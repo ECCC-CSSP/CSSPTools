@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\CSSPCodeWriterBase\CSSPCodeWriterBase.csproj" />
+    <ProjectReference Include="..\CSSPEnums\CSSPEnums.csproj" />
+    <ProjectReference Include="..\CSSPModels\CSSPModels.csproj" />
+    <ProjectReference Include="..\CSSPPolSourceGroupingExcelFileRead\CSSPPolSourceGroupingExcelFileRead.csproj" />
+  </ItemGroup>
+
+</Project>

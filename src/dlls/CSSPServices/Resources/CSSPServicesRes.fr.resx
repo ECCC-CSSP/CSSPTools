@@ -1,0 +1,318 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="AutoEmailFromServer" xml:space="preserve">
+    <value>Courriel automatisé provenant du serveur.</value>
+  </data>
+  <data name="CodeEmail" xml:space="preserve">
+    <value>CodeEmail</value>
+  </data>
+  <data name="CodeIs" xml:space="preserve">
+    <value>Le code est:</value>
+  </data>
+  <data name="CodeNeedsToBe8Characters" xml:space="preserve">
+    <value>Code doit &#x1E;être exactement 8 caracters</value>
+  </data>
+  <data name="Code_ForEmail_DoesNotExist" xml:space="preserve">
+    <value>Code {0} pour le courriel {1} n'existe pas.</value>
+  </data>
+  <data name="CouldNotAdd_Error_" xml:space="preserve">
+    <value>Impossible d'ajouter {0}. Erreur: {1}</value>
+  </data>
+  <data name="CouldNotFindRoot" xml:space="preserve">
+    <value>Dans l'impossibilité de trouver Base</value>
+  </data>
+  <data name="CouldNotFind_" xml:space="preserve">
+    <value>Dans l'impossibilité de trouver {0}.</value>
+  </data>
+  <data name="CouldNotFind_With_Equal_" xml:space="preserve">
+    <value>Dans l'impossibilité de trouver {0} à l'aide de {1} qui est équivalent à {2}.</value>
+  </data>
+  <data name="EmailWasNotSent_" xml:space="preserve">
+    <value>Email was not sent. Error: {0}</value>
+  </data>
+  <data name="FullName" xml:space="preserve">
+    <value>Nom au complet</value>
+  </data>
+  <data name="NeedToBeLoggedIn" xml:space="preserve">
+    <value>Doit établir la connexion</value>
+  </data>
+  <data name="NotAllowedToChangeContactInformation" xml:space="preserve">
+    <value>Non autorisé à modifier les informations de contact</value>
+  </data>
+  <data name="OnlyAdministratorsCanManageUsers" xml:space="preserve">
+    <value>Seulement les administrateurs peuvent gérer les comptes d'utilisateurs</value>
+  </data>
+  <data name="PlsUseFollowingUniqueCodeEtc" xml:space="preserve">
+    <value>Veuillez utiliser le code unique suivant afin de réinitialiser le mot de passe de votre courriel de connexion. </value>
+  </data>
+  <data name="RequiredInformationToChangeYourPassword" xml:space="preserve">
+    <value>Informations requises pour modifier votre mot de passe</value>
+  </data>
+  <data name="Root" xml:space="preserve">
+    <value>Base</value>
+  </data>
+  <data name="ToAddFirst_Requires_TableToBeEmpty" xml:space="preserve">
+    <value>Pour ajouter la première {0} requiert que la {1} table soit vide</value>
+  </data>
+  <data name="TVItemRootShouldBeTheFirstOneAdded" xml:space="preserve">
+    <value>TVItem 'Base' devrait être ajouté en premier.</value>
+  </data>
+  <data name="UserWithLoginEmail_AlreadyExist" xml:space="preserve">
+    <value>L'utilisateur du "LoginEmail" {0} existe déjà.</value>
+  </data>
+  <data name="YouBeenAddedInWebSiteBy_" xml:space="preserve">
+    <value>{0} vous a inscrit sur le site web.</value>
+  </data>
+  <data name="YourEmailIs" xml:space="preserve">
+    <value>Votre courriel est:</value>
+  </data>
+  <data name="_AddedInWebSiteBy_" xml:space="preserve">
+    <value>{0} a été ajouté au site web par {1}.</value>
+  </data>
+  <data name="_AlreadyExists" xml:space="preserve">
+    <value>{0} existe déjà.</value>
+  </data>
+  <data name="_And_AreNotIdentical" xml:space="preserve">
+    <value>{0} et {1} ne sont pas identiques.</value>
+  </data>
+  <data name="_DoesNotExist" xml:space="preserve">
+    <value>{0} n'existe pas.</value>
+  </data>
+  <data name="_EmailNotWellFormed" xml:space="preserve">
+    <value>{0} courriel non valide.</value>
+  </data>
+  <data name="_HasToBeUnique" xml:space="preserve">
+    <value>{0} doit être unique.</value>
+  </data>
+  <data name="_IsLaterThan_" xml:space="preserve">
+    <value>{0} est plus tard que {1}.</value>
+  </data>
+  <data name="_IsNotComposedOf_Parts" xml:space="preserve">
+    <value>{0} ne contient pas les composantes {1}.</value>
+  </data>
+  <data name="_IsRequired" xml:space="preserve">
+    <value>{0} est nécessaire</value>
+  </data>
+  <data name="_LengthShouldBeBetween_And_" xml:space="preserve">
+    <value>La longueur de {0} devrait être entre {1} et {2}</value>
+  </data>
+  <data name="_MaxLengthIs_" xml:space="preserve">
+    <value>Le nombre maximum de caractère de {0} est {1}.</value>
+  </data>
+  <data name="_MinLengthIs_" xml:space="preserve">
+    <value>Le nombre minimum de caractère de {0} est {1}.</value>
+  </data>
+  <data name="_RegisteredAndAddedInWebSite" xml:space="preserve">
+    <value>{0} est inscrit sur le site web.</value>
+  </data>
+  <data name="_ValueShouldBeBetween_And_" xml:space="preserve">
+    <value>La valeur de {0} devrait être entre {1} et {2}</value>
+  </data>
+  <data name="_IsNullOrEmpty" xml:space="preserve">
+    <value>{0} est nul ou vide</value>
+  </data>
+  <data name="_MinValueIs_" xml:space="preserve">
+    <value>{0} la valeur minimale est {1}</value>
+  </data>
+  <data name="_MaxValueIs_1" xml:space="preserve">
+    <value>{0} la valeur maximale est {1}</value>
+  </data>
+  <data name="_IsNotAValidEmail" xml:space="preserve">
+    <value>{0} n'est pas un courrier électronique valide</value>
+  </data>
+  <data name="InvalidLengthOfPasswordHashShouldBe64Bytes" xml:space="preserve">
+    <value>Longueur invalide du "PasswordHash". Doit être 64 octets.</value>
+  </data>
+  <data name="InvalidLengthOfPasswordSaltShouldBe128Bytes" xml:space="preserve">
+    <value>Longueur invalide du "PasswordSalt". Doit être 128 octets.</value>
+  </data>
+  <data name="TVText" xml:space="preserve">
+    <value>TVText</value>
+  </data>
+  <data name="_YearShouldBeBiggerThan_" xml:space="preserve">
+    <value>[{0}] année devrait être plus grand que [{1}]</value>
+  </data>
+  <data name="_DateIsBiggerThan_" xml:space="preserve">
+    <value>[{0}] date est plus grand que [{1}]</value>
+  </data>
+  <data name="_IsNotOfType_" xml:space="preserve">
+    <value>{0} n'est pas du type {1}</value>
+  </data>
+  <data name="Password" xml:space="preserve">
+    <value>Password (fr)</value>
+  </data>
+  <data name="AllowableLanguagesAreFRAndEN" xml:space="preserve">
+    <value>Langues disponible sont [fr et en]</value>
+  </data>
+  <data name="CouldNotFindFile_" xml:space="preserve">
+    <value>Dans l'impossibilité de trouver la filière [{0}]</value>
+  </data>
+  <data name="WhereOperator_NotImplementedYet" xml:space="preserve">
+    <value>Opérateur (where) [{0}] pas encore implanté</value>
+  </data>
+  <data name="_DoesNotExistForModelType_" xml:space="preserve">
+    <value>{0} n'existe pas pour ModelType = {1}</value>
+  </data>
+  <data name="_NeedsToBeADateFor_OfModel_" xml:space="preserve">
+    <value>[{0}] devrait être une date pour {1} pour model {2}</value>
+  </data>
+  <data name="_NeedsToBeANumberFor_OfModel_" xml:space="preserve">
+    <value>[{0}] devrait être un chiffre pour {1} pour model {2}</value>
+  </data>
+  <data name="_NeedsToBeAValidEnumNumberFor_OfModel_" xml:space="preserve">
+    <value>[{0}] devrait être un chiffre d'énumération valid pour {1} pour model {2}</value>
+  </data>
+  <data name="_NeedsToBeAValidEnumTextFor_OfModel_" xml:space="preserve">
+    <value>[{0}] devrait être un texte d'énumération valid pour {1} pour model {2}</value>
+  </data>
+  <data name="_NeedsToBeTrueOrFalseFor_OfModel_" xml:space="preserve">
+    <value>[{0}] devrait être soit true ou false pour {1} pour model {2}</value>
+  </data>
+  <data name="_NeedToHaveValidStringFormatEx_" xml:space="preserve">
+    <value>{0} (string) a besoin d'être dans un format valid - Ex: {1}</value>
+  </data>
+  <data name="_NotImplementedYet" xml:space="preserve">
+    <value>{0} pas encore implanté</value>
+  </data>
+  <data name="_ShouldBeAbove_" xml:space="preserve">
+    <value>{0} devrait être au dessus {1}</value>
+  </data>
+  <data name="_ShouldBeBelow_" xml:space="preserve">
+    <value>{0} devrait être en dessous {1}</value>
+  </data>
+  <data name="_ShouldNotBeNullOrEmpty" xml:space="preserve">
+    <value>{0} ne devrait pas être null ou vide</value>
+  </data>
+  <data name="WhereOperator_For_OfModel_IsNotValidOnlyEQIsAllowed" xml:space="preserve">
+    <value>Where operator [{0}] for [{1}] of model [{2}] is not valid. Only [EQ] is allowed. (fr)</value>
+  </data>
+  <data name="Extra_OfModel_IsInvalidAllowableValuesAre_" xml:space="preserve">
+    <value>Extra [{0}] of model [{1}] is invalid. Allowable values are [{2}] (fr)</value>
+  </data>
+  <data name="WhereOperator_NotValidAllowableValuesAre_" xml:space="preserve">
+    <value>Where operator [{0}] not valid. Allowable values are [{1}] (fr)</value>
+  </data>
+  <data name="_NeedsToBeAValidEnumNumberFor_OfModel_AllowableValuesAre_" xml:space="preserve">
+    <value>[{0}] needs to be a valid Enum number for [{1}] of model [{2}] allowable values are [{3}] (fr)</value>
+  </data>
+  <data name="_NeedsToBeAValidEnumTextFor_OfModel_AllowableValuesAre_" xml:space="preserve">
+    <value>[{0}] needs to be a valid Enum text for [{1}] of model [{2}] allowable values are [{3}] (fr)</value>
+  </data>
+</root>
