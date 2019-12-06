@@ -51,7 +51,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSSPModelsDLL.Tests", "src\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSSPTestingPolSourceGrouping", "src\forms\CSSPTestingPolSourceGrouping\CSSPTestingPolSourceGrouping.csproj", "{88E01477-E5C5-4B28-B1A3-4D7ADC352C90}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleAppTestingOpenXML", "src\play\ConsoleAppTestingOpenXML\ConsoleAppTestingOpenXML.csproj", "{89C7F58C-BFC0-4244-B28A-0ED51F5C4608}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsoleAppTestingOpenXML", "src\play\ConsoleAppTestingOpenXML\ConsoleAppTestingOpenXML.csproj", "{89C7F58C-BFC0-4244-B28A-0ED51F5C4608}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleAppHelloWorld", "src\play\ConsoleAppHelloWorld\ConsoleAppHelloWorld.csproj", "{B6D0BE74-CF3D-4B62-B5AA-04E5A296AAA0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -363,6 +365,18 @@ Global
 		{89C7F58C-BFC0-4244-B28A-0ED51F5C4608}.Release|x64.Build.0 = Release|Any CPU
 		{89C7F58C-BFC0-4244-B28A-0ED51F5C4608}.Release|x86.ActiveCfg = Release|Any CPU
 		{89C7F58C-BFC0-4244-B28A-0ED51F5C4608}.Release|x86.Build.0 = Release|Any CPU
+		{B6D0BE74-CF3D-4B62-B5AA-04E5A296AAA0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B6D0BE74-CF3D-4B62-B5AA-04E5A296AAA0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B6D0BE74-CF3D-4B62-B5AA-04E5A296AAA0}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{B6D0BE74-CF3D-4B62-B5AA-04E5A296AAA0}.Debug|x64.Build.0 = Debug|Any CPU
+		{B6D0BE74-CF3D-4B62-B5AA-04E5A296AAA0}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{B6D0BE74-CF3D-4B62-B5AA-04E5A296AAA0}.Debug|x86.Build.0 = Debug|Any CPU
+		{B6D0BE74-CF3D-4B62-B5AA-04E5A296AAA0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B6D0BE74-CF3D-4B62-B5AA-04E5A296AAA0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B6D0BE74-CF3D-4B62-B5AA-04E5A296AAA0}.Release|x64.ActiveCfg = Release|Any CPU
+		{B6D0BE74-CF3D-4B62-B5AA-04E5A296AAA0}.Release|x64.Build.0 = Release|Any CPU
+		{B6D0BE74-CF3D-4B62-B5AA-04E5A296AAA0}.Release|x86.ActiveCfg = Release|Any CPU
+		{B6D0BE74-CF3D-4B62-B5AA-04E5A296AAA0}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
