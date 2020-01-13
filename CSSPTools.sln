@@ -53,7 +53,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSSPTestingPolSourceGroupin
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsoleAppTestingOpenXML", "src\play\ConsoleAppTestingOpenXML\ConsoleAppTestingOpenXML.csproj", "{89C7F58C-BFC0-4244-B28A-0ED51F5C4608}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleAppHelloWorld", "src\play\ConsoleAppHelloWorld\ConsoleAppHelloWorld.csproj", "{B6D0BE74-CF3D-4B62-B5AA-04E5A296AAA0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsoleAppHelloWorld", "src\play\ConsoleAppHelloWorld\ConsoleAppHelloWorld.csproj", "{B6D0BE74-CF3D-4B62-B5AA-04E5A296AAA0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XUnitTestProject1", "..\AAA\XUnitTestProject1\XUnitTestProject1.csproj", "{BE78A2E4-A545-4B21-A1DE-A2E7FD00DA1C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -377,6 +379,18 @@ Global
 		{B6D0BE74-CF3D-4B62-B5AA-04E5A296AAA0}.Release|x64.Build.0 = Release|Any CPU
 		{B6D0BE74-CF3D-4B62-B5AA-04E5A296AAA0}.Release|x86.ActiveCfg = Release|Any CPU
 		{B6D0BE74-CF3D-4B62-B5AA-04E5A296AAA0}.Release|x86.Build.0 = Release|Any CPU
+		{BE78A2E4-A545-4B21-A1DE-A2E7FD00DA1C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BE78A2E4-A545-4B21-A1DE-A2E7FD00DA1C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BE78A2E4-A545-4B21-A1DE-A2E7FD00DA1C}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{BE78A2E4-A545-4B21-A1DE-A2E7FD00DA1C}.Debug|x64.Build.0 = Debug|Any CPU
+		{BE78A2E4-A545-4B21-A1DE-A2E7FD00DA1C}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{BE78A2E4-A545-4B21-A1DE-A2E7FD00DA1C}.Debug|x86.Build.0 = Debug|Any CPU
+		{BE78A2E4-A545-4B21-A1DE-A2E7FD00DA1C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BE78A2E4-A545-4B21-A1DE-A2E7FD00DA1C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BE78A2E4-A545-4B21-A1DE-A2E7FD00DA1C}.Release|x64.ActiveCfg = Release|Any CPU
+		{BE78A2E4-A545-4B21-A1DE-A2E7FD00DA1C}.Release|x64.Build.0 = Release|Any CPU
+		{BE78A2E4-A545-4B21-A1DE-A2E7FD00DA1C}.Release|x86.ActiveCfg = Release|Any CPU
+		{BE78A2E4-A545-4B21-A1DE-A2E7FD00DA1C}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
