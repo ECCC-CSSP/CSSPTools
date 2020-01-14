@@ -6,7 +6,7 @@
  */ 
 using System;
 using System.Text;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using System.Linq;
 using System.Globalization;
 using System.Transactions;
@@ -19,7 +19,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace CSSPModels.Tests
 {
-    [TestClass]
+
     public partial class TVFileLanguageTest
     {
         #region Variables
@@ -37,7 +37,7 @@ namespace CSSPModels.Tests
         #endregion Constructors
 
         #region Tests Functions public
-        [TestMethod]
+        [Fact]
         public void TVFileLanguage_Properties_Test()
         {
             List<string> propNameList = new List<string>() { "TVFileLanguageID", "TVFileID", "Language", "FileDescription", "TranslationStatus", "LastUpdateDate_UTC", "LastUpdateContactTVItemID",  }.OrderBy(c => c).ToList();
@@ -50,12 +50,12 @@ namespace CSSPModels.Tests
                     && propertyInfo.Name != "ValidationResults"
                     && !propertyInfo.CustomAttributes.Where(c => c.AttributeType.Name.Contains("NotMappedAttribute")).Any())
                 {
-                    Assert.AreEqual(propNameList[index], propertyInfo.Name);
+                    Assert.Equal(propNameList[index], propertyInfo.Name);
                     index += 1;
                 }
             }
 
-            Assert.AreEqual(propNameList.Count, index);
+            Assert.Equal(propNameList.Count, index);
 
             index = 0;
             foreach (PropertyInfo propertyInfo in typeof(TVFileLanguage).GetProperties().Where(c => c.Name != "ValidationResults").OrderBy(c => c.Name).ToList())
@@ -64,16 +64,16 @@ namespace CSSPModels.Tests
                 {
                     if (customAttributeData.AttributeType.Name == "NotMappedAttribute")
                     {
-                        Assert.AreEqual(propertyInfo.Name, propNameNotMappedList[index]);
+                        Assert.Equal(propertyInfo.Name, propNameNotMappedList[index]);
                         index += 1;
                     }
                 }
             }
 
-            Assert.AreEqual(propNameNotMappedList.Count, index);
+            Assert.Equal(propNameNotMappedList.Count, index);
 
         }
-        [TestMethod]
+        [Fact]
         public void TVFileLanguage_Navigation_Test()
         {
             List<string> foreignNameList = new List<string>() {  }.OrderBy(c => c).ToList();
@@ -84,61 +84,61 @@ namespace CSSPModels.Tests
             {
                 if (propertyInfo.GetGetMethod().IsVirtual && !propertyInfo.GetGetMethod().ReturnType.Name.StartsWith("ICollection"))
                 {
-                    Assert.IsTrue(foreignNameList.Contains(propertyInfo.Name));
+                    Assert.True(foreignNameList.Contains(propertyInfo.Name));
                     index += 1;
                 }
             }
 
-            Assert.AreEqual(foreignNameList.Count, index);
+            Assert.Equal(foreignNameList.Count, index);
 
             index = 0;
             foreach (PropertyInfo propertyInfo in typeof(TVFileLanguage).GetProperties().Where(c => c.Name != "ValidationResults").OrderBy(c => c.Name).ToList())
             {
                 if (propertyInfo.GetGetMethod().ReturnType.Name.StartsWith("ICollection"))
                 {
-                    Assert.IsTrue(foreignNameCollectionList.Contains(propertyInfo.Name));
+                    Assert.True(foreignNameCollectionList.Contains(propertyInfo.Name));
                     index += 1;
                 }
             }
 
-            Assert.AreEqual(foreignNameCollectionList.Count, index);
+            Assert.Equal(foreignNameCollectionList.Count, index);
 
         }
-        [TestMethod]
+        [Fact]
         public void TVFileLanguage_Has_ValidationResults_Test()
         {
-             Assert.IsTrue(typeof(TVFileLanguage).GetProperties().Where(c => c.Name == "ValidationResults").Any());
+             Assert.True(typeof(TVFileLanguage).GetProperties().Where(c => c.Name == "ValidationResults").Any());
         }
-        [TestMethod]
+        [Fact]
         public void TVFileLanguage_Every_Property_Has_Get_Set_Test()
         {
                int val1 = 45;
                tVFileLanguage.TVFileLanguageID = val1;
-               Assert.AreEqual(val1, tVFileLanguage.TVFileLanguageID);
+               Assert.Equal(val1, tVFileLanguage.TVFileLanguageID);
                int val2 = 45;
                tVFileLanguage.TVFileID = val2;
-               Assert.AreEqual(val2, tVFileLanguage.TVFileID);
+               Assert.Equal(val2, tVFileLanguage.TVFileID);
                LanguageEnum val3 = (LanguageEnum)3;
                tVFileLanguage.Language = val3;
-               Assert.AreEqual(val3, tVFileLanguage.Language);
+               Assert.Equal(val3, tVFileLanguage.Language);
                string val4 = "Some text";
                tVFileLanguage.FileDescription = val4;
-               Assert.AreEqual(val4, tVFileLanguage.FileDescription);
+               Assert.Equal(val4, tVFileLanguage.FileDescription);
                TranslationStatusEnum val5 = (TranslationStatusEnum)3;
                tVFileLanguage.TranslationStatus = val5;
-               Assert.AreEqual(val5, tVFileLanguage.TranslationStatus);
+               Assert.Equal(val5, tVFileLanguage.TranslationStatus);
                DateTime val6 = new DateTime(2010, 3, 4);
                tVFileLanguage.LastUpdateDate_UTC = val6;
-               Assert.AreEqual(val6, tVFileLanguage.LastUpdateDate_UTC);
+               Assert.Equal(val6, tVFileLanguage.LastUpdateDate_UTC);
                int val7 = 45;
                tVFileLanguage.LastUpdateContactTVItemID = val7;
-               Assert.AreEqual(val7, tVFileLanguage.LastUpdateContactTVItemID);
+               Assert.Equal(val7, tVFileLanguage.LastUpdateContactTVItemID);
                bool val8 = true;
                tVFileLanguage.HasErrors = val8;
-               Assert.AreEqual(val8, tVFileLanguage.HasErrors);
+               Assert.Equal(val8, tVFileLanguage.HasErrors);
                IEnumerable<ValidationResult> val27 = new List<ValidationResult>() { new ValidationResult("First CSSPError Message") }.AsEnumerable();
                tVFileLanguage.ValidationResults = val27;
-               Assert.AreEqual(val27, tVFileLanguage.ValidationResults);
+               Assert.Equal(val27, tVFileLanguage.ValidationResults);
         }
         #endregion Tests Functions public
     }

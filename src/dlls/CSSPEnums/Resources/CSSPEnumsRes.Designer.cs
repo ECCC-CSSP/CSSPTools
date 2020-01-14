@@ -502,6 +502,15 @@ namespace CSSPEnums.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Climate Site Load CoCoRaHS Data.
+        /// </summary>
+        public static string AppTaskCommandEnumClimateSiteLoadCoCoRaHSData {
+            get {
+                return ResourceManager.GetString("AppTaskCommandEnumClimateSiteLoadCoCoRaHSData", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Create document from parameters.
         /// </summary>
         public static string AppTaskCommandEnumCreateDocumentFromParameters {
@@ -5790,6 +5799,15 @@ namespace CSSPEnums.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Bivalve.
+        /// </summary>
+        public static string SampleTypeEnumBivalve {
+            get {
+                return ResourceManager.GetString("SampleTypeEnumBivalve", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Daily duplicate.
         /// </summary>
         public static string SampleTypeEnumDailyDuplicate {
@@ -5876,6 +5894,15 @@ namespace CSSPEnums.Resources {
         public static string SampleTypeEnumSanitary {
             get {
                 return ResourceManager.GetString("SampleTypeEnumSanitary", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sediment.
+        /// </summary>
+        public static string SampleTypeEnumSediment {
+            get {
+                return ResourceManager.GetString("SampleTypeEnumSediment", resourceCulture);
             }
         }
         

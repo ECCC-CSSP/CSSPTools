@@ -6,7 +6,7 @@
  */ 
 using System;
 using System.Text;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using System.Linq;
 using System.Globalization;
 using System.Transactions;
@@ -19,7 +19,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace CSSPModels.Tests
 {
-    [TestClass]
+
     public partial class ContourPolygonTest
     {
         #region Variables
@@ -37,7 +37,7 @@ namespace CSSPModels.Tests
         #endregion Constructors
 
         #region Tests Functions public
-        [TestMethod]
+        [Fact]
         public void ContourPolygon_Properties_Test()
         {
             List<string> propNameList = new List<string>() { "ContourValue", "Layer", "Depth_m", "ContourNodeList", "HasErrors",  }.OrderBy(c => c).ToList();
@@ -46,38 +46,38 @@ namespace CSSPModels.Tests
             int index = 0;
             foreach (PropertyInfo propertyInfo in typeof(ContourPolygon).GetProperties().Where(c => c.Name != "ValidationResults").OrderBy(c => c.Name).ToList())
             {
-                Assert.AreEqual(propertyInfo.Name, propNameList[index]);
+                Assert.Equal(propertyInfo.Name, propNameList[index]);
                 index += 1;
             }
 
-            Assert.AreEqual(propNameList.Count, index);
+            Assert.Equal(propNameList.Count, index);
         }
-        [TestMethod]
+        [Fact]
         public void ContourPolygon_Has_ValidationResults_Test()
         {
-             Assert.IsTrue(typeof(ContourPolygon).GetProperties().Where(c => c.Name == "ValidationResults").Any());
+             Assert.True(typeof(ContourPolygon).GetProperties().Where(c => c.Name == "ValidationResults").Any());
         }
-        [TestMethod]
+        [Fact]
         public void ContourPolygon_Every_Property_Has_Get_Set_Test()
         {
                double val1 = 87.9D;
                contourPolygon.ContourValue = val1;
-               Assert.AreEqual(val1, contourPolygon.ContourValue);
+               Assert.Equal(val1, contourPolygon.ContourValue);
                int val2 = 45;
                contourPolygon.Layer = val2;
-               Assert.AreEqual(val2, contourPolygon.Layer);
+               Assert.Equal(val2, contourPolygon.Layer);
                double val3 = 87.9D;
                contourPolygon.Depth_m = val3;
-               Assert.AreEqual(val3, contourPolygon.Depth_m);
+               Assert.Equal(val3, contourPolygon.Depth_m);
                List<Node> val4 = new List<Node>() { new Node(), new Node() };
                contourPolygon.ContourNodeList = val4;
-               Assert.AreEqual(val4, contourPolygon.ContourNodeList);
+               Assert.Equal(val4, contourPolygon.ContourNodeList);
                bool val5 = true;
                contourPolygon.HasErrors = val5;
-               Assert.AreEqual(val5, contourPolygon.HasErrors);
+               Assert.Equal(val5, contourPolygon.HasErrors);
                IEnumerable<ValidationResult> val18 = new List<ValidationResult>() { new ValidationResult("First CSSPError Message") }.AsEnumerable();
                contourPolygon.ValidationResults = val18;
-               Assert.AreEqual(val18, contourPolygon.ValidationResults);
+               Assert.Equal(val18, contourPolygon.ValidationResults);
         }
         #endregion Tests Functions public
     }

@@ -6,7 +6,7 @@
  */ 
 using System;
 using System.Text;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using System.Linq;
 using System.Globalization;
 using System.Transactions;
@@ -19,7 +19,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace CSSPModels.Tests
 {
-    [TestClass]
+
     public partial class MWQMSiteSampleFCTest
     {
         #region Variables
@@ -37,7 +37,7 @@ namespace CSSPModels.Tests
         #endregion Constructors
 
         #region Tests Functions public
-        [TestMethod]
+        [Fact]
         public void MWQMSiteSampleFC_Properties_Test()
         {
             List<string> propNameList = new List<string>() { "SampleDate", "FC", "Sal", "Temp", "PH", "DO", "Depth", "SampCount", "MinFC", "MaxFC", "GeoMean", "Median", "P90", "PercOver43", "PercOver260", "HasErrors",  }.OrderBy(c => c).ToList();
@@ -46,71 +46,71 @@ namespace CSSPModels.Tests
             int index = 0;
             foreach (PropertyInfo propertyInfo in typeof(MWQMSiteSampleFC).GetProperties().Where(c => c.Name != "ValidationResults").OrderBy(c => c.Name).ToList())
             {
-                Assert.AreEqual(propertyInfo.Name, propNameList[index]);
+                Assert.Equal(propertyInfo.Name, propNameList[index]);
                 index += 1;
             }
 
-            Assert.AreEqual(propNameList.Count, index);
+            Assert.Equal(propNameList.Count, index);
         }
-        [TestMethod]
+        [Fact]
         public void MWQMSiteSampleFC_Has_ValidationResults_Test()
         {
-             Assert.IsTrue(typeof(MWQMSiteSampleFC).GetProperties().Where(c => c.Name == "ValidationResults").Any());
+             Assert.True(typeof(MWQMSiteSampleFC).GetProperties().Where(c => c.Name == "ValidationResults").Any());
         }
-        [TestMethod]
+        [Fact]
         public void MWQMSiteSampleFC_Every_Property_Has_Get_Set_Test()
         {
                DateTime val1 = new DateTime(2010, 3, 4);
                mWQMSiteSampleFC.SampleDate = val1;
-               Assert.AreEqual(val1, mWQMSiteSampleFC.SampleDate);
+               Assert.Equal(val1, mWQMSiteSampleFC.SampleDate);
                int val2 = 45;
                mWQMSiteSampleFC.FC = val2;
-               Assert.AreEqual(val2, mWQMSiteSampleFC.FC);
+               Assert.Equal(val2, mWQMSiteSampleFC.FC);
                double val3 = 87.9D;
                mWQMSiteSampleFC.Sal = val3;
-               Assert.AreEqual(val3, mWQMSiteSampleFC.Sal);
+               Assert.Equal(val3, mWQMSiteSampleFC.Sal);
                double val4 = 87.9D;
                mWQMSiteSampleFC.Temp = val4;
-               Assert.AreEqual(val4, mWQMSiteSampleFC.Temp);
+               Assert.Equal(val4, mWQMSiteSampleFC.Temp);
                double val5 = 87.9D;
                mWQMSiteSampleFC.PH = val5;
-               Assert.AreEqual(val5, mWQMSiteSampleFC.PH);
+               Assert.Equal(val5, mWQMSiteSampleFC.PH);
                double val6 = 87.9D;
                mWQMSiteSampleFC.DO = val6;
-               Assert.AreEqual(val6, mWQMSiteSampleFC.DO);
+               Assert.Equal(val6, mWQMSiteSampleFC.DO);
                double val7 = 87.9D;
                mWQMSiteSampleFC.Depth = val7;
-               Assert.AreEqual(val7, mWQMSiteSampleFC.Depth);
+               Assert.Equal(val7, mWQMSiteSampleFC.Depth);
                int val8 = 45;
                mWQMSiteSampleFC.SampCount = val8;
-               Assert.AreEqual(val8, mWQMSiteSampleFC.SampCount);
+               Assert.Equal(val8, mWQMSiteSampleFC.SampCount);
                int val9 = 45;
                mWQMSiteSampleFC.MinFC = val9;
-               Assert.AreEqual(val9, mWQMSiteSampleFC.MinFC);
+               Assert.Equal(val9, mWQMSiteSampleFC.MinFC);
                int val10 = 45;
                mWQMSiteSampleFC.MaxFC = val10;
-               Assert.AreEqual(val10, mWQMSiteSampleFC.MaxFC);
+               Assert.Equal(val10, mWQMSiteSampleFC.MaxFC);
                double val11 = 87.9D;
                mWQMSiteSampleFC.GeoMean = val11;
-               Assert.AreEqual(val11, mWQMSiteSampleFC.GeoMean);
+               Assert.Equal(val11, mWQMSiteSampleFC.GeoMean);
                double val12 = 87.9D;
                mWQMSiteSampleFC.Median = val12;
-               Assert.AreEqual(val12, mWQMSiteSampleFC.Median);
+               Assert.Equal(val12, mWQMSiteSampleFC.Median);
                double val13 = 87.9D;
                mWQMSiteSampleFC.P90 = val13;
-               Assert.AreEqual(val13, mWQMSiteSampleFC.P90);
+               Assert.Equal(val13, mWQMSiteSampleFC.P90);
                double val14 = 87.9D;
                mWQMSiteSampleFC.PercOver43 = val14;
-               Assert.AreEqual(val14, mWQMSiteSampleFC.PercOver43);
+               Assert.Equal(val14, mWQMSiteSampleFC.PercOver43);
                double val15 = 87.9D;
                mWQMSiteSampleFC.PercOver260 = val15;
-               Assert.AreEqual(val15, mWQMSiteSampleFC.PercOver260);
+               Assert.Equal(val15, mWQMSiteSampleFC.PercOver260);
                bool val16 = true;
                mWQMSiteSampleFC.HasErrors = val16;
-               Assert.AreEqual(val16, mWQMSiteSampleFC.HasErrors);
+               Assert.Equal(val16, mWQMSiteSampleFC.HasErrors);
                IEnumerable<ValidationResult> val51 = new List<ValidationResult>() { new ValidationResult("First CSSPError Message") }.AsEnumerable();
                mWQMSiteSampleFC.ValidationResults = val51;
-               Assert.AreEqual(val51, mWQMSiteSampleFC.ValidationResults);
+               Assert.Equal(val51, mWQMSiteSampleFC.ValidationResults);
         }
         #endregion Tests Functions public
     }

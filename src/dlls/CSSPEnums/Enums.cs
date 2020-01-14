@@ -179,6 +179,7 @@ namespace CSSPEnums
         GenerateKMLFileClassificationForCSSPWebToolsVisualization = 45,
         ProvinceToolsGenerateStats = 46,
         MikeScenarioPrepareResults = 47,
+        ClimateSiteLoadCoCoRaHSData = 48,
     }
     public enum AppTaskStatusEnum
     {
@@ -754,6 +755,8 @@ namespace CSSPEnums
         Routine = 109,
         Sanitary = 110,
         Study = 111,
+        Sediment = 112,
+        Bivalve = 113,
     }
     public enum SamplingPlanTypeEnum
     {

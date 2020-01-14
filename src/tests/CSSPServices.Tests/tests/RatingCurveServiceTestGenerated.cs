@@ -5,7 +5,7 @@
  */ 
 
 using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using System.Linq;
 using System.Collections.Generic;
 using CSSPModels;
@@ -21,7 +21,7 @@ using CSSPEnums.Resources;
 
 namespace CSSPServices.Tests
 {
-    [TestClass]
+
     public partial class RatingCurveServiceTest : TestHelper
     {
         #region Variables
@@ -39,7 +39,7 @@ namespace CSSPServices.Tests
         #endregion Constructors
 
         #region Tests Generated CRUD
-        [TestMethod]
+        [Fact]
         public void RatingCurve_CRUD_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -66,26 +66,26 @@ namespace CSSPServices.Tests
 
                     count = ratingCurveService.GetRatingCurveList().Count();
 
-                    Assert.AreEqual(count, (from c in dbTestDB.RatingCurves select c).Count());
+                    Assert.Equal(count, (from c in dbTestDB.RatingCurves select c).Count());
 
                     ratingCurveService.Add(ratingCurve);
                     if (ratingCurve.HasErrors)
                     {
-                        Assert.AreEqual("", ratingCurve.ValidationResults.FirstOrDefault().ErrorMessage);
+                        Assert.Equal("", ratingCurve.ValidationResults.FirstOrDefault().ErrorMessage);
                     }
-                    Assert.AreEqual(true, ratingCurveService.GetRatingCurveList().Where(c => c == ratingCurve).Any());
+                    Assert.True(ratingCurveService.GetRatingCurveList().Where(c => c == ratingCurve).Any());
                     ratingCurveService.Update(ratingCurve);
                     if (ratingCurve.HasErrors)
                     {
-                        Assert.AreEqual("", ratingCurve.ValidationResults.FirstOrDefault().ErrorMessage);
+                        Assert.Equal("", ratingCurve.ValidationResults.FirstOrDefault().ErrorMessage);
                     }
-                    Assert.AreEqual(count + 1, ratingCurveService.GetRatingCurveList().Count());
+                    Assert.Equal(count + 1, ratingCurveService.GetRatingCurveList().Count());
                     ratingCurveService.Delete(ratingCurve);
                     if (ratingCurve.HasErrors)
                     {
-                        Assert.AreEqual("", ratingCurve.ValidationResults.FirstOrDefault().ErrorMessage);
+                        Assert.Equal("", ratingCurve.ValidationResults.FirstOrDefault().ErrorMessage);
                     }
-                    Assert.AreEqual(count, ratingCurveService.GetRatingCurveList().Count());
+                    Assert.Equal(count, ratingCurveService.GetRatingCurveList().Count());
 
                 }
             }
@@ -93,7 +93,7 @@ namespace CSSPServices.Tests
         #endregion Tests Generated CRUD
 
         #region Tests Generated Properties
-        [TestMethod]
+        [Fact]
         public void RatingCurve_Properties_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -131,13 +131,13 @@ namespace CSSPServices.Tests
                     ratingCurve = GetFilledRandomRatingCurve("");
                     ratingCurve.RatingCurveID = 0;
                     ratingCurveService.Update(ratingCurve);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsRequired, "RatingCurveID"), ratingCurve.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsRequired, "RatingCurveID"), ratingCurve.ValidationResults.FirstOrDefault().ErrorMessage);
 
                     ratingCurve = null;
                     ratingCurve = GetFilledRandomRatingCurve("");
                     ratingCurve.RatingCurveID = 10000000;
                     ratingCurveService.Update(ratingCurve);
-                    Assert.AreEqual(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "RatingCurve", "RatingCurveID", ratingCurve.RatingCurveID.ToString()), ratingCurve.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "RatingCurve", "RatingCurveID", ratingCurve.RatingCurveID.ToString()), ratingCurve.ValidationResults.FirstOrDefault().ErrorMessage);
 
 
                     // -----------------------------------
@@ -150,7 +150,7 @@ namespace CSSPServices.Tests
                     ratingCurve = GetFilledRandomRatingCurve("");
                     ratingCurve.HydrometricSiteID = 0;
                     ratingCurveService.Add(ratingCurve);
-                    Assert.AreEqual(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "HydrometricSite", "HydrometricSiteID", ratingCurve.HydrometricSiteID.ToString()), ratingCurve.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "HydrometricSite", "HydrometricSiteID", ratingCurve.HydrometricSiteID.ToString()), ratingCurve.ValidationResults.FirstOrDefault().ErrorMessage);
 
 
                     // -----------------------------------
@@ -161,18 +161,18 @@ namespace CSSPServices.Tests
 
                     ratingCurve = null;
                     ratingCurve = GetFilledRandomRatingCurve("RatingCurveNumber");
-                    Assert.AreEqual(false, ratingCurveService.Add(ratingCurve));
-                    Assert.AreEqual(1, ratingCurve.ValidationResults.Count());
-                    Assert.IsTrue(ratingCurve.ValidationResults.Where(c => c.ErrorMessage == string.Format(CSSPServicesRes._IsRequired, "RatingCurveNumber")).Any());
-                    Assert.AreEqual(null, ratingCurve.RatingCurveNumber);
-                    Assert.AreEqual(count, ratingCurveService.GetRatingCurveList().Count());
+                    Assert.False(ratingCurveService.Add(ratingCurve));
+                    Assert.Equal(1, ratingCurve.ValidationResults.Count());
+                    Assert.True(ratingCurve.ValidationResults.Where(c => c.ErrorMessage == string.Format(CSSPServicesRes._IsRequired, "RatingCurveNumber")).Any());
+                    Assert.Null(ratingCurve.RatingCurveNumber);
+                    Assert.Equal(count, ratingCurveService.GetRatingCurveList().Count());
 
                     ratingCurve = null;
                     ratingCurve = GetFilledRandomRatingCurve("");
                     ratingCurve.RatingCurveNumber = GetRandomString("", 51);
-                    Assert.AreEqual(false, ratingCurveService.Add(ratingCurve));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._MaxLengthIs_, "RatingCurveNumber", "50"), ratingCurve.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, ratingCurveService.GetRatingCurveList().Count());
+                    Assert.False(ratingCurveService.Add(ratingCurve));
+                    Assert.Equal(string.Format(CSSPServicesRes._MaxLengthIs_, "RatingCurveNumber", "50"), ratingCurve.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, ratingCurveService.GetRatingCurveList().Count());
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -184,12 +184,12 @@ namespace CSSPServices.Tests
                     ratingCurve = GetFilledRandomRatingCurve("");
                     ratingCurve.LastUpdateDate_UTC = new DateTime();
                     ratingCurveService.Add(ratingCurve);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsRequired, "LastUpdateDate_UTC"), ratingCurve.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsRequired, "LastUpdateDate_UTC"), ratingCurve.ValidationResults.FirstOrDefault().ErrorMessage);
                     ratingCurve = null;
                     ratingCurve = GetFilledRandomRatingCurve("");
                     ratingCurve.LastUpdateDate_UTC = new DateTime(1979, 1, 1);
                     ratingCurveService.Add(ratingCurve);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._YearShouldBeBiggerThan_, "LastUpdateDate_UTC", "1980"), ratingCurve.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._YearShouldBeBiggerThan_, "LastUpdateDate_UTC", "1980"), ratingCurve.ValidationResults.FirstOrDefault().ErrorMessage);
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -201,13 +201,13 @@ namespace CSSPServices.Tests
                     ratingCurve = GetFilledRandomRatingCurve("");
                     ratingCurve.LastUpdateContactTVItemID = 0;
                     ratingCurveService.Add(ratingCurve);
-                    Assert.AreEqual(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "TVItem", "LastUpdateContactTVItemID", ratingCurve.LastUpdateContactTVItemID.ToString()), ratingCurve.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "TVItem", "LastUpdateContactTVItemID", ratingCurve.LastUpdateContactTVItemID.ToString()), ratingCurve.ValidationResults.FirstOrDefault().ErrorMessage);
 
                     ratingCurve = null;
                     ratingCurve = GetFilledRandomRatingCurve("");
                     ratingCurve.LastUpdateContactTVItemID = 1;
                     ratingCurveService.Add(ratingCurve);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsNotOfType_, "LastUpdateContactTVItemID", "Contact"), ratingCurve.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsNotOfType_, "LastUpdateContactTVItemID", "Contact"), ratingCurve.ValidationResults.FirstOrDefault().ErrorMessage);
 
 
                     // -----------------------------------
@@ -231,7 +231,7 @@ namespace CSSPServices.Tests
         #endregion Tests Generated Properties
 
         #region Tests Generated for GetRatingCurveWithRatingCurveID(ratingCurve.RatingCurveID)
-        [TestMethod]
+        [Fact]
         public void GetRatingCurveWithRatingCurveID__ratingCurve_RatingCurveID__Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -242,7 +242,7 @@ namespace CSSPServices.Tests
                 {
                     RatingCurveService ratingCurveService = new RatingCurveService(new Query() { Lang = culture.TwoLetterISOLanguageName }, dbTestDB, ContactID);
                     RatingCurve ratingCurve = (from c in dbTestDB.RatingCurves select c).FirstOrDefault();
-                    Assert.IsNotNull(ratingCurve);
+                    Assert.NotNull(ratingCurve);
 
                 }
             }
@@ -250,7 +250,7 @@ namespace CSSPServices.Tests
         #endregion Tests Generated for GetRatingCurveWithRatingCurveID(ratingCurve.RatingCurveID)
 
         #region Tests Generated for GetRatingCurveList()
-        [TestMethod]
+        [Fact]
         public void GetRatingCurveList_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -261,7 +261,7 @@ namespace CSSPServices.Tests
                 {
                     RatingCurveService ratingCurveService = new RatingCurveService(new Query() { Lang = culture.TwoLetterISOLanguageName }, dbTestDB, ContactID);
                     RatingCurve ratingCurve = (from c in dbTestDB.RatingCurves select c).FirstOrDefault();
-                    Assert.IsNotNull(ratingCurve);
+                    Assert.NotNull(ratingCurve);
 
                     List<RatingCurve> ratingCurveDirectQueryList = new List<RatingCurve>();
                     ratingCurveDirectQueryList = (from c in dbTestDB.RatingCurves select c).Take(200).ToList();
@@ -272,7 +272,7 @@ namespace CSSPServices.Tests
         #endregion Tests Generated for GetRatingCurveList()
 
         #region Tests Generated for GetRatingCurveList() Skip Take
-        [TestMethod]
+        [Fact]
         public void GetRatingCurveList_Skip_Take_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -291,14 +291,14 @@ namespace CSSPServices.Tests
                         List<RatingCurve> ratingCurveList = new List<RatingCurve>();
                         ratingCurveList = ratingCurveService.GetRatingCurveList().ToList();
                         CheckRatingCurveFields(ratingCurveList);
-                        Assert.AreEqual(ratingCurveDirectQueryList[0].RatingCurveID, ratingCurveList[0].RatingCurveID);
+                        Assert.Equal(ratingCurveDirectQueryList[0].RatingCurveID, ratingCurveList[0].RatingCurveID);
                 }
             }
         }
         #endregion Tests Generated for GetRatingCurveList() Skip Take
 
         #region Tests Generated for GetRatingCurveList() Skip Take Asc
-        [TestMethod]
+        [Fact]
         public void GetRatingCurveList_Skip_Take_Asc_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -317,14 +317,14 @@ namespace CSSPServices.Tests
                         List<RatingCurve> ratingCurveList = new List<RatingCurve>();
                         ratingCurveList = ratingCurveService.GetRatingCurveList().ToList();
                         CheckRatingCurveFields(ratingCurveList);
-                        Assert.AreEqual(ratingCurveDirectQueryList[0].RatingCurveID, ratingCurveList[0].RatingCurveID);
+                        Assert.Equal(ratingCurveDirectQueryList[0].RatingCurveID, ratingCurveList[0].RatingCurveID);
                 }
             }
         }
         #endregion Tests Generated for GetRatingCurveList() Skip Take Asc
 
         #region Tests Generated for GetRatingCurveList() Skip Take 2 Asc
-        [TestMethod]
+        [Fact]
         public void GetRatingCurveList_Skip_Take_2Asc_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -343,14 +343,14 @@ namespace CSSPServices.Tests
                         List<RatingCurve> ratingCurveList = new List<RatingCurve>();
                         ratingCurveList = ratingCurveService.GetRatingCurveList().ToList();
                         CheckRatingCurveFields(ratingCurveList);
-                        Assert.AreEqual(ratingCurveDirectQueryList[0].RatingCurveID, ratingCurveList[0].RatingCurveID);
+                        Assert.Equal(ratingCurveDirectQueryList[0].RatingCurveID, ratingCurveList[0].RatingCurveID);
                 }
             }
         }
         #endregion Tests Generated for GetRatingCurveList() Skip Take 2 Asc
 
         #region Tests Generated for GetRatingCurveList() Skip Take Asc Where
-        [TestMethod]
+        [Fact]
         public void GetRatingCurveList_Skip_Take_Asc_Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -369,14 +369,14 @@ namespace CSSPServices.Tests
                         List<RatingCurve> ratingCurveList = new List<RatingCurve>();
                         ratingCurveList = ratingCurveService.GetRatingCurveList().ToList();
                         CheckRatingCurveFields(ratingCurveList);
-                        Assert.AreEqual(ratingCurveDirectQueryList[0].RatingCurveID, ratingCurveList[0].RatingCurveID);
+                        Assert.Equal(ratingCurveDirectQueryList[0].RatingCurveID, ratingCurveList[0].RatingCurveID);
                 }
             }
         }
         #endregion Tests Generated for GetRatingCurveList() Skip Take Asc Where
 
         #region Tests Generated for GetRatingCurveList() Skip Take Asc 2 Where
-        [TestMethod]
+        [Fact]
         public void GetRatingCurveList_Skip_Take_Asc_2Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -395,14 +395,14 @@ namespace CSSPServices.Tests
                         List<RatingCurve> ratingCurveList = new List<RatingCurve>();
                         ratingCurveList = ratingCurveService.GetRatingCurveList().ToList();
                         CheckRatingCurveFields(ratingCurveList);
-                        Assert.AreEqual(ratingCurveDirectQueryList[0].RatingCurveID, ratingCurveList[0].RatingCurveID);
+                        Assert.Equal(ratingCurveDirectQueryList[0].RatingCurveID, ratingCurveList[0].RatingCurveID);
                 }
             }
         }
         #endregion Tests Generated for GetRatingCurveList() Skip Take Asc 2 Where
 
         #region Tests Generated for GetRatingCurveList() Skip Take Desc
-        [TestMethod]
+        [Fact]
         public void GetRatingCurveList_Skip_Take_Desc_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -421,14 +421,14 @@ namespace CSSPServices.Tests
                         List<RatingCurve> ratingCurveList = new List<RatingCurve>();
                         ratingCurveList = ratingCurveService.GetRatingCurveList().ToList();
                         CheckRatingCurveFields(ratingCurveList);
-                        Assert.AreEqual(ratingCurveDirectQueryList[0].RatingCurveID, ratingCurveList[0].RatingCurveID);
+                        Assert.Equal(ratingCurveDirectQueryList[0].RatingCurveID, ratingCurveList[0].RatingCurveID);
                 }
             }
         }
         #endregion Tests Generated for GetRatingCurveList() Skip Take Desc
 
         #region Tests Generated for GetRatingCurveList() Skip Take 2 Desc
-        [TestMethod]
+        [Fact]
         public void GetRatingCurveList_Skip_Take_2Desc_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -447,14 +447,14 @@ namespace CSSPServices.Tests
                         List<RatingCurve> ratingCurveList = new List<RatingCurve>();
                         ratingCurveList = ratingCurveService.GetRatingCurveList().ToList();
                         CheckRatingCurveFields(ratingCurveList);
-                        Assert.AreEqual(ratingCurveDirectQueryList[0].RatingCurveID, ratingCurveList[0].RatingCurveID);
+                        Assert.Equal(ratingCurveDirectQueryList[0].RatingCurveID, ratingCurveList[0].RatingCurveID);
                 }
             }
         }
         #endregion Tests Generated for GetRatingCurveList() Skip Take 2 Desc
 
         #region Tests Generated for GetRatingCurveList() Skip Take Desc Where
-        [TestMethod]
+        [Fact]
         public void GetRatingCurveList_Skip_Take_Desc_Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -473,14 +473,14 @@ namespace CSSPServices.Tests
                         List<RatingCurve> ratingCurveList = new List<RatingCurve>();
                         ratingCurveList = ratingCurveService.GetRatingCurveList().ToList();
                         CheckRatingCurveFields(ratingCurveList);
-                        Assert.AreEqual(ratingCurveDirectQueryList[0].RatingCurveID, ratingCurveList[0].RatingCurveID);
+                        Assert.Equal(ratingCurveDirectQueryList[0].RatingCurveID, ratingCurveList[0].RatingCurveID);
                 }
             }
         }
         #endregion Tests Generated for GetRatingCurveList() Skip Take Desc Where
 
         #region Tests Generated for GetRatingCurveList() Skip Take Desc 2 Where
-        [TestMethod]
+        [Fact]
         public void GetRatingCurveList_Skip_Take_Desc_2Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -499,14 +499,14 @@ namespace CSSPServices.Tests
                         List<RatingCurve> ratingCurveList = new List<RatingCurve>();
                         ratingCurveList = ratingCurveService.GetRatingCurveList().ToList();
                         CheckRatingCurveFields(ratingCurveList);
-                        Assert.AreEqual(ratingCurveDirectQueryList[0].RatingCurveID, ratingCurveList[0].RatingCurveID);
+                        Assert.Equal(ratingCurveDirectQueryList[0].RatingCurveID, ratingCurveList[0].RatingCurveID);
                 }
             }
         }
         #endregion Tests Generated for GetRatingCurveList() Skip Take Desc 2 Where
 
         #region Tests Generated for GetRatingCurveList() 2 Where
-        [TestMethod]
+        [Fact]
         public void GetRatingCurveList_2Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -525,7 +525,7 @@ namespace CSSPServices.Tests
                         List<RatingCurve> ratingCurveList = new List<RatingCurve>();
                         ratingCurveList = ratingCurveService.GetRatingCurveList().ToList();
                         CheckRatingCurveFields(ratingCurveList);
-                        Assert.AreEqual(ratingCurveDirectQueryList[0].RatingCurveID, ratingCurveList[0].RatingCurveID);
+                        Assert.Equal(ratingCurveDirectQueryList[0].RatingCurveID, ratingCurveList[0].RatingCurveID);
                 }
             }
         }
@@ -534,12 +534,12 @@ namespace CSSPServices.Tests
         #region Functions private
         private void CheckRatingCurveFields(List<RatingCurve> ratingCurveList)
         {
-            Assert.IsNotNull(ratingCurveList[0].RatingCurveID);
-            Assert.IsNotNull(ratingCurveList[0].HydrometricSiteID);
-            Assert.IsFalse(string.IsNullOrWhiteSpace(ratingCurveList[0].RatingCurveNumber));
-            Assert.IsNotNull(ratingCurveList[0].LastUpdateDate_UTC);
-            Assert.IsNotNull(ratingCurveList[0].LastUpdateContactTVItemID);
-            Assert.IsNotNull(ratingCurveList[0].HasErrors);
+            Assert.NotNull(ratingCurveList[0].RatingCurveID);
+            Assert.NotNull(ratingCurveList[0].HydrometricSiteID);
+            Assert.False(string.IsNullOrWhiteSpace(ratingCurveList[0].RatingCurveNumber));
+            Assert.NotNull(ratingCurveList[0].LastUpdateDate_UTC);
+            Assert.NotNull(ratingCurveList[0].LastUpdateContactTVItemID);
+            Assert.NotNull(ratingCurveList[0].HasErrors);
         }
         private RatingCurve GetFilledRandomRatingCurve(string OmitPropName)
         {

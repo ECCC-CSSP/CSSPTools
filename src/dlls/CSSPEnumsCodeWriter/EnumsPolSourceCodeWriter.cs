@@ -223,9 +223,7 @@ namespace PolSourceGroupingGenerateCodeHelper
             polSourceGroupingExcelFileRead.Status += PolSourceGroupingExcelFileRead_Status;
             polSourceGroupingExcelFileRead.CSSPError += PolSourceGroupingExcelFileRead_CSSPError;
 
-            string path = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
-
-            string ExcelFileName = $@"{path}\PolSourceGrouping.xlsm";
+            string ExcelFileName = @"C:\CSSPTools\src\assets\PolSourceGrouping.xlsm";
 
             if (!CheckFileDirectoriesExist(ExcelFileName))
             {

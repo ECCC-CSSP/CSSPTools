@@ -6,7 +6,7 @@
  */ 
 using System;
 using System.Text;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using System.Linq;
 using System.Globalization;
 using System.Transactions;
@@ -19,7 +19,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace CSSPModels.Tests
 {
-    [TestClass]
+
     public partial class TVItemUserAuthorizationTest
     {
         #region Variables
@@ -37,7 +37,7 @@ namespace CSSPModels.Tests
         #endregion Constructors
 
         #region Tests Functions public
-        [TestMethod]
+        [Fact]
         public void TVItemUserAuthorization_Properties_Test()
         {
             List<string> propNameList = new List<string>() { "TVItemUserAuthorizationID", "ContactTVItemID", "TVItemID1", "TVItemID2", "TVItemID3", "TVItemID4", "TVAuth", "LastUpdateDate_UTC", "LastUpdateContactTVItemID",  }.OrderBy(c => c).ToList();
@@ -50,12 +50,12 @@ namespace CSSPModels.Tests
                     && propertyInfo.Name != "ValidationResults"
                     && !propertyInfo.CustomAttributes.Where(c => c.AttributeType.Name.Contains("NotMappedAttribute")).Any())
                 {
-                    Assert.AreEqual(propNameList[index], propertyInfo.Name);
+                    Assert.Equal(propNameList[index], propertyInfo.Name);
                     index += 1;
                 }
             }
 
-            Assert.AreEqual(propNameList.Count, index);
+            Assert.Equal(propNameList.Count, index);
 
             index = 0;
             foreach (PropertyInfo propertyInfo in typeof(TVItemUserAuthorization).GetProperties().Where(c => c.Name != "ValidationResults").OrderBy(c => c.Name).ToList())
@@ -64,16 +64,16 @@ namespace CSSPModels.Tests
                 {
                     if (customAttributeData.AttributeType.Name == "NotMappedAttribute")
                     {
-                        Assert.AreEqual(propertyInfo.Name, propNameNotMappedList[index]);
+                        Assert.Equal(propertyInfo.Name, propNameNotMappedList[index]);
                         index += 1;
                     }
                 }
             }
 
-            Assert.AreEqual(propNameNotMappedList.Count, index);
+            Assert.Equal(propNameNotMappedList.Count, index);
 
         }
-        [TestMethod]
+        [Fact]
         public void TVItemUserAuthorization_Navigation_Test()
         {
             List<string> foreignNameList = new List<string>() {  }.OrderBy(c => c).ToList();
@@ -84,67 +84,67 @@ namespace CSSPModels.Tests
             {
                 if (propertyInfo.GetGetMethod().IsVirtual && !propertyInfo.GetGetMethod().ReturnType.Name.StartsWith("ICollection"))
                 {
-                    Assert.IsTrue(foreignNameList.Contains(propertyInfo.Name));
+                    Assert.True(foreignNameList.Contains(propertyInfo.Name));
                     index += 1;
                 }
             }
 
-            Assert.AreEqual(foreignNameList.Count, index);
+            Assert.Equal(foreignNameList.Count, index);
 
             index = 0;
             foreach (PropertyInfo propertyInfo in typeof(TVItemUserAuthorization).GetProperties().Where(c => c.Name != "ValidationResults").OrderBy(c => c.Name).ToList())
             {
                 if (propertyInfo.GetGetMethod().ReturnType.Name.StartsWith("ICollection"))
                 {
-                    Assert.IsTrue(foreignNameCollectionList.Contains(propertyInfo.Name));
+                    Assert.True(foreignNameCollectionList.Contains(propertyInfo.Name));
                     index += 1;
                 }
             }
 
-            Assert.AreEqual(foreignNameCollectionList.Count, index);
+            Assert.Equal(foreignNameCollectionList.Count, index);
 
         }
-        [TestMethod]
+        [Fact]
         public void TVItemUserAuthorization_Has_ValidationResults_Test()
         {
-             Assert.IsTrue(typeof(TVItemUserAuthorization).GetProperties().Where(c => c.Name == "ValidationResults").Any());
+             Assert.True(typeof(TVItemUserAuthorization).GetProperties().Where(c => c.Name == "ValidationResults").Any());
         }
-        [TestMethod]
+        [Fact]
         public void TVItemUserAuthorization_Every_Property_Has_Get_Set_Test()
         {
                int val1 = 45;
                tVItemUserAuthorization.TVItemUserAuthorizationID = val1;
-               Assert.AreEqual(val1, tVItemUserAuthorization.TVItemUserAuthorizationID);
+               Assert.Equal(val1, tVItemUserAuthorization.TVItemUserAuthorizationID);
                int val2 = 45;
                tVItemUserAuthorization.ContactTVItemID = val2;
-               Assert.AreEqual(val2, tVItemUserAuthorization.ContactTVItemID);
+               Assert.Equal(val2, tVItemUserAuthorization.ContactTVItemID);
                int val3 = 45;
                tVItemUserAuthorization.TVItemID1 = val3;
-               Assert.AreEqual(val3, tVItemUserAuthorization.TVItemID1);
+               Assert.Equal(val3, tVItemUserAuthorization.TVItemID1);
                int val4 = 45;
                tVItemUserAuthorization.TVItemID2 = val4;
-               Assert.AreEqual(val4, tVItemUserAuthorization.TVItemID2);
+               Assert.Equal(val4, tVItemUserAuthorization.TVItemID2);
                int val5 = 45;
                tVItemUserAuthorization.TVItemID3 = val5;
-               Assert.AreEqual(val5, tVItemUserAuthorization.TVItemID3);
+               Assert.Equal(val5, tVItemUserAuthorization.TVItemID3);
                int val6 = 45;
                tVItemUserAuthorization.TVItemID4 = val6;
-               Assert.AreEqual(val6, tVItemUserAuthorization.TVItemID4);
+               Assert.Equal(val6, tVItemUserAuthorization.TVItemID4);
                TVAuthEnum val7 = (TVAuthEnum)3;
                tVItemUserAuthorization.TVAuth = val7;
-               Assert.AreEqual(val7, tVItemUserAuthorization.TVAuth);
+               Assert.Equal(val7, tVItemUserAuthorization.TVAuth);
                DateTime val8 = new DateTime(2010, 3, 4);
                tVItemUserAuthorization.LastUpdateDate_UTC = val8;
-               Assert.AreEqual(val8, tVItemUserAuthorization.LastUpdateDate_UTC);
+               Assert.Equal(val8, tVItemUserAuthorization.LastUpdateDate_UTC);
                int val9 = 45;
                tVItemUserAuthorization.LastUpdateContactTVItemID = val9;
-               Assert.AreEqual(val9, tVItemUserAuthorization.LastUpdateContactTVItemID);
+               Assert.Equal(val9, tVItemUserAuthorization.LastUpdateContactTVItemID);
                bool val10 = true;
                tVItemUserAuthorization.HasErrors = val10;
-               Assert.AreEqual(val10, tVItemUserAuthorization.HasErrors);
+               Assert.Equal(val10, tVItemUserAuthorization.HasErrors);
                IEnumerable<ValidationResult> val33 = new List<ValidationResult>() { new ValidationResult("First CSSPError Message") }.AsEnumerable();
                tVItemUserAuthorization.ValidationResults = val33;
-               Assert.AreEqual(val33, tVItemUserAuthorization.ValidationResults);
+               Assert.Equal(val33, tVItemUserAuthorization.ValidationResults);
         }
         #endregion Tests Functions public
     }

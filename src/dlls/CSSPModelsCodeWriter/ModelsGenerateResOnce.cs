@@ -17,7 +17,7 @@ namespace CSSPModelsGenerateCodeHelper
         ///     C:\CSSPTools\src\dlls\CSSPModels\Resources\CSSPModelsRes.fr.resx file
         /// 
         /// Requires:
-        ///     C:\CSSPTools\src\dlls\CSSPModels\bin\Debug\netcoreapp3.0\CSSPModels.dll
+        ///     C:\CSSPTools\src\dlls\CSSPModels\bin\Debug\netcoreapp3.1\CSSPModels.dll
         /// </summary>
         public void CSSPModelsRes()
         {

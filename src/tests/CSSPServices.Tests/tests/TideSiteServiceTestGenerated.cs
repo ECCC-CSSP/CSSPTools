@@ -5,7 +5,7 @@
  */ 
 
 using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using System.Linq;
 using System.Collections.Generic;
 using CSSPModels;
@@ -21,7 +21,7 @@ using CSSPEnums.Resources;
 
 namespace CSSPServices.Tests
 {
-    [TestClass]
+
     public partial class TideSiteServiceTest : TestHelper
     {
         #region Variables
@@ -39,7 +39,7 @@ namespace CSSPServices.Tests
         #endregion Constructors
 
         #region Tests Generated CRUD
-        [TestMethod]
+        [Fact]
         public void TideSite_CRUD_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -66,26 +66,26 @@ namespace CSSPServices.Tests
 
                     count = tideSiteService.GetTideSiteList().Count();
 
-                    Assert.AreEqual(count, (from c in dbTestDB.TideSites select c).Count());
+                    Assert.Equal(count, (from c in dbTestDB.TideSites select c).Count());
 
                     tideSiteService.Add(tideSite);
                     if (tideSite.HasErrors)
                     {
-                        Assert.AreEqual("", tideSite.ValidationResults.FirstOrDefault().ErrorMessage);
+                        Assert.Equal("", tideSite.ValidationResults.FirstOrDefault().ErrorMessage);
                     }
-                    Assert.AreEqual(true, tideSiteService.GetTideSiteList().Where(c => c == tideSite).Any());
+                    Assert.True(tideSiteService.GetTideSiteList().Where(c => c == tideSite).Any());
                     tideSiteService.Update(tideSite);
                     if (tideSite.HasErrors)
                     {
-                        Assert.AreEqual("", tideSite.ValidationResults.FirstOrDefault().ErrorMessage);
+                        Assert.Equal("", tideSite.ValidationResults.FirstOrDefault().ErrorMessage);
                     }
-                    Assert.AreEqual(count + 1, tideSiteService.GetTideSiteList().Count());
+                    Assert.Equal(count + 1, tideSiteService.GetTideSiteList().Count());
                     tideSiteService.Delete(tideSite);
                     if (tideSite.HasErrors)
                     {
-                        Assert.AreEqual("", tideSite.ValidationResults.FirstOrDefault().ErrorMessage);
+                        Assert.Equal("", tideSite.ValidationResults.FirstOrDefault().ErrorMessage);
                     }
-                    Assert.AreEqual(count, tideSiteService.GetTideSiteList().Count());
+                    Assert.Equal(count, tideSiteService.GetTideSiteList().Count());
 
                 }
             }
@@ -93,7 +93,7 @@ namespace CSSPServices.Tests
         #endregion Tests Generated CRUD
 
         #region Tests Generated Properties
-        [TestMethod]
+        [Fact]
         public void TideSite_Properties_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -131,13 +131,13 @@ namespace CSSPServices.Tests
                     tideSite = GetFilledRandomTideSite("");
                     tideSite.TideSiteID = 0;
                     tideSiteService.Update(tideSite);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsRequired, "TideSiteID"), tideSite.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsRequired, "TideSiteID"), tideSite.ValidationResults.FirstOrDefault().ErrorMessage);
 
                     tideSite = null;
                     tideSite = GetFilledRandomTideSite("");
                     tideSite.TideSiteID = 10000000;
                     tideSiteService.Update(tideSite);
-                    Assert.AreEqual(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "TideSite", "TideSiteID", tideSite.TideSiteID.ToString()), tideSite.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "TideSite", "TideSiteID", tideSite.TideSiteID.ToString()), tideSite.ValidationResults.FirstOrDefault().ErrorMessage);
 
 
                     // -----------------------------------
@@ -150,13 +150,13 @@ namespace CSSPServices.Tests
                     tideSite = GetFilledRandomTideSite("");
                     tideSite.TideSiteTVItemID = 0;
                     tideSiteService.Add(tideSite);
-                    Assert.AreEqual(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "TVItem", "TideSiteTVItemID", tideSite.TideSiteTVItemID.ToString()), tideSite.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "TVItem", "TideSiteTVItemID", tideSite.TideSiteTVItemID.ToString()), tideSite.ValidationResults.FirstOrDefault().ErrorMessage);
 
                     tideSite = null;
                     tideSite = GetFilledRandomTideSite("");
                     tideSite.TideSiteTVItemID = 1;
                     tideSiteService.Add(tideSite);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsNotOfType_, "TideSiteTVItemID", "TideSite"), tideSite.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsNotOfType_, "TideSiteTVItemID", "TideSite"), tideSite.ValidationResults.FirstOrDefault().ErrorMessage);
 
 
                     // -----------------------------------
@@ -167,18 +167,18 @@ namespace CSSPServices.Tests
 
                     tideSite = null;
                     tideSite = GetFilledRandomTideSite("TideSiteName");
-                    Assert.AreEqual(false, tideSiteService.Add(tideSite));
-                    Assert.AreEqual(1, tideSite.ValidationResults.Count());
-                    Assert.IsTrue(tideSite.ValidationResults.Where(c => c.ErrorMessage == string.Format(CSSPServicesRes._IsRequired, "TideSiteName")).Any());
-                    Assert.AreEqual(null, tideSite.TideSiteName);
-                    Assert.AreEqual(count, tideSiteService.GetTideSiteList().Count());
+                    Assert.False(tideSiteService.Add(tideSite));
+                    Assert.Equal(1, tideSite.ValidationResults.Count());
+                    Assert.True(tideSite.ValidationResults.Where(c => c.ErrorMessage == string.Format(CSSPServicesRes._IsRequired, "TideSiteName")).Any());
+                    Assert.Null(tideSite.TideSiteName);
+                    Assert.Equal(count, tideSiteService.GetTideSiteList().Count());
 
                     tideSite = null;
                     tideSite = GetFilledRandomTideSite("");
                     tideSite.TideSiteName = GetRandomString("", 101);
-                    Assert.AreEqual(false, tideSiteService.Add(tideSite));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._MaxLengthIs_, "TideSiteName", "100"), tideSite.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, tideSiteService.GetTideSiteList().Count());
+                    Assert.False(tideSiteService.Add(tideSite));
+                    Assert.Equal(string.Format(CSSPServicesRes._MaxLengthIs_, "TideSiteName", "100"), tideSite.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, tideSiteService.GetTideSiteList().Count());
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -188,24 +188,24 @@ namespace CSSPServices.Tests
 
                     tideSite = null;
                     tideSite = GetFilledRandomTideSite("Province");
-                    Assert.AreEqual(false, tideSiteService.Add(tideSite));
-                    Assert.AreEqual(1, tideSite.ValidationResults.Count());
-                    Assert.IsTrue(tideSite.ValidationResults.Where(c => c.ErrorMessage == string.Format(CSSPServicesRes._IsRequired, "Province")).Any());
-                    Assert.AreEqual(null, tideSite.Province);
-                    Assert.AreEqual(count, tideSiteService.GetTideSiteList().Count());
+                    Assert.False(tideSiteService.Add(tideSite));
+                    Assert.Equal(1, tideSite.ValidationResults.Count());
+                    Assert.True(tideSite.ValidationResults.Where(c => c.ErrorMessage == string.Format(CSSPServicesRes._IsRequired, "Province")).Any());
+                    Assert.Null(tideSite.Province);
+                    Assert.Equal(count, tideSiteService.GetTideSiteList().Count());
 
                     tideSite = null;
                     tideSite = GetFilledRandomTideSite("");
                     tideSite.Province = GetRandomString("", 1);
-                    Assert.AreEqual(false, tideSiteService.Add(tideSite));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._LengthShouldBeBetween_And_, "Province", "2", "2"), tideSite.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, tideSiteService.GetTideSiteList().Count());
+                    Assert.False(tideSiteService.Add(tideSite));
+                    Assert.Equal(string.Format(CSSPServicesRes._LengthShouldBeBetween_And_, "Province", "2", "2"), tideSite.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, tideSiteService.GetTideSiteList().Count());
                     tideSite = null;
                     tideSite = GetFilledRandomTideSite("");
                     tideSite.Province = GetRandomString("", 3);
-                    Assert.AreEqual(false, tideSiteService.Add(tideSite));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._LengthShouldBeBetween_And_, "Province", "2", "2"), tideSite.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, tideSiteService.GetTideSiteList().Count());
+                    Assert.False(tideSiteService.Add(tideSite));
+                    Assert.Equal(string.Format(CSSPServicesRes._LengthShouldBeBetween_And_, "Province", "2", "2"), tideSite.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, tideSiteService.GetTideSiteList().Count());
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -216,15 +216,15 @@ namespace CSSPServices.Tests
                     tideSite = null;
                     tideSite = GetFilledRandomTideSite("");
                     tideSite.sid = -1;
-                    Assert.AreEqual(false, tideSiteService.Add(tideSite));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "sid", "0", "10000"), tideSite.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, tideSiteService.GetTideSiteList().Count());
+                    Assert.False(tideSiteService.Add(tideSite));
+                    Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "sid", "0", "10000"), tideSite.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, tideSiteService.GetTideSiteList().Count());
                     tideSite = null;
                     tideSite = GetFilledRandomTideSite("");
                     tideSite.sid = 10001;
-                    Assert.AreEqual(false, tideSiteService.Add(tideSite));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "sid", "0", "10000"), tideSite.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, tideSiteService.GetTideSiteList().Count());
+                    Assert.False(tideSiteService.Add(tideSite));
+                    Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "sid", "0", "10000"), tideSite.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, tideSiteService.GetTideSiteList().Count());
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -235,15 +235,15 @@ namespace CSSPServices.Tests
                     tideSite = null;
                     tideSite = GetFilledRandomTideSite("");
                     tideSite.Zone = -1;
-                    Assert.AreEqual(false, tideSiteService.Add(tideSite));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "Zone", "0", "10000"), tideSite.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, tideSiteService.GetTideSiteList().Count());
+                    Assert.False(tideSiteService.Add(tideSite));
+                    Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "Zone", "0", "10000"), tideSite.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, tideSiteService.GetTideSiteList().Count());
                     tideSite = null;
                     tideSite = GetFilledRandomTideSite("");
                     tideSite.Zone = 10001;
-                    Assert.AreEqual(false, tideSiteService.Add(tideSite));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "Zone", "0", "10000"), tideSite.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, tideSiteService.GetTideSiteList().Count());
+                    Assert.False(tideSiteService.Add(tideSite));
+                    Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "Zone", "0", "10000"), tideSite.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, tideSiteService.GetTideSiteList().Count());
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -255,12 +255,12 @@ namespace CSSPServices.Tests
                     tideSite = GetFilledRandomTideSite("");
                     tideSite.LastUpdateDate_UTC = new DateTime();
                     tideSiteService.Add(tideSite);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsRequired, "LastUpdateDate_UTC"), tideSite.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsRequired, "LastUpdateDate_UTC"), tideSite.ValidationResults.FirstOrDefault().ErrorMessage);
                     tideSite = null;
                     tideSite = GetFilledRandomTideSite("");
                     tideSite.LastUpdateDate_UTC = new DateTime(1979, 1, 1);
                     tideSiteService.Add(tideSite);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._YearShouldBeBiggerThan_, "LastUpdateDate_UTC", "1980"), tideSite.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._YearShouldBeBiggerThan_, "LastUpdateDate_UTC", "1980"), tideSite.ValidationResults.FirstOrDefault().ErrorMessage);
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -272,13 +272,13 @@ namespace CSSPServices.Tests
                     tideSite = GetFilledRandomTideSite("");
                     tideSite.LastUpdateContactTVItemID = 0;
                     tideSiteService.Add(tideSite);
-                    Assert.AreEqual(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "TVItem", "LastUpdateContactTVItemID", tideSite.LastUpdateContactTVItemID.ToString()), tideSite.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "TVItem", "LastUpdateContactTVItemID", tideSite.LastUpdateContactTVItemID.ToString()), tideSite.ValidationResults.FirstOrDefault().ErrorMessage);
 
                     tideSite = null;
                     tideSite = GetFilledRandomTideSite("");
                     tideSite.LastUpdateContactTVItemID = 1;
                     tideSiteService.Add(tideSite);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsNotOfType_, "LastUpdateContactTVItemID", "Contact"), tideSite.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsNotOfType_, "LastUpdateContactTVItemID", "Contact"), tideSite.ValidationResults.FirstOrDefault().ErrorMessage);
 
 
                     // -----------------------------------
@@ -302,7 +302,7 @@ namespace CSSPServices.Tests
         #endregion Tests Generated Properties
 
         #region Tests Generated for GetTideSiteWithTideSiteID(tideSite.TideSiteID)
-        [TestMethod]
+        [Fact]
         public void GetTideSiteWithTideSiteID__tideSite_TideSiteID__Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -313,7 +313,7 @@ namespace CSSPServices.Tests
                 {
                     TideSiteService tideSiteService = new TideSiteService(new Query() { Lang = culture.TwoLetterISOLanguageName }, dbTestDB, ContactID);
                     TideSite tideSite = (from c in dbTestDB.TideSites select c).FirstOrDefault();
-                    Assert.IsNotNull(tideSite);
+                    Assert.NotNull(tideSite);
 
                 }
             }
@@ -321,7 +321,7 @@ namespace CSSPServices.Tests
         #endregion Tests Generated for GetTideSiteWithTideSiteID(tideSite.TideSiteID)
 
         #region Tests Generated for GetTideSiteList()
-        [TestMethod]
+        [Fact]
         public void GetTideSiteList_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -332,7 +332,7 @@ namespace CSSPServices.Tests
                 {
                     TideSiteService tideSiteService = new TideSiteService(new Query() { Lang = culture.TwoLetterISOLanguageName }, dbTestDB, ContactID);
                     TideSite tideSite = (from c in dbTestDB.TideSites select c).FirstOrDefault();
-                    Assert.IsNotNull(tideSite);
+                    Assert.NotNull(tideSite);
 
                     List<TideSite> tideSiteDirectQueryList = new List<TideSite>();
                     tideSiteDirectQueryList = (from c in dbTestDB.TideSites select c).Take(200).ToList();
@@ -343,7 +343,7 @@ namespace CSSPServices.Tests
         #endregion Tests Generated for GetTideSiteList()
 
         #region Tests Generated for GetTideSiteList() Skip Take
-        [TestMethod]
+        [Fact]
         public void GetTideSiteList_Skip_Take_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -362,14 +362,14 @@ namespace CSSPServices.Tests
                         List<TideSite> tideSiteList = new List<TideSite>();
                         tideSiteList = tideSiteService.GetTideSiteList().ToList();
                         CheckTideSiteFields(tideSiteList);
-                        Assert.AreEqual(tideSiteDirectQueryList[0].TideSiteID, tideSiteList[0].TideSiteID);
+                        Assert.Equal(tideSiteDirectQueryList[0].TideSiteID, tideSiteList[0].TideSiteID);
                 }
             }
         }
         #endregion Tests Generated for GetTideSiteList() Skip Take
 
         #region Tests Generated for GetTideSiteList() Skip Take Asc
-        [TestMethod]
+        [Fact]
         public void GetTideSiteList_Skip_Take_Asc_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -388,14 +388,14 @@ namespace CSSPServices.Tests
                         List<TideSite> tideSiteList = new List<TideSite>();
                         tideSiteList = tideSiteService.GetTideSiteList().ToList();
                         CheckTideSiteFields(tideSiteList);
-                        Assert.AreEqual(tideSiteDirectQueryList[0].TideSiteID, tideSiteList[0].TideSiteID);
+                        Assert.Equal(tideSiteDirectQueryList[0].TideSiteID, tideSiteList[0].TideSiteID);
                 }
             }
         }
         #endregion Tests Generated for GetTideSiteList() Skip Take Asc
 
         #region Tests Generated for GetTideSiteList() Skip Take 2 Asc
-        [TestMethod]
+        [Fact]
         public void GetTideSiteList_Skip_Take_2Asc_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -414,14 +414,14 @@ namespace CSSPServices.Tests
                         List<TideSite> tideSiteList = new List<TideSite>();
                         tideSiteList = tideSiteService.GetTideSiteList().ToList();
                         CheckTideSiteFields(tideSiteList);
-                        Assert.AreEqual(tideSiteDirectQueryList[0].TideSiteID, tideSiteList[0].TideSiteID);
+                        Assert.Equal(tideSiteDirectQueryList[0].TideSiteID, tideSiteList[0].TideSiteID);
                 }
             }
         }
         #endregion Tests Generated for GetTideSiteList() Skip Take 2 Asc
 
         #region Tests Generated for GetTideSiteList() Skip Take Asc Where
-        [TestMethod]
+        [Fact]
         public void GetTideSiteList_Skip_Take_Asc_Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -440,14 +440,14 @@ namespace CSSPServices.Tests
                         List<TideSite> tideSiteList = new List<TideSite>();
                         tideSiteList = tideSiteService.GetTideSiteList().ToList();
                         CheckTideSiteFields(tideSiteList);
-                        Assert.AreEqual(tideSiteDirectQueryList[0].TideSiteID, tideSiteList[0].TideSiteID);
+                        Assert.Equal(tideSiteDirectQueryList[0].TideSiteID, tideSiteList[0].TideSiteID);
                 }
             }
         }
         #endregion Tests Generated for GetTideSiteList() Skip Take Asc Where
 
         #region Tests Generated for GetTideSiteList() Skip Take Asc 2 Where
-        [TestMethod]
+        [Fact]
         public void GetTideSiteList_Skip_Take_Asc_2Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -466,14 +466,14 @@ namespace CSSPServices.Tests
                         List<TideSite> tideSiteList = new List<TideSite>();
                         tideSiteList = tideSiteService.GetTideSiteList().ToList();
                         CheckTideSiteFields(tideSiteList);
-                        Assert.AreEqual(tideSiteDirectQueryList[0].TideSiteID, tideSiteList[0].TideSiteID);
+                        Assert.Equal(tideSiteDirectQueryList[0].TideSiteID, tideSiteList[0].TideSiteID);
                 }
             }
         }
         #endregion Tests Generated for GetTideSiteList() Skip Take Asc 2 Where
 
         #region Tests Generated for GetTideSiteList() Skip Take Desc
-        [TestMethod]
+        [Fact]
         public void GetTideSiteList_Skip_Take_Desc_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -492,14 +492,14 @@ namespace CSSPServices.Tests
                         List<TideSite> tideSiteList = new List<TideSite>();
                         tideSiteList = tideSiteService.GetTideSiteList().ToList();
                         CheckTideSiteFields(tideSiteList);
-                        Assert.AreEqual(tideSiteDirectQueryList[0].TideSiteID, tideSiteList[0].TideSiteID);
+                        Assert.Equal(tideSiteDirectQueryList[0].TideSiteID, tideSiteList[0].TideSiteID);
                 }
             }
         }
         #endregion Tests Generated for GetTideSiteList() Skip Take Desc
 
         #region Tests Generated for GetTideSiteList() Skip Take 2 Desc
-        [TestMethod]
+        [Fact]
         public void GetTideSiteList_Skip_Take_2Desc_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -518,14 +518,14 @@ namespace CSSPServices.Tests
                         List<TideSite> tideSiteList = new List<TideSite>();
                         tideSiteList = tideSiteService.GetTideSiteList().ToList();
                         CheckTideSiteFields(tideSiteList);
-                        Assert.AreEqual(tideSiteDirectQueryList[0].TideSiteID, tideSiteList[0].TideSiteID);
+                        Assert.Equal(tideSiteDirectQueryList[0].TideSiteID, tideSiteList[0].TideSiteID);
                 }
             }
         }
         #endregion Tests Generated for GetTideSiteList() Skip Take 2 Desc
 
         #region Tests Generated for GetTideSiteList() Skip Take Desc Where
-        [TestMethod]
+        [Fact]
         public void GetTideSiteList_Skip_Take_Desc_Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -544,14 +544,14 @@ namespace CSSPServices.Tests
                         List<TideSite> tideSiteList = new List<TideSite>();
                         tideSiteList = tideSiteService.GetTideSiteList().ToList();
                         CheckTideSiteFields(tideSiteList);
-                        Assert.AreEqual(tideSiteDirectQueryList[0].TideSiteID, tideSiteList[0].TideSiteID);
+                        Assert.Equal(tideSiteDirectQueryList[0].TideSiteID, tideSiteList[0].TideSiteID);
                 }
             }
         }
         #endregion Tests Generated for GetTideSiteList() Skip Take Desc Where
 
         #region Tests Generated for GetTideSiteList() Skip Take Desc 2 Where
-        [TestMethod]
+        [Fact]
         public void GetTideSiteList_Skip_Take_Desc_2Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -570,14 +570,14 @@ namespace CSSPServices.Tests
                         List<TideSite> tideSiteList = new List<TideSite>();
                         tideSiteList = tideSiteService.GetTideSiteList().ToList();
                         CheckTideSiteFields(tideSiteList);
-                        Assert.AreEqual(tideSiteDirectQueryList[0].TideSiteID, tideSiteList[0].TideSiteID);
+                        Assert.Equal(tideSiteDirectQueryList[0].TideSiteID, tideSiteList[0].TideSiteID);
                 }
             }
         }
         #endregion Tests Generated for GetTideSiteList() Skip Take Desc 2 Where
 
         #region Tests Generated for GetTideSiteList() 2 Where
-        [TestMethod]
+        [Fact]
         public void GetTideSiteList_2Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -596,7 +596,7 @@ namespace CSSPServices.Tests
                         List<TideSite> tideSiteList = new List<TideSite>();
                         tideSiteList = tideSiteService.GetTideSiteList().ToList();
                         CheckTideSiteFields(tideSiteList);
-                        Assert.AreEqual(tideSiteDirectQueryList[0].TideSiteID, tideSiteList[0].TideSiteID);
+                        Assert.Equal(tideSiteDirectQueryList[0].TideSiteID, tideSiteList[0].TideSiteID);
                 }
             }
         }
@@ -605,15 +605,15 @@ namespace CSSPServices.Tests
         #region Functions private
         private void CheckTideSiteFields(List<TideSite> tideSiteList)
         {
-            Assert.IsNotNull(tideSiteList[0].TideSiteID);
-            Assert.IsNotNull(tideSiteList[0].TideSiteTVItemID);
-            Assert.IsFalse(string.IsNullOrWhiteSpace(tideSiteList[0].TideSiteName));
-            Assert.IsFalse(string.IsNullOrWhiteSpace(tideSiteList[0].Province));
-            Assert.IsNotNull(tideSiteList[0].sid);
-            Assert.IsNotNull(tideSiteList[0].Zone);
-            Assert.IsNotNull(tideSiteList[0].LastUpdateDate_UTC);
-            Assert.IsNotNull(tideSiteList[0].LastUpdateContactTVItemID);
-            Assert.IsNotNull(tideSiteList[0].HasErrors);
+            Assert.NotNull(tideSiteList[0].TideSiteID);
+            Assert.NotNull(tideSiteList[0].TideSiteTVItemID);
+            Assert.False(string.IsNullOrWhiteSpace(tideSiteList[0].TideSiteName));
+            Assert.False(string.IsNullOrWhiteSpace(tideSiteList[0].Province));
+            Assert.NotNull(tideSiteList[0].sid);
+            Assert.NotNull(tideSiteList[0].Zone);
+            Assert.NotNull(tideSiteList[0].LastUpdateDate_UTC);
+            Assert.NotNull(tideSiteList[0].LastUpdateContactTVItemID);
+            Assert.NotNull(tideSiteList[0].HasErrors);
         }
         private TideSite GetFilledRandomTideSite(string OmitPropName)
         {

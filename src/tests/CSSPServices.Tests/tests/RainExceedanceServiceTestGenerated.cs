@@ -5,7 +5,7 @@
  */ 
 
 using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using System.Linq;
 using System.Collections.Generic;
 using CSSPModels;
@@ -21,7 +21,7 @@ using CSSPEnums.Resources;
 
 namespace CSSPServices.Tests
 {
-    [TestClass]
+
     public partial class RainExceedanceServiceTest : TestHelper
     {
         #region Variables
@@ -39,7 +39,7 @@ namespace CSSPServices.Tests
         #endregion Constructors
 
         #region Tests Generated CRUD
-        [TestMethod]
+        [Fact]
         public void RainExceedance_CRUD_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -66,26 +66,26 @@ namespace CSSPServices.Tests
 
                     count = rainExceedanceService.GetRainExceedanceList().Count();
 
-                    Assert.AreEqual(count, (from c in dbTestDB.RainExceedances select c).Count());
+                    Assert.Equal(count, (from c in dbTestDB.RainExceedances select c).Count());
 
                     rainExceedanceService.Add(rainExceedance);
                     if (rainExceedance.HasErrors)
                     {
-                        Assert.AreEqual("", rainExceedance.ValidationResults.FirstOrDefault().ErrorMessage);
+                        Assert.Equal("", rainExceedance.ValidationResults.FirstOrDefault().ErrorMessage);
                     }
-                    Assert.AreEqual(true, rainExceedanceService.GetRainExceedanceList().Where(c => c == rainExceedance).Any());
+                    Assert.True(rainExceedanceService.GetRainExceedanceList().Where(c => c == rainExceedance).Any());
                     rainExceedanceService.Update(rainExceedance);
                     if (rainExceedance.HasErrors)
                     {
-                        Assert.AreEqual("", rainExceedance.ValidationResults.FirstOrDefault().ErrorMessage);
+                        Assert.Equal("", rainExceedance.ValidationResults.FirstOrDefault().ErrorMessage);
                     }
-                    Assert.AreEqual(count + 1, rainExceedanceService.GetRainExceedanceList().Count());
+                    Assert.Equal(count + 1, rainExceedanceService.GetRainExceedanceList().Count());
                     rainExceedanceService.Delete(rainExceedance);
                     if (rainExceedance.HasErrors)
                     {
-                        Assert.AreEqual("", rainExceedance.ValidationResults.FirstOrDefault().ErrorMessage);
+                        Assert.Equal("", rainExceedance.ValidationResults.FirstOrDefault().ErrorMessage);
                     }
-                    Assert.AreEqual(count, rainExceedanceService.GetRainExceedanceList().Count());
+                    Assert.Equal(count, rainExceedanceService.GetRainExceedanceList().Count());
 
                 }
             }
@@ -93,7 +93,7 @@ namespace CSSPServices.Tests
         #endregion Tests Generated CRUD
 
         #region Tests Generated Properties
-        [TestMethod]
+        [Fact]
         public void RainExceedance_Properties_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -131,13 +131,13 @@ namespace CSSPServices.Tests
                     rainExceedance = GetFilledRandomRainExceedance("");
                     rainExceedance.RainExceedanceID = 0;
                     rainExceedanceService.Update(rainExceedance);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsRequired, "RainExceedanceID"), rainExceedance.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsRequired, "RainExceedanceID"), rainExceedance.ValidationResults.FirstOrDefault().ErrorMessage);
 
                     rainExceedance = null;
                     rainExceedance = GetFilledRandomRainExceedance("");
                     rainExceedance.RainExceedanceID = 10000000;
                     rainExceedanceService.Update(rainExceedance);
-                    Assert.AreEqual(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "RainExceedance", "RainExceedanceID", rainExceedance.RainExceedanceID.ToString()), rainExceedance.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "RainExceedance", "RainExceedanceID", rainExceedance.RainExceedanceID.ToString()), rainExceedance.ValidationResults.FirstOrDefault().ErrorMessage);
 
 
                     // -----------------------------------
@@ -150,13 +150,13 @@ namespace CSSPServices.Tests
                     rainExceedance = GetFilledRandomRainExceedance("");
                     rainExceedance.RainExceedanceTVItemID = 0;
                     rainExceedanceService.Add(rainExceedance);
-                    Assert.AreEqual(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "TVItem", "RainExceedanceTVItemID", rainExceedance.RainExceedanceTVItemID.ToString()), rainExceedance.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "TVItem", "RainExceedanceTVItemID", rainExceedance.RainExceedanceTVItemID.ToString()), rainExceedance.ValidationResults.FirstOrDefault().ErrorMessage);
 
                     rainExceedance = null;
                     rainExceedance = GetFilledRandomRainExceedance("");
                     rainExceedance.RainExceedanceTVItemID = 1;
                     rainExceedanceService.Add(rainExceedance);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsNotOfType_, "RainExceedanceTVItemID", "RainExceedance"), rainExceedance.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsNotOfType_, "RainExceedanceTVItemID", "RainExceedance"), rainExceedance.ValidationResults.FirstOrDefault().ErrorMessage);
 
 
                     // -----------------------------------
@@ -168,15 +168,15 @@ namespace CSSPServices.Tests
                     rainExceedance = null;
                     rainExceedance = GetFilledRandomRainExceedance("");
                     rainExceedance.StartMonth = 0;
-                    Assert.AreEqual(false, rainExceedanceService.Add(rainExceedance));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "StartMonth", "1", "12"), rainExceedance.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, rainExceedanceService.GetRainExceedanceList().Count());
+                    Assert.False(rainExceedanceService.Add(rainExceedance));
+                    Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "StartMonth", "1", "12"), rainExceedance.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, rainExceedanceService.GetRainExceedanceList().Count());
                     rainExceedance = null;
                     rainExceedance = GetFilledRandomRainExceedance("");
                     rainExceedance.StartMonth = 13;
-                    Assert.AreEqual(false, rainExceedanceService.Add(rainExceedance));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "StartMonth", "1", "12"), rainExceedance.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, rainExceedanceService.GetRainExceedanceList().Count());
+                    Assert.False(rainExceedanceService.Add(rainExceedance));
+                    Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "StartMonth", "1", "12"), rainExceedance.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, rainExceedanceService.GetRainExceedanceList().Count());
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -187,15 +187,15 @@ namespace CSSPServices.Tests
                     rainExceedance = null;
                     rainExceedance = GetFilledRandomRainExceedance("");
                     rainExceedance.StartDay = 0;
-                    Assert.AreEqual(false, rainExceedanceService.Add(rainExceedance));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "StartDay", "1", "31"), rainExceedance.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, rainExceedanceService.GetRainExceedanceList().Count());
+                    Assert.False(rainExceedanceService.Add(rainExceedance));
+                    Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "StartDay", "1", "31"), rainExceedance.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, rainExceedanceService.GetRainExceedanceList().Count());
                     rainExceedance = null;
                     rainExceedance = GetFilledRandomRainExceedance("");
                     rainExceedance.StartDay = 32;
-                    Assert.AreEqual(false, rainExceedanceService.Add(rainExceedance));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "StartDay", "1", "31"), rainExceedance.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, rainExceedanceService.GetRainExceedanceList().Count());
+                    Assert.False(rainExceedanceService.Add(rainExceedance));
+                    Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "StartDay", "1", "31"), rainExceedance.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, rainExceedanceService.GetRainExceedanceList().Count());
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -206,15 +206,15 @@ namespace CSSPServices.Tests
                     rainExceedance = null;
                     rainExceedance = GetFilledRandomRainExceedance("");
                     rainExceedance.EndMonth = 0;
-                    Assert.AreEqual(false, rainExceedanceService.Add(rainExceedance));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "EndMonth", "1", "12"), rainExceedance.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, rainExceedanceService.GetRainExceedanceList().Count());
+                    Assert.False(rainExceedanceService.Add(rainExceedance));
+                    Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "EndMonth", "1", "12"), rainExceedance.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, rainExceedanceService.GetRainExceedanceList().Count());
                     rainExceedance = null;
                     rainExceedance = GetFilledRandomRainExceedance("");
                     rainExceedance.EndMonth = 13;
-                    Assert.AreEqual(false, rainExceedanceService.Add(rainExceedance));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "EndMonth", "1", "12"), rainExceedance.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, rainExceedanceService.GetRainExceedanceList().Count());
+                    Assert.False(rainExceedanceService.Add(rainExceedance));
+                    Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "EndMonth", "1", "12"), rainExceedance.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, rainExceedanceService.GetRainExceedanceList().Count());
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -225,15 +225,15 @@ namespace CSSPServices.Tests
                     rainExceedance = null;
                     rainExceedance = GetFilledRandomRainExceedance("");
                     rainExceedance.EndDay = 0;
-                    Assert.AreEqual(false, rainExceedanceService.Add(rainExceedance));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "EndDay", "1", "31"), rainExceedance.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, rainExceedanceService.GetRainExceedanceList().Count());
+                    Assert.False(rainExceedanceService.Add(rainExceedance));
+                    Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "EndDay", "1", "31"), rainExceedance.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, rainExceedanceService.GetRainExceedanceList().Count());
                     rainExceedance = null;
                     rainExceedance = GetFilledRandomRainExceedance("");
                     rainExceedance.EndDay = 32;
-                    Assert.AreEqual(false, rainExceedanceService.Add(rainExceedance));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "EndDay", "1", "31"), rainExceedance.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, rainExceedanceService.GetRainExceedanceList().Count());
+                    Assert.False(rainExceedanceService.Add(rainExceedance));
+                    Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "EndDay", "1", "31"), rainExceedance.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, rainExceedanceService.GetRainExceedanceList().Count());
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -248,15 +248,15 @@ namespace CSSPServices.Tests
                     rainExceedance = null;
                     rainExceedance = GetFilledRandomRainExceedance("");
                     rainExceedance.RainMaximum_mm = -1.0D;
-                    Assert.AreEqual(false, rainExceedanceService.Add(rainExceedance));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "RainMaximum_mm", "0", "300"), rainExceedance.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, rainExceedanceService.GetRainExceedanceList().Count());
+                    Assert.False(rainExceedanceService.Add(rainExceedance));
+                    Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "RainMaximum_mm", "0", "300"), rainExceedance.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, rainExceedanceService.GetRainExceedanceList().Count());
                     rainExceedance = null;
                     rainExceedance = GetFilledRandomRainExceedance("");
                     rainExceedance.RainMaximum_mm = 301.0D;
-                    Assert.AreEqual(false, rainExceedanceService.Add(rainExceedance));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "RainMaximum_mm", "0", "300"), rainExceedance.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, rainExceedanceService.GetRainExceedanceList().Count());
+                    Assert.False(rainExceedanceService.Add(rainExceedance));
+                    Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "RainMaximum_mm", "0", "300"), rainExceedance.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, rainExceedanceService.GetRainExceedanceList().Count());
 
                     // -----------------------------------
                     // Is Nullable
@@ -268,7 +268,7 @@ namespace CSSPServices.Tests
                     rainExceedance = GetFilledRandomRainExceedance("");
                     rainExceedance.StakeholdersEmailDistributionListID = 0;
                     rainExceedanceService.Add(rainExceedance);
-                    Assert.AreEqual(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "EmailDistributionList", "StakeholdersEmailDistributionListID", rainExceedance.StakeholdersEmailDistributionListID.ToString()), rainExceedance.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "EmailDistributionList", "StakeholdersEmailDistributionListID", rainExceedance.StakeholdersEmailDistributionListID.ToString()), rainExceedance.ValidationResults.FirstOrDefault().ErrorMessage);
 
 
                     // -----------------------------------
@@ -281,7 +281,7 @@ namespace CSSPServices.Tests
                     rainExceedance = GetFilledRandomRainExceedance("");
                     rainExceedance.OnlyStaffEmailDistributionListID = 0;
                     rainExceedanceService.Add(rainExceedance);
-                    Assert.AreEqual(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "EmailDistributionList", "OnlyStaffEmailDistributionListID", rainExceedance.OnlyStaffEmailDistributionListID.ToString()), rainExceedance.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "EmailDistributionList", "OnlyStaffEmailDistributionListID", rainExceedance.OnlyStaffEmailDistributionListID.ToString()), rainExceedance.ValidationResults.FirstOrDefault().ErrorMessage);
 
 
                     // -----------------------------------
@@ -300,12 +300,12 @@ namespace CSSPServices.Tests
                     rainExceedance = GetFilledRandomRainExceedance("");
                     rainExceedance.LastUpdateDate_UTC = new DateTime();
                     rainExceedanceService.Add(rainExceedance);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsRequired, "LastUpdateDate_UTC"), rainExceedance.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsRequired, "LastUpdateDate_UTC"), rainExceedance.ValidationResults.FirstOrDefault().ErrorMessage);
                     rainExceedance = null;
                     rainExceedance = GetFilledRandomRainExceedance("");
                     rainExceedance.LastUpdateDate_UTC = new DateTime(1979, 1, 1);
                     rainExceedanceService.Add(rainExceedance);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._YearShouldBeBiggerThan_, "LastUpdateDate_UTC", "1980"), rainExceedance.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._YearShouldBeBiggerThan_, "LastUpdateDate_UTC", "1980"), rainExceedance.ValidationResults.FirstOrDefault().ErrorMessage);
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -317,13 +317,13 @@ namespace CSSPServices.Tests
                     rainExceedance = GetFilledRandomRainExceedance("");
                     rainExceedance.LastUpdateContactTVItemID = 0;
                     rainExceedanceService.Add(rainExceedance);
-                    Assert.AreEqual(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "TVItem", "LastUpdateContactTVItemID", rainExceedance.LastUpdateContactTVItemID.ToString()), rainExceedance.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "TVItem", "LastUpdateContactTVItemID", rainExceedance.LastUpdateContactTVItemID.ToString()), rainExceedance.ValidationResults.FirstOrDefault().ErrorMessage);
 
                     rainExceedance = null;
                     rainExceedance = GetFilledRandomRainExceedance("");
                     rainExceedance.LastUpdateContactTVItemID = 1;
                     rainExceedanceService.Add(rainExceedance);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsNotOfType_, "LastUpdateContactTVItemID", "Contact"), rainExceedance.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsNotOfType_, "LastUpdateContactTVItemID", "Contact"), rainExceedance.ValidationResults.FirstOrDefault().ErrorMessage);
 
 
                     // -----------------------------------
@@ -347,7 +347,7 @@ namespace CSSPServices.Tests
         #endregion Tests Generated Properties
 
         #region Tests Generated for GetRainExceedanceWithRainExceedanceID(rainExceedance.RainExceedanceID)
-        [TestMethod]
+        [Fact]
         public void GetRainExceedanceWithRainExceedanceID__rainExceedance_RainExceedanceID__Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -358,7 +358,7 @@ namespace CSSPServices.Tests
                 {
                     RainExceedanceService rainExceedanceService = new RainExceedanceService(new Query() { Lang = culture.TwoLetterISOLanguageName }, dbTestDB, ContactID);
                     RainExceedance rainExceedance = (from c in dbTestDB.RainExceedances select c).FirstOrDefault();
-                    Assert.IsNotNull(rainExceedance);
+                    Assert.NotNull(rainExceedance);
 
                 }
             }
@@ -366,7 +366,7 @@ namespace CSSPServices.Tests
         #endregion Tests Generated for GetRainExceedanceWithRainExceedanceID(rainExceedance.RainExceedanceID)
 
         #region Tests Generated for GetRainExceedanceList()
-        [TestMethod]
+        [Fact]
         public void GetRainExceedanceList_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -377,7 +377,7 @@ namespace CSSPServices.Tests
                 {
                     RainExceedanceService rainExceedanceService = new RainExceedanceService(new Query() { Lang = culture.TwoLetterISOLanguageName }, dbTestDB, ContactID);
                     RainExceedance rainExceedance = (from c in dbTestDB.RainExceedances select c).FirstOrDefault();
-                    Assert.IsNotNull(rainExceedance);
+                    Assert.NotNull(rainExceedance);
 
                     List<RainExceedance> rainExceedanceDirectQueryList = new List<RainExceedance>();
                     rainExceedanceDirectQueryList = (from c in dbTestDB.RainExceedances select c).Take(200).ToList();
@@ -388,7 +388,7 @@ namespace CSSPServices.Tests
         #endregion Tests Generated for GetRainExceedanceList()
 
         #region Tests Generated for GetRainExceedanceList() Skip Take
-        [TestMethod]
+        [Fact]
         public void GetRainExceedanceList_Skip_Take_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -407,14 +407,14 @@ namespace CSSPServices.Tests
                         List<RainExceedance> rainExceedanceList = new List<RainExceedance>();
                         rainExceedanceList = rainExceedanceService.GetRainExceedanceList().ToList();
                         CheckRainExceedanceFields(rainExceedanceList);
-                        Assert.AreEqual(rainExceedanceDirectQueryList[0].RainExceedanceID, rainExceedanceList[0].RainExceedanceID);
+                        Assert.Equal(rainExceedanceDirectQueryList[0].RainExceedanceID, rainExceedanceList[0].RainExceedanceID);
                 }
             }
         }
         #endregion Tests Generated for GetRainExceedanceList() Skip Take
 
         #region Tests Generated for GetRainExceedanceList() Skip Take Asc
-        [TestMethod]
+        [Fact]
         public void GetRainExceedanceList_Skip_Take_Asc_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -433,14 +433,14 @@ namespace CSSPServices.Tests
                         List<RainExceedance> rainExceedanceList = new List<RainExceedance>();
                         rainExceedanceList = rainExceedanceService.GetRainExceedanceList().ToList();
                         CheckRainExceedanceFields(rainExceedanceList);
-                        Assert.AreEqual(rainExceedanceDirectQueryList[0].RainExceedanceID, rainExceedanceList[0].RainExceedanceID);
+                        Assert.Equal(rainExceedanceDirectQueryList[0].RainExceedanceID, rainExceedanceList[0].RainExceedanceID);
                 }
             }
         }
         #endregion Tests Generated for GetRainExceedanceList() Skip Take Asc
 
         #region Tests Generated for GetRainExceedanceList() Skip Take 2 Asc
-        [TestMethod]
+        [Fact]
         public void GetRainExceedanceList_Skip_Take_2Asc_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -459,14 +459,14 @@ namespace CSSPServices.Tests
                         List<RainExceedance> rainExceedanceList = new List<RainExceedance>();
                         rainExceedanceList = rainExceedanceService.GetRainExceedanceList().ToList();
                         CheckRainExceedanceFields(rainExceedanceList);
-                        Assert.AreEqual(rainExceedanceDirectQueryList[0].RainExceedanceID, rainExceedanceList[0].RainExceedanceID);
+                        Assert.Equal(rainExceedanceDirectQueryList[0].RainExceedanceID, rainExceedanceList[0].RainExceedanceID);
                 }
             }
         }
         #endregion Tests Generated for GetRainExceedanceList() Skip Take 2 Asc
 
         #region Tests Generated for GetRainExceedanceList() Skip Take Asc Where
-        [TestMethod]
+        [Fact]
         public void GetRainExceedanceList_Skip_Take_Asc_Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -485,14 +485,14 @@ namespace CSSPServices.Tests
                         List<RainExceedance> rainExceedanceList = new List<RainExceedance>();
                         rainExceedanceList = rainExceedanceService.GetRainExceedanceList().ToList();
                         CheckRainExceedanceFields(rainExceedanceList);
-                        Assert.AreEqual(rainExceedanceDirectQueryList[0].RainExceedanceID, rainExceedanceList[0].RainExceedanceID);
+                        Assert.Equal(rainExceedanceDirectQueryList[0].RainExceedanceID, rainExceedanceList[0].RainExceedanceID);
                 }
             }
         }
         #endregion Tests Generated for GetRainExceedanceList() Skip Take Asc Where
 
         #region Tests Generated for GetRainExceedanceList() Skip Take Asc 2 Where
-        [TestMethod]
+        [Fact]
         public void GetRainExceedanceList_Skip_Take_Asc_2Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -511,14 +511,14 @@ namespace CSSPServices.Tests
                         List<RainExceedance> rainExceedanceList = new List<RainExceedance>();
                         rainExceedanceList = rainExceedanceService.GetRainExceedanceList().ToList();
                         CheckRainExceedanceFields(rainExceedanceList);
-                        Assert.AreEqual(rainExceedanceDirectQueryList[0].RainExceedanceID, rainExceedanceList[0].RainExceedanceID);
+                        Assert.Equal(rainExceedanceDirectQueryList[0].RainExceedanceID, rainExceedanceList[0].RainExceedanceID);
                 }
             }
         }
         #endregion Tests Generated for GetRainExceedanceList() Skip Take Asc 2 Where
 
         #region Tests Generated for GetRainExceedanceList() Skip Take Desc
-        [TestMethod]
+        [Fact]
         public void GetRainExceedanceList_Skip_Take_Desc_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -537,14 +537,14 @@ namespace CSSPServices.Tests
                         List<RainExceedance> rainExceedanceList = new List<RainExceedance>();
                         rainExceedanceList = rainExceedanceService.GetRainExceedanceList().ToList();
                         CheckRainExceedanceFields(rainExceedanceList);
-                        Assert.AreEqual(rainExceedanceDirectQueryList[0].RainExceedanceID, rainExceedanceList[0].RainExceedanceID);
+                        Assert.Equal(rainExceedanceDirectQueryList[0].RainExceedanceID, rainExceedanceList[0].RainExceedanceID);
                 }
             }
         }
         #endregion Tests Generated for GetRainExceedanceList() Skip Take Desc
 
         #region Tests Generated for GetRainExceedanceList() Skip Take 2 Desc
-        [TestMethod]
+        [Fact]
         public void GetRainExceedanceList_Skip_Take_2Desc_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -563,14 +563,14 @@ namespace CSSPServices.Tests
                         List<RainExceedance> rainExceedanceList = new List<RainExceedance>();
                         rainExceedanceList = rainExceedanceService.GetRainExceedanceList().ToList();
                         CheckRainExceedanceFields(rainExceedanceList);
-                        Assert.AreEqual(rainExceedanceDirectQueryList[0].RainExceedanceID, rainExceedanceList[0].RainExceedanceID);
+                        Assert.Equal(rainExceedanceDirectQueryList[0].RainExceedanceID, rainExceedanceList[0].RainExceedanceID);
                 }
             }
         }
         #endregion Tests Generated for GetRainExceedanceList() Skip Take 2 Desc
 
         #region Tests Generated for GetRainExceedanceList() Skip Take Desc Where
-        [TestMethod]
+        [Fact]
         public void GetRainExceedanceList_Skip_Take_Desc_Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -589,14 +589,14 @@ namespace CSSPServices.Tests
                         List<RainExceedance> rainExceedanceList = new List<RainExceedance>();
                         rainExceedanceList = rainExceedanceService.GetRainExceedanceList().ToList();
                         CheckRainExceedanceFields(rainExceedanceList);
-                        Assert.AreEqual(rainExceedanceDirectQueryList[0].RainExceedanceID, rainExceedanceList[0].RainExceedanceID);
+                        Assert.Equal(rainExceedanceDirectQueryList[0].RainExceedanceID, rainExceedanceList[0].RainExceedanceID);
                 }
             }
         }
         #endregion Tests Generated for GetRainExceedanceList() Skip Take Desc Where
 
         #region Tests Generated for GetRainExceedanceList() Skip Take Desc 2 Where
-        [TestMethod]
+        [Fact]
         public void GetRainExceedanceList_Skip_Take_Desc_2Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -615,14 +615,14 @@ namespace CSSPServices.Tests
                         List<RainExceedance> rainExceedanceList = new List<RainExceedance>();
                         rainExceedanceList = rainExceedanceService.GetRainExceedanceList().ToList();
                         CheckRainExceedanceFields(rainExceedanceList);
-                        Assert.AreEqual(rainExceedanceDirectQueryList[0].RainExceedanceID, rainExceedanceList[0].RainExceedanceID);
+                        Assert.Equal(rainExceedanceDirectQueryList[0].RainExceedanceID, rainExceedanceList[0].RainExceedanceID);
                 }
             }
         }
         #endregion Tests Generated for GetRainExceedanceList() Skip Take Desc 2 Where
 
         #region Tests Generated for GetRainExceedanceList() 2 Where
-        [TestMethod]
+        [Fact]
         public void GetRainExceedanceList_2Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -641,7 +641,7 @@ namespace CSSPServices.Tests
                         List<RainExceedance> rainExceedanceList = new List<RainExceedance>();
                         rainExceedanceList = rainExceedanceService.GetRainExceedanceList().ToList();
                         CheckRainExceedanceFields(rainExceedanceList);
-                        Assert.AreEqual(rainExceedanceDirectQueryList[0].RainExceedanceID, rainExceedanceList[0].RainExceedanceID);
+                        Assert.Equal(rainExceedanceDirectQueryList[0].RainExceedanceID, rainExceedanceList[0].RainExceedanceID);
                 }
             }
         }
@@ -650,25 +650,25 @@ namespace CSSPServices.Tests
         #region Functions private
         private void CheckRainExceedanceFields(List<RainExceedance> rainExceedanceList)
         {
-            Assert.IsNotNull(rainExceedanceList[0].RainExceedanceID);
-            Assert.IsNotNull(rainExceedanceList[0].RainExceedanceTVItemID);
-            Assert.IsNotNull(rainExceedanceList[0].StartMonth);
-            Assert.IsNotNull(rainExceedanceList[0].StartDay);
-            Assert.IsNotNull(rainExceedanceList[0].EndMonth);
-            Assert.IsNotNull(rainExceedanceList[0].EndDay);
-            Assert.IsNotNull(rainExceedanceList[0].RainMaximum_mm);
+            Assert.NotNull(rainExceedanceList[0].RainExceedanceID);
+            Assert.NotNull(rainExceedanceList[0].RainExceedanceTVItemID);
+            Assert.NotNull(rainExceedanceList[0].StartMonth);
+            Assert.NotNull(rainExceedanceList[0].StartDay);
+            Assert.NotNull(rainExceedanceList[0].EndMonth);
+            Assert.NotNull(rainExceedanceList[0].EndDay);
+            Assert.NotNull(rainExceedanceList[0].RainMaximum_mm);
             if (rainExceedanceList[0].StakeholdersEmailDistributionListID != null)
             {
-                Assert.IsNotNull(rainExceedanceList[0].StakeholdersEmailDistributionListID);
+                Assert.NotNull(rainExceedanceList[0].StakeholdersEmailDistributionListID);
             }
             if (rainExceedanceList[0].OnlyStaffEmailDistributionListID != null)
             {
-                Assert.IsNotNull(rainExceedanceList[0].OnlyStaffEmailDistributionListID);
+                Assert.NotNull(rainExceedanceList[0].OnlyStaffEmailDistributionListID);
             }
-            Assert.IsNotNull(rainExceedanceList[0].IsActive);
-            Assert.IsNotNull(rainExceedanceList[0].LastUpdateDate_UTC);
-            Assert.IsNotNull(rainExceedanceList[0].LastUpdateContactTVItemID);
-            Assert.IsNotNull(rainExceedanceList[0].HasErrors);
+            Assert.NotNull(rainExceedanceList[0].IsActive);
+            Assert.NotNull(rainExceedanceList[0].LastUpdateDate_UTC);
+            Assert.NotNull(rainExceedanceList[0].LastUpdateContactTVItemID);
+            Assert.NotNull(rainExceedanceList[0].HasErrors);
         }
         private RainExceedance GetFilledRandomRainExceedance(string OmitPropName)
         {

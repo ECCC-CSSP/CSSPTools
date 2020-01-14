@@ -5,7 +5,7 @@
  */ 
 
 using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using System.Linq;
 using System.Collections.Generic;
 using CSSPModels;
@@ -21,7 +21,7 @@ using CSSPEnums.Resources;
 
 namespace CSSPServices.Tests
 {
-    [TestClass]
+
     public partial class MWQMSubsectorLanguageServiceTest : TestHelper
     {
         #region Variables
@@ -39,7 +39,7 @@ namespace CSSPServices.Tests
         #endregion Constructors
 
         #region Tests Generated CRUD
-        [TestMethod]
+        [Fact]
         public void MWQMSubsectorLanguage_CRUD_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -66,26 +66,26 @@ namespace CSSPServices.Tests
 
                     count = mwqmSubsectorLanguageService.GetMWQMSubsectorLanguageList().Count();
 
-                    Assert.AreEqual(count, (from c in dbTestDB.MWQMSubsectorLanguages select c).Count());
+                    Assert.Equal(count, (from c in dbTestDB.MWQMSubsectorLanguages select c).Count());
 
                     mwqmSubsectorLanguageService.Add(mwqmSubsectorLanguage);
                     if (mwqmSubsectorLanguage.HasErrors)
                     {
-                        Assert.AreEqual("", mwqmSubsectorLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
+                        Assert.Equal("", mwqmSubsectorLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
                     }
-                    Assert.AreEqual(true, mwqmSubsectorLanguageService.GetMWQMSubsectorLanguageList().Where(c => c == mwqmSubsectorLanguage).Any());
+                    Assert.True(mwqmSubsectorLanguageService.GetMWQMSubsectorLanguageList().Where(c => c == mwqmSubsectorLanguage).Any());
                     mwqmSubsectorLanguageService.Update(mwqmSubsectorLanguage);
                     if (mwqmSubsectorLanguage.HasErrors)
                     {
-                        Assert.AreEqual("", mwqmSubsectorLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
+                        Assert.Equal("", mwqmSubsectorLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
                     }
-                    Assert.AreEqual(count + 1, mwqmSubsectorLanguageService.GetMWQMSubsectorLanguageList().Count());
+                    Assert.Equal(count + 1, mwqmSubsectorLanguageService.GetMWQMSubsectorLanguageList().Count());
                     mwqmSubsectorLanguageService.Delete(mwqmSubsectorLanguage);
                     if (mwqmSubsectorLanguage.HasErrors)
                     {
-                        Assert.AreEqual("", mwqmSubsectorLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
+                        Assert.Equal("", mwqmSubsectorLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
                     }
-                    Assert.AreEqual(count, mwqmSubsectorLanguageService.GetMWQMSubsectorLanguageList().Count());
+                    Assert.Equal(count, mwqmSubsectorLanguageService.GetMWQMSubsectorLanguageList().Count());
 
                 }
             }
@@ -93,7 +93,7 @@ namespace CSSPServices.Tests
         #endregion Tests Generated CRUD
 
         #region Tests Generated Properties
-        [TestMethod]
+        [Fact]
         public void MWQMSubsectorLanguage_Properties_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -131,13 +131,13 @@ namespace CSSPServices.Tests
                     mwqmSubsectorLanguage = GetFilledRandomMWQMSubsectorLanguage("");
                     mwqmSubsectorLanguage.MWQMSubsectorLanguageID = 0;
                     mwqmSubsectorLanguageService.Update(mwqmSubsectorLanguage);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsRequired, "MWQMSubsectorLanguageID"), mwqmSubsectorLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsRequired, "MWQMSubsectorLanguageID"), mwqmSubsectorLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
 
                     mwqmSubsectorLanguage = null;
                     mwqmSubsectorLanguage = GetFilledRandomMWQMSubsectorLanguage("");
                     mwqmSubsectorLanguage.MWQMSubsectorLanguageID = 10000000;
                     mwqmSubsectorLanguageService.Update(mwqmSubsectorLanguage);
-                    Assert.AreEqual(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "MWQMSubsectorLanguage", "MWQMSubsectorLanguageID", mwqmSubsectorLanguage.MWQMSubsectorLanguageID.ToString()), mwqmSubsectorLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "MWQMSubsectorLanguage", "MWQMSubsectorLanguageID", mwqmSubsectorLanguage.MWQMSubsectorLanguageID.ToString()), mwqmSubsectorLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
 
 
                     // -----------------------------------
@@ -150,7 +150,7 @@ namespace CSSPServices.Tests
                     mwqmSubsectorLanguage = GetFilledRandomMWQMSubsectorLanguage("");
                     mwqmSubsectorLanguage.MWQMSubsectorID = 0;
                     mwqmSubsectorLanguageService.Add(mwqmSubsectorLanguage);
-                    Assert.AreEqual(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "MWQMSubsector", "MWQMSubsectorID", mwqmSubsectorLanguage.MWQMSubsectorID.ToString()), mwqmSubsectorLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "MWQMSubsector", "MWQMSubsectorID", mwqmSubsectorLanguage.MWQMSubsectorID.ToString()), mwqmSubsectorLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
 
 
                     // -----------------------------------
@@ -163,7 +163,7 @@ namespace CSSPServices.Tests
                     mwqmSubsectorLanguage = GetFilledRandomMWQMSubsectorLanguage("");
                     mwqmSubsectorLanguage.Language = (LanguageEnum)1000000;
                     mwqmSubsectorLanguageService.Add(mwqmSubsectorLanguage);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsRequired, "Language"), mwqmSubsectorLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsRequired, "Language"), mwqmSubsectorLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
 
 
                     // -----------------------------------
@@ -174,18 +174,18 @@ namespace CSSPServices.Tests
 
                     mwqmSubsectorLanguage = null;
                     mwqmSubsectorLanguage = GetFilledRandomMWQMSubsectorLanguage("SubsectorDesc");
-                    Assert.AreEqual(false, mwqmSubsectorLanguageService.Add(mwqmSubsectorLanguage));
-                    Assert.AreEqual(1, mwqmSubsectorLanguage.ValidationResults.Count());
-                    Assert.IsTrue(mwqmSubsectorLanguage.ValidationResults.Where(c => c.ErrorMessage == string.Format(CSSPServicesRes._IsRequired, "SubsectorDesc")).Any());
-                    Assert.AreEqual(null, mwqmSubsectorLanguage.SubsectorDesc);
-                    Assert.AreEqual(count, mwqmSubsectorLanguageService.GetMWQMSubsectorLanguageList().Count());
+                    Assert.False(mwqmSubsectorLanguageService.Add(mwqmSubsectorLanguage));
+                    Assert.Equal(1, mwqmSubsectorLanguage.ValidationResults.Count());
+                    Assert.True(mwqmSubsectorLanguage.ValidationResults.Where(c => c.ErrorMessage == string.Format(CSSPServicesRes._IsRequired, "SubsectorDesc")).Any());
+                    Assert.Null(mwqmSubsectorLanguage.SubsectorDesc);
+                    Assert.Equal(count, mwqmSubsectorLanguageService.GetMWQMSubsectorLanguageList().Count());
 
                     mwqmSubsectorLanguage = null;
                     mwqmSubsectorLanguage = GetFilledRandomMWQMSubsectorLanguage("");
                     mwqmSubsectorLanguage.SubsectorDesc = GetRandomString("", 251);
-                    Assert.AreEqual(false, mwqmSubsectorLanguageService.Add(mwqmSubsectorLanguage));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._MaxLengthIs_, "SubsectorDesc", "250"), mwqmSubsectorLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, mwqmSubsectorLanguageService.GetMWQMSubsectorLanguageList().Count());
+                    Assert.False(mwqmSubsectorLanguageService.Add(mwqmSubsectorLanguage));
+                    Assert.Equal(string.Format(CSSPServicesRes._MaxLengthIs_, "SubsectorDesc", "250"), mwqmSubsectorLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, mwqmSubsectorLanguageService.GetMWQMSubsectorLanguageList().Count());
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -197,7 +197,7 @@ namespace CSSPServices.Tests
                     mwqmSubsectorLanguage = GetFilledRandomMWQMSubsectorLanguage("");
                     mwqmSubsectorLanguage.TranslationStatusSubsectorDesc = (TranslationStatusEnum)1000000;
                     mwqmSubsectorLanguageService.Add(mwqmSubsectorLanguage);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsRequired, "TranslationStatusSubsectorDesc"), mwqmSubsectorLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsRequired, "TranslationStatusSubsectorDesc"), mwqmSubsectorLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
 
 
                     // -----------------------------------
@@ -216,7 +216,7 @@ namespace CSSPServices.Tests
                     mwqmSubsectorLanguage = GetFilledRandomMWQMSubsectorLanguage("");
                     mwqmSubsectorLanguage.TranslationStatusLogBook = (TranslationStatusEnum)1000000;
                     mwqmSubsectorLanguageService.Add(mwqmSubsectorLanguage);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsRequired, "TranslationStatusLogBook"), mwqmSubsectorLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsRequired, "TranslationStatusLogBook"), mwqmSubsectorLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
 
 
                     // -----------------------------------
@@ -229,12 +229,12 @@ namespace CSSPServices.Tests
                     mwqmSubsectorLanguage = GetFilledRandomMWQMSubsectorLanguage("");
                     mwqmSubsectorLanguage.LastUpdateDate_UTC = new DateTime();
                     mwqmSubsectorLanguageService.Add(mwqmSubsectorLanguage);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsRequired, "LastUpdateDate_UTC"), mwqmSubsectorLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsRequired, "LastUpdateDate_UTC"), mwqmSubsectorLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
                     mwqmSubsectorLanguage = null;
                     mwqmSubsectorLanguage = GetFilledRandomMWQMSubsectorLanguage("");
                     mwqmSubsectorLanguage.LastUpdateDate_UTC = new DateTime(1979, 1, 1);
                     mwqmSubsectorLanguageService.Add(mwqmSubsectorLanguage);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._YearShouldBeBiggerThan_, "LastUpdateDate_UTC", "1980"), mwqmSubsectorLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._YearShouldBeBiggerThan_, "LastUpdateDate_UTC", "1980"), mwqmSubsectorLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -246,13 +246,13 @@ namespace CSSPServices.Tests
                     mwqmSubsectorLanguage = GetFilledRandomMWQMSubsectorLanguage("");
                     mwqmSubsectorLanguage.LastUpdateContactTVItemID = 0;
                     mwqmSubsectorLanguageService.Add(mwqmSubsectorLanguage);
-                    Assert.AreEqual(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "TVItem", "LastUpdateContactTVItemID", mwqmSubsectorLanguage.LastUpdateContactTVItemID.ToString()), mwqmSubsectorLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "TVItem", "LastUpdateContactTVItemID", mwqmSubsectorLanguage.LastUpdateContactTVItemID.ToString()), mwqmSubsectorLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
 
                     mwqmSubsectorLanguage = null;
                     mwqmSubsectorLanguage = GetFilledRandomMWQMSubsectorLanguage("");
                     mwqmSubsectorLanguage.LastUpdateContactTVItemID = 1;
                     mwqmSubsectorLanguageService.Add(mwqmSubsectorLanguage);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsNotOfType_, "LastUpdateContactTVItemID", "Contact"), mwqmSubsectorLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsNotOfType_, "LastUpdateContactTVItemID", "Contact"), mwqmSubsectorLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
 
 
                     // -----------------------------------
@@ -276,7 +276,7 @@ namespace CSSPServices.Tests
         #endregion Tests Generated Properties
 
         #region Tests Generated for GetMWQMSubsectorLanguageWithMWQMSubsectorLanguageID(mwqmSubsectorLanguage.MWQMSubsectorLanguageID)
-        [TestMethod]
+        [Fact]
         public void GetMWQMSubsectorLanguageWithMWQMSubsectorLanguageID__mwqmSubsectorLanguage_MWQMSubsectorLanguageID__Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -287,7 +287,7 @@ namespace CSSPServices.Tests
                 {
                     MWQMSubsectorLanguageService mwqmSubsectorLanguageService = new MWQMSubsectorLanguageService(new Query() { Lang = culture.TwoLetterISOLanguageName }, dbTestDB, ContactID);
                     MWQMSubsectorLanguage mwqmSubsectorLanguage = (from c in dbTestDB.MWQMSubsectorLanguages select c).FirstOrDefault();
-                    Assert.IsNotNull(mwqmSubsectorLanguage);
+                    Assert.NotNull(mwqmSubsectorLanguage);
 
                 }
             }
@@ -295,7 +295,7 @@ namespace CSSPServices.Tests
         #endregion Tests Generated for GetMWQMSubsectorLanguageWithMWQMSubsectorLanguageID(mwqmSubsectorLanguage.MWQMSubsectorLanguageID)
 
         #region Tests Generated for GetMWQMSubsectorLanguageList()
-        [TestMethod]
+        [Fact]
         public void GetMWQMSubsectorLanguageList_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -306,7 +306,7 @@ namespace CSSPServices.Tests
                 {
                     MWQMSubsectorLanguageService mwqmSubsectorLanguageService = new MWQMSubsectorLanguageService(new Query() { Lang = culture.TwoLetterISOLanguageName }, dbTestDB, ContactID);
                     MWQMSubsectorLanguage mwqmSubsectorLanguage = (from c in dbTestDB.MWQMSubsectorLanguages select c).FirstOrDefault();
-                    Assert.IsNotNull(mwqmSubsectorLanguage);
+                    Assert.NotNull(mwqmSubsectorLanguage);
 
                     List<MWQMSubsectorLanguage> mwqmSubsectorLanguageDirectQueryList = new List<MWQMSubsectorLanguage>();
                     mwqmSubsectorLanguageDirectQueryList = (from c in dbTestDB.MWQMSubsectorLanguages select c).Take(200).ToList();
@@ -317,7 +317,7 @@ namespace CSSPServices.Tests
         #endregion Tests Generated for GetMWQMSubsectorLanguageList()
 
         #region Tests Generated for GetMWQMSubsectorLanguageList() Skip Take
-        [TestMethod]
+        [Fact]
         public void GetMWQMSubsectorLanguageList_Skip_Take_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -336,14 +336,14 @@ namespace CSSPServices.Tests
                         List<MWQMSubsectorLanguage> mwqmSubsectorLanguageList = new List<MWQMSubsectorLanguage>();
                         mwqmSubsectorLanguageList = mwqmSubsectorLanguageService.GetMWQMSubsectorLanguageList().ToList();
                         CheckMWQMSubsectorLanguageFields(mwqmSubsectorLanguageList);
-                        Assert.AreEqual(mwqmSubsectorLanguageDirectQueryList[0].MWQMSubsectorLanguageID, mwqmSubsectorLanguageList[0].MWQMSubsectorLanguageID);
+                        Assert.Equal(mwqmSubsectorLanguageDirectQueryList[0].MWQMSubsectorLanguageID, mwqmSubsectorLanguageList[0].MWQMSubsectorLanguageID);
                 }
             }
         }
         #endregion Tests Generated for GetMWQMSubsectorLanguageList() Skip Take
 
         #region Tests Generated for GetMWQMSubsectorLanguageList() Skip Take Asc
-        [TestMethod]
+        [Fact]
         public void GetMWQMSubsectorLanguageList_Skip_Take_Asc_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -362,14 +362,14 @@ namespace CSSPServices.Tests
                         List<MWQMSubsectorLanguage> mwqmSubsectorLanguageList = new List<MWQMSubsectorLanguage>();
                         mwqmSubsectorLanguageList = mwqmSubsectorLanguageService.GetMWQMSubsectorLanguageList().ToList();
                         CheckMWQMSubsectorLanguageFields(mwqmSubsectorLanguageList);
-                        Assert.AreEqual(mwqmSubsectorLanguageDirectQueryList[0].MWQMSubsectorLanguageID, mwqmSubsectorLanguageList[0].MWQMSubsectorLanguageID);
+                        Assert.Equal(mwqmSubsectorLanguageDirectQueryList[0].MWQMSubsectorLanguageID, mwqmSubsectorLanguageList[0].MWQMSubsectorLanguageID);
                 }
             }
         }
         #endregion Tests Generated for GetMWQMSubsectorLanguageList() Skip Take Asc
 
         #region Tests Generated for GetMWQMSubsectorLanguageList() Skip Take 2 Asc
-        [TestMethod]
+        [Fact]
         public void GetMWQMSubsectorLanguageList_Skip_Take_2Asc_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -388,14 +388,14 @@ namespace CSSPServices.Tests
                         List<MWQMSubsectorLanguage> mwqmSubsectorLanguageList = new List<MWQMSubsectorLanguage>();
                         mwqmSubsectorLanguageList = mwqmSubsectorLanguageService.GetMWQMSubsectorLanguageList().ToList();
                         CheckMWQMSubsectorLanguageFields(mwqmSubsectorLanguageList);
-                        Assert.AreEqual(mwqmSubsectorLanguageDirectQueryList[0].MWQMSubsectorLanguageID, mwqmSubsectorLanguageList[0].MWQMSubsectorLanguageID);
+                        Assert.Equal(mwqmSubsectorLanguageDirectQueryList[0].MWQMSubsectorLanguageID, mwqmSubsectorLanguageList[0].MWQMSubsectorLanguageID);
                 }
             }
         }
         #endregion Tests Generated for GetMWQMSubsectorLanguageList() Skip Take 2 Asc
 
         #region Tests Generated for GetMWQMSubsectorLanguageList() Skip Take Asc Where
-        [TestMethod]
+        [Fact]
         public void GetMWQMSubsectorLanguageList_Skip_Take_Asc_Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -414,14 +414,14 @@ namespace CSSPServices.Tests
                         List<MWQMSubsectorLanguage> mwqmSubsectorLanguageList = new List<MWQMSubsectorLanguage>();
                         mwqmSubsectorLanguageList = mwqmSubsectorLanguageService.GetMWQMSubsectorLanguageList().ToList();
                         CheckMWQMSubsectorLanguageFields(mwqmSubsectorLanguageList);
-                        Assert.AreEqual(mwqmSubsectorLanguageDirectQueryList[0].MWQMSubsectorLanguageID, mwqmSubsectorLanguageList[0].MWQMSubsectorLanguageID);
+                        Assert.Equal(mwqmSubsectorLanguageDirectQueryList[0].MWQMSubsectorLanguageID, mwqmSubsectorLanguageList[0].MWQMSubsectorLanguageID);
                 }
             }
         }
         #endregion Tests Generated for GetMWQMSubsectorLanguageList() Skip Take Asc Where
 
         #region Tests Generated for GetMWQMSubsectorLanguageList() Skip Take Asc 2 Where
-        [TestMethod]
+        [Fact]
         public void GetMWQMSubsectorLanguageList_Skip_Take_Asc_2Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -440,14 +440,14 @@ namespace CSSPServices.Tests
                         List<MWQMSubsectorLanguage> mwqmSubsectorLanguageList = new List<MWQMSubsectorLanguage>();
                         mwqmSubsectorLanguageList = mwqmSubsectorLanguageService.GetMWQMSubsectorLanguageList().ToList();
                         CheckMWQMSubsectorLanguageFields(mwqmSubsectorLanguageList);
-                        Assert.AreEqual(mwqmSubsectorLanguageDirectQueryList[0].MWQMSubsectorLanguageID, mwqmSubsectorLanguageList[0].MWQMSubsectorLanguageID);
+                        Assert.Equal(mwqmSubsectorLanguageDirectQueryList[0].MWQMSubsectorLanguageID, mwqmSubsectorLanguageList[0].MWQMSubsectorLanguageID);
                 }
             }
         }
         #endregion Tests Generated for GetMWQMSubsectorLanguageList() Skip Take Asc 2 Where
 
         #region Tests Generated for GetMWQMSubsectorLanguageList() Skip Take Desc
-        [TestMethod]
+        [Fact]
         public void GetMWQMSubsectorLanguageList_Skip_Take_Desc_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -466,14 +466,14 @@ namespace CSSPServices.Tests
                         List<MWQMSubsectorLanguage> mwqmSubsectorLanguageList = new List<MWQMSubsectorLanguage>();
                         mwqmSubsectorLanguageList = mwqmSubsectorLanguageService.GetMWQMSubsectorLanguageList().ToList();
                         CheckMWQMSubsectorLanguageFields(mwqmSubsectorLanguageList);
-                        Assert.AreEqual(mwqmSubsectorLanguageDirectQueryList[0].MWQMSubsectorLanguageID, mwqmSubsectorLanguageList[0].MWQMSubsectorLanguageID);
+                        Assert.Equal(mwqmSubsectorLanguageDirectQueryList[0].MWQMSubsectorLanguageID, mwqmSubsectorLanguageList[0].MWQMSubsectorLanguageID);
                 }
             }
         }
         #endregion Tests Generated for GetMWQMSubsectorLanguageList() Skip Take Desc
 
         #region Tests Generated for GetMWQMSubsectorLanguageList() Skip Take 2 Desc
-        [TestMethod]
+        [Fact]
         public void GetMWQMSubsectorLanguageList_Skip_Take_2Desc_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -492,14 +492,14 @@ namespace CSSPServices.Tests
                         List<MWQMSubsectorLanguage> mwqmSubsectorLanguageList = new List<MWQMSubsectorLanguage>();
                         mwqmSubsectorLanguageList = mwqmSubsectorLanguageService.GetMWQMSubsectorLanguageList().ToList();
                         CheckMWQMSubsectorLanguageFields(mwqmSubsectorLanguageList);
-                        Assert.AreEqual(mwqmSubsectorLanguageDirectQueryList[0].MWQMSubsectorLanguageID, mwqmSubsectorLanguageList[0].MWQMSubsectorLanguageID);
+                        Assert.Equal(mwqmSubsectorLanguageDirectQueryList[0].MWQMSubsectorLanguageID, mwqmSubsectorLanguageList[0].MWQMSubsectorLanguageID);
                 }
             }
         }
         #endregion Tests Generated for GetMWQMSubsectorLanguageList() Skip Take 2 Desc
 
         #region Tests Generated for GetMWQMSubsectorLanguageList() Skip Take Desc Where
-        [TestMethod]
+        [Fact]
         public void GetMWQMSubsectorLanguageList_Skip_Take_Desc_Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -518,14 +518,14 @@ namespace CSSPServices.Tests
                         List<MWQMSubsectorLanguage> mwqmSubsectorLanguageList = new List<MWQMSubsectorLanguage>();
                         mwqmSubsectorLanguageList = mwqmSubsectorLanguageService.GetMWQMSubsectorLanguageList().ToList();
                         CheckMWQMSubsectorLanguageFields(mwqmSubsectorLanguageList);
-                        Assert.AreEqual(mwqmSubsectorLanguageDirectQueryList[0].MWQMSubsectorLanguageID, mwqmSubsectorLanguageList[0].MWQMSubsectorLanguageID);
+                        Assert.Equal(mwqmSubsectorLanguageDirectQueryList[0].MWQMSubsectorLanguageID, mwqmSubsectorLanguageList[0].MWQMSubsectorLanguageID);
                 }
             }
         }
         #endregion Tests Generated for GetMWQMSubsectorLanguageList() Skip Take Desc Where
 
         #region Tests Generated for GetMWQMSubsectorLanguageList() Skip Take Desc 2 Where
-        [TestMethod]
+        [Fact]
         public void GetMWQMSubsectorLanguageList_Skip_Take_Desc_2Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -544,14 +544,14 @@ namespace CSSPServices.Tests
                         List<MWQMSubsectorLanguage> mwqmSubsectorLanguageList = new List<MWQMSubsectorLanguage>();
                         mwqmSubsectorLanguageList = mwqmSubsectorLanguageService.GetMWQMSubsectorLanguageList().ToList();
                         CheckMWQMSubsectorLanguageFields(mwqmSubsectorLanguageList);
-                        Assert.AreEqual(mwqmSubsectorLanguageDirectQueryList[0].MWQMSubsectorLanguageID, mwqmSubsectorLanguageList[0].MWQMSubsectorLanguageID);
+                        Assert.Equal(mwqmSubsectorLanguageDirectQueryList[0].MWQMSubsectorLanguageID, mwqmSubsectorLanguageList[0].MWQMSubsectorLanguageID);
                 }
             }
         }
         #endregion Tests Generated for GetMWQMSubsectorLanguageList() Skip Take Desc 2 Where
 
         #region Tests Generated for GetMWQMSubsectorLanguageList() 2 Where
-        [TestMethod]
+        [Fact]
         public void GetMWQMSubsectorLanguageList_2Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -570,7 +570,7 @@ namespace CSSPServices.Tests
                         List<MWQMSubsectorLanguage> mwqmSubsectorLanguageList = new List<MWQMSubsectorLanguage>();
                         mwqmSubsectorLanguageList = mwqmSubsectorLanguageService.GetMWQMSubsectorLanguageList().ToList();
                         CheckMWQMSubsectorLanguageFields(mwqmSubsectorLanguageList);
-                        Assert.AreEqual(mwqmSubsectorLanguageDirectQueryList[0].MWQMSubsectorLanguageID, mwqmSubsectorLanguageList[0].MWQMSubsectorLanguageID);
+                        Assert.Equal(mwqmSubsectorLanguageDirectQueryList[0].MWQMSubsectorLanguageID, mwqmSubsectorLanguageList[0].MWQMSubsectorLanguageID);
                 }
             }
         }
@@ -579,22 +579,22 @@ namespace CSSPServices.Tests
         #region Functions private
         private void CheckMWQMSubsectorLanguageFields(List<MWQMSubsectorLanguage> mwqmSubsectorLanguageList)
         {
-            Assert.IsNotNull(mwqmSubsectorLanguageList[0].MWQMSubsectorLanguageID);
-            Assert.IsNotNull(mwqmSubsectorLanguageList[0].MWQMSubsectorID);
-            Assert.IsNotNull(mwqmSubsectorLanguageList[0].Language);
-            Assert.IsFalse(string.IsNullOrWhiteSpace(mwqmSubsectorLanguageList[0].SubsectorDesc));
-            Assert.IsNotNull(mwqmSubsectorLanguageList[0].TranslationStatusSubsectorDesc);
+            Assert.NotNull(mwqmSubsectorLanguageList[0].MWQMSubsectorLanguageID);
+            Assert.NotNull(mwqmSubsectorLanguageList[0].MWQMSubsectorID);
+            Assert.NotNull(mwqmSubsectorLanguageList[0].Language);
+            Assert.False(string.IsNullOrWhiteSpace(mwqmSubsectorLanguageList[0].SubsectorDesc));
+            Assert.NotNull(mwqmSubsectorLanguageList[0].TranslationStatusSubsectorDesc);
             if (!string.IsNullOrWhiteSpace(mwqmSubsectorLanguageList[0].LogBook))
             {
-                Assert.IsFalse(string.IsNullOrWhiteSpace(mwqmSubsectorLanguageList[0].LogBook));
+                Assert.False(string.IsNullOrWhiteSpace(mwqmSubsectorLanguageList[0].LogBook));
             }
             if (mwqmSubsectorLanguageList[0].TranslationStatusLogBook != null)
             {
-                Assert.IsNotNull(mwqmSubsectorLanguageList[0].TranslationStatusLogBook);
+                Assert.NotNull(mwqmSubsectorLanguageList[0].TranslationStatusLogBook);
             }
-            Assert.IsNotNull(mwqmSubsectorLanguageList[0].LastUpdateDate_UTC);
-            Assert.IsNotNull(mwqmSubsectorLanguageList[0].LastUpdateContactTVItemID);
-            Assert.IsNotNull(mwqmSubsectorLanguageList[0].HasErrors);
+            Assert.NotNull(mwqmSubsectorLanguageList[0].LastUpdateDate_UTC);
+            Assert.NotNull(mwqmSubsectorLanguageList[0].LastUpdateContactTVItemID);
+            Assert.NotNull(mwqmSubsectorLanguageList[0].HasErrors);
         }
         private MWQMSubsectorLanguage GetFilledRandomMWQMSubsectorLanguage(string OmitPropName)
         {

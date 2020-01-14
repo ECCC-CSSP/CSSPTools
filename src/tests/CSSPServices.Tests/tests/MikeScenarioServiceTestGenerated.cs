@@ -5,7 +5,7 @@
  */ 
 
 using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using System.Linq;
 using System.Collections.Generic;
 using CSSPModels;
@@ -21,7 +21,7 @@ using CSSPEnums.Resources;
 
 namespace CSSPServices.Tests
 {
-    [TestClass]
+
     public partial class MikeScenarioServiceTest : TestHelper
     {
         #region Variables
@@ -39,7 +39,7 @@ namespace CSSPServices.Tests
         #endregion Constructors
 
         #region Tests Generated CRUD
-        [TestMethod]
+        [Fact]
         public void MikeScenario_CRUD_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -66,26 +66,26 @@ namespace CSSPServices.Tests
 
                     count = mikeScenarioService.GetMikeScenarioList().Count();
 
-                    Assert.AreEqual(count, (from c in dbTestDB.MikeScenarios select c).Count());
+                    Assert.Equal(count, (from c in dbTestDB.MikeScenarios select c).Count());
 
                     mikeScenarioService.Add(mikeScenario);
                     if (mikeScenario.HasErrors)
                     {
-                        Assert.AreEqual("", mikeScenario.ValidationResults.FirstOrDefault().ErrorMessage);
+                        Assert.Equal("", mikeScenario.ValidationResults.FirstOrDefault().ErrorMessage);
                     }
-                    Assert.AreEqual(true, mikeScenarioService.GetMikeScenarioList().Where(c => c == mikeScenario).Any());
+                    Assert.True(mikeScenarioService.GetMikeScenarioList().Where(c => c == mikeScenario).Any());
                     mikeScenarioService.Update(mikeScenario);
                     if (mikeScenario.HasErrors)
                     {
-                        Assert.AreEqual("", mikeScenario.ValidationResults.FirstOrDefault().ErrorMessage);
+                        Assert.Equal("", mikeScenario.ValidationResults.FirstOrDefault().ErrorMessage);
                     }
-                    Assert.AreEqual(count + 1, mikeScenarioService.GetMikeScenarioList().Count());
+                    Assert.Equal(count + 1, mikeScenarioService.GetMikeScenarioList().Count());
                     mikeScenarioService.Delete(mikeScenario);
                     if (mikeScenario.HasErrors)
                     {
-                        Assert.AreEqual("", mikeScenario.ValidationResults.FirstOrDefault().ErrorMessage);
+                        Assert.Equal("", mikeScenario.ValidationResults.FirstOrDefault().ErrorMessage);
                     }
-                    Assert.AreEqual(count, mikeScenarioService.GetMikeScenarioList().Count());
+                    Assert.Equal(count, mikeScenarioService.GetMikeScenarioList().Count());
 
                 }
             }
@@ -93,7 +93,7 @@ namespace CSSPServices.Tests
         #endregion Tests Generated CRUD
 
         #region Tests Generated Properties
-        [TestMethod]
+        [Fact]
         public void MikeScenario_Properties_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -131,13 +131,13 @@ namespace CSSPServices.Tests
                     mikeScenario = GetFilledRandomMikeScenario("");
                     mikeScenario.MikeScenarioID = 0;
                     mikeScenarioService.Update(mikeScenario);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsRequired, "MikeScenarioID"), mikeScenario.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsRequired, "MikeScenarioID"), mikeScenario.ValidationResults.FirstOrDefault().ErrorMessage);
 
                     mikeScenario = null;
                     mikeScenario = GetFilledRandomMikeScenario("");
                     mikeScenario.MikeScenarioID = 10000000;
                     mikeScenarioService.Update(mikeScenario);
-                    Assert.AreEqual(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "MikeScenario", "MikeScenarioID", mikeScenario.MikeScenarioID.ToString()), mikeScenario.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "MikeScenario", "MikeScenarioID", mikeScenario.MikeScenarioID.ToString()), mikeScenario.ValidationResults.FirstOrDefault().ErrorMessage);
 
 
                     // -----------------------------------
@@ -150,13 +150,13 @@ namespace CSSPServices.Tests
                     mikeScenario = GetFilledRandomMikeScenario("");
                     mikeScenario.MikeScenarioTVItemID = 0;
                     mikeScenarioService.Add(mikeScenario);
-                    Assert.AreEqual(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "TVItem", "MikeScenarioTVItemID", mikeScenario.MikeScenarioTVItemID.ToString()), mikeScenario.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "TVItem", "MikeScenarioTVItemID", mikeScenario.MikeScenarioTVItemID.ToString()), mikeScenario.ValidationResults.FirstOrDefault().ErrorMessage);
 
                     mikeScenario = null;
                     mikeScenario = GetFilledRandomMikeScenario("");
                     mikeScenario.MikeScenarioTVItemID = 1;
                     mikeScenarioService.Add(mikeScenario);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsNotOfType_, "MikeScenarioTVItemID", "MikeScenario"), mikeScenario.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsNotOfType_, "MikeScenarioTVItemID", "MikeScenario"), mikeScenario.ValidationResults.FirstOrDefault().ErrorMessage);
 
 
                     // -----------------------------------
@@ -169,13 +169,13 @@ namespace CSSPServices.Tests
                     mikeScenario = GetFilledRandomMikeScenario("");
                     mikeScenario.ParentMikeScenarioID = 0;
                     mikeScenarioService.Add(mikeScenario);
-                    Assert.AreEqual(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "TVItem", "ParentMikeScenarioID", mikeScenario.ParentMikeScenarioID.ToString()), mikeScenario.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "TVItem", "ParentMikeScenarioID", mikeScenario.ParentMikeScenarioID.ToString()), mikeScenario.ValidationResults.FirstOrDefault().ErrorMessage);
 
                     mikeScenario = null;
                     mikeScenario = GetFilledRandomMikeScenario("");
                     mikeScenario.ParentMikeScenarioID = 1;
                     mikeScenarioService.Add(mikeScenario);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsNotOfType_, "ParentMikeScenarioID", "MikeScenario"), mikeScenario.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsNotOfType_, "ParentMikeScenarioID", "MikeScenario"), mikeScenario.ValidationResults.FirstOrDefault().ErrorMessage);
 
 
                     // -----------------------------------
@@ -188,7 +188,7 @@ namespace CSSPServices.Tests
                     mikeScenario = GetFilledRandomMikeScenario("");
                     mikeScenario.ScenarioStatus = (ScenarioStatusEnum)1000000;
                     mikeScenarioService.Add(mikeScenario);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsRequired, "ScenarioStatus"), mikeScenario.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsRequired, "ScenarioStatus"), mikeScenario.ValidationResults.FirstOrDefault().ErrorMessage);
 
 
                     // -----------------------------------
@@ -207,12 +207,12 @@ namespace CSSPServices.Tests
                     mikeScenario = GetFilledRandomMikeScenario("");
                     mikeScenario.MikeScenarioStartDateTime_Local = new DateTime();
                     mikeScenarioService.Add(mikeScenario);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsRequired, "MikeScenarioStartDateTime_Local"), mikeScenario.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsRequired, "MikeScenarioStartDateTime_Local"), mikeScenario.ValidationResults.FirstOrDefault().ErrorMessage);
                     mikeScenario = null;
                     mikeScenario = GetFilledRandomMikeScenario("");
                     mikeScenario.MikeScenarioStartDateTime_Local = new DateTime(1979, 1, 1);
                     mikeScenarioService.Add(mikeScenario);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._YearShouldBeBiggerThan_, "MikeScenarioStartDateTime_Local", "1980"), mikeScenario.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._YearShouldBeBiggerThan_, "MikeScenarioStartDateTime_Local", "1980"), mikeScenario.ValidationResults.FirstOrDefault().ErrorMessage);
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -224,12 +224,12 @@ namespace CSSPServices.Tests
                     mikeScenario = GetFilledRandomMikeScenario("");
                     mikeScenario.MikeScenarioEndDateTime_Local = new DateTime();
                     mikeScenarioService.Add(mikeScenario);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsRequired, "MikeScenarioEndDateTime_Local"), mikeScenario.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsRequired, "MikeScenarioEndDateTime_Local"), mikeScenario.ValidationResults.FirstOrDefault().ErrorMessage);
                     mikeScenario = null;
                     mikeScenario = GetFilledRandomMikeScenario("");
                     mikeScenario.MikeScenarioEndDateTime_Local = new DateTime(1979, 1, 1);
                     mikeScenarioService.Add(mikeScenario);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._YearShouldBeBiggerThan_, "MikeScenarioEndDateTime_Local", "1980"), mikeScenario.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._YearShouldBeBiggerThan_, "MikeScenarioEndDateTime_Local", "1980"), mikeScenario.ValidationResults.FirstOrDefault().ErrorMessage);
 
                     // -----------------------------------
                     // Is Nullable
@@ -241,7 +241,7 @@ namespace CSSPServices.Tests
                     mikeScenario = GetFilledRandomMikeScenario("");
                     mikeScenario.MikeScenarioStartExecutionDateTime_Local = new DateTime(1979, 1, 1);
                     mikeScenarioService.Add(mikeScenario);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._YearShouldBeBiggerThan_, "MikeScenarioStartExecutionDateTime_Local", "1980"), mikeScenario.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._YearShouldBeBiggerThan_, "MikeScenarioStartExecutionDateTime_Local", "1980"), mikeScenario.ValidationResults.FirstOrDefault().ErrorMessage);
 
                     // -----------------------------------
                     // Is Nullable
@@ -256,15 +256,15 @@ namespace CSSPServices.Tests
                     mikeScenario = null;
                     mikeScenario = GetFilledRandomMikeScenario("");
                     mikeScenario.MikeScenarioExecutionTime_min = 0.0D;
-                    Assert.AreEqual(false, mikeScenarioService.Add(mikeScenario));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "MikeScenarioExecutionTime_min", "1", "100000"), mikeScenario.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, mikeScenarioService.GetMikeScenarioList().Count());
+                    Assert.False(mikeScenarioService.Add(mikeScenario));
+                    Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "MikeScenarioExecutionTime_min", "1", "100000"), mikeScenario.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, mikeScenarioService.GetMikeScenarioList().Count());
                     mikeScenario = null;
                     mikeScenario = GetFilledRandomMikeScenario("");
                     mikeScenario.MikeScenarioExecutionTime_min = 100001.0D;
-                    Assert.AreEqual(false, mikeScenarioService.Add(mikeScenario));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "MikeScenarioExecutionTime_min", "1", "100000"), mikeScenario.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, mikeScenarioService.GetMikeScenarioList().Count());
+                    Assert.False(mikeScenarioService.Add(mikeScenario));
+                    Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "MikeScenarioExecutionTime_min", "1", "100000"), mikeScenario.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, mikeScenarioService.GetMikeScenarioList().Count());
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -279,15 +279,15 @@ namespace CSSPServices.Tests
                     mikeScenario = null;
                     mikeScenario = GetFilledRandomMikeScenario("");
                     mikeScenario.WindSpeed_km_h = -1.0D;
-                    Assert.AreEqual(false, mikeScenarioService.Add(mikeScenario));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "WindSpeed_km_h", "0", "100"), mikeScenario.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, mikeScenarioService.GetMikeScenarioList().Count());
+                    Assert.False(mikeScenarioService.Add(mikeScenario));
+                    Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "WindSpeed_km_h", "0", "100"), mikeScenario.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, mikeScenarioService.GetMikeScenarioList().Count());
                     mikeScenario = null;
                     mikeScenario = GetFilledRandomMikeScenario("");
                     mikeScenario.WindSpeed_km_h = 101.0D;
-                    Assert.AreEqual(false, mikeScenarioService.Add(mikeScenario));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "WindSpeed_km_h", "0", "100"), mikeScenario.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, mikeScenarioService.GetMikeScenarioList().Count());
+                    Assert.False(mikeScenarioService.Add(mikeScenario));
+                    Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "WindSpeed_km_h", "0", "100"), mikeScenario.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, mikeScenarioService.GetMikeScenarioList().Count());
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -302,15 +302,15 @@ namespace CSSPServices.Tests
                     mikeScenario = null;
                     mikeScenario = GetFilledRandomMikeScenario("");
                     mikeScenario.WindDirection_deg = -1.0D;
-                    Assert.AreEqual(false, mikeScenarioService.Add(mikeScenario));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "WindDirection_deg", "0", "360"), mikeScenario.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, mikeScenarioService.GetMikeScenarioList().Count());
+                    Assert.False(mikeScenarioService.Add(mikeScenario));
+                    Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "WindDirection_deg", "0", "360"), mikeScenario.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, mikeScenarioService.GetMikeScenarioList().Count());
                     mikeScenario = null;
                     mikeScenario = GetFilledRandomMikeScenario("");
                     mikeScenario.WindDirection_deg = 361.0D;
-                    Assert.AreEqual(false, mikeScenarioService.Add(mikeScenario));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "WindDirection_deg", "0", "360"), mikeScenario.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, mikeScenarioService.GetMikeScenarioList().Count());
+                    Assert.False(mikeScenarioService.Add(mikeScenario));
+                    Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "WindDirection_deg", "0", "360"), mikeScenario.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, mikeScenarioService.GetMikeScenarioList().Count());
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -325,15 +325,15 @@ namespace CSSPServices.Tests
                     mikeScenario = null;
                     mikeScenario = GetFilledRandomMikeScenario("");
                     mikeScenario.DecayFactor_per_day = -1.0D;
-                    Assert.AreEqual(false, mikeScenarioService.Add(mikeScenario));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "DecayFactor_per_day", "0", "100"), mikeScenario.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, mikeScenarioService.GetMikeScenarioList().Count());
+                    Assert.False(mikeScenarioService.Add(mikeScenario));
+                    Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "DecayFactor_per_day", "0", "100"), mikeScenario.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, mikeScenarioService.GetMikeScenarioList().Count());
                     mikeScenario = null;
                     mikeScenario = GetFilledRandomMikeScenario("");
                     mikeScenario.DecayFactor_per_day = 101.0D;
-                    Assert.AreEqual(false, mikeScenarioService.Add(mikeScenario));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "DecayFactor_per_day", "0", "100"), mikeScenario.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, mikeScenarioService.GetMikeScenarioList().Count());
+                    Assert.False(mikeScenarioService.Add(mikeScenario));
+                    Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "DecayFactor_per_day", "0", "100"), mikeScenario.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, mikeScenarioService.GetMikeScenarioList().Count());
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -354,15 +354,15 @@ namespace CSSPServices.Tests
                     mikeScenario = null;
                     mikeScenario = GetFilledRandomMikeScenario("");
                     mikeScenario.DecayFactorAmplitude = -1.0D;
-                    Assert.AreEqual(false, mikeScenarioService.Add(mikeScenario));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "DecayFactorAmplitude", "0", "100"), mikeScenario.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, mikeScenarioService.GetMikeScenarioList().Count());
+                    Assert.False(mikeScenarioService.Add(mikeScenario));
+                    Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "DecayFactorAmplitude", "0", "100"), mikeScenario.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, mikeScenarioService.GetMikeScenarioList().Count());
                     mikeScenario = null;
                     mikeScenario = GetFilledRandomMikeScenario("");
                     mikeScenario.DecayFactorAmplitude = 101.0D;
-                    Assert.AreEqual(false, mikeScenarioService.Add(mikeScenario));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "DecayFactorAmplitude", "0", "100"), mikeScenario.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, mikeScenarioService.GetMikeScenarioList().Count());
+                    Assert.False(mikeScenarioService.Add(mikeScenario));
+                    Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "DecayFactorAmplitude", "0", "100"), mikeScenario.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, mikeScenarioService.GetMikeScenarioList().Count());
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -373,15 +373,15 @@ namespace CSSPServices.Tests
                     mikeScenario = null;
                     mikeScenario = GetFilledRandomMikeScenario("");
                     mikeScenario.ResultFrequency_min = -1;
-                    Assert.AreEqual(false, mikeScenarioService.Add(mikeScenario));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "ResultFrequency_min", "0", "100"), mikeScenario.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, mikeScenarioService.GetMikeScenarioList().Count());
+                    Assert.False(mikeScenarioService.Add(mikeScenario));
+                    Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "ResultFrequency_min", "0", "100"), mikeScenario.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, mikeScenarioService.GetMikeScenarioList().Count());
                     mikeScenario = null;
                     mikeScenario = GetFilledRandomMikeScenario("");
                     mikeScenario.ResultFrequency_min = 101;
-                    Assert.AreEqual(false, mikeScenarioService.Add(mikeScenario));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "ResultFrequency_min", "0", "100"), mikeScenario.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, mikeScenarioService.GetMikeScenarioList().Count());
+                    Assert.False(mikeScenarioService.Add(mikeScenario));
+                    Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "ResultFrequency_min", "0", "100"), mikeScenario.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, mikeScenarioService.GetMikeScenarioList().Count());
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -396,15 +396,15 @@ namespace CSSPServices.Tests
                     mikeScenario = null;
                     mikeScenario = GetFilledRandomMikeScenario("");
                     mikeScenario.AmbientTemperature_C = -11.0D;
-                    Assert.AreEqual(false, mikeScenarioService.Add(mikeScenario));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "AmbientTemperature_C", "-10", "40"), mikeScenario.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, mikeScenarioService.GetMikeScenarioList().Count());
+                    Assert.False(mikeScenarioService.Add(mikeScenario));
+                    Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "AmbientTemperature_C", "-10", "40"), mikeScenario.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, mikeScenarioService.GetMikeScenarioList().Count());
                     mikeScenario = null;
                     mikeScenario = GetFilledRandomMikeScenario("");
                     mikeScenario.AmbientTemperature_C = 41.0D;
-                    Assert.AreEqual(false, mikeScenarioService.Add(mikeScenario));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "AmbientTemperature_C", "-10", "40"), mikeScenario.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, mikeScenarioService.GetMikeScenarioList().Count());
+                    Assert.False(mikeScenarioService.Add(mikeScenario));
+                    Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "AmbientTemperature_C", "-10", "40"), mikeScenario.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, mikeScenarioService.GetMikeScenarioList().Count());
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -419,15 +419,15 @@ namespace CSSPServices.Tests
                     mikeScenario = null;
                     mikeScenario = GetFilledRandomMikeScenario("");
                     mikeScenario.AmbientSalinity_PSU = -1.0D;
-                    Assert.AreEqual(false, mikeScenarioService.Add(mikeScenario));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "AmbientSalinity_PSU", "0", "40"), mikeScenario.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, mikeScenarioService.GetMikeScenarioList().Count());
+                    Assert.False(mikeScenarioService.Add(mikeScenario));
+                    Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "AmbientSalinity_PSU", "0", "40"), mikeScenario.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, mikeScenarioService.GetMikeScenarioList().Count());
                     mikeScenario = null;
                     mikeScenario = GetFilledRandomMikeScenario("");
                     mikeScenario.AmbientSalinity_PSU = 41.0D;
-                    Assert.AreEqual(false, mikeScenarioService.Add(mikeScenario));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "AmbientSalinity_PSU", "0", "40"), mikeScenario.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, mikeScenarioService.GetMikeScenarioList().Count());
+                    Assert.False(mikeScenarioService.Add(mikeScenario));
+                    Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "AmbientSalinity_PSU", "0", "40"), mikeScenario.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, mikeScenarioService.GetMikeScenarioList().Count());
 
                     // -----------------------------------
                     // Is Nullable
@@ -451,13 +451,13 @@ namespace CSSPServices.Tests
                     mikeScenario = GetFilledRandomMikeScenario("");
                     mikeScenario.UseSalinityAndTemperatureInitialConditionFromTVFileTVItemID = 0;
                     mikeScenarioService.Add(mikeScenario);
-                    Assert.AreEqual(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "TVItem", "UseSalinityAndTemperatureInitialConditionFromTVFileTVItemID", mikeScenario.UseSalinityAndTemperatureInitialConditionFromTVFileTVItemID.ToString()), mikeScenario.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "TVItem", "UseSalinityAndTemperatureInitialConditionFromTVFileTVItemID", mikeScenario.UseSalinityAndTemperatureInitialConditionFromTVFileTVItemID.ToString()), mikeScenario.ValidationResults.FirstOrDefault().ErrorMessage);
 
                     mikeScenario = null;
                     mikeScenario = GetFilledRandomMikeScenario("");
                     mikeScenario.UseSalinityAndTemperatureInitialConditionFromTVFileTVItemID = 1;
                     mikeScenarioService.Add(mikeScenario);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsNotOfType_, "UseSalinityAndTemperatureInitialConditionFromTVFileTVItemID", "File"), mikeScenario.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsNotOfType_, "UseSalinityAndTemperatureInitialConditionFromTVFileTVItemID", "File"), mikeScenario.ValidationResults.FirstOrDefault().ErrorMessage);
 
 
                     // -----------------------------------
@@ -470,13 +470,13 @@ namespace CSSPServices.Tests
                     mikeScenario = GetFilledRandomMikeScenario("");
                     mikeScenario.ForSimulatingMWQMRunTVItemID = 0;
                     mikeScenarioService.Add(mikeScenario);
-                    Assert.AreEqual(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "TVItem", "ForSimulatingMWQMRunTVItemID", mikeScenario.ForSimulatingMWQMRunTVItemID.ToString()), mikeScenario.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "TVItem", "ForSimulatingMWQMRunTVItemID", mikeScenario.ForSimulatingMWQMRunTVItemID.ToString()), mikeScenario.ValidationResults.FirstOrDefault().ErrorMessage);
 
                     mikeScenario = null;
                     mikeScenario = GetFilledRandomMikeScenario("");
                     mikeScenario.ForSimulatingMWQMRunTVItemID = 1;
                     mikeScenarioService.Add(mikeScenario);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsNotOfType_, "ForSimulatingMWQMRunTVItemID", "MWQMRun"), mikeScenario.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsNotOfType_, "ForSimulatingMWQMRunTVItemID", "MWQMRun"), mikeScenario.ValidationResults.FirstOrDefault().ErrorMessage);
 
 
                     // -----------------------------------
@@ -492,15 +492,15 @@ namespace CSSPServices.Tests
                     mikeScenario = null;
                     mikeScenario = GetFilledRandomMikeScenario("");
                     mikeScenario.ManningNumber = -1.0D;
-                    Assert.AreEqual(false, mikeScenarioService.Add(mikeScenario));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "ManningNumber", "0", "100"), mikeScenario.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, mikeScenarioService.GetMikeScenarioList().Count());
+                    Assert.False(mikeScenarioService.Add(mikeScenario));
+                    Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "ManningNumber", "0", "100"), mikeScenario.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, mikeScenarioService.GetMikeScenarioList().Count());
                     mikeScenario = null;
                     mikeScenario = GetFilledRandomMikeScenario("");
                     mikeScenario.ManningNumber = 101.0D;
-                    Assert.AreEqual(false, mikeScenarioService.Add(mikeScenario));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "ManningNumber", "0", "100"), mikeScenario.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, mikeScenarioService.GetMikeScenarioList().Count());
+                    Assert.False(mikeScenarioService.Add(mikeScenario));
+                    Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "ManningNumber", "0", "100"), mikeScenario.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, mikeScenarioService.GetMikeScenarioList().Count());
 
                     // -----------------------------------
                     // Is Nullable
@@ -511,15 +511,15 @@ namespace CSSPServices.Tests
                     mikeScenario = null;
                     mikeScenario = GetFilledRandomMikeScenario("");
                     mikeScenario.NumberOfElements = 0;
-                    Assert.AreEqual(false, mikeScenarioService.Add(mikeScenario));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "NumberOfElements", "1", "1000000"), mikeScenario.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, mikeScenarioService.GetMikeScenarioList().Count());
+                    Assert.False(mikeScenarioService.Add(mikeScenario));
+                    Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "NumberOfElements", "1", "1000000"), mikeScenario.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, mikeScenarioService.GetMikeScenarioList().Count());
                     mikeScenario = null;
                     mikeScenario = GetFilledRandomMikeScenario("");
                     mikeScenario.NumberOfElements = 1000001;
-                    Assert.AreEqual(false, mikeScenarioService.Add(mikeScenario));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "NumberOfElements", "1", "1000000"), mikeScenario.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, mikeScenarioService.GetMikeScenarioList().Count());
+                    Assert.False(mikeScenarioService.Add(mikeScenario));
+                    Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "NumberOfElements", "1", "1000000"), mikeScenario.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, mikeScenarioService.GetMikeScenarioList().Count());
 
                     // -----------------------------------
                     // Is Nullable
@@ -530,15 +530,15 @@ namespace CSSPServices.Tests
                     mikeScenario = null;
                     mikeScenario = GetFilledRandomMikeScenario("");
                     mikeScenario.NumberOfTimeSteps = 0;
-                    Assert.AreEqual(false, mikeScenarioService.Add(mikeScenario));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "NumberOfTimeSteps", "1", "1000000"), mikeScenario.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, mikeScenarioService.GetMikeScenarioList().Count());
+                    Assert.False(mikeScenarioService.Add(mikeScenario));
+                    Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "NumberOfTimeSteps", "1", "1000000"), mikeScenario.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, mikeScenarioService.GetMikeScenarioList().Count());
                     mikeScenario = null;
                     mikeScenario = GetFilledRandomMikeScenario("");
                     mikeScenario.NumberOfTimeSteps = 1000001;
-                    Assert.AreEqual(false, mikeScenarioService.Add(mikeScenario));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "NumberOfTimeSteps", "1", "1000000"), mikeScenario.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, mikeScenarioService.GetMikeScenarioList().Count());
+                    Assert.False(mikeScenarioService.Add(mikeScenario));
+                    Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "NumberOfTimeSteps", "1", "1000000"), mikeScenario.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, mikeScenarioService.GetMikeScenarioList().Count());
 
                     // -----------------------------------
                     // Is Nullable
@@ -549,15 +549,15 @@ namespace CSSPServices.Tests
                     mikeScenario = null;
                     mikeScenario = GetFilledRandomMikeScenario("");
                     mikeScenario.NumberOfSigmaLayers = -1;
-                    Assert.AreEqual(false, mikeScenarioService.Add(mikeScenario));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "NumberOfSigmaLayers", "0", "100"), mikeScenario.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, mikeScenarioService.GetMikeScenarioList().Count());
+                    Assert.False(mikeScenarioService.Add(mikeScenario));
+                    Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "NumberOfSigmaLayers", "0", "100"), mikeScenario.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, mikeScenarioService.GetMikeScenarioList().Count());
                     mikeScenario = null;
                     mikeScenario = GetFilledRandomMikeScenario("");
                     mikeScenario.NumberOfSigmaLayers = 101;
-                    Assert.AreEqual(false, mikeScenarioService.Add(mikeScenario));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "NumberOfSigmaLayers", "0", "100"), mikeScenario.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, mikeScenarioService.GetMikeScenarioList().Count());
+                    Assert.False(mikeScenarioService.Add(mikeScenario));
+                    Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "NumberOfSigmaLayers", "0", "100"), mikeScenario.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, mikeScenarioService.GetMikeScenarioList().Count());
 
                     // -----------------------------------
                     // Is Nullable
@@ -568,15 +568,15 @@ namespace CSSPServices.Tests
                     mikeScenario = null;
                     mikeScenario = GetFilledRandomMikeScenario("");
                     mikeScenario.NumberOfZLayers = -1;
-                    Assert.AreEqual(false, mikeScenarioService.Add(mikeScenario));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "NumberOfZLayers", "0", "100"), mikeScenario.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, mikeScenarioService.GetMikeScenarioList().Count());
+                    Assert.False(mikeScenarioService.Add(mikeScenario));
+                    Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "NumberOfZLayers", "0", "100"), mikeScenario.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, mikeScenarioService.GetMikeScenarioList().Count());
                     mikeScenario = null;
                     mikeScenario = GetFilledRandomMikeScenario("");
                     mikeScenario.NumberOfZLayers = 101;
-                    Assert.AreEqual(false, mikeScenarioService.Add(mikeScenario));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "NumberOfZLayers", "0", "100"), mikeScenario.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, mikeScenarioService.GetMikeScenarioList().Count());
+                    Assert.False(mikeScenarioService.Add(mikeScenario));
+                    Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "NumberOfZLayers", "0", "100"), mikeScenario.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, mikeScenarioService.GetMikeScenarioList().Count());
 
                     // -----------------------------------
                     // Is Nullable
@@ -587,15 +587,15 @@ namespace CSSPServices.Tests
                     mikeScenario = null;
                     mikeScenario = GetFilledRandomMikeScenario("");
                     mikeScenario.NumberOfHydroOutputParameters = -1;
-                    Assert.AreEqual(false, mikeScenarioService.Add(mikeScenario));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "NumberOfHydroOutputParameters", "0", "100"), mikeScenario.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, mikeScenarioService.GetMikeScenarioList().Count());
+                    Assert.False(mikeScenarioService.Add(mikeScenario));
+                    Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "NumberOfHydroOutputParameters", "0", "100"), mikeScenario.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, mikeScenarioService.GetMikeScenarioList().Count());
                     mikeScenario = null;
                     mikeScenario = GetFilledRandomMikeScenario("");
                     mikeScenario.NumberOfHydroOutputParameters = 101;
-                    Assert.AreEqual(false, mikeScenarioService.Add(mikeScenario));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "NumberOfHydroOutputParameters", "0", "100"), mikeScenario.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, mikeScenarioService.GetMikeScenarioList().Count());
+                    Assert.False(mikeScenarioService.Add(mikeScenario));
+                    Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "NumberOfHydroOutputParameters", "0", "100"), mikeScenario.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, mikeScenarioService.GetMikeScenarioList().Count());
 
                     // -----------------------------------
                     // Is Nullable
@@ -606,15 +606,15 @@ namespace CSSPServices.Tests
                     mikeScenario = null;
                     mikeScenario = GetFilledRandomMikeScenario("");
                     mikeScenario.NumberOfTransOutputParameters = -1;
-                    Assert.AreEqual(false, mikeScenarioService.Add(mikeScenario));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "NumberOfTransOutputParameters", "0", "100"), mikeScenario.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, mikeScenarioService.GetMikeScenarioList().Count());
+                    Assert.False(mikeScenarioService.Add(mikeScenario));
+                    Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "NumberOfTransOutputParameters", "0", "100"), mikeScenario.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, mikeScenarioService.GetMikeScenarioList().Count());
                     mikeScenario = null;
                     mikeScenario = GetFilledRandomMikeScenario("");
                     mikeScenario.NumberOfTransOutputParameters = 101;
-                    Assert.AreEqual(false, mikeScenarioService.Add(mikeScenario));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "NumberOfTransOutputParameters", "0", "100"), mikeScenario.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, mikeScenarioService.GetMikeScenarioList().Count());
+                    Assert.False(mikeScenarioService.Add(mikeScenario));
+                    Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "NumberOfTransOutputParameters", "0", "100"), mikeScenario.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, mikeScenarioService.GetMikeScenarioList().Count());
 
                     // -----------------------------------
                     // Is Nullable
@@ -625,15 +625,15 @@ namespace CSSPServices.Tests
                     mikeScenario = null;
                     mikeScenario = GetFilledRandomMikeScenario("");
                     mikeScenario.EstimatedHydroFileSize = -1;
-                    Assert.AreEqual(false, mikeScenarioService.Add(mikeScenario));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "EstimatedHydroFileSize", "0", "100000000"), mikeScenario.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, mikeScenarioService.GetMikeScenarioList().Count());
+                    Assert.False(mikeScenarioService.Add(mikeScenario));
+                    Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "EstimatedHydroFileSize", "0", "100000000"), mikeScenario.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, mikeScenarioService.GetMikeScenarioList().Count());
                     mikeScenario = null;
                     mikeScenario = GetFilledRandomMikeScenario("");
                     mikeScenario.EstimatedHydroFileSize = 100000001;
-                    Assert.AreEqual(false, mikeScenarioService.Add(mikeScenario));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "EstimatedHydroFileSize", "0", "100000000"), mikeScenario.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, mikeScenarioService.GetMikeScenarioList().Count());
+                    Assert.False(mikeScenarioService.Add(mikeScenario));
+                    Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "EstimatedHydroFileSize", "0", "100000000"), mikeScenario.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, mikeScenarioService.GetMikeScenarioList().Count());
 
                     // -----------------------------------
                     // Is Nullable
@@ -644,15 +644,15 @@ namespace CSSPServices.Tests
                     mikeScenario = null;
                     mikeScenario = GetFilledRandomMikeScenario("");
                     mikeScenario.EstimatedTransFileSize = -1;
-                    Assert.AreEqual(false, mikeScenarioService.Add(mikeScenario));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "EstimatedTransFileSize", "0", "100000000"), mikeScenario.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, mikeScenarioService.GetMikeScenarioList().Count());
+                    Assert.False(mikeScenarioService.Add(mikeScenario));
+                    Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "EstimatedTransFileSize", "0", "100000000"), mikeScenario.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, mikeScenarioService.GetMikeScenarioList().Count());
                     mikeScenario = null;
                     mikeScenario = GetFilledRandomMikeScenario("");
                     mikeScenario.EstimatedTransFileSize = 100000001;
-                    Assert.AreEqual(false, mikeScenarioService.Add(mikeScenario));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "EstimatedTransFileSize", "0", "100000000"), mikeScenario.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, mikeScenarioService.GetMikeScenarioList().Count());
+                    Assert.False(mikeScenarioService.Add(mikeScenario));
+                    Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "EstimatedTransFileSize", "0", "100000000"), mikeScenario.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, mikeScenarioService.GetMikeScenarioList().Count());
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -664,12 +664,12 @@ namespace CSSPServices.Tests
                     mikeScenario = GetFilledRandomMikeScenario("");
                     mikeScenario.LastUpdateDate_UTC = new DateTime();
                     mikeScenarioService.Add(mikeScenario);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsRequired, "LastUpdateDate_UTC"), mikeScenario.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsRequired, "LastUpdateDate_UTC"), mikeScenario.ValidationResults.FirstOrDefault().ErrorMessage);
                     mikeScenario = null;
                     mikeScenario = GetFilledRandomMikeScenario("");
                     mikeScenario.LastUpdateDate_UTC = new DateTime(1979, 1, 1);
                     mikeScenarioService.Add(mikeScenario);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._YearShouldBeBiggerThan_, "LastUpdateDate_UTC", "1980"), mikeScenario.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._YearShouldBeBiggerThan_, "LastUpdateDate_UTC", "1980"), mikeScenario.ValidationResults.FirstOrDefault().ErrorMessage);
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -681,13 +681,13 @@ namespace CSSPServices.Tests
                     mikeScenario = GetFilledRandomMikeScenario("");
                     mikeScenario.LastUpdateContactTVItemID = 0;
                     mikeScenarioService.Add(mikeScenario);
-                    Assert.AreEqual(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "TVItem", "LastUpdateContactTVItemID", mikeScenario.LastUpdateContactTVItemID.ToString()), mikeScenario.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "TVItem", "LastUpdateContactTVItemID", mikeScenario.LastUpdateContactTVItemID.ToString()), mikeScenario.ValidationResults.FirstOrDefault().ErrorMessage);
 
                     mikeScenario = null;
                     mikeScenario = GetFilledRandomMikeScenario("");
                     mikeScenario.LastUpdateContactTVItemID = 1;
                     mikeScenarioService.Add(mikeScenario);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsNotOfType_, "LastUpdateContactTVItemID", "Contact"), mikeScenario.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsNotOfType_, "LastUpdateContactTVItemID", "Contact"), mikeScenario.ValidationResults.FirstOrDefault().ErrorMessage);
 
 
                     // -----------------------------------
@@ -711,7 +711,7 @@ namespace CSSPServices.Tests
         #endregion Tests Generated Properties
 
         #region Tests Generated for GetMikeScenarioWithMikeScenarioID(mikeScenario.MikeScenarioID)
-        [TestMethod]
+        [Fact]
         public void GetMikeScenarioWithMikeScenarioID__mikeScenario_MikeScenarioID__Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -722,7 +722,7 @@ namespace CSSPServices.Tests
                 {
                     MikeScenarioService mikeScenarioService = new MikeScenarioService(new Query() { Lang = culture.TwoLetterISOLanguageName }, dbTestDB, ContactID);
                     MikeScenario mikeScenario = (from c in dbTestDB.MikeScenarios select c).FirstOrDefault();
-                    Assert.IsNotNull(mikeScenario);
+                    Assert.NotNull(mikeScenario);
 
                 }
             }
@@ -730,7 +730,7 @@ namespace CSSPServices.Tests
         #endregion Tests Generated for GetMikeScenarioWithMikeScenarioID(mikeScenario.MikeScenarioID)
 
         #region Tests Generated for GetMikeScenarioList()
-        [TestMethod]
+        [Fact]
         public void GetMikeScenarioList_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -741,7 +741,7 @@ namespace CSSPServices.Tests
                 {
                     MikeScenarioService mikeScenarioService = new MikeScenarioService(new Query() { Lang = culture.TwoLetterISOLanguageName }, dbTestDB, ContactID);
                     MikeScenario mikeScenario = (from c in dbTestDB.MikeScenarios select c).FirstOrDefault();
-                    Assert.IsNotNull(mikeScenario);
+                    Assert.NotNull(mikeScenario);
 
                     List<MikeScenario> mikeScenarioDirectQueryList = new List<MikeScenario>();
                     mikeScenarioDirectQueryList = (from c in dbTestDB.MikeScenarios select c).Take(200).ToList();
@@ -752,7 +752,7 @@ namespace CSSPServices.Tests
         #endregion Tests Generated for GetMikeScenarioList()
 
         #region Tests Generated for GetMikeScenarioList() Skip Take
-        [TestMethod]
+        [Fact]
         public void GetMikeScenarioList_Skip_Take_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -771,14 +771,14 @@ namespace CSSPServices.Tests
                         List<MikeScenario> mikeScenarioList = new List<MikeScenario>();
                         mikeScenarioList = mikeScenarioService.GetMikeScenarioList().ToList();
                         CheckMikeScenarioFields(mikeScenarioList);
-                        Assert.AreEqual(mikeScenarioDirectQueryList[0].MikeScenarioID, mikeScenarioList[0].MikeScenarioID);
+                        Assert.Equal(mikeScenarioDirectQueryList[0].MikeScenarioID, mikeScenarioList[0].MikeScenarioID);
                 }
             }
         }
         #endregion Tests Generated for GetMikeScenarioList() Skip Take
 
         #region Tests Generated for GetMikeScenarioList() Skip Take Asc
-        [TestMethod]
+        [Fact]
         public void GetMikeScenarioList_Skip_Take_Asc_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -797,14 +797,14 @@ namespace CSSPServices.Tests
                         List<MikeScenario> mikeScenarioList = new List<MikeScenario>();
                         mikeScenarioList = mikeScenarioService.GetMikeScenarioList().ToList();
                         CheckMikeScenarioFields(mikeScenarioList);
-                        Assert.AreEqual(mikeScenarioDirectQueryList[0].MikeScenarioID, mikeScenarioList[0].MikeScenarioID);
+                        Assert.Equal(mikeScenarioDirectQueryList[0].MikeScenarioID, mikeScenarioList[0].MikeScenarioID);
                 }
             }
         }
         #endregion Tests Generated for GetMikeScenarioList() Skip Take Asc
 
         #region Tests Generated for GetMikeScenarioList() Skip Take 2 Asc
-        [TestMethod]
+        [Fact]
         public void GetMikeScenarioList_Skip_Take_2Asc_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -823,14 +823,14 @@ namespace CSSPServices.Tests
                         List<MikeScenario> mikeScenarioList = new List<MikeScenario>();
                         mikeScenarioList = mikeScenarioService.GetMikeScenarioList().ToList();
                         CheckMikeScenarioFields(mikeScenarioList);
-                        Assert.AreEqual(mikeScenarioDirectQueryList[0].MikeScenarioID, mikeScenarioList[0].MikeScenarioID);
+                        Assert.Equal(mikeScenarioDirectQueryList[0].MikeScenarioID, mikeScenarioList[0].MikeScenarioID);
                 }
             }
         }
         #endregion Tests Generated for GetMikeScenarioList() Skip Take 2 Asc
 
         #region Tests Generated for GetMikeScenarioList() Skip Take Asc Where
-        [TestMethod]
+        [Fact]
         public void GetMikeScenarioList_Skip_Take_Asc_Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -849,14 +849,14 @@ namespace CSSPServices.Tests
                         List<MikeScenario> mikeScenarioList = new List<MikeScenario>();
                         mikeScenarioList = mikeScenarioService.GetMikeScenarioList().ToList();
                         CheckMikeScenarioFields(mikeScenarioList);
-                        Assert.AreEqual(mikeScenarioDirectQueryList[0].MikeScenarioID, mikeScenarioList[0].MikeScenarioID);
+                        Assert.Equal(mikeScenarioDirectQueryList[0].MikeScenarioID, mikeScenarioList[0].MikeScenarioID);
                 }
             }
         }
         #endregion Tests Generated for GetMikeScenarioList() Skip Take Asc Where
 
         #region Tests Generated for GetMikeScenarioList() Skip Take Asc 2 Where
-        [TestMethod]
+        [Fact]
         public void GetMikeScenarioList_Skip_Take_Asc_2Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -875,14 +875,14 @@ namespace CSSPServices.Tests
                         List<MikeScenario> mikeScenarioList = new List<MikeScenario>();
                         mikeScenarioList = mikeScenarioService.GetMikeScenarioList().ToList();
                         CheckMikeScenarioFields(mikeScenarioList);
-                        Assert.AreEqual(mikeScenarioDirectQueryList[0].MikeScenarioID, mikeScenarioList[0].MikeScenarioID);
+                        Assert.Equal(mikeScenarioDirectQueryList[0].MikeScenarioID, mikeScenarioList[0].MikeScenarioID);
                 }
             }
         }
         #endregion Tests Generated for GetMikeScenarioList() Skip Take Asc 2 Where
 
         #region Tests Generated for GetMikeScenarioList() Skip Take Desc
-        [TestMethod]
+        [Fact]
         public void GetMikeScenarioList_Skip_Take_Desc_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -901,14 +901,14 @@ namespace CSSPServices.Tests
                         List<MikeScenario> mikeScenarioList = new List<MikeScenario>();
                         mikeScenarioList = mikeScenarioService.GetMikeScenarioList().ToList();
                         CheckMikeScenarioFields(mikeScenarioList);
-                        Assert.AreEqual(mikeScenarioDirectQueryList[0].MikeScenarioID, mikeScenarioList[0].MikeScenarioID);
+                        Assert.Equal(mikeScenarioDirectQueryList[0].MikeScenarioID, mikeScenarioList[0].MikeScenarioID);
                 }
             }
         }
         #endregion Tests Generated for GetMikeScenarioList() Skip Take Desc
 
         #region Tests Generated for GetMikeScenarioList() Skip Take 2 Desc
-        [TestMethod]
+        [Fact]
         public void GetMikeScenarioList_Skip_Take_2Desc_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -927,14 +927,14 @@ namespace CSSPServices.Tests
                         List<MikeScenario> mikeScenarioList = new List<MikeScenario>();
                         mikeScenarioList = mikeScenarioService.GetMikeScenarioList().ToList();
                         CheckMikeScenarioFields(mikeScenarioList);
-                        Assert.AreEqual(mikeScenarioDirectQueryList[0].MikeScenarioID, mikeScenarioList[0].MikeScenarioID);
+                        Assert.Equal(mikeScenarioDirectQueryList[0].MikeScenarioID, mikeScenarioList[0].MikeScenarioID);
                 }
             }
         }
         #endregion Tests Generated for GetMikeScenarioList() Skip Take 2 Desc
 
         #region Tests Generated for GetMikeScenarioList() Skip Take Desc Where
-        [TestMethod]
+        [Fact]
         public void GetMikeScenarioList_Skip_Take_Desc_Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -953,14 +953,14 @@ namespace CSSPServices.Tests
                         List<MikeScenario> mikeScenarioList = new List<MikeScenario>();
                         mikeScenarioList = mikeScenarioService.GetMikeScenarioList().ToList();
                         CheckMikeScenarioFields(mikeScenarioList);
-                        Assert.AreEqual(mikeScenarioDirectQueryList[0].MikeScenarioID, mikeScenarioList[0].MikeScenarioID);
+                        Assert.Equal(mikeScenarioDirectQueryList[0].MikeScenarioID, mikeScenarioList[0].MikeScenarioID);
                 }
             }
         }
         #endregion Tests Generated for GetMikeScenarioList() Skip Take Desc Where
 
         #region Tests Generated for GetMikeScenarioList() Skip Take Desc 2 Where
-        [TestMethod]
+        [Fact]
         public void GetMikeScenarioList_Skip_Take_Desc_2Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -979,14 +979,14 @@ namespace CSSPServices.Tests
                         List<MikeScenario> mikeScenarioList = new List<MikeScenario>();
                         mikeScenarioList = mikeScenarioService.GetMikeScenarioList().ToList();
                         CheckMikeScenarioFields(mikeScenarioList);
-                        Assert.AreEqual(mikeScenarioDirectQueryList[0].MikeScenarioID, mikeScenarioList[0].MikeScenarioID);
+                        Assert.Equal(mikeScenarioDirectQueryList[0].MikeScenarioID, mikeScenarioList[0].MikeScenarioID);
                 }
             }
         }
         #endregion Tests Generated for GetMikeScenarioList() Skip Take Desc 2 Where
 
         #region Tests Generated for GetMikeScenarioList() 2 Where
-        [TestMethod]
+        [Fact]
         public void GetMikeScenarioList_2Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -1005,7 +1005,7 @@ namespace CSSPServices.Tests
                         List<MikeScenario> mikeScenarioList = new List<MikeScenario>();
                         mikeScenarioList = mikeScenarioService.GetMikeScenarioList().ToList();
                         CheckMikeScenarioFields(mikeScenarioList);
-                        Assert.AreEqual(mikeScenarioDirectQueryList[0].MikeScenarioID, mikeScenarioList[0].MikeScenarioID);
+                        Assert.Equal(mikeScenarioDirectQueryList[0].MikeScenarioID, mikeScenarioList[0].MikeScenarioID);
                 }
             }
         }
@@ -1014,87 +1014,87 @@ namespace CSSPServices.Tests
         #region Functions private
         private void CheckMikeScenarioFields(List<MikeScenario> mikeScenarioList)
         {
-            Assert.IsNotNull(mikeScenarioList[0].MikeScenarioID);
-            Assert.IsNotNull(mikeScenarioList[0].MikeScenarioTVItemID);
+            Assert.NotNull(mikeScenarioList[0].MikeScenarioID);
+            Assert.NotNull(mikeScenarioList[0].MikeScenarioTVItemID);
             if (mikeScenarioList[0].ParentMikeScenarioID != null)
             {
-                Assert.IsNotNull(mikeScenarioList[0].ParentMikeScenarioID);
+                Assert.NotNull(mikeScenarioList[0].ParentMikeScenarioID);
             }
-            Assert.IsNotNull(mikeScenarioList[0].ScenarioStatus);
+            Assert.NotNull(mikeScenarioList[0].ScenarioStatus);
             if (!string.IsNullOrWhiteSpace(mikeScenarioList[0].ErrorInfo))
             {
-                Assert.IsFalse(string.IsNullOrWhiteSpace(mikeScenarioList[0].ErrorInfo));
+                Assert.False(string.IsNullOrWhiteSpace(mikeScenarioList[0].ErrorInfo));
             }
-            Assert.IsNotNull(mikeScenarioList[0].MikeScenarioStartDateTime_Local);
-            Assert.IsNotNull(mikeScenarioList[0].MikeScenarioEndDateTime_Local);
+            Assert.NotNull(mikeScenarioList[0].MikeScenarioStartDateTime_Local);
+            Assert.NotNull(mikeScenarioList[0].MikeScenarioEndDateTime_Local);
             if (mikeScenarioList[0].MikeScenarioStartExecutionDateTime_Local != null)
             {
-                Assert.IsNotNull(mikeScenarioList[0].MikeScenarioStartExecutionDateTime_Local);
+                Assert.NotNull(mikeScenarioList[0].MikeScenarioStartExecutionDateTime_Local);
             }
             if (mikeScenarioList[0].MikeScenarioExecutionTime_min != null)
             {
-                Assert.IsNotNull(mikeScenarioList[0].MikeScenarioExecutionTime_min);
+                Assert.NotNull(mikeScenarioList[0].MikeScenarioExecutionTime_min);
             }
-            Assert.IsNotNull(mikeScenarioList[0].WindSpeed_km_h);
-            Assert.IsNotNull(mikeScenarioList[0].WindDirection_deg);
-            Assert.IsNotNull(mikeScenarioList[0].DecayFactor_per_day);
-            Assert.IsNotNull(mikeScenarioList[0].DecayIsConstant);
-            Assert.IsNotNull(mikeScenarioList[0].DecayFactorAmplitude);
-            Assert.IsNotNull(mikeScenarioList[0].ResultFrequency_min);
-            Assert.IsNotNull(mikeScenarioList[0].AmbientTemperature_C);
-            Assert.IsNotNull(mikeScenarioList[0].AmbientSalinity_PSU);
+            Assert.NotNull(mikeScenarioList[0].WindSpeed_km_h);
+            Assert.NotNull(mikeScenarioList[0].WindDirection_deg);
+            Assert.NotNull(mikeScenarioList[0].DecayFactor_per_day);
+            Assert.NotNull(mikeScenarioList[0].DecayIsConstant);
+            Assert.NotNull(mikeScenarioList[0].DecayFactorAmplitude);
+            Assert.NotNull(mikeScenarioList[0].ResultFrequency_min);
+            Assert.NotNull(mikeScenarioList[0].AmbientTemperature_C);
+            Assert.NotNull(mikeScenarioList[0].AmbientSalinity_PSU);
             if (mikeScenarioList[0].GenerateDecouplingFiles != null)
             {
-                Assert.IsNotNull(mikeScenarioList[0].GenerateDecouplingFiles);
+                Assert.NotNull(mikeScenarioList[0].GenerateDecouplingFiles);
             }
             if (mikeScenarioList[0].UseDecouplingFiles != null)
             {
-                Assert.IsNotNull(mikeScenarioList[0].UseDecouplingFiles);
+                Assert.NotNull(mikeScenarioList[0].UseDecouplingFiles);
             }
             if (mikeScenarioList[0].UseSalinityAndTemperatureInitialConditionFromTVFileTVItemID != null)
             {
-                Assert.IsNotNull(mikeScenarioList[0].UseSalinityAndTemperatureInitialConditionFromTVFileTVItemID);
+                Assert.NotNull(mikeScenarioList[0].UseSalinityAndTemperatureInitialConditionFromTVFileTVItemID);
             }
             if (mikeScenarioList[0].ForSimulatingMWQMRunTVItemID != null)
             {
-                Assert.IsNotNull(mikeScenarioList[0].ForSimulatingMWQMRunTVItemID);
+                Assert.NotNull(mikeScenarioList[0].ForSimulatingMWQMRunTVItemID);
             }
-            Assert.IsNotNull(mikeScenarioList[0].ManningNumber);
+            Assert.NotNull(mikeScenarioList[0].ManningNumber);
             if (mikeScenarioList[0].NumberOfElements != null)
             {
-                Assert.IsNotNull(mikeScenarioList[0].NumberOfElements);
+                Assert.NotNull(mikeScenarioList[0].NumberOfElements);
             }
             if (mikeScenarioList[0].NumberOfTimeSteps != null)
             {
-                Assert.IsNotNull(mikeScenarioList[0].NumberOfTimeSteps);
+                Assert.NotNull(mikeScenarioList[0].NumberOfTimeSteps);
             }
             if (mikeScenarioList[0].NumberOfSigmaLayers != null)
             {
-                Assert.IsNotNull(mikeScenarioList[0].NumberOfSigmaLayers);
+                Assert.NotNull(mikeScenarioList[0].NumberOfSigmaLayers);
             }
             if (mikeScenarioList[0].NumberOfZLayers != null)
             {
-                Assert.IsNotNull(mikeScenarioList[0].NumberOfZLayers);
+                Assert.NotNull(mikeScenarioList[0].NumberOfZLayers);
             }
             if (mikeScenarioList[0].NumberOfHydroOutputParameters != null)
             {
-                Assert.IsNotNull(mikeScenarioList[0].NumberOfHydroOutputParameters);
+                Assert.NotNull(mikeScenarioList[0].NumberOfHydroOutputParameters);
             }
             if (mikeScenarioList[0].NumberOfTransOutputParameters != null)
             {
-                Assert.IsNotNull(mikeScenarioList[0].NumberOfTransOutputParameters);
+                Assert.NotNull(mikeScenarioList[0].NumberOfTransOutputParameters);
             }
             if (mikeScenarioList[0].EstimatedHydroFileSize != null)
             {
-                Assert.IsNotNull(mikeScenarioList[0].EstimatedHydroFileSize);
+                Assert.NotNull(mikeScenarioList[0].EstimatedHydroFileSize);
             }
             if (mikeScenarioList[0].EstimatedTransFileSize != null)
             {
-                Assert.IsNotNull(mikeScenarioList[0].EstimatedTransFileSize);
+                Assert.NotNull(mikeScenarioList[0].EstimatedTransFileSize);
             }
-            Assert.IsNotNull(mikeScenarioList[0].LastUpdateDate_UTC);
-            Assert.IsNotNull(mikeScenarioList[0].LastUpdateContactTVItemID);
-            Assert.IsNotNull(mikeScenarioList[0].HasErrors);
+            Assert.NotNull(mikeScenarioList[0].LastUpdateDate_UTC);
+            Assert.NotNull(mikeScenarioList[0].LastUpdateContactTVItemID);
+            Assert.NotNull(mikeScenarioList[0].HasErrors);
         }
         private MikeScenario GetFilledRandomMikeScenario(string OmitPropName)
         {

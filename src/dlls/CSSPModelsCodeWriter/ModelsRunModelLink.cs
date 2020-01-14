@@ -22,7 +22,7 @@ namespace CSSPModelsGenerateCodeHelper
         ///     C:\CSSPTools\src\dlls\CSSPModels\Resources\CSSPModelsRes.fr.resx file
         /// 
         /// Requires:
-        ///     C:\CSSPTools\src\dlls\CSSPModels\bin\Debug\netcoreapp3.0\CSSPModels.dll
+        ///     C:\CSSPTools\src\dlls\CSSPModels\bin\Debug\netcoreapp3.1\CSSPModels.dll
         ///     
         /// </summary>
         /// <param name="CSSPDBConnectionString">Contains the connection string of the CSSPDB</param>
@@ -379,7 +379,7 @@ namespace CSSPModelsGenerateCodeHelper
         private bool LoadCSSPModelsDLLInfo(List<TypeProp> typePropList)
         {
 
-            FileInfo fiDLL = new FileInfo(@"C:\CSSPTools\src\dlls\CSSPModels\bin\Debug\netcoreapp3.0\CSSPModels.dll");
+            FileInfo fiDLL = new FileInfo(@"C:\CSSPTools\src\dlls\CSSPModels\bin\Debug\netcoreapp3.1\CSSPModels.dll");
 
             if (!fiDLL.Exists)
             {

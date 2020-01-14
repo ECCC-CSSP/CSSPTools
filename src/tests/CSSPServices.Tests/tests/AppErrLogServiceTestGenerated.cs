@@ -5,7 +5,7 @@
  */ 
 
 using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using System.Linq;
 using System.Collections.Generic;
 using CSSPModels;
@@ -21,7 +21,7 @@ using CSSPEnums.Resources;
 
 namespace CSSPServices.Tests
 {
-    [TestClass]
+
     public partial class AppErrLogServiceTest : TestHelper
     {
         #region Variables
@@ -39,7 +39,7 @@ namespace CSSPServices.Tests
         #endregion Constructors
 
         #region Tests Generated CRUD
-        [TestMethod]
+        [Fact]
         public void AppErrLog_CRUD_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -66,26 +66,26 @@ namespace CSSPServices.Tests
 
                     count = appErrLogService.GetAppErrLogList().Count();
 
-                    Assert.AreEqual(count, (from c in dbTestDB.AppErrLogs select c).Count());
+                    Assert.Equal(count, (from c in dbTestDB.AppErrLogs select c).Count());
 
                     appErrLogService.Add(appErrLog);
                     if (appErrLog.HasErrors)
                     {
-                        Assert.AreEqual("", appErrLog.ValidationResults.FirstOrDefault().ErrorMessage);
+                        Assert.Equal("", appErrLog.ValidationResults.FirstOrDefault().ErrorMessage);
                     }
-                    Assert.AreEqual(true, appErrLogService.GetAppErrLogList().Where(c => c == appErrLog).Any());
+                    Assert.True(appErrLogService.GetAppErrLogList().Where(c => c == appErrLog).Any());
                     appErrLogService.Update(appErrLog);
                     if (appErrLog.HasErrors)
                     {
-                        Assert.AreEqual("", appErrLog.ValidationResults.FirstOrDefault().ErrorMessage);
+                        Assert.Equal("", appErrLog.ValidationResults.FirstOrDefault().ErrorMessage);
                     }
-                    Assert.AreEqual(count + 1, appErrLogService.GetAppErrLogList().Count());
+                    Assert.Equal(count + 1, appErrLogService.GetAppErrLogList().Count());
                     appErrLogService.Delete(appErrLog);
                     if (appErrLog.HasErrors)
                     {
-                        Assert.AreEqual("", appErrLog.ValidationResults.FirstOrDefault().ErrorMessage);
+                        Assert.Equal("", appErrLog.ValidationResults.FirstOrDefault().ErrorMessage);
                     }
-                    Assert.AreEqual(count, appErrLogService.GetAppErrLogList().Count());
+                    Assert.Equal(count, appErrLogService.GetAppErrLogList().Count());
 
                 }
             }
@@ -93,7 +93,7 @@ namespace CSSPServices.Tests
         #endregion Tests Generated CRUD
 
         #region Tests Generated Properties
-        [TestMethod]
+        [Fact]
         public void AppErrLog_Properties_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -131,13 +131,13 @@ namespace CSSPServices.Tests
                     appErrLog = GetFilledRandomAppErrLog("");
                     appErrLog.AppErrLogID = 0;
                     appErrLogService.Update(appErrLog);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsRequired, "AppErrLogID"), appErrLog.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsRequired, "AppErrLogID"), appErrLog.ValidationResults.FirstOrDefault().ErrorMessage);
 
                     appErrLog = null;
                     appErrLog = GetFilledRandomAppErrLog("");
                     appErrLog.AppErrLogID = 10000000;
                     appErrLogService.Update(appErrLog);
-                    Assert.AreEqual(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "AppErrLog", "AppErrLogID", appErrLog.AppErrLogID.ToString()), appErrLog.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "AppErrLog", "AppErrLogID", appErrLog.AppErrLogID.ToString()), appErrLog.ValidationResults.FirstOrDefault().ErrorMessage);
 
 
                     // -----------------------------------
@@ -148,18 +148,18 @@ namespace CSSPServices.Tests
 
                     appErrLog = null;
                     appErrLog = GetFilledRandomAppErrLog("Tag");
-                    Assert.AreEqual(false, appErrLogService.Add(appErrLog));
-                    Assert.AreEqual(1, appErrLog.ValidationResults.Count());
-                    Assert.IsTrue(appErrLog.ValidationResults.Where(c => c.ErrorMessage == string.Format(CSSPServicesRes._IsRequired, "Tag")).Any());
-                    Assert.AreEqual(null, appErrLog.Tag);
-                    Assert.AreEqual(count, appErrLogService.GetAppErrLogList().Count());
+                    Assert.False(appErrLogService.Add(appErrLog));
+                    Assert.Equal(1, appErrLog.ValidationResults.Count());
+                    Assert.True(appErrLog.ValidationResults.Where(c => c.ErrorMessage == string.Format(CSSPServicesRes._IsRequired, "Tag")).Any());
+                    Assert.Null(appErrLog.Tag);
+                    Assert.Equal(count, appErrLogService.GetAppErrLogList().Count());
 
                     appErrLog = null;
                     appErrLog = GetFilledRandomAppErrLog("");
                     appErrLog.Tag = GetRandomString("", 101);
-                    Assert.AreEqual(false, appErrLogService.Add(appErrLog));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._MaxLengthIs_, "Tag", "100"), appErrLog.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, appErrLogService.GetAppErrLogList().Count());
+                    Assert.False(appErrLogService.Add(appErrLog));
+                    Assert.Equal(string.Format(CSSPServicesRes._MaxLengthIs_, "Tag", "100"), appErrLog.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, appErrLogService.GetAppErrLogList().Count());
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -170,9 +170,9 @@ namespace CSSPServices.Tests
                     appErrLog = null;
                     appErrLog = GetFilledRandomAppErrLog("");
                     appErrLog.LineNumber = 0;
-                    Assert.AreEqual(false, appErrLogService.Add(appErrLog));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._MinValueIs_, "LineNumber", "1"), appErrLog.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, appErrLogService.GetAppErrLogList().Count());
+                    Assert.False(appErrLogService.Add(appErrLog));
+                    Assert.Equal(string.Format(CSSPServicesRes._MinValueIs_, "LineNumber", "1"), appErrLog.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, appErrLogService.GetAppErrLogList().Count());
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -181,11 +181,11 @@ namespace CSSPServices.Tests
 
                     appErrLog = null;
                     appErrLog = GetFilledRandomAppErrLog("Source");
-                    Assert.AreEqual(false, appErrLogService.Add(appErrLog));
-                    Assert.AreEqual(1, appErrLog.ValidationResults.Count());
-                    Assert.IsTrue(appErrLog.ValidationResults.Where(c => c.ErrorMessage == string.Format(CSSPServicesRes._IsRequired, "Source")).Any());
-                    Assert.AreEqual(null, appErrLog.Source);
-                    Assert.AreEqual(count, appErrLogService.GetAppErrLogList().Count());
+                    Assert.False(appErrLogService.Add(appErrLog));
+                    Assert.Equal(1, appErrLog.ValidationResults.Count());
+                    Assert.True(appErrLog.ValidationResults.Where(c => c.ErrorMessage == string.Format(CSSPServicesRes._IsRequired, "Source")).Any());
+                    Assert.Null(appErrLog.Source);
+                    Assert.Equal(count, appErrLogService.GetAppErrLogList().Count());
 
 
                     // -----------------------------------
@@ -195,11 +195,11 @@ namespace CSSPServices.Tests
 
                     appErrLog = null;
                     appErrLog = GetFilledRandomAppErrLog("Message");
-                    Assert.AreEqual(false, appErrLogService.Add(appErrLog));
-                    Assert.AreEqual(1, appErrLog.ValidationResults.Count());
-                    Assert.IsTrue(appErrLog.ValidationResults.Where(c => c.ErrorMessage == string.Format(CSSPServicesRes._IsRequired, "Message")).Any());
-                    Assert.AreEqual(null, appErrLog.Message);
-                    Assert.AreEqual(count, appErrLogService.GetAppErrLogList().Count());
+                    Assert.False(appErrLogService.Add(appErrLog));
+                    Assert.Equal(1, appErrLog.ValidationResults.Count());
+                    Assert.True(appErrLog.ValidationResults.Where(c => c.ErrorMessage == string.Format(CSSPServicesRes._IsRequired, "Message")).Any());
+                    Assert.Null(appErrLog.Message);
+                    Assert.Equal(count, appErrLogService.GetAppErrLogList().Count());
 
 
                     // -----------------------------------
@@ -212,12 +212,12 @@ namespace CSSPServices.Tests
                     appErrLog = GetFilledRandomAppErrLog("");
                     appErrLog.DateTime_UTC = new DateTime();
                     appErrLogService.Add(appErrLog);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsRequired, "DateTime_UTC"), appErrLog.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsRequired, "DateTime_UTC"), appErrLog.ValidationResults.FirstOrDefault().ErrorMessage);
                     appErrLog = null;
                     appErrLog = GetFilledRandomAppErrLog("");
                     appErrLog.DateTime_UTC = new DateTime(1979, 1, 1);
                     appErrLogService.Add(appErrLog);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._YearShouldBeBiggerThan_, "DateTime_UTC", "1980"), appErrLog.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._YearShouldBeBiggerThan_, "DateTime_UTC", "1980"), appErrLog.ValidationResults.FirstOrDefault().ErrorMessage);
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -229,12 +229,12 @@ namespace CSSPServices.Tests
                     appErrLog = GetFilledRandomAppErrLog("");
                     appErrLog.LastUpdateDate_UTC = new DateTime();
                     appErrLogService.Add(appErrLog);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsRequired, "LastUpdateDate_UTC"), appErrLog.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsRequired, "LastUpdateDate_UTC"), appErrLog.ValidationResults.FirstOrDefault().ErrorMessage);
                     appErrLog = null;
                     appErrLog = GetFilledRandomAppErrLog("");
                     appErrLog.LastUpdateDate_UTC = new DateTime(1979, 1, 1);
                     appErrLogService.Add(appErrLog);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._YearShouldBeBiggerThan_, "LastUpdateDate_UTC", "1980"), appErrLog.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._YearShouldBeBiggerThan_, "LastUpdateDate_UTC", "1980"), appErrLog.ValidationResults.FirstOrDefault().ErrorMessage);
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -246,13 +246,13 @@ namespace CSSPServices.Tests
                     appErrLog = GetFilledRandomAppErrLog("");
                     appErrLog.LastUpdateContactTVItemID = 0;
                     appErrLogService.Add(appErrLog);
-                    Assert.AreEqual(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "TVItem", "LastUpdateContactTVItemID", appErrLog.LastUpdateContactTVItemID.ToString()), appErrLog.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "TVItem", "LastUpdateContactTVItemID", appErrLog.LastUpdateContactTVItemID.ToString()), appErrLog.ValidationResults.FirstOrDefault().ErrorMessage);
 
                     appErrLog = null;
                     appErrLog = GetFilledRandomAppErrLog("");
                     appErrLog.LastUpdateContactTVItemID = 1;
                     appErrLogService.Add(appErrLog);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsNotOfType_, "LastUpdateContactTVItemID", "Contact"), appErrLog.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsNotOfType_, "LastUpdateContactTVItemID", "Contact"), appErrLog.ValidationResults.FirstOrDefault().ErrorMessage);
 
 
                     // -----------------------------------
@@ -276,7 +276,7 @@ namespace CSSPServices.Tests
         #endregion Tests Generated Properties
 
         #region Tests Generated for GetAppErrLogWithAppErrLogID(appErrLog.AppErrLogID)
-        [TestMethod]
+        [Fact]
         public void GetAppErrLogWithAppErrLogID__appErrLog_AppErrLogID__Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -287,7 +287,7 @@ namespace CSSPServices.Tests
                 {
                     AppErrLogService appErrLogService = new AppErrLogService(new Query() { Lang = culture.TwoLetterISOLanguageName }, dbTestDB, ContactID);
                     AppErrLog appErrLog = (from c in dbTestDB.AppErrLogs select c).FirstOrDefault();
-                    Assert.IsNotNull(appErrLog);
+                    Assert.NotNull(appErrLog);
 
                 }
             }
@@ -295,7 +295,7 @@ namespace CSSPServices.Tests
         #endregion Tests Generated for GetAppErrLogWithAppErrLogID(appErrLog.AppErrLogID)
 
         #region Tests Generated for GetAppErrLogList()
-        [TestMethod]
+        [Fact]
         public void GetAppErrLogList_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -306,7 +306,7 @@ namespace CSSPServices.Tests
                 {
                     AppErrLogService appErrLogService = new AppErrLogService(new Query() { Lang = culture.TwoLetterISOLanguageName }, dbTestDB, ContactID);
                     AppErrLog appErrLog = (from c in dbTestDB.AppErrLogs select c).FirstOrDefault();
-                    Assert.IsNotNull(appErrLog);
+                    Assert.NotNull(appErrLog);
 
                     List<AppErrLog> appErrLogDirectQueryList = new List<AppErrLog>();
                     appErrLogDirectQueryList = (from c in dbTestDB.AppErrLogs select c).Take(200).ToList();
@@ -317,7 +317,7 @@ namespace CSSPServices.Tests
         #endregion Tests Generated for GetAppErrLogList()
 
         #region Tests Generated for GetAppErrLogList() Skip Take
-        [TestMethod]
+        [Fact]
         public void GetAppErrLogList_Skip_Take_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -336,14 +336,14 @@ namespace CSSPServices.Tests
                         List<AppErrLog> appErrLogList = new List<AppErrLog>();
                         appErrLogList = appErrLogService.GetAppErrLogList().ToList();
                         CheckAppErrLogFields(appErrLogList);
-                        Assert.AreEqual(appErrLogDirectQueryList[0].AppErrLogID, appErrLogList[0].AppErrLogID);
+                        Assert.Equal(appErrLogDirectQueryList[0].AppErrLogID, appErrLogList[0].AppErrLogID);
                 }
             }
         }
         #endregion Tests Generated for GetAppErrLogList() Skip Take
 
         #region Tests Generated for GetAppErrLogList() Skip Take Asc
-        [TestMethod]
+        [Fact]
         public void GetAppErrLogList_Skip_Take_Asc_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -362,14 +362,14 @@ namespace CSSPServices.Tests
                         List<AppErrLog> appErrLogList = new List<AppErrLog>();
                         appErrLogList = appErrLogService.GetAppErrLogList().ToList();
                         CheckAppErrLogFields(appErrLogList);
-                        Assert.AreEqual(appErrLogDirectQueryList[0].AppErrLogID, appErrLogList[0].AppErrLogID);
+                        Assert.Equal(appErrLogDirectQueryList[0].AppErrLogID, appErrLogList[0].AppErrLogID);
                 }
             }
         }
         #endregion Tests Generated for GetAppErrLogList() Skip Take Asc
 
         #region Tests Generated for GetAppErrLogList() Skip Take 2 Asc
-        [TestMethod]
+        [Fact]
         public void GetAppErrLogList_Skip_Take_2Asc_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -388,14 +388,14 @@ namespace CSSPServices.Tests
                         List<AppErrLog> appErrLogList = new List<AppErrLog>();
                         appErrLogList = appErrLogService.GetAppErrLogList().ToList();
                         CheckAppErrLogFields(appErrLogList);
-                        Assert.AreEqual(appErrLogDirectQueryList[0].AppErrLogID, appErrLogList[0].AppErrLogID);
+                        Assert.Equal(appErrLogDirectQueryList[0].AppErrLogID, appErrLogList[0].AppErrLogID);
                 }
             }
         }
         #endregion Tests Generated for GetAppErrLogList() Skip Take 2 Asc
 
         #region Tests Generated for GetAppErrLogList() Skip Take Asc Where
-        [TestMethod]
+        [Fact]
         public void GetAppErrLogList_Skip_Take_Asc_Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -414,14 +414,14 @@ namespace CSSPServices.Tests
                         List<AppErrLog> appErrLogList = new List<AppErrLog>();
                         appErrLogList = appErrLogService.GetAppErrLogList().ToList();
                         CheckAppErrLogFields(appErrLogList);
-                        Assert.AreEqual(appErrLogDirectQueryList[0].AppErrLogID, appErrLogList[0].AppErrLogID);
+                        Assert.Equal(appErrLogDirectQueryList[0].AppErrLogID, appErrLogList[0].AppErrLogID);
                 }
             }
         }
         #endregion Tests Generated for GetAppErrLogList() Skip Take Asc Where
 
         #region Tests Generated for GetAppErrLogList() Skip Take Asc 2 Where
-        [TestMethod]
+        [Fact]
         public void GetAppErrLogList_Skip_Take_Asc_2Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -440,14 +440,14 @@ namespace CSSPServices.Tests
                         List<AppErrLog> appErrLogList = new List<AppErrLog>();
                         appErrLogList = appErrLogService.GetAppErrLogList().ToList();
                         CheckAppErrLogFields(appErrLogList);
-                        Assert.AreEqual(appErrLogDirectQueryList[0].AppErrLogID, appErrLogList[0].AppErrLogID);
+                        Assert.Equal(appErrLogDirectQueryList[0].AppErrLogID, appErrLogList[0].AppErrLogID);
                 }
             }
         }
         #endregion Tests Generated for GetAppErrLogList() Skip Take Asc 2 Where
 
         #region Tests Generated for GetAppErrLogList() Skip Take Desc
-        [TestMethod]
+        [Fact]
         public void GetAppErrLogList_Skip_Take_Desc_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -466,14 +466,14 @@ namespace CSSPServices.Tests
                         List<AppErrLog> appErrLogList = new List<AppErrLog>();
                         appErrLogList = appErrLogService.GetAppErrLogList().ToList();
                         CheckAppErrLogFields(appErrLogList);
-                        Assert.AreEqual(appErrLogDirectQueryList[0].AppErrLogID, appErrLogList[0].AppErrLogID);
+                        Assert.Equal(appErrLogDirectQueryList[0].AppErrLogID, appErrLogList[0].AppErrLogID);
                 }
             }
         }
         #endregion Tests Generated for GetAppErrLogList() Skip Take Desc
 
         #region Tests Generated for GetAppErrLogList() Skip Take 2 Desc
-        [TestMethod]
+        [Fact]
         public void GetAppErrLogList_Skip_Take_2Desc_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -492,14 +492,14 @@ namespace CSSPServices.Tests
                         List<AppErrLog> appErrLogList = new List<AppErrLog>();
                         appErrLogList = appErrLogService.GetAppErrLogList().ToList();
                         CheckAppErrLogFields(appErrLogList);
-                        Assert.AreEqual(appErrLogDirectQueryList[0].AppErrLogID, appErrLogList[0].AppErrLogID);
+                        Assert.Equal(appErrLogDirectQueryList[0].AppErrLogID, appErrLogList[0].AppErrLogID);
                 }
             }
         }
         #endregion Tests Generated for GetAppErrLogList() Skip Take 2 Desc
 
         #region Tests Generated for GetAppErrLogList() Skip Take Desc Where
-        [TestMethod]
+        [Fact]
         public void GetAppErrLogList_Skip_Take_Desc_Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -518,14 +518,14 @@ namespace CSSPServices.Tests
                         List<AppErrLog> appErrLogList = new List<AppErrLog>();
                         appErrLogList = appErrLogService.GetAppErrLogList().ToList();
                         CheckAppErrLogFields(appErrLogList);
-                        Assert.AreEqual(appErrLogDirectQueryList[0].AppErrLogID, appErrLogList[0].AppErrLogID);
+                        Assert.Equal(appErrLogDirectQueryList[0].AppErrLogID, appErrLogList[0].AppErrLogID);
                 }
             }
         }
         #endregion Tests Generated for GetAppErrLogList() Skip Take Desc Where
 
         #region Tests Generated for GetAppErrLogList() Skip Take Desc 2 Where
-        [TestMethod]
+        [Fact]
         public void GetAppErrLogList_Skip_Take_Desc_2Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -544,14 +544,14 @@ namespace CSSPServices.Tests
                         List<AppErrLog> appErrLogList = new List<AppErrLog>();
                         appErrLogList = appErrLogService.GetAppErrLogList().ToList();
                         CheckAppErrLogFields(appErrLogList);
-                        Assert.AreEqual(appErrLogDirectQueryList[0].AppErrLogID, appErrLogList[0].AppErrLogID);
+                        Assert.Equal(appErrLogDirectQueryList[0].AppErrLogID, appErrLogList[0].AppErrLogID);
                 }
             }
         }
         #endregion Tests Generated for GetAppErrLogList() Skip Take Desc 2 Where
 
         #region Tests Generated for GetAppErrLogList() 2 Where
-        [TestMethod]
+        [Fact]
         public void GetAppErrLogList_2Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -570,7 +570,7 @@ namespace CSSPServices.Tests
                         List<AppErrLog> appErrLogList = new List<AppErrLog>();
                         appErrLogList = appErrLogService.GetAppErrLogList().ToList();
                         CheckAppErrLogFields(appErrLogList);
-                        Assert.AreEqual(appErrLogDirectQueryList[0].AppErrLogID, appErrLogList[0].AppErrLogID);
+                        Assert.Equal(appErrLogDirectQueryList[0].AppErrLogID, appErrLogList[0].AppErrLogID);
                 }
             }
         }
@@ -579,15 +579,15 @@ namespace CSSPServices.Tests
         #region Functions private
         private void CheckAppErrLogFields(List<AppErrLog> appErrLogList)
         {
-            Assert.IsNotNull(appErrLogList[0].AppErrLogID);
-            Assert.IsFalse(string.IsNullOrWhiteSpace(appErrLogList[0].Tag));
-            Assert.IsNotNull(appErrLogList[0].LineNumber);
-            Assert.IsFalse(string.IsNullOrWhiteSpace(appErrLogList[0].Source));
-            Assert.IsFalse(string.IsNullOrWhiteSpace(appErrLogList[0].Message));
-            Assert.IsNotNull(appErrLogList[0].DateTime_UTC);
-            Assert.IsNotNull(appErrLogList[0].LastUpdateDate_UTC);
-            Assert.IsNotNull(appErrLogList[0].LastUpdateContactTVItemID);
-            Assert.IsNotNull(appErrLogList[0].HasErrors);
+            Assert.NotNull(appErrLogList[0].AppErrLogID);
+            Assert.False(string.IsNullOrWhiteSpace(appErrLogList[0].Tag));
+            Assert.NotNull(appErrLogList[0].LineNumber);
+            Assert.False(string.IsNullOrWhiteSpace(appErrLogList[0].Source));
+            Assert.False(string.IsNullOrWhiteSpace(appErrLogList[0].Message));
+            Assert.NotNull(appErrLogList[0].DateTime_UTC);
+            Assert.NotNull(appErrLogList[0].LastUpdateDate_UTC);
+            Assert.NotNull(appErrLogList[0].LastUpdateContactTVItemID);
+            Assert.NotNull(appErrLogList[0].HasErrors);
         }
         private AppErrLog GetFilledRandomAppErrLog(string OmitPropName)
         {

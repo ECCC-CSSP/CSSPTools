@@ -5,7 +5,7 @@
  */ 
 
 using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using System.Linq;
 using System.Collections.Generic;
 using CSSPModels;
@@ -21,7 +21,7 @@ using CSSPEnums.Resources;
 
 namespace CSSPServices.Tests
 {
-    [TestClass]
+
     public partial class MikeSourceStartEndServiceTest : TestHelper
     {
         #region Variables
@@ -39,7 +39,7 @@ namespace CSSPServices.Tests
         #endregion Constructors
 
         #region Tests Generated CRUD
-        [TestMethod]
+        [Fact]
         public void MikeSourceStartEnd_CRUD_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -66,26 +66,26 @@ namespace CSSPServices.Tests
 
                     count = mikeSourceStartEndService.GetMikeSourceStartEndList().Count();
 
-                    Assert.AreEqual(count, (from c in dbTestDB.MikeSourceStartEnds select c).Count());
+                    Assert.Equal(count, (from c in dbTestDB.MikeSourceStartEnds select c).Count());
 
                     mikeSourceStartEndService.Add(mikeSourceStartEnd);
                     if (mikeSourceStartEnd.HasErrors)
                     {
-                        Assert.AreEqual("", mikeSourceStartEnd.ValidationResults.FirstOrDefault().ErrorMessage);
+                        Assert.Equal("", mikeSourceStartEnd.ValidationResults.FirstOrDefault().ErrorMessage);
                     }
-                    Assert.AreEqual(true, mikeSourceStartEndService.GetMikeSourceStartEndList().Where(c => c == mikeSourceStartEnd).Any());
+                    Assert.True(mikeSourceStartEndService.GetMikeSourceStartEndList().Where(c => c == mikeSourceStartEnd).Any());
                     mikeSourceStartEndService.Update(mikeSourceStartEnd);
                     if (mikeSourceStartEnd.HasErrors)
                     {
-                        Assert.AreEqual("", mikeSourceStartEnd.ValidationResults.FirstOrDefault().ErrorMessage);
+                        Assert.Equal("", mikeSourceStartEnd.ValidationResults.FirstOrDefault().ErrorMessage);
                     }
-                    Assert.AreEqual(count + 1, mikeSourceStartEndService.GetMikeSourceStartEndList().Count());
+                    Assert.Equal(count + 1, mikeSourceStartEndService.GetMikeSourceStartEndList().Count());
                     mikeSourceStartEndService.Delete(mikeSourceStartEnd);
                     if (mikeSourceStartEnd.HasErrors)
                     {
-                        Assert.AreEqual("", mikeSourceStartEnd.ValidationResults.FirstOrDefault().ErrorMessage);
+                        Assert.Equal("", mikeSourceStartEnd.ValidationResults.FirstOrDefault().ErrorMessage);
                     }
-                    Assert.AreEqual(count, mikeSourceStartEndService.GetMikeSourceStartEndList().Count());
+                    Assert.Equal(count, mikeSourceStartEndService.GetMikeSourceStartEndList().Count());
 
                 }
             }
@@ -93,7 +93,7 @@ namespace CSSPServices.Tests
         #endregion Tests Generated CRUD
 
         #region Tests Generated Properties
-        [TestMethod]
+        [Fact]
         public void MikeSourceStartEnd_Properties_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -131,13 +131,13 @@ namespace CSSPServices.Tests
                     mikeSourceStartEnd = GetFilledRandomMikeSourceStartEnd("");
                     mikeSourceStartEnd.MikeSourceStartEndID = 0;
                     mikeSourceStartEndService.Update(mikeSourceStartEnd);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsRequired, "MikeSourceStartEndID"), mikeSourceStartEnd.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsRequired, "MikeSourceStartEndID"), mikeSourceStartEnd.ValidationResults.FirstOrDefault().ErrorMessage);
 
                     mikeSourceStartEnd = null;
                     mikeSourceStartEnd = GetFilledRandomMikeSourceStartEnd("");
                     mikeSourceStartEnd.MikeSourceStartEndID = 10000000;
                     mikeSourceStartEndService.Update(mikeSourceStartEnd);
-                    Assert.AreEqual(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "MikeSourceStartEnd", "MikeSourceStartEndID", mikeSourceStartEnd.MikeSourceStartEndID.ToString()), mikeSourceStartEnd.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "MikeSourceStartEnd", "MikeSourceStartEndID", mikeSourceStartEnd.MikeSourceStartEndID.ToString()), mikeSourceStartEnd.ValidationResults.FirstOrDefault().ErrorMessage);
 
 
                     // -----------------------------------
@@ -150,7 +150,7 @@ namespace CSSPServices.Tests
                     mikeSourceStartEnd = GetFilledRandomMikeSourceStartEnd("");
                     mikeSourceStartEnd.MikeSourceID = 0;
                     mikeSourceStartEndService.Add(mikeSourceStartEnd);
-                    Assert.AreEqual(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "MikeSource", "MikeSourceID", mikeSourceStartEnd.MikeSourceID.ToString()), mikeSourceStartEnd.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "MikeSource", "MikeSourceID", mikeSourceStartEnd.MikeSourceID.ToString()), mikeSourceStartEnd.ValidationResults.FirstOrDefault().ErrorMessage);
 
 
                     // -----------------------------------
@@ -163,12 +163,12 @@ namespace CSSPServices.Tests
                     mikeSourceStartEnd = GetFilledRandomMikeSourceStartEnd("");
                     mikeSourceStartEnd.StartDateAndTime_Local = new DateTime();
                     mikeSourceStartEndService.Add(mikeSourceStartEnd);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsRequired, "StartDateAndTime_Local"), mikeSourceStartEnd.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsRequired, "StartDateAndTime_Local"), mikeSourceStartEnd.ValidationResults.FirstOrDefault().ErrorMessage);
                     mikeSourceStartEnd = null;
                     mikeSourceStartEnd = GetFilledRandomMikeSourceStartEnd("");
                     mikeSourceStartEnd.StartDateAndTime_Local = new DateTime(1979, 1, 1);
                     mikeSourceStartEndService.Add(mikeSourceStartEnd);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._YearShouldBeBiggerThan_, "StartDateAndTime_Local", "1980"), mikeSourceStartEnd.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._YearShouldBeBiggerThan_, "StartDateAndTime_Local", "1980"), mikeSourceStartEnd.ValidationResults.FirstOrDefault().ErrorMessage);
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -181,12 +181,12 @@ namespace CSSPServices.Tests
                     mikeSourceStartEnd = GetFilledRandomMikeSourceStartEnd("");
                     mikeSourceStartEnd.EndDateAndTime_Local = new DateTime();
                     mikeSourceStartEndService.Add(mikeSourceStartEnd);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsRequired, "EndDateAndTime_Local"), mikeSourceStartEnd.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsRequired, "EndDateAndTime_Local"), mikeSourceStartEnd.ValidationResults.FirstOrDefault().ErrorMessage);
                     mikeSourceStartEnd = null;
                     mikeSourceStartEnd = GetFilledRandomMikeSourceStartEnd("");
                     mikeSourceStartEnd.EndDateAndTime_Local = new DateTime(1979, 1, 1);
                     mikeSourceStartEndService.Add(mikeSourceStartEnd);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._YearShouldBeBiggerThan_, "EndDateAndTime_Local", "1980"), mikeSourceStartEnd.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._YearShouldBeBiggerThan_, "EndDateAndTime_Local", "1980"), mikeSourceStartEnd.ValidationResults.FirstOrDefault().ErrorMessage);
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -201,15 +201,15 @@ namespace CSSPServices.Tests
                     mikeSourceStartEnd = null;
                     mikeSourceStartEnd = GetFilledRandomMikeSourceStartEnd("");
                     mikeSourceStartEnd.SourceFlowStart_m3_day = -1.0D;
-                    Assert.AreEqual(false, mikeSourceStartEndService.Add(mikeSourceStartEnd));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "SourceFlowStart_m3_day", "0", "1000000"), mikeSourceStartEnd.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, mikeSourceStartEndService.GetMikeSourceStartEndList().Count());
+                    Assert.False(mikeSourceStartEndService.Add(mikeSourceStartEnd));
+                    Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "SourceFlowStart_m3_day", "0", "1000000"), mikeSourceStartEnd.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, mikeSourceStartEndService.GetMikeSourceStartEndList().Count());
                     mikeSourceStartEnd = null;
                     mikeSourceStartEnd = GetFilledRandomMikeSourceStartEnd("");
                     mikeSourceStartEnd.SourceFlowStart_m3_day = 1000001.0D;
-                    Assert.AreEqual(false, mikeSourceStartEndService.Add(mikeSourceStartEnd));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "SourceFlowStart_m3_day", "0", "1000000"), mikeSourceStartEnd.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, mikeSourceStartEndService.GetMikeSourceStartEndList().Count());
+                    Assert.False(mikeSourceStartEndService.Add(mikeSourceStartEnd));
+                    Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "SourceFlowStart_m3_day", "0", "1000000"), mikeSourceStartEnd.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, mikeSourceStartEndService.GetMikeSourceStartEndList().Count());
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -224,15 +224,15 @@ namespace CSSPServices.Tests
                     mikeSourceStartEnd = null;
                     mikeSourceStartEnd = GetFilledRandomMikeSourceStartEnd("");
                     mikeSourceStartEnd.SourceFlowEnd_m3_day = -1.0D;
-                    Assert.AreEqual(false, mikeSourceStartEndService.Add(mikeSourceStartEnd));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "SourceFlowEnd_m3_day", "0", "1000000"), mikeSourceStartEnd.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, mikeSourceStartEndService.GetMikeSourceStartEndList().Count());
+                    Assert.False(mikeSourceStartEndService.Add(mikeSourceStartEnd));
+                    Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "SourceFlowEnd_m3_day", "0", "1000000"), mikeSourceStartEnd.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, mikeSourceStartEndService.GetMikeSourceStartEndList().Count());
                     mikeSourceStartEnd = null;
                     mikeSourceStartEnd = GetFilledRandomMikeSourceStartEnd("");
                     mikeSourceStartEnd.SourceFlowEnd_m3_day = 1000001.0D;
-                    Assert.AreEqual(false, mikeSourceStartEndService.Add(mikeSourceStartEnd));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "SourceFlowEnd_m3_day", "0", "1000000"), mikeSourceStartEnd.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, mikeSourceStartEndService.GetMikeSourceStartEndList().Count());
+                    Assert.False(mikeSourceStartEndService.Add(mikeSourceStartEnd));
+                    Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "SourceFlowEnd_m3_day", "0", "1000000"), mikeSourceStartEnd.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, mikeSourceStartEndService.GetMikeSourceStartEndList().Count());
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -243,15 +243,15 @@ namespace CSSPServices.Tests
                     mikeSourceStartEnd = null;
                     mikeSourceStartEnd = GetFilledRandomMikeSourceStartEnd("");
                     mikeSourceStartEnd.SourcePollutionStart_MPN_100ml = -1;
-                    Assert.AreEqual(false, mikeSourceStartEndService.Add(mikeSourceStartEnd));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "SourcePollutionStart_MPN_100ml", "0", "10000000"), mikeSourceStartEnd.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, mikeSourceStartEndService.GetMikeSourceStartEndList().Count());
+                    Assert.False(mikeSourceStartEndService.Add(mikeSourceStartEnd));
+                    Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "SourcePollutionStart_MPN_100ml", "0", "10000000"), mikeSourceStartEnd.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, mikeSourceStartEndService.GetMikeSourceStartEndList().Count());
                     mikeSourceStartEnd = null;
                     mikeSourceStartEnd = GetFilledRandomMikeSourceStartEnd("");
                     mikeSourceStartEnd.SourcePollutionStart_MPN_100ml = 10000001;
-                    Assert.AreEqual(false, mikeSourceStartEndService.Add(mikeSourceStartEnd));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "SourcePollutionStart_MPN_100ml", "0", "10000000"), mikeSourceStartEnd.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, mikeSourceStartEndService.GetMikeSourceStartEndList().Count());
+                    Assert.False(mikeSourceStartEndService.Add(mikeSourceStartEnd));
+                    Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "SourcePollutionStart_MPN_100ml", "0", "10000000"), mikeSourceStartEnd.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, mikeSourceStartEndService.GetMikeSourceStartEndList().Count());
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -262,15 +262,15 @@ namespace CSSPServices.Tests
                     mikeSourceStartEnd = null;
                     mikeSourceStartEnd = GetFilledRandomMikeSourceStartEnd("");
                     mikeSourceStartEnd.SourcePollutionEnd_MPN_100ml = -1;
-                    Assert.AreEqual(false, mikeSourceStartEndService.Add(mikeSourceStartEnd));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "SourcePollutionEnd_MPN_100ml", "0", "10000000"), mikeSourceStartEnd.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, mikeSourceStartEndService.GetMikeSourceStartEndList().Count());
+                    Assert.False(mikeSourceStartEndService.Add(mikeSourceStartEnd));
+                    Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "SourcePollutionEnd_MPN_100ml", "0", "10000000"), mikeSourceStartEnd.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, mikeSourceStartEndService.GetMikeSourceStartEndList().Count());
                     mikeSourceStartEnd = null;
                     mikeSourceStartEnd = GetFilledRandomMikeSourceStartEnd("");
                     mikeSourceStartEnd.SourcePollutionEnd_MPN_100ml = 10000001;
-                    Assert.AreEqual(false, mikeSourceStartEndService.Add(mikeSourceStartEnd));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "SourcePollutionEnd_MPN_100ml", "0", "10000000"), mikeSourceStartEnd.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, mikeSourceStartEndService.GetMikeSourceStartEndList().Count());
+                    Assert.False(mikeSourceStartEndService.Add(mikeSourceStartEnd));
+                    Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "SourcePollutionEnd_MPN_100ml", "0", "10000000"), mikeSourceStartEnd.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, mikeSourceStartEndService.GetMikeSourceStartEndList().Count());
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -285,15 +285,15 @@ namespace CSSPServices.Tests
                     mikeSourceStartEnd = null;
                     mikeSourceStartEnd = GetFilledRandomMikeSourceStartEnd("");
                     mikeSourceStartEnd.SourceTemperatureStart_C = -11.0D;
-                    Assert.AreEqual(false, mikeSourceStartEndService.Add(mikeSourceStartEnd));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "SourceTemperatureStart_C", "-10", "40"), mikeSourceStartEnd.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, mikeSourceStartEndService.GetMikeSourceStartEndList().Count());
+                    Assert.False(mikeSourceStartEndService.Add(mikeSourceStartEnd));
+                    Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "SourceTemperatureStart_C", "-10", "40"), mikeSourceStartEnd.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, mikeSourceStartEndService.GetMikeSourceStartEndList().Count());
                     mikeSourceStartEnd = null;
                     mikeSourceStartEnd = GetFilledRandomMikeSourceStartEnd("");
                     mikeSourceStartEnd.SourceTemperatureStart_C = 41.0D;
-                    Assert.AreEqual(false, mikeSourceStartEndService.Add(mikeSourceStartEnd));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "SourceTemperatureStart_C", "-10", "40"), mikeSourceStartEnd.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, mikeSourceStartEndService.GetMikeSourceStartEndList().Count());
+                    Assert.False(mikeSourceStartEndService.Add(mikeSourceStartEnd));
+                    Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "SourceTemperatureStart_C", "-10", "40"), mikeSourceStartEnd.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, mikeSourceStartEndService.GetMikeSourceStartEndList().Count());
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -308,15 +308,15 @@ namespace CSSPServices.Tests
                     mikeSourceStartEnd = null;
                     mikeSourceStartEnd = GetFilledRandomMikeSourceStartEnd("");
                     mikeSourceStartEnd.SourceTemperatureEnd_C = -11.0D;
-                    Assert.AreEqual(false, mikeSourceStartEndService.Add(mikeSourceStartEnd));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "SourceTemperatureEnd_C", "-10", "40"), mikeSourceStartEnd.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, mikeSourceStartEndService.GetMikeSourceStartEndList().Count());
+                    Assert.False(mikeSourceStartEndService.Add(mikeSourceStartEnd));
+                    Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "SourceTemperatureEnd_C", "-10", "40"), mikeSourceStartEnd.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, mikeSourceStartEndService.GetMikeSourceStartEndList().Count());
                     mikeSourceStartEnd = null;
                     mikeSourceStartEnd = GetFilledRandomMikeSourceStartEnd("");
                     mikeSourceStartEnd.SourceTemperatureEnd_C = 41.0D;
-                    Assert.AreEqual(false, mikeSourceStartEndService.Add(mikeSourceStartEnd));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "SourceTemperatureEnd_C", "-10", "40"), mikeSourceStartEnd.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, mikeSourceStartEndService.GetMikeSourceStartEndList().Count());
+                    Assert.False(mikeSourceStartEndService.Add(mikeSourceStartEnd));
+                    Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "SourceTemperatureEnd_C", "-10", "40"), mikeSourceStartEnd.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, mikeSourceStartEndService.GetMikeSourceStartEndList().Count());
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -331,15 +331,15 @@ namespace CSSPServices.Tests
                     mikeSourceStartEnd = null;
                     mikeSourceStartEnd = GetFilledRandomMikeSourceStartEnd("");
                     mikeSourceStartEnd.SourceSalinityStart_PSU = -1.0D;
-                    Assert.AreEqual(false, mikeSourceStartEndService.Add(mikeSourceStartEnd));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "SourceSalinityStart_PSU", "0", "40"), mikeSourceStartEnd.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, mikeSourceStartEndService.GetMikeSourceStartEndList().Count());
+                    Assert.False(mikeSourceStartEndService.Add(mikeSourceStartEnd));
+                    Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "SourceSalinityStart_PSU", "0", "40"), mikeSourceStartEnd.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, mikeSourceStartEndService.GetMikeSourceStartEndList().Count());
                     mikeSourceStartEnd = null;
                     mikeSourceStartEnd = GetFilledRandomMikeSourceStartEnd("");
                     mikeSourceStartEnd.SourceSalinityStart_PSU = 41.0D;
-                    Assert.AreEqual(false, mikeSourceStartEndService.Add(mikeSourceStartEnd));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "SourceSalinityStart_PSU", "0", "40"), mikeSourceStartEnd.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, mikeSourceStartEndService.GetMikeSourceStartEndList().Count());
+                    Assert.False(mikeSourceStartEndService.Add(mikeSourceStartEnd));
+                    Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "SourceSalinityStart_PSU", "0", "40"), mikeSourceStartEnd.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, mikeSourceStartEndService.GetMikeSourceStartEndList().Count());
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -354,15 +354,15 @@ namespace CSSPServices.Tests
                     mikeSourceStartEnd = null;
                     mikeSourceStartEnd = GetFilledRandomMikeSourceStartEnd("");
                     mikeSourceStartEnd.SourceSalinityEnd_PSU = -1.0D;
-                    Assert.AreEqual(false, mikeSourceStartEndService.Add(mikeSourceStartEnd));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "SourceSalinityEnd_PSU", "0", "40"), mikeSourceStartEnd.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, mikeSourceStartEndService.GetMikeSourceStartEndList().Count());
+                    Assert.False(mikeSourceStartEndService.Add(mikeSourceStartEnd));
+                    Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "SourceSalinityEnd_PSU", "0", "40"), mikeSourceStartEnd.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, mikeSourceStartEndService.GetMikeSourceStartEndList().Count());
                     mikeSourceStartEnd = null;
                     mikeSourceStartEnd = GetFilledRandomMikeSourceStartEnd("");
                     mikeSourceStartEnd.SourceSalinityEnd_PSU = 41.0D;
-                    Assert.AreEqual(false, mikeSourceStartEndService.Add(mikeSourceStartEnd));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "SourceSalinityEnd_PSU", "0", "40"), mikeSourceStartEnd.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, mikeSourceStartEndService.GetMikeSourceStartEndList().Count());
+                    Assert.False(mikeSourceStartEndService.Add(mikeSourceStartEnd));
+                    Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "SourceSalinityEnd_PSU", "0", "40"), mikeSourceStartEnd.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, mikeSourceStartEndService.GetMikeSourceStartEndList().Count());
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -374,12 +374,12 @@ namespace CSSPServices.Tests
                     mikeSourceStartEnd = GetFilledRandomMikeSourceStartEnd("");
                     mikeSourceStartEnd.LastUpdateDate_UTC = new DateTime();
                     mikeSourceStartEndService.Add(mikeSourceStartEnd);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsRequired, "LastUpdateDate_UTC"), mikeSourceStartEnd.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsRequired, "LastUpdateDate_UTC"), mikeSourceStartEnd.ValidationResults.FirstOrDefault().ErrorMessage);
                     mikeSourceStartEnd = null;
                     mikeSourceStartEnd = GetFilledRandomMikeSourceStartEnd("");
                     mikeSourceStartEnd.LastUpdateDate_UTC = new DateTime(1979, 1, 1);
                     mikeSourceStartEndService.Add(mikeSourceStartEnd);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._YearShouldBeBiggerThan_, "LastUpdateDate_UTC", "1980"), mikeSourceStartEnd.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._YearShouldBeBiggerThan_, "LastUpdateDate_UTC", "1980"), mikeSourceStartEnd.ValidationResults.FirstOrDefault().ErrorMessage);
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -391,13 +391,13 @@ namespace CSSPServices.Tests
                     mikeSourceStartEnd = GetFilledRandomMikeSourceStartEnd("");
                     mikeSourceStartEnd.LastUpdateContactTVItemID = 0;
                     mikeSourceStartEndService.Add(mikeSourceStartEnd);
-                    Assert.AreEqual(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "TVItem", "LastUpdateContactTVItemID", mikeSourceStartEnd.LastUpdateContactTVItemID.ToString()), mikeSourceStartEnd.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "TVItem", "LastUpdateContactTVItemID", mikeSourceStartEnd.LastUpdateContactTVItemID.ToString()), mikeSourceStartEnd.ValidationResults.FirstOrDefault().ErrorMessage);
 
                     mikeSourceStartEnd = null;
                     mikeSourceStartEnd = GetFilledRandomMikeSourceStartEnd("");
                     mikeSourceStartEnd.LastUpdateContactTVItemID = 1;
                     mikeSourceStartEndService.Add(mikeSourceStartEnd);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsNotOfType_, "LastUpdateContactTVItemID", "Contact"), mikeSourceStartEnd.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsNotOfType_, "LastUpdateContactTVItemID", "Contact"), mikeSourceStartEnd.ValidationResults.FirstOrDefault().ErrorMessage);
 
 
                     // -----------------------------------
@@ -421,7 +421,7 @@ namespace CSSPServices.Tests
         #endregion Tests Generated Properties
 
         #region Tests Generated for GetMikeSourceStartEndWithMikeSourceStartEndID(mikeSourceStartEnd.MikeSourceStartEndID)
-        [TestMethod]
+        [Fact]
         public void GetMikeSourceStartEndWithMikeSourceStartEndID__mikeSourceStartEnd_MikeSourceStartEndID__Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -432,7 +432,7 @@ namespace CSSPServices.Tests
                 {
                     MikeSourceStartEndService mikeSourceStartEndService = new MikeSourceStartEndService(new Query() { Lang = culture.TwoLetterISOLanguageName }, dbTestDB, ContactID);
                     MikeSourceStartEnd mikeSourceStartEnd = (from c in dbTestDB.MikeSourceStartEnds select c).FirstOrDefault();
-                    Assert.IsNotNull(mikeSourceStartEnd);
+                    Assert.NotNull(mikeSourceStartEnd);
 
                 }
             }
@@ -440,7 +440,7 @@ namespace CSSPServices.Tests
         #endregion Tests Generated for GetMikeSourceStartEndWithMikeSourceStartEndID(mikeSourceStartEnd.MikeSourceStartEndID)
 
         #region Tests Generated for GetMikeSourceStartEndList()
-        [TestMethod]
+        [Fact]
         public void GetMikeSourceStartEndList_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -451,7 +451,7 @@ namespace CSSPServices.Tests
                 {
                     MikeSourceStartEndService mikeSourceStartEndService = new MikeSourceStartEndService(new Query() { Lang = culture.TwoLetterISOLanguageName }, dbTestDB, ContactID);
                     MikeSourceStartEnd mikeSourceStartEnd = (from c in dbTestDB.MikeSourceStartEnds select c).FirstOrDefault();
-                    Assert.IsNotNull(mikeSourceStartEnd);
+                    Assert.NotNull(mikeSourceStartEnd);
 
                     List<MikeSourceStartEnd> mikeSourceStartEndDirectQueryList = new List<MikeSourceStartEnd>();
                     mikeSourceStartEndDirectQueryList = (from c in dbTestDB.MikeSourceStartEnds select c).Take(200).ToList();
@@ -462,7 +462,7 @@ namespace CSSPServices.Tests
         #endregion Tests Generated for GetMikeSourceStartEndList()
 
         #region Tests Generated for GetMikeSourceStartEndList() Skip Take
-        [TestMethod]
+        [Fact]
         public void GetMikeSourceStartEndList_Skip_Take_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -481,14 +481,14 @@ namespace CSSPServices.Tests
                         List<MikeSourceStartEnd> mikeSourceStartEndList = new List<MikeSourceStartEnd>();
                         mikeSourceStartEndList = mikeSourceStartEndService.GetMikeSourceStartEndList().ToList();
                         CheckMikeSourceStartEndFields(mikeSourceStartEndList);
-                        Assert.AreEqual(mikeSourceStartEndDirectQueryList[0].MikeSourceStartEndID, mikeSourceStartEndList[0].MikeSourceStartEndID);
+                        Assert.Equal(mikeSourceStartEndDirectQueryList[0].MikeSourceStartEndID, mikeSourceStartEndList[0].MikeSourceStartEndID);
                 }
             }
         }
         #endregion Tests Generated for GetMikeSourceStartEndList() Skip Take
 
         #region Tests Generated for GetMikeSourceStartEndList() Skip Take Asc
-        [TestMethod]
+        [Fact]
         public void GetMikeSourceStartEndList_Skip_Take_Asc_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -507,14 +507,14 @@ namespace CSSPServices.Tests
                         List<MikeSourceStartEnd> mikeSourceStartEndList = new List<MikeSourceStartEnd>();
                         mikeSourceStartEndList = mikeSourceStartEndService.GetMikeSourceStartEndList().ToList();
                         CheckMikeSourceStartEndFields(mikeSourceStartEndList);
-                        Assert.AreEqual(mikeSourceStartEndDirectQueryList[0].MikeSourceStartEndID, mikeSourceStartEndList[0].MikeSourceStartEndID);
+                        Assert.Equal(mikeSourceStartEndDirectQueryList[0].MikeSourceStartEndID, mikeSourceStartEndList[0].MikeSourceStartEndID);
                 }
             }
         }
         #endregion Tests Generated for GetMikeSourceStartEndList() Skip Take Asc
 
         #region Tests Generated for GetMikeSourceStartEndList() Skip Take 2 Asc
-        [TestMethod]
+        [Fact]
         public void GetMikeSourceStartEndList_Skip_Take_2Asc_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -533,14 +533,14 @@ namespace CSSPServices.Tests
                         List<MikeSourceStartEnd> mikeSourceStartEndList = new List<MikeSourceStartEnd>();
                         mikeSourceStartEndList = mikeSourceStartEndService.GetMikeSourceStartEndList().ToList();
                         CheckMikeSourceStartEndFields(mikeSourceStartEndList);
-                        Assert.AreEqual(mikeSourceStartEndDirectQueryList[0].MikeSourceStartEndID, mikeSourceStartEndList[0].MikeSourceStartEndID);
+                        Assert.Equal(mikeSourceStartEndDirectQueryList[0].MikeSourceStartEndID, mikeSourceStartEndList[0].MikeSourceStartEndID);
                 }
             }
         }
         #endregion Tests Generated for GetMikeSourceStartEndList() Skip Take 2 Asc
 
         #region Tests Generated for GetMikeSourceStartEndList() Skip Take Asc Where
-        [TestMethod]
+        [Fact]
         public void GetMikeSourceStartEndList_Skip_Take_Asc_Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -559,14 +559,14 @@ namespace CSSPServices.Tests
                         List<MikeSourceStartEnd> mikeSourceStartEndList = new List<MikeSourceStartEnd>();
                         mikeSourceStartEndList = mikeSourceStartEndService.GetMikeSourceStartEndList().ToList();
                         CheckMikeSourceStartEndFields(mikeSourceStartEndList);
-                        Assert.AreEqual(mikeSourceStartEndDirectQueryList[0].MikeSourceStartEndID, mikeSourceStartEndList[0].MikeSourceStartEndID);
+                        Assert.Equal(mikeSourceStartEndDirectQueryList[0].MikeSourceStartEndID, mikeSourceStartEndList[0].MikeSourceStartEndID);
                 }
             }
         }
         #endregion Tests Generated for GetMikeSourceStartEndList() Skip Take Asc Where
 
         #region Tests Generated for GetMikeSourceStartEndList() Skip Take Asc 2 Where
-        [TestMethod]
+        [Fact]
         public void GetMikeSourceStartEndList_Skip_Take_Asc_2Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -585,14 +585,14 @@ namespace CSSPServices.Tests
                         List<MikeSourceStartEnd> mikeSourceStartEndList = new List<MikeSourceStartEnd>();
                         mikeSourceStartEndList = mikeSourceStartEndService.GetMikeSourceStartEndList().ToList();
                         CheckMikeSourceStartEndFields(mikeSourceStartEndList);
-                        Assert.AreEqual(mikeSourceStartEndDirectQueryList[0].MikeSourceStartEndID, mikeSourceStartEndList[0].MikeSourceStartEndID);
+                        Assert.Equal(mikeSourceStartEndDirectQueryList[0].MikeSourceStartEndID, mikeSourceStartEndList[0].MikeSourceStartEndID);
                 }
             }
         }
         #endregion Tests Generated for GetMikeSourceStartEndList() Skip Take Asc 2 Where
 
         #region Tests Generated for GetMikeSourceStartEndList() Skip Take Desc
-        [TestMethod]
+        [Fact]
         public void GetMikeSourceStartEndList_Skip_Take_Desc_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -611,14 +611,14 @@ namespace CSSPServices.Tests
                         List<MikeSourceStartEnd> mikeSourceStartEndList = new List<MikeSourceStartEnd>();
                         mikeSourceStartEndList = mikeSourceStartEndService.GetMikeSourceStartEndList().ToList();
                         CheckMikeSourceStartEndFields(mikeSourceStartEndList);
-                        Assert.AreEqual(mikeSourceStartEndDirectQueryList[0].MikeSourceStartEndID, mikeSourceStartEndList[0].MikeSourceStartEndID);
+                        Assert.Equal(mikeSourceStartEndDirectQueryList[0].MikeSourceStartEndID, mikeSourceStartEndList[0].MikeSourceStartEndID);
                 }
             }
         }
         #endregion Tests Generated for GetMikeSourceStartEndList() Skip Take Desc
 
         #region Tests Generated for GetMikeSourceStartEndList() Skip Take 2 Desc
-        [TestMethod]
+        [Fact]
         public void GetMikeSourceStartEndList_Skip_Take_2Desc_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -637,14 +637,14 @@ namespace CSSPServices.Tests
                         List<MikeSourceStartEnd> mikeSourceStartEndList = new List<MikeSourceStartEnd>();
                         mikeSourceStartEndList = mikeSourceStartEndService.GetMikeSourceStartEndList().ToList();
                         CheckMikeSourceStartEndFields(mikeSourceStartEndList);
-                        Assert.AreEqual(mikeSourceStartEndDirectQueryList[0].MikeSourceStartEndID, mikeSourceStartEndList[0].MikeSourceStartEndID);
+                        Assert.Equal(mikeSourceStartEndDirectQueryList[0].MikeSourceStartEndID, mikeSourceStartEndList[0].MikeSourceStartEndID);
                 }
             }
         }
         #endregion Tests Generated for GetMikeSourceStartEndList() Skip Take 2 Desc
 
         #region Tests Generated for GetMikeSourceStartEndList() Skip Take Desc Where
-        [TestMethod]
+        [Fact]
         public void GetMikeSourceStartEndList_Skip_Take_Desc_Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -663,14 +663,14 @@ namespace CSSPServices.Tests
                         List<MikeSourceStartEnd> mikeSourceStartEndList = new List<MikeSourceStartEnd>();
                         mikeSourceStartEndList = mikeSourceStartEndService.GetMikeSourceStartEndList().ToList();
                         CheckMikeSourceStartEndFields(mikeSourceStartEndList);
-                        Assert.AreEqual(mikeSourceStartEndDirectQueryList[0].MikeSourceStartEndID, mikeSourceStartEndList[0].MikeSourceStartEndID);
+                        Assert.Equal(mikeSourceStartEndDirectQueryList[0].MikeSourceStartEndID, mikeSourceStartEndList[0].MikeSourceStartEndID);
                 }
             }
         }
         #endregion Tests Generated for GetMikeSourceStartEndList() Skip Take Desc Where
 
         #region Tests Generated for GetMikeSourceStartEndList() Skip Take Desc 2 Where
-        [TestMethod]
+        [Fact]
         public void GetMikeSourceStartEndList_Skip_Take_Desc_2Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -689,14 +689,14 @@ namespace CSSPServices.Tests
                         List<MikeSourceStartEnd> mikeSourceStartEndList = new List<MikeSourceStartEnd>();
                         mikeSourceStartEndList = mikeSourceStartEndService.GetMikeSourceStartEndList().ToList();
                         CheckMikeSourceStartEndFields(mikeSourceStartEndList);
-                        Assert.AreEqual(mikeSourceStartEndDirectQueryList[0].MikeSourceStartEndID, mikeSourceStartEndList[0].MikeSourceStartEndID);
+                        Assert.Equal(mikeSourceStartEndDirectQueryList[0].MikeSourceStartEndID, mikeSourceStartEndList[0].MikeSourceStartEndID);
                 }
             }
         }
         #endregion Tests Generated for GetMikeSourceStartEndList() Skip Take Desc 2 Where
 
         #region Tests Generated for GetMikeSourceStartEndList() 2 Where
-        [TestMethod]
+        [Fact]
         public void GetMikeSourceStartEndList_2Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -715,7 +715,7 @@ namespace CSSPServices.Tests
                         List<MikeSourceStartEnd> mikeSourceStartEndList = new List<MikeSourceStartEnd>();
                         mikeSourceStartEndList = mikeSourceStartEndService.GetMikeSourceStartEndList().ToList();
                         CheckMikeSourceStartEndFields(mikeSourceStartEndList);
-                        Assert.AreEqual(mikeSourceStartEndDirectQueryList[0].MikeSourceStartEndID, mikeSourceStartEndList[0].MikeSourceStartEndID);
+                        Assert.Equal(mikeSourceStartEndDirectQueryList[0].MikeSourceStartEndID, mikeSourceStartEndList[0].MikeSourceStartEndID);
                 }
             }
         }
@@ -724,21 +724,21 @@ namespace CSSPServices.Tests
         #region Functions private
         private void CheckMikeSourceStartEndFields(List<MikeSourceStartEnd> mikeSourceStartEndList)
         {
-            Assert.IsNotNull(mikeSourceStartEndList[0].MikeSourceStartEndID);
-            Assert.IsNotNull(mikeSourceStartEndList[0].MikeSourceID);
-            Assert.IsNotNull(mikeSourceStartEndList[0].StartDateAndTime_Local);
-            Assert.IsNotNull(mikeSourceStartEndList[0].EndDateAndTime_Local);
-            Assert.IsNotNull(mikeSourceStartEndList[0].SourceFlowStart_m3_day);
-            Assert.IsNotNull(mikeSourceStartEndList[0].SourceFlowEnd_m3_day);
-            Assert.IsNotNull(mikeSourceStartEndList[0].SourcePollutionStart_MPN_100ml);
-            Assert.IsNotNull(mikeSourceStartEndList[0].SourcePollutionEnd_MPN_100ml);
-            Assert.IsNotNull(mikeSourceStartEndList[0].SourceTemperatureStart_C);
-            Assert.IsNotNull(mikeSourceStartEndList[0].SourceTemperatureEnd_C);
-            Assert.IsNotNull(mikeSourceStartEndList[0].SourceSalinityStart_PSU);
-            Assert.IsNotNull(mikeSourceStartEndList[0].SourceSalinityEnd_PSU);
-            Assert.IsNotNull(mikeSourceStartEndList[0].LastUpdateDate_UTC);
-            Assert.IsNotNull(mikeSourceStartEndList[0].LastUpdateContactTVItemID);
-            Assert.IsNotNull(mikeSourceStartEndList[0].HasErrors);
+            Assert.NotNull(mikeSourceStartEndList[0].MikeSourceStartEndID);
+            Assert.NotNull(mikeSourceStartEndList[0].MikeSourceID);
+            Assert.NotNull(mikeSourceStartEndList[0].StartDateAndTime_Local);
+            Assert.NotNull(mikeSourceStartEndList[0].EndDateAndTime_Local);
+            Assert.NotNull(mikeSourceStartEndList[0].SourceFlowStart_m3_day);
+            Assert.NotNull(mikeSourceStartEndList[0].SourceFlowEnd_m3_day);
+            Assert.NotNull(mikeSourceStartEndList[0].SourcePollutionStart_MPN_100ml);
+            Assert.NotNull(mikeSourceStartEndList[0].SourcePollutionEnd_MPN_100ml);
+            Assert.NotNull(mikeSourceStartEndList[0].SourceTemperatureStart_C);
+            Assert.NotNull(mikeSourceStartEndList[0].SourceTemperatureEnd_C);
+            Assert.NotNull(mikeSourceStartEndList[0].SourceSalinityStart_PSU);
+            Assert.NotNull(mikeSourceStartEndList[0].SourceSalinityEnd_PSU);
+            Assert.NotNull(mikeSourceStartEndList[0].LastUpdateDate_UTC);
+            Assert.NotNull(mikeSourceStartEndList[0].LastUpdateContactTVItemID);
+            Assert.NotNull(mikeSourceStartEndList[0].HasErrors);
         }
         private MikeSourceStartEnd GetFilledRandomMikeSourceStartEnd(string OmitPropName)
         {

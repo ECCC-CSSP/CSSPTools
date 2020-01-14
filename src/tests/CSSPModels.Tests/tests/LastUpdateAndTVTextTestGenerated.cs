@@ -6,7 +6,7 @@
  */ 
 using System;
 using System.Text;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using System.Linq;
 using System.Globalization;
 using System.Transactions;
@@ -19,7 +19,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace CSSPModels.Tests
 {
-    [TestClass]
+
     public partial class LastUpdateAndTVTextTest
     {
         #region Variables
@@ -37,7 +37,7 @@ namespace CSSPModels.Tests
         #endregion Constructors
 
         #region Tests Functions public
-        [TestMethod]
+        [Fact]
         public void LastUpdateAndTVText_Properties_Test()
         {
             List<string> propNameList = new List<string>() { "LastUpdateAndTVTextDate_UTC", "LastUpdateDate_Local", "TVText", "HasErrors",  }.OrderBy(c => c).ToList();
@@ -46,35 +46,35 @@ namespace CSSPModels.Tests
             int index = 0;
             foreach (PropertyInfo propertyInfo in typeof(LastUpdateAndTVText).GetProperties().Where(c => c.Name != "ValidationResults").OrderBy(c => c.Name).ToList())
             {
-                Assert.AreEqual(propertyInfo.Name, propNameList[index]);
+                Assert.Equal(propertyInfo.Name, propNameList[index]);
                 index += 1;
             }
 
-            Assert.AreEqual(propNameList.Count, index);
+            Assert.Equal(propNameList.Count, index);
         }
-        [TestMethod]
+        [Fact]
         public void LastUpdateAndTVText_Has_ValidationResults_Test()
         {
-             Assert.IsTrue(typeof(LastUpdateAndTVText).GetProperties().Where(c => c.Name == "ValidationResults").Any());
+             Assert.True(typeof(LastUpdateAndTVText).GetProperties().Where(c => c.Name == "ValidationResults").Any());
         }
-        [TestMethod]
+        [Fact]
         public void LastUpdateAndTVText_Every_Property_Has_Get_Set_Test()
         {
                DateTime val1 = new DateTime(2010, 3, 4);
                lastUpdateAndTVText.LastUpdateAndTVTextDate_UTC = val1;
-               Assert.AreEqual(val1, lastUpdateAndTVText.LastUpdateAndTVTextDate_UTC);
+               Assert.Equal(val1, lastUpdateAndTVText.LastUpdateAndTVTextDate_UTC);
                DateTime val2 = new DateTime(2010, 3, 4);
                lastUpdateAndTVText.LastUpdateDate_Local = val2;
-               Assert.AreEqual(val2, lastUpdateAndTVText.LastUpdateDate_Local);
+               Assert.Equal(val2, lastUpdateAndTVText.LastUpdateDate_Local);
                string val3 = "Some text";
                lastUpdateAndTVText.TVText = val3;
-               Assert.AreEqual(val3, lastUpdateAndTVText.TVText);
+               Assert.Equal(val3, lastUpdateAndTVText.TVText);
                bool val4 = true;
                lastUpdateAndTVText.HasErrors = val4;
-               Assert.AreEqual(val4, lastUpdateAndTVText.HasErrors);
+               Assert.Equal(val4, lastUpdateAndTVText.HasErrors);
                IEnumerable<ValidationResult> val15 = new List<ValidationResult>() { new ValidationResult("First CSSPError Message") }.AsEnumerable();
                lastUpdateAndTVText.ValidationResults = val15;
-               Assert.AreEqual(val15, lastUpdateAndTVText.ValidationResults);
+               Assert.Equal(val15, lastUpdateAndTVText.ValidationResults);
         }
         #endregion Tests Functions public
     }

@@ -6,7 +6,7 @@
  */ 
 using System;
 using System.Text;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using System.Linq;
 using System.Globalization;
 using System.Transactions;
@@ -19,7 +19,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace CSSPModels.Tests
 {
-    [TestClass]
+
     public partial class MWQMSampleTest
     {
         #region Variables
@@ -37,7 +37,7 @@ namespace CSSPModels.Tests
         #endregion Constructors
 
         #region Tests Functions public
-        [TestMethod]
+        [Fact]
         public void MWQMSample_Properties_Test()
         {
             List<string> propNameList = new List<string>() { "MWQMSampleID", "MWQMSiteTVItemID", "MWQMRunTVItemID", "SampleDateTime_Local", "TimeText", "Depth_m", "FecCol_MPN_100ml", "Salinity_PPT", "WaterTemp_C", "PH", "SampleTypesText", "SampleType_old", "Tube_10", "Tube_1_0", "Tube_0_1", "ProcessedBy", "UseForOpenData", "LastUpdateDate_UTC", "LastUpdateContactTVItemID",  }.OrderBy(c => c).ToList();
@@ -50,12 +50,12 @@ namespace CSSPModels.Tests
                     && propertyInfo.Name != "ValidationResults"
                     && !propertyInfo.CustomAttributes.Where(c => c.AttributeType.Name.Contains("NotMappedAttribute")).Any())
                 {
-                    Assert.AreEqual(propNameList[index], propertyInfo.Name);
+                    Assert.Equal(propNameList[index], propertyInfo.Name);
                     index += 1;
                 }
             }
 
-            Assert.AreEqual(propNameList.Count, index);
+            Assert.Equal(propNameList.Count, index);
 
             index = 0;
             foreach (PropertyInfo propertyInfo in typeof(MWQMSample).GetProperties().Where(c => c.Name != "ValidationResults").OrderBy(c => c.Name).ToList())
@@ -64,16 +64,16 @@ namespace CSSPModels.Tests
                 {
                     if (customAttributeData.AttributeType.Name == "NotMappedAttribute")
                     {
-                        Assert.AreEqual(propertyInfo.Name, propNameNotMappedList[index]);
+                        Assert.Equal(propertyInfo.Name, propNameNotMappedList[index]);
                         index += 1;
                     }
                 }
             }
 
-            Assert.AreEqual(propNameNotMappedList.Count, index);
+            Assert.Equal(propNameNotMappedList.Count, index);
 
         }
-        [TestMethod]
+        [Fact]
         public void MWQMSample_Navigation_Test()
         {
             List<string> foreignNameList = new List<string>() {  }.OrderBy(c => c).ToList();
@@ -84,97 +84,97 @@ namespace CSSPModels.Tests
             {
                 if (propertyInfo.GetGetMethod().IsVirtual && !propertyInfo.GetGetMethod().ReturnType.Name.StartsWith("ICollection"))
                 {
-                    Assert.IsTrue(foreignNameList.Contains(propertyInfo.Name));
+                    Assert.True(foreignNameList.Contains(propertyInfo.Name));
                     index += 1;
                 }
             }
 
-            Assert.AreEqual(foreignNameList.Count, index);
+            Assert.Equal(foreignNameList.Count, index);
 
             index = 0;
             foreach (PropertyInfo propertyInfo in typeof(MWQMSample).GetProperties().Where(c => c.Name != "ValidationResults").OrderBy(c => c.Name).ToList())
             {
                 if (propertyInfo.GetGetMethod().ReturnType.Name.StartsWith("ICollection"))
                 {
-                    Assert.IsTrue(foreignNameCollectionList.Contains(propertyInfo.Name));
+                    Assert.True(foreignNameCollectionList.Contains(propertyInfo.Name));
                     index += 1;
                 }
             }
 
-            Assert.AreEqual(foreignNameCollectionList.Count, index);
+            Assert.Equal(foreignNameCollectionList.Count, index);
 
         }
-        [TestMethod]
+        [Fact]
         public void MWQMSample_Has_ValidationResults_Test()
         {
-             Assert.IsTrue(typeof(MWQMSample).GetProperties().Where(c => c.Name == "ValidationResults").Any());
+             Assert.True(typeof(MWQMSample).GetProperties().Where(c => c.Name == "ValidationResults").Any());
         }
-        [TestMethod]
+        [Fact]
         public void MWQMSample_Every_Property_Has_Get_Set_Test()
         {
                int val1 = 45;
                mWQMSample.MWQMSampleID = val1;
-               Assert.AreEqual(val1, mWQMSample.MWQMSampleID);
+               Assert.Equal(val1, mWQMSample.MWQMSampleID);
                int val2 = 45;
                mWQMSample.MWQMSiteTVItemID = val2;
-               Assert.AreEqual(val2, mWQMSample.MWQMSiteTVItemID);
+               Assert.Equal(val2, mWQMSample.MWQMSiteTVItemID);
                int val3 = 45;
                mWQMSample.MWQMRunTVItemID = val3;
-               Assert.AreEqual(val3, mWQMSample.MWQMRunTVItemID);
+               Assert.Equal(val3, mWQMSample.MWQMRunTVItemID);
                DateTime val4 = new DateTime(2010, 3, 4);
                mWQMSample.SampleDateTime_Local = val4;
-               Assert.AreEqual(val4, mWQMSample.SampleDateTime_Local);
+               Assert.Equal(val4, mWQMSample.SampleDateTime_Local);
                string val5 = "Some text";
                mWQMSample.TimeText = val5;
-               Assert.AreEqual(val5, mWQMSample.TimeText);
+               Assert.Equal(val5, mWQMSample.TimeText);
                double val6 = 87.9D;
                mWQMSample.Depth_m = val6;
-               Assert.AreEqual(val6, mWQMSample.Depth_m);
+               Assert.Equal(val6, mWQMSample.Depth_m);
                int val7 = 45;
                mWQMSample.FecCol_MPN_100ml = val7;
-               Assert.AreEqual(val7, mWQMSample.FecCol_MPN_100ml);
+               Assert.Equal(val7, mWQMSample.FecCol_MPN_100ml);
                double val8 = 87.9D;
                mWQMSample.Salinity_PPT = val8;
-               Assert.AreEqual(val8, mWQMSample.Salinity_PPT);
+               Assert.Equal(val8, mWQMSample.Salinity_PPT);
                double val9 = 87.9D;
                mWQMSample.WaterTemp_C = val9;
-               Assert.AreEqual(val9, mWQMSample.WaterTemp_C);
+               Assert.Equal(val9, mWQMSample.WaterTemp_C);
                double val10 = 87.9D;
                mWQMSample.PH = val10;
-               Assert.AreEqual(val10, mWQMSample.PH);
+               Assert.Equal(val10, mWQMSample.PH);
                string val11 = "Some text";
                mWQMSample.SampleTypesText = val11;
-               Assert.AreEqual(val11, mWQMSample.SampleTypesText);
+               Assert.Equal(val11, mWQMSample.SampleTypesText);
                SampleTypeEnum val12 = (SampleTypeEnum)3;
                mWQMSample.SampleType_old = val12;
-               Assert.AreEqual(val12, mWQMSample.SampleType_old);
+               Assert.Equal(val12, mWQMSample.SampleType_old);
                int val13 = 45;
                mWQMSample.Tube_10 = val13;
-               Assert.AreEqual(val13, mWQMSample.Tube_10);
+               Assert.Equal(val13, mWQMSample.Tube_10);
                int val14 = 45;
                mWQMSample.Tube_1_0 = val14;
-               Assert.AreEqual(val14, mWQMSample.Tube_1_0);
+               Assert.Equal(val14, mWQMSample.Tube_1_0);
                int val15 = 45;
                mWQMSample.Tube_0_1 = val15;
-               Assert.AreEqual(val15, mWQMSample.Tube_0_1);
+               Assert.Equal(val15, mWQMSample.Tube_0_1);
                string val16 = "Some text";
                mWQMSample.ProcessedBy = val16;
-               Assert.AreEqual(val16, mWQMSample.ProcessedBy);
+               Assert.Equal(val16, mWQMSample.ProcessedBy);
                bool val17 = true;
                mWQMSample.UseForOpenData = val17;
-               Assert.AreEqual(val17, mWQMSample.UseForOpenData);
+               Assert.Equal(val17, mWQMSample.UseForOpenData);
                DateTime val18 = new DateTime(2010, 3, 4);
                mWQMSample.LastUpdateDate_UTC = val18;
-               Assert.AreEqual(val18, mWQMSample.LastUpdateDate_UTC);
+               Assert.Equal(val18, mWQMSample.LastUpdateDate_UTC);
                int val19 = 45;
                mWQMSample.LastUpdateContactTVItemID = val19;
-               Assert.AreEqual(val19, mWQMSample.LastUpdateContactTVItemID);
+               Assert.Equal(val19, mWQMSample.LastUpdateContactTVItemID);
                bool val20 = true;
                mWQMSample.HasErrors = val20;
-               Assert.AreEqual(val20, mWQMSample.HasErrors);
+               Assert.Equal(val20, mWQMSample.HasErrors);
                IEnumerable<ValidationResult> val63 = new List<ValidationResult>() { new ValidationResult("First CSSPError Message") }.AsEnumerable();
                mWQMSample.ValidationResults = val63;
-               Assert.AreEqual(val63, mWQMSample.ValidationResults);
+               Assert.Equal(val63, mWQMSample.ValidationResults);
         }
         #endregion Tests Functions public
     }

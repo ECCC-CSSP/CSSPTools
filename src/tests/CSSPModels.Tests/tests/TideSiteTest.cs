@@ -1,5 +1,5 @@
 using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using System.Linq;
 using System.Collections.Generic;
 using CSSPModels;
@@ -15,11 +15,11 @@ namespace CSSPModels.Tests
         // use this section to add other manual test
 
         #region Tests
-        [TestMethod]
+        [Fact]
         public void TideSite_Example_Manual_Test()
         {
             int i = 5;
-            Assert.AreEqual(5, i);
+            Assert.Equal(5, i);
         }
         #endregion Tests
     }

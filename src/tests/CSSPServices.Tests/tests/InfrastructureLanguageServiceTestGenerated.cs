@@ -5,7 +5,7 @@
  */ 
 
 using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using System.Linq;
 using System.Collections.Generic;
 using CSSPModels;
@@ -21,7 +21,7 @@ using CSSPEnums.Resources;
 
 namespace CSSPServices.Tests
 {
-    [TestClass]
+
     public partial class InfrastructureLanguageServiceTest : TestHelper
     {
         #region Variables
@@ -39,7 +39,7 @@ namespace CSSPServices.Tests
         #endregion Constructors
 
         #region Tests Generated CRUD
-        [TestMethod]
+        [Fact]
         public void InfrastructureLanguage_CRUD_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -66,26 +66,26 @@ namespace CSSPServices.Tests
 
                     count = infrastructureLanguageService.GetInfrastructureLanguageList().Count();
 
-                    Assert.AreEqual(count, (from c in dbTestDB.InfrastructureLanguages select c).Count());
+                    Assert.Equal(count, (from c in dbTestDB.InfrastructureLanguages select c).Count());
 
                     infrastructureLanguageService.Add(infrastructureLanguage);
                     if (infrastructureLanguage.HasErrors)
                     {
-                        Assert.AreEqual("", infrastructureLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
+                        Assert.Equal("", infrastructureLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
                     }
-                    Assert.AreEqual(true, infrastructureLanguageService.GetInfrastructureLanguageList().Where(c => c == infrastructureLanguage).Any());
+                    Assert.True(infrastructureLanguageService.GetInfrastructureLanguageList().Where(c => c == infrastructureLanguage).Any());
                     infrastructureLanguageService.Update(infrastructureLanguage);
                     if (infrastructureLanguage.HasErrors)
                     {
-                        Assert.AreEqual("", infrastructureLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
+                        Assert.Equal("", infrastructureLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
                     }
-                    Assert.AreEqual(count + 1, infrastructureLanguageService.GetInfrastructureLanguageList().Count());
+                    Assert.Equal(count + 1, infrastructureLanguageService.GetInfrastructureLanguageList().Count());
                     infrastructureLanguageService.Delete(infrastructureLanguage);
                     if (infrastructureLanguage.HasErrors)
                     {
-                        Assert.AreEqual("", infrastructureLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
+                        Assert.Equal("", infrastructureLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
                     }
-                    Assert.AreEqual(count, infrastructureLanguageService.GetInfrastructureLanguageList().Count());
+                    Assert.Equal(count, infrastructureLanguageService.GetInfrastructureLanguageList().Count());
 
                 }
             }
@@ -93,7 +93,7 @@ namespace CSSPServices.Tests
         #endregion Tests Generated CRUD
 
         #region Tests Generated Properties
-        [TestMethod]
+        [Fact]
         public void InfrastructureLanguage_Properties_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -131,13 +131,13 @@ namespace CSSPServices.Tests
                     infrastructureLanguage = GetFilledRandomInfrastructureLanguage("");
                     infrastructureLanguage.InfrastructureLanguageID = 0;
                     infrastructureLanguageService.Update(infrastructureLanguage);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsRequired, "InfrastructureLanguageID"), infrastructureLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsRequired, "InfrastructureLanguageID"), infrastructureLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
 
                     infrastructureLanguage = null;
                     infrastructureLanguage = GetFilledRandomInfrastructureLanguage("");
                     infrastructureLanguage.InfrastructureLanguageID = 10000000;
                     infrastructureLanguageService.Update(infrastructureLanguage);
-                    Assert.AreEqual(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "InfrastructureLanguage", "InfrastructureLanguageID", infrastructureLanguage.InfrastructureLanguageID.ToString()), infrastructureLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "InfrastructureLanguage", "InfrastructureLanguageID", infrastructureLanguage.InfrastructureLanguageID.ToString()), infrastructureLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
 
 
                     // -----------------------------------
@@ -150,7 +150,7 @@ namespace CSSPServices.Tests
                     infrastructureLanguage = GetFilledRandomInfrastructureLanguage("");
                     infrastructureLanguage.InfrastructureID = 0;
                     infrastructureLanguageService.Add(infrastructureLanguage);
-                    Assert.AreEqual(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "Infrastructure", "InfrastructureID", infrastructureLanguage.InfrastructureID.ToString()), infrastructureLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "Infrastructure", "InfrastructureID", infrastructureLanguage.InfrastructureID.ToString()), infrastructureLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
 
 
                     // -----------------------------------
@@ -163,7 +163,7 @@ namespace CSSPServices.Tests
                     infrastructureLanguage = GetFilledRandomInfrastructureLanguage("");
                     infrastructureLanguage.Language = (LanguageEnum)1000000;
                     infrastructureLanguageService.Add(infrastructureLanguage);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsRequired, "Language"), infrastructureLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsRequired, "Language"), infrastructureLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
 
 
                     // -----------------------------------
@@ -173,11 +173,11 @@ namespace CSSPServices.Tests
 
                     infrastructureLanguage = null;
                     infrastructureLanguage = GetFilledRandomInfrastructureLanguage("Comment");
-                    Assert.AreEqual(false, infrastructureLanguageService.Add(infrastructureLanguage));
-                    Assert.AreEqual(1, infrastructureLanguage.ValidationResults.Count());
-                    Assert.IsTrue(infrastructureLanguage.ValidationResults.Where(c => c.ErrorMessage == string.Format(CSSPServicesRes._IsRequired, "Comment")).Any());
-                    Assert.AreEqual(null, infrastructureLanguage.Comment);
-                    Assert.AreEqual(count, infrastructureLanguageService.GetInfrastructureLanguageList().Count());
+                    Assert.False(infrastructureLanguageService.Add(infrastructureLanguage));
+                    Assert.Equal(1, infrastructureLanguage.ValidationResults.Count());
+                    Assert.True(infrastructureLanguage.ValidationResults.Where(c => c.ErrorMessage == string.Format(CSSPServicesRes._IsRequired, "Comment")).Any());
+                    Assert.Null(infrastructureLanguage.Comment);
+                    Assert.Equal(count, infrastructureLanguageService.GetInfrastructureLanguageList().Count());
 
 
                     // -----------------------------------
@@ -190,7 +190,7 @@ namespace CSSPServices.Tests
                     infrastructureLanguage = GetFilledRandomInfrastructureLanguage("");
                     infrastructureLanguage.TranslationStatus = (TranslationStatusEnum)1000000;
                     infrastructureLanguageService.Add(infrastructureLanguage);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsRequired, "TranslationStatus"), infrastructureLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsRequired, "TranslationStatus"), infrastructureLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
 
 
                     // -----------------------------------
@@ -203,12 +203,12 @@ namespace CSSPServices.Tests
                     infrastructureLanguage = GetFilledRandomInfrastructureLanguage("");
                     infrastructureLanguage.LastUpdateDate_UTC = new DateTime();
                     infrastructureLanguageService.Add(infrastructureLanguage);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsRequired, "LastUpdateDate_UTC"), infrastructureLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsRequired, "LastUpdateDate_UTC"), infrastructureLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
                     infrastructureLanguage = null;
                     infrastructureLanguage = GetFilledRandomInfrastructureLanguage("");
                     infrastructureLanguage.LastUpdateDate_UTC = new DateTime(1979, 1, 1);
                     infrastructureLanguageService.Add(infrastructureLanguage);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._YearShouldBeBiggerThan_, "LastUpdateDate_UTC", "1980"), infrastructureLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._YearShouldBeBiggerThan_, "LastUpdateDate_UTC", "1980"), infrastructureLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -220,13 +220,13 @@ namespace CSSPServices.Tests
                     infrastructureLanguage = GetFilledRandomInfrastructureLanguage("");
                     infrastructureLanguage.LastUpdateContactTVItemID = 0;
                     infrastructureLanguageService.Add(infrastructureLanguage);
-                    Assert.AreEqual(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "TVItem", "LastUpdateContactTVItemID", infrastructureLanguage.LastUpdateContactTVItemID.ToString()), infrastructureLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "TVItem", "LastUpdateContactTVItemID", infrastructureLanguage.LastUpdateContactTVItemID.ToString()), infrastructureLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
 
                     infrastructureLanguage = null;
                     infrastructureLanguage = GetFilledRandomInfrastructureLanguage("");
                     infrastructureLanguage.LastUpdateContactTVItemID = 1;
                     infrastructureLanguageService.Add(infrastructureLanguage);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsNotOfType_, "LastUpdateContactTVItemID", "Contact"), infrastructureLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsNotOfType_, "LastUpdateContactTVItemID", "Contact"), infrastructureLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
 
 
                     // -----------------------------------
@@ -250,7 +250,7 @@ namespace CSSPServices.Tests
         #endregion Tests Generated Properties
 
         #region Tests Generated for GetInfrastructureLanguageWithInfrastructureLanguageID(infrastructureLanguage.InfrastructureLanguageID)
-        [TestMethod]
+        [Fact]
         public void GetInfrastructureLanguageWithInfrastructureLanguageID__infrastructureLanguage_InfrastructureLanguageID__Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -261,7 +261,7 @@ namespace CSSPServices.Tests
                 {
                     InfrastructureLanguageService infrastructureLanguageService = new InfrastructureLanguageService(new Query() { Lang = culture.TwoLetterISOLanguageName }, dbTestDB, ContactID);
                     InfrastructureLanguage infrastructureLanguage = (from c in dbTestDB.InfrastructureLanguages select c).FirstOrDefault();
-                    Assert.IsNotNull(infrastructureLanguage);
+                    Assert.NotNull(infrastructureLanguage);
 
                 }
             }
@@ -269,7 +269,7 @@ namespace CSSPServices.Tests
         #endregion Tests Generated for GetInfrastructureLanguageWithInfrastructureLanguageID(infrastructureLanguage.InfrastructureLanguageID)
 
         #region Tests Generated for GetInfrastructureLanguageList()
-        [TestMethod]
+        [Fact]
         public void GetInfrastructureLanguageList_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -280,7 +280,7 @@ namespace CSSPServices.Tests
                 {
                     InfrastructureLanguageService infrastructureLanguageService = new InfrastructureLanguageService(new Query() { Lang = culture.TwoLetterISOLanguageName }, dbTestDB, ContactID);
                     InfrastructureLanguage infrastructureLanguage = (from c in dbTestDB.InfrastructureLanguages select c).FirstOrDefault();
-                    Assert.IsNotNull(infrastructureLanguage);
+                    Assert.NotNull(infrastructureLanguage);
 
                     List<InfrastructureLanguage> infrastructureLanguageDirectQueryList = new List<InfrastructureLanguage>();
                     infrastructureLanguageDirectQueryList = (from c in dbTestDB.InfrastructureLanguages select c).Take(200).ToList();
@@ -291,7 +291,7 @@ namespace CSSPServices.Tests
         #endregion Tests Generated for GetInfrastructureLanguageList()
 
         #region Tests Generated for GetInfrastructureLanguageList() Skip Take
-        [TestMethod]
+        [Fact]
         public void GetInfrastructureLanguageList_Skip_Take_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -310,14 +310,14 @@ namespace CSSPServices.Tests
                         List<InfrastructureLanguage> infrastructureLanguageList = new List<InfrastructureLanguage>();
                         infrastructureLanguageList = infrastructureLanguageService.GetInfrastructureLanguageList().ToList();
                         CheckInfrastructureLanguageFields(infrastructureLanguageList);
-                        Assert.AreEqual(infrastructureLanguageDirectQueryList[0].InfrastructureLanguageID, infrastructureLanguageList[0].InfrastructureLanguageID);
+                        Assert.Equal(infrastructureLanguageDirectQueryList[0].InfrastructureLanguageID, infrastructureLanguageList[0].InfrastructureLanguageID);
                 }
             }
         }
         #endregion Tests Generated for GetInfrastructureLanguageList() Skip Take
 
         #region Tests Generated for GetInfrastructureLanguageList() Skip Take Asc
-        [TestMethod]
+        [Fact]
         public void GetInfrastructureLanguageList_Skip_Take_Asc_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -336,14 +336,14 @@ namespace CSSPServices.Tests
                         List<InfrastructureLanguage> infrastructureLanguageList = new List<InfrastructureLanguage>();
                         infrastructureLanguageList = infrastructureLanguageService.GetInfrastructureLanguageList().ToList();
                         CheckInfrastructureLanguageFields(infrastructureLanguageList);
-                        Assert.AreEqual(infrastructureLanguageDirectQueryList[0].InfrastructureLanguageID, infrastructureLanguageList[0].InfrastructureLanguageID);
+                        Assert.Equal(infrastructureLanguageDirectQueryList[0].InfrastructureLanguageID, infrastructureLanguageList[0].InfrastructureLanguageID);
                 }
             }
         }
         #endregion Tests Generated for GetInfrastructureLanguageList() Skip Take Asc
 
         #region Tests Generated for GetInfrastructureLanguageList() Skip Take 2 Asc
-        [TestMethod]
+        [Fact]
         public void GetInfrastructureLanguageList_Skip_Take_2Asc_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -362,14 +362,14 @@ namespace CSSPServices.Tests
                         List<InfrastructureLanguage> infrastructureLanguageList = new List<InfrastructureLanguage>();
                         infrastructureLanguageList = infrastructureLanguageService.GetInfrastructureLanguageList().ToList();
                         CheckInfrastructureLanguageFields(infrastructureLanguageList);
-                        Assert.AreEqual(infrastructureLanguageDirectQueryList[0].InfrastructureLanguageID, infrastructureLanguageList[0].InfrastructureLanguageID);
+                        Assert.Equal(infrastructureLanguageDirectQueryList[0].InfrastructureLanguageID, infrastructureLanguageList[0].InfrastructureLanguageID);
                 }
             }
         }
         #endregion Tests Generated for GetInfrastructureLanguageList() Skip Take 2 Asc
 
         #region Tests Generated for GetInfrastructureLanguageList() Skip Take Asc Where
-        [TestMethod]
+        [Fact]
         public void GetInfrastructureLanguageList_Skip_Take_Asc_Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -388,14 +388,14 @@ namespace CSSPServices.Tests
                         List<InfrastructureLanguage> infrastructureLanguageList = new List<InfrastructureLanguage>();
                         infrastructureLanguageList = infrastructureLanguageService.GetInfrastructureLanguageList().ToList();
                         CheckInfrastructureLanguageFields(infrastructureLanguageList);
-                        Assert.AreEqual(infrastructureLanguageDirectQueryList[0].InfrastructureLanguageID, infrastructureLanguageList[0].InfrastructureLanguageID);
+                        Assert.Equal(infrastructureLanguageDirectQueryList[0].InfrastructureLanguageID, infrastructureLanguageList[0].InfrastructureLanguageID);
                 }
             }
         }
         #endregion Tests Generated for GetInfrastructureLanguageList() Skip Take Asc Where
 
         #region Tests Generated for GetInfrastructureLanguageList() Skip Take Asc 2 Where
-        [TestMethod]
+        [Fact]
         public void GetInfrastructureLanguageList_Skip_Take_Asc_2Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -414,14 +414,14 @@ namespace CSSPServices.Tests
                         List<InfrastructureLanguage> infrastructureLanguageList = new List<InfrastructureLanguage>();
                         infrastructureLanguageList = infrastructureLanguageService.GetInfrastructureLanguageList().ToList();
                         CheckInfrastructureLanguageFields(infrastructureLanguageList);
-                        Assert.AreEqual(infrastructureLanguageDirectQueryList[0].InfrastructureLanguageID, infrastructureLanguageList[0].InfrastructureLanguageID);
+                        Assert.Equal(infrastructureLanguageDirectQueryList[0].InfrastructureLanguageID, infrastructureLanguageList[0].InfrastructureLanguageID);
                 }
             }
         }
         #endregion Tests Generated for GetInfrastructureLanguageList() Skip Take Asc 2 Where
 
         #region Tests Generated for GetInfrastructureLanguageList() Skip Take Desc
-        [TestMethod]
+        [Fact]
         public void GetInfrastructureLanguageList_Skip_Take_Desc_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -440,14 +440,14 @@ namespace CSSPServices.Tests
                         List<InfrastructureLanguage> infrastructureLanguageList = new List<InfrastructureLanguage>();
                         infrastructureLanguageList = infrastructureLanguageService.GetInfrastructureLanguageList().ToList();
                         CheckInfrastructureLanguageFields(infrastructureLanguageList);
-                        Assert.AreEqual(infrastructureLanguageDirectQueryList[0].InfrastructureLanguageID, infrastructureLanguageList[0].InfrastructureLanguageID);
+                        Assert.Equal(infrastructureLanguageDirectQueryList[0].InfrastructureLanguageID, infrastructureLanguageList[0].InfrastructureLanguageID);
                 }
             }
         }
         #endregion Tests Generated for GetInfrastructureLanguageList() Skip Take Desc
 
         #region Tests Generated for GetInfrastructureLanguageList() Skip Take 2 Desc
-        [TestMethod]
+        [Fact]
         public void GetInfrastructureLanguageList_Skip_Take_2Desc_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -466,14 +466,14 @@ namespace CSSPServices.Tests
                         List<InfrastructureLanguage> infrastructureLanguageList = new List<InfrastructureLanguage>();
                         infrastructureLanguageList = infrastructureLanguageService.GetInfrastructureLanguageList().ToList();
                         CheckInfrastructureLanguageFields(infrastructureLanguageList);
-                        Assert.AreEqual(infrastructureLanguageDirectQueryList[0].InfrastructureLanguageID, infrastructureLanguageList[0].InfrastructureLanguageID);
+                        Assert.Equal(infrastructureLanguageDirectQueryList[0].InfrastructureLanguageID, infrastructureLanguageList[0].InfrastructureLanguageID);
                 }
             }
         }
         #endregion Tests Generated for GetInfrastructureLanguageList() Skip Take 2 Desc
 
         #region Tests Generated for GetInfrastructureLanguageList() Skip Take Desc Where
-        [TestMethod]
+        [Fact]
         public void GetInfrastructureLanguageList_Skip_Take_Desc_Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -492,14 +492,14 @@ namespace CSSPServices.Tests
                         List<InfrastructureLanguage> infrastructureLanguageList = new List<InfrastructureLanguage>();
                         infrastructureLanguageList = infrastructureLanguageService.GetInfrastructureLanguageList().ToList();
                         CheckInfrastructureLanguageFields(infrastructureLanguageList);
-                        Assert.AreEqual(infrastructureLanguageDirectQueryList[0].InfrastructureLanguageID, infrastructureLanguageList[0].InfrastructureLanguageID);
+                        Assert.Equal(infrastructureLanguageDirectQueryList[0].InfrastructureLanguageID, infrastructureLanguageList[0].InfrastructureLanguageID);
                 }
             }
         }
         #endregion Tests Generated for GetInfrastructureLanguageList() Skip Take Desc Where
 
         #region Tests Generated for GetInfrastructureLanguageList() Skip Take Desc 2 Where
-        [TestMethod]
+        [Fact]
         public void GetInfrastructureLanguageList_Skip_Take_Desc_2Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -518,14 +518,14 @@ namespace CSSPServices.Tests
                         List<InfrastructureLanguage> infrastructureLanguageList = new List<InfrastructureLanguage>();
                         infrastructureLanguageList = infrastructureLanguageService.GetInfrastructureLanguageList().ToList();
                         CheckInfrastructureLanguageFields(infrastructureLanguageList);
-                        Assert.AreEqual(infrastructureLanguageDirectQueryList[0].InfrastructureLanguageID, infrastructureLanguageList[0].InfrastructureLanguageID);
+                        Assert.Equal(infrastructureLanguageDirectQueryList[0].InfrastructureLanguageID, infrastructureLanguageList[0].InfrastructureLanguageID);
                 }
             }
         }
         #endregion Tests Generated for GetInfrastructureLanguageList() Skip Take Desc 2 Where
 
         #region Tests Generated for GetInfrastructureLanguageList() 2 Where
-        [TestMethod]
+        [Fact]
         public void GetInfrastructureLanguageList_2Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -544,7 +544,7 @@ namespace CSSPServices.Tests
                         List<InfrastructureLanguage> infrastructureLanguageList = new List<InfrastructureLanguage>();
                         infrastructureLanguageList = infrastructureLanguageService.GetInfrastructureLanguageList().ToList();
                         CheckInfrastructureLanguageFields(infrastructureLanguageList);
-                        Assert.AreEqual(infrastructureLanguageDirectQueryList[0].InfrastructureLanguageID, infrastructureLanguageList[0].InfrastructureLanguageID);
+                        Assert.Equal(infrastructureLanguageDirectQueryList[0].InfrastructureLanguageID, infrastructureLanguageList[0].InfrastructureLanguageID);
                 }
             }
         }
@@ -553,14 +553,14 @@ namespace CSSPServices.Tests
         #region Functions private
         private void CheckInfrastructureLanguageFields(List<InfrastructureLanguage> infrastructureLanguageList)
         {
-            Assert.IsNotNull(infrastructureLanguageList[0].InfrastructureLanguageID);
-            Assert.IsNotNull(infrastructureLanguageList[0].InfrastructureID);
-            Assert.IsNotNull(infrastructureLanguageList[0].Language);
-            Assert.IsFalse(string.IsNullOrWhiteSpace(infrastructureLanguageList[0].Comment));
-            Assert.IsNotNull(infrastructureLanguageList[0].TranslationStatus);
-            Assert.IsNotNull(infrastructureLanguageList[0].LastUpdateDate_UTC);
-            Assert.IsNotNull(infrastructureLanguageList[0].LastUpdateContactTVItemID);
-            Assert.IsNotNull(infrastructureLanguageList[0].HasErrors);
+            Assert.NotNull(infrastructureLanguageList[0].InfrastructureLanguageID);
+            Assert.NotNull(infrastructureLanguageList[0].InfrastructureID);
+            Assert.NotNull(infrastructureLanguageList[0].Language);
+            Assert.False(string.IsNullOrWhiteSpace(infrastructureLanguageList[0].Comment));
+            Assert.NotNull(infrastructureLanguageList[0].TranslationStatus);
+            Assert.NotNull(infrastructureLanguageList[0].LastUpdateDate_UTC);
+            Assert.NotNull(infrastructureLanguageList[0].LastUpdateContactTVItemID);
+            Assert.NotNull(infrastructureLanguageList[0].HasErrors);
         }
         private InfrastructureLanguage GetFilledRandomInfrastructureLanguage(string OmitPropName)
         {

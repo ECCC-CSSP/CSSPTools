@@ -5,7 +5,7 @@
  */ 
 
 using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using System.Linq;
 using System.Collections.Generic;
 using CSSPModels;
@@ -21,7 +21,7 @@ using CSSPEnums.Resources;
 
 namespace CSSPServices.Tests
 {
-    [TestClass]
+
     public partial class MikeScenarioResultServiceTest : TestHelper
     {
         #region Variables
@@ -39,7 +39,7 @@ namespace CSSPServices.Tests
         #endregion Constructors
 
         #region Tests Generated CRUD
-        [TestMethod]
+        [Fact]
         public void MikeScenarioResult_CRUD_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -66,26 +66,26 @@ namespace CSSPServices.Tests
 
                     count = mikeScenarioResultService.GetMikeScenarioResultList().Count();
 
-                    Assert.AreEqual(count, (from c in dbTestDB.MikeScenarioResults select c).Count());
+                    Assert.Equal(count, (from c in dbTestDB.MikeScenarioResults select c).Count());
 
                     mikeScenarioResultService.Add(mikeScenarioResult);
                     if (mikeScenarioResult.HasErrors)
                     {
-                        Assert.AreEqual("", mikeScenarioResult.ValidationResults.FirstOrDefault().ErrorMessage);
+                        Assert.Equal("", mikeScenarioResult.ValidationResults.FirstOrDefault().ErrorMessage);
                     }
-                    Assert.AreEqual(true, mikeScenarioResultService.GetMikeScenarioResultList().Where(c => c == mikeScenarioResult).Any());
+                    Assert.True(mikeScenarioResultService.GetMikeScenarioResultList().Where(c => c == mikeScenarioResult).Any());
                     mikeScenarioResultService.Update(mikeScenarioResult);
                     if (mikeScenarioResult.HasErrors)
                     {
-                        Assert.AreEqual("", mikeScenarioResult.ValidationResults.FirstOrDefault().ErrorMessage);
+                        Assert.Equal("", mikeScenarioResult.ValidationResults.FirstOrDefault().ErrorMessage);
                     }
-                    Assert.AreEqual(count + 1, mikeScenarioResultService.GetMikeScenarioResultList().Count());
+                    Assert.Equal(count + 1, mikeScenarioResultService.GetMikeScenarioResultList().Count());
                     mikeScenarioResultService.Delete(mikeScenarioResult);
                     if (mikeScenarioResult.HasErrors)
                     {
-                        Assert.AreEqual("", mikeScenarioResult.ValidationResults.FirstOrDefault().ErrorMessage);
+                        Assert.Equal("", mikeScenarioResult.ValidationResults.FirstOrDefault().ErrorMessage);
                     }
-                    Assert.AreEqual(count, mikeScenarioResultService.GetMikeScenarioResultList().Count());
+                    Assert.Equal(count, mikeScenarioResultService.GetMikeScenarioResultList().Count());
 
                 }
             }
@@ -93,7 +93,7 @@ namespace CSSPServices.Tests
         #endregion Tests Generated CRUD
 
         #region Tests Generated Properties
-        [TestMethod]
+        [Fact]
         public void MikeScenarioResult_Properties_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -131,13 +131,13 @@ namespace CSSPServices.Tests
                     mikeScenarioResult = GetFilledRandomMikeScenarioResult("");
                     mikeScenarioResult.MikeScenarioResultID = 0;
                     mikeScenarioResultService.Update(mikeScenarioResult);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsRequired, "MikeScenarioResultID"), mikeScenarioResult.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsRequired, "MikeScenarioResultID"), mikeScenarioResult.ValidationResults.FirstOrDefault().ErrorMessage);
 
                     mikeScenarioResult = null;
                     mikeScenarioResult = GetFilledRandomMikeScenarioResult("");
                     mikeScenarioResult.MikeScenarioResultID = 10000000;
                     mikeScenarioResultService.Update(mikeScenarioResult);
-                    Assert.AreEqual(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "MikeScenarioResult", "MikeScenarioResultID", mikeScenarioResult.MikeScenarioResultID.ToString()), mikeScenarioResult.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "MikeScenarioResult", "MikeScenarioResultID", mikeScenarioResult.MikeScenarioResultID.ToString()), mikeScenarioResult.ValidationResults.FirstOrDefault().ErrorMessage);
 
 
                     // -----------------------------------
@@ -150,13 +150,13 @@ namespace CSSPServices.Tests
                     mikeScenarioResult = GetFilledRandomMikeScenarioResult("");
                     mikeScenarioResult.MikeScenarioTVItemID = 0;
                     mikeScenarioResultService.Add(mikeScenarioResult);
-                    Assert.AreEqual(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "TVItem", "MikeScenarioTVItemID", mikeScenarioResult.MikeScenarioTVItemID.ToString()), mikeScenarioResult.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "TVItem", "MikeScenarioTVItemID", mikeScenarioResult.MikeScenarioTVItemID.ToString()), mikeScenarioResult.ValidationResults.FirstOrDefault().ErrorMessage);
 
                     mikeScenarioResult = null;
                     mikeScenarioResult = GetFilledRandomMikeScenarioResult("");
                     mikeScenarioResult.MikeScenarioTVItemID = 1;
                     mikeScenarioResultService.Add(mikeScenarioResult);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsNotOfType_, "MikeScenarioTVItemID", "MikeScenario"), mikeScenarioResult.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsNotOfType_, "MikeScenarioTVItemID", "MikeScenario"), mikeScenarioResult.ValidationResults.FirstOrDefault().ErrorMessage);
 
 
                     // -----------------------------------
@@ -175,12 +175,12 @@ namespace CSSPServices.Tests
                     mikeScenarioResult = GetFilledRandomMikeScenarioResult("");
                     mikeScenarioResult.LastUpdateDate_UTC = new DateTime();
                     mikeScenarioResultService.Add(mikeScenarioResult);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsRequired, "LastUpdateDate_UTC"), mikeScenarioResult.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsRequired, "LastUpdateDate_UTC"), mikeScenarioResult.ValidationResults.FirstOrDefault().ErrorMessage);
                     mikeScenarioResult = null;
                     mikeScenarioResult = GetFilledRandomMikeScenarioResult("");
                     mikeScenarioResult.LastUpdateDate_UTC = new DateTime(1979, 1, 1);
                     mikeScenarioResultService.Add(mikeScenarioResult);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._YearShouldBeBiggerThan_, "LastUpdateDate_UTC", "1980"), mikeScenarioResult.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._YearShouldBeBiggerThan_, "LastUpdateDate_UTC", "1980"), mikeScenarioResult.ValidationResults.FirstOrDefault().ErrorMessage);
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -192,13 +192,13 @@ namespace CSSPServices.Tests
                     mikeScenarioResult = GetFilledRandomMikeScenarioResult("");
                     mikeScenarioResult.LastUpdateContactTVItemID = 0;
                     mikeScenarioResultService.Add(mikeScenarioResult);
-                    Assert.AreEqual(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "TVItem", "LastUpdateContactTVItemID", mikeScenarioResult.LastUpdateContactTVItemID.ToString()), mikeScenarioResult.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "TVItem", "LastUpdateContactTVItemID", mikeScenarioResult.LastUpdateContactTVItemID.ToString()), mikeScenarioResult.ValidationResults.FirstOrDefault().ErrorMessage);
 
                     mikeScenarioResult = null;
                     mikeScenarioResult = GetFilledRandomMikeScenarioResult("");
                     mikeScenarioResult.LastUpdateContactTVItemID = 1;
                     mikeScenarioResultService.Add(mikeScenarioResult);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsNotOfType_, "LastUpdateContactTVItemID", "Contact"), mikeScenarioResult.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsNotOfType_, "LastUpdateContactTVItemID", "Contact"), mikeScenarioResult.ValidationResults.FirstOrDefault().ErrorMessage);
 
 
                     // -----------------------------------
@@ -222,7 +222,7 @@ namespace CSSPServices.Tests
         #endregion Tests Generated Properties
 
         #region Tests Generated for GetMikeScenarioResultWithMikeScenarioResultID(mikeScenarioResult.MikeScenarioResultID)
-        [TestMethod]
+        [Fact]
         public void GetMikeScenarioResultWithMikeScenarioResultID__mikeScenarioResult_MikeScenarioResultID__Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -233,7 +233,7 @@ namespace CSSPServices.Tests
                 {
                     MikeScenarioResultService mikeScenarioResultService = new MikeScenarioResultService(new Query() { Lang = culture.TwoLetterISOLanguageName }, dbTestDB, ContactID);
                     MikeScenarioResult mikeScenarioResult = (from c in dbTestDB.MikeScenarioResults select c).FirstOrDefault();
-                    Assert.IsNotNull(mikeScenarioResult);
+                    Assert.NotNull(mikeScenarioResult);
 
                 }
             }
@@ -241,7 +241,7 @@ namespace CSSPServices.Tests
         #endregion Tests Generated for GetMikeScenarioResultWithMikeScenarioResultID(mikeScenarioResult.MikeScenarioResultID)
 
         #region Tests Generated for GetMikeScenarioResultList()
-        [TestMethod]
+        [Fact]
         public void GetMikeScenarioResultList_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -252,7 +252,7 @@ namespace CSSPServices.Tests
                 {
                     MikeScenarioResultService mikeScenarioResultService = new MikeScenarioResultService(new Query() { Lang = culture.TwoLetterISOLanguageName }, dbTestDB, ContactID);
                     MikeScenarioResult mikeScenarioResult = (from c in dbTestDB.MikeScenarioResults select c).FirstOrDefault();
-                    Assert.IsNotNull(mikeScenarioResult);
+                    Assert.NotNull(mikeScenarioResult);
 
                     List<MikeScenarioResult> mikeScenarioResultDirectQueryList = new List<MikeScenarioResult>();
                     mikeScenarioResultDirectQueryList = (from c in dbTestDB.MikeScenarioResults select c).Take(200).ToList();
@@ -263,7 +263,7 @@ namespace CSSPServices.Tests
         #endregion Tests Generated for GetMikeScenarioResultList()
 
         #region Tests Generated for GetMikeScenarioResultList() Skip Take
-        [TestMethod]
+        [Fact]
         public void GetMikeScenarioResultList_Skip_Take_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -282,14 +282,14 @@ namespace CSSPServices.Tests
                         List<MikeScenarioResult> mikeScenarioResultList = new List<MikeScenarioResult>();
                         mikeScenarioResultList = mikeScenarioResultService.GetMikeScenarioResultList().ToList();
                         CheckMikeScenarioResultFields(mikeScenarioResultList);
-                        Assert.AreEqual(mikeScenarioResultDirectQueryList[0].MikeScenarioResultID, mikeScenarioResultList[0].MikeScenarioResultID);
+                        Assert.Equal(mikeScenarioResultDirectQueryList[0].MikeScenarioResultID, mikeScenarioResultList[0].MikeScenarioResultID);
                 }
             }
         }
         #endregion Tests Generated for GetMikeScenarioResultList() Skip Take
 
         #region Tests Generated for GetMikeScenarioResultList() Skip Take Asc
-        [TestMethod]
+        [Fact]
         public void GetMikeScenarioResultList_Skip_Take_Asc_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -308,14 +308,14 @@ namespace CSSPServices.Tests
                         List<MikeScenarioResult> mikeScenarioResultList = new List<MikeScenarioResult>();
                         mikeScenarioResultList = mikeScenarioResultService.GetMikeScenarioResultList().ToList();
                         CheckMikeScenarioResultFields(mikeScenarioResultList);
-                        Assert.AreEqual(mikeScenarioResultDirectQueryList[0].MikeScenarioResultID, mikeScenarioResultList[0].MikeScenarioResultID);
+                        Assert.Equal(mikeScenarioResultDirectQueryList[0].MikeScenarioResultID, mikeScenarioResultList[0].MikeScenarioResultID);
                 }
             }
         }
         #endregion Tests Generated for GetMikeScenarioResultList() Skip Take Asc
 
         #region Tests Generated for GetMikeScenarioResultList() Skip Take 2 Asc
-        [TestMethod]
+        [Fact]
         public void GetMikeScenarioResultList_Skip_Take_2Asc_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -334,14 +334,14 @@ namespace CSSPServices.Tests
                         List<MikeScenarioResult> mikeScenarioResultList = new List<MikeScenarioResult>();
                         mikeScenarioResultList = mikeScenarioResultService.GetMikeScenarioResultList().ToList();
                         CheckMikeScenarioResultFields(mikeScenarioResultList);
-                        Assert.AreEqual(mikeScenarioResultDirectQueryList[0].MikeScenarioResultID, mikeScenarioResultList[0].MikeScenarioResultID);
+                        Assert.Equal(mikeScenarioResultDirectQueryList[0].MikeScenarioResultID, mikeScenarioResultList[0].MikeScenarioResultID);
                 }
             }
         }
         #endregion Tests Generated for GetMikeScenarioResultList() Skip Take 2 Asc
 
         #region Tests Generated for GetMikeScenarioResultList() Skip Take Asc Where
-        [TestMethod]
+        [Fact]
         public void GetMikeScenarioResultList_Skip_Take_Asc_Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -360,14 +360,14 @@ namespace CSSPServices.Tests
                         List<MikeScenarioResult> mikeScenarioResultList = new List<MikeScenarioResult>();
                         mikeScenarioResultList = mikeScenarioResultService.GetMikeScenarioResultList().ToList();
                         CheckMikeScenarioResultFields(mikeScenarioResultList);
-                        Assert.AreEqual(mikeScenarioResultDirectQueryList[0].MikeScenarioResultID, mikeScenarioResultList[0].MikeScenarioResultID);
+                        Assert.Equal(mikeScenarioResultDirectQueryList[0].MikeScenarioResultID, mikeScenarioResultList[0].MikeScenarioResultID);
                 }
             }
         }
         #endregion Tests Generated for GetMikeScenarioResultList() Skip Take Asc Where
 
         #region Tests Generated for GetMikeScenarioResultList() Skip Take Asc 2 Where
-        [TestMethod]
+        [Fact]
         public void GetMikeScenarioResultList_Skip_Take_Asc_2Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -386,14 +386,14 @@ namespace CSSPServices.Tests
                         List<MikeScenarioResult> mikeScenarioResultList = new List<MikeScenarioResult>();
                         mikeScenarioResultList = mikeScenarioResultService.GetMikeScenarioResultList().ToList();
                         CheckMikeScenarioResultFields(mikeScenarioResultList);
-                        Assert.AreEqual(mikeScenarioResultDirectQueryList[0].MikeScenarioResultID, mikeScenarioResultList[0].MikeScenarioResultID);
+                        Assert.Equal(mikeScenarioResultDirectQueryList[0].MikeScenarioResultID, mikeScenarioResultList[0].MikeScenarioResultID);
                 }
             }
         }
         #endregion Tests Generated for GetMikeScenarioResultList() Skip Take Asc 2 Where
 
         #region Tests Generated for GetMikeScenarioResultList() Skip Take Desc
-        [TestMethod]
+        [Fact]
         public void GetMikeScenarioResultList_Skip_Take_Desc_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -412,14 +412,14 @@ namespace CSSPServices.Tests
                         List<MikeScenarioResult> mikeScenarioResultList = new List<MikeScenarioResult>();
                         mikeScenarioResultList = mikeScenarioResultService.GetMikeScenarioResultList().ToList();
                         CheckMikeScenarioResultFields(mikeScenarioResultList);
-                        Assert.AreEqual(mikeScenarioResultDirectQueryList[0].MikeScenarioResultID, mikeScenarioResultList[0].MikeScenarioResultID);
+                        Assert.Equal(mikeScenarioResultDirectQueryList[0].MikeScenarioResultID, mikeScenarioResultList[0].MikeScenarioResultID);
                 }
             }
         }
         #endregion Tests Generated for GetMikeScenarioResultList() Skip Take Desc
 
         #region Tests Generated for GetMikeScenarioResultList() Skip Take 2 Desc
-        [TestMethod]
+        [Fact]
         public void GetMikeScenarioResultList_Skip_Take_2Desc_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -438,14 +438,14 @@ namespace CSSPServices.Tests
                         List<MikeScenarioResult> mikeScenarioResultList = new List<MikeScenarioResult>();
                         mikeScenarioResultList = mikeScenarioResultService.GetMikeScenarioResultList().ToList();
                         CheckMikeScenarioResultFields(mikeScenarioResultList);
-                        Assert.AreEqual(mikeScenarioResultDirectQueryList[0].MikeScenarioResultID, mikeScenarioResultList[0].MikeScenarioResultID);
+                        Assert.Equal(mikeScenarioResultDirectQueryList[0].MikeScenarioResultID, mikeScenarioResultList[0].MikeScenarioResultID);
                 }
             }
         }
         #endregion Tests Generated for GetMikeScenarioResultList() Skip Take 2 Desc
 
         #region Tests Generated for GetMikeScenarioResultList() Skip Take Desc Where
-        [TestMethod]
+        [Fact]
         public void GetMikeScenarioResultList_Skip_Take_Desc_Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -464,14 +464,14 @@ namespace CSSPServices.Tests
                         List<MikeScenarioResult> mikeScenarioResultList = new List<MikeScenarioResult>();
                         mikeScenarioResultList = mikeScenarioResultService.GetMikeScenarioResultList().ToList();
                         CheckMikeScenarioResultFields(mikeScenarioResultList);
-                        Assert.AreEqual(mikeScenarioResultDirectQueryList[0].MikeScenarioResultID, mikeScenarioResultList[0].MikeScenarioResultID);
+                        Assert.Equal(mikeScenarioResultDirectQueryList[0].MikeScenarioResultID, mikeScenarioResultList[0].MikeScenarioResultID);
                 }
             }
         }
         #endregion Tests Generated for GetMikeScenarioResultList() Skip Take Desc Where
 
         #region Tests Generated for GetMikeScenarioResultList() Skip Take Desc 2 Where
-        [TestMethod]
+        [Fact]
         public void GetMikeScenarioResultList_Skip_Take_Desc_2Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -490,14 +490,14 @@ namespace CSSPServices.Tests
                         List<MikeScenarioResult> mikeScenarioResultList = new List<MikeScenarioResult>();
                         mikeScenarioResultList = mikeScenarioResultService.GetMikeScenarioResultList().ToList();
                         CheckMikeScenarioResultFields(mikeScenarioResultList);
-                        Assert.AreEqual(mikeScenarioResultDirectQueryList[0].MikeScenarioResultID, mikeScenarioResultList[0].MikeScenarioResultID);
+                        Assert.Equal(mikeScenarioResultDirectQueryList[0].MikeScenarioResultID, mikeScenarioResultList[0].MikeScenarioResultID);
                 }
             }
         }
         #endregion Tests Generated for GetMikeScenarioResultList() Skip Take Desc 2 Where
 
         #region Tests Generated for GetMikeScenarioResultList() 2 Where
-        [TestMethod]
+        [Fact]
         public void GetMikeScenarioResultList_2Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -516,7 +516,7 @@ namespace CSSPServices.Tests
                         List<MikeScenarioResult> mikeScenarioResultList = new List<MikeScenarioResult>();
                         mikeScenarioResultList = mikeScenarioResultService.GetMikeScenarioResultList().ToList();
                         CheckMikeScenarioResultFields(mikeScenarioResultList);
-                        Assert.AreEqual(mikeScenarioResultDirectQueryList[0].MikeScenarioResultID, mikeScenarioResultList[0].MikeScenarioResultID);
+                        Assert.Equal(mikeScenarioResultDirectQueryList[0].MikeScenarioResultID, mikeScenarioResultList[0].MikeScenarioResultID);
                 }
             }
         }
@@ -525,15 +525,15 @@ namespace CSSPServices.Tests
         #region Functions private
         private void CheckMikeScenarioResultFields(List<MikeScenarioResult> mikeScenarioResultList)
         {
-            Assert.IsNotNull(mikeScenarioResultList[0].MikeScenarioResultID);
-            Assert.IsNotNull(mikeScenarioResultList[0].MikeScenarioTVItemID);
+            Assert.NotNull(mikeScenarioResultList[0].MikeScenarioResultID);
+            Assert.NotNull(mikeScenarioResultList[0].MikeScenarioTVItemID);
             if (!string.IsNullOrWhiteSpace(mikeScenarioResultList[0].MikeResultsJSON))
             {
-                Assert.IsFalse(string.IsNullOrWhiteSpace(mikeScenarioResultList[0].MikeResultsJSON));
+                Assert.False(string.IsNullOrWhiteSpace(mikeScenarioResultList[0].MikeResultsJSON));
             }
-            Assert.IsNotNull(mikeScenarioResultList[0].LastUpdateDate_UTC);
-            Assert.IsNotNull(mikeScenarioResultList[0].LastUpdateContactTVItemID);
-            Assert.IsNotNull(mikeScenarioResultList[0].HasErrors);
+            Assert.NotNull(mikeScenarioResultList[0].LastUpdateDate_UTC);
+            Assert.NotNull(mikeScenarioResultList[0].LastUpdateContactTVItemID);
+            Assert.NotNull(mikeScenarioResultList[0].HasErrors);
         }
         private MikeScenarioResult GetFilledRandomMikeScenarioResult(string OmitPropName)
         {

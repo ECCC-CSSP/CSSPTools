@@ -6,7 +6,7 @@
  */ 
 using System;
 using System.Text;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using System.Linq;
 using System.Globalization;
 using System.Transactions;
@@ -19,7 +19,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace CSSPModels.Tests
 {
-    [TestClass]
+
     public partial class PolSourceObsInfoChildTest
     {
         #region Variables
@@ -37,7 +37,7 @@ namespace CSSPModels.Tests
         #endregion Constructors
 
         #region Tests Functions public
-        [TestMethod]
+        [Fact]
         public void PolSourceObsInfoChild_Properties_Test()
         {
             List<string> propNameList = new List<string>() { "PolSourceObsInfo", "PolSourceObsInfoChildStart", "PolSourceObsInfoText", "PolSourceObsInfoChildStartText", "HasErrors",  }.OrderBy(c => c).ToList();
@@ -46,38 +46,38 @@ namespace CSSPModels.Tests
             int index = 0;
             foreach (PropertyInfo propertyInfo in typeof(PolSourceObsInfoChild).GetProperties().Where(c => c.Name != "ValidationResults").OrderBy(c => c.Name).ToList())
             {
-                Assert.AreEqual(propertyInfo.Name, propNameList[index]);
+                Assert.Equal(propertyInfo.Name, propNameList[index]);
                 index += 1;
             }
 
-            Assert.AreEqual(propNameList.Count, index);
+            Assert.Equal(propNameList.Count, index);
         }
-        [TestMethod]
+        [Fact]
         public void PolSourceObsInfoChild_Has_ValidationResults_Test()
         {
-             Assert.IsTrue(typeof(PolSourceObsInfoChild).GetProperties().Where(c => c.Name == "ValidationResults").Any());
+             Assert.True(typeof(PolSourceObsInfoChild).GetProperties().Where(c => c.Name == "ValidationResults").Any());
         }
-        [TestMethod]
+        [Fact]
         public void PolSourceObsInfoChild_Every_Property_Has_Get_Set_Test()
         {
                PolSourceObsInfoEnum val1 = (PolSourceObsInfoEnum)3;
                polSourceObsInfoChild.PolSourceObsInfo = val1;
-               Assert.AreEqual(val1, polSourceObsInfoChild.PolSourceObsInfo);
+               Assert.Equal(val1, polSourceObsInfoChild.PolSourceObsInfo);
                PolSourceObsInfoEnum val2 = (PolSourceObsInfoEnum)3;
                polSourceObsInfoChild.PolSourceObsInfoChildStart = val2;
-               Assert.AreEqual(val2, polSourceObsInfoChild.PolSourceObsInfoChildStart);
+               Assert.Equal(val2, polSourceObsInfoChild.PolSourceObsInfoChildStart);
                string val3 = "Some text";
                polSourceObsInfoChild.PolSourceObsInfoText = val3;
-               Assert.AreEqual(val3, polSourceObsInfoChild.PolSourceObsInfoText);
+               Assert.Equal(val3, polSourceObsInfoChild.PolSourceObsInfoText);
                string val4 = "Some text";
                polSourceObsInfoChild.PolSourceObsInfoChildStartText = val4;
-               Assert.AreEqual(val4, polSourceObsInfoChild.PolSourceObsInfoChildStartText);
+               Assert.Equal(val4, polSourceObsInfoChild.PolSourceObsInfoChildStartText);
                bool val5 = true;
                polSourceObsInfoChild.HasErrors = val5;
-               Assert.AreEqual(val5, polSourceObsInfoChild.HasErrors);
+               Assert.Equal(val5, polSourceObsInfoChild.HasErrors);
                IEnumerable<ValidationResult> val18 = new List<ValidationResult>() { new ValidationResult("First CSSPError Message") }.AsEnumerable();
                polSourceObsInfoChild.ValidationResults = val18;
-               Assert.AreEqual(val18, polSourceObsInfoChild.ValidationResults);
+               Assert.Equal(val18, polSourceObsInfoChild.ValidationResults);
         }
         #endregion Tests Functions public
     }

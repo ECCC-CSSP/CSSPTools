@@ -5,7 +5,7 @@
  */ 
 
 using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using System.Linq;
 using System.Collections.Generic;
 using CSSPModels;
@@ -21,7 +21,7 @@ using CSSPEnums.Resources;
 
 namespace CSSPServices.Tests
 {
-    [TestClass]
+
     public partial class ClassificationServiceTest : TestHelper
     {
         #region Variables
@@ -39,7 +39,7 @@ namespace CSSPServices.Tests
         #endregion Constructors
 
         #region Tests Generated CRUD
-        [TestMethod]
+        [Fact]
         public void Classification_CRUD_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -66,26 +66,26 @@ namespace CSSPServices.Tests
 
                     count = classificationService.GetClassificationList().Count();
 
-                    Assert.AreEqual(count, (from c in dbTestDB.Classifications select c).Count());
+                    Assert.Equal(count, (from c in dbTestDB.Classifications select c).Count());
 
                     classificationService.Add(classification);
                     if (classification.HasErrors)
                     {
-                        Assert.AreEqual("", classification.ValidationResults.FirstOrDefault().ErrorMessage);
+                        Assert.Equal("", classification.ValidationResults.FirstOrDefault().ErrorMessage);
                     }
-                    Assert.AreEqual(true, classificationService.GetClassificationList().Where(c => c == classification).Any());
+                    Assert.True(classificationService.GetClassificationList().Where(c => c == classification).Any());
                     classificationService.Update(classification);
                     if (classification.HasErrors)
                     {
-                        Assert.AreEqual("", classification.ValidationResults.FirstOrDefault().ErrorMessage);
+                        Assert.Equal("", classification.ValidationResults.FirstOrDefault().ErrorMessage);
                     }
-                    Assert.AreEqual(count + 1, classificationService.GetClassificationList().Count());
+                    Assert.Equal(count + 1, classificationService.GetClassificationList().Count());
                     classificationService.Delete(classification);
                     if (classification.HasErrors)
                     {
-                        Assert.AreEqual("", classification.ValidationResults.FirstOrDefault().ErrorMessage);
+                        Assert.Equal("", classification.ValidationResults.FirstOrDefault().ErrorMessage);
                     }
-                    Assert.AreEqual(count, classificationService.GetClassificationList().Count());
+                    Assert.Equal(count, classificationService.GetClassificationList().Count());
 
                 }
             }
@@ -93,7 +93,7 @@ namespace CSSPServices.Tests
         #endregion Tests Generated CRUD
 
         #region Tests Generated Properties
-        [TestMethod]
+        [Fact]
         public void Classification_Properties_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -131,13 +131,13 @@ namespace CSSPServices.Tests
                     classification = GetFilledRandomClassification("");
                     classification.ClassificationID = 0;
                     classificationService.Update(classification);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsRequired, "ClassificationID"), classification.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsRequired, "ClassificationID"), classification.ValidationResults.FirstOrDefault().ErrorMessage);
 
                     classification = null;
                     classification = GetFilledRandomClassification("");
                     classification.ClassificationID = 10000000;
                     classificationService.Update(classification);
-                    Assert.AreEqual(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "Classification", "ClassificationID", classification.ClassificationID.ToString()), classification.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "Classification", "ClassificationID", classification.ClassificationID.ToString()), classification.ValidationResults.FirstOrDefault().ErrorMessage);
 
 
                     // -----------------------------------
@@ -150,13 +150,13 @@ namespace CSSPServices.Tests
                     classification = GetFilledRandomClassification("");
                     classification.ClassificationTVItemID = 0;
                     classificationService.Add(classification);
-                    Assert.AreEqual(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "TVItem", "ClassificationTVItemID", classification.ClassificationTVItemID.ToString()), classification.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "TVItem", "ClassificationTVItemID", classification.ClassificationTVItemID.ToString()), classification.ValidationResults.FirstOrDefault().ErrorMessage);
 
                     classification = null;
                     classification = GetFilledRandomClassification("");
                     classification.ClassificationTVItemID = 1;
                     classificationService.Add(classification);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsNotOfType_, "ClassificationTVItemID", "Classification"), classification.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsNotOfType_, "ClassificationTVItemID", "Classification"), classification.ValidationResults.FirstOrDefault().ErrorMessage);
 
 
                     // -----------------------------------
@@ -169,7 +169,7 @@ namespace CSSPServices.Tests
                     classification = GetFilledRandomClassification("");
                     classification.ClassificationType = (ClassificationTypeEnum)1000000;
                     classificationService.Add(classification);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsRequired, "ClassificationType"), classification.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsRequired, "ClassificationType"), classification.ValidationResults.FirstOrDefault().ErrorMessage);
 
 
                     // -----------------------------------
@@ -181,15 +181,15 @@ namespace CSSPServices.Tests
                     classification = null;
                     classification = GetFilledRandomClassification("");
                     classification.Ordinal = -1;
-                    Assert.AreEqual(false, classificationService.Add(classification));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "Ordinal", "0", "10000"), classification.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, classificationService.GetClassificationList().Count());
+                    Assert.False(classificationService.Add(classification));
+                    Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "Ordinal", "0", "10000"), classification.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, classificationService.GetClassificationList().Count());
                     classification = null;
                     classification = GetFilledRandomClassification("");
                     classification.Ordinal = 10001;
-                    Assert.AreEqual(false, classificationService.Add(classification));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "Ordinal", "0", "10000"), classification.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, classificationService.GetClassificationList().Count());
+                    Assert.False(classificationService.Add(classification));
+                    Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "Ordinal", "0", "10000"), classification.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, classificationService.GetClassificationList().Count());
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -201,12 +201,12 @@ namespace CSSPServices.Tests
                     classification = GetFilledRandomClassification("");
                     classification.LastUpdateDate_UTC = new DateTime();
                     classificationService.Add(classification);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsRequired, "LastUpdateDate_UTC"), classification.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsRequired, "LastUpdateDate_UTC"), classification.ValidationResults.FirstOrDefault().ErrorMessage);
                     classification = null;
                     classification = GetFilledRandomClassification("");
                     classification.LastUpdateDate_UTC = new DateTime(1979, 1, 1);
                     classificationService.Add(classification);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._YearShouldBeBiggerThan_, "LastUpdateDate_UTC", "1980"), classification.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._YearShouldBeBiggerThan_, "LastUpdateDate_UTC", "1980"), classification.ValidationResults.FirstOrDefault().ErrorMessage);
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -218,13 +218,13 @@ namespace CSSPServices.Tests
                     classification = GetFilledRandomClassification("");
                     classification.LastUpdateContactTVItemID = 0;
                     classificationService.Add(classification);
-                    Assert.AreEqual(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "TVItem", "LastUpdateContactTVItemID", classification.LastUpdateContactTVItemID.ToString()), classification.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "TVItem", "LastUpdateContactTVItemID", classification.LastUpdateContactTVItemID.ToString()), classification.ValidationResults.FirstOrDefault().ErrorMessage);
 
                     classification = null;
                     classification = GetFilledRandomClassification("");
                     classification.LastUpdateContactTVItemID = 1;
                     classificationService.Add(classification);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsNotOfType_, "LastUpdateContactTVItemID", "Contact"), classification.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsNotOfType_, "LastUpdateContactTVItemID", "Contact"), classification.ValidationResults.FirstOrDefault().ErrorMessage);
 
 
                     // -----------------------------------
@@ -248,7 +248,7 @@ namespace CSSPServices.Tests
         #endregion Tests Generated Properties
 
         #region Tests Generated for GetClassificationWithClassificationID(classification.ClassificationID)
-        [TestMethod]
+        [Fact]
         public void GetClassificationWithClassificationID__classification_ClassificationID__Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -259,7 +259,7 @@ namespace CSSPServices.Tests
                 {
                     ClassificationService classificationService = new ClassificationService(new Query() { Lang = culture.TwoLetterISOLanguageName }, dbTestDB, ContactID);
                     Classification classification = (from c in dbTestDB.Classifications select c).FirstOrDefault();
-                    Assert.IsNotNull(classification);
+                    Assert.NotNull(classification);
 
                 }
             }
@@ -267,7 +267,7 @@ namespace CSSPServices.Tests
         #endregion Tests Generated for GetClassificationWithClassificationID(classification.ClassificationID)
 
         #region Tests Generated for GetClassificationList()
-        [TestMethod]
+        [Fact]
         public void GetClassificationList_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -278,7 +278,7 @@ namespace CSSPServices.Tests
                 {
                     ClassificationService classificationService = new ClassificationService(new Query() { Lang = culture.TwoLetterISOLanguageName }, dbTestDB, ContactID);
                     Classification classification = (from c in dbTestDB.Classifications select c).FirstOrDefault();
-                    Assert.IsNotNull(classification);
+                    Assert.NotNull(classification);
 
                     List<Classification> classificationDirectQueryList = new List<Classification>();
                     classificationDirectQueryList = (from c in dbTestDB.Classifications select c).Take(200).ToList();
@@ -289,7 +289,7 @@ namespace CSSPServices.Tests
         #endregion Tests Generated for GetClassificationList()
 
         #region Tests Generated for GetClassificationList() Skip Take
-        [TestMethod]
+        [Fact]
         public void GetClassificationList_Skip_Take_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -308,14 +308,14 @@ namespace CSSPServices.Tests
                         List<Classification> classificationList = new List<Classification>();
                         classificationList = classificationService.GetClassificationList().ToList();
                         CheckClassificationFields(classificationList);
-                        Assert.AreEqual(classificationDirectQueryList[0].ClassificationID, classificationList[0].ClassificationID);
+                        Assert.Equal(classificationDirectQueryList[0].ClassificationID, classificationList[0].ClassificationID);
                 }
             }
         }
         #endregion Tests Generated for GetClassificationList() Skip Take
 
         #region Tests Generated for GetClassificationList() Skip Take Asc
-        [TestMethod]
+        [Fact]
         public void GetClassificationList_Skip_Take_Asc_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -334,14 +334,14 @@ namespace CSSPServices.Tests
                         List<Classification> classificationList = new List<Classification>();
                         classificationList = classificationService.GetClassificationList().ToList();
                         CheckClassificationFields(classificationList);
-                        Assert.AreEqual(classificationDirectQueryList[0].ClassificationID, classificationList[0].ClassificationID);
+                        Assert.Equal(classificationDirectQueryList[0].ClassificationID, classificationList[0].ClassificationID);
                 }
             }
         }
         #endregion Tests Generated for GetClassificationList() Skip Take Asc
 
         #region Tests Generated for GetClassificationList() Skip Take 2 Asc
-        [TestMethod]
+        [Fact]
         public void GetClassificationList_Skip_Take_2Asc_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -360,14 +360,14 @@ namespace CSSPServices.Tests
                         List<Classification> classificationList = new List<Classification>();
                         classificationList = classificationService.GetClassificationList().ToList();
                         CheckClassificationFields(classificationList);
-                        Assert.AreEqual(classificationDirectQueryList[0].ClassificationID, classificationList[0].ClassificationID);
+                        Assert.Equal(classificationDirectQueryList[0].ClassificationID, classificationList[0].ClassificationID);
                 }
             }
         }
         #endregion Tests Generated for GetClassificationList() Skip Take 2 Asc
 
         #region Tests Generated for GetClassificationList() Skip Take Asc Where
-        [TestMethod]
+        [Fact]
         public void GetClassificationList_Skip_Take_Asc_Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -386,14 +386,14 @@ namespace CSSPServices.Tests
                         List<Classification> classificationList = new List<Classification>();
                         classificationList = classificationService.GetClassificationList().ToList();
                         CheckClassificationFields(classificationList);
-                        Assert.AreEqual(classificationDirectQueryList[0].ClassificationID, classificationList[0].ClassificationID);
+                        Assert.Equal(classificationDirectQueryList[0].ClassificationID, classificationList[0].ClassificationID);
                 }
             }
         }
         #endregion Tests Generated for GetClassificationList() Skip Take Asc Where
 
         #region Tests Generated for GetClassificationList() Skip Take Asc 2 Where
-        [TestMethod]
+        [Fact]
         public void GetClassificationList_Skip_Take_Asc_2Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -412,14 +412,14 @@ namespace CSSPServices.Tests
                         List<Classification> classificationList = new List<Classification>();
                         classificationList = classificationService.GetClassificationList().ToList();
                         CheckClassificationFields(classificationList);
-                        Assert.AreEqual(classificationDirectQueryList[0].ClassificationID, classificationList[0].ClassificationID);
+                        Assert.Equal(classificationDirectQueryList[0].ClassificationID, classificationList[0].ClassificationID);
                 }
             }
         }
         #endregion Tests Generated for GetClassificationList() Skip Take Asc 2 Where
 
         #region Tests Generated for GetClassificationList() Skip Take Desc
-        [TestMethod]
+        [Fact]
         public void GetClassificationList_Skip_Take_Desc_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -438,14 +438,14 @@ namespace CSSPServices.Tests
                         List<Classification> classificationList = new List<Classification>();
                         classificationList = classificationService.GetClassificationList().ToList();
                         CheckClassificationFields(classificationList);
-                        Assert.AreEqual(classificationDirectQueryList[0].ClassificationID, classificationList[0].ClassificationID);
+                        Assert.Equal(classificationDirectQueryList[0].ClassificationID, classificationList[0].ClassificationID);
                 }
             }
         }
         #endregion Tests Generated for GetClassificationList() Skip Take Desc
 
         #region Tests Generated for GetClassificationList() Skip Take 2 Desc
-        [TestMethod]
+        [Fact]
         public void GetClassificationList_Skip_Take_2Desc_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -464,14 +464,14 @@ namespace CSSPServices.Tests
                         List<Classification> classificationList = new List<Classification>();
                         classificationList = classificationService.GetClassificationList().ToList();
                         CheckClassificationFields(classificationList);
-                        Assert.AreEqual(classificationDirectQueryList[0].ClassificationID, classificationList[0].ClassificationID);
+                        Assert.Equal(classificationDirectQueryList[0].ClassificationID, classificationList[0].ClassificationID);
                 }
             }
         }
         #endregion Tests Generated for GetClassificationList() Skip Take 2 Desc
 
         #region Tests Generated for GetClassificationList() Skip Take Desc Where
-        [TestMethod]
+        [Fact]
         public void GetClassificationList_Skip_Take_Desc_Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -490,14 +490,14 @@ namespace CSSPServices.Tests
                         List<Classification> classificationList = new List<Classification>();
                         classificationList = classificationService.GetClassificationList().ToList();
                         CheckClassificationFields(classificationList);
-                        Assert.AreEqual(classificationDirectQueryList[0].ClassificationID, classificationList[0].ClassificationID);
+                        Assert.Equal(classificationDirectQueryList[0].ClassificationID, classificationList[0].ClassificationID);
                 }
             }
         }
         #endregion Tests Generated for GetClassificationList() Skip Take Desc Where
 
         #region Tests Generated for GetClassificationList() Skip Take Desc 2 Where
-        [TestMethod]
+        [Fact]
         public void GetClassificationList_Skip_Take_Desc_2Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -516,14 +516,14 @@ namespace CSSPServices.Tests
                         List<Classification> classificationList = new List<Classification>();
                         classificationList = classificationService.GetClassificationList().ToList();
                         CheckClassificationFields(classificationList);
-                        Assert.AreEqual(classificationDirectQueryList[0].ClassificationID, classificationList[0].ClassificationID);
+                        Assert.Equal(classificationDirectQueryList[0].ClassificationID, classificationList[0].ClassificationID);
                 }
             }
         }
         #endregion Tests Generated for GetClassificationList() Skip Take Desc 2 Where
 
         #region Tests Generated for GetClassificationList() 2 Where
-        [TestMethod]
+        [Fact]
         public void GetClassificationList_2Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -542,7 +542,7 @@ namespace CSSPServices.Tests
                         List<Classification> classificationList = new List<Classification>();
                         classificationList = classificationService.GetClassificationList().ToList();
                         CheckClassificationFields(classificationList);
-                        Assert.AreEqual(classificationDirectQueryList[0].ClassificationID, classificationList[0].ClassificationID);
+                        Assert.Equal(classificationDirectQueryList[0].ClassificationID, classificationList[0].ClassificationID);
                 }
             }
         }
@@ -551,13 +551,13 @@ namespace CSSPServices.Tests
         #region Functions private
         private void CheckClassificationFields(List<Classification> classificationList)
         {
-            Assert.IsNotNull(classificationList[0].ClassificationID);
-            Assert.IsNotNull(classificationList[0].ClassificationTVItemID);
-            Assert.IsNotNull(classificationList[0].ClassificationType);
-            Assert.IsNotNull(classificationList[0].Ordinal);
-            Assert.IsNotNull(classificationList[0].LastUpdateDate_UTC);
-            Assert.IsNotNull(classificationList[0].LastUpdateContactTVItemID);
-            Assert.IsNotNull(classificationList[0].HasErrors);
+            Assert.NotNull(classificationList[0].ClassificationID);
+            Assert.NotNull(classificationList[0].ClassificationTVItemID);
+            Assert.NotNull(classificationList[0].ClassificationType);
+            Assert.NotNull(classificationList[0].Ordinal);
+            Assert.NotNull(classificationList[0].LastUpdateDate_UTC);
+            Assert.NotNull(classificationList[0].LastUpdateContactTVItemID);
+            Assert.NotNull(classificationList[0].HasErrors);
         }
         private Classification GetFilledRandomClassification(string OmitPropName)
         {

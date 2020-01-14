@@ -6,7 +6,7 @@
  */ 
 using System;
 using System.Text;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using System.Linq;
 using System.Globalization;
 using System.Transactions;
@@ -19,7 +19,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace CSSPModels.Tests
 {
-    [TestClass]
+
     public partial class SubsectorMWQMSampleYearTest
     {
         #region Variables
@@ -37,7 +37,7 @@ namespace CSSPModels.Tests
         #endregion Constructors
 
         #region Tests Functions public
-        [TestMethod]
+        [Fact]
         public void SubsectorMWQMSampleYear_Properties_Test()
         {
             List<string> propNameList = new List<string>() { "SubsectorTVItemID", "Year", "EarliestDate", "LatestDate", "HasErrors",  }.OrderBy(c => c).ToList();
@@ -46,38 +46,38 @@ namespace CSSPModels.Tests
             int index = 0;
             foreach (PropertyInfo propertyInfo in typeof(SubsectorMWQMSampleYear).GetProperties().Where(c => c.Name != "ValidationResults").OrderBy(c => c.Name).ToList())
             {
-                Assert.AreEqual(propertyInfo.Name, propNameList[index]);
+                Assert.Equal(propertyInfo.Name, propNameList[index]);
                 index += 1;
             }
 
-            Assert.AreEqual(propNameList.Count, index);
+            Assert.Equal(propNameList.Count, index);
         }
-        [TestMethod]
+        [Fact]
         public void SubsectorMWQMSampleYear_Has_ValidationResults_Test()
         {
-             Assert.IsTrue(typeof(SubsectorMWQMSampleYear).GetProperties().Where(c => c.Name == "ValidationResults").Any());
+             Assert.True(typeof(SubsectorMWQMSampleYear).GetProperties().Where(c => c.Name == "ValidationResults").Any());
         }
-        [TestMethod]
+        [Fact]
         public void SubsectorMWQMSampleYear_Every_Property_Has_Get_Set_Test()
         {
                int val1 = 45;
                subsectorMWQMSampleYear.SubsectorTVItemID = val1;
-               Assert.AreEqual(val1, subsectorMWQMSampleYear.SubsectorTVItemID);
+               Assert.Equal(val1, subsectorMWQMSampleYear.SubsectorTVItemID);
                int val2 = 45;
                subsectorMWQMSampleYear.Year = val2;
-               Assert.AreEqual(val2, subsectorMWQMSampleYear.Year);
+               Assert.Equal(val2, subsectorMWQMSampleYear.Year);
                DateTime val3 = new DateTime(2010, 3, 4);
                subsectorMWQMSampleYear.EarliestDate = val3;
-               Assert.AreEqual(val3, subsectorMWQMSampleYear.EarliestDate);
+               Assert.Equal(val3, subsectorMWQMSampleYear.EarliestDate);
                DateTime val4 = new DateTime(2010, 3, 4);
                subsectorMWQMSampleYear.LatestDate = val4;
-               Assert.AreEqual(val4, subsectorMWQMSampleYear.LatestDate);
+               Assert.Equal(val4, subsectorMWQMSampleYear.LatestDate);
                bool val5 = true;
                subsectorMWQMSampleYear.HasErrors = val5;
-               Assert.AreEqual(val5, subsectorMWQMSampleYear.HasErrors);
+               Assert.Equal(val5, subsectorMWQMSampleYear.HasErrors);
                IEnumerable<ValidationResult> val18 = new List<ValidationResult>() { new ValidationResult("First CSSPError Message") }.AsEnumerable();
                subsectorMWQMSampleYear.ValidationResults = val18;
-               Assert.AreEqual(val18, subsectorMWQMSampleYear.ValidationResults);
+               Assert.Equal(val18, subsectorMWQMSampleYear.ValidationResults);
         }
         #endregion Tests Functions public
     }

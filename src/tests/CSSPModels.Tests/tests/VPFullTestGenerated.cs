@@ -6,7 +6,7 @@
  */ 
 using System;
 using System.Text;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using System.Linq;
 using System.Globalization;
 using System.Transactions;
@@ -19,7 +19,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace CSSPModels.Tests
 {
-    [TestClass]
+
     public partial class VPFullTest
     {
         #region Variables
@@ -37,7 +37,7 @@ namespace CSSPModels.Tests
         #endregion Constructors
 
         #region Tests Functions public
-        [TestMethod]
+        [Fact]
         public void VPFull_Properties_Test()
         {
             List<string> propNameList = new List<string>() { "VPScenario", "VPAmbientList", "VPResultList", "HasErrors",  }.OrderBy(c => c).ToList();
@@ -46,35 +46,35 @@ namespace CSSPModels.Tests
             int index = 0;
             foreach (PropertyInfo propertyInfo in typeof(VPFull).GetProperties().Where(c => c.Name != "ValidationResults").OrderBy(c => c.Name).ToList())
             {
-                Assert.AreEqual(propertyInfo.Name, propNameList[index]);
+                Assert.Equal(propertyInfo.Name, propNameList[index]);
                 index += 1;
             }
 
-            Assert.AreEqual(propNameList.Count, index);
+            Assert.Equal(propNameList.Count, index);
         }
-        [TestMethod]
+        [Fact]
         public void VPFull_Has_ValidationResults_Test()
         {
-             Assert.IsTrue(typeof(VPFull).GetProperties().Where(c => c.Name == "ValidationResults").Any());
+             Assert.True(typeof(VPFull).GetProperties().Where(c => c.Name == "ValidationResults").Any());
         }
-        [TestMethod]
+        [Fact]
         public void VPFull_Every_Property_Has_Get_Set_Test()
         {
                VPScenario val1 = new VPScenario();
                vPFull.VPScenario = val1;
-               Assert.AreEqual(val1, vPFull.VPScenario);
+               Assert.Equal(val1, vPFull.VPScenario);
                List<VPAmbient> val2 = new List<VPAmbient>() { new VPAmbient(), new VPAmbient() };
                vPFull.VPAmbientList = val2;
-               Assert.AreEqual(val2, vPFull.VPAmbientList);
+               Assert.Equal(val2, vPFull.VPAmbientList);
                List<VPResult> val3 = new List<VPResult>() { new VPResult(), new VPResult() };
                vPFull.VPResultList = val3;
-               Assert.AreEqual(val3, vPFull.VPResultList);
+               Assert.Equal(val3, vPFull.VPResultList);
                bool val4 = true;
                vPFull.HasErrors = val4;
-               Assert.AreEqual(val4, vPFull.HasErrors);
+               Assert.Equal(val4, vPFull.HasErrors);
                IEnumerable<ValidationResult> val15 = new List<ValidationResult>() { new ValidationResult("First CSSPError Message") }.AsEnumerable();
                vPFull.ValidationResults = val15;
-               Assert.AreEqual(val15, vPFull.ValidationResults);
+               Assert.Equal(val15, vPFull.ValidationResults);
         }
         #endregion Tests Functions public
     }

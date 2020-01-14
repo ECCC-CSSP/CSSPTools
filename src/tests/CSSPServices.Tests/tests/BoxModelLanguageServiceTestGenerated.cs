@@ -5,7 +5,7 @@
  */ 
 
 using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using System.Linq;
 using System.Collections.Generic;
 using CSSPModels;
@@ -21,7 +21,7 @@ using CSSPEnums.Resources;
 
 namespace CSSPServices.Tests
 {
-    [TestClass]
+
     public partial class BoxModelLanguageServiceTest : TestHelper
     {
         #region Variables
@@ -39,7 +39,7 @@ namespace CSSPServices.Tests
         #endregion Constructors
 
         #region Tests Generated CRUD
-        [TestMethod]
+        [Fact]
         public void BoxModelLanguage_CRUD_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -66,26 +66,26 @@ namespace CSSPServices.Tests
 
                     count = boxModelLanguageService.GetBoxModelLanguageList().Count();
 
-                    Assert.AreEqual(count, (from c in dbTestDB.BoxModelLanguages select c).Count());
+                    Assert.Equal(count, (from c in dbTestDB.BoxModelLanguages select c).Count());
 
                     boxModelLanguageService.Add(boxModelLanguage);
                     if (boxModelLanguage.HasErrors)
                     {
-                        Assert.AreEqual("", boxModelLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
+                        Assert.Equal("", boxModelLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
                     }
-                    Assert.AreEqual(true, boxModelLanguageService.GetBoxModelLanguageList().Where(c => c == boxModelLanguage).Any());
+                    Assert.True(boxModelLanguageService.GetBoxModelLanguageList().Where(c => c == boxModelLanguage).Any());
                     boxModelLanguageService.Update(boxModelLanguage);
                     if (boxModelLanguage.HasErrors)
                     {
-                        Assert.AreEqual("", boxModelLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
+                        Assert.Equal("", boxModelLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
                     }
-                    Assert.AreEqual(count + 1, boxModelLanguageService.GetBoxModelLanguageList().Count());
+                    Assert.Equal(count + 1, boxModelLanguageService.GetBoxModelLanguageList().Count());
                     boxModelLanguageService.Delete(boxModelLanguage);
                     if (boxModelLanguage.HasErrors)
                     {
-                        Assert.AreEqual("", boxModelLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
+                        Assert.Equal("", boxModelLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
                     }
-                    Assert.AreEqual(count, boxModelLanguageService.GetBoxModelLanguageList().Count());
+                    Assert.Equal(count, boxModelLanguageService.GetBoxModelLanguageList().Count());
 
                 }
             }
@@ -93,7 +93,7 @@ namespace CSSPServices.Tests
         #endregion Tests Generated CRUD
 
         #region Tests Generated Properties
-        [TestMethod]
+        [Fact]
         public void BoxModelLanguage_Properties_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -131,13 +131,13 @@ namespace CSSPServices.Tests
                     boxModelLanguage = GetFilledRandomBoxModelLanguage("");
                     boxModelLanguage.BoxModelLanguageID = 0;
                     boxModelLanguageService.Update(boxModelLanguage);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsRequired, "BoxModelLanguageID"), boxModelLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsRequired, "BoxModelLanguageID"), boxModelLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
 
                     boxModelLanguage = null;
                     boxModelLanguage = GetFilledRandomBoxModelLanguage("");
                     boxModelLanguage.BoxModelLanguageID = 10000000;
                     boxModelLanguageService.Update(boxModelLanguage);
-                    Assert.AreEqual(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "BoxModelLanguage", "BoxModelLanguageID", boxModelLanguage.BoxModelLanguageID.ToString()), boxModelLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "BoxModelLanguage", "BoxModelLanguageID", boxModelLanguage.BoxModelLanguageID.ToString()), boxModelLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
 
 
                     // -----------------------------------
@@ -150,7 +150,7 @@ namespace CSSPServices.Tests
                     boxModelLanguage = GetFilledRandomBoxModelLanguage("");
                     boxModelLanguage.BoxModelID = 0;
                     boxModelLanguageService.Add(boxModelLanguage);
-                    Assert.AreEqual(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "BoxModel", "BoxModelID", boxModelLanguage.BoxModelID.ToString()), boxModelLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "BoxModel", "BoxModelID", boxModelLanguage.BoxModelID.ToString()), boxModelLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
 
 
                     // -----------------------------------
@@ -163,7 +163,7 @@ namespace CSSPServices.Tests
                     boxModelLanguage = GetFilledRandomBoxModelLanguage("");
                     boxModelLanguage.Language = (LanguageEnum)1000000;
                     boxModelLanguageService.Add(boxModelLanguage);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsRequired, "Language"), boxModelLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsRequired, "Language"), boxModelLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
 
 
                     // -----------------------------------
@@ -174,18 +174,18 @@ namespace CSSPServices.Tests
 
                     boxModelLanguage = null;
                     boxModelLanguage = GetFilledRandomBoxModelLanguage("ScenarioName");
-                    Assert.AreEqual(false, boxModelLanguageService.Add(boxModelLanguage));
-                    Assert.AreEqual(1, boxModelLanguage.ValidationResults.Count());
-                    Assert.IsTrue(boxModelLanguage.ValidationResults.Where(c => c.ErrorMessage == string.Format(CSSPServicesRes._IsRequired, "ScenarioName")).Any());
-                    Assert.AreEqual(null, boxModelLanguage.ScenarioName);
-                    Assert.AreEqual(count, boxModelLanguageService.GetBoxModelLanguageList().Count());
+                    Assert.False(boxModelLanguageService.Add(boxModelLanguage));
+                    Assert.Equal(1, boxModelLanguage.ValidationResults.Count());
+                    Assert.True(boxModelLanguage.ValidationResults.Where(c => c.ErrorMessage == string.Format(CSSPServicesRes._IsRequired, "ScenarioName")).Any());
+                    Assert.Null(boxModelLanguage.ScenarioName);
+                    Assert.Equal(count, boxModelLanguageService.GetBoxModelLanguageList().Count());
 
                     boxModelLanguage = null;
                     boxModelLanguage = GetFilledRandomBoxModelLanguage("");
                     boxModelLanguage.ScenarioName = GetRandomString("", 251);
-                    Assert.AreEqual(false, boxModelLanguageService.Add(boxModelLanguage));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._MaxLengthIs_, "ScenarioName", "250"), boxModelLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, boxModelLanguageService.GetBoxModelLanguageList().Count());
+                    Assert.False(boxModelLanguageService.Add(boxModelLanguage));
+                    Assert.Equal(string.Format(CSSPServicesRes._MaxLengthIs_, "ScenarioName", "250"), boxModelLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, boxModelLanguageService.GetBoxModelLanguageList().Count());
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -197,7 +197,7 @@ namespace CSSPServices.Tests
                     boxModelLanguage = GetFilledRandomBoxModelLanguage("");
                     boxModelLanguage.TranslationStatus = (TranslationStatusEnum)1000000;
                     boxModelLanguageService.Add(boxModelLanguage);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsRequired, "TranslationStatus"), boxModelLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsRequired, "TranslationStatus"), boxModelLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
 
 
                     // -----------------------------------
@@ -210,12 +210,12 @@ namespace CSSPServices.Tests
                     boxModelLanguage = GetFilledRandomBoxModelLanguage("");
                     boxModelLanguage.LastUpdateDate_UTC = new DateTime();
                     boxModelLanguageService.Add(boxModelLanguage);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsRequired, "LastUpdateDate_UTC"), boxModelLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsRequired, "LastUpdateDate_UTC"), boxModelLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
                     boxModelLanguage = null;
                     boxModelLanguage = GetFilledRandomBoxModelLanguage("");
                     boxModelLanguage.LastUpdateDate_UTC = new DateTime(1979, 1, 1);
                     boxModelLanguageService.Add(boxModelLanguage);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._YearShouldBeBiggerThan_, "LastUpdateDate_UTC", "1980"), boxModelLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._YearShouldBeBiggerThan_, "LastUpdateDate_UTC", "1980"), boxModelLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -227,13 +227,13 @@ namespace CSSPServices.Tests
                     boxModelLanguage = GetFilledRandomBoxModelLanguage("");
                     boxModelLanguage.LastUpdateContactTVItemID = 0;
                     boxModelLanguageService.Add(boxModelLanguage);
-                    Assert.AreEqual(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "TVItem", "LastUpdateContactTVItemID", boxModelLanguage.LastUpdateContactTVItemID.ToString()), boxModelLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "TVItem", "LastUpdateContactTVItemID", boxModelLanguage.LastUpdateContactTVItemID.ToString()), boxModelLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
 
                     boxModelLanguage = null;
                     boxModelLanguage = GetFilledRandomBoxModelLanguage("");
                     boxModelLanguage.LastUpdateContactTVItemID = 1;
                     boxModelLanguageService.Add(boxModelLanguage);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsNotOfType_, "LastUpdateContactTVItemID", "Contact"), boxModelLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsNotOfType_, "LastUpdateContactTVItemID", "Contact"), boxModelLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
 
 
                     // -----------------------------------
@@ -257,7 +257,7 @@ namespace CSSPServices.Tests
         #endregion Tests Generated Properties
 
         #region Tests Generated for GetBoxModelLanguageWithBoxModelLanguageID(boxModelLanguage.BoxModelLanguageID)
-        [TestMethod]
+        [Fact]
         public void GetBoxModelLanguageWithBoxModelLanguageID__boxModelLanguage_BoxModelLanguageID__Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -268,7 +268,7 @@ namespace CSSPServices.Tests
                 {
                     BoxModelLanguageService boxModelLanguageService = new BoxModelLanguageService(new Query() { Lang = culture.TwoLetterISOLanguageName }, dbTestDB, ContactID);
                     BoxModelLanguage boxModelLanguage = (from c in dbTestDB.BoxModelLanguages select c).FirstOrDefault();
-                    Assert.IsNotNull(boxModelLanguage);
+                    Assert.NotNull(boxModelLanguage);
 
                 }
             }
@@ -276,7 +276,7 @@ namespace CSSPServices.Tests
         #endregion Tests Generated for GetBoxModelLanguageWithBoxModelLanguageID(boxModelLanguage.BoxModelLanguageID)
 
         #region Tests Generated for GetBoxModelLanguageList()
-        [TestMethod]
+        [Fact]
         public void GetBoxModelLanguageList_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -287,7 +287,7 @@ namespace CSSPServices.Tests
                 {
                     BoxModelLanguageService boxModelLanguageService = new BoxModelLanguageService(new Query() { Lang = culture.TwoLetterISOLanguageName }, dbTestDB, ContactID);
                     BoxModelLanguage boxModelLanguage = (from c in dbTestDB.BoxModelLanguages select c).FirstOrDefault();
-                    Assert.IsNotNull(boxModelLanguage);
+                    Assert.NotNull(boxModelLanguage);
 
                     List<BoxModelLanguage> boxModelLanguageDirectQueryList = new List<BoxModelLanguage>();
                     boxModelLanguageDirectQueryList = (from c in dbTestDB.BoxModelLanguages select c).Take(200).ToList();
@@ -298,7 +298,7 @@ namespace CSSPServices.Tests
         #endregion Tests Generated for GetBoxModelLanguageList()
 
         #region Tests Generated for GetBoxModelLanguageList() Skip Take
-        [TestMethod]
+        [Fact]
         public void GetBoxModelLanguageList_Skip_Take_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -317,14 +317,14 @@ namespace CSSPServices.Tests
                         List<BoxModelLanguage> boxModelLanguageList = new List<BoxModelLanguage>();
                         boxModelLanguageList = boxModelLanguageService.GetBoxModelLanguageList().ToList();
                         CheckBoxModelLanguageFields(boxModelLanguageList);
-                        Assert.AreEqual(boxModelLanguageDirectQueryList[0].BoxModelLanguageID, boxModelLanguageList[0].BoxModelLanguageID);
+                        Assert.Equal(boxModelLanguageDirectQueryList[0].BoxModelLanguageID, boxModelLanguageList[0].BoxModelLanguageID);
                 }
             }
         }
         #endregion Tests Generated for GetBoxModelLanguageList() Skip Take
 
         #region Tests Generated for GetBoxModelLanguageList() Skip Take Asc
-        [TestMethod]
+        [Fact]
         public void GetBoxModelLanguageList_Skip_Take_Asc_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -343,14 +343,14 @@ namespace CSSPServices.Tests
                         List<BoxModelLanguage> boxModelLanguageList = new List<BoxModelLanguage>();
                         boxModelLanguageList = boxModelLanguageService.GetBoxModelLanguageList().ToList();
                         CheckBoxModelLanguageFields(boxModelLanguageList);
-                        Assert.AreEqual(boxModelLanguageDirectQueryList[0].BoxModelLanguageID, boxModelLanguageList[0].BoxModelLanguageID);
+                        Assert.Equal(boxModelLanguageDirectQueryList[0].BoxModelLanguageID, boxModelLanguageList[0].BoxModelLanguageID);
                 }
             }
         }
         #endregion Tests Generated for GetBoxModelLanguageList() Skip Take Asc
 
         #region Tests Generated for GetBoxModelLanguageList() Skip Take 2 Asc
-        [TestMethod]
+        [Fact]
         public void GetBoxModelLanguageList_Skip_Take_2Asc_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -369,14 +369,14 @@ namespace CSSPServices.Tests
                         List<BoxModelLanguage> boxModelLanguageList = new List<BoxModelLanguage>();
                         boxModelLanguageList = boxModelLanguageService.GetBoxModelLanguageList().ToList();
                         CheckBoxModelLanguageFields(boxModelLanguageList);
-                        Assert.AreEqual(boxModelLanguageDirectQueryList[0].BoxModelLanguageID, boxModelLanguageList[0].BoxModelLanguageID);
+                        Assert.Equal(boxModelLanguageDirectQueryList[0].BoxModelLanguageID, boxModelLanguageList[0].BoxModelLanguageID);
                 }
             }
         }
         #endregion Tests Generated for GetBoxModelLanguageList() Skip Take 2 Asc
 
         #region Tests Generated for GetBoxModelLanguageList() Skip Take Asc Where
-        [TestMethod]
+        [Fact]
         public void GetBoxModelLanguageList_Skip_Take_Asc_Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -395,14 +395,14 @@ namespace CSSPServices.Tests
                         List<BoxModelLanguage> boxModelLanguageList = new List<BoxModelLanguage>();
                         boxModelLanguageList = boxModelLanguageService.GetBoxModelLanguageList().ToList();
                         CheckBoxModelLanguageFields(boxModelLanguageList);
-                        Assert.AreEqual(boxModelLanguageDirectQueryList[0].BoxModelLanguageID, boxModelLanguageList[0].BoxModelLanguageID);
+                        Assert.Equal(boxModelLanguageDirectQueryList[0].BoxModelLanguageID, boxModelLanguageList[0].BoxModelLanguageID);
                 }
             }
         }
         #endregion Tests Generated for GetBoxModelLanguageList() Skip Take Asc Where
 
         #region Tests Generated for GetBoxModelLanguageList() Skip Take Asc 2 Where
-        [TestMethod]
+        [Fact]
         public void GetBoxModelLanguageList_Skip_Take_Asc_2Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -421,14 +421,14 @@ namespace CSSPServices.Tests
                         List<BoxModelLanguage> boxModelLanguageList = new List<BoxModelLanguage>();
                         boxModelLanguageList = boxModelLanguageService.GetBoxModelLanguageList().ToList();
                         CheckBoxModelLanguageFields(boxModelLanguageList);
-                        Assert.AreEqual(boxModelLanguageDirectQueryList[0].BoxModelLanguageID, boxModelLanguageList[0].BoxModelLanguageID);
+                        Assert.Equal(boxModelLanguageDirectQueryList[0].BoxModelLanguageID, boxModelLanguageList[0].BoxModelLanguageID);
                 }
             }
         }
         #endregion Tests Generated for GetBoxModelLanguageList() Skip Take Asc 2 Where
 
         #region Tests Generated for GetBoxModelLanguageList() Skip Take Desc
-        [TestMethod]
+        [Fact]
         public void GetBoxModelLanguageList_Skip_Take_Desc_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -447,14 +447,14 @@ namespace CSSPServices.Tests
                         List<BoxModelLanguage> boxModelLanguageList = new List<BoxModelLanguage>();
                         boxModelLanguageList = boxModelLanguageService.GetBoxModelLanguageList().ToList();
                         CheckBoxModelLanguageFields(boxModelLanguageList);
-                        Assert.AreEqual(boxModelLanguageDirectQueryList[0].BoxModelLanguageID, boxModelLanguageList[0].BoxModelLanguageID);
+                        Assert.Equal(boxModelLanguageDirectQueryList[0].BoxModelLanguageID, boxModelLanguageList[0].BoxModelLanguageID);
                 }
             }
         }
         #endregion Tests Generated for GetBoxModelLanguageList() Skip Take Desc
 
         #region Tests Generated for GetBoxModelLanguageList() Skip Take 2 Desc
-        [TestMethod]
+        [Fact]
         public void GetBoxModelLanguageList_Skip_Take_2Desc_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -473,14 +473,14 @@ namespace CSSPServices.Tests
                         List<BoxModelLanguage> boxModelLanguageList = new List<BoxModelLanguage>();
                         boxModelLanguageList = boxModelLanguageService.GetBoxModelLanguageList().ToList();
                         CheckBoxModelLanguageFields(boxModelLanguageList);
-                        Assert.AreEqual(boxModelLanguageDirectQueryList[0].BoxModelLanguageID, boxModelLanguageList[0].BoxModelLanguageID);
+                        Assert.Equal(boxModelLanguageDirectQueryList[0].BoxModelLanguageID, boxModelLanguageList[0].BoxModelLanguageID);
                 }
             }
         }
         #endregion Tests Generated for GetBoxModelLanguageList() Skip Take 2 Desc
 
         #region Tests Generated for GetBoxModelLanguageList() Skip Take Desc Where
-        [TestMethod]
+        [Fact]
         public void GetBoxModelLanguageList_Skip_Take_Desc_Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -499,14 +499,14 @@ namespace CSSPServices.Tests
                         List<BoxModelLanguage> boxModelLanguageList = new List<BoxModelLanguage>();
                         boxModelLanguageList = boxModelLanguageService.GetBoxModelLanguageList().ToList();
                         CheckBoxModelLanguageFields(boxModelLanguageList);
-                        Assert.AreEqual(boxModelLanguageDirectQueryList[0].BoxModelLanguageID, boxModelLanguageList[0].BoxModelLanguageID);
+                        Assert.Equal(boxModelLanguageDirectQueryList[0].BoxModelLanguageID, boxModelLanguageList[0].BoxModelLanguageID);
                 }
             }
         }
         #endregion Tests Generated for GetBoxModelLanguageList() Skip Take Desc Where
 
         #region Tests Generated for GetBoxModelLanguageList() Skip Take Desc 2 Where
-        [TestMethod]
+        [Fact]
         public void GetBoxModelLanguageList_Skip_Take_Desc_2Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -525,14 +525,14 @@ namespace CSSPServices.Tests
                         List<BoxModelLanguage> boxModelLanguageList = new List<BoxModelLanguage>();
                         boxModelLanguageList = boxModelLanguageService.GetBoxModelLanguageList().ToList();
                         CheckBoxModelLanguageFields(boxModelLanguageList);
-                        Assert.AreEqual(boxModelLanguageDirectQueryList[0].BoxModelLanguageID, boxModelLanguageList[0].BoxModelLanguageID);
+                        Assert.Equal(boxModelLanguageDirectQueryList[0].BoxModelLanguageID, boxModelLanguageList[0].BoxModelLanguageID);
                 }
             }
         }
         #endregion Tests Generated for GetBoxModelLanguageList() Skip Take Desc 2 Where
 
         #region Tests Generated for GetBoxModelLanguageList() 2 Where
-        [TestMethod]
+        [Fact]
         public void GetBoxModelLanguageList_2Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -551,7 +551,7 @@ namespace CSSPServices.Tests
                         List<BoxModelLanguage> boxModelLanguageList = new List<BoxModelLanguage>();
                         boxModelLanguageList = boxModelLanguageService.GetBoxModelLanguageList().ToList();
                         CheckBoxModelLanguageFields(boxModelLanguageList);
-                        Assert.AreEqual(boxModelLanguageDirectQueryList[0].BoxModelLanguageID, boxModelLanguageList[0].BoxModelLanguageID);
+                        Assert.Equal(boxModelLanguageDirectQueryList[0].BoxModelLanguageID, boxModelLanguageList[0].BoxModelLanguageID);
                 }
             }
         }
@@ -560,14 +560,14 @@ namespace CSSPServices.Tests
         #region Functions private
         private void CheckBoxModelLanguageFields(List<BoxModelLanguage> boxModelLanguageList)
         {
-            Assert.IsNotNull(boxModelLanguageList[0].BoxModelLanguageID);
-            Assert.IsNotNull(boxModelLanguageList[0].BoxModelID);
-            Assert.IsNotNull(boxModelLanguageList[0].Language);
-            Assert.IsFalse(string.IsNullOrWhiteSpace(boxModelLanguageList[0].ScenarioName));
-            Assert.IsNotNull(boxModelLanguageList[0].TranslationStatus);
-            Assert.IsNotNull(boxModelLanguageList[0].LastUpdateDate_UTC);
-            Assert.IsNotNull(boxModelLanguageList[0].LastUpdateContactTVItemID);
-            Assert.IsNotNull(boxModelLanguageList[0].HasErrors);
+            Assert.NotNull(boxModelLanguageList[0].BoxModelLanguageID);
+            Assert.NotNull(boxModelLanguageList[0].BoxModelID);
+            Assert.NotNull(boxModelLanguageList[0].Language);
+            Assert.False(string.IsNullOrWhiteSpace(boxModelLanguageList[0].ScenarioName));
+            Assert.NotNull(boxModelLanguageList[0].TranslationStatus);
+            Assert.NotNull(boxModelLanguageList[0].LastUpdateDate_UTC);
+            Assert.NotNull(boxModelLanguageList[0].LastUpdateContactTVItemID);
+            Assert.NotNull(boxModelLanguageList[0].HasErrors);
         }
         private BoxModelLanguage GetFilledRandomBoxModelLanguage(string OmitPropName)
         {

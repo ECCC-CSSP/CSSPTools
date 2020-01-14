@@ -5,7 +5,7 @@
  */ 
 
 using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using System.Linq;
 using System.Collections.Generic;
 using CSSPModels;
@@ -21,7 +21,7 @@ using CSSPEnums.Resources;
 
 namespace CSSPServices.Tests
 {
-    [TestClass]
+
     public partial class DrogueRunServiceTest : TestHelper
     {
         #region Variables
@@ -39,7 +39,7 @@ namespace CSSPServices.Tests
         #endregion Constructors
 
         #region Tests Generated CRUD
-        [TestMethod]
+        [Fact]
         public void DrogueRun_CRUD_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -66,26 +66,26 @@ namespace CSSPServices.Tests
 
                     count = drogueRunService.GetDrogueRunList().Count();
 
-                    Assert.AreEqual(count, (from c in dbTestDB.DrogueRuns select c).Count());
+                    Assert.Equal(count, (from c in dbTestDB.DrogueRuns select c).Count());
 
                     drogueRunService.Add(drogueRun);
                     if (drogueRun.HasErrors)
                     {
-                        Assert.AreEqual("", drogueRun.ValidationResults.FirstOrDefault().ErrorMessage);
+                        Assert.Equal("", drogueRun.ValidationResults.FirstOrDefault().ErrorMessage);
                     }
-                    Assert.AreEqual(true, drogueRunService.GetDrogueRunList().Where(c => c == drogueRun).Any());
+                    Assert.True(drogueRunService.GetDrogueRunList().Where(c => c == drogueRun).Any());
                     drogueRunService.Update(drogueRun);
                     if (drogueRun.HasErrors)
                     {
-                        Assert.AreEqual("", drogueRun.ValidationResults.FirstOrDefault().ErrorMessage);
+                        Assert.Equal("", drogueRun.ValidationResults.FirstOrDefault().ErrorMessage);
                     }
-                    Assert.AreEqual(count + 1, drogueRunService.GetDrogueRunList().Count());
+                    Assert.Equal(count + 1, drogueRunService.GetDrogueRunList().Count());
                     drogueRunService.Delete(drogueRun);
                     if (drogueRun.HasErrors)
                     {
-                        Assert.AreEqual("", drogueRun.ValidationResults.FirstOrDefault().ErrorMessage);
+                        Assert.Equal("", drogueRun.ValidationResults.FirstOrDefault().ErrorMessage);
                     }
-                    Assert.AreEqual(count, drogueRunService.GetDrogueRunList().Count());
+                    Assert.Equal(count, drogueRunService.GetDrogueRunList().Count());
 
                 }
             }
@@ -93,7 +93,7 @@ namespace CSSPServices.Tests
         #endregion Tests Generated CRUD
 
         #region Tests Generated Properties
-        [TestMethod]
+        [Fact]
         public void DrogueRun_Properties_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -131,13 +131,13 @@ namespace CSSPServices.Tests
                     drogueRun = GetFilledRandomDrogueRun("");
                     drogueRun.DrogueRunID = 0;
                     drogueRunService.Update(drogueRun);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsRequired, "DrogueRunID"), drogueRun.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsRequired, "DrogueRunID"), drogueRun.ValidationResults.FirstOrDefault().ErrorMessage);
 
                     drogueRun = null;
                     drogueRun = GetFilledRandomDrogueRun("");
                     drogueRun.DrogueRunID = 10000000;
                     drogueRunService.Update(drogueRun);
-                    Assert.AreEqual(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "DrogueRun", "DrogueRunID", drogueRun.DrogueRunID.ToString()), drogueRun.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "DrogueRun", "DrogueRunID", drogueRun.DrogueRunID.ToString()), drogueRun.ValidationResults.FirstOrDefault().ErrorMessage);
 
 
                     // -----------------------------------
@@ -150,13 +150,13 @@ namespace CSSPServices.Tests
                     drogueRun = GetFilledRandomDrogueRun("");
                     drogueRun.SubsectorTVItemID = 0;
                     drogueRunService.Add(drogueRun);
-                    Assert.AreEqual(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "TVItem", "SubsectorTVItemID", drogueRun.SubsectorTVItemID.ToString()), drogueRun.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "TVItem", "SubsectorTVItemID", drogueRun.SubsectorTVItemID.ToString()), drogueRun.ValidationResults.FirstOrDefault().ErrorMessage);
 
                     drogueRun = null;
                     drogueRun = GetFilledRandomDrogueRun("");
                     drogueRun.SubsectorTVItemID = 1;
                     drogueRunService.Add(drogueRun);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsNotOfType_, "SubsectorTVItemID", "Subsector"), drogueRun.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsNotOfType_, "SubsectorTVItemID", "Subsector"), drogueRun.ValidationResults.FirstOrDefault().ErrorMessage);
 
 
                     // -----------------------------------
@@ -168,15 +168,15 @@ namespace CSSPServices.Tests
                     drogueRun = null;
                     drogueRun = GetFilledRandomDrogueRun("");
                     drogueRun.DrogueNumber = -1;
-                    Assert.AreEqual(false, drogueRunService.Add(drogueRun));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "DrogueNumber", "0", "100"), drogueRun.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, drogueRunService.GetDrogueRunList().Count());
+                    Assert.False(drogueRunService.Add(drogueRun));
+                    Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "DrogueNumber", "0", "100"), drogueRun.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, drogueRunService.GetDrogueRunList().Count());
                     drogueRun = null;
                     drogueRun = GetFilledRandomDrogueRun("");
                     drogueRun.DrogueNumber = 101;
-                    Assert.AreEqual(false, drogueRunService.Add(drogueRun));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "DrogueNumber", "0", "100"), drogueRun.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, drogueRunService.GetDrogueRunList().Count());
+                    Assert.False(drogueRunService.Add(drogueRun));
+                    Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "DrogueNumber", "0", "100"), drogueRun.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, drogueRunService.GetDrogueRunList().Count());
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -188,7 +188,7 @@ namespace CSSPServices.Tests
                     drogueRun = GetFilledRandomDrogueRun("");
                     drogueRun.DrogueType = (DrogueTypeEnum)1000000;
                     drogueRunService.Add(drogueRun);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsRequired, "DrogueType"), drogueRun.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsRequired, "DrogueType"), drogueRun.ValidationResults.FirstOrDefault().ErrorMessage);
 
 
                     // -----------------------------------
@@ -201,12 +201,12 @@ namespace CSSPServices.Tests
                     drogueRun = GetFilledRandomDrogueRun("");
                     drogueRun.RunStartDateTime = new DateTime();
                     drogueRunService.Add(drogueRun);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsRequired, "RunStartDateTime"), drogueRun.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsRequired, "RunStartDateTime"), drogueRun.ValidationResults.FirstOrDefault().ErrorMessage);
                     drogueRun = null;
                     drogueRun = GetFilledRandomDrogueRun("");
                     drogueRun.RunStartDateTime = new DateTime(1979, 1, 1);
                     drogueRunService.Add(drogueRun);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._YearShouldBeBiggerThan_, "RunStartDateTime", "1980"), drogueRun.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._YearShouldBeBiggerThan_, "RunStartDateTime", "1980"), drogueRun.ValidationResults.FirstOrDefault().ErrorMessage);
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -224,12 +224,12 @@ namespace CSSPServices.Tests
                     drogueRun = GetFilledRandomDrogueRun("");
                     drogueRun.LastUpdateDate_UTC = new DateTime();
                     drogueRunService.Add(drogueRun);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsRequired, "LastUpdateDate_UTC"), drogueRun.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsRequired, "LastUpdateDate_UTC"), drogueRun.ValidationResults.FirstOrDefault().ErrorMessage);
                     drogueRun = null;
                     drogueRun = GetFilledRandomDrogueRun("");
                     drogueRun.LastUpdateDate_UTC = new DateTime(1979, 1, 1);
                     drogueRunService.Add(drogueRun);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._YearShouldBeBiggerThan_, "LastUpdateDate_UTC", "1980"), drogueRun.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._YearShouldBeBiggerThan_, "LastUpdateDate_UTC", "1980"), drogueRun.ValidationResults.FirstOrDefault().ErrorMessage);
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -241,13 +241,13 @@ namespace CSSPServices.Tests
                     drogueRun = GetFilledRandomDrogueRun("");
                     drogueRun.LastUpdateContactTVItemID = 0;
                     drogueRunService.Add(drogueRun);
-                    Assert.AreEqual(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "TVItem", "LastUpdateContactTVItemID", drogueRun.LastUpdateContactTVItemID.ToString()), drogueRun.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "TVItem", "LastUpdateContactTVItemID", drogueRun.LastUpdateContactTVItemID.ToString()), drogueRun.ValidationResults.FirstOrDefault().ErrorMessage);
 
                     drogueRun = null;
                     drogueRun = GetFilledRandomDrogueRun("");
                     drogueRun.LastUpdateContactTVItemID = 1;
                     drogueRunService.Add(drogueRun);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsNotOfType_, "LastUpdateContactTVItemID", "Contact"), drogueRun.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsNotOfType_, "LastUpdateContactTVItemID", "Contact"), drogueRun.ValidationResults.FirstOrDefault().ErrorMessage);
 
 
                     // -----------------------------------
@@ -271,7 +271,7 @@ namespace CSSPServices.Tests
         #endregion Tests Generated Properties
 
         #region Tests Generated for GetDrogueRunWithDrogueRunID(drogueRun.DrogueRunID)
-        [TestMethod]
+        [Fact]
         public void GetDrogueRunWithDrogueRunID__drogueRun_DrogueRunID__Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -282,7 +282,7 @@ namespace CSSPServices.Tests
                 {
                     DrogueRunService drogueRunService = new DrogueRunService(new Query() { Lang = culture.TwoLetterISOLanguageName }, dbTestDB, ContactID);
                     DrogueRun drogueRun = (from c in dbTestDB.DrogueRuns select c).FirstOrDefault();
-                    Assert.IsNotNull(drogueRun);
+                    Assert.NotNull(drogueRun);
 
                 }
             }
@@ -290,7 +290,7 @@ namespace CSSPServices.Tests
         #endregion Tests Generated for GetDrogueRunWithDrogueRunID(drogueRun.DrogueRunID)
 
         #region Tests Generated for GetDrogueRunList()
-        [TestMethod]
+        [Fact]
         public void GetDrogueRunList_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -301,7 +301,7 @@ namespace CSSPServices.Tests
                 {
                     DrogueRunService drogueRunService = new DrogueRunService(new Query() { Lang = culture.TwoLetterISOLanguageName }, dbTestDB, ContactID);
                     DrogueRun drogueRun = (from c in dbTestDB.DrogueRuns select c).FirstOrDefault();
-                    Assert.IsNotNull(drogueRun);
+                    Assert.NotNull(drogueRun);
 
                     List<DrogueRun> drogueRunDirectQueryList = new List<DrogueRun>();
                     drogueRunDirectQueryList = (from c in dbTestDB.DrogueRuns select c).Take(200).ToList();
@@ -312,7 +312,7 @@ namespace CSSPServices.Tests
         #endregion Tests Generated for GetDrogueRunList()
 
         #region Tests Generated for GetDrogueRunList() Skip Take
-        [TestMethod]
+        [Fact]
         public void GetDrogueRunList_Skip_Take_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -331,14 +331,14 @@ namespace CSSPServices.Tests
                         List<DrogueRun> drogueRunList = new List<DrogueRun>();
                         drogueRunList = drogueRunService.GetDrogueRunList().ToList();
                         CheckDrogueRunFields(drogueRunList);
-                        Assert.AreEqual(drogueRunDirectQueryList[0].DrogueRunID, drogueRunList[0].DrogueRunID);
+                        Assert.Equal(drogueRunDirectQueryList[0].DrogueRunID, drogueRunList[0].DrogueRunID);
                 }
             }
         }
         #endregion Tests Generated for GetDrogueRunList() Skip Take
 
         #region Tests Generated for GetDrogueRunList() Skip Take Asc
-        [TestMethod]
+        [Fact]
         public void GetDrogueRunList_Skip_Take_Asc_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -357,14 +357,14 @@ namespace CSSPServices.Tests
                         List<DrogueRun> drogueRunList = new List<DrogueRun>();
                         drogueRunList = drogueRunService.GetDrogueRunList().ToList();
                         CheckDrogueRunFields(drogueRunList);
-                        Assert.AreEqual(drogueRunDirectQueryList[0].DrogueRunID, drogueRunList[0].DrogueRunID);
+                        Assert.Equal(drogueRunDirectQueryList[0].DrogueRunID, drogueRunList[0].DrogueRunID);
                 }
             }
         }
         #endregion Tests Generated for GetDrogueRunList() Skip Take Asc
 
         #region Tests Generated for GetDrogueRunList() Skip Take 2 Asc
-        [TestMethod]
+        [Fact]
         public void GetDrogueRunList_Skip_Take_2Asc_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -383,14 +383,14 @@ namespace CSSPServices.Tests
                         List<DrogueRun> drogueRunList = new List<DrogueRun>();
                         drogueRunList = drogueRunService.GetDrogueRunList().ToList();
                         CheckDrogueRunFields(drogueRunList);
-                        Assert.AreEqual(drogueRunDirectQueryList[0].DrogueRunID, drogueRunList[0].DrogueRunID);
+                        Assert.Equal(drogueRunDirectQueryList[0].DrogueRunID, drogueRunList[0].DrogueRunID);
                 }
             }
         }
         #endregion Tests Generated for GetDrogueRunList() Skip Take 2 Asc
 
         #region Tests Generated for GetDrogueRunList() Skip Take Asc Where
-        [TestMethod]
+        [Fact]
         public void GetDrogueRunList_Skip_Take_Asc_Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -409,14 +409,14 @@ namespace CSSPServices.Tests
                         List<DrogueRun> drogueRunList = new List<DrogueRun>();
                         drogueRunList = drogueRunService.GetDrogueRunList().ToList();
                         CheckDrogueRunFields(drogueRunList);
-                        Assert.AreEqual(drogueRunDirectQueryList[0].DrogueRunID, drogueRunList[0].DrogueRunID);
+                        Assert.Equal(drogueRunDirectQueryList[0].DrogueRunID, drogueRunList[0].DrogueRunID);
                 }
             }
         }
         #endregion Tests Generated for GetDrogueRunList() Skip Take Asc Where
 
         #region Tests Generated for GetDrogueRunList() Skip Take Asc 2 Where
-        [TestMethod]
+        [Fact]
         public void GetDrogueRunList_Skip_Take_Asc_2Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -435,14 +435,14 @@ namespace CSSPServices.Tests
                         List<DrogueRun> drogueRunList = new List<DrogueRun>();
                         drogueRunList = drogueRunService.GetDrogueRunList().ToList();
                         CheckDrogueRunFields(drogueRunList);
-                        Assert.AreEqual(drogueRunDirectQueryList[0].DrogueRunID, drogueRunList[0].DrogueRunID);
+                        Assert.Equal(drogueRunDirectQueryList[0].DrogueRunID, drogueRunList[0].DrogueRunID);
                 }
             }
         }
         #endregion Tests Generated for GetDrogueRunList() Skip Take Asc 2 Where
 
         #region Tests Generated for GetDrogueRunList() Skip Take Desc
-        [TestMethod]
+        [Fact]
         public void GetDrogueRunList_Skip_Take_Desc_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -461,14 +461,14 @@ namespace CSSPServices.Tests
                         List<DrogueRun> drogueRunList = new List<DrogueRun>();
                         drogueRunList = drogueRunService.GetDrogueRunList().ToList();
                         CheckDrogueRunFields(drogueRunList);
-                        Assert.AreEqual(drogueRunDirectQueryList[0].DrogueRunID, drogueRunList[0].DrogueRunID);
+                        Assert.Equal(drogueRunDirectQueryList[0].DrogueRunID, drogueRunList[0].DrogueRunID);
                 }
             }
         }
         #endregion Tests Generated for GetDrogueRunList() Skip Take Desc
 
         #region Tests Generated for GetDrogueRunList() Skip Take 2 Desc
-        [TestMethod]
+        [Fact]
         public void GetDrogueRunList_Skip_Take_2Desc_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -487,14 +487,14 @@ namespace CSSPServices.Tests
                         List<DrogueRun> drogueRunList = new List<DrogueRun>();
                         drogueRunList = drogueRunService.GetDrogueRunList().ToList();
                         CheckDrogueRunFields(drogueRunList);
-                        Assert.AreEqual(drogueRunDirectQueryList[0].DrogueRunID, drogueRunList[0].DrogueRunID);
+                        Assert.Equal(drogueRunDirectQueryList[0].DrogueRunID, drogueRunList[0].DrogueRunID);
                 }
             }
         }
         #endregion Tests Generated for GetDrogueRunList() Skip Take 2 Desc
 
         #region Tests Generated for GetDrogueRunList() Skip Take Desc Where
-        [TestMethod]
+        [Fact]
         public void GetDrogueRunList_Skip_Take_Desc_Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -513,14 +513,14 @@ namespace CSSPServices.Tests
                         List<DrogueRun> drogueRunList = new List<DrogueRun>();
                         drogueRunList = drogueRunService.GetDrogueRunList().ToList();
                         CheckDrogueRunFields(drogueRunList);
-                        Assert.AreEqual(drogueRunDirectQueryList[0].DrogueRunID, drogueRunList[0].DrogueRunID);
+                        Assert.Equal(drogueRunDirectQueryList[0].DrogueRunID, drogueRunList[0].DrogueRunID);
                 }
             }
         }
         #endregion Tests Generated for GetDrogueRunList() Skip Take Desc Where
 
         #region Tests Generated for GetDrogueRunList() Skip Take Desc 2 Where
-        [TestMethod]
+        [Fact]
         public void GetDrogueRunList_Skip_Take_Desc_2Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -539,14 +539,14 @@ namespace CSSPServices.Tests
                         List<DrogueRun> drogueRunList = new List<DrogueRun>();
                         drogueRunList = drogueRunService.GetDrogueRunList().ToList();
                         CheckDrogueRunFields(drogueRunList);
-                        Assert.AreEqual(drogueRunDirectQueryList[0].DrogueRunID, drogueRunList[0].DrogueRunID);
+                        Assert.Equal(drogueRunDirectQueryList[0].DrogueRunID, drogueRunList[0].DrogueRunID);
                 }
             }
         }
         #endregion Tests Generated for GetDrogueRunList() Skip Take Desc 2 Where
 
         #region Tests Generated for GetDrogueRunList() 2 Where
-        [TestMethod]
+        [Fact]
         public void GetDrogueRunList_2Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -565,7 +565,7 @@ namespace CSSPServices.Tests
                         List<DrogueRun> drogueRunList = new List<DrogueRun>();
                         drogueRunList = drogueRunService.GetDrogueRunList().ToList();
                         CheckDrogueRunFields(drogueRunList);
-                        Assert.AreEqual(drogueRunDirectQueryList[0].DrogueRunID, drogueRunList[0].DrogueRunID);
+                        Assert.Equal(drogueRunDirectQueryList[0].DrogueRunID, drogueRunList[0].DrogueRunID);
                 }
             }
         }
@@ -574,15 +574,15 @@ namespace CSSPServices.Tests
         #region Functions private
         private void CheckDrogueRunFields(List<DrogueRun> drogueRunList)
         {
-            Assert.IsNotNull(drogueRunList[0].DrogueRunID);
-            Assert.IsNotNull(drogueRunList[0].SubsectorTVItemID);
-            Assert.IsNotNull(drogueRunList[0].DrogueNumber);
-            Assert.IsNotNull(drogueRunList[0].DrogueType);
-            Assert.IsNotNull(drogueRunList[0].RunStartDateTime);
-            Assert.IsNotNull(drogueRunList[0].IsRisingTide);
-            Assert.IsNotNull(drogueRunList[0].LastUpdateDate_UTC);
-            Assert.IsNotNull(drogueRunList[0].LastUpdateContactTVItemID);
-            Assert.IsNotNull(drogueRunList[0].HasErrors);
+            Assert.NotNull(drogueRunList[0].DrogueRunID);
+            Assert.NotNull(drogueRunList[0].SubsectorTVItemID);
+            Assert.NotNull(drogueRunList[0].DrogueNumber);
+            Assert.NotNull(drogueRunList[0].DrogueType);
+            Assert.NotNull(drogueRunList[0].RunStartDateTime);
+            Assert.NotNull(drogueRunList[0].IsRisingTide);
+            Assert.NotNull(drogueRunList[0].LastUpdateDate_UTC);
+            Assert.NotNull(drogueRunList[0].LastUpdateContactTVItemID);
+            Assert.NotNull(drogueRunList[0].HasErrors);
         }
         private DrogueRun GetFilledRandomDrogueRun(string OmitPropName)
         {

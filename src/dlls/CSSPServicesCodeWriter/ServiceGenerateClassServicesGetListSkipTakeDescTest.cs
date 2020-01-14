@@ -20,7 +20,7 @@ namespace CSSPServicesGenerateCodeHelper
         private void GenerateGetListSkipTakeDescTestCode(string TypeName, string TypeNameLower, List<Type> types, StringBuilder sb)
         {
             sb.AppendLine($@"        #region Tests Generated for Get{ TypeName }List() Skip Take Desc");
-            sb.AppendLine(@"        [TestMethod]");
+            sb.AppendLine(@"        [Fact]");
             sb.AppendLine($@"        public void Get{ TypeName }List_Skip_Take_Desc_Test()");
             sb.AppendLine(@"        {");
             sb.AppendLine(@"            foreach (CultureInfo culture in AllowableCulture)");

@@ -7,13 +7,12 @@
  * Last edited by Charles LeBlanc. 
  * 
  */
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using System.Globalization;
 using System.Threading;
 
 namespace CSSPEnums.Tests
 {
-    [TestClass]
     public partial class EnumsTest
     {
         #region Variables

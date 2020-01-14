@@ -617,6 +617,8 @@ namespace CSSPEnums
                     return CSSPEnumsRes.AppTaskCommandEnumProvinceToolsGenerateStats;
                 case AppTaskCommandEnum.MikeScenarioPrepareResults:
                     return CSSPEnumsRes.AppTaskCommandEnumMikeScenarioPrepareResults;
+                case AppTaskCommandEnum.ClimateSiteLoadCoCoRaHSData:
+                    return CSSPEnumsRes.AppTaskCommandEnumClimateSiteLoadCoCoRaHSData;
                 default:
                     return CSSPEnumsRes.Empty;
             }
@@ -2000,6 +2002,10 @@ namespace CSSPEnums
                     return CSSPEnumsRes.SampleTypeEnumSanitary;
                 case SampleTypeEnum.Study:
                     return CSSPEnumsRes.SampleTypeEnumStudy;
+                case SampleTypeEnum.Sediment:
+                    return CSSPEnumsRes.SampleTypeEnumSediment;
+                case SampleTypeEnum.Bivalve:
+                    return CSSPEnumsRes.SampleTypeEnumBivalve;
                 default:
                     return CSSPEnumsRes.Empty;
             }

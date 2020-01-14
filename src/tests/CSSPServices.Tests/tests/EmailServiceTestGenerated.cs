@@ -5,7 +5,7 @@
  */ 
 
 using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using System.Linq;
 using System.Collections.Generic;
 using CSSPModels;
@@ -21,7 +21,7 @@ using CSSPEnums.Resources;
 
 namespace CSSPServices.Tests
 {
-    [TestClass]
+
     public partial class EmailServiceTest : TestHelper
     {
         #region Variables
@@ -39,7 +39,7 @@ namespace CSSPServices.Tests
         #endregion Constructors
 
         #region Tests Generated CRUD
-        [TestMethod]
+        [Fact]
         public void Email_CRUD_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -66,26 +66,26 @@ namespace CSSPServices.Tests
 
                     count = emailService.GetEmailList().Count();
 
-                    Assert.AreEqual(count, (from c in dbTestDB.Emails select c).Count());
+                    Assert.Equal(count, (from c in dbTestDB.Emails select c).Count());
 
                     emailService.Add(email);
                     if (email.HasErrors)
                     {
-                        Assert.AreEqual("", email.ValidationResults.FirstOrDefault().ErrorMessage);
+                        Assert.Equal("", email.ValidationResults.FirstOrDefault().ErrorMessage);
                     }
-                    Assert.AreEqual(true, emailService.GetEmailList().Where(c => c == email).Any());
+                    Assert.True(emailService.GetEmailList().Where(c => c == email).Any());
                     emailService.Update(email);
                     if (email.HasErrors)
                     {
-                        Assert.AreEqual("", email.ValidationResults.FirstOrDefault().ErrorMessage);
+                        Assert.Equal("", email.ValidationResults.FirstOrDefault().ErrorMessage);
                     }
-                    Assert.AreEqual(count + 1, emailService.GetEmailList().Count());
+                    Assert.Equal(count + 1, emailService.GetEmailList().Count());
                     emailService.Delete(email);
                     if (email.HasErrors)
                     {
-                        Assert.AreEqual("", email.ValidationResults.FirstOrDefault().ErrorMessage);
+                        Assert.Equal("", email.ValidationResults.FirstOrDefault().ErrorMessage);
                     }
-                    Assert.AreEqual(count, emailService.GetEmailList().Count());
+                    Assert.Equal(count, emailService.GetEmailList().Count());
 
                 }
             }
@@ -93,7 +93,7 @@ namespace CSSPServices.Tests
         #endregion Tests Generated CRUD
 
         #region Tests Generated Properties
-        [TestMethod]
+        [Fact]
         public void Email_Properties_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -131,13 +131,13 @@ namespace CSSPServices.Tests
                     email = GetFilledRandomEmail("");
                     email.EmailID = 0;
                     emailService.Update(email);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsRequired, "EmailID"), email.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsRequired, "EmailID"), email.ValidationResults.FirstOrDefault().ErrorMessage);
 
                     email = null;
                     email = GetFilledRandomEmail("");
                     email.EmailID = 10000000;
                     emailService.Update(email);
-                    Assert.AreEqual(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "Email", "EmailID", email.EmailID.ToString()), email.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "Email", "EmailID", email.EmailID.ToString()), email.ValidationResults.FirstOrDefault().ErrorMessage);
 
 
                     // -----------------------------------
@@ -150,13 +150,13 @@ namespace CSSPServices.Tests
                     email = GetFilledRandomEmail("");
                     email.EmailTVItemID = 0;
                     emailService.Add(email);
-                    Assert.AreEqual(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "TVItem", "EmailTVItemID", email.EmailTVItemID.ToString()), email.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "TVItem", "EmailTVItemID", email.EmailTVItemID.ToString()), email.ValidationResults.FirstOrDefault().ErrorMessage);
 
                     email = null;
                     email = GetFilledRandomEmail("");
                     email.EmailTVItemID = 1;
                     emailService.Add(email);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsNotOfType_, "EmailTVItemID", "Email"), email.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsNotOfType_, "EmailTVItemID", "Email"), email.ValidationResults.FirstOrDefault().ErrorMessage);
 
 
                     // -----------------------------------
@@ -168,18 +168,18 @@ namespace CSSPServices.Tests
 
                     email = null;
                     email = GetFilledRandomEmail("EmailAddress");
-                    Assert.AreEqual(false, emailService.Add(email));
-                    Assert.AreEqual(1, email.ValidationResults.Count());
-                    Assert.IsTrue(email.ValidationResults.Where(c => c.ErrorMessage == string.Format(CSSPServicesRes._IsRequired, "EmailAddress")).Any());
-                    Assert.AreEqual(null, email.EmailAddress);
-                    Assert.AreEqual(count, emailService.GetEmailList().Count());
+                    Assert.False(emailService.Add(email));
+                    Assert.Equal(1, email.ValidationResults.Count());
+                    Assert.True(email.ValidationResults.Where(c => c.ErrorMessage == string.Format(CSSPServicesRes._IsRequired, "EmailAddress")).Any());
+                    Assert.Null(email.EmailAddress);
+                    Assert.Equal(count, emailService.GetEmailList().Count());
 
                     email = null;
                     email = GetFilledRandomEmail("");
                     email.EmailAddress = GetRandomString("", 256);
-                    Assert.AreEqual(false, emailService.Add(email));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._MaxLengthIs_, "EmailAddress", "255"), email.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, emailService.GetEmailList().Count());
+                    Assert.False(emailService.Add(email));
+                    Assert.Equal(string.Format(CSSPServicesRes._MaxLengthIs_, "EmailAddress", "255"), email.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, emailService.GetEmailList().Count());
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -191,7 +191,7 @@ namespace CSSPServices.Tests
                     email = GetFilledRandomEmail("");
                     email.EmailType = (EmailTypeEnum)1000000;
                     emailService.Add(email);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsRequired, "EmailType"), email.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsRequired, "EmailType"), email.ValidationResults.FirstOrDefault().ErrorMessage);
 
 
                     // -----------------------------------
@@ -204,12 +204,12 @@ namespace CSSPServices.Tests
                     email = GetFilledRandomEmail("");
                     email.LastUpdateDate_UTC = new DateTime();
                     emailService.Add(email);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsRequired, "LastUpdateDate_UTC"), email.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsRequired, "LastUpdateDate_UTC"), email.ValidationResults.FirstOrDefault().ErrorMessage);
                     email = null;
                     email = GetFilledRandomEmail("");
                     email.LastUpdateDate_UTC = new DateTime(1979, 1, 1);
                     emailService.Add(email);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._YearShouldBeBiggerThan_, "LastUpdateDate_UTC", "1980"), email.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._YearShouldBeBiggerThan_, "LastUpdateDate_UTC", "1980"), email.ValidationResults.FirstOrDefault().ErrorMessage);
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -221,13 +221,13 @@ namespace CSSPServices.Tests
                     email = GetFilledRandomEmail("");
                     email.LastUpdateContactTVItemID = 0;
                     emailService.Add(email);
-                    Assert.AreEqual(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "TVItem", "LastUpdateContactTVItemID", email.LastUpdateContactTVItemID.ToString()), email.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "TVItem", "LastUpdateContactTVItemID", email.LastUpdateContactTVItemID.ToString()), email.ValidationResults.FirstOrDefault().ErrorMessage);
 
                     email = null;
                     email = GetFilledRandomEmail("");
                     email.LastUpdateContactTVItemID = 1;
                     emailService.Add(email);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsNotOfType_, "LastUpdateContactTVItemID", "Contact"), email.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsNotOfType_, "LastUpdateContactTVItemID", "Contact"), email.ValidationResults.FirstOrDefault().ErrorMessage);
 
 
                     // -----------------------------------
@@ -251,7 +251,7 @@ namespace CSSPServices.Tests
         #endregion Tests Generated Properties
 
         #region Tests Generated for GetEmailWithEmailID(email.EmailID)
-        [TestMethod]
+        [Fact]
         public void GetEmailWithEmailID__email_EmailID__Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -262,7 +262,7 @@ namespace CSSPServices.Tests
                 {
                     EmailService emailService = new EmailService(new Query() { Lang = culture.TwoLetterISOLanguageName }, dbTestDB, ContactID);
                     Email email = (from c in dbTestDB.Emails select c).FirstOrDefault();
-                    Assert.IsNotNull(email);
+                    Assert.NotNull(email);
 
                 }
             }
@@ -270,7 +270,7 @@ namespace CSSPServices.Tests
         #endregion Tests Generated for GetEmailWithEmailID(email.EmailID)
 
         #region Tests Generated for GetEmailList()
-        [TestMethod]
+        [Fact]
         public void GetEmailList_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -281,7 +281,7 @@ namespace CSSPServices.Tests
                 {
                     EmailService emailService = new EmailService(new Query() { Lang = culture.TwoLetterISOLanguageName }, dbTestDB, ContactID);
                     Email email = (from c in dbTestDB.Emails select c).FirstOrDefault();
-                    Assert.IsNotNull(email);
+                    Assert.NotNull(email);
 
                     List<Email> emailDirectQueryList = new List<Email>();
                     emailDirectQueryList = (from c in dbTestDB.Emails select c).Take(200).ToList();
@@ -292,7 +292,7 @@ namespace CSSPServices.Tests
         #endregion Tests Generated for GetEmailList()
 
         #region Tests Generated for GetEmailList() Skip Take
-        [TestMethod]
+        [Fact]
         public void GetEmailList_Skip_Take_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -311,14 +311,14 @@ namespace CSSPServices.Tests
                         List<Email> emailList = new List<Email>();
                         emailList = emailService.GetEmailList().ToList();
                         CheckEmailFields(emailList);
-                        Assert.AreEqual(emailDirectQueryList[0].EmailID, emailList[0].EmailID);
+                        Assert.Equal(emailDirectQueryList[0].EmailID, emailList[0].EmailID);
                 }
             }
         }
         #endregion Tests Generated for GetEmailList() Skip Take
 
         #region Tests Generated for GetEmailList() Skip Take Asc
-        [TestMethod]
+        [Fact]
         public void GetEmailList_Skip_Take_Asc_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -337,14 +337,14 @@ namespace CSSPServices.Tests
                         List<Email> emailList = new List<Email>();
                         emailList = emailService.GetEmailList().ToList();
                         CheckEmailFields(emailList);
-                        Assert.AreEqual(emailDirectQueryList[0].EmailID, emailList[0].EmailID);
+                        Assert.Equal(emailDirectQueryList[0].EmailID, emailList[0].EmailID);
                 }
             }
         }
         #endregion Tests Generated for GetEmailList() Skip Take Asc
 
         #region Tests Generated for GetEmailList() Skip Take 2 Asc
-        [TestMethod]
+        [Fact]
         public void GetEmailList_Skip_Take_2Asc_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -363,14 +363,14 @@ namespace CSSPServices.Tests
                         List<Email> emailList = new List<Email>();
                         emailList = emailService.GetEmailList().ToList();
                         CheckEmailFields(emailList);
-                        Assert.AreEqual(emailDirectQueryList[0].EmailID, emailList[0].EmailID);
+                        Assert.Equal(emailDirectQueryList[0].EmailID, emailList[0].EmailID);
                 }
             }
         }
         #endregion Tests Generated for GetEmailList() Skip Take 2 Asc
 
         #region Tests Generated for GetEmailList() Skip Take Asc Where
-        [TestMethod]
+        [Fact]
         public void GetEmailList_Skip_Take_Asc_Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -389,14 +389,14 @@ namespace CSSPServices.Tests
                         List<Email> emailList = new List<Email>();
                         emailList = emailService.GetEmailList().ToList();
                         CheckEmailFields(emailList);
-                        Assert.AreEqual(emailDirectQueryList[0].EmailID, emailList[0].EmailID);
+                        Assert.Equal(emailDirectQueryList[0].EmailID, emailList[0].EmailID);
                 }
             }
         }
         #endregion Tests Generated for GetEmailList() Skip Take Asc Where
 
         #region Tests Generated for GetEmailList() Skip Take Asc 2 Where
-        [TestMethod]
+        [Fact]
         public void GetEmailList_Skip_Take_Asc_2Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -415,14 +415,14 @@ namespace CSSPServices.Tests
                         List<Email> emailList = new List<Email>();
                         emailList = emailService.GetEmailList().ToList();
                         CheckEmailFields(emailList);
-                        Assert.AreEqual(emailDirectQueryList[0].EmailID, emailList[0].EmailID);
+                        Assert.Equal(emailDirectQueryList[0].EmailID, emailList[0].EmailID);
                 }
             }
         }
         #endregion Tests Generated for GetEmailList() Skip Take Asc 2 Where
 
         #region Tests Generated for GetEmailList() Skip Take Desc
-        [TestMethod]
+        [Fact]
         public void GetEmailList_Skip_Take_Desc_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -441,14 +441,14 @@ namespace CSSPServices.Tests
                         List<Email> emailList = new List<Email>();
                         emailList = emailService.GetEmailList().ToList();
                         CheckEmailFields(emailList);
-                        Assert.AreEqual(emailDirectQueryList[0].EmailID, emailList[0].EmailID);
+                        Assert.Equal(emailDirectQueryList[0].EmailID, emailList[0].EmailID);
                 }
             }
         }
         #endregion Tests Generated for GetEmailList() Skip Take Desc
 
         #region Tests Generated for GetEmailList() Skip Take 2 Desc
-        [TestMethod]
+        [Fact]
         public void GetEmailList_Skip_Take_2Desc_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -467,14 +467,14 @@ namespace CSSPServices.Tests
                         List<Email> emailList = new List<Email>();
                         emailList = emailService.GetEmailList().ToList();
                         CheckEmailFields(emailList);
-                        Assert.AreEqual(emailDirectQueryList[0].EmailID, emailList[0].EmailID);
+                        Assert.Equal(emailDirectQueryList[0].EmailID, emailList[0].EmailID);
                 }
             }
         }
         #endregion Tests Generated for GetEmailList() Skip Take 2 Desc
 
         #region Tests Generated for GetEmailList() Skip Take Desc Where
-        [TestMethod]
+        [Fact]
         public void GetEmailList_Skip_Take_Desc_Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -493,14 +493,14 @@ namespace CSSPServices.Tests
                         List<Email> emailList = new List<Email>();
                         emailList = emailService.GetEmailList().ToList();
                         CheckEmailFields(emailList);
-                        Assert.AreEqual(emailDirectQueryList[0].EmailID, emailList[0].EmailID);
+                        Assert.Equal(emailDirectQueryList[0].EmailID, emailList[0].EmailID);
                 }
             }
         }
         #endregion Tests Generated for GetEmailList() Skip Take Desc Where
 
         #region Tests Generated for GetEmailList() Skip Take Desc 2 Where
-        [TestMethod]
+        [Fact]
         public void GetEmailList_Skip_Take_Desc_2Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -519,14 +519,14 @@ namespace CSSPServices.Tests
                         List<Email> emailList = new List<Email>();
                         emailList = emailService.GetEmailList().ToList();
                         CheckEmailFields(emailList);
-                        Assert.AreEqual(emailDirectQueryList[0].EmailID, emailList[0].EmailID);
+                        Assert.Equal(emailDirectQueryList[0].EmailID, emailList[0].EmailID);
                 }
             }
         }
         #endregion Tests Generated for GetEmailList() Skip Take Desc 2 Where
 
         #region Tests Generated for GetEmailList() 2 Where
-        [TestMethod]
+        [Fact]
         public void GetEmailList_2Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -545,7 +545,7 @@ namespace CSSPServices.Tests
                         List<Email> emailList = new List<Email>();
                         emailList = emailService.GetEmailList().ToList();
                         CheckEmailFields(emailList);
-                        Assert.AreEqual(emailDirectQueryList[0].EmailID, emailList[0].EmailID);
+                        Assert.Equal(emailDirectQueryList[0].EmailID, emailList[0].EmailID);
                 }
             }
         }
@@ -554,13 +554,13 @@ namespace CSSPServices.Tests
         #region Functions private
         private void CheckEmailFields(List<Email> emailList)
         {
-            Assert.IsNotNull(emailList[0].EmailID);
-            Assert.IsNotNull(emailList[0].EmailTVItemID);
-            Assert.IsFalse(string.IsNullOrWhiteSpace(emailList[0].EmailAddress));
-            Assert.IsNotNull(emailList[0].EmailType);
-            Assert.IsNotNull(emailList[0].LastUpdateDate_UTC);
-            Assert.IsNotNull(emailList[0].LastUpdateContactTVItemID);
-            Assert.IsNotNull(emailList[0].HasErrors);
+            Assert.NotNull(emailList[0].EmailID);
+            Assert.NotNull(emailList[0].EmailTVItemID);
+            Assert.False(string.IsNullOrWhiteSpace(emailList[0].EmailAddress));
+            Assert.NotNull(emailList[0].EmailType);
+            Assert.NotNull(emailList[0].LastUpdateDate_UTC);
+            Assert.NotNull(emailList[0].LastUpdateContactTVItemID);
+            Assert.NotNull(emailList[0].HasErrors);
         }
         private Email GetFilledRandomEmail(string OmitPropName)
         {

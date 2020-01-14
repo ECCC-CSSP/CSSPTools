@@ -5,7 +5,7 @@
  */ 
 
 using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using System.Linq;
 using System.Collections.Generic;
 using CSSPModels;
@@ -21,7 +21,7 @@ using CSSPEnums.Resources;
 
 namespace CSSPServices.Tests
 {
-    [TestClass]
+
     public partial class MikeSourceServiceTest : TestHelper
     {
         #region Variables
@@ -39,7 +39,7 @@ namespace CSSPServices.Tests
         #endregion Constructors
 
         #region Tests Generated CRUD
-        [TestMethod]
+        [Fact]
         public void MikeSource_CRUD_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -66,26 +66,26 @@ namespace CSSPServices.Tests
 
                     count = mikeSourceService.GetMikeSourceList().Count();
 
-                    Assert.AreEqual(count, (from c in dbTestDB.MikeSources select c).Count());
+                    Assert.Equal(count, (from c in dbTestDB.MikeSources select c).Count());
 
                     mikeSourceService.Add(mikeSource);
                     if (mikeSource.HasErrors)
                     {
-                        Assert.AreEqual("", mikeSource.ValidationResults.FirstOrDefault().ErrorMessage);
+                        Assert.Equal("", mikeSource.ValidationResults.FirstOrDefault().ErrorMessage);
                     }
-                    Assert.AreEqual(true, mikeSourceService.GetMikeSourceList().Where(c => c == mikeSource).Any());
+                    Assert.True(mikeSourceService.GetMikeSourceList().Where(c => c == mikeSource).Any());
                     mikeSourceService.Update(mikeSource);
                     if (mikeSource.HasErrors)
                     {
-                        Assert.AreEqual("", mikeSource.ValidationResults.FirstOrDefault().ErrorMessage);
+                        Assert.Equal("", mikeSource.ValidationResults.FirstOrDefault().ErrorMessage);
                     }
-                    Assert.AreEqual(count + 1, mikeSourceService.GetMikeSourceList().Count());
+                    Assert.Equal(count + 1, mikeSourceService.GetMikeSourceList().Count());
                     mikeSourceService.Delete(mikeSource);
                     if (mikeSource.HasErrors)
                     {
-                        Assert.AreEqual("", mikeSource.ValidationResults.FirstOrDefault().ErrorMessage);
+                        Assert.Equal("", mikeSource.ValidationResults.FirstOrDefault().ErrorMessage);
                     }
-                    Assert.AreEqual(count, mikeSourceService.GetMikeSourceList().Count());
+                    Assert.Equal(count, mikeSourceService.GetMikeSourceList().Count());
 
                 }
             }
@@ -93,7 +93,7 @@ namespace CSSPServices.Tests
         #endregion Tests Generated CRUD
 
         #region Tests Generated Properties
-        [TestMethod]
+        [Fact]
         public void MikeSource_Properties_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -131,13 +131,13 @@ namespace CSSPServices.Tests
                     mikeSource = GetFilledRandomMikeSource("");
                     mikeSource.MikeSourceID = 0;
                     mikeSourceService.Update(mikeSource);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsRequired, "MikeSourceID"), mikeSource.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsRequired, "MikeSourceID"), mikeSource.ValidationResults.FirstOrDefault().ErrorMessage);
 
                     mikeSource = null;
                     mikeSource = GetFilledRandomMikeSource("");
                     mikeSource.MikeSourceID = 10000000;
                     mikeSourceService.Update(mikeSource);
-                    Assert.AreEqual(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "MikeSource", "MikeSourceID", mikeSource.MikeSourceID.ToString()), mikeSource.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "MikeSource", "MikeSourceID", mikeSource.MikeSourceID.ToString()), mikeSource.ValidationResults.FirstOrDefault().ErrorMessage);
 
 
                     // -----------------------------------
@@ -150,13 +150,13 @@ namespace CSSPServices.Tests
                     mikeSource = GetFilledRandomMikeSource("");
                     mikeSource.MikeSourceTVItemID = 0;
                     mikeSourceService.Add(mikeSource);
-                    Assert.AreEqual(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "TVItem", "MikeSourceTVItemID", mikeSource.MikeSourceTVItemID.ToString()), mikeSource.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "TVItem", "MikeSourceTVItemID", mikeSource.MikeSourceTVItemID.ToString()), mikeSource.ValidationResults.FirstOrDefault().ErrorMessage);
 
                     mikeSource = null;
                     mikeSource = GetFilledRandomMikeSource("");
                     mikeSource.MikeSourceTVItemID = 1;
                     mikeSourceService.Add(mikeSource);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsNotOfType_, "MikeSourceTVItemID", "MikeSource"), mikeSource.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsNotOfType_, "MikeSourceTVItemID", "MikeSource"), mikeSource.ValidationResults.FirstOrDefault().ErrorMessage);
 
 
                     // -----------------------------------
@@ -193,13 +193,13 @@ namespace CSSPServices.Tests
                     mikeSource = GetFilledRandomMikeSource("");
                     mikeSource.HydrometricTVItemID = 0;
                     mikeSourceService.Add(mikeSource);
-                    Assert.AreEqual(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "TVItem", "HydrometricTVItemID", mikeSource.HydrometricTVItemID.ToString()), mikeSource.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "TVItem", "HydrometricTVItemID", mikeSource.HydrometricTVItemID.ToString()), mikeSource.ValidationResults.FirstOrDefault().ErrorMessage);
 
                     mikeSource = null;
                     mikeSource = GetFilledRandomMikeSource("");
                     mikeSource.HydrometricTVItemID = 1;
                     mikeSourceService.Add(mikeSource);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsNotOfType_, "HydrometricTVItemID", "HydrometricSite"), mikeSource.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsNotOfType_, "HydrometricTVItemID", "HydrometricSite"), mikeSource.ValidationResults.FirstOrDefault().ErrorMessage);
 
 
                     // -----------------------------------
@@ -215,15 +215,15 @@ namespace CSSPServices.Tests
                     mikeSource = null;
                     mikeSource = GetFilledRandomMikeSource("");
                     mikeSource.DrainageArea_km2 = -1.0D;
-                    Assert.AreEqual(false, mikeSourceService.Add(mikeSource));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "DrainageArea_km2", "0", "1000000"), mikeSource.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, mikeSourceService.GetMikeSourceList().Count());
+                    Assert.False(mikeSourceService.Add(mikeSource));
+                    Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "DrainageArea_km2", "0", "1000000"), mikeSource.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, mikeSourceService.GetMikeSourceList().Count());
                     mikeSource = null;
                     mikeSource = GetFilledRandomMikeSource("");
                     mikeSource.DrainageArea_km2 = 1000001.0D;
-                    Assert.AreEqual(false, mikeSourceService.Add(mikeSource));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "DrainageArea_km2", "0", "1000000"), mikeSource.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, mikeSourceService.GetMikeSourceList().Count());
+                    Assert.False(mikeSourceService.Add(mikeSource));
+                    Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "DrainageArea_km2", "0", "1000000"), mikeSource.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, mikeSourceService.GetMikeSourceList().Count());
 
                     // -----------------------------------
                     // Is Nullable
@@ -238,15 +238,15 @@ namespace CSSPServices.Tests
                     mikeSource = null;
                     mikeSource = GetFilledRandomMikeSource("");
                     mikeSource.Factor = -1.0D;
-                    Assert.AreEqual(false, mikeSourceService.Add(mikeSource));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "Factor", "0", "1000000"), mikeSource.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, mikeSourceService.GetMikeSourceList().Count());
+                    Assert.False(mikeSourceService.Add(mikeSource));
+                    Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "Factor", "0", "1000000"), mikeSource.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, mikeSourceService.GetMikeSourceList().Count());
                     mikeSource = null;
                     mikeSource = GetFilledRandomMikeSource("");
                     mikeSource.Factor = 1000001.0D;
-                    Assert.AreEqual(false, mikeSourceService.Add(mikeSource));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "Factor", "0", "1000000"), mikeSource.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, mikeSourceService.GetMikeSourceList().Count());
+                    Assert.False(mikeSourceService.Add(mikeSource));
+                    Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "Factor", "0", "1000000"), mikeSource.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, mikeSourceService.GetMikeSourceList().Count());
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -256,18 +256,18 @@ namespace CSSPServices.Tests
 
                     mikeSource = null;
                     mikeSource = GetFilledRandomMikeSource("SourceNumberString");
-                    Assert.AreEqual(false, mikeSourceService.Add(mikeSource));
-                    Assert.AreEqual(1, mikeSource.ValidationResults.Count());
-                    Assert.IsTrue(mikeSource.ValidationResults.Where(c => c.ErrorMessage == string.Format(CSSPServicesRes._IsRequired, "SourceNumberString")).Any());
-                    Assert.AreEqual(null, mikeSource.SourceNumberString);
-                    Assert.AreEqual(count, mikeSourceService.GetMikeSourceList().Count());
+                    Assert.False(mikeSourceService.Add(mikeSource));
+                    Assert.Equal(1, mikeSource.ValidationResults.Count());
+                    Assert.True(mikeSource.ValidationResults.Where(c => c.ErrorMessage == string.Format(CSSPServicesRes._IsRequired, "SourceNumberString")).Any());
+                    Assert.Null(mikeSource.SourceNumberString);
+                    Assert.Equal(count, mikeSourceService.GetMikeSourceList().Count());
 
                     mikeSource = null;
                     mikeSource = GetFilledRandomMikeSource("");
                     mikeSource.SourceNumberString = GetRandomString("", 51);
-                    Assert.AreEqual(false, mikeSourceService.Add(mikeSource));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._MaxLengthIs_, "SourceNumberString", "50"), mikeSource.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, mikeSourceService.GetMikeSourceList().Count());
+                    Assert.False(mikeSourceService.Add(mikeSource));
+                    Assert.Equal(string.Format(CSSPServicesRes._MaxLengthIs_, "SourceNumberString", "50"), mikeSource.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, mikeSourceService.GetMikeSourceList().Count());
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -279,12 +279,12 @@ namespace CSSPServices.Tests
                     mikeSource = GetFilledRandomMikeSource("");
                     mikeSource.LastUpdateDate_UTC = new DateTime();
                     mikeSourceService.Add(mikeSource);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsRequired, "LastUpdateDate_UTC"), mikeSource.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsRequired, "LastUpdateDate_UTC"), mikeSource.ValidationResults.FirstOrDefault().ErrorMessage);
                     mikeSource = null;
                     mikeSource = GetFilledRandomMikeSource("");
                     mikeSource.LastUpdateDate_UTC = new DateTime(1979, 1, 1);
                     mikeSourceService.Add(mikeSource);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._YearShouldBeBiggerThan_, "LastUpdateDate_UTC", "1980"), mikeSource.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._YearShouldBeBiggerThan_, "LastUpdateDate_UTC", "1980"), mikeSource.ValidationResults.FirstOrDefault().ErrorMessage);
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -296,13 +296,13 @@ namespace CSSPServices.Tests
                     mikeSource = GetFilledRandomMikeSource("");
                     mikeSource.LastUpdateContactTVItemID = 0;
                     mikeSourceService.Add(mikeSource);
-                    Assert.AreEqual(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "TVItem", "LastUpdateContactTVItemID", mikeSource.LastUpdateContactTVItemID.ToString()), mikeSource.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "TVItem", "LastUpdateContactTVItemID", mikeSource.LastUpdateContactTVItemID.ToString()), mikeSource.ValidationResults.FirstOrDefault().ErrorMessage);
 
                     mikeSource = null;
                     mikeSource = GetFilledRandomMikeSource("");
                     mikeSource.LastUpdateContactTVItemID = 1;
                     mikeSourceService.Add(mikeSource);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsNotOfType_, "LastUpdateContactTVItemID", "Contact"), mikeSource.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsNotOfType_, "LastUpdateContactTVItemID", "Contact"), mikeSource.ValidationResults.FirstOrDefault().ErrorMessage);
 
 
                     // -----------------------------------
@@ -326,7 +326,7 @@ namespace CSSPServices.Tests
         #endregion Tests Generated Properties
 
         #region Tests Generated for GetMikeSourceWithMikeSourceID(mikeSource.MikeSourceID)
-        [TestMethod]
+        [Fact]
         public void GetMikeSourceWithMikeSourceID__mikeSource_MikeSourceID__Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -337,7 +337,7 @@ namespace CSSPServices.Tests
                 {
                     MikeSourceService mikeSourceService = new MikeSourceService(new Query() { Lang = culture.TwoLetterISOLanguageName }, dbTestDB, ContactID);
                     MikeSource mikeSource = (from c in dbTestDB.MikeSources select c).FirstOrDefault();
-                    Assert.IsNotNull(mikeSource);
+                    Assert.NotNull(mikeSource);
 
                 }
             }
@@ -345,7 +345,7 @@ namespace CSSPServices.Tests
         #endregion Tests Generated for GetMikeSourceWithMikeSourceID(mikeSource.MikeSourceID)
 
         #region Tests Generated for GetMikeSourceList()
-        [TestMethod]
+        [Fact]
         public void GetMikeSourceList_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -356,7 +356,7 @@ namespace CSSPServices.Tests
                 {
                     MikeSourceService mikeSourceService = new MikeSourceService(new Query() { Lang = culture.TwoLetterISOLanguageName }, dbTestDB, ContactID);
                     MikeSource mikeSource = (from c in dbTestDB.MikeSources select c).FirstOrDefault();
-                    Assert.IsNotNull(mikeSource);
+                    Assert.NotNull(mikeSource);
 
                     List<MikeSource> mikeSourceDirectQueryList = new List<MikeSource>();
                     mikeSourceDirectQueryList = (from c in dbTestDB.MikeSources select c).Take(200).ToList();
@@ -367,7 +367,7 @@ namespace CSSPServices.Tests
         #endregion Tests Generated for GetMikeSourceList()
 
         #region Tests Generated for GetMikeSourceList() Skip Take
-        [TestMethod]
+        [Fact]
         public void GetMikeSourceList_Skip_Take_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -386,14 +386,14 @@ namespace CSSPServices.Tests
                         List<MikeSource> mikeSourceList = new List<MikeSource>();
                         mikeSourceList = mikeSourceService.GetMikeSourceList().ToList();
                         CheckMikeSourceFields(mikeSourceList);
-                        Assert.AreEqual(mikeSourceDirectQueryList[0].MikeSourceID, mikeSourceList[0].MikeSourceID);
+                        Assert.Equal(mikeSourceDirectQueryList[0].MikeSourceID, mikeSourceList[0].MikeSourceID);
                 }
             }
         }
         #endregion Tests Generated for GetMikeSourceList() Skip Take
 
         #region Tests Generated for GetMikeSourceList() Skip Take Asc
-        [TestMethod]
+        [Fact]
         public void GetMikeSourceList_Skip_Take_Asc_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -412,14 +412,14 @@ namespace CSSPServices.Tests
                         List<MikeSource> mikeSourceList = new List<MikeSource>();
                         mikeSourceList = mikeSourceService.GetMikeSourceList().ToList();
                         CheckMikeSourceFields(mikeSourceList);
-                        Assert.AreEqual(mikeSourceDirectQueryList[0].MikeSourceID, mikeSourceList[0].MikeSourceID);
+                        Assert.Equal(mikeSourceDirectQueryList[0].MikeSourceID, mikeSourceList[0].MikeSourceID);
                 }
             }
         }
         #endregion Tests Generated for GetMikeSourceList() Skip Take Asc
 
         #region Tests Generated for GetMikeSourceList() Skip Take 2 Asc
-        [TestMethod]
+        [Fact]
         public void GetMikeSourceList_Skip_Take_2Asc_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -438,14 +438,14 @@ namespace CSSPServices.Tests
                         List<MikeSource> mikeSourceList = new List<MikeSource>();
                         mikeSourceList = mikeSourceService.GetMikeSourceList().ToList();
                         CheckMikeSourceFields(mikeSourceList);
-                        Assert.AreEqual(mikeSourceDirectQueryList[0].MikeSourceID, mikeSourceList[0].MikeSourceID);
+                        Assert.Equal(mikeSourceDirectQueryList[0].MikeSourceID, mikeSourceList[0].MikeSourceID);
                 }
             }
         }
         #endregion Tests Generated for GetMikeSourceList() Skip Take 2 Asc
 
         #region Tests Generated for GetMikeSourceList() Skip Take Asc Where
-        [TestMethod]
+        [Fact]
         public void GetMikeSourceList_Skip_Take_Asc_Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -464,14 +464,14 @@ namespace CSSPServices.Tests
                         List<MikeSource> mikeSourceList = new List<MikeSource>();
                         mikeSourceList = mikeSourceService.GetMikeSourceList().ToList();
                         CheckMikeSourceFields(mikeSourceList);
-                        Assert.AreEqual(mikeSourceDirectQueryList[0].MikeSourceID, mikeSourceList[0].MikeSourceID);
+                        Assert.Equal(mikeSourceDirectQueryList[0].MikeSourceID, mikeSourceList[0].MikeSourceID);
                 }
             }
         }
         #endregion Tests Generated for GetMikeSourceList() Skip Take Asc Where
 
         #region Tests Generated for GetMikeSourceList() Skip Take Asc 2 Where
-        [TestMethod]
+        [Fact]
         public void GetMikeSourceList_Skip_Take_Asc_2Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -490,14 +490,14 @@ namespace CSSPServices.Tests
                         List<MikeSource> mikeSourceList = new List<MikeSource>();
                         mikeSourceList = mikeSourceService.GetMikeSourceList().ToList();
                         CheckMikeSourceFields(mikeSourceList);
-                        Assert.AreEqual(mikeSourceDirectQueryList[0].MikeSourceID, mikeSourceList[0].MikeSourceID);
+                        Assert.Equal(mikeSourceDirectQueryList[0].MikeSourceID, mikeSourceList[0].MikeSourceID);
                 }
             }
         }
         #endregion Tests Generated for GetMikeSourceList() Skip Take Asc 2 Where
 
         #region Tests Generated for GetMikeSourceList() Skip Take Desc
-        [TestMethod]
+        [Fact]
         public void GetMikeSourceList_Skip_Take_Desc_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -516,14 +516,14 @@ namespace CSSPServices.Tests
                         List<MikeSource> mikeSourceList = new List<MikeSource>();
                         mikeSourceList = mikeSourceService.GetMikeSourceList().ToList();
                         CheckMikeSourceFields(mikeSourceList);
-                        Assert.AreEqual(mikeSourceDirectQueryList[0].MikeSourceID, mikeSourceList[0].MikeSourceID);
+                        Assert.Equal(mikeSourceDirectQueryList[0].MikeSourceID, mikeSourceList[0].MikeSourceID);
                 }
             }
         }
         #endregion Tests Generated for GetMikeSourceList() Skip Take Desc
 
         #region Tests Generated for GetMikeSourceList() Skip Take 2 Desc
-        [TestMethod]
+        [Fact]
         public void GetMikeSourceList_Skip_Take_2Desc_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -542,14 +542,14 @@ namespace CSSPServices.Tests
                         List<MikeSource> mikeSourceList = new List<MikeSource>();
                         mikeSourceList = mikeSourceService.GetMikeSourceList().ToList();
                         CheckMikeSourceFields(mikeSourceList);
-                        Assert.AreEqual(mikeSourceDirectQueryList[0].MikeSourceID, mikeSourceList[0].MikeSourceID);
+                        Assert.Equal(mikeSourceDirectQueryList[0].MikeSourceID, mikeSourceList[0].MikeSourceID);
                 }
             }
         }
         #endregion Tests Generated for GetMikeSourceList() Skip Take 2 Desc
 
         #region Tests Generated for GetMikeSourceList() Skip Take Desc Where
-        [TestMethod]
+        [Fact]
         public void GetMikeSourceList_Skip_Take_Desc_Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -568,14 +568,14 @@ namespace CSSPServices.Tests
                         List<MikeSource> mikeSourceList = new List<MikeSource>();
                         mikeSourceList = mikeSourceService.GetMikeSourceList().ToList();
                         CheckMikeSourceFields(mikeSourceList);
-                        Assert.AreEqual(mikeSourceDirectQueryList[0].MikeSourceID, mikeSourceList[0].MikeSourceID);
+                        Assert.Equal(mikeSourceDirectQueryList[0].MikeSourceID, mikeSourceList[0].MikeSourceID);
                 }
             }
         }
         #endregion Tests Generated for GetMikeSourceList() Skip Take Desc Where
 
         #region Tests Generated for GetMikeSourceList() Skip Take Desc 2 Where
-        [TestMethod]
+        [Fact]
         public void GetMikeSourceList_Skip_Take_Desc_2Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -594,14 +594,14 @@ namespace CSSPServices.Tests
                         List<MikeSource> mikeSourceList = new List<MikeSource>();
                         mikeSourceList = mikeSourceService.GetMikeSourceList().ToList();
                         CheckMikeSourceFields(mikeSourceList);
-                        Assert.AreEqual(mikeSourceDirectQueryList[0].MikeSourceID, mikeSourceList[0].MikeSourceID);
+                        Assert.Equal(mikeSourceDirectQueryList[0].MikeSourceID, mikeSourceList[0].MikeSourceID);
                 }
             }
         }
         #endregion Tests Generated for GetMikeSourceList() Skip Take Desc 2 Where
 
         #region Tests Generated for GetMikeSourceList() 2 Where
-        [TestMethod]
+        [Fact]
         public void GetMikeSourceList_2Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -620,7 +620,7 @@ namespace CSSPServices.Tests
                         List<MikeSource> mikeSourceList = new List<MikeSource>();
                         mikeSourceList = mikeSourceService.GetMikeSourceList().ToList();
                         CheckMikeSourceFields(mikeSourceList);
-                        Assert.AreEqual(mikeSourceDirectQueryList[0].MikeSourceID, mikeSourceList[0].MikeSourceID);
+                        Assert.Equal(mikeSourceDirectQueryList[0].MikeSourceID, mikeSourceList[0].MikeSourceID);
                 }
             }
         }
@@ -629,28 +629,28 @@ namespace CSSPServices.Tests
         #region Functions private
         private void CheckMikeSourceFields(List<MikeSource> mikeSourceList)
         {
-            Assert.IsNotNull(mikeSourceList[0].MikeSourceID);
-            Assert.IsNotNull(mikeSourceList[0].MikeSourceTVItemID);
-            Assert.IsNotNull(mikeSourceList[0].IsContinuous);
-            Assert.IsNotNull(mikeSourceList[0].Include);
-            Assert.IsNotNull(mikeSourceList[0].IsRiver);
-            Assert.IsNotNull(mikeSourceList[0].UseHydrometric);
+            Assert.NotNull(mikeSourceList[0].MikeSourceID);
+            Assert.NotNull(mikeSourceList[0].MikeSourceTVItemID);
+            Assert.NotNull(mikeSourceList[0].IsContinuous);
+            Assert.NotNull(mikeSourceList[0].Include);
+            Assert.NotNull(mikeSourceList[0].IsRiver);
+            Assert.NotNull(mikeSourceList[0].UseHydrometric);
             if (mikeSourceList[0].HydrometricTVItemID != null)
             {
-                Assert.IsNotNull(mikeSourceList[0].HydrometricTVItemID);
+                Assert.NotNull(mikeSourceList[0].HydrometricTVItemID);
             }
             if (mikeSourceList[0].DrainageArea_km2 != null)
             {
-                Assert.IsNotNull(mikeSourceList[0].DrainageArea_km2);
+                Assert.NotNull(mikeSourceList[0].DrainageArea_km2);
             }
             if (mikeSourceList[0].Factor != null)
             {
-                Assert.IsNotNull(mikeSourceList[0].Factor);
+                Assert.NotNull(mikeSourceList[0].Factor);
             }
-            Assert.IsFalse(string.IsNullOrWhiteSpace(mikeSourceList[0].SourceNumberString));
-            Assert.IsNotNull(mikeSourceList[0].LastUpdateDate_UTC);
-            Assert.IsNotNull(mikeSourceList[0].LastUpdateContactTVItemID);
-            Assert.IsNotNull(mikeSourceList[0].HasErrors);
+            Assert.False(string.IsNullOrWhiteSpace(mikeSourceList[0].SourceNumberString));
+            Assert.NotNull(mikeSourceList[0].LastUpdateDate_UTC);
+            Assert.NotNull(mikeSourceList[0].LastUpdateContactTVItemID);
+            Assert.NotNull(mikeSourceList[0].HasErrors);
         }
         private MikeSource GetFilledRandomMikeSource(string OmitPropName)
         {

@@ -6,7 +6,7 @@
  */ 
 using System;
 using System.Text;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using System.Linq;
 using System.Globalization;
 using System.Transactions;
@@ -19,7 +19,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace CSSPModels.Tests
 {
-    [TestClass]
+
     public partial class VectorTest
     {
         #region Variables
@@ -37,7 +37,7 @@ namespace CSSPModels.Tests
         #endregion Constructors
 
         #region Tests Functions public
-        [TestMethod]
+        [Fact]
         public void Vector_Properties_Test()
         {
             List<string> propNameList = new List<string>() { "StartNode", "EndNode", "HasErrors",  }.OrderBy(c => c).ToList();
@@ -46,32 +46,32 @@ namespace CSSPModels.Tests
             int index = 0;
             foreach (PropertyInfo propertyInfo in typeof(Vector).GetProperties().Where(c => c.Name != "ValidationResults").OrderBy(c => c.Name).ToList())
             {
-                Assert.AreEqual(propertyInfo.Name, propNameList[index]);
+                Assert.Equal(propertyInfo.Name, propNameList[index]);
                 index += 1;
             }
 
-            Assert.AreEqual(propNameList.Count, index);
+            Assert.Equal(propNameList.Count, index);
         }
-        [TestMethod]
+        [Fact]
         public void Vector_Has_ValidationResults_Test()
         {
-             Assert.IsTrue(typeof(Vector).GetProperties().Where(c => c.Name == "ValidationResults").Any());
+             Assert.True(typeof(Vector).GetProperties().Where(c => c.Name == "ValidationResults").Any());
         }
-        [TestMethod]
+        [Fact]
         public void Vector_Every_Property_Has_Get_Set_Test()
         {
                Node val1 = new Node();
                vector.StartNode = val1;
-               Assert.AreEqual(val1, vector.StartNode);
+               Assert.Equal(val1, vector.StartNode);
                Node val2 = new Node();
                vector.EndNode = val2;
-               Assert.AreEqual(val2, vector.EndNode);
+               Assert.Equal(val2, vector.EndNode);
                bool val3 = true;
                vector.HasErrors = val3;
-               Assert.AreEqual(val3, vector.HasErrors);
+               Assert.Equal(val3, vector.HasErrors);
                IEnumerable<ValidationResult> val12 = new List<ValidationResult>() { new ValidationResult("First CSSPError Message") }.AsEnumerable();
                vector.ValidationResults = val12;
-               Assert.AreEqual(val12, vector.ValidationResults);
+               Assert.Equal(val12, vector.ValidationResults);
         }
         #endregion Tests Functions public
     }

@@ -5,7 +5,7 @@
  */ 
 
 using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using System.Linq;
 using System.Collections.Generic;
 using CSSPModels;
@@ -21,7 +21,7 @@ using CSSPEnums.Resources;
 
 namespace CSSPServices.Tests
 {
-    [TestClass]
+
     public partial class PolSourceObservationIssueServiceTest : TestHelper
     {
         #region Variables
@@ -39,7 +39,7 @@ namespace CSSPServices.Tests
         #endregion Constructors
 
         #region Tests Generated CRUD
-        [TestMethod]
+        [Fact]
         public void PolSourceObservationIssue_CRUD_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -66,26 +66,26 @@ namespace CSSPServices.Tests
 
                     count = polSourceObservationIssueService.GetPolSourceObservationIssueList().Count();
 
-                    Assert.AreEqual(count, (from c in dbTestDB.PolSourceObservationIssues select c).Count());
+                    Assert.Equal(count, (from c in dbTestDB.PolSourceObservationIssues select c).Count());
 
                     polSourceObservationIssueService.Add(polSourceObservationIssue);
                     if (polSourceObservationIssue.HasErrors)
                     {
-                        Assert.AreEqual("", polSourceObservationIssue.ValidationResults.FirstOrDefault().ErrorMessage);
+                        Assert.Equal("", polSourceObservationIssue.ValidationResults.FirstOrDefault().ErrorMessage);
                     }
-                    Assert.AreEqual(true, polSourceObservationIssueService.GetPolSourceObservationIssueList().Where(c => c == polSourceObservationIssue).Any());
+                    Assert.True(polSourceObservationIssueService.GetPolSourceObservationIssueList().Where(c => c == polSourceObservationIssue).Any());
                     polSourceObservationIssueService.Update(polSourceObservationIssue);
                     if (polSourceObservationIssue.HasErrors)
                     {
-                        Assert.AreEqual("", polSourceObservationIssue.ValidationResults.FirstOrDefault().ErrorMessage);
+                        Assert.Equal("", polSourceObservationIssue.ValidationResults.FirstOrDefault().ErrorMessage);
                     }
-                    Assert.AreEqual(count + 1, polSourceObservationIssueService.GetPolSourceObservationIssueList().Count());
+                    Assert.Equal(count + 1, polSourceObservationIssueService.GetPolSourceObservationIssueList().Count());
                     polSourceObservationIssueService.Delete(polSourceObservationIssue);
                     if (polSourceObservationIssue.HasErrors)
                     {
-                        Assert.AreEqual("", polSourceObservationIssue.ValidationResults.FirstOrDefault().ErrorMessage);
+                        Assert.Equal("", polSourceObservationIssue.ValidationResults.FirstOrDefault().ErrorMessage);
                     }
-                    Assert.AreEqual(count, polSourceObservationIssueService.GetPolSourceObservationIssueList().Count());
+                    Assert.Equal(count, polSourceObservationIssueService.GetPolSourceObservationIssueList().Count());
 
                 }
             }
@@ -93,7 +93,7 @@ namespace CSSPServices.Tests
         #endregion Tests Generated CRUD
 
         #region Tests Generated Properties
-        [TestMethod]
+        [Fact]
         public void PolSourceObservationIssue_Properties_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -131,13 +131,13 @@ namespace CSSPServices.Tests
                     polSourceObservationIssue = GetFilledRandomPolSourceObservationIssue("");
                     polSourceObservationIssue.PolSourceObservationIssueID = 0;
                     polSourceObservationIssueService.Update(polSourceObservationIssue);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsRequired, "PolSourceObservationIssueID"), polSourceObservationIssue.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsRequired, "PolSourceObservationIssueID"), polSourceObservationIssue.ValidationResults.FirstOrDefault().ErrorMessage);
 
                     polSourceObservationIssue = null;
                     polSourceObservationIssue = GetFilledRandomPolSourceObservationIssue("");
                     polSourceObservationIssue.PolSourceObservationIssueID = 10000000;
                     polSourceObservationIssueService.Update(polSourceObservationIssue);
-                    Assert.AreEqual(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "PolSourceObservationIssue", "PolSourceObservationIssueID", polSourceObservationIssue.PolSourceObservationIssueID.ToString()), polSourceObservationIssue.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "PolSourceObservationIssue", "PolSourceObservationIssueID", polSourceObservationIssue.PolSourceObservationIssueID.ToString()), polSourceObservationIssue.ValidationResults.FirstOrDefault().ErrorMessage);
 
 
                     // -----------------------------------
@@ -150,7 +150,7 @@ namespace CSSPServices.Tests
                     polSourceObservationIssue = GetFilledRandomPolSourceObservationIssue("");
                     polSourceObservationIssue.PolSourceObservationID = 0;
                     polSourceObservationIssueService.Add(polSourceObservationIssue);
-                    Assert.AreEqual(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "PolSourceObservation", "PolSourceObservationID", polSourceObservationIssue.PolSourceObservationID.ToString()), polSourceObservationIssue.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "PolSourceObservation", "PolSourceObservationID", polSourceObservationIssue.PolSourceObservationID.ToString()), polSourceObservationIssue.ValidationResults.FirstOrDefault().ErrorMessage);
 
 
                     // -----------------------------------
@@ -161,18 +161,18 @@ namespace CSSPServices.Tests
 
                     polSourceObservationIssue = null;
                     polSourceObservationIssue = GetFilledRandomPolSourceObservationIssue("ObservationInfo");
-                    Assert.AreEqual(false, polSourceObservationIssueService.Add(polSourceObservationIssue));
-                    Assert.AreEqual(1, polSourceObservationIssue.ValidationResults.Count());
-                    Assert.IsTrue(polSourceObservationIssue.ValidationResults.Where(c => c.ErrorMessage == string.Format(CSSPServicesRes._IsRequired, "ObservationInfo")).Any());
-                    Assert.AreEqual(null, polSourceObservationIssue.ObservationInfo);
-                    Assert.AreEqual(count, polSourceObservationIssueService.GetPolSourceObservationIssueList().Count());
+                    Assert.False(polSourceObservationIssueService.Add(polSourceObservationIssue));
+                    Assert.Equal(1, polSourceObservationIssue.ValidationResults.Count());
+                    Assert.True(polSourceObservationIssue.ValidationResults.Where(c => c.ErrorMessage == string.Format(CSSPServicesRes._IsRequired, "ObservationInfo")).Any());
+                    Assert.Null(polSourceObservationIssue.ObservationInfo);
+                    Assert.Equal(count, polSourceObservationIssueService.GetPolSourceObservationIssueList().Count());
 
                     polSourceObservationIssue = null;
                     polSourceObservationIssue = GetFilledRandomPolSourceObservationIssue("");
                     polSourceObservationIssue.ObservationInfo = GetRandomString("", 251);
-                    Assert.AreEqual(false, polSourceObservationIssueService.Add(polSourceObservationIssue));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._MaxLengthIs_, "ObservationInfo", "250"), polSourceObservationIssue.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, polSourceObservationIssueService.GetPolSourceObservationIssueList().Count());
+                    Assert.False(polSourceObservationIssueService.Add(polSourceObservationIssue));
+                    Assert.Equal(string.Format(CSSPServicesRes._MaxLengthIs_, "ObservationInfo", "250"), polSourceObservationIssue.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, polSourceObservationIssueService.GetPolSourceObservationIssueList().Count());
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -183,15 +183,15 @@ namespace CSSPServices.Tests
                     polSourceObservationIssue = null;
                     polSourceObservationIssue = GetFilledRandomPolSourceObservationIssue("");
                     polSourceObservationIssue.Ordinal = -1;
-                    Assert.AreEqual(false, polSourceObservationIssueService.Add(polSourceObservationIssue));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "Ordinal", "0", "1000"), polSourceObservationIssue.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, polSourceObservationIssueService.GetPolSourceObservationIssueList().Count());
+                    Assert.False(polSourceObservationIssueService.Add(polSourceObservationIssue));
+                    Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "Ordinal", "0", "1000"), polSourceObservationIssue.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, polSourceObservationIssueService.GetPolSourceObservationIssueList().Count());
                     polSourceObservationIssue = null;
                     polSourceObservationIssue = GetFilledRandomPolSourceObservationIssue("");
                     polSourceObservationIssue.Ordinal = 1001;
-                    Assert.AreEqual(false, polSourceObservationIssueService.Add(polSourceObservationIssue));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "Ordinal", "0", "1000"), polSourceObservationIssue.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, polSourceObservationIssueService.GetPolSourceObservationIssueList().Count());
+                    Assert.False(polSourceObservationIssueService.Add(polSourceObservationIssue));
+                    Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "Ordinal", "0", "1000"), polSourceObservationIssue.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, polSourceObservationIssueService.GetPolSourceObservationIssueList().Count());
 
                     // -----------------------------------
                     // Is Nullable
@@ -209,12 +209,12 @@ namespace CSSPServices.Tests
                     polSourceObservationIssue = GetFilledRandomPolSourceObservationIssue("");
                     polSourceObservationIssue.LastUpdateDate_UTC = new DateTime();
                     polSourceObservationIssueService.Add(polSourceObservationIssue);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsRequired, "LastUpdateDate_UTC"), polSourceObservationIssue.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsRequired, "LastUpdateDate_UTC"), polSourceObservationIssue.ValidationResults.FirstOrDefault().ErrorMessage);
                     polSourceObservationIssue = null;
                     polSourceObservationIssue = GetFilledRandomPolSourceObservationIssue("");
                     polSourceObservationIssue.LastUpdateDate_UTC = new DateTime(1979, 1, 1);
                     polSourceObservationIssueService.Add(polSourceObservationIssue);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._YearShouldBeBiggerThan_, "LastUpdateDate_UTC", "1980"), polSourceObservationIssue.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._YearShouldBeBiggerThan_, "LastUpdateDate_UTC", "1980"), polSourceObservationIssue.ValidationResults.FirstOrDefault().ErrorMessage);
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -226,13 +226,13 @@ namespace CSSPServices.Tests
                     polSourceObservationIssue = GetFilledRandomPolSourceObservationIssue("");
                     polSourceObservationIssue.LastUpdateContactTVItemID = 0;
                     polSourceObservationIssueService.Add(polSourceObservationIssue);
-                    Assert.AreEqual(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "TVItem", "LastUpdateContactTVItemID", polSourceObservationIssue.LastUpdateContactTVItemID.ToString()), polSourceObservationIssue.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "TVItem", "LastUpdateContactTVItemID", polSourceObservationIssue.LastUpdateContactTVItemID.ToString()), polSourceObservationIssue.ValidationResults.FirstOrDefault().ErrorMessage);
 
                     polSourceObservationIssue = null;
                     polSourceObservationIssue = GetFilledRandomPolSourceObservationIssue("");
                     polSourceObservationIssue.LastUpdateContactTVItemID = 1;
                     polSourceObservationIssueService.Add(polSourceObservationIssue);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsNotOfType_, "LastUpdateContactTVItemID", "Contact"), polSourceObservationIssue.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsNotOfType_, "LastUpdateContactTVItemID", "Contact"), polSourceObservationIssue.ValidationResults.FirstOrDefault().ErrorMessage);
 
 
                     // -----------------------------------
@@ -256,7 +256,7 @@ namespace CSSPServices.Tests
         #endregion Tests Generated Properties
 
         #region Tests Generated for GetPolSourceObservationIssueWithPolSourceObservationIssueID(polSourceObservationIssue.PolSourceObservationIssueID)
-        [TestMethod]
+        [Fact]
         public void GetPolSourceObservationIssueWithPolSourceObservationIssueID__polSourceObservationIssue_PolSourceObservationIssueID__Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -267,7 +267,7 @@ namespace CSSPServices.Tests
                 {
                     PolSourceObservationIssueService polSourceObservationIssueService = new PolSourceObservationIssueService(new Query() { Lang = culture.TwoLetterISOLanguageName }, dbTestDB, ContactID);
                     PolSourceObservationIssue polSourceObservationIssue = (from c in dbTestDB.PolSourceObservationIssues select c).FirstOrDefault();
-                    Assert.IsNotNull(polSourceObservationIssue);
+                    Assert.NotNull(polSourceObservationIssue);
 
                 }
             }
@@ -275,7 +275,7 @@ namespace CSSPServices.Tests
         #endregion Tests Generated for GetPolSourceObservationIssueWithPolSourceObservationIssueID(polSourceObservationIssue.PolSourceObservationIssueID)
 
         #region Tests Generated for GetPolSourceObservationIssueList()
-        [TestMethod]
+        [Fact]
         public void GetPolSourceObservationIssueList_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -286,7 +286,7 @@ namespace CSSPServices.Tests
                 {
                     PolSourceObservationIssueService polSourceObservationIssueService = new PolSourceObservationIssueService(new Query() { Lang = culture.TwoLetterISOLanguageName }, dbTestDB, ContactID);
                     PolSourceObservationIssue polSourceObservationIssue = (from c in dbTestDB.PolSourceObservationIssues select c).FirstOrDefault();
-                    Assert.IsNotNull(polSourceObservationIssue);
+                    Assert.NotNull(polSourceObservationIssue);
 
                     List<PolSourceObservationIssue> polSourceObservationIssueDirectQueryList = new List<PolSourceObservationIssue>();
                     polSourceObservationIssueDirectQueryList = (from c in dbTestDB.PolSourceObservationIssues select c).Take(200).ToList();
@@ -297,7 +297,7 @@ namespace CSSPServices.Tests
         #endregion Tests Generated for GetPolSourceObservationIssueList()
 
         #region Tests Generated for GetPolSourceObservationIssueList() Skip Take
-        [TestMethod]
+        [Fact]
         public void GetPolSourceObservationIssueList_Skip_Take_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -316,14 +316,14 @@ namespace CSSPServices.Tests
                         List<PolSourceObservationIssue> polSourceObservationIssueList = new List<PolSourceObservationIssue>();
                         polSourceObservationIssueList = polSourceObservationIssueService.GetPolSourceObservationIssueList().ToList();
                         CheckPolSourceObservationIssueFields(polSourceObservationIssueList);
-                        Assert.AreEqual(polSourceObservationIssueDirectQueryList[0].PolSourceObservationIssueID, polSourceObservationIssueList[0].PolSourceObservationIssueID);
+                        Assert.Equal(polSourceObservationIssueDirectQueryList[0].PolSourceObservationIssueID, polSourceObservationIssueList[0].PolSourceObservationIssueID);
                 }
             }
         }
         #endregion Tests Generated for GetPolSourceObservationIssueList() Skip Take
 
         #region Tests Generated for GetPolSourceObservationIssueList() Skip Take Asc
-        [TestMethod]
+        [Fact]
         public void GetPolSourceObservationIssueList_Skip_Take_Asc_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -342,14 +342,14 @@ namespace CSSPServices.Tests
                         List<PolSourceObservationIssue> polSourceObservationIssueList = new List<PolSourceObservationIssue>();
                         polSourceObservationIssueList = polSourceObservationIssueService.GetPolSourceObservationIssueList().ToList();
                         CheckPolSourceObservationIssueFields(polSourceObservationIssueList);
-                        Assert.AreEqual(polSourceObservationIssueDirectQueryList[0].PolSourceObservationIssueID, polSourceObservationIssueList[0].PolSourceObservationIssueID);
+                        Assert.Equal(polSourceObservationIssueDirectQueryList[0].PolSourceObservationIssueID, polSourceObservationIssueList[0].PolSourceObservationIssueID);
                 }
             }
         }
         #endregion Tests Generated for GetPolSourceObservationIssueList() Skip Take Asc
 
         #region Tests Generated for GetPolSourceObservationIssueList() Skip Take 2 Asc
-        [TestMethod]
+        [Fact]
         public void GetPolSourceObservationIssueList_Skip_Take_2Asc_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -368,14 +368,14 @@ namespace CSSPServices.Tests
                         List<PolSourceObservationIssue> polSourceObservationIssueList = new List<PolSourceObservationIssue>();
                         polSourceObservationIssueList = polSourceObservationIssueService.GetPolSourceObservationIssueList().ToList();
                         CheckPolSourceObservationIssueFields(polSourceObservationIssueList);
-                        Assert.AreEqual(polSourceObservationIssueDirectQueryList[0].PolSourceObservationIssueID, polSourceObservationIssueList[0].PolSourceObservationIssueID);
+                        Assert.Equal(polSourceObservationIssueDirectQueryList[0].PolSourceObservationIssueID, polSourceObservationIssueList[0].PolSourceObservationIssueID);
                 }
             }
         }
         #endregion Tests Generated for GetPolSourceObservationIssueList() Skip Take 2 Asc
 
         #region Tests Generated for GetPolSourceObservationIssueList() Skip Take Asc Where
-        [TestMethod]
+        [Fact]
         public void GetPolSourceObservationIssueList_Skip_Take_Asc_Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -394,14 +394,14 @@ namespace CSSPServices.Tests
                         List<PolSourceObservationIssue> polSourceObservationIssueList = new List<PolSourceObservationIssue>();
                         polSourceObservationIssueList = polSourceObservationIssueService.GetPolSourceObservationIssueList().ToList();
                         CheckPolSourceObservationIssueFields(polSourceObservationIssueList);
-                        Assert.AreEqual(polSourceObservationIssueDirectQueryList[0].PolSourceObservationIssueID, polSourceObservationIssueList[0].PolSourceObservationIssueID);
+                        Assert.Equal(polSourceObservationIssueDirectQueryList[0].PolSourceObservationIssueID, polSourceObservationIssueList[0].PolSourceObservationIssueID);
                 }
             }
         }
         #endregion Tests Generated for GetPolSourceObservationIssueList() Skip Take Asc Where
 
         #region Tests Generated for GetPolSourceObservationIssueList() Skip Take Asc 2 Where
-        [TestMethod]
+        [Fact]
         public void GetPolSourceObservationIssueList_Skip_Take_Asc_2Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -420,14 +420,14 @@ namespace CSSPServices.Tests
                         List<PolSourceObservationIssue> polSourceObservationIssueList = new List<PolSourceObservationIssue>();
                         polSourceObservationIssueList = polSourceObservationIssueService.GetPolSourceObservationIssueList().ToList();
                         CheckPolSourceObservationIssueFields(polSourceObservationIssueList);
-                        Assert.AreEqual(polSourceObservationIssueDirectQueryList[0].PolSourceObservationIssueID, polSourceObservationIssueList[0].PolSourceObservationIssueID);
+                        Assert.Equal(polSourceObservationIssueDirectQueryList[0].PolSourceObservationIssueID, polSourceObservationIssueList[0].PolSourceObservationIssueID);
                 }
             }
         }
         #endregion Tests Generated for GetPolSourceObservationIssueList() Skip Take Asc 2 Where
 
         #region Tests Generated for GetPolSourceObservationIssueList() Skip Take Desc
-        [TestMethod]
+        [Fact]
         public void GetPolSourceObservationIssueList_Skip_Take_Desc_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -446,14 +446,14 @@ namespace CSSPServices.Tests
                         List<PolSourceObservationIssue> polSourceObservationIssueList = new List<PolSourceObservationIssue>();
                         polSourceObservationIssueList = polSourceObservationIssueService.GetPolSourceObservationIssueList().ToList();
                         CheckPolSourceObservationIssueFields(polSourceObservationIssueList);
-                        Assert.AreEqual(polSourceObservationIssueDirectQueryList[0].PolSourceObservationIssueID, polSourceObservationIssueList[0].PolSourceObservationIssueID);
+                        Assert.Equal(polSourceObservationIssueDirectQueryList[0].PolSourceObservationIssueID, polSourceObservationIssueList[0].PolSourceObservationIssueID);
                 }
             }
         }
         #endregion Tests Generated for GetPolSourceObservationIssueList() Skip Take Desc
 
         #region Tests Generated for GetPolSourceObservationIssueList() Skip Take 2 Desc
-        [TestMethod]
+        [Fact]
         public void GetPolSourceObservationIssueList_Skip_Take_2Desc_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -472,14 +472,14 @@ namespace CSSPServices.Tests
                         List<PolSourceObservationIssue> polSourceObservationIssueList = new List<PolSourceObservationIssue>();
                         polSourceObservationIssueList = polSourceObservationIssueService.GetPolSourceObservationIssueList().ToList();
                         CheckPolSourceObservationIssueFields(polSourceObservationIssueList);
-                        Assert.AreEqual(polSourceObservationIssueDirectQueryList[0].PolSourceObservationIssueID, polSourceObservationIssueList[0].PolSourceObservationIssueID);
+                        Assert.Equal(polSourceObservationIssueDirectQueryList[0].PolSourceObservationIssueID, polSourceObservationIssueList[0].PolSourceObservationIssueID);
                 }
             }
         }
         #endregion Tests Generated for GetPolSourceObservationIssueList() Skip Take 2 Desc
 
         #region Tests Generated for GetPolSourceObservationIssueList() Skip Take Desc Where
-        [TestMethod]
+        [Fact]
         public void GetPolSourceObservationIssueList_Skip_Take_Desc_Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -498,14 +498,14 @@ namespace CSSPServices.Tests
                         List<PolSourceObservationIssue> polSourceObservationIssueList = new List<PolSourceObservationIssue>();
                         polSourceObservationIssueList = polSourceObservationIssueService.GetPolSourceObservationIssueList().ToList();
                         CheckPolSourceObservationIssueFields(polSourceObservationIssueList);
-                        Assert.AreEqual(polSourceObservationIssueDirectQueryList[0].PolSourceObservationIssueID, polSourceObservationIssueList[0].PolSourceObservationIssueID);
+                        Assert.Equal(polSourceObservationIssueDirectQueryList[0].PolSourceObservationIssueID, polSourceObservationIssueList[0].PolSourceObservationIssueID);
                 }
             }
         }
         #endregion Tests Generated for GetPolSourceObservationIssueList() Skip Take Desc Where
 
         #region Tests Generated for GetPolSourceObservationIssueList() Skip Take Desc 2 Where
-        [TestMethod]
+        [Fact]
         public void GetPolSourceObservationIssueList_Skip_Take_Desc_2Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -524,14 +524,14 @@ namespace CSSPServices.Tests
                         List<PolSourceObservationIssue> polSourceObservationIssueList = new List<PolSourceObservationIssue>();
                         polSourceObservationIssueList = polSourceObservationIssueService.GetPolSourceObservationIssueList().ToList();
                         CheckPolSourceObservationIssueFields(polSourceObservationIssueList);
-                        Assert.AreEqual(polSourceObservationIssueDirectQueryList[0].PolSourceObservationIssueID, polSourceObservationIssueList[0].PolSourceObservationIssueID);
+                        Assert.Equal(polSourceObservationIssueDirectQueryList[0].PolSourceObservationIssueID, polSourceObservationIssueList[0].PolSourceObservationIssueID);
                 }
             }
         }
         #endregion Tests Generated for GetPolSourceObservationIssueList() Skip Take Desc 2 Where
 
         #region Tests Generated for GetPolSourceObservationIssueList() 2 Where
-        [TestMethod]
+        [Fact]
         public void GetPolSourceObservationIssueList_2Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -550,7 +550,7 @@ namespace CSSPServices.Tests
                         List<PolSourceObservationIssue> polSourceObservationIssueList = new List<PolSourceObservationIssue>();
                         polSourceObservationIssueList = polSourceObservationIssueService.GetPolSourceObservationIssueList().ToList();
                         CheckPolSourceObservationIssueFields(polSourceObservationIssueList);
-                        Assert.AreEqual(polSourceObservationIssueDirectQueryList[0].PolSourceObservationIssueID, polSourceObservationIssueList[0].PolSourceObservationIssueID);
+                        Assert.Equal(polSourceObservationIssueDirectQueryList[0].PolSourceObservationIssueID, polSourceObservationIssueList[0].PolSourceObservationIssueID);
                 }
             }
         }
@@ -559,17 +559,17 @@ namespace CSSPServices.Tests
         #region Functions private
         private void CheckPolSourceObservationIssueFields(List<PolSourceObservationIssue> polSourceObservationIssueList)
         {
-            Assert.IsNotNull(polSourceObservationIssueList[0].PolSourceObservationIssueID);
-            Assert.IsNotNull(polSourceObservationIssueList[0].PolSourceObservationID);
-            Assert.IsFalse(string.IsNullOrWhiteSpace(polSourceObservationIssueList[0].ObservationInfo));
-            Assert.IsNotNull(polSourceObservationIssueList[0].Ordinal);
+            Assert.NotNull(polSourceObservationIssueList[0].PolSourceObservationIssueID);
+            Assert.NotNull(polSourceObservationIssueList[0].PolSourceObservationID);
+            Assert.False(string.IsNullOrWhiteSpace(polSourceObservationIssueList[0].ObservationInfo));
+            Assert.NotNull(polSourceObservationIssueList[0].Ordinal);
             if (!string.IsNullOrWhiteSpace(polSourceObservationIssueList[0].ExtraComment))
             {
-                Assert.IsFalse(string.IsNullOrWhiteSpace(polSourceObservationIssueList[0].ExtraComment));
+                Assert.False(string.IsNullOrWhiteSpace(polSourceObservationIssueList[0].ExtraComment));
             }
-            Assert.IsNotNull(polSourceObservationIssueList[0].LastUpdateDate_UTC);
-            Assert.IsNotNull(polSourceObservationIssueList[0].LastUpdateContactTVItemID);
-            Assert.IsNotNull(polSourceObservationIssueList[0].HasErrors);
+            Assert.NotNull(polSourceObservationIssueList[0].LastUpdateDate_UTC);
+            Assert.NotNull(polSourceObservationIssueList[0].LastUpdateContactTVItemID);
+            Assert.NotNull(polSourceObservationIssueList[0].HasErrors);
         }
         private PolSourceObservationIssue GetFilledRandomPolSourceObservationIssue(string OmitPropName)
         {

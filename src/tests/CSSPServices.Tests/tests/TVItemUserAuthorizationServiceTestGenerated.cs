@@ -5,7 +5,7 @@
  */ 
 
 using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using System.Linq;
 using System.Collections.Generic;
 using CSSPModels;
@@ -21,7 +21,7 @@ using CSSPEnums.Resources;
 
 namespace CSSPServices.Tests
 {
-    [TestClass]
+
     public partial class TVItemUserAuthorizationServiceTest : TestHelper
     {
         #region Variables
@@ -39,7 +39,7 @@ namespace CSSPServices.Tests
         #endregion Constructors
 
         #region Tests Generated CRUD
-        [TestMethod]
+        [Fact]
         public void TVItemUserAuthorization_CRUD_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -66,26 +66,26 @@ namespace CSSPServices.Tests
 
                     count = tvItemUserAuthorizationService.GetTVItemUserAuthorizationList().Count();
 
-                    Assert.AreEqual(count, (from c in dbTestDB.TVItemUserAuthorizations select c).Count());
+                    Assert.Equal(count, (from c in dbTestDB.TVItemUserAuthorizations select c).Count());
 
                     tvItemUserAuthorizationService.Add(tvItemUserAuthorization);
                     if (tvItemUserAuthorization.HasErrors)
                     {
-                        Assert.AreEqual("", tvItemUserAuthorization.ValidationResults.FirstOrDefault().ErrorMessage);
+                        Assert.Equal("", tvItemUserAuthorization.ValidationResults.FirstOrDefault().ErrorMessage);
                     }
-                    Assert.AreEqual(true, tvItemUserAuthorizationService.GetTVItemUserAuthorizationList().Where(c => c == tvItemUserAuthorization).Any());
+                    Assert.True(tvItemUserAuthorizationService.GetTVItemUserAuthorizationList().Where(c => c == tvItemUserAuthorization).Any());
                     tvItemUserAuthorizationService.Update(tvItemUserAuthorization);
                     if (tvItemUserAuthorization.HasErrors)
                     {
-                        Assert.AreEqual("", tvItemUserAuthorization.ValidationResults.FirstOrDefault().ErrorMessage);
+                        Assert.Equal("", tvItemUserAuthorization.ValidationResults.FirstOrDefault().ErrorMessage);
                     }
-                    Assert.AreEqual(count + 1, tvItemUserAuthorizationService.GetTVItemUserAuthorizationList().Count());
+                    Assert.Equal(count + 1, tvItemUserAuthorizationService.GetTVItemUserAuthorizationList().Count());
                     tvItemUserAuthorizationService.Delete(tvItemUserAuthorization);
                     if (tvItemUserAuthorization.HasErrors)
                     {
-                        Assert.AreEqual("", tvItemUserAuthorization.ValidationResults.FirstOrDefault().ErrorMessage);
+                        Assert.Equal("", tvItemUserAuthorization.ValidationResults.FirstOrDefault().ErrorMessage);
                     }
-                    Assert.AreEqual(count, tvItemUserAuthorizationService.GetTVItemUserAuthorizationList().Count());
+                    Assert.Equal(count, tvItemUserAuthorizationService.GetTVItemUserAuthorizationList().Count());
 
                 }
             }
@@ -93,7 +93,7 @@ namespace CSSPServices.Tests
         #endregion Tests Generated CRUD
 
         #region Tests Generated Properties
-        [TestMethod]
+        [Fact]
         public void TVItemUserAuthorization_Properties_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -131,13 +131,13 @@ namespace CSSPServices.Tests
                     tvItemUserAuthorization = GetFilledRandomTVItemUserAuthorization("");
                     tvItemUserAuthorization.TVItemUserAuthorizationID = 0;
                     tvItemUserAuthorizationService.Update(tvItemUserAuthorization);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsRequired, "TVItemUserAuthorizationID"), tvItemUserAuthorization.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsRequired, "TVItemUserAuthorizationID"), tvItemUserAuthorization.ValidationResults.FirstOrDefault().ErrorMessage);
 
                     tvItemUserAuthorization = null;
                     tvItemUserAuthorization = GetFilledRandomTVItemUserAuthorization("");
                     tvItemUserAuthorization.TVItemUserAuthorizationID = 10000000;
                     tvItemUserAuthorizationService.Update(tvItemUserAuthorization);
-                    Assert.AreEqual(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "TVItemUserAuthorization", "TVItemUserAuthorizationID", tvItemUserAuthorization.TVItemUserAuthorizationID.ToString()), tvItemUserAuthorization.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "TVItemUserAuthorization", "TVItemUserAuthorizationID", tvItemUserAuthorization.TVItemUserAuthorizationID.ToString()), tvItemUserAuthorization.ValidationResults.FirstOrDefault().ErrorMessage);
 
 
                     // -----------------------------------
@@ -150,13 +150,13 @@ namespace CSSPServices.Tests
                     tvItemUserAuthorization = GetFilledRandomTVItemUserAuthorization("");
                     tvItemUserAuthorization.ContactTVItemID = 0;
                     tvItemUserAuthorizationService.Add(tvItemUserAuthorization);
-                    Assert.AreEqual(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "TVItem", "ContactTVItemID", tvItemUserAuthorization.ContactTVItemID.ToString()), tvItemUserAuthorization.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "TVItem", "ContactTVItemID", tvItemUserAuthorization.ContactTVItemID.ToString()), tvItemUserAuthorization.ValidationResults.FirstOrDefault().ErrorMessage);
 
                     tvItemUserAuthorization = null;
                     tvItemUserAuthorization = GetFilledRandomTVItemUserAuthorization("");
                     tvItemUserAuthorization.ContactTVItemID = 1;
                     tvItemUserAuthorizationService.Add(tvItemUserAuthorization);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsNotOfType_, "ContactTVItemID", "Contact"), tvItemUserAuthorization.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsNotOfType_, "ContactTVItemID", "Contact"), tvItemUserAuthorization.ValidationResults.FirstOrDefault().ErrorMessage);
 
 
                     // -----------------------------------
@@ -169,13 +169,13 @@ namespace CSSPServices.Tests
                     tvItemUserAuthorization = GetFilledRandomTVItemUserAuthorization("");
                     tvItemUserAuthorization.TVItemID1 = 0;
                     tvItemUserAuthorizationService.Add(tvItemUserAuthorization);
-                    Assert.AreEqual(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "TVItem", "TVItemID1", tvItemUserAuthorization.TVItemID1.ToString()), tvItemUserAuthorization.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "TVItem", "TVItemID1", tvItemUserAuthorization.TVItemID1.ToString()), tvItemUserAuthorization.ValidationResults.FirstOrDefault().ErrorMessage);
 
                     tvItemUserAuthorization = null;
                     tvItemUserAuthorization = GetFilledRandomTVItemUserAuthorization("");
                     tvItemUserAuthorization.TVItemID1 = 13;
                     tvItemUserAuthorizationService.Add(tvItemUserAuthorization);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsNotOfType_, "TVItemID1", "Root,Address,Area,ClimateSite,Contact,Country,Email,File,HydrometricSite,Infrastructure,MikeScenario,MikeSource,Municipality,MWQMSite,PolSourceSite,Province,Sector,Subsector,Tel,TideSite,WasteWaterTreatmentPlant,LiftStation,Spill,BoxModel,VisualPlumesScenario,OtherInfrastructure,MWQMRun,MeshNode,WebTideNode,SamplingPlan,SeeOtherMunicipality,LineOverflow,MapInfo,MapInfoPoint"), tvItemUserAuthorization.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsNotOfType_, "TVItemID1", "Root,Address,Area,ClimateSite,Contact,Country,Email,File,HydrometricSite,Infrastructure,MikeScenario,MikeSource,Municipality,MWQMSite,PolSourceSite,Province,Sector,Subsector,Tel,TideSite,WasteWaterTreatmentPlant,LiftStation,Spill,BoxModel,VisualPlumesScenario,OtherInfrastructure,MWQMRun,MeshNode,WebTideNode,SamplingPlan,SeeOtherMunicipality,LineOverflow,MapInfo,MapInfoPoint"), tvItemUserAuthorization.ValidationResults.FirstOrDefault().ErrorMessage);
 
 
                     // -----------------------------------
@@ -188,13 +188,13 @@ namespace CSSPServices.Tests
                     tvItemUserAuthorization = GetFilledRandomTVItemUserAuthorization("");
                     tvItemUserAuthorization.TVItemID2 = 0;
                     tvItemUserAuthorizationService.Add(tvItemUserAuthorization);
-                    Assert.AreEqual(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "TVItem", "TVItemID2", tvItemUserAuthorization.TVItemID2.ToString()), tvItemUserAuthorization.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "TVItem", "TVItemID2", tvItemUserAuthorization.TVItemID2.ToString()), tvItemUserAuthorization.ValidationResults.FirstOrDefault().ErrorMessage);
 
                     tvItemUserAuthorization = null;
                     tvItemUserAuthorization = GetFilledRandomTVItemUserAuthorization("");
                     tvItemUserAuthorization.TVItemID2 = 13;
                     tvItemUserAuthorizationService.Add(tvItemUserAuthorization);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsNotOfType_, "TVItemID2", "Root,Address,Area,ClimateSite,Contact,Country,Email,File,HydrometricSite,Infrastructure,MikeScenario,MikeSource,Municipality,MWQMSite,PolSourceSite,Province,Sector,Subsector,Tel,TideSite,WasteWaterTreatmentPlant,LiftStation,Spill,BoxModel,VisualPlumesScenario,OtherInfrastructure,MWQMRun,MeshNode,WebTideNode,SamplingPlan,SeeOtherMunicipality,LineOverflow,MapInfo,MapInfoPoint"), tvItemUserAuthorization.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsNotOfType_, "TVItemID2", "Root,Address,Area,ClimateSite,Contact,Country,Email,File,HydrometricSite,Infrastructure,MikeScenario,MikeSource,Municipality,MWQMSite,PolSourceSite,Province,Sector,Subsector,Tel,TideSite,WasteWaterTreatmentPlant,LiftStation,Spill,BoxModel,VisualPlumesScenario,OtherInfrastructure,MWQMRun,MeshNode,WebTideNode,SamplingPlan,SeeOtherMunicipality,LineOverflow,MapInfo,MapInfoPoint"), tvItemUserAuthorization.ValidationResults.FirstOrDefault().ErrorMessage);
 
 
                     // -----------------------------------
@@ -207,13 +207,13 @@ namespace CSSPServices.Tests
                     tvItemUserAuthorization = GetFilledRandomTVItemUserAuthorization("");
                     tvItemUserAuthorization.TVItemID3 = 0;
                     tvItemUserAuthorizationService.Add(tvItemUserAuthorization);
-                    Assert.AreEqual(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "TVItem", "TVItemID3", tvItemUserAuthorization.TVItemID3.ToString()), tvItemUserAuthorization.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "TVItem", "TVItemID3", tvItemUserAuthorization.TVItemID3.ToString()), tvItemUserAuthorization.ValidationResults.FirstOrDefault().ErrorMessage);
 
                     tvItemUserAuthorization = null;
                     tvItemUserAuthorization = GetFilledRandomTVItemUserAuthorization("");
                     tvItemUserAuthorization.TVItemID3 = 13;
                     tvItemUserAuthorizationService.Add(tvItemUserAuthorization);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsNotOfType_, "TVItemID3", "Root,Address,Area,ClimateSite,Contact,Country,Email,File,HydrometricSite,Infrastructure,MikeScenario,MikeSource,Municipality,MWQMSite,PolSourceSite,Province,Sector,Subsector,Tel,TideSite,WasteWaterTreatmentPlant,LiftStation,Spill,BoxModel,VisualPlumesScenario,OtherInfrastructure,MWQMRun,MeshNode,WebTideNode,SamplingPlan,SeeOtherMunicipality,LineOverflow,MapInfo,MapInfoPoint"), tvItemUserAuthorization.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsNotOfType_, "TVItemID3", "Root,Address,Area,ClimateSite,Contact,Country,Email,File,HydrometricSite,Infrastructure,MikeScenario,MikeSource,Municipality,MWQMSite,PolSourceSite,Province,Sector,Subsector,Tel,TideSite,WasteWaterTreatmentPlant,LiftStation,Spill,BoxModel,VisualPlumesScenario,OtherInfrastructure,MWQMRun,MeshNode,WebTideNode,SamplingPlan,SeeOtherMunicipality,LineOverflow,MapInfo,MapInfoPoint"), tvItemUserAuthorization.ValidationResults.FirstOrDefault().ErrorMessage);
 
 
                     // -----------------------------------
@@ -226,13 +226,13 @@ namespace CSSPServices.Tests
                     tvItemUserAuthorization = GetFilledRandomTVItemUserAuthorization("");
                     tvItemUserAuthorization.TVItemID4 = 0;
                     tvItemUserAuthorizationService.Add(tvItemUserAuthorization);
-                    Assert.AreEqual(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "TVItem", "TVItemID4", tvItemUserAuthorization.TVItemID4.ToString()), tvItemUserAuthorization.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "TVItem", "TVItemID4", tvItemUserAuthorization.TVItemID4.ToString()), tvItemUserAuthorization.ValidationResults.FirstOrDefault().ErrorMessage);
 
                     tvItemUserAuthorization = null;
                     tvItemUserAuthorization = GetFilledRandomTVItemUserAuthorization("");
                     tvItemUserAuthorization.TVItemID4 = 13;
                     tvItemUserAuthorizationService.Add(tvItemUserAuthorization);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsNotOfType_, "TVItemID4", "Root,Address,Area,ClimateSite,Contact,Country,Email,File,HydrometricSite,Infrastructure,MikeScenario,MikeSource,Municipality,MWQMSite,PolSourceSite,Province,Sector,Subsector,Tel,TideSite,WasteWaterTreatmentPlant,LiftStation,Spill,BoxModel,VisualPlumesScenario,OtherInfrastructure,MWQMRun,MeshNode,WebTideNode,SamplingPlan,SeeOtherMunicipality,LineOverflow,MapInfo,MapInfoPoint"), tvItemUserAuthorization.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsNotOfType_, "TVItemID4", "Root,Address,Area,ClimateSite,Contact,Country,Email,File,HydrometricSite,Infrastructure,MikeScenario,MikeSource,Municipality,MWQMSite,PolSourceSite,Province,Sector,Subsector,Tel,TideSite,WasteWaterTreatmentPlant,LiftStation,Spill,BoxModel,VisualPlumesScenario,OtherInfrastructure,MWQMRun,MeshNode,WebTideNode,SamplingPlan,SeeOtherMunicipality,LineOverflow,MapInfo,MapInfoPoint"), tvItemUserAuthorization.ValidationResults.FirstOrDefault().ErrorMessage);
 
 
                     // -----------------------------------
@@ -245,7 +245,7 @@ namespace CSSPServices.Tests
                     tvItemUserAuthorization = GetFilledRandomTVItemUserAuthorization("");
                     tvItemUserAuthorization.TVAuth = (TVAuthEnum)1000000;
                     tvItemUserAuthorizationService.Add(tvItemUserAuthorization);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsRequired, "TVAuth"), tvItemUserAuthorization.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsRequired, "TVAuth"), tvItemUserAuthorization.ValidationResults.FirstOrDefault().ErrorMessage);
 
 
                     // -----------------------------------
@@ -258,12 +258,12 @@ namespace CSSPServices.Tests
                     tvItemUserAuthorization = GetFilledRandomTVItemUserAuthorization("");
                     tvItemUserAuthorization.LastUpdateDate_UTC = new DateTime();
                     tvItemUserAuthorizationService.Add(tvItemUserAuthorization);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsRequired, "LastUpdateDate_UTC"), tvItemUserAuthorization.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsRequired, "LastUpdateDate_UTC"), tvItemUserAuthorization.ValidationResults.FirstOrDefault().ErrorMessage);
                     tvItemUserAuthorization = null;
                     tvItemUserAuthorization = GetFilledRandomTVItemUserAuthorization("");
                     tvItemUserAuthorization.LastUpdateDate_UTC = new DateTime(1979, 1, 1);
                     tvItemUserAuthorizationService.Add(tvItemUserAuthorization);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._YearShouldBeBiggerThan_, "LastUpdateDate_UTC", "1980"), tvItemUserAuthorization.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._YearShouldBeBiggerThan_, "LastUpdateDate_UTC", "1980"), tvItemUserAuthorization.ValidationResults.FirstOrDefault().ErrorMessage);
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -275,13 +275,13 @@ namespace CSSPServices.Tests
                     tvItemUserAuthorization = GetFilledRandomTVItemUserAuthorization("");
                     tvItemUserAuthorization.LastUpdateContactTVItemID = 0;
                     tvItemUserAuthorizationService.Add(tvItemUserAuthorization);
-                    Assert.AreEqual(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "TVItem", "LastUpdateContactTVItemID", tvItemUserAuthorization.LastUpdateContactTVItemID.ToString()), tvItemUserAuthorization.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "TVItem", "LastUpdateContactTVItemID", tvItemUserAuthorization.LastUpdateContactTVItemID.ToString()), tvItemUserAuthorization.ValidationResults.FirstOrDefault().ErrorMessage);
 
                     tvItemUserAuthorization = null;
                     tvItemUserAuthorization = GetFilledRandomTVItemUserAuthorization("");
                     tvItemUserAuthorization.LastUpdateContactTVItemID = 1;
                     tvItemUserAuthorizationService.Add(tvItemUserAuthorization);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsNotOfType_, "LastUpdateContactTVItemID", "Contact"), tvItemUserAuthorization.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsNotOfType_, "LastUpdateContactTVItemID", "Contact"), tvItemUserAuthorization.ValidationResults.FirstOrDefault().ErrorMessage);
 
 
                     // -----------------------------------
@@ -305,7 +305,7 @@ namespace CSSPServices.Tests
         #endregion Tests Generated Properties
 
         #region Tests Generated for GetTVItemUserAuthorizationWithTVItemUserAuthorizationID(tvItemUserAuthorization.TVItemUserAuthorizationID)
-        [TestMethod]
+        [Fact]
         public void GetTVItemUserAuthorizationWithTVItemUserAuthorizationID__tvItemUserAuthorization_TVItemUserAuthorizationID__Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -316,7 +316,7 @@ namespace CSSPServices.Tests
                 {
                     TVItemUserAuthorizationService tvItemUserAuthorizationService = new TVItemUserAuthorizationService(new Query() { Lang = culture.TwoLetterISOLanguageName }, dbTestDB, ContactID);
                     TVItemUserAuthorization tvItemUserAuthorization = (from c in dbTestDB.TVItemUserAuthorizations select c).FirstOrDefault();
-                    Assert.IsNotNull(tvItemUserAuthorization);
+                    Assert.NotNull(tvItemUserAuthorization);
 
                 }
             }
@@ -324,7 +324,7 @@ namespace CSSPServices.Tests
         #endregion Tests Generated for GetTVItemUserAuthorizationWithTVItemUserAuthorizationID(tvItemUserAuthorization.TVItemUserAuthorizationID)
 
         #region Tests Generated for GetTVItemUserAuthorizationList()
-        [TestMethod]
+        [Fact]
         public void GetTVItemUserAuthorizationList_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -335,7 +335,7 @@ namespace CSSPServices.Tests
                 {
                     TVItemUserAuthorizationService tvItemUserAuthorizationService = new TVItemUserAuthorizationService(new Query() { Lang = culture.TwoLetterISOLanguageName }, dbTestDB, ContactID);
                     TVItemUserAuthorization tvItemUserAuthorization = (from c in dbTestDB.TVItemUserAuthorizations select c).FirstOrDefault();
-                    Assert.IsNotNull(tvItemUserAuthorization);
+                    Assert.NotNull(tvItemUserAuthorization);
 
                     List<TVItemUserAuthorization> tvItemUserAuthorizationDirectQueryList = new List<TVItemUserAuthorization>();
                     tvItemUserAuthorizationDirectQueryList = (from c in dbTestDB.TVItemUserAuthorizations select c).Take(200).ToList();
@@ -346,7 +346,7 @@ namespace CSSPServices.Tests
         #endregion Tests Generated for GetTVItemUserAuthorizationList()
 
         #region Tests Generated for GetTVItemUserAuthorizationList() Skip Take
-        [TestMethod]
+        [Fact]
         public void GetTVItemUserAuthorizationList_Skip_Take_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -365,14 +365,14 @@ namespace CSSPServices.Tests
                         List<TVItemUserAuthorization> tvItemUserAuthorizationList = new List<TVItemUserAuthorization>();
                         tvItemUserAuthorizationList = tvItemUserAuthorizationService.GetTVItemUserAuthorizationList().ToList();
                         CheckTVItemUserAuthorizationFields(tvItemUserAuthorizationList);
-                        Assert.AreEqual(tvItemUserAuthorizationDirectQueryList[0].TVItemUserAuthorizationID, tvItemUserAuthorizationList[0].TVItemUserAuthorizationID);
+                        Assert.Equal(tvItemUserAuthorizationDirectQueryList[0].TVItemUserAuthorizationID, tvItemUserAuthorizationList[0].TVItemUserAuthorizationID);
                 }
             }
         }
         #endregion Tests Generated for GetTVItemUserAuthorizationList() Skip Take
 
         #region Tests Generated for GetTVItemUserAuthorizationList() Skip Take Asc
-        [TestMethod]
+        [Fact]
         public void GetTVItemUserAuthorizationList_Skip_Take_Asc_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -391,14 +391,14 @@ namespace CSSPServices.Tests
                         List<TVItemUserAuthorization> tvItemUserAuthorizationList = new List<TVItemUserAuthorization>();
                         tvItemUserAuthorizationList = tvItemUserAuthorizationService.GetTVItemUserAuthorizationList().ToList();
                         CheckTVItemUserAuthorizationFields(tvItemUserAuthorizationList);
-                        Assert.AreEqual(tvItemUserAuthorizationDirectQueryList[0].TVItemUserAuthorizationID, tvItemUserAuthorizationList[0].TVItemUserAuthorizationID);
+                        Assert.Equal(tvItemUserAuthorizationDirectQueryList[0].TVItemUserAuthorizationID, tvItemUserAuthorizationList[0].TVItemUserAuthorizationID);
                 }
             }
         }
         #endregion Tests Generated for GetTVItemUserAuthorizationList() Skip Take Asc
 
         #region Tests Generated for GetTVItemUserAuthorizationList() Skip Take 2 Asc
-        [TestMethod]
+        [Fact]
         public void GetTVItemUserAuthorizationList_Skip_Take_2Asc_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -417,14 +417,14 @@ namespace CSSPServices.Tests
                         List<TVItemUserAuthorization> tvItemUserAuthorizationList = new List<TVItemUserAuthorization>();
                         tvItemUserAuthorizationList = tvItemUserAuthorizationService.GetTVItemUserAuthorizationList().ToList();
                         CheckTVItemUserAuthorizationFields(tvItemUserAuthorizationList);
-                        Assert.AreEqual(tvItemUserAuthorizationDirectQueryList[0].TVItemUserAuthorizationID, tvItemUserAuthorizationList[0].TVItemUserAuthorizationID);
+                        Assert.Equal(tvItemUserAuthorizationDirectQueryList[0].TVItemUserAuthorizationID, tvItemUserAuthorizationList[0].TVItemUserAuthorizationID);
                 }
             }
         }
         #endregion Tests Generated for GetTVItemUserAuthorizationList() Skip Take 2 Asc
 
         #region Tests Generated for GetTVItemUserAuthorizationList() Skip Take Asc Where
-        [TestMethod]
+        [Fact]
         public void GetTVItemUserAuthorizationList_Skip_Take_Asc_Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -443,14 +443,14 @@ namespace CSSPServices.Tests
                         List<TVItemUserAuthorization> tvItemUserAuthorizationList = new List<TVItemUserAuthorization>();
                         tvItemUserAuthorizationList = tvItemUserAuthorizationService.GetTVItemUserAuthorizationList().ToList();
                         CheckTVItemUserAuthorizationFields(tvItemUserAuthorizationList);
-                        Assert.AreEqual(tvItemUserAuthorizationDirectQueryList[0].TVItemUserAuthorizationID, tvItemUserAuthorizationList[0].TVItemUserAuthorizationID);
+                        Assert.Equal(tvItemUserAuthorizationDirectQueryList[0].TVItemUserAuthorizationID, tvItemUserAuthorizationList[0].TVItemUserAuthorizationID);
                 }
             }
         }
         #endregion Tests Generated for GetTVItemUserAuthorizationList() Skip Take Asc Where
 
         #region Tests Generated for GetTVItemUserAuthorizationList() Skip Take Asc 2 Where
-        [TestMethod]
+        [Fact]
         public void GetTVItemUserAuthorizationList_Skip_Take_Asc_2Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -469,14 +469,14 @@ namespace CSSPServices.Tests
                         List<TVItemUserAuthorization> tvItemUserAuthorizationList = new List<TVItemUserAuthorization>();
                         tvItemUserAuthorizationList = tvItemUserAuthorizationService.GetTVItemUserAuthorizationList().ToList();
                         CheckTVItemUserAuthorizationFields(tvItemUserAuthorizationList);
-                        Assert.AreEqual(tvItemUserAuthorizationDirectQueryList[0].TVItemUserAuthorizationID, tvItemUserAuthorizationList[0].TVItemUserAuthorizationID);
+                        Assert.Equal(tvItemUserAuthorizationDirectQueryList[0].TVItemUserAuthorizationID, tvItemUserAuthorizationList[0].TVItemUserAuthorizationID);
                 }
             }
         }
         #endregion Tests Generated for GetTVItemUserAuthorizationList() Skip Take Asc 2 Where
 
         #region Tests Generated for GetTVItemUserAuthorizationList() Skip Take Desc
-        [TestMethod]
+        [Fact]
         public void GetTVItemUserAuthorizationList_Skip_Take_Desc_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -495,14 +495,14 @@ namespace CSSPServices.Tests
                         List<TVItemUserAuthorization> tvItemUserAuthorizationList = new List<TVItemUserAuthorization>();
                         tvItemUserAuthorizationList = tvItemUserAuthorizationService.GetTVItemUserAuthorizationList().ToList();
                         CheckTVItemUserAuthorizationFields(tvItemUserAuthorizationList);
-                        Assert.AreEqual(tvItemUserAuthorizationDirectQueryList[0].TVItemUserAuthorizationID, tvItemUserAuthorizationList[0].TVItemUserAuthorizationID);
+                        Assert.Equal(tvItemUserAuthorizationDirectQueryList[0].TVItemUserAuthorizationID, tvItemUserAuthorizationList[0].TVItemUserAuthorizationID);
                 }
             }
         }
         #endregion Tests Generated for GetTVItemUserAuthorizationList() Skip Take Desc
 
         #region Tests Generated for GetTVItemUserAuthorizationList() Skip Take 2 Desc
-        [TestMethod]
+        [Fact]
         public void GetTVItemUserAuthorizationList_Skip_Take_2Desc_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -521,14 +521,14 @@ namespace CSSPServices.Tests
                         List<TVItemUserAuthorization> tvItemUserAuthorizationList = new List<TVItemUserAuthorization>();
                         tvItemUserAuthorizationList = tvItemUserAuthorizationService.GetTVItemUserAuthorizationList().ToList();
                         CheckTVItemUserAuthorizationFields(tvItemUserAuthorizationList);
-                        Assert.AreEqual(tvItemUserAuthorizationDirectQueryList[0].TVItemUserAuthorizationID, tvItemUserAuthorizationList[0].TVItemUserAuthorizationID);
+                        Assert.Equal(tvItemUserAuthorizationDirectQueryList[0].TVItemUserAuthorizationID, tvItemUserAuthorizationList[0].TVItemUserAuthorizationID);
                 }
             }
         }
         #endregion Tests Generated for GetTVItemUserAuthorizationList() Skip Take 2 Desc
 
         #region Tests Generated for GetTVItemUserAuthorizationList() Skip Take Desc Where
-        [TestMethod]
+        [Fact]
         public void GetTVItemUserAuthorizationList_Skip_Take_Desc_Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -547,14 +547,14 @@ namespace CSSPServices.Tests
                         List<TVItemUserAuthorization> tvItemUserAuthorizationList = new List<TVItemUserAuthorization>();
                         tvItemUserAuthorizationList = tvItemUserAuthorizationService.GetTVItemUserAuthorizationList().ToList();
                         CheckTVItemUserAuthorizationFields(tvItemUserAuthorizationList);
-                        Assert.AreEqual(tvItemUserAuthorizationDirectQueryList[0].TVItemUserAuthorizationID, tvItemUserAuthorizationList[0].TVItemUserAuthorizationID);
+                        Assert.Equal(tvItemUserAuthorizationDirectQueryList[0].TVItemUserAuthorizationID, tvItemUserAuthorizationList[0].TVItemUserAuthorizationID);
                 }
             }
         }
         #endregion Tests Generated for GetTVItemUserAuthorizationList() Skip Take Desc Where
 
         #region Tests Generated for GetTVItemUserAuthorizationList() Skip Take Desc 2 Where
-        [TestMethod]
+        [Fact]
         public void GetTVItemUserAuthorizationList_Skip_Take_Desc_2Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -573,14 +573,14 @@ namespace CSSPServices.Tests
                         List<TVItemUserAuthorization> tvItemUserAuthorizationList = new List<TVItemUserAuthorization>();
                         tvItemUserAuthorizationList = tvItemUserAuthorizationService.GetTVItemUserAuthorizationList().ToList();
                         CheckTVItemUserAuthorizationFields(tvItemUserAuthorizationList);
-                        Assert.AreEqual(tvItemUserAuthorizationDirectQueryList[0].TVItemUserAuthorizationID, tvItemUserAuthorizationList[0].TVItemUserAuthorizationID);
+                        Assert.Equal(tvItemUserAuthorizationDirectQueryList[0].TVItemUserAuthorizationID, tvItemUserAuthorizationList[0].TVItemUserAuthorizationID);
                 }
             }
         }
         #endregion Tests Generated for GetTVItemUserAuthorizationList() Skip Take Desc 2 Where
 
         #region Tests Generated for GetTVItemUserAuthorizationList() 2 Where
-        [TestMethod]
+        [Fact]
         public void GetTVItemUserAuthorizationList_2Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -599,7 +599,7 @@ namespace CSSPServices.Tests
                         List<TVItemUserAuthorization> tvItemUserAuthorizationList = new List<TVItemUserAuthorization>();
                         tvItemUserAuthorizationList = tvItemUserAuthorizationService.GetTVItemUserAuthorizationList().ToList();
                         CheckTVItemUserAuthorizationFields(tvItemUserAuthorizationList);
-                        Assert.AreEqual(tvItemUserAuthorizationDirectQueryList[0].TVItemUserAuthorizationID, tvItemUserAuthorizationList[0].TVItemUserAuthorizationID);
+                        Assert.Equal(tvItemUserAuthorizationDirectQueryList[0].TVItemUserAuthorizationID, tvItemUserAuthorizationList[0].TVItemUserAuthorizationID);
                 }
             }
         }
@@ -608,25 +608,25 @@ namespace CSSPServices.Tests
         #region Functions private
         private void CheckTVItemUserAuthorizationFields(List<TVItemUserAuthorization> tvItemUserAuthorizationList)
         {
-            Assert.IsNotNull(tvItemUserAuthorizationList[0].TVItemUserAuthorizationID);
-            Assert.IsNotNull(tvItemUserAuthorizationList[0].ContactTVItemID);
-            Assert.IsNotNull(tvItemUserAuthorizationList[0].TVItemID1);
+            Assert.NotNull(tvItemUserAuthorizationList[0].TVItemUserAuthorizationID);
+            Assert.NotNull(tvItemUserAuthorizationList[0].ContactTVItemID);
+            Assert.NotNull(tvItemUserAuthorizationList[0].TVItemID1);
             if (tvItemUserAuthorizationList[0].TVItemID2 != null)
             {
-                Assert.IsNotNull(tvItemUserAuthorizationList[0].TVItemID2);
+                Assert.NotNull(tvItemUserAuthorizationList[0].TVItemID2);
             }
             if (tvItemUserAuthorizationList[0].TVItemID3 != null)
             {
-                Assert.IsNotNull(tvItemUserAuthorizationList[0].TVItemID3);
+                Assert.NotNull(tvItemUserAuthorizationList[0].TVItemID3);
             }
             if (tvItemUserAuthorizationList[0].TVItemID4 != null)
             {
-                Assert.IsNotNull(tvItemUserAuthorizationList[0].TVItemID4);
+                Assert.NotNull(tvItemUserAuthorizationList[0].TVItemID4);
             }
-            Assert.IsNotNull(tvItemUserAuthorizationList[0].TVAuth);
-            Assert.IsNotNull(tvItemUserAuthorizationList[0].LastUpdateDate_UTC);
-            Assert.IsNotNull(tvItemUserAuthorizationList[0].LastUpdateContactTVItemID);
-            Assert.IsNotNull(tvItemUserAuthorizationList[0].HasErrors);
+            Assert.NotNull(tvItemUserAuthorizationList[0].TVAuth);
+            Assert.NotNull(tvItemUserAuthorizationList[0].LastUpdateDate_UTC);
+            Assert.NotNull(tvItemUserAuthorizationList[0].LastUpdateContactTVItemID);
+            Assert.NotNull(tvItemUserAuthorizationList[0].HasErrors);
         }
         private TVItemUserAuthorization GetFilledRandomTVItemUserAuthorization(string OmitPropName)
         {

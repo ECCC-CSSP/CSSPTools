@@ -6,7 +6,7 @@
  */ 
 using System;
 using System.Text;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using System.Linq;
 using System.Globalization;
 using System.Transactions;
@@ -19,7 +19,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace CSSPModels.Tests
 {
-    [TestClass]
+
     public partial class NodeLayerTest
     {
         #region Variables
@@ -37,7 +37,7 @@ namespace CSSPModels.Tests
         #endregion Constructors
 
         #region Tests Functions public
-        [TestMethod]
+        [Fact]
         public void NodeLayer_Properties_Test()
         {
             List<string> propNameList = new List<string>() { "Layer", "Z", "Node", "HasErrors",  }.OrderBy(c => c).ToList();
@@ -46,35 +46,35 @@ namespace CSSPModels.Tests
             int index = 0;
             foreach (PropertyInfo propertyInfo in typeof(NodeLayer).GetProperties().Where(c => c.Name != "ValidationResults").OrderBy(c => c.Name).ToList())
             {
-                Assert.AreEqual(propertyInfo.Name, propNameList[index]);
+                Assert.Equal(propertyInfo.Name, propNameList[index]);
                 index += 1;
             }
 
-            Assert.AreEqual(propNameList.Count, index);
+            Assert.Equal(propNameList.Count, index);
         }
-        [TestMethod]
+        [Fact]
         public void NodeLayer_Has_ValidationResults_Test()
         {
-             Assert.IsTrue(typeof(NodeLayer).GetProperties().Where(c => c.Name == "ValidationResults").Any());
+             Assert.True(typeof(NodeLayer).GetProperties().Where(c => c.Name == "ValidationResults").Any());
         }
-        [TestMethod]
+        [Fact]
         public void NodeLayer_Every_Property_Has_Get_Set_Test()
         {
                int val1 = 45;
                nodeLayer.Layer = val1;
-               Assert.AreEqual(val1, nodeLayer.Layer);
+               Assert.Equal(val1, nodeLayer.Layer);
                double val2 = 87.9D;
                nodeLayer.Z = val2;
-               Assert.AreEqual(val2, nodeLayer.Z);
+               Assert.Equal(val2, nodeLayer.Z);
                Node val3 = new Node();
                nodeLayer.Node = val3;
-               Assert.AreEqual(val3, nodeLayer.Node);
+               Assert.Equal(val3, nodeLayer.Node);
                bool val4 = true;
                nodeLayer.HasErrors = val4;
-               Assert.AreEqual(val4, nodeLayer.HasErrors);
+               Assert.Equal(val4, nodeLayer.HasErrors);
                IEnumerable<ValidationResult> val15 = new List<ValidationResult>() { new ValidationResult("First CSSPError Message") }.AsEnumerable();
                nodeLayer.ValidationResults = val15;
-               Assert.AreEqual(val15, nodeLayer.ValidationResults);
+               Assert.Equal(val15, nodeLayer.ValidationResults);
         }
         #endregion Tests Functions public
     }

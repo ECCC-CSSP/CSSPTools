@@ -6,7 +6,7 @@
  */ 
 using System;
 using System.Text;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using System.Linq;
 using System.Globalization;
 using System.Transactions;
@@ -19,7 +19,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace CSSPModels.Tests
 {
-    [TestClass]
+
     public partial class DrogueRunPositionTest
     {
         #region Variables
@@ -37,7 +37,7 @@ namespace CSSPModels.Tests
         #endregion Constructors
 
         #region Tests Functions public
-        [TestMethod]
+        [Fact]
         public void DrogueRunPosition_Properties_Test()
         {
             List<string> propNameList = new List<string>() { "DrogueRunPositionID", "DrogueRunID", "Ordinal", "StepLat", "StepLng", "StepDateTime_Local", "CalculatedSpeed_m_s", "CalculatedDirection_deg", "LastUpdateDate_UTC", "LastUpdateContactTVItemID",  }.OrderBy(c => c).ToList();
@@ -50,12 +50,12 @@ namespace CSSPModels.Tests
                     && propertyInfo.Name != "ValidationResults"
                     && !propertyInfo.CustomAttributes.Where(c => c.AttributeType.Name.Contains("NotMappedAttribute")).Any())
                 {
-                    Assert.AreEqual(propNameList[index], propertyInfo.Name);
+                    Assert.Equal(propNameList[index], propertyInfo.Name);
                     index += 1;
                 }
             }
 
-            Assert.AreEqual(propNameList.Count, index);
+            Assert.Equal(propNameList.Count, index);
 
             index = 0;
             foreach (PropertyInfo propertyInfo in typeof(DrogueRunPosition).GetProperties().Where(c => c.Name != "ValidationResults").OrderBy(c => c.Name).ToList())
@@ -64,16 +64,16 @@ namespace CSSPModels.Tests
                 {
                     if (customAttributeData.AttributeType.Name == "NotMappedAttribute")
                     {
-                        Assert.AreEqual(propertyInfo.Name, propNameNotMappedList[index]);
+                        Assert.Equal(propertyInfo.Name, propNameNotMappedList[index]);
                         index += 1;
                     }
                 }
             }
 
-            Assert.AreEqual(propNameNotMappedList.Count, index);
+            Assert.Equal(propNameNotMappedList.Count, index);
 
         }
-        [TestMethod]
+        [Fact]
         public void DrogueRunPosition_Navigation_Test()
         {
             List<string> foreignNameList = new List<string>() {  }.OrderBy(c => c).ToList();
@@ -84,70 +84,70 @@ namespace CSSPModels.Tests
             {
                 if (propertyInfo.GetGetMethod().IsVirtual && !propertyInfo.GetGetMethod().ReturnType.Name.StartsWith("ICollection"))
                 {
-                    Assert.IsTrue(foreignNameList.Contains(propertyInfo.Name));
+                    Assert.True(foreignNameList.Contains(propertyInfo.Name));
                     index += 1;
                 }
             }
 
-            Assert.AreEqual(foreignNameList.Count, index);
+            Assert.Equal(foreignNameList.Count, index);
 
             index = 0;
             foreach (PropertyInfo propertyInfo in typeof(DrogueRunPosition).GetProperties().Where(c => c.Name != "ValidationResults").OrderBy(c => c.Name).ToList())
             {
                 if (propertyInfo.GetGetMethod().ReturnType.Name.StartsWith("ICollection"))
                 {
-                    Assert.IsTrue(foreignNameCollectionList.Contains(propertyInfo.Name));
+                    Assert.True(foreignNameCollectionList.Contains(propertyInfo.Name));
                     index += 1;
                 }
             }
 
-            Assert.AreEqual(foreignNameCollectionList.Count, index);
+            Assert.Equal(foreignNameCollectionList.Count, index);
 
         }
-        [TestMethod]
+        [Fact]
         public void DrogueRunPosition_Has_ValidationResults_Test()
         {
-             Assert.IsTrue(typeof(DrogueRunPosition).GetProperties().Where(c => c.Name == "ValidationResults").Any());
+             Assert.True(typeof(DrogueRunPosition).GetProperties().Where(c => c.Name == "ValidationResults").Any());
         }
-        [TestMethod]
+        [Fact]
         public void DrogueRunPosition_Every_Property_Has_Get_Set_Test()
         {
                int val1 = 45;
                drogueRunPosition.DrogueRunPositionID = val1;
-               Assert.AreEqual(val1, drogueRunPosition.DrogueRunPositionID);
+               Assert.Equal(val1, drogueRunPosition.DrogueRunPositionID);
                int val2 = 45;
                drogueRunPosition.DrogueRunID = val2;
-               Assert.AreEqual(val2, drogueRunPosition.DrogueRunID);
+               Assert.Equal(val2, drogueRunPosition.DrogueRunID);
                int val3 = 45;
                drogueRunPosition.Ordinal = val3;
-               Assert.AreEqual(val3, drogueRunPosition.Ordinal);
+               Assert.Equal(val3, drogueRunPosition.Ordinal);
                double val4 = 87.9D;
                drogueRunPosition.StepLat = val4;
-               Assert.AreEqual(val4, drogueRunPosition.StepLat);
+               Assert.Equal(val4, drogueRunPosition.StepLat);
                double val5 = 87.9D;
                drogueRunPosition.StepLng = val5;
-               Assert.AreEqual(val5, drogueRunPosition.StepLng);
+               Assert.Equal(val5, drogueRunPosition.StepLng);
                DateTime val6 = new DateTime(2010, 3, 4);
                drogueRunPosition.StepDateTime_Local = val6;
-               Assert.AreEqual(val6, drogueRunPosition.StepDateTime_Local);
+               Assert.Equal(val6, drogueRunPosition.StepDateTime_Local);
                double val7 = 87.9D;
                drogueRunPosition.CalculatedSpeed_m_s = val7;
-               Assert.AreEqual(val7, drogueRunPosition.CalculatedSpeed_m_s);
+               Assert.Equal(val7, drogueRunPosition.CalculatedSpeed_m_s);
                double val8 = 87.9D;
                drogueRunPosition.CalculatedDirection_deg = val8;
-               Assert.AreEqual(val8, drogueRunPosition.CalculatedDirection_deg);
+               Assert.Equal(val8, drogueRunPosition.CalculatedDirection_deg);
                DateTime val9 = new DateTime(2010, 3, 4);
                drogueRunPosition.LastUpdateDate_UTC = val9;
-               Assert.AreEqual(val9, drogueRunPosition.LastUpdateDate_UTC);
+               Assert.Equal(val9, drogueRunPosition.LastUpdateDate_UTC);
                int val10 = 45;
                drogueRunPosition.LastUpdateContactTVItemID = val10;
-               Assert.AreEqual(val10, drogueRunPosition.LastUpdateContactTVItemID);
+               Assert.Equal(val10, drogueRunPosition.LastUpdateContactTVItemID);
                bool val11 = true;
                drogueRunPosition.HasErrors = val11;
-               Assert.AreEqual(val11, drogueRunPosition.HasErrors);
+               Assert.Equal(val11, drogueRunPosition.HasErrors);
                IEnumerable<ValidationResult> val36 = new List<ValidationResult>() { new ValidationResult("First CSSPError Message") }.AsEnumerable();
                drogueRunPosition.ValidationResults = val36;
-               Assert.AreEqual(val36, drogueRunPosition.ValidationResults);
+               Assert.Equal(val36, drogueRunPosition.ValidationResults);
         }
         #endregion Tests Functions public
     }

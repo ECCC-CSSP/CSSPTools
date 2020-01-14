@@ -5,7 +5,7 @@
  */ 
 
 using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using System.Linq;
 using System.Collections.Generic;
 using CSSPModels;
@@ -21,7 +21,7 @@ using CSSPEnums.Resources;
 
 namespace CSSPServices.Tests
 {
-    [TestClass]
+
     public partial class TVFileServiceTest : TestHelper
     {
         #region Variables
@@ -39,7 +39,7 @@ namespace CSSPServices.Tests
         #endregion Constructors
 
         #region Tests Generated CRUD
-        [TestMethod]
+        [Fact]
         public void TVFile_CRUD_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -66,26 +66,26 @@ namespace CSSPServices.Tests
 
                     count = tvFileService.GetTVFileList().Count();
 
-                    Assert.AreEqual(count, (from c in dbTestDB.TVFiles select c).Count());
+                    Assert.Equal(count, (from c in dbTestDB.TVFiles select c).Count());
 
                     tvFileService.Add(tvFile);
                     if (tvFile.HasErrors)
                     {
-                        Assert.AreEqual("", tvFile.ValidationResults.FirstOrDefault().ErrorMessage);
+                        Assert.Equal("", tvFile.ValidationResults.FirstOrDefault().ErrorMessage);
                     }
-                    Assert.AreEqual(true, tvFileService.GetTVFileList().Where(c => c == tvFile).Any());
+                    Assert.True(tvFileService.GetTVFileList().Where(c => c == tvFile).Any());
                     tvFileService.Update(tvFile);
                     if (tvFile.HasErrors)
                     {
-                        Assert.AreEqual("", tvFile.ValidationResults.FirstOrDefault().ErrorMessage);
+                        Assert.Equal("", tvFile.ValidationResults.FirstOrDefault().ErrorMessage);
                     }
-                    Assert.AreEqual(count + 1, tvFileService.GetTVFileList().Count());
+                    Assert.Equal(count + 1, tvFileService.GetTVFileList().Count());
                     tvFileService.Delete(tvFile);
                     if (tvFile.HasErrors)
                     {
-                        Assert.AreEqual("", tvFile.ValidationResults.FirstOrDefault().ErrorMessage);
+                        Assert.Equal("", tvFile.ValidationResults.FirstOrDefault().ErrorMessage);
                     }
-                    Assert.AreEqual(count, tvFileService.GetTVFileList().Count());
+                    Assert.Equal(count, tvFileService.GetTVFileList().Count());
 
                 }
             }
@@ -93,7 +93,7 @@ namespace CSSPServices.Tests
         #endregion Tests Generated CRUD
 
         #region Tests Generated Properties
-        [TestMethod]
+        [Fact]
         public void TVFile_Properties_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -131,13 +131,13 @@ namespace CSSPServices.Tests
                     tvFile = GetFilledRandomTVFile("");
                     tvFile.TVFileID = 0;
                     tvFileService.Update(tvFile);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsRequired, "TVFileID"), tvFile.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsRequired, "TVFileID"), tvFile.ValidationResults.FirstOrDefault().ErrorMessage);
 
                     tvFile = null;
                     tvFile = GetFilledRandomTVFile("");
                     tvFile.TVFileID = 10000000;
                     tvFileService.Update(tvFile);
-                    Assert.AreEqual(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "TVFile", "TVFileID", tvFile.TVFileID.ToString()), tvFile.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "TVFile", "TVFileID", tvFile.TVFileID.ToString()), tvFile.ValidationResults.FirstOrDefault().ErrorMessage);
 
 
                     // -----------------------------------
@@ -150,13 +150,13 @@ namespace CSSPServices.Tests
                     tvFile = GetFilledRandomTVFile("");
                     tvFile.TVFileTVItemID = 0;
                     tvFileService.Add(tvFile);
-                    Assert.AreEqual(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "TVItem", "TVFileTVItemID", tvFile.TVFileTVItemID.ToString()), tvFile.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "TVItem", "TVFileTVItemID", tvFile.TVFileTVItemID.ToString()), tvFile.ValidationResults.FirstOrDefault().ErrorMessage);
 
                     tvFile = null;
                     tvFile = GetFilledRandomTVFile("");
                     tvFile.TVFileTVItemID = 1;
                     tvFileService.Add(tvFile);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsNotOfType_, "TVFileTVItemID", "File"), tvFile.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsNotOfType_, "TVFileTVItemID", "File"), tvFile.ValidationResults.FirstOrDefault().ErrorMessage);
 
 
                     // -----------------------------------
@@ -169,7 +169,7 @@ namespace CSSPServices.Tests
                     tvFile = GetFilledRandomTVFile("");
                     tvFile.TemplateTVType = (TVTypeEnum)1000000;
                     tvFileService.Add(tvFile);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsRequired, "TemplateTVType"), tvFile.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsRequired, "TemplateTVType"), tvFile.ValidationResults.FirstOrDefault().ErrorMessage);
 
 
                     // -----------------------------------
@@ -182,7 +182,7 @@ namespace CSSPServices.Tests
                     tvFile = GetFilledRandomTVFile("");
                     tvFile.ReportTypeID = 0;
                     tvFileService.Add(tvFile);
-                    Assert.AreEqual(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "ReportType", "ReportTypeID", tvFile.ReportTypeID.ToString()), tvFile.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "ReportType", "ReportTypeID", tvFile.ReportTypeID.ToString()), tvFile.ValidationResults.FirstOrDefault().ErrorMessage);
 
 
                     // -----------------------------------
@@ -200,15 +200,15 @@ namespace CSSPServices.Tests
                     tvFile = null;
                     tvFile = GetFilledRandomTVFile("");
                     tvFile.Year = 1979;
-                    Assert.AreEqual(false, tvFileService.Add(tvFile));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "Year", "1980", "2050"), tvFile.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, tvFileService.GetTVFileList().Count());
+                    Assert.False(tvFileService.Add(tvFile));
+                    Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "Year", "1980", "2050"), tvFile.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, tvFileService.GetTVFileList().Count());
                     tvFile = null;
                     tvFile = GetFilledRandomTVFile("");
                     tvFile.Year = 2051;
-                    Assert.AreEqual(false, tvFileService.Add(tvFile));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "Year", "1980", "2050"), tvFile.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, tvFileService.GetTVFileList().Count());
+                    Assert.False(tvFileService.Add(tvFile));
+                    Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "Year", "1980", "2050"), tvFile.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, tvFileService.GetTVFileList().Count());
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -220,7 +220,7 @@ namespace CSSPServices.Tests
                     tvFile = GetFilledRandomTVFile("");
                     tvFile.Language = (LanguageEnum)1000000;
                     tvFileService.Add(tvFile);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsRequired, "Language"), tvFile.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsRequired, "Language"), tvFile.ValidationResults.FirstOrDefault().ErrorMessage);
 
 
                     // -----------------------------------
@@ -233,7 +233,7 @@ namespace CSSPServices.Tests
                     tvFile = GetFilledRandomTVFile("");
                     tvFile.FilePurpose = (FilePurposeEnum)1000000;
                     tvFileService.Add(tvFile);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsRequired, "FilePurpose"), tvFile.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsRequired, "FilePurpose"), tvFile.ValidationResults.FirstOrDefault().ErrorMessage);
 
 
                     // -----------------------------------
@@ -246,7 +246,7 @@ namespace CSSPServices.Tests
                     tvFile = GetFilledRandomTVFile("");
                     tvFile.FileType = (FileTypeEnum)1000000;
                     tvFileService.Add(tvFile);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsRequired, "FileType"), tvFile.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsRequired, "FileType"), tvFile.ValidationResults.FirstOrDefault().ErrorMessage);
 
 
                     // -----------------------------------
@@ -258,15 +258,15 @@ namespace CSSPServices.Tests
                     tvFile = null;
                     tvFile = GetFilledRandomTVFile("");
                     tvFile.FileSize_kb = -1;
-                    Assert.AreEqual(false, tvFileService.Add(tvFile));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "FileSize_kb", "0", "100000000"), tvFile.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, tvFileService.GetTVFileList().Count());
+                    Assert.False(tvFileService.Add(tvFile));
+                    Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "FileSize_kb", "0", "100000000"), tvFile.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, tvFileService.GetTVFileList().Count());
                     tvFile = null;
                     tvFile = GetFilledRandomTVFile("");
                     tvFile.FileSize_kb = 100000001;
-                    Assert.AreEqual(false, tvFileService.Add(tvFile));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "FileSize_kb", "0", "100000000"), tvFile.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, tvFileService.GetTVFileList().Count());
+                    Assert.False(tvFileService.Add(tvFile));
+                    Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "FileSize_kb", "0", "100000000"), tvFile.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, tvFileService.GetTVFileList().Count());
 
                     // -----------------------------------
                     // Is Nullable
@@ -284,12 +284,12 @@ namespace CSSPServices.Tests
                     tvFile = GetFilledRandomTVFile("");
                     tvFile.FileCreatedDate_UTC = new DateTime();
                     tvFileService.Add(tvFile);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsRequired, "FileCreatedDate_UTC"), tvFile.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsRequired, "FileCreatedDate_UTC"), tvFile.ValidationResults.FirstOrDefault().ErrorMessage);
                     tvFile = null;
                     tvFile = GetFilledRandomTVFile("");
                     tvFile.FileCreatedDate_UTC = new DateTime(1979, 1, 1);
                     tvFileService.Add(tvFile);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._YearShouldBeBiggerThan_, "FileCreatedDate_UTC", "1980"), tvFile.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._YearShouldBeBiggerThan_, "FileCreatedDate_UTC", "1980"), tvFile.ValidationResults.FirstOrDefault().ErrorMessage);
 
                     // -----------------------------------
                     // Is Nullable
@@ -306,9 +306,9 @@ namespace CSSPServices.Tests
                     tvFile = null;
                     tvFile = GetFilledRandomTVFile("");
                     tvFile.ClientFilePath = GetRandomString("", 251);
-                    Assert.AreEqual(false, tvFileService.Add(tvFile));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._MaxLengthIs_, "ClientFilePath", "250"), tvFile.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, tvFileService.GetTVFileList().Count());
+                    Assert.False(tvFileService.Add(tvFile));
+                    Assert.Equal(string.Format(CSSPServicesRes._MaxLengthIs_, "ClientFilePath", "250"), tvFile.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, tvFileService.GetTVFileList().Count());
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -318,18 +318,18 @@ namespace CSSPServices.Tests
 
                     tvFile = null;
                     tvFile = GetFilledRandomTVFile("ServerFileName");
-                    Assert.AreEqual(false, tvFileService.Add(tvFile));
-                    Assert.AreEqual(1, tvFile.ValidationResults.Count());
-                    Assert.IsTrue(tvFile.ValidationResults.Where(c => c.ErrorMessage == string.Format(CSSPServicesRes._IsRequired, "ServerFileName")).Any());
-                    Assert.AreEqual(null, tvFile.ServerFileName);
-                    Assert.AreEqual(count, tvFileService.GetTVFileList().Count());
+                    Assert.False(tvFileService.Add(tvFile));
+                    Assert.Equal(1, tvFile.ValidationResults.Count());
+                    Assert.True(tvFile.ValidationResults.Where(c => c.ErrorMessage == string.Format(CSSPServicesRes._IsRequired, "ServerFileName")).Any());
+                    Assert.Null(tvFile.ServerFileName);
+                    Assert.Equal(count, tvFileService.GetTVFileList().Count());
 
                     tvFile = null;
                     tvFile = GetFilledRandomTVFile("");
                     tvFile.ServerFileName = GetRandomString("", 251);
-                    Assert.AreEqual(false, tvFileService.Add(tvFile));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._MaxLengthIs_, "ServerFileName", "250"), tvFile.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, tvFileService.GetTVFileList().Count());
+                    Assert.False(tvFileService.Add(tvFile));
+                    Assert.Equal(string.Format(CSSPServicesRes._MaxLengthIs_, "ServerFileName", "250"), tvFile.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, tvFileService.GetTVFileList().Count());
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -339,18 +339,18 @@ namespace CSSPServices.Tests
 
                     tvFile = null;
                     tvFile = GetFilledRandomTVFile("ServerFilePath");
-                    Assert.AreEqual(false, tvFileService.Add(tvFile));
-                    Assert.AreEqual(1, tvFile.ValidationResults.Count());
-                    Assert.IsTrue(tvFile.ValidationResults.Where(c => c.ErrorMessage == string.Format(CSSPServicesRes._IsRequired, "ServerFilePath")).Any());
-                    Assert.AreEqual(null, tvFile.ServerFilePath);
-                    Assert.AreEqual(count, tvFileService.GetTVFileList().Count());
+                    Assert.False(tvFileService.Add(tvFile));
+                    Assert.Equal(1, tvFile.ValidationResults.Count());
+                    Assert.True(tvFile.ValidationResults.Where(c => c.ErrorMessage == string.Format(CSSPServicesRes._IsRequired, "ServerFilePath")).Any());
+                    Assert.Null(tvFile.ServerFilePath);
+                    Assert.Equal(count, tvFileService.GetTVFileList().Count());
 
                     tvFile = null;
                     tvFile = GetFilledRandomTVFile("");
                     tvFile.ServerFilePath = GetRandomString("", 251);
-                    Assert.AreEqual(false, tvFileService.Add(tvFile));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._MaxLengthIs_, "ServerFilePath", "250"), tvFile.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, tvFileService.GetTVFileList().Count());
+                    Assert.False(tvFileService.Add(tvFile));
+                    Assert.Equal(string.Format(CSSPServicesRes._MaxLengthIs_, "ServerFilePath", "250"), tvFile.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, tvFileService.GetTVFileList().Count());
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -362,12 +362,12 @@ namespace CSSPServices.Tests
                     tvFile = GetFilledRandomTVFile("");
                     tvFile.LastUpdateDate_UTC = new DateTime();
                     tvFileService.Add(tvFile);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsRequired, "LastUpdateDate_UTC"), tvFile.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsRequired, "LastUpdateDate_UTC"), tvFile.ValidationResults.FirstOrDefault().ErrorMessage);
                     tvFile = null;
                     tvFile = GetFilledRandomTVFile("");
                     tvFile.LastUpdateDate_UTC = new DateTime(1979, 1, 1);
                     tvFileService.Add(tvFile);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._YearShouldBeBiggerThan_, "LastUpdateDate_UTC", "1980"), tvFile.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._YearShouldBeBiggerThan_, "LastUpdateDate_UTC", "1980"), tvFile.ValidationResults.FirstOrDefault().ErrorMessage);
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -379,13 +379,13 @@ namespace CSSPServices.Tests
                     tvFile = GetFilledRandomTVFile("");
                     tvFile.LastUpdateContactTVItemID = 0;
                     tvFileService.Add(tvFile);
-                    Assert.AreEqual(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "TVItem", "LastUpdateContactTVItemID", tvFile.LastUpdateContactTVItemID.ToString()), tvFile.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "TVItem", "LastUpdateContactTVItemID", tvFile.LastUpdateContactTVItemID.ToString()), tvFile.ValidationResults.FirstOrDefault().ErrorMessage);
 
                     tvFile = null;
                     tvFile = GetFilledRandomTVFile("");
                     tvFile.LastUpdateContactTVItemID = 1;
                     tvFileService.Add(tvFile);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsNotOfType_, "LastUpdateContactTVItemID", "Contact"), tvFile.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsNotOfType_, "LastUpdateContactTVItemID", "Contact"), tvFile.ValidationResults.FirstOrDefault().ErrorMessage);
 
 
                     // -----------------------------------
@@ -409,7 +409,7 @@ namespace CSSPServices.Tests
         #endregion Tests Generated Properties
 
         #region Tests Generated for GetTVFileWithTVFileID(tvFile.TVFileID)
-        [TestMethod]
+        [Fact]
         public void GetTVFileWithTVFileID__tvFile_TVFileID__Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -420,7 +420,7 @@ namespace CSSPServices.Tests
                 {
                     TVFileService tvFileService = new TVFileService(new Query() { Lang = culture.TwoLetterISOLanguageName }, dbTestDB, ContactID);
                     TVFile tvFile = (from c in dbTestDB.TVFiles select c).FirstOrDefault();
-                    Assert.IsNotNull(tvFile);
+                    Assert.NotNull(tvFile);
 
                 }
             }
@@ -428,7 +428,7 @@ namespace CSSPServices.Tests
         #endregion Tests Generated for GetTVFileWithTVFileID(tvFile.TVFileID)
 
         #region Tests Generated for GetTVFileList()
-        [TestMethod]
+        [Fact]
         public void GetTVFileList_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -439,7 +439,7 @@ namespace CSSPServices.Tests
                 {
                     TVFileService tvFileService = new TVFileService(new Query() { Lang = culture.TwoLetterISOLanguageName }, dbTestDB, ContactID);
                     TVFile tvFile = (from c in dbTestDB.TVFiles select c).FirstOrDefault();
-                    Assert.IsNotNull(tvFile);
+                    Assert.NotNull(tvFile);
 
                     List<TVFile> tvFileDirectQueryList = new List<TVFile>();
                     tvFileDirectQueryList = (from c in dbTestDB.TVFiles select c).Take(200).ToList();
@@ -450,7 +450,7 @@ namespace CSSPServices.Tests
         #endregion Tests Generated for GetTVFileList()
 
         #region Tests Generated for GetTVFileList() Skip Take
-        [TestMethod]
+        [Fact]
         public void GetTVFileList_Skip_Take_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -469,14 +469,14 @@ namespace CSSPServices.Tests
                         List<TVFile> tvFileList = new List<TVFile>();
                         tvFileList = tvFileService.GetTVFileList().ToList();
                         CheckTVFileFields(tvFileList);
-                        Assert.AreEqual(tvFileDirectQueryList[0].TVFileID, tvFileList[0].TVFileID);
+                        Assert.Equal(tvFileDirectQueryList[0].TVFileID, tvFileList[0].TVFileID);
                 }
             }
         }
         #endregion Tests Generated for GetTVFileList() Skip Take
 
         #region Tests Generated for GetTVFileList() Skip Take Asc
-        [TestMethod]
+        [Fact]
         public void GetTVFileList_Skip_Take_Asc_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -495,14 +495,14 @@ namespace CSSPServices.Tests
                         List<TVFile> tvFileList = new List<TVFile>();
                         tvFileList = tvFileService.GetTVFileList().ToList();
                         CheckTVFileFields(tvFileList);
-                        Assert.AreEqual(tvFileDirectQueryList[0].TVFileID, tvFileList[0].TVFileID);
+                        Assert.Equal(tvFileDirectQueryList[0].TVFileID, tvFileList[0].TVFileID);
                 }
             }
         }
         #endregion Tests Generated for GetTVFileList() Skip Take Asc
 
         #region Tests Generated for GetTVFileList() Skip Take 2 Asc
-        [TestMethod]
+        [Fact]
         public void GetTVFileList_Skip_Take_2Asc_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -521,14 +521,14 @@ namespace CSSPServices.Tests
                         List<TVFile> tvFileList = new List<TVFile>();
                         tvFileList = tvFileService.GetTVFileList().ToList();
                         CheckTVFileFields(tvFileList);
-                        Assert.AreEqual(tvFileDirectQueryList[0].TVFileID, tvFileList[0].TVFileID);
+                        Assert.Equal(tvFileDirectQueryList[0].TVFileID, tvFileList[0].TVFileID);
                 }
             }
         }
         #endregion Tests Generated for GetTVFileList() Skip Take 2 Asc
 
         #region Tests Generated for GetTVFileList() Skip Take Asc Where
-        [TestMethod]
+        [Fact]
         public void GetTVFileList_Skip_Take_Asc_Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -547,14 +547,14 @@ namespace CSSPServices.Tests
                         List<TVFile> tvFileList = new List<TVFile>();
                         tvFileList = tvFileService.GetTVFileList().ToList();
                         CheckTVFileFields(tvFileList);
-                        Assert.AreEqual(tvFileDirectQueryList[0].TVFileID, tvFileList[0].TVFileID);
+                        Assert.Equal(tvFileDirectQueryList[0].TVFileID, tvFileList[0].TVFileID);
                 }
             }
         }
         #endregion Tests Generated for GetTVFileList() Skip Take Asc Where
 
         #region Tests Generated for GetTVFileList() Skip Take Asc 2 Where
-        [TestMethod]
+        [Fact]
         public void GetTVFileList_Skip_Take_Asc_2Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -573,14 +573,14 @@ namespace CSSPServices.Tests
                         List<TVFile> tvFileList = new List<TVFile>();
                         tvFileList = tvFileService.GetTVFileList().ToList();
                         CheckTVFileFields(tvFileList);
-                        Assert.AreEqual(tvFileDirectQueryList[0].TVFileID, tvFileList[0].TVFileID);
+                        Assert.Equal(tvFileDirectQueryList[0].TVFileID, tvFileList[0].TVFileID);
                 }
             }
         }
         #endregion Tests Generated for GetTVFileList() Skip Take Asc 2 Where
 
         #region Tests Generated for GetTVFileList() Skip Take Desc
-        [TestMethod]
+        [Fact]
         public void GetTVFileList_Skip_Take_Desc_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -599,14 +599,14 @@ namespace CSSPServices.Tests
                         List<TVFile> tvFileList = new List<TVFile>();
                         tvFileList = tvFileService.GetTVFileList().ToList();
                         CheckTVFileFields(tvFileList);
-                        Assert.AreEqual(tvFileDirectQueryList[0].TVFileID, tvFileList[0].TVFileID);
+                        Assert.Equal(tvFileDirectQueryList[0].TVFileID, tvFileList[0].TVFileID);
                 }
             }
         }
         #endregion Tests Generated for GetTVFileList() Skip Take Desc
 
         #region Tests Generated for GetTVFileList() Skip Take 2 Desc
-        [TestMethod]
+        [Fact]
         public void GetTVFileList_Skip_Take_2Desc_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -625,14 +625,14 @@ namespace CSSPServices.Tests
                         List<TVFile> tvFileList = new List<TVFile>();
                         tvFileList = tvFileService.GetTVFileList().ToList();
                         CheckTVFileFields(tvFileList);
-                        Assert.AreEqual(tvFileDirectQueryList[0].TVFileID, tvFileList[0].TVFileID);
+                        Assert.Equal(tvFileDirectQueryList[0].TVFileID, tvFileList[0].TVFileID);
                 }
             }
         }
         #endregion Tests Generated for GetTVFileList() Skip Take 2 Desc
 
         #region Tests Generated for GetTVFileList() Skip Take Desc Where
-        [TestMethod]
+        [Fact]
         public void GetTVFileList_Skip_Take_Desc_Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -651,14 +651,14 @@ namespace CSSPServices.Tests
                         List<TVFile> tvFileList = new List<TVFile>();
                         tvFileList = tvFileService.GetTVFileList().ToList();
                         CheckTVFileFields(tvFileList);
-                        Assert.AreEqual(tvFileDirectQueryList[0].TVFileID, tvFileList[0].TVFileID);
+                        Assert.Equal(tvFileDirectQueryList[0].TVFileID, tvFileList[0].TVFileID);
                 }
             }
         }
         #endregion Tests Generated for GetTVFileList() Skip Take Desc Where
 
         #region Tests Generated for GetTVFileList() Skip Take Desc 2 Where
-        [TestMethod]
+        [Fact]
         public void GetTVFileList_Skip_Take_Desc_2Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -677,14 +677,14 @@ namespace CSSPServices.Tests
                         List<TVFile> tvFileList = new List<TVFile>();
                         tvFileList = tvFileService.GetTVFileList().ToList();
                         CheckTVFileFields(tvFileList);
-                        Assert.AreEqual(tvFileDirectQueryList[0].TVFileID, tvFileList[0].TVFileID);
+                        Assert.Equal(tvFileDirectQueryList[0].TVFileID, tvFileList[0].TVFileID);
                 }
             }
         }
         #endregion Tests Generated for GetTVFileList() Skip Take Desc 2 Where
 
         #region Tests Generated for GetTVFileList() 2 Where
-        [TestMethod]
+        [Fact]
         public void GetTVFileList_2Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -703,7 +703,7 @@ namespace CSSPServices.Tests
                         List<TVFile> tvFileList = new List<TVFile>();
                         tvFileList = tvFileService.GetTVFileList().ToList();
                         CheckTVFileFields(tvFileList);
-                        Assert.AreEqual(tvFileDirectQueryList[0].TVFileID, tvFileList[0].TVFileID);
+                        Assert.Equal(tvFileDirectQueryList[0].TVFileID, tvFileList[0].TVFileID);
                 }
             }
         }
@@ -712,46 +712,46 @@ namespace CSSPServices.Tests
         #region Functions private
         private void CheckTVFileFields(List<TVFile> tvFileList)
         {
-            Assert.IsNotNull(tvFileList[0].TVFileID);
-            Assert.IsNotNull(tvFileList[0].TVFileTVItemID);
+            Assert.NotNull(tvFileList[0].TVFileID);
+            Assert.NotNull(tvFileList[0].TVFileTVItemID);
             if (tvFileList[0].TemplateTVType != null)
             {
-                Assert.IsNotNull(tvFileList[0].TemplateTVType);
+                Assert.NotNull(tvFileList[0].TemplateTVType);
             }
             if (tvFileList[0].ReportTypeID != null)
             {
-                Assert.IsNotNull(tvFileList[0].ReportTypeID);
+                Assert.NotNull(tvFileList[0].ReportTypeID);
             }
             if (!string.IsNullOrWhiteSpace(tvFileList[0].Parameters))
             {
-                Assert.IsFalse(string.IsNullOrWhiteSpace(tvFileList[0].Parameters));
+                Assert.False(string.IsNullOrWhiteSpace(tvFileList[0].Parameters));
             }
             if (tvFileList[0].Year != null)
             {
-                Assert.IsNotNull(tvFileList[0].Year);
+                Assert.NotNull(tvFileList[0].Year);
             }
-            Assert.IsNotNull(tvFileList[0].Language);
-            Assert.IsNotNull(tvFileList[0].FilePurpose);
-            Assert.IsNotNull(tvFileList[0].FileType);
-            Assert.IsNotNull(tvFileList[0].FileSize_kb);
+            Assert.NotNull(tvFileList[0].Language);
+            Assert.NotNull(tvFileList[0].FilePurpose);
+            Assert.NotNull(tvFileList[0].FileType);
+            Assert.NotNull(tvFileList[0].FileSize_kb);
             if (!string.IsNullOrWhiteSpace(tvFileList[0].FileInfo))
             {
-                Assert.IsFalse(string.IsNullOrWhiteSpace(tvFileList[0].FileInfo));
+                Assert.False(string.IsNullOrWhiteSpace(tvFileList[0].FileInfo));
             }
-            Assert.IsNotNull(tvFileList[0].FileCreatedDate_UTC);
+            Assert.NotNull(tvFileList[0].FileCreatedDate_UTC);
             if (tvFileList[0].FromWater != null)
             {
-                Assert.IsNotNull(tvFileList[0].FromWater);
+                Assert.NotNull(tvFileList[0].FromWater);
             }
             if (!string.IsNullOrWhiteSpace(tvFileList[0].ClientFilePath))
             {
-                Assert.IsFalse(string.IsNullOrWhiteSpace(tvFileList[0].ClientFilePath));
+                Assert.False(string.IsNullOrWhiteSpace(tvFileList[0].ClientFilePath));
             }
-            Assert.IsFalse(string.IsNullOrWhiteSpace(tvFileList[0].ServerFileName));
-            Assert.IsFalse(string.IsNullOrWhiteSpace(tvFileList[0].ServerFilePath));
-            Assert.IsNotNull(tvFileList[0].LastUpdateDate_UTC);
-            Assert.IsNotNull(tvFileList[0].LastUpdateContactTVItemID);
-            Assert.IsNotNull(tvFileList[0].HasErrors);
+            Assert.False(string.IsNullOrWhiteSpace(tvFileList[0].ServerFileName));
+            Assert.False(string.IsNullOrWhiteSpace(tvFileList[0].ServerFilePath));
+            Assert.NotNull(tvFileList[0].LastUpdateDate_UTC);
+            Assert.NotNull(tvFileList[0].LastUpdateContactTVItemID);
+            Assert.NotNull(tvFileList[0].HasErrors);
         }
         private TVFile GetFilledRandomTVFile(string OmitPropName)
         {

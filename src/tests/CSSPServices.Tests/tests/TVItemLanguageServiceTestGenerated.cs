@@ -5,7 +5,7 @@
  */ 
 
 using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using System.Linq;
 using System.Collections.Generic;
 using CSSPModels;
@@ -21,7 +21,7 @@ using CSSPEnums.Resources;
 
 namespace CSSPServices.Tests
 {
-    [TestClass]
+
     public partial class TVItemLanguageServiceTest : TestHelper
     {
         #region Variables
@@ -39,7 +39,7 @@ namespace CSSPServices.Tests
         #endregion Constructors
 
         #region Tests Generated CRUD
-        [TestMethod]
+        [Fact]
         public void TVItemLanguage_CRUD_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -66,26 +66,26 @@ namespace CSSPServices.Tests
 
                     count = tvItemLanguageService.GetTVItemLanguageList().Count();
 
-                    Assert.AreEqual(count, (from c in dbTestDB.TVItemLanguages select c).Count());
+                    Assert.Equal(count, (from c in dbTestDB.TVItemLanguages select c).Count());
 
                     tvItemLanguageService.Add(tvItemLanguage);
                     if (tvItemLanguage.HasErrors)
                     {
-                        Assert.AreEqual("", tvItemLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
+                        Assert.Equal("", tvItemLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
                     }
-                    Assert.AreEqual(true, tvItemLanguageService.GetTVItemLanguageList().Where(c => c == tvItemLanguage).Any());
+                    Assert.True(tvItemLanguageService.GetTVItemLanguageList().Where(c => c == tvItemLanguage).Any());
                     tvItemLanguageService.Update(tvItemLanguage);
                     if (tvItemLanguage.HasErrors)
                     {
-                        Assert.AreEqual("", tvItemLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
+                        Assert.Equal("", tvItemLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
                     }
-                    Assert.AreEqual(count + 1, tvItemLanguageService.GetTVItemLanguageList().Count());
+                    Assert.Equal(count + 1, tvItemLanguageService.GetTVItemLanguageList().Count());
                     tvItemLanguageService.Delete(tvItemLanguage);
                     if (tvItemLanguage.HasErrors)
                     {
-                        Assert.AreEqual("", tvItemLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
+                        Assert.Equal("", tvItemLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
                     }
-                    Assert.AreEqual(count, tvItemLanguageService.GetTVItemLanguageList().Count());
+                    Assert.Equal(count, tvItemLanguageService.GetTVItemLanguageList().Count());
 
                 }
             }
@@ -93,7 +93,7 @@ namespace CSSPServices.Tests
         #endregion Tests Generated CRUD
 
         #region Tests Generated Properties
-        [TestMethod]
+        [Fact]
         public void TVItemLanguage_Properties_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -131,13 +131,13 @@ namespace CSSPServices.Tests
                     tvItemLanguage = GetFilledRandomTVItemLanguage("");
                     tvItemLanguage.TVItemLanguageID = 0;
                     tvItemLanguageService.Update(tvItemLanguage);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsRequired, "TVItemLanguageID"), tvItemLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsRequired, "TVItemLanguageID"), tvItemLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
 
                     tvItemLanguage = null;
                     tvItemLanguage = GetFilledRandomTVItemLanguage("");
                     tvItemLanguage.TVItemLanguageID = 10000000;
                     tvItemLanguageService.Update(tvItemLanguage);
-                    Assert.AreEqual(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "TVItemLanguage", "TVItemLanguageID", tvItemLanguage.TVItemLanguageID.ToString()), tvItemLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "TVItemLanguage", "TVItemLanguageID", tvItemLanguage.TVItemLanguageID.ToString()), tvItemLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
 
 
                     // -----------------------------------
@@ -150,13 +150,13 @@ namespace CSSPServices.Tests
                     tvItemLanguage = GetFilledRandomTVItemLanguage("");
                     tvItemLanguage.TVItemID = 0;
                     tvItemLanguageService.Add(tvItemLanguage);
-                    Assert.AreEqual(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "TVItem", "TVItemID", tvItemLanguage.TVItemID.ToString()), tvItemLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "TVItem", "TVItemID", tvItemLanguage.TVItemID.ToString()), tvItemLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
 
                     tvItemLanguage = null;
                     tvItemLanguage = GetFilledRandomTVItemLanguage("");
                     tvItemLanguage.TVItemID = 38;
                     tvItemLanguageService.Add(tvItemLanguage);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsNotOfType_, "TVItemID", "Root,Address,Area,ClimateSite,Contact,Country,Email,HydrometricSite,Infrastructure,MikeBoundaryConditionWebTide,MikeBoundaryConditionMesh,MikeScenario,MikeSource,Municipality,MWQMSite,PolSourceSite,Province,Sector,Subsector,Tel,MWQMRun,Classification"), tvItemLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsNotOfType_, "TVItemID", "Root,Address,Area,ClimateSite,Contact,Country,Email,HydrometricSite,Infrastructure,MikeBoundaryConditionWebTide,MikeBoundaryConditionMesh,MikeScenario,MikeSource,Municipality,MWQMSite,PolSourceSite,Province,Sector,Subsector,Tel,MWQMRun,Classification"), tvItemLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
 
 
                     // -----------------------------------
@@ -169,7 +169,7 @@ namespace CSSPServices.Tests
                     tvItemLanguage = GetFilledRandomTVItemLanguage("");
                     tvItemLanguage.Language = (LanguageEnum)1000000;
                     tvItemLanguageService.Add(tvItemLanguage);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsRequired, "Language"), tvItemLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsRequired, "Language"), tvItemLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
 
 
                     // -----------------------------------
@@ -180,18 +180,18 @@ namespace CSSPServices.Tests
 
                     tvItemLanguage = null;
                     tvItemLanguage = GetFilledRandomTVItemLanguage("TVText");
-                    Assert.AreEqual(false, tvItemLanguageService.Add(tvItemLanguage));
-                    Assert.AreEqual(1, tvItemLanguage.ValidationResults.Count());
-                    Assert.IsTrue(tvItemLanguage.ValidationResults.Where(c => c.ErrorMessage == string.Format(CSSPServicesRes._IsRequired, "TVText")).Any());
-                    Assert.AreEqual(null, tvItemLanguage.TVText);
-                    Assert.AreEqual(count, tvItemLanguageService.GetTVItemLanguageList().Count());
+                    Assert.False(tvItemLanguageService.Add(tvItemLanguage));
+                    Assert.Equal(1, tvItemLanguage.ValidationResults.Count());
+                    Assert.True(tvItemLanguage.ValidationResults.Where(c => c.ErrorMessage == string.Format(CSSPServicesRes._IsRequired, "TVText")).Any());
+                    Assert.Null(tvItemLanguage.TVText);
+                    Assert.Equal(count, tvItemLanguageService.GetTVItemLanguageList().Count());
 
                     tvItemLanguage = null;
                     tvItemLanguage = GetFilledRandomTVItemLanguage("");
                     tvItemLanguage.TVText = GetRandomString("", 201);
-                    Assert.AreEqual(false, tvItemLanguageService.Add(tvItemLanguage));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._MaxLengthIs_, "TVText", "200"), tvItemLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, tvItemLanguageService.GetTVItemLanguageList().Count());
+                    Assert.False(tvItemLanguageService.Add(tvItemLanguage));
+                    Assert.Equal(string.Format(CSSPServicesRes._MaxLengthIs_, "TVText", "200"), tvItemLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, tvItemLanguageService.GetTVItemLanguageList().Count());
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -203,7 +203,7 @@ namespace CSSPServices.Tests
                     tvItemLanguage = GetFilledRandomTVItemLanguage("");
                     tvItemLanguage.TranslationStatus = (TranslationStatusEnum)1000000;
                     tvItemLanguageService.Add(tvItemLanguage);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsRequired, "TranslationStatus"), tvItemLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsRequired, "TranslationStatus"), tvItemLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
 
 
                     // -----------------------------------
@@ -216,12 +216,12 @@ namespace CSSPServices.Tests
                     tvItemLanguage = GetFilledRandomTVItemLanguage("");
                     tvItemLanguage.LastUpdateDate_UTC = new DateTime();
                     tvItemLanguageService.Add(tvItemLanguage);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsRequired, "LastUpdateDate_UTC"), tvItemLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsRequired, "LastUpdateDate_UTC"), tvItemLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
                     tvItemLanguage = null;
                     tvItemLanguage = GetFilledRandomTVItemLanguage("");
                     tvItemLanguage.LastUpdateDate_UTC = new DateTime(1979, 1, 1);
                     tvItemLanguageService.Add(tvItemLanguage);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._YearShouldBeBiggerThan_, "LastUpdateDate_UTC", "1980"), tvItemLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._YearShouldBeBiggerThan_, "LastUpdateDate_UTC", "1980"), tvItemLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -233,13 +233,13 @@ namespace CSSPServices.Tests
                     tvItemLanguage = GetFilledRandomTVItemLanguage("");
                     tvItemLanguage.LastUpdateContactTVItemID = 0;
                     tvItemLanguageService.Add(tvItemLanguage);
-                    Assert.AreEqual(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "TVItem", "LastUpdateContactTVItemID", tvItemLanguage.LastUpdateContactTVItemID.ToString()), tvItemLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "TVItem", "LastUpdateContactTVItemID", tvItemLanguage.LastUpdateContactTVItemID.ToString()), tvItemLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
 
                     tvItemLanguage = null;
                     tvItemLanguage = GetFilledRandomTVItemLanguage("");
                     tvItemLanguage.LastUpdateContactTVItemID = 1;
                     tvItemLanguageService.Add(tvItemLanguage);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsNotOfType_, "LastUpdateContactTVItemID", "Contact"), tvItemLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsNotOfType_, "LastUpdateContactTVItemID", "Contact"), tvItemLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
 
 
                     // -----------------------------------
@@ -263,7 +263,7 @@ namespace CSSPServices.Tests
         #endregion Tests Generated Properties
 
         #region Tests Generated for GetTVItemLanguageWithTVItemLanguageID(tvItemLanguage.TVItemLanguageID)
-        [TestMethod]
+        [Fact]
         public void GetTVItemLanguageWithTVItemLanguageID__tvItemLanguage_TVItemLanguageID__Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -274,7 +274,7 @@ namespace CSSPServices.Tests
                 {
                     TVItemLanguageService tvItemLanguageService = new TVItemLanguageService(new Query() { Lang = culture.TwoLetterISOLanguageName }, dbTestDB, ContactID);
                     TVItemLanguage tvItemLanguage = (from c in dbTestDB.TVItemLanguages select c).FirstOrDefault();
-                    Assert.IsNotNull(tvItemLanguage);
+                    Assert.NotNull(tvItemLanguage);
 
                 }
             }
@@ -282,7 +282,7 @@ namespace CSSPServices.Tests
         #endregion Tests Generated for GetTVItemLanguageWithTVItemLanguageID(tvItemLanguage.TVItemLanguageID)
 
         #region Tests Generated for GetTVItemLanguageList()
-        [TestMethod]
+        [Fact]
         public void GetTVItemLanguageList_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -293,7 +293,7 @@ namespace CSSPServices.Tests
                 {
                     TVItemLanguageService tvItemLanguageService = new TVItemLanguageService(new Query() { Lang = culture.TwoLetterISOLanguageName }, dbTestDB, ContactID);
                     TVItemLanguage tvItemLanguage = (from c in dbTestDB.TVItemLanguages select c).FirstOrDefault();
-                    Assert.IsNotNull(tvItemLanguage);
+                    Assert.NotNull(tvItemLanguage);
 
                     List<TVItemLanguage> tvItemLanguageDirectQueryList = new List<TVItemLanguage>();
                     tvItemLanguageDirectQueryList = (from c in dbTestDB.TVItemLanguages select c).Take(200).ToList();
@@ -304,7 +304,7 @@ namespace CSSPServices.Tests
         #endregion Tests Generated for GetTVItemLanguageList()
 
         #region Tests Generated for GetTVItemLanguageList() Skip Take
-        [TestMethod]
+        [Fact]
         public void GetTVItemLanguageList_Skip_Take_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -323,14 +323,14 @@ namespace CSSPServices.Tests
                         List<TVItemLanguage> tvItemLanguageList = new List<TVItemLanguage>();
                         tvItemLanguageList = tvItemLanguageService.GetTVItemLanguageList().ToList();
                         CheckTVItemLanguageFields(tvItemLanguageList);
-                        Assert.AreEqual(tvItemLanguageDirectQueryList[0].TVItemLanguageID, tvItemLanguageList[0].TVItemLanguageID);
+                        Assert.Equal(tvItemLanguageDirectQueryList[0].TVItemLanguageID, tvItemLanguageList[0].TVItemLanguageID);
                 }
             }
         }
         #endregion Tests Generated for GetTVItemLanguageList() Skip Take
 
         #region Tests Generated for GetTVItemLanguageList() Skip Take Asc
-        [TestMethod]
+        [Fact]
         public void GetTVItemLanguageList_Skip_Take_Asc_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -349,14 +349,14 @@ namespace CSSPServices.Tests
                         List<TVItemLanguage> tvItemLanguageList = new List<TVItemLanguage>();
                         tvItemLanguageList = tvItemLanguageService.GetTVItemLanguageList().ToList();
                         CheckTVItemLanguageFields(tvItemLanguageList);
-                        Assert.AreEqual(tvItemLanguageDirectQueryList[0].TVItemLanguageID, tvItemLanguageList[0].TVItemLanguageID);
+                        Assert.Equal(tvItemLanguageDirectQueryList[0].TVItemLanguageID, tvItemLanguageList[0].TVItemLanguageID);
                 }
             }
         }
         #endregion Tests Generated for GetTVItemLanguageList() Skip Take Asc
 
         #region Tests Generated for GetTVItemLanguageList() Skip Take 2 Asc
-        [TestMethod]
+        [Fact]
         public void GetTVItemLanguageList_Skip_Take_2Asc_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -375,14 +375,14 @@ namespace CSSPServices.Tests
                         List<TVItemLanguage> tvItemLanguageList = new List<TVItemLanguage>();
                         tvItemLanguageList = tvItemLanguageService.GetTVItemLanguageList().ToList();
                         CheckTVItemLanguageFields(tvItemLanguageList);
-                        Assert.AreEqual(tvItemLanguageDirectQueryList[0].TVItemLanguageID, tvItemLanguageList[0].TVItemLanguageID);
+                        Assert.Equal(tvItemLanguageDirectQueryList[0].TVItemLanguageID, tvItemLanguageList[0].TVItemLanguageID);
                 }
             }
         }
         #endregion Tests Generated for GetTVItemLanguageList() Skip Take 2 Asc
 
         #region Tests Generated for GetTVItemLanguageList() Skip Take Asc Where
-        [TestMethod]
+        [Fact]
         public void GetTVItemLanguageList_Skip_Take_Asc_Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -401,14 +401,14 @@ namespace CSSPServices.Tests
                         List<TVItemLanguage> tvItemLanguageList = new List<TVItemLanguage>();
                         tvItemLanguageList = tvItemLanguageService.GetTVItemLanguageList().ToList();
                         CheckTVItemLanguageFields(tvItemLanguageList);
-                        Assert.AreEqual(tvItemLanguageDirectQueryList[0].TVItemLanguageID, tvItemLanguageList[0].TVItemLanguageID);
+                        Assert.Equal(tvItemLanguageDirectQueryList[0].TVItemLanguageID, tvItemLanguageList[0].TVItemLanguageID);
                 }
             }
         }
         #endregion Tests Generated for GetTVItemLanguageList() Skip Take Asc Where
 
         #region Tests Generated for GetTVItemLanguageList() Skip Take Asc 2 Where
-        [TestMethod]
+        [Fact]
         public void GetTVItemLanguageList_Skip_Take_Asc_2Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -427,14 +427,14 @@ namespace CSSPServices.Tests
                         List<TVItemLanguage> tvItemLanguageList = new List<TVItemLanguage>();
                         tvItemLanguageList = tvItemLanguageService.GetTVItemLanguageList().ToList();
                         CheckTVItemLanguageFields(tvItemLanguageList);
-                        Assert.AreEqual(tvItemLanguageDirectQueryList[0].TVItemLanguageID, tvItemLanguageList[0].TVItemLanguageID);
+                        Assert.Equal(tvItemLanguageDirectQueryList[0].TVItemLanguageID, tvItemLanguageList[0].TVItemLanguageID);
                 }
             }
         }
         #endregion Tests Generated for GetTVItemLanguageList() Skip Take Asc 2 Where
 
         #region Tests Generated for GetTVItemLanguageList() Skip Take Desc
-        [TestMethod]
+        [Fact]
         public void GetTVItemLanguageList_Skip_Take_Desc_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -453,14 +453,14 @@ namespace CSSPServices.Tests
                         List<TVItemLanguage> tvItemLanguageList = new List<TVItemLanguage>();
                         tvItemLanguageList = tvItemLanguageService.GetTVItemLanguageList().ToList();
                         CheckTVItemLanguageFields(tvItemLanguageList);
-                        Assert.AreEqual(tvItemLanguageDirectQueryList[0].TVItemLanguageID, tvItemLanguageList[0].TVItemLanguageID);
+                        Assert.Equal(tvItemLanguageDirectQueryList[0].TVItemLanguageID, tvItemLanguageList[0].TVItemLanguageID);
                 }
             }
         }
         #endregion Tests Generated for GetTVItemLanguageList() Skip Take Desc
 
         #region Tests Generated for GetTVItemLanguageList() Skip Take 2 Desc
-        [TestMethod]
+        [Fact]
         public void GetTVItemLanguageList_Skip_Take_2Desc_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -479,14 +479,14 @@ namespace CSSPServices.Tests
                         List<TVItemLanguage> tvItemLanguageList = new List<TVItemLanguage>();
                         tvItemLanguageList = tvItemLanguageService.GetTVItemLanguageList().ToList();
                         CheckTVItemLanguageFields(tvItemLanguageList);
-                        Assert.AreEqual(tvItemLanguageDirectQueryList[0].TVItemLanguageID, tvItemLanguageList[0].TVItemLanguageID);
+                        Assert.Equal(tvItemLanguageDirectQueryList[0].TVItemLanguageID, tvItemLanguageList[0].TVItemLanguageID);
                 }
             }
         }
         #endregion Tests Generated for GetTVItemLanguageList() Skip Take 2 Desc
 
         #region Tests Generated for GetTVItemLanguageList() Skip Take Desc Where
-        [TestMethod]
+        [Fact]
         public void GetTVItemLanguageList_Skip_Take_Desc_Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -505,14 +505,14 @@ namespace CSSPServices.Tests
                         List<TVItemLanguage> tvItemLanguageList = new List<TVItemLanguage>();
                         tvItemLanguageList = tvItemLanguageService.GetTVItemLanguageList().ToList();
                         CheckTVItemLanguageFields(tvItemLanguageList);
-                        Assert.AreEqual(tvItemLanguageDirectQueryList[0].TVItemLanguageID, tvItemLanguageList[0].TVItemLanguageID);
+                        Assert.Equal(tvItemLanguageDirectQueryList[0].TVItemLanguageID, tvItemLanguageList[0].TVItemLanguageID);
                 }
             }
         }
         #endregion Tests Generated for GetTVItemLanguageList() Skip Take Desc Where
 
         #region Tests Generated for GetTVItemLanguageList() Skip Take Desc 2 Where
-        [TestMethod]
+        [Fact]
         public void GetTVItemLanguageList_Skip_Take_Desc_2Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -531,14 +531,14 @@ namespace CSSPServices.Tests
                         List<TVItemLanguage> tvItemLanguageList = new List<TVItemLanguage>();
                         tvItemLanguageList = tvItemLanguageService.GetTVItemLanguageList().ToList();
                         CheckTVItemLanguageFields(tvItemLanguageList);
-                        Assert.AreEqual(tvItemLanguageDirectQueryList[0].TVItemLanguageID, tvItemLanguageList[0].TVItemLanguageID);
+                        Assert.Equal(tvItemLanguageDirectQueryList[0].TVItemLanguageID, tvItemLanguageList[0].TVItemLanguageID);
                 }
             }
         }
         #endregion Tests Generated for GetTVItemLanguageList() Skip Take Desc 2 Where
 
         #region Tests Generated for GetTVItemLanguageList() 2 Where
-        [TestMethod]
+        [Fact]
         public void GetTVItemLanguageList_2Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -557,7 +557,7 @@ namespace CSSPServices.Tests
                         List<TVItemLanguage> tvItemLanguageList = new List<TVItemLanguage>();
                         tvItemLanguageList = tvItemLanguageService.GetTVItemLanguageList().ToList();
                         CheckTVItemLanguageFields(tvItemLanguageList);
-                        Assert.AreEqual(tvItemLanguageDirectQueryList[0].TVItemLanguageID, tvItemLanguageList[0].TVItemLanguageID);
+                        Assert.Equal(tvItemLanguageDirectQueryList[0].TVItemLanguageID, tvItemLanguageList[0].TVItemLanguageID);
                 }
             }
         }
@@ -566,14 +566,14 @@ namespace CSSPServices.Tests
         #region Functions private
         private void CheckTVItemLanguageFields(List<TVItemLanguage> tvItemLanguageList)
         {
-            Assert.IsNotNull(tvItemLanguageList[0].TVItemLanguageID);
-            Assert.IsNotNull(tvItemLanguageList[0].TVItemID);
-            Assert.IsNotNull(tvItemLanguageList[0].Language);
-            Assert.IsFalse(string.IsNullOrWhiteSpace(tvItemLanguageList[0].TVText));
-            Assert.IsNotNull(tvItemLanguageList[0].TranslationStatus);
-            Assert.IsNotNull(tvItemLanguageList[0].LastUpdateDate_UTC);
-            Assert.IsNotNull(tvItemLanguageList[0].LastUpdateContactTVItemID);
-            Assert.IsNotNull(tvItemLanguageList[0].HasErrors);
+            Assert.NotNull(tvItemLanguageList[0].TVItemLanguageID);
+            Assert.NotNull(tvItemLanguageList[0].TVItemID);
+            Assert.NotNull(tvItemLanguageList[0].Language);
+            Assert.False(string.IsNullOrWhiteSpace(tvItemLanguageList[0].TVText));
+            Assert.NotNull(tvItemLanguageList[0].TranslationStatus);
+            Assert.NotNull(tvItemLanguageList[0].LastUpdateDate_UTC);
+            Assert.NotNull(tvItemLanguageList[0].LastUpdateContactTVItemID);
+            Assert.NotNull(tvItemLanguageList[0].HasErrors);
         }
         private TVItemLanguage GetFilledRandomTVItemLanguage(string OmitPropName)
         {

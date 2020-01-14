@@ -5,7 +5,7 @@
  */ 
 
 using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using System.Linq;
 using System.Collections.Generic;
 using CSSPModels;
@@ -21,7 +21,7 @@ using CSSPEnums.Resources;
 
 namespace CSSPServices.Tests
 {
-    [TestClass]
+
     public partial class LogServiceTest : TestHelper
     {
         #region Variables
@@ -39,7 +39,7 @@ namespace CSSPServices.Tests
         #endregion Constructors
 
         #region Tests Generated CRUD
-        [TestMethod]
+        [Fact]
         public void Log_CRUD_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -66,26 +66,26 @@ namespace CSSPServices.Tests
 
                     count = logService.GetLogList().Count();
 
-                    Assert.AreEqual(count, (from c in dbTestDB.Logs select c).Count());
+                    Assert.Equal(count, (from c in dbTestDB.Logs select c).Count());
 
                     logService.Add(log);
                     if (log.HasErrors)
                     {
-                        Assert.AreEqual("", log.ValidationResults.FirstOrDefault().ErrorMessage);
+                        Assert.Equal("", log.ValidationResults.FirstOrDefault().ErrorMessage);
                     }
-                    Assert.AreEqual(true, logService.GetLogList().Where(c => c == log).Any());
+                    Assert.True(logService.GetLogList().Where(c => c == log).Any());
                     logService.Update(log);
                     if (log.HasErrors)
                     {
-                        Assert.AreEqual("", log.ValidationResults.FirstOrDefault().ErrorMessage);
+                        Assert.Equal("", log.ValidationResults.FirstOrDefault().ErrorMessage);
                     }
-                    Assert.AreEqual(count + 1, logService.GetLogList().Count());
+                    Assert.Equal(count + 1, logService.GetLogList().Count());
                     logService.Delete(log);
                     if (log.HasErrors)
                     {
-                        Assert.AreEqual("", log.ValidationResults.FirstOrDefault().ErrorMessage);
+                        Assert.Equal("", log.ValidationResults.FirstOrDefault().ErrorMessage);
                     }
-                    Assert.AreEqual(count, logService.GetLogList().Count());
+                    Assert.Equal(count, logService.GetLogList().Count());
 
                 }
             }
@@ -93,7 +93,7 @@ namespace CSSPServices.Tests
         #endregion Tests Generated CRUD
 
         #region Tests Generated Properties
-        [TestMethod]
+        [Fact]
         public void Log_Properties_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -131,13 +131,13 @@ namespace CSSPServices.Tests
                     log = GetFilledRandomLog("");
                     log.LogID = 0;
                     logService.Update(log);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsRequired, "LogID"), log.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsRequired, "LogID"), log.ValidationResults.FirstOrDefault().ErrorMessage);
 
                     log = null;
                     log = GetFilledRandomLog("");
                     log.LogID = 10000000;
                     logService.Update(log);
-                    Assert.AreEqual(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "Log", "LogID", log.LogID.ToString()), log.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "Log", "LogID", log.LogID.ToString()), log.ValidationResults.FirstOrDefault().ErrorMessage);
 
 
                     // -----------------------------------
@@ -148,18 +148,18 @@ namespace CSSPServices.Tests
 
                     log = null;
                     log = GetFilledRandomLog("TableName");
-                    Assert.AreEqual(false, logService.Add(log));
-                    Assert.AreEqual(1, log.ValidationResults.Count());
-                    Assert.IsTrue(log.ValidationResults.Where(c => c.ErrorMessage == string.Format(CSSPServicesRes._IsRequired, "TableName")).Any());
-                    Assert.AreEqual(null, log.TableName);
-                    Assert.AreEqual(count, logService.GetLogList().Count());
+                    Assert.False(logService.Add(log));
+                    Assert.Equal(1, log.ValidationResults.Count());
+                    Assert.True(log.ValidationResults.Where(c => c.ErrorMessage == string.Format(CSSPServicesRes._IsRequired, "TableName")).Any());
+                    Assert.Null(log.TableName);
+                    Assert.Equal(count, logService.GetLogList().Count());
 
                     log = null;
                     log = GetFilledRandomLog("");
                     log.TableName = GetRandomString("", 51);
-                    Assert.AreEqual(false, logService.Add(log));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._MaxLengthIs_, "TableName", "50"), log.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, logService.GetLogList().Count());
+                    Assert.False(logService.Add(log));
+                    Assert.Equal(string.Format(CSSPServicesRes._MaxLengthIs_, "TableName", "50"), log.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, logService.GetLogList().Count());
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -170,9 +170,9 @@ namespace CSSPServices.Tests
                     log = null;
                     log = GetFilledRandomLog("");
                     log.ID = 0;
-                    Assert.AreEqual(false, logService.Add(log));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._MinValueIs_, "ID", "1"), log.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, logService.GetLogList().Count());
+                    Assert.False(logService.Add(log));
+                    Assert.Equal(string.Format(CSSPServicesRes._MinValueIs_, "ID", "1"), log.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, logService.GetLogList().Count());
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -184,7 +184,7 @@ namespace CSSPServices.Tests
                     log = GetFilledRandomLog("");
                     log.LogCommand = (LogCommandEnum)1000000;
                     logService.Add(log);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsRequired, "LogCommand"), log.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsRequired, "LogCommand"), log.ValidationResults.FirstOrDefault().ErrorMessage);
 
 
                     // -----------------------------------
@@ -194,11 +194,11 @@ namespace CSSPServices.Tests
 
                     log = null;
                     log = GetFilledRandomLog("Information");
-                    Assert.AreEqual(false, logService.Add(log));
-                    Assert.AreEqual(1, log.ValidationResults.Count());
-                    Assert.IsTrue(log.ValidationResults.Where(c => c.ErrorMessage == string.Format(CSSPServicesRes._IsRequired, "Information")).Any());
-                    Assert.AreEqual(null, log.Information);
-                    Assert.AreEqual(count, logService.GetLogList().Count());
+                    Assert.False(logService.Add(log));
+                    Assert.Equal(1, log.ValidationResults.Count());
+                    Assert.True(log.ValidationResults.Where(c => c.ErrorMessage == string.Format(CSSPServicesRes._IsRequired, "Information")).Any());
+                    Assert.Null(log.Information);
+                    Assert.Equal(count, logService.GetLogList().Count());
 
 
                     // -----------------------------------
@@ -211,12 +211,12 @@ namespace CSSPServices.Tests
                     log = GetFilledRandomLog("");
                     log.LastUpdateDate_UTC = new DateTime();
                     logService.Add(log);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsRequired, "LastUpdateDate_UTC"), log.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsRequired, "LastUpdateDate_UTC"), log.ValidationResults.FirstOrDefault().ErrorMessage);
                     log = null;
                     log = GetFilledRandomLog("");
                     log.LastUpdateDate_UTC = new DateTime(1979, 1, 1);
                     logService.Add(log);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._YearShouldBeBiggerThan_, "LastUpdateDate_UTC", "1980"), log.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._YearShouldBeBiggerThan_, "LastUpdateDate_UTC", "1980"), log.ValidationResults.FirstOrDefault().ErrorMessage);
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -228,13 +228,13 @@ namespace CSSPServices.Tests
                     log = GetFilledRandomLog("");
                     log.LastUpdateContactTVItemID = 0;
                     logService.Add(log);
-                    Assert.AreEqual(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "TVItem", "LastUpdateContactTVItemID", log.LastUpdateContactTVItemID.ToString()), log.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "TVItem", "LastUpdateContactTVItemID", log.LastUpdateContactTVItemID.ToString()), log.ValidationResults.FirstOrDefault().ErrorMessage);
 
                     log = null;
                     log = GetFilledRandomLog("");
                     log.LastUpdateContactTVItemID = 1;
                     logService.Add(log);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsNotOfType_, "LastUpdateContactTVItemID", "Contact"), log.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsNotOfType_, "LastUpdateContactTVItemID", "Contact"), log.ValidationResults.FirstOrDefault().ErrorMessage);
 
 
                     // -----------------------------------
@@ -258,7 +258,7 @@ namespace CSSPServices.Tests
         #endregion Tests Generated Properties
 
         #region Tests Generated for GetLogWithLogID(log.LogID)
-        [TestMethod]
+        [Fact]
         public void GetLogWithLogID__log_LogID__Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -269,7 +269,7 @@ namespace CSSPServices.Tests
                 {
                     LogService logService = new LogService(new Query() { Lang = culture.TwoLetterISOLanguageName }, dbTestDB, ContactID);
                     Log log = (from c in dbTestDB.Logs select c).FirstOrDefault();
-                    Assert.IsNotNull(log);
+                    Assert.NotNull(log);
 
                 }
             }
@@ -277,7 +277,7 @@ namespace CSSPServices.Tests
         #endregion Tests Generated for GetLogWithLogID(log.LogID)
 
         #region Tests Generated for GetLogList()
-        [TestMethod]
+        [Fact]
         public void GetLogList_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -288,7 +288,7 @@ namespace CSSPServices.Tests
                 {
                     LogService logService = new LogService(new Query() { Lang = culture.TwoLetterISOLanguageName }, dbTestDB, ContactID);
                     Log log = (from c in dbTestDB.Logs select c).FirstOrDefault();
-                    Assert.IsNotNull(log);
+                    Assert.NotNull(log);
 
                     List<Log> logDirectQueryList = new List<Log>();
                     logDirectQueryList = (from c in dbTestDB.Logs select c).Take(200).ToList();
@@ -299,7 +299,7 @@ namespace CSSPServices.Tests
         #endregion Tests Generated for GetLogList()
 
         #region Tests Generated for GetLogList() Skip Take
-        [TestMethod]
+        [Fact]
         public void GetLogList_Skip_Take_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -318,14 +318,14 @@ namespace CSSPServices.Tests
                         List<Log> logList = new List<Log>();
                         logList = logService.GetLogList().ToList();
                         CheckLogFields(logList);
-                        Assert.AreEqual(logDirectQueryList[0].LogID, logList[0].LogID);
+                        Assert.Equal(logDirectQueryList[0].LogID, logList[0].LogID);
                 }
             }
         }
         #endregion Tests Generated for GetLogList() Skip Take
 
         #region Tests Generated for GetLogList() Skip Take Asc
-        [TestMethod]
+        [Fact]
         public void GetLogList_Skip_Take_Asc_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -344,14 +344,14 @@ namespace CSSPServices.Tests
                         List<Log> logList = new List<Log>();
                         logList = logService.GetLogList().ToList();
                         CheckLogFields(logList);
-                        Assert.AreEqual(logDirectQueryList[0].LogID, logList[0].LogID);
+                        Assert.Equal(logDirectQueryList[0].LogID, logList[0].LogID);
                 }
             }
         }
         #endregion Tests Generated for GetLogList() Skip Take Asc
 
         #region Tests Generated for GetLogList() Skip Take 2 Asc
-        [TestMethod]
+        [Fact]
         public void GetLogList_Skip_Take_2Asc_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -370,14 +370,14 @@ namespace CSSPServices.Tests
                         List<Log> logList = new List<Log>();
                         logList = logService.GetLogList().ToList();
                         CheckLogFields(logList);
-                        Assert.AreEqual(logDirectQueryList[0].LogID, logList[0].LogID);
+                        Assert.Equal(logDirectQueryList[0].LogID, logList[0].LogID);
                 }
             }
         }
         #endregion Tests Generated for GetLogList() Skip Take 2 Asc
 
         #region Tests Generated for GetLogList() Skip Take Asc Where
-        [TestMethod]
+        [Fact]
         public void GetLogList_Skip_Take_Asc_Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -396,14 +396,14 @@ namespace CSSPServices.Tests
                         List<Log> logList = new List<Log>();
                         logList = logService.GetLogList().ToList();
                         CheckLogFields(logList);
-                        Assert.AreEqual(logDirectQueryList[0].LogID, logList[0].LogID);
+                        Assert.Equal(logDirectQueryList[0].LogID, logList[0].LogID);
                 }
             }
         }
         #endregion Tests Generated for GetLogList() Skip Take Asc Where
 
         #region Tests Generated for GetLogList() Skip Take Asc 2 Where
-        [TestMethod]
+        [Fact]
         public void GetLogList_Skip_Take_Asc_2Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -422,14 +422,14 @@ namespace CSSPServices.Tests
                         List<Log> logList = new List<Log>();
                         logList = logService.GetLogList().ToList();
                         CheckLogFields(logList);
-                        Assert.AreEqual(logDirectQueryList[0].LogID, logList[0].LogID);
+                        Assert.Equal(logDirectQueryList[0].LogID, logList[0].LogID);
                 }
             }
         }
         #endregion Tests Generated for GetLogList() Skip Take Asc 2 Where
 
         #region Tests Generated for GetLogList() Skip Take Desc
-        [TestMethod]
+        [Fact]
         public void GetLogList_Skip_Take_Desc_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -448,14 +448,14 @@ namespace CSSPServices.Tests
                         List<Log> logList = new List<Log>();
                         logList = logService.GetLogList().ToList();
                         CheckLogFields(logList);
-                        Assert.AreEqual(logDirectQueryList[0].LogID, logList[0].LogID);
+                        Assert.Equal(logDirectQueryList[0].LogID, logList[0].LogID);
                 }
             }
         }
         #endregion Tests Generated for GetLogList() Skip Take Desc
 
         #region Tests Generated for GetLogList() Skip Take 2 Desc
-        [TestMethod]
+        [Fact]
         public void GetLogList_Skip_Take_2Desc_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -474,14 +474,14 @@ namespace CSSPServices.Tests
                         List<Log> logList = new List<Log>();
                         logList = logService.GetLogList().ToList();
                         CheckLogFields(logList);
-                        Assert.AreEqual(logDirectQueryList[0].LogID, logList[0].LogID);
+                        Assert.Equal(logDirectQueryList[0].LogID, logList[0].LogID);
                 }
             }
         }
         #endregion Tests Generated for GetLogList() Skip Take 2 Desc
 
         #region Tests Generated for GetLogList() Skip Take Desc Where
-        [TestMethod]
+        [Fact]
         public void GetLogList_Skip_Take_Desc_Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -500,14 +500,14 @@ namespace CSSPServices.Tests
                         List<Log> logList = new List<Log>();
                         logList = logService.GetLogList().ToList();
                         CheckLogFields(logList);
-                        Assert.AreEqual(logDirectQueryList[0].LogID, logList[0].LogID);
+                        Assert.Equal(logDirectQueryList[0].LogID, logList[0].LogID);
                 }
             }
         }
         #endregion Tests Generated for GetLogList() Skip Take Desc Where
 
         #region Tests Generated for GetLogList() Skip Take Desc 2 Where
-        [TestMethod]
+        [Fact]
         public void GetLogList_Skip_Take_Desc_2Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -526,14 +526,14 @@ namespace CSSPServices.Tests
                         List<Log> logList = new List<Log>();
                         logList = logService.GetLogList().ToList();
                         CheckLogFields(logList);
-                        Assert.AreEqual(logDirectQueryList[0].LogID, logList[0].LogID);
+                        Assert.Equal(logDirectQueryList[0].LogID, logList[0].LogID);
                 }
             }
         }
         #endregion Tests Generated for GetLogList() Skip Take Desc 2 Where
 
         #region Tests Generated for GetLogList() 2 Where
-        [TestMethod]
+        [Fact]
         public void GetLogList_2Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -552,7 +552,7 @@ namespace CSSPServices.Tests
                         List<Log> logList = new List<Log>();
                         logList = logService.GetLogList().ToList();
                         CheckLogFields(logList);
-                        Assert.AreEqual(logDirectQueryList[0].LogID, logList[0].LogID);
+                        Assert.Equal(logDirectQueryList[0].LogID, logList[0].LogID);
                 }
             }
         }
@@ -561,14 +561,14 @@ namespace CSSPServices.Tests
         #region Functions private
         private void CheckLogFields(List<Log> logList)
         {
-            Assert.IsNotNull(logList[0].LogID);
-            Assert.IsFalse(string.IsNullOrWhiteSpace(logList[0].TableName));
-            Assert.IsNotNull(logList[0].ID);
-            Assert.IsNotNull(logList[0].LogCommand);
-            Assert.IsFalse(string.IsNullOrWhiteSpace(logList[0].Information));
-            Assert.IsNotNull(logList[0].LastUpdateDate_UTC);
-            Assert.IsNotNull(logList[0].LastUpdateContactTVItemID);
-            Assert.IsNotNull(logList[0].HasErrors);
+            Assert.NotNull(logList[0].LogID);
+            Assert.False(string.IsNullOrWhiteSpace(logList[0].TableName));
+            Assert.NotNull(logList[0].ID);
+            Assert.NotNull(logList[0].LogCommand);
+            Assert.False(string.IsNullOrWhiteSpace(logList[0].Information));
+            Assert.NotNull(logList[0].LastUpdateDate_UTC);
+            Assert.NotNull(logList[0].LastUpdateContactTVItemID);
+            Assert.NotNull(logList[0].HasErrors);
         }
         private Log GetFilledRandomLog(string OmitPropName)
         {

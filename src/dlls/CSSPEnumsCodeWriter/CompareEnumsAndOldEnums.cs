@@ -13,11 +13,11 @@ namespace CSSPEnumsGenerateCodeHelper
     {
         /// <summary>
         /// Compares the enums between:
-        ///     C:\CSSPTools\src\dlls\CSSPEnums\bin\Debug\netcoreapp3.0\CSSPEnums.dll
+        ///     C:\CSSPTools\src\dlls\CSSPEnums\bin\Debug\netcoreapp3.1\CSSPEnums.dll
         ///     C:\CSSP Latest Code Old\CSSPEnumsDLL\CSSPEnumsDLL\bin\Debug\CSSPEnumsDLL.dll
         /// 
         /// Requires:
-        ///     C:\CSSPTools\src\dlls\CSSPEnums\bin\Debug\netcoreapp3.0\CSSPEnums.dll
+        ///     C:\CSSPTools\src\dlls\CSSPEnums\bin\Debug\netcoreapp3.1\CSSPEnums.dll
         ///     C:\CSSP Latest Code Old\CSSPEnumsDLL\CSSPEnumsDLL\bin\Debug\CSSPEnumsDLL.dll
         /// </summary>
         public void CompareEnumsAndOldEnums()
@@ -27,7 +27,7 @@ namespace CSSPEnumsGenerateCodeHelper
             StatusPermanentEvent(new StatusEventArgs(""));
 
             StringBuilder sb = new StringBuilder();
-            FileInfo fiDLL = new FileInfo(@"C:\CSSPTools\src\dlls\CSSPEnums\bin\Debug\netcoreapp3.0\CSSPEnums.dll");
+            FileInfo fiDLL = new FileInfo(@"C:\CSSPTools\src\dlls\CSSPEnums\bin\Debug\netcoreapp3.1\CSSPEnums.dll");
             FileInfo fiOldDLL = new FileInfo(@"C:\CSSP Latest Code Old\CSSPEnumsDLL\CSSPEnumsDLL\bin\Debug\CSSPEnumsDLL.dll");
 
             if (!fiDLL.Exists)

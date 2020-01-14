@@ -6,7 +6,7 @@
  */ 
 using System;
 using System.Text;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using System.Linq;
 using System.Globalization;
 using System.Transactions;
@@ -19,7 +19,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace CSSPModels.Tests
 {
-    [TestClass]
+
     public partial class NewContactTest
     {
         #region Variables
@@ -37,7 +37,7 @@ namespace CSSPModels.Tests
         #endregion Constructors
 
         #region Tests Functions public
-        [TestMethod]
+        [Fact]
         public void NewContact_Properties_Test()
         {
             List<string> propNameList = new List<string>() { "LoginEmail", "FirstName", "LastName", "Initial", "ContactTitle", "ContactTitleText", "HasErrors",  }.OrderBy(c => c).ToList();
@@ -46,44 +46,44 @@ namespace CSSPModels.Tests
             int index = 0;
             foreach (PropertyInfo propertyInfo in typeof(NewContact).GetProperties().Where(c => c.Name != "ValidationResults").OrderBy(c => c.Name).ToList())
             {
-                Assert.AreEqual(propertyInfo.Name, propNameList[index]);
+                Assert.Equal(propertyInfo.Name, propNameList[index]);
                 index += 1;
             }
 
-            Assert.AreEqual(propNameList.Count, index);
+            Assert.Equal(propNameList.Count, index);
         }
-        [TestMethod]
+        [Fact]
         public void NewContact_Has_ValidationResults_Test()
         {
-             Assert.IsTrue(typeof(NewContact).GetProperties().Where(c => c.Name == "ValidationResults").Any());
+             Assert.True(typeof(NewContact).GetProperties().Where(c => c.Name == "ValidationResults").Any());
         }
-        [TestMethod]
+        [Fact]
         public void NewContact_Every_Property_Has_Get_Set_Test()
         {
                string val1 = "Some text";
                newContact.LoginEmail = val1;
-               Assert.AreEqual(val1, newContact.LoginEmail);
+               Assert.Equal(val1, newContact.LoginEmail);
                string val2 = "Some text";
                newContact.FirstName = val2;
-               Assert.AreEqual(val2, newContact.FirstName);
+               Assert.Equal(val2, newContact.FirstName);
                string val3 = "Some text";
                newContact.LastName = val3;
-               Assert.AreEqual(val3, newContact.LastName);
+               Assert.Equal(val3, newContact.LastName);
                string val4 = "Some text";
                newContact.Initial = val4;
-               Assert.AreEqual(val4, newContact.Initial);
+               Assert.Equal(val4, newContact.Initial);
                ContactTitleEnum val5 = (ContactTitleEnum)3;
                newContact.ContactTitle = val5;
-               Assert.AreEqual(val5, newContact.ContactTitle);
+               Assert.Equal(val5, newContact.ContactTitle);
                string val6 = "Some text";
                newContact.ContactTitleText = val6;
-               Assert.AreEqual(val6, newContact.ContactTitleText);
+               Assert.Equal(val6, newContact.ContactTitleText);
                bool val7 = true;
                newContact.HasErrors = val7;
-               Assert.AreEqual(val7, newContact.HasErrors);
+               Assert.Equal(val7, newContact.HasErrors);
                IEnumerable<ValidationResult> val24 = new List<ValidationResult>() { new ValidationResult("First CSSPError Message") }.AsEnumerable();
                newContact.ValidationResults = val24;
-               Assert.AreEqual(val24, newContact.ValidationResults);
+               Assert.Equal(val24, newContact.ValidationResults);
         }
         #endregion Tests Functions public
     }

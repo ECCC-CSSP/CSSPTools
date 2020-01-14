@@ -6,7 +6,7 @@
  */ 
 using System;
 using System.Text;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using System.Linq;
 using System.Globalization;
 using System.Transactions;
@@ -19,7 +19,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace CSSPModels.Tests
 {
-    [TestClass]
+
     public partial class CoordTest
     {
         #region Variables
@@ -37,7 +37,7 @@ namespace CSSPModels.Tests
         #endregion Constructors
 
         #region Tests Functions public
-        [TestMethod]
+        [Fact]
         public void Coord_Properties_Test()
         {
             List<string> propNameList = new List<string>() { "Lat", "Lng", "Ordinal", "HasErrors",  }.OrderBy(c => c).ToList();
@@ -46,35 +46,35 @@ namespace CSSPModels.Tests
             int index = 0;
             foreach (PropertyInfo propertyInfo in typeof(Coord).GetProperties().Where(c => c.Name != "ValidationResults").OrderBy(c => c.Name).ToList())
             {
-                Assert.AreEqual(propertyInfo.Name, propNameList[index]);
+                Assert.Equal(propertyInfo.Name, propNameList[index]);
                 index += 1;
             }
 
-            Assert.AreEqual(propNameList.Count, index);
+            Assert.Equal(propNameList.Count, index);
         }
-        [TestMethod]
+        [Fact]
         public void Coord_Has_ValidationResults_Test()
         {
-             Assert.IsTrue(typeof(Coord).GetProperties().Where(c => c.Name == "ValidationResults").Any());
+             Assert.True(typeof(Coord).GetProperties().Where(c => c.Name == "ValidationResults").Any());
         }
-        [TestMethod]
+        [Fact]
         public void Coord_Every_Property_Has_Get_Set_Test()
         {
                double val1 = 87.9D;
                coord.Lat = val1;
-               Assert.AreEqual(val1, coord.Lat);
+               Assert.Equal(val1, coord.Lat);
                double val2 = 87.9D;
                coord.Lng = val2;
-               Assert.AreEqual(val2, coord.Lng);
+               Assert.Equal(val2, coord.Lng);
                int val3 = 45;
                coord.Ordinal = val3;
-               Assert.AreEqual(val3, coord.Ordinal);
+               Assert.Equal(val3, coord.Ordinal);
                bool val4 = true;
                coord.HasErrors = val4;
-               Assert.AreEqual(val4, coord.HasErrors);
+               Assert.Equal(val4, coord.HasErrors);
                IEnumerable<ValidationResult> val15 = new List<ValidationResult>() { new ValidationResult("First CSSPError Message") }.AsEnumerable();
                coord.ValidationResults = val15;
-               Assert.AreEqual(val15, coord.ValidationResults);
+               Assert.Equal(val15, coord.ValidationResults);
         }
         #endregion Tests Functions public
     }

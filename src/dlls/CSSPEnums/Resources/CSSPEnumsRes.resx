@@ -2898,4 +2898,13 @@
   <data name="PrimaryTreatmentTypeEnumPrimaryClarification" xml:space="preserve">
     <value>Primary clarification</value>
   </data>
+  <data name="AppTaskCommandEnumClimateSiteLoadCoCoRaHSData" xml:space="preserve">
+    <value>Climate Site Load CoCoRaHS Data</value>
+  </data>
+  <data name="SampleTypeEnumBivalve" xml:space="preserve">
+    <value>Bivalve</value>
+  </data>
+  <data name="SampleTypeEnumSediment" xml:space="preserve">
+    <value>Sediment</value>
+  </data>
 </root>

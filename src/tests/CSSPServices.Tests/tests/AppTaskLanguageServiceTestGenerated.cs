@@ -5,7 +5,7 @@
  */ 
 
 using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using System.Linq;
 using System.Collections.Generic;
 using CSSPModels;
@@ -21,7 +21,7 @@ using CSSPEnums.Resources;
 
 namespace CSSPServices.Tests
 {
-    [TestClass]
+
     public partial class AppTaskLanguageServiceTest : TestHelper
     {
         #region Variables
@@ -39,7 +39,7 @@ namespace CSSPServices.Tests
         #endregion Constructors
 
         #region Tests Generated CRUD
-        [TestMethod]
+        [Fact]
         public void AppTaskLanguage_CRUD_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -66,26 +66,26 @@ namespace CSSPServices.Tests
 
                     count = appTaskLanguageService.GetAppTaskLanguageList().Count();
 
-                    Assert.AreEqual(count, (from c in dbTestDB.AppTaskLanguages select c).Count());
+                    Assert.Equal(count, (from c in dbTestDB.AppTaskLanguages select c).Count());
 
                     appTaskLanguageService.Add(appTaskLanguage);
                     if (appTaskLanguage.HasErrors)
                     {
-                        Assert.AreEqual("", appTaskLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
+                        Assert.Equal("", appTaskLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
                     }
-                    Assert.AreEqual(true, appTaskLanguageService.GetAppTaskLanguageList().Where(c => c == appTaskLanguage).Any());
+                    Assert.True(appTaskLanguageService.GetAppTaskLanguageList().Where(c => c == appTaskLanguage).Any());
                     appTaskLanguageService.Update(appTaskLanguage);
                     if (appTaskLanguage.HasErrors)
                     {
-                        Assert.AreEqual("", appTaskLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
+                        Assert.Equal("", appTaskLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
                     }
-                    Assert.AreEqual(count + 1, appTaskLanguageService.GetAppTaskLanguageList().Count());
+                    Assert.Equal(count + 1, appTaskLanguageService.GetAppTaskLanguageList().Count());
                     appTaskLanguageService.Delete(appTaskLanguage);
                     if (appTaskLanguage.HasErrors)
                     {
-                        Assert.AreEqual("", appTaskLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
+                        Assert.Equal("", appTaskLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
                     }
-                    Assert.AreEqual(count, appTaskLanguageService.GetAppTaskLanguageList().Count());
+                    Assert.Equal(count, appTaskLanguageService.GetAppTaskLanguageList().Count());
 
                 }
             }
@@ -93,7 +93,7 @@ namespace CSSPServices.Tests
         #endregion Tests Generated CRUD
 
         #region Tests Generated Properties
-        [TestMethod]
+        [Fact]
         public void AppTaskLanguage_Properties_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -131,13 +131,13 @@ namespace CSSPServices.Tests
                     appTaskLanguage = GetFilledRandomAppTaskLanguage("");
                     appTaskLanguage.AppTaskLanguageID = 0;
                     appTaskLanguageService.Update(appTaskLanguage);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsRequired, "AppTaskLanguageID"), appTaskLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsRequired, "AppTaskLanguageID"), appTaskLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
 
                     appTaskLanguage = null;
                     appTaskLanguage = GetFilledRandomAppTaskLanguage("");
                     appTaskLanguage.AppTaskLanguageID = 10000000;
                     appTaskLanguageService.Update(appTaskLanguage);
-                    Assert.AreEqual(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "AppTaskLanguage", "AppTaskLanguageID", appTaskLanguage.AppTaskLanguageID.ToString()), appTaskLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "AppTaskLanguage", "AppTaskLanguageID", appTaskLanguage.AppTaskLanguageID.ToString()), appTaskLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
 
 
                     // -----------------------------------
@@ -150,7 +150,7 @@ namespace CSSPServices.Tests
                     appTaskLanguage = GetFilledRandomAppTaskLanguage("");
                     appTaskLanguage.AppTaskID = 0;
                     appTaskLanguageService.Add(appTaskLanguage);
-                    Assert.AreEqual(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "AppTask", "AppTaskID", appTaskLanguage.AppTaskID.ToString()), appTaskLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "AppTask", "AppTaskID", appTaskLanguage.AppTaskID.ToString()), appTaskLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
 
 
                     // -----------------------------------
@@ -163,7 +163,7 @@ namespace CSSPServices.Tests
                     appTaskLanguage = GetFilledRandomAppTaskLanguage("");
                     appTaskLanguage.Language = (LanguageEnum)1000000;
                     appTaskLanguageService.Add(appTaskLanguage);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsRequired, "Language"), appTaskLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsRequired, "Language"), appTaskLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
 
 
                     // -----------------------------------
@@ -175,9 +175,9 @@ namespace CSSPServices.Tests
                     appTaskLanguage = null;
                     appTaskLanguage = GetFilledRandomAppTaskLanguage("");
                     appTaskLanguage.StatusText = GetRandomString("", 251);
-                    Assert.AreEqual(false, appTaskLanguageService.Add(appTaskLanguage));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._MaxLengthIs_, "StatusText", "250"), appTaskLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, appTaskLanguageService.GetAppTaskLanguageList().Count());
+                    Assert.False(appTaskLanguageService.Add(appTaskLanguage));
+                    Assert.Equal(string.Format(CSSPServicesRes._MaxLengthIs_, "StatusText", "250"), appTaskLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, appTaskLanguageService.GetAppTaskLanguageList().Count());
 
                     // -----------------------------------
                     // Is Nullable
@@ -188,9 +188,9 @@ namespace CSSPServices.Tests
                     appTaskLanguage = null;
                     appTaskLanguage = GetFilledRandomAppTaskLanguage("");
                     appTaskLanguage.ErrorText = GetRandomString("", 251);
-                    Assert.AreEqual(false, appTaskLanguageService.Add(appTaskLanguage));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._MaxLengthIs_, "ErrorText", "250"), appTaskLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, appTaskLanguageService.GetAppTaskLanguageList().Count());
+                    Assert.False(appTaskLanguageService.Add(appTaskLanguage));
+                    Assert.Equal(string.Format(CSSPServicesRes._MaxLengthIs_, "ErrorText", "250"), appTaskLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, appTaskLanguageService.GetAppTaskLanguageList().Count());
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -202,7 +202,7 @@ namespace CSSPServices.Tests
                     appTaskLanguage = GetFilledRandomAppTaskLanguage("");
                     appTaskLanguage.TranslationStatus = (TranslationStatusEnum)1000000;
                     appTaskLanguageService.Add(appTaskLanguage);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsRequired, "TranslationStatus"), appTaskLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsRequired, "TranslationStatus"), appTaskLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
 
 
                     // -----------------------------------
@@ -215,12 +215,12 @@ namespace CSSPServices.Tests
                     appTaskLanguage = GetFilledRandomAppTaskLanguage("");
                     appTaskLanguage.LastUpdateDate_UTC = new DateTime();
                     appTaskLanguageService.Add(appTaskLanguage);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsRequired, "LastUpdateDate_UTC"), appTaskLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsRequired, "LastUpdateDate_UTC"), appTaskLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
                     appTaskLanguage = null;
                     appTaskLanguage = GetFilledRandomAppTaskLanguage("");
                     appTaskLanguage.LastUpdateDate_UTC = new DateTime(1979, 1, 1);
                     appTaskLanguageService.Add(appTaskLanguage);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._YearShouldBeBiggerThan_, "LastUpdateDate_UTC", "1980"), appTaskLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._YearShouldBeBiggerThan_, "LastUpdateDate_UTC", "1980"), appTaskLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -232,13 +232,13 @@ namespace CSSPServices.Tests
                     appTaskLanguage = GetFilledRandomAppTaskLanguage("");
                     appTaskLanguage.LastUpdateContactTVItemID = 0;
                     appTaskLanguageService.Add(appTaskLanguage);
-                    Assert.AreEqual(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "TVItem", "LastUpdateContactTVItemID", appTaskLanguage.LastUpdateContactTVItemID.ToString()), appTaskLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "TVItem", "LastUpdateContactTVItemID", appTaskLanguage.LastUpdateContactTVItemID.ToString()), appTaskLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
 
                     appTaskLanguage = null;
                     appTaskLanguage = GetFilledRandomAppTaskLanguage("");
                     appTaskLanguage.LastUpdateContactTVItemID = 1;
                     appTaskLanguageService.Add(appTaskLanguage);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsNotOfType_, "LastUpdateContactTVItemID", "Contact"), appTaskLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsNotOfType_, "LastUpdateContactTVItemID", "Contact"), appTaskLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
 
 
                     // -----------------------------------
@@ -262,7 +262,7 @@ namespace CSSPServices.Tests
         #endregion Tests Generated Properties
 
         #region Tests Generated for GetAppTaskLanguageWithAppTaskLanguageID(appTaskLanguage.AppTaskLanguageID)
-        [TestMethod]
+        [Fact]
         public void GetAppTaskLanguageWithAppTaskLanguageID__appTaskLanguage_AppTaskLanguageID__Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -273,7 +273,7 @@ namespace CSSPServices.Tests
                 {
                     AppTaskLanguageService appTaskLanguageService = new AppTaskLanguageService(new Query() { Lang = culture.TwoLetterISOLanguageName }, dbTestDB, ContactID);
                     AppTaskLanguage appTaskLanguage = (from c in dbTestDB.AppTaskLanguages select c).FirstOrDefault();
-                    Assert.IsNotNull(appTaskLanguage);
+                    Assert.NotNull(appTaskLanguage);
 
                 }
             }
@@ -281,7 +281,7 @@ namespace CSSPServices.Tests
         #endregion Tests Generated for GetAppTaskLanguageWithAppTaskLanguageID(appTaskLanguage.AppTaskLanguageID)
 
         #region Tests Generated for GetAppTaskLanguageList()
-        [TestMethod]
+        [Fact]
         public void GetAppTaskLanguageList_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -292,7 +292,7 @@ namespace CSSPServices.Tests
                 {
                     AppTaskLanguageService appTaskLanguageService = new AppTaskLanguageService(new Query() { Lang = culture.TwoLetterISOLanguageName }, dbTestDB, ContactID);
                     AppTaskLanguage appTaskLanguage = (from c in dbTestDB.AppTaskLanguages select c).FirstOrDefault();
-                    Assert.IsNotNull(appTaskLanguage);
+                    Assert.NotNull(appTaskLanguage);
 
                     List<AppTaskLanguage> appTaskLanguageDirectQueryList = new List<AppTaskLanguage>();
                     appTaskLanguageDirectQueryList = (from c in dbTestDB.AppTaskLanguages select c).Take(200).ToList();
@@ -303,7 +303,7 @@ namespace CSSPServices.Tests
         #endregion Tests Generated for GetAppTaskLanguageList()
 
         #region Tests Generated for GetAppTaskLanguageList() Skip Take
-        [TestMethod]
+        [Fact]
         public void GetAppTaskLanguageList_Skip_Take_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -322,14 +322,14 @@ namespace CSSPServices.Tests
                         List<AppTaskLanguage> appTaskLanguageList = new List<AppTaskLanguage>();
                         appTaskLanguageList = appTaskLanguageService.GetAppTaskLanguageList().ToList();
                         CheckAppTaskLanguageFields(appTaskLanguageList);
-                        Assert.AreEqual(appTaskLanguageDirectQueryList[0].AppTaskLanguageID, appTaskLanguageList[0].AppTaskLanguageID);
+                        Assert.Equal(appTaskLanguageDirectQueryList[0].AppTaskLanguageID, appTaskLanguageList[0].AppTaskLanguageID);
                 }
             }
         }
         #endregion Tests Generated for GetAppTaskLanguageList() Skip Take
 
         #region Tests Generated for GetAppTaskLanguageList() Skip Take Asc
-        [TestMethod]
+        [Fact]
         public void GetAppTaskLanguageList_Skip_Take_Asc_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -348,14 +348,14 @@ namespace CSSPServices.Tests
                         List<AppTaskLanguage> appTaskLanguageList = new List<AppTaskLanguage>();
                         appTaskLanguageList = appTaskLanguageService.GetAppTaskLanguageList().ToList();
                         CheckAppTaskLanguageFields(appTaskLanguageList);
-                        Assert.AreEqual(appTaskLanguageDirectQueryList[0].AppTaskLanguageID, appTaskLanguageList[0].AppTaskLanguageID);
+                        Assert.Equal(appTaskLanguageDirectQueryList[0].AppTaskLanguageID, appTaskLanguageList[0].AppTaskLanguageID);
                 }
             }
         }
         #endregion Tests Generated for GetAppTaskLanguageList() Skip Take Asc
 
         #region Tests Generated for GetAppTaskLanguageList() Skip Take 2 Asc
-        [TestMethod]
+        [Fact]
         public void GetAppTaskLanguageList_Skip_Take_2Asc_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -374,14 +374,14 @@ namespace CSSPServices.Tests
                         List<AppTaskLanguage> appTaskLanguageList = new List<AppTaskLanguage>();
                         appTaskLanguageList = appTaskLanguageService.GetAppTaskLanguageList().ToList();
                         CheckAppTaskLanguageFields(appTaskLanguageList);
-                        Assert.AreEqual(appTaskLanguageDirectQueryList[0].AppTaskLanguageID, appTaskLanguageList[0].AppTaskLanguageID);
+                        Assert.Equal(appTaskLanguageDirectQueryList[0].AppTaskLanguageID, appTaskLanguageList[0].AppTaskLanguageID);
                 }
             }
         }
         #endregion Tests Generated for GetAppTaskLanguageList() Skip Take 2 Asc
 
         #region Tests Generated for GetAppTaskLanguageList() Skip Take Asc Where
-        [TestMethod]
+        [Fact]
         public void GetAppTaskLanguageList_Skip_Take_Asc_Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -400,14 +400,14 @@ namespace CSSPServices.Tests
                         List<AppTaskLanguage> appTaskLanguageList = new List<AppTaskLanguage>();
                         appTaskLanguageList = appTaskLanguageService.GetAppTaskLanguageList().ToList();
                         CheckAppTaskLanguageFields(appTaskLanguageList);
-                        Assert.AreEqual(appTaskLanguageDirectQueryList[0].AppTaskLanguageID, appTaskLanguageList[0].AppTaskLanguageID);
+                        Assert.Equal(appTaskLanguageDirectQueryList[0].AppTaskLanguageID, appTaskLanguageList[0].AppTaskLanguageID);
                 }
             }
         }
         #endregion Tests Generated for GetAppTaskLanguageList() Skip Take Asc Where
 
         #region Tests Generated for GetAppTaskLanguageList() Skip Take Asc 2 Where
-        [TestMethod]
+        [Fact]
         public void GetAppTaskLanguageList_Skip_Take_Asc_2Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -426,14 +426,14 @@ namespace CSSPServices.Tests
                         List<AppTaskLanguage> appTaskLanguageList = new List<AppTaskLanguage>();
                         appTaskLanguageList = appTaskLanguageService.GetAppTaskLanguageList().ToList();
                         CheckAppTaskLanguageFields(appTaskLanguageList);
-                        Assert.AreEqual(appTaskLanguageDirectQueryList[0].AppTaskLanguageID, appTaskLanguageList[0].AppTaskLanguageID);
+                        Assert.Equal(appTaskLanguageDirectQueryList[0].AppTaskLanguageID, appTaskLanguageList[0].AppTaskLanguageID);
                 }
             }
         }
         #endregion Tests Generated for GetAppTaskLanguageList() Skip Take Asc 2 Where
 
         #region Tests Generated for GetAppTaskLanguageList() Skip Take Desc
-        [TestMethod]
+        [Fact]
         public void GetAppTaskLanguageList_Skip_Take_Desc_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -452,14 +452,14 @@ namespace CSSPServices.Tests
                         List<AppTaskLanguage> appTaskLanguageList = new List<AppTaskLanguage>();
                         appTaskLanguageList = appTaskLanguageService.GetAppTaskLanguageList().ToList();
                         CheckAppTaskLanguageFields(appTaskLanguageList);
-                        Assert.AreEqual(appTaskLanguageDirectQueryList[0].AppTaskLanguageID, appTaskLanguageList[0].AppTaskLanguageID);
+                        Assert.Equal(appTaskLanguageDirectQueryList[0].AppTaskLanguageID, appTaskLanguageList[0].AppTaskLanguageID);
                 }
             }
         }
         #endregion Tests Generated for GetAppTaskLanguageList() Skip Take Desc
 
         #region Tests Generated for GetAppTaskLanguageList() Skip Take 2 Desc
-        [TestMethod]
+        [Fact]
         public void GetAppTaskLanguageList_Skip_Take_2Desc_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -478,14 +478,14 @@ namespace CSSPServices.Tests
                         List<AppTaskLanguage> appTaskLanguageList = new List<AppTaskLanguage>();
                         appTaskLanguageList = appTaskLanguageService.GetAppTaskLanguageList().ToList();
                         CheckAppTaskLanguageFields(appTaskLanguageList);
-                        Assert.AreEqual(appTaskLanguageDirectQueryList[0].AppTaskLanguageID, appTaskLanguageList[0].AppTaskLanguageID);
+                        Assert.Equal(appTaskLanguageDirectQueryList[0].AppTaskLanguageID, appTaskLanguageList[0].AppTaskLanguageID);
                 }
             }
         }
         #endregion Tests Generated for GetAppTaskLanguageList() Skip Take 2 Desc
 
         #region Tests Generated for GetAppTaskLanguageList() Skip Take Desc Where
-        [TestMethod]
+        [Fact]
         public void GetAppTaskLanguageList_Skip_Take_Desc_Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -504,14 +504,14 @@ namespace CSSPServices.Tests
                         List<AppTaskLanguage> appTaskLanguageList = new List<AppTaskLanguage>();
                         appTaskLanguageList = appTaskLanguageService.GetAppTaskLanguageList().ToList();
                         CheckAppTaskLanguageFields(appTaskLanguageList);
-                        Assert.AreEqual(appTaskLanguageDirectQueryList[0].AppTaskLanguageID, appTaskLanguageList[0].AppTaskLanguageID);
+                        Assert.Equal(appTaskLanguageDirectQueryList[0].AppTaskLanguageID, appTaskLanguageList[0].AppTaskLanguageID);
                 }
             }
         }
         #endregion Tests Generated for GetAppTaskLanguageList() Skip Take Desc Where
 
         #region Tests Generated for GetAppTaskLanguageList() Skip Take Desc 2 Where
-        [TestMethod]
+        [Fact]
         public void GetAppTaskLanguageList_Skip_Take_Desc_2Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -530,14 +530,14 @@ namespace CSSPServices.Tests
                         List<AppTaskLanguage> appTaskLanguageList = new List<AppTaskLanguage>();
                         appTaskLanguageList = appTaskLanguageService.GetAppTaskLanguageList().ToList();
                         CheckAppTaskLanguageFields(appTaskLanguageList);
-                        Assert.AreEqual(appTaskLanguageDirectQueryList[0].AppTaskLanguageID, appTaskLanguageList[0].AppTaskLanguageID);
+                        Assert.Equal(appTaskLanguageDirectQueryList[0].AppTaskLanguageID, appTaskLanguageList[0].AppTaskLanguageID);
                 }
             }
         }
         #endregion Tests Generated for GetAppTaskLanguageList() Skip Take Desc 2 Where
 
         #region Tests Generated for GetAppTaskLanguageList() 2 Where
-        [TestMethod]
+        [Fact]
         public void GetAppTaskLanguageList_2Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -556,7 +556,7 @@ namespace CSSPServices.Tests
                         List<AppTaskLanguage> appTaskLanguageList = new List<AppTaskLanguage>();
                         appTaskLanguageList = appTaskLanguageService.GetAppTaskLanguageList().ToList();
                         CheckAppTaskLanguageFields(appTaskLanguageList);
-                        Assert.AreEqual(appTaskLanguageDirectQueryList[0].AppTaskLanguageID, appTaskLanguageList[0].AppTaskLanguageID);
+                        Assert.Equal(appTaskLanguageDirectQueryList[0].AppTaskLanguageID, appTaskLanguageList[0].AppTaskLanguageID);
                 }
             }
         }
@@ -565,21 +565,21 @@ namespace CSSPServices.Tests
         #region Functions private
         private void CheckAppTaskLanguageFields(List<AppTaskLanguage> appTaskLanguageList)
         {
-            Assert.IsNotNull(appTaskLanguageList[0].AppTaskLanguageID);
-            Assert.IsNotNull(appTaskLanguageList[0].AppTaskID);
-            Assert.IsNotNull(appTaskLanguageList[0].Language);
+            Assert.NotNull(appTaskLanguageList[0].AppTaskLanguageID);
+            Assert.NotNull(appTaskLanguageList[0].AppTaskID);
+            Assert.NotNull(appTaskLanguageList[0].Language);
             if (!string.IsNullOrWhiteSpace(appTaskLanguageList[0].StatusText))
             {
-                Assert.IsFalse(string.IsNullOrWhiteSpace(appTaskLanguageList[0].StatusText));
+                Assert.False(string.IsNullOrWhiteSpace(appTaskLanguageList[0].StatusText));
             }
             if (!string.IsNullOrWhiteSpace(appTaskLanguageList[0].ErrorText))
             {
-                Assert.IsFalse(string.IsNullOrWhiteSpace(appTaskLanguageList[0].ErrorText));
+                Assert.False(string.IsNullOrWhiteSpace(appTaskLanguageList[0].ErrorText));
             }
-            Assert.IsNotNull(appTaskLanguageList[0].TranslationStatus);
-            Assert.IsNotNull(appTaskLanguageList[0].LastUpdateDate_UTC);
-            Assert.IsNotNull(appTaskLanguageList[0].LastUpdateContactTVItemID);
-            Assert.IsNotNull(appTaskLanguageList[0].HasErrors);
+            Assert.NotNull(appTaskLanguageList[0].TranslationStatus);
+            Assert.NotNull(appTaskLanguageList[0].LastUpdateDate_UTC);
+            Assert.NotNull(appTaskLanguageList[0].LastUpdateContactTVItemID);
+            Assert.NotNull(appTaskLanguageList[0].HasErrors);
         }
         private AppTaskLanguage GetFilledRandomAppTaskLanguage(string OmitPropName)
         {

@@ -6,7 +6,7 @@
  */ 
 using System;
 using System.Text;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using System.Linq;
 using System.Globalization;
 using System.Transactions;
@@ -19,7 +19,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace CSSPModels.Tests
 {
-    [TestClass]
+
     public partial class ElementTest
     {
         #region Variables
@@ -37,7 +37,7 @@ namespace CSSPModels.Tests
         #endregion Constructors
 
         #region Tests Functions public
-        [TestMethod]
+        [Fact]
         public void Element_Properties_Test()
         {
             List<string> propNameList = new List<string>() { "ID", "Type", "NumbOfNodes", "Value", "XNode0", "YNode0", "ZNode0", "NodeList", "HasErrors",  }.OrderBy(c => c).ToList();
@@ -46,50 +46,50 @@ namespace CSSPModels.Tests
             int index = 0;
             foreach (PropertyInfo propertyInfo in typeof(Element).GetProperties().Where(c => c.Name != "ValidationResults").OrderBy(c => c.Name).ToList())
             {
-                Assert.AreEqual(propertyInfo.Name, propNameList[index]);
+                Assert.Equal(propertyInfo.Name, propNameList[index]);
                 index += 1;
             }
 
-            Assert.AreEqual(propNameList.Count, index);
+            Assert.Equal(propNameList.Count, index);
         }
-        [TestMethod]
+        [Fact]
         public void Element_Has_ValidationResults_Test()
         {
-             Assert.IsTrue(typeof(Element).GetProperties().Where(c => c.Name == "ValidationResults").Any());
+             Assert.True(typeof(Element).GetProperties().Where(c => c.Name == "ValidationResults").Any());
         }
-        [TestMethod]
+        [Fact]
         public void Element_Every_Property_Has_Get_Set_Test()
         {
                int val1 = 45;
                element.ID = val1;
-               Assert.AreEqual(val1, element.ID);
+               Assert.Equal(val1, element.ID);
                int val2 = 45;
                element.Type = val2;
-               Assert.AreEqual(val2, element.Type);
+               Assert.Equal(val2, element.Type);
                int val3 = 45;
                element.NumbOfNodes = val3;
-               Assert.AreEqual(val3, element.NumbOfNodes);
+               Assert.Equal(val3, element.NumbOfNodes);
                double val4 = 87.9D;
                element.Value = val4;
-               Assert.AreEqual(val4, element.Value);
+               Assert.Equal(val4, element.Value);
                double val5 = 87.9D;
                element.XNode0 = val5;
-               Assert.AreEqual(val5, element.XNode0);
+               Assert.Equal(val5, element.XNode0);
                double val6 = 87.9D;
                element.YNode0 = val6;
-               Assert.AreEqual(val6, element.YNode0);
+               Assert.Equal(val6, element.YNode0);
                double val7 = 87.9D;
                element.ZNode0 = val7;
-               Assert.AreEqual(val7, element.ZNode0);
+               Assert.Equal(val7, element.ZNode0);
                List<Node> val8 = new List<Node>() { new Node(), new Node() };
                element.NodeList = val8;
-               Assert.AreEqual(val8, element.NodeList);
+               Assert.Equal(val8, element.NodeList);
                bool val9 = true;
                element.HasErrors = val9;
-               Assert.AreEqual(val9, element.HasErrors);
+               Assert.Equal(val9, element.HasErrors);
                IEnumerable<ValidationResult> val30 = new List<ValidationResult>() { new ValidationResult("First CSSPError Message") }.AsEnumerable();
                element.ValidationResults = val30;
-               Assert.AreEqual(val30, element.ValidationResults);
+               Assert.Equal(val30, element.ValidationResults);
         }
         #endregion Tests Functions public
     }

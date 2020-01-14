@@ -6,7 +6,7 @@
  */ 
 using System;
 using System.Text;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using System.Linq;
 using System.Globalization;
 using System.Transactions;
@@ -19,7 +19,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace CSSPModels.Tests
 {
-    [TestClass]
+
     public partial class FileItemListTest
     {
         #region Variables
@@ -37,7 +37,7 @@ namespace CSSPModels.Tests
         #endregion Constructors
 
         #region Tests Functions public
-        [TestMethod]
+        [Fact]
         public void FileItemList_Properties_Test()
         {
             List<string> propNameList = new List<string>() { "Text", "FileName", "HasErrors",  }.OrderBy(c => c).ToList();
@@ -46,32 +46,32 @@ namespace CSSPModels.Tests
             int index = 0;
             foreach (PropertyInfo propertyInfo in typeof(FileItemList).GetProperties().Where(c => c.Name != "ValidationResults").OrderBy(c => c.Name).ToList())
             {
-                Assert.AreEqual(propertyInfo.Name, propNameList[index]);
+                Assert.Equal(propertyInfo.Name, propNameList[index]);
                 index += 1;
             }
 
-            Assert.AreEqual(propNameList.Count, index);
+            Assert.Equal(propNameList.Count, index);
         }
-        [TestMethod]
+        [Fact]
         public void FileItemList_Has_ValidationResults_Test()
         {
-             Assert.IsTrue(typeof(FileItemList).GetProperties().Where(c => c.Name == "ValidationResults").Any());
+             Assert.True(typeof(FileItemList).GetProperties().Where(c => c.Name == "ValidationResults").Any());
         }
-        [TestMethod]
+        [Fact]
         public void FileItemList_Every_Property_Has_Get_Set_Test()
         {
                string val1 = "Some text";
                fileItemList.Text = val1;
-               Assert.AreEqual(val1, fileItemList.Text);
+               Assert.Equal(val1, fileItemList.Text);
                string val2 = "Some text";
                fileItemList.FileName = val2;
-               Assert.AreEqual(val2, fileItemList.FileName);
+               Assert.Equal(val2, fileItemList.FileName);
                bool val3 = true;
                fileItemList.HasErrors = val3;
-               Assert.AreEqual(val3, fileItemList.HasErrors);
+               Assert.Equal(val3, fileItemList.HasErrors);
                IEnumerable<ValidationResult> val12 = new List<ValidationResult>() { new ValidationResult("First CSSPError Message") }.AsEnumerable();
                fileItemList.ValidationResults = val12;
-               Assert.AreEqual(val12, fileItemList.ValidationResults);
+               Assert.Equal(val12, fileItemList.ValidationResults);
         }
         #endregion Tests Functions public
     }

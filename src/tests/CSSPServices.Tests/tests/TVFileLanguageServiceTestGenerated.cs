@@ -5,7 +5,7 @@
  */ 
 
 using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using System.Linq;
 using System.Collections.Generic;
 using CSSPModels;
@@ -21,7 +21,7 @@ using CSSPEnums.Resources;
 
 namespace CSSPServices.Tests
 {
-    [TestClass]
+
     public partial class TVFileLanguageServiceTest : TestHelper
     {
         #region Variables
@@ -39,7 +39,7 @@ namespace CSSPServices.Tests
         #endregion Constructors
 
         #region Tests Generated CRUD
-        [TestMethod]
+        [Fact]
         public void TVFileLanguage_CRUD_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -66,26 +66,26 @@ namespace CSSPServices.Tests
 
                     count = tvFileLanguageService.GetTVFileLanguageList().Count();
 
-                    Assert.AreEqual(count, (from c in dbTestDB.TVFileLanguages select c).Count());
+                    Assert.Equal(count, (from c in dbTestDB.TVFileLanguages select c).Count());
 
                     tvFileLanguageService.Add(tvFileLanguage);
                     if (tvFileLanguage.HasErrors)
                     {
-                        Assert.AreEqual("", tvFileLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
+                        Assert.Equal("", tvFileLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
                     }
-                    Assert.AreEqual(true, tvFileLanguageService.GetTVFileLanguageList().Where(c => c == tvFileLanguage).Any());
+                    Assert.True(tvFileLanguageService.GetTVFileLanguageList().Where(c => c == tvFileLanguage).Any());
                     tvFileLanguageService.Update(tvFileLanguage);
                     if (tvFileLanguage.HasErrors)
                     {
-                        Assert.AreEqual("", tvFileLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
+                        Assert.Equal("", tvFileLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
                     }
-                    Assert.AreEqual(count + 1, tvFileLanguageService.GetTVFileLanguageList().Count());
+                    Assert.Equal(count + 1, tvFileLanguageService.GetTVFileLanguageList().Count());
                     tvFileLanguageService.Delete(tvFileLanguage);
                     if (tvFileLanguage.HasErrors)
                     {
-                        Assert.AreEqual("", tvFileLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
+                        Assert.Equal("", tvFileLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
                     }
-                    Assert.AreEqual(count, tvFileLanguageService.GetTVFileLanguageList().Count());
+                    Assert.Equal(count, tvFileLanguageService.GetTVFileLanguageList().Count());
 
                 }
             }
@@ -93,7 +93,7 @@ namespace CSSPServices.Tests
         #endregion Tests Generated CRUD
 
         #region Tests Generated Properties
-        [TestMethod]
+        [Fact]
         public void TVFileLanguage_Properties_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -131,13 +131,13 @@ namespace CSSPServices.Tests
                     tvFileLanguage = GetFilledRandomTVFileLanguage("");
                     tvFileLanguage.TVFileLanguageID = 0;
                     tvFileLanguageService.Update(tvFileLanguage);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsRequired, "TVFileLanguageID"), tvFileLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsRequired, "TVFileLanguageID"), tvFileLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
 
                     tvFileLanguage = null;
                     tvFileLanguage = GetFilledRandomTVFileLanguage("");
                     tvFileLanguage.TVFileLanguageID = 10000000;
                     tvFileLanguageService.Update(tvFileLanguage);
-                    Assert.AreEqual(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "TVFileLanguage", "TVFileLanguageID", tvFileLanguage.TVFileLanguageID.ToString()), tvFileLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "TVFileLanguage", "TVFileLanguageID", tvFileLanguage.TVFileLanguageID.ToString()), tvFileLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
 
 
                     // -----------------------------------
@@ -150,7 +150,7 @@ namespace CSSPServices.Tests
                     tvFileLanguage = GetFilledRandomTVFileLanguage("");
                     tvFileLanguage.TVFileID = 0;
                     tvFileLanguageService.Add(tvFileLanguage);
-                    Assert.AreEqual(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "TVFile", "TVFileID", tvFileLanguage.TVFileID.ToString()), tvFileLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "TVFile", "TVFileID", tvFileLanguage.TVFileID.ToString()), tvFileLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
 
 
                     // -----------------------------------
@@ -163,7 +163,7 @@ namespace CSSPServices.Tests
                     tvFileLanguage = GetFilledRandomTVFileLanguage("");
                     tvFileLanguage.Language = (LanguageEnum)1000000;
                     tvFileLanguageService.Add(tvFileLanguage);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsRequired, "Language"), tvFileLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsRequired, "Language"), tvFileLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
 
 
                     // -----------------------------------
@@ -182,7 +182,7 @@ namespace CSSPServices.Tests
                     tvFileLanguage = GetFilledRandomTVFileLanguage("");
                     tvFileLanguage.TranslationStatus = (TranslationStatusEnum)1000000;
                     tvFileLanguageService.Add(tvFileLanguage);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsRequired, "TranslationStatus"), tvFileLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsRequired, "TranslationStatus"), tvFileLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
 
 
                     // -----------------------------------
@@ -195,12 +195,12 @@ namespace CSSPServices.Tests
                     tvFileLanguage = GetFilledRandomTVFileLanguage("");
                     tvFileLanguage.LastUpdateDate_UTC = new DateTime();
                     tvFileLanguageService.Add(tvFileLanguage);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsRequired, "LastUpdateDate_UTC"), tvFileLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsRequired, "LastUpdateDate_UTC"), tvFileLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
                     tvFileLanguage = null;
                     tvFileLanguage = GetFilledRandomTVFileLanguage("");
                     tvFileLanguage.LastUpdateDate_UTC = new DateTime(1979, 1, 1);
                     tvFileLanguageService.Add(tvFileLanguage);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._YearShouldBeBiggerThan_, "LastUpdateDate_UTC", "1980"), tvFileLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._YearShouldBeBiggerThan_, "LastUpdateDate_UTC", "1980"), tvFileLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -212,13 +212,13 @@ namespace CSSPServices.Tests
                     tvFileLanguage = GetFilledRandomTVFileLanguage("");
                     tvFileLanguage.LastUpdateContactTVItemID = 0;
                     tvFileLanguageService.Add(tvFileLanguage);
-                    Assert.AreEqual(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "TVItem", "LastUpdateContactTVItemID", tvFileLanguage.LastUpdateContactTVItemID.ToString()), tvFileLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "TVItem", "LastUpdateContactTVItemID", tvFileLanguage.LastUpdateContactTVItemID.ToString()), tvFileLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
 
                     tvFileLanguage = null;
                     tvFileLanguage = GetFilledRandomTVFileLanguage("");
                     tvFileLanguage.LastUpdateContactTVItemID = 1;
                     tvFileLanguageService.Add(tvFileLanguage);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsNotOfType_, "LastUpdateContactTVItemID", "Contact"), tvFileLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsNotOfType_, "LastUpdateContactTVItemID", "Contact"), tvFileLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
 
 
                     // -----------------------------------
@@ -242,7 +242,7 @@ namespace CSSPServices.Tests
         #endregion Tests Generated Properties
 
         #region Tests Generated for GetTVFileLanguageWithTVFileLanguageID(tvFileLanguage.TVFileLanguageID)
-        [TestMethod]
+        [Fact]
         public void GetTVFileLanguageWithTVFileLanguageID__tvFileLanguage_TVFileLanguageID__Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -253,7 +253,7 @@ namespace CSSPServices.Tests
                 {
                     TVFileLanguageService tvFileLanguageService = new TVFileLanguageService(new Query() { Lang = culture.TwoLetterISOLanguageName }, dbTestDB, ContactID);
                     TVFileLanguage tvFileLanguage = (from c in dbTestDB.TVFileLanguages select c).FirstOrDefault();
-                    Assert.IsNotNull(tvFileLanguage);
+                    Assert.NotNull(tvFileLanguage);
 
                 }
             }
@@ -261,7 +261,7 @@ namespace CSSPServices.Tests
         #endregion Tests Generated for GetTVFileLanguageWithTVFileLanguageID(tvFileLanguage.TVFileLanguageID)
 
         #region Tests Generated for GetTVFileLanguageList()
-        [TestMethod]
+        [Fact]
         public void GetTVFileLanguageList_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -272,7 +272,7 @@ namespace CSSPServices.Tests
                 {
                     TVFileLanguageService tvFileLanguageService = new TVFileLanguageService(new Query() { Lang = culture.TwoLetterISOLanguageName }, dbTestDB, ContactID);
                     TVFileLanguage tvFileLanguage = (from c in dbTestDB.TVFileLanguages select c).FirstOrDefault();
-                    Assert.IsNotNull(tvFileLanguage);
+                    Assert.NotNull(tvFileLanguage);
 
                     List<TVFileLanguage> tvFileLanguageDirectQueryList = new List<TVFileLanguage>();
                     tvFileLanguageDirectQueryList = (from c in dbTestDB.TVFileLanguages select c).Take(200).ToList();
@@ -283,7 +283,7 @@ namespace CSSPServices.Tests
         #endregion Tests Generated for GetTVFileLanguageList()
 
         #region Tests Generated for GetTVFileLanguageList() Skip Take
-        [TestMethod]
+        [Fact]
         public void GetTVFileLanguageList_Skip_Take_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -302,14 +302,14 @@ namespace CSSPServices.Tests
                         List<TVFileLanguage> tvFileLanguageList = new List<TVFileLanguage>();
                         tvFileLanguageList = tvFileLanguageService.GetTVFileLanguageList().ToList();
                         CheckTVFileLanguageFields(tvFileLanguageList);
-                        Assert.AreEqual(tvFileLanguageDirectQueryList[0].TVFileLanguageID, tvFileLanguageList[0].TVFileLanguageID);
+                        Assert.Equal(tvFileLanguageDirectQueryList[0].TVFileLanguageID, tvFileLanguageList[0].TVFileLanguageID);
                 }
             }
         }
         #endregion Tests Generated for GetTVFileLanguageList() Skip Take
 
         #region Tests Generated for GetTVFileLanguageList() Skip Take Asc
-        [TestMethod]
+        [Fact]
         public void GetTVFileLanguageList_Skip_Take_Asc_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -328,14 +328,14 @@ namespace CSSPServices.Tests
                         List<TVFileLanguage> tvFileLanguageList = new List<TVFileLanguage>();
                         tvFileLanguageList = tvFileLanguageService.GetTVFileLanguageList().ToList();
                         CheckTVFileLanguageFields(tvFileLanguageList);
-                        Assert.AreEqual(tvFileLanguageDirectQueryList[0].TVFileLanguageID, tvFileLanguageList[0].TVFileLanguageID);
+                        Assert.Equal(tvFileLanguageDirectQueryList[0].TVFileLanguageID, tvFileLanguageList[0].TVFileLanguageID);
                 }
             }
         }
         #endregion Tests Generated for GetTVFileLanguageList() Skip Take Asc
 
         #region Tests Generated for GetTVFileLanguageList() Skip Take 2 Asc
-        [TestMethod]
+        [Fact]
         public void GetTVFileLanguageList_Skip_Take_2Asc_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -354,14 +354,14 @@ namespace CSSPServices.Tests
                         List<TVFileLanguage> tvFileLanguageList = new List<TVFileLanguage>();
                         tvFileLanguageList = tvFileLanguageService.GetTVFileLanguageList().ToList();
                         CheckTVFileLanguageFields(tvFileLanguageList);
-                        Assert.AreEqual(tvFileLanguageDirectQueryList[0].TVFileLanguageID, tvFileLanguageList[0].TVFileLanguageID);
+                        Assert.Equal(tvFileLanguageDirectQueryList[0].TVFileLanguageID, tvFileLanguageList[0].TVFileLanguageID);
                 }
             }
         }
         #endregion Tests Generated for GetTVFileLanguageList() Skip Take 2 Asc
 
         #region Tests Generated for GetTVFileLanguageList() Skip Take Asc Where
-        [TestMethod]
+        [Fact]
         public void GetTVFileLanguageList_Skip_Take_Asc_Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -380,14 +380,14 @@ namespace CSSPServices.Tests
                         List<TVFileLanguage> tvFileLanguageList = new List<TVFileLanguage>();
                         tvFileLanguageList = tvFileLanguageService.GetTVFileLanguageList().ToList();
                         CheckTVFileLanguageFields(tvFileLanguageList);
-                        Assert.AreEqual(tvFileLanguageDirectQueryList[0].TVFileLanguageID, tvFileLanguageList[0].TVFileLanguageID);
+                        Assert.Equal(tvFileLanguageDirectQueryList[0].TVFileLanguageID, tvFileLanguageList[0].TVFileLanguageID);
                 }
             }
         }
         #endregion Tests Generated for GetTVFileLanguageList() Skip Take Asc Where
 
         #region Tests Generated for GetTVFileLanguageList() Skip Take Asc 2 Where
-        [TestMethod]
+        [Fact]
         public void GetTVFileLanguageList_Skip_Take_Asc_2Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -406,14 +406,14 @@ namespace CSSPServices.Tests
                         List<TVFileLanguage> tvFileLanguageList = new List<TVFileLanguage>();
                         tvFileLanguageList = tvFileLanguageService.GetTVFileLanguageList().ToList();
                         CheckTVFileLanguageFields(tvFileLanguageList);
-                        Assert.AreEqual(tvFileLanguageDirectQueryList[0].TVFileLanguageID, tvFileLanguageList[0].TVFileLanguageID);
+                        Assert.Equal(tvFileLanguageDirectQueryList[0].TVFileLanguageID, tvFileLanguageList[0].TVFileLanguageID);
                 }
             }
         }
         #endregion Tests Generated for GetTVFileLanguageList() Skip Take Asc 2 Where
 
         #region Tests Generated for GetTVFileLanguageList() Skip Take Desc
-        [TestMethod]
+        [Fact]
         public void GetTVFileLanguageList_Skip_Take_Desc_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -432,14 +432,14 @@ namespace CSSPServices.Tests
                         List<TVFileLanguage> tvFileLanguageList = new List<TVFileLanguage>();
                         tvFileLanguageList = tvFileLanguageService.GetTVFileLanguageList().ToList();
                         CheckTVFileLanguageFields(tvFileLanguageList);
-                        Assert.AreEqual(tvFileLanguageDirectQueryList[0].TVFileLanguageID, tvFileLanguageList[0].TVFileLanguageID);
+                        Assert.Equal(tvFileLanguageDirectQueryList[0].TVFileLanguageID, tvFileLanguageList[0].TVFileLanguageID);
                 }
             }
         }
         #endregion Tests Generated for GetTVFileLanguageList() Skip Take Desc
 
         #region Tests Generated for GetTVFileLanguageList() Skip Take 2 Desc
-        [TestMethod]
+        [Fact]
         public void GetTVFileLanguageList_Skip_Take_2Desc_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -458,14 +458,14 @@ namespace CSSPServices.Tests
                         List<TVFileLanguage> tvFileLanguageList = new List<TVFileLanguage>();
                         tvFileLanguageList = tvFileLanguageService.GetTVFileLanguageList().ToList();
                         CheckTVFileLanguageFields(tvFileLanguageList);
-                        Assert.AreEqual(tvFileLanguageDirectQueryList[0].TVFileLanguageID, tvFileLanguageList[0].TVFileLanguageID);
+                        Assert.Equal(tvFileLanguageDirectQueryList[0].TVFileLanguageID, tvFileLanguageList[0].TVFileLanguageID);
                 }
             }
         }
         #endregion Tests Generated for GetTVFileLanguageList() Skip Take 2 Desc
 
         #region Tests Generated for GetTVFileLanguageList() Skip Take Desc Where
-        [TestMethod]
+        [Fact]
         public void GetTVFileLanguageList_Skip_Take_Desc_Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -484,14 +484,14 @@ namespace CSSPServices.Tests
                         List<TVFileLanguage> tvFileLanguageList = new List<TVFileLanguage>();
                         tvFileLanguageList = tvFileLanguageService.GetTVFileLanguageList().ToList();
                         CheckTVFileLanguageFields(tvFileLanguageList);
-                        Assert.AreEqual(tvFileLanguageDirectQueryList[0].TVFileLanguageID, tvFileLanguageList[0].TVFileLanguageID);
+                        Assert.Equal(tvFileLanguageDirectQueryList[0].TVFileLanguageID, tvFileLanguageList[0].TVFileLanguageID);
                 }
             }
         }
         #endregion Tests Generated for GetTVFileLanguageList() Skip Take Desc Where
 
         #region Tests Generated for GetTVFileLanguageList() Skip Take Desc 2 Where
-        [TestMethod]
+        [Fact]
         public void GetTVFileLanguageList_Skip_Take_Desc_2Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -510,14 +510,14 @@ namespace CSSPServices.Tests
                         List<TVFileLanguage> tvFileLanguageList = new List<TVFileLanguage>();
                         tvFileLanguageList = tvFileLanguageService.GetTVFileLanguageList().ToList();
                         CheckTVFileLanguageFields(tvFileLanguageList);
-                        Assert.AreEqual(tvFileLanguageDirectQueryList[0].TVFileLanguageID, tvFileLanguageList[0].TVFileLanguageID);
+                        Assert.Equal(tvFileLanguageDirectQueryList[0].TVFileLanguageID, tvFileLanguageList[0].TVFileLanguageID);
                 }
             }
         }
         #endregion Tests Generated for GetTVFileLanguageList() Skip Take Desc 2 Where
 
         #region Tests Generated for GetTVFileLanguageList() 2 Where
-        [TestMethod]
+        [Fact]
         public void GetTVFileLanguageList_2Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -536,7 +536,7 @@ namespace CSSPServices.Tests
                         List<TVFileLanguage> tvFileLanguageList = new List<TVFileLanguage>();
                         tvFileLanguageList = tvFileLanguageService.GetTVFileLanguageList().ToList();
                         CheckTVFileLanguageFields(tvFileLanguageList);
-                        Assert.AreEqual(tvFileLanguageDirectQueryList[0].TVFileLanguageID, tvFileLanguageList[0].TVFileLanguageID);
+                        Assert.Equal(tvFileLanguageDirectQueryList[0].TVFileLanguageID, tvFileLanguageList[0].TVFileLanguageID);
                 }
             }
         }
@@ -545,17 +545,17 @@ namespace CSSPServices.Tests
         #region Functions private
         private void CheckTVFileLanguageFields(List<TVFileLanguage> tvFileLanguageList)
         {
-            Assert.IsNotNull(tvFileLanguageList[0].TVFileLanguageID);
-            Assert.IsNotNull(tvFileLanguageList[0].TVFileID);
-            Assert.IsNotNull(tvFileLanguageList[0].Language);
+            Assert.NotNull(tvFileLanguageList[0].TVFileLanguageID);
+            Assert.NotNull(tvFileLanguageList[0].TVFileID);
+            Assert.NotNull(tvFileLanguageList[0].Language);
             if (!string.IsNullOrWhiteSpace(tvFileLanguageList[0].FileDescription))
             {
-                Assert.IsFalse(string.IsNullOrWhiteSpace(tvFileLanguageList[0].FileDescription));
+                Assert.False(string.IsNullOrWhiteSpace(tvFileLanguageList[0].FileDescription));
             }
-            Assert.IsNotNull(tvFileLanguageList[0].TranslationStatus);
-            Assert.IsNotNull(tvFileLanguageList[0].LastUpdateDate_UTC);
-            Assert.IsNotNull(tvFileLanguageList[0].LastUpdateContactTVItemID);
-            Assert.IsNotNull(tvFileLanguageList[0].HasErrors);
+            Assert.NotNull(tvFileLanguageList[0].TranslationStatus);
+            Assert.NotNull(tvFileLanguageList[0].LastUpdateDate_UTC);
+            Assert.NotNull(tvFileLanguageList[0].LastUpdateContactTVItemID);
+            Assert.NotNull(tvFileLanguageList[0].HasErrors);
         }
         private TVFileLanguage GetFilledRandomTVFileLanguage(string OmitPropName)
         {

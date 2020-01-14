@@ -6,7 +6,7 @@
  */ 
 using System;
 using System.Text;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using System.Linq;
 using System.Globalization;
 using System.Transactions;
@@ -19,7 +19,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace CSSPModels.Tests
 {
-    [TestClass]
+
     public partial class BoxModelCalNumbTest
     {
         #region Variables
@@ -37,7 +37,7 @@ namespace CSSPModels.Tests
         #endregion Constructors
 
         #region Tests Functions public
-        [TestMethod]
+        [Fact]
         public void BoxModelCalNumb_Properties_Test()
         {
             List<string> propNameList = new List<string>() { "BoxModelResultType", "CalLength_m", "CalRadius_m", "CalSurface_m2", "CalVolume_m3", "CalWidth_m", "FixLength", "FixWidth", "BoxModelResultTypeText", "HasErrors",  }.OrderBy(c => c).ToList();
@@ -46,53 +46,53 @@ namespace CSSPModels.Tests
             int index = 0;
             foreach (PropertyInfo propertyInfo in typeof(BoxModelCalNumb).GetProperties().Where(c => c.Name != "ValidationResults").OrderBy(c => c.Name).ToList())
             {
-                Assert.AreEqual(propertyInfo.Name, propNameList[index]);
+                Assert.Equal(propertyInfo.Name, propNameList[index]);
                 index += 1;
             }
 
-            Assert.AreEqual(propNameList.Count, index);
+            Assert.Equal(propNameList.Count, index);
         }
-        [TestMethod]
+        [Fact]
         public void BoxModelCalNumb_Has_ValidationResults_Test()
         {
-             Assert.IsTrue(typeof(BoxModelCalNumb).GetProperties().Where(c => c.Name == "ValidationResults").Any());
+             Assert.True(typeof(BoxModelCalNumb).GetProperties().Where(c => c.Name == "ValidationResults").Any());
         }
-        [TestMethod]
+        [Fact]
         public void BoxModelCalNumb_Every_Property_Has_Get_Set_Test()
         {
                BoxModelResultTypeEnum val1 = (BoxModelResultTypeEnum)3;
                boxModelCalNumb.BoxModelResultType = val1;
-               Assert.AreEqual(val1, boxModelCalNumb.BoxModelResultType);
+               Assert.Equal(val1, boxModelCalNumb.BoxModelResultType);
                double val2 = 87.9D;
                boxModelCalNumb.CalLength_m = val2;
-               Assert.AreEqual(val2, boxModelCalNumb.CalLength_m);
+               Assert.Equal(val2, boxModelCalNumb.CalLength_m);
                double val3 = 87.9D;
                boxModelCalNumb.CalRadius_m = val3;
-               Assert.AreEqual(val3, boxModelCalNumb.CalRadius_m);
+               Assert.Equal(val3, boxModelCalNumb.CalRadius_m);
                double val4 = 87.9D;
                boxModelCalNumb.CalSurface_m2 = val4;
-               Assert.AreEqual(val4, boxModelCalNumb.CalSurface_m2);
+               Assert.Equal(val4, boxModelCalNumb.CalSurface_m2);
                double val5 = 87.9D;
                boxModelCalNumb.CalVolume_m3 = val5;
-               Assert.AreEqual(val5, boxModelCalNumb.CalVolume_m3);
+               Assert.Equal(val5, boxModelCalNumb.CalVolume_m3);
                double val6 = 87.9D;
                boxModelCalNumb.CalWidth_m = val6;
-               Assert.AreEqual(val6, boxModelCalNumb.CalWidth_m);
+               Assert.Equal(val6, boxModelCalNumb.CalWidth_m);
                bool val7 = true;
                boxModelCalNumb.FixLength = val7;
-               Assert.AreEqual(val7, boxModelCalNumb.FixLength);
+               Assert.Equal(val7, boxModelCalNumb.FixLength);
                bool val8 = true;
                boxModelCalNumb.FixWidth = val8;
-               Assert.AreEqual(val8, boxModelCalNumb.FixWidth);
+               Assert.Equal(val8, boxModelCalNumb.FixWidth);
                string val9 = "Some text";
                boxModelCalNumb.BoxModelResultTypeText = val9;
-               Assert.AreEqual(val9, boxModelCalNumb.BoxModelResultTypeText);
+               Assert.Equal(val9, boxModelCalNumb.BoxModelResultTypeText);
                bool val10 = true;
                boxModelCalNumb.HasErrors = val10;
-               Assert.AreEqual(val10, boxModelCalNumb.HasErrors);
+               Assert.Equal(val10, boxModelCalNumb.HasErrors);
                IEnumerable<ValidationResult> val33 = new List<ValidationResult>() { new ValidationResult("First CSSPError Message") }.AsEnumerable();
                boxModelCalNumb.ValidationResults = val33;
-               Assert.AreEqual(val33, boxModelCalNumb.ValidationResults);
+               Assert.Equal(val33, boxModelCalNumb.ValidationResults);
         }
         #endregion Tests Functions public
     }

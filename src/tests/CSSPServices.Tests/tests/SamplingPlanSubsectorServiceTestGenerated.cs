@@ -5,7 +5,7 @@
  */ 
 
 using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using System.Linq;
 using System.Collections.Generic;
 using CSSPModels;
@@ -21,7 +21,7 @@ using CSSPEnums.Resources;
 
 namespace CSSPServices.Tests
 {
-    [TestClass]
+
     public partial class SamplingPlanSubsectorServiceTest : TestHelper
     {
         #region Variables
@@ -39,7 +39,7 @@ namespace CSSPServices.Tests
         #endregion Constructors
 
         #region Tests Generated CRUD
-        [TestMethod]
+        [Fact]
         public void SamplingPlanSubsector_CRUD_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -66,26 +66,26 @@ namespace CSSPServices.Tests
 
                     count = samplingPlanSubsectorService.GetSamplingPlanSubsectorList().Count();
 
-                    Assert.AreEqual(count, (from c in dbTestDB.SamplingPlanSubsectors select c).Count());
+                    Assert.Equal(count, (from c in dbTestDB.SamplingPlanSubsectors select c).Count());
 
                     samplingPlanSubsectorService.Add(samplingPlanSubsector);
                     if (samplingPlanSubsector.HasErrors)
                     {
-                        Assert.AreEqual("", samplingPlanSubsector.ValidationResults.FirstOrDefault().ErrorMessage);
+                        Assert.Equal("", samplingPlanSubsector.ValidationResults.FirstOrDefault().ErrorMessage);
                     }
-                    Assert.AreEqual(true, samplingPlanSubsectorService.GetSamplingPlanSubsectorList().Where(c => c == samplingPlanSubsector).Any());
+                    Assert.True(samplingPlanSubsectorService.GetSamplingPlanSubsectorList().Where(c => c == samplingPlanSubsector).Any());
                     samplingPlanSubsectorService.Update(samplingPlanSubsector);
                     if (samplingPlanSubsector.HasErrors)
                     {
-                        Assert.AreEqual("", samplingPlanSubsector.ValidationResults.FirstOrDefault().ErrorMessage);
+                        Assert.Equal("", samplingPlanSubsector.ValidationResults.FirstOrDefault().ErrorMessage);
                     }
-                    Assert.AreEqual(count + 1, samplingPlanSubsectorService.GetSamplingPlanSubsectorList().Count());
+                    Assert.Equal(count + 1, samplingPlanSubsectorService.GetSamplingPlanSubsectorList().Count());
                     samplingPlanSubsectorService.Delete(samplingPlanSubsector);
                     if (samplingPlanSubsector.HasErrors)
                     {
-                        Assert.AreEqual("", samplingPlanSubsector.ValidationResults.FirstOrDefault().ErrorMessage);
+                        Assert.Equal("", samplingPlanSubsector.ValidationResults.FirstOrDefault().ErrorMessage);
                     }
-                    Assert.AreEqual(count, samplingPlanSubsectorService.GetSamplingPlanSubsectorList().Count());
+                    Assert.Equal(count, samplingPlanSubsectorService.GetSamplingPlanSubsectorList().Count());
 
                 }
             }
@@ -93,7 +93,7 @@ namespace CSSPServices.Tests
         #endregion Tests Generated CRUD
 
         #region Tests Generated Properties
-        [TestMethod]
+        [Fact]
         public void SamplingPlanSubsector_Properties_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -131,13 +131,13 @@ namespace CSSPServices.Tests
                     samplingPlanSubsector = GetFilledRandomSamplingPlanSubsector("");
                     samplingPlanSubsector.SamplingPlanSubsectorID = 0;
                     samplingPlanSubsectorService.Update(samplingPlanSubsector);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsRequired, "SamplingPlanSubsectorID"), samplingPlanSubsector.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsRequired, "SamplingPlanSubsectorID"), samplingPlanSubsector.ValidationResults.FirstOrDefault().ErrorMessage);
 
                     samplingPlanSubsector = null;
                     samplingPlanSubsector = GetFilledRandomSamplingPlanSubsector("");
                     samplingPlanSubsector.SamplingPlanSubsectorID = 10000000;
                     samplingPlanSubsectorService.Update(samplingPlanSubsector);
-                    Assert.AreEqual(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "SamplingPlanSubsector", "SamplingPlanSubsectorID", samplingPlanSubsector.SamplingPlanSubsectorID.ToString()), samplingPlanSubsector.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "SamplingPlanSubsector", "SamplingPlanSubsectorID", samplingPlanSubsector.SamplingPlanSubsectorID.ToString()), samplingPlanSubsector.ValidationResults.FirstOrDefault().ErrorMessage);
 
 
                     // -----------------------------------
@@ -150,7 +150,7 @@ namespace CSSPServices.Tests
                     samplingPlanSubsector = GetFilledRandomSamplingPlanSubsector("");
                     samplingPlanSubsector.SamplingPlanID = 0;
                     samplingPlanSubsectorService.Add(samplingPlanSubsector);
-                    Assert.AreEqual(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "SamplingPlan", "SamplingPlanID", samplingPlanSubsector.SamplingPlanID.ToString()), samplingPlanSubsector.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "SamplingPlan", "SamplingPlanID", samplingPlanSubsector.SamplingPlanID.ToString()), samplingPlanSubsector.ValidationResults.FirstOrDefault().ErrorMessage);
 
 
                     // -----------------------------------
@@ -163,13 +163,13 @@ namespace CSSPServices.Tests
                     samplingPlanSubsector = GetFilledRandomSamplingPlanSubsector("");
                     samplingPlanSubsector.SubsectorTVItemID = 0;
                     samplingPlanSubsectorService.Add(samplingPlanSubsector);
-                    Assert.AreEqual(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "TVItem", "SubsectorTVItemID", samplingPlanSubsector.SubsectorTVItemID.ToString()), samplingPlanSubsector.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "TVItem", "SubsectorTVItemID", samplingPlanSubsector.SubsectorTVItemID.ToString()), samplingPlanSubsector.ValidationResults.FirstOrDefault().ErrorMessage);
 
                     samplingPlanSubsector = null;
                     samplingPlanSubsector = GetFilledRandomSamplingPlanSubsector("");
                     samplingPlanSubsector.SubsectorTVItemID = 1;
                     samplingPlanSubsectorService.Add(samplingPlanSubsector);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsNotOfType_, "SubsectorTVItemID", "Subsector"), samplingPlanSubsector.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsNotOfType_, "SubsectorTVItemID", "Subsector"), samplingPlanSubsector.ValidationResults.FirstOrDefault().ErrorMessage);
 
 
                     // -----------------------------------
@@ -182,12 +182,12 @@ namespace CSSPServices.Tests
                     samplingPlanSubsector = GetFilledRandomSamplingPlanSubsector("");
                     samplingPlanSubsector.LastUpdateDate_UTC = new DateTime();
                     samplingPlanSubsectorService.Add(samplingPlanSubsector);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsRequired, "LastUpdateDate_UTC"), samplingPlanSubsector.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsRequired, "LastUpdateDate_UTC"), samplingPlanSubsector.ValidationResults.FirstOrDefault().ErrorMessage);
                     samplingPlanSubsector = null;
                     samplingPlanSubsector = GetFilledRandomSamplingPlanSubsector("");
                     samplingPlanSubsector.LastUpdateDate_UTC = new DateTime(1979, 1, 1);
                     samplingPlanSubsectorService.Add(samplingPlanSubsector);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._YearShouldBeBiggerThan_, "LastUpdateDate_UTC", "1980"), samplingPlanSubsector.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._YearShouldBeBiggerThan_, "LastUpdateDate_UTC", "1980"), samplingPlanSubsector.ValidationResults.FirstOrDefault().ErrorMessage);
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -199,13 +199,13 @@ namespace CSSPServices.Tests
                     samplingPlanSubsector = GetFilledRandomSamplingPlanSubsector("");
                     samplingPlanSubsector.LastUpdateContactTVItemID = 0;
                     samplingPlanSubsectorService.Add(samplingPlanSubsector);
-                    Assert.AreEqual(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "TVItem", "LastUpdateContactTVItemID", samplingPlanSubsector.LastUpdateContactTVItemID.ToString()), samplingPlanSubsector.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "TVItem", "LastUpdateContactTVItemID", samplingPlanSubsector.LastUpdateContactTVItemID.ToString()), samplingPlanSubsector.ValidationResults.FirstOrDefault().ErrorMessage);
 
                     samplingPlanSubsector = null;
                     samplingPlanSubsector = GetFilledRandomSamplingPlanSubsector("");
                     samplingPlanSubsector.LastUpdateContactTVItemID = 1;
                     samplingPlanSubsectorService.Add(samplingPlanSubsector);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsNotOfType_, "LastUpdateContactTVItemID", "Contact"), samplingPlanSubsector.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsNotOfType_, "LastUpdateContactTVItemID", "Contact"), samplingPlanSubsector.ValidationResults.FirstOrDefault().ErrorMessage);
 
 
                     // -----------------------------------
@@ -229,7 +229,7 @@ namespace CSSPServices.Tests
         #endregion Tests Generated Properties
 
         #region Tests Generated for GetSamplingPlanSubsectorWithSamplingPlanSubsectorID(samplingPlanSubsector.SamplingPlanSubsectorID)
-        [TestMethod]
+        [Fact]
         public void GetSamplingPlanSubsectorWithSamplingPlanSubsectorID__samplingPlanSubsector_SamplingPlanSubsectorID__Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -240,7 +240,7 @@ namespace CSSPServices.Tests
                 {
                     SamplingPlanSubsectorService samplingPlanSubsectorService = new SamplingPlanSubsectorService(new Query() { Lang = culture.TwoLetterISOLanguageName }, dbTestDB, ContactID);
                     SamplingPlanSubsector samplingPlanSubsector = (from c in dbTestDB.SamplingPlanSubsectors select c).FirstOrDefault();
-                    Assert.IsNotNull(samplingPlanSubsector);
+                    Assert.NotNull(samplingPlanSubsector);
 
                 }
             }
@@ -248,7 +248,7 @@ namespace CSSPServices.Tests
         #endregion Tests Generated for GetSamplingPlanSubsectorWithSamplingPlanSubsectorID(samplingPlanSubsector.SamplingPlanSubsectorID)
 
         #region Tests Generated for GetSamplingPlanSubsectorList()
-        [TestMethod]
+        [Fact]
         public void GetSamplingPlanSubsectorList_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -259,7 +259,7 @@ namespace CSSPServices.Tests
                 {
                     SamplingPlanSubsectorService samplingPlanSubsectorService = new SamplingPlanSubsectorService(new Query() { Lang = culture.TwoLetterISOLanguageName }, dbTestDB, ContactID);
                     SamplingPlanSubsector samplingPlanSubsector = (from c in dbTestDB.SamplingPlanSubsectors select c).FirstOrDefault();
-                    Assert.IsNotNull(samplingPlanSubsector);
+                    Assert.NotNull(samplingPlanSubsector);
 
                     List<SamplingPlanSubsector> samplingPlanSubsectorDirectQueryList = new List<SamplingPlanSubsector>();
                     samplingPlanSubsectorDirectQueryList = (from c in dbTestDB.SamplingPlanSubsectors select c).Take(200).ToList();
@@ -270,7 +270,7 @@ namespace CSSPServices.Tests
         #endregion Tests Generated for GetSamplingPlanSubsectorList()
 
         #region Tests Generated for GetSamplingPlanSubsectorList() Skip Take
-        [TestMethod]
+        [Fact]
         public void GetSamplingPlanSubsectorList_Skip_Take_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -289,14 +289,14 @@ namespace CSSPServices.Tests
                         List<SamplingPlanSubsector> samplingPlanSubsectorList = new List<SamplingPlanSubsector>();
                         samplingPlanSubsectorList = samplingPlanSubsectorService.GetSamplingPlanSubsectorList().ToList();
                         CheckSamplingPlanSubsectorFields(samplingPlanSubsectorList);
-                        Assert.AreEqual(samplingPlanSubsectorDirectQueryList[0].SamplingPlanSubsectorID, samplingPlanSubsectorList[0].SamplingPlanSubsectorID);
+                        Assert.Equal(samplingPlanSubsectorDirectQueryList[0].SamplingPlanSubsectorID, samplingPlanSubsectorList[0].SamplingPlanSubsectorID);
                 }
             }
         }
         #endregion Tests Generated for GetSamplingPlanSubsectorList() Skip Take
 
         #region Tests Generated for GetSamplingPlanSubsectorList() Skip Take Asc
-        [TestMethod]
+        [Fact]
         public void GetSamplingPlanSubsectorList_Skip_Take_Asc_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -315,14 +315,14 @@ namespace CSSPServices.Tests
                         List<SamplingPlanSubsector> samplingPlanSubsectorList = new List<SamplingPlanSubsector>();
                         samplingPlanSubsectorList = samplingPlanSubsectorService.GetSamplingPlanSubsectorList().ToList();
                         CheckSamplingPlanSubsectorFields(samplingPlanSubsectorList);
-                        Assert.AreEqual(samplingPlanSubsectorDirectQueryList[0].SamplingPlanSubsectorID, samplingPlanSubsectorList[0].SamplingPlanSubsectorID);
+                        Assert.Equal(samplingPlanSubsectorDirectQueryList[0].SamplingPlanSubsectorID, samplingPlanSubsectorList[0].SamplingPlanSubsectorID);
                 }
             }
         }
         #endregion Tests Generated for GetSamplingPlanSubsectorList() Skip Take Asc
 
         #region Tests Generated for GetSamplingPlanSubsectorList() Skip Take 2 Asc
-        [TestMethod]
+        [Fact]
         public void GetSamplingPlanSubsectorList_Skip_Take_2Asc_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -341,14 +341,14 @@ namespace CSSPServices.Tests
                         List<SamplingPlanSubsector> samplingPlanSubsectorList = new List<SamplingPlanSubsector>();
                         samplingPlanSubsectorList = samplingPlanSubsectorService.GetSamplingPlanSubsectorList().ToList();
                         CheckSamplingPlanSubsectorFields(samplingPlanSubsectorList);
-                        Assert.AreEqual(samplingPlanSubsectorDirectQueryList[0].SamplingPlanSubsectorID, samplingPlanSubsectorList[0].SamplingPlanSubsectorID);
+                        Assert.Equal(samplingPlanSubsectorDirectQueryList[0].SamplingPlanSubsectorID, samplingPlanSubsectorList[0].SamplingPlanSubsectorID);
                 }
             }
         }
         #endregion Tests Generated for GetSamplingPlanSubsectorList() Skip Take 2 Asc
 
         #region Tests Generated for GetSamplingPlanSubsectorList() Skip Take Asc Where
-        [TestMethod]
+        [Fact]
         public void GetSamplingPlanSubsectorList_Skip_Take_Asc_Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -367,14 +367,14 @@ namespace CSSPServices.Tests
                         List<SamplingPlanSubsector> samplingPlanSubsectorList = new List<SamplingPlanSubsector>();
                         samplingPlanSubsectorList = samplingPlanSubsectorService.GetSamplingPlanSubsectorList().ToList();
                         CheckSamplingPlanSubsectorFields(samplingPlanSubsectorList);
-                        Assert.AreEqual(samplingPlanSubsectorDirectQueryList[0].SamplingPlanSubsectorID, samplingPlanSubsectorList[0].SamplingPlanSubsectorID);
+                        Assert.Equal(samplingPlanSubsectorDirectQueryList[0].SamplingPlanSubsectorID, samplingPlanSubsectorList[0].SamplingPlanSubsectorID);
                 }
             }
         }
         #endregion Tests Generated for GetSamplingPlanSubsectorList() Skip Take Asc Where
 
         #region Tests Generated for GetSamplingPlanSubsectorList() Skip Take Asc 2 Where
-        [TestMethod]
+        [Fact]
         public void GetSamplingPlanSubsectorList_Skip_Take_Asc_2Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -393,14 +393,14 @@ namespace CSSPServices.Tests
                         List<SamplingPlanSubsector> samplingPlanSubsectorList = new List<SamplingPlanSubsector>();
                         samplingPlanSubsectorList = samplingPlanSubsectorService.GetSamplingPlanSubsectorList().ToList();
                         CheckSamplingPlanSubsectorFields(samplingPlanSubsectorList);
-                        Assert.AreEqual(samplingPlanSubsectorDirectQueryList[0].SamplingPlanSubsectorID, samplingPlanSubsectorList[0].SamplingPlanSubsectorID);
+                        Assert.Equal(samplingPlanSubsectorDirectQueryList[0].SamplingPlanSubsectorID, samplingPlanSubsectorList[0].SamplingPlanSubsectorID);
                 }
             }
         }
         #endregion Tests Generated for GetSamplingPlanSubsectorList() Skip Take Asc 2 Where
 
         #region Tests Generated for GetSamplingPlanSubsectorList() Skip Take Desc
-        [TestMethod]
+        [Fact]
         public void GetSamplingPlanSubsectorList_Skip_Take_Desc_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -419,14 +419,14 @@ namespace CSSPServices.Tests
                         List<SamplingPlanSubsector> samplingPlanSubsectorList = new List<SamplingPlanSubsector>();
                         samplingPlanSubsectorList = samplingPlanSubsectorService.GetSamplingPlanSubsectorList().ToList();
                         CheckSamplingPlanSubsectorFields(samplingPlanSubsectorList);
-                        Assert.AreEqual(samplingPlanSubsectorDirectQueryList[0].SamplingPlanSubsectorID, samplingPlanSubsectorList[0].SamplingPlanSubsectorID);
+                        Assert.Equal(samplingPlanSubsectorDirectQueryList[0].SamplingPlanSubsectorID, samplingPlanSubsectorList[0].SamplingPlanSubsectorID);
                 }
             }
         }
         #endregion Tests Generated for GetSamplingPlanSubsectorList() Skip Take Desc
 
         #region Tests Generated for GetSamplingPlanSubsectorList() Skip Take 2 Desc
-        [TestMethod]
+        [Fact]
         public void GetSamplingPlanSubsectorList_Skip_Take_2Desc_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -445,14 +445,14 @@ namespace CSSPServices.Tests
                         List<SamplingPlanSubsector> samplingPlanSubsectorList = new List<SamplingPlanSubsector>();
                         samplingPlanSubsectorList = samplingPlanSubsectorService.GetSamplingPlanSubsectorList().ToList();
                         CheckSamplingPlanSubsectorFields(samplingPlanSubsectorList);
-                        Assert.AreEqual(samplingPlanSubsectorDirectQueryList[0].SamplingPlanSubsectorID, samplingPlanSubsectorList[0].SamplingPlanSubsectorID);
+                        Assert.Equal(samplingPlanSubsectorDirectQueryList[0].SamplingPlanSubsectorID, samplingPlanSubsectorList[0].SamplingPlanSubsectorID);
                 }
             }
         }
         #endregion Tests Generated for GetSamplingPlanSubsectorList() Skip Take 2 Desc
 
         #region Tests Generated for GetSamplingPlanSubsectorList() Skip Take Desc Where
-        [TestMethod]
+        [Fact]
         public void GetSamplingPlanSubsectorList_Skip_Take_Desc_Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -471,14 +471,14 @@ namespace CSSPServices.Tests
                         List<SamplingPlanSubsector> samplingPlanSubsectorList = new List<SamplingPlanSubsector>();
                         samplingPlanSubsectorList = samplingPlanSubsectorService.GetSamplingPlanSubsectorList().ToList();
                         CheckSamplingPlanSubsectorFields(samplingPlanSubsectorList);
-                        Assert.AreEqual(samplingPlanSubsectorDirectQueryList[0].SamplingPlanSubsectorID, samplingPlanSubsectorList[0].SamplingPlanSubsectorID);
+                        Assert.Equal(samplingPlanSubsectorDirectQueryList[0].SamplingPlanSubsectorID, samplingPlanSubsectorList[0].SamplingPlanSubsectorID);
                 }
             }
         }
         #endregion Tests Generated for GetSamplingPlanSubsectorList() Skip Take Desc Where
 
         #region Tests Generated for GetSamplingPlanSubsectorList() Skip Take Desc 2 Where
-        [TestMethod]
+        [Fact]
         public void GetSamplingPlanSubsectorList_Skip_Take_Desc_2Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -497,14 +497,14 @@ namespace CSSPServices.Tests
                         List<SamplingPlanSubsector> samplingPlanSubsectorList = new List<SamplingPlanSubsector>();
                         samplingPlanSubsectorList = samplingPlanSubsectorService.GetSamplingPlanSubsectorList().ToList();
                         CheckSamplingPlanSubsectorFields(samplingPlanSubsectorList);
-                        Assert.AreEqual(samplingPlanSubsectorDirectQueryList[0].SamplingPlanSubsectorID, samplingPlanSubsectorList[0].SamplingPlanSubsectorID);
+                        Assert.Equal(samplingPlanSubsectorDirectQueryList[0].SamplingPlanSubsectorID, samplingPlanSubsectorList[0].SamplingPlanSubsectorID);
                 }
             }
         }
         #endregion Tests Generated for GetSamplingPlanSubsectorList() Skip Take Desc 2 Where
 
         #region Tests Generated for GetSamplingPlanSubsectorList() 2 Where
-        [TestMethod]
+        [Fact]
         public void GetSamplingPlanSubsectorList_2Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -523,7 +523,7 @@ namespace CSSPServices.Tests
                         List<SamplingPlanSubsector> samplingPlanSubsectorList = new List<SamplingPlanSubsector>();
                         samplingPlanSubsectorList = samplingPlanSubsectorService.GetSamplingPlanSubsectorList().ToList();
                         CheckSamplingPlanSubsectorFields(samplingPlanSubsectorList);
-                        Assert.AreEqual(samplingPlanSubsectorDirectQueryList[0].SamplingPlanSubsectorID, samplingPlanSubsectorList[0].SamplingPlanSubsectorID);
+                        Assert.Equal(samplingPlanSubsectorDirectQueryList[0].SamplingPlanSubsectorID, samplingPlanSubsectorList[0].SamplingPlanSubsectorID);
                 }
             }
         }
@@ -532,12 +532,12 @@ namespace CSSPServices.Tests
         #region Functions private
         private void CheckSamplingPlanSubsectorFields(List<SamplingPlanSubsector> samplingPlanSubsectorList)
         {
-            Assert.IsNotNull(samplingPlanSubsectorList[0].SamplingPlanSubsectorID);
-            Assert.IsNotNull(samplingPlanSubsectorList[0].SamplingPlanID);
-            Assert.IsNotNull(samplingPlanSubsectorList[0].SubsectorTVItemID);
-            Assert.IsNotNull(samplingPlanSubsectorList[0].LastUpdateDate_UTC);
-            Assert.IsNotNull(samplingPlanSubsectorList[0].LastUpdateContactTVItemID);
-            Assert.IsNotNull(samplingPlanSubsectorList[0].HasErrors);
+            Assert.NotNull(samplingPlanSubsectorList[0].SamplingPlanSubsectorID);
+            Assert.NotNull(samplingPlanSubsectorList[0].SamplingPlanID);
+            Assert.NotNull(samplingPlanSubsectorList[0].SubsectorTVItemID);
+            Assert.NotNull(samplingPlanSubsectorList[0].LastUpdateDate_UTC);
+            Assert.NotNull(samplingPlanSubsectorList[0].LastUpdateContactTVItemID);
+            Assert.NotNull(samplingPlanSubsectorList[0].HasErrors);
         }
         private SamplingPlanSubsector GetFilledRandomSamplingPlanSubsector(string OmitPropName)
         {

@@ -5,6 +5,7 @@
  *
  */ 
 using System;
+using Xunit;
 using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Globalization;
@@ -17,7 +18,7 @@ namespace CSSPEnums.Tests
     {
 
         #region Testing Methods GetEnumText public
-        [TestMethod]
+        [Fact]
         public void Enums_GetEnumText_ActionDBTypeEnum_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
@@ -25,13 +26,13 @@ namespace CSSPEnums.Tests
                 SetupTest(culture);
 
                 string retStr = enums.GetResValueForTypeAndID(typeof(ActionDBTypeEnum), -100);
-                Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                Assert.Equal(CSSPEnumsRes.Empty, retStr);
 
                 retStr = enums.GetResValueForTypeAndID(typeof(ActionDBTypeEnum), 10000000);
-                Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                Assert.Equal(CSSPEnumsRes.Empty, retStr);
 
                 retStr = enums.GetResValueForTypeAndID(typeof(ActionDBTypeEnum), null);
-                Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                Assert.Equal(CSSPEnumsRes.Empty, retStr);
 
                 foreach (int i in Enum.GetValues(typeof(ActionDBTypeEnum)))
                 {
@@ -40,25 +41,25 @@ namespace CSSPEnums.Tests
                     switch ((ActionDBTypeEnum)i)
                     {
                         case ActionDBTypeEnum.Create:
-                            Assert.AreEqual(CSSPEnumsRes.ActionDBTypeEnumCreate, retStr);
+                            Assert.Equal(CSSPEnumsRes.ActionDBTypeEnumCreate, retStr);
                             break;
                         case ActionDBTypeEnum.Read:
-                            Assert.AreEqual(CSSPEnumsRes.ActionDBTypeEnumRead, retStr);
+                            Assert.Equal(CSSPEnumsRes.ActionDBTypeEnumRead, retStr);
                             break;
                         case ActionDBTypeEnum.Update:
-                            Assert.AreEqual(CSSPEnumsRes.ActionDBTypeEnumUpdate, retStr);
+                            Assert.Equal(CSSPEnumsRes.ActionDBTypeEnumUpdate, retStr);
                             break;
                         case ActionDBTypeEnum.Delete:
-                            Assert.AreEqual(CSSPEnumsRes.ActionDBTypeEnumDelete, retStr);
+                            Assert.Equal(CSSPEnumsRes.ActionDBTypeEnumDelete, retStr);
                             break;
                         default:
-                            Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                            Assert.Equal(CSSPEnumsRes.Empty, retStr);
                             break;
                     }
                 }
             }
         }
-        [TestMethod]
+        [Fact]
         public void Enums_GetEnumText_AddContactTypeEnum_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
@@ -66,13 +67,13 @@ namespace CSSPEnums.Tests
                 SetupTest(culture);
 
                 string retStr = enums.GetResValueForTypeAndID(typeof(AddContactTypeEnum), -100);
-                Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                Assert.Equal(CSSPEnumsRes.Empty, retStr);
 
                 retStr = enums.GetResValueForTypeAndID(typeof(AddContactTypeEnum), 10000000);
-                Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                Assert.Equal(CSSPEnumsRes.Empty, retStr);
 
                 retStr = enums.GetResValueForTypeAndID(typeof(AddContactTypeEnum), null);
-                Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                Assert.Equal(CSSPEnumsRes.Empty, retStr);
 
                 foreach (int i in Enum.GetValues(typeof(AddContactTypeEnum)))
                 {
@@ -81,22 +82,22 @@ namespace CSSPEnums.Tests
                     switch ((AddContactTypeEnum)i)
                     {
                         case AddContactTypeEnum.First:
-                            Assert.AreEqual(CSSPEnumsRes.AddContactTypeEnumFirst, retStr);
+                            Assert.Equal(CSSPEnumsRes.AddContactTypeEnumFirst, retStr);
                             break;
                         case AddContactTypeEnum.Register:
-                            Assert.AreEqual(CSSPEnumsRes.AddContactTypeEnumRegister, retStr);
+                            Assert.Equal(CSSPEnumsRes.AddContactTypeEnumRegister, retStr);
                             break;
                         case AddContactTypeEnum.LoggedIn:
-                            Assert.AreEqual(CSSPEnumsRes.AddContactTypeEnumLoggedIn, retStr);
+                            Assert.Equal(CSSPEnumsRes.AddContactTypeEnumLoggedIn, retStr);
                             break;
                         default:
-                            Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                            Assert.Equal(CSSPEnumsRes.Empty, retStr);
                             break;
                     }
                 }
             }
         }
-        [TestMethod]
+        [Fact]
         public void Enums_GetEnumText_DatabaseTypeEnum_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
@@ -104,13 +105,13 @@ namespace CSSPEnums.Tests
                 SetupTest(culture);
 
                 string retStr = enums.GetResValueForTypeAndID(typeof(DatabaseTypeEnum), -100);
-                Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                Assert.Equal(CSSPEnumsRes.Empty, retStr);
 
                 retStr = enums.GetResValueForTypeAndID(typeof(DatabaseTypeEnum), 10000000);
-                Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                Assert.Equal(CSSPEnumsRes.Empty, retStr);
 
                 retStr = enums.GetResValueForTypeAndID(typeof(DatabaseTypeEnum), null);
-                Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                Assert.Equal(CSSPEnumsRes.Empty, retStr);
 
                 foreach (int i in Enum.GetValues(typeof(DatabaseTypeEnum)))
                 {
@@ -119,25 +120,25 @@ namespace CSSPEnums.Tests
                     switch ((DatabaseTypeEnum)i)
                     {
                         case DatabaseTypeEnum.MemoryCSSPDB:
-                            Assert.AreEqual(CSSPEnumsRes.DatabaseTypeEnumMemoryCSSPDB, retStr);
+                            Assert.Equal(CSSPEnumsRes.DatabaseTypeEnumMemoryCSSPDB, retStr);
                             break;
                         case DatabaseTypeEnum.MemoryTestDB:
-                            Assert.AreEqual(CSSPEnumsRes.DatabaseTypeEnumMemoryTestDB, retStr);
+                            Assert.Equal(CSSPEnumsRes.DatabaseTypeEnumMemoryTestDB, retStr);
                             break;
                         case DatabaseTypeEnum.SqlServerCSSPDB:
-                            Assert.AreEqual(CSSPEnumsRes.DatabaseTypeEnumSqlServerCSSPDB, retStr);
+                            Assert.Equal(CSSPEnumsRes.DatabaseTypeEnumSqlServerCSSPDB, retStr);
                             break;
                         case DatabaseTypeEnum.SqlServerTestDB:
-                            Assert.AreEqual(CSSPEnumsRes.DatabaseTypeEnumSqlServerTestDB, retStr);
+                            Assert.Equal(CSSPEnumsRes.DatabaseTypeEnumSqlServerTestDB, retStr);
                             break;
                         default:
-                            Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                            Assert.Equal(CSSPEnumsRes.Empty, retStr);
                             break;
                     }
                 }
             }
         }
-        [TestMethod]
+        [Fact]
         public void Enums_GetEnumText_EntityQueryTypeEnum_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
@@ -145,13 +146,13 @@ namespace CSSPEnums.Tests
                 SetupTest(culture);
 
                 string retStr = enums.GetResValueForTypeAndID(typeof(EntityQueryTypeEnum), -100);
-                Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                Assert.Equal(CSSPEnumsRes.Empty, retStr);
 
                 retStr = enums.GetResValueForTypeAndID(typeof(EntityQueryTypeEnum), 10000000);
-                Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                Assert.Equal(CSSPEnumsRes.Empty, retStr);
 
                 retStr = enums.GetResValueForTypeAndID(typeof(EntityQueryTypeEnum), null);
-                Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                Assert.Equal(CSSPEnumsRes.Empty, retStr);
 
                 foreach (int i in Enum.GetValues(typeof(EntityQueryTypeEnum)))
                 {
@@ -160,19 +161,19 @@ namespace CSSPEnums.Tests
                     switch ((EntityQueryTypeEnum)i)
                     {
                         case EntityQueryTypeEnum.AsNoTracking:
-                            Assert.AreEqual(CSSPEnumsRes.EntityQueryTypeEnumAsNoTracking, retStr);
+                            Assert.Equal(CSSPEnumsRes.EntityQueryTypeEnumAsNoTracking, retStr);
                             break;
                         case EntityQueryTypeEnum.WithTracking:
-                            Assert.AreEqual(CSSPEnumsRes.EntityQueryTypeEnumWithTracking, retStr);
+                            Assert.Equal(CSSPEnumsRes.EntityQueryTypeEnumWithTracking, retStr);
                             break;
                         default:
-                            Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                            Assert.Equal(CSSPEnumsRes.Empty, retStr);
                             break;
                     }
                 }
             }
         }
-        [TestMethod]
+        [Fact]
         public void Enums_GetEnumText_PolSourceObsInfoTypeEnum_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
@@ -180,13 +181,13 @@ namespace CSSPEnums.Tests
                 SetupTest(culture);
 
                 string retStr = enums.GetResValueForTypeAndID(typeof(PolSourceObsInfoTypeEnum), -100);
-                Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                Assert.Equal(CSSPEnumsRes.Empty, retStr);
 
                 retStr = enums.GetResValueForTypeAndID(typeof(PolSourceObsInfoTypeEnum), 10000000);
-                Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                Assert.Equal(CSSPEnumsRes.Empty, retStr);
 
                 retStr = enums.GetResValueForTypeAndID(typeof(PolSourceObsInfoTypeEnum), null);
-                Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                Assert.Equal(CSSPEnumsRes.Empty, retStr);
 
                 foreach (int i in Enum.GetValues(typeof(PolSourceObsInfoTypeEnum)))
                 {
@@ -195,25 +196,25 @@ namespace CSSPEnums.Tests
                     switch ((PolSourceObsInfoTypeEnum)i)
                     {
                         case PolSourceObsInfoTypeEnum.Description:
-                            Assert.AreEqual(CSSPEnumsRes.PolSourceObsInfoTypeEnumDescription, retStr);
+                            Assert.Equal(CSSPEnumsRes.PolSourceObsInfoTypeEnumDescription, retStr);
                             break;
                         case PolSourceObsInfoTypeEnum.Report:
-                            Assert.AreEqual(CSSPEnumsRes.PolSourceObsInfoTypeEnumReport, retStr);
+                            Assert.Equal(CSSPEnumsRes.PolSourceObsInfoTypeEnumReport, retStr);
                             break;
                         case PolSourceObsInfoTypeEnum.Text:
-                            Assert.AreEqual(CSSPEnumsRes.PolSourceObsInfoTypeEnumText, retStr);
+                            Assert.Equal(CSSPEnumsRes.PolSourceObsInfoTypeEnumText, retStr);
                             break;
                         case PolSourceObsInfoTypeEnum.Initial:
-                            Assert.AreEqual(CSSPEnumsRes.PolSourceObsInfoTypeEnumInitial, retStr);
+                            Assert.Equal(CSSPEnumsRes.PolSourceObsInfoTypeEnumInitial, retStr);
                             break;
                         default:
-                            Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                            Assert.Equal(CSSPEnumsRes.Empty, retStr);
                             break;
                     }
                 }
             }
         }
-        [TestMethod]
+        [Fact]
         public void Enums_GetEnumText_AddressTypeEnum_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
@@ -221,13 +222,13 @@ namespace CSSPEnums.Tests
                 SetupTest(culture);
 
                 string retStr = enums.GetResValueForTypeAndID(typeof(AddressTypeEnum), -100);
-                Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                Assert.Equal(CSSPEnumsRes.Empty, retStr);
 
                 retStr = enums.GetResValueForTypeAndID(typeof(AddressTypeEnum), 10000000);
-                Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                Assert.Equal(CSSPEnumsRes.Empty, retStr);
 
                 retStr = enums.GetResValueForTypeAndID(typeof(AddressTypeEnum), null);
-                Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                Assert.Equal(CSSPEnumsRes.Empty, retStr);
 
                 foreach (int i in Enum.GetValues(typeof(AddressTypeEnum)))
                 {
@@ -236,22 +237,22 @@ namespace CSSPEnums.Tests
                     switch ((AddressTypeEnum)i)
                     {
                         case AddressTypeEnum.Mailing:
-                            Assert.AreEqual(CSSPEnumsRes.AddressTypeEnumMailing, retStr);
+                            Assert.Equal(CSSPEnumsRes.AddressTypeEnumMailing, retStr);
                             break;
                         case AddressTypeEnum.Shipping:
-                            Assert.AreEqual(CSSPEnumsRes.AddressTypeEnumShipping, retStr);
+                            Assert.Equal(CSSPEnumsRes.AddressTypeEnumShipping, retStr);
                             break;
                         case AddressTypeEnum.Civic:
-                            Assert.AreEqual(CSSPEnumsRes.AddressTypeEnumCivic, retStr);
+                            Assert.Equal(CSSPEnumsRes.AddressTypeEnumCivic, retStr);
                             break;
                         default:
-                            Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                            Assert.Equal(CSSPEnumsRes.Empty, retStr);
                             break;
                     }
                 }
             }
         }
-        [TestMethod]
+        [Fact]
         public void Enums_GetEnumText_AerationTypeEnum_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
@@ -259,13 +260,13 @@ namespace CSSPEnums.Tests
                 SetupTest(culture);
 
                 string retStr = enums.GetResValueForTypeAndID(typeof(AerationTypeEnum), -100);
-                Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                Assert.Equal(CSSPEnumsRes.Empty, retStr);
 
                 retStr = enums.GetResValueForTypeAndID(typeof(AerationTypeEnum), 10000000);
-                Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                Assert.Equal(CSSPEnumsRes.Empty, retStr);
 
                 retStr = enums.GetResValueForTypeAndID(typeof(AerationTypeEnum), null);
-                Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                Assert.Equal(CSSPEnumsRes.Empty, retStr);
 
                 foreach (int i in Enum.GetValues(typeof(AerationTypeEnum)))
                 {
@@ -274,19 +275,19 @@ namespace CSSPEnums.Tests
                     switch ((AerationTypeEnum)i)
                     {
                         case AerationTypeEnum.MechanicalAirLines:
-                            Assert.AreEqual(CSSPEnumsRes.AerationTypeEnumMechanicalAirLines, retStr);
+                            Assert.Equal(CSSPEnumsRes.AerationTypeEnumMechanicalAirLines, retStr);
                             break;
                         case AerationTypeEnum.MechanicalSurfaceMixers:
-                            Assert.AreEqual(CSSPEnumsRes.AerationTypeEnumMechanicalSurfaceMixers, retStr);
+                            Assert.Equal(CSSPEnumsRes.AerationTypeEnumMechanicalSurfaceMixers, retStr);
                             break;
                         default:
-                            Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                            Assert.Equal(CSSPEnumsRes.Empty, retStr);
                             break;
                     }
                 }
             }
         }
-        [TestMethod]
+        [Fact]
         public void Enums_GetEnumText_AlarmSystemTypeEnum_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
@@ -294,13 +295,13 @@ namespace CSSPEnums.Tests
                 SetupTest(culture);
 
                 string retStr = enums.GetResValueForTypeAndID(typeof(AlarmSystemTypeEnum), -100);
-                Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                Assert.Equal(CSSPEnumsRes.Empty, retStr);
 
                 retStr = enums.GetResValueForTypeAndID(typeof(AlarmSystemTypeEnum), 10000000);
-                Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                Assert.Equal(CSSPEnumsRes.Empty, retStr);
 
                 retStr = enums.GetResValueForTypeAndID(typeof(AlarmSystemTypeEnum), null);
-                Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                Assert.Equal(CSSPEnumsRes.Empty, retStr);
 
                 foreach (int i in Enum.GetValues(typeof(AlarmSystemTypeEnum)))
                 {
@@ -309,28 +310,28 @@ namespace CSSPEnums.Tests
                     switch ((AlarmSystemTypeEnum)i)
                     {
                         case AlarmSystemTypeEnum.SCADA:
-                            Assert.AreEqual(CSSPEnumsRes.AlarmSystemTypeEnumSCADA, retStr);
+                            Assert.Equal(CSSPEnumsRes.AlarmSystemTypeEnumSCADA, retStr);
                             break;
                         case AlarmSystemTypeEnum.None:
-                            Assert.AreEqual(CSSPEnumsRes.AlarmSystemTypeEnumNone, retStr);
+                            Assert.Equal(CSSPEnumsRes.AlarmSystemTypeEnumNone, retStr);
                             break;
                         case AlarmSystemTypeEnum.OnlyVisualLight:
-                            Assert.AreEqual(CSSPEnumsRes.AlarmSystemTypeEnumOnlyVisualLight, retStr);
+                            Assert.Equal(CSSPEnumsRes.AlarmSystemTypeEnumOnlyVisualLight, retStr);
                             break;
                         case AlarmSystemTypeEnum.SCADAAndLight:
-                            Assert.AreEqual(CSSPEnumsRes.AlarmSystemTypeEnumSCADAAndLight, retStr);
+                            Assert.Equal(CSSPEnumsRes.AlarmSystemTypeEnumSCADAAndLight, retStr);
                             break;
                         case AlarmSystemTypeEnum.PagerAndLight:
-                            Assert.AreEqual(CSSPEnumsRes.AlarmSystemTypeEnumPagerAndLight, retStr);
+                            Assert.Equal(CSSPEnumsRes.AlarmSystemTypeEnumPagerAndLight, retStr);
                             break;
                         default:
-                            Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                            Assert.Equal(CSSPEnumsRes.Empty, retStr);
                             break;
                     }
                 }
             }
         }
-        [TestMethod]
+        [Fact]
         public void Enums_GetEnumText_AnalysisCalculationTypeEnum_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
@@ -338,13 +339,13 @@ namespace CSSPEnums.Tests
                 SetupTest(culture);
 
                 string retStr = enums.GetResValueForTypeAndID(typeof(AnalysisCalculationTypeEnum), -100);
-                Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                Assert.Equal(CSSPEnumsRes.Empty, retStr);
 
                 retStr = enums.GetResValueForTypeAndID(typeof(AnalysisCalculationTypeEnum), 10000000);
-                Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                Assert.Equal(CSSPEnumsRes.Empty, retStr);
 
                 retStr = enums.GetResValueForTypeAndID(typeof(AnalysisCalculationTypeEnum), null);
-                Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                Assert.Equal(CSSPEnumsRes.Empty, retStr);
 
                 foreach (int i in Enum.GetValues(typeof(AnalysisCalculationTypeEnum)))
                 {
@@ -353,34 +354,34 @@ namespace CSSPEnums.Tests
                     switch ((AnalysisCalculationTypeEnum)i)
                     {
                         case AnalysisCalculationTypeEnum.AllAllAll:
-                            Assert.AreEqual(CSSPEnumsRes.AnalysisCalculationTypeEnumAllAllAll, retStr);
+                            Assert.Equal(CSSPEnumsRes.AnalysisCalculationTypeEnumAllAllAll, retStr);
                             break;
                         case AnalysisCalculationTypeEnum.WetAllAll:
-                            Assert.AreEqual(CSSPEnumsRes.AnalysisCalculationTypeEnumWetAllAll, retStr);
+                            Assert.Equal(CSSPEnumsRes.AnalysisCalculationTypeEnumWetAllAll, retStr);
                             break;
                         case AnalysisCalculationTypeEnum.DryAllAll:
-                            Assert.AreEqual(CSSPEnumsRes.AnalysisCalculationTypeEnumDryAllAll, retStr);
+                            Assert.Equal(CSSPEnumsRes.AnalysisCalculationTypeEnumDryAllAll, retStr);
                             break;
                         case AnalysisCalculationTypeEnum.WetWetAll:
-                            Assert.AreEqual(CSSPEnumsRes.AnalysisCalculationTypeEnumWetWetAll, retStr);
+                            Assert.Equal(CSSPEnumsRes.AnalysisCalculationTypeEnumWetWetAll, retStr);
                             break;
                         case AnalysisCalculationTypeEnum.DryDryAll:
-                            Assert.AreEqual(CSSPEnumsRes.AnalysisCalculationTypeEnumDryDryAll, retStr);
+                            Assert.Equal(CSSPEnumsRes.AnalysisCalculationTypeEnumDryDryAll, retStr);
                             break;
                         case AnalysisCalculationTypeEnum.WetDryAll:
-                            Assert.AreEqual(CSSPEnumsRes.AnalysisCalculationTypeEnumWetDryAll, retStr);
+                            Assert.Equal(CSSPEnumsRes.AnalysisCalculationTypeEnumWetDryAll, retStr);
                             break;
                         case AnalysisCalculationTypeEnum.DryWetAll:
-                            Assert.AreEqual(CSSPEnumsRes.AnalysisCalculationTypeEnumDryWetAll, retStr);
+                            Assert.Equal(CSSPEnumsRes.AnalysisCalculationTypeEnumDryWetAll, retStr);
                             break;
                         default:
-                            Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                            Assert.Equal(CSSPEnumsRes.Empty, retStr);
                             break;
                     }
                 }
             }
         }
-        [TestMethod]
+        [Fact]
         public void Enums_GetEnumText_AnalysisReportExportCommandEnum_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
@@ -388,13 +389,13 @@ namespace CSSPEnums.Tests
                 SetupTest(culture);
 
                 string retStr = enums.GetResValueForTypeAndID(typeof(AnalysisReportExportCommandEnum), -100);
-                Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                Assert.Equal(CSSPEnumsRes.Empty, retStr);
 
                 retStr = enums.GetResValueForTypeAndID(typeof(AnalysisReportExportCommandEnum), 10000000);
-                Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                Assert.Equal(CSSPEnumsRes.Empty, retStr);
 
                 retStr = enums.GetResValueForTypeAndID(typeof(AnalysisReportExportCommandEnum), null);
-                Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                Assert.Equal(CSSPEnumsRes.Empty, retStr);
 
                 foreach (int i in Enum.GetValues(typeof(AnalysisReportExportCommandEnum)))
                 {
@@ -403,19 +404,19 @@ namespace CSSPEnums.Tests
                     switch ((AnalysisReportExportCommandEnum)i)
                     {
                         case AnalysisReportExportCommandEnum.Report:
-                            Assert.AreEqual(CSSPEnumsRes.AnalysisReportExportCommandEnumReport, retStr);
+                            Assert.Equal(CSSPEnumsRes.AnalysisReportExportCommandEnumReport, retStr);
                             break;
                         case AnalysisReportExportCommandEnum.Excel:
-                            Assert.AreEqual(CSSPEnumsRes.AnalysisReportExportCommandEnumExcel, retStr);
+                            Assert.Equal(CSSPEnumsRes.AnalysisReportExportCommandEnumExcel, retStr);
                             break;
                         default:
-                            Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                            Assert.Equal(CSSPEnumsRes.Empty, retStr);
                             break;
                     }
                 }
             }
         }
-        [TestMethod]
+        [Fact]
         public void Enums_GetEnumText_AnalyzeMethodEnum_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
@@ -423,13 +424,13 @@ namespace CSSPEnums.Tests
                 SetupTest(culture);
 
                 string retStr = enums.GetResValueForTypeAndID(typeof(AnalyzeMethodEnum), -100);
-                Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                Assert.Equal(CSSPEnumsRes.Empty, retStr);
 
                 retStr = enums.GetResValueForTypeAndID(typeof(AnalyzeMethodEnum), 10000000);
-                Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                Assert.Equal(CSSPEnumsRes.Empty, retStr);
 
                 retStr = enums.GetResValueForTypeAndID(typeof(AnalyzeMethodEnum), null);
-                Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                Assert.Equal(CSSPEnumsRes.Empty, retStr);
 
                 foreach (int i in Enum.GetValues(typeof(AnalyzeMethodEnum)))
                 {
@@ -438,49 +439,49 @@ namespace CSSPEnums.Tests
                     switch ((AnalyzeMethodEnum)i)
                     {
                         case AnalyzeMethodEnum.MF:
-                            Assert.AreEqual(CSSPEnumsRes.AnalyzeMethodEnumMF, retStr);
+                            Assert.Equal(CSSPEnumsRes.AnalyzeMethodEnumMF, retStr);
                             break;
                         case AnalyzeMethodEnum.ZZ_510Q:
-                            Assert.AreEqual(CSSPEnumsRes.AnalyzeMethodEnumZZ_510Q, retStr);
+                            Assert.Equal(CSSPEnumsRes.AnalyzeMethodEnumZZ_510Q, retStr);
                             break;
                         case AnalyzeMethodEnum.ZZ_509Q:
-                            Assert.AreEqual(CSSPEnumsRes.AnalyzeMethodEnumZZ_509Q, retStr);
+                            Assert.Equal(CSSPEnumsRes.AnalyzeMethodEnumZZ_509Q, retStr);
                             break;
                         case AnalyzeMethodEnum.ZZ_0:
-                            Assert.AreEqual(CSSPEnumsRes.AnalyzeMethodEnumZZ_0, retStr);
+                            Assert.Equal(CSSPEnumsRes.AnalyzeMethodEnumZZ_0, retStr);
                             break;
                         case AnalyzeMethodEnum.ZZ_525Q:
-                            Assert.AreEqual(CSSPEnumsRes.AnalyzeMethodEnumZZ_525Q, retStr);
+                            Assert.Equal(CSSPEnumsRes.AnalyzeMethodEnumZZ_525Q, retStr);
                             break;
                         case AnalyzeMethodEnum.MPN:
-                            Assert.AreEqual(CSSPEnumsRes.AnalyzeMethodEnumMPN, retStr);
+                            Assert.Equal(CSSPEnumsRes.AnalyzeMethodEnumMPN, retStr);
                             break;
                         case AnalyzeMethodEnum.ZZ_0Q:
-                            Assert.AreEqual(CSSPEnumsRes.AnalyzeMethodEnumZZ_0Q, retStr);
+                            Assert.Equal(CSSPEnumsRes.AnalyzeMethodEnumZZ_0Q, retStr);
                             break;
                         case AnalyzeMethodEnum.AnalyzeMethod8:
-                            Assert.AreEqual(CSSPEnumsRes.AnalyzeMethodEnumAnalyzeMethod8, retStr);
+                            Assert.Equal(CSSPEnumsRes.AnalyzeMethodEnumAnalyzeMethod8, retStr);
                             break;
                         case AnalyzeMethodEnum.AnalyzeMethod9:
-                            Assert.AreEqual(CSSPEnumsRes.AnalyzeMethodEnumAnalyzeMethod9, retStr);
+                            Assert.Equal(CSSPEnumsRes.AnalyzeMethodEnumAnalyzeMethod9, retStr);
                             break;
                         case AnalyzeMethodEnum.AnalyzeMethod10:
-                            Assert.AreEqual(CSSPEnumsRes.AnalyzeMethodEnumAnalyzeMethod10, retStr);
+                            Assert.Equal(CSSPEnumsRes.AnalyzeMethodEnumAnalyzeMethod10, retStr);
                             break;
                         case AnalyzeMethodEnum.AnalyzeMethod11:
-                            Assert.AreEqual(CSSPEnumsRes.AnalyzeMethodEnumAnalyzeMethod11, retStr);
+                            Assert.Equal(CSSPEnumsRes.AnalyzeMethodEnumAnalyzeMethod11, retStr);
                             break;
                         case AnalyzeMethodEnum.AnalyzeMethod12:
-                            Assert.AreEqual(CSSPEnumsRes.AnalyzeMethodEnumAnalyzeMethod12, retStr);
+                            Assert.Equal(CSSPEnumsRes.AnalyzeMethodEnumAnalyzeMethod12, retStr);
                             break;
                         default:
-                            Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                            Assert.Equal(CSSPEnumsRes.Empty, retStr);
                             break;
                     }
                 }
             }
         }
-        [TestMethod]
+        [Fact]
         public void Enums_GetEnumText_AppTaskCommandEnum_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
@@ -488,13 +489,13 @@ namespace CSSPEnums.Tests
                 SetupTest(culture);
 
                 string retStr = enums.GetResValueForTypeAndID(typeof(AppTaskCommandEnum), -100);
-                Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                Assert.Equal(CSSPEnumsRes.Empty, retStr);
 
                 retStr = enums.GetResValueForTypeAndID(typeof(AppTaskCommandEnum), 10000000);
-                Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                Assert.Equal(CSSPEnumsRes.Empty, retStr);
 
                 retStr = enums.GetResValueForTypeAndID(typeof(AppTaskCommandEnum), null);
-                Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                Assert.Equal(CSSPEnumsRes.Empty, retStr);
 
                 foreach (int i in Enum.GetValues(typeof(AppTaskCommandEnum)))
                 {
@@ -503,154 +504,157 @@ namespace CSSPEnums.Tests
                     switch ((AppTaskCommandEnum)i)
                     {
                         case AppTaskCommandEnum.GenerateWebTide:
-                            Assert.AreEqual(CSSPEnumsRes.AppTaskCommandEnumGenerateWebTide, retStr);
+                            Assert.Equal(CSSPEnumsRes.AppTaskCommandEnumGenerateWebTide, retStr);
                             break;
                         case AppTaskCommandEnum.MikeScenarioAskToRun:
-                            Assert.AreEqual(CSSPEnumsRes.AppTaskCommandEnumMikeScenarioAskToRun, retStr);
+                            Assert.Equal(CSSPEnumsRes.AppTaskCommandEnumMikeScenarioAskToRun, retStr);
                             break;
                         case AppTaskCommandEnum.MikeScenarioImport:
-                            Assert.AreEqual(CSSPEnumsRes.AppTaskCommandEnumMikeScenarioImport, retStr);
+                            Assert.Equal(CSSPEnumsRes.AppTaskCommandEnumMikeScenarioImport, retStr);
                             break;
                         case AppTaskCommandEnum.MikeScenarioOtherFileImport:
-                            Assert.AreEqual(CSSPEnumsRes.AppTaskCommandEnumMikeScenarioOtherFileImport, retStr);
+                            Assert.Equal(CSSPEnumsRes.AppTaskCommandEnumMikeScenarioOtherFileImport, retStr);
                             break;
                         case AppTaskCommandEnum.MikeScenarioRunning:
-                            Assert.AreEqual(CSSPEnumsRes.AppTaskCommandEnumMikeScenarioRunning, retStr);
+                            Assert.Equal(CSSPEnumsRes.AppTaskCommandEnumMikeScenarioRunning, retStr);
                             break;
                         case AppTaskCommandEnum.MikeScenarioToCancel:
-                            Assert.AreEqual(CSSPEnumsRes.AppTaskCommandEnumMikeScenarioToCancel, retStr);
+                            Assert.Equal(CSSPEnumsRes.AppTaskCommandEnumMikeScenarioToCancel, retStr);
                             break;
                         case AppTaskCommandEnum.MikeScenarioWaitingToRun:
-                            Assert.AreEqual(CSSPEnumsRes.AppTaskCommandEnumMikeScenarioWaitingToRun, retStr);
+                            Assert.Equal(CSSPEnumsRes.AppTaskCommandEnumMikeScenarioWaitingToRun, retStr);
                             break;
                         case AppTaskCommandEnum.SetupWebTide:
-                            Assert.AreEqual(CSSPEnumsRes.AppTaskCommandEnumSetupWebTide, retStr);
+                            Assert.Equal(CSSPEnumsRes.AppTaskCommandEnumSetupWebTide, retStr);
                             break;
                         case AppTaskCommandEnum.UpdateClimateSiteInformation:
-                            Assert.AreEqual(CSSPEnumsRes.AppTaskCommandEnumUpdateClimateSiteInformation, retStr);
+                            Assert.Equal(CSSPEnumsRes.AppTaskCommandEnumUpdateClimateSiteInformation, retStr);
                             break;
                         case AppTaskCommandEnum.UpdateClimateSiteDailyAndHourlyFromStartDateToEndDate:
-                            Assert.AreEqual(CSSPEnumsRes.AppTaskCommandEnumUpdateClimateSiteDailyAndHourlyFromStartDateToEndDate, retStr);
+                            Assert.Equal(CSSPEnumsRes.AppTaskCommandEnumUpdateClimateSiteDailyAndHourlyFromStartDateToEndDate, retStr);
                             break;
                         case AppTaskCommandEnum.UpdateClimateSiteDailyAndHourlyForSubsectorFromStartDateToEndDate:
-                            Assert.AreEqual(CSSPEnumsRes.AppTaskCommandEnumUpdateClimateSiteDailyAndHourlyForSubsectorFromStartDateToEndDate, retStr);
+                            Assert.Equal(CSSPEnumsRes.AppTaskCommandEnumUpdateClimateSiteDailyAndHourlyForSubsectorFromStartDateToEndDate, retStr);
                             break;
                         case AppTaskCommandEnum.CreateFCForm:
-                            Assert.AreEqual(CSSPEnumsRes.AppTaskCommandEnumCreateFCForm, retStr);
+                            Assert.Equal(CSSPEnumsRes.AppTaskCommandEnumCreateFCForm, retStr);
                             break;
                         case AppTaskCommandEnum.CreateSamplingPlanSamplingPlanTextFile:
-                            Assert.AreEqual(CSSPEnumsRes.AppTaskCommandEnumCreateSamplingPlanSamplingPlanTextFile, retStr);
+                            Assert.Equal(CSSPEnumsRes.AppTaskCommandEnumCreateSamplingPlanSamplingPlanTextFile, retStr);
                             break;
                         case AppTaskCommandEnum.CreateDocumentFromTemplate:
-                            Assert.AreEqual(CSSPEnumsRes.AppTaskCommandEnumCreateDocumentFromTemplate, retStr);
+                            Assert.Equal(CSSPEnumsRes.AppTaskCommandEnumCreateDocumentFromTemplate, retStr);
                             break;
                         case AppTaskCommandEnum.GetClimateSitesDataForRunsOfYear:
-                            Assert.AreEqual(CSSPEnumsRes.AppTaskCommandEnumGetClimateSitesDataForRunsOfYear, retStr);
+                            Assert.Equal(CSSPEnumsRes.AppTaskCommandEnumGetClimateSitesDataForRunsOfYear, retStr);
                             break;
                         case AppTaskCommandEnum.CreateWebTideDataWLAtFirstNode:
-                            Assert.AreEqual(CSSPEnumsRes.AppTaskCommandEnumCreateWebTideDataWLAtFirstNode, retStr);
+                            Assert.Equal(CSSPEnumsRes.AppTaskCommandEnumCreateWebTideDataWLAtFirstNode, retStr);
                             break;
                         case AppTaskCommandEnum.ExportEmailDistributionLists:
-                            Assert.AreEqual(CSSPEnumsRes.AppTaskCommandEnumExportEmailDistributionLists, retStr);
+                            Assert.Equal(CSSPEnumsRes.AppTaskCommandEnumExportEmailDistributionLists, retStr);
                             break;
                         case AppTaskCommandEnum.ExportAnalysisToExcel:
-                            Assert.AreEqual(CSSPEnumsRes.AppTaskCommandEnumExportAnalysisToExcel, retStr);
+                            Assert.Equal(CSSPEnumsRes.AppTaskCommandEnumExportAnalysisToExcel, retStr);
                             break;
                         case AppTaskCommandEnum.CreateDocumentFromParameters:
-                            Assert.AreEqual(CSSPEnumsRes.AppTaskCommandEnumCreateDocumentFromParameters, retStr);
+                            Assert.Equal(CSSPEnumsRes.AppTaskCommandEnumCreateDocumentFromParameters, retStr);
                             break;
                         case AppTaskCommandEnum.CreateDocxPDF:
-                            Assert.AreEqual(CSSPEnumsRes.AppTaskCommandEnumCreateDocxPDF, retStr);
+                            Assert.Equal(CSSPEnumsRes.AppTaskCommandEnumCreateDocxPDF, retStr);
                             break;
                         case AppTaskCommandEnum.CreateXlsxPDF:
-                            Assert.AreEqual(CSSPEnumsRes.AppTaskCommandEnumCreateXlsxPDF, retStr);
+                            Assert.Equal(CSSPEnumsRes.AppTaskCommandEnumCreateXlsxPDF, retStr);
                             break;
                         case AppTaskCommandEnum.OpenDataCSVOfMWQMSites:
-                            Assert.AreEqual(CSSPEnumsRes.AppTaskCommandEnumOpenDataCSVOfMWQMSites, retStr);
+                            Assert.Equal(CSSPEnumsRes.AppTaskCommandEnumOpenDataCSVOfMWQMSites, retStr);
                             break;
                         case AppTaskCommandEnum.OpenDataKMZOfMWQMSites:
-                            Assert.AreEqual(CSSPEnumsRes.AppTaskCommandEnumOpenDataKMZOfMWQMSites, retStr);
+                            Assert.Equal(CSSPEnumsRes.AppTaskCommandEnumOpenDataKMZOfMWQMSites, retStr);
                             break;
                         case AppTaskCommandEnum.OpenDataXlsxOfMWQMSitesAndSamples:
-                            Assert.AreEqual(CSSPEnumsRes.AppTaskCommandEnumOpenDataXlsxOfMWQMSitesAndSamples, retStr);
+                            Assert.Equal(CSSPEnumsRes.AppTaskCommandEnumOpenDataXlsxOfMWQMSitesAndSamples, retStr);
                             break;
                         case AppTaskCommandEnum.OpenDataCSVOfMWQMSamples:
-                            Assert.AreEqual(CSSPEnumsRes.AppTaskCommandEnumOpenDataCSVOfMWQMSamples, retStr);
+                            Assert.Equal(CSSPEnumsRes.AppTaskCommandEnumOpenDataCSVOfMWQMSamples, retStr);
                             break;
                         case AppTaskCommandEnum.GetAllPrecipitationForYear:
-                            Assert.AreEqual(CSSPEnumsRes.AppTaskCommandEnumGetAllPrecipitationForYear, retStr);
+                            Assert.Equal(CSSPEnumsRes.AppTaskCommandEnumGetAllPrecipitationForYear, retStr);
                             break;
                         case AppTaskCommandEnum.FillRunPrecipByClimateSitePriorityForYear:
-                            Assert.AreEqual(CSSPEnumsRes.AppTaskCommandEnumFillRunPrecipByClimateSitePriorityForYear, retStr);
+                            Assert.Equal(CSSPEnumsRes.AppTaskCommandEnumFillRunPrecipByClimateSitePriorityForYear, retStr);
                             break;
                         case AppTaskCommandEnum.FindMissingPrecipForProvince:
-                            Assert.AreEqual(CSSPEnumsRes.AppTaskCommandEnumFindMissingPrecipForProvince, retStr);
+                            Assert.Equal(CSSPEnumsRes.AppTaskCommandEnumFindMissingPrecipForProvince, retStr);
                             break;
                         case AppTaskCommandEnum.ExportToArcGIS:
-                            Assert.AreEqual(CSSPEnumsRes.AppTaskCommandEnumExportToArcGIS, retStr);
+                            Assert.Equal(CSSPEnumsRes.AppTaskCommandEnumExportToArcGIS, retStr);
                             break;
                         case AppTaskCommandEnum.GenerateClassificationForCSSPWebToolsVisualization:
-                            Assert.AreEqual(CSSPEnumsRes.AppTaskCommandEnumGenerateClassificationForCSSPWebToolsVisualization, retStr);
+                            Assert.Equal(CSSPEnumsRes.AppTaskCommandEnumGenerateClassificationForCSSPWebToolsVisualization, retStr);
                             break;
                         case AppTaskCommandEnum.GenerateLinksBetweenMWQMSitesAndPolSourceSitesForCSSPWebToolsVisualization:
-                            Assert.AreEqual(CSSPEnumsRes.AppTaskCommandEnumGenerateLinksBetweenMWQMSitesAndPolSourceSitesForCSSPWebToolsVisualization, retStr);
+                            Assert.Equal(CSSPEnumsRes.AppTaskCommandEnumGenerateLinksBetweenMWQMSitesAndPolSourceSitesForCSSPWebToolsVisualization, retStr);
                             break;
                         case AppTaskCommandEnum.OpenDataCSVNationalOfMWQMSites:
-                            Assert.AreEqual(CSSPEnumsRes.AppTaskCommandEnumOpenDataCSVNationalOfMWQMSites, retStr);
+                            Assert.Equal(CSSPEnumsRes.AppTaskCommandEnumOpenDataCSVNationalOfMWQMSites, retStr);
                             break;
                         case AppTaskCommandEnum.OpenDataCSVNationalOfMWQMSamples:
-                            Assert.AreEqual(CSSPEnumsRes.AppTaskCommandEnumOpenDataCSVNationalOfMWQMSamples, retStr);
+                            Assert.Equal(CSSPEnumsRes.AppTaskCommandEnumOpenDataCSVNationalOfMWQMSamples, retStr);
                             break;
                         case AppTaskCommandEnum.ProvinceToolsCreateClassificationInputsKML:
-                            Assert.AreEqual(CSSPEnumsRes.AppTaskCommandEnumProvinceToolsCreateClassificationInputsKML, retStr);
+                            Assert.Equal(CSSPEnumsRes.AppTaskCommandEnumProvinceToolsCreateClassificationInputsKML, retStr);
                             break;
                         case AppTaskCommandEnum.ProvinceToolsCreateGroupingInputsKML:
-                            Assert.AreEqual(CSSPEnumsRes.AppTaskCommandEnumProvinceToolsCreateGroupingInputsKML, retStr);
+                            Assert.Equal(CSSPEnumsRes.AppTaskCommandEnumProvinceToolsCreateGroupingInputsKML, retStr);
                             break;
                         case AppTaskCommandEnum.ProvinceToolsCreateMWQMSitesAndPolSourceSitesKML:
-                            Assert.AreEqual(CSSPEnumsRes.AppTaskCommandEnumProvinceToolsCreateMWQMSitesAndPolSourceSitesKML, retStr);
+                            Assert.Equal(CSSPEnumsRes.AppTaskCommandEnumProvinceToolsCreateMWQMSitesAndPolSourceSitesKML, retStr);
                             break;
                         case AppTaskCommandEnum.UpdateHydrometricSiteInformation:
-                            Assert.AreEqual(CSSPEnumsRes.AppTaskCommandEnumUpdateHydrometricSiteInformation, retStr);
+                            Assert.Equal(CSSPEnumsRes.AppTaskCommandEnumUpdateHydrometricSiteInformation, retStr);
                             break;
                         case AppTaskCommandEnum.UpdateHydrometricSiteDailyAndHourlyFromStartDateToEndDate:
-                            Assert.AreEqual(CSSPEnumsRes.AppTaskCommandEnumUpdateHydrometricSiteDailyAndHourlyFromStartDateToEndDate, retStr);
+                            Assert.Equal(CSSPEnumsRes.AppTaskCommandEnumUpdateHydrometricSiteDailyAndHourlyFromStartDateToEndDate, retStr);
                             break;
                         case AppTaskCommandEnum.UpdateHydrometricSiteDailyAndHourlyForSubsectorFromStartDateToEndDate:
-                            Assert.AreEqual(CSSPEnumsRes.AppTaskCommandEnumUpdateHydrometricSiteDailyAndHourlyForSubsectorFromStartDateToEndDate, retStr);
+                            Assert.Equal(CSSPEnumsRes.AppTaskCommandEnumUpdateHydrometricSiteDailyAndHourlyForSubsectorFromStartDateToEndDate, retStr);
                             break;
                         case AppTaskCommandEnum.GetHydrometricSitesDataForRunsOfYear:
-                            Assert.AreEqual(CSSPEnumsRes.AppTaskCommandEnumGetHydrometricSitesDataForRunsOfYear, retStr);
+                            Assert.Equal(CSSPEnumsRes.AppTaskCommandEnumGetHydrometricSitesDataForRunsOfYear, retStr);
                             break;
                         case AppTaskCommandEnum.GetAllDischargesForYear:
-                            Assert.AreEqual(CSSPEnumsRes.AppTaskCommandEnumGetAllDischargesForYear, retStr);
+                            Assert.Equal(CSSPEnumsRes.AppTaskCommandEnumGetAllDischargesForYear, retStr);
                             break;
                         case AppTaskCommandEnum.FillRunDischargesByHydrometricSitePriorityForYear:
-                            Assert.AreEqual(CSSPEnumsRes.AppTaskCommandEnumFillRunDischargesByHydrometricSitePriorityForYear, retStr);
+                            Assert.Equal(CSSPEnumsRes.AppTaskCommandEnumFillRunDischargesByHydrometricSitePriorityForYear, retStr);
                             break;
                         case AppTaskCommandEnum.FindMissingDischargesForProvince:
-                            Assert.AreEqual(CSSPEnumsRes.AppTaskCommandEnumFindMissingDischargesForProvince, retStr);
+                            Assert.Equal(CSSPEnumsRes.AppTaskCommandEnumFindMissingDischargesForProvince, retStr);
                             break;
                         case AppTaskCommandEnum.LoadHydrometricDataValue:
-                            Assert.AreEqual(CSSPEnumsRes.AppTaskCommandEnumLoadHydrometricDataValue, retStr);
+                            Assert.Equal(CSSPEnumsRes.AppTaskCommandEnumLoadHydrometricDataValue, retStr);
                             break;
                         case AppTaskCommandEnum.GenerateKMLFileClassificationForCSSPWebToolsVisualization:
-                            Assert.AreEqual(CSSPEnumsRes.AppTaskCommandEnumGenerateKMLFileClassificationForCSSPWebToolsVisualization, retStr);
+                            Assert.Equal(CSSPEnumsRes.AppTaskCommandEnumGenerateKMLFileClassificationForCSSPWebToolsVisualization, retStr);
                             break;
                         case AppTaskCommandEnum.ProvinceToolsGenerateStats:
-                            Assert.AreEqual(CSSPEnumsRes.AppTaskCommandEnumProvinceToolsGenerateStats, retStr);
+                            Assert.Equal(CSSPEnumsRes.AppTaskCommandEnumProvinceToolsGenerateStats, retStr);
                             break;
                         case AppTaskCommandEnum.MikeScenarioPrepareResults:
-                            Assert.AreEqual(CSSPEnumsRes.AppTaskCommandEnumMikeScenarioPrepareResults, retStr);
+                            Assert.Equal(CSSPEnumsRes.AppTaskCommandEnumMikeScenarioPrepareResults, retStr);
+                            break;
+                        case AppTaskCommandEnum.ClimateSiteLoadCoCoRaHSData:
+                            Assert.Equal(CSSPEnumsRes.AppTaskCommandEnumClimateSiteLoadCoCoRaHSData, retStr);
                             break;
                         default:
-                            Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                            Assert.Equal(CSSPEnumsRes.Empty, retStr);
                             break;
                     }
                 }
             }
         }
-        [TestMethod]
+        [Fact]
         public void Enums_GetEnumText_AppTaskStatusEnum_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
@@ -658,13 +662,13 @@ namespace CSSPEnums.Tests
                 SetupTest(culture);
 
                 string retStr = enums.GetResValueForTypeAndID(typeof(AppTaskStatusEnum), -100);
-                Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                Assert.Equal(CSSPEnumsRes.Empty, retStr);
 
                 retStr = enums.GetResValueForTypeAndID(typeof(AppTaskStatusEnum), 10000000);
-                Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                Assert.Equal(CSSPEnumsRes.Empty, retStr);
 
                 retStr = enums.GetResValueForTypeAndID(typeof(AppTaskStatusEnum), null);
-                Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                Assert.Equal(CSSPEnumsRes.Empty, retStr);
 
                 foreach (int i in Enum.GetValues(typeof(AppTaskStatusEnum)))
                 {
@@ -673,25 +677,25 @@ namespace CSSPEnums.Tests
                     switch ((AppTaskStatusEnum)i)
                     {
                         case AppTaskStatusEnum.Created:
-                            Assert.AreEqual(CSSPEnumsRes.AppTaskStatusEnumCreated, retStr);
+                            Assert.Equal(CSSPEnumsRes.AppTaskStatusEnumCreated, retStr);
                             break;
                         case AppTaskStatusEnum.Running:
-                            Assert.AreEqual(CSSPEnumsRes.AppTaskStatusEnumRunning, retStr);
+                            Assert.Equal(CSSPEnumsRes.AppTaskStatusEnumRunning, retStr);
                             break;
                         case AppTaskStatusEnum.Completed:
-                            Assert.AreEqual(CSSPEnumsRes.AppTaskStatusEnumCompleted, retStr);
+                            Assert.Equal(CSSPEnumsRes.AppTaskStatusEnumCompleted, retStr);
                             break;
                         case AppTaskStatusEnum.Cancelled:
-                            Assert.AreEqual(CSSPEnumsRes.AppTaskStatusEnumCancelled, retStr);
+                            Assert.Equal(CSSPEnumsRes.AppTaskStatusEnumCancelled, retStr);
                             break;
                         default:
-                            Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                            Assert.Equal(CSSPEnumsRes.Empty, retStr);
                             break;
                     }
                 }
             }
         }
-        [TestMethod]
+        [Fact]
         public void Enums_GetEnumText_BeaufortScaleEnum_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
@@ -699,13 +703,13 @@ namespace CSSPEnums.Tests
                 SetupTest(culture);
 
                 string retStr = enums.GetResValueForTypeAndID(typeof(BeaufortScaleEnum), -100);
-                Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                Assert.Equal(CSSPEnumsRes.Empty, retStr);
 
                 retStr = enums.GetResValueForTypeAndID(typeof(BeaufortScaleEnum), 10000000);
-                Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                Assert.Equal(CSSPEnumsRes.Empty, retStr);
 
                 retStr = enums.GetResValueForTypeAndID(typeof(BeaufortScaleEnum), null);
-                Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                Assert.Equal(CSSPEnumsRes.Empty, retStr);
 
                 foreach (int i in Enum.GetValues(typeof(BeaufortScaleEnum)))
                 {
@@ -714,52 +718,52 @@ namespace CSSPEnums.Tests
                     switch ((BeaufortScaleEnum)i)
                     {
                         case BeaufortScaleEnum.Calm:
-                            Assert.AreEqual(CSSPEnumsRes.BeaufortScaleEnumCalm, retStr);
+                            Assert.Equal(CSSPEnumsRes.BeaufortScaleEnumCalm, retStr);
                             break;
                         case BeaufortScaleEnum.LightAir:
-                            Assert.AreEqual(CSSPEnumsRes.BeaufortScaleEnumLightAir, retStr);
+                            Assert.Equal(CSSPEnumsRes.BeaufortScaleEnumLightAir, retStr);
                             break;
                         case BeaufortScaleEnum.LightBreeze:
-                            Assert.AreEqual(CSSPEnumsRes.BeaufortScaleEnumLightBreeze, retStr);
+                            Assert.Equal(CSSPEnumsRes.BeaufortScaleEnumLightBreeze, retStr);
                             break;
                         case BeaufortScaleEnum.GentleBreeze:
-                            Assert.AreEqual(CSSPEnumsRes.BeaufortScaleEnumGentleBreeze, retStr);
+                            Assert.Equal(CSSPEnumsRes.BeaufortScaleEnumGentleBreeze, retStr);
                             break;
                         case BeaufortScaleEnum.ModerateBreeze:
-                            Assert.AreEqual(CSSPEnumsRes.BeaufortScaleEnumModerateBreeze, retStr);
+                            Assert.Equal(CSSPEnumsRes.BeaufortScaleEnumModerateBreeze, retStr);
                             break;
                         case BeaufortScaleEnum.FreshBreeze:
-                            Assert.AreEqual(CSSPEnumsRes.BeaufortScaleEnumFreshBreeze, retStr);
+                            Assert.Equal(CSSPEnumsRes.BeaufortScaleEnumFreshBreeze, retStr);
                             break;
                         case BeaufortScaleEnum.StrongBreeze:
-                            Assert.AreEqual(CSSPEnumsRes.BeaufortScaleEnumStrongBreeze, retStr);
+                            Assert.Equal(CSSPEnumsRes.BeaufortScaleEnumStrongBreeze, retStr);
                             break;
                         case BeaufortScaleEnum.HighWind_ModerateGale_NearGale:
-                            Assert.AreEqual(CSSPEnumsRes.BeaufortScaleEnumHighWind_ModerateGale_NearGale, retStr);
+                            Assert.Equal(CSSPEnumsRes.BeaufortScaleEnumHighWind_ModerateGale_NearGale, retStr);
                             break;
                         case BeaufortScaleEnum.Gale_FreshGale:
-                            Assert.AreEqual(CSSPEnumsRes.BeaufortScaleEnumGale_FreshGale, retStr);
+                            Assert.Equal(CSSPEnumsRes.BeaufortScaleEnumGale_FreshGale, retStr);
                             break;
                         case BeaufortScaleEnum.Strong_SevereGale:
-                            Assert.AreEqual(CSSPEnumsRes.BeaufortScaleEnumStrong_SevereGale, retStr);
+                            Assert.Equal(CSSPEnumsRes.BeaufortScaleEnumStrong_SevereGale, retStr);
                             break;
                         case BeaufortScaleEnum.Storm_WholeGale:
-                            Assert.AreEqual(CSSPEnumsRes.BeaufortScaleEnumStorm_WholeGale, retStr);
+                            Assert.Equal(CSSPEnumsRes.BeaufortScaleEnumStorm_WholeGale, retStr);
                             break;
                         case BeaufortScaleEnum.ViolentStorm:
-                            Assert.AreEqual(CSSPEnumsRes.BeaufortScaleEnumViolentStorm, retStr);
+                            Assert.Equal(CSSPEnumsRes.BeaufortScaleEnumViolentStorm, retStr);
                             break;
                         case BeaufortScaleEnum.HurricaneForce:
-                            Assert.AreEqual(CSSPEnumsRes.BeaufortScaleEnumHurricaneForce, retStr);
+                            Assert.Equal(CSSPEnumsRes.BeaufortScaleEnumHurricaneForce, retStr);
                             break;
                         default:
-                            Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                            Assert.Equal(CSSPEnumsRes.Empty, retStr);
                             break;
                     }
                 }
             }
         }
-        [TestMethod]
+        [Fact]
         public void Enums_GetEnumText_BoxModelResultTypeEnum_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
@@ -767,13 +771,13 @@ namespace CSSPEnums.Tests
                 SetupTest(culture);
 
                 string retStr = enums.GetResValueForTypeAndID(typeof(BoxModelResultTypeEnum), -100);
-                Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                Assert.Equal(CSSPEnumsRes.Empty, retStr);
 
                 retStr = enums.GetResValueForTypeAndID(typeof(BoxModelResultTypeEnum), 10000000);
-                Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                Assert.Equal(CSSPEnumsRes.Empty, retStr);
 
                 retStr = enums.GetResValueForTypeAndID(typeof(BoxModelResultTypeEnum), null);
-                Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                Assert.Equal(CSSPEnumsRes.Empty, retStr);
 
                 foreach (int i in Enum.GetValues(typeof(BoxModelResultTypeEnum)))
                 {
@@ -782,28 +786,28 @@ namespace CSSPEnums.Tests
                     switch ((BoxModelResultTypeEnum)i)
                     {
                         case BoxModelResultTypeEnum.Dilution:
-                            Assert.AreEqual(CSSPEnumsRes.BoxModelResultTypeEnumDilution, retStr);
+                            Assert.Equal(CSSPEnumsRes.BoxModelResultTypeEnumDilution, retStr);
                             break;
                         case BoxModelResultTypeEnum.NoDecayUntreated:
-                            Assert.AreEqual(CSSPEnumsRes.BoxModelResultTypeEnumNoDecayUntreated, retStr);
+                            Assert.Equal(CSSPEnumsRes.BoxModelResultTypeEnumNoDecayUntreated, retStr);
                             break;
                         case BoxModelResultTypeEnum.NoDecayPreDisinfection:
-                            Assert.AreEqual(CSSPEnumsRes.BoxModelResultTypeEnumNoDecayPreDisinfection, retStr);
+                            Assert.Equal(CSSPEnumsRes.BoxModelResultTypeEnumNoDecayPreDisinfection, retStr);
                             break;
                         case BoxModelResultTypeEnum.DecayUntreated:
-                            Assert.AreEqual(CSSPEnumsRes.BoxModelResultTypeEnumDecayUntreated, retStr);
+                            Assert.Equal(CSSPEnumsRes.BoxModelResultTypeEnumDecayUntreated, retStr);
                             break;
                         case BoxModelResultTypeEnum.DecayPreDisinfection:
-                            Assert.AreEqual(CSSPEnumsRes.BoxModelResultTypeEnumDecayPreDisinfection, retStr);
+                            Assert.Equal(CSSPEnumsRes.BoxModelResultTypeEnumDecayPreDisinfection, retStr);
                             break;
                         default:
-                            Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                            Assert.Equal(CSSPEnumsRes.Empty, retStr);
                             break;
                     }
                 }
             }
         }
-        [TestMethod]
+        [Fact]
         public void Enums_GetEnumText_ClassificationTypeEnum_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
@@ -811,13 +815,13 @@ namespace CSSPEnums.Tests
                 SetupTest(culture);
 
                 string retStr = enums.GetResValueForTypeAndID(typeof(ClassificationTypeEnum), -100);
-                Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                Assert.Equal(CSSPEnumsRes.Empty, retStr);
 
                 retStr = enums.GetResValueForTypeAndID(typeof(ClassificationTypeEnum), 10000000);
-                Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                Assert.Equal(CSSPEnumsRes.Empty, retStr);
 
                 retStr = enums.GetResValueForTypeAndID(typeof(ClassificationTypeEnum), null);
-                Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                Assert.Equal(CSSPEnumsRes.Empty, retStr);
 
                 foreach (int i in Enum.GetValues(typeof(ClassificationTypeEnum)))
                 {
@@ -826,28 +830,28 @@ namespace CSSPEnums.Tests
                     switch ((ClassificationTypeEnum)i)
                     {
                         case ClassificationTypeEnum.Approved:
-                            Assert.AreEqual(CSSPEnumsRes.ClassificationTypeEnumApproved, retStr);
+                            Assert.Equal(CSSPEnumsRes.ClassificationTypeEnumApproved, retStr);
                             break;
                         case ClassificationTypeEnum.Restricted:
-                            Assert.AreEqual(CSSPEnumsRes.ClassificationTypeEnumRestricted, retStr);
+                            Assert.Equal(CSSPEnumsRes.ClassificationTypeEnumRestricted, retStr);
                             break;
                         case ClassificationTypeEnum.Prohibited:
-                            Assert.AreEqual(CSSPEnumsRes.ClassificationTypeEnumProhibited, retStr);
+                            Assert.Equal(CSSPEnumsRes.ClassificationTypeEnumProhibited, retStr);
                             break;
                         case ClassificationTypeEnum.ConditionallyApproved:
-                            Assert.AreEqual(CSSPEnumsRes.ClassificationTypeEnumConditionallyApproved, retStr);
+                            Assert.Equal(CSSPEnumsRes.ClassificationTypeEnumConditionallyApproved, retStr);
                             break;
                         case ClassificationTypeEnum.ConditionallyRestricted:
-                            Assert.AreEqual(CSSPEnumsRes.ClassificationTypeEnumConditionallyRestricted, retStr);
+                            Assert.Equal(CSSPEnumsRes.ClassificationTypeEnumConditionallyRestricted, retStr);
                             break;
                         default:
-                            Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                            Assert.Equal(CSSPEnumsRes.Empty, retStr);
                             break;
                     }
                 }
             }
         }
-        [TestMethod]
+        [Fact]
         public void Enums_GetEnumText_CollectionSystemTypeEnum_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
@@ -855,13 +859,13 @@ namespace CSSPEnums.Tests
                 SetupTest(culture);
 
                 string retStr = enums.GetResValueForTypeAndID(typeof(CollectionSystemTypeEnum), -100);
-                Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                Assert.Equal(CSSPEnumsRes.Empty, retStr);
 
                 retStr = enums.GetResValueForTypeAndID(typeof(CollectionSystemTypeEnum), 10000000);
-                Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                Assert.Equal(CSSPEnumsRes.Empty, retStr);
 
                 retStr = enums.GetResValueForTypeAndID(typeof(CollectionSystemTypeEnum), null);
-                Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                Assert.Equal(CSSPEnumsRes.Empty, retStr);
 
                 foreach (int i in Enum.GetValues(typeof(CollectionSystemTypeEnum)))
                 {
@@ -870,46 +874,46 @@ namespace CSSPEnums.Tests
                     switch ((CollectionSystemTypeEnum)i)
                     {
                         case CollectionSystemTypeEnum.CompletelySeparated:
-                            Assert.AreEqual(CSSPEnumsRes.CollectionSystemTypeEnumCompletelySeparated, retStr);
+                            Assert.Equal(CSSPEnumsRes.CollectionSystemTypeEnumCompletelySeparated, retStr);
                             break;
                         case CollectionSystemTypeEnum.CompletelyCombined:
-                            Assert.AreEqual(CSSPEnumsRes.CollectionSystemTypeEnumCompletelyCombined, retStr);
+                            Assert.Equal(CSSPEnumsRes.CollectionSystemTypeEnumCompletelyCombined, retStr);
                             break;
                         case CollectionSystemTypeEnum.Combined90Separated10:
-                            Assert.AreEqual(CSSPEnumsRes.CollectionSystemTypeEnumCombined90Separated10, retStr);
+                            Assert.Equal(CSSPEnumsRes.CollectionSystemTypeEnumCombined90Separated10, retStr);
                             break;
                         case CollectionSystemTypeEnum.Combined80Separated20:
-                            Assert.AreEqual(CSSPEnumsRes.CollectionSystemTypeEnumCombined80Separated20, retStr);
+                            Assert.Equal(CSSPEnumsRes.CollectionSystemTypeEnumCombined80Separated20, retStr);
                             break;
                         case CollectionSystemTypeEnum.Combined70Separated30:
-                            Assert.AreEqual(CSSPEnumsRes.CollectionSystemTypeEnumCombined70Separated30, retStr);
+                            Assert.Equal(CSSPEnumsRes.CollectionSystemTypeEnumCombined70Separated30, retStr);
                             break;
                         case CollectionSystemTypeEnum.Combined60Separated40:
-                            Assert.AreEqual(CSSPEnumsRes.CollectionSystemTypeEnumCombined60Separated40, retStr);
+                            Assert.Equal(CSSPEnumsRes.CollectionSystemTypeEnumCombined60Separated40, retStr);
                             break;
                         case CollectionSystemTypeEnum.Combined50Separated50:
-                            Assert.AreEqual(CSSPEnumsRes.CollectionSystemTypeEnumCombined50Separated50, retStr);
+                            Assert.Equal(CSSPEnumsRes.CollectionSystemTypeEnumCombined50Separated50, retStr);
                             break;
                         case CollectionSystemTypeEnum.Combined40Separated60:
-                            Assert.AreEqual(CSSPEnumsRes.CollectionSystemTypeEnumCombined40Separated60, retStr);
+                            Assert.Equal(CSSPEnumsRes.CollectionSystemTypeEnumCombined40Separated60, retStr);
                             break;
                         case CollectionSystemTypeEnum.Combined30Separated70:
-                            Assert.AreEqual(CSSPEnumsRes.CollectionSystemTypeEnumCombined30Separated70, retStr);
+                            Assert.Equal(CSSPEnumsRes.CollectionSystemTypeEnumCombined30Separated70, retStr);
                             break;
                         case CollectionSystemTypeEnum.Combined20Separated80:
-                            Assert.AreEqual(CSSPEnumsRes.CollectionSystemTypeEnumCombined20Separated80, retStr);
+                            Assert.Equal(CSSPEnumsRes.CollectionSystemTypeEnumCombined20Separated80, retStr);
                             break;
                         case CollectionSystemTypeEnum.Combined10Separated90:
-                            Assert.AreEqual(CSSPEnumsRes.CollectionSystemTypeEnumCombined10Separated90, retStr);
+                            Assert.Equal(CSSPEnumsRes.CollectionSystemTypeEnumCombined10Separated90, retStr);
                             break;
                         default:
-                            Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                            Assert.Equal(CSSPEnumsRes.Empty, retStr);
                             break;
                     }
                 }
             }
         }
-        [TestMethod]
+        [Fact]
         public void Enums_GetEnumText_ContactTitleEnum_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
@@ -917,13 +921,13 @@ namespace CSSPEnums.Tests
                 SetupTest(culture);
 
                 string retStr = enums.GetResValueForTypeAndID(typeof(ContactTitleEnum), -100);
-                Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                Assert.Equal(CSSPEnumsRes.Empty, retStr);
 
                 retStr = enums.GetResValueForTypeAndID(typeof(ContactTitleEnum), 10000000);
-                Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                Assert.Equal(CSSPEnumsRes.Empty, retStr);
 
                 retStr = enums.GetResValueForTypeAndID(typeof(ContactTitleEnum), null);
-                Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                Assert.Equal(CSSPEnumsRes.Empty, retStr);
 
                 foreach (int i in Enum.GetValues(typeof(ContactTitleEnum)))
                 {
@@ -932,40 +936,40 @@ namespace CSSPEnums.Tests
                     switch ((ContactTitleEnum)i)
                     {
                         case ContactTitleEnum.DirectorGeneral:
-                            Assert.AreEqual(CSSPEnumsRes.ContactTitleEnumDirectorGeneral, retStr);
+                            Assert.Equal(CSSPEnumsRes.ContactTitleEnumDirectorGeneral, retStr);
                             break;
                         case ContactTitleEnum.DirectorPublicWorks:
-                            Assert.AreEqual(CSSPEnumsRes.ContactTitleEnumDirectorPublicWorks, retStr);
+                            Assert.Equal(CSSPEnumsRes.ContactTitleEnumDirectorPublicWorks, retStr);
                             break;
                         case ContactTitleEnum.Superintendent:
-                            Assert.AreEqual(CSSPEnumsRes.ContactTitleEnumSuperintendent, retStr);
+                            Assert.Equal(CSSPEnumsRes.ContactTitleEnumSuperintendent, retStr);
                             break;
                         case ContactTitleEnum.Engineer:
-                            Assert.AreEqual(CSSPEnumsRes.ContactTitleEnumEngineer, retStr);
+                            Assert.Equal(CSSPEnumsRes.ContactTitleEnumEngineer, retStr);
                             break;
                         case ContactTitleEnum.Foreman:
-                            Assert.AreEqual(CSSPEnumsRes.ContactTitleEnumForeman, retStr);
+                            Assert.Equal(CSSPEnumsRes.ContactTitleEnumForeman, retStr);
                             break;
                         case ContactTitleEnum.Operator:
-                            Assert.AreEqual(CSSPEnumsRes.ContactTitleEnumOperator, retStr);
+                            Assert.Equal(CSSPEnumsRes.ContactTitleEnumOperator, retStr);
                             break;
                         case ContactTitleEnum.FacilitiesManager:
-                            Assert.AreEqual(CSSPEnumsRes.ContactTitleEnumFacilitiesManager, retStr);
+                            Assert.Equal(CSSPEnumsRes.ContactTitleEnumFacilitiesManager, retStr);
                             break;
                         case ContactTitleEnum.Supervisor:
-                            Assert.AreEqual(CSSPEnumsRes.ContactTitleEnumSupervisor, retStr);
+                            Assert.Equal(CSSPEnumsRes.ContactTitleEnumSupervisor, retStr);
                             break;
                         case ContactTitleEnum.Technician:
-                            Assert.AreEqual(CSSPEnumsRes.ContactTitleEnumTechnician, retStr);
+                            Assert.Equal(CSSPEnumsRes.ContactTitleEnumTechnician, retStr);
                             break;
                         default:
-                            Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                            Assert.Equal(CSSPEnumsRes.Empty, retStr);
                             break;
                     }
                 }
             }
         }
-        [TestMethod]
+        [Fact]
         public void Enums_GetEnumText_CSSPWQInputSheetTypeEnum_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
@@ -973,13 +977,13 @@ namespace CSSPEnums.Tests
                 SetupTest(culture);
 
                 string retStr = enums.GetResValueForTypeAndID(typeof(CSSPWQInputSheetTypeEnum), -100);
-                Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                Assert.Equal(CSSPEnumsRes.Empty, retStr);
 
                 retStr = enums.GetResValueForTypeAndID(typeof(CSSPWQInputSheetTypeEnum), 10000000);
-                Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                Assert.Equal(CSSPEnumsRes.Empty, retStr);
 
                 retStr = enums.GetResValueForTypeAndID(typeof(CSSPWQInputSheetTypeEnum), null);
-                Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                Assert.Equal(CSSPEnumsRes.Empty, retStr);
 
                 foreach (int i in Enum.GetValues(typeof(CSSPWQInputSheetTypeEnum)))
                 {
@@ -988,22 +992,22 @@ namespace CSSPEnums.Tests
                     switch ((CSSPWQInputSheetTypeEnum)i)
                     {
                         case CSSPWQInputSheetTypeEnum.A1:
-                            Assert.AreEqual(CSSPEnumsRes.CSSPWQInputSheetTypeEnumA1, retStr);
+                            Assert.Equal(CSSPEnumsRes.CSSPWQInputSheetTypeEnumA1, retStr);
                             break;
                         case CSSPWQInputSheetTypeEnum.LTB:
-                            Assert.AreEqual(CSSPEnumsRes.CSSPWQInputSheetTypeEnumLTB, retStr);
+                            Assert.Equal(CSSPEnumsRes.CSSPWQInputSheetTypeEnumLTB, retStr);
                             break;
                         case CSSPWQInputSheetTypeEnum.EC:
-                            Assert.AreEqual(CSSPEnumsRes.CSSPWQInputSheetTypeEnumEC, retStr);
+                            Assert.Equal(CSSPEnumsRes.CSSPWQInputSheetTypeEnumEC, retStr);
                             break;
                         default:
-                            Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                            Assert.Equal(CSSPEnumsRes.Empty, retStr);
                             break;
                     }
                 }
             }
         }
-        [TestMethod]
+        [Fact]
         public void Enums_GetEnumText_CSSPWQInputTypeEnum_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
@@ -1011,13 +1015,13 @@ namespace CSSPEnums.Tests
                 SetupTest(culture);
 
                 string retStr = enums.GetResValueForTypeAndID(typeof(CSSPWQInputTypeEnum), -100);
-                Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                Assert.Equal(CSSPEnumsRes.Empty, retStr);
 
                 retStr = enums.GetResValueForTypeAndID(typeof(CSSPWQInputTypeEnum), 10000000);
-                Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                Assert.Equal(CSSPEnumsRes.Empty, retStr);
 
                 retStr = enums.GetResValueForTypeAndID(typeof(CSSPWQInputTypeEnum), null);
-                Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                Assert.Equal(CSSPEnumsRes.Empty, retStr);
 
                 foreach (int i in Enum.GetValues(typeof(CSSPWQInputTypeEnum)))
                 {
@@ -1026,19 +1030,19 @@ namespace CSSPEnums.Tests
                     switch ((CSSPWQInputTypeEnum)i)
                     {
                         case CSSPWQInputTypeEnum.Subsector:
-                            Assert.AreEqual(CSSPEnumsRes.CSSPWQInputTypeEnumSubsector, retStr);
+                            Assert.Equal(CSSPEnumsRes.CSSPWQInputTypeEnumSubsector, retStr);
                             break;
                         case CSSPWQInputTypeEnum.Municipality:
-                            Assert.AreEqual(CSSPEnumsRes.CSSPWQInputTypeEnumMunicipality, retStr);
+                            Assert.Equal(CSSPEnumsRes.CSSPWQInputTypeEnumMunicipality, retStr);
                             break;
                         default:
-                            Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                            Assert.Equal(CSSPEnumsRes.Empty, retStr);
                             break;
                     }
                 }
             }
         }
-        [TestMethod]
+        [Fact]
         public void Enums_GetEnumText_DailyOrHourlyDataEnum_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
@@ -1046,13 +1050,13 @@ namespace CSSPEnums.Tests
                 SetupTest(culture);
 
                 string retStr = enums.GetResValueForTypeAndID(typeof(DailyOrHourlyDataEnum), -100);
-                Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                Assert.Equal(CSSPEnumsRes.Empty, retStr);
 
                 retStr = enums.GetResValueForTypeAndID(typeof(DailyOrHourlyDataEnum), 10000000);
-                Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                Assert.Equal(CSSPEnumsRes.Empty, retStr);
 
                 retStr = enums.GetResValueForTypeAndID(typeof(DailyOrHourlyDataEnum), null);
-                Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                Assert.Equal(CSSPEnumsRes.Empty, retStr);
 
                 foreach (int i in Enum.GetValues(typeof(DailyOrHourlyDataEnum)))
                 {
@@ -1061,19 +1065,19 @@ namespace CSSPEnums.Tests
                     switch ((DailyOrHourlyDataEnum)i)
                     {
                         case DailyOrHourlyDataEnum.Daily:
-                            Assert.AreEqual(CSSPEnumsRes.DailyOrHourlyDataEnumDaily, retStr);
+                            Assert.Equal(CSSPEnumsRes.DailyOrHourlyDataEnumDaily, retStr);
                             break;
                         case DailyOrHourlyDataEnum.Hourly:
-                            Assert.AreEqual(CSSPEnumsRes.DailyOrHourlyDataEnumHourly, retStr);
+                            Assert.Equal(CSSPEnumsRes.DailyOrHourlyDataEnumHourly, retStr);
                             break;
                         default:
-                            Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                            Assert.Equal(CSSPEnumsRes.Empty, retStr);
                             break;
                     }
                 }
             }
         }
-        [TestMethod]
+        [Fact]
         public void Enums_GetEnumText_DisinfectionTypeEnum_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
@@ -1081,13 +1085,13 @@ namespace CSSPEnums.Tests
                 SetupTest(culture);
 
                 string retStr = enums.GetResValueForTypeAndID(typeof(DisinfectionTypeEnum), -100);
-                Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                Assert.Equal(CSSPEnumsRes.Empty, retStr);
 
                 retStr = enums.GetResValueForTypeAndID(typeof(DisinfectionTypeEnum), 10000000);
-                Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                Assert.Equal(CSSPEnumsRes.Empty, retStr);
 
                 retStr = enums.GetResValueForTypeAndID(typeof(DisinfectionTypeEnum), null);
-                Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                Assert.Equal(CSSPEnumsRes.Empty, retStr);
 
                 foreach (int i in Enum.GetValues(typeof(DisinfectionTypeEnum)))
                 {
@@ -1096,34 +1100,34 @@ namespace CSSPEnums.Tests
                     switch ((DisinfectionTypeEnum)i)
                     {
                         case DisinfectionTypeEnum.None:
-                            Assert.AreEqual(CSSPEnumsRes.DisinfectionTypeEnumNone, retStr);
+                            Assert.Equal(CSSPEnumsRes.DisinfectionTypeEnumNone, retStr);
                             break;
                         case DisinfectionTypeEnum.UV:
-                            Assert.AreEqual(CSSPEnumsRes.DisinfectionTypeEnumUV, retStr);
+                            Assert.Equal(CSSPEnumsRes.DisinfectionTypeEnumUV, retStr);
                             break;
                         case DisinfectionTypeEnum.ChlorinationNoDechlorination:
-                            Assert.AreEqual(CSSPEnumsRes.DisinfectionTypeEnumChlorinationNoDechlorination, retStr);
+                            Assert.Equal(CSSPEnumsRes.DisinfectionTypeEnumChlorinationNoDechlorination, retStr);
                             break;
                         case DisinfectionTypeEnum.ChlorinationWithDechlorination:
-                            Assert.AreEqual(CSSPEnumsRes.DisinfectionTypeEnumChlorinationWithDechlorination, retStr);
+                            Assert.Equal(CSSPEnumsRes.DisinfectionTypeEnumChlorinationWithDechlorination, retStr);
                             break;
                         case DisinfectionTypeEnum.UVSeasonal:
-                            Assert.AreEqual(CSSPEnumsRes.DisinfectionTypeEnumUVSeasonal, retStr);
+                            Assert.Equal(CSSPEnumsRes.DisinfectionTypeEnumUVSeasonal, retStr);
                             break;
                         case DisinfectionTypeEnum.ChlorinationNoDechlorinationSeasonal:
-                            Assert.AreEqual(CSSPEnumsRes.DisinfectionTypeEnumChlorinationNoDechlorinationSeasonal, retStr);
+                            Assert.Equal(CSSPEnumsRes.DisinfectionTypeEnumChlorinationNoDechlorinationSeasonal, retStr);
                             break;
                         case DisinfectionTypeEnum.ChlorinationWithDechlorinationSeasonal:
-                            Assert.AreEqual(CSSPEnumsRes.DisinfectionTypeEnumChlorinationWithDechlorinationSeasonal, retStr);
+                            Assert.Equal(CSSPEnumsRes.DisinfectionTypeEnumChlorinationWithDechlorinationSeasonal, retStr);
                             break;
                         default:
-                            Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                            Assert.Equal(CSSPEnumsRes.Empty, retStr);
                             break;
                     }
                 }
             }
         }
-        [TestMethod]
+        [Fact]
         public void Enums_GetEnumText_DrogueTypeEnum_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
@@ -1131,13 +1135,13 @@ namespace CSSPEnums.Tests
                 SetupTest(culture);
 
                 string retStr = enums.GetResValueForTypeAndID(typeof(DrogueTypeEnum), -100);
-                Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                Assert.Equal(CSSPEnumsRes.Empty, retStr);
 
                 retStr = enums.GetResValueForTypeAndID(typeof(DrogueTypeEnum), 10000000);
-                Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                Assert.Equal(CSSPEnumsRes.Empty, retStr);
 
                 retStr = enums.GetResValueForTypeAndID(typeof(DrogueTypeEnum), null);
-                Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                Assert.Equal(CSSPEnumsRes.Empty, retStr);
 
                 foreach (int i in Enum.GetValues(typeof(DrogueTypeEnum)))
                 {
@@ -1146,19 +1150,19 @@ namespace CSSPEnums.Tests
                     switch ((DrogueTypeEnum)i)
                     {
                         case DrogueTypeEnum.SmallDrogue:
-                            Assert.AreEqual(CSSPEnumsRes.DrogueTypeEnumSmallDrogue, retStr);
+                            Assert.Equal(CSSPEnumsRes.DrogueTypeEnumSmallDrogue, retStr);
                             break;
                         case DrogueTypeEnum.LargeDrogue:
-                            Assert.AreEqual(CSSPEnumsRes.DrogueTypeEnumLargeDrogue, retStr);
+                            Assert.Equal(CSSPEnumsRes.DrogueTypeEnumLargeDrogue, retStr);
                             break;
                         default:
-                            Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                            Assert.Equal(CSSPEnumsRes.Empty, retStr);
                             break;
                     }
                 }
             }
         }
-        [TestMethod]
+        [Fact]
         public void Enums_GetEnumText_EmailTypeEnum_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
@@ -1166,13 +1170,13 @@ namespace CSSPEnums.Tests
                 SetupTest(culture);
 
                 string retStr = enums.GetResValueForTypeAndID(typeof(EmailTypeEnum), -100);
-                Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                Assert.Equal(CSSPEnumsRes.Empty, retStr);
 
                 retStr = enums.GetResValueForTypeAndID(typeof(EmailTypeEnum), 10000000);
-                Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                Assert.Equal(CSSPEnumsRes.Empty, retStr);
 
                 retStr = enums.GetResValueForTypeAndID(typeof(EmailTypeEnum), null);
-                Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                Assert.Equal(CSSPEnumsRes.Empty, retStr);
 
                 foreach (int i in Enum.GetValues(typeof(EmailTypeEnum)))
                 {
@@ -1181,25 +1185,25 @@ namespace CSSPEnums.Tests
                     switch ((EmailTypeEnum)i)
                     {
                         case EmailTypeEnum.Personal:
-                            Assert.AreEqual(CSSPEnumsRes.EmailTypeEnumPersonal, retStr);
+                            Assert.Equal(CSSPEnumsRes.EmailTypeEnumPersonal, retStr);
                             break;
                         case EmailTypeEnum.Work:
-                            Assert.AreEqual(CSSPEnumsRes.EmailTypeEnumWork, retStr);
+                            Assert.Equal(CSSPEnumsRes.EmailTypeEnumWork, retStr);
                             break;
                         case EmailTypeEnum.Personal2:
-                            Assert.AreEqual(CSSPEnumsRes.EmailTypeEnumPersonal2, retStr);
+                            Assert.Equal(CSSPEnumsRes.EmailTypeEnumPersonal2, retStr);
                             break;
                         case EmailTypeEnum.Work2:
-                            Assert.AreEqual(CSSPEnumsRes.EmailTypeEnumWork2, retStr);
+                            Assert.Equal(CSSPEnumsRes.EmailTypeEnumWork2, retStr);
                             break;
                         default:
-                            Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                            Assert.Equal(CSSPEnumsRes.Empty, retStr);
                             break;
                     }
                 }
             }
         }
-        [TestMethod]
+        [Fact]
         public void Enums_GetEnumText_ExcelExportShowDataTypeEnum_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
@@ -1207,13 +1211,13 @@ namespace CSSPEnums.Tests
                 SetupTest(culture);
 
                 string retStr = enums.GetResValueForTypeAndID(typeof(ExcelExportShowDataTypeEnum), -100);
-                Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                Assert.Equal(CSSPEnumsRes.Empty, retStr);
 
                 retStr = enums.GetResValueForTypeAndID(typeof(ExcelExportShowDataTypeEnum), 10000000);
-                Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                Assert.Equal(CSSPEnumsRes.Empty, retStr);
 
                 retStr = enums.GetResValueForTypeAndID(typeof(ExcelExportShowDataTypeEnum), null);
-                Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                Assert.Equal(CSSPEnumsRes.Empty, retStr);
 
                 foreach (int i in Enum.GetValues(typeof(ExcelExportShowDataTypeEnum)))
                 {
@@ -1222,37 +1226,37 @@ namespace CSSPEnums.Tests
                     switch ((ExcelExportShowDataTypeEnum)i)
                     {
                         case ExcelExportShowDataTypeEnum.FecalColiform:
-                            Assert.AreEqual(CSSPEnumsRes.ExcelExportShowDataTypeEnumFecalColiform, retStr);
+                            Assert.Equal(CSSPEnumsRes.ExcelExportShowDataTypeEnumFecalColiform, retStr);
                             break;
                         case ExcelExportShowDataTypeEnum.Temperature:
-                            Assert.AreEqual(CSSPEnumsRes.ExcelExportShowDataTypeEnumTemperature, retStr);
+                            Assert.Equal(CSSPEnumsRes.ExcelExportShowDataTypeEnumTemperature, retStr);
                             break;
                         case ExcelExportShowDataTypeEnum.Salinity:
-                            Assert.AreEqual(CSSPEnumsRes.ExcelExportShowDataTypeEnumSalinity, retStr);
+                            Assert.Equal(CSSPEnumsRes.ExcelExportShowDataTypeEnumSalinity, retStr);
                             break;
                         case ExcelExportShowDataTypeEnum.P90:
-                            Assert.AreEqual(CSSPEnumsRes.ExcelExportShowDataTypeEnumP90, retStr);
+                            Assert.Equal(CSSPEnumsRes.ExcelExportShowDataTypeEnumP90, retStr);
                             break;
                         case ExcelExportShowDataTypeEnum.GemetricMean:
-                            Assert.AreEqual(CSSPEnumsRes.ExcelExportShowDataTypeEnumGemetricMean, retStr);
+                            Assert.Equal(CSSPEnumsRes.ExcelExportShowDataTypeEnumGemetricMean, retStr);
                             break;
                         case ExcelExportShowDataTypeEnum.Median:
-                            Assert.AreEqual(CSSPEnumsRes.ExcelExportShowDataTypeEnumMedian, retStr);
+                            Assert.Equal(CSSPEnumsRes.ExcelExportShowDataTypeEnumMedian, retStr);
                             break;
                         case ExcelExportShowDataTypeEnum.PercOfP90Over43:
-                            Assert.AreEqual(CSSPEnumsRes.ExcelExportShowDataTypeEnumPercOfP90Over43, retStr);
+                            Assert.Equal(CSSPEnumsRes.ExcelExportShowDataTypeEnumPercOfP90Over43, retStr);
                             break;
                         case ExcelExportShowDataTypeEnum.PercOfP90Over260:
-                            Assert.AreEqual(CSSPEnumsRes.ExcelExportShowDataTypeEnumPercOfP90Over260, retStr);
+                            Assert.Equal(CSSPEnumsRes.ExcelExportShowDataTypeEnumPercOfP90Over260, retStr);
                             break;
                         default:
-                            Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                            Assert.Equal(CSSPEnumsRes.Empty, retStr);
                             break;
                     }
                 }
             }
         }
-        [TestMethod]
+        [Fact]
         public void Enums_GetEnumText_FacilityTypeEnum_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
@@ -1260,13 +1264,13 @@ namespace CSSPEnums.Tests
                 SetupTest(culture);
 
                 string retStr = enums.GetResValueForTypeAndID(typeof(FacilityTypeEnum), -100);
-                Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                Assert.Equal(CSSPEnumsRes.Empty, retStr);
 
                 retStr = enums.GetResValueForTypeAndID(typeof(FacilityTypeEnum), 10000000);
-                Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                Assert.Equal(CSSPEnumsRes.Empty, retStr);
 
                 retStr = enums.GetResValueForTypeAndID(typeof(FacilityTypeEnum), null);
-                Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                Assert.Equal(CSSPEnumsRes.Empty, retStr);
 
                 foreach (int i in Enum.GetValues(typeof(FacilityTypeEnum)))
                 {
@@ -1275,19 +1279,19 @@ namespace CSSPEnums.Tests
                     switch ((FacilityTypeEnum)i)
                     {
                         case FacilityTypeEnum.Lagoon:
-                            Assert.AreEqual(CSSPEnumsRes.FacilityTypeEnumLagoon, retStr);
+                            Assert.Equal(CSSPEnumsRes.FacilityTypeEnumLagoon, retStr);
                             break;
                         case FacilityTypeEnum.Plant:
-                            Assert.AreEqual(CSSPEnumsRes.FacilityTypeEnumPlant, retStr);
+                            Assert.Equal(CSSPEnumsRes.FacilityTypeEnumPlant, retStr);
                             break;
                         default:
-                            Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                            Assert.Equal(CSSPEnumsRes.Empty, retStr);
                             break;
                     }
                 }
             }
         }
-        [TestMethod]
+        [Fact]
         public void Enums_GetEnumText_FilePurposeEnum_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
@@ -1295,13 +1299,13 @@ namespace CSSPEnums.Tests
                 SetupTest(culture);
 
                 string retStr = enums.GetResValueForTypeAndID(typeof(FilePurposeEnum), -100);
-                Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                Assert.Equal(CSSPEnumsRes.Empty, retStr);
 
                 retStr = enums.GetResValueForTypeAndID(typeof(FilePurposeEnum), 10000000);
-                Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                Assert.Equal(CSSPEnumsRes.Empty, retStr);
 
                 retStr = enums.GetResValueForTypeAndID(typeof(FilePurposeEnum), null);
-                Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                Assert.Equal(CSSPEnumsRes.Empty, retStr);
 
                 foreach (int i in Enum.GetValues(typeof(FilePurposeEnum)))
                 {
@@ -1310,55 +1314,55 @@ namespace CSSPEnums.Tests
                     switch ((FilePurposeEnum)i)
                     {
                         case FilePurposeEnum.MikeInput:
-                            Assert.AreEqual(CSSPEnumsRes.FilePurposeEnumMikeInput, retStr);
+                            Assert.Equal(CSSPEnumsRes.FilePurposeEnumMikeInput, retStr);
                             break;
                         case FilePurposeEnum.MikeInputMDF:
-                            Assert.AreEqual(CSSPEnumsRes.FilePurposeEnumMikeInputMDF, retStr);
+                            Assert.Equal(CSSPEnumsRes.FilePurposeEnumMikeInputMDF, retStr);
                             break;
                         case FilePurposeEnum.MikeResultDFSU:
-                            Assert.AreEqual(CSSPEnumsRes.FilePurposeEnumMikeResultDFSU, retStr);
+                            Assert.Equal(CSSPEnumsRes.FilePurposeEnumMikeResultDFSU, retStr);
                             break;
                         case FilePurposeEnum.MikeResultKMZ:
-                            Assert.AreEqual(CSSPEnumsRes.FilePurposeEnumMikeResultKMZ, retStr);
+                            Assert.Equal(CSSPEnumsRes.FilePurposeEnumMikeResultKMZ, retStr);
                             break;
                         case FilePurposeEnum.Information:
-                            Assert.AreEqual(CSSPEnumsRes.FilePurposeEnumInformation, retStr);
+                            Assert.Equal(CSSPEnumsRes.FilePurposeEnumInformation, retStr);
                             break;
                         case FilePurposeEnum.Image:
-                            Assert.AreEqual(CSSPEnumsRes.FilePurposeEnumImage, retStr);
+                            Assert.Equal(CSSPEnumsRes.FilePurposeEnumImage, retStr);
                             break;
                         case FilePurposeEnum.Picture:
-                            Assert.AreEqual(CSSPEnumsRes.FilePurposeEnumPicture, retStr);
+                            Assert.Equal(CSSPEnumsRes.FilePurposeEnumPicture, retStr);
                             break;
                         case FilePurposeEnum.ReportGenerated:
-                            Assert.AreEqual(CSSPEnumsRes.FilePurposeEnumReportGenerated, retStr);
+                            Assert.Equal(CSSPEnumsRes.FilePurposeEnumReportGenerated, retStr);
                             break;
                         case FilePurposeEnum.TemplateGenerated:
-                            Assert.AreEqual(CSSPEnumsRes.FilePurposeEnumTemplateGenerated, retStr);
+                            Assert.Equal(CSSPEnumsRes.FilePurposeEnumTemplateGenerated, retStr);
                             break;
                         case FilePurposeEnum.GeneratedFCForm:
-                            Assert.AreEqual(CSSPEnumsRes.FilePurposeEnumGeneratedFCForm, retStr);
+                            Assert.Equal(CSSPEnumsRes.FilePurposeEnumGeneratedFCForm, retStr);
                             break;
                         case FilePurposeEnum.Template:
-                            Assert.AreEqual(CSSPEnumsRes.FilePurposeEnumTemplate, retStr);
+                            Assert.Equal(CSSPEnumsRes.FilePurposeEnumTemplate, retStr);
                             break;
                         case FilePurposeEnum.Map:
-                            Assert.AreEqual(CSSPEnumsRes.FilePurposeEnumMap, retStr);
+                            Assert.Equal(CSSPEnumsRes.FilePurposeEnumMap, retStr);
                             break;
                         case FilePurposeEnum.Analysis:
-                            Assert.AreEqual(CSSPEnumsRes.FilePurposeEnumAnalysis, retStr);
+                            Assert.Equal(CSSPEnumsRes.FilePurposeEnumAnalysis, retStr);
                             break;
                         case FilePurposeEnum.OpenData:
-                            Assert.AreEqual(CSSPEnumsRes.FilePurposeEnumOpenData, retStr);
+                            Assert.Equal(CSSPEnumsRes.FilePurposeEnumOpenData, retStr);
                             break;
                         default:
-                            Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                            Assert.Equal(CSSPEnumsRes.Empty, retStr);
                             break;
                     }
                 }
             }
         }
-        [TestMethod]
+        [Fact]
         public void Enums_GetEnumText_FileStatusEnum_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
@@ -1366,13 +1370,13 @@ namespace CSSPEnums.Tests
                 SetupTest(culture);
 
                 string retStr = enums.GetResValueForTypeAndID(typeof(FileStatusEnum), -100);
-                Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                Assert.Equal(CSSPEnumsRes.Empty, retStr);
 
                 retStr = enums.GetResValueForTypeAndID(typeof(FileStatusEnum), 10000000);
-                Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                Assert.Equal(CSSPEnumsRes.Empty, retStr);
 
                 retStr = enums.GetResValueForTypeAndID(typeof(FileStatusEnum), null);
-                Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                Assert.Equal(CSSPEnumsRes.Empty, retStr);
 
                 foreach (int i in Enum.GetValues(typeof(FileStatusEnum)))
                 {
@@ -1381,28 +1385,28 @@ namespace CSSPEnums.Tests
                     switch ((FileStatusEnum)i)
                     {
                         case FileStatusEnum.Changed:
-                            Assert.AreEqual(CSSPEnumsRes.FileStatusEnumChanged, retStr);
+                            Assert.Equal(CSSPEnumsRes.FileStatusEnumChanged, retStr);
                             break;
                         case FileStatusEnum.Sent:
-                            Assert.AreEqual(CSSPEnumsRes.FileStatusEnumSent, retStr);
+                            Assert.Equal(CSSPEnumsRes.FileStatusEnumSent, retStr);
                             break;
                         case FileStatusEnum.Accepted:
-                            Assert.AreEqual(CSSPEnumsRes.FileStatusEnumAccepted, retStr);
+                            Assert.Equal(CSSPEnumsRes.FileStatusEnumAccepted, retStr);
                             break;
                         case FileStatusEnum.Rejected:
-                            Assert.AreEqual(CSSPEnumsRes.FileStatusEnumRejected, retStr);
+                            Assert.Equal(CSSPEnumsRes.FileStatusEnumRejected, retStr);
                             break;
                         case FileStatusEnum.Fail:
-                            Assert.AreEqual(CSSPEnumsRes.FileStatusEnumFail, retStr);
+                            Assert.Equal(CSSPEnumsRes.FileStatusEnumFail, retStr);
                             break;
                         default:
-                            Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                            Assert.Equal(CSSPEnumsRes.Empty, retStr);
                             break;
                     }
                 }
             }
         }
-        [TestMethod]
+        [Fact]
         public void Enums_GetEnumText_FileTypeEnum_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
@@ -1410,13 +1414,13 @@ namespace CSSPEnums.Tests
                 SetupTest(culture);
 
                 string retStr = enums.GetResValueForTypeAndID(typeof(FileTypeEnum), -100);
-                Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                Assert.Equal(CSSPEnumsRes.Empty, retStr);
 
                 retStr = enums.GetResValueForTypeAndID(typeof(FileTypeEnum), 10000000);
-                Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                Assert.Equal(CSSPEnumsRes.Empty, retStr);
 
                 retStr = enums.GetResValueForTypeAndID(typeof(FileTypeEnum), null);
-                Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                Assert.Equal(CSSPEnumsRes.Empty, retStr);
 
                 foreach (int i in Enum.GetValues(typeof(FileTypeEnum)))
                 {
@@ -1425,76 +1429,76 @@ namespace CSSPEnums.Tests
                     switch ((FileTypeEnum)i)
                     {
                         case FileTypeEnum.DFS0:
-                            Assert.AreEqual(CSSPEnumsRes.FileTypeEnumDFS0, retStr);
+                            Assert.Equal(CSSPEnumsRes.FileTypeEnumDFS0, retStr);
                             break;
                         case FileTypeEnum.DFS1:
-                            Assert.AreEqual(CSSPEnumsRes.FileTypeEnumDFS1, retStr);
+                            Assert.Equal(CSSPEnumsRes.FileTypeEnumDFS1, retStr);
                             break;
                         case FileTypeEnum.DFSU:
-                            Assert.AreEqual(CSSPEnumsRes.FileTypeEnumDFSU, retStr);
+                            Assert.Equal(CSSPEnumsRes.FileTypeEnumDFSU, retStr);
                             break;
                         case FileTypeEnum.KMZ:
-                            Assert.AreEqual(CSSPEnumsRes.FileTypeEnumKMZ, retStr);
+                            Assert.Equal(CSSPEnumsRes.FileTypeEnumKMZ, retStr);
                             break;
                         case FileTypeEnum.LOG:
-                            Assert.AreEqual(CSSPEnumsRes.FileTypeEnumLOG, retStr);
+                            Assert.Equal(CSSPEnumsRes.FileTypeEnumLOG, retStr);
                             break;
                         case FileTypeEnum.M21FM:
-                            Assert.AreEqual(CSSPEnumsRes.FileTypeEnumM21FM, retStr);
+                            Assert.Equal(CSSPEnumsRes.FileTypeEnumM21FM, retStr);
                             break;
                         case FileTypeEnum.M3FM:
-                            Assert.AreEqual(CSSPEnumsRes.FileTypeEnumM3FM, retStr);
+                            Assert.Equal(CSSPEnumsRes.FileTypeEnumM3FM, retStr);
                             break;
                         case FileTypeEnum.MDF:
-                            Assert.AreEqual(CSSPEnumsRes.FileTypeEnumMDF, retStr);
+                            Assert.Equal(CSSPEnumsRes.FileTypeEnumMDF, retStr);
                             break;
                         case FileTypeEnum.MESH:
-                            Assert.AreEqual(CSSPEnumsRes.FileTypeEnumMESH, retStr);
+                            Assert.Equal(CSSPEnumsRes.FileTypeEnumMESH, retStr);
                             break;
                         case FileTypeEnum.XLSX:
-                            Assert.AreEqual(CSSPEnumsRes.FileTypeEnumXLSX, retStr);
+                            Assert.Equal(CSSPEnumsRes.FileTypeEnumXLSX, retStr);
                             break;
                         case FileTypeEnum.DOCX:
-                            Assert.AreEqual(CSSPEnumsRes.FileTypeEnumDOCX, retStr);
+                            Assert.Equal(CSSPEnumsRes.FileTypeEnumDOCX, retStr);
                             break;
                         case FileTypeEnum.PDF:
-                            Assert.AreEqual(CSSPEnumsRes.FileTypeEnumPDF, retStr);
+                            Assert.Equal(CSSPEnumsRes.FileTypeEnumPDF, retStr);
                             break;
                         case FileTypeEnum.JPG:
-                            Assert.AreEqual(CSSPEnumsRes.FileTypeEnumJPG, retStr);
+                            Assert.Equal(CSSPEnumsRes.FileTypeEnumJPG, retStr);
                             break;
                         case FileTypeEnum.JPEG:
-                            Assert.AreEqual(CSSPEnumsRes.FileTypeEnumJPEG, retStr);
+                            Assert.Equal(CSSPEnumsRes.FileTypeEnumJPEG, retStr);
                             break;
                         case FileTypeEnum.GIF:
-                            Assert.AreEqual(CSSPEnumsRes.FileTypeEnumGIF, retStr);
+                            Assert.Equal(CSSPEnumsRes.FileTypeEnumGIF, retStr);
                             break;
                         case FileTypeEnum.PNG:
-                            Assert.AreEqual(CSSPEnumsRes.FileTypeEnumPNG, retStr);
+                            Assert.Equal(CSSPEnumsRes.FileTypeEnumPNG, retStr);
                             break;
                         case FileTypeEnum.HTML:
-                            Assert.AreEqual(CSSPEnumsRes.FileTypeEnumHTML, retStr);
+                            Assert.Equal(CSSPEnumsRes.FileTypeEnumHTML, retStr);
                             break;
                         case FileTypeEnum.TXT:
-                            Assert.AreEqual(CSSPEnumsRes.FileTypeEnumTXT, retStr);
+                            Assert.Equal(CSSPEnumsRes.FileTypeEnumTXT, retStr);
                             break;
                         case FileTypeEnum.XYZ:
-                            Assert.AreEqual(CSSPEnumsRes.FileTypeEnumXYZ, retStr);
+                            Assert.Equal(CSSPEnumsRes.FileTypeEnumXYZ, retStr);
                             break;
                         case FileTypeEnum.KML:
-                            Assert.AreEqual(CSSPEnumsRes.FileTypeEnumKML, retStr);
+                            Assert.Equal(CSSPEnumsRes.FileTypeEnumKML, retStr);
                             break;
                         case FileTypeEnum.CSV:
-                            Assert.AreEqual(CSSPEnumsRes.FileTypeEnumCSV, retStr);
+                            Assert.Equal(CSSPEnumsRes.FileTypeEnumCSV, retStr);
                             break;
                         default:
-                            Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                            Assert.Equal(CSSPEnumsRes.Empty, retStr);
                             break;
                     }
                 }
             }
         }
-        [TestMethod]
+        [Fact]
         public void Enums_GetEnumText_InfrastructureTypeEnum_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
@@ -1502,13 +1506,13 @@ namespace CSSPEnums.Tests
                 SetupTest(culture);
 
                 string retStr = enums.GetResValueForTypeAndID(typeof(InfrastructureTypeEnum), -100);
-                Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                Assert.Equal(CSSPEnumsRes.Empty, retStr);
 
                 retStr = enums.GetResValueForTypeAndID(typeof(InfrastructureTypeEnum), 10000000);
-                Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                Assert.Equal(CSSPEnumsRes.Empty, retStr);
 
                 retStr = enums.GetResValueForTypeAndID(typeof(InfrastructureTypeEnum), null);
-                Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                Assert.Equal(CSSPEnumsRes.Empty, retStr);
 
                 foreach (int i in Enum.GetValues(typeof(InfrastructureTypeEnum)))
                 {
@@ -1517,28 +1521,28 @@ namespace CSSPEnums.Tests
                     switch ((InfrastructureTypeEnum)i)
                     {
                         case InfrastructureTypeEnum.WWTP:
-                            Assert.AreEqual(CSSPEnumsRes.InfrastructureTypeEnumWWTP, retStr);
+                            Assert.Equal(CSSPEnumsRes.InfrastructureTypeEnumWWTP, retStr);
                             break;
                         case InfrastructureTypeEnum.LiftStation:
-                            Assert.AreEqual(CSSPEnumsRes.InfrastructureTypeEnumLiftStation, retStr);
+                            Assert.Equal(CSSPEnumsRes.InfrastructureTypeEnumLiftStation, retStr);
                             break;
                         case InfrastructureTypeEnum.Other:
-                            Assert.AreEqual(CSSPEnumsRes.InfrastructureTypeEnumOther, retStr);
+                            Assert.Equal(CSSPEnumsRes.InfrastructureTypeEnumOther, retStr);
                             break;
                         case InfrastructureTypeEnum.SeeOtherMunicipality:
-                            Assert.AreEqual(CSSPEnumsRes.InfrastructureTypeEnumSeeOtherMunicipality, retStr);
+                            Assert.Equal(CSSPEnumsRes.InfrastructureTypeEnumSeeOtherMunicipality, retStr);
                             break;
                         case InfrastructureTypeEnum.LineOverflow:
-                            Assert.AreEqual(CSSPEnumsRes.InfrastructureTypeEnumLineOverflow, retStr);
+                            Assert.Equal(CSSPEnumsRes.InfrastructureTypeEnumLineOverflow, retStr);
                             break;
                         default:
-                            Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                            Assert.Equal(CSSPEnumsRes.Empty, retStr);
                             break;
                     }
                 }
             }
         }
-        [TestMethod]
+        [Fact]
         public void Enums_GetEnumText_KMZActionEnum_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
@@ -1546,13 +1550,13 @@ namespace CSSPEnums.Tests
                 SetupTest(culture);
 
                 string retStr = enums.GetResValueForTypeAndID(typeof(KMZActionEnum), -100);
-                Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                Assert.Equal(CSSPEnumsRes.Empty, retStr);
 
                 retStr = enums.GetResValueForTypeAndID(typeof(KMZActionEnum), 10000000);
-                Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                Assert.Equal(CSSPEnumsRes.Empty, retStr);
 
                 retStr = enums.GetResValueForTypeAndID(typeof(KMZActionEnum), null);
-                Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                Assert.Equal(CSSPEnumsRes.Empty, retStr);
 
                 foreach (int i in Enum.GetValues(typeof(KMZActionEnum)))
                 {
@@ -1561,37 +1565,37 @@ namespace CSSPEnums.Tests
                     switch ((KMZActionEnum)i)
                     {
                         case KMZActionEnum.DoNothing:
-                            Assert.AreEqual(CSSPEnumsRes.KMZActionEnumDoNothing, retStr);
+                            Assert.Equal(CSSPEnumsRes.KMZActionEnumDoNothing, retStr);
                             break;
                         case KMZActionEnum.GenerateKMZContourAnimation:
-                            Assert.AreEqual(CSSPEnumsRes.KMZActionEnumGenerateKMZContourAnimation, retStr);
+                            Assert.Equal(CSSPEnumsRes.KMZActionEnumGenerateKMZContourAnimation, retStr);
                             break;
                         case KMZActionEnum.GenerateKMZContourLimit:
-                            Assert.AreEqual(CSSPEnumsRes.KMZActionEnumGenerateKMZContourLimit, retStr);
+                            Assert.Equal(CSSPEnumsRes.KMZActionEnumGenerateKMZContourLimit, retStr);
                             break;
                         case KMZActionEnum.GenerateKMZCurrentAnimation:
-                            Assert.AreEqual(CSSPEnumsRes.KMZActionEnumGenerateKMZCurrentAnimation, retStr);
+                            Assert.Equal(CSSPEnumsRes.KMZActionEnumGenerateKMZCurrentAnimation, retStr);
                             break;
                         case KMZActionEnum.GenerateKMZCurrentMaximum:
-                            Assert.AreEqual(CSSPEnumsRes.KMZActionEnumGenerateKMZCurrentMaximum, retStr);
+                            Assert.Equal(CSSPEnumsRes.KMZActionEnumGenerateKMZCurrentMaximum, retStr);
                             break;
                         case KMZActionEnum.GenerateKMZMesh:
-                            Assert.AreEqual(CSSPEnumsRes.KMZActionEnumGenerateKMZMesh, retStr);
+                            Assert.Equal(CSSPEnumsRes.KMZActionEnumGenerateKMZMesh, retStr);
                             break;
                         case KMZActionEnum.GenerateKMZStudyArea:
-                            Assert.AreEqual(CSSPEnumsRes.KMZActionEnumGenerateKMZStudyArea, retStr);
+                            Assert.Equal(CSSPEnumsRes.KMZActionEnumGenerateKMZStudyArea, retStr);
                             break;
                         case KMZActionEnum.GenerateKMZBoundaryConditionNodes:
-                            Assert.AreEqual(CSSPEnumsRes.KMZActionEnumGenerateKMZBoundaryConditionNodes, retStr);
+                            Assert.Equal(CSSPEnumsRes.KMZActionEnumGenerateKMZBoundaryConditionNodes, retStr);
                             break;
                         default:
-                            Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                            Assert.Equal(CSSPEnumsRes.Empty, retStr);
                             break;
                     }
                 }
             }
         }
-        [TestMethod]
+        [Fact]
         public void Enums_GetEnumText_LaboratoryEnum_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
@@ -1599,13 +1603,13 @@ namespace CSSPEnums.Tests
                 SetupTest(culture);
 
                 string retStr = enums.GetResValueForTypeAndID(typeof(LaboratoryEnum), -100);
-                Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                Assert.Equal(CSSPEnumsRes.Empty, retStr);
 
                 retStr = enums.GetResValueForTypeAndID(typeof(LaboratoryEnum), 10000000);
-                Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                Assert.Equal(CSSPEnumsRes.Empty, retStr);
 
                 retStr = enums.GetResValueForTypeAndID(typeof(LaboratoryEnum), null);
-                Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                Assert.Equal(CSSPEnumsRes.Empty, retStr);
 
                 foreach (int i in Enum.GetValues(typeof(LaboratoryEnum)))
                 {
@@ -1614,103 +1618,103 @@ namespace CSSPEnums.Tests
                     switch ((LaboratoryEnum)i)
                     {
                         case LaboratoryEnum.ZZ_0:
-                            Assert.AreEqual(CSSPEnumsRes.LaboratoryEnumZZ_0, retStr);
+                            Assert.Equal(CSSPEnumsRes.LaboratoryEnumZZ_0, retStr);
                             break;
                         case LaboratoryEnum.ZZ_1:
-                            Assert.AreEqual(CSSPEnumsRes.LaboratoryEnumZZ_1, retStr);
+                            Assert.Equal(CSSPEnumsRes.LaboratoryEnumZZ_1, retStr);
                             break;
                         case LaboratoryEnum.ZZ_2:
-                            Assert.AreEqual(CSSPEnumsRes.LaboratoryEnumZZ_2, retStr);
+                            Assert.Equal(CSSPEnumsRes.LaboratoryEnumZZ_2, retStr);
                             break;
                         case LaboratoryEnum.ZZ_3:
-                            Assert.AreEqual(CSSPEnumsRes.LaboratoryEnumZZ_3, retStr);
+                            Assert.Equal(CSSPEnumsRes.LaboratoryEnumZZ_3, retStr);
                             break;
                         case LaboratoryEnum.ZZ_4:
-                            Assert.AreEqual(CSSPEnumsRes.LaboratoryEnumZZ_4, retStr);
+                            Assert.Equal(CSSPEnumsRes.LaboratoryEnumZZ_4, retStr);
                             break;
                         case LaboratoryEnum.ZZ_1Q:
-                            Assert.AreEqual(CSSPEnumsRes.LaboratoryEnumZZ_1Q, retStr);
+                            Assert.Equal(CSSPEnumsRes.LaboratoryEnumZZ_1Q, retStr);
                             break;
                         case LaboratoryEnum.ZZ_2Q:
-                            Assert.AreEqual(CSSPEnumsRes.LaboratoryEnumZZ_2Q, retStr);
+                            Assert.Equal(CSSPEnumsRes.LaboratoryEnumZZ_2Q, retStr);
                             break;
                         case LaboratoryEnum.ZZ_3Q:
-                            Assert.AreEqual(CSSPEnumsRes.LaboratoryEnumZZ_3Q, retStr);
+                            Assert.Equal(CSSPEnumsRes.LaboratoryEnumZZ_3Q, retStr);
                             break;
                         case LaboratoryEnum.ZZ_4Q:
-                            Assert.AreEqual(CSSPEnumsRes.LaboratoryEnumZZ_4Q, retStr);
+                            Assert.Equal(CSSPEnumsRes.LaboratoryEnumZZ_4Q, retStr);
                             break;
                         case LaboratoryEnum.ZZ_5Q:
-                            Assert.AreEqual(CSSPEnumsRes.LaboratoryEnumZZ_5Q, retStr);
+                            Assert.Equal(CSSPEnumsRes.LaboratoryEnumZZ_5Q, retStr);
                             break;
                         case LaboratoryEnum.ZZ_11BC:
-                            Assert.AreEqual(CSSPEnumsRes.LaboratoryEnumZZ_11BC, retStr);
+                            Assert.Equal(CSSPEnumsRes.LaboratoryEnumZZ_11BC, retStr);
                             break;
                         case LaboratoryEnum.ZZ_12BC:
-                            Assert.AreEqual(CSSPEnumsRes.LaboratoryEnumZZ_12BC, retStr);
+                            Assert.Equal(CSSPEnumsRes.LaboratoryEnumZZ_12BC, retStr);
                             break;
                         case LaboratoryEnum.ZZ_13BC:
-                            Assert.AreEqual(CSSPEnumsRes.LaboratoryEnumZZ_13BC, retStr);
+                            Assert.Equal(CSSPEnumsRes.LaboratoryEnumZZ_13BC, retStr);
                             break;
                         case LaboratoryEnum.ZZ_14BC:
-                            Assert.AreEqual(CSSPEnumsRes.LaboratoryEnumZZ_14BC, retStr);
+                            Assert.Equal(CSSPEnumsRes.LaboratoryEnumZZ_14BC, retStr);
                             break;
                         case LaboratoryEnum.ZZ_15BC:
-                            Assert.AreEqual(CSSPEnumsRes.LaboratoryEnumZZ_15BC, retStr);
+                            Assert.Equal(CSSPEnumsRes.LaboratoryEnumZZ_15BC, retStr);
                             break;
                         case LaboratoryEnum.ZZ_16BC:
-                            Assert.AreEqual(CSSPEnumsRes.LaboratoryEnumZZ_16BC, retStr);
+                            Assert.Equal(CSSPEnumsRes.LaboratoryEnumZZ_16BC, retStr);
                             break;
                         case LaboratoryEnum.ZZ_17BC:
-                            Assert.AreEqual(CSSPEnumsRes.LaboratoryEnumZZ_17BC, retStr);
+                            Assert.Equal(CSSPEnumsRes.LaboratoryEnumZZ_17BC, retStr);
                             break;
                         case LaboratoryEnum.ZZ_18BC:
-                            Assert.AreEqual(CSSPEnumsRes.LaboratoryEnumZZ_18BC, retStr);
+                            Assert.Equal(CSSPEnumsRes.LaboratoryEnumZZ_18BC, retStr);
                             break;
                         case LaboratoryEnum.MonctonEnvironmentCanada:
-                            Assert.AreEqual(CSSPEnumsRes.LaboratoryEnumMonctonEnvironmentCanada, retStr);
+                            Assert.Equal(CSSPEnumsRes.LaboratoryEnumMonctonEnvironmentCanada, retStr);
                             break;
                         case LaboratoryEnum.BIOEnvironmentCanada:
-                            Assert.AreEqual(CSSPEnumsRes.LaboratoryEnumBIOEnvironmentCanada, retStr);
+                            Assert.Equal(CSSPEnumsRes.LaboratoryEnumBIOEnvironmentCanada, retStr);
                             break;
                         case LaboratoryEnum.EasternCharlotteWaterwayLaboratory:
-                            Assert.AreEqual(CSSPEnumsRes.LaboratoryEnumEasternCharlotteWaterwayLaboratory, retStr);
+                            Assert.Equal(CSSPEnumsRes.LaboratoryEnumEasternCharlotteWaterwayLaboratory, retStr);
                             break;
                         case LaboratoryEnum.InstitutDeRechercheSurLesZonesCotieres:
-                            Assert.AreEqual(CSSPEnumsRes.LaboratoryEnumInstitutDeRechercheSurLesZonesCotieres, retStr);
+                            Assert.Equal(CSSPEnumsRes.LaboratoryEnumInstitutDeRechercheSurLesZonesCotieres, retStr);
                             break;
                         case LaboratoryEnum.CentreDeRechercheSurLesAliments:
-                            Assert.AreEqual(CSSPEnumsRes.LaboratoryEnumCentreDeRechercheSurLesAliments, retStr);
+                            Assert.Equal(CSSPEnumsRes.LaboratoryEnumCentreDeRechercheSurLesAliments, retStr);
                             break;
                         case LaboratoryEnum.CaraquetMobileLaboratoryEnvironmentCanada:
-                            Assert.AreEqual(CSSPEnumsRes.LaboratoryEnumCaraquetMobileLaboratoryEnvironmentCanada, retStr);
+                            Assert.Equal(CSSPEnumsRes.LaboratoryEnumCaraquetMobileLaboratoryEnvironmentCanada, retStr);
                             break;
                         case LaboratoryEnum.MaxxamAnalyticsBedford:
-                            Assert.AreEqual(CSSPEnumsRes.LaboratoryEnumMaxxamAnalyticsBedford, retStr);
+                            Assert.Equal(CSSPEnumsRes.LaboratoryEnumMaxxamAnalyticsBedford, retStr);
                             break;
                         case LaboratoryEnum.MaxxamAnalyticsSydney:
-                            Assert.AreEqual(CSSPEnumsRes.LaboratoryEnumMaxxamAnalyticsSydney, retStr);
+                            Assert.Equal(CSSPEnumsRes.LaboratoryEnumMaxxamAnalyticsSydney, retStr);
                             break;
                         case LaboratoryEnum.PEIAnalyticalLaboratory:
-                            Assert.AreEqual(CSSPEnumsRes.LaboratoryEnumPEIAnalyticalLaboratory, retStr);
+                            Assert.Equal(CSSPEnumsRes.LaboratoryEnumPEIAnalyticalLaboratory, retStr);
                             break;
                         case LaboratoryEnum.NLMobileLaboratory:
-                            Assert.AreEqual(CSSPEnumsRes.LaboratoryEnumNLMobileLaboratory, retStr);
+                            Assert.Equal(CSSPEnumsRes.LaboratoryEnumNLMobileLaboratory, retStr);
                             break;
                         case LaboratoryEnum.AvalonLaboratoriesInc:
-                            Assert.AreEqual(CSSPEnumsRes.LaboratoryEnumAvalonLaboratoriesInc, retStr);
+                            Assert.Equal(CSSPEnumsRes.LaboratoryEnumAvalonLaboratoriesInc, retStr);
                             break;
                         case LaboratoryEnum.Maxxam:
-                            Assert.AreEqual(CSSPEnumsRes.LaboratoryEnumMaxxam, retStr);
+                            Assert.Equal(CSSPEnumsRes.LaboratoryEnumMaxxam, retStr);
                             break;
                         default:
-                            Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                            Assert.Equal(CSSPEnumsRes.Empty, retStr);
                             break;
                     }
                 }
             }
         }
-        [TestMethod]
+        [Fact]
         public void Enums_GetEnumText_LabSheetStatusEnum_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
@@ -1718,13 +1722,13 @@ namespace CSSPEnums.Tests
                 SetupTest(culture);
 
                 string retStr = enums.GetResValueForTypeAndID(typeof(LabSheetStatusEnum), -100);
-                Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                Assert.Equal(CSSPEnumsRes.Empty, retStr);
 
                 retStr = enums.GetResValueForTypeAndID(typeof(LabSheetStatusEnum), 10000000);
-                Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                Assert.Equal(CSSPEnumsRes.Empty, retStr);
 
                 retStr = enums.GetResValueForTypeAndID(typeof(LabSheetStatusEnum), null);
-                Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                Assert.Equal(CSSPEnumsRes.Empty, retStr);
 
                 foreach (int i in Enum.GetValues(typeof(LabSheetStatusEnum)))
                 {
@@ -1733,25 +1737,25 @@ namespace CSSPEnums.Tests
                     switch ((LabSheetStatusEnum)i)
                     {
                         case LabSheetStatusEnum.Created:
-                            Assert.AreEqual(CSSPEnumsRes.LabSheetStatusEnumCreated, retStr);
+                            Assert.Equal(CSSPEnumsRes.LabSheetStatusEnumCreated, retStr);
                             break;
                         case LabSheetStatusEnum.Transferred:
-                            Assert.AreEqual(CSSPEnumsRes.LabSheetStatusEnumTransferred, retStr);
+                            Assert.Equal(CSSPEnumsRes.LabSheetStatusEnumTransferred, retStr);
                             break;
                         case LabSheetStatusEnum.Accepted:
-                            Assert.AreEqual(CSSPEnumsRes.LabSheetStatusEnumAccepted, retStr);
+                            Assert.Equal(CSSPEnumsRes.LabSheetStatusEnumAccepted, retStr);
                             break;
                         case LabSheetStatusEnum.Rejected:
-                            Assert.AreEqual(CSSPEnumsRes.LabSheetStatusEnumRejected, retStr);
+                            Assert.Equal(CSSPEnumsRes.LabSheetStatusEnumRejected, retStr);
                             break;
                         default:
-                            Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                            Assert.Equal(CSSPEnumsRes.Empty, retStr);
                             break;
                     }
                 }
             }
         }
-        [TestMethod]
+        [Fact]
         public void Enums_GetEnumText_LabSheetTypeEnum_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
@@ -1759,13 +1763,13 @@ namespace CSSPEnums.Tests
                 SetupTest(culture);
 
                 string retStr = enums.GetResValueForTypeAndID(typeof(LabSheetTypeEnum), -100);
-                Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                Assert.Equal(CSSPEnumsRes.Empty, retStr);
 
                 retStr = enums.GetResValueForTypeAndID(typeof(LabSheetTypeEnum), 10000000);
-                Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                Assert.Equal(CSSPEnumsRes.Empty, retStr);
 
                 retStr = enums.GetResValueForTypeAndID(typeof(LabSheetTypeEnum), null);
-                Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                Assert.Equal(CSSPEnumsRes.Empty, retStr);
 
                 foreach (int i in Enum.GetValues(typeof(LabSheetTypeEnum)))
                 {
@@ -1774,22 +1778,22 @@ namespace CSSPEnums.Tests
                     switch ((LabSheetTypeEnum)i)
                     {
                         case LabSheetTypeEnum.A1:
-                            Assert.AreEqual(CSSPEnumsRes.LabSheetTypeEnumA1, retStr);
+                            Assert.Equal(CSSPEnumsRes.LabSheetTypeEnumA1, retStr);
                             break;
                         case LabSheetTypeEnum.LTB:
-                            Assert.AreEqual(CSSPEnumsRes.LabSheetTypeEnumLTB, retStr);
+                            Assert.Equal(CSSPEnumsRes.LabSheetTypeEnumLTB, retStr);
                             break;
                         case LabSheetTypeEnum.EC:
-                            Assert.AreEqual(CSSPEnumsRes.LabSheetTypeEnumEC, retStr);
+                            Assert.Equal(CSSPEnumsRes.LabSheetTypeEnumEC, retStr);
                             break;
                         default:
-                            Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                            Assert.Equal(CSSPEnumsRes.Empty, retStr);
                             break;
                     }
                 }
             }
         }
-        [TestMethod]
+        [Fact]
         public void Enums_GetEnumText_LanguageEnum_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
@@ -1797,13 +1801,13 @@ namespace CSSPEnums.Tests
                 SetupTest(culture);
 
                 string retStr = enums.GetResValueForTypeAndID(typeof(LanguageEnum), -100);
-                Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                Assert.Equal(CSSPEnumsRes.Empty, retStr);
 
                 retStr = enums.GetResValueForTypeAndID(typeof(LanguageEnum), 10000000);
-                Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                Assert.Equal(CSSPEnumsRes.Empty, retStr);
 
                 retStr = enums.GetResValueForTypeAndID(typeof(LanguageEnum), null);
-                Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                Assert.Equal(CSSPEnumsRes.Empty, retStr);
 
                 foreach (int i in Enum.GetValues(typeof(LanguageEnum)))
                 {
@@ -1812,25 +1816,25 @@ namespace CSSPEnums.Tests
                     switch ((LanguageEnum)i)
                     {
                         case LanguageEnum.en:
-                            Assert.AreEqual(CSSPEnumsRes.LanguageEnumen, retStr);
+                            Assert.Equal(CSSPEnumsRes.LanguageEnumen, retStr);
                             break;
                         case LanguageEnum.fr:
-                            Assert.AreEqual(CSSPEnumsRes.LanguageEnumfr, retStr);
+                            Assert.Equal(CSSPEnumsRes.LanguageEnumfr, retStr);
                             break;
                         case LanguageEnum.enAndfr:
-                            Assert.AreEqual(CSSPEnumsRes.LanguageEnumenAndfr, retStr);
+                            Assert.Equal(CSSPEnumsRes.LanguageEnumenAndfr, retStr);
                             break;
                         case LanguageEnum.es:
-                            Assert.AreEqual(CSSPEnumsRes.LanguageEnumes, retStr);
+                            Assert.Equal(CSSPEnumsRes.LanguageEnumes, retStr);
                             break;
                         default:
-                            Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                            Assert.Equal(CSSPEnumsRes.Empty, retStr);
                             break;
                     }
                 }
             }
         }
-        [TestMethod]
+        [Fact]
         public void Enums_GetEnumText_LogCommandEnum_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
@@ -1838,13 +1842,13 @@ namespace CSSPEnums.Tests
                 SetupTest(culture);
 
                 string retStr = enums.GetResValueForTypeAndID(typeof(LogCommandEnum), -100);
-                Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                Assert.Equal(CSSPEnumsRes.Empty, retStr);
 
                 retStr = enums.GetResValueForTypeAndID(typeof(LogCommandEnum), 10000000);
-                Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                Assert.Equal(CSSPEnumsRes.Empty, retStr);
 
                 retStr = enums.GetResValueForTypeAndID(typeof(LogCommandEnum), null);
-                Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                Assert.Equal(CSSPEnumsRes.Empty, retStr);
 
                 foreach (int i in Enum.GetValues(typeof(LogCommandEnum)))
                 {
@@ -1853,22 +1857,22 @@ namespace CSSPEnums.Tests
                     switch ((LogCommandEnum)i)
                     {
                         case LogCommandEnum.Add:
-                            Assert.AreEqual(CSSPEnumsRes.LogCommandEnumAdd, retStr);
+                            Assert.Equal(CSSPEnumsRes.LogCommandEnumAdd, retStr);
                             break;
                         case LogCommandEnum.Change:
-                            Assert.AreEqual(CSSPEnumsRes.LogCommandEnumChange, retStr);
+                            Assert.Equal(CSSPEnumsRes.LogCommandEnumChange, retStr);
                             break;
                         case LogCommandEnum.Delete:
-                            Assert.AreEqual(CSSPEnumsRes.LogCommandEnumDelete, retStr);
+                            Assert.Equal(CSSPEnumsRes.LogCommandEnumDelete, retStr);
                             break;
                         default:
-                            Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                            Assert.Equal(CSSPEnumsRes.Empty, retStr);
                             break;
                     }
                 }
             }
         }
-        [TestMethod]
+        [Fact]
         public void Enums_GetEnumText_MapInfoDrawTypeEnum_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
@@ -1876,13 +1880,13 @@ namespace CSSPEnums.Tests
                 SetupTest(culture);
 
                 string retStr = enums.GetResValueForTypeAndID(typeof(MapInfoDrawTypeEnum), -100);
-                Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                Assert.Equal(CSSPEnumsRes.Empty, retStr);
 
                 retStr = enums.GetResValueForTypeAndID(typeof(MapInfoDrawTypeEnum), 10000000);
-                Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                Assert.Equal(CSSPEnumsRes.Empty, retStr);
 
                 retStr = enums.GetResValueForTypeAndID(typeof(MapInfoDrawTypeEnum), null);
-                Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                Assert.Equal(CSSPEnumsRes.Empty, retStr);
 
                 foreach (int i in Enum.GetValues(typeof(MapInfoDrawTypeEnum)))
                 {
@@ -1891,22 +1895,22 @@ namespace CSSPEnums.Tests
                     switch ((MapInfoDrawTypeEnum)i)
                     {
                         case MapInfoDrawTypeEnum.Point:
-                            Assert.AreEqual(CSSPEnumsRes.MapInfoDrawTypeEnumPoint, retStr);
+                            Assert.Equal(CSSPEnumsRes.MapInfoDrawTypeEnumPoint, retStr);
                             break;
                         case MapInfoDrawTypeEnum.Polyline:
-                            Assert.AreEqual(CSSPEnumsRes.MapInfoDrawTypeEnumPolyline, retStr);
+                            Assert.Equal(CSSPEnumsRes.MapInfoDrawTypeEnumPolyline, retStr);
                             break;
                         case MapInfoDrawTypeEnum.Polygon:
-                            Assert.AreEqual(CSSPEnumsRes.MapInfoDrawTypeEnumPolygon, retStr);
+                            Assert.Equal(CSSPEnumsRes.MapInfoDrawTypeEnumPolygon, retStr);
                             break;
                         default:
-                            Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                            Assert.Equal(CSSPEnumsRes.Empty, retStr);
                             break;
                     }
                 }
             }
         }
-        [TestMethod]
+        [Fact]
         public void Enums_GetEnumText_MikeBoundaryConditionLevelOrVelocityEnum_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
@@ -1914,13 +1918,13 @@ namespace CSSPEnums.Tests
                 SetupTest(culture);
 
                 string retStr = enums.GetResValueForTypeAndID(typeof(MikeBoundaryConditionLevelOrVelocityEnum), -100);
-                Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                Assert.Equal(CSSPEnumsRes.Empty, retStr);
 
                 retStr = enums.GetResValueForTypeAndID(typeof(MikeBoundaryConditionLevelOrVelocityEnum), 10000000);
-                Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                Assert.Equal(CSSPEnumsRes.Empty, retStr);
 
                 retStr = enums.GetResValueForTypeAndID(typeof(MikeBoundaryConditionLevelOrVelocityEnum), null);
-                Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                Assert.Equal(CSSPEnumsRes.Empty, retStr);
 
                 foreach (int i in Enum.GetValues(typeof(MikeBoundaryConditionLevelOrVelocityEnum)))
                 {
@@ -1929,19 +1933,19 @@ namespace CSSPEnums.Tests
                     switch ((MikeBoundaryConditionLevelOrVelocityEnum)i)
                     {
                         case MikeBoundaryConditionLevelOrVelocityEnum.Level:
-                            Assert.AreEqual(CSSPEnumsRes.MikeBoundaryConditionLevelOrVelocityEnumLevel, retStr);
+                            Assert.Equal(CSSPEnumsRes.MikeBoundaryConditionLevelOrVelocityEnumLevel, retStr);
                             break;
                         case MikeBoundaryConditionLevelOrVelocityEnum.Velocity:
-                            Assert.AreEqual(CSSPEnumsRes.MikeBoundaryConditionLevelOrVelocityEnumVelocity, retStr);
+                            Assert.Equal(CSSPEnumsRes.MikeBoundaryConditionLevelOrVelocityEnumVelocity, retStr);
                             break;
                         default:
-                            Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                            Assert.Equal(CSSPEnumsRes.Empty, retStr);
                             break;
                     }
                 }
             }
         }
-        [TestMethod]
+        [Fact]
         public void Enums_GetEnumText_MikeScenarioSpecialResultKMLTypeEnum_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
@@ -1949,13 +1953,13 @@ namespace CSSPEnums.Tests
                 SetupTest(culture);
 
                 string retStr = enums.GetResValueForTypeAndID(typeof(MikeScenarioSpecialResultKMLTypeEnum), -100);
-                Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                Assert.Equal(CSSPEnumsRes.Empty, retStr);
 
                 retStr = enums.GetResValueForTypeAndID(typeof(MikeScenarioSpecialResultKMLTypeEnum), 10000000);
-                Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                Assert.Equal(CSSPEnumsRes.Empty, retStr);
 
                 retStr = enums.GetResValueForTypeAndID(typeof(MikeScenarioSpecialResultKMLTypeEnum), null);
-                Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                Assert.Equal(CSSPEnumsRes.Empty, retStr);
 
                 foreach (int i in Enum.GetValues(typeof(MikeScenarioSpecialResultKMLTypeEnum)))
                 {
@@ -1964,28 +1968,28 @@ namespace CSSPEnums.Tests
                     switch ((MikeScenarioSpecialResultKMLTypeEnum)i)
                     {
                         case MikeScenarioSpecialResultKMLTypeEnum.Mesh:
-                            Assert.AreEqual(CSSPEnumsRes.MikeScenarioSpecialResultKMLTypeEnumMesh, retStr);
+                            Assert.Equal(CSSPEnumsRes.MikeScenarioSpecialResultKMLTypeEnumMesh, retStr);
                             break;
                         case MikeScenarioSpecialResultKMLTypeEnum.StudyArea:
-                            Assert.AreEqual(CSSPEnumsRes.MikeScenarioSpecialResultKMLTypeEnumStudyArea, retStr);
+                            Assert.Equal(CSSPEnumsRes.MikeScenarioSpecialResultKMLTypeEnumStudyArea, retStr);
                             break;
                         case MikeScenarioSpecialResultKMLTypeEnum.BoundaryConditions:
-                            Assert.AreEqual(CSSPEnumsRes.MikeScenarioSpecialResultKMLTypeEnumBoundaryConditions, retStr);
+                            Assert.Equal(CSSPEnumsRes.MikeScenarioSpecialResultKMLTypeEnumBoundaryConditions, retStr);
                             break;
                         case MikeScenarioSpecialResultKMLTypeEnum.PollutionLimit:
-                            Assert.AreEqual(CSSPEnumsRes.MikeScenarioSpecialResultKMLTypeEnumPollutionLimit, retStr);
+                            Assert.Equal(CSSPEnumsRes.MikeScenarioSpecialResultKMLTypeEnumPollutionLimit, retStr);
                             break;
                         case MikeScenarioSpecialResultKMLTypeEnum.PollutionAnimation:
-                            Assert.AreEqual(CSSPEnumsRes.MikeScenarioSpecialResultKMLTypeEnumPollutionAnimation, retStr);
+                            Assert.Equal(CSSPEnumsRes.MikeScenarioSpecialResultKMLTypeEnumPollutionAnimation, retStr);
                             break;
                         default:
-                            Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                            Assert.Equal(CSSPEnumsRes.Empty, retStr);
                             break;
                     }
                 }
             }
         }
-        [TestMethod]
+        [Fact]
         public void Enums_GetEnumText_MWQMSiteLatestClassificationEnum_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
@@ -1993,13 +1997,13 @@ namespace CSSPEnums.Tests
                 SetupTest(culture);
 
                 string retStr = enums.GetResValueForTypeAndID(typeof(MWQMSiteLatestClassificationEnum), -100);
-                Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                Assert.Equal(CSSPEnumsRes.Empty, retStr);
 
                 retStr = enums.GetResValueForTypeAndID(typeof(MWQMSiteLatestClassificationEnum), 10000000);
-                Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                Assert.Equal(CSSPEnumsRes.Empty, retStr);
 
                 retStr = enums.GetResValueForTypeAndID(typeof(MWQMSiteLatestClassificationEnum), null);
-                Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                Assert.Equal(CSSPEnumsRes.Empty, retStr);
 
                 foreach (int i in Enum.GetValues(typeof(MWQMSiteLatestClassificationEnum)))
                 {
@@ -2008,31 +2012,31 @@ namespace CSSPEnums.Tests
                     switch ((MWQMSiteLatestClassificationEnum)i)
                     {
                         case MWQMSiteLatestClassificationEnum.Approved:
-                            Assert.AreEqual(CSSPEnumsRes.MWQMSiteLatestClassificationEnumApproved, retStr);
+                            Assert.Equal(CSSPEnumsRes.MWQMSiteLatestClassificationEnumApproved, retStr);
                             break;
                         case MWQMSiteLatestClassificationEnum.ConditionallyApproved:
-                            Assert.AreEqual(CSSPEnumsRes.MWQMSiteLatestClassificationEnumConditionallyApproved, retStr);
+                            Assert.Equal(CSSPEnumsRes.MWQMSiteLatestClassificationEnumConditionallyApproved, retStr);
                             break;
                         case MWQMSiteLatestClassificationEnum.Restricted:
-                            Assert.AreEqual(CSSPEnumsRes.MWQMSiteLatestClassificationEnumRestricted, retStr);
+                            Assert.Equal(CSSPEnumsRes.MWQMSiteLatestClassificationEnumRestricted, retStr);
                             break;
                         case MWQMSiteLatestClassificationEnum.ConditionallyRestricted:
-                            Assert.AreEqual(CSSPEnumsRes.MWQMSiteLatestClassificationEnumConditionallyRestricted, retStr);
+                            Assert.Equal(CSSPEnumsRes.MWQMSiteLatestClassificationEnumConditionallyRestricted, retStr);
                             break;
                         case MWQMSiteLatestClassificationEnum.Prohibited:
-                            Assert.AreEqual(CSSPEnumsRes.MWQMSiteLatestClassificationEnumProhibited, retStr);
+                            Assert.Equal(CSSPEnumsRes.MWQMSiteLatestClassificationEnumProhibited, retStr);
                             break;
                         case MWQMSiteLatestClassificationEnum.Unclassified:
-                            Assert.AreEqual(CSSPEnumsRes.MWQMSiteLatestClassificationEnumUnclassified, retStr);
+                            Assert.Equal(CSSPEnumsRes.MWQMSiteLatestClassificationEnumUnclassified, retStr);
                             break;
                         default:
-                            Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                            Assert.Equal(CSSPEnumsRes.Empty, retStr);
                             break;
                     }
                 }
             }
         }
-        [TestMethod]
+        [Fact]
         public void Enums_GetEnumText_PolSourceInactiveReasonEnum_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
@@ -2040,13 +2044,13 @@ namespace CSSPEnums.Tests
                 SetupTest(culture);
 
                 string retStr = enums.GetResValueForTypeAndID(typeof(PolSourceInactiveReasonEnum), -100);
-                Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                Assert.Equal(CSSPEnumsRes.Empty, retStr);
 
                 retStr = enums.GetResValueForTypeAndID(typeof(PolSourceInactiveReasonEnum), 10000000);
-                Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                Assert.Equal(CSSPEnumsRes.Empty, retStr);
 
                 retStr = enums.GetResValueForTypeAndID(typeof(PolSourceInactiveReasonEnum), null);
-                Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                Assert.Equal(CSSPEnumsRes.Empty, retStr);
 
                 foreach (int i in Enum.GetValues(typeof(PolSourceInactiveReasonEnum)))
                 {
@@ -2055,22 +2059,22 @@ namespace CSSPEnums.Tests
                     switch ((PolSourceInactiveReasonEnum)i)
                     {
                         case PolSourceInactiveReasonEnum.Abandoned:
-                            Assert.AreEqual(CSSPEnumsRes.PolSourceInactiveReasonEnumAbandoned, retStr);
+                            Assert.Equal(CSSPEnumsRes.PolSourceInactiveReasonEnumAbandoned, retStr);
                             break;
                         case PolSourceInactiveReasonEnum.Closed:
-                            Assert.AreEqual(CSSPEnumsRes.PolSourceInactiveReasonEnumClosed, retStr);
+                            Assert.Equal(CSSPEnumsRes.PolSourceInactiveReasonEnumClosed, retStr);
                             break;
                         case PolSourceInactiveReasonEnum.Removed:
-                            Assert.AreEqual(CSSPEnumsRes.PolSourceInactiveReasonEnumRemoved, retStr);
+                            Assert.Equal(CSSPEnumsRes.PolSourceInactiveReasonEnumRemoved, retStr);
                             break;
                         default:
-                            Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                            Assert.Equal(CSSPEnumsRes.Empty, retStr);
                             break;
                     }
                 }
             }
         }
-        [TestMethod]
+        [Fact]
         public void Enums_GetEnumText_PolSourceIssueRiskEnum_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
@@ -2078,13 +2082,13 @@ namespace CSSPEnums.Tests
                 SetupTest(culture);
 
                 string retStr = enums.GetResValueForTypeAndID(typeof(PolSourceIssueRiskEnum), -100);
-                Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                Assert.Equal(CSSPEnumsRes.Empty, retStr);
 
                 retStr = enums.GetResValueForTypeAndID(typeof(PolSourceIssueRiskEnum), 10000000);
-                Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                Assert.Equal(CSSPEnumsRes.Empty, retStr);
 
                 retStr = enums.GetResValueForTypeAndID(typeof(PolSourceIssueRiskEnum), null);
-                Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                Assert.Equal(CSSPEnumsRes.Empty, retStr);
 
                 foreach (int i in Enum.GetValues(typeof(PolSourceIssueRiskEnum)))
                 {
@@ -2093,22 +2097,22 @@ namespace CSSPEnums.Tests
                     switch ((PolSourceIssueRiskEnum)i)
                     {
                         case PolSourceIssueRiskEnum.LowRisk:
-                            Assert.AreEqual(CSSPEnumsRes.PolSourceIssueRiskEnumLowRisk, retStr);
+                            Assert.Equal(CSSPEnumsRes.PolSourceIssueRiskEnumLowRisk, retStr);
                             break;
                         case PolSourceIssueRiskEnum.ModerateRisk:
-                            Assert.AreEqual(CSSPEnumsRes.PolSourceIssueRiskEnumModerateRisk, retStr);
+                            Assert.Equal(CSSPEnumsRes.PolSourceIssueRiskEnumModerateRisk, retStr);
                             break;
                         case PolSourceIssueRiskEnum.HighRisk:
-                            Assert.AreEqual(CSSPEnumsRes.PolSourceIssueRiskEnumHighRisk, retStr);
+                            Assert.Equal(CSSPEnumsRes.PolSourceIssueRiskEnumHighRisk, retStr);
                             break;
                         default:
-                            Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                            Assert.Equal(CSSPEnumsRes.Empty, retStr);
                             break;
                     }
                 }
             }
         }
-        [TestMethod]
+        [Fact]
         public void Enums_GetEnumText_PositionEnum_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
@@ -2116,13 +2120,13 @@ namespace CSSPEnums.Tests
                 SetupTest(culture);
 
                 string retStr = enums.GetResValueForTypeAndID(typeof(PositionEnum), -100);
-                Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                Assert.Equal(CSSPEnumsRes.Empty, retStr);
 
                 retStr = enums.GetResValueForTypeAndID(typeof(PositionEnum), 10000000);
-                Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                Assert.Equal(CSSPEnumsRes.Empty, retStr);
 
                 retStr = enums.GetResValueForTypeAndID(typeof(PositionEnum), null);
-                Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                Assert.Equal(CSSPEnumsRes.Empty, retStr);
 
                 foreach (int i in Enum.GetValues(typeof(PositionEnum)))
                 {
@@ -2131,25 +2135,25 @@ namespace CSSPEnums.Tests
                     switch ((PositionEnum)i)
                     {
                         case PositionEnum.LeftBottom:
-                            Assert.AreEqual(CSSPEnumsRes.PositionEnumLeftBottom, retStr);
+                            Assert.Equal(CSSPEnumsRes.PositionEnumLeftBottom, retStr);
                             break;
                         case PositionEnum.RightBottom:
-                            Assert.AreEqual(CSSPEnumsRes.PositionEnumRightBottom, retStr);
+                            Assert.Equal(CSSPEnumsRes.PositionEnumRightBottom, retStr);
                             break;
                         case PositionEnum.LeftTop:
-                            Assert.AreEqual(CSSPEnumsRes.PositionEnumLeftTop, retStr);
+                            Assert.Equal(CSSPEnumsRes.PositionEnumLeftTop, retStr);
                             break;
                         case PositionEnum.RightTop:
-                            Assert.AreEqual(CSSPEnumsRes.PositionEnumRightTop, retStr);
+                            Assert.Equal(CSSPEnumsRes.PositionEnumRightTop, retStr);
                             break;
                         default:
-                            Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                            Assert.Equal(CSSPEnumsRes.Empty, retStr);
                             break;
                     }
                 }
             }
         }
-        [TestMethod]
+        [Fact]
         public void Enums_GetEnumText_PreliminaryTreatmentTypeEnum_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
@@ -2157,13 +2161,13 @@ namespace CSSPEnums.Tests
                 SetupTest(culture);
 
                 string retStr = enums.GetResValueForTypeAndID(typeof(PreliminaryTreatmentTypeEnum), -100);
-                Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                Assert.Equal(CSSPEnumsRes.Empty, retStr);
 
                 retStr = enums.GetResValueForTypeAndID(typeof(PreliminaryTreatmentTypeEnum), 10000000);
-                Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                Assert.Equal(CSSPEnumsRes.Empty, retStr);
 
                 retStr = enums.GetResValueForTypeAndID(typeof(PreliminaryTreatmentTypeEnum), null);
-                Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                Assert.Equal(CSSPEnumsRes.Empty, retStr);
 
                 foreach (int i in Enum.GetValues(typeof(PreliminaryTreatmentTypeEnum)))
                 {
@@ -2172,25 +2176,25 @@ namespace CSSPEnums.Tests
                     switch ((PreliminaryTreatmentTypeEnum)i)
                     {
                         case PreliminaryTreatmentTypeEnum.NotApplicable:
-                            Assert.AreEqual(CSSPEnumsRes.PreliminaryTreatmentTypeEnumNotApplicable, retStr);
+                            Assert.Equal(CSSPEnumsRes.PreliminaryTreatmentTypeEnumNotApplicable, retStr);
                             break;
                         case PreliminaryTreatmentTypeEnum.BarScreen:
-                            Assert.AreEqual(CSSPEnumsRes.PreliminaryTreatmentTypeEnumBarScreen, retStr);
+                            Assert.Equal(CSSPEnumsRes.PreliminaryTreatmentTypeEnumBarScreen, retStr);
                             break;
                         case PreliminaryTreatmentTypeEnum.Grinder:
-                            Assert.AreEqual(CSSPEnumsRes.PreliminaryTreatmentTypeEnumGrinder, retStr);
+                            Assert.Equal(CSSPEnumsRes.PreliminaryTreatmentTypeEnumGrinder, retStr);
                             break;
                         case PreliminaryTreatmentTypeEnum.MechanicalScreening:
-                            Assert.AreEqual(CSSPEnumsRes.PreliminaryTreatmentTypeEnumMechanicalScreening, retStr);
+                            Assert.Equal(CSSPEnumsRes.PreliminaryTreatmentTypeEnumMechanicalScreening, retStr);
                             break;
                         default:
-                            Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                            Assert.Equal(CSSPEnumsRes.Empty, retStr);
                             break;
                     }
                 }
             }
         }
-        [TestMethod]
+        [Fact]
         public void Enums_GetEnumText_PrimaryTreatmentTypeEnum_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
@@ -2198,13 +2202,13 @@ namespace CSSPEnums.Tests
                 SetupTest(culture);
 
                 string retStr = enums.GetResValueForTypeAndID(typeof(PrimaryTreatmentTypeEnum), -100);
-                Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                Assert.Equal(CSSPEnumsRes.Empty, retStr);
 
                 retStr = enums.GetResValueForTypeAndID(typeof(PrimaryTreatmentTypeEnum), 10000000);
-                Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                Assert.Equal(CSSPEnumsRes.Empty, retStr);
 
                 retStr = enums.GetResValueForTypeAndID(typeof(PrimaryTreatmentTypeEnum), null);
-                Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                Assert.Equal(CSSPEnumsRes.Empty, retStr);
 
                 foreach (int i in Enum.GetValues(typeof(PrimaryTreatmentTypeEnum)))
                 {
@@ -2213,28 +2217,28 @@ namespace CSSPEnums.Tests
                     switch ((PrimaryTreatmentTypeEnum)i)
                     {
                         case PrimaryTreatmentTypeEnum.NotApplicable:
-                            Assert.AreEqual(CSSPEnumsRes.PrimaryTreatmentTypeEnumNotApplicable, retStr);
+                            Assert.Equal(CSSPEnumsRes.PrimaryTreatmentTypeEnumNotApplicable, retStr);
                             break;
                         case PrimaryTreatmentTypeEnum.Sedimentation:
-                            Assert.AreEqual(CSSPEnumsRes.PrimaryTreatmentTypeEnumSedimentation, retStr);
+                            Assert.Equal(CSSPEnumsRes.PrimaryTreatmentTypeEnumSedimentation, retStr);
                             break;
                         case PrimaryTreatmentTypeEnum.ChemicalCoagulation:
-                            Assert.AreEqual(CSSPEnumsRes.PrimaryTreatmentTypeEnumChemicalCoagulation, retStr);
+                            Assert.Equal(CSSPEnumsRes.PrimaryTreatmentTypeEnumChemicalCoagulation, retStr);
                             break;
                         case PrimaryTreatmentTypeEnum.Filtration:
-                            Assert.AreEqual(CSSPEnumsRes.PrimaryTreatmentTypeEnumFiltration, retStr);
+                            Assert.Equal(CSSPEnumsRes.PrimaryTreatmentTypeEnumFiltration, retStr);
                             break;
                         case PrimaryTreatmentTypeEnum.PrimaryClarification:
-                            Assert.AreEqual(CSSPEnumsRes.PrimaryTreatmentTypeEnumPrimaryClarification, retStr);
+                            Assert.Equal(CSSPEnumsRes.PrimaryTreatmentTypeEnumPrimaryClarification, retStr);
                             break;
                         default:
-                            Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                            Assert.Equal(CSSPEnumsRes.Empty, retStr);
                             break;
                     }
                 }
             }
         }
-        [TestMethod]
+        [Fact]
         public void Enums_GetEnumText_PropertyTypeEnum_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
@@ -2242,13 +2246,13 @@ namespace CSSPEnums.Tests
                 SetupTest(culture);
 
                 string retStr = enums.GetResValueForTypeAndID(typeof(PropertyTypeEnum), -100);
-                Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                Assert.Equal(CSSPEnumsRes.Empty, retStr);
 
                 retStr = enums.GetResValueForTypeAndID(typeof(PropertyTypeEnum), 10000000);
-                Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                Assert.Equal(CSSPEnumsRes.Empty, retStr);
 
                 retStr = enums.GetResValueForTypeAndID(typeof(PropertyTypeEnum), null);
-                Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                Assert.Equal(CSSPEnumsRes.Empty, retStr);
 
                 foreach (int i in Enum.GetValues(typeof(PropertyTypeEnum)))
                 {
@@ -2257,31 +2261,31 @@ namespace CSSPEnums.Tests
                     switch ((PropertyTypeEnum)i)
                     {
                         case PropertyTypeEnum.Int:
-                            Assert.AreEqual(CSSPEnumsRes.PropertyTypeEnumInt, retStr);
+                            Assert.Equal(CSSPEnumsRes.PropertyTypeEnumInt, retStr);
                             break;
                         case PropertyTypeEnum.Double:
-                            Assert.AreEqual(CSSPEnumsRes.PropertyTypeEnumDouble, retStr);
+                            Assert.Equal(CSSPEnumsRes.PropertyTypeEnumDouble, retStr);
                             break;
                         case PropertyTypeEnum.String:
-                            Assert.AreEqual(CSSPEnumsRes.PropertyTypeEnumString, retStr);
+                            Assert.Equal(CSSPEnumsRes.PropertyTypeEnumString, retStr);
                             break;
                         case PropertyTypeEnum.Boolean:
-                            Assert.AreEqual(CSSPEnumsRes.PropertyTypeEnumBoolean, retStr);
+                            Assert.Equal(CSSPEnumsRes.PropertyTypeEnumBoolean, retStr);
                             break;
                         case PropertyTypeEnum.DateTime:
-                            Assert.AreEqual(CSSPEnumsRes.PropertyTypeEnumDateTime, retStr);
+                            Assert.Equal(CSSPEnumsRes.PropertyTypeEnumDateTime, retStr);
                             break;
                         case PropertyTypeEnum.Enum:
-                            Assert.AreEqual(CSSPEnumsRes.PropertyTypeEnumEnum, retStr);
+                            Assert.Equal(CSSPEnumsRes.PropertyTypeEnumEnum, retStr);
                             break;
                         default:
-                            Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                            Assert.Equal(CSSPEnumsRes.Empty, retStr);
                             break;
                     }
                 }
             }
         }
-        [TestMethod]
+        [Fact]
         public void Enums_GetEnumText_ReportConditionEnum_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
@@ -2289,13 +2293,13 @@ namespace CSSPEnums.Tests
                 SetupTest(culture);
 
                 string retStr = enums.GetResValueForTypeAndID(typeof(ReportConditionEnum), -100);
-                Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                Assert.Equal(CSSPEnumsRes.Empty, retStr);
 
                 retStr = enums.GetResValueForTypeAndID(typeof(ReportConditionEnum), 10000000);
-                Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                Assert.Equal(CSSPEnumsRes.Empty, retStr);
 
                 retStr = enums.GetResValueForTypeAndID(typeof(ReportConditionEnum), null);
-                Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                Assert.Equal(CSSPEnumsRes.Empty, retStr);
 
                 foreach (int i in Enum.GetValues(typeof(ReportConditionEnum)))
                 {
@@ -2304,37 +2308,37 @@ namespace CSSPEnums.Tests
                     switch ((ReportConditionEnum)i)
                     {
                         case ReportConditionEnum.ReportConditionTrue:
-                            Assert.AreEqual(CSSPEnumsRes.ReportConditionEnumReportConditionTrue, retStr);
+                            Assert.Equal(CSSPEnumsRes.ReportConditionEnumReportConditionTrue, retStr);
                             break;
                         case ReportConditionEnum.ReportConditionFalse:
-                            Assert.AreEqual(CSSPEnumsRes.ReportConditionEnumReportConditionFalse, retStr);
+                            Assert.Equal(CSSPEnumsRes.ReportConditionEnumReportConditionFalse, retStr);
                             break;
                         case ReportConditionEnum.ReportConditionContain:
-                            Assert.AreEqual(CSSPEnumsRes.ReportConditionEnumReportConditionContain, retStr);
+                            Assert.Equal(CSSPEnumsRes.ReportConditionEnumReportConditionContain, retStr);
                             break;
                         case ReportConditionEnum.ReportConditionStart:
-                            Assert.AreEqual(CSSPEnumsRes.ReportConditionEnumReportConditionStart, retStr);
+                            Assert.Equal(CSSPEnumsRes.ReportConditionEnumReportConditionStart, retStr);
                             break;
                         case ReportConditionEnum.ReportConditionEnd:
-                            Assert.AreEqual(CSSPEnumsRes.ReportConditionEnumReportConditionEnd, retStr);
+                            Assert.Equal(CSSPEnumsRes.ReportConditionEnumReportConditionEnd, retStr);
                             break;
                         case ReportConditionEnum.ReportConditionBigger:
-                            Assert.AreEqual(CSSPEnumsRes.ReportConditionEnumReportConditionBigger, retStr);
+                            Assert.Equal(CSSPEnumsRes.ReportConditionEnumReportConditionBigger, retStr);
                             break;
                         case ReportConditionEnum.ReportConditionSmaller:
-                            Assert.AreEqual(CSSPEnumsRes.ReportConditionEnumReportConditionSmaller, retStr);
+                            Assert.Equal(CSSPEnumsRes.ReportConditionEnumReportConditionSmaller, retStr);
                             break;
                         case ReportConditionEnum.ReportConditionEqual:
-                            Assert.AreEqual(CSSPEnumsRes.ReportConditionEnumReportConditionEqual, retStr);
+                            Assert.Equal(CSSPEnumsRes.ReportConditionEnumReportConditionEqual, retStr);
                             break;
                         default:
-                            Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                            Assert.Equal(CSSPEnumsRes.Empty, retStr);
                             break;
                     }
                 }
             }
         }
-        [TestMethod]
+        [Fact]
         public void Enums_GetEnumText_ReportFieldTypeEnum_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
@@ -2342,13 +2346,13 @@ namespace CSSPEnums.Tests
                 SetupTest(culture);
 
                 string retStr = enums.GetResValueForTypeAndID(typeof(ReportFieldTypeEnum), -100);
-                Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                Assert.Equal(CSSPEnumsRes.Empty, retStr);
 
                 retStr = enums.GetResValueForTypeAndID(typeof(ReportFieldTypeEnum), 10000000);
-                Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                Assert.Equal(CSSPEnumsRes.Empty, retStr);
 
                 retStr = enums.GetResValueForTypeAndID(typeof(ReportFieldTypeEnum), null);
-                Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                Assert.Equal(CSSPEnumsRes.Empty, retStr);
 
                 foreach (int i in Enum.GetValues(typeof(ReportFieldTypeEnum)))
                 {
@@ -2357,151 +2361,151 @@ namespace CSSPEnums.Tests
                     switch ((ReportFieldTypeEnum)i)
                     {
                         case ReportFieldTypeEnum.NumberWhole:
-                            Assert.AreEqual(CSSPEnumsRes.ReportFieldTypeEnumNumberWhole, retStr);
+                            Assert.Equal(CSSPEnumsRes.ReportFieldTypeEnumNumberWhole, retStr);
                             break;
                         case ReportFieldTypeEnum.NumberWithDecimal:
-                            Assert.AreEqual(CSSPEnumsRes.ReportFieldTypeEnumNumberWithDecimal, retStr);
+                            Assert.Equal(CSSPEnumsRes.ReportFieldTypeEnumNumberWithDecimal, retStr);
                             break;
                         case ReportFieldTypeEnum.DateAndTime:
-                            Assert.AreEqual(CSSPEnumsRes.ReportFieldTypeEnumDateAndTime, retStr);
+                            Assert.Equal(CSSPEnumsRes.ReportFieldTypeEnumDateAndTime, retStr);
                             break;
                         case ReportFieldTypeEnum.Text:
-                            Assert.AreEqual(CSSPEnumsRes.ReportFieldTypeEnumText, retStr);
+                            Assert.Equal(CSSPEnumsRes.ReportFieldTypeEnumText, retStr);
                             break;
                         case ReportFieldTypeEnum.TrueOrFalse:
-                            Assert.AreEqual(CSSPEnumsRes.ReportFieldTypeEnumTrueOrFalse, retStr);
+                            Assert.Equal(CSSPEnumsRes.ReportFieldTypeEnumTrueOrFalse, retStr);
                             break;
                         case ReportFieldTypeEnum.FilePurpose:
-                            Assert.AreEqual(CSSPEnumsRes.ReportFieldTypeEnumFilePurpose, retStr);
+                            Assert.Equal(CSSPEnumsRes.ReportFieldTypeEnumFilePurpose, retStr);
                             break;
                         case ReportFieldTypeEnum.FileType:
-                            Assert.AreEqual(CSSPEnumsRes.ReportFieldTypeEnumFileType, retStr);
+                            Assert.Equal(CSSPEnumsRes.ReportFieldTypeEnumFileType, retStr);
                             break;
                         case ReportFieldTypeEnum.TranslationStatus:
-                            Assert.AreEqual(CSSPEnumsRes.ReportFieldTypeEnumTranslationStatus, retStr);
+                            Assert.Equal(CSSPEnumsRes.ReportFieldTypeEnumTranslationStatus, retStr);
                             break;
                         case ReportFieldTypeEnum.BoxModelResultType:
-                            Assert.AreEqual(CSSPEnumsRes.ReportFieldTypeEnumBoxModelResultType, retStr);
+                            Assert.Equal(CSSPEnumsRes.ReportFieldTypeEnumBoxModelResultType, retStr);
                             break;
                         case ReportFieldTypeEnum.InfrastructureType:
-                            Assert.AreEqual(CSSPEnumsRes.ReportFieldTypeEnumInfrastructureType, retStr);
+                            Assert.Equal(CSSPEnumsRes.ReportFieldTypeEnumInfrastructureType, retStr);
                             break;
                         case ReportFieldTypeEnum.FacilityType:
-                            Assert.AreEqual(CSSPEnumsRes.ReportFieldTypeEnumFacilityType, retStr);
+                            Assert.Equal(CSSPEnumsRes.ReportFieldTypeEnumFacilityType, retStr);
                             break;
                         case ReportFieldTypeEnum.AerationType:
-                            Assert.AreEqual(CSSPEnumsRes.ReportFieldTypeEnumAerationType, retStr);
+                            Assert.Equal(CSSPEnumsRes.ReportFieldTypeEnumAerationType, retStr);
                             break;
                         case ReportFieldTypeEnum.PreliminaryTreatmentType:
-                            Assert.AreEqual(CSSPEnumsRes.ReportFieldTypeEnumPreliminaryTreatmentType, retStr);
+                            Assert.Equal(CSSPEnumsRes.ReportFieldTypeEnumPreliminaryTreatmentType, retStr);
                             break;
                         case ReportFieldTypeEnum.PrimaryTreatmentType:
-                            Assert.AreEqual(CSSPEnumsRes.ReportFieldTypeEnumPrimaryTreatmentType, retStr);
+                            Assert.Equal(CSSPEnumsRes.ReportFieldTypeEnumPrimaryTreatmentType, retStr);
                             break;
                         case ReportFieldTypeEnum.SecondaryTreatmentType:
-                            Assert.AreEqual(CSSPEnumsRes.ReportFieldTypeEnumSecondaryTreatmentType, retStr);
+                            Assert.Equal(CSSPEnumsRes.ReportFieldTypeEnumSecondaryTreatmentType, retStr);
                             break;
                         case ReportFieldTypeEnum.TertiaryTreatmentType:
-                            Assert.AreEqual(CSSPEnumsRes.ReportFieldTypeEnumTertiaryTreatmentType, retStr);
+                            Assert.Equal(CSSPEnumsRes.ReportFieldTypeEnumTertiaryTreatmentType, retStr);
                             break;
                         case ReportFieldTypeEnum.TreatmentType:
-                            Assert.AreEqual(CSSPEnumsRes.ReportFieldTypeEnumTreatmentType, retStr);
+                            Assert.Equal(CSSPEnumsRes.ReportFieldTypeEnumTreatmentType, retStr);
                             break;
                         case ReportFieldTypeEnum.DisinfectionType:
-                            Assert.AreEqual(CSSPEnumsRes.ReportFieldTypeEnumDisinfectionType, retStr);
+                            Assert.Equal(CSSPEnumsRes.ReportFieldTypeEnumDisinfectionType, retStr);
                             break;
                         case ReportFieldTypeEnum.CollectionSystemType:
-                            Assert.AreEqual(CSSPEnumsRes.ReportFieldTypeEnumCollectionSystemType, retStr);
+                            Assert.Equal(CSSPEnumsRes.ReportFieldTypeEnumCollectionSystemType, retStr);
                             break;
                         case ReportFieldTypeEnum.AlarmSystemType:
-                            Assert.AreEqual(CSSPEnumsRes.ReportFieldTypeEnumAlarmSystemType, retStr);
+                            Assert.Equal(CSSPEnumsRes.ReportFieldTypeEnumAlarmSystemType, retStr);
                             break;
                         case ReportFieldTypeEnum.ScenarioStatus:
-                            Assert.AreEqual(CSSPEnumsRes.ReportFieldTypeEnumScenarioStatus, retStr);
+                            Assert.Equal(CSSPEnumsRes.ReportFieldTypeEnumScenarioStatus, retStr);
                             break;
                         case ReportFieldTypeEnum.StorageDataType:
-                            Assert.AreEqual(CSSPEnumsRes.ReportFieldTypeEnumStorageDataType, retStr);
+                            Assert.Equal(CSSPEnumsRes.ReportFieldTypeEnumStorageDataType, retStr);
                             break;
                         case ReportFieldTypeEnum.Language:
-                            Assert.AreEqual(CSSPEnumsRes.ReportFieldTypeEnumLanguage, retStr);
+                            Assert.Equal(CSSPEnumsRes.ReportFieldTypeEnumLanguage, retStr);
                             break;
                         case ReportFieldTypeEnum.SampleType:
-                            Assert.AreEqual(CSSPEnumsRes.ReportFieldTypeEnumSampleType, retStr);
+                            Assert.Equal(CSSPEnumsRes.ReportFieldTypeEnumSampleType, retStr);
                             break;
                         case ReportFieldTypeEnum.BeaufortScale:
-                            Assert.AreEqual(CSSPEnumsRes.ReportFieldTypeEnumBeaufortScale, retStr);
+                            Assert.Equal(CSSPEnumsRes.ReportFieldTypeEnumBeaufortScale, retStr);
                             break;
                         case ReportFieldTypeEnum.AnalyzeMethod:
-                            Assert.AreEqual(CSSPEnumsRes.ReportFieldTypeEnumAnalyzeMethod, retStr);
+                            Assert.Equal(CSSPEnumsRes.ReportFieldTypeEnumAnalyzeMethod, retStr);
                             break;
                         case ReportFieldTypeEnum.SampleMatrix:
-                            Assert.AreEqual(CSSPEnumsRes.ReportFieldTypeEnumSampleMatrix, retStr);
+                            Assert.Equal(CSSPEnumsRes.ReportFieldTypeEnumSampleMatrix, retStr);
                             break;
                         case ReportFieldTypeEnum.Laboratory:
-                            Assert.AreEqual(CSSPEnumsRes.ReportFieldTypeEnumLaboratory, retStr);
+                            Assert.Equal(CSSPEnumsRes.ReportFieldTypeEnumLaboratory, retStr);
                             break;
                         case ReportFieldTypeEnum.SampleStatus:
-                            Assert.AreEqual(CSSPEnumsRes.ReportFieldTypeEnumSampleStatus, retStr);
+                            Assert.Equal(CSSPEnumsRes.ReportFieldTypeEnumSampleStatus, retStr);
                             break;
                         case ReportFieldTypeEnum.SamplingPlanType:
-                            Assert.AreEqual(CSSPEnumsRes.ReportFieldTypeEnumSamplingPlanType, retStr);
+                            Assert.Equal(CSSPEnumsRes.ReportFieldTypeEnumSamplingPlanType, retStr);
                             break;
                         case ReportFieldTypeEnum.LabSheetSampleType:
-                            Assert.AreEqual(CSSPEnumsRes.ReportFieldTypeEnumLabSheetSampleType, retStr);
+                            Assert.Equal(CSSPEnumsRes.ReportFieldTypeEnumLabSheetSampleType, retStr);
                             break;
                         case ReportFieldTypeEnum.LabSheetType:
-                            Assert.AreEqual(CSSPEnumsRes.ReportFieldTypeEnumLabSheetType, retStr);
+                            Assert.Equal(CSSPEnumsRes.ReportFieldTypeEnumLabSheetType, retStr);
                             break;
                         case ReportFieldTypeEnum.LabSheetStatus:
-                            Assert.AreEqual(CSSPEnumsRes.ReportFieldTypeEnumLabSheetStatus, retStr);
+                            Assert.Equal(CSSPEnumsRes.ReportFieldTypeEnumLabSheetStatus, retStr);
                             break;
                         case ReportFieldTypeEnum.PolSourceInactiveReason:
-                            Assert.AreEqual(CSSPEnumsRes.ReportFieldTypeEnumPolSourceInactiveReason, retStr);
+                            Assert.Equal(CSSPEnumsRes.ReportFieldTypeEnumPolSourceInactiveReason, retStr);
                             break;
                         case ReportFieldTypeEnum.PolSourceObsInfo:
-                            Assert.AreEqual(CSSPEnumsRes.ReportFieldTypeEnumPolSourceObsInfo, retStr);
+                            Assert.Equal(CSSPEnumsRes.ReportFieldTypeEnumPolSourceObsInfo, retStr);
                             break;
                         case ReportFieldTypeEnum.AddressType:
-                            Assert.AreEqual(CSSPEnumsRes.ReportFieldTypeEnumAddressType, retStr);
+                            Assert.Equal(CSSPEnumsRes.ReportFieldTypeEnumAddressType, retStr);
                             break;
                         case ReportFieldTypeEnum.StreetType:
-                            Assert.AreEqual(CSSPEnumsRes.ReportFieldTypeEnumStreetType, retStr);
+                            Assert.Equal(CSSPEnumsRes.ReportFieldTypeEnumStreetType, retStr);
                             break;
                         case ReportFieldTypeEnum.ContactTitle:
-                            Assert.AreEqual(CSSPEnumsRes.ReportFieldTypeEnumContactTitle, retStr);
+                            Assert.Equal(CSSPEnumsRes.ReportFieldTypeEnumContactTitle, retStr);
                             break;
                         case ReportFieldTypeEnum.EmailType:
-                            Assert.AreEqual(CSSPEnumsRes.ReportFieldTypeEnumEmailType, retStr);
+                            Assert.Equal(CSSPEnumsRes.ReportFieldTypeEnumEmailType, retStr);
                             break;
                         case ReportFieldTypeEnum.TelType:
-                            Assert.AreEqual(CSSPEnumsRes.ReportFieldTypeEnumTelType, retStr);
+                            Assert.Equal(CSSPEnumsRes.ReportFieldTypeEnumTelType, retStr);
                             break;
                         case ReportFieldTypeEnum.TideText:
-                            Assert.AreEqual(CSSPEnumsRes.ReportFieldTypeEnumTideText, retStr);
+                            Assert.Equal(CSSPEnumsRes.ReportFieldTypeEnumTideText, retStr);
                             break;
                         case ReportFieldTypeEnum.TideDataType:
-                            Assert.AreEqual(CSSPEnumsRes.ReportFieldTypeEnumTideDataType, retStr);
+                            Assert.Equal(CSSPEnumsRes.ReportFieldTypeEnumTideDataType, retStr);
                             break;
                         case ReportFieldTypeEnum.SpecialTableType:
-                            Assert.AreEqual(CSSPEnumsRes.ReportFieldTypeEnumSpecialTableType, retStr);
+                            Assert.Equal(CSSPEnumsRes.ReportFieldTypeEnumSpecialTableType, retStr);
                             break;
                         case ReportFieldTypeEnum.MWQMSiteLatestClassification:
-                            Assert.AreEqual(CSSPEnumsRes.ReportFieldTypeEnumMWQMSiteLatestClassification, retStr);
+                            Assert.Equal(CSSPEnumsRes.ReportFieldTypeEnumMWQMSiteLatestClassification, retStr);
                             break;
                         case ReportFieldTypeEnum.PolSourceIssueRisk:
-                            Assert.AreEqual(CSSPEnumsRes.ReportFieldTypeEnumPolSourceIssueRisk, retStr);
+                            Assert.Equal(CSSPEnumsRes.ReportFieldTypeEnumPolSourceIssueRisk, retStr);
                             break;
                         case ReportFieldTypeEnum.MikeScenarioSpecialResultKMLType:
-                            Assert.AreEqual(CSSPEnumsRes.ReportFieldTypeEnumMikeScenarioSpecialResultKMLType, retStr);
+                            Assert.Equal(CSSPEnumsRes.ReportFieldTypeEnumMikeScenarioSpecialResultKMLType, retStr);
                             break;
                         default:
-                            Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                            Assert.Equal(CSSPEnumsRes.Empty, retStr);
                             break;
                     }
                 }
             }
         }
-        [TestMethod]
+        [Fact]
         public void Enums_GetEnumText_ReportFileTypeEnum_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
@@ -2509,13 +2513,13 @@ namespace CSSPEnums.Tests
                 SetupTest(culture);
 
                 string retStr = enums.GetResValueForTypeAndID(typeof(ReportFileTypeEnum), -100);
-                Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                Assert.Equal(CSSPEnumsRes.Empty, retStr);
 
                 retStr = enums.GetResValueForTypeAndID(typeof(ReportFileTypeEnum), 10000000);
-                Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                Assert.Equal(CSSPEnumsRes.Empty, retStr);
 
                 retStr = enums.GetResValueForTypeAndID(typeof(ReportFileTypeEnum), null);
-                Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                Assert.Equal(CSSPEnumsRes.Empty, retStr);
 
                 foreach (int i in Enum.GetValues(typeof(ReportFileTypeEnum)))
                 {
@@ -2524,25 +2528,25 @@ namespace CSSPEnums.Tests
                     switch ((ReportFileTypeEnum)i)
                     {
                         case ReportFileTypeEnum.CSV:
-                            Assert.AreEqual(CSSPEnumsRes.ReportFileTypeEnumCSV, retStr);
+                            Assert.Equal(CSSPEnumsRes.ReportFileTypeEnumCSV, retStr);
                             break;
                         case ReportFileTypeEnum.Word:
-                            Assert.AreEqual(CSSPEnumsRes.ReportFileTypeEnumWord, retStr);
+                            Assert.Equal(CSSPEnumsRes.ReportFileTypeEnumWord, retStr);
                             break;
                         case ReportFileTypeEnum.Excel:
-                            Assert.AreEqual(CSSPEnumsRes.ReportFileTypeEnumExcel, retStr);
+                            Assert.Equal(CSSPEnumsRes.ReportFileTypeEnumExcel, retStr);
                             break;
                         case ReportFileTypeEnum.KML:
-                            Assert.AreEqual(CSSPEnumsRes.ReportFileTypeEnumKML, retStr);
+                            Assert.Equal(CSSPEnumsRes.ReportFileTypeEnumKML, retStr);
                             break;
                         default:
-                            Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                            Assert.Equal(CSSPEnumsRes.Empty, retStr);
                             break;
                     }
                 }
             }
         }
-        [TestMethod]
+        [Fact]
         public void Enums_GetEnumText_ReportFormatingDateEnum_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
@@ -2550,13 +2554,13 @@ namespace CSSPEnums.Tests
                 SetupTest(culture);
 
                 string retStr = enums.GetResValueForTypeAndID(typeof(ReportFormatingDateEnum), -100);
-                Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                Assert.Equal(CSSPEnumsRes.Empty, retStr);
 
                 retStr = enums.GetResValueForTypeAndID(typeof(ReportFormatingDateEnum), 10000000);
-                Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                Assert.Equal(CSSPEnumsRes.Empty, retStr);
 
                 retStr = enums.GetResValueForTypeAndID(typeof(ReportFormatingDateEnum), null);
-                Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                Assert.Equal(CSSPEnumsRes.Empty, retStr);
 
                 foreach (int i in Enum.GetValues(typeof(ReportFormatingDateEnum)))
                 {
@@ -2565,52 +2569,52 @@ namespace CSSPEnums.Tests
                     switch ((ReportFormatingDateEnum)i)
                     {
                         case ReportFormatingDateEnum.ReportFormatingDateYearOnly:
-                            Assert.AreEqual(CSSPEnumsRes.ReportFormatingDateEnumReportFormatingDateYearOnly, retStr);
+                            Assert.Equal(CSSPEnumsRes.ReportFormatingDateEnumReportFormatingDateYearOnly, retStr);
                             break;
                         case ReportFormatingDateEnum.ReportFormatingDateMonthDecimalOnly:
-                            Assert.AreEqual(CSSPEnumsRes.ReportFormatingDateEnumReportFormatingDateMonthDecimalOnly, retStr);
+                            Assert.Equal(CSSPEnumsRes.ReportFormatingDateEnumReportFormatingDateMonthDecimalOnly, retStr);
                             break;
                         case ReportFormatingDateEnum.ReportFormatingDateMonthShortTextOnly:
-                            Assert.AreEqual(CSSPEnumsRes.ReportFormatingDateEnumReportFormatingDateMonthShortTextOnly, retStr);
+                            Assert.Equal(CSSPEnumsRes.ReportFormatingDateEnumReportFormatingDateMonthShortTextOnly, retStr);
                             break;
                         case ReportFormatingDateEnum.ReportFormatingDateMonthFullTextOnly:
-                            Assert.AreEqual(CSSPEnumsRes.ReportFormatingDateEnumReportFormatingDateMonthFullTextOnly, retStr);
+                            Assert.Equal(CSSPEnumsRes.ReportFormatingDateEnumReportFormatingDateMonthFullTextOnly, retStr);
                             break;
                         case ReportFormatingDateEnum.ReportFormatingDateDayOnly:
-                            Assert.AreEqual(CSSPEnumsRes.ReportFormatingDateEnumReportFormatingDateDayOnly, retStr);
+                            Assert.Equal(CSSPEnumsRes.ReportFormatingDateEnumReportFormatingDateDayOnly, retStr);
                             break;
                         case ReportFormatingDateEnum.ReportFormatingDateHourOnly:
-                            Assert.AreEqual(CSSPEnumsRes.ReportFormatingDateEnumReportFormatingDateHourOnly, retStr);
+                            Assert.Equal(CSSPEnumsRes.ReportFormatingDateEnumReportFormatingDateHourOnly, retStr);
                             break;
                         case ReportFormatingDateEnum.ReportFormatingDateMinuteOnly:
-                            Assert.AreEqual(CSSPEnumsRes.ReportFormatingDateEnumReportFormatingDateMinuteOnly, retStr);
+                            Assert.Equal(CSSPEnumsRes.ReportFormatingDateEnumReportFormatingDateMinuteOnly, retStr);
                             break;
                         case ReportFormatingDateEnum.ReportFormatingDateYearMonthDecimalDay:
-                            Assert.AreEqual(CSSPEnumsRes.ReportFormatingDateEnumReportFormatingDateYearMonthDecimalDay, retStr);
+                            Assert.Equal(CSSPEnumsRes.ReportFormatingDateEnumReportFormatingDateYearMonthDecimalDay, retStr);
                             break;
                         case ReportFormatingDateEnum.ReportFormatingDateYearMonthShortTextDay:
-                            Assert.AreEqual(CSSPEnumsRes.ReportFormatingDateEnumReportFormatingDateYearMonthShortTextDay, retStr);
+                            Assert.Equal(CSSPEnumsRes.ReportFormatingDateEnumReportFormatingDateYearMonthShortTextDay, retStr);
                             break;
                         case ReportFormatingDateEnum.ReportFormatingDateYearMonthFullTextDay:
-                            Assert.AreEqual(CSSPEnumsRes.ReportFormatingDateEnumReportFormatingDateYearMonthFullTextDay, retStr);
+                            Assert.Equal(CSSPEnumsRes.ReportFormatingDateEnumReportFormatingDateYearMonthFullTextDay, retStr);
                             break;
                         case ReportFormatingDateEnum.ReportFormatingDateYearMonthDecimalDayHourMinute:
-                            Assert.AreEqual(CSSPEnumsRes.ReportFormatingDateEnumReportFormatingDateYearMonthDecimalDayHourMinute, retStr);
+                            Assert.Equal(CSSPEnumsRes.ReportFormatingDateEnumReportFormatingDateYearMonthDecimalDayHourMinute, retStr);
                             break;
                         case ReportFormatingDateEnum.ReportFormatingDateYearMonthShortTextDayHourMinute:
-                            Assert.AreEqual(CSSPEnumsRes.ReportFormatingDateEnumReportFormatingDateYearMonthShortTextDayHourMinute, retStr);
+                            Assert.Equal(CSSPEnumsRes.ReportFormatingDateEnumReportFormatingDateYearMonthShortTextDayHourMinute, retStr);
                             break;
                         case ReportFormatingDateEnum.ReportFormatingDateYearMonthFullTextDayHourMinute:
-                            Assert.AreEqual(CSSPEnumsRes.ReportFormatingDateEnumReportFormatingDateYearMonthFullTextDayHourMinute, retStr);
+                            Assert.Equal(CSSPEnumsRes.ReportFormatingDateEnumReportFormatingDateYearMonthFullTextDayHourMinute, retStr);
                             break;
                         default:
-                            Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                            Assert.Equal(CSSPEnumsRes.Empty, retStr);
                             break;
                     }
                 }
             }
         }
-        [TestMethod]
+        [Fact]
         public void Enums_GetEnumText_ReportFormatingNumberEnum_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
@@ -2618,13 +2622,13 @@ namespace CSSPEnums.Tests
                 SetupTest(culture);
 
                 string retStr = enums.GetResValueForTypeAndID(typeof(ReportFormatingNumberEnum), -100);
-                Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                Assert.Equal(CSSPEnumsRes.Empty, retStr);
 
                 retStr = enums.GetResValueForTypeAndID(typeof(ReportFormatingNumberEnum), 10000000);
-                Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                Assert.Equal(CSSPEnumsRes.Empty, retStr);
 
                 retStr = enums.GetResValueForTypeAndID(typeof(ReportFormatingNumberEnum), null);
-                Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                Assert.Equal(CSSPEnumsRes.Empty, retStr);
 
                 foreach (int i in Enum.GetValues(typeof(ReportFormatingNumberEnum)))
                 {
@@ -2633,55 +2637,55 @@ namespace CSSPEnums.Tests
                     switch ((ReportFormatingNumberEnum)i)
                     {
                         case ReportFormatingNumberEnum.ReportFormatingNumber0Decimal:
-                            Assert.AreEqual(CSSPEnumsRes.ReportFormatingNumberEnumReportFormatingNumber0Decimal, retStr);
+                            Assert.Equal(CSSPEnumsRes.ReportFormatingNumberEnumReportFormatingNumber0Decimal, retStr);
                             break;
                         case ReportFormatingNumberEnum.ReportFormatingNumber1Decimal:
-                            Assert.AreEqual(CSSPEnumsRes.ReportFormatingNumberEnumReportFormatingNumber1Decimal, retStr);
+                            Assert.Equal(CSSPEnumsRes.ReportFormatingNumberEnumReportFormatingNumber1Decimal, retStr);
                             break;
                         case ReportFormatingNumberEnum.ReportFormatingNumber2Decimal:
-                            Assert.AreEqual(CSSPEnumsRes.ReportFormatingNumberEnumReportFormatingNumber2Decimal, retStr);
+                            Assert.Equal(CSSPEnumsRes.ReportFormatingNumberEnumReportFormatingNumber2Decimal, retStr);
                             break;
                         case ReportFormatingNumberEnum.ReportFormatingNumber3Decimal:
-                            Assert.AreEqual(CSSPEnumsRes.ReportFormatingNumberEnumReportFormatingNumber3Decimal, retStr);
+                            Assert.Equal(CSSPEnumsRes.ReportFormatingNumberEnumReportFormatingNumber3Decimal, retStr);
                             break;
                         case ReportFormatingNumberEnum.ReportFormatingNumber4Decimal:
-                            Assert.AreEqual(CSSPEnumsRes.ReportFormatingNumberEnumReportFormatingNumber4Decimal, retStr);
+                            Assert.Equal(CSSPEnumsRes.ReportFormatingNumberEnumReportFormatingNumber4Decimal, retStr);
                             break;
                         case ReportFormatingNumberEnum.ReportFormatingNumber5Decimal:
-                            Assert.AreEqual(CSSPEnumsRes.ReportFormatingNumberEnumReportFormatingNumber5Decimal, retStr);
+                            Assert.Equal(CSSPEnumsRes.ReportFormatingNumberEnumReportFormatingNumber5Decimal, retStr);
                             break;
                         case ReportFormatingNumberEnum.ReportFormatingNumber6Decimal:
-                            Assert.AreEqual(CSSPEnumsRes.ReportFormatingNumberEnumReportFormatingNumber6Decimal, retStr);
+                            Assert.Equal(CSSPEnumsRes.ReportFormatingNumberEnumReportFormatingNumber6Decimal, retStr);
                             break;
                         case ReportFormatingNumberEnum.ReportFormatingNumberScientific0Decimal:
-                            Assert.AreEqual(CSSPEnumsRes.ReportFormatingNumberEnumReportFormatingNumberScientific0Decimal, retStr);
+                            Assert.Equal(CSSPEnumsRes.ReportFormatingNumberEnumReportFormatingNumberScientific0Decimal, retStr);
                             break;
                         case ReportFormatingNumberEnum.ReportFormatingNumberScientific1Decimal:
-                            Assert.AreEqual(CSSPEnumsRes.ReportFormatingNumberEnumReportFormatingNumberScientific1Decimal, retStr);
+                            Assert.Equal(CSSPEnumsRes.ReportFormatingNumberEnumReportFormatingNumberScientific1Decimal, retStr);
                             break;
                         case ReportFormatingNumberEnum.ReportFormatingNumberScientific2Decimal:
-                            Assert.AreEqual(CSSPEnumsRes.ReportFormatingNumberEnumReportFormatingNumberScientific2Decimal, retStr);
+                            Assert.Equal(CSSPEnumsRes.ReportFormatingNumberEnumReportFormatingNumberScientific2Decimal, retStr);
                             break;
                         case ReportFormatingNumberEnum.ReportFormatingNumberScientific3Decimal:
-                            Assert.AreEqual(CSSPEnumsRes.ReportFormatingNumberEnumReportFormatingNumberScientific3Decimal, retStr);
+                            Assert.Equal(CSSPEnumsRes.ReportFormatingNumberEnumReportFormatingNumberScientific3Decimal, retStr);
                             break;
                         case ReportFormatingNumberEnum.ReportFormatingNumberScientific4Decimal:
-                            Assert.AreEqual(CSSPEnumsRes.ReportFormatingNumberEnumReportFormatingNumberScientific4Decimal, retStr);
+                            Assert.Equal(CSSPEnumsRes.ReportFormatingNumberEnumReportFormatingNumberScientific4Decimal, retStr);
                             break;
                         case ReportFormatingNumberEnum.ReportFormatingNumberScientific5Decimal:
-                            Assert.AreEqual(CSSPEnumsRes.ReportFormatingNumberEnumReportFormatingNumberScientific5Decimal, retStr);
+                            Assert.Equal(CSSPEnumsRes.ReportFormatingNumberEnumReportFormatingNumberScientific5Decimal, retStr);
                             break;
                         case ReportFormatingNumberEnum.ReportFormatingNumberScientific6Decimal:
-                            Assert.AreEqual(CSSPEnumsRes.ReportFormatingNumberEnumReportFormatingNumberScientific6Decimal, retStr);
+                            Assert.Equal(CSSPEnumsRes.ReportFormatingNumberEnumReportFormatingNumberScientific6Decimal, retStr);
                             break;
                         default:
-                            Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                            Assert.Equal(CSSPEnumsRes.Empty, retStr);
                             break;
                     }
                 }
             }
         }
-        [TestMethod]
+        [Fact]
         public void Enums_GetEnumText_ReportGenerateObjectsKeywordEnum_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
@@ -2689,13 +2693,13 @@ namespace CSSPEnums.Tests
                 SetupTest(culture);
 
                 string retStr = enums.GetResValueForTypeAndID(typeof(ReportGenerateObjectsKeywordEnum), -100);
-                Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                Assert.Equal(CSSPEnumsRes.Empty, retStr);
 
                 retStr = enums.GetResValueForTypeAndID(typeof(ReportGenerateObjectsKeywordEnum), 10000000);
-                Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                Assert.Equal(CSSPEnumsRes.Empty, retStr);
 
                 retStr = enums.GetResValueForTypeAndID(typeof(ReportGenerateObjectsKeywordEnum), null);
-                Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                Assert.Equal(CSSPEnumsRes.Empty, retStr);
 
                 foreach (int i in Enum.GetValues(typeof(ReportGenerateObjectsKeywordEnum)))
                 {
@@ -2704,82 +2708,82 @@ namespace CSSPEnums.Tests
                     switch ((ReportGenerateObjectsKeywordEnum)i)
                     {
                         case ReportGenerateObjectsKeywordEnum.SUBSECTOR_RE_EVALUATION_COVER_PAGE:
-                            Assert.AreEqual(CSSPEnumsRes.ReportGenerateObjectsKeywordEnumSUBSECTOR_RE_EVALUATION_COVER_PAGE, retStr);
+                            Assert.Equal(CSSPEnumsRes.ReportGenerateObjectsKeywordEnumSUBSECTOR_RE_EVALUATION_COVER_PAGE, retStr);
                             break;
                         case ReportGenerateObjectsKeywordEnum.SUBSECTOR_FC_SUMMARY_STAT_ALL:
-                            Assert.AreEqual(CSSPEnumsRes.ReportGenerateObjectsKeywordEnumSUBSECTOR_FC_SUMMARY_STAT_ALL, retStr);
+                            Assert.Equal(CSSPEnumsRes.ReportGenerateObjectsKeywordEnumSUBSECTOR_FC_SUMMARY_STAT_ALL, retStr);
                             break;
                         case ReportGenerateObjectsKeywordEnum.SUBSECTOR_FC_SUMMARY_STAT_WET:
-                            Assert.AreEqual(CSSPEnumsRes.ReportGenerateObjectsKeywordEnumSUBSECTOR_FC_SUMMARY_STAT_WET, retStr);
+                            Assert.Equal(CSSPEnumsRes.ReportGenerateObjectsKeywordEnumSUBSECTOR_FC_SUMMARY_STAT_WET, retStr);
                             break;
                         case ReportGenerateObjectsKeywordEnum.SUBSECTOR_FC_SUMMARY_STAT_DRY:
-                            Assert.AreEqual(CSSPEnumsRes.ReportGenerateObjectsKeywordEnumSUBSECTOR_FC_SUMMARY_STAT_DRY, retStr);
+                            Assert.Equal(CSSPEnumsRes.ReportGenerateObjectsKeywordEnumSUBSECTOR_FC_SUMMARY_STAT_DRY, retStr);
                             break;
                         case ReportGenerateObjectsKeywordEnum.SUBSECTOR_MWQM_SITES_DATA_AVAILABILITY:
-                            Assert.AreEqual(CSSPEnumsRes.ReportGenerateObjectsKeywordEnumSUBSECTOR_MWQM_SITES_DATA_AVAILABILITY, retStr);
+                            Assert.Equal(CSSPEnumsRes.ReportGenerateObjectsKeywordEnumSUBSECTOR_MWQM_SITES_DATA_AVAILABILITY, retStr);
                             break;
                         case ReportGenerateObjectsKeywordEnum.SUBSECTOR_MWQM_SITES_NUMBER_OF_SITES_BY_YEAR:
-                            Assert.AreEqual(CSSPEnumsRes.ReportGenerateObjectsKeywordEnumSUBSECTOR_MWQM_SITES_NUMBER_OF_SITES_BY_YEAR, retStr);
+                            Assert.Equal(CSSPEnumsRes.ReportGenerateObjectsKeywordEnumSUBSECTOR_MWQM_SITES_NUMBER_OF_SITES_BY_YEAR, retStr);
                             break;
                         case ReportGenerateObjectsKeywordEnum.SUBSECTOR_MWQM_SITES_NUMBER_OF_RUNS_BY_YEAR:
-                            Assert.AreEqual(CSSPEnumsRes.ReportGenerateObjectsKeywordEnumSUBSECTOR_MWQM_SITES_NUMBER_OF_RUNS_BY_YEAR, retStr);
+                            Assert.Equal(CSSPEnumsRes.ReportGenerateObjectsKeywordEnumSUBSECTOR_MWQM_SITES_NUMBER_OF_RUNS_BY_YEAR, retStr);
                             break;
                         case ReportGenerateObjectsKeywordEnum.SUBSECTOR_MWQM_SITES_NUMBER_OF_SAMPLES_BY_YEAR:
-                            Assert.AreEqual(CSSPEnumsRes.ReportGenerateObjectsKeywordEnumSUBSECTOR_MWQM_SITES_NUMBER_OF_SAMPLES_BY_YEAR, retStr);
+                            Assert.Equal(CSSPEnumsRes.ReportGenerateObjectsKeywordEnumSUBSECTOR_MWQM_SITES_NUMBER_OF_SAMPLES_BY_YEAR, retStr);
                             break;
                         case ReportGenerateObjectsKeywordEnum.SUBSECTOR_MWQM_SITES_FC_TABLE:
-                            Assert.AreEqual(CSSPEnumsRes.ReportGenerateObjectsKeywordEnumSUBSECTOR_MWQM_SITES_FC_TABLE, retStr);
+                            Assert.Equal(CSSPEnumsRes.ReportGenerateObjectsKeywordEnumSUBSECTOR_MWQM_SITES_FC_TABLE, retStr);
                             break;
                         case ReportGenerateObjectsKeywordEnum.SUBSECTOR_MWQM_SITES_SALINITY_TABLE:
-                            Assert.AreEqual(CSSPEnumsRes.ReportGenerateObjectsKeywordEnumSUBSECTOR_MWQM_SITES_SALINITY_TABLE, retStr);
+                            Assert.Equal(CSSPEnumsRes.ReportGenerateObjectsKeywordEnumSUBSECTOR_MWQM_SITES_SALINITY_TABLE, retStr);
                             break;
                         case ReportGenerateObjectsKeywordEnum.SUBSECTOR_MWQM_SITES_TEMPERATURE_TABLE:
-                            Assert.AreEqual(CSSPEnumsRes.ReportGenerateObjectsKeywordEnumSUBSECTOR_MWQM_SITES_TEMPERATURE_TABLE, retStr);
+                            Assert.Equal(CSSPEnumsRes.ReportGenerateObjectsKeywordEnumSUBSECTOR_MWQM_SITES_TEMPERATURE_TABLE, retStr);
                             break;
                         case ReportGenerateObjectsKeywordEnum.SUBSECTOR_POLLUTION_SOURCE_SITES:
-                            Assert.AreEqual(CSSPEnumsRes.ReportGenerateObjectsKeywordEnumSUBSECTOR_POLLUTION_SOURCE_SITES, retStr);
+                            Assert.Equal(CSSPEnumsRes.ReportGenerateObjectsKeywordEnumSUBSECTOR_POLLUTION_SOURCE_SITES, retStr);
                             break;
                         case ReportGenerateObjectsKeywordEnum.SUBSECTOR_POLLUTION_SOURCE_SITES_COMPACT:
-                            Assert.AreEqual(CSSPEnumsRes.ReportGenerateObjectsKeywordEnumSUBSECTOR_POLLUTION_SOURCE_SITES_COMPACT, retStr);
+                            Assert.Equal(CSSPEnumsRes.ReportGenerateObjectsKeywordEnumSUBSECTOR_POLLUTION_SOURCE_SITES_COMPACT, retStr);
                             break;
                         case ReportGenerateObjectsKeywordEnum.SUBSECTOR_MUNICIPALITIES:
-                            Assert.AreEqual(CSSPEnumsRes.ReportGenerateObjectsKeywordEnumSUBSECTOR_MUNICIPALITIES, retStr);
+                            Assert.Equal(CSSPEnumsRes.ReportGenerateObjectsKeywordEnumSUBSECTOR_MUNICIPALITIES, retStr);
                             break;
                         case ReportGenerateObjectsKeywordEnum.SUBSECTOR_MUNICIPALITY_INFRASTRUCTURE_MAP:
-                            Assert.AreEqual(CSSPEnumsRes.ReportGenerateObjectsKeywordEnumSUBSECTOR_MUNICIPALITY_INFRASTRUCTURE_MAP, retStr);
+                            Assert.Equal(CSSPEnumsRes.ReportGenerateObjectsKeywordEnumSUBSECTOR_MUNICIPALITY_INFRASTRUCTURE_MAP, retStr);
                             break;
                         case ReportGenerateObjectsKeywordEnum.SUBSECTOR_MUNICIPALITY_CONTACTS:
-                            Assert.AreEqual(CSSPEnumsRes.ReportGenerateObjectsKeywordEnumSUBSECTOR_MUNICIPALITY_CONTACTS, retStr);
+                            Assert.Equal(CSSPEnumsRes.ReportGenerateObjectsKeywordEnumSUBSECTOR_MUNICIPALITY_CONTACTS, retStr);
                             break;
                         case ReportGenerateObjectsKeywordEnum.SUBSECTOR_MUNICIPALITY_INFRASTRUCTURE_DETAIL:
-                            Assert.AreEqual(CSSPEnumsRes.ReportGenerateObjectsKeywordEnumSUBSECTOR_MUNICIPALITY_INFRASTRUCTURE_DETAIL, retStr);
+                            Assert.Equal(CSSPEnumsRes.ReportGenerateObjectsKeywordEnumSUBSECTOR_MUNICIPALITY_INFRASTRUCTURE_DETAIL, retStr);
                             break;
                         case ReportGenerateObjectsKeywordEnum.SUBSECTOR_ECCC_AND_SWCP_LOGO:
-                            Assert.AreEqual(CSSPEnumsRes.ReportGenerateObjectsKeywordEnumSUBSECTOR_ECCC_AND_SWCP_LOGO, retStr);
+                            Assert.Equal(CSSPEnumsRes.ReportGenerateObjectsKeywordEnumSUBSECTOR_ECCC_AND_SWCP_LOGO, retStr);
                             break;
                         case ReportGenerateObjectsKeywordEnum.SUBSECTOR_CSSP_LOGO:
-                            Assert.AreEqual(CSSPEnumsRes.ReportGenerateObjectsKeywordEnumSUBSECTOR_CSSP_LOGO, retStr);
+                            Assert.Equal(CSSPEnumsRes.ReportGenerateObjectsKeywordEnumSUBSECTOR_CSSP_LOGO, retStr);
                             break;
                         case ReportGenerateObjectsKeywordEnum.SUBSECTOR_LOCATION_OF_SURVEY_AREA_MAP:
-                            Assert.AreEqual(CSSPEnumsRes.ReportGenerateObjectsKeywordEnumSUBSECTOR_LOCATION_OF_SURVEY_AREA_MAP, retStr);
+                            Assert.Equal(CSSPEnumsRes.ReportGenerateObjectsKeywordEnumSUBSECTOR_LOCATION_OF_SURVEY_AREA_MAP, retStr);
                             break;
                         case ReportGenerateObjectsKeywordEnum.SUBSECTOR_CURRENT_CLASSIFICATION_AND_SAMPLING_LOCATION_MAP:
-                            Assert.AreEqual(CSSPEnumsRes.ReportGenerateObjectsKeywordEnumSUBSECTOR_CURRENT_CLASSIFICATION_AND_SAMPLING_LOCATION_MAP, retStr);
+                            Assert.Equal(CSSPEnumsRes.ReportGenerateObjectsKeywordEnumSUBSECTOR_CURRENT_CLASSIFICATION_AND_SAMPLING_LOCATION_MAP, retStr);
                             break;
                         case ReportGenerateObjectsKeywordEnum.SUBSECTOR_RECOMMENDED_CLASSIFICATION_MAP:
-                            Assert.AreEqual(CSSPEnumsRes.ReportGenerateObjectsKeywordEnumSUBSECTOR_RECOMMENDED_CLASSIFICATION_MAP, retStr);
+                            Assert.Equal(CSSPEnumsRes.ReportGenerateObjectsKeywordEnumSUBSECTOR_RECOMMENDED_CLASSIFICATION_MAP, retStr);
                             break;
                         case ReportGenerateObjectsKeywordEnum.SUBSECTOR_POLLUTION_SOURCE_LOCATIONS_MAP:
-                            Assert.AreEqual(CSSPEnumsRes.ReportGenerateObjectsKeywordEnumSUBSECTOR_POLLUTION_SOURCE_LOCATIONS_MAP, retStr);
+                            Assert.Equal(CSSPEnumsRes.ReportGenerateObjectsKeywordEnumSUBSECTOR_POLLUTION_SOURCE_LOCATIONS_MAP, retStr);
                             break;
                         default:
-                            Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                            Assert.Equal(CSSPEnumsRes.Empty, retStr);
                             break;
                     }
                 }
             }
         }
-        [TestMethod]
+        [Fact]
         public void Enums_GetEnumText_ReportSortingEnum_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
@@ -2787,13 +2791,13 @@ namespace CSSPEnums.Tests
                 SetupTest(culture);
 
                 string retStr = enums.GetResValueForTypeAndID(typeof(ReportSortingEnum), -100);
-                Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                Assert.Equal(CSSPEnumsRes.Empty, retStr);
 
                 retStr = enums.GetResValueForTypeAndID(typeof(ReportSortingEnum), 10000000);
-                Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                Assert.Equal(CSSPEnumsRes.Empty, retStr);
 
                 retStr = enums.GetResValueForTypeAndID(typeof(ReportSortingEnum), null);
-                Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                Assert.Equal(CSSPEnumsRes.Empty, retStr);
 
                 foreach (int i in Enum.GetValues(typeof(ReportSortingEnum)))
                 {
@@ -2802,19 +2806,19 @@ namespace CSSPEnums.Tests
                     switch ((ReportSortingEnum)i)
                     {
                         case ReportSortingEnum.ReportSortingAscending:
-                            Assert.AreEqual(CSSPEnumsRes.ReportSortingEnumReportSortingAscending, retStr);
+                            Assert.Equal(CSSPEnumsRes.ReportSortingEnumReportSortingAscending, retStr);
                             break;
                         case ReportSortingEnum.ReportSortingDescending:
-                            Assert.AreEqual(CSSPEnumsRes.ReportSortingEnumReportSortingDescending, retStr);
+                            Assert.Equal(CSSPEnumsRes.ReportSortingEnumReportSortingDescending, retStr);
                             break;
                         default:
-                            Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                            Assert.Equal(CSSPEnumsRes.Empty, retStr);
                             break;
                     }
                 }
             }
         }
-        [TestMethod]
+        [Fact]
         public void Enums_GetEnumText_ReportTreeNodeSubTypeEnum_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
@@ -2822,13 +2826,13 @@ namespace CSSPEnums.Tests
                 SetupTest(culture);
 
                 string retStr = enums.GetResValueForTypeAndID(typeof(ReportTreeNodeSubTypeEnum), -100);
-                Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                Assert.Equal(CSSPEnumsRes.Empty, retStr);
 
                 retStr = enums.GetResValueForTypeAndID(typeof(ReportTreeNodeSubTypeEnum), 10000000);
-                Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                Assert.Equal(CSSPEnumsRes.Empty, retStr);
 
                 retStr = enums.GetResValueForTypeAndID(typeof(ReportTreeNodeSubTypeEnum), null);
-                Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                Assert.Equal(CSSPEnumsRes.Empty, retStr);
 
                 foreach (int i in Enum.GetValues(typeof(ReportTreeNodeSubTypeEnum)))
                 {
@@ -2837,25 +2841,25 @@ namespace CSSPEnums.Tests
                     switch ((ReportTreeNodeSubTypeEnum)i)
                     {
                         case ReportTreeNodeSubTypeEnum.TableSelectable:
-                            Assert.AreEqual(CSSPEnumsRes.ReportTreeNodeSubTypeEnumTableSelectable, retStr);
+                            Assert.Equal(CSSPEnumsRes.ReportTreeNodeSubTypeEnumTableSelectable, retStr);
                             break;
                         case ReportTreeNodeSubTypeEnum.Field:
-                            Assert.AreEqual(CSSPEnumsRes.ReportTreeNodeSubTypeEnumField, retStr);
+                            Assert.Equal(CSSPEnumsRes.ReportTreeNodeSubTypeEnumField, retStr);
                             break;
                         case ReportTreeNodeSubTypeEnum.FieldsHolder:
-                            Assert.AreEqual(CSSPEnumsRes.ReportTreeNodeSubTypeEnumFieldsHolder, retStr);
+                            Assert.Equal(CSSPEnumsRes.ReportTreeNodeSubTypeEnumFieldsHolder, retStr);
                             break;
                         case ReportTreeNodeSubTypeEnum.TableNotSelectable:
-                            Assert.AreEqual(CSSPEnumsRes.ReportTreeNodeSubTypeEnumTableNotSelectable, retStr);
+                            Assert.Equal(CSSPEnumsRes.ReportTreeNodeSubTypeEnumTableNotSelectable, retStr);
                             break;
                         default:
-                            Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                            Assert.Equal(CSSPEnumsRes.Empty, retStr);
                             break;
                     }
                 }
             }
         }
-        [TestMethod]
+        [Fact]
         public void Enums_GetEnumText_ReportTreeNodeTypeEnum_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
@@ -2863,13 +2867,13 @@ namespace CSSPEnums.Tests
                 SetupTest(culture);
 
                 string retStr = enums.GetResValueForTypeAndID(typeof(ReportTreeNodeTypeEnum), -100);
-                Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                Assert.Equal(CSSPEnumsRes.Empty, retStr);
 
                 retStr = enums.GetResValueForTypeAndID(typeof(ReportTreeNodeTypeEnum), 10000000);
-                Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                Assert.Equal(CSSPEnumsRes.Empty, retStr);
 
                 retStr = enums.GetResValueForTypeAndID(typeof(ReportTreeNodeTypeEnum), null);
-                Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                Assert.Equal(CSSPEnumsRes.Empty, retStr);
 
                 foreach (int i in Enum.GetValues(typeof(ReportTreeNodeTypeEnum)))
                 {
@@ -2878,250 +2882,250 @@ namespace CSSPEnums.Tests
                     switch ((ReportTreeNodeTypeEnum)i)
                     {
                         case ReportTreeNodeTypeEnum.ReportRootType:
-                            Assert.AreEqual(CSSPEnumsRes.ReportTreeNodeTypeEnumReportRootType, retStr);
+                            Assert.Equal(CSSPEnumsRes.ReportTreeNodeTypeEnumReportRootType, retStr);
                             break;
                         case ReportTreeNodeTypeEnum.ReportCountryType:
-                            Assert.AreEqual(CSSPEnumsRes.ReportTreeNodeTypeEnumReportCountryType, retStr);
+                            Assert.Equal(CSSPEnumsRes.ReportTreeNodeTypeEnumReportCountryType, retStr);
                             break;
                         case ReportTreeNodeTypeEnum.ReportProvinceType:
-                            Assert.AreEqual(CSSPEnumsRes.ReportTreeNodeTypeEnumReportProvinceType, retStr);
+                            Assert.Equal(CSSPEnumsRes.ReportTreeNodeTypeEnumReportProvinceType, retStr);
                             break;
                         case ReportTreeNodeTypeEnum.ReportAreaType:
-                            Assert.AreEqual(CSSPEnumsRes.ReportTreeNodeTypeEnumReportAreaType, retStr);
+                            Assert.Equal(CSSPEnumsRes.ReportTreeNodeTypeEnumReportAreaType, retStr);
                             break;
                         case ReportTreeNodeTypeEnum.ReportSectorType:
-                            Assert.AreEqual(CSSPEnumsRes.ReportTreeNodeTypeEnumReportSectorType, retStr);
+                            Assert.Equal(CSSPEnumsRes.ReportTreeNodeTypeEnumReportSectorType, retStr);
                             break;
                         case ReportTreeNodeTypeEnum.ReportSubsectorType:
-                            Assert.AreEqual(CSSPEnumsRes.ReportTreeNodeTypeEnumReportSubsectorType, retStr);
+                            Assert.Equal(CSSPEnumsRes.ReportTreeNodeTypeEnumReportSubsectorType, retStr);
                             break;
                         case ReportTreeNodeTypeEnum.ReportMWQMSiteType:
-                            Assert.AreEqual(CSSPEnumsRes.ReportTreeNodeTypeEnumReportMWQMSiteType, retStr);
+                            Assert.Equal(CSSPEnumsRes.ReportTreeNodeTypeEnumReportMWQMSiteType, retStr);
                             break;
                         case ReportTreeNodeTypeEnum.ReportMWQMRunType:
-                            Assert.AreEqual(CSSPEnumsRes.ReportTreeNodeTypeEnumReportMWQMRunType, retStr);
+                            Assert.Equal(CSSPEnumsRes.ReportTreeNodeTypeEnumReportMWQMRunType, retStr);
                             break;
                         case ReportTreeNodeTypeEnum.ReportPolSourceSiteType:
-                            Assert.AreEqual(CSSPEnumsRes.ReportTreeNodeTypeEnumReportPolSourceSiteType, retStr);
+                            Assert.Equal(CSSPEnumsRes.ReportTreeNodeTypeEnumReportPolSourceSiteType, retStr);
                             break;
                         case ReportTreeNodeTypeEnum.ReportMunicipalityType:
-                            Assert.AreEqual(CSSPEnumsRes.ReportTreeNodeTypeEnumReportMunicipalityType, retStr);
+                            Assert.Equal(CSSPEnumsRes.ReportTreeNodeTypeEnumReportMunicipalityType, retStr);
                             break;
                         case ReportTreeNodeTypeEnum.ReportRootFileType:
-                            Assert.AreEqual(CSSPEnumsRes.ReportTreeNodeTypeEnumReportRootFileType, retStr);
+                            Assert.Equal(CSSPEnumsRes.ReportTreeNodeTypeEnumReportRootFileType, retStr);
                             break;
                         case ReportTreeNodeTypeEnum.ReportInfrastructureType:
-                            Assert.AreEqual(CSSPEnumsRes.ReportTreeNodeTypeEnumReportInfrastructureType, retStr);
+                            Assert.Equal(CSSPEnumsRes.ReportTreeNodeTypeEnumReportInfrastructureType, retStr);
                             break;
                         case ReportTreeNodeTypeEnum.ReportBoxModelType:
-                            Assert.AreEqual(CSSPEnumsRes.ReportTreeNodeTypeEnumReportBoxModelType, retStr);
+                            Assert.Equal(CSSPEnumsRes.ReportTreeNodeTypeEnumReportBoxModelType, retStr);
                             break;
                         case ReportTreeNodeTypeEnum.ReportVisualPlumesScenarioType:
-                            Assert.AreEqual(CSSPEnumsRes.ReportTreeNodeTypeEnumReportVisualPlumesScenarioType, retStr);
+                            Assert.Equal(CSSPEnumsRes.ReportTreeNodeTypeEnumReportVisualPlumesScenarioType, retStr);
                             break;
                         case ReportTreeNodeTypeEnum.ReportMikeScenarioType:
-                            Assert.AreEqual(CSSPEnumsRes.ReportTreeNodeTypeEnumReportMikeScenarioType, retStr);
+                            Assert.Equal(CSSPEnumsRes.ReportTreeNodeTypeEnumReportMikeScenarioType, retStr);
                             break;
                         case ReportTreeNodeTypeEnum.ReportMikeSourceType:
-                            Assert.AreEqual(CSSPEnumsRes.ReportTreeNodeTypeEnumReportMikeSourceType, retStr);
+                            Assert.Equal(CSSPEnumsRes.ReportTreeNodeTypeEnumReportMikeSourceType, retStr);
                             break;
                         case ReportTreeNodeTypeEnum.ReportMWQMSiteSampleType:
-                            Assert.AreEqual(CSSPEnumsRes.ReportTreeNodeTypeEnumReportMWQMSiteSampleType, retStr);
+                            Assert.Equal(CSSPEnumsRes.ReportTreeNodeTypeEnumReportMWQMSiteSampleType, retStr);
                             break;
                         case ReportTreeNodeTypeEnum.ReportPolSourceSiteObsType:
-                            Assert.AreEqual(CSSPEnumsRes.ReportTreeNodeTypeEnumReportPolSourceSiteObsType, retStr);
+                            Assert.Equal(CSSPEnumsRes.ReportTreeNodeTypeEnumReportPolSourceSiteObsType, retStr);
                             break;
                         case ReportTreeNodeTypeEnum.ReportPolSourceSiteObsIssueType:
-                            Assert.AreEqual(CSSPEnumsRes.ReportTreeNodeTypeEnumReportPolSourceSiteObsIssueType, retStr);
+                            Assert.Equal(CSSPEnumsRes.ReportTreeNodeTypeEnumReportPolSourceSiteObsIssueType, retStr);
                             break;
                         case ReportTreeNodeTypeEnum.ReportMikeScenarioGeneralParameterType:
-                            Assert.AreEqual(CSSPEnumsRes.ReportTreeNodeTypeEnumReportMikeScenarioGeneralParameterType, retStr);
+                            Assert.Equal(CSSPEnumsRes.ReportTreeNodeTypeEnumReportMikeScenarioGeneralParameterType, retStr);
                             break;
                         case ReportTreeNodeTypeEnum.ReportMunicipalityContactType:
-                            Assert.AreEqual(CSSPEnumsRes.ReportTreeNodeTypeEnumReportMunicipalityContactType, retStr);
+                            Assert.Equal(CSSPEnumsRes.ReportTreeNodeTypeEnumReportMunicipalityContactType, retStr);
                             break;
                         case ReportTreeNodeTypeEnum.ReportConditionType:
-                            Assert.AreEqual(CSSPEnumsRes.ReportTreeNodeTypeEnumReportConditionType, retStr);
+                            Assert.Equal(CSSPEnumsRes.ReportTreeNodeTypeEnumReportConditionType, retStr);
                             break;
                         case ReportTreeNodeTypeEnum.ReportStatisticType:
-                            Assert.AreEqual(CSSPEnumsRes.ReportTreeNodeTypeEnumReportStatisticType, retStr);
+                            Assert.Equal(CSSPEnumsRes.ReportTreeNodeTypeEnumReportStatisticType, retStr);
                             break;
                         case ReportTreeNodeTypeEnum.ReportFieldsType:
-                            Assert.AreEqual(CSSPEnumsRes.ReportTreeNodeTypeEnumReportFieldsType, retStr);
+                            Assert.Equal(CSSPEnumsRes.ReportTreeNodeTypeEnumReportFieldsType, retStr);
                             break;
                         case ReportTreeNodeTypeEnum.ReportFieldType:
-                            Assert.AreEqual(CSSPEnumsRes.ReportTreeNodeTypeEnumReportFieldType, retStr);
+                            Assert.Equal(CSSPEnumsRes.ReportTreeNodeTypeEnumReportFieldType, retStr);
                             break;
                         case ReportTreeNodeTypeEnum.ReportPolSourceSiteAddressType:
-                            Assert.AreEqual(CSSPEnumsRes.ReportTreeNodeTypeEnumReportPolSourceSiteAddressType, retStr);
+                            Assert.Equal(CSSPEnumsRes.ReportTreeNodeTypeEnumReportPolSourceSiteAddressType, retStr);
                             break;
                         case ReportTreeNodeTypeEnum.ReportMunicipalityContactTelType:
-                            Assert.AreEqual(CSSPEnumsRes.ReportTreeNodeTypeEnumReportMunicipalityContactTelType, retStr);
+                            Assert.Equal(CSSPEnumsRes.ReportTreeNodeTypeEnumReportMunicipalityContactTelType, retStr);
                             break;
                         case ReportTreeNodeTypeEnum.ReportMunicipalityContactEmailType:
-                            Assert.AreEqual(CSSPEnumsRes.ReportTreeNodeTypeEnumReportMunicipalityContactEmailType, retStr);
+                            Assert.Equal(CSSPEnumsRes.ReportTreeNodeTypeEnumReportMunicipalityContactEmailType, retStr);
                             break;
                         case ReportTreeNodeTypeEnum.ReportBoxModelResultType:
-                            Assert.AreEqual(CSSPEnumsRes.ReportTreeNodeTypeEnumReportBoxModelResultType, retStr);
+                            Assert.Equal(CSSPEnumsRes.ReportTreeNodeTypeEnumReportBoxModelResultType, retStr);
                             break;
                         case ReportTreeNodeTypeEnum.ReportClimateSiteType:
-                            Assert.AreEqual(CSSPEnumsRes.ReportTreeNodeTypeEnumReportClimateSiteType, retStr);
+                            Assert.Equal(CSSPEnumsRes.ReportTreeNodeTypeEnumReportClimateSiteType, retStr);
                             break;
                         case ReportTreeNodeTypeEnum.ReportClimateSiteDataType:
-                            Assert.AreEqual(CSSPEnumsRes.ReportTreeNodeTypeEnumReportClimateSiteDataType, retStr);
+                            Assert.Equal(CSSPEnumsRes.ReportTreeNodeTypeEnumReportClimateSiteDataType, retStr);
                             break;
                         case ReportTreeNodeTypeEnum.ReportHydrometricSiteType:
-                            Assert.AreEqual(CSSPEnumsRes.ReportTreeNodeTypeEnumReportHydrometricSiteType, retStr);
+                            Assert.Equal(CSSPEnumsRes.ReportTreeNodeTypeEnumReportHydrometricSiteType, retStr);
                             break;
                         case ReportTreeNodeTypeEnum.ReportHydrometricSiteDataType:
-                            Assert.AreEqual(CSSPEnumsRes.ReportTreeNodeTypeEnumReportHydrometricSiteDataType, retStr);
+                            Assert.Equal(CSSPEnumsRes.ReportTreeNodeTypeEnumReportHydrometricSiteDataType, retStr);
                             break;
                         case ReportTreeNodeTypeEnum.ReportHydrometricSiteRatingCurveType:
-                            Assert.AreEqual(CSSPEnumsRes.ReportTreeNodeTypeEnumReportHydrometricSiteRatingCurveType, retStr);
+                            Assert.Equal(CSSPEnumsRes.ReportTreeNodeTypeEnumReportHydrometricSiteRatingCurveType, retStr);
                             break;
                         case ReportTreeNodeTypeEnum.ReportHydrometricSiteRatingCurveValueType:
-                            Assert.AreEqual(CSSPEnumsRes.ReportTreeNodeTypeEnumReportHydrometricSiteRatingCurveValueType, retStr);
+                            Assert.Equal(CSSPEnumsRes.ReportTreeNodeTypeEnumReportHydrometricSiteRatingCurveValueType, retStr);
                             break;
                         case ReportTreeNodeTypeEnum.ReportInfrastructureAddressType:
-                            Assert.AreEqual(CSSPEnumsRes.ReportTreeNodeTypeEnumReportInfrastructureAddressType, retStr);
+                            Assert.Equal(CSSPEnumsRes.ReportTreeNodeTypeEnumReportInfrastructureAddressType, retStr);
                             break;
                         case ReportTreeNodeTypeEnum.ReportSubsectorLabSheetType:
-                            Assert.AreEqual(CSSPEnumsRes.ReportTreeNodeTypeEnumReportSubsectorLabSheetType, retStr);
+                            Assert.Equal(CSSPEnumsRes.ReportTreeNodeTypeEnumReportSubsectorLabSheetType, retStr);
                             break;
                         case ReportTreeNodeTypeEnum.ReportSubsectorLabSheetDetailType:
-                            Assert.AreEqual(CSSPEnumsRes.ReportTreeNodeTypeEnumReportSubsectorLabSheetDetailType, retStr);
+                            Assert.Equal(CSSPEnumsRes.ReportTreeNodeTypeEnumReportSubsectorLabSheetDetailType, retStr);
                             break;
                         case ReportTreeNodeTypeEnum.ReportSubsectorLabSheetTubeMPNDetailType:
-                            Assert.AreEqual(CSSPEnumsRes.ReportTreeNodeTypeEnumReportSubsectorLabSheetTubeMPNDetailType, retStr);
+                            Assert.Equal(CSSPEnumsRes.ReportTreeNodeTypeEnumReportSubsectorLabSheetTubeMPNDetailType, retStr);
                             break;
                         case ReportTreeNodeTypeEnum.ReportMWQMRunSampleType:
-                            Assert.AreEqual(CSSPEnumsRes.ReportTreeNodeTypeEnumReportMWQMRunSampleType, retStr);
+                            Assert.Equal(CSSPEnumsRes.ReportTreeNodeTypeEnumReportMWQMRunSampleType, retStr);
                             break;
                         case ReportTreeNodeTypeEnum.ReportCountryFileType:
-                            Assert.AreEqual(CSSPEnumsRes.ReportTreeNodeTypeEnumReportCountryFileType, retStr);
+                            Assert.Equal(CSSPEnumsRes.ReportTreeNodeTypeEnumReportCountryFileType, retStr);
                             break;
                         case ReportTreeNodeTypeEnum.ReportProvinceFileType:
-                            Assert.AreEqual(CSSPEnumsRes.ReportTreeNodeTypeEnumReportProvinceFileType, retStr);
+                            Assert.Equal(CSSPEnumsRes.ReportTreeNodeTypeEnumReportProvinceFileType, retStr);
                             break;
                         case ReportTreeNodeTypeEnum.ReportAreaFileType:
-                            Assert.AreEqual(CSSPEnumsRes.ReportTreeNodeTypeEnumReportAreaFileType, retStr);
+                            Assert.Equal(CSSPEnumsRes.ReportTreeNodeTypeEnumReportAreaFileType, retStr);
                             break;
                         case ReportTreeNodeTypeEnum.ReportSectorFileType:
-                            Assert.AreEqual(CSSPEnumsRes.ReportTreeNodeTypeEnumReportSectorFileType, retStr);
+                            Assert.Equal(CSSPEnumsRes.ReportTreeNodeTypeEnumReportSectorFileType, retStr);
                             break;
                         case ReportTreeNodeTypeEnum.ReportSubsectorFileType:
-                            Assert.AreEqual(CSSPEnumsRes.ReportTreeNodeTypeEnumReportSubsectorFileType, retStr);
+                            Assert.Equal(CSSPEnumsRes.ReportTreeNodeTypeEnumReportSubsectorFileType, retStr);
                             break;
                         case ReportTreeNodeTypeEnum.ReportMWQMSiteFileType:
-                            Assert.AreEqual(CSSPEnumsRes.ReportTreeNodeTypeEnumReportMWQMSiteFileType, retStr);
+                            Assert.Equal(CSSPEnumsRes.ReportTreeNodeTypeEnumReportMWQMSiteFileType, retStr);
                             break;
                         case ReportTreeNodeTypeEnum.ReportMWQMRunFileType:
-                            Assert.AreEqual(CSSPEnumsRes.ReportTreeNodeTypeEnumReportMWQMRunFileType, retStr);
+                            Assert.Equal(CSSPEnumsRes.ReportTreeNodeTypeEnumReportMWQMRunFileType, retStr);
                             break;
                         case ReportTreeNodeTypeEnum.ReportPolSourceSiteFileType:
-                            Assert.AreEqual(CSSPEnumsRes.ReportTreeNodeTypeEnumReportPolSourceSiteFileType, retStr);
+                            Assert.Equal(CSSPEnumsRes.ReportTreeNodeTypeEnumReportPolSourceSiteFileType, retStr);
                             break;
                         case ReportTreeNodeTypeEnum.ReportMunicipalityFileType:
-                            Assert.AreEqual(CSSPEnumsRes.ReportTreeNodeTypeEnumReportMunicipalityFileType, retStr);
+                            Assert.Equal(CSSPEnumsRes.ReportTreeNodeTypeEnumReportMunicipalityFileType, retStr);
                             break;
                         case ReportTreeNodeTypeEnum.ReportInfrastructureFileType:
-                            Assert.AreEqual(CSSPEnumsRes.ReportTreeNodeTypeEnumReportInfrastructureFileType, retStr);
+                            Assert.Equal(CSSPEnumsRes.ReportTreeNodeTypeEnumReportInfrastructureFileType, retStr);
                             break;
                         case ReportTreeNodeTypeEnum.ReportMikeScenarioFileType:
-                            Assert.AreEqual(CSSPEnumsRes.ReportTreeNodeTypeEnumReportMikeScenarioFileType, retStr);
+                            Assert.Equal(CSSPEnumsRes.ReportTreeNodeTypeEnumReportMikeScenarioFileType, retStr);
                             break;
                         case ReportTreeNodeTypeEnum.ReportMikeSourceStartEndType:
-                            Assert.AreEqual(CSSPEnumsRes.ReportTreeNodeTypeEnumReportMikeSourceStartEndType, retStr);
+                            Assert.Equal(CSSPEnumsRes.ReportTreeNodeTypeEnumReportMikeSourceStartEndType, retStr);
                             break;
                         case ReportTreeNodeTypeEnum.ReportMWQMRunLabSheetType:
-                            Assert.AreEqual(CSSPEnumsRes.ReportTreeNodeTypeEnumReportMWQMRunLabSheetType, retStr);
+                            Assert.Equal(CSSPEnumsRes.ReportTreeNodeTypeEnumReportMWQMRunLabSheetType, retStr);
                             break;
                         case ReportTreeNodeTypeEnum.ReportMWQMRunLabSheetDetailType:
-                            Assert.AreEqual(CSSPEnumsRes.ReportTreeNodeTypeEnumReportMWQMRunLabSheetDetailType, retStr);
+                            Assert.Equal(CSSPEnumsRes.ReportTreeNodeTypeEnumReportMWQMRunLabSheetDetailType, retStr);
                             break;
                         case ReportTreeNodeTypeEnum.ReportMWQMRunLabSheetTubeMPNDetailType:
-                            Assert.AreEqual(CSSPEnumsRes.ReportTreeNodeTypeEnumReportMWQMRunLabSheetTubeMPNDetailType, retStr);
+                            Assert.Equal(CSSPEnumsRes.ReportTreeNodeTypeEnumReportMWQMRunLabSheetTubeMPNDetailType, retStr);
                             break;
                         case ReportTreeNodeTypeEnum.ReportSamplingPlanLabSheetType:
-                            Assert.AreEqual(CSSPEnumsRes.ReportTreeNodeTypeEnumReportSamplingPlanLabSheetType, retStr);
+                            Assert.Equal(CSSPEnumsRes.ReportTreeNodeTypeEnumReportSamplingPlanLabSheetType, retStr);
                             break;
                         case ReportTreeNodeTypeEnum.ReportSamplingPlanLabSheetDetailType:
-                            Assert.AreEqual(CSSPEnumsRes.ReportTreeNodeTypeEnumReportSamplingPlanLabSheetDetailType, retStr);
+                            Assert.Equal(CSSPEnumsRes.ReportTreeNodeTypeEnumReportSamplingPlanLabSheetDetailType, retStr);
                             break;
                         case ReportTreeNodeTypeEnum.ReportSamplingPlanLabSheetTubeMPNDetailType:
-                            Assert.AreEqual(CSSPEnumsRes.ReportTreeNodeTypeEnumReportSamplingPlanLabSheetTubeMPNDetailType, retStr);
+                            Assert.Equal(CSSPEnumsRes.ReportTreeNodeTypeEnumReportSamplingPlanLabSheetTubeMPNDetailType, retStr);
                             break;
                         case ReportTreeNodeTypeEnum.ReportSamplingPlanType:
-                            Assert.AreEqual(CSSPEnumsRes.ReportTreeNodeTypeEnumReportSamplingPlanType, retStr);
+                            Assert.Equal(CSSPEnumsRes.ReportTreeNodeTypeEnumReportSamplingPlanType, retStr);
                             break;
                         case ReportTreeNodeTypeEnum.ReportSamplingPlanSubsectorType:
-                            Assert.AreEqual(CSSPEnumsRes.ReportTreeNodeTypeEnumReportSamplingPlanSubsectorType, retStr);
+                            Assert.Equal(CSSPEnumsRes.ReportTreeNodeTypeEnumReportSamplingPlanSubsectorType, retStr);
                             break;
                         case ReportTreeNodeTypeEnum.ReportSamplingPlanSubsectorSiteType:
-                            Assert.AreEqual(CSSPEnumsRes.ReportTreeNodeTypeEnumReportSamplingPlanSubsectorSiteType, retStr);
+                            Assert.Equal(CSSPEnumsRes.ReportTreeNodeTypeEnumReportSamplingPlanSubsectorSiteType, retStr);
                             break;
                         case ReportTreeNodeTypeEnum.ReportMikeBoundaryConditionType:
-                            Assert.AreEqual(CSSPEnumsRes.ReportTreeNodeTypeEnumReportMikeBoundaryConditionType, retStr);
+                            Assert.Equal(CSSPEnumsRes.ReportTreeNodeTypeEnumReportMikeBoundaryConditionType, retStr);
                             break;
                         case ReportTreeNodeTypeEnum.ReportVisualPlumesScenarioAmbientType:
-                            Assert.AreEqual(CSSPEnumsRes.ReportTreeNodeTypeEnumReportVisualPlumesScenarioAmbientType, retStr);
+                            Assert.Equal(CSSPEnumsRes.ReportTreeNodeTypeEnumReportVisualPlumesScenarioAmbientType, retStr);
                             break;
                         case ReportTreeNodeTypeEnum.ReportVisualPlumesScenarioResultType:
-                            Assert.AreEqual(CSSPEnumsRes.ReportTreeNodeTypeEnumReportVisualPlumesScenarioResultType, retStr);
+                            Assert.Equal(CSSPEnumsRes.ReportTreeNodeTypeEnumReportVisualPlumesScenarioResultType, retStr);
                             break;
                         case ReportTreeNodeTypeEnum.ReportMPNLookupType:
-                            Assert.AreEqual(CSSPEnumsRes.ReportTreeNodeTypeEnumReportMPNLookupType, retStr);
+                            Assert.Equal(CSSPEnumsRes.ReportTreeNodeTypeEnumReportMPNLookupType, retStr);
                             break;
                         case ReportTreeNodeTypeEnum.ReportMWQMSiteStartAndEndType:
-                            Assert.AreEqual(CSSPEnumsRes.ReportTreeNodeTypeEnumReportMWQMSiteStartAndEndType, retStr);
+                            Assert.Equal(CSSPEnumsRes.ReportTreeNodeTypeEnumReportMWQMSiteStartAndEndType, retStr);
                             break;
                         case ReportTreeNodeTypeEnum.ReportSubsectorTideSiteType:
-                            Assert.AreEqual(CSSPEnumsRes.ReportTreeNodeTypeEnumReportSubsectorTideSiteType, retStr);
+                            Assert.Equal(CSSPEnumsRes.ReportTreeNodeTypeEnumReportSubsectorTideSiteType, retStr);
                             break;
                         case ReportTreeNodeTypeEnum.ReportSubsectorTideSiteDataType:
-                            Assert.AreEqual(CSSPEnumsRes.ReportTreeNodeTypeEnumReportSubsectorTideSiteDataType, retStr);
+                            Assert.Equal(CSSPEnumsRes.ReportTreeNodeTypeEnumReportSubsectorTideSiteDataType, retStr);
                             break;
                         case ReportTreeNodeTypeEnum.ReportOrderType:
-                            Assert.AreEqual(CSSPEnumsRes.ReportTreeNodeTypeEnumReportOrderType, retStr);
+                            Assert.Equal(CSSPEnumsRes.ReportTreeNodeTypeEnumReportOrderType, retStr);
                             break;
                         case ReportTreeNodeTypeEnum.ReportFormatType:
-                            Assert.AreEqual(CSSPEnumsRes.ReportTreeNodeTypeEnumReportFormatType, retStr);
+                            Assert.Equal(CSSPEnumsRes.ReportTreeNodeTypeEnumReportFormatType, retStr);
                             break;
                         case ReportTreeNodeTypeEnum.ReportMunicipalityContactAddressType:
-                            Assert.AreEqual(CSSPEnumsRes.ReportTreeNodeTypeEnumReportMunicipalityContactAddressType, retStr);
+                            Assert.Equal(CSSPEnumsRes.ReportTreeNodeTypeEnumReportMunicipalityContactAddressType, retStr);
                             break;
                         case ReportTreeNodeTypeEnum.ReportSubsectorClimateSiteType:
-                            Assert.AreEqual(CSSPEnumsRes.ReportTreeNodeTypeEnumReportSubsectorClimateSiteType, retStr);
+                            Assert.Equal(CSSPEnumsRes.ReportTreeNodeTypeEnumReportSubsectorClimateSiteType, retStr);
                             break;
                         case ReportTreeNodeTypeEnum.ReportSubsectorHydrometricSiteType:
-                            Assert.AreEqual(CSSPEnumsRes.ReportTreeNodeTypeEnumReportSubsectorHydrometricSiteType, retStr);
+                            Assert.Equal(CSSPEnumsRes.ReportTreeNodeTypeEnumReportSubsectorHydrometricSiteType, retStr);
                             break;
                         case ReportTreeNodeTypeEnum.ReportSubsectorHydrometricSiteDataType:
-                            Assert.AreEqual(CSSPEnumsRes.ReportTreeNodeTypeEnumReportSubsectorHydrometricSiteDataType, retStr);
+                            Assert.Equal(CSSPEnumsRes.ReportTreeNodeTypeEnumReportSubsectorHydrometricSiteDataType, retStr);
                             break;
                         case ReportTreeNodeTypeEnum.ReportSubsectorHydrometricSiteRatingCurveType:
-                            Assert.AreEqual(CSSPEnumsRes.ReportTreeNodeTypeEnumReportSubsectorHydrometricSiteRatingCurveType, retStr);
+                            Assert.Equal(CSSPEnumsRes.ReportTreeNodeTypeEnumReportSubsectorHydrometricSiteRatingCurveType, retStr);
                             break;
                         case ReportTreeNodeTypeEnum.ReportSubsectorClimateSiteDataType:
-                            Assert.AreEqual(CSSPEnumsRes.ReportTreeNodeTypeEnumReportSubsectorClimateSiteDataType, retStr);
+                            Assert.Equal(CSSPEnumsRes.ReportTreeNodeTypeEnumReportSubsectorClimateSiteDataType, retStr);
                             break;
                         case ReportTreeNodeTypeEnum.ReportSubsectorHydrometricSiteRatingCurveValueType:
-                            Assert.AreEqual(CSSPEnumsRes.ReportTreeNodeTypeEnumReportSubsectorHydrometricSiteRatingCurveValueType, retStr);
+                            Assert.Equal(CSSPEnumsRes.ReportTreeNodeTypeEnumReportSubsectorHydrometricSiteRatingCurveValueType, retStr);
                             break;
                         case ReportTreeNodeTypeEnum.ReportSubsectorSpecialTableType:
-                            Assert.AreEqual(CSSPEnumsRes.ReportTreeNodeTypeEnumReportSubsectorSpecialTableType, retStr);
+                            Assert.Equal(CSSPEnumsRes.ReportTreeNodeTypeEnumReportSubsectorSpecialTableType, retStr);
                             break;
                         case ReportTreeNodeTypeEnum.ReportMikeScenarioSpecialResultKMLType:
-                            Assert.AreEqual(CSSPEnumsRes.ReportTreeNodeTypeEnumReportMikeScenarioSpecialResultKMLType, retStr);
+                            Assert.Equal(CSSPEnumsRes.ReportTreeNodeTypeEnumReportMikeScenarioSpecialResultKMLType, retStr);
                             break;
                         default:
-                            Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                            Assert.Equal(CSSPEnumsRes.Empty, retStr);
                             break;
                     }
                 }
             }
         }
-        [TestMethod]
+        [Fact]
         public void Enums_GetEnumText_SameDayNextDayEnum_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
@@ -3129,13 +3133,13 @@ namespace CSSPEnums.Tests
                 SetupTest(culture);
 
                 string retStr = enums.GetResValueForTypeAndID(typeof(SameDayNextDayEnum), -100);
-                Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                Assert.Equal(CSSPEnumsRes.Empty, retStr);
 
                 retStr = enums.GetResValueForTypeAndID(typeof(SameDayNextDayEnum), 10000000);
-                Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                Assert.Equal(CSSPEnumsRes.Empty, retStr);
 
                 retStr = enums.GetResValueForTypeAndID(typeof(SameDayNextDayEnum), null);
-                Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                Assert.Equal(CSSPEnumsRes.Empty, retStr);
 
                 foreach (int i in Enum.GetValues(typeof(SameDayNextDayEnum)))
                 {
@@ -3144,19 +3148,19 @@ namespace CSSPEnums.Tests
                     switch ((SameDayNextDayEnum)i)
                     {
                         case SameDayNextDayEnum.SameDay:
-                            Assert.AreEqual(CSSPEnumsRes.SameDayNextDayEnumSameDay, retStr);
+                            Assert.Equal(CSSPEnumsRes.SameDayNextDayEnumSameDay, retStr);
                             break;
                         case SameDayNextDayEnum.NextDay:
-                            Assert.AreEqual(CSSPEnumsRes.SameDayNextDayEnumNextDay, retStr);
+                            Assert.Equal(CSSPEnumsRes.SameDayNextDayEnumNextDay, retStr);
                             break;
                         default:
-                            Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                            Assert.Equal(CSSPEnumsRes.Empty, retStr);
                             break;
                     }
                 }
             }
         }
-        [TestMethod]
+        [Fact]
         public void Enums_GetEnumText_SampleMatrixEnum_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
@@ -3164,13 +3168,13 @@ namespace CSSPEnums.Tests
                 SetupTest(culture);
 
                 string retStr = enums.GetResValueForTypeAndID(typeof(SampleMatrixEnum), -100);
-                Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                Assert.Equal(CSSPEnumsRes.Empty, retStr);
 
                 retStr = enums.GetResValueForTypeAndID(typeof(SampleMatrixEnum), 10000000);
-                Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                Assert.Equal(CSSPEnumsRes.Empty, retStr);
 
                 retStr = enums.GetResValueForTypeAndID(typeof(SampleMatrixEnum), null);
-                Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                Assert.Equal(CSSPEnumsRes.Empty, retStr);
 
                 foreach (int i in Enum.GetValues(typeof(SampleMatrixEnum)))
                 {
@@ -3179,34 +3183,34 @@ namespace CSSPEnums.Tests
                     switch ((SampleMatrixEnum)i)
                     {
                         case SampleMatrixEnum.W:
-                            Assert.AreEqual(CSSPEnumsRes.SampleMatrixEnumW, retStr);
+                            Assert.Equal(CSSPEnumsRes.SampleMatrixEnumW, retStr);
                             break;
                         case SampleMatrixEnum.S:
-                            Assert.AreEqual(CSSPEnumsRes.SampleMatrixEnumS, retStr);
+                            Assert.Equal(CSSPEnumsRes.SampleMatrixEnumS, retStr);
                             break;
                         case SampleMatrixEnum.B:
-                            Assert.AreEqual(CSSPEnumsRes.SampleMatrixEnumB, retStr);
+                            Assert.Equal(CSSPEnumsRes.SampleMatrixEnumB, retStr);
                             break;
                         case SampleMatrixEnum.MPNQ:
-                            Assert.AreEqual(CSSPEnumsRes.SampleMatrixEnumMPNQ, retStr);
+                            Assert.Equal(CSSPEnumsRes.SampleMatrixEnumMPNQ, retStr);
                             break;
                         case SampleMatrixEnum.SampleMatrix5:
-                            Assert.AreEqual(CSSPEnumsRes.SampleMatrixEnumSampleMatrix5, retStr);
+                            Assert.Equal(CSSPEnumsRes.SampleMatrixEnumSampleMatrix5, retStr);
                             break;
                         case SampleMatrixEnum.SampleMatrix6:
-                            Assert.AreEqual(CSSPEnumsRes.SampleMatrixEnumSampleMatrix6, retStr);
+                            Assert.Equal(CSSPEnumsRes.SampleMatrixEnumSampleMatrix6, retStr);
                             break;
                         case SampleMatrixEnum.Water:
-                            Assert.AreEqual(CSSPEnumsRes.SampleMatrixEnumWater, retStr);
+                            Assert.Equal(CSSPEnumsRes.SampleMatrixEnumWater, retStr);
                             break;
                         default:
-                            Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                            Assert.Equal(CSSPEnumsRes.Empty, retStr);
                             break;
                     }
                 }
             }
         }
-        [TestMethod]
+        [Fact]
         public void Enums_GetEnumText_SampleStatusEnum_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
@@ -3214,13 +3218,13 @@ namespace CSSPEnums.Tests
                 SetupTest(culture);
 
                 string retStr = enums.GetResValueForTypeAndID(typeof(SampleStatusEnum), -100);
-                Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                Assert.Equal(CSSPEnumsRes.Empty, retStr);
 
                 retStr = enums.GetResValueForTypeAndID(typeof(SampleStatusEnum), 10000000);
-                Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                Assert.Equal(CSSPEnumsRes.Empty, retStr);
 
                 retStr = enums.GetResValueForTypeAndID(typeof(SampleStatusEnum), null);
-                Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                Assert.Equal(CSSPEnumsRes.Empty, retStr);
 
                 foreach (int i in Enum.GetValues(typeof(SampleStatusEnum)))
                 {
@@ -3229,28 +3233,28 @@ namespace CSSPEnums.Tests
                     switch ((SampleStatusEnum)i)
                     {
                         case SampleStatusEnum.Active:
-                            Assert.AreEqual(CSSPEnumsRes.SampleStatusEnumActive, retStr);
+                            Assert.Equal(CSSPEnumsRes.SampleStatusEnumActive, retStr);
                             break;
                         case SampleStatusEnum.Archived:
-                            Assert.AreEqual(CSSPEnumsRes.SampleStatusEnumArchived, retStr);
+                            Assert.Equal(CSSPEnumsRes.SampleStatusEnumArchived, retStr);
                             break;
                         case SampleStatusEnum.SampleStatus3:
-                            Assert.AreEqual(CSSPEnumsRes.SampleStatusEnumSampleStatus3, retStr);
+                            Assert.Equal(CSSPEnumsRes.SampleStatusEnumSampleStatus3, retStr);
                             break;
                         case SampleStatusEnum.SampleStatus4:
-                            Assert.AreEqual(CSSPEnumsRes.SampleStatusEnumSampleStatus4, retStr);
+                            Assert.Equal(CSSPEnumsRes.SampleStatusEnumSampleStatus4, retStr);
                             break;
                         case SampleStatusEnum.SampleStatus5:
-                            Assert.AreEqual(CSSPEnumsRes.SampleStatusEnumSampleStatus5, retStr);
+                            Assert.Equal(CSSPEnumsRes.SampleStatusEnumSampleStatus5, retStr);
                             break;
                         default:
-                            Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                            Assert.Equal(CSSPEnumsRes.Empty, retStr);
                             break;
                     }
                 }
             }
         }
-        [TestMethod]
+        [Fact]
         public void Enums_GetEnumText_SampleTypeEnum_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
@@ -3258,13 +3262,13 @@ namespace CSSPEnums.Tests
                 SetupTest(culture);
 
                 string retStr = enums.GetResValueForTypeAndID(typeof(SampleTypeEnum), -100);
-                Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                Assert.Equal(CSSPEnumsRes.Empty, retStr);
 
                 retStr = enums.GetResValueForTypeAndID(typeof(SampleTypeEnum), 10000000);
-                Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                Assert.Equal(CSSPEnumsRes.Empty, retStr);
 
                 retStr = enums.GetResValueForTypeAndID(typeof(SampleTypeEnum), null);
-                Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                Assert.Equal(CSSPEnumsRes.Empty, retStr);
 
                 foreach (int i in Enum.GetValues(typeof(SampleTypeEnum)))
                 {
@@ -3273,46 +3277,52 @@ namespace CSSPEnums.Tests
                     switch ((SampleTypeEnum)i)
                     {
                         case SampleTypeEnum.DailyDuplicate:
-                            Assert.AreEqual(CSSPEnumsRes.SampleTypeEnumDailyDuplicate, retStr);
+                            Assert.Equal(CSSPEnumsRes.SampleTypeEnumDailyDuplicate, retStr);
                             break;
                         case SampleTypeEnum.Infrastructure:
-                            Assert.AreEqual(CSSPEnumsRes.SampleTypeEnumInfrastructure, retStr);
+                            Assert.Equal(CSSPEnumsRes.SampleTypeEnumInfrastructure, retStr);
                             break;
                         case SampleTypeEnum.IntertechDuplicate:
-                            Assert.AreEqual(CSSPEnumsRes.SampleTypeEnumIntertechDuplicate, retStr);
+                            Assert.Equal(CSSPEnumsRes.SampleTypeEnumIntertechDuplicate, retStr);
                             break;
                         case SampleTypeEnum.IntertechRead:
-                            Assert.AreEqual(CSSPEnumsRes.SampleTypeEnumIntertechRead, retStr);
+                            Assert.Equal(CSSPEnumsRes.SampleTypeEnumIntertechRead, retStr);
                             break;
                         case SampleTypeEnum.RainCMP:
-                            Assert.AreEqual(CSSPEnumsRes.SampleTypeEnumRainCMP, retStr);
+                            Assert.Equal(CSSPEnumsRes.SampleTypeEnumRainCMP, retStr);
                             break;
                         case SampleTypeEnum.RainRun:
-                            Assert.AreEqual(CSSPEnumsRes.SampleTypeEnumRainRun, retStr);
+                            Assert.Equal(CSSPEnumsRes.SampleTypeEnumRainRun, retStr);
                             break;
                         case SampleTypeEnum.ReopeningEmergencyRain:
-                            Assert.AreEqual(CSSPEnumsRes.SampleTypeEnumReopeningEmergencyRain, retStr);
+                            Assert.Equal(CSSPEnumsRes.SampleTypeEnumReopeningEmergencyRain, retStr);
                             break;
                         case SampleTypeEnum.ReopeningSpill:
-                            Assert.AreEqual(CSSPEnumsRes.SampleTypeEnumReopeningSpill, retStr);
+                            Assert.Equal(CSSPEnumsRes.SampleTypeEnumReopeningSpill, retStr);
                             break;
                         case SampleTypeEnum.Routine:
-                            Assert.AreEqual(CSSPEnumsRes.SampleTypeEnumRoutine, retStr);
+                            Assert.Equal(CSSPEnumsRes.SampleTypeEnumRoutine, retStr);
                             break;
                         case SampleTypeEnum.Sanitary:
-                            Assert.AreEqual(CSSPEnumsRes.SampleTypeEnumSanitary, retStr);
+                            Assert.Equal(CSSPEnumsRes.SampleTypeEnumSanitary, retStr);
                             break;
                         case SampleTypeEnum.Study:
-                            Assert.AreEqual(CSSPEnumsRes.SampleTypeEnumStudy, retStr);
+                            Assert.Equal(CSSPEnumsRes.SampleTypeEnumStudy, retStr);
+                            break;
+                        case SampleTypeEnum.Sediment:
+                            Assert.Equal(CSSPEnumsRes.SampleTypeEnumSediment, retStr);
+                            break;
+                        case SampleTypeEnum.Bivalve:
+                            Assert.Equal(CSSPEnumsRes.SampleTypeEnumBivalve, retStr);
                             break;
                         default:
-                            Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                            Assert.Equal(CSSPEnumsRes.Empty, retStr);
                             break;
                     }
                 }
             }
         }
-        [TestMethod]
+        [Fact]
         public void Enums_GetEnumText_SamplingPlanTypeEnum_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
@@ -3320,13 +3330,13 @@ namespace CSSPEnums.Tests
                 SetupTest(culture);
 
                 string retStr = enums.GetResValueForTypeAndID(typeof(SamplingPlanTypeEnum), -100);
-                Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                Assert.Equal(CSSPEnumsRes.Empty, retStr);
 
                 retStr = enums.GetResValueForTypeAndID(typeof(SamplingPlanTypeEnum), 10000000);
-                Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                Assert.Equal(CSSPEnumsRes.Empty, retStr);
 
                 retStr = enums.GetResValueForTypeAndID(typeof(SamplingPlanTypeEnum), null);
-                Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                Assert.Equal(CSSPEnumsRes.Empty, retStr);
 
                 foreach (int i in Enum.GetValues(typeof(SamplingPlanTypeEnum)))
                 {
@@ -3335,19 +3345,19 @@ namespace CSSPEnums.Tests
                     switch ((SamplingPlanTypeEnum)i)
                     {
                         case SamplingPlanTypeEnum.Subsector:
-                            Assert.AreEqual(CSSPEnumsRes.SamplingPlanTypeEnumSubsector, retStr);
+                            Assert.Equal(CSSPEnumsRes.SamplingPlanTypeEnumSubsector, retStr);
                             break;
                         case SamplingPlanTypeEnum.Municipality:
-                            Assert.AreEqual(CSSPEnumsRes.SamplingPlanTypeEnumMunicipality, retStr);
+                            Assert.Equal(CSSPEnumsRes.SamplingPlanTypeEnumMunicipality, retStr);
                             break;
                         default:
-                            Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                            Assert.Equal(CSSPEnumsRes.Empty, retStr);
                             break;
                     }
                 }
             }
         }
-        [TestMethod]
+        [Fact]
         public void Enums_GetEnumText_ScenarioStatusEnum_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
@@ -3355,13 +3365,13 @@ namespace CSSPEnums.Tests
                 SetupTest(culture);
 
                 string retStr = enums.GetResValueForTypeAndID(typeof(ScenarioStatusEnum), -100);
-                Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                Assert.Equal(CSSPEnumsRes.Empty, retStr);
 
                 retStr = enums.GetResValueForTypeAndID(typeof(ScenarioStatusEnum), 10000000);
-                Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                Assert.Equal(CSSPEnumsRes.Empty, retStr);
 
                 retStr = enums.GetResValueForTypeAndID(typeof(ScenarioStatusEnum), null);
-                Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                Assert.Equal(CSSPEnumsRes.Empty, retStr);
 
                 foreach (int i in Enum.GetValues(typeof(ScenarioStatusEnum)))
                 {
@@ -3370,40 +3380,40 @@ namespace CSSPEnums.Tests
                     switch ((ScenarioStatusEnum)i)
                     {
                         case ScenarioStatusEnum.Normal:
-                            Assert.AreEqual(CSSPEnumsRes.ScenarioStatusEnumNormal, retStr);
+                            Assert.Equal(CSSPEnumsRes.ScenarioStatusEnumNormal, retStr);
                             break;
                         case ScenarioStatusEnum.Copying:
-                            Assert.AreEqual(CSSPEnumsRes.ScenarioStatusEnumCopying, retStr);
+                            Assert.Equal(CSSPEnumsRes.ScenarioStatusEnumCopying, retStr);
                             break;
                         case ScenarioStatusEnum.Copied:
-                            Assert.AreEqual(CSSPEnumsRes.ScenarioStatusEnumCopied, retStr);
+                            Assert.Equal(CSSPEnumsRes.ScenarioStatusEnumCopied, retStr);
                             break;
                         case ScenarioStatusEnum.Changing:
-                            Assert.AreEqual(CSSPEnumsRes.ScenarioStatusEnumChanging, retStr);
+                            Assert.Equal(CSSPEnumsRes.ScenarioStatusEnumChanging, retStr);
                             break;
                         case ScenarioStatusEnum.Changed:
-                            Assert.AreEqual(CSSPEnumsRes.ScenarioStatusEnumChanged, retStr);
+                            Assert.Equal(CSSPEnumsRes.ScenarioStatusEnumChanged, retStr);
                             break;
                         case ScenarioStatusEnum.AskToRun:
-                            Assert.AreEqual(CSSPEnumsRes.ScenarioStatusEnumAskToRun, retStr);
+                            Assert.Equal(CSSPEnumsRes.ScenarioStatusEnumAskToRun, retStr);
                             break;
                         case ScenarioStatusEnum.Running:
-                            Assert.AreEqual(CSSPEnumsRes.ScenarioStatusEnumRunning, retStr);
+                            Assert.Equal(CSSPEnumsRes.ScenarioStatusEnumRunning, retStr);
                             break;
                         case ScenarioStatusEnum.Completed:
-                            Assert.AreEqual(CSSPEnumsRes.ScenarioStatusEnumCompleted, retStr);
+                            Assert.Equal(CSSPEnumsRes.ScenarioStatusEnumCompleted, retStr);
                             break;
                         case ScenarioStatusEnum.Cancelled:
-                            Assert.AreEqual(CSSPEnumsRes.ScenarioStatusEnumCancelled, retStr);
+                            Assert.Equal(CSSPEnumsRes.ScenarioStatusEnumCancelled, retStr);
                             break;
                         default:
-                            Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                            Assert.Equal(CSSPEnumsRes.Empty, retStr);
                             break;
                     }
                 }
             }
         }
-        [TestMethod]
+        [Fact]
         public void Enums_GetEnumText_SearchTagEnum_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
@@ -3411,13 +3421,13 @@ namespace CSSPEnums.Tests
                 SetupTest(culture);
 
                 string retStr = enums.GetResValueForTypeAndID(typeof(SearchTagEnum), -100);
-                Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                Assert.Equal(CSSPEnumsRes.Empty, retStr);
 
                 retStr = enums.GetResValueForTypeAndID(typeof(SearchTagEnum), 10000000);
-                Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                Assert.Equal(CSSPEnumsRes.Empty, retStr);
 
                 retStr = enums.GetResValueForTypeAndID(typeof(SearchTagEnum), null);
-                Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                Assert.Equal(CSSPEnumsRes.Empty, retStr);
 
                 foreach (int i in Enum.GetValues(typeof(SearchTagEnum)))
                 {
@@ -3426,121 +3436,121 @@ namespace CSSPEnums.Tests
                     switch ((SearchTagEnum)i)
                     {
                         case SearchTagEnum.c:
-                            Assert.AreEqual(CSSPEnumsRes.SearchTagEnumc, retStr);
+                            Assert.Equal(CSSPEnumsRes.SearchTagEnumc, retStr);
                             break;
                         case SearchTagEnum.e:
-                            Assert.AreEqual(CSSPEnumsRes.SearchTagEnume, retStr);
+                            Assert.Equal(CSSPEnumsRes.SearchTagEnume, retStr);
                             break;
                         case SearchTagEnum.t:
-                            Assert.AreEqual(CSSPEnumsRes.SearchTagEnumt, retStr);
+                            Assert.Equal(CSSPEnumsRes.SearchTagEnumt, retStr);
                             break;
                         case SearchTagEnum.fi:
-                            Assert.AreEqual(CSSPEnumsRes.SearchTagEnumfi, retStr);
+                            Assert.Equal(CSSPEnumsRes.SearchTagEnumfi, retStr);
                             break;
                         case SearchTagEnum.fp:
-                            Assert.AreEqual(CSSPEnumsRes.SearchTagEnumfp, retStr);
+                            Assert.Equal(CSSPEnumsRes.SearchTagEnumfp, retStr);
                             break;
                         case SearchTagEnum.frg:
-                            Assert.AreEqual(CSSPEnumsRes.SearchTagEnumfrg, retStr);
+                            Assert.Equal(CSSPEnumsRes.SearchTagEnumfrg, retStr);
                             break;
                         case SearchTagEnum.ftg:
-                            Assert.AreEqual(CSSPEnumsRes.SearchTagEnumftg, retStr);
+                            Assert.Equal(CSSPEnumsRes.SearchTagEnumftg, retStr);
                             break;
                         case SearchTagEnum.fpdf:
-                            Assert.AreEqual(CSSPEnumsRes.SearchTagEnumfpdf, retStr);
+                            Assert.Equal(CSSPEnumsRes.SearchTagEnumfpdf, retStr);
                             break;
                         case SearchTagEnum.fdocx:
-                            Assert.AreEqual(CSSPEnumsRes.SearchTagEnumfdocx, retStr);
+                            Assert.Equal(CSSPEnumsRes.SearchTagEnumfdocx, retStr);
                             break;
                         case SearchTagEnum.fxlsx:
-                            Assert.AreEqual(CSSPEnumsRes.SearchTagEnumfxlsx, retStr);
+                            Assert.Equal(CSSPEnumsRes.SearchTagEnumfxlsx, retStr);
                             break;
                         case SearchTagEnum.fkmz:
-                            Assert.AreEqual(CSSPEnumsRes.SearchTagEnumfkmz, retStr);
+                            Assert.Equal(CSSPEnumsRes.SearchTagEnumfkmz, retStr);
                             break;
                         case SearchTagEnum.fxyz:
-                            Assert.AreEqual(CSSPEnumsRes.SearchTagEnumfxyz, retStr);
+                            Assert.Equal(CSSPEnumsRes.SearchTagEnumfxyz, retStr);
                             break;
                         case SearchTagEnum.fdfs:
-                            Assert.AreEqual(CSSPEnumsRes.SearchTagEnumfdfs, retStr);
+                            Assert.Equal(CSSPEnumsRes.SearchTagEnumfdfs, retStr);
                             break;
                         case SearchTagEnum.fmike:
-                            Assert.AreEqual(CSSPEnumsRes.SearchTagEnumfmike, retStr);
+                            Assert.Equal(CSSPEnumsRes.SearchTagEnumfmike, retStr);
                             break;
                         case SearchTagEnum.fmdf:
-                            Assert.AreEqual(CSSPEnumsRes.SearchTagEnumfmdf, retStr);
+                            Assert.Equal(CSSPEnumsRes.SearchTagEnumfmdf, retStr);
                             break;
                         case SearchTagEnum.fm21fm:
-                            Assert.AreEqual(CSSPEnumsRes.SearchTagEnumfm21fm, retStr);
+                            Assert.Equal(CSSPEnumsRes.SearchTagEnumfm21fm, retStr);
                             break;
                         case SearchTagEnum.fm3fm:
-                            Assert.AreEqual(CSSPEnumsRes.SearchTagEnumfm3fm, retStr);
+                            Assert.Equal(CSSPEnumsRes.SearchTagEnumfm3fm, retStr);
                             break;
                         case SearchTagEnum.fmesh:
-                            Assert.AreEqual(CSSPEnumsRes.SearchTagEnumfmesh, retStr);
+                            Assert.Equal(CSSPEnumsRes.SearchTagEnumfmesh, retStr);
                             break;
                         case SearchTagEnum.flog:
-                            Assert.AreEqual(CSSPEnumsRes.SearchTagEnumflog, retStr);
+                            Assert.Equal(CSSPEnumsRes.SearchTagEnumflog, retStr);
                             break;
                         case SearchTagEnum.ftxt:
-                            Assert.AreEqual(CSSPEnumsRes.SearchTagEnumftxt, retStr);
+                            Assert.Equal(CSSPEnumsRes.SearchTagEnumftxt, retStr);
                             break;
                         case SearchTagEnum.m:
-                            Assert.AreEqual(CSSPEnumsRes.SearchTagEnumm, retStr);
+                            Assert.Equal(CSSPEnumsRes.SearchTagEnumm, retStr);
                             break;
                         case SearchTagEnum.p:
-                            Assert.AreEqual(CSSPEnumsRes.SearchTagEnump, retStr);
+                            Assert.Equal(CSSPEnumsRes.SearchTagEnump, retStr);
                             break;
                         case SearchTagEnum.ms:
-                            Assert.AreEqual(CSSPEnumsRes.SearchTagEnumms, retStr);
+                            Assert.Equal(CSSPEnumsRes.SearchTagEnumms, retStr);
                             break;
                         case SearchTagEnum.cs:
-                            Assert.AreEqual(CSSPEnumsRes.SearchTagEnumcs, retStr);
+                            Assert.Equal(CSSPEnumsRes.SearchTagEnumcs, retStr);
                             break;
                         case SearchTagEnum.hs:
-                            Assert.AreEqual(CSSPEnumsRes.SearchTagEnumhs, retStr);
+                            Assert.Equal(CSSPEnumsRes.SearchTagEnumhs, retStr);
                             break;
                         case SearchTagEnum.ts:
-                            Assert.AreEqual(CSSPEnumsRes.SearchTagEnumts, retStr);
+                            Assert.Equal(CSSPEnumsRes.SearchTagEnumts, retStr);
                             break;
                         case SearchTagEnum.ww:
-                            Assert.AreEqual(CSSPEnumsRes.SearchTagEnumww, retStr);
+                            Assert.Equal(CSSPEnumsRes.SearchTagEnumww, retStr);
                             break;
                         case SearchTagEnum.ls:
-                            Assert.AreEqual(CSSPEnumsRes.SearchTagEnumls, retStr);
+                            Assert.Equal(CSSPEnumsRes.SearchTagEnumls, retStr);
                             break;
                         case SearchTagEnum.st:
-                            Assert.AreEqual(CSSPEnumsRes.SearchTagEnumst, retStr);
+                            Assert.Equal(CSSPEnumsRes.SearchTagEnumst, retStr);
                             break;
                         case SearchTagEnum.ps:
-                            Assert.AreEqual(CSSPEnumsRes.SearchTagEnumps, retStr);
+                            Assert.Equal(CSSPEnumsRes.SearchTagEnumps, retStr);
                             break;
                         case SearchTagEnum.a:
-                            Assert.AreEqual(CSSPEnumsRes.SearchTagEnuma, retStr);
+                            Assert.Equal(CSSPEnumsRes.SearchTagEnuma, retStr);
                             break;
                         case SearchTagEnum.s:
-                            Assert.AreEqual(CSSPEnumsRes.SearchTagEnums, retStr);
+                            Assert.Equal(CSSPEnumsRes.SearchTagEnums, retStr);
                             break;
                         case SearchTagEnum.ss:
-                            Assert.AreEqual(CSSPEnumsRes.SearchTagEnumss, retStr);
+                            Assert.Equal(CSSPEnumsRes.SearchTagEnumss, retStr);
                             break;
                         case SearchTagEnum.u:
-                            Assert.AreEqual(CSSPEnumsRes.SearchTagEnumu, retStr);
+                            Assert.Equal(CSSPEnumsRes.SearchTagEnumu, retStr);
                             break;
                         case SearchTagEnum.notag:
-                            Assert.AreEqual(CSSPEnumsRes.SearchTagEnumnotag, retStr);
+                            Assert.Equal(CSSPEnumsRes.SearchTagEnumnotag, retStr);
                             break;
                         case SearchTagEnum.fcsv:
-                            Assert.AreEqual(CSSPEnumsRes.SearchTagEnumfcsv, retStr);
+                            Assert.Equal(CSSPEnumsRes.SearchTagEnumfcsv, retStr);
                             break;
                         default:
-                            Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                            Assert.Equal(CSSPEnumsRes.Empty, retStr);
                             break;
                     }
                 }
             }
         }
-        [TestMethod]
+        [Fact]
         public void Enums_GetEnumText_SecondaryTreatmentTypeEnum_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
@@ -3548,13 +3558,13 @@ namespace CSSPEnums.Tests
                 SetupTest(culture);
 
                 string retStr = enums.GetResValueForTypeAndID(typeof(SecondaryTreatmentTypeEnum), -100);
-                Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                Assert.Equal(CSSPEnumsRes.Empty, retStr);
 
                 retStr = enums.GetResValueForTypeAndID(typeof(SecondaryTreatmentTypeEnum), 10000000);
-                Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                Assert.Equal(CSSPEnumsRes.Empty, retStr);
 
                 retStr = enums.GetResValueForTypeAndID(typeof(SecondaryTreatmentTypeEnum), null);
-                Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                Assert.Equal(CSSPEnumsRes.Empty, retStr);
 
                 foreach (int i in Enum.GetValues(typeof(SecondaryTreatmentTypeEnum)))
                 {
@@ -3563,55 +3573,55 @@ namespace CSSPEnums.Tests
                     switch ((SecondaryTreatmentTypeEnum)i)
                     {
                         case SecondaryTreatmentTypeEnum.NotApplicable:
-                            Assert.AreEqual(CSSPEnumsRes.SecondaryTreatmentTypeEnumNotApplicable, retStr);
+                            Assert.Equal(CSSPEnumsRes.SecondaryTreatmentTypeEnumNotApplicable, retStr);
                             break;
                         case SecondaryTreatmentTypeEnum.RotatingBiologicalContactor:
-                            Assert.AreEqual(CSSPEnumsRes.SecondaryTreatmentTypeEnumRotatingBiologicalContactor, retStr);
+                            Assert.Equal(CSSPEnumsRes.SecondaryTreatmentTypeEnumRotatingBiologicalContactor, retStr);
                             break;
                         case SecondaryTreatmentTypeEnum.TricklingFilters:
-                            Assert.AreEqual(CSSPEnumsRes.SecondaryTreatmentTypeEnumTricklingFilters, retStr);
+                            Assert.Equal(CSSPEnumsRes.SecondaryTreatmentTypeEnumTricklingFilters, retStr);
                             break;
                         case SecondaryTreatmentTypeEnum.SequencingBatchReactor:
-                            Assert.AreEqual(CSSPEnumsRes.SecondaryTreatmentTypeEnumSequencingBatchReactor, retStr);
+                            Assert.Equal(CSSPEnumsRes.SecondaryTreatmentTypeEnumSequencingBatchReactor, retStr);
                             break;
                         case SecondaryTreatmentTypeEnum.OxidationDitch:
-                            Assert.AreEqual(CSSPEnumsRes.SecondaryTreatmentTypeEnumOxidationDitch, retStr);
+                            Assert.Equal(CSSPEnumsRes.SecondaryTreatmentTypeEnumOxidationDitch, retStr);
                             break;
                         case SecondaryTreatmentTypeEnum.ExtendedAeration:
-                            Assert.AreEqual(CSSPEnumsRes.SecondaryTreatmentTypeEnumExtendedAeration, retStr);
+                            Assert.Equal(CSSPEnumsRes.SecondaryTreatmentTypeEnumExtendedAeration, retStr);
                             break;
                         case SecondaryTreatmentTypeEnum.ContactStabilization:
-                            Assert.AreEqual(CSSPEnumsRes.SecondaryTreatmentTypeEnumContactStabilization, retStr);
+                            Assert.Equal(CSSPEnumsRes.SecondaryTreatmentTypeEnumContactStabilization, retStr);
                             break;
                         case SecondaryTreatmentTypeEnum.PhysicalChemicalProcesses:
-                            Assert.AreEqual(CSSPEnumsRes.SecondaryTreatmentTypeEnumPhysicalChemicalProcesses, retStr);
+                            Assert.Equal(CSSPEnumsRes.SecondaryTreatmentTypeEnumPhysicalChemicalProcesses, retStr);
                             break;
                         case SecondaryTreatmentTypeEnum.MovingBedBioReactor:
-                            Assert.AreEqual(CSSPEnumsRes.SecondaryTreatmentTypeEnumMovingBedBioReactor, retStr);
+                            Assert.Equal(CSSPEnumsRes.SecondaryTreatmentTypeEnumMovingBedBioReactor, retStr);
                             break;
                         case SecondaryTreatmentTypeEnum.BiologicalAearatedFilters:
-                            Assert.AreEqual(CSSPEnumsRes.SecondaryTreatmentTypeEnumBiologicalAearatedFilters, retStr);
+                            Assert.Equal(CSSPEnumsRes.SecondaryTreatmentTypeEnumBiologicalAearatedFilters, retStr);
                             break;
                         case SecondaryTreatmentTypeEnum.AeratedSubmergedBioFilmReactor:
-                            Assert.AreEqual(CSSPEnumsRes.SecondaryTreatmentTypeEnumAeratedSubmergedBioFilmReactor, retStr);
+                            Assert.Equal(CSSPEnumsRes.SecondaryTreatmentTypeEnumAeratedSubmergedBioFilmReactor, retStr);
                             break;
                         case SecondaryTreatmentTypeEnum.IntegratedFixedFilmActivatedSludge:
-                            Assert.AreEqual(CSSPEnumsRes.SecondaryTreatmentTypeEnumIntegratedFixedFilmActivatedSludge, retStr);
+                            Assert.Equal(CSSPEnumsRes.SecondaryTreatmentTypeEnumIntegratedFixedFilmActivatedSludge, retStr);
                             break;
                         case SecondaryTreatmentTypeEnum.ActivatedSludge:
-                            Assert.AreEqual(CSSPEnumsRes.SecondaryTreatmentTypeEnumActivatedSludge, retStr);
+                            Assert.Equal(CSSPEnumsRes.SecondaryTreatmentTypeEnumActivatedSludge, retStr);
                             break;
                         case SecondaryTreatmentTypeEnum.ExtendedActivatedSludge:
-                            Assert.AreEqual(CSSPEnumsRes.SecondaryTreatmentTypeEnumExtendedActivatedSludge, retStr);
+                            Assert.Equal(CSSPEnumsRes.SecondaryTreatmentTypeEnumExtendedActivatedSludge, retStr);
                             break;
                         default:
-                            Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                            Assert.Equal(CSSPEnumsRes.Empty, retStr);
                             break;
                     }
                 }
             }
         }
-        [TestMethod]
+        [Fact]
         public void Enums_GetEnumText_SiteTypeEnum_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
@@ -3619,13 +3629,13 @@ namespace CSSPEnums.Tests
                 SetupTest(culture);
 
                 string retStr = enums.GetResValueForTypeAndID(typeof(SiteTypeEnum), -100);
-                Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                Assert.Equal(CSSPEnumsRes.Empty, retStr);
 
                 retStr = enums.GetResValueForTypeAndID(typeof(SiteTypeEnum), 10000000);
-                Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                Assert.Equal(CSSPEnumsRes.Empty, retStr);
 
                 retStr = enums.GetResValueForTypeAndID(typeof(SiteTypeEnum), null);
-                Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                Assert.Equal(CSSPEnumsRes.Empty, retStr);
 
                 foreach (int i in Enum.GetValues(typeof(SiteTypeEnum)))
                 {
@@ -3634,22 +3644,22 @@ namespace CSSPEnums.Tests
                     switch ((SiteTypeEnum)i)
                     {
                         case SiteTypeEnum.Climate:
-                            Assert.AreEqual(CSSPEnumsRes.SiteTypeEnumClimate, retStr);
+                            Assert.Equal(CSSPEnumsRes.SiteTypeEnumClimate, retStr);
                             break;
                         case SiteTypeEnum.Hydrometric:
-                            Assert.AreEqual(CSSPEnumsRes.SiteTypeEnumHydrometric, retStr);
+                            Assert.Equal(CSSPEnumsRes.SiteTypeEnumHydrometric, retStr);
                             break;
                         case SiteTypeEnum.Tide:
-                            Assert.AreEqual(CSSPEnumsRes.SiteTypeEnumTide, retStr);
+                            Assert.Equal(CSSPEnumsRes.SiteTypeEnumTide, retStr);
                             break;
                         default:
-                            Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                            Assert.Equal(CSSPEnumsRes.Empty, retStr);
                             break;
                     }
                 }
             }
         }
-        [TestMethod]
+        [Fact]
         public void Enums_GetEnumText_SpecialTableTypeEnum_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
@@ -3657,13 +3667,13 @@ namespace CSSPEnums.Tests
                 SetupTest(culture);
 
                 string retStr = enums.GetResValueForTypeAndID(typeof(SpecialTableTypeEnum), -100);
-                Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                Assert.Equal(CSSPEnumsRes.Empty, retStr);
 
                 retStr = enums.GetResValueForTypeAndID(typeof(SpecialTableTypeEnum), 10000000);
-                Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                Assert.Equal(CSSPEnumsRes.Empty, retStr);
 
                 retStr = enums.GetResValueForTypeAndID(typeof(SpecialTableTypeEnum), null);
-                Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                Assert.Equal(CSSPEnumsRes.Empty, retStr);
 
                 foreach (int i in Enum.GetValues(typeof(SpecialTableTypeEnum)))
                 {
@@ -3672,37 +3682,37 @@ namespace CSSPEnums.Tests
                     switch ((SpecialTableTypeEnum)i)
                     {
                         case SpecialTableTypeEnum.FCDensitiesTable:
-                            Assert.AreEqual(CSSPEnumsRes.SpecialTableTypeEnumFCDensitiesTable, retStr);
+                            Assert.Equal(CSSPEnumsRes.SpecialTableTypeEnumFCDensitiesTable, retStr);
                             break;
                         case SpecialTableTypeEnum.SalinityTable:
-                            Assert.AreEqual(CSSPEnumsRes.SpecialTableTypeEnumSalinityTable, retStr);
+                            Assert.Equal(CSSPEnumsRes.SpecialTableTypeEnumSalinityTable, retStr);
                             break;
                         case SpecialTableTypeEnum.TemperatureTable:
-                            Assert.AreEqual(CSSPEnumsRes.SpecialTableTypeEnumTemperatureTable, retStr);
+                            Assert.Equal(CSSPEnumsRes.SpecialTableTypeEnumTemperatureTable, retStr);
                             break;
                         case SpecialTableTypeEnum.GeometricMeanTable:
-                            Assert.AreEqual(CSSPEnumsRes.SpecialTableTypeEnumGeometricMeanTable, retStr);
+                            Assert.Equal(CSSPEnumsRes.SpecialTableTypeEnumGeometricMeanTable, retStr);
                             break;
                         case SpecialTableTypeEnum.MedianTable:
-                            Assert.AreEqual(CSSPEnumsRes.SpecialTableTypeEnumMedianTable, retStr);
+                            Assert.Equal(CSSPEnumsRes.SpecialTableTypeEnumMedianTable, retStr);
                             break;
                         case SpecialTableTypeEnum.P90Table:
-                            Assert.AreEqual(CSSPEnumsRes.SpecialTableTypeEnumP90Table, retStr);
+                            Assert.Equal(CSSPEnumsRes.SpecialTableTypeEnumP90Table, retStr);
                             break;
                         case SpecialTableTypeEnum.PercentOver43Table:
-                            Assert.AreEqual(CSSPEnumsRes.SpecialTableTypeEnumPercentOver43Table, retStr);
+                            Assert.Equal(CSSPEnumsRes.SpecialTableTypeEnumPercentOver43Table, retStr);
                             break;
                         case SpecialTableTypeEnum.PercentOver260Table:
-                            Assert.AreEqual(CSSPEnumsRes.SpecialTableTypeEnumPercentOver260Table, retStr);
+                            Assert.Equal(CSSPEnumsRes.SpecialTableTypeEnumPercentOver260Table, retStr);
                             break;
                         default:
-                            Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                            Assert.Equal(CSSPEnumsRes.Empty, retStr);
                             break;
                     }
                 }
             }
         }
-        [TestMethod]
+        [Fact]
         public void Enums_GetEnumText_StorageDataTypeEnum_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
@@ -3710,13 +3720,13 @@ namespace CSSPEnums.Tests
                 SetupTest(culture);
 
                 string retStr = enums.GetResValueForTypeAndID(typeof(StorageDataTypeEnum), -100);
-                Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                Assert.Equal(CSSPEnumsRes.Empty, retStr);
 
                 retStr = enums.GetResValueForTypeAndID(typeof(StorageDataTypeEnum), 10000000);
-                Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                Assert.Equal(CSSPEnumsRes.Empty, retStr);
 
                 retStr = enums.GetResValueForTypeAndID(typeof(StorageDataTypeEnum), null);
-                Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                Assert.Equal(CSSPEnumsRes.Empty, retStr);
 
                 foreach (int i in Enum.GetValues(typeof(StorageDataTypeEnum)))
                 {
@@ -3725,22 +3735,22 @@ namespace CSSPEnums.Tests
                     switch ((StorageDataTypeEnum)i)
                     {
                         case StorageDataTypeEnum.Archived:
-                            Assert.AreEqual(CSSPEnumsRes.StorageDataTypeEnumArchived, retStr);
+                            Assert.Equal(CSSPEnumsRes.StorageDataTypeEnumArchived, retStr);
                             break;
                         case StorageDataTypeEnum.Forcasted:
-                            Assert.AreEqual(CSSPEnumsRes.StorageDataTypeEnumForcasted, retStr);
+                            Assert.Equal(CSSPEnumsRes.StorageDataTypeEnumForcasted, retStr);
                             break;
                         case StorageDataTypeEnum.Observed:
-                            Assert.AreEqual(CSSPEnumsRes.StorageDataTypeEnumObserved, retStr);
+                            Assert.Equal(CSSPEnumsRes.StorageDataTypeEnumObserved, retStr);
                             break;
                         default:
-                            Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                            Assert.Equal(CSSPEnumsRes.Empty, retStr);
                             break;
                     }
                 }
             }
         }
-        [TestMethod]
+        [Fact]
         public void Enums_GetEnumText_StreetTypeEnum_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
@@ -3748,13 +3758,13 @@ namespace CSSPEnums.Tests
                 SetupTest(culture);
 
                 string retStr = enums.GetResValueForTypeAndID(typeof(StreetTypeEnum), -100);
-                Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                Assert.Equal(CSSPEnumsRes.Empty, retStr);
 
                 retStr = enums.GetResValueForTypeAndID(typeof(StreetTypeEnum), 10000000);
-                Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                Assert.Equal(CSSPEnumsRes.Empty, retStr);
 
                 retStr = enums.GetResValueForTypeAndID(typeof(StreetTypeEnum), null);
-                Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                Assert.Equal(CSSPEnumsRes.Empty, retStr);
 
                 foreach (int i in Enum.GetValues(typeof(StreetTypeEnum)))
                 {
@@ -3763,43 +3773,43 @@ namespace CSSPEnums.Tests
                     switch ((StreetTypeEnum)i)
                     {
                         case StreetTypeEnum.Street:
-                            Assert.AreEqual(CSSPEnumsRes.StreetTypeEnumStreet, retStr);
+                            Assert.Equal(CSSPEnumsRes.StreetTypeEnumStreet, retStr);
                             break;
                         case StreetTypeEnum.Road:
-                            Assert.AreEqual(CSSPEnumsRes.StreetTypeEnumRoad, retStr);
+                            Assert.Equal(CSSPEnumsRes.StreetTypeEnumRoad, retStr);
                             break;
                         case StreetTypeEnum.Avenue:
-                            Assert.AreEqual(CSSPEnumsRes.StreetTypeEnumAvenue, retStr);
+                            Assert.Equal(CSSPEnumsRes.StreetTypeEnumAvenue, retStr);
                             break;
                         case StreetTypeEnum.Crescent:
-                            Assert.AreEqual(CSSPEnumsRes.StreetTypeEnumCrescent, retStr);
+                            Assert.Equal(CSSPEnumsRes.StreetTypeEnumCrescent, retStr);
                             break;
                         case StreetTypeEnum.Court:
-                            Assert.AreEqual(CSSPEnumsRes.StreetTypeEnumCourt, retStr);
+                            Assert.Equal(CSSPEnumsRes.StreetTypeEnumCourt, retStr);
                             break;
                         case StreetTypeEnum.Alley:
-                            Assert.AreEqual(CSSPEnumsRes.StreetTypeEnumAlley, retStr);
+                            Assert.Equal(CSSPEnumsRes.StreetTypeEnumAlley, retStr);
                             break;
                         case StreetTypeEnum.Drive:
-                            Assert.AreEqual(CSSPEnumsRes.StreetTypeEnumDrive, retStr);
+                            Assert.Equal(CSSPEnumsRes.StreetTypeEnumDrive, retStr);
                             break;
                         case StreetTypeEnum.Blvd:
-                            Assert.AreEqual(CSSPEnumsRes.StreetTypeEnumBlvd, retStr);
+                            Assert.Equal(CSSPEnumsRes.StreetTypeEnumBlvd, retStr);
                             break;
                         case StreetTypeEnum.Route:
-                            Assert.AreEqual(CSSPEnumsRes.StreetTypeEnumRoute, retStr);
+                            Assert.Equal(CSSPEnumsRes.StreetTypeEnumRoute, retStr);
                             break;
                         case StreetTypeEnum.Lane:
-                            Assert.AreEqual(CSSPEnumsRes.StreetTypeEnumLane, retStr);
+                            Assert.Equal(CSSPEnumsRes.StreetTypeEnumLane, retStr);
                             break;
                         default:
-                            Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                            Assert.Equal(CSSPEnumsRes.Empty, retStr);
                             break;
                     }
                 }
             }
         }
-        [TestMethod]
+        [Fact]
         public void Enums_GetEnumText_TelTypeEnum_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
@@ -3807,13 +3817,13 @@ namespace CSSPEnums.Tests
                 SetupTest(culture);
 
                 string retStr = enums.GetResValueForTypeAndID(typeof(TelTypeEnum), -100);
-                Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                Assert.Equal(CSSPEnumsRes.Empty, retStr);
 
                 retStr = enums.GetResValueForTypeAndID(typeof(TelTypeEnum), 10000000);
-                Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                Assert.Equal(CSSPEnumsRes.Empty, retStr);
 
                 retStr = enums.GetResValueForTypeAndID(typeof(TelTypeEnum), null);
-                Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                Assert.Equal(CSSPEnumsRes.Empty, retStr);
 
                 foreach (int i in Enum.GetValues(typeof(TelTypeEnum)))
                 {
@@ -3822,31 +3832,31 @@ namespace CSSPEnums.Tests
                     switch ((TelTypeEnum)i)
                     {
                         case TelTypeEnum.Personal:
-                            Assert.AreEqual(CSSPEnumsRes.TelTypeEnumPersonal, retStr);
+                            Assert.Equal(CSSPEnumsRes.TelTypeEnumPersonal, retStr);
                             break;
                         case TelTypeEnum.Work:
-                            Assert.AreEqual(CSSPEnumsRes.TelTypeEnumWork, retStr);
+                            Assert.Equal(CSSPEnumsRes.TelTypeEnumWork, retStr);
                             break;
                         case TelTypeEnum.Mobile:
-                            Assert.AreEqual(CSSPEnumsRes.TelTypeEnumMobile, retStr);
+                            Assert.Equal(CSSPEnumsRes.TelTypeEnumMobile, retStr);
                             break;
                         case TelTypeEnum.Personal2:
-                            Assert.AreEqual(CSSPEnumsRes.TelTypeEnumPersonal2, retStr);
+                            Assert.Equal(CSSPEnumsRes.TelTypeEnumPersonal2, retStr);
                             break;
                         case TelTypeEnum.Work2:
-                            Assert.AreEqual(CSSPEnumsRes.TelTypeEnumWork2, retStr);
+                            Assert.Equal(CSSPEnumsRes.TelTypeEnumWork2, retStr);
                             break;
                         case TelTypeEnum.Mobile2:
-                            Assert.AreEqual(CSSPEnumsRes.TelTypeEnumMobile2, retStr);
+                            Assert.Equal(CSSPEnumsRes.TelTypeEnumMobile2, retStr);
                             break;
                         default:
-                            Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                            Assert.Equal(CSSPEnumsRes.Empty, retStr);
                             break;
                     }
                 }
             }
         }
-        [TestMethod]
+        [Fact]
         public void Enums_GetEnumText_TertiaryTreatmentTypeEnum_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
@@ -3854,13 +3864,13 @@ namespace CSSPEnums.Tests
                 SetupTest(culture);
 
                 string retStr = enums.GetResValueForTypeAndID(typeof(TertiaryTreatmentTypeEnum), -100);
-                Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                Assert.Equal(CSSPEnumsRes.Empty, retStr);
 
                 retStr = enums.GetResValueForTypeAndID(typeof(TertiaryTreatmentTypeEnum), 10000000);
-                Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                Assert.Equal(CSSPEnumsRes.Empty, retStr);
 
                 retStr = enums.GetResValueForTypeAndID(typeof(TertiaryTreatmentTypeEnum), null);
-                Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                Assert.Equal(CSSPEnumsRes.Empty, retStr);
 
                 foreach (int i in Enum.GetValues(typeof(TertiaryTreatmentTypeEnum)))
                 {
@@ -3869,34 +3879,34 @@ namespace CSSPEnums.Tests
                     switch ((TertiaryTreatmentTypeEnum)i)
                     {
                         case TertiaryTreatmentTypeEnum.NotApplicable:
-                            Assert.AreEqual(CSSPEnumsRes.TertiaryTreatmentTypeEnumNotApplicable, retStr);
+                            Assert.Equal(CSSPEnumsRes.TertiaryTreatmentTypeEnumNotApplicable, retStr);
                             break;
                         case TertiaryTreatmentTypeEnum.Adsorption:
-                            Assert.AreEqual(CSSPEnumsRes.TertiaryTreatmentTypeEnumAdsorption, retStr);
+                            Assert.Equal(CSSPEnumsRes.TertiaryTreatmentTypeEnumAdsorption, retStr);
                             break;
                         case TertiaryTreatmentTypeEnum.Flocculation:
-                            Assert.AreEqual(CSSPEnumsRes.TertiaryTreatmentTypeEnumFlocculation, retStr);
+                            Assert.Equal(CSSPEnumsRes.TertiaryTreatmentTypeEnumFlocculation, retStr);
                             break;
                         case TertiaryTreatmentTypeEnum.MembraneFiltration:
-                            Assert.AreEqual(CSSPEnumsRes.TertiaryTreatmentTypeEnumMembraneFiltration, retStr);
+                            Assert.Equal(CSSPEnumsRes.TertiaryTreatmentTypeEnumMembraneFiltration, retStr);
                             break;
                         case TertiaryTreatmentTypeEnum.IonExchange:
-                            Assert.AreEqual(CSSPEnumsRes.TertiaryTreatmentTypeEnumIonExchange, retStr);
+                            Assert.Equal(CSSPEnumsRes.TertiaryTreatmentTypeEnumIonExchange, retStr);
                             break;
                         case TertiaryTreatmentTypeEnum.ReverseOsmosis:
-                            Assert.AreEqual(CSSPEnumsRes.TertiaryTreatmentTypeEnumReverseOsmosis, retStr);
+                            Assert.Equal(CSSPEnumsRes.TertiaryTreatmentTypeEnumReverseOsmosis, retStr);
                             break;
                         case TertiaryTreatmentTypeEnum.BiologicalNutrientRemoval:
-                            Assert.AreEqual(CSSPEnumsRes.TertiaryTreatmentTypeEnumBiologicalNutrientRemoval, retStr);
+                            Assert.Equal(CSSPEnumsRes.TertiaryTreatmentTypeEnumBiologicalNutrientRemoval, retStr);
                             break;
                         default:
-                            Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                            Assert.Equal(CSSPEnumsRes.Empty, retStr);
                             break;
                     }
                 }
             }
         }
-        [TestMethod]
+        [Fact]
         public void Enums_GetEnumText_TideDataTypeEnum_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
@@ -3904,13 +3914,13 @@ namespace CSSPEnums.Tests
                 SetupTest(culture);
 
                 string retStr = enums.GetResValueForTypeAndID(typeof(TideDataTypeEnum), -100);
-                Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                Assert.Equal(CSSPEnumsRes.Empty, retStr);
 
                 retStr = enums.GetResValueForTypeAndID(typeof(TideDataTypeEnum), 10000000);
-                Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                Assert.Equal(CSSPEnumsRes.Empty, retStr);
 
                 retStr = enums.GetResValueForTypeAndID(typeof(TideDataTypeEnum), null);
-                Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                Assert.Equal(CSSPEnumsRes.Empty, retStr);
 
                 foreach (int i in Enum.GetValues(typeof(TideDataTypeEnum)))
                 {
@@ -3919,19 +3929,19 @@ namespace CSSPEnums.Tests
                     switch ((TideDataTypeEnum)i)
                     {
                         case TideDataTypeEnum.Min15:
-                            Assert.AreEqual(CSSPEnumsRes.TideDataTypeEnumMin15, retStr);
+                            Assert.Equal(CSSPEnumsRes.TideDataTypeEnumMin15, retStr);
                             break;
                         case TideDataTypeEnum.Min60:
-                            Assert.AreEqual(CSSPEnumsRes.TideDataTypeEnumMin60, retStr);
+                            Assert.Equal(CSSPEnumsRes.TideDataTypeEnumMin60, retStr);
                             break;
                         default:
-                            Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                            Assert.Equal(CSSPEnumsRes.Empty, retStr);
                             break;
                     }
                 }
             }
         }
-        [TestMethod]
+        [Fact]
         public void Enums_GetEnumText_TideTextEnum_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
@@ -3939,13 +3949,13 @@ namespace CSSPEnums.Tests
                 SetupTest(culture);
 
                 string retStr = enums.GetResValueForTypeAndID(typeof(TideTextEnum), -100);
-                Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                Assert.Equal(CSSPEnumsRes.Empty, retStr);
 
                 retStr = enums.GetResValueForTypeAndID(typeof(TideTextEnum), 10000000);
-                Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                Assert.Equal(CSSPEnumsRes.Empty, retStr);
 
                 retStr = enums.GetResValueForTypeAndID(typeof(TideTextEnum), null);
-                Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                Assert.Equal(CSSPEnumsRes.Empty, retStr);
 
                 foreach (int i in Enum.GetValues(typeof(TideTextEnum)))
                 {
@@ -3954,40 +3964,40 @@ namespace CSSPEnums.Tests
                     switch ((TideTextEnum)i)
                     {
                         case TideTextEnum.LowTide:
-                            Assert.AreEqual(CSSPEnumsRes.TideTextEnumLowTide, retStr);
+                            Assert.Equal(CSSPEnumsRes.TideTextEnumLowTide, retStr);
                             break;
                         case TideTextEnum.LowTideFalling:
-                            Assert.AreEqual(CSSPEnumsRes.TideTextEnumLowTideFalling, retStr);
+                            Assert.Equal(CSSPEnumsRes.TideTextEnumLowTideFalling, retStr);
                             break;
                         case TideTextEnum.LowTideRising:
-                            Assert.AreEqual(CSSPEnumsRes.TideTextEnumLowTideRising, retStr);
+                            Assert.Equal(CSSPEnumsRes.TideTextEnumLowTideRising, retStr);
                             break;
                         case TideTextEnum.MidTide:
-                            Assert.AreEqual(CSSPEnumsRes.TideTextEnumMidTide, retStr);
+                            Assert.Equal(CSSPEnumsRes.TideTextEnumMidTide, retStr);
                             break;
                         case TideTextEnum.MidTideFalling:
-                            Assert.AreEqual(CSSPEnumsRes.TideTextEnumMidTideFalling, retStr);
+                            Assert.Equal(CSSPEnumsRes.TideTextEnumMidTideFalling, retStr);
                             break;
                         case TideTextEnum.MidTideRising:
-                            Assert.AreEqual(CSSPEnumsRes.TideTextEnumMidTideRising, retStr);
+                            Assert.Equal(CSSPEnumsRes.TideTextEnumMidTideRising, retStr);
                             break;
                         case TideTextEnum.HighTide:
-                            Assert.AreEqual(CSSPEnumsRes.TideTextEnumHighTide, retStr);
+                            Assert.Equal(CSSPEnumsRes.TideTextEnumHighTide, retStr);
                             break;
                         case TideTextEnum.HighTideFalling:
-                            Assert.AreEqual(CSSPEnumsRes.TideTextEnumHighTideFalling, retStr);
+                            Assert.Equal(CSSPEnumsRes.TideTextEnumHighTideFalling, retStr);
                             break;
                         case TideTextEnum.HighTideRising:
-                            Assert.AreEqual(CSSPEnumsRes.TideTextEnumHighTideRising, retStr);
+                            Assert.Equal(CSSPEnumsRes.TideTextEnumHighTideRising, retStr);
                             break;
                         default:
-                            Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                            Assert.Equal(CSSPEnumsRes.Empty, retStr);
                             break;
                     }
                 }
             }
         }
-        [TestMethod]
+        [Fact]
         public void Enums_GetEnumText_TranslationStatusEnum_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
@@ -3995,13 +4005,13 @@ namespace CSSPEnums.Tests
                 SetupTest(culture);
 
                 string retStr = enums.GetResValueForTypeAndID(typeof(TranslationStatusEnum), -100);
-                Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                Assert.Equal(CSSPEnumsRes.Empty, retStr);
 
                 retStr = enums.GetResValueForTypeAndID(typeof(TranslationStatusEnum), 10000000);
-                Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                Assert.Equal(CSSPEnumsRes.Empty, retStr);
 
                 retStr = enums.GetResValueForTypeAndID(typeof(TranslationStatusEnum), null);
-                Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                Assert.Equal(CSSPEnumsRes.Empty, retStr);
 
                 foreach (int i in Enum.GetValues(typeof(TranslationStatusEnum)))
                 {
@@ -4010,22 +4020,22 @@ namespace CSSPEnums.Tests
                     switch ((TranslationStatusEnum)i)
                     {
                         case TranslationStatusEnum.NotTranslated:
-                            Assert.AreEqual(CSSPEnumsRes.TranslationStatusEnumNotTranslated, retStr);
+                            Assert.Equal(CSSPEnumsRes.TranslationStatusEnumNotTranslated, retStr);
                             break;
                         case TranslationStatusEnum.ElectronicallyTranslated:
-                            Assert.AreEqual(CSSPEnumsRes.TranslationStatusEnumElectronicallyTranslated, retStr);
+                            Assert.Equal(CSSPEnumsRes.TranslationStatusEnumElectronicallyTranslated, retStr);
                             break;
                         case TranslationStatusEnum.Translated:
-                            Assert.AreEqual(CSSPEnumsRes.TranslationStatusEnumTranslated, retStr);
+                            Assert.Equal(CSSPEnumsRes.TranslationStatusEnumTranslated, retStr);
                             break;
                         default:
-                            Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                            Assert.Equal(CSSPEnumsRes.Empty, retStr);
                             break;
                     }
                 }
             }
         }
-        [TestMethod]
+        [Fact]
         public void Enums_GetEnumText_TreatmentTypeEnum_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
@@ -4033,13 +4043,13 @@ namespace CSSPEnums.Tests
                 SetupTest(culture);
 
                 string retStr = enums.GetResValueForTypeAndID(typeof(TreatmentTypeEnum), -100);
-                Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                Assert.Equal(CSSPEnumsRes.Empty, retStr);
 
                 retStr = enums.GetResValueForTypeAndID(typeof(TreatmentTypeEnum), 10000000);
-                Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                Assert.Equal(CSSPEnumsRes.Empty, retStr);
 
                 retStr = enums.GetResValueForTypeAndID(typeof(TreatmentTypeEnum), null);
-                Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                Assert.Equal(CSSPEnumsRes.Empty, retStr);
 
                 foreach (int i in Enum.GetValues(typeof(TreatmentTypeEnum)))
                 {
@@ -4048,112 +4058,112 @@ namespace CSSPEnums.Tests
                     switch ((TreatmentTypeEnum)i)
                     {
                         case TreatmentTypeEnum.ActivatedSludge:
-                            Assert.AreEqual(CSSPEnumsRes.TreatmentTypeEnumActivatedSludge, retStr);
+                            Assert.Equal(CSSPEnumsRes.TreatmentTypeEnumActivatedSludge, retStr);
                             break;
                         case TreatmentTypeEnum.ActivatedSludgeWithBiofilter:
-                            Assert.AreEqual(CSSPEnumsRes.TreatmentTypeEnumActivatedSludgeWithBiofilter, retStr);
+                            Assert.Equal(CSSPEnumsRes.TreatmentTypeEnumActivatedSludgeWithBiofilter, retStr);
                             break;
                         case TreatmentTypeEnum.LagoonNoAeration1Cell:
-                            Assert.AreEqual(CSSPEnumsRes.TreatmentTypeEnumLagoonNoAeration1Cell, retStr);
+                            Assert.Equal(CSSPEnumsRes.TreatmentTypeEnumLagoonNoAeration1Cell, retStr);
                             break;
                         case TreatmentTypeEnum.LagoonNoAeration2Cell:
-                            Assert.AreEqual(CSSPEnumsRes.TreatmentTypeEnumLagoonNoAeration2Cell, retStr);
+                            Assert.Equal(CSSPEnumsRes.TreatmentTypeEnumLagoonNoAeration2Cell, retStr);
                             break;
                         case TreatmentTypeEnum.LagoonNoAeration3Cell:
-                            Assert.AreEqual(CSSPEnumsRes.TreatmentTypeEnumLagoonNoAeration3Cell, retStr);
+                            Assert.Equal(CSSPEnumsRes.TreatmentTypeEnumLagoonNoAeration3Cell, retStr);
                             break;
                         case TreatmentTypeEnum.LagoonNoAeration4Cell:
-                            Assert.AreEqual(CSSPEnumsRes.TreatmentTypeEnumLagoonNoAeration4Cell, retStr);
+                            Assert.Equal(CSSPEnumsRes.TreatmentTypeEnumLagoonNoAeration4Cell, retStr);
                             break;
                         case TreatmentTypeEnum.LagoonNoAeration5Cell:
-                            Assert.AreEqual(CSSPEnumsRes.TreatmentTypeEnumLagoonNoAeration5Cell, retStr);
+                            Assert.Equal(CSSPEnumsRes.TreatmentTypeEnumLagoonNoAeration5Cell, retStr);
                             break;
                         case TreatmentTypeEnum.LagoonWithAeration1Cell:
-                            Assert.AreEqual(CSSPEnumsRes.TreatmentTypeEnumLagoonWithAeration1Cell, retStr);
+                            Assert.Equal(CSSPEnumsRes.TreatmentTypeEnumLagoonWithAeration1Cell, retStr);
                             break;
                         case TreatmentTypeEnum.LagoonWithAeration2Cell:
-                            Assert.AreEqual(CSSPEnumsRes.TreatmentTypeEnumLagoonWithAeration2Cell, retStr);
+                            Assert.Equal(CSSPEnumsRes.TreatmentTypeEnumLagoonWithAeration2Cell, retStr);
                             break;
                         case TreatmentTypeEnum.LagoonWithAeration3Cell:
-                            Assert.AreEqual(CSSPEnumsRes.TreatmentTypeEnumLagoonWithAeration3Cell, retStr);
+                            Assert.Equal(CSSPEnumsRes.TreatmentTypeEnumLagoonWithAeration3Cell, retStr);
                             break;
                         case TreatmentTypeEnum.LagoonWithAeration4Cell:
-                            Assert.AreEqual(CSSPEnumsRes.TreatmentTypeEnumLagoonWithAeration4Cell, retStr);
+                            Assert.Equal(CSSPEnumsRes.TreatmentTypeEnumLagoonWithAeration4Cell, retStr);
                             break;
                         case TreatmentTypeEnum.LagoonWithAeration5Cell:
-                            Assert.AreEqual(CSSPEnumsRes.TreatmentTypeEnumLagoonWithAeration5Cell, retStr);
+                            Assert.Equal(CSSPEnumsRes.TreatmentTypeEnumLagoonWithAeration5Cell, retStr);
                             break;
                         case TreatmentTypeEnum.LagoonWithAeration6Cell:
-                            Assert.AreEqual(CSSPEnumsRes.TreatmentTypeEnumLagoonWithAeration6Cell, retStr);
+                            Assert.Equal(CSSPEnumsRes.TreatmentTypeEnumLagoonWithAeration6Cell, retStr);
                             break;
                         case TreatmentTypeEnum.StabalizingPondOnly:
-                            Assert.AreEqual(CSSPEnumsRes.TreatmentTypeEnumStabalizingPondOnly, retStr);
+                            Assert.Equal(CSSPEnumsRes.TreatmentTypeEnumStabalizingPondOnly, retStr);
                             break;
                         case TreatmentTypeEnum.OxidationDitchOnly:
-                            Assert.AreEqual(CSSPEnumsRes.TreatmentTypeEnumOxidationDitchOnly, retStr);
+                            Assert.Equal(CSSPEnumsRes.TreatmentTypeEnumOxidationDitchOnly, retStr);
                             break;
                         case TreatmentTypeEnum.CirculatingFluidizedBed:
-                            Assert.AreEqual(CSSPEnumsRes.TreatmentTypeEnumCirculatingFluidizedBed, retStr);
+                            Assert.Equal(CSSPEnumsRes.TreatmentTypeEnumCirculatingFluidizedBed, retStr);
                             break;
                         case TreatmentTypeEnum.TricklingFilter:
-                            Assert.AreEqual(CSSPEnumsRes.TreatmentTypeEnumTricklingFilter, retStr);
+                            Assert.Equal(CSSPEnumsRes.TreatmentTypeEnumTricklingFilter, retStr);
                             break;
                         case TreatmentTypeEnum.RecirculatingSandFilter:
-                            Assert.AreEqual(CSSPEnumsRes.TreatmentTypeEnumRecirculatingSandFilter, retStr);
+                            Assert.Equal(CSSPEnumsRes.TreatmentTypeEnumRecirculatingSandFilter, retStr);
                             break;
                         case TreatmentTypeEnum.TrashRackRakeOnly:
-                            Assert.AreEqual(CSSPEnumsRes.TreatmentTypeEnumTrashRackRakeOnly, retStr);
+                            Assert.Equal(CSSPEnumsRes.TreatmentTypeEnumTrashRackRakeOnly, retStr);
                             break;
                         case TreatmentTypeEnum.SepticTank:
-                            Assert.AreEqual(CSSPEnumsRes.TreatmentTypeEnumSepticTank, retStr);
+                            Assert.Equal(CSSPEnumsRes.TreatmentTypeEnumSepticTank, retStr);
                             break;
                         case TreatmentTypeEnum.Secondary:
-                            Assert.AreEqual(CSSPEnumsRes.TreatmentTypeEnumSecondary, retStr);
+                            Assert.Equal(CSSPEnumsRes.TreatmentTypeEnumSecondary, retStr);
                             break;
                         case TreatmentTypeEnum.Tertiary:
-                            Assert.AreEqual(CSSPEnumsRes.TreatmentTypeEnumTertiary, retStr);
+                            Assert.Equal(CSSPEnumsRes.TreatmentTypeEnumTertiary, retStr);
                             break;
                         case TreatmentTypeEnum.VolumeFermenter:
-                            Assert.AreEqual(CSSPEnumsRes.TreatmentTypeEnumVolumeFermenter, retStr);
+                            Assert.Equal(CSSPEnumsRes.TreatmentTypeEnumVolumeFermenter, retStr);
                             break;
                         case TreatmentTypeEnum.BioFilmReactor:
-                            Assert.AreEqual(CSSPEnumsRes.TreatmentTypeEnumBioFilmReactor, retStr);
+                            Assert.Equal(CSSPEnumsRes.TreatmentTypeEnumBioFilmReactor, retStr);
                             break;
                         case TreatmentTypeEnum.BioGreen:
-                            Assert.AreEqual(CSSPEnumsRes.TreatmentTypeEnumBioGreen, retStr);
+                            Assert.Equal(CSSPEnumsRes.TreatmentTypeEnumBioGreen, retStr);
                             break;
                         case TreatmentTypeEnum.BioDisks:
-                            Assert.AreEqual(CSSPEnumsRes.TreatmentTypeEnumBioDisks, retStr);
+                            Assert.Equal(CSSPEnumsRes.TreatmentTypeEnumBioDisks, retStr);
                             break;
                         case TreatmentTypeEnum.ChemicalPrimary:
-                            Assert.AreEqual(CSSPEnumsRes.TreatmentTypeEnumChemicalPrimary, retStr);
+                            Assert.Equal(CSSPEnumsRes.TreatmentTypeEnumChemicalPrimary, retStr);
                             break;
                         case TreatmentTypeEnum.Chromoglass:
-                            Assert.AreEqual(CSSPEnumsRes.TreatmentTypeEnumChromoglass, retStr);
+                            Assert.Equal(CSSPEnumsRes.TreatmentTypeEnumChromoglass, retStr);
                             break;
                         case TreatmentTypeEnum.Primary:
-                            Assert.AreEqual(CSSPEnumsRes.TreatmentTypeEnumPrimary, retStr);
+                            Assert.Equal(CSSPEnumsRes.TreatmentTypeEnumPrimary, retStr);
                             break;
                         case TreatmentTypeEnum.SequencingBatchReactor:
-                            Assert.AreEqual(CSSPEnumsRes.TreatmentTypeEnumSequencingBatchReactor, retStr);
+                            Assert.Equal(CSSPEnumsRes.TreatmentTypeEnumSequencingBatchReactor, retStr);
                             break;
                         case TreatmentTypeEnum.PeatSystem:
-                            Assert.AreEqual(CSSPEnumsRes.TreatmentTypeEnumPeatSystem, retStr);
+                            Assert.Equal(CSSPEnumsRes.TreatmentTypeEnumPeatSystem, retStr);
                             break;
                         case TreatmentTypeEnum.Physicochimique:
-                            Assert.AreEqual(CSSPEnumsRes.TreatmentTypeEnumPhysicochimique, retStr);
+                            Assert.Equal(CSSPEnumsRes.TreatmentTypeEnumPhysicochimique, retStr);
                             break;
                         case TreatmentTypeEnum.RotatingBiologicalContactor:
-                            Assert.AreEqual(CSSPEnumsRes.TreatmentTypeEnumRotatingBiologicalContactor, retStr);
+                            Assert.Equal(CSSPEnumsRes.TreatmentTypeEnumRotatingBiologicalContactor, retStr);
                             break;
                         default:
-                            Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                            Assert.Equal(CSSPEnumsRes.Empty, retStr);
                             break;
                     }
                 }
             }
         }
-        [TestMethod]
+        [Fact]
         public void Enums_GetEnumText_TVAuthEnum_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
@@ -4161,13 +4171,13 @@ namespace CSSPEnums.Tests
                 SetupTest(culture);
 
                 string retStr = enums.GetResValueForTypeAndID(typeof(TVAuthEnum), -100);
-                Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                Assert.Equal(CSSPEnumsRes.Empty, retStr);
 
                 retStr = enums.GetResValueForTypeAndID(typeof(TVAuthEnum), 10000000);
-                Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                Assert.Equal(CSSPEnumsRes.Empty, retStr);
 
                 retStr = enums.GetResValueForTypeAndID(typeof(TVAuthEnum), null);
-                Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                Assert.Equal(CSSPEnumsRes.Empty, retStr);
 
                 foreach (int i in Enum.GetValues(typeof(TVAuthEnum)))
                 {
@@ -4176,31 +4186,31 @@ namespace CSSPEnums.Tests
                     switch ((TVAuthEnum)i)
                     {
                         case TVAuthEnum.NoAccess:
-                            Assert.AreEqual(CSSPEnumsRes.TVAuthEnumNoAccess, retStr);
+                            Assert.Equal(CSSPEnumsRes.TVAuthEnumNoAccess, retStr);
                             break;
                         case TVAuthEnum.Read:
-                            Assert.AreEqual(CSSPEnumsRes.TVAuthEnumRead, retStr);
+                            Assert.Equal(CSSPEnumsRes.TVAuthEnumRead, retStr);
                             break;
                         case TVAuthEnum.Write:
-                            Assert.AreEqual(CSSPEnumsRes.TVAuthEnumWrite, retStr);
+                            Assert.Equal(CSSPEnumsRes.TVAuthEnumWrite, retStr);
                             break;
                         case TVAuthEnum.Create:
-                            Assert.AreEqual(CSSPEnumsRes.TVAuthEnumCreate, retStr);
+                            Assert.Equal(CSSPEnumsRes.TVAuthEnumCreate, retStr);
                             break;
                         case TVAuthEnum.Delete:
-                            Assert.AreEqual(CSSPEnumsRes.TVAuthEnumDelete, retStr);
+                            Assert.Equal(CSSPEnumsRes.TVAuthEnumDelete, retStr);
                             break;
                         case TVAuthEnum.Admin:
-                            Assert.AreEqual(CSSPEnumsRes.TVAuthEnumAdmin, retStr);
+                            Assert.Equal(CSSPEnumsRes.TVAuthEnumAdmin, retStr);
                             break;
                         default:
-                            Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                            Assert.Equal(CSSPEnumsRes.Empty, retStr);
                             break;
                     }
                 }
             }
         }
-        [TestMethod]
+        [Fact]
         public void Enums_GetEnumText_TVTypeEnum_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
@@ -4208,13 +4218,13 @@ namespace CSSPEnums.Tests
                 SetupTest(culture);
 
                 string retStr = enums.GetResValueForTypeAndID(typeof(TVTypeEnum), -100);
-                Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                Assert.Equal(CSSPEnumsRes.Empty, retStr);
 
                 retStr = enums.GetResValueForTypeAndID(typeof(TVTypeEnum), 10000000);
-                Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                Assert.Equal(CSSPEnumsRes.Empty, retStr);
 
                 retStr = enums.GetResValueForTypeAndID(typeof(TVTypeEnum), null);
-                Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                Assert.Equal(CSSPEnumsRes.Empty, retStr);
 
                 foreach (int i in Enum.GetValues(typeof(TVTypeEnum)))
                 {
@@ -4223,271 +4233,271 @@ namespace CSSPEnums.Tests
                     switch ((TVTypeEnum)i)
                     {
                         case TVTypeEnum.Root:
-                            Assert.AreEqual(CSSPEnumsRes.TVTypeEnumRoot, retStr);
+                            Assert.Equal(CSSPEnumsRes.TVTypeEnumRoot, retStr);
                             break;
                         case TVTypeEnum.Address:
-                            Assert.AreEqual(CSSPEnumsRes.TVTypeEnumAddress, retStr);
+                            Assert.Equal(CSSPEnumsRes.TVTypeEnumAddress, retStr);
                             break;
                         case TVTypeEnum.Area:
-                            Assert.AreEqual(CSSPEnumsRes.TVTypeEnumArea, retStr);
+                            Assert.Equal(CSSPEnumsRes.TVTypeEnumArea, retStr);
                             break;
                         case TVTypeEnum.ClimateSite:
-                            Assert.AreEqual(CSSPEnumsRes.TVTypeEnumClimateSite, retStr);
+                            Assert.Equal(CSSPEnumsRes.TVTypeEnumClimateSite, retStr);
                             break;
                         case TVTypeEnum.Contact:
-                            Assert.AreEqual(CSSPEnumsRes.TVTypeEnumContact, retStr);
+                            Assert.Equal(CSSPEnumsRes.TVTypeEnumContact, retStr);
                             break;
                         case TVTypeEnum.Country:
-                            Assert.AreEqual(CSSPEnumsRes.TVTypeEnumCountry, retStr);
+                            Assert.Equal(CSSPEnumsRes.TVTypeEnumCountry, retStr);
                             break;
                         case TVTypeEnum.Email:
-                            Assert.AreEqual(CSSPEnumsRes.TVTypeEnumEmail, retStr);
+                            Assert.Equal(CSSPEnumsRes.TVTypeEnumEmail, retStr);
                             break;
                         case TVTypeEnum.File:
-                            Assert.AreEqual(CSSPEnumsRes.TVTypeEnumFile, retStr);
+                            Assert.Equal(CSSPEnumsRes.TVTypeEnumFile, retStr);
                             break;
                         case TVTypeEnum.HydrometricSite:
-                            Assert.AreEqual(CSSPEnumsRes.TVTypeEnumHydrometricSite, retStr);
+                            Assert.Equal(CSSPEnumsRes.TVTypeEnumHydrometricSite, retStr);
                             break;
                         case TVTypeEnum.Infrastructure:
-                            Assert.AreEqual(CSSPEnumsRes.TVTypeEnumInfrastructure, retStr);
+                            Assert.Equal(CSSPEnumsRes.TVTypeEnumInfrastructure, retStr);
                             break;
                         case TVTypeEnum.MikeBoundaryConditionWebTide:
-                            Assert.AreEqual(CSSPEnumsRes.TVTypeEnumMikeBoundaryConditionWebTide, retStr);
+                            Assert.Equal(CSSPEnumsRes.TVTypeEnumMikeBoundaryConditionWebTide, retStr);
                             break;
                         case TVTypeEnum.MikeBoundaryConditionMesh:
-                            Assert.AreEqual(CSSPEnumsRes.TVTypeEnumMikeBoundaryConditionMesh, retStr);
+                            Assert.Equal(CSSPEnumsRes.TVTypeEnumMikeBoundaryConditionMesh, retStr);
                             break;
                         case TVTypeEnum.MikeScenario:
-                            Assert.AreEqual(CSSPEnumsRes.TVTypeEnumMikeScenario, retStr);
+                            Assert.Equal(CSSPEnumsRes.TVTypeEnumMikeScenario, retStr);
                             break;
                         case TVTypeEnum.MikeSource:
-                            Assert.AreEqual(CSSPEnumsRes.TVTypeEnumMikeSource, retStr);
+                            Assert.Equal(CSSPEnumsRes.TVTypeEnumMikeSource, retStr);
                             break;
                         case TVTypeEnum.Municipality:
-                            Assert.AreEqual(CSSPEnumsRes.TVTypeEnumMunicipality, retStr);
+                            Assert.Equal(CSSPEnumsRes.TVTypeEnumMunicipality, retStr);
                             break;
                         case TVTypeEnum.MWQMSite:
-                            Assert.AreEqual(CSSPEnumsRes.TVTypeEnumMWQMSite, retStr);
+                            Assert.Equal(CSSPEnumsRes.TVTypeEnumMWQMSite, retStr);
                             break;
                         case TVTypeEnum.PolSourceSite:
-                            Assert.AreEqual(CSSPEnumsRes.TVTypeEnumPolSourceSite, retStr);
+                            Assert.Equal(CSSPEnumsRes.TVTypeEnumPolSourceSite, retStr);
                             break;
                         case TVTypeEnum.Province:
-                            Assert.AreEqual(CSSPEnumsRes.TVTypeEnumProvince, retStr);
+                            Assert.Equal(CSSPEnumsRes.TVTypeEnumProvince, retStr);
                             break;
                         case TVTypeEnum.Sector:
-                            Assert.AreEqual(CSSPEnumsRes.TVTypeEnumSector, retStr);
+                            Assert.Equal(CSSPEnumsRes.TVTypeEnumSector, retStr);
                             break;
                         case TVTypeEnum.Subsector:
-                            Assert.AreEqual(CSSPEnumsRes.TVTypeEnumSubsector, retStr);
+                            Assert.Equal(CSSPEnumsRes.TVTypeEnumSubsector, retStr);
                             break;
                         case TVTypeEnum.Tel:
-                            Assert.AreEqual(CSSPEnumsRes.TVTypeEnumTel, retStr);
+                            Assert.Equal(CSSPEnumsRes.TVTypeEnumTel, retStr);
                             break;
                         case TVTypeEnum.TideSite:
-                            Assert.AreEqual(CSSPEnumsRes.TVTypeEnumTideSite, retStr);
+                            Assert.Equal(CSSPEnumsRes.TVTypeEnumTideSite, retStr);
                             break;
                         case TVTypeEnum.MWQMSiteSample:
-                            Assert.AreEqual(CSSPEnumsRes.TVTypeEnumMWQMSiteSample, retStr);
+                            Assert.Equal(CSSPEnumsRes.TVTypeEnumMWQMSiteSample, retStr);
                             break;
                         case TVTypeEnum.WasteWaterTreatmentPlant:
-                            Assert.AreEqual(CSSPEnumsRes.TVTypeEnumWasteWaterTreatmentPlant, retStr);
+                            Assert.Equal(CSSPEnumsRes.TVTypeEnumWasteWaterTreatmentPlant, retStr);
                             break;
                         case TVTypeEnum.LiftStation:
-                            Assert.AreEqual(CSSPEnumsRes.TVTypeEnumLiftStation, retStr);
+                            Assert.Equal(CSSPEnumsRes.TVTypeEnumLiftStation, retStr);
                             break;
                         case TVTypeEnum.Spill:
-                            Assert.AreEqual(CSSPEnumsRes.TVTypeEnumSpill, retStr);
+                            Assert.Equal(CSSPEnumsRes.TVTypeEnumSpill, retStr);
                             break;
                         case TVTypeEnum.BoxModel:
-                            Assert.AreEqual(CSSPEnumsRes.TVTypeEnumBoxModel, retStr);
+                            Assert.Equal(CSSPEnumsRes.TVTypeEnumBoxModel, retStr);
                             break;
                         case TVTypeEnum.VisualPlumesScenario:
-                            Assert.AreEqual(CSSPEnumsRes.TVTypeEnumVisualPlumesScenario, retStr);
+                            Assert.Equal(CSSPEnumsRes.TVTypeEnumVisualPlumesScenario, retStr);
                             break;
                         case TVTypeEnum.Outfall:
-                            Assert.AreEqual(CSSPEnumsRes.TVTypeEnumOutfall, retStr);
+                            Assert.Equal(CSSPEnumsRes.TVTypeEnumOutfall, retStr);
                             break;
                         case TVTypeEnum.OtherInfrastructure:
-                            Assert.AreEqual(CSSPEnumsRes.TVTypeEnumOtherInfrastructure, retStr);
+                            Assert.Equal(CSSPEnumsRes.TVTypeEnumOtherInfrastructure, retStr);
                             break;
                         case TVTypeEnum.MWQMRun:
-                            Assert.AreEqual(CSSPEnumsRes.TVTypeEnumMWQMRun, retStr);
+                            Assert.Equal(CSSPEnumsRes.TVTypeEnumMWQMRun, retStr);
                             break;
                         case TVTypeEnum.NoDepuration:
-                            Assert.AreEqual(CSSPEnumsRes.TVTypeEnumNoDepuration, retStr);
+                            Assert.Equal(CSSPEnumsRes.TVTypeEnumNoDepuration, retStr);
                             break;
                         case TVTypeEnum.Failed:
-                            Assert.AreEqual(CSSPEnumsRes.TVTypeEnumFailed, retStr);
+                            Assert.Equal(CSSPEnumsRes.TVTypeEnumFailed, retStr);
                             break;
                         case TVTypeEnum.Passed:
-                            Assert.AreEqual(CSSPEnumsRes.TVTypeEnumPassed, retStr);
+                            Assert.Equal(CSSPEnumsRes.TVTypeEnumPassed, retStr);
                             break;
                         case TVTypeEnum.NoData:
-                            Assert.AreEqual(CSSPEnumsRes.TVTypeEnumNoData, retStr);
+                            Assert.Equal(CSSPEnumsRes.TVTypeEnumNoData, retStr);
                             break;
                         case TVTypeEnum.LessThan10:
-                            Assert.AreEqual(CSSPEnumsRes.TVTypeEnumLessThan10, retStr);
+                            Assert.Equal(CSSPEnumsRes.TVTypeEnumLessThan10, retStr);
                             break;
                         case TVTypeEnum.MeshNode:
-                            Assert.AreEqual(CSSPEnumsRes.TVTypeEnumMeshNode, retStr);
+                            Assert.Equal(CSSPEnumsRes.TVTypeEnumMeshNode, retStr);
                             break;
                         case TVTypeEnum.WebTideNode:
-                            Assert.AreEqual(CSSPEnumsRes.TVTypeEnumWebTideNode, retStr);
+                            Assert.Equal(CSSPEnumsRes.TVTypeEnumWebTideNode, retStr);
                             break;
                         case TVTypeEnum.SamplingPlan:
-                            Assert.AreEqual(CSSPEnumsRes.TVTypeEnumSamplingPlan, retStr);
+                            Assert.Equal(CSSPEnumsRes.TVTypeEnumSamplingPlan, retStr);
                             break;
                         case TVTypeEnum.SeeOtherMunicipality:
-                            Assert.AreEqual(CSSPEnumsRes.TVTypeEnumSeeOtherMunicipality, retStr);
+                            Assert.Equal(CSSPEnumsRes.TVTypeEnumSeeOtherMunicipality, retStr);
                             break;
                         case TVTypeEnum.LineOverflow:
-                            Assert.AreEqual(CSSPEnumsRes.TVTypeEnumLineOverflow, retStr);
+                            Assert.Equal(CSSPEnumsRes.TVTypeEnumLineOverflow, retStr);
                             break;
                         case TVTypeEnum.BoxModelInputs:
-                            Assert.AreEqual(CSSPEnumsRes.TVTypeEnumBoxModelInputs, retStr);
+                            Assert.Equal(CSSPEnumsRes.TVTypeEnumBoxModelInputs, retStr);
                             break;
                         case TVTypeEnum.BoxModelResults:
-                            Assert.AreEqual(CSSPEnumsRes.TVTypeEnumBoxModelResults, retStr);
+                            Assert.Equal(CSSPEnumsRes.TVTypeEnumBoxModelResults, retStr);
                             break;
                         case TVTypeEnum.ClimateSiteInfo:
-                            Assert.AreEqual(CSSPEnumsRes.TVTypeEnumClimateSiteInfo, retStr);
+                            Assert.Equal(CSSPEnumsRes.TVTypeEnumClimateSiteInfo, retStr);
                             break;
                         case TVTypeEnum.ClimateSiteData:
-                            Assert.AreEqual(CSSPEnumsRes.TVTypeEnumClimateSiteData, retStr);
+                            Assert.Equal(CSSPEnumsRes.TVTypeEnumClimateSiteData, retStr);
                             break;
                         case TVTypeEnum.HydrometricSiteInfo:
-                            Assert.AreEqual(CSSPEnumsRes.TVTypeEnumHydrometricSiteInfo, retStr);
+                            Assert.Equal(CSSPEnumsRes.TVTypeEnumHydrometricSiteInfo, retStr);
                             break;
                         case TVTypeEnum.HydrometricSiteData:
-                            Assert.AreEqual(CSSPEnumsRes.TVTypeEnumHydrometricSiteData, retStr);
+                            Assert.Equal(CSSPEnumsRes.TVTypeEnumHydrometricSiteData, retStr);
                             break;
                         case TVTypeEnum.InfrastructureInfo:
-                            Assert.AreEqual(CSSPEnumsRes.TVTypeEnumInfrastructureInfo, retStr);
+                            Assert.Equal(CSSPEnumsRes.TVTypeEnumInfrastructureInfo, retStr);
                             break;
                         case TVTypeEnum.LabSheetInfo:
-                            Assert.AreEqual(CSSPEnumsRes.TVTypeEnumLabSheetInfo, retStr);
+                            Assert.Equal(CSSPEnumsRes.TVTypeEnumLabSheetInfo, retStr);
                             break;
                         case TVTypeEnum.LabSheetDetailInfo:
-                            Assert.AreEqual(CSSPEnumsRes.TVTypeEnumLabSheetDetailInfo, retStr);
+                            Assert.Equal(CSSPEnumsRes.TVTypeEnumLabSheetDetailInfo, retStr);
                             break;
                         case TVTypeEnum.MapInfo:
-                            Assert.AreEqual(CSSPEnumsRes.TVTypeEnumMapInfo, retStr);
+                            Assert.Equal(CSSPEnumsRes.TVTypeEnumMapInfo, retStr);
                             break;
                         case TVTypeEnum.MapInfoPoint:
-                            Assert.AreEqual(CSSPEnumsRes.TVTypeEnumMapInfoPoint, retStr);
+                            Assert.Equal(CSSPEnumsRes.TVTypeEnumMapInfoPoint, retStr);
                             break;
                         case TVTypeEnum.MikeSourceStartEndInfo:
-                            Assert.AreEqual(CSSPEnumsRes.TVTypeEnumMikeSourceStartEndInfo, retStr);
+                            Assert.Equal(CSSPEnumsRes.TVTypeEnumMikeSourceStartEndInfo, retStr);
                             break;
                         case TVTypeEnum.MWQMLookupMPNInfo:
-                            Assert.AreEqual(CSSPEnumsRes.TVTypeEnumMWQMLookupMPNInfo, retStr);
+                            Assert.Equal(CSSPEnumsRes.TVTypeEnumMWQMLookupMPNInfo, retStr);
                             break;
                         case TVTypeEnum.SamplingPlanInfo:
-                            Assert.AreEqual(CSSPEnumsRes.TVTypeEnumSamplingPlanInfo, retStr);
+                            Assert.Equal(CSSPEnumsRes.TVTypeEnumSamplingPlanInfo, retStr);
                             break;
                         case TVTypeEnum.SamplingPlanSubsectorInfo:
-                            Assert.AreEqual(CSSPEnumsRes.TVTypeEnumSamplingPlanSubsectorInfo, retStr);
+                            Assert.Equal(CSSPEnumsRes.TVTypeEnumSamplingPlanSubsectorInfo, retStr);
                             break;
                         case TVTypeEnum.SamplingPlanSubsectorSiteInfo:
-                            Assert.AreEqual(CSSPEnumsRes.TVTypeEnumSamplingPlanSubsectorSiteInfo, retStr);
+                            Assert.Equal(CSSPEnumsRes.TVTypeEnumSamplingPlanSubsectorSiteInfo, retStr);
                             break;
                         case TVTypeEnum.MWQMSiteStartEndInfo:
-                            Assert.AreEqual(CSSPEnumsRes.TVTypeEnumMWQMSiteStartEndInfo, retStr);
+                            Assert.Equal(CSSPEnumsRes.TVTypeEnumMWQMSiteStartEndInfo, retStr);
                             break;
                         case TVTypeEnum.MWQMSubsectorInfo:
-                            Assert.AreEqual(CSSPEnumsRes.TVTypeEnumMWQMSubsectorInfo, retStr);
+                            Assert.Equal(CSSPEnumsRes.TVTypeEnumMWQMSubsectorInfo, retStr);
                             break;
                         case TVTypeEnum.PolSourceSiteInfo:
-                            Assert.AreEqual(CSSPEnumsRes.TVTypeEnumPolSourceSiteInfo, retStr);
+                            Assert.Equal(CSSPEnumsRes.TVTypeEnumPolSourceSiteInfo, retStr);
                             break;
                         case TVTypeEnum.PolSourceSiteObsInfo:
-                            Assert.AreEqual(CSSPEnumsRes.TVTypeEnumPolSourceSiteObsInfo, retStr);
+                            Assert.Equal(CSSPEnumsRes.TVTypeEnumPolSourceSiteObsInfo, retStr);
                             break;
                         case TVTypeEnum.HydrometricRatingCurveInfo:
-                            Assert.AreEqual(CSSPEnumsRes.TVTypeEnumHydrometricRatingCurveInfo, retStr);
+                            Assert.Equal(CSSPEnumsRes.TVTypeEnumHydrometricRatingCurveInfo, retStr);
                             break;
                         case TVTypeEnum.HydrometricRatingCurveDataInfo:
-                            Assert.AreEqual(CSSPEnumsRes.TVTypeEnumHydrometricRatingCurveDataInfo, retStr);
+                            Assert.Equal(CSSPEnumsRes.TVTypeEnumHydrometricRatingCurveDataInfo, retStr);
                             break;
                         case TVTypeEnum.TideLocationInfo:
-                            Assert.AreEqual(CSSPEnumsRes.TVTypeEnumTideLocationInfo, retStr);
+                            Assert.Equal(CSSPEnumsRes.TVTypeEnumTideLocationInfo, retStr);
                             break;
                         case TVTypeEnum.TideSiteDataInfo:
-                            Assert.AreEqual(CSSPEnumsRes.TVTypeEnumTideSiteDataInfo, retStr);
+                            Assert.Equal(CSSPEnumsRes.TVTypeEnumTideSiteDataInfo, retStr);
                             break;
                         case TVTypeEnum.UseOfSite:
-                            Assert.AreEqual(CSSPEnumsRes.TVTypeEnumUseOfSite, retStr);
+                            Assert.Equal(CSSPEnumsRes.TVTypeEnumUseOfSite, retStr);
                             break;
                         case TVTypeEnum.VisualPlumesScenarioInfo:
-                            Assert.AreEqual(CSSPEnumsRes.TVTypeEnumVisualPlumesScenarioInfo, retStr);
+                            Assert.Equal(CSSPEnumsRes.TVTypeEnumVisualPlumesScenarioInfo, retStr);
                             break;
                         case TVTypeEnum.VisualPlumesScenarioAmbient:
-                            Assert.AreEqual(CSSPEnumsRes.TVTypeEnumVisualPlumesScenarioAmbient, retStr);
+                            Assert.Equal(CSSPEnumsRes.TVTypeEnumVisualPlumesScenarioAmbient, retStr);
                             break;
                         case TVTypeEnum.VisualPlumesScenarioResults:
-                            Assert.AreEqual(CSSPEnumsRes.TVTypeEnumVisualPlumesScenarioResults, retStr);
+                            Assert.Equal(CSSPEnumsRes.TVTypeEnumVisualPlumesScenarioResults, retStr);
                             break;
                         case TVTypeEnum.TotalFile:
-                            Assert.AreEqual(CSSPEnumsRes.TVTypeEnumTotalFile, retStr);
+                            Assert.Equal(CSSPEnumsRes.TVTypeEnumTotalFile, retStr);
                             break;
                         case TVTypeEnum.MikeSourceIsRiver:
-                            Assert.AreEqual(CSSPEnumsRes.TVTypeEnumMikeSourceIsRiver, retStr);
+                            Assert.Equal(CSSPEnumsRes.TVTypeEnumMikeSourceIsRiver, retStr);
                             break;
                         case TVTypeEnum.MikeSourceIncluded:
-                            Assert.AreEqual(CSSPEnumsRes.TVTypeEnumMikeSourceIncluded, retStr);
+                            Assert.Equal(CSSPEnumsRes.TVTypeEnumMikeSourceIncluded, retStr);
                             break;
                         case TVTypeEnum.MikeSourceNotIncluded:
-                            Assert.AreEqual(CSSPEnumsRes.TVTypeEnumMikeSourceNotIncluded, retStr);
+                            Assert.Equal(CSSPEnumsRes.TVTypeEnumMikeSourceNotIncluded, retStr);
                             break;
                         case TVTypeEnum.RainExceedance:
-                            Assert.AreEqual(CSSPEnumsRes.TVTypeEnumRainExceedance, retStr);
+                            Assert.Equal(CSSPEnumsRes.TVTypeEnumRainExceedance, retStr);
                             break;
                         case TVTypeEnum.EmailDistributionList:
-                            Assert.AreEqual(CSSPEnumsRes.TVTypeEnumEmailDistributionList, retStr);
+                            Assert.Equal(CSSPEnumsRes.TVTypeEnumEmailDistributionList, retStr);
                             break;
                         case TVTypeEnum.OpenData:
-                            Assert.AreEqual(CSSPEnumsRes.TVTypeEnumOpenData, retStr);
+                            Assert.Equal(CSSPEnumsRes.TVTypeEnumOpenData, retStr);
                             break;
                         case TVTypeEnum.ProvinceTools:
-                            Assert.AreEqual(CSSPEnumsRes.TVTypeEnumProvinceTools, retStr);
+                            Assert.Equal(CSSPEnumsRes.TVTypeEnumProvinceTools, retStr);
                             break;
                         case TVTypeEnum.Classification:
-                            Assert.AreEqual(CSSPEnumsRes.TVTypeEnumClassification, retStr);
+                            Assert.Equal(CSSPEnumsRes.TVTypeEnumClassification, retStr);
                             break;
                         case TVTypeEnum.Approved:
-                            Assert.AreEqual(CSSPEnumsRes.TVTypeEnumApproved, retStr);
+                            Assert.Equal(CSSPEnumsRes.TVTypeEnumApproved, retStr);
                             break;
                         case TVTypeEnum.Restricted:
-                            Assert.AreEqual(CSSPEnumsRes.TVTypeEnumRestricted, retStr);
+                            Assert.Equal(CSSPEnumsRes.TVTypeEnumRestricted, retStr);
                             break;
                         case TVTypeEnum.Prohibited:
-                            Assert.AreEqual(CSSPEnumsRes.TVTypeEnumProhibited, retStr);
+                            Assert.Equal(CSSPEnumsRes.TVTypeEnumProhibited, retStr);
                             break;
                         case TVTypeEnum.ConditionallyApproved:
-                            Assert.AreEqual(CSSPEnumsRes.TVTypeEnumConditionallyApproved, retStr);
+                            Assert.Equal(CSSPEnumsRes.TVTypeEnumConditionallyApproved, retStr);
                             break;
                         case TVTypeEnum.ConditionallyRestricted:
-                            Assert.AreEqual(CSSPEnumsRes.TVTypeEnumConditionallyRestricted, retStr);
+                            Assert.Equal(CSSPEnumsRes.TVTypeEnumConditionallyRestricted, retStr);
                             break;
                         case TVTypeEnum.OpenDataNational:
-                            Assert.AreEqual(CSSPEnumsRes.TVTypeEnumOpenDataNational, retStr);
+                            Assert.Equal(CSSPEnumsRes.TVTypeEnumOpenDataNational, retStr);
                             break;
                         case TVTypeEnum.PolSourceSiteMikeScenario:
-                            Assert.AreEqual(CSSPEnumsRes.TVTypeEnumPolSourceSiteMikeScenario, retStr);
+                            Assert.Equal(CSSPEnumsRes.TVTypeEnumPolSourceSiteMikeScenario, retStr);
                             break;
                         case TVTypeEnum.SubsectorTools:
-                            Assert.AreEqual(CSSPEnumsRes.TVTypeEnumSubsectorTools, retStr);
+                            Assert.Equal(CSSPEnumsRes.TVTypeEnumSubsectorTools, retStr);
                             break;
                         default:
-                            Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                            Assert.Equal(CSSPEnumsRes.Empty, retStr);
                             break;
                     }
                 }
             }
         }
-        [TestMethod]
+        [Fact]
         public void Enums_GetEnumText_WebTideDataSetEnum_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
@@ -4495,13 +4505,13 @@ namespace CSSPEnums.Tests
                 SetupTest(culture);
 
                 string retStr = enums.GetResValueForTypeAndID(typeof(WebTideDataSetEnum), -100);
-                Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                Assert.Equal(CSSPEnumsRes.Empty, retStr);
 
                 retStr = enums.GetResValueForTypeAndID(typeof(WebTideDataSetEnum), 10000000);
-                Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                Assert.Equal(CSSPEnumsRes.Empty, retStr);
 
                 retStr = enums.GetResValueForTypeAndID(typeof(WebTideDataSetEnum), null);
-                Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                Assert.Equal(CSSPEnumsRes.Empty, retStr);
 
                 foreach (int i in Enum.GetValues(typeof(WebTideDataSetEnum)))
                 {
@@ -4510,46 +4520,46 @@ namespace CSSPEnums.Tests
                     switch ((WebTideDataSetEnum)i)
                     {
                         case WebTideDataSetEnum.arctic9:
-                            Assert.AreEqual(CSSPEnumsRes.WebTideDataSetEnumarctic9, retStr);
+                            Assert.Equal(CSSPEnumsRes.WebTideDataSetEnumarctic9, retStr);
                             break;
                         case WebTideDataSetEnum.brador:
-                            Assert.AreEqual(CSSPEnumsRes.WebTideDataSetEnumbrador, retStr);
+                            Assert.Equal(CSSPEnumsRes.WebTideDataSetEnumbrador, retStr);
                             break;
                         case WebTideDataSetEnum.HRglobal:
-                            Assert.AreEqual(CSSPEnumsRes.WebTideDataSetEnumHRglobal, retStr);
+                            Assert.Equal(CSSPEnumsRes.WebTideDataSetEnumHRglobal, retStr);
                             break;
                         case WebTideDataSetEnum.h3o:
-                            Assert.AreEqual(CSSPEnumsRes.WebTideDataSetEnumh3o, retStr);
+                            Assert.Equal(CSSPEnumsRes.WebTideDataSetEnumh3o, retStr);
                             break;
                         case WebTideDataSetEnum.hudson:
-                            Assert.AreEqual(CSSPEnumsRes.WebTideDataSetEnumhudson, retStr);
+                            Assert.Equal(CSSPEnumsRes.WebTideDataSetEnumhudson, retStr);
                             break;
                         case WebTideDataSetEnum.ne_pac4:
-                            Assert.AreEqual(CSSPEnumsRes.WebTideDataSetEnumne_pac4, retStr);
+                            Assert.Equal(CSSPEnumsRes.WebTideDataSetEnumne_pac4, retStr);
                             break;
                         case WebTideDataSetEnum.nwatl:
-                            Assert.AreEqual(CSSPEnumsRes.WebTideDataSetEnumnwatl, retStr);
+                            Assert.Equal(CSSPEnumsRes.WebTideDataSetEnumnwatl, retStr);
                             break;
                         case WebTideDataSetEnum.QuatsinoModel14:
-                            Assert.AreEqual(CSSPEnumsRes.WebTideDataSetEnumQuatsinoModel14, retStr);
+                            Assert.Equal(CSSPEnumsRes.WebTideDataSetEnumQuatsinoModel14, retStr);
                             break;
                         case WebTideDataSetEnum.sshelf:
-                            Assert.AreEqual(CSSPEnumsRes.WebTideDataSetEnumsshelf, retStr);
+                            Assert.Equal(CSSPEnumsRes.WebTideDataSetEnumsshelf, retStr);
                             break;
                         case WebTideDataSetEnum.flood:
-                            Assert.AreEqual(CSSPEnumsRes.WebTideDataSetEnumflood, retStr);
+                            Assert.Equal(CSSPEnumsRes.WebTideDataSetEnumflood, retStr);
                             break;
                         case WebTideDataSetEnum.vigf8:
-                            Assert.AreEqual(CSSPEnumsRes.WebTideDataSetEnumvigf8, retStr);
+                            Assert.Equal(CSSPEnumsRes.WebTideDataSetEnumvigf8, retStr);
                             break;
                         default:
-                            Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                            Assert.Equal(CSSPEnumsRes.Empty, retStr);
                             break;
                     }
                 }
             }
         }
-        [TestMethod]
+        [Fact]
         public void Enums_GetEnumText_WhereOperatorEnum_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
@@ -4557,13 +4567,13 @@ namespace CSSPEnums.Tests
                 SetupTest(culture);
 
                 string retStr = enums.GetResValueForTypeAndID(typeof(WhereOperatorEnum), -100);
-                Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                Assert.Equal(CSSPEnumsRes.Empty, retStr);
 
                 retStr = enums.GetResValueForTypeAndID(typeof(WhereOperatorEnum), 10000000);
-                Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                Assert.Equal(CSSPEnumsRes.Empty, retStr);
 
                 retStr = enums.GetResValueForTypeAndID(typeof(WhereOperatorEnum), null);
-                Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                Assert.Equal(CSSPEnumsRes.Empty, retStr);
 
                 foreach (int i in Enum.GetValues(typeof(WhereOperatorEnum)))
                 {
@@ -4572,25 +4582,25 @@ namespace CSSPEnums.Tests
                     switch ((WhereOperatorEnum)i)
                     {
                         case WhereOperatorEnum.Equal:
-                            Assert.AreEqual(CSSPEnumsRes.WhereOperatorEnumEqual, retStr);
+                            Assert.Equal(CSSPEnumsRes.WhereOperatorEnumEqual, retStr);
                             break;
                         case WhereOperatorEnum.LessThan:
-                            Assert.AreEqual(CSSPEnumsRes.WhereOperatorEnumLessThan, retStr);
+                            Assert.Equal(CSSPEnumsRes.WhereOperatorEnumLessThan, retStr);
                             break;
                         case WhereOperatorEnum.GreaterThan:
-                            Assert.AreEqual(CSSPEnumsRes.WhereOperatorEnumGreaterThan, retStr);
+                            Assert.Equal(CSSPEnumsRes.WhereOperatorEnumGreaterThan, retStr);
                             break;
                         case WhereOperatorEnum.Contains:
-                            Assert.AreEqual(CSSPEnumsRes.WhereOperatorEnumContains, retStr);
+                            Assert.Equal(CSSPEnumsRes.WhereOperatorEnumContains, retStr);
                             break;
                         case WhereOperatorEnum.StartsWith:
-                            Assert.AreEqual(CSSPEnumsRes.WhereOperatorEnumStartsWith, retStr);
+                            Assert.Equal(CSSPEnumsRes.WhereOperatorEnumStartsWith, retStr);
                             break;
                         case WhereOperatorEnum.EndsWith:
-                            Assert.AreEqual(CSSPEnumsRes.WhereOperatorEnumEndsWith, retStr);
+                            Assert.Equal(CSSPEnumsRes.WhereOperatorEnumEndsWith, retStr);
                             break;
                         default:
-                            Assert.AreEqual(CSSPEnumsRes.Empty, retStr);
+                            Assert.Equal(CSSPEnumsRes.Empty, retStr);
                             break;
                     }
                 }
@@ -4600,7 +4610,7 @@ namespace CSSPEnums.Tests
         #endregion Testing Methods GetEnumText public
 
         #region Testing Methods Check OK public
-        [TestMethod]
+        [Fact]
         public void Enums_EnumTypeListOK_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
@@ -4608,17 +4618,17 @@ namespace CSSPEnums.Tests
                 SetupTest(culture);
 
                 List<int?> intList = new List<int?>() { (int)PolSourceObsInfoEnum.AgriculturalSourceCrop, (int)PolSourceObsInfoEnum.AgricultureSourcePasture };
-                Assert.AreEqual((int)PolSourceObsInfoEnum.AgriculturalSourceCrop, intList[0]);
-                Assert.AreEqual((int)PolSourceObsInfoEnum.AgricultureSourcePasture, intList[1]);
+                Assert.Equal((int)PolSourceObsInfoEnum.AgriculturalSourceCrop, intList[0]);
+                Assert.Equal((int)PolSourceObsInfoEnum.AgricultureSourcePasture, intList[1]);
                 string retStr = enums.EnumTypeListOK(typeof(PolSourceObsInfoEnum), intList);
-                Assert.AreEqual("", retStr);
+                Assert.Equal("", retStr);
 
                 intList.Add(1000000);
                 retStr = enums.EnumTypeListOK(typeof(PolSourceObsInfoEnum), intList);
-                Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, "PolSourceObsInfoEnum"), retStr);
+                Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "PolSourceObsInfoEnum"), retStr);
             }
         }
-        [TestMethod]
+        [Fact]
         public void Enums_ActionDBTypeOK_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
@@ -4626,13 +4636,13 @@ namespace CSSPEnums.Tests
                 SetupTest(culture);
 
                 string retStr = enums.EnumTypeOK(typeof(ActionDBTypeEnum), null);
-                Assert.AreEqual("", retStr);
+                Assert.Equal("", retStr);
 
                 retStr = enums.EnumTypeOK(typeof(ActionDBTypeEnum), -100);
-                Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, "ActionDBTypeEnum"), retStr);
+                Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "ActionDBTypeEnum"), retStr);
 
                 retStr = enums.EnumTypeOK(typeof(ActionDBTypeEnum), 10000000);
-                Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, "ActionDBTypeEnum"), retStr);
+                Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "ActionDBTypeEnum"), retStr);
 
                 foreach (int i in Enum.GetValues(typeof(ActionDBTypeEnum)))
                 {
@@ -4644,16 +4654,16 @@ namespace CSSPEnums.Tests
                         case ActionDBTypeEnum.Read:
                         case ActionDBTypeEnum.Update:
                         case ActionDBTypeEnum.Delete:
-                            Assert.AreEqual("", retStr);
+                            Assert.Equal("", retStr);
                             break;
                         default:
-                            Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, "ActionDBTypeEnum"), retStr);
+                            Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "ActionDBTypeEnum"), retStr);
                             break;
                     }
                 }
             }
         }
-        [TestMethod]
+        [Fact]
         public void Enums_AddContactTypeOK_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
@@ -4661,13 +4671,13 @@ namespace CSSPEnums.Tests
                 SetupTest(culture);
 
                 string retStr = enums.EnumTypeOK(typeof(AddContactTypeEnum), null);
-                Assert.AreEqual("", retStr);
+                Assert.Equal("", retStr);
 
                 retStr = enums.EnumTypeOK(typeof(AddContactTypeEnum), -100);
-                Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, "AddContactTypeEnum"), retStr);
+                Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "AddContactTypeEnum"), retStr);
 
                 retStr = enums.EnumTypeOK(typeof(AddContactTypeEnum), 10000000);
-                Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, "AddContactTypeEnum"), retStr);
+                Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "AddContactTypeEnum"), retStr);
 
                 foreach (int i in Enum.GetValues(typeof(AddContactTypeEnum)))
                 {
@@ -4678,16 +4688,16 @@ namespace CSSPEnums.Tests
                         case AddContactTypeEnum.First:
                         case AddContactTypeEnum.Register:
                         case AddContactTypeEnum.LoggedIn:
-                            Assert.AreEqual("", retStr);
+                            Assert.Equal("", retStr);
                             break;
                         default:
-                            Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, "AddContactTypeEnum"), retStr);
+                            Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "AddContactTypeEnum"), retStr);
                             break;
                     }
                 }
             }
         }
-        [TestMethod]
+        [Fact]
         public void Enums_DatabaseTypeOK_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
@@ -4695,13 +4705,13 @@ namespace CSSPEnums.Tests
                 SetupTest(culture);
 
                 string retStr = enums.EnumTypeOK(typeof(DatabaseTypeEnum), null);
-                Assert.AreEqual("", retStr);
+                Assert.Equal("", retStr);
 
                 retStr = enums.EnumTypeOK(typeof(DatabaseTypeEnum), -100);
-                Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, "DatabaseTypeEnum"), retStr);
+                Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "DatabaseTypeEnum"), retStr);
 
                 retStr = enums.EnumTypeOK(typeof(DatabaseTypeEnum), 10000000);
-                Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, "DatabaseTypeEnum"), retStr);
+                Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "DatabaseTypeEnum"), retStr);
 
                 foreach (int i in Enum.GetValues(typeof(DatabaseTypeEnum)))
                 {
@@ -4713,16 +4723,16 @@ namespace CSSPEnums.Tests
                         case DatabaseTypeEnum.MemoryTestDB:
                         case DatabaseTypeEnum.SqlServerCSSPDB:
                         case DatabaseTypeEnum.SqlServerTestDB:
-                            Assert.AreEqual("", retStr);
+                            Assert.Equal("", retStr);
                             break;
                         default:
-                            Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, "DatabaseTypeEnum"), retStr);
+                            Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "DatabaseTypeEnum"), retStr);
                             break;
                     }
                 }
             }
         }
-        [TestMethod]
+        [Fact]
         public void Enums_EntityQueryTypeOK_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
@@ -4730,13 +4740,13 @@ namespace CSSPEnums.Tests
                 SetupTest(culture);
 
                 string retStr = enums.EnumTypeOK(typeof(EntityQueryTypeEnum), null);
-                Assert.AreEqual("", retStr);
+                Assert.Equal("", retStr);
 
                 retStr = enums.EnumTypeOK(typeof(EntityQueryTypeEnum), -100);
-                Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, "EntityQueryTypeEnum"), retStr);
+                Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "EntityQueryTypeEnum"), retStr);
 
                 retStr = enums.EnumTypeOK(typeof(EntityQueryTypeEnum), 10000000);
-                Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, "EntityQueryTypeEnum"), retStr);
+                Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "EntityQueryTypeEnum"), retStr);
 
                 foreach (int i in Enum.GetValues(typeof(EntityQueryTypeEnum)))
                 {
@@ -4746,16 +4756,16 @@ namespace CSSPEnums.Tests
                     {
                         case EntityQueryTypeEnum.AsNoTracking:
                         case EntityQueryTypeEnum.WithTracking:
-                            Assert.AreEqual("", retStr);
+                            Assert.Equal("", retStr);
                             break;
                         default:
-                            Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, "EntityQueryTypeEnum"), retStr);
+                            Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "EntityQueryTypeEnum"), retStr);
                             break;
                     }
                 }
             }
         }
-        [TestMethod]
+        [Fact]
         public void Enums_PolSourceObsInfoTypeOK_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
@@ -4763,13 +4773,13 @@ namespace CSSPEnums.Tests
                 SetupTest(culture);
 
                 string retStr = enums.EnumTypeOK(typeof(PolSourceObsInfoTypeEnum), null);
-                Assert.AreEqual("", retStr);
+                Assert.Equal("", retStr);
 
                 retStr = enums.EnumTypeOK(typeof(PolSourceObsInfoTypeEnum), -100);
-                Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, "PolSourceObsInfoTypeEnum"), retStr);
+                Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "PolSourceObsInfoTypeEnum"), retStr);
 
                 retStr = enums.EnumTypeOK(typeof(PolSourceObsInfoTypeEnum), 10000000);
-                Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, "PolSourceObsInfoTypeEnum"), retStr);
+                Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "PolSourceObsInfoTypeEnum"), retStr);
 
                 foreach (int i in Enum.GetValues(typeof(PolSourceObsInfoTypeEnum)))
                 {
@@ -4781,16 +4791,16 @@ namespace CSSPEnums.Tests
                         case PolSourceObsInfoTypeEnum.Report:
                         case PolSourceObsInfoTypeEnum.Text:
                         case PolSourceObsInfoTypeEnum.Initial:
-                            Assert.AreEqual("", retStr);
+                            Assert.Equal("", retStr);
                             break;
                         default:
-                            Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, "PolSourceObsInfoTypeEnum"), retStr);
+                            Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "PolSourceObsInfoTypeEnum"), retStr);
                             break;
                     }
                 }
             }
         }
-        [TestMethod]
+        [Fact]
         public void Enums_AddressTypeOK_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
@@ -4798,13 +4808,13 @@ namespace CSSPEnums.Tests
                 SetupTest(culture);
 
                 string retStr = enums.EnumTypeOK(typeof(AddressTypeEnum), null);
-                Assert.AreEqual("", retStr);
+                Assert.Equal("", retStr);
 
                 retStr = enums.EnumTypeOK(typeof(AddressTypeEnum), -100);
-                Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, "AddressTypeEnum"), retStr);
+                Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "AddressTypeEnum"), retStr);
 
                 retStr = enums.EnumTypeOK(typeof(AddressTypeEnum), 10000000);
-                Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, "AddressTypeEnum"), retStr);
+                Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "AddressTypeEnum"), retStr);
 
                 foreach (int i in Enum.GetValues(typeof(AddressTypeEnum)))
                 {
@@ -4815,16 +4825,16 @@ namespace CSSPEnums.Tests
                         case AddressTypeEnum.Mailing:
                         case AddressTypeEnum.Shipping:
                         case AddressTypeEnum.Civic:
-                            Assert.AreEqual("", retStr);
+                            Assert.Equal("", retStr);
                             break;
                         default:
-                            Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, "AddressTypeEnum"), retStr);
+                            Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "AddressTypeEnum"), retStr);
                             break;
                     }
                 }
             }
         }
-        [TestMethod]
+        [Fact]
         public void Enums_AerationTypeOK_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
@@ -4832,13 +4842,13 @@ namespace CSSPEnums.Tests
                 SetupTest(culture);
 
                 string retStr = enums.EnumTypeOK(typeof(AerationTypeEnum), null);
-                Assert.AreEqual("", retStr);
+                Assert.Equal("", retStr);
 
                 retStr = enums.EnumTypeOK(typeof(AerationTypeEnum), -100);
-                Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, "AerationTypeEnum"), retStr);
+                Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "AerationTypeEnum"), retStr);
 
                 retStr = enums.EnumTypeOK(typeof(AerationTypeEnum), 10000000);
-                Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, "AerationTypeEnum"), retStr);
+                Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "AerationTypeEnum"), retStr);
 
                 foreach (int i in Enum.GetValues(typeof(AerationTypeEnum)))
                 {
@@ -4848,16 +4858,16 @@ namespace CSSPEnums.Tests
                     {
                         case AerationTypeEnum.MechanicalAirLines:
                         case AerationTypeEnum.MechanicalSurfaceMixers:
-                            Assert.AreEqual("", retStr);
+                            Assert.Equal("", retStr);
                             break;
                         default:
-                            Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, "AerationTypeEnum"), retStr);
+                            Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "AerationTypeEnum"), retStr);
                             break;
                     }
                 }
             }
         }
-        [TestMethod]
+        [Fact]
         public void Enums_AlarmSystemTypeOK_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
@@ -4865,13 +4875,13 @@ namespace CSSPEnums.Tests
                 SetupTest(culture);
 
                 string retStr = enums.EnumTypeOK(typeof(AlarmSystemTypeEnum), null);
-                Assert.AreEqual("", retStr);
+                Assert.Equal("", retStr);
 
                 retStr = enums.EnumTypeOK(typeof(AlarmSystemTypeEnum), -100);
-                Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, "AlarmSystemTypeEnum"), retStr);
+                Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "AlarmSystemTypeEnum"), retStr);
 
                 retStr = enums.EnumTypeOK(typeof(AlarmSystemTypeEnum), 10000000);
-                Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, "AlarmSystemTypeEnum"), retStr);
+                Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "AlarmSystemTypeEnum"), retStr);
 
                 foreach (int i in Enum.GetValues(typeof(AlarmSystemTypeEnum)))
                 {
@@ -4884,16 +4894,16 @@ namespace CSSPEnums.Tests
                         case AlarmSystemTypeEnum.OnlyVisualLight:
                         case AlarmSystemTypeEnum.SCADAAndLight:
                         case AlarmSystemTypeEnum.PagerAndLight:
-                            Assert.AreEqual("", retStr);
+                            Assert.Equal("", retStr);
                             break;
                         default:
-                            Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, "AlarmSystemTypeEnum"), retStr);
+                            Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "AlarmSystemTypeEnum"), retStr);
                             break;
                     }
                 }
             }
         }
-        [TestMethod]
+        [Fact]
         public void Enums_AnalysisCalculationTypeOK_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
@@ -4901,13 +4911,13 @@ namespace CSSPEnums.Tests
                 SetupTest(culture);
 
                 string retStr = enums.EnumTypeOK(typeof(AnalysisCalculationTypeEnum), null);
-                Assert.AreEqual("", retStr);
+                Assert.Equal("", retStr);
 
                 retStr = enums.EnumTypeOK(typeof(AnalysisCalculationTypeEnum), -100);
-                Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, "AnalysisCalculationTypeEnum"), retStr);
+                Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "AnalysisCalculationTypeEnum"), retStr);
 
                 retStr = enums.EnumTypeOK(typeof(AnalysisCalculationTypeEnum), 10000000);
-                Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, "AnalysisCalculationTypeEnum"), retStr);
+                Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "AnalysisCalculationTypeEnum"), retStr);
 
                 foreach (int i in Enum.GetValues(typeof(AnalysisCalculationTypeEnum)))
                 {
@@ -4922,16 +4932,16 @@ namespace CSSPEnums.Tests
                         case AnalysisCalculationTypeEnum.DryDryAll:
                         case AnalysisCalculationTypeEnum.WetDryAll:
                         case AnalysisCalculationTypeEnum.DryWetAll:
-                            Assert.AreEqual("", retStr);
+                            Assert.Equal("", retStr);
                             break;
                         default:
-                            Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, "AnalysisCalculationTypeEnum"), retStr);
+                            Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "AnalysisCalculationTypeEnum"), retStr);
                             break;
                     }
                 }
             }
         }
-        [TestMethod]
+        [Fact]
         public void Enums_AnalysisReportExportCommandOK_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
@@ -4939,13 +4949,13 @@ namespace CSSPEnums.Tests
                 SetupTest(culture);
 
                 string retStr = enums.EnumTypeOK(typeof(AnalysisReportExportCommandEnum), null);
-                Assert.AreEqual("", retStr);
+                Assert.Equal("", retStr);
 
                 retStr = enums.EnumTypeOK(typeof(AnalysisReportExportCommandEnum), -100);
-                Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, "AnalysisReportExportCommandEnum"), retStr);
+                Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "AnalysisReportExportCommandEnum"), retStr);
 
                 retStr = enums.EnumTypeOK(typeof(AnalysisReportExportCommandEnum), 10000000);
-                Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, "AnalysisReportExportCommandEnum"), retStr);
+                Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "AnalysisReportExportCommandEnum"), retStr);
 
                 foreach (int i in Enum.GetValues(typeof(AnalysisReportExportCommandEnum)))
                 {
@@ -4955,16 +4965,16 @@ namespace CSSPEnums.Tests
                     {
                         case AnalysisReportExportCommandEnum.Report:
                         case AnalysisReportExportCommandEnum.Excel:
-                            Assert.AreEqual("", retStr);
+                            Assert.Equal("", retStr);
                             break;
                         default:
-                            Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, "AnalysisReportExportCommandEnum"), retStr);
+                            Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "AnalysisReportExportCommandEnum"), retStr);
                             break;
                     }
                 }
             }
         }
-        [TestMethod]
+        [Fact]
         public void Enums_AnalyzeMethodOK_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
@@ -4972,13 +4982,13 @@ namespace CSSPEnums.Tests
                 SetupTest(culture);
 
                 string retStr = enums.EnumTypeOK(typeof(AnalyzeMethodEnum), null);
-                Assert.AreEqual("", retStr);
+                Assert.Equal("", retStr);
 
                 retStr = enums.EnumTypeOK(typeof(AnalyzeMethodEnum), -100);
-                Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, "AnalyzeMethodEnum"), retStr);
+                Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "AnalyzeMethodEnum"), retStr);
 
                 retStr = enums.EnumTypeOK(typeof(AnalyzeMethodEnum), 10000000);
-                Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, "AnalyzeMethodEnum"), retStr);
+                Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "AnalyzeMethodEnum"), retStr);
 
                 foreach (int i in Enum.GetValues(typeof(AnalyzeMethodEnum)))
                 {
@@ -4998,16 +5008,16 @@ namespace CSSPEnums.Tests
                         case AnalyzeMethodEnum.AnalyzeMethod10:
                         case AnalyzeMethodEnum.AnalyzeMethod11:
                         case AnalyzeMethodEnum.AnalyzeMethod12:
-                            Assert.AreEqual("", retStr);
+                            Assert.Equal("", retStr);
                             break;
                         default:
-                            Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, "AnalyzeMethodEnum"), retStr);
+                            Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "AnalyzeMethodEnum"), retStr);
                             break;
                     }
                 }
             }
         }
-        [TestMethod]
+        [Fact]
         public void Enums_AppTaskCommandOK_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
@@ -5015,13 +5025,13 @@ namespace CSSPEnums.Tests
                 SetupTest(culture);
 
                 string retStr = enums.EnumTypeOK(typeof(AppTaskCommandEnum), null);
-                Assert.AreEqual("", retStr);
+                Assert.Equal("", retStr);
 
                 retStr = enums.EnumTypeOK(typeof(AppTaskCommandEnum), -100);
-                Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, "AppTaskCommandEnum"), retStr);
+                Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "AppTaskCommandEnum"), retStr);
 
                 retStr = enums.EnumTypeOK(typeof(AppTaskCommandEnum), 10000000);
-                Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, "AppTaskCommandEnum"), retStr);
+                Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "AppTaskCommandEnum"), retStr);
 
                 foreach (int i in Enum.GetValues(typeof(AppTaskCommandEnum)))
                 {
@@ -5076,16 +5086,17 @@ namespace CSSPEnums.Tests
                         case AppTaskCommandEnum.GenerateKMLFileClassificationForCSSPWebToolsVisualization:
                         case AppTaskCommandEnum.ProvinceToolsGenerateStats:
                         case AppTaskCommandEnum.MikeScenarioPrepareResults:
-                            Assert.AreEqual("", retStr);
+                        case AppTaskCommandEnum.ClimateSiteLoadCoCoRaHSData:
+                            Assert.Equal("", retStr);
                             break;
                         default:
-                            Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, "AppTaskCommandEnum"), retStr);
+                            Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "AppTaskCommandEnum"), retStr);
                             break;
                     }
                 }
             }
         }
-        [TestMethod]
+        [Fact]
         public void Enums_AppTaskStatusOK_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
@@ -5093,13 +5104,13 @@ namespace CSSPEnums.Tests
                 SetupTest(culture);
 
                 string retStr = enums.EnumTypeOK(typeof(AppTaskStatusEnum), null);
-                Assert.AreEqual("", retStr);
+                Assert.Equal("", retStr);
 
                 retStr = enums.EnumTypeOK(typeof(AppTaskStatusEnum), -100);
-                Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, "AppTaskStatusEnum"), retStr);
+                Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "AppTaskStatusEnum"), retStr);
 
                 retStr = enums.EnumTypeOK(typeof(AppTaskStatusEnum), 10000000);
-                Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, "AppTaskStatusEnum"), retStr);
+                Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "AppTaskStatusEnum"), retStr);
 
                 foreach (int i in Enum.GetValues(typeof(AppTaskStatusEnum)))
                 {
@@ -5111,16 +5122,16 @@ namespace CSSPEnums.Tests
                         case AppTaskStatusEnum.Running:
                         case AppTaskStatusEnum.Completed:
                         case AppTaskStatusEnum.Cancelled:
-                            Assert.AreEqual("", retStr);
+                            Assert.Equal("", retStr);
                             break;
                         default:
-                            Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, "AppTaskStatusEnum"), retStr);
+                            Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "AppTaskStatusEnum"), retStr);
                             break;
                     }
                 }
             }
         }
-        [TestMethod]
+        [Fact]
         public void Enums_BeaufortScaleOK_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
@@ -5128,13 +5139,13 @@ namespace CSSPEnums.Tests
                 SetupTest(culture);
 
                 string retStr = enums.EnumTypeOK(typeof(BeaufortScaleEnum), null);
-                Assert.AreEqual("", retStr);
+                Assert.Equal("", retStr);
 
                 retStr = enums.EnumTypeOK(typeof(BeaufortScaleEnum), -100);
-                Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, "BeaufortScaleEnum"), retStr);
+                Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "BeaufortScaleEnum"), retStr);
 
                 retStr = enums.EnumTypeOK(typeof(BeaufortScaleEnum), 10000000);
-                Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, "BeaufortScaleEnum"), retStr);
+                Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "BeaufortScaleEnum"), retStr);
 
                 foreach (int i in Enum.GetValues(typeof(BeaufortScaleEnum)))
                 {
@@ -5155,16 +5166,16 @@ namespace CSSPEnums.Tests
                         case BeaufortScaleEnum.Storm_WholeGale:
                         case BeaufortScaleEnum.ViolentStorm:
                         case BeaufortScaleEnum.HurricaneForce:
-                            Assert.AreEqual("", retStr);
+                            Assert.Equal("", retStr);
                             break;
                         default:
-                            Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, "BeaufortScaleEnum"), retStr);
+                            Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "BeaufortScaleEnum"), retStr);
                             break;
                     }
                 }
             }
         }
-        [TestMethod]
+        [Fact]
         public void Enums_BoxModelResultTypeOK_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
@@ -5172,13 +5183,13 @@ namespace CSSPEnums.Tests
                 SetupTest(culture);
 
                 string retStr = enums.EnumTypeOK(typeof(BoxModelResultTypeEnum), null);
-                Assert.AreEqual("", retStr);
+                Assert.Equal("", retStr);
 
                 retStr = enums.EnumTypeOK(typeof(BoxModelResultTypeEnum), -100);
-                Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, "BoxModelResultTypeEnum"), retStr);
+                Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "BoxModelResultTypeEnum"), retStr);
 
                 retStr = enums.EnumTypeOK(typeof(BoxModelResultTypeEnum), 10000000);
-                Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, "BoxModelResultTypeEnum"), retStr);
+                Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "BoxModelResultTypeEnum"), retStr);
 
                 foreach (int i in Enum.GetValues(typeof(BoxModelResultTypeEnum)))
                 {
@@ -5191,16 +5202,16 @@ namespace CSSPEnums.Tests
                         case BoxModelResultTypeEnum.NoDecayPreDisinfection:
                         case BoxModelResultTypeEnum.DecayUntreated:
                         case BoxModelResultTypeEnum.DecayPreDisinfection:
-                            Assert.AreEqual("", retStr);
+                            Assert.Equal("", retStr);
                             break;
                         default:
-                            Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, "BoxModelResultTypeEnum"), retStr);
+                            Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "BoxModelResultTypeEnum"), retStr);
                             break;
                     }
                 }
             }
         }
-        [TestMethod]
+        [Fact]
         public void Enums_ClassificationTypeOK_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
@@ -5208,13 +5219,13 @@ namespace CSSPEnums.Tests
                 SetupTest(culture);
 
                 string retStr = enums.EnumTypeOK(typeof(ClassificationTypeEnum), null);
-                Assert.AreEqual("", retStr);
+                Assert.Equal("", retStr);
 
                 retStr = enums.EnumTypeOK(typeof(ClassificationTypeEnum), -100);
-                Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, "ClassificationTypeEnum"), retStr);
+                Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "ClassificationTypeEnum"), retStr);
 
                 retStr = enums.EnumTypeOK(typeof(ClassificationTypeEnum), 10000000);
-                Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, "ClassificationTypeEnum"), retStr);
+                Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "ClassificationTypeEnum"), retStr);
 
                 foreach (int i in Enum.GetValues(typeof(ClassificationTypeEnum)))
                 {
@@ -5227,16 +5238,16 @@ namespace CSSPEnums.Tests
                         case ClassificationTypeEnum.Prohibited:
                         case ClassificationTypeEnum.ConditionallyApproved:
                         case ClassificationTypeEnum.ConditionallyRestricted:
-                            Assert.AreEqual("", retStr);
+                            Assert.Equal("", retStr);
                             break;
                         default:
-                            Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, "ClassificationTypeEnum"), retStr);
+                            Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "ClassificationTypeEnum"), retStr);
                             break;
                     }
                 }
             }
         }
-        [TestMethod]
+        [Fact]
         public void Enums_CollectionSystemTypeOK_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
@@ -5244,13 +5255,13 @@ namespace CSSPEnums.Tests
                 SetupTest(culture);
 
                 string retStr = enums.EnumTypeOK(typeof(CollectionSystemTypeEnum), null);
-                Assert.AreEqual("", retStr);
+                Assert.Equal("", retStr);
 
                 retStr = enums.EnumTypeOK(typeof(CollectionSystemTypeEnum), -100);
-                Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, "CollectionSystemTypeEnum"), retStr);
+                Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "CollectionSystemTypeEnum"), retStr);
 
                 retStr = enums.EnumTypeOK(typeof(CollectionSystemTypeEnum), 10000000);
-                Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, "CollectionSystemTypeEnum"), retStr);
+                Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "CollectionSystemTypeEnum"), retStr);
 
                 foreach (int i in Enum.GetValues(typeof(CollectionSystemTypeEnum)))
                 {
@@ -5269,16 +5280,16 @@ namespace CSSPEnums.Tests
                         case CollectionSystemTypeEnum.Combined30Separated70:
                         case CollectionSystemTypeEnum.Combined20Separated80:
                         case CollectionSystemTypeEnum.Combined10Separated90:
-                            Assert.AreEqual("", retStr);
+                            Assert.Equal("", retStr);
                             break;
                         default:
-                            Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, "CollectionSystemTypeEnum"), retStr);
+                            Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "CollectionSystemTypeEnum"), retStr);
                             break;
                     }
                 }
             }
         }
-        [TestMethod]
+        [Fact]
         public void Enums_ContactTitleOK_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
@@ -5286,13 +5297,13 @@ namespace CSSPEnums.Tests
                 SetupTest(culture);
 
                 string retStr = enums.EnumTypeOK(typeof(ContactTitleEnum), null);
-                Assert.AreEqual("", retStr);
+                Assert.Equal("", retStr);
 
                 retStr = enums.EnumTypeOK(typeof(ContactTitleEnum), -100);
-                Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, "ContactTitleEnum"), retStr);
+                Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "ContactTitleEnum"), retStr);
 
                 retStr = enums.EnumTypeOK(typeof(ContactTitleEnum), 10000000);
-                Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, "ContactTitleEnum"), retStr);
+                Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "ContactTitleEnum"), retStr);
 
                 foreach (int i in Enum.GetValues(typeof(ContactTitleEnum)))
                 {
@@ -5309,16 +5320,16 @@ namespace CSSPEnums.Tests
                         case ContactTitleEnum.FacilitiesManager:
                         case ContactTitleEnum.Supervisor:
                         case ContactTitleEnum.Technician:
-                            Assert.AreEqual("", retStr);
+                            Assert.Equal("", retStr);
                             break;
                         default:
-                            Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, "ContactTitleEnum"), retStr);
+                            Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "ContactTitleEnum"), retStr);
                             break;
                     }
                 }
             }
         }
-        [TestMethod]
+        [Fact]
         public void Enums_CSSPWQInputSheetTypeOK_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
@@ -5326,13 +5337,13 @@ namespace CSSPEnums.Tests
                 SetupTest(culture);
 
                 string retStr = enums.EnumTypeOK(typeof(CSSPWQInputSheetTypeEnum), null);
-                Assert.AreEqual("", retStr);
+                Assert.Equal("", retStr);
 
                 retStr = enums.EnumTypeOK(typeof(CSSPWQInputSheetTypeEnum), -100);
-                Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, "CSSPWQInputSheetTypeEnum"), retStr);
+                Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "CSSPWQInputSheetTypeEnum"), retStr);
 
                 retStr = enums.EnumTypeOK(typeof(CSSPWQInputSheetTypeEnum), 10000000);
-                Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, "CSSPWQInputSheetTypeEnum"), retStr);
+                Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "CSSPWQInputSheetTypeEnum"), retStr);
 
                 foreach (int i in Enum.GetValues(typeof(CSSPWQInputSheetTypeEnum)))
                 {
@@ -5343,16 +5354,16 @@ namespace CSSPEnums.Tests
                         case CSSPWQInputSheetTypeEnum.A1:
                         case CSSPWQInputSheetTypeEnum.LTB:
                         case CSSPWQInputSheetTypeEnum.EC:
-                            Assert.AreEqual("", retStr);
+                            Assert.Equal("", retStr);
                             break;
                         default:
-                            Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, "CSSPWQInputSheetTypeEnum"), retStr);
+                            Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "CSSPWQInputSheetTypeEnum"), retStr);
                             break;
                     }
                 }
             }
         }
-        [TestMethod]
+        [Fact]
         public void Enums_CSSPWQInputTypeOK_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
@@ -5360,13 +5371,13 @@ namespace CSSPEnums.Tests
                 SetupTest(culture);
 
                 string retStr = enums.EnumTypeOK(typeof(CSSPWQInputTypeEnum), null);
-                Assert.AreEqual("", retStr);
+                Assert.Equal("", retStr);
 
                 retStr = enums.EnumTypeOK(typeof(CSSPWQInputTypeEnum), -100);
-                Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, "CSSPWQInputTypeEnum"), retStr);
+                Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "CSSPWQInputTypeEnum"), retStr);
 
                 retStr = enums.EnumTypeOK(typeof(CSSPWQInputTypeEnum), 10000000);
-                Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, "CSSPWQInputTypeEnum"), retStr);
+                Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "CSSPWQInputTypeEnum"), retStr);
 
                 foreach (int i in Enum.GetValues(typeof(CSSPWQInputTypeEnum)))
                 {
@@ -5376,16 +5387,16 @@ namespace CSSPEnums.Tests
                     {
                         case CSSPWQInputTypeEnum.Subsector:
                         case CSSPWQInputTypeEnum.Municipality:
-                            Assert.AreEqual("", retStr);
+                            Assert.Equal("", retStr);
                             break;
                         default:
-                            Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, "CSSPWQInputTypeEnum"), retStr);
+                            Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "CSSPWQInputTypeEnum"), retStr);
                             break;
                     }
                 }
             }
         }
-        [TestMethod]
+        [Fact]
         public void Enums_DailyOrHourlyDataOK_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
@@ -5393,13 +5404,13 @@ namespace CSSPEnums.Tests
                 SetupTest(culture);
 
                 string retStr = enums.EnumTypeOK(typeof(DailyOrHourlyDataEnum), null);
-                Assert.AreEqual("", retStr);
+                Assert.Equal("", retStr);
 
                 retStr = enums.EnumTypeOK(typeof(DailyOrHourlyDataEnum), -100);
-                Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, "DailyOrHourlyDataEnum"), retStr);
+                Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "DailyOrHourlyDataEnum"), retStr);
 
                 retStr = enums.EnumTypeOK(typeof(DailyOrHourlyDataEnum), 10000000);
-                Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, "DailyOrHourlyDataEnum"), retStr);
+                Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "DailyOrHourlyDataEnum"), retStr);
 
                 foreach (int i in Enum.GetValues(typeof(DailyOrHourlyDataEnum)))
                 {
@@ -5409,16 +5420,16 @@ namespace CSSPEnums.Tests
                     {
                         case DailyOrHourlyDataEnum.Daily:
                         case DailyOrHourlyDataEnum.Hourly:
-                            Assert.AreEqual("", retStr);
+                            Assert.Equal("", retStr);
                             break;
                         default:
-                            Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, "DailyOrHourlyDataEnum"), retStr);
+                            Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "DailyOrHourlyDataEnum"), retStr);
                             break;
                     }
                 }
             }
         }
-        [TestMethod]
+        [Fact]
         public void Enums_DisinfectionTypeOK_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
@@ -5426,13 +5437,13 @@ namespace CSSPEnums.Tests
                 SetupTest(culture);
 
                 string retStr = enums.EnumTypeOK(typeof(DisinfectionTypeEnum), null);
-                Assert.AreEqual("", retStr);
+                Assert.Equal("", retStr);
 
                 retStr = enums.EnumTypeOK(typeof(DisinfectionTypeEnum), -100);
-                Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, "DisinfectionTypeEnum"), retStr);
+                Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "DisinfectionTypeEnum"), retStr);
 
                 retStr = enums.EnumTypeOK(typeof(DisinfectionTypeEnum), 10000000);
-                Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, "DisinfectionTypeEnum"), retStr);
+                Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "DisinfectionTypeEnum"), retStr);
 
                 foreach (int i in Enum.GetValues(typeof(DisinfectionTypeEnum)))
                 {
@@ -5447,16 +5458,16 @@ namespace CSSPEnums.Tests
                         case DisinfectionTypeEnum.UVSeasonal:
                         case DisinfectionTypeEnum.ChlorinationNoDechlorinationSeasonal:
                         case DisinfectionTypeEnum.ChlorinationWithDechlorinationSeasonal:
-                            Assert.AreEqual("", retStr);
+                            Assert.Equal("", retStr);
                             break;
                         default:
-                            Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, "DisinfectionTypeEnum"), retStr);
+                            Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "DisinfectionTypeEnum"), retStr);
                             break;
                     }
                 }
             }
         }
-        [TestMethod]
+        [Fact]
         public void Enums_DrogueTypeOK_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
@@ -5464,13 +5475,13 @@ namespace CSSPEnums.Tests
                 SetupTest(culture);
 
                 string retStr = enums.EnumTypeOK(typeof(DrogueTypeEnum), null);
-                Assert.AreEqual("", retStr);
+                Assert.Equal("", retStr);
 
                 retStr = enums.EnumTypeOK(typeof(DrogueTypeEnum), -100);
-                Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, "DrogueTypeEnum"), retStr);
+                Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "DrogueTypeEnum"), retStr);
 
                 retStr = enums.EnumTypeOK(typeof(DrogueTypeEnum), 10000000);
-                Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, "DrogueTypeEnum"), retStr);
+                Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "DrogueTypeEnum"), retStr);
 
                 foreach (int i in Enum.GetValues(typeof(DrogueTypeEnum)))
                 {
@@ -5480,16 +5491,16 @@ namespace CSSPEnums.Tests
                     {
                         case DrogueTypeEnum.SmallDrogue:
                         case DrogueTypeEnum.LargeDrogue:
-                            Assert.AreEqual("", retStr);
+                            Assert.Equal("", retStr);
                             break;
                         default:
-                            Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, "DrogueTypeEnum"), retStr);
+                            Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "DrogueTypeEnum"), retStr);
                             break;
                     }
                 }
             }
         }
-        [TestMethod]
+        [Fact]
         public void Enums_EmailTypeOK_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
@@ -5497,13 +5508,13 @@ namespace CSSPEnums.Tests
                 SetupTest(culture);
 
                 string retStr = enums.EnumTypeOK(typeof(EmailTypeEnum), null);
-                Assert.AreEqual("", retStr);
+                Assert.Equal("", retStr);
 
                 retStr = enums.EnumTypeOK(typeof(EmailTypeEnum), -100);
-                Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, "EmailTypeEnum"), retStr);
+                Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "EmailTypeEnum"), retStr);
 
                 retStr = enums.EnumTypeOK(typeof(EmailTypeEnum), 10000000);
-                Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, "EmailTypeEnum"), retStr);
+                Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "EmailTypeEnum"), retStr);
 
                 foreach (int i in Enum.GetValues(typeof(EmailTypeEnum)))
                 {
@@ -5515,16 +5526,16 @@ namespace CSSPEnums.Tests
                         case EmailTypeEnum.Work:
                         case EmailTypeEnum.Personal2:
                         case EmailTypeEnum.Work2:
-                            Assert.AreEqual("", retStr);
+                            Assert.Equal("", retStr);
                             break;
                         default:
-                            Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, "EmailTypeEnum"), retStr);
+                            Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "EmailTypeEnum"), retStr);
                             break;
                     }
                 }
             }
         }
-        [TestMethod]
+        [Fact]
         public void Enums_ExcelExportShowDataTypeOK_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
@@ -5532,13 +5543,13 @@ namespace CSSPEnums.Tests
                 SetupTest(culture);
 
                 string retStr = enums.EnumTypeOK(typeof(ExcelExportShowDataTypeEnum), null);
-                Assert.AreEqual("", retStr);
+                Assert.Equal("", retStr);
 
                 retStr = enums.EnumTypeOK(typeof(ExcelExportShowDataTypeEnum), -100);
-                Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, "ExcelExportShowDataTypeEnum"), retStr);
+                Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "ExcelExportShowDataTypeEnum"), retStr);
 
                 retStr = enums.EnumTypeOK(typeof(ExcelExportShowDataTypeEnum), 10000000);
-                Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, "ExcelExportShowDataTypeEnum"), retStr);
+                Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "ExcelExportShowDataTypeEnum"), retStr);
 
                 foreach (int i in Enum.GetValues(typeof(ExcelExportShowDataTypeEnum)))
                 {
@@ -5554,16 +5565,16 @@ namespace CSSPEnums.Tests
                         case ExcelExportShowDataTypeEnum.Median:
                         case ExcelExportShowDataTypeEnum.PercOfP90Over43:
                         case ExcelExportShowDataTypeEnum.PercOfP90Over260:
-                            Assert.AreEqual("", retStr);
+                            Assert.Equal("", retStr);
                             break;
                         default:
-                            Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, "ExcelExportShowDataTypeEnum"), retStr);
+                            Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "ExcelExportShowDataTypeEnum"), retStr);
                             break;
                     }
                 }
             }
         }
-        [TestMethod]
+        [Fact]
         public void Enums_FacilityTypeOK_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
@@ -5571,13 +5582,13 @@ namespace CSSPEnums.Tests
                 SetupTest(culture);
 
                 string retStr = enums.EnumTypeOK(typeof(FacilityTypeEnum), null);
-                Assert.AreEqual("", retStr);
+                Assert.Equal("", retStr);
 
                 retStr = enums.EnumTypeOK(typeof(FacilityTypeEnum), -100);
-                Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, "FacilityTypeEnum"), retStr);
+                Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "FacilityTypeEnum"), retStr);
 
                 retStr = enums.EnumTypeOK(typeof(FacilityTypeEnum), 10000000);
-                Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, "FacilityTypeEnum"), retStr);
+                Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "FacilityTypeEnum"), retStr);
 
                 foreach (int i in Enum.GetValues(typeof(FacilityTypeEnum)))
                 {
@@ -5587,16 +5598,16 @@ namespace CSSPEnums.Tests
                     {
                         case FacilityTypeEnum.Lagoon:
                         case FacilityTypeEnum.Plant:
-                            Assert.AreEqual("", retStr);
+                            Assert.Equal("", retStr);
                             break;
                         default:
-                            Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, "FacilityTypeEnum"), retStr);
+                            Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "FacilityTypeEnum"), retStr);
                             break;
                     }
                 }
             }
         }
-        [TestMethod]
+        [Fact]
         public void Enums_FilePurposeOK_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
@@ -5604,13 +5615,13 @@ namespace CSSPEnums.Tests
                 SetupTest(culture);
 
                 string retStr = enums.EnumTypeOK(typeof(FilePurposeEnum), null);
-                Assert.AreEqual("", retStr);
+                Assert.Equal("", retStr);
 
                 retStr = enums.EnumTypeOK(typeof(FilePurposeEnum), -100);
-                Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, "FilePurposeEnum"), retStr);
+                Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "FilePurposeEnum"), retStr);
 
                 retStr = enums.EnumTypeOK(typeof(FilePurposeEnum), 10000000);
-                Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, "FilePurposeEnum"), retStr);
+                Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "FilePurposeEnum"), retStr);
 
                 foreach (int i in Enum.GetValues(typeof(FilePurposeEnum)))
                 {
@@ -5632,16 +5643,16 @@ namespace CSSPEnums.Tests
                         case FilePurposeEnum.Map:
                         case FilePurposeEnum.Analysis:
                         case FilePurposeEnum.OpenData:
-                            Assert.AreEqual("", retStr);
+                            Assert.Equal("", retStr);
                             break;
                         default:
-                            Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, "FilePurposeEnum"), retStr);
+                            Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "FilePurposeEnum"), retStr);
                             break;
                     }
                 }
             }
         }
-        [TestMethod]
+        [Fact]
         public void Enums_FileStatusOK_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
@@ -5649,13 +5660,13 @@ namespace CSSPEnums.Tests
                 SetupTest(culture);
 
                 string retStr = enums.EnumTypeOK(typeof(FileStatusEnum), null);
-                Assert.AreEqual("", retStr);
+                Assert.Equal("", retStr);
 
                 retStr = enums.EnumTypeOK(typeof(FileStatusEnum), -100);
-                Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, "FileStatusEnum"), retStr);
+                Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "FileStatusEnum"), retStr);
 
                 retStr = enums.EnumTypeOK(typeof(FileStatusEnum), 10000000);
-                Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, "FileStatusEnum"), retStr);
+                Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "FileStatusEnum"), retStr);
 
                 foreach (int i in Enum.GetValues(typeof(FileStatusEnum)))
                 {
@@ -5668,16 +5679,16 @@ namespace CSSPEnums.Tests
                         case FileStatusEnum.Accepted:
                         case FileStatusEnum.Rejected:
                         case FileStatusEnum.Fail:
-                            Assert.AreEqual("", retStr);
+                            Assert.Equal("", retStr);
                             break;
                         default:
-                            Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, "FileStatusEnum"), retStr);
+                            Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "FileStatusEnum"), retStr);
                             break;
                     }
                 }
             }
         }
-        [TestMethod]
+        [Fact]
         public void Enums_FileTypeOK_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
@@ -5685,13 +5696,13 @@ namespace CSSPEnums.Tests
                 SetupTest(culture);
 
                 string retStr = enums.EnumTypeOK(typeof(FileTypeEnum), null);
-                Assert.AreEqual("", retStr);
+                Assert.Equal("", retStr);
 
                 retStr = enums.EnumTypeOK(typeof(FileTypeEnum), -100);
-                Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, "FileTypeEnum"), retStr);
+                Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "FileTypeEnum"), retStr);
 
                 retStr = enums.EnumTypeOK(typeof(FileTypeEnum), 10000000);
-                Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, "FileTypeEnum"), retStr);
+                Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "FileTypeEnum"), retStr);
 
                 foreach (int i in Enum.GetValues(typeof(FileTypeEnum)))
                 {
@@ -5720,16 +5731,16 @@ namespace CSSPEnums.Tests
                         case FileTypeEnum.XYZ:
                         case FileTypeEnum.KML:
                         case FileTypeEnum.CSV:
-                            Assert.AreEqual("", retStr);
+                            Assert.Equal("", retStr);
                             break;
                         default:
-                            Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, "FileTypeEnum"), retStr);
+                            Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "FileTypeEnum"), retStr);
                             break;
                     }
                 }
             }
         }
-        [TestMethod]
+        [Fact]
         public void Enums_InfrastructureTypeOK_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
@@ -5737,13 +5748,13 @@ namespace CSSPEnums.Tests
                 SetupTest(culture);
 
                 string retStr = enums.EnumTypeOK(typeof(InfrastructureTypeEnum), null);
-                Assert.AreEqual("", retStr);
+                Assert.Equal("", retStr);
 
                 retStr = enums.EnumTypeOK(typeof(InfrastructureTypeEnum), -100);
-                Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, "InfrastructureTypeEnum"), retStr);
+                Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "InfrastructureTypeEnum"), retStr);
 
                 retStr = enums.EnumTypeOK(typeof(InfrastructureTypeEnum), 10000000);
-                Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, "InfrastructureTypeEnum"), retStr);
+                Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "InfrastructureTypeEnum"), retStr);
 
                 foreach (int i in Enum.GetValues(typeof(InfrastructureTypeEnum)))
                 {
@@ -5756,16 +5767,16 @@ namespace CSSPEnums.Tests
                         case InfrastructureTypeEnum.Other:
                         case InfrastructureTypeEnum.SeeOtherMunicipality:
                         case InfrastructureTypeEnum.LineOverflow:
-                            Assert.AreEqual("", retStr);
+                            Assert.Equal("", retStr);
                             break;
                         default:
-                            Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, "InfrastructureTypeEnum"), retStr);
+                            Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "InfrastructureTypeEnum"), retStr);
                             break;
                     }
                 }
             }
         }
-        [TestMethod]
+        [Fact]
         public void Enums_KMZActionOK_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
@@ -5773,13 +5784,13 @@ namespace CSSPEnums.Tests
                 SetupTest(culture);
 
                 string retStr = enums.EnumTypeOK(typeof(KMZActionEnum), null);
-                Assert.AreEqual("", retStr);
+                Assert.Equal("", retStr);
 
                 retStr = enums.EnumTypeOK(typeof(KMZActionEnum), -100);
-                Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, "KMZActionEnum"), retStr);
+                Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "KMZActionEnum"), retStr);
 
                 retStr = enums.EnumTypeOK(typeof(KMZActionEnum), 10000000);
-                Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, "KMZActionEnum"), retStr);
+                Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "KMZActionEnum"), retStr);
 
                 foreach (int i in Enum.GetValues(typeof(KMZActionEnum)))
                 {
@@ -5795,16 +5806,16 @@ namespace CSSPEnums.Tests
                         case KMZActionEnum.GenerateKMZMesh:
                         case KMZActionEnum.GenerateKMZStudyArea:
                         case KMZActionEnum.GenerateKMZBoundaryConditionNodes:
-                            Assert.AreEqual("", retStr);
+                            Assert.Equal("", retStr);
                             break;
                         default:
-                            Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, "KMZActionEnum"), retStr);
+                            Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "KMZActionEnum"), retStr);
                             break;
                     }
                 }
             }
         }
-        [TestMethod]
+        [Fact]
         public void Enums_LaboratoryOK_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
@@ -5812,13 +5823,13 @@ namespace CSSPEnums.Tests
                 SetupTest(culture);
 
                 string retStr = enums.EnumTypeOK(typeof(LaboratoryEnum), null);
-                Assert.AreEqual("", retStr);
+                Assert.Equal("", retStr);
 
                 retStr = enums.EnumTypeOK(typeof(LaboratoryEnum), -100);
-                Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, "LaboratoryEnum"), retStr);
+                Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "LaboratoryEnum"), retStr);
 
                 retStr = enums.EnumTypeOK(typeof(LaboratoryEnum), 10000000);
-                Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, "LaboratoryEnum"), retStr);
+                Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "LaboratoryEnum"), retStr);
 
                 foreach (int i in Enum.GetValues(typeof(LaboratoryEnum)))
                 {
@@ -5856,16 +5867,16 @@ namespace CSSPEnums.Tests
                         case LaboratoryEnum.NLMobileLaboratory:
                         case LaboratoryEnum.AvalonLaboratoriesInc:
                         case LaboratoryEnum.Maxxam:
-                            Assert.AreEqual("", retStr);
+                            Assert.Equal("", retStr);
                             break;
                         default:
-                            Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, "LaboratoryEnum"), retStr);
+                            Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "LaboratoryEnum"), retStr);
                             break;
                     }
                 }
             }
         }
-        [TestMethod]
+        [Fact]
         public void Enums_LabSheetStatusOK_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
@@ -5873,13 +5884,13 @@ namespace CSSPEnums.Tests
                 SetupTest(culture);
 
                 string retStr = enums.EnumTypeOK(typeof(LabSheetStatusEnum), null);
-                Assert.AreEqual("", retStr);
+                Assert.Equal("", retStr);
 
                 retStr = enums.EnumTypeOK(typeof(LabSheetStatusEnum), -100);
-                Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, "LabSheetStatusEnum"), retStr);
+                Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "LabSheetStatusEnum"), retStr);
 
                 retStr = enums.EnumTypeOK(typeof(LabSheetStatusEnum), 10000000);
-                Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, "LabSheetStatusEnum"), retStr);
+                Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "LabSheetStatusEnum"), retStr);
 
                 foreach (int i in Enum.GetValues(typeof(LabSheetStatusEnum)))
                 {
@@ -5891,16 +5902,16 @@ namespace CSSPEnums.Tests
                         case LabSheetStatusEnum.Transferred:
                         case LabSheetStatusEnum.Accepted:
                         case LabSheetStatusEnum.Rejected:
-                            Assert.AreEqual("", retStr);
+                            Assert.Equal("", retStr);
                             break;
                         default:
-                            Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, "LabSheetStatusEnum"), retStr);
+                            Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "LabSheetStatusEnum"), retStr);
                             break;
                     }
                 }
             }
         }
-        [TestMethod]
+        [Fact]
         public void Enums_LabSheetTypeOK_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
@@ -5908,13 +5919,13 @@ namespace CSSPEnums.Tests
                 SetupTest(culture);
 
                 string retStr = enums.EnumTypeOK(typeof(LabSheetTypeEnum), null);
-                Assert.AreEqual("", retStr);
+                Assert.Equal("", retStr);
 
                 retStr = enums.EnumTypeOK(typeof(LabSheetTypeEnum), -100);
-                Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, "LabSheetTypeEnum"), retStr);
+                Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "LabSheetTypeEnum"), retStr);
 
                 retStr = enums.EnumTypeOK(typeof(LabSheetTypeEnum), 10000000);
-                Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, "LabSheetTypeEnum"), retStr);
+                Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "LabSheetTypeEnum"), retStr);
 
                 foreach (int i in Enum.GetValues(typeof(LabSheetTypeEnum)))
                 {
@@ -5925,16 +5936,16 @@ namespace CSSPEnums.Tests
                         case LabSheetTypeEnum.A1:
                         case LabSheetTypeEnum.LTB:
                         case LabSheetTypeEnum.EC:
-                            Assert.AreEqual("", retStr);
+                            Assert.Equal("", retStr);
                             break;
                         default:
-                            Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, "LabSheetTypeEnum"), retStr);
+                            Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "LabSheetTypeEnum"), retStr);
                             break;
                     }
                 }
             }
         }
-        [TestMethod]
+        [Fact]
         public void Enums_LanguageOK_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
@@ -5942,13 +5953,13 @@ namespace CSSPEnums.Tests
                 SetupTest(culture);
 
                 string retStr = enums.EnumTypeOK(typeof(LanguageEnum), null);
-                Assert.AreEqual("", retStr);
+                Assert.Equal("", retStr);
 
                 retStr = enums.EnumTypeOK(typeof(LanguageEnum), -100);
-                Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, "LanguageEnum"), retStr);
+                Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "LanguageEnum"), retStr);
 
                 retStr = enums.EnumTypeOK(typeof(LanguageEnum), 10000000);
-                Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, "LanguageEnum"), retStr);
+                Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "LanguageEnum"), retStr);
 
                 foreach (int i in Enum.GetValues(typeof(LanguageEnum)))
                 {
@@ -5960,16 +5971,16 @@ namespace CSSPEnums.Tests
                         case LanguageEnum.fr:
                         case LanguageEnum.enAndfr:
                         case LanguageEnum.es:
-                            Assert.AreEqual("", retStr);
+                            Assert.Equal("", retStr);
                             break;
                         default:
-                            Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, "LanguageEnum"), retStr);
+                            Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "LanguageEnum"), retStr);
                             break;
                     }
                 }
             }
         }
-        [TestMethod]
+        [Fact]
         public void Enums_LogCommandOK_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
@@ -5977,13 +5988,13 @@ namespace CSSPEnums.Tests
                 SetupTest(culture);
 
                 string retStr = enums.EnumTypeOK(typeof(LogCommandEnum), null);
-                Assert.AreEqual("", retStr);
+                Assert.Equal("", retStr);
 
                 retStr = enums.EnumTypeOK(typeof(LogCommandEnum), -100);
-                Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, "LogCommandEnum"), retStr);
+                Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "LogCommandEnum"), retStr);
 
                 retStr = enums.EnumTypeOK(typeof(LogCommandEnum), 10000000);
-                Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, "LogCommandEnum"), retStr);
+                Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "LogCommandEnum"), retStr);
 
                 foreach (int i in Enum.GetValues(typeof(LogCommandEnum)))
                 {
@@ -5994,16 +6005,16 @@ namespace CSSPEnums.Tests
                         case LogCommandEnum.Add:
                         case LogCommandEnum.Change:
                         case LogCommandEnum.Delete:
-                            Assert.AreEqual("", retStr);
+                            Assert.Equal("", retStr);
                             break;
                         default:
-                            Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, "LogCommandEnum"), retStr);
+                            Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "LogCommandEnum"), retStr);
                             break;
                     }
                 }
             }
         }
-        [TestMethod]
+        [Fact]
         public void Enums_MapInfoDrawTypeOK_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
@@ -6011,13 +6022,13 @@ namespace CSSPEnums.Tests
                 SetupTest(culture);
 
                 string retStr = enums.EnumTypeOK(typeof(MapInfoDrawTypeEnum), null);
-                Assert.AreEqual("", retStr);
+                Assert.Equal("", retStr);
 
                 retStr = enums.EnumTypeOK(typeof(MapInfoDrawTypeEnum), -100);
-                Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, "MapInfoDrawTypeEnum"), retStr);
+                Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "MapInfoDrawTypeEnum"), retStr);
 
                 retStr = enums.EnumTypeOK(typeof(MapInfoDrawTypeEnum), 10000000);
-                Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, "MapInfoDrawTypeEnum"), retStr);
+                Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "MapInfoDrawTypeEnum"), retStr);
 
                 foreach (int i in Enum.GetValues(typeof(MapInfoDrawTypeEnum)))
                 {
@@ -6028,16 +6039,16 @@ namespace CSSPEnums.Tests
                         case MapInfoDrawTypeEnum.Point:
                         case MapInfoDrawTypeEnum.Polyline:
                         case MapInfoDrawTypeEnum.Polygon:
-                            Assert.AreEqual("", retStr);
+                            Assert.Equal("", retStr);
                             break;
                         default:
-                            Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, "MapInfoDrawTypeEnum"), retStr);
+                            Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "MapInfoDrawTypeEnum"), retStr);
                             break;
                     }
                 }
             }
         }
-        [TestMethod]
+        [Fact]
         public void Enums_MikeBoundaryConditionLevelOrVelocityOK_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
@@ -6045,13 +6056,13 @@ namespace CSSPEnums.Tests
                 SetupTest(culture);
 
                 string retStr = enums.EnumTypeOK(typeof(MikeBoundaryConditionLevelOrVelocityEnum), null);
-                Assert.AreEqual("", retStr);
+                Assert.Equal("", retStr);
 
                 retStr = enums.EnumTypeOK(typeof(MikeBoundaryConditionLevelOrVelocityEnum), -100);
-                Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, "MikeBoundaryConditionLevelOrVelocityEnum"), retStr);
+                Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "MikeBoundaryConditionLevelOrVelocityEnum"), retStr);
 
                 retStr = enums.EnumTypeOK(typeof(MikeBoundaryConditionLevelOrVelocityEnum), 10000000);
-                Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, "MikeBoundaryConditionLevelOrVelocityEnum"), retStr);
+                Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "MikeBoundaryConditionLevelOrVelocityEnum"), retStr);
 
                 foreach (int i in Enum.GetValues(typeof(MikeBoundaryConditionLevelOrVelocityEnum)))
                 {
@@ -6061,16 +6072,16 @@ namespace CSSPEnums.Tests
                     {
                         case MikeBoundaryConditionLevelOrVelocityEnum.Level:
                         case MikeBoundaryConditionLevelOrVelocityEnum.Velocity:
-                            Assert.AreEqual("", retStr);
+                            Assert.Equal("", retStr);
                             break;
                         default:
-                            Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, "MikeBoundaryConditionLevelOrVelocityEnum"), retStr);
+                            Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "MikeBoundaryConditionLevelOrVelocityEnum"), retStr);
                             break;
                     }
                 }
             }
         }
-        [TestMethod]
+        [Fact]
         public void Enums_MikeScenarioSpecialResultKMLTypeOK_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
@@ -6078,13 +6089,13 @@ namespace CSSPEnums.Tests
                 SetupTest(culture);
 
                 string retStr = enums.EnumTypeOK(typeof(MikeScenarioSpecialResultKMLTypeEnum), null);
-                Assert.AreEqual("", retStr);
+                Assert.Equal("", retStr);
 
                 retStr = enums.EnumTypeOK(typeof(MikeScenarioSpecialResultKMLTypeEnum), -100);
-                Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, "MikeScenarioSpecialResultKMLTypeEnum"), retStr);
+                Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "MikeScenarioSpecialResultKMLTypeEnum"), retStr);
 
                 retStr = enums.EnumTypeOK(typeof(MikeScenarioSpecialResultKMLTypeEnum), 10000000);
-                Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, "MikeScenarioSpecialResultKMLTypeEnum"), retStr);
+                Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "MikeScenarioSpecialResultKMLTypeEnum"), retStr);
 
                 foreach (int i in Enum.GetValues(typeof(MikeScenarioSpecialResultKMLTypeEnum)))
                 {
@@ -6097,16 +6108,16 @@ namespace CSSPEnums.Tests
                         case MikeScenarioSpecialResultKMLTypeEnum.BoundaryConditions:
                         case MikeScenarioSpecialResultKMLTypeEnum.PollutionLimit:
                         case MikeScenarioSpecialResultKMLTypeEnum.PollutionAnimation:
-                            Assert.AreEqual("", retStr);
+                            Assert.Equal("", retStr);
                             break;
                         default:
-                            Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, "MikeScenarioSpecialResultKMLTypeEnum"), retStr);
+                            Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "MikeScenarioSpecialResultKMLTypeEnum"), retStr);
                             break;
                     }
                 }
             }
         }
-        [TestMethod]
+        [Fact]
         public void Enums_MWQMSiteLatestClassificationOK_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
@@ -6114,13 +6125,13 @@ namespace CSSPEnums.Tests
                 SetupTest(culture);
 
                 string retStr = enums.EnumTypeOK(typeof(MWQMSiteLatestClassificationEnum), null);
-                Assert.AreEqual("", retStr);
+                Assert.Equal("", retStr);
 
                 retStr = enums.EnumTypeOK(typeof(MWQMSiteLatestClassificationEnum), -100);
-                Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, "MWQMSiteLatestClassificationEnum"), retStr);
+                Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "MWQMSiteLatestClassificationEnum"), retStr);
 
                 retStr = enums.EnumTypeOK(typeof(MWQMSiteLatestClassificationEnum), 10000000);
-                Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, "MWQMSiteLatestClassificationEnum"), retStr);
+                Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "MWQMSiteLatestClassificationEnum"), retStr);
 
                 foreach (int i in Enum.GetValues(typeof(MWQMSiteLatestClassificationEnum)))
                 {
@@ -6134,16 +6145,16 @@ namespace CSSPEnums.Tests
                         case MWQMSiteLatestClassificationEnum.ConditionallyRestricted:
                         case MWQMSiteLatestClassificationEnum.Prohibited:
                         case MWQMSiteLatestClassificationEnum.Unclassified:
-                            Assert.AreEqual("", retStr);
+                            Assert.Equal("", retStr);
                             break;
                         default:
-                            Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, "MWQMSiteLatestClassificationEnum"), retStr);
+                            Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "MWQMSiteLatestClassificationEnum"), retStr);
                             break;
                     }
                 }
             }
         }
-        [TestMethod]
+        [Fact]
         public void Enums_PolSourceInactiveReasonOK_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
@@ -6151,13 +6162,13 @@ namespace CSSPEnums.Tests
                 SetupTest(culture);
 
                 string retStr = enums.EnumTypeOK(typeof(PolSourceInactiveReasonEnum), null);
-                Assert.AreEqual("", retStr);
+                Assert.Equal("", retStr);
 
                 retStr = enums.EnumTypeOK(typeof(PolSourceInactiveReasonEnum), -100);
-                Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, "PolSourceInactiveReasonEnum"), retStr);
+                Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "PolSourceInactiveReasonEnum"), retStr);
 
                 retStr = enums.EnumTypeOK(typeof(PolSourceInactiveReasonEnum), 10000000);
-                Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, "PolSourceInactiveReasonEnum"), retStr);
+                Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "PolSourceInactiveReasonEnum"), retStr);
 
                 foreach (int i in Enum.GetValues(typeof(PolSourceInactiveReasonEnum)))
                 {
@@ -6168,16 +6179,16 @@ namespace CSSPEnums.Tests
                         case PolSourceInactiveReasonEnum.Abandoned:
                         case PolSourceInactiveReasonEnum.Closed:
                         case PolSourceInactiveReasonEnum.Removed:
-                            Assert.AreEqual("", retStr);
+                            Assert.Equal("", retStr);
                             break;
                         default:
-                            Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, "PolSourceInactiveReasonEnum"), retStr);
+                            Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "PolSourceInactiveReasonEnum"), retStr);
                             break;
                     }
                 }
             }
         }
-        [TestMethod]
+        [Fact]
         public void Enums_PolSourceIssueRiskOK_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
@@ -6185,13 +6196,13 @@ namespace CSSPEnums.Tests
                 SetupTest(culture);
 
                 string retStr = enums.EnumTypeOK(typeof(PolSourceIssueRiskEnum), null);
-                Assert.AreEqual("", retStr);
+                Assert.Equal("", retStr);
 
                 retStr = enums.EnumTypeOK(typeof(PolSourceIssueRiskEnum), -100);
-                Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, "PolSourceIssueRiskEnum"), retStr);
+                Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "PolSourceIssueRiskEnum"), retStr);
 
                 retStr = enums.EnumTypeOK(typeof(PolSourceIssueRiskEnum), 10000000);
-                Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, "PolSourceIssueRiskEnum"), retStr);
+                Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "PolSourceIssueRiskEnum"), retStr);
 
                 foreach (int i in Enum.GetValues(typeof(PolSourceIssueRiskEnum)))
                 {
@@ -6202,16 +6213,16 @@ namespace CSSPEnums.Tests
                         case PolSourceIssueRiskEnum.LowRisk:
                         case PolSourceIssueRiskEnum.ModerateRisk:
                         case PolSourceIssueRiskEnum.HighRisk:
-                            Assert.AreEqual("", retStr);
+                            Assert.Equal("", retStr);
                             break;
                         default:
-                            Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, "PolSourceIssueRiskEnum"), retStr);
+                            Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "PolSourceIssueRiskEnum"), retStr);
                             break;
                     }
                 }
             }
         }
-        [TestMethod]
+        [Fact]
         public void Enums_PositionOK_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
@@ -6219,13 +6230,13 @@ namespace CSSPEnums.Tests
                 SetupTest(culture);
 
                 string retStr = enums.EnumTypeOK(typeof(PositionEnum), null);
-                Assert.AreEqual("", retStr);
+                Assert.Equal("", retStr);
 
                 retStr = enums.EnumTypeOK(typeof(PositionEnum), -100);
-                Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, "PositionEnum"), retStr);
+                Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "PositionEnum"), retStr);
 
                 retStr = enums.EnumTypeOK(typeof(PositionEnum), 10000000);
-                Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, "PositionEnum"), retStr);
+                Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "PositionEnum"), retStr);
 
                 foreach (int i in Enum.GetValues(typeof(PositionEnum)))
                 {
@@ -6237,16 +6248,16 @@ namespace CSSPEnums.Tests
                         case PositionEnum.RightBottom:
                         case PositionEnum.LeftTop:
                         case PositionEnum.RightTop:
-                            Assert.AreEqual("", retStr);
+                            Assert.Equal("", retStr);
                             break;
                         default:
-                            Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, "PositionEnum"), retStr);
+                            Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "PositionEnum"), retStr);
                             break;
                     }
                 }
             }
         }
-        [TestMethod]
+        [Fact]
         public void Enums_PreliminaryTreatmentTypeOK_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
@@ -6254,13 +6265,13 @@ namespace CSSPEnums.Tests
                 SetupTest(culture);
 
                 string retStr = enums.EnumTypeOK(typeof(PreliminaryTreatmentTypeEnum), null);
-                Assert.AreEqual("", retStr);
+                Assert.Equal("", retStr);
 
                 retStr = enums.EnumTypeOK(typeof(PreliminaryTreatmentTypeEnum), -100);
-                Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, "PreliminaryTreatmentTypeEnum"), retStr);
+                Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "PreliminaryTreatmentTypeEnum"), retStr);
 
                 retStr = enums.EnumTypeOK(typeof(PreliminaryTreatmentTypeEnum), 10000000);
-                Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, "PreliminaryTreatmentTypeEnum"), retStr);
+                Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "PreliminaryTreatmentTypeEnum"), retStr);
 
                 foreach (int i in Enum.GetValues(typeof(PreliminaryTreatmentTypeEnum)))
                 {
@@ -6272,16 +6283,16 @@ namespace CSSPEnums.Tests
                         case PreliminaryTreatmentTypeEnum.BarScreen:
                         case PreliminaryTreatmentTypeEnum.Grinder:
                         case PreliminaryTreatmentTypeEnum.MechanicalScreening:
-                            Assert.AreEqual("", retStr);
+                            Assert.Equal("", retStr);
                             break;
                         default:
-                            Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, "PreliminaryTreatmentTypeEnum"), retStr);
+                            Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "PreliminaryTreatmentTypeEnum"), retStr);
                             break;
                     }
                 }
             }
         }
-        [TestMethod]
+        [Fact]
         public void Enums_PrimaryTreatmentTypeOK_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
@@ -6289,13 +6300,13 @@ namespace CSSPEnums.Tests
                 SetupTest(culture);
 
                 string retStr = enums.EnumTypeOK(typeof(PrimaryTreatmentTypeEnum), null);
-                Assert.AreEqual("", retStr);
+                Assert.Equal("", retStr);
 
                 retStr = enums.EnumTypeOK(typeof(PrimaryTreatmentTypeEnum), -100);
-                Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, "PrimaryTreatmentTypeEnum"), retStr);
+                Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "PrimaryTreatmentTypeEnum"), retStr);
 
                 retStr = enums.EnumTypeOK(typeof(PrimaryTreatmentTypeEnum), 10000000);
-                Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, "PrimaryTreatmentTypeEnum"), retStr);
+                Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "PrimaryTreatmentTypeEnum"), retStr);
 
                 foreach (int i in Enum.GetValues(typeof(PrimaryTreatmentTypeEnum)))
                 {
@@ -6308,16 +6319,16 @@ namespace CSSPEnums.Tests
                         case PrimaryTreatmentTypeEnum.ChemicalCoagulation:
                         case PrimaryTreatmentTypeEnum.Filtration:
                         case PrimaryTreatmentTypeEnum.PrimaryClarification:
-                            Assert.AreEqual("", retStr);
+                            Assert.Equal("", retStr);
                             break;
                         default:
-                            Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, "PrimaryTreatmentTypeEnum"), retStr);
+                            Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "PrimaryTreatmentTypeEnum"), retStr);
                             break;
                     }
                 }
             }
         }
-        [TestMethod]
+        [Fact]
         public void Enums_PropertyTypeOK_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
@@ -6325,13 +6336,13 @@ namespace CSSPEnums.Tests
                 SetupTest(culture);
 
                 string retStr = enums.EnumTypeOK(typeof(PropertyTypeEnum), null);
-                Assert.AreEqual("", retStr);
+                Assert.Equal("", retStr);
 
                 retStr = enums.EnumTypeOK(typeof(PropertyTypeEnum), -100);
-                Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, "PropertyTypeEnum"), retStr);
+                Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "PropertyTypeEnum"), retStr);
 
                 retStr = enums.EnumTypeOK(typeof(PropertyTypeEnum), 10000000);
-                Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, "PropertyTypeEnum"), retStr);
+                Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "PropertyTypeEnum"), retStr);
 
                 foreach (int i in Enum.GetValues(typeof(PropertyTypeEnum)))
                 {
@@ -6345,16 +6356,16 @@ namespace CSSPEnums.Tests
                         case PropertyTypeEnum.Boolean:
                         case PropertyTypeEnum.DateTime:
                         case PropertyTypeEnum.Enum:
-                            Assert.AreEqual("", retStr);
+                            Assert.Equal("", retStr);
                             break;
                         default:
-                            Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, "PropertyTypeEnum"), retStr);
+                            Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "PropertyTypeEnum"), retStr);
                             break;
                     }
                 }
             }
         }
-        [TestMethod]
+        [Fact]
         public void Enums_ReportConditionOK_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
@@ -6362,13 +6373,13 @@ namespace CSSPEnums.Tests
                 SetupTest(culture);
 
                 string retStr = enums.EnumTypeOK(typeof(ReportConditionEnum), null);
-                Assert.AreEqual("", retStr);
+                Assert.Equal("", retStr);
 
                 retStr = enums.EnumTypeOK(typeof(ReportConditionEnum), -100);
-                Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, "ReportConditionEnum"), retStr);
+                Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "ReportConditionEnum"), retStr);
 
                 retStr = enums.EnumTypeOK(typeof(ReportConditionEnum), 10000000);
-                Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, "ReportConditionEnum"), retStr);
+                Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "ReportConditionEnum"), retStr);
 
                 foreach (int i in Enum.GetValues(typeof(ReportConditionEnum)))
                 {
@@ -6384,16 +6395,16 @@ namespace CSSPEnums.Tests
                         case ReportConditionEnum.ReportConditionBigger:
                         case ReportConditionEnum.ReportConditionSmaller:
                         case ReportConditionEnum.ReportConditionEqual:
-                            Assert.AreEqual("", retStr);
+                            Assert.Equal("", retStr);
                             break;
                         default:
-                            Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, "ReportConditionEnum"), retStr);
+                            Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "ReportConditionEnum"), retStr);
                             break;
                     }
                 }
             }
         }
-        [TestMethod]
+        [Fact]
         public void Enums_ReportFieldTypeOK_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
@@ -6401,13 +6412,13 @@ namespace CSSPEnums.Tests
                 SetupTest(culture);
 
                 string retStr = enums.EnumTypeOK(typeof(ReportFieldTypeEnum), null);
-                Assert.AreEqual("", retStr);
+                Assert.Equal("", retStr);
 
                 retStr = enums.EnumTypeOK(typeof(ReportFieldTypeEnum), -100);
-                Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, "ReportFieldTypeEnum"), retStr);
+                Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "ReportFieldTypeEnum"), retStr);
 
                 retStr = enums.EnumTypeOK(typeof(ReportFieldTypeEnum), 10000000);
-                Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, "ReportFieldTypeEnum"), retStr);
+                Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "ReportFieldTypeEnum"), retStr);
 
                 foreach (int i in Enum.GetValues(typeof(ReportFieldTypeEnum)))
                 {
@@ -6461,16 +6472,16 @@ namespace CSSPEnums.Tests
                         case ReportFieldTypeEnum.MWQMSiteLatestClassification:
                         case ReportFieldTypeEnum.PolSourceIssueRisk:
                         case ReportFieldTypeEnum.MikeScenarioSpecialResultKMLType:
-                            Assert.AreEqual("", retStr);
+                            Assert.Equal("", retStr);
                             break;
                         default:
-                            Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, "ReportFieldTypeEnum"), retStr);
+                            Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "ReportFieldTypeEnum"), retStr);
                             break;
                     }
                 }
             }
         }
-        [TestMethod]
+        [Fact]
         public void Enums_ReportFileTypeOK_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
@@ -6478,13 +6489,13 @@ namespace CSSPEnums.Tests
                 SetupTest(culture);
 
                 string retStr = enums.EnumTypeOK(typeof(ReportFileTypeEnum), null);
-                Assert.AreEqual("", retStr);
+                Assert.Equal("", retStr);
 
                 retStr = enums.EnumTypeOK(typeof(ReportFileTypeEnum), -100);
-                Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, "ReportFileTypeEnum"), retStr);
+                Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "ReportFileTypeEnum"), retStr);
 
                 retStr = enums.EnumTypeOK(typeof(ReportFileTypeEnum), 10000000);
-                Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, "ReportFileTypeEnum"), retStr);
+                Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "ReportFileTypeEnum"), retStr);
 
                 foreach (int i in Enum.GetValues(typeof(ReportFileTypeEnum)))
                 {
@@ -6496,16 +6507,16 @@ namespace CSSPEnums.Tests
                         case ReportFileTypeEnum.Word:
                         case ReportFileTypeEnum.Excel:
                         case ReportFileTypeEnum.KML:
-                            Assert.AreEqual("", retStr);
+                            Assert.Equal("", retStr);
                             break;
                         default:
-                            Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, "ReportFileTypeEnum"), retStr);
+                            Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "ReportFileTypeEnum"), retStr);
                             break;
                     }
                 }
             }
         }
-        [TestMethod]
+        [Fact]
         public void Enums_ReportFormatingDateOK_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
@@ -6513,13 +6524,13 @@ namespace CSSPEnums.Tests
                 SetupTest(culture);
 
                 string retStr = enums.EnumTypeOK(typeof(ReportFormatingDateEnum), null);
-                Assert.AreEqual("", retStr);
+                Assert.Equal("", retStr);
 
                 retStr = enums.EnumTypeOK(typeof(ReportFormatingDateEnum), -100);
-                Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, "ReportFormatingDateEnum"), retStr);
+                Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "ReportFormatingDateEnum"), retStr);
 
                 retStr = enums.EnumTypeOK(typeof(ReportFormatingDateEnum), 10000000);
-                Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, "ReportFormatingDateEnum"), retStr);
+                Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "ReportFormatingDateEnum"), retStr);
 
                 foreach (int i in Enum.GetValues(typeof(ReportFormatingDateEnum)))
                 {
@@ -6540,16 +6551,16 @@ namespace CSSPEnums.Tests
                         case ReportFormatingDateEnum.ReportFormatingDateYearMonthDecimalDayHourMinute:
                         case ReportFormatingDateEnum.ReportFormatingDateYearMonthShortTextDayHourMinute:
                         case ReportFormatingDateEnum.ReportFormatingDateYearMonthFullTextDayHourMinute:
-                            Assert.AreEqual("", retStr);
+                            Assert.Equal("", retStr);
                             break;
                         default:
-                            Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, "ReportFormatingDateEnum"), retStr);
+                            Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "ReportFormatingDateEnum"), retStr);
                             break;
                     }
                 }
             }
         }
-        [TestMethod]
+        [Fact]
         public void Enums_ReportFormatingNumberOK_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
@@ -6557,13 +6568,13 @@ namespace CSSPEnums.Tests
                 SetupTest(culture);
 
                 string retStr = enums.EnumTypeOK(typeof(ReportFormatingNumberEnum), null);
-                Assert.AreEqual("", retStr);
+                Assert.Equal("", retStr);
 
                 retStr = enums.EnumTypeOK(typeof(ReportFormatingNumberEnum), -100);
-                Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, "ReportFormatingNumberEnum"), retStr);
+                Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "ReportFormatingNumberEnum"), retStr);
 
                 retStr = enums.EnumTypeOK(typeof(ReportFormatingNumberEnum), 10000000);
-                Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, "ReportFormatingNumberEnum"), retStr);
+                Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "ReportFormatingNumberEnum"), retStr);
 
                 foreach (int i in Enum.GetValues(typeof(ReportFormatingNumberEnum)))
                 {
@@ -6585,16 +6596,16 @@ namespace CSSPEnums.Tests
                         case ReportFormatingNumberEnum.ReportFormatingNumberScientific4Decimal:
                         case ReportFormatingNumberEnum.ReportFormatingNumberScientific5Decimal:
                         case ReportFormatingNumberEnum.ReportFormatingNumberScientific6Decimal:
-                            Assert.AreEqual("", retStr);
+                            Assert.Equal("", retStr);
                             break;
                         default:
-                            Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, "ReportFormatingNumberEnum"), retStr);
+                            Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "ReportFormatingNumberEnum"), retStr);
                             break;
                     }
                 }
             }
         }
-        [TestMethod]
+        [Fact]
         public void Enums_ReportGenerateObjectsKeywordOK_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
@@ -6602,13 +6613,13 @@ namespace CSSPEnums.Tests
                 SetupTest(culture);
 
                 string retStr = enums.EnumTypeOK(typeof(ReportGenerateObjectsKeywordEnum), null);
-                Assert.AreEqual("", retStr);
+                Assert.Equal("", retStr);
 
                 retStr = enums.EnumTypeOK(typeof(ReportGenerateObjectsKeywordEnum), -100);
-                Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, "ReportGenerateObjectsKeywordEnum"), retStr);
+                Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "ReportGenerateObjectsKeywordEnum"), retStr);
 
                 retStr = enums.EnumTypeOK(typeof(ReportGenerateObjectsKeywordEnum), 10000000);
-                Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, "ReportGenerateObjectsKeywordEnum"), retStr);
+                Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "ReportGenerateObjectsKeywordEnum"), retStr);
 
                 foreach (int i in Enum.GetValues(typeof(ReportGenerateObjectsKeywordEnum)))
                 {
@@ -6639,16 +6650,16 @@ namespace CSSPEnums.Tests
                         case ReportGenerateObjectsKeywordEnum.SUBSECTOR_CURRENT_CLASSIFICATION_AND_SAMPLING_LOCATION_MAP:
                         case ReportGenerateObjectsKeywordEnum.SUBSECTOR_RECOMMENDED_CLASSIFICATION_MAP:
                         case ReportGenerateObjectsKeywordEnum.SUBSECTOR_POLLUTION_SOURCE_LOCATIONS_MAP:
-                            Assert.AreEqual("", retStr);
+                            Assert.Equal("", retStr);
                             break;
                         default:
-                            Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, "ReportGenerateObjectsKeywordEnum"), retStr);
+                            Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "ReportGenerateObjectsKeywordEnum"), retStr);
                             break;
                     }
                 }
             }
         }
-        [TestMethod]
+        [Fact]
         public void Enums_ReportSortingOK_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
@@ -6656,13 +6667,13 @@ namespace CSSPEnums.Tests
                 SetupTest(culture);
 
                 string retStr = enums.EnumTypeOK(typeof(ReportSortingEnum), null);
-                Assert.AreEqual("", retStr);
+                Assert.Equal("", retStr);
 
                 retStr = enums.EnumTypeOK(typeof(ReportSortingEnum), -100);
-                Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, "ReportSortingEnum"), retStr);
+                Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "ReportSortingEnum"), retStr);
 
                 retStr = enums.EnumTypeOK(typeof(ReportSortingEnum), 10000000);
-                Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, "ReportSortingEnum"), retStr);
+                Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "ReportSortingEnum"), retStr);
 
                 foreach (int i in Enum.GetValues(typeof(ReportSortingEnum)))
                 {
@@ -6672,16 +6683,16 @@ namespace CSSPEnums.Tests
                     {
                         case ReportSortingEnum.ReportSortingAscending:
                         case ReportSortingEnum.ReportSortingDescending:
-                            Assert.AreEqual("", retStr);
+                            Assert.Equal("", retStr);
                             break;
                         default:
-                            Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, "ReportSortingEnum"), retStr);
+                            Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "ReportSortingEnum"), retStr);
                             break;
                     }
                 }
             }
         }
-        [TestMethod]
+        [Fact]
         public void Enums_ReportTreeNodeSubTypeOK_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
@@ -6689,13 +6700,13 @@ namespace CSSPEnums.Tests
                 SetupTest(culture);
 
                 string retStr = enums.EnumTypeOK(typeof(ReportTreeNodeSubTypeEnum), null);
-                Assert.AreEqual("", retStr);
+                Assert.Equal("", retStr);
 
                 retStr = enums.EnumTypeOK(typeof(ReportTreeNodeSubTypeEnum), -100);
-                Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, "ReportTreeNodeSubTypeEnum"), retStr);
+                Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "ReportTreeNodeSubTypeEnum"), retStr);
 
                 retStr = enums.EnumTypeOK(typeof(ReportTreeNodeSubTypeEnum), 10000000);
-                Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, "ReportTreeNodeSubTypeEnum"), retStr);
+                Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "ReportTreeNodeSubTypeEnum"), retStr);
 
                 foreach (int i in Enum.GetValues(typeof(ReportTreeNodeSubTypeEnum)))
                 {
@@ -6707,16 +6718,16 @@ namespace CSSPEnums.Tests
                         case ReportTreeNodeSubTypeEnum.Field:
                         case ReportTreeNodeSubTypeEnum.FieldsHolder:
                         case ReportTreeNodeSubTypeEnum.TableNotSelectable:
-                            Assert.AreEqual("", retStr);
+                            Assert.Equal("", retStr);
                             break;
                         default:
-                            Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, "ReportTreeNodeSubTypeEnum"), retStr);
+                            Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "ReportTreeNodeSubTypeEnum"), retStr);
                             break;
                     }
                 }
             }
         }
-        [TestMethod]
+        [Fact]
         public void Enums_ReportTreeNodeTypeOK_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
@@ -6724,13 +6735,13 @@ namespace CSSPEnums.Tests
                 SetupTest(culture);
 
                 string retStr = enums.EnumTypeOK(typeof(ReportTreeNodeTypeEnum), null);
-                Assert.AreEqual("", retStr);
+                Assert.Equal("", retStr);
 
                 retStr = enums.EnumTypeOK(typeof(ReportTreeNodeTypeEnum), -100);
-                Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, "ReportTreeNodeTypeEnum"), retStr);
+                Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "ReportTreeNodeTypeEnum"), retStr);
 
                 retStr = enums.EnumTypeOK(typeof(ReportTreeNodeTypeEnum), 10000000);
-                Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, "ReportTreeNodeTypeEnum"), retStr);
+                Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "ReportTreeNodeTypeEnum"), retStr);
 
                 foreach (int i in Enum.GetValues(typeof(ReportTreeNodeTypeEnum)))
                 {
@@ -6817,16 +6828,16 @@ namespace CSSPEnums.Tests
                         case ReportTreeNodeTypeEnum.ReportSubsectorHydrometricSiteRatingCurveValueType:
                         case ReportTreeNodeTypeEnum.ReportSubsectorSpecialTableType:
                         case ReportTreeNodeTypeEnum.ReportMikeScenarioSpecialResultKMLType:
-                            Assert.AreEqual("", retStr);
+                            Assert.Equal("", retStr);
                             break;
                         default:
-                            Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, "ReportTreeNodeTypeEnum"), retStr);
+                            Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "ReportTreeNodeTypeEnum"), retStr);
                             break;
                     }
                 }
             }
         }
-        [TestMethod]
+        [Fact]
         public void Enums_SameDayNextDayOK_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
@@ -6834,13 +6845,13 @@ namespace CSSPEnums.Tests
                 SetupTest(culture);
 
                 string retStr = enums.EnumTypeOK(typeof(SameDayNextDayEnum), null);
-                Assert.AreEqual("", retStr);
+                Assert.Equal("", retStr);
 
                 retStr = enums.EnumTypeOK(typeof(SameDayNextDayEnum), -100);
-                Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, "SameDayNextDayEnum"), retStr);
+                Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "SameDayNextDayEnum"), retStr);
 
                 retStr = enums.EnumTypeOK(typeof(SameDayNextDayEnum), 10000000);
-                Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, "SameDayNextDayEnum"), retStr);
+                Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "SameDayNextDayEnum"), retStr);
 
                 foreach (int i in Enum.GetValues(typeof(SameDayNextDayEnum)))
                 {
@@ -6850,16 +6861,16 @@ namespace CSSPEnums.Tests
                     {
                         case SameDayNextDayEnum.SameDay:
                         case SameDayNextDayEnum.NextDay:
-                            Assert.AreEqual("", retStr);
+                            Assert.Equal("", retStr);
                             break;
                         default:
-                            Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, "SameDayNextDayEnum"), retStr);
+                            Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "SameDayNextDayEnum"), retStr);
                             break;
                     }
                 }
             }
         }
-        [TestMethod]
+        [Fact]
         public void Enums_SampleMatrixOK_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
@@ -6867,13 +6878,13 @@ namespace CSSPEnums.Tests
                 SetupTest(culture);
 
                 string retStr = enums.EnumTypeOK(typeof(SampleMatrixEnum), null);
-                Assert.AreEqual("", retStr);
+                Assert.Equal("", retStr);
 
                 retStr = enums.EnumTypeOK(typeof(SampleMatrixEnum), -100);
-                Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, "SampleMatrixEnum"), retStr);
+                Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "SampleMatrixEnum"), retStr);
 
                 retStr = enums.EnumTypeOK(typeof(SampleMatrixEnum), 10000000);
-                Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, "SampleMatrixEnum"), retStr);
+                Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "SampleMatrixEnum"), retStr);
 
                 foreach (int i in Enum.GetValues(typeof(SampleMatrixEnum)))
                 {
@@ -6888,16 +6899,16 @@ namespace CSSPEnums.Tests
                         case SampleMatrixEnum.SampleMatrix5:
                         case SampleMatrixEnum.SampleMatrix6:
                         case SampleMatrixEnum.Water:
-                            Assert.AreEqual("", retStr);
+                            Assert.Equal("", retStr);
                             break;
                         default:
-                            Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, "SampleMatrixEnum"), retStr);
+                            Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "SampleMatrixEnum"), retStr);
                             break;
                     }
                 }
             }
         }
-        [TestMethod]
+        [Fact]
         public void Enums_SampleStatusOK_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
@@ -6905,13 +6916,13 @@ namespace CSSPEnums.Tests
                 SetupTest(culture);
 
                 string retStr = enums.EnumTypeOK(typeof(SampleStatusEnum), null);
-                Assert.AreEqual("", retStr);
+                Assert.Equal("", retStr);
 
                 retStr = enums.EnumTypeOK(typeof(SampleStatusEnum), -100);
-                Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, "SampleStatusEnum"), retStr);
+                Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "SampleStatusEnum"), retStr);
 
                 retStr = enums.EnumTypeOK(typeof(SampleStatusEnum), 10000000);
-                Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, "SampleStatusEnum"), retStr);
+                Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "SampleStatusEnum"), retStr);
 
                 foreach (int i in Enum.GetValues(typeof(SampleStatusEnum)))
                 {
@@ -6924,16 +6935,16 @@ namespace CSSPEnums.Tests
                         case SampleStatusEnum.SampleStatus3:
                         case SampleStatusEnum.SampleStatus4:
                         case SampleStatusEnum.SampleStatus5:
-                            Assert.AreEqual("", retStr);
+                            Assert.Equal("", retStr);
                             break;
                         default:
-                            Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, "SampleStatusEnum"), retStr);
+                            Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "SampleStatusEnum"), retStr);
                             break;
                     }
                 }
             }
         }
-        [TestMethod]
+        [Fact]
         public void Enums_SampleTypeOK_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
@@ -6941,13 +6952,13 @@ namespace CSSPEnums.Tests
                 SetupTest(culture);
 
                 string retStr = enums.EnumTypeOK(typeof(SampleTypeEnum), null);
-                Assert.AreEqual("", retStr);
+                Assert.Equal("", retStr);
 
                 retStr = enums.EnumTypeOK(typeof(SampleTypeEnum), -100);
-                Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, "SampleTypeEnum"), retStr);
+                Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "SampleTypeEnum"), retStr);
 
                 retStr = enums.EnumTypeOK(typeof(SampleTypeEnum), 10000000);
-                Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, "SampleTypeEnum"), retStr);
+                Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "SampleTypeEnum"), retStr);
 
                 foreach (int i in Enum.GetValues(typeof(SampleTypeEnum)))
                 {
@@ -6966,16 +6977,18 @@ namespace CSSPEnums.Tests
                         case SampleTypeEnum.Routine:
                         case SampleTypeEnum.Sanitary:
                         case SampleTypeEnum.Study:
-                            Assert.AreEqual("", retStr);
+                        case SampleTypeEnum.Sediment:
+                        case SampleTypeEnum.Bivalve:
+                            Assert.Equal("", retStr);
                             break;
                         default:
-                            Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, "SampleTypeEnum"), retStr);
+                            Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "SampleTypeEnum"), retStr);
                             break;
                     }
                 }
             }
         }
-        [TestMethod]
+        [Fact]
         public void Enums_SamplingPlanTypeOK_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
@@ -6983,13 +6996,13 @@ namespace CSSPEnums.Tests
                 SetupTest(culture);
 
                 string retStr = enums.EnumTypeOK(typeof(SamplingPlanTypeEnum), null);
-                Assert.AreEqual("", retStr);
+                Assert.Equal("", retStr);
 
                 retStr = enums.EnumTypeOK(typeof(SamplingPlanTypeEnum), -100);
-                Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, "SamplingPlanTypeEnum"), retStr);
+                Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "SamplingPlanTypeEnum"), retStr);
 
                 retStr = enums.EnumTypeOK(typeof(SamplingPlanTypeEnum), 10000000);
-                Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, "SamplingPlanTypeEnum"), retStr);
+                Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "SamplingPlanTypeEnum"), retStr);
 
                 foreach (int i in Enum.GetValues(typeof(SamplingPlanTypeEnum)))
                 {
@@ -6999,16 +7012,16 @@ namespace CSSPEnums.Tests
                     {
                         case SamplingPlanTypeEnum.Subsector:
                         case SamplingPlanTypeEnum.Municipality:
-                            Assert.AreEqual("", retStr);
+                            Assert.Equal("", retStr);
                             break;
                         default:
-                            Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, "SamplingPlanTypeEnum"), retStr);
+                            Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "SamplingPlanTypeEnum"), retStr);
                             break;
                     }
                 }
             }
         }
-        [TestMethod]
+        [Fact]
         public void Enums_ScenarioStatusOK_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
@@ -7016,13 +7029,13 @@ namespace CSSPEnums.Tests
                 SetupTest(culture);
 
                 string retStr = enums.EnumTypeOK(typeof(ScenarioStatusEnum), null);
-                Assert.AreEqual("", retStr);
+                Assert.Equal("", retStr);
 
                 retStr = enums.EnumTypeOK(typeof(ScenarioStatusEnum), -100);
-                Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, "ScenarioStatusEnum"), retStr);
+                Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "ScenarioStatusEnum"), retStr);
 
                 retStr = enums.EnumTypeOK(typeof(ScenarioStatusEnum), 10000000);
-                Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, "ScenarioStatusEnum"), retStr);
+                Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "ScenarioStatusEnum"), retStr);
 
                 foreach (int i in Enum.GetValues(typeof(ScenarioStatusEnum)))
                 {
@@ -7039,16 +7052,16 @@ namespace CSSPEnums.Tests
                         case ScenarioStatusEnum.Running:
                         case ScenarioStatusEnum.Completed:
                         case ScenarioStatusEnum.Cancelled:
-                            Assert.AreEqual("", retStr);
+                            Assert.Equal("", retStr);
                             break;
                         default:
-                            Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, "ScenarioStatusEnum"), retStr);
+                            Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "ScenarioStatusEnum"), retStr);
                             break;
                     }
                 }
             }
         }
-        [TestMethod]
+        [Fact]
         public void Enums_SearchTagOK_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
@@ -7056,13 +7069,13 @@ namespace CSSPEnums.Tests
                 SetupTest(culture);
 
                 string retStr = enums.EnumTypeOK(typeof(SearchTagEnum), null);
-                Assert.AreEqual("", retStr);
+                Assert.Equal("", retStr);
 
                 retStr = enums.EnumTypeOK(typeof(SearchTagEnum), -100);
-                Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, "SearchTagEnum"), retStr);
+                Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "SearchTagEnum"), retStr);
 
                 retStr = enums.EnumTypeOK(typeof(SearchTagEnum), 10000000);
-                Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, "SearchTagEnum"), retStr);
+                Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "SearchTagEnum"), retStr);
 
                 foreach (int i in Enum.GetValues(typeof(SearchTagEnum)))
                 {
@@ -7106,16 +7119,16 @@ namespace CSSPEnums.Tests
                         case SearchTagEnum.u:
                         case SearchTagEnum.notag:
                         case SearchTagEnum.fcsv:
-                            Assert.AreEqual("", retStr);
+                            Assert.Equal("", retStr);
                             break;
                         default:
-                            Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, "SearchTagEnum"), retStr);
+                            Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "SearchTagEnum"), retStr);
                             break;
                     }
                 }
             }
         }
-        [TestMethod]
+        [Fact]
         public void Enums_SecondaryTreatmentTypeOK_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
@@ -7123,13 +7136,13 @@ namespace CSSPEnums.Tests
                 SetupTest(culture);
 
                 string retStr = enums.EnumTypeOK(typeof(SecondaryTreatmentTypeEnum), null);
-                Assert.AreEqual("", retStr);
+                Assert.Equal("", retStr);
 
                 retStr = enums.EnumTypeOK(typeof(SecondaryTreatmentTypeEnum), -100);
-                Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, "SecondaryTreatmentTypeEnum"), retStr);
+                Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "SecondaryTreatmentTypeEnum"), retStr);
 
                 retStr = enums.EnumTypeOK(typeof(SecondaryTreatmentTypeEnum), 10000000);
-                Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, "SecondaryTreatmentTypeEnum"), retStr);
+                Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "SecondaryTreatmentTypeEnum"), retStr);
 
                 foreach (int i in Enum.GetValues(typeof(SecondaryTreatmentTypeEnum)))
                 {
@@ -7151,16 +7164,16 @@ namespace CSSPEnums.Tests
                         case SecondaryTreatmentTypeEnum.IntegratedFixedFilmActivatedSludge:
                         case SecondaryTreatmentTypeEnum.ActivatedSludge:
                         case SecondaryTreatmentTypeEnum.ExtendedActivatedSludge:
-                            Assert.AreEqual("", retStr);
+                            Assert.Equal("", retStr);
                             break;
                         default:
-                            Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, "SecondaryTreatmentTypeEnum"), retStr);
+                            Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "SecondaryTreatmentTypeEnum"), retStr);
                             break;
                     }
                 }
             }
         }
-        [TestMethod]
+        [Fact]
         public void Enums_SiteTypeOK_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
@@ -7168,13 +7181,13 @@ namespace CSSPEnums.Tests
                 SetupTest(culture);
 
                 string retStr = enums.EnumTypeOK(typeof(SiteTypeEnum), null);
-                Assert.AreEqual("", retStr);
+                Assert.Equal("", retStr);
 
                 retStr = enums.EnumTypeOK(typeof(SiteTypeEnum), -100);
-                Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, "SiteTypeEnum"), retStr);
+                Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "SiteTypeEnum"), retStr);
 
                 retStr = enums.EnumTypeOK(typeof(SiteTypeEnum), 10000000);
-                Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, "SiteTypeEnum"), retStr);
+                Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "SiteTypeEnum"), retStr);
 
                 foreach (int i in Enum.GetValues(typeof(SiteTypeEnum)))
                 {
@@ -7185,16 +7198,16 @@ namespace CSSPEnums.Tests
                         case SiteTypeEnum.Climate:
                         case SiteTypeEnum.Hydrometric:
                         case SiteTypeEnum.Tide:
-                            Assert.AreEqual("", retStr);
+                            Assert.Equal("", retStr);
                             break;
                         default:
-                            Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, "SiteTypeEnum"), retStr);
+                            Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "SiteTypeEnum"), retStr);
                             break;
                     }
                 }
             }
         }
-        [TestMethod]
+        [Fact]
         public void Enums_SpecialTableTypeOK_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
@@ -7202,13 +7215,13 @@ namespace CSSPEnums.Tests
                 SetupTest(culture);
 
                 string retStr = enums.EnumTypeOK(typeof(SpecialTableTypeEnum), null);
-                Assert.AreEqual("", retStr);
+                Assert.Equal("", retStr);
 
                 retStr = enums.EnumTypeOK(typeof(SpecialTableTypeEnum), -100);
-                Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, "SpecialTableTypeEnum"), retStr);
+                Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "SpecialTableTypeEnum"), retStr);
 
                 retStr = enums.EnumTypeOK(typeof(SpecialTableTypeEnum), 10000000);
-                Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, "SpecialTableTypeEnum"), retStr);
+                Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "SpecialTableTypeEnum"), retStr);
 
                 foreach (int i in Enum.GetValues(typeof(SpecialTableTypeEnum)))
                 {
@@ -7224,16 +7237,16 @@ namespace CSSPEnums.Tests
                         case SpecialTableTypeEnum.P90Table:
                         case SpecialTableTypeEnum.PercentOver43Table:
                         case SpecialTableTypeEnum.PercentOver260Table:
-                            Assert.AreEqual("", retStr);
+                            Assert.Equal("", retStr);
                             break;
                         default:
-                            Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, "SpecialTableTypeEnum"), retStr);
+                            Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "SpecialTableTypeEnum"), retStr);
                             break;
                     }
                 }
             }
         }
-        [TestMethod]
+        [Fact]
         public void Enums_StorageDataTypeOK_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
@@ -7241,13 +7254,13 @@ namespace CSSPEnums.Tests
                 SetupTest(culture);
 
                 string retStr = enums.EnumTypeOK(typeof(StorageDataTypeEnum), null);
-                Assert.AreEqual("", retStr);
+                Assert.Equal("", retStr);
 
                 retStr = enums.EnumTypeOK(typeof(StorageDataTypeEnum), -100);
-                Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, "StorageDataTypeEnum"), retStr);
+                Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "StorageDataTypeEnum"), retStr);
 
                 retStr = enums.EnumTypeOK(typeof(StorageDataTypeEnum), 10000000);
-                Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, "StorageDataTypeEnum"), retStr);
+                Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "StorageDataTypeEnum"), retStr);
 
                 foreach (int i in Enum.GetValues(typeof(StorageDataTypeEnum)))
                 {
@@ -7258,16 +7271,16 @@ namespace CSSPEnums.Tests
                         case StorageDataTypeEnum.Archived:
                         case StorageDataTypeEnum.Forcasted:
                         case StorageDataTypeEnum.Observed:
-                            Assert.AreEqual("", retStr);
+                            Assert.Equal("", retStr);
                             break;
                         default:
-                            Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, "StorageDataTypeEnum"), retStr);
+                            Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "StorageDataTypeEnum"), retStr);
                             break;
                     }
                 }
             }
         }
-        [TestMethod]
+        [Fact]
         public void Enums_StreetTypeOK_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
@@ -7275,13 +7288,13 @@ namespace CSSPEnums.Tests
                 SetupTest(culture);
 
                 string retStr = enums.EnumTypeOK(typeof(StreetTypeEnum), null);
-                Assert.AreEqual("", retStr);
+                Assert.Equal("", retStr);
 
                 retStr = enums.EnumTypeOK(typeof(StreetTypeEnum), -100);
-                Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, "StreetTypeEnum"), retStr);
+                Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "StreetTypeEnum"), retStr);
 
                 retStr = enums.EnumTypeOK(typeof(StreetTypeEnum), 10000000);
-                Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, "StreetTypeEnum"), retStr);
+                Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "StreetTypeEnum"), retStr);
 
                 foreach (int i in Enum.GetValues(typeof(StreetTypeEnum)))
                 {
@@ -7299,16 +7312,16 @@ namespace CSSPEnums.Tests
                         case StreetTypeEnum.Blvd:
                         case StreetTypeEnum.Route:
                         case StreetTypeEnum.Lane:
-                            Assert.AreEqual("", retStr);
+                            Assert.Equal("", retStr);
                             break;
                         default:
-                            Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, "StreetTypeEnum"), retStr);
+                            Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "StreetTypeEnum"), retStr);
                             break;
                     }
                 }
             }
         }
-        [TestMethod]
+        [Fact]
         public void Enums_TelTypeOK_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
@@ -7316,13 +7329,13 @@ namespace CSSPEnums.Tests
                 SetupTest(culture);
 
                 string retStr = enums.EnumTypeOK(typeof(TelTypeEnum), null);
-                Assert.AreEqual("", retStr);
+                Assert.Equal("", retStr);
 
                 retStr = enums.EnumTypeOK(typeof(TelTypeEnum), -100);
-                Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, "TelTypeEnum"), retStr);
+                Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "TelTypeEnum"), retStr);
 
                 retStr = enums.EnumTypeOK(typeof(TelTypeEnum), 10000000);
-                Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, "TelTypeEnum"), retStr);
+                Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "TelTypeEnum"), retStr);
 
                 foreach (int i in Enum.GetValues(typeof(TelTypeEnum)))
                 {
@@ -7336,16 +7349,16 @@ namespace CSSPEnums.Tests
                         case TelTypeEnum.Personal2:
                         case TelTypeEnum.Work2:
                         case TelTypeEnum.Mobile2:
-                            Assert.AreEqual("", retStr);
+                            Assert.Equal("", retStr);
                             break;
                         default:
-                            Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, "TelTypeEnum"), retStr);
+                            Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "TelTypeEnum"), retStr);
                             break;
                     }
                 }
             }
         }
-        [TestMethod]
+        [Fact]
         public void Enums_TertiaryTreatmentTypeOK_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
@@ -7353,13 +7366,13 @@ namespace CSSPEnums.Tests
                 SetupTest(culture);
 
                 string retStr = enums.EnumTypeOK(typeof(TertiaryTreatmentTypeEnum), null);
-                Assert.AreEqual("", retStr);
+                Assert.Equal("", retStr);
 
                 retStr = enums.EnumTypeOK(typeof(TertiaryTreatmentTypeEnum), -100);
-                Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, "TertiaryTreatmentTypeEnum"), retStr);
+                Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "TertiaryTreatmentTypeEnum"), retStr);
 
                 retStr = enums.EnumTypeOK(typeof(TertiaryTreatmentTypeEnum), 10000000);
-                Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, "TertiaryTreatmentTypeEnum"), retStr);
+                Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "TertiaryTreatmentTypeEnum"), retStr);
 
                 foreach (int i in Enum.GetValues(typeof(TertiaryTreatmentTypeEnum)))
                 {
@@ -7374,16 +7387,16 @@ namespace CSSPEnums.Tests
                         case TertiaryTreatmentTypeEnum.IonExchange:
                         case TertiaryTreatmentTypeEnum.ReverseOsmosis:
                         case TertiaryTreatmentTypeEnum.BiologicalNutrientRemoval:
-                            Assert.AreEqual("", retStr);
+                            Assert.Equal("", retStr);
                             break;
                         default:
-                            Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, "TertiaryTreatmentTypeEnum"), retStr);
+                            Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "TertiaryTreatmentTypeEnum"), retStr);
                             break;
                     }
                 }
             }
         }
-        [TestMethod]
+        [Fact]
         public void Enums_TideDataTypeOK_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
@@ -7391,13 +7404,13 @@ namespace CSSPEnums.Tests
                 SetupTest(culture);
 
                 string retStr = enums.EnumTypeOK(typeof(TideDataTypeEnum), null);
-                Assert.AreEqual("", retStr);
+                Assert.Equal("", retStr);
 
                 retStr = enums.EnumTypeOK(typeof(TideDataTypeEnum), -100);
-                Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, "TideDataTypeEnum"), retStr);
+                Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "TideDataTypeEnum"), retStr);
 
                 retStr = enums.EnumTypeOK(typeof(TideDataTypeEnum), 10000000);
-                Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, "TideDataTypeEnum"), retStr);
+                Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "TideDataTypeEnum"), retStr);
 
                 foreach (int i in Enum.GetValues(typeof(TideDataTypeEnum)))
                 {
@@ -7407,16 +7420,16 @@ namespace CSSPEnums.Tests
                     {
                         case TideDataTypeEnum.Min15:
                         case TideDataTypeEnum.Min60:
-                            Assert.AreEqual("", retStr);
+                            Assert.Equal("", retStr);
                             break;
                         default:
-                            Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, "TideDataTypeEnum"), retStr);
+                            Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "TideDataTypeEnum"), retStr);
                             break;
                     }
                 }
             }
         }
-        [TestMethod]
+        [Fact]
         public void Enums_TideTextOK_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
@@ -7424,13 +7437,13 @@ namespace CSSPEnums.Tests
                 SetupTest(culture);
 
                 string retStr = enums.EnumTypeOK(typeof(TideTextEnum), null);
-                Assert.AreEqual("", retStr);
+                Assert.Equal("", retStr);
 
                 retStr = enums.EnumTypeOK(typeof(TideTextEnum), -100);
-                Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, "TideTextEnum"), retStr);
+                Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "TideTextEnum"), retStr);
 
                 retStr = enums.EnumTypeOK(typeof(TideTextEnum), 10000000);
-                Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, "TideTextEnum"), retStr);
+                Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "TideTextEnum"), retStr);
 
                 foreach (int i in Enum.GetValues(typeof(TideTextEnum)))
                 {
@@ -7447,16 +7460,16 @@ namespace CSSPEnums.Tests
                         case TideTextEnum.HighTide:
                         case TideTextEnum.HighTideFalling:
                         case TideTextEnum.HighTideRising:
-                            Assert.AreEqual("", retStr);
+                            Assert.Equal("", retStr);
                             break;
                         default:
-                            Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, "TideTextEnum"), retStr);
+                            Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "TideTextEnum"), retStr);
                             break;
                     }
                 }
             }
         }
-        [TestMethod]
+        [Fact]
         public void Enums_TranslationStatusOK_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
@@ -7464,13 +7477,13 @@ namespace CSSPEnums.Tests
                 SetupTest(culture);
 
                 string retStr = enums.EnumTypeOK(typeof(TranslationStatusEnum), null);
-                Assert.AreEqual("", retStr);
+                Assert.Equal("", retStr);
 
                 retStr = enums.EnumTypeOK(typeof(TranslationStatusEnum), -100);
-                Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, "TranslationStatusEnum"), retStr);
+                Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "TranslationStatusEnum"), retStr);
 
                 retStr = enums.EnumTypeOK(typeof(TranslationStatusEnum), 10000000);
-                Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, "TranslationStatusEnum"), retStr);
+                Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "TranslationStatusEnum"), retStr);
 
                 foreach (int i in Enum.GetValues(typeof(TranslationStatusEnum)))
                 {
@@ -7481,16 +7494,16 @@ namespace CSSPEnums.Tests
                         case TranslationStatusEnum.NotTranslated:
                         case TranslationStatusEnum.ElectronicallyTranslated:
                         case TranslationStatusEnum.Translated:
-                            Assert.AreEqual("", retStr);
+                            Assert.Equal("", retStr);
                             break;
                         default:
-                            Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, "TranslationStatusEnum"), retStr);
+                            Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "TranslationStatusEnum"), retStr);
                             break;
                     }
                 }
             }
         }
-        [TestMethod]
+        [Fact]
         public void Enums_TreatmentTypeOK_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
@@ -7498,13 +7511,13 @@ namespace CSSPEnums.Tests
                 SetupTest(culture);
 
                 string retStr = enums.EnumTypeOK(typeof(TreatmentTypeEnum), null);
-                Assert.AreEqual("", retStr);
+                Assert.Equal("", retStr);
 
                 retStr = enums.EnumTypeOK(typeof(TreatmentTypeEnum), -100);
-                Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, "TreatmentTypeEnum"), retStr);
+                Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "TreatmentTypeEnum"), retStr);
 
                 retStr = enums.EnumTypeOK(typeof(TreatmentTypeEnum), 10000000);
-                Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, "TreatmentTypeEnum"), retStr);
+                Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "TreatmentTypeEnum"), retStr);
 
                 foreach (int i in Enum.GetValues(typeof(TreatmentTypeEnum)))
                 {
@@ -7545,16 +7558,16 @@ namespace CSSPEnums.Tests
                         case TreatmentTypeEnum.PeatSystem:
                         case TreatmentTypeEnum.Physicochimique:
                         case TreatmentTypeEnum.RotatingBiologicalContactor:
-                            Assert.AreEqual("", retStr);
+                            Assert.Equal("", retStr);
                             break;
                         default:
-                            Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, "TreatmentTypeEnum"), retStr);
+                            Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "TreatmentTypeEnum"), retStr);
                             break;
                     }
                 }
             }
         }
-        [TestMethod]
+        [Fact]
         public void Enums_TVAuthOK_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
@@ -7562,13 +7575,13 @@ namespace CSSPEnums.Tests
                 SetupTest(culture);
 
                 string retStr = enums.EnumTypeOK(typeof(TVAuthEnum), null);
-                Assert.AreEqual("", retStr);
+                Assert.Equal("", retStr);
 
                 retStr = enums.EnumTypeOK(typeof(TVAuthEnum), -100);
-                Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, "TVAuthEnum"), retStr);
+                Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "TVAuthEnum"), retStr);
 
                 retStr = enums.EnumTypeOK(typeof(TVAuthEnum), 10000000);
-                Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, "TVAuthEnum"), retStr);
+                Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "TVAuthEnum"), retStr);
 
                 foreach (int i in Enum.GetValues(typeof(TVAuthEnum)))
                 {
@@ -7582,16 +7595,16 @@ namespace CSSPEnums.Tests
                         case TVAuthEnum.Create:
                         case TVAuthEnum.Delete:
                         case TVAuthEnum.Admin:
-                            Assert.AreEqual("", retStr);
+                            Assert.Equal("", retStr);
                             break;
                         default:
-                            Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, "TVAuthEnum"), retStr);
+                            Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "TVAuthEnum"), retStr);
                             break;
                     }
                 }
             }
         }
-        [TestMethod]
+        [Fact]
         public void Enums_TVTypeOK_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
@@ -7599,13 +7612,13 @@ namespace CSSPEnums.Tests
                 SetupTest(culture);
 
                 string retStr = enums.EnumTypeOK(typeof(TVTypeEnum), null);
-                Assert.AreEqual("", retStr);
+                Assert.Equal("", retStr);
 
                 retStr = enums.EnumTypeOK(typeof(TVTypeEnum), -100);
-                Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, "TVTypeEnum"), retStr);
+                Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "TVTypeEnum"), retStr);
 
                 retStr = enums.EnumTypeOK(typeof(TVTypeEnum), 10000000);
-                Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, "TVTypeEnum"), retStr);
+                Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "TVTypeEnum"), retStr);
 
                 foreach (int i in Enum.GetValues(typeof(TVTypeEnum)))
                 {
@@ -7699,16 +7712,16 @@ namespace CSSPEnums.Tests
                         case TVTypeEnum.OpenDataNational:
                         case TVTypeEnum.PolSourceSiteMikeScenario:
                         case TVTypeEnum.SubsectorTools:
-                            Assert.AreEqual("", retStr);
+                            Assert.Equal("", retStr);
                             break;
                         default:
-                            Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, "TVTypeEnum"), retStr);
+                            Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "TVTypeEnum"), retStr);
                             break;
                     }
                 }
             }
         }
-        [TestMethod]
+        [Fact]
         public void Enums_WebTideDataSetOK_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
@@ -7716,13 +7729,13 @@ namespace CSSPEnums.Tests
                 SetupTest(culture);
 
                 string retStr = enums.EnumTypeOK(typeof(WebTideDataSetEnum), null);
-                Assert.AreEqual("", retStr);
+                Assert.Equal("", retStr);
 
                 retStr = enums.EnumTypeOK(typeof(WebTideDataSetEnum), -100);
-                Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, "WebTideDataSetEnum"), retStr);
+                Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "WebTideDataSetEnum"), retStr);
 
                 retStr = enums.EnumTypeOK(typeof(WebTideDataSetEnum), 10000000);
-                Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, "WebTideDataSetEnum"), retStr);
+                Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "WebTideDataSetEnum"), retStr);
 
                 foreach (int i in Enum.GetValues(typeof(WebTideDataSetEnum)))
                 {
@@ -7741,16 +7754,16 @@ namespace CSSPEnums.Tests
                         case WebTideDataSetEnum.sshelf:
                         case WebTideDataSetEnum.flood:
                         case WebTideDataSetEnum.vigf8:
-                            Assert.AreEqual("", retStr);
+                            Assert.Equal("", retStr);
                             break;
                         default:
-                            Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, "WebTideDataSetEnum"), retStr);
+                            Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "WebTideDataSetEnum"), retStr);
                             break;
                     }
                 }
             }
         }
-        [TestMethod]
+        [Fact]
         public void Enums_WhereOperatorOK_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
@@ -7758,13 +7771,13 @@ namespace CSSPEnums.Tests
                 SetupTest(culture);
 
                 string retStr = enums.EnumTypeOK(typeof(WhereOperatorEnum), null);
-                Assert.AreEqual("", retStr);
+                Assert.Equal("", retStr);
 
                 retStr = enums.EnumTypeOK(typeof(WhereOperatorEnum), -100);
-                Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, "WhereOperatorEnum"), retStr);
+                Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "WhereOperatorEnum"), retStr);
 
                 retStr = enums.EnumTypeOK(typeof(WhereOperatorEnum), 10000000);
-                Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, "WhereOperatorEnum"), retStr);
+                Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "WhereOperatorEnum"), retStr);
 
                 foreach (int i in Enum.GetValues(typeof(WhereOperatorEnum)))
                 {
@@ -7778,16 +7791,16 @@ namespace CSSPEnums.Tests
                         case WhereOperatorEnum.Contains:
                         case WhereOperatorEnum.StartsWith:
                         case WhereOperatorEnum.EndsWith:
-                            Assert.AreEqual("", retStr);
+                            Assert.Equal("", retStr);
                             break;
                         default:
-                            Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, "WhereOperatorEnum"), retStr);
+                            Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "WhereOperatorEnum"), retStr);
                             break;
                     }
                 }
             }
         }
-        [TestMethod]
+        [Fact]
         public void Enums_PolSourceObsInfoOK_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
@@ -7795,13 +7808,13 @@ namespace CSSPEnums.Tests
                 SetupTest(culture);
 
                 string retStr = enums.EnumTypeOK(typeof(PolSourceObsInfoEnum), null);
-                Assert.AreEqual("", retStr);
+                Assert.Equal("", retStr);
 
                 retStr = enums.EnumTypeOK(typeof(PolSourceObsInfoEnum), -100);
-                Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, "PolSourceObsInfoEnum"), retStr);
+                Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "PolSourceObsInfoEnum"), retStr);
 
                 retStr = enums.EnumTypeOK(typeof(PolSourceObsInfoEnum), 10000000);
-                Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, "PolSourceObsInfoEnum"), retStr);
+                Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "PolSourceObsInfoEnum"), retStr);
 
                 foreach (int i in Enum.GetValues(typeof(PolSourceObsInfoEnum)))
                 {
@@ -9408,10 +9421,10 @@ namespace CSSPEnums.Tests
                         case PolSourceObsInfoEnum.DistanceToShoreInMeters800WDisposal:
                         case PolSourceObsInfoEnum.DistanceToShoreInMeters1000WDisposal:
                         case PolSourceObsInfoEnum.DistanceToShoreInMetersGreaterThan1000WDisposal:
-                            Assert.AreEqual("", retStr);
+                            Assert.Equal("", retStr);
                             break;
                         default:
-                            Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, "PolSourceObsInfoEnum"), retStr);
+                            Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "PolSourceObsInfoEnum"), retStr);
                             break;
                     }
                 }
@@ -9420,7 +9433,7 @@ namespace CSSPEnums.Tests
 
         #endregion Testing Methods Check OK public
         #region Testing Methods TextOrdered public
-        [TestMethod]
+        [Fact]
         public void Enums_ActionDBTypeEnumTextOrdered_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
@@ -9435,19 +9448,19 @@ namespace CSSPEnums.Tests
                 enumTextOrderedList = enumTextOrderedList.OrderBy(c => c.EnumText).ToList();
 
                 List<EnumIDAndText> enumTextOrderedList2 = enums.GetEnumTextOrderedList(typeof(ActionDBTypeEnum));
-                Assert.AreEqual(enumTextOrderedList.Count, enumTextOrderedList2.Count);
+                Assert.Equal(enumTextOrderedList.Count, enumTextOrderedList2.Count);
 
                 EnumIDAndText enumTextOrdered = new EnumIDAndText();
-                Assert.IsNotNull(enumTextOrdered);
+                Assert.NotNull(enumTextOrdered);
 
                 for (int i = 0, count = enumTextOrderedList.Count; i < count; i++)
                 {
-                    Assert.AreEqual(enumTextOrderedList[i].EnumText, enumTextOrderedList2[i].EnumText);
-                    Assert.AreEqual(enumTextOrderedList[i].EnumID, enumTextOrderedList2[i].EnumID);
+                    Assert.Equal(enumTextOrderedList[i].EnumText, enumTextOrderedList2[i].EnumText);
+                    Assert.Equal(enumTextOrderedList[i].EnumID, enumTextOrderedList2[i].EnumID);
                 }
             }
         }
-        [TestMethod]
+        [Fact]
         public void Enums_AddContactTypeEnumTextOrdered_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
@@ -9462,19 +9475,19 @@ namespace CSSPEnums.Tests
                 enumTextOrderedList = enumTextOrderedList.OrderBy(c => c.EnumText).ToList();
 
                 List<EnumIDAndText> enumTextOrderedList2 = enums.GetEnumTextOrderedList(typeof(AddContactTypeEnum));
-                Assert.AreEqual(enumTextOrderedList.Count, enumTextOrderedList2.Count);
+                Assert.Equal(enumTextOrderedList.Count, enumTextOrderedList2.Count);
 
                 EnumIDAndText enumTextOrdered = new EnumIDAndText();
-                Assert.IsNotNull(enumTextOrdered);
+                Assert.NotNull(enumTextOrdered);
 
                 for (int i = 0, count = enumTextOrderedList.Count; i < count; i++)
                 {
-                    Assert.AreEqual(enumTextOrderedList[i].EnumText, enumTextOrderedList2[i].EnumText);
-                    Assert.AreEqual(enumTextOrderedList[i].EnumID, enumTextOrderedList2[i].EnumID);
+                    Assert.Equal(enumTextOrderedList[i].EnumText, enumTextOrderedList2[i].EnumText);
+                    Assert.Equal(enumTextOrderedList[i].EnumID, enumTextOrderedList2[i].EnumID);
                 }
             }
         }
-        [TestMethod]
+        [Fact]
         public void Enums_DatabaseTypeEnumTextOrdered_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
@@ -9489,19 +9502,19 @@ namespace CSSPEnums.Tests
                 enumTextOrderedList = enumTextOrderedList.OrderBy(c => c.EnumText).ToList();
 
                 List<EnumIDAndText> enumTextOrderedList2 = enums.GetEnumTextOrderedList(typeof(DatabaseTypeEnum));
-                Assert.AreEqual(enumTextOrderedList.Count, enumTextOrderedList2.Count);
+                Assert.Equal(enumTextOrderedList.Count, enumTextOrderedList2.Count);
 
                 EnumIDAndText enumTextOrdered = new EnumIDAndText();
-                Assert.IsNotNull(enumTextOrdered);
+                Assert.NotNull(enumTextOrdered);
 
                 for (int i = 0, count = enumTextOrderedList.Count; i < count; i++)
                 {
-                    Assert.AreEqual(enumTextOrderedList[i].EnumText, enumTextOrderedList2[i].EnumText);
-                    Assert.AreEqual(enumTextOrderedList[i].EnumID, enumTextOrderedList2[i].EnumID);
+                    Assert.Equal(enumTextOrderedList[i].EnumText, enumTextOrderedList2[i].EnumText);
+                    Assert.Equal(enumTextOrderedList[i].EnumID, enumTextOrderedList2[i].EnumID);
                 }
             }
         }
-        [TestMethod]
+        [Fact]
         public void Enums_EntityQueryTypeEnumTextOrdered_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
@@ -9516,19 +9529,19 @@ namespace CSSPEnums.Tests
                 enumTextOrderedList = enumTextOrderedList.OrderBy(c => c.EnumText).ToList();
 
                 List<EnumIDAndText> enumTextOrderedList2 = enums.GetEnumTextOrderedList(typeof(EntityQueryTypeEnum));
-                Assert.AreEqual(enumTextOrderedList.Count, enumTextOrderedList2.Count);
+                Assert.Equal(enumTextOrderedList.Count, enumTextOrderedList2.Count);
 
                 EnumIDAndText enumTextOrdered = new EnumIDAndText();
-                Assert.IsNotNull(enumTextOrdered);
+                Assert.NotNull(enumTextOrdered);
 
                 for (int i = 0, count = enumTextOrderedList.Count; i < count; i++)
                 {
-                    Assert.AreEqual(enumTextOrderedList[i].EnumText, enumTextOrderedList2[i].EnumText);
-                    Assert.AreEqual(enumTextOrderedList[i].EnumID, enumTextOrderedList2[i].EnumID);
+                    Assert.Equal(enumTextOrderedList[i].EnumText, enumTextOrderedList2[i].EnumText);
+                    Assert.Equal(enumTextOrderedList[i].EnumID, enumTextOrderedList2[i].EnumID);
                 }
             }
         }
-        [TestMethod]
+        [Fact]
         public void Enums_PolSourceObsInfoTypeEnumTextOrdered_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
@@ -9543,19 +9556,19 @@ namespace CSSPEnums.Tests
                 enumTextOrderedList = enumTextOrderedList.OrderBy(c => c.EnumText).ToList();
 
                 List<EnumIDAndText> enumTextOrderedList2 = enums.GetEnumTextOrderedList(typeof(PolSourceObsInfoTypeEnum));
-                Assert.AreEqual(enumTextOrderedList.Count, enumTextOrderedList2.Count);
+                Assert.Equal(enumTextOrderedList.Count, enumTextOrderedList2.Count);
 
                 EnumIDAndText enumTextOrdered = new EnumIDAndText();
-                Assert.IsNotNull(enumTextOrdered);
+                Assert.NotNull(enumTextOrdered);
 
                 for (int i = 0, count = enumTextOrderedList.Count; i < count; i++)
                 {
-                    Assert.AreEqual(enumTextOrderedList[i].EnumText, enumTextOrderedList2[i].EnumText);
-                    Assert.AreEqual(enumTextOrderedList[i].EnumID, enumTextOrderedList2[i].EnumID);
+                    Assert.Equal(enumTextOrderedList[i].EnumText, enumTextOrderedList2[i].EnumText);
+                    Assert.Equal(enumTextOrderedList[i].EnumID, enumTextOrderedList2[i].EnumID);
                 }
             }
         }
-        [TestMethod]
+        [Fact]
         public void Enums_AddressTypeEnumTextOrdered_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
@@ -9570,19 +9583,19 @@ namespace CSSPEnums.Tests
                 enumTextOrderedList = enumTextOrderedList.OrderBy(c => c.EnumText).ToList();
 
                 List<EnumIDAndText> enumTextOrderedList2 = enums.GetEnumTextOrderedList(typeof(AddressTypeEnum));
-                Assert.AreEqual(enumTextOrderedList.Count, enumTextOrderedList2.Count);
+                Assert.Equal(enumTextOrderedList.Count, enumTextOrderedList2.Count);
 
                 EnumIDAndText enumTextOrdered = new EnumIDAndText();
-                Assert.IsNotNull(enumTextOrdered);
+                Assert.NotNull(enumTextOrdered);
 
                 for (int i = 0, count = enumTextOrderedList.Count; i < count; i++)
                 {
-                    Assert.AreEqual(enumTextOrderedList[i].EnumText, enumTextOrderedList2[i].EnumText);
-                    Assert.AreEqual(enumTextOrderedList[i].EnumID, enumTextOrderedList2[i].EnumID);
+                    Assert.Equal(enumTextOrderedList[i].EnumText, enumTextOrderedList2[i].EnumText);
+                    Assert.Equal(enumTextOrderedList[i].EnumID, enumTextOrderedList2[i].EnumID);
                 }
             }
         }
-        [TestMethod]
+        [Fact]
         public void Enums_AerationTypeEnumTextOrdered_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
@@ -9597,19 +9610,19 @@ namespace CSSPEnums.Tests
                 enumTextOrderedList = enumTextOrderedList.OrderBy(c => c.EnumText).ToList();
 
                 List<EnumIDAndText> enumTextOrderedList2 = enums.GetEnumTextOrderedList(typeof(AerationTypeEnum));
-                Assert.AreEqual(enumTextOrderedList.Count, enumTextOrderedList2.Count);
+                Assert.Equal(enumTextOrderedList.Count, enumTextOrderedList2.Count);
 
                 EnumIDAndText enumTextOrdered = new EnumIDAndText();
-                Assert.IsNotNull(enumTextOrdered);
+                Assert.NotNull(enumTextOrdered);
 
                 for (int i = 0, count = enumTextOrderedList.Count; i < count; i++)
                 {
-                    Assert.AreEqual(enumTextOrderedList[i].EnumText, enumTextOrderedList2[i].EnumText);
-                    Assert.AreEqual(enumTextOrderedList[i].EnumID, enumTextOrderedList2[i].EnumID);
+                    Assert.Equal(enumTextOrderedList[i].EnumText, enumTextOrderedList2[i].EnumText);
+                    Assert.Equal(enumTextOrderedList[i].EnumID, enumTextOrderedList2[i].EnumID);
                 }
             }
         }
-        [TestMethod]
+        [Fact]
         public void Enums_AlarmSystemTypeEnumTextOrdered_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
@@ -9624,19 +9637,19 @@ namespace CSSPEnums.Tests
                 enumTextOrderedList = enumTextOrderedList.OrderBy(c => c.EnumText).ToList();
 
                 List<EnumIDAndText> enumTextOrderedList2 = enums.GetEnumTextOrderedList(typeof(AlarmSystemTypeEnum));
-                Assert.AreEqual(enumTextOrderedList.Count, enumTextOrderedList2.Count);
+                Assert.Equal(enumTextOrderedList.Count, enumTextOrderedList2.Count);
 
                 EnumIDAndText enumTextOrdered = new EnumIDAndText();
-                Assert.IsNotNull(enumTextOrdered);
+                Assert.NotNull(enumTextOrdered);
 
                 for (int i = 0, count = enumTextOrderedList.Count; i < count; i++)
                 {
-                    Assert.AreEqual(enumTextOrderedList[i].EnumText, enumTextOrderedList2[i].EnumText);
-                    Assert.AreEqual(enumTextOrderedList[i].EnumID, enumTextOrderedList2[i].EnumID);
+                    Assert.Equal(enumTextOrderedList[i].EnumText, enumTextOrderedList2[i].EnumText);
+                    Assert.Equal(enumTextOrderedList[i].EnumID, enumTextOrderedList2[i].EnumID);
                 }
             }
         }
-        [TestMethod]
+        [Fact]
         public void Enums_AnalysisCalculationTypeEnumTextOrdered_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
@@ -9651,19 +9664,19 @@ namespace CSSPEnums.Tests
                 enumTextOrderedList = enumTextOrderedList.OrderBy(c => c.EnumText).ToList();
 
                 List<EnumIDAndText> enumTextOrderedList2 = enums.GetEnumTextOrderedList(typeof(AnalysisCalculationTypeEnum));
-                Assert.AreEqual(enumTextOrderedList.Count, enumTextOrderedList2.Count);
+                Assert.Equal(enumTextOrderedList.Count, enumTextOrderedList2.Count);
 
                 EnumIDAndText enumTextOrdered = new EnumIDAndText();
-                Assert.IsNotNull(enumTextOrdered);
+                Assert.NotNull(enumTextOrdered);
 
                 for (int i = 0, count = enumTextOrderedList.Count; i < count; i++)
                 {
-                    Assert.AreEqual(enumTextOrderedList[i].EnumText, enumTextOrderedList2[i].EnumText);
-                    Assert.AreEqual(enumTextOrderedList[i].EnumID, enumTextOrderedList2[i].EnumID);
+                    Assert.Equal(enumTextOrderedList[i].EnumText, enumTextOrderedList2[i].EnumText);
+                    Assert.Equal(enumTextOrderedList[i].EnumID, enumTextOrderedList2[i].EnumID);
                 }
             }
         }
-        [TestMethod]
+        [Fact]
         public void Enums_AnalysisReportExportCommandEnumTextOrdered_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
@@ -9678,19 +9691,19 @@ namespace CSSPEnums.Tests
                 enumTextOrderedList = enumTextOrderedList.OrderBy(c => c.EnumText).ToList();
 
                 List<EnumIDAndText> enumTextOrderedList2 = enums.GetEnumTextOrderedList(typeof(AnalysisReportExportCommandEnum));
-                Assert.AreEqual(enumTextOrderedList.Count, enumTextOrderedList2.Count);
+                Assert.Equal(enumTextOrderedList.Count, enumTextOrderedList2.Count);
 
                 EnumIDAndText enumTextOrdered = new EnumIDAndText();
-                Assert.IsNotNull(enumTextOrdered);
+                Assert.NotNull(enumTextOrdered);
 
                 for (int i = 0, count = enumTextOrderedList.Count; i < count; i++)
                 {
-                    Assert.AreEqual(enumTextOrderedList[i].EnumText, enumTextOrderedList2[i].EnumText);
-                    Assert.AreEqual(enumTextOrderedList[i].EnumID, enumTextOrderedList2[i].EnumID);
+                    Assert.Equal(enumTextOrderedList[i].EnumText, enumTextOrderedList2[i].EnumText);
+                    Assert.Equal(enumTextOrderedList[i].EnumID, enumTextOrderedList2[i].EnumID);
                 }
             }
         }
-        [TestMethod]
+        [Fact]
         public void Enums_AnalyzeMethodEnumTextOrdered_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
@@ -9705,19 +9718,19 @@ namespace CSSPEnums.Tests
                 enumTextOrderedList = enumTextOrderedList.OrderBy(c => c.EnumText).ToList();
 
                 List<EnumIDAndText> enumTextOrderedList2 = enums.GetEnumTextOrderedList(typeof(AnalyzeMethodEnum));
-                Assert.AreEqual(enumTextOrderedList.Count, enumTextOrderedList2.Count);
+                Assert.Equal(enumTextOrderedList.Count, enumTextOrderedList2.Count);
 
                 EnumIDAndText enumTextOrdered = new EnumIDAndText();
-                Assert.IsNotNull(enumTextOrdered);
+                Assert.NotNull(enumTextOrdered);
 
                 for (int i = 0, count = enumTextOrderedList.Count; i < count; i++)
                 {
-                    Assert.AreEqual(enumTextOrderedList[i].EnumText, enumTextOrderedList2[i].EnumText);
-                    Assert.AreEqual(enumTextOrderedList[i].EnumID, enumTextOrderedList2[i].EnumID);
+                    Assert.Equal(enumTextOrderedList[i].EnumText, enumTextOrderedList2[i].EnumText);
+                    Assert.Equal(enumTextOrderedList[i].EnumID, enumTextOrderedList2[i].EnumID);
                 }
             }
         }
-        [TestMethod]
+        [Fact]
         public void Enums_AppTaskCommandEnumTextOrdered_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
@@ -9732,19 +9745,19 @@ namespace CSSPEnums.Tests
                 enumTextOrderedList = enumTextOrderedList.OrderBy(c => c.EnumText).ToList();
 
                 List<EnumIDAndText> enumTextOrderedList2 = enums.GetEnumTextOrderedList(typeof(AppTaskCommandEnum));
-                Assert.AreEqual(enumTextOrderedList.Count, enumTextOrderedList2.Count);
+                Assert.Equal(enumTextOrderedList.Count, enumTextOrderedList2.Count);
 
                 EnumIDAndText enumTextOrdered = new EnumIDAndText();
-                Assert.IsNotNull(enumTextOrdered);
+                Assert.NotNull(enumTextOrdered);
 
                 for (int i = 0, count = enumTextOrderedList.Count; i < count; i++)
                 {
-                    Assert.AreEqual(enumTextOrderedList[i].EnumText, enumTextOrderedList2[i].EnumText);
-                    Assert.AreEqual(enumTextOrderedList[i].EnumID, enumTextOrderedList2[i].EnumID);
+                    Assert.Equal(enumTextOrderedList[i].EnumText, enumTextOrderedList2[i].EnumText);
+                    Assert.Equal(enumTextOrderedList[i].EnumID, enumTextOrderedList2[i].EnumID);
                 }
             }
         }
-        [TestMethod]
+        [Fact]
         public void Enums_AppTaskStatusEnumTextOrdered_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
@@ -9759,19 +9772,19 @@ namespace CSSPEnums.Tests
                 enumTextOrderedList = enumTextOrderedList.OrderBy(c => c.EnumText).ToList();
 
                 List<EnumIDAndText> enumTextOrderedList2 = enums.GetEnumTextOrderedList(typeof(AppTaskStatusEnum));
-                Assert.AreEqual(enumTextOrderedList.Count, enumTextOrderedList2.Count);
+                Assert.Equal(enumTextOrderedList.Count, enumTextOrderedList2.Count);
 
                 EnumIDAndText enumTextOrdered = new EnumIDAndText();
-                Assert.IsNotNull(enumTextOrdered);
+                Assert.NotNull(enumTextOrdered);
 
                 for (int i = 0, count = enumTextOrderedList.Count; i < count; i++)
                 {
-                    Assert.AreEqual(enumTextOrderedList[i].EnumText, enumTextOrderedList2[i].EnumText);
-                    Assert.AreEqual(enumTextOrderedList[i].EnumID, enumTextOrderedList2[i].EnumID);
+                    Assert.Equal(enumTextOrderedList[i].EnumText, enumTextOrderedList2[i].EnumText);
+                    Assert.Equal(enumTextOrderedList[i].EnumID, enumTextOrderedList2[i].EnumID);
                 }
             }
         }
-        [TestMethod]
+        [Fact]
         public void Enums_BeaufortScaleEnumTextOrdered_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
@@ -9786,19 +9799,19 @@ namespace CSSPEnums.Tests
                 enumTextOrderedList = enumTextOrderedList.OrderBy(c => c.EnumText).ToList();
 
                 List<EnumIDAndText> enumTextOrderedList2 = enums.GetEnumTextOrderedList(typeof(BeaufortScaleEnum));
-                Assert.AreEqual(enumTextOrderedList.Count, enumTextOrderedList2.Count);
+                Assert.Equal(enumTextOrderedList.Count, enumTextOrderedList2.Count);
 
                 EnumIDAndText enumTextOrdered = new EnumIDAndText();
-                Assert.IsNotNull(enumTextOrdered);
+                Assert.NotNull(enumTextOrdered);
 
                 for (int i = 0, count = enumTextOrderedList.Count; i < count; i++)
                 {
-                    Assert.AreEqual(enumTextOrderedList[i].EnumText, enumTextOrderedList2[i].EnumText);
-                    Assert.AreEqual(enumTextOrderedList[i].EnumID, enumTextOrderedList2[i].EnumID);
+                    Assert.Equal(enumTextOrderedList[i].EnumText, enumTextOrderedList2[i].EnumText);
+                    Assert.Equal(enumTextOrderedList[i].EnumID, enumTextOrderedList2[i].EnumID);
                 }
             }
         }
-        [TestMethod]
+        [Fact]
         public void Enums_BoxModelResultTypeEnumTextOrdered_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
@@ -9813,19 +9826,19 @@ namespace CSSPEnums.Tests
                 enumTextOrderedList = enumTextOrderedList.OrderBy(c => c.EnumText).ToList();
 
                 List<EnumIDAndText> enumTextOrderedList2 = enums.GetEnumTextOrderedList(typeof(BoxModelResultTypeEnum));
-                Assert.AreEqual(enumTextOrderedList.Count, enumTextOrderedList2.Count);
+                Assert.Equal(enumTextOrderedList.Count, enumTextOrderedList2.Count);
 
                 EnumIDAndText enumTextOrdered = new EnumIDAndText();
-                Assert.IsNotNull(enumTextOrdered);
+                Assert.NotNull(enumTextOrdered);
 
                 for (int i = 0, count = enumTextOrderedList.Count; i < count; i++)
                 {
-                    Assert.AreEqual(enumTextOrderedList[i].EnumText, enumTextOrderedList2[i].EnumText);
-                    Assert.AreEqual(enumTextOrderedList[i].EnumID, enumTextOrderedList2[i].EnumID);
+                    Assert.Equal(enumTextOrderedList[i].EnumText, enumTextOrderedList2[i].EnumText);
+                    Assert.Equal(enumTextOrderedList[i].EnumID, enumTextOrderedList2[i].EnumID);
                 }
             }
         }
-        [TestMethod]
+        [Fact]
         public void Enums_ClassificationTypeEnumTextOrdered_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
@@ -9840,19 +9853,19 @@ namespace CSSPEnums.Tests
                 enumTextOrderedList = enumTextOrderedList.OrderBy(c => c.EnumText).ToList();
 
                 List<EnumIDAndText> enumTextOrderedList2 = enums.GetEnumTextOrderedList(typeof(ClassificationTypeEnum));
-                Assert.AreEqual(enumTextOrderedList.Count, enumTextOrderedList2.Count);
+                Assert.Equal(enumTextOrderedList.Count, enumTextOrderedList2.Count);
 
                 EnumIDAndText enumTextOrdered = new EnumIDAndText();
-                Assert.IsNotNull(enumTextOrdered);
+                Assert.NotNull(enumTextOrdered);
 
                 for (int i = 0, count = enumTextOrderedList.Count; i < count; i++)
                 {
-                    Assert.AreEqual(enumTextOrderedList[i].EnumText, enumTextOrderedList2[i].EnumText);
-                    Assert.AreEqual(enumTextOrderedList[i].EnumID, enumTextOrderedList2[i].EnumID);
+                    Assert.Equal(enumTextOrderedList[i].EnumText, enumTextOrderedList2[i].EnumText);
+                    Assert.Equal(enumTextOrderedList[i].EnumID, enumTextOrderedList2[i].EnumID);
                 }
             }
         }
-        [TestMethod]
+        [Fact]
         public void Enums_CollectionSystemTypeEnumTextOrdered_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
@@ -9867,19 +9880,19 @@ namespace CSSPEnums.Tests
                 enumTextOrderedList = enumTextOrderedList.OrderBy(c => c.EnumText).ToList();
 
                 List<EnumIDAndText> enumTextOrderedList2 = enums.GetEnumTextOrderedList(typeof(CollectionSystemTypeEnum));
-                Assert.AreEqual(enumTextOrderedList.Count, enumTextOrderedList2.Count);
+                Assert.Equal(enumTextOrderedList.Count, enumTextOrderedList2.Count);
 
                 EnumIDAndText enumTextOrdered = new EnumIDAndText();
-                Assert.IsNotNull(enumTextOrdered);
+                Assert.NotNull(enumTextOrdered);
 
                 for (int i = 0, count = enumTextOrderedList.Count; i < count; i++)
                 {
-                    Assert.AreEqual(enumTextOrderedList[i].EnumText, enumTextOrderedList2[i].EnumText);
-                    Assert.AreEqual(enumTextOrderedList[i].EnumID, enumTextOrderedList2[i].EnumID);
+                    Assert.Equal(enumTextOrderedList[i].EnumText, enumTextOrderedList2[i].EnumText);
+                    Assert.Equal(enumTextOrderedList[i].EnumID, enumTextOrderedList2[i].EnumID);
                 }
             }
         }
-        [TestMethod]
+        [Fact]
         public void Enums_ContactTitleEnumTextOrdered_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
@@ -9894,19 +9907,19 @@ namespace CSSPEnums.Tests
                 enumTextOrderedList = enumTextOrderedList.OrderBy(c => c.EnumText).ToList();
 
                 List<EnumIDAndText> enumTextOrderedList2 = enums.GetEnumTextOrderedList(typeof(ContactTitleEnum));
-                Assert.AreEqual(enumTextOrderedList.Count, enumTextOrderedList2.Count);
+                Assert.Equal(enumTextOrderedList.Count, enumTextOrderedList2.Count);
 
                 EnumIDAndText enumTextOrdered = new EnumIDAndText();
-                Assert.IsNotNull(enumTextOrdered);
+                Assert.NotNull(enumTextOrdered);
 
                 for (int i = 0, count = enumTextOrderedList.Count; i < count; i++)
                 {
-                    Assert.AreEqual(enumTextOrderedList[i].EnumText, enumTextOrderedList2[i].EnumText);
-                    Assert.AreEqual(enumTextOrderedList[i].EnumID, enumTextOrderedList2[i].EnumID);
+                    Assert.Equal(enumTextOrderedList[i].EnumText, enumTextOrderedList2[i].EnumText);
+                    Assert.Equal(enumTextOrderedList[i].EnumID, enumTextOrderedList2[i].EnumID);
                 }
             }
         }
-        [TestMethod]
+        [Fact]
         public void Enums_CSSPWQInputSheetTypeEnumTextOrdered_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
@@ -9921,19 +9934,19 @@ namespace CSSPEnums.Tests
                 enumTextOrderedList = enumTextOrderedList.OrderBy(c => c.EnumText).ToList();
 
                 List<EnumIDAndText> enumTextOrderedList2 = enums.GetEnumTextOrderedList(typeof(CSSPWQInputSheetTypeEnum));
-                Assert.AreEqual(enumTextOrderedList.Count, enumTextOrderedList2.Count);
+                Assert.Equal(enumTextOrderedList.Count, enumTextOrderedList2.Count);
 
                 EnumIDAndText enumTextOrdered = new EnumIDAndText();
-                Assert.IsNotNull(enumTextOrdered);
+                Assert.NotNull(enumTextOrdered);
 
                 for (int i = 0, count = enumTextOrderedList.Count; i < count; i++)
                 {
-                    Assert.AreEqual(enumTextOrderedList[i].EnumText, enumTextOrderedList2[i].EnumText);
-                    Assert.AreEqual(enumTextOrderedList[i].EnumID, enumTextOrderedList2[i].EnumID);
+                    Assert.Equal(enumTextOrderedList[i].EnumText, enumTextOrderedList2[i].EnumText);
+                    Assert.Equal(enumTextOrderedList[i].EnumID, enumTextOrderedList2[i].EnumID);
                 }
             }
         }
-        [TestMethod]
+        [Fact]
         public void Enums_CSSPWQInputTypeEnumTextOrdered_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
@@ -9948,19 +9961,19 @@ namespace CSSPEnums.Tests
                 enumTextOrderedList = enumTextOrderedList.OrderBy(c => c.EnumText).ToList();
 
                 List<EnumIDAndText> enumTextOrderedList2 = enums.GetEnumTextOrderedList(typeof(CSSPWQInputTypeEnum));
-                Assert.AreEqual(enumTextOrderedList.Count, enumTextOrderedList2.Count);
+                Assert.Equal(enumTextOrderedList.Count, enumTextOrderedList2.Count);
 
                 EnumIDAndText enumTextOrdered = new EnumIDAndText();
-                Assert.IsNotNull(enumTextOrdered);
+                Assert.NotNull(enumTextOrdered);
 
                 for (int i = 0, count = enumTextOrderedList.Count; i < count; i++)
                 {
-                    Assert.AreEqual(enumTextOrderedList[i].EnumText, enumTextOrderedList2[i].EnumText);
-                    Assert.AreEqual(enumTextOrderedList[i].EnumID, enumTextOrderedList2[i].EnumID);
+                    Assert.Equal(enumTextOrderedList[i].EnumText, enumTextOrderedList2[i].EnumText);
+                    Assert.Equal(enumTextOrderedList[i].EnumID, enumTextOrderedList2[i].EnumID);
                 }
             }
         }
-        [TestMethod]
+        [Fact]
         public void Enums_DailyOrHourlyDataEnumTextOrdered_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
@@ -9975,19 +9988,19 @@ namespace CSSPEnums.Tests
                 enumTextOrderedList = enumTextOrderedList.OrderBy(c => c.EnumText).ToList();
 
                 List<EnumIDAndText> enumTextOrderedList2 = enums.GetEnumTextOrderedList(typeof(DailyOrHourlyDataEnum));
-                Assert.AreEqual(enumTextOrderedList.Count, enumTextOrderedList2.Count);
+                Assert.Equal(enumTextOrderedList.Count, enumTextOrderedList2.Count);
 
                 EnumIDAndText enumTextOrdered = new EnumIDAndText();
-                Assert.IsNotNull(enumTextOrdered);
+                Assert.NotNull(enumTextOrdered);
 
                 for (int i = 0, count = enumTextOrderedList.Count; i < count; i++)
                 {
-                    Assert.AreEqual(enumTextOrderedList[i].EnumText, enumTextOrderedList2[i].EnumText);
-                    Assert.AreEqual(enumTextOrderedList[i].EnumID, enumTextOrderedList2[i].EnumID);
+                    Assert.Equal(enumTextOrderedList[i].EnumText, enumTextOrderedList2[i].EnumText);
+                    Assert.Equal(enumTextOrderedList[i].EnumID, enumTextOrderedList2[i].EnumID);
                 }
             }
         }
-        [TestMethod]
+        [Fact]
         public void Enums_DisinfectionTypeEnumTextOrdered_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
@@ -10002,19 +10015,19 @@ namespace CSSPEnums.Tests
                 enumTextOrderedList = enumTextOrderedList.OrderBy(c => c.EnumText).ToList();
 
                 List<EnumIDAndText> enumTextOrderedList2 = enums.GetEnumTextOrderedList(typeof(DisinfectionTypeEnum));
-                Assert.AreEqual(enumTextOrderedList.Count, enumTextOrderedList2.Count);
+                Assert.Equal(enumTextOrderedList.Count, enumTextOrderedList2.Count);
 
                 EnumIDAndText enumTextOrdered = new EnumIDAndText();
-                Assert.IsNotNull(enumTextOrdered);
+                Assert.NotNull(enumTextOrdered);
 
                 for (int i = 0, count = enumTextOrderedList.Count; i < count; i++)
                 {
-                    Assert.AreEqual(enumTextOrderedList[i].EnumText, enumTextOrderedList2[i].EnumText);
-                    Assert.AreEqual(enumTextOrderedList[i].EnumID, enumTextOrderedList2[i].EnumID);
+                    Assert.Equal(enumTextOrderedList[i].EnumText, enumTextOrderedList2[i].EnumText);
+                    Assert.Equal(enumTextOrderedList[i].EnumID, enumTextOrderedList2[i].EnumID);
                 }
             }
         }
-        [TestMethod]
+        [Fact]
         public void Enums_DrogueTypeEnumTextOrdered_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
@@ -10029,19 +10042,19 @@ namespace CSSPEnums.Tests
                 enumTextOrderedList = enumTextOrderedList.OrderBy(c => c.EnumText).ToList();
 
                 List<EnumIDAndText> enumTextOrderedList2 = enums.GetEnumTextOrderedList(typeof(DrogueTypeEnum));
-                Assert.AreEqual(enumTextOrderedList.Count, enumTextOrderedList2.Count);
+                Assert.Equal(enumTextOrderedList.Count, enumTextOrderedList2.Count);
 
                 EnumIDAndText enumTextOrdered = new EnumIDAndText();
-                Assert.IsNotNull(enumTextOrdered);
+                Assert.NotNull(enumTextOrdered);
 
                 for (int i = 0, count = enumTextOrderedList.Count; i < count; i++)
                 {
-                    Assert.AreEqual(enumTextOrderedList[i].EnumText, enumTextOrderedList2[i].EnumText);
-                    Assert.AreEqual(enumTextOrderedList[i].EnumID, enumTextOrderedList2[i].EnumID);
+                    Assert.Equal(enumTextOrderedList[i].EnumText, enumTextOrderedList2[i].EnumText);
+                    Assert.Equal(enumTextOrderedList[i].EnumID, enumTextOrderedList2[i].EnumID);
                 }
             }
         }
-        [TestMethod]
+        [Fact]
         public void Enums_EmailTypeEnumTextOrdered_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
@@ -10056,19 +10069,19 @@ namespace CSSPEnums.Tests
                 enumTextOrderedList = enumTextOrderedList.OrderBy(c => c.EnumText).ToList();
 
                 List<EnumIDAndText> enumTextOrderedList2 = enums.GetEnumTextOrderedList(typeof(EmailTypeEnum));
-                Assert.AreEqual(enumTextOrderedList.Count, enumTextOrderedList2.Count);
+                Assert.Equal(enumTextOrderedList.Count, enumTextOrderedList2.Count);
 
                 EnumIDAndText enumTextOrdered = new EnumIDAndText();
-                Assert.IsNotNull(enumTextOrdered);
+                Assert.NotNull(enumTextOrdered);
 
                 for (int i = 0, count = enumTextOrderedList.Count; i < count; i++)
                 {
-                    Assert.AreEqual(enumTextOrderedList[i].EnumText, enumTextOrderedList2[i].EnumText);
-                    Assert.AreEqual(enumTextOrderedList[i].EnumID, enumTextOrderedList2[i].EnumID);
+                    Assert.Equal(enumTextOrderedList[i].EnumText, enumTextOrderedList2[i].EnumText);
+                    Assert.Equal(enumTextOrderedList[i].EnumID, enumTextOrderedList2[i].EnumID);
                 }
             }
         }
-        [TestMethod]
+        [Fact]
         public void Enums_ExcelExportShowDataTypeEnumTextOrdered_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
@@ -10083,19 +10096,19 @@ namespace CSSPEnums.Tests
                 enumTextOrderedList = enumTextOrderedList.OrderBy(c => c.EnumText).ToList();
 
                 List<EnumIDAndText> enumTextOrderedList2 = enums.GetEnumTextOrderedList(typeof(ExcelExportShowDataTypeEnum));
-                Assert.AreEqual(enumTextOrderedList.Count, enumTextOrderedList2.Count);
+                Assert.Equal(enumTextOrderedList.Count, enumTextOrderedList2.Count);
 
                 EnumIDAndText enumTextOrdered = new EnumIDAndText();
-                Assert.IsNotNull(enumTextOrdered);
+                Assert.NotNull(enumTextOrdered);
 
                 for (int i = 0, count = enumTextOrderedList.Count; i < count; i++)
                 {
-                    Assert.AreEqual(enumTextOrderedList[i].EnumText, enumTextOrderedList2[i].EnumText);
-                    Assert.AreEqual(enumTextOrderedList[i].EnumID, enumTextOrderedList2[i].EnumID);
+                    Assert.Equal(enumTextOrderedList[i].EnumText, enumTextOrderedList2[i].EnumText);
+                    Assert.Equal(enumTextOrderedList[i].EnumID, enumTextOrderedList2[i].EnumID);
                 }
             }
         }
-        [TestMethod]
+        [Fact]
         public void Enums_FacilityTypeEnumTextOrdered_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
@@ -10110,19 +10123,19 @@ namespace CSSPEnums.Tests
                 enumTextOrderedList = enumTextOrderedList.OrderBy(c => c.EnumText).ToList();
 
                 List<EnumIDAndText> enumTextOrderedList2 = enums.GetEnumTextOrderedList(typeof(FacilityTypeEnum));
-                Assert.AreEqual(enumTextOrderedList.Count, enumTextOrderedList2.Count);
+                Assert.Equal(enumTextOrderedList.Count, enumTextOrderedList2.Count);
 
                 EnumIDAndText enumTextOrdered = new EnumIDAndText();
-                Assert.IsNotNull(enumTextOrdered);
+                Assert.NotNull(enumTextOrdered);
 
                 for (int i = 0, count = enumTextOrderedList.Count; i < count; i++)
                 {
-                    Assert.AreEqual(enumTextOrderedList[i].EnumText, enumTextOrderedList2[i].EnumText);
-                    Assert.AreEqual(enumTextOrderedList[i].EnumID, enumTextOrderedList2[i].EnumID);
+                    Assert.Equal(enumTextOrderedList[i].EnumText, enumTextOrderedList2[i].EnumText);
+                    Assert.Equal(enumTextOrderedList[i].EnumID, enumTextOrderedList2[i].EnumID);
                 }
             }
         }
-        [TestMethod]
+        [Fact]
         public void Enums_FilePurposeEnumTextOrdered_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
@@ -10137,19 +10150,19 @@ namespace CSSPEnums.Tests
                 enumTextOrderedList = enumTextOrderedList.OrderBy(c => c.EnumText).ToList();
 
                 List<EnumIDAndText> enumTextOrderedList2 = enums.GetEnumTextOrderedList(typeof(FilePurposeEnum));
-                Assert.AreEqual(enumTextOrderedList.Count, enumTextOrderedList2.Count);
+                Assert.Equal(enumTextOrderedList.Count, enumTextOrderedList2.Count);
 
                 EnumIDAndText enumTextOrdered = new EnumIDAndText();
-                Assert.IsNotNull(enumTextOrdered);
+                Assert.NotNull(enumTextOrdered);
 
                 for (int i = 0, count = enumTextOrderedList.Count; i < count; i++)
                 {
-                    Assert.AreEqual(enumTextOrderedList[i].EnumText, enumTextOrderedList2[i].EnumText);
-                    Assert.AreEqual(enumTextOrderedList[i].EnumID, enumTextOrderedList2[i].EnumID);
+                    Assert.Equal(enumTextOrderedList[i].EnumText, enumTextOrderedList2[i].EnumText);
+                    Assert.Equal(enumTextOrderedList[i].EnumID, enumTextOrderedList2[i].EnumID);
                 }
             }
         }
-        [TestMethod]
+        [Fact]
         public void Enums_FileStatusEnumTextOrdered_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
@@ -10164,19 +10177,19 @@ namespace CSSPEnums.Tests
                 enumTextOrderedList = enumTextOrderedList.OrderBy(c => c.EnumText).ToList();
 
                 List<EnumIDAndText> enumTextOrderedList2 = enums.GetEnumTextOrderedList(typeof(FileStatusEnum));
-                Assert.AreEqual(enumTextOrderedList.Count, enumTextOrderedList2.Count);
+                Assert.Equal(enumTextOrderedList.Count, enumTextOrderedList2.Count);
 
                 EnumIDAndText enumTextOrdered = new EnumIDAndText();
-                Assert.IsNotNull(enumTextOrdered);
+                Assert.NotNull(enumTextOrdered);
 
                 for (int i = 0, count = enumTextOrderedList.Count; i < count; i++)
                 {
-                    Assert.AreEqual(enumTextOrderedList[i].EnumText, enumTextOrderedList2[i].EnumText);
-                    Assert.AreEqual(enumTextOrderedList[i].EnumID, enumTextOrderedList2[i].EnumID);
+                    Assert.Equal(enumTextOrderedList[i].EnumText, enumTextOrderedList2[i].EnumText);
+                    Assert.Equal(enumTextOrderedList[i].EnumID, enumTextOrderedList2[i].EnumID);
                 }
             }
         }
-        [TestMethod]
+        [Fact]
         public void Enums_FileTypeEnumTextOrdered_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
@@ -10191,19 +10204,19 @@ namespace CSSPEnums.Tests
                 enumTextOrderedList = enumTextOrderedList.OrderBy(c => c.EnumText).ToList();
 
                 List<EnumIDAndText> enumTextOrderedList2 = enums.GetEnumTextOrderedList(typeof(FileTypeEnum));
-                Assert.AreEqual(enumTextOrderedList.Count, enumTextOrderedList2.Count);
+                Assert.Equal(enumTextOrderedList.Count, enumTextOrderedList2.Count);
 
                 EnumIDAndText enumTextOrdered = new EnumIDAndText();
-                Assert.IsNotNull(enumTextOrdered);
+                Assert.NotNull(enumTextOrdered);
 
                 for (int i = 0, count = enumTextOrderedList.Count; i < count; i++)
                 {
-                    Assert.AreEqual(enumTextOrderedList[i].EnumText, enumTextOrderedList2[i].EnumText);
-                    Assert.AreEqual(enumTextOrderedList[i].EnumID, enumTextOrderedList2[i].EnumID);
+                    Assert.Equal(enumTextOrderedList[i].EnumText, enumTextOrderedList2[i].EnumText);
+                    Assert.Equal(enumTextOrderedList[i].EnumID, enumTextOrderedList2[i].EnumID);
                 }
             }
         }
-        [TestMethod]
+        [Fact]
         public void Enums_InfrastructureTypeEnumTextOrdered_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
@@ -10218,19 +10231,19 @@ namespace CSSPEnums.Tests
                 enumTextOrderedList = enumTextOrderedList.OrderBy(c => c.EnumText).ToList();
 
                 List<EnumIDAndText> enumTextOrderedList2 = enums.GetEnumTextOrderedList(typeof(InfrastructureTypeEnum));
-                Assert.AreEqual(enumTextOrderedList.Count, enumTextOrderedList2.Count);
+                Assert.Equal(enumTextOrderedList.Count, enumTextOrderedList2.Count);
 
                 EnumIDAndText enumTextOrdered = new EnumIDAndText();
-                Assert.IsNotNull(enumTextOrdered);
+                Assert.NotNull(enumTextOrdered);
 
                 for (int i = 0, count = enumTextOrderedList.Count; i < count; i++)
                 {
-                    Assert.AreEqual(enumTextOrderedList[i].EnumText, enumTextOrderedList2[i].EnumText);
-                    Assert.AreEqual(enumTextOrderedList[i].EnumID, enumTextOrderedList2[i].EnumID);
+                    Assert.Equal(enumTextOrderedList[i].EnumText, enumTextOrderedList2[i].EnumText);
+                    Assert.Equal(enumTextOrderedList[i].EnumID, enumTextOrderedList2[i].EnumID);
                 }
             }
         }
-        [TestMethod]
+        [Fact]
         public void Enums_KMZActionEnumTextOrdered_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
@@ -10245,19 +10258,19 @@ namespace CSSPEnums.Tests
                 enumTextOrderedList = enumTextOrderedList.OrderBy(c => c.EnumText).ToList();
 
                 List<EnumIDAndText> enumTextOrderedList2 = enums.GetEnumTextOrderedList(typeof(KMZActionEnum));
-                Assert.AreEqual(enumTextOrderedList.Count, enumTextOrderedList2.Count);
+                Assert.Equal(enumTextOrderedList.Count, enumTextOrderedList2.Count);
 
                 EnumIDAndText enumTextOrdered = new EnumIDAndText();
-                Assert.IsNotNull(enumTextOrdered);
+                Assert.NotNull(enumTextOrdered);
 
                 for (int i = 0, count = enumTextOrderedList.Count; i < count; i++)
                 {
-                    Assert.AreEqual(enumTextOrderedList[i].EnumText, enumTextOrderedList2[i].EnumText);
-                    Assert.AreEqual(enumTextOrderedList[i].EnumID, enumTextOrderedList2[i].EnumID);
+                    Assert.Equal(enumTextOrderedList[i].EnumText, enumTextOrderedList2[i].EnumText);
+                    Assert.Equal(enumTextOrderedList[i].EnumID, enumTextOrderedList2[i].EnumID);
                 }
             }
         }
-        [TestMethod]
+        [Fact]
         public void Enums_LaboratoryEnumTextOrdered_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
@@ -10272,19 +10285,19 @@ namespace CSSPEnums.Tests
                 enumTextOrderedList = enumTextOrderedList.OrderBy(c => c.EnumText).ToList();
 
                 List<EnumIDAndText> enumTextOrderedList2 = enums.GetEnumTextOrderedList(typeof(LaboratoryEnum));
-                Assert.AreEqual(enumTextOrderedList.Count, enumTextOrderedList2.Count);
+                Assert.Equal(enumTextOrderedList.Count, enumTextOrderedList2.Count);
 
                 EnumIDAndText enumTextOrdered = new EnumIDAndText();
-                Assert.IsNotNull(enumTextOrdered);
+                Assert.NotNull(enumTextOrdered);
 
                 for (int i = 0, count = enumTextOrderedList.Count; i < count; i++)
                 {
-                    Assert.AreEqual(enumTextOrderedList[i].EnumText, enumTextOrderedList2[i].EnumText);
-                    Assert.AreEqual(enumTextOrderedList[i].EnumID, enumTextOrderedList2[i].EnumID);
+                    Assert.Equal(enumTextOrderedList[i].EnumText, enumTextOrderedList2[i].EnumText);
+                    Assert.Equal(enumTextOrderedList[i].EnumID, enumTextOrderedList2[i].EnumID);
                 }
             }
         }
-        [TestMethod]
+        [Fact]
         public void Enums_LabSheetStatusEnumTextOrdered_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
@@ -10299,19 +10312,19 @@ namespace CSSPEnums.Tests
                 enumTextOrderedList = enumTextOrderedList.OrderBy(c => c.EnumText).ToList();
 
                 List<EnumIDAndText> enumTextOrderedList2 = enums.GetEnumTextOrderedList(typeof(LabSheetStatusEnum));
-                Assert.AreEqual(enumTextOrderedList.Count, enumTextOrderedList2.Count);
+                Assert.Equal(enumTextOrderedList.Count, enumTextOrderedList2.Count);
 
                 EnumIDAndText enumTextOrdered = new EnumIDAndText();
-                Assert.IsNotNull(enumTextOrdered);
+                Assert.NotNull(enumTextOrdered);
 
                 for (int i = 0, count = enumTextOrderedList.Count; i < count; i++)
                 {
-                    Assert.AreEqual(enumTextOrderedList[i].EnumText, enumTextOrderedList2[i].EnumText);
-                    Assert.AreEqual(enumTextOrderedList[i].EnumID, enumTextOrderedList2[i].EnumID);
+                    Assert.Equal(enumTextOrderedList[i].EnumText, enumTextOrderedList2[i].EnumText);
+                    Assert.Equal(enumTextOrderedList[i].EnumID, enumTextOrderedList2[i].EnumID);
                 }
             }
         }
-        [TestMethod]
+        [Fact]
         public void Enums_LabSheetTypeEnumTextOrdered_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
@@ -10326,19 +10339,19 @@ namespace CSSPEnums.Tests
                 enumTextOrderedList = enumTextOrderedList.OrderBy(c => c.EnumText).ToList();
 
                 List<EnumIDAndText> enumTextOrderedList2 = enums.GetEnumTextOrderedList(typeof(LabSheetTypeEnum));
-                Assert.AreEqual(enumTextOrderedList.Count, enumTextOrderedList2.Count);
+                Assert.Equal(enumTextOrderedList.Count, enumTextOrderedList2.Count);
 
                 EnumIDAndText enumTextOrdered = new EnumIDAndText();
-                Assert.IsNotNull(enumTextOrdered);
+                Assert.NotNull(enumTextOrdered);
 
                 for (int i = 0, count = enumTextOrderedList.Count; i < count; i++)
                 {
-                    Assert.AreEqual(enumTextOrderedList[i].EnumText, enumTextOrderedList2[i].EnumText);
-                    Assert.AreEqual(enumTextOrderedList[i].EnumID, enumTextOrderedList2[i].EnumID);
+                    Assert.Equal(enumTextOrderedList[i].EnumText, enumTextOrderedList2[i].EnumText);
+                    Assert.Equal(enumTextOrderedList[i].EnumID, enumTextOrderedList2[i].EnumID);
                 }
             }
         }
-        [TestMethod]
+        [Fact]
         public void Enums_LanguageEnumTextOrdered_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
@@ -10353,19 +10366,19 @@ namespace CSSPEnums.Tests
                 enumTextOrderedList = enumTextOrderedList.OrderBy(c => c.EnumText).ToList();
 
                 List<EnumIDAndText> enumTextOrderedList2 = enums.GetEnumTextOrderedList(typeof(LanguageEnum));
-                Assert.AreEqual(enumTextOrderedList.Count, enumTextOrderedList2.Count);
+                Assert.Equal(enumTextOrderedList.Count, enumTextOrderedList2.Count);
 
                 EnumIDAndText enumTextOrdered = new EnumIDAndText();
-                Assert.IsNotNull(enumTextOrdered);
+                Assert.NotNull(enumTextOrdered);
 
                 for (int i = 0, count = enumTextOrderedList.Count; i < count; i++)
                 {
-                    Assert.AreEqual(enumTextOrderedList[i].EnumText, enumTextOrderedList2[i].EnumText);
-                    Assert.AreEqual(enumTextOrderedList[i].EnumID, enumTextOrderedList2[i].EnumID);
+                    Assert.Equal(enumTextOrderedList[i].EnumText, enumTextOrderedList2[i].EnumText);
+                    Assert.Equal(enumTextOrderedList[i].EnumID, enumTextOrderedList2[i].EnumID);
                 }
             }
         }
-        [TestMethod]
+        [Fact]
         public void Enums_LogCommandEnumTextOrdered_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
@@ -10380,19 +10393,19 @@ namespace CSSPEnums.Tests
                 enumTextOrderedList = enumTextOrderedList.OrderBy(c => c.EnumText).ToList();
 
                 List<EnumIDAndText> enumTextOrderedList2 = enums.GetEnumTextOrderedList(typeof(LogCommandEnum));
-                Assert.AreEqual(enumTextOrderedList.Count, enumTextOrderedList2.Count);
+                Assert.Equal(enumTextOrderedList.Count, enumTextOrderedList2.Count);
 
                 EnumIDAndText enumTextOrdered = new EnumIDAndText();
-                Assert.IsNotNull(enumTextOrdered);
+                Assert.NotNull(enumTextOrdered);
 
                 for (int i = 0, count = enumTextOrderedList.Count; i < count; i++)
                 {
-                    Assert.AreEqual(enumTextOrderedList[i].EnumText, enumTextOrderedList2[i].EnumText);
-                    Assert.AreEqual(enumTextOrderedList[i].EnumID, enumTextOrderedList2[i].EnumID);
+                    Assert.Equal(enumTextOrderedList[i].EnumText, enumTextOrderedList2[i].EnumText);
+                    Assert.Equal(enumTextOrderedList[i].EnumID, enumTextOrderedList2[i].EnumID);
                 }
             }
         }
-        [TestMethod]
+        [Fact]
         public void Enums_MapInfoDrawTypeEnumTextOrdered_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
@@ -10407,19 +10420,19 @@ namespace CSSPEnums.Tests
                 enumTextOrderedList = enumTextOrderedList.OrderBy(c => c.EnumText).ToList();
 
                 List<EnumIDAndText> enumTextOrderedList2 = enums.GetEnumTextOrderedList(typeof(MapInfoDrawTypeEnum));
-                Assert.AreEqual(enumTextOrderedList.Count, enumTextOrderedList2.Count);
+                Assert.Equal(enumTextOrderedList.Count, enumTextOrderedList2.Count);
 
                 EnumIDAndText enumTextOrdered = new EnumIDAndText();
-                Assert.IsNotNull(enumTextOrdered);
+                Assert.NotNull(enumTextOrdered);
 
                 for (int i = 0, count = enumTextOrderedList.Count; i < count; i++)
                 {
-                    Assert.AreEqual(enumTextOrderedList[i].EnumText, enumTextOrderedList2[i].EnumText);
-                    Assert.AreEqual(enumTextOrderedList[i].EnumID, enumTextOrderedList2[i].EnumID);
+                    Assert.Equal(enumTextOrderedList[i].EnumText, enumTextOrderedList2[i].EnumText);
+                    Assert.Equal(enumTextOrderedList[i].EnumID, enumTextOrderedList2[i].EnumID);
                 }
             }
         }
-        [TestMethod]
+        [Fact]
         public void Enums_MikeBoundaryConditionLevelOrVelocityEnumTextOrdered_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
@@ -10434,19 +10447,19 @@ namespace CSSPEnums.Tests
                 enumTextOrderedList = enumTextOrderedList.OrderBy(c => c.EnumText).ToList();
 
                 List<EnumIDAndText> enumTextOrderedList2 = enums.GetEnumTextOrderedList(typeof(MikeBoundaryConditionLevelOrVelocityEnum));
-                Assert.AreEqual(enumTextOrderedList.Count, enumTextOrderedList2.Count);
+                Assert.Equal(enumTextOrderedList.Count, enumTextOrderedList2.Count);
 
                 EnumIDAndText enumTextOrdered = new EnumIDAndText();
-                Assert.IsNotNull(enumTextOrdered);
+                Assert.NotNull(enumTextOrdered);
 
                 for (int i = 0, count = enumTextOrderedList.Count; i < count; i++)
                 {
-                    Assert.AreEqual(enumTextOrderedList[i].EnumText, enumTextOrderedList2[i].EnumText);
-                    Assert.AreEqual(enumTextOrderedList[i].EnumID, enumTextOrderedList2[i].EnumID);
+                    Assert.Equal(enumTextOrderedList[i].EnumText, enumTextOrderedList2[i].EnumText);
+                    Assert.Equal(enumTextOrderedList[i].EnumID, enumTextOrderedList2[i].EnumID);
                 }
             }
         }
-        [TestMethod]
+        [Fact]
         public void Enums_MikeScenarioSpecialResultKMLTypeEnumTextOrdered_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
@@ -10461,19 +10474,19 @@ namespace CSSPEnums.Tests
                 enumTextOrderedList = enumTextOrderedList.OrderBy(c => c.EnumText).ToList();
 
                 List<EnumIDAndText> enumTextOrderedList2 = enums.GetEnumTextOrderedList(typeof(MikeScenarioSpecialResultKMLTypeEnum));
-                Assert.AreEqual(enumTextOrderedList.Count, enumTextOrderedList2.Count);
+                Assert.Equal(enumTextOrderedList.Count, enumTextOrderedList2.Count);
 
                 EnumIDAndText enumTextOrdered = new EnumIDAndText();
-                Assert.IsNotNull(enumTextOrdered);
+                Assert.NotNull(enumTextOrdered);
 
                 for (int i = 0, count = enumTextOrderedList.Count; i < count; i++)
                 {
-                    Assert.AreEqual(enumTextOrderedList[i].EnumText, enumTextOrderedList2[i].EnumText);
-                    Assert.AreEqual(enumTextOrderedList[i].EnumID, enumTextOrderedList2[i].EnumID);
+                    Assert.Equal(enumTextOrderedList[i].EnumText, enumTextOrderedList2[i].EnumText);
+                    Assert.Equal(enumTextOrderedList[i].EnumID, enumTextOrderedList2[i].EnumID);
                 }
             }
         }
-        [TestMethod]
+        [Fact]
         public void Enums_MWQMSiteLatestClassificationEnumTextOrdered_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
@@ -10488,19 +10501,19 @@ namespace CSSPEnums.Tests
                 enumTextOrderedList = enumTextOrderedList.OrderBy(c => c.EnumText).ToList();
 
                 List<EnumIDAndText> enumTextOrderedList2 = enums.GetEnumTextOrderedList(typeof(MWQMSiteLatestClassificationEnum));
-                Assert.AreEqual(enumTextOrderedList.Count, enumTextOrderedList2.Count);
+                Assert.Equal(enumTextOrderedList.Count, enumTextOrderedList2.Count);
 
                 EnumIDAndText enumTextOrdered = new EnumIDAndText();
-                Assert.IsNotNull(enumTextOrdered);
+                Assert.NotNull(enumTextOrdered);
 
                 for (int i = 0, count = enumTextOrderedList.Count; i < count; i++)
                 {
-                    Assert.AreEqual(enumTextOrderedList[i].EnumText, enumTextOrderedList2[i].EnumText);
-                    Assert.AreEqual(enumTextOrderedList[i].EnumID, enumTextOrderedList2[i].EnumID);
+                    Assert.Equal(enumTextOrderedList[i].EnumText, enumTextOrderedList2[i].EnumText);
+                    Assert.Equal(enumTextOrderedList[i].EnumID, enumTextOrderedList2[i].EnumID);
                 }
             }
         }
-        [TestMethod]
+        [Fact]
         public void Enums_PolSourceInactiveReasonEnumTextOrdered_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
@@ -10515,19 +10528,19 @@ namespace CSSPEnums.Tests
                 enumTextOrderedList = enumTextOrderedList.OrderBy(c => c.EnumText).ToList();
 
                 List<EnumIDAndText> enumTextOrderedList2 = enums.GetEnumTextOrderedList(typeof(PolSourceInactiveReasonEnum));
-                Assert.AreEqual(enumTextOrderedList.Count, enumTextOrderedList2.Count);
+                Assert.Equal(enumTextOrderedList.Count, enumTextOrderedList2.Count);
 
                 EnumIDAndText enumTextOrdered = new EnumIDAndText();
-                Assert.IsNotNull(enumTextOrdered);
+                Assert.NotNull(enumTextOrdered);
 
                 for (int i = 0, count = enumTextOrderedList.Count; i < count; i++)
                 {
-                    Assert.AreEqual(enumTextOrderedList[i].EnumText, enumTextOrderedList2[i].EnumText);
-                    Assert.AreEqual(enumTextOrderedList[i].EnumID, enumTextOrderedList2[i].EnumID);
+                    Assert.Equal(enumTextOrderedList[i].EnumText, enumTextOrderedList2[i].EnumText);
+                    Assert.Equal(enumTextOrderedList[i].EnumID, enumTextOrderedList2[i].EnumID);
                 }
             }
         }
-        [TestMethod]
+        [Fact]
         public void Enums_PolSourceIssueRiskEnumTextOrdered_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
@@ -10542,19 +10555,19 @@ namespace CSSPEnums.Tests
                 enumTextOrderedList = enumTextOrderedList.OrderBy(c => c.EnumText).ToList();
 
                 List<EnumIDAndText> enumTextOrderedList2 = enums.GetEnumTextOrderedList(typeof(PolSourceIssueRiskEnum));
-                Assert.AreEqual(enumTextOrderedList.Count, enumTextOrderedList2.Count);
+                Assert.Equal(enumTextOrderedList.Count, enumTextOrderedList2.Count);
 
                 EnumIDAndText enumTextOrdered = new EnumIDAndText();
-                Assert.IsNotNull(enumTextOrdered);
+                Assert.NotNull(enumTextOrdered);
 
                 for (int i = 0, count = enumTextOrderedList.Count; i < count; i++)
                 {
-                    Assert.AreEqual(enumTextOrderedList[i].EnumText, enumTextOrderedList2[i].EnumText);
-                    Assert.AreEqual(enumTextOrderedList[i].EnumID, enumTextOrderedList2[i].EnumID);
+                    Assert.Equal(enumTextOrderedList[i].EnumText, enumTextOrderedList2[i].EnumText);
+                    Assert.Equal(enumTextOrderedList[i].EnumID, enumTextOrderedList2[i].EnumID);
                 }
             }
         }
-        [TestMethod]
+        [Fact]
         public void Enums_PositionEnumTextOrdered_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
@@ -10569,19 +10582,19 @@ namespace CSSPEnums.Tests
                 enumTextOrderedList = enumTextOrderedList.OrderBy(c => c.EnumText).ToList();
 
                 List<EnumIDAndText> enumTextOrderedList2 = enums.GetEnumTextOrderedList(typeof(PositionEnum));
-                Assert.AreEqual(enumTextOrderedList.Count, enumTextOrderedList2.Count);
+                Assert.Equal(enumTextOrderedList.Count, enumTextOrderedList2.Count);
 
                 EnumIDAndText enumTextOrdered = new EnumIDAndText();
-                Assert.IsNotNull(enumTextOrdered);
+                Assert.NotNull(enumTextOrdered);
 
                 for (int i = 0, count = enumTextOrderedList.Count; i < count; i++)
                 {
-                    Assert.AreEqual(enumTextOrderedList[i].EnumText, enumTextOrderedList2[i].EnumText);
-                    Assert.AreEqual(enumTextOrderedList[i].EnumID, enumTextOrderedList2[i].EnumID);
+                    Assert.Equal(enumTextOrderedList[i].EnumText, enumTextOrderedList2[i].EnumText);
+                    Assert.Equal(enumTextOrderedList[i].EnumID, enumTextOrderedList2[i].EnumID);
                 }
             }
         }
-        [TestMethod]
+        [Fact]
         public void Enums_PreliminaryTreatmentTypeEnumTextOrdered_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
@@ -10596,19 +10609,19 @@ namespace CSSPEnums.Tests
                 enumTextOrderedList = enumTextOrderedList.OrderBy(c => c.EnumText).ToList();
 
                 List<EnumIDAndText> enumTextOrderedList2 = enums.GetEnumTextOrderedList(typeof(PreliminaryTreatmentTypeEnum));
-                Assert.AreEqual(enumTextOrderedList.Count, enumTextOrderedList2.Count);
+                Assert.Equal(enumTextOrderedList.Count, enumTextOrderedList2.Count);
 
                 EnumIDAndText enumTextOrdered = new EnumIDAndText();
-                Assert.IsNotNull(enumTextOrdered);
+                Assert.NotNull(enumTextOrdered);
 
                 for (int i = 0, count = enumTextOrderedList.Count; i < count; i++)
                 {
-                    Assert.AreEqual(enumTextOrderedList[i].EnumText, enumTextOrderedList2[i].EnumText);
-                    Assert.AreEqual(enumTextOrderedList[i].EnumID, enumTextOrderedList2[i].EnumID);
+                    Assert.Equal(enumTextOrderedList[i].EnumText, enumTextOrderedList2[i].EnumText);
+                    Assert.Equal(enumTextOrderedList[i].EnumID, enumTextOrderedList2[i].EnumID);
                 }
             }
         }
-        [TestMethod]
+        [Fact]
         public void Enums_PrimaryTreatmentTypeEnumTextOrdered_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
@@ -10623,19 +10636,19 @@ namespace CSSPEnums.Tests
                 enumTextOrderedList = enumTextOrderedList.OrderBy(c => c.EnumText).ToList();
 
                 List<EnumIDAndText> enumTextOrderedList2 = enums.GetEnumTextOrderedList(typeof(PrimaryTreatmentTypeEnum));
-                Assert.AreEqual(enumTextOrderedList.Count, enumTextOrderedList2.Count);
+                Assert.Equal(enumTextOrderedList.Count, enumTextOrderedList2.Count);
 
                 EnumIDAndText enumTextOrdered = new EnumIDAndText();
-                Assert.IsNotNull(enumTextOrdered);
+                Assert.NotNull(enumTextOrdered);
 
                 for (int i = 0, count = enumTextOrderedList.Count; i < count; i++)
                 {
-                    Assert.AreEqual(enumTextOrderedList[i].EnumText, enumTextOrderedList2[i].EnumText);
-                    Assert.AreEqual(enumTextOrderedList[i].EnumID, enumTextOrderedList2[i].EnumID);
+                    Assert.Equal(enumTextOrderedList[i].EnumText, enumTextOrderedList2[i].EnumText);
+                    Assert.Equal(enumTextOrderedList[i].EnumID, enumTextOrderedList2[i].EnumID);
                 }
             }
         }
-        [TestMethod]
+        [Fact]
         public void Enums_PropertyTypeEnumTextOrdered_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
@@ -10650,19 +10663,19 @@ namespace CSSPEnums.Tests
                 enumTextOrderedList = enumTextOrderedList.OrderBy(c => c.EnumText).ToList();
 
                 List<EnumIDAndText> enumTextOrderedList2 = enums.GetEnumTextOrderedList(typeof(PropertyTypeEnum));
-                Assert.AreEqual(enumTextOrderedList.Count, enumTextOrderedList2.Count);
+                Assert.Equal(enumTextOrderedList.Count, enumTextOrderedList2.Count);
 
                 EnumIDAndText enumTextOrdered = new EnumIDAndText();
-                Assert.IsNotNull(enumTextOrdered);
+                Assert.NotNull(enumTextOrdered);
 
                 for (int i = 0, count = enumTextOrderedList.Count; i < count; i++)
                 {
-                    Assert.AreEqual(enumTextOrderedList[i].EnumText, enumTextOrderedList2[i].EnumText);
-                    Assert.AreEqual(enumTextOrderedList[i].EnumID, enumTextOrderedList2[i].EnumID);
+                    Assert.Equal(enumTextOrderedList[i].EnumText, enumTextOrderedList2[i].EnumText);
+                    Assert.Equal(enumTextOrderedList[i].EnumID, enumTextOrderedList2[i].EnumID);
                 }
             }
         }
-        [TestMethod]
+        [Fact]
         public void Enums_ReportConditionEnumTextOrdered_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
@@ -10677,19 +10690,19 @@ namespace CSSPEnums.Tests
                 enumTextOrderedList = enumTextOrderedList.OrderBy(c => c.EnumText).ToList();
 
                 List<EnumIDAndText> enumTextOrderedList2 = enums.GetEnumTextOrderedList(typeof(ReportConditionEnum));
-                Assert.AreEqual(enumTextOrderedList.Count, enumTextOrderedList2.Count);
+                Assert.Equal(enumTextOrderedList.Count, enumTextOrderedList2.Count);
 
                 EnumIDAndText enumTextOrdered = new EnumIDAndText();
-                Assert.IsNotNull(enumTextOrdered);
+                Assert.NotNull(enumTextOrdered);
 
                 for (int i = 0, count = enumTextOrderedList.Count; i < count; i++)
                 {
-                    Assert.AreEqual(enumTextOrderedList[i].EnumText, enumTextOrderedList2[i].EnumText);
-                    Assert.AreEqual(enumTextOrderedList[i].EnumID, enumTextOrderedList2[i].EnumID);
+                    Assert.Equal(enumTextOrderedList[i].EnumText, enumTextOrderedList2[i].EnumText);
+                    Assert.Equal(enumTextOrderedList[i].EnumID, enumTextOrderedList2[i].EnumID);
                 }
             }
         }
-        [TestMethod]
+        [Fact]
         public void Enums_ReportFieldTypeEnumTextOrdered_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
@@ -10704,19 +10717,19 @@ namespace CSSPEnums.Tests
                 enumTextOrderedList = enumTextOrderedList.OrderBy(c => c.EnumText).ToList();
 
                 List<EnumIDAndText> enumTextOrderedList2 = enums.GetEnumTextOrderedList(typeof(ReportFieldTypeEnum));
-                Assert.AreEqual(enumTextOrderedList.Count, enumTextOrderedList2.Count);
+                Assert.Equal(enumTextOrderedList.Count, enumTextOrderedList2.Count);
 
                 EnumIDAndText enumTextOrdered = new EnumIDAndText();
-                Assert.IsNotNull(enumTextOrdered);
+                Assert.NotNull(enumTextOrdered);
 
                 for (int i = 0, count = enumTextOrderedList.Count; i < count; i++)
                 {
-                    Assert.AreEqual(enumTextOrderedList[i].EnumText, enumTextOrderedList2[i].EnumText);
-                    Assert.AreEqual(enumTextOrderedList[i].EnumID, enumTextOrderedList2[i].EnumID);
+                    Assert.Equal(enumTextOrderedList[i].EnumText, enumTextOrderedList2[i].EnumText);
+                    Assert.Equal(enumTextOrderedList[i].EnumID, enumTextOrderedList2[i].EnumID);
                 }
             }
         }
-        [TestMethod]
+        [Fact]
         public void Enums_ReportFileTypeEnumTextOrdered_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
@@ -10731,19 +10744,19 @@ namespace CSSPEnums.Tests
                 enumTextOrderedList = enumTextOrderedList.OrderBy(c => c.EnumText).ToList();
 
                 List<EnumIDAndText> enumTextOrderedList2 = enums.GetEnumTextOrderedList(typeof(ReportFileTypeEnum));
-                Assert.AreEqual(enumTextOrderedList.Count, enumTextOrderedList2.Count);
+                Assert.Equal(enumTextOrderedList.Count, enumTextOrderedList2.Count);
 
                 EnumIDAndText enumTextOrdered = new EnumIDAndText();
-                Assert.IsNotNull(enumTextOrdered);
+                Assert.NotNull(enumTextOrdered);
 
                 for (int i = 0, count = enumTextOrderedList.Count; i < count; i++)
                 {
-                    Assert.AreEqual(enumTextOrderedList[i].EnumText, enumTextOrderedList2[i].EnumText);
-                    Assert.AreEqual(enumTextOrderedList[i].EnumID, enumTextOrderedList2[i].EnumID);
+                    Assert.Equal(enumTextOrderedList[i].EnumText, enumTextOrderedList2[i].EnumText);
+                    Assert.Equal(enumTextOrderedList[i].EnumID, enumTextOrderedList2[i].EnumID);
                 }
             }
         }
-        [TestMethod]
+        [Fact]
         public void Enums_ReportFormatingDateEnumTextOrdered_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
@@ -10758,19 +10771,19 @@ namespace CSSPEnums.Tests
                 enumTextOrderedList = enumTextOrderedList.OrderBy(c => c.EnumText).ToList();
 
                 List<EnumIDAndText> enumTextOrderedList2 = enums.GetEnumTextOrderedList(typeof(ReportFormatingDateEnum));
-                Assert.AreEqual(enumTextOrderedList.Count, enumTextOrderedList2.Count);
+                Assert.Equal(enumTextOrderedList.Count, enumTextOrderedList2.Count);
 
                 EnumIDAndText enumTextOrdered = new EnumIDAndText();
-                Assert.IsNotNull(enumTextOrdered);
+                Assert.NotNull(enumTextOrdered);
 
                 for (int i = 0, count = enumTextOrderedList.Count; i < count; i++)
                 {
-                    Assert.AreEqual(enumTextOrderedList[i].EnumText, enumTextOrderedList2[i].EnumText);
-                    Assert.AreEqual(enumTextOrderedList[i].EnumID, enumTextOrderedList2[i].EnumID);
+                    Assert.Equal(enumTextOrderedList[i].EnumText, enumTextOrderedList2[i].EnumText);
+                    Assert.Equal(enumTextOrderedList[i].EnumID, enumTextOrderedList2[i].EnumID);
                 }
             }
         }
-        [TestMethod]
+        [Fact]
         public void Enums_ReportFormatingNumberEnumTextOrdered_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
@@ -10785,19 +10798,19 @@ namespace CSSPEnums.Tests
                 enumTextOrderedList = enumTextOrderedList.OrderBy(c => c.EnumText).ToList();
 
                 List<EnumIDAndText> enumTextOrderedList2 = enums.GetEnumTextOrderedList(typeof(ReportFormatingNumberEnum));
-                Assert.AreEqual(enumTextOrderedList.Count, enumTextOrderedList2.Count);
+                Assert.Equal(enumTextOrderedList.Count, enumTextOrderedList2.Count);
 
                 EnumIDAndText enumTextOrdered = new EnumIDAndText();
-                Assert.IsNotNull(enumTextOrdered);
+                Assert.NotNull(enumTextOrdered);
 
                 for (int i = 0, count = enumTextOrderedList.Count; i < count; i++)
                 {
-                    Assert.AreEqual(enumTextOrderedList[i].EnumText, enumTextOrderedList2[i].EnumText);
-                    Assert.AreEqual(enumTextOrderedList[i].EnumID, enumTextOrderedList2[i].EnumID);
+                    Assert.Equal(enumTextOrderedList[i].EnumText, enumTextOrderedList2[i].EnumText);
+                    Assert.Equal(enumTextOrderedList[i].EnumID, enumTextOrderedList2[i].EnumID);
                 }
             }
         }
-        [TestMethod]
+        [Fact]
         public void Enums_ReportGenerateObjectsKeywordEnumTextOrdered_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
@@ -10812,19 +10825,19 @@ namespace CSSPEnums.Tests
                 enumTextOrderedList = enumTextOrderedList.OrderBy(c => c.EnumText).ToList();
 
                 List<EnumIDAndText> enumTextOrderedList2 = enums.GetEnumTextOrderedList(typeof(ReportGenerateObjectsKeywordEnum));
-                Assert.AreEqual(enumTextOrderedList.Count, enumTextOrderedList2.Count);
+                Assert.Equal(enumTextOrderedList.Count, enumTextOrderedList2.Count);
 
                 EnumIDAndText enumTextOrdered = new EnumIDAndText();
-                Assert.IsNotNull(enumTextOrdered);
+                Assert.NotNull(enumTextOrdered);
 
                 for (int i = 0, count = enumTextOrderedList.Count; i < count; i++)
                 {
-                    Assert.AreEqual(enumTextOrderedList[i].EnumText, enumTextOrderedList2[i].EnumText);
-                    Assert.AreEqual(enumTextOrderedList[i].EnumID, enumTextOrderedList2[i].EnumID);
+                    Assert.Equal(enumTextOrderedList[i].EnumText, enumTextOrderedList2[i].EnumText);
+                    Assert.Equal(enumTextOrderedList[i].EnumID, enumTextOrderedList2[i].EnumID);
                 }
             }
         }
-        [TestMethod]
+        [Fact]
         public void Enums_ReportSortingEnumTextOrdered_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
@@ -10839,19 +10852,19 @@ namespace CSSPEnums.Tests
                 enumTextOrderedList = enumTextOrderedList.OrderBy(c => c.EnumText).ToList();
 
                 List<EnumIDAndText> enumTextOrderedList2 = enums.GetEnumTextOrderedList(typeof(ReportSortingEnum));
-                Assert.AreEqual(enumTextOrderedList.Count, enumTextOrderedList2.Count);
+                Assert.Equal(enumTextOrderedList.Count, enumTextOrderedList2.Count);
 
                 EnumIDAndText enumTextOrdered = new EnumIDAndText();
-                Assert.IsNotNull(enumTextOrdered);
+                Assert.NotNull(enumTextOrdered);
 
                 for (int i = 0, count = enumTextOrderedList.Count; i < count; i++)
                 {
-                    Assert.AreEqual(enumTextOrderedList[i].EnumText, enumTextOrderedList2[i].EnumText);
-                    Assert.AreEqual(enumTextOrderedList[i].EnumID, enumTextOrderedList2[i].EnumID);
+                    Assert.Equal(enumTextOrderedList[i].EnumText, enumTextOrderedList2[i].EnumText);
+                    Assert.Equal(enumTextOrderedList[i].EnumID, enumTextOrderedList2[i].EnumID);
                 }
             }
         }
-        [TestMethod]
+        [Fact]
         public void Enums_ReportTreeNodeSubTypeEnumTextOrdered_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
@@ -10866,19 +10879,19 @@ namespace CSSPEnums.Tests
                 enumTextOrderedList = enumTextOrderedList.OrderBy(c => c.EnumText).ToList();
 
                 List<EnumIDAndText> enumTextOrderedList2 = enums.GetEnumTextOrderedList(typeof(ReportTreeNodeSubTypeEnum));
-                Assert.AreEqual(enumTextOrderedList.Count, enumTextOrderedList2.Count);
+                Assert.Equal(enumTextOrderedList.Count, enumTextOrderedList2.Count);
 
                 EnumIDAndText enumTextOrdered = new EnumIDAndText();
-                Assert.IsNotNull(enumTextOrdered);
+                Assert.NotNull(enumTextOrdered);
 
                 for (int i = 0, count = enumTextOrderedList.Count; i < count; i++)
                 {
-                    Assert.AreEqual(enumTextOrderedList[i].EnumText, enumTextOrderedList2[i].EnumText);
-                    Assert.AreEqual(enumTextOrderedList[i].EnumID, enumTextOrderedList2[i].EnumID);
+                    Assert.Equal(enumTextOrderedList[i].EnumText, enumTextOrderedList2[i].EnumText);
+                    Assert.Equal(enumTextOrderedList[i].EnumID, enumTextOrderedList2[i].EnumID);
                 }
             }
         }
-        [TestMethod]
+        [Fact]
         public void Enums_ReportTreeNodeTypeEnumTextOrdered_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
@@ -10893,19 +10906,19 @@ namespace CSSPEnums.Tests
                 enumTextOrderedList = enumTextOrderedList.OrderBy(c => c.EnumText).ToList();
 
                 List<EnumIDAndText> enumTextOrderedList2 = enums.GetEnumTextOrderedList(typeof(ReportTreeNodeTypeEnum));
-                Assert.AreEqual(enumTextOrderedList.Count, enumTextOrderedList2.Count);
+                Assert.Equal(enumTextOrderedList.Count, enumTextOrderedList2.Count);
 
                 EnumIDAndText enumTextOrdered = new EnumIDAndText();
-                Assert.IsNotNull(enumTextOrdered);
+                Assert.NotNull(enumTextOrdered);
 
                 for (int i = 0, count = enumTextOrderedList.Count; i < count; i++)
                 {
-                    Assert.AreEqual(enumTextOrderedList[i].EnumText, enumTextOrderedList2[i].EnumText);
-                    Assert.AreEqual(enumTextOrderedList[i].EnumID, enumTextOrderedList2[i].EnumID);
+                    Assert.Equal(enumTextOrderedList[i].EnumText, enumTextOrderedList2[i].EnumText);
+                    Assert.Equal(enumTextOrderedList[i].EnumID, enumTextOrderedList2[i].EnumID);
                 }
             }
         }
-        [TestMethod]
+        [Fact]
         public void Enums_SameDayNextDayEnumTextOrdered_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
@@ -10920,19 +10933,19 @@ namespace CSSPEnums.Tests
                 enumTextOrderedList = enumTextOrderedList.OrderBy(c => c.EnumText).ToList();
 
                 List<EnumIDAndText> enumTextOrderedList2 = enums.GetEnumTextOrderedList(typeof(SameDayNextDayEnum));
-                Assert.AreEqual(enumTextOrderedList.Count, enumTextOrderedList2.Count);
+                Assert.Equal(enumTextOrderedList.Count, enumTextOrderedList2.Count);
 
                 EnumIDAndText enumTextOrdered = new EnumIDAndText();
-                Assert.IsNotNull(enumTextOrdered);
+                Assert.NotNull(enumTextOrdered);
 
                 for (int i = 0, count = enumTextOrderedList.Count; i < count; i++)
                 {
-                    Assert.AreEqual(enumTextOrderedList[i].EnumText, enumTextOrderedList2[i].EnumText);
-                    Assert.AreEqual(enumTextOrderedList[i].EnumID, enumTextOrderedList2[i].EnumID);
+                    Assert.Equal(enumTextOrderedList[i].EnumText, enumTextOrderedList2[i].EnumText);
+                    Assert.Equal(enumTextOrderedList[i].EnumID, enumTextOrderedList2[i].EnumID);
                 }
             }
         }
-        [TestMethod]
+        [Fact]
         public void Enums_SampleMatrixEnumTextOrdered_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
@@ -10947,19 +10960,19 @@ namespace CSSPEnums.Tests
                 enumTextOrderedList = enumTextOrderedList.OrderBy(c => c.EnumText).ToList();
 
                 List<EnumIDAndText> enumTextOrderedList2 = enums.GetEnumTextOrderedList(typeof(SampleMatrixEnum));
-                Assert.AreEqual(enumTextOrderedList.Count, enumTextOrderedList2.Count);
+                Assert.Equal(enumTextOrderedList.Count, enumTextOrderedList2.Count);
 
                 EnumIDAndText enumTextOrdered = new EnumIDAndText();
-                Assert.IsNotNull(enumTextOrdered);
+                Assert.NotNull(enumTextOrdered);
 
                 for (int i = 0, count = enumTextOrderedList.Count; i < count; i++)
                 {
-                    Assert.AreEqual(enumTextOrderedList[i].EnumText, enumTextOrderedList2[i].EnumText);
-                    Assert.AreEqual(enumTextOrderedList[i].EnumID, enumTextOrderedList2[i].EnumID);
+                    Assert.Equal(enumTextOrderedList[i].EnumText, enumTextOrderedList2[i].EnumText);
+                    Assert.Equal(enumTextOrderedList[i].EnumID, enumTextOrderedList2[i].EnumID);
                 }
             }
         }
-        [TestMethod]
+        [Fact]
         public void Enums_SampleStatusEnumTextOrdered_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
@@ -10974,19 +10987,19 @@ namespace CSSPEnums.Tests
                 enumTextOrderedList = enumTextOrderedList.OrderBy(c => c.EnumText).ToList();
 
                 List<EnumIDAndText> enumTextOrderedList2 = enums.GetEnumTextOrderedList(typeof(SampleStatusEnum));
-                Assert.AreEqual(enumTextOrderedList.Count, enumTextOrderedList2.Count);
+                Assert.Equal(enumTextOrderedList.Count, enumTextOrderedList2.Count);
 
                 EnumIDAndText enumTextOrdered = new EnumIDAndText();
-                Assert.IsNotNull(enumTextOrdered);
+                Assert.NotNull(enumTextOrdered);
 
                 for (int i = 0, count = enumTextOrderedList.Count; i < count; i++)
                 {
-                    Assert.AreEqual(enumTextOrderedList[i].EnumText, enumTextOrderedList2[i].EnumText);
-                    Assert.AreEqual(enumTextOrderedList[i].EnumID, enumTextOrderedList2[i].EnumID);
+                    Assert.Equal(enumTextOrderedList[i].EnumText, enumTextOrderedList2[i].EnumText);
+                    Assert.Equal(enumTextOrderedList[i].EnumID, enumTextOrderedList2[i].EnumID);
                 }
             }
         }
-        [TestMethod]
+        [Fact]
         public void Enums_SampleTypeEnumTextOrdered_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
@@ -11001,19 +11014,19 @@ namespace CSSPEnums.Tests
                 enumTextOrderedList = enumTextOrderedList.OrderBy(c => c.EnumText).ToList();
 
                 List<EnumIDAndText> enumTextOrderedList2 = enums.GetEnumTextOrderedList(typeof(SampleTypeEnum));
-                Assert.AreEqual(enumTextOrderedList.Count, enumTextOrderedList2.Count);
+                Assert.Equal(enumTextOrderedList.Count, enumTextOrderedList2.Count);
 
                 EnumIDAndText enumTextOrdered = new EnumIDAndText();
-                Assert.IsNotNull(enumTextOrdered);
+                Assert.NotNull(enumTextOrdered);
 
                 for (int i = 0, count = enumTextOrderedList.Count; i < count; i++)
                 {
-                    Assert.AreEqual(enumTextOrderedList[i].EnumText, enumTextOrderedList2[i].EnumText);
-                    Assert.AreEqual(enumTextOrderedList[i].EnumID, enumTextOrderedList2[i].EnumID);
+                    Assert.Equal(enumTextOrderedList[i].EnumText, enumTextOrderedList2[i].EnumText);
+                    Assert.Equal(enumTextOrderedList[i].EnumID, enumTextOrderedList2[i].EnumID);
                 }
             }
         }
-        [TestMethod]
+        [Fact]
         public void Enums_SamplingPlanTypeEnumTextOrdered_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
@@ -11028,19 +11041,19 @@ namespace CSSPEnums.Tests
                 enumTextOrderedList = enumTextOrderedList.OrderBy(c => c.EnumText).ToList();
 
                 List<EnumIDAndText> enumTextOrderedList2 = enums.GetEnumTextOrderedList(typeof(SamplingPlanTypeEnum));
-                Assert.AreEqual(enumTextOrderedList.Count, enumTextOrderedList2.Count);
+                Assert.Equal(enumTextOrderedList.Count, enumTextOrderedList2.Count);
 
                 EnumIDAndText enumTextOrdered = new EnumIDAndText();
-                Assert.IsNotNull(enumTextOrdered);
+                Assert.NotNull(enumTextOrdered);
 
                 for (int i = 0, count = enumTextOrderedList.Count; i < count; i++)
                 {
-                    Assert.AreEqual(enumTextOrderedList[i].EnumText, enumTextOrderedList2[i].EnumText);
-                    Assert.AreEqual(enumTextOrderedList[i].EnumID, enumTextOrderedList2[i].EnumID);
+                    Assert.Equal(enumTextOrderedList[i].EnumText, enumTextOrderedList2[i].EnumText);
+                    Assert.Equal(enumTextOrderedList[i].EnumID, enumTextOrderedList2[i].EnumID);
                 }
             }
         }
-        [TestMethod]
+        [Fact]
         public void Enums_ScenarioStatusEnumTextOrdered_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
@@ -11055,19 +11068,19 @@ namespace CSSPEnums.Tests
                 enumTextOrderedList = enumTextOrderedList.OrderBy(c => c.EnumText).ToList();
 
                 List<EnumIDAndText> enumTextOrderedList2 = enums.GetEnumTextOrderedList(typeof(ScenarioStatusEnum));
-                Assert.AreEqual(enumTextOrderedList.Count, enumTextOrderedList2.Count);
+                Assert.Equal(enumTextOrderedList.Count, enumTextOrderedList2.Count);
 
                 EnumIDAndText enumTextOrdered = new EnumIDAndText();
-                Assert.IsNotNull(enumTextOrdered);
+                Assert.NotNull(enumTextOrdered);
 
                 for (int i = 0, count = enumTextOrderedList.Count; i < count; i++)
                 {
-                    Assert.AreEqual(enumTextOrderedList[i].EnumText, enumTextOrderedList2[i].EnumText);
-                    Assert.AreEqual(enumTextOrderedList[i].EnumID, enumTextOrderedList2[i].EnumID);
+                    Assert.Equal(enumTextOrderedList[i].EnumText, enumTextOrderedList2[i].EnumText);
+                    Assert.Equal(enumTextOrderedList[i].EnumID, enumTextOrderedList2[i].EnumID);
                 }
             }
         }
-        [TestMethod]
+        [Fact]
         public void Enums_SearchTagEnumTextOrdered_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
@@ -11082,19 +11095,19 @@ namespace CSSPEnums.Tests
                 enumTextOrderedList = enumTextOrderedList.OrderBy(c => c.EnumText).ToList();
 
                 List<EnumIDAndText> enumTextOrderedList2 = enums.GetEnumTextOrderedList(typeof(SearchTagEnum));
-                Assert.AreEqual(enumTextOrderedList.Count, enumTextOrderedList2.Count);
+                Assert.Equal(enumTextOrderedList.Count, enumTextOrderedList2.Count);
 
                 EnumIDAndText enumTextOrdered = new EnumIDAndText();
-                Assert.IsNotNull(enumTextOrdered);
+                Assert.NotNull(enumTextOrdered);
 
                 for (int i = 0, count = enumTextOrderedList.Count; i < count; i++)
                 {
-                    Assert.AreEqual(enumTextOrderedList[i].EnumText, enumTextOrderedList2[i].EnumText);
-                    Assert.AreEqual(enumTextOrderedList[i].EnumID, enumTextOrderedList2[i].EnumID);
+                    Assert.Equal(enumTextOrderedList[i].EnumText, enumTextOrderedList2[i].EnumText);
+                    Assert.Equal(enumTextOrderedList[i].EnumID, enumTextOrderedList2[i].EnumID);
                 }
             }
         }
-        [TestMethod]
+        [Fact]
         public void Enums_SecondaryTreatmentTypeEnumTextOrdered_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
@@ -11109,19 +11122,19 @@ namespace CSSPEnums.Tests
                 enumTextOrderedList = enumTextOrderedList.OrderBy(c => c.EnumText).ToList();
 
                 List<EnumIDAndText> enumTextOrderedList2 = enums.GetEnumTextOrderedList(typeof(SecondaryTreatmentTypeEnum));
-                Assert.AreEqual(enumTextOrderedList.Count, enumTextOrderedList2.Count);
+                Assert.Equal(enumTextOrderedList.Count, enumTextOrderedList2.Count);
 
                 EnumIDAndText enumTextOrdered = new EnumIDAndText();
-                Assert.IsNotNull(enumTextOrdered);
+                Assert.NotNull(enumTextOrdered);
 
                 for (int i = 0, count = enumTextOrderedList.Count; i < count; i++)
                 {
-                    Assert.AreEqual(enumTextOrderedList[i].EnumText, enumTextOrderedList2[i].EnumText);
-                    Assert.AreEqual(enumTextOrderedList[i].EnumID, enumTextOrderedList2[i].EnumID);
+                    Assert.Equal(enumTextOrderedList[i].EnumText, enumTextOrderedList2[i].EnumText);
+                    Assert.Equal(enumTextOrderedList[i].EnumID, enumTextOrderedList2[i].EnumID);
                 }
             }
         }
-        [TestMethod]
+        [Fact]
         public void Enums_SiteTypeEnumTextOrdered_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
@@ -11136,19 +11149,19 @@ namespace CSSPEnums.Tests
                 enumTextOrderedList = enumTextOrderedList.OrderBy(c => c.EnumText).ToList();
 
                 List<EnumIDAndText> enumTextOrderedList2 = enums.GetEnumTextOrderedList(typeof(SiteTypeEnum));
-                Assert.AreEqual(enumTextOrderedList.Count, enumTextOrderedList2.Count);
+                Assert.Equal(enumTextOrderedList.Count, enumTextOrderedList2.Count);
 
                 EnumIDAndText enumTextOrdered = new EnumIDAndText();
-                Assert.IsNotNull(enumTextOrdered);
+                Assert.NotNull(enumTextOrdered);
 
                 for (int i = 0, count = enumTextOrderedList.Count; i < count; i++)
                 {
-                    Assert.AreEqual(enumTextOrderedList[i].EnumText, enumTextOrderedList2[i].EnumText);
-                    Assert.AreEqual(enumTextOrderedList[i].EnumID, enumTextOrderedList2[i].EnumID);
+                    Assert.Equal(enumTextOrderedList[i].EnumText, enumTextOrderedList2[i].EnumText);
+                    Assert.Equal(enumTextOrderedList[i].EnumID, enumTextOrderedList2[i].EnumID);
                 }
             }
         }
-        [TestMethod]
+        [Fact]
         public void Enums_SpecialTableTypeEnumTextOrdered_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
@@ -11163,19 +11176,19 @@ namespace CSSPEnums.Tests
                 enumTextOrderedList = enumTextOrderedList.OrderBy(c => c.EnumText).ToList();
 
                 List<EnumIDAndText> enumTextOrderedList2 = enums.GetEnumTextOrderedList(typeof(SpecialTableTypeEnum));
-                Assert.AreEqual(enumTextOrderedList.Count, enumTextOrderedList2.Count);
+                Assert.Equal(enumTextOrderedList.Count, enumTextOrderedList2.Count);
 
                 EnumIDAndText enumTextOrdered = new EnumIDAndText();
-                Assert.IsNotNull(enumTextOrdered);
+                Assert.NotNull(enumTextOrdered);
 
                 for (int i = 0, count = enumTextOrderedList.Count; i < count; i++)
                 {
-                    Assert.AreEqual(enumTextOrderedList[i].EnumText, enumTextOrderedList2[i].EnumText);
-                    Assert.AreEqual(enumTextOrderedList[i].EnumID, enumTextOrderedList2[i].EnumID);
+                    Assert.Equal(enumTextOrderedList[i].EnumText, enumTextOrderedList2[i].EnumText);
+                    Assert.Equal(enumTextOrderedList[i].EnumID, enumTextOrderedList2[i].EnumID);
                 }
             }
         }
-        [TestMethod]
+        [Fact]
         public void Enums_StorageDataTypeEnumTextOrdered_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
@@ -11190,19 +11203,19 @@ namespace CSSPEnums.Tests
                 enumTextOrderedList = enumTextOrderedList.OrderBy(c => c.EnumText).ToList();
 
                 List<EnumIDAndText> enumTextOrderedList2 = enums.GetEnumTextOrderedList(typeof(StorageDataTypeEnum));
-                Assert.AreEqual(enumTextOrderedList.Count, enumTextOrderedList2.Count);
+                Assert.Equal(enumTextOrderedList.Count, enumTextOrderedList2.Count);
 
                 EnumIDAndText enumTextOrdered = new EnumIDAndText();
-                Assert.IsNotNull(enumTextOrdered);
+                Assert.NotNull(enumTextOrdered);
 
                 for (int i = 0, count = enumTextOrderedList.Count; i < count; i++)
                 {
-                    Assert.AreEqual(enumTextOrderedList[i].EnumText, enumTextOrderedList2[i].EnumText);
-                    Assert.AreEqual(enumTextOrderedList[i].EnumID, enumTextOrderedList2[i].EnumID);
+                    Assert.Equal(enumTextOrderedList[i].EnumText, enumTextOrderedList2[i].EnumText);
+                    Assert.Equal(enumTextOrderedList[i].EnumID, enumTextOrderedList2[i].EnumID);
                 }
             }
         }
-        [TestMethod]
+        [Fact]
         public void Enums_StreetTypeEnumTextOrdered_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
@@ -11217,19 +11230,19 @@ namespace CSSPEnums.Tests
                 enumTextOrderedList = enumTextOrderedList.OrderBy(c => c.EnumText).ToList();
 
                 List<EnumIDAndText> enumTextOrderedList2 = enums.GetEnumTextOrderedList(typeof(StreetTypeEnum));
-                Assert.AreEqual(enumTextOrderedList.Count, enumTextOrderedList2.Count);
+                Assert.Equal(enumTextOrderedList.Count, enumTextOrderedList2.Count);
 
                 EnumIDAndText enumTextOrdered = new EnumIDAndText();
-                Assert.IsNotNull(enumTextOrdered);
+                Assert.NotNull(enumTextOrdered);
 
                 for (int i = 0, count = enumTextOrderedList.Count; i < count; i++)
                 {
-                    Assert.AreEqual(enumTextOrderedList[i].EnumText, enumTextOrderedList2[i].EnumText);
-                    Assert.AreEqual(enumTextOrderedList[i].EnumID, enumTextOrderedList2[i].EnumID);
+                    Assert.Equal(enumTextOrderedList[i].EnumText, enumTextOrderedList2[i].EnumText);
+                    Assert.Equal(enumTextOrderedList[i].EnumID, enumTextOrderedList2[i].EnumID);
                 }
             }
         }
-        [TestMethod]
+        [Fact]
         public void Enums_TelTypeEnumTextOrdered_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
@@ -11244,19 +11257,19 @@ namespace CSSPEnums.Tests
                 enumTextOrderedList = enumTextOrderedList.OrderBy(c => c.EnumText).ToList();
 
                 List<EnumIDAndText> enumTextOrderedList2 = enums.GetEnumTextOrderedList(typeof(TelTypeEnum));
-                Assert.AreEqual(enumTextOrderedList.Count, enumTextOrderedList2.Count);
+                Assert.Equal(enumTextOrderedList.Count, enumTextOrderedList2.Count);
 
                 EnumIDAndText enumTextOrdered = new EnumIDAndText();
-                Assert.IsNotNull(enumTextOrdered);
+                Assert.NotNull(enumTextOrdered);
 
                 for (int i = 0, count = enumTextOrderedList.Count; i < count; i++)
                 {
-                    Assert.AreEqual(enumTextOrderedList[i].EnumText, enumTextOrderedList2[i].EnumText);
-                    Assert.AreEqual(enumTextOrderedList[i].EnumID, enumTextOrderedList2[i].EnumID);
+                    Assert.Equal(enumTextOrderedList[i].EnumText, enumTextOrderedList2[i].EnumText);
+                    Assert.Equal(enumTextOrderedList[i].EnumID, enumTextOrderedList2[i].EnumID);
                 }
             }
         }
-        [TestMethod]
+        [Fact]
         public void Enums_TertiaryTreatmentTypeEnumTextOrdered_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
@@ -11271,19 +11284,19 @@ namespace CSSPEnums.Tests
                 enumTextOrderedList = enumTextOrderedList.OrderBy(c => c.EnumText).ToList();
 
                 List<EnumIDAndText> enumTextOrderedList2 = enums.GetEnumTextOrderedList(typeof(TertiaryTreatmentTypeEnum));
-                Assert.AreEqual(enumTextOrderedList.Count, enumTextOrderedList2.Count);
+                Assert.Equal(enumTextOrderedList.Count, enumTextOrderedList2.Count);
 
                 EnumIDAndText enumTextOrdered = new EnumIDAndText();
-                Assert.IsNotNull(enumTextOrdered);
+                Assert.NotNull(enumTextOrdered);
 
                 for (int i = 0, count = enumTextOrderedList.Count; i < count; i++)
                 {
-                    Assert.AreEqual(enumTextOrderedList[i].EnumText, enumTextOrderedList2[i].EnumText);
-                    Assert.AreEqual(enumTextOrderedList[i].EnumID, enumTextOrderedList2[i].EnumID);
+                    Assert.Equal(enumTextOrderedList[i].EnumText, enumTextOrderedList2[i].EnumText);
+                    Assert.Equal(enumTextOrderedList[i].EnumID, enumTextOrderedList2[i].EnumID);
                 }
             }
         }
-        [TestMethod]
+        [Fact]
         public void Enums_TideDataTypeEnumTextOrdered_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
@@ -11298,19 +11311,19 @@ namespace CSSPEnums.Tests
                 enumTextOrderedList = enumTextOrderedList.OrderBy(c => c.EnumText).ToList();
 
                 List<EnumIDAndText> enumTextOrderedList2 = enums.GetEnumTextOrderedList(typeof(TideDataTypeEnum));
-                Assert.AreEqual(enumTextOrderedList.Count, enumTextOrderedList2.Count);
+                Assert.Equal(enumTextOrderedList.Count, enumTextOrderedList2.Count);
 
                 EnumIDAndText enumTextOrdered = new EnumIDAndText();
-                Assert.IsNotNull(enumTextOrdered);
+                Assert.NotNull(enumTextOrdered);
 
                 for (int i = 0, count = enumTextOrderedList.Count; i < count; i++)
                 {
-                    Assert.AreEqual(enumTextOrderedList[i].EnumText, enumTextOrderedList2[i].EnumText);
-                    Assert.AreEqual(enumTextOrderedList[i].EnumID, enumTextOrderedList2[i].EnumID);
+                    Assert.Equal(enumTextOrderedList[i].EnumText, enumTextOrderedList2[i].EnumText);
+                    Assert.Equal(enumTextOrderedList[i].EnumID, enumTextOrderedList2[i].EnumID);
                 }
             }
         }
-        [TestMethod]
+        [Fact]
         public void Enums_TideTextEnumTextOrdered_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
@@ -11325,19 +11338,19 @@ namespace CSSPEnums.Tests
                 enumTextOrderedList = enumTextOrderedList.OrderBy(c => c.EnumText).ToList();
 
                 List<EnumIDAndText> enumTextOrderedList2 = enums.GetEnumTextOrderedList(typeof(TideTextEnum));
-                Assert.AreEqual(enumTextOrderedList.Count, enumTextOrderedList2.Count);
+                Assert.Equal(enumTextOrderedList.Count, enumTextOrderedList2.Count);
 
                 EnumIDAndText enumTextOrdered = new EnumIDAndText();
-                Assert.IsNotNull(enumTextOrdered);
+                Assert.NotNull(enumTextOrdered);
 
                 for (int i = 0, count = enumTextOrderedList.Count; i < count; i++)
                 {
-                    Assert.AreEqual(enumTextOrderedList[i].EnumText, enumTextOrderedList2[i].EnumText);
-                    Assert.AreEqual(enumTextOrderedList[i].EnumID, enumTextOrderedList2[i].EnumID);
+                    Assert.Equal(enumTextOrderedList[i].EnumText, enumTextOrderedList2[i].EnumText);
+                    Assert.Equal(enumTextOrderedList[i].EnumID, enumTextOrderedList2[i].EnumID);
                 }
             }
         }
-        [TestMethod]
+        [Fact]
         public void Enums_TranslationStatusEnumTextOrdered_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
@@ -11352,19 +11365,19 @@ namespace CSSPEnums.Tests
                 enumTextOrderedList = enumTextOrderedList.OrderBy(c => c.EnumText).ToList();
 
                 List<EnumIDAndText> enumTextOrderedList2 = enums.GetEnumTextOrderedList(typeof(TranslationStatusEnum));
-                Assert.AreEqual(enumTextOrderedList.Count, enumTextOrderedList2.Count);
+                Assert.Equal(enumTextOrderedList.Count, enumTextOrderedList2.Count);
 
                 EnumIDAndText enumTextOrdered = new EnumIDAndText();
-                Assert.IsNotNull(enumTextOrdered);
+                Assert.NotNull(enumTextOrdered);
 
                 for (int i = 0, count = enumTextOrderedList.Count; i < count; i++)
                 {
-                    Assert.AreEqual(enumTextOrderedList[i].EnumText, enumTextOrderedList2[i].EnumText);
-                    Assert.AreEqual(enumTextOrderedList[i].EnumID, enumTextOrderedList2[i].EnumID);
+                    Assert.Equal(enumTextOrderedList[i].EnumText, enumTextOrderedList2[i].EnumText);
+                    Assert.Equal(enumTextOrderedList[i].EnumID, enumTextOrderedList2[i].EnumID);
                 }
             }
         }
-        [TestMethod]
+        [Fact]
         public void Enums_TreatmentTypeEnumTextOrdered_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
@@ -11379,19 +11392,19 @@ namespace CSSPEnums.Tests
                 enumTextOrderedList = enumTextOrderedList.OrderBy(c => c.EnumText).ToList();
 
                 List<EnumIDAndText> enumTextOrderedList2 = enums.GetEnumTextOrderedList(typeof(TreatmentTypeEnum));
-                Assert.AreEqual(enumTextOrderedList.Count, enumTextOrderedList2.Count);
+                Assert.Equal(enumTextOrderedList.Count, enumTextOrderedList2.Count);
 
                 EnumIDAndText enumTextOrdered = new EnumIDAndText();
-                Assert.IsNotNull(enumTextOrdered);
+                Assert.NotNull(enumTextOrdered);
 
                 for (int i = 0, count = enumTextOrderedList.Count; i < count; i++)
                 {
-                    Assert.AreEqual(enumTextOrderedList[i].EnumText, enumTextOrderedList2[i].EnumText);
-                    Assert.AreEqual(enumTextOrderedList[i].EnumID, enumTextOrderedList2[i].EnumID);
+                    Assert.Equal(enumTextOrderedList[i].EnumText, enumTextOrderedList2[i].EnumText);
+                    Assert.Equal(enumTextOrderedList[i].EnumID, enumTextOrderedList2[i].EnumID);
                 }
             }
         }
-        [TestMethod]
+        [Fact]
         public void Enums_TVAuthEnumTextOrdered_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
@@ -11406,19 +11419,19 @@ namespace CSSPEnums.Tests
                 enumTextOrderedList = enumTextOrderedList.OrderBy(c => c.EnumText).ToList();
 
                 List<EnumIDAndText> enumTextOrderedList2 = enums.GetEnumTextOrderedList(typeof(TVAuthEnum));
-                Assert.AreEqual(enumTextOrderedList.Count, enumTextOrderedList2.Count);
+                Assert.Equal(enumTextOrderedList.Count, enumTextOrderedList2.Count);
 
                 EnumIDAndText enumTextOrdered = new EnumIDAndText();
-                Assert.IsNotNull(enumTextOrdered);
+                Assert.NotNull(enumTextOrdered);
 
                 for (int i = 0, count = enumTextOrderedList.Count; i < count; i++)
                 {
-                    Assert.AreEqual(enumTextOrderedList[i].EnumText, enumTextOrderedList2[i].EnumText);
-                    Assert.AreEqual(enumTextOrderedList[i].EnumID, enumTextOrderedList2[i].EnumID);
+                    Assert.Equal(enumTextOrderedList[i].EnumText, enumTextOrderedList2[i].EnumText);
+                    Assert.Equal(enumTextOrderedList[i].EnumID, enumTextOrderedList2[i].EnumID);
                 }
             }
         }
-        [TestMethod]
+        [Fact]
         public void Enums_TVTypeEnumTextOrdered_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
@@ -11433,19 +11446,19 @@ namespace CSSPEnums.Tests
                 enumTextOrderedList = enumTextOrderedList.OrderBy(c => c.EnumText).ToList();
 
                 List<EnumIDAndText> enumTextOrderedList2 = enums.GetEnumTextOrderedList(typeof(TVTypeEnum));
-                Assert.AreEqual(enumTextOrderedList.Count, enumTextOrderedList2.Count);
+                Assert.Equal(enumTextOrderedList.Count, enumTextOrderedList2.Count);
 
                 EnumIDAndText enumTextOrdered = new EnumIDAndText();
-                Assert.IsNotNull(enumTextOrdered);
+                Assert.NotNull(enumTextOrdered);
 
                 for (int i = 0, count = enumTextOrderedList.Count; i < count; i++)
                 {
-                    Assert.AreEqual(enumTextOrderedList[i].EnumText, enumTextOrderedList2[i].EnumText);
-                    Assert.AreEqual(enumTextOrderedList[i].EnumID, enumTextOrderedList2[i].EnumID);
+                    Assert.Equal(enumTextOrderedList[i].EnumText, enumTextOrderedList2[i].EnumText);
+                    Assert.Equal(enumTextOrderedList[i].EnumID, enumTextOrderedList2[i].EnumID);
                 }
             }
         }
-        [TestMethod]
+        [Fact]
         public void Enums_WebTideDataSetEnumTextOrdered_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
@@ -11460,19 +11473,19 @@ namespace CSSPEnums.Tests
                 enumTextOrderedList = enumTextOrderedList.OrderBy(c => c.EnumText).ToList();
 
                 List<EnumIDAndText> enumTextOrderedList2 = enums.GetEnumTextOrderedList(typeof(WebTideDataSetEnum));
-                Assert.AreEqual(enumTextOrderedList.Count, enumTextOrderedList2.Count);
+                Assert.Equal(enumTextOrderedList.Count, enumTextOrderedList2.Count);
 
                 EnumIDAndText enumTextOrdered = new EnumIDAndText();
-                Assert.IsNotNull(enumTextOrdered);
+                Assert.NotNull(enumTextOrdered);
 
                 for (int i = 0, count = enumTextOrderedList.Count; i < count; i++)
                 {
-                    Assert.AreEqual(enumTextOrderedList[i].EnumText, enumTextOrderedList2[i].EnumText);
-                    Assert.AreEqual(enumTextOrderedList[i].EnumID, enumTextOrderedList2[i].EnumID);
+                    Assert.Equal(enumTextOrderedList[i].EnumText, enumTextOrderedList2[i].EnumText);
+                    Assert.Equal(enumTextOrderedList[i].EnumID, enumTextOrderedList2[i].EnumID);
                 }
             }
         }
-        [TestMethod]
+        [Fact]
         public void Enums_WhereOperatorEnumTextOrdered_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
@@ -11487,19 +11500,19 @@ namespace CSSPEnums.Tests
                 enumTextOrderedList = enumTextOrderedList.OrderBy(c => c.EnumText).ToList();
 
                 List<EnumIDAndText> enumTextOrderedList2 = enums.GetEnumTextOrderedList(typeof(WhereOperatorEnum));
-                Assert.AreEqual(enumTextOrderedList.Count, enumTextOrderedList2.Count);
+                Assert.Equal(enumTextOrderedList.Count, enumTextOrderedList2.Count);
 
                 EnumIDAndText enumTextOrdered = new EnumIDAndText();
-                Assert.IsNotNull(enumTextOrdered);
+                Assert.NotNull(enumTextOrdered);
 
                 for (int i = 0, count = enumTextOrderedList.Count; i < count; i++)
                 {
-                    Assert.AreEqual(enumTextOrderedList[i].EnumText, enumTextOrderedList2[i].EnumText);
-                    Assert.AreEqual(enumTextOrderedList[i].EnumID, enumTextOrderedList2[i].EnumID);
+                    Assert.Equal(enumTextOrderedList[i].EnumText, enumTextOrderedList2[i].EnumText);
+                    Assert.Equal(enumTextOrderedList[i].EnumID, enumTextOrderedList2[i].EnumID);
                 }
             }
         }
-        [TestMethod]
+        [Fact]
         public void Enums_PolSourceObsInfoEnumTextOrdered_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
@@ -11514,15 +11527,15 @@ namespace CSSPEnums.Tests
                 enumTextOrderedList = enumTextOrderedList.OrderBy(c => c.EnumText).ToList();
 
                 List<EnumIDAndText> enumTextOrderedList2 = enums.GetEnumTextOrderedList(typeof(PolSourceObsInfoEnum));
-                Assert.AreEqual(enumTextOrderedList.Count, enumTextOrderedList2.Count);
+                Assert.Equal(enumTextOrderedList.Count, enumTextOrderedList2.Count);
 
                 EnumIDAndText enumTextOrdered = new EnumIDAndText();
-                Assert.IsNotNull(enumTextOrdered);
+                Assert.NotNull(enumTextOrdered);
 
                 for (int i = 0, count = enumTextOrderedList.Count; i < count; i++)
                 {
-                    Assert.AreEqual(enumTextOrderedList[i].EnumText, enumTextOrderedList2[i].EnumText);
-                    Assert.AreEqual(enumTextOrderedList[i].EnumID, enumTextOrderedList2[i].EnumID);
+                    Assert.Equal(enumTextOrderedList[i].EnumText, enumTextOrderedList2[i].EnumText);
+                    Assert.Equal(enumTextOrderedList[i].EnumID, enumTextOrderedList2[i].EnumID);
                 }
             }
         }

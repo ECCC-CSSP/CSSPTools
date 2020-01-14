@@ -292,9 +292,7 @@ namespace CSSPEnumsGenerateCode
             FileInfo fi = new FileInfo(@"C:\CSSPTools\src\tests\CSSPEnumsDLL.Tests\Services\GeneratedBaseEnumServiceTest.cs");
 
             sb.AppendLine(@"using System;");
-            sb.AppendLine(@"using System.Text;");
-            sb.AppendLine(@"using System.Collections.Generic;");
-            sb.AppendLine(@"using Microsoft.VisualStudio.TestTools.UnitTesting;");
+            sb.AppendLine(@"using Xunit;");
             sb.AppendLine(@"using CSSPEnumsDLL.Tests.SetupInfo;");
             sb.AppendLine(@"using System.Globalization;");
             sb.AppendLine(@"using System.Threading;");
@@ -320,7 +318,7 @@ namespace CSSPEnumsGenerateCode
                     if (enumName == "PolSourceObsInfoEnum")
                         continue;
 
-                    sb.AppendLine(@"        [TestMethod]");
+                    sb.AppendLine(@"        [Fact]");
                     sb.AppendLine(@"        public void BaseEnumService_GetEnumText_" + enumName + "_Test()");
                     sb.AppendLine(@"        {");
                     sb.AppendLine(@"            foreach (CultureInfo culture in setupData.cultureListGood)");
@@ -328,7 +326,7 @@ namespace CSSPEnumsGenerateCode
                     sb.AppendLine(@"                SetupTest(culture);");
                     sb.AppendLine(@"        ");
                     sb.AppendLine(@"                string retStr = baseEnumService.GetEnumText_" + enumName + "(null);");
-                    sb.AppendLine(@"                Assert.AreEqual(BaseEnumServiceRes.Empty, retStr);");
+                    sb.AppendLine(@"                Assert.Equal(BaseEnumServiceRes.Empty, retStr);");
                     sb.AppendLine(@"        ");
                     sb.AppendLine(@"                for (int i = 0, count = Enum.GetNames(typeof(" + enumName + ")).Length; i < count; i++)");
                     sb.AppendLine(@"                {");
@@ -341,23 +339,21 @@ namespace CSSPEnumsGenerateCode
                         if (fieldInfo.FieldType.IsEnum)
                         {
                             string fName = fieldInfo.Name;
-                            //object fValue = fieldInfo.GetRawConstantValue();
-                            //richTextBoxStatus.AppendText(fName + " " + fValue + "\r\n");
                             sb.AppendLine(@"                        case " + enumName + "." + fName + ":");
                             if (fName == "Error")
                             {
-                                sb.AppendLine(@"                            Assert.AreEqual(BaseEnumServiceRes.Empty, retStr);");
+                                sb.AppendLine(@"                            Assert.Equal(BaseEnumServiceRes.Empty, retStr);");
                                 sb.AppendLine(@"                            break;");
                             }
                             else
                             {
-                                sb.AppendLine(@"                            Assert.AreEqual(BaseEnumServiceRes." + enumName + fName + ", retStr);");
+                                sb.AppendLine(@"                            Assert.Equal(BaseEnumServiceRes." + enumName + fName + ", retStr);");
                                 sb.AppendLine(@"                            break;");
                             }
                         }
                     }
                     sb.AppendLine(@"                        default:");
-                    sb.AppendLine(@"                            Assert.AreEqual(BaseEnumServiceRes.Empty, retStr);");
+                    sb.AppendLine(@"                            Assert.Equal(BaseEnumServiceRes.Empty, retStr);");
                     sb.AppendLine(@"                            break;");
                     sb.AppendLine(@"                    }");
                     sb.AppendLine(@"                }");
@@ -383,7 +379,7 @@ namespace CSSPEnumsGenerateCode
                     if (enumName == "PolSourceObsInfoEnum")
                         continue;
 
-                    sb.AppendLine(@"        [TestMethod]");
+                    sb.AppendLine(@"        [Fact]");
                     sb.AppendLine(@"        public void BaseEnumService_" + enumName.Substring(0, enumName.Length - 4) + "OK_Test()");
                     sb.AppendLine(@"        {");
                     sb.AppendLine(@"            foreach (CultureInfo culture in setupData.cultureListGood)");
@@ -391,7 +387,7 @@ namespace CSSPEnumsGenerateCode
                     sb.AppendLine(@"                SetupTest(culture);");
                     sb.AppendLine(@"");
                     sb.AppendLine(@"                string retStr = baseEnumService." + enumName.Substring(0, enumName.Length - 4) + "OK(null);");
-                    sb.AppendLine(@"                Assert.AreEqual("""", retStr);");
+                    sb.AppendLine(@"                Assert.Equal("""", retStr);");
                     sb.AppendLine(@"");
                     sb.AppendLine(@"                for (int i = 0, count = Enum.GetNames(typeof(" + enumName + ")).Length; i < count; i++)");
                     sb.AppendLine(@"                {");
@@ -404,15 +400,13 @@ namespace CSSPEnumsGenerateCode
                         if (fieldInfo.FieldType.IsEnum)
                         {
                             string fName = fieldInfo.Name;
-                            //object fValue = fieldInfo.GetRawConstantValue();
-                            //richTextBoxStatus.AppendText(fName + " " + fValue + "\r\n");
                             sb.AppendLine(@"                        case " + enumName + "." + fName + ":");
                         }
                     }
-                    sb.AppendLine(@"                            Assert.AreEqual("""", retStr);");
+                    sb.AppendLine(@"                            Assert.Equal("""", retStr);");
                     sb.AppendLine(@"                            break;");
                     sb.AppendLine(@"                        default:");
-                    sb.AppendLine(@"                            Assert.AreEqual(string.Format(BaseEnumServiceRes._IsRequired, BaseEnumServiceRes." + enumName.Substring(0, enumName.Length - 4) + "), retStr);");
+                    sb.AppendLine(@"                            Assert.Equal(string.Format(BaseEnumServiceRes._IsRequired, BaseEnumServiceRes." + enumName.Substring(0, enumName.Length - 4) + "), retStr);");
                     sb.AppendLine(@"                            break;");
                     sb.AppendLine(@"                    }");
                     sb.AppendLine(@"                }");
@@ -425,28 +419,6 @@ namespace CSSPEnumsGenerateCode
             sb.AppendLine(@"        #endregion Testing Methods Check OK public");
             sb.AppendLine(@"    }");
             sb.AppendLine(@"}");
-
-
-
-            //var importAssembly = System.Reflection.Assembly.LoadFile(fiDLL.FullName);
-            //Type[] types = importAssembly.GetTypes();
-            //foreach (Type type in types)
-            //{
-            //    if (type.IsEnum)
-            //    {
-            //        string enumName = type.Name;
-            //        richTextBoxStatus.AppendText(enumName + "\r\n");
-            //        foreach (FieldInfo fieldInfo in type.GetFields())
-            //        {
-            //            if (fieldInfo.FieldType.IsEnum)
-            //            {
-            //                string fName = fieldInfo.Name;
-            //                object fValue = fieldInfo.GetRawConstantValue();
-            //                richTextBoxStatus.AppendText(fName + " " + fValue + "\r\n");
-            //            }
-            //        }
-            //    }
-            //}
 
             StreamWriter sw = fi.CreateText();
             sw.Write(sb.ToString());

@@ -6,7 +6,7 @@
  */ 
 using System;
 using System.Text;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using System.Linq;
 using System.Globalization;
 using System.Transactions;
@@ -19,7 +19,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace CSSPModels.Tests
 {
-    [TestClass]
+
     public partial class LabSheetAndA1SheetTest
     {
         #region Variables
@@ -37,7 +37,7 @@ namespace CSSPModels.Tests
         #endregion Constructors
 
         #region Tests Functions public
-        [TestMethod]
+        [Fact]
         public void LabSheetAndA1Sheet_Properties_Test()
         {
             List<string> propNameList = new List<string>() { "LabSheet", "LabSheetA1Sheet", "HasErrors",  }.OrderBy(c => c).ToList();
@@ -46,32 +46,32 @@ namespace CSSPModels.Tests
             int index = 0;
             foreach (PropertyInfo propertyInfo in typeof(LabSheetAndA1Sheet).GetProperties().Where(c => c.Name != "ValidationResults").OrderBy(c => c.Name).ToList())
             {
-                Assert.AreEqual(propertyInfo.Name, propNameList[index]);
+                Assert.Equal(propertyInfo.Name, propNameList[index]);
                 index += 1;
             }
 
-            Assert.AreEqual(propNameList.Count, index);
+            Assert.Equal(propNameList.Count, index);
         }
-        [TestMethod]
+        [Fact]
         public void LabSheetAndA1Sheet_Has_ValidationResults_Test()
         {
-             Assert.IsTrue(typeof(LabSheetAndA1Sheet).GetProperties().Where(c => c.Name == "ValidationResults").Any());
+             Assert.True(typeof(LabSheetAndA1Sheet).GetProperties().Where(c => c.Name == "ValidationResults").Any());
         }
-        [TestMethod]
+        [Fact]
         public void LabSheetAndA1Sheet_Every_Property_Has_Get_Set_Test()
         {
                LabSheet val1 = new LabSheet();
                labSheetAndA1Sheet.LabSheet = val1;
-               Assert.AreEqual(val1, labSheetAndA1Sheet.LabSheet);
+               Assert.Equal(val1, labSheetAndA1Sheet.LabSheet);
                LabSheetA1Sheet val2 = new LabSheetA1Sheet();
                labSheetAndA1Sheet.LabSheetA1Sheet = val2;
-               Assert.AreEqual(val2, labSheetAndA1Sheet.LabSheetA1Sheet);
+               Assert.Equal(val2, labSheetAndA1Sheet.LabSheetA1Sheet);
                bool val3 = true;
                labSheetAndA1Sheet.HasErrors = val3;
-               Assert.AreEqual(val3, labSheetAndA1Sheet.HasErrors);
+               Assert.Equal(val3, labSheetAndA1Sheet.HasErrors);
                IEnumerable<ValidationResult> val12 = new List<ValidationResult>() { new ValidationResult("First CSSPError Message") }.AsEnumerable();
                labSheetAndA1Sheet.ValidationResults = val12;
-               Assert.AreEqual(val12, labSheetAndA1Sheet.ValidationResults);
+               Assert.Equal(val12, labSheetAndA1Sheet.ValidationResults);
         }
         #endregion Tests Functions public
     }

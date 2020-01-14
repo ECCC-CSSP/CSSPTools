@@ -5,7 +5,7 @@
  */ 
 
 using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using System.Linq;
 using System.Collections.Generic;
 using CSSPModels;
@@ -21,7 +21,7 @@ using CSSPEnums.Resources;
 
 namespace CSSPServices.Tests
 {
-    [TestClass]
+
     public partial class ReportSectionLanguageServiceTest : TestHelper
     {
         #region Variables
@@ -39,7 +39,7 @@ namespace CSSPServices.Tests
         #endregion Constructors
 
         #region Tests Generated CRUD
-        [TestMethod]
+        [Fact]
         public void ReportSectionLanguage_CRUD_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -66,26 +66,26 @@ namespace CSSPServices.Tests
 
                     count = reportSectionLanguageService.GetReportSectionLanguageList().Count();
 
-                    Assert.AreEqual(count, (from c in dbTestDB.ReportSectionLanguages select c).Count());
+                    Assert.Equal(count, (from c in dbTestDB.ReportSectionLanguages select c).Count());
 
                     reportSectionLanguageService.Add(reportSectionLanguage);
                     if (reportSectionLanguage.HasErrors)
                     {
-                        Assert.AreEqual("", reportSectionLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
+                        Assert.Equal("", reportSectionLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
                     }
-                    Assert.AreEqual(true, reportSectionLanguageService.GetReportSectionLanguageList().Where(c => c == reportSectionLanguage).Any());
+                    Assert.True(reportSectionLanguageService.GetReportSectionLanguageList().Where(c => c == reportSectionLanguage).Any());
                     reportSectionLanguageService.Update(reportSectionLanguage);
                     if (reportSectionLanguage.HasErrors)
                     {
-                        Assert.AreEqual("", reportSectionLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
+                        Assert.Equal("", reportSectionLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
                     }
-                    Assert.AreEqual(count + 1, reportSectionLanguageService.GetReportSectionLanguageList().Count());
+                    Assert.Equal(count + 1, reportSectionLanguageService.GetReportSectionLanguageList().Count());
                     reportSectionLanguageService.Delete(reportSectionLanguage);
                     if (reportSectionLanguage.HasErrors)
                     {
-                        Assert.AreEqual("", reportSectionLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
+                        Assert.Equal("", reportSectionLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
                     }
-                    Assert.AreEqual(count, reportSectionLanguageService.GetReportSectionLanguageList().Count());
+                    Assert.Equal(count, reportSectionLanguageService.GetReportSectionLanguageList().Count());
 
                 }
             }
@@ -93,7 +93,7 @@ namespace CSSPServices.Tests
         #endregion Tests Generated CRUD
 
         #region Tests Generated Properties
-        [TestMethod]
+        [Fact]
         public void ReportSectionLanguage_Properties_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -131,13 +131,13 @@ namespace CSSPServices.Tests
                     reportSectionLanguage = GetFilledRandomReportSectionLanguage("");
                     reportSectionLanguage.ReportSectionLanguageID = 0;
                     reportSectionLanguageService.Update(reportSectionLanguage);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsRequired, "ReportSectionLanguageID"), reportSectionLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsRequired, "ReportSectionLanguageID"), reportSectionLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
 
                     reportSectionLanguage = null;
                     reportSectionLanguage = GetFilledRandomReportSectionLanguage("");
                     reportSectionLanguage.ReportSectionLanguageID = 10000000;
                     reportSectionLanguageService.Update(reportSectionLanguage);
-                    Assert.AreEqual(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "ReportSectionLanguage", "ReportSectionLanguageID", reportSectionLanguage.ReportSectionLanguageID.ToString()), reportSectionLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "ReportSectionLanguage", "ReportSectionLanguageID", reportSectionLanguage.ReportSectionLanguageID.ToString()), reportSectionLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
 
 
                     // -----------------------------------
@@ -150,7 +150,7 @@ namespace CSSPServices.Tests
                     reportSectionLanguage = GetFilledRandomReportSectionLanguage("");
                     reportSectionLanguage.ReportSectionID = 0;
                     reportSectionLanguageService.Add(reportSectionLanguage);
-                    Assert.AreEqual(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "ReportSection", "ReportSectionID", reportSectionLanguage.ReportSectionID.ToString()), reportSectionLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "ReportSection", "ReportSectionID", reportSectionLanguage.ReportSectionID.ToString()), reportSectionLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
 
 
                     // -----------------------------------
@@ -163,7 +163,7 @@ namespace CSSPServices.Tests
                     reportSectionLanguage = GetFilledRandomReportSectionLanguage("");
                     reportSectionLanguage.Language = (LanguageEnum)1000000;
                     reportSectionLanguageService.Add(reportSectionLanguage);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsRequired, "Language"), reportSectionLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsRequired, "Language"), reportSectionLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
 
 
                     // -----------------------------------
@@ -174,18 +174,18 @@ namespace CSSPServices.Tests
 
                     reportSectionLanguage = null;
                     reportSectionLanguage = GetFilledRandomReportSectionLanguage("ReportSectionName");
-                    Assert.AreEqual(false, reportSectionLanguageService.Add(reportSectionLanguage));
-                    Assert.AreEqual(1, reportSectionLanguage.ValidationResults.Count());
-                    Assert.IsTrue(reportSectionLanguage.ValidationResults.Where(c => c.ErrorMessage == string.Format(CSSPServicesRes._IsRequired, "ReportSectionName")).Any());
-                    Assert.AreEqual(null, reportSectionLanguage.ReportSectionName);
-                    Assert.AreEqual(count, reportSectionLanguageService.GetReportSectionLanguageList().Count());
+                    Assert.False(reportSectionLanguageService.Add(reportSectionLanguage));
+                    Assert.Equal(1, reportSectionLanguage.ValidationResults.Count());
+                    Assert.True(reportSectionLanguage.ValidationResults.Where(c => c.ErrorMessage == string.Format(CSSPServicesRes._IsRequired, "ReportSectionName")).Any());
+                    Assert.Null(reportSectionLanguage.ReportSectionName);
+                    Assert.Equal(count, reportSectionLanguageService.GetReportSectionLanguageList().Count());
 
                     reportSectionLanguage = null;
                     reportSectionLanguage = GetFilledRandomReportSectionLanguage("");
                     reportSectionLanguage.ReportSectionName = GetRandomString("", 101);
-                    Assert.AreEqual(false, reportSectionLanguageService.Add(reportSectionLanguage));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._MaxLengthIs_, "ReportSectionName", "100"), reportSectionLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, reportSectionLanguageService.GetReportSectionLanguageList().Count());
+                    Assert.False(reportSectionLanguageService.Add(reportSectionLanguage));
+                    Assert.Equal(string.Format(CSSPServicesRes._MaxLengthIs_, "ReportSectionName", "100"), reportSectionLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, reportSectionLanguageService.GetReportSectionLanguageList().Count());
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -197,7 +197,7 @@ namespace CSSPServices.Tests
                     reportSectionLanguage = GetFilledRandomReportSectionLanguage("");
                     reportSectionLanguage.TranslationStatusReportSectionName = (TranslationStatusEnum)1000000;
                     reportSectionLanguageService.Add(reportSectionLanguage);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsRequired, "TranslationStatusReportSectionName"), reportSectionLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsRequired, "TranslationStatusReportSectionName"), reportSectionLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
 
 
                     // -----------------------------------
@@ -208,18 +208,18 @@ namespace CSSPServices.Tests
 
                     reportSectionLanguage = null;
                     reportSectionLanguage = GetFilledRandomReportSectionLanguage("ReportSectionText");
-                    Assert.AreEqual(false, reportSectionLanguageService.Add(reportSectionLanguage));
-                    Assert.AreEqual(1, reportSectionLanguage.ValidationResults.Count());
-                    Assert.IsTrue(reportSectionLanguage.ValidationResults.Where(c => c.ErrorMessage == string.Format(CSSPServicesRes._IsRequired, "ReportSectionText")).Any());
-                    Assert.AreEqual(null, reportSectionLanguage.ReportSectionText);
-                    Assert.AreEqual(count, reportSectionLanguageService.GetReportSectionLanguageList().Count());
+                    Assert.False(reportSectionLanguageService.Add(reportSectionLanguage));
+                    Assert.Equal(1, reportSectionLanguage.ValidationResults.Count());
+                    Assert.True(reportSectionLanguage.ValidationResults.Where(c => c.ErrorMessage == string.Format(CSSPServicesRes._IsRequired, "ReportSectionText")).Any());
+                    Assert.Null(reportSectionLanguage.ReportSectionText);
+                    Assert.Equal(count, reportSectionLanguageService.GetReportSectionLanguageList().Count());
 
                     reportSectionLanguage = null;
                     reportSectionLanguage = GetFilledRandomReportSectionLanguage("");
                     reportSectionLanguage.ReportSectionText = GetRandomString("", 10001);
-                    Assert.AreEqual(false, reportSectionLanguageService.Add(reportSectionLanguage));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._MaxLengthIs_, "ReportSectionText", "10000"), reportSectionLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, reportSectionLanguageService.GetReportSectionLanguageList().Count());
+                    Assert.False(reportSectionLanguageService.Add(reportSectionLanguage));
+                    Assert.Equal(string.Format(CSSPServicesRes._MaxLengthIs_, "ReportSectionText", "10000"), reportSectionLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, reportSectionLanguageService.GetReportSectionLanguageList().Count());
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -231,7 +231,7 @@ namespace CSSPServices.Tests
                     reportSectionLanguage = GetFilledRandomReportSectionLanguage("");
                     reportSectionLanguage.TranslationStatusReportSectionText = (TranslationStatusEnum)1000000;
                     reportSectionLanguageService.Add(reportSectionLanguage);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsRequired, "TranslationStatusReportSectionText"), reportSectionLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsRequired, "TranslationStatusReportSectionText"), reportSectionLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
 
 
                     // -----------------------------------
@@ -244,12 +244,12 @@ namespace CSSPServices.Tests
                     reportSectionLanguage = GetFilledRandomReportSectionLanguage("");
                     reportSectionLanguage.LastUpdateDate_UTC = new DateTime();
                     reportSectionLanguageService.Add(reportSectionLanguage);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsRequired, "LastUpdateDate_UTC"), reportSectionLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsRequired, "LastUpdateDate_UTC"), reportSectionLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
                     reportSectionLanguage = null;
                     reportSectionLanguage = GetFilledRandomReportSectionLanguage("");
                     reportSectionLanguage.LastUpdateDate_UTC = new DateTime(1979, 1, 1);
                     reportSectionLanguageService.Add(reportSectionLanguage);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._YearShouldBeBiggerThan_, "LastUpdateDate_UTC", "1980"), reportSectionLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._YearShouldBeBiggerThan_, "LastUpdateDate_UTC", "1980"), reportSectionLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -261,13 +261,13 @@ namespace CSSPServices.Tests
                     reportSectionLanguage = GetFilledRandomReportSectionLanguage("");
                     reportSectionLanguage.LastUpdateContactTVItemID = 0;
                     reportSectionLanguageService.Add(reportSectionLanguage);
-                    Assert.AreEqual(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "TVItem", "LastUpdateContactTVItemID", reportSectionLanguage.LastUpdateContactTVItemID.ToString()), reportSectionLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "TVItem", "LastUpdateContactTVItemID", reportSectionLanguage.LastUpdateContactTVItemID.ToString()), reportSectionLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
 
                     reportSectionLanguage = null;
                     reportSectionLanguage = GetFilledRandomReportSectionLanguage("");
                     reportSectionLanguage.LastUpdateContactTVItemID = 1;
                     reportSectionLanguageService.Add(reportSectionLanguage);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsNotOfType_, "LastUpdateContactTVItemID", "Contact"), reportSectionLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsNotOfType_, "LastUpdateContactTVItemID", "Contact"), reportSectionLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
 
 
                     // -----------------------------------
@@ -291,7 +291,7 @@ namespace CSSPServices.Tests
         #endregion Tests Generated Properties
 
         #region Tests Generated for GetReportSectionLanguageWithReportSectionLanguageID(reportSectionLanguage.ReportSectionLanguageID)
-        [TestMethod]
+        [Fact]
         public void GetReportSectionLanguageWithReportSectionLanguageID__reportSectionLanguage_ReportSectionLanguageID__Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -302,7 +302,7 @@ namespace CSSPServices.Tests
                 {
                     ReportSectionLanguageService reportSectionLanguageService = new ReportSectionLanguageService(new Query() { Lang = culture.TwoLetterISOLanguageName }, dbTestDB, ContactID);
                     ReportSectionLanguage reportSectionLanguage = (from c in dbTestDB.ReportSectionLanguages select c).FirstOrDefault();
-                    Assert.IsNotNull(reportSectionLanguage);
+                    Assert.NotNull(reportSectionLanguage);
 
                 }
             }
@@ -310,7 +310,7 @@ namespace CSSPServices.Tests
         #endregion Tests Generated for GetReportSectionLanguageWithReportSectionLanguageID(reportSectionLanguage.ReportSectionLanguageID)
 
         #region Tests Generated for GetReportSectionLanguageList()
-        [TestMethod]
+        [Fact]
         public void GetReportSectionLanguageList_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -321,7 +321,7 @@ namespace CSSPServices.Tests
                 {
                     ReportSectionLanguageService reportSectionLanguageService = new ReportSectionLanguageService(new Query() { Lang = culture.TwoLetterISOLanguageName }, dbTestDB, ContactID);
                     ReportSectionLanguage reportSectionLanguage = (from c in dbTestDB.ReportSectionLanguages select c).FirstOrDefault();
-                    Assert.IsNotNull(reportSectionLanguage);
+                    Assert.NotNull(reportSectionLanguage);
 
                     List<ReportSectionLanguage> reportSectionLanguageDirectQueryList = new List<ReportSectionLanguage>();
                     reportSectionLanguageDirectQueryList = (from c in dbTestDB.ReportSectionLanguages select c).Take(200).ToList();
@@ -332,7 +332,7 @@ namespace CSSPServices.Tests
         #endregion Tests Generated for GetReportSectionLanguageList()
 
         #region Tests Generated for GetReportSectionLanguageList() Skip Take
-        [TestMethod]
+        [Fact]
         public void GetReportSectionLanguageList_Skip_Take_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -351,14 +351,14 @@ namespace CSSPServices.Tests
                         List<ReportSectionLanguage> reportSectionLanguageList = new List<ReportSectionLanguage>();
                         reportSectionLanguageList = reportSectionLanguageService.GetReportSectionLanguageList().ToList();
                         CheckReportSectionLanguageFields(reportSectionLanguageList);
-                        Assert.AreEqual(reportSectionLanguageDirectQueryList[0].ReportSectionLanguageID, reportSectionLanguageList[0].ReportSectionLanguageID);
+                        Assert.Equal(reportSectionLanguageDirectQueryList[0].ReportSectionLanguageID, reportSectionLanguageList[0].ReportSectionLanguageID);
                 }
             }
         }
         #endregion Tests Generated for GetReportSectionLanguageList() Skip Take
 
         #region Tests Generated for GetReportSectionLanguageList() Skip Take Asc
-        [TestMethod]
+        [Fact]
         public void GetReportSectionLanguageList_Skip_Take_Asc_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -377,14 +377,14 @@ namespace CSSPServices.Tests
                         List<ReportSectionLanguage> reportSectionLanguageList = new List<ReportSectionLanguage>();
                         reportSectionLanguageList = reportSectionLanguageService.GetReportSectionLanguageList().ToList();
                         CheckReportSectionLanguageFields(reportSectionLanguageList);
-                        Assert.AreEqual(reportSectionLanguageDirectQueryList[0].ReportSectionLanguageID, reportSectionLanguageList[0].ReportSectionLanguageID);
+                        Assert.Equal(reportSectionLanguageDirectQueryList[0].ReportSectionLanguageID, reportSectionLanguageList[0].ReportSectionLanguageID);
                 }
             }
         }
         #endregion Tests Generated for GetReportSectionLanguageList() Skip Take Asc
 
         #region Tests Generated for GetReportSectionLanguageList() Skip Take 2 Asc
-        [TestMethod]
+        [Fact]
         public void GetReportSectionLanguageList_Skip_Take_2Asc_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -403,14 +403,14 @@ namespace CSSPServices.Tests
                         List<ReportSectionLanguage> reportSectionLanguageList = new List<ReportSectionLanguage>();
                         reportSectionLanguageList = reportSectionLanguageService.GetReportSectionLanguageList().ToList();
                         CheckReportSectionLanguageFields(reportSectionLanguageList);
-                        Assert.AreEqual(reportSectionLanguageDirectQueryList[0].ReportSectionLanguageID, reportSectionLanguageList[0].ReportSectionLanguageID);
+                        Assert.Equal(reportSectionLanguageDirectQueryList[0].ReportSectionLanguageID, reportSectionLanguageList[0].ReportSectionLanguageID);
                 }
             }
         }
         #endregion Tests Generated for GetReportSectionLanguageList() Skip Take 2 Asc
 
         #region Tests Generated for GetReportSectionLanguageList() Skip Take Asc Where
-        [TestMethod]
+        [Fact]
         public void GetReportSectionLanguageList_Skip_Take_Asc_Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -429,14 +429,14 @@ namespace CSSPServices.Tests
                         List<ReportSectionLanguage> reportSectionLanguageList = new List<ReportSectionLanguage>();
                         reportSectionLanguageList = reportSectionLanguageService.GetReportSectionLanguageList().ToList();
                         CheckReportSectionLanguageFields(reportSectionLanguageList);
-                        Assert.AreEqual(reportSectionLanguageDirectQueryList[0].ReportSectionLanguageID, reportSectionLanguageList[0].ReportSectionLanguageID);
+                        Assert.Equal(reportSectionLanguageDirectQueryList[0].ReportSectionLanguageID, reportSectionLanguageList[0].ReportSectionLanguageID);
                 }
             }
         }
         #endregion Tests Generated for GetReportSectionLanguageList() Skip Take Asc Where
 
         #region Tests Generated for GetReportSectionLanguageList() Skip Take Asc 2 Where
-        [TestMethod]
+        [Fact]
         public void GetReportSectionLanguageList_Skip_Take_Asc_2Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -455,14 +455,14 @@ namespace CSSPServices.Tests
                         List<ReportSectionLanguage> reportSectionLanguageList = new List<ReportSectionLanguage>();
                         reportSectionLanguageList = reportSectionLanguageService.GetReportSectionLanguageList().ToList();
                         CheckReportSectionLanguageFields(reportSectionLanguageList);
-                        Assert.AreEqual(reportSectionLanguageDirectQueryList[0].ReportSectionLanguageID, reportSectionLanguageList[0].ReportSectionLanguageID);
+                        Assert.Equal(reportSectionLanguageDirectQueryList[0].ReportSectionLanguageID, reportSectionLanguageList[0].ReportSectionLanguageID);
                 }
             }
         }
         #endregion Tests Generated for GetReportSectionLanguageList() Skip Take Asc 2 Where
 
         #region Tests Generated for GetReportSectionLanguageList() Skip Take Desc
-        [TestMethod]
+        [Fact]
         public void GetReportSectionLanguageList_Skip_Take_Desc_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -481,14 +481,14 @@ namespace CSSPServices.Tests
                         List<ReportSectionLanguage> reportSectionLanguageList = new List<ReportSectionLanguage>();
                         reportSectionLanguageList = reportSectionLanguageService.GetReportSectionLanguageList().ToList();
                         CheckReportSectionLanguageFields(reportSectionLanguageList);
-                        Assert.AreEqual(reportSectionLanguageDirectQueryList[0].ReportSectionLanguageID, reportSectionLanguageList[0].ReportSectionLanguageID);
+                        Assert.Equal(reportSectionLanguageDirectQueryList[0].ReportSectionLanguageID, reportSectionLanguageList[0].ReportSectionLanguageID);
                 }
             }
         }
         #endregion Tests Generated for GetReportSectionLanguageList() Skip Take Desc
 
         #region Tests Generated for GetReportSectionLanguageList() Skip Take 2 Desc
-        [TestMethod]
+        [Fact]
         public void GetReportSectionLanguageList_Skip_Take_2Desc_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -507,14 +507,14 @@ namespace CSSPServices.Tests
                         List<ReportSectionLanguage> reportSectionLanguageList = new List<ReportSectionLanguage>();
                         reportSectionLanguageList = reportSectionLanguageService.GetReportSectionLanguageList().ToList();
                         CheckReportSectionLanguageFields(reportSectionLanguageList);
-                        Assert.AreEqual(reportSectionLanguageDirectQueryList[0].ReportSectionLanguageID, reportSectionLanguageList[0].ReportSectionLanguageID);
+                        Assert.Equal(reportSectionLanguageDirectQueryList[0].ReportSectionLanguageID, reportSectionLanguageList[0].ReportSectionLanguageID);
                 }
             }
         }
         #endregion Tests Generated for GetReportSectionLanguageList() Skip Take 2 Desc
 
         #region Tests Generated for GetReportSectionLanguageList() Skip Take Desc Where
-        [TestMethod]
+        [Fact]
         public void GetReportSectionLanguageList_Skip_Take_Desc_Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -533,14 +533,14 @@ namespace CSSPServices.Tests
                         List<ReportSectionLanguage> reportSectionLanguageList = new List<ReportSectionLanguage>();
                         reportSectionLanguageList = reportSectionLanguageService.GetReportSectionLanguageList().ToList();
                         CheckReportSectionLanguageFields(reportSectionLanguageList);
-                        Assert.AreEqual(reportSectionLanguageDirectQueryList[0].ReportSectionLanguageID, reportSectionLanguageList[0].ReportSectionLanguageID);
+                        Assert.Equal(reportSectionLanguageDirectQueryList[0].ReportSectionLanguageID, reportSectionLanguageList[0].ReportSectionLanguageID);
                 }
             }
         }
         #endregion Tests Generated for GetReportSectionLanguageList() Skip Take Desc Where
 
         #region Tests Generated for GetReportSectionLanguageList() Skip Take Desc 2 Where
-        [TestMethod]
+        [Fact]
         public void GetReportSectionLanguageList_Skip_Take_Desc_2Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -559,14 +559,14 @@ namespace CSSPServices.Tests
                         List<ReportSectionLanguage> reportSectionLanguageList = new List<ReportSectionLanguage>();
                         reportSectionLanguageList = reportSectionLanguageService.GetReportSectionLanguageList().ToList();
                         CheckReportSectionLanguageFields(reportSectionLanguageList);
-                        Assert.AreEqual(reportSectionLanguageDirectQueryList[0].ReportSectionLanguageID, reportSectionLanguageList[0].ReportSectionLanguageID);
+                        Assert.Equal(reportSectionLanguageDirectQueryList[0].ReportSectionLanguageID, reportSectionLanguageList[0].ReportSectionLanguageID);
                 }
             }
         }
         #endregion Tests Generated for GetReportSectionLanguageList() Skip Take Desc 2 Where
 
         #region Tests Generated for GetReportSectionLanguageList() 2 Where
-        [TestMethod]
+        [Fact]
         public void GetReportSectionLanguageList_2Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -585,7 +585,7 @@ namespace CSSPServices.Tests
                         List<ReportSectionLanguage> reportSectionLanguageList = new List<ReportSectionLanguage>();
                         reportSectionLanguageList = reportSectionLanguageService.GetReportSectionLanguageList().ToList();
                         CheckReportSectionLanguageFields(reportSectionLanguageList);
-                        Assert.AreEqual(reportSectionLanguageDirectQueryList[0].ReportSectionLanguageID, reportSectionLanguageList[0].ReportSectionLanguageID);
+                        Assert.Equal(reportSectionLanguageDirectQueryList[0].ReportSectionLanguageID, reportSectionLanguageList[0].ReportSectionLanguageID);
                 }
             }
         }
@@ -594,16 +594,16 @@ namespace CSSPServices.Tests
         #region Functions private
         private void CheckReportSectionLanguageFields(List<ReportSectionLanguage> reportSectionLanguageList)
         {
-            Assert.IsNotNull(reportSectionLanguageList[0].ReportSectionLanguageID);
-            Assert.IsNotNull(reportSectionLanguageList[0].ReportSectionID);
-            Assert.IsNotNull(reportSectionLanguageList[0].Language);
-            Assert.IsFalse(string.IsNullOrWhiteSpace(reportSectionLanguageList[0].ReportSectionName));
-            Assert.IsNotNull(reportSectionLanguageList[0].TranslationStatusReportSectionName);
-            Assert.IsFalse(string.IsNullOrWhiteSpace(reportSectionLanguageList[0].ReportSectionText));
-            Assert.IsNotNull(reportSectionLanguageList[0].TranslationStatusReportSectionText);
-            Assert.IsNotNull(reportSectionLanguageList[0].LastUpdateDate_UTC);
-            Assert.IsNotNull(reportSectionLanguageList[0].LastUpdateContactTVItemID);
-            Assert.IsNotNull(reportSectionLanguageList[0].HasErrors);
+            Assert.NotNull(reportSectionLanguageList[0].ReportSectionLanguageID);
+            Assert.NotNull(reportSectionLanguageList[0].ReportSectionID);
+            Assert.NotNull(reportSectionLanguageList[0].Language);
+            Assert.False(string.IsNullOrWhiteSpace(reportSectionLanguageList[0].ReportSectionName));
+            Assert.NotNull(reportSectionLanguageList[0].TranslationStatusReportSectionName);
+            Assert.False(string.IsNullOrWhiteSpace(reportSectionLanguageList[0].ReportSectionText));
+            Assert.NotNull(reportSectionLanguageList[0].TranslationStatusReportSectionText);
+            Assert.NotNull(reportSectionLanguageList[0].LastUpdateDate_UTC);
+            Assert.NotNull(reportSectionLanguageList[0].LastUpdateContactTVItemID);
+            Assert.NotNull(reportSectionLanguageList[0].HasErrors);
         }
         private ReportSectionLanguage GetFilledRandomReportSectionLanguage(string OmitPropName)
         {

@@ -6,7 +6,7 @@
  */ 
 using System;
 using System.Text;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using System.Linq;
 using System.Globalization;
 using System.Transactions;
@@ -19,7 +19,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace CSSPModels.Tests
 {
-    [TestClass]
+
     public partial class CSSPWQInputAppTest
     {
         #region Variables
@@ -37,7 +37,7 @@ namespace CSSPModels.Tests
         #endregion Constructors
 
         #region Tests Functions public
-        [TestMethod]
+        [Fact]
         public void CSSPWQInputApp_Properties_Test()
         {
             List<string> propNameList = new List<string>() { "AccessCode", "ActiveYear", "DailyDuplicatePrecisionCriteria", "IntertechDuplicatePrecisionCriteria", "IncludeLaboratoryQAQC", "ApprovalCode", "ApprovalDate", "HasErrors",  }.OrderBy(c => c).ToList();
@@ -46,47 +46,47 @@ namespace CSSPModels.Tests
             int index = 0;
             foreach (PropertyInfo propertyInfo in typeof(CSSPWQInputApp).GetProperties().Where(c => c.Name != "ValidationResults").OrderBy(c => c.Name).ToList())
             {
-                Assert.AreEqual(propertyInfo.Name, propNameList[index]);
+                Assert.Equal(propertyInfo.Name, propNameList[index]);
                 index += 1;
             }
 
-            Assert.AreEqual(propNameList.Count, index);
+            Assert.Equal(propNameList.Count, index);
         }
-        [TestMethod]
+        [Fact]
         public void CSSPWQInputApp_Has_ValidationResults_Test()
         {
-             Assert.IsTrue(typeof(CSSPWQInputApp).GetProperties().Where(c => c.Name == "ValidationResults").Any());
+             Assert.True(typeof(CSSPWQInputApp).GetProperties().Where(c => c.Name == "ValidationResults").Any());
         }
-        [TestMethod]
+        [Fact]
         public void CSSPWQInputApp_Every_Property_Has_Get_Set_Test()
         {
                string val1 = "Some text";
                cSSPWQInputApp.AccessCode = val1;
-               Assert.AreEqual(val1, cSSPWQInputApp.AccessCode);
+               Assert.Equal(val1, cSSPWQInputApp.AccessCode);
                string val2 = "Some text";
                cSSPWQInputApp.ActiveYear = val2;
-               Assert.AreEqual(val2, cSSPWQInputApp.ActiveYear);
+               Assert.Equal(val2, cSSPWQInputApp.ActiveYear);
                double val3 = 87.9D;
                cSSPWQInputApp.DailyDuplicatePrecisionCriteria = val3;
-               Assert.AreEqual(val3, cSSPWQInputApp.DailyDuplicatePrecisionCriteria);
+               Assert.Equal(val3, cSSPWQInputApp.DailyDuplicatePrecisionCriteria);
                double val4 = 87.9D;
                cSSPWQInputApp.IntertechDuplicatePrecisionCriteria = val4;
-               Assert.AreEqual(val4, cSSPWQInputApp.IntertechDuplicatePrecisionCriteria);
+               Assert.Equal(val4, cSSPWQInputApp.IntertechDuplicatePrecisionCriteria);
                bool val5 = true;
                cSSPWQInputApp.IncludeLaboratoryQAQC = val5;
-               Assert.AreEqual(val5, cSSPWQInputApp.IncludeLaboratoryQAQC);
+               Assert.Equal(val5, cSSPWQInputApp.IncludeLaboratoryQAQC);
                string val6 = "Some text";
                cSSPWQInputApp.ApprovalCode = val6;
-               Assert.AreEqual(val6, cSSPWQInputApp.ApprovalCode);
+               Assert.Equal(val6, cSSPWQInputApp.ApprovalCode);
                DateTime val7 = new DateTime(2010, 3, 4);
                cSSPWQInputApp.ApprovalDate = val7;
-               Assert.AreEqual(val7, cSSPWQInputApp.ApprovalDate);
+               Assert.Equal(val7, cSSPWQInputApp.ApprovalDate);
                bool val8 = true;
                cSSPWQInputApp.HasErrors = val8;
-               Assert.AreEqual(val8, cSSPWQInputApp.HasErrors);
+               Assert.Equal(val8, cSSPWQInputApp.HasErrors);
                IEnumerable<ValidationResult> val27 = new List<ValidationResult>() { new ValidationResult("First CSSPError Message") }.AsEnumerable();
                cSSPWQInputApp.ValidationResults = val27;
-               Assert.AreEqual(val27, cSSPWQInputApp.ValidationResults);
+               Assert.Equal(val27, cSSPWQInputApp.ValidationResults);
         }
         #endregion Tests Functions public
     }

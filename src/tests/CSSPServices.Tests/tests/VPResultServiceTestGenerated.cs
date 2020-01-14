@@ -5,7 +5,7 @@
  */ 
 
 using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using System.Linq;
 using System.Collections.Generic;
 using CSSPModels;
@@ -21,7 +21,7 @@ using CSSPEnums.Resources;
 
 namespace CSSPServices.Tests
 {
-    [TestClass]
+
     public partial class VPResultServiceTest : TestHelper
     {
         #region Variables
@@ -39,7 +39,7 @@ namespace CSSPServices.Tests
         #endregion Constructors
 
         #region Tests Generated CRUD
-        [TestMethod]
+        [Fact]
         public void VPResult_CRUD_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -66,26 +66,26 @@ namespace CSSPServices.Tests
 
                     count = vpResultService.GetVPResultList().Count();
 
-                    Assert.AreEqual(count, (from c in dbTestDB.VPResults select c).Count());
+                    Assert.Equal(count, (from c in dbTestDB.VPResults select c).Count());
 
                     vpResultService.Add(vpResult);
                     if (vpResult.HasErrors)
                     {
-                        Assert.AreEqual("", vpResult.ValidationResults.FirstOrDefault().ErrorMessage);
+                        Assert.Equal("", vpResult.ValidationResults.FirstOrDefault().ErrorMessage);
                     }
-                    Assert.AreEqual(true, vpResultService.GetVPResultList().Where(c => c == vpResult).Any());
+                    Assert.True(vpResultService.GetVPResultList().Where(c => c == vpResult).Any());
                     vpResultService.Update(vpResult);
                     if (vpResult.HasErrors)
                     {
-                        Assert.AreEqual("", vpResult.ValidationResults.FirstOrDefault().ErrorMessage);
+                        Assert.Equal("", vpResult.ValidationResults.FirstOrDefault().ErrorMessage);
                     }
-                    Assert.AreEqual(count + 1, vpResultService.GetVPResultList().Count());
+                    Assert.Equal(count + 1, vpResultService.GetVPResultList().Count());
                     vpResultService.Delete(vpResult);
                     if (vpResult.HasErrors)
                     {
-                        Assert.AreEqual("", vpResult.ValidationResults.FirstOrDefault().ErrorMessage);
+                        Assert.Equal("", vpResult.ValidationResults.FirstOrDefault().ErrorMessage);
                     }
-                    Assert.AreEqual(count, vpResultService.GetVPResultList().Count());
+                    Assert.Equal(count, vpResultService.GetVPResultList().Count());
 
                 }
             }
@@ -93,7 +93,7 @@ namespace CSSPServices.Tests
         #endregion Tests Generated CRUD
 
         #region Tests Generated Properties
-        [TestMethod]
+        [Fact]
         public void VPResult_Properties_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -131,13 +131,13 @@ namespace CSSPServices.Tests
                     vpResult = GetFilledRandomVPResult("");
                     vpResult.VPResultID = 0;
                     vpResultService.Update(vpResult);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsRequired, "VPResultID"), vpResult.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsRequired, "VPResultID"), vpResult.ValidationResults.FirstOrDefault().ErrorMessage);
 
                     vpResult = null;
                     vpResult = GetFilledRandomVPResult("");
                     vpResult.VPResultID = 10000000;
                     vpResultService.Update(vpResult);
-                    Assert.AreEqual(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "VPResult", "VPResultID", vpResult.VPResultID.ToString()), vpResult.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "VPResult", "VPResultID", vpResult.VPResultID.ToString()), vpResult.ValidationResults.FirstOrDefault().ErrorMessage);
 
 
                     // -----------------------------------
@@ -150,7 +150,7 @@ namespace CSSPServices.Tests
                     vpResult = GetFilledRandomVPResult("");
                     vpResult.VPScenarioID = 0;
                     vpResultService.Add(vpResult);
-                    Assert.AreEqual(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "VPScenario", "VPScenarioID", vpResult.VPScenarioID.ToString()), vpResult.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "VPScenario", "VPScenarioID", vpResult.VPScenarioID.ToString()), vpResult.ValidationResults.FirstOrDefault().ErrorMessage);
 
 
                     // -----------------------------------
@@ -162,15 +162,15 @@ namespace CSSPServices.Tests
                     vpResult = null;
                     vpResult = GetFilledRandomVPResult("");
                     vpResult.Ordinal = -1;
-                    Assert.AreEqual(false, vpResultService.Add(vpResult));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "Ordinal", "0", "1000"), vpResult.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, vpResultService.GetVPResultList().Count());
+                    Assert.False(vpResultService.Add(vpResult));
+                    Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "Ordinal", "0", "1000"), vpResult.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, vpResultService.GetVPResultList().Count());
                     vpResult = null;
                     vpResult = GetFilledRandomVPResult("");
                     vpResult.Ordinal = 1001;
-                    Assert.AreEqual(false, vpResultService.Add(vpResult));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "Ordinal", "0", "1000"), vpResult.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, vpResultService.GetVPResultList().Count());
+                    Assert.False(vpResultService.Add(vpResult));
+                    Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "Ordinal", "0", "1000"), vpResult.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, vpResultService.GetVPResultList().Count());
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -181,15 +181,15 @@ namespace CSSPServices.Tests
                     vpResult = null;
                     vpResult = GetFilledRandomVPResult("");
                     vpResult.Concentration_MPN_100ml = -1;
-                    Assert.AreEqual(false, vpResultService.Add(vpResult));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "Concentration_MPN_100ml", "0", "10000000"), vpResult.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, vpResultService.GetVPResultList().Count());
+                    Assert.False(vpResultService.Add(vpResult));
+                    Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "Concentration_MPN_100ml", "0", "10000000"), vpResult.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, vpResultService.GetVPResultList().Count());
                     vpResult = null;
                     vpResult = GetFilledRandomVPResult("");
                     vpResult.Concentration_MPN_100ml = 10000001;
-                    Assert.AreEqual(false, vpResultService.Add(vpResult));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "Concentration_MPN_100ml", "0", "10000000"), vpResult.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, vpResultService.GetVPResultList().Count());
+                    Assert.False(vpResultService.Add(vpResult));
+                    Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "Concentration_MPN_100ml", "0", "10000000"), vpResult.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, vpResultService.GetVPResultList().Count());
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -204,15 +204,15 @@ namespace CSSPServices.Tests
                     vpResult = null;
                     vpResult = GetFilledRandomVPResult("");
                     vpResult.Dilution = -1.0D;
-                    Assert.AreEqual(false, vpResultService.Add(vpResult));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "Dilution", "0", "1000000"), vpResult.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, vpResultService.GetVPResultList().Count());
+                    Assert.False(vpResultService.Add(vpResult));
+                    Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "Dilution", "0", "1000000"), vpResult.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, vpResultService.GetVPResultList().Count());
                     vpResult = null;
                     vpResult = GetFilledRandomVPResult("");
                     vpResult.Dilution = 1000001.0D;
-                    Assert.AreEqual(false, vpResultService.Add(vpResult));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "Dilution", "0", "1000000"), vpResult.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, vpResultService.GetVPResultList().Count());
+                    Assert.False(vpResultService.Add(vpResult));
+                    Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "Dilution", "0", "1000000"), vpResult.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, vpResultService.GetVPResultList().Count());
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -227,15 +227,15 @@ namespace CSSPServices.Tests
                     vpResult = null;
                     vpResult = GetFilledRandomVPResult("");
                     vpResult.FarFieldWidth_m = -1.0D;
-                    Assert.AreEqual(false, vpResultService.Add(vpResult));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "FarFieldWidth_m", "0", "10000"), vpResult.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, vpResultService.GetVPResultList().Count());
+                    Assert.False(vpResultService.Add(vpResult));
+                    Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "FarFieldWidth_m", "0", "10000"), vpResult.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, vpResultService.GetVPResultList().Count());
                     vpResult = null;
                     vpResult = GetFilledRandomVPResult("");
                     vpResult.FarFieldWidth_m = 10001.0D;
-                    Assert.AreEqual(false, vpResultService.Add(vpResult));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "FarFieldWidth_m", "0", "10000"), vpResult.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, vpResultService.GetVPResultList().Count());
+                    Assert.False(vpResultService.Add(vpResult));
+                    Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "FarFieldWidth_m", "0", "10000"), vpResult.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, vpResultService.GetVPResultList().Count());
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -250,15 +250,15 @@ namespace CSSPServices.Tests
                     vpResult = null;
                     vpResult = GetFilledRandomVPResult("");
                     vpResult.DispersionDistance_m = -1.0D;
-                    Assert.AreEqual(false, vpResultService.Add(vpResult));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "DispersionDistance_m", "0", "100000"), vpResult.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, vpResultService.GetVPResultList().Count());
+                    Assert.False(vpResultService.Add(vpResult));
+                    Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "DispersionDistance_m", "0", "100000"), vpResult.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, vpResultService.GetVPResultList().Count());
                     vpResult = null;
                     vpResult = GetFilledRandomVPResult("");
                     vpResult.DispersionDistance_m = 100001.0D;
-                    Assert.AreEqual(false, vpResultService.Add(vpResult));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "DispersionDistance_m", "0", "100000"), vpResult.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, vpResultService.GetVPResultList().Count());
+                    Assert.False(vpResultService.Add(vpResult));
+                    Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "DispersionDistance_m", "0", "100000"), vpResult.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, vpResultService.GetVPResultList().Count());
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -273,15 +273,15 @@ namespace CSSPServices.Tests
                     vpResult = null;
                     vpResult = GetFilledRandomVPResult("");
                     vpResult.TravelTime_hour = -1.0D;
-                    Assert.AreEqual(false, vpResultService.Add(vpResult));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "TravelTime_hour", "0", "100"), vpResult.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, vpResultService.GetVPResultList().Count());
+                    Assert.False(vpResultService.Add(vpResult));
+                    Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "TravelTime_hour", "0", "100"), vpResult.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, vpResultService.GetVPResultList().Count());
                     vpResult = null;
                     vpResult = GetFilledRandomVPResult("");
                     vpResult.TravelTime_hour = 101.0D;
-                    Assert.AreEqual(false, vpResultService.Add(vpResult));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "TravelTime_hour", "0", "100"), vpResult.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, vpResultService.GetVPResultList().Count());
+                    Assert.False(vpResultService.Add(vpResult));
+                    Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "TravelTime_hour", "0", "100"), vpResult.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, vpResultService.GetVPResultList().Count());
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -293,12 +293,12 @@ namespace CSSPServices.Tests
                     vpResult = GetFilledRandomVPResult("");
                     vpResult.LastUpdateDate_UTC = new DateTime();
                     vpResultService.Add(vpResult);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsRequired, "LastUpdateDate_UTC"), vpResult.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsRequired, "LastUpdateDate_UTC"), vpResult.ValidationResults.FirstOrDefault().ErrorMessage);
                     vpResult = null;
                     vpResult = GetFilledRandomVPResult("");
                     vpResult.LastUpdateDate_UTC = new DateTime(1979, 1, 1);
                     vpResultService.Add(vpResult);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._YearShouldBeBiggerThan_, "LastUpdateDate_UTC", "1980"), vpResult.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._YearShouldBeBiggerThan_, "LastUpdateDate_UTC", "1980"), vpResult.ValidationResults.FirstOrDefault().ErrorMessage);
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -310,13 +310,13 @@ namespace CSSPServices.Tests
                     vpResult = GetFilledRandomVPResult("");
                     vpResult.LastUpdateContactTVItemID = 0;
                     vpResultService.Add(vpResult);
-                    Assert.AreEqual(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "TVItem", "LastUpdateContactTVItemID", vpResult.LastUpdateContactTVItemID.ToString()), vpResult.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "TVItem", "LastUpdateContactTVItemID", vpResult.LastUpdateContactTVItemID.ToString()), vpResult.ValidationResults.FirstOrDefault().ErrorMessage);
 
                     vpResult = null;
                     vpResult = GetFilledRandomVPResult("");
                     vpResult.LastUpdateContactTVItemID = 1;
                     vpResultService.Add(vpResult);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsNotOfType_, "LastUpdateContactTVItemID", "Contact"), vpResult.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsNotOfType_, "LastUpdateContactTVItemID", "Contact"), vpResult.ValidationResults.FirstOrDefault().ErrorMessage);
 
 
                     // -----------------------------------
@@ -340,7 +340,7 @@ namespace CSSPServices.Tests
         #endregion Tests Generated Properties
 
         #region Tests Generated for GetVPResultWithVPResultID(vpResult.VPResultID)
-        [TestMethod]
+        [Fact]
         public void GetVPResultWithVPResultID__vpResult_VPResultID__Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -351,7 +351,7 @@ namespace CSSPServices.Tests
                 {
                     VPResultService vpResultService = new VPResultService(new Query() { Lang = culture.TwoLetterISOLanguageName }, dbTestDB, ContactID);
                     VPResult vpResult = (from c in dbTestDB.VPResults select c).FirstOrDefault();
-                    Assert.IsNotNull(vpResult);
+                    Assert.NotNull(vpResult);
 
                 }
             }
@@ -359,7 +359,7 @@ namespace CSSPServices.Tests
         #endregion Tests Generated for GetVPResultWithVPResultID(vpResult.VPResultID)
 
         #region Tests Generated for GetVPResultList()
-        [TestMethod]
+        [Fact]
         public void GetVPResultList_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -370,7 +370,7 @@ namespace CSSPServices.Tests
                 {
                     VPResultService vpResultService = new VPResultService(new Query() { Lang = culture.TwoLetterISOLanguageName }, dbTestDB, ContactID);
                     VPResult vpResult = (from c in dbTestDB.VPResults select c).FirstOrDefault();
-                    Assert.IsNotNull(vpResult);
+                    Assert.NotNull(vpResult);
 
                     List<VPResult> vpResultDirectQueryList = new List<VPResult>();
                     vpResultDirectQueryList = (from c in dbTestDB.VPResults select c).Take(200).ToList();
@@ -381,7 +381,7 @@ namespace CSSPServices.Tests
         #endregion Tests Generated for GetVPResultList()
 
         #region Tests Generated for GetVPResultList() Skip Take
-        [TestMethod]
+        [Fact]
         public void GetVPResultList_Skip_Take_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -400,14 +400,14 @@ namespace CSSPServices.Tests
                         List<VPResult> vpResultList = new List<VPResult>();
                         vpResultList = vpResultService.GetVPResultList().ToList();
                         CheckVPResultFields(vpResultList);
-                        Assert.AreEqual(vpResultDirectQueryList[0].VPResultID, vpResultList[0].VPResultID);
+                        Assert.Equal(vpResultDirectQueryList[0].VPResultID, vpResultList[0].VPResultID);
                 }
             }
         }
         #endregion Tests Generated for GetVPResultList() Skip Take
 
         #region Tests Generated for GetVPResultList() Skip Take Asc
-        [TestMethod]
+        [Fact]
         public void GetVPResultList_Skip_Take_Asc_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -426,14 +426,14 @@ namespace CSSPServices.Tests
                         List<VPResult> vpResultList = new List<VPResult>();
                         vpResultList = vpResultService.GetVPResultList().ToList();
                         CheckVPResultFields(vpResultList);
-                        Assert.AreEqual(vpResultDirectQueryList[0].VPResultID, vpResultList[0].VPResultID);
+                        Assert.Equal(vpResultDirectQueryList[0].VPResultID, vpResultList[0].VPResultID);
                 }
             }
         }
         #endregion Tests Generated for GetVPResultList() Skip Take Asc
 
         #region Tests Generated for GetVPResultList() Skip Take 2 Asc
-        [TestMethod]
+        [Fact]
         public void GetVPResultList_Skip_Take_2Asc_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -452,14 +452,14 @@ namespace CSSPServices.Tests
                         List<VPResult> vpResultList = new List<VPResult>();
                         vpResultList = vpResultService.GetVPResultList().ToList();
                         CheckVPResultFields(vpResultList);
-                        Assert.AreEqual(vpResultDirectQueryList[0].VPResultID, vpResultList[0].VPResultID);
+                        Assert.Equal(vpResultDirectQueryList[0].VPResultID, vpResultList[0].VPResultID);
                 }
             }
         }
         #endregion Tests Generated for GetVPResultList() Skip Take 2 Asc
 
         #region Tests Generated for GetVPResultList() Skip Take Asc Where
-        [TestMethod]
+        [Fact]
         public void GetVPResultList_Skip_Take_Asc_Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -478,14 +478,14 @@ namespace CSSPServices.Tests
                         List<VPResult> vpResultList = new List<VPResult>();
                         vpResultList = vpResultService.GetVPResultList().ToList();
                         CheckVPResultFields(vpResultList);
-                        Assert.AreEqual(vpResultDirectQueryList[0].VPResultID, vpResultList[0].VPResultID);
+                        Assert.Equal(vpResultDirectQueryList[0].VPResultID, vpResultList[0].VPResultID);
                 }
             }
         }
         #endregion Tests Generated for GetVPResultList() Skip Take Asc Where
 
         #region Tests Generated for GetVPResultList() Skip Take Asc 2 Where
-        [TestMethod]
+        [Fact]
         public void GetVPResultList_Skip_Take_Asc_2Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -504,14 +504,14 @@ namespace CSSPServices.Tests
                         List<VPResult> vpResultList = new List<VPResult>();
                         vpResultList = vpResultService.GetVPResultList().ToList();
                         CheckVPResultFields(vpResultList);
-                        Assert.AreEqual(vpResultDirectQueryList[0].VPResultID, vpResultList[0].VPResultID);
+                        Assert.Equal(vpResultDirectQueryList[0].VPResultID, vpResultList[0].VPResultID);
                 }
             }
         }
         #endregion Tests Generated for GetVPResultList() Skip Take Asc 2 Where
 
         #region Tests Generated for GetVPResultList() Skip Take Desc
-        [TestMethod]
+        [Fact]
         public void GetVPResultList_Skip_Take_Desc_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -530,14 +530,14 @@ namespace CSSPServices.Tests
                         List<VPResult> vpResultList = new List<VPResult>();
                         vpResultList = vpResultService.GetVPResultList().ToList();
                         CheckVPResultFields(vpResultList);
-                        Assert.AreEqual(vpResultDirectQueryList[0].VPResultID, vpResultList[0].VPResultID);
+                        Assert.Equal(vpResultDirectQueryList[0].VPResultID, vpResultList[0].VPResultID);
                 }
             }
         }
         #endregion Tests Generated for GetVPResultList() Skip Take Desc
 
         #region Tests Generated for GetVPResultList() Skip Take 2 Desc
-        [TestMethod]
+        [Fact]
         public void GetVPResultList_Skip_Take_2Desc_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -556,14 +556,14 @@ namespace CSSPServices.Tests
                         List<VPResult> vpResultList = new List<VPResult>();
                         vpResultList = vpResultService.GetVPResultList().ToList();
                         CheckVPResultFields(vpResultList);
-                        Assert.AreEqual(vpResultDirectQueryList[0].VPResultID, vpResultList[0].VPResultID);
+                        Assert.Equal(vpResultDirectQueryList[0].VPResultID, vpResultList[0].VPResultID);
                 }
             }
         }
         #endregion Tests Generated for GetVPResultList() Skip Take 2 Desc
 
         #region Tests Generated for GetVPResultList() Skip Take Desc Where
-        [TestMethod]
+        [Fact]
         public void GetVPResultList_Skip_Take_Desc_Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -582,14 +582,14 @@ namespace CSSPServices.Tests
                         List<VPResult> vpResultList = new List<VPResult>();
                         vpResultList = vpResultService.GetVPResultList().ToList();
                         CheckVPResultFields(vpResultList);
-                        Assert.AreEqual(vpResultDirectQueryList[0].VPResultID, vpResultList[0].VPResultID);
+                        Assert.Equal(vpResultDirectQueryList[0].VPResultID, vpResultList[0].VPResultID);
                 }
             }
         }
         #endregion Tests Generated for GetVPResultList() Skip Take Desc Where
 
         #region Tests Generated for GetVPResultList() Skip Take Desc 2 Where
-        [TestMethod]
+        [Fact]
         public void GetVPResultList_Skip_Take_Desc_2Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -608,14 +608,14 @@ namespace CSSPServices.Tests
                         List<VPResult> vpResultList = new List<VPResult>();
                         vpResultList = vpResultService.GetVPResultList().ToList();
                         CheckVPResultFields(vpResultList);
-                        Assert.AreEqual(vpResultDirectQueryList[0].VPResultID, vpResultList[0].VPResultID);
+                        Assert.Equal(vpResultDirectQueryList[0].VPResultID, vpResultList[0].VPResultID);
                 }
             }
         }
         #endregion Tests Generated for GetVPResultList() Skip Take Desc 2 Where
 
         #region Tests Generated for GetVPResultList() 2 Where
-        [TestMethod]
+        [Fact]
         public void GetVPResultList_2Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -634,7 +634,7 @@ namespace CSSPServices.Tests
                         List<VPResult> vpResultList = new List<VPResult>();
                         vpResultList = vpResultService.GetVPResultList().ToList();
                         CheckVPResultFields(vpResultList);
-                        Assert.AreEqual(vpResultDirectQueryList[0].VPResultID, vpResultList[0].VPResultID);
+                        Assert.Equal(vpResultDirectQueryList[0].VPResultID, vpResultList[0].VPResultID);
                 }
             }
         }
@@ -643,17 +643,17 @@ namespace CSSPServices.Tests
         #region Functions private
         private void CheckVPResultFields(List<VPResult> vpResultList)
         {
-            Assert.IsNotNull(vpResultList[0].VPResultID);
-            Assert.IsNotNull(vpResultList[0].VPScenarioID);
-            Assert.IsNotNull(vpResultList[0].Ordinal);
-            Assert.IsNotNull(vpResultList[0].Concentration_MPN_100ml);
-            Assert.IsNotNull(vpResultList[0].Dilution);
-            Assert.IsNotNull(vpResultList[0].FarFieldWidth_m);
-            Assert.IsNotNull(vpResultList[0].DispersionDistance_m);
-            Assert.IsNotNull(vpResultList[0].TravelTime_hour);
-            Assert.IsNotNull(vpResultList[0].LastUpdateDate_UTC);
-            Assert.IsNotNull(vpResultList[0].LastUpdateContactTVItemID);
-            Assert.IsNotNull(vpResultList[0].HasErrors);
+            Assert.NotNull(vpResultList[0].VPResultID);
+            Assert.NotNull(vpResultList[0].VPScenarioID);
+            Assert.NotNull(vpResultList[0].Ordinal);
+            Assert.NotNull(vpResultList[0].Concentration_MPN_100ml);
+            Assert.NotNull(vpResultList[0].Dilution);
+            Assert.NotNull(vpResultList[0].FarFieldWidth_m);
+            Assert.NotNull(vpResultList[0].DispersionDistance_m);
+            Assert.NotNull(vpResultList[0].TravelTime_hour);
+            Assert.NotNull(vpResultList[0].LastUpdateDate_UTC);
+            Assert.NotNull(vpResultList[0].LastUpdateContactTVItemID);
+            Assert.NotNull(vpResultList[0].HasErrors);
         }
         private VPResult GetFilledRandomVPResult(string OmitPropName)
         {

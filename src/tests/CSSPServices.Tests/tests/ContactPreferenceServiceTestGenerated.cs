@@ -5,7 +5,7 @@
  */ 
 
 using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using System.Linq;
 using System.Collections.Generic;
 using CSSPModels;
@@ -21,7 +21,7 @@ using CSSPEnums.Resources;
 
 namespace CSSPServices.Tests
 {
-    [TestClass]
+
     public partial class ContactPreferenceServiceTest : TestHelper
     {
         #region Variables
@@ -39,7 +39,7 @@ namespace CSSPServices.Tests
         #endregion Constructors
 
         #region Tests Generated CRUD
-        [TestMethod]
+        [Fact]
         public void ContactPreference_CRUD_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -66,26 +66,26 @@ namespace CSSPServices.Tests
 
                     count = contactPreferenceService.GetContactPreferenceList().Count();
 
-                    Assert.AreEqual(count, (from c in dbTestDB.ContactPreferences select c).Count());
+                    Assert.Equal(count, (from c in dbTestDB.ContactPreferences select c).Count());
 
                     contactPreferenceService.Add(contactPreference);
                     if (contactPreference.HasErrors)
                     {
-                        Assert.AreEqual("", contactPreference.ValidationResults.FirstOrDefault().ErrorMessage);
+                        Assert.Equal("", contactPreference.ValidationResults.FirstOrDefault().ErrorMessage);
                     }
-                    Assert.AreEqual(true, contactPreferenceService.GetContactPreferenceList().Where(c => c == contactPreference).Any());
+                    Assert.True(contactPreferenceService.GetContactPreferenceList().Where(c => c == contactPreference).Any());
                     contactPreferenceService.Update(contactPreference);
                     if (contactPreference.HasErrors)
                     {
-                        Assert.AreEqual("", contactPreference.ValidationResults.FirstOrDefault().ErrorMessage);
+                        Assert.Equal("", contactPreference.ValidationResults.FirstOrDefault().ErrorMessage);
                     }
-                    Assert.AreEqual(count + 1, contactPreferenceService.GetContactPreferenceList().Count());
+                    Assert.Equal(count + 1, contactPreferenceService.GetContactPreferenceList().Count());
                     contactPreferenceService.Delete(contactPreference);
                     if (contactPreference.HasErrors)
                     {
-                        Assert.AreEqual("", contactPreference.ValidationResults.FirstOrDefault().ErrorMessage);
+                        Assert.Equal("", contactPreference.ValidationResults.FirstOrDefault().ErrorMessage);
                     }
-                    Assert.AreEqual(count, contactPreferenceService.GetContactPreferenceList().Count());
+                    Assert.Equal(count, contactPreferenceService.GetContactPreferenceList().Count());
 
                 }
             }
@@ -93,7 +93,7 @@ namespace CSSPServices.Tests
         #endregion Tests Generated CRUD
 
         #region Tests Generated Properties
-        [TestMethod]
+        [Fact]
         public void ContactPreference_Properties_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -131,13 +131,13 @@ namespace CSSPServices.Tests
                     contactPreference = GetFilledRandomContactPreference("");
                     contactPreference.ContactPreferenceID = 0;
                     contactPreferenceService.Update(contactPreference);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsRequired, "ContactPreferenceID"), contactPreference.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsRequired, "ContactPreferenceID"), contactPreference.ValidationResults.FirstOrDefault().ErrorMessage);
 
                     contactPreference = null;
                     contactPreference = GetFilledRandomContactPreference("");
                     contactPreference.ContactPreferenceID = 10000000;
                     contactPreferenceService.Update(contactPreference);
-                    Assert.AreEqual(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "ContactPreference", "ContactPreferenceID", contactPreference.ContactPreferenceID.ToString()), contactPreference.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "ContactPreference", "ContactPreferenceID", contactPreference.ContactPreferenceID.ToString()), contactPreference.ValidationResults.FirstOrDefault().ErrorMessage);
 
 
                     // -----------------------------------
@@ -150,7 +150,7 @@ namespace CSSPServices.Tests
                     contactPreference = GetFilledRandomContactPreference("");
                     contactPreference.ContactID = 0;
                     contactPreferenceService.Add(contactPreference);
-                    Assert.AreEqual(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "Contact", "ContactID", contactPreference.ContactID.ToString()), contactPreference.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "Contact", "ContactID", contactPreference.ContactID.ToString()), contactPreference.ValidationResults.FirstOrDefault().ErrorMessage);
 
 
                     // -----------------------------------
@@ -163,7 +163,7 @@ namespace CSSPServices.Tests
                     contactPreference = GetFilledRandomContactPreference("");
                     contactPreference.TVType = (TVTypeEnum)1000000;
                     contactPreferenceService.Add(contactPreference);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsRequired, "TVType"), contactPreference.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsRequired, "TVType"), contactPreference.ValidationResults.FirstOrDefault().ErrorMessage);
 
 
                     // -----------------------------------
@@ -175,15 +175,15 @@ namespace CSSPServices.Tests
                     contactPreference = null;
                     contactPreference = GetFilledRandomContactPreference("");
                     contactPreference.MarkerSize = 0;
-                    Assert.AreEqual(false, contactPreferenceService.Add(contactPreference));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "MarkerSize", "1", "1000"), contactPreference.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, contactPreferenceService.GetContactPreferenceList().Count());
+                    Assert.False(contactPreferenceService.Add(contactPreference));
+                    Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "MarkerSize", "1", "1000"), contactPreference.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, contactPreferenceService.GetContactPreferenceList().Count());
                     contactPreference = null;
                     contactPreference = GetFilledRandomContactPreference("");
                     contactPreference.MarkerSize = 1001;
-                    Assert.AreEqual(false, contactPreferenceService.Add(contactPreference));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "MarkerSize", "1", "1000"), contactPreference.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, contactPreferenceService.GetContactPreferenceList().Count());
+                    Assert.False(contactPreferenceService.Add(contactPreference));
+                    Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "MarkerSize", "1", "1000"), contactPreference.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, contactPreferenceService.GetContactPreferenceList().Count());
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -195,12 +195,12 @@ namespace CSSPServices.Tests
                     contactPreference = GetFilledRandomContactPreference("");
                     contactPreference.LastUpdateDate_UTC = new DateTime();
                     contactPreferenceService.Add(contactPreference);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsRequired, "LastUpdateDate_UTC"), contactPreference.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsRequired, "LastUpdateDate_UTC"), contactPreference.ValidationResults.FirstOrDefault().ErrorMessage);
                     contactPreference = null;
                     contactPreference = GetFilledRandomContactPreference("");
                     contactPreference.LastUpdateDate_UTC = new DateTime(1979, 1, 1);
                     contactPreferenceService.Add(contactPreference);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._YearShouldBeBiggerThan_, "LastUpdateDate_UTC", "1980"), contactPreference.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._YearShouldBeBiggerThan_, "LastUpdateDate_UTC", "1980"), contactPreference.ValidationResults.FirstOrDefault().ErrorMessage);
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -212,13 +212,13 @@ namespace CSSPServices.Tests
                     contactPreference = GetFilledRandomContactPreference("");
                     contactPreference.LastUpdateContactTVItemID = 0;
                     contactPreferenceService.Add(contactPreference);
-                    Assert.AreEqual(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "TVItem", "LastUpdateContactTVItemID", contactPreference.LastUpdateContactTVItemID.ToString()), contactPreference.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "TVItem", "LastUpdateContactTVItemID", contactPreference.LastUpdateContactTVItemID.ToString()), contactPreference.ValidationResults.FirstOrDefault().ErrorMessage);
 
                     contactPreference = null;
                     contactPreference = GetFilledRandomContactPreference("");
                     contactPreference.LastUpdateContactTVItemID = 1;
                     contactPreferenceService.Add(contactPreference);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsNotOfType_, "LastUpdateContactTVItemID", "Contact"), contactPreference.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsNotOfType_, "LastUpdateContactTVItemID", "Contact"), contactPreference.ValidationResults.FirstOrDefault().ErrorMessage);
 
 
                     // -----------------------------------
@@ -242,7 +242,7 @@ namespace CSSPServices.Tests
         #endregion Tests Generated Properties
 
         #region Tests Generated for GetContactPreferenceWithContactPreferenceID(contactPreference.ContactPreferenceID)
-        [TestMethod]
+        [Fact]
         public void GetContactPreferenceWithContactPreferenceID__contactPreference_ContactPreferenceID__Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -253,7 +253,7 @@ namespace CSSPServices.Tests
                 {
                     ContactPreferenceService contactPreferenceService = new ContactPreferenceService(new Query() { Lang = culture.TwoLetterISOLanguageName }, dbTestDB, ContactID);
                     ContactPreference contactPreference = (from c in dbTestDB.ContactPreferences select c).FirstOrDefault();
-                    Assert.IsNotNull(contactPreference);
+                    Assert.NotNull(contactPreference);
 
                 }
             }
@@ -261,7 +261,7 @@ namespace CSSPServices.Tests
         #endregion Tests Generated for GetContactPreferenceWithContactPreferenceID(contactPreference.ContactPreferenceID)
 
         #region Tests Generated for GetContactPreferenceList()
-        [TestMethod]
+        [Fact]
         public void GetContactPreferenceList_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -272,7 +272,7 @@ namespace CSSPServices.Tests
                 {
                     ContactPreferenceService contactPreferenceService = new ContactPreferenceService(new Query() { Lang = culture.TwoLetterISOLanguageName }, dbTestDB, ContactID);
                     ContactPreference contactPreference = (from c in dbTestDB.ContactPreferences select c).FirstOrDefault();
-                    Assert.IsNotNull(contactPreference);
+                    Assert.NotNull(contactPreference);
 
                     List<ContactPreference> contactPreferenceDirectQueryList = new List<ContactPreference>();
                     contactPreferenceDirectQueryList = (from c in dbTestDB.ContactPreferences select c).Take(200).ToList();
@@ -283,7 +283,7 @@ namespace CSSPServices.Tests
         #endregion Tests Generated for GetContactPreferenceList()
 
         #region Tests Generated for GetContactPreferenceList() Skip Take
-        [TestMethod]
+        [Fact]
         public void GetContactPreferenceList_Skip_Take_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -302,14 +302,14 @@ namespace CSSPServices.Tests
                         List<ContactPreference> contactPreferenceList = new List<ContactPreference>();
                         contactPreferenceList = contactPreferenceService.GetContactPreferenceList().ToList();
                         CheckContactPreferenceFields(contactPreferenceList);
-                        Assert.AreEqual(contactPreferenceDirectQueryList[0].ContactPreferenceID, contactPreferenceList[0].ContactPreferenceID);
+                        Assert.Equal(contactPreferenceDirectQueryList[0].ContactPreferenceID, contactPreferenceList[0].ContactPreferenceID);
                 }
             }
         }
         #endregion Tests Generated for GetContactPreferenceList() Skip Take
 
         #region Tests Generated for GetContactPreferenceList() Skip Take Asc
-        [TestMethod]
+        [Fact]
         public void GetContactPreferenceList_Skip_Take_Asc_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -328,14 +328,14 @@ namespace CSSPServices.Tests
                         List<ContactPreference> contactPreferenceList = new List<ContactPreference>();
                         contactPreferenceList = contactPreferenceService.GetContactPreferenceList().ToList();
                         CheckContactPreferenceFields(contactPreferenceList);
-                        Assert.AreEqual(contactPreferenceDirectQueryList[0].ContactPreferenceID, contactPreferenceList[0].ContactPreferenceID);
+                        Assert.Equal(contactPreferenceDirectQueryList[0].ContactPreferenceID, contactPreferenceList[0].ContactPreferenceID);
                 }
             }
         }
         #endregion Tests Generated for GetContactPreferenceList() Skip Take Asc
 
         #region Tests Generated for GetContactPreferenceList() Skip Take 2 Asc
-        [TestMethod]
+        [Fact]
         public void GetContactPreferenceList_Skip_Take_2Asc_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -354,14 +354,14 @@ namespace CSSPServices.Tests
                         List<ContactPreference> contactPreferenceList = new List<ContactPreference>();
                         contactPreferenceList = contactPreferenceService.GetContactPreferenceList().ToList();
                         CheckContactPreferenceFields(contactPreferenceList);
-                        Assert.AreEqual(contactPreferenceDirectQueryList[0].ContactPreferenceID, contactPreferenceList[0].ContactPreferenceID);
+                        Assert.Equal(contactPreferenceDirectQueryList[0].ContactPreferenceID, contactPreferenceList[0].ContactPreferenceID);
                 }
             }
         }
         #endregion Tests Generated for GetContactPreferenceList() Skip Take 2 Asc
 
         #region Tests Generated for GetContactPreferenceList() Skip Take Asc Where
-        [TestMethod]
+        [Fact]
         public void GetContactPreferenceList_Skip_Take_Asc_Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -380,14 +380,14 @@ namespace CSSPServices.Tests
                         List<ContactPreference> contactPreferenceList = new List<ContactPreference>();
                         contactPreferenceList = contactPreferenceService.GetContactPreferenceList().ToList();
                         CheckContactPreferenceFields(contactPreferenceList);
-                        Assert.AreEqual(contactPreferenceDirectQueryList[0].ContactPreferenceID, contactPreferenceList[0].ContactPreferenceID);
+                        Assert.Equal(contactPreferenceDirectQueryList[0].ContactPreferenceID, contactPreferenceList[0].ContactPreferenceID);
                 }
             }
         }
         #endregion Tests Generated for GetContactPreferenceList() Skip Take Asc Where
 
         #region Tests Generated for GetContactPreferenceList() Skip Take Asc 2 Where
-        [TestMethod]
+        [Fact]
         public void GetContactPreferenceList_Skip_Take_Asc_2Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -406,14 +406,14 @@ namespace CSSPServices.Tests
                         List<ContactPreference> contactPreferenceList = new List<ContactPreference>();
                         contactPreferenceList = contactPreferenceService.GetContactPreferenceList().ToList();
                         CheckContactPreferenceFields(contactPreferenceList);
-                        Assert.AreEqual(contactPreferenceDirectQueryList[0].ContactPreferenceID, contactPreferenceList[0].ContactPreferenceID);
+                        Assert.Equal(contactPreferenceDirectQueryList[0].ContactPreferenceID, contactPreferenceList[0].ContactPreferenceID);
                 }
             }
         }
         #endregion Tests Generated for GetContactPreferenceList() Skip Take Asc 2 Where
 
         #region Tests Generated for GetContactPreferenceList() Skip Take Desc
-        [TestMethod]
+        [Fact]
         public void GetContactPreferenceList_Skip_Take_Desc_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -432,14 +432,14 @@ namespace CSSPServices.Tests
                         List<ContactPreference> contactPreferenceList = new List<ContactPreference>();
                         contactPreferenceList = contactPreferenceService.GetContactPreferenceList().ToList();
                         CheckContactPreferenceFields(contactPreferenceList);
-                        Assert.AreEqual(contactPreferenceDirectQueryList[0].ContactPreferenceID, contactPreferenceList[0].ContactPreferenceID);
+                        Assert.Equal(contactPreferenceDirectQueryList[0].ContactPreferenceID, contactPreferenceList[0].ContactPreferenceID);
                 }
             }
         }
         #endregion Tests Generated for GetContactPreferenceList() Skip Take Desc
 
         #region Tests Generated for GetContactPreferenceList() Skip Take 2 Desc
-        [TestMethod]
+        [Fact]
         public void GetContactPreferenceList_Skip_Take_2Desc_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -458,14 +458,14 @@ namespace CSSPServices.Tests
                         List<ContactPreference> contactPreferenceList = new List<ContactPreference>();
                         contactPreferenceList = contactPreferenceService.GetContactPreferenceList().ToList();
                         CheckContactPreferenceFields(contactPreferenceList);
-                        Assert.AreEqual(contactPreferenceDirectQueryList[0].ContactPreferenceID, contactPreferenceList[0].ContactPreferenceID);
+                        Assert.Equal(contactPreferenceDirectQueryList[0].ContactPreferenceID, contactPreferenceList[0].ContactPreferenceID);
                 }
             }
         }
         #endregion Tests Generated for GetContactPreferenceList() Skip Take 2 Desc
 
         #region Tests Generated for GetContactPreferenceList() Skip Take Desc Where
-        [TestMethod]
+        [Fact]
         public void GetContactPreferenceList_Skip_Take_Desc_Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -484,14 +484,14 @@ namespace CSSPServices.Tests
                         List<ContactPreference> contactPreferenceList = new List<ContactPreference>();
                         contactPreferenceList = contactPreferenceService.GetContactPreferenceList().ToList();
                         CheckContactPreferenceFields(contactPreferenceList);
-                        Assert.AreEqual(contactPreferenceDirectQueryList[0].ContactPreferenceID, contactPreferenceList[0].ContactPreferenceID);
+                        Assert.Equal(contactPreferenceDirectQueryList[0].ContactPreferenceID, contactPreferenceList[0].ContactPreferenceID);
                 }
             }
         }
         #endregion Tests Generated for GetContactPreferenceList() Skip Take Desc Where
 
         #region Tests Generated for GetContactPreferenceList() Skip Take Desc 2 Where
-        [TestMethod]
+        [Fact]
         public void GetContactPreferenceList_Skip_Take_Desc_2Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -510,14 +510,14 @@ namespace CSSPServices.Tests
                         List<ContactPreference> contactPreferenceList = new List<ContactPreference>();
                         contactPreferenceList = contactPreferenceService.GetContactPreferenceList().ToList();
                         CheckContactPreferenceFields(contactPreferenceList);
-                        Assert.AreEqual(contactPreferenceDirectQueryList[0].ContactPreferenceID, contactPreferenceList[0].ContactPreferenceID);
+                        Assert.Equal(contactPreferenceDirectQueryList[0].ContactPreferenceID, contactPreferenceList[0].ContactPreferenceID);
                 }
             }
         }
         #endregion Tests Generated for GetContactPreferenceList() Skip Take Desc 2 Where
 
         #region Tests Generated for GetContactPreferenceList() 2 Where
-        [TestMethod]
+        [Fact]
         public void GetContactPreferenceList_2Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -536,7 +536,7 @@ namespace CSSPServices.Tests
                         List<ContactPreference> contactPreferenceList = new List<ContactPreference>();
                         contactPreferenceList = contactPreferenceService.GetContactPreferenceList().ToList();
                         CheckContactPreferenceFields(contactPreferenceList);
-                        Assert.AreEqual(contactPreferenceDirectQueryList[0].ContactPreferenceID, contactPreferenceList[0].ContactPreferenceID);
+                        Assert.Equal(contactPreferenceDirectQueryList[0].ContactPreferenceID, contactPreferenceList[0].ContactPreferenceID);
                 }
             }
         }
@@ -545,13 +545,13 @@ namespace CSSPServices.Tests
         #region Functions private
         private void CheckContactPreferenceFields(List<ContactPreference> contactPreferenceList)
         {
-            Assert.IsNotNull(contactPreferenceList[0].ContactPreferenceID);
-            Assert.IsNotNull(contactPreferenceList[0].ContactID);
-            Assert.IsNotNull(contactPreferenceList[0].TVType);
-            Assert.IsNotNull(contactPreferenceList[0].MarkerSize);
-            Assert.IsNotNull(contactPreferenceList[0].LastUpdateDate_UTC);
-            Assert.IsNotNull(contactPreferenceList[0].LastUpdateContactTVItemID);
-            Assert.IsNotNull(contactPreferenceList[0].HasErrors);
+            Assert.NotNull(contactPreferenceList[0].ContactPreferenceID);
+            Assert.NotNull(contactPreferenceList[0].ContactID);
+            Assert.NotNull(contactPreferenceList[0].TVType);
+            Assert.NotNull(contactPreferenceList[0].MarkerSize);
+            Assert.NotNull(contactPreferenceList[0].LastUpdateDate_UTC);
+            Assert.NotNull(contactPreferenceList[0].LastUpdateContactTVItemID);
+            Assert.NotNull(contactPreferenceList[0].HasErrors);
         }
         private ContactPreference GetFilledRandomContactPreference(string OmitPropName)
         {

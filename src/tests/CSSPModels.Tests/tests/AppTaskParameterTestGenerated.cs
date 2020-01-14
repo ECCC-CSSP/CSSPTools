@@ -6,7 +6,7 @@
  */ 
 using System;
 using System.Text;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using System.Linq;
 using System.Globalization;
 using System.Transactions;
@@ -19,7 +19,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace CSSPModels.Tests
 {
-    [TestClass]
+
     public partial class AppTaskParameterTest
     {
         #region Variables
@@ -37,7 +37,7 @@ namespace CSSPModels.Tests
         #endregion Constructors
 
         #region Tests Functions public
-        [TestMethod]
+        [Fact]
         public void AppTaskParameter_Properties_Test()
         {
             List<string> propNameList = new List<string>() { "Name", "Value", "HasErrors",  }.OrderBy(c => c).ToList();
@@ -46,32 +46,32 @@ namespace CSSPModels.Tests
             int index = 0;
             foreach (PropertyInfo propertyInfo in typeof(AppTaskParameter).GetProperties().Where(c => c.Name != "ValidationResults").OrderBy(c => c.Name).ToList())
             {
-                Assert.AreEqual(propertyInfo.Name, propNameList[index]);
+                Assert.Equal(propertyInfo.Name, propNameList[index]);
                 index += 1;
             }
 
-            Assert.AreEqual(propNameList.Count, index);
+            Assert.Equal(propNameList.Count, index);
         }
-        [TestMethod]
+        [Fact]
         public void AppTaskParameter_Has_ValidationResults_Test()
         {
-             Assert.IsTrue(typeof(AppTaskParameter).GetProperties().Where(c => c.Name == "ValidationResults").Any());
+             Assert.True(typeof(AppTaskParameter).GetProperties().Where(c => c.Name == "ValidationResults").Any());
         }
-        [TestMethod]
+        [Fact]
         public void AppTaskParameter_Every_Property_Has_Get_Set_Test()
         {
                string val1 = "Some text";
                appTaskParameter.Name = val1;
-               Assert.AreEqual(val1, appTaskParameter.Name);
+               Assert.Equal(val1, appTaskParameter.Name);
                string val2 = "Some text";
                appTaskParameter.Value = val2;
-               Assert.AreEqual(val2, appTaskParameter.Value);
+               Assert.Equal(val2, appTaskParameter.Value);
                bool val3 = true;
                appTaskParameter.HasErrors = val3;
-               Assert.AreEqual(val3, appTaskParameter.HasErrors);
+               Assert.Equal(val3, appTaskParameter.HasErrors);
                IEnumerable<ValidationResult> val12 = new List<ValidationResult>() { new ValidationResult("First CSSPError Message") }.AsEnumerable();
                appTaskParameter.ValidationResults = val12;
-               Assert.AreEqual(val12, appTaskParameter.ValidationResults);
+               Assert.Equal(val12, appTaskParameter.ValidationResults);
         }
         #endregion Tests Functions public
     }

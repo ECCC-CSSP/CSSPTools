@@ -5,7 +5,7 @@
  */ 
 
 using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using System.Linq;
 using System.Collections.Generic;
 using CSSPModels;
@@ -21,7 +21,7 @@ using CSSPEnums.Resources;
 
 namespace CSSPServices.Tests
 {
-    [TestClass]
+
     public partial class TVItemLinkServiceTest : TestHelper
     {
         #region Variables
@@ -39,7 +39,7 @@ namespace CSSPServices.Tests
         #endregion Constructors
 
         #region Tests Generated CRUD
-        [TestMethod]
+        [Fact]
         public void TVItemLink_CRUD_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -66,26 +66,26 @@ namespace CSSPServices.Tests
 
                     count = tvItemLinkService.GetTVItemLinkList().Count();
 
-                    Assert.AreEqual(count, (from c in dbTestDB.TVItemLinks select c).Count());
+                    Assert.Equal(count, (from c in dbTestDB.TVItemLinks select c).Count());
 
                     tvItemLinkService.Add(tvItemLink);
                     if (tvItemLink.HasErrors)
                     {
-                        Assert.AreEqual("", tvItemLink.ValidationResults.FirstOrDefault().ErrorMessage);
+                        Assert.Equal("", tvItemLink.ValidationResults.FirstOrDefault().ErrorMessage);
                     }
-                    Assert.AreEqual(true, tvItemLinkService.GetTVItemLinkList().Where(c => c == tvItemLink).Any());
+                    Assert.True(tvItemLinkService.GetTVItemLinkList().Where(c => c == tvItemLink).Any());
                     tvItemLinkService.Update(tvItemLink);
                     if (tvItemLink.HasErrors)
                     {
-                        Assert.AreEqual("", tvItemLink.ValidationResults.FirstOrDefault().ErrorMessage);
+                        Assert.Equal("", tvItemLink.ValidationResults.FirstOrDefault().ErrorMessage);
                     }
-                    Assert.AreEqual(count + 1, tvItemLinkService.GetTVItemLinkList().Count());
+                    Assert.Equal(count + 1, tvItemLinkService.GetTVItemLinkList().Count());
                     tvItemLinkService.Delete(tvItemLink);
                     if (tvItemLink.HasErrors)
                     {
-                        Assert.AreEqual("", tvItemLink.ValidationResults.FirstOrDefault().ErrorMessage);
+                        Assert.Equal("", tvItemLink.ValidationResults.FirstOrDefault().ErrorMessage);
                     }
-                    Assert.AreEqual(count, tvItemLinkService.GetTVItemLinkList().Count());
+                    Assert.Equal(count, tvItemLinkService.GetTVItemLinkList().Count());
 
                 }
             }
@@ -93,7 +93,7 @@ namespace CSSPServices.Tests
         #endregion Tests Generated CRUD
 
         #region Tests Generated Properties
-        [TestMethod]
+        [Fact]
         public void TVItemLink_Properties_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -131,13 +131,13 @@ namespace CSSPServices.Tests
                     tvItemLink = GetFilledRandomTVItemLink("");
                     tvItemLink.TVItemLinkID = 0;
                     tvItemLinkService.Update(tvItemLink);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsRequired, "TVItemLinkID"), tvItemLink.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsRequired, "TVItemLinkID"), tvItemLink.ValidationResults.FirstOrDefault().ErrorMessage);
 
                     tvItemLink = null;
                     tvItemLink = GetFilledRandomTVItemLink("");
                     tvItemLink.TVItemLinkID = 10000000;
                     tvItemLinkService.Update(tvItemLink);
-                    Assert.AreEqual(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "TVItemLink", "TVItemLinkID", tvItemLink.TVItemLinkID.ToString()), tvItemLink.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "TVItemLink", "TVItemLinkID", tvItemLink.TVItemLinkID.ToString()), tvItemLink.ValidationResults.FirstOrDefault().ErrorMessage);
 
 
                     // -----------------------------------
@@ -150,13 +150,13 @@ namespace CSSPServices.Tests
                     tvItemLink = GetFilledRandomTVItemLink("");
                     tvItemLink.FromTVItemID = 0;
                     tvItemLinkService.Add(tvItemLink);
-                    Assert.AreEqual(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "TVItem", "FromTVItemID", tvItemLink.FromTVItemID.ToString()), tvItemLink.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "TVItem", "FromTVItemID", tvItemLink.FromTVItemID.ToString()), tvItemLink.ValidationResults.FirstOrDefault().ErrorMessage);
 
                     tvItemLink = null;
                     tvItemLink = GetFilledRandomTVItemLink("");
                     tvItemLink.FromTVItemID = 13;
                     tvItemLinkService.Add(tvItemLink);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsNotOfType_, "FromTVItemID", "Root,Address,Area,ClimateSite,Contact,Country,Email,File,HydrometricSite,Infrastructure,MikeScenario,MikeSource,Municipality,MWQMSite,PolSourceSite,Province,Sector,Subsector,Tel,TideSite,WasteWaterTreatmentPlant,LiftStation,Spill,BoxModel,VisualPlumesScenario,OtherInfrastructure,MWQMRun,MeshNode,WebTideNode,SamplingPlan,SeeOtherMunicipality,LineOverflow,MapInfo,MapInfoPoint"), tvItemLink.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsNotOfType_, "FromTVItemID", "Root,Address,Area,ClimateSite,Contact,Country,Email,File,HydrometricSite,Infrastructure,MikeScenario,MikeSource,Municipality,MWQMSite,PolSourceSite,Province,Sector,Subsector,Tel,TideSite,WasteWaterTreatmentPlant,LiftStation,Spill,BoxModel,VisualPlumesScenario,OtherInfrastructure,MWQMRun,MeshNode,WebTideNode,SamplingPlan,SeeOtherMunicipality,LineOverflow,MapInfo,MapInfoPoint"), tvItemLink.ValidationResults.FirstOrDefault().ErrorMessage);
 
 
                     // -----------------------------------
@@ -169,13 +169,13 @@ namespace CSSPServices.Tests
                     tvItemLink = GetFilledRandomTVItemLink("");
                     tvItemLink.ToTVItemID = 0;
                     tvItemLinkService.Add(tvItemLink);
-                    Assert.AreEqual(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "TVItem", "ToTVItemID", tvItemLink.ToTVItemID.ToString()), tvItemLink.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "TVItem", "ToTVItemID", tvItemLink.ToTVItemID.ToString()), tvItemLink.ValidationResults.FirstOrDefault().ErrorMessage);
 
                     tvItemLink = null;
                     tvItemLink = GetFilledRandomTVItemLink("");
                     tvItemLink.ToTVItemID = 13;
                     tvItemLinkService.Add(tvItemLink);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsNotOfType_, "ToTVItemID", "Root,Address,Area,ClimateSite,Contact,Country,Email,File,HydrometricSite,Infrastructure,MikeScenario,MikeSource,Municipality,MWQMSite,PolSourceSite,Province,Sector,Subsector,Tel,TideSite,WasteWaterTreatmentPlant,LiftStation,Spill,BoxModel,VisualPlumesScenario,OtherInfrastructure,MWQMRun,MeshNode,WebTideNode,SamplingPlan,SeeOtherMunicipality,LineOverflow,MapInfo,MapInfoPoint"), tvItemLink.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsNotOfType_, "ToTVItemID", "Root,Address,Area,ClimateSite,Contact,Country,Email,File,HydrometricSite,Infrastructure,MikeScenario,MikeSource,Municipality,MWQMSite,PolSourceSite,Province,Sector,Subsector,Tel,TideSite,WasteWaterTreatmentPlant,LiftStation,Spill,BoxModel,VisualPlumesScenario,OtherInfrastructure,MWQMRun,MeshNode,WebTideNode,SamplingPlan,SeeOtherMunicipality,LineOverflow,MapInfo,MapInfoPoint"), tvItemLink.ValidationResults.FirstOrDefault().ErrorMessage);
 
 
                     // -----------------------------------
@@ -188,7 +188,7 @@ namespace CSSPServices.Tests
                     tvItemLink = GetFilledRandomTVItemLink("");
                     tvItemLink.FromTVType = (TVTypeEnum)1000000;
                     tvItemLinkService.Add(tvItemLink);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsRequired, "FromTVType"), tvItemLink.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsRequired, "FromTVType"), tvItemLink.ValidationResults.FirstOrDefault().ErrorMessage);
 
 
                     // -----------------------------------
@@ -201,7 +201,7 @@ namespace CSSPServices.Tests
                     tvItemLink = GetFilledRandomTVItemLink("");
                     tvItemLink.ToTVType = (TVTypeEnum)1000000;
                     tvItemLinkService.Add(tvItemLink);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsRequired, "ToTVType"), tvItemLink.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsRequired, "ToTVType"), tvItemLink.ValidationResults.FirstOrDefault().ErrorMessage);
 
 
                     // -----------------------------------
@@ -214,7 +214,7 @@ namespace CSSPServices.Tests
                     tvItemLink = GetFilledRandomTVItemLink("");
                     tvItemLink.StartDateTime_Local = new DateTime(1979, 1, 1);
                     tvItemLinkService.Add(tvItemLink);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._YearShouldBeBiggerThan_, "StartDateTime_Local", "1980"), tvItemLink.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._YearShouldBeBiggerThan_, "StartDateTime_Local", "1980"), tvItemLink.ValidationResults.FirstOrDefault().ErrorMessage);
 
                     // -----------------------------------
                     // Is Nullable
@@ -227,7 +227,7 @@ namespace CSSPServices.Tests
                     tvItemLink = GetFilledRandomTVItemLink("");
                     tvItemLink.EndDateTime_Local = new DateTime(1979, 1, 1);
                     tvItemLinkService.Add(tvItemLink);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._YearShouldBeBiggerThan_, "EndDateTime_Local", "1980"), tvItemLink.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._YearShouldBeBiggerThan_, "EndDateTime_Local", "1980"), tvItemLink.ValidationResults.FirstOrDefault().ErrorMessage);
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -238,15 +238,15 @@ namespace CSSPServices.Tests
                     tvItemLink = null;
                     tvItemLink = GetFilledRandomTVItemLink("");
                     tvItemLink.Ordinal = -1;
-                    Assert.AreEqual(false, tvItemLinkService.Add(tvItemLink));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "Ordinal", "0", "100"), tvItemLink.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, tvItemLinkService.GetTVItemLinkList().Count());
+                    Assert.False(tvItemLinkService.Add(tvItemLink));
+                    Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "Ordinal", "0", "100"), tvItemLink.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, tvItemLinkService.GetTVItemLinkList().Count());
                     tvItemLink = null;
                     tvItemLink = GetFilledRandomTVItemLink("");
                     tvItemLink.Ordinal = 101;
-                    Assert.AreEqual(false, tvItemLinkService.Add(tvItemLink));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "Ordinal", "0", "100"), tvItemLink.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, tvItemLinkService.GetTVItemLinkList().Count());
+                    Assert.False(tvItemLinkService.Add(tvItemLink));
+                    Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "Ordinal", "0", "100"), tvItemLink.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, tvItemLinkService.GetTVItemLinkList().Count());
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -257,15 +257,15 @@ namespace CSSPServices.Tests
                     tvItemLink = null;
                     tvItemLink = GetFilledRandomTVItemLink("");
                     tvItemLink.TVLevel = -1;
-                    Assert.AreEqual(false, tvItemLinkService.Add(tvItemLink));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "TVLevel", "0", "100"), tvItemLink.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, tvItemLinkService.GetTVItemLinkList().Count());
+                    Assert.False(tvItemLinkService.Add(tvItemLink));
+                    Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "TVLevel", "0", "100"), tvItemLink.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, tvItemLinkService.GetTVItemLinkList().Count());
                     tvItemLink = null;
                     tvItemLink = GetFilledRandomTVItemLink("");
                     tvItemLink.TVLevel = 101;
-                    Assert.AreEqual(false, tvItemLinkService.Add(tvItemLink));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "TVLevel", "0", "100"), tvItemLink.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, tvItemLinkService.GetTVItemLinkList().Count());
+                    Assert.False(tvItemLinkService.Add(tvItemLink));
+                    Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "TVLevel", "0", "100"), tvItemLink.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, tvItemLinkService.GetTVItemLinkList().Count());
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -275,18 +275,18 @@ namespace CSSPServices.Tests
 
                     tvItemLink = null;
                     tvItemLink = GetFilledRandomTVItemLink("TVPath");
-                    Assert.AreEqual(false, tvItemLinkService.Add(tvItemLink));
-                    Assert.AreEqual(1, tvItemLink.ValidationResults.Count());
-                    Assert.IsTrue(tvItemLink.ValidationResults.Where(c => c.ErrorMessage == string.Format(CSSPServicesRes._IsRequired, "TVPath")).Any());
-                    Assert.AreEqual(null, tvItemLink.TVPath);
-                    Assert.AreEqual(count, tvItemLinkService.GetTVItemLinkList().Count());
+                    Assert.False(tvItemLinkService.Add(tvItemLink));
+                    Assert.Equal(1, tvItemLink.ValidationResults.Count());
+                    Assert.True(tvItemLink.ValidationResults.Where(c => c.ErrorMessage == string.Format(CSSPServicesRes._IsRequired, "TVPath")).Any());
+                    Assert.Null(tvItemLink.TVPath);
+                    Assert.Equal(count, tvItemLinkService.GetTVItemLinkList().Count());
 
                     tvItemLink = null;
                     tvItemLink = GetFilledRandomTVItemLink("");
                     tvItemLink.TVPath = GetRandomString("", 251);
-                    Assert.AreEqual(false, tvItemLinkService.Add(tvItemLink));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._MaxLengthIs_, "TVPath", "250"), tvItemLink.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, tvItemLinkService.GetTVItemLinkList().Count());
+                    Assert.False(tvItemLinkService.Add(tvItemLink));
+                    Assert.Equal(string.Format(CSSPServicesRes._MaxLengthIs_, "TVPath", "250"), tvItemLink.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, tvItemLinkService.GetTVItemLinkList().Count());
 
                     // -----------------------------------
                     // Is Nullable
@@ -298,7 +298,7 @@ namespace CSSPServices.Tests
                     tvItemLink = GetFilledRandomTVItemLink("");
                     tvItemLink.ParentTVItemLinkID = 0;
                     tvItemLinkService.Add(tvItemLink);
-                    Assert.AreEqual(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "TVItemLink", "ParentTVItemLinkID", tvItemLink.ParentTVItemLinkID.ToString()), tvItemLink.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "TVItemLink", "ParentTVItemLinkID", tvItemLink.ParentTVItemLinkID.ToString()), tvItemLink.ValidationResults.FirstOrDefault().ErrorMessage);
 
 
                     // -----------------------------------
@@ -311,12 +311,12 @@ namespace CSSPServices.Tests
                     tvItemLink = GetFilledRandomTVItemLink("");
                     tvItemLink.LastUpdateDate_UTC = new DateTime();
                     tvItemLinkService.Add(tvItemLink);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsRequired, "LastUpdateDate_UTC"), tvItemLink.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsRequired, "LastUpdateDate_UTC"), tvItemLink.ValidationResults.FirstOrDefault().ErrorMessage);
                     tvItemLink = null;
                     tvItemLink = GetFilledRandomTVItemLink("");
                     tvItemLink.LastUpdateDate_UTC = new DateTime(1979, 1, 1);
                     tvItemLinkService.Add(tvItemLink);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._YearShouldBeBiggerThan_, "LastUpdateDate_UTC", "1980"), tvItemLink.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._YearShouldBeBiggerThan_, "LastUpdateDate_UTC", "1980"), tvItemLink.ValidationResults.FirstOrDefault().ErrorMessage);
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -328,13 +328,13 @@ namespace CSSPServices.Tests
                     tvItemLink = GetFilledRandomTVItemLink("");
                     tvItemLink.LastUpdateContactTVItemID = 0;
                     tvItemLinkService.Add(tvItemLink);
-                    Assert.AreEqual(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "TVItem", "LastUpdateContactTVItemID", tvItemLink.LastUpdateContactTVItemID.ToString()), tvItemLink.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "TVItem", "LastUpdateContactTVItemID", tvItemLink.LastUpdateContactTVItemID.ToString()), tvItemLink.ValidationResults.FirstOrDefault().ErrorMessage);
 
                     tvItemLink = null;
                     tvItemLink = GetFilledRandomTVItemLink("");
                     tvItemLink.LastUpdateContactTVItemID = 1;
                     tvItemLinkService.Add(tvItemLink);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsNotOfType_, "LastUpdateContactTVItemID", "Contact"), tvItemLink.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsNotOfType_, "LastUpdateContactTVItemID", "Contact"), tvItemLink.ValidationResults.FirstOrDefault().ErrorMessage);
 
 
                     // -----------------------------------
@@ -358,7 +358,7 @@ namespace CSSPServices.Tests
         #endregion Tests Generated Properties
 
         #region Tests Generated for GetTVItemLinkWithTVItemLinkID(tvItemLink.TVItemLinkID)
-        [TestMethod]
+        [Fact]
         public void GetTVItemLinkWithTVItemLinkID__tvItemLink_TVItemLinkID__Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -369,7 +369,7 @@ namespace CSSPServices.Tests
                 {
                     TVItemLinkService tvItemLinkService = new TVItemLinkService(new Query() { Lang = culture.TwoLetterISOLanguageName }, dbTestDB, ContactID);
                     TVItemLink tvItemLink = (from c in dbTestDB.TVItemLinks select c).FirstOrDefault();
-                    Assert.IsNotNull(tvItemLink);
+                    Assert.NotNull(tvItemLink);
 
                 }
             }
@@ -377,7 +377,7 @@ namespace CSSPServices.Tests
         #endregion Tests Generated for GetTVItemLinkWithTVItemLinkID(tvItemLink.TVItemLinkID)
 
         #region Tests Generated for GetTVItemLinkList()
-        [TestMethod]
+        [Fact]
         public void GetTVItemLinkList_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -388,7 +388,7 @@ namespace CSSPServices.Tests
                 {
                     TVItemLinkService tvItemLinkService = new TVItemLinkService(new Query() { Lang = culture.TwoLetterISOLanguageName }, dbTestDB, ContactID);
                     TVItemLink tvItemLink = (from c in dbTestDB.TVItemLinks select c).FirstOrDefault();
-                    Assert.IsNotNull(tvItemLink);
+                    Assert.NotNull(tvItemLink);
 
                     List<TVItemLink> tvItemLinkDirectQueryList = new List<TVItemLink>();
                     tvItemLinkDirectQueryList = (from c in dbTestDB.TVItemLinks select c).Take(200).ToList();
@@ -399,7 +399,7 @@ namespace CSSPServices.Tests
         #endregion Tests Generated for GetTVItemLinkList()
 
         #region Tests Generated for GetTVItemLinkList() Skip Take
-        [TestMethod]
+        [Fact]
         public void GetTVItemLinkList_Skip_Take_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -418,14 +418,14 @@ namespace CSSPServices.Tests
                         List<TVItemLink> tvItemLinkList = new List<TVItemLink>();
                         tvItemLinkList = tvItemLinkService.GetTVItemLinkList().ToList();
                         CheckTVItemLinkFields(tvItemLinkList);
-                        Assert.AreEqual(tvItemLinkDirectQueryList[0].TVItemLinkID, tvItemLinkList[0].TVItemLinkID);
+                        Assert.Equal(tvItemLinkDirectQueryList[0].TVItemLinkID, tvItemLinkList[0].TVItemLinkID);
                 }
             }
         }
         #endregion Tests Generated for GetTVItemLinkList() Skip Take
 
         #region Tests Generated for GetTVItemLinkList() Skip Take Asc
-        [TestMethod]
+        [Fact]
         public void GetTVItemLinkList_Skip_Take_Asc_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -444,14 +444,14 @@ namespace CSSPServices.Tests
                         List<TVItemLink> tvItemLinkList = new List<TVItemLink>();
                         tvItemLinkList = tvItemLinkService.GetTVItemLinkList().ToList();
                         CheckTVItemLinkFields(tvItemLinkList);
-                        Assert.AreEqual(tvItemLinkDirectQueryList[0].TVItemLinkID, tvItemLinkList[0].TVItemLinkID);
+                        Assert.Equal(tvItemLinkDirectQueryList[0].TVItemLinkID, tvItemLinkList[0].TVItemLinkID);
                 }
             }
         }
         #endregion Tests Generated for GetTVItemLinkList() Skip Take Asc
 
         #region Tests Generated for GetTVItemLinkList() Skip Take 2 Asc
-        [TestMethod]
+        [Fact]
         public void GetTVItemLinkList_Skip_Take_2Asc_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -470,14 +470,14 @@ namespace CSSPServices.Tests
                         List<TVItemLink> tvItemLinkList = new List<TVItemLink>();
                         tvItemLinkList = tvItemLinkService.GetTVItemLinkList().ToList();
                         CheckTVItemLinkFields(tvItemLinkList);
-                        Assert.AreEqual(tvItemLinkDirectQueryList[0].TVItemLinkID, tvItemLinkList[0].TVItemLinkID);
+                        Assert.Equal(tvItemLinkDirectQueryList[0].TVItemLinkID, tvItemLinkList[0].TVItemLinkID);
                 }
             }
         }
         #endregion Tests Generated for GetTVItemLinkList() Skip Take 2 Asc
 
         #region Tests Generated for GetTVItemLinkList() Skip Take Asc Where
-        [TestMethod]
+        [Fact]
         public void GetTVItemLinkList_Skip_Take_Asc_Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -496,14 +496,14 @@ namespace CSSPServices.Tests
                         List<TVItemLink> tvItemLinkList = new List<TVItemLink>();
                         tvItemLinkList = tvItemLinkService.GetTVItemLinkList().ToList();
                         CheckTVItemLinkFields(tvItemLinkList);
-                        Assert.AreEqual(tvItemLinkDirectQueryList[0].TVItemLinkID, tvItemLinkList[0].TVItemLinkID);
+                        Assert.Equal(tvItemLinkDirectQueryList[0].TVItemLinkID, tvItemLinkList[0].TVItemLinkID);
                 }
             }
         }
         #endregion Tests Generated for GetTVItemLinkList() Skip Take Asc Where
 
         #region Tests Generated for GetTVItemLinkList() Skip Take Asc 2 Where
-        [TestMethod]
+        [Fact]
         public void GetTVItemLinkList_Skip_Take_Asc_2Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -522,14 +522,14 @@ namespace CSSPServices.Tests
                         List<TVItemLink> tvItemLinkList = new List<TVItemLink>();
                         tvItemLinkList = tvItemLinkService.GetTVItemLinkList().ToList();
                         CheckTVItemLinkFields(tvItemLinkList);
-                        Assert.AreEqual(tvItemLinkDirectQueryList[0].TVItemLinkID, tvItemLinkList[0].TVItemLinkID);
+                        Assert.Equal(tvItemLinkDirectQueryList[0].TVItemLinkID, tvItemLinkList[0].TVItemLinkID);
                 }
             }
         }
         #endregion Tests Generated for GetTVItemLinkList() Skip Take Asc 2 Where
 
         #region Tests Generated for GetTVItemLinkList() Skip Take Desc
-        [TestMethod]
+        [Fact]
         public void GetTVItemLinkList_Skip_Take_Desc_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -548,14 +548,14 @@ namespace CSSPServices.Tests
                         List<TVItemLink> tvItemLinkList = new List<TVItemLink>();
                         tvItemLinkList = tvItemLinkService.GetTVItemLinkList().ToList();
                         CheckTVItemLinkFields(tvItemLinkList);
-                        Assert.AreEqual(tvItemLinkDirectQueryList[0].TVItemLinkID, tvItemLinkList[0].TVItemLinkID);
+                        Assert.Equal(tvItemLinkDirectQueryList[0].TVItemLinkID, tvItemLinkList[0].TVItemLinkID);
                 }
             }
         }
         #endregion Tests Generated for GetTVItemLinkList() Skip Take Desc
 
         #region Tests Generated for GetTVItemLinkList() Skip Take 2 Desc
-        [TestMethod]
+        [Fact]
         public void GetTVItemLinkList_Skip_Take_2Desc_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -574,14 +574,14 @@ namespace CSSPServices.Tests
                         List<TVItemLink> tvItemLinkList = new List<TVItemLink>();
                         tvItemLinkList = tvItemLinkService.GetTVItemLinkList().ToList();
                         CheckTVItemLinkFields(tvItemLinkList);
-                        Assert.AreEqual(tvItemLinkDirectQueryList[0].TVItemLinkID, tvItemLinkList[0].TVItemLinkID);
+                        Assert.Equal(tvItemLinkDirectQueryList[0].TVItemLinkID, tvItemLinkList[0].TVItemLinkID);
                 }
             }
         }
         #endregion Tests Generated for GetTVItemLinkList() Skip Take 2 Desc
 
         #region Tests Generated for GetTVItemLinkList() Skip Take Desc Where
-        [TestMethod]
+        [Fact]
         public void GetTVItemLinkList_Skip_Take_Desc_Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -600,14 +600,14 @@ namespace CSSPServices.Tests
                         List<TVItemLink> tvItemLinkList = new List<TVItemLink>();
                         tvItemLinkList = tvItemLinkService.GetTVItemLinkList().ToList();
                         CheckTVItemLinkFields(tvItemLinkList);
-                        Assert.AreEqual(tvItemLinkDirectQueryList[0].TVItemLinkID, tvItemLinkList[0].TVItemLinkID);
+                        Assert.Equal(tvItemLinkDirectQueryList[0].TVItemLinkID, tvItemLinkList[0].TVItemLinkID);
                 }
             }
         }
         #endregion Tests Generated for GetTVItemLinkList() Skip Take Desc Where
 
         #region Tests Generated for GetTVItemLinkList() Skip Take Desc 2 Where
-        [TestMethod]
+        [Fact]
         public void GetTVItemLinkList_Skip_Take_Desc_2Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -626,14 +626,14 @@ namespace CSSPServices.Tests
                         List<TVItemLink> tvItemLinkList = new List<TVItemLink>();
                         tvItemLinkList = tvItemLinkService.GetTVItemLinkList().ToList();
                         CheckTVItemLinkFields(tvItemLinkList);
-                        Assert.AreEqual(tvItemLinkDirectQueryList[0].TVItemLinkID, tvItemLinkList[0].TVItemLinkID);
+                        Assert.Equal(tvItemLinkDirectQueryList[0].TVItemLinkID, tvItemLinkList[0].TVItemLinkID);
                 }
             }
         }
         #endregion Tests Generated for GetTVItemLinkList() Skip Take Desc 2 Where
 
         #region Tests Generated for GetTVItemLinkList() 2 Where
-        [TestMethod]
+        [Fact]
         public void GetTVItemLinkList_2Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -652,7 +652,7 @@ namespace CSSPServices.Tests
                         List<TVItemLink> tvItemLinkList = new List<TVItemLink>();
                         tvItemLinkList = tvItemLinkService.GetTVItemLinkList().ToList();
                         CheckTVItemLinkFields(tvItemLinkList);
-                        Assert.AreEqual(tvItemLinkDirectQueryList[0].TVItemLinkID, tvItemLinkList[0].TVItemLinkID);
+                        Assert.Equal(tvItemLinkDirectQueryList[0].TVItemLinkID, tvItemLinkList[0].TVItemLinkID);
                 }
             }
         }
@@ -661,29 +661,29 @@ namespace CSSPServices.Tests
         #region Functions private
         private void CheckTVItemLinkFields(List<TVItemLink> tvItemLinkList)
         {
-            Assert.IsNotNull(tvItemLinkList[0].TVItemLinkID);
-            Assert.IsNotNull(tvItemLinkList[0].FromTVItemID);
-            Assert.IsNotNull(tvItemLinkList[0].ToTVItemID);
-            Assert.IsNotNull(tvItemLinkList[0].FromTVType);
-            Assert.IsNotNull(tvItemLinkList[0].ToTVType);
+            Assert.NotNull(tvItemLinkList[0].TVItemLinkID);
+            Assert.NotNull(tvItemLinkList[0].FromTVItemID);
+            Assert.NotNull(tvItemLinkList[0].ToTVItemID);
+            Assert.NotNull(tvItemLinkList[0].FromTVType);
+            Assert.NotNull(tvItemLinkList[0].ToTVType);
             if (tvItemLinkList[0].StartDateTime_Local != null)
             {
-                Assert.IsNotNull(tvItemLinkList[0].StartDateTime_Local);
+                Assert.NotNull(tvItemLinkList[0].StartDateTime_Local);
             }
             if (tvItemLinkList[0].EndDateTime_Local != null)
             {
-                Assert.IsNotNull(tvItemLinkList[0].EndDateTime_Local);
+                Assert.NotNull(tvItemLinkList[0].EndDateTime_Local);
             }
-            Assert.IsNotNull(tvItemLinkList[0].Ordinal);
-            Assert.IsNotNull(tvItemLinkList[0].TVLevel);
-            Assert.IsFalse(string.IsNullOrWhiteSpace(tvItemLinkList[0].TVPath));
+            Assert.NotNull(tvItemLinkList[0].Ordinal);
+            Assert.NotNull(tvItemLinkList[0].TVLevel);
+            Assert.False(string.IsNullOrWhiteSpace(tvItemLinkList[0].TVPath));
             if (tvItemLinkList[0].ParentTVItemLinkID != null)
             {
-                Assert.IsNotNull(tvItemLinkList[0].ParentTVItemLinkID);
+                Assert.NotNull(tvItemLinkList[0].ParentTVItemLinkID);
             }
-            Assert.IsNotNull(tvItemLinkList[0].LastUpdateDate_UTC);
-            Assert.IsNotNull(tvItemLinkList[0].LastUpdateContactTVItemID);
-            Assert.IsNotNull(tvItemLinkList[0].HasErrors);
+            Assert.NotNull(tvItemLinkList[0].LastUpdateDate_UTC);
+            Assert.NotNull(tvItemLinkList[0].LastUpdateContactTVItemID);
+            Assert.NotNull(tvItemLinkList[0].HasErrors);
         }
         private TVItemLink GetFilledRandomTVItemLink(string OmitPropName)
         {

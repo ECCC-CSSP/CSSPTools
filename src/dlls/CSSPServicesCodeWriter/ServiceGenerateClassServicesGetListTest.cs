@@ -20,7 +20,7 @@ namespace CSSPServicesGenerateCodeHelper
         private void GenerateGetListTestCode(string TypeName, string TypeNameLower, List<Type> types, StringBuilder sb)
         {
             sb.AppendLine($@"        #region Tests Generated for Get{ TypeName }List()");
-            sb.AppendLine(@"        [TestMethod]");
+            sb.AppendLine(@"        [Fact]");
             sb.AppendLine($@"        public void Get{ TypeName }List_Test()");
             sb.AppendLine(@"        {");
             sb.AppendLine(@"            foreach (CultureInfo culture in AllowableCulture)");
@@ -38,7 +38,7 @@ namespace CSSPServicesGenerateCodeHelper
             {
                 sb.AppendLine($@"                    { TypeName } { TypeNameLower } = (from c in dbTestDB.{ TypeName }s select c).FirstOrDefault();");
             }
-            sb.AppendLine($@"                    Assert.IsNotNull({ TypeNameLower });");
+            sb.AppendLine($@"                    Assert.NotNull({ TypeNameLower });");
             sb.AppendLine(@"");
             sb.AppendLine($@"                    List<{ TypeName }> { TypeNameLower }DirectQueryList = new List<{ TypeName }>();");
             if (TypeName == "Address")

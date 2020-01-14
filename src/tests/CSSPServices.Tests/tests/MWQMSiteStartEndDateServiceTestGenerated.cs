@@ -5,7 +5,7 @@
  */ 
 
 using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using System.Linq;
 using System.Collections.Generic;
 using CSSPModels;
@@ -21,7 +21,7 @@ using CSSPEnums.Resources;
 
 namespace CSSPServices.Tests
 {
-    [TestClass]
+
     public partial class MWQMSiteStartEndDateServiceTest : TestHelper
     {
         #region Variables
@@ -39,7 +39,7 @@ namespace CSSPServices.Tests
         #endregion Constructors
 
         #region Tests Generated CRUD
-        [TestMethod]
+        [Fact]
         public void MWQMSiteStartEndDate_CRUD_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -66,26 +66,26 @@ namespace CSSPServices.Tests
 
                     count = mwqmSiteStartEndDateService.GetMWQMSiteStartEndDateList().Count();
 
-                    Assert.AreEqual(count, (from c in dbTestDB.MWQMSiteStartEndDates select c).Count());
+                    Assert.Equal(count, (from c in dbTestDB.MWQMSiteStartEndDates select c).Count());
 
                     mwqmSiteStartEndDateService.Add(mwqmSiteStartEndDate);
                     if (mwqmSiteStartEndDate.HasErrors)
                     {
-                        Assert.AreEqual("", mwqmSiteStartEndDate.ValidationResults.FirstOrDefault().ErrorMessage);
+                        Assert.Equal("", mwqmSiteStartEndDate.ValidationResults.FirstOrDefault().ErrorMessage);
                     }
-                    Assert.AreEqual(true, mwqmSiteStartEndDateService.GetMWQMSiteStartEndDateList().Where(c => c == mwqmSiteStartEndDate).Any());
+                    Assert.True(mwqmSiteStartEndDateService.GetMWQMSiteStartEndDateList().Where(c => c == mwqmSiteStartEndDate).Any());
                     mwqmSiteStartEndDateService.Update(mwqmSiteStartEndDate);
                     if (mwqmSiteStartEndDate.HasErrors)
                     {
-                        Assert.AreEqual("", mwqmSiteStartEndDate.ValidationResults.FirstOrDefault().ErrorMessage);
+                        Assert.Equal("", mwqmSiteStartEndDate.ValidationResults.FirstOrDefault().ErrorMessage);
                     }
-                    Assert.AreEqual(count + 1, mwqmSiteStartEndDateService.GetMWQMSiteStartEndDateList().Count());
+                    Assert.Equal(count + 1, mwqmSiteStartEndDateService.GetMWQMSiteStartEndDateList().Count());
                     mwqmSiteStartEndDateService.Delete(mwqmSiteStartEndDate);
                     if (mwqmSiteStartEndDate.HasErrors)
                     {
-                        Assert.AreEqual("", mwqmSiteStartEndDate.ValidationResults.FirstOrDefault().ErrorMessage);
+                        Assert.Equal("", mwqmSiteStartEndDate.ValidationResults.FirstOrDefault().ErrorMessage);
                     }
-                    Assert.AreEqual(count, mwqmSiteStartEndDateService.GetMWQMSiteStartEndDateList().Count());
+                    Assert.Equal(count, mwqmSiteStartEndDateService.GetMWQMSiteStartEndDateList().Count());
 
                 }
             }
@@ -93,7 +93,7 @@ namespace CSSPServices.Tests
         #endregion Tests Generated CRUD
 
         #region Tests Generated Properties
-        [TestMethod]
+        [Fact]
         public void MWQMSiteStartEndDate_Properties_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -131,13 +131,13 @@ namespace CSSPServices.Tests
                     mwqmSiteStartEndDate = GetFilledRandomMWQMSiteStartEndDate("");
                     mwqmSiteStartEndDate.MWQMSiteStartEndDateID = 0;
                     mwqmSiteStartEndDateService.Update(mwqmSiteStartEndDate);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsRequired, "MWQMSiteStartEndDateID"), mwqmSiteStartEndDate.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsRequired, "MWQMSiteStartEndDateID"), mwqmSiteStartEndDate.ValidationResults.FirstOrDefault().ErrorMessage);
 
                     mwqmSiteStartEndDate = null;
                     mwqmSiteStartEndDate = GetFilledRandomMWQMSiteStartEndDate("");
                     mwqmSiteStartEndDate.MWQMSiteStartEndDateID = 10000000;
                     mwqmSiteStartEndDateService.Update(mwqmSiteStartEndDate);
-                    Assert.AreEqual(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "MWQMSiteStartEndDate", "MWQMSiteStartEndDateID", mwqmSiteStartEndDate.MWQMSiteStartEndDateID.ToString()), mwqmSiteStartEndDate.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "MWQMSiteStartEndDate", "MWQMSiteStartEndDateID", mwqmSiteStartEndDate.MWQMSiteStartEndDateID.ToString()), mwqmSiteStartEndDate.ValidationResults.FirstOrDefault().ErrorMessage);
 
 
                     // -----------------------------------
@@ -150,13 +150,13 @@ namespace CSSPServices.Tests
                     mwqmSiteStartEndDate = GetFilledRandomMWQMSiteStartEndDate("");
                     mwqmSiteStartEndDate.MWQMSiteTVItemID = 0;
                     mwqmSiteStartEndDateService.Add(mwqmSiteStartEndDate);
-                    Assert.AreEqual(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "TVItem", "MWQMSiteTVItemID", mwqmSiteStartEndDate.MWQMSiteTVItemID.ToString()), mwqmSiteStartEndDate.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "TVItem", "MWQMSiteTVItemID", mwqmSiteStartEndDate.MWQMSiteTVItemID.ToString()), mwqmSiteStartEndDate.ValidationResults.FirstOrDefault().ErrorMessage);
 
                     mwqmSiteStartEndDate = null;
                     mwqmSiteStartEndDate = GetFilledRandomMWQMSiteStartEndDate("");
                     mwqmSiteStartEndDate.MWQMSiteTVItemID = 1;
                     mwqmSiteStartEndDateService.Add(mwqmSiteStartEndDate);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsNotOfType_, "MWQMSiteTVItemID", "MWQMSite"), mwqmSiteStartEndDate.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsNotOfType_, "MWQMSiteTVItemID", "MWQMSite"), mwqmSiteStartEndDate.ValidationResults.FirstOrDefault().ErrorMessage);
 
 
                     // -----------------------------------
@@ -169,12 +169,12 @@ namespace CSSPServices.Tests
                     mwqmSiteStartEndDate = GetFilledRandomMWQMSiteStartEndDate("");
                     mwqmSiteStartEndDate.StartDate = new DateTime();
                     mwqmSiteStartEndDateService.Add(mwqmSiteStartEndDate);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsRequired, "StartDate"), mwqmSiteStartEndDate.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsRequired, "StartDate"), mwqmSiteStartEndDate.ValidationResults.FirstOrDefault().ErrorMessage);
                     mwqmSiteStartEndDate = null;
                     mwqmSiteStartEndDate = GetFilledRandomMWQMSiteStartEndDate("");
                     mwqmSiteStartEndDate.StartDate = new DateTime(1979, 1, 1);
                     mwqmSiteStartEndDateService.Add(mwqmSiteStartEndDate);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._YearShouldBeBiggerThan_, "StartDate", "1980"), mwqmSiteStartEndDate.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._YearShouldBeBiggerThan_, "StartDate", "1980"), mwqmSiteStartEndDate.ValidationResults.FirstOrDefault().ErrorMessage);
 
                     // -----------------------------------
                     // Is Nullable
@@ -187,7 +187,7 @@ namespace CSSPServices.Tests
                     mwqmSiteStartEndDate = GetFilledRandomMWQMSiteStartEndDate("");
                     mwqmSiteStartEndDate.EndDate = new DateTime(1979, 1, 1);
                     mwqmSiteStartEndDateService.Add(mwqmSiteStartEndDate);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._YearShouldBeBiggerThan_, "EndDate", "1980"), mwqmSiteStartEndDate.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._YearShouldBeBiggerThan_, "EndDate", "1980"), mwqmSiteStartEndDate.ValidationResults.FirstOrDefault().ErrorMessage);
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -199,12 +199,12 @@ namespace CSSPServices.Tests
                     mwqmSiteStartEndDate = GetFilledRandomMWQMSiteStartEndDate("");
                     mwqmSiteStartEndDate.LastUpdateDate_UTC = new DateTime();
                     mwqmSiteStartEndDateService.Add(mwqmSiteStartEndDate);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsRequired, "LastUpdateDate_UTC"), mwqmSiteStartEndDate.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsRequired, "LastUpdateDate_UTC"), mwqmSiteStartEndDate.ValidationResults.FirstOrDefault().ErrorMessage);
                     mwqmSiteStartEndDate = null;
                     mwqmSiteStartEndDate = GetFilledRandomMWQMSiteStartEndDate("");
                     mwqmSiteStartEndDate.LastUpdateDate_UTC = new DateTime(1979, 1, 1);
                     mwqmSiteStartEndDateService.Add(mwqmSiteStartEndDate);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._YearShouldBeBiggerThan_, "LastUpdateDate_UTC", "1980"), mwqmSiteStartEndDate.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._YearShouldBeBiggerThan_, "LastUpdateDate_UTC", "1980"), mwqmSiteStartEndDate.ValidationResults.FirstOrDefault().ErrorMessage);
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -216,13 +216,13 @@ namespace CSSPServices.Tests
                     mwqmSiteStartEndDate = GetFilledRandomMWQMSiteStartEndDate("");
                     mwqmSiteStartEndDate.LastUpdateContactTVItemID = 0;
                     mwqmSiteStartEndDateService.Add(mwqmSiteStartEndDate);
-                    Assert.AreEqual(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "TVItem", "LastUpdateContactTVItemID", mwqmSiteStartEndDate.LastUpdateContactTVItemID.ToString()), mwqmSiteStartEndDate.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "TVItem", "LastUpdateContactTVItemID", mwqmSiteStartEndDate.LastUpdateContactTVItemID.ToString()), mwqmSiteStartEndDate.ValidationResults.FirstOrDefault().ErrorMessage);
 
                     mwqmSiteStartEndDate = null;
                     mwqmSiteStartEndDate = GetFilledRandomMWQMSiteStartEndDate("");
                     mwqmSiteStartEndDate.LastUpdateContactTVItemID = 1;
                     mwqmSiteStartEndDateService.Add(mwqmSiteStartEndDate);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsNotOfType_, "LastUpdateContactTVItemID", "Contact"), mwqmSiteStartEndDate.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsNotOfType_, "LastUpdateContactTVItemID", "Contact"), mwqmSiteStartEndDate.ValidationResults.FirstOrDefault().ErrorMessage);
 
 
                     // -----------------------------------
@@ -246,7 +246,7 @@ namespace CSSPServices.Tests
         #endregion Tests Generated Properties
 
         #region Tests Generated for GetMWQMSiteStartEndDateWithMWQMSiteStartEndDateID(mwqmSiteStartEndDate.MWQMSiteStartEndDateID)
-        [TestMethod]
+        [Fact]
         public void GetMWQMSiteStartEndDateWithMWQMSiteStartEndDateID__mwqmSiteStartEndDate_MWQMSiteStartEndDateID__Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -257,7 +257,7 @@ namespace CSSPServices.Tests
                 {
                     MWQMSiteStartEndDateService mwqmSiteStartEndDateService = new MWQMSiteStartEndDateService(new Query() { Lang = culture.TwoLetterISOLanguageName }, dbTestDB, ContactID);
                     MWQMSiteStartEndDate mwqmSiteStartEndDate = (from c in dbTestDB.MWQMSiteStartEndDates select c).FirstOrDefault();
-                    Assert.IsNotNull(mwqmSiteStartEndDate);
+                    Assert.NotNull(mwqmSiteStartEndDate);
 
                 }
             }
@@ -265,7 +265,7 @@ namespace CSSPServices.Tests
         #endregion Tests Generated for GetMWQMSiteStartEndDateWithMWQMSiteStartEndDateID(mwqmSiteStartEndDate.MWQMSiteStartEndDateID)
 
         #region Tests Generated for GetMWQMSiteStartEndDateList()
-        [TestMethod]
+        [Fact]
         public void GetMWQMSiteStartEndDateList_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -276,7 +276,7 @@ namespace CSSPServices.Tests
                 {
                     MWQMSiteStartEndDateService mwqmSiteStartEndDateService = new MWQMSiteStartEndDateService(new Query() { Lang = culture.TwoLetterISOLanguageName }, dbTestDB, ContactID);
                     MWQMSiteStartEndDate mwqmSiteStartEndDate = (from c in dbTestDB.MWQMSiteStartEndDates select c).FirstOrDefault();
-                    Assert.IsNotNull(mwqmSiteStartEndDate);
+                    Assert.NotNull(mwqmSiteStartEndDate);
 
                     List<MWQMSiteStartEndDate> mwqmSiteStartEndDateDirectQueryList = new List<MWQMSiteStartEndDate>();
                     mwqmSiteStartEndDateDirectQueryList = (from c in dbTestDB.MWQMSiteStartEndDates select c).Take(200).ToList();
@@ -287,7 +287,7 @@ namespace CSSPServices.Tests
         #endregion Tests Generated for GetMWQMSiteStartEndDateList()
 
         #region Tests Generated for GetMWQMSiteStartEndDateList() Skip Take
-        [TestMethod]
+        [Fact]
         public void GetMWQMSiteStartEndDateList_Skip_Take_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -306,14 +306,14 @@ namespace CSSPServices.Tests
                         List<MWQMSiteStartEndDate> mwqmSiteStartEndDateList = new List<MWQMSiteStartEndDate>();
                         mwqmSiteStartEndDateList = mwqmSiteStartEndDateService.GetMWQMSiteStartEndDateList().ToList();
                         CheckMWQMSiteStartEndDateFields(mwqmSiteStartEndDateList);
-                        Assert.AreEqual(mwqmSiteStartEndDateDirectQueryList[0].MWQMSiteStartEndDateID, mwqmSiteStartEndDateList[0].MWQMSiteStartEndDateID);
+                        Assert.Equal(mwqmSiteStartEndDateDirectQueryList[0].MWQMSiteStartEndDateID, mwqmSiteStartEndDateList[0].MWQMSiteStartEndDateID);
                 }
             }
         }
         #endregion Tests Generated for GetMWQMSiteStartEndDateList() Skip Take
 
         #region Tests Generated for GetMWQMSiteStartEndDateList() Skip Take Asc
-        [TestMethod]
+        [Fact]
         public void GetMWQMSiteStartEndDateList_Skip_Take_Asc_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -332,14 +332,14 @@ namespace CSSPServices.Tests
                         List<MWQMSiteStartEndDate> mwqmSiteStartEndDateList = new List<MWQMSiteStartEndDate>();
                         mwqmSiteStartEndDateList = mwqmSiteStartEndDateService.GetMWQMSiteStartEndDateList().ToList();
                         CheckMWQMSiteStartEndDateFields(mwqmSiteStartEndDateList);
-                        Assert.AreEqual(mwqmSiteStartEndDateDirectQueryList[0].MWQMSiteStartEndDateID, mwqmSiteStartEndDateList[0].MWQMSiteStartEndDateID);
+                        Assert.Equal(mwqmSiteStartEndDateDirectQueryList[0].MWQMSiteStartEndDateID, mwqmSiteStartEndDateList[0].MWQMSiteStartEndDateID);
                 }
             }
         }
         #endregion Tests Generated for GetMWQMSiteStartEndDateList() Skip Take Asc
 
         #region Tests Generated for GetMWQMSiteStartEndDateList() Skip Take 2 Asc
-        [TestMethod]
+        [Fact]
         public void GetMWQMSiteStartEndDateList_Skip_Take_2Asc_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -358,14 +358,14 @@ namespace CSSPServices.Tests
                         List<MWQMSiteStartEndDate> mwqmSiteStartEndDateList = new List<MWQMSiteStartEndDate>();
                         mwqmSiteStartEndDateList = mwqmSiteStartEndDateService.GetMWQMSiteStartEndDateList().ToList();
                         CheckMWQMSiteStartEndDateFields(mwqmSiteStartEndDateList);
-                        Assert.AreEqual(mwqmSiteStartEndDateDirectQueryList[0].MWQMSiteStartEndDateID, mwqmSiteStartEndDateList[0].MWQMSiteStartEndDateID);
+                        Assert.Equal(mwqmSiteStartEndDateDirectQueryList[0].MWQMSiteStartEndDateID, mwqmSiteStartEndDateList[0].MWQMSiteStartEndDateID);
                 }
             }
         }
         #endregion Tests Generated for GetMWQMSiteStartEndDateList() Skip Take 2 Asc
 
         #region Tests Generated for GetMWQMSiteStartEndDateList() Skip Take Asc Where
-        [TestMethod]
+        [Fact]
         public void GetMWQMSiteStartEndDateList_Skip_Take_Asc_Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -384,14 +384,14 @@ namespace CSSPServices.Tests
                         List<MWQMSiteStartEndDate> mwqmSiteStartEndDateList = new List<MWQMSiteStartEndDate>();
                         mwqmSiteStartEndDateList = mwqmSiteStartEndDateService.GetMWQMSiteStartEndDateList().ToList();
                         CheckMWQMSiteStartEndDateFields(mwqmSiteStartEndDateList);
-                        Assert.AreEqual(mwqmSiteStartEndDateDirectQueryList[0].MWQMSiteStartEndDateID, mwqmSiteStartEndDateList[0].MWQMSiteStartEndDateID);
+                        Assert.Equal(mwqmSiteStartEndDateDirectQueryList[0].MWQMSiteStartEndDateID, mwqmSiteStartEndDateList[0].MWQMSiteStartEndDateID);
                 }
             }
         }
         #endregion Tests Generated for GetMWQMSiteStartEndDateList() Skip Take Asc Where
 
         #region Tests Generated for GetMWQMSiteStartEndDateList() Skip Take Asc 2 Where
-        [TestMethod]
+        [Fact]
         public void GetMWQMSiteStartEndDateList_Skip_Take_Asc_2Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -410,14 +410,14 @@ namespace CSSPServices.Tests
                         List<MWQMSiteStartEndDate> mwqmSiteStartEndDateList = new List<MWQMSiteStartEndDate>();
                         mwqmSiteStartEndDateList = mwqmSiteStartEndDateService.GetMWQMSiteStartEndDateList().ToList();
                         CheckMWQMSiteStartEndDateFields(mwqmSiteStartEndDateList);
-                        Assert.AreEqual(mwqmSiteStartEndDateDirectQueryList[0].MWQMSiteStartEndDateID, mwqmSiteStartEndDateList[0].MWQMSiteStartEndDateID);
+                        Assert.Equal(mwqmSiteStartEndDateDirectQueryList[0].MWQMSiteStartEndDateID, mwqmSiteStartEndDateList[0].MWQMSiteStartEndDateID);
                 }
             }
         }
         #endregion Tests Generated for GetMWQMSiteStartEndDateList() Skip Take Asc 2 Where
 
         #region Tests Generated for GetMWQMSiteStartEndDateList() Skip Take Desc
-        [TestMethod]
+        [Fact]
         public void GetMWQMSiteStartEndDateList_Skip_Take_Desc_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -436,14 +436,14 @@ namespace CSSPServices.Tests
                         List<MWQMSiteStartEndDate> mwqmSiteStartEndDateList = new List<MWQMSiteStartEndDate>();
                         mwqmSiteStartEndDateList = mwqmSiteStartEndDateService.GetMWQMSiteStartEndDateList().ToList();
                         CheckMWQMSiteStartEndDateFields(mwqmSiteStartEndDateList);
-                        Assert.AreEqual(mwqmSiteStartEndDateDirectQueryList[0].MWQMSiteStartEndDateID, mwqmSiteStartEndDateList[0].MWQMSiteStartEndDateID);
+                        Assert.Equal(mwqmSiteStartEndDateDirectQueryList[0].MWQMSiteStartEndDateID, mwqmSiteStartEndDateList[0].MWQMSiteStartEndDateID);
                 }
             }
         }
         #endregion Tests Generated for GetMWQMSiteStartEndDateList() Skip Take Desc
 
         #region Tests Generated for GetMWQMSiteStartEndDateList() Skip Take 2 Desc
-        [TestMethod]
+        [Fact]
         public void GetMWQMSiteStartEndDateList_Skip_Take_2Desc_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -462,14 +462,14 @@ namespace CSSPServices.Tests
                         List<MWQMSiteStartEndDate> mwqmSiteStartEndDateList = new List<MWQMSiteStartEndDate>();
                         mwqmSiteStartEndDateList = mwqmSiteStartEndDateService.GetMWQMSiteStartEndDateList().ToList();
                         CheckMWQMSiteStartEndDateFields(mwqmSiteStartEndDateList);
-                        Assert.AreEqual(mwqmSiteStartEndDateDirectQueryList[0].MWQMSiteStartEndDateID, mwqmSiteStartEndDateList[0].MWQMSiteStartEndDateID);
+                        Assert.Equal(mwqmSiteStartEndDateDirectQueryList[0].MWQMSiteStartEndDateID, mwqmSiteStartEndDateList[0].MWQMSiteStartEndDateID);
                 }
             }
         }
         #endregion Tests Generated for GetMWQMSiteStartEndDateList() Skip Take 2 Desc
 
         #region Tests Generated for GetMWQMSiteStartEndDateList() Skip Take Desc Where
-        [TestMethod]
+        [Fact]
         public void GetMWQMSiteStartEndDateList_Skip_Take_Desc_Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -488,14 +488,14 @@ namespace CSSPServices.Tests
                         List<MWQMSiteStartEndDate> mwqmSiteStartEndDateList = new List<MWQMSiteStartEndDate>();
                         mwqmSiteStartEndDateList = mwqmSiteStartEndDateService.GetMWQMSiteStartEndDateList().ToList();
                         CheckMWQMSiteStartEndDateFields(mwqmSiteStartEndDateList);
-                        Assert.AreEqual(mwqmSiteStartEndDateDirectQueryList[0].MWQMSiteStartEndDateID, mwqmSiteStartEndDateList[0].MWQMSiteStartEndDateID);
+                        Assert.Equal(mwqmSiteStartEndDateDirectQueryList[0].MWQMSiteStartEndDateID, mwqmSiteStartEndDateList[0].MWQMSiteStartEndDateID);
                 }
             }
         }
         #endregion Tests Generated for GetMWQMSiteStartEndDateList() Skip Take Desc Where
 
         #region Tests Generated for GetMWQMSiteStartEndDateList() Skip Take Desc 2 Where
-        [TestMethod]
+        [Fact]
         public void GetMWQMSiteStartEndDateList_Skip_Take_Desc_2Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -514,14 +514,14 @@ namespace CSSPServices.Tests
                         List<MWQMSiteStartEndDate> mwqmSiteStartEndDateList = new List<MWQMSiteStartEndDate>();
                         mwqmSiteStartEndDateList = mwqmSiteStartEndDateService.GetMWQMSiteStartEndDateList().ToList();
                         CheckMWQMSiteStartEndDateFields(mwqmSiteStartEndDateList);
-                        Assert.AreEqual(mwqmSiteStartEndDateDirectQueryList[0].MWQMSiteStartEndDateID, mwqmSiteStartEndDateList[0].MWQMSiteStartEndDateID);
+                        Assert.Equal(mwqmSiteStartEndDateDirectQueryList[0].MWQMSiteStartEndDateID, mwqmSiteStartEndDateList[0].MWQMSiteStartEndDateID);
                 }
             }
         }
         #endregion Tests Generated for GetMWQMSiteStartEndDateList() Skip Take Desc 2 Where
 
         #region Tests Generated for GetMWQMSiteStartEndDateList() 2 Where
-        [TestMethod]
+        [Fact]
         public void GetMWQMSiteStartEndDateList_2Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -540,7 +540,7 @@ namespace CSSPServices.Tests
                         List<MWQMSiteStartEndDate> mwqmSiteStartEndDateList = new List<MWQMSiteStartEndDate>();
                         mwqmSiteStartEndDateList = mwqmSiteStartEndDateService.GetMWQMSiteStartEndDateList().ToList();
                         CheckMWQMSiteStartEndDateFields(mwqmSiteStartEndDateList);
-                        Assert.AreEqual(mwqmSiteStartEndDateDirectQueryList[0].MWQMSiteStartEndDateID, mwqmSiteStartEndDateList[0].MWQMSiteStartEndDateID);
+                        Assert.Equal(mwqmSiteStartEndDateDirectQueryList[0].MWQMSiteStartEndDateID, mwqmSiteStartEndDateList[0].MWQMSiteStartEndDateID);
                 }
             }
         }
@@ -549,16 +549,16 @@ namespace CSSPServices.Tests
         #region Functions private
         private void CheckMWQMSiteStartEndDateFields(List<MWQMSiteStartEndDate> mwqmSiteStartEndDateList)
         {
-            Assert.IsNotNull(mwqmSiteStartEndDateList[0].MWQMSiteStartEndDateID);
-            Assert.IsNotNull(mwqmSiteStartEndDateList[0].MWQMSiteTVItemID);
-            Assert.IsNotNull(mwqmSiteStartEndDateList[0].StartDate);
+            Assert.NotNull(mwqmSiteStartEndDateList[0].MWQMSiteStartEndDateID);
+            Assert.NotNull(mwqmSiteStartEndDateList[0].MWQMSiteTVItemID);
+            Assert.NotNull(mwqmSiteStartEndDateList[0].StartDate);
             if (mwqmSiteStartEndDateList[0].EndDate != null)
             {
-                Assert.IsNotNull(mwqmSiteStartEndDateList[0].EndDate);
+                Assert.NotNull(mwqmSiteStartEndDateList[0].EndDate);
             }
-            Assert.IsNotNull(mwqmSiteStartEndDateList[0].LastUpdateDate_UTC);
-            Assert.IsNotNull(mwqmSiteStartEndDateList[0].LastUpdateContactTVItemID);
-            Assert.IsNotNull(mwqmSiteStartEndDateList[0].HasErrors);
+            Assert.NotNull(mwqmSiteStartEndDateList[0].LastUpdateDate_UTC);
+            Assert.NotNull(mwqmSiteStartEndDateList[0].LastUpdateContactTVItemID);
+            Assert.NotNull(mwqmSiteStartEndDateList[0].HasErrors);
         }
         private MWQMSiteStartEndDate GetFilledRandomMWQMSiteStartEndDate(string OmitPropName)
         {

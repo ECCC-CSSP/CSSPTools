@@ -14,7 +14,7 @@ namespace CSSPModelsGenerateCodeHelper
         #region Functions private
         private void ResxDLL(StringBuilder sb)
         {
-            FileInfo fiDLL = new FileInfo(@"C:\CSSPTools\src\dlls\CSSPModels\bin\Debug\netcoreapp3.0\CSSPModels.dll");
+            FileInfo fiDLL = new FileInfo(@"C:\CSSPTools\src\dlls\CSSPModels\bin\Debug\netcoreapp3.1\CSSPModels.dll");
 
             if (!fiDLL.Exists)
             {

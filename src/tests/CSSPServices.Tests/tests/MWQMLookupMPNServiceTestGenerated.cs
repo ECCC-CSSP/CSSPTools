@@ -5,7 +5,7 @@
  */ 
 
 using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using System.Linq;
 using System.Collections.Generic;
 using CSSPModels;
@@ -21,7 +21,7 @@ using CSSPEnums.Resources;
 
 namespace CSSPServices.Tests
 {
-    [TestClass]
+
     public partial class MWQMLookupMPNServiceTest : TestHelper
     {
         #region Variables
@@ -39,7 +39,7 @@ namespace CSSPServices.Tests
         #endregion Constructors
 
         #region Tests Generated CRUD
-        [TestMethod]
+        [Fact]
         public void MWQMLookupMPN_CRUD_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -66,26 +66,26 @@ namespace CSSPServices.Tests
 
                     count = mwqmLookupMPNService.GetMWQMLookupMPNList().Count();
 
-                    Assert.AreEqual(count, (from c in dbTestDB.MWQMLookupMPNs select c).Count());
+                    Assert.Equal(count, (from c in dbTestDB.MWQMLookupMPNs select c).Count());
 
                     mwqmLookupMPNService.Add(mwqmLookupMPN);
                     if (mwqmLookupMPN.HasErrors)
                     {
-                        Assert.AreEqual("", mwqmLookupMPN.ValidationResults.FirstOrDefault().ErrorMessage);
+                        Assert.Equal("", mwqmLookupMPN.ValidationResults.FirstOrDefault().ErrorMessage);
                     }
-                    Assert.AreEqual(true, mwqmLookupMPNService.GetMWQMLookupMPNList().Where(c => c == mwqmLookupMPN).Any());
+                    Assert.True(mwqmLookupMPNService.GetMWQMLookupMPNList().Where(c => c == mwqmLookupMPN).Any());
                     mwqmLookupMPNService.Update(mwqmLookupMPN);
                     if (mwqmLookupMPN.HasErrors)
                     {
-                        Assert.AreEqual("", mwqmLookupMPN.ValidationResults.FirstOrDefault().ErrorMessage);
+                        Assert.Equal("", mwqmLookupMPN.ValidationResults.FirstOrDefault().ErrorMessage);
                     }
-                    Assert.AreEqual(count + 1, mwqmLookupMPNService.GetMWQMLookupMPNList().Count());
+                    Assert.Equal(count + 1, mwqmLookupMPNService.GetMWQMLookupMPNList().Count());
                     mwqmLookupMPNService.Delete(mwqmLookupMPN);
                     if (mwqmLookupMPN.HasErrors)
                     {
-                        Assert.AreEqual("", mwqmLookupMPN.ValidationResults.FirstOrDefault().ErrorMessage);
+                        Assert.Equal("", mwqmLookupMPN.ValidationResults.FirstOrDefault().ErrorMessage);
                     }
-                    Assert.AreEqual(count, mwqmLookupMPNService.GetMWQMLookupMPNList().Count());
+                    Assert.Equal(count, mwqmLookupMPNService.GetMWQMLookupMPNList().Count());
 
                 }
             }
@@ -93,7 +93,7 @@ namespace CSSPServices.Tests
         #endregion Tests Generated CRUD
 
         #region Tests Generated Properties
-        [TestMethod]
+        [Fact]
         public void MWQMLookupMPN_Properties_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -131,13 +131,13 @@ namespace CSSPServices.Tests
                     mwqmLookupMPN = GetFilledRandomMWQMLookupMPN("");
                     mwqmLookupMPN.MWQMLookupMPNID = 0;
                     mwqmLookupMPNService.Update(mwqmLookupMPN);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsRequired, "MWQMLookupMPNID"), mwqmLookupMPN.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsRequired, "MWQMLookupMPNID"), mwqmLookupMPN.ValidationResults.FirstOrDefault().ErrorMessage);
 
                     mwqmLookupMPN = null;
                     mwqmLookupMPN = GetFilledRandomMWQMLookupMPN("");
                     mwqmLookupMPN.MWQMLookupMPNID = 10000000;
                     mwqmLookupMPNService.Update(mwqmLookupMPN);
-                    Assert.AreEqual(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "MWQMLookupMPN", "MWQMLookupMPNID", mwqmLookupMPN.MWQMLookupMPNID.ToString()), mwqmLookupMPN.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "MWQMLookupMPN", "MWQMLookupMPNID", mwqmLookupMPN.MWQMLookupMPNID.ToString()), mwqmLookupMPN.ValidationResults.FirstOrDefault().ErrorMessage);
 
 
                     // -----------------------------------
@@ -149,15 +149,15 @@ namespace CSSPServices.Tests
                     mwqmLookupMPN = null;
                     mwqmLookupMPN = GetFilledRandomMWQMLookupMPN("");
                     mwqmLookupMPN.Tubes10 = -1;
-                    Assert.AreEqual(false, mwqmLookupMPNService.Add(mwqmLookupMPN));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "Tubes10", "0", "5"), mwqmLookupMPN.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, mwqmLookupMPNService.GetMWQMLookupMPNList().Count());
+                    Assert.False(mwqmLookupMPNService.Add(mwqmLookupMPN));
+                    Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "Tubes10", "0", "5"), mwqmLookupMPN.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, mwqmLookupMPNService.GetMWQMLookupMPNList().Count());
                     mwqmLookupMPN = null;
                     mwqmLookupMPN = GetFilledRandomMWQMLookupMPN("");
                     mwqmLookupMPN.Tubes10 = 6;
-                    Assert.AreEqual(false, mwqmLookupMPNService.Add(mwqmLookupMPN));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "Tubes10", "0", "5"), mwqmLookupMPN.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, mwqmLookupMPNService.GetMWQMLookupMPNList().Count());
+                    Assert.False(mwqmLookupMPNService.Add(mwqmLookupMPN));
+                    Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "Tubes10", "0", "5"), mwqmLookupMPN.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, mwqmLookupMPNService.GetMWQMLookupMPNList().Count());
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -168,15 +168,15 @@ namespace CSSPServices.Tests
                     mwqmLookupMPN = null;
                     mwqmLookupMPN = GetFilledRandomMWQMLookupMPN("");
                     mwqmLookupMPN.Tubes1 = -1;
-                    Assert.AreEqual(false, mwqmLookupMPNService.Add(mwqmLookupMPN));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "Tubes1", "0", "5"), mwqmLookupMPN.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, mwqmLookupMPNService.GetMWQMLookupMPNList().Count());
+                    Assert.False(mwqmLookupMPNService.Add(mwqmLookupMPN));
+                    Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "Tubes1", "0", "5"), mwqmLookupMPN.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, mwqmLookupMPNService.GetMWQMLookupMPNList().Count());
                     mwqmLookupMPN = null;
                     mwqmLookupMPN = GetFilledRandomMWQMLookupMPN("");
                     mwqmLookupMPN.Tubes1 = 6;
-                    Assert.AreEqual(false, mwqmLookupMPNService.Add(mwqmLookupMPN));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "Tubes1", "0", "5"), mwqmLookupMPN.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, mwqmLookupMPNService.GetMWQMLookupMPNList().Count());
+                    Assert.False(mwqmLookupMPNService.Add(mwqmLookupMPN));
+                    Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "Tubes1", "0", "5"), mwqmLookupMPN.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, mwqmLookupMPNService.GetMWQMLookupMPNList().Count());
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -187,15 +187,15 @@ namespace CSSPServices.Tests
                     mwqmLookupMPN = null;
                     mwqmLookupMPN = GetFilledRandomMWQMLookupMPN("");
                     mwqmLookupMPN.Tubes01 = -1;
-                    Assert.AreEqual(false, mwqmLookupMPNService.Add(mwqmLookupMPN));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "Tubes01", "0", "5"), mwqmLookupMPN.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, mwqmLookupMPNService.GetMWQMLookupMPNList().Count());
+                    Assert.False(mwqmLookupMPNService.Add(mwqmLookupMPN));
+                    Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "Tubes01", "0", "5"), mwqmLookupMPN.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, mwqmLookupMPNService.GetMWQMLookupMPNList().Count());
                     mwqmLookupMPN = null;
                     mwqmLookupMPN = GetFilledRandomMWQMLookupMPN("");
                     mwqmLookupMPN.Tubes01 = 6;
-                    Assert.AreEqual(false, mwqmLookupMPNService.Add(mwqmLookupMPN));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "Tubes01", "0", "5"), mwqmLookupMPN.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, mwqmLookupMPNService.GetMWQMLookupMPNList().Count());
+                    Assert.False(mwqmLookupMPNService.Add(mwqmLookupMPN));
+                    Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "Tubes01", "0", "5"), mwqmLookupMPN.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, mwqmLookupMPNService.GetMWQMLookupMPNList().Count());
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -206,15 +206,15 @@ namespace CSSPServices.Tests
                     mwqmLookupMPN = null;
                     mwqmLookupMPN = GetFilledRandomMWQMLookupMPN("");
                     mwqmLookupMPN.MPN_100ml = 0;
-                    Assert.AreEqual(false, mwqmLookupMPNService.Add(mwqmLookupMPN));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "MPN_100ml", "1", "10000"), mwqmLookupMPN.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, mwqmLookupMPNService.GetMWQMLookupMPNList().Count());
+                    Assert.False(mwqmLookupMPNService.Add(mwqmLookupMPN));
+                    Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "MPN_100ml", "1", "10000"), mwqmLookupMPN.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, mwqmLookupMPNService.GetMWQMLookupMPNList().Count());
                     mwqmLookupMPN = null;
                     mwqmLookupMPN = GetFilledRandomMWQMLookupMPN("");
                     mwqmLookupMPN.MPN_100ml = 10001;
-                    Assert.AreEqual(false, mwqmLookupMPNService.Add(mwqmLookupMPN));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "MPN_100ml", "1", "10000"), mwqmLookupMPN.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, mwqmLookupMPNService.GetMWQMLookupMPNList().Count());
+                    Assert.False(mwqmLookupMPNService.Add(mwqmLookupMPN));
+                    Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "MPN_100ml", "1", "10000"), mwqmLookupMPN.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, mwqmLookupMPNService.GetMWQMLookupMPNList().Count());
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -226,12 +226,12 @@ namespace CSSPServices.Tests
                     mwqmLookupMPN = GetFilledRandomMWQMLookupMPN("");
                     mwqmLookupMPN.LastUpdateDate_UTC = new DateTime();
                     mwqmLookupMPNService.Add(mwqmLookupMPN);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsRequired, "LastUpdateDate_UTC"), mwqmLookupMPN.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsRequired, "LastUpdateDate_UTC"), mwqmLookupMPN.ValidationResults.FirstOrDefault().ErrorMessage);
                     mwqmLookupMPN = null;
                     mwqmLookupMPN = GetFilledRandomMWQMLookupMPN("");
                     mwqmLookupMPN.LastUpdateDate_UTC = new DateTime(1979, 1, 1);
                     mwqmLookupMPNService.Add(mwqmLookupMPN);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._YearShouldBeBiggerThan_, "LastUpdateDate_UTC", "1980"), mwqmLookupMPN.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._YearShouldBeBiggerThan_, "LastUpdateDate_UTC", "1980"), mwqmLookupMPN.ValidationResults.FirstOrDefault().ErrorMessage);
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -243,13 +243,13 @@ namespace CSSPServices.Tests
                     mwqmLookupMPN = GetFilledRandomMWQMLookupMPN("");
                     mwqmLookupMPN.LastUpdateContactTVItemID = 0;
                     mwqmLookupMPNService.Add(mwqmLookupMPN);
-                    Assert.AreEqual(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "TVItem", "LastUpdateContactTVItemID", mwqmLookupMPN.LastUpdateContactTVItemID.ToString()), mwqmLookupMPN.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "TVItem", "LastUpdateContactTVItemID", mwqmLookupMPN.LastUpdateContactTVItemID.ToString()), mwqmLookupMPN.ValidationResults.FirstOrDefault().ErrorMessage);
 
                     mwqmLookupMPN = null;
                     mwqmLookupMPN = GetFilledRandomMWQMLookupMPN("");
                     mwqmLookupMPN.LastUpdateContactTVItemID = 1;
                     mwqmLookupMPNService.Add(mwqmLookupMPN);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsNotOfType_, "LastUpdateContactTVItemID", "Contact"), mwqmLookupMPN.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsNotOfType_, "LastUpdateContactTVItemID", "Contact"), mwqmLookupMPN.ValidationResults.FirstOrDefault().ErrorMessage);
 
 
                     // -----------------------------------
@@ -273,7 +273,7 @@ namespace CSSPServices.Tests
         #endregion Tests Generated Properties
 
         #region Tests Generated for GetMWQMLookupMPNWithMWQMLookupMPNID(mwqmLookupMPN.MWQMLookupMPNID)
-        [TestMethod]
+        [Fact]
         public void GetMWQMLookupMPNWithMWQMLookupMPNID__mwqmLookupMPN_MWQMLookupMPNID__Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -284,7 +284,7 @@ namespace CSSPServices.Tests
                 {
                     MWQMLookupMPNService mwqmLookupMPNService = new MWQMLookupMPNService(new Query() { Lang = culture.TwoLetterISOLanguageName }, dbTestDB, ContactID);
                     MWQMLookupMPN mwqmLookupMPN = (from c in dbTestDB.MWQMLookupMPNs select c).FirstOrDefault();
-                    Assert.IsNotNull(mwqmLookupMPN);
+                    Assert.NotNull(mwqmLookupMPN);
 
                 }
             }
@@ -292,7 +292,7 @@ namespace CSSPServices.Tests
         #endregion Tests Generated for GetMWQMLookupMPNWithMWQMLookupMPNID(mwqmLookupMPN.MWQMLookupMPNID)
 
         #region Tests Generated for GetMWQMLookupMPNList()
-        [TestMethod]
+        [Fact]
         public void GetMWQMLookupMPNList_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -303,7 +303,7 @@ namespace CSSPServices.Tests
                 {
                     MWQMLookupMPNService mwqmLookupMPNService = new MWQMLookupMPNService(new Query() { Lang = culture.TwoLetterISOLanguageName }, dbTestDB, ContactID);
                     MWQMLookupMPN mwqmLookupMPN = (from c in dbTestDB.MWQMLookupMPNs select c).FirstOrDefault();
-                    Assert.IsNotNull(mwqmLookupMPN);
+                    Assert.NotNull(mwqmLookupMPN);
 
                     List<MWQMLookupMPN> mwqmLookupMPNDirectQueryList = new List<MWQMLookupMPN>();
                     mwqmLookupMPNDirectQueryList = (from c in dbTestDB.MWQMLookupMPNs select c).Take(200).ToList();
@@ -314,7 +314,7 @@ namespace CSSPServices.Tests
         #endregion Tests Generated for GetMWQMLookupMPNList()
 
         #region Tests Generated for GetMWQMLookupMPNList() Skip Take
-        [TestMethod]
+        [Fact]
         public void GetMWQMLookupMPNList_Skip_Take_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -333,14 +333,14 @@ namespace CSSPServices.Tests
                         List<MWQMLookupMPN> mwqmLookupMPNList = new List<MWQMLookupMPN>();
                         mwqmLookupMPNList = mwqmLookupMPNService.GetMWQMLookupMPNList().ToList();
                         CheckMWQMLookupMPNFields(mwqmLookupMPNList);
-                        Assert.AreEqual(mwqmLookupMPNDirectQueryList[0].MWQMLookupMPNID, mwqmLookupMPNList[0].MWQMLookupMPNID);
+                        Assert.Equal(mwqmLookupMPNDirectQueryList[0].MWQMLookupMPNID, mwqmLookupMPNList[0].MWQMLookupMPNID);
                 }
             }
         }
         #endregion Tests Generated for GetMWQMLookupMPNList() Skip Take
 
         #region Tests Generated for GetMWQMLookupMPNList() Skip Take Asc
-        [TestMethod]
+        [Fact]
         public void GetMWQMLookupMPNList_Skip_Take_Asc_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -359,14 +359,14 @@ namespace CSSPServices.Tests
                         List<MWQMLookupMPN> mwqmLookupMPNList = new List<MWQMLookupMPN>();
                         mwqmLookupMPNList = mwqmLookupMPNService.GetMWQMLookupMPNList().ToList();
                         CheckMWQMLookupMPNFields(mwqmLookupMPNList);
-                        Assert.AreEqual(mwqmLookupMPNDirectQueryList[0].MWQMLookupMPNID, mwqmLookupMPNList[0].MWQMLookupMPNID);
+                        Assert.Equal(mwqmLookupMPNDirectQueryList[0].MWQMLookupMPNID, mwqmLookupMPNList[0].MWQMLookupMPNID);
                 }
             }
         }
         #endregion Tests Generated for GetMWQMLookupMPNList() Skip Take Asc
 
         #region Tests Generated for GetMWQMLookupMPNList() Skip Take 2 Asc
-        [TestMethod]
+        [Fact]
         public void GetMWQMLookupMPNList_Skip_Take_2Asc_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -385,14 +385,14 @@ namespace CSSPServices.Tests
                         List<MWQMLookupMPN> mwqmLookupMPNList = new List<MWQMLookupMPN>();
                         mwqmLookupMPNList = mwqmLookupMPNService.GetMWQMLookupMPNList().ToList();
                         CheckMWQMLookupMPNFields(mwqmLookupMPNList);
-                        Assert.AreEqual(mwqmLookupMPNDirectQueryList[0].MWQMLookupMPNID, mwqmLookupMPNList[0].MWQMLookupMPNID);
+                        Assert.Equal(mwqmLookupMPNDirectQueryList[0].MWQMLookupMPNID, mwqmLookupMPNList[0].MWQMLookupMPNID);
                 }
             }
         }
         #endregion Tests Generated for GetMWQMLookupMPNList() Skip Take 2 Asc
 
         #region Tests Generated for GetMWQMLookupMPNList() Skip Take Asc Where
-        [TestMethod]
+        [Fact]
         public void GetMWQMLookupMPNList_Skip_Take_Asc_Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -411,14 +411,14 @@ namespace CSSPServices.Tests
                         List<MWQMLookupMPN> mwqmLookupMPNList = new List<MWQMLookupMPN>();
                         mwqmLookupMPNList = mwqmLookupMPNService.GetMWQMLookupMPNList().ToList();
                         CheckMWQMLookupMPNFields(mwqmLookupMPNList);
-                        Assert.AreEqual(mwqmLookupMPNDirectQueryList[0].MWQMLookupMPNID, mwqmLookupMPNList[0].MWQMLookupMPNID);
+                        Assert.Equal(mwqmLookupMPNDirectQueryList[0].MWQMLookupMPNID, mwqmLookupMPNList[0].MWQMLookupMPNID);
                 }
             }
         }
         #endregion Tests Generated for GetMWQMLookupMPNList() Skip Take Asc Where
 
         #region Tests Generated for GetMWQMLookupMPNList() Skip Take Asc 2 Where
-        [TestMethod]
+        [Fact]
         public void GetMWQMLookupMPNList_Skip_Take_Asc_2Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -437,14 +437,14 @@ namespace CSSPServices.Tests
                         List<MWQMLookupMPN> mwqmLookupMPNList = new List<MWQMLookupMPN>();
                         mwqmLookupMPNList = mwqmLookupMPNService.GetMWQMLookupMPNList().ToList();
                         CheckMWQMLookupMPNFields(mwqmLookupMPNList);
-                        Assert.AreEqual(mwqmLookupMPNDirectQueryList[0].MWQMLookupMPNID, mwqmLookupMPNList[0].MWQMLookupMPNID);
+                        Assert.Equal(mwqmLookupMPNDirectQueryList[0].MWQMLookupMPNID, mwqmLookupMPNList[0].MWQMLookupMPNID);
                 }
             }
         }
         #endregion Tests Generated for GetMWQMLookupMPNList() Skip Take Asc 2 Where
 
         #region Tests Generated for GetMWQMLookupMPNList() Skip Take Desc
-        [TestMethod]
+        [Fact]
         public void GetMWQMLookupMPNList_Skip_Take_Desc_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -463,14 +463,14 @@ namespace CSSPServices.Tests
                         List<MWQMLookupMPN> mwqmLookupMPNList = new List<MWQMLookupMPN>();
                         mwqmLookupMPNList = mwqmLookupMPNService.GetMWQMLookupMPNList().ToList();
                         CheckMWQMLookupMPNFields(mwqmLookupMPNList);
-                        Assert.AreEqual(mwqmLookupMPNDirectQueryList[0].MWQMLookupMPNID, mwqmLookupMPNList[0].MWQMLookupMPNID);
+                        Assert.Equal(mwqmLookupMPNDirectQueryList[0].MWQMLookupMPNID, mwqmLookupMPNList[0].MWQMLookupMPNID);
                 }
             }
         }
         #endregion Tests Generated for GetMWQMLookupMPNList() Skip Take Desc
 
         #region Tests Generated for GetMWQMLookupMPNList() Skip Take 2 Desc
-        [TestMethod]
+        [Fact]
         public void GetMWQMLookupMPNList_Skip_Take_2Desc_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -489,14 +489,14 @@ namespace CSSPServices.Tests
                         List<MWQMLookupMPN> mwqmLookupMPNList = new List<MWQMLookupMPN>();
                         mwqmLookupMPNList = mwqmLookupMPNService.GetMWQMLookupMPNList().ToList();
                         CheckMWQMLookupMPNFields(mwqmLookupMPNList);
-                        Assert.AreEqual(mwqmLookupMPNDirectQueryList[0].MWQMLookupMPNID, mwqmLookupMPNList[0].MWQMLookupMPNID);
+                        Assert.Equal(mwqmLookupMPNDirectQueryList[0].MWQMLookupMPNID, mwqmLookupMPNList[0].MWQMLookupMPNID);
                 }
             }
         }
         #endregion Tests Generated for GetMWQMLookupMPNList() Skip Take 2 Desc
 
         #region Tests Generated for GetMWQMLookupMPNList() Skip Take Desc Where
-        [TestMethod]
+        [Fact]
         public void GetMWQMLookupMPNList_Skip_Take_Desc_Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -515,14 +515,14 @@ namespace CSSPServices.Tests
                         List<MWQMLookupMPN> mwqmLookupMPNList = new List<MWQMLookupMPN>();
                         mwqmLookupMPNList = mwqmLookupMPNService.GetMWQMLookupMPNList().ToList();
                         CheckMWQMLookupMPNFields(mwqmLookupMPNList);
-                        Assert.AreEqual(mwqmLookupMPNDirectQueryList[0].MWQMLookupMPNID, mwqmLookupMPNList[0].MWQMLookupMPNID);
+                        Assert.Equal(mwqmLookupMPNDirectQueryList[0].MWQMLookupMPNID, mwqmLookupMPNList[0].MWQMLookupMPNID);
                 }
             }
         }
         #endregion Tests Generated for GetMWQMLookupMPNList() Skip Take Desc Where
 
         #region Tests Generated for GetMWQMLookupMPNList() Skip Take Desc 2 Where
-        [TestMethod]
+        [Fact]
         public void GetMWQMLookupMPNList_Skip_Take_Desc_2Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -541,14 +541,14 @@ namespace CSSPServices.Tests
                         List<MWQMLookupMPN> mwqmLookupMPNList = new List<MWQMLookupMPN>();
                         mwqmLookupMPNList = mwqmLookupMPNService.GetMWQMLookupMPNList().ToList();
                         CheckMWQMLookupMPNFields(mwqmLookupMPNList);
-                        Assert.AreEqual(mwqmLookupMPNDirectQueryList[0].MWQMLookupMPNID, mwqmLookupMPNList[0].MWQMLookupMPNID);
+                        Assert.Equal(mwqmLookupMPNDirectQueryList[0].MWQMLookupMPNID, mwqmLookupMPNList[0].MWQMLookupMPNID);
                 }
             }
         }
         #endregion Tests Generated for GetMWQMLookupMPNList() Skip Take Desc 2 Where
 
         #region Tests Generated for GetMWQMLookupMPNList() 2 Where
-        [TestMethod]
+        [Fact]
         public void GetMWQMLookupMPNList_2Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -567,7 +567,7 @@ namespace CSSPServices.Tests
                         List<MWQMLookupMPN> mwqmLookupMPNList = new List<MWQMLookupMPN>();
                         mwqmLookupMPNList = mwqmLookupMPNService.GetMWQMLookupMPNList().ToList();
                         CheckMWQMLookupMPNFields(mwqmLookupMPNList);
-                        Assert.AreEqual(mwqmLookupMPNDirectQueryList[0].MWQMLookupMPNID, mwqmLookupMPNList[0].MWQMLookupMPNID);
+                        Assert.Equal(mwqmLookupMPNDirectQueryList[0].MWQMLookupMPNID, mwqmLookupMPNList[0].MWQMLookupMPNID);
                 }
             }
         }
@@ -576,14 +576,14 @@ namespace CSSPServices.Tests
         #region Functions private
         private void CheckMWQMLookupMPNFields(List<MWQMLookupMPN> mwqmLookupMPNList)
         {
-            Assert.IsNotNull(mwqmLookupMPNList[0].MWQMLookupMPNID);
-            Assert.IsNotNull(mwqmLookupMPNList[0].Tubes10);
-            Assert.IsNotNull(mwqmLookupMPNList[0].Tubes1);
-            Assert.IsNotNull(mwqmLookupMPNList[0].Tubes01);
-            Assert.IsNotNull(mwqmLookupMPNList[0].MPN_100ml);
-            Assert.IsNotNull(mwqmLookupMPNList[0].LastUpdateDate_UTC);
-            Assert.IsNotNull(mwqmLookupMPNList[0].LastUpdateContactTVItemID);
-            Assert.IsNotNull(mwqmLookupMPNList[0].HasErrors);
+            Assert.NotNull(mwqmLookupMPNList[0].MWQMLookupMPNID);
+            Assert.NotNull(mwqmLookupMPNList[0].Tubes10);
+            Assert.NotNull(mwqmLookupMPNList[0].Tubes1);
+            Assert.NotNull(mwqmLookupMPNList[0].Tubes01);
+            Assert.NotNull(mwqmLookupMPNList[0].MPN_100ml);
+            Assert.NotNull(mwqmLookupMPNList[0].LastUpdateDate_UTC);
+            Assert.NotNull(mwqmLookupMPNList[0].LastUpdateContactTVItemID);
+            Assert.NotNull(mwqmLookupMPNList[0].HasErrors);
         }
         private MWQMLookupMPN GetFilledRandomMWQMLookupMPN(string OmitPropName)
         {

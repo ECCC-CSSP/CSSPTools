@@ -5,7 +5,7 @@
  */ 
 
 using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using System.Linq;
 using System.Collections.Generic;
 using CSSPModels;
@@ -21,7 +21,7 @@ using CSSPEnums.Resources;
 
 namespace CSSPServices.Tests
 {
-    [TestClass]
+
     public partial class ResetPasswordServiceTest : TestHelper
     {
         #region Variables
@@ -39,7 +39,7 @@ namespace CSSPServices.Tests
         #endregion Constructors
 
         #region Tests Generated CRUD
-        [TestMethod]
+        [Fact]
         public void ResetPassword_CRUD_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -66,26 +66,26 @@ namespace CSSPServices.Tests
 
                     count = resetPasswordService.GetResetPasswordList().Count();
 
-                    Assert.AreEqual(count, (from c in dbTestDB.ResetPasswords select c).Count());
+                    Assert.Equal(count, (from c in dbTestDB.ResetPasswords select c).Count());
 
                     resetPasswordService.Add(resetPassword);
                     if (resetPassword.HasErrors)
                     {
-                        Assert.AreEqual("", resetPassword.ValidationResults.FirstOrDefault().ErrorMessage);
+                        Assert.Equal("", resetPassword.ValidationResults.FirstOrDefault().ErrorMessage);
                     }
-                    Assert.AreEqual(true, resetPasswordService.GetResetPasswordList().Where(c => c == resetPassword).Any());
+                    Assert.True(resetPasswordService.GetResetPasswordList().Where(c => c == resetPassword).Any());
                     resetPasswordService.Update(resetPassword);
                     if (resetPassword.HasErrors)
                     {
-                        Assert.AreEqual("", resetPassword.ValidationResults.FirstOrDefault().ErrorMessage);
+                        Assert.Equal("", resetPassword.ValidationResults.FirstOrDefault().ErrorMessage);
                     }
-                    Assert.AreEqual(count + 1, resetPasswordService.GetResetPasswordList().Count());
+                    Assert.Equal(count + 1, resetPasswordService.GetResetPasswordList().Count());
                     resetPasswordService.Delete(resetPassword);
                     if (resetPassword.HasErrors)
                     {
-                        Assert.AreEqual("", resetPassword.ValidationResults.FirstOrDefault().ErrorMessage);
+                        Assert.Equal("", resetPassword.ValidationResults.FirstOrDefault().ErrorMessage);
                     }
-                    Assert.AreEqual(count, resetPasswordService.GetResetPasswordList().Count());
+                    Assert.Equal(count, resetPasswordService.GetResetPasswordList().Count());
 
                 }
             }
@@ -93,7 +93,7 @@ namespace CSSPServices.Tests
         #endregion Tests Generated CRUD
 
         #region Tests Generated Properties
-        [TestMethod]
+        [Fact]
         public void ResetPassword_Properties_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -131,13 +131,13 @@ namespace CSSPServices.Tests
                     resetPassword = GetFilledRandomResetPassword("");
                     resetPassword.ResetPasswordID = 0;
                     resetPasswordService.Update(resetPassword);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsRequired, "ResetPasswordID"), resetPassword.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsRequired, "ResetPasswordID"), resetPassword.ValidationResults.FirstOrDefault().ErrorMessage);
 
                     resetPassword = null;
                     resetPassword = GetFilledRandomResetPassword("");
                     resetPassword.ResetPasswordID = 10000000;
                     resetPasswordService.Update(resetPassword);
-                    Assert.AreEqual(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "ResetPassword", "ResetPasswordID", resetPassword.ResetPasswordID.ToString()), resetPassword.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "ResetPassword", "ResetPasswordID", resetPassword.ResetPasswordID.ToString()), resetPassword.ValidationResults.FirstOrDefault().ErrorMessage);
 
 
                     // -----------------------------------
@@ -149,18 +149,18 @@ namespace CSSPServices.Tests
 
                     resetPassword = null;
                     resetPassword = GetFilledRandomResetPassword("Email");
-                    Assert.AreEqual(false, resetPasswordService.Add(resetPassword));
-                    Assert.AreEqual(1, resetPassword.ValidationResults.Count());
-                    Assert.IsTrue(resetPassword.ValidationResults.Where(c => c.ErrorMessage == string.Format(CSSPServicesRes._IsRequired, "Email")).Any());
-                    Assert.AreEqual(null, resetPassword.Email);
-                    Assert.AreEqual(count, resetPasswordService.GetResetPasswordList().Count());
+                    Assert.False(resetPasswordService.Add(resetPassword));
+                    Assert.Equal(1, resetPassword.ValidationResults.Count());
+                    Assert.True(resetPassword.ValidationResults.Where(c => c.ErrorMessage == string.Format(CSSPServicesRes._IsRequired, "Email")).Any());
+                    Assert.Null(resetPassword.Email);
+                    Assert.Equal(count, resetPasswordService.GetResetPasswordList().Count());
 
                     resetPassword = null;
                     resetPassword = GetFilledRandomResetPassword("");
                     resetPassword.Email = GetRandomString("", 257);
-                    Assert.AreEqual(false, resetPasswordService.Add(resetPassword));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._MaxLengthIs_, "Email", "256"), resetPassword.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, resetPasswordService.GetResetPasswordList().Count());
+                    Assert.False(resetPasswordService.Add(resetPassword));
+                    Assert.Equal(string.Format(CSSPServicesRes._MaxLengthIs_, "Email", "256"), resetPassword.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, resetPasswordService.GetResetPasswordList().Count());
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -172,12 +172,12 @@ namespace CSSPServices.Tests
                     resetPassword = GetFilledRandomResetPassword("");
                     resetPassword.ExpireDate_Local = new DateTime();
                     resetPasswordService.Add(resetPassword);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsRequired, "ExpireDate_Local"), resetPassword.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsRequired, "ExpireDate_Local"), resetPassword.ValidationResults.FirstOrDefault().ErrorMessage);
                     resetPassword = null;
                     resetPassword = GetFilledRandomResetPassword("");
                     resetPassword.ExpireDate_Local = new DateTime(1979, 1, 1);
                     resetPasswordService.Add(resetPassword);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._YearShouldBeBiggerThan_, "ExpireDate_Local", "1980"), resetPassword.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._YearShouldBeBiggerThan_, "ExpireDate_Local", "1980"), resetPassword.ValidationResults.FirstOrDefault().ErrorMessage);
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -187,18 +187,18 @@ namespace CSSPServices.Tests
 
                     resetPassword = null;
                     resetPassword = GetFilledRandomResetPassword("Code");
-                    Assert.AreEqual(false, resetPasswordService.Add(resetPassword));
-                    Assert.AreEqual(1, resetPassword.ValidationResults.Count());
-                    Assert.IsTrue(resetPassword.ValidationResults.Where(c => c.ErrorMessage == string.Format(CSSPServicesRes._IsRequired, "Code")).Any());
-                    Assert.AreEqual(null, resetPassword.Code);
-                    Assert.AreEqual(count, resetPasswordService.GetResetPasswordList().Count());
+                    Assert.False(resetPasswordService.Add(resetPassword));
+                    Assert.Equal(1, resetPassword.ValidationResults.Count());
+                    Assert.True(resetPassword.ValidationResults.Where(c => c.ErrorMessage == string.Format(CSSPServicesRes._IsRequired, "Code")).Any());
+                    Assert.Null(resetPassword.Code);
+                    Assert.Equal(count, resetPasswordService.GetResetPasswordList().Count());
 
                     resetPassword = null;
                     resetPassword = GetFilledRandomResetPassword("");
                     resetPassword.Code = GetRandomString("", 9);
-                    Assert.AreEqual(false, resetPasswordService.Add(resetPassword));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._MaxLengthIs_, "Code", "8"), resetPassword.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, resetPasswordService.GetResetPasswordList().Count());
+                    Assert.False(resetPasswordService.Add(resetPassword));
+                    Assert.Equal(string.Format(CSSPServicesRes._MaxLengthIs_, "Code", "8"), resetPassword.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, resetPasswordService.GetResetPasswordList().Count());
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -210,12 +210,12 @@ namespace CSSPServices.Tests
                     resetPassword = GetFilledRandomResetPassword("");
                     resetPassword.LastUpdateDate_UTC = new DateTime();
                     resetPasswordService.Add(resetPassword);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsRequired, "LastUpdateDate_UTC"), resetPassword.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsRequired, "LastUpdateDate_UTC"), resetPassword.ValidationResults.FirstOrDefault().ErrorMessage);
                     resetPassword = null;
                     resetPassword = GetFilledRandomResetPassword("");
                     resetPassword.LastUpdateDate_UTC = new DateTime(1979, 1, 1);
                     resetPasswordService.Add(resetPassword);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._YearShouldBeBiggerThan_, "LastUpdateDate_UTC", "1980"), resetPassword.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._YearShouldBeBiggerThan_, "LastUpdateDate_UTC", "1980"), resetPassword.ValidationResults.FirstOrDefault().ErrorMessage);
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -227,13 +227,13 @@ namespace CSSPServices.Tests
                     resetPassword = GetFilledRandomResetPassword("");
                     resetPassword.LastUpdateContactTVItemID = 0;
                     resetPasswordService.Add(resetPassword);
-                    Assert.AreEqual(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "TVItem", "LastUpdateContactTVItemID", resetPassword.LastUpdateContactTVItemID.ToString()), resetPassword.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "TVItem", "LastUpdateContactTVItemID", resetPassword.LastUpdateContactTVItemID.ToString()), resetPassword.ValidationResults.FirstOrDefault().ErrorMessage);
 
                     resetPassword = null;
                     resetPassword = GetFilledRandomResetPassword("");
                     resetPassword.LastUpdateContactTVItemID = 1;
                     resetPasswordService.Add(resetPassword);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsNotOfType_, "LastUpdateContactTVItemID", "Contact"), resetPassword.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsNotOfType_, "LastUpdateContactTVItemID", "Contact"), resetPassword.ValidationResults.FirstOrDefault().ErrorMessage);
 
 
                     // -----------------------------------
@@ -257,7 +257,7 @@ namespace CSSPServices.Tests
         #endregion Tests Generated Properties
 
         #region Tests Generated for GetResetPasswordWithResetPasswordID(resetPassword.ResetPasswordID)
-        [TestMethod]
+        [Fact]
         public void GetResetPasswordWithResetPasswordID__resetPassword_ResetPasswordID__Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -268,7 +268,7 @@ namespace CSSPServices.Tests
                 {
                     ResetPasswordService resetPasswordService = new ResetPasswordService(new Query() { Lang = culture.TwoLetterISOLanguageName }, dbTestDB, ContactID);
                     ResetPassword resetPassword = (from c in dbTestDB.ResetPasswords select c).FirstOrDefault();
-                    Assert.IsNotNull(resetPassword);
+                    Assert.NotNull(resetPassword);
 
                 }
             }
@@ -276,7 +276,7 @@ namespace CSSPServices.Tests
         #endregion Tests Generated for GetResetPasswordWithResetPasswordID(resetPassword.ResetPasswordID)
 
         #region Tests Generated for GetResetPasswordList()
-        [TestMethod]
+        [Fact]
         public void GetResetPasswordList_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -287,7 +287,7 @@ namespace CSSPServices.Tests
                 {
                     ResetPasswordService resetPasswordService = new ResetPasswordService(new Query() { Lang = culture.TwoLetterISOLanguageName }, dbTestDB, ContactID);
                     ResetPassword resetPassword = (from c in dbTestDB.ResetPasswords select c).FirstOrDefault();
-                    Assert.IsNotNull(resetPassword);
+                    Assert.NotNull(resetPassword);
 
                     List<ResetPassword> resetPasswordDirectQueryList = new List<ResetPassword>();
                     resetPasswordDirectQueryList = (from c in dbTestDB.ResetPasswords select c).Take(200).ToList();
@@ -298,7 +298,7 @@ namespace CSSPServices.Tests
         #endregion Tests Generated for GetResetPasswordList()
 
         #region Tests Generated for GetResetPasswordList() Skip Take
-        [TestMethod]
+        [Fact]
         public void GetResetPasswordList_Skip_Take_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -317,14 +317,14 @@ namespace CSSPServices.Tests
                         List<ResetPassword> resetPasswordList = new List<ResetPassword>();
                         resetPasswordList = resetPasswordService.GetResetPasswordList().ToList();
                         CheckResetPasswordFields(resetPasswordList);
-                        Assert.AreEqual(resetPasswordDirectQueryList[0].ResetPasswordID, resetPasswordList[0].ResetPasswordID);
+                        Assert.Equal(resetPasswordDirectQueryList[0].ResetPasswordID, resetPasswordList[0].ResetPasswordID);
                 }
             }
         }
         #endregion Tests Generated for GetResetPasswordList() Skip Take
 
         #region Tests Generated for GetResetPasswordList() Skip Take Asc
-        [TestMethod]
+        [Fact]
         public void GetResetPasswordList_Skip_Take_Asc_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -343,14 +343,14 @@ namespace CSSPServices.Tests
                         List<ResetPassword> resetPasswordList = new List<ResetPassword>();
                         resetPasswordList = resetPasswordService.GetResetPasswordList().ToList();
                         CheckResetPasswordFields(resetPasswordList);
-                        Assert.AreEqual(resetPasswordDirectQueryList[0].ResetPasswordID, resetPasswordList[0].ResetPasswordID);
+                        Assert.Equal(resetPasswordDirectQueryList[0].ResetPasswordID, resetPasswordList[0].ResetPasswordID);
                 }
             }
         }
         #endregion Tests Generated for GetResetPasswordList() Skip Take Asc
 
         #region Tests Generated for GetResetPasswordList() Skip Take 2 Asc
-        [TestMethod]
+        [Fact]
         public void GetResetPasswordList_Skip_Take_2Asc_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -369,14 +369,14 @@ namespace CSSPServices.Tests
                         List<ResetPassword> resetPasswordList = new List<ResetPassword>();
                         resetPasswordList = resetPasswordService.GetResetPasswordList().ToList();
                         CheckResetPasswordFields(resetPasswordList);
-                        Assert.AreEqual(resetPasswordDirectQueryList[0].ResetPasswordID, resetPasswordList[0].ResetPasswordID);
+                        Assert.Equal(resetPasswordDirectQueryList[0].ResetPasswordID, resetPasswordList[0].ResetPasswordID);
                 }
             }
         }
         #endregion Tests Generated for GetResetPasswordList() Skip Take 2 Asc
 
         #region Tests Generated for GetResetPasswordList() Skip Take Asc Where
-        [TestMethod]
+        [Fact]
         public void GetResetPasswordList_Skip_Take_Asc_Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -395,14 +395,14 @@ namespace CSSPServices.Tests
                         List<ResetPassword> resetPasswordList = new List<ResetPassword>();
                         resetPasswordList = resetPasswordService.GetResetPasswordList().ToList();
                         CheckResetPasswordFields(resetPasswordList);
-                        Assert.AreEqual(resetPasswordDirectQueryList[0].ResetPasswordID, resetPasswordList[0].ResetPasswordID);
+                        Assert.Equal(resetPasswordDirectQueryList[0].ResetPasswordID, resetPasswordList[0].ResetPasswordID);
                 }
             }
         }
         #endregion Tests Generated for GetResetPasswordList() Skip Take Asc Where
 
         #region Tests Generated for GetResetPasswordList() Skip Take Asc 2 Where
-        [TestMethod]
+        [Fact]
         public void GetResetPasswordList_Skip_Take_Asc_2Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -421,14 +421,14 @@ namespace CSSPServices.Tests
                         List<ResetPassword> resetPasswordList = new List<ResetPassword>();
                         resetPasswordList = resetPasswordService.GetResetPasswordList().ToList();
                         CheckResetPasswordFields(resetPasswordList);
-                        Assert.AreEqual(resetPasswordDirectQueryList[0].ResetPasswordID, resetPasswordList[0].ResetPasswordID);
+                        Assert.Equal(resetPasswordDirectQueryList[0].ResetPasswordID, resetPasswordList[0].ResetPasswordID);
                 }
             }
         }
         #endregion Tests Generated for GetResetPasswordList() Skip Take Asc 2 Where
 
         #region Tests Generated for GetResetPasswordList() Skip Take Desc
-        [TestMethod]
+        [Fact]
         public void GetResetPasswordList_Skip_Take_Desc_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -447,14 +447,14 @@ namespace CSSPServices.Tests
                         List<ResetPassword> resetPasswordList = new List<ResetPassword>();
                         resetPasswordList = resetPasswordService.GetResetPasswordList().ToList();
                         CheckResetPasswordFields(resetPasswordList);
-                        Assert.AreEqual(resetPasswordDirectQueryList[0].ResetPasswordID, resetPasswordList[0].ResetPasswordID);
+                        Assert.Equal(resetPasswordDirectQueryList[0].ResetPasswordID, resetPasswordList[0].ResetPasswordID);
                 }
             }
         }
         #endregion Tests Generated for GetResetPasswordList() Skip Take Desc
 
         #region Tests Generated for GetResetPasswordList() Skip Take 2 Desc
-        [TestMethod]
+        [Fact]
         public void GetResetPasswordList_Skip_Take_2Desc_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -473,14 +473,14 @@ namespace CSSPServices.Tests
                         List<ResetPassword> resetPasswordList = new List<ResetPassword>();
                         resetPasswordList = resetPasswordService.GetResetPasswordList().ToList();
                         CheckResetPasswordFields(resetPasswordList);
-                        Assert.AreEqual(resetPasswordDirectQueryList[0].ResetPasswordID, resetPasswordList[0].ResetPasswordID);
+                        Assert.Equal(resetPasswordDirectQueryList[0].ResetPasswordID, resetPasswordList[0].ResetPasswordID);
                 }
             }
         }
         #endregion Tests Generated for GetResetPasswordList() Skip Take 2 Desc
 
         #region Tests Generated for GetResetPasswordList() Skip Take Desc Where
-        [TestMethod]
+        [Fact]
         public void GetResetPasswordList_Skip_Take_Desc_Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -499,14 +499,14 @@ namespace CSSPServices.Tests
                         List<ResetPassword> resetPasswordList = new List<ResetPassword>();
                         resetPasswordList = resetPasswordService.GetResetPasswordList().ToList();
                         CheckResetPasswordFields(resetPasswordList);
-                        Assert.AreEqual(resetPasswordDirectQueryList[0].ResetPasswordID, resetPasswordList[0].ResetPasswordID);
+                        Assert.Equal(resetPasswordDirectQueryList[0].ResetPasswordID, resetPasswordList[0].ResetPasswordID);
                 }
             }
         }
         #endregion Tests Generated for GetResetPasswordList() Skip Take Desc Where
 
         #region Tests Generated for GetResetPasswordList() Skip Take Desc 2 Where
-        [TestMethod]
+        [Fact]
         public void GetResetPasswordList_Skip_Take_Desc_2Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -525,14 +525,14 @@ namespace CSSPServices.Tests
                         List<ResetPassword> resetPasswordList = new List<ResetPassword>();
                         resetPasswordList = resetPasswordService.GetResetPasswordList().ToList();
                         CheckResetPasswordFields(resetPasswordList);
-                        Assert.AreEqual(resetPasswordDirectQueryList[0].ResetPasswordID, resetPasswordList[0].ResetPasswordID);
+                        Assert.Equal(resetPasswordDirectQueryList[0].ResetPasswordID, resetPasswordList[0].ResetPasswordID);
                 }
             }
         }
         #endregion Tests Generated for GetResetPasswordList() Skip Take Desc 2 Where
 
         #region Tests Generated for GetResetPasswordList() 2 Where
-        [TestMethod]
+        [Fact]
         public void GetResetPasswordList_2Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -551,7 +551,7 @@ namespace CSSPServices.Tests
                         List<ResetPassword> resetPasswordList = new List<ResetPassword>();
                         resetPasswordList = resetPasswordService.GetResetPasswordList().ToList();
                         CheckResetPasswordFields(resetPasswordList);
-                        Assert.AreEqual(resetPasswordDirectQueryList[0].ResetPasswordID, resetPasswordList[0].ResetPasswordID);
+                        Assert.Equal(resetPasswordDirectQueryList[0].ResetPasswordID, resetPasswordList[0].ResetPasswordID);
                 }
             }
         }
@@ -560,13 +560,13 @@ namespace CSSPServices.Tests
         #region Functions private
         private void CheckResetPasswordFields(List<ResetPassword> resetPasswordList)
         {
-            Assert.IsNotNull(resetPasswordList[0].ResetPasswordID);
-            Assert.IsFalse(string.IsNullOrWhiteSpace(resetPasswordList[0].Email));
-            Assert.IsNotNull(resetPasswordList[0].ExpireDate_Local);
-            Assert.IsFalse(string.IsNullOrWhiteSpace(resetPasswordList[0].Code));
-            Assert.IsNotNull(resetPasswordList[0].LastUpdateDate_UTC);
-            Assert.IsNotNull(resetPasswordList[0].LastUpdateContactTVItemID);
-            Assert.IsNotNull(resetPasswordList[0].HasErrors);
+            Assert.NotNull(resetPasswordList[0].ResetPasswordID);
+            Assert.False(string.IsNullOrWhiteSpace(resetPasswordList[0].Email));
+            Assert.NotNull(resetPasswordList[0].ExpireDate_Local);
+            Assert.False(string.IsNullOrWhiteSpace(resetPasswordList[0].Code));
+            Assert.NotNull(resetPasswordList[0].LastUpdateDate_UTC);
+            Assert.NotNull(resetPasswordList[0].LastUpdateContactTVItemID);
+            Assert.NotNull(resetPasswordList[0].HasErrors);
         }
         private ResetPassword GetFilledRandomResetPassword(string OmitPropName)
         {

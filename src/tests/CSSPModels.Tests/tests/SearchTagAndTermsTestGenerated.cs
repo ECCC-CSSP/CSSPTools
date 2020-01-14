@@ -6,7 +6,7 @@
  */ 
 using System;
 using System.Text;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using System.Linq;
 using System.Globalization;
 using System.Transactions;
@@ -19,7 +19,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace CSSPModels.Tests
 {
-    [TestClass]
+
     public partial class SearchTagAndTermsTest
     {
         #region Variables
@@ -37,7 +37,7 @@ namespace CSSPModels.Tests
         #endregion Constructors
 
         #region Tests Functions public
-        [TestMethod]
+        [Fact]
         public void SearchTagAndTerms_Properties_Test()
         {
             List<string> propNameList = new List<string>() { "SearchTag", "SearchTagText", "SearchTermList", "HasErrors",  }.OrderBy(c => c).ToList();
@@ -46,35 +46,35 @@ namespace CSSPModels.Tests
             int index = 0;
             foreach (PropertyInfo propertyInfo in typeof(SearchTagAndTerms).GetProperties().Where(c => c.Name != "ValidationResults").OrderBy(c => c.Name).ToList())
             {
-                Assert.AreEqual(propertyInfo.Name, propNameList[index]);
+                Assert.Equal(propertyInfo.Name, propNameList[index]);
                 index += 1;
             }
 
-            Assert.AreEqual(propNameList.Count, index);
+            Assert.Equal(propNameList.Count, index);
         }
-        [TestMethod]
+        [Fact]
         public void SearchTagAndTerms_Has_ValidationResults_Test()
         {
-             Assert.IsTrue(typeof(SearchTagAndTerms).GetProperties().Where(c => c.Name == "ValidationResults").Any());
+             Assert.True(typeof(SearchTagAndTerms).GetProperties().Where(c => c.Name == "ValidationResults").Any());
         }
-        [TestMethod]
+        [Fact]
         public void SearchTagAndTerms_Every_Property_Has_Get_Set_Test()
         {
                SearchTagEnum val1 = (SearchTagEnum)3;
                searchTagAndTerms.SearchTag = val1;
-               Assert.AreEqual(val1, searchTagAndTerms.SearchTag);
+               Assert.Equal(val1, searchTagAndTerms.SearchTag);
                string val2 = "Some text";
                searchTagAndTerms.SearchTagText = val2;
-               Assert.AreEqual(val2, searchTagAndTerms.SearchTagText);
+               Assert.Equal(val2, searchTagAndTerms.SearchTagText);
                List<string> val3 = new List<string>() { "testing", "Bonjour Allo" };
                searchTagAndTerms.SearchTermList = val3;
-               Assert.AreEqual(val3, searchTagAndTerms.SearchTermList);
+               Assert.Equal(val3, searchTagAndTerms.SearchTermList);
                bool val4 = true;
                searchTagAndTerms.HasErrors = val4;
-               Assert.AreEqual(val4, searchTagAndTerms.HasErrors);
+               Assert.Equal(val4, searchTagAndTerms.HasErrors);
                IEnumerable<ValidationResult> val15 = new List<ValidationResult>() { new ValidationResult("First CSSPError Message") }.AsEnumerable();
                searchTagAndTerms.ValidationResults = val15;
-               Assert.AreEqual(val15, searchTagAndTerms.ValidationResults);
+               Assert.Equal(val15, searchTagAndTerms.ValidationResults);
         }
         #endregion Tests Functions public
     }

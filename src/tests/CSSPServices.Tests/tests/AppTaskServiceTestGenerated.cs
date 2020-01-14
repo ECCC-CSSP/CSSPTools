@@ -5,7 +5,7 @@
  */ 
 
 using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using System.Linq;
 using System.Collections.Generic;
 using CSSPModels;
@@ -21,7 +21,7 @@ using CSSPEnums.Resources;
 
 namespace CSSPServices.Tests
 {
-    [TestClass]
+
     public partial class AppTaskServiceTest : TestHelper
     {
         #region Variables
@@ -39,7 +39,7 @@ namespace CSSPServices.Tests
         #endregion Constructors
 
         #region Tests Generated CRUD
-        [TestMethod]
+        [Fact]
         public void AppTask_CRUD_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -66,26 +66,26 @@ namespace CSSPServices.Tests
 
                     count = appTaskService.GetAppTaskList().Count();
 
-                    Assert.AreEqual(count, (from c in dbTestDB.AppTasks select c).Count());
+                    Assert.Equal(count, (from c in dbTestDB.AppTasks select c).Count());
 
                     appTaskService.Add(appTask);
                     if (appTask.HasErrors)
                     {
-                        Assert.AreEqual("", appTask.ValidationResults.FirstOrDefault().ErrorMessage);
+                        Assert.Equal("", appTask.ValidationResults.FirstOrDefault().ErrorMessage);
                     }
-                    Assert.AreEqual(true, appTaskService.GetAppTaskList().Where(c => c == appTask).Any());
+                    Assert.True(appTaskService.GetAppTaskList().Where(c => c == appTask).Any());
                     appTaskService.Update(appTask);
                     if (appTask.HasErrors)
                     {
-                        Assert.AreEqual("", appTask.ValidationResults.FirstOrDefault().ErrorMessage);
+                        Assert.Equal("", appTask.ValidationResults.FirstOrDefault().ErrorMessage);
                     }
-                    Assert.AreEqual(count + 1, appTaskService.GetAppTaskList().Count());
+                    Assert.Equal(count + 1, appTaskService.GetAppTaskList().Count());
                     appTaskService.Delete(appTask);
                     if (appTask.HasErrors)
                     {
-                        Assert.AreEqual("", appTask.ValidationResults.FirstOrDefault().ErrorMessage);
+                        Assert.Equal("", appTask.ValidationResults.FirstOrDefault().ErrorMessage);
                     }
-                    Assert.AreEqual(count, appTaskService.GetAppTaskList().Count());
+                    Assert.Equal(count, appTaskService.GetAppTaskList().Count());
 
                 }
             }
@@ -93,7 +93,7 @@ namespace CSSPServices.Tests
         #endregion Tests Generated CRUD
 
         #region Tests Generated Properties
-        [TestMethod]
+        [Fact]
         public void AppTask_Properties_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -131,13 +131,13 @@ namespace CSSPServices.Tests
                     appTask = GetFilledRandomAppTask("");
                     appTask.AppTaskID = 0;
                     appTaskService.Update(appTask);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsRequired, "AppTaskID"), appTask.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsRequired, "AppTaskID"), appTask.ValidationResults.FirstOrDefault().ErrorMessage);
 
                     appTask = null;
                     appTask = GetFilledRandomAppTask("");
                     appTask.AppTaskID = 10000000;
                     appTaskService.Update(appTask);
-                    Assert.AreEqual(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "AppTask", "AppTaskID", appTask.AppTaskID.ToString()), appTask.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "AppTask", "AppTaskID", appTask.AppTaskID.ToString()), appTask.ValidationResults.FirstOrDefault().ErrorMessage);
 
 
                     // -----------------------------------
@@ -150,13 +150,13 @@ namespace CSSPServices.Tests
                     appTask = GetFilledRandomAppTask("");
                     appTask.TVItemID = 0;
                     appTaskService.Add(appTask);
-                    Assert.AreEqual(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "TVItem", "TVItemID", appTask.TVItemID.ToString()), appTask.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "TVItem", "TVItemID", appTask.TVItemID.ToString()), appTask.ValidationResults.FirstOrDefault().ErrorMessage);
 
                     appTask = null;
                     appTask = GetFilledRandomAppTask("");
                     appTask.TVItemID = 2;
                     appTaskService.Add(appTask);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsNotOfType_, "TVItemID", "Root,Address,Area,ClimateSite,Country,File,HydrometricSite,MikeBoundaryConditionWebTide,MikeBoundaryConditionMesh,MikeSource,Municipality,MWQMSite,PolSourceSite,Province,Sector,Subsector,TideSite,WasteWaterTreatmentPlant,LiftStation,Spill,Outfall,OtherInfrastructure,SeeOtherMunicipality,LineOverflow"), appTask.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsNotOfType_, "TVItemID", "Root,Address,Area,ClimateSite,Country,File,HydrometricSite,MikeBoundaryConditionWebTide,MikeBoundaryConditionMesh,MikeSource,Municipality,MWQMSite,PolSourceSite,Province,Sector,Subsector,TideSite,WasteWaterTreatmentPlant,LiftStation,Spill,Outfall,OtherInfrastructure,SeeOtherMunicipality,LineOverflow"), appTask.ValidationResults.FirstOrDefault().ErrorMessage);
 
 
                     // -----------------------------------
@@ -169,13 +169,13 @@ namespace CSSPServices.Tests
                     appTask = GetFilledRandomAppTask("");
                     appTask.TVItemID2 = 0;
                     appTaskService.Add(appTask);
-                    Assert.AreEqual(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "TVItem", "TVItemID2", appTask.TVItemID2.ToString()), appTask.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "TVItem", "TVItemID2", appTask.TVItemID2.ToString()), appTask.ValidationResults.FirstOrDefault().ErrorMessage);
 
                     appTask = null;
                     appTask = GetFilledRandomAppTask("");
                     appTask.TVItemID2 = 2;
                     appTaskService.Add(appTask);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsNotOfType_, "TVItemID2", "Root,Address,Area,ClimateSite,Country,File,HydrometricSite,MikeBoundaryConditionWebTide,MikeBoundaryConditionMesh,MikeSource,Municipality,MWQMSite,PolSourceSite,Province,Sector,Subsector,TideSite,WasteWaterTreatmentPlant,LiftStation,Spill,Outfall,OtherInfrastructure,SeeOtherMunicipality,LineOverflow"), appTask.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsNotOfType_, "TVItemID2", "Root,Address,Area,ClimateSite,Country,File,HydrometricSite,MikeBoundaryConditionWebTide,MikeBoundaryConditionMesh,MikeSource,Municipality,MWQMSite,PolSourceSite,Province,Sector,Subsector,TideSite,WasteWaterTreatmentPlant,LiftStation,Spill,Outfall,OtherInfrastructure,SeeOtherMunicipality,LineOverflow"), appTask.ValidationResults.FirstOrDefault().ErrorMessage);
 
 
                     // -----------------------------------
@@ -188,7 +188,7 @@ namespace CSSPServices.Tests
                     appTask = GetFilledRandomAppTask("");
                     appTask.AppTaskCommand = (AppTaskCommandEnum)1000000;
                     appTaskService.Add(appTask);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsRequired, "AppTaskCommand"), appTask.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsRequired, "AppTaskCommand"), appTask.ValidationResults.FirstOrDefault().ErrorMessage);
 
 
                     // -----------------------------------
@@ -201,7 +201,7 @@ namespace CSSPServices.Tests
                     appTask = GetFilledRandomAppTask("");
                     appTask.AppTaskStatus = (AppTaskStatusEnum)1000000;
                     appTaskService.Add(appTask);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsRequired, "AppTaskStatus"), appTask.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsRequired, "AppTaskStatus"), appTask.ValidationResults.FirstOrDefault().ErrorMessage);
 
 
                     // -----------------------------------
@@ -213,15 +213,15 @@ namespace CSSPServices.Tests
                     appTask = null;
                     appTask = GetFilledRandomAppTask("");
                     appTask.PercentCompleted = -1;
-                    Assert.AreEqual(false, appTaskService.Add(appTask));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "PercentCompleted", "0", "100"), appTask.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, appTaskService.GetAppTaskList().Count());
+                    Assert.False(appTaskService.Add(appTask));
+                    Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "PercentCompleted", "0", "100"), appTask.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, appTaskService.GetAppTaskList().Count());
                     appTask = null;
                     appTask = GetFilledRandomAppTask("");
                     appTask.PercentCompleted = 101;
-                    Assert.AreEqual(false, appTaskService.Add(appTask));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "PercentCompleted", "0", "100"), appTask.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, appTaskService.GetAppTaskList().Count());
+                    Assert.False(appTaskService.Add(appTask));
+                    Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "PercentCompleted", "0", "100"), appTask.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, appTaskService.GetAppTaskList().Count());
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -230,11 +230,11 @@ namespace CSSPServices.Tests
 
                     appTask = null;
                     appTask = GetFilledRandomAppTask("Parameters");
-                    Assert.AreEqual(false, appTaskService.Add(appTask));
-                    Assert.AreEqual(1, appTask.ValidationResults.Count());
-                    Assert.IsTrue(appTask.ValidationResults.Where(c => c.ErrorMessage == string.Format(CSSPServicesRes._IsRequired, "Parameters")).Any());
-                    Assert.AreEqual(null, appTask.Parameters);
-                    Assert.AreEqual(count, appTaskService.GetAppTaskList().Count());
+                    Assert.False(appTaskService.Add(appTask));
+                    Assert.Equal(1, appTask.ValidationResults.Count());
+                    Assert.True(appTask.ValidationResults.Where(c => c.ErrorMessage == string.Format(CSSPServicesRes._IsRequired, "Parameters")).Any());
+                    Assert.Null(appTask.Parameters);
+                    Assert.Equal(count, appTaskService.GetAppTaskList().Count());
 
 
                     // -----------------------------------
@@ -247,7 +247,7 @@ namespace CSSPServices.Tests
                     appTask = GetFilledRandomAppTask("");
                     appTask.Language = (LanguageEnum)1000000;
                     appTaskService.Add(appTask);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsRequired, "Language"), appTask.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsRequired, "Language"), appTask.ValidationResults.FirstOrDefault().ErrorMessage);
 
 
                     // -----------------------------------
@@ -260,12 +260,12 @@ namespace CSSPServices.Tests
                     appTask = GetFilledRandomAppTask("");
                     appTask.StartDateTime_UTC = new DateTime();
                     appTaskService.Add(appTask);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsRequired, "StartDateTime_UTC"), appTask.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsRequired, "StartDateTime_UTC"), appTask.ValidationResults.FirstOrDefault().ErrorMessage);
                     appTask = null;
                     appTask = GetFilledRandomAppTask("");
                     appTask.StartDateTime_UTC = new DateTime(1979, 1, 1);
                     appTaskService.Add(appTask);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._YearShouldBeBiggerThan_, "StartDateTime_UTC", "1980"), appTask.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._YearShouldBeBiggerThan_, "StartDateTime_UTC", "1980"), appTask.ValidationResults.FirstOrDefault().ErrorMessage);
 
                     // -----------------------------------
                     // Is Nullable
@@ -278,7 +278,7 @@ namespace CSSPServices.Tests
                     appTask = GetFilledRandomAppTask("");
                     appTask.EndDateTime_UTC = new DateTime(1979, 1, 1);
                     appTaskService.Add(appTask);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._YearShouldBeBiggerThan_, "EndDateTime_UTC", "1980"), appTask.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._YearShouldBeBiggerThan_, "EndDateTime_UTC", "1980"), appTask.ValidationResults.FirstOrDefault().ErrorMessage);
 
                     // -----------------------------------
                     // Is Nullable
@@ -289,15 +289,15 @@ namespace CSSPServices.Tests
                     appTask = null;
                     appTask = GetFilledRandomAppTask("");
                     appTask.EstimatedLength_second = -1;
-                    Assert.AreEqual(false, appTaskService.Add(appTask));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "EstimatedLength_second", "0", "1000000"), appTask.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, appTaskService.GetAppTaskList().Count());
+                    Assert.False(appTaskService.Add(appTask));
+                    Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "EstimatedLength_second", "0", "1000000"), appTask.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, appTaskService.GetAppTaskList().Count());
                     appTask = null;
                     appTask = GetFilledRandomAppTask("");
                     appTask.EstimatedLength_second = 1000001;
-                    Assert.AreEqual(false, appTaskService.Add(appTask));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "EstimatedLength_second", "0", "1000000"), appTask.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, appTaskService.GetAppTaskList().Count());
+                    Assert.False(appTaskService.Add(appTask));
+                    Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "EstimatedLength_second", "0", "1000000"), appTask.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, appTaskService.GetAppTaskList().Count());
 
                     // -----------------------------------
                     // Is Nullable
@@ -308,15 +308,15 @@ namespace CSSPServices.Tests
                     appTask = null;
                     appTask = GetFilledRandomAppTask("");
                     appTask.RemainingTime_second = -1;
-                    Assert.AreEqual(false, appTaskService.Add(appTask));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "RemainingTime_second", "0", "1000000"), appTask.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, appTaskService.GetAppTaskList().Count());
+                    Assert.False(appTaskService.Add(appTask));
+                    Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "RemainingTime_second", "0", "1000000"), appTask.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, appTaskService.GetAppTaskList().Count());
                     appTask = null;
                     appTask = GetFilledRandomAppTask("");
                     appTask.RemainingTime_second = 1000001;
-                    Assert.AreEqual(false, appTaskService.Add(appTask));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "RemainingTime_second", "0", "1000000"), appTask.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, appTaskService.GetAppTaskList().Count());
+                    Assert.False(appTaskService.Add(appTask));
+                    Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "RemainingTime_second", "0", "1000000"), appTask.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, appTaskService.GetAppTaskList().Count());
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -328,12 +328,12 @@ namespace CSSPServices.Tests
                     appTask = GetFilledRandomAppTask("");
                     appTask.LastUpdateDate_UTC = new DateTime();
                     appTaskService.Add(appTask);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsRequired, "LastUpdateDate_UTC"), appTask.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsRequired, "LastUpdateDate_UTC"), appTask.ValidationResults.FirstOrDefault().ErrorMessage);
                     appTask = null;
                     appTask = GetFilledRandomAppTask("");
                     appTask.LastUpdateDate_UTC = new DateTime(1979, 1, 1);
                     appTaskService.Add(appTask);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._YearShouldBeBiggerThan_, "LastUpdateDate_UTC", "1980"), appTask.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._YearShouldBeBiggerThan_, "LastUpdateDate_UTC", "1980"), appTask.ValidationResults.FirstOrDefault().ErrorMessage);
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -345,13 +345,13 @@ namespace CSSPServices.Tests
                     appTask = GetFilledRandomAppTask("");
                     appTask.LastUpdateContactTVItemID = 0;
                     appTaskService.Add(appTask);
-                    Assert.AreEqual(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "TVItem", "LastUpdateContactTVItemID", appTask.LastUpdateContactTVItemID.ToString()), appTask.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "TVItem", "LastUpdateContactTVItemID", appTask.LastUpdateContactTVItemID.ToString()), appTask.ValidationResults.FirstOrDefault().ErrorMessage);
 
                     appTask = null;
                     appTask = GetFilledRandomAppTask("");
                     appTask.LastUpdateContactTVItemID = 1;
                     appTaskService.Add(appTask);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsNotOfType_, "LastUpdateContactTVItemID", "Contact"), appTask.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsNotOfType_, "LastUpdateContactTVItemID", "Contact"), appTask.ValidationResults.FirstOrDefault().ErrorMessage);
 
 
                     // -----------------------------------
@@ -375,7 +375,7 @@ namespace CSSPServices.Tests
         #endregion Tests Generated Properties
 
         #region Tests Generated for GetAppTaskWithAppTaskID(appTask.AppTaskID)
-        [TestMethod]
+        [Fact]
         public void GetAppTaskWithAppTaskID__appTask_AppTaskID__Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -386,7 +386,7 @@ namespace CSSPServices.Tests
                 {
                     AppTaskService appTaskService = new AppTaskService(new Query() { Lang = culture.TwoLetterISOLanguageName }, dbTestDB, ContactID);
                     AppTask appTask = (from c in dbTestDB.AppTasks select c).FirstOrDefault();
-                    Assert.IsNotNull(appTask);
+                    Assert.NotNull(appTask);
 
                 }
             }
@@ -394,7 +394,7 @@ namespace CSSPServices.Tests
         #endregion Tests Generated for GetAppTaskWithAppTaskID(appTask.AppTaskID)
 
         #region Tests Generated for GetAppTaskList()
-        [TestMethod]
+        [Fact]
         public void GetAppTaskList_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -405,7 +405,7 @@ namespace CSSPServices.Tests
                 {
                     AppTaskService appTaskService = new AppTaskService(new Query() { Lang = culture.TwoLetterISOLanguageName }, dbTestDB, ContactID);
                     AppTask appTask = (from c in dbTestDB.AppTasks select c).FirstOrDefault();
-                    Assert.IsNotNull(appTask);
+                    Assert.NotNull(appTask);
 
                     List<AppTask> appTaskDirectQueryList = new List<AppTask>();
                     appTaskDirectQueryList = (from c in dbTestDB.AppTasks select c).Take(200).ToList();
@@ -416,7 +416,7 @@ namespace CSSPServices.Tests
         #endregion Tests Generated for GetAppTaskList()
 
         #region Tests Generated for GetAppTaskList() Skip Take
-        [TestMethod]
+        [Fact]
         public void GetAppTaskList_Skip_Take_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -435,14 +435,14 @@ namespace CSSPServices.Tests
                         List<AppTask> appTaskList = new List<AppTask>();
                         appTaskList = appTaskService.GetAppTaskList().ToList();
                         CheckAppTaskFields(appTaskList);
-                        Assert.AreEqual(appTaskDirectQueryList[0].AppTaskID, appTaskList[0].AppTaskID);
+                        Assert.Equal(appTaskDirectQueryList[0].AppTaskID, appTaskList[0].AppTaskID);
                 }
             }
         }
         #endregion Tests Generated for GetAppTaskList() Skip Take
 
         #region Tests Generated for GetAppTaskList() Skip Take Asc
-        [TestMethod]
+        [Fact]
         public void GetAppTaskList_Skip_Take_Asc_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -461,14 +461,14 @@ namespace CSSPServices.Tests
                         List<AppTask> appTaskList = new List<AppTask>();
                         appTaskList = appTaskService.GetAppTaskList().ToList();
                         CheckAppTaskFields(appTaskList);
-                        Assert.AreEqual(appTaskDirectQueryList[0].AppTaskID, appTaskList[0].AppTaskID);
+                        Assert.Equal(appTaskDirectQueryList[0].AppTaskID, appTaskList[0].AppTaskID);
                 }
             }
         }
         #endregion Tests Generated for GetAppTaskList() Skip Take Asc
 
         #region Tests Generated for GetAppTaskList() Skip Take 2 Asc
-        [TestMethod]
+        [Fact]
         public void GetAppTaskList_Skip_Take_2Asc_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -487,14 +487,14 @@ namespace CSSPServices.Tests
                         List<AppTask> appTaskList = new List<AppTask>();
                         appTaskList = appTaskService.GetAppTaskList().ToList();
                         CheckAppTaskFields(appTaskList);
-                        Assert.AreEqual(appTaskDirectQueryList[0].AppTaskID, appTaskList[0].AppTaskID);
+                        Assert.Equal(appTaskDirectQueryList[0].AppTaskID, appTaskList[0].AppTaskID);
                 }
             }
         }
         #endregion Tests Generated for GetAppTaskList() Skip Take 2 Asc
 
         #region Tests Generated for GetAppTaskList() Skip Take Asc Where
-        [TestMethod]
+        [Fact]
         public void GetAppTaskList_Skip_Take_Asc_Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -513,14 +513,14 @@ namespace CSSPServices.Tests
                         List<AppTask> appTaskList = new List<AppTask>();
                         appTaskList = appTaskService.GetAppTaskList().ToList();
                         CheckAppTaskFields(appTaskList);
-                        Assert.AreEqual(appTaskDirectQueryList[0].AppTaskID, appTaskList[0].AppTaskID);
+                        Assert.Equal(appTaskDirectQueryList[0].AppTaskID, appTaskList[0].AppTaskID);
                 }
             }
         }
         #endregion Tests Generated for GetAppTaskList() Skip Take Asc Where
 
         #region Tests Generated for GetAppTaskList() Skip Take Asc 2 Where
-        [TestMethod]
+        [Fact]
         public void GetAppTaskList_Skip_Take_Asc_2Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -539,14 +539,14 @@ namespace CSSPServices.Tests
                         List<AppTask> appTaskList = new List<AppTask>();
                         appTaskList = appTaskService.GetAppTaskList().ToList();
                         CheckAppTaskFields(appTaskList);
-                        Assert.AreEqual(appTaskDirectQueryList[0].AppTaskID, appTaskList[0].AppTaskID);
+                        Assert.Equal(appTaskDirectQueryList[0].AppTaskID, appTaskList[0].AppTaskID);
                 }
             }
         }
         #endregion Tests Generated for GetAppTaskList() Skip Take Asc 2 Where
 
         #region Tests Generated for GetAppTaskList() Skip Take Desc
-        [TestMethod]
+        [Fact]
         public void GetAppTaskList_Skip_Take_Desc_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -565,14 +565,14 @@ namespace CSSPServices.Tests
                         List<AppTask> appTaskList = new List<AppTask>();
                         appTaskList = appTaskService.GetAppTaskList().ToList();
                         CheckAppTaskFields(appTaskList);
-                        Assert.AreEqual(appTaskDirectQueryList[0].AppTaskID, appTaskList[0].AppTaskID);
+                        Assert.Equal(appTaskDirectQueryList[0].AppTaskID, appTaskList[0].AppTaskID);
                 }
             }
         }
         #endregion Tests Generated for GetAppTaskList() Skip Take Desc
 
         #region Tests Generated for GetAppTaskList() Skip Take 2 Desc
-        [TestMethod]
+        [Fact]
         public void GetAppTaskList_Skip_Take_2Desc_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -591,14 +591,14 @@ namespace CSSPServices.Tests
                         List<AppTask> appTaskList = new List<AppTask>();
                         appTaskList = appTaskService.GetAppTaskList().ToList();
                         CheckAppTaskFields(appTaskList);
-                        Assert.AreEqual(appTaskDirectQueryList[0].AppTaskID, appTaskList[0].AppTaskID);
+                        Assert.Equal(appTaskDirectQueryList[0].AppTaskID, appTaskList[0].AppTaskID);
                 }
             }
         }
         #endregion Tests Generated for GetAppTaskList() Skip Take 2 Desc
 
         #region Tests Generated for GetAppTaskList() Skip Take Desc Where
-        [TestMethod]
+        [Fact]
         public void GetAppTaskList_Skip_Take_Desc_Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -617,14 +617,14 @@ namespace CSSPServices.Tests
                         List<AppTask> appTaskList = new List<AppTask>();
                         appTaskList = appTaskService.GetAppTaskList().ToList();
                         CheckAppTaskFields(appTaskList);
-                        Assert.AreEqual(appTaskDirectQueryList[0].AppTaskID, appTaskList[0].AppTaskID);
+                        Assert.Equal(appTaskDirectQueryList[0].AppTaskID, appTaskList[0].AppTaskID);
                 }
             }
         }
         #endregion Tests Generated for GetAppTaskList() Skip Take Desc Where
 
         #region Tests Generated for GetAppTaskList() Skip Take Desc 2 Where
-        [TestMethod]
+        [Fact]
         public void GetAppTaskList_Skip_Take_Desc_2Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -643,14 +643,14 @@ namespace CSSPServices.Tests
                         List<AppTask> appTaskList = new List<AppTask>();
                         appTaskList = appTaskService.GetAppTaskList().ToList();
                         CheckAppTaskFields(appTaskList);
-                        Assert.AreEqual(appTaskDirectQueryList[0].AppTaskID, appTaskList[0].AppTaskID);
+                        Assert.Equal(appTaskDirectQueryList[0].AppTaskID, appTaskList[0].AppTaskID);
                 }
             }
         }
         #endregion Tests Generated for GetAppTaskList() Skip Take Desc 2 Where
 
         #region Tests Generated for GetAppTaskList() 2 Where
-        [TestMethod]
+        [Fact]
         public void GetAppTaskList_2Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -669,7 +669,7 @@ namespace CSSPServices.Tests
                         List<AppTask> appTaskList = new List<AppTask>();
                         appTaskList = appTaskService.GetAppTaskList().ToList();
                         CheckAppTaskFields(appTaskList);
-                        Assert.AreEqual(appTaskDirectQueryList[0].AppTaskID, appTaskList[0].AppTaskID);
+                        Assert.Equal(appTaskDirectQueryList[0].AppTaskID, appTaskList[0].AppTaskID);
                 }
             }
         }
@@ -678,30 +678,30 @@ namespace CSSPServices.Tests
         #region Functions private
         private void CheckAppTaskFields(List<AppTask> appTaskList)
         {
-            Assert.IsNotNull(appTaskList[0].AppTaskID);
-            Assert.IsNotNull(appTaskList[0].TVItemID);
-            Assert.IsNotNull(appTaskList[0].TVItemID2);
-            Assert.IsNotNull(appTaskList[0].AppTaskCommand);
-            Assert.IsNotNull(appTaskList[0].AppTaskStatus);
-            Assert.IsNotNull(appTaskList[0].PercentCompleted);
-            Assert.IsFalse(string.IsNullOrWhiteSpace(appTaskList[0].Parameters));
-            Assert.IsNotNull(appTaskList[0].Language);
-            Assert.IsNotNull(appTaskList[0].StartDateTime_UTC);
+            Assert.NotNull(appTaskList[0].AppTaskID);
+            Assert.NotNull(appTaskList[0].TVItemID);
+            Assert.NotNull(appTaskList[0].TVItemID2);
+            Assert.NotNull(appTaskList[0].AppTaskCommand);
+            Assert.NotNull(appTaskList[0].AppTaskStatus);
+            Assert.NotNull(appTaskList[0].PercentCompleted);
+            Assert.False(string.IsNullOrWhiteSpace(appTaskList[0].Parameters));
+            Assert.NotNull(appTaskList[0].Language);
+            Assert.NotNull(appTaskList[0].StartDateTime_UTC);
             if (appTaskList[0].EndDateTime_UTC != null)
             {
-                Assert.IsNotNull(appTaskList[0].EndDateTime_UTC);
+                Assert.NotNull(appTaskList[0].EndDateTime_UTC);
             }
             if (appTaskList[0].EstimatedLength_second != null)
             {
-                Assert.IsNotNull(appTaskList[0].EstimatedLength_second);
+                Assert.NotNull(appTaskList[0].EstimatedLength_second);
             }
             if (appTaskList[0].RemainingTime_second != null)
             {
-                Assert.IsNotNull(appTaskList[0].RemainingTime_second);
+                Assert.NotNull(appTaskList[0].RemainingTime_second);
             }
-            Assert.IsNotNull(appTaskList[0].LastUpdateDate_UTC);
-            Assert.IsNotNull(appTaskList[0].LastUpdateContactTVItemID);
-            Assert.IsNotNull(appTaskList[0].HasErrors);
+            Assert.NotNull(appTaskList[0].LastUpdateDate_UTC);
+            Assert.NotNull(appTaskList[0].LastUpdateContactTVItemID);
+            Assert.NotNull(appTaskList[0].HasErrors);
         }
         private AppTask GetFilledRandomAppTask(string OmitPropName)
         {

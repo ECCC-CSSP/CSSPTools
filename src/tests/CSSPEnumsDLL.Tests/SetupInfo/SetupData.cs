@@ -10,7 +10,6 @@ namespace CSSPEnumsDLL.Tests.SetupInfo
     public class SetupData
     {
         public List<CultureInfo> cultureListGood { get; set; }
-        public List<double> StatData { get; set; }
 
         public SetupData()
         {

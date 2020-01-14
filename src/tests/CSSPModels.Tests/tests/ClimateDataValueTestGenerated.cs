@@ -6,7 +6,7 @@
  */ 
 using System;
 using System.Text;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using System.Linq;
 using System.Globalization;
 using System.Transactions;
@@ -19,7 +19,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace CSSPModels.Tests
 {
-    [TestClass]
+
     public partial class ClimateDataValueTest
     {
         #region Variables
@@ -37,7 +37,7 @@ namespace CSSPModels.Tests
         #endregion Constructors
 
         #region Tests Functions public
-        [TestMethod]
+        [Fact]
         public void ClimateDataValue_Properties_Test()
         {
             List<string> propNameList = new List<string>() { "ClimateDataValueID", "ClimateSiteID", "DateTime_Local", "Keep", "StorageDataType", "HasBeenRead", "Snow_cm", "Rainfall_mm", "RainfallEntered_mm", "TotalPrecip_mm_cm", "MaxTemp_C", "MinTemp_C", "HeatDegDays_C", "CoolDegDays_C", "SnowOnGround_cm", "DirMaxGust_0North", "SpdMaxGust_kmh", "HourlyValues", "LastUpdateDate_UTC", "LastUpdateContactTVItemID",  }.OrderBy(c => c).ToList();
@@ -50,12 +50,12 @@ namespace CSSPModels.Tests
                     && propertyInfo.Name != "ValidationResults"
                     && !propertyInfo.CustomAttributes.Where(c => c.AttributeType.Name.Contains("NotMappedAttribute")).Any())
                 {
-                    Assert.AreEqual(propNameList[index], propertyInfo.Name);
+                    Assert.Equal(propNameList[index], propertyInfo.Name);
                     index += 1;
                 }
             }
 
-            Assert.AreEqual(propNameList.Count, index);
+            Assert.Equal(propNameList.Count, index);
 
             index = 0;
             foreach (PropertyInfo propertyInfo in typeof(ClimateDataValue).GetProperties().Where(c => c.Name != "ValidationResults").OrderBy(c => c.Name).ToList())
@@ -64,16 +64,16 @@ namespace CSSPModels.Tests
                 {
                     if (customAttributeData.AttributeType.Name == "NotMappedAttribute")
                     {
-                        Assert.AreEqual(propertyInfo.Name, propNameNotMappedList[index]);
+                        Assert.Equal(propertyInfo.Name, propNameNotMappedList[index]);
                         index += 1;
                     }
                 }
             }
 
-            Assert.AreEqual(propNameNotMappedList.Count, index);
+            Assert.Equal(propNameNotMappedList.Count, index);
 
         }
-        [TestMethod]
+        [Fact]
         public void ClimateDataValue_Navigation_Test()
         {
             List<string> foreignNameList = new List<string>() {  }.OrderBy(c => c).ToList();
@@ -84,100 +84,100 @@ namespace CSSPModels.Tests
             {
                 if (propertyInfo.GetGetMethod().IsVirtual && !propertyInfo.GetGetMethod().ReturnType.Name.StartsWith("ICollection"))
                 {
-                    Assert.IsTrue(foreignNameList.Contains(propertyInfo.Name));
+                    Assert.True(foreignNameList.Contains(propertyInfo.Name));
                     index += 1;
                 }
             }
 
-            Assert.AreEqual(foreignNameList.Count, index);
+            Assert.Equal(foreignNameList.Count, index);
 
             index = 0;
             foreach (PropertyInfo propertyInfo in typeof(ClimateDataValue).GetProperties().Where(c => c.Name != "ValidationResults").OrderBy(c => c.Name).ToList())
             {
                 if (propertyInfo.GetGetMethod().ReturnType.Name.StartsWith("ICollection"))
                 {
-                    Assert.IsTrue(foreignNameCollectionList.Contains(propertyInfo.Name));
+                    Assert.True(foreignNameCollectionList.Contains(propertyInfo.Name));
                     index += 1;
                 }
             }
 
-            Assert.AreEqual(foreignNameCollectionList.Count, index);
+            Assert.Equal(foreignNameCollectionList.Count, index);
 
         }
-        [TestMethod]
+        [Fact]
         public void ClimateDataValue_Has_ValidationResults_Test()
         {
-             Assert.IsTrue(typeof(ClimateDataValue).GetProperties().Where(c => c.Name == "ValidationResults").Any());
+             Assert.True(typeof(ClimateDataValue).GetProperties().Where(c => c.Name == "ValidationResults").Any());
         }
-        [TestMethod]
+        [Fact]
         public void ClimateDataValue_Every_Property_Has_Get_Set_Test()
         {
                int val1 = 45;
                climateDataValue.ClimateDataValueID = val1;
-               Assert.AreEqual(val1, climateDataValue.ClimateDataValueID);
+               Assert.Equal(val1, climateDataValue.ClimateDataValueID);
                int val2 = 45;
                climateDataValue.ClimateSiteID = val2;
-               Assert.AreEqual(val2, climateDataValue.ClimateSiteID);
+               Assert.Equal(val2, climateDataValue.ClimateSiteID);
                DateTime val3 = new DateTime(2010, 3, 4);
                climateDataValue.DateTime_Local = val3;
-               Assert.AreEqual(val3, climateDataValue.DateTime_Local);
+               Assert.Equal(val3, climateDataValue.DateTime_Local);
                bool val4 = true;
                climateDataValue.Keep = val4;
-               Assert.AreEqual(val4, climateDataValue.Keep);
+               Assert.Equal(val4, climateDataValue.Keep);
                StorageDataTypeEnum val5 = (StorageDataTypeEnum)3;
                climateDataValue.StorageDataType = val5;
-               Assert.AreEqual(val5, climateDataValue.StorageDataType);
+               Assert.Equal(val5, climateDataValue.StorageDataType);
                bool val6 = true;
                climateDataValue.HasBeenRead = val6;
-               Assert.AreEqual(val6, climateDataValue.HasBeenRead);
+               Assert.Equal(val6, climateDataValue.HasBeenRead);
                double val7 = 87.9D;
                climateDataValue.Snow_cm = val7;
-               Assert.AreEqual(val7, climateDataValue.Snow_cm);
+               Assert.Equal(val7, climateDataValue.Snow_cm);
                double val8 = 87.9D;
                climateDataValue.Rainfall_mm = val8;
-               Assert.AreEqual(val8, climateDataValue.Rainfall_mm);
+               Assert.Equal(val8, climateDataValue.Rainfall_mm);
                double val9 = 87.9D;
                climateDataValue.RainfallEntered_mm = val9;
-               Assert.AreEqual(val9, climateDataValue.RainfallEntered_mm);
+               Assert.Equal(val9, climateDataValue.RainfallEntered_mm);
                double val10 = 87.9D;
                climateDataValue.TotalPrecip_mm_cm = val10;
-               Assert.AreEqual(val10, climateDataValue.TotalPrecip_mm_cm);
+               Assert.Equal(val10, climateDataValue.TotalPrecip_mm_cm);
                double val11 = 87.9D;
                climateDataValue.MaxTemp_C = val11;
-               Assert.AreEqual(val11, climateDataValue.MaxTemp_C);
+               Assert.Equal(val11, climateDataValue.MaxTemp_C);
                double val12 = 87.9D;
                climateDataValue.MinTemp_C = val12;
-               Assert.AreEqual(val12, climateDataValue.MinTemp_C);
+               Assert.Equal(val12, climateDataValue.MinTemp_C);
                double val13 = 87.9D;
                climateDataValue.HeatDegDays_C = val13;
-               Assert.AreEqual(val13, climateDataValue.HeatDegDays_C);
+               Assert.Equal(val13, climateDataValue.HeatDegDays_C);
                double val14 = 87.9D;
                climateDataValue.CoolDegDays_C = val14;
-               Assert.AreEqual(val14, climateDataValue.CoolDegDays_C);
+               Assert.Equal(val14, climateDataValue.CoolDegDays_C);
                double val15 = 87.9D;
                climateDataValue.SnowOnGround_cm = val15;
-               Assert.AreEqual(val15, climateDataValue.SnowOnGround_cm);
+               Assert.Equal(val15, climateDataValue.SnowOnGround_cm);
                double val16 = 87.9D;
                climateDataValue.DirMaxGust_0North = val16;
-               Assert.AreEqual(val16, climateDataValue.DirMaxGust_0North);
+               Assert.Equal(val16, climateDataValue.DirMaxGust_0North);
                double val17 = 87.9D;
                climateDataValue.SpdMaxGust_kmh = val17;
-               Assert.AreEqual(val17, climateDataValue.SpdMaxGust_kmh);
+               Assert.Equal(val17, climateDataValue.SpdMaxGust_kmh);
                string val18 = "Some text";
                climateDataValue.HourlyValues = val18;
-               Assert.AreEqual(val18, climateDataValue.HourlyValues);
+               Assert.Equal(val18, climateDataValue.HourlyValues);
                DateTime val19 = new DateTime(2010, 3, 4);
                climateDataValue.LastUpdateDate_UTC = val19;
-               Assert.AreEqual(val19, climateDataValue.LastUpdateDate_UTC);
+               Assert.Equal(val19, climateDataValue.LastUpdateDate_UTC);
                int val20 = 45;
                climateDataValue.LastUpdateContactTVItemID = val20;
-               Assert.AreEqual(val20, climateDataValue.LastUpdateContactTVItemID);
+               Assert.Equal(val20, climateDataValue.LastUpdateContactTVItemID);
                bool val21 = true;
                climateDataValue.HasErrors = val21;
-               Assert.AreEqual(val21, climateDataValue.HasErrors);
+               Assert.Equal(val21, climateDataValue.HasErrors);
                IEnumerable<ValidationResult> val66 = new List<ValidationResult>() { new ValidationResult("First CSSPError Message") }.AsEnumerable();
                climateDataValue.ValidationResults = val66;
-               Assert.AreEqual(val66, climateDataValue.ValidationResults);
+               Assert.Equal(val66, climateDataValue.ValidationResults);
         }
         #endregion Tests Functions public
     }

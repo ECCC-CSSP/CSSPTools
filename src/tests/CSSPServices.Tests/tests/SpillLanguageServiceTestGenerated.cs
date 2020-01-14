@@ -5,7 +5,7 @@
  */ 
 
 using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using System.Linq;
 using System.Collections.Generic;
 using CSSPModels;
@@ -21,7 +21,7 @@ using CSSPEnums.Resources;
 
 namespace CSSPServices.Tests
 {
-    [TestClass]
+
     public partial class SpillLanguageServiceTest : TestHelper
     {
         #region Variables
@@ -39,7 +39,7 @@ namespace CSSPServices.Tests
         #endregion Constructors
 
         #region Tests Generated CRUD
-        [TestMethod]
+        [Fact]
         public void SpillLanguage_CRUD_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -66,26 +66,26 @@ namespace CSSPServices.Tests
 
                     count = spillLanguageService.GetSpillLanguageList().Count();
 
-                    Assert.AreEqual(count, (from c in dbTestDB.SpillLanguages select c).Count());
+                    Assert.Equal(count, (from c in dbTestDB.SpillLanguages select c).Count());
 
                     spillLanguageService.Add(spillLanguage);
                     if (spillLanguage.HasErrors)
                     {
-                        Assert.AreEqual("", spillLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
+                        Assert.Equal("", spillLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
                     }
-                    Assert.AreEqual(true, spillLanguageService.GetSpillLanguageList().Where(c => c == spillLanguage).Any());
+                    Assert.True(spillLanguageService.GetSpillLanguageList().Where(c => c == spillLanguage).Any());
                     spillLanguageService.Update(spillLanguage);
                     if (spillLanguage.HasErrors)
                     {
-                        Assert.AreEqual("", spillLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
+                        Assert.Equal("", spillLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
                     }
-                    Assert.AreEqual(count + 1, spillLanguageService.GetSpillLanguageList().Count());
+                    Assert.Equal(count + 1, spillLanguageService.GetSpillLanguageList().Count());
                     spillLanguageService.Delete(spillLanguage);
                     if (spillLanguage.HasErrors)
                     {
-                        Assert.AreEqual("", spillLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
+                        Assert.Equal("", spillLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
                     }
-                    Assert.AreEqual(count, spillLanguageService.GetSpillLanguageList().Count());
+                    Assert.Equal(count, spillLanguageService.GetSpillLanguageList().Count());
 
                 }
             }
@@ -93,7 +93,7 @@ namespace CSSPServices.Tests
         #endregion Tests Generated CRUD
 
         #region Tests Generated Properties
-        [TestMethod]
+        [Fact]
         public void SpillLanguage_Properties_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -131,13 +131,13 @@ namespace CSSPServices.Tests
                     spillLanguage = GetFilledRandomSpillLanguage("");
                     spillLanguage.SpillLanguageID = 0;
                     spillLanguageService.Update(spillLanguage);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsRequired, "SpillLanguageID"), spillLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsRequired, "SpillLanguageID"), spillLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
 
                     spillLanguage = null;
                     spillLanguage = GetFilledRandomSpillLanguage("");
                     spillLanguage.SpillLanguageID = 10000000;
                     spillLanguageService.Update(spillLanguage);
-                    Assert.AreEqual(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "SpillLanguage", "SpillLanguageID", spillLanguage.SpillLanguageID.ToString()), spillLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "SpillLanguage", "SpillLanguageID", spillLanguage.SpillLanguageID.ToString()), spillLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
 
 
                     // -----------------------------------
@@ -150,7 +150,7 @@ namespace CSSPServices.Tests
                     spillLanguage = GetFilledRandomSpillLanguage("");
                     spillLanguage.SpillID = 0;
                     spillLanguageService.Add(spillLanguage);
-                    Assert.AreEqual(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "Spill", "SpillID", spillLanguage.SpillID.ToString()), spillLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "Spill", "SpillID", spillLanguage.SpillID.ToString()), spillLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
 
 
                     // -----------------------------------
@@ -163,7 +163,7 @@ namespace CSSPServices.Tests
                     spillLanguage = GetFilledRandomSpillLanguage("");
                     spillLanguage.Language = (LanguageEnum)1000000;
                     spillLanguageService.Add(spillLanguage);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsRequired, "Language"), spillLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsRequired, "Language"), spillLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
 
 
                     // -----------------------------------
@@ -173,11 +173,11 @@ namespace CSSPServices.Tests
 
                     spillLanguage = null;
                     spillLanguage = GetFilledRandomSpillLanguage("SpillComment");
-                    Assert.AreEqual(false, spillLanguageService.Add(spillLanguage));
-                    Assert.AreEqual(1, spillLanguage.ValidationResults.Count());
-                    Assert.IsTrue(spillLanguage.ValidationResults.Where(c => c.ErrorMessage == string.Format(CSSPServicesRes._IsRequired, "SpillComment")).Any());
-                    Assert.AreEqual(null, spillLanguage.SpillComment);
-                    Assert.AreEqual(count, spillLanguageService.GetSpillLanguageList().Count());
+                    Assert.False(spillLanguageService.Add(spillLanguage));
+                    Assert.Equal(1, spillLanguage.ValidationResults.Count());
+                    Assert.True(spillLanguage.ValidationResults.Where(c => c.ErrorMessage == string.Format(CSSPServicesRes._IsRequired, "SpillComment")).Any());
+                    Assert.Null(spillLanguage.SpillComment);
+                    Assert.Equal(count, spillLanguageService.GetSpillLanguageList().Count());
 
 
                     // -----------------------------------
@@ -190,7 +190,7 @@ namespace CSSPServices.Tests
                     spillLanguage = GetFilledRandomSpillLanguage("");
                     spillLanguage.TranslationStatus = (TranslationStatusEnum)1000000;
                     spillLanguageService.Add(spillLanguage);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsRequired, "TranslationStatus"), spillLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsRequired, "TranslationStatus"), spillLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
 
 
                     // -----------------------------------
@@ -203,12 +203,12 @@ namespace CSSPServices.Tests
                     spillLanguage = GetFilledRandomSpillLanguage("");
                     spillLanguage.LastUpdateDate_UTC = new DateTime();
                     spillLanguageService.Add(spillLanguage);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsRequired, "LastUpdateDate_UTC"), spillLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsRequired, "LastUpdateDate_UTC"), spillLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
                     spillLanguage = null;
                     spillLanguage = GetFilledRandomSpillLanguage("");
                     spillLanguage.LastUpdateDate_UTC = new DateTime(1979, 1, 1);
                     spillLanguageService.Add(spillLanguage);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._YearShouldBeBiggerThan_, "LastUpdateDate_UTC", "1980"), spillLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._YearShouldBeBiggerThan_, "LastUpdateDate_UTC", "1980"), spillLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -220,13 +220,13 @@ namespace CSSPServices.Tests
                     spillLanguage = GetFilledRandomSpillLanguage("");
                     spillLanguage.LastUpdateContactTVItemID = 0;
                     spillLanguageService.Add(spillLanguage);
-                    Assert.AreEqual(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "TVItem", "LastUpdateContactTVItemID", spillLanguage.LastUpdateContactTVItemID.ToString()), spillLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "TVItem", "LastUpdateContactTVItemID", spillLanguage.LastUpdateContactTVItemID.ToString()), spillLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
 
                     spillLanguage = null;
                     spillLanguage = GetFilledRandomSpillLanguage("");
                     spillLanguage.LastUpdateContactTVItemID = 1;
                     spillLanguageService.Add(spillLanguage);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsNotOfType_, "LastUpdateContactTVItemID", "Contact"), spillLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsNotOfType_, "LastUpdateContactTVItemID", "Contact"), spillLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
 
 
                     // -----------------------------------
@@ -250,7 +250,7 @@ namespace CSSPServices.Tests
         #endregion Tests Generated Properties
 
         #region Tests Generated for GetSpillLanguageWithSpillLanguageID(spillLanguage.SpillLanguageID)
-        [TestMethod]
+        [Fact]
         public void GetSpillLanguageWithSpillLanguageID__spillLanguage_SpillLanguageID__Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -261,7 +261,7 @@ namespace CSSPServices.Tests
                 {
                     SpillLanguageService spillLanguageService = new SpillLanguageService(new Query() { Lang = culture.TwoLetterISOLanguageName }, dbTestDB, ContactID);
                     SpillLanguage spillLanguage = (from c in dbTestDB.SpillLanguages select c).FirstOrDefault();
-                    Assert.IsNotNull(spillLanguage);
+                    Assert.NotNull(spillLanguage);
 
                 }
             }
@@ -269,7 +269,7 @@ namespace CSSPServices.Tests
         #endregion Tests Generated for GetSpillLanguageWithSpillLanguageID(spillLanguage.SpillLanguageID)
 
         #region Tests Generated for GetSpillLanguageList()
-        [TestMethod]
+        [Fact]
         public void GetSpillLanguageList_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -280,7 +280,7 @@ namespace CSSPServices.Tests
                 {
                     SpillLanguageService spillLanguageService = new SpillLanguageService(new Query() { Lang = culture.TwoLetterISOLanguageName }, dbTestDB, ContactID);
                     SpillLanguage spillLanguage = (from c in dbTestDB.SpillLanguages select c).FirstOrDefault();
-                    Assert.IsNotNull(spillLanguage);
+                    Assert.NotNull(spillLanguage);
 
                     List<SpillLanguage> spillLanguageDirectQueryList = new List<SpillLanguage>();
                     spillLanguageDirectQueryList = (from c in dbTestDB.SpillLanguages select c).Take(200).ToList();
@@ -291,7 +291,7 @@ namespace CSSPServices.Tests
         #endregion Tests Generated for GetSpillLanguageList()
 
         #region Tests Generated for GetSpillLanguageList() Skip Take
-        [TestMethod]
+        [Fact]
         public void GetSpillLanguageList_Skip_Take_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -310,14 +310,14 @@ namespace CSSPServices.Tests
                         List<SpillLanguage> spillLanguageList = new List<SpillLanguage>();
                         spillLanguageList = spillLanguageService.GetSpillLanguageList().ToList();
                         CheckSpillLanguageFields(spillLanguageList);
-                        Assert.AreEqual(spillLanguageDirectQueryList[0].SpillLanguageID, spillLanguageList[0].SpillLanguageID);
+                        Assert.Equal(spillLanguageDirectQueryList[0].SpillLanguageID, spillLanguageList[0].SpillLanguageID);
                 }
             }
         }
         #endregion Tests Generated for GetSpillLanguageList() Skip Take
 
         #region Tests Generated for GetSpillLanguageList() Skip Take Asc
-        [TestMethod]
+        [Fact]
         public void GetSpillLanguageList_Skip_Take_Asc_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -336,14 +336,14 @@ namespace CSSPServices.Tests
                         List<SpillLanguage> spillLanguageList = new List<SpillLanguage>();
                         spillLanguageList = spillLanguageService.GetSpillLanguageList().ToList();
                         CheckSpillLanguageFields(spillLanguageList);
-                        Assert.AreEqual(spillLanguageDirectQueryList[0].SpillLanguageID, spillLanguageList[0].SpillLanguageID);
+                        Assert.Equal(spillLanguageDirectQueryList[0].SpillLanguageID, spillLanguageList[0].SpillLanguageID);
                 }
             }
         }
         #endregion Tests Generated for GetSpillLanguageList() Skip Take Asc
 
         #region Tests Generated for GetSpillLanguageList() Skip Take 2 Asc
-        [TestMethod]
+        [Fact]
         public void GetSpillLanguageList_Skip_Take_2Asc_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -362,14 +362,14 @@ namespace CSSPServices.Tests
                         List<SpillLanguage> spillLanguageList = new List<SpillLanguage>();
                         spillLanguageList = spillLanguageService.GetSpillLanguageList().ToList();
                         CheckSpillLanguageFields(spillLanguageList);
-                        Assert.AreEqual(spillLanguageDirectQueryList[0].SpillLanguageID, spillLanguageList[0].SpillLanguageID);
+                        Assert.Equal(spillLanguageDirectQueryList[0].SpillLanguageID, spillLanguageList[0].SpillLanguageID);
                 }
             }
         }
         #endregion Tests Generated for GetSpillLanguageList() Skip Take 2 Asc
 
         #region Tests Generated for GetSpillLanguageList() Skip Take Asc Where
-        [TestMethod]
+        [Fact]
         public void GetSpillLanguageList_Skip_Take_Asc_Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -388,14 +388,14 @@ namespace CSSPServices.Tests
                         List<SpillLanguage> spillLanguageList = new List<SpillLanguage>();
                         spillLanguageList = spillLanguageService.GetSpillLanguageList().ToList();
                         CheckSpillLanguageFields(spillLanguageList);
-                        Assert.AreEqual(spillLanguageDirectQueryList[0].SpillLanguageID, spillLanguageList[0].SpillLanguageID);
+                        Assert.Equal(spillLanguageDirectQueryList[0].SpillLanguageID, spillLanguageList[0].SpillLanguageID);
                 }
             }
         }
         #endregion Tests Generated for GetSpillLanguageList() Skip Take Asc Where
 
         #region Tests Generated for GetSpillLanguageList() Skip Take Asc 2 Where
-        [TestMethod]
+        [Fact]
         public void GetSpillLanguageList_Skip_Take_Asc_2Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -414,14 +414,14 @@ namespace CSSPServices.Tests
                         List<SpillLanguage> spillLanguageList = new List<SpillLanguage>();
                         spillLanguageList = spillLanguageService.GetSpillLanguageList().ToList();
                         CheckSpillLanguageFields(spillLanguageList);
-                        Assert.AreEqual(spillLanguageDirectQueryList[0].SpillLanguageID, spillLanguageList[0].SpillLanguageID);
+                        Assert.Equal(spillLanguageDirectQueryList[0].SpillLanguageID, spillLanguageList[0].SpillLanguageID);
                 }
             }
         }
         #endregion Tests Generated for GetSpillLanguageList() Skip Take Asc 2 Where
 
         #region Tests Generated for GetSpillLanguageList() Skip Take Desc
-        [TestMethod]
+        [Fact]
         public void GetSpillLanguageList_Skip_Take_Desc_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -440,14 +440,14 @@ namespace CSSPServices.Tests
                         List<SpillLanguage> spillLanguageList = new List<SpillLanguage>();
                         spillLanguageList = spillLanguageService.GetSpillLanguageList().ToList();
                         CheckSpillLanguageFields(spillLanguageList);
-                        Assert.AreEqual(spillLanguageDirectQueryList[0].SpillLanguageID, spillLanguageList[0].SpillLanguageID);
+                        Assert.Equal(spillLanguageDirectQueryList[0].SpillLanguageID, spillLanguageList[0].SpillLanguageID);
                 }
             }
         }
         #endregion Tests Generated for GetSpillLanguageList() Skip Take Desc
 
         #region Tests Generated for GetSpillLanguageList() Skip Take 2 Desc
-        [TestMethod]
+        [Fact]
         public void GetSpillLanguageList_Skip_Take_2Desc_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -466,14 +466,14 @@ namespace CSSPServices.Tests
                         List<SpillLanguage> spillLanguageList = new List<SpillLanguage>();
                         spillLanguageList = spillLanguageService.GetSpillLanguageList().ToList();
                         CheckSpillLanguageFields(spillLanguageList);
-                        Assert.AreEqual(spillLanguageDirectQueryList[0].SpillLanguageID, spillLanguageList[0].SpillLanguageID);
+                        Assert.Equal(spillLanguageDirectQueryList[0].SpillLanguageID, spillLanguageList[0].SpillLanguageID);
                 }
             }
         }
         #endregion Tests Generated for GetSpillLanguageList() Skip Take 2 Desc
 
         #region Tests Generated for GetSpillLanguageList() Skip Take Desc Where
-        [TestMethod]
+        [Fact]
         public void GetSpillLanguageList_Skip_Take_Desc_Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -492,14 +492,14 @@ namespace CSSPServices.Tests
                         List<SpillLanguage> spillLanguageList = new List<SpillLanguage>();
                         spillLanguageList = spillLanguageService.GetSpillLanguageList().ToList();
                         CheckSpillLanguageFields(spillLanguageList);
-                        Assert.AreEqual(spillLanguageDirectQueryList[0].SpillLanguageID, spillLanguageList[0].SpillLanguageID);
+                        Assert.Equal(spillLanguageDirectQueryList[0].SpillLanguageID, spillLanguageList[0].SpillLanguageID);
                 }
             }
         }
         #endregion Tests Generated for GetSpillLanguageList() Skip Take Desc Where
 
         #region Tests Generated for GetSpillLanguageList() Skip Take Desc 2 Where
-        [TestMethod]
+        [Fact]
         public void GetSpillLanguageList_Skip_Take_Desc_2Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -518,14 +518,14 @@ namespace CSSPServices.Tests
                         List<SpillLanguage> spillLanguageList = new List<SpillLanguage>();
                         spillLanguageList = spillLanguageService.GetSpillLanguageList().ToList();
                         CheckSpillLanguageFields(spillLanguageList);
-                        Assert.AreEqual(spillLanguageDirectQueryList[0].SpillLanguageID, spillLanguageList[0].SpillLanguageID);
+                        Assert.Equal(spillLanguageDirectQueryList[0].SpillLanguageID, spillLanguageList[0].SpillLanguageID);
                 }
             }
         }
         #endregion Tests Generated for GetSpillLanguageList() Skip Take Desc 2 Where
 
         #region Tests Generated for GetSpillLanguageList() 2 Where
-        [TestMethod]
+        [Fact]
         public void GetSpillLanguageList_2Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -544,7 +544,7 @@ namespace CSSPServices.Tests
                         List<SpillLanguage> spillLanguageList = new List<SpillLanguage>();
                         spillLanguageList = spillLanguageService.GetSpillLanguageList().ToList();
                         CheckSpillLanguageFields(spillLanguageList);
-                        Assert.AreEqual(spillLanguageDirectQueryList[0].SpillLanguageID, spillLanguageList[0].SpillLanguageID);
+                        Assert.Equal(spillLanguageDirectQueryList[0].SpillLanguageID, spillLanguageList[0].SpillLanguageID);
                 }
             }
         }
@@ -553,14 +553,14 @@ namespace CSSPServices.Tests
         #region Functions private
         private void CheckSpillLanguageFields(List<SpillLanguage> spillLanguageList)
         {
-            Assert.IsNotNull(spillLanguageList[0].SpillLanguageID);
-            Assert.IsNotNull(spillLanguageList[0].SpillID);
-            Assert.IsNotNull(spillLanguageList[0].Language);
-            Assert.IsFalse(string.IsNullOrWhiteSpace(spillLanguageList[0].SpillComment));
-            Assert.IsNotNull(spillLanguageList[0].TranslationStatus);
-            Assert.IsNotNull(spillLanguageList[0].LastUpdateDate_UTC);
-            Assert.IsNotNull(spillLanguageList[0].LastUpdateContactTVItemID);
-            Assert.IsNotNull(spillLanguageList[0].HasErrors);
+            Assert.NotNull(spillLanguageList[0].SpillLanguageID);
+            Assert.NotNull(spillLanguageList[0].SpillID);
+            Assert.NotNull(spillLanguageList[0].Language);
+            Assert.False(string.IsNullOrWhiteSpace(spillLanguageList[0].SpillComment));
+            Assert.NotNull(spillLanguageList[0].TranslationStatus);
+            Assert.NotNull(spillLanguageList[0].LastUpdateDate_UTC);
+            Assert.NotNull(spillLanguageList[0].LastUpdateContactTVItemID);
+            Assert.NotNull(spillLanguageList[0].HasErrors);
         }
         private SpillLanguage GetFilledRandomSpillLanguage(string OmitPropName)
         {

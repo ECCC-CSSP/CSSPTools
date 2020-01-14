@@ -5,7 +5,7 @@
  */ 
 
 using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using System.Linq;
 using System.Collections.Generic;
 using CSSPModels;
@@ -21,7 +21,7 @@ using CSSPEnums.Resources;
 
 namespace CSSPServices.Tests
 {
-    [TestClass]
+
     public partial class SpillServiceTest : TestHelper
     {
         #region Variables
@@ -39,7 +39,7 @@ namespace CSSPServices.Tests
         #endregion Constructors
 
         #region Tests Generated CRUD
-        [TestMethod]
+        [Fact]
         public void Spill_CRUD_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -66,26 +66,26 @@ namespace CSSPServices.Tests
 
                     count = spillService.GetSpillList().Count();
 
-                    Assert.AreEqual(count, (from c in dbTestDB.Spills select c).Count());
+                    Assert.Equal(count, (from c in dbTestDB.Spills select c).Count());
 
                     spillService.Add(spill);
                     if (spill.HasErrors)
                     {
-                        Assert.AreEqual("", spill.ValidationResults.FirstOrDefault().ErrorMessage);
+                        Assert.Equal("", spill.ValidationResults.FirstOrDefault().ErrorMessage);
                     }
-                    Assert.AreEqual(true, spillService.GetSpillList().Where(c => c == spill).Any());
+                    Assert.True(spillService.GetSpillList().Where(c => c == spill).Any());
                     spillService.Update(spill);
                     if (spill.HasErrors)
                     {
-                        Assert.AreEqual("", spill.ValidationResults.FirstOrDefault().ErrorMessage);
+                        Assert.Equal("", spill.ValidationResults.FirstOrDefault().ErrorMessage);
                     }
-                    Assert.AreEqual(count + 1, spillService.GetSpillList().Count());
+                    Assert.Equal(count + 1, spillService.GetSpillList().Count());
                     spillService.Delete(spill);
                     if (spill.HasErrors)
                     {
-                        Assert.AreEqual("", spill.ValidationResults.FirstOrDefault().ErrorMessage);
+                        Assert.Equal("", spill.ValidationResults.FirstOrDefault().ErrorMessage);
                     }
-                    Assert.AreEqual(count, spillService.GetSpillList().Count());
+                    Assert.Equal(count, spillService.GetSpillList().Count());
 
                 }
             }
@@ -93,7 +93,7 @@ namespace CSSPServices.Tests
         #endregion Tests Generated CRUD
 
         #region Tests Generated Properties
-        [TestMethod]
+        [Fact]
         public void Spill_Properties_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -131,13 +131,13 @@ namespace CSSPServices.Tests
                     spill = GetFilledRandomSpill("");
                     spill.SpillID = 0;
                     spillService.Update(spill);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsRequired, "SpillID"), spill.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsRequired, "SpillID"), spill.ValidationResults.FirstOrDefault().ErrorMessage);
 
                     spill = null;
                     spill = GetFilledRandomSpill("");
                     spill.SpillID = 10000000;
                     spillService.Update(spill);
-                    Assert.AreEqual(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "Spill", "SpillID", spill.SpillID.ToString()), spill.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "Spill", "SpillID", spill.SpillID.ToString()), spill.ValidationResults.FirstOrDefault().ErrorMessage);
 
 
                     // -----------------------------------
@@ -150,13 +150,13 @@ namespace CSSPServices.Tests
                     spill = GetFilledRandomSpill("");
                     spill.MunicipalityTVItemID = 0;
                     spillService.Add(spill);
-                    Assert.AreEqual(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "TVItem", "MunicipalityTVItemID", spill.MunicipalityTVItemID.ToString()), spill.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "TVItem", "MunicipalityTVItemID", spill.MunicipalityTVItemID.ToString()), spill.ValidationResults.FirstOrDefault().ErrorMessage);
 
                     spill = null;
                     spill = GetFilledRandomSpill("");
                     spill.MunicipalityTVItemID = 1;
                     spillService.Add(spill);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsNotOfType_, "MunicipalityTVItemID", "Municipality"), spill.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsNotOfType_, "MunicipalityTVItemID", "Municipality"), spill.ValidationResults.FirstOrDefault().ErrorMessage);
 
 
                     // -----------------------------------
@@ -169,13 +169,13 @@ namespace CSSPServices.Tests
                     spill = GetFilledRandomSpill("");
                     spill.InfrastructureTVItemID = 0;
                     spillService.Add(spill);
-                    Assert.AreEqual(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "TVItem", "InfrastructureTVItemID", spill.InfrastructureTVItemID.ToString()), spill.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "TVItem", "InfrastructureTVItemID", spill.InfrastructureTVItemID.ToString()), spill.ValidationResults.FirstOrDefault().ErrorMessage);
 
                     spill = null;
                     spill = GetFilledRandomSpill("");
                     spill.InfrastructureTVItemID = 1;
                     spillService.Add(spill);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsNotOfType_, "InfrastructureTVItemID", "Infrastructure"), spill.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsNotOfType_, "InfrastructureTVItemID", "Infrastructure"), spill.ValidationResults.FirstOrDefault().ErrorMessage);
 
 
                     // -----------------------------------
@@ -188,12 +188,12 @@ namespace CSSPServices.Tests
                     spill = GetFilledRandomSpill("");
                     spill.StartDateTime_Local = new DateTime();
                     spillService.Add(spill);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsRequired, "StartDateTime_Local"), spill.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsRequired, "StartDateTime_Local"), spill.ValidationResults.FirstOrDefault().ErrorMessage);
                     spill = null;
                     spill = GetFilledRandomSpill("");
                     spill.StartDateTime_Local = new DateTime(1979, 1, 1);
                     spillService.Add(spill);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._YearShouldBeBiggerThan_, "StartDateTime_Local", "1980"), spill.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._YearShouldBeBiggerThan_, "StartDateTime_Local", "1980"), spill.ValidationResults.FirstOrDefault().ErrorMessage);
 
                     // -----------------------------------
                     // Is Nullable
@@ -206,7 +206,7 @@ namespace CSSPServices.Tests
                     spill = GetFilledRandomSpill("");
                     spill.EndDateTime_Local = new DateTime(1979, 1, 1);
                     spillService.Add(spill);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._YearShouldBeBiggerThan_, "EndDateTime_Local", "1980"), spill.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._YearShouldBeBiggerThan_, "EndDateTime_Local", "1980"), spill.ValidationResults.FirstOrDefault().ErrorMessage);
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -221,15 +221,15 @@ namespace CSSPServices.Tests
                     spill = null;
                     spill = GetFilledRandomSpill("");
                     spill.AverageFlow_m3_day = -1.0D;
-                    Assert.AreEqual(false, spillService.Add(spill));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "AverageFlow_m3_day", "0", "1000000"), spill.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, spillService.GetSpillList().Count());
+                    Assert.False(spillService.Add(spill));
+                    Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "AverageFlow_m3_day", "0", "1000000"), spill.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, spillService.GetSpillList().Count());
                     spill = null;
                     spill = GetFilledRandomSpill("");
                     spill.AverageFlow_m3_day = 1000001.0D;
-                    Assert.AreEqual(false, spillService.Add(spill));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "AverageFlow_m3_day", "0", "1000000"), spill.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, spillService.GetSpillList().Count());
+                    Assert.False(spillService.Add(spill));
+                    Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "AverageFlow_m3_day", "0", "1000000"), spill.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, spillService.GetSpillList().Count());
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -241,12 +241,12 @@ namespace CSSPServices.Tests
                     spill = GetFilledRandomSpill("");
                     spill.LastUpdateDate_UTC = new DateTime();
                     spillService.Add(spill);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsRequired, "LastUpdateDate_UTC"), spill.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsRequired, "LastUpdateDate_UTC"), spill.ValidationResults.FirstOrDefault().ErrorMessage);
                     spill = null;
                     spill = GetFilledRandomSpill("");
                     spill.LastUpdateDate_UTC = new DateTime(1979, 1, 1);
                     spillService.Add(spill);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._YearShouldBeBiggerThan_, "LastUpdateDate_UTC", "1980"), spill.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._YearShouldBeBiggerThan_, "LastUpdateDate_UTC", "1980"), spill.ValidationResults.FirstOrDefault().ErrorMessage);
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -258,13 +258,13 @@ namespace CSSPServices.Tests
                     spill = GetFilledRandomSpill("");
                     spill.LastUpdateContactTVItemID = 0;
                     spillService.Add(spill);
-                    Assert.AreEqual(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "TVItem", "LastUpdateContactTVItemID", spill.LastUpdateContactTVItemID.ToString()), spill.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "TVItem", "LastUpdateContactTVItemID", spill.LastUpdateContactTVItemID.ToString()), spill.ValidationResults.FirstOrDefault().ErrorMessage);
 
                     spill = null;
                     spill = GetFilledRandomSpill("");
                     spill.LastUpdateContactTVItemID = 1;
                     spillService.Add(spill);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsNotOfType_, "LastUpdateContactTVItemID", "Contact"), spill.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsNotOfType_, "LastUpdateContactTVItemID", "Contact"), spill.ValidationResults.FirstOrDefault().ErrorMessage);
 
 
                     // -----------------------------------
@@ -288,7 +288,7 @@ namespace CSSPServices.Tests
         #endregion Tests Generated Properties
 
         #region Tests Generated for GetSpillWithSpillID(spill.SpillID)
-        [TestMethod]
+        [Fact]
         public void GetSpillWithSpillID__spill_SpillID__Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -299,7 +299,7 @@ namespace CSSPServices.Tests
                 {
                     SpillService spillService = new SpillService(new Query() { Lang = culture.TwoLetterISOLanguageName }, dbTestDB, ContactID);
                     Spill spill = (from c in dbTestDB.Spills select c).FirstOrDefault();
-                    Assert.IsNotNull(spill);
+                    Assert.NotNull(spill);
 
                 }
             }
@@ -307,7 +307,7 @@ namespace CSSPServices.Tests
         #endregion Tests Generated for GetSpillWithSpillID(spill.SpillID)
 
         #region Tests Generated for GetSpillList()
-        [TestMethod]
+        [Fact]
         public void GetSpillList_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -318,7 +318,7 @@ namespace CSSPServices.Tests
                 {
                     SpillService spillService = new SpillService(new Query() { Lang = culture.TwoLetterISOLanguageName }, dbTestDB, ContactID);
                     Spill spill = (from c in dbTestDB.Spills select c).FirstOrDefault();
-                    Assert.IsNotNull(spill);
+                    Assert.NotNull(spill);
 
                     List<Spill> spillDirectQueryList = new List<Spill>();
                     spillDirectQueryList = (from c in dbTestDB.Spills select c).Take(200).ToList();
@@ -329,7 +329,7 @@ namespace CSSPServices.Tests
         #endregion Tests Generated for GetSpillList()
 
         #region Tests Generated for GetSpillList() Skip Take
-        [TestMethod]
+        [Fact]
         public void GetSpillList_Skip_Take_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -348,14 +348,14 @@ namespace CSSPServices.Tests
                         List<Spill> spillList = new List<Spill>();
                         spillList = spillService.GetSpillList().ToList();
                         CheckSpillFields(spillList);
-                        Assert.AreEqual(spillDirectQueryList[0].SpillID, spillList[0].SpillID);
+                        Assert.Equal(spillDirectQueryList[0].SpillID, spillList[0].SpillID);
                 }
             }
         }
         #endregion Tests Generated for GetSpillList() Skip Take
 
         #region Tests Generated for GetSpillList() Skip Take Asc
-        [TestMethod]
+        [Fact]
         public void GetSpillList_Skip_Take_Asc_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -374,14 +374,14 @@ namespace CSSPServices.Tests
                         List<Spill> spillList = new List<Spill>();
                         spillList = spillService.GetSpillList().ToList();
                         CheckSpillFields(spillList);
-                        Assert.AreEqual(spillDirectQueryList[0].SpillID, spillList[0].SpillID);
+                        Assert.Equal(spillDirectQueryList[0].SpillID, spillList[0].SpillID);
                 }
             }
         }
         #endregion Tests Generated for GetSpillList() Skip Take Asc
 
         #region Tests Generated for GetSpillList() Skip Take 2 Asc
-        [TestMethod]
+        [Fact]
         public void GetSpillList_Skip_Take_2Asc_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -400,14 +400,14 @@ namespace CSSPServices.Tests
                         List<Spill> spillList = new List<Spill>();
                         spillList = spillService.GetSpillList().ToList();
                         CheckSpillFields(spillList);
-                        Assert.AreEqual(spillDirectQueryList[0].SpillID, spillList[0].SpillID);
+                        Assert.Equal(spillDirectQueryList[0].SpillID, spillList[0].SpillID);
                 }
             }
         }
         #endregion Tests Generated for GetSpillList() Skip Take 2 Asc
 
         #region Tests Generated for GetSpillList() Skip Take Asc Where
-        [TestMethod]
+        [Fact]
         public void GetSpillList_Skip_Take_Asc_Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -426,14 +426,14 @@ namespace CSSPServices.Tests
                         List<Spill> spillList = new List<Spill>();
                         spillList = spillService.GetSpillList().ToList();
                         CheckSpillFields(spillList);
-                        Assert.AreEqual(spillDirectQueryList[0].SpillID, spillList[0].SpillID);
+                        Assert.Equal(spillDirectQueryList[0].SpillID, spillList[0].SpillID);
                 }
             }
         }
         #endregion Tests Generated for GetSpillList() Skip Take Asc Where
 
         #region Tests Generated for GetSpillList() Skip Take Asc 2 Where
-        [TestMethod]
+        [Fact]
         public void GetSpillList_Skip_Take_Asc_2Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -452,14 +452,14 @@ namespace CSSPServices.Tests
                         List<Spill> spillList = new List<Spill>();
                         spillList = spillService.GetSpillList().ToList();
                         CheckSpillFields(spillList);
-                        Assert.AreEqual(spillDirectQueryList[0].SpillID, spillList[0].SpillID);
+                        Assert.Equal(spillDirectQueryList[0].SpillID, spillList[0].SpillID);
                 }
             }
         }
         #endregion Tests Generated for GetSpillList() Skip Take Asc 2 Where
 
         #region Tests Generated for GetSpillList() Skip Take Desc
-        [TestMethod]
+        [Fact]
         public void GetSpillList_Skip_Take_Desc_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -478,14 +478,14 @@ namespace CSSPServices.Tests
                         List<Spill> spillList = new List<Spill>();
                         spillList = spillService.GetSpillList().ToList();
                         CheckSpillFields(spillList);
-                        Assert.AreEqual(spillDirectQueryList[0].SpillID, spillList[0].SpillID);
+                        Assert.Equal(spillDirectQueryList[0].SpillID, spillList[0].SpillID);
                 }
             }
         }
         #endregion Tests Generated for GetSpillList() Skip Take Desc
 
         #region Tests Generated for GetSpillList() Skip Take 2 Desc
-        [TestMethod]
+        [Fact]
         public void GetSpillList_Skip_Take_2Desc_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -504,14 +504,14 @@ namespace CSSPServices.Tests
                         List<Spill> spillList = new List<Spill>();
                         spillList = spillService.GetSpillList().ToList();
                         CheckSpillFields(spillList);
-                        Assert.AreEqual(spillDirectQueryList[0].SpillID, spillList[0].SpillID);
+                        Assert.Equal(spillDirectQueryList[0].SpillID, spillList[0].SpillID);
                 }
             }
         }
         #endregion Tests Generated for GetSpillList() Skip Take 2 Desc
 
         #region Tests Generated for GetSpillList() Skip Take Desc Where
-        [TestMethod]
+        [Fact]
         public void GetSpillList_Skip_Take_Desc_Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -530,14 +530,14 @@ namespace CSSPServices.Tests
                         List<Spill> spillList = new List<Spill>();
                         spillList = spillService.GetSpillList().ToList();
                         CheckSpillFields(spillList);
-                        Assert.AreEqual(spillDirectQueryList[0].SpillID, spillList[0].SpillID);
+                        Assert.Equal(spillDirectQueryList[0].SpillID, spillList[0].SpillID);
                 }
             }
         }
         #endregion Tests Generated for GetSpillList() Skip Take Desc Where
 
         #region Tests Generated for GetSpillList() Skip Take Desc 2 Where
-        [TestMethod]
+        [Fact]
         public void GetSpillList_Skip_Take_Desc_2Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -556,14 +556,14 @@ namespace CSSPServices.Tests
                         List<Spill> spillList = new List<Spill>();
                         spillList = spillService.GetSpillList().ToList();
                         CheckSpillFields(spillList);
-                        Assert.AreEqual(spillDirectQueryList[0].SpillID, spillList[0].SpillID);
+                        Assert.Equal(spillDirectQueryList[0].SpillID, spillList[0].SpillID);
                 }
             }
         }
         #endregion Tests Generated for GetSpillList() Skip Take Desc 2 Where
 
         #region Tests Generated for GetSpillList() 2 Where
-        [TestMethod]
+        [Fact]
         public void GetSpillList_2Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -582,7 +582,7 @@ namespace CSSPServices.Tests
                         List<Spill> spillList = new List<Spill>();
                         spillList = spillService.GetSpillList().ToList();
                         CheckSpillFields(spillList);
-                        Assert.AreEqual(spillDirectQueryList[0].SpillID, spillList[0].SpillID);
+                        Assert.Equal(spillDirectQueryList[0].SpillID, spillList[0].SpillID);
                 }
             }
         }
@@ -591,21 +591,21 @@ namespace CSSPServices.Tests
         #region Functions private
         private void CheckSpillFields(List<Spill> spillList)
         {
-            Assert.IsNotNull(spillList[0].SpillID);
-            Assert.IsNotNull(spillList[0].MunicipalityTVItemID);
+            Assert.NotNull(spillList[0].SpillID);
+            Assert.NotNull(spillList[0].MunicipalityTVItemID);
             if (spillList[0].InfrastructureTVItemID != null)
             {
-                Assert.IsNotNull(spillList[0].InfrastructureTVItemID);
+                Assert.NotNull(spillList[0].InfrastructureTVItemID);
             }
-            Assert.IsNotNull(spillList[0].StartDateTime_Local);
+            Assert.NotNull(spillList[0].StartDateTime_Local);
             if (spillList[0].EndDateTime_Local != null)
             {
-                Assert.IsNotNull(spillList[0].EndDateTime_Local);
+                Assert.NotNull(spillList[0].EndDateTime_Local);
             }
-            Assert.IsNotNull(spillList[0].AverageFlow_m3_day);
-            Assert.IsNotNull(spillList[0].LastUpdateDate_UTC);
-            Assert.IsNotNull(spillList[0].LastUpdateContactTVItemID);
-            Assert.IsNotNull(spillList[0].HasErrors);
+            Assert.NotNull(spillList[0].AverageFlow_m3_day);
+            Assert.NotNull(spillList[0].LastUpdateDate_UTC);
+            Assert.NotNull(spillList[0].LastUpdateContactTVItemID);
+            Assert.NotNull(spillList[0].HasErrors);
         }
         private Spill GetFilledRandomSpill(string OmitPropName)
         {

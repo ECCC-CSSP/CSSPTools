@@ -6,7 +6,7 @@
  */ 
 using System;
 using System.Text;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using System.Linq;
 using System.Globalization;
 using System.Transactions;
@@ -19,7 +19,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace CSSPModels.Tests
 {
-    [TestClass]
+
     public partial class LabSheetTubeMPNDetailTest
     {
         #region Variables
@@ -37,7 +37,7 @@ namespace CSSPModels.Tests
         #endregion Constructors
 
         #region Tests Functions public
-        [TestMethod]
+        [Fact]
         public void LabSheetTubeMPNDetail_Properties_Test()
         {
             List<string> propNameList = new List<string>() { "LabSheetTubeMPNDetailID", "LabSheetDetailID", "Ordinal", "MWQMSiteTVItemID", "SampleDateTime", "MPN", "Tube10", "Tube1_0", "Tube0_1", "Salinity", "Temperature", "ProcessedBy", "SampleType", "SiteComment", "LastUpdateDate_UTC", "LastUpdateContactTVItemID",  }.OrderBy(c => c).ToList();
@@ -50,12 +50,12 @@ namespace CSSPModels.Tests
                     && propertyInfo.Name != "ValidationResults"
                     && !propertyInfo.CustomAttributes.Where(c => c.AttributeType.Name.Contains("NotMappedAttribute")).Any())
                 {
-                    Assert.AreEqual(propNameList[index], propertyInfo.Name);
+                    Assert.Equal(propNameList[index], propertyInfo.Name);
                     index += 1;
                 }
             }
 
-            Assert.AreEqual(propNameList.Count, index);
+            Assert.Equal(propNameList.Count, index);
 
             index = 0;
             foreach (PropertyInfo propertyInfo in typeof(LabSheetTubeMPNDetail).GetProperties().Where(c => c.Name != "ValidationResults").OrderBy(c => c.Name).ToList())
@@ -64,16 +64,16 @@ namespace CSSPModels.Tests
                 {
                     if (customAttributeData.AttributeType.Name == "NotMappedAttribute")
                     {
-                        Assert.AreEqual(propertyInfo.Name, propNameNotMappedList[index]);
+                        Assert.Equal(propertyInfo.Name, propNameNotMappedList[index]);
                         index += 1;
                     }
                 }
             }
 
-            Assert.AreEqual(propNameNotMappedList.Count, index);
+            Assert.Equal(propNameNotMappedList.Count, index);
 
         }
-        [TestMethod]
+        [Fact]
         public void LabSheetTubeMPNDetail_Navigation_Test()
         {
             List<string> foreignNameList = new List<string>() {  }.OrderBy(c => c).ToList();
@@ -84,88 +84,88 @@ namespace CSSPModels.Tests
             {
                 if (propertyInfo.GetGetMethod().IsVirtual && !propertyInfo.GetGetMethod().ReturnType.Name.StartsWith("ICollection"))
                 {
-                    Assert.IsTrue(foreignNameList.Contains(propertyInfo.Name));
+                    Assert.True(foreignNameList.Contains(propertyInfo.Name));
                     index += 1;
                 }
             }
 
-            Assert.AreEqual(foreignNameList.Count, index);
+            Assert.Equal(foreignNameList.Count, index);
 
             index = 0;
             foreach (PropertyInfo propertyInfo in typeof(LabSheetTubeMPNDetail).GetProperties().Where(c => c.Name != "ValidationResults").OrderBy(c => c.Name).ToList())
             {
                 if (propertyInfo.GetGetMethod().ReturnType.Name.StartsWith("ICollection"))
                 {
-                    Assert.IsTrue(foreignNameCollectionList.Contains(propertyInfo.Name));
+                    Assert.True(foreignNameCollectionList.Contains(propertyInfo.Name));
                     index += 1;
                 }
             }
 
-            Assert.AreEqual(foreignNameCollectionList.Count, index);
+            Assert.Equal(foreignNameCollectionList.Count, index);
 
         }
-        [TestMethod]
+        [Fact]
         public void LabSheetTubeMPNDetail_Has_ValidationResults_Test()
         {
-             Assert.IsTrue(typeof(LabSheetTubeMPNDetail).GetProperties().Where(c => c.Name == "ValidationResults").Any());
+             Assert.True(typeof(LabSheetTubeMPNDetail).GetProperties().Where(c => c.Name == "ValidationResults").Any());
         }
-        [TestMethod]
+        [Fact]
         public void LabSheetTubeMPNDetail_Every_Property_Has_Get_Set_Test()
         {
                int val1 = 45;
                labSheetTubeMPNDetail.LabSheetTubeMPNDetailID = val1;
-               Assert.AreEqual(val1, labSheetTubeMPNDetail.LabSheetTubeMPNDetailID);
+               Assert.Equal(val1, labSheetTubeMPNDetail.LabSheetTubeMPNDetailID);
                int val2 = 45;
                labSheetTubeMPNDetail.LabSheetDetailID = val2;
-               Assert.AreEqual(val2, labSheetTubeMPNDetail.LabSheetDetailID);
+               Assert.Equal(val2, labSheetTubeMPNDetail.LabSheetDetailID);
                int val3 = 45;
                labSheetTubeMPNDetail.Ordinal = val3;
-               Assert.AreEqual(val3, labSheetTubeMPNDetail.Ordinal);
+               Assert.Equal(val3, labSheetTubeMPNDetail.Ordinal);
                int val4 = 45;
                labSheetTubeMPNDetail.MWQMSiteTVItemID = val4;
-               Assert.AreEqual(val4, labSheetTubeMPNDetail.MWQMSiteTVItemID);
+               Assert.Equal(val4, labSheetTubeMPNDetail.MWQMSiteTVItemID);
                DateTime val5 = new DateTime(2010, 3, 4);
                labSheetTubeMPNDetail.SampleDateTime = val5;
-               Assert.AreEqual(val5, labSheetTubeMPNDetail.SampleDateTime);
+               Assert.Equal(val5, labSheetTubeMPNDetail.SampleDateTime);
                int val6 = 45;
                labSheetTubeMPNDetail.MPN = val6;
-               Assert.AreEqual(val6, labSheetTubeMPNDetail.MPN);
+               Assert.Equal(val6, labSheetTubeMPNDetail.MPN);
                int val7 = 45;
                labSheetTubeMPNDetail.Tube10 = val7;
-               Assert.AreEqual(val7, labSheetTubeMPNDetail.Tube10);
+               Assert.Equal(val7, labSheetTubeMPNDetail.Tube10);
                int val8 = 45;
                labSheetTubeMPNDetail.Tube1_0 = val8;
-               Assert.AreEqual(val8, labSheetTubeMPNDetail.Tube1_0);
+               Assert.Equal(val8, labSheetTubeMPNDetail.Tube1_0);
                int val9 = 45;
                labSheetTubeMPNDetail.Tube0_1 = val9;
-               Assert.AreEqual(val9, labSheetTubeMPNDetail.Tube0_1);
+               Assert.Equal(val9, labSheetTubeMPNDetail.Tube0_1);
                double val10 = 87.9D;
                labSheetTubeMPNDetail.Salinity = val10;
-               Assert.AreEqual(val10, labSheetTubeMPNDetail.Salinity);
+               Assert.Equal(val10, labSheetTubeMPNDetail.Salinity);
                double val11 = 87.9D;
                labSheetTubeMPNDetail.Temperature = val11;
-               Assert.AreEqual(val11, labSheetTubeMPNDetail.Temperature);
+               Assert.Equal(val11, labSheetTubeMPNDetail.Temperature);
                string val12 = "Some text";
                labSheetTubeMPNDetail.ProcessedBy = val12;
-               Assert.AreEqual(val12, labSheetTubeMPNDetail.ProcessedBy);
+               Assert.Equal(val12, labSheetTubeMPNDetail.ProcessedBy);
                SampleTypeEnum val13 = (SampleTypeEnum)3;
                labSheetTubeMPNDetail.SampleType = val13;
-               Assert.AreEqual(val13, labSheetTubeMPNDetail.SampleType);
+               Assert.Equal(val13, labSheetTubeMPNDetail.SampleType);
                string val14 = "Some text";
                labSheetTubeMPNDetail.SiteComment = val14;
-               Assert.AreEqual(val14, labSheetTubeMPNDetail.SiteComment);
+               Assert.Equal(val14, labSheetTubeMPNDetail.SiteComment);
                DateTime val15 = new DateTime(2010, 3, 4);
                labSheetTubeMPNDetail.LastUpdateDate_UTC = val15;
-               Assert.AreEqual(val15, labSheetTubeMPNDetail.LastUpdateDate_UTC);
+               Assert.Equal(val15, labSheetTubeMPNDetail.LastUpdateDate_UTC);
                int val16 = 45;
                labSheetTubeMPNDetail.LastUpdateContactTVItemID = val16;
-               Assert.AreEqual(val16, labSheetTubeMPNDetail.LastUpdateContactTVItemID);
+               Assert.Equal(val16, labSheetTubeMPNDetail.LastUpdateContactTVItemID);
                bool val17 = true;
                labSheetTubeMPNDetail.HasErrors = val17;
-               Assert.AreEqual(val17, labSheetTubeMPNDetail.HasErrors);
+               Assert.Equal(val17, labSheetTubeMPNDetail.HasErrors);
                IEnumerable<ValidationResult> val54 = new List<ValidationResult>() { new ValidationResult("First CSSPError Message") }.AsEnumerable();
                labSheetTubeMPNDetail.ValidationResults = val54;
-               Assert.AreEqual(val54, labSheetTubeMPNDetail.ValidationResults);
+               Assert.Equal(val54, labSheetTubeMPNDetail.ValidationResults);
         }
         #endregion Tests Functions public
     }

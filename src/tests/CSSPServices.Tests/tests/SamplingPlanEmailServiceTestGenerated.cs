@@ -5,7 +5,7 @@
  */ 
 
 using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using System.Linq;
 using System.Collections.Generic;
 using CSSPModels;
@@ -21,7 +21,7 @@ using CSSPEnums.Resources;
 
 namespace CSSPServices.Tests
 {
-    [TestClass]
+
     public partial class SamplingPlanEmailServiceTest : TestHelper
     {
         #region Variables
@@ -39,7 +39,7 @@ namespace CSSPServices.Tests
         #endregion Constructors
 
         #region Tests Generated CRUD
-        [TestMethod]
+        [Fact]
         public void SamplingPlanEmail_CRUD_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -66,26 +66,26 @@ namespace CSSPServices.Tests
 
                     count = samplingPlanEmailService.GetSamplingPlanEmailList().Count();
 
-                    Assert.AreEqual(count, (from c in dbTestDB.SamplingPlanEmails select c).Count());
+                    Assert.Equal(count, (from c in dbTestDB.SamplingPlanEmails select c).Count());
 
                     samplingPlanEmailService.Add(samplingPlanEmail);
                     if (samplingPlanEmail.HasErrors)
                     {
-                        Assert.AreEqual("", samplingPlanEmail.ValidationResults.FirstOrDefault().ErrorMessage);
+                        Assert.Equal("", samplingPlanEmail.ValidationResults.FirstOrDefault().ErrorMessage);
                     }
-                    Assert.AreEqual(true, samplingPlanEmailService.GetSamplingPlanEmailList().Where(c => c == samplingPlanEmail).Any());
+                    Assert.True(samplingPlanEmailService.GetSamplingPlanEmailList().Where(c => c == samplingPlanEmail).Any());
                     samplingPlanEmailService.Update(samplingPlanEmail);
                     if (samplingPlanEmail.HasErrors)
                     {
-                        Assert.AreEqual("", samplingPlanEmail.ValidationResults.FirstOrDefault().ErrorMessage);
+                        Assert.Equal("", samplingPlanEmail.ValidationResults.FirstOrDefault().ErrorMessage);
                     }
-                    Assert.AreEqual(count + 1, samplingPlanEmailService.GetSamplingPlanEmailList().Count());
+                    Assert.Equal(count + 1, samplingPlanEmailService.GetSamplingPlanEmailList().Count());
                     samplingPlanEmailService.Delete(samplingPlanEmail);
                     if (samplingPlanEmail.HasErrors)
                     {
-                        Assert.AreEqual("", samplingPlanEmail.ValidationResults.FirstOrDefault().ErrorMessage);
+                        Assert.Equal("", samplingPlanEmail.ValidationResults.FirstOrDefault().ErrorMessage);
                     }
-                    Assert.AreEqual(count, samplingPlanEmailService.GetSamplingPlanEmailList().Count());
+                    Assert.Equal(count, samplingPlanEmailService.GetSamplingPlanEmailList().Count());
 
                 }
             }
@@ -93,7 +93,7 @@ namespace CSSPServices.Tests
         #endregion Tests Generated CRUD
 
         #region Tests Generated Properties
-        [TestMethod]
+        [Fact]
         public void SamplingPlanEmail_Properties_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -131,13 +131,13 @@ namespace CSSPServices.Tests
                     samplingPlanEmail = GetFilledRandomSamplingPlanEmail("");
                     samplingPlanEmail.SamplingPlanEmailID = 0;
                     samplingPlanEmailService.Update(samplingPlanEmail);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsRequired, "SamplingPlanEmailID"), samplingPlanEmail.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsRequired, "SamplingPlanEmailID"), samplingPlanEmail.ValidationResults.FirstOrDefault().ErrorMessage);
 
                     samplingPlanEmail = null;
                     samplingPlanEmail = GetFilledRandomSamplingPlanEmail("");
                     samplingPlanEmail.SamplingPlanEmailID = 10000000;
                     samplingPlanEmailService.Update(samplingPlanEmail);
-                    Assert.AreEqual(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "SamplingPlanEmail", "SamplingPlanEmailID", samplingPlanEmail.SamplingPlanEmailID.ToString()), samplingPlanEmail.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "SamplingPlanEmail", "SamplingPlanEmailID", samplingPlanEmail.SamplingPlanEmailID.ToString()), samplingPlanEmail.ValidationResults.FirstOrDefault().ErrorMessage);
 
 
                     // -----------------------------------
@@ -150,7 +150,7 @@ namespace CSSPServices.Tests
                     samplingPlanEmail = GetFilledRandomSamplingPlanEmail("");
                     samplingPlanEmail.SamplingPlanID = 0;
                     samplingPlanEmailService.Add(samplingPlanEmail);
-                    Assert.AreEqual(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "SamplingPlan", "SamplingPlanID", samplingPlanEmail.SamplingPlanID.ToString()), samplingPlanEmail.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "SamplingPlan", "SamplingPlanID", samplingPlanEmail.SamplingPlanID.ToString()), samplingPlanEmail.ValidationResults.FirstOrDefault().ErrorMessage);
 
 
                     // -----------------------------------
@@ -162,18 +162,18 @@ namespace CSSPServices.Tests
 
                     samplingPlanEmail = null;
                     samplingPlanEmail = GetFilledRandomSamplingPlanEmail("Email");
-                    Assert.AreEqual(false, samplingPlanEmailService.Add(samplingPlanEmail));
-                    Assert.AreEqual(1, samplingPlanEmail.ValidationResults.Count());
-                    Assert.IsTrue(samplingPlanEmail.ValidationResults.Where(c => c.ErrorMessage == string.Format(CSSPServicesRes._IsRequired, "Email")).Any());
-                    Assert.AreEqual(null, samplingPlanEmail.Email);
-                    Assert.AreEqual(count, samplingPlanEmailService.GetSamplingPlanEmailList().Count());
+                    Assert.False(samplingPlanEmailService.Add(samplingPlanEmail));
+                    Assert.Equal(1, samplingPlanEmail.ValidationResults.Count());
+                    Assert.True(samplingPlanEmail.ValidationResults.Where(c => c.ErrorMessage == string.Format(CSSPServicesRes._IsRequired, "Email")).Any());
+                    Assert.Null(samplingPlanEmail.Email);
+                    Assert.Equal(count, samplingPlanEmailService.GetSamplingPlanEmailList().Count());
 
                     samplingPlanEmail = null;
                     samplingPlanEmail = GetFilledRandomSamplingPlanEmail("");
                     samplingPlanEmail.Email = GetRandomString("", 151);
-                    Assert.AreEqual(false, samplingPlanEmailService.Add(samplingPlanEmail));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._MaxLengthIs_, "Email", "150"), samplingPlanEmail.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, samplingPlanEmailService.GetSamplingPlanEmailList().Count());
+                    Assert.False(samplingPlanEmailService.Add(samplingPlanEmail));
+                    Assert.Equal(string.Format(CSSPServicesRes._MaxLengthIs_, "Email", "150"), samplingPlanEmail.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, samplingPlanEmailService.GetSamplingPlanEmailList().Count());
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -215,12 +215,12 @@ namespace CSSPServices.Tests
                     samplingPlanEmail = GetFilledRandomSamplingPlanEmail("");
                     samplingPlanEmail.LastUpdateDate_UTC = new DateTime();
                     samplingPlanEmailService.Add(samplingPlanEmail);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsRequired, "LastUpdateDate_UTC"), samplingPlanEmail.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsRequired, "LastUpdateDate_UTC"), samplingPlanEmail.ValidationResults.FirstOrDefault().ErrorMessage);
                     samplingPlanEmail = null;
                     samplingPlanEmail = GetFilledRandomSamplingPlanEmail("");
                     samplingPlanEmail.LastUpdateDate_UTC = new DateTime(1979, 1, 1);
                     samplingPlanEmailService.Add(samplingPlanEmail);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._YearShouldBeBiggerThan_, "LastUpdateDate_UTC", "1980"), samplingPlanEmail.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._YearShouldBeBiggerThan_, "LastUpdateDate_UTC", "1980"), samplingPlanEmail.ValidationResults.FirstOrDefault().ErrorMessage);
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -232,13 +232,13 @@ namespace CSSPServices.Tests
                     samplingPlanEmail = GetFilledRandomSamplingPlanEmail("");
                     samplingPlanEmail.LastUpdateContactTVItemID = 0;
                     samplingPlanEmailService.Add(samplingPlanEmail);
-                    Assert.AreEqual(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "TVItem", "LastUpdateContactTVItemID", samplingPlanEmail.LastUpdateContactTVItemID.ToString()), samplingPlanEmail.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "TVItem", "LastUpdateContactTVItemID", samplingPlanEmail.LastUpdateContactTVItemID.ToString()), samplingPlanEmail.ValidationResults.FirstOrDefault().ErrorMessage);
 
                     samplingPlanEmail = null;
                     samplingPlanEmail = GetFilledRandomSamplingPlanEmail("");
                     samplingPlanEmail.LastUpdateContactTVItemID = 1;
                     samplingPlanEmailService.Add(samplingPlanEmail);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsNotOfType_, "LastUpdateContactTVItemID", "Contact"), samplingPlanEmail.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsNotOfType_, "LastUpdateContactTVItemID", "Contact"), samplingPlanEmail.ValidationResults.FirstOrDefault().ErrorMessage);
 
 
                     // -----------------------------------
@@ -262,7 +262,7 @@ namespace CSSPServices.Tests
         #endregion Tests Generated Properties
 
         #region Tests Generated for GetSamplingPlanEmailWithSamplingPlanEmailID(samplingPlanEmail.SamplingPlanEmailID)
-        [TestMethod]
+        [Fact]
         public void GetSamplingPlanEmailWithSamplingPlanEmailID__samplingPlanEmail_SamplingPlanEmailID__Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -273,7 +273,7 @@ namespace CSSPServices.Tests
                 {
                     SamplingPlanEmailService samplingPlanEmailService = new SamplingPlanEmailService(new Query() { Lang = culture.TwoLetterISOLanguageName }, dbTestDB, ContactID);
                     SamplingPlanEmail samplingPlanEmail = (from c in dbTestDB.SamplingPlanEmails select c).FirstOrDefault();
-                    Assert.IsNotNull(samplingPlanEmail);
+                    Assert.NotNull(samplingPlanEmail);
 
                 }
             }
@@ -281,7 +281,7 @@ namespace CSSPServices.Tests
         #endregion Tests Generated for GetSamplingPlanEmailWithSamplingPlanEmailID(samplingPlanEmail.SamplingPlanEmailID)
 
         #region Tests Generated for GetSamplingPlanEmailList()
-        [TestMethod]
+        [Fact]
         public void GetSamplingPlanEmailList_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -292,7 +292,7 @@ namespace CSSPServices.Tests
                 {
                     SamplingPlanEmailService samplingPlanEmailService = new SamplingPlanEmailService(new Query() { Lang = culture.TwoLetterISOLanguageName }, dbTestDB, ContactID);
                     SamplingPlanEmail samplingPlanEmail = (from c in dbTestDB.SamplingPlanEmails select c).FirstOrDefault();
-                    Assert.IsNotNull(samplingPlanEmail);
+                    Assert.NotNull(samplingPlanEmail);
 
                     List<SamplingPlanEmail> samplingPlanEmailDirectQueryList = new List<SamplingPlanEmail>();
                     samplingPlanEmailDirectQueryList = (from c in dbTestDB.SamplingPlanEmails select c).Take(200).ToList();
@@ -303,7 +303,7 @@ namespace CSSPServices.Tests
         #endregion Tests Generated for GetSamplingPlanEmailList()
 
         #region Tests Generated for GetSamplingPlanEmailList() Skip Take
-        [TestMethod]
+        [Fact]
         public void GetSamplingPlanEmailList_Skip_Take_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -322,14 +322,14 @@ namespace CSSPServices.Tests
                         List<SamplingPlanEmail> samplingPlanEmailList = new List<SamplingPlanEmail>();
                         samplingPlanEmailList = samplingPlanEmailService.GetSamplingPlanEmailList().ToList();
                         CheckSamplingPlanEmailFields(samplingPlanEmailList);
-                        Assert.AreEqual(samplingPlanEmailDirectQueryList[0].SamplingPlanEmailID, samplingPlanEmailList[0].SamplingPlanEmailID);
+                        Assert.Equal(samplingPlanEmailDirectQueryList[0].SamplingPlanEmailID, samplingPlanEmailList[0].SamplingPlanEmailID);
                 }
             }
         }
         #endregion Tests Generated for GetSamplingPlanEmailList() Skip Take
 
         #region Tests Generated for GetSamplingPlanEmailList() Skip Take Asc
-        [TestMethod]
+        [Fact]
         public void GetSamplingPlanEmailList_Skip_Take_Asc_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -348,14 +348,14 @@ namespace CSSPServices.Tests
                         List<SamplingPlanEmail> samplingPlanEmailList = new List<SamplingPlanEmail>();
                         samplingPlanEmailList = samplingPlanEmailService.GetSamplingPlanEmailList().ToList();
                         CheckSamplingPlanEmailFields(samplingPlanEmailList);
-                        Assert.AreEqual(samplingPlanEmailDirectQueryList[0].SamplingPlanEmailID, samplingPlanEmailList[0].SamplingPlanEmailID);
+                        Assert.Equal(samplingPlanEmailDirectQueryList[0].SamplingPlanEmailID, samplingPlanEmailList[0].SamplingPlanEmailID);
                 }
             }
         }
         #endregion Tests Generated for GetSamplingPlanEmailList() Skip Take Asc
 
         #region Tests Generated for GetSamplingPlanEmailList() Skip Take 2 Asc
-        [TestMethod]
+        [Fact]
         public void GetSamplingPlanEmailList_Skip_Take_2Asc_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -374,14 +374,14 @@ namespace CSSPServices.Tests
                         List<SamplingPlanEmail> samplingPlanEmailList = new List<SamplingPlanEmail>();
                         samplingPlanEmailList = samplingPlanEmailService.GetSamplingPlanEmailList().ToList();
                         CheckSamplingPlanEmailFields(samplingPlanEmailList);
-                        Assert.AreEqual(samplingPlanEmailDirectQueryList[0].SamplingPlanEmailID, samplingPlanEmailList[0].SamplingPlanEmailID);
+                        Assert.Equal(samplingPlanEmailDirectQueryList[0].SamplingPlanEmailID, samplingPlanEmailList[0].SamplingPlanEmailID);
                 }
             }
         }
         #endregion Tests Generated for GetSamplingPlanEmailList() Skip Take 2 Asc
 
         #region Tests Generated for GetSamplingPlanEmailList() Skip Take Asc Where
-        [TestMethod]
+        [Fact]
         public void GetSamplingPlanEmailList_Skip_Take_Asc_Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -400,14 +400,14 @@ namespace CSSPServices.Tests
                         List<SamplingPlanEmail> samplingPlanEmailList = new List<SamplingPlanEmail>();
                         samplingPlanEmailList = samplingPlanEmailService.GetSamplingPlanEmailList().ToList();
                         CheckSamplingPlanEmailFields(samplingPlanEmailList);
-                        Assert.AreEqual(samplingPlanEmailDirectQueryList[0].SamplingPlanEmailID, samplingPlanEmailList[0].SamplingPlanEmailID);
+                        Assert.Equal(samplingPlanEmailDirectQueryList[0].SamplingPlanEmailID, samplingPlanEmailList[0].SamplingPlanEmailID);
                 }
             }
         }
         #endregion Tests Generated for GetSamplingPlanEmailList() Skip Take Asc Where
 
         #region Tests Generated for GetSamplingPlanEmailList() Skip Take Asc 2 Where
-        [TestMethod]
+        [Fact]
         public void GetSamplingPlanEmailList_Skip_Take_Asc_2Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -426,14 +426,14 @@ namespace CSSPServices.Tests
                         List<SamplingPlanEmail> samplingPlanEmailList = new List<SamplingPlanEmail>();
                         samplingPlanEmailList = samplingPlanEmailService.GetSamplingPlanEmailList().ToList();
                         CheckSamplingPlanEmailFields(samplingPlanEmailList);
-                        Assert.AreEqual(samplingPlanEmailDirectQueryList[0].SamplingPlanEmailID, samplingPlanEmailList[0].SamplingPlanEmailID);
+                        Assert.Equal(samplingPlanEmailDirectQueryList[0].SamplingPlanEmailID, samplingPlanEmailList[0].SamplingPlanEmailID);
                 }
             }
         }
         #endregion Tests Generated for GetSamplingPlanEmailList() Skip Take Asc 2 Where
 
         #region Tests Generated for GetSamplingPlanEmailList() Skip Take Desc
-        [TestMethod]
+        [Fact]
         public void GetSamplingPlanEmailList_Skip_Take_Desc_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -452,14 +452,14 @@ namespace CSSPServices.Tests
                         List<SamplingPlanEmail> samplingPlanEmailList = new List<SamplingPlanEmail>();
                         samplingPlanEmailList = samplingPlanEmailService.GetSamplingPlanEmailList().ToList();
                         CheckSamplingPlanEmailFields(samplingPlanEmailList);
-                        Assert.AreEqual(samplingPlanEmailDirectQueryList[0].SamplingPlanEmailID, samplingPlanEmailList[0].SamplingPlanEmailID);
+                        Assert.Equal(samplingPlanEmailDirectQueryList[0].SamplingPlanEmailID, samplingPlanEmailList[0].SamplingPlanEmailID);
                 }
             }
         }
         #endregion Tests Generated for GetSamplingPlanEmailList() Skip Take Desc
 
         #region Tests Generated for GetSamplingPlanEmailList() Skip Take 2 Desc
-        [TestMethod]
+        [Fact]
         public void GetSamplingPlanEmailList_Skip_Take_2Desc_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -478,14 +478,14 @@ namespace CSSPServices.Tests
                         List<SamplingPlanEmail> samplingPlanEmailList = new List<SamplingPlanEmail>();
                         samplingPlanEmailList = samplingPlanEmailService.GetSamplingPlanEmailList().ToList();
                         CheckSamplingPlanEmailFields(samplingPlanEmailList);
-                        Assert.AreEqual(samplingPlanEmailDirectQueryList[0].SamplingPlanEmailID, samplingPlanEmailList[0].SamplingPlanEmailID);
+                        Assert.Equal(samplingPlanEmailDirectQueryList[0].SamplingPlanEmailID, samplingPlanEmailList[0].SamplingPlanEmailID);
                 }
             }
         }
         #endregion Tests Generated for GetSamplingPlanEmailList() Skip Take 2 Desc
 
         #region Tests Generated for GetSamplingPlanEmailList() Skip Take Desc Where
-        [TestMethod]
+        [Fact]
         public void GetSamplingPlanEmailList_Skip_Take_Desc_Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -504,14 +504,14 @@ namespace CSSPServices.Tests
                         List<SamplingPlanEmail> samplingPlanEmailList = new List<SamplingPlanEmail>();
                         samplingPlanEmailList = samplingPlanEmailService.GetSamplingPlanEmailList().ToList();
                         CheckSamplingPlanEmailFields(samplingPlanEmailList);
-                        Assert.AreEqual(samplingPlanEmailDirectQueryList[0].SamplingPlanEmailID, samplingPlanEmailList[0].SamplingPlanEmailID);
+                        Assert.Equal(samplingPlanEmailDirectQueryList[0].SamplingPlanEmailID, samplingPlanEmailList[0].SamplingPlanEmailID);
                 }
             }
         }
         #endregion Tests Generated for GetSamplingPlanEmailList() Skip Take Desc Where
 
         #region Tests Generated for GetSamplingPlanEmailList() Skip Take Desc 2 Where
-        [TestMethod]
+        [Fact]
         public void GetSamplingPlanEmailList_Skip_Take_Desc_2Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -530,14 +530,14 @@ namespace CSSPServices.Tests
                         List<SamplingPlanEmail> samplingPlanEmailList = new List<SamplingPlanEmail>();
                         samplingPlanEmailList = samplingPlanEmailService.GetSamplingPlanEmailList().ToList();
                         CheckSamplingPlanEmailFields(samplingPlanEmailList);
-                        Assert.AreEqual(samplingPlanEmailDirectQueryList[0].SamplingPlanEmailID, samplingPlanEmailList[0].SamplingPlanEmailID);
+                        Assert.Equal(samplingPlanEmailDirectQueryList[0].SamplingPlanEmailID, samplingPlanEmailList[0].SamplingPlanEmailID);
                 }
             }
         }
         #endregion Tests Generated for GetSamplingPlanEmailList() Skip Take Desc 2 Where
 
         #region Tests Generated for GetSamplingPlanEmailList() 2 Where
-        [TestMethod]
+        [Fact]
         public void GetSamplingPlanEmailList_2Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -556,7 +556,7 @@ namespace CSSPServices.Tests
                         List<SamplingPlanEmail> samplingPlanEmailList = new List<SamplingPlanEmail>();
                         samplingPlanEmailList = samplingPlanEmailService.GetSamplingPlanEmailList().ToList();
                         CheckSamplingPlanEmailFields(samplingPlanEmailList);
-                        Assert.AreEqual(samplingPlanEmailDirectQueryList[0].SamplingPlanEmailID, samplingPlanEmailList[0].SamplingPlanEmailID);
+                        Assert.Equal(samplingPlanEmailDirectQueryList[0].SamplingPlanEmailID, samplingPlanEmailList[0].SamplingPlanEmailID);
                 }
             }
         }
@@ -565,17 +565,17 @@ namespace CSSPServices.Tests
         #region Functions private
         private void CheckSamplingPlanEmailFields(List<SamplingPlanEmail> samplingPlanEmailList)
         {
-            Assert.IsNotNull(samplingPlanEmailList[0].SamplingPlanEmailID);
-            Assert.IsNotNull(samplingPlanEmailList[0].SamplingPlanID);
-            Assert.IsFalse(string.IsNullOrWhiteSpace(samplingPlanEmailList[0].Email));
-            Assert.IsNotNull(samplingPlanEmailList[0].IsContractor);
-            Assert.IsNotNull(samplingPlanEmailList[0].LabSheetHasValueOver500);
-            Assert.IsNotNull(samplingPlanEmailList[0].LabSheetReceived);
-            Assert.IsNotNull(samplingPlanEmailList[0].LabSheetAccepted);
-            Assert.IsNotNull(samplingPlanEmailList[0].LabSheetRejected);
-            Assert.IsNotNull(samplingPlanEmailList[0].LastUpdateDate_UTC);
-            Assert.IsNotNull(samplingPlanEmailList[0].LastUpdateContactTVItemID);
-            Assert.IsNotNull(samplingPlanEmailList[0].HasErrors);
+            Assert.NotNull(samplingPlanEmailList[0].SamplingPlanEmailID);
+            Assert.NotNull(samplingPlanEmailList[0].SamplingPlanID);
+            Assert.False(string.IsNullOrWhiteSpace(samplingPlanEmailList[0].Email));
+            Assert.NotNull(samplingPlanEmailList[0].IsContractor);
+            Assert.NotNull(samplingPlanEmailList[0].LabSheetHasValueOver500);
+            Assert.NotNull(samplingPlanEmailList[0].LabSheetReceived);
+            Assert.NotNull(samplingPlanEmailList[0].LabSheetAccepted);
+            Assert.NotNull(samplingPlanEmailList[0].LabSheetRejected);
+            Assert.NotNull(samplingPlanEmailList[0].LastUpdateDate_UTC);
+            Assert.NotNull(samplingPlanEmailList[0].LastUpdateContactTVItemID);
+            Assert.NotNull(samplingPlanEmailList[0].HasErrors);
         }
         private SamplingPlanEmail GetFilledRandomSamplingPlanEmail(string OmitPropName)
         {

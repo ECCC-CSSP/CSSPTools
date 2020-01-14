@@ -5,7 +5,7 @@
  */ 
 
 using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using System.Linq;
 using System.Collections.Generic;
 using CSSPModels;
@@ -21,7 +21,7 @@ using CSSPEnums.Resources;
 
 namespace CSSPServices.Tests
 {
-    [TestClass]
+
     public partial class ReportTypeServiceTest : TestHelper
     {
         #region Variables
@@ -39,7 +39,7 @@ namespace CSSPServices.Tests
         #endregion Constructors
 
         #region Tests Generated CRUD
-        [TestMethod]
+        [Fact]
         public void ReportType_CRUD_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -66,26 +66,26 @@ namespace CSSPServices.Tests
 
                     count = reportTypeService.GetReportTypeList().Count();
 
-                    Assert.AreEqual(count, (from c in dbTestDB.ReportTypes select c).Count());
+                    Assert.Equal(count, (from c in dbTestDB.ReportTypes select c).Count());
 
                     reportTypeService.Add(reportType);
                     if (reportType.HasErrors)
                     {
-                        Assert.AreEqual("", reportType.ValidationResults.FirstOrDefault().ErrorMessage);
+                        Assert.Equal("", reportType.ValidationResults.FirstOrDefault().ErrorMessage);
                     }
-                    Assert.AreEqual(true, reportTypeService.GetReportTypeList().Where(c => c == reportType).Any());
+                    Assert.True(reportTypeService.GetReportTypeList().Where(c => c == reportType).Any());
                     reportTypeService.Update(reportType);
                     if (reportType.HasErrors)
                     {
-                        Assert.AreEqual("", reportType.ValidationResults.FirstOrDefault().ErrorMessage);
+                        Assert.Equal("", reportType.ValidationResults.FirstOrDefault().ErrorMessage);
                     }
-                    Assert.AreEqual(count + 1, reportTypeService.GetReportTypeList().Count());
+                    Assert.Equal(count + 1, reportTypeService.GetReportTypeList().Count());
                     reportTypeService.Delete(reportType);
                     if (reportType.HasErrors)
                     {
-                        Assert.AreEqual("", reportType.ValidationResults.FirstOrDefault().ErrorMessage);
+                        Assert.Equal("", reportType.ValidationResults.FirstOrDefault().ErrorMessage);
                     }
-                    Assert.AreEqual(count, reportTypeService.GetReportTypeList().Count());
+                    Assert.Equal(count, reportTypeService.GetReportTypeList().Count());
 
                 }
             }
@@ -93,7 +93,7 @@ namespace CSSPServices.Tests
         #endregion Tests Generated CRUD
 
         #region Tests Generated Properties
-        [TestMethod]
+        [Fact]
         public void ReportType_Properties_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -131,13 +131,13 @@ namespace CSSPServices.Tests
                     reportType = GetFilledRandomReportType("");
                     reportType.ReportTypeID = 0;
                     reportTypeService.Update(reportType);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsRequired, "ReportTypeID"), reportType.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsRequired, "ReportTypeID"), reportType.ValidationResults.FirstOrDefault().ErrorMessage);
 
                     reportType = null;
                     reportType = GetFilledRandomReportType("");
                     reportType.ReportTypeID = 10000000;
                     reportTypeService.Update(reportType);
-                    Assert.AreEqual(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "ReportType", "ReportTypeID", reportType.ReportTypeID.ToString()), reportType.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "ReportType", "ReportTypeID", reportType.ReportTypeID.ToString()), reportType.ValidationResults.FirstOrDefault().ErrorMessage);
 
 
                     // -----------------------------------
@@ -150,7 +150,7 @@ namespace CSSPServices.Tests
                     reportType = GetFilledRandomReportType("");
                     reportType.TVType = (TVTypeEnum)1000000;
                     reportTypeService.Add(reportType);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsRequired, "TVType"), reportType.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsRequired, "TVType"), reportType.ValidationResults.FirstOrDefault().ErrorMessage);
 
 
                     // -----------------------------------
@@ -163,7 +163,7 @@ namespace CSSPServices.Tests
                     reportType = GetFilledRandomReportType("");
                     reportType.FileType = (FileTypeEnum)1000000;
                     reportTypeService.Add(reportType);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsRequired, "FileType"), reportType.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsRequired, "FileType"), reportType.ValidationResults.FirstOrDefault().ErrorMessage);
 
 
                     // -----------------------------------
@@ -174,18 +174,18 @@ namespace CSSPServices.Tests
 
                     reportType = null;
                     reportType = GetFilledRandomReportType("UniqueCode");
-                    Assert.AreEqual(false, reportTypeService.Add(reportType));
-                    Assert.AreEqual(1, reportType.ValidationResults.Count());
-                    Assert.IsTrue(reportType.ValidationResults.Where(c => c.ErrorMessage == string.Format(CSSPServicesRes._IsRequired, "UniqueCode")).Any());
-                    Assert.AreEqual(null, reportType.UniqueCode);
-                    Assert.AreEqual(count, reportTypeService.GetReportTypeList().Count());
+                    Assert.False(reportTypeService.Add(reportType));
+                    Assert.Equal(1, reportType.ValidationResults.Count());
+                    Assert.True(reportType.ValidationResults.Where(c => c.ErrorMessage == string.Format(CSSPServicesRes._IsRequired, "UniqueCode")).Any());
+                    Assert.Null(reportType.UniqueCode);
+                    Assert.Equal(count, reportTypeService.GetReportTypeList().Count());
 
                     reportType = null;
                     reportType = GetFilledRandomReportType("");
                     reportType.UniqueCode = GetRandomString("", 101);
-                    Assert.AreEqual(false, reportTypeService.Add(reportType));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._MaxLengthIs_, "UniqueCode", "100"), reportType.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, reportTypeService.GetReportTypeList().Count());
+                    Assert.False(reportTypeService.Add(reportType));
+                    Assert.Equal(string.Format(CSSPServicesRes._MaxLengthIs_, "UniqueCode", "100"), reportType.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, reportTypeService.GetReportTypeList().Count());
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -197,12 +197,12 @@ namespace CSSPServices.Tests
                     reportType = GetFilledRandomReportType("");
                     reportType.LastUpdateDate_UTC = new DateTime();
                     reportTypeService.Add(reportType);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsRequired, "LastUpdateDate_UTC"), reportType.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsRequired, "LastUpdateDate_UTC"), reportType.ValidationResults.FirstOrDefault().ErrorMessage);
                     reportType = null;
                     reportType = GetFilledRandomReportType("");
                     reportType.LastUpdateDate_UTC = new DateTime(1979, 1, 1);
                     reportTypeService.Add(reportType);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._YearShouldBeBiggerThan_, "LastUpdateDate_UTC", "1980"), reportType.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._YearShouldBeBiggerThan_, "LastUpdateDate_UTC", "1980"), reportType.ValidationResults.FirstOrDefault().ErrorMessage);
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -214,13 +214,13 @@ namespace CSSPServices.Tests
                     reportType = GetFilledRandomReportType("");
                     reportType.LastUpdateContactTVItemID = 0;
                     reportTypeService.Add(reportType);
-                    Assert.AreEqual(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "TVItem", "LastUpdateContactTVItemID", reportType.LastUpdateContactTVItemID.ToString()), reportType.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "TVItem", "LastUpdateContactTVItemID", reportType.LastUpdateContactTVItemID.ToString()), reportType.ValidationResults.FirstOrDefault().ErrorMessage);
 
                     reportType = null;
                     reportType = GetFilledRandomReportType("");
                     reportType.LastUpdateContactTVItemID = 1;
                     reportTypeService.Add(reportType);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsNotOfType_, "LastUpdateContactTVItemID", "Contact"), reportType.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsNotOfType_, "LastUpdateContactTVItemID", "Contact"), reportType.ValidationResults.FirstOrDefault().ErrorMessage);
 
 
                     // -----------------------------------
@@ -244,7 +244,7 @@ namespace CSSPServices.Tests
         #endregion Tests Generated Properties
 
         #region Tests Generated for GetReportTypeWithReportTypeID(reportType.ReportTypeID)
-        [TestMethod]
+        [Fact]
         public void GetReportTypeWithReportTypeID__reportType_ReportTypeID__Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -255,7 +255,7 @@ namespace CSSPServices.Tests
                 {
                     ReportTypeService reportTypeService = new ReportTypeService(new Query() { Lang = culture.TwoLetterISOLanguageName }, dbTestDB, ContactID);
                     ReportType reportType = (from c in dbTestDB.ReportTypes select c).FirstOrDefault();
-                    Assert.IsNotNull(reportType);
+                    Assert.NotNull(reportType);
 
                 }
             }
@@ -263,7 +263,7 @@ namespace CSSPServices.Tests
         #endregion Tests Generated for GetReportTypeWithReportTypeID(reportType.ReportTypeID)
 
         #region Tests Generated for GetReportTypeList()
-        [TestMethod]
+        [Fact]
         public void GetReportTypeList_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -274,7 +274,7 @@ namespace CSSPServices.Tests
                 {
                     ReportTypeService reportTypeService = new ReportTypeService(new Query() { Lang = culture.TwoLetterISOLanguageName }, dbTestDB, ContactID);
                     ReportType reportType = (from c in dbTestDB.ReportTypes select c).FirstOrDefault();
-                    Assert.IsNotNull(reportType);
+                    Assert.NotNull(reportType);
 
                     List<ReportType> reportTypeDirectQueryList = new List<ReportType>();
                     reportTypeDirectQueryList = (from c in dbTestDB.ReportTypes select c).Take(200).ToList();
@@ -285,7 +285,7 @@ namespace CSSPServices.Tests
         #endregion Tests Generated for GetReportTypeList()
 
         #region Tests Generated for GetReportTypeList() Skip Take
-        [TestMethod]
+        [Fact]
         public void GetReportTypeList_Skip_Take_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -304,14 +304,14 @@ namespace CSSPServices.Tests
                         List<ReportType> reportTypeList = new List<ReportType>();
                         reportTypeList = reportTypeService.GetReportTypeList().ToList();
                         CheckReportTypeFields(reportTypeList);
-                        Assert.AreEqual(reportTypeDirectQueryList[0].ReportTypeID, reportTypeList[0].ReportTypeID);
+                        Assert.Equal(reportTypeDirectQueryList[0].ReportTypeID, reportTypeList[0].ReportTypeID);
                 }
             }
         }
         #endregion Tests Generated for GetReportTypeList() Skip Take
 
         #region Tests Generated for GetReportTypeList() Skip Take Asc
-        [TestMethod]
+        [Fact]
         public void GetReportTypeList_Skip_Take_Asc_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -330,14 +330,14 @@ namespace CSSPServices.Tests
                         List<ReportType> reportTypeList = new List<ReportType>();
                         reportTypeList = reportTypeService.GetReportTypeList().ToList();
                         CheckReportTypeFields(reportTypeList);
-                        Assert.AreEqual(reportTypeDirectQueryList[0].ReportTypeID, reportTypeList[0].ReportTypeID);
+                        Assert.Equal(reportTypeDirectQueryList[0].ReportTypeID, reportTypeList[0].ReportTypeID);
                 }
             }
         }
         #endregion Tests Generated for GetReportTypeList() Skip Take Asc
 
         #region Tests Generated for GetReportTypeList() Skip Take 2 Asc
-        [TestMethod]
+        [Fact]
         public void GetReportTypeList_Skip_Take_2Asc_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -356,14 +356,14 @@ namespace CSSPServices.Tests
                         List<ReportType> reportTypeList = new List<ReportType>();
                         reportTypeList = reportTypeService.GetReportTypeList().ToList();
                         CheckReportTypeFields(reportTypeList);
-                        Assert.AreEqual(reportTypeDirectQueryList[0].ReportTypeID, reportTypeList[0].ReportTypeID);
+                        Assert.Equal(reportTypeDirectQueryList[0].ReportTypeID, reportTypeList[0].ReportTypeID);
                 }
             }
         }
         #endregion Tests Generated for GetReportTypeList() Skip Take 2 Asc
 
         #region Tests Generated for GetReportTypeList() Skip Take Asc Where
-        [TestMethod]
+        [Fact]
         public void GetReportTypeList_Skip_Take_Asc_Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -382,14 +382,14 @@ namespace CSSPServices.Tests
                         List<ReportType> reportTypeList = new List<ReportType>();
                         reportTypeList = reportTypeService.GetReportTypeList().ToList();
                         CheckReportTypeFields(reportTypeList);
-                        Assert.AreEqual(reportTypeDirectQueryList[0].ReportTypeID, reportTypeList[0].ReportTypeID);
+                        Assert.Equal(reportTypeDirectQueryList[0].ReportTypeID, reportTypeList[0].ReportTypeID);
                 }
             }
         }
         #endregion Tests Generated for GetReportTypeList() Skip Take Asc Where
 
         #region Tests Generated for GetReportTypeList() Skip Take Asc 2 Where
-        [TestMethod]
+        [Fact]
         public void GetReportTypeList_Skip_Take_Asc_2Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -408,14 +408,14 @@ namespace CSSPServices.Tests
                         List<ReportType> reportTypeList = new List<ReportType>();
                         reportTypeList = reportTypeService.GetReportTypeList().ToList();
                         CheckReportTypeFields(reportTypeList);
-                        Assert.AreEqual(reportTypeDirectQueryList[0].ReportTypeID, reportTypeList[0].ReportTypeID);
+                        Assert.Equal(reportTypeDirectQueryList[0].ReportTypeID, reportTypeList[0].ReportTypeID);
                 }
             }
         }
         #endregion Tests Generated for GetReportTypeList() Skip Take Asc 2 Where
 
         #region Tests Generated for GetReportTypeList() Skip Take Desc
-        [TestMethod]
+        [Fact]
         public void GetReportTypeList_Skip_Take_Desc_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -434,14 +434,14 @@ namespace CSSPServices.Tests
                         List<ReportType> reportTypeList = new List<ReportType>();
                         reportTypeList = reportTypeService.GetReportTypeList().ToList();
                         CheckReportTypeFields(reportTypeList);
-                        Assert.AreEqual(reportTypeDirectQueryList[0].ReportTypeID, reportTypeList[0].ReportTypeID);
+                        Assert.Equal(reportTypeDirectQueryList[0].ReportTypeID, reportTypeList[0].ReportTypeID);
                 }
             }
         }
         #endregion Tests Generated for GetReportTypeList() Skip Take Desc
 
         #region Tests Generated for GetReportTypeList() Skip Take 2 Desc
-        [TestMethod]
+        [Fact]
         public void GetReportTypeList_Skip_Take_2Desc_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -460,14 +460,14 @@ namespace CSSPServices.Tests
                         List<ReportType> reportTypeList = new List<ReportType>();
                         reportTypeList = reportTypeService.GetReportTypeList().ToList();
                         CheckReportTypeFields(reportTypeList);
-                        Assert.AreEqual(reportTypeDirectQueryList[0].ReportTypeID, reportTypeList[0].ReportTypeID);
+                        Assert.Equal(reportTypeDirectQueryList[0].ReportTypeID, reportTypeList[0].ReportTypeID);
                 }
             }
         }
         #endregion Tests Generated for GetReportTypeList() Skip Take 2 Desc
 
         #region Tests Generated for GetReportTypeList() Skip Take Desc Where
-        [TestMethod]
+        [Fact]
         public void GetReportTypeList_Skip_Take_Desc_Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -486,14 +486,14 @@ namespace CSSPServices.Tests
                         List<ReportType> reportTypeList = new List<ReportType>();
                         reportTypeList = reportTypeService.GetReportTypeList().ToList();
                         CheckReportTypeFields(reportTypeList);
-                        Assert.AreEqual(reportTypeDirectQueryList[0].ReportTypeID, reportTypeList[0].ReportTypeID);
+                        Assert.Equal(reportTypeDirectQueryList[0].ReportTypeID, reportTypeList[0].ReportTypeID);
                 }
             }
         }
         #endregion Tests Generated for GetReportTypeList() Skip Take Desc Where
 
         #region Tests Generated for GetReportTypeList() Skip Take Desc 2 Where
-        [TestMethod]
+        [Fact]
         public void GetReportTypeList_Skip_Take_Desc_2Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -512,14 +512,14 @@ namespace CSSPServices.Tests
                         List<ReportType> reportTypeList = new List<ReportType>();
                         reportTypeList = reportTypeService.GetReportTypeList().ToList();
                         CheckReportTypeFields(reportTypeList);
-                        Assert.AreEqual(reportTypeDirectQueryList[0].ReportTypeID, reportTypeList[0].ReportTypeID);
+                        Assert.Equal(reportTypeDirectQueryList[0].ReportTypeID, reportTypeList[0].ReportTypeID);
                 }
             }
         }
         #endregion Tests Generated for GetReportTypeList() Skip Take Desc 2 Where
 
         #region Tests Generated for GetReportTypeList() 2 Where
-        [TestMethod]
+        [Fact]
         public void GetReportTypeList_2Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -538,7 +538,7 @@ namespace CSSPServices.Tests
                         List<ReportType> reportTypeList = new List<ReportType>();
                         reportTypeList = reportTypeService.GetReportTypeList().ToList();
                         CheckReportTypeFields(reportTypeList);
-                        Assert.AreEqual(reportTypeDirectQueryList[0].ReportTypeID, reportTypeList[0].ReportTypeID);
+                        Assert.Equal(reportTypeDirectQueryList[0].ReportTypeID, reportTypeList[0].ReportTypeID);
                 }
             }
         }
@@ -547,13 +547,13 @@ namespace CSSPServices.Tests
         #region Functions private
         private void CheckReportTypeFields(List<ReportType> reportTypeList)
         {
-            Assert.IsNotNull(reportTypeList[0].ReportTypeID);
-            Assert.IsNotNull(reportTypeList[0].TVType);
-            Assert.IsNotNull(reportTypeList[0].FileType);
-            Assert.IsFalse(string.IsNullOrWhiteSpace(reportTypeList[0].UniqueCode));
-            Assert.IsNotNull(reportTypeList[0].LastUpdateDate_UTC);
-            Assert.IsNotNull(reportTypeList[0].LastUpdateContactTVItemID);
-            Assert.IsNotNull(reportTypeList[0].HasErrors);
+            Assert.NotNull(reportTypeList[0].ReportTypeID);
+            Assert.NotNull(reportTypeList[0].TVType);
+            Assert.NotNull(reportTypeList[0].FileType);
+            Assert.False(string.IsNullOrWhiteSpace(reportTypeList[0].UniqueCode));
+            Assert.NotNull(reportTypeList[0].LastUpdateDate_UTC);
+            Assert.NotNull(reportTypeList[0].LastUpdateContactTVItemID);
+            Assert.NotNull(reportTypeList[0].HasErrors);
         }
         private ReportType GetFilledRandomReportType(string OmitPropName)
         {

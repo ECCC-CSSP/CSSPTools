@@ -5,7 +5,7 @@
  */ 
 
 using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using System.Linq;
 using System.Collections.Generic;
 using CSSPModels;
@@ -21,7 +21,7 @@ using CSSPEnums.Resources;
 
 namespace CSSPServices.Tests
 {
-    [TestClass]
+
     public partial class TelServiceTest : TestHelper
     {
         #region Variables
@@ -39,7 +39,7 @@ namespace CSSPServices.Tests
         #endregion Constructors
 
         #region Tests Generated CRUD
-        [TestMethod]
+        [Fact]
         public void Tel_CRUD_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -66,26 +66,26 @@ namespace CSSPServices.Tests
 
                     count = telService.GetTelList().Count();
 
-                    Assert.AreEqual(count, (from c in dbTestDB.Tels select c).Count());
+                    Assert.Equal(count, (from c in dbTestDB.Tels select c).Count());
 
                     telService.Add(tel);
                     if (tel.HasErrors)
                     {
-                        Assert.AreEqual("", tel.ValidationResults.FirstOrDefault().ErrorMessage);
+                        Assert.Equal("", tel.ValidationResults.FirstOrDefault().ErrorMessage);
                     }
-                    Assert.AreEqual(true, telService.GetTelList().Where(c => c == tel).Any());
+                    Assert.True(telService.GetTelList().Where(c => c == tel).Any());
                     telService.Update(tel);
                     if (tel.HasErrors)
                     {
-                        Assert.AreEqual("", tel.ValidationResults.FirstOrDefault().ErrorMessage);
+                        Assert.Equal("", tel.ValidationResults.FirstOrDefault().ErrorMessage);
                     }
-                    Assert.AreEqual(count + 1, telService.GetTelList().Count());
+                    Assert.Equal(count + 1, telService.GetTelList().Count());
                     telService.Delete(tel);
                     if (tel.HasErrors)
                     {
-                        Assert.AreEqual("", tel.ValidationResults.FirstOrDefault().ErrorMessage);
+                        Assert.Equal("", tel.ValidationResults.FirstOrDefault().ErrorMessage);
                     }
-                    Assert.AreEqual(count, telService.GetTelList().Count());
+                    Assert.Equal(count, telService.GetTelList().Count());
 
                 }
             }
@@ -93,7 +93,7 @@ namespace CSSPServices.Tests
         #endregion Tests Generated CRUD
 
         #region Tests Generated Properties
-        [TestMethod]
+        [Fact]
         public void Tel_Properties_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -131,13 +131,13 @@ namespace CSSPServices.Tests
                     tel = GetFilledRandomTel("");
                     tel.TelID = 0;
                     telService.Update(tel);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsRequired, "TelID"), tel.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsRequired, "TelID"), tel.ValidationResults.FirstOrDefault().ErrorMessage);
 
                     tel = null;
                     tel = GetFilledRandomTel("");
                     tel.TelID = 10000000;
                     telService.Update(tel);
-                    Assert.AreEqual(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "Tel", "TelID", tel.TelID.ToString()), tel.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "Tel", "TelID", tel.TelID.ToString()), tel.ValidationResults.FirstOrDefault().ErrorMessage);
 
 
                     // -----------------------------------
@@ -150,13 +150,13 @@ namespace CSSPServices.Tests
                     tel = GetFilledRandomTel("");
                     tel.TelTVItemID = 0;
                     telService.Add(tel);
-                    Assert.AreEqual(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "TVItem", "TelTVItemID", tel.TelTVItemID.ToString()), tel.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "TVItem", "TelTVItemID", tel.TelTVItemID.ToString()), tel.ValidationResults.FirstOrDefault().ErrorMessage);
 
                     tel = null;
                     tel = GetFilledRandomTel("");
                     tel.TelTVItemID = 1;
                     telService.Add(tel);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsNotOfType_, "TelTVItemID", "Tel"), tel.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsNotOfType_, "TelTVItemID", "Tel"), tel.ValidationResults.FirstOrDefault().ErrorMessage);
 
 
                     // -----------------------------------
@@ -167,18 +167,18 @@ namespace CSSPServices.Tests
 
                     tel = null;
                     tel = GetFilledRandomTel("TelNumber");
-                    Assert.AreEqual(false, telService.Add(tel));
-                    Assert.AreEqual(1, tel.ValidationResults.Count());
-                    Assert.IsTrue(tel.ValidationResults.Where(c => c.ErrorMessage == string.Format(CSSPServicesRes._IsRequired, "TelNumber")).Any());
-                    Assert.AreEqual(null, tel.TelNumber);
-                    Assert.AreEqual(count, telService.GetTelList().Count());
+                    Assert.False(telService.Add(tel));
+                    Assert.Equal(1, tel.ValidationResults.Count());
+                    Assert.True(tel.ValidationResults.Where(c => c.ErrorMessage == string.Format(CSSPServicesRes._IsRequired, "TelNumber")).Any());
+                    Assert.Null(tel.TelNumber);
+                    Assert.Equal(count, telService.GetTelList().Count());
 
                     tel = null;
                     tel = GetFilledRandomTel("");
                     tel.TelNumber = GetRandomString("", 51);
-                    Assert.AreEqual(false, telService.Add(tel));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._MaxLengthIs_, "TelNumber", "50"), tel.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, telService.GetTelList().Count());
+                    Assert.False(telService.Add(tel));
+                    Assert.Equal(string.Format(CSSPServicesRes._MaxLengthIs_, "TelNumber", "50"), tel.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, telService.GetTelList().Count());
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -190,7 +190,7 @@ namespace CSSPServices.Tests
                     tel = GetFilledRandomTel("");
                     tel.TelType = (TelTypeEnum)1000000;
                     telService.Add(tel);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsRequired, "TelType"), tel.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsRequired, "TelType"), tel.ValidationResults.FirstOrDefault().ErrorMessage);
 
 
                     // -----------------------------------
@@ -203,12 +203,12 @@ namespace CSSPServices.Tests
                     tel = GetFilledRandomTel("");
                     tel.LastUpdateDate_UTC = new DateTime();
                     telService.Add(tel);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsRequired, "LastUpdateDate_UTC"), tel.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsRequired, "LastUpdateDate_UTC"), tel.ValidationResults.FirstOrDefault().ErrorMessage);
                     tel = null;
                     tel = GetFilledRandomTel("");
                     tel.LastUpdateDate_UTC = new DateTime(1979, 1, 1);
                     telService.Add(tel);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._YearShouldBeBiggerThan_, "LastUpdateDate_UTC", "1980"), tel.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._YearShouldBeBiggerThan_, "LastUpdateDate_UTC", "1980"), tel.ValidationResults.FirstOrDefault().ErrorMessage);
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -220,13 +220,13 @@ namespace CSSPServices.Tests
                     tel = GetFilledRandomTel("");
                     tel.LastUpdateContactTVItemID = 0;
                     telService.Add(tel);
-                    Assert.AreEqual(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "TVItem", "LastUpdateContactTVItemID", tel.LastUpdateContactTVItemID.ToString()), tel.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "TVItem", "LastUpdateContactTVItemID", tel.LastUpdateContactTVItemID.ToString()), tel.ValidationResults.FirstOrDefault().ErrorMessage);
 
                     tel = null;
                     tel = GetFilledRandomTel("");
                     tel.LastUpdateContactTVItemID = 1;
                     telService.Add(tel);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsNotOfType_, "LastUpdateContactTVItemID", "Contact"), tel.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsNotOfType_, "LastUpdateContactTVItemID", "Contact"), tel.ValidationResults.FirstOrDefault().ErrorMessage);
 
 
                     // -----------------------------------
@@ -250,7 +250,7 @@ namespace CSSPServices.Tests
         #endregion Tests Generated Properties
 
         #region Tests Generated for GetTelWithTelID(tel.TelID)
-        [TestMethod]
+        [Fact]
         public void GetTelWithTelID__tel_TelID__Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -261,7 +261,7 @@ namespace CSSPServices.Tests
                 {
                     TelService telService = new TelService(new Query() { Lang = culture.TwoLetterISOLanguageName }, dbTestDB, ContactID);
                     Tel tel = (from c in dbTestDB.Tels select c).FirstOrDefault();
-                    Assert.IsNotNull(tel);
+                    Assert.NotNull(tel);
 
                 }
             }
@@ -269,7 +269,7 @@ namespace CSSPServices.Tests
         #endregion Tests Generated for GetTelWithTelID(tel.TelID)
 
         #region Tests Generated for GetTelList()
-        [TestMethod]
+        [Fact]
         public void GetTelList_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -280,7 +280,7 @@ namespace CSSPServices.Tests
                 {
                     TelService telService = new TelService(new Query() { Lang = culture.TwoLetterISOLanguageName }, dbTestDB, ContactID);
                     Tel tel = (from c in dbTestDB.Tels select c).FirstOrDefault();
-                    Assert.IsNotNull(tel);
+                    Assert.NotNull(tel);
 
                     List<Tel> telDirectQueryList = new List<Tel>();
                     telDirectQueryList = (from c in dbTestDB.Tels select c).Take(200).ToList();
@@ -291,7 +291,7 @@ namespace CSSPServices.Tests
         #endregion Tests Generated for GetTelList()
 
         #region Tests Generated for GetTelList() Skip Take
-        [TestMethod]
+        [Fact]
         public void GetTelList_Skip_Take_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -310,14 +310,14 @@ namespace CSSPServices.Tests
                         List<Tel> telList = new List<Tel>();
                         telList = telService.GetTelList().ToList();
                         CheckTelFields(telList);
-                        Assert.AreEqual(telDirectQueryList[0].TelID, telList[0].TelID);
+                        Assert.Equal(telDirectQueryList[0].TelID, telList[0].TelID);
                 }
             }
         }
         #endregion Tests Generated for GetTelList() Skip Take
 
         #region Tests Generated for GetTelList() Skip Take Asc
-        [TestMethod]
+        [Fact]
         public void GetTelList_Skip_Take_Asc_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -336,14 +336,14 @@ namespace CSSPServices.Tests
                         List<Tel> telList = new List<Tel>();
                         telList = telService.GetTelList().ToList();
                         CheckTelFields(telList);
-                        Assert.AreEqual(telDirectQueryList[0].TelID, telList[0].TelID);
+                        Assert.Equal(telDirectQueryList[0].TelID, telList[0].TelID);
                 }
             }
         }
         #endregion Tests Generated for GetTelList() Skip Take Asc
 
         #region Tests Generated for GetTelList() Skip Take 2 Asc
-        [TestMethod]
+        [Fact]
         public void GetTelList_Skip_Take_2Asc_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -362,14 +362,14 @@ namespace CSSPServices.Tests
                         List<Tel> telList = new List<Tel>();
                         telList = telService.GetTelList().ToList();
                         CheckTelFields(telList);
-                        Assert.AreEqual(telDirectQueryList[0].TelID, telList[0].TelID);
+                        Assert.Equal(telDirectQueryList[0].TelID, telList[0].TelID);
                 }
             }
         }
         #endregion Tests Generated for GetTelList() Skip Take 2 Asc
 
         #region Tests Generated for GetTelList() Skip Take Asc Where
-        [TestMethod]
+        [Fact]
         public void GetTelList_Skip_Take_Asc_Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -388,14 +388,14 @@ namespace CSSPServices.Tests
                         List<Tel> telList = new List<Tel>();
                         telList = telService.GetTelList().ToList();
                         CheckTelFields(telList);
-                        Assert.AreEqual(telDirectQueryList[0].TelID, telList[0].TelID);
+                        Assert.Equal(telDirectQueryList[0].TelID, telList[0].TelID);
                 }
             }
         }
         #endregion Tests Generated for GetTelList() Skip Take Asc Where
 
         #region Tests Generated for GetTelList() Skip Take Asc 2 Where
-        [TestMethod]
+        [Fact]
         public void GetTelList_Skip_Take_Asc_2Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -414,14 +414,14 @@ namespace CSSPServices.Tests
                         List<Tel> telList = new List<Tel>();
                         telList = telService.GetTelList().ToList();
                         CheckTelFields(telList);
-                        Assert.AreEqual(telDirectQueryList[0].TelID, telList[0].TelID);
+                        Assert.Equal(telDirectQueryList[0].TelID, telList[0].TelID);
                 }
             }
         }
         #endregion Tests Generated for GetTelList() Skip Take Asc 2 Where
 
         #region Tests Generated for GetTelList() Skip Take Desc
-        [TestMethod]
+        [Fact]
         public void GetTelList_Skip_Take_Desc_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -440,14 +440,14 @@ namespace CSSPServices.Tests
                         List<Tel> telList = new List<Tel>();
                         telList = telService.GetTelList().ToList();
                         CheckTelFields(telList);
-                        Assert.AreEqual(telDirectQueryList[0].TelID, telList[0].TelID);
+                        Assert.Equal(telDirectQueryList[0].TelID, telList[0].TelID);
                 }
             }
         }
         #endregion Tests Generated for GetTelList() Skip Take Desc
 
         #region Tests Generated for GetTelList() Skip Take 2 Desc
-        [TestMethod]
+        [Fact]
         public void GetTelList_Skip_Take_2Desc_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -466,14 +466,14 @@ namespace CSSPServices.Tests
                         List<Tel> telList = new List<Tel>();
                         telList = telService.GetTelList().ToList();
                         CheckTelFields(telList);
-                        Assert.AreEqual(telDirectQueryList[0].TelID, telList[0].TelID);
+                        Assert.Equal(telDirectQueryList[0].TelID, telList[0].TelID);
                 }
             }
         }
         #endregion Tests Generated for GetTelList() Skip Take 2 Desc
 
         #region Tests Generated for GetTelList() Skip Take Desc Where
-        [TestMethod]
+        [Fact]
         public void GetTelList_Skip_Take_Desc_Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -492,14 +492,14 @@ namespace CSSPServices.Tests
                         List<Tel> telList = new List<Tel>();
                         telList = telService.GetTelList().ToList();
                         CheckTelFields(telList);
-                        Assert.AreEqual(telDirectQueryList[0].TelID, telList[0].TelID);
+                        Assert.Equal(telDirectQueryList[0].TelID, telList[0].TelID);
                 }
             }
         }
         #endregion Tests Generated for GetTelList() Skip Take Desc Where
 
         #region Tests Generated for GetTelList() Skip Take Desc 2 Where
-        [TestMethod]
+        [Fact]
         public void GetTelList_Skip_Take_Desc_2Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -518,14 +518,14 @@ namespace CSSPServices.Tests
                         List<Tel> telList = new List<Tel>();
                         telList = telService.GetTelList().ToList();
                         CheckTelFields(telList);
-                        Assert.AreEqual(telDirectQueryList[0].TelID, telList[0].TelID);
+                        Assert.Equal(telDirectQueryList[0].TelID, telList[0].TelID);
                 }
             }
         }
         #endregion Tests Generated for GetTelList() Skip Take Desc 2 Where
 
         #region Tests Generated for GetTelList() 2 Where
-        [TestMethod]
+        [Fact]
         public void GetTelList_2Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -544,7 +544,7 @@ namespace CSSPServices.Tests
                         List<Tel> telList = new List<Tel>();
                         telList = telService.GetTelList().ToList();
                         CheckTelFields(telList);
-                        Assert.AreEqual(telDirectQueryList[0].TelID, telList[0].TelID);
+                        Assert.Equal(telDirectQueryList[0].TelID, telList[0].TelID);
                 }
             }
         }
@@ -553,13 +553,13 @@ namespace CSSPServices.Tests
         #region Functions private
         private void CheckTelFields(List<Tel> telList)
         {
-            Assert.IsNotNull(telList[0].TelID);
-            Assert.IsNotNull(telList[0].TelTVItemID);
-            Assert.IsFalse(string.IsNullOrWhiteSpace(telList[0].TelNumber));
-            Assert.IsNotNull(telList[0].TelType);
-            Assert.IsNotNull(telList[0].LastUpdateDate_UTC);
-            Assert.IsNotNull(telList[0].LastUpdateContactTVItemID);
-            Assert.IsNotNull(telList[0].HasErrors);
+            Assert.NotNull(telList[0].TelID);
+            Assert.NotNull(telList[0].TelTVItemID);
+            Assert.False(string.IsNullOrWhiteSpace(telList[0].TelNumber));
+            Assert.NotNull(telList[0].TelType);
+            Assert.NotNull(telList[0].LastUpdateDate_UTC);
+            Assert.NotNull(telList[0].LastUpdateContactTVItemID);
+            Assert.NotNull(telList[0].HasErrors);
         }
         private Tel GetFilledRandomTel(string OmitPropName)
         {

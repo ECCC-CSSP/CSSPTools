@@ -6,7 +6,7 @@
  */ 
 using System;
 using System.Text;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using System.Linq;
 using System.Globalization;
 using System.Transactions;
@@ -19,7 +19,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace CSSPModels.Tests
 {
-    [TestClass]
+
     public partial class InfrastructureTest
     {
         #region Variables
@@ -37,7 +37,7 @@ namespace CSSPModels.Tests
         #endregion Constructors
 
         #region Tests Functions public
-        [TestMethod]
+        [Fact]
         public void Infrastructure_Properties_Test()
         {
             List<string> propNameList = new List<string>() { "InfrastructureID", "InfrastructureTVItemID", "PrismID", "TPID", "LSID", "SiteID", "Site", "InfrastructureCategory", "InfrastructureType", "FacilityType", "IsMechanicallyAerated", "NumberOfCells", "NumberOfAeratedCells", "AerationType", "PreliminaryTreatmentType", "PrimaryTreatmentType", "SecondaryTreatmentType", "TertiaryTreatmentType", "TreatmentType", "DisinfectionType", "CollectionSystemType", "AlarmSystemType", "DesignFlow_m3_day", "AverageFlow_m3_day", "PeakFlow_m3_day", "PopServed", "CanOverflow", "PercFlowOfTotal", "TimeOffset_hour", "TempCatchAllRemoveLater", "AverageDepth_m", "NumberOfPorts", "PortDiameter_m", "PortSpacing_m", "PortElevation_m", "VerticalAngle_deg", "HorizontalAngle_deg", "DecayRate_per_day", "NearFieldVelocity_m_s", "FarFieldVelocity_m_s", "ReceivingWaterSalinity_PSU", "ReceivingWaterTemperature_C", "ReceivingWater_MPN_per_100ml", "DistanceFromShore_m", "SeeOtherMunicipalityTVItemID", "CivicAddressTVItemID", "LastUpdateDate_UTC", "LastUpdateContactTVItemID",  }.OrderBy(c => c).ToList();
@@ -50,12 +50,12 @@ namespace CSSPModels.Tests
                     && propertyInfo.Name != "ValidationResults"
                     && !propertyInfo.CustomAttributes.Where(c => c.AttributeType.Name.Contains("NotMappedAttribute")).Any())
                 {
-                    Assert.AreEqual(propNameList[index], propertyInfo.Name);
+                    Assert.Equal(propNameList[index], propertyInfo.Name);
                     index += 1;
                 }
             }
 
-            Assert.AreEqual(propNameList.Count, index);
+            Assert.Equal(propNameList.Count, index);
 
             index = 0;
             foreach (PropertyInfo propertyInfo in typeof(Infrastructure).GetProperties().Where(c => c.Name != "ValidationResults").OrderBy(c => c.Name).ToList())
@@ -64,16 +64,16 @@ namespace CSSPModels.Tests
                 {
                     if (customAttributeData.AttributeType.Name == "NotMappedAttribute")
                     {
-                        Assert.AreEqual(propertyInfo.Name, propNameNotMappedList[index]);
+                        Assert.Equal(propertyInfo.Name, propNameNotMappedList[index]);
                         index += 1;
                     }
                 }
             }
 
-            Assert.AreEqual(propNameNotMappedList.Count, index);
+            Assert.Equal(propNameNotMappedList.Count, index);
 
         }
-        [TestMethod]
+        [Fact]
         public void Infrastructure_Navigation_Test()
         {
             List<string> foreignNameList = new List<string>() {  }.OrderBy(c => c).ToList();
@@ -84,184 +84,184 @@ namespace CSSPModels.Tests
             {
                 if (propertyInfo.GetGetMethod().IsVirtual && !propertyInfo.GetGetMethod().ReturnType.Name.StartsWith("ICollection"))
                 {
-                    Assert.IsTrue(foreignNameList.Contains(propertyInfo.Name));
+                    Assert.True(foreignNameList.Contains(propertyInfo.Name));
                     index += 1;
                 }
             }
 
-            Assert.AreEqual(foreignNameList.Count, index);
+            Assert.Equal(foreignNameList.Count, index);
 
             index = 0;
             foreach (PropertyInfo propertyInfo in typeof(Infrastructure).GetProperties().Where(c => c.Name != "ValidationResults").OrderBy(c => c.Name).ToList())
             {
                 if (propertyInfo.GetGetMethod().ReturnType.Name.StartsWith("ICollection"))
                 {
-                    Assert.IsTrue(foreignNameCollectionList.Contains(propertyInfo.Name));
+                    Assert.True(foreignNameCollectionList.Contains(propertyInfo.Name));
                     index += 1;
                 }
             }
 
-            Assert.AreEqual(foreignNameCollectionList.Count, index);
+            Assert.Equal(foreignNameCollectionList.Count, index);
 
         }
-        [TestMethod]
+        [Fact]
         public void Infrastructure_Has_ValidationResults_Test()
         {
-             Assert.IsTrue(typeof(Infrastructure).GetProperties().Where(c => c.Name == "ValidationResults").Any());
+             Assert.True(typeof(Infrastructure).GetProperties().Where(c => c.Name == "ValidationResults").Any());
         }
-        [TestMethod]
+        [Fact]
         public void Infrastructure_Every_Property_Has_Get_Set_Test()
         {
                int val1 = 45;
                infrastructure.InfrastructureID = val1;
-               Assert.AreEqual(val1, infrastructure.InfrastructureID);
+               Assert.Equal(val1, infrastructure.InfrastructureID);
                int val2 = 45;
                infrastructure.InfrastructureTVItemID = val2;
-               Assert.AreEqual(val2, infrastructure.InfrastructureTVItemID);
+               Assert.Equal(val2, infrastructure.InfrastructureTVItemID);
                int val3 = 45;
                infrastructure.PrismID = val3;
-               Assert.AreEqual(val3, infrastructure.PrismID);
+               Assert.Equal(val3, infrastructure.PrismID);
                int val4 = 45;
                infrastructure.TPID = val4;
-               Assert.AreEqual(val4, infrastructure.TPID);
+               Assert.Equal(val4, infrastructure.TPID);
                int val5 = 45;
                infrastructure.LSID = val5;
-               Assert.AreEqual(val5, infrastructure.LSID);
+               Assert.Equal(val5, infrastructure.LSID);
                int val6 = 45;
                infrastructure.SiteID = val6;
-               Assert.AreEqual(val6, infrastructure.SiteID);
+               Assert.Equal(val6, infrastructure.SiteID);
                int val7 = 45;
                infrastructure.Site = val7;
-               Assert.AreEqual(val7, infrastructure.Site);
+               Assert.Equal(val7, infrastructure.Site);
                string val8 = "Some text";
                infrastructure.InfrastructureCategory = val8;
-               Assert.AreEqual(val8, infrastructure.InfrastructureCategory);
+               Assert.Equal(val8, infrastructure.InfrastructureCategory);
                InfrastructureTypeEnum val9 = (InfrastructureTypeEnum)3;
                infrastructure.InfrastructureType = val9;
-               Assert.AreEqual(val9, infrastructure.InfrastructureType);
+               Assert.Equal(val9, infrastructure.InfrastructureType);
                FacilityTypeEnum val10 = (FacilityTypeEnum)3;
                infrastructure.FacilityType = val10;
-               Assert.AreEqual(val10, infrastructure.FacilityType);
+               Assert.Equal(val10, infrastructure.FacilityType);
                bool val11 = true;
                infrastructure.IsMechanicallyAerated = val11;
-               Assert.AreEqual(val11, infrastructure.IsMechanicallyAerated);
+               Assert.Equal(val11, infrastructure.IsMechanicallyAerated);
                int val12 = 45;
                infrastructure.NumberOfCells = val12;
-               Assert.AreEqual(val12, infrastructure.NumberOfCells);
+               Assert.Equal(val12, infrastructure.NumberOfCells);
                int val13 = 45;
                infrastructure.NumberOfAeratedCells = val13;
-               Assert.AreEqual(val13, infrastructure.NumberOfAeratedCells);
+               Assert.Equal(val13, infrastructure.NumberOfAeratedCells);
                AerationTypeEnum val14 = (AerationTypeEnum)3;
                infrastructure.AerationType = val14;
-               Assert.AreEqual(val14, infrastructure.AerationType);
+               Assert.Equal(val14, infrastructure.AerationType);
                PreliminaryTreatmentTypeEnum val15 = (PreliminaryTreatmentTypeEnum)3;
                infrastructure.PreliminaryTreatmentType = val15;
-               Assert.AreEqual(val15, infrastructure.PreliminaryTreatmentType);
+               Assert.Equal(val15, infrastructure.PreliminaryTreatmentType);
                PrimaryTreatmentTypeEnum val16 = (PrimaryTreatmentTypeEnum)3;
                infrastructure.PrimaryTreatmentType = val16;
-               Assert.AreEqual(val16, infrastructure.PrimaryTreatmentType);
+               Assert.Equal(val16, infrastructure.PrimaryTreatmentType);
                SecondaryTreatmentTypeEnum val17 = (SecondaryTreatmentTypeEnum)3;
                infrastructure.SecondaryTreatmentType = val17;
-               Assert.AreEqual(val17, infrastructure.SecondaryTreatmentType);
+               Assert.Equal(val17, infrastructure.SecondaryTreatmentType);
                TertiaryTreatmentTypeEnum val18 = (TertiaryTreatmentTypeEnum)3;
                infrastructure.TertiaryTreatmentType = val18;
-               Assert.AreEqual(val18, infrastructure.TertiaryTreatmentType);
+               Assert.Equal(val18, infrastructure.TertiaryTreatmentType);
                TreatmentTypeEnum val19 = (TreatmentTypeEnum)3;
                infrastructure.TreatmentType = val19;
-               Assert.AreEqual(val19, infrastructure.TreatmentType);
+               Assert.Equal(val19, infrastructure.TreatmentType);
                DisinfectionTypeEnum val20 = (DisinfectionTypeEnum)3;
                infrastructure.DisinfectionType = val20;
-               Assert.AreEqual(val20, infrastructure.DisinfectionType);
+               Assert.Equal(val20, infrastructure.DisinfectionType);
                CollectionSystemTypeEnum val21 = (CollectionSystemTypeEnum)3;
                infrastructure.CollectionSystemType = val21;
-               Assert.AreEqual(val21, infrastructure.CollectionSystemType);
+               Assert.Equal(val21, infrastructure.CollectionSystemType);
                AlarmSystemTypeEnum val22 = (AlarmSystemTypeEnum)3;
                infrastructure.AlarmSystemType = val22;
-               Assert.AreEqual(val22, infrastructure.AlarmSystemType);
+               Assert.Equal(val22, infrastructure.AlarmSystemType);
                double val23 = 87.9D;
                infrastructure.DesignFlow_m3_day = val23;
-               Assert.AreEqual(val23, infrastructure.DesignFlow_m3_day);
+               Assert.Equal(val23, infrastructure.DesignFlow_m3_day);
                double val24 = 87.9D;
                infrastructure.AverageFlow_m3_day = val24;
-               Assert.AreEqual(val24, infrastructure.AverageFlow_m3_day);
+               Assert.Equal(val24, infrastructure.AverageFlow_m3_day);
                double val25 = 87.9D;
                infrastructure.PeakFlow_m3_day = val25;
-               Assert.AreEqual(val25, infrastructure.PeakFlow_m3_day);
+               Assert.Equal(val25, infrastructure.PeakFlow_m3_day);
                int val26 = 45;
                infrastructure.PopServed = val26;
-               Assert.AreEqual(val26, infrastructure.PopServed);
+               Assert.Equal(val26, infrastructure.PopServed);
                bool val27 = true;
                infrastructure.CanOverflow = val27;
-               Assert.AreEqual(val27, infrastructure.CanOverflow);
+               Assert.Equal(val27, infrastructure.CanOverflow);
                double val28 = 87.9D;
                infrastructure.PercFlowOfTotal = val28;
-               Assert.AreEqual(val28, infrastructure.PercFlowOfTotal);
+               Assert.Equal(val28, infrastructure.PercFlowOfTotal);
                double val29 = 87.9D;
                infrastructure.TimeOffset_hour = val29;
-               Assert.AreEqual(val29, infrastructure.TimeOffset_hour);
+               Assert.Equal(val29, infrastructure.TimeOffset_hour);
                string val30 = "Some text";
                infrastructure.TempCatchAllRemoveLater = val30;
-               Assert.AreEqual(val30, infrastructure.TempCatchAllRemoveLater);
+               Assert.Equal(val30, infrastructure.TempCatchAllRemoveLater);
                double val31 = 87.9D;
                infrastructure.AverageDepth_m = val31;
-               Assert.AreEqual(val31, infrastructure.AverageDepth_m);
+               Assert.Equal(val31, infrastructure.AverageDepth_m);
                int val32 = 45;
                infrastructure.NumberOfPorts = val32;
-               Assert.AreEqual(val32, infrastructure.NumberOfPorts);
+               Assert.Equal(val32, infrastructure.NumberOfPorts);
                double val33 = 87.9D;
                infrastructure.PortDiameter_m = val33;
-               Assert.AreEqual(val33, infrastructure.PortDiameter_m);
+               Assert.Equal(val33, infrastructure.PortDiameter_m);
                double val34 = 87.9D;
                infrastructure.PortSpacing_m = val34;
-               Assert.AreEqual(val34, infrastructure.PortSpacing_m);
+               Assert.Equal(val34, infrastructure.PortSpacing_m);
                double val35 = 87.9D;
                infrastructure.PortElevation_m = val35;
-               Assert.AreEqual(val35, infrastructure.PortElevation_m);
+               Assert.Equal(val35, infrastructure.PortElevation_m);
                double val36 = 87.9D;
                infrastructure.VerticalAngle_deg = val36;
-               Assert.AreEqual(val36, infrastructure.VerticalAngle_deg);
+               Assert.Equal(val36, infrastructure.VerticalAngle_deg);
                double val37 = 87.9D;
                infrastructure.HorizontalAngle_deg = val37;
-               Assert.AreEqual(val37, infrastructure.HorizontalAngle_deg);
+               Assert.Equal(val37, infrastructure.HorizontalAngle_deg);
                double val38 = 87.9D;
                infrastructure.DecayRate_per_day = val38;
-               Assert.AreEqual(val38, infrastructure.DecayRate_per_day);
+               Assert.Equal(val38, infrastructure.DecayRate_per_day);
                double val39 = 87.9D;
                infrastructure.NearFieldVelocity_m_s = val39;
-               Assert.AreEqual(val39, infrastructure.NearFieldVelocity_m_s);
+               Assert.Equal(val39, infrastructure.NearFieldVelocity_m_s);
                double val40 = 87.9D;
                infrastructure.FarFieldVelocity_m_s = val40;
-               Assert.AreEqual(val40, infrastructure.FarFieldVelocity_m_s);
+               Assert.Equal(val40, infrastructure.FarFieldVelocity_m_s);
                double val41 = 87.9D;
                infrastructure.ReceivingWaterSalinity_PSU = val41;
-               Assert.AreEqual(val41, infrastructure.ReceivingWaterSalinity_PSU);
+               Assert.Equal(val41, infrastructure.ReceivingWaterSalinity_PSU);
                double val42 = 87.9D;
                infrastructure.ReceivingWaterTemperature_C = val42;
-               Assert.AreEqual(val42, infrastructure.ReceivingWaterTemperature_C);
+               Assert.Equal(val42, infrastructure.ReceivingWaterTemperature_C);
                int val43 = 45;
                infrastructure.ReceivingWater_MPN_per_100ml = val43;
-               Assert.AreEqual(val43, infrastructure.ReceivingWater_MPN_per_100ml);
+               Assert.Equal(val43, infrastructure.ReceivingWater_MPN_per_100ml);
                double val44 = 87.9D;
                infrastructure.DistanceFromShore_m = val44;
-               Assert.AreEqual(val44, infrastructure.DistanceFromShore_m);
+               Assert.Equal(val44, infrastructure.DistanceFromShore_m);
                int val45 = 45;
                infrastructure.SeeOtherMunicipalityTVItemID = val45;
-               Assert.AreEqual(val45, infrastructure.SeeOtherMunicipalityTVItemID);
+               Assert.Equal(val45, infrastructure.SeeOtherMunicipalityTVItemID);
                int val46 = 45;
                infrastructure.CivicAddressTVItemID = val46;
-               Assert.AreEqual(val46, infrastructure.CivicAddressTVItemID);
+               Assert.Equal(val46, infrastructure.CivicAddressTVItemID);
                DateTime val47 = new DateTime(2010, 3, 4);
                infrastructure.LastUpdateDate_UTC = val47;
-               Assert.AreEqual(val47, infrastructure.LastUpdateDate_UTC);
+               Assert.Equal(val47, infrastructure.LastUpdateDate_UTC);
                int val48 = 45;
                infrastructure.LastUpdateContactTVItemID = val48;
-               Assert.AreEqual(val48, infrastructure.LastUpdateContactTVItemID);
+               Assert.Equal(val48, infrastructure.LastUpdateContactTVItemID);
                bool val49 = true;
                infrastructure.HasErrors = val49;
-               Assert.AreEqual(val49, infrastructure.HasErrors);
+               Assert.Equal(val49, infrastructure.HasErrors);
                IEnumerable<ValidationResult> val150 = new List<ValidationResult>() { new ValidationResult("First CSSPError Message") }.AsEnumerable();
                infrastructure.ValidationResults = val150;
-               Assert.AreEqual(val150, infrastructure.ValidationResults);
+               Assert.Equal(val150, infrastructure.ValidationResults);
         }
         #endregion Tests Functions public
     }

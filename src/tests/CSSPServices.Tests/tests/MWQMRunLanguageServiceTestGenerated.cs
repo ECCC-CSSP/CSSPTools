@@ -5,7 +5,7 @@
  */ 
 
 using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using System.Linq;
 using System.Collections.Generic;
 using CSSPModels;
@@ -21,7 +21,7 @@ using CSSPEnums.Resources;
 
 namespace CSSPServices.Tests
 {
-    [TestClass]
+
     public partial class MWQMRunLanguageServiceTest : TestHelper
     {
         #region Variables
@@ -39,7 +39,7 @@ namespace CSSPServices.Tests
         #endregion Constructors
 
         #region Tests Generated CRUD
-        [TestMethod]
+        [Fact]
         public void MWQMRunLanguage_CRUD_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -66,26 +66,26 @@ namespace CSSPServices.Tests
 
                     count = mwqmRunLanguageService.GetMWQMRunLanguageList().Count();
 
-                    Assert.AreEqual(count, (from c in dbTestDB.MWQMRunLanguages select c).Count());
+                    Assert.Equal(count, (from c in dbTestDB.MWQMRunLanguages select c).Count());
 
                     mwqmRunLanguageService.Add(mwqmRunLanguage);
                     if (mwqmRunLanguage.HasErrors)
                     {
-                        Assert.AreEqual("", mwqmRunLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
+                        Assert.Equal("", mwqmRunLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
                     }
-                    Assert.AreEqual(true, mwqmRunLanguageService.GetMWQMRunLanguageList().Where(c => c == mwqmRunLanguage).Any());
+                    Assert.True(mwqmRunLanguageService.GetMWQMRunLanguageList().Where(c => c == mwqmRunLanguage).Any());
                     mwqmRunLanguageService.Update(mwqmRunLanguage);
                     if (mwqmRunLanguage.HasErrors)
                     {
-                        Assert.AreEqual("", mwqmRunLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
+                        Assert.Equal("", mwqmRunLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
                     }
-                    Assert.AreEqual(count + 1, mwqmRunLanguageService.GetMWQMRunLanguageList().Count());
+                    Assert.Equal(count + 1, mwqmRunLanguageService.GetMWQMRunLanguageList().Count());
                     mwqmRunLanguageService.Delete(mwqmRunLanguage);
                     if (mwqmRunLanguage.HasErrors)
                     {
-                        Assert.AreEqual("", mwqmRunLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
+                        Assert.Equal("", mwqmRunLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
                     }
-                    Assert.AreEqual(count, mwqmRunLanguageService.GetMWQMRunLanguageList().Count());
+                    Assert.Equal(count, mwqmRunLanguageService.GetMWQMRunLanguageList().Count());
 
                 }
             }
@@ -93,7 +93,7 @@ namespace CSSPServices.Tests
         #endregion Tests Generated CRUD
 
         #region Tests Generated Properties
-        [TestMethod]
+        [Fact]
         public void MWQMRunLanguage_Properties_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -131,13 +131,13 @@ namespace CSSPServices.Tests
                     mwqmRunLanguage = GetFilledRandomMWQMRunLanguage("");
                     mwqmRunLanguage.MWQMRunLanguageID = 0;
                     mwqmRunLanguageService.Update(mwqmRunLanguage);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsRequired, "MWQMRunLanguageID"), mwqmRunLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsRequired, "MWQMRunLanguageID"), mwqmRunLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
 
                     mwqmRunLanguage = null;
                     mwqmRunLanguage = GetFilledRandomMWQMRunLanguage("");
                     mwqmRunLanguage.MWQMRunLanguageID = 10000000;
                     mwqmRunLanguageService.Update(mwqmRunLanguage);
-                    Assert.AreEqual(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "MWQMRunLanguage", "MWQMRunLanguageID", mwqmRunLanguage.MWQMRunLanguageID.ToString()), mwqmRunLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "MWQMRunLanguage", "MWQMRunLanguageID", mwqmRunLanguage.MWQMRunLanguageID.ToString()), mwqmRunLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
 
 
                     // -----------------------------------
@@ -150,7 +150,7 @@ namespace CSSPServices.Tests
                     mwqmRunLanguage = GetFilledRandomMWQMRunLanguage("");
                     mwqmRunLanguage.MWQMRunID = 0;
                     mwqmRunLanguageService.Add(mwqmRunLanguage);
-                    Assert.AreEqual(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "MWQMRun", "MWQMRunID", mwqmRunLanguage.MWQMRunID.ToString()), mwqmRunLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "MWQMRun", "MWQMRunID", mwqmRunLanguage.MWQMRunID.ToString()), mwqmRunLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
 
 
                     // -----------------------------------
@@ -163,7 +163,7 @@ namespace CSSPServices.Tests
                     mwqmRunLanguage = GetFilledRandomMWQMRunLanguage("");
                     mwqmRunLanguage.Language = (LanguageEnum)1000000;
                     mwqmRunLanguageService.Add(mwqmRunLanguage);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsRequired, "Language"), mwqmRunLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsRequired, "Language"), mwqmRunLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
 
 
                     // -----------------------------------
@@ -173,11 +173,11 @@ namespace CSSPServices.Tests
 
                     mwqmRunLanguage = null;
                     mwqmRunLanguage = GetFilledRandomMWQMRunLanguage("RunComment");
-                    Assert.AreEqual(false, mwqmRunLanguageService.Add(mwqmRunLanguage));
-                    Assert.AreEqual(1, mwqmRunLanguage.ValidationResults.Count());
-                    Assert.IsTrue(mwqmRunLanguage.ValidationResults.Where(c => c.ErrorMessage == string.Format(CSSPServicesRes._IsRequired, "RunComment")).Any());
-                    Assert.AreEqual(null, mwqmRunLanguage.RunComment);
-                    Assert.AreEqual(count, mwqmRunLanguageService.GetMWQMRunLanguageList().Count());
+                    Assert.False(mwqmRunLanguageService.Add(mwqmRunLanguage));
+                    Assert.Equal(1, mwqmRunLanguage.ValidationResults.Count());
+                    Assert.True(mwqmRunLanguage.ValidationResults.Where(c => c.ErrorMessage == string.Format(CSSPServicesRes._IsRequired, "RunComment")).Any());
+                    Assert.Null(mwqmRunLanguage.RunComment);
+                    Assert.Equal(count, mwqmRunLanguageService.GetMWQMRunLanguageList().Count());
 
 
                     // -----------------------------------
@@ -190,7 +190,7 @@ namespace CSSPServices.Tests
                     mwqmRunLanguage = GetFilledRandomMWQMRunLanguage("");
                     mwqmRunLanguage.TranslationStatusRunComment = (TranslationStatusEnum)1000000;
                     mwqmRunLanguageService.Add(mwqmRunLanguage);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsRequired, "TranslationStatusRunComment"), mwqmRunLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsRequired, "TranslationStatusRunComment"), mwqmRunLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
 
 
                     // -----------------------------------
@@ -200,11 +200,11 @@ namespace CSSPServices.Tests
 
                     mwqmRunLanguage = null;
                     mwqmRunLanguage = GetFilledRandomMWQMRunLanguage("RunWeatherComment");
-                    Assert.AreEqual(false, mwqmRunLanguageService.Add(mwqmRunLanguage));
-                    Assert.AreEqual(1, mwqmRunLanguage.ValidationResults.Count());
-                    Assert.IsTrue(mwqmRunLanguage.ValidationResults.Where(c => c.ErrorMessage == string.Format(CSSPServicesRes._IsRequired, "RunWeatherComment")).Any());
-                    Assert.AreEqual(null, mwqmRunLanguage.RunWeatherComment);
-                    Assert.AreEqual(count, mwqmRunLanguageService.GetMWQMRunLanguageList().Count());
+                    Assert.False(mwqmRunLanguageService.Add(mwqmRunLanguage));
+                    Assert.Equal(1, mwqmRunLanguage.ValidationResults.Count());
+                    Assert.True(mwqmRunLanguage.ValidationResults.Where(c => c.ErrorMessage == string.Format(CSSPServicesRes._IsRequired, "RunWeatherComment")).Any());
+                    Assert.Null(mwqmRunLanguage.RunWeatherComment);
+                    Assert.Equal(count, mwqmRunLanguageService.GetMWQMRunLanguageList().Count());
 
 
                     // -----------------------------------
@@ -217,7 +217,7 @@ namespace CSSPServices.Tests
                     mwqmRunLanguage = GetFilledRandomMWQMRunLanguage("");
                     mwqmRunLanguage.TranslationStatusRunWeatherComment = (TranslationStatusEnum)1000000;
                     mwqmRunLanguageService.Add(mwqmRunLanguage);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsRequired, "TranslationStatusRunWeatherComment"), mwqmRunLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsRequired, "TranslationStatusRunWeatherComment"), mwqmRunLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
 
 
                     // -----------------------------------
@@ -230,12 +230,12 @@ namespace CSSPServices.Tests
                     mwqmRunLanguage = GetFilledRandomMWQMRunLanguage("");
                     mwqmRunLanguage.LastUpdateDate_UTC = new DateTime();
                     mwqmRunLanguageService.Add(mwqmRunLanguage);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsRequired, "LastUpdateDate_UTC"), mwqmRunLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsRequired, "LastUpdateDate_UTC"), mwqmRunLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
                     mwqmRunLanguage = null;
                     mwqmRunLanguage = GetFilledRandomMWQMRunLanguage("");
                     mwqmRunLanguage.LastUpdateDate_UTC = new DateTime(1979, 1, 1);
                     mwqmRunLanguageService.Add(mwqmRunLanguage);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._YearShouldBeBiggerThan_, "LastUpdateDate_UTC", "1980"), mwqmRunLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._YearShouldBeBiggerThan_, "LastUpdateDate_UTC", "1980"), mwqmRunLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -247,13 +247,13 @@ namespace CSSPServices.Tests
                     mwqmRunLanguage = GetFilledRandomMWQMRunLanguage("");
                     mwqmRunLanguage.LastUpdateContactTVItemID = 0;
                     mwqmRunLanguageService.Add(mwqmRunLanguage);
-                    Assert.AreEqual(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "TVItem", "LastUpdateContactTVItemID", mwqmRunLanguage.LastUpdateContactTVItemID.ToString()), mwqmRunLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "TVItem", "LastUpdateContactTVItemID", mwqmRunLanguage.LastUpdateContactTVItemID.ToString()), mwqmRunLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
 
                     mwqmRunLanguage = null;
                     mwqmRunLanguage = GetFilledRandomMWQMRunLanguage("");
                     mwqmRunLanguage.LastUpdateContactTVItemID = 1;
                     mwqmRunLanguageService.Add(mwqmRunLanguage);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsNotOfType_, "LastUpdateContactTVItemID", "Contact"), mwqmRunLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsNotOfType_, "LastUpdateContactTVItemID", "Contact"), mwqmRunLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
 
 
                     // -----------------------------------
@@ -277,7 +277,7 @@ namespace CSSPServices.Tests
         #endregion Tests Generated Properties
 
         #region Tests Generated for GetMWQMRunLanguageWithMWQMRunLanguageID(mwqmRunLanguage.MWQMRunLanguageID)
-        [TestMethod]
+        [Fact]
         public void GetMWQMRunLanguageWithMWQMRunLanguageID__mwqmRunLanguage_MWQMRunLanguageID__Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -288,7 +288,7 @@ namespace CSSPServices.Tests
                 {
                     MWQMRunLanguageService mwqmRunLanguageService = new MWQMRunLanguageService(new Query() { Lang = culture.TwoLetterISOLanguageName }, dbTestDB, ContactID);
                     MWQMRunLanguage mwqmRunLanguage = (from c in dbTestDB.MWQMRunLanguages select c).FirstOrDefault();
-                    Assert.IsNotNull(mwqmRunLanguage);
+                    Assert.NotNull(mwqmRunLanguage);
 
                 }
             }
@@ -296,7 +296,7 @@ namespace CSSPServices.Tests
         #endregion Tests Generated for GetMWQMRunLanguageWithMWQMRunLanguageID(mwqmRunLanguage.MWQMRunLanguageID)
 
         #region Tests Generated for GetMWQMRunLanguageList()
-        [TestMethod]
+        [Fact]
         public void GetMWQMRunLanguageList_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -307,7 +307,7 @@ namespace CSSPServices.Tests
                 {
                     MWQMRunLanguageService mwqmRunLanguageService = new MWQMRunLanguageService(new Query() { Lang = culture.TwoLetterISOLanguageName }, dbTestDB, ContactID);
                     MWQMRunLanguage mwqmRunLanguage = (from c in dbTestDB.MWQMRunLanguages select c).FirstOrDefault();
-                    Assert.IsNotNull(mwqmRunLanguage);
+                    Assert.NotNull(mwqmRunLanguage);
 
                     List<MWQMRunLanguage> mwqmRunLanguageDirectQueryList = new List<MWQMRunLanguage>();
                     mwqmRunLanguageDirectQueryList = (from c in dbTestDB.MWQMRunLanguages select c).Take(200).ToList();
@@ -318,7 +318,7 @@ namespace CSSPServices.Tests
         #endregion Tests Generated for GetMWQMRunLanguageList()
 
         #region Tests Generated for GetMWQMRunLanguageList() Skip Take
-        [TestMethod]
+        [Fact]
         public void GetMWQMRunLanguageList_Skip_Take_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -337,14 +337,14 @@ namespace CSSPServices.Tests
                         List<MWQMRunLanguage> mwqmRunLanguageList = new List<MWQMRunLanguage>();
                         mwqmRunLanguageList = mwqmRunLanguageService.GetMWQMRunLanguageList().ToList();
                         CheckMWQMRunLanguageFields(mwqmRunLanguageList);
-                        Assert.AreEqual(mwqmRunLanguageDirectQueryList[0].MWQMRunLanguageID, mwqmRunLanguageList[0].MWQMRunLanguageID);
+                        Assert.Equal(mwqmRunLanguageDirectQueryList[0].MWQMRunLanguageID, mwqmRunLanguageList[0].MWQMRunLanguageID);
                 }
             }
         }
         #endregion Tests Generated for GetMWQMRunLanguageList() Skip Take
 
         #region Tests Generated for GetMWQMRunLanguageList() Skip Take Asc
-        [TestMethod]
+        [Fact]
         public void GetMWQMRunLanguageList_Skip_Take_Asc_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -363,14 +363,14 @@ namespace CSSPServices.Tests
                         List<MWQMRunLanguage> mwqmRunLanguageList = new List<MWQMRunLanguage>();
                         mwqmRunLanguageList = mwqmRunLanguageService.GetMWQMRunLanguageList().ToList();
                         CheckMWQMRunLanguageFields(mwqmRunLanguageList);
-                        Assert.AreEqual(mwqmRunLanguageDirectQueryList[0].MWQMRunLanguageID, mwqmRunLanguageList[0].MWQMRunLanguageID);
+                        Assert.Equal(mwqmRunLanguageDirectQueryList[0].MWQMRunLanguageID, mwqmRunLanguageList[0].MWQMRunLanguageID);
                 }
             }
         }
         #endregion Tests Generated for GetMWQMRunLanguageList() Skip Take Asc
 
         #region Tests Generated for GetMWQMRunLanguageList() Skip Take 2 Asc
-        [TestMethod]
+        [Fact]
         public void GetMWQMRunLanguageList_Skip_Take_2Asc_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -389,14 +389,14 @@ namespace CSSPServices.Tests
                         List<MWQMRunLanguage> mwqmRunLanguageList = new List<MWQMRunLanguage>();
                         mwqmRunLanguageList = mwqmRunLanguageService.GetMWQMRunLanguageList().ToList();
                         CheckMWQMRunLanguageFields(mwqmRunLanguageList);
-                        Assert.AreEqual(mwqmRunLanguageDirectQueryList[0].MWQMRunLanguageID, mwqmRunLanguageList[0].MWQMRunLanguageID);
+                        Assert.Equal(mwqmRunLanguageDirectQueryList[0].MWQMRunLanguageID, mwqmRunLanguageList[0].MWQMRunLanguageID);
                 }
             }
         }
         #endregion Tests Generated for GetMWQMRunLanguageList() Skip Take 2 Asc
 
         #region Tests Generated for GetMWQMRunLanguageList() Skip Take Asc Where
-        [TestMethod]
+        [Fact]
         public void GetMWQMRunLanguageList_Skip_Take_Asc_Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -415,14 +415,14 @@ namespace CSSPServices.Tests
                         List<MWQMRunLanguage> mwqmRunLanguageList = new List<MWQMRunLanguage>();
                         mwqmRunLanguageList = mwqmRunLanguageService.GetMWQMRunLanguageList().ToList();
                         CheckMWQMRunLanguageFields(mwqmRunLanguageList);
-                        Assert.AreEqual(mwqmRunLanguageDirectQueryList[0].MWQMRunLanguageID, mwqmRunLanguageList[0].MWQMRunLanguageID);
+                        Assert.Equal(mwqmRunLanguageDirectQueryList[0].MWQMRunLanguageID, mwqmRunLanguageList[0].MWQMRunLanguageID);
                 }
             }
         }
         #endregion Tests Generated for GetMWQMRunLanguageList() Skip Take Asc Where
 
         #region Tests Generated for GetMWQMRunLanguageList() Skip Take Asc 2 Where
-        [TestMethod]
+        [Fact]
         public void GetMWQMRunLanguageList_Skip_Take_Asc_2Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -441,14 +441,14 @@ namespace CSSPServices.Tests
                         List<MWQMRunLanguage> mwqmRunLanguageList = new List<MWQMRunLanguage>();
                         mwqmRunLanguageList = mwqmRunLanguageService.GetMWQMRunLanguageList().ToList();
                         CheckMWQMRunLanguageFields(mwqmRunLanguageList);
-                        Assert.AreEqual(mwqmRunLanguageDirectQueryList[0].MWQMRunLanguageID, mwqmRunLanguageList[0].MWQMRunLanguageID);
+                        Assert.Equal(mwqmRunLanguageDirectQueryList[0].MWQMRunLanguageID, mwqmRunLanguageList[0].MWQMRunLanguageID);
                 }
             }
         }
         #endregion Tests Generated for GetMWQMRunLanguageList() Skip Take Asc 2 Where
 
         #region Tests Generated for GetMWQMRunLanguageList() Skip Take Desc
-        [TestMethod]
+        [Fact]
         public void GetMWQMRunLanguageList_Skip_Take_Desc_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -467,14 +467,14 @@ namespace CSSPServices.Tests
                         List<MWQMRunLanguage> mwqmRunLanguageList = new List<MWQMRunLanguage>();
                         mwqmRunLanguageList = mwqmRunLanguageService.GetMWQMRunLanguageList().ToList();
                         CheckMWQMRunLanguageFields(mwqmRunLanguageList);
-                        Assert.AreEqual(mwqmRunLanguageDirectQueryList[0].MWQMRunLanguageID, mwqmRunLanguageList[0].MWQMRunLanguageID);
+                        Assert.Equal(mwqmRunLanguageDirectQueryList[0].MWQMRunLanguageID, mwqmRunLanguageList[0].MWQMRunLanguageID);
                 }
             }
         }
         #endregion Tests Generated for GetMWQMRunLanguageList() Skip Take Desc
 
         #region Tests Generated for GetMWQMRunLanguageList() Skip Take 2 Desc
-        [TestMethod]
+        [Fact]
         public void GetMWQMRunLanguageList_Skip_Take_2Desc_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -493,14 +493,14 @@ namespace CSSPServices.Tests
                         List<MWQMRunLanguage> mwqmRunLanguageList = new List<MWQMRunLanguage>();
                         mwqmRunLanguageList = mwqmRunLanguageService.GetMWQMRunLanguageList().ToList();
                         CheckMWQMRunLanguageFields(mwqmRunLanguageList);
-                        Assert.AreEqual(mwqmRunLanguageDirectQueryList[0].MWQMRunLanguageID, mwqmRunLanguageList[0].MWQMRunLanguageID);
+                        Assert.Equal(mwqmRunLanguageDirectQueryList[0].MWQMRunLanguageID, mwqmRunLanguageList[0].MWQMRunLanguageID);
                 }
             }
         }
         #endregion Tests Generated for GetMWQMRunLanguageList() Skip Take 2 Desc
 
         #region Tests Generated for GetMWQMRunLanguageList() Skip Take Desc Where
-        [TestMethod]
+        [Fact]
         public void GetMWQMRunLanguageList_Skip_Take_Desc_Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -519,14 +519,14 @@ namespace CSSPServices.Tests
                         List<MWQMRunLanguage> mwqmRunLanguageList = new List<MWQMRunLanguage>();
                         mwqmRunLanguageList = mwqmRunLanguageService.GetMWQMRunLanguageList().ToList();
                         CheckMWQMRunLanguageFields(mwqmRunLanguageList);
-                        Assert.AreEqual(mwqmRunLanguageDirectQueryList[0].MWQMRunLanguageID, mwqmRunLanguageList[0].MWQMRunLanguageID);
+                        Assert.Equal(mwqmRunLanguageDirectQueryList[0].MWQMRunLanguageID, mwqmRunLanguageList[0].MWQMRunLanguageID);
                 }
             }
         }
         #endregion Tests Generated for GetMWQMRunLanguageList() Skip Take Desc Where
 
         #region Tests Generated for GetMWQMRunLanguageList() Skip Take Desc 2 Where
-        [TestMethod]
+        [Fact]
         public void GetMWQMRunLanguageList_Skip_Take_Desc_2Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -545,14 +545,14 @@ namespace CSSPServices.Tests
                         List<MWQMRunLanguage> mwqmRunLanguageList = new List<MWQMRunLanguage>();
                         mwqmRunLanguageList = mwqmRunLanguageService.GetMWQMRunLanguageList().ToList();
                         CheckMWQMRunLanguageFields(mwqmRunLanguageList);
-                        Assert.AreEqual(mwqmRunLanguageDirectQueryList[0].MWQMRunLanguageID, mwqmRunLanguageList[0].MWQMRunLanguageID);
+                        Assert.Equal(mwqmRunLanguageDirectQueryList[0].MWQMRunLanguageID, mwqmRunLanguageList[0].MWQMRunLanguageID);
                 }
             }
         }
         #endregion Tests Generated for GetMWQMRunLanguageList() Skip Take Desc 2 Where
 
         #region Tests Generated for GetMWQMRunLanguageList() 2 Where
-        [TestMethod]
+        [Fact]
         public void GetMWQMRunLanguageList_2Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -571,7 +571,7 @@ namespace CSSPServices.Tests
                         List<MWQMRunLanguage> mwqmRunLanguageList = new List<MWQMRunLanguage>();
                         mwqmRunLanguageList = mwqmRunLanguageService.GetMWQMRunLanguageList().ToList();
                         CheckMWQMRunLanguageFields(mwqmRunLanguageList);
-                        Assert.AreEqual(mwqmRunLanguageDirectQueryList[0].MWQMRunLanguageID, mwqmRunLanguageList[0].MWQMRunLanguageID);
+                        Assert.Equal(mwqmRunLanguageDirectQueryList[0].MWQMRunLanguageID, mwqmRunLanguageList[0].MWQMRunLanguageID);
                 }
             }
         }
@@ -580,16 +580,16 @@ namespace CSSPServices.Tests
         #region Functions private
         private void CheckMWQMRunLanguageFields(List<MWQMRunLanguage> mwqmRunLanguageList)
         {
-            Assert.IsNotNull(mwqmRunLanguageList[0].MWQMRunLanguageID);
-            Assert.IsNotNull(mwqmRunLanguageList[0].MWQMRunID);
-            Assert.IsNotNull(mwqmRunLanguageList[0].Language);
-            Assert.IsFalse(string.IsNullOrWhiteSpace(mwqmRunLanguageList[0].RunComment));
-            Assert.IsNotNull(mwqmRunLanguageList[0].TranslationStatusRunComment);
-            Assert.IsFalse(string.IsNullOrWhiteSpace(mwqmRunLanguageList[0].RunWeatherComment));
-            Assert.IsNotNull(mwqmRunLanguageList[0].TranslationStatusRunWeatherComment);
-            Assert.IsNotNull(mwqmRunLanguageList[0].LastUpdateDate_UTC);
-            Assert.IsNotNull(mwqmRunLanguageList[0].LastUpdateContactTVItemID);
-            Assert.IsNotNull(mwqmRunLanguageList[0].HasErrors);
+            Assert.NotNull(mwqmRunLanguageList[0].MWQMRunLanguageID);
+            Assert.NotNull(mwqmRunLanguageList[0].MWQMRunID);
+            Assert.NotNull(mwqmRunLanguageList[0].Language);
+            Assert.False(string.IsNullOrWhiteSpace(mwqmRunLanguageList[0].RunComment));
+            Assert.NotNull(mwqmRunLanguageList[0].TranslationStatusRunComment);
+            Assert.False(string.IsNullOrWhiteSpace(mwqmRunLanguageList[0].RunWeatherComment));
+            Assert.NotNull(mwqmRunLanguageList[0].TranslationStatusRunWeatherComment);
+            Assert.NotNull(mwqmRunLanguageList[0].LastUpdateDate_UTC);
+            Assert.NotNull(mwqmRunLanguageList[0].LastUpdateContactTVItemID);
+            Assert.NotNull(mwqmRunLanguageList[0].HasErrors);
         }
         private MWQMRunLanguage GetFilledRandomMWQMRunLanguage(string OmitPropName)
         {

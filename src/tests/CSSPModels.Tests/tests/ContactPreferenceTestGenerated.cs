@@ -6,7 +6,7 @@
  */ 
 using System;
 using System.Text;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using System.Linq;
 using System.Globalization;
 using System.Transactions;
@@ -19,7 +19,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace CSSPModels.Tests
 {
-    [TestClass]
+
     public partial class ContactPreferenceTest
     {
         #region Variables
@@ -37,7 +37,7 @@ namespace CSSPModels.Tests
         #endregion Constructors
 
         #region Tests Functions public
-        [TestMethod]
+        [Fact]
         public void ContactPreference_Properties_Test()
         {
             List<string> propNameList = new List<string>() { "ContactPreferenceID", "ContactID", "TVType", "MarkerSize", "LastUpdateDate_UTC", "LastUpdateContactTVItemID",  }.OrderBy(c => c).ToList();
@@ -50,12 +50,12 @@ namespace CSSPModels.Tests
                     && propertyInfo.Name != "ValidationResults"
                     && !propertyInfo.CustomAttributes.Where(c => c.AttributeType.Name.Contains("NotMappedAttribute")).Any())
                 {
-                    Assert.AreEqual(propNameList[index], propertyInfo.Name);
+                    Assert.Equal(propNameList[index], propertyInfo.Name);
                     index += 1;
                 }
             }
 
-            Assert.AreEqual(propNameList.Count, index);
+            Assert.Equal(propNameList.Count, index);
 
             index = 0;
             foreach (PropertyInfo propertyInfo in typeof(ContactPreference).GetProperties().Where(c => c.Name != "ValidationResults").OrderBy(c => c.Name).ToList())
@@ -64,16 +64,16 @@ namespace CSSPModels.Tests
                 {
                     if (customAttributeData.AttributeType.Name == "NotMappedAttribute")
                     {
-                        Assert.AreEqual(propertyInfo.Name, propNameNotMappedList[index]);
+                        Assert.Equal(propertyInfo.Name, propNameNotMappedList[index]);
                         index += 1;
                     }
                 }
             }
 
-            Assert.AreEqual(propNameNotMappedList.Count, index);
+            Assert.Equal(propNameNotMappedList.Count, index);
 
         }
-        [TestMethod]
+        [Fact]
         public void ContactPreference_Navigation_Test()
         {
             List<string> foreignNameList = new List<string>() {  }.OrderBy(c => c).ToList();
@@ -84,58 +84,58 @@ namespace CSSPModels.Tests
             {
                 if (propertyInfo.GetGetMethod().IsVirtual && !propertyInfo.GetGetMethod().ReturnType.Name.StartsWith("ICollection"))
                 {
-                    Assert.IsTrue(foreignNameList.Contains(propertyInfo.Name));
+                    Assert.True(foreignNameList.Contains(propertyInfo.Name));
                     index += 1;
                 }
             }
 
-            Assert.AreEqual(foreignNameList.Count, index);
+            Assert.Equal(foreignNameList.Count, index);
 
             index = 0;
             foreach (PropertyInfo propertyInfo in typeof(ContactPreference).GetProperties().Where(c => c.Name != "ValidationResults").OrderBy(c => c.Name).ToList())
             {
                 if (propertyInfo.GetGetMethod().ReturnType.Name.StartsWith("ICollection"))
                 {
-                    Assert.IsTrue(foreignNameCollectionList.Contains(propertyInfo.Name));
+                    Assert.True(foreignNameCollectionList.Contains(propertyInfo.Name));
                     index += 1;
                 }
             }
 
-            Assert.AreEqual(foreignNameCollectionList.Count, index);
+            Assert.Equal(foreignNameCollectionList.Count, index);
 
         }
-        [TestMethod]
+        [Fact]
         public void ContactPreference_Has_ValidationResults_Test()
         {
-             Assert.IsTrue(typeof(ContactPreference).GetProperties().Where(c => c.Name == "ValidationResults").Any());
+             Assert.True(typeof(ContactPreference).GetProperties().Where(c => c.Name == "ValidationResults").Any());
         }
-        [TestMethod]
+        [Fact]
         public void ContactPreference_Every_Property_Has_Get_Set_Test()
         {
                int val1 = 45;
                contactPreference.ContactPreferenceID = val1;
-               Assert.AreEqual(val1, contactPreference.ContactPreferenceID);
+               Assert.Equal(val1, contactPreference.ContactPreferenceID);
                int val2 = 45;
                contactPreference.ContactID = val2;
-               Assert.AreEqual(val2, contactPreference.ContactID);
+               Assert.Equal(val2, contactPreference.ContactID);
                TVTypeEnum val3 = (TVTypeEnum)3;
                contactPreference.TVType = val3;
-               Assert.AreEqual(val3, contactPreference.TVType);
+               Assert.Equal(val3, contactPreference.TVType);
                int val4 = 45;
                contactPreference.MarkerSize = val4;
-               Assert.AreEqual(val4, contactPreference.MarkerSize);
+               Assert.Equal(val4, contactPreference.MarkerSize);
                DateTime val5 = new DateTime(2010, 3, 4);
                contactPreference.LastUpdateDate_UTC = val5;
-               Assert.AreEqual(val5, contactPreference.LastUpdateDate_UTC);
+               Assert.Equal(val5, contactPreference.LastUpdateDate_UTC);
                int val6 = 45;
                contactPreference.LastUpdateContactTVItemID = val6;
-               Assert.AreEqual(val6, contactPreference.LastUpdateContactTVItemID);
+               Assert.Equal(val6, contactPreference.LastUpdateContactTVItemID);
                bool val7 = true;
                contactPreference.HasErrors = val7;
-               Assert.AreEqual(val7, contactPreference.HasErrors);
+               Assert.Equal(val7, contactPreference.HasErrors);
                IEnumerable<ValidationResult> val24 = new List<ValidationResult>() { new ValidationResult("First CSSPError Message") }.AsEnumerable();
                contactPreference.ValidationResults = val24;
-               Assert.AreEqual(val24, contactPreference.ValidationResults);
+               Assert.Equal(val24, contactPreference.ValidationResults);
         }
         #endregion Tests Functions public
     }

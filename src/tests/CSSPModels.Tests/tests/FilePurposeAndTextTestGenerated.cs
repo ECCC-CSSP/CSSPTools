@@ -6,7 +6,7 @@
  */ 
 using System;
 using System.Text;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using System.Linq;
 using System.Globalization;
 using System.Transactions;
@@ -19,7 +19,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace CSSPModels.Tests
 {
-    [TestClass]
+
     public partial class FilePurposeAndTextTest
     {
         #region Variables
@@ -37,7 +37,7 @@ namespace CSSPModels.Tests
         #endregion Constructors
 
         #region Tests Functions public
-        [TestMethod]
+        [Fact]
         public void FilePurposeAndText_Properties_Test()
         {
             List<string> propNameList = new List<string>() { "FilePurpose", "FilePurposeText", "HasErrors",  }.OrderBy(c => c).ToList();
@@ -46,32 +46,32 @@ namespace CSSPModels.Tests
             int index = 0;
             foreach (PropertyInfo propertyInfo in typeof(FilePurposeAndText).GetProperties().Where(c => c.Name != "ValidationResults").OrderBy(c => c.Name).ToList())
             {
-                Assert.AreEqual(propertyInfo.Name, propNameList[index]);
+                Assert.Equal(propertyInfo.Name, propNameList[index]);
                 index += 1;
             }
 
-            Assert.AreEqual(propNameList.Count, index);
+            Assert.Equal(propNameList.Count, index);
         }
-        [TestMethod]
+        [Fact]
         public void FilePurposeAndText_Has_ValidationResults_Test()
         {
-             Assert.IsTrue(typeof(FilePurposeAndText).GetProperties().Where(c => c.Name == "ValidationResults").Any());
+             Assert.True(typeof(FilePurposeAndText).GetProperties().Where(c => c.Name == "ValidationResults").Any());
         }
-        [TestMethod]
+        [Fact]
         public void FilePurposeAndText_Every_Property_Has_Get_Set_Test()
         {
                FilePurposeEnum val1 = (FilePurposeEnum)3;
                filePurposeAndText.FilePurpose = val1;
-               Assert.AreEqual(val1, filePurposeAndText.FilePurpose);
+               Assert.Equal(val1, filePurposeAndText.FilePurpose);
                string val2 = "Some text";
                filePurposeAndText.FilePurposeText = val2;
-               Assert.AreEqual(val2, filePurposeAndText.FilePurposeText);
+               Assert.Equal(val2, filePurposeAndText.FilePurposeText);
                bool val3 = true;
                filePurposeAndText.HasErrors = val3;
-               Assert.AreEqual(val3, filePurposeAndText.HasErrors);
+               Assert.Equal(val3, filePurposeAndText.HasErrors);
                IEnumerable<ValidationResult> val12 = new List<ValidationResult>() { new ValidationResult("First CSSPError Message") }.AsEnumerable();
                filePurposeAndText.ValidationResults = val12;
-               Assert.AreEqual(val12, filePurposeAndText.ValidationResults);
+               Assert.Equal(val12, filePurposeAndText.ValidationResults);
         }
         #endregion Tests Functions public
     }

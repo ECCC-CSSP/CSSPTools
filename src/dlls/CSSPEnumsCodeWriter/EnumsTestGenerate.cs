@@ -15,7 +15,7 @@ namespace CSSPEnumsGenerateCodeHelper
         ///     C:\CSSPTools\src\tests\CSSPEnums.Tests\tests\EnumsTestGenerated.cs file
         /// 
         /// Requires:
-        ///     C:\CSSPTools\src\dlls\CSSPEnums\bin\Debug\netcoreapp3.0\CSSPEnums.dll
+        ///     C:\CSSPTools\src\dlls\CSSPEnums\bin\Debug\netcoreapp3.1\CSSPEnums.dll
         /// </summary>
         public void EnumsTestGenerate()
         {
@@ -24,7 +24,7 @@ namespace CSSPEnumsGenerateCodeHelper
             StatusPermanentEvent(new StatusEventArgs(""));
 
             StringBuilder sb = new StringBuilder();
-            FileInfo fiDLL = new FileInfo(@"C:\CSSPTools\src\dlls\CSSPEnums\bin\Debug\netcoreapp3.0\CSSPEnums.dll");
+            FileInfo fiDLL = new FileInfo(@"C:\CSSPTools\src\dlls\CSSPEnums\bin\Debug\netcoreapp3.1\CSSPEnums.dll");
             FileInfo fi = new FileInfo(@"C:\CSSPTools\src\tests\CSSPEnums.Tests\tests\EnumsTestGenerated.cs");
 
             if (!fiDLL.Exists)
@@ -40,6 +40,7 @@ namespace CSSPEnumsGenerateCodeHelper
             sb.AppendLine(@" *");
             sb.AppendLine(@" */ ");
             sb.AppendLine(@"using System;");
+            sb.AppendLine(@"using Xunit;");
             sb.AppendLine(@"using System.Collections.Generic;");
             sb.AppendLine(@"using Microsoft.VisualStudio.TestTools.UnitTesting;");
             sb.AppendLine(@"using System.Globalization;");
@@ -64,7 +65,7 @@ namespace CSSPEnumsGenerateCodeHelper
                     if (enumName == "PolSourceObsInfoEnum")
                         continue;
 
-                    sb.AppendLine(@"        [TestMethod]");
+                    sb.AppendLine(@"        [Fact]");
                     sb.AppendLine($@"        public void Enums_GetEnumText_{ enumName }_Test()");
                     sb.AppendLine(@"        {");
                     sb.AppendLine(@"            foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo(""en-CA""), new CultureInfo(""fr-CA"") })");
@@ -72,13 +73,13 @@ namespace CSSPEnumsGenerateCodeHelper
                     sb.AppendLine(@"                SetupTest(culture);");
                     sb.AppendLine(@"");
                     sb.AppendLine($@"                string retStr = enums.GetResValueForTypeAndID(typeof({ enumName }), -100);");
-                    sb.AppendLine(@"                Assert.AreEqual(CSSPEnumsRes.Empty, retStr);");
+                    sb.AppendLine(@"                Assert.Equal(CSSPEnumsRes.Empty, retStr);");
                     sb.AppendLine(@"");
                     sb.AppendLine($@"                retStr = enums.GetResValueForTypeAndID(typeof({ enumName }), 10000000);");
-                    sb.AppendLine(@"                Assert.AreEqual(CSSPEnumsRes.Empty, retStr);");
+                    sb.AppendLine(@"                Assert.Equal(CSSPEnumsRes.Empty, retStr);");
                     sb.AppendLine(@"");
                     sb.AppendLine($@"                retStr = enums.GetResValueForTypeAndID(typeof({ enumName }), null);");
-                    sb.AppendLine(@"                Assert.AreEqual(CSSPEnumsRes.Empty, retStr);");
+                    sb.AppendLine(@"                Assert.Equal(CSSPEnumsRes.Empty, retStr);");
                     sb.AppendLine(@"");
                     sb.AppendLine($@"                foreach (int i in Enum.GetValues(typeof({ enumName })))");
                     sb.AppendLine(@"                {");
@@ -94,18 +95,18 @@ namespace CSSPEnumsGenerateCodeHelper
                             sb.AppendLine($@"                        case { enumName }.{ fName }:");
                             if (fName == "CSSPError")
                             {
-                                sb.AppendLine(@"                            Assert.AreEqual(CSSPEnumsRes.Empty, retStr);");
+                                sb.AppendLine(@"                            Assert.Equal(CSSPEnumsRes.Empty, retStr);");
                                 sb.AppendLine(@"                            break;");
                             }
                             else
                             {
-                                sb.AppendLine($@"                            Assert.AreEqual(CSSPEnumsRes.{ enumName }{ fName }, retStr);");
+                                sb.AppendLine($@"                            Assert.Equal(CSSPEnumsRes.{ enumName }{ fName }, retStr);");
                                 sb.AppendLine(@"                            break;");
                             }
                         }
                     }
                     sb.AppendLine(@"                        default:");
-                    sb.AppendLine(@"                            Assert.AreEqual(CSSPEnumsRes.Empty, retStr);");
+                    sb.AppendLine(@"                            Assert.Equal(CSSPEnumsRes.Empty, retStr);");
                     sb.AppendLine(@"                            break;");
                     sb.AppendLine(@"                    }");
                     sb.AppendLine(@"                }");
@@ -121,7 +122,7 @@ namespace CSSPEnumsGenerateCodeHelper
 
             // Doing Testing Methods Check OK public
             sb.AppendLine(@"        #region Testing Methods Check OK public");
-            sb.AppendLine(@"        [TestMethod]");
+            sb.AppendLine(@"        [Fact]");
             sb.AppendLine(@"        public void Enums_EnumTypeListOK_Test()");
             sb.AppendLine(@"        {");
             sb.AppendLine(@"            foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo(""en-CA""), new CultureInfo(""fr-CA"") })");
@@ -129,14 +130,14 @@ namespace CSSPEnumsGenerateCodeHelper
             sb.AppendLine(@"                SetupTest(culture);");
             sb.AppendLine(@"");
             sb.AppendLine(@"                List<int?> intList = new List<int?>() { (int)PolSourceObsInfoEnum.AgriculturalSourceCrop, (int)PolSourceObsInfoEnum.AgricultureSourcePasture };");
-            sb.AppendLine(@"                Assert.AreEqual((int)PolSourceObsInfoEnum.AgriculturalSourceCrop, intList[0]);");
-            sb.AppendLine(@"                Assert.AreEqual((int)PolSourceObsInfoEnum.AgricultureSourcePasture, intList[1]);");
+            sb.AppendLine(@"                Assert.Equal((int)PolSourceObsInfoEnum.AgriculturalSourceCrop, intList[0]);");
+            sb.AppendLine(@"                Assert.Equal((int)PolSourceObsInfoEnum.AgricultureSourcePasture, intList[1]);");
             sb.AppendLine(@"                string retStr = enums.EnumTypeListOK(typeof(PolSourceObsInfoEnum), intList);");
-            sb.AppendLine(@"                Assert.AreEqual("""", retStr);");
+            sb.AppendLine(@"                Assert.Equal("""", retStr);");
             sb.AppendLine(@"");
             sb.AppendLine(@"                intList.Add(1000000);");
             sb.AppendLine(@"                retStr = enums.EnumTypeListOK(typeof(PolSourceObsInfoEnum), intList);");
-            sb.AppendLine(@"                Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, ""PolSourceObsInfoEnum""), retStr);");
+            sb.AppendLine(@"                Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, ""PolSourceObsInfoEnum""), retStr);");
             sb.AppendLine(@"            }");
             sb.AppendLine(@"        }");
 
@@ -148,7 +149,7 @@ namespace CSSPEnumsGenerateCodeHelper
                 {
                     string enumName = type.Name;
 
-                    sb.AppendLine(@"        [TestMethod]");
+                    sb.AppendLine(@"        [Fact]");
                     sb.AppendLine($@"        public void Enums_{ enumName.Substring(0, enumName.Length - 4) }OK_Test()");
                     sb.AppendLine(@"        {");
                     sb.AppendLine(@"            foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo(""en-CA""), new CultureInfo(""fr-CA"") })");
@@ -156,13 +157,13 @@ namespace CSSPEnumsGenerateCodeHelper
                     sb.AppendLine(@"                SetupTest(culture);");
                     sb.AppendLine(@"");
                     sb.AppendLine($@"                string retStr = enums.EnumTypeOK(typeof({ enumName }), null);");
-                    sb.AppendLine(@"                Assert.AreEqual("""", retStr);");
+                    sb.AppendLine(@"                Assert.Equal("""", retStr);");
                     sb.AppendLine(@"");
                     sb.AppendLine($@"                retStr = enums.EnumTypeOK(typeof({ enumName }), -100);");
-                    sb.AppendLine($@"                Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, ""{ enumName }""), retStr);");
+                    sb.AppendLine($@"                Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, ""{ enumName }""), retStr);");
                     sb.AppendLine(@"");
                     sb.AppendLine($@"                retStr = enums.EnumTypeOK(typeof({ enumName }), 10000000);");
-                    sb.AppendLine($@"                Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, ""{ enumName }""), retStr);");
+                    sb.AppendLine($@"                Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, ""{ enumName }""), retStr);");
                     sb.AppendLine(@"");
                     sb.AppendLine($@"                foreach (int i in Enum.GetValues(typeof({ enumName })))");
                     sb.AppendLine(@"                {");
@@ -178,10 +179,10 @@ namespace CSSPEnumsGenerateCodeHelper
                             sb.AppendLine($@"                        case { enumName }.{ fName }:");
                         }
                     }
-                    sb.AppendLine(@"                            Assert.AreEqual("""", retStr);");
+                    sb.AppendLine(@"                            Assert.Equal("""", retStr);");
                     sb.AppendLine(@"                            break;");
                     sb.AppendLine(@"                        default:");
-                    sb.AppendLine($@"                            Assert.AreEqual(string.Format(CSSPEnumsRes._IsRequired, ""{ enumName }""), retStr);");
+                    sb.AppendLine($@"                            Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, ""{ enumName }""), retStr);");
                     sb.AppendLine(@"                            break;");
                     sb.AppendLine(@"                    }");
                     sb.AppendLine(@"                }");
@@ -204,7 +205,7 @@ namespace CSSPEnumsGenerateCodeHelper
                 {
                     string enumName = type.Name;
 
-                    sb.AppendLine(@"        [TestMethod]");
+                    sb.AppendLine(@"        [Fact]");
                     sb.AppendLine($@"        public void Enums_{ enumName }TextOrdered_Test()");
                     sb.AppendLine(@"        {");
                     sb.AppendLine(@"            foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo(""en-CA""), new CultureInfo(""fr-CA"") })");
@@ -219,15 +220,15 @@ namespace CSSPEnumsGenerateCodeHelper
                     sb.AppendLine(@"                enumTextOrderedList = enumTextOrderedList.OrderBy(c => c.EnumText).ToList();");
                     sb.AppendLine(@"");
                     sb.AppendLine($@"                List<EnumIDAndText> enumTextOrderedList2 = enums.GetEnumTextOrderedList(typeof({ enumName }));");
-                    sb.AppendLine(@"                Assert.AreEqual(enumTextOrderedList.Count, enumTextOrderedList2.Count);");
+                    sb.AppendLine(@"                Assert.Equal(enumTextOrderedList.Count, enumTextOrderedList2.Count);");
                     sb.AppendLine(@"");
                     sb.AppendLine(@"                EnumIDAndText enumTextOrdered = new EnumIDAndText();");
-                    sb.AppendLine(@"                Assert.IsNotNull(enumTextOrdered);");
+                    sb.AppendLine(@"                Assert.NotNull(enumTextOrdered);");
                     sb.AppendLine(@"");
                     sb.AppendLine(@"                for (int i = 0, count = enumTextOrderedList.Count; i < count; i++)");
                     sb.AppendLine(@"                {");
-                    sb.AppendLine(@"                    Assert.AreEqual(enumTextOrderedList[i].EnumText, enumTextOrderedList2[i].EnumText);");
-                    sb.AppendLine(@"                    Assert.AreEqual(enumTextOrderedList[i].EnumID, enumTextOrderedList2[i].EnumID);");
+                    sb.AppendLine(@"                    Assert.Equal(enumTextOrderedList[i].EnumText, enumTextOrderedList2[i].EnumText);");
+                    sb.AppendLine(@"                    Assert.Equal(enumTextOrderedList[i].EnumID, enumTextOrderedList2[i].EnumID);");
                     sb.AppendLine(@"                }");
                     sb.AppendLine(@"            }");
                     sb.AppendLine(@"        }");

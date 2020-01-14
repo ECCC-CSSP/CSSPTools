@@ -6,7 +6,7 @@
  */ 
 using System;
 using System.Text;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using System.Linq;
 using System.Globalization;
 using System.Transactions;
@@ -19,7 +19,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace CSSPModels.Tests
 {
-    [TestClass]
+
     public partial class CSSPWQInputParamTest
     {
         #region Variables
@@ -37,7 +37,7 @@ namespace CSSPModels.Tests
         #endregion Constructors
 
         #region Tests Functions public
-        [TestMethod]
+        [Fact]
         public void CSSPWQInputParam_Properties_Test()
         {
             List<string> propNameList = new List<string>() { "CSSPWQInputType", "Name", "TVItemID", "CSSPWQInputTypeText", "sidList", "MWQMSiteList", "MWQMSiteTVItemIDList", "DailyDuplicateMWQMSiteList", "DailyDuplicateMWQMSiteTVItemIDList", "InfrastructureList", "InfrastructureTVItemIDList", "HasErrors",  }.OrderBy(c => c).ToList();
@@ -46,59 +46,59 @@ namespace CSSPModels.Tests
             int index = 0;
             foreach (PropertyInfo propertyInfo in typeof(CSSPWQInputParam).GetProperties().Where(c => c.Name != "ValidationResults").OrderBy(c => c.Name).ToList())
             {
-                Assert.AreEqual(propertyInfo.Name, propNameList[index]);
+                Assert.Equal(propertyInfo.Name, propNameList[index]);
                 index += 1;
             }
 
-            Assert.AreEqual(propNameList.Count, index);
+            Assert.Equal(propNameList.Count, index);
         }
-        [TestMethod]
+        [Fact]
         public void CSSPWQInputParam_Has_ValidationResults_Test()
         {
-             Assert.IsTrue(typeof(CSSPWQInputParam).GetProperties().Where(c => c.Name == "ValidationResults").Any());
+             Assert.True(typeof(CSSPWQInputParam).GetProperties().Where(c => c.Name == "ValidationResults").Any());
         }
-        [TestMethod]
+        [Fact]
         public void CSSPWQInputParam_Every_Property_Has_Get_Set_Test()
         {
                CSSPWQInputTypeEnum val1 = (CSSPWQInputTypeEnum)3;
                cSSPWQInputParam.CSSPWQInputType = val1;
-               Assert.AreEqual(val1, cSSPWQInputParam.CSSPWQInputType);
+               Assert.Equal(val1, cSSPWQInputParam.CSSPWQInputType);
                string val2 = "Some text";
                cSSPWQInputParam.Name = val2;
-               Assert.AreEqual(val2, cSSPWQInputParam.Name);
+               Assert.Equal(val2, cSSPWQInputParam.Name);
                int val3 = 45;
                cSSPWQInputParam.TVItemID = val3;
-               Assert.AreEqual(val3, cSSPWQInputParam.TVItemID);
+               Assert.Equal(val3, cSSPWQInputParam.TVItemID);
                string val4 = "Some text";
                cSSPWQInputParam.CSSPWQInputTypeText = val4;
-               Assert.AreEqual(val4, cSSPWQInputParam.CSSPWQInputTypeText);
+               Assert.Equal(val4, cSSPWQInputParam.CSSPWQInputTypeText);
                List<string> val5 = new List<string>() { "testing", "Bonjour Allo" };
                cSSPWQInputParam.sidList = val5;
-               Assert.AreEqual(val5, cSSPWQInputParam.sidList);
+               Assert.Equal(val5, cSSPWQInputParam.sidList);
                List<string> val6 = new List<string>() { "testing", "Bonjour Allo" };
                cSSPWQInputParam.MWQMSiteList = val6;
-               Assert.AreEqual(val6, cSSPWQInputParam.MWQMSiteList);
+               Assert.Equal(val6, cSSPWQInputParam.MWQMSiteList);
                List<int> val7 = new List<int>() { 34, 45, 56 };
                cSSPWQInputParam.MWQMSiteTVItemIDList = val7;
-               Assert.AreEqual(val7, cSSPWQInputParam.MWQMSiteTVItemIDList);
+               Assert.Equal(val7, cSSPWQInputParam.MWQMSiteTVItemIDList);
                List<string> val8 = new List<string>() { "testing", "Bonjour Allo" };
                cSSPWQInputParam.DailyDuplicateMWQMSiteList = val8;
-               Assert.AreEqual(val8, cSSPWQInputParam.DailyDuplicateMWQMSiteList);
+               Assert.Equal(val8, cSSPWQInputParam.DailyDuplicateMWQMSiteList);
                List<int> val9 = new List<int>() { 34, 45, 56 };
                cSSPWQInputParam.DailyDuplicateMWQMSiteTVItemIDList = val9;
-               Assert.AreEqual(val9, cSSPWQInputParam.DailyDuplicateMWQMSiteTVItemIDList);
+               Assert.Equal(val9, cSSPWQInputParam.DailyDuplicateMWQMSiteTVItemIDList);
                List<string> val10 = new List<string>() { "testing", "Bonjour Allo" };
                cSSPWQInputParam.InfrastructureList = val10;
-               Assert.AreEqual(val10, cSSPWQInputParam.InfrastructureList);
+               Assert.Equal(val10, cSSPWQInputParam.InfrastructureList);
                List<int> val11 = new List<int>() { 34, 45, 56 };
                cSSPWQInputParam.InfrastructureTVItemIDList = val11;
-               Assert.AreEqual(val11, cSSPWQInputParam.InfrastructureTVItemIDList);
+               Assert.Equal(val11, cSSPWQInputParam.InfrastructureTVItemIDList);
                bool val12 = true;
                cSSPWQInputParam.HasErrors = val12;
-               Assert.AreEqual(val12, cSSPWQInputParam.HasErrors);
+               Assert.Equal(val12, cSSPWQInputParam.HasErrors);
                IEnumerable<ValidationResult> val39 = new List<ValidationResult>() { new ValidationResult("First CSSPError Message") }.AsEnumerable();
                cSSPWQInputParam.ValidationResults = val39;
-               Assert.AreEqual(val39, cSSPWQInputParam.ValidationResults);
+               Assert.Equal(val39, cSSPWQInputParam.ValidationResults);
         }
         #endregion Tests Functions public
     }

@@ -1,5 +1,5 @@
 using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using System.Linq;
 using System.Collections.Generic;
 using CSSPModels;
@@ -227,7 +227,7 @@ namespace CSSPServices.Tests
                 }
                 catch (Exception ex)
                 {
-                    Assert.AreEqual("", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
+                    Assert.Equal("", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
                 }
             }
             #endregion TVItems
@@ -244,7 +244,7 @@ namespace CSSPServices.Tests
                 }
                 catch (Exception ex)
                 {
-                    Assert.AreEqual("", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
+                    Assert.Equal("", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
                 }
             }
             #endregion TVItemLanguages
@@ -261,7 +261,7 @@ namespace CSSPServices.Tests
                 }
                 catch (Exception ex)
                 {
-                    Assert.AreEqual("", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
+                    Assert.Equal("", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
                 }
             }
             #endregion Contacts
@@ -278,7 +278,7 @@ namespace CSSPServices.Tests
             //    }
             //    catch (Exception ex)
             //    {
-            //        Assert.AreEqual("", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
+            //        Assert.Equal("", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
             //    }
             //}
             //#endregion ContactLogins
@@ -295,7 +295,7 @@ namespace CSSPServices.Tests
                 }
                 catch (Exception ex)
                 {
-                    Assert.AreEqual("", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
+                    Assert.Equal("", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
                 }
             }
             #endregion ClimateSites
@@ -312,7 +312,7 @@ namespace CSSPServices.Tests
                 }
                 catch (Exception ex)
                 {
-                    Assert.AreEqual("", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
+                    Assert.Equal("", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
                 }
             }
             #endregion ClimateDataValues
@@ -329,7 +329,7 @@ namespace CSSPServices.Tests
                 }
                 catch (Exception ex)
                 {
-                    Assert.AreEqual("", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
+                    Assert.Equal("", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
                 }
             }
             #endregion HydrometricSites
@@ -346,7 +346,7 @@ namespace CSSPServices.Tests
                 }
                 catch (Exception ex)
                 {
-                    Assert.AreEqual("", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
+                    Assert.Equal("", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
                 }
             }
             #endregion HydrometricDataValues
@@ -363,7 +363,7 @@ namespace CSSPServices.Tests
                 }
                 catch (Exception ex)
                 {
-                    Assert.AreEqual("", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
+                    Assert.Equal("", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
                 }
             }
             #endregion RatingCurves
@@ -380,7 +380,7 @@ namespace CSSPServices.Tests
                 }
                 catch (Exception ex)
                 {
-                    Assert.AreEqual("", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
+                    Assert.Equal("", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
                 }
             }
             #endregion RatingCurveValues
@@ -397,7 +397,7 @@ namespace CSSPServices.Tests
                 }
                 catch (Exception ex)
                 {
-                    Assert.AreEqual("", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
+                    Assert.Equal("", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
                 }
             }
             #endregion Infrastructures
@@ -414,7 +414,7 @@ namespace CSSPServices.Tests
                 }
                 catch (Exception ex)
                 {
-                    Assert.AreEqual("", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
+                    Assert.Equal("", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
                 }
             }
             #endregion InfrastructureLanguages
@@ -431,7 +431,7 @@ namespace CSSPServices.Tests
                 }
                 catch (Exception ex)
                 {
-                    Assert.AreEqual("", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
+                    Assert.Equal("", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
                 }
             }
             #endregion BoxModels
@@ -448,7 +448,7 @@ namespace CSSPServices.Tests
                 }
                 catch (Exception ex)
                 {
-                    Assert.AreEqual("", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
+                    Assert.Equal("", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
                 }
             }
             #endregion BoxModelLanguages
@@ -465,7 +465,7 @@ namespace CSSPServices.Tests
                 }
                 catch (Exception ex)
                 {
-                    Assert.AreEqual("", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
+                    Assert.Equal("", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
                 }
             }
             #endregion BoxModelResults
@@ -482,7 +482,7 @@ namespace CSSPServices.Tests
                 }
                 catch (Exception ex)
                 {
-                    Assert.AreEqual("", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
+                    Assert.Equal("", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
                 }
             }
             #endregion VPScenarios
@@ -499,7 +499,7 @@ namespace CSSPServices.Tests
                 }
                 catch (Exception ex)
                 {
-                    Assert.AreEqual("", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
+                    Assert.Equal("", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
                 }
             }
             #endregion VPScenarioLanguages
@@ -516,7 +516,7 @@ namespace CSSPServices.Tests
                 }
                 catch (Exception ex)
                 {
-                    Assert.AreEqual("", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
+                    Assert.Equal("", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
                 }
             }
             #endregion VPAmbients
@@ -533,7 +533,7 @@ namespace CSSPServices.Tests
                 }
                 catch (Exception ex)
                 {
-                    Assert.AreEqual("", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
+                    Assert.Equal("", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
                 }
             }
             #endregion VPResults
@@ -550,7 +550,7 @@ namespace CSSPServices.Tests
                 }
                 catch (Exception ex)
                 {
-                    Assert.AreEqual("", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
+                    Assert.Equal("", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
                 }
             }
             #endregion MWQMSites
@@ -567,7 +567,7 @@ namespace CSSPServices.Tests
                 }
                 catch (Exception ex)
                 {
-                    Assert.AreEqual("", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
+                    Assert.Equal("", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
                 }
             }
             #endregion MWQMSiteStartEndDates
@@ -584,7 +584,7 @@ namespace CSSPServices.Tests
                 }
                 catch (Exception ex)
                 {
-                    Assert.AreEqual("", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
+                    Assert.Equal("", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
                 }
             }
             #endregion PolSourceSites
@@ -601,7 +601,7 @@ namespace CSSPServices.Tests
                 }
                 catch (Exception ex)
                 {
-                    Assert.AreEqual("", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
+                    Assert.Equal("", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
                 }
             }
             #endregion PolSourceObservations
@@ -618,7 +618,7 @@ namespace CSSPServices.Tests
                 }
                 catch (Exception ex)
                 {
-                    Assert.AreEqual("", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
+                    Assert.Equal("", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
                 }
             }
             #endregion PolSourceObservationIssues
@@ -635,7 +635,7 @@ namespace CSSPServices.Tests
                 }
                 catch (Exception ex)
                 {
-                    Assert.AreEqual("", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
+                    Assert.Equal("", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
                 }
             }
             #endregion SamplingPlans
@@ -652,7 +652,7 @@ namespace CSSPServices.Tests
                 }
                 catch (Exception ex)
                 {
-                    Assert.AreEqual("", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
+                    Assert.Equal("", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
                 }
             }
             #endregion SamplingPlanSubsectors
@@ -669,7 +669,7 @@ namespace CSSPServices.Tests
                 }
                 catch (Exception ex)
                 {
-                    Assert.AreEqual("", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
+                    Assert.Equal("", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
                 }
             }
             #endregion SamplingPlanSubsectorSites
@@ -686,7 +686,7 @@ namespace CSSPServices.Tests
                 }
                 catch (Exception ex)
                 {
-                    Assert.AreEqual("", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
+                    Assert.Equal("", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
                 }
             }
             #endregion MWQMRuns
@@ -703,7 +703,7 @@ namespace CSSPServices.Tests
                 }
                 catch (Exception ex)
                 {
-                    Assert.AreEqual("", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
+                    Assert.Equal("", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
                 }
             }
             #endregion MWQMRunLanguages
@@ -720,7 +720,7 @@ namespace CSSPServices.Tests
                 }
                 catch (Exception ex)
                 {
-                    Assert.AreEqual("", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
+                    Assert.Equal("", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
                 }
             }
             #endregion UseOfSites
@@ -737,7 +737,7 @@ namespace CSSPServices.Tests
                 }
                 catch (Exception ex)
                 {
-                    Assert.AreEqual("", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
+                    Assert.Equal("", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
                 }
             }
             #endregion MWQMSamples
@@ -754,7 +754,7 @@ namespace CSSPServices.Tests
                 }
                 catch (Exception ex)
                 {
-                    Assert.AreEqual("", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
+                    Assert.Equal("", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
                 }
             }
             #endregion MWQMSampleLanguages
@@ -771,7 +771,7 @@ namespace CSSPServices.Tests
                 }
                 catch (Exception ex)
                 {
-                    Assert.AreEqual("", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
+                    Assert.Equal("", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
                 }
             }
             #endregion MikeScenarios
@@ -788,7 +788,7 @@ namespace CSSPServices.Tests
                 }
                 catch (Exception ex)
                 {
-                    Assert.AreEqual("", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
+                    Assert.Equal("", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
                 }
             }
             #endregion MikeBoundaryConditions
@@ -805,7 +805,7 @@ namespace CSSPServices.Tests
                 }
                 catch (Exception ex)
                 {
-                    Assert.AreEqual("", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
+                    Assert.Equal("", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
                 }
             }
             #endregion MikeSources
@@ -822,7 +822,7 @@ namespace CSSPServices.Tests
                 }
                 catch (Exception ex)
                 {
-                    Assert.AreEqual("", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
+                    Assert.Equal("", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
                 }
             }
             #endregion MikeSourceStartEnds
@@ -839,7 +839,7 @@ namespace CSSPServices.Tests
                 }
                 catch (Exception ex)
                 {
-                    Assert.AreEqual("", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
+                    Assert.Equal("", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
                 }
             }
             #endregion LabSheets
@@ -856,7 +856,7 @@ namespace CSSPServices.Tests
                 }
                 catch (Exception ex)
                 {
-                    Assert.AreEqual("", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
+                    Assert.Equal("", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
                 }
             }
             #endregion LabSheetDetails
@@ -873,7 +873,7 @@ namespace CSSPServices.Tests
                 }
                 catch (Exception ex)
                 {
-                    Assert.AreEqual("", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
+                    Assert.Equal("", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
                 }
             }
             #endregion LabSheetTubeMPNDetails
@@ -890,7 +890,7 @@ namespace CSSPServices.Tests
                 }
                 catch (Exception ex)
                 {
-                    Assert.AreEqual("", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
+                    Assert.Equal("", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
                 }
             }
             #endregion Addresss
@@ -907,7 +907,7 @@ namespace CSSPServices.Tests
                 }
                 catch (Exception ex)
                 {
-                    Assert.AreEqual("", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
+                    Assert.Equal("", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
                 }
             }
             #endregion Emails
@@ -924,7 +924,7 @@ namespace CSSPServices.Tests
                 }
                 catch (Exception ex)
                 {
-                    Assert.AreEqual("", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
+                    Assert.Equal("", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
                 }
             }
             #endregion Tels
@@ -941,7 +941,7 @@ namespace CSSPServices.Tests
                 }
                 catch (Exception ex)
                 {
-                    Assert.AreEqual("", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
+                    Assert.Equal("", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
                 }
             }
             #endregion TVItemLinks
@@ -958,7 +958,7 @@ namespace CSSPServices.Tests
                 }
                 catch (Exception ex)
                 {
-                    Assert.AreEqual("", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
+                    Assert.Equal("", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
                 }
             }
             #endregion MWQMSubsectors
@@ -975,7 +975,7 @@ namespace CSSPServices.Tests
                 }
                 catch (Exception ex)
                 {
-                    Assert.AreEqual("", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
+                    Assert.Equal("", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
                 }
             }
             #endregion MWQMSubsectorLanguages
@@ -992,7 +992,7 @@ namespace CSSPServices.Tests
                 }
                 catch (Exception ex)
                 {
-                    Assert.AreEqual("", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
+                    Assert.Equal("", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
                 }
             }
             #endregion TVFiles
@@ -1009,7 +1009,7 @@ namespace CSSPServices.Tests
                 }
                 catch (Exception ex)
                 {
-                    Assert.AreEqual("", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
+                    Assert.Equal("", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
                 }
             }
             #endregion TVFileLanguages

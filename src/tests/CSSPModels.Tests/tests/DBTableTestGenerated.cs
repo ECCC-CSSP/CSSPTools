@@ -6,7 +6,7 @@
  */ 
 using System;
 using System.Text;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using System.Linq;
 using System.Globalization;
 using System.Transactions;
@@ -19,7 +19,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace CSSPModels.Tests
 {
-    [TestClass]
+
     public partial class DBTableTest
     {
         #region Variables
@@ -37,7 +37,7 @@ namespace CSSPModels.Tests
         #endregion Constructors
 
         #region Tests Functions public
-        [TestMethod]
+        [Fact]
         public void DBTable_Properties_Test()
         {
             List<string> propNameList = new List<string>() { "TableName", "Plurial", "HasErrors",  }.OrderBy(c => c).ToList();
@@ -46,32 +46,32 @@ namespace CSSPModels.Tests
             int index = 0;
             foreach (PropertyInfo propertyInfo in typeof(DBTable).GetProperties().Where(c => c.Name != "ValidationResults").OrderBy(c => c.Name).ToList())
             {
-                Assert.AreEqual(propertyInfo.Name, propNameList[index]);
+                Assert.Equal(propertyInfo.Name, propNameList[index]);
                 index += 1;
             }
 
-            Assert.AreEqual(propNameList.Count, index);
+            Assert.Equal(propNameList.Count, index);
         }
-        [TestMethod]
+        [Fact]
         public void DBTable_Has_ValidationResults_Test()
         {
-             Assert.IsTrue(typeof(DBTable).GetProperties().Where(c => c.Name == "ValidationResults").Any());
+             Assert.True(typeof(DBTable).GetProperties().Where(c => c.Name == "ValidationResults").Any());
         }
-        [TestMethod]
+        [Fact]
         public void DBTable_Every_Property_Has_Get_Set_Test()
         {
                string val1 = "Some text";
                dBTable.TableName = val1;
-               Assert.AreEqual(val1, dBTable.TableName);
+               Assert.Equal(val1, dBTable.TableName);
                string val2 = "Some text";
                dBTable.Plurial = val2;
-               Assert.AreEqual(val2, dBTable.Plurial);
+               Assert.Equal(val2, dBTable.Plurial);
                bool val3 = true;
                dBTable.HasErrors = val3;
-               Assert.AreEqual(val3, dBTable.HasErrors);
+               Assert.Equal(val3, dBTable.HasErrors);
                IEnumerable<ValidationResult> val12 = new List<ValidationResult>() { new ValidationResult("First CSSPError Message") }.AsEnumerable();
                dBTable.ValidationResults = val12;
-               Assert.AreEqual(val12, dBTable.ValidationResults);
+               Assert.Equal(val12, dBTable.ValidationResults);
         }
         #endregion Tests Functions public
     }

@@ -5,7 +5,7 @@
  */ 
 
 using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using System.Linq;
 using System.Collections.Generic;
 using CSSPModels;
@@ -21,7 +21,7 @@ using CSSPEnums.Resources;
 
 namespace CSSPServices.Tests
 {
-    [TestClass]
+
     public partial class PolSourceSiteServiceTest : TestHelper
     {
         #region Variables
@@ -39,7 +39,7 @@ namespace CSSPServices.Tests
         #endregion Constructors
 
         #region Tests Generated CRUD
-        [TestMethod]
+        [Fact]
         public void PolSourceSite_CRUD_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -66,26 +66,26 @@ namespace CSSPServices.Tests
 
                     count = polSourceSiteService.GetPolSourceSiteList().Count();
 
-                    Assert.AreEqual(count, (from c in dbTestDB.PolSourceSites select c).Count());
+                    Assert.Equal(count, (from c in dbTestDB.PolSourceSites select c).Count());
 
                     polSourceSiteService.Add(polSourceSite);
                     if (polSourceSite.HasErrors)
                     {
-                        Assert.AreEqual("", polSourceSite.ValidationResults.FirstOrDefault().ErrorMessage);
+                        Assert.Equal("", polSourceSite.ValidationResults.FirstOrDefault().ErrorMessage);
                     }
-                    Assert.AreEqual(true, polSourceSiteService.GetPolSourceSiteList().Where(c => c == polSourceSite).Any());
+                    Assert.True(polSourceSiteService.GetPolSourceSiteList().Where(c => c == polSourceSite).Any());
                     polSourceSiteService.Update(polSourceSite);
                     if (polSourceSite.HasErrors)
                     {
-                        Assert.AreEqual("", polSourceSite.ValidationResults.FirstOrDefault().ErrorMessage);
+                        Assert.Equal("", polSourceSite.ValidationResults.FirstOrDefault().ErrorMessage);
                     }
-                    Assert.AreEqual(count + 1, polSourceSiteService.GetPolSourceSiteList().Count());
+                    Assert.Equal(count + 1, polSourceSiteService.GetPolSourceSiteList().Count());
                     polSourceSiteService.Delete(polSourceSite);
                     if (polSourceSite.HasErrors)
                     {
-                        Assert.AreEqual("", polSourceSite.ValidationResults.FirstOrDefault().ErrorMessage);
+                        Assert.Equal("", polSourceSite.ValidationResults.FirstOrDefault().ErrorMessage);
                     }
-                    Assert.AreEqual(count, polSourceSiteService.GetPolSourceSiteList().Count());
+                    Assert.Equal(count, polSourceSiteService.GetPolSourceSiteList().Count());
 
                 }
             }
@@ -93,7 +93,7 @@ namespace CSSPServices.Tests
         #endregion Tests Generated CRUD
 
         #region Tests Generated Properties
-        [TestMethod]
+        [Fact]
         public void PolSourceSite_Properties_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -131,13 +131,13 @@ namespace CSSPServices.Tests
                     polSourceSite = GetFilledRandomPolSourceSite("");
                     polSourceSite.PolSourceSiteID = 0;
                     polSourceSiteService.Update(polSourceSite);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsRequired, "PolSourceSiteID"), polSourceSite.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsRequired, "PolSourceSiteID"), polSourceSite.ValidationResults.FirstOrDefault().ErrorMessage);
 
                     polSourceSite = null;
                     polSourceSite = GetFilledRandomPolSourceSite("");
                     polSourceSite.PolSourceSiteID = 10000000;
                     polSourceSiteService.Update(polSourceSite);
-                    Assert.AreEqual(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "PolSourceSite", "PolSourceSiteID", polSourceSite.PolSourceSiteID.ToString()), polSourceSite.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "PolSourceSite", "PolSourceSiteID", polSourceSite.PolSourceSiteID.ToString()), polSourceSite.ValidationResults.FirstOrDefault().ErrorMessage);
 
 
                     // -----------------------------------
@@ -150,13 +150,13 @@ namespace CSSPServices.Tests
                     polSourceSite = GetFilledRandomPolSourceSite("");
                     polSourceSite.PolSourceSiteTVItemID = 0;
                     polSourceSiteService.Add(polSourceSite);
-                    Assert.AreEqual(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "TVItem", "PolSourceSiteTVItemID", polSourceSite.PolSourceSiteTVItemID.ToString()), polSourceSite.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "TVItem", "PolSourceSiteTVItemID", polSourceSite.PolSourceSiteTVItemID.ToString()), polSourceSite.ValidationResults.FirstOrDefault().ErrorMessage);
 
                     polSourceSite = null;
                     polSourceSite = GetFilledRandomPolSourceSite("");
                     polSourceSite.PolSourceSiteTVItemID = 1;
                     polSourceSiteService.Add(polSourceSite);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsNotOfType_, "PolSourceSiteTVItemID", "PolSourceSite"), polSourceSite.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsNotOfType_, "PolSourceSiteTVItemID", "PolSourceSite"), polSourceSite.ValidationResults.FirstOrDefault().ErrorMessage);
 
 
                     // -----------------------------------
@@ -168,9 +168,9 @@ namespace CSSPServices.Tests
                     polSourceSite = null;
                     polSourceSite = GetFilledRandomPolSourceSite("");
                     polSourceSite.Temp_Locator_CanDelete = GetRandomString("", 51);
-                    Assert.AreEqual(false, polSourceSiteService.Add(polSourceSite));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._MaxLengthIs_, "Temp_Locator_CanDelete", "50"), polSourceSite.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, polSourceSiteService.GetPolSourceSiteList().Count());
+                    Assert.False(polSourceSiteService.Add(polSourceSite));
+                    Assert.Equal(string.Format(CSSPServicesRes._MaxLengthIs_, "Temp_Locator_CanDelete", "50"), polSourceSite.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, polSourceSiteService.GetPolSourceSiteList().Count());
 
                     // -----------------------------------
                     // Is Nullable
@@ -181,15 +181,15 @@ namespace CSSPServices.Tests
                     polSourceSite = null;
                     polSourceSite = GetFilledRandomPolSourceSite("");
                     polSourceSite.Oldsiteid = -1;
-                    Assert.AreEqual(false, polSourceSiteService.Add(polSourceSite));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "Oldsiteid", "0", "1000"), polSourceSite.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, polSourceSiteService.GetPolSourceSiteList().Count());
+                    Assert.False(polSourceSiteService.Add(polSourceSite));
+                    Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "Oldsiteid", "0", "1000"), polSourceSite.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, polSourceSiteService.GetPolSourceSiteList().Count());
                     polSourceSite = null;
                     polSourceSite = GetFilledRandomPolSourceSite("");
                     polSourceSite.Oldsiteid = 1001;
-                    Assert.AreEqual(false, polSourceSiteService.Add(polSourceSite));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "Oldsiteid", "0", "1000"), polSourceSite.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, polSourceSiteService.GetPolSourceSiteList().Count());
+                    Assert.False(polSourceSiteService.Add(polSourceSite));
+                    Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "Oldsiteid", "0", "1000"), polSourceSite.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, polSourceSiteService.GetPolSourceSiteList().Count());
 
                     // -----------------------------------
                     // Is Nullable
@@ -200,15 +200,15 @@ namespace CSSPServices.Tests
                     polSourceSite = null;
                     polSourceSite = GetFilledRandomPolSourceSite("");
                     polSourceSite.Site = -1;
-                    Assert.AreEqual(false, polSourceSiteService.Add(polSourceSite));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "Site", "0", "1000"), polSourceSite.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, polSourceSiteService.GetPolSourceSiteList().Count());
+                    Assert.False(polSourceSiteService.Add(polSourceSite));
+                    Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "Site", "0", "1000"), polSourceSite.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, polSourceSiteService.GetPolSourceSiteList().Count());
                     polSourceSite = null;
                     polSourceSite = GetFilledRandomPolSourceSite("");
                     polSourceSite.Site = 1001;
-                    Assert.AreEqual(false, polSourceSiteService.Add(polSourceSite));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "Site", "0", "1000"), polSourceSite.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, polSourceSiteService.GetPolSourceSiteList().Count());
+                    Assert.False(polSourceSiteService.Add(polSourceSite));
+                    Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "Site", "0", "1000"), polSourceSite.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, polSourceSiteService.GetPolSourceSiteList().Count());
 
                     // -----------------------------------
                     // Is Nullable
@@ -219,15 +219,15 @@ namespace CSSPServices.Tests
                     polSourceSite = null;
                     polSourceSite = GetFilledRandomPolSourceSite("");
                     polSourceSite.SiteID = -1;
-                    Assert.AreEqual(false, polSourceSiteService.Add(polSourceSite));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "SiteID", "0", "1000"), polSourceSite.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, polSourceSiteService.GetPolSourceSiteList().Count());
+                    Assert.False(polSourceSiteService.Add(polSourceSite));
+                    Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "SiteID", "0", "1000"), polSourceSite.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, polSourceSiteService.GetPolSourceSiteList().Count());
                     polSourceSite = null;
                     polSourceSite = GetFilledRandomPolSourceSite("");
                     polSourceSite.SiteID = 1001;
-                    Assert.AreEqual(false, polSourceSiteService.Add(polSourceSite));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "SiteID", "0", "1000"), polSourceSite.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, polSourceSiteService.GetPolSourceSiteList().Count());
+                    Assert.False(polSourceSiteService.Add(polSourceSite));
+                    Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "SiteID", "0", "1000"), polSourceSite.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, polSourceSiteService.GetPolSourceSiteList().Count());
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -245,7 +245,7 @@ namespace CSSPServices.Tests
                     polSourceSite = GetFilledRandomPolSourceSite("");
                     polSourceSite.InactiveReason = (PolSourceInactiveReasonEnum)1000000;
                     polSourceSiteService.Add(polSourceSite);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsRequired, "InactiveReason"), polSourceSite.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsRequired, "InactiveReason"), polSourceSite.ValidationResults.FirstOrDefault().ErrorMessage);
 
 
                     // -----------------------------------
@@ -258,13 +258,13 @@ namespace CSSPServices.Tests
                     polSourceSite = GetFilledRandomPolSourceSite("");
                     polSourceSite.CivicAddressTVItemID = 0;
                     polSourceSiteService.Add(polSourceSite);
-                    Assert.AreEqual(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "TVItem", "CivicAddressTVItemID", polSourceSite.CivicAddressTVItemID.ToString()), polSourceSite.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "TVItem", "CivicAddressTVItemID", polSourceSite.CivicAddressTVItemID.ToString()), polSourceSite.ValidationResults.FirstOrDefault().ErrorMessage);
 
                     polSourceSite = null;
                     polSourceSite = GetFilledRandomPolSourceSite("");
                     polSourceSite.CivicAddressTVItemID = 1;
                     polSourceSiteService.Add(polSourceSite);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsNotOfType_, "CivicAddressTVItemID", "Address"), polSourceSite.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsNotOfType_, "CivicAddressTVItemID", "Address"), polSourceSite.ValidationResults.FirstOrDefault().ErrorMessage);
 
 
                     // -----------------------------------
@@ -277,12 +277,12 @@ namespace CSSPServices.Tests
                     polSourceSite = GetFilledRandomPolSourceSite("");
                     polSourceSite.LastUpdateDate_UTC = new DateTime();
                     polSourceSiteService.Add(polSourceSite);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsRequired, "LastUpdateDate_UTC"), polSourceSite.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsRequired, "LastUpdateDate_UTC"), polSourceSite.ValidationResults.FirstOrDefault().ErrorMessage);
                     polSourceSite = null;
                     polSourceSite = GetFilledRandomPolSourceSite("");
                     polSourceSite.LastUpdateDate_UTC = new DateTime(1979, 1, 1);
                     polSourceSiteService.Add(polSourceSite);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._YearShouldBeBiggerThan_, "LastUpdateDate_UTC", "1980"), polSourceSite.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._YearShouldBeBiggerThan_, "LastUpdateDate_UTC", "1980"), polSourceSite.ValidationResults.FirstOrDefault().ErrorMessage);
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -294,13 +294,13 @@ namespace CSSPServices.Tests
                     polSourceSite = GetFilledRandomPolSourceSite("");
                     polSourceSite.LastUpdateContactTVItemID = 0;
                     polSourceSiteService.Add(polSourceSite);
-                    Assert.AreEqual(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "TVItem", "LastUpdateContactTVItemID", polSourceSite.LastUpdateContactTVItemID.ToString()), polSourceSite.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "TVItem", "LastUpdateContactTVItemID", polSourceSite.LastUpdateContactTVItemID.ToString()), polSourceSite.ValidationResults.FirstOrDefault().ErrorMessage);
 
                     polSourceSite = null;
                     polSourceSite = GetFilledRandomPolSourceSite("");
                     polSourceSite.LastUpdateContactTVItemID = 1;
                     polSourceSiteService.Add(polSourceSite);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsNotOfType_, "LastUpdateContactTVItemID", "Contact"), polSourceSite.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsNotOfType_, "LastUpdateContactTVItemID", "Contact"), polSourceSite.ValidationResults.FirstOrDefault().ErrorMessage);
 
 
                     // -----------------------------------
@@ -324,7 +324,7 @@ namespace CSSPServices.Tests
         #endregion Tests Generated Properties
 
         #region Tests Generated for GetPolSourceSiteWithPolSourceSiteID(polSourceSite.PolSourceSiteID)
-        [TestMethod]
+        [Fact]
         public void GetPolSourceSiteWithPolSourceSiteID__polSourceSite_PolSourceSiteID__Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -335,7 +335,7 @@ namespace CSSPServices.Tests
                 {
                     PolSourceSiteService polSourceSiteService = new PolSourceSiteService(new Query() { Lang = culture.TwoLetterISOLanguageName }, dbTestDB, ContactID);
                     PolSourceSite polSourceSite = (from c in dbTestDB.PolSourceSites select c).FirstOrDefault();
-                    Assert.IsNotNull(polSourceSite);
+                    Assert.NotNull(polSourceSite);
 
                 }
             }
@@ -343,7 +343,7 @@ namespace CSSPServices.Tests
         #endregion Tests Generated for GetPolSourceSiteWithPolSourceSiteID(polSourceSite.PolSourceSiteID)
 
         #region Tests Generated for GetPolSourceSiteList()
-        [TestMethod]
+        [Fact]
         public void GetPolSourceSiteList_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -354,7 +354,7 @@ namespace CSSPServices.Tests
                 {
                     PolSourceSiteService polSourceSiteService = new PolSourceSiteService(new Query() { Lang = culture.TwoLetterISOLanguageName }, dbTestDB, ContactID);
                     PolSourceSite polSourceSite = (from c in dbTestDB.PolSourceSites select c).FirstOrDefault();
-                    Assert.IsNotNull(polSourceSite);
+                    Assert.NotNull(polSourceSite);
 
                     List<PolSourceSite> polSourceSiteDirectQueryList = new List<PolSourceSite>();
                     polSourceSiteDirectQueryList = (from c in dbTestDB.PolSourceSites select c).Take(200).ToList();
@@ -365,7 +365,7 @@ namespace CSSPServices.Tests
         #endregion Tests Generated for GetPolSourceSiteList()
 
         #region Tests Generated for GetPolSourceSiteList() Skip Take
-        [TestMethod]
+        [Fact]
         public void GetPolSourceSiteList_Skip_Take_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -384,14 +384,14 @@ namespace CSSPServices.Tests
                         List<PolSourceSite> polSourceSiteList = new List<PolSourceSite>();
                         polSourceSiteList = polSourceSiteService.GetPolSourceSiteList().ToList();
                         CheckPolSourceSiteFields(polSourceSiteList);
-                        Assert.AreEqual(polSourceSiteDirectQueryList[0].PolSourceSiteID, polSourceSiteList[0].PolSourceSiteID);
+                        Assert.Equal(polSourceSiteDirectQueryList[0].PolSourceSiteID, polSourceSiteList[0].PolSourceSiteID);
                 }
             }
         }
         #endregion Tests Generated for GetPolSourceSiteList() Skip Take
 
         #region Tests Generated for GetPolSourceSiteList() Skip Take Asc
-        [TestMethod]
+        [Fact]
         public void GetPolSourceSiteList_Skip_Take_Asc_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -410,14 +410,14 @@ namespace CSSPServices.Tests
                         List<PolSourceSite> polSourceSiteList = new List<PolSourceSite>();
                         polSourceSiteList = polSourceSiteService.GetPolSourceSiteList().ToList();
                         CheckPolSourceSiteFields(polSourceSiteList);
-                        Assert.AreEqual(polSourceSiteDirectQueryList[0].PolSourceSiteID, polSourceSiteList[0].PolSourceSiteID);
+                        Assert.Equal(polSourceSiteDirectQueryList[0].PolSourceSiteID, polSourceSiteList[0].PolSourceSiteID);
                 }
             }
         }
         #endregion Tests Generated for GetPolSourceSiteList() Skip Take Asc
 
         #region Tests Generated for GetPolSourceSiteList() Skip Take 2 Asc
-        [TestMethod]
+        [Fact]
         public void GetPolSourceSiteList_Skip_Take_2Asc_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -436,14 +436,14 @@ namespace CSSPServices.Tests
                         List<PolSourceSite> polSourceSiteList = new List<PolSourceSite>();
                         polSourceSiteList = polSourceSiteService.GetPolSourceSiteList().ToList();
                         CheckPolSourceSiteFields(polSourceSiteList);
-                        Assert.AreEqual(polSourceSiteDirectQueryList[0].PolSourceSiteID, polSourceSiteList[0].PolSourceSiteID);
+                        Assert.Equal(polSourceSiteDirectQueryList[0].PolSourceSiteID, polSourceSiteList[0].PolSourceSiteID);
                 }
             }
         }
         #endregion Tests Generated for GetPolSourceSiteList() Skip Take 2 Asc
 
         #region Tests Generated for GetPolSourceSiteList() Skip Take Asc Where
-        [TestMethod]
+        [Fact]
         public void GetPolSourceSiteList_Skip_Take_Asc_Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -462,14 +462,14 @@ namespace CSSPServices.Tests
                         List<PolSourceSite> polSourceSiteList = new List<PolSourceSite>();
                         polSourceSiteList = polSourceSiteService.GetPolSourceSiteList().ToList();
                         CheckPolSourceSiteFields(polSourceSiteList);
-                        Assert.AreEqual(polSourceSiteDirectQueryList[0].PolSourceSiteID, polSourceSiteList[0].PolSourceSiteID);
+                        Assert.Equal(polSourceSiteDirectQueryList[0].PolSourceSiteID, polSourceSiteList[0].PolSourceSiteID);
                 }
             }
         }
         #endregion Tests Generated for GetPolSourceSiteList() Skip Take Asc Where
 
         #region Tests Generated for GetPolSourceSiteList() Skip Take Asc 2 Where
-        [TestMethod]
+        [Fact]
         public void GetPolSourceSiteList_Skip_Take_Asc_2Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -488,14 +488,14 @@ namespace CSSPServices.Tests
                         List<PolSourceSite> polSourceSiteList = new List<PolSourceSite>();
                         polSourceSiteList = polSourceSiteService.GetPolSourceSiteList().ToList();
                         CheckPolSourceSiteFields(polSourceSiteList);
-                        Assert.AreEqual(polSourceSiteDirectQueryList[0].PolSourceSiteID, polSourceSiteList[0].PolSourceSiteID);
+                        Assert.Equal(polSourceSiteDirectQueryList[0].PolSourceSiteID, polSourceSiteList[0].PolSourceSiteID);
                 }
             }
         }
         #endregion Tests Generated for GetPolSourceSiteList() Skip Take Asc 2 Where
 
         #region Tests Generated for GetPolSourceSiteList() Skip Take Desc
-        [TestMethod]
+        [Fact]
         public void GetPolSourceSiteList_Skip_Take_Desc_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -514,14 +514,14 @@ namespace CSSPServices.Tests
                         List<PolSourceSite> polSourceSiteList = new List<PolSourceSite>();
                         polSourceSiteList = polSourceSiteService.GetPolSourceSiteList().ToList();
                         CheckPolSourceSiteFields(polSourceSiteList);
-                        Assert.AreEqual(polSourceSiteDirectQueryList[0].PolSourceSiteID, polSourceSiteList[0].PolSourceSiteID);
+                        Assert.Equal(polSourceSiteDirectQueryList[0].PolSourceSiteID, polSourceSiteList[0].PolSourceSiteID);
                 }
             }
         }
         #endregion Tests Generated for GetPolSourceSiteList() Skip Take Desc
 
         #region Tests Generated for GetPolSourceSiteList() Skip Take 2 Desc
-        [TestMethod]
+        [Fact]
         public void GetPolSourceSiteList_Skip_Take_2Desc_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -540,14 +540,14 @@ namespace CSSPServices.Tests
                         List<PolSourceSite> polSourceSiteList = new List<PolSourceSite>();
                         polSourceSiteList = polSourceSiteService.GetPolSourceSiteList().ToList();
                         CheckPolSourceSiteFields(polSourceSiteList);
-                        Assert.AreEqual(polSourceSiteDirectQueryList[0].PolSourceSiteID, polSourceSiteList[0].PolSourceSiteID);
+                        Assert.Equal(polSourceSiteDirectQueryList[0].PolSourceSiteID, polSourceSiteList[0].PolSourceSiteID);
                 }
             }
         }
         #endregion Tests Generated for GetPolSourceSiteList() Skip Take 2 Desc
 
         #region Tests Generated for GetPolSourceSiteList() Skip Take Desc Where
-        [TestMethod]
+        [Fact]
         public void GetPolSourceSiteList_Skip_Take_Desc_Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -566,14 +566,14 @@ namespace CSSPServices.Tests
                         List<PolSourceSite> polSourceSiteList = new List<PolSourceSite>();
                         polSourceSiteList = polSourceSiteService.GetPolSourceSiteList().ToList();
                         CheckPolSourceSiteFields(polSourceSiteList);
-                        Assert.AreEqual(polSourceSiteDirectQueryList[0].PolSourceSiteID, polSourceSiteList[0].PolSourceSiteID);
+                        Assert.Equal(polSourceSiteDirectQueryList[0].PolSourceSiteID, polSourceSiteList[0].PolSourceSiteID);
                 }
             }
         }
         #endregion Tests Generated for GetPolSourceSiteList() Skip Take Desc Where
 
         #region Tests Generated for GetPolSourceSiteList() Skip Take Desc 2 Where
-        [TestMethod]
+        [Fact]
         public void GetPolSourceSiteList_Skip_Take_Desc_2Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -592,14 +592,14 @@ namespace CSSPServices.Tests
                         List<PolSourceSite> polSourceSiteList = new List<PolSourceSite>();
                         polSourceSiteList = polSourceSiteService.GetPolSourceSiteList().ToList();
                         CheckPolSourceSiteFields(polSourceSiteList);
-                        Assert.AreEqual(polSourceSiteDirectQueryList[0].PolSourceSiteID, polSourceSiteList[0].PolSourceSiteID);
+                        Assert.Equal(polSourceSiteDirectQueryList[0].PolSourceSiteID, polSourceSiteList[0].PolSourceSiteID);
                 }
             }
         }
         #endregion Tests Generated for GetPolSourceSiteList() Skip Take Desc 2 Where
 
         #region Tests Generated for GetPolSourceSiteList() 2 Where
-        [TestMethod]
+        [Fact]
         public void GetPolSourceSiteList_2Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -618,7 +618,7 @@ namespace CSSPServices.Tests
                         List<PolSourceSite> polSourceSiteList = new List<PolSourceSite>();
                         polSourceSiteList = polSourceSiteService.GetPolSourceSiteList().ToList();
                         CheckPolSourceSiteFields(polSourceSiteList);
-                        Assert.AreEqual(polSourceSiteDirectQueryList[0].PolSourceSiteID, polSourceSiteList[0].PolSourceSiteID);
+                        Assert.Equal(polSourceSiteDirectQueryList[0].PolSourceSiteID, polSourceSiteList[0].PolSourceSiteID);
                 }
             }
         }
@@ -627,36 +627,36 @@ namespace CSSPServices.Tests
         #region Functions private
         private void CheckPolSourceSiteFields(List<PolSourceSite> polSourceSiteList)
         {
-            Assert.IsNotNull(polSourceSiteList[0].PolSourceSiteID);
-            Assert.IsNotNull(polSourceSiteList[0].PolSourceSiteTVItemID);
+            Assert.NotNull(polSourceSiteList[0].PolSourceSiteID);
+            Assert.NotNull(polSourceSiteList[0].PolSourceSiteTVItemID);
             if (!string.IsNullOrWhiteSpace(polSourceSiteList[0].Temp_Locator_CanDelete))
             {
-                Assert.IsFalse(string.IsNullOrWhiteSpace(polSourceSiteList[0].Temp_Locator_CanDelete));
+                Assert.False(string.IsNullOrWhiteSpace(polSourceSiteList[0].Temp_Locator_CanDelete));
             }
             if (polSourceSiteList[0].Oldsiteid != null)
             {
-                Assert.IsNotNull(polSourceSiteList[0].Oldsiteid);
+                Assert.NotNull(polSourceSiteList[0].Oldsiteid);
             }
             if (polSourceSiteList[0].Site != null)
             {
-                Assert.IsNotNull(polSourceSiteList[0].Site);
+                Assert.NotNull(polSourceSiteList[0].Site);
             }
             if (polSourceSiteList[0].SiteID != null)
             {
-                Assert.IsNotNull(polSourceSiteList[0].SiteID);
+                Assert.NotNull(polSourceSiteList[0].SiteID);
             }
-            Assert.IsNotNull(polSourceSiteList[0].IsPointSource);
+            Assert.NotNull(polSourceSiteList[0].IsPointSource);
             if (polSourceSiteList[0].InactiveReason != null)
             {
-                Assert.IsNotNull(polSourceSiteList[0].InactiveReason);
+                Assert.NotNull(polSourceSiteList[0].InactiveReason);
             }
             if (polSourceSiteList[0].CivicAddressTVItemID != null)
             {
-                Assert.IsNotNull(polSourceSiteList[0].CivicAddressTVItemID);
+                Assert.NotNull(polSourceSiteList[0].CivicAddressTVItemID);
             }
-            Assert.IsNotNull(polSourceSiteList[0].LastUpdateDate_UTC);
-            Assert.IsNotNull(polSourceSiteList[0].LastUpdateContactTVItemID);
-            Assert.IsNotNull(polSourceSiteList[0].HasErrors);
+            Assert.NotNull(polSourceSiteList[0].LastUpdateDate_UTC);
+            Assert.NotNull(polSourceSiteList[0].LastUpdateContactTVItemID);
+            Assert.NotNull(polSourceSiteList[0].HasErrors);
         }
         private PolSourceSite GetFilledRandomPolSourceSite(string OmitPropName)
         {

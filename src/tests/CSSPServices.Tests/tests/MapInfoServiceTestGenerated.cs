@@ -5,7 +5,7 @@
  */ 
 
 using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using System.Linq;
 using System.Collections.Generic;
 using CSSPModels;
@@ -21,7 +21,7 @@ using CSSPEnums.Resources;
 
 namespace CSSPServices.Tests
 {
-    [TestClass]
+
     public partial class MapInfoServiceTest : TestHelper
     {
         #region Variables
@@ -39,7 +39,7 @@ namespace CSSPServices.Tests
         #endregion Constructors
 
         #region Tests Generated CRUD
-        [TestMethod]
+        [Fact]
         public void MapInfo_CRUD_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -66,26 +66,26 @@ namespace CSSPServices.Tests
 
                     count = mapInfoService.GetMapInfoList().Count();
 
-                    Assert.AreEqual(count, (from c in dbTestDB.MapInfos select c).Count());
+                    Assert.Equal(count, (from c in dbTestDB.MapInfos select c).Count());
 
                     mapInfoService.Add(mapInfo);
                     if (mapInfo.HasErrors)
                     {
-                        Assert.AreEqual("", mapInfo.ValidationResults.FirstOrDefault().ErrorMessage);
+                        Assert.Equal("", mapInfo.ValidationResults.FirstOrDefault().ErrorMessage);
                     }
-                    Assert.AreEqual(true, mapInfoService.GetMapInfoList().Where(c => c == mapInfo).Any());
+                    Assert.True(mapInfoService.GetMapInfoList().Where(c => c == mapInfo).Any());
                     mapInfoService.Update(mapInfo);
                     if (mapInfo.HasErrors)
                     {
-                        Assert.AreEqual("", mapInfo.ValidationResults.FirstOrDefault().ErrorMessage);
+                        Assert.Equal("", mapInfo.ValidationResults.FirstOrDefault().ErrorMessage);
                     }
-                    Assert.AreEqual(count + 1, mapInfoService.GetMapInfoList().Count());
+                    Assert.Equal(count + 1, mapInfoService.GetMapInfoList().Count());
                     mapInfoService.Delete(mapInfo);
                     if (mapInfo.HasErrors)
                     {
-                        Assert.AreEqual("", mapInfo.ValidationResults.FirstOrDefault().ErrorMessage);
+                        Assert.Equal("", mapInfo.ValidationResults.FirstOrDefault().ErrorMessage);
                     }
-                    Assert.AreEqual(count, mapInfoService.GetMapInfoList().Count());
+                    Assert.Equal(count, mapInfoService.GetMapInfoList().Count());
 
                 }
             }
@@ -93,7 +93,7 @@ namespace CSSPServices.Tests
         #endregion Tests Generated CRUD
 
         #region Tests Generated Properties
-        [TestMethod]
+        [Fact]
         public void MapInfo_Properties_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -131,13 +131,13 @@ namespace CSSPServices.Tests
                     mapInfo = GetFilledRandomMapInfo("");
                     mapInfo.MapInfoID = 0;
                     mapInfoService.Update(mapInfo);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsRequired, "MapInfoID"), mapInfo.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsRequired, "MapInfoID"), mapInfo.ValidationResults.FirstOrDefault().ErrorMessage);
 
                     mapInfo = null;
                     mapInfo = GetFilledRandomMapInfo("");
                     mapInfo.MapInfoID = 10000000;
                     mapInfoService.Update(mapInfo);
-                    Assert.AreEqual(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "MapInfo", "MapInfoID", mapInfo.MapInfoID.ToString()), mapInfo.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "MapInfo", "MapInfoID", mapInfo.MapInfoID.ToString()), mapInfo.ValidationResults.FirstOrDefault().ErrorMessage);
 
 
                     // -----------------------------------
@@ -150,13 +150,13 @@ namespace CSSPServices.Tests
                     mapInfo = GetFilledRandomMapInfo("");
                     mapInfo.TVItemID = 0;
                     mapInfoService.Add(mapInfo);
-                    Assert.AreEqual(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "TVItem", "TVItemID", mapInfo.TVItemID.ToString()), mapInfo.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "TVItem", "TVItemID", mapInfo.TVItemID.ToString()), mapInfo.ValidationResults.FirstOrDefault().ErrorMessage);
 
                     mapInfo = null;
                     mapInfo = GetFilledRandomMapInfo("");
                     mapInfo.TVItemID = 2;
                     mapInfoService.Add(mapInfo);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsNotOfType_, "TVItemID", "Root,Address,Area,ClimateSite,Country,File,HydrometricSite,MikeBoundaryConditionWebTide,MikeBoundaryConditionMesh,MikeSource,Municipality,MWQMSite,PolSourceSite,Province,Sector,Subsector,TideSite,WasteWaterTreatmentPlant,LiftStation,Spill,Outfall,OtherInfrastructure,SeeOtherMunicipality,LineOverflow,RainExceedance,Classification,Approved,Restricted,Prohibited,ConditionallyApproved,ConditionallyRestricted"), mapInfo.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsNotOfType_, "TVItemID", "Root,Address,Area,ClimateSite,Country,File,HydrometricSite,MikeBoundaryConditionWebTide,MikeBoundaryConditionMesh,MikeSource,Municipality,MWQMSite,PolSourceSite,Province,Sector,Subsector,TideSite,WasteWaterTreatmentPlant,LiftStation,Spill,Outfall,OtherInfrastructure,SeeOtherMunicipality,LineOverflow,RainExceedance,Classification,Approved,Restricted,Prohibited,ConditionallyApproved,ConditionallyRestricted"), mapInfo.ValidationResults.FirstOrDefault().ErrorMessage);
 
 
                     // -----------------------------------
@@ -169,7 +169,7 @@ namespace CSSPServices.Tests
                     mapInfo = GetFilledRandomMapInfo("");
                     mapInfo.TVType = (TVTypeEnum)1000000;
                     mapInfoService.Add(mapInfo);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsRequired, "TVType"), mapInfo.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsRequired, "TVType"), mapInfo.ValidationResults.FirstOrDefault().ErrorMessage);
 
 
                     // -----------------------------------
@@ -185,15 +185,15 @@ namespace CSSPServices.Tests
                     mapInfo = null;
                     mapInfo = GetFilledRandomMapInfo("");
                     mapInfo.LatMin = -91.0D;
-                    Assert.AreEqual(false, mapInfoService.Add(mapInfo));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "LatMin", "-90", "90"), mapInfo.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, mapInfoService.GetMapInfoList().Count());
+                    Assert.False(mapInfoService.Add(mapInfo));
+                    Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "LatMin", "-90", "90"), mapInfo.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, mapInfoService.GetMapInfoList().Count());
                     mapInfo = null;
                     mapInfo = GetFilledRandomMapInfo("");
                     mapInfo.LatMin = 91.0D;
-                    Assert.AreEqual(false, mapInfoService.Add(mapInfo));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "LatMin", "-90", "90"), mapInfo.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, mapInfoService.GetMapInfoList().Count());
+                    Assert.False(mapInfoService.Add(mapInfo));
+                    Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "LatMin", "-90", "90"), mapInfo.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, mapInfoService.GetMapInfoList().Count());
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -208,15 +208,15 @@ namespace CSSPServices.Tests
                     mapInfo = null;
                     mapInfo = GetFilledRandomMapInfo("");
                     mapInfo.LatMax = -91.0D;
-                    Assert.AreEqual(false, mapInfoService.Add(mapInfo));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "LatMax", "-90", "90"), mapInfo.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, mapInfoService.GetMapInfoList().Count());
+                    Assert.False(mapInfoService.Add(mapInfo));
+                    Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "LatMax", "-90", "90"), mapInfo.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, mapInfoService.GetMapInfoList().Count());
                     mapInfo = null;
                     mapInfo = GetFilledRandomMapInfo("");
                     mapInfo.LatMax = 91.0D;
-                    Assert.AreEqual(false, mapInfoService.Add(mapInfo));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "LatMax", "-90", "90"), mapInfo.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, mapInfoService.GetMapInfoList().Count());
+                    Assert.False(mapInfoService.Add(mapInfo));
+                    Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "LatMax", "-90", "90"), mapInfo.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, mapInfoService.GetMapInfoList().Count());
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -231,15 +231,15 @@ namespace CSSPServices.Tests
                     mapInfo = null;
                     mapInfo = GetFilledRandomMapInfo("");
                     mapInfo.LngMin = -181.0D;
-                    Assert.AreEqual(false, mapInfoService.Add(mapInfo));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "LngMin", "-180", "180"), mapInfo.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, mapInfoService.GetMapInfoList().Count());
+                    Assert.False(mapInfoService.Add(mapInfo));
+                    Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "LngMin", "-180", "180"), mapInfo.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, mapInfoService.GetMapInfoList().Count());
                     mapInfo = null;
                     mapInfo = GetFilledRandomMapInfo("");
                     mapInfo.LngMin = 181.0D;
-                    Assert.AreEqual(false, mapInfoService.Add(mapInfo));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "LngMin", "-180", "180"), mapInfo.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, mapInfoService.GetMapInfoList().Count());
+                    Assert.False(mapInfoService.Add(mapInfo));
+                    Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "LngMin", "-180", "180"), mapInfo.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, mapInfoService.GetMapInfoList().Count());
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -254,15 +254,15 @@ namespace CSSPServices.Tests
                     mapInfo = null;
                     mapInfo = GetFilledRandomMapInfo("");
                     mapInfo.LngMax = -181.0D;
-                    Assert.AreEqual(false, mapInfoService.Add(mapInfo));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "LngMax", "-180", "180"), mapInfo.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, mapInfoService.GetMapInfoList().Count());
+                    Assert.False(mapInfoService.Add(mapInfo));
+                    Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "LngMax", "-180", "180"), mapInfo.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, mapInfoService.GetMapInfoList().Count());
                     mapInfo = null;
                     mapInfo = GetFilledRandomMapInfo("");
                     mapInfo.LngMax = 181.0D;
-                    Assert.AreEqual(false, mapInfoService.Add(mapInfo));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "LngMax", "-180", "180"), mapInfo.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, mapInfoService.GetMapInfoList().Count());
+                    Assert.False(mapInfoService.Add(mapInfo));
+                    Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "LngMax", "-180", "180"), mapInfo.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, mapInfoService.GetMapInfoList().Count());
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -274,7 +274,7 @@ namespace CSSPServices.Tests
                     mapInfo = GetFilledRandomMapInfo("");
                     mapInfo.MapInfoDrawType = (MapInfoDrawTypeEnum)1000000;
                     mapInfoService.Add(mapInfo);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsRequired, "MapInfoDrawType"), mapInfo.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsRequired, "MapInfoDrawType"), mapInfo.ValidationResults.FirstOrDefault().ErrorMessage);
 
 
                     // -----------------------------------
@@ -287,12 +287,12 @@ namespace CSSPServices.Tests
                     mapInfo = GetFilledRandomMapInfo("");
                     mapInfo.LastUpdateDate_UTC = new DateTime();
                     mapInfoService.Add(mapInfo);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsRequired, "LastUpdateDate_UTC"), mapInfo.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsRequired, "LastUpdateDate_UTC"), mapInfo.ValidationResults.FirstOrDefault().ErrorMessage);
                     mapInfo = null;
                     mapInfo = GetFilledRandomMapInfo("");
                     mapInfo.LastUpdateDate_UTC = new DateTime(1979, 1, 1);
                     mapInfoService.Add(mapInfo);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._YearShouldBeBiggerThan_, "LastUpdateDate_UTC", "1980"), mapInfo.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._YearShouldBeBiggerThan_, "LastUpdateDate_UTC", "1980"), mapInfo.ValidationResults.FirstOrDefault().ErrorMessage);
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -304,13 +304,13 @@ namespace CSSPServices.Tests
                     mapInfo = GetFilledRandomMapInfo("");
                     mapInfo.LastUpdateContactTVItemID = 0;
                     mapInfoService.Add(mapInfo);
-                    Assert.AreEqual(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "TVItem", "LastUpdateContactTVItemID", mapInfo.LastUpdateContactTVItemID.ToString()), mapInfo.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "TVItem", "LastUpdateContactTVItemID", mapInfo.LastUpdateContactTVItemID.ToString()), mapInfo.ValidationResults.FirstOrDefault().ErrorMessage);
 
                     mapInfo = null;
                     mapInfo = GetFilledRandomMapInfo("");
                     mapInfo.LastUpdateContactTVItemID = 1;
                     mapInfoService.Add(mapInfo);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsNotOfType_, "LastUpdateContactTVItemID", "Contact"), mapInfo.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsNotOfType_, "LastUpdateContactTVItemID", "Contact"), mapInfo.ValidationResults.FirstOrDefault().ErrorMessage);
 
 
                     // -----------------------------------
@@ -334,7 +334,7 @@ namespace CSSPServices.Tests
         #endregion Tests Generated Properties
 
         #region Tests Generated for GetMapInfoWithMapInfoID(mapInfo.MapInfoID)
-        [TestMethod]
+        [Fact]
         public void GetMapInfoWithMapInfoID__mapInfo_MapInfoID__Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -345,7 +345,7 @@ namespace CSSPServices.Tests
                 {
                     MapInfoService mapInfoService = new MapInfoService(new Query() { Lang = culture.TwoLetterISOLanguageName }, dbTestDB, ContactID);
                     MapInfo mapInfo = (from c in dbTestDB.MapInfos select c).FirstOrDefault();
-                    Assert.IsNotNull(mapInfo);
+                    Assert.NotNull(mapInfo);
 
                 }
             }
@@ -353,7 +353,7 @@ namespace CSSPServices.Tests
         #endregion Tests Generated for GetMapInfoWithMapInfoID(mapInfo.MapInfoID)
 
         #region Tests Generated for GetMapInfoList()
-        [TestMethod]
+        [Fact]
         public void GetMapInfoList_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -364,7 +364,7 @@ namespace CSSPServices.Tests
                 {
                     MapInfoService mapInfoService = new MapInfoService(new Query() { Lang = culture.TwoLetterISOLanguageName }, dbTestDB, ContactID);
                     MapInfo mapInfo = (from c in dbTestDB.MapInfos select c).FirstOrDefault();
-                    Assert.IsNotNull(mapInfo);
+                    Assert.NotNull(mapInfo);
 
                     List<MapInfo> mapInfoDirectQueryList = new List<MapInfo>();
                     mapInfoDirectQueryList = (from c in dbTestDB.MapInfos select c).Take(200).ToList();
@@ -375,7 +375,7 @@ namespace CSSPServices.Tests
         #endregion Tests Generated for GetMapInfoList()
 
         #region Tests Generated for GetMapInfoList() Skip Take
-        [TestMethod]
+        [Fact]
         public void GetMapInfoList_Skip_Take_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -394,14 +394,14 @@ namespace CSSPServices.Tests
                         List<MapInfo> mapInfoList = new List<MapInfo>();
                         mapInfoList = mapInfoService.GetMapInfoList().ToList();
                         CheckMapInfoFields(mapInfoList);
-                        Assert.AreEqual(mapInfoDirectQueryList[0].MapInfoID, mapInfoList[0].MapInfoID);
+                        Assert.Equal(mapInfoDirectQueryList[0].MapInfoID, mapInfoList[0].MapInfoID);
                 }
             }
         }
         #endregion Tests Generated for GetMapInfoList() Skip Take
 
         #region Tests Generated for GetMapInfoList() Skip Take Asc
-        [TestMethod]
+        [Fact]
         public void GetMapInfoList_Skip_Take_Asc_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -420,14 +420,14 @@ namespace CSSPServices.Tests
                         List<MapInfo> mapInfoList = new List<MapInfo>();
                         mapInfoList = mapInfoService.GetMapInfoList().ToList();
                         CheckMapInfoFields(mapInfoList);
-                        Assert.AreEqual(mapInfoDirectQueryList[0].MapInfoID, mapInfoList[0].MapInfoID);
+                        Assert.Equal(mapInfoDirectQueryList[0].MapInfoID, mapInfoList[0].MapInfoID);
                 }
             }
         }
         #endregion Tests Generated for GetMapInfoList() Skip Take Asc
 
         #region Tests Generated for GetMapInfoList() Skip Take 2 Asc
-        [TestMethod]
+        [Fact]
         public void GetMapInfoList_Skip_Take_2Asc_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -446,14 +446,14 @@ namespace CSSPServices.Tests
                         List<MapInfo> mapInfoList = new List<MapInfo>();
                         mapInfoList = mapInfoService.GetMapInfoList().ToList();
                         CheckMapInfoFields(mapInfoList);
-                        Assert.AreEqual(mapInfoDirectQueryList[0].MapInfoID, mapInfoList[0].MapInfoID);
+                        Assert.Equal(mapInfoDirectQueryList[0].MapInfoID, mapInfoList[0].MapInfoID);
                 }
             }
         }
         #endregion Tests Generated for GetMapInfoList() Skip Take 2 Asc
 
         #region Tests Generated for GetMapInfoList() Skip Take Asc Where
-        [TestMethod]
+        [Fact]
         public void GetMapInfoList_Skip_Take_Asc_Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -472,14 +472,14 @@ namespace CSSPServices.Tests
                         List<MapInfo> mapInfoList = new List<MapInfo>();
                         mapInfoList = mapInfoService.GetMapInfoList().ToList();
                         CheckMapInfoFields(mapInfoList);
-                        Assert.AreEqual(mapInfoDirectQueryList[0].MapInfoID, mapInfoList[0].MapInfoID);
+                        Assert.Equal(mapInfoDirectQueryList[0].MapInfoID, mapInfoList[0].MapInfoID);
                 }
             }
         }
         #endregion Tests Generated for GetMapInfoList() Skip Take Asc Where
 
         #region Tests Generated for GetMapInfoList() Skip Take Asc 2 Where
-        [TestMethod]
+        [Fact]
         public void GetMapInfoList_Skip_Take_Asc_2Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -498,14 +498,14 @@ namespace CSSPServices.Tests
                         List<MapInfo> mapInfoList = new List<MapInfo>();
                         mapInfoList = mapInfoService.GetMapInfoList().ToList();
                         CheckMapInfoFields(mapInfoList);
-                        Assert.AreEqual(mapInfoDirectQueryList[0].MapInfoID, mapInfoList[0].MapInfoID);
+                        Assert.Equal(mapInfoDirectQueryList[0].MapInfoID, mapInfoList[0].MapInfoID);
                 }
             }
         }
         #endregion Tests Generated for GetMapInfoList() Skip Take Asc 2 Where
 
         #region Tests Generated for GetMapInfoList() Skip Take Desc
-        [TestMethod]
+        [Fact]
         public void GetMapInfoList_Skip_Take_Desc_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -524,14 +524,14 @@ namespace CSSPServices.Tests
                         List<MapInfo> mapInfoList = new List<MapInfo>();
                         mapInfoList = mapInfoService.GetMapInfoList().ToList();
                         CheckMapInfoFields(mapInfoList);
-                        Assert.AreEqual(mapInfoDirectQueryList[0].MapInfoID, mapInfoList[0].MapInfoID);
+                        Assert.Equal(mapInfoDirectQueryList[0].MapInfoID, mapInfoList[0].MapInfoID);
                 }
             }
         }
         #endregion Tests Generated for GetMapInfoList() Skip Take Desc
 
         #region Tests Generated for GetMapInfoList() Skip Take 2 Desc
-        [TestMethod]
+        [Fact]
         public void GetMapInfoList_Skip_Take_2Desc_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -550,14 +550,14 @@ namespace CSSPServices.Tests
                         List<MapInfo> mapInfoList = new List<MapInfo>();
                         mapInfoList = mapInfoService.GetMapInfoList().ToList();
                         CheckMapInfoFields(mapInfoList);
-                        Assert.AreEqual(mapInfoDirectQueryList[0].MapInfoID, mapInfoList[0].MapInfoID);
+                        Assert.Equal(mapInfoDirectQueryList[0].MapInfoID, mapInfoList[0].MapInfoID);
                 }
             }
         }
         #endregion Tests Generated for GetMapInfoList() Skip Take 2 Desc
 
         #region Tests Generated for GetMapInfoList() Skip Take Desc Where
-        [TestMethod]
+        [Fact]
         public void GetMapInfoList_Skip_Take_Desc_Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -576,14 +576,14 @@ namespace CSSPServices.Tests
                         List<MapInfo> mapInfoList = new List<MapInfo>();
                         mapInfoList = mapInfoService.GetMapInfoList().ToList();
                         CheckMapInfoFields(mapInfoList);
-                        Assert.AreEqual(mapInfoDirectQueryList[0].MapInfoID, mapInfoList[0].MapInfoID);
+                        Assert.Equal(mapInfoDirectQueryList[0].MapInfoID, mapInfoList[0].MapInfoID);
                 }
             }
         }
         #endregion Tests Generated for GetMapInfoList() Skip Take Desc Where
 
         #region Tests Generated for GetMapInfoList() Skip Take Desc 2 Where
-        [TestMethod]
+        [Fact]
         public void GetMapInfoList_Skip_Take_Desc_2Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -602,14 +602,14 @@ namespace CSSPServices.Tests
                         List<MapInfo> mapInfoList = new List<MapInfo>();
                         mapInfoList = mapInfoService.GetMapInfoList().ToList();
                         CheckMapInfoFields(mapInfoList);
-                        Assert.AreEqual(mapInfoDirectQueryList[0].MapInfoID, mapInfoList[0].MapInfoID);
+                        Assert.Equal(mapInfoDirectQueryList[0].MapInfoID, mapInfoList[0].MapInfoID);
                 }
             }
         }
         #endregion Tests Generated for GetMapInfoList() Skip Take Desc 2 Where
 
         #region Tests Generated for GetMapInfoList() 2 Where
-        [TestMethod]
+        [Fact]
         public void GetMapInfoList_2Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -628,7 +628,7 @@ namespace CSSPServices.Tests
                         List<MapInfo> mapInfoList = new List<MapInfo>();
                         mapInfoList = mapInfoService.GetMapInfoList().ToList();
                         CheckMapInfoFields(mapInfoList);
-                        Assert.AreEqual(mapInfoDirectQueryList[0].MapInfoID, mapInfoList[0].MapInfoID);
+                        Assert.Equal(mapInfoDirectQueryList[0].MapInfoID, mapInfoList[0].MapInfoID);
                 }
             }
         }
@@ -637,17 +637,17 @@ namespace CSSPServices.Tests
         #region Functions private
         private void CheckMapInfoFields(List<MapInfo> mapInfoList)
         {
-            Assert.IsNotNull(mapInfoList[0].MapInfoID);
-            Assert.IsNotNull(mapInfoList[0].TVItemID);
-            Assert.IsNotNull(mapInfoList[0].TVType);
-            Assert.IsNotNull(mapInfoList[0].LatMin);
-            Assert.IsNotNull(mapInfoList[0].LatMax);
-            Assert.IsNotNull(mapInfoList[0].LngMin);
-            Assert.IsNotNull(mapInfoList[0].LngMax);
-            Assert.IsNotNull(mapInfoList[0].MapInfoDrawType);
-            Assert.IsNotNull(mapInfoList[0].LastUpdateDate_UTC);
-            Assert.IsNotNull(mapInfoList[0].LastUpdateContactTVItemID);
-            Assert.IsNotNull(mapInfoList[0].HasErrors);
+            Assert.NotNull(mapInfoList[0].MapInfoID);
+            Assert.NotNull(mapInfoList[0].TVItemID);
+            Assert.NotNull(mapInfoList[0].TVType);
+            Assert.NotNull(mapInfoList[0].LatMin);
+            Assert.NotNull(mapInfoList[0].LatMax);
+            Assert.NotNull(mapInfoList[0].LngMin);
+            Assert.NotNull(mapInfoList[0].LngMax);
+            Assert.NotNull(mapInfoList[0].MapInfoDrawType);
+            Assert.NotNull(mapInfoList[0].LastUpdateDate_UTC);
+            Assert.NotNull(mapInfoList[0].LastUpdateContactTVItemID);
+            Assert.NotNull(mapInfoList[0].HasErrors);
         }
         private MapInfo GetFilledRandomMapInfo(string OmitPropName)
         {

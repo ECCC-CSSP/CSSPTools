@@ -5,7 +5,7 @@
  */ 
 
 using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using System.Linq;
 using System.Collections.Generic;
 using CSSPModels;
@@ -21,7 +21,7 @@ using CSSPEnums.Resources;
 
 namespace CSSPServices.Tests
 {
-    [TestClass]
+
     public partial class MWQMSampleLanguageServiceTest : TestHelper
     {
         #region Variables
@@ -39,7 +39,7 @@ namespace CSSPServices.Tests
         #endregion Constructors
 
         #region Tests Generated CRUD
-        [TestMethod]
+        [Fact]
         public void MWQMSampleLanguage_CRUD_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -66,26 +66,26 @@ namespace CSSPServices.Tests
 
                     count = mwqmSampleLanguageService.GetMWQMSampleLanguageList().Count();
 
-                    Assert.AreEqual(count, (from c in dbTestDB.MWQMSampleLanguages select c).Count());
+                    Assert.Equal(count, (from c in dbTestDB.MWQMSampleLanguages select c).Count());
 
                     mwqmSampleLanguageService.Add(mwqmSampleLanguage);
                     if (mwqmSampleLanguage.HasErrors)
                     {
-                        Assert.AreEqual("", mwqmSampleLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
+                        Assert.Equal("", mwqmSampleLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
                     }
-                    Assert.AreEqual(true, mwqmSampleLanguageService.GetMWQMSampleLanguageList().Where(c => c == mwqmSampleLanguage).Any());
+                    Assert.True(mwqmSampleLanguageService.GetMWQMSampleLanguageList().Where(c => c == mwqmSampleLanguage).Any());
                     mwqmSampleLanguageService.Update(mwqmSampleLanguage);
                     if (mwqmSampleLanguage.HasErrors)
                     {
-                        Assert.AreEqual("", mwqmSampleLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
+                        Assert.Equal("", mwqmSampleLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
                     }
-                    Assert.AreEqual(count + 1, mwqmSampleLanguageService.GetMWQMSampleLanguageList().Count());
+                    Assert.Equal(count + 1, mwqmSampleLanguageService.GetMWQMSampleLanguageList().Count());
                     mwqmSampleLanguageService.Delete(mwqmSampleLanguage);
                     if (mwqmSampleLanguage.HasErrors)
                     {
-                        Assert.AreEqual("", mwqmSampleLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
+                        Assert.Equal("", mwqmSampleLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
                     }
-                    Assert.AreEqual(count, mwqmSampleLanguageService.GetMWQMSampleLanguageList().Count());
+                    Assert.Equal(count, mwqmSampleLanguageService.GetMWQMSampleLanguageList().Count());
 
                 }
             }
@@ -93,7 +93,7 @@ namespace CSSPServices.Tests
         #endregion Tests Generated CRUD
 
         #region Tests Generated Properties
-        [TestMethod]
+        [Fact]
         public void MWQMSampleLanguage_Properties_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -131,13 +131,13 @@ namespace CSSPServices.Tests
                     mwqmSampleLanguage = GetFilledRandomMWQMSampleLanguage("");
                     mwqmSampleLanguage.MWQMSampleLanguageID = 0;
                     mwqmSampleLanguageService.Update(mwqmSampleLanguage);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsRequired, "MWQMSampleLanguageID"), mwqmSampleLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsRequired, "MWQMSampleLanguageID"), mwqmSampleLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
 
                     mwqmSampleLanguage = null;
                     mwqmSampleLanguage = GetFilledRandomMWQMSampleLanguage("");
                     mwqmSampleLanguage.MWQMSampleLanguageID = 10000000;
                     mwqmSampleLanguageService.Update(mwqmSampleLanguage);
-                    Assert.AreEqual(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "MWQMSampleLanguage", "MWQMSampleLanguageID", mwqmSampleLanguage.MWQMSampleLanguageID.ToString()), mwqmSampleLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "MWQMSampleLanguage", "MWQMSampleLanguageID", mwqmSampleLanguage.MWQMSampleLanguageID.ToString()), mwqmSampleLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
 
 
                     // -----------------------------------
@@ -150,7 +150,7 @@ namespace CSSPServices.Tests
                     mwqmSampleLanguage = GetFilledRandomMWQMSampleLanguage("");
                     mwqmSampleLanguage.MWQMSampleID = 0;
                     mwqmSampleLanguageService.Add(mwqmSampleLanguage);
-                    Assert.AreEqual(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "MWQMSample", "MWQMSampleID", mwqmSampleLanguage.MWQMSampleID.ToString()), mwqmSampleLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "MWQMSample", "MWQMSampleID", mwqmSampleLanguage.MWQMSampleID.ToString()), mwqmSampleLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
 
 
                     // -----------------------------------
@@ -163,7 +163,7 @@ namespace CSSPServices.Tests
                     mwqmSampleLanguage = GetFilledRandomMWQMSampleLanguage("");
                     mwqmSampleLanguage.Language = (LanguageEnum)1000000;
                     mwqmSampleLanguageService.Add(mwqmSampleLanguage);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsRequired, "Language"), mwqmSampleLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsRequired, "Language"), mwqmSampleLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
 
 
                     // -----------------------------------
@@ -173,11 +173,11 @@ namespace CSSPServices.Tests
 
                     mwqmSampleLanguage = null;
                     mwqmSampleLanguage = GetFilledRandomMWQMSampleLanguage("MWQMSampleNote");
-                    Assert.AreEqual(false, mwqmSampleLanguageService.Add(mwqmSampleLanguage));
-                    Assert.AreEqual(1, mwqmSampleLanguage.ValidationResults.Count());
-                    Assert.IsTrue(mwqmSampleLanguage.ValidationResults.Where(c => c.ErrorMessage == string.Format(CSSPServicesRes._IsRequired, "MWQMSampleNote")).Any());
-                    Assert.AreEqual(null, mwqmSampleLanguage.MWQMSampleNote);
-                    Assert.AreEqual(count, mwqmSampleLanguageService.GetMWQMSampleLanguageList().Count());
+                    Assert.False(mwqmSampleLanguageService.Add(mwqmSampleLanguage));
+                    Assert.Equal(1, mwqmSampleLanguage.ValidationResults.Count());
+                    Assert.True(mwqmSampleLanguage.ValidationResults.Where(c => c.ErrorMessage == string.Format(CSSPServicesRes._IsRequired, "MWQMSampleNote")).Any());
+                    Assert.Null(mwqmSampleLanguage.MWQMSampleNote);
+                    Assert.Equal(count, mwqmSampleLanguageService.GetMWQMSampleLanguageList().Count());
 
 
                     // -----------------------------------
@@ -190,7 +190,7 @@ namespace CSSPServices.Tests
                     mwqmSampleLanguage = GetFilledRandomMWQMSampleLanguage("");
                     mwqmSampleLanguage.TranslationStatus = (TranslationStatusEnum)1000000;
                     mwqmSampleLanguageService.Add(mwqmSampleLanguage);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsRequired, "TranslationStatus"), mwqmSampleLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsRequired, "TranslationStatus"), mwqmSampleLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
 
 
                     // -----------------------------------
@@ -203,12 +203,12 @@ namespace CSSPServices.Tests
                     mwqmSampleLanguage = GetFilledRandomMWQMSampleLanguage("");
                     mwqmSampleLanguage.LastUpdateDate_UTC = new DateTime();
                     mwqmSampleLanguageService.Add(mwqmSampleLanguage);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsRequired, "LastUpdateDate_UTC"), mwqmSampleLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsRequired, "LastUpdateDate_UTC"), mwqmSampleLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
                     mwqmSampleLanguage = null;
                     mwqmSampleLanguage = GetFilledRandomMWQMSampleLanguage("");
                     mwqmSampleLanguage.LastUpdateDate_UTC = new DateTime(1979, 1, 1);
                     mwqmSampleLanguageService.Add(mwqmSampleLanguage);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._YearShouldBeBiggerThan_, "LastUpdateDate_UTC", "1980"), mwqmSampleLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._YearShouldBeBiggerThan_, "LastUpdateDate_UTC", "1980"), mwqmSampleLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -220,13 +220,13 @@ namespace CSSPServices.Tests
                     mwqmSampleLanguage = GetFilledRandomMWQMSampleLanguage("");
                     mwqmSampleLanguage.LastUpdateContactTVItemID = 0;
                     mwqmSampleLanguageService.Add(mwqmSampleLanguage);
-                    Assert.AreEqual(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "TVItem", "LastUpdateContactTVItemID", mwqmSampleLanguage.LastUpdateContactTVItemID.ToString()), mwqmSampleLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "TVItem", "LastUpdateContactTVItemID", mwqmSampleLanguage.LastUpdateContactTVItemID.ToString()), mwqmSampleLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
 
                     mwqmSampleLanguage = null;
                     mwqmSampleLanguage = GetFilledRandomMWQMSampleLanguage("");
                     mwqmSampleLanguage.LastUpdateContactTVItemID = 1;
                     mwqmSampleLanguageService.Add(mwqmSampleLanguage);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsNotOfType_, "LastUpdateContactTVItemID", "Contact"), mwqmSampleLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsNotOfType_, "LastUpdateContactTVItemID", "Contact"), mwqmSampleLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
 
 
                     // -----------------------------------
@@ -250,7 +250,7 @@ namespace CSSPServices.Tests
         #endregion Tests Generated Properties
 
         #region Tests Generated for GetMWQMSampleLanguageWithMWQMSampleLanguageID(mwqmSampleLanguage.MWQMSampleLanguageID)
-        [TestMethod]
+        [Fact]
         public void GetMWQMSampleLanguageWithMWQMSampleLanguageID__mwqmSampleLanguage_MWQMSampleLanguageID__Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -261,7 +261,7 @@ namespace CSSPServices.Tests
                 {
                     MWQMSampleLanguageService mwqmSampleLanguageService = new MWQMSampleLanguageService(new Query() { Lang = culture.TwoLetterISOLanguageName }, dbTestDB, ContactID);
                     MWQMSampleLanguage mwqmSampleLanguage = (from c in dbTestDB.MWQMSampleLanguages select c).FirstOrDefault();
-                    Assert.IsNotNull(mwqmSampleLanguage);
+                    Assert.NotNull(mwqmSampleLanguage);
 
                 }
             }
@@ -269,7 +269,7 @@ namespace CSSPServices.Tests
         #endregion Tests Generated for GetMWQMSampleLanguageWithMWQMSampleLanguageID(mwqmSampleLanguage.MWQMSampleLanguageID)
 
         #region Tests Generated for GetMWQMSampleLanguageList()
-        [TestMethod]
+        [Fact]
         public void GetMWQMSampleLanguageList_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -280,7 +280,7 @@ namespace CSSPServices.Tests
                 {
                     MWQMSampleLanguageService mwqmSampleLanguageService = new MWQMSampleLanguageService(new Query() { Lang = culture.TwoLetterISOLanguageName }, dbTestDB, ContactID);
                     MWQMSampleLanguage mwqmSampleLanguage = (from c in dbTestDB.MWQMSampleLanguages select c).FirstOrDefault();
-                    Assert.IsNotNull(mwqmSampleLanguage);
+                    Assert.NotNull(mwqmSampleLanguage);
 
                     List<MWQMSampleLanguage> mwqmSampleLanguageDirectQueryList = new List<MWQMSampleLanguage>();
                     mwqmSampleLanguageDirectQueryList = (from c in dbTestDB.MWQMSampleLanguages select c).Take(200).ToList();
@@ -291,7 +291,7 @@ namespace CSSPServices.Tests
         #endregion Tests Generated for GetMWQMSampleLanguageList()
 
         #region Tests Generated for GetMWQMSampleLanguageList() Skip Take
-        [TestMethod]
+        [Fact]
         public void GetMWQMSampleLanguageList_Skip_Take_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -310,14 +310,14 @@ namespace CSSPServices.Tests
                         List<MWQMSampleLanguage> mwqmSampleLanguageList = new List<MWQMSampleLanguage>();
                         mwqmSampleLanguageList = mwqmSampleLanguageService.GetMWQMSampleLanguageList().ToList();
                         CheckMWQMSampleLanguageFields(mwqmSampleLanguageList);
-                        Assert.AreEqual(mwqmSampleLanguageDirectQueryList[0].MWQMSampleLanguageID, mwqmSampleLanguageList[0].MWQMSampleLanguageID);
+                        Assert.Equal(mwqmSampleLanguageDirectQueryList[0].MWQMSampleLanguageID, mwqmSampleLanguageList[0].MWQMSampleLanguageID);
                 }
             }
         }
         #endregion Tests Generated for GetMWQMSampleLanguageList() Skip Take
 
         #region Tests Generated for GetMWQMSampleLanguageList() Skip Take Asc
-        [TestMethod]
+        [Fact]
         public void GetMWQMSampleLanguageList_Skip_Take_Asc_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -336,14 +336,14 @@ namespace CSSPServices.Tests
                         List<MWQMSampleLanguage> mwqmSampleLanguageList = new List<MWQMSampleLanguage>();
                         mwqmSampleLanguageList = mwqmSampleLanguageService.GetMWQMSampleLanguageList().ToList();
                         CheckMWQMSampleLanguageFields(mwqmSampleLanguageList);
-                        Assert.AreEqual(mwqmSampleLanguageDirectQueryList[0].MWQMSampleLanguageID, mwqmSampleLanguageList[0].MWQMSampleLanguageID);
+                        Assert.Equal(mwqmSampleLanguageDirectQueryList[0].MWQMSampleLanguageID, mwqmSampleLanguageList[0].MWQMSampleLanguageID);
                 }
             }
         }
         #endregion Tests Generated for GetMWQMSampleLanguageList() Skip Take Asc
 
         #region Tests Generated for GetMWQMSampleLanguageList() Skip Take 2 Asc
-        [TestMethod]
+        [Fact]
         public void GetMWQMSampleLanguageList_Skip_Take_2Asc_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -362,14 +362,14 @@ namespace CSSPServices.Tests
                         List<MWQMSampleLanguage> mwqmSampleLanguageList = new List<MWQMSampleLanguage>();
                         mwqmSampleLanguageList = mwqmSampleLanguageService.GetMWQMSampleLanguageList().ToList();
                         CheckMWQMSampleLanguageFields(mwqmSampleLanguageList);
-                        Assert.AreEqual(mwqmSampleLanguageDirectQueryList[0].MWQMSampleLanguageID, mwqmSampleLanguageList[0].MWQMSampleLanguageID);
+                        Assert.Equal(mwqmSampleLanguageDirectQueryList[0].MWQMSampleLanguageID, mwqmSampleLanguageList[0].MWQMSampleLanguageID);
                 }
             }
         }
         #endregion Tests Generated for GetMWQMSampleLanguageList() Skip Take 2 Asc
 
         #region Tests Generated for GetMWQMSampleLanguageList() Skip Take Asc Where
-        [TestMethod]
+        [Fact]
         public void GetMWQMSampleLanguageList_Skip_Take_Asc_Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -388,14 +388,14 @@ namespace CSSPServices.Tests
                         List<MWQMSampleLanguage> mwqmSampleLanguageList = new List<MWQMSampleLanguage>();
                         mwqmSampleLanguageList = mwqmSampleLanguageService.GetMWQMSampleLanguageList().ToList();
                         CheckMWQMSampleLanguageFields(mwqmSampleLanguageList);
-                        Assert.AreEqual(mwqmSampleLanguageDirectQueryList[0].MWQMSampleLanguageID, mwqmSampleLanguageList[0].MWQMSampleLanguageID);
+                        Assert.Equal(mwqmSampleLanguageDirectQueryList[0].MWQMSampleLanguageID, mwqmSampleLanguageList[0].MWQMSampleLanguageID);
                 }
             }
         }
         #endregion Tests Generated for GetMWQMSampleLanguageList() Skip Take Asc Where
 
         #region Tests Generated for GetMWQMSampleLanguageList() Skip Take Asc 2 Where
-        [TestMethod]
+        [Fact]
         public void GetMWQMSampleLanguageList_Skip_Take_Asc_2Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -414,14 +414,14 @@ namespace CSSPServices.Tests
                         List<MWQMSampleLanguage> mwqmSampleLanguageList = new List<MWQMSampleLanguage>();
                         mwqmSampleLanguageList = mwqmSampleLanguageService.GetMWQMSampleLanguageList().ToList();
                         CheckMWQMSampleLanguageFields(mwqmSampleLanguageList);
-                        Assert.AreEqual(mwqmSampleLanguageDirectQueryList[0].MWQMSampleLanguageID, mwqmSampleLanguageList[0].MWQMSampleLanguageID);
+                        Assert.Equal(mwqmSampleLanguageDirectQueryList[0].MWQMSampleLanguageID, mwqmSampleLanguageList[0].MWQMSampleLanguageID);
                 }
             }
         }
         #endregion Tests Generated for GetMWQMSampleLanguageList() Skip Take Asc 2 Where
 
         #region Tests Generated for GetMWQMSampleLanguageList() Skip Take Desc
-        [TestMethod]
+        [Fact]
         public void GetMWQMSampleLanguageList_Skip_Take_Desc_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -440,14 +440,14 @@ namespace CSSPServices.Tests
                         List<MWQMSampleLanguage> mwqmSampleLanguageList = new List<MWQMSampleLanguage>();
                         mwqmSampleLanguageList = mwqmSampleLanguageService.GetMWQMSampleLanguageList().ToList();
                         CheckMWQMSampleLanguageFields(mwqmSampleLanguageList);
-                        Assert.AreEqual(mwqmSampleLanguageDirectQueryList[0].MWQMSampleLanguageID, mwqmSampleLanguageList[0].MWQMSampleLanguageID);
+                        Assert.Equal(mwqmSampleLanguageDirectQueryList[0].MWQMSampleLanguageID, mwqmSampleLanguageList[0].MWQMSampleLanguageID);
                 }
             }
         }
         #endregion Tests Generated for GetMWQMSampleLanguageList() Skip Take Desc
 
         #region Tests Generated for GetMWQMSampleLanguageList() Skip Take 2 Desc
-        [TestMethod]
+        [Fact]
         public void GetMWQMSampleLanguageList_Skip_Take_2Desc_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -466,14 +466,14 @@ namespace CSSPServices.Tests
                         List<MWQMSampleLanguage> mwqmSampleLanguageList = new List<MWQMSampleLanguage>();
                         mwqmSampleLanguageList = mwqmSampleLanguageService.GetMWQMSampleLanguageList().ToList();
                         CheckMWQMSampleLanguageFields(mwqmSampleLanguageList);
-                        Assert.AreEqual(mwqmSampleLanguageDirectQueryList[0].MWQMSampleLanguageID, mwqmSampleLanguageList[0].MWQMSampleLanguageID);
+                        Assert.Equal(mwqmSampleLanguageDirectQueryList[0].MWQMSampleLanguageID, mwqmSampleLanguageList[0].MWQMSampleLanguageID);
                 }
             }
         }
         #endregion Tests Generated for GetMWQMSampleLanguageList() Skip Take 2 Desc
 
         #region Tests Generated for GetMWQMSampleLanguageList() Skip Take Desc Where
-        [TestMethod]
+        [Fact]
         public void GetMWQMSampleLanguageList_Skip_Take_Desc_Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -492,14 +492,14 @@ namespace CSSPServices.Tests
                         List<MWQMSampleLanguage> mwqmSampleLanguageList = new List<MWQMSampleLanguage>();
                         mwqmSampleLanguageList = mwqmSampleLanguageService.GetMWQMSampleLanguageList().ToList();
                         CheckMWQMSampleLanguageFields(mwqmSampleLanguageList);
-                        Assert.AreEqual(mwqmSampleLanguageDirectQueryList[0].MWQMSampleLanguageID, mwqmSampleLanguageList[0].MWQMSampleLanguageID);
+                        Assert.Equal(mwqmSampleLanguageDirectQueryList[0].MWQMSampleLanguageID, mwqmSampleLanguageList[0].MWQMSampleLanguageID);
                 }
             }
         }
         #endregion Tests Generated for GetMWQMSampleLanguageList() Skip Take Desc Where
 
         #region Tests Generated for GetMWQMSampleLanguageList() Skip Take Desc 2 Where
-        [TestMethod]
+        [Fact]
         public void GetMWQMSampleLanguageList_Skip_Take_Desc_2Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -518,14 +518,14 @@ namespace CSSPServices.Tests
                         List<MWQMSampleLanguage> mwqmSampleLanguageList = new List<MWQMSampleLanguage>();
                         mwqmSampleLanguageList = mwqmSampleLanguageService.GetMWQMSampleLanguageList().ToList();
                         CheckMWQMSampleLanguageFields(mwqmSampleLanguageList);
-                        Assert.AreEqual(mwqmSampleLanguageDirectQueryList[0].MWQMSampleLanguageID, mwqmSampleLanguageList[0].MWQMSampleLanguageID);
+                        Assert.Equal(mwqmSampleLanguageDirectQueryList[0].MWQMSampleLanguageID, mwqmSampleLanguageList[0].MWQMSampleLanguageID);
                 }
             }
         }
         #endregion Tests Generated for GetMWQMSampleLanguageList() Skip Take Desc 2 Where
 
         #region Tests Generated for GetMWQMSampleLanguageList() 2 Where
-        [TestMethod]
+        [Fact]
         public void GetMWQMSampleLanguageList_2Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -544,7 +544,7 @@ namespace CSSPServices.Tests
                         List<MWQMSampleLanguage> mwqmSampleLanguageList = new List<MWQMSampleLanguage>();
                         mwqmSampleLanguageList = mwqmSampleLanguageService.GetMWQMSampleLanguageList().ToList();
                         CheckMWQMSampleLanguageFields(mwqmSampleLanguageList);
-                        Assert.AreEqual(mwqmSampleLanguageDirectQueryList[0].MWQMSampleLanguageID, mwqmSampleLanguageList[0].MWQMSampleLanguageID);
+                        Assert.Equal(mwqmSampleLanguageDirectQueryList[0].MWQMSampleLanguageID, mwqmSampleLanguageList[0].MWQMSampleLanguageID);
                 }
             }
         }
@@ -553,14 +553,14 @@ namespace CSSPServices.Tests
         #region Functions private
         private void CheckMWQMSampleLanguageFields(List<MWQMSampleLanguage> mwqmSampleLanguageList)
         {
-            Assert.IsNotNull(mwqmSampleLanguageList[0].MWQMSampleLanguageID);
-            Assert.IsNotNull(mwqmSampleLanguageList[0].MWQMSampleID);
-            Assert.IsNotNull(mwqmSampleLanguageList[0].Language);
-            Assert.IsFalse(string.IsNullOrWhiteSpace(mwqmSampleLanguageList[0].MWQMSampleNote));
-            Assert.IsNotNull(mwqmSampleLanguageList[0].TranslationStatus);
-            Assert.IsNotNull(mwqmSampleLanguageList[0].LastUpdateDate_UTC);
-            Assert.IsNotNull(mwqmSampleLanguageList[0].LastUpdateContactTVItemID);
-            Assert.IsNotNull(mwqmSampleLanguageList[0].HasErrors);
+            Assert.NotNull(mwqmSampleLanguageList[0].MWQMSampleLanguageID);
+            Assert.NotNull(mwqmSampleLanguageList[0].MWQMSampleID);
+            Assert.NotNull(mwqmSampleLanguageList[0].Language);
+            Assert.False(string.IsNullOrWhiteSpace(mwqmSampleLanguageList[0].MWQMSampleNote));
+            Assert.NotNull(mwqmSampleLanguageList[0].TranslationStatus);
+            Assert.NotNull(mwqmSampleLanguageList[0].LastUpdateDate_UTC);
+            Assert.NotNull(mwqmSampleLanguageList[0].LastUpdateContactTVItemID);
+            Assert.NotNull(mwqmSampleLanguageList[0].HasErrors);
         }
         private MWQMSampleLanguage GetFilledRandomMWQMSampleLanguage(string OmitPropName)
         {

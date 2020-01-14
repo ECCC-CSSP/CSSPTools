@@ -6,7 +6,7 @@
  */ 
 using System;
 using System.Text;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using System.Linq;
 using System.Globalization;
 using System.Transactions;
@@ -19,7 +19,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace CSSPModels.Tests
 {
-    [TestClass]
+
     public partial class QueryTest
     {
         #region Variables
@@ -37,7 +37,7 @@ namespace CSSPModels.Tests
         #endregion Constructors
 
         #region Tests Functions public
-        [TestMethod]
+        [Fact]
         public void Query_Properties_Test()
         {
             List<string> propNameList = new List<string>() { "ModelType", "Language", "Lang", "Skip", "Take", "Asc", "Desc", "Where", "AscList", "DescList", "WhereInfoList", "HasErrors",  }.OrderBy(c => c).ToList();
@@ -46,59 +46,59 @@ namespace CSSPModels.Tests
             int index = 0;
             foreach (PropertyInfo propertyInfo in typeof(Query).GetProperties().Where(c => c.Name != "ValidationResults").OrderBy(c => c.Name).ToList())
             {
-                Assert.AreEqual(propertyInfo.Name, propNameList[index]);
+                Assert.Equal(propertyInfo.Name, propNameList[index]);
                 index += 1;
             }
 
-            Assert.AreEqual(propNameList.Count, index);
+            Assert.Equal(propNameList.Count, index);
         }
-        [TestMethod]
+        [Fact]
         public void Query_Has_ValidationResults_Test()
         {
-             Assert.IsTrue(typeof(Query).GetProperties().Where(c => c.Name == "ValidationResults").Any());
+             Assert.True(typeof(Query).GetProperties().Where(c => c.Name == "ValidationResults").Any());
         }
-        [TestMethod]
+        [Fact]
         public void Query_Every_Property_Has_Get_Set_Test()
         {
                Type val1 = typeof(Query);
                query.ModelType = val1;
-               Assert.AreEqual(val1, query.ModelType);
+               Assert.Equal(val1, query.ModelType);
                LanguageEnum val2 = (LanguageEnum)3;
                query.Language = val2;
-               Assert.AreEqual(val2, query.Language);
+               Assert.Equal(val2, query.Language);
                string val3 = "Some text";
                query.Lang = val3;
-               Assert.AreEqual(val3, query.Lang);
+               Assert.Equal(val3, query.Lang);
                int val4 = 45;
                query.Skip = val4;
-               Assert.AreEqual(val4, query.Skip);
+               Assert.Equal(val4, query.Skip);
                int val5 = 45;
                query.Take = val5;
-               Assert.AreEqual(val5, query.Take);
+               Assert.Equal(val5, query.Take);
                string val6 = "Some text";
                query.Asc = val6;
-               Assert.AreEqual(val6, query.Asc);
+               Assert.Equal(val6, query.Asc);
                string val7 = "Some text";
                query.Desc = val7;
-               Assert.AreEqual(val7, query.Desc);
+               Assert.Equal(val7, query.Desc);
                string val8 = "Some text";
                query.Where = val8;
-               Assert.AreEqual(val8, query.Where);
+               Assert.Equal(val8, query.Where);
                List<string> val9 = new List<string>() { "testing", "Bonjour Allo" };
                query.AscList = val9;
-               Assert.AreEqual(val9, query.AscList);
+               Assert.Equal(val9, query.AscList);
                List<string> val10 = new List<string>() { "testing", "Bonjour Allo" };
                query.DescList = val10;
-               Assert.AreEqual(val10, query.DescList);
+               Assert.Equal(val10, query.DescList);
                List<WhereInfo> val11 = new List<WhereInfo>() { new WhereInfo(), new WhereInfo() };
                query.WhereInfoList = val11;
-               Assert.AreEqual(val11, query.WhereInfoList);
+               Assert.Equal(val11, query.WhereInfoList);
                bool val12 = true;
                query.HasErrors = val12;
-               Assert.AreEqual(val12, query.HasErrors);
+               Assert.Equal(val12, query.HasErrors);
                IEnumerable<ValidationResult> val39 = new List<ValidationResult>() { new ValidationResult("First CSSPError Message") }.AsEnumerable();
                query.ValidationResults = val39;
-               Assert.AreEqual(val39, query.ValidationResults);
+               Assert.Equal(val39, query.ValidationResults);
         }
         #endregion Tests Functions public
     }

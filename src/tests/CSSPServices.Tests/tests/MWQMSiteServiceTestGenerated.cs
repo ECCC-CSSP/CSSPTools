@@ -5,7 +5,7 @@
  */ 
 
 using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using System.Linq;
 using System.Collections.Generic;
 using CSSPModels;
@@ -21,7 +21,7 @@ using CSSPEnums.Resources;
 
 namespace CSSPServices.Tests
 {
-    [TestClass]
+
     public partial class MWQMSiteServiceTest : TestHelper
     {
         #region Variables
@@ -39,7 +39,7 @@ namespace CSSPServices.Tests
         #endregion Constructors
 
         #region Tests Generated CRUD
-        [TestMethod]
+        [Fact]
         public void MWQMSite_CRUD_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -66,26 +66,26 @@ namespace CSSPServices.Tests
 
                     count = mwqmSiteService.GetMWQMSiteList().Count();
 
-                    Assert.AreEqual(count, (from c in dbTestDB.MWQMSites select c).Count());
+                    Assert.Equal(count, (from c in dbTestDB.MWQMSites select c).Count());
 
                     mwqmSiteService.Add(mwqmSite);
                     if (mwqmSite.HasErrors)
                     {
-                        Assert.AreEqual("", mwqmSite.ValidationResults.FirstOrDefault().ErrorMessage);
+                        Assert.Equal("", mwqmSite.ValidationResults.FirstOrDefault().ErrorMessage);
                     }
-                    Assert.AreEqual(true, mwqmSiteService.GetMWQMSiteList().Where(c => c == mwqmSite).Any());
+                    Assert.True(mwqmSiteService.GetMWQMSiteList().Where(c => c == mwqmSite).Any());
                     mwqmSiteService.Update(mwqmSite);
                     if (mwqmSite.HasErrors)
                     {
-                        Assert.AreEqual("", mwqmSite.ValidationResults.FirstOrDefault().ErrorMessage);
+                        Assert.Equal("", mwqmSite.ValidationResults.FirstOrDefault().ErrorMessage);
                     }
-                    Assert.AreEqual(count + 1, mwqmSiteService.GetMWQMSiteList().Count());
+                    Assert.Equal(count + 1, mwqmSiteService.GetMWQMSiteList().Count());
                     mwqmSiteService.Delete(mwqmSite);
                     if (mwqmSite.HasErrors)
                     {
-                        Assert.AreEqual("", mwqmSite.ValidationResults.FirstOrDefault().ErrorMessage);
+                        Assert.Equal("", mwqmSite.ValidationResults.FirstOrDefault().ErrorMessage);
                     }
-                    Assert.AreEqual(count, mwqmSiteService.GetMWQMSiteList().Count());
+                    Assert.Equal(count, mwqmSiteService.GetMWQMSiteList().Count());
 
                 }
             }
@@ -93,7 +93,7 @@ namespace CSSPServices.Tests
         #endregion Tests Generated CRUD
 
         #region Tests Generated Properties
-        [TestMethod]
+        [Fact]
         public void MWQMSite_Properties_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -131,13 +131,13 @@ namespace CSSPServices.Tests
                     mwqmSite = GetFilledRandomMWQMSite("");
                     mwqmSite.MWQMSiteID = 0;
                     mwqmSiteService.Update(mwqmSite);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsRequired, "MWQMSiteID"), mwqmSite.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsRequired, "MWQMSiteID"), mwqmSite.ValidationResults.FirstOrDefault().ErrorMessage);
 
                     mwqmSite = null;
                     mwqmSite = GetFilledRandomMWQMSite("");
                     mwqmSite.MWQMSiteID = 10000000;
                     mwqmSiteService.Update(mwqmSite);
-                    Assert.AreEqual(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "MWQMSite", "MWQMSiteID", mwqmSite.MWQMSiteID.ToString()), mwqmSite.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "MWQMSite", "MWQMSiteID", mwqmSite.MWQMSiteID.ToString()), mwqmSite.ValidationResults.FirstOrDefault().ErrorMessage);
 
 
                     // -----------------------------------
@@ -150,13 +150,13 @@ namespace CSSPServices.Tests
                     mwqmSite = GetFilledRandomMWQMSite("");
                     mwqmSite.MWQMSiteTVItemID = 0;
                     mwqmSiteService.Add(mwqmSite);
-                    Assert.AreEqual(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "TVItem", "MWQMSiteTVItemID", mwqmSite.MWQMSiteTVItemID.ToString()), mwqmSite.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "TVItem", "MWQMSiteTVItemID", mwqmSite.MWQMSiteTVItemID.ToString()), mwqmSite.ValidationResults.FirstOrDefault().ErrorMessage);
 
                     mwqmSite = null;
                     mwqmSite = GetFilledRandomMWQMSite("");
                     mwqmSite.MWQMSiteTVItemID = 1;
                     mwqmSiteService.Add(mwqmSite);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsNotOfType_, "MWQMSiteTVItemID", "MWQMSite"), mwqmSite.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsNotOfType_, "MWQMSiteTVItemID", "MWQMSite"), mwqmSite.ValidationResults.FirstOrDefault().ErrorMessage);
 
 
                     // -----------------------------------
@@ -167,18 +167,18 @@ namespace CSSPServices.Tests
 
                     mwqmSite = null;
                     mwqmSite = GetFilledRandomMWQMSite("MWQMSiteNumber");
-                    Assert.AreEqual(false, mwqmSiteService.Add(mwqmSite));
-                    Assert.AreEqual(1, mwqmSite.ValidationResults.Count());
-                    Assert.IsTrue(mwqmSite.ValidationResults.Where(c => c.ErrorMessage == string.Format(CSSPServicesRes._IsRequired, "MWQMSiteNumber")).Any());
-                    Assert.AreEqual(null, mwqmSite.MWQMSiteNumber);
-                    Assert.AreEqual(count, mwqmSiteService.GetMWQMSiteList().Count());
+                    Assert.False(mwqmSiteService.Add(mwqmSite));
+                    Assert.Equal(1, mwqmSite.ValidationResults.Count());
+                    Assert.True(mwqmSite.ValidationResults.Where(c => c.ErrorMessage == string.Format(CSSPServicesRes._IsRequired, "MWQMSiteNumber")).Any());
+                    Assert.Null(mwqmSite.MWQMSiteNumber);
+                    Assert.Equal(count, mwqmSiteService.GetMWQMSiteList().Count());
 
                     mwqmSite = null;
                     mwqmSite = GetFilledRandomMWQMSite("");
                     mwqmSite.MWQMSiteNumber = GetRandomString("", 9);
-                    Assert.AreEqual(false, mwqmSiteService.Add(mwqmSite));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._MaxLengthIs_, "MWQMSiteNumber", "8"), mwqmSite.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, mwqmSiteService.GetMWQMSiteList().Count());
+                    Assert.False(mwqmSiteService.Add(mwqmSite));
+                    Assert.Equal(string.Format(CSSPServicesRes._MaxLengthIs_, "MWQMSiteNumber", "8"), mwqmSite.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, mwqmSiteService.GetMWQMSiteList().Count());
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -188,18 +188,18 @@ namespace CSSPServices.Tests
 
                     mwqmSite = null;
                     mwqmSite = GetFilledRandomMWQMSite("MWQMSiteDescription");
-                    Assert.AreEqual(false, mwqmSiteService.Add(mwqmSite));
-                    Assert.AreEqual(1, mwqmSite.ValidationResults.Count());
-                    Assert.IsTrue(mwqmSite.ValidationResults.Where(c => c.ErrorMessage == string.Format(CSSPServicesRes._IsRequired, "MWQMSiteDescription")).Any());
-                    Assert.AreEqual(null, mwqmSite.MWQMSiteDescription);
-                    Assert.AreEqual(count, mwqmSiteService.GetMWQMSiteList().Count());
+                    Assert.False(mwqmSiteService.Add(mwqmSite));
+                    Assert.Equal(1, mwqmSite.ValidationResults.Count());
+                    Assert.True(mwqmSite.ValidationResults.Where(c => c.ErrorMessage == string.Format(CSSPServicesRes._IsRequired, "MWQMSiteDescription")).Any());
+                    Assert.Null(mwqmSite.MWQMSiteDescription);
+                    Assert.Equal(count, mwqmSiteService.GetMWQMSiteList().Count());
 
                     mwqmSite = null;
                     mwqmSite = GetFilledRandomMWQMSite("");
                     mwqmSite.MWQMSiteDescription = GetRandomString("", 201);
-                    Assert.AreEqual(false, mwqmSiteService.Add(mwqmSite));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._MaxLengthIs_, "MWQMSiteDescription", "200"), mwqmSite.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, mwqmSiteService.GetMWQMSiteList().Count());
+                    Assert.False(mwqmSiteService.Add(mwqmSite));
+                    Assert.Equal(string.Format(CSSPServicesRes._MaxLengthIs_, "MWQMSiteDescription", "200"), mwqmSite.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, mwqmSiteService.GetMWQMSiteList().Count());
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -211,7 +211,7 @@ namespace CSSPServices.Tests
                     mwqmSite = GetFilledRandomMWQMSite("");
                     mwqmSite.MWQMSiteLatestClassification = (MWQMSiteLatestClassificationEnum)1000000;
                     mwqmSiteService.Add(mwqmSite);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsRequired, "MWQMSiteLatestClassification"), mwqmSite.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsRequired, "MWQMSiteLatestClassification"), mwqmSite.ValidationResults.FirstOrDefault().ErrorMessage);
 
 
                     // -----------------------------------
@@ -223,15 +223,15 @@ namespace CSSPServices.Tests
                     mwqmSite = null;
                     mwqmSite = GetFilledRandomMWQMSite("");
                     mwqmSite.Ordinal = -1;
-                    Assert.AreEqual(false, mwqmSiteService.Add(mwqmSite));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "Ordinal", "0", "1000"), mwqmSite.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, mwqmSiteService.GetMWQMSiteList().Count());
+                    Assert.False(mwqmSiteService.Add(mwqmSite));
+                    Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "Ordinal", "0", "1000"), mwqmSite.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, mwqmSiteService.GetMWQMSiteList().Count());
                     mwqmSite = null;
                     mwqmSite = GetFilledRandomMWQMSite("");
                     mwqmSite.Ordinal = 1001;
-                    Assert.AreEqual(false, mwqmSiteService.Add(mwqmSite));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "Ordinal", "0", "1000"), mwqmSite.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, mwqmSiteService.GetMWQMSiteList().Count());
+                    Assert.False(mwqmSiteService.Add(mwqmSite));
+                    Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "Ordinal", "0", "1000"), mwqmSite.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, mwqmSiteService.GetMWQMSiteList().Count());
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -243,12 +243,12 @@ namespace CSSPServices.Tests
                     mwqmSite = GetFilledRandomMWQMSite("");
                     mwqmSite.LastUpdateDate_UTC = new DateTime();
                     mwqmSiteService.Add(mwqmSite);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsRequired, "LastUpdateDate_UTC"), mwqmSite.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsRequired, "LastUpdateDate_UTC"), mwqmSite.ValidationResults.FirstOrDefault().ErrorMessage);
                     mwqmSite = null;
                     mwqmSite = GetFilledRandomMWQMSite("");
                     mwqmSite.LastUpdateDate_UTC = new DateTime(1979, 1, 1);
                     mwqmSiteService.Add(mwqmSite);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._YearShouldBeBiggerThan_, "LastUpdateDate_UTC", "1980"), mwqmSite.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._YearShouldBeBiggerThan_, "LastUpdateDate_UTC", "1980"), mwqmSite.ValidationResults.FirstOrDefault().ErrorMessage);
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -260,13 +260,13 @@ namespace CSSPServices.Tests
                     mwqmSite = GetFilledRandomMWQMSite("");
                     mwqmSite.LastUpdateContactTVItemID = 0;
                     mwqmSiteService.Add(mwqmSite);
-                    Assert.AreEqual(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "TVItem", "LastUpdateContactTVItemID", mwqmSite.LastUpdateContactTVItemID.ToString()), mwqmSite.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "TVItem", "LastUpdateContactTVItemID", mwqmSite.LastUpdateContactTVItemID.ToString()), mwqmSite.ValidationResults.FirstOrDefault().ErrorMessage);
 
                     mwqmSite = null;
                     mwqmSite = GetFilledRandomMWQMSite("");
                     mwqmSite.LastUpdateContactTVItemID = 1;
                     mwqmSiteService.Add(mwqmSite);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsNotOfType_, "LastUpdateContactTVItemID", "Contact"), mwqmSite.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsNotOfType_, "LastUpdateContactTVItemID", "Contact"), mwqmSite.ValidationResults.FirstOrDefault().ErrorMessage);
 
 
                     // -----------------------------------
@@ -290,7 +290,7 @@ namespace CSSPServices.Tests
         #endregion Tests Generated Properties
 
         #region Tests Generated for GetMWQMSiteWithMWQMSiteID(mwqmSite.MWQMSiteID)
-        [TestMethod]
+        [Fact]
         public void GetMWQMSiteWithMWQMSiteID__mwqmSite_MWQMSiteID__Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -301,7 +301,7 @@ namespace CSSPServices.Tests
                 {
                     MWQMSiteService mwqmSiteService = new MWQMSiteService(new Query() { Lang = culture.TwoLetterISOLanguageName }, dbTestDB, ContactID);
                     MWQMSite mwqmSite = (from c in dbTestDB.MWQMSites select c).FirstOrDefault();
-                    Assert.IsNotNull(mwqmSite);
+                    Assert.NotNull(mwqmSite);
 
                 }
             }
@@ -309,7 +309,7 @@ namespace CSSPServices.Tests
         #endregion Tests Generated for GetMWQMSiteWithMWQMSiteID(mwqmSite.MWQMSiteID)
 
         #region Tests Generated for GetMWQMSiteList()
-        [TestMethod]
+        [Fact]
         public void GetMWQMSiteList_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -320,7 +320,7 @@ namespace CSSPServices.Tests
                 {
                     MWQMSiteService mwqmSiteService = new MWQMSiteService(new Query() { Lang = culture.TwoLetterISOLanguageName }, dbTestDB, ContactID);
                     MWQMSite mwqmSite = (from c in dbTestDB.MWQMSites select c).FirstOrDefault();
-                    Assert.IsNotNull(mwqmSite);
+                    Assert.NotNull(mwqmSite);
 
                     List<MWQMSite> mwqmSiteDirectQueryList = new List<MWQMSite>();
                     mwqmSiteDirectQueryList = (from c in dbTestDB.MWQMSites select c).Take(200).ToList();
@@ -331,7 +331,7 @@ namespace CSSPServices.Tests
         #endregion Tests Generated for GetMWQMSiteList()
 
         #region Tests Generated for GetMWQMSiteList() Skip Take
-        [TestMethod]
+        [Fact]
         public void GetMWQMSiteList_Skip_Take_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -350,14 +350,14 @@ namespace CSSPServices.Tests
                         List<MWQMSite> mwqmSiteList = new List<MWQMSite>();
                         mwqmSiteList = mwqmSiteService.GetMWQMSiteList().ToList();
                         CheckMWQMSiteFields(mwqmSiteList);
-                        Assert.AreEqual(mwqmSiteDirectQueryList[0].MWQMSiteID, mwqmSiteList[0].MWQMSiteID);
+                        Assert.Equal(mwqmSiteDirectQueryList[0].MWQMSiteID, mwqmSiteList[0].MWQMSiteID);
                 }
             }
         }
         #endregion Tests Generated for GetMWQMSiteList() Skip Take
 
         #region Tests Generated for GetMWQMSiteList() Skip Take Asc
-        [TestMethod]
+        [Fact]
         public void GetMWQMSiteList_Skip_Take_Asc_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -376,14 +376,14 @@ namespace CSSPServices.Tests
                         List<MWQMSite> mwqmSiteList = new List<MWQMSite>();
                         mwqmSiteList = mwqmSiteService.GetMWQMSiteList().ToList();
                         CheckMWQMSiteFields(mwqmSiteList);
-                        Assert.AreEqual(mwqmSiteDirectQueryList[0].MWQMSiteID, mwqmSiteList[0].MWQMSiteID);
+                        Assert.Equal(mwqmSiteDirectQueryList[0].MWQMSiteID, mwqmSiteList[0].MWQMSiteID);
                 }
             }
         }
         #endregion Tests Generated for GetMWQMSiteList() Skip Take Asc
 
         #region Tests Generated for GetMWQMSiteList() Skip Take 2 Asc
-        [TestMethod]
+        [Fact]
         public void GetMWQMSiteList_Skip_Take_2Asc_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -402,14 +402,14 @@ namespace CSSPServices.Tests
                         List<MWQMSite> mwqmSiteList = new List<MWQMSite>();
                         mwqmSiteList = mwqmSiteService.GetMWQMSiteList().ToList();
                         CheckMWQMSiteFields(mwqmSiteList);
-                        Assert.AreEqual(mwqmSiteDirectQueryList[0].MWQMSiteID, mwqmSiteList[0].MWQMSiteID);
+                        Assert.Equal(mwqmSiteDirectQueryList[0].MWQMSiteID, mwqmSiteList[0].MWQMSiteID);
                 }
             }
         }
         #endregion Tests Generated for GetMWQMSiteList() Skip Take 2 Asc
 
         #region Tests Generated for GetMWQMSiteList() Skip Take Asc Where
-        [TestMethod]
+        [Fact]
         public void GetMWQMSiteList_Skip_Take_Asc_Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -428,14 +428,14 @@ namespace CSSPServices.Tests
                         List<MWQMSite> mwqmSiteList = new List<MWQMSite>();
                         mwqmSiteList = mwqmSiteService.GetMWQMSiteList().ToList();
                         CheckMWQMSiteFields(mwqmSiteList);
-                        Assert.AreEqual(mwqmSiteDirectQueryList[0].MWQMSiteID, mwqmSiteList[0].MWQMSiteID);
+                        Assert.Equal(mwqmSiteDirectQueryList[0].MWQMSiteID, mwqmSiteList[0].MWQMSiteID);
                 }
             }
         }
         #endregion Tests Generated for GetMWQMSiteList() Skip Take Asc Where
 
         #region Tests Generated for GetMWQMSiteList() Skip Take Asc 2 Where
-        [TestMethod]
+        [Fact]
         public void GetMWQMSiteList_Skip_Take_Asc_2Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -454,14 +454,14 @@ namespace CSSPServices.Tests
                         List<MWQMSite> mwqmSiteList = new List<MWQMSite>();
                         mwqmSiteList = mwqmSiteService.GetMWQMSiteList().ToList();
                         CheckMWQMSiteFields(mwqmSiteList);
-                        Assert.AreEqual(mwqmSiteDirectQueryList[0].MWQMSiteID, mwqmSiteList[0].MWQMSiteID);
+                        Assert.Equal(mwqmSiteDirectQueryList[0].MWQMSiteID, mwqmSiteList[0].MWQMSiteID);
                 }
             }
         }
         #endregion Tests Generated for GetMWQMSiteList() Skip Take Asc 2 Where
 
         #region Tests Generated for GetMWQMSiteList() Skip Take Desc
-        [TestMethod]
+        [Fact]
         public void GetMWQMSiteList_Skip_Take_Desc_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -480,14 +480,14 @@ namespace CSSPServices.Tests
                         List<MWQMSite> mwqmSiteList = new List<MWQMSite>();
                         mwqmSiteList = mwqmSiteService.GetMWQMSiteList().ToList();
                         CheckMWQMSiteFields(mwqmSiteList);
-                        Assert.AreEqual(mwqmSiteDirectQueryList[0].MWQMSiteID, mwqmSiteList[0].MWQMSiteID);
+                        Assert.Equal(mwqmSiteDirectQueryList[0].MWQMSiteID, mwqmSiteList[0].MWQMSiteID);
                 }
             }
         }
         #endregion Tests Generated for GetMWQMSiteList() Skip Take Desc
 
         #region Tests Generated for GetMWQMSiteList() Skip Take 2 Desc
-        [TestMethod]
+        [Fact]
         public void GetMWQMSiteList_Skip_Take_2Desc_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -506,14 +506,14 @@ namespace CSSPServices.Tests
                         List<MWQMSite> mwqmSiteList = new List<MWQMSite>();
                         mwqmSiteList = mwqmSiteService.GetMWQMSiteList().ToList();
                         CheckMWQMSiteFields(mwqmSiteList);
-                        Assert.AreEqual(mwqmSiteDirectQueryList[0].MWQMSiteID, mwqmSiteList[0].MWQMSiteID);
+                        Assert.Equal(mwqmSiteDirectQueryList[0].MWQMSiteID, mwqmSiteList[0].MWQMSiteID);
                 }
             }
         }
         #endregion Tests Generated for GetMWQMSiteList() Skip Take 2 Desc
 
         #region Tests Generated for GetMWQMSiteList() Skip Take Desc Where
-        [TestMethod]
+        [Fact]
         public void GetMWQMSiteList_Skip_Take_Desc_Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -532,14 +532,14 @@ namespace CSSPServices.Tests
                         List<MWQMSite> mwqmSiteList = new List<MWQMSite>();
                         mwqmSiteList = mwqmSiteService.GetMWQMSiteList().ToList();
                         CheckMWQMSiteFields(mwqmSiteList);
-                        Assert.AreEqual(mwqmSiteDirectQueryList[0].MWQMSiteID, mwqmSiteList[0].MWQMSiteID);
+                        Assert.Equal(mwqmSiteDirectQueryList[0].MWQMSiteID, mwqmSiteList[0].MWQMSiteID);
                 }
             }
         }
         #endregion Tests Generated for GetMWQMSiteList() Skip Take Desc Where
 
         #region Tests Generated for GetMWQMSiteList() Skip Take Desc 2 Where
-        [TestMethod]
+        [Fact]
         public void GetMWQMSiteList_Skip_Take_Desc_2Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -558,14 +558,14 @@ namespace CSSPServices.Tests
                         List<MWQMSite> mwqmSiteList = new List<MWQMSite>();
                         mwqmSiteList = mwqmSiteService.GetMWQMSiteList().ToList();
                         CheckMWQMSiteFields(mwqmSiteList);
-                        Assert.AreEqual(mwqmSiteDirectQueryList[0].MWQMSiteID, mwqmSiteList[0].MWQMSiteID);
+                        Assert.Equal(mwqmSiteDirectQueryList[0].MWQMSiteID, mwqmSiteList[0].MWQMSiteID);
                 }
             }
         }
         #endregion Tests Generated for GetMWQMSiteList() Skip Take Desc 2 Where
 
         #region Tests Generated for GetMWQMSiteList() 2 Where
-        [TestMethod]
+        [Fact]
         public void GetMWQMSiteList_2Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -584,7 +584,7 @@ namespace CSSPServices.Tests
                         List<MWQMSite> mwqmSiteList = new List<MWQMSite>();
                         mwqmSiteList = mwqmSiteService.GetMWQMSiteList().ToList();
                         CheckMWQMSiteFields(mwqmSiteList);
-                        Assert.AreEqual(mwqmSiteDirectQueryList[0].MWQMSiteID, mwqmSiteList[0].MWQMSiteID);
+                        Assert.Equal(mwqmSiteDirectQueryList[0].MWQMSiteID, mwqmSiteList[0].MWQMSiteID);
                 }
             }
         }
@@ -593,15 +593,15 @@ namespace CSSPServices.Tests
         #region Functions private
         private void CheckMWQMSiteFields(List<MWQMSite> mwqmSiteList)
         {
-            Assert.IsNotNull(mwqmSiteList[0].MWQMSiteID);
-            Assert.IsNotNull(mwqmSiteList[0].MWQMSiteTVItemID);
-            Assert.IsFalse(string.IsNullOrWhiteSpace(mwqmSiteList[0].MWQMSiteNumber));
-            Assert.IsFalse(string.IsNullOrWhiteSpace(mwqmSiteList[0].MWQMSiteDescription));
-            Assert.IsNotNull(mwqmSiteList[0].MWQMSiteLatestClassification);
-            Assert.IsNotNull(mwqmSiteList[0].Ordinal);
-            Assert.IsNotNull(mwqmSiteList[0].LastUpdateDate_UTC);
-            Assert.IsNotNull(mwqmSiteList[0].LastUpdateContactTVItemID);
-            Assert.IsNotNull(mwqmSiteList[0].HasErrors);
+            Assert.NotNull(mwqmSiteList[0].MWQMSiteID);
+            Assert.NotNull(mwqmSiteList[0].MWQMSiteTVItemID);
+            Assert.False(string.IsNullOrWhiteSpace(mwqmSiteList[0].MWQMSiteNumber));
+            Assert.False(string.IsNullOrWhiteSpace(mwqmSiteList[0].MWQMSiteDescription));
+            Assert.NotNull(mwqmSiteList[0].MWQMSiteLatestClassification);
+            Assert.NotNull(mwqmSiteList[0].Ordinal);
+            Assert.NotNull(mwqmSiteList[0].LastUpdateDate_UTC);
+            Assert.NotNull(mwqmSiteList[0].LastUpdateContactTVItemID);
+            Assert.NotNull(mwqmSiteList[0].HasErrors);
         }
         private MWQMSite GetFilledRandomMWQMSite(string OmitPropName)
         {

@@ -6,7 +6,7 @@
  */ 
 using System;
 using System.Text;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using System.Linq;
 using System.Globalization;
 using System.Transactions;
@@ -19,7 +19,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace CSSPModels.Tests
 {
-    [TestClass]
+
     public partial class CalDecayTest
     {
         #region Variables
@@ -37,7 +37,7 @@ namespace CSSPModels.Tests
         #endregion Constructors
 
         #region Tests Functions public
-        [TestMethod]
+        [Fact]
         public void CalDecay_Properties_Test()
         {
             List<string> propNameList = new List<string>() { "Decay", "HasErrors",  }.OrderBy(c => c).ToList();
@@ -46,29 +46,29 @@ namespace CSSPModels.Tests
             int index = 0;
             foreach (PropertyInfo propertyInfo in typeof(CalDecay).GetProperties().Where(c => c.Name != "ValidationResults").OrderBy(c => c.Name).ToList())
             {
-                Assert.AreEqual(propertyInfo.Name, propNameList[index]);
+                Assert.Equal(propertyInfo.Name, propNameList[index]);
                 index += 1;
             }
 
-            Assert.AreEqual(propNameList.Count, index);
+            Assert.Equal(propNameList.Count, index);
         }
-        [TestMethod]
+        [Fact]
         public void CalDecay_Has_ValidationResults_Test()
         {
-             Assert.IsTrue(typeof(CalDecay).GetProperties().Where(c => c.Name == "ValidationResults").Any());
+             Assert.True(typeof(CalDecay).GetProperties().Where(c => c.Name == "ValidationResults").Any());
         }
-        [TestMethod]
+        [Fact]
         public void CalDecay_Every_Property_Has_Get_Set_Test()
         {
                double val1 = 87.9D;
                calDecay.Decay = val1;
-               Assert.AreEqual(val1, calDecay.Decay);
+               Assert.Equal(val1, calDecay.Decay);
                bool val2 = true;
                calDecay.HasErrors = val2;
-               Assert.AreEqual(val2, calDecay.HasErrors);
+               Assert.Equal(val2, calDecay.HasErrors);
                IEnumerable<ValidationResult> val9 = new List<ValidationResult>() { new ValidationResult("First CSSPError Message") }.AsEnumerable();
                calDecay.ValidationResults = val9;
-               Assert.AreEqual(val9, calDecay.ValidationResults);
+               Assert.Equal(val9, calDecay.ValidationResults);
         }
         #endregion Tests Functions public
     }

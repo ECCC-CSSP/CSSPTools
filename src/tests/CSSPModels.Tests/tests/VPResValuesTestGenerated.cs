@@ -6,7 +6,7 @@
  */ 
 using System;
 using System.Text;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using System.Linq;
 using System.Globalization;
 using System.Transactions;
@@ -19,7 +19,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace CSSPModels.Tests
 {
-    [TestClass]
+
     public partial class VPResValuesTest
     {
         #region Variables
@@ -37,7 +37,7 @@ namespace CSSPModels.Tests
         #endregion Constructors
 
         #region Tests Functions public
-        [TestMethod]
+        [Fact]
         public void VPResValues_Properties_Test()
         {
             List<string> propNameList = new List<string>() { "Conc", "Dilu", "FarfieldWidth", "Distance", "TheTime", "Decay", "HasErrors",  }.OrderBy(c => c).ToList();
@@ -46,44 +46,44 @@ namespace CSSPModels.Tests
             int index = 0;
             foreach (PropertyInfo propertyInfo in typeof(VPResValues).GetProperties().Where(c => c.Name != "ValidationResults").OrderBy(c => c.Name).ToList())
             {
-                Assert.AreEqual(propertyInfo.Name, propNameList[index]);
+                Assert.Equal(propertyInfo.Name, propNameList[index]);
                 index += 1;
             }
 
-            Assert.AreEqual(propNameList.Count, index);
+            Assert.Equal(propNameList.Count, index);
         }
-        [TestMethod]
+        [Fact]
         public void VPResValues_Has_ValidationResults_Test()
         {
-             Assert.IsTrue(typeof(VPResValues).GetProperties().Where(c => c.Name == "ValidationResults").Any());
+             Assert.True(typeof(VPResValues).GetProperties().Where(c => c.Name == "ValidationResults").Any());
         }
-        [TestMethod]
+        [Fact]
         public void VPResValues_Every_Property_Has_Get_Set_Test()
         {
                int val1 = 45;
                vPResValues.Conc = val1;
-               Assert.AreEqual(val1, vPResValues.Conc);
+               Assert.Equal(val1, vPResValues.Conc);
                double val2 = 87.9D;
                vPResValues.Dilu = val2;
-               Assert.AreEqual(val2, vPResValues.Dilu);
+               Assert.Equal(val2, vPResValues.Dilu);
                double val3 = 87.9D;
                vPResValues.FarfieldWidth = val3;
-               Assert.AreEqual(val3, vPResValues.FarfieldWidth);
+               Assert.Equal(val3, vPResValues.FarfieldWidth);
                double val4 = 87.9D;
                vPResValues.Distance = val4;
-               Assert.AreEqual(val4, vPResValues.Distance);
+               Assert.Equal(val4, vPResValues.Distance);
                double val5 = 87.9D;
                vPResValues.TheTime = val5;
-               Assert.AreEqual(val5, vPResValues.TheTime);
+               Assert.Equal(val5, vPResValues.TheTime);
                double val6 = 87.9D;
                vPResValues.Decay = val6;
-               Assert.AreEqual(val6, vPResValues.Decay);
+               Assert.Equal(val6, vPResValues.Decay);
                bool val7 = true;
                vPResValues.HasErrors = val7;
-               Assert.AreEqual(val7, vPResValues.HasErrors);
+               Assert.Equal(val7, vPResValues.HasErrors);
                IEnumerable<ValidationResult> val24 = new List<ValidationResult>() { new ValidationResult("First CSSPError Message") }.AsEnumerable();
                vPResValues.ValidationResults = val24;
-               Assert.AreEqual(val24, vPResValues.ValidationResults);
+               Assert.Equal(val24, vPResValues.ValidationResults);
         }
         #endregion Tests Functions public
     }

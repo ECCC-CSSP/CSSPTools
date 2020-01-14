@@ -6,7 +6,7 @@
  */ 
 using System;
 using System.Text;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using System.Linq;
 using System.Globalization;
 using System.Transactions;
@@ -19,7 +19,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace CSSPModels.Tests
 {
-    [TestClass]
+
     public partial class TVItemTest
     {
         #region Variables
@@ -37,7 +37,7 @@ namespace CSSPModels.Tests
         #endregion Constructors
 
         #region Tests Functions public
-        [TestMethod]
+        [Fact]
         public void TVItem_Properties_Test()
         {
             List<string> propNameList = new List<string>() { "TVItemID", "TVLevel", "TVPath", "TVType", "ParentID", "IsActive", "LastUpdateDate_UTC", "LastUpdateContactTVItemID",  }.OrderBy(c => c).ToList();
@@ -50,12 +50,12 @@ namespace CSSPModels.Tests
                     && propertyInfo.Name != "ValidationResults"
                     && !propertyInfo.CustomAttributes.Where(c => c.AttributeType.Name.Contains("NotMappedAttribute")).Any())
                 {
-                    Assert.AreEqual(propNameList[index], propertyInfo.Name);
+                    Assert.Equal(propNameList[index], propertyInfo.Name);
                     index += 1;
                 }
             }
 
-            Assert.AreEqual(propNameList.Count, index);
+            Assert.Equal(propNameList.Count, index);
 
             index = 0;
             foreach (PropertyInfo propertyInfo in typeof(TVItem).GetProperties().Where(c => c.Name != "ValidationResults").OrderBy(c => c.Name).ToList())
@@ -64,16 +64,16 @@ namespace CSSPModels.Tests
                 {
                     if (customAttributeData.AttributeType.Name == "NotMappedAttribute")
                     {
-                        Assert.AreEqual(propertyInfo.Name, propNameNotMappedList[index]);
+                        Assert.Equal(propertyInfo.Name, propNameNotMappedList[index]);
                         index += 1;
                     }
                 }
             }
 
-            Assert.AreEqual(propNameNotMappedList.Count, index);
+            Assert.Equal(propNameNotMappedList.Count, index);
 
         }
-        [TestMethod]
+        [Fact]
         public void TVItem_Navigation_Test()
         {
             List<string> foreignNameList = new List<string>() {  }.OrderBy(c => c).ToList();
@@ -84,64 +84,64 @@ namespace CSSPModels.Tests
             {
                 if (propertyInfo.GetGetMethod().IsVirtual && !propertyInfo.GetGetMethod().ReturnType.Name.StartsWith("ICollection"))
                 {
-                    Assert.IsTrue(foreignNameList.Contains(propertyInfo.Name));
+                    Assert.True(foreignNameList.Contains(propertyInfo.Name));
                     index += 1;
                 }
             }
 
-            Assert.AreEqual(foreignNameList.Count, index);
+            Assert.Equal(foreignNameList.Count, index);
 
             index = 0;
             foreach (PropertyInfo propertyInfo in typeof(TVItem).GetProperties().Where(c => c.Name != "ValidationResults").OrderBy(c => c.Name).ToList())
             {
                 if (propertyInfo.GetGetMethod().ReturnType.Name.StartsWith("ICollection"))
                 {
-                    Assert.IsTrue(foreignNameCollectionList.Contains(propertyInfo.Name));
+                    Assert.True(foreignNameCollectionList.Contains(propertyInfo.Name));
                     index += 1;
                 }
             }
 
-            Assert.AreEqual(foreignNameCollectionList.Count, index);
+            Assert.Equal(foreignNameCollectionList.Count, index);
 
         }
-        [TestMethod]
+        [Fact]
         public void TVItem_Has_ValidationResults_Test()
         {
-             Assert.IsTrue(typeof(TVItem).GetProperties().Where(c => c.Name == "ValidationResults").Any());
+             Assert.True(typeof(TVItem).GetProperties().Where(c => c.Name == "ValidationResults").Any());
         }
-        [TestMethod]
+        [Fact]
         public void TVItem_Every_Property_Has_Get_Set_Test()
         {
                int val1 = 45;
                tVItem.TVItemID = val1;
-               Assert.AreEqual(val1, tVItem.TVItemID);
+               Assert.Equal(val1, tVItem.TVItemID);
                int val2 = 45;
                tVItem.TVLevel = val2;
-               Assert.AreEqual(val2, tVItem.TVLevel);
+               Assert.Equal(val2, tVItem.TVLevel);
                string val3 = "Some text";
                tVItem.TVPath = val3;
-               Assert.AreEqual(val3, tVItem.TVPath);
+               Assert.Equal(val3, tVItem.TVPath);
                TVTypeEnum val4 = (TVTypeEnum)3;
                tVItem.TVType = val4;
-               Assert.AreEqual(val4, tVItem.TVType);
+               Assert.Equal(val4, tVItem.TVType);
                int val5 = 45;
                tVItem.ParentID = val5;
-               Assert.AreEqual(val5, tVItem.ParentID);
+               Assert.Equal(val5, tVItem.ParentID);
                bool val6 = true;
                tVItem.IsActive = val6;
-               Assert.AreEqual(val6, tVItem.IsActive);
+               Assert.Equal(val6, tVItem.IsActive);
                DateTime val7 = new DateTime(2010, 3, 4);
                tVItem.LastUpdateDate_UTC = val7;
-               Assert.AreEqual(val7, tVItem.LastUpdateDate_UTC);
+               Assert.Equal(val7, tVItem.LastUpdateDate_UTC);
                int val8 = 45;
                tVItem.LastUpdateContactTVItemID = val8;
-               Assert.AreEqual(val8, tVItem.LastUpdateContactTVItemID);
+               Assert.Equal(val8, tVItem.LastUpdateContactTVItemID);
                bool val9 = true;
                tVItem.HasErrors = val9;
-               Assert.AreEqual(val9, tVItem.HasErrors);
+               Assert.Equal(val9, tVItem.HasErrors);
                IEnumerable<ValidationResult> val30 = new List<ValidationResult>() { new ValidationResult("First CSSPError Message") }.AsEnumerable();
                tVItem.ValidationResults = val30;
-               Assert.AreEqual(val30, tVItem.ValidationResults);
+               Assert.Equal(val30, tVItem.ValidationResults);
         }
         #endregion Tests Functions public
     }

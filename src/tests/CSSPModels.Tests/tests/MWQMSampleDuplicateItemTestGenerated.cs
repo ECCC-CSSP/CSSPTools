@@ -6,7 +6,7 @@
  */ 
 using System;
 using System.Text;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using System.Linq;
 using System.Globalization;
 using System.Transactions;
@@ -19,7 +19,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace CSSPModels.Tests
 {
-    [TestClass]
+
     public partial class MWQMSampleDuplicateItemTest
     {
         #region Variables
@@ -37,7 +37,7 @@ namespace CSSPModels.Tests
         #endregion Constructors
 
         #region Tests Functions public
-        [TestMethod]
+        [Fact]
         public void MWQMSampleDuplicateItem_Properties_Test()
         {
             List<string> propNameList = new List<string>() { "ParentSite", "DuplicateSite", "HasErrors",  }.OrderBy(c => c).ToList();
@@ -46,32 +46,32 @@ namespace CSSPModels.Tests
             int index = 0;
             foreach (PropertyInfo propertyInfo in typeof(MWQMSampleDuplicateItem).GetProperties().Where(c => c.Name != "ValidationResults").OrderBy(c => c.Name).ToList())
             {
-                Assert.AreEqual(propertyInfo.Name, propNameList[index]);
+                Assert.Equal(propertyInfo.Name, propNameList[index]);
                 index += 1;
             }
 
-            Assert.AreEqual(propNameList.Count, index);
+            Assert.Equal(propNameList.Count, index);
         }
-        [TestMethod]
+        [Fact]
         public void MWQMSampleDuplicateItem_Has_ValidationResults_Test()
         {
-             Assert.IsTrue(typeof(MWQMSampleDuplicateItem).GetProperties().Where(c => c.Name == "ValidationResults").Any());
+             Assert.True(typeof(MWQMSampleDuplicateItem).GetProperties().Where(c => c.Name == "ValidationResults").Any());
         }
-        [TestMethod]
+        [Fact]
         public void MWQMSampleDuplicateItem_Every_Property_Has_Get_Set_Test()
         {
                string val1 = "Some text";
                mWQMSampleDuplicateItem.ParentSite = val1;
-               Assert.AreEqual(val1, mWQMSampleDuplicateItem.ParentSite);
+               Assert.Equal(val1, mWQMSampleDuplicateItem.ParentSite);
                string val2 = "Some text";
                mWQMSampleDuplicateItem.DuplicateSite = val2;
-               Assert.AreEqual(val2, mWQMSampleDuplicateItem.DuplicateSite);
+               Assert.Equal(val2, mWQMSampleDuplicateItem.DuplicateSite);
                bool val3 = true;
                mWQMSampleDuplicateItem.HasErrors = val3;
-               Assert.AreEqual(val3, mWQMSampleDuplicateItem.HasErrors);
+               Assert.Equal(val3, mWQMSampleDuplicateItem.HasErrors);
                IEnumerable<ValidationResult> val12 = new List<ValidationResult>() { new ValidationResult("First CSSPError Message") }.AsEnumerable();
                mWQMSampleDuplicateItem.ValidationResults = val12;
-               Assert.AreEqual(val12, mWQMSampleDuplicateItem.ValidationResults);
+               Assert.Equal(val12, mWQMSampleDuplicateItem.ValidationResults);
         }
         #endregion Tests Functions public
     }

@@ -6,7 +6,7 @@
  */ 
 using System;
 using System.Text;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using System.Linq;
 using System.Globalization;
 using System.Transactions;
@@ -19,7 +19,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace CSSPModels.Tests
 {
-    [TestClass]
+
     public partial class RegisterTest
     {
         #region Variables
@@ -37,7 +37,7 @@ namespace CSSPModels.Tests
         #endregion Constructors
 
         #region Tests Functions public
-        [TestMethod]
+        [Fact]
         public void Register_Properties_Test()
         {
             List<string> propNameList = new List<string>() { "LoginEmail", "FirstName", "Initial", "LastName", "WebName", "Password", "ConfirmPassword", "HasErrors",  }.OrderBy(c => c).ToList();
@@ -46,47 +46,47 @@ namespace CSSPModels.Tests
             int index = 0;
             foreach (PropertyInfo propertyInfo in typeof(Register).GetProperties().Where(c => c.Name != "ValidationResults").OrderBy(c => c.Name).ToList())
             {
-                Assert.AreEqual(propertyInfo.Name, propNameList[index]);
+                Assert.Equal(propertyInfo.Name, propNameList[index]);
                 index += 1;
             }
 
-            Assert.AreEqual(propNameList.Count, index);
+            Assert.Equal(propNameList.Count, index);
         }
-        [TestMethod]
+        [Fact]
         public void Register_Has_ValidationResults_Test()
         {
-             Assert.IsTrue(typeof(Register).GetProperties().Where(c => c.Name == "ValidationResults").Any());
+             Assert.True(typeof(Register).GetProperties().Where(c => c.Name == "ValidationResults").Any());
         }
-        [TestMethod]
+        [Fact]
         public void Register_Every_Property_Has_Get_Set_Test()
         {
                string val1 = "Some text";
                register.LoginEmail = val1;
-               Assert.AreEqual(val1, register.LoginEmail);
+               Assert.Equal(val1, register.LoginEmail);
                string val2 = "Some text";
                register.FirstName = val2;
-               Assert.AreEqual(val2, register.FirstName);
+               Assert.Equal(val2, register.FirstName);
                string val3 = "Some text";
                register.Initial = val3;
-               Assert.AreEqual(val3, register.Initial);
+               Assert.Equal(val3, register.Initial);
                string val4 = "Some text";
                register.LastName = val4;
-               Assert.AreEqual(val4, register.LastName);
+               Assert.Equal(val4, register.LastName);
                string val5 = "Some text";
                register.WebName = val5;
-               Assert.AreEqual(val5, register.WebName);
+               Assert.Equal(val5, register.WebName);
                string val6 = "Some text";
                register.Password = val6;
-               Assert.AreEqual(val6, register.Password);
+               Assert.Equal(val6, register.Password);
                string val7 = "Some text";
                register.ConfirmPassword = val7;
-               Assert.AreEqual(val7, register.ConfirmPassword);
+               Assert.Equal(val7, register.ConfirmPassword);
                bool val8 = true;
                register.HasErrors = val8;
-               Assert.AreEqual(val8, register.HasErrors);
+               Assert.Equal(val8, register.HasErrors);
                IEnumerable<ValidationResult> val27 = new List<ValidationResult>() { new ValidationResult("First CSSPError Message") }.AsEnumerable();
                register.ValidationResults = val27;
-               Assert.AreEqual(val27, register.ValidationResults);
+               Assert.Equal(val27, register.ValidationResults);
         }
         #endregion Tests Functions public
     }

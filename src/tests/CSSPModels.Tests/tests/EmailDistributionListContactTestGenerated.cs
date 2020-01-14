@@ -6,7 +6,7 @@
  */ 
 using System;
 using System.Text;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using System.Linq;
 using System.Globalization;
 using System.Transactions;
@@ -19,7 +19,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace CSSPModels.Tests
 {
-    [TestClass]
+
     public partial class EmailDistributionListContactTest
     {
         #region Variables
@@ -37,7 +37,7 @@ namespace CSSPModels.Tests
         #endregion Constructors
 
         #region Tests Functions public
-        [TestMethod]
+        [Fact]
         public void EmailDistributionListContact_Properties_Test()
         {
             List<string> propNameList = new List<string>() { "EmailDistributionListContactID", "EmailDistributionListID", "IsCC", "Name", "Email", "CMPRainfallSeasonal", "CMPWastewater", "EmergencyWeather", "EmergencyWastewater", "ReopeningAllTypes", "LastUpdateDate_UTC", "LastUpdateContactTVItemID",  }.OrderBy(c => c).ToList();
@@ -50,12 +50,12 @@ namespace CSSPModels.Tests
                     && propertyInfo.Name != "ValidationResults"
                     && !propertyInfo.CustomAttributes.Where(c => c.AttributeType.Name.Contains("NotMappedAttribute")).Any())
                 {
-                    Assert.AreEqual(propNameList[index], propertyInfo.Name);
+                    Assert.Equal(propNameList[index], propertyInfo.Name);
                     index += 1;
                 }
             }
 
-            Assert.AreEqual(propNameList.Count, index);
+            Assert.Equal(propNameList.Count, index);
 
             index = 0;
             foreach (PropertyInfo propertyInfo in typeof(EmailDistributionListContact).GetProperties().Where(c => c.Name != "ValidationResults").OrderBy(c => c.Name).ToList())
@@ -64,16 +64,16 @@ namespace CSSPModels.Tests
                 {
                     if (customAttributeData.AttributeType.Name == "NotMappedAttribute")
                     {
-                        Assert.AreEqual(propertyInfo.Name, propNameNotMappedList[index]);
+                        Assert.Equal(propertyInfo.Name, propNameNotMappedList[index]);
                         index += 1;
                     }
                 }
             }
 
-            Assert.AreEqual(propNameNotMappedList.Count, index);
+            Assert.Equal(propNameNotMappedList.Count, index);
 
         }
-        [TestMethod]
+        [Fact]
         public void EmailDistributionListContact_Navigation_Test()
         {
             List<string> foreignNameList = new List<string>() {  }.OrderBy(c => c).ToList();
@@ -84,76 +84,76 @@ namespace CSSPModels.Tests
             {
                 if (propertyInfo.GetGetMethod().IsVirtual && !propertyInfo.GetGetMethod().ReturnType.Name.StartsWith("ICollection"))
                 {
-                    Assert.IsTrue(foreignNameList.Contains(propertyInfo.Name));
+                    Assert.True(foreignNameList.Contains(propertyInfo.Name));
                     index += 1;
                 }
             }
 
-            Assert.AreEqual(foreignNameList.Count, index);
+            Assert.Equal(foreignNameList.Count, index);
 
             index = 0;
             foreach (PropertyInfo propertyInfo in typeof(EmailDistributionListContact).GetProperties().Where(c => c.Name != "ValidationResults").OrderBy(c => c.Name).ToList())
             {
                 if (propertyInfo.GetGetMethod().ReturnType.Name.StartsWith("ICollection"))
                 {
-                    Assert.IsTrue(foreignNameCollectionList.Contains(propertyInfo.Name));
+                    Assert.True(foreignNameCollectionList.Contains(propertyInfo.Name));
                     index += 1;
                 }
             }
 
-            Assert.AreEqual(foreignNameCollectionList.Count, index);
+            Assert.Equal(foreignNameCollectionList.Count, index);
 
         }
-        [TestMethod]
+        [Fact]
         public void EmailDistributionListContact_Has_ValidationResults_Test()
         {
-             Assert.IsTrue(typeof(EmailDistributionListContact).GetProperties().Where(c => c.Name == "ValidationResults").Any());
+             Assert.True(typeof(EmailDistributionListContact).GetProperties().Where(c => c.Name == "ValidationResults").Any());
         }
-        [TestMethod]
+        [Fact]
         public void EmailDistributionListContact_Every_Property_Has_Get_Set_Test()
         {
                int val1 = 45;
                emailDistributionListContact.EmailDistributionListContactID = val1;
-               Assert.AreEqual(val1, emailDistributionListContact.EmailDistributionListContactID);
+               Assert.Equal(val1, emailDistributionListContact.EmailDistributionListContactID);
                int val2 = 45;
                emailDistributionListContact.EmailDistributionListID = val2;
-               Assert.AreEqual(val2, emailDistributionListContact.EmailDistributionListID);
+               Assert.Equal(val2, emailDistributionListContact.EmailDistributionListID);
                bool val3 = true;
                emailDistributionListContact.IsCC = val3;
-               Assert.AreEqual(val3, emailDistributionListContact.IsCC);
+               Assert.Equal(val3, emailDistributionListContact.IsCC);
                string val4 = "Some text";
                emailDistributionListContact.Name = val4;
-               Assert.AreEqual(val4, emailDistributionListContact.Name);
+               Assert.Equal(val4, emailDistributionListContact.Name);
                string val5 = "Some text";
                emailDistributionListContact.Email = val5;
-               Assert.AreEqual(val5, emailDistributionListContact.Email);
+               Assert.Equal(val5, emailDistributionListContact.Email);
                bool val6 = true;
                emailDistributionListContact.CMPRainfallSeasonal = val6;
-               Assert.AreEqual(val6, emailDistributionListContact.CMPRainfallSeasonal);
+               Assert.Equal(val6, emailDistributionListContact.CMPRainfallSeasonal);
                bool val7 = true;
                emailDistributionListContact.CMPWastewater = val7;
-               Assert.AreEqual(val7, emailDistributionListContact.CMPWastewater);
+               Assert.Equal(val7, emailDistributionListContact.CMPWastewater);
                bool val8 = true;
                emailDistributionListContact.EmergencyWeather = val8;
-               Assert.AreEqual(val8, emailDistributionListContact.EmergencyWeather);
+               Assert.Equal(val8, emailDistributionListContact.EmergencyWeather);
                bool val9 = true;
                emailDistributionListContact.EmergencyWastewater = val9;
-               Assert.AreEqual(val9, emailDistributionListContact.EmergencyWastewater);
+               Assert.Equal(val9, emailDistributionListContact.EmergencyWastewater);
                bool val10 = true;
                emailDistributionListContact.ReopeningAllTypes = val10;
-               Assert.AreEqual(val10, emailDistributionListContact.ReopeningAllTypes);
+               Assert.Equal(val10, emailDistributionListContact.ReopeningAllTypes);
                DateTime val11 = new DateTime(2010, 3, 4);
                emailDistributionListContact.LastUpdateDate_UTC = val11;
-               Assert.AreEqual(val11, emailDistributionListContact.LastUpdateDate_UTC);
+               Assert.Equal(val11, emailDistributionListContact.LastUpdateDate_UTC);
                int val12 = 45;
                emailDistributionListContact.LastUpdateContactTVItemID = val12;
-               Assert.AreEqual(val12, emailDistributionListContact.LastUpdateContactTVItemID);
+               Assert.Equal(val12, emailDistributionListContact.LastUpdateContactTVItemID);
                bool val13 = true;
                emailDistributionListContact.HasErrors = val13;
-               Assert.AreEqual(val13, emailDistributionListContact.HasErrors);
+               Assert.Equal(val13, emailDistributionListContact.HasErrors);
                IEnumerable<ValidationResult> val42 = new List<ValidationResult>() { new ValidationResult("First CSSPError Message") }.AsEnumerable();
                emailDistributionListContact.ValidationResults = val42;
-               Assert.AreEqual(val42, emailDistributionListContact.ValidationResults);
+               Assert.Equal(val42, emailDistributionListContact.ValidationResults);
         }
         #endregion Tests Functions public
     }

@@ -6,7 +6,7 @@
  */ 
 using System;
 using System.Text;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using System.Linq;
 using System.Globalization;
 using System.Transactions;
@@ -19,7 +19,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace CSSPModels.Tests
 {
-    [TestClass]
+
     public partial class InputSummaryTest
     {
         #region Variables
@@ -37,7 +37,7 @@ namespace CSSPModels.Tests
         #endregion Constructors
 
         #region Tests Functions public
-        [TestMethod]
+        [Fact]
         public void InputSummary_Properties_Test()
         {
             List<string> propNameList = new List<string>() { "Summary", "HasErrors",  }.OrderBy(c => c).ToList();
@@ -46,29 +46,29 @@ namespace CSSPModels.Tests
             int index = 0;
             foreach (PropertyInfo propertyInfo in typeof(InputSummary).GetProperties().Where(c => c.Name != "ValidationResults").OrderBy(c => c.Name).ToList())
             {
-                Assert.AreEqual(propertyInfo.Name, propNameList[index]);
+                Assert.Equal(propertyInfo.Name, propNameList[index]);
                 index += 1;
             }
 
-            Assert.AreEqual(propNameList.Count, index);
+            Assert.Equal(propNameList.Count, index);
         }
-        [TestMethod]
+        [Fact]
         public void InputSummary_Has_ValidationResults_Test()
         {
-             Assert.IsTrue(typeof(InputSummary).GetProperties().Where(c => c.Name == "ValidationResults").Any());
+             Assert.True(typeof(InputSummary).GetProperties().Where(c => c.Name == "ValidationResults").Any());
         }
-        [TestMethod]
+        [Fact]
         public void InputSummary_Every_Property_Has_Get_Set_Test()
         {
                string val1 = "Some text";
                inputSummary.Summary = val1;
-               Assert.AreEqual(val1, inputSummary.Summary);
+               Assert.Equal(val1, inputSummary.Summary);
                bool val2 = true;
                inputSummary.HasErrors = val2;
-               Assert.AreEqual(val2, inputSummary.HasErrors);
+               Assert.Equal(val2, inputSummary.HasErrors);
                IEnumerable<ValidationResult> val9 = new List<ValidationResult>() { new ValidationResult("First CSSPError Message") }.AsEnumerable();
                inputSummary.ValidationResults = val9;
-               Assert.AreEqual(val9, inputSummary.ValidationResults);
+               Assert.Equal(val9, inputSummary.ValidationResults);
         }
         #endregion Tests Functions public
     }

@@ -6,7 +6,7 @@
  */ 
 using System;
 using System.Text;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using System.Linq;
 using System.Globalization;
 using System.Transactions;
@@ -19,7 +19,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace CSSPModels.Tests
 {
-    [TestClass]
+
     public partial class PolSourceSiteEffectTest
     {
         #region Variables
@@ -37,7 +37,7 @@ namespace CSSPModels.Tests
         #endregion Constructors
 
         #region Tests Functions public
-        [TestMethod]
+        [Fact]
         public void PolSourceSiteEffect_Properties_Test()
         {
             List<string> propNameList = new List<string>() { "PolSourceSiteEffectID", "PolSourceSiteOrInfrastructureTVItemID", "MWQMSiteTVItemID", "PolSourceSiteEffectTermIDs", "Comments", "AnalysisDocumentTVItemID", "LastUpdateDate_UTC", "LastUpdateContactTVItemID",  }.OrderBy(c => c).ToList();
@@ -50,12 +50,12 @@ namespace CSSPModels.Tests
                     && propertyInfo.Name != "ValidationResults"
                     && !propertyInfo.CustomAttributes.Where(c => c.AttributeType.Name.Contains("NotMappedAttribute")).Any())
                 {
-                    Assert.AreEqual(propNameList[index], propertyInfo.Name);
+                    Assert.Equal(propNameList[index], propertyInfo.Name);
                     index += 1;
                 }
             }
 
-            Assert.AreEqual(propNameList.Count, index);
+            Assert.Equal(propNameList.Count, index);
 
             index = 0;
             foreach (PropertyInfo propertyInfo in typeof(PolSourceSiteEffect).GetProperties().Where(c => c.Name != "ValidationResults").OrderBy(c => c.Name).ToList())
@@ -64,16 +64,16 @@ namespace CSSPModels.Tests
                 {
                     if (customAttributeData.AttributeType.Name == "NotMappedAttribute")
                     {
-                        Assert.AreEqual(propertyInfo.Name, propNameNotMappedList[index]);
+                        Assert.Equal(propertyInfo.Name, propNameNotMappedList[index]);
                         index += 1;
                     }
                 }
             }
 
-            Assert.AreEqual(propNameNotMappedList.Count, index);
+            Assert.Equal(propNameNotMappedList.Count, index);
 
         }
-        [TestMethod]
+        [Fact]
         public void PolSourceSiteEffect_Navigation_Test()
         {
             List<string> foreignNameList = new List<string>() {  }.OrderBy(c => c).ToList();
@@ -84,64 +84,64 @@ namespace CSSPModels.Tests
             {
                 if (propertyInfo.GetGetMethod().IsVirtual && !propertyInfo.GetGetMethod().ReturnType.Name.StartsWith("ICollection"))
                 {
-                    Assert.IsTrue(foreignNameList.Contains(propertyInfo.Name));
+                    Assert.True(foreignNameList.Contains(propertyInfo.Name));
                     index += 1;
                 }
             }
 
-            Assert.AreEqual(foreignNameList.Count, index);
+            Assert.Equal(foreignNameList.Count, index);
 
             index = 0;
             foreach (PropertyInfo propertyInfo in typeof(PolSourceSiteEffect).GetProperties().Where(c => c.Name != "ValidationResults").OrderBy(c => c.Name).ToList())
             {
                 if (propertyInfo.GetGetMethod().ReturnType.Name.StartsWith("ICollection"))
                 {
-                    Assert.IsTrue(foreignNameCollectionList.Contains(propertyInfo.Name));
+                    Assert.True(foreignNameCollectionList.Contains(propertyInfo.Name));
                     index += 1;
                 }
             }
 
-            Assert.AreEqual(foreignNameCollectionList.Count, index);
+            Assert.Equal(foreignNameCollectionList.Count, index);
 
         }
-        [TestMethod]
+        [Fact]
         public void PolSourceSiteEffect_Has_ValidationResults_Test()
         {
-             Assert.IsTrue(typeof(PolSourceSiteEffect).GetProperties().Where(c => c.Name == "ValidationResults").Any());
+             Assert.True(typeof(PolSourceSiteEffect).GetProperties().Where(c => c.Name == "ValidationResults").Any());
         }
-        [TestMethod]
+        [Fact]
         public void PolSourceSiteEffect_Every_Property_Has_Get_Set_Test()
         {
                int val1 = 45;
                polSourceSiteEffect.PolSourceSiteEffectID = val1;
-               Assert.AreEqual(val1, polSourceSiteEffect.PolSourceSiteEffectID);
+               Assert.Equal(val1, polSourceSiteEffect.PolSourceSiteEffectID);
                int val2 = 45;
                polSourceSiteEffect.PolSourceSiteOrInfrastructureTVItemID = val2;
-               Assert.AreEqual(val2, polSourceSiteEffect.PolSourceSiteOrInfrastructureTVItemID);
+               Assert.Equal(val2, polSourceSiteEffect.PolSourceSiteOrInfrastructureTVItemID);
                int val3 = 45;
                polSourceSiteEffect.MWQMSiteTVItemID = val3;
-               Assert.AreEqual(val3, polSourceSiteEffect.MWQMSiteTVItemID);
+               Assert.Equal(val3, polSourceSiteEffect.MWQMSiteTVItemID);
                string val4 = "Some text";
                polSourceSiteEffect.PolSourceSiteEffectTermIDs = val4;
-               Assert.AreEqual(val4, polSourceSiteEffect.PolSourceSiteEffectTermIDs);
+               Assert.Equal(val4, polSourceSiteEffect.PolSourceSiteEffectTermIDs);
                string val5 = "Some text";
                polSourceSiteEffect.Comments = val5;
-               Assert.AreEqual(val5, polSourceSiteEffect.Comments);
+               Assert.Equal(val5, polSourceSiteEffect.Comments);
                int val6 = 45;
                polSourceSiteEffect.AnalysisDocumentTVItemID = val6;
-               Assert.AreEqual(val6, polSourceSiteEffect.AnalysisDocumentTVItemID);
+               Assert.Equal(val6, polSourceSiteEffect.AnalysisDocumentTVItemID);
                DateTime val7 = new DateTime(2010, 3, 4);
                polSourceSiteEffect.LastUpdateDate_UTC = val7;
-               Assert.AreEqual(val7, polSourceSiteEffect.LastUpdateDate_UTC);
+               Assert.Equal(val7, polSourceSiteEffect.LastUpdateDate_UTC);
                int val8 = 45;
                polSourceSiteEffect.LastUpdateContactTVItemID = val8;
-               Assert.AreEqual(val8, polSourceSiteEffect.LastUpdateContactTVItemID);
+               Assert.Equal(val8, polSourceSiteEffect.LastUpdateContactTVItemID);
                bool val9 = true;
                polSourceSiteEffect.HasErrors = val9;
-               Assert.AreEqual(val9, polSourceSiteEffect.HasErrors);
+               Assert.Equal(val9, polSourceSiteEffect.HasErrors);
                IEnumerable<ValidationResult> val30 = new List<ValidationResult>() { new ValidationResult("First CSSPError Message") }.AsEnumerable();
                polSourceSiteEffect.ValidationResults = val30;
-               Assert.AreEqual(val30, polSourceSiteEffect.ValidationResults);
+               Assert.Equal(val30, polSourceSiteEffect.ValidationResults);
         }
         #endregion Tests Functions public
     }

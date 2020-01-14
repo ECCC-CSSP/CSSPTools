@@ -6,7 +6,7 @@
  */ 
 using System;
 using System.Text;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using System.Linq;
 using System.Globalization;
 using System.Transactions;
@@ -19,7 +19,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace CSSPModels.Tests
 {
-    [TestClass]
+
     public partial class LatLngTest
     {
         #region Variables
@@ -37,7 +37,7 @@ namespace CSSPModels.Tests
         #endregion Constructors
 
         #region Tests Functions public
-        [TestMethod]
+        [Fact]
         public void LatLng_Properties_Test()
         {
             List<string> propNameList = new List<string>() { "Lat", "Lng", "HasErrors",  }.OrderBy(c => c).ToList();
@@ -46,32 +46,32 @@ namespace CSSPModels.Tests
             int index = 0;
             foreach (PropertyInfo propertyInfo in typeof(LatLng).GetProperties().Where(c => c.Name != "ValidationResults").OrderBy(c => c.Name).ToList())
             {
-                Assert.AreEqual(propertyInfo.Name, propNameList[index]);
+                Assert.Equal(propertyInfo.Name, propNameList[index]);
                 index += 1;
             }
 
-            Assert.AreEqual(propNameList.Count, index);
+            Assert.Equal(propNameList.Count, index);
         }
-        [TestMethod]
+        [Fact]
         public void LatLng_Has_ValidationResults_Test()
         {
-             Assert.IsTrue(typeof(LatLng).GetProperties().Where(c => c.Name == "ValidationResults").Any());
+             Assert.True(typeof(LatLng).GetProperties().Where(c => c.Name == "ValidationResults").Any());
         }
-        [TestMethod]
+        [Fact]
         public void LatLng_Every_Property_Has_Get_Set_Test()
         {
                double val1 = 87.9D;
                latLng.Lat = val1;
-               Assert.AreEqual(val1, latLng.Lat);
+               Assert.Equal(val1, latLng.Lat);
                double val2 = 87.9D;
                latLng.Lng = val2;
-               Assert.AreEqual(val2, latLng.Lng);
+               Assert.Equal(val2, latLng.Lng);
                bool val3 = true;
                latLng.HasErrors = val3;
-               Assert.AreEqual(val3, latLng.HasErrors);
+               Assert.Equal(val3, latLng.HasErrors);
                IEnumerable<ValidationResult> val12 = new List<ValidationResult>() { new ValidationResult("First CSSPError Message") }.AsEnumerable();
                latLng.ValidationResults = val12;
-               Assert.AreEqual(val12, latLng.ValidationResults);
+               Assert.Equal(val12, latLng.ValidationResults);
         }
         #endregion Tests Functions public
     }

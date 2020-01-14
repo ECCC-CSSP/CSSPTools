@@ -5,7 +5,7 @@
  */ 
 
 using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using System.Linq;
 using System.Collections.Generic;
 using CSSPModels;
@@ -21,7 +21,7 @@ using CSSPEnums.Resources;
 
 namespace CSSPServices.Tests
 {
-    [TestClass]
+
     public partial class HelpDocServiceTest : TestHelper
     {
         #region Variables
@@ -39,7 +39,7 @@ namespace CSSPServices.Tests
         #endregion Constructors
 
         #region Tests Generated CRUD
-        [TestMethod]
+        [Fact]
         public void HelpDoc_CRUD_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -66,26 +66,26 @@ namespace CSSPServices.Tests
 
                     count = helpDocService.GetHelpDocList().Count();
 
-                    Assert.AreEqual(count, (from c in dbTestDB.HelpDocs select c).Count());
+                    Assert.Equal(count, (from c in dbTestDB.HelpDocs select c).Count());
 
                     helpDocService.Add(helpDoc);
                     if (helpDoc.HasErrors)
                     {
-                        Assert.AreEqual("", helpDoc.ValidationResults.FirstOrDefault().ErrorMessage);
+                        Assert.Equal("", helpDoc.ValidationResults.FirstOrDefault().ErrorMessage);
                     }
-                    Assert.AreEqual(true, helpDocService.GetHelpDocList().Where(c => c == helpDoc).Any());
+                    Assert.True(helpDocService.GetHelpDocList().Where(c => c == helpDoc).Any());
                     helpDocService.Update(helpDoc);
                     if (helpDoc.HasErrors)
                     {
-                        Assert.AreEqual("", helpDoc.ValidationResults.FirstOrDefault().ErrorMessage);
+                        Assert.Equal("", helpDoc.ValidationResults.FirstOrDefault().ErrorMessage);
                     }
-                    Assert.AreEqual(count + 1, helpDocService.GetHelpDocList().Count());
+                    Assert.Equal(count + 1, helpDocService.GetHelpDocList().Count());
                     helpDocService.Delete(helpDoc);
                     if (helpDoc.HasErrors)
                     {
-                        Assert.AreEqual("", helpDoc.ValidationResults.FirstOrDefault().ErrorMessage);
+                        Assert.Equal("", helpDoc.ValidationResults.FirstOrDefault().ErrorMessage);
                     }
-                    Assert.AreEqual(count, helpDocService.GetHelpDocList().Count());
+                    Assert.Equal(count, helpDocService.GetHelpDocList().Count());
 
                 }
             }
@@ -93,7 +93,7 @@ namespace CSSPServices.Tests
         #endregion Tests Generated CRUD
 
         #region Tests Generated Properties
-        [TestMethod]
+        [Fact]
         public void HelpDoc_Properties_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -131,13 +131,13 @@ namespace CSSPServices.Tests
                     helpDoc = GetFilledRandomHelpDoc("");
                     helpDoc.HelpDocID = 0;
                     helpDocService.Update(helpDoc);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsRequired, "HelpDocID"), helpDoc.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsRequired, "HelpDocID"), helpDoc.ValidationResults.FirstOrDefault().ErrorMessage);
 
                     helpDoc = null;
                     helpDoc = GetFilledRandomHelpDoc("");
                     helpDoc.HelpDocID = 10000000;
                     helpDocService.Update(helpDoc);
-                    Assert.AreEqual(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "HelpDoc", "HelpDocID", helpDoc.HelpDocID.ToString()), helpDoc.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "HelpDoc", "HelpDocID", helpDoc.HelpDocID.ToString()), helpDoc.ValidationResults.FirstOrDefault().ErrorMessage);
 
 
                     // -----------------------------------
@@ -148,18 +148,18 @@ namespace CSSPServices.Tests
 
                     helpDoc = null;
                     helpDoc = GetFilledRandomHelpDoc("DocKey");
-                    Assert.AreEqual(false, helpDocService.Add(helpDoc));
-                    Assert.AreEqual(1, helpDoc.ValidationResults.Count());
-                    Assert.IsTrue(helpDoc.ValidationResults.Where(c => c.ErrorMessage == string.Format(CSSPServicesRes._IsRequired, "DocKey")).Any());
-                    Assert.AreEqual(null, helpDoc.DocKey);
-                    Assert.AreEqual(count, helpDocService.GetHelpDocList().Count());
+                    Assert.False(helpDocService.Add(helpDoc));
+                    Assert.Equal(1, helpDoc.ValidationResults.Count());
+                    Assert.True(helpDoc.ValidationResults.Where(c => c.ErrorMessage == string.Format(CSSPServicesRes._IsRequired, "DocKey")).Any());
+                    Assert.Null(helpDoc.DocKey);
+                    Assert.Equal(count, helpDocService.GetHelpDocList().Count());
 
                     helpDoc = null;
                     helpDoc = GetFilledRandomHelpDoc("");
                     helpDoc.DocKey = GetRandomString("", 101);
-                    Assert.AreEqual(false, helpDocService.Add(helpDoc));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._MaxLengthIs_, "DocKey", "100"), helpDoc.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, helpDocService.GetHelpDocList().Count());
+                    Assert.False(helpDocService.Add(helpDoc));
+                    Assert.Equal(string.Format(CSSPServicesRes._MaxLengthIs_, "DocKey", "100"), helpDoc.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, helpDocService.GetHelpDocList().Count());
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -171,7 +171,7 @@ namespace CSSPServices.Tests
                     helpDoc = GetFilledRandomHelpDoc("");
                     helpDoc.Language = (LanguageEnum)1000000;
                     helpDocService.Add(helpDoc);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsRequired, "Language"), helpDoc.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsRequired, "Language"), helpDoc.ValidationResults.FirstOrDefault().ErrorMessage);
 
 
                     // -----------------------------------
@@ -182,18 +182,18 @@ namespace CSSPServices.Tests
 
                     helpDoc = null;
                     helpDoc = GetFilledRandomHelpDoc("DocHTMLText");
-                    Assert.AreEqual(false, helpDocService.Add(helpDoc));
-                    Assert.AreEqual(1, helpDoc.ValidationResults.Count());
-                    Assert.IsTrue(helpDoc.ValidationResults.Where(c => c.ErrorMessage == string.Format(CSSPServicesRes._IsRequired, "DocHTMLText")).Any());
-                    Assert.AreEqual(null, helpDoc.DocHTMLText);
-                    Assert.AreEqual(count, helpDocService.GetHelpDocList().Count());
+                    Assert.False(helpDocService.Add(helpDoc));
+                    Assert.Equal(1, helpDoc.ValidationResults.Count());
+                    Assert.True(helpDoc.ValidationResults.Where(c => c.ErrorMessage == string.Format(CSSPServicesRes._IsRequired, "DocHTMLText")).Any());
+                    Assert.Null(helpDoc.DocHTMLText);
+                    Assert.Equal(count, helpDocService.GetHelpDocList().Count());
 
                     helpDoc = null;
                     helpDoc = GetFilledRandomHelpDoc("");
                     helpDoc.DocHTMLText = GetRandomString("", 100001);
-                    Assert.AreEqual(false, helpDocService.Add(helpDoc));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._MaxLengthIs_, "DocHTMLText", "100000"), helpDoc.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, helpDocService.GetHelpDocList().Count());
+                    Assert.False(helpDocService.Add(helpDoc));
+                    Assert.Equal(string.Format(CSSPServicesRes._MaxLengthIs_, "DocHTMLText", "100000"), helpDoc.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, helpDocService.GetHelpDocList().Count());
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -205,12 +205,12 @@ namespace CSSPServices.Tests
                     helpDoc = GetFilledRandomHelpDoc("");
                     helpDoc.LastUpdateDate_UTC = new DateTime();
                     helpDocService.Add(helpDoc);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsRequired, "LastUpdateDate_UTC"), helpDoc.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsRequired, "LastUpdateDate_UTC"), helpDoc.ValidationResults.FirstOrDefault().ErrorMessage);
                     helpDoc = null;
                     helpDoc = GetFilledRandomHelpDoc("");
                     helpDoc.LastUpdateDate_UTC = new DateTime(1979, 1, 1);
                     helpDocService.Add(helpDoc);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._YearShouldBeBiggerThan_, "LastUpdateDate_UTC", "1980"), helpDoc.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._YearShouldBeBiggerThan_, "LastUpdateDate_UTC", "1980"), helpDoc.ValidationResults.FirstOrDefault().ErrorMessage);
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -222,13 +222,13 @@ namespace CSSPServices.Tests
                     helpDoc = GetFilledRandomHelpDoc("");
                     helpDoc.LastUpdateContactTVItemID = 0;
                     helpDocService.Add(helpDoc);
-                    Assert.AreEqual(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "TVItem", "LastUpdateContactTVItemID", helpDoc.LastUpdateContactTVItemID.ToString()), helpDoc.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "TVItem", "LastUpdateContactTVItemID", helpDoc.LastUpdateContactTVItemID.ToString()), helpDoc.ValidationResults.FirstOrDefault().ErrorMessage);
 
                     helpDoc = null;
                     helpDoc = GetFilledRandomHelpDoc("");
                     helpDoc.LastUpdateContactTVItemID = 1;
                     helpDocService.Add(helpDoc);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsNotOfType_, "LastUpdateContactTVItemID", "Contact"), helpDoc.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsNotOfType_, "LastUpdateContactTVItemID", "Contact"), helpDoc.ValidationResults.FirstOrDefault().ErrorMessage);
 
 
                     // -----------------------------------
@@ -252,7 +252,7 @@ namespace CSSPServices.Tests
         #endregion Tests Generated Properties
 
         #region Tests Generated for GetHelpDocWithHelpDocID(helpDoc.HelpDocID)
-        [TestMethod]
+        [Fact]
         public void GetHelpDocWithHelpDocID__helpDoc_HelpDocID__Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -263,7 +263,7 @@ namespace CSSPServices.Tests
                 {
                     HelpDocService helpDocService = new HelpDocService(new Query() { Lang = culture.TwoLetterISOLanguageName }, dbTestDB, ContactID);
                     HelpDoc helpDoc = (from c in dbTestDB.HelpDocs select c).FirstOrDefault();
-                    Assert.IsNotNull(helpDoc);
+                    Assert.NotNull(helpDoc);
 
                 }
             }
@@ -271,7 +271,7 @@ namespace CSSPServices.Tests
         #endregion Tests Generated for GetHelpDocWithHelpDocID(helpDoc.HelpDocID)
 
         #region Tests Generated for GetHelpDocList()
-        [TestMethod]
+        [Fact]
         public void GetHelpDocList_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -282,7 +282,7 @@ namespace CSSPServices.Tests
                 {
                     HelpDocService helpDocService = new HelpDocService(new Query() { Lang = culture.TwoLetterISOLanguageName }, dbTestDB, ContactID);
                     HelpDoc helpDoc = (from c in dbTestDB.HelpDocs select c).FirstOrDefault();
-                    Assert.IsNotNull(helpDoc);
+                    Assert.NotNull(helpDoc);
 
                     List<HelpDoc> helpDocDirectQueryList = new List<HelpDoc>();
                     helpDocDirectQueryList = (from c in dbTestDB.HelpDocs select c).Take(200).ToList();
@@ -293,7 +293,7 @@ namespace CSSPServices.Tests
         #endregion Tests Generated for GetHelpDocList()
 
         #region Tests Generated for GetHelpDocList() Skip Take
-        [TestMethod]
+        [Fact]
         public void GetHelpDocList_Skip_Take_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -312,14 +312,14 @@ namespace CSSPServices.Tests
                         List<HelpDoc> helpDocList = new List<HelpDoc>();
                         helpDocList = helpDocService.GetHelpDocList().ToList();
                         CheckHelpDocFields(helpDocList);
-                        Assert.AreEqual(helpDocDirectQueryList[0].HelpDocID, helpDocList[0].HelpDocID);
+                        Assert.Equal(helpDocDirectQueryList[0].HelpDocID, helpDocList[0].HelpDocID);
                 }
             }
         }
         #endregion Tests Generated for GetHelpDocList() Skip Take
 
         #region Tests Generated for GetHelpDocList() Skip Take Asc
-        [TestMethod]
+        [Fact]
         public void GetHelpDocList_Skip_Take_Asc_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -338,14 +338,14 @@ namespace CSSPServices.Tests
                         List<HelpDoc> helpDocList = new List<HelpDoc>();
                         helpDocList = helpDocService.GetHelpDocList().ToList();
                         CheckHelpDocFields(helpDocList);
-                        Assert.AreEqual(helpDocDirectQueryList[0].HelpDocID, helpDocList[0].HelpDocID);
+                        Assert.Equal(helpDocDirectQueryList[0].HelpDocID, helpDocList[0].HelpDocID);
                 }
             }
         }
         #endregion Tests Generated for GetHelpDocList() Skip Take Asc
 
         #region Tests Generated for GetHelpDocList() Skip Take 2 Asc
-        [TestMethod]
+        [Fact]
         public void GetHelpDocList_Skip_Take_2Asc_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -364,14 +364,14 @@ namespace CSSPServices.Tests
                         List<HelpDoc> helpDocList = new List<HelpDoc>();
                         helpDocList = helpDocService.GetHelpDocList().ToList();
                         CheckHelpDocFields(helpDocList);
-                        Assert.AreEqual(helpDocDirectQueryList[0].HelpDocID, helpDocList[0].HelpDocID);
+                        Assert.Equal(helpDocDirectQueryList[0].HelpDocID, helpDocList[0].HelpDocID);
                 }
             }
         }
         #endregion Tests Generated for GetHelpDocList() Skip Take 2 Asc
 
         #region Tests Generated for GetHelpDocList() Skip Take Asc Where
-        [TestMethod]
+        [Fact]
         public void GetHelpDocList_Skip_Take_Asc_Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -390,14 +390,14 @@ namespace CSSPServices.Tests
                         List<HelpDoc> helpDocList = new List<HelpDoc>();
                         helpDocList = helpDocService.GetHelpDocList().ToList();
                         CheckHelpDocFields(helpDocList);
-                        Assert.AreEqual(helpDocDirectQueryList[0].HelpDocID, helpDocList[0].HelpDocID);
+                        Assert.Equal(helpDocDirectQueryList[0].HelpDocID, helpDocList[0].HelpDocID);
                 }
             }
         }
         #endregion Tests Generated for GetHelpDocList() Skip Take Asc Where
 
         #region Tests Generated for GetHelpDocList() Skip Take Asc 2 Where
-        [TestMethod]
+        [Fact]
         public void GetHelpDocList_Skip_Take_Asc_2Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -416,14 +416,14 @@ namespace CSSPServices.Tests
                         List<HelpDoc> helpDocList = new List<HelpDoc>();
                         helpDocList = helpDocService.GetHelpDocList().ToList();
                         CheckHelpDocFields(helpDocList);
-                        Assert.AreEqual(helpDocDirectQueryList[0].HelpDocID, helpDocList[0].HelpDocID);
+                        Assert.Equal(helpDocDirectQueryList[0].HelpDocID, helpDocList[0].HelpDocID);
                 }
             }
         }
         #endregion Tests Generated for GetHelpDocList() Skip Take Asc 2 Where
 
         #region Tests Generated for GetHelpDocList() Skip Take Desc
-        [TestMethod]
+        [Fact]
         public void GetHelpDocList_Skip_Take_Desc_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -442,14 +442,14 @@ namespace CSSPServices.Tests
                         List<HelpDoc> helpDocList = new List<HelpDoc>();
                         helpDocList = helpDocService.GetHelpDocList().ToList();
                         CheckHelpDocFields(helpDocList);
-                        Assert.AreEqual(helpDocDirectQueryList[0].HelpDocID, helpDocList[0].HelpDocID);
+                        Assert.Equal(helpDocDirectQueryList[0].HelpDocID, helpDocList[0].HelpDocID);
                 }
             }
         }
         #endregion Tests Generated for GetHelpDocList() Skip Take Desc
 
         #region Tests Generated for GetHelpDocList() Skip Take 2 Desc
-        [TestMethod]
+        [Fact]
         public void GetHelpDocList_Skip_Take_2Desc_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -468,14 +468,14 @@ namespace CSSPServices.Tests
                         List<HelpDoc> helpDocList = new List<HelpDoc>();
                         helpDocList = helpDocService.GetHelpDocList().ToList();
                         CheckHelpDocFields(helpDocList);
-                        Assert.AreEqual(helpDocDirectQueryList[0].HelpDocID, helpDocList[0].HelpDocID);
+                        Assert.Equal(helpDocDirectQueryList[0].HelpDocID, helpDocList[0].HelpDocID);
                 }
             }
         }
         #endregion Tests Generated for GetHelpDocList() Skip Take 2 Desc
 
         #region Tests Generated for GetHelpDocList() Skip Take Desc Where
-        [TestMethod]
+        [Fact]
         public void GetHelpDocList_Skip_Take_Desc_Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -494,14 +494,14 @@ namespace CSSPServices.Tests
                         List<HelpDoc> helpDocList = new List<HelpDoc>();
                         helpDocList = helpDocService.GetHelpDocList().ToList();
                         CheckHelpDocFields(helpDocList);
-                        Assert.AreEqual(helpDocDirectQueryList[0].HelpDocID, helpDocList[0].HelpDocID);
+                        Assert.Equal(helpDocDirectQueryList[0].HelpDocID, helpDocList[0].HelpDocID);
                 }
             }
         }
         #endregion Tests Generated for GetHelpDocList() Skip Take Desc Where
 
         #region Tests Generated for GetHelpDocList() Skip Take Desc 2 Where
-        [TestMethod]
+        [Fact]
         public void GetHelpDocList_Skip_Take_Desc_2Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -520,14 +520,14 @@ namespace CSSPServices.Tests
                         List<HelpDoc> helpDocList = new List<HelpDoc>();
                         helpDocList = helpDocService.GetHelpDocList().ToList();
                         CheckHelpDocFields(helpDocList);
-                        Assert.AreEqual(helpDocDirectQueryList[0].HelpDocID, helpDocList[0].HelpDocID);
+                        Assert.Equal(helpDocDirectQueryList[0].HelpDocID, helpDocList[0].HelpDocID);
                 }
             }
         }
         #endregion Tests Generated for GetHelpDocList() Skip Take Desc 2 Where
 
         #region Tests Generated for GetHelpDocList() 2 Where
-        [TestMethod]
+        [Fact]
         public void GetHelpDocList_2Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -546,7 +546,7 @@ namespace CSSPServices.Tests
                         List<HelpDoc> helpDocList = new List<HelpDoc>();
                         helpDocList = helpDocService.GetHelpDocList().ToList();
                         CheckHelpDocFields(helpDocList);
-                        Assert.AreEqual(helpDocDirectQueryList[0].HelpDocID, helpDocList[0].HelpDocID);
+                        Assert.Equal(helpDocDirectQueryList[0].HelpDocID, helpDocList[0].HelpDocID);
                 }
             }
         }
@@ -555,13 +555,13 @@ namespace CSSPServices.Tests
         #region Functions private
         private void CheckHelpDocFields(List<HelpDoc> helpDocList)
         {
-            Assert.IsNotNull(helpDocList[0].HelpDocID);
-            Assert.IsFalse(string.IsNullOrWhiteSpace(helpDocList[0].DocKey));
-            Assert.IsNotNull(helpDocList[0].Language);
-            Assert.IsFalse(string.IsNullOrWhiteSpace(helpDocList[0].DocHTMLText));
-            Assert.IsNotNull(helpDocList[0].LastUpdateDate_UTC);
-            Assert.IsNotNull(helpDocList[0].LastUpdateContactTVItemID);
-            Assert.IsNotNull(helpDocList[0].HasErrors);
+            Assert.NotNull(helpDocList[0].HelpDocID);
+            Assert.False(string.IsNullOrWhiteSpace(helpDocList[0].DocKey));
+            Assert.NotNull(helpDocList[0].Language);
+            Assert.False(string.IsNullOrWhiteSpace(helpDocList[0].DocHTMLText));
+            Assert.NotNull(helpDocList[0].LastUpdateDate_UTC);
+            Assert.NotNull(helpDocList[0].LastUpdateContactTVItemID);
+            Assert.NotNull(helpDocList[0].HasErrors);
         }
         private HelpDoc GetFilledRandomHelpDoc(string OmitPropName)
         {

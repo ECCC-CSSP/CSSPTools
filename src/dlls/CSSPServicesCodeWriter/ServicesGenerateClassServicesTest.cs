@@ -42,11 +42,11 @@ namespace CSSPServicesGenerateCodeHelper
             sb.AppendLine(@"");
             if (TypeName == "Address")
             {
-                sb.AppendLine($@"                    Assert.AreEqual(count, (from c in dbTestDB.{ TypeName }es select c).Count());");
+                sb.AppendLine($@"                    Assert.Equal(count, (from c in dbTestDB.{ TypeName }es select c).Count());");
             }
             else
             {
-                sb.AppendLine($@"                    Assert.AreEqual(count, (from c in dbTestDB.{ TypeName }s select c).Count());");
+                sb.AppendLine($@"                    Assert.Equal(count, (from c in dbTestDB.{ TypeName }s select c).Count());");
             }
             sb.AppendLine(@"");
             if (TypeName == "Contact")
@@ -59,21 +59,21 @@ namespace CSSPServicesGenerateCodeHelper
             }
             sb.AppendLine($@"                    if ({ TypeNameLower }.HasErrors)");
             sb.AppendLine(@"                    {");
-            sb.AppendLine($@"                        Assert.AreEqual("""", { TypeNameLower }.ValidationResults.FirstOrDefault().ErrorMessage);");
+            sb.AppendLine($@"                        Assert.Equal("""", { TypeNameLower }.ValidationResults.FirstOrDefault().ErrorMessage);");
             sb.AppendLine(@"                    }");
-            sb.AppendLine($@"                    Assert.AreEqual(true, { TypeNameLower }Service.Get{ TypeName }List().Where(c => c == { TypeNameLower }).Any());");
+            sb.AppendLine($@"                    Assert.True({ TypeNameLower }Service.Get{ TypeName }List().Where(c => c == { TypeNameLower }).Any());");
             sb.AppendLine($@"                    { TypeNameLower }Service.Update({ TypeNameLower });");
             sb.AppendLine($@"                    if ({ TypeNameLower }.HasErrors)");
             sb.AppendLine(@"                    {");
-            sb.AppendLine($@"                        Assert.AreEqual("""", { TypeNameLower }.ValidationResults.FirstOrDefault().ErrorMessage);");
+            sb.AppendLine($@"                        Assert.Equal("""", { TypeNameLower }.ValidationResults.FirstOrDefault().ErrorMessage);");
             sb.AppendLine(@"                    }");
-            sb.AppendLine($@"                    Assert.AreEqual(count + 1, { TypeNameLower }Service.Get{ TypeName }List().Count());");
+            sb.AppendLine($@"                    Assert.Equal(count + 1, { TypeNameLower }Service.Get{ TypeName }List().Count());");
             sb.AppendLine($@"                    { TypeNameLower }Service.Delete({ TypeNameLower });");
             sb.AppendLine($@"                    if ({ TypeNameLower }.HasErrors)");
             sb.AppendLine(@"                    {");
-            sb.AppendLine($@"                        Assert.AreEqual("""", { TypeNameLower }.ValidationResults.FirstOrDefault().ErrorMessage);");
+            sb.AppendLine($@"                        Assert.Equal("""", { TypeNameLower }.ValidationResults.FirstOrDefault().ErrorMessage);");
             sb.AppendLine(@"                    }");
-            sb.AppendLine($@"                    Assert.AreEqual(count, { TypeNameLower }Service.Get{ TypeName }List().Count());");
+            sb.AppendLine($@"                    Assert.Equal(count, { TypeNameLower }Service.Get{ TypeName }List().Count());");
         }
               /// <summary>
         ///     <code>
@@ -90,13 +90,13 @@ namespace CSSPServicesGenerateCodeHelper
             sb.AppendLine($@"                    { TypeNameLower } = GetFilledRandom{ TypeName }("""");");
             sb.AppendLine($@"                    { TypeNameLower }.{ csspProp.PropName } = 0;");
             sb.AppendLine($@"                    { TypeNameLower }Service.Update({ TypeNameLower });");
-            sb.AppendLine($@"                    Assert.AreEqual(string.Format(CSSPServicesRes._IsRequired, ""{ csspProp.PropName }""), { TypeNameLower }.ValidationResults.FirstOrDefault().ErrorMessage);");
+            sb.AppendLine($@"                    Assert.Equal(string.Format(CSSPServicesRes._IsRequired, ""{ csspProp.PropName }""), { TypeNameLower }.ValidationResults.FirstOrDefault().ErrorMessage);");
             sb.AppendLine(@"");
             sb.AppendLine($@"                    { TypeNameLower } = null;");
             sb.AppendLine($@"                    { TypeNameLower } = GetFilledRandom{ TypeName }("""");");
             sb.AppendLine($@"                    { TypeNameLower }.{ csspProp.PropName } = 10000000;");
             sb.AppendLine($@"                    { TypeNameLower }Service.Update({ TypeNameLower });");
-            sb.AppendLine($@"                    Assert.AreEqual(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, ""{ TypeName }"", ""{ csspProp.PropName }"", { TypeNameLower }.{ csspProp.PropName }.ToString()), { TypeNameLower }.ValidationResults.FirstOrDefault().ErrorMessage);");
+            sb.AppendLine($@"                    Assert.Equal(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, ""{ TypeName }"", ""{ csspProp.PropName }"", { TypeNameLower }.{ csspProp.PropName }.ToString()), { TypeNameLower }.ValidationResults.FirstOrDefault().ErrorMessage);");
             sb.AppendLine(@"");
         }
         /// <summary>
@@ -886,7 +886,6 @@ namespace CSSPServicesGenerateCodeHelper
                 sb.AppendLine(@"");
                 sb.AppendLine(@"namespace CSSPServices.Tests");
                 sb.AppendLine(@"{");
-                sb.AppendLine(@"    [TestClass]");
                 sb.AppendLine($@"    public partial class { TypeName }ServiceTest : TestHelper");
                 sb.AppendLine(@"    {");
                 sb.AppendLine(@"        #region Variables");
@@ -974,11 +973,11 @@ namespace CSSPServicesGenerateCodeHelper
                         }
                         if (csspProp.PropType == "String")
                         {
-                            sb.AppendLine($@"            { (csspProp.IsNullable ? "    " : "") }Assert.IsFalse(string.IsNullOrWhiteSpace({ TypeNameLower }List[0].{ csspProp.PropName }));");
+                            sb.AppendLine($@"            { (csspProp.IsNullable ? "    " : "") }Assert.False(string.IsNullOrWhiteSpace({ TypeNameLower }List[0].{ csspProp.PropName }));");
                         }
                         else
                         {
-                            sb.AppendLine($@"            { (csspProp.IsNullable ? "    " : "") }Assert.IsNotNull({ TypeNameLower }List[0].{ csspProp.PropName });");
+                            sb.AppendLine($@"            { (csspProp.IsNullable ? "    " : "") }Assert.NotNull({ TypeNameLower }List[0].{ csspProp.PropName });");
                         }
                         if (csspProp.IsNullable)
                         {
@@ -1034,7 +1033,7 @@ namespace CSSPServicesGenerateCodeHelper
             sb.AppendLine($@"                        Check{ TypeName }Fields({ TypeNameLower }List);");
             if (AssertDirectQuery)
             {
-                sb.AppendLine($@"                        Assert.AreEqual({ TypeNameLower }DirectQueryList[0].{ TypeName }ID, { TypeNameLower }List[0].{ TypeName }ID);");
+                sb.AppendLine($@"                        Assert.Equal({ TypeNameLower }DirectQueryList[0].{ TypeName }ID, { TypeNameLower }List[0].{ TypeName }ID);");
             }
         }
         #endregion Functions private

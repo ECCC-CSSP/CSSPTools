@@ -5,7 +5,7 @@
  */ 
 
 using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using System.Linq;
 using System.Collections.Generic;
 using CSSPModels;
@@ -21,7 +21,7 @@ using CSSPEnums.Resources;
 
 namespace CSSPServices.Tests
 {
-    [TestClass]
+
     public partial class ReportSectionServiceTest : TestHelper
     {
         #region Variables
@@ -39,7 +39,7 @@ namespace CSSPServices.Tests
         #endregion Constructors
 
         #region Tests Generated CRUD
-        [TestMethod]
+        [Fact]
         public void ReportSection_CRUD_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -66,26 +66,26 @@ namespace CSSPServices.Tests
 
                     count = reportSectionService.GetReportSectionList().Count();
 
-                    Assert.AreEqual(count, (from c in dbTestDB.ReportSections select c).Count());
+                    Assert.Equal(count, (from c in dbTestDB.ReportSections select c).Count());
 
                     reportSectionService.Add(reportSection);
                     if (reportSection.HasErrors)
                     {
-                        Assert.AreEqual("", reportSection.ValidationResults.FirstOrDefault().ErrorMessage);
+                        Assert.Equal("", reportSection.ValidationResults.FirstOrDefault().ErrorMessage);
                     }
-                    Assert.AreEqual(true, reportSectionService.GetReportSectionList().Where(c => c == reportSection).Any());
+                    Assert.True(reportSectionService.GetReportSectionList().Where(c => c == reportSection).Any());
                     reportSectionService.Update(reportSection);
                     if (reportSection.HasErrors)
                     {
-                        Assert.AreEqual("", reportSection.ValidationResults.FirstOrDefault().ErrorMessage);
+                        Assert.Equal("", reportSection.ValidationResults.FirstOrDefault().ErrorMessage);
                     }
-                    Assert.AreEqual(count + 1, reportSectionService.GetReportSectionList().Count());
+                    Assert.Equal(count + 1, reportSectionService.GetReportSectionList().Count());
                     reportSectionService.Delete(reportSection);
                     if (reportSection.HasErrors)
                     {
-                        Assert.AreEqual("", reportSection.ValidationResults.FirstOrDefault().ErrorMessage);
+                        Assert.Equal("", reportSection.ValidationResults.FirstOrDefault().ErrorMessage);
                     }
-                    Assert.AreEqual(count, reportSectionService.GetReportSectionList().Count());
+                    Assert.Equal(count, reportSectionService.GetReportSectionList().Count());
 
                 }
             }
@@ -93,7 +93,7 @@ namespace CSSPServices.Tests
         #endregion Tests Generated CRUD
 
         #region Tests Generated Properties
-        [TestMethod]
+        [Fact]
         public void ReportSection_Properties_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -131,13 +131,13 @@ namespace CSSPServices.Tests
                     reportSection = GetFilledRandomReportSection("");
                     reportSection.ReportSectionID = 0;
                     reportSectionService.Update(reportSection);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsRequired, "ReportSectionID"), reportSection.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsRequired, "ReportSectionID"), reportSection.ValidationResults.FirstOrDefault().ErrorMessage);
 
                     reportSection = null;
                     reportSection = GetFilledRandomReportSection("");
                     reportSection.ReportSectionID = 10000000;
                     reportSectionService.Update(reportSection);
-                    Assert.AreEqual(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "ReportSection", "ReportSectionID", reportSection.ReportSectionID.ToString()), reportSection.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "ReportSection", "ReportSectionID", reportSection.ReportSectionID.ToString()), reportSection.ValidationResults.FirstOrDefault().ErrorMessage);
 
 
                     // -----------------------------------
@@ -150,7 +150,7 @@ namespace CSSPServices.Tests
                     reportSection = GetFilledRandomReportSection("");
                     reportSection.ReportTypeID = 0;
                     reportSectionService.Add(reportSection);
-                    Assert.AreEqual(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "ReportType", "ReportTypeID", reportSection.ReportTypeID.ToString()), reportSection.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "ReportType", "ReportTypeID", reportSection.ReportTypeID.ToString()), reportSection.ValidationResults.FirstOrDefault().ErrorMessage);
 
 
                     // -----------------------------------
@@ -163,13 +163,13 @@ namespace CSSPServices.Tests
                     reportSection = GetFilledRandomReportSection("");
                     reportSection.TVItemID = 0;
                     reportSectionService.Add(reportSection);
-                    Assert.AreEqual(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "TVItem", "TVItemID", reportSection.TVItemID.ToString()), reportSection.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "TVItem", "TVItemID", reportSection.TVItemID.ToString()), reportSection.ValidationResults.FirstOrDefault().ErrorMessage);
 
                     reportSection = null;
                     reportSection = GetFilledRandomReportSection("");
                     reportSection.TVItemID = 1;
                     reportSectionService.Add(reportSection);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsNotOfType_, "TVItemID", ""), reportSection.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsNotOfType_, "TVItemID", ""), reportSection.ValidationResults.FirstOrDefault().ErrorMessage);
 
 
                     // -----------------------------------
@@ -181,15 +181,15 @@ namespace CSSPServices.Tests
                     reportSection = null;
                     reportSection = GetFilledRandomReportSection("");
                     reportSection.Ordinal = -1;
-                    Assert.AreEqual(false, reportSectionService.Add(reportSection));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "Ordinal", "0", "1000"), reportSection.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, reportSectionService.GetReportSectionList().Count());
+                    Assert.False(reportSectionService.Add(reportSection));
+                    Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "Ordinal", "0", "1000"), reportSection.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, reportSectionService.GetReportSectionList().Count());
                     reportSection = null;
                     reportSection = GetFilledRandomReportSection("");
                     reportSection.Ordinal = 1001;
-                    Assert.AreEqual(false, reportSectionService.Add(reportSection));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "Ordinal", "0", "1000"), reportSection.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, reportSectionService.GetReportSectionList().Count());
+                    Assert.False(reportSectionService.Add(reportSection));
+                    Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "Ordinal", "0", "1000"), reportSection.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, reportSectionService.GetReportSectionList().Count());
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -207,7 +207,7 @@ namespace CSSPServices.Tests
                     reportSection = GetFilledRandomReportSection("");
                     reportSection.ParentReportSectionID = 0;
                     reportSectionService.Add(reportSection);
-                    Assert.AreEqual(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "ReportSection", "ParentReportSectionID", reportSection.ParentReportSectionID.ToString()), reportSection.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "ReportSection", "ParentReportSectionID", reportSection.ParentReportSectionID.ToString()), reportSection.ValidationResults.FirstOrDefault().ErrorMessage);
 
 
                     // -----------------------------------
@@ -219,15 +219,15 @@ namespace CSSPServices.Tests
                     reportSection = null;
                     reportSection = GetFilledRandomReportSection("");
                     reportSection.Year = 1978;
-                    Assert.AreEqual(false, reportSectionService.Add(reportSection));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "Year", "1979", "2050"), reportSection.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, reportSectionService.GetReportSectionList().Count());
+                    Assert.False(reportSectionService.Add(reportSection));
+                    Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "Year", "1979", "2050"), reportSection.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, reportSectionService.GetReportSectionList().Count());
                     reportSection = null;
                     reportSection = GetFilledRandomReportSection("");
                     reportSection.Year = 2051;
-                    Assert.AreEqual(false, reportSectionService.Add(reportSection));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "Year", "1979", "2050"), reportSection.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, reportSectionService.GetReportSectionList().Count());
+                    Assert.False(reportSectionService.Add(reportSection));
+                    Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "Year", "1979", "2050"), reportSection.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, reportSectionService.GetReportSectionList().Count());
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -245,7 +245,7 @@ namespace CSSPServices.Tests
                     reportSection = GetFilledRandomReportSection("");
                     reportSection.TemplateReportSectionID = 0;
                     reportSectionService.Add(reportSection);
-                    Assert.AreEqual(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "ReportSection", "TemplateReportSectionID", reportSection.TemplateReportSectionID.ToString()), reportSection.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "ReportSection", "TemplateReportSectionID", reportSection.TemplateReportSectionID.ToString()), reportSection.ValidationResults.FirstOrDefault().ErrorMessage);
 
 
                     // -----------------------------------
@@ -258,12 +258,12 @@ namespace CSSPServices.Tests
                     reportSection = GetFilledRandomReportSection("");
                     reportSection.LastUpdateDate_UTC = new DateTime();
                     reportSectionService.Add(reportSection);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsRequired, "LastUpdateDate_UTC"), reportSection.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsRequired, "LastUpdateDate_UTC"), reportSection.ValidationResults.FirstOrDefault().ErrorMessage);
                     reportSection = null;
                     reportSection = GetFilledRandomReportSection("");
                     reportSection.LastUpdateDate_UTC = new DateTime(1979, 1, 1);
                     reportSectionService.Add(reportSection);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._YearShouldBeBiggerThan_, "LastUpdateDate_UTC", "1980"), reportSection.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._YearShouldBeBiggerThan_, "LastUpdateDate_UTC", "1980"), reportSection.ValidationResults.FirstOrDefault().ErrorMessage);
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -275,13 +275,13 @@ namespace CSSPServices.Tests
                     reportSection = GetFilledRandomReportSection("");
                     reportSection.LastUpdateContactTVItemID = 0;
                     reportSectionService.Add(reportSection);
-                    Assert.AreEqual(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "TVItem", "LastUpdateContactTVItemID", reportSection.LastUpdateContactTVItemID.ToString()), reportSection.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "TVItem", "LastUpdateContactTVItemID", reportSection.LastUpdateContactTVItemID.ToString()), reportSection.ValidationResults.FirstOrDefault().ErrorMessage);
 
                     reportSection = null;
                     reportSection = GetFilledRandomReportSection("");
                     reportSection.LastUpdateContactTVItemID = 1;
                     reportSectionService.Add(reportSection);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsNotOfType_, "LastUpdateContactTVItemID", "Contact"), reportSection.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsNotOfType_, "LastUpdateContactTVItemID", "Contact"), reportSection.ValidationResults.FirstOrDefault().ErrorMessage);
 
 
                     // -----------------------------------
@@ -305,7 +305,7 @@ namespace CSSPServices.Tests
         #endregion Tests Generated Properties
 
         #region Tests Generated for GetReportSectionWithReportSectionID(reportSection.ReportSectionID)
-        [TestMethod]
+        [Fact]
         public void GetReportSectionWithReportSectionID__reportSection_ReportSectionID__Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -316,7 +316,7 @@ namespace CSSPServices.Tests
                 {
                     ReportSectionService reportSectionService = new ReportSectionService(new Query() { Lang = culture.TwoLetterISOLanguageName }, dbTestDB, ContactID);
                     ReportSection reportSection = (from c in dbTestDB.ReportSections select c).FirstOrDefault();
-                    Assert.IsNotNull(reportSection);
+                    Assert.NotNull(reportSection);
 
                 }
             }
@@ -324,7 +324,7 @@ namespace CSSPServices.Tests
         #endregion Tests Generated for GetReportSectionWithReportSectionID(reportSection.ReportSectionID)
 
         #region Tests Generated for GetReportSectionList()
-        [TestMethod]
+        [Fact]
         public void GetReportSectionList_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -335,7 +335,7 @@ namespace CSSPServices.Tests
                 {
                     ReportSectionService reportSectionService = new ReportSectionService(new Query() { Lang = culture.TwoLetterISOLanguageName }, dbTestDB, ContactID);
                     ReportSection reportSection = (from c in dbTestDB.ReportSections select c).FirstOrDefault();
-                    Assert.IsNotNull(reportSection);
+                    Assert.NotNull(reportSection);
 
                     List<ReportSection> reportSectionDirectQueryList = new List<ReportSection>();
                     reportSectionDirectQueryList = (from c in dbTestDB.ReportSections select c).Take(200).ToList();
@@ -346,7 +346,7 @@ namespace CSSPServices.Tests
         #endregion Tests Generated for GetReportSectionList()
 
         #region Tests Generated for GetReportSectionList() Skip Take
-        [TestMethod]
+        [Fact]
         public void GetReportSectionList_Skip_Take_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -365,14 +365,14 @@ namespace CSSPServices.Tests
                         List<ReportSection> reportSectionList = new List<ReportSection>();
                         reportSectionList = reportSectionService.GetReportSectionList().ToList();
                         CheckReportSectionFields(reportSectionList);
-                        Assert.AreEqual(reportSectionDirectQueryList[0].ReportSectionID, reportSectionList[0].ReportSectionID);
+                        Assert.Equal(reportSectionDirectQueryList[0].ReportSectionID, reportSectionList[0].ReportSectionID);
                 }
             }
         }
         #endregion Tests Generated for GetReportSectionList() Skip Take
 
         #region Tests Generated for GetReportSectionList() Skip Take Asc
-        [TestMethod]
+        [Fact]
         public void GetReportSectionList_Skip_Take_Asc_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -391,14 +391,14 @@ namespace CSSPServices.Tests
                         List<ReportSection> reportSectionList = new List<ReportSection>();
                         reportSectionList = reportSectionService.GetReportSectionList().ToList();
                         CheckReportSectionFields(reportSectionList);
-                        Assert.AreEqual(reportSectionDirectQueryList[0].ReportSectionID, reportSectionList[0].ReportSectionID);
+                        Assert.Equal(reportSectionDirectQueryList[0].ReportSectionID, reportSectionList[0].ReportSectionID);
                 }
             }
         }
         #endregion Tests Generated for GetReportSectionList() Skip Take Asc
 
         #region Tests Generated for GetReportSectionList() Skip Take 2 Asc
-        [TestMethod]
+        [Fact]
         public void GetReportSectionList_Skip_Take_2Asc_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -417,14 +417,14 @@ namespace CSSPServices.Tests
                         List<ReportSection> reportSectionList = new List<ReportSection>();
                         reportSectionList = reportSectionService.GetReportSectionList().ToList();
                         CheckReportSectionFields(reportSectionList);
-                        Assert.AreEqual(reportSectionDirectQueryList[0].ReportSectionID, reportSectionList[0].ReportSectionID);
+                        Assert.Equal(reportSectionDirectQueryList[0].ReportSectionID, reportSectionList[0].ReportSectionID);
                 }
             }
         }
         #endregion Tests Generated for GetReportSectionList() Skip Take 2 Asc
 
         #region Tests Generated for GetReportSectionList() Skip Take Asc Where
-        [TestMethod]
+        [Fact]
         public void GetReportSectionList_Skip_Take_Asc_Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -443,14 +443,14 @@ namespace CSSPServices.Tests
                         List<ReportSection> reportSectionList = new List<ReportSection>();
                         reportSectionList = reportSectionService.GetReportSectionList().ToList();
                         CheckReportSectionFields(reportSectionList);
-                        Assert.AreEqual(reportSectionDirectQueryList[0].ReportSectionID, reportSectionList[0].ReportSectionID);
+                        Assert.Equal(reportSectionDirectQueryList[0].ReportSectionID, reportSectionList[0].ReportSectionID);
                 }
             }
         }
         #endregion Tests Generated for GetReportSectionList() Skip Take Asc Where
 
         #region Tests Generated for GetReportSectionList() Skip Take Asc 2 Where
-        [TestMethod]
+        [Fact]
         public void GetReportSectionList_Skip_Take_Asc_2Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -469,14 +469,14 @@ namespace CSSPServices.Tests
                         List<ReportSection> reportSectionList = new List<ReportSection>();
                         reportSectionList = reportSectionService.GetReportSectionList().ToList();
                         CheckReportSectionFields(reportSectionList);
-                        Assert.AreEqual(reportSectionDirectQueryList[0].ReportSectionID, reportSectionList[0].ReportSectionID);
+                        Assert.Equal(reportSectionDirectQueryList[0].ReportSectionID, reportSectionList[0].ReportSectionID);
                 }
             }
         }
         #endregion Tests Generated for GetReportSectionList() Skip Take Asc 2 Where
 
         #region Tests Generated for GetReportSectionList() Skip Take Desc
-        [TestMethod]
+        [Fact]
         public void GetReportSectionList_Skip_Take_Desc_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -495,14 +495,14 @@ namespace CSSPServices.Tests
                         List<ReportSection> reportSectionList = new List<ReportSection>();
                         reportSectionList = reportSectionService.GetReportSectionList().ToList();
                         CheckReportSectionFields(reportSectionList);
-                        Assert.AreEqual(reportSectionDirectQueryList[0].ReportSectionID, reportSectionList[0].ReportSectionID);
+                        Assert.Equal(reportSectionDirectQueryList[0].ReportSectionID, reportSectionList[0].ReportSectionID);
                 }
             }
         }
         #endregion Tests Generated for GetReportSectionList() Skip Take Desc
 
         #region Tests Generated for GetReportSectionList() Skip Take 2 Desc
-        [TestMethod]
+        [Fact]
         public void GetReportSectionList_Skip_Take_2Desc_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -521,14 +521,14 @@ namespace CSSPServices.Tests
                         List<ReportSection> reportSectionList = new List<ReportSection>();
                         reportSectionList = reportSectionService.GetReportSectionList().ToList();
                         CheckReportSectionFields(reportSectionList);
-                        Assert.AreEqual(reportSectionDirectQueryList[0].ReportSectionID, reportSectionList[0].ReportSectionID);
+                        Assert.Equal(reportSectionDirectQueryList[0].ReportSectionID, reportSectionList[0].ReportSectionID);
                 }
             }
         }
         #endregion Tests Generated for GetReportSectionList() Skip Take 2 Desc
 
         #region Tests Generated for GetReportSectionList() Skip Take Desc Where
-        [TestMethod]
+        [Fact]
         public void GetReportSectionList_Skip_Take_Desc_Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -547,14 +547,14 @@ namespace CSSPServices.Tests
                         List<ReportSection> reportSectionList = new List<ReportSection>();
                         reportSectionList = reportSectionService.GetReportSectionList().ToList();
                         CheckReportSectionFields(reportSectionList);
-                        Assert.AreEqual(reportSectionDirectQueryList[0].ReportSectionID, reportSectionList[0].ReportSectionID);
+                        Assert.Equal(reportSectionDirectQueryList[0].ReportSectionID, reportSectionList[0].ReportSectionID);
                 }
             }
         }
         #endregion Tests Generated for GetReportSectionList() Skip Take Desc Where
 
         #region Tests Generated for GetReportSectionList() Skip Take Desc 2 Where
-        [TestMethod]
+        [Fact]
         public void GetReportSectionList_Skip_Take_Desc_2Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -573,14 +573,14 @@ namespace CSSPServices.Tests
                         List<ReportSection> reportSectionList = new List<ReportSection>();
                         reportSectionList = reportSectionService.GetReportSectionList().ToList();
                         CheckReportSectionFields(reportSectionList);
-                        Assert.AreEqual(reportSectionDirectQueryList[0].ReportSectionID, reportSectionList[0].ReportSectionID);
+                        Assert.Equal(reportSectionDirectQueryList[0].ReportSectionID, reportSectionList[0].ReportSectionID);
                 }
             }
         }
         #endregion Tests Generated for GetReportSectionList() Skip Take Desc 2 Where
 
         #region Tests Generated for GetReportSectionList() 2 Where
-        [TestMethod]
+        [Fact]
         public void GetReportSectionList_2Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -599,7 +599,7 @@ namespace CSSPServices.Tests
                         List<ReportSection> reportSectionList = new List<ReportSection>();
                         reportSectionList = reportSectionService.GetReportSectionList().ToList();
                         CheckReportSectionFields(reportSectionList);
-                        Assert.AreEqual(reportSectionDirectQueryList[0].ReportSectionID, reportSectionList[0].ReportSectionID);
+                        Assert.Equal(reportSectionDirectQueryList[0].ReportSectionID, reportSectionList[0].ReportSectionID);
                 }
             }
         }
@@ -608,30 +608,30 @@ namespace CSSPServices.Tests
         #region Functions private
         private void CheckReportSectionFields(List<ReportSection> reportSectionList)
         {
-            Assert.IsNotNull(reportSectionList[0].ReportSectionID);
-            Assert.IsNotNull(reportSectionList[0].ReportTypeID);
+            Assert.NotNull(reportSectionList[0].ReportSectionID);
+            Assert.NotNull(reportSectionList[0].ReportTypeID);
             if (reportSectionList[0].TVItemID != null)
             {
-                Assert.IsNotNull(reportSectionList[0].TVItemID);
+                Assert.NotNull(reportSectionList[0].TVItemID);
             }
-            Assert.IsNotNull(reportSectionList[0].Ordinal);
-            Assert.IsNotNull(reportSectionList[0].IsStatic);
+            Assert.NotNull(reportSectionList[0].Ordinal);
+            Assert.NotNull(reportSectionList[0].IsStatic);
             if (reportSectionList[0].ParentReportSectionID != null)
             {
-                Assert.IsNotNull(reportSectionList[0].ParentReportSectionID);
+                Assert.NotNull(reportSectionList[0].ParentReportSectionID);
             }
             if (reportSectionList[0].Year != null)
             {
-                Assert.IsNotNull(reportSectionList[0].Year);
+                Assert.NotNull(reportSectionList[0].Year);
             }
-            Assert.IsNotNull(reportSectionList[0].Locked);
+            Assert.NotNull(reportSectionList[0].Locked);
             if (reportSectionList[0].TemplateReportSectionID != null)
             {
-                Assert.IsNotNull(reportSectionList[0].TemplateReportSectionID);
+                Assert.NotNull(reportSectionList[0].TemplateReportSectionID);
             }
-            Assert.IsNotNull(reportSectionList[0].LastUpdateDate_UTC);
-            Assert.IsNotNull(reportSectionList[0].LastUpdateContactTVItemID);
-            Assert.IsNotNull(reportSectionList[0].HasErrors);
+            Assert.NotNull(reportSectionList[0].LastUpdateDate_UTC);
+            Assert.NotNull(reportSectionList[0].LastUpdateContactTVItemID);
+            Assert.NotNull(reportSectionList[0].HasErrors);
         }
         private ReportSection GetFilledRandomReportSection(string OmitPropName)
         {

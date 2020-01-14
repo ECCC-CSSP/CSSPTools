@@ -6,7 +6,7 @@
  */ 
 using System;
 using System.Text;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using System.Linq;
 using System.Globalization;
 using System.Transactions;
@@ -19,7 +19,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace CSSPModels.Tests
 {
-    [TestClass]
+
     public partial class RTBStringPosTest
     {
         #region Variables
@@ -37,7 +37,7 @@ namespace CSSPModels.Tests
         #endregion Constructors
 
         #region Tests Functions public
-        [TestMethod]
+        [Fact]
         public void RTBStringPos_Properties_Test()
         {
             List<string> propNameList = new List<string>() { "StartPos", "EndPos", "Text", "TagText", "HasErrors",  }.OrderBy(c => c).ToList();
@@ -46,38 +46,38 @@ namespace CSSPModels.Tests
             int index = 0;
             foreach (PropertyInfo propertyInfo in typeof(RTBStringPos).GetProperties().Where(c => c.Name != "ValidationResults").OrderBy(c => c.Name).ToList())
             {
-                Assert.AreEqual(propertyInfo.Name, propNameList[index]);
+                Assert.Equal(propertyInfo.Name, propNameList[index]);
                 index += 1;
             }
 
-            Assert.AreEqual(propNameList.Count, index);
+            Assert.Equal(propNameList.Count, index);
         }
-        [TestMethod]
+        [Fact]
         public void RTBStringPos_Has_ValidationResults_Test()
         {
-             Assert.IsTrue(typeof(RTBStringPos).GetProperties().Where(c => c.Name == "ValidationResults").Any());
+             Assert.True(typeof(RTBStringPos).GetProperties().Where(c => c.Name == "ValidationResults").Any());
         }
-        [TestMethod]
+        [Fact]
         public void RTBStringPos_Every_Property_Has_Get_Set_Test()
         {
                int val1 = 45;
                rTBStringPos.StartPos = val1;
-               Assert.AreEqual(val1, rTBStringPos.StartPos);
+               Assert.Equal(val1, rTBStringPos.StartPos);
                int val2 = 45;
                rTBStringPos.EndPos = val2;
-               Assert.AreEqual(val2, rTBStringPos.EndPos);
+               Assert.Equal(val2, rTBStringPos.EndPos);
                string val3 = "Some text";
                rTBStringPos.Text = val3;
-               Assert.AreEqual(val3, rTBStringPos.Text);
+               Assert.Equal(val3, rTBStringPos.Text);
                string val4 = "Some text";
                rTBStringPos.TagText = val4;
-               Assert.AreEqual(val4, rTBStringPos.TagText);
+               Assert.Equal(val4, rTBStringPos.TagText);
                bool val5 = true;
                rTBStringPos.HasErrors = val5;
-               Assert.AreEqual(val5, rTBStringPos.HasErrors);
+               Assert.Equal(val5, rTBStringPos.HasErrors);
                IEnumerable<ValidationResult> val18 = new List<ValidationResult>() { new ValidationResult("First CSSPError Message") }.AsEnumerable();
                rTBStringPos.ValidationResults = val18;
-               Assert.AreEqual(val18, rTBStringPos.ValidationResults);
+               Assert.Equal(val18, rTBStringPos.ValidationResults);
         }
         #endregion Tests Functions public
     }

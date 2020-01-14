@@ -5,7 +5,7 @@
  */ 
 
 using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using System.Linq;
 using System.Collections.Generic;
 using CSSPModels;
@@ -21,7 +21,7 @@ using CSSPEnums.Resources;
 
 namespace CSSPServices.Tests
 {
-    [TestClass]
+
     public partial class VPScenarioLanguageServiceTest : TestHelper
     {
         #region Variables
@@ -39,7 +39,7 @@ namespace CSSPServices.Tests
         #endregion Constructors
 
         #region Tests Generated CRUD
-        [TestMethod]
+        [Fact]
         public void VPScenarioLanguage_CRUD_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -66,26 +66,26 @@ namespace CSSPServices.Tests
 
                     count = vpScenarioLanguageService.GetVPScenarioLanguageList().Count();
 
-                    Assert.AreEqual(count, (from c in dbTestDB.VPScenarioLanguages select c).Count());
+                    Assert.Equal(count, (from c in dbTestDB.VPScenarioLanguages select c).Count());
 
                     vpScenarioLanguageService.Add(vpScenarioLanguage);
                     if (vpScenarioLanguage.HasErrors)
                     {
-                        Assert.AreEqual("", vpScenarioLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
+                        Assert.Equal("", vpScenarioLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
                     }
-                    Assert.AreEqual(true, vpScenarioLanguageService.GetVPScenarioLanguageList().Where(c => c == vpScenarioLanguage).Any());
+                    Assert.True(vpScenarioLanguageService.GetVPScenarioLanguageList().Where(c => c == vpScenarioLanguage).Any());
                     vpScenarioLanguageService.Update(vpScenarioLanguage);
                     if (vpScenarioLanguage.HasErrors)
                     {
-                        Assert.AreEqual("", vpScenarioLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
+                        Assert.Equal("", vpScenarioLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
                     }
-                    Assert.AreEqual(count + 1, vpScenarioLanguageService.GetVPScenarioLanguageList().Count());
+                    Assert.Equal(count + 1, vpScenarioLanguageService.GetVPScenarioLanguageList().Count());
                     vpScenarioLanguageService.Delete(vpScenarioLanguage);
                     if (vpScenarioLanguage.HasErrors)
                     {
-                        Assert.AreEqual("", vpScenarioLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
+                        Assert.Equal("", vpScenarioLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
                     }
-                    Assert.AreEqual(count, vpScenarioLanguageService.GetVPScenarioLanguageList().Count());
+                    Assert.Equal(count, vpScenarioLanguageService.GetVPScenarioLanguageList().Count());
 
                 }
             }
@@ -93,7 +93,7 @@ namespace CSSPServices.Tests
         #endregion Tests Generated CRUD
 
         #region Tests Generated Properties
-        [TestMethod]
+        [Fact]
         public void VPScenarioLanguage_Properties_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -131,13 +131,13 @@ namespace CSSPServices.Tests
                     vpScenarioLanguage = GetFilledRandomVPScenarioLanguage("");
                     vpScenarioLanguage.VPScenarioLanguageID = 0;
                     vpScenarioLanguageService.Update(vpScenarioLanguage);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsRequired, "VPScenarioLanguageID"), vpScenarioLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsRequired, "VPScenarioLanguageID"), vpScenarioLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
 
                     vpScenarioLanguage = null;
                     vpScenarioLanguage = GetFilledRandomVPScenarioLanguage("");
                     vpScenarioLanguage.VPScenarioLanguageID = 10000000;
                     vpScenarioLanguageService.Update(vpScenarioLanguage);
-                    Assert.AreEqual(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "VPScenarioLanguage", "VPScenarioLanguageID", vpScenarioLanguage.VPScenarioLanguageID.ToString()), vpScenarioLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "VPScenarioLanguage", "VPScenarioLanguageID", vpScenarioLanguage.VPScenarioLanguageID.ToString()), vpScenarioLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
 
 
                     // -----------------------------------
@@ -150,7 +150,7 @@ namespace CSSPServices.Tests
                     vpScenarioLanguage = GetFilledRandomVPScenarioLanguage("");
                     vpScenarioLanguage.VPScenarioID = 0;
                     vpScenarioLanguageService.Add(vpScenarioLanguage);
-                    Assert.AreEqual(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "VPScenario", "VPScenarioID", vpScenarioLanguage.VPScenarioID.ToString()), vpScenarioLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "VPScenario", "VPScenarioID", vpScenarioLanguage.VPScenarioID.ToString()), vpScenarioLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
 
 
                     // -----------------------------------
@@ -163,7 +163,7 @@ namespace CSSPServices.Tests
                     vpScenarioLanguage = GetFilledRandomVPScenarioLanguage("");
                     vpScenarioLanguage.Language = (LanguageEnum)1000000;
                     vpScenarioLanguageService.Add(vpScenarioLanguage);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsRequired, "Language"), vpScenarioLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsRequired, "Language"), vpScenarioLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
 
 
                     // -----------------------------------
@@ -174,18 +174,18 @@ namespace CSSPServices.Tests
 
                     vpScenarioLanguage = null;
                     vpScenarioLanguage = GetFilledRandomVPScenarioLanguage("VPScenarioName");
-                    Assert.AreEqual(false, vpScenarioLanguageService.Add(vpScenarioLanguage));
-                    Assert.AreEqual(1, vpScenarioLanguage.ValidationResults.Count());
-                    Assert.IsTrue(vpScenarioLanguage.ValidationResults.Where(c => c.ErrorMessage == string.Format(CSSPServicesRes._IsRequired, "VPScenarioName")).Any());
-                    Assert.AreEqual(null, vpScenarioLanguage.VPScenarioName);
-                    Assert.AreEqual(count, vpScenarioLanguageService.GetVPScenarioLanguageList().Count());
+                    Assert.False(vpScenarioLanguageService.Add(vpScenarioLanguage));
+                    Assert.Equal(1, vpScenarioLanguage.ValidationResults.Count());
+                    Assert.True(vpScenarioLanguage.ValidationResults.Where(c => c.ErrorMessage == string.Format(CSSPServicesRes._IsRequired, "VPScenarioName")).Any());
+                    Assert.Null(vpScenarioLanguage.VPScenarioName);
+                    Assert.Equal(count, vpScenarioLanguageService.GetVPScenarioLanguageList().Count());
 
                     vpScenarioLanguage = null;
                     vpScenarioLanguage = GetFilledRandomVPScenarioLanguage("");
                     vpScenarioLanguage.VPScenarioName = GetRandomString("", 101);
-                    Assert.AreEqual(false, vpScenarioLanguageService.Add(vpScenarioLanguage));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._MaxLengthIs_, "VPScenarioName", "100"), vpScenarioLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, vpScenarioLanguageService.GetVPScenarioLanguageList().Count());
+                    Assert.False(vpScenarioLanguageService.Add(vpScenarioLanguage));
+                    Assert.Equal(string.Format(CSSPServicesRes._MaxLengthIs_, "VPScenarioName", "100"), vpScenarioLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, vpScenarioLanguageService.GetVPScenarioLanguageList().Count());
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -197,7 +197,7 @@ namespace CSSPServices.Tests
                     vpScenarioLanguage = GetFilledRandomVPScenarioLanguage("");
                     vpScenarioLanguage.TranslationStatus = (TranslationStatusEnum)1000000;
                     vpScenarioLanguageService.Add(vpScenarioLanguage);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsRequired, "TranslationStatus"), vpScenarioLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsRequired, "TranslationStatus"), vpScenarioLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
 
 
                     // -----------------------------------
@@ -210,12 +210,12 @@ namespace CSSPServices.Tests
                     vpScenarioLanguage = GetFilledRandomVPScenarioLanguage("");
                     vpScenarioLanguage.LastUpdateDate_UTC = new DateTime();
                     vpScenarioLanguageService.Add(vpScenarioLanguage);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsRequired, "LastUpdateDate_UTC"), vpScenarioLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsRequired, "LastUpdateDate_UTC"), vpScenarioLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
                     vpScenarioLanguage = null;
                     vpScenarioLanguage = GetFilledRandomVPScenarioLanguage("");
                     vpScenarioLanguage.LastUpdateDate_UTC = new DateTime(1979, 1, 1);
                     vpScenarioLanguageService.Add(vpScenarioLanguage);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._YearShouldBeBiggerThan_, "LastUpdateDate_UTC", "1980"), vpScenarioLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._YearShouldBeBiggerThan_, "LastUpdateDate_UTC", "1980"), vpScenarioLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -227,13 +227,13 @@ namespace CSSPServices.Tests
                     vpScenarioLanguage = GetFilledRandomVPScenarioLanguage("");
                     vpScenarioLanguage.LastUpdateContactTVItemID = 0;
                     vpScenarioLanguageService.Add(vpScenarioLanguage);
-                    Assert.AreEqual(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "TVItem", "LastUpdateContactTVItemID", vpScenarioLanguage.LastUpdateContactTVItemID.ToString()), vpScenarioLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "TVItem", "LastUpdateContactTVItemID", vpScenarioLanguage.LastUpdateContactTVItemID.ToString()), vpScenarioLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
 
                     vpScenarioLanguage = null;
                     vpScenarioLanguage = GetFilledRandomVPScenarioLanguage("");
                     vpScenarioLanguage.LastUpdateContactTVItemID = 1;
                     vpScenarioLanguageService.Add(vpScenarioLanguage);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsNotOfType_, "LastUpdateContactTVItemID", "Contact"), vpScenarioLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsNotOfType_, "LastUpdateContactTVItemID", "Contact"), vpScenarioLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
 
 
                     // -----------------------------------
@@ -257,7 +257,7 @@ namespace CSSPServices.Tests
         #endregion Tests Generated Properties
 
         #region Tests Generated for GetVPScenarioLanguageWithVPScenarioLanguageID(vpScenarioLanguage.VPScenarioLanguageID)
-        [TestMethod]
+        [Fact]
         public void GetVPScenarioLanguageWithVPScenarioLanguageID__vpScenarioLanguage_VPScenarioLanguageID__Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -268,7 +268,7 @@ namespace CSSPServices.Tests
                 {
                     VPScenarioLanguageService vpScenarioLanguageService = new VPScenarioLanguageService(new Query() { Lang = culture.TwoLetterISOLanguageName }, dbTestDB, ContactID);
                     VPScenarioLanguage vpScenarioLanguage = (from c in dbTestDB.VPScenarioLanguages select c).FirstOrDefault();
-                    Assert.IsNotNull(vpScenarioLanguage);
+                    Assert.NotNull(vpScenarioLanguage);
 
                 }
             }
@@ -276,7 +276,7 @@ namespace CSSPServices.Tests
         #endregion Tests Generated for GetVPScenarioLanguageWithVPScenarioLanguageID(vpScenarioLanguage.VPScenarioLanguageID)
 
         #region Tests Generated for GetVPScenarioLanguageList()
-        [TestMethod]
+        [Fact]
         public void GetVPScenarioLanguageList_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -287,7 +287,7 @@ namespace CSSPServices.Tests
                 {
                     VPScenarioLanguageService vpScenarioLanguageService = new VPScenarioLanguageService(new Query() { Lang = culture.TwoLetterISOLanguageName }, dbTestDB, ContactID);
                     VPScenarioLanguage vpScenarioLanguage = (from c in dbTestDB.VPScenarioLanguages select c).FirstOrDefault();
-                    Assert.IsNotNull(vpScenarioLanguage);
+                    Assert.NotNull(vpScenarioLanguage);
 
                     List<VPScenarioLanguage> vpScenarioLanguageDirectQueryList = new List<VPScenarioLanguage>();
                     vpScenarioLanguageDirectQueryList = (from c in dbTestDB.VPScenarioLanguages select c).Take(200).ToList();
@@ -298,7 +298,7 @@ namespace CSSPServices.Tests
         #endregion Tests Generated for GetVPScenarioLanguageList()
 
         #region Tests Generated for GetVPScenarioLanguageList() Skip Take
-        [TestMethod]
+        [Fact]
         public void GetVPScenarioLanguageList_Skip_Take_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -317,14 +317,14 @@ namespace CSSPServices.Tests
                         List<VPScenarioLanguage> vpScenarioLanguageList = new List<VPScenarioLanguage>();
                         vpScenarioLanguageList = vpScenarioLanguageService.GetVPScenarioLanguageList().ToList();
                         CheckVPScenarioLanguageFields(vpScenarioLanguageList);
-                        Assert.AreEqual(vpScenarioLanguageDirectQueryList[0].VPScenarioLanguageID, vpScenarioLanguageList[0].VPScenarioLanguageID);
+                        Assert.Equal(vpScenarioLanguageDirectQueryList[0].VPScenarioLanguageID, vpScenarioLanguageList[0].VPScenarioLanguageID);
                 }
             }
         }
         #endregion Tests Generated for GetVPScenarioLanguageList() Skip Take
 
         #region Tests Generated for GetVPScenarioLanguageList() Skip Take Asc
-        [TestMethod]
+        [Fact]
         public void GetVPScenarioLanguageList_Skip_Take_Asc_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -343,14 +343,14 @@ namespace CSSPServices.Tests
                         List<VPScenarioLanguage> vpScenarioLanguageList = new List<VPScenarioLanguage>();
                         vpScenarioLanguageList = vpScenarioLanguageService.GetVPScenarioLanguageList().ToList();
                         CheckVPScenarioLanguageFields(vpScenarioLanguageList);
-                        Assert.AreEqual(vpScenarioLanguageDirectQueryList[0].VPScenarioLanguageID, vpScenarioLanguageList[0].VPScenarioLanguageID);
+                        Assert.Equal(vpScenarioLanguageDirectQueryList[0].VPScenarioLanguageID, vpScenarioLanguageList[0].VPScenarioLanguageID);
                 }
             }
         }
         #endregion Tests Generated for GetVPScenarioLanguageList() Skip Take Asc
 
         #region Tests Generated for GetVPScenarioLanguageList() Skip Take 2 Asc
-        [TestMethod]
+        [Fact]
         public void GetVPScenarioLanguageList_Skip_Take_2Asc_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -369,14 +369,14 @@ namespace CSSPServices.Tests
                         List<VPScenarioLanguage> vpScenarioLanguageList = new List<VPScenarioLanguage>();
                         vpScenarioLanguageList = vpScenarioLanguageService.GetVPScenarioLanguageList().ToList();
                         CheckVPScenarioLanguageFields(vpScenarioLanguageList);
-                        Assert.AreEqual(vpScenarioLanguageDirectQueryList[0].VPScenarioLanguageID, vpScenarioLanguageList[0].VPScenarioLanguageID);
+                        Assert.Equal(vpScenarioLanguageDirectQueryList[0].VPScenarioLanguageID, vpScenarioLanguageList[0].VPScenarioLanguageID);
                 }
             }
         }
         #endregion Tests Generated for GetVPScenarioLanguageList() Skip Take 2 Asc
 
         #region Tests Generated for GetVPScenarioLanguageList() Skip Take Asc Where
-        [TestMethod]
+        [Fact]
         public void GetVPScenarioLanguageList_Skip_Take_Asc_Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -395,14 +395,14 @@ namespace CSSPServices.Tests
                         List<VPScenarioLanguage> vpScenarioLanguageList = new List<VPScenarioLanguage>();
                         vpScenarioLanguageList = vpScenarioLanguageService.GetVPScenarioLanguageList().ToList();
                         CheckVPScenarioLanguageFields(vpScenarioLanguageList);
-                        Assert.AreEqual(vpScenarioLanguageDirectQueryList[0].VPScenarioLanguageID, vpScenarioLanguageList[0].VPScenarioLanguageID);
+                        Assert.Equal(vpScenarioLanguageDirectQueryList[0].VPScenarioLanguageID, vpScenarioLanguageList[0].VPScenarioLanguageID);
                 }
             }
         }
         #endregion Tests Generated for GetVPScenarioLanguageList() Skip Take Asc Where
 
         #region Tests Generated for GetVPScenarioLanguageList() Skip Take Asc 2 Where
-        [TestMethod]
+        [Fact]
         public void GetVPScenarioLanguageList_Skip_Take_Asc_2Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -421,14 +421,14 @@ namespace CSSPServices.Tests
                         List<VPScenarioLanguage> vpScenarioLanguageList = new List<VPScenarioLanguage>();
                         vpScenarioLanguageList = vpScenarioLanguageService.GetVPScenarioLanguageList().ToList();
                         CheckVPScenarioLanguageFields(vpScenarioLanguageList);
-                        Assert.AreEqual(vpScenarioLanguageDirectQueryList[0].VPScenarioLanguageID, vpScenarioLanguageList[0].VPScenarioLanguageID);
+                        Assert.Equal(vpScenarioLanguageDirectQueryList[0].VPScenarioLanguageID, vpScenarioLanguageList[0].VPScenarioLanguageID);
                 }
             }
         }
         #endregion Tests Generated for GetVPScenarioLanguageList() Skip Take Asc 2 Where
 
         #region Tests Generated for GetVPScenarioLanguageList() Skip Take Desc
-        [TestMethod]
+        [Fact]
         public void GetVPScenarioLanguageList_Skip_Take_Desc_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -447,14 +447,14 @@ namespace CSSPServices.Tests
                         List<VPScenarioLanguage> vpScenarioLanguageList = new List<VPScenarioLanguage>();
                         vpScenarioLanguageList = vpScenarioLanguageService.GetVPScenarioLanguageList().ToList();
                         CheckVPScenarioLanguageFields(vpScenarioLanguageList);
-                        Assert.AreEqual(vpScenarioLanguageDirectQueryList[0].VPScenarioLanguageID, vpScenarioLanguageList[0].VPScenarioLanguageID);
+                        Assert.Equal(vpScenarioLanguageDirectQueryList[0].VPScenarioLanguageID, vpScenarioLanguageList[0].VPScenarioLanguageID);
                 }
             }
         }
         #endregion Tests Generated for GetVPScenarioLanguageList() Skip Take Desc
 
         #region Tests Generated for GetVPScenarioLanguageList() Skip Take 2 Desc
-        [TestMethod]
+        [Fact]
         public void GetVPScenarioLanguageList_Skip_Take_2Desc_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -473,14 +473,14 @@ namespace CSSPServices.Tests
                         List<VPScenarioLanguage> vpScenarioLanguageList = new List<VPScenarioLanguage>();
                         vpScenarioLanguageList = vpScenarioLanguageService.GetVPScenarioLanguageList().ToList();
                         CheckVPScenarioLanguageFields(vpScenarioLanguageList);
-                        Assert.AreEqual(vpScenarioLanguageDirectQueryList[0].VPScenarioLanguageID, vpScenarioLanguageList[0].VPScenarioLanguageID);
+                        Assert.Equal(vpScenarioLanguageDirectQueryList[0].VPScenarioLanguageID, vpScenarioLanguageList[0].VPScenarioLanguageID);
                 }
             }
         }
         #endregion Tests Generated for GetVPScenarioLanguageList() Skip Take 2 Desc
 
         #region Tests Generated for GetVPScenarioLanguageList() Skip Take Desc Where
-        [TestMethod]
+        [Fact]
         public void GetVPScenarioLanguageList_Skip_Take_Desc_Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -499,14 +499,14 @@ namespace CSSPServices.Tests
                         List<VPScenarioLanguage> vpScenarioLanguageList = new List<VPScenarioLanguage>();
                         vpScenarioLanguageList = vpScenarioLanguageService.GetVPScenarioLanguageList().ToList();
                         CheckVPScenarioLanguageFields(vpScenarioLanguageList);
-                        Assert.AreEqual(vpScenarioLanguageDirectQueryList[0].VPScenarioLanguageID, vpScenarioLanguageList[0].VPScenarioLanguageID);
+                        Assert.Equal(vpScenarioLanguageDirectQueryList[0].VPScenarioLanguageID, vpScenarioLanguageList[0].VPScenarioLanguageID);
                 }
             }
         }
         #endregion Tests Generated for GetVPScenarioLanguageList() Skip Take Desc Where
 
         #region Tests Generated for GetVPScenarioLanguageList() Skip Take Desc 2 Where
-        [TestMethod]
+        [Fact]
         public void GetVPScenarioLanguageList_Skip_Take_Desc_2Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -525,14 +525,14 @@ namespace CSSPServices.Tests
                         List<VPScenarioLanguage> vpScenarioLanguageList = new List<VPScenarioLanguage>();
                         vpScenarioLanguageList = vpScenarioLanguageService.GetVPScenarioLanguageList().ToList();
                         CheckVPScenarioLanguageFields(vpScenarioLanguageList);
-                        Assert.AreEqual(vpScenarioLanguageDirectQueryList[0].VPScenarioLanguageID, vpScenarioLanguageList[0].VPScenarioLanguageID);
+                        Assert.Equal(vpScenarioLanguageDirectQueryList[0].VPScenarioLanguageID, vpScenarioLanguageList[0].VPScenarioLanguageID);
                 }
             }
         }
         #endregion Tests Generated for GetVPScenarioLanguageList() Skip Take Desc 2 Where
 
         #region Tests Generated for GetVPScenarioLanguageList() 2 Where
-        [TestMethod]
+        [Fact]
         public void GetVPScenarioLanguageList_2Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -551,7 +551,7 @@ namespace CSSPServices.Tests
                         List<VPScenarioLanguage> vpScenarioLanguageList = new List<VPScenarioLanguage>();
                         vpScenarioLanguageList = vpScenarioLanguageService.GetVPScenarioLanguageList().ToList();
                         CheckVPScenarioLanguageFields(vpScenarioLanguageList);
-                        Assert.AreEqual(vpScenarioLanguageDirectQueryList[0].VPScenarioLanguageID, vpScenarioLanguageList[0].VPScenarioLanguageID);
+                        Assert.Equal(vpScenarioLanguageDirectQueryList[0].VPScenarioLanguageID, vpScenarioLanguageList[0].VPScenarioLanguageID);
                 }
             }
         }
@@ -560,14 +560,14 @@ namespace CSSPServices.Tests
         #region Functions private
         private void CheckVPScenarioLanguageFields(List<VPScenarioLanguage> vpScenarioLanguageList)
         {
-            Assert.IsNotNull(vpScenarioLanguageList[0].VPScenarioLanguageID);
-            Assert.IsNotNull(vpScenarioLanguageList[0].VPScenarioID);
-            Assert.IsNotNull(vpScenarioLanguageList[0].Language);
-            Assert.IsFalse(string.IsNullOrWhiteSpace(vpScenarioLanguageList[0].VPScenarioName));
-            Assert.IsNotNull(vpScenarioLanguageList[0].TranslationStatus);
-            Assert.IsNotNull(vpScenarioLanguageList[0].LastUpdateDate_UTC);
-            Assert.IsNotNull(vpScenarioLanguageList[0].LastUpdateContactTVItemID);
-            Assert.IsNotNull(vpScenarioLanguageList[0].HasErrors);
+            Assert.NotNull(vpScenarioLanguageList[0].VPScenarioLanguageID);
+            Assert.NotNull(vpScenarioLanguageList[0].VPScenarioID);
+            Assert.NotNull(vpScenarioLanguageList[0].Language);
+            Assert.False(string.IsNullOrWhiteSpace(vpScenarioLanguageList[0].VPScenarioName));
+            Assert.NotNull(vpScenarioLanguageList[0].TranslationStatus);
+            Assert.NotNull(vpScenarioLanguageList[0].LastUpdateDate_UTC);
+            Assert.NotNull(vpScenarioLanguageList[0].LastUpdateContactTVItemID);
+            Assert.NotNull(vpScenarioLanguageList[0].HasErrors);
         }
         private VPScenarioLanguage GetFilledRandomVPScenarioLanguage(string OmitPropName)
         {

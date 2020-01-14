@@ -17,13 +17,13 @@ namespace CSSPModelsGenerateCodeHelper
         ///     C:\CSSPTools\src\tests\CSSPModels.Tests\tests\[ModelClassName]TestGenerated.cs file
         /// 
         /// Requires:
-        ///     C:\CSSPTools\src\dlls\CSSPModels\bin\Debug\netcoreapp3.0\CSSPModels.dll
+        ///     C:\CSSPTools\src\dlls\CSSPModels\bin\Debug\netcoreapp3.1\CSSPModels.dll
         /// </summary>
         public void ModelClassName_TestGenerated()
         {
             ClearPermanentEvent(new StatusEventArgs(""));
 
-            FileInfo fiDLL = new FileInfo(@"C:\CSSPTools\src\dlls\CSSPModels\bin\Debug\netcoreapp3.0\CSSPModels.dll");
+            FileInfo fiDLL = new FileInfo(@"C:\CSSPTools\src\dlls\CSSPModels\bin\Debug\netcoreapp3.1\CSSPModels.dll");
 
             if (!fiDLL.Exists)
             {
@@ -68,7 +68,7 @@ namespace CSSPModelsGenerateCodeHelper
                 sb.AppendLine(@" */ ");
                 sb.AppendLine(@"using System;");
                 sb.AppendLine(@"using System.Text;");
-                sb.AppendLine(@"using Microsoft.VisualStudio.TestTools.UnitTesting;");
+                sb.AppendLine(@"using Xunit;");
                 sb.AppendLine(@"using System.Linq;");
                 sb.AppendLine(@"using System.Globalization;");
                 sb.AppendLine(@"using System.Transactions;");
@@ -81,7 +81,6 @@ namespace CSSPModelsGenerateCodeHelper
                 sb.AppendLine(@"");
                 sb.AppendLine(@"namespace CSSPModels.Tests");
                 sb.AppendLine(@"{");
-                sb.AppendLine(@"    [TestClass]");
                 sb.AppendLine($@"    public partial class { type.Name }Test");
                 sb.AppendLine(@"    {");
                 sb.AppendLine(@"        #region Variables");
@@ -114,7 +113,7 @@ namespace CSSPModelsGenerateCodeHelper
                     continue;
                 }
 
-                sb.AppendLine(@"        [TestMethod]");
+                sb.AppendLine(@"        [Fact]");
                 sb.AppendLine($@"        public void { currentType.Name }_Properties_Test()");
                 sb.AppendLine(@"        {");
 
@@ -158,12 +157,12 @@ namespace CSSPModelsGenerateCodeHelper
                     sb.AppendLine(@"                    && propertyInfo.Name != ""ValidationResults""");
                     sb.AppendLine(@"                    && !propertyInfo.CustomAttributes.Where(c => c.AttributeType.Name.Contains(""NotMappedAttribute"")).Any())");
                     sb.AppendLine(@"                {");
-                    sb.AppendLine(@"                    Assert.AreEqual(propNameList[index], propertyInfo.Name);");
+                    sb.AppendLine(@"                    Assert.Equal(propNameList[index], propertyInfo.Name);");
                     sb.AppendLine(@"                    index += 1;");
                     sb.AppendLine(@"                }");
                     sb.AppendLine(@"            }");
                     sb.AppendLine(@"");
-                    sb.AppendLine(@"            Assert.AreEqual(propNameList.Count, index);");
+                    sb.AppendLine(@"            Assert.Equal(propNameList.Count, index);");
                     sb.AppendLine(@"");
                     sb.AppendLine(@"            index = 0;");
                     sb.AppendLine($@"            foreach (PropertyInfo propertyInfo in typeof({ currentType.Name }).GetProperties().Where(c => c.Name != ""ValidationResults"").OrderBy(c => c.Name).ToList())");
@@ -172,13 +171,13 @@ namespace CSSPModelsGenerateCodeHelper
                     sb.AppendLine(@"                {");
                     sb.AppendLine(@"                    if (customAttributeData.AttributeType.Name == ""NotMappedAttribute"")");
                     sb.AppendLine(@"                    {");
-                    sb.AppendLine(@"                        Assert.AreEqual(propertyInfo.Name, propNameNotMappedList[index]);");
+                    sb.AppendLine(@"                        Assert.Equal(propertyInfo.Name, propNameNotMappedList[index]);");
                     sb.AppendLine(@"                        index += 1;");
                     sb.AppendLine(@"                    }");
                     sb.AppendLine(@"                }");
                     sb.AppendLine(@"            }");
                     sb.AppendLine(@"");
-                    sb.AppendLine(@"            Assert.AreEqual(propNameNotMappedList.Count, index);");
+                    sb.AppendLine(@"            Assert.Equal(propNameNotMappedList.Count, index);");
                     sb.AppendLine(@"");
 
                 }
@@ -187,17 +186,17 @@ namespace CSSPModelsGenerateCodeHelper
                     sb.AppendLine(@"            int index = 0;");
                     sb.AppendLine($@"            foreach (PropertyInfo propertyInfo in typeof({ currentType.Name }).GetProperties().Where(c => c.Name != ""ValidationResults"").OrderBy(c => c.Name).ToList())");
                     sb.AppendLine(@"            {");
-                    sb.AppendLine(@"                Assert.AreEqual(propertyInfo.Name, propNameList[index]);");
+                    sb.AppendLine(@"                Assert.Equal(propertyInfo.Name, propNameList[index]);");
                     sb.AppendLine(@"                index += 1;");
                     sb.AppendLine(@"            }");
                     sb.AppendLine(@"");
-                    sb.AppendLine(@"            Assert.AreEqual(propNameList.Count, index);");
+                    sb.AppendLine(@"            Assert.Equal(propNameList.Count, index);");
                 }
                 sb.AppendLine(@"        }");
 
                 if (!ClassNotMapped)
                 {
-                    sb.AppendLine(@"        [TestMethod]");
+                    sb.AppendLine(@"        [Fact]");
                     sb.AppendLine($@"        public void { currentType.Name }_Navigation_Test()");
                     sb.AppendLine(@"        {");
 
@@ -227,36 +226,38 @@ namespace CSSPModelsGenerateCodeHelper
                     sb.AppendLine(@"            {");
                     sb.AppendLine(@"                if (propertyInfo.GetGetMethod().IsVirtual && !propertyInfo.GetGetMethod().ReturnType.Name.StartsWith(""ICollection""))");
                     sb.AppendLine(@"                {");
-                    sb.AppendLine(@"                    Assert.IsTrue(foreignNameList.Contains(propertyInfo.Name));");
+                    sb.AppendLine(@"                    bool foreignNameExist = foreignNameList.Contains(propertyInfo.Name);");
+                    sb.AppendLine(@"                    Assert.True(foreignNameExist);");
                     sb.AppendLine(@"                    index += 1;");
                     sb.AppendLine(@"                }");
                     sb.AppendLine(@"            }");
                     sb.AppendLine(@"");
-                    sb.AppendLine(@"            Assert.AreEqual(foreignNameList.Count, index);");
+                    sb.AppendLine(@"            Assert.Equal(foreignNameList.Count, index);");
                     sb.AppendLine(@"");
                     sb.AppendLine(@"            index = 0;");
                     sb.AppendLine($@"            foreach (PropertyInfo propertyInfo in typeof({ currentType.Name }).GetProperties().Where(c => c.Name != ""ValidationResults"").OrderBy(c => c.Name).ToList())");
                     sb.AppendLine(@"            {");
                     sb.AppendLine(@"                if (propertyInfo.GetGetMethod().ReturnType.Name.StartsWith(""ICollection""))");
                     sb.AppendLine(@"                {");
-                    sb.AppendLine(@"                    Assert.IsTrue(foreignNameCollectionList.Contains(propertyInfo.Name));");
+                    sb.AppendLine(@"                    bool foreignNameCollectionExist = foreignNameCollectionList.Contains(propertyInfo.Name);");
+                    sb.AppendLine(@"                    Assert.True(foreignNameCollectionExist);");
                     sb.AppendLine(@"                    index += 1;");
                     sb.AppendLine(@"                }");
                     sb.AppendLine(@"            }");
                     sb.AppendLine(@"");
-                    sb.AppendLine(@"            Assert.AreEqual(foreignNameCollectionList.Count, index);");
+                    sb.AppendLine(@"            Assert.Equal(foreignNameCollectionList.Count, index);");
                     sb.AppendLine(@"");
                     sb.AppendLine(@"        }");
 
                 }
 
-                sb.AppendLine(@"        [TestMethod]");
+                sb.AppendLine(@"        [Fact]");
                 sb.AppendLine($@"        public void { currentType.Name }_Has_ValidationResults_Test()");
                 sb.AppendLine(@"        {");
-                sb.AppendLine($@"             Assert.IsTrue(typeof({ currentType.Name }).GetProperties().Where(c => c.Name == ""ValidationResults"").Any());");
+                sb.AppendLine($@"             Assert.True(typeof({ currentType.Name }).GetProperties().Where(c => c.Name == ""ValidationResults"").Any());");
                 sb.AppendLine(@"        }");
 
-                sb.AppendLine(@"        [TestMethod]");
+                sb.AppendLine(@"        [Fact]");
                 sb.AppendLine($@"        public void { currentType.Name }_Every_Property_Has_Get_Set_Test()");
                 sb.AppendLine(@"        {");
 
@@ -412,7 +413,7 @@ namespace CSSPModelsGenerateCodeHelper
                             sb.AppendLine($@"               { currentType.Name.Substring(0, 1).ToLower() }{ currentType.Name.Substring(1) }.{ prop.Name } = val{ count.ToString() };");
                         }
 
-                        sb.AppendLine($@"               Assert.AreEqual(val{ count.ToString() }, { currentType.Name.Substring(0, 1).ToLower() }{ currentType.Name.Substring(1) }.{ prop.Name });");
+                        sb.AppendLine($@"               Assert.Equal(val{ count.ToString() }, { currentType.Name.Substring(0, 1).ToLower() }{ currentType.Name.Substring(1) }.{ prop.Name });");
                     }
                 }
 
@@ -441,7 +442,7 @@ namespace CSSPModelsGenerateCodeHelper
                             sb.AppendLine($@"               { csspProp.PropType } val{ count.ToString() } = new { csspProp.PropType }();");
                         }
                         sb.AppendLine($@"               { currentType.Name.Substring(0, 1).ToLower() }{ currentType.Name.Substring(1) }.{ prop.Name } = val{ count.ToString() };");
-                        sb.AppendLine($@"               Assert.AreEqual(val{ count.ToString() }, { currentType.Name.Substring(0, 1).ToLower() }{ currentType.Name.Substring(1) }.{ prop.Name });");
+                        sb.AppendLine($@"               Assert.Equal(val{ count.ToString() }, { currentType.Name.Substring(0, 1).ToLower() }{ currentType.Name.Substring(1) }.{ prop.Name });");
                     }
                 }
 
@@ -459,7 +460,7 @@ namespace CSSPModelsGenerateCodeHelper
                         }
                         sb.AppendLine($@"               IEnumerable<ValidationResult> val{ count.ToString() } = new List<ValidationResult>() {{ new ValidationResult(""First CSSPError Message"") }}.AsEnumerable();");
                         sb.AppendLine($@"               { currentType.Name.Substring(0, 1).ToLower() }{ currentType.Name.Substring(1) }.{ prop.Name } = val{ count.ToString() };");
-                        sb.AppendLine($@"               Assert.AreEqual(val{ count.ToString() }, { currentType.Name.Substring(0, 1).ToLower() }{ currentType.Name.Substring(1) }.{ prop.Name });");
+                        sb.AppendLine($@"               Assert.Equal(val{ count.ToString() }, { currentType.Name.Substring(0, 1).ToLower() }{ currentType.Name.Substring(1) }.{ prop.Name });");
                     }
                 }
                 sb.AppendLine(@"        }");

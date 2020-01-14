@@ -5,7 +5,7 @@
  */ 
 
 using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using System.Linq;
 using System.Collections.Generic;
 using CSSPModels;
@@ -21,7 +21,7 @@ using CSSPEnums.Resources;
 
 namespace CSSPServices.Tests
 {
-    [TestClass]
+
     public partial class RainExceedanceClimateSiteServiceTest : TestHelper
     {
         #region Variables
@@ -39,7 +39,7 @@ namespace CSSPServices.Tests
         #endregion Constructors
 
         #region Tests Generated CRUD
-        [TestMethod]
+        [Fact]
         public void RainExceedanceClimateSite_CRUD_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -66,26 +66,26 @@ namespace CSSPServices.Tests
 
                     count = rainExceedanceClimateSiteService.GetRainExceedanceClimateSiteList().Count();
 
-                    Assert.AreEqual(count, (from c in dbTestDB.RainExceedanceClimateSites select c).Count());
+                    Assert.Equal(count, (from c in dbTestDB.RainExceedanceClimateSites select c).Count());
 
                     rainExceedanceClimateSiteService.Add(rainExceedanceClimateSite);
                     if (rainExceedanceClimateSite.HasErrors)
                     {
-                        Assert.AreEqual("", rainExceedanceClimateSite.ValidationResults.FirstOrDefault().ErrorMessage);
+                        Assert.Equal("", rainExceedanceClimateSite.ValidationResults.FirstOrDefault().ErrorMessage);
                     }
-                    Assert.AreEqual(true, rainExceedanceClimateSiteService.GetRainExceedanceClimateSiteList().Where(c => c == rainExceedanceClimateSite).Any());
+                    Assert.True(rainExceedanceClimateSiteService.GetRainExceedanceClimateSiteList().Where(c => c == rainExceedanceClimateSite).Any());
                     rainExceedanceClimateSiteService.Update(rainExceedanceClimateSite);
                     if (rainExceedanceClimateSite.HasErrors)
                     {
-                        Assert.AreEqual("", rainExceedanceClimateSite.ValidationResults.FirstOrDefault().ErrorMessage);
+                        Assert.Equal("", rainExceedanceClimateSite.ValidationResults.FirstOrDefault().ErrorMessage);
                     }
-                    Assert.AreEqual(count + 1, rainExceedanceClimateSiteService.GetRainExceedanceClimateSiteList().Count());
+                    Assert.Equal(count + 1, rainExceedanceClimateSiteService.GetRainExceedanceClimateSiteList().Count());
                     rainExceedanceClimateSiteService.Delete(rainExceedanceClimateSite);
                     if (rainExceedanceClimateSite.HasErrors)
                     {
-                        Assert.AreEqual("", rainExceedanceClimateSite.ValidationResults.FirstOrDefault().ErrorMessage);
+                        Assert.Equal("", rainExceedanceClimateSite.ValidationResults.FirstOrDefault().ErrorMessage);
                     }
-                    Assert.AreEqual(count, rainExceedanceClimateSiteService.GetRainExceedanceClimateSiteList().Count());
+                    Assert.Equal(count, rainExceedanceClimateSiteService.GetRainExceedanceClimateSiteList().Count());
 
                 }
             }
@@ -93,7 +93,7 @@ namespace CSSPServices.Tests
         #endregion Tests Generated CRUD
 
         #region Tests Generated Properties
-        [TestMethod]
+        [Fact]
         public void RainExceedanceClimateSite_Properties_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -131,13 +131,13 @@ namespace CSSPServices.Tests
                     rainExceedanceClimateSite = GetFilledRandomRainExceedanceClimateSite("");
                     rainExceedanceClimateSite.RainExceedanceClimateSiteID = 0;
                     rainExceedanceClimateSiteService.Update(rainExceedanceClimateSite);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsRequired, "RainExceedanceClimateSiteID"), rainExceedanceClimateSite.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsRequired, "RainExceedanceClimateSiteID"), rainExceedanceClimateSite.ValidationResults.FirstOrDefault().ErrorMessage);
 
                     rainExceedanceClimateSite = null;
                     rainExceedanceClimateSite = GetFilledRandomRainExceedanceClimateSite("");
                     rainExceedanceClimateSite.RainExceedanceClimateSiteID = 10000000;
                     rainExceedanceClimateSiteService.Update(rainExceedanceClimateSite);
-                    Assert.AreEqual(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "RainExceedanceClimateSite", "RainExceedanceClimateSiteID", rainExceedanceClimateSite.RainExceedanceClimateSiteID.ToString()), rainExceedanceClimateSite.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "RainExceedanceClimateSite", "RainExceedanceClimateSiteID", rainExceedanceClimateSite.RainExceedanceClimateSiteID.ToString()), rainExceedanceClimateSite.ValidationResults.FirstOrDefault().ErrorMessage);
 
 
                     // -----------------------------------
@@ -150,13 +150,13 @@ namespace CSSPServices.Tests
                     rainExceedanceClimateSite = GetFilledRandomRainExceedanceClimateSite("");
                     rainExceedanceClimateSite.RainExceedanceTVItemID = 0;
                     rainExceedanceClimateSiteService.Add(rainExceedanceClimateSite);
-                    Assert.AreEqual(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "TVItem", "RainExceedanceTVItemID", rainExceedanceClimateSite.RainExceedanceTVItemID.ToString()), rainExceedanceClimateSite.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "TVItem", "RainExceedanceTVItemID", rainExceedanceClimateSite.RainExceedanceTVItemID.ToString()), rainExceedanceClimateSite.ValidationResults.FirstOrDefault().ErrorMessage);
 
                     rainExceedanceClimateSite = null;
                     rainExceedanceClimateSite = GetFilledRandomRainExceedanceClimateSite("");
                     rainExceedanceClimateSite.RainExceedanceTVItemID = 1;
                     rainExceedanceClimateSiteService.Add(rainExceedanceClimateSite);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsNotOfType_, "RainExceedanceTVItemID", "RainExceedance"), rainExceedanceClimateSite.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsNotOfType_, "RainExceedanceTVItemID", "RainExceedance"), rainExceedanceClimateSite.ValidationResults.FirstOrDefault().ErrorMessage);
 
 
                     // -----------------------------------
@@ -169,13 +169,13 @@ namespace CSSPServices.Tests
                     rainExceedanceClimateSite = GetFilledRandomRainExceedanceClimateSite("");
                     rainExceedanceClimateSite.ClimateSiteTVItemID = 0;
                     rainExceedanceClimateSiteService.Add(rainExceedanceClimateSite);
-                    Assert.AreEqual(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "TVItem", "ClimateSiteTVItemID", rainExceedanceClimateSite.ClimateSiteTVItemID.ToString()), rainExceedanceClimateSite.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "TVItem", "ClimateSiteTVItemID", rainExceedanceClimateSite.ClimateSiteTVItemID.ToString()), rainExceedanceClimateSite.ValidationResults.FirstOrDefault().ErrorMessage);
 
                     rainExceedanceClimateSite = null;
                     rainExceedanceClimateSite = GetFilledRandomRainExceedanceClimateSite("");
                     rainExceedanceClimateSite.ClimateSiteTVItemID = 1;
                     rainExceedanceClimateSiteService.Add(rainExceedanceClimateSite);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsNotOfType_, "ClimateSiteTVItemID", "ClimateSite"), rainExceedanceClimateSite.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsNotOfType_, "ClimateSiteTVItemID", "ClimateSite"), rainExceedanceClimateSite.ValidationResults.FirstOrDefault().ErrorMessage);
 
 
                     // -----------------------------------
@@ -188,12 +188,12 @@ namespace CSSPServices.Tests
                     rainExceedanceClimateSite = GetFilledRandomRainExceedanceClimateSite("");
                     rainExceedanceClimateSite.LastUpdateDate_UTC = new DateTime();
                     rainExceedanceClimateSiteService.Add(rainExceedanceClimateSite);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsRequired, "LastUpdateDate_UTC"), rainExceedanceClimateSite.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsRequired, "LastUpdateDate_UTC"), rainExceedanceClimateSite.ValidationResults.FirstOrDefault().ErrorMessage);
                     rainExceedanceClimateSite = null;
                     rainExceedanceClimateSite = GetFilledRandomRainExceedanceClimateSite("");
                     rainExceedanceClimateSite.LastUpdateDate_UTC = new DateTime(1979, 1, 1);
                     rainExceedanceClimateSiteService.Add(rainExceedanceClimateSite);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._YearShouldBeBiggerThan_, "LastUpdateDate_UTC", "1980"), rainExceedanceClimateSite.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._YearShouldBeBiggerThan_, "LastUpdateDate_UTC", "1980"), rainExceedanceClimateSite.ValidationResults.FirstOrDefault().ErrorMessage);
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -205,13 +205,13 @@ namespace CSSPServices.Tests
                     rainExceedanceClimateSite = GetFilledRandomRainExceedanceClimateSite("");
                     rainExceedanceClimateSite.LastUpdateContactTVItemID = 0;
                     rainExceedanceClimateSiteService.Add(rainExceedanceClimateSite);
-                    Assert.AreEqual(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "TVItem", "LastUpdateContactTVItemID", rainExceedanceClimateSite.LastUpdateContactTVItemID.ToString()), rainExceedanceClimateSite.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "TVItem", "LastUpdateContactTVItemID", rainExceedanceClimateSite.LastUpdateContactTVItemID.ToString()), rainExceedanceClimateSite.ValidationResults.FirstOrDefault().ErrorMessage);
 
                     rainExceedanceClimateSite = null;
                     rainExceedanceClimateSite = GetFilledRandomRainExceedanceClimateSite("");
                     rainExceedanceClimateSite.LastUpdateContactTVItemID = 1;
                     rainExceedanceClimateSiteService.Add(rainExceedanceClimateSite);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsNotOfType_, "LastUpdateContactTVItemID", "Contact"), rainExceedanceClimateSite.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsNotOfType_, "LastUpdateContactTVItemID", "Contact"), rainExceedanceClimateSite.ValidationResults.FirstOrDefault().ErrorMessage);
 
 
                     // -----------------------------------
@@ -235,7 +235,7 @@ namespace CSSPServices.Tests
         #endregion Tests Generated Properties
 
         #region Tests Generated for GetRainExceedanceClimateSiteWithRainExceedanceClimateSiteID(rainExceedanceClimateSite.RainExceedanceClimateSiteID)
-        [TestMethod]
+        [Fact]
         public void GetRainExceedanceClimateSiteWithRainExceedanceClimateSiteID__rainExceedanceClimateSite_RainExceedanceClimateSiteID__Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -246,7 +246,7 @@ namespace CSSPServices.Tests
                 {
                     RainExceedanceClimateSiteService rainExceedanceClimateSiteService = new RainExceedanceClimateSiteService(new Query() { Lang = culture.TwoLetterISOLanguageName }, dbTestDB, ContactID);
                     RainExceedanceClimateSite rainExceedanceClimateSite = (from c in dbTestDB.RainExceedanceClimateSites select c).FirstOrDefault();
-                    Assert.IsNotNull(rainExceedanceClimateSite);
+                    Assert.NotNull(rainExceedanceClimateSite);
 
                 }
             }
@@ -254,7 +254,7 @@ namespace CSSPServices.Tests
         #endregion Tests Generated for GetRainExceedanceClimateSiteWithRainExceedanceClimateSiteID(rainExceedanceClimateSite.RainExceedanceClimateSiteID)
 
         #region Tests Generated for GetRainExceedanceClimateSiteList()
-        [TestMethod]
+        [Fact]
         public void GetRainExceedanceClimateSiteList_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -265,7 +265,7 @@ namespace CSSPServices.Tests
                 {
                     RainExceedanceClimateSiteService rainExceedanceClimateSiteService = new RainExceedanceClimateSiteService(new Query() { Lang = culture.TwoLetterISOLanguageName }, dbTestDB, ContactID);
                     RainExceedanceClimateSite rainExceedanceClimateSite = (from c in dbTestDB.RainExceedanceClimateSites select c).FirstOrDefault();
-                    Assert.IsNotNull(rainExceedanceClimateSite);
+                    Assert.NotNull(rainExceedanceClimateSite);
 
                     List<RainExceedanceClimateSite> rainExceedanceClimateSiteDirectQueryList = new List<RainExceedanceClimateSite>();
                     rainExceedanceClimateSiteDirectQueryList = (from c in dbTestDB.RainExceedanceClimateSites select c).Take(200).ToList();
@@ -276,7 +276,7 @@ namespace CSSPServices.Tests
         #endregion Tests Generated for GetRainExceedanceClimateSiteList()
 
         #region Tests Generated for GetRainExceedanceClimateSiteList() Skip Take
-        [TestMethod]
+        [Fact]
         public void GetRainExceedanceClimateSiteList_Skip_Take_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -295,14 +295,14 @@ namespace CSSPServices.Tests
                         List<RainExceedanceClimateSite> rainExceedanceClimateSiteList = new List<RainExceedanceClimateSite>();
                         rainExceedanceClimateSiteList = rainExceedanceClimateSiteService.GetRainExceedanceClimateSiteList().ToList();
                         CheckRainExceedanceClimateSiteFields(rainExceedanceClimateSiteList);
-                        Assert.AreEqual(rainExceedanceClimateSiteDirectQueryList[0].RainExceedanceClimateSiteID, rainExceedanceClimateSiteList[0].RainExceedanceClimateSiteID);
+                        Assert.Equal(rainExceedanceClimateSiteDirectQueryList[0].RainExceedanceClimateSiteID, rainExceedanceClimateSiteList[0].RainExceedanceClimateSiteID);
                 }
             }
         }
         #endregion Tests Generated for GetRainExceedanceClimateSiteList() Skip Take
 
         #region Tests Generated for GetRainExceedanceClimateSiteList() Skip Take Asc
-        [TestMethod]
+        [Fact]
         public void GetRainExceedanceClimateSiteList_Skip_Take_Asc_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -321,14 +321,14 @@ namespace CSSPServices.Tests
                         List<RainExceedanceClimateSite> rainExceedanceClimateSiteList = new List<RainExceedanceClimateSite>();
                         rainExceedanceClimateSiteList = rainExceedanceClimateSiteService.GetRainExceedanceClimateSiteList().ToList();
                         CheckRainExceedanceClimateSiteFields(rainExceedanceClimateSiteList);
-                        Assert.AreEqual(rainExceedanceClimateSiteDirectQueryList[0].RainExceedanceClimateSiteID, rainExceedanceClimateSiteList[0].RainExceedanceClimateSiteID);
+                        Assert.Equal(rainExceedanceClimateSiteDirectQueryList[0].RainExceedanceClimateSiteID, rainExceedanceClimateSiteList[0].RainExceedanceClimateSiteID);
                 }
             }
         }
         #endregion Tests Generated for GetRainExceedanceClimateSiteList() Skip Take Asc
 
         #region Tests Generated for GetRainExceedanceClimateSiteList() Skip Take 2 Asc
-        [TestMethod]
+        [Fact]
         public void GetRainExceedanceClimateSiteList_Skip_Take_2Asc_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -347,14 +347,14 @@ namespace CSSPServices.Tests
                         List<RainExceedanceClimateSite> rainExceedanceClimateSiteList = new List<RainExceedanceClimateSite>();
                         rainExceedanceClimateSiteList = rainExceedanceClimateSiteService.GetRainExceedanceClimateSiteList().ToList();
                         CheckRainExceedanceClimateSiteFields(rainExceedanceClimateSiteList);
-                        Assert.AreEqual(rainExceedanceClimateSiteDirectQueryList[0].RainExceedanceClimateSiteID, rainExceedanceClimateSiteList[0].RainExceedanceClimateSiteID);
+                        Assert.Equal(rainExceedanceClimateSiteDirectQueryList[0].RainExceedanceClimateSiteID, rainExceedanceClimateSiteList[0].RainExceedanceClimateSiteID);
                 }
             }
         }
         #endregion Tests Generated for GetRainExceedanceClimateSiteList() Skip Take 2 Asc
 
         #region Tests Generated for GetRainExceedanceClimateSiteList() Skip Take Asc Where
-        [TestMethod]
+        [Fact]
         public void GetRainExceedanceClimateSiteList_Skip_Take_Asc_Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -373,14 +373,14 @@ namespace CSSPServices.Tests
                         List<RainExceedanceClimateSite> rainExceedanceClimateSiteList = new List<RainExceedanceClimateSite>();
                         rainExceedanceClimateSiteList = rainExceedanceClimateSiteService.GetRainExceedanceClimateSiteList().ToList();
                         CheckRainExceedanceClimateSiteFields(rainExceedanceClimateSiteList);
-                        Assert.AreEqual(rainExceedanceClimateSiteDirectQueryList[0].RainExceedanceClimateSiteID, rainExceedanceClimateSiteList[0].RainExceedanceClimateSiteID);
+                        Assert.Equal(rainExceedanceClimateSiteDirectQueryList[0].RainExceedanceClimateSiteID, rainExceedanceClimateSiteList[0].RainExceedanceClimateSiteID);
                 }
             }
         }
         #endregion Tests Generated for GetRainExceedanceClimateSiteList() Skip Take Asc Where
 
         #region Tests Generated for GetRainExceedanceClimateSiteList() Skip Take Asc 2 Where
-        [TestMethod]
+        [Fact]
         public void GetRainExceedanceClimateSiteList_Skip_Take_Asc_2Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -399,14 +399,14 @@ namespace CSSPServices.Tests
                         List<RainExceedanceClimateSite> rainExceedanceClimateSiteList = new List<RainExceedanceClimateSite>();
                         rainExceedanceClimateSiteList = rainExceedanceClimateSiteService.GetRainExceedanceClimateSiteList().ToList();
                         CheckRainExceedanceClimateSiteFields(rainExceedanceClimateSiteList);
-                        Assert.AreEqual(rainExceedanceClimateSiteDirectQueryList[0].RainExceedanceClimateSiteID, rainExceedanceClimateSiteList[0].RainExceedanceClimateSiteID);
+                        Assert.Equal(rainExceedanceClimateSiteDirectQueryList[0].RainExceedanceClimateSiteID, rainExceedanceClimateSiteList[0].RainExceedanceClimateSiteID);
                 }
             }
         }
         #endregion Tests Generated for GetRainExceedanceClimateSiteList() Skip Take Asc 2 Where
 
         #region Tests Generated for GetRainExceedanceClimateSiteList() Skip Take Desc
-        [TestMethod]
+        [Fact]
         public void GetRainExceedanceClimateSiteList_Skip_Take_Desc_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -425,14 +425,14 @@ namespace CSSPServices.Tests
                         List<RainExceedanceClimateSite> rainExceedanceClimateSiteList = new List<RainExceedanceClimateSite>();
                         rainExceedanceClimateSiteList = rainExceedanceClimateSiteService.GetRainExceedanceClimateSiteList().ToList();
                         CheckRainExceedanceClimateSiteFields(rainExceedanceClimateSiteList);
-                        Assert.AreEqual(rainExceedanceClimateSiteDirectQueryList[0].RainExceedanceClimateSiteID, rainExceedanceClimateSiteList[0].RainExceedanceClimateSiteID);
+                        Assert.Equal(rainExceedanceClimateSiteDirectQueryList[0].RainExceedanceClimateSiteID, rainExceedanceClimateSiteList[0].RainExceedanceClimateSiteID);
                 }
             }
         }
         #endregion Tests Generated for GetRainExceedanceClimateSiteList() Skip Take Desc
 
         #region Tests Generated for GetRainExceedanceClimateSiteList() Skip Take 2 Desc
-        [TestMethod]
+        [Fact]
         public void GetRainExceedanceClimateSiteList_Skip_Take_2Desc_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -451,14 +451,14 @@ namespace CSSPServices.Tests
                         List<RainExceedanceClimateSite> rainExceedanceClimateSiteList = new List<RainExceedanceClimateSite>();
                         rainExceedanceClimateSiteList = rainExceedanceClimateSiteService.GetRainExceedanceClimateSiteList().ToList();
                         CheckRainExceedanceClimateSiteFields(rainExceedanceClimateSiteList);
-                        Assert.AreEqual(rainExceedanceClimateSiteDirectQueryList[0].RainExceedanceClimateSiteID, rainExceedanceClimateSiteList[0].RainExceedanceClimateSiteID);
+                        Assert.Equal(rainExceedanceClimateSiteDirectQueryList[0].RainExceedanceClimateSiteID, rainExceedanceClimateSiteList[0].RainExceedanceClimateSiteID);
                 }
             }
         }
         #endregion Tests Generated for GetRainExceedanceClimateSiteList() Skip Take 2 Desc
 
         #region Tests Generated for GetRainExceedanceClimateSiteList() Skip Take Desc Where
-        [TestMethod]
+        [Fact]
         public void GetRainExceedanceClimateSiteList_Skip_Take_Desc_Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -477,14 +477,14 @@ namespace CSSPServices.Tests
                         List<RainExceedanceClimateSite> rainExceedanceClimateSiteList = new List<RainExceedanceClimateSite>();
                         rainExceedanceClimateSiteList = rainExceedanceClimateSiteService.GetRainExceedanceClimateSiteList().ToList();
                         CheckRainExceedanceClimateSiteFields(rainExceedanceClimateSiteList);
-                        Assert.AreEqual(rainExceedanceClimateSiteDirectQueryList[0].RainExceedanceClimateSiteID, rainExceedanceClimateSiteList[0].RainExceedanceClimateSiteID);
+                        Assert.Equal(rainExceedanceClimateSiteDirectQueryList[0].RainExceedanceClimateSiteID, rainExceedanceClimateSiteList[0].RainExceedanceClimateSiteID);
                 }
             }
         }
         #endregion Tests Generated for GetRainExceedanceClimateSiteList() Skip Take Desc Where
 
         #region Tests Generated for GetRainExceedanceClimateSiteList() Skip Take Desc 2 Where
-        [TestMethod]
+        [Fact]
         public void GetRainExceedanceClimateSiteList_Skip_Take_Desc_2Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -503,14 +503,14 @@ namespace CSSPServices.Tests
                         List<RainExceedanceClimateSite> rainExceedanceClimateSiteList = new List<RainExceedanceClimateSite>();
                         rainExceedanceClimateSiteList = rainExceedanceClimateSiteService.GetRainExceedanceClimateSiteList().ToList();
                         CheckRainExceedanceClimateSiteFields(rainExceedanceClimateSiteList);
-                        Assert.AreEqual(rainExceedanceClimateSiteDirectQueryList[0].RainExceedanceClimateSiteID, rainExceedanceClimateSiteList[0].RainExceedanceClimateSiteID);
+                        Assert.Equal(rainExceedanceClimateSiteDirectQueryList[0].RainExceedanceClimateSiteID, rainExceedanceClimateSiteList[0].RainExceedanceClimateSiteID);
                 }
             }
         }
         #endregion Tests Generated for GetRainExceedanceClimateSiteList() Skip Take Desc 2 Where
 
         #region Tests Generated for GetRainExceedanceClimateSiteList() 2 Where
-        [TestMethod]
+        [Fact]
         public void GetRainExceedanceClimateSiteList_2Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -529,7 +529,7 @@ namespace CSSPServices.Tests
                         List<RainExceedanceClimateSite> rainExceedanceClimateSiteList = new List<RainExceedanceClimateSite>();
                         rainExceedanceClimateSiteList = rainExceedanceClimateSiteService.GetRainExceedanceClimateSiteList().ToList();
                         CheckRainExceedanceClimateSiteFields(rainExceedanceClimateSiteList);
-                        Assert.AreEqual(rainExceedanceClimateSiteDirectQueryList[0].RainExceedanceClimateSiteID, rainExceedanceClimateSiteList[0].RainExceedanceClimateSiteID);
+                        Assert.Equal(rainExceedanceClimateSiteDirectQueryList[0].RainExceedanceClimateSiteID, rainExceedanceClimateSiteList[0].RainExceedanceClimateSiteID);
                 }
             }
         }
@@ -538,12 +538,12 @@ namespace CSSPServices.Tests
         #region Functions private
         private void CheckRainExceedanceClimateSiteFields(List<RainExceedanceClimateSite> rainExceedanceClimateSiteList)
         {
-            Assert.IsNotNull(rainExceedanceClimateSiteList[0].RainExceedanceClimateSiteID);
-            Assert.IsNotNull(rainExceedanceClimateSiteList[0].RainExceedanceTVItemID);
-            Assert.IsNotNull(rainExceedanceClimateSiteList[0].ClimateSiteTVItemID);
-            Assert.IsNotNull(rainExceedanceClimateSiteList[0].LastUpdateDate_UTC);
-            Assert.IsNotNull(rainExceedanceClimateSiteList[0].LastUpdateContactTVItemID);
-            Assert.IsNotNull(rainExceedanceClimateSiteList[0].HasErrors);
+            Assert.NotNull(rainExceedanceClimateSiteList[0].RainExceedanceClimateSiteID);
+            Assert.NotNull(rainExceedanceClimateSiteList[0].RainExceedanceTVItemID);
+            Assert.NotNull(rainExceedanceClimateSiteList[0].ClimateSiteTVItemID);
+            Assert.NotNull(rainExceedanceClimateSiteList[0].LastUpdateDate_UTC);
+            Assert.NotNull(rainExceedanceClimateSiteList[0].LastUpdateContactTVItemID);
+            Assert.NotNull(rainExceedanceClimateSiteList[0].HasErrors);
         }
         private RainExceedanceClimateSite GetFilledRandomRainExceedanceClimateSite(string OmitPropName)
         {

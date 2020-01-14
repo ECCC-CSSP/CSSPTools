@@ -5,7 +5,7 @@
  */ 
 
 using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using System.Linq;
 using System.Collections.Generic;
 using CSSPModels;
@@ -21,7 +21,7 @@ using CSSPEnums.Resources;
 
 namespace CSSPServices.Tests
 {
-    [TestClass]
+
     public partial class HydrometricDataValueServiceTest : TestHelper
     {
         #region Variables
@@ -39,7 +39,7 @@ namespace CSSPServices.Tests
         #endregion Constructors
 
         #region Tests Generated CRUD
-        [TestMethod]
+        [Fact]
         public void HydrometricDataValue_CRUD_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -66,26 +66,26 @@ namespace CSSPServices.Tests
 
                     count = hydrometricDataValueService.GetHydrometricDataValueList().Count();
 
-                    Assert.AreEqual(count, (from c in dbTestDB.HydrometricDataValues select c).Count());
+                    Assert.Equal(count, (from c in dbTestDB.HydrometricDataValues select c).Count());
 
                     hydrometricDataValueService.Add(hydrometricDataValue);
                     if (hydrometricDataValue.HasErrors)
                     {
-                        Assert.AreEqual("", hydrometricDataValue.ValidationResults.FirstOrDefault().ErrorMessage);
+                        Assert.Equal("", hydrometricDataValue.ValidationResults.FirstOrDefault().ErrorMessage);
                     }
-                    Assert.AreEqual(true, hydrometricDataValueService.GetHydrometricDataValueList().Where(c => c == hydrometricDataValue).Any());
+                    Assert.True(hydrometricDataValueService.GetHydrometricDataValueList().Where(c => c == hydrometricDataValue).Any());
                     hydrometricDataValueService.Update(hydrometricDataValue);
                     if (hydrometricDataValue.HasErrors)
                     {
-                        Assert.AreEqual("", hydrometricDataValue.ValidationResults.FirstOrDefault().ErrorMessage);
+                        Assert.Equal("", hydrometricDataValue.ValidationResults.FirstOrDefault().ErrorMessage);
                     }
-                    Assert.AreEqual(count + 1, hydrometricDataValueService.GetHydrometricDataValueList().Count());
+                    Assert.Equal(count + 1, hydrometricDataValueService.GetHydrometricDataValueList().Count());
                     hydrometricDataValueService.Delete(hydrometricDataValue);
                     if (hydrometricDataValue.HasErrors)
                     {
-                        Assert.AreEqual("", hydrometricDataValue.ValidationResults.FirstOrDefault().ErrorMessage);
+                        Assert.Equal("", hydrometricDataValue.ValidationResults.FirstOrDefault().ErrorMessage);
                     }
-                    Assert.AreEqual(count, hydrometricDataValueService.GetHydrometricDataValueList().Count());
+                    Assert.Equal(count, hydrometricDataValueService.GetHydrometricDataValueList().Count());
 
                 }
             }
@@ -93,7 +93,7 @@ namespace CSSPServices.Tests
         #endregion Tests Generated CRUD
 
         #region Tests Generated Properties
-        [TestMethod]
+        [Fact]
         public void HydrometricDataValue_Properties_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -131,13 +131,13 @@ namespace CSSPServices.Tests
                     hydrometricDataValue = GetFilledRandomHydrometricDataValue("");
                     hydrometricDataValue.HydrometricDataValueID = 0;
                     hydrometricDataValueService.Update(hydrometricDataValue);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsRequired, "HydrometricDataValueID"), hydrometricDataValue.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsRequired, "HydrometricDataValueID"), hydrometricDataValue.ValidationResults.FirstOrDefault().ErrorMessage);
 
                     hydrometricDataValue = null;
                     hydrometricDataValue = GetFilledRandomHydrometricDataValue("");
                     hydrometricDataValue.HydrometricDataValueID = 10000000;
                     hydrometricDataValueService.Update(hydrometricDataValue);
-                    Assert.AreEqual(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "HydrometricDataValue", "HydrometricDataValueID", hydrometricDataValue.HydrometricDataValueID.ToString()), hydrometricDataValue.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "HydrometricDataValue", "HydrometricDataValueID", hydrometricDataValue.HydrometricDataValueID.ToString()), hydrometricDataValue.ValidationResults.FirstOrDefault().ErrorMessage);
 
 
                     // -----------------------------------
@@ -150,7 +150,7 @@ namespace CSSPServices.Tests
                     hydrometricDataValue = GetFilledRandomHydrometricDataValue("");
                     hydrometricDataValue.HydrometricSiteID = 0;
                     hydrometricDataValueService.Add(hydrometricDataValue);
-                    Assert.AreEqual(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "HydrometricSite", "HydrometricSiteID", hydrometricDataValue.HydrometricSiteID.ToString()), hydrometricDataValue.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "HydrometricSite", "HydrometricSiteID", hydrometricDataValue.HydrometricSiteID.ToString()), hydrometricDataValue.ValidationResults.FirstOrDefault().ErrorMessage);
 
 
                     // -----------------------------------
@@ -163,12 +163,12 @@ namespace CSSPServices.Tests
                     hydrometricDataValue = GetFilledRandomHydrometricDataValue("");
                     hydrometricDataValue.DateTime_Local = new DateTime();
                     hydrometricDataValueService.Add(hydrometricDataValue);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsRequired, "DateTime_Local"), hydrometricDataValue.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsRequired, "DateTime_Local"), hydrometricDataValue.ValidationResults.FirstOrDefault().ErrorMessage);
                     hydrometricDataValue = null;
                     hydrometricDataValue = GetFilledRandomHydrometricDataValue("");
                     hydrometricDataValue.DateTime_Local = new DateTime(1979, 1, 1);
                     hydrometricDataValueService.Add(hydrometricDataValue);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._YearShouldBeBiggerThan_, "DateTime_Local", "1980"), hydrometricDataValue.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._YearShouldBeBiggerThan_, "DateTime_Local", "1980"), hydrometricDataValue.ValidationResults.FirstOrDefault().ErrorMessage);
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -186,7 +186,7 @@ namespace CSSPServices.Tests
                     hydrometricDataValue = GetFilledRandomHydrometricDataValue("");
                     hydrometricDataValue.StorageDataType = (StorageDataTypeEnum)1000000;
                     hydrometricDataValueService.Add(hydrometricDataValue);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsRequired, "StorageDataType"), hydrometricDataValue.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsRequired, "StorageDataType"), hydrometricDataValue.ValidationResults.FirstOrDefault().ErrorMessage);
 
 
                     // -----------------------------------
@@ -208,15 +208,15 @@ namespace CSSPServices.Tests
                     hydrometricDataValue = null;
                     hydrometricDataValue = GetFilledRandomHydrometricDataValue("");
                     hydrometricDataValue.Discharge_m3_s = -1.0D;
-                    Assert.AreEqual(false, hydrometricDataValueService.Add(hydrometricDataValue));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "Discharge_m3_s", "0", "100000"), hydrometricDataValue.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, hydrometricDataValueService.GetHydrometricDataValueList().Count());
+                    Assert.False(hydrometricDataValueService.Add(hydrometricDataValue));
+                    Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "Discharge_m3_s", "0", "100000"), hydrometricDataValue.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, hydrometricDataValueService.GetHydrometricDataValueList().Count());
                     hydrometricDataValue = null;
                     hydrometricDataValue = GetFilledRandomHydrometricDataValue("");
                     hydrometricDataValue.Discharge_m3_s = 100001.0D;
-                    Assert.AreEqual(false, hydrometricDataValueService.Add(hydrometricDataValue));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "Discharge_m3_s", "0", "100000"), hydrometricDataValue.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, hydrometricDataValueService.GetHydrometricDataValueList().Count());
+                    Assert.False(hydrometricDataValueService.Add(hydrometricDataValue));
+                    Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "Discharge_m3_s", "0", "100000"), hydrometricDataValue.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, hydrometricDataValueService.GetHydrometricDataValueList().Count());
 
                     // -----------------------------------
                     // Is Nullable
@@ -231,15 +231,15 @@ namespace CSSPServices.Tests
                     hydrometricDataValue = null;
                     hydrometricDataValue = GetFilledRandomHydrometricDataValue("");
                     hydrometricDataValue.DischargeEntered_m3_s = -1.0D;
-                    Assert.AreEqual(false, hydrometricDataValueService.Add(hydrometricDataValue));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "DischargeEntered_m3_s", "0", "100000"), hydrometricDataValue.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, hydrometricDataValueService.GetHydrometricDataValueList().Count());
+                    Assert.False(hydrometricDataValueService.Add(hydrometricDataValue));
+                    Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "DischargeEntered_m3_s", "0", "100000"), hydrometricDataValue.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, hydrometricDataValueService.GetHydrometricDataValueList().Count());
                     hydrometricDataValue = null;
                     hydrometricDataValue = GetFilledRandomHydrometricDataValue("");
                     hydrometricDataValue.DischargeEntered_m3_s = 100001.0D;
-                    Assert.AreEqual(false, hydrometricDataValueService.Add(hydrometricDataValue));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "DischargeEntered_m3_s", "0", "100000"), hydrometricDataValue.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, hydrometricDataValueService.GetHydrometricDataValueList().Count());
+                    Assert.False(hydrometricDataValueService.Add(hydrometricDataValue));
+                    Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "DischargeEntered_m3_s", "0", "100000"), hydrometricDataValue.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, hydrometricDataValueService.GetHydrometricDataValueList().Count());
 
                     // -----------------------------------
                     // Is Nullable
@@ -254,15 +254,15 @@ namespace CSSPServices.Tests
                     hydrometricDataValue = null;
                     hydrometricDataValue = GetFilledRandomHydrometricDataValue("");
                     hydrometricDataValue.Level_m = -1.0D;
-                    Assert.AreEqual(false, hydrometricDataValueService.Add(hydrometricDataValue));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "Level_m", "0", "10000"), hydrometricDataValue.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, hydrometricDataValueService.GetHydrometricDataValueList().Count());
+                    Assert.False(hydrometricDataValueService.Add(hydrometricDataValue));
+                    Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "Level_m", "0", "10000"), hydrometricDataValue.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, hydrometricDataValueService.GetHydrometricDataValueList().Count());
                     hydrometricDataValue = null;
                     hydrometricDataValue = GetFilledRandomHydrometricDataValue("");
                     hydrometricDataValue.Level_m = 10001.0D;
-                    Assert.AreEqual(false, hydrometricDataValueService.Add(hydrometricDataValue));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "Level_m", "0", "10000"), hydrometricDataValue.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, hydrometricDataValueService.GetHydrometricDataValueList().Count());
+                    Assert.False(hydrometricDataValueService.Add(hydrometricDataValue));
+                    Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "Level_m", "0", "10000"), hydrometricDataValue.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, hydrometricDataValueService.GetHydrometricDataValueList().Count());
 
                     // -----------------------------------
                     // Is Nullable
@@ -280,12 +280,12 @@ namespace CSSPServices.Tests
                     hydrometricDataValue = GetFilledRandomHydrometricDataValue("");
                     hydrometricDataValue.LastUpdateDate_UTC = new DateTime();
                     hydrometricDataValueService.Add(hydrometricDataValue);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsRequired, "LastUpdateDate_UTC"), hydrometricDataValue.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsRequired, "LastUpdateDate_UTC"), hydrometricDataValue.ValidationResults.FirstOrDefault().ErrorMessage);
                     hydrometricDataValue = null;
                     hydrometricDataValue = GetFilledRandomHydrometricDataValue("");
                     hydrometricDataValue.LastUpdateDate_UTC = new DateTime(1979, 1, 1);
                     hydrometricDataValueService.Add(hydrometricDataValue);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._YearShouldBeBiggerThan_, "LastUpdateDate_UTC", "1980"), hydrometricDataValue.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._YearShouldBeBiggerThan_, "LastUpdateDate_UTC", "1980"), hydrometricDataValue.ValidationResults.FirstOrDefault().ErrorMessage);
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -297,13 +297,13 @@ namespace CSSPServices.Tests
                     hydrometricDataValue = GetFilledRandomHydrometricDataValue("");
                     hydrometricDataValue.LastUpdateContactTVItemID = 0;
                     hydrometricDataValueService.Add(hydrometricDataValue);
-                    Assert.AreEqual(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "TVItem", "LastUpdateContactTVItemID", hydrometricDataValue.LastUpdateContactTVItemID.ToString()), hydrometricDataValue.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "TVItem", "LastUpdateContactTVItemID", hydrometricDataValue.LastUpdateContactTVItemID.ToString()), hydrometricDataValue.ValidationResults.FirstOrDefault().ErrorMessage);
 
                     hydrometricDataValue = null;
                     hydrometricDataValue = GetFilledRandomHydrometricDataValue("");
                     hydrometricDataValue.LastUpdateContactTVItemID = 1;
                     hydrometricDataValueService.Add(hydrometricDataValue);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsNotOfType_, "LastUpdateContactTVItemID", "Contact"), hydrometricDataValue.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsNotOfType_, "LastUpdateContactTVItemID", "Contact"), hydrometricDataValue.ValidationResults.FirstOrDefault().ErrorMessage);
 
 
                     // -----------------------------------
@@ -327,7 +327,7 @@ namespace CSSPServices.Tests
         #endregion Tests Generated Properties
 
         #region Tests Generated for GetHydrometricDataValueWithHydrometricDataValueID(hydrometricDataValue.HydrometricDataValueID)
-        [TestMethod]
+        [Fact]
         public void GetHydrometricDataValueWithHydrometricDataValueID__hydrometricDataValue_HydrometricDataValueID__Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -338,7 +338,7 @@ namespace CSSPServices.Tests
                 {
                     HydrometricDataValueService hydrometricDataValueService = new HydrometricDataValueService(new Query() { Lang = culture.TwoLetterISOLanguageName }, dbTestDB, ContactID);
                     HydrometricDataValue hydrometricDataValue = (from c in dbTestDB.HydrometricDataValues select c).FirstOrDefault();
-                    Assert.IsNotNull(hydrometricDataValue);
+                    Assert.NotNull(hydrometricDataValue);
 
                 }
             }
@@ -346,7 +346,7 @@ namespace CSSPServices.Tests
         #endregion Tests Generated for GetHydrometricDataValueWithHydrometricDataValueID(hydrometricDataValue.HydrometricDataValueID)
 
         #region Tests Generated for GetHydrometricDataValueList()
-        [TestMethod]
+        [Fact]
         public void GetHydrometricDataValueList_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -357,7 +357,7 @@ namespace CSSPServices.Tests
                 {
                     HydrometricDataValueService hydrometricDataValueService = new HydrometricDataValueService(new Query() { Lang = culture.TwoLetterISOLanguageName }, dbTestDB, ContactID);
                     HydrometricDataValue hydrometricDataValue = (from c in dbTestDB.HydrometricDataValues select c).FirstOrDefault();
-                    Assert.IsNotNull(hydrometricDataValue);
+                    Assert.NotNull(hydrometricDataValue);
 
                     List<HydrometricDataValue> hydrometricDataValueDirectQueryList = new List<HydrometricDataValue>();
                     hydrometricDataValueDirectQueryList = (from c in dbTestDB.HydrometricDataValues select c).Take(200).ToList();
@@ -368,7 +368,7 @@ namespace CSSPServices.Tests
         #endregion Tests Generated for GetHydrometricDataValueList()
 
         #region Tests Generated for GetHydrometricDataValueList() Skip Take
-        [TestMethod]
+        [Fact]
         public void GetHydrometricDataValueList_Skip_Take_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -387,14 +387,14 @@ namespace CSSPServices.Tests
                         List<HydrometricDataValue> hydrometricDataValueList = new List<HydrometricDataValue>();
                         hydrometricDataValueList = hydrometricDataValueService.GetHydrometricDataValueList().ToList();
                         CheckHydrometricDataValueFields(hydrometricDataValueList);
-                        Assert.AreEqual(hydrometricDataValueDirectQueryList[0].HydrometricDataValueID, hydrometricDataValueList[0].HydrometricDataValueID);
+                        Assert.Equal(hydrometricDataValueDirectQueryList[0].HydrometricDataValueID, hydrometricDataValueList[0].HydrometricDataValueID);
                 }
             }
         }
         #endregion Tests Generated for GetHydrometricDataValueList() Skip Take
 
         #region Tests Generated for GetHydrometricDataValueList() Skip Take Asc
-        [TestMethod]
+        [Fact]
         public void GetHydrometricDataValueList_Skip_Take_Asc_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -413,14 +413,14 @@ namespace CSSPServices.Tests
                         List<HydrometricDataValue> hydrometricDataValueList = new List<HydrometricDataValue>();
                         hydrometricDataValueList = hydrometricDataValueService.GetHydrometricDataValueList().ToList();
                         CheckHydrometricDataValueFields(hydrometricDataValueList);
-                        Assert.AreEqual(hydrometricDataValueDirectQueryList[0].HydrometricDataValueID, hydrometricDataValueList[0].HydrometricDataValueID);
+                        Assert.Equal(hydrometricDataValueDirectQueryList[0].HydrometricDataValueID, hydrometricDataValueList[0].HydrometricDataValueID);
                 }
             }
         }
         #endregion Tests Generated for GetHydrometricDataValueList() Skip Take Asc
 
         #region Tests Generated for GetHydrometricDataValueList() Skip Take 2 Asc
-        [TestMethod]
+        [Fact]
         public void GetHydrometricDataValueList_Skip_Take_2Asc_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -439,14 +439,14 @@ namespace CSSPServices.Tests
                         List<HydrometricDataValue> hydrometricDataValueList = new List<HydrometricDataValue>();
                         hydrometricDataValueList = hydrometricDataValueService.GetHydrometricDataValueList().ToList();
                         CheckHydrometricDataValueFields(hydrometricDataValueList);
-                        Assert.AreEqual(hydrometricDataValueDirectQueryList[0].HydrometricDataValueID, hydrometricDataValueList[0].HydrometricDataValueID);
+                        Assert.Equal(hydrometricDataValueDirectQueryList[0].HydrometricDataValueID, hydrometricDataValueList[0].HydrometricDataValueID);
                 }
             }
         }
         #endregion Tests Generated for GetHydrometricDataValueList() Skip Take 2 Asc
 
         #region Tests Generated for GetHydrometricDataValueList() Skip Take Asc Where
-        [TestMethod]
+        [Fact]
         public void GetHydrometricDataValueList_Skip_Take_Asc_Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -465,14 +465,14 @@ namespace CSSPServices.Tests
                         List<HydrometricDataValue> hydrometricDataValueList = new List<HydrometricDataValue>();
                         hydrometricDataValueList = hydrometricDataValueService.GetHydrometricDataValueList().ToList();
                         CheckHydrometricDataValueFields(hydrometricDataValueList);
-                        Assert.AreEqual(hydrometricDataValueDirectQueryList[0].HydrometricDataValueID, hydrometricDataValueList[0].HydrometricDataValueID);
+                        Assert.Equal(hydrometricDataValueDirectQueryList[0].HydrometricDataValueID, hydrometricDataValueList[0].HydrometricDataValueID);
                 }
             }
         }
         #endregion Tests Generated for GetHydrometricDataValueList() Skip Take Asc Where
 
         #region Tests Generated for GetHydrometricDataValueList() Skip Take Asc 2 Where
-        [TestMethod]
+        [Fact]
         public void GetHydrometricDataValueList_Skip_Take_Asc_2Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -491,14 +491,14 @@ namespace CSSPServices.Tests
                         List<HydrometricDataValue> hydrometricDataValueList = new List<HydrometricDataValue>();
                         hydrometricDataValueList = hydrometricDataValueService.GetHydrometricDataValueList().ToList();
                         CheckHydrometricDataValueFields(hydrometricDataValueList);
-                        Assert.AreEqual(hydrometricDataValueDirectQueryList[0].HydrometricDataValueID, hydrometricDataValueList[0].HydrometricDataValueID);
+                        Assert.Equal(hydrometricDataValueDirectQueryList[0].HydrometricDataValueID, hydrometricDataValueList[0].HydrometricDataValueID);
                 }
             }
         }
         #endregion Tests Generated for GetHydrometricDataValueList() Skip Take Asc 2 Where
 
         #region Tests Generated for GetHydrometricDataValueList() Skip Take Desc
-        [TestMethod]
+        [Fact]
         public void GetHydrometricDataValueList_Skip_Take_Desc_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -517,14 +517,14 @@ namespace CSSPServices.Tests
                         List<HydrometricDataValue> hydrometricDataValueList = new List<HydrometricDataValue>();
                         hydrometricDataValueList = hydrometricDataValueService.GetHydrometricDataValueList().ToList();
                         CheckHydrometricDataValueFields(hydrometricDataValueList);
-                        Assert.AreEqual(hydrometricDataValueDirectQueryList[0].HydrometricDataValueID, hydrometricDataValueList[0].HydrometricDataValueID);
+                        Assert.Equal(hydrometricDataValueDirectQueryList[0].HydrometricDataValueID, hydrometricDataValueList[0].HydrometricDataValueID);
                 }
             }
         }
         #endregion Tests Generated for GetHydrometricDataValueList() Skip Take Desc
 
         #region Tests Generated for GetHydrometricDataValueList() Skip Take 2 Desc
-        [TestMethod]
+        [Fact]
         public void GetHydrometricDataValueList_Skip_Take_2Desc_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -543,14 +543,14 @@ namespace CSSPServices.Tests
                         List<HydrometricDataValue> hydrometricDataValueList = new List<HydrometricDataValue>();
                         hydrometricDataValueList = hydrometricDataValueService.GetHydrometricDataValueList().ToList();
                         CheckHydrometricDataValueFields(hydrometricDataValueList);
-                        Assert.AreEqual(hydrometricDataValueDirectQueryList[0].HydrometricDataValueID, hydrometricDataValueList[0].HydrometricDataValueID);
+                        Assert.Equal(hydrometricDataValueDirectQueryList[0].HydrometricDataValueID, hydrometricDataValueList[0].HydrometricDataValueID);
                 }
             }
         }
         #endregion Tests Generated for GetHydrometricDataValueList() Skip Take 2 Desc
 
         #region Tests Generated for GetHydrometricDataValueList() Skip Take Desc Where
-        [TestMethod]
+        [Fact]
         public void GetHydrometricDataValueList_Skip_Take_Desc_Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -569,14 +569,14 @@ namespace CSSPServices.Tests
                         List<HydrometricDataValue> hydrometricDataValueList = new List<HydrometricDataValue>();
                         hydrometricDataValueList = hydrometricDataValueService.GetHydrometricDataValueList().ToList();
                         CheckHydrometricDataValueFields(hydrometricDataValueList);
-                        Assert.AreEqual(hydrometricDataValueDirectQueryList[0].HydrometricDataValueID, hydrometricDataValueList[0].HydrometricDataValueID);
+                        Assert.Equal(hydrometricDataValueDirectQueryList[0].HydrometricDataValueID, hydrometricDataValueList[0].HydrometricDataValueID);
                 }
             }
         }
         #endregion Tests Generated for GetHydrometricDataValueList() Skip Take Desc Where
 
         #region Tests Generated for GetHydrometricDataValueList() Skip Take Desc 2 Where
-        [TestMethod]
+        [Fact]
         public void GetHydrometricDataValueList_Skip_Take_Desc_2Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -595,14 +595,14 @@ namespace CSSPServices.Tests
                         List<HydrometricDataValue> hydrometricDataValueList = new List<HydrometricDataValue>();
                         hydrometricDataValueList = hydrometricDataValueService.GetHydrometricDataValueList().ToList();
                         CheckHydrometricDataValueFields(hydrometricDataValueList);
-                        Assert.AreEqual(hydrometricDataValueDirectQueryList[0].HydrometricDataValueID, hydrometricDataValueList[0].HydrometricDataValueID);
+                        Assert.Equal(hydrometricDataValueDirectQueryList[0].HydrometricDataValueID, hydrometricDataValueList[0].HydrometricDataValueID);
                 }
             }
         }
         #endregion Tests Generated for GetHydrometricDataValueList() Skip Take Desc 2 Where
 
         #region Tests Generated for GetHydrometricDataValueList() 2 Where
-        [TestMethod]
+        [Fact]
         public void GetHydrometricDataValueList_2Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -621,7 +621,7 @@ namespace CSSPServices.Tests
                         List<HydrometricDataValue> hydrometricDataValueList = new List<HydrometricDataValue>();
                         hydrometricDataValueList = hydrometricDataValueService.GetHydrometricDataValueList().ToList();
                         CheckHydrometricDataValueFields(hydrometricDataValueList);
-                        Assert.AreEqual(hydrometricDataValueDirectQueryList[0].HydrometricDataValueID, hydrometricDataValueList[0].HydrometricDataValueID);
+                        Assert.Equal(hydrometricDataValueDirectQueryList[0].HydrometricDataValueID, hydrometricDataValueList[0].HydrometricDataValueID);
                 }
             }
         }
@@ -630,31 +630,31 @@ namespace CSSPServices.Tests
         #region Functions private
         private void CheckHydrometricDataValueFields(List<HydrometricDataValue> hydrometricDataValueList)
         {
-            Assert.IsNotNull(hydrometricDataValueList[0].HydrometricDataValueID);
-            Assert.IsNotNull(hydrometricDataValueList[0].HydrometricSiteID);
-            Assert.IsNotNull(hydrometricDataValueList[0].DateTime_Local);
-            Assert.IsNotNull(hydrometricDataValueList[0].Keep);
-            Assert.IsNotNull(hydrometricDataValueList[0].StorageDataType);
-            Assert.IsNotNull(hydrometricDataValueList[0].HasBeenRead);
+            Assert.NotNull(hydrometricDataValueList[0].HydrometricDataValueID);
+            Assert.NotNull(hydrometricDataValueList[0].HydrometricSiteID);
+            Assert.NotNull(hydrometricDataValueList[0].DateTime_Local);
+            Assert.NotNull(hydrometricDataValueList[0].Keep);
+            Assert.NotNull(hydrometricDataValueList[0].StorageDataType);
+            Assert.NotNull(hydrometricDataValueList[0].HasBeenRead);
             if (hydrometricDataValueList[0].Discharge_m3_s != null)
             {
-                Assert.IsNotNull(hydrometricDataValueList[0].Discharge_m3_s);
+                Assert.NotNull(hydrometricDataValueList[0].Discharge_m3_s);
             }
             if (hydrometricDataValueList[0].DischargeEntered_m3_s != null)
             {
-                Assert.IsNotNull(hydrometricDataValueList[0].DischargeEntered_m3_s);
+                Assert.NotNull(hydrometricDataValueList[0].DischargeEntered_m3_s);
             }
             if (hydrometricDataValueList[0].Level_m != null)
             {
-                Assert.IsNotNull(hydrometricDataValueList[0].Level_m);
+                Assert.NotNull(hydrometricDataValueList[0].Level_m);
             }
             if (!string.IsNullOrWhiteSpace(hydrometricDataValueList[0].HourlyValues))
             {
-                Assert.IsFalse(string.IsNullOrWhiteSpace(hydrometricDataValueList[0].HourlyValues));
+                Assert.False(string.IsNullOrWhiteSpace(hydrometricDataValueList[0].HourlyValues));
             }
-            Assert.IsNotNull(hydrometricDataValueList[0].LastUpdateDate_UTC);
-            Assert.IsNotNull(hydrometricDataValueList[0].LastUpdateContactTVItemID);
-            Assert.IsNotNull(hydrometricDataValueList[0].HasErrors);
+            Assert.NotNull(hydrometricDataValueList[0].LastUpdateDate_UTC);
+            Assert.NotNull(hydrometricDataValueList[0].LastUpdateContactTVItemID);
+            Assert.NotNull(hydrometricDataValueList[0].HasErrors);
         }
         private HydrometricDataValue GetFilledRandomHydrometricDataValue(string OmitPropName)
         {

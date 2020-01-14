@@ -18,9 +18,9 @@ namespace CSSPEnumsGenerateCodeHelper
         ///     C:\CSSPTools\src\dlls\CSSPEnums\PolSourceObsInfoEnumWithDocGenerated.cs file
         /// 
         /// Requires: 
-        ///     C:\CSSPTools\src\dlls\CSSPEnums\bin\Debug\netcoreapp3.0\CSSPEnums.dll
-        ///     C:\CSSPTools\src\dlls\CSSPModels\bin\Debug\netcoreapp3.0\CSSPModels.dll
-        ///     C:\CSSPTools\src\dlls\CSSPServices\bin\Debug\netcoreapp3.0\CSSPServices.dll
+        ///     C:\CSSPTools\src\dlls\CSSPEnums\bin\Debug\netcoreapp3.1\CSSPEnums.dll
+        ///     C:\CSSPTools\src\dlls\CSSPModels\bin\Debug\netcoreapp3.1\CSSPModels.dll
+        ///     C:\CSSPTools\src\dlls\CSSPServices\bin\Debug\netcoreapp3.1\CSSPServices.dll
         /// </summary>
         public void EnumsAndPolSourceInfoEnumsWithDocGenerate()
         {
@@ -34,10 +34,10 @@ namespace CSSPEnumsGenerateCodeHelper
             StringBuilder sb = new StringBuilder();
             StringBuilder sbPol = new StringBuilder();
 
-            FileInfo fiCSSPEnumsDLL = new FileInfo(@"C:\CSSPTools\src\dlls\CSSPEnums\bin\Debug\netcoreapp3.0\CSSPEnums.dll");
-            FileInfo fiCSSPModelsDLL = new FileInfo(@"C:\CSSPTools\src\dlls\CSSPModels\bin\Debug\netcoreapp3.0\CSSPModels.dll");
-            FileInfo fiCSSPServicesDLL = new FileInfo(@"C:\CSSPTools\src\dlls\CSSPServices\bin\Debug\netcoreapp3.0\CSSPServices.dll");
-            FileInfo fiCSSPWebAPIDLL = new FileInfo(@"C:\CSSPTools\src\web\CSSPWebAPI\bin\Debug\netcoreapp3.0\CSSPWebAPI.dll");
+            FileInfo fiCSSPEnumsDLL = new FileInfo(@"C:\CSSPTools\src\dlls\CSSPEnums\bin\Debug\netcoreapp3.1\CSSPEnums.dll");
+            FileInfo fiCSSPModelsDLL = new FileInfo(@"C:\CSSPTools\src\dlls\CSSPModels\bin\Debug\netcoreapp3.1\CSSPModels.dll");
+            FileInfo fiCSSPServicesDLL = new FileInfo(@"C:\CSSPTools\src\dlls\CSSPServices\bin\Debug\netcoreapp3.1\CSSPServices.dll");
+            FileInfo fiCSSPWebAPIDLL = new FileInfo(@"C:\CSSPTools\src\web\CSSPWebAPI\bin\Debug\netcoreapp3.1\CSSPWebAPI.dll");
             FileInfo fi = new FileInfo(@"C:\CSSPTools\src\dlls\CSSPEnums\EnumsWithDocGenerated.cs");
             FileInfo fiPol = new FileInfo(@"C:\CSSPTools\src\dlls\CSSPEnums\PolSourceObsInfoEnumWithDocGenerated.cs");
 

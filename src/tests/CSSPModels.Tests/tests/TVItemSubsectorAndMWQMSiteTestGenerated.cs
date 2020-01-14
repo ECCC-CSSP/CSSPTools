@@ -6,7 +6,7 @@
  */ 
 using System;
 using System.Text;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using System.Linq;
 using System.Globalization;
 using System.Transactions;
@@ -19,7 +19,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace CSSPModels.Tests
 {
-    [TestClass]
+
     public partial class TVItemSubsectorAndMWQMSiteTest
     {
         #region Variables
@@ -37,7 +37,7 @@ namespace CSSPModels.Tests
         #endregion Constructors
 
         #region Tests Functions public
-        [TestMethod]
+        [Fact]
         public void TVItemSubsectorAndMWQMSite_Properties_Test()
         {
             List<string> propNameList = new List<string>() { "TVItemSubsector", "TVItemMWQMSiteList", "TVItemMWQMSiteDuplicate", "HasErrors",  }.OrderBy(c => c).ToList();
@@ -46,35 +46,35 @@ namespace CSSPModels.Tests
             int index = 0;
             foreach (PropertyInfo propertyInfo in typeof(TVItemSubsectorAndMWQMSite).GetProperties().Where(c => c.Name != "ValidationResults").OrderBy(c => c.Name).ToList())
             {
-                Assert.AreEqual(propertyInfo.Name, propNameList[index]);
+                Assert.Equal(propertyInfo.Name, propNameList[index]);
                 index += 1;
             }
 
-            Assert.AreEqual(propNameList.Count, index);
+            Assert.Equal(propNameList.Count, index);
         }
-        [TestMethod]
+        [Fact]
         public void TVItemSubsectorAndMWQMSite_Has_ValidationResults_Test()
         {
-             Assert.IsTrue(typeof(TVItemSubsectorAndMWQMSite).GetProperties().Where(c => c.Name == "ValidationResults").Any());
+             Assert.True(typeof(TVItemSubsectorAndMWQMSite).GetProperties().Where(c => c.Name == "ValidationResults").Any());
         }
-        [TestMethod]
+        [Fact]
         public void TVItemSubsectorAndMWQMSite_Every_Property_Has_Get_Set_Test()
         {
                TVItem val1 = new TVItem();
                tVItemSubsectorAndMWQMSite.TVItemSubsector = val1;
-               Assert.AreEqual(val1, tVItemSubsectorAndMWQMSite.TVItemSubsector);
+               Assert.Equal(val1, tVItemSubsectorAndMWQMSite.TVItemSubsector);
                List<TVItem> val2 = new List<TVItem>() { new TVItem(), new TVItem() };
                tVItemSubsectorAndMWQMSite.TVItemMWQMSiteList = val2;
-               Assert.AreEqual(val2, tVItemSubsectorAndMWQMSite.TVItemMWQMSiteList);
+               Assert.Equal(val2, tVItemSubsectorAndMWQMSite.TVItemMWQMSiteList);
                TVItem val3 = new TVItem();
                tVItemSubsectorAndMWQMSite.TVItemMWQMSiteDuplicate = val3;
-               Assert.AreEqual(val3, tVItemSubsectorAndMWQMSite.TVItemMWQMSiteDuplicate);
+               Assert.Equal(val3, tVItemSubsectorAndMWQMSite.TVItemMWQMSiteDuplicate);
                bool val4 = true;
                tVItemSubsectorAndMWQMSite.HasErrors = val4;
-               Assert.AreEqual(val4, tVItemSubsectorAndMWQMSite.HasErrors);
+               Assert.Equal(val4, tVItemSubsectorAndMWQMSite.HasErrors);
                IEnumerable<ValidationResult> val15 = new List<ValidationResult>() { new ValidationResult("First CSSPError Message") }.AsEnumerable();
                tVItemSubsectorAndMWQMSite.ValidationResults = val15;
-               Assert.AreEqual(val15, tVItemSubsectorAndMWQMSite.ValidationResults);
+               Assert.Equal(val15, tVItemSubsectorAndMWQMSite.ValidationResults);
         }
         #endregion Tests Functions public
     }

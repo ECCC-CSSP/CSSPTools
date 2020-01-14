@@ -6,7 +6,7 @@
  */ 
 using System;
 using System.Text;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using System.Linq;
 using System.Globalization;
 using System.Transactions;
@@ -19,7 +19,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace CSSPModels.Tests
 {
-    [TestClass]
+
     public partial class AddressTest
     {
         #region Variables
@@ -37,7 +37,7 @@ namespace CSSPModels.Tests
         #endregion Constructors
 
         #region Tests Functions public
-        [TestMethod]
+        [Fact]
         public void Address_Properties_Test()
         {
             List<string> propNameList = new List<string>() { "AddressID", "AddressTVItemID", "AddressType", "CountryTVItemID", "ProvinceTVItemID", "MunicipalityTVItemID", "StreetName", "StreetNumber", "StreetType", "PostalCode", "GoogleAddressText", "LastUpdateDate_UTC", "LastUpdateContactTVItemID",  }.OrderBy(c => c).ToList();
@@ -50,12 +50,12 @@ namespace CSSPModels.Tests
                     && propertyInfo.Name != "ValidationResults"
                     && !propertyInfo.CustomAttributes.Where(c => c.AttributeType.Name.Contains("NotMappedAttribute")).Any())
                 {
-                    Assert.AreEqual(propNameList[index], propertyInfo.Name);
+                    Assert.Equal(propNameList[index], propertyInfo.Name);
                     index += 1;
                 }
             }
 
-            Assert.AreEqual(propNameList.Count, index);
+            Assert.Equal(propNameList.Count, index);
 
             index = 0;
             foreach (PropertyInfo propertyInfo in typeof(Address).GetProperties().Where(c => c.Name != "ValidationResults").OrderBy(c => c.Name).ToList())
@@ -64,16 +64,16 @@ namespace CSSPModels.Tests
                 {
                     if (customAttributeData.AttributeType.Name == "NotMappedAttribute")
                     {
-                        Assert.AreEqual(propertyInfo.Name, propNameNotMappedList[index]);
+                        Assert.Equal(propertyInfo.Name, propNameNotMappedList[index]);
                         index += 1;
                     }
                 }
             }
 
-            Assert.AreEqual(propNameNotMappedList.Count, index);
+            Assert.Equal(propNameNotMappedList.Count, index);
 
         }
-        [TestMethod]
+        [Fact]
         public void Address_Navigation_Test()
         {
             List<string> foreignNameList = new List<string>() {  }.OrderBy(c => c).ToList();
@@ -84,79 +84,79 @@ namespace CSSPModels.Tests
             {
                 if (propertyInfo.GetGetMethod().IsVirtual && !propertyInfo.GetGetMethod().ReturnType.Name.StartsWith("ICollection"))
                 {
-                    Assert.IsTrue(foreignNameList.Contains(propertyInfo.Name));
+                    Assert.True(foreignNameList.Contains(propertyInfo.Name));
                     index += 1;
                 }
             }
 
-            Assert.AreEqual(foreignNameList.Count, index);
+            Assert.Equal(foreignNameList.Count, index);
 
             index = 0;
             foreach (PropertyInfo propertyInfo in typeof(Address).GetProperties().Where(c => c.Name != "ValidationResults").OrderBy(c => c.Name).ToList())
             {
                 if (propertyInfo.GetGetMethod().ReturnType.Name.StartsWith("ICollection"))
                 {
-                    Assert.IsTrue(foreignNameCollectionList.Contains(propertyInfo.Name));
+                    Assert.True(foreignNameCollectionList.Contains(propertyInfo.Name));
                     index += 1;
                 }
             }
 
-            Assert.AreEqual(foreignNameCollectionList.Count, index);
+            Assert.Equal(foreignNameCollectionList.Count, index);
 
         }
-        [TestMethod]
+        [Fact]
         public void Address_Has_ValidationResults_Test()
         {
-             Assert.IsTrue(typeof(Address).GetProperties().Where(c => c.Name == "ValidationResults").Any());
+             Assert.True(typeof(Address).GetProperties().Where(c => c.Name == "ValidationResults").Any());
         }
-        [TestMethod]
+        [Fact]
         public void Address_Every_Property_Has_Get_Set_Test()
         {
                int val1 = 45;
                address.AddressID = val1;
-               Assert.AreEqual(val1, address.AddressID);
+               Assert.Equal(val1, address.AddressID);
                int val2 = 45;
                address.AddressTVItemID = val2;
-               Assert.AreEqual(val2, address.AddressTVItemID);
+               Assert.Equal(val2, address.AddressTVItemID);
                AddressTypeEnum val3 = (AddressTypeEnum)3;
                address.AddressType = val3;
-               Assert.AreEqual(val3, address.AddressType);
+               Assert.Equal(val3, address.AddressType);
                int val4 = 45;
                address.CountryTVItemID = val4;
-               Assert.AreEqual(val4, address.CountryTVItemID);
+               Assert.Equal(val4, address.CountryTVItemID);
                int val5 = 45;
                address.ProvinceTVItemID = val5;
-               Assert.AreEqual(val5, address.ProvinceTVItemID);
+               Assert.Equal(val5, address.ProvinceTVItemID);
                int val6 = 45;
                address.MunicipalityTVItemID = val6;
-               Assert.AreEqual(val6, address.MunicipalityTVItemID);
+               Assert.Equal(val6, address.MunicipalityTVItemID);
                string val7 = "Some text";
                address.StreetName = val7;
-               Assert.AreEqual(val7, address.StreetName);
+               Assert.Equal(val7, address.StreetName);
                string val8 = "Some text";
                address.StreetNumber = val8;
-               Assert.AreEqual(val8, address.StreetNumber);
+               Assert.Equal(val8, address.StreetNumber);
                StreetTypeEnum val9 = (StreetTypeEnum)3;
                address.StreetType = val9;
-               Assert.AreEqual(val9, address.StreetType);
+               Assert.Equal(val9, address.StreetType);
                string val10 = "Some text";
                address.PostalCode = val10;
-               Assert.AreEqual(val10, address.PostalCode);
+               Assert.Equal(val10, address.PostalCode);
                string val11 = "Some text";
                address.GoogleAddressText = val11;
-               Assert.AreEqual(val11, address.GoogleAddressText);
+               Assert.Equal(val11, address.GoogleAddressText);
                DateTime val12 = new DateTime(2010, 3, 4);
                address.LastUpdateDate_UTC = val12;
-               Assert.AreEqual(val12, address.LastUpdateDate_UTC);
+               Assert.Equal(val12, address.LastUpdateDate_UTC);
                int val13 = 45;
                address.LastUpdateContactTVItemID = val13;
-               Assert.AreEqual(val13, address.LastUpdateContactTVItemID);
+               Assert.Equal(val13, address.LastUpdateContactTVItemID);
                bool val14 = true;
                address.HasErrors = val14;
-               Assert.AreEqual(val14, address.HasErrors);
+               Assert.Equal(val14, address.HasErrors);
                IEnumerable<ValidationResult> val45 = new List<ValidationResult>() { new ValidationResult("First CSSPError Message") }.AsEnumerable();
                address.ValidationResults = val45;
-               Assert.AreEqual(val45, address.ValidationResults);
+               Assert.Equal(val45, address.ValidationResults);
         }
         #endregion Tests Functions public
     }

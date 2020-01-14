@@ -6,7 +6,7 @@
  */ 
 using System;
 using System.Text;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using System.Linq;
 using System.Globalization;
 using System.Transactions;
@@ -19,7 +19,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace CSSPModels.Tests
 {
-    [TestClass]
+
     public partial class TVItemTVAuthTest
     {
         #region Variables
@@ -37,7 +37,7 @@ namespace CSSPModels.Tests
         #endregion Constructors
 
         #region Tests Functions public
-        [TestMethod]
+        [Fact]
         public void TVItemTVAuth_Properties_Test()
         {
             List<string> propNameList = new List<string>() { "TVItemUserAuthID", "TVText", "TVItemID1", "TVTypeStr", "TVAuth", "TVAuthText", "HasErrors",  }.OrderBy(c => c).ToList();
@@ -46,44 +46,44 @@ namespace CSSPModels.Tests
             int index = 0;
             foreach (PropertyInfo propertyInfo in typeof(TVItemTVAuth).GetProperties().Where(c => c.Name != "ValidationResults").OrderBy(c => c.Name).ToList())
             {
-                Assert.AreEqual(propertyInfo.Name, propNameList[index]);
+                Assert.Equal(propertyInfo.Name, propNameList[index]);
                 index += 1;
             }
 
-            Assert.AreEqual(propNameList.Count, index);
+            Assert.Equal(propNameList.Count, index);
         }
-        [TestMethod]
+        [Fact]
         public void TVItemTVAuth_Has_ValidationResults_Test()
         {
-             Assert.IsTrue(typeof(TVItemTVAuth).GetProperties().Where(c => c.Name == "ValidationResults").Any());
+             Assert.True(typeof(TVItemTVAuth).GetProperties().Where(c => c.Name == "ValidationResults").Any());
         }
-        [TestMethod]
+        [Fact]
         public void TVItemTVAuth_Every_Property_Has_Get_Set_Test()
         {
                int val1 = 45;
                tVItemTVAuth.TVItemUserAuthID = val1;
-               Assert.AreEqual(val1, tVItemTVAuth.TVItemUserAuthID);
+               Assert.Equal(val1, tVItemTVAuth.TVItemUserAuthID);
                string val2 = "Some text";
                tVItemTVAuth.TVText = val2;
-               Assert.AreEqual(val2, tVItemTVAuth.TVText);
+               Assert.Equal(val2, tVItemTVAuth.TVText);
                int val3 = 45;
                tVItemTVAuth.TVItemID1 = val3;
-               Assert.AreEqual(val3, tVItemTVAuth.TVItemID1);
+               Assert.Equal(val3, tVItemTVAuth.TVItemID1);
                string val4 = "Some text";
                tVItemTVAuth.TVTypeStr = val4;
-               Assert.AreEqual(val4, tVItemTVAuth.TVTypeStr);
+               Assert.Equal(val4, tVItemTVAuth.TVTypeStr);
                TVAuthEnum val5 = (TVAuthEnum)3;
                tVItemTVAuth.TVAuth = val5;
-               Assert.AreEqual(val5, tVItemTVAuth.TVAuth);
+               Assert.Equal(val5, tVItemTVAuth.TVAuth);
                string val6 = "Some text";
                tVItemTVAuth.TVAuthText = val6;
-               Assert.AreEqual(val6, tVItemTVAuth.TVAuthText);
+               Assert.Equal(val6, tVItemTVAuth.TVAuthText);
                bool val7 = true;
                tVItemTVAuth.HasErrors = val7;
-               Assert.AreEqual(val7, tVItemTVAuth.HasErrors);
+               Assert.Equal(val7, tVItemTVAuth.HasErrors);
                IEnumerable<ValidationResult> val24 = new List<ValidationResult>() { new ValidationResult("First CSSPError Message") }.AsEnumerable();
                tVItemTVAuth.ValidationResults = val24;
-               Assert.AreEqual(val24, tVItemTVAuth.ValidationResults);
+               Assert.Equal(val24, tVItemTVAuth.ValidationResults);
         }
         #endregion Tests Functions public
     }

@@ -5,7 +5,7 @@
  */ 
 
 using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using System.Linq;
 using System.Collections.Generic;
 using CSSPModels;
@@ -21,7 +21,7 @@ using CSSPEnums.Resources;
 
 namespace CSSPServices.Tests
 {
-    [TestClass]
+
     public partial class ContactShortcutServiceTest : TestHelper
     {
         #region Variables
@@ -39,7 +39,7 @@ namespace CSSPServices.Tests
         #endregion Constructors
 
         #region Tests Generated CRUD
-        [TestMethod]
+        [Fact]
         public void ContactShortcut_CRUD_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -66,26 +66,26 @@ namespace CSSPServices.Tests
 
                     count = contactShortcutService.GetContactShortcutList().Count();
 
-                    Assert.AreEqual(count, (from c in dbTestDB.ContactShortcuts select c).Count());
+                    Assert.Equal(count, (from c in dbTestDB.ContactShortcuts select c).Count());
 
                     contactShortcutService.Add(contactShortcut);
                     if (contactShortcut.HasErrors)
                     {
-                        Assert.AreEqual("", contactShortcut.ValidationResults.FirstOrDefault().ErrorMessage);
+                        Assert.Equal("", contactShortcut.ValidationResults.FirstOrDefault().ErrorMessage);
                     }
-                    Assert.AreEqual(true, contactShortcutService.GetContactShortcutList().Where(c => c == contactShortcut).Any());
+                    Assert.True(contactShortcutService.GetContactShortcutList().Where(c => c == contactShortcut).Any());
                     contactShortcutService.Update(contactShortcut);
                     if (contactShortcut.HasErrors)
                     {
-                        Assert.AreEqual("", contactShortcut.ValidationResults.FirstOrDefault().ErrorMessage);
+                        Assert.Equal("", contactShortcut.ValidationResults.FirstOrDefault().ErrorMessage);
                     }
-                    Assert.AreEqual(count + 1, contactShortcutService.GetContactShortcutList().Count());
+                    Assert.Equal(count + 1, contactShortcutService.GetContactShortcutList().Count());
                     contactShortcutService.Delete(contactShortcut);
                     if (contactShortcut.HasErrors)
                     {
-                        Assert.AreEqual("", contactShortcut.ValidationResults.FirstOrDefault().ErrorMessage);
+                        Assert.Equal("", contactShortcut.ValidationResults.FirstOrDefault().ErrorMessage);
                     }
-                    Assert.AreEqual(count, contactShortcutService.GetContactShortcutList().Count());
+                    Assert.Equal(count, contactShortcutService.GetContactShortcutList().Count());
 
                 }
             }
@@ -93,7 +93,7 @@ namespace CSSPServices.Tests
         #endregion Tests Generated CRUD
 
         #region Tests Generated Properties
-        [TestMethod]
+        [Fact]
         public void ContactShortcut_Properties_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -131,13 +131,13 @@ namespace CSSPServices.Tests
                     contactShortcut = GetFilledRandomContactShortcut("");
                     contactShortcut.ContactShortcutID = 0;
                     contactShortcutService.Update(contactShortcut);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsRequired, "ContactShortcutID"), contactShortcut.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsRequired, "ContactShortcutID"), contactShortcut.ValidationResults.FirstOrDefault().ErrorMessage);
 
                     contactShortcut = null;
                     contactShortcut = GetFilledRandomContactShortcut("");
                     contactShortcut.ContactShortcutID = 10000000;
                     contactShortcutService.Update(contactShortcut);
-                    Assert.AreEqual(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "ContactShortcut", "ContactShortcutID", contactShortcut.ContactShortcutID.ToString()), contactShortcut.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "ContactShortcut", "ContactShortcutID", contactShortcut.ContactShortcutID.ToString()), contactShortcut.ValidationResults.FirstOrDefault().ErrorMessage);
 
 
                     // -----------------------------------
@@ -150,7 +150,7 @@ namespace CSSPServices.Tests
                     contactShortcut = GetFilledRandomContactShortcut("");
                     contactShortcut.ContactID = 0;
                     contactShortcutService.Add(contactShortcut);
-                    Assert.AreEqual(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "Contact", "ContactID", contactShortcut.ContactID.ToString()), contactShortcut.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "Contact", "ContactID", contactShortcut.ContactID.ToString()), contactShortcut.ValidationResults.FirstOrDefault().ErrorMessage);
 
 
                     // -----------------------------------
@@ -161,18 +161,18 @@ namespace CSSPServices.Tests
 
                     contactShortcut = null;
                     contactShortcut = GetFilledRandomContactShortcut("ShortCutText");
-                    Assert.AreEqual(false, contactShortcutService.Add(contactShortcut));
-                    Assert.AreEqual(1, contactShortcut.ValidationResults.Count());
-                    Assert.IsTrue(contactShortcut.ValidationResults.Where(c => c.ErrorMessage == string.Format(CSSPServicesRes._IsRequired, "ShortCutText")).Any());
-                    Assert.AreEqual(null, contactShortcut.ShortCutText);
-                    Assert.AreEqual(count, contactShortcutService.GetContactShortcutList().Count());
+                    Assert.False(contactShortcutService.Add(contactShortcut));
+                    Assert.Equal(1, contactShortcut.ValidationResults.Count());
+                    Assert.True(contactShortcut.ValidationResults.Where(c => c.ErrorMessage == string.Format(CSSPServicesRes._IsRequired, "ShortCutText")).Any());
+                    Assert.Null(contactShortcut.ShortCutText);
+                    Assert.Equal(count, contactShortcutService.GetContactShortcutList().Count());
 
                     contactShortcut = null;
                     contactShortcut = GetFilledRandomContactShortcut("");
                     contactShortcut.ShortCutText = GetRandomString("", 101);
-                    Assert.AreEqual(false, contactShortcutService.Add(contactShortcut));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._MaxLengthIs_, "ShortCutText", "100"), contactShortcut.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, contactShortcutService.GetContactShortcutList().Count());
+                    Assert.False(contactShortcutService.Add(contactShortcut));
+                    Assert.Equal(string.Format(CSSPServicesRes._MaxLengthIs_, "ShortCutText", "100"), contactShortcut.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, contactShortcutService.GetContactShortcutList().Count());
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -182,18 +182,18 @@ namespace CSSPServices.Tests
 
                     contactShortcut = null;
                     contactShortcut = GetFilledRandomContactShortcut("ShortCutAddress");
-                    Assert.AreEqual(false, contactShortcutService.Add(contactShortcut));
-                    Assert.AreEqual(1, contactShortcut.ValidationResults.Count());
-                    Assert.IsTrue(contactShortcut.ValidationResults.Where(c => c.ErrorMessage == string.Format(CSSPServicesRes._IsRequired, "ShortCutAddress")).Any());
-                    Assert.AreEqual(null, contactShortcut.ShortCutAddress);
-                    Assert.AreEqual(count, contactShortcutService.GetContactShortcutList().Count());
+                    Assert.False(contactShortcutService.Add(contactShortcut));
+                    Assert.Equal(1, contactShortcut.ValidationResults.Count());
+                    Assert.True(contactShortcut.ValidationResults.Where(c => c.ErrorMessage == string.Format(CSSPServicesRes._IsRequired, "ShortCutAddress")).Any());
+                    Assert.Null(contactShortcut.ShortCutAddress);
+                    Assert.Equal(count, contactShortcutService.GetContactShortcutList().Count());
 
                     contactShortcut = null;
                     contactShortcut = GetFilledRandomContactShortcut("");
                     contactShortcut.ShortCutAddress = GetRandomString("", 201);
-                    Assert.AreEqual(false, contactShortcutService.Add(contactShortcut));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._MaxLengthIs_, "ShortCutAddress", "200"), contactShortcut.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, contactShortcutService.GetContactShortcutList().Count());
+                    Assert.False(contactShortcutService.Add(contactShortcut));
+                    Assert.Equal(string.Format(CSSPServicesRes._MaxLengthIs_, "ShortCutAddress", "200"), contactShortcut.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, contactShortcutService.GetContactShortcutList().Count());
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -205,12 +205,12 @@ namespace CSSPServices.Tests
                     contactShortcut = GetFilledRandomContactShortcut("");
                     contactShortcut.LastUpdateDate_UTC = new DateTime();
                     contactShortcutService.Add(contactShortcut);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsRequired, "LastUpdateDate_UTC"), contactShortcut.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsRequired, "LastUpdateDate_UTC"), contactShortcut.ValidationResults.FirstOrDefault().ErrorMessage);
                     contactShortcut = null;
                     contactShortcut = GetFilledRandomContactShortcut("");
                     contactShortcut.LastUpdateDate_UTC = new DateTime(1979, 1, 1);
                     contactShortcutService.Add(contactShortcut);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._YearShouldBeBiggerThan_, "LastUpdateDate_UTC", "1980"), contactShortcut.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._YearShouldBeBiggerThan_, "LastUpdateDate_UTC", "1980"), contactShortcut.ValidationResults.FirstOrDefault().ErrorMessage);
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -222,13 +222,13 @@ namespace CSSPServices.Tests
                     contactShortcut = GetFilledRandomContactShortcut("");
                     contactShortcut.LastUpdateContactTVItemID = 0;
                     contactShortcutService.Add(contactShortcut);
-                    Assert.AreEqual(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "TVItem", "LastUpdateContactTVItemID", contactShortcut.LastUpdateContactTVItemID.ToString()), contactShortcut.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "TVItem", "LastUpdateContactTVItemID", contactShortcut.LastUpdateContactTVItemID.ToString()), contactShortcut.ValidationResults.FirstOrDefault().ErrorMessage);
 
                     contactShortcut = null;
                     contactShortcut = GetFilledRandomContactShortcut("");
                     contactShortcut.LastUpdateContactTVItemID = 1;
                     contactShortcutService.Add(contactShortcut);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsNotOfType_, "LastUpdateContactTVItemID", "Contact"), contactShortcut.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsNotOfType_, "LastUpdateContactTVItemID", "Contact"), contactShortcut.ValidationResults.FirstOrDefault().ErrorMessage);
 
 
                     // -----------------------------------
@@ -252,7 +252,7 @@ namespace CSSPServices.Tests
         #endregion Tests Generated Properties
 
         #region Tests Generated for GetContactShortcutWithContactShortcutID(contactShortcut.ContactShortcutID)
-        [TestMethod]
+        [Fact]
         public void GetContactShortcutWithContactShortcutID__contactShortcut_ContactShortcutID__Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -263,7 +263,7 @@ namespace CSSPServices.Tests
                 {
                     ContactShortcutService contactShortcutService = new ContactShortcutService(new Query() { Lang = culture.TwoLetterISOLanguageName }, dbTestDB, ContactID);
                     ContactShortcut contactShortcut = (from c in dbTestDB.ContactShortcuts select c).FirstOrDefault();
-                    Assert.IsNotNull(contactShortcut);
+                    Assert.NotNull(contactShortcut);
 
                 }
             }
@@ -271,7 +271,7 @@ namespace CSSPServices.Tests
         #endregion Tests Generated for GetContactShortcutWithContactShortcutID(contactShortcut.ContactShortcutID)
 
         #region Tests Generated for GetContactShortcutList()
-        [TestMethod]
+        [Fact]
         public void GetContactShortcutList_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -282,7 +282,7 @@ namespace CSSPServices.Tests
                 {
                     ContactShortcutService contactShortcutService = new ContactShortcutService(new Query() { Lang = culture.TwoLetterISOLanguageName }, dbTestDB, ContactID);
                     ContactShortcut contactShortcut = (from c in dbTestDB.ContactShortcuts select c).FirstOrDefault();
-                    Assert.IsNotNull(contactShortcut);
+                    Assert.NotNull(contactShortcut);
 
                     List<ContactShortcut> contactShortcutDirectQueryList = new List<ContactShortcut>();
                     contactShortcutDirectQueryList = (from c in dbTestDB.ContactShortcuts select c).Take(200).ToList();
@@ -293,7 +293,7 @@ namespace CSSPServices.Tests
         #endregion Tests Generated for GetContactShortcutList()
 
         #region Tests Generated for GetContactShortcutList() Skip Take
-        [TestMethod]
+        [Fact]
         public void GetContactShortcutList_Skip_Take_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -312,14 +312,14 @@ namespace CSSPServices.Tests
                         List<ContactShortcut> contactShortcutList = new List<ContactShortcut>();
                         contactShortcutList = contactShortcutService.GetContactShortcutList().ToList();
                         CheckContactShortcutFields(contactShortcutList);
-                        Assert.AreEqual(contactShortcutDirectQueryList[0].ContactShortcutID, contactShortcutList[0].ContactShortcutID);
+                        Assert.Equal(contactShortcutDirectQueryList[0].ContactShortcutID, contactShortcutList[0].ContactShortcutID);
                 }
             }
         }
         #endregion Tests Generated for GetContactShortcutList() Skip Take
 
         #region Tests Generated for GetContactShortcutList() Skip Take Asc
-        [TestMethod]
+        [Fact]
         public void GetContactShortcutList_Skip_Take_Asc_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -338,14 +338,14 @@ namespace CSSPServices.Tests
                         List<ContactShortcut> contactShortcutList = new List<ContactShortcut>();
                         contactShortcutList = contactShortcutService.GetContactShortcutList().ToList();
                         CheckContactShortcutFields(contactShortcutList);
-                        Assert.AreEqual(contactShortcutDirectQueryList[0].ContactShortcutID, contactShortcutList[0].ContactShortcutID);
+                        Assert.Equal(contactShortcutDirectQueryList[0].ContactShortcutID, contactShortcutList[0].ContactShortcutID);
                 }
             }
         }
         #endregion Tests Generated for GetContactShortcutList() Skip Take Asc
 
         #region Tests Generated for GetContactShortcutList() Skip Take 2 Asc
-        [TestMethod]
+        [Fact]
         public void GetContactShortcutList_Skip_Take_2Asc_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -364,14 +364,14 @@ namespace CSSPServices.Tests
                         List<ContactShortcut> contactShortcutList = new List<ContactShortcut>();
                         contactShortcutList = contactShortcutService.GetContactShortcutList().ToList();
                         CheckContactShortcutFields(contactShortcutList);
-                        Assert.AreEqual(contactShortcutDirectQueryList[0].ContactShortcutID, contactShortcutList[0].ContactShortcutID);
+                        Assert.Equal(contactShortcutDirectQueryList[0].ContactShortcutID, contactShortcutList[0].ContactShortcutID);
                 }
             }
         }
         #endregion Tests Generated for GetContactShortcutList() Skip Take 2 Asc
 
         #region Tests Generated for GetContactShortcutList() Skip Take Asc Where
-        [TestMethod]
+        [Fact]
         public void GetContactShortcutList_Skip_Take_Asc_Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -390,14 +390,14 @@ namespace CSSPServices.Tests
                         List<ContactShortcut> contactShortcutList = new List<ContactShortcut>();
                         contactShortcutList = contactShortcutService.GetContactShortcutList().ToList();
                         CheckContactShortcutFields(contactShortcutList);
-                        Assert.AreEqual(contactShortcutDirectQueryList[0].ContactShortcutID, contactShortcutList[0].ContactShortcutID);
+                        Assert.Equal(contactShortcutDirectQueryList[0].ContactShortcutID, contactShortcutList[0].ContactShortcutID);
                 }
             }
         }
         #endregion Tests Generated for GetContactShortcutList() Skip Take Asc Where
 
         #region Tests Generated for GetContactShortcutList() Skip Take Asc 2 Where
-        [TestMethod]
+        [Fact]
         public void GetContactShortcutList_Skip_Take_Asc_2Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -416,14 +416,14 @@ namespace CSSPServices.Tests
                         List<ContactShortcut> contactShortcutList = new List<ContactShortcut>();
                         contactShortcutList = contactShortcutService.GetContactShortcutList().ToList();
                         CheckContactShortcutFields(contactShortcutList);
-                        Assert.AreEqual(contactShortcutDirectQueryList[0].ContactShortcutID, contactShortcutList[0].ContactShortcutID);
+                        Assert.Equal(contactShortcutDirectQueryList[0].ContactShortcutID, contactShortcutList[0].ContactShortcutID);
                 }
             }
         }
         #endregion Tests Generated for GetContactShortcutList() Skip Take Asc 2 Where
 
         #region Tests Generated for GetContactShortcutList() Skip Take Desc
-        [TestMethod]
+        [Fact]
         public void GetContactShortcutList_Skip_Take_Desc_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -442,14 +442,14 @@ namespace CSSPServices.Tests
                         List<ContactShortcut> contactShortcutList = new List<ContactShortcut>();
                         contactShortcutList = contactShortcutService.GetContactShortcutList().ToList();
                         CheckContactShortcutFields(contactShortcutList);
-                        Assert.AreEqual(contactShortcutDirectQueryList[0].ContactShortcutID, contactShortcutList[0].ContactShortcutID);
+                        Assert.Equal(contactShortcutDirectQueryList[0].ContactShortcutID, contactShortcutList[0].ContactShortcutID);
                 }
             }
         }
         #endregion Tests Generated for GetContactShortcutList() Skip Take Desc
 
         #region Tests Generated for GetContactShortcutList() Skip Take 2 Desc
-        [TestMethod]
+        [Fact]
         public void GetContactShortcutList_Skip_Take_2Desc_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -468,14 +468,14 @@ namespace CSSPServices.Tests
                         List<ContactShortcut> contactShortcutList = new List<ContactShortcut>();
                         contactShortcutList = contactShortcutService.GetContactShortcutList().ToList();
                         CheckContactShortcutFields(contactShortcutList);
-                        Assert.AreEqual(contactShortcutDirectQueryList[0].ContactShortcutID, contactShortcutList[0].ContactShortcutID);
+                        Assert.Equal(contactShortcutDirectQueryList[0].ContactShortcutID, contactShortcutList[0].ContactShortcutID);
                 }
             }
         }
         #endregion Tests Generated for GetContactShortcutList() Skip Take 2 Desc
 
         #region Tests Generated for GetContactShortcutList() Skip Take Desc Where
-        [TestMethod]
+        [Fact]
         public void GetContactShortcutList_Skip_Take_Desc_Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -494,14 +494,14 @@ namespace CSSPServices.Tests
                         List<ContactShortcut> contactShortcutList = new List<ContactShortcut>();
                         contactShortcutList = contactShortcutService.GetContactShortcutList().ToList();
                         CheckContactShortcutFields(contactShortcutList);
-                        Assert.AreEqual(contactShortcutDirectQueryList[0].ContactShortcutID, contactShortcutList[0].ContactShortcutID);
+                        Assert.Equal(contactShortcutDirectQueryList[0].ContactShortcutID, contactShortcutList[0].ContactShortcutID);
                 }
             }
         }
         #endregion Tests Generated for GetContactShortcutList() Skip Take Desc Where
 
         #region Tests Generated for GetContactShortcutList() Skip Take Desc 2 Where
-        [TestMethod]
+        [Fact]
         public void GetContactShortcutList_Skip_Take_Desc_2Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -520,14 +520,14 @@ namespace CSSPServices.Tests
                         List<ContactShortcut> contactShortcutList = new List<ContactShortcut>();
                         contactShortcutList = contactShortcutService.GetContactShortcutList().ToList();
                         CheckContactShortcutFields(contactShortcutList);
-                        Assert.AreEqual(contactShortcutDirectQueryList[0].ContactShortcutID, contactShortcutList[0].ContactShortcutID);
+                        Assert.Equal(contactShortcutDirectQueryList[0].ContactShortcutID, contactShortcutList[0].ContactShortcutID);
                 }
             }
         }
         #endregion Tests Generated for GetContactShortcutList() Skip Take Desc 2 Where
 
         #region Tests Generated for GetContactShortcutList() 2 Where
-        [TestMethod]
+        [Fact]
         public void GetContactShortcutList_2Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -546,7 +546,7 @@ namespace CSSPServices.Tests
                         List<ContactShortcut> contactShortcutList = new List<ContactShortcut>();
                         contactShortcutList = contactShortcutService.GetContactShortcutList().ToList();
                         CheckContactShortcutFields(contactShortcutList);
-                        Assert.AreEqual(contactShortcutDirectQueryList[0].ContactShortcutID, contactShortcutList[0].ContactShortcutID);
+                        Assert.Equal(contactShortcutDirectQueryList[0].ContactShortcutID, contactShortcutList[0].ContactShortcutID);
                 }
             }
         }
@@ -555,13 +555,13 @@ namespace CSSPServices.Tests
         #region Functions private
         private void CheckContactShortcutFields(List<ContactShortcut> contactShortcutList)
         {
-            Assert.IsNotNull(contactShortcutList[0].ContactShortcutID);
-            Assert.IsNotNull(contactShortcutList[0].ContactID);
-            Assert.IsFalse(string.IsNullOrWhiteSpace(contactShortcutList[0].ShortCutText));
-            Assert.IsFalse(string.IsNullOrWhiteSpace(contactShortcutList[0].ShortCutAddress));
-            Assert.IsNotNull(contactShortcutList[0].LastUpdateDate_UTC);
-            Assert.IsNotNull(contactShortcutList[0].LastUpdateContactTVItemID);
-            Assert.IsNotNull(contactShortcutList[0].HasErrors);
+            Assert.NotNull(contactShortcutList[0].ContactShortcutID);
+            Assert.NotNull(contactShortcutList[0].ContactID);
+            Assert.False(string.IsNullOrWhiteSpace(contactShortcutList[0].ShortCutText));
+            Assert.False(string.IsNullOrWhiteSpace(contactShortcutList[0].ShortCutAddress));
+            Assert.NotNull(contactShortcutList[0].LastUpdateDate_UTC);
+            Assert.NotNull(contactShortcutList[0].LastUpdateContactTVItemID);
+            Assert.NotNull(contactShortcutList[0].HasErrors);
         }
         private ContactShortcut GetFilledRandomContactShortcut(string OmitPropName)
         {

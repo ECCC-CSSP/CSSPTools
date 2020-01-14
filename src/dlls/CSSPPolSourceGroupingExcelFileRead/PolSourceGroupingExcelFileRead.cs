@@ -1,4 +1,6 @@
-﻿using System;
+﻿using DocumentFormat.OpenXml.Packaging;
+using DocumentFormat.OpenXml.Spreadsheet;
+using System;
 using System.Collections.Generic;
 using System.Data.OleDb;
 using System.IO;
@@ -228,126 +230,348 @@ namespace CSSPPolSourceGroupingExcelFileRead
 
             FileInfo fi = new FileInfo(FullFileName);
 
-            string connectionString = $@"Provider=Microsoft.ACE.OLEDB.12.0;Data Source={ fi.FullName };Extended Properties=Excel 12.0";
-            OleDbConnection conn = new OleDbConnection(connectionString);
-
             try
             {
-                conn.Open();
+                //Lets open the existing excel file and read through its content . Open the excel using openxml sdk
+                using (SpreadsheetDocument doc = SpreadsheetDocument.Open(fi.FullName, false))
+                {
+                    //create the object for workbook part  
+                    WorkbookPart workbookPart = doc.WorkbookPart;
+                    Sheets thesheetcollection = workbookPart.Workbook.GetFirstChild<Sheets>();
+                    //StringBuilder sb = new StringBuilder();
+
+                    //using for each loop to get the sheet from the sheetcollection  
+                    foreach (Sheet thesheet in thesheetcollection)
+                    {
+                        if (thesheet.Name == "PolSourceGrouping")
+                        {
+                            string CSSPID = "";
+                            string Group = "";
+                            string Choice = "";
+                            string Child = "";
+                            string Hide = "";
+                            string EN = "";
+                            string InitEN = "";
+                            string DescEN = "";
+                            string ReportEN = "";
+                            string TextEN = "";
+                            string FR = "";
+                            string InitFR = "";
+                            string DescFR = "";
+                            string ReportFR = "";
+                            string TextFR = "";
+
+                            Worksheet theWorksheet = ((WorksheetPart)workbookPart.GetPartById(thesheet.Id)).Worksheet;
+
+                            SheetData thesheetdata = (SheetData)theWorksheet.GetFirstChild<SheetData>();
+                            int rowCount = 0;
+                            foreach (Row thecurrentrow in thesheetdata)
+                            {
+                                rowCount++;
+                                if (rowCount == 1)
+                                {
+                                    List<string> FieldNameList = new List<string>();
+                                    FieldNameList = new List<string>() { "CSSPID", "Group", "Child", "Hide", "EN", "InitEN", "DescEN", "ReportEN", "TextEN", "FR", "InitFR", "DescFR", "ReportFR", "TextFR" };
+                                    int cellcount = 0;
+                                    foreach (Cell thecurrentcell in thecurrentrow)
+                                    {
+                                        string currentcellvalue = string.Empty;
+                                        if (thecurrentcell.DataType != null)
+                                        {
+                                            if (thecurrentcell.DataType == CellValues.SharedString)
+                                            {
+                                                SharedStringItem item = workbookPart.SharedStringTablePart.SharedStringTable.Elements<SharedStringItem>().ElementAt(id);
+                                                if (item.Text != null)
+                                                {
+                                                    if ((item.Text.Text + "") != FieldNameList[cellcount])
+                                                    {
+                                                        OnCSSPError(new CSSPErrorEventArgs() { CSSPError = $"{ fi.FullName } PolSourceGrouping { item.Text } is not equal to { FieldNameList[cellcount] }\r\n" });
+                                                        return false;
+                                                    }
+                                                }
+                                                else if (item.InnerText != null)
+                                                {
+                                                    currentcellvalue = item.InnerText;
+                                                    if (currentcellvalue != FieldNameList[cellcount])
+                                                    {
+                                                        OnCSSPError(new CSSPErrorEventArgs() { CSSPError = $"{ fi.FullName } PolSourceGrouping { item.Text } is not equal to { FieldNameList[cellcount] }\r\n" });
+                                                        return false;
+                                                    }
+                                                }
+                                                else if (item.InnerXml != null)
+                                                {
+                                                    currentcellvalue = item.InnerXml;
+                                                    if (currentcellvalue != FieldNameList[cellcount])
+                                                    {
+                                                        OnCSSPError(new CSSPErrorEventArgs() { CSSPError = $"{ fi.FullName } PolSourceGrouping { item.Text } is not equal to { FieldNameList[cellcount] }\r\n" });
+                                                        return false;
+                                                    }
+                                                }
+                                            }
+                                        }
+                                        else
+                                        {
+                                            if ((thecurrentcell.InnerText + " ") != FieldNameList[cellcount])
+                                            {
+                                                OnCSSPError(new CSSPErrorEventArgs() { CSSPError = $"{ fi.FullName } PolSourceGrouping { (thecurrentcell.InnerText + " ") } is not equal to { FieldNameList[cellcount] }\r\n" });
+                                                return false;
+                                            }
+                                        }
+
+                                        cellcount++;
+                                    }
+                                }
+                                else
+                                {
+                                    int cellCount = 0;
+                                    foreach (Cell thecurrentcell in thecurrentrow)
+                                    {
+                                        string currentcellvalue = string.Empty;
+                                        if (thecurrentcell.DataType != null)
+                                        {
+                                            if (thecurrentcell.DataType == CellValues.SharedString)
+                                            {
+                                                int id;
+                                                if (Int32.TryParse(thecurrentcell.InnerText, out id))
+                                                {
+                                                    string tempStr = "";
+                                                    SharedStringItem item = workbookPart.SharedStringTablePart.SharedStringTable.Elements<SharedStringItem>().ElementAt(id);
+                                                    if (item.Text != null)
+                                                    {
+                                                        tempStr = item.Text.Text;
+                                                    }
+                                                    else if (item.InnerText != null)
+                                                    {
+                                                        tempStr = item.InnerText;
+                                                    }
+                                                    else if (item.InnerXml != null)
+                                                    {
+                                                        tempStr = item.InnerXml;
+                                                    }
+
+                                                    switch (cellCount)
+                                                    {
+                                                        case 0:
+                                                            {
+                                                                CSSPID = tempStr.Trim();
+                                                            }
+                                                            break;
+                                                        default:
+                                                            break;
+                                                    }
+                                                }
+                                            }
+                                        }
+                                        else
+                                        {
+                                            switch (cellCount)
+                                            {
+                                                case 0:
+                                                    {
+                                                        CSSPID = thecurrentcell.InnerText.Trim();
+                                                    }
+                                                    break;
+                                                default:
+                                                    break;
+                                            }
+                                        }
+                                        cellCount++;
+                                    }
+
+                                    if (rowCount % 200 == 0)
+                                    {
+                                        OnStatus(new StatusEventArgs() { status = $"Reading spreadsheet ... { rowCount }" });
+                                    }
+
+                                    if (reader.GetValue(1).GetType() == typeof(DBNull) || string.IsNullOrEmpty(reader.GetValue(1).ToString()))
+                                    {
+                                        CSSPID = "";
+                                        Group = "";
+                                        Choice = "";
+                                        Child = "";
+                                        Hide = "";
+                                        EN = "";
+                                        InitEN = "";
+                                        DescEN = "";
+                                        ReportEN = "";
+                                        TextEN = "";
+                                        FR = "";
+                                        InitFR = "";
+                                        DescFR = "";
+                                        ReportFR = "";
+                                        TextFR = "";
+                                        continue;
+                                    }
+                                    else
+                                    {
+                                        CSSPID = reader.GetValue(0).ToString();
+                                        Group = reader.GetValue(1).ToString();
+                                        Child = reader.GetValue(2).ToString();
+                                        Hide = reader.GetValue(3).ToString();
+                                        EN = reader.GetValue(4).ToString();
+                                        InitEN = reader.GetValue(5).ToString();
+                                        DescEN = reader.GetValue(6).ToString();
+                                        ReportEN = reader.GetValue(7).ToString();
+                                        TextEN = reader.GetValue(8).ToString();
+                                        FR = reader.GetValue(9).ToString();
+                                        InitFR = reader.GetValue(10).ToString();
+                                        DescFR = reader.GetValue(11).ToString();
+                                        ReportFR = reader.GetValue(12).ToString();
+                                        TextFR = reader.GetValue(13).ToString();
+                                    }
+                                    groupChoiceChildLevelStraitList.Add(new GroupChoiceChildLevel()
+                                    {
+                                        CSSPID = CSSPID,
+                                        Group = Group,
+                                        Choice = Choice,
+                                        Child = Child,
+                                        Hide = Hide,
+                                        EN = EN,
+                                        InitEN = InitEN,
+                                        DescEN = DescEN,
+                                        ReportEN = ReportEN,
+                                        TextEN = TextEN,
+                                        FR = FR,
+                                        InitFR = InitFR,
+                                        DescFR = DescFR,
+                                        ReportFR = ReportFR,
+                                        TextFR = TextFR,
+                                    });
+
+                                }
+                            }
+                            sb.Append("");
+                            OnCSSPError(new CSSPErrorEventArgs() { CSSPError = $"{ sb.ToString() }" });
+                            return false;
+                        }
+                    }
+                }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                string InnerException = (ex.InnerException == null ? "" : $" InnerException: { ex.InnerException.Message }");
-                OnCSSPError(new CSSPErrorEventArgs() { CSSPError = $"{ ex.Message }{ InnerException }" });
-                return false;
+
             }
-            OleDbDataReader reader;
 
-            OleDbCommand comm = new OleDbCommand("Select * from [PolSourceGrouping$];");
+            //string connectionString = $@"Provider=Microsoft.ACE.OLEDB.12.0;Data Source={ fi.FullName };Extended Properties=Excel 12.0 Xml;HDR=YES";
+            //OleDbConnection conn = new OleDbConnection(connectionString);
+
+            //try
+            //{
+            //    conn.Open();
+            //}
+            //catch (Exception ex)
+            //{
+            //    string InnerException = (ex.InnerException == null ? "" : $" InnerException: { ex.InnerException.Message }");
+            //    OnCSSPError(new CSSPErrorEventArgs() { CSSPError = $"{ ex.Message }{ InnerException }" });
+            //    return false;
+            //}
+            //OleDbDataReader reader;
+
+            //OleDbCommand comm = new OleDbCommand("Select * from [PolSourceGrouping$];");
 
 
-            comm.Connection = conn;
-            reader = comm.ExecuteReader();
+            //comm.Connection = conn;
+            //reader = comm.ExecuteReader();
 
 
-            List<string> FieldNameList = new List<string>();
-            FieldNameList = new List<string>() { "CSSPID", "Group", "Child", "Hide", "EN", "InitEN", "DescEN", "ReportEN", "TextEN", "FR", "InitFR", "DescFR", "ReportFR", "TextFR" };
-            for (int j = 0; j < reader.FieldCount; j++)
-            {
-                if (reader.GetName(j) != FieldNameList[j])
-                {
-                    OnCSSPError(new CSSPErrorEventArgs() { CSSPError = $"{ fi.FullName } PolSourceGrouping { reader.GetName(j) } is not equal to { FieldNameList[j] }\r\n" });
-                    return false;
-                }
-            }
-            reader.Close();
+            ////List<string> FieldNameList = new List<string>();
+            ////FieldNameList = new List<string>() { "CSSPID", "Group", "Child", "Hide", "EN", "InitEN", "DescEN", "ReportEN", "TextEN", "FR", "InitFR", "DescFR", "ReportFR", "TextFR" };
+            ////for (int j = 0; j < reader.FieldCount; j++)
+            ////{
+            ////    if (reader.GetName(j) != FieldNameList[j])
+            ////    {
+            ////        OnCSSPError(new CSSPErrorEventArgs() { CSSPError = $"{ fi.FullName } PolSourceGrouping { reader.GetName(j) } is not equal to { FieldNameList[j] }\r\n" });
+            ////        return false;
+            ////    }
+            ////}
+            //reader.Close();
 
-            reader = comm.ExecuteReader();
+            //reader = comm.ExecuteReader();
 
-            string CSSPID = "";
-            string Group = "";
-            string Choice = "";
-            string Child = "";
-            string Hide = "";
-            string EN = "";
-            string InitEN = "";
-            string DescEN = "";
-            string ReportEN = "";
-            string TextEN = "";
-            string FR = "";
-            string InitFR = "";
-            string DescFR = "";
-            string ReportFR = "";
-            string TextFR = "";
+            //string CSSPID = "";
+            //string Group = "";
+            //string Choice = "";
+            //string Child = "";
+            //string Hide = "";
+            //string EN = "";
+            //string InitEN = "";
+            //string DescEN = "";
+            //string ReportEN = "";
+            //string TextEN = "";
+            //string FR = "";
+            //string InitFR = "";
+            //string DescFR = "";
+            //string ReportFR = "";
+            //string TextFR = "";
 
-            int CountRead = 0;
-            while (reader.Read())
-            {
-                CountRead += 1;
+            //int CountRead = 0;
+            //while (reader.Read())
+            //{
+            //    CountRead += 1;
 
-                if (CountRead % 200 == 0)
-                {
-                    OnStatus(new StatusEventArgs() { status = $"Reading spreadsheet ... { CountRead }" });
-                }
+            //    if (CountRead % 200 == 0)
+            //    {
+            //        OnStatus(new StatusEventArgs() { status = $"Reading spreadsheet ... { CountRead }" });
+            //    }
 
-                if (reader.GetValue(1).GetType() == typeof(DBNull) || string.IsNullOrEmpty(reader.GetValue(1).ToString()))
-                {
-                    CSSPID = "";
-                    Group = "";
-                    Choice = "";
-                    Child = "";
-                    Hide = "";
-                    EN = "";
-                    InitEN = "";
-                    DescEN = "";
-                    ReportEN = "";
-                    TextEN = "";
-                    FR = "";
-                    InitFR = "";
-                    DescFR = "";
-                    ReportFR = "";
-                    TextFR = "";
-                    continue;
-                }
-                else
-                {
-                    CSSPID = reader.GetValue(0).ToString();
-                    Group = reader.GetValue(1).ToString();
-                    Child = reader.GetValue(2).ToString();
-                    Hide = reader.GetValue(3).ToString();
-                    EN = reader.GetValue(4).ToString();
-                    InitEN = reader.GetValue(5).ToString();
-                    DescEN = reader.GetValue(6).ToString();
-                    ReportEN = reader.GetValue(7).ToString();
-                    TextEN = reader.GetValue(8).ToString();
-                    FR = reader.GetValue(9).ToString();
-                    InitFR = reader.GetValue(10).ToString();
-                    DescFR = reader.GetValue(11).ToString();
-                    ReportFR = reader.GetValue(12).ToString();
-                    TextFR = reader.GetValue(13).ToString();
-                }
-                groupChoiceChildLevelStraitList.Add(new GroupChoiceChildLevel()
-                {
-                    CSSPID = CSSPID,
-                    Group = Group,
-                    Choice = Choice,
-                    Child = Child,
-                    Hide = Hide,
-                    EN = EN,
-                    InitEN = InitEN,
-                    DescEN = DescEN,
-                    ReportEN = ReportEN,
-                    TextEN = TextEN,
-                    FR = FR,
-                    InitFR = InitFR,
-                    DescFR = DescFR,
-                    ReportFR = ReportFR,
-                    TextFR = TextFR,
-                });
-            }
-            reader.Close();
+            //    if (reader.GetValue(1).GetType() == typeof(DBNull) || string.IsNullOrEmpty(reader.GetValue(1).ToString()))
+            //    {
+            //        CSSPID = "";
+            //        Group = "";
+            //        Choice = "";
+            //        Child = "";
+            //        Hide = "";
+            //        EN = "";
+            //        InitEN = "";
+            //        DescEN = "";
+            //        ReportEN = "";
+            //        TextEN = "";
+            //        FR = "";
+            //        InitFR = "";
+            //        DescFR = "";
+            //        ReportFR = "";
+            //        TextFR = "";
+            //        continue;
+            //    }
+            //    else
+            //    {
+            //        CSSPID = reader.GetValue(0).ToString();
+            //        Group = reader.GetValue(1).ToString();
+            //        Child = reader.GetValue(2).ToString();
+            //        Hide = reader.GetValue(3).ToString();
+            //        EN = reader.GetValue(4).ToString();
+            //        InitEN = reader.GetValue(5).ToString();
+            //        DescEN = reader.GetValue(6).ToString();
+            //        ReportEN = reader.GetValue(7).ToString();
+            //        TextEN = reader.GetValue(8).ToString();
+            //        FR = reader.GetValue(9).ToString();
+            //        InitFR = reader.GetValue(10).ToString();
+            //        DescFR = reader.GetValue(11).ToString();
+            //        ReportFR = reader.GetValue(12).ToString();
+            //        TextFR = reader.GetValue(13).ToString();
+            //    }
+            //    groupChoiceChildLevelStraitList.Add(new GroupChoiceChildLevel()
+            //    {
+            //        CSSPID = CSSPID,
+            //        Group = Group,
+            //        Choice = Choice,
+            //        Child = Child,
+            //        Hide = Hide,
+            //        EN = EN,
+            //        InitEN = InitEN,
+            //        DescEN = DescEN,
+            //        ReportEN = ReportEN,
+            //        TextEN = TextEN,
+            //        FR = FR,
+            //        InitFR = InitFR,
+            //        DescFR = DescFR,
+            //        ReportFR = ReportFR,
+            //        TextFR = TextFR,
+            //    });
+            //}
+            //reader.Close();
 
-            conn.Close();
+            //conn.Close();
 
             List<GroupChoiceChildLevel> groupChoiceChildLevelOrderedList = (from c in groupChoiceChildLevelStraitList
                                                                             orderby c.Group
@@ -667,7 +891,7 @@ namespace CSSPPolSourceGroupingExcelFileRead
 
             FileInfo fi = new FileInfo(FullFileName);
 
-            string connectionString = $@"Provider=Microsoft.ACE.OLEDB.12.0;Data Source={ fi.FullName };Extended Properties=Excel 12.0";
+            string connectionString = $@"Provider=Microsoft.ACE.OLEDB.12.0;Data Source={ fi.FullName };Extended Properties=Excel 12.0 Xml;HDR=YES";
             OleDbConnection conn = new OleDbConnection(connectionString);
 
             try
@@ -677,7 +901,7 @@ namespace CSSPPolSourceGroupingExcelFileRead
             catch (Exception ex)
             {
                 string InnerException = (ex.InnerException == null ? "" : $" InnerException: { ex.InnerException.Message }");
-                OnCSSPError(new CSSPErrorEventArgs() { CSSPError = $"{ ex.Message }{ InnerException }"  });
+                OnCSSPError(new CSSPErrorEventArgs() { CSSPError = $"{ ex.Message }{ InnerException }" });
                 return false;
             }
             OleDbDataReader reader;
@@ -978,7 +1202,7 @@ namespace CSSPPolSourceGroupingExcelFileRead
             return true;
         }
         #endregion Functions
-        
+
         #region Class
         public class GroupChoiceChildLevel
         {

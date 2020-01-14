@@ -6,7 +6,7 @@
  */ 
 using System;
 using System.Text;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using System.Linq;
 using System.Globalization;
 using System.Transactions;
@@ -19,7 +19,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace CSSPModels.Tests
 {
-    [TestClass]
+
     public partial class SamplingPlanSubsectorTest
     {
         #region Variables
@@ -37,7 +37,7 @@ namespace CSSPModels.Tests
         #endregion Constructors
 
         #region Tests Functions public
-        [TestMethod]
+        [Fact]
         public void SamplingPlanSubsector_Properties_Test()
         {
             List<string> propNameList = new List<string>() { "SamplingPlanSubsectorID", "SamplingPlanID", "SubsectorTVItemID", "LastUpdateDate_UTC", "LastUpdateContactTVItemID",  }.OrderBy(c => c).ToList();
@@ -50,12 +50,12 @@ namespace CSSPModels.Tests
                     && propertyInfo.Name != "ValidationResults"
                     && !propertyInfo.CustomAttributes.Where(c => c.AttributeType.Name.Contains("NotMappedAttribute")).Any())
                 {
-                    Assert.AreEqual(propNameList[index], propertyInfo.Name);
+                    Assert.Equal(propNameList[index], propertyInfo.Name);
                     index += 1;
                 }
             }
 
-            Assert.AreEqual(propNameList.Count, index);
+            Assert.Equal(propNameList.Count, index);
 
             index = 0;
             foreach (PropertyInfo propertyInfo in typeof(SamplingPlanSubsector).GetProperties().Where(c => c.Name != "ValidationResults").OrderBy(c => c.Name).ToList())
@@ -64,16 +64,16 @@ namespace CSSPModels.Tests
                 {
                     if (customAttributeData.AttributeType.Name == "NotMappedAttribute")
                     {
-                        Assert.AreEqual(propertyInfo.Name, propNameNotMappedList[index]);
+                        Assert.Equal(propertyInfo.Name, propNameNotMappedList[index]);
                         index += 1;
                     }
                 }
             }
 
-            Assert.AreEqual(propNameNotMappedList.Count, index);
+            Assert.Equal(propNameNotMappedList.Count, index);
 
         }
-        [TestMethod]
+        [Fact]
         public void SamplingPlanSubsector_Navigation_Test()
         {
             List<string> foreignNameList = new List<string>() {  }.OrderBy(c => c).ToList();
@@ -84,55 +84,55 @@ namespace CSSPModels.Tests
             {
                 if (propertyInfo.GetGetMethod().IsVirtual && !propertyInfo.GetGetMethod().ReturnType.Name.StartsWith("ICollection"))
                 {
-                    Assert.IsTrue(foreignNameList.Contains(propertyInfo.Name));
+                    Assert.True(foreignNameList.Contains(propertyInfo.Name));
                     index += 1;
                 }
             }
 
-            Assert.AreEqual(foreignNameList.Count, index);
+            Assert.Equal(foreignNameList.Count, index);
 
             index = 0;
             foreach (PropertyInfo propertyInfo in typeof(SamplingPlanSubsector).GetProperties().Where(c => c.Name != "ValidationResults").OrderBy(c => c.Name).ToList())
             {
                 if (propertyInfo.GetGetMethod().ReturnType.Name.StartsWith("ICollection"))
                 {
-                    Assert.IsTrue(foreignNameCollectionList.Contains(propertyInfo.Name));
+                    Assert.True(foreignNameCollectionList.Contains(propertyInfo.Name));
                     index += 1;
                 }
             }
 
-            Assert.AreEqual(foreignNameCollectionList.Count, index);
+            Assert.Equal(foreignNameCollectionList.Count, index);
 
         }
-        [TestMethod]
+        [Fact]
         public void SamplingPlanSubsector_Has_ValidationResults_Test()
         {
-             Assert.IsTrue(typeof(SamplingPlanSubsector).GetProperties().Where(c => c.Name == "ValidationResults").Any());
+             Assert.True(typeof(SamplingPlanSubsector).GetProperties().Where(c => c.Name == "ValidationResults").Any());
         }
-        [TestMethod]
+        [Fact]
         public void SamplingPlanSubsector_Every_Property_Has_Get_Set_Test()
         {
                int val1 = 45;
                samplingPlanSubsector.SamplingPlanSubsectorID = val1;
-               Assert.AreEqual(val1, samplingPlanSubsector.SamplingPlanSubsectorID);
+               Assert.Equal(val1, samplingPlanSubsector.SamplingPlanSubsectorID);
                int val2 = 45;
                samplingPlanSubsector.SamplingPlanID = val2;
-               Assert.AreEqual(val2, samplingPlanSubsector.SamplingPlanID);
+               Assert.Equal(val2, samplingPlanSubsector.SamplingPlanID);
                int val3 = 45;
                samplingPlanSubsector.SubsectorTVItemID = val3;
-               Assert.AreEqual(val3, samplingPlanSubsector.SubsectorTVItemID);
+               Assert.Equal(val3, samplingPlanSubsector.SubsectorTVItemID);
                DateTime val4 = new DateTime(2010, 3, 4);
                samplingPlanSubsector.LastUpdateDate_UTC = val4;
-               Assert.AreEqual(val4, samplingPlanSubsector.LastUpdateDate_UTC);
+               Assert.Equal(val4, samplingPlanSubsector.LastUpdateDate_UTC);
                int val5 = 45;
                samplingPlanSubsector.LastUpdateContactTVItemID = val5;
-               Assert.AreEqual(val5, samplingPlanSubsector.LastUpdateContactTVItemID);
+               Assert.Equal(val5, samplingPlanSubsector.LastUpdateContactTVItemID);
                bool val6 = true;
                samplingPlanSubsector.HasErrors = val6;
-               Assert.AreEqual(val6, samplingPlanSubsector.HasErrors);
+               Assert.Equal(val6, samplingPlanSubsector.HasErrors);
                IEnumerable<ValidationResult> val21 = new List<ValidationResult>() { new ValidationResult("First CSSPError Message") }.AsEnumerable();
                samplingPlanSubsector.ValidationResults = val21;
-               Assert.AreEqual(val21, samplingPlanSubsector.ValidationResults);
+               Assert.Equal(val21, samplingPlanSubsector.ValidationResults);
         }
         #endregion Tests Functions public
     }

@@ -6,7 +6,7 @@
  */ 
 using System;
 using System.Text;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using System.Linq;
 using System.Globalization;
 using System.Transactions;
@@ -19,7 +19,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace CSSPModels.Tests
 {
-    [TestClass]
+
     public partial class TVFileTest
     {
         #region Variables
@@ -37,7 +37,7 @@ namespace CSSPModels.Tests
         #endregion Constructors
 
         #region Tests Functions public
-        [TestMethod]
+        [Fact]
         public void TVFile_Properties_Test()
         {
             List<string> propNameList = new List<string>() { "TVFileID", "TVFileTVItemID", "TemplateTVType", "ReportTypeID", "Parameters", "Year", "Language", "FilePurpose", "FileType", "FileSize_kb", "FileInfo", "FileCreatedDate_UTC", "FromWater", "ClientFilePath", "ServerFileName", "ServerFilePath", "LastUpdateDate_UTC", "LastUpdateContactTVItemID",  }.OrderBy(c => c).ToList();
@@ -50,12 +50,12 @@ namespace CSSPModels.Tests
                     && propertyInfo.Name != "ValidationResults"
                     && !propertyInfo.CustomAttributes.Where(c => c.AttributeType.Name.Contains("NotMappedAttribute")).Any())
                 {
-                    Assert.AreEqual(propNameList[index], propertyInfo.Name);
+                    Assert.Equal(propNameList[index], propertyInfo.Name);
                     index += 1;
                 }
             }
 
-            Assert.AreEqual(propNameList.Count, index);
+            Assert.Equal(propNameList.Count, index);
 
             index = 0;
             foreach (PropertyInfo propertyInfo in typeof(TVFile).GetProperties().Where(c => c.Name != "ValidationResults").OrderBy(c => c.Name).ToList())
@@ -64,16 +64,16 @@ namespace CSSPModels.Tests
                 {
                     if (customAttributeData.AttributeType.Name == "NotMappedAttribute")
                     {
-                        Assert.AreEqual(propertyInfo.Name, propNameNotMappedList[index]);
+                        Assert.Equal(propertyInfo.Name, propNameNotMappedList[index]);
                         index += 1;
                     }
                 }
             }
 
-            Assert.AreEqual(propNameNotMappedList.Count, index);
+            Assert.Equal(propNameNotMappedList.Count, index);
 
         }
-        [TestMethod]
+        [Fact]
         public void TVFile_Navigation_Test()
         {
             List<string> foreignNameList = new List<string>() {  }.OrderBy(c => c).ToList();
@@ -84,94 +84,94 @@ namespace CSSPModels.Tests
             {
                 if (propertyInfo.GetGetMethod().IsVirtual && !propertyInfo.GetGetMethod().ReturnType.Name.StartsWith("ICollection"))
                 {
-                    Assert.IsTrue(foreignNameList.Contains(propertyInfo.Name));
+                    Assert.True(foreignNameList.Contains(propertyInfo.Name));
                     index += 1;
                 }
             }
 
-            Assert.AreEqual(foreignNameList.Count, index);
+            Assert.Equal(foreignNameList.Count, index);
 
             index = 0;
             foreach (PropertyInfo propertyInfo in typeof(TVFile).GetProperties().Where(c => c.Name != "ValidationResults").OrderBy(c => c.Name).ToList())
             {
                 if (propertyInfo.GetGetMethod().ReturnType.Name.StartsWith("ICollection"))
                 {
-                    Assert.IsTrue(foreignNameCollectionList.Contains(propertyInfo.Name));
+                    Assert.True(foreignNameCollectionList.Contains(propertyInfo.Name));
                     index += 1;
                 }
             }
 
-            Assert.AreEqual(foreignNameCollectionList.Count, index);
+            Assert.Equal(foreignNameCollectionList.Count, index);
 
         }
-        [TestMethod]
+        [Fact]
         public void TVFile_Has_ValidationResults_Test()
         {
-             Assert.IsTrue(typeof(TVFile).GetProperties().Where(c => c.Name == "ValidationResults").Any());
+             Assert.True(typeof(TVFile).GetProperties().Where(c => c.Name == "ValidationResults").Any());
         }
-        [TestMethod]
+        [Fact]
         public void TVFile_Every_Property_Has_Get_Set_Test()
         {
                int val1 = 45;
                tVFile.TVFileID = val1;
-               Assert.AreEqual(val1, tVFile.TVFileID);
+               Assert.Equal(val1, tVFile.TVFileID);
                int val2 = 45;
                tVFile.TVFileTVItemID = val2;
-               Assert.AreEqual(val2, tVFile.TVFileTVItemID);
+               Assert.Equal(val2, tVFile.TVFileTVItemID);
                TVTypeEnum val3 = (TVTypeEnum)3;
                tVFile.TemplateTVType = val3;
-               Assert.AreEqual(val3, tVFile.TemplateTVType);
+               Assert.Equal(val3, tVFile.TemplateTVType);
                int val4 = 45;
                tVFile.ReportTypeID = val4;
-               Assert.AreEqual(val4, tVFile.ReportTypeID);
+               Assert.Equal(val4, tVFile.ReportTypeID);
                string val5 = "Some text";
                tVFile.Parameters = val5;
-               Assert.AreEqual(val5, tVFile.Parameters);
+               Assert.Equal(val5, tVFile.Parameters);
                int val6 = 45;
                tVFile.Year = val6;
-               Assert.AreEqual(val6, tVFile.Year);
+               Assert.Equal(val6, tVFile.Year);
                LanguageEnum val7 = (LanguageEnum)3;
                tVFile.Language = val7;
-               Assert.AreEqual(val7, tVFile.Language);
+               Assert.Equal(val7, tVFile.Language);
                FilePurposeEnum val8 = (FilePurposeEnum)3;
                tVFile.FilePurpose = val8;
-               Assert.AreEqual(val8, tVFile.FilePurpose);
+               Assert.Equal(val8, tVFile.FilePurpose);
                FileTypeEnum val9 = (FileTypeEnum)3;
                tVFile.FileType = val9;
-               Assert.AreEqual(val9, tVFile.FileType);
+               Assert.Equal(val9, tVFile.FileType);
                int val10 = 45;
                tVFile.FileSize_kb = val10;
-               Assert.AreEqual(val10, tVFile.FileSize_kb);
+               Assert.Equal(val10, tVFile.FileSize_kb);
                string val11 = "Some text";
                tVFile.FileInfo = val11;
-               Assert.AreEqual(val11, tVFile.FileInfo);
+               Assert.Equal(val11, tVFile.FileInfo);
                DateTime val12 = new DateTime(2010, 3, 4);
                tVFile.FileCreatedDate_UTC = val12;
-               Assert.AreEqual(val12, tVFile.FileCreatedDate_UTC);
+               Assert.Equal(val12, tVFile.FileCreatedDate_UTC);
                bool val13 = true;
                tVFile.FromWater = val13;
-               Assert.AreEqual(val13, tVFile.FromWater);
+               Assert.Equal(val13, tVFile.FromWater);
                string val14 = "Some text";
                tVFile.ClientFilePath = val14;
-               Assert.AreEqual(val14, tVFile.ClientFilePath);
+               Assert.Equal(val14, tVFile.ClientFilePath);
                string val15 = "Some text";
                tVFile.ServerFileName = val15;
-               Assert.AreEqual(val15, tVFile.ServerFileName);
+               Assert.Equal(val15, tVFile.ServerFileName);
                string val16 = "Some text";
                tVFile.ServerFilePath = val16;
-               Assert.AreEqual(val16, tVFile.ServerFilePath);
+               Assert.Equal(val16, tVFile.ServerFilePath);
                DateTime val17 = new DateTime(2010, 3, 4);
                tVFile.LastUpdateDate_UTC = val17;
-               Assert.AreEqual(val17, tVFile.LastUpdateDate_UTC);
+               Assert.Equal(val17, tVFile.LastUpdateDate_UTC);
                int val18 = 45;
                tVFile.LastUpdateContactTVItemID = val18;
-               Assert.AreEqual(val18, tVFile.LastUpdateContactTVItemID);
+               Assert.Equal(val18, tVFile.LastUpdateContactTVItemID);
                bool val19 = true;
                tVFile.HasErrors = val19;
-               Assert.AreEqual(val19, tVFile.HasErrors);
+               Assert.Equal(val19, tVFile.HasErrors);
                IEnumerable<ValidationResult> val60 = new List<ValidationResult>() { new ValidationResult("First CSSPError Message") }.AsEnumerable();
                tVFile.ValidationResults = val60;
-               Assert.AreEqual(val60, tVFile.ValidationResults);
+               Assert.Equal(val60, tVFile.ValidationResults);
         }
         #endregion Tests Functions public
     }

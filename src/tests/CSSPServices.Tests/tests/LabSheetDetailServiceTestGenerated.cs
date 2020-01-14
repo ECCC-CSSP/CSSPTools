@@ -5,7 +5,7 @@
  */ 
 
 using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using System.Linq;
 using System.Collections.Generic;
 using CSSPModels;
@@ -21,7 +21,7 @@ using CSSPEnums.Resources;
 
 namespace CSSPServices.Tests
 {
-    [TestClass]
+
     public partial class LabSheetDetailServiceTest : TestHelper
     {
         #region Variables
@@ -39,7 +39,7 @@ namespace CSSPServices.Tests
         #endregion Constructors
 
         #region Tests Generated CRUD
-        [TestMethod]
+        [Fact]
         public void LabSheetDetail_CRUD_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -66,26 +66,26 @@ namespace CSSPServices.Tests
 
                     count = labSheetDetailService.GetLabSheetDetailList().Count();
 
-                    Assert.AreEqual(count, (from c in dbTestDB.LabSheetDetails select c).Count());
+                    Assert.Equal(count, (from c in dbTestDB.LabSheetDetails select c).Count());
 
                     labSheetDetailService.Add(labSheetDetail);
                     if (labSheetDetail.HasErrors)
                     {
-                        Assert.AreEqual("", labSheetDetail.ValidationResults.FirstOrDefault().ErrorMessage);
+                        Assert.Equal("", labSheetDetail.ValidationResults.FirstOrDefault().ErrorMessage);
                     }
-                    Assert.AreEqual(true, labSheetDetailService.GetLabSheetDetailList().Where(c => c == labSheetDetail).Any());
+                    Assert.True(labSheetDetailService.GetLabSheetDetailList().Where(c => c == labSheetDetail).Any());
                     labSheetDetailService.Update(labSheetDetail);
                     if (labSheetDetail.HasErrors)
                     {
-                        Assert.AreEqual("", labSheetDetail.ValidationResults.FirstOrDefault().ErrorMessage);
+                        Assert.Equal("", labSheetDetail.ValidationResults.FirstOrDefault().ErrorMessage);
                     }
-                    Assert.AreEqual(count + 1, labSheetDetailService.GetLabSheetDetailList().Count());
+                    Assert.Equal(count + 1, labSheetDetailService.GetLabSheetDetailList().Count());
                     labSheetDetailService.Delete(labSheetDetail);
                     if (labSheetDetail.HasErrors)
                     {
-                        Assert.AreEqual("", labSheetDetail.ValidationResults.FirstOrDefault().ErrorMessage);
+                        Assert.Equal("", labSheetDetail.ValidationResults.FirstOrDefault().ErrorMessage);
                     }
-                    Assert.AreEqual(count, labSheetDetailService.GetLabSheetDetailList().Count());
+                    Assert.Equal(count, labSheetDetailService.GetLabSheetDetailList().Count());
 
                 }
             }
@@ -93,7 +93,7 @@ namespace CSSPServices.Tests
         #endregion Tests Generated CRUD
 
         #region Tests Generated Properties
-        [TestMethod]
+        [Fact]
         public void LabSheetDetail_Properties_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -131,13 +131,13 @@ namespace CSSPServices.Tests
                     labSheetDetail = GetFilledRandomLabSheetDetail("");
                     labSheetDetail.LabSheetDetailID = 0;
                     labSheetDetailService.Update(labSheetDetail);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsRequired, "LabSheetDetailID"), labSheetDetail.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsRequired, "LabSheetDetailID"), labSheetDetail.ValidationResults.FirstOrDefault().ErrorMessage);
 
                     labSheetDetail = null;
                     labSheetDetail = GetFilledRandomLabSheetDetail("");
                     labSheetDetail.LabSheetDetailID = 10000000;
                     labSheetDetailService.Update(labSheetDetail);
-                    Assert.AreEqual(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "LabSheetDetail", "LabSheetDetailID", labSheetDetail.LabSheetDetailID.ToString()), labSheetDetail.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "LabSheetDetail", "LabSheetDetailID", labSheetDetail.LabSheetDetailID.ToString()), labSheetDetail.ValidationResults.FirstOrDefault().ErrorMessage);
 
 
                     // -----------------------------------
@@ -150,7 +150,7 @@ namespace CSSPServices.Tests
                     labSheetDetail = GetFilledRandomLabSheetDetail("");
                     labSheetDetail.LabSheetID = 0;
                     labSheetDetailService.Add(labSheetDetail);
-                    Assert.AreEqual(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "LabSheet", "LabSheetID", labSheetDetail.LabSheetID.ToString()), labSheetDetail.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "LabSheet", "LabSheetID", labSheetDetail.LabSheetID.ToString()), labSheetDetail.ValidationResults.FirstOrDefault().ErrorMessage);
 
 
                     // -----------------------------------
@@ -163,7 +163,7 @@ namespace CSSPServices.Tests
                     labSheetDetail = GetFilledRandomLabSheetDetail("");
                     labSheetDetail.SamplingPlanID = 0;
                     labSheetDetailService.Add(labSheetDetail);
-                    Assert.AreEqual(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "SamplingPlan", "SamplingPlanID", labSheetDetail.SamplingPlanID.ToString()), labSheetDetail.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "SamplingPlan", "SamplingPlanID", labSheetDetail.SamplingPlanID.ToString()), labSheetDetail.ValidationResults.FirstOrDefault().ErrorMessage);
 
 
                     // -----------------------------------
@@ -176,13 +176,13 @@ namespace CSSPServices.Tests
                     labSheetDetail = GetFilledRandomLabSheetDetail("");
                     labSheetDetail.SubsectorTVItemID = 0;
                     labSheetDetailService.Add(labSheetDetail);
-                    Assert.AreEqual(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "TVItem", "SubsectorTVItemID", labSheetDetail.SubsectorTVItemID.ToString()), labSheetDetail.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "TVItem", "SubsectorTVItemID", labSheetDetail.SubsectorTVItemID.ToString()), labSheetDetail.ValidationResults.FirstOrDefault().ErrorMessage);
 
                     labSheetDetail = null;
                     labSheetDetail = GetFilledRandomLabSheetDetail("");
                     labSheetDetail.SubsectorTVItemID = 1;
                     labSheetDetailService.Add(labSheetDetail);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsNotOfType_, "SubsectorTVItemID", "Subsector"), labSheetDetail.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsNotOfType_, "SubsectorTVItemID", "Subsector"), labSheetDetail.ValidationResults.FirstOrDefault().ErrorMessage);
 
 
                     // -----------------------------------
@@ -194,15 +194,15 @@ namespace CSSPServices.Tests
                     labSheetDetail = null;
                     labSheetDetail = GetFilledRandomLabSheetDetail("");
                     labSheetDetail.Version = 0;
-                    Assert.AreEqual(false, labSheetDetailService.Add(labSheetDetail));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "Version", "1", "5"), labSheetDetail.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, labSheetDetailService.GetLabSheetDetailList().Count());
+                    Assert.False(labSheetDetailService.Add(labSheetDetail));
+                    Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "Version", "1", "5"), labSheetDetail.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, labSheetDetailService.GetLabSheetDetailList().Count());
                     labSheetDetail = null;
                     labSheetDetail = GetFilledRandomLabSheetDetail("");
                     labSheetDetail.Version = 6;
-                    Assert.AreEqual(false, labSheetDetailService.Add(labSheetDetail));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "Version", "1", "5"), labSheetDetail.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, labSheetDetailService.GetLabSheetDetailList().Count());
+                    Assert.False(labSheetDetailService.Add(labSheetDetail));
+                    Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "Version", "1", "5"), labSheetDetail.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, labSheetDetailService.GetLabSheetDetailList().Count());
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -214,12 +214,12 @@ namespace CSSPServices.Tests
                     labSheetDetail = GetFilledRandomLabSheetDetail("");
                     labSheetDetail.RunDate = new DateTime();
                     labSheetDetailService.Add(labSheetDetail);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsRequired, "RunDate"), labSheetDetail.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsRequired, "RunDate"), labSheetDetail.ValidationResults.FirstOrDefault().ErrorMessage);
                     labSheetDetail = null;
                     labSheetDetail = GetFilledRandomLabSheetDetail("");
                     labSheetDetail.RunDate = new DateTime(1979, 1, 1);
                     labSheetDetailService.Add(labSheetDetail);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._YearShouldBeBiggerThan_, "RunDate", "1980"), labSheetDetail.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._YearShouldBeBiggerThan_, "RunDate", "1980"), labSheetDetail.ValidationResults.FirstOrDefault().ErrorMessage);
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -229,20 +229,20 @@ namespace CSSPServices.Tests
 
                     labSheetDetail = null;
                     labSheetDetail = GetFilledRandomLabSheetDetail("Tides");
-                    Assert.AreEqual(false, labSheetDetailService.Add(labSheetDetail));
-                    Assert.AreEqual(1, labSheetDetail.ValidationResults.Count());
-                    Assert.IsTrue(labSheetDetail.ValidationResults.Where(c => c.ErrorMessage == string.Format(CSSPServicesRes._IsRequired, "Tides")).Any());
-                    Assert.AreEqual(null, labSheetDetail.Tides);
-                    Assert.AreEqual(count, labSheetDetailService.GetLabSheetDetailList().Count());
+                    Assert.False(labSheetDetailService.Add(labSheetDetail));
+                    Assert.Equal(1, labSheetDetail.ValidationResults.Count());
+                    Assert.True(labSheetDetail.ValidationResults.Where(c => c.ErrorMessage == string.Format(CSSPServicesRes._IsRequired, "Tides")).Any());
+                    Assert.Null(labSheetDetail.Tides);
+                    Assert.Equal(count, labSheetDetailService.GetLabSheetDetailList().Count());
 
                     labSheetDetail = null;
                     labSheetDetail = GetFilledRandomLabSheetDetail("");
                     labSheetDetail = null;
                     labSheetDetail = GetFilledRandomLabSheetDetail("");
                     labSheetDetail.Tides = GetRandomString("", 8);
-                    Assert.AreEqual(false, labSheetDetailService.Add(labSheetDetail));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._LengthShouldBeBetween_And_, "Tides", "1", "7"), labSheetDetail.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, labSheetDetailService.GetLabSheetDetailList().Count());
+                    Assert.False(labSheetDetailService.Add(labSheetDetail));
+                    Assert.Equal(string.Format(CSSPServicesRes._LengthShouldBeBetween_And_, "Tides", "1", "7"), labSheetDetail.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, labSheetDetailService.GetLabSheetDetailList().Count());
 
                     // -----------------------------------
                     // Is Nullable
@@ -253,9 +253,9 @@ namespace CSSPServices.Tests
                     labSheetDetail = null;
                     labSheetDetail = GetFilledRandomLabSheetDetail("");
                     labSheetDetail.SampleCrewInitials = GetRandomString("", 21);
-                    Assert.AreEqual(false, labSheetDetailService.Add(labSheetDetail));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._MaxLengthIs_, "SampleCrewInitials", "20"), labSheetDetail.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, labSheetDetailService.GetLabSheetDetailList().Count());
+                    Assert.False(labSheetDetailService.Add(labSheetDetail));
+                    Assert.Equal(string.Format(CSSPServicesRes._MaxLengthIs_, "SampleCrewInitials", "20"), labSheetDetail.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, labSheetDetailService.GetLabSheetDetailList().Count());
 
                     // -----------------------------------
                     // Is Nullable
@@ -266,15 +266,15 @@ namespace CSSPServices.Tests
                     labSheetDetail = null;
                     labSheetDetail = GetFilledRandomLabSheetDetail("");
                     labSheetDetail.WaterBathCount = 0;
-                    Assert.AreEqual(false, labSheetDetailService.Add(labSheetDetail));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "WaterBathCount", "1", "3"), labSheetDetail.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, labSheetDetailService.GetLabSheetDetailList().Count());
+                    Assert.False(labSheetDetailService.Add(labSheetDetail));
+                    Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "WaterBathCount", "1", "3"), labSheetDetail.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, labSheetDetailService.GetLabSheetDetailList().Count());
                     labSheetDetail = null;
                     labSheetDetail = GetFilledRandomLabSheetDetail("");
                     labSheetDetail.WaterBathCount = 4;
-                    Assert.AreEqual(false, labSheetDetailService.Add(labSheetDetail));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "WaterBathCount", "1", "3"), labSheetDetail.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, labSheetDetailService.GetLabSheetDetailList().Count());
+                    Assert.False(labSheetDetailService.Add(labSheetDetail));
+                    Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "WaterBathCount", "1", "3"), labSheetDetail.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, labSheetDetailService.GetLabSheetDetailList().Count());
 
                     // -----------------------------------
                     // Is Nullable
@@ -286,7 +286,7 @@ namespace CSSPServices.Tests
                     labSheetDetail = GetFilledRandomLabSheetDetail("");
                     labSheetDetail.IncubationBath1StartTime = new DateTime(1979, 1, 1);
                     labSheetDetailService.Add(labSheetDetail);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._YearShouldBeBiggerThan_, "IncubationBath1StartTime", "1980"), labSheetDetail.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._YearShouldBeBiggerThan_, "IncubationBath1StartTime", "1980"), labSheetDetail.ValidationResults.FirstOrDefault().ErrorMessage);
 
                     // -----------------------------------
                     // Is Nullable
@@ -298,7 +298,7 @@ namespace CSSPServices.Tests
                     labSheetDetail = GetFilledRandomLabSheetDetail("");
                     labSheetDetail.IncubationBath2StartTime = new DateTime(1979, 1, 1);
                     labSheetDetailService.Add(labSheetDetail);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._YearShouldBeBiggerThan_, "IncubationBath2StartTime", "1980"), labSheetDetail.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._YearShouldBeBiggerThan_, "IncubationBath2StartTime", "1980"), labSheetDetail.ValidationResults.FirstOrDefault().ErrorMessage);
 
                     // -----------------------------------
                     // Is Nullable
@@ -310,7 +310,7 @@ namespace CSSPServices.Tests
                     labSheetDetail = GetFilledRandomLabSheetDetail("");
                     labSheetDetail.IncubationBath3StartTime = new DateTime(1979, 1, 1);
                     labSheetDetailService.Add(labSheetDetail);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._YearShouldBeBiggerThan_, "IncubationBath3StartTime", "1980"), labSheetDetail.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._YearShouldBeBiggerThan_, "IncubationBath3StartTime", "1980"), labSheetDetail.ValidationResults.FirstOrDefault().ErrorMessage);
 
                     // -----------------------------------
                     // Is Nullable
@@ -322,7 +322,7 @@ namespace CSSPServices.Tests
                     labSheetDetail = GetFilledRandomLabSheetDetail("");
                     labSheetDetail.IncubationBath1EndTime = new DateTime(1979, 1, 1);
                     labSheetDetailService.Add(labSheetDetail);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._YearShouldBeBiggerThan_, "IncubationBath1EndTime", "1980"), labSheetDetail.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._YearShouldBeBiggerThan_, "IncubationBath1EndTime", "1980"), labSheetDetail.ValidationResults.FirstOrDefault().ErrorMessage);
 
                     // -----------------------------------
                     // Is Nullable
@@ -334,7 +334,7 @@ namespace CSSPServices.Tests
                     labSheetDetail = GetFilledRandomLabSheetDetail("");
                     labSheetDetail.IncubationBath2EndTime = new DateTime(1979, 1, 1);
                     labSheetDetailService.Add(labSheetDetail);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._YearShouldBeBiggerThan_, "IncubationBath2EndTime", "1980"), labSheetDetail.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._YearShouldBeBiggerThan_, "IncubationBath2EndTime", "1980"), labSheetDetail.ValidationResults.FirstOrDefault().ErrorMessage);
 
                     // -----------------------------------
                     // Is Nullable
@@ -346,7 +346,7 @@ namespace CSSPServices.Tests
                     labSheetDetail = GetFilledRandomLabSheetDetail("");
                     labSheetDetail.IncubationBath3EndTime = new DateTime(1979, 1, 1);
                     labSheetDetailService.Add(labSheetDetail);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._YearShouldBeBiggerThan_, "IncubationBath3EndTime", "1980"), labSheetDetail.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._YearShouldBeBiggerThan_, "IncubationBath3EndTime", "1980"), labSheetDetail.ValidationResults.FirstOrDefault().ErrorMessage);
 
                     // -----------------------------------
                     // Is Nullable
@@ -357,15 +357,15 @@ namespace CSSPServices.Tests
                     labSheetDetail = null;
                     labSheetDetail = GetFilledRandomLabSheetDetail("");
                     labSheetDetail.IncubationBath1TimeCalculated_minutes = -1;
-                    Assert.AreEqual(false, labSheetDetailService.Add(labSheetDetail));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "IncubationBath1TimeCalculated_minutes", "0", "10000"), labSheetDetail.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, labSheetDetailService.GetLabSheetDetailList().Count());
+                    Assert.False(labSheetDetailService.Add(labSheetDetail));
+                    Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "IncubationBath1TimeCalculated_minutes", "0", "10000"), labSheetDetail.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, labSheetDetailService.GetLabSheetDetailList().Count());
                     labSheetDetail = null;
                     labSheetDetail = GetFilledRandomLabSheetDetail("");
                     labSheetDetail.IncubationBath1TimeCalculated_minutes = 10001;
-                    Assert.AreEqual(false, labSheetDetailService.Add(labSheetDetail));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "IncubationBath1TimeCalculated_minutes", "0", "10000"), labSheetDetail.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, labSheetDetailService.GetLabSheetDetailList().Count());
+                    Assert.False(labSheetDetailService.Add(labSheetDetail));
+                    Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "IncubationBath1TimeCalculated_minutes", "0", "10000"), labSheetDetail.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, labSheetDetailService.GetLabSheetDetailList().Count());
 
                     // -----------------------------------
                     // Is Nullable
@@ -376,15 +376,15 @@ namespace CSSPServices.Tests
                     labSheetDetail = null;
                     labSheetDetail = GetFilledRandomLabSheetDetail("");
                     labSheetDetail.IncubationBath2TimeCalculated_minutes = -1;
-                    Assert.AreEqual(false, labSheetDetailService.Add(labSheetDetail));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "IncubationBath2TimeCalculated_minutes", "0", "10000"), labSheetDetail.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, labSheetDetailService.GetLabSheetDetailList().Count());
+                    Assert.False(labSheetDetailService.Add(labSheetDetail));
+                    Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "IncubationBath2TimeCalculated_minutes", "0", "10000"), labSheetDetail.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, labSheetDetailService.GetLabSheetDetailList().Count());
                     labSheetDetail = null;
                     labSheetDetail = GetFilledRandomLabSheetDetail("");
                     labSheetDetail.IncubationBath2TimeCalculated_minutes = 10001;
-                    Assert.AreEqual(false, labSheetDetailService.Add(labSheetDetail));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "IncubationBath2TimeCalculated_minutes", "0", "10000"), labSheetDetail.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, labSheetDetailService.GetLabSheetDetailList().Count());
+                    Assert.False(labSheetDetailService.Add(labSheetDetail));
+                    Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "IncubationBath2TimeCalculated_minutes", "0", "10000"), labSheetDetail.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, labSheetDetailService.GetLabSheetDetailList().Count());
 
                     // -----------------------------------
                     // Is Nullable
@@ -395,15 +395,15 @@ namespace CSSPServices.Tests
                     labSheetDetail = null;
                     labSheetDetail = GetFilledRandomLabSheetDetail("");
                     labSheetDetail.IncubationBath3TimeCalculated_minutes = -1;
-                    Assert.AreEqual(false, labSheetDetailService.Add(labSheetDetail));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "IncubationBath3TimeCalculated_minutes", "0", "10000"), labSheetDetail.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, labSheetDetailService.GetLabSheetDetailList().Count());
+                    Assert.False(labSheetDetailService.Add(labSheetDetail));
+                    Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "IncubationBath3TimeCalculated_minutes", "0", "10000"), labSheetDetail.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, labSheetDetailService.GetLabSheetDetailList().Count());
                     labSheetDetail = null;
                     labSheetDetail = GetFilledRandomLabSheetDetail("");
                     labSheetDetail.IncubationBath3TimeCalculated_minutes = 10001;
-                    Assert.AreEqual(false, labSheetDetailService.Add(labSheetDetail));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "IncubationBath3TimeCalculated_minutes", "0", "10000"), labSheetDetail.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, labSheetDetailService.GetLabSheetDetailList().Count());
+                    Assert.False(labSheetDetailService.Add(labSheetDetail));
+                    Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "IncubationBath3TimeCalculated_minutes", "0", "10000"), labSheetDetail.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, labSheetDetailService.GetLabSheetDetailList().Count());
 
                     // -----------------------------------
                     // Is Nullable
@@ -414,9 +414,9 @@ namespace CSSPServices.Tests
                     labSheetDetail = null;
                     labSheetDetail = GetFilledRandomLabSheetDetail("");
                     labSheetDetail.WaterBath1 = GetRandomString("", 11);
-                    Assert.AreEqual(false, labSheetDetailService.Add(labSheetDetail));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._MaxLengthIs_, "WaterBath1", "10"), labSheetDetail.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, labSheetDetailService.GetLabSheetDetailList().Count());
+                    Assert.False(labSheetDetailService.Add(labSheetDetail));
+                    Assert.Equal(string.Format(CSSPServicesRes._MaxLengthIs_, "WaterBath1", "10"), labSheetDetail.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, labSheetDetailService.GetLabSheetDetailList().Count());
 
                     // -----------------------------------
                     // Is Nullable
@@ -427,9 +427,9 @@ namespace CSSPServices.Tests
                     labSheetDetail = null;
                     labSheetDetail = GetFilledRandomLabSheetDetail("");
                     labSheetDetail.WaterBath2 = GetRandomString("", 11);
-                    Assert.AreEqual(false, labSheetDetailService.Add(labSheetDetail));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._MaxLengthIs_, "WaterBath2", "10"), labSheetDetail.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, labSheetDetailService.GetLabSheetDetailList().Count());
+                    Assert.False(labSheetDetailService.Add(labSheetDetail));
+                    Assert.Equal(string.Format(CSSPServicesRes._MaxLengthIs_, "WaterBath2", "10"), labSheetDetail.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, labSheetDetailService.GetLabSheetDetailList().Count());
 
                     // -----------------------------------
                     // Is Nullable
@@ -440,9 +440,9 @@ namespace CSSPServices.Tests
                     labSheetDetail = null;
                     labSheetDetail = GetFilledRandomLabSheetDetail("");
                     labSheetDetail.WaterBath3 = GetRandomString("", 11);
-                    Assert.AreEqual(false, labSheetDetailService.Add(labSheetDetail));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._MaxLengthIs_, "WaterBath3", "10"), labSheetDetail.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, labSheetDetailService.GetLabSheetDetailList().Count());
+                    Assert.False(labSheetDetailService.Add(labSheetDetail));
+                    Assert.Equal(string.Format(CSSPServicesRes._MaxLengthIs_, "WaterBath3", "10"), labSheetDetail.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, labSheetDetailService.GetLabSheetDetailList().Count());
 
                     // -----------------------------------
                     // Is Nullable
@@ -457,15 +457,15 @@ namespace CSSPServices.Tests
                     labSheetDetail = null;
                     labSheetDetail = GetFilledRandomLabSheetDetail("");
                     labSheetDetail.TCField1 = -11.0D;
-                    Assert.AreEqual(false, labSheetDetailService.Add(labSheetDetail));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "TCField1", "-10", "40"), labSheetDetail.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, labSheetDetailService.GetLabSheetDetailList().Count());
+                    Assert.False(labSheetDetailService.Add(labSheetDetail));
+                    Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "TCField1", "-10", "40"), labSheetDetail.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, labSheetDetailService.GetLabSheetDetailList().Count());
                     labSheetDetail = null;
                     labSheetDetail = GetFilledRandomLabSheetDetail("");
                     labSheetDetail.TCField1 = 41.0D;
-                    Assert.AreEqual(false, labSheetDetailService.Add(labSheetDetail));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "TCField1", "-10", "40"), labSheetDetail.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, labSheetDetailService.GetLabSheetDetailList().Count());
+                    Assert.False(labSheetDetailService.Add(labSheetDetail));
+                    Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "TCField1", "-10", "40"), labSheetDetail.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, labSheetDetailService.GetLabSheetDetailList().Count());
 
                     // -----------------------------------
                     // Is Nullable
@@ -480,15 +480,15 @@ namespace CSSPServices.Tests
                     labSheetDetail = null;
                     labSheetDetail = GetFilledRandomLabSheetDetail("");
                     labSheetDetail.TCLab1 = -11.0D;
-                    Assert.AreEqual(false, labSheetDetailService.Add(labSheetDetail));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "TCLab1", "-10", "40"), labSheetDetail.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, labSheetDetailService.GetLabSheetDetailList().Count());
+                    Assert.False(labSheetDetailService.Add(labSheetDetail));
+                    Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "TCLab1", "-10", "40"), labSheetDetail.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, labSheetDetailService.GetLabSheetDetailList().Count());
                     labSheetDetail = null;
                     labSheetDetail = GetFilledRandomLabSheetDetail("");
                     labSheetDetail.TCLab1 = 41.0D;
-                    Assert.AreEqual(false, labSheetDetailService.Add(labSheetDetail));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "TCLab1", "-10", "40"), labSheetDetail.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, labSheetDetailService.GetLabSheetDetailList().Count());
+                    Assert.False(labSheetDetailService.Add(labSheetDetail));
+                    Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "TCLab1", "-10", "40"), labSheetDetail.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, labSheetDetailService.GetLabSheetDetailList().Count());
 
                     // -----------------------------------
                     // Is Nullable
@@ -503,15 +503,15 @@ namespace CSSPServices.Tests
                     labSheetDetail = null;
                     labSheetDetail = GetFilledRandomLabSheetDetail("");
                     labSheetDetail.TCField2 = -11.0D;
-                    Assert.AreEqual(false, labSheetDetailService.Add(labSheetDetail));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "TCField2", "-10", "40"), labSheetDetail.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, labSheetDetailService.GetLabSheetDetailList().Count());
+                    Assert.False(labSheetDetailService.Add(labSheetDetail));
+                    Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "TCField2", "-10", "40"), labSheetDetail.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, labSheetDetailService.GetLabSheetDetailList().Count());
                     labSheetDetail = null;
                     labSheetDetail = GetFilledRandomLabSheetDetail("");
                     labSheetDetail.TCField2 = 41.0D;
-                    Assert.AreEqual(false, labSheetDetailService.Add(labSheetDetail));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "TCField2", "-10", "40"), labSheetDetail.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, labSheetDetailService.GetLabSheetDetailList().Count());
+                    Assert.False(labSheetDetailService.Add(labSheetDetail));
+                    Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "TCField2", "-10", "40"), labSheetDetail.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, labSheetDetailService.GetLabSheetDetailList().Count());
 
                     // -----------------------------------
                     // Is Nullable
@@ -526,15 +526,15 @@ namespace CSSPServices.Tests
                     labSheetDetail = null;
                     labSheetDetail = GetFilledRandomLabSheetDetail("");
                     labSheetDetail.TCLab2 = -11.0D;
-                    Assert.AreEqual(false, labSheetDetailService.Add(labSheetDetail));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "TCLab2", "-10", "40"), labSheetDetail.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, labSheetDetailService.GetLabSheetDetailList().Count());
+                    Assert.False(labSheetDetailService.Add(labSheetDetail));
+                    Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "TCLab2", "-10", "40"), labSheetDetail.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, labSheetDetailService.GetLabSheetDetailList().Count());
                     labSheetDetail = null;
                     labSheetDetail = GetFilledRandomLabSheetDetail("");
                     labSheetDetail.TCLab2 = 41.0D;
-                    Assert.AreEqual(false, labSheetDetailService.Add(labSheetDetail));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "TCLab2", "-10", "40"), labSheetDetail.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, labSheetDetailService.GetLabSheetDetailList().Count());
+                    Assert.False(labSheetDetailService.Add(labSheetDetail));
+                    Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "TCLab2", "-10", "40"), labSheetDetail.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, labSheetDetailService.GetLabSheetDetailList().Count());
 
                     // -----------------------------------
                     // Is Nullable
@@ -549,15 +549,15 @@ namespace CSSPServices.Tests
                     labSheetDetail = null;
                     labSheetDetail = GetFilledRandomLabSheetDetail("");
                     labSheetDetail.TCFirst = -11.0D;
-                    Assert.AreEqual(false, labSheetDetailService.Add(labSheetDetail));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "TCFirst", "-10", "40"), labSheetDetail.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, labSheetDetailService.GetLabSheetDetailList().Count());
+                    Assert.False(labSheetDetailService.Add(labSheetDetail));
+                    Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "TCFirst", "-10", "40"), labSheetDetail.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, labSheetDetailService.GetLabSheetDetailList().Count());
                     labSheetDetail = null;
                     labSheetDetail = GetFilledRandomLabSheetDetail("");
                     labSheetDetail.TCFirst = 41.0D;
-                    Assert.AreEqual(false, labSheetDetailService.Add(labSheetDetail));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "TCFirst", "-10", "40"), labSheetDetail.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, labSheetDetailService.GetLabSheetDetailList().Count());
+                    Assert.False(labSheetDetailService.Add(labSheetDetail));
+                    Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "TCFirst", "-10", "40"), labSheetDetail.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, labSheetDetailService.GetLabSheetDetailList().Count());
 
                     // -----------------------------------
                     // Is Nullable
@@ -572,15 +572,15 @@ namespace CSSPServices.Tests
                     labSheetDetail = null;
                     labSheetDetail = GetFilledRandomLabSheetDetail("");
                     labSheetDetail.TCAverage = -11.0D;
-                    Assert.AreEqual(false, labSheetDetailService.Add(labSheetDetail));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "TCAverage", "-10", "40"), labSheetDetail.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, labSheetDetailService.GetLabSheetDetailList().Count());
+                    Assert.False(labSheetDetailService.Add(labSheetDetail));
+                    Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "TCAverage", "-10", "40"), labSheetDetail.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, labSheetDetailService.GetLabSheetDetailList().Count());
                     labSheetDetail = null;
                     labSheetDetail = GetFilledRandomLabSheetDetail("");
                     labSheetDetail.TCAverage = 41.0D;
-                    Assert.AreEqual(false, labSheetDetailService.Add(labSheetDetail));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "TCAverage", "-10", "40"), labSheetDetail.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, labSheetDetailService.GetLabSheetDetailList().Count());
+                    Assert.False(labSheetDetailService.Add(labSheetDetail));
+                    Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "TCAverage", "-10", "40"), labSheetDetail.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, labSheetDetailService.GetLabSheetDetailList().Count());
 
                     // -----------------------------------
                     // Is Nullable
@@ -591,9 +591,9 @@ namespace CSSPServices.Tests
                     labSheetDetail = null;
                     labSheetDetail = GetFilledRandomLabSheetDetail("");
                     labSheetDetail.ControlLot = GetRandomString("", 101);
-                    Assert.AreEqual(false, labSheetDetailService.Add(labSheetDetail));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._MaxLengthIs_, "ControlLot", "100"), labSheetDetail.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, labSheetDetailService.GetLabSheetDetailList().Count());
+                    Assert.False(labSheetDetailService.Add(labSheetDetail));
+                    Assert.Equal(string.Format(CSSPServicesRes._MaxLengthIs_, "ControlLot", "100"), labSheetDetail.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, labSheetDetailService.GetLabSheetDetailList().Count());
 
                     // -----------------------------------
                     // Is Nullable
@@ -606,9 +606,9 @@ namespace CSSPServices.Tests
                     labSheetDetail = null;
                     labSheetDetail = GetFilledRandomLabSheetDetail("");
                     labSheetDetail.Positive35 = GetRandomString("", 2);
-                    Assert.AreEqual(false, labSheetDetailService.Add(labSheetDetail));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._LengthShouldBeBetween_And_, "Positive35", "1", "1"), labSheetDetail.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, labSheetDetailService.GetLabSheetDetailList().Count());
+                    Assert.False(labSheetDetailService.Add(labSheetDetail));
+                    Assert.Equal(string.Format(CSSPServicesRes._LengthShouldBeBetween_And_, "Positive35", "1", "1"), labSheetDetail.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, labSheetDetailService.GetLabSheetDetailList().Count());
 
                     // -----------------------------------
                     // Is Nullable
@@ -621,9 +621,9 @@ namespace CSSPServices.Tests
                     labSheetDetail = null;
                     labSheetDetail = GetFilledRandomLabSheetDetail("");
                     labSheetDetail.NonTarget35 = GetRandomString("", 2);
-                    Assert.AreEqual(false, labSheetDetailService.Add(labSheetDetail));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._LengthShouldBeBetween_And_, "NonTarget35", "1", "1"), labSheetDetail.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, labSheetDetailService.GetLabSheetDetailList().Count());
+                    Assert.False(labSheetDetailService.Add(labSheetDetail));
+                    Assert.Equal(string.Format(CSSPServicesRes._LengthShouldBeBetween_And_, "NonTarget35", "1", "1"), labSheetDetail.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, labSheetDetailService.GetLabSheetDetailList().Count());
 
                     // -----------------------------------
                     // Is Nullable
@@ -636,9 +636,9 @@ namespace CSSPServices.Tests
                     labSheetDetail = null;
                     labSheetDetail = GetFilledRandomLabSheetDetail("");
                     labSheetDetail.Negative35 = GetRandomString("", 2);
-                    Assert.AreEqual(false, labSheetDetailService.Add(labSheetDetail));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._LengthShouldBeBetween_And_, "Negative35", "1", "1"), labSheetDetail.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, labSheetDetailService.GetLabSheetDetailList().Count());
+                    Assert.False(labSheetDetailService.Add(labSheetDetail));
+                    Assert.Equal(string.Format(CSSPServicesRes._LengthShouldBeBetween_And_, "Negative35", "1", "1"), labSheetDetail.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, labSheetDetailService.GetLabSheetDetailList().Count());
 
                     // -----------------------------------
                     // Is Nullable
@@ -651,9 +651,9 @@ namespace CSSPServices.Tests
                     labSheetDetail = null;
                     labSheetDetail = GetFilledRandomLabSheetDetail("");
                     labSheetDetail.Bath1Positive44_5 = GetRandomString("", 2);
-                    Assert.AreEqual(false, labSheetDetailService.Add(labSheetDetail));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._LengthShouldBeBetween_And_, "Bath1Positive44_5", "1", "1"), labSheetDetail.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, labSheetDetailService.GetLabSheetDetailList().Count());
+                    Assert.False(labSheetDetailService.Add(labSheetDetail));
+                    Assert.Equal(string.Format(CSSPServicesRes._LengthShouldBeBetween_And_, "Bath1Positive44_5", "1", "1"), labSheetDetail.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, labSheetDetailService.GetLabSheetDetailList().Count());
 
                     // -----------------------------------
                     // Is Nullable
@@ -666,9 +666,9 @@ namespace CSSPServices.Tests
                     labSheetDetail = null;
                     labSheetDetail = GetFilledRandomLabSheetDetail("");
                     labSheetDetail.Bath2Positive44_5 = GetRandomString("", 2);
-                    Assert.AreEqual(false, labSheetDetailService.Add(labSheetDetail));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._LengthShouldBeBetween_And_, "Bath2Positive44_5", "1", "1"), labSheetDetail.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, labSheetDetailService.GetLabSheetDetailList().Count());
+                    Assert.False(labSheetDetailService.Add(labSheetDetail));
+                    Assert.Equal(string.Format(CSSPServicesRes._LengthShouldBeBetween_And_, "Bath2Positive44_5", "1", "1"), labSheetDetail.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, labSheetDetailService.GetLabSheetDetailList().Count());
 
                     // -----------------------------------
                     // Is Nullable
@@ -681,9 +681,9 @@ namespace CSSPServices.Tests
                     labSheetDetail = null;
                     labSheetDetail = GetFilledRandomLabSheetDetail("");
                     labSheetDetail.Bath3Positive44_5 = GetRandomString("", 2);
-                    Assert.AreEqual(false, labSheetDetailService.Add(labSheetDetail));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._LengthShouldBeBetween_And_, "Bath3Positive44_5", "1", "1"), labSheetDetail.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, labSheetDetailService.GetLabSheetDetailList().Count());
+                    Assert.False(labSheetDetailService.Add(labSheetDetail));
+                    Assert.Equal(string.Format(CSSPServicesRes._LengthShouldBeBetween_And_, "Bath3Positive44_5", "1", "1"), labSheetDetail.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, labSheetDetailService.GetLabSheetDetailList().Count());
 
                     // -----------------------------------
                     // Is Nullable
@@ -696,9 +696,9 @@ namespace CSSPServices.Tests
                     labSheetDetail = null;
                     labSheetDetail = GetFilledRandomLabSheetDetail("");
                     labSheetDetail.Bath1NonTarget44_5 = GetRandomString("", 2);
-                    Assert.AreEqual(false, labSheetDetailService.Add(labSheetDetail));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._LengthShouldBeBetween_And_, "Bath1NonTarget44_5", "1", "1"), labSheetDetail.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, labSheetDetailService.GetLabSheetDetailList().Count());
+                    Assert.False(labSheetDetailService.Add(labSheetDetail));
+                    Assert.Equal(string.Format(CSSPServicesRes._LengthShouldBeBetween_And_, "Bath1NonTarget44_5", "1", "1"), labSheetDetail.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, labSheetDetailService.GetLabSheetDetailList().Count());
 
                     // -----------------------------------
                     // Is Nullable
@@ -711,9 +711,9 @@ namespace CSSPServices.Tests
                     labSheetDetail = null;
                     labSheetDetail = GetFilledRandomLabSheetDetail("");
                     labSheetDetail.Bath2NonTarget44_5 = GetRandomString("", 2);
-                    Assert.AreEqual(false, labSheetDetailService.Add(labSheetDetail));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._LengthShouldBeBetween_And_, "Bath2NonTarget44_5", "1", "1"), labSheetDetail.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, labSheetDetailService.GetLabSheetDetailList().Count());
+                    Assert.False(labSheetDetailService.Add(labSheetDetail));
+                    Assert.Equal(string.Format(CSSPServicesRes._LengthShouldBeBetween_And_, "Bath2NonTarget44_5", "1", "1"), labSheetDetail.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, labSheetDetailService.GetLabSheetDetailList().Count());
 
                     // -----------------------------------
                     // Is Nullable
@@ -726,9 +726,9 @@ namespace CSSPServices.Tests
                     labSheetDetail = null;
                     labSheetDetail = GetFilledRandomLabSheetDetail("");
                     labSheetDetail.Bath3NonTarget44_5 = GetRandomString("", 2);
-                    Assert.AreEqual(false, labSheetDetailService.Add(labSheetDetail));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._LengthShouldBeBetween_And_, "Bath3NonTarget44_5", "1", "1"), labSheetDetail.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, labSheetDetailService.GetLabSheetDetailList().Count());
+                    Assert.False(labSheetDetailService.Add(labSheetDetail));
+                    Assert.Equal(string.Format(CSSPServicesRes._LengthShouldBeBetween_And_, "Bath3NonTarget44_5", "1", "1"), labSheetDetail.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, labSheetDetailService.GetLabSheetDetailList().Count());
 
                     // -----------------------------------
                     // Is Nullable
@@ -741,9 +741,9 @@ namespace CSSPServices.Tests
                     labSheetDetail = null;
                     labSheetDetail = GetFilledRandomLabSheetDetail("");
                     labSheetDetail.Bath1Negative44_5 = GetRandomString("", 2);
-                    Assert.AreEqual(false, labSheetDetailService.Add(labSheetDetail));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._LengthShouldBeBetween_And_, "Bath1Negative44_5", "1", "1"), labSheetDetail.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, labSheetDetailService.GetLabSheetDetailList().Count());
+                    Assert.False(labSheetDetailService.Add(labSheetDetail));
+                    Assert.Equal(string.Format(CSSPServicesRes._LengthShouldBeBetween_And_, "Bath1Negative44_5", "1", "1"), labSheetDetail.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, labSheetDetailService.GetLabSheetDetailList().Count());
 
                     // -----------------------------------
                     // Is Nullable
@@ -756,9 +756,9 @@ namespace CSSPServices.Tests
                     labSheetDetail = null;
                     labSheetDetail = GetFilledRandomLabSheetDetail("");
                     labSheetDetail.Bath2Negative44_5 = GetRandomString("", 2);
-                    Assert.AreEqual(false, labSheetDetailService.Add(labSheetDetail));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._LengthShouldBeBetween_And_, "Bath2Negative44_5", "1", "1"), labSheetDetail.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, labSheetDetailService.GetLabSheetDetailList().Count());
+                    Assert.False(labSheetDetailService.Add(labSheetDetail));
+                    Assert.Equal(string.Format(CSSPServicesRes._LengthShouldBeBetween_And_, "Bath2Negative44_5", "1", "1"), labSheetDetail.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, labSheetDetailService.GetLabSheetDetailList().Count());
 
                     // -----------------------------------
                     // Is Nullable
@@ -771,9 +771,9 @@ namespace CSSPServices.Tests
                     labSheetDetail = null;
                     labSheetDetail = GetFilledRandomLabSheetDetail("");
                     labSheetDetail.Bath3Negative44_5 = GetRandomString("", 2);
-                    Assert.AreEqual(false, labSheetDetailService.Add(labSheetDetail));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._LengthShouldBeBetween_And_, "Bath3Negative44_5", "1", "1"), labSheetDetail.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, labSheetDetailService.GetLabSheetDetailList().Count());
+                    Assert.False(labSheetDetailService.Add(labSheetDetail));
+                    Assert.Equal(string.Format(CSSPServicesRes._LengthShouldBeBetween_And_, "Bath3Negative44_5", "1", "1"), labSheetDetail.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, labSheetDetailService.GetLabSheetDetailList().Count());
 
                     // -----------------------------------
                     // Is Nullable
@@ -786,9 +786,9 @@ namespace CSSPServices.Tests
                     labSheetDetail = null;
                     labSheetDetail = GetFilledRandomLabSheetDetail("");
                     labSheetDetail.Blank35 = GetRandomString("", 2);
-                    Assert.AreEqual(false, labSheetDetailService.Add(labSheetDetail));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._LengthShouldBeBetween_And_, "Blank35", "1", "1"), labSheetDetail.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, labSheetDetailService.GetLabSheetDetailList().Count());
+                    Assert.False(labSheetDetailService.Add(labSheetDetail));
+                    Assert.Equal(string.Format(CSSPServicesRes._LengthShouldBeBetween_And_, "Blank35", "1", "1"), labSheetDetail.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, labSheetDetailService.GetLabSheetDetailList().Count());
 
                     // -----------------------------------
                     // Is Nullable
@@ -801,9 +801,9 @@ namespace CSSPServices.Tests
                     labSheetDetail = null;
                     labSheetDetail = GetFilledRandomLabSheetDetail("");
                     labSheetDetail.Bath1Blank44_5 = GetRandomString("", 2);
-                    Assert.AreEqual(false, labSheetDetailService.Add(labSheetDetail));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._LengthShouldBeBetween_And_, "Bath1Blank44_5", "1", "1"), labSheetDetail.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, labSheetDetailService.GetLabSheetDetailList().Count());
+                    Assert.False(labSheetDetailService.Add(labSheetDetail));
+                    Assert.Equal(string.Format(CSSPServicesRes._LengthShouldBeBetween_And_, "Bath1Blank44_5", "1", "1"), labSheetDetail.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, labSheetDetailService.GetLabSheetDetailList().Count());
 
                     // -----------------------------------
                     // Is Nullable
@@ -816,9 +816,9 @@ namespace CSSPServices.Tests
                     labSheetDetail = null;
                     labSheetDetail = GetFilledRandomLabSheetDetail("");
                     labSheetDetail.Bath2Blank44_5 = GetRandomString("", 2);
-                    Assert.AreEqual(false, labSheetDetailService.Add(labSheetDetail));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._LengthShouldBeBetween_And_, "Bath2Blank44_5", "1", "1"), labSheetDetail.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, labSheetDetailService.GetLabSheetDetailList().Count());
+                    Assert.False(labSheetDetailService.Add(labSheetDetail));
+                    Assert.Equal(string.Format(CSSPServicesRes._LengthShouldBeBetween_And_, "Bath2Blank44_5", "1", "1"), labSheetDetail.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, labSheetDetailService.GetLabSheetDetailList().Count());
 
                     // -----------------------------------
                     // Is Nullable
@@ -831,9 +831,9 @@ namespace CSSPServices.Tests
                     labSheetDetail = null;
                     labSheetDetail = GetFilledRandomLabSheetDetail("");
                     labSheetDetail.Bath3Blank44_5 = GetRandomString("", 2);
-                    Assert.AreEqual(false, labSheetDetailService.Add(labSheetDetail));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._LengthShouldBeBetween_And_, "Bath3Blank44_5", "1", "1"), labSheetDetail.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, labSheetDetailService.GetLabSheetDetailList().Count());
+                    Assert.False(labSheetDetailService.Add(labSheetDetail));
+                    Assert.Equal(string.Format(CSSPServicesRes._LengthShouldBeBetween_And_, "Bath3Blank44_5", "1", "1"), labSheetDetail.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, labSheetDetailService.GetLabSheetDetailList().Count());
 
                     // -----------------------------------
                     // Is Nullable
@@ -844,9 +844,9 @@ namespace CSSPServices.Tests
                     labSheetDetail = null;
                     labSheetDetail = GetFilledRandomLabSheetDetail("");
                     labSheetDetail.Lot35 = GetRandomString("", 21);
-                    Assert.AreEqual(false, labSheetDetailService.Add(labSheetDetail));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._MaxLengthIs_, "Lot35", "20"), labSheetDetail.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, labSheetDetailService.GetLabSheetDetailList().Count());
+                    Assert.False(labSheetDetailService.Add(labSheetDetail));
+                    Assert.Equal(string.Format(CSSPServicesRes._MaxLengthIs_, "Lot35", "20"), labSheetDetail.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, labSheetDetailService.GetLabSheetDetailList().Count());
 
                     // -----------------------------------
                     // Is Nullable
@@ -857,9 +857,9 @@ namespace CSSPServices.Tests
                     labSheetDetail = null;
                     labSheetDetail = GetFilledRandomLabSheetDetail("");
                     labSheetDetail.Lot44_5 = GetRandomString("", 21);
-                    Assert.AreEqual(false, labSheetDetailService.Add(labSheetDetail));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._MaxLengthIs_, "Lot44_5", "20"), labSheetDetail.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, labSheetDetailService.GetLabSheetDetailList().Count());
+                    Assert.False(labSheetDetailService.Add(labSheetDetail));
+                    Assert.Equal(string.Format(CSSPServicesRes._MaxLengthIs_, "Lot44_5", "20"), labSheetDetail.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, labSheetDetailService.GetLabSheetDetailList().Count());
 
                     // -----------------------------------
                     // Is Nullable
@@ -870,9 +870,9 @@ namespace CSSPServices.Tests
                     labSheetDetail = null;
                     labSheetDetail = GetFilledRandomLabSheetDetail("");
                     labSheetDetail.Weather = GetRandomString("", 251);
-                    Assert.AreEqual(false, labSheetDetailService.Add(labSheetDetail));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._MaxLengthIs_, "Weather", "250"), labSheetDetail.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, labSheetDetailService.GetLabSheetDetailList().Count());
+                    Assert.False(labSheetDetailService.Add(labSheetDetail));
+                    Assert.Equal(string.Format(CSSPServicesRes._MaxLengthIs_, "Weather", "250"), labSheetDetail.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, labSheetDetailService.GetLabSheetDetailList().Count());
 
                     // -----------------------------------
                     // Is Nullable
@@ -883,9 +883,9 @@ namespace CSSPServices.Tests
                     labSheetDetail = null;
                     labSheetDetail = GetFilledRandomLabSheetDetail("");
                     labSheetDetail.RunComment = GetRandomString("", 251);
-                    Assert.AreEqual(false, labSheetDetailService.Add(labSheetDetail));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._MaxLengthIs_, "RunComment", "250"), labSheetDetail.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, labSheetDetailService.GetLabSheetDetailList().Count());
+                    Assert.False(labSheetDetailService.Add(labSheetDetail));
+                    Assert.Equal(string.Format(CSSPServicesRes._MaxLengthIs_, "RunComment", "250"), labSheetDetail.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, labSheetDetailService.GetLabSheetDetailList().Count());
 
                     // -----------------------------------
                     // Is Nullable
@@ -896,9 +896,9 @@ namespace CSSPServices.Tests
                     labSheetDetail = null;
                     labSheetDetail = GetFilledRandomLabSheetDetail("");
                     labSheetDetail.RunWeatherComment = GetRandomString("", 251);
-                    Assert.AreEqual(false, labSheetDetailService.Add(labSheetDetail));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._MaxLengthIs_, "RunWeatherComment", "250"), labSheetDetail.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, labSheetDetailService.GetLabSheetDetailList().Count());
+                    Assert.False(labSheetDetailService.Add(labSheetDetail));
+                    Assert.Equal(string.Format(CSSPServicesRes._MaxLengthIs_, "RunWeatherComment", "250"), labSheetDetail.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, labSheetDetailService.GetLabSheetDetailList().Count());
 
                     // -----------------------------------
                     // Is Nullable
@@ -909,9 +909,9 @@ namespace CSSPServices.Tests
                     labSheetDetail = null;
                     labSheetDetail = GetFilledRandomLabSheetDetail("");
                     labSheetDetail.SampleBottleLotNumber = GetRandomString("", 21);
-                    Assert.AreEqual(false, labSheetDetailService.Add(labSheetDetail));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._MaxLengthIs_, "SampleBottleLotNumber", "20"), labSheetDetail.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, labSheetDetailService.GetLabSheetDetailList().Count());
+                    Assert.False(labSheetDetailService.Add(labSheetDetail));
+                    Assert.Equal(string.Format(CSSPServicesRes._MaxLengthIs_, "SampleBottleLotNumber", "20"), labSheetDetail.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, labSheetDetailService.GetLabSheetDetailList().Count());
 
                     // -----------------------------------
                     // Is Nullable
@@ -922,9 +922,9 @@ namespace CSSPServices.Tests
                     labSheetDetail = null;
                     labSheetDetail = GetFilledRandomLabSheetDetail("");
                     labSheetDetail.SalinitiesReadBy = GetRandomString("", 21);
-                    Assert.AreEqual(false, labSheetDetailService.Add(labSheetDetail));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._MaxLengthIs_, "SalinitiesReadBy", "20"), labSheetDetail.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, labSheetDetailService.GetLabSheetDetailList().Count());
+                    Assert.False(labSheetDetailService.Add(labSheetDetail));
+                    Assert.Equal(string.Format(CSSPServicesRes._MaxLengthIs_, "SalinitiesReadBy", "20"), labSheetDetail.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, labSheetDetailService.GetLabSheetDetailList().Count());
 
                     // -----------------------------------
                     // Is Nullable
@@ -936,7 +936,7 @@ namespace CSSPServices.Tests
                     labSheetDetail = GetFilledRandomLabSheetDetail("");
                     labSheetDetail.SalinitiesReadDate = new DateTime(1979, 1, 1);
                     labSheetDetailService.Add(labSheetDetail);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._YearShouldBeBiggerThan_, "SalinitiesReadDate", "1980"), labSheetDetail.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._YearShouldBeBiggerThan_, "SalinitiesReadDate", "1980"), labSheetDetail.ValidationResults.FirstOrDefault().ErrorMessage);
 
                     // -----------------------------------
                     // Is Nullable
@@ -947,9 +947,9 @@ namespace CSSPServices.Tests
                     labSheetDetail = null;
                     labSheetDetail = GetFilledRandomLabSheetDetail("");
                     labSheetDetail.ResultsReadBy = GetRandomString("", 21);
-                    Assert.AreEqual(false, labSheetDetailService.Add(labSheetDetail));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._MaxLengthIs_, "ResultsReadBy", "20"), labSheetDetail.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, labSheetDetailService.GetLabSheetDetailList().Count());
+                    Assert.False(labSheetDetailService.Add(labSheetDetail));
+                    Assert.Equal(string.Format(CSSPServicesRes._MaxLengthIs_, "ResultsReadBy", "20"), labSheetDetail.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, labSheetDetailService.GetLabSheetDetailList().Count());
 
                     // -----------------------------------
                     // Is Nullable
@@ -961,7 +961,7 @@ namespace CSSPServices.Tests
                     labSheetDetail = GetFilledRandomLabSheetDetail("");
                     labSheetDetail.ResultsReadDate = new DateTime(1979, 1, 1);
                     labSheetDetailService.Add(labSheetDetail);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._YearShouldBeBiggerThan_, "ResultsReadDate", "1980"), labSheetDetail.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._YearShouldBeBiggerThan_, "ResultsReadDate", "1980"), labSheetDetail.ValidationResults.FirstOrDefault().ErrorMessage);
 
                     // -----------------------------------
                     // Is Nullable
@@ -972,9 +972,9 @@ namespace CSSPServices.Tests
                     labSheetDetail = null;
                     labSheetDetail = GetFilledRandomLabSheetDetail("");
                     labSheetDetail.ResultsRecordedBy = GetRandomString("", 21);
-                    Assert.AreEqual(false, labSheetDetailService.Add(labSheetDetail));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._MaxLengthIs_, "ResultsRecordedBy", "20"), labSheetDetail.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, labSheetDetailService.GetLabSheetDetailList().Count());
+                    Assert.False(labSheetDetailService.Add(labSheetDetail));
+                    Assert.Equal(string.Format(CSSPServicesRes._MaxLengthIs_, "ResultsRecordedBy", "20"), labSheetDetail.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, labSheetDetailService.GetLabSheetDetailList().Count());
 
                     // -----------------------------------
                     // Is Nullable
@@ -986,7 +986,7 @@ namespace CSSPServices.Tests
                     labSheetDetail = GetFilledRandomLabSheetDetail("");
                     labSheetDetail.ResultsRecordedDate = new DateTime(1979, 1, 1);
                     labSheetDetailService.Add(labSheetDetail);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._YearShouldBeBiggerThan_, "ResultsRecordedDate", "1980"), labSheetDetail.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._YearShouldBeBiggerThan_, "ResultsRecordedDate", "1980"), labSheetDetail.ValidationResults.FirstOrDefault().ErrorMessage);
 
                     // -----------------------------------
                     // Is Nullable
@@ -1001,15 +1001,15 @@ namespace CSSPServices.Tests
                     labSheetDetail = null;
                     labSheetDetail = GetFilledRandomLabSheetDetail("");
                     labSheetDetail.DailyDuplicateRLog = -1.0D;
-                    Assert.AreEqual(false, labSheetDetailService.Add(labSheetDetail));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "DailyDuplicateRLog", "0", "100"), labSheetDetail.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, labSheetDetailService.GetLabSheetDetailList().Count());
+                    Assert.False(labSheetDetailService.Add(labSheetDetail));
+                    Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "DailyDuplicateRLog", "0", "100"), labSheetDetail.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, labSheetDetailService.GetLabSheetDetailList().Count());
                     labSheetDetail = null;
                     labSheetDetail = GetFilledRandomLabSheetDetail("");
                     labSheetDetail.DailyDuplicateRLog = 101.0D;
-                    Assert.AreEqual(false, labSheetDetailService.Add(labSheetDetail));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "DailyDuplicateRLog", "0", "100"), labSheetDetail.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, labSheetDetailService.GetLabSheetDetailList().Count());
+                    Assert.False(labSheetDetailService.Add(labSheetDetail));
+                    Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "DailyDuplicateRLog", "0", "100"), labSheetDetail.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, labSheetDetailService.GetLabSheetDetailList().Count());
 
                     // -----------------------------------
                     // Is Nullable
@@ -1024,15 +1024,15 @@ namespace CSSPServices.Tests
                     labSheetDetail = null;
                     labSheetDetail = GetFilledRandomLabSheetDetail("");
                     labSheetDetail.DailyDuplicatePrecisionCriteria = -1.0D;
-                    Assert.AreEqual(false, labSheetDetailService.Add(labSheetDetail));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "DailyDuplicatePrecisionCriteria", "0", "100"), labSheetDetail.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, labSheetDetailService.GetLabSheetDetailList().Count());
+                    Assert.False(labSheetDetailService.Add(labSheetDetail));
+                    Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "DailyDuplicatePrecisionCriteria", "0", "100"), labSheetDetail.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, labSheetDetailService.GetLabSheetDetailList().Count());
                     labSheetDetail = null;
                     labSheetDetail = GetFilledRandomLabSheetDetail("");
                     labSheetDetail.DailyDuplicatePrecisionCriteria = 101.0D;
-                    Assert.AreEqual(false, labSheetDetailService.Add(labSheetDetail));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "DailyDuplicatePrecisionCriteria", "0", "100"), labSheetDetail.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, labSheetDetailService.GetLabSheetDetailList().Count());
+                    Assert.False(labSheetDetailService.Add(labSheetDetail));
+                    Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "DailyDuplicatePrecisionCriteria", "0", "100"), labSheetDetail.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, labSheetDetailService.GetLabSheetDetailList().Count());
 
                     // -----------------------------------
                     // Is Nullable
@@ -1053,15 +1053,15 @@ namespace CSSPServices.Tests
                     labSheetDetail = null;
                     labSheetDetail = GetFilledRandomLabSheetDetail("");
                     labSheetDetail.IntertechDuplicateRLog = -1.0D;
-                    Assert.AreEqual(false, labSheetDetailService.Add(labSheetDetail));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "IntertechDuplicateRLog", "0", "100"), labSheetDetail.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, labSheetDetailService.GetLabSheetDetailList().Count());
+                    Assert.False(labSheetDetailService.Add(labSheetDetail));
+                    Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "IntertechDuplicateRLog", "0", "100"), labSheetDetail.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, labSheetDetailService.GetLabSheetDetailList().Count());
                     labSheetDetail = null;
                     labSheetDetail = GetFilledRandomLabSheetDetail("");
                     labSheetDetail.IntertechDuplicateRLog = 101.0D;
-                    Assert.AreEqual(false, labSheetDetailService.Add(labSheetDetail));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "IntertechDuplicateRLog", "0", "100"), labSheetDetail.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, labSheetDetailService.GetLabSheetDetailList().Count());
+                    Assert.False(labSheetDetailService.Add(labSheetDetail));
+                    Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "IntertechDuplicateRLog", "0", "100"), labSheetDetail.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, labSheetDetailService.GetLabSheetDetailList().Count());
 
                     // -----------------------------------
                     // Is Nullable
@@ -1076,15 +1076,15 @@ namespace CSSPServices.Tests
                     labSheetDetail = null;
                     labSheetDetail = GetFilledRandomLabSheetDetail("");
                     labSheetDetail.IntertechDuplicatePrecisionCriteria = -1.0D;
-                    Assert.AreEqual(false, labSheetDetailService.Add(labSheetDetail));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "IntertechDuplicatePrecisionCriteria", "0", "100"), labSheetDetail.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, labSheetDetailService.GetLabSheetDetailList().Count());
+                    Assert.False(labSheetDetailService.Add(labSheetDetail));
+                    Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "IntertechDuplicatePrecisionCriteria", "0", "100"), labSheetDetail.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, labSheetDetailService.GetLabSheetDetailList().Count());
                     labSheetDetail = null;
                     labSheetDetail = GetFilledRandomLabSheetDetail("");
                     labSheetDetail.IntertechDuplicatePrecisionCriteria = 101.0D;
-                    Assert.AreEqual(false, labSheetDetailService.Add(labSheetDetail));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "IntertechDuplicatePrecisionCriteria", "0", "100"), labSheetDetail.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, labSheetDetailService.GetLabSheetDetailList().Count());
+                    Assert.False(labSheetDetailService.Add(labSheetDetail));
+                    Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "IntertechDuplicatePrecisionCriteria", "0", "100"), labSheetDetail.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, labSheetDetailService.GetLabSheetDetailList().Count());
 
                     // -----------------------------------
                     // Is Nullable
@@ -1108,12 +1108,12 @@ namespace CSSPServices.Tests
                     labSheetDetail = GetFilledRandomLabSheetDetail("");
                     labSheetDetail.LastUpdateDate_UTC = new DateTime();
                     labSheetDetailService.Add(labSheetDetail);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsRequired, "LastUpdateDate_UTC"), labSheetDetail.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsRequired, "LastUpdateDate_UTC"), labSheetDetail.ValidationResults.FirstOrDefault().ErrorMessage);
                     labSheetDetail = null;
                     labSheetDetail = GetFilledRandomLabSheetDetail("");
                     labSheetDetail.LastUpdateDate_UTC = new DateTime(1979, 1, 1);
                     labSheetDetailService.Add(labSheetDetail);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._YearShouldBeBiggerThan_, "LastUpdateDate_UTC", "1980"), labSheetDetail.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._YearShouldBeBiggerThan_, "LastUpdateDate_UTC", "1980"), labSheetDetail.ValidationResults.FirstOrDefault().ErrorMessage);
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -1125,13 +1125,13 @@ namespace CSSPServices.Tests
                     labSheetDetail = GetFilledRandomLabSheetDetail("");
                     labSheetDetail.LastUpdateContactTVItemID = 0;
                     labSheetDetailService.Add(labSheetDetail);
-                    Assert.AreEqual(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "TVItem", "LastUpdateContactTVItemID", labSheetDetail.LastUpdateContactTVItemID.ToString()), labSheetDetail.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "TVItem", "LastUpdateContactTVItemID", labSheetDetail.LastUpdateContactTVItemID.ToString()), labSheetDetail.ValidationResults.FirstOrDefault().ErrorMessage);
 
                     labSheetDetail = null;
                     labSheetDetail = GetFilledRandomLabSheetDetail("");
                     labSheetDetail.LastUpdateContactTVItemID = 1;
                     labSheetDetailService.Add(labSheetDetail);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsNotOfType_, "LastUpdateContactTVItemID", "Contact"), labSheetDetail.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsNotOfType_, "LastUpdateContactTVItemID", "Contact"), labSheetDetail.ValidationResults.FirstOrDefault().ErrorMessage);
 
 
                     // -----------------------------------
@@ -1155,7 +1155,7 @@ namespace CSSPServices.Tests
         #endregion Tests Generated Properties
 
         #region Tests Generated for GetLabSheetDetailWithLabSheetDetailID(labSheetDetail.LabSheetDetailID)
-        [TestMethod]
+        [Fact]
         public void GetLabSheetDetailWithLabSheetDetailID__labSheetDetail_LabSheetDetailID__Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -1166,7 +1166,7 @@ namespace CSSPServices.Tests
                 {
                     LabSheetDetailService labSheetDetailService = new LabSheetDetailService(new Query() { Lang = culture.TwoLetterISOLanguageName }, dbTestDB, ContactID);
                     LabSheetDetail labSheetDetail = (from c in dbTestDB.LabSheetDetails select c).FirstOrDefault();
-                    Assert.IsNotNull(labSheetDetail);
+                    Assert.NotNull(labSheetDetail);
 
                 }
             }
@@ -1174,7 +1174,7 @@ namespace CSSPServices.Tests
         #endregion Tests Generated for GetLabSheetDetailWithLabSheetDetailID(labSheetDetail.LabSheetDetailID)
 
         #region Tests Generated for GetLabSheetDetailList()
-        [TestMethod]
+        [Fact]
         public void GetLabSheetDetailList_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -1185,7 +1185,7 @@ namespace CSSPServices.Tests
                 {
                     LabSheetDetailService labSheetDetailService = new LabSheetDetailService(new Query() { Lang = culture.TwoLetterISOLanguageName }, dbTestDB, ContactID);
                     LabSheetDetail labSheetDetail = (from c in dbTestDB.LabSheetDetails select c).FirstOrDefault();
-                    Assert.IsNotNull(labSheetDetail);
+                    Assert.NotNull(labSheetDetail);
 
                     List<LabSheetDetail> labSheetDetailDirectQueryList = new List<LabSheetDetail>();
                     labSheetDetailDirectQueryList = (from c in dbTestDB.LabSheetDetails select c).Take(200).ToList();
@@ -1196,7 +1196,7 @@ namespace CSSPServices.Tests
         #endregion Tests Generated for GetLabSheetDetailList()
 
         #region Tests Generated for GetLabSheetDetailList() Skip Take
-        [TestMethod]
+        [Fact]
         public void GetLabSheetDetailList_Skip_Take_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -1215,14 +1215,14 @@ namespace CSSPServices.Tests
                         List<LabSheetDetail> labSheetDetailList = new List<LabSheetDetail>();
                         labSheetDetailList = labSheetDetailService.GetLabSheetDetailList().ToList();
                         CheckLabSheetDetailFields(labSheetDetailList);
-                        Assert.AreEqual(labSheetDetailDirectQueryList[0].LabSheetDetailID, labSheetDetailList[0].LabSheetDetailID);
+                        Assert.Equal(labSheetDetailDirectQueryList[0].LabSheetDetailID, labSheetDetailList[0].LabSheetDetailID);
                 }
             }
         }
         #endregion Tests Generated for GetLabSheetDetailList() Skip Take
 
         #region Tests Generated for GetLabSheetDetailList() Skip Take Asc
-        [TestMethod]
+        [Fact]
         public void GetLabSheetDetailList_Skip_Take_Asc_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -1241,14 +1241,14 @@ namespace CSSPServices.Tests
                         List<LabSheetDetail> labSheetDetailList = new List<LabSheetDetail>();
                         labSheetDetailList = labSheetDetailService.GetLabSheetDetailList().ToList();
                         CheckLabSheetDetailFields(labSheetDetailList);
-                        Assert.AreEqual(labSheetDetailDirectQueryList[0].LabSheetDetailID, labSheetDetailList[0].LabSheetDetailID);
+                        Assert.Equal(labSheetDetailDirectQueryList[0].LabSheetDetailID, labSheetDetailList[0].LabSheetDetailID);
                 }
             }
         }
         #endregion Tests Generated for GetLabSheetDetailList() Skip Take Asc
 
         #region Tests Generated for GetLabSheetDetailList() Skip Take 2 Asc
-        [TestMethod]
+        [Fact]
         public void GetLabSheetDetailList_Skip_Take_2Asc_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -1267,14 +1267,14 @@ namespace CSSPServices.Tests
                         List<LabSheetDetail> labSheetDetailList = new List<LabSheetDetail>();
                         labSheetDetailList = labSheetDetailService.GetLabSheetDetailList().ToList();
                         CheckLabSheetDetailFields(labSheetDetailList);
-                        Assert.AreEqual(labSheetDetailDirectQueryList[0].LabSheetDetailID, labSheetDetailList[0].LabSheetDetailID);
+                        Assert.Equal(labSheetDetailDirectQueryList[0].LabSheetDetailID, labSheetDetailList[0].LabSheetDetailID);
                 }
             }
         }
         #endregion Tests Generated for GetLabSheetDetailList() Skip Take 2 Asc
 
         #region Tests Generated for GetLabSheetDetailList() Skip Take Asc Where
-        [TestMethod]
+        [Fact]
         public void GetLabSheetDetailList_Skip_Take_Asc_Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -1293,14 +1293,14 @@ namespace CSSPServices.Tests
                         List<LabSheetDetail> labSheetDetailList = new List<LabSheetDetail>();
                         labSheetDetailList = labSheetDetailService.GetLabSheetDetailList().ToList();
                         CheckLabSheetDetailFields(labSheetDetailList);
-                        Assert.AreEqual(labSheetDetailDirectQueryList[0].LabSheetDetailID, labSheetDetailList[0].LabSheetDetailID);
+                        Assert.Equal(labSheetDetailDirectQueryList[0].LabSheetDetailID, labSheetDetailList[0].LabSheetDetailID);
                 }
             }
         }
         #endregion Tests Generated for GetLabSheetDetailList() Skip Take Asc Where
 
         #region Tests Generated for GetLabSheetDetailList() Skip Take Asc 2 Where
-        [TestMethod]
+        [Fact]
         public void GetLabSheetDetailList_Skip_Take_Asc_2Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -1319,14 +1319,14 @@ namespace CSSPServices.Tests
                         List<LabSheetDetail> labSheetDetailList = new List<LabSheetDetail>();
                         labSheetDetailList = labSheetDetailService.GetLabSheetDetailList().ToList();
                         CheckLabSheetDetailFields(labSheetDetailList);
-                        Assert.AreEqual(labSheetDetailDirectQueryList[0].LabSheetDetailID, labSheetDetailList[0].LabSheetDetailID);
+                        Assert.Equal(labSheetDetailDirectQueryList[0].LabSheetDetailID, labSheetDetailList[0].LabSheetDetailID);
                 }
             }
         }
         #endregion Tests Generated for GetLabSheetDetailList() Skip Take Asc 2 Where
 
         #region Tests Generated for GetLabSheetDetailList() Skip Take Desc
-        [TestMethod]
+        [Fact]
         public void GetLabSheetDetailList_Skip_Take_Desc_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -1345,14 +1345,14 @@ namespace CSSPServices.Tests
                         List<LabSheetDetail> labSheetDetailList = new List<LabSheetDetail>();
                         labSheetDetailList = labSheetDetailService.GetLabSheetDetailList().ToList();
                         CheckLabSheetDetailFields(labSheetDetailList);
-                        Assert.AreEqual(labSheetDetailDirectQueryList[0].LabSheetDetailID, labSheetDetailList[0].LabSheetDetailID);
+                        Assert.Equal(labSheetDetailDirectQueryList[0].LabSheetDetailID, labSheetDetailList[0].LabSheetDetailID);
                 }
             }
         }
         #endregion Tests Generated for GetLabSheetDetailList() Skip Take Desc
 
         #region Tests Generated for GetLabSheetDetailList() Skip Take 2 Desc
-        [TestMethod]
+        [Fact]
         public void GetLabSheetDetailList_Skip_Take_2Desc_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -1371,14 +1371,14 @@ namespace CSSPServices.Tests
                         List<LabSheetDetail> labSheetDetailList = new List<LabSheetDetail>();
                         labSheetDetailList = labSheetDetailService.GetLabSheetDetailList().ToList();
                         CheckLabSheetDetailFields(labSheetDetailList);
-                        Assert.AreEqual(labSheetDetailDirectQueryList[0].LabSheetDetailID, labSheetDetailList[0].LabSheetDetailID);
+                        Assert.Equal(labSheetDetailDirectQueryList[0].LabSheetDetailID, labSheetDetailList[0].LabSheetDetailID);
                 }
             }
         }
         #endregion Tests Generated for GetLabSheetDetailList() Skip Take 2 Desc
 
         #region Tests Generated for GetLabSheetDetailList() Skip Take Desc Where
-        [TestMethod]
+        [Fact]
         public void GetLabSheetDetailList_Skip_Take_Desc_Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -1397,14 +1397,14 @@ namespace CSSPServices.Tests
                         List<LabSheetDetail> labSheetDetailList = new List<LabSheetDetail>();
                         labSheetDetailList = labSheetDetailService.GetLabSheetDetailList().ToList();
                         CheckLabSheetDetailFields(labSheetDetailList);
-                        Assert.AreEqual(labSheetDetailDirectQueryList[0].LabSheetDetailID, labSheetDetailList[0].LabSheetDetailID);
+                        Assert.Equal(labSheetDetailDirectQueryList[0].LabSheetDetailID, labSheetDetailList[0].LabSheetDetailID);
                 }
             }
         }
         #endregion Tests Generated for GetLabSheetDetailList() Skip Take Desc Where
 
         #region Tests Generated for GetLabSheetDetailList() Skip Take Desc 2 Where
-        [TestMethod]
+        [Fact]
         public void GetLabSheetDetailList_Skip_Take_Desc_2Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -1423,14 +1423,14 @@ namespace CSSPServices.Tests
                         List<LabSheetDetail> labSheetDetailList = new List<LabSheetDetail>();
                         labSheetDetailList = labSheetDetailService.GetLabSheetDetailList().ToList();
                         CheckLabSheetDetailFields(labSheetDetailList);
-                        Assert.AreEqual(labSheetDetailDirectQueryList[0].LabSheetDetailID, labSheetDetailList[0].LabSheetDetailID);
+                        Assert.Equal(labSheetDetailDirectQueryList[0].LabSheetDetailID, labSheetDetailList[0].LabSheetDetailID);
                 }
             }
         }
         #endregion Tests Generated for GetLabSheetDetailList() Skip Take Desc 2 Where
 
         #region Tests Generated for GetLabSheetDetailList() 2 Where
-        [TestMethod]
+        [Fact]
         public void GetLabSheetDetailList_2Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -1449,7 +1449,7 @@ namespace CSSPServices.Tests
                         List<LabSheetDetail> labSheetDetailList = new List<LabSheetDetail>();
                         labSheetDetailList = labSheetDetailService.GetLabSheetDetailList().ToList();
                         CheckLabSheetDetailFields(labSheetDetailList);
-                        Assert.AreEqual(labSheetDetailDirectQueryList[0].LabSheetDetailID, labSheetDetailList[0].LabSheetDetailID);
+                        Assert.Equal(labSheetDetailDirectQueryList[0].LabSheetDetailID, labSheetDetailList[0].LabSheetDetailID);
                 }
             }
         }
@@ -1458,240 +1458,240 @@ namespace CSSPServices.Tests
         #region Functions private
         private void CheckLabSheetDetailFields(List<LabSheetDetail> labSheetDetailList)
         {
-            Assert.IsNotNull(labSheetDetailList[0].LabSheetDetailID);
-            Assert.IsNotNull(labSheetDetailList[0].LabSheetID);
-            Assert.IsNotNull(labSheetDetailList[0].SamplingPlanID);
-            Assert.IsNotNull(labSheetDetailList[0].SubsectorTVItemID);
-            Assert.IsNotNull(labSheetDetailList[0].Version);
-            Assert.IsNotNull(labSheetDetailList[0].RunDate);
-            Assert.IsFalse(string.IsNullOrWhiteSpace(labSheetDetailList[0].Tides));
+            Assert.NotNull(labSheetDetailList[0].LabSheetDetailID);
+            Assert.NotNull(labSheetDetailList[0].LabSheetID);
+            Assert.NotNull(labSheetDetailList[0].SamplingPlanID);
+            Assert.NotNull(labSheetDetailList[0].SubsectorTVItemID);
+            Assert.NotNull(labSheetDetailList[0].Version);
+            Assert.NotNull(labSheetDetailList[0].RunDate);
+            Assert.False(string.IsNullOrWhiteSpace(labSheetDetailList[0].Tides));
             if (!string.IsNullOrWhiteSpace(labSheetDetailList[0].SampleCrewInitials))
             {
-                Assert.IsFalse(string.IsNullOrWhiteSpace(labSheetDetailList[0].SampleCrewInitials));
+                Assert.False(string.IsNullOrWhiteSpace(labSheetDetailList[0].SampleCrewInitials));
             }
             if (labSheetDetailList[0].WaterBathCount != null)
             {
-                Assert.IsNotNull(labSheetDetailList[0].WaterBathCount);
+                Assert.NotNull(labSheetDetailList[0].WaterBathCount);
             }
             if (labSheetDetailList[0].IncubationBath1StartTime != null)
             {
-                Assert.IsNotNull(labSheetDetailList[0].IncubationBath1StartTime);
+                Assert.NotNull(labSheetDetailList[0].IncubationBath1StartTime);
             }
             if (labSheetDetailList[0].IncubationBath2StartTime != null)
             {
-                Assert.IsNotNull(labSheetDetailList[0].IncubationBath2StartTime);
+                Assert.NotNull(labSheetDetailList[0].IncubationBath2StartTime);
             }
             if (labSheetDetailList[0].IncubationBath3StartTime != null)
             {
-                Assert.IsNotNull(labSheetDetailList[0].IncubationBath3StartTime);
+                Assert.NotNull(labSheetDetailList[0].IncubationBath3StartTime);
             }
             if (labSheetDetailList[0].IncubationBath1EndTime != null)
             {
-                Assert.IsNotNull(labSheetDetailList[0].IncubationBath1EndTime);
+                Assert.NotNull(labSheetDetailList[0].IncubationBath1EndTime);
             }
             if (labSheetDetailList[0].IncubationBath2EndTime != null)
             {
-                Assert.IsNotNull(labSheetDetailList[0].IncubationBath2EndTime);
+                Assert.NotNull(labSheetDetailList[0].IncubationBath2EndTime);
             }
             if (labSheetDetailList[0].IncubationBath3EndTime != null)
             {
-                Assert.IsNotNull(labSheetDetailList[0].IncubationBath3EndTime);
+                Assert.NotNull(labSheetDetailList[0].IncubationBath3EndTime);
             }
             if (labSheetDetailList[0].IncubationBath1TimeCalculated_minutes != null)
             {
-                Assert.IsNotNull(labSheetDetailList[0].IncubationBath1TimeCalculated_minutes);
+                Assert.NotNull(labSheetDetailList[0].IncubationBath1TimeCalculated_minutes);
             }
             if (labSheetDetailList[0].IncubationBath2TimeCalculated_minutes != null)
             {
-                Assert.IsNotNull(labSheetDetailList[0].IncubationBath2TimeCalculated_minutes);
+                Assert.NotNull(labSheetDetailList[0].IncubationBath2TimeCalculated_minutes);
             }
             if (labSheetDetailList[0].IncubationBath3TimeCalculated_minutes != null)
             {
-                Assert.IsNotNull(labSheetDetailList[0].IncubationBath3TimeCalculated_minutes);
+                Assert.NotNull(labSheetDetailList[0].IncubationBath3TimeCalculated_minutes);
             }
             if (!string.IsNullOrWhiteSpace(labSheetDetailList[0].WaterBath1))
             {
-                Assert.IsFalse(string.IsNullOrWhiteSpace(labSheetDetailList[0].WaterBath1));
+                Assert.False(string.IsNullOrWhiteSpace(labSheetDetailList[0].WaterBath1));
             }
             if (!string.IsNullOrWhiteSpace(labSheetDetailList[0].WaterBath2))
             {
-                Assert.IsFalse(string.IsNullOrWhiteSpace(labSheetDetailList[0].WaterBath2));
+                Assert.False(string.IsNullOrWhiteSpace(labSheetDetailList[0].WaterBath2));
             }
             if (!string.IsNullOrWhiteSpace(labSheetDetailList[0].WaterBath3))
             {
-                Assert.IsFalse(string.IsNullOrWhiteSpace(labSheetDetailList[0].WaterBath3));
+                Assert.False(string.IsNullOrWhiteSpace(labSheetDetailList[0].WaterBath3));
             }
             if (labSheetDetailList[0].TCField1 != null)
             {
-                Assert.IsNotNull(labSheetDetailList[0].TCField1);
+                Assert.NotNull(labSheetDetailList[0].TCField1);
             }
             if (labSheetDetailList[0].TCLab1 != null)
             {
-                Assert.IsNotNull(labSheetDetailList[0].TCLab1);
+                Assert.NotNull(labSheetDetailList[0].TCLab1);
             }
             if (labSheetDetailList[0].TCField2 != null)
             {
-                Assert.IsNotNull(labSheetDetailList[0].TCField2);
+                Assert.NotNull(labSheetDetailList[0].TCField2);
             }
             if (labSheetDetailList[0].TCLab2 != null)
             {
-                Assert.IsNotNull(labSheetDetailList[0].TCLab2);
+                Assert.NotNull(labSheetDetailList[0].TCLab2);
             }
             if (labSheetDetailList[0].TCFirst != null)
             {
-                Assert.IsNotNull(labSheetDetailList[0].TCFirst);
+                Assert.NotNull(labSheetDetailList[0].TCFirst);
             }
             if (labSheetDetailList[0].TCAverage != null)
             {
-                Assert.IsNotNull(labSheetDetailList[0].TCAverage);
+                Assert.NotNull(labSheetDetailList[0].TCAverage);
             }
             if (!string.IsNullOrWhiteSpace(labSheetDetailList[0].ControlLot))
             {
-                Assert.IsFalse(string.IsNullOrWhiteSpace(labSheetDetailList[0].ControlLot));
+                Assert.False(string.IsNullOrWhiteSpace(labSheetDetailList[0].ControlLot));
             }
             if (!string.IsNullOrWhiteSpace(labSheetDetailList[0].Positive35))
             {
-                Assert.IsFalse(string.IsNullOrWhiteSpace(labSheetDetailList[0].Positive35));
+                Assert.False(string.IsNullOrWhiteSpace(labSheetDetailList[0].Positive35));
             }
             if (!string.IsNullOrWhiteSpace(labSheetDetailList[0].NonTarget35))
             {
-                Assert.IsFalse(string.IsNullOrWhiteSpace(labSheetDetailList[0].NonTarget35));
+                Assert.False(string.IsNullOrWhiteSpace(labSheetDetailList[0].NonTarget35));
             }
             if (!string.IsNullOrWhiteSpace(labSheetDetailList[0].Negative35))
             {
-                Assert.IsFalse(string.IsNullOrWhiteSpace(labSheetDetailList[0].Negative35));
+                Assert.False(string.IsNullOrWhiteSpace(labSheetDetailList[0].Negative35));
             }
             if (!string.IsNullOrWhiteSpace(labSheetDetailList[0].Bath1Positive44_5))
             {
-                Assert.IsFalse(string.IsNullOrWhiteSpace(labSheetDetailList[0].Bath1Positive44_5));
+                Assert.False(string.IsNullOrWhiteSpace(labSheetDetailList[0].Bath1Positive44_5));
             }
             if (!string.IsNullOrWhiteSpace(labSheetDetailList[0].Bath2Positive44_5))
             {
-                Assert.IsFalse(string.IsNullOrWhiteSpace(labSheetDetailList[0].Bath2Positive44_5));
+                Assert.False(string.IsNullOrWhiteSpace(labSheetDetailList[0].Bath2Positive44_5));
             }
             if (!string.IsNullOrWhiteSpace(labSheetDetailList[0].Bath3Positive44_5))
             {
-                Assert.IsFalse(string.IsNullOrWhiteSpace(labSheetDetailList[0].Bath3Positive44_5));
+                Assert.False(string.IsNullOrWhiteSpace(labSheetDetailList[0].Bath3Positive44_5));
             }
             if (!string.IsNullOrWhiteSpace(labSheetDetailList[0].Bath1NonTarget44_5))
             {
-                Assert.IsFalse(string.IsNullOrWhiteSpace(labSheetDetailList[0].Bath1NonTarget44_5));
+                Assert.False(string.IsNullOrWhiteSpace(labSheetDetailList[0].Bath1NonTarget44_5));
             }
             if (!string.IsNullOrWhiteSpace(labSheetDetailList[0].Bath2NonTarget44_5))
             {
-                Assert.IsFalse(string.IsNullOrWhiteSpace(labSheetDetailList[0].Bath2NonTarget44_5));
+                Assert.False(string.IsNullOrWhiteSpace(labSheetDetailList[0].Bath2NonTarget44_5));
             }
             if (!string.IsNullOrWhiteSpace(labSheetDetailList[0].Bath3NonTarget44_5))
             {
-                Assert.IsFalse(string.IsNullOrWhiteSpace(labSheetDetailList[0].Bath3NonTarget44_5));
+                Assert.False(string.IsNullOrWhiteSpace(labSheetDetailList[0].Bath3NonTarget44_5));
             }
             if (!string.IsNullOrWhiteSpace(labSheetDetailList[0].Bath1Negative44_5))
             {
-                Assert.IsFalse(string.IsNullOrWhiteSpace(labSheetDetailList[0].Bath1Negative44_5));
+                Assert.False(string.IsNullOrWhiteSpace(labSheetDetailList[0].Bath1Negative44_5));
             }
             if (!string.IsNullOrWhiteSpace(labSheetDetailList[0].Bath2Negative44_5))
             {
-                Assert.IsFalse(string.IsNullOrWhiteSpace(labSheetDetailList[0].Bath2Negative44_5));
+                Assert.False(string.IsNullOrWhiteSpace(labSheetDetailList[0].Bath2Negative44_5));
             }
             if (!string.IsNullOrWhiteSpace(labSheetDetailList[0].Bath3Negative44_5))
             {
-                Assert.IsFalse(string.IsNullOrWhiteSpace(labSheetDetailList[0].Bath3Negative44_5));
+                Assert.False(string.IsNullOrWhiteSpace(labSheetDetailList[0].Bath3Negative44_5));
             }
             if (!string.IsNullOrWhiteSpace(labSheetDetailList[0].Blank35))
             {
-                Assert.IsFalse(string.IsNullOrWhiteSpace(labSheetDetailList[0].Blank35));
+                Assert.False(string.IsNullOrWhiteSpace(labSheetDetailList[0].Blank35));
             }
             if (!string.IsNullOrWhiteSpace(labSheetDetailList[0].Bath1Blank44_5))
             {
-                Assert.IsFalse(string.IsNullOrWhiteSpace(labSheetDetailList[0].Bath1Blank44_5));
+                Assert.False(string.IsNullOrWhiteSpace(labSheetDetailList[0].Bath1Blank44_5));
             }
             if (!string.IsNullOrWhiteSpace(labSheetDetailList[0].Bath2Blank44_5))
             {
-                Assert.IsFalse(string.IsNullOrWhiteSpace(labSheetDetailList[0].Bath2Blank44_5));
+                Assert.False(string.IsNullOrWhiteSpace(labSheetDetailList[0].Bath2Blank44_5));
             }
             if (!string.IsNullOrWhiteSpace(labSheetDetailList[0].Bath3Blank44_5))
             {
-                Assert.IsFalse(string.IsNullOrWhiteSpace(labSheetDetailList[0].Bath3Blank44_5));
+                Assert.False(string.IsNullOrWhiteSpace(labSheetDetailList[0].Bath3Blank44_5));
             }
             if (!string.IsNullOrWhiteSpace(labSheetDetailList[0].Lot35))
             {
-                Assert.IsFalse(string.IsNullOrWhiteSpace(labSheetDetailList[0].Lot35));
+                Assert.False(string.IsNullOrWhiteSpace(labSheetDetailList[0].Lot35));
             }
             if (!string.IsNullOrWhiteSpace(labSheetDetailList[0].Lot44_5))
             {
-                Assert.IsFalse(string.IsNullOrWhiteSpace(labSheetDetailList[0].Lot44_5));
+                Assert.False(string.IsNullOrWhiteSpace(labSheetDetailList[0].Lot44_5));
             }
             if (!string.IsNullOrWhiteSpace(labSheetDetailList[0].Weather))
             {
-                Assert.IsFalse(string.IsNullOrWhiteSpace(labSheetDetailList[0].Weather));
+                Assert.False(string.IsNullOrWhiteSpace(labSheetDetailList[0].Weather));
             }
             if (!string.IsNullOrWhiteSpace(labSheetDetailList[0].RunComment))
             {
-                Assert.IsFalse(string.IsNullOrWhiteSpace(labSheetDetailList[0].RunComment));
+                Assert.False(string.IsNullOrWhiteSpace(labSheetDetailList[0].RunComment));
             }
             if (!string.IsNullOrWhiteSpace(labSheetDetailList[0].RunWeatherComment))
             {
-                Assert.IsFalse(string.IsNullOrWhiteSpace(labSheetDetailList[0].RunWeatherComment));
+                Assert.False(string.IsNullOrWhiteSpace(labSheetDetailList[0].RunWeatherComment));
             }
             if (!string.IsNullOrWhiteSpace(labSheetDetailList[0].SampleBottleLotNumber))
             {
-                Assert.IsFalse(string.IsNullOrWhiteSpace(labSheetDetailList[0].SampleBottleLotNumber));
+                Assert.False(string.IsNullOrWhiteSpace(labSheetDetailList[0].SampleBottleLotNumber));
             }
             if (!string.IsNullOrWhiteSpace(labSheetDetailList[0].SalinitiesReadBy))
             {
-                Assert.IsFalse(string.IsNullOrWhiteSpace(labSheetDetailList[0].SalinitiesReadBy));
+                Assert.False(string.IsNullOrWhiteSpace(labSheetDetailList[0].SalinitiesReadBy));
             }
             if (labSheetDetailList[0].SalinitiesReadDate != null)
             {
-                Assert.IsNotNull(labSheetDetailList[0].SalinitiesReadDate);
+                Assert.NotNull(labSheetDetailList[0].SalinitiesReadDate);
             }
             if (!string.IsNullOrWhiteSpace(labSheetDetailList[0].ResultsReadBy))
             {
-                Assert.IsFalse(string.IsNullOrWhiteSpace(labSheetDetailList[0].ResultsReadBy));
+                Assert.False(string.IsNullOrWhiteSpace(labSheetDetailList[0].ResultsReadBy));
             }
             if (labSheetDetailList[0].ResultsReadDate != null)
             {
-                Assert.IsNotNull(labSheetDetailList[0].ResultsReadDate);
+                Assert.NotNull(labSheetDetailList[0].ResultsReadDate);
             }
             if (!string.IsNullOrWhiteSpace(labSheetDetailList[0].ResultsRecordedBy))
             {
-                Assert.IsFalse(string.IsNullOrWhiteSpace(labSheetDetailList[0].ResultsRecordedBy));
+                Assert.False(string.IsNullOrWhiteSpace(labSheetDetailList[0].ResultsRecordedBy));
             }
             if (labSheetDetailList[0].ResultsRecordedDate != null)
             {
-                Assert.IsNotNull(labSheetDetailList[0].ResultsRecordedDate);
+                Assert.NotNull(labSheetDetailList[0].ResultsRecordedDate);
             }
             if (labSheetDetailList[0].DailyDuplicateRLog != null)
             {
-                Assert.IsNotNull(labSheetDetailList[0].DailyDuplicateRLog);
+                Assert.NotNull(labSheetDetailList[0].DailyDuplicateRLog);
             }
             if (labSheetDetailList[0].DailyDuplicatePrecisionCriteria != null)
             {
-                Assert.IsNotNull(labSheetDetailList[0].DailyDuplicatePrecisionCriteria);
+                Assert.NotNull(labSheetDetailList[0].DailyDuplicatePrecisionCriteria);
             }
             if (labSheetDetailList[0].DailyDuplicateAcceptable != null)
             {
-                Assert.IsNotNull(labSheetDetailList[0].DailyDuplicateAcceptable);
+                Assert.NotNull(labSheetDetailList[0].DailyDuplicateAcceptable);
             }
             if (labSheetDetailList[0].IntertechDuplicateRLog != null)
             {
-                Assert.IsNotNull(labSheetDetailList[0].IntertechDuplicateRLog);
+                Assert.NotNull(labSheetDetailList[0].IntertechDuplicateRLog);
             }
             if (labSheetDetailList[0].IntertechDuplicatePrecisionCriteria != null)
             {
-                Assert.IsNotNull(labSheetDetailList[0].IntertechDuplicatePrecisionCriteria);
+                Assert.NotNull(labSheetDetailList[0].IntertechDuplicatePrecisionCriteria);
             }
             if (labSheetDetailList[0].IntertechDuplicateAcceptable != null)
             {
-                Assert.IsNotNull(labSheetDetailList[0].IntertechDuplicateAcceptable);
+                Assert.NotNull(labSheetDetailList[0].IntertechDuplicateAcceptable);
             }
             if (labSheetDetailList[0].IntertechReadAcceptable != null)
             {
-                Assert.IsNotNull(labSheetDetailList[0].IntertechReadAcceptable);
+                Assert.NotNull(labSheetDetailList[0].IntertechReadAcceptable);
             }
-            Assert.IsNotNull(labSheetDetailList[0].LastUpdateDate_UTC);
-            Assert.IsNotNull(labSheetDetailList[0].LastUpdateContactTVItemID);
-            Assert.IsNotNull(labSheetDetailList[0].HasErrors);
+            Assert.NotNull(labSheetDetailList[0].LastUpdateDate_UTC);
+            Assert.NotNull(labSheetDetailList[0].LastUpdateContactTVItemID);
+            Assert.NotNull(labSheetDetailList[0].HasErrors);
         }
         private LabSheetDetail GetFilledRandomLabSheetDetail(string OmitPropName)
         {

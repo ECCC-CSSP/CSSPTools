@@ -6,7 +6,7 @@
  */ 
 using System;
 using System.Text;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using System.Linq;
 using System.Globalization;
 using System.Transactions;
@@ -19,7 +19,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace CSSPModels.Tests
 {
-    [TestClass]
+
     public partial class MikeBoundaryConditionTest
     {
         #region Variables
@@ -37,7 +37,7 @@ namespace CSSPModels.Tests
         #endregion Constructors
 
         #region Tests Functions public
-        [TestMethod]
+        [Fact]
         public void MikeBoundaryCondition_Properties_Test()
         {
             List<string> propNameList = new List<string>() { "MikeBoundaryConditionID", "MikeBoundaryConditionTVItemID", "MikeBoundaryConditionCode", "MikeBoundaryConditionName", "MikeBoundaryConditionLength_m", "MikeBoundaryConditionFormat", "MikeBoundaryConditionLevelOrVelocity", "WebTideDataSet", "NumberOfWebTideNodes", "WebTideDataFromStartToEndDate", "TVType", "LastUpdateDate_UTC", "LastUpdateContactTVItemID",  }.OrderBy(c => c).ToList();
@@ -50,12 +50,12 @@ namespace CSSPModels.Tests
                     && propertyInfo.Name != "ValidationResults"
                     && !propertyInfo.CustomAttributes.Where(c => c.AttributeType.Name.Contains("NotMappedAttribute")).Any())
                 {
-                    Assert.AreEqual(propNameList[index], propertyInfo.Name);
+                    Assert.Equal(propNameList[index], propertyInfo.Name);
                     index += 1;
                 }
             }
 
-            Assert.AreEqual(propNameList.Count, index);
+            Assert.Equal(propNameList.Count, index);
 
             index = 0;
             foreach (PropertyInfo propertyInfo in typeof(MikeBoundaryCondition).GetProperties().Where(c => c.Name != "ValidationResults").OrderBy(c => c.Name).ToList())
@@ -64,16 +64,16 @@ namespace CSSPModels.Tests
                 {
                     if (customAttributeData.AttributeType.Name == "NotMappedAttribute")
                     {
-                        Assert.AreEqual(propertyInfo.Name, propNameNotMappedList[index]);
+                        Assert.Equal(propertyInfo.Name, propNameNotMappedList[index]);
                         index += 1;
                     }
                 }
             }
 
-            Assert.AreEqual(propNameNotMappedList.Count, index);
+            Assert.Equal(propNameNotMappedList.Count, index);
 
         }
-        [TestMethod]
+        [Fact]
         public void MikeBoundaryCondition_Navigation_Test()
         {
             List<string> foreignNameList = new List<string>() {  }.OrderBy(c => c).ToList();
@@ -84,79 +84,79 @@ namespace CSSPModels.Tests
             {
                 if (propertyInfo.GetGetMethod().IsVirtual && !propertyInfo.GetGetMethod().ReturnType.Name.StartsWith("ICollection"))
                 {
-                    Assert.IsTrue(foreignNameList.Contains(propertyInfo.Name));
+                    Assert.True(foreignNameList.Contains(propertyInfo.Name));
                     index += 1;
                 }
             }
 
-            Assert.AreEqual(foreignNameList.Count, index);
+            Assert.Equal(foreignNameList.Count, index);
 
             index = 0;
             foreach (PropertyInfo propertyInfo in typeof(MikeBoundaryCondition).GetProperties().Where(c => c.Name != "ValidationResults").OrderBy(c => c.Name).ToList())
             {
                 if (propertyInfo.GetGetMethod().ReturnType.Name.StartsWith("ICollection"))
                 {
-                    Assert.IsTrue(foreignNameCollectionList.Contains(propertyInfo.Name));
+                    Assert.True(foreignNameCollectionList.Contains(propertyInfo.Name));
                     index += 1;
                 }
             }
 
-            Assert.AreEqual(foreignNameCollectionList.Count, index);
+            Assert.Equal(foreignNameCollectionList.Count, index);
 
         }
-        [TestMethod]
+        [Fact]
         public void MikeBoundaryCondition_Has_ValidationResults_Test()
         {
-             Assert.IsTrue(typeof(MikeBoundaryCondition).GetProperties().Where(c => c.Name == "ValidationResults").Any());
+             Assert.True(typeof(MikeBoundaryCondition).GetProperties().Where(c => c.Name == "ValidationResults").Any());
         }
-        [TestMethod]
+        [Fact]
         public void MikeBoundaryCondition_Every_Property_Has_Get_Set_Test()
         {
                int val1 = 45;
                mikeBoundaryCondition.MikeBoundaryConditionID = val1;
-               Assert.AreEqual(val1, mikeBoundaryCondition.MikeBoundaryConditionID);
+               Assert.Equal(val1, mikeBoundaryCondition.MikeBoundaryConditionID);
                int val2 = 45;
                mikeBoundaryCondition.MikeBoundaryConditionTVItemID = val2;
-               Assert.AreEqual(val2, mikeBoundaryCondition.MikeBoundaryConditionTVItemID);
+               Assert.Equal(val2, mikeBoundaryCondition.MikeBoundaryConditionTVItemID);
                string val3 = "Some text";
                mikeBoundaryCondition.MikeBoundaryConditionCode = val3;
-               Assert.AreEqual(val3, mikeBoundaryCondition.MikeBoundaryConditionCode);
+               Assert.Equal(val3, mikeBoundaryCondition.MikeBoundaryConditionCode);
                string val4 = "Some text";
                mikeBoundaryCondition.MikeBoundaryConditionName = val4;
-               Assert.AreEqual(val4, mikeBoundaryCondition.MikeBoundaryConditionName);
+               Assert.Equal(val4, mikeBoundaryCondition.MikeBoundaryConditionName);
                double val5 = 87.9D;
                mikeBoundaryCondition.MikeBoundaryConditionLength_m = val5;
-               Assert.AreEqual(val5, mikeBoundaryCondition.MikeBoundaryConditionLength_m);
+               Assert.Equal(val5, mikeBoundaryCondition.MikeBoundaryConditionLength_m);
                string val6 = "Some text";
                mikeBoundaryCondition.MikeBoundaryConditionFormat = val6;
-               Assert.AreEqual(val6, mikeBoundaryCondition.MikeBoundaryConditionFormat);
+               Assert.Equal(val6, mikeBoundaryCondition.MikeBoundaryConditionFormat);
                MikeBoundaryConditionLevelOrVelocityEnum val7 = (MikeBoundaryConditionLevelOrVelocityEnum)3;
                mikeBoundaryCondition.MikeBoundaryConditionLevelOrVelocity = val7;
-               Assert.AreEqual(val7, mikeBoundaryCondition.MikeBoundaryConditionLevelOrVelocity);
+               Assert.Equal(val7, mikeBoundaryCondition.MikeBoundaryConditionLevelOrVelocity);
                WebTideDataSetEnum val8 = (WebTideDataSetEnum)3;
                mikeBoundaryCondition.WebTideDataSet = val8;
-               Assert.AreEqual(val8, mikeBoundaryCondition.WebTideDataSet);
+               Assert.Equal(val8, mikeBoundaryCondition.WebTideDataSet);
                int val9 = 45;
                mikeBoundaryCondition.NumberOfWebTideNodes = val9;
-               Assert.AreEqual(val9, mikeBoundaryCondition.NumberOfWebTideNodes);
+               Assert.Equal(val9, mikeBoundaryCondition.NumberOfWebTideNodes);
                string val10 = "Some text";
                mikeBoundaryCondition.WebTideDataFromStartToEndDate = val10;
-               Assert.AreEqual(val10, mikeBoundaryCondition.WebTideDataFromStartToEndDate);
+               Assert.Equal(val10, mikeBoundaryCondition.WebTideDataFromStartToEndDate);
                TVTypeEnum val11 = (TVTypeEnum)3;
                mikeBoundaryCondition.TVType = val11;
-               Assert.AreEqual(val11, mikeBoundaryCondition.TVType);
+               Assert.Equal(val11, mikeBoundaryCondition.TVType);
                DateTime val12 = new DateTime(2010, 3, 4);
                mikeBoundaryCondition.LastUpdateDate_UTC = val12;
-               Assert.AreEqual(val12, mikeBoundaryCondition.LastUpdateDate_UTC);
+               Assert.Equal(val12, mikeBoundaryCondition.LastUpdateDate_UTC);
                int val13 = 45;
                mikeBoundaryCondition.LastUpdateContactTVItemID = val13;
-               Assert.AreEqual(val13, mikeBoundaryCondition.LastUpdateContactTVItemID);
+               Assert.Equal(val13, mikeBoundaryCondition.LastUpdateContactTVItemID);
                bool val14 = true;
                mikeBoundaryCondition.HasErrors = val14;
-               Assert.AreEqual(val14, mikeBoundaryCondition.HasErrors);
+               Assert.Equal(val14, mikeBoundaryCondition.HasErrors);
                IEnumerable<ValidationResult> val45 = new List<ValidationResult>() { new ValidationResult("First CSSPError Message") }.AsEnumerable();
                mikeBoundaryCondition.ValidationResults = val45;
-               Assert.AreEqual(val45, mikeBoundaryCondition.ValidationResults);
+               Assert.Equal(val45, mikeBoundaryCondition.ValidationResults);
         }
         #endregion Tests Functions public
     }

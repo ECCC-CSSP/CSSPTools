@@ -5,7 +5,7 @@
  */ 
 
 using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using System.Linq;
 using System.Collections.Generic;
 using CSSPModels;
@@ -21,7 +21,7 @@ using CSSPEnums.Resources;
 
 namespace CSSPServices.Tests
 {
-    [TestClass]
+
     public partial class EmailDistributionListServiceTest : TestHelper
     {
         #region Variables
@@ -39,7 +39,7 @@ namespace CSSPServices.Tests
         #endregion Constructors
 
         #region Tests Generated CRUD
-        [TestMethod]
+        [Fact]
         public void EmailDistributionList_CRUD_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -66,26 +66,26 @@ namespace CSSPServices.Tests
 
                     count = emailDistributionListService.GetEmailDistributionListList().Count();
 
-                    Assert.AreEqual(count, (from c in dbTestDB.EmailDistributionLists select c).Count());
+                    Assert.Equal(count, (from c in dbTestDB.EmailDistributionLists select c).Count());
 
                     emailDistributionListService.Add(emailDistributionList);
                     if (emailDistributionList.HasErrors)
                     {
-                        Assert.AreEqual("", emailDistributionList.ValidationResults.FirstOrDefault().ErrorMessage);
+                        Assert.Equal("", emailDistributionList.ValidationResults.FirstOrDefault().ErrorMessage);
                     }
-                    Assert.AreEqual(true, emailDistributionListService.GetEmailDistributionListList().Where(c => c == emailDistributionList).Any());
+                    Assert.True(emailDistributionListService.GetEmailDistributionListList().Where(c => c == emailDistributionList).Any());
                     emailDistributionListService.Update(emailDistributionList);
                     if (emailDistributionList.HasErrors)
                     {
-                        Assert.AreEqual("", emailDistributionList.ValidationResults.FirstOrDefault().ErrorMessage);
+                        Assert.Equal("", emailDistributionList.ValidationResults.FirstOrDefault().ErrorMessage);
                     }
-                    Assert.AreEqual(count + 1, emailDistributionListService.GetEmailDistributionListList().Count());
+                    Assert.Equal(count + 1, emailDistributionListService.GetEmailDistributionListList().Count());
                     emailDistributionListService.Delete(emailDistributionList);
                     if (emailDistributionList.HasErrors)
                     {
-                        Assert.AreEqual("", emailDistributionList.ValidationResults.FirstOrDefault().ErrorMessage);
+                        Assert.Equal("", emailDistributionList.ValidationResults.FirstOrDefault().ErrorMessage);
                     }
-                    Assert.AreEqual(count, emailDistributionListService.GetEmailDistributionListList().Count());
+                    Assert.Equal(count, emailDistributionListService.GetEmailDistributionListList().Count());
 
                 }
             }
@@ -93,7 +93,7 @@ namespace CSSPServices.Tests
         #endregion Tests Generated CRUD
 
         #region Tests Generated Properties
-        [TestMethod]
+        [Fact]
         public void EmailDistributionList_Properties_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -131,13 +131,13 @@ namespace CSSPServices.Tests
                     emailDistributionList = GetFilledRandomEmailDistributionList("");
                     emailDistributionList.EmailDistributionListID = 0;
                     emailDistributionListService.Update(emailDistributionList);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsRequired, "EmailDistributionListID"), emailDistributionList.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsRequired, "EmailDistributionListID"), emailDistributionList.ValidationResults.FirstOrDefault().ErrorMessage);
 
                     emailDistributionList = null;
                     emailDistributionList = GetFilledRandomEmailDistributionList("");
                     emailDistributionList.EmailDistributionListID = 10000000;
                     emailDistributionListService.Update(emailDistributionList);
-                    Assert.AreEqual(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "EmailDistributionList", "EmailDistributionListID", emailDistributionList.EmailDistributionListID.ToString()), emailDistributionList.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "EmailDistributionList", "EmailDistributionListID", emailDistributionList.EmailDistributionListID.ToString()), emailDistributionList.ValidationResults.FirstOrDefault().ErrorMessage);
 
 
                     // -----------------------------------
@@ -150,13 +150,13 @@ namespace CSSPServices.Tests
                     emailDistributionList = GetFilledRandomEmailDistributionList("");
                     emailDistributionList.ParentTVItemID = 0;
                     emailDistributionListService.Add(emailDistributionList);
-                    Assert.AreEqual(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "TVItem", "ParentTVItemID", emailDistributionList.ParentTVItemID.ToString()), emailDistributionList.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "TVItem", "ParentTVItemID", emailDistributionList.ParentTVItemID.ToString()), emailDistributionList.ValidationResults.FirstOrDefault().ErrorMessage);
 
                     emailDistributionList = null;
                     emailDistributionList = GetFilledRandomEmailDistributionList("");
                     emailDistributionList.ParentTVItemID = 1;
                     emailDistributionListService.Add(emailDistributionList);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsNotOfType_, "ParentTVItemID", "Country"), emailDistributionList.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsNotOfType_, "ParentTVItemID", "Country"), emailDistributionList.ValidationResults.FirstOrDefault().ErrorMessage);
 
 
                     // -----------------------------------
@@ -168,15 +168,15 @@ namespace CSSPServices.Tests
                     emailDistributionList = null;
                     emailDistributionList = GetFilledRandomEmailDistributionList("");
                     emailDistributionList.Ordinal = -1;
-                    Assert.AreEqual(false, emailDistributionListService.Add(emailDistributionList));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "Ordinal", "0", "1000"), emailDistributionList.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, emailDistributionListService.GetEmailDistributionListList().Count());
+                    Assert.False(emailDistributionListService.Add(emailDistributionList));
+                    Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "Ordinal", "0", "1000"), emailDistributionList.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, emailDistributionListService.GetEmailDistributionListList().Count());
                     emailDistributionList = null;
                     emailDistributionList = GetFilledRandomEmailDistributionList("");
                     emailDistributionList.Ordinal = 1001;
-                    Assert.AreEqual(false, emailDistributionListService.Add(emailDistributionList));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "Ordinal", "0", "1000"), emailDistributionList.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, emailDistributionListService.GetEmailDistributionListList().Count());
+                    Assert.False(emailDistributionListService.Add(emailDistributionList));
+                    Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "Ordinal", "0", "1000"), emailDistributionList.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, emailDistributionListService.GetEmailDistributionListList().Count());
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -188,12 +188,12 @@ namespace CSSPServices.Tests
                     emailDistributionList = GetFilledRandomEmailDistributionList("");
                     emailDistributionList.LastUpdateDate_UTC = new DateTime();
                     emailDistributionListService.Add(emailDistributionList);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsRequired, "LastUpdateDate_UTC"), emailDistributionList.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsRequired, "LastUpdateDate_UTC"), emailDistributionList.ValidationResults.FirstOrDefault().ErrorMessage);
                     emailDistributionList = null;
                     emailDistributionList = GetFilledRandomEmailDistributionList("");
                     emailDistributionList.LastUpdateDate_UTC = new DateTime(1979, 1, 1);
                     emailDistributionListService.Add(emailDistributionList);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._YearShouldBeBiggerThan_, "LastUpdateDate_UTC", "1980"), emailDistributionList.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._YearShouldBeBiggerThan_, "LastUpdateDate_UTC", "1980"), emailDistributionList.ValidationResults.FirstOrDefault().ErrorMessage);
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -205,13 +205,13 @@ namespace CSSPServices.Tests
                     emailDistributionList = GetFilledRandomEmailDistributionList("");
                     emailDistributionList.LastUpdateContactTVItemID = 0;
                     emailDistributionListService.Add(emailDistributionList);
-                    Assert.AreEqual(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "TVItem", "LastUpdateContactTVItemID", emailDistributionList.LastUpdateContactTVItemID.ToString()), emailDistributionList.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "TVItem", "LastUpdateContactTVItemID", emailDistributionList.LastUpdateContactTVItemID.ToString()), emailDistributionList.ValidationResults.FirstOrDefault().ErrorMessage);
 
                     emailDistributionList = null;
                     emailDistributionList = GetFilledRandomEmailDistributionList("");
                     emailDistributionList.LastUpdateContactTVItemID = 1;
                     emailDistributionListService.Add(emailDistributionList);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsNotOfType_, "LastUpdateContactTVItemID", "Contact"), emailDistributionList.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsNotOfType_, "LastUpdateContactTVItemID", "Contact"), emailDistributionList.ValidationResults.FirstOrDefault().ErrorMessage);
 
 
                     // -----------------------------------
@@ -235,7 +235,7 @@ namespace CSSPServices.Tests
         #endregion Tests Generated Properties
 
         #region Tests Generated for GetEmailDistributionListWithEmailDistributionListID(emailDistributionList.EmailDistributionListID)
-        [TestMethod]
+        [Fact]
         public void GetEmailDistributionListWithEmailDistributionListID__emailDistributionList_EmailDistributionListID__Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -246,7 +246,7 @@ namespace CSSPServices.Tests
                 {
                     EmailDistributionListService emailDistributionListService = new EmailDistributionListService(new Query() { Lang = culture.TwoLetterISOLanguageName }, dbTestDB, ContactID);
                     EmailDistributionList emailDistributionList = (from c in dbTestDB.EmailDistributionLists select c).FirstOrDefault();
-                    Assert.IsNotNull(emailDistributionList);
+                    Assert.NotNull(emailDistributionList);
 
                 }
             }
@@ -254,7 +254,7 @@ namespace CSSPServices.Tests
         #endregion Tests Generated for GetEmailDistributionListWithEmailDistributionListID(emailDistributionList.EmailDistributionListID)
 
         #region Tests Generated for GetEmailDistributionListList()
-        [TestMethod]
+        [Fact]
         public void GetEmailDistributionListList_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -265,7 +265,7 @@ namespace CSSPServices.Tests
                 {
                     EmailDistributionListService emailDistributionListService = new EmailDistributionListService(new Query() { Lang = culture.TwoLetterISOLanguageName }, dbTestDB, ContactID);
                     EmailDistributionList emailDistributionList = (from c in dbTestDB.EmailDistributionLists select c).FirstOrDefault();
-                    Assert.IsNotNull(emailDistributionList);
+                    Assert.NotNull(emailDistributionList);
 
                     List<EmailDistributionList> emailDistributionListDirectQueryList = new List<EmailDistributionList>();
                     emailDistributionListDirectQueryList = (from c in dbTestDB.EmailDistributionLists select c).Take(200).ToList();
@@ -276,7 +276,7 @@ namespace CSSPServices.Tests
         #endregion Tests Generated for GetEmailDistributionListList()
 
         #region Tests Generated for GetEmailDistributionListList() Skip Take
-        [TestMethod]
+        [Fact]
         public void GetEmailDistributionListList_Skip_Take_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -295,14 +295,14 @@ namespace CSSPServices.Tests
                         List<EmailDistributionList> emailDistributionListList = new List<EmailDistributionList>();
                         emailDistributionListList = emailDistributionListService.GetEmailDistributionListList().ToList();
                         CheckEmailDistributionListFields(emailDistributionListList);
-                        Assert.AreEqual(emailDistributionListDirectQueryList[0].EmailDistributionListID, emailDistributionListList[0].EmailDistributionListID);
+                        Assert.Equal(emailDistributionListDirectQueryList[0].EmailDistributionListID, emailDistributionListList[0].EmailDistributionListID);
                 }
             }
         }
         #endregion Tests Generated for GetEmailDistributionListList() Skip Take
 
         #region Tests Generated for GetEmailDistributionListList() Skip Take Asc
-        [TestMethod]
+        [Fact]
         public void GetEmailDistributionListList_Skip_Take_Asc_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -321,14 +321,14 @@ namespace CSSPServices.Tests
                         List<EmailDistributionList> emailDistributionListList = new List<EmailDistributionList>();
                         emailDistributionListList = emailDistributionListService.GetEmailDistributionListList().ToList();
                         CheckEmailDistributionListFields(emailDistributionListList);
-                        Assert.AreEqual(emailDistributionListDirectQueryList[0].EmailDistributionListID, emailDistributionListList[0].EmailDistributionListID);
+                        Assert.Equal(emailDistributionListDirectQueryList[0].EmailDistributionListID, emailDistributionListList[0].EmailDistributionListID);
                 }
             }
         }
         #endregion Tests Generated for GetEmailDistributionListList() Skip Take Asc
 
         #region Tests Generated for GetEmailDistributionListList() Skip Take 2 Asc
-        [TestMethod]
+        [Fact]
         public void GetEmailDistributionListList_Skip_Take_2Asc_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -347,14 +347,14 @@ namespace CSSPServices.Tests
                         List<EmailDistributionList> emailDistributionListList = new List<EmailDistributionList>();
                         emailDistributionListList = emailDistributionListService.GetEmailDistributionListList().ToList();
                         CheckEmailDistributionListFields(emailDistributionListList);
-                        Assert.AreEqual(emailDistributionListDirectQueryList[0].EmailDistributionListID, emailDistributionListList[0].EmailDistributionListID);
+                        Assert.Equal(emailDistributionListDirectQueryList[0].EmailDistributionListID, emailDistributionListList[0].EmailDistributionListID);
                 }
             }
         }
         #endregion Tests Generated for GetEmailDistributionListList() Skip Take 2 Asc
 
         #region Tests Generated for GetEmailDistributionListList() Skip Take Asc Where
-        [TestMethod]
+        [Fact]
         public void GetEmailDistributionListList_Skip_Take_Asc_Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -373,14 +373,14 @@ namespace CSSPServices.Tests
                         List<EmailDistributionList> emailDistributionListList = new List<EmailDistributionList>();
                         emailDistributionListList = emailDistributionListService.GetEmailDistributionListList().ToList();
                         CheckEmailDistributionListFields(emailDistributionListList);
-                        Assert.AreEqual(emailDistributionListDirectQueryList[0].EmailDistributionListID, emailDistributionListList[0].EmailDistributionListID);
+                        Assert.Equal(emailDistributionListDirectQueryList[0].EmailDistributionListID, emailDistributionListList[0].EmailDistributionListID);
                 }
             }
         }
         #endregion Tests Generated for GetEmailDistributionListList() Skip Take Asc Where
 
         #region Tests Generated for GetEmailDistributionListList() Skip Take Asc 2 Where
-        [TestMethod]
+        [Fact]
         public void GetEmailDistributionListList_Skip_Take_Asc_2Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -399,14 +399,14 @@ namespace CSSPServices.Tests
                         List<EmailDistributionList> emailDistributionListList = new List<EmailDistributionList>();
                         emailDistributionListList = emailDistributionListService.GetEmailDistributionListList().ToList();
                         CheckEmailDistributionListFields(emailDistributionListList);
-                        Assert.AreEqual(emailDistributionListDirectQueryList[0].EmailDistributionListID, emailDistributionListList[0].EmailDistributionListID);
+                        Assert.Equal(emailDistributionListDirectQueryList[0].EmailDistributionListID, emailDistributionListList[0].EmailDistributionListID);
                 }
             }
         }
         #endregion Tests Generated for GetEmailDistributionListList() Skip Take Asc 2 Where
 
         #region Tests Generated for GetEmailDistributionListList() Skip Take Desc
-        [TestMethod]
+        [Fact]
         public void GetEmailDistributionListList_Skip_Take_Desc_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -425,14 +425,14 @@ namespace CSSPServices.Tests
                         List<EmailDistributionList> emailDistributionListList = new List<EmailDistributionList>();
                         emailDistributionListList = emailDistributionListService.GetEmailDistributionListList().ToList();
                         CheckEmailDistributionListFields(emailDistributionListList);
-                        Assert.AreEqual(emailDistributionListDirectQueryList[0].EmailDistributionListID, emailDistributionListList[0].EmailDistributionListID);
+                        Assert.Equal(emailDistributionListDirectQueryList[0].EmailDistributionListID, emailDistributionListList[0].EmailDistributionListID);
                 }
             }
         }
         #endregion Tests Generated for GetEmailDistributionListList() Skip Take Desc
 
         #region Tests Generated for GetEmailDistributionListList() Skip Take 2 Desc
-        [TestMethod]
+        [Fact]
         public void GetEmailDistributionListList_Skip_Take_2Desc_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -451,14 +451,14 @@ namespace CSSPServices.Tests
                         List<EmailDistributionList> emailDistributionListList = new List<EmailDistributionList>();
                         emailDistributionListList = emailDistributionListService.GetEmailDistributionListList().ToList();
                         CheckEmailDistributionListFields(emailDistributionListList);
-                        Assert.AreEqual(emailDistributionListDirectQueryList[0].EmailDistributionListID, emailDistributionListList[0].EmailDistributionListID);
+                        Assert.Equal(emailDistributionListDirectQueryList[0].EmailDistributionListID, emailDistributionListList[0].EmailDistributionListID);
                 }
             }
         }
         #endregion Tests Generated for GetEmailDistributionListList() Skip Take 2 Desc
 
         #region Tests Generated for GetEmailDistributionListList() Skip Take Desc Where
-        [TestMethod]
+        [Fact]
         public void GetEmailDistributionListList_Skip_Take_Desc_Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -477,14 +477,14 @@ namespace CSSPServices.Tests
                         List<EmailDistributionList> emailDistributionListList = new List<EmailDistributionList>();
                         emailDistributionListList = emailDistributionListService.GetEmailDistributionListList().ToList();
                         CheckEmailDistributionListFields(emailDistributionListList);
-                        Assert.AreEqual(emailDistributionListDirectQueryList[0].EmailDistributionListID, emailDistributionListList[0].EmailDistributionListID);
+                        Assert.Equal(emailDistributionListDirectQueryList[0].EmailDistributionListID, emailDistributionListList[0].EmailDistributionListID);
                 }
             }
         }
         #endregion Tests Generated for GetEmailDistributionListList() Skip Take Desc Where
 
         #region Tests Generated for GetEmailDistributionListList() Skip Take Desc 2 Where
-        [TestMethod]
+        [Fact]
         public void GetEmailDistributionListList_Skip_Take_Desc_2Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -503,14 +503,14 @@ namespace CSSPServices.Tests
                         List<EmailDistributionList> emailDistributionListList = new List<EmailDistributionList>();
                         emailDistributionListList = emailDistributionListService.GetEmailDistributionListList().ToList();
                         CheckEmailDistributionListFields(emailDistributionListList);
-                        Assert.AreEqual(emailDistributionListDirectQueryList[0].EmailDistributionListID, emailDistributionListList[0].EmailDistributionListID);
+                        Assert.Equal(emailDistributionListDirectQueryList[0].EmailDistributionListID, emailDistributionListList[0].EmailDistributionListID);
                 }
             }
         }
         #endregion Tests Generated for GetEmailDistributionListList() Skip Take Desc 2 Where
 
         #region Tests Generated for GetEmailDistributionListList() 2 Where
-        [TestMethod]
+        [Fact]
         public void GetEmailDistributionListList_2Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -529,7 +529,7 @@ namespace CSSPServices.Tests
                         List<EmailDistributionList> emailDistributionListList = new List<EmailDistributionList>();
                         emailDistributionListList = emailDistributionListService.GetEmailDistributionListList().ToList();
                         CheckEmailDistributionListFields(emailDistributionListList);
-                        Assert.AreEqual(emailDistributionListDirectQueryList[0].EmailDistributionListID, emailDistributionListList[0].EmailDistributionListID);
+                        Assert.Equal(emailDistributionListDirectQueryList[0].EmailDistributionListID, emailDistributionListList[0].EmailDistributionListID);
                 }
             }
         }
@@ -538,12 +538,12 @@ namespace CSSPServices.Tests
         #region Functions private
         private void CheckEmailDistributionListFields(List<EmailDistributionList> emailDistributionListList)
         {
-            Assert.IsNotNull(emailDistributionListList[0].EmailDistributionListID);
-            Assert.IsNotNull(emailDistributionListList[0].ParentTVItemID);
-            Assert.IsNotNull(emailDistributionListList[0].Ordinal);
-            Assert.IsNotNull(emailDistributionListList[0].LastUpdateDate_UTC);
-            Assert.IsNotNull(emailDistributionListList[0].LastUpdateContactTVItemID);
-            Assert.IsNotNull(emailDistributionListList[0].HasErrors);
+            Assert.NotNull(emailDistributionListList[0].EmailDistributionListID);
+            Assert.NotNull(emailDistributionListList[0].ParentTVItemID);
+            Assert.NotNull(emailDistributionListList[0].Ordinal);
+            Assert.NotNull(emailDistributionListList[0].LastUpdateDate_UTC);
+            Assert.NotNull(emailDistributionListList[0].LastUpdateContactTVItemID);
+            Assert.NotNull(emailDistributionListList[0].HasErrors);
         }
         private EmailDistributionList GetFilledRandomEmailDistributionList(string OmitPropName)
         {

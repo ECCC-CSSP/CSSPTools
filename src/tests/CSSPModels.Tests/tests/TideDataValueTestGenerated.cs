@@ -6,7 +6,7 @@
  */ 
 using System;
 using System.Text;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using System.Linq;
 using System.Globalization;
 using System.Transactions;
@@ -19,7 +19,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace CSSPModels.Tests
 {
-    [TestClass]
+
     public partial class TideDataValueTest
     {
         #region Variables
@@ -37,7 +37,7 @@ namespace CSSPModels.Tests
         #endregion Constructors
 
         #region Tests Functions public
-        [TestMethod]
+        [Fact]
         public void TideDataValue_Properties_Test()
         {
             List<string> propNameList = new List<string>() { "TideDataValueID", "TideSiteTVItemID", "DateTime_Local", "Keep", "TideDataType", "StorageDataType", "Depth_m", "UVelocity_m_s", "VVelocity_m_s", "TideStart", "TideEnd", "LastUpdateDate_UTC", "LastUpdateContactTVItemID",  }.OrderBy(c => c).ToList();
@@ -50,12 +50,12 @@ namespace CSSPModels.Tests
                     && propertyInfo.Name != "ValidationResults"
                     && !propertyInfo.CustomAttributes.Where(c => c.AttributeType.Name.Contains("NotMappedAttribute")).Any())
                 {
-                    Assert.AreEqual(propNameList[index], propertyInfo.Name);
+                    Assert.Equal(propNameList[index], propertyInfo.Name);
                     index += 1;
                 }
             }
 
-            Assert.AreEqual(propNameList.Count, index);
+            Assert.Equal(propNameList.Count, index);
 
             index = 0;
             foreach (PropertyInfo propertyInfo in typeof(TideDataValue).GetProperties().Where(c => c.Name != "ValidationResults").OrderBy(c => c.Name).ToList())
@@ -64,16 +64,16 @@ namespace CSSPModels.Tests
                 {
                     if (customAttributeData.AttributeType.Name == "NotMappedAttribute")
                     {
-                        Assert.AreEqual(propertyInfo.Name, propNameNotMappedList[index]);
+                        Assert.Equal(propertyInfo.Name, propNameNotMappedList[index]);
                         index += 1;
                     }
                 }
             }
 
-            Assert.AreEqual(propNameNotMappedList.Count, index);
+            Assert.Equal(propNameNotMappedList.Count, index);
 
         }
-        [TestMethod]
+        [Fact]
         public void TideDataValue_Navigation_Test()
         {
             List<string> foreignNameList = new List<string>() {  }.OrderBy(c => c).ToList();
@@ -84,79 +84,79 @@ namespace CSSPModels.Tests
             {
                 if (propertyInfo.GetGetMethod().IsVirtual && !propertyInfo.GetGetMethod().ReturnType.Name.StartsWith("ICollection"))
                 {
-                    Assert.IsTrue(foreignNameList.Contains(propertyInfo.Name));
+                    Assert.True(foreignNameList.Contains(propertyInfo.Name));
                     index += 1;
                 }
             }
 
-            Assert.AreEqual(foreignNameList.Count, index);
+            Assert.Equal(foreignNameList.Count, index);
 
             index = 0;
             foreach (PropertyInfo propertyInfo in typeof(TideDataValue).GetProperties().Where(c => c.Name != "ValidationResults").OrderBy(c => c.Name).ToList())
             {
                 if (propertyInfo.GetGetMethod().ReturnType.Name.StartsWith("ICollection"))
                 {
-                    Assert.IsTrue(foreignNameCollectionList.Contains(propertyInfo.Name));
+                    Assert.True(foreignNameCollectionList.Contains(propertyInfo.Name));
                     index += 1;
                 }
             }
 
-            Assert.AreEqual(foreignNameCollectionList.Count, index);
+            Assert.Equal(foreignNameCollectionList.Count, index);
 
         }
-        [TestMethod]
+        [Fact]
         public void TideDataValue_Has_ValidationResults_Test()
         {
-             Assert.IsTrue(typeof(TideDataValue).GetProperties().Where(c => c.Name == "ValidationResults").Any());
+             Assert.True(typeof(TideDataValue).GetProperties().Where(c => c.Name == "ValidationResults").Any());
         }
-        [TestMethod]
+        [Fact]
         public void TideDataValue_Every_Property_Has_Get_Set_Test()
         {
                int val1 = 45;
                tideDataValue.TideDataValueID = val1;
-               Assert.AreEqual(val1, tideDataValue.TideDataValueID);
+               Assert.Equal(val1, tideDataValue.TideDataValueID);
                int val2 = 45;
                tideDataValue.TideSiteTVItemID = val2;
-               Assert.AreEqual(val2, tideDataValue.TideSiteTVItemID);
+               Assert.Equal(val2, tideDataValue.TideSiteTVItemID);
                DateTime val3 = new DateTime(2010, 3, 4);
                tideDataValue.DateTime_Local = val3;
-               Assert.AreEqual(val3, tideDataValue.DateTime_Local);
+               Assert.Equal(val3, tideDataValue.DateTime_Local);
                bool val4 = true;
                tideDataValue.Keep = val4;
-               Assert.AreEqual(val4, tideDataValue.Keep);
+               Assert.Equal(val4, tideDataValue.Keep);
                TideDataTypeEnum val5 = (TideDataTypeEnum)3;
                tideDataValue.TideDataType = val5;
-               Assert.AreEqual(val5, tideDataValue.TideDataType);
+               Assert.Equal(val5, tideDataValue.TideDataType);
                StorageDataTypeEnum val6 = (StorageDataTypeEnum)3;
                tideDataValue.StorageDataType = val6;
-               Assert.AreEqual(val6, tideDataValue.StorageDataType);
+               Assert.Equal(val6, tideDataValue.StorageDataType);
                double val7 = 87.9D;
                tideDataValue.Depth_m = val7;
-               Assert.AreEqual(val7, tideDataValue.Depth_m);
+               Assert.Equal(val7, tideDataValue.Depth_m);
                double val8 = 87.9D;
                tideDataValue.UVelocity_m_s = val8;
-               Assert.AreEqual(val8, tideDataValue.UVelocity_m_s);
+               Assert.Equal(val8, tideDataValue.UVelocity_m_s);
                double val9 = 87.9D;
                tideDataValue.VVelocity_m_s = val9;
-               Assert.AreEqual(val9, tideDataValue.VVelocity_m_s);
+               Assert.Equal(val9, tideDataValue.VVelocity_m_s);
                TideTextEnum val10 = (TideTextEnum)3;
                tideDataValue.TideStart = val10;
-               Assert.AreEqual(val10, tideDataValue.TideStart);
+               Assert.Equal(val10, tideDataValue.TideStart);
                TideTextEnum val11 = (TideTextEnum)3;
                tideDataValue.TideEnd = val11;
-               Assert.AreEqual(val11, tideDataValue.TideEnd);
+               Assert.Equal(val11, tideDataValue.TideEnd);
                DateTime val12 = new DateTime(2010, 3, 4);
                tideDataValue.LastUpdateDate_UTC = val12;
-               Assert.AreEqual(val12, tideDataValue.LastUpdateDate_UTC);
+               Assert.Equal(val12, tideDataValue.LastUpdateDate_UTC);
                int val13 = 45;
                tideDataValue.LastUpdateContactTVItemID = val13;
-               Assert.AreEqual(val13, tideDataValue.LastUpdateContactTVItemID);
+               Assert.Equal(val13, tideDataValue.LastUpdateContactTVItemID);
                bool val14 = true;
                tideDataValue.HasErrors = val14;
-               Assert.AreEqual(val14, tideDataValue.HasErrors);
+               Assert.Equal(val14, tideDataValue.HasErrors);
                IEnumerable<ValidationResult> val45 = new List<ValidationResult>() { new ValidationResult("First CSSPError Message") }.AsEnumerable();
                tideDataValue.ValidationResults = val45;
-               Assert.AreEqual(val45, tideDataValue.ValidationResults);
+               Assert.Equal(val45, tideDataValue.ValidationResults);
         }
         #endregion Tests Functions public
     }

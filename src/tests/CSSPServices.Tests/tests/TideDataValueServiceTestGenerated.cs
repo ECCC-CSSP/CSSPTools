@@ -5,7 +5,7 @@
  */ 
 
 using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using System.Linq;
 using System.Collections.Generic;
 using CSSPModels;
@@ -21,7 +21,7 @@ using CSSPEnums.Resources;
 
 namespace CSSPServices.Tests
 {
-    [TestClass]
+
     public partial class TideDataValueServiceTest : TestHelper
     {
         #region Variables
@@ -39,7 +39,7 @@ namespace CSSPServices.Tests
         #endregion Constructors
 
         #region Tests Generated CRUD
-        [TestMethod]
+        [Fact]
         public void TideDataValue_CRUD_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -66,26 +66,26 @@ namespace CSSPServices.Tests
 
                     count = tideDataValueService.GetTideDataValueList().Count();
 
-                    Assert.AreEqual(count, (from c in dbTestDB.TideDataValues select c).Count());
+                    Assert.Equal(count, (from c in dbTestDB.TideDataValues select c).Count());
 
                     tideDataValueService.Add(tideDataValue);
                     if (tideDataValue.HasErrors)
                     {
-                        Assert.AreEqual("", tideDataValue.ValidationResults.FirstOrDefault().ErrorMessage);
+                        Assert.Equal("", tideDataValue.ValidationResults.FirstOrDefault().ErrorMessage);
                     }
-                    Assert.AreEqual(true, tideDataValueService.GetTideDataValueList().Where(c => c == tideDataValue).Any());
+                    Assert.True(tideDataValueService.GetTideDataValueList().Where(c => c == tideDataValue).Any());
                     tideDataValueService.Update(tideDataValue);
                     if (tideDataValue.HasErrors)
                     {
-                        Assert.AreEqual("", tideDataValue.ValidationResults.FirstOrDefault().ErrorMessage);
+                        Assert.Equal("", tideDataValue.ValidationResults.FirstOrDefault().ErrorMessage);
                     }
-                    Assert.AreEqual(count + 1, tideDataValueService.GetTideDataValueList().Count());
+                    Assert.Equal(count + 1, tideDataValueService.GetTideDataValueList().Count());
                     tideDataValueService.Delete(tideDataValue);
                     if (tideDataValue.HasErrors)
                     {
-                        Assert.AreEqual("", tideDataValue.ValidationResults.FirstOrDefault().ErrorMessage);
+                        Assert.Equal("", tideDataValue.ValidationResults.FirstOrDefault().ErrorMessage);
                     }
-                    Assert.AreEqual(count, tideDataValueService.GetTideDataValueList().Count());
+                    Assert.Equal(count, tideDataValueService.GetTideDataValueList().Count());
 
                 }
             }
@@ -93,7 +93,7 @@ namespace CSSPServices.Tests
         #endregion Tests Generated CRUD
 
         #region Tests Generated Properties
-        [TestMethod]
+        [Fact]
         public void TideDataValue_Properties_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -131,13 +131,13 @@ namespace CSSPServices.Tests
                     tideDataValue = GetFilledRandomTideDataValue("");
                     tideDataValue.TideDataValueID = 0;
                     tideDataValueService.Update(tideDataValue);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsRequired, "TideDataValueID"), tideDataValue.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsRequired, "TideDataValueID"), tideDataValue.ValidationResults.FirstOrDefault().ErrorMessage);
 
                     tideDataValue = null;
                     tideDataValue = GetFilledRandomTideDataValue("");
                     tideDataValue.TideDataValueID = 10000000;
                     tideDataValueService.Update(tideDataValue);
-                    Assert.AreEqual(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "TideDataValue", "TideDataValueID", tideDataValue.TideDataValueID.ToString()), tideDataValue.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "TideDataValue", "TideDataValueID", tideDataValue.TideDataValueID.ToString()), tideDataValue.ValidationResults.FirstOrDefault().ErrorMessage);
 
 
                     // -----------------------------------
@@ -150,13 +150,13 @@ namespace CSSPServices.Tests
                     tideDataValue = GetFilledRandomTideDataValue("");
                     tideDataValue.TideSiteTVItemID = 0;
                     tideDataValueService.Add(tideDataValue);
-                    Assert.AreEqual(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "TVItem", "TideSiteTVItemID", tideDataValue.TideSiteTVItemID.ToString()), tideDataValue.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "TVItem", "TideSiteTVItemID", tideDataValue.TideSiteTVItemID.ToString()), tideDataValue.ValidationResults.FirstOrDefault().ErrorMessage);
 
                     tideDataValue = null;
                     tideDataValue = GetFilledRandomTideDataValue("");
                     tideDataValue.TideSiteTVItemID = 1;
                     tideDataValueService.Add(tideDataValue);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsNotOfType_, "TideSiteTVItemID", "TideSite"), tideDataValue.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsNotOfType_, "TideSiteTVItemID", "TideSite"), tideDataValue.ValidationResults.FirstOrDefault().ErrorMessage);
 
 
                     // -----------------------------------
@@ -169,12 +169,12 @@ namespace CSSPServices.Tests
                     tideDataValue = GetFilledRandomTideDataValue("");
                     tideDataValue.DateTime_Local = new DateTime();
                     tideDataValueService.Add(tideDataValue);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsRequired, "DateTime_Local"), tideDataValue.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsRequired, "DateTime_Local"), tideDataValue.ValidationResults.FirstOrDefault().ErrorMessage);
                     tideDataValue = null;
                     tideDataValue = GetFilledRandomTideDataValue("");
                     tideDataValue.DateTime_Local = new DateTime(1979, 1, 1);
                     tideDataValueService.Add(tideDataValue);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._YearShouldBeBiggerThan_, "DateTime_Local", "1980"), tideDataValue.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._YearShouldBeBiggerThan_, "DateTime_Local", "1980"), tideDataValue.ValidationResults.FirstOrDefault().ErrorMessage);
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -192,7 +192,7 @@ namespace CSSPServices.Tests
                     tideDataValue = GetFilledRandomTideDataValue("");
                     tideDataValue.TideDataType = (TideDataTypeEnum)1000000;
                     tideDataValueService.Add(tideDataValue);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsRequired, "TideDataType"), tideDataValue.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsRequired, "TideDataType"), tideDataValue.ValidationResults.FirstOrDefault().ErrorMessage);
 
 
                     // -----------------------------------
@@ -205,7 +205,7 @@ namespace CSSPServices.Tests
                     tideDataValue = GetFilledRandomTideDataValue("");
                     tideDataValue.StorageDataType = (StorageDataTypeEnum)1000000;
                     tideDataValueService.Add(tideDataValue);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsRequired, "StorageDataType"), tideDataValue.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsRequired, "StorageDataType"), tideDataValue.ValidationResults.FirstOrDefault().ErrorMessage);
 
 
                     // -----------------------------------
@@ -221,15 +221,15 @@ namespace CSSPServices.Tests
                     tideDataValue = null;
                     tideDataValue = GetFilledRandomTideDataValue("");
                     tideDataValue.Depth_m = -1.0D;
-                    Assert.AreEqual(false, tideDataValueService.Add(tideDataValue));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "Depth_m", "0", "10000"), tideDataValue.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, tideDataValueService.GetTideDataValueList().Count());
+                    Assert.False(tideDataValueService.Add(tideDataValue));
+                    Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "Depth_m", "0", "10000"), tideDataValue.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, tideDataValueService.GetTideDataValueList().Count());
                     tideDataValue = null;
                     tideDataValue = GetFilledRandomTideDataValue("");
                     tideDataValue.Depth_m = 10001.0D;
-                    Assert.AreEqual(false, tideDataValueService.Add(tideDataValue));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "Depth_m", "0", "10000"), tideDataValue.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, tideDataValueService.GetTideDataValueList().Count());
+                    Assert.False(tideDataValueService.Add(tideDataValue));
+                    Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "Depth_m", "0", "10000"), tideDataValue.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, tideDataValueService.GetTideDataValueList().Count());
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -244,15 +244,15 @@ namespace CSSPServices.Tests
                     tideDataValue = null;
                     tideDataValue = GetFilledRandomTideDataValue("");
                     tideDataValue.UVelocity_m_s = -1.0D;
-                    Assert.AreEqual(false, tideDataValueService.Add(tideDataValue));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "UVelocity_m_s", "0", "10"), tideDataValue.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, tideDataValueService.GetTideDataValueList().Count());
+                    Assert.False(tideDataValueService.Add(tideDataValue));
+                    Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "UVelocity_m_s", "0", "10"), tideDataValue.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, tideDataValueService.GetTideDataValueList().Count());
                     tideDataValue = null;
                     tideDataValue = GetFilledRandomTideDataValue("");
                     tideDataValue.UVelocity_m_s = 11.0D;
-                    Assert.AreEqual(false, tideDataValueService.Add(tideDataValue));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "UVelocity_m_s", "0", "10"), tideDataValue.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, tideDataValueService.GetTideDataValueList().Count());
+                    Assert.False(tideDataValueService.Add(tideDataValue));
+                    Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "UVelocity_m_s", "0", "10"), tideDataValue.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, tideDataValueService.GetTideDataValueList().Count());
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -267,15 +267,15 @@ namespace CSSPServices.Tests
                     tideDataValue = null;
                     tideDataValue = GetFilledRandomTideDataValue("");
                     tideDataValue.VVelocity_m_s = -1.0D;
-                    Assert.AreEqual(false, tideDataValueService.Add(tideDataValue));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "VVelocity_m_s", "0", "10"), tideDataValue.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, tideDataValueService.GetTideDataValueList().Count());
+                    Assert.False(tideDataValueService.Add(tideDataValue));
+                    Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "VVelocity_m_s", "0", "10"), tideDataValue.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, tideDataValueService.GetTideDataValueList().Count());
                     tideDataValue = null;
                     tideDataValue = GetFilledRandomTideDataValue("");
                     tideDataValue.VVelocity_m_s = 11.0D;
-                    Assert.AreEqual(false, tideDataValueService.Add(tideDataValue));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "VVelocity_m_s", "0", "10"), tideDataValue.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, tideDataValueService.GetTideDataValueList().Count());
+                    Assert.False(tideDataValueService.Add(tideDataValue));
+                    Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "VVelocity_m_s", "0", "10"), tideDataValue.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, tideDataValueService.GetTideDataValueList().Count());
 
                     // -----------------------------------
                     // Is Nullable
@@ -287,7 +287,7 @@ namespace CSSPServices.Tests
                     tideDataValue = GetFilledRandomTideDataValue("");
                     tideDataValue.TideStart = (TideTextEnum)1000000;
                     tideDataValueService.Add(tideDataValue);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsRequired, "TideStart"), tideDataValue.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsRequired, "TideStart"), tideDataValue.ValidationResults.FirstOrDefault().ErrorMessage);
 
 
                     // -----------------------------------
@@ -300,7 +300,7 @@ namespace CSSPServices.Tests
                     tideDataValue = GetFilledRandomTideDataValue("");
                     tideDataValue.TideEnd = (TideTextEnum)1000000;
                     tideDataValueService.Add(tideDataValue);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsRequired, "TideEnd"), tideDataValue.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsRequired, "TideEnd"), tideDataValue.ValidationResults.FirstOrDefault().ErrorMessage);
 
 
                     // -----------------------------------
@@ -313,12 +313,12 @@ namespace CSSPServices.Tests
                     tideDataValue = GetFilledRandomTideDataValue("");
                     tideDataValue.LastUpdateDate_UTC = new DateTime();
                     tideDataValueService.Add(tideDataValue);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsRequired, "LastUpdateDate_UTC"), tideDataValue.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsRequired, "LastUpdateDate_UTC"), tideDataValue.ValidationResults.FirstOrDefault().ErrorMessage);
                     tideDataValue = null;
                     tideDataValue = GetFilledRandomTideDataValue("");
                     tideDataValue.LastUpdateDate_UTC = new DateTime(1979, 1, 1);
                     tideDataValueService.Add(tideDataValue);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._YearShouldBeBiggerThan_, "LastUpdateDate_UTC", "1980"), tideDataValue.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._YearShouldBeBiggerThan_, "LastUpdateDate_UTC", "1980"), tideDataValue.ValidationResults.FirstOrDefault().ErrorMessage);
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -330,13 +330,13 @@ namespace CSSPServices.Tests
                     tideDataValue = GetFilledRandomTideDataValue("");
                     tideDataValue.LastUpdateContactTVItemID = 0;
                     tideDataValueService.Add(tideDataValue);
-                    Assert.AreEqual(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "TVItem", "LastUpdateContactTVItemID", tideDataValue.LastUpdateContactTVItemID.ToString()), tideDataValue.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "TVItem", "LastUpdateContactTVItemID", tideDataValue.LastUpdateContactTVItemID.ToString()), tideDataValue.ValidationResults.FirstOrDefault().ErrorMessage);
 
                     tideDataValue = null;
                     tideDataValue = GetFilledRandomTideDataValue("");
                     tideDataValue.LastUpdateContactTVItemID = 1;
                     tideDataValueService.Add(tideDataValue);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsNotOfType_, "LastUpdateContactTVItemID", "Contact"), tideDataValue.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsNotOfType_, "LastUpdateContactTVItemID", "Contact"), tideDataValue.ValidationResults.FirstOrDefault().ErrorMessage);
 
 
                     // -----------------------------------
@@ -360,7 +360,7 @@ namespace CSSPServices.Tests
         #endregion Tests Generated Properties
 
         #region Tests Generated for GetTideDataValueWithTideDataValueID(tideDataValue.TideDataValueID)
-        [TestMethod]
+        [Fact]
         public void GetTideDataValueWithTideDataValueID__tideDataValue_TideDataValueID__Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -371,7 +371,7 @@ namespace CSSPServices.Tests
                 {
                     TideDataValueService tideDataValueService = new TideDataValueService(new Query() { Lang = culture.TwoLetterISOLanguageName }, dbTestDB, ContactID);
                     TideDataValue tideDataValue = (from c in dbTestDB.TideDataValues select c).FirstOrDefault();
-                    Assert.IsNotNull(tideDataValue);
+                    Assert.NotNull(tideDataValue);
 
                 }
             }
@@ -379,7 +379,7 @@ namespace CSSPServices.Tests
         #endregion Tests Generated for GetTideDataValueWithTideDataValueID(tideDataValue.TideDataValueID)
 
         #region Tests Generated for GetTideDataValueList()
-        [TestMethod]
+        [Fact]
         public void GetTideDataValueList_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -390,7 +390,7 @@ namespace CSSPServices.Tests
                 {
                     TideDataValueService tideDataValueService = new TideDataValueService(new Query() { Lang = culture.TwoLetterISOLanguageName }, dbTestDB, ContactID);
                     TideDataValue tideDataValue = (from c in dbTestDB.TideDataValues select c).FirstOrDefault();
-                    Assert.IsNotNull(tideDataValue);
+                    Assert.NotNull(tideDataValue);
 
                     List<TideDataValue> tideDataValueDirectQueryList = new List<TideDataValue>();
                     tideDataValueDirectQueryList = (from c in dbTestDB.TideDataValues select c).Take(200).ToList();
@@ -401,7 +401,7 @@ namespace CSSPServices.Tests
         #endregion Tests Generated for GetTideDataValueList()
 
         #region Tests Generated for GetTideDataValueList() Skip Take
-        [TestMethod]
+        [Fact]
         public void GetTideDataValueList_Skip_Take_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -420,14 +420,14 @@ namespace CSSPServices.Tests
                         List<TideDataValue> tideDataValueList = new List<TideDataValue>();
                         tideDataValueList = tideDataValueService.GetTideDataValueList().ToList();
                         CheckTideDataValueFields(tideDataValueList);
-                        Assert.AreEqual(tideDataValueDirectQueryList[0].TideDataValueID, tideDataValueList[0].TideDataValueID);
+                        Assert.Equal(tideDataValueDirectQueryList[0].TideDataValueID, tideDataValueList[0].TideDataValueID);
                 }
             }
         }
         #endregion Tests Generated for GetTideDataValueList() Skip Take
 
         #region Tests Generated for GetTideDataValueList() Skip Take Asc
-        [TestMethod]
+        [Fact]
         public void GetTideDataValueList_Skip_Take_Asc_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -446,14 +446,14 @@ namespace CSSPServices.Tests
                         List<TideDataValue> tideDataValueList = new List<TideDataValue>();
                         tideDataValueList = tideDataValueService.GetTideDataValueList().ToList();
                         CheckTideDataValueFields(tideDataValueList);
-                        Assert.AreEqual(tideDataValueDirectQueryList[0].TideDataValueID, tideDataValueList[0].TideDataValueID);
+                        Assert.Equal(tideDataValueDirectQueryList[0].TideDataValueID, tideDataValueList[0].TideDataValueID);
                 }
             }
         }
         #endregion Tests Generated for GetTideDataValueList() Skip Take Asc
 
         #region Tests Generated for GetTideDataValueList() Skip Take 2 Asc
-        [TestMethod]
+        [Fact]
         public void GetTideDataValueList_Skip_Take_2Asc_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -472,14 +472,14 @@ namespace CSSPServices.Tests
                         List<TideDataValue> tideDataValueList = new List<TideDataValue>();
                         tideDataValueList = tideDataValueService.GetTideDataValueList().ToList();
                         CheckTideDataValueFields(tideDataValueList);
-                        Assert.AreEqual(tideDataValueDirectQueryList[0].TideDataValueID, tideDataValueList[0].TideDataValueID);
+                        Assert.Equal(tideDataValueDirectQueryList[0].TideDataValueID, tideDataValueList[0].TideDataValueID);
                 }
             }
         }
         #endregion Tests Generated for GetTideDataValueList() Skip Take 2 Asc
 
         #region Tests Generated for GetTideDataValueList() Skip Take Asc Where
-        [TestMethod]
+        [Fact]
         public void GetTideDataValueList_Skip_Take_Asc_Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -498,14 +498,14 @@ namespace CSSPServices.Tests
                         List<TideDataValue> tideDataValueList = new List<TideDataValue>();
                         tideDataValueList = tideDataValueService.GetTideDataValueList().ToList();
                         CheckTideDataValueFields(tideDataValueList);
-                        Assert.AreEqual(tideDataValueDirectQueryList[0].TideDataValueID, tideDataValueList[0].TideDataValueID);
+                        Assert.Equal(tideDataValueDirectQueryList[0].TideDataValueID, tideDataValueList[0].TideDataValueID);
                 }
             }
         }
         #endregion Tests Generated for GetTideDataValueList() Skip Take Asc Where
 
         #region Tests Generated for GetTideDataValueList() Skip Take Asc 2 Where
-        [TestMethod]
+        [Fact]
         public void GetTideDataValueList_Skip_Take_Asc_2Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -524,14 +524,14 @@ namespace CSSPServices.Tests
                         List<TideDataValue> tideDataValueList = new List<TideDataValue>();
                         tideDataValueList = tideDataValueService.GetTideDataValueList().ToList();
                         CheckTideDataValueFields(tideDataValueList);
-                        Assert.AreEqual(tideDataValueDirectQueryList[0].TideDataValueID, tideDataValueList[0].TideDataValueID);
+                        Assert.Equal(tideDataValueDirectQueryList[0].TideDataValueID, tideDataValueList[0].TideDataValueID);
                 }
             }
         }
         #endregion Tests Generated for GetTideDataValueList() Skip Take Asc 2 Where
 
         #region Tests Generated for GetTideDataValueList() Skip Take Desc
-        [TestMethod]
+        [Fact]
         public void GetTideDataValueList_Skip_Take_Desc_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -550,14 +550,14 @@ namespace CSSPServices.Tests
                         List<TideDataValue> tideDataValueList = new List<TideDataValue>();
                         tideDataValueList = tideDataValueService.GetTideDataValueList().ToList();
                         CheckTideDataValueFields(tideDataValueList);
-                        Assert.AreEqual(tideDataValueDirectQueryList[0].TideDataValueID, tideDataValueList[0].TideDataValueID);
+                        Assert.Equal(tideDataValueDirectQueryList[0].TideDataValueID, tideDataValueList[0].TideDataValueID);
                 }
             }
         }
         #endregion Tests Generated for GetTideDataValueList() Skip Take Desc
 
         #region Tests Generated for GetTideDataValueList() Skip Take 2 Desc
-        [TestMethod]
+        [Fact]
         public void GetTideDataValueList_Skip_Take_2Desc_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -576,14 +576,14 @@ namespace CSSPServices.Tests
                         List<TideDataValue> tideDataValueList = new List<TideDataValue>();
                         tideDataValueList = tideDataValueService.GetTideDataValueList().ToList();
                         CheckTideDataValueFields(tideDataValueList);
-                        Assert.AreEqual(tideDataValueDirectQueryList[0].TideDataValueID, tideDataValueList[0].TideDataValueID);
+                        Assert.Equal(tideDataValueDirectQueryList[0].TideDataValueID, tideDataValueList[0].TideDataValueID);
                 }
             }
         }
         #endregion Tests Generated for GetTideDataValueList() Skip Take 2 Desc
 
         #region Tests Generated for GetTideDataValueList() Skip Take Desc Where
-        [TestMethod]
+        [Fact]
         public void GetTideDataValueList_Skip_Take_Desc_Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -602,14 +602,14 @@ namespace CSSPServices.Tests
                         List<TideDataValue> tideDataValueList = new List<TideDataValue>();
                         tideDataValueList = tideDataValueService.GetTideDataValueList().ToList();
                         CheckTideDataValueFields(tideDataValueList);
-                        Assert.AreEqual(tideDataValueDirectQueryList[0].TideDataValueID, tideDataValueList[0].TideDataValueID);
+                        Assert.Equal(tideDataValueDirectQueryList[0].TideDataValueID, tideDataValueList[0].TideDataValueID);
                 }
             }
         }
         #endregion Tests Generated for GetTideDataValueList() Skip Take Desc Where
 
         #region Tests Generated for GetTideDataValueList() Skip Take Desc 2 Where
-        [TestMethod]
+        [Fact]
         public void GetTideDataValueList_Skip_Take_Desc_2Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -628,14 +628,14 @@ namespace CSSPServices.Tests
                         List<TideDataValue> tideDataValueList = new List<TideDataValue>();
                         tideDataValueList = tideDataValueService.GetTideDataValueList().ToList();
                         CheckTideDataValueFields(tideDataValueList);
-                        Assert.AreEqual(tideDataValueDirectQueryList[0].TideDataValueID, tideDataValueList[0].TideDataValueID);
+                        Assert.Equal(tideDataValueDirectQueryList[0].TideDataValueID, tideDataValueList[0].TideDataValueID);
                 }
             }
         }
         #endregion Tests Generated for GetTideDataValueList() Skip Take Desc 2 Where
 
         #region Tests Generated for GetTideDataValueList() 2 Where
-        [TestMethod]
+        [Fact]
         public void GetTideDataValueList_2Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -654,7 +654,7 @@ namespace CSSPServices.Tests
                         List<TideDataValue> tideDataValueList = new List<TideDataValue>();
                         tideDataValueList = tideDataValueService.GetTideDataValueList().ToList();
                         CheckTideDataValueFields(tideDataValueList);
-                        Assert.AreEqual(tideDataValueDirectQueryList[0].TideDataValueID, tideDataValueList[0].TideDataValueID);
+                        Assert.Equal(tideDataValueDirectQueryList[0].TideDataValueID, tideDataValueList[0].TideDataValueID);
                 }
             }
         }
@@ -663,26 +663,26 @@ namespace CSSPServices.Tests
         #region Functions private
         private void CheckTideDataValueFields(List<TideDataValue> tideDataValueList)
         {
-            Assert.IsNotNull(tideDataValueList[0].TideDataValueID);
-            Assert.IsNotNull(tideDataValueList[0].TideSiteTVItemID);
-            Assert.IsNotNull(tideDataValueList[0].DateTime_Local);
-            Assert.IsNotNull(tideDataValueList[0].Keep);
-            Assert.IsNotNull(tideDataValueList[0].TideDataType);
-            Assert.IsNotNull(tideDataValueList[0].StorageDataType);
-            Assert.IsNotNull(tideDataValueList[0].Depth_m);
-            Assert.IsNotNull(tideDataValueList[0].UVelocity_m_s);
-            Assert.IsNotNull(tideDataValueList[0].VVelocity_m_s);
+            Assert.NotNull(tideDataValueList[0].TideDataValueID);
+            Assert.NotNull(tideDataValueList[0].TideSiteTVItemID);
+            Assert.NotNull(tideDataValueList[0].DateTime_Local);
+            Assert.NotNull(tideDataValueList[0].Keep);
+            Assert.NotNull(tideDataValueList[0].TideDataType);
+            Assert.NotNull(tideDataValueList[0].StorageDataType);
+            Assert.NotNull(tideDataValueList[0].Depth_m);
+            Assert.NotNull(tideDataValueList[0].UVelocity_m_s);
+            Assert.NotNull(tideDataValueList[0].VVelocity_m_s);
             if (tideDataValueList[0].TideStart != null)
             {
-                Assert.IsNotNull(tideDataValueList[0].TideStart);
+                Assert.NotNull(tideDataValueList[0].TideStart);
             }
             if (tideDataValueList[0].TideEnd != null)
             {
-                Assert.IsNotNull(tideDataValueList[0].TideEnd);
+                Assert.NotNull(tideDataValueList[0].TideEnd);
             }
-            Assert.IsNotNull(tideDataValueList[0].LastUpdateDate_UTC);
-            Assert.IsNotNull(tideDataValueList[0].LastUpdateContactTVItemID);
-            Assert.IsNotNull(tideDataValueList[0].HasErrors);
+            Assert.NotNull(tideDataValueList[0].LastUpdateDate_UTC);
+            Assert.NotNull(tideDataValueList[0].LastUpdateContactTVItemID);
+            Assert.NotNull(tideDataValueList[0].HasErrors);
         }
         private TideDataValue GetFilledRandomTideDataValue(string OmitPropName)
         {

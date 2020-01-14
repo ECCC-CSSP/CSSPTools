@@ -5,7 +5,7 @@
  */ 
 
 using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using System.Linq;
 using System.Collections.Generic;
 using CSSPModels;
@@ -21,7 +21,7 @@ using CSSPEnums.Resources;
 
 namespace CSSPServices.Tests
 {
-    [TestClass]
+
     public partial class MWQMSubsectorServiceTest : TestHelper
     {
         #region Variables
@@ -39,7 +39,7 @@ namespace CSSPServices.Tests
         #endregion Constructors
 
         #region Tests Generated CRUD
-        [TestMethod]
+        [Fact]
         public void MWQMSubsector_CRUD_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -66,26 +66,26 @@ namespace CSSPServices.Tests
 
                     count = mwqmSubsectorService.GetMWQMSubsectorList().Count();
 
-                    Assert.AreEqual(count, (from c in dbTestDB.MWQMSubsectors select c).Count());
+                    Assert.Equal(count, (from c in dbTestDB.MWQMSubsectors select c).Count());
 
                     mwqmSubsectorService.Add(mwqmSubsector);
                     if (mwqmSubsector.HasErrors)
                     {
-                        Assert.AreEqual("", mwqmSubsector.ValidationResults.FirstOrDefault().ErrorMessage);
+                        Assert.Equal("", mwqmSubsector.ValidationResults.FirstOrDefault().ErrorMessage);
                     }
-                    Assert.AreEqual(true, mwqmSubsectorService.GetMWQMSubsectorList().Where(c => c == mwqmSubsector).Any());
+                    Assert.True(mwqmSubsectorService.GetMWQMSubsectorList().Where(c => c == mwqmSubsector).Any());
                     mwqmSubsectorService.Update(mwqmSubsector);
                     if (mwqmSubsector.HasErrors)
                     {
-                        Assert.AreEqual("", mwqmSubsector.ValidationResults.FirstOrDefault().ErrorMessage);
+                        Assert.Equal("", mwqmSubsector.ValidationResults.FirstOrDefault().ErrorMessage);
                     }
-                    Assert.AreEqual(count + 1, mwqmSubsectorService.GetMWQMSubsectorList().Count());
+                    Assert.Equal(count + 1, mwqmSubsectorService.GetMWQMSubsectorList().Count());
                     mwqmSubsectorService.Delete(mwqmSubsector);
                     if (mwqmSubsector.HasErrors)
                     {
-                        Assert.AreEqual("", mwqmSubsector.ValidationResults.FirstOrDefault().ErrorMessage);
+                        Assert.Equal("", mwqmSubsector.ValidationResults.FirstOrDefault().ErrorMessage);
                     }
-                    Assert.AreEqual(count, mwqmSubsectorService.GetMWQMSubsectorList().Count());
+                    Assert.Equal(count, mwqmSubsectorService.GetMWQMSubsectorList().Count());
 
                 }
             }
@@ -93,7 +93,7 @@ namespace CSSPServices.Tests
         #endregion Tests Generated CRUD
 
         #region Tests Generated Properties
-        [TestMethod]
+        [Fact]
         public void MWQMSubsector_Properties_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -131,13 +131,13 @@ namespace CSSPServices.Tests
                     mwqmSubsector = GetFilledRandomMWQMSubsector("");
                     mwqmSubsector.MWQMSubsectorID = 0;
                     mwqmSubsectorService.Update(mwqmSubsector);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsRequired, "MWQMSubsectorID"), mwqmSubsector.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsRequired, "MWQMSubsectorID"), mwqmSubsector.ValidationResults.FirstOrDefault().ErrorMessage);
 
                     mwqmSubsector = null;
                     mwqmSubsector = GetFilledRandomMWQMSubsector("");
                     mwqmSubsector.MWQMSubsectorID = 10000000;
                     mwqmSubsectorService.Update(mwqmSubsector);
-                    Assert.AreEqual(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "MWQMSubsector", "MWQMSubsectorID", mwqmSubsector.MWQMSubsectorID.ToString()), mwqmSubsector.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "MWQMSubsector", "MWQMSubsectorID", mwqmSubsector.MWQMSubsectorID.ToString()), mwqmSubsector.ValidationResults.FirstOrDefault().ErrorMessage);
 
 
                     // -----------------------------------
@@ -150,13 +150,13 @@ namespace CSSPServices.Tests
                     mwqmSubsector = GetFilledRandomMWQMSubsector("");
                     mwqmSubsector.MWQMSubsectorTVItemID = 0;
                     mwqmSubsectorService.Add(mwqmSubsector);
-                    Assert.AreEqual(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "TVItem", "MWQMSubsectorTVItemID", mwqmSubsector.MWQMSubsectorTVItemID.ToString()), mwqmSubsector.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "TVItem", "MWQMSubsectorTVItemID", mwqmSubsector.MWQMSubsectorTVItemID.ToString()), mwqmSubsector.ValidationResults.FirstOrDefault().ErrorMessage);
 
                     mwqmSubsector = null;
                     mwqmSubsector = GetFilledRandomMWQMSubsector("");
                     mwqmSubsector.MWQMSubsectorTVItemID = 1;
                     mwqmSubsectorService.Add(mwqmSubsector);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsNotOfType_, "MWQMSubsectorTVItemID", "Subsector"), mwqmSubsector.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsNotOfType_, "MWQMSubsectorTVItemID", "Subsector"), mwqmSubsector.ValidationResults.FirstOrDefault().ErrorMessage);
 
 
                     // -----------------------------------
@@ -167,18 +167,18 @@ namespace CSSPServices.Tests
 
                     mwqmSubsector = null;
                     mwqmSubsector = GetFilledRandomMWQMSubsector("SubsectorHistoricKey");
-                    Assert.AreEqual(false, mwqmSubsectorService.Add(mwqmSubsector));
-                    Assert.AreEqual(1, mwqmSubsector.ValidationResults.Count());
-                    Assert.IsTrue(mwqmSubsector.ValidationResults.Where(c => c.ErrorMessage == string.Format(CSSPServicesRes._IsRequired, "SubsectorHistoricKey")).Any());
-                    Assert.AreEqual(null, mwqmSubsector.SubsectorHistoricKey);
-                    Assert.AreEqual(count, mwqmSubsectorService.GetMWQMSubsectorList().Count());
+                    Assert.False(mwqmSubsectorService.Add(mwqmSubsector));
+                    Assert.Equal(1, mwqmSubsector.ValidationResults.Count());
+                    Assert.True(mwqmSubsector.ValidationResults.Where(c => c.ErrorMessage == string.Format(CSSPServicesRes._IsRequired, "SubsectorHistoricKey")).Any());
+                    Assert.Null(mwqmSubsector.SubsectorHistoricKey);
+                    Assert.Equal(count, mwqmSubsectorService.GetMWQMSubsectorList().Count());
 
                     mwqmSubsector = null;
                     mwqmSubsector = GetFilledRandomMWQMSubsector("");
                     mwqmSubsector.SubsectorHistoricKey = GetRandomString("", 21);
-                    Assert.AreEqual(false, mwqmSubsectorService.Add(mwqmSubsector));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._MaxLengthIs_, "SubsectorHistoricKey", "20"), mwqmSubsector.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, mwqmSubsectorService.GetMWQMSubsectorList().Count());
+                    Assert.False(mwqmSubsectorService.Add(mwqmSubsector));
+                    Assert.Equal(string.Format(CSSPServicesRes._MaxLengthIs_, "SubsectorHistoricKey", "20"), mwqmSubsector.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, mwqmSubsectorService.GetMWQMSubsectorList().Count());
 
                     // -----------------------------------
                     // Is Nullable
@@ -189,9 +189,9 @@ namespace CSSPServices.Tests
                     mwqmSubsector = null;
                     mwqmSubsector = GetFilledRandomMWQMSubsector("");
                     mwqmSubsector.TideLocationSIDText = GetRandomString("", 21);
-                    Assert.AreEqual(false, mwqmSubsectorService.Add(mwqmSubsector));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._MaxLengthIs_, "TideLocationSIDText", "20"), mwqmSubsector.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, mwqmSubsectorService.GetMWQMSubsectorList().Count());
+                    Assert.False(mwqmSubsectorService.Add(mwqmSubsector));
+                    Assert.Equal(string.Format(CSSPServicesRes._MaxLengthIs_, "TideLocationSIDText", "20"), mwqmSubsector.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, mwqmSubsectorService.GetMWQMSubsectorList().Count());
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -203,12 +203,12 @@ namespace CSSPServices.Tests
                     mwqmSubsector = GetFilledRandomMWQMSubsector("");
                     mwqmSubsector.LastUpdateDate_UTC = new DateTime();
                     mwqmSubsectorService.Add(mwqmSubsector);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsRequired, "LastUpdateDate_UTC"), mwqmSubsector.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsRequired, "LastUpdateDate_UTC"), mwqmSubsector.ValidationResults.FirstOrDefault().ErrorMessage);
                     mwqmSubsector = null;
                     mwqmSubsector = GetFilledRandomMWQMSubsector("");
                     mwqmSubsector.LastUpdateDate_UTC = new DateTime(1979, 1, 1);
                     mwqmSubsectorService.Add(mwqmSubsector);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._YearShouldBeBiggerThan_, "LastUpdateDate_UTC", "1980"), mwqmSubsector.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._YearShouldBeBiggerThan_, "LastUpdateDate_UTC", "1980"), mwqmSubsector.ValidationResults.FirstOrDefault().ErrorMessage);
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -220,13 +220,13 @@ namespace CSSPServices.Tests
                     mwqmSubsector = GetFilledRandomMWQMSubsector("");
                     mwqmSubsector.LastUpdateContactTVItemID = 0;
                     mwqmSubsectorService.Add(mwqmSubsector);
-                    Assert.AreEqual(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "TVItem", "LastUpdateContactTVItemID", mwqmSubsector.LastUpdateContactTVItemID.ToString()), mwqmSubsector.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "TVItem", "LastUpdateContactTVItemID", mwqmSubsector.LastUpdateContactTVItemID.ToString()), mwqmSubsector.ValidationResults.FirstOrDefault().ErrorMessage);
 
                     mwqmSubsector = null;
                     mwqmSubsector = GetFilledRandomMWQMSubsector("");
                     mwqmSubsector.LastUpdateContactTVItemID = 1;
                     mwqmSubsectorService.Add(mwqmSubsector);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsNotOfType_, "LastUpdateContactTVItemID", "Contact"), mwqmSubsector.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsNotOfType_, "LastUpdateContactTVItemID", "Contact"), mwqmSubsector.ValidationResults.FirstOrDefault().ErrorMessage);
 
 
                     // -----------------------------------
@@ -250,7 +250,7 @@ namespace CSSPServices.Tests
         #endregion Tests Generated Properties
 
         #region Tests Generated for GetMWQMSubsectorWithMWQMSubsectorID(mwqmSubsector.MWQMSubsectorID)
-        [TestMethod]
+        [Fact]
         public void GetMWQMSubsectorWithMWQMSubsectorID__mwqmSubsector_MWQMSubsectorID__Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -261,7 +261,7 @@ namespace CSSPServices.Tests
                 {
                     MWQMSubsectorService mwqmSubsectorService = new MWQMSubsectorService(new Query() { Lang = culture.TwoLetterISOLanguageName }, dbTestDB, ContactID);
                     MWQMSubsector mwqmSubsector = (from c in dbTestDB.MWQMSubsectors select c).FirstOrDefault();
-                    Assert.IsNotNull(mwqmSubsector);
+                    Assert.NotNull(mwqmSubsector);
 
                 }
             }
@@ -269,7 +269,7 @@ namespace CSSPServices.Tests
         #endregion Tests Generated for GetMWQMSubsectorWithMWQMSubsectorID(mwqmSubsector.MWQMSubsectorID)
 
         #region Tests Generated for GetMWQMSubsectorList()
-        [TestMethod]
+        [Fact]
         public void GetMWQMSubsectorList_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -280,7 +280,7 @@ namespace CSSPServices.Tests
                 {
                     MWQMSubsectorService mwqmSubsectorService = new MWQMSubsectorService(new Query() { Lang = culture.TwoLetterISOLanguageName }, dbTestDB, ContactID);
                     MWQMSubsector mwqmSubsector = (from c in dbTestDB.MWQMSubsectors select c).FirstOrDefault();
-                    Assert.IsNotNull(mwqmSubsector);
+                    Assert.NotNull(mwqmSubsector);
 
                     List<MWQMSubsector> mwqmSubsectorDirectQueryList = new List<MWQMSubsector>();
                     mwqmSubsectorDirectQueryList = (from c in dbTestDB.MWQMSubsectors select c).Take(200).ToList();
@@ -291,7 +291,7 @@ namespace CSSPServices.Tests
         #endregion Tests Generated for GetMWQMSubsectorList()
 
         #region Tests Generated for GetMWQMSubsectorList() Skip Take
-        [TestMethod]
+        [Fact]
         public void GetMWQMSubsectorList_Skip_Take_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -310,14 +310,14 @@ namespace CSSPServices.Tests
                         List<MWQMSubsector> mwqmSubsectorList = new List<MWQMSubsector>();
                         mwqmSubsectorList = mwqmSubsectorService.GetMWQMSubsectorList().ToList();
                         CheckMWQMSubsectorFields(mwqmSubsectorList);
-                        Assert.AreEqual(mwqmSubsectorDirectQueryList[0].MWQMSubsectorID, mwqmSubsectorList[0].MWQMSubsectorID);
+                        Assert.Equal(mwqmSubsectorDirectQueryList[0].MWQMSubsectorID, mwqmSubsectorList[0].MWQMSubsectorID);
                 }
             }
         }
         #endregion Tests Generated for GetMWQMSubsectorList() Skip Take
 
         #region Tests Generated for GetMWQMSubsectorList() Skip Take Asc
-        [TestMethod]
+        [Fact]
         public void GetMWQMSubsectorList_Skip_Take_Asc_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -336,14 +336,14 @@ namespace CSSPServices.Tests
                         List<MWQMSubsector> mwqmSubsectorList = new List<MWQMSubsector>();
                         mwqmSubsectorList = mwqmSubsectorService.GetMWQMSubsectorList().ToList();
                         CheckMWQMSubsectorFields(mwqmSubsectorList);
-                        Assert.AreEqual(mwqmSubsectorDirectQueryList[0].MWQMSubsectorID, mwqmSubsectorList[0].MWQMSubsectorID);
+                        Assert.Equal(mwqmSubsectorDirectQueryList[0].MWQMSubsectorID, mwqmSubsectorList[0].MWQMSubsectorID);
                 }
             }
         }
         #endregion Tests Generated for GetMWQMSubsectorList() Skip Take Asc
 
         #region Tests Generated for GetMWQMSubsectorList() Skip Take 2 Asc
-        [TestMethod]
+        [Fact]
         public void GetMWQMSubsectorList_Skip_Take_2Asc_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -362,14 +362,14 @@ namespace CSSPServices.Tests
                         List<MWQMSubsector> mwqmSubsectorList = new List<MWQMSubsector>();
                         mwqmSubsectorList = mwqmSubsectorService.GetMWQMSubsectorList().ToList();
                         CheckMWQMSubsectorFields(mwqmSubsectorList);
-                        Assert.AreEqual(mwqmSubsectorDirectQueryList[0].MWQMSubsectorID, mwqmSubsectorList[0].MWQMSubsectorID);
+                        Assert.Equal(mwqmSubsectorDirectQueryList[0].MWQMSubsectorID, mwqmSubsectorList[0].MWQMSubsectorID);
                 }
             }
         }
         #endregion Tests Generated for GetMWQMSubsectorList() Skip Take 2 Asc
 
         #region Tests Generated for GetMWQMSubsectorList() Skip Take Asc Where
-        [TestMethod]
+        [Fact]
         public void GetMWQMSubsectorList_Skip_Take_Asc_Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -388,14 +388,14 @@ namespace CSSPServices.Tests
                         List<MWQMSubsector> mwqmSubsectorList = new List<MWQMSubsector>();
                         mwqmSubsectorList = mwqmSubsectorService.GetMWQMSubsectorList().ToList();
                         CheckMWQMSubsectorFields(mwqmSubsectorList);
-                        Assert.AreEqual(mwqmSubsectorDirectQueryList[0].MWQMSubsectorID, mwqmSubsectorList[0].MWQMSubsectorID);
+                        Assert.Equal(mwqmSubsectorDirectQueryList[0].MWQMSubsectorID, mwqmSubsectorList[0].MWQMSubsectorID);
                 }
             }
         }
         #endregion Tests Generated for GetMWQMSubsectorList() Skip Take Asc Where
 
         #region Tests Generated for GetMWQMSubsectorList() Skip Take Asc 2 Where
-        [TestMethod]
+        [Fact]
         public void GetMWQMSubsectorList_Skip_Take_Asc_2Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -414,14 +414,14 @@ namespace CSSPServices.Tests
                         List<MWQMSubsector> mwqmSubsectorList = new List<MWQMSubsector>();
                         mwqmSubsectorList = mwqmSubsectorService.GetMWQMSubsectorList().ToList();
                         CheckMWQMSubsectorFields(mwqmSubsectorList);
-                        Assert.AreEqual(mwqmSubsectorDirectQueryList[0].MWQMSubsectorID, mwqmSubsectorList[0].MWQMSubsectorID);
+                        Assert.Equal(mwqmSubsectorDirectQueryList[0].MWQMSubsectorID, mwqmSubsectorList[0].MWQMSubsectorID);
                 }
             }
         }
         #endregion Tests Generated for GetMWQMSubsectorList() Skip Take Asc 2 Where
 
         #region Tests Generated for GetMWQMSubsectorList() Skip Take Desc
-        [TestMethod]
+        [Fact]
         public void GetMWQMSubsectorList_Skip_Take_Desc_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -440,14 +440,14 @@ namespace CSSPServices.Tests
                         List<MWQMSubsector> mwqmSubsectorList = new List<MWQMSubsector>();
                         mwqmSubsectorList = mwqmSubsectorService.GetMWQMSubsectorList().ToList();
                         CheckMWQMSubsectorFields(mwqmSubsectorList);
-                        Assert.AreEqual(mwqmSubsectorDirectQueryList[0].MWQMSubsectorID, mwqmSubsectorList[0].MWQMSubsectorID);
+                        Assert.Equal(mwqmSubsectorDirectQueryList[0].MWQMSubsectorID, mwqmSubsectorList[0].MWQMSubsectorID);
                 }
             }
         }
         #endregion Tests Generated for GetMWQMSubsectorList() Skip Take Desc
 
         #region Tests Generated for GetMWQMSubsectorList() Skip Take 2 Desc
-        [TestMethod]
+        [Fact]
         public void GetMWQMSubsectorList_Skip_Take_2Desc_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -466,14 +466,14 @@ namespace CSSPServices.Tests
                         List<MWQMSubsector> mwqmSubsectorList = new List<MWQMSubsector>();
                         mwqmSubsectorList = mwqmSubsectorService.GetMWQMSubsectorList().ToList();
                         CheckMWQMSubsectorFields(mwqmSubsectorList);
-                        Assert.AreEqual(mwqmSubsectorDirectQueryList[0].MWQMSubsectorID, mwqmSubsectorList[0].MWQMSubsectorID);
+                        Assert.Equal(mwqmSubsectorDirectQueryList[0].MWQMSubsectorID, mwqmSubsectorList[0].MWQMSubsectorID);
                 }
             }
         }
         #endregion Tests Generated for GetMWQMSubsectorList() Skip Take 2 Desc
 
         #region Tests Generated for GetMWQMSubsectorList() Skip Take Desc Where
-        [TestMethod]
+        [Fact]
         public void GetMWQMSubsectorList_Skip_Take_Desc_Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -492,14 +492,14 @@ namespace CSSPServices.Tests
                         List<MWQMSubsector> mwqmSubsectorList = new List<MWQMSubsector>();
                         mwqmSubsectorList = mwqmSubsectorService.GetMWQMSubsectorList().ToList();
                         CheckMWQMSubsectorFields(mwqmSubsectorList);
-                        Assert.AreEqual(mwqmSubsectorDirectQueryList[0].MWQMSubsectorID, mwqmSubsectorList[0].MWQMSubsectorID);
+                        Assert.Equal(mwqmSubsectorDirectQueryList[0].MWQMSubsectorID, mwqmSubsectorList[0].MWQMSubsectorID);
                 }
             }
         }
         #endregion Tests Generated for GetMWQMSubsectorList() Skip Take Desc Where
 
         #region Tests Generated for GetMWQMSubsectorList() Skip Take Desc 2 Where
-        [TestMethod]
+        [Fact]
         public void GetMWQMSubsectorList_Skip_Take_Desc_2Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -518,14 +518,14 @@ namespace CSSPServices.Tests
                         List<MWQMSubsector> mwqmSubsectorList = new List<MWQMSubsector>();
                         mwqmSubsectorList = mwqmSubsectorService.GetMWQMSubsectorList().ToList();
                         CheckMWQMSubsectorFields(mwqmSubsectorList);
-                        Assert.AreEqual(mwqmSubsectorDirectQueryList[0].MWQMSubsectorID, mwqmSubsectorList[0].MWQMSubsectorID);
+                        Assert.Equal(mwqmSubsectorDirectQueryList[0].MWQMSubsectorID, mwqmSubsectorList[0].MWQMSubsectorID);
                 }
             }
         }
         #endregion Tests Generated for GetMWQMSubsectorList() Skip Take Desc 2 Where
 
         #region Tests Generated for GetMWQMSubsectorList() 2 Where
-        [TestMethod]
+        [Fact]
         public void GetMWQMSubsectorList_2Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -544,7 +544,7 @@ namespace CSSPServices.Tests
                         List<MWQMSubsector> mwqmSubsectorList = new List<MWQMSubsector>();
                         mwqmSubsectorList = mwqmSubsectorService.GetMWQMSubsectorList().ToList();
                         CheckMWQMSubsectorFields(mwqmSubsectorList);
-                        Assert.AreEqual(mwqmSubsectorDirectQueryList[0].MWQMSubsectorID, mwqmSubsectorList[0].MWQMSubsectorID);
+                        Assert.Equal(mwqmSubsectorDirectQueryList[0].MWQMSubsectorID, mwqmSubsectorList[0].MWQMSubsectorID);
                 }
             }
         }
@@ -553,16 +553,16 @@ namespace CSSPServices.Tests
         #region Functions private
         private void CheckMWQMSubsectorFields(List<MWQMSubsector> mwqmSubsectorList)
         {
-            Assert.IsNotNull(mwqmSubsectorList[0].MWQMSubsectorID);
-            Assert.IsNotNull(mwqmSubsectorList[0].MWQMSubsectorTVItemID);
-            Assert.IsFalse(string.IsNullOrWhiteSpace(mwqmSubsectorList[0].SubsectorHistoricKey));
+            Assert.NotNull(mwqmSubsectorList[0].MWQMSubsectorID);
+            Assert.NotNull(mwqmSubsectorList[0].MWQMSubsectorTVItemID);
+            Assert.False(string.IsNullOrWhiteSpace(mwqmSubsectorList[0].SubsectorHistoricKey));
             if (!string.IsNullOrWhiteSpace(mwqmSubsectorList[0].TideLocationSIDText))
             {
-                Assert.IsFalse(string.IsNullOrWhiteSpace(mwqmSubsectorList[0].TideLocationSIDText));
+                Assert.False(string.IsNullOrWhiteSpace(mwqmSubsectorList[0].TideLocationSIDText));
             }
-            Assert.IsNotNull(mwqmSubsectorList[0].LastUpdateDate_UTC);
-            Assert.IsNotNull(mwqmSubsectorList[0].LastUpdateContactTVItemID);
-            Assert.IsNotNull(mwqmSubsectorList[0].HasErrors);
+            Assert.NotNull(mwqmSubsectorList[0].LastUpdateDate_UTC);
+            Assert.NotNull(mwqmSubsectorList[0].LastUpdateContactTVItemID);
+            Assert.NotNull(mwqmSubsectorList[0].HasErrors);
         }
         private MWQMSubsector GetFilledRandomMWQMSubsector(string OmitPropName)
         {

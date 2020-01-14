@@ -6,7 +6,7 @@
  */ 
 using System;
 using System.Text;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using System.Linq;
 using System.Globalization;
 using System.Transactions;
@@ -19,7 +19,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace CSSPModels.Tests
 {
-    [TestClass]
+
     public partial class DrogueRunTest
     {
         #region Variables
@@ -37,7 +37,7 @@ namespace CSSPModels.Tests
         #endregion Constructors
 
         #region Tests Functions public
-        [TestMethod]
+        [Fact]
         public void DrogueRun_Properties_Test()
         {
             List<string> propNameList = new List<string>() { "DrogueRunID", "SubsectorTVItemID", "DrogueNumber", "DrogueType", "RunStartDateTime", "IsRisingTide", "LastUpdateDate_UTC", "LastUpdateContactTVItemID",  }.OrderBy(c => c).ToList();
@@ -50,12 +50,12 @@ namespace CSSPModels.Tests
                     && propertyInfo.Name != "ValidationResults"
                     && !propertyInfo.CustomAttributes.Where(c => c.AttributeType.Name.Contains("NotMappedAttribute")).Any())
                 {
-                    Assert.AreEqual(propNameList[index], propertyInfo.Name);
+                    Assert.Equal(propNameList[index], propertyInfo.Name);
                     index += 1;
                 }
             }
 
-            Assert.AreEqual(propNameList.Count, index);
+            Assert.Equal(propNameList.Count, index);
 
             index = 0;
             foreach (PropertyInfo propertyInfo in typeof(DrogueRun).GetProperties().Where(c => c.Name != "ValidationResults").OrderBy(c => c.Name).ToList())
@@ -64,16 +64,16 @@ namespace CSSPModels.Tests
                 {
                     if (customAttributeData.AttributeType.Name == "NotMappedAttribute")
                     {
-                        Assert.AreEqual(propertyInfo.Name, propNameNotMappedList[index]);
+                        Assert.Equal(propertyInfo.Name, propNameNotMappedList[index]);
                         index += 1;
                     }
                 }
             }
 
-            Assert.AreEqual(propNameNotMappedList.Count, index);
+            Assert.Equal(propNameNotMappedList.Count, index);
 
         }
-        [TestMethod]
+        [Fact]
         public void DrogueRun_Navigation_Test()
         {
             List<string> foreignNameList = new List<string>() {  }.OrderBy(c => c).ToList();
@@ -84,64 +84,64 @@ namespace CSSPModels.Tests
             {
                 if (propertyInfo.GetGetMethod().IsVirtual && !propertyInfo.GetGetMethod().ReturnType.Name.StartsWith("ICollection"))
                 {
-                    Assert.IsTrue(foreignNameList.Contains(propertyInfo.Name));
+                    Assert.True(foreignNameList.Contains(propertyInfo.Name));
                     index += 1;
                 }
             }
 
-            Assert.AreEqual(foreignNameList.Count, index);
+            Assert.Equal(foreignNameList.Count, index);
 
             index = 0;
             foreach (PropertyInfo propertyInfo in typeof(DrogueRun).GetProperties().Where(c => c.Name != "ValidationResults").OrderBy(c => c.Name).ToList())
             {
                 if (propertyInfo.GetGetMethod().ReturnType.Name.StartsWith("ICollection"))
                 {
-                    Assert.IsTrue(foreignNameCollectionList.Contains(propertyInfo.Name));
+                    Assert.True(foreignNameCollectionList.Contains(propertyInfo.Name));
                     index += 1;
                 }
             }
 
-            Assert.AreEqual(foreignNameCollectionList.Count, index);
+            Assert.Equal(foreignNameCollectionList.Count, index);
 
         }
-        [TestMethod]
+        [Fact]
         public void DrogueRun_Has_ValidationResults_Test()
         {
-             Assert.IsTrue(typeof(DrogueRun).GetProperties().Where(c => c.Name == "ValidationResults").Any());
+             Assert.True(typeof(DrogueRun).GetProperties().Where(c => c.Name == "ValidationResults").Any());
         }
-        [TestMethod]
+        [Fact]
         public void DrogueRun_Every_Property_Has_Get_Set_Test()
         {
                int val1 = 45;
                drogueRun.DrogueRunID = val1;
-               Assert.AreEqual(val1, drogueRun.DrogueRunID);
+               Assert.Equal(val1, drogueRun.DrogueRunID);
                int val2 = 45;
                drogueRun.SubsectorTVItemID = val2;
-               Assert.AreEqual(val2, drogueRun.SubsectorTVItemID);
+               Assert.Equal(val2, drogueRun.SubsectorTVItemID);
                int val3 = 45;
                drogueRun.DrogueNumber = val3;
-               Assert.AreEqual(val3, drogueRun.DrogueNumber);
+               Assert.Equal(val3, drogueRun.DrogueNumber);
                DrogueTypeEnum val4 = (DrogueTypeEnum)3;
                drogueRun.DrogueType = val4;
-               Assert.AreEqual(val4, drogueRun.DrogueType);
+               Assert.Equal(val4, drogueRun.DrogueType);
                DateTime val5 = new DateTime(2010, 3, 4);
                drogueRun.RunStartDateTime = val5;
-               Assert.AreEqual(val5, drogueRun.RunStartDateTime);
+               Assert.Equal(val5, drogueRun.RunStartDateTime);
                bool val6 = true;
                drogueRun.IsRisingTide = val6;
-               Assert.AreEqual(val6, drogueRun.IsRisingTide);
+               Assert.Equal(val6, drogueRun.IsRisingTide);
                DateTime val7 = new DateTime(2010, 3, 4);
                drogueRun.LastUpdateDate_UTC = val7;
-               Assert.AreEqual(val7, drogueRun.LastUpdateDate_UTC);
+               Assert.Equal(val7, drogueRun.LastUpdateDate_UTC);
                int val8 = 45;
                drogueRun.LastUpdateContactTVItemID = val8;
-               Assert.AreEqual(val8, drogueRun.LastUpdateContactTVItemID);
+               Assert.Equal(val8, drogueRun.LastUpdateContactTVItemID);
                bool val9 = true;
                drogueRun.HasErrors = val9;
-               Assert.AreEqual(val9, drogueRun.HasErrors);
+               Assert.Equal(val9, drogueRun.HasErrors);
                IEnumerable<ValidationResult> val30 = new List<ValidationResult>() { new ValidationResult("First CSSPError Message") }.AsEnumerable();
                drogueRun.ValidationResults = val30;
-               Assert.AreEqual(val30, drogueRun.ValidationResults);
+               Assert.Equal(val30, drogueRun.ValidationResults);
         }
         #endregion Tests Functions public
     }

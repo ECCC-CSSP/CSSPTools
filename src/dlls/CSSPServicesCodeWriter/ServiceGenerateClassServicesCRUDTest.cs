@@ -20,7 +20,7 @@ namespace CSSPServicesGenerateCodeHelper
         private void GenerateCRUDTestCode(string TypeName, string TypeNameLower, StringBuilder sb)
         {
             sb.AppendLine(@"        #region Tests Generated CRUD");
-            sb.AppendLine(@"        [TestMethod]");
+            sb.AppendLine(@"        [Fact]");
             sb.AppendLine($@"        public void { TypeName }_CRUD_Test()");
             sb.AppendLine(@"        {");
             sb.AppendLine(@"            foreach (CultureInfo culture in AllowableCulture)");

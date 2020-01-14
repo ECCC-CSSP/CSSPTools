@@ -5,7 +5,7 @@
  */ 
 
 using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using System.Linq;
 using System.Collections.Generic;
 using CSSPModels;
@@ -21,7 +21,7 @@ using CSSPEnums.Resources;
 
 namespace CSSPServices.Tests
 {
-    [TestClass]
+
     public partial class PolSourceSiteEffectServiceTest : TestHelper
     {
         #region Variables
@@ -39,7 +39,7 @@ namespace CSSPServices.Tests
         #endregion Constructors
 
         #region Tests Generated CRUD
-        [TestMethod]
+        [Fact]
         public void PolSourceSiteEffect_CRUD_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -66,26 +66,26 @@ namespace CSSPServices.Tests
 
                     count = polSourceSiteEffectService.GetPolSourceSiteEffectList().Count();
 
-                    Assert.AreEqual(count, (from c in dbTestDB.PolSourceSiteEffects select c).Count());
+                    Assert.Equal(count, (from c in dbTestDB.PolSourceSiteEffects select c).Count());
 
                     polSourceSiteEffectService.Add(polSourceSiteEffect);
                     if (polSourceSiteEffect.HasErrors)
                     {
-                        Assert.AreEqual("", polSourceSiteEffect.ValidationResults.FirstOrDefault().ErrorMessage);
+                        Assert.Equal("", polSourceSiteEffect.ValidationResults.FirstOrDefault().ErrorMessage);
                     }
-                    Assert.AreEqual(true, polSourceSiteEffectService.GetPolSourceSiteEffectList().Where(c => c == polSourceSiteEffect).Any());
+                    Assert.True(polSourceSiteEffectService.GetPolSourceSiteEffectList().Where(c => c == polSourceSiteEffect).Any());
                     polSourceSiteEffectService.Update(polSourceSiteEffect);
                     if (polSourceSiteEffect.HasErrors)
                     {
-                        Assert.AreEqual("", polSourceSiteEffect.ValidationResults.FirstOrDefault().ErrorMessage);
+                        Assert.Equal("", polSourceSiteEffect.ValidationResults.FirstOrDefault().ErrorMessage);
                     }
-                    Assert.AreEqual(count + 1, polSourceSiteEffectService.GetPolSourceSiteEffectList().Count());
+                    Assert.Equal(count + 1, polSourceSiteEffectService.GetPolSourceSiteEffectList().Count());
                     polSourceSiteEffectService.Delete(polSourceSiteEffect);
                     if (polSourceSiteEffect.HasErrors)
                     {
-                        Assert.AreEqual("", polSourceSiteEffect.ValidationResults.FirstOrDefault().ErrorMessage);
+                        Assert.Equal("", polSourceSiteEffect.ValidationResults.FirstOrDefault().ErrorMessage);
                     }
-                    Assert.AreEqual(count, polSourceSiteEffectService.GetPolSourceSiteEffectList().Count());
+                    Assert.Equal(count, polSourceSiteEffectService.GetPolSourceSiteEffectList().Count());
 
                 }
             }
@@ -93,7 +93,7 @@ namespace CSSPServices.Tests
         #endregion Tests Generated CRUD
 
         #region Tests Generated Properties
-        [TestMethod]
+        [Fact]
         public void PolSourceSiteEffect_Properties_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -131,13 +131,13 @@ namespace CSSPServices.Tests
                     polSourceSiteEffect = GetFilledRandomPolSourceSiteEffect("");
                     polSourceSiteEffect.PolSourceSiteEffectID = 0;
                     polSourceSiteEffectService.Update(polSourceSiteEffect);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsRequired, "PolSourceSiteEffectID"), polSourceSiteEffect.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsRequired, "PolSourceSiteEffectID"), polSourceSiteEffect.ValidationResults.FirstOrDefault().ErrorMessage);
 
                     polSourceSiteEffect = null;
                     polSourceSiteEffect = GetFilledRandomPolSourceSiteEffect("");
                     polSourceSiteEffect.PolSourceSiteEffectID = 10000000;
                     polSourceSiteEffectService.Update(polSourceSiteEffect);
-                    Assert.AreEqual(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "PolSourceSiteEffect", "PolSourceSiteEffectID", polSourceSiteEffect.PolSourceSiteEffectID.ToString()), polSourceSiteEffect.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "PolSourceSiteEffect", "PolSourceSiteEffectID", polSourceSiteEffect.PolSourceSiteEffectID.ToString()), polSourceSiteEffect.ValidationResults.FirstOrDefault().ErrorMessage);
 
 
                     // -----------------------------------
@@ -150,13 +150,13 @@ namespace CSSPServices.Tests
                     polSourceSiteEffect = GetFilledRandomPolSourceSiteEffect("");
                     polSourceSiteEffect.PolSourceSiteOrInfrastructureTVItemID = 0;
                     polSourceSiteEffectService.Add(polSourceSiteEffect);
-                    Assert.AreEqual(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "TVItem", "PolSourceSiteOrInfrastructureTVItemID", polSourceSiteEffect.PolSourceSiteOrInfrastructureTVItemID.ToString()), polSourceSiteEffect.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "TVItem", "PolSourceSiteOrInfrastructureTVItemID", polSourceSiteEffect.PolSourceSiteOrInfrastructureTVItemID.ToString()), polSourceSiteEffect.ValidationResults.FirstOrDefault().ErrorMessage);
 
                     polSourceSiteEffect = null;
                     polSourceSiteEffect = GetFilledRandomPolSourceSiteEffect("");
                     polSourceSiteEffect.PolSourceSiteOrInfrastructureTVItemID = 1;
                     polSourceSiteEffectService.Add(polSourceSiteEffect);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsNotOfType_, "PolSourceSiteOrInfrastructureTVItemID", "Infrastructure,PolSourceSite"), polSourceSiteEffect.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsNotOfType_, "PolSourceSiteOrInfrastructureTVItemID", "Infrastructure,PolSourceSite"), polSourceSiteEffect.ValidationResults.FirstOrDefault().ErrorMessage);
 
 
                     // -----------------------------------
@@ -169,13 +169,13 @@ namespace CSSPServices.Tests
                     polSourceSiteEffect = GetFilledRandomPolSourceSiteEffect("");
                     polSourceSiteEffect.MWQMSiteTVItemID = 0;
                     polSourceSiteEffectService.Add(polSourceSiteEffect);
-                    Assert.AreEqual(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "TVItem", "MWQMSiteTVItemID", polSourceSiteEffect.MWQMSiteTVItemID.ToString()), polSourceSiteEffect.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "TVItem", "MWQMSiteTVItemID", polSourceSiteEffect.MWQMSiteTVItemID.ToString()), polSourceSiteEffect.ValidationResults.FirstOrDefault().ErrorMessage);
 
                     polSourceSiteEffect = null;
                     polSourceSiteEffect = GetFilledRandomPolSourceSiteEffect("");
                     polSourceSiteEffect.MWQMSiteTVItemID = 1;
                     polSourceSiteEffectService.Add(polSourceSiteEffect);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsNotOfType_, "MWQMSiteTVItemID", "MWQMSite"), polSourceSiteEffect.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsNotOfType_, "MWQMSiteTVItemID", "MWQMSite"), polSourceSiteEffect.ValidationResults.FirstOrDefault().ErrorMessage);
 
 
                     // -----------------------------------
@@ -187,9 +187,9 @@ namespace CSSPServices.Tests
                     polSourceSiteEffect = null;
                     polSourceSiteEffect = GetFilledRandomPolSourceSiteEffect("");
                     polSourceSiteEffect.PolSourceSiteEffectTermIDs = GetRandomString("", 251);
-                    Assert.AreEqual(false, polSourceSiteEffectService.Add(polSourceSiteEffect));
-                    Assert.AreEqual(string.Format(CSSPServicesRes._MaxLengthIs_, "PolSourceSiteEffectTermIDs", "250"), polSourceSiteEffect.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.AreEqual(count, polSourceSiteEffectService.GetPolSourceSiteEffectList().Count());
+                    Assert.False(polSourceSiteEffectService.Add(polSourceSiteEffect));
+                    Assert.Equal(string.Format(CSSPServicesRes._MaxLengthIs_, "PolSourceSiteEffectTermIDs", "250"), polSourceSiteEffect.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(count, polSourceSiteEffectService.GetPolSourceSiteEffectList().Count());
 
                     // -----------------------------------
                     // Is Nullable
@@ -207,13 +207,13 @@ namespace CSSPServices.Tests
                     polSourceSiteEffect = GetFilledRandomPolSourceSiteEffect("");
                     polSourceSiteEffect.AnalysisDocumentTVItemID = 0;
                     polSourceSiteEffectService.Add(polSourceSiteEffect);
-                    Assert.AreEqual(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "TVItem", "AnalysisDocumentTVItemID", polSourceSiteEffect.AnalysisDocumentTVItemID.ToString()), polSourceSiteEffect.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "TVItem", "AnalysisDocumentTVItemID", polSourceSiteEffect.AnalysisDocumentTVItemID.ToString()), polSourceSiteEffect.ValidationResults.FirstOrDefault().ErrorMessage);
 
                     polSourceSiteEffect = null;
                     polSourceSiteEffect = GetFilledRandomPolSourceSiteEffect("");
                     polSourceSiteEffect.AnalysisDocumentTVItemID = 1;
                     polSourceSiteEffectService.Add(polSourceSiteEffect);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsNotOfType_, "AnalysisDocumentTVItemID", "File"), polSourceSiteEffect.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsNotOfType_, "AnalysisDocumentTVItemID", "File"), polSourceSiteEffect.ValidationResults.FirstOrDefault().ErrorMessage);
 
 
                     // -----------------------------------
@@ -226,12 +226,12 @@ namespace CSSPServices.Tests
                     polSourceSiteEffect = GetFilledRandomPolSourceSiteEffect("");
                     polSourceSiteEffect.LastUpdateDate_UTC = new DateTime();
                     polSourceSiteEffectService.Add(polSourceSiteEffect);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsRequired, "LastUpdateDate_UTC"), polSourceSiteEffect.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsRequired, "LastUpdateDate_UTC"), polSourceSiteEffect.ValidationResults.FirstOrDefault().ErrorMessage);
                     polSourceSiteEffect = null;
                     polSourceSiteEffect = GetFilledRandomPolSourceSiteEffect("");
                     polSourceSiteEffect.LastUpdateDate_UTC = new DateTime(1979, 1, 1);
                     polSourceSiteEffectService.Add(polSourceSiteEffect);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._YearShouldBeBiggerThan_, "LastUpdateDate_UTC", "1980"), polSourceSiteEffect.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._YearShouldBeBiggerThan_, "LastUpdateDate_UTC", "1980"), polSourceSiteEffect.ValidationResults.FirstOrDefault().ErrorMessage);
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -243,13 +243,13 @@ namespace CSSPServices.Tests
                     polSourceSiteEffect = GetFilledRandomPolSourceSiteEffect("");
                     polSourceSiteEffect.LastUpdateContactTVItemID = 0;
                     polSourceSiteEffectService.Add(polSourceSiteEffect);
-                    Assert.AreEqual(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "TVItem", "LastUpdateContactTVItemID", polSourceSiteEffect.LastUpdateContactTVItemID.ToString()), polSourceSiteEffect.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "TVItem", "LastUpdateContactTVItemID", polSourceSiteEffect.LastUpdateContactTVItemID.ToString()), polSourceSiteEffect.ValidationResults.FirstOrDefault().ErrorMessage);
 
                     polSourceSiteEffect = null;
                     polSourceSiteEffect = GetFilledRandomPolSourceSiteEffect("");
                     polSourceSiteEffect.LastUpdateContactTVItemID = 1;
                     polSourceSiteEffectService.Add(polSourceSiteEffect);
-                    Assert.AreEqual(string.Format(CSSPServicesRes._IsNotOfType_, "LastUpdateContactTVItemID", "Contact"), polSourceSiteEffect.ValidationResults.FirstOrDefault().ErrorMessage);
+                    Assert.Equal(string.Format(CSSPServicesRes._IsNotOfType_, "LastUpdateContactTVItemID", "Contact"), polSourceSiteEffect.ValidationResults.FirstOrDefault().ErrorMessage);
 
 
                     // -----------------------------------
@@ -273,7 +273,7 @@ namespace CSSPServices.Tests
         #endregion Tests Generated Properties
 
         #region Tests Generated for GetPolSourceSiteEffectWithPolSourceSiteEffectID(polSourceSiteEffect.PolSourceSiteEffectID)
-        [TestMethod]
+        [Fact]
         public void GetPolSourceSiteEffectWithPolSourceSiteEffectID__polSourceSiteEffect_PolSourceSiteEffectID__Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -284,7 +284,7 @@ namespace CSSPServices.Tests
                 {
                     PolSourceSiteEffectService polSourceSiteEffectService = new PolSourceSiteEffectService(new Query() { Lang = culture.TwoLetterISOLanguageName }, dbTestDB, ContactID);
                     PolSourceSiteEffect polSourceSiteEffect = (from c in dbTestDB.PolSourceSiteEffects select c).FirstOrDefault();
-                    Assert.IsNotNull(polSourceSiteEffect);
+                    Assert.NotNull(polSourceSiteEffect);
 
                 }
             }
@@ -292,7 +292,7 @@ namespace CSSPServices.Tests
         #endregion Tests Generated for GetPolSourceSiteEffectWithPolSourceSiteEffectID(polSourceSiteEffect.PolSourceSiteEffectID)
 
         #region Tests Generated for GetPolSourceSiteEffectList()
-        [TestMethod]
+        [Fact]
         public void GetPolSourceSiteEffectList_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -303,7 +303,7 @@ namespace CSSPServices.Tests
                 {
                     PolSourceSiteEffectService polSourceSiteEffectService = new PolSourceSiteEffectService(new Query() { Lang = culture.TwoLetterISOLanguageName }, dbTestDB, ContactID);
                     PolSourceSiteEffect polSourceSiteEffect = (from c in dbTestDB.PolSourceSiteEffects select c).FirstOrDefault();
-                    Assert.IsNotNull(polSourceSiteEffect);
+                    Assert.NotNull(polSourceSiteEffect);
 
                     List<PolSourceSiteEffect> polSourceSiteEffectDirectQueryList = new List<PolSourceSiteEffect>();
                     polSourceSiteEffectDirectQueryList = (from c in dbTestDB.PolSourceSiteEffects select c).Take(200).ToList();
@@ -314,7 +314,7 @@ namespace CSSPServices.Tests
         #endregion Tests Generated for GetPolSourceSiteEffectList()
 
         #region Tests Generated for GetPolSourceSiteEffectList() Skip Take
-        [TestMethod]
+        [Fact]
         public void GetPolSourceSiteEffectList_Skip_Take_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -333,14 +333,14 @@ namespace CSSPServices.Tests
                         List<PolSourceSiteEffect> polSourceSiteEffectList = new List<PolSourceSiteEffect>();
                         polSourceSiteEffectList = polSourceSiteEffectService.GetPolSourceSiteEffectList().ToList();
                         CheckPolSourceSiteEffectFields(polSourceSiteEffectList);
-                        Assert.AreEqual(polSourceSiteEffectDirectQueryList[0].PolSourceSiteEffectID, polSourceSiteEffectList[0].PolSourceSiteEffectID);
+                        Assert.Equal(polSourceSiteEffectDirectQueryList[0].PolSourceSiteEffectID, polSourceSiteEffectList[0].PolSourceSiteEffectID);
                 }
             }
         }
         #endregion Tests Generated for GetPolSourceSiteEffectList() Skip Take
 
         #region Tests Generated for GetPolSourceSiteEffectList() Skip Take Asc
-        [TestMethod]
+        [Fact]
         public void GetPolSourceSiteEffectList_Skip_Take_Asc_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -359,14 +359,14 @@ namespace CSSPServices.Tests
                         List<PolSourceSiteEffect> polSourceSiteEffectList = new List<PolSourceSiteEffect>();
                         polSourceSiteEffectList = polSourceSiteEffectService.GetPolSourceSiteEffectList().ToList();
                         CheckPolSourceSiteEffectFields(polSourceSiteEffectList);
-                        Assert.AreEqual(polSourceSiteEffectDirectQueryList[0].PolSourceSiteEffectID, polSourceSiteEffectList[0].PolSourceSiteEffectID);
+                        Assert.Equal(polSourceSiteEffectDirectQueryList[0].PolSourceSiteEffectID, polSourceSiteEffectList[0].PolSourceSiteEffectID);
                 }
             }
         }
         #endregion Tests Generated for GetPolSourceSiteEffectList() Skip Take Asc
 
         #region Tests Generated for GetPolSourceSiteEffectList() Skip Take 2 Asc
-        [TestMethod]
+        [Fact]
         public void GetPolSourceSiteEffectList_Skip_Take_2Asc_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -385,14 +385,14 @@ namespace CSSPServices.Tests
                         List<PolSourceSiteEffect> polSourceSiteEffectList = new List<PolSourceSiteEffect>();
                         polSourceSiteEffectList = polSourceSiteEffectService.GetPolSourceSiteEffectList().ToList();
                         CheckPolSourceSiteEffectFields(polSourceSiteEffectList);
-                        Assert.AreEqual(polSourceSiteEffectDirectQueryList[0].PolSourceSiteEffectID, polSourceSiteEffectList[0].PolSourceSiteEffectID);
+                        Assert.Equal(polSourceSiteEffectDirectQueryList[0].PolSourceSiteEffectID, polSourceSiteEffectList[0].PolSourceSiteEffectID);
                 }
             }
         }
         #endregion Tests Generated for GetPolSourceSiteEffectList() Skip Take 2 Asc
 
         #region Tests Generated for GetPolSourceSiteEffectList() Skip Take Asc Where
-        [TestMethod]
+        [Fact]
         public void GetPolSourceSiteEffectList_Skip_Take_Asc_Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -411,14 +411,14 @@ namespace CSSPServices.Tests
                         List<PolSourceSiteEffect> polSourceSiteEffectList = new List<PolSourceSiteEffect>();
                         polSourceSiteEffectList = polSourceSiteEffectService.GetPolSourceSiteEffectList().ToList();
                         CheckPolSourceSiteEffectFields(polSourceSiteEffectList);
-                        Assert.AreEqual(polSourceSiteEffectDirectQueryList[0].PolSourceSiteEffectID, polSourceSiteEffectList[0].PolSourceSiteEffectID);
+                        Assert.Equal(polSourceSiteEffectDirectQueryList[0].PolSourceSiteEffectID, polSourceSiteEffectList[0].PolSourceSiteEffectID);
                 }
             }
         }
         #endregion Tests Generated for GetPolSourceSiteEffectList() Skip Take Asc Where
 
         #region Tests Generated for GetPolSourceSiteEffectList() Skip Take Asc 2 Where
-        [TestMethod]
+        [Fact]
         public void GetPolSourceSiteEffectList_Skip_Take_Asc_2Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -437,14 +437,14 @@ namespace CSSPServices.Tests
                         List<PolSourceSiteEffect> polSourceSiteEffectList = new List<PolSourceSiteEffect>();
                         polSourceSiteEffectList = polSourceSiteEffectService.GetPolSourceSiteEffectList().ToList();
                         CheckPolSourceSiteEffectFields(polSourceSiteEffectList);
-                        Assert.AreEqual(polSourceSiteEffectDirectQueryList[0].PolSourceSiteEffectID, polSourceSiteEffectList[0].PolSourceSiteEffectID);
+                        Assert.Equal(polSourceSiteEffectDirectQueryList[0].PolSourceSiteEffectID, polSourceSiteEffectList[0].PolSourceSiteEffectID);
                 }
             }
         }
         #endregion Tests Generated for GetPolSourceSiteEffectList() Skip Take Asc 2 Where
 
         #region Tests Generated for GetPolSourceSiteEffectList() Skip Take Desc
-        [TestMethod]
+        [Fact]
         public void GetPolSourceSiteEffectList_Skip_Take_Desc_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -463,14 +463,14 @@ namespace CSSPServices.Tests
                         List<PolSourceSiteEffect> polSourceSiteEffectList = new List<PolSourceSiteEffect>();
                         polSourceSiteEffectList = polSourceSiteEffectService.GetPolSourceSiteEffectList().ToList();
                         CheckPolSourceSiteEffectFields(polSourceSiteEffectList);
-                        Assert.AreEqual(polSourceSiteEffectDirectQueryList[0].PolSourceSiteEffectID, polSourceSiteEffectList[0].PolSourceSiteEffectID);
+                        Assert.Equal(polSourceSiteEffectDirectQueryList[0].PolSourceSiteEffectID, polSourceSiteEffectList[0].PolSourceSiteEffectID);
                 }
             }
         }
         #endregion Tests Generated for GetPolSourceSiteEffectList() Skip Take Desc
 
         #region Tests Generated for GetPolSourceSiteEffectList() Skip Take 2 Desc
-        [TestMethod]
+        [Fact]
         public void GetPolSourceSiteEffectList_Skip_Take_2Desc_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -489,14 +489,14 @@ namespace CSSPServices.Tests
                         List<PolSourceSiteEffect> polSourceSiteEffectList = new List<PolSourceSiteEffect>();
                         polSourceSiteEffectList = polSourceSiteEffectService.GetPolSourceSiteEffectList().ToList();
                         CheckPolSourceSiteEffectFields(polSourceSiteEffectList);
-                        Assert.AreEqual(polSourceSiteEffectDirectQueryList[0].PolSourceSiteEffectID, polSourceSiteEffectList[0].PolSourceSiteEffectID);
+                        Assert.Equal(polSourceSiteEffectDirectQueryList[0].PolSourceSiteEffectID, polSourceSiteEffectList[0].PolSourceSiteEffectID);
                 }
             }
         }
         #endregion Tests Generated for GetPolSourceSiteEffectList() Skip Take 2 Desc
 
         #region Tests Generated for GetPolSourceSiteEffectList() Skip Take Desc Where
-        [TestMethod]
+        [Fact]
         public void GetPolSourceSiteEffectList_Skip_Take_Desc_Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -515,14 +515,14 @@ namespace CSSPServices.Tests
                         List<PolSourceSiteEffect> polSourceSiteEffectList = new List<PolSourceSiteEffect>();
                         polSourceSiteEffectList = polSourceSiteEffectService.GetPolSourceSiteEffectList().ToList();
                         CheckPolSourceSiteEffectFields(polSourceSiteEffectList);
-                        Assert.AreEqual(polSourceSiteEffectDirectQueryList[0].PolSourceSiteEffectID, polSourceSiteEffectList[0].PolSourceSiteEffectID);
+                        Assert.Equal(polSourceSiteEffectDirectQueryList[0].PolSourceSiteEffectID, polSourceSiteEffectList[0].PolSourceSiteEffectID);
                 }
             }
         }
         #endregion Tests Generated for GetPolSourceSiteEffectList() Skip Take Desc Where
 
         #region Tests Generated for GetPolSourceSiteEffectList() Skip Take Desc 2 Where
-        [TestMethod]
+        [Fact]
         public void GetPolSourceSiteEffectList_Skip_Take_Desc_2Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -541,14 +541,14 @@ namespace CSSPServices.Tests
                         List<PolSourceSiteEffect> polSourceSiteEffectList = new List<PolSourceSiteEffect>();
                         polSourceSiteEffectList = polSourceSiteEffectService.GetPolSourceSiteEffectList().ToList();
                         CheckPolSourceSiteEffectFields(polSourceSiteEffectList);
-                        Assert.AreEqual(polSourceSiteEffectDirectQueryList[0].PolSourceSiteEffectID, polSourceSiteEffectList[0].PolSourceSiteEffectID);
+                        Assert.Equal(polSourceSiteEffectDirectQueryList[0].PolSourceSiteEffectID, polSourceSiteEffectList[0].PolSourceSiteEffectID);
                 }
             }
         }
         #endregion Tests Generated for GetPolSourceSiteEffectList() Skip Take Desc 2 Where
 
         #region Tests Generated for GetPolSourceSiteEffectList() 2 Where
-        [TestMethod]
+        [Fact]
         public void GetPolSourceSiteEffectList_2Where_Test()
         {
             foreach (CultureInfo culture in AllowableCulture)
@@ -567,7 +567,7 @@ namespace CSSPServices.Tests
                         List<PolSourceSiteEffect> polSourceSiteEffectList = new List<PolSourceSiteEffect>();
                         polSourceSiteEffectList = polSourceSiteEffectService.GetPolSourceSiteEffectList().ToList();
                         CheckPolSourceSiteEffectFields(polSourceSiteEffectList);
-                        Assert.AreEqual(polSourceSiteEffectDirectQueryList[0].PolSourceSiteEffectID, polSourceSiteEffectList[0].PolSourceSiteEffectID);
+                        Assert.Equal(polSourceSiteEffectDirectQueryList[0].PolSourceSiteEffectID, polSourceSiteEffectList[0].PolSourceSiteEffectID);
                 }
             }
         }
@@ -576,24 +576,24 @@ namespace CSSPServices.Tests
         #region Functions private
         private void CheckPolSourceSiteEffectFields(List<PolSourceSiteEffect> polSourceSiteEffectList)
         {
-            Assert.IsNotNull(polSourceSiteEffectList[0].PolSourceSiteEffectID);
-            Assert.IsNotNull(polSourceSiteEffectList[0].PolSourceSiteOrInfrastructureTVItemID);
-            Assert.IsNotNull(polSourceSiteEffectList[0].MWQMSiteTVItemID);
+            Assert.NotNull(polSourceSiteEffectList[0].PolSourceSiteEffectID);
+            Assert.NotNull(polSourceSiteEffectList[0].PolSourceSiteOrInfrastructureTVItemID);
+            Assert.NotNull(polSourceSiteEffectList[0].MWQMSiteTVItemID);
             if (!string.IsNullOrWhiteSpace(polSourceSiteEffectList[0].PolSourceSiteEffectTermIDs))
             {
-                Assert.IsFalse(string.IsNullOrWhiteSpace(polSourceSiteEffectList[0].PolSourceSiteEffectTermIDs));
+                Assert.False(string.IsNullOrWhiteSpace(polSourceSiteEffectList[0].PolSourceSiteEffectTermIDs));
             }
             if (!string.IsNullOrWhiteSpace(polSourceSiteEffectList[0].Comments))
             {
-                Assert.IsFalse(string.IsNullOrWhiteSpace(polSourceSiteEffectList[0].Comments));
+                Assert.False(string.IsNullOrWhiteSpace(polSourceSiteEffectList[0].Comments));
             }
             if (polSourceSiteEffectList[0].AnalysisDocumentTVItemID != null)
             {
-                Assert.IsNotNull(polSourceSiteEffectList[0].AnalysisDocumentTVItemID);
+                Assert.NotNull(polSourceSiteEffectList[0].AnalysisDocumentTVItemID);
             }
-            Assert.IsNotNull(polSourceSiteEffectList[0].LastUpdateDate_UTC);
-            Assert.IsNotNull(polSourceSiteEffectList[0].LastUpdateContactTVItemID);
-            Assert.IsNotNull(polSourceSiteEffectList[0].HasErrors);
+            Assert.NotNull(polSourceSiteEffectList[0].LastUpdateDate_UTC);
+            Assert.NotNull(polSourceSiteEffectList[0].LastUpdateContactTVItemID);
+            Assert.NotNull(polSourceSiteEffectList[0].HasErrors);
         }
         private PolSourceSiteEffect GetFilledRandomPolSourceSiteEffect(string OmitPropName)
         {

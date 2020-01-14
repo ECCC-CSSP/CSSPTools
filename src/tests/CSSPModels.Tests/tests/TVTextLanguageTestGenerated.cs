@@ -6,7 +6,7 @@
  */ 
 using System;
 using System.Text;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using System.Linq;
 using System.Globalization;
 using System.Transactions;
@@ -19,7 +19,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace CSSPModels.Tests
 {
-    [TestClass]
+
     public partial class TVTextLanguageTest
     {
         #region Variables
@@ -37,7 +37,7 @@ namespace CSSPModels.Tests
         #endregion Constructors
 
         #region Tests Functions public
-        [TestMethod]
+        [Fact]
         public void TVTextLanguage_Properties_Test()
         {
             List<string> propNameList = new List<string>() { "TVText", "Language", "LanguageText", "HasErrors",  }.OrderBy(c => c).ToList();
@@ -46,35 +46,35 @@ namespace CSSPModels.Tests
             int index = 0;
             foreach (PropertyInfo propertyInfo in typeof(TVTextLanguage).GetProperties().Where(c => c.Name != "ValidationResults").OrderBy(c => c.Name).ToList())
             {
-                Assert.AreEqual(propertyInfo.Name, propNameList[index]);
+                Assert.Equal(propertyInfo.Name, propNameList[index]);
                 index += 1;
             }
 
-            Assert.AreEqual(propNameList.Count, index);
+            Assert.Equal(propNameList.Count, index);
         }
-        [TestMethod]
+        [Fact]
         public void TVTextLanguage_Has_ValidationResults_Test()
         {
-             Assert.IsTrue(typeof(TVTextLanguage).GetProperties().Where(c => c.Name == "ValidationResults").Any());
+             Assert.True(typeof(TVTextLanguage).GetProperties().Where(c => c.Name == "ValidationResults").Any());
         }
-        [TestMethod]
+        [Fact]
         public void TVTextLanguage_Every_Property_Has_Get_Set_Test()
         {
                string val1 = "Some text";
                tVTextLanguage.TVText = val1;
-               Assert.AreEqual(val1, tVTextLanguage.TVText);
+               Assert.Equal(val1, tVTextLanguage.TVText);
                LanguageEnum val2 = (LanguageEnum)3;
                tVTextLanguage.Language = val2;
-               Assert.AreEqual(val2, tVTextLanguage.Language);
+               Assert.Equal(val2, tVTextLanguage.Language);
                string val3 = "Some text";
                tVTextLanguage.LanguageText = val3;
-               Assert.AreEqual(val3, tVTextLanguage.LanguageText);
+               Assert.Equal(val3, tVTextLanguage.LanguageText);
                bool val4 = true;
                tVTextLanguage.HasErrors = val4;
-               Assert.AreEqual(val4, tVTextLanguage.HasErrors);
+               Assert.Equal(val4, tVTextLanguage.HasErrors);
                IEnumerable<ValidationResult> val15 = new List<ValidationResult>() { new ValidationResult("First CSSPError Message") }.AsEnumerable();
                tVTextLanguage.ValidationResults = val15;
-               Assert.AreEqual(val15, tVTextLanguage.ValidationResults);
+               Assert.Equal(val15, tVTextLanguage.ValidationResults);
         }
         #endregion Tests Functions public
     }

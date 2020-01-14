@@ -20,7 +20,7 @@ namespace CSSPServicesGenerateCodeHelper
         private void GenerateGetListSkipTakeAsc2WhereTestCode(string TypeName, string TypeNameLower, List<Type> types, StringBuilder sb)
         {
             sb.AppendLine($@"        #region Tests Generated for Get{ TypeName }List() Skip Take Asc 2 Where");
-            sb.AppendLine(@"        [TestMethod]");
+            sb.AppendLine(@"        [Fact]");
             sb.AppendLine($@"        public void Get{ TypeName }List_Skip_Take_Asc_2Where_Test()");
             sb.AppendLine(@"        {");
             sb.AppendLine(@"            foreach (CultureInfo culture in AllowableCulture)");

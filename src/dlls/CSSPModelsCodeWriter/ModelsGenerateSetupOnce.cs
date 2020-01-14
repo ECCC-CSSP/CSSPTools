@@ -19,14 +19,14 @@ namespace CSSPModelsGenerateCodeHelper
         ///     But only if it does not already exist
         /// 
         /// Requires:
-        ///     C:\CSSPTools\src\dlls\CSSPModels\bin\Debug\netcoreapp3.0\CSSPModels.dll
+        ///     C:\CSSPTools\src\dlls\CSSPModels\bin\Debug\netcoreapp3.1\CSSPModels.dll
         /// </summary>
         public void ModelClassName_Test()
         {
             StatusTempEvent(new StatusEventArgs(""));
             ClearPermanentEvent(new StatusEventArgs(""));
 
-            FileInfo fiDLL = new FileInfo(@"C:\CSSPTools\src\dlls\CSSPModels\bin\Debug\netcoreapp3.0\CSSPModels.dll");
+            FileInfo fiDLL = new FileInfo(@"C:\CSSPTools\src\dlls\CSSPModels\bin\Debug\netcoreapp3.1\CSSPModels.dll");
 
             if (!fiDLL.Exists)
             {
@@ -54,7 +54,7 @@ namespace CSSPModelsGenerateCodeHelper
                 //}
 
                 sb.AppendLine(@"using System;");
-                sb.AppendLine(@"using Microsoft.VisualStudio.TestTools.UnitTesting;");
+                sb.AppendLine(@"using Xunit;");
                 sb.AppendLine(@"using System.Linq;");
                 sb.AppendLine(@"using System.Collections.Generic;");
                 sb.AppendLine(@"using CSSPModels;");
@@ -70,11 +70,11 @@ namespace CSSPModelsGenerateCodeHelper
                 sb.AppendLine(@"        // use this section to add other manual test");
                 sb.AppendLine(@"");
                 sb.AppendLine(@"        #region Tests");
-                sb.AppendLine(@"        [TestMethod]");
+                sb.AppendLine(@"        [Fact]");
                 sb.AppendLine($@"        public void { type.Name }_Example_Manual_Test()");
                 sb.AppendLine(@"        {");
                 sb.AppendLine(@"            int i = 5;");
-                sb.AppendLine(@"            Assert.AreEqual(5, i);");
+                sb.AppendLine(@"            Assert.Equal(5, i);");
                 sb.AppendLine(@"        }");
                 sb.AppendLine(@"        #endregion Tests");
                 sb.AppendLine(@"    }");

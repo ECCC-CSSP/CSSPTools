@@ -6,7 +6,7 @@
  */ 
 using System;
 using System.Text;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using System.Linq;
 using System.Globalization;
 using System.Transactions;
@@ -19,7 +19,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace CSSPModels.Tests
 {
-    [TestClass]
+
     public partial class PolyPointTest
     {
         #region Variables
@@ -37,7 +37,7 @@ namespace CSSPModels.Tests
         #endregion Constructors
 
         #region Tests Functions public
-        [TestMethod]
+        [Fact]
         public void PolyPoint_Properties_Test()
         {
             List<string> propNameList = new List<string>() { "XCoord", "YCoord", "Z", "HasErrors",  }.OrderBy(c => c).ToList();
@@ -46,35 +46,35 @@ namespace CSSPModels.Tests
             int index = 0;
             foreach (PropertyInfo propertyInfo in typeof(PolyPoint).GetProperties().Where(c => c.Name != "ValidationResults").OrderBy(c => c.Name).ToList())
             {
-                Assert.AreEqual(propertyInfo.Name, propNameList[index]);
+                Assert.Equal(propertyInfo.Name, propNameList[index]);
                 index += 1;
             }
 
-            Assert.AreEqual(propNameList.Count, index);
+            Assert.Equal(propNameList.Count, index);
         }
-        [TestMethod]
+        [Fact]
         public void PolyPoint_Has_ValidationResults_Test()
         {
-             Assert.IsTrue(typeof(PolyPoint).GetProperties().Where(c => c.Name == "ValidationResults").Any());
+             Assert.True(typeof(PolyPoint).GetProperties().Where(c => c.Name == "ValidationResults").Any());
         }
-        [TestMethod]
+        [Fact]
         public void PolyPoint_Every_Property_Has_Get_Set_Test()
         {
                double val1 = 87.9D;
                polyPoint.XCoord = val1;
-               Assert.AreEqual(val1, polyPoint.XCoord);
+               Assert.Equal(val1, polyPoint.XCoord);
                double val2 = 87.9D;
                polyPoint.YCoord = val2;
-               Assert.AreEqual(val2, polyPoint.YCoord);
+               Assert.Equal(val2, polyPoint.YCoord);
                double val3 = 87.9D;
                polyPoint.Z = val3;
-               Assert.AreEqual(val3, polyPoint.Z);
+               Assert.Equal(val3, polyPoint.Z);
                bool val4 = true;
                polyPoint.HasErrors = val4;
-               Assert.AreEqual(val4, polyPoint.HasErrors);
+               Assert.Equal(val4, polyPoint.HasErrors);
                IEnumerable<ValidationResult> val15 = new List<ValidationResult>() { new ValidationResult("First CSSPError Message") }.AsEnumerable();
                polyPoint.ValidationResults = val15;
-               Assert.AreEqual(val15, polyPoint.ValidationResults);
+               Assert.Equal(val15, polyPoint.ValidationResults);
         }
         #endregion Tests Functions public
     }

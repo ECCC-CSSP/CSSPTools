@@ -6,7 +6,7 @@
  */ 
 using System;
 using System.Text;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using System.Linq;
 using System.Globalization;
 using System.Transactions;
@@ -19,7 +19,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace CSSPModels.Tests
 {
-    [TestClass]
+
     public partial class MapInfoPointTest
     {
         #region Variables
@@ -37,7 +37,7 @@ namespace CSSPModels.Tests
         #endregion Constructors
 
         #region Tests Functions public
-        [TestMethod]
+        [Fact]
         public void MapInfoPoint_Properties_Test()
         {
             List<string> propNameList = new List<string>() { "MapInfoPointID", "MapInfoID", "Ordinal", "Lat", "Lng", "LastUpdateDate_UTC", "LastUpdateContactTVItemID",  }.OrderBy(c => c).ToList();
@@ -50,12 +50,12 @@ namespace CSSPModels.Tests
                     && propertyInfo.Name != "ValidationResults"
                     && !propertyInfo.CustomAttributes.Where(c => c.AttributeType.Name.Contains("NotMappedAttribute")).Any())
                 {
-                    Assert.AreEqual(propNameList[index], propertyInfo.Name);
+                    Assert.Equal(propNameList[index], propertyInfo.Name);
                     index += 1;
                 }
             }
 
-            Assert.AreEqual(propNameList.Count, index);
+            Assert.Equal(propNameList.Count, index);
 
             index = 0;
             foreach (PropertyInfo propertyInfo in typeof(MapInfoPoint).GetProperties().Where(c => c.Name != "ValidationResults").OrderBy(c => c.Name).ToList())
@@ -64,16 +64,16 @@ namespace CSSPModels.Tests
                 {
                     if (customAttributeData.AttributeType.Name == "NotMappedAttribute")
                     {
-                        Assert.AreEqual(propertyInfo.Name, propNameNotMappedList[index]);
+                        Assert.Equal(propertyInfo.Name, propNameNotMappedList[index]);
                         index += 1;
                     }
                 }
             }
 
-            Assert.AreEqual(propNameNotMappedList.Count, index);
+            Assert.Equal(propNameNotMappedList.Count, index);
 
         }
-        [TestMethod]
+        [Fact]
         public void MapInfoPoint_Navigation_Test()
         {
             List<string> foreignNameList = new List<string>() {  }.OrderBy(c => c).ToList();
@@ -84,61 +84,61 @@ namespace CSSPModels.Tests
             {
                 if (propertyInfo.GetGetMethod().IsVirtual && !propertyInfo.GetGetMethod().ReturnType.Name.StartsWith("ICollection"))
                 {
-                    Assert.IsTrue(foreignNameList.Contains(propertyInfo.Name));
+                    Assert.True(foreignNameList.Contains(propertyInfo.Name));
                     index += 1;
                 }
             }
 
-            Assert.AreEqual(foreignNameList.Count, index);
+            Assert.Equal(foreignNameList.Count, index);
 
             index = 0;
             foreach (PropertyInfo propertyInfo in typeof(MapInfoPoint).GetProperties().Where(c => c.Name != "ValidationResults").OrderBy(c => c.Name).ToList())
             {
                 if (propertyInfo.GetGetMethod().ReturnType.Name.StartsWith("ICollection"))
                 {
-                    Assert.IsTrue(foreignNameCollectionList.Contains(propertyInfo.Name));
+                    Assert.True(foreignNameCollectionList.Contains(propertyInfo.Name));
                     index += 1;
                 }
             }
 
-            Assert.AreEqual(foreignNameCollectionList.Count, index);
+            Assert.Equal(foreignNameCollectionList.Count, index);
 
         }
-        [TestMethod]
+        [Fact]
         public void MapInfoPoint_Has_ValidationResults_Test()
         {
-             Assert.IsTrue(typeof(MapInfoPoint).GetProperties().Where(c => c.Name == "ValidationResults").Any());
+             Assert.True(typeof(MapInfoPoint).GetProperties().Where(c => c.Name == "ValidationResults").Any());
         }
-        [TestMethod]
+        [Fact]
         public void MapInfoPoint_Every_Property_Has_Get_Set_Test()
         {
                int val1 = 45;
                mapInfoPoint.MapInfoPointID = val1;
-               Assert.AreEqual(val1, mapInfoPoint.MapInfoPointID);
+               Assert.Equal(val1, mapInfoPoint.MapInfoPointID);
                int val2 = 45;
                mapInfoPoint.MapInfoID = val2;
-               Assert.AreEqual(val2, mapInfoPoint.MapInfoID);
+               Assert.Equal(val2, mapInfoPoint.MapInfoID);
                int val3 = 45;
                mapInfoPoint.Ordinal = val3;
-               Assert.AreEqual(val3, mapInfoPoint.Ordinal);
+               Assert.Equal(val3, mapInfoPoint.Ordinal);
                double val4 = 87.9D;
                mapInfoPoint.Lat = val4;
-               Assert.AreEqual(val4, mapInfoPoint.Lat);
+               Assert.Equal(val4, mapInfoPoint.Lat);
                double val5 = 87.9D;
                mapInfoPoint.Lng = val5;
-               Assert.AreEqual(val5, mapInfoPoint.Lng);
+               Assert.Equal(val5, mapInfoPoint.Lng);
                DateTime val6 = new DateTime(2010, 3, 4);
                mapInfoPoint.LastUpdateDate_UTC = val6;
-               Assert.AreEqual(val6, mapInfoPoint.LastUpdateDate_UTC);
+               Assert.Equal(val6, mapInfoPoint.LastUpdateDate_UTC);
                int val7 = 45;
                mapInfoPoint.LastUpdateContactTVItemID = val7;
-               Assert.AreEqual(val7, mapInfoPoint.LastUpdateContactTVItemID);
+               Assert.Equal(val7, mapInfoPoint.LastUpdateContactTVItemID);
                bool val8 = true;
                mapInfoPoint.HasErrors = val8;
-               Assert.AreEqual(val8, mapInfoPoint.HasErrors);
+               Assert.Equal(val8, mapInfoPoint.HasErrors);
                IEnumerable<ValidationResult> val27 = new List<ValidationResult>() { new ValidationResult("First CSSPError Message") }.AsEnumerable();
                mapInfoPoint.ValidationResults = val27;
-               Assert.AreEqual(val27, mapInfoPoint.ValidationResults);
+               Assert.Equal(val27, mapInfoPoint.ValidationResults);
         }
         #endregion Tests Functions public
     }
