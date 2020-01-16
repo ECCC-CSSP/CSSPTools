@@ -19,7 +19,6 @@ using System.ComponentModel.DataAnnotations;
 
 namespace CSSPModels.Tests
 {
-
     public partial class PolyPointTest
     {
         #region Variables

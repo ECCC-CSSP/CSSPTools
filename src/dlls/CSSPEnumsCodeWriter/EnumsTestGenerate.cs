@@ -42,7 +42,6 @@ namespace CSSPEnumsGenerateCodeHelper
             sb.AppendLine(@"using System;");
             sb.AppendLine(@"using Xunit;");
             sb.AppendLine(@"using System.Collections.Generic;");
-            sb.AppendLine(@"using Microsoft.VisualStudio.TestTools.UnitTesting;");
             sb.AppendLine(@"using System.Globalization;");
             sb.AppendLine(@"using CSSPEnums.Resources;");
             sb.AppendLine(@"using System.Linq;");

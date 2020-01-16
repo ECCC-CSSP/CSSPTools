@@ -40,8 +40,8 @@ namespace PolSourceGroupingGenerateCodeHelper
             sb.AppendLine(@" *");
             sb.AppendLine(@" */ ");
             sb.AppendLine(@"using System;");
+            sb.AppendLine(@"using Xunit;");
             sb.AppendLine(@"using System.Collections.Generic;");
-            sb.AppendLine(@"using Microsoft.VisualStudio.TestTools.UnitTesting;");
             sb.AppendLine(@"using System.Globalization;");
             sb.AppendLine(@"using CSSPEnums.Resources;");
             sb.AppendLine(@"");
@@ -49,7 +49,7 @@ namespace PolSourceGroupingGenerateCodeHelper
             sb.AppendLine(@"{");
             sb.AppendLine(@"    public partial class EnumsTest");
             sb.AppendLine(@"    {");
-            sb.AppendLine(@"        [TestMethod]");
+            sb.AppendLine(@"        [Fact]");
             sb.AppendLine(@"        public void BaseService_GetEnumText_PolSourceObsInfoEnum_Test()");
             sb.AppendLine(@"        {");
             sb.AppendLine(@"            foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo(""en-CA""), new CultureInfo(""fr-CA"") })");
@@ -57,15 +57,15 @@ namespace PolSourceGroupingGenerateCodeHelper
             sb.AppendLine(@"                SetupTest(culture);");
             sb.AppendLine(@"");
             sb.AppendLine(@"                string retStr = enums.GetResValueForTypeAndID(typeof(PolSourceObsInfoEnum), null, null);");
-            sb.AppendLine(@"                Assert.AreEqual(CSSPEnumsRes.Empty, retStr);");
+            sb.AppendLine(@"                Assert.Equal(CSSPEnumsRes.Empty, retStr);");
             sb.AppendLine(@"                string retStrDesc = enums.GetResValueForTypeAndID(typeof(PolSourceObsInfoEnum), null, PolSourceObsInfoTypeEnum.Description);");
-            sb.AppendLine(@"                Assert.AreEqual(CSSPEnumsRes.Empty, retStrDesc);");
+            sb.AppendLine(@"                Assert.Equal(CSSPEnumsRes.Empty, retStrDesc);");
             sb.AppendLine(@"                string retStrReport = enums.GetResValueForTypeAndID(typeof(PolSourceObsInfoEnum), null, PolSourceObsInfoTypeEnum.Report);");
-            sb.AppendLine(@"                Assert.AreEqual(CSSPEnumsRes.Empty, retStrReport);");
+            sb.AppendLine(@"                Assert.Equal(CSSPEnumsRes.Empty, retStrReport);");
             sb.AppendLine(@"                string retStrText = enums.GetResValueForTypeAndID(typeof(PolSourceObsInfoEnum), null, PolSourceObsInfoTypeEnum.Text);");
-            sb.AppendLine(@"                Assert.AreEqual(CSSPEnumsRes.Empty, retStrText);");
+            sb.AppendLine(@"                Assert.Equal(CSSPEnumsRes.Empty, retStrText);");
             sb.AppendLine(@"                string retStrInit = enums.GetResValueForTypeAndID(typeof(PolSourceObsInfoEnum), null, PolSourceObsInfoTypeEnum.Initial);");
-            sb.AppendLine(@"                Assert.AreEqual(CSSPEnumsRes.Empty, retStrInit);");
+            sb.AppendLine(@"                Assert.Equal(CSSPEnumsRes.Empty, retStrInit);");
             sb.AppendLine(@"");
             sb.AppendLine(@"                foreach (int i in Enum.GetValues(typeof(PolSourceObsInfoEnum)))");
             sb.AppendLine(@"                {");
@@ -81,8 +81,8 @@ namespace PolSourceGroupingGenerateCodeHelper
             {
                 sb.AppendLine($@"                        case PolSourceObsInfoEnum.{ groupChoiceChildLevel.Group }:");
                 sb.AppendLine(@"                        {");
-                sb.AppendLine($@"                            Assert.AreEqual(PolSourceInfoEnumGeneratedRes.PolSourceInfoEnum{ groupChoiceChildLevel.Group }, retStr);");
-                sb.AppendLine($@"                            Assert.AreEqual(PolSourceInfoEnumGeneratedRes.PolSourceInfoEnum{ groupChoiceChildLevel.Group }Desc, retStrDesc);");
+                sb.AppendLine($@"                            Assert.Equal(PolSourceInfoEnumGeneratedRes.PolSourceInfoEnum{ groupChoiceChildLevel.Group }, retStr);");
+                sb.AppendLine($@"                            Assert.Equal(PolSourceInfoEnumGeneratedRes.PolSourceInfoEnum{ groupChoiceChildLevel.Group }Desc, retStrDesc);");
                 sb.AppendLine(@"                        }");
                 sb.AppendLine(@"                        break;");
             }
@@ -92,11 +92,11 @@ namespace PolSourceGroupingGenerateCodeHelper
                 {
                     sb.AppendLine($@"                        case PolSourceObsInfoEnum.{ groupChoiceChildLevel.Choice }:");
                     sb.AppendLine(@"                        {");
-                    sb.AppendLine($@"                            Assert.AreEqual(PolSourceInfoEnumGeneratedRes.PolSourceInfoEnum{ groupChoiceChildLevel.Choice }, retStr);");
-                    sb.AppendLine($@"                            Assert.AreEqual(PolSourceInfoEnumGeneratedRes.PolSourceInfoEnum{ groupChoiceChildLevel.Choice }Report, retStrReport);");
+                    sb.AppendLine($@"                            Assert.Equal(PolSourceInfoEnumGeneratedRes.PolSourceInfoEnum{ groupChoiceChildLevel.Choice }, retStr);");
+                    sb.AppendLine($@"                            Assert.Equal(PolSourceInfoEnumGeneratedRes.PolSourceInfoEnum{ groupChoiceChildLevel.Choice }Report, retStrReport);");
                     if (!string.IsNullOrWhiteSpace(groupChoiceChildLevel.TextEN))
                     {
-                        sb.AppendLine($@"                            Assert.AreEqual(PolSourceInfoEnumGeneratedRes.PolSourceInfoEnum{ groupChoiceChildLevel.Choice }Text, retStrText);");
+                        sb.AppendLine($@"                            Assert.Equal(PolSourceInfoEnumGeneratedRes.PolSourceInfoEnum{ groupChoiceChildLevel.Choice }Text, retStrText);");
                     }
                     sb.AppendLine(@"                        }");
                     sb.AppendLine(@"                        break;");
@@ -106,15 +106,15 @@ namespace PolSourceGroupingGenerateCodeHelper
             sb.AppendLine(@"                }");
             sb.AppendLine(@"");
             sb.AppendLine(@"            retStr = enums.GetResValueForTypeAndID(typeof(PolSourceObsInfoEnum), 1000000, null);");
-            sb.AppendLine(@"            Assert.AreEqual(CSSPEnumsRes.CSSPError.ToString(), retStr);");
+            sb.AppendLine(@"            Assert.Equal(CSSPEnumsRes.CSSPError.ToString(), retStr);");
             sb.AppendLine(@"            retStrDesc = enums.GetResValueForTypeAndID(typeof(PolSourceObsInfoEnum), 1000000, PolSourceObsInfoTypeEnum.Description);");
-            sb.AppendLine(@"            Assert.AreEqual(CSSPEnumsRes.CSSPError.ToString(), retStrDesc);");
+            sb.AppendLine(@"            Assert.Equal(CSSPEnumsRes.CSSPError.ToString(), retStrDesc);");
             sb.AppendLine(@"            retStrReport = enums.GetResValueForTypeAndID(typeof(PolSourceObsInfoEnum), 1000000, PolSourceObsInfoTypeEnum.Report);");
-            sb.AppendLine(@"            Assert.AreEqual("""", retStrReport);");
+            sb.AppendLine(@"            Assert.Equal("""", retStrReport);");
             sb.AppendLine(@"            retStrText = enums.GetResValueForTypeAndID(typeof(PolSourceObsInfoEnum), 1000000, PolSourceObsInfoTypeEnum.Text);");
-            sb.AppendLine(@"            Assert.AreEqual("""", retStrText);");
+            sb.AppendLine(@"            Assert.Equal("""", retStrText);");
             sb.AppendLine(@"            retStrInit = enums.GetResValueForTypeAndID(typeof(PolSourceObsInfoEnum), 1000000, PolSourceObsInfoTypeEnum.Initial);");
-            sb.AppendLine(@"            Assert.AreEqual("""", retStrInit);");
+            sb.AppendLine(@"            Assert.Equal("""", retStrInit);");
             sb.AppendLine(@"            }");
             sb.AppendLine(@"        }");
             sb.AppendLine(@"    }");

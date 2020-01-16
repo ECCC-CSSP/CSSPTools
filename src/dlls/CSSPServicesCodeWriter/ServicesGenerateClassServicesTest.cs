@@ -870,7 +870,6 @@ namespace CSSPServicesGenerateCodeHelper
                 sb.AppendLine(@" */ ");
                 sb.AppendLine(@"");
                 sb.AppendLine(@"using System;");
-                sb.AppendLine(@"using Microsoft.VisualStudio.TestTools.UnitTesting;");
                 sb.AppendLine(@"using System.Linq;");
                 sb.AppendLine(@"using System.Collections.Generic;");
                 sb.AppendLine(@"using CSSPModels;");

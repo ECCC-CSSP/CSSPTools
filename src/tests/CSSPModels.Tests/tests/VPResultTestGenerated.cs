@@ -19,7 +19,6 @@ using System.ComponentModel.DataAnnotations;
 
 namespace CSSPModels.Tests
 {
-
     public partial class VPResultTest
     {
         #region Variables
@@ -84,7 +83,8 @@ namespace CSSPModels.Tests
             {
                 if (propertyInfo.GetGetMethod().IsVirtual && !propertyInfo.GetGetMethod().ReturnType.Name.StartsWith("ICollection"))
                 {
-                    Assert.True(foreignNameList.Contains(propertyInfo.Name));
+                    bool foreignNameExist = foreignNameList.Contains(propertyInfo.Name);
+                    Assert.True(foreignNameExist);
                     index += 1;
                 }
             }
@@ -96,7 +96,8 @@ namespace CSSPModels.Tests
             {
                 if (propertyInfo.GetGetMethod().ReturnType.Name.StartsWith("ICollection"))
                 {
-                    Assert.True(foreignNameCollectionList.Contains(propertyInfo.Name));
+                    bool foreignNameCollectionExist = foreignNameCollectionList.Contains(propertyInfo.Name);
+                    Assert.True(foreignNameCollectionExist);
                     index += 1;
                 }
             }

@@ -280,31 +280,35 @@ namespace CSSPPolSourceGroupingExcelFileRead
                                         {
                                             if (thecurrentcell.DataType == CellValues.SharedString)
                                             {
-                                                SharedStringItem item = workbookPart.SharedStringTablePart.SharedStringTable.Elements<SharedStringItem>().ElementAt(id);
-                                                if (item.Text != null)
+                                                int id;
+                                                if (Int32.TryParse(thecurrentcell.InnerText, out id))
                                                 {
-                                                    if ((item.Text.Text + "") != FieldNameList[cellcount])
+                                                    SharedStringItem item = workbookPart.SharedStringTablePart.SharedStringTable.Elements<SharedStringItem>().ElementAt(id);
+                                                    if (item.Text != null)
                                                     {
-                                                        OnCSSPError(new CSSPErrorEventArgs() { CSSPError = $"{ fi.FullName } PolSourceGrouping { item.Text } is not equal to { FieldNameList[cellcount] }\r\n" });
-                                                        return false;
+                                                        if ((item.Text.Text + "") != FieldNameList[cellcount])
+                                                        {
+                                                            OnCSSPError(new CSSPErrorEventArgs() { CSSPError = $"{ fi.FullName } PolSourceGrouping { item.Text } is not equal to { FieldNameList[cellcount] }\r\n" });
+                                                            return false;
+                                                        }
                                                     }
-                                                }
-                                                else if (item.InnerText != null)
-                                                {
-                                                    currentcellvalue = item.InnerText;
-                                                    if (currentcellvalue != FieldNameList[cellcount])
+                                                    else if (item.InnerText != null)
                                                     {
-                                                        OnCSSPError(new CSSPErrorEventArgs() { CSSPError = $"{ fi.FullName } PolSourceGrouping { item.Text } is not equal to { FieldNameList[cellcount] }\r\n" });
-                                                        return false;
+                                                        currentcellvalue = item.InnerText;
+                                                        if (currentcellvalue != FieldNameList[cellcount])
+                                                        {
+                                                            OnCSSPError(new CSSPErrorEventArgs() { CSSPError = $"{ fi.FullName } PolSourceGrouping { item.Text } is not equal to { FieldNameList[cellcount] }\r\n" });
+                                                            return false;
+                                                        }
                                                     }
-                                                }
-                                                else if (item.InnerXml != null)
-                                                {
-                                                    currentcellvalue = item.InnerXml;
-                                                    if (currentcellvalue != FieldNameList[cellcount])
+                                                    else if (item.InnerXml != null)
                                                     {
-                                                        OnCSSPError(new CSSPErrorEventArgs() { CSSPError = $"{ fi.FullName } PolSourceGrouping { item.Text } is not equal to { FieldNameList[cellcount] }\r\n" });
-                                                        return false;
+                                                        currentcellvalue = item.InnerXml;
+                                                        if (currentcellvalue != FieldNameList[cellcount])
+                                                        {
+                                                            OnCSSPError(new CSSPErrorEventArgs() { CSSPError = $"{ fi.FullName } PolSourceGrouping { item.Text } is not equal to { FieldNameList[cellcount] }\r\n" });
+                                                            return false;
+                                                        }
                                                     }
                                                 }
                                             }
@@ -321,7 +325,7 @@ namespace CSSPPolSourceGroupingExcelFileRead
                                         cellcount++;
                                     }
                                 }
-                                else
+                                else // rowCount > 1
                                 {
                                     int cellCount = 0;
                                     foreach (Cell thecurrentcell in thecurrentrow)
@@ -356,6 +360,90 @@ namespace CSSPPolSourceGroupingExcelFileRead
                                                                 CSSPID = tempStr.Trim();
                                                             }
                                                             break;
+                                                        case 1:
+                                                            {
+                                                                Group = tempStr.Trim();
+                                                                if (string.IsNullOrWhiteSpace(Group))
+                                                                {
+                                                                    CSSPID = "";
+                                                                    Group = "";
+                                                                    Choice = "";
+                                                                    Child = "";
+                                                                    Hide = "";
+                                                                    EN = "";
+                                                                    InitEN = "";
+                                                                    DescEN = "";
+                                                                    ReportEN = "";
+                                                                    TextEN = "";
+                                                                    FR = "";
+                                                                    InitFR = "";
+                                                                    DescFR = "";
+                                                                    ReportFR = "";
+                                                                    TextFR = "";
+                                                                    continue;
+                                                                }
+                                                            }
+                                                            break;
+                                                        case 2:
+                                                            {
+                                                                Child = tempStr.Trim();
+                                                            }
+                                                            break;
+                                                        case 3:
+                                                            {
+                                                                Hide = tempStr.Trim();
+                                                            }
+                                                            break;
+                                                        case 4:
+                                                            {
+                                                                EN = tempStr.Trim();
+                                                            }
+                                                            break;
+                                                        case 5:
+                                                            {
+                                                                InitEN = tempStr.Trim();
+                                                            }
+                                                            break;
+                                                        case 6:
+                                                            {
+                                                                DescEN = tempStr.Trim();
+                                                            }
+                                                            break;
+                                                        case 7:
+                                                            {
+                                                                ReportEN = tempStr.Trim();
+                                                            }
+                                                            break;
+                                                        case 8:
+                                                            {
+                                                                TextEN = tempStr.Trim();
+                                                            }
+                                                            break;
+                                                        case 9:
+                                                            {
+                                                                FR = tempStr.Trim();
+                                                            }
+                                                            break;
+                                                        case 10:
+                                                            {
+                                                                InitFR = tempStr.Trim();
+                                                            }
+                                                            break;
+                                                        case 11:
+                                                            {
+                                                                DescFR = tempStr.Trim();
+                                                            }
+                                                            break;
+                                                        case 12:
+                                                            {
+                                                                ReportFR = tempStr.Trim();
+                                                            }
+                                                            break;
+                                                        case 13:
+                                                            {
+                                                                TextFR = tempStr.Trim();
+                                                            }
+                                                            break;
                                                         default:
                                                             break;
                                                     }
@@ -371,6 +459,90 @@ namespace CSSPPolSourceGroupingExcelFileRead
                                                         CSSPID = thecurrentcell.InnerText.Trim();
                                                     }
                                                     break;
+                                                case 1:
+                                                    {
+                                                        Group = thecurrentcell.InnerText.Trim();
+                                                        if (string.IsNullOrWhiteSpace(Group))
+                                                        {
+                                                            CSSPID = "";
+                                                            Group = "";
+                                                            Choice = "";
+                                                            Child = "";
+                                                            Hide = "";
+                                                            EN = "";
+                                                            InitEN = "";
+                                                            DescEN = "";
+                                                            ReportEN = "";
+                                                            TextEN = "";
+                                                            FR = "";
+                                                            InitFR = "";
+                                                            DescFR = "";
+                                                            ReportFR = "";
+                                                            TextFR = "";
+                                                            continue;
+                                                        }
+                                                    }
+                                                    break;
+                                                case 2:
+                                                    {
+                                                        Child = thecurrentcell.InnerText.Trim();
+                                                    }
+                                                    break;
+                                                case 3:
+                                                    {
+                                                        Hide = thecurrentcell.InnerText.Trim();
+                                                    }
+                                                    break;
+                                                case 4:
+                                                    {
+                                                        EN = thecurrentcell.InnerText.Trim();
+                                                    }
+                                                    break;
+                                                case 5:
+                                                    {
+                                                        InitEN = thecurrentcell.InnerText.Trim();
+                                                    }
+                                                    break;
+                                                case 6:
+                                                    {
+                                                        DescEN = thecurrentcell.InnerText.Trim();
+                                                    }
+                                                    break;
+                                                case 7:
+                                                    {
+                                                        ReportEN = thecurrentcell.InnerText.Trim();
+                                                    }
+                                                    break;
+                                                case 8:
+                                                    {
+                                                        TextEN = thecurrentcell.InnerText.Trim();
+                                                    }
+                                                    break;
+                                                case 9:
+                                                    {
+                                                        FR = thecurrentcell.InnerText.Trim();
+                                                    }
+                                                    break;
+                                                case 10:
+                                                    {
+                                                        InitFR = thecurrentcell.InnerText.Trim();
+                                                    }
+                                                    break;
+                                                case 11:
+                                                    {
+                                                        DescFR = thecurrentcell.InnerText.Trim();
+                                                    }
+                                                    break;
+                                                case 12:
+                                                    {
+                                                        ReportFR = thecurrentcell.InnerText.Trim();
+                                                    }
+                                                    break;
+                                                case 13:
+                                                    {
+                                                        TextFR = thecurrentcell.InnerText.Trim();
+                                                    }
+                                                    break;
                                                 default:
                                                     break;
                                             }
@@ -383,75 +555,40 @@ namespace CSSPPolSourceGroupingExcelFileRead
                                         OnStatus(new StatusEventArgs() { status = $"Reading spreadsheet ... { rowCount }" });
                                     }
 
-                                    if (reader.GetValue(1).GetType() == typeof(DBNull) || string.IsNullOrEmpty(reader.GetValue(1).ToString()))
+                                    if (!string.IsNullOrWhiteSpace(CSSPID))
                                     {
-                                        CSSPID = "";
-                                        Group = "";
-                                        Choice = "";
-                                        Child = "";
-                                        Hide = "";
-                                        EN = "";
-                                        InitEN = "";
-                                        DescEN = "";
-                                        ReportEN = "";
-                                        TextEN = "";
-                                        FR = "";
-                                        InitFR = "";
-                                        DescFR = "";
-                                        ReportFR = "";
-                                        TextFR = "";
-                                        continue;
+                                        groupChoiceChildLevelStraitList.Add(new GroupChoiceChildLevel()
+                                        {
+                                            CSSPID = CSSPID,
+                                            Group = Group,
+                                            Choice = Choice,
+                                            Child = Child,
+                                            Hide = Hide,
+                                            EN = EN,
+                                            InitEN = InitEN,
+                                            DescEN = DescEN,
+                                            ReportEN = ReportEN,
+                                            TextEN = TextEN,
+                                            FR = FR,
+                                            InitFR = InitFR,
+                                            DescFR = DescFR,
+                                            ReportFR = ReportFR,
+                                            TextFR = TextFR,
+                                        });
                                     }
-                                    else
-                                    {
-                                        CSSPID = reader.GetValue(0).ToString();
-                                        Group = reader.GetValue(1).ToString();
-                                        Child = reader.GetValue(2).ToString();
-                                        Hide = reader.GetValue(3).ToString();
-                                        EN = reader.GetValue(4).ToString();
-                                        InitEN = reader.GetValue(5).ToString();
-                                        DescEN = reader.GetValue(6).ToString();
-                                        ReportEN = reader.GetValue(7).ToString();
-                                        TextEN = reader.GetValue(8).ToString();
-                                        FR = reader.GetValue(9).ToString();
-                                        InitFR = reader.GetValue(10).ToString();
-                                        DescFR = reader.GetValue(11).ToString();
-                                        ReportFR = reader.GetValue(12).ToString();
-                                        TextFR = reader.GetValue(13).ToString();
-                                    }
-                                    groupChoiceChildLevelStraitList.Add(new GroupChoiceChildLevel()
-                                    {
-                                        CSSPID = CSSPID,
-                                        Group = Group,
-                                        Choice = Choice,
-                                        Child = Child,
-                                        Hide = Hide,
-                                        EN = EN,
-                                        InitEN = InitEN,
-                                        DescEN = DescEN,
-                                        ReportEN = ReportEN,
-                                        TextEN = TextEN,
-                                        FR = FR,
-                                        InitFR = InitFR,
-                                        DescFR = DescFR,
-                                        ReportFR = ReportFR,
-                                        TextFR = TextFR,
-                                    });
-
                                 }
                             }
-                            sb.Append("");
-                            OnCSSPError(new CSSPErrorEventArgs() { CSSPError = $"{ sb.ToString() }" });
-                            return false;
                         }
                     }
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-
+                OnCSSPError(new CSSPErrorEventArgs() { CSSPError = $"{ ex.Message }" });
+                return false;
             }
 
+            #region Old Text
             //string connectionString = $@"Provider=Microsoft.ACE.OLEDB.12.0;Data Source={ fi.FullName };Extended Properties=Excel 12.0 Xml;HDR=YES";
             //OleDbConnection conn = new OleDbConnection(connectionString);
 
@@ -572,6 +709,8 @@ namespace CSSPPolSourceGroupingExcelFileRead
             //reader.Close();
 
             //conn.Close();
+
+            #endregion Old Text
 
             List<GroupChoiceChildLevel> groupChoiceChildLevelOrderedList = (from c in groupChoiceChildLevelStraitList
                                                                             orderby c.Group
@@ -891,181 +1030,562 @@ namespace CSSPPolSourceGroupingExcelFileRead
 
             FileInfo fi = new FileInfo(FullFileName);
 
-            string connectionString = $@"Provider=Microsoft.ACE.OLEDB.12.0;Data Source={ fi.FullName };Extended Properties=Excel 12.0 Xml;HDR=YES";
-            OleDbConnection conn = new OleDbConnection(connectionString);
-
             try
             {
-                conn.Open();
-            }
-            catch (Exception ex)
-            {
-                string InnerException = (ex.InnerException == null ? "" : $" InnerException: { ex.InnerException.Message }");
-                OnCSSPError(new CSSPErrorEventArgs() { CSSPError = $"{ ex.Message }{ InnerException }" });
-                return false;
-            }
-            OleDbDataReader reader;
-
-            OleDbCommand comm = new OleDbCommand("Select * from [PolSourceGrouping$];");
-
-            try
-            {
-                comm.Connection = conn;
-                reader = comm.ExecuteReader();
-
-            }
-            catch (Exception ex)
-            {
-                OnCSSPError(new CSSPErrorEventArgs() { CSSPError = $"CSSPError 'comm.ExecuteReader' { ex.Message }\r\n" });
-                return false;
-            }
-
-            if (reader.FieldCount != 14)
-            {
-                OnCSSPError(new CSSPErrorEventArgs() { CSSPError = $"CSSPError Column count is [{ reader.FieldCount }]. It should be 14.\r\n" });
-                return false;
-            }
-
-            List<string> FieldNameList = new List<string>();
-            FieldNameList = new List<string>() { "CSSPID", "Group", "Child", "Hide", "EN", "InitEN", "DescEN", "ReportEN", "TextEN", "FR", "InitFR", "DescFR", "ReportFR", "TextFR" };
-            for (int j = 0; j < reader.FieldCount; j++)
-            {
-                if (reader.GetName(j) != FieldNameList[j])
+                //Lets open the existing excel file and read through its content . Open the excel using openxml sdk
+                using (SpreadsheetDocument doc = SpreadsheetDocument.Open(fi.FullName, false))
                 {
-                    OnStatus(new StatusEventArgs() { status = $"{ fi.FullName } PolSourceGrouping { reader.GetName(j) } is not equal to { FieldNameList[j] }\r\n" });
-                    return false;
-                }
-            }
-            reader.Close();
+                    //create the object for workbook part  
+                    WorkbookPart workbookPart = doc.WorkbookPart;
+                    Sheets thesheetcollection = workbookPart.Workbook.GetFirstChild<Sheets>();
+                    //StringBuilder sb = new StringBuilder();
 
-            reader = comm.ExecuteReader();
-
-            string CSSPID = "";
-            string Group = "";
-            string Choice = "";
-            string Child = "";
-            string Hide = "";
-            string EN = "";
-            string InitEN = "";
-            string DescEN = "";
-            string ReportEN = "";
-            string TextEN = "";
-            string FR = "";
-            string InitFR = "";
-            string DescFR = "";
-            string ReportFR = "";
-            string TextFR = "";
-
-            int CountRead = 0;
-            while (reader.Read())
-            {
-                CountRead += 1;
-
-                if (CountRead % 200 == 0)
-                {
-                    OnStatus(new StatusEventArgs() { status = $"Reading spreadsheet ... { CountRead }" });
-                }
-
-                if (reader.GetValue(1).GetType() == typeof(DBNull) || string.IsNullOrEmpty(reader.GetValue(1).ToString()))
-                {
-                    CSSPID = "";
-                    Group = "";
-                    Choice = "";
-                    Child = "";
-                    Hide = "";
-                    EN = "";
-                    InitEN = "";
-                    DescEN = "";
-                    ReportEN = "";
-                    TextEN = "";
-                    FR = "";
-                    InitFR = "";
-                    DescFR = "";
-                    ReportFR = "";
-                    TextFR = "";
-                    continue;
-                }
-                else
-                {
-                    string TempStr = reader.GetValue(1).ToString();
-                    if (TempStr.Length > 0)
+                    //using for each loop to get the sheet from the sheetcollection  
+                    foreach (Sheet thesheet in thesheetcollection)
                     {
-                        if (TempStr.Substring(TempStr.Length - 5) == "Start")
+                        if (thesheet.Name == "PolSourceGrouping")
                         {
-                            CSSPID = reader.GetValue(0).ToString();
-                            Group = TempStr;
-                            Choice = "";
-                            Child = "";
-                            Hide = "";
-                            EN = reader.GetValue(4).ToString();
-                            InitEN = reader.GetValue(5).ToString();
-                            DescEN = reader.GetValue(6).ToString();
-                            ReportEN = reader.GetValue(7).ToString();
-                            TextEN = reader.GetValue(8).ToString();
-                            FR = reader.GetValue(9).ToString();
-                            InitFR = reader.GetValue(10).ToString();
-                            DescFR = reader.GetValue(11).ToString();
-                            ReportFR = reader.GetValue(12).ToString();
-                            TextFR = reader.GetValue(13).ToString();
-                        }
-                        else
-                        {
-                            CSSPID = reader.GetValue(0).ToString();
-                            Choice = TempStr;
-                            if (reader.GetValue(2).GetType() == typeof(DBNull) || string.IsNullOrEmpty(reader.GetValue(2).ToString()))
-                            {
-                                Child = "";
-                            }
-                            else
-                            {
-                                Child = reader.GetValue(2).ToString();
-                            }
-                            if (reader.GetValue(3).GetType() == typeof(DBNull) || string.IsNullOrEmpty(reader.GetValue(3).ToString()))
-                            {
-                                Hide = "";
-                            }
-                            else
-                            {
-                                Hide = reader.GetValue(3).ToString();
-                            }
-                            EN = reader.GetValue(4).ToString();
-                            InitEN = reader.GetValue(5).ToString();
-                            DescEN = reader.GetValue(6).ToString();
-                            ReportEN = reader.GetValue(7).ToString();
-                            TextEN = reader.GetValue(8).ToString();
-                            FR = reader.GetValue(9).ToString();
-                            InitFR = reader.GetValue(10).ToString();
-                            DescFR = reader.GetValue(11).ToString();
-                            ReportFR = reader.GetValue(12).ToString();
-                            TextFR = reader.GetValue(13).ToString();
-                        }
+                            string CSSPID = "";
+                            string Group = "";
+                            string Choice = "";
+                            string Child = "";
+                            string Hide = "";
+                            string EN = "";
+                            string InitEN = "";
+                            string DescEN = "";
+                            string ReportEN = "";
+                            string TextEN = "";
+                            string FR = "";
+                            string InitFR = "";
+                            string DescFR = "";
+                            string ReportFR = "";
+                            string TextFR = "";
 
-                        groupChoiceChildLevelList.Add(new GroupChoiceChildLevel()
-                        {
-                            CSSPID = CSSPID,
-                            Group = Group,
-                            Choice = Choice,
-                            Child = Child,
-                            Hide = Hide,
-                            EN = EN,
-                            InitEN = InitEN,
-                            DescEN = DescEN,
-                            ReportEN = ReportEN,
-                            TextEN = TextEN,
-                            FR = FR,
-                            InitFR = InitFR,
-                            DescFR = DescFR,
-                            ReportFR = ReportFR,
-                            TextFR = TextFR,
-                        });
+                            Worksheet theWorksheet = ((WorksheetPart)workbookPart.GetPartById(thesheet.Id)).Worksheet;
+
+                            SheetData thesheetdata = (SheetData)theWorksheet.GetFirstChild<SheetData>();
+                            int rowCount = 0;
+                            foreach (Row thecurrentrow in thesheetdata)
+                            {
+                                rowCount++;
+                                if (rowCount == 1)
+                                {
+                                    List<string> FieldNameList = new List<string>();
+                                    FieldNameList = new List<string>() { "CSSPID", "Group", "Child", "Hide", "EN", "InitEN", "DescEN", "ReportEN", "TextEN", "FR", "InitFR", "DescFR", "ReportFR", "TextFR" };
+                                    int cellcount = 0;
+                                    foreach (Cell thecurrentcell in thecurrentrow)
+                                    {
+                                        string currentcellvalue = string.Empty;
+                                        if (thecurrentcell.DataType != null)
+                                        {
+                                            if (thecurrentcell.DataType == CellValues.SharedString)
+                                            {
+                                                int id;
+                                                if (Int32.TryParse(thecurrentcell.InnerText, out id))
+                                                {
+                                                    SharedStringItem item = workbookPart.SharedStringTablePart.SharedStringTable.Elements<SharedStringItem>().ElementAt(id);
+                                                    if (item.Text != null)
+                                                    {
+                                                        if ((item.Text.Text + "") != FieldNameList[cellcount])
+                                                        {
+                                                            OnCSSPError(new CSSPErrorEventArgs() { CSSPError = $"{ fi.FullName } PolSourceGrouping { item.Text } is not equal to { FieldNameList[cellcount] }\r\n" });
+                                                            return false;
+                                                        }
+                                                    }
+                                                    else if (item.InnerText != null)
+                                                    {
+                                                        currentcellvalue = item.InnerText;
+                                                        if (currentcellvalue != FieldNameList[cellcount])
+                                                        {
+                                                            OnCSSPError(new CSSPErrorEventArgs() { CSSPError = $"{ fi.FullName } PolSourceGrouping { item.Text } is not equal to { FieldNameList[cellcount] }\r\n" });
+                                                            return false;
+                                                        }
+                                                    }
+                                                    else if (item.InnerXml != null)
+                                                    {
+                                                        currentcellvalue = item.InnerXml;
+                                                        if (currentcellvalue != FieldNameList[cellcount])
+                                                        {
+                                                            OnCSSPError(new CSSPErrorEventArgs() { CSSPError = $"{ fi.FullName } PolSourceGrouping { item.Text } is not equal to { FieldNameList[cellcount] }\r\n" });
+                                                            return false;
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                        else
+                                        {
+                                            if ((thecurrentcell.InnerText + " ") != FieldNameList[cellcount])
+                                            {
+                                                OnCSSPError(new CSSPErrorEventArgs() { CSSPError = $"{ fi.FullName } PolSourceGrouping { (thecurrentcell.InnerText + " ") } is not equal to { FieldNameList[cellcount] }\r\n" });
+                                                return false;
+                                            }
+                                        }
+
+                                        cellcount++;
+                                    }
+                                }
+                                else // rowCount > 1
+                                {
+                                    int cellCount = 0;
+                                    foreach (Cell thecurrentcell in thecurrentrow)
+                                    {
+                                        string currentcellvalue = string.Empty;
+                                        if (thecurrentcell.DataType != null)
+                                        {
+                                            if (thecurrentcell.DataType == CellValues.SharedString)
+                                            {
+                                                int id;
+                                                if (Int32.TryParse(thecurrentcell.InnerText, out id))
+                                                {
+                                                    string tempStr = "";
+                                                    SharedStringItem item = workbookPart.SharedStringTablePart.SharedStringTable.Elements<SharedStringItem>().ElementAt(id);
+                                                    if (item.Text != null)
+                                                    {
+                                                        tempStr = item.Text.Text;
+                                                    }
+                                                    else if (item.InnerText != null)
+                                                    {
+                                                        tempStr = item.InnerText;
+                                                    }
+                                                    else if (item.InnerXml != null)
+                                                    {
+                                                        tempStr = item.InnerXml;
+                                                    }
+
+                                                    switch (cellCount)
+                                                    {
+                                                        case 0:
+                                                            {
+                                                                CSSPID = tempStr.Trim();
+                                                            }
+                                                            break;
+                                                        case 1:
+                                                            {
+                                                                Group = tempStr.Trim();
+                                                                if (string.IsNullOrWhiteSpace(Group))
+                                                                {
+                                                                    CSSPID = "";
+                                                                    Group = "";
+                                                                    Choice = "";
+                                                                    Child = "";
+                                                                    Hide = "";
+                                                                    EN = "";
+                                                                    InitEN = "";
+                                                                    DescEN = "";
+                                                                    ReportEN = "";
+                                                                    TextEN = "";
+                                                                    FR = "";
+                                                                    InitFR = "";
+                                                                    DescFR = "";
+                                                                    ReportFR = "";
+                                                                    TextFR = "";
+                                                                    continue;
+                                                                }
+                                                                else
+                                                                {
+                                                                }
+                                                            }
+                                                            break;
+                                                        case 2:
+                                                            {
+                                                                Child = tempStr.Trim();
+                                                            }
+                                                            break;
+                                                        case 3:
+                                                            {
+                                                                Hide = tempStr.Trim();
+                                                            }
+                                                            break;
+                                                        case 4:
+                                                            {
+                                                                EN = tempStr.Trim();
+                                                            }
+                                                            break;
+                                                        case 5:
+                                                            {
+                                                                InitEN = tempStr.Trim();
+                                                            }
+                                                            break;
+                                                        case 6:
+                                                            {
+                                                                DescEN = tempStr.Trim();
+                                                            }
+                                                            break;
+                                                        case 7:
+                                                            {
+                                                                ReportEN = tempStr.Trim();
+                                                            }
+                                                            break;
+                                                        case 8:
+                                                            {
+                                                                TextEN = tempStr.Trim();
+                                                            }
+                                                            break;
+                                                        case 9:
+                                                            {
+                                                                FR = tempStr.Trim();
+                                                            }
+                                                            break;
+                                                        case 10:
+                                                            {
+                                                                InitFR = tempStr.Trim();
+                                                            }
+                                                            break;
+                                                        case 11:
+                                                            {
+                                                                DescFR = tempStr.Trim();
+                                                            }
+                                                            break;
+                                                        case 12:
+                                                            {
+                                                                ReportFR = tempStr.Trim();
+                                                            }
+                                                            break;
+                                                        case 13:
+                                                            {
+                                                                TextFR = tempStr.Trim();
+                                                            }
+                                                            break;
+                                                        default:
+                                                            break;
+                                                    }
+                                                }
+                                            }
+                                        }
+                                        else
+                                        {
+                                            switch (cellCount)
+                                            {
+                                                case 0:
+                                                    {
+                                                        CSSPID = thecurrentcell.InnerText.Trim();
+                                                    }
+                                                    break;
+                                                case 1:
+                                                    {
+                                                        Group = thecurrentcell.InnerText.Trim();
+                                                        if (string.IsNullOrWhiteSpace(Group))
+                                                        {
+                                                            CSSPID = "";
+                                                            Group = "";
+                                                            Choice = "";
+                                                            Child = "";
+                                                            Hide = "";
+                                                            EN = "";
+                                                            InitEN = "";
+                                                            DescEN = "";
+                                                            ReportEN = "";
+                                                            TextEN = "";
+                                                            FR = "";
+                                                            InitFR = "";
+                                                            DescFR = "";
+                                                            ReportFR = "";
+                                                            TextFR = "";
+                                                            continue;
+                                                        }
+                                                    }
+                                                    break;
+                                                case 2:
+                                                    {
+                                                        Child = thecurrentcell.InnerText.Trim();
+                                                    }
+                                                    break;
+                                                case 3:
+                                                    {
+                                                        Hide = thecurrentcell.InnerText.Trim();
+                                                    }
+                                                    break;
+                                                case 4:
+                                                    {
+                                                        EN = thecurrentcell.InnerText.Trim();
+                                                    }
+                                                    break;
+                                                case 5:
+                                                    {
+                                                        InitEN = thecurrentcell.InnerText.Trim();
+                                                    }
+                                                    break;
+                                                case 6:
+                                                    {
+                                                        DescEN = thecurrentcell.InnerText.Trim();
+                                                    }
+                                                    break;
+                                                case 7:
+                                                    {
+                                                        ReportEN = thecurrentcell.InnerText.Trim();
+                                                    }
+                                                    break;
+                                                case 8:
+                                                    {
+                                                        TextEN = thecurrentcell.InnerText.Trim();
+                                                    }
+                                                    break;
+                                                case 9:
+                                                    {
+                                                        FR = thecurrentcell.InnerText.Trim();
+                                                    }
+                                                    break;
+                                                case 10:
+                                                    {
+                                                        InitFR = thecurrentcell.InnerText.Trim();
+                                                    }
+                                                    break;
+                                                case 11:
+                                                    {
+                                                        DescFR = thecurrentcell.InnerText.Trim();
+                                                    }
+                                                    break;
+                                                case 12:
+                                                    {
+                                                        ReportFR = thecurrentcell.InnerText.Trim();
+                                                    }
+                                                    break;
+                                                case 13:
+                                                    {
+                                                        TextFR = thecurrentcell.InnerText.Trim();
+                                                    }
+                                                    break;
+                                                default:
+                                                    break;
+                                            }
+                                        }
+                                        cellCount++;
+                                    }
+
+                                    if (!string.IsNullOrWhiteSpace(Group))
+                                    {
+                                        if (Group.Substring(Group.Length - 5) == "Start")
+                                        {
+                                            Choice = "";
+                                            Child = "";
+                                            Hide = "";
+                                        }
+                                        else
+                                        {
+                                            Choice = Group;
+                                        }
+                                    }
+
+
+                                    if (rowCount % 200 == 0)
+                                    {
+                                        OnStatus(new StatusEventArgs() { status = $"Reading spreadsheet ... { rowCount }" });
+                                    }
+
+                                    if (!string.IsNullOrWhiteSpace(CSSPID))
+                                    {
+                                        groupChoiceChildLevelList.Add(new GroupChoiceChildLevel()
+                                        {
+                                            CSSPID = CSSPID,
+                                            Group = Group,
+                                            Choice = Choice,
+                                            Child = Child,
+                                            Hide = Hide,
+                                            EN = EN,
+                                            InitEN = InitEN,
+                                            DescEN = DescEN,
+                                            ReportEN = ReportEN,
+                                            TextEN = TextEN,
+                                            FR = FR,
+                                            InitFR = InitFR,
+                                            DescFR = DescFR,
+                                            ReportFR = ReportFR,
+                                            TextFR = TextFR,
+                                        });
+                                    }
+
+                                }
+                            }
+                        }
                     }
                 }
-
-
             }
-            reader.Close();
+            catch (Exception ex)
+            {
+                OnCSSPError(new CSSPErrorEventArgs() { CSSPError = $"{ ex.Message }" });
+                return false;
+            }
 
-            conn.Close();
+            #region Old Text
+
+            //string connectionString = $@"Provider=Microsoft.ACE.OLEDB.12.0;Data Source={ fi.FullName };Extended Properties=Excel 12.0 Xml;HDR=YES";
+            //OleDbConnection conn = new OleDbConnection(connectionString);
+
+            //try
+            //{
+            //    conn.Open();
+            //}
+            //catch (Exception ex)
+            //{
+            //    string InnerException = (ex.InnerException == null ? "" : $" InnerException: { ex.InnerException.Message }");
+            //    OnCSSPError(new CSSPErrorEventArgs() { CSSPError = $"{ ex.Message }{ InnerException }" });
+            //    return false;
+            //}
+            //OleDbDataReader reader;
+
+            //OleDbCommand comm = new OleDbCommand("Select * from [PolSourceGrouping$];");
+
+            //try
+            //{
+            //    comm.Connection = conn;
+            //    reader = comm.ExecuteReader();
+
+            //}
+            //catch (Exception ex)
+            //{
+            //    OnCSSPError(new CSSPErrorEventArgs() { CSSPError = $"CSSPError 'comm.ExecuteReader' { ex.Message }\r\n" });
+            //    return false;
+            //}
+
+            //if (reader.FieldCount != 14)
+            //{
+            //    OnCSSPError(new CSSPErrorEventArgs() { CSSPError = $"CSSPError Column count is [{ reader.FieldCount }]. It should be 14.\r\n" });
+            //    return false;
+            //}
+
+            //List<string> FieldNameList = new List<string>();
+            //FieldNameList = new List<string>() { "CSSPID", "Group", "Child", "Hide", "EN", "InitEN", "DescEN", "ReportEN", "TextEN", "FR", "InitFR", "DescFR", "ReportFR", "TextFR" };
+            //for (int j = 0; j < reader.FieldCount; j++)
+            //{
+            //    if (reader.GetName(j) != FieldNameList[j])
+            //    {
+            //        OnStatus(new StatusEventArgs() { status = $"{ fi.FullName } PolSourceGrouping { reader.GetName(j) } is not equal to { FieldNameList[j] }\r\n" });
+            //        return false;
+            //    }
+            //}
+            //reader.Close();
+
+            //reader = comm.ExecuteReader();
+
+            //string CSSPID = "";
+            //string Group = "";
+            //string Choice = "";
+            //string Child = "";
+            //string Hide = "";
+            //string EN = "";
+            //string InitEN = "";
+            //string DescEN = "";
+            //string ReportEN = "";
+            //string TextEN = "";
+            //string FR = "";
+            //string InitFR = "";
+            //string DescFR = "";
+            //string ReportFR = "";
+            //string TextFR = "";
+
+            //int CountRead = 0;
+            //while (reader.Read())
+            //{
+            //    CountRead += 1;
+
+            //    if (CountRead % 200 == 0)
+            //    {
+            //        OnStatus(new StatusEventArgs() { status = $"Reading spreadsheet ... { CountRead }" });
+            //    }
+
+            //    if (reader.GetValue(1).GetType() == typeof(DBNull) || string.IsNullOrEmpty(reader.GetValue(1).ToString()))
+            //    {
+            //        CSSPID = "";
+            //        Group = "";
+            //        Choice = "";
+            //        Child = "";
+            //        Hide = "";
+            //        EN = "";
+            //        InitEN = "";
+            //        DescEN = "";
+            //        ReportEN = "";
+            //        TextEN = "";
+            //        FR = "";
+            //        InitFR = "";
+            //        DescFR = "";
+            //        ReportFR = "";
+            //        TextFR = "";
+            //        continue;
+            //    }
+            //    else
+            //    {
+            //        string TempStr = reader.GetValue(1).ToString();
+            //        if (TempStr.Length > 0)
+            //        {
+            //            if (TempStr.Substring(TempStr.Length - 5) == "Start")
+            //            {
+            //                CSSPID = reader.GetValue(0).ToString();
+            //                Group = TempStr;
+            //                Choice = "";
+            //                Child = "";
+            //                Hide = "";
+            //                EN = reader.GetValue(4).ToString();
+            //                InitEN = reader.GetValue(5).ToString();
+            //                DescEN = reader.GetValue(6).ToString();
+            //                ReportEN = reader.GetValue(7).ToString();
+            //                TextEN = reader.GetValue(8).ToString();
+            //                FR = reader.GetValue(9).ToString();
+            //                InitFR = reader.GetValue(10).ToString();
+            //                DescFR = reader.GetValue(11).ToString();
+            //                ReportFR = reader.GetValue(12).ToString();
+            //                TextFR = reader.GetValue(13).ToString();
+            //            }
+            //            else
+            //            {
+            //                CSSPID = reader.GetValue(0).ToString();
+            //                Choice = TempStr;
+            //                if (reader.GetValue(2).GetType() == typeof(DBNull) || string.IsNullOrEmpty(reader.GetValue(2).ToString()))
+            //                {
+            //                    Child = "";
+            //                }
+            //                else
+            //                {
+            //                    Child = reader.GetValue(2).ToString();
+            //                }
+            //                if (reader.GetValue(3).GetType() == typeof(DBNull) || string.IsNullOrEmpty(reader.GetValue(3).ToString()))
+            //                {
+            //                    Hide = "";
+            //                }
+            //                else
+            //                {
+            //                    Hide = reader.GetValue(3).ToString();
+            //                }
+            //                EN = reader.GetValue(4).ToString();
+            //                InitEN = reader.GetValue(5).ToString();
+            //                DescEN = reader.GetValue(6).ToString();
+            //                ReportEN = reader.GetValue(7).ToString();
+            //                TextEN = reader.GetValue(8).ToString();
+            //                FR = reader.GetValue(9).ToString();
+            //                InitFR = reader.GetValue(10).ToString();
+            //                DescFR = reader.GetValue(11).ToString();
+            //                ReportFR = reader.GetValue(12).ToString();
+            //                TextFR = reader.GetValue(13).ToString();
+            //            }
+
+            //            groupChoiceChildLevelList.Add(new GroupChoiceChildLevel()
+            //            {
+            //                CSSPID = CSSPID,
+            //                Group = Group,
+            //                Choice = Choice,
+            //                Child = Child,
+            //                Hide = Hide,
+            //                EN = EN,
+            //                InitEN = InitEN,
+            //                DescEN = DescEN,
+            //                ReportEN = ReportEN,
+            //                TextEN = TextEN,
+            //                FR = FR,
+            //                InitFR = InitFR,
+            //                DescFR = DescFR,
+            //                ReportFR = ReportFR,
+            //                TextFR = TextFR,
+            //            });
+            //        }
+            //    }
+
+
+            //}
+            //reader.Close();
+
+            //conn.Close();
+
+            #endregion Old Text
 
             int Level = 0;
             List<string> textList = new List<string>();

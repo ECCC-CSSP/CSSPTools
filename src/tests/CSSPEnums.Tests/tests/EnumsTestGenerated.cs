@@ -7,7 +7,6 @@
 using System;
 using Xunit;
 using System.Collections.Generic;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Globalization;
 using CSSPEnums.Resources;
 using System.Linq;
