@@ -52,7 +52,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
-            this.splitContainer1.SuspendLayout();
             this.panel5.SuspendLayout();
             this.panel3.SuspendLayout();
             this.panel2.SuspendLayout();
@@ -64,10 +63,11 @@
             this.splitContainer1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.splitContainer1.Location = new System.Drawing.Point(0, 0);
+            this.splitContainer1.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.splitContainer1.Name = "splitContainer1";
             this.splitContainer1.Orientation = System.Windows.Forms.Orientation.Horizontal;
             // 
-            // splitContainer1.Panel1
+            // 
             // 
             this.splitContainer1.Panel1.Controls.Add(this.panel4);
             this.splitContainer1.Panel1.Controls.Add(this.panel5);
@@ -75,20 +75,22 @@
             this.splitContainer1.Panel1.Controls.Add(this.panel2);
             this.splitContainer1.Panel1.Controls.Add(this.panel1);
             // 
-            // splitContainer1.Panel2
+            // 
             // 
             this.splitContainer1.Panel2.Controls.Add(this.richTextBoxStatus);
-            this.splitContainer1.Size = new System.Drawing.Size(1147, 816);
-            this.splitContainer1.SplitterDistance = 623;
+            this.splitContainer1.Size = new System.Drawing.Size(1338, 942);
+            this.splitContainer1.SplitterDistance = 719;
+            this.splitContainer1.SplitterWidth = 5;
             this.splitContainer1.TabIndex = 0;
             // 
             // panel4
             // 
             this.panel4.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.panel4.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel4.Location = new System.Drawing.Point(0, 76);
+            this.panel4.Location = new System.Drawing.Point(0, 87);
+            this.panel4.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.panel4.Name = "panel4";
-            this.panel4.Size = new System.Drawing.Size(909, 512);
+            this.panel4.Size = new System.Drawing.Size(1061, 592);
             this.panel4.TabIndex = 11;
             // 
             // panel5
@@ -98,16 +100,18 @@
             this.panel5.Controls.Add(this.butCheckCircular);
             this.panel5.Controls.Add(this.butShowReportText);
             this.panel5.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panel5.Location = new System.Drawing.Point(0, 35);
+            this.panel5.Location = new System.Drawing.Point(0, 40);
+            this.panel5.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.panel5.Name = "panel5";
-            this.panel5.Size = new System.Drawing.Size(909, 41);
+            this.panel5.Size = new System.Drawing.Size(1061, 47);
             this.panel5.TabIndex = 72;
             // 
             // butLoadExcelSheet
             // 
-            this.butLoadExcelSheet.Location = new System.Drawing.Point(14, 8);
+            this.butLoadExcelSheet.Location = new System.Drawing.Point(16, 9);
+            this.butLoadExcelSheet.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.butLoadExcelSheet.Name = "butLoadExcelSheet";
-            this.butLoadExcelSheet.Size = new System.Drawing.Size(182, 23);
+            this.butLoadExcelSheet.Size = new System.Drawing.Size(212, 27);
             this.butLoadExcelSheet.TabIndex = 0;
             this.butLoadExcelSheet.Text = "Load and Check Excel Sheet";
             this.butLoadExcelSheet.UseVisualStyleBackColor = true;
@@ -116,9 +120,10 @@
             // checkBoxFR
             // 
             this.checkBoxFR.AutoSize = true;
-            this.checkBoxFR.Location = new System.Drawing.Point(437, 14);
+            this.checkBoxFR.Location = new System.Drawing.Point(510, 16);
+            this.checkBoxFR.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.checkBoxFR.Name = "checkBoxFR";
-            this.checkBoxFR.Size = new System.Drawing.Size(66, 17);
+            this.checkBoxFR.Size = new System.Drawing.Size(69, 19);
             this.checkBoxFR.TabIndex = 71;
             this.checkBoxFR.Text = "Français";
             this.checkBoxFR.UseVisualStyleBackColor = true;
@@ -126,9 +131,10 @@
             // 
             // butCheckCircular
             // 
-            this.butCheckCircular.Location = new System.Drawing.Point(202, 8);
+            this.butCheckCircular.Location = new System.Drawing.Point(236, 9);
+            this.butCheckCircular.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.butCheckCircular.Name = "butCheckCircular";
-            this.butCheckCircular.Size = new System.Drawing.Size(81, 23);
+            this.butCheckCircular.Size = new System.Drawing.Size(94, 27);
             this.butCheckCircular.TabIndex = 0;
             this.butCheckCircular.Text = "Get All Paths";
             this.butCheckCircular.UseVisualStyleBackColor = true;
@@ -136,9 +142,10 @@
             // 
             // butShowReportText
             // 
-            this.butShowReportText.Location = new System.Drawing.Point(289, 8);
+            this.butShowReportText.Location = new System.Drawing.Point(337, 9);
+            this.butShowReportText.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.butShowReportText.Name = "butShowReportText";
-            this.butShowReportText.Size = new System.Drawing.Size(133, 23);
+            this.butShowReportText.Size = new System.Drawing.Size(155, 27);
             this.butShowReportText.TabIndex = 69;
             this.butShowReportText.Text = "Show Report Text";
             this.butShowReportText.UseVisualStyleBackColor = true;
@@ -152,16 +159,18 @@
             this.panel3.Controls.Add(this.butPartialServiceResFR);
             this.panel3.Controls.Add(this.butPartialServiceResEN);
             this.panel3.Dock = System.Windows.Forms.DockStyle.Right;
-            this.panel3.Location = new System.Drawing.Point(909, 35);
+            this.panel3.Location = new System.Drawing.Point(1061, 40);
+            this.panel3.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(234, 553);
+            this.panel3.Size = new System.Drawing.Size(273, 639);
             this.panel3.TabIndex = 10;
             // 
             // butSeeFileNamesThatWillBeGenerated
             // 
-            this.butSeeFileNamesThatWillBeGenerated.Location = new System.Drawing.Point(29, 31);
+            this.butSeeFileNamesThatWillBeGenerated.Location = new System.Drawing.Point(34, 36);
+            this.butSeeFileNamesThatWillBeGenerated.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.butSeeFileNamesThatWillBeGenerated.Name = "butSeeFileNamesThatWillBeGenerated";
-            this.butSeeFileNamesThatWillBeGenerated.Size = new System.Drawing.Size(199, 23);
+            this.butSeeFileNamesThatWillBeGenerated.Size = new System.Drawing.Size(232, 27);
             this.butSeeFileNamesThatWillBeGenerated.TabIndex = 6;
             this.butSeeFileNamesThatWillBeGenerated.Text = "See file code that will be generated";
             this.butSeeFileNamesThatWillBeGenerated.UseVisualStyleBackColor = true;
@@ -169,9 +178,10 @@
             // 
             // butGenerateAllCodeFiles
             // 
-            this.butGenerateAllCodeFiles.Location = new System.Drawing.Point(28, 60);
+            this.butGenerateAllCodeFiles.Location = new System.Drawing.Point(33, 69);
+            this.butGenerateAllCodeFiles.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.butGenerateAllCodeFiles.Name = "butGenerateAllCodeFiles";
-            this.butGenerateAllCodeFiles.Size = new System.Drawing.Size(199, 23);
+            this.butGenerateAllCodeFiles.Size = new System.Drawing.Size(232, 27);
             this.butGenerateAllCodeFiles.TabIndex = 6;
             this.butGenerateAllCodeFiles.Text = "Generate all code files";
             this.butGenerateAllCodeFiles.UseVisualStyleBackColor = true;
@@ -180,17 +190,19 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(170, 12);
+            this.label3.Location = new System.Drawing.Point(198, 14);
+            this.label3.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(57, 13);
+            this.label3.Size = new System.Drawing.Size(64, 15);
             this.label3.TabIndex = 5;
             this.label3.Text = "for Charles";
             // 
             // butPartialServiceResFR
             // 
-            this.butPartialServiceResFR.Location = new System.Drawing.Point(45, 143);
+            this.butPartialServiceResFR.Location = new System.Drawing.Point(52, 165);
+            this.butPartialServiceResFR.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.butPartialServiceResFR.Name = "butPartialServiceResFR";
-            this.butPartialServiceResFR.Size = new System.Drawing.Size(182, 23);
+            this.butPartialServiceResFR.Size = new System.Drawing.Size(212, 27);
             this.butPartialServiceResFR.TabIndex = 0;
             this.butPartialServiceResFR.Text = "PolSourceInfoEnumRes FR";
             this.butPartialServiceResFR.UseVisualStyleBackColor = true;
@@ -198,9 +210,10 @@
             // 
             // butPartialServiceResEN
             // 
-            this.butPartialServiceResEN.Location = new System.Drawing.Point(45, 114);
+            this.butPartialServiceResEN.Location = new System.Drawing.Point(52, 132);
+            this.butPartialServiceResEN.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.butPartialServiceResEN.Name = "butPartialServiceResEN";
-            this.butPartialServiceResEN.Size = new System.Drawing.Size(182, 23);
+            this.butPartialServiceResEN.Size = new System.Drawing.Size(212, 27);
             this.butPartialServiceResEN.TabIndex = 0;
             this.butPartialServiceResEN.Text = "PolSourceInfoEnumRes EN";
             this.butPartialServiceResEN.UseVisualStyleBackColor = true;
@@ -211,26 +224,29 @@
             this.panel2.Controls.Add(this.label2);
             this.panel2.Controls.Add(this.lblStatus);
             this.panel2.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panel2.Location = new System.Drawing.Point(0, 588);
+            this.panel2.Location = new System.Drawing.Point(0, 679);
+            this.panel2.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(1143, 31);
+            this.panel2.Size = new System.Drawing.Size(1334, 36);
             this.panel2.TabIndex = 9;
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(12, 9);
+            this.label2.Location = new System.Drawing.Point(14, 10);
+            this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(40, 13);
+            this.label2.Size = new System.Drawing.Size(42, 15);
             this.label2.TabIndex = 3;
             this.label2.Text = "Status:";
             // 
             // lblStatus
             // 
             this.lblStatus.AutoSize = true;
-            this.lblStatus.Location = new System.Drawing.Point(66, 9);
+            this.lblStatus.Location = new System.Drawing.Point(77, 10);
+            this.lblStatus.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblStatus.Name = "lblStatus";
-            this.lblStatus.Size = new System.Drawing.Size(0, 13);
+            this.lblStatus.Size = new System.Drawing.Size(0, 15);
             this.lblStatus.TabIndex = 4;
             // 
             // panel1
@@ -239,50 +255,54 @@
             this.panel1.Controls.Add(this.textBoxFileLocation);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel1.Location = new System.Drawing.Point(0, 0);
+            this.panel1.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(1143, 35);
+            this.panel1.Size = new System.Drawing.Size(1334, 40);
             this.panel1.TabIndex = 8;
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(14, 9);
+            this.label1.Location = new System.Drawing.Point(16, 10);
+            this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(70, 13);
+            this.label1.Size = new System.Drawing.Size(77, 15);
             this.label1.TabIndex = 2;
             this.label1.Text = "File Location:";
             // 
             // textBoxFileLocation
             // 
-            this.textBoxFileLocation.Location = new System.Drawing.Point(90, 6);
+            this.textBoxFileLocation.Location = new System.Drawing.Point(105, 7);
+            this.textBoxFileLocation.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.textBoxFileLocation.Name = "textBoxFileLocation";
-            this.textBoxFileLocation.Size = new System.Drawing.Size(701, 20);
+            this.textBoxFileLocation.Size = new System.Drawing.Size(817, 23);
             this.textBoxFileLocation.TabIndex = 1;
-            this.textBoxFileLocation.Text = "C:\\Users\\leblancc\\Desktop\\PolSourceGrouping.xlsm";
+            this.textBoxFileLocation.Text = "C:\\CSSPTools\\src\\assets\\PolSourceGrouping.xlsm";
             // 
             // richTextBoxStatus
             // 
             this.richTextBoxStatus.Dock = System.Windows.Forms.DockStyle.Fill;
             this.richTextBoxStatus.Location = new System.Drawing.Point(0, 0);
+            this.richTextBoxStatus.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.richTextBoxStatus.Name = "richTextBoxStatus";
-            this.richTextBoxStatus.Size = new System.Drawing.Size(1143, 185);
+            this.richTextBoxStatus.Size = new System.Drawing.Size(1334, 214);
             this.richTextBoxStatus.TabIndex = 0;
             this.richTextBoxStatus.Text = "";
             // 
             // TestingPolSourceGrouping
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1147, 816);
+            this.ClientSize = new System.Drawing.Size(1338, 942);
             this.Controls.Add(this.splitContainer1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.Name = "TestingPolSourceGrouping";
             this.Text = "Testing Pollution Source Grouping";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
-            this.splitContainer1.ResumeLayout(false);
             this.panel5.ResumeLayout(false);
             this.panel5.PerformLayout();
             this.panel3.ResumeLayout(false);

@@ -243,7 +243,7 @@ namespace CSSPPolSourceGroupingExcelFileRead
                     //using for each loop to get the sheet from the sheetcollection  
                     foreach (Sheet thesheet in thesheetcollection)
                     {
-                        if (thesheet.Name == "PolSourceGrouping")
+                        if (thesheet.Name == "PolsourceGrouping")
                         {
                             string CSSPID = "";
                             string Group = "";
@@ -1043,7 +1043,7 @@ namespace CSSPPolSourceGroupingExcelFileRead
                     //using for each loop to get the sheet from the sheetcollection  
                     foreach (Sheet thesheet in thesheetcollection)
                     {
-                        if (thesheet.Name == "PolSourceGrouping")
+                        if (thesheet.Name == "PolsourceGrouping")
                         {
                             string CSSPID = "";
                             string Group = "";
@@ -1189,62 +1189,62 @@ namespace CSSPPolSourceGroupingExcelFileRead
                                                             break;
                                                         case 2:
                                                             {
-                                                                Child = tempStr.Trim();
+                                                                Child = tempStr;
                                                             }
                                                             break;
                                                         case 3:
                                                             {
-                                                                Hide = tempStr.Trim();
+                                                                Hide = tempStr;
                                                             }
                                                             break;
                                                         case 4:
                                                             {
-                                                                EN = tempStr.Trim();
+                                                                EN = tempStr;
                                                             }
                                                             break;
                                                         case 5:
                                                             {
-                                                                InitEN = tempStr.Trim();
+                                                                InitEN = tempStr;
                                                             }
                                                             break;
                                                         case 6:
                                                             {
-                                                                DescEN = tempStr.Trim();
+                                                                DescEN = tempStr;
                                                             }
                                                             break;
                                                         case 7:
                                                             {
-                                                                ReportEN = tempStr.Trim();
+                                                                ReportEN = tempStr;
                                                             }
                                                             break;
                                                         case 8:
                                                             {
-                                                                TextEN = tempStr.Trim();
+                                                                TextEN = tempStr;
                                                             }
                                                             break;
                                                         case 9:
                                                             {
-                                                                FR = tempStr.Trim();
+                                                                FR = tempStr;
                                                             }
                                                             break;
                                                         case 10:
                                                             {
-                                                                InitFR = tempStr.Trim();
+                                                                InitFR = tempStr;
                                                             }
                                                             break;
                                                         case 11:
                                                             {
-                                                                DescFR = tempStr.Trim();
+                                                                DescFR = tempStr;
                                                             }
                                                             break;
                                                         case 12:
                                                             {
-                                                                ReportFR = tempStr.Trim();
+                                                                ReportFR = tempStr;
                                                             }
                                                             break;
                                                         case 13:
                                                             {
-                                                                TextFR = tempStr.Trim();
+                                                                TextFR = tempStr;
                                                             }
                                                             break;
                                                         default:
@@ -1260,6 +1260,10 @@ namespace CSSPPolSourceGroupingExcelFileRead
                                                 case 0:
                                                     {
                                                         CSSPID = thecurrentcell.InnerText.Trim();
+                                                        if (CSSPID == "16800")
+                                                        {
+                                                            int slifej = 34;
+                                                        }
                                                     }
                                                     break;
                                                 case 1:
@@ -1288,62 +1292,62 @@ namespace CSSPPolSourceGroupingExcelFileRead
                                                     break;
                                                 case 2:
                                                     {
-                                                        Child = thecurrentcell.InnerText.Trim();
+                                                        Child = thecurrentcell.InnerText;
                                                     }
                                                     break;
                                                 case 3:
                                                     {
-                                                        Hide = thecurrentcell.InnerText.Trim();
+                                                        Hide = thecurrentcell.InnerText;
                                                     }
                                                     break;
                                                 case 4:
                                                     {
-                                                        EN = thecurrentcell.InnerText.Trim();
+                                                        EN = thecurrentcell.InnerText;
                                                     }
                                                     break;
                                                 case 5:
                                                     {
-                                                        InitEN = thecurrentcell.InnerText.Trim();
+                                                        InitEN = thecurrentcell.InnerText;
                                                     }
                                                     break;
                                                 case 6:
                                                     {
-                                                        DescEN = thecurrentcell.InnerText.Trim();
+                                                        DescEN = thecurrentcell.InnerText;
                                                     }
                                                     break;
                                                 case 7:
                                                     {
-                                                        ReportEN = thecurrentcell.InnerText.Trim();
+                                                        ReportEN = thecurrentcell.InnerText;
                                                     }
                                                     break;
                                                 case 8:
                                                     {
-                                                        TextEN = thecurrentcell.InnerText.Trim();
+                                                        TextEN = thecurrentcell.InnerText;
                                                     }
                                                     break;
                                                 case 9:
                                                     {
-                                                        FR = thecurrentcell.InnerText.Trim();
+                                                        FR = thecurrentcell.InnerText;
                                                     }
                                                     break;
                                                 case 10:
                                                     {
-                                                        InitFR = thecurrentcell.InnerText.Trim();
+                                                        InitFR = thecurrentcell.InnerText;
                                                     }
                                                     break;
                                                 case 11:
                                                     {
-                                                        DescFR = thecurrentcell.InnerText.Trim();
+                                                        DescFR = thecurrentcell.InnerText;
                                                     }
                                                     break;
                                                 case 12:
                                                     {
-                                                        ReportFR = thecurrentcell.InnerText.Trim();
+                                                        ReportFR = thecurrentcell.InnerText;
                                                     }
                                                     break;
                                                 case 13:
                                                     {
-                                                        TextFR = thecurrentcell.InnerText.Trim();
+                                                        TextFR = thecurrentcell.InnerText;
                                                     }
                                                     break;
                                                 default:
