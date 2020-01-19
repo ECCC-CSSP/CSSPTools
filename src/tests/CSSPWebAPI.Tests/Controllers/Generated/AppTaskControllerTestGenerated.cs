@@ -1,8 +1,8 @@
 using CSSPEnums;
 using CSSPModels;
 using CSSPServices;
+using Xunit;
 using CSSPWebAPI.Controllers;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
@@ -10,7 +10,6 @@ using System.Web.Http.Results;
 
 namespace CSSPWebAPI.Tests.Controllers
 {
-    [TestClass]
     public partial class AppTaskControllerTest : BaseControllerTest
     {
         #region Variables
@@ -26,7 +25,7 @@ namespace CSSPWebAPI.Tests.Controllers
         #endregion Constructors
 
         #region Tests Generated for Class Controller GetList Command
-        [TestMethod]
+        [Fact]
         public void AppTask_Controller_GetAppTaskList_Test()
         {
             foreach (LanguageEnum LanguageRequest in AllowableLanguages)
@@ -34,8 +33,8 @@ namespace CSSPWebAPI.Tests.Controllers
                 foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
                 {
                     AppTaskController appTaskController = new AppTaskController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(appTaskController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, appTaskController.DatabaseType);
+                    Assert.NotNull(appTaskController);
+                    Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, appTaskController.DatabaseType);
 
                     AppTask appTaskFirst = new AppTask();
                     int count = -1;
@@ -50,11 +49,11 @@ namespace CSSPWebAPI.Tests.Controllers
 
                     // ok with AppTask info
                     IHttpActionResult jsonRet = appTaskController.GetAppTaskList();
-                    Assert.IsNotNull(jsonRet);
+                    Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<List<AppTask>> ret = jsonRet as OkNegotiatedContentResult<List<AppTask>>;
-                    Assert.AreEqual(appTaskFirst.AppTaskID, ret.Content[0].AppTaskID);
-                    Assert.AreEqual((count > query.Take ? query.Take : count), ret.Content.Count);
+                    Assert.Equal(appTaskFirst.AppTaskID, ret.Content[0].AppTaskID);
+                    Assert.Equal((count > query.Take ? query.Take : count), ret.Content.Count);
 
                     List<AppTask> appTaskList = new List<AppTask>();
                     count = -1;
@@ -74,11 +73,11 @@ namespace CSSPWebAPI.Tests.Controllers
 
                         // ok with AppTask info
                         jsonRet = appTaskController.GetAppTaskList(query.Language.ToString(), query.Skip, query.Take);
-                        Assert.IsNotNull(jsonRet);
+                        Assert.NotNull(jsonRet);
 
                         ret = jsonRet as OkNegotiatedContentResult<List<AppTask>>;
-                        Assert.AreEqual(appTaskList[0].AppTaskID, ret.Content[0].AppTaskID);
-                        Assert.AreEqual((count > query.Take ? query.Take : count), ret.Content.Count);
+                        Assert.Equal(appTaskList[0].AppTaskID, ret.Content[0].AppTaskID);
+                        Assert.Equal((count > query.Take ? query.Take : count), ret.Content.Count);
 
                        if (count > 1)
                        {
@@ -88,11 +87,11 @@ namespace CSSPWebAPI.Tests.Controllers
 
                            // ok with AppTask info
                            IHttpActionResult jsonRet2 = appTaskController.GetAppTaskList(query.Language.ToString(), query.Skip, query.Take);
-                           Assert.IsNotNull(jsonRet2);
+                           Assert.NotNull(jsonRet2);
 
                            OkNegotiatedContentResult<List<AppTask>> ret2 = jsonRet2 as OkNegotiatedContentResult<List<AppTask>>;
-                           Assert.AreEqual(appTaskList[1].AppTaskID, ret2.Content[0].AppTaskID);
-                           Assert.AreEqual((count > query.Take ? query.Take : count), ret2.Content.Count);
+                           Assert.Equal(appTaskList[1].AppTaskID, ret2.Content[0].AppTaskID);
+                           Assert.Equal((count > query.Take ? query.Take : count), ret2.Content.Count);
                        }
                     }
                 }
@@ -101,7 +100,7 @@ namespace CSSPWebAPI.Tests.Controllers
         #endregion Tests Generated for Class Controller GetList Command
 
         #region Tests Generated for Class Controller GetWithID Command
-        [TestMethod]
+        [Fact]
         public void AppTask_Controller_GetAppTaskWithID_Test()
         {
             foreach (LanguageEnum LanguageRequest in AllowableLanguages)
@@ -109,8 +108,8 @@ namespace CSSPWebAPI.Tests.Controllers
                 foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
                 {
                     AppTaskController appTaskController = new AppTaskController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(appTaskController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, appTaskController.DatabaseType);
+                    Assert.NotNull(appTaskController);
+                    Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, appTaskController.DatabaseType);
 
                     AppTask appTaskFirst = new AppTask();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
@@ -121,31 +120,31 @@ namespace CSSPWebAPI.Tests.Controllers
 
                     // ok with AppTask info
                     IHttpActionResult jsonRet = appTaskController.GetAppTaskWithID(appTaskFirst.AppTaskID);
-                    Assert.IsNotNull(jsonRet);
+                    Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<AppTask> Ret = jsonRet as OkNegotiatedContentResult<AppTask>;
                     AppTask appTaskRet = Ret.Content;
-                    Assert.AreEqual(appTaskFirst.AppTaskID, appTaskRet.AppTaskID);
+                    Assert.Equal(appTaskFirst.AppTaskID, appTaskRet.AppTaskID);
 
                     BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
                     Assert.IsNull(badRequest);
 
                     // Not Found
                     IHttpActionResult jsonRet2 = appTaskController.GetAppTaskWithID(0);
-                    Assert.IsNotNull(jsonRet2);
+                    Assert.NotNull(jsonRet2);
 
                     OkNegotiatedContentResult<AppTask> appTaskRet2 = jsonRet2 as OkNegotiatedContentResult<AppTask>;
                     Assert.IsNull(appTaskRet2);
 
                     NotFoundResult notFoundRequest = jsonRet2 as NotFoundResult;
-                    Assert.IsNotNull(notFoundRequest);
+                    Assert.NotNull(notFoundRequest);
                 }
             }
         }
         #endregion Tests Generated for Class Controller GetWithID Command
 
         #region Tests Generated for Class Controller Post Command
-        [TestMethod]
+        [Fact]
         public void AppTask_Controller_Post_Test()
         {
             foreach (LanguageEnum LanguageRequest in AllowableLanguages)
@@ -153,8 +152,8 @@ namespace CSSPWebAPI.Tests.Controllers
                 foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
                 {
                     AppTaskController appTaskController = new AppTaskController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(appTaskController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, appTaskController.DatabaseType);
+                    Assert.NotNull(appTaskController);
+                    Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, appTaskController.DatabaseType);
 
                     AppTask appTaskLast = new AppTask();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
@@ -170,43 +169,43 @@ namespace CSSPWebAPI.Tests.Controllers
 
                     // ok with AppTask info
                     IHttpActionResult jsonRet = appTaskController.GetAppTaskWithID(appTaskLast.AppTaskID);
-                    Assert.IsNotNull(jsonRet);
+                    Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<AppTask> Ret = jsonRet as OkNegotiatedContentResult<AppTask>;
                     AppTask appTaskRet = Ret.Content;
-                    Assert.AreEqual(appTaskLast.AppTaskID, appTaskRet.AppTaskID);
+                    Assert.Equal(appTaskLast.AppTaskID, appTaskRet.AppTaskID);
 
                     BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
                     Assert.IsNull(badRequest);
 
                     // Post to return CSSPError because AppTaskID exist
                     IHttpActionResult jsonRet2 = appTaskController.Post(appTaskRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet2);
+                    Assert.NotNull(jsonRet2);
 
                     OkNegotiatedContentResult<AppTask> appTaskRet2 = jsonRet2 as OkNegotiatedContentResult<AppTask>;
                     Assert.IsNull(appTaskRet2);
 
                     BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
-                    Assert.IsNotNull(badRequest2);
+                    Assert.NotNull(badRequest2);
 
                     // Post to return newly added AppTask
                     appTaskRet.AppTaskID = 0;
                     appTaskController.Request = new System.Net.Http.HttpRequestMessage();
                     appTaskController.Request.RequestUri = new System.Uri("http://localhost:5000/api/appTask");
                     IHttpActionResult jsonRet3 = appTaskController.Post(appTaskRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet3);
+                    Assert.NotNull(jsonRet3);
 
                     CreatedNegotiatedContentResult<AppTask> appTaskRet3 = jsonRet3 as CreatedNegotiatedContentResult<AppTask>;
-                    Assert.IsNotNull(appTaskRet3);
+                    Assert.NotNull(appTaskRet3);
 
                     BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
                     Assert.IsNull(badRequest3);
 
                     IHttpActionResult jsonRet4 = appTaskController.Delete(appTaskRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet4);
+                    Assert.NotNull(jsonRet4);
 
                     OkNegotiatedContentResult<AppTask> appTaskRet4 = jsonRet4 as OkNegotiatedContentResult<AppTask>;
-                    Assert.IsNotNull(appTaskRet4);
+                    Assert.NotNull(appTaskRet4);
 
                     BadRequestErrorMessageResult badRequest4 = jsonRet4 as BadRequestErrorMessageResult;
                     Assert.IsNull(badRequest4);
@@ -216,7 +215,7 @@ namespace CSSPWebAPI.Tests.Controllers
         #endregion Tests Generated for Class Controller Post Command
 
         #region Tests Generated for Class Controller Put Command
-        [TestMethod]
+        [Fact]
         public void AppTask_Controller_Put_Test()
         {
             foreach (LanguageEnum LanguageRequest in AllowableLanguages)
@@ -224,8 +223,8 @@ namespace CSSPWebAPI.Tests.Controllers
                 foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
                 {
                     AppTaskController appTaskController = new AppTaskController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(appTaskController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, appTaskController.DatabaseType);
+                    Assert.NotNull(appTaskController);
+                    Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, appTaskController.DatabaseType);
 
                     AppTask appTaskLast = new AppTask();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
@@ -239,21 +238,21 @@ namespace CSSPWebAPI.Tests.Controllers
 
                     // ok with AppTask info
                     IHttpActionResult jsonRet = appTaskController.GetAppTaskWithID(appTaskLast.AppTaskID);
-                    Assert.IsNotNull(jsonRet);
+                    Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<AppTask> Ret = jsonRet as OkNegotiatedContentResult<AppTask>;
                     AppTask appTaskRet = Ret.Content;
-                    Assert.AreEqual(appTaskLast.AppTaskID, appTaskRet.AppTaskID);
+                    Assert.Equal(appTaskLast.AppTaskID, appTaskRet.AppTaskID);
 
                     BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
                     Assert.IsNull(badRequest);
 
                     // Put to return success
                     IHttpActionResult jsonRet2 = appTaskController.Put(appTaskRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet2);
+                    Assert.NotNull(jsonRet2);
 
                     OkNegotiatedContentResult<AppTask> appTaskRet2 = jsonRet2 as OkNegotiatedContentResult<AppTask>;
-                    Assert.IsNotNull(appTaskRet2);
+                    Assert.NotNull(appTaskRet2);
 
                     BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
                     Assert.IsNull(badRequest2);
@@ -261,20 +260,20 @@ namespace CSSPWebAPI.Tests.Controllers
                     // Put to return CSSPError because AppTaskID of 0 does not exist
                     appTaskRet.AppTaskID = 0;
                     IHttpActionResult jsonRet3 = appTaskController.Put(appTaskRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet3);
+                    Assert.NotNull(jsonRet3);
 
                     OkNegotiatedContentResult<AppTask> appTaskRet3 = jsonRet3 as OkNegotiatedContentResult<AppTask>;
                     Assert.IsNull(appTaskRet3);
 
                     BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
-                    Assert.IsNotNull(badRequest3);
+                    Assert.NotNull(badRequest3);
                 }
             }
         }
         #endregion Tests Generated for Class Controller Put Command
 
         #region Tests Generated for Class Controller Delete Command
-        [TestMethod]
+        [Fact]
         public void AppTask_Controller_Delete_Test()
         {
             foreach (LanguageEnum LanguageRequest in AllowableLanguages)
@@ -282,8 +281,8 @@ namespace CSSPWebAPI.Tests.Controllers
                 foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
                 {
                     AppTaskController appTaskController = new AppTaskController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(appTaskController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, appTaskController.DatabaseType);
+                    Assert.NotNull(appTaskController);
+                    Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, appTaskController.DatabaseType);
 
                     AppTask appTaskLast = new AppTask();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
@@ -299,11 +298,11 @@ namespace CSSPWebAPI.Tests.Controllers
 
                     // ok with AppTask info
                     IHttpActionResult jsonRet = appTaskController.GetAppTaskWithID(appTaskLast.AppTaskID);
-                    Assert.IsNotNull(jsonRet);
+                    Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<AppTask> Ret = jsonRet as OkNegotiatedContentResult<AppTask>;
                     AppTask appTaskRet = Ret.Content;
-                    Assert.AreEqual(appTaskLast.AppTaskID, appTaskRet.AppTaskID);
+                    Assert.Equal(appTaskLast.AppTaskID, appTaskRet.AppTaskID);
 
                     BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
                     Assert.IsNull(badRequest);
@@ -313,10 +312,10 @@ namespace CSSPWebAPI.Tests.Controllers
                     appTaskController.Request = new System.Net.Http.HttpRequestMessage();
                     appTaskController.Request.RequestUri = new System.Uri("http://localhost:5000/api/appTask");
                     IHttpActionResult jsonRet3 = appTaskController.Post(appTaskRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet3);
+                    Assert.NotNull(jsonRet3);
 
                     CreatedNegotiatedContentResult<AppTask> appTaskRet3 = jsonRet3 as CreatedNegotiatedContentResult<AppTask>;
-                    Assert.IsNotNull(appTaskRet3);
+                    Assert.NotNull(appTaskRet3);
                     AppTask appTask = appTaskRet3.Content;
 
                     BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
@@ -324,10 +323,10 @@ namespace CSSPWebAPI.Tests.Controllers
 
                     // Delete to return success
                     IHttpActionResult jsonRet2 = appTaskController.Delete(appTaskRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet2);
+                    Assert.NotNull(jsonRet2);
 
                     OkNegotiatedContentResult<AppTask> appTaskRet2 = jsonRet2 as OkNegotiatedContentResult<AppTask>;
-                    Assert.IsNotNull(appTaskRet2);
+                    Assert.NotNull(appTaskRet2);
 
                     BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
                     Assert.IsNull(badRequest2);
@@ -335,13 +334,13 @@ namespace CSSPWebAPI.Tests.Controllers
                     // Delete to return CSSPError because AppTaskID of 0 does not exist
                     appTaskRet.AppTaskID = 0;
                     IHttpActionResult jsonRet4 = appTaskController.Delete(appTaskRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet4);
+                    Assert.NotNull(jsonRet4);
 
                     OkNegotiatedContentResult<AppTask> appTaskRet4 = jsonRet4 as OkNegotiatedContentResult<AppTask>;
                     Assert.IsNull(appTaskRet4);
 
                     BadRequestErrorMessageResult badRequest4 = jsonRet4 as BadRequestErrorMessageResult;
-                    Assert.IsNotNull(badRequest4);
+                    Assert.NotNull(badRequest4);
                 }
             }
         }

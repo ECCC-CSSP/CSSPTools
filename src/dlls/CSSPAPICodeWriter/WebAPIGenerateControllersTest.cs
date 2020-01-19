@@ -39,14 +39,14 @@ namespace CSSPWebAPIGenerateCodeHelper
         ///    C:\CSSPTools\src\tests\CSSPWebAPI.Tests\Controllers\Generated\[ModelClassName]ControllerTestGenerated.cs file
         ///
         /// Requires:
-        ///     C:\CSSPTools\src\dlls\CSSPModels\bin\Debug\netcoreapp3.0\CSSPModels.dll
+        ///     C:\CSSPTools\src\dlls\CSSPModels\bin\Debug\netcoreapp3.1\CSSPModels.dll
         /// </summary>
         public void ModelClassNameControllerTestGenerated()
         {
             StatusTempEvent(new StatusEventArgs(""));
             ClearPermanentEvent(new StatusEventArgs(""));
 
-            FileInfo fiDLL = new FileInfo(@"C:\CSSPTools\src\dlls\CSSPModels\bin\Debug\netcoreapp3.0\CSSPModels.dll");
+            FileInfo fiDLL = new FileInfo(@"C:\CSSPTools\src\dlls\CSSPModels\bin\Debug\netcoreapp3.1\CSSPModels.dll");
 
             if (!fiDLL.Exists)
             {
@@ -104,8 +104,8 @@ namespace CSSPWebAPIGenerateCodeHelper
                     sb.AppendLine(@"using CSSPEnums;");
                     sb.AppendLine(@"using CSSPModels;");
                     sb.AppendLine(@"using CSSPServices;");
+                    sb.AppendLine(@"using Xunit;");
                     sb.AppendLine(@"using CSSPWebAPI.Controllers;");
-                    sb.AppendLine(@"using Microsoft.VisualStudio.TestTools.UnitTesting;");
                     sb.AppendLine(@"using System.Collections.Generic;");
                     sb.AppendLine(@"using System.Linq;");
                     sb.AppendLine(@"using System.Web.Http;");
@@ -113,7 +113,6 @@ namespace CSSPWebAPIGenerateCodeHelper
                     sb.AppendLine(@"");
                     sb.AppendLine(@"namespace CSSPWebAPI.Tests.Controllers");
                     sb.AppendLine(@"{");
-                    sb.AppendLine(@"    [TestClass]");
                     sb.AppendLine($@"    public partial class { TypeName }ControllerTest : BaseControllerTest");
                     sb.AppendLine(@"    {");
                     sb.AppendLine(@"        #region Variables");

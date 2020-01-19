@@ -1,8 +1,8 @@
 using CSSPEnums;
 using CSSPModels;
 using CSSPServices;
+using Xunit;
 using CSSPWebAPI.Controllers;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
@@ -10,7 +10,6 @@ using System.Web.Http.Results;
 
 namespace CSSPWebAPI.Tests.Controllers
 {
-    [TestClass]
     public partial class MikeScenarioControllerTest : BaseControllerTest
     {
         #region Variables
@@ -26,7 +25,7 @@ namespace CSSPWebAPI.Tests.Controllers
         #endregion Constructors
 
         #region Tests Generated for Class Controller GetList Command
-        [TestMethod]
+        [Fact]
         public void MikeScenario_Controller_GetMikeScenarioList_Test()
         {
             foreach (LanguageEnum LanguageRequest in AllowableLanguages)
@@ -34,8 +33,8 @@ namespace CSSPWebAPI.Tests.Controllers
                 foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
                 {
                     MikeScenarioController mikeScenarioController = new MikeScenarioController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(mikeScenarioController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, mikeScenarioController.DatabaseType);
+                    Assert.NotNull(mikeScenarioController);
+                    Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, mikeScenarioController.DatabaseType);
 
                     MikeScenario mikeScenarioFirst = new MikeScenario();
                     int count = -1;
@@ -50,11 +49,11 @@ namespace CSSPWebAPI.Tests.Controllers
 
                     // ok with MikeScenario info
                     IHttpActionResult jsonRet = mikeScenarioController.GetMikeScenarioList();
-                    Assert.IsNotNull(jsonRet);
+                    Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<List<MikeScenario>> ret = jsonRet as OkNegotiatedContentResult<List<MikeScenario>>;
-                    Assert.AreEqual(mikeScenarioFirst.MikeScenarioID, ret.Content[0].MikeScenarioID);
-                    Assert.AreEqual((count > query.Take ? query.Take : count), ret.Content.Count);
+                    Assert.Equal(mikeScenarioFirst.MikeScenarioID, ret.Content[0].MikeScenarioID);
+                    Assert.Equal((count > query.Take ? query.Take : count), ret.Content.Count);
 
                     List<MikeScenario> mikeScenarioList = new List<MikeScenario>();
                     count = -1;
@@ -74,11 +73,11 @@ namespace CSSPWebAPI.Tests.Controllers
 
                         // ok with MikeScenario info
                         jsonRet = mikeScenarioController.GetMikeScenarioList(query.Language.ToString(), query.Skip, query.Take);
-                        Assert.IsNotNull(jsonRet);
+                        Assert.NotNull(jsonRet);
 
                         ret = jsonRet as OkNegotiatedContentResult<List<MikeScenario>>;
-                        Assert.AreEqual(mikeScenarioList[0].MikeScenarioID, ret.Content[0].MikeScenarioID);
-                        Assert.AreEqual((count > query.Take ? query.Take : count), ret.Content.Count);
+                        Assert.Equal(mikeScenarioList[0].MikeScenarioID, ret.Content[0].MikeScenarioID);
+                        Assert.Equal((count > query.Take ? query.Take : count), ret.Content.Count);
 
                        if (count > 1)
                        {
@@ -88,11 +87,11 @@ namespace CSSPWebAPI.Tests.Controllers
 
                            // ok with MikeScenario info
                            IHttpActionResult jsonRet2 = mikeScenarioController.GetMikeScenarioList(query.Language.ToString(), query.Skip, query.Take);
-                           Assert.IsNotNull(jsonRet2);
+                           Assert.NotNull(jsonRet2);
 
                            OkNegotiatedContentResult<List<MikeScenario>> ret2 = jsonRet2 as OkNegotiatedContentResult<List<MikeScenario>>;
-                           Assert.AreEqual(mikeScenarioList[1].MikeScenarioID, ret2.Content[0].MikeScenarioID);
-                           Assert.AreEqual((count > query.Take ? query.Take : count), ret2.Content.Count);
+                           Assert.Equal(mikeScenarioList[1].MikeScenarioID, ret2.Content[0].MikeScenarioID);
+                           Assert.Equal((count > query.Take ? query.Take : count), ret2.Content.Count);
                        }
                     }
                 }
@@ -101,7 +100,7 @@ namespace CSSPWebAPI.Tests.Controllers
         #endregion Tests Generated for Class Controller GetList Command
 
         #region Tests Generated for Class Controller GetWithID Command
-        [TestMethod]
+        [Fact]
         public void MikeScenario_Controller_GetMikeScenarioWithID_Test()
         {
             foreach (LanguageEnum LanguageRequest in AllowableLanguages)
@@ -109,8 +108,8 @@ namespace CSSPWebAPI.Tests.Controllers
                 foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
                 {
                     MikeScenarioController mikeScenarioController = new MikeScenarioController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(mikeScenarioController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, mikeScenarioController.DatabaseType);
+                    Assert.NotNull(mikeScenarioController);
+                    Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, mikeScenarioController.DatabaseType);
 
                     MikeScenario mikeScenarioFirst = new MikeScenario();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
@@ -121,31 +120,31 @@ namespace CSSPWebAPI.Tests.Controllers
 
                     // ok with MikeScenario info
                     IHttpActionResult jsonRet = mikeScenarioController.GetMikeScenarioWithID(mikeScenarioFirst.MikeScenarioID);
-                    Assert.IsNotNull(jsonRet);
+                    Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<MikeScenario> Ret = jsonRet as OkNegotiatedContentResult<MikeScenario>;
                     MikeScenario mikeScenarioRet = Ret.Content;
-                    Assert.AreEqual(mikeScenarioFirst.MikeScenarioID, mikeScenarioRet.MikeScenarioID);
+                    Assert.Equal(mikeScenarioFirst.MikeScenarioID, mikeScenarioRet.MikeScenarioID);
 
                     BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
                     Assert.IsNull(badRequest);
 
                     // Not Found
                     IHttpActionResult jsonRet2 = mikeScenarioController.GetMikeScenarioWithID(0);
-                    Assert.IsNotNull(jsonRet2);
+                    Assert.NotNull(jsonRet2);
 
                     OkNegotiatedContentResult<MikeScenario> mikeScenarioRet2 = jsonRet2 as OkNegotiatedContentResult<MikeScenario>;
                     Assert.IsNull(mikeScenarioRet2);
 
                     NotFoundResult notFoundRequest = jsonRet2 as NotFoundResult;
-                    Assert.IsNotNull(notFoundRequest);
+                    Assert.NotNull(notFoundRequest);
                 }
             }
         }
         #endregion Tests Generated for Class Controller GetWithID Command
 
         #region Tests Generated for Class Controller Post Command
-        [TestMethod]
+        [Fact]
         public void MikeScenario_Controller_Post_Test()
         {
             foreach (LanguageEnum LanguageRequest in AllowableLanguages)
@@ -153,8 +152,8 @@ namespace CSSPWebAPI.Tests.Controllers
                 foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
                 {
                     MikeScenarioController mikeScenarioController = new MikeScenarioController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(mikeScenarioController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, mikeScenarioController.DatabaseType);
+                    Assert.NotNull(mikeScenarioController);
+                    Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, mikeScenarioController.DatabaseType);
 
                     MikeScenario mikeScenarioLast = new MikeScenario();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
@@ -170,43 +169,43 @@ namespace CSSPWebAPI.Tests.Controllers
 
                     // ok with MikeScenario info
                     IHttpActionResult jsonRet = mikeScenarioController.GetMikeScenarioWithID(mikeScenarioLast.MikeScenarioID);
-                    Assert.IsNotNull(jsonRet);
+                    Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<MikeScenario> Ret = jsonRet as OkNegotiatedContentResult<MikeScenario>;
                     MikeScenario mikeScenarioRet = Ret.Content;
-                    Assert.AreEqual(mikeScenarioLast.MikeScenarioID, mikeScenarioRet.MikeScenarioID);
+                    Assert.Equal(mikeScenarioLast.MikeScenarioID, mikeScenarioRet.MikeScenarioID);
 
                     BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
                     Assert.IsNull(badRequest);
 
                     // Post to return CSSPError because MikeScenarioID exist
                     IHttpActionResult jsonRet2 = mikeScenarioController.Post(mikeScenarioRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet2);
+                    Assert.NotNull(jsonRet2);
 
                     OkNegotiatedContentResult<MikeScenario> mikeScenarioRet2 = jsonRet2 as OkNegotiatedContentResult<MikeScenario>;
                     Assert.IsNull(mikeScenarioRet2);
 
                     BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
-                    Assert.IsNotNull(badRequest2);
+                    Assert.NotNull(badRequest2);
 
                     // Post to return newly added MikeScenario
                     mikeScenarioRet.MikeScenarioID = 0;
                     mikeScenarioController.Request = new System.Net.Http.HttpRequestMessage();
                     mikeScenarioController.Request.RequestUri = new System.Uri("http://localhost:5000/api/mikeScenario");
                     IHttpActionResult jsonRet3 = mikeScenarioController.Post(mikeScenarioRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet3);
+                    Assert.NotNull(jsonRet3);
 
                     CreatedNegotiatedContentResult<MikeScenario> mikeScenarioRet3 = jsonRet3 as CreatedNegotiatedContentResult<MikeScenario>;
-                    Assert.IsNotNull(mikeScenarioRet3);
+                    Assert.NotNull(mikeScenarioRet3);
 
                     BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
                     Assert.IsNull(badRequest3);
 
                     IHttpActionResult jsonRet4 = mikeScenarioController.Delete(mikeScenarioRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet4);
+                    Assert.NotNull(jsonRet4);
 
                     OkNegotiatedContentResult<MikeScenario> mikeScenarioRet4 = jsonRet4 as OkNegotiatedContentResult<MikeScenario>;
-                    Assert.IsNotNull(mikeScenarioRet4);
+                    Assert.NotNull(mikeScenarioRet4);
 
                     BadRequestErrorMessageResult badRequest4 = jsonRet4 as BadRequestErrorMessageResult;
                     Assert.IsNull(badRequest4);
@@ -216,7 +215,7 @@ namespace CSSPWebAPI.Tests.Controllers
         #endregion Tests Generated for Class Controller Post Command
 
         #region Tests Generated for Class Controller Put Command
-        [TestMethod]
+        [Fact]
         public void MikeScenario_Controller_Put_Test()
         {
             foreach (LanguageEnum LanguageRequest in AllowableLanguages)
@@ -224,8 +223,8 @@ namespace CSSPWebAPI.Tests.Controllers
                 foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
                 {
                     MikeScenarioController mikeScenarioController = new MikeScenarioController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(mikeScenarioController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, mikeScenarioController.DatabaseType);
+                    Assert.NotNull(mikeScenarioController);
+                    Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, mikeScenarioController.DatabaseType);
 
                     MikeScenario mikeScenarioLast = new MikeScenario();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
@@ -239,21 +238,21 @@ namespace CSSPWebAPI.Tests.Controllers
 
                     // ok with MikeScenario info
                     IHttpActionResult jsonRet = mikeScenarioController.GetMikeScenarioWithID(mikeScenarioLast.MikeScenarioID);
-                    Assert.IsNotNull(jsonRet);
+                    Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<MikeScenario> Ret = jsonRet as OkNegotiatedContentResult<MikeScenario>;
                     MikeScenario mikeScenarioRet = Ret.Content;
-                    Assert.AreEqual(mikeScenarioLast.MikeScenarioID, mikeScenarioRet.MikeScenarioID);
+                    Assert.Equal(mikeScenarioLast.MikeScenarioID, mikeScenarioRet.MikeScenarioID);
 
                     BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
                     Assert.IsNull(badRequest);
 
                     // Put to return success
                     IHttpActionResult jsonRet2 = mikeScenarioController.Put(mikeScenarioRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet2);
+                    Assert.NotNull(jsonRet2);
 
                     OkNegotiatedContentResult<MikeScenario> mikeScenarioRet2 = jsonRet2 as OkNegotiatedContentResult<MikeScenario>;
-                    Assert.IsNotNull(mikeScenarioRet2);
+                    Assert.NotNull(mikeScenarioRet2);
 
                     BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
                     Assert.IsNull(badRequest2);
@@ -261,20 +260,20 @@ namespace CSSPWebAPI.Tests.Controllers
                     // Put to return CSSPError because MikeScenarioID of 0 does not exist
                     mikeScenarioRet.MikeScenarioID = 0;
                     IHttpActionResult jsonRet3 = mikeScenarioController.Put(mikeScenarioRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet3);
+                    Assert.NotNull(jsonRet3);
 
                     OkNegotiatedContentResult<MikeScenario> mikeScenarioRet3 = jsonRet3 as OkNegotiatedContentResult<MikeScenario>;
                     Assert.IsNull(mikeScenarioRet3);
 
                     BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
-                    Assert.IsNotNull(badRequest3);
+                    Assert.NotNull(badRequest3);
                 }
             }
         }
         #endregion Tests Generated for Class Controller Put Command
 
         #region Tests Generated for Class Controller Delete Command
-        [TestMethod]
+        [Fact]
         public void MikeScenario_Controller_Delete_Test()
         {
             foreach (LanguageEnum LanguageRequest in AllowableLanguages)
@@ -282,8 +281,8 @@ namespace CSSPWebAPI.Tests.Controllers
                 foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
                 {
                     MikeScenarioController mikeScenarioController = new MikeScenarioController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(mikeScenarioController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, mikeScenarioController.DatabaseType);
+                    Assert.NotNull(mikeScenarioController);
+                    Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, mikeScenarioController.DatabaseType);
 
                     MikeScenario mikeScenarioLast = new MikeScenario();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
@@ -299,11 +298,11 @@ namespace CSSPWebAPI.Tests.Controllers
 
                     // ok with MikeScenario info
                     IHttpActionResult jsonRet = mikeScenarioController.GetMikeScenarioWithID(mikeScenarioLast.MikeScenarioID);
-                    Assert.IsNotNull(jsonRet);
+                    Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<MikeScenario> Ret = jsonRet as OkNegotiatedContentResult<MikeScenario>;
                     MikeScenario mikeScenarioRet = Ret.Content;
-                    Assert.AreEqual(mikeScenarioLast.MikeScenarioID, mikeScenarioRet.MikeScenarioID);
+                    Assert.Equal(mikeScenarioLast.MikeScenarioID, mikeScenarioRet.MikeScenarioID);
 
                     BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
                     Assert.IsNull(badRequest);
@@ -313,10 +312,10 @@ namespace CSSPWebAPI.Tests.Controllers
                     mikeScenarioController.Request = new System.Net.Http.HttpRequestMessage();
                     mikeScenarioController.Request.RequestUri = new System.Uri("http://localhost:5000/api/mikeScenario");
                     IHttpActionResult jsonRet3 = mikeScenarioController.Post(mikeScenarioRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet3);
+                    Assert.NotNull(jsonRet3);
 
                     CreatedNegotiatedContentResult<MikeScenario> mikeScenarioRet3 = jsonRet3 as CreatedNegotiatedContentResult<MikeScenario>;
-                    Assert.IsNotNull(mikeScenarioRet3);
+                    Assert.NotNull(mikeScenarioRet3);
                     MikeScenario mikeScenario = mikeScenarioRet3.Content;
 
                     BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
@@ -324,10 +323,10 @@ namespace CSSPWebAPI.Tests.Controllers
 
                     // Delete to return success
                     IHttpActionResult jsonRet2 = mikeScenarioController.Delete(mikeScenarioRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet2);
+                    Assert.NotNull(jsonRet2);
 
                     OkNegotiatedContentResult<MikeScenario> mikeScenarioRet2 = jsonRet2 as OkNegotiatedContentResult<MikeScenario>;
-                    Assert.IsNotNull(mikeScenarioRet2);
+                    Assert.NotNull(mikeScenarioRet2);
 
                     BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
                     Assert.IsNull(badRequest2);
@@ -335,13 +334,13 @@ namespace CSSPWebAPI.Tests.Controllers
                     // Delete to return CSSPError because MikeScenarioID of 0 does not exist
                     mikeScenarioRet.MikeScenarioID = 0;
                     IHttpActionResult jsonRet4 = mikeScenarioController.Delete(mikeScenarioRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet4);
+                    Assert.NotNull(jsonRet4);
 
                     OkNegotiatedContentResult<MikeScenario> mikeScenarioRet4 = jsonRet4 as OkNegotiatedContentResult<MikeScenario>;
                     Assert.IsNull(mikeScenarioRet4);
 
                     BadRequestErrorMessageResult badRequest4 = jsonRet4 as BadRequestErrorMessageResult;
-                    Assert.IsNotNull(badRequest4);
+                    Assert.NotNull(badRequest4);
                 }
             }
         }

@@ -23,7 +23,7 @@ namespace CSSPWebAPIGenerateCodeHelper
         private void GenerateControllersGetClassList(string TypeName, string TypeNameLower, StringBuilder sb)
         {
             sb.AppendLine(@"        #region Tests Generated for Class Controller GetList Command");
-            sb.AppendLine(@"        [TestMethod]");
+            sb.AppendLine(@"        [Fact]");
             sb.AppendLine($@"        public void { TypeName }_Controller_Get{ TypeName }List_Test()");
             sb.AppendLine(@"        {");
             sb.AppendLine(@"            foreach (LanguageEnum LanguageRequest in AllowableLanguages)");
@@ -31,8 +31,8 @@ namespace CSSPWebAPIGenerateCodeHelper
             sb.AppendLine(@"                foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })");
             sb.AppendLine(@"                {");
             sb.AppendLine($@"                    { TypeName }Controller { TypeNameLower }Controller = new { TypeName }Controller(DatabaseTypeEnum.SqlServerTestDB);");
-            sb.AppendLine($@"                    Assert.IsNotNull({ TypeNameLower }Controller);");
-            sb.AppendLine($@"                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, { TypeNameLower }Controller.DatabaseType);");
+            sb.AppendLine($@"                    Assert.NotNull({ TypeNameLower }Controller);");
+            sb.AppendLine($@"                    Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, { TypeNameLower }Controller.DatabaseType);");
             sb.AppendLine(@"");
             sb.AppendLine($@"                    { TypeName } { TypeNameLower }First = new { TypeName }();");
             sb.AppendLine(@"                    int count = -1;");
@@ -55,11 +55,11 @@ namespace CSSPWebAPIGenerateCodeHelper
             sb.AppendLine(@"");
             sb.AppendLine($@"                    // ok with { TypeName } info");
             sb.AppendLine($@"                    IHttpActionResult jsonRet = { TypeNameLower }Controller.Get{ TypeName }List();");
-            sb.AppendLine(@"                    Assert.IsNotNull(jsonRet);");
+            sb.AppendLine(@"                    Assert.NotNull(jsonRet);");
             sb.AppendLine(@"");
             sb.AppendLine($@"                    OkNegotiatedContentResult<List<{ TypeName }>> ret = jsonRet as OkNegotiatedContentResult<List<{ TypeName }>>;");
-            sb.AppendLine($@"                    Assert.AreEqual({ TypeNameLower }First.{ TypeName }ID, ret.Content[0].{ TypeName }ID);");
-            sb.AppendLine(@"                    Assert.AreEqual((count > query.Take ? query.Take : count), ret.Content.Count);");
+            sb.AppendLine($@"                    Assert.Equal({ TypeNameLower }First.{ TypeName }ID, ret.Content[0].{ TypeName }ID);");
+            sb.AppendLine(@"                    Assert.Equal((count > query.Take ? query.Take : count), ret.Content.Count);");
             sb.AppendLine(@"");
             sb.AppendLine($@"                    List<{ TypeName }> { TypeNameLower }List = new List<{ TypeName }>();");
             sb.AppendLine(@"                    count = -1;");
@@ -87,11 +87,11 @@ namespace CSSPWebAPIGenerateCodeHelper
             sb.AppendLine(@"");
             sb.AppendLine($@"                        // ok with { TypeName } info");
             sb.AppendLine($@"                        jsonRet = { TypeNameLower }Controller.Get{ TypeName }List(query.Language.ToString(), query.Skip, query.Take);");
-            sb.AppendLine(@"                        Assert.IsNotNull(jsonRet);");
+            sb.AppendLine(@"                        Assert.NotNull(jsonRet);");
             sb.AppendLine(@"");
             sb.AppendLine($@"                        ret = jsonRet as OkNegotiatedContentResult<List<{ TypeName }>>;");
-            sb.AppendLine($@"                        Assert.AreEqual({ TypeNameLower }List[0].{ TypeName }ID, ret.Content[0].{ TypeName }ID);");
-            sb.AppendLine(@"                        Assert.AreEqual((count > query.Take ? query.Take : count), ret.Content.Count);");
+            sb.AppendLine($@"                        Assert.Equal({ TypeNameLower }List[0].{ TypeName }ID, ret.Content[0].{ TypeName }ID);");
+            sb.AppendLine(@"                        Assert.Equal((count > query.Take ? query.Take : count), ret.Content.Count);");
             sb.AppendLine(@"");
             sb.AppendLine(@"                       if (count > 1)");
             sb.AppendLine(@"                       {");
@@ -101,11 +101,11 @@ namespace CSSPWebAPIGenerateCodeHelper
             sb.AppendLine(@"");
             sb.AppendLine($@"                           // ok with { TypeName } info");
             sb.AppendLine($@"                           IHttpActionResult jsonRet2 = { TypeNameLower }Controller.Get{ TypeName }List(query.Language.ToString(), query.Skip, query.Take);");
-            sb.AppendLine(@"                           Assert.IsNotNull(jsonRet2);");
+            sb.AppendLine(@"                           Assert.NotNull(jsonRet2);");
             sb.AppendLine(@"");
             sb.AppendLine($@"                           OkNegotiatedContentResult<List<{ TypeName }>> ret2 = jsonRet2 as OkNegotiatedContentResult<List<{ TypeName }>>;");
-            sb.AppendLine($@"                           Assert.AreEqual({ TypeNameLower }List[1].{ TypeName }ID, ret2.Content[0].{ TypeName }ID);");
-            sb.AppendLine(@"                           Assert.AreEqual((count > query.Take ? query.Take : count), ret2.Content.Count);");
+            sb.AppendLine($@"                           Assert.Equal({ TypeNameLower }List[1].{ TypeName }ID, ret2.Content[0].{ TypeName }ID);");
+            sb.AppendLine(@"                           Assert.Equal((count > query.Take ? query.Take : count), ret2.Content.Count);");
             sb.AppendLine(@"                       }");
             sb.AppendLine(@"                    }");
             sb.AppendLine(@"                }");

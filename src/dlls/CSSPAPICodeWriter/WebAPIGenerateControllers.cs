@@ -43,14 +43,14 @@ namespace CSSPWebAPIGenerateCodeHelper
         ///     C:\CSSPTools\src\web\CSSPWebAPI\Controllers\Generated\[ModelClassName]ControllerGenerated.cs file
         ///
         /// Requires:
-        ///     C:\CSSPTools\src\dlls\CSSPModels\bin\Debug\netcoreapp3.0\CSSPModels.dll
+        ///     C:\CSSPTools\src\dlls\CSSPModels\bin\Debug\netcoreapp3.1\CSSPModels.dll
         /// </summary>
         public void ModelControllerGenerated(bool WithDoc)
         {
             StatusTempEvent(new StatusEventArgs(""));
             ClearPermanentEvent(new StatusEventArgs(""));
 
-            FileInfo fiDLL = new FileInfo(@"C:\CSSPTools\src\dlls\CSSPModels\bin\Debug\netcoreapp3.0\CSSPModels.dll");
+            FileInfo fiDLL = new FileInfo(@"C:\CSSPTools\src\dlls\CSSPModels\bin\Debug\netcoreapp3.1\CSSPModels.dll");
 
             if (!fiDLL.Exists)
             {
@@ -111,11 +111,11 @@ namespace CSSPWebAPIGenerateCodeHelper
                     sb.AppendLine(@"using System;");
                     sb.AppendLine(@"using System.Collections.Generic;");
                     sb.AppendLine(@"using System.Linq;");
-                    sb.AppendLine(@"using System.Web.Http;");
+                    sb.AppendLine(@"using Microsoft.AspNetCore.Components;;");
                     sb.AppendLine(@"");
                     sb.AppendLine(@"namespace CSSPWebAPI.Controllers");
                     sb.AppendLine(@"{");
-                    sb.AppendLine($@"    [RoutePrefix(""api/{ TypeNameLower }"")]");
+                    sb.AppendLine($@"    [Route(""api/{ TypeNameLower }"")]");
                     sb.AppendLine($@"    public partial class { TypeName }Controller : BaseController");
                     sb.AppendLine(@"    {");
                     sb.AppendLine(@"        #region Variables");

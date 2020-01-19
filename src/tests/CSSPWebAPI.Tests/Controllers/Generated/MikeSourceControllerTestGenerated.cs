@@ -1,8 +1,8 @@
 using CSSPEnums;
 using CSSPModels;
 using CSSPServices;
+using Xunit;
 using CSSPWebAPI.Controllers;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
@@ -10,7 +10,6 @@ using System.Web.Http.Results;
 
 namespace CSSPWebAPI.Tests.Controllers
 {
-    [TestClass]
     public partial class MikeSourceControllerTest : BaseControllerTest
     {
         #region Variables
@@ -26,7 +25,7 @@ namespace CSSPWebAPI.Tests.Controllers
         #endregion Constructors
 
         #region Tests Generated for Class Controller GetList Command
-        [TestMethod]
+        [Fact]
         public void MikeSource_Controller_GetMikeSourceList_Test()
         {
             foreach (LanguageEnum LanguageRequest in AllowableLanguages)
@@ -34,8 +33,8 @@ namespace CSSPWebAPI.Tests.Controllers
                 foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
                 {
                     MikeSourceController mikeSourceController = new MikeSourceController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(mikeSourceController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, mikeSourceController.DatabaseType);
+                    Assert.NotNull(mikeSourceController);
+                    Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, mikeSourceController.DatabaseType);
 
                     MikeSource mikeSourceFirst = new MikeSource();
                     int count = -1;
@@ -50,11 +49,11 @@ namespace CSSPWebAPI.Tests.Controllers
 
                     // ok with MikeSource info
                     IHttpActionResult jsonRet = mikeSourceController.GetMikeSourceList();
-                    Assert.IsNotNull(jsonRet);
+                    Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<List<MikeSource>> ret = jsonRet as OkNegotiatedContentResult<List<MikeSource>>;
-                    Assert.AreEqual(mikeSourceFirst.MikeSourceID, ret.Content[0].MikeSourceID);
-                    Assert.AreEqual((count > query.Take ? query.Take : count), ret.Content.Count);
+                    Assert.Equal(mikeSourceFirst.MikeSourceID, ret.Content[0].MikeSourceID);
+                    Assert.Equal((count > query.Take ? query.Take : count), ret.Content.Count);
 
                     List<MikeSource> mikeSourceList = new List<MikeSource>();
                     count = -1;
@@ -74,11 +73,11 @@ namespace CSSPWebAPI.Tests.Controllers
 
                         // ok with MikeSource info
                         jsonRet = mikeSourceController.GetMikeSourceList(query.Language.ToString(), query.Skip, query.Take);
-                        Assert.IsNotNull(jsonRet);
+                        Assert.NotNull(jsonRet);
 
                         ret = jsonRet as OkNegotiatedContentResult<List<MikeSource>>;
-                        Assert.AreEqual(mikeSourceList[0].MikeSourceID, ret.Content[0].MikeSourceID);
-                        Assert.AreEqual((count > query.Take ? query.Take : count), ret.Content.Count);
+                        Assert.Equal(mikeSourceList[0].MikeSourceID, ret.Content[0].MikeSourceID);
+                        Assert.Equal((count > query.Take ? query.Take : count), ret.Content.Count);
 
                        if (count > 1)
                        {
@@ -88,11 +87,11 @@ namespace CSSPWebAPI.Tests.Controllers
 
                            // ok with MikeSource info
                            IHttpActionResult jsonRet2 = mikeSourceController.GetMikeSourceList(query.Language.ToString(), query.Skip, query.Take);
-                           Assert.IsNotNull(jsonRet2);
+                           Assert.NotNull(jsonRet2);
 
                            OkNegotiatedContentResult<List<MikeSource>> ret2 = jsonRet2 as OkNegotiatedContentResult<List<MikeSource>>;
-                           Assert.AreEqual(mikeSourceList[1].MikeSourceID, ret2.Content[0].MikeSourceID);
-                           Assert.AreEqual((count > query.Take ? query.Take : count), ret2.Content.Count);
+                           Assert.Equal(mikeSourceList[1].MikeSourceID, ret2.Content[0].MikeSourceID);
+                           Assert.Equal((count > query.Take ? query.Take : count), ret2.Content.Count);
                        }
                     }
                 }
@@ -101,7 +100,7 @@ namespace CSSPWebAPI.Tests.Controllers
         #endregion Tests Generated for Class Controller GetList Command
 
         #region Tests Generated for Class Controller GetWithID Command
-        [TestMethod]
+        [Fact]
         public void MikeSource_Controller_GetMikeSourceWithID_Test()
         {
             foreach (LanguageEnum LanguageRequest in AllowableLanguages)
@@ -109,8 +108,8 @@ namespace CSSPWebAPI.Tests.Controllers
                 foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
                 {
                     MikeSourceController mikeSourceController = new MikeSourceController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(mikeSourceController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, mikeSourceController.DatabaseType);
+                    Assert.NotNull(mikeSourceController);
+                    Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, mikeSourceController.DatabaseType);
 
                     MikeSource mikeSourceFirst = new MikeSource();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
@@ -121,31 +120,31 @@ namespace CSSPWebAPI.Tests.Controllers
 
                     // ok with MikeSource info
                     IHttpActionResult jsonRet = mikeSourceController.GetMikeSourceWithID(mikeSourceFirst.MikeSourceID);
-                    Assert.IsNotNull(jsonRet);
+                    Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<MikeSource> Ret = jsonRet as OkNegotiatedContentResult<MikeSource>;
                     MikeSource mikeSourceRet = Ret.Content;
-                    Assert.AreEqual(mikeSourceFirst.MikeSourceID, mikeSourceRet.MikeSourceID);
+                    Assert.Equal(mikeSourceFirst.MikeSourceID, mikeSourceRet.MikeSourceID);
 
                     BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
                     Assert.IsNull(badRequest);
 
                     // Not Found
                     IHttpActionResult jsonRet2 = mikeSourceController.GetMikeSourceWithID(0);
-                    Assert.IsNotNull(jsonRet2);
+                    Assert.NotNull(jsonRet2);
 
                     OkNegotiatedContentResult<MikeSource> mikeSourceRet2 = jsonRet2 as OkNegotiatedContentResult<MikeSource>;
                     Assert.IsNull(mikeSourceRet2);
 
                     NotFoundResult notFoundRequest = jsonRet2 as NotFoundResult;
-                    Assert.IsNotNull(notFoundRequest);
+                    Assert.NotNull(notFoundRequest);
                 }
             }
         }
         #endregion Tests Generated for Class Controller GetWithID Command
 
         #region Tests Generated for Class Controller Post Command
-        [TestMethod]
+        [Fact]
         public void MikeSource_Controller_Post_Test()
         {
             foreach (LanguageEnum LanguageRequest in AllowableLanguages)
@@ -153,8 +152,8 @@ namespace CSSPWebAPI.Tests.Controllers
                 foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
                 {
                     MikeSourceController mikeSourceController = new MikeSourceController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(mikeSourceController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, mikeSourceController.DatabaseType);
+                    Assert.NotNull(mikeSourceController);
+                    Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, mikeSourceController.DatabaseType);
 
                     MikeSource mikeSourceLast = new MikeSource();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
@@ -170,43 +169,43 @@ namespace CSSPWebAPI.Tests.Controllers
 
                     // ok with MikeSource info
                     IHttpActionResult jsonRet = mikeSourceController.GetMikeSourceWithID(mikeSourceLast.MikeSourceID);
-                    Assert.IsNotNull(jsonRet);
+                    Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<MikeSource> Ret = jsonRet as OkNegotiatedContentResult<MikeSource>;
                     MikeSource mikeSourceRet = Ret.Content;
-                    Assert.AreEqual(mikeSourceLast.MikeSourceID, mikeSourceRet.MikeSourceID);
+                    Assert.Equal(mikeSourceLast.MikeSourceID, mikeSourceRet.MikeSourceID);
 
                     BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
                     Assert.IsNull(badRequest);
 
                     // Post to return CSSPError because MikeSourceID exist
                     IHttpActionResult jsonRet2 = mikeSourceController.Post(mikeSourceRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet2);
+                    Assert.NotNull(jsonRet2);
 
                     OkNegotiatedContentResult<MikeSource> mikeSourceRet2 = jsonRet2 as OkNegotiatedContentResult<MikeSource>;
                     Assert.IsNull(mikeSourceRet2);
 
                     BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
-                    Assert.IsNotNull(badRequest2);
+                    Assert.NotNull(badRequest2);
 
                     // Post to return newly added MikeSource
                     mikeSourceRet.MikeSourceID = 0;
                     mikeSourceController.Request = new System.Net.Http.HttpRequestMessage();
                     mikeSourceController.Request.RequestUri = new System.Uri("http://localhost:5000/api/mikeSource");
                     IHttpActionResult jsonRet3 = mikeSourceController.Post(mikeSourceRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet3);
+                    Assert.NotNull(jsonRet3);
 
                     CreatedNegotiatedContentResult<MikeSource> mikeSourceRet3 = jsonRet3 as CreatedNegotiatedContentResult<MikeSource>;
-                    Assert.IsNotNull(mikeSourceRet3);
+                    Assert.NotNull(mikeSourceRet3);
 
                     BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
                     Assert.IsNull(badRequest3);
 
                     IHttpActionResult jsonRet4 = mikeSourceController.Delete(mikeSourceRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet4);
+                    Assert.NotNull(jsonRet4);
 
                     OkNegotiatedContentResult<MikeSource> mikeSourceRet4 = jsonRet4 as OkNegotiatedContentResult<MikeSource>;
-                    Assert.IsNotNull(mikeSourceRet4);
+                    Assert.NotNull(mikeSourceRet4);
 
                     BadRequestErrorMessageResult badRequest4 = jsonRet4 as BadRequestErrorMessageResult;
                     Assert.IsNull(badRequest4);
@@ -216,7 +215,7 @@ namespace CSSPWebAPI.Tests.Controllers
         #endregion Tests Generated for Class Controller Post Command
 
         #region Tests Generated for Class Controller Put Command
-        [TestMethod]
+        [Fact]
         public void MikeSource_Controller_Put_Test()
         {
             foreach (LanguageEnum LanguageRequest in AllowableLanguages)
@@ -224,8 +223,8 @@ namespace CSSPWebAPI.Tests.Controllers
                 foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
                 {
                     MikeSourceController mikeSourceController = new MikeSourceController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(mikeSourceController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, mikeSourceController.DatabaseType);
+                    Assert.NotNull(mikeSourceController);
+                    Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, mikeSourceController.DatabaseType);
 
                     MikeSource mikeSourceLast = new MikeSource();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
@@ -239,21 +238,21 @@ namespace CSSPWebAPI.Tests.Controllers
 
                     // ok with MikeSource info
                     IHttpActionResult jsonRet = mikeSourceController.GetMikeSourceWithID(mikeSourceLast.MikeSourceID);
-                    Assert.IsNotNull(jsonRet);
+                    Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<MikeSource> Ret = jsonRet as OkNegotiatedContentResult<MikeSource>;
                     MikeSource mikeSourceRet = Ret.Content;
-                    Assert.AreEqual(mikeSourceLast.MikeSourceID, mikeSourceRet.MikeSourceID);
+                    Assert.Equal(mikeSourceLast.MikeSourceID, mikeSourceRet.MikeSourceID);
 
                     BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
                     Assert.IsNull(badRequest);
 
                     // Put to return success
                     IHttpActionResult jsonRet2 = mikeSourceController.Put(mikeSourceRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet2);
+                    Assert.NotNull(jsonRet2);
 
                     OkNegotiatedContentResult<MikeSource> mikeSourceRet2 = jsonRet2 as OkNegotiatedContentResult<MikeSource>;
-                    Assert.IsNotNull(mikeSourceRet2);
+                    Assert.NotNull(mikeSourceRet2);
 
                     BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
                     Assert.IsNull(badRequest2);
@@ -261,20 +260,20 @@ namespace CSSPWebAPI.Tests.Controllers
                     // Put to return CSSPError because MikeSourceID of 0 does not exist
                     mikeSourceRet.MikeSourceID = 0;
                     IHttpActionResult jsonRet3 = mikeSourceController.Put(mikeSourceRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet3);
+                    Assert.NotNull(jsonRet3);
 
                     OkNegotiatedContentResult<MikeSource> mikeSourceRet3 = jsonRet3 as OkNegotiatedContentResult<MikeSource>;
                     Assert.IsNull(mikeSourceRet3);
 
                     BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
-                    Assert.IsNotNull(badRequest3);
+                    Assert.NotNull(badRequest3);
                 }
             }
         }
         #endregion Tests Generated for Class Controller Put Command
 
         #region Tests Generated for Class Controller Delete Command
-        [TestMethod]
+        [Fact]
         public void MikeSource_Controller_Delete_Test()
         {
             foreach (LanguageEnum LanguageRequest in AllowableLanguages)
@@ -282,8 +281,8 @@ namespace CSSPWebAPI.Tests.Controllers
                 foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
                 {
                     MikeSourceController mikeSourceController = new MikeSourceController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(mikeSourceController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, mikeSourceController.DatabaseType);
+                    Assert.NotNull(mikeSourceController);
+                    Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, mikeSourceController.DatabaseType);
 
                     MikeSource mikeSourceLast = new MikeSource();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
@@ -299,11 +298,11 @@ namespace CSSPWebAPI.Tests.Controllers
 
                     // ok with MikeSource info
                     IHttpActionResult jsonRet = mikeSourceController.GetMikeSourceWithID(mikeSourceLast.MikeSourceID);
-                    Assert.IsNotNull(jsonRet);
+                    Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<MikeSource> Ret = jsonRet as OkNegotiatedContentResult<MikeSource>;
                     MikeSource mikeSourceRet = Ret.Content;
-                    Assert.AreEqual(mikeSourceLast.MikeSourceID, mikeSourceRet.MikeSourceID);
+                    Assert.Equal(mikeSourceLast.MikeSourceID, mikeSourceRet.MikeSourceID);
 
                     BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
                     Assert.IsNull(badRequest);
@@ -313,10 +312,10 @@ namespace CSSPWebAPI.Tests.Controllers
                     mikeSourceController.Request = new System.Net.Http.HttpRequestMessage();
                     mikeSourceController.Request.RequestUri = new System.Uri("http://localhost:5000/api/mikeSource");
                     IHttpActionResult jsonRet3 = mikeSourceController.Post(mikeSourceRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet3);
+                    Assert.NotNull(jsonRet3);
 
                     CreatedNegotiatedContentResult<MikeSource> mikeSourceRet3 = jsonRet3 as CreatedNegotiatedContentResult<MikeSource>;
-                    Assert.IsNotNull(mikeSourceRet3);
+                    Assert.NotNull(mikeSourceRet3);
                     MikeSource mikeSource = mikeSourceRet3.Content;
 
                     BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
@@ -324,10 +323,10 @@ namespace CSSPWebAPI.Tests.Controllers
 
                     // Delete to return success
                     IHttpActionResult jsonRet2 = mikeSourceController.Delete(mikeSourceRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet2);
+                    Assert.NotNull(jsonRet2);
 
                     OkNegotiatedContentResult<MikeSource> mikeSourceRet2 = jsonRet2 as OkNegotiatedContentResult<MikeSource>;
-                    Assert.IsNotNull(mikeSourceRet2);
+                    Assert.NotNull(mikeSourceRet2);
 
                     BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
                     Assert.IsNull(badRequest2);
@@ -335,13 +334,13 @@ namespace CSSPWebAPI.Tests.Controllers
                     // Delete to return CSSPError because MikeSourceID of 0 does not exist
                     mikeSourceRet.MikeSourceID = 0;
                     IHttpActionResult jsonRet4 = mikeSourceController.Delete(mikeSourceRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet4);
+                    Assert.NotNull(jsonRet4);
 
                     OkNegotiatedContentResult<MikeSource> mikeSourceRet4 = jsonRet4 as OkNegotiatedContentResult<MikeSource>;
                     Assert.IsNull(mikeSourceRet4);
 
                     BadRequestErrorMessageResult badRequest4 = jsonRet4 as BadRequestErrorMessageResult;
-                    Assert.IsNotNull(badRequest4);
+                    Assert.NotNull(badRequest4);
                 }
             }
         }

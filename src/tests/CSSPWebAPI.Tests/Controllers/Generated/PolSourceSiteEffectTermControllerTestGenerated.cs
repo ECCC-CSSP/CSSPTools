@@ -1,8 +1,8 @@
 using CSSPEnums;
 using CSSPModels;
 using CSSPServices;
+using Xunit;
 using CSSPWebAPI.Controllers;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
@@ -10,7 +10,6 @@ using System.Web.Http.Results;
 
 namespace CSSPWebAPI.Tests.Controllers
 {
-    [TestClass]
     public partial class PolSourceSiteEffectTermControllerTest : BaseControllerTest
     {
         #region Variables
@@ -26,7 +25,7 @@ namespace CSSPWebAPI.Tests.Controllers
         #endregion Constructors
 
         #region Tests Generated for Class Controller GetList Command
-        [TestMethod]
+        [Fact]
         public void PolSourceSiteEffectTerm_Controller_GetPolSourceSiteEffectTermList_Test()
         {
             foreach (LanguageEnum LanguageRequest in AllowableLanguages)
@@ -34,8 +33,8 @@ namespace CSSPWebAPI.Tests.Controllers
                 foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
                 {
                     PolSourceSiteEffectTermController polSourceSiteEffectTermController = new PolSourceSiteEffectTermController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(polSourceSiteEffectTermController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, polSourceSiteEffectTermController.DatabaseType);
+                    Assert.NotNull(polSourceSiteEffectTermController);
+                    Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, polSourceSiteEffectTermController.DatabaseType);
 
                     PolSourceSiteEffectTerm polSourceSiteEffectTermFirst = new PolSourceSiteEffectTerm();
                     int count = -1;
@@ -50,11 +49,11 @@ namespace CSSPWebAPI.Tests.Controllers
 
                     // ok with PolSourceSiteEffectTerm info
                     IHttpActionResult jsonRet = polSourceSiteEffectTermController.GetPolSourceSiteEffectTermList();
-                    Assert.IsNotNull(jsonRet);
+                    Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<List<PolSourceSiteEffectTerm>> ret = jsonRet as OkNegotiatedContentResult<List<PolSourceSiteEffectTerm>>;
-                    Assert.AreEqual(polSourceSiteEffectTermFirst.PolSourceSiteEffectTermID, ret.Content[0].PolSourceSiteEffectTermID);
-                    Assert.AreEqual((count > query.Take ? query.Take : count), ret.Content.Count);
+                    Assert.Equal(polSourceSiteEffectTermFirst.PolSourceSiteEffectTermID, ret.Content[0].PolSourceSiteEffectTermID);
+                    Assert.Equal((count > query.Take ? query.Take : count), ret.Content.Count);
 
                     List<PolSourceSiteEffectTerm> polSourceSiteEffectTermList = new List<PolSourceSiteEffectTerm>();
                     count = -1;
@@ -74,11 +73,11 @@ namespace CSSPWebAPI.Tests.Controllers
 
                         // ok with PolSourceSiteEffectTerm info
                         jsonRet = polSourceSiteEffectTermController.GetPolSourceSiteEffectTermList(query.Language.ToString(), query.Skip, query.Take);
-                        Assert.IsNotNull(jsonRet);
+                        Assert.NotNull(jsonRet);
 
                         ret = jsonRet as OkNegotiatedContentResult<List<PolSourceSiteEffectTerm>>;
-                        Assert.AreEqual(polSourceSiteEffectTermList[0].PolSourceSiteEffectTermID, ret.Content[0].PolSourceSiteEffectTermID);
-                        Assert.AreEqual((count > query.Take ? query.Take : count), ret.Content.Count);
+                        Assert.Equal(polSourceSiteEffectTermList[0].PolSourceSiteEffectTermID, ret.Content[0].PolSourceSiteEffectTermID);
+                        Assert.Equal((count > query.Take ? query.Take : count), ret.Content.Count);
 
                        if (count > 1)
                        {
@@ -88,11 +87,11 @@ namespace CSSPWebAPI.Tests.Controllers
 
                            // ok with PolSourceSiteEffectTerm info
                            IHttpActionResult jsonRet2 = polSourceSiteEffectTermController.GetPolSourceSiteEffectTermList(query.Language.ToString(), query.Skip, query.Take);
-                           Assert.IsNotNull(jsonRet2);
+                           Assert.NotNull(jsonRet2);
 
                            OkNegotiatedContentResult<List<PolSourceSiteEffectTerm>> ret2 = jsonRet2 as OkNegotiatedContentResult<List<PolSourceSiteEffectTerm>>;
-                           Assert.AreEqual(polSourceSiteEffectTermList[1].PolSourceSiteEffectTermID, ret2.Content[0].PolSourceSiteEffectTermID);
-                           Assert.AreEqual((count > query.Take ? query.Take : count), ret2.Content.Count);
+                           Assert.Equal(polSourceSiteEffectTermList[1].PolSourceSiteEffectTermID, ret2.Content[0].PolSourceSiteEffectTermID);
+                           Assert.Equal((count > query.Take ? query.Take : count), ret2.Content.Count);
                        }
                     }
                 }
@@ -101,7 +100,7 @@ namespace CSSPWebAPI.Tests.Controllers
         #endregion Tests Generated for Class Controller GetList Command
 
         #region Tests Generated for Class Controller GetWithID Command
-        [TestMethod]
+        [Fact]
         public void PolSourceSiteEffectTerm_Controller_GetPolSourceSiteEffectTermWithID_Test()
         {
             foreach (LanguageEnum LanguageRequest in AllowableLanguages)
@@ -109,8 +108,8 @@ namespace CSSPWebAPI.Tests.Controllers
                 foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
                 {
                     PolSourceSiteEffectTermController polSourceSiteEffectTermController = new PolSourceSiteEffectTermController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(polSourceSiteEffectTermController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, polSourceSiteEffectTermController.DatabaseType);
+                    Assert.NotNull(polSourceSiteEffectTermController);
+                    Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, polSourceSiteEffectTermController.DatabaseType);
 
                     PolSourceSiteEffectTerm polSourceSiteEffectTermFirst = new PolSourceSiteEffectTerm();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
@@ -121,31 +120,31 @@ namespace CSSPWebAPI.Tests.Controllers
 
                     // ok with PolSourceSiteEffectTerm info
                     IHttpActionResult jsonRet = polSourceSiteEffectTermController.GetPolSourceSiteEffectTermWithID(polSourceSiteEffectTermFirst.PolSourceSiteEffectTermID);
-                    Assert.IsNotNull(jsonRet);
+                    Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<PolSourceSiteEffectTerm> Ret = jsonRet as OkNegotiatedContentResult<PolSourceSiteEffectTerm>;
                     PolSourceSiteEffectTerm polSourceSiteEffectTermRet = Ret.Content;
-                    Assert.AreEqual(polSourceSiteEffectTermFirst.PolSourceSiteEffectTermID, polSourceSiteEffectTermRet.PolSourceSiteEffectTermID);
+                    Assert.Equal(polSourceSiteEffectTermFirst.PolSourceSiteEffectTermID, polSourceSiteEffectTermRet.PolSourceSiteEffectTermID);
 
                     BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
                     Assert.IsNull(badRequest);
 
                     // Not Found
                     IHttpActionResult jsonRet2 = polSourceSiteEffectTermController.GetPolSourceSiteEffectTermWithID(0);
-                    Assert.IsNotNull(jsonRet2);
+                    Assert.NotNull(jsonRet2);
 
                     OkNegotiatedContentResult<PolSourceSiteEffectTerm> polSourceSiteEffectTermRet2 = jsonRet2 as OkNegotiatedContentResult<PolSourceSiteEffectTerm>;
                     Assert.IsNull(polSourceSiteEffectTermRet2);
 
                     NotFoundResult notFoundRequest = jsonRet2 as NotFoundResult;
-                    Assert.IsNotNull(notFoundRequest);
+                    Assert.NotNull(notFoundRequest);
                 }
             }
         }
         #endregion Tests Generated for Class Controller GetWithID Command
 
         #region Tests Generated for Class Controller Post Command
-        [TestMethod]
+        [Fact]
         public void PolSourceSiteEffectTerm_Controller_Post_Test()
         {
             foreach (LanguageEnum LanguageRequest in AllowableLanguages)
@@ -153,8 +152,8 @@ namespace CSSPWebAPI.Tests.Controllers
                 foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
                 {
                     PolSourceSiteEffectTermController polSourceSiteEffectTermController = new PolSourceSiteEffectTermController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(polSourceSiteEffectTermController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, polSourceSiteEffectTermController.DatabaseType);
+                    Assert.NotNull(polSourceSiteEffectTermController);
+                    Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, polSourceSiteEffectTermController.DatabaseType);
 
                     PolSourceSiteEffectTerm polSourceSiteEffectTermLast = new PolSourceSiteEffectTerm();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
@@ -170,43 +169,43 @@ namespace CSSPWebAPI.Tests.Controllers
 
                     // ok with PolSourceSiteEffectTerm info
                     IHttpActionResult jsonRet = polSourceSiteEffectTermController.GetPolSourceSiteEffectTermWithID(polSourceSiteEffectTermLast.PolSourceSiteEffectTermID);
-                    Assert.IsNotNull(jsonRet);
+                    Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<PolSourceSiteEffectTerm> Ret = jsonRet as OkNegotiatedContentResult<PolSourceSiteEffectTerm>;
                     PolSourceSiteEffectTerm polSourceSiteEffectTermRet = Ret.Content;
-                    Assert.AreEqual(polSourceSiteEffectTermLast.PolSourceSiteEffectTermID, polSourceSiteEffectTermRet.PolSourceSiteEffectTermID);
+                    Assert.Equal(polSourceSiteEffectTermLast.PolSourceSiteEffectTermID, polSourceSiteEffectTermRet.PolSourceSiteEffectTermID);
 
                     BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
                     Assert.IsNull(badRequest);
 
                     // Post to return CSSPError because PolSourceSiteEffectTermID exist
                     IHttpActionResult jsonRet2 = polSourceSiteEffectTermController.Post(polSourceSiteEffectTermRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet2);
+                    Assert.NotNull(jsonRet2);
 
                     OkNegotiatedContentResult<PolSourceSiteEffectTerm> polSourceSiteEffectTermRet2 = jsonRet2 as OkNegotiatedContentResult<PolSourceSiteEffectTerm>;
                     Assert.IsNull(polSourceSiteEffectTermRet2);
 
                     BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
-                    Assert.IsNotNull(badRequest2);
+                    Assert.NotNull(badRequest2);
 
                     // Post to return newly added PolSourceSiteEffectTerm
                     polSourceSiteEffectTermRet.PolSourceSiteEffectTermID = 0;
                     polSourceSiteEffectTermController.Request = new System.Net.Http.HttpRequestMessage();
                     polSourceSiteEffectTermController.Request.RequestUri = new System.Uri("http://localhost:5000/api/polSourceSiteEffectTerm");
                     IHttpActionResult jsonRet3 = polSourceSiteEffectTermController.Post(polSourceSiteEffectTermRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet3);
+                    Assert.NotNull(jsonRet3);
 
                     CreatedNegotiatedContentResult<PolSourceSiteEffectTerm> polSourceSiteEffectTermRet3 = jsonRet3 as CreatedNegotiatedContentResult<PolSourceSiteEffectTerm>;
-                    Assert.IsNotNull(polSourceSiteEffectTermRet3);
+                    Assert.NotNull(polSourceSiteEffectTermRet3);
 
                     BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
                     Assert.IsNull(badRequest3);
 
                     IHttpActionResult jsonRet4 = polSourceSiteEffectTermController.Delete(polSourceSiteEffectTermRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet4);
+                    Assert.NotNull(jsonRet4);
 
                     OkNegotiatedContentResult<PolSourceSiteEffectTerm> polSourceSiteEffectTermRet4 = jsonRet4 as OkNegotiatedContentResult<PolSourceSiteEffectTerm>;
-                    Assert.IsNotNull(polSourceSiteEffectTermRet4);
+                    Assert.NotNull(polSourceSiteEffectTermRet4);
 
                     BadRequestErrorMessageResult badRequest4 = jsonRet4 as BadRequestErrorMessageResult;
                     Assert.IsNull(badRequest4);
@@ -216,7 +215,7 @@ namespace CSSPWebAPI.Tests.Controllers
         #endregion Tests Generated for Class Controller Post Command
 
         #region Tests Generated for Class Controller Put Command
-        [TestMethod]
+        [Fact]
         public void PolSourceSiteEffectTerm_Controller_Put_Test()
         {
             foreach (LanguageEnum LanguageRequest in AllowableLanguages)
@@ -224,8 +223,8 @@ namespace CSSPWebAPI.Tests.Controllers
                 foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
                 {
                     PolSourceSiteEffectTermController polSourceSiteEffectTermController = new PolSourceSiteEffectTermController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(polSourceSiteEffectTermController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, polSourceSiteEffectTermController.DatabaseType);
+                    Assert.NotNull(polSourceSiteEffectTermController);
+                    Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, polSourceSiteEffectTermController.DatabaseType);
 
                     PolSourceSiteEffectTerm polSourceSiteEffectTermLast = new PolSourceSiteEffectTerm();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
@@ -239,21 +238,21 @@ namespace CSSPWebAPI.Tests.Controllers
 
                     // ok with PolSourceSiteEffectTerm info
                     IHttpActionResult jsonRet = polSourceSiteEffectTermController.GetPolSourceSiteEffectTermWithID(polSourceSiteEffectTermLast.PolSourceSiteEffectTermID);
-                    Assert.IsNotNull(jsonRet);
+                    Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<PolSourceSiteEffectTerm> Ret = jsonRet as OkNegotiatedContentResult<PolSourceSiteEffectTerm>;
                     PolSourceSiteEffectTerm polSourceSiteEffectTermRet = Ret.Content;
-                    Assert.AreEqual(polSourceSiteEffectTermLast.PolSourceSiteEffectTermID, polSourceSiteEffectTermRet.PolSourceSiteEffectTermID);
+                    Assert.Equal(polSourceSiteEffectTermLast.PolSourceSiteEffectTermID, polSourceSiteEffectTermRet.PolSourceSiteEffectTermID);
 
                     BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
                     Assert.IsNull(badRequest);
 
                     // Put to return success
                     IHttpActionResult jsonRet2 = polSourceSiteEffectTermController.Put(polSourceSiteEffectTermRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet2);
+                    Assert.NotNull(jsonRet2);
 
                     OkNegotiatedContentResult<PolSourceSiteEffectTerm> polSourceSiteEffectTermRet2 = jsonRet2 as OkNegotiatedContentResult<PolSourceSiteEffectTerm>;
-                    Assert.IsNotNull(polSourceSiteEffectTermRet2);
+                    Assert.NotNull(polSourceSiteEffectTermRet2);
 
                     BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
                     Assert.IsNull(badRequest2);
@@ -261,20 +260,20 @@ namespace CSSPWebAPI.Tests.Controllers
                     // Put to return CSSPError because PolSourceSiteEffectTermID of 0 does not exist
                     polSourceSiteEffectTermRet.PolSourceSiteEffectTermID = 0;
                     IHttpActionResult jsonRet3 = polSourceSiteEffectTermController.Put(polSourceSiteEffectTermRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet3);
+                    Assert.NotNull(jsonRet3);
 
                     OkNegotiatedContentResult<PolSourceSiteEffectTerm> polSourceSiteEffectTermRet3 = jsonRet3 as OkNegotiatedContentResult<PolSourceSiteEffectTerm>;
                     Assert.IsNull(polSourceSiteEffectTermRet3);
 
                     BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
-                    Assert.IsNotNull(badRequest3);
+                    Assert.NotNull(badRequest3);
                 }
             }
         }
         #endregion Tests Generated for Class Controller Put Command
 
         #region Tests Generated for Class Controller Delete Command
-        [TestMethod]
+        [Fact]
         public void PolSourceSiteEffectTerm_Controller_Delete_Test()
         {
             foreach (LanguageEnum LanguageRequest in AllowableLanguages)
@@ -282,8 +281,8 @@ namespace CSSPWebAPI.Tests.Controllers
                 foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
                 {
                     PolSourceSiteEffectTermController polSourceSiteEffectTermController = new PolSourceSiteEffectTermController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(polSourceSiteEffectTermController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, polSourceSiteEffectTermController.DatabaseType);
+                    Assert.NotNull(polSourceSiteEffectTermController);
+                    Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, polSourceSiteEffectTermController.DatabaseType);
 
                     PolSourceSiteEffectTerm polSourceSiteEffectTermLast = new PolSourceSiteEffectTerm();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
@@ -299,11 +298,11 @@ namespace CSSPWebAPI.Tests.Controllers
 
                     // ok with PolSourceSiteEffectTerm info
                     IHttpActionResult jsonRet = polSourceSiteEffectTermController.GetPolSourceSiteEffectTermWithID(polSourceSiteEffectTermLast.PolSourceSiteEffectTermID);
-                    Assert.IsNotNull(jsonRet);
+                    Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<PolSourceSiteEffectTerm> Ret = jsonRet as OkNegotiatedContentResult<PolSourceSiteEffectTerm>;
                     PolSourceSiteEffectTerm polSourceSiteEffectTermRet = Ret.Content;
-                    Assert.AreEqual(polSourceSiteEffectTermLast.PolSourceSiteEffectTermID, polSourceSiteEffectTermRet.PolSourceSiteEffectTermID);
+                    Assert.Equal(polSourceSiteEffectTermLast.PolSourceSiteEffectTermID, polSourceSiteEffectTermRet.PolSourceSiteEffectTermID);
 
                     BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
                     Assert.IsNull(badRequest);
@@ -313,10 +312,10 @@ namespace CSSPWebAPI.Tests.Controllers
                     polSourceSiteEffectTermController.Request = new System.Net.Http.HttpRequestMessage();
                     polSourceSiteEffectTermController.Request.RequestUri = new System.Uri("http://localhost:5000/api/polSourceSiteEffectTerm");
                     IHttpActionResult jsonRet3 = polSourceSiteEffectTermController.Post(polSourceSiteEffectTermRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet3);
+                    Assert.NotNull(jsonRet3);
 
                     CreatedNegotiatedContentResult<PolSourceSiteEffectTerm> polSourceSiteEffectTermRet3 = jsonRet3 as CreatedNegotiatedContentResult<PolSourceSiteEffectTerm>;
-                    Assert.IsNotNull(polSourceSiteEffectTermRet3);
+                    Assert.NotNull(polSourceSiteEffectTermRet3);
                     PolSourceSiteEffectTerm polSourceSiteEffectTerm = polSourceSiteEffectTermRet3.Content;
 
                     BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
@@ -324,10 +323,10 @@ namespace CSSPWebAPI.Tests.Controllers
 
                     // Delete to return success
                     IHttpActionResult jsonRet2 = polSourceSiteEffectTermController.Delete(polSourceSiteEffectTermRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet2);
+                    Assert.NotNull(jsonRet2);
 
                     OkNegotiatedContentResult<PolSourceSiteEffectTerm> polSourceSiteEffectTermRet2 = jsonRet2 as OkNegotiatedContentResult<PolSourceSiteEffectTerm>;
-                    Assert.IsNotNull(polSourceSiteEffectTermRet2);
+                    Assert.NotNull(polSourceSiteEffectTermRet2);
 
                     BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
                     Assert.IsNull(badRequest2);
@@ -335,13 +334,13 @@ namespace CSSPWebAPI.Tests.Controllers
                     // Delete to return CSSPError because PolSourceSiteEffectTermID of 0 does not exist
                     polSourceSiteEffectTermRet.PolSourceSiteEffectTermID = 0;
                     IHttpActionResult jsonRet4 = polSourceSiteEffectTermController.Delete(polSourceSiteEffectTermRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet4);
+                    Assert.NotNull(jsonRet4);
 
                     OkNegotiatedContentResult<PolSourceSiteEffectTerm> polSourceSiteEffectTermRet4 = jsonRet4 as OkNegotiatedContentResult<PolSourceSiteEffectTerm>;
                     Assert.IsNull(polSourceSiteEffectTermRet4);
 
                     BadRequestErrorMessageResult badRequest4 = jsonRet4 as BadRequestErrorMessageResult;
-                    Assert.IsNotNull(badRequest4);
+                    Assert.NotNull(badRequest4);
                 }
             }
         }

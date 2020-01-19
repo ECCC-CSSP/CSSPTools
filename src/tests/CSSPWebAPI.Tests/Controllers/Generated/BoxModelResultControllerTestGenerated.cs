@@ -1,8 +1,8 @@
 using CSSPEnums;
 using CSSPModels;
 using CSSPServices;
+using Xunit;
 using CSSPWebAPI.Controllers;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
@@ -10,7 +10,6 @@ using System.Web.Http.Results;
 
 namespace CSSPWebAPI.Tests.Controllers
 {
-    [TestClass]
     public partial class BoxModelResultControllerTest : BaseControllerTest
     {
         #region Variables
@@ -26,7 +25,7 @@ namespace CSSPWebAPI.Tests.Controllers
         #endregion Constructors
 
         #region Tests Generated for Class Controller GetList Command
-        [TestMethod]
+        [Fact]
         public void BoxModelResult_Controller_GetBoxModelResultList_Test()
         {
             foreach (LanguageEnum LanguageRequest in AllowableLanguages)
@@ -34,8 +33,8 @@ namespace CSSPWebAPI.Tests.Controllers
                 foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
                 {
                     BoxModelResultController boxModelResultController = new BoxModelResultController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(boxModelResultController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, boxModelResultController.DatabaseType);
+                    Assert.NotNull(boxModelResultController);
+                    Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, boxModelResultController.DatabaseType);
 
                     BoxModelResult boxModelResultFirst = new BoxModelResult();
                     int count = -1;
@@ -50,11 +49,11 @@ namespace CSSPWebAPI.Tests.Controllers
 
                     // ok with BoxModelResult info
                     IHttpActionResult jsonRet = boxModelResultController.GetBoxModelResultList();
-                    Assert.IsNotNull(jsonRet);
+                    Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<List<BoxModelResult>> ret = jsonRet as OkNegotiatedContentResult<List<BoxModelResult>>;
-                    Assert.AreEqual(boxModelResultFirst.BoxModelResultID, ret.Content[0].BoxModelResultID);
-                    Assert.AreEqual((count > query.Take ? query.Take : count), ret.Content.Count);
+                    Assert.Equal(boxModelResultFirst.BoxModelResultID, ret.Content[0].BoxModelResultID);
+                    Assert.Equal((count > query.Take ? query.Take : count), ret.Content.Count);
 
                     List<BoxModelResult> boxModelResultList = new List<BoxModelResult>();
                     count = -1;
@@ -74,11 +73,11 @@ namespace CSSPWebAPI.Tests.Controllers
 
                         // ok with BoxModelResult info
                         jsonRet = boxModelResultController.GetBoxModelResultList(query.Language.ToString(), query.Skip, query.Take);
-                        Assert.IsNotNull(jsonRet);
+                        Assert.NotNull(jsonRet);
 
                         ret = jsonRet as OkNegotiatedContentResult<List<BoxModelResult>>;
-                        Assert.AreEqual(boxModelResultList[0].BoxModelResultID, ret.Content[0].BoxModelResultID);
-                        Assert.AreEqual((count > query.Take ? query.Take : count), ret.Content.Count);
+                        Assert.Equal(boxModelResultList[0].BoxModelResultID, ret.Content[0].BoxModelResultID);
+                        Assert.Equal((count > query.Take ? query.Take : count), ret.Content.Count);
 
                        if (count > 1)
                        {
@@ -88,11 +87,11 @@ namespace CSSPWebAPI.Tests.Controllers
 
                            // ok with BoxModelResult info
                            IHttpActionResult jsonRet2 = boxModelResultController.GetBoxModelResultList(query.Language.ToString(), query.Skip, query.Take);
-                           Assert.IsNotNull(jsonRet2);
+                           Assert.NotNull(jsonRet2);
 
                            OkNegotiatedContentResult<List<BoxModelResult>> ret2 = jsonRet2 as OkNegotiatedContentResult<List<BoxModelResult>>;
-                           Assert.AreEqual(boxModelResultList[1].BoxModelResultID, ret2.Content[0].BoxModelResultID);
-                           Assert.AreEqual((count > query.Take ? query.Take : count), ret2.Content.Count);
+                           Assert.Equal(boxModelResultList[1].BoxModelResultID, ret2.Content[0].BoxModelResultID);
+                           Assert.Equal((count > query.Take ? query.Take : count), ret2.Content.Count);
                        }
                     }
                 }
@@ -101,7 +100,7 @@ namespace CSSPWebAPI.Tests.Controllers
         #endregion Tests Generated for Class Controller GetList Command
 
         #region Tests Generated for Class Controller GetWithID Command
-        [TestMethod]
+        [Fact]
         public void BoxModelResult_Controller_GetBoxModelResultWithID_Test()
         {
             foreach (LanguageEnum LanguageRequest in AllowableLanguages)
@@ -109,8 +108,8 @@ namespace CSSPWebAPI.Tests.Controllers
                 foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
                 {
                     BoxModelResultController boxModelResultController = new BoxModelResultController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(boxModelResultController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, boxModelResultController.DatabaseType);
+                    Assert.NotNull(boxModelResultController);
+                    Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, boxModelResultController.DatabaseType);
 
                     BoxModelResult boxModelResultFirst = new BoxModelResult();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
@@ -121,31 +120,31 @@ namespace CSSPWebAPI.Tests.Controllers
 
                     // ok with BoxModelResult info
                     IHttpActionResult jsonRet = boxModelResultController.GetBoxModelResultWithID(boxModelResultFirst.BoxModelResultID);
-                    Assert.IsNotNull(jsonRet);
+                    Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<BoxModelResult> Ret = jsonRet as OkNegotiatedContentResult<BoxModelResult>;
                     BoxModelResult boxModelResultRet = Ret.Content;
-                    Assert.AreEqual(boxModelResultFirst.BoxModelResultID, boxModelResultRet.BoxModelResultID);
+                    Assert.Equal(boxModelResultFirst.BoxModelResultID, boxModelResultRet.BoxModelResultID);
 
                     BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
                     Assert.IsNull(badRequest);
 
                     // Not Found
                     IHttpActionResult jsonRet2 = boxModelResultController.GetBoxModelResultWithID(0);
-                    Assert.IsNotNull(jsonRet2);
+                    Assert.NotNull(jsonRet2);
 
                     OkNegotiatedContentResult<BoxModelResult> boxModelResultRet2 = jsonRet2 as OkNegotiatedContentResult<BoxModelResult>;
                     Assert.IsNull(boxModelResultRet2);
 
                     NotFoundResult notFoundRequest = jsonRet2 as NotFoundResult;
-                    Assert.IsNotNull(notFoundRequest);
+                    Assert.NotNull(notFoundRequest);
                 }
             }
         }
         #endregion Tests Generated for Class Controller GetWithID Command
 
         #region Tests Generated for Class Controller Post Command
-        [TestMethod]
+        [Fact]
         public void BoxModelResult_Controller_Post_Test()
         {
             foreach (LanguageEnum LanguageRequest in AllowableLanguages)
@@ -153,8 +152,8 @@ namespace CSSPWebAPI.Tests.Controllers
                 foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
                 {
                     BoxModelResultController boxModelResultController = new BoxModelResultController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(boxModelResultController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, boxModelResultController.DatabaseType);
+                    Assert.NotNull(boxModelResultController);
+                    Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, boxModelResultController.DatabaseType);
 
                     BoxModelResult boxModelResultLast = new BoxModelResult();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
@@ -170,43 +169,43 @@ namespace CSSPWebAPI.Tests.Controllers
 
                     // ok with BoxModelResult info
                     IHttpActionResult jsonRet = boxModelResultController.GetBoxModelResultWithID(boxModelResultLast.BoxModelResultID);
-                    Assert.IsNotNull(jsonRet);
+                    Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<BoxModelResult> Ret = jsonRet as OkNegotiatedContentResult<BoxModelResult>;
                     BoxModelResult boxModelResultRet = Ret.Content;
-                    Assert.AreEqual(boxModelResultLast.BoxModelResultID, boxModelResultRet.BoxModelResultID);
+                    Assert.Equal(boxModelResultLast.BoxModelResultID, boxModelResultRet.BoxModelResultID);
 
                     BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
                     Assert.IsNull(badRequest);
 
                     // Post to return CSSPError because BoxModelResultID exist
                     IHttpActionResult jsonRet2 = boxModelResultController.Post(boxModelResultRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet2);
+                    Assert.NotNull(jsonRet2);
 
                     OkNegotiatedContentResult<BoxModelResult> boxModelResultRet2 = jsonRet2 as OkNegotiatedContentResult<BoxModelResult>;
                     Assert.IsNull(boxModelResultRet2);
 
                     BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
-                    Assert.IsNotNull(badRequest2);
+                    Assert.NotNull(badRequest2);
 
                     // Post to return newly added BoxModelResult
                     boxModelResultRet.BoxModelResultID = 0;
                     boxModelResultController.Request = new System.Net.Http.HttpRequestMessage();
                     boxModelResultController.Request.RequestUri = new System.Uri("http://localhost:5000/api/boxModelResult");
                     IHttpActionResult jsonRet3 = boxModelResultController.Post(boxModelResultRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet3);
+                    Assert.NotNull(jsonRet3);
 
                     CreatedNegotiatedContentResult<BoxModelResult> boxModelResultRet3 = jsonRet3 as CreatedNegotiatedContentResult<BoxModelResult>;
-                    Assert.IsNotNull(boxModelResultRet3);
+                    Assert.NotNull(boxModelResultRet3);
 
                     BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
                     Assert.IsNull(badRequest3);
 
                     IHttpActionResult jsonRet4 = boxModelResultController.Delete(boxModelResultRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet4);
+                    Assert.NotNull(jsonRet4);
 
                     OkNegotiatedContentResult<BoxModelResult> boxModelResultRet4 = jsonRet4 as OkNegotiatedContentResult<BoxModelResult>;
-                    Assert.IsNotNull(boxModelResultRet4);
+                    Assert.NotNull(boxModelResultRet4);
 
                     BadRequestErrorMessageResult badRequest4 = jsonRet4 as BadRequestErrorMessageResult;
                     Assert.IsNull(badRequest4);
@@ -216,7 +215,7 @@ namespace CSSPWebAPI.Tests.Controllers
         #endregion Tests Generated for Class Controller Post Command
 
         #region Tests Generated for Class Controller Put Command
-        [TestMethod]
+        [Fact]
         public void BoxModelResult_Controller_Put_Test()
         {
             foreach (LanguageEnum LanguageRequest in AllowableLanguages)
@@ -224,8 +223,8 @@ namespace CSSPWebAPI.Tests.Controllers
                 foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
                 {
                     BoxModelResultController boxModelResultController = new BoxModelResultController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(boxModelResultController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, boxModelResultController.DatabaseType);
+                    Assert.NotNull(boxModelResultController);
+                    Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, boxModelResultController.DatabaseType);
 
                     BoxModelResult boxModelResultLast = new BoxModelResult();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
@@ -239,21 +238,21 @@ namespace CSSPWebAPI.Tests.Controllers
 
                     // ok with BoxModelResult info
                     IHttpActionResult jsonRet = boxModelResultController.GetBoxModelResultWithID(boxModelResultLast.BoxModelResultID);
-                    Assert.IsNotNull(jsonRet);
+                    Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<BoxModelResult> Ret = jsonRet as OkNegotiatedContentResult<BoxModelResult>;
                     BoxModelResult boxModelResultRet = Ret.Content;
-                    Assert.AreEqual(boxModelResultLast.BoxModelResultID, boxModelResultRet.BoxModelResultID);
+                    Assert.Equal(boxModelResultLast.BoxModelResultID, boxModelResultRet.BoxModelResultID);
 
                     BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
                     Assert.IsNull(badRequest);
 
                     // Put to return success
                     IHttpActionResult jsonRet2 = boxModelResultController.Put(boxModelResultRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet2);
+                    Assert.NotNull(jsonRet2);
 
                     OkNegotiatedContentResult<BoxModelResult> boxModelResultRet2 = jsonRet2 as OkNegotiatedContentResult<BoxModelResult>;
-                    Assert.IsNotNull(boxModelResultRet2);
+                    Assert.NotNull(boxModelResultRet2);
 
                     BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
                     Assert.IsNull(badRequest2);
@@ -261,20 +260,20 @@ namespace CSSPWebAPI.Tests.Controllers
                     // Put to return CSSPError because BoxModelResultID of 0 does not exist
                     boxModelResultRet.BoxModelResultID = 0;
                     IHttpActionResult jsonRet3 = boxModelResultController.Put(boxModelResultRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet3);
+                    Assert.NotNull(jsonRet3);
 
                     OkNegotiatedContentResult<BoxModelResult> boxModelResultRet3 = jsonRet3 as OkNegotiatedContentResult<BoxModelResult>;
                     Assert.IsNull(boxModelResultRet3);
 
                     BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
-                    Assert.IsNotNull(badRequest3);
+                    Assert.NotNull(badRequest3);
                 }
             }
         }
         #endregion Tests Generated for Class Controller Put Command
 
         #region Tests Generated for Class Controller Delete Command
-        [TestMethod]
+        [Fact]
         public void BoxModelResult_Controller_Delete_Test()
         {
             foreach (LanguageEnum LanguageRequest in AllowableLanguages)
@@ -282,8 +281,8 @@ namespace CSSPWebAPI.Tests.Controllers
                 foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
                 {
                     BoxModelResultController boxModelResultController = new BoxModelResultController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(boxModelResultController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, boxModelResultController.DatabaseType);
+                    Assert.NotNull(boxModelResultController);
+                    Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, boxModelResultController.DatabaseType);
 
                     BoxModelResult boxModelResultLast = new BoxModelResult();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
@@ -299,11 +298,11 @@ namespace CSSPWebAPI.Tests.Controllers
 
                     // ok with BoxModelResult info
                     IHttpActionResult jsonRet = boxModelResultController.GetBoxModelResultWithID(boxModelResultLast.BoxModelResultID);
-                    Assert.IsNotNull(jsonRet);
+                    Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<BoxModelResult> Ret = jsonRet as OkNegotiatedContentResult<BoxModelResult>;
                     BoxModelResult boxModelResultRet = Ret.Content;
-                    Assert.AreEqual(boxModelResultLast.BoxModelResultID, boxModelResultRet.BoxModelResultID);
+                    Assert.Equal(boxModelResultLast.BoxModelResultID, boxModelResultRet.BoxModelResultID);
 
                     BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
                     Assert.IsNull(badRequest);
@@ -313,10 +312,10 @@ namespace CSSPWebAPI.Tests.Controllers
                     boxModelResultController.Request = new System.Net.Http.HttpRequestMessage();
                     boxModelResultController.Request.RequestUri = new System.Uri("http://localhost:5000/api/boxModelResult");
                     IHttpActionResult jsonRet3 = boxModelResultController.Post(boxModelResultRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet3);
+                    Assert.NotNull(jsonRet3);
 
                     CreatedNegotiatedContentResult<BoxModelResult> boxModelResultRet3 = jsonRet3 as CreatedNegotiatedContentResult<BoxModelResult>;
-                    Assert.IsNotNull(boxModelResultRet3);
+                    Assert.NotNull(boxModelResultRet3);
                     BoxModelResult boxModelResult = boxModelResultRet3.Content;
 
                     BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
@@ -324,10 +323,10 @@ namespace CSSPWebAPI.Tests.Controllers
 
                     // Delete to return success
                     IHttpActionResult jsonRet2 = boxModelResultController.Delete(boxModelResultRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet2);
+                    Assert.NotNull(jsonRet2);
 
                     OkNegotiatedContentResult<BoxModelResult> boxModelResultRet2 = jsonRet2 as OkNegotiatedContentResult<BoxModelResult>;
-                    Assert.IsNotNull(boxModelResultRet2);
+                    Assert.NotNull(boxModelResultRet2);
 
                     BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
                     Assert.IsNull(badRequest2);
@@ -335,13 +334,13 @@ namespace CSSPWebAPI.Tests.Controllers
                     // Delete to return CSSPError because BoxModelResultID of 0 does not exist
                     boxModelResultRet.BoxModelResultID = 0;
                     IHttpActionResult jsonRet4 = boxModelResultController.Delete(boxModelResultRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet4);
+                    Assert.NotNull(jsonRet4);
 
                     OkNegotiatedContentResult<BoxModelResult> boxModelResultRet4 = jsonRet4 as OkNegotiatedContentResult<BoxModelResult>;
                     Assert.IsNull(boxModelResultRet4);
 
                     BadRequestErrorMessageResult badRequest4 = jsonRet4 as BadRequestErrorMessageResult;
-                    Assert.IsNotNull(badRequest4);
+                    Assert.NotNull(badRequest4);
                 }
             }
         }

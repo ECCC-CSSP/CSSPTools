@@ -16,7 +16,7 @@ namespace CSSPModelsDLL.Tests.Models
         }
 
         [Fact]
-        public void TestMethod1()
+        public void Fact1()
         {
             Assert.True(true);
         }

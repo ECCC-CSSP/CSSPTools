@@ -1,8 +1,8 @@
 using CSSPEnums;
 using CSSPModels;
 using CSSPServices;
+using Xunit;
 using CSSPWebAPI.Controllers;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
@@ -10,7 +10,6 @@ using System.Web.Http.Results;
 
 namespace CSSPWebAPI.Tests.Controllers
 {
-    [TestClass]
     public partial class MWQMLookupMPNControllerTest : BaseControllerTest
     {
         #region Variables
@@ -26,7 +25,7 @@ namespace CSSPWebAPI.Tests.Controllers
         #endregion Constructors
 
         #region Tests Generated for Class Controller GetList Command
-        [TestMethod]
+        [Fact]
         public void MWQMLookupMPN_Controller_GetMWQMLookupMPNList_Test()
         {
             foreach (LanguageEnum LanguageRequest in AllowableLanguages)
@@ -34,8 +33,8 @@ namespace CSSPWebAPI.Tests.Controllers
                 foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
                 {
                     MWQMLookupMPNController mwqmLookupMPNController = new MWQMLookupMPNController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(mwqmLookupMPNController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, mwqmLookupMPNController.DatabaseType);
+                    Assert.NotNull(mwqmLookupMPNController);
+                    Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, mwqmLookupMPNController.DatabaseType);
 
                     MWQMLookupMPN mwqmLookupMPNFirst = new MWQMLookupMPN();
                     int count = -1;
@@ -50,11 +49,11 @@ namespace CSSPWebAPI.Tests.Controllers
 
                     // ok with MWQMLookupMPN info
                     IHttpActionResult jsonRet = mwqmLookupMPNController.GetMWQMLookupMPNList();
-                    Assert.IsNotNull(jsonRet);
+                    Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<List<MWQMLookupMPN>> ret = jsonRet as OkNegotiatedContentResult<List<MWQMLookupMPN>>;
-                    Assert.AreEqual(mwqmLookupMPNFirst.MWQMLookupMPNID, ret.Content[0].MWQMLookupMPNID);
-                    Assert.AreEqual((count > query.Take ? query.Take : count), ret.Content.Count);
+                    Assert.Equal(mwqmLookupMPNFirst.MWQMLookupMPNID, ret.Content[0].MWQMLookupMPNID);
+                    Assert.Equal((count > query.Take ? query.Take : count), ret.Content.Count);
 
                     List<MWQMLookupMPN> mwqmLookupMPNList = new List<MWQMLookupMPN>();
                     count = -1;
@@ -74,11 +73,11 @@ namespace CSSPWebAPI.Tests.Controllers
 
                         // ok with MWQMLookupMPN info
                         jsonRet = mwqmLookupMPNController.GetMWQMLookupMPNList(query.Language.ToString(), query.Skip, query.Take);
-                        Assert.IsNotNull(jsonRet);
+                        Assert.NotNull(jsonRet);
 
                         ret = jsonRet as OkNegotiatedContentResult<List<MWQMLookupMPN>>;
-                        Assert.AreEqual(mwqmLookupMPNList[0].MWQMLookupMPNID, ret.Content[0].MWQMLookupMPNID);
-                        Assert.AreEqual((count > query.Take ? query.Take : count), ret.Content.Count);
+                        Assert.Equal(mwqmLookupMPNList[0].MWQMLookupMPNID, ret.Content[0].MWQMLookupMPNID);
+                        Assert.Equal((count > query.Take ? query.Take : count), ret.Content.Count);
 
                        if (count > 1)
                        {
@@ -88,11 +87,11 @@ namespace CSSPWebAPI.Tests.Controllers
 
                            // ok with MWQMLookupMPN info
                            IHttpActionResult jsonRet2 = mwqmLookupMPNController.GetMWQMLookupMPNList(query.Language.ToString(), query.Skip, query.Take);
-                           Assert.IsNotNull(jsonRet2);
+                           Assert.NotNull(jsonRet2);
 
                            OkNegotiatedContentResult<List<MWQMLookupMPN>> ret2 = jsonRet2 as OkNegotiatedContentResult<List<MWQMLookupMPN>>;
-                           Assert.AreEqual(mwqmLookupMPNList[1].MWQMLookupMPNID, ret2.Content[0].MWQMLookupMPNID);
-                           Assert.AreEqual((count > query.Take ? query.Take : count), ret2.Content.Count);
+                           Assert.Equal(mwqmLookupMPNList[1].MWQMLookupMPNID, ret2.Content[0].MWQMLookupMPNID);
+                           Assert.Equal((count > query.Take ? query.Take : count), ret2.Content.Count);
                        }
                     }
                 }
@@ -101,7 +100,7 @@ namespace CSSPWebAPI.Tests.Controllers
         #endregion Tests Generated for Class Controller GetList Command
 
         #region Tests Generated for Class Controller GetWithID Command
-        [TestMethod]
+        [Fact]
         public void MWQMLookupMPN_Controller_GetMWQMLookupMPNWithID_Test()
         {
             foreach (LanguageEnum LanguageRequest in AllowableLanguages)
@@ -109,8 +108,8 @@ namespace CSSPWebAPI.Tests.Controllers
                 foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
                 {
                     MWQMLookupMPNController mwqmLookupMPNController = new MWQMLookupMPNController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(mwqmLookupMPNController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, mwqmLookupMPNController.DatabaseType);
+                    Assert.NotNull(mwqmLookupMPNController);
+                    Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, mwqmLookupMPNController.DatabaseType);
 
                     MWQMLookupMPN mwqmLookupMPNFirst = new MWQMLookupMPN();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
@@ -121,31 +120,31 @@ namespace CSSPWebAPI.Tests.Controllers
 
                     // ok with MWQMLookupMPN info
                     IHttpActionResult jsonRet = mwqmLookupMPNController.GetMWQMLookupMPNWithID(mwqmLookupMPNFirst.MWQMLookupMPNID);
-                    Assert.IsNotNull(jsonRet);
+                    Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<MWQMLookupMPN> Ret = jsonRet as OkNegotiatedContentResult<MWQMLookupMPN>;
                     MWQMLookupMPN mwqmLookupMPNRet = Ret.Content;
-                    Assert.AreEqual(mwqmLookupMPNFirst.MWQMLookupMPNID, mwqmLookupMPNRet.MWQMLookupMPNID);
+                    Assert.Equal(mwqmLookupMPNFirst.MWQMLookupMPNID, mwqmLookupMPNRet.MWQMLookupMPNID);
 
                     BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
                     Assert.IsNull(badRequest);
 
                     // Not Found
                     IHttpActionResult jsonRet2 = mwqmLookupMPNController.GetMWQMLookupMPNWithID(0);
-                    Assert.IsNotNull(jsonRet2);
+                    Assert.NotNull(jsonRet2);
 
                     OkNegotiatedContentResult<MWQMLookupMPN> mwqmLookupMPNRet2 = jsonRet2 as OkNegotiatedContentResult<MWQMLookupMPN>;
                     Assert.IsNull(mwqmLookupMPNRet2);
 
                     NotFoundResult notFoundRequest = jsonRet2 as NotFoundResult;
-                    Assert.IsNotNull(notFoundRequest);
+                    Assert.NotNull(notFoundRequest);
                 }
             }
         }
         #endregion Tests Generated for Class Controller GetWithID Command
 
         #region Tests Generated for Class Controller Post Command
-        [TestMethod]
+        [Fact]
         public void MWQMLookupMPN_Controller_Post_Test()
         {
             foreach (LanguageEnum LanguageRequest in AllowableLanguages)
@@ -153,8 +152,8 @@ namespace CSSPWebAPI.Tests.Controllers
                 foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
                 {
                     MWQMLookupMPNController mwqmLookupMPNController = new MWQMLookupMPNController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(mwqmLookupMPNController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, mwqmLookupMPNController.DatabaseType);
+                    Assert.NotNull(mwqmLookupMPNController);
+                    Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, mwqmLookupMPNController.DatabaseType);
 
                     MWQMLookupMPN mwqmLookupMPNLast = new MWQMLookupMPN();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
@@ -170,24 +169,24 @@ namespace CSSPWebAPI.Tests.Controllers
 
                     // ok with MWQMLookupMPN info
                     IHttpActionResult jsonRet = mwqmLookupMPNController.GetMWQMLookupMPNWithID(mwqmLookupMPNLast.MWQMLookupMPNID);
-                    Assert.IsNotNull(jsonRet);
+                    Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<MWQMLookupMPN> Ret = jsonRet as OkNegotiatedContentResult<MWQMLookupMPN>;
                     MWQMLookupMPN mwqmLookupMPNRet = Ret.Content;
-                    Assert.AreEqual(mwqmLookupMPNLast.MWQMLookupMPNID, mwqmLookupMPNRet.MWQMLookupMPNID);
+                    Assert.Equal(mwqmLookupMPNLast.MWQMLookupMPNID, mwqmLookupMPNRet.MWQMLookupMPNID);
 
                     BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
                     Assert.IsNull(badRequest);
 
                     // Post to return CSSPError because MWQMLookupMPNID exist
                     IHttpActionResult jsonRet2 = mwqmLookupMPNController.Post(mwqmLookupMPNRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet2);
+                    Assert.NotNull(jsonRet2);
 
                     OkNegotiatedContentResult<MWQMLookupMPN> mwqmLookupMPNRet2 = jsonRet2 as OkNegotiatedContentResult<MWQMLookupMPN>;
                     Assert.IsNull(mwqmLookupMPNRet2);
 
                     BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
-                    Assert.IsNotNull(badRequest2);
+                    Assert.NotNull(badRequest2);
 
                     // Post to return newly added MWQMLookupMPN
                     mwqmLookupMPNRet.MWQMLookupMPNID = 0;
@@ -198,19 +197,19 @@ namespace CSSPWebAPI.Tests.Controllers
                     mwqmLookupMPNController.Request = new System.Net.Http.HttpRequestMessage();
                     mwqmLookupMPNController.Request.RequestUri = new System.Uri("http://localhost:5000/api/mwqmLookupMPN");
                     IHttpActionResult jsonRet3 = mwqmLookupMPNController.Post(mwqmLookupMPNRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet3);
+                    Assert.NotNull(jsonRet3);
 
                     CreatedNegotiatedContentResult<MWQMLookupMPN> mwqmLookupMPNRet3 = jsonRet3 as CreatedNegotiatedContentResult<MWQMLookupMPN>;
-                    Assert.IsNotNull(mwqmLookupMPNRet3);
+                    Assert.NotNull(mwqmLookupMPNRet3);
 
                     BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
                     Assert.IsNull(badRequest3);
 
                     IHttpActionResult jsonRet4 = mwqmLookupMPNController.Delete(mwqmLookupMPNRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet4);
+                    Assert.NotNull(jsonRet4);
 
                     OkNegotiatedContentResult<MWQMLookupMPN> mwqmLookupMPNRet4 = jsonRet4 as OkNegotiatedContentResult<MWQMLookupMPN>;
-                    Assert.IsNotNull(mwqmLookupMPNRet4);
+                    Assert.NotNull(mwqmLookupMPNRet4);
 
                     BadRequestErrorMessageResult badRequest4 = jsonRet4 as BadRequestErrorMessageResult;
                     Assert.IsNull(badRequest4);
@@ -220,7 +219,7 @@ namespace CSSPWebAPI.Tests.Controllers
         #endregion Tests Generated for Class Controller Post Command
 
         #region Tests Generated for Class Controller Put Command
-        [TestMethod]
+        [Fact]
         public void MWQMLookupMPN_Controller_Put_Test()
         {
             foreach (LanguageEnum LanguageRequest in AllowableLanguages)
@@ -228,8 +227,8 @@ namespace CSSPWebAPI.Tests.Controllers
                 foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
                 {
                     MWQMLookupMPNController mwqmLookupMPNController = new MWQMLookupMPNController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(mwqmLookupMPNController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, mwqmLookupMPNController.DatabaseType);
+                    Assert.NotNull(mwqmLookupMPNController);
+                    Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, mwqmLookupMPNController.DatabaseType);
 
                     MWQMLookupMPN mwqmLookupMPNLast = new MWQMLookupMPN();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
@@ -243,21 +242,21 @@ namespace CSSPWebAPI.Tests.Controllers
 
                     // ok with MWQMLookupMPN info
                     IHttpActionResult jsonRet = mwqmLookupMPNController.GetMWQMLookupMPNWithID(mwqmLookupMPNLast.MWQMLookupMPNID);
-                    Assert.IsNotNull(jsonRet);
+                    Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<MWQMLookupMPN> Ret = jsonRet as OkNegotiatedContentResult<MWQMLookupMPN>;
                     MWQMLookupMPN mwqmLookupMPNRet = Ret.Content;
-                    Assert.AreEqual(mwqmLookupMPNLast.MWQMLookupMPNID, mwqmLookupMPNRet.MWQMLookupMPNID);
+                    Assert.Equal(mwqmLookupMPNLast.MWQMLookupMPNID, mwqmLookupMPNRet.MWQMLookupMPNID);
 
                     BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
                     Assert.IsNull(badRequest);
 
                     // Put to return success
                     IHttpActionResult jsonRet2 = mwqmLookupMPNController.Put(mwqmLookupMPNRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet2);
+                    Assert.NotNull(jsonRet2);
 
                     OkNegotiatedContentResult<MWQMLookupMPN> mwqmLookupMPNRet2 = jsonRet2 as OkNegotiatedContentResult<MWQMLookupMPN>;
-                    Assert.IsNotNull(mwqmLookupMPNRet2);
+                    Assert.NotNull(mwqmLookupMPNRet2);
 
                     BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
                     Assert.IsNull(badRequest2);
@@ -265,20 +264,20 @@ namespace CSSPWebAPI.Tests.Controllers
                     // Put to return CSSPError because MWQMLookupMPNID of 0 does not exist
                     mwqmLookupMPNRet.MWQMLookupMPNID = 0;
                     IHttpActionResult jsonRet3 = mwqmLookupMPNController.Put(mwqmLookupMPNRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet3);
+                    Assert.NotNull(jsonRet3);
 
                     OkNegotiatedContentResult<MWQMLookupMPN> mwqmLookupMPNRet3 = jsonRet3 as OkNegotiatedContentResult<MWQMLookupMPN>;
                     Assert.IsNull(mwqmLookupMPNRet3);
 
                     BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
-                    Assert.IsNotNull(badRequest3);
+                    Assert.NotNull(badRequest3);
                 }
             }
         }
         #endregion Tests Generated for Class Controller Put Command
 
         #region Tests Generated for Class Controller Delete Command
-        [TestMethod]
+        [Fact]
         public void MWQMLookupMPN_Controller_Delete_Test()
         {
             foreach (LanguageEnum LanguageRequest in AllowableLanguages)
@@ -286,8 +285,8 @@ namespace CSSPWebAPI.Tests.Controllers
                 foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
                 {
                     MWQMLookupMPNController mwqmLookupMPNController = new MWQMLookupMPNController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(mwqmLookupMPNController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, mwqmLookupMPNController.DatabaseType);
+                    Assert.NotNull(mwqmLookupMPNController);
+                    Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, mwqmLookupMPNController.DatabaseType);
 
                     MWQMLookupMPN mwqmLookupMPNLast = new MWQMLookupMPN();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
@@ -303,11 +302,11 @@ namespace CSSPWebAPI.Tests.Controllers
 
                     // ok with MWQMLookupMPN info
                     IHttpActionResult jsonRet = mwqmLookupMPNController.GetMWQMLookupMPNWithID(mwqmLookupMPNLast.MWQMLookupMPNID);
-                    Assert.IsNotNull(jsonRet);
+                    Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<MWQMLookupMPN> Ret = jsonRet as OkNegotiatedContentResult<MWQMLookupMPN>;
                     MWQMLookupMPN mwqmLookupMPNRet = Ret.Content;
-                    Assert.AreEqual(mwqmLookupMPNLast.MWQMLookupMPNID, mwqmLookupMPNRet.MWQMLookupMPNID);
+                    Assert.Equal(mwqmLookupMPNLast.MWQMLookupMPNID, mwqmLookupMPNRet.MWQMLookupMPNID);
 
                     BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
                     Assert.IsNull(badRequest);
@@ -321,10 +320,10 @@ namespace CSSPWebAPI.Tests.Controllers
                     mwqmLookupMPNController.Request = new System.Net.Http.HttpRequestMessage();
                     mwqmLookupMPNController.Request.RequestUri = new System.Uri("http://localhost:5000/api/mwqmLookupMPN");
                     IHttpActionResult jsonRet3 = mwqmLookupMPNController.Post(mwqmLookupMPNRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet3);
+                    Assert.NotNull(jsonRet3);
 
                     CreatedNegotiatedContentResult<MWQMLookupMPN> mwqmLookupMPNRet3 = jsonRet3 as CreatedNegotiatedContentResult<MWQMLookupMPN>;
-                    Assert.IsNotNull(mwqmLookupMPNRet3);
+                    Assert.NotNull(mwqmLookupMPNRet3);
                     MWQMLookupMPN mwqmLookupMPN = mwqmLookupMPNRet3.Content;
 
                     BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
@@ -332,10 +331,10 @@ namespace CSSPWebAPI.Tests.Controllers
 
                     // Delete to return success
                     IHttpActionResult jsonRet2 = mwqmLookupMPNController.Delete(mwqmLookupMPNRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet2);
+                    Assert.NotNull(jsonRet2);
 
                     OkNegotiatedContentResult<MWQMLookupMPN> mwqmLookupMPNRet2 = jsonRet2 as OkNegotiatedContentResult<MWQMLookupMPN>;
-                    Assert.IsNotNull(mwqmLookupMPNRet2);
+                    Assert.NotNull(mwqmLookupMPNRet2);
 
                     BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
                     Assert.IsNull(badRequest2);
@@ -343,13 +342,13 @@ namespace CSSPWebAPI.Tests.Controllers
                     // Delete to return CSSPError because MWQMLookupMPNID of 0 does not exist
                     mwqmLookupMPNRet.MWQMLookupMPNID = 0;
                     IHttpActionResult jsonRet4 = mwqmLookupMPNController.Delete(mwqmLookupMPNRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet4);
+                    Assert.NotNull(jsonRet4);
 
                     OkNegotiatedContentResult<MWQMLookupMPN> mwqmLookupMPNRet4 = jsonRet4 as OkNegotiatedContentResult<MWQMLookupMPN>;
                     Assert.IsNull(mwqmLookupMPNRet4);
 
                     BadRequestErrorMessageResult badRequest4 = jsonRet4 as BadRequestErrorMessageResult;
-                    Assert.IsNotNull(badRequest4);
+                    Assert.NotNull(badRequest4);
                 }
             }
         }

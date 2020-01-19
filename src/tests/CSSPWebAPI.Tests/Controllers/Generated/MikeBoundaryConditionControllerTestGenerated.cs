@@ -1,8 +1,8 @@
 using CSSPEnums;
 using CSSPModels;
 using CSSPServices;
+using Xunit;
 using CSSPWebAPI.Controllers;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
@@ -10,7 +10,6 @@ using System.Web.Http.Results;
 
 namespace CSSPWebAPI.Tests.Controllers
 {
-    [TestClass]
     public partial class MikeBoundaryConditionControllerTest : BaseControllerTest
     {
         #region Variables
@@ -26,7 +25,7 @@ namespace CSSPWebAPI.Tests.Controllers
         #endregion Constructors
 
         #region Tests Generated for Class Controller GetList Command
-        [TestMethod]
+        [Fact]
         public void MikeBoundaryCondition_Controller_GetMikeBoundaryConditionList_Test()
         {
             foreach (LanguageEnum LanguageRequest in AllowableLanguages)
@@ -34,8 +33,8 @@ namespace CSSPWebAPI.Tests.Controllers
                 foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
                 {
                     MikeBoundaryConditionController mikeBoundaryConditionController = new MikeBoundaryConditionController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(mikeBoundaryConditionController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, mikeBoundaryConditionController.DatabaseType);
+                    Assert.NotNull(mikeBoundaryConditionController);
+                    Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, mikeBoundaryConditionController.DatabaseType);
 
                     MikeBoundaryCondition mikeBoundaryConditionFirst = new MikeBoundaryCondition();
                     int count = -1;
@@ -50,11 +49,11 @@ namespace CSSPWebAPI.Tests.Controllers
 
                     // ok with MikeBoundaryCondition info
                     IHttpActionResult jsonRet = mikeBoundaryConditionController.GetMikeBoundaryConditionList();
-                    Assert.IsNotNull(jsonRet);
+                    Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<List<MikeBoundaryCondition>> ret = jsonRet as OkNegotiatedContentResult<List<MikeBoundaryCondition>>;
-                    Assert.AreEqual(mikeBoundaryConditionFirst.MikeBoundaryConditionID, ret.Content[0].MikeBoundaryConditionID);
-                    Assert.AreEqual((count > query.Take ? query.Take : count), ret.Content.Count);
+                    Assert.Equal(mikeBoundaryConditionFirst.MikeBoundaryConditionID, ret.Content[0].MikeBoundaryConditionID);
+                    Assert.Equal((count > query.Take ? query.Take : count), ret.Content.Count);
 
                     List<MikeBoundaryCondition> mikeBoundaryConditionList = new List<MikeBoundaryCondition>();
                     count = -1;
@@ -74,11 +73,11 @@ namespace CSSPWebAPI.Tests.Controllers
 
                         // ok with MikeBoundaryCondition info
                         jsonRet = mikeBoundaryConditionController.GetMikeBoundaryConditionList(query.Language.ToString(), query.Skip, query.Take);
-                        Assert.IsNotNull(jsonRet);
+                        Assert.NotNull(jsonRet);
 
                         ret = jsonRet as OkNegotiatedContentResult<List<MikeBoundaryCondition>>;
-                        Assert.AreEqual(mikeBoundaryConditionList[0].MikeBoundaryConditionID, ret.Content[0].MikeBoundaryConditionID);
-                        Assert.AreEqual((count > query.Take ? query.Take : count), ret.Content.Count);
+                        Assert.Equal(mikeBoundaryConditionList[0].MikeBoundaryConditionID, ret.Content[0].MikeBoundaryConditionID);
+                        Assert.Equal((count > query.Take ? query.Take : count), ret.Content.Count);
 
                        if (count > 1)
                        {
@@ -88,11 +87,11 @@ namespace CSSPWebAPI.Tests.Controllers
 
                            // ok with MikeBoundaryCondition info
                            IHttpActionResult jsonRet2 = mikeBoundaryConditionController.GetMikeBoundaryConditionList(query.Language.ToString(), query.Skip, query.Take);
-                           Assert.IsNotNull(jsonRet2);
+                           Assert.NotNull(jsonRet2);
 
                            OkNegotiatedContentResult<List<MikeBoundaryCondition>> ret2 = jsonRet2 as OkNegotiatedContentResult<List<MikeBoundaryCondition>>;
-                           Assert.AreEqual(mikeBoundaryConditionList[1].MikeBoundaryConditionID, ret2.Content[0].MikeBoundaryConditionID);
-                           Assert.AreEqual((count > query.Take ? query.Take : count), ret2.Content.Count);
+                           Assert.Equal(mikeBoundaryConditionList[1].MikeBoundaryConditionID, ret2.Content[0].MikeBoundaryConditionID);
+                           Assert.Equal((count > query.Take ? query.Take : count), ret2.Content.Count);
                        }
                     }
                 }
@@ -101,7 +100,7 @@ namespace CSSPWebAPI.Tests.Controllers
         #endregion Tests Generated for Class Controller GetList Command
 
         #region Tests Generated for Class Controller GetWithID Command
-        [TestMethod]
+        [Fact]
         public void MikeBoundaryCondition_Controller_GetMikeBoundaryConditionWithID_Test()
         {
             foreach (LanguageEnum LanguageRequest in AllowableLanguages)
@@ -109,8 +108,8 @@ namespace CSSPWebAPI.Tests.Controllers
                 foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
                 {
                     MikeBoundaryConditionController mikeBoundaryConditionController = new MikeBoundaryConditionController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(mikeBoundaryConditionController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, mikeBoundaryConditionController.DatabaseType);
+                    Assert.NotNull(mikeBoundaryConditionController);
+                    Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, mikeBoundaryConditionController.DatabaseType);
 
                     MikeBoundaryCondition mikeBoundaryConditionFirst = new MikeBoundaryCondition();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
@@ -121,31 +120,31 @@ namespace CSSPWebAPI.Tests.Controllers
 
                     // ok with MikeBoundaryCondition info
                     IHttpActionResult jsonRet = mikeBoundaryConditionController.GetMikeBoundaryConditionWithID(mikeBoundaryConditionFirst.MikeBoundaryConditionID);
-                    Assert.IsNotNull(jsonRet);
+                    Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<MikeBoundaryCondition> Ret = jsonRet as OkNegotiatedContentResult<MikeBoundaryCondition>;
                     MikeBoundaryCondition mikeBoundaryConditionRet = Ret.Content;
-                    Assert.AreEqual(mikeBoundaryConditionFirst.MikeBoundaryConditionID, mikeBoundaryConditionRet.MikeBoundaryConditionID);
+                    Assert.Equal(mikeBoundaryConditionFirst.MikeBoundaryConditionID, mikeBoundaryConditionRet.MikeBoundaryConditionID);
 
                     BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
                     Assert.IsNull(badRequest);
 
                     // Not Found
                     IHttpActionResult jsonRet2 = mikeBoundaryConditionController.GetMikeBoundaryConditionWithID(0);
-                    Assert.IsNotNull(jsonRet2);
+                    Assert.NotNull(jsonRet2);
 
                     OkNegotiatedContentResult<MikeBoundaryCondition> mikeBoundaryConditionRet2 = jsonRet2 as OkNegotiatedContentResult<MikeBoundaryCondition>;
                     Assert.IsNull(mikeBoundaryConditionRet2);
 
                     NotFoundResult notFoundRequest = jsonRet2 as NotFoundResult;
-                    Assert.IsNotNull(notFoundRequest);
+                    Assert.NotNull(notFoundRequest);
                 }
             }
         }
         #endregion Tests Generated for Class Controller GetWithID Command
 
         #region Tests Generated for Class Controller Post Command
-        [TestMethod]
+        [Fact]
         public void MikeBoundaryCondition_Controller_Post_Test()
         {
             foreach (LanguageEnum LanguageRequest in AllowableLanguages)
@@ -153,8 +152,8 @@ namespace CSSPWebAPI.Tests.Controllers
                 foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
                 {
                     MikeBoundaryConditionController mikeBoundaryConditionController = new MikeBoundaryConditionController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(mikeBoundaryConditionController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, mikeBoundaryConditionController.DatabaseType);
+                    Assert.NotNull(mikeBoundaryConditionController);
+                    Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, mikeBoundaryConditionController.DatabaseType);
 
                     MikeBoundaryCondition mikeBoundaryConditionLast = new MikeBoundaryCondition();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
@@ -170,43 +169,43 @@ namespace CSSPWebAPI.Tests.Controllers
 
                     // ok with MikeBoundaryCondition info
                     IHttpActionResult jsonRet = mikeBoundaryConditionController.GetMikeBoundaryConditionWithID(mikeBoundaryConditionLast.MikeBoundaryConditionID);
-                    Assert.IsNotNull(jsonRet);
+                    Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<MikeBoundaryCondition> Ret = jsonRet as OkNegotiatedContentResult<MikeBoundaryCondition>;
                     MikeBoundaryCondition mikeBoundaryConditionRet = Ret.Content;
-                    Assert.AreEqual(mikeBoundaryConditionLast.MikeBoundaryConditionID, mikeBoundaryConditionRet.MikeBoundaryConditionID);
+                    Assert.Equal(mikeBoundaryConditionLast.MikeBoundaryConditionID, mikeBoundaryConditionRet.MikeBoundaryConditionID);
 
                     BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
                     Assert.IsNull(badRequest);
 
                     // Post to return CSSPError because MikeBoundaryConditionID exist
                     IHttpActionResult jsonRet2 = mikeBoundaryConditionController.Post(mikeBoundaryConditionRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet2);
+                    Assert.NotNull(jsonRet2);
 
                     OkNegotiatedContentResult<MikeBoundaryCondition> mikeBoundaryConditionRet2 = jsonRet2 as OkNegotiatedContentResult<MikeBoundaryCondition>;
                     Assert.IsNull(mikeBoundaryConditionRet2);
 
                     BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
-                    Assert.IsNotNull(badRequest2);
+                    Assert.NotNull(badRequest2);
 
                     // Post to return newly added MikeBoundaryCondition
                     mikeBoundaryConditionRet.MikeBoundaryConditionID = 0;
                     mikeBoundaryConditionController.Request = new System.Net.Http.HttpRequestMessage();
                     mikeBoundaryConditionController.Request.RequestUri = new System.Uri("http://localhost:5000/api/mikeBoundaryCondition");
                     IHttpActionResult jsonRet3 = mikeBoundaryConditionController.Post(mikeBoundaryConditionRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet3);
+                    Assert.NotNull(jsonRet3);
 
                     CreatedNegotiatedContentResult<MikeBoundaryCondition> mikeBoundaryConditionRet3 = jsonRet3 as CreatedNegotiatedContentResult<MikeBoundaryCondition>;
-                    Assert.IsNotNull(mikeBoundaryConditionRet3);
+                    Assert.NotNull(mikeBoundaryConditionRet3);
 
                     BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
                     Assert.IsNull(badRequest3);
 
                     IHttpActionResult jsonRet4 = mikeBoundaryConditionController.Delete(mikeBoundaryConditionRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet4);
+                    Assert.NotNull(jsonRet4);
 
                     OkNegotiatedContentResult<MikeBoundaryCondition> mikeBoundaryConditionRet4 = jsonRet4 as OkNegotiatedContentResult<MikeBoundaryCondition>;
-                    Assert.IsNotNull(mikeBoundaryConditionRet4);
+                    Assert.NotNull(mikeBoundaryConditionRet4);
 
                     BadRequestErrorMessageResult badRequest4 = jsonRet4 as BadRequestErrorMessageResult;
                     Assert.IsNull(badRequest4);
@@ -216,7 +215,7 @@ namespace CSSPWebAPI.Tests.Controllers
         #endregion Tests Generated for Class Controller Post Command
 
         #region Tests Generated for Class Controller Put Command
-        [TestMethod]
+        [Fact]
         public void MikeBoundaryCondition_Controller_Put_Test()
         {
             foreach (LanguageEnum LanguageRequest in AllowableLanguages)
@@ -224,8 +223,8 @@ namespace CSSPWebAPI.Tests.Controllers
                 foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
                 {
                     MikeBoundaryConditionController mikeBoundaryConditionController = new MikeBoundaryConditionController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(mikeBoundaryConditionController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, mikeBoundaryConditionController.DatabaseType);
+                    Assert.NotNull(mikeBoundaryConditionController);
+                    Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, mikeBoundaryConditionController.DatabaseType);
 
                     MikeBoundaryCondition mikeBoundaryConditionLast = new MikeBoundaryCondition();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
@@ -239,21 +238,21 @@ namespace CSSPWebAPI.Tests.Controllers
 
                     // ok with MikeBoundaryCondition info
                     IHttpActionResult jsonRet = mikeBoundaryConditionController.GetMikeBoundaryConditionWithID(mikeBoundaryConditionLast.MikeBoundaryConditionID);
-                    Assert.IsNotNull(jsonRet);
+                    Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<MikeBoundaryCondition> Ret = jsonRet as OkNegotiatedContentResult<MikeBoundaryCondition>;
                     MikeBoundaryCondition mikeBoundaryConditionRet = Ret.Content;
-                    Assert.AreEqual(mikeBoundaryConditionLast.MikeBoundaryConditionID, mikeBoundaryConditionRet.MikeBoundaryConditionID);
+                    Assert.Equal(mikeBoundaryConditionLast.MikeBoundaryConditionID, mikeBoundaryConditionRet.MikeBoundaryConditionID);
 
                     BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
                     Assert.IsNull(badRequest);
 
                     // Put to return success
                     IHttpActionResult jsonRet2 = mikeBoundaryConditionController.Put(mikeBoundaryConditionRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet2);
+                    Assert.NotNull(jsonRet2);
 
                     OkNegotiatedContentResult<MikeBoundaryCondition> mikeBoundaryConditionRet2 = jsonRet2 as OkNegotiatedContentResult<MikeBoundaryCondition>;
-                    Assert.IsNotNull(mikeBoundaryConditionRet2);
+                    Assert.NotNull(mikeBoundaryConditionRet2);
 
                     BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
                     Assert.IsNull(badRequest2);
@@ -261,20 +260,20 @@ namespace CSSPWebAPI.Tests.Controllers
                     // Put to return CSSPError because MikeBoundaryConditionID of 0 does not exist
                     mikeBoundaryConditionRet.MikeBoundaryConditionID = 0;
                     IHttpActionResult jsonRet3 = mikeBoundaryConditionController.Put(mikeBoundaryConditionRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet3);
+                    Assert.NotNull(jsonRet3);
 
                     OkNegotiatedContentResult<MikeBoundaryCondition> mikeBoundaryConditionRet3 = jsonRet3 as OkNegotiatedContentResult<MikeBoundaryCondition>;
                     Assert.IsNull(mikeBoundaryConditionRet3);
 
                     BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
-                    Assert.IsNotNull(badRequest3);
+                    Assert.NotNull(badRequest3);
                 }
             }
         }
         #endregion Tests Generated for Class Controller Put Command
 
         #region Tests Generated for Class Controller Delete Command
-        [TestMethod]
+        [Fact]
         public void MikeBoundaryCondition_Controller_Delete_Test()
         {
             foreach (LanguageEnum LanguageRequest in AllowableLanguages)
@@ -282,8 +281,8 @@ namespace CSSPWebAPI.Tests.Controllers
                 foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
                 {
                     MikeBoundaryConditionController mikeBoundaryConditionController = new MikeBoundaryConditionController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(mikeBoundaryConditionController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, mikeBoundaryConditionController.DatabaseType);
+                    Assert.NotNull(mikeBoundaryConditionController);
+                    Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, mikeBoundaryConditionController.DatabaseType);
 
                     MikeBoundaryCondition mikeBoundaryConditionLast = new MikeBoundaryCondition();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
@@ -299,11 +298,11 @@ namespace CSSPWebAPI.Tests.Controllers
 
                     // ok with MikeBoundaryCondition info
                     IHttpActionResult jsonRet = mikeBoundaryConditionController.GetMikeBoundaryConditionWithID(mikeBoundaryConditionLast.MikeBoundaryConditionID);
-                    Assert.IsNotNull(jsonRet);
+                    Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<MikeBoundaryCondition> Ret = jsonRet as OkNegotiatedContentResult<MikeBoundaryCondition>;
                     MikeBoundaryCondition mikeBoundaryConditionRet = Ret.Content;
-                    Assert.AreEqual(mikeBoundaryConditionLast.MikeBoundaryConditionID, mikeBoundaryConditionRet.MikeBoundaryConditionID);
+                    Assert.Equal(mikeBoundaryConditionLast.MikeBoundaryConditionID, mikeBoundaryConditionRet.MikeBoundaryConditionID);
 
                     BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
                     Assert.IsNull(badRequest);
@@ -313,10 +312,10 @@ namespace CSSPWebAPI.Tests.Controllers
                     mikeBoundaryConditionController.Request = new System.Net.Http.HttpRequestMessage();
                     mikeBoundaryConditionController.Request.RequestUri = new System.Uri("http://localhost:5000/api/mikeBoundaryCondition");
                     IHttpActionResult jsonRet3 = mikeBoundaryConditionController.Post(mikeBoundaryConditionRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet3);
+                    Assert.NotNull(jsonRet3);
 
                     CreatedNegotiatedContentResult<MikeBoundaryCondition> mikeBoundaryConditionRet3 = jsonRet3 as CreatedNegotiatedContentResult<MikeBoundaryCondition>;
-                    Assert.IsNotNull(mikeBoundaryConditionRet3);
+                    Assert.NotNull(mikeBoundaryConditionRet3);
                     MikeBoundaryCondition mikeBoundaryCondition = mikeBoundaryConditionRet3.Content;
 
                     BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
@@ -324,10 +323,10 @@ namespace CSSPWebAPI.Tests.Controllers
 
                     // Delete to return success
                     IHttpActionResult jsonRet2 = mikeBoundaryConditionController.Delete(mikeBoundaryConditionRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet2);
+                    Assert.NotNull(jsonRet2);
 
                     OkNegotiatedContentResult<MikeBoundaryCondition> mikeBoundaryConditionRet2 = jsonRet2 as OkNegotiatedContentResult<MikeBoundaryCondition>;
-                    Assert.IsNotNull(mikeBoundaryConditionRet2);
+                    Assert.NotNull(mikeBoundaryConditionRet2);
 
                     BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
                     Assert.IsNull(badRequest2);
@@ -335,13 +334,13 @@ namespace CSSPWebAPI.Tests.Controllers
                     // Delete to return CSSPError because MikeBoundaryConditionID of 0 does not exist
                     mikeBoundaryConditionRet.MikeBoundaryConditionID = 0;
                     IHttpActionResult jsonRet4 = mikeBoundaryConditionController.Delete(mikeBoundaryConditionRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet4);
+                    Assert.NotNull(jsonRet4);
 
                     OkNegotiatedContentResult<MikeBoundaryCondition> mikeBoundaryConditionRet4 = jsonRet4 as OkNegotiatedContentResult<MikeBoundaryCondition>;
                     Assert.IsNull(mikeBoundaryConditionRet4);
 
                     BadRequestErrorMessageResult badRequest4 = jsonRet4 as BadRequestErrorMessageResult;
-                    Assert.IsNotNull(badRequest4);
+                    Assert.NotNull(badRequest4);
                 }
             }
         }

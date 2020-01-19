@@ -911,11 +911,11 @@ namespace CSSPServicesGenerateCodeHelper
         ///     C:\CSSPTools\src\dlls\CSSPServices\srcWithDoc\[ServiceClassName]ServiceGenerated.cs file
         /// 
         /// Requires:
-        ///     C:\CSSPTools\src\dlls\CSSPModels\bin\Debug\netcoreapp3.0\CSSPModels.dll
+        ///     C:\CSSPTools\src\dlls\CSSPModels\bin\Debug\netcoreapp3.1\CSSPModels.dll
         ///     
         ///     if WithDoc parameter is true then
-        ///     C:\CSSPTools\src\dlls\CSSPEnums\bin\Debug\netcoreapp3.0\CSSPEnums.dll
-        ///     C:\CSSPTools\src\dlls\CSSPServices\bin\Debug\netcoreapp3.0\CSSPServices.dll
+        ///     C:\CSSPTools\src\dlls\CSSPEnums\bin\Debug\netcoreapp3.1\CSSPEnums.dll
+        ///     C:\CSSPTools\src\dlls\CSSPServices\bin\Debug\netcoreapp3.1\CSSPServices.dll
         /// </summary>
         public void ClassNameServiceGenerated(bool WithDoc)
         {
@@ -926,7 +926,7 @@ namespace CSSPServicesGenerateCodeHelper
             FileInfo fiCSSPEnumsDLL = null;
             FileInfo fiCSSPServicesDLL = null;
             FileInfo fiCSSPWebAPIDLL = null;
-            FileInfo fiCSSPModelsDLL = new FileInfo(@"C:\CSSPTools\src\dlls\CSSPModels\bin\Debug\netcoreapp3.0\CSSPModels.dll");
+            FileInfo fiCSSPModelsDLL = new FileInfo(@"C:\CSSPTools\src\dlls\CSSPModels\bin\Debug\netcoreapp3.1\CSSPModels.dll");
 
             List<DLLTypeInfo> DLLTypeInfoCSSPEnumsList = new List<DLLTypeInfo>();
             List<DLLTypeInfo> DLLTypeInfoCSSPServicesList = new List<DLLTypeInfo>();
@@ -934,9 +934,9 @@ namespace CSSPServicesGenerateCodeHelper
 
             if (WithDoc)
             {
-                fiCSSPEnumsDLL = new FileInfo(@"C:\CSSPTools\src\dlls\CSSPEnums\bin\Debug\netcoreapp3.0\CSSPEnums.dll");
-                fiCSSPServicesDLL = new FileInfo(@"C:\CSSPTools\src\dlls\CSSPServices\bin\Debug\netcoreapp3.0\CSSPServices.dll");
-                fiCSSPWebAPIDLL = new FileInfo(@"C:\CSSPTools\src\web\CSSPWebAPI\bin\Debug\netcoreapp3.0\CSSPWebAPI.dll");
+                fiCSSPEnumsDLL = new FileInfo(@"C:\CSSPTools\src\dlls\CSSPEnums\bin\Debug\netcoreapp3.1\CSSPEnums.dll");
+                fiCSSPServicesDLL = new FileInfo(@"C:\CSSPTools\src\dlls\CSSPServices\bin\Debug\netcoreapp3.1\CSSPServices.dll");
+                fiCSSPWebAPIDLL = new FileInfo(@"C:\CSSPTools\src\web\CSSPWebAPI\bin\Debug\netcoreapp3.1\CSSPWebAPI.dll");
 
                 if (!fiCSSPEnumsDLL.Exists)
                 {

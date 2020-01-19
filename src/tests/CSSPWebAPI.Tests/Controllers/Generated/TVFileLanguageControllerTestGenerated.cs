@@ -1,8 +1,8 @@
 using CSSPEnums;
 using CSSPModels;
 using CSSPServices;
+using Xunit;
 using CSSPWebAPI.Controllers;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
@@ -10,7 +10,6 @@ using System.Web.Http.Results;
 
 namespace CSSPWebAPI.Tests.Controllers
 {
-    [TestClass]
     public partial class TVFileLanguageControllerTest : BaseControllerTest
     {
         #region Variables
@@ -26,7 +25,7 @@ namespace CSSPWebAPI.Tests.Controllers
         #endregion Constructors
 
         #region Tests Generated for Class Controller GetList Command
-        [TestMethod]
+        [Fact]
         public void TVFileLanguage_Controller_GetTVFileLanguageList_Test()
         {
             foreach (LanguageEnum LanguageRequest in AllowableLanguages)
@@ -34,8 +33,8 @@ namespace CSSPWebAPI.Tests.Controllers
                 foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
                 {
                     TVFileLanguageController tvFileLanguageController = new TVFileLanguageController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(tvFileLanguageController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, tvFileLanguageController.DatabaseType);
+                    Assert.NotNull(tvFileLanguageController);
+                    Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, tvFileLanguageController.DatabaseType);
 
                     TVFileLanguage tvFileLanguageFirst = new TVFileLanguage();
                     int count = -1;
@@ -50,11 +49,11 @@ namespace CSSPWebAPI.Tests.Controllers
 
                     // ok with TVFileLanguage info
                     IHttpActionResult jsonRet = tvFileLanguageController.GetTVFileLanguageList();
-                    Assert.IsNotNull(jsonRet);
+                    Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<List<TVFileLanguage>> ret = jsonRet as OkNegotiatedContentResult<List<TVFileLanguage>>;
-                    Assert.AreEqual(tvFileLanguageFirst.TVFileLanguageID, ret.Content[0].TVFileLanguageID);
-                    Assert.AreEqual((count > query.Take ? query.Take : count), ret.Content.Count);
+                    Assert.Equal(tvFileLanguageFirst.TVFileLanguageID, ret.Content[0].TVFileLanguageID);
+                    Assert.Equal((count > query.Take ? query.Take : count), ret.Content.Count);
 
                     List<TVFileLanguage> tvFileLanguageList = new List<TVFileLanguage>();
                     count = -1;
@@ -74,11 +73,11 @@ namespace CSSPWebAPI.Tests.Controllers
 
                         // ok with TVFileLanguage info
                         jsonRet = tvFileLanguageController.GetTVFileLanguageList(query.Language.ToString(), query.Skip, query.Take);
-                        Assert.IsNotNull(jsonRet);
+                        Assert.NotNull(jsonRet);
 
                         ret = jsonRet as OkNegotiatedContentResult<List<TVFileLanguage>>;
-                        Assert.AreEqual(tvFileLanguageList[0].TVFileLanguageID, ret.Content[0].TVFileLanguageID);
-                        Assert.AreEqual((count > query.Take ? query.Take : count), ret.Content.Count);
+                        Assert.Equal(tvFileLanguageList[0].TVFileLanguageID, ret.Content[0].TVFileLanguageID);
+                        Assert.Equal((count > query.Take ? query.Take : count), ret.Content.Count);
 
                        if (count > 1)
                        {
@@ -88,11 +87,11 @@ namespace CSSPWebAPI.Tests.Controllers
 
                            // ok with TVFileLanguage info
                            IHttpActionResult jsonRet2 = tvFileLanguageController.GetTVFileLanguageList(query.Language.ToString(), query.Skip, query.Take);
-                           Assert.IsNotNull(jsonRet2);
+                           Assert.NotNull(jsonRet2);
 
                            OkNegotiatedContentResult<List<TVFileLanguage>> ret2 = jsonRet2 as OkNegotiatedContentResult<List<TVFileLanguage>>;
-                           Assert.AreEqual(tvFileLanguageList[1].TVFileLanguageID, ret2.Content[0].TVFileLanguageID);
-                           Assert.AreEqual((count > query.Take ? query.Take : count), ret2.Content.Count);
+                           Assert.Equal(tvFileLanguageList[1].TVFileLanguageID, ret2.Content[0].TVFileLanguageID);
+                           Assert.Equal((count > query.Take ? query.Take : count), ret2.Content.Count);
                        }
                     }
                 }
@@ -101,7 +100,7 @@ namespace CSSPWebAPI.Tests.Controllers
         #endregion Tests Generated for Class Controller GetList Command
 
         #region Tests Generated for Class Controller GetWithID Command
-        [TestMethod]
+        [Fact]
         public void TVFileLanguage_Controller_GetTVFileLanguageWithID_Test()
         {
             foreach (LanguageEnum LanguageRequest in AllowableLanguages)
@@ -109,8 +108,8 @@ namespace CSSPWebAPI.Tests.Controllers
                 foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
                 {
                     TVFileLanguageController tvFileLanguageController = new TVFileLanguageController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(tvFileLanguageController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, tvFileLanguageController.DatabaseType);
+                    Assert.NotNull(tvFileLanguageController);
+                    Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, tvFileLanguageController.DatabaseType);
 
                     TVFileLanguage tvFileLanguageFirst = new TVFileLanguage();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
@@ -121,31 +120,31 @@ namespace CSSPWebAPI.Tests.Controllers
 
                     // ok with TVFileLanguage info
                     IHttpActionResult jsonRet = tvFileLanguageController.GetTVFileLanguageWithID(tvFileLanguageFirst.TVFileLanguageID);
-                    Assert.IsNotNull(jsonRet);
+                    Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<TVFileLanguage> Ret = jsonRet as OkNegotiatedContentResult<TVFileLanguage>;
                     TVFileLanguage tvFileLanguageRet = Ret.Content;
-                    Assert.AreEqual(tvFileLanguageFirst.TVFileLanguageID, tvFileLanguageRet.TVFileLanguageID);
+                    Assert.Equal(tvFileLanguageFirst.TVFileLanguageID, tvFileLanguageRet.TVFileLanguageID);
 
                     BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
                     Assert.IsNull(badRequest);
 
                     // Not Found
                     IHttpActionResult jsonRet2 = tvFileLanguageController.GetTVFileLanguageWithID(0);
-                    Assert.IsNotNull(jsonRet2);
+                    Assert.NotNull(jsonRet2);
 
                     OkNegotiatedContentResult<TVFileLanguage> tvFileLanguageRet2 = jsonRet2 as OkNegotiatedContentResult<TVFileLanguage>;
                     Assert.IsNull(tvFileLanguageRet2);
 
                     NotFoundResult notFoundRequest = jsonRet2 as NotFoundResult;
-                    Assert.IsNotNull(notFoundRequest);
+                    Assert.NotNull(notFoundRequest);
                 }
             }
         }
         #endregion Tests Generated for Class Controller GetWithID Command
 
         #region Tests Generated for Class Controller Post Command
-        [TestMethod]
+        [Fact]
         public void TVFileLanguage_Controller_Post_Test()
         {
             foreach (LanguageEnum LanguageRequest in AllowableLanguages)
@@ -153,8 +152,8 @@ namespace CSSPWebAPI.Tests.Controllers
                 foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
                 {
                     TVFileLanguageController tvFileLanguageController = new TVFileLanguageController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(tvFileLanguageController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, tvFileLanguageController.DatabaseType);
+                    Assert.NotNull(tvFileLanguageController);
+                    Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, tvFileLanguageController.DatabaseType);
 
                     TVFileLanguage tvFileLanguageLast = new TVFileLanguage();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
@@ -170,43 +169,43 @@ namespace CSSPWebAPI.Tests.Controllers
 
                     // ok with TVFileLanguage info
                     IHttpActionResult jsonRet = tvFileLanguageController.GetTVFileLanguageWithID(tvFileLanguageLast.TVFileLanguageID);
-                    Assert.IsNotNull(jsonRet);
+                    Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<TVFileLanguage> Ret = jsonRet as OkNegotiatedContentResult<TVFileLanguage>;
                     TVFileLanguage tvFileLanguageRet = Ret.Content;
-                    Assert.AreEqual(tvFileLanguageLast.TVFileLanguageID, tvFileLanguageRet.TVFileLanguageID);
+                    Assert.Equal(tvFileLanguageLast.TVFileLanguageID, tvFileLanguageRet.TVFileLanguageID);
 
                     BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
                     Assert.IsNull(badRequest);
 
                     // Post to return CSSPError because TVFileLanguageID exist
                     IHttpActionResult jsonRet2 = tvFileLanguageController.Post(tvFileLanguageRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet2);
+                    Assert.NotNull(jsonRet2);
 
                     OkNegotiatedContentResult<TVFileLanguage> tvFileLanguageRet2 = jsonRet2 as OkNegotiatedContentResult<TVFileLanguage>;
                     Assert.IsNull(tvFileLanguageRet2);
 
                     BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
-                    Assert.IsNotNull(badRequest2);
+                    Assert.NotNull(badRequest2);
 
                     // Post to return newly added TVFileLanguage
                     tvFileLanguageRet.TVFileLanguageID = 0;
                     tvFileLanguageController.Request = new System.Net.Http.HttpRequestMessage();
                     tvFileLanguageController.Request.RequestUri = new System.Uri("http://localhost:5000/api/tvFileLanguage");
                     IHttpActionResult jsonRet3 = tvFileLanguageController.Post(tvFileLanguageRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet3);
+                    Assert.NotNull(jsonRet3);
 
                     CreatedNegotiatedContentResult<TVFileLanguage> tvFileLanguageRet3 = jsonRet3 as CreatedNegotiatedContentResult<TVFileLanguage>;
-                    Assert.IsNotNull(tvFileLanguageRet3);
+                    Assert.NotNull(tvFileLanguageRet3);
 
                     BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
                     Assert.IsNull(badRequest3);
 
                     IHttpActionResult jsonRet4 = tvFileLanguageController.Delete(tvFileLanguageRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet4);
+                    Assert.NotNull(jsonRet4);
 
                     OkNegotiatedContentResult<TVFileLanguage> tvFileLanguageRet4 = jsonRet4 as OkNegotiatedContentResult<TVFileLanguage>;
-                    Assert.IsNotNull(tvFileLanguageRet4);
+                    Assert.NotNull(tvFileLanguageRet4);
 
                     BadRequestErrorMessageResult badRequest4 = jsonRet4 as BadRequestErrorMessageResult;
                     Assert.IsNull(badRequest4);
@@ -216,7 +215,7 @@ namespace CSSPWebAPI.Tests.Controllers
         #endregion Tests Generated for Class Controller Post Command
 
         #region Tests Generated for Class Controller Put Command
-        [TestMethod]
+        [Fact]
         public void TVFileLanguage_Controller_Put_Test()
         {
             foreach (LanguageEnum LanguageRequest in AllowableLanguages)
@@ -224,8 +223,8 @@ namespace CSSPWebAPI.Tests.Controllers
                 foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
                 {
                     TVFileLanguageController tvFileLanguageController = new TVFileLanguageController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(tvFileLanguageController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, tvFileLanguageController.DatabaseType);
+                    Assert.NotNull(tvFileLanguageController);
+                    Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, tvFileLanguageController.DatabaseType);
 
                     TVFileLanguage tvFileLanguageLast = new TVFileLanguage();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
@@ -239,21 +238,21 @@ namespace CSSPWebAPI.Tests.Controllers
 
                     // ok with TVFileLanguage info
                     IHttpActionResult jsonRet = tvFileLanguageController.GetTVFileLanguageWithID(tvFileLanguageLast.TVFileLanguageID);
-                    Assert.IsNotNull(jsonRet);
+                    Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<TVFileLanguage> Ret = jsonRet as OkNegotiatedContentResult<TVFileLanguage>;
                     TVFileLanguage tvFileLanguageRet = Ret.Content;
-                    Assert.AreEqual(tvFileLanguageLast.TVFileLanguageID, tvFileLanguageRet.TVFileLanguageID);
+                    Assert.Equal(tvFileLanguageLast.TVFileLanguageID, tvFileLanguageRet.TVFileLanguageID);
 
                     BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
                     Assert.IsNull(badRequest);
 
                     // Put to return success
                     IHttpActionResult jsonRet2 = tvFileLanguageController.Put(tvFileLanguageRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet2);
+                    Assert.NotNull(jsonRet2);
 
                     OkNegotiatedContentResult<TVFileLanguage> tvFileLanguageRet2 = jsonRet2 as OkNegotiatedContentResult<TVFileLanguage>;
-                    Assert.IsNotNull(tvFileLanguageRet2);
+                    Assert.NotNull(tvFileLanguageRet2);
 
                     BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
                     Assert.IsNull(badRequest2);
@@ -261,20 +260,20 @@ namespace CSSPWebAPI.Tests.Controllers
                     // Put to return CSSPError because TVFileLanguageID of 0 does not exist
                     tvFileLanguageRet.TVFileLanguageID = 0;
                     IHttpActionResult jsonRet3 = tvFileLanguageController.Put(tvFileLanguageRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet3);
+                    Assert.NotNull(jsonRet3);
 
                     OkNegotiatedContentResult<TVFileLanguage> tvFileLanguageRet3 = jsonRet3 as OkNegotiatedContentResult<TVFileLanguage>;
                     Assert.IsNull(tvFileLanguageRet3);
 
                     BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
-                    Assert.IsNotNull(badRequest3);
+                    Assert.NotNull(badRequest3);
                 }
             }
         }
         #endregion Tests Generated for Class Controller Put Command
 
         #region Tests Generated for Class Controller Delete Command
-        [TestMethod]
+        [Fact]
         public void TVFileLanguage_Controller_Delete_Test()
         {
             foreach (LanguageEnum LanguageRequest in AllowableLanguages)
@@ -282,8 +281,8 @@ namespace CSSPWebAPI.Tests.Controllers
                 foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
                 {
                     TVFileLanguageController tvFileLanguageController = new TVFileLanguageController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(tvFileLanguageController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, tvFileLanguageController.DatabaseType);
+                    Assert.NotNull(tvFileLanguageController);
+                    Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, tvFileLanguageController.DatabaseType);
 
                     TVFileLanguage tvFileLanguageLast = new TVFileLanguage();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
@@ -299,11 +298,11 @@ namespace CSSPWebAPI.Tests.Controllers
 
                     // ok with TVFileLanguage info
                     IHttpActionResult jsonRet = tvFileLanguageController.GetTVFileLanguageWithID(tvFileLanguageLast.TVFileLanguageID);
-                    Assert.IsNotNull(jsonRet);
+                    Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<TVFileLanguage> Ret = jsonRet as OkNegotiatedContentResult<TVFileLanguage>;
                     TVFileLanguage tvFileLanguageRet = Ret.Content;
-                    Assert.AreEqual(tvFileLanguageLast.TVFileLanguageID, tvFileLanguageRet.TVFileLanguageID);
+                    Assert.Equal(tvFileLanguageLast.TVFileLanguageID, tvFileLanguageRet.TVFileLanguageID);
 
                     BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
                     Assert.IsNull(badRequest);
@@ -313,10 +312,10 @@ namespace CSSPWebAPI.Tests.Controllers
                     tvFileLanguageController.Request = new System.Net.Http.HttpRequestMessage();
                     tvFileLanguageController.Request.RequestUri = new System.Uri("http://localhost:5000/api/tvFileLanguage");
                     IHttpActionResult jsonRet3 = tvFileLanguageController.Post(tvFileLanguageRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet3);
+                    Assert.NotNull(jsonRet3);
 
                     CreatedNegotiatedContentResult<TVFileLanguage> tvFileLanguageRet3 = jsonRet3 as CreatedNegotiatedContentResult<TVFileLanguage>;
-                    Assert.IsNotNull(tvFileLanguageRet3);
+                    Assert.NotNull(tvFileLanguageRet3);
                     TVFileLanguage tvFileLanguage = tvFileLanguageRet3.Content;
 
                     BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
@@ -324,10 +323,10 @@ namespace CSSPWebAPI.Tests.Controllers
 
                     // Delete to return success
                     IHttpActionResult jsonRet2 = tvFileLanguageController.Delete(tvFileLanguageRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet2);
+                    Assert.NotNull(jsonRet2);
 
                     OkNegotiatedContentResult<TVFileLanguage> tvFileLanguageRet2 = jsonRet2 as OkNegotiatedContentResult<TVFileLanguage>;
-                    Assert.IsNotNull(tvFileLanguageRet2);
+                    Assert.NotNull(tvFileLanguageRet2);
 
                     BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
                     Assert.IsNull(badRequest2);
@@ -335,13 +334,13 @@ namespace CSSPWebAPI.Tests.Controllers
                     // Delete to return CSSPError because TVFileLanguageID of 0 does not exist
                     tvFileLanguageRet.TVFileLanguageID = 0;
                     IHttpActionResult jsonRet4 = tvFileLanguageController.Delete(tvFileLanguageRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet4);
+                    Assert.NotNull(jsonRet4);
 
                     OkNegotiatedContentResult<TVFileLanguage> tvFileLanguageRet4 = jsonRet4 as OkNegotiatedContentResult<TVFileLanguage>;
                     Assert.IsNull(tvFileLanguageRet4);
 
                     BadRequestErrorMessageResult badRequest4 = jsonRet4 as BadRequestErrorMessageResult;
-                    Assert.IsNotNull(badRequest4);
+                    Assert.NotNull(badRequest4);
                 }
             }
         }

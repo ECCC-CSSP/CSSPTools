@@ -1,8 +1,8 @@
 using CSSPEnums;
 using CSSPModels;
 using CSSPServices;
+using Xunit;
 using CSSPWebAPI.Controllers;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
@@ -10,7 +10,6 @@ using System.Web.Http.Results;
 
 namespace CSSPWebAPI.Tests.Controllers
 {
-    [TestClass]
     public partial class SpillLanguageControllerTest : BaseControllerTest
     {
         #region Variables
@@ -26,7 +25,7 @@ namespace CSSPWebAPI.Tests.Controllers
         #endregion Constructors
 
         #region Tests Generated for Class Controller GetList Command
-        [TestMethod]
+        [Fact]
         public void SpillLanguage_Controller_GetSpillLanguageList_Test()
         {
             foreach (LanguageEnum LanguageRequest in AllowableLanguages)
@@ -34,8 +33,8 @@ namespace CSSPWebAPI.Tests.Controllers
                 foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
                 {
                     SpillLanguageController spillLanguageController = new SpillLanguageController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(spillLanguageController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, spillLanguageController.DatabaseType);
+                    Assert.NotNull(spillLanguageController);
+                    Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, spillLanguageController.DatabaseType);
 
                     SpillLanguage spillLanguageFirst = new SpillLanguage();
                     int count = -1;
@@ -50,11 +49,11 @@ namespace CSSPWebAPI.Tests.Controllers
 
                     // ok with SpillLanguage info
                     IHttpActionResult jsonRet = spillLanguageController.GetSpillLanguageList();
-                    Assert.IsNotNull(jsonRet);
+                    Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<List<SpillLanguage>> ret = jsonRet as OkNegotiatedContentResult<List<SpillLanguage>>;
-                    Assert.AreEqual(spillLanguageFirst.SpillLanguageID, ret.Content[0].SpillLanguageID);
-                    Assert.AreEqual((count > query.Take ? query.Take : count), ret.Content.Count);
+                    Assert.Equal(spillLanguageFirst.SpillLanguageID, ret.Content[0].SpillLanguageID);
+                    Assert.Equal((count > query.Take ? query.Take : count), ret.Content.Count);
 
                     List<SpillLanguage> spillLanguageList = new List<SpillLanguage>();
                     count = -1;
@@ -74,11 +73,11 @@ namespace CSSPWebAPI.Tests.Controllers
 
                         // ok with SpillLanguage info
                         jsonRet = spillLanguageController.GetSpillLanguageList(query.Language.ToString(), query.Skip, query.Take);
-                        Assert.IsNotNull(jsonRet);
+                        Assert.NotNull(jsonRet);
 
                         ret = jsonRet as OkNegotiatedContentResult<List<SpillLanguage>>;
-                        Assert.AreEqual(spillLanguageList[0].SpillLanguageID, ret.Content[0].SpillLanguageID);
-                        Assert.AreEqual((count > query.Take ? query.Take : count), ret.Content.Count);
+                        Assert.Equal(spillLanguageList[0].SpillLanguageID, ret.Content[0].SpillLanguageID);
+                        Assert.Equal((count > query.Take ? query.Take : count), ret.Content.Count);
 
                        if (count > 1)
                        {
@@ -88,11 +87,11 @@ namespace CSSPWebAPI.Tests.Controllers
 
                            // ok with SpillLanguage info
                            IHttpActionResult jsonRet2 = spillLanguageController.GetSpillLanguageList(query.Language.ToString(), query.Skip, query.Take);
-                           Assert.IsNotNull(jsonRet2);
+                           Assert.NotNull(jsonRet2);
 
                            OkNegotiatedContentResult<List<SpillLanguage>> ret2 = jsonRet2 as OkNegotiatedContentResult<List<SpillLanguage>>;
-                           Assert.AreEqual(spillLanguageList[1].SpillLanguageID, ret2.Content[0].SpillLanguageID);
-                           Assert.AreEqual((count > query.Take ? query.Take : count), ret2.Content.Count);
+                           Assert.Equal(spillLanguageList[1].SpillLanguageID, ret2.Content[0].SpillLanguageID);
+                           Assert.Equal((count > query.Take ? query.Take : count), ret2.Content.Count);
                        }
                     }
                 }
@@ -101,7 +100,7 @@ namespace CSSPWebAPI.Tests.Controllers
         #endregion Tests Generated for Class Controller GetList Command
 
         #region Tests Generated for Class Controller GetWithID Command
-        [TestMethod]
+        [Fact]
         public void SpillLanguage_Controller_GetSpillLanguageWithID_Test()
         {
             foreach (LanguageEnum LanguageRequest in AllowableLanguages)
@@ -109,8 +108,8 @@ namespace CSSPWebAPI.Tests.Controllers
                 foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
                 {
                     SpillLanguageController spillLanguageController = new SpillLanguageController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(spillLanguageController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, spillLanguageController.DatabaseType);
+                    Assert.NotNull(spillLanguageController);
+                    Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, spillLanguageController.DatabaseType);
 
                     SpillLanguage spillLanguageFirst = new SpillLanguage();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
@@ -121,31 +120,31 @@ namespace CSSPWebAPI.Tests.Controllers
 
                     // ok with SpillLanguage info
                     IHttpActionResult jsonRet = spillLanguageController.GetSpillLanguageWithID(spillLanguageFirst.SpillLanguageID);
-                    Assert.IsNotNull(jsonRet);
+                    Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<SpillLanguage> Ret = jsonRet as OkNegotiatedContentResult<SpillLanguage>;
                     SpillLanguage spillLanguageRet = Ret.Content;
-                    Assert.AreEqual(spillLanguageFirst.SpillLanguageID, spillLanguageRet.SpillLanguageID);
+                    Assert.Equal(spillLanguageFirst.SpillLanguageID, spillLanguageRet.SpillLanguageID);
 
                     BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
                     Assert.IsNull(badRequest);
 
                     // Not Found
                     IHttpActionResult jsonRet2 = spillLanguageController.GetSpillLanguageWithID(0);
-                    Assert.IsNotNull(jsonRet2);
+                    Assert.NotNull(jsonRet2);
 
                     OkNegotiatedContentResult<SpillLanguage> spillLanguageRet2 = jsonRet2 as OkNegotiatedContentResult<SpillLanguage>;
                     Assert.IsNull(spillLanguageRet2);
 
                     NotFoundResult notFoundRequest = jsonRet2 as NotFoundResult;
-                    Assert.IsNotNull(notFoundRequest);
+                    Assert.NotNull(notFoundRequest);
                 }
             }
         }
         #endregion Tests Generated for Class Controller GetWithID Command
 
         #region Tests Generated for Class Controller Post Command
-        [TestMethod]
+        [Fact]
         public void SpillLanguage_Controller_Post_Test()
         {
             foreach (LanguageEnum LanguageRequest in AllowableLanguages)
@@ -153,8 +152,8 @@ namespace CSSPWebAPI.Tests.Controllers
                 foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
                 {
                     SpillLanguageController spillLanguageController = new SpillLanguageController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(spillLanguageController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, spillLanguageController.DatabaseType);
+                    Assert.NotNull(spillLanguageController);
+                    Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, spillLanguageController.DatabaseType);
 
                     SpillLanguage spillLanguageLast = new SpillLanguage();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
@@ -170,43 +169,43 @@ namespace CSSPWebAPI.Tests.Controllers
 
                     // ok with SpillLanguage info
                     IHttpActionResult jsonRet = spillLanguageController.GetSpillLanguageWithID(spillLanguageLast.SpillLanguageID);
-                    Assert.IsNotNull(jsonRet);
+                    Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<SpillLanguage> Ret = jsonRet as OkNegotiatedContentResult<SpillLanguage>;
                     SpillLanguage spillLanguageRet = Ret.Content;
-                    Assert.AreEqual(spillLanguageLast.SpillLanguageID, spillLanguageRet.SpillLanguageID);
+                    Assert.Equal(spillLanguageLast.SpillLanguageID, spillLanguageRet.SpillLanguageID);
 
                     BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
                     Assert.IsNull(badRequest);
 
                     // Post to return CSSPError because SpillLanguageID exist
                     IHttpActionResult jsonRet2 = spillLanguageController.Post(spillLanguageRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet2);
+                    Assert.NotNull(jsonRet2);
 
                     OkNegotiatedContentResult<SpillLanguage> spillLanguageRet2 = jsonRet2 as OkNegotiatedContentResult<SpillLanguage>;
                     Assert.IsNull(spillLanguageRet2);
 
                     BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
-                    Assert.IsNotNull(badRequest2);
+                    Assert.NotNull(badRequest2);
 
                     // Post to return newly added SpillLanguage
                     spillLanguageRet.SpillLanguageID = 0;
                     spillLanguageController.Request = new System.Net.Http.HttpRequestMessage();
                     spillLanguageController.Request.RequestUri = new System.Uri("http://localhost:5000/api/spillLanguage");
                     IHttpActionResult jsonRet3 = spillLanguageController.Post(spillLanguageRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet3);
+                    Assert.NotNull(jsonRet3);
 
                     CreatedNegotiatedContentResult<SpillLanguage> spillLanguageRet3 = jsonRet3 as CreatedNegotiatedContentResult<SpillLanguage>;
-                    Assert.IsNotNull(spillLanguageRet3);
+                    Assert.NotNull(spillLanguageRet3);
 
                     BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
                     Assert.IsNull(badRequest3);
 
                     IHttpActionResult jsonRet4 = spillLanguageController.Delete(spillLanguageRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet4);
+                    Assert.NotNull(jsonRet4);
 
                     OkNegotiatedContentResult<SpillLanguage> spillLanguageRet4 = jsonRet4 as OkNegotiatedContentResult<SpillLanguage>;
-                    Assert.IsNotNull(spillLanguageRet4);
+                    Assert.NotNull(spillLanguageRet4);
 
                     BadRequestErrorMessageResult badRequest4 = jsonRet4 as BadRequestErrorMessageResult;
                     Assert.IsNull(badRequest4);
@@ -216,7 +215,7 @@ namespace CSSPWebAPI.Tests.Controllers
         #endregion Tests Generated for Class Controller Post Command
 
         #region Tests Generated for Class Controller Put Command
-        [TestMethod]
+        [Fact]
         public void SpillLanguage_Controller_Put_Test()
         {
             foreach (LanguageEnum LanguageRequest in AllowableLanguages)
@@ -224,8 +223,8 @@ namespace CSSPWebAPI.Tests.Controllers
                 foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
                 {
                     SpillLanguageController spillLanguageController = new SpillLanguageController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(spillLanguageController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, spillLanguageController.DatabaseType);
+                    Assert.NotNull(spillLanguageController);
+                    Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, spillLanguageController.DatabaseType);
 
                     SpillLanguage spillLanguageLast = new SpillLanguage();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
@@ -239,21 +238,21 @@ namespace CSSPWebAPI.Tests.Controllers
 
                     // ok with SpillLanguage info
                     IHttpActionResult jsonRet = spillLanguageController.GetSpillLanguageWithID(spillLanguageLast.SpillLanguageID);
-                    Assert.IsNotNull(jsonRet);
+                    Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<SpillLanguage> Ret = jsonRet as OkNegotiatedContentResult<SpillLanguage>;
                     SpillLanguage spillLanguageRet = Ret.Content;
-                    Assert.AreEqual(spillLanguageLast.SpillLanguageID, spillLanguageRet.SpillLanguageID);
+                    Assert.Equal(spillLanguageLast.SpillLanguageID, spillLanguageRet.SpillLanguageID);
 
                     BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
                     Assert.IsNull(badRequest);
 
                     // Put to return success
                     IHttpActionResult jsonRet2 = spillLanguageController.Put(spillLanguageRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet2);
+                    Assert.NotNull(jsonRet2);
 
                     OkNegotiatedContentResult<SpillLanguage> spillLanguageRet2 = jsonRet2 as OkNegotiatedContentResult<SpillLanguage>;
-                    Assert.IsNotNull(spillLanguageRet2);
+                    Assert.NotNull(spillLanguageRet2);
 
                     BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
                     Assert.IsNull(badRequest2);
@@ -261,20 +260,20 @@ namespace CSSPWebAPI.Tests.Controllers
                     // Put to return CSSPError because SpillLanguageID of 0 does not exist
                     spillLanguageRet.SpillLanguageID = 0;
                     IHttpActionResult jsonRet3 = spillLanguageController.Put(spillLanguageRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet3);
+                    Assert.NotNull(jsonRet3);
 
                     OkNegotiatedContentResult<SpillLanguage> spillLanguageRet3 = jsonRet3 as OkNegotiatedContentResult<SpillLanguage>;
                     Assert.IsNull(spillLanguageRet3);
 
                     BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
-                    Assert.IsNotNull(badRequest3);
+                    Assert.NotNull(badRequest3);
                 }
             }
         }
         #endregion Tests Generated for Class Controller Put Command
 
         #region Tests Generated for Class Controller Delete Command
-        [TestMethod]
+        [Fact]
         public void SpillLanguage_Controller_Delete_Test()
         {
             foreach (LanguageEnum LanguageRequest in AllowableLanguages)
@@ -282,8 +281,8 @@ namespace CSSPWebAPI.Tests.Controllers
                 foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
                 {
                     SpillLanguageController spillLanguageController = new SpillLanguageController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(spillLanguageController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, spillLanguageController.DatabaseType);
+                    Assert.NotNull(spillLanguageController);
+                    Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, spillLanguageController.DatabaseType);
 
                     SpillLanguage spillLanguageLast = new SpillLanguage();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
@@ -299,11 +298,11 @@ namespace CSSPWebAPI.Tests.Controllers
 
                     // ok with SpillLanguage info
                     IHttpActionResult jsonRet = spillLanguageController.GetSpillLanguageWithID(spillLanguageLast.SpillLanguageID);
-                    Assert.IsNotNull(jsonRet);
+                    Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<SpillLanguage> Ret = jsonRet as OkNegotiatedContentResult<SpillLanguage>;
                     SpillLanguage spillLanguageRet = Ret.Content;
-                    Assert.AreEqual(spillLanguageLast.SpillLanguageID, spillLanguageRet.SpillLanguageID);
+                    Assert.Equal(spillLanguageLast.SpillLanguageID, spillLanguageRet.SpillLanguageID);
 
                     BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
                     Assert.IsNull(badRequest);
@@ -313,10 +312,10 @@ namespace CSSPWebAPI.Tests.Controllers
                     spillLanguageController.Request = new System.Net.Http.HttpRequestMessage();
                     spillLanguageController.Request.RequestUri = new System.Uri("http://localhost:5000/api/spillLanguage");
                     IHttpActionResult jsonRet3 = spillLanguageController.Post(spillLanguageRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet3);
+                    Assert.NotNull(jsonRet3);
 
                     CreatedNegotiatedContentResult<SpillLanguage> spillLanguageRet3 = jsonRet3 as CreatedNegotiatedContentResult<SpillLanguage>;
-                    Assert.IsNotNull(spillLanguageRet3);
+                    Assert.NotNull(spillLanguageRet3);
                     SpillLanguage spillLanguage = spillLanguageRet3.Content;
 
                     BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
@@ -324,10 +323,10 @@ namespace CSSPWebAPI.Tests.Controllers
 
                     // Delete to return success
                     IHttpActionResult jsonRet2 = spillLanguageController.Delete(spillLanguageRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet2);
+                    Assert.NotNull(jsonRet2);
 
                     OkNegotiatedContentResult<SpillLanguage> spillLanguageRet2 = jsonRet2 as OkNegotiatedContentResult<SpillLanguage>;
-                    Assert.IsNotNull(spillLanguageRet2);
+                    Assert.NotNull(spillLanguageRet2);
 
                     BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
                     Assert.IsNull(badRequest2);
@@ -335,13 +334,13 @@ namespace CSSPWebAPI.Tests.Controllers
                     // Delete to return CSSPError because SpillLanguageID of 0 does not exist
                     spillLanguageRet.SpillLanguageID = 0;
                     IHttpActionResult jsonRet4 = spillLanguageController.Delete(spillLanguageRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet4);
+                    Assert.NotNull(jsonRet4);
 
                     OkNegotiatedContentResult<SpillLanguage> spillLanguageRet4 = jsonRet4 as OkNegotiatedContentResult<SpillLanguage>;
                     Assert.IsNull(spillLanguageRet4);
 
                     BadRequestErrorMessageResult badRequest4 = jsonRet4 as BadRequestErrorMessageResult;
-                    Assert.IsNotNull(badRequest4);
+                    Assert.NotNull(badRequest4);
                 }
             }
         }

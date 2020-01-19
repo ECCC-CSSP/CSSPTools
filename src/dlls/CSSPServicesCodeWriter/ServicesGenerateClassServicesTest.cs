@@ -802,7 +802,7 @@ namespace CSSPServicesGenerateCodeHelper
         ///     C:\CSSPTools\src\tests\CSSPServices.Tests\tests\[ServiceClassName]ServiceTestGenerated.cs file
         /// 
         /// Requires:
-        ///     C:\CSSPTools\src\dlls\CSSPModels\bin\Debug\netcoreapp3.0\CSSPModels.dll
+        ///     C:\CSSPTools\src\dlls\CSSPModels\bin\Debug\netcoreapp3.1\CSSPModels.dll
         ///     
         /// </summary>
         public void ClassNameServiceTestGenerated()
@@ -810,7 +810,7 @@ namespace CSSPServicesGenerateCodeHelper
             StatusTempEvent(new StatusEventArgs(""));
             ClearPermanentEvent(new StatusEventArgs(""));
 
-            FileInfo fiDLL = new FileInfo(@"C:\CSSPTools\src\dlls\CSSPModels\bin\Debug\netcoreapp3.0\CSSPModels.dll");
+            FileInfo fiDLL = new FileInfo(@"C:\CSSPTools\src\dlls\CSSPModels\bin\Debug\netcoreapp3.1\CSSPModels.dll");
 
             if (!fiDLL.Exists)
             {

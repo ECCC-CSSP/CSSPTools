@@ -1651,7 +1651,7 @@ namespace TestingPolSourceGrouping
             sb.AppendLine(@"{");
             sb.AppendLine(@"    public partial class BaseEnumServiceTest");
             sb.AppendLine(@"    {");
-            sb.AppendLine(@"        [TestMethod]");
+            sb.AppendLine(@"        [Fact]");
             sb.AppendLine(@"        public void BaseService_GetEnumText_PolSourceObsInfoEnum_Test()");
             sb.AppendLine(@"        {");
             sb.AppendLine(@"            foreach (CultureInfo culture in setupData.cultureListGood)");
@@ -1659,13 +1659,13 @@ namespace TestingPolSourceGrouping
             sb.AppendLine(@"                SetupTest(culture);");
             sb.AppendLine(@"");
             sb.AppendLine(@"                string retStr = baseEnumService.GetEnumText_PolSourceObsInfoEnum(null);");
-            sb.AppendLine(@"                Assert.AreEqual(BaseEnumServiceRes.Empty, retStr);");
+            sb.AppendLine(@"                Assert.Equal(BaseEnumServiceRes.Empty, retStr);");
             sb.AppendLine(@"                string retStrDesc = baseEnumService.GetEnumText_PolSourceObsInfoDescEnum(null);");
-            sb.AppendLine(@"                Assert.AreEqual(BaseEnumServiceRes.Empty, retStrDesc);");
+            sb.AppendLine(@"                Assert.Equal(BaseEnumServiceRes.Empty, retStrDesc);");
             sb.AppendLine(@"                string retStrReport = baseEnumService.GetEnumText_PolSourceObsInfoReportEnum(null);");
-            sb.AppendLine(@"                Assert.AreEqual(BaseEnumServiceRes.Empty, retStrReport);");
+            sb.AppendLine(@"                Assert.Equal(BaseEnumServiceRes.Empty, retStrReport);");
             sb.AppendLine(@"                string retStrText = baseEnumService.GetEnumText_PolSourceObsInfoTextEnum(null);");
-            sb.AppendLine(@"                Assert.AreEqual(BaseEnumServiceRes.Empty, retStrText);");
+            sb.AppendLine(@"                Assert.Equal(BaseEnumServiceRes.Empty, retStrText);");
             sb.AppendLine(@"");
             sb.AppendLine(@"                foreach (int i in Enum.GetValues(typeof(PolSourceObsInfoEnum)))");
             sb.AppendLine(@"                {");
@@ -1678,15 +1678,15 @@ namespace TestingPolSourceGrouping
             sb.AppendLine(@"                    {");
             sb.AppendLine(@"                        case PolSourceObsInfoEnum.Error:");
             sb.AppendLine(@"                        {");
-            sb.AppendLine(@"                            Assert.AreEqual(BaseEnumServiceRes.Error, retStr);");
+            sb.AppendLine(@"                            Assert.Equal(BaseEnumServiceRes.Error, retStr);");
             sb.AppendLine(@"                        }");
             sb.AppendLine(@"                        break;");
             foreach (PolSourceGroupingExcelFileRead.GroupChoiceChildLevel groupChoiceChildLevel in polSourceGroupingExcelFileRead.groupChoiceChildLevelList.Where(c => c.Group.Substring(c.Group.Length - 5) == "Start" && c.Choice == "").Distinct().ToList())
             {
                 sb.AppendLine(@"                        case PolSourceObsInfoEnum." + groupChoiceChildLevel.Group + ":");
                 sb.AppendLine(@"                        {");
-                sb.AppendLine(@"                            Assert.AreEqual(PolSourceInfoEnumRes.PolSourceInfoEnum" + groupChoiceChildLevel.Group + ", retStr);");
-                sb.AppendLine(@"                            Assert.AreEqual(PolSourceInfoEnumRes.PolSourceInfoEnum" + groupChoiceChildLevel.Group + "Desc, retStrDesc);");
+                sb.AppendLine(@"                            Assert.Equal(PolSourceInfoEnumRes.PolSourceInfoEnum" + groupChoiceChildLevel.Group + ", retStr);");
+                sb.AppendLine(@"                            Assert.Equal(PolSourceInfoEnumRes.PolSourceInfoEnum" + groupChoiceChildLevel.Group + "Desc, retStrDesc);");
                 sb.AppendLine(@"                        }");
                 sb.AppendLine(@"                        break;");
             }
@@ -1696,11 +1696,11 @@ namespace TestingPolSourceGrouping
                 {
                     sb.AppendLine(@"                        case PolSourceObsInfoEnum." + groupChoiceChildLevel.Choice + ":");
                     sb.AppendLine(@"                        {");
-                    sb.AppendLine(@"                            Assert.AreEqual(PolSourceInfoEnumRes.PolSourceInfoEnum" + groupChoiceChildLevel.Choice + ", retStr);");
-                    sb.AppendLine(@"                            Assert.AreEqual(PolSourceInfoEnumRes.PolSourceInfoEnum" + groupChoiceChildLevel.Choice + "Report, retStrReport);");
+                    sb.AppendLine(@"                            Assert.Equal(PolSourceInfoEnumRes.PolSourceInfoEnum" + groupChoiceChildLevel.Choice + ", retStr);");
+                    sb.AppendLine(@"                            Assert.Equal(PolSourceInfoEnumRes.PolSourceInfoEnum" + groupChoiceChildLevel.Choice + "Report, retStrReport);");
                     if (!string.IsNullOrWhiteSpace(groupChoiceChildLevel.TextEN))
                     {
-                        sb.AppendLine(@"                            Assert.AreEqual(PolSourceInfoEnumRes.PolSourceInfoEnum" + groupChoiceChildLevel.Choice + "Text, retStrText);");
+                        sb.AppendLine(@"                            Assert.Equal(PolSourceInfoEnumRes.PolSourceInfoEnum" + groupChoiceChildLevel.Choice + "Text, retStrText);");
                     }
                     sb.AppendLine(@"                        }");
                     sb.AppendLine(@"                        break;");
@@ -1708,7 +1708,7 @@ namespace TestingPolSourceGrouping
             }
             sb.AppendLine(@"                        default:");
             sb.AppendLine(@"                        {");
-            sb.AppendLine(@"                            Assert.AreEqual("""", ((PolSourceObsInfoEnum)i).ToString() + ""["" + i.ToString() + ""]"");");
+            sb.AppendLine(@"                            Assert.Equal("""", ((PolSourceObsInfoEnum)i).ToString() + ""["" + i.ToString() + ""]"");");
             sb.AppendLine(@"                        }");
             sb.AppendLine(@"                        break;");
             sb.AppendLine(@"                    }");

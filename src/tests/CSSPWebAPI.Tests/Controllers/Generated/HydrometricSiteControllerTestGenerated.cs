@@ -1,8 +1,8 @@
 using CSSPEnums;
 using CSSPModels;
 using CSSPServices;
+using Xunit;
 using CSSPWebAPI.Controllers;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
@@ -10,7 +10,6 @@ using System.Web.Http.Results;
 
 namespace CSSPWebAPI.Tests.Controllers
 {
-    [TestClass]
     public partial class HydrometricSiteControllerTest : BaseControllerTest
     {
         #region Variables
@@ -26,7 +25,7 @@ namespace CSSPWebAPI.Tests.Controllers
         #endregion Constructors
 
         #region Tests Generated for Class Controller GetList Command
-        [TestMethod]
+        [Fact]
         public void HydrometricSite_Controller_GetHydrometricSiteList_Test()
         {
             foreach (LanguageEnum LanguageRequest in AllowableLanguages)
@@ -34,8 +33,8 @@ namespace CSSPWebAPI.Tests.Controllers
                 foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
                 {
                     HydrometricSiteController hydrometricSiteController = new HydrometricSiteController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(hydrometricSiteController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, hydrometricSiteController.DatabaseType);
+                    Assert.NotNull(hydrometricSiteController);
+                    Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, hydrometricSiteController.DatabaseType);
 
                     HydrometricSite hydrometricSiteFirst = new HydrometricSite();
                     int count = -1;
@@ -50,11 +49,11 @@ namespace CSSPWebAPI.Tests.Controllers
 
                     // ok with HydrometricSite info
                     IHttpActionResult jsonRet = hydrometricSiteController.GetHydrometricSiteList();
-                    Assert.IsNotNull(jsonRet);
+                    Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<List<HydrometricSite>> ret = jsonRet as OkNegotiatedContentResult<List<HydrometricSite>>;
-                    Assert.AreEqual(hydrometricSiteFirst.HydrometricSiteID, ret.Content[0].HydrometricSiteID);
-                    Assert.AreEqual((count > query.Take ? query.Take : count), ret.Content.Count);
+                    Assert.Equal(hydrometricSiteFirst.HydrometricSiteID, ret.Content[0].HydrometricSiteID);
+                    Assert.Equal((count > query.Take ? query.Take : count), ret.Content.Count);
 
                     List<HydrometricSite> hydrometricSiteList = new List<HydrometricSite>();
                     count = -1;
@@ -74,11 +73,11 @@ namespace CSSPWebAPI.Tests.Controllers
 
                         // ok with HydrometricSite info
                         jsonRet = hydrometricSiteController.GetHydrometricSiteList(query.Language.ToString(), query.Skip, query.Take);
-                        Assert.IsNotNull(jsonRet);
+                        Assert.NotNull(jsonRet);
 
                         ret = jsonRet as OkNegotiatedContentResult<List<HydrometricSite>>;
-                        Assert.AreEqual(hydrometricSiteList[0].HydrometricSiteID, ret.Content[0].HydrometricSiteID);
-                        Assert.AreEqual((count > query.Take ? query.Take : count), ret.Content.Count);
+                        Assert.Equal(hydrometricSiteList[0].HydrometricSiteID, ret.Content[0].HydrometricSiteID);
+                        Assert.Equal((count > query.Take ? query.Take : count), ret.Content.Count);
 
                        if (count > 1)
                        {
@@ -88,11 +87,11 @@ namespace CSSPWebAPI.Tests.Controllers
 
                            // ok with HydrometricSite info
                            IHttpActionResult jsonRet2 = hydrometricSiteController.GetHydrometricSiteList(query.Language.ToString(), query.Skip, query.Take);
-                           Assert.IsNotNull(jsonRet2);
+                           Assert.NotNull(jsonRet2);
 
                            OkNegotiatedContentResult<List<HydrometricSite>> ret2 = jsonRet2 as OkNegotiatedContentResult<List<HydrometricSite>>;
-                           Assert.AreEqual(hydrometricSiteList[1].HydrometricSiteID, ret2.Content[0].HydrometricSiteID);
-                           Assert.AreEqual((count > query.Take ? query.Take : count), ret2.Content.Count);
+                           Assert.Equal(hydrometricSiteList[1].HydrometricSiteID, ret2.Content[0].HydrometricSiteID);
+                           Assert.Equal((count > query.Take ? query.Take : count), ret2.Content.Count);
                        }
                     }
                 }
@@ -101,7 +100,7 @@ namespace CSSPWebAPI.Tests.Controllers
         #endregion Tests Generated for Class Controller GetList Command
 
         #region Tests Generated for Class Controller GetWithID Command
-        [TestMethod]
+        [Fact]
         public void HydrometricSite_Controller_GetHydrometricSiteWithID_Test()
         {
             foreach (LanguageEnum LanguageRequest in AllowableLanguages)
@@ -109,8 +108,8 @@ namespace CSSPWebAPI.Tests.Controllers
                 foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
                 {
                     HydrometricSiteController hydrometricSiteController = new HydrometricSiteController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(hydrometricSiteController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, hydrometricSiteController.DatabaseType);
+                    Assert.NotNull(hydrometricSiteController);
+                    Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, hydrometricSiteController.DatabaseType);
 
                     HydrometricSite hydrometricSiteFirst = new HydrometricSite();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
@@ -121,31 +120,31 @@ namespace CSSPWebAPI.Tests.Controllers
 
                     // ok with HydrometricSite info
                     IHttpActionResult jsonRet = hydrometricSiteController.GetHydrometricSiteWithID(hydrometricSiteFirst.HydrometricSiteID);
-                    Assert.IsNotNull(jsonRet);
+                    Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<HydrometricSite> Ret = jsonRet as OkNegotiatedContentResult<HydrometricSite>;
                     HydrometricSite hydrometricSiteRet = Ret.Content;
-                    Assert.AreEqual(hydrometricSiteFirst.HydrometricSiteID, hydrometricSiteRet.HydrometricSiteID);
+                    Assert.Equal(hydrometricSiteFirst.HydrometricSiteID, hydrometricSiteRet.HydrometricSiteID);
 
                     BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
                     Assert.IsNull(badRequest);
 
                     // Not Found
                     IHttpActionResult jsonRet2 = hydrometricSiteController.GetHydrometricSiteWithID(0);
-                    Assert.IsNotNull(jsonRet2);
+                    Assert.NotNull(jsonRet2);
 
                     OkNegotiatedContentResult<HydrometricSite> hydrometricSiteRet2 = jsonRet2 as OkNegotiatedContentResult<HydrometricSite>;
                     Assert.IsNull(hydrometricSiteRet2);
 
                     NotFoundResult notFoundRequest = jsonRet2 as NotFoundResult;
-                    Assert.IsNotNull(notFoundRequest);
+                    Assert.NotNull(notFoundRequest);
                 }
             }
         }
         #endregion Tests Generated for Class Controller GetWithID Command
 
         #region Tests Generated for Class Controller Post Command
-        [TestMethod]
+        [Fact]
         public void HydrometricSite_Controller_Post_Test()
         {
             foreach (LanguageEnum LanguageRequest in AllowableLanguages)
@@ -153,8 +152,8 @@ namespace CSSPWebAPI.Tests.Controllers
                 foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
                 {
                     HydrometricSiteController hydrometricSiteController = new HydrometricSiteController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(hydrometricSiteController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, hydrometricSiteController.DatabaseType);
+                    Assert.NotNull(hydrometricSiteController);
+                    Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, hydrometricSiteController.DatabaseType);
 
                     HydrometricSite hydrometricSiteLast = new HydrometricSite();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
@@ -170,43 +169,43 @@ namespace CSSPWebAPI.Tests.Controllers
 
                     // ok with HydrometricSite info
                     IHttpActionResult jsonRet = hydrometricSiteController.GetHydrometricSiteWithID(hydrometricSiteLast.HydrometricSiteID);
-                    Assert.IsNotNull(jsonRet);
+                    Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<HydrometricSite> Ret = jsonRet as OkNegotiatedContentResult<HydrometricSite>;
                     HydrometricSite hydrometricSiteRet = Ret.Content;
-                    Assert.AreEqual(hydrometricSiteLast.HydrometricSiteID, hydrometricSiteRet.HydrometricSiteID);
+                    Assert.Equal(hydrometricSiteLast.HydrometricSiteID, hydrometricSiteRet.HydrometricSiteID);
 
                     BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
                     Assert.IsNull(badRequest);
 
                     // Post to return CSSPError because HydrometricSiteID exist
                     IHttpActionResult jsonRet2 = hydrometricSiteController.Post(hydrometricSiteRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet2);
+                    Assert.NotNull(jsonRet2);
 
                     OkNegotiatedContentResult<HydrometricSite> hydrometricSiteRet2 = jsonRet2 as OkNegotiatedContentResult<HydrometricSite>;
                     Assert.IsNull(hydrometricSiteRet2);
 
                     BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
-                    Assert.IsNotNull(badRequest2);
+                    Assert.NotNull(badRequest2);
 
                     // Post to return newly added HydrometricSite
                     hydrometricSiteRet.HydrometricSiteID = 0;
                     hydrometricSiteController.Request = new System.Net.Http.HttpRequestMessage();
                     hydrometricSiteController.Request.RequestUri = new System.Uri("http://localhost:5000/api/hydrometricSite");
                     IHttpActionResult jsonRet3 = hydrometricSiteController.Post(hydrometricSiteRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet3);
+                    Assert.NotNull(jsonRet3);
 
                     CreatedNegotiatedContentResult<HydrometricSite> hydrometricSiteRet3 = jsonRet3 as CreatedNegotiatedContentResult<HydrometricSite>;
-                    Assert.IsNotNull(hydrometricSiteRet3);
+                    Assert.NotNull(hydrometricSiteRet3);
 
                     BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
                     Assert.IsNull(badRequest3);
 
                     IHttpActionResult jsonRet4 = hydrometricSiteController.Delete(hydrometricSiteRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet4);
+                    Assert.NotNull(jsonRet4);
 
                     OkNegotiatedContentResult<HydrometricSite> hydrometricSiteRet4 = jsonRet4 as OkNegotiatedContentResult<HydrometricSite>;
-                    Assert.IsNotNull(hydrometricSiteRet4);
+                    Assert.NotNull(hydrometricSiteRet4);
 
                     BadRequestErrorMessageResult badRequest4 = jsonRet4 as BadRequestErrorMessageResult;
                     Assert.IsNull(badRequest4);
@@ -216,7 +215,7 @@ namespace CSSPWebAPI.Tests.Controllers
         #endregion Tests Generated for Class Controller Post Command
 
         #region Tests Generated for Class Controller Put Command
-        [TestMethod]
+        [Fact]
         public void HydrometricSite_Controller_Put_Test()
         {
             foreach (LanguageEnum LanguageRequest in AllowableLanguages)
@@ -224,8 +223,8 @@ namespace CSSPWebAPI.Tests.Controllers
                 foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
                 {
                     HydrometricSiteController hydrometricSiteController = new HydrometricSiteController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(hydrometricSiteController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, hydrometricSiteController.DatabaseType);
+                    Assert.NotNull(hydrometricSiteController);
+                    Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, hydrometricSiteController.DatabaseType);
 
                     HydrometricSite hydrometricSiteLast = new HydrometricSite();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
@@ -239,21 +238,21 @@ namespace CSSPWebAPI.Tests.Controllers
 
                     // ok with HydrometricSite info
                     IHttpActionResult jsonRet = hydrometricSiteController.GetHydrometricSiteWithID(hydrometricSiteLast.HydrometricSiteID);
-                    Assert.IsNotNull(jsonRet);
+                    Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<HydrometricSite> Ret = jsonRet as OkNegotiatedContentResult<HydrometricSite>;
                     HydrometricSite hydrometricSiteRet = Ret.Content;
-                    Assert.AreEqual(hydrometricSiteLast.HydrometricSiteID, hydrometricSiteRet.HydrometricSiteID);
+                    Assert.Equal(hydrometricSiteLast.HydrometricSiteID, hydrometricSiteRet.HydrometricSiteID);
 
                     BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
                     Assert.IsNull(badRequest);
 
                     // Put to return success
                     IHttpActionResult jsonRet2 = hydrometricSiteController.Put(hydrometricSiteRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet2);
+                    Assert.NotNull(jsonRet2);
 
                     OkNegotiatedContentResult<HydrometricSite> hydrometricSiteRet2 = jsonRet2 as OkNegotiatedContentResult<HydrometricSite>;
-                    Assert.IsNotNull(hydrometricSiteRet2);
+                    Assert.NotNull(hydrometricSiteRet2);
 
                     BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
                     Assert.IsNull(badRequest2);
@@ -261,20 +260,20 @@ namespace CSSPWebAPI.Tests.Controllers
                     // Put to return CSSPError because HydrometricSiteID of 0 does not exist
                     hydrometricSiteRet.HydrometricSiteID = 0;
                     IHttpActionResult jsonRet3 = hydrometricSiteController.Put(hydrometricSiteRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet3);
+                    Assert.NotNull(jsonRet3);
 
                     OkNegotiatedContentResult<HydrometricSite> hydrometricSiteRet3 = jsonRet3 as OkNegotiatedContentResult<HydrometricSite>;
                     Assert.IsNull(hydrometricSiteRet3);
 
                     BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
-                    Assert.IsNotNull(badRequest3);
+                    Assert.NotNull(badRequest3);
                 }
             }
         }
         #endregion Tests Generated for Class Controller Put Command
 
         #region Tests Generated for Class Controller Delete Command
-        [TestMethod]
+        [Fact]
         public void HydrometricSite_Controller_Delete_Test()
         {
             foreach (LanguageEnum LanguageRequest in AllowableLanguages)
@@ -282,8 +281,8 @@ namespace CSSPWebAPI.Tests.Controllers
                 foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
                 {
                     HydrometricSiteController hydrometricSiteController = new HydrometricSiteController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(hydrometricSiteController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, hydrometricSiteController.DatabaseType);
+                    Assert.NotNull(hydrometricSiteController);
+                    Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, hydrometricSiteController.DatabaseType);
 
                     HydrometricSite hydrometricSiteLast = new HydrometricSite();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
@@ -299,11 +298,11 @@ namespace CSSPWebAPI.Tests.Controllers
 
                     // ok with HydrometricSite info
                     IHttpActionResult jsonRet = hydrometricSiteController.GetHydrometricSiteWithID(hydrometricSiteLast.HydrometricSiteID);
-                    Assert.IsNotNull(jsonRet);
+                    Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<HydrometricSite> Ret = jsonRet as OkNegotiatedContentResult<HydrometricSite>;
                     HydrometricSite hydrometricSiteRet = Ret.Content;
-                    Assert.AreEqual(hydrometricSiteLast.HydrometricSiteID, hydrometricSiteRet.HydrometricSiteID);
+                    Assert.Equal(hydrometricSiteLast.HydrometricSiteID, hydrometricSiteRet.HydrometricSiteID);
 
                     BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
                     Assert.IsNull(badRequest);
@@ -313,10 +312,10 @@ namespace CSSPWebAPI.Tests.Controllers
                     hydrometricSiteController.Request = new System.Net.Http.HttpRequestMessage();
                     hydrometricSiteController.Request.RequestUri = new System.Uri("http://localhost:5000/api/hydrometricSite");
                     IHttpActionResult jsonRet3 = hydrometricSiteController.Post(hydrometricSiteRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet3);
+                    Assert.NotNull(jsonRet3);
 
                     CreatedNegotiatedContentResult<HydrometricSite> hydrometricSiteRet3 = jsonRet3 as CreatedNegotiatedContentResult<HydrometricSite>;
-                    Assert.IsNotNull(hydrometricSiteRet3);
+                    Assert.NotNull(hydrometricSiteRet3);
                     HydrometricSite hydrometricSite = hydrometricSiteRet3.Content;
 
                     BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
@@ -324,10 +323,10 @@ namespace CSSPWebAPI.Tests.Controllers
 
                     // Delete to return success
                     IHttpActionResult jsonRet2 = hydrometricSiteController.Delete(hydrometricSiteRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet2);
+                    Assert.NotNull(jsonRet2);
 
                     OkNegotiatedContentResult<HydrometricSite> hydrometricSiteRet2 = jsonRet2 as OkNegotiatedContentResult<HydrometricSite>;
-                    Assert.IsNotNull(hydrometricSiteRet2);
+                    Assert.NotNull(hydrometricSiteRet2);
 
                     BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
                     Assert.IsNull(badRequest2);
@@ -335,13 +334,13 @@ namespace CSSPWebAPI.Tests.Controllers
                     // Delete to return CSSPError because HydrometricSiteID of 0 does not exist
                     hydrometricSiteRet.HydrometricSiteID = 0;
                     IHttpActionResult jsonRet4 = hydrometricSiteController.Delete(hydrometricSiteRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet4);
+                    Assert.NotNull(jsonRet4);
 
                     OkNegotiatedContentResult<HydrometricSite> hydrometricSiteRet4 = jsonRet4 as OkNegotiatedContentResult<HydrometricSite>;
                     Assert.IsNull(hydrometricSiteRet4);
 
                     BadRequestErrorMessageResult badRequest4 = jsonRet4 as BadRequestErrorMessageResult;
-                    Assert.IsNotNull(badRequest4);
+                    Assert.NotNull(badRequest4);
                 }
             }
         }

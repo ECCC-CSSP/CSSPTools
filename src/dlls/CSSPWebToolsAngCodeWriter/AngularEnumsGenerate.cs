@@ -53,7 +53,7 @@ namespace CSSPWebToolsAngGenerateCodeHelper
                 }
             }
 
-            FileInfo fiCSSPEnumsDLL = new FileInfo(@"C:\CSSPTools\src\dlls\CSSPEnums\bin\Debug\netcoreapp3.0\CSSPEnums.dll");
+            FileInfo fiCSSPEnumsDLL = new FileInfo(@"C:\CSSPTools\src\dlls\CSSPEnums\bin\Debug\netcoreapp3.1\CSSPEnums.dll");
 
             if (!fiCSSPEnumsDLL.Exists)
             {

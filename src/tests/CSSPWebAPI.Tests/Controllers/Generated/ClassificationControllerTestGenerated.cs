@@ -1,8 +1,8 @@
 using CSSPEnums;
 using CSSPModels;
 using CSSPServices;
+using Xunit;
 using CSSPWebAPI.Controllers;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
@@ -10,7 +10,6 @@ using System.Web.Http.Results;
 
 namespace CSSPWebAPI.Tests.Controllers
 {
-    [TestClass]
     public partial class ClassificationControllerTest : BaseControllerTest
     {
         #region Variables
@@ -26,7 +25,7 @@ namespace CSSPWebAPI.Tests.Controllers
         #endregion Constructors
 
         #region Tests Generated for Class Controller GetList Command
-        [TestMethod]
+        [Fact]
         public void Classification_Controller_GetClassificationList_Test()
         {
             foreach (LanguageEnum LanguageRequest in AllowableLanguages)
@@ -34,8 +33,8 @@ namespace CSSPWebAPI.Tests.Controllers
                 foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
                 {
                     ClassificationController classificationController = new ClassificationController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(classificationController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, classificationController.DatabaseType);
+                    Assert.NotNull(classificationController);
+                    Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, classificationController.DatabaseType);
 
                     Classification classificationFirst = new Classification();
                     int count = -1;
@@ -50,11 +49,11 @@ namespace CSSPWebAPI.Tests.Controllers
 
                     // ok with Classification info
                     IHttpActionResult jsonRet = classificationController.GetClassificationList();
-                    Assert.IsNotNull(jsonRet);
+                    Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<List<Classification>> ret = jsonRet as OkNegotiatedContentResult<List<Classification>>;
-                    Assert.AreEqual(classificationFirst.ClassificationID, ret.Content[0].ClassificationID);
-                    Assert.AreEqual((count > query.Take ? query.Take : count), ret.Content.Count);
+                    Assert.Equal(classificationFirst.ClassificationID, ret.Content[0].ClassificationID);
+                    Assert.Equal((count > query.Take ? query.Take : count), ret.Content.Count);
 
                     List<Classification> classificationList = new List<Classification>();
                     count = -1;
@@ -74,11 +73,11 @@ namespace CSSPWebAPI.Tests.Controllers
 
                         // ok with Classification info
                         jsonRet = classificationController.GetClassificationList(query.Language.ToString(), query.Skip, query.Take);
-                        Assert.IsNotNull(jsonRet);
+                        Assert.NotNull(jsonRet);
 
                         ret = jsonRet as OkNegotiatedContentResult<List<Classification>>;
-                        Assert.AreEqual(classificationList[0].ClassificationID, ret.Content[0].ClassificationID);
-                        Assert.AreEqual((count > query.Take ? query.Take : count), ret.Content.Count);
+                        Assert.Equal(classificationList[0].ClassificationID, ret.Content[0].ClassificationID);
+                        Assert.Equal((count > query.Take ? query.Take : count), ret.Content.Count);
 
                        if (count > 1)
                        {
@@ -88,11 +87,11 @@ namespace CSSPWebAPI.Tests.Controllers
 
                            // ok with Classification info
                            IHttpActionResult jsonRet2 = classificationController.GetClassificationList(query.Language.ToString(), query.Skip, query.Take);
-                           Assert.IsNotNull(jsonRet2);
+                           Assert.NotNull(jsonRet2);
 
                            OkNegotiatedContentResult<List<Classification>> ret2 = jsonRet2 as OkNegotiatedContentResult<List<Classification>>;
-                           Assert.AreEqual(classificationList[1].ClassificationID, ret2.Content[0].ClassificationID);
-                           Assert.AreEqual((count > query.Take ? query.Take : count), ret2.Content.Count);
+                           Assert.Equal(classificationList[1].ClassificationID, ret2.Content[0].ClassificationID);
+                           Assert.Equal((count > query.Take ? query.Take : count), ret2.Content.Count);
                        }
                     }
                 }
@@ -101,7 +100,7 @@ namespace CSSPWebAPI.Tests.Controllers
         #endregion Tests Generated for Class Controller GetList Command
 
         #region Tests Generated for Class Controller GetWithID Command
-        [TestMethod]
+        [Fact]
         public void Classification_Controller_GetClassificationWithID_Test()
         {
             foreach (LanguageEnum LanguageRequest in AllowableLanguages)
@@ -109,8 +108,8 @@ namespace CSSPWebAPI.Tests.Controllers
                 foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
                 {
                     ClassificationController classificationController = new ClassificationController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(classificationController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, classificationController.DatabaseType);
+                    Assert.NotNull(classificationController);
+                    Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, classificationController.DatabaseType);
 
                     Classification classificationFirst = new Classification();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
@@ -121,31 +120,31 @@ namespace CSSPWebAPI.Tests.Controllers
 
                     // ok with Classification info
                     IHttpActionResult jsonRet = classificationController.GetClassificationWithID(classificationFirst.ClassificationID);
-                    Assert.IsNotNull(jsonRet);
+                    Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<Classification> Ret = jsonRet as OkNegotiatedContentResult<Classification>;
                     Classification classificationRet = Ret.Content;
-                    Assert.AreEqual(classificationFirst.ClassificationID, classificationRet.ClassificationID);
+                    Assert.Equal(classificationFirst.ClassificationID, classificationRet.ClassificationID);
 
                     BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
                     Assert.IsNull(badRequest);
 
                     // Not Found
                     IHttpActionResult jsonRet2 = classificationController.GetClassificationWithID(0);
-                    Assert.IsNotNull(jsonRet2);
+                    Assert.NotNull(jsonRet2);
 
                     OkNegotiatedContentResult<Classification> classificationRet2 = jsonRet2 as OkNegotiatedContentResult<Classification>;
                     Assert.IsNull(classificationRet2);
 
                     NotFoundResult notFoundRequest = jsonRet2 as NotFoundResult;
-                    Assert.IsNotNull(notFoundRequest);
+                    Assert.NotNull(notFoundRequest);
                 }
             }
         }
         #endregion Tests Generated for Class Controller GetWithID Command
 
         #region Tests Generated for Class Controller Post Command
-        [TestMethod]
+        [Fact]
         public void Classification_Controller_Post_Test()
         {
             foreach (LanguageEnum LanguageRequest in AllowableLanguages)
@@ -153,8 +152,8 @@ namespace CSSPWebAPI.Tests.Controllers
                 foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
                 {
                     ClassificationController classificationController = new ClassificationController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(classificationController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, classificationController.DatabaseType);
+                    Assert.NotNull(classificationController);
+                    Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, classificationController.DatabaseType);
 
                     Classification classificationLast = new Classification();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
@@ -170,43 +169,43 @@ namespace CSSPWebAPI.Tests.Controllers
 
                     // ok with Classification info
                     IHttpActionResult jsonRet = classificationController.GetClassificationWithID(classificationLast.ClassificationID);
-                    Assert.IsNotNull(jsonRet);
+                    Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<Classification> Ret = jsonRet as OkNegotiatedContentResult<Classification>;
                     Classification classificationRet = Ret.Content;
-                    Assert.AreEqual(classificationLast.ClassificationID, classificationRet.ClassificationID);
+                    Assert.Equal(classificationLast.ClassificationID, classificationRet.ClassificationID);
 
                     BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
                     Assert.IsNull(badRequest);
 
                     // Post to return CSSPError because ClassificationID exist
                     IHttpActionResult jsonRet2 = classificationController.Post(classificationRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet2);
+                    Assert.NotNull(jsonRet2);
 
                     OkNegotiatedContentResult<Classification> classificationRet2 = jsonRet2 as OkNegotiatedContentResult<Classification>;
                     Assert.IsNull(classificationRet2);
 
                     BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
-                    Assert.IsNotNull(badRequest2);
+                    Assert.NotNull(badRequest2);
 
                     // Post to return newly added Classification
                     classificationRet.ClassificationID = 0;
                     classificationController.Request = new System.Net.Http.HttpRequestMessage();
                     classificationController.Request.RequestUri = new System.Uri("http://localhost:5000/api/classification");
                     IHttpActionResult jsonRet3 = classificationController.Post(classificationRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet3);
+                    Assert.NotNull(jsonRet3);
 
                     CreatedNegotiatedContentResult<Classification> classificationRet3 = jsonRet3 as CreatedNegotiatedContentResult<Classification>;
-                    Assert.IsNotNull(classificationRet3);
+                    Assert.NotNull(classificationRet3);
 
                     BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
                     Assert.IsNull(badRequest3);
 
                     IHttpActionResult jsonRet4 = classificationController.Delete(classificationRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet4);
+                    Assert.NotNull(jsonRet4);
 
                     OkNegotiatedContentResult<Classification> classificationRet4 = jsonRet4 as OkNegotiatedContentResult<Classification>;
-                    Assert.IsNotNull(classificationRet4);
+                    Assert.NotNull(classificationRet4);
 
                     BadRequestErrorMessageResult badRequest4 = jsonRet4 as BadRequestErrorMessageResult;
                     Assert.IsNull(badRequest4);
@@ -216,7 +215,7 @@ namespace CSSPWebAPI.Tests.Controllers
         #endregion Tests Generated for Class Controller Post Command
 
         #region Tests Generated for Class Controller Put Command
-        [TestMethod]
+        [Fact]
         public void Classification_Controller_Put_Test()
         {
             foreach (LanguageEnum LanguageRequest in AllowableLanguages)
@@ -224,8 +223,8 @@ namespace CSSPWebAPI.Tests.Controllers
                 foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
                 {
                     ClassificationController classificationController = new ClassificationController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(classificationController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, classificationController.DatabaseType);
+                    Assert.NotNull(classificationController);
+                    Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, classificationController.DatabaseType);
 
                     Classification classificationLast = new Classification();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
@@ -239,21 +238,21 @@ namespace CSSPWebAPI.Tests.Controllers
 
                     // ok with Classification info
                     IHttpActionResult jsonRet = classificationController.GetClassificationWithID(classificationLast.ClassificationID);
-                    Assert.IsNotNull(jsonRet);
+                    Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<Classification> Ret = jsonRet as OkNegotiatedContentResult<Classification>;
                     Classification classificationRet = Ret.Content;
-                    Assert.AreEqual(classificationLast.ClassificationID, classificationRet.ClassificationID);
+                    Assert.Equal(classificationLast.ClassificationID, classificationRet.ClassificationID);
 
                     BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
                     Assert.IsNull(badRequest);
 
                     // Put to return success
                     IHttpActionResult jsonRet2 = classificationController.Put(classificationRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet2);
+                    Assert.NotNull(jsonRet2);
 
                     OkNegotiatedContentResult<Classification> classificationRet2 = jsonRet2 as OkNegotiatedContentResult<Classification>;
-                    Assert.IsNotNull(classificationRet2);
+                    Assert.NotNull(classificationRet2);
 
                     BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
                     Assert.IsNull(badRequest2);
@@ -261,20 +260,20 @@ namespace CSSPWebAPI.Tests.Controllers
                     // Put to return CSSPError because ClassificationID of 0 does not exist
                     classificationRet.ClassificationID = 0;
                     IHttpActionResult jsonRet3 = classificationController.Put(classificationRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet3);
+                    Assert.NotNull(jsonRet3);
 
                     OkNegotiatedContentResult<Classification> classificationRet3 = jsonRet3 as OkNegotiatedContentResult<Classification>;
                     Assert.IsNull(classificationRet3);
 
                     BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
-                    Assert.IsNotNull(badRequest3);
+                    Assert.NotNull(badRequest3);
                 }
             }
         }
         #endregion Tests Generated for Class Controller Put Command
 
         #region Tests Generated for Class Controller Delete Command
-        [TestMethod]
+        [Fact]
         public void Classification_Controller_Delete_Test()
         {
             foreach (LanguageEnum LanguageRequest in AllowableLanguages)
@@ -282,8 +281,8 @@ namespace CSSPWebAPI.Tests.Controllers
                 foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
                 {
                     ClassificationController classificationController = new ClassificationController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(classificationController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, classificationController.DatabaseType);
+                    Assert.NotNull(classificationController);
+                    Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, classificationController.DatabaseType);
 
                     Classification classificationLast = new Classification();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
@@ -299,11 +298,11 @@ namespace CSSPWebAPI.Tests.Controllers
 
                     // ok with Classification info
                     IHttpActionResult jsonRet = classificationController.GetClassificationWithID(classificationLast.ClassificationID);
-                    Assert.IsNotNull(jsonRet);
+                    Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<Classification> Ret = jsonRet as OkNegotiatedContentResult<Classification>;
                     Classification classificationRet = Ret.Content;
-                    Assert.AreEqual(classificationLast.ClassificationID, classificationRet.ClassificationID);
+                    Assert.Equal(classificationLast.ClassificationID, classificationRet.ClassificationID);
 
                     BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
                     Assert.IsNull(badRequest);
@@ -313,10 +312,10 @@ namespace CSSPWebAPI.Tests.Controllers
                     classificationController.Request = new System.Net.Http.HttpRequestMessage();
                     classificationController.Request.RequestUri = new System.Uri("http://localhost:5000/api/classification");
                     IHttpActionResult jsonRet3 = classificationController.Post(classificationRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet3);
+                    Assert.NotNull(jsonRet3);
 
                     CreatedNegotiatedContentResult<Classification> classificationRet3 = jsonRet3 as CreatedNegotiatedContentResult<Classification>;
-                    Assert.IsNotNull(classificationRet3);
+                    Assert.NotNull(classificationRet3);
                     Classification classification = classificationRet3.Content;
 
                     BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
@@ -324,10 +323,10 @@ namespace CSSPWebAPI.Tests.Controllers
 
                     // Delete to return success
                     IHttpActionResult jsonRet2 = classificationController.Delete(classificationRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet2);
+                    Assert.NotNull(jsonRet2);
 
                     OkNegotiatedContentResult<Classification> classificationRet2 = jsonRet2 as OkNegotiatedContentResult<Classification>;
-                    Assert.IsNotNull(classificationRet2);
+                    Assert.NotNull(classificationRet2);
 
                     BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
                     Assert.IsNull(badRequest2);
@@ -335,13 +334,13 @@ namespace CSSPWebAPI.Tests.Controllers
                     // Delete to return CSSPError because ClassificationID of 0 does not exist
                     classificationRet.ClassificationID = 0;
                     IHttpActionResult jsonRet4 = classificationController.Delete(classificationRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet4);
+                    Assert.NotNull(jsonRet4);
 
                     OkNegotiatedContentResult<Classification> classificationRet4 = jsonRet4 as OkNegotiatedContentResult<Classification>;
                     Assert.IsNull(classificationRet4);
 
                     BadRequestErrorMessageResult badRequest4 = jsonRet4 as BadRequestErrorMessageResult;
-                    Assert.IsNotNull(badRequest4);
+                    Assert.NotNull(badRequest4);
                 }
             }
         }

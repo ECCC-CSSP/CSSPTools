@@ -36,7 +36,7 @@ namespace CSSPServicesGenerateCodeHelper
         ///     C:\CSSPTools\src\dlls\CSSPServices\_ExtensionEnumCastingGenerated.cs file
         /// 
         /// Requires:
-        ///     C:\CSSPTools\src\dlls\CSSPEnums\bin\Debug\netcoreapp3.0\CSSPEnums.dll
+        ///     C:\CSSPTools\src\dlls\CSSPEnums\bin\Debug\netcoreapp3.1\CSSPEnums.dll
         ///     
         /// </summary>
         public void ExtensionEnumCastingGenerated()
@@ -49,7 +49,7 @@ namespace CSSPServicesGenerateCodeHelper
                 "Enums", "EnumIDAndText", "CSSPEnumsRes", "PolSourceInfoEnumGeneratedRes", "<PrivateImplementationDetails>", "<>c"
             };
 
-            FileInfo fiDLL = new FileInfo(@"C:\CSSPTools\src\dlls\CSSPEnums\bin\Debug\netcoreapp3.0\CSSPEnums.dll");
+            FileInfo fiDLL = new FileInfo(@"C:\CSSPTools\src\dlls\CSSPEnums\bin\Debug\netcoreapp3.1\CSSPEnums.dll");
 
             if (!fiDLL.Exists)
             {

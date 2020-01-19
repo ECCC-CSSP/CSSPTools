@@ -1,8 +1,8 @@
 using CSSPEnums;
 using CSSPModels;
 using CSSPServices;
+using Xunit;
 using CSSPWebAPI.Controllers;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
@@ -10,7 +10,6 @@ using System.Web.Http.Results;
 
 namespace CSSPWebAPI.Tests.Controllers
 {
-    [TestClass]
     public partial class ReportSectionControllerTest : BaseControllerTest
     {
         #region Variables
@@ -26,7 +25,7 @@ namespace CSSPWebAPI.Tests.Controllers
         #endregion Constructors
 
         #region Tests Generated for Class Controller GetList Command
-        [TestMethod]
+        [Fact]
         public void ReportSection_Controller_GetReportSectionList_Test()
         {
             foreach (LanguageEnum LanguageRequest in AllowableLanguages)
@@ -34,8 +33,8 @@ namespace CSSPWebAPI.Tests.Controllers
                 foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
                 {
                     ReportSectionController reportSectionController = new ReportSectionController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(reportSectionController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, reportSectionController.DatabaseType);
+                    Assert.NotNull(reportSectionController);
+                    Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, reportSectionController.DatabaseType);
 
                     ReportSection reportSectionFirst = new ReportSection();
                     int count = -1;
@@ -50,11 +49,11 @@ namespace CSSPWebAPI.Tests.Controllers
 
                     // ok with ReportSection info
                     IHttpActionResult jsonRet = reportSectionController.GetReportSectionList();
-                    Assert.IsNotNull(jsonRet);
+                    Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<List<ReportSection>> ret = jsonRet as OkNegotiatedContentResult<List<ReportSection>>;
-                    Assert.AreEqual(reportSectionFirst.ReportSectionID, ret.Content[0].ReportSectionID);
-                    Assert.AreEqual((count > query.Take ? query.Take : count), ret.Content.Count);
+                    Assert.Equal(reportSectionFirst.ReportSectionID, ret.Content[0].ReportSectionID);
+                    Assert.Equal((count > query.Take ? query.Take : count), ret.Content.Count);
 
                     List<ReportSection> reportSectionList = new List<ReportSection>();
                     count = -1;
@@ -74,11 +73,11 @@ namespace CSSPWebAPI.Tests.Controllers
 
                         // ok with ReportSection info
                         jsonRet = reportSectionController.GetReportSectionList(query.Language.ToString(), query.Skip, query.Take);
-                        Assert.IsNotNull(jsonRet);
+                        Assert.NotNull(jsonRet);
 
                         ret = jsonRet as OkNegotiatedContentResult<List<ReportSection>>;
-                        Assert.AreEqual(reportSectionList[0].ReportSectionID, ret.Content[0].ReportSectionID);
-                        Assert.AreEqual((count > query.Take ? query.Take : count), ret.Content.Count);
+                        Assert.Equal(reportSectionList[0].ReportSectionID, ret.Content[0].ReportSectionID);
+                        Assert.Equal((count > query.Take ? query.Take : count), ret.Content.Count);
 
                        if (count > 1)
                        {
@@ -88,11 +87,11 @@ namespace CSSPWebAPI.Tests.Controllers
 
                            // ok with ReportSection info
                            IHttpActionResult jsonRet2 = reportSectionController.GetReportSectionList(query.Language.ToString(), query.Skip, query.Take);
-                           Assert.IsNotNull(jsonRet2);
+                           Assert.NotNull(jsonRet2);
 
                            OkNegotiatedContentResult<List<ReportSection>> ret2 = jsonRet2 as OkNegotiatedContentResult<List<ReportSection>>;
-                           Assert.AreEqual(reportSectionList[1].ReportSectionID, ret2.Content[0].ReportSectionID);
-                           Assert.AreEqual((count > query.Take ? query.Take : count), ret2.Content.Count);
+                           Assert.Equal(reportSectionList[1].ReportSectionID, ret2.Content[0].ReportSectionID);
+                           Assert.Equal((count > query.Take ? query.Take : count), ret2.Content.Count);
                        }
                     }
                 }
@@ -101,7 +100,7 @@ namespace CSSPWebAPI.Tests.Controllers
         #endregion Tests Generated for Class Controller GetList Command
 
         #region Tests Generated for Class Controller GetWithID Command
-        [TestMethod]
+        [Fact]
         public void ReportSection_Controller_GetReportSectionWithID_Test()
         {
             foreach (LanguageEnum LanguageRequest in AllowableLanguages)
@@ -109,8 +108,8 @@ namespace CSSPWebAPI.Tests.Controllers
                 foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
                 {
                     ReportSectionController reportSectionController = new ReportSectionController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(reportSectionController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, reportSectionController.DatabaseType);
+                    Assert.NotNull(reportSectionController);
+                    Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, reportSectionController.DatabaseType);
 
                     ReportSection reportSectionFirst = new ReportSection();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
@@ -121,31 +120,31 @@ namespace CSSPWebAPI.Tests.Controllers
 
                     // ok with ReportSection info
                     IHttpActionResult jsonRet = reportSectionController.GetReportSectionWithID(reportSectionFirst.ReportSectionID);
-                    Assert.IsNotNull(jsonRet);
+                    Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<ReportSection> Ret = jsonRet as OkNegotiatedContentResult<ReportSection>;
                     ReportSection reportSectionRet = Ret.Content;
-                    Assert.AreEqual(reportSectionFirst.ReportSectionID, reportSectionRet.ReportSectionID);
+                    Assert.Equal(reportSectionFirst.ReportSectionID, reportSectionRet.ReportSectionID);
 
                     BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
                     Assert.IsNull(badRequest);
 
                     // Not Found
                     IHttpActionResult jsonRet2 = reportSectionController.GetReportSectionWithID(0);
-                    Assert.IsNotNull(jsonRet2);
+                    Assert.NotNull(jsonRet2);
 
                     OkNegotiatedContentResult<ReportSection> reportSectionRet2 = jsonRet2 as OkNegotiatedContentResult<ReportSection>;
                     Assert.IsNull(reportSectionRet2);
 
                     NotFoundResult notFoundRequest = jsonRet2 as NotFoundResult;
-                    Assert.IsNotNull(notFoundRequest);
+                    Assert.NotNull(notFoundRequest);
                 }
             }
         }
         #endregion Tests Generated for Class Controller GetWithID Command
 
         #region Tests Generated for Class Controller Post Command
-        [TestMethod]
+        [Fact]
         public void ReportSection_Controller_Post_Test()
         {
             foreach (LanguageEnum LanguageRequest in AllowableLanguages)
@@ -153,8 +152,8 @@ namespace CSSPWebAPI.Tests.Controllers
                 foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
                 {
                     ReportSectionController reportSectionController = new ReportSectionController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(reportSectionController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, reportSectionController.DatabaseType);
+                    Assert.NotNull(reportSectionController);
+                    Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, reportSectionController.DatabaseType);
 
                     ReportSection reportSectionLast = new ReportSection();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
@@ -170,43 +169,43 @@ namespace CSSPWebAPI.Tests.Controllers
 
                     // ok with ReportSection info
                     IHttpActionResult jsonRet = reportSectionController.GetReportSectionWithID(reportSectionLast.ReportSectionID);
-                    Assert.IsNotNull(jsonRet);
+                    Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<ReportSection> Ret = jsonRet as OkNegotiatedContentResult<ReportSection>;
                     ReportSection reportSectionRet = Ret.Content;
-                    Assert.AreEqual(reportSectionLast.ReportSectionID, reportSectionRet.ReportSectionID);
+                    Assert.Equal(reportSectionLast.ReportSectionID, reportSectionRet.ReportSectionID);
 
                     BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
                     Assert.IsNull(badRequest);
 
                     // Post to return CSSPError because ReportSectionID exist
                     IHttpActionResult jsonRet2 = reportSectionController.Post(reportSectionRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet2);
+                    Assert.NotNull(jsonRet2);
 
                     OkNegotiatedContentResult<ReportSection> reportSectionRet2 = jsonRet2 as OkNegotiatedContentResult<ReportSection>;
                     Assert.IsNull(reportSectionRet2);
 
                     BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
-                    Assert.IsNotNull(badRequest2);
+                    Assert.NotNull(badRequest2);
 
                     // Post to return newly added ReportSection
                     reportSectionRet.ReportSectionID = 0;
                     reportSectionController.Request = new System.Net.Http.HttpRequestMessage();
                     reportSectionController.Request.RequestUri = new System.Uri("http://localhost:5000/api/reportSection");
                     IHttpActionResult jsonRet3 = reportSectionController.Post(reportSectionRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet3);
+                    Assert.NotNull(jsonRet3);
 
                     CreatedNegotiatedContentResult<ReportSection> reportSectionRet3 = jsonRet3 as CreatedNegotiatedContentResult<ReportSection>;
-                    Assert.IsNotNull(reportSectionRet3);
+                    Assert.NotNull(reportSectionRet3);
 
                     BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
                     Assert.IsNull(badRequest3);
 
                     IHttpActionResult jsonRet4 = reportSectionController.Delete(reportSectionRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet4);
+                    Assert.NotNull(jsonRet4);
 
                     OkNegotiatedContentResult<ReportSection> reportSectionRet4 = jsonRet4 as OkNegotiatedContentResult<ReportSection>;
-                    Assert.IsNotNull(reportSectionRet4);
+                    Assert.NotNull(reportSectionRet4);
 
                     BadRequestErrorMessageResult badRequest4 = jsonRet4 as BadRequestErrorMessageResult;
                     Assert.IsNull(badRequest4);
@@ -216,7 +215,7 @@ namespace CSSPWebAPI.Tests.Controllers
         #endregion Tests Generated for Class Controller Post Command
 
         #region Tests Generated for Class Controller Put Command
-        [TestMethod]
+        [Fact]
         public void ReportSection_Controller_Put_Test()
         {
             foreach (LanguageEnum LanguageRequest in AllowableLanguages)
@@ -224,8 +223,8 @@ namespace CSSPWebAPI.Tests.Controllers
                 foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
                 {
                     ReportSectionController reportSectionController = new ReportSectionController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(reportSectionController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, reportSectionController.DatabaseType);
+                    Assert.NotNull(reportSectionController);
+                    Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, reportSectionController.DatabaseType);
 
                     ReportSection reportSectionLast = new ReportSection();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
@@ -239,21 +238,21 @@ namespace CSSPWebAPI.Tests.Controllers
 
                     // ok with ReportSection info
                     IHttpActionResult jsonRet = reportSectionController.GetReportSectionWithID(reportSectionLast.ReportSectionID);
-                    Assert.IsNotNull(jsonRet);
+                    Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<ReportSection> Ret = jsonRet as OkNegotiatedContentResult<ReportSection>;
                     ReportSection reportSectionRet = Ret.Content;
-                    Assert.AreEqual(reportSectionLast.ReportSectionID, reportSectionRet.ReportSectionID);
+                    Assert.Equal(reportSectionLast.ReportSectionID, reportSectionRet.ReportSectionID);
 
                     BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
                     Assert.IsNull(badRequest);
 
                     // Put to return success
                     IHttpActionResult jsonRet2 = reportSectionController.Put(reportSectionRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet2);
+                    Assert.NotNull(jsonRet2);
 
                     OkNegotiatedContentResult<ReportSection> reportSectionRet2 = jsonRet2 as OkNegotiatedContentResult<ReportSection>;
-                    Assert.IsNotNull(reportSectionRet2);
+                    Assert.NotNull(reportSectionRet2);
 
                     BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
                     Assert.IsNull(badRequest2);
@@ -261,20 +260,20 @@ namespace CSSPWebAPI.Tests.Controllers
                     // Put to return CSSPError because ReportSectionID of 0 does not exist
                     reportSectionRet.ReportSectionID = 0;
                     IHttpActionResult jsonRet3 = reportSectionController.Put(reportSectionRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet3);
+                    Assert.NotNull(jsonRet3);
 
                     OkNegotiatedContentResult<ReportSection> reportSectionRet3 = jsonRet3 as OkNegotiatedContentResult<ReportSection>;
                     Assert.IsNull(reportSectionRet3);
 
                     BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
-                    Assert.IsNotNull(badRequest3);
+                    Assert.NotNull(badRequest3);
                 }
             }
         }
         #endregion Tests Generated for Class Controller Put Command
 
         #region Tests Generated for Class Controller Delete Command
-        [TestMethod]
+        [Fact]
         public void ReportSection_Controller_Delete_Test()
         {
             foreach (LanguageEnum LanguageRequest in AllowableLanguages)
@@ -282,8 +281,8 @@ namespace CSSPWebAPI.Tests.Controllers
                 foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
                 {
                     ReportSectionController reportSectionController = new ReportSectionController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(reportSectionController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, reportSectionController.DatabaseType);
+                    Assert.NotNull(reportSectionController);
+                    Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, reportSectionController.DatabaseType);
 
                     ReportSection reportSectionLast = new ReportSection();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
@@ -299,11 +298,11 @@ namespace CSSPWebAPI.Tests.Controllers
 
                     // ok with ReportSection info
                     IHttpActionResult jsonRet = reportSectionController.GetReportSectionWithID(reportSectionLast.ReportSectionID);
-                    Assert.IsNotNull(jsonRet);
+                    Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<ReportSection> Ret = jsonRet as OkNegotiatedContentResult<ReportSection>;
                     ReportSection reportSectionRet = Ret.Content;
-                    Assert.AreEqual(reportSectionLast.ReportSectionID, reportSectionRet.ReportSectionID);
+                    Assert.Equal(reportSectionLast.ReportSectionID, reportSectionRet.ReportSectionID);
 
                     BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
                     Assert.IsNull(badRequest);
@@ -313,10 +312,10 @@ namespace CSSPWebAPI.Tests.Controllers
                     reportSectionController.Request = new System.Net.Http.HttpRequestMessage();
                     reportSectionController.Request.RequestUri = new System.Uri("http://localhost:5000/api/reportSection");
                     IHttpActionResult jsonRet3 = reportSectionController.Post(reportSectionRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet3);
+                    Assert.NotNull(jsonRet3);
 
                     CreatedNegotiatedContentResult<ReportSection> reportSectionRet3 = jsonRet3 as CreatedNegotiatedContentResult<ReportSection>;
-                    Assert.IsNotNull(reportSectionRet3);
+                    Assert.NotNull(reportSectionRet3);
                     ReportSection reportSection = reportSectionRet3.Content;
 
                     BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
@@ -324,10 +323,10 @@ namespace CSSPWebAPI.Tests.Controllers
 
                     // Delete to return success
                     IHttpActionResult jsonRet2 = reportSectionController.Delete(reportSectionRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet2);
+                    Assert.NotNull(jsonRet2);
 
                     OkNegotiatedContentResult<ReportSection> reportSectionRet2 = jsonRet2 as OkNegotiatedContentResult<ReportSection>;
-                    Assert.IsNotNull(reportSectionRet2);
+                    Assert.NotNull(reportSectionRet2);
 
                     BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
                     Assert.IsNull(badRequest2);
@@ -335,13 +334,13 @@ namespace CSSPWebAPI.Tests.Controllers
                     // Delete to return CSSPError because ReportSectionID of 0 does not exist
                     reportSectionRet.ReportSectionID = 0;
                     IHttpActionResult jsonRet4 = reportSectionController.Delete(reportSectionRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet4);
+                    Assert.NotNull(jsonRet4);
 
                     OkNegotiatedContentResult<ReportSection> reportSectionRet4 = jsonRet4 as OkNegotiatedContentResult<ReportSection>;
                     Assert.IsNull(reportSectionRet4);
 
                     BadRequestErrorMessageResult badRequest4 = jsonRet4 as BadRequestErrorMessageResult;
-                    Assert.IsNotNull(badRequest4);
+                    Assert.NotNull(badRequest4);
                 }
             }
         }
