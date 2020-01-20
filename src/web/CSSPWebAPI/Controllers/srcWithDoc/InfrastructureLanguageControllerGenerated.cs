@@ -1,0 +1,211 @@
+using CSSPEnums;
+using CSSPModels;
+using CSSPServices;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web.Http;
+
+namespace CSSPWebAPI.Controllers
+{
+    [RoutePrefix("api/infrastructureLanguage")]
+    public partial class InfrastructureLanguageController : BaseController
+    {
+        #region Variables
+        #endregion Variables
+
+        #region Properties
+        #endregion Properties
+
+        #region Constructors
+        public InfrastructureLanguageController() : base()
+        {
+        }
+        public InfrastructureLanguageController(DatabaseTypeEnum dbt = DatabaseTypeEnum.SqlServerTestDB) : base(dbt)
+        {
+        }
+        #endregion Constructors
+
+        #region Functions public
+        // GET api/infrastructureLanguage
+        [Route("")]
+        public IHttpActionResult GetInfrastructureLanguageList([FromUri]string lang = "en", [FromUri]int skip = 0, [FromUri]int take = 200,
+            [FromUri]string asc = "", [FromUri]string desc = "", [FromUri]string where = "", [FromUri]string extra = "")
+        {
+            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
+            {
+                InfrastructureLanguageService infrastructureLanguageService = new InfrastructureLanguageService(new Query() { Lang = lang }, db, ContactID);
+
+                if (extra == "A") // QueryString contains [extra=A]
+                {
+                   infrastructureLanguageService.Query = infrastructureLanguageService.FillQuery(typeof(InfrastructureLanguageExtraA), lang, skip, take, asc, desc, where, extra);
+
+                    if (infrastructureLanguageService.Query.HasErrors)
+                    {
+                        return Ok(new List<InfrastructureLanguageExtraA>()
+                        {
+                            new InfrastructureLanguageExtraA()
+                            {
+                                HasErrors = infrastructureLanguageService.Query.HasErrors,
+                                ValidationResults = infrastructureLanguageService.Query.ValidationResults,
+                            },
+                        }.ToList());
+                    }
+                    else
+                    {
+                        return Ok(infrastructureLanguageService.GetInfrastructureLanguageExtraAList().ToList());
+                    }
+                }
+                else if (extra == "B") // QueryString contains [extra=B]
+                {
+                   infrastructureLanguageService.Query = infrastructureLanguageService.FillQuery(typeof(InfrastructureLanguageExtraB), lang, skip, take, asc, desc, where, extra);
+
+                    if (infrastructureLanguageService.Query.HasErrors)
+                    {
+                        return Ok(new List<InfrastructureLanguageExtraB>()
+                        {
+                            new InfrastructureLanguageExtraB()
+                            {
+                                HasErrors = infrastructureLanguageService.Query.HasErrors,
+                                ValidationResults = infrastructureLanguageService.Query.ValidationResults,
+                            },
+                        }.ToList());
+                    }
+                    else
+                    {
+                        return Ok(infrastructureLanguageService.GetInfrastructureLanguageExtraBList().ToList());
+                    }
+                }
+                else // QueryString has no parameter [extra] or extra is empty
+                {
+                   infrastructureLanguageService.Query = infrastructureLanguageService.FillQuery(typeof(InfrastructureLanguage), lang, skip, take, asc, desc, where, extra);
+
+                    if (infrastructureLanguageService.Query.HasErrors)
+                    {
+                        return Ok(new List<InfrastructureLanguage>()
+                        {
+                            new InfrastructureLanguage()
+                            {
+                                HasErrors = infrastructureLanguageService.Query.HasErrors,
+                                ValidationResults = infrastructureLanguageService.Query.ValidationResults,
+                            },
+                        }.ToList());
+                    }
+                    else
+                    {
+                        return Ok(infrastructureLanguageService.GetInfrastructureLanguageList().ToList());
+                    }
+                }
+            }
+        }
+        // GET api/infrastructureLanguage/1
+        [Route("{InfrastructureLanguageID:int}")]
+        public IHttpActionResult GetInfrastructureLanguageWithID([FromUri]int InfrastructureLanguageID, [FromUri]string lang = "en", [FromUri]string extra = "")
+        {
+            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
+            {
+                InfrastructureLanguageService infrastructureLanguageService = new InfrastructureLanguageService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+
+                infrastructureLanguageService.Query = infrastructureLanguageService.FillQuery(typeof(InfrastructureLanguage), lang, 0, 1, "", "", extra);
+
+                if (infrastructureLanguageService.Query.Extra == "A")
+                {
+                    InfrastructureLanguageExtraA infrastructureLanguageExtraA = new InfrastructureLanguageExtraA();
+                    infrastructureLanguageExtraA = infrastructureLanguageService.GetInfrastructureLanguageExtraAWithInfrastructureLanguageID(InfrastructureLanguageID);
+
+                    if (infrastructureLanguageExtraA == null)
+                    {
+                        return NotFound();
+                    }
+
+                    return Ok(infrastructureLanguageExtraA);
+                }
+                else if (infrastructureLanguageService.Query.Extra == "B")
+                {
+                    InfrastructureLanguageExtraB infrastructureLanguageExtraB = new InfrastructureLanguageExtraB();
+                    infrastructureLanguageExtraB = infrastructureLanguageService.GetInfrastructureLanguageExtraBWithInfrastructureLanguageID(InfrastructureLanguageID);
+
+                    if (infrastructureLanguageExtraB == null)
+                    {
+                        return NotFound();
+                    }
+
+                    return Ok(infrastructureLanguageExtraB);
+                }
+                else
+                {
+                    InfrastructureLanguage infrastructureLanguage = new InfrastructureLanguage();
+                    infrastructureLanguage = infrastructureLanguageService.GetInfrastructureLanguageWithInfrastructureLanguageID(InfrastructureLanguageID);
+
+                    if (infrastructureLanguage == null)
+                    {
+                        return NotFound();
+                    }
+
+                    return Ok(infrastructureLanguage);
+                }
+            }
+        }
+        // POST api/infrastructureLanguage
+        [Route("")]
+        public IHttpActionResult Post([FromBody]InfrastructureLanguage infrastructureLanguage, [FromUri]string lang = "en")
+        {
+            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
+            {
+                InfrastructureLanguageService infrastructureLanguageService = new InfrastructureLanguageService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+
+                if (!infrastructureLanguageService.Add(infrastructureLanguage))
+                {
+                    return BadRequest(String.Join("|||", infrastructureLanguage.ValidationResults));
+                }
+                else
+                {
+                    infrastructureLanguage.ValidationResults = null;
+                    return Created<InfrastructureLanguage>(new Uri(Request.RequestUri, infrastructureLanguage.InfrastructureLanguageID.ToString()), infrastructureLanguage);
+                }
+            }
+        }
+        // PUT api/infrastructureLanguage
+        [Route("")]
+        public IHttpActionResult Put([FromBody]InfrastructureLanguage infrastructureLanguage, [FromUri]string lang = "en")
+        {
+            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
+            {
+                InfrastructureLanguageService infrastructureLanguageService = new InfrastructureLanguageService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+
+                if (!infrastructureLanguageService.Update(infrastructureLanguage))
+                {
+                    return BadRequest(String.Join("|||", infrastructureLanguage.ValidationResults));
+                }
+                else
+                {
+                    infrastructureLanguage.ValidationResults = null;
+                    return Ok(infrastructureLanguage);
+                }
+            }
+        }
+        // DELETE api/infrastructureLanguage
+        [Route("")]
+        public IHttpActionResult Delete([FromBody]InfrastructureLanguage infrastructureLanguage, [FromUri]string lang = "en")
+        {
+            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
+            {
+                InfrastructureLanguageService infrastructureLanguageService = new InfrastructureLanguageService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+
+                if (!infrastructureLanguageService.Delete(infrastructureLanguage))
+                {
+                    return BadRequest(String.Join("|||", infrastructureLanguage.ValidationResults));
+                }
+                else
+                {
+                    infrastructureLanguage.ValidationResults = null;
+                    return Ok(infrastructureLanguage);
+                }
+            }
+        }
+        #endregion Functions public
+
+        #region Functions private
+        #endregion Functions private
+    }
+}

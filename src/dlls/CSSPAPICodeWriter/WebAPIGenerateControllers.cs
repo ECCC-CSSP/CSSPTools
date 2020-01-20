@@ -108,10 +108,10 @@ namespace CSSPWebAPIGenerateCodeHelper
                     sb.AppendLine(@"using CSSPEnums;");
                     sb.AppendLine(@"using CSSPModels;");
                     sb.AppendLine(@"using CSSPServices;");
+                    sb.AppendLine(@"using Microsoft.AspNetCore.Mvc;");
                     sb.AppendLine(@"using System;");
                     sb.AppendLine(@"using System.Collections.Generic;");
                     sb.AppendLine(@"using System.Linq;");
-                    sb.AppendLine(@"using Microsoft.AspNetCore.Components;;");
                     sb.AppendLine(@"");
                     sb.AppendLine(@"namespace CSSPWebAPI.Controllers");
                     sb.AppendLine(@"{");
@@ -137,41 +137,38 @@ namespace CSSPWebAPIGenerateCodeHelper
 
                     sb.AppendLine($@"        // GET api/{ TypeNameLower }");
                     sb.AppendLine(@"        [Route("""")]");
-                    sb.AppendLine($@"        public IHttpActionResult Get{ TypeName }List([FromUri]string lang = ""en"", [FromUri]int skip = 0, [FromUri]int take = 200,");
-                    sb.AppendLine($@"            [FromUri]string asc = """", [FromUri]string desc = """", [FromUri]string where = """")");
+                    sb.AppendLine($@"        public IActionResult Get{ TypeName }List([FromQuery]string lang = ""en"", [FromQuery]int skip = 0, [FromQuery]int take = 200,");
+                    sb.AppendLine($@"            [FromQuery]string asc = """", [FromQuery]string desc = """", [FromQuery]string where = """")");
                     sb.AppendLine(@"        {");
                     sb.AppendLine(@"            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))");
                     sb.AppendLine(@"            {");
                     string QueryStr = @"new Query() { Lang = lang }";
                     sb.AppendLine($@"                { TypeName }Service { TypeNameLower }Service = new { TypeName }Service({ QueryStr }, db, ContactID);");
                     sb.AppendLine(@"");
-                    sb.AppendLine(@"                else");
-                    sb.AppendLine(@"                {");
-                    sb.AppendLine($@"                   { TypeNameLower }Service.Query = { TypeNameLower }Service.FillQuery(typeof({ TypeName }), lang, skip, take, asc, desc, where);");
-                    sb.AppendLine(@"");
-                    sb.AppendLine($@"                    if ({ TypeNameLower }Service.Query.HasErrors)");
-                    sb.AppendLine(@"                    {");
-                    sb.AppendLine($@"                        return Ok(new List<{ TypeName }>()");
-                    sb.AppendLine(@"                        {");
-                    sb.AppendLine($@"                            new { TypeName }()");
-                    sb.AppendLine(@"                            {");
-                    sb.AppendLine($@"                                HasErrors = { TypeNameLower }Service.Query.HasErrors,");
-                    sb.AppendLine($@"                                ValidationResults = { TypeNameLower }Service.Query.ValidationResults,");
-                    sb.AppendLine(@"                            },");
-                    sb.AppendLine(@"                        }.ToList());");
-                    sb.AppendLine(@"                    }");
-                    sb.AppendLine(@"                    else");
-                    sb.AppendLine(@"                    {");
-                    sb.AppendLine($@"                        return Ok({ TypeNameLower }Service.Get{ TypeName }List().ToList());");
-                    sb.AppendLine(@"                    }");
-                    sb.AppendLine(@"                }");
+                    sb.AppendLine($@"                { TypeNameLower }Service.Query = { TypeNameLower }Service.FillQuery(typeof({ TypeName }), lang, skip, take, asc, desc, where);");
+                    sb.AppendLine(@"");              
+                    sb.AppendLine($@"                 if ({ TypeNameLower }Service.Query.HasErrors)");
+                    sb.AppendLine(@"                 {");
+                    sb.AppendLine($@"                     return Ok(new List<{ TypeName }>()");
+                    sb.AppendLine(@"                     {");
+                    sb.AppendLine($@"                         new { TypeName }()");
+                    sb.AppendLine(@"                         {");
+                    sb.AppendLine($@"                             HasErrors = { TypeNameLower }Service.Query.HasErrors,");
+                    sb.AppendLine($@"                             ValidationResults = { TypeNameLower }Service.Query.ValidationResults,");
+                    sb.AppendLine(@"                         },");
+                    sb.AppendLine(@"                     }.ToList());");
+                    sb.AppendLine(@"                 }");
+                    sb.AppendLine(@"                 else");
+                    sb.AppendLine(@"                 {");
+                    sb.AppendLine($@"                     return Ok({ TypeNameLower }Service.Get{ TypeName }List().ToList());");
+                    sb.AppendLine(@"                 }");
                     sb.AppendLine(@"            }");
                     sb.AppendLine(@"        }");
 
 
                     sb.AppendLine($@"        // GET api/{ TypeNameLower }/1");
                     sb.AppendLine($@"        [Route(""{{{ TypeName }ID:int}}"")]");
-                    sb.AppendLine($@"        public IHttpActionResult Get{ TypeName }WithID([FromUri]int { TypeName }ID, [FromUri]string lang = ""en"")");
+                    sb.AppendLine($@"        public IActionResult Get{ TypeName }WithID([FromQuery]int { TypeName }ID, [FromQuery]string lang = ""en"")");
                     sb.AppendLine(@"        {");
                     sb.AppendLine(@"            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))");
                     sb.AppendLine(@"            {");
@@ -180,24 +177,21 @@ namespace CSSPWebAPIGenerateCodeHelper
                     sb.AppendLine(@"");
                     sb.AppendLine($@"                { TypeNameLower }Service.Query = { TypeNameLower }Service.FillQuery(typeof({ TypeName }), lang, 0, 1, """", """");");
                     sb.AppendLine(@"");
-                    sb.AppendLine(@"                else");
-                    sb.AppendLine(@"                {");
-                    sb.AppendLine($@"                    { TypeName } { TypeNameLower } = new { TypeName }();");
-                    sb.AppendLine($@"                    { TypeNameLower } = { TypeNameLower }Service.Get{ TypeName }With{ TypeName }ID({ TypeName }ID);");
+                    sb.AppendLine($@"                { TypeName } { TypeNameLower } = new { TypeName }();");
+                    sb.AppendLine($@"                { TypeNameLower } = { TypeNameLower }Service.Get{ TypeName }With{ TypeName }ID({ TypeName }ID);");
                     sb.AppendLine(@"");
-                    sb.AppendLine($@"                    if ({ TypeNameLower } == null)");
-                    sb.AppendLine(@"                    {");
-                    sb.AppendLine($@"                        return NotFound();");
-                    sb.AppendLine(@"                    }");
-                    sb.AppendLine($@"");
-                    sb.AppendLine($@"                    return Ok({ TypeNameLower });");
+                    sb.AppendLine($@"                if ({ TypeNameLower } == null)");
+                    sb.AppendLine(@"                {");
+                    sb.AppendLine($@"                    return NotFound();");
                     sb.AppendLine(@"                }");
+                    sb.AppendLine($@"");
+                    sb.AppendLine($@"                return Ok({ TypeNameLower });");
                     sb.AppendLine(@"            }");
                     sb.AppendLine(@"        }");
 
                     sb.AppendLine($@"        // POST api/{ TypeNameLower }");
                     sb.AppendLine(@"        [Route("""")]");
-                    sb.AppendLine($@"        public IHttpActionResult Post([FromBody]{ TypeName } { TypeNameLower }, [FromUri]string lang = ""en"")");
+                    sb.AppendLine($@"        public IActionResult Post([FromBody]{ TypeName } { TypeNameLower }, [FromQuery]string lang = ""en"")");
                     sb.AppendLine(@"        {");
                     sb.AppendLine(@"            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))");
                     sb.AppendLine(@"            {");
@@ -225,7 +219,7 @@ namespace CSSPWebAPIGenerateCodeHelper
 
                     sb.AppendLine($@"        // PUT api/{ TypeNameLower }");
                     sb.AppendLine(@"        [Route("""")]");
-                    sb.AppendLine($@"        public IHttpActionResult Put([FromBody]{ TypeName } { TypeNameLower }, [FromUri]string lang = ""en"")");
+                    sb.AppendLine($@"        public IActionResult Put([FromBody]{ TypeName } { TypeNameLower }, [FromQuery]string lang = ""en"")");
                     sb.AppendLine(@"        {");
                     sb.AppendLine(@"            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))");
                     sb.AppendLine(@"            {");
@@ -253,7 +247,7 @@ namespace CSSPWebAPIGenerateCodeHelper
 
                     sb.AppendLine($@"        // DELETE api/{ TypeNameLower }");
                     sb.AppendLine(@"        [Route("""")]");
-                    sb.AppendLine($@"        public IHttpActionResult Delete([FromBody]{ TypeName } { TypeNameLower }, [FromUri]string lang = ""en"")");
+                    sb.AppendLine($@"        public IActionResult Delete([FromBody]{ TypeName } { TypeNameLower }, [FromQuery]string lang = ""en"")");
                     sb.AppendLine(@"        {");
                     sb.AppendLine(@"            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))");
                     sb.AppendLine(@"            {");
@@ -289,7 +283,7 @@ namespace CSSPWebAPIGenerateCodeHelper
                     FileInfo fiOutputGen = null;
                     if (WithDoc)
                     {
-                        fiOutputGen = new FileInfo($@"C:\CSSPTools\src\web\CSSPWebAPI\Controllers\GeneratedWithDoc\{ TypeName }ControllerGenerated.cs");
+                        fiOutputGen = new FileInfo($@"C:\CSSPTools\src\web\CSSPWebAPI\Controllers\srcWithDoc\{ TypeName }ControllerGenerated.cs");
                         using (StreamWriter sw2 = fiOutputGen.CreateText())
                         {
                             sw2.Write(sb.ToString());
@@ -297,7 +291,7 @@ namespace CSSPWebAPIGenerateCodeHelper
                     }
                     else
                     {
-                        fiOutputGen = new FileInfo($@"C:\CSSPTools\src\web\CSSPWebAPI\Controllers\Generated\{ TypeName }ControllerGenerated.cs");
+                        fiOutputGen = new FileInfo($@"C:\CSSPTools\src\web\CSSPWebAPI\Controllers\src\{ TypeName }ControllerGenerated.cs");
                         using (StreamWriter sw2 = fiOutputGen.CreateText())
                         {
                             sw2.Write(sb.ToString());

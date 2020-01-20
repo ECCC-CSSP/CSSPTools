@@ -55,7 +55,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsoleAppTestingOpenXML", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsoleAppHelloWorld", "src\play\ConsoleAppHelloWorld\ConsoleAppHelloWorld.csproj", "{B6D0BE74-CF3D-4B62-B5AA-04E5A296AAA0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CSSPWebTools2", "src\web\CSSPWebTools2\CSSPWebTools2.csproj", "{380505D4-C165-4704-9790-A36CA45B8428}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSSPWebTools2", "src\web\CSSPWebTools2\CSSPWebTools2.csproj", "{380505D4-C165-4704-9790-A36CA45B8428}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

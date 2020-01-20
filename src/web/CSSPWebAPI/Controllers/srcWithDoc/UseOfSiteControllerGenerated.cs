@@ -1,0 +1,211 @@
+using CSSPEnums;
+using CSSPModels;
+using CSSPServices;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web.Http;
+
+namespace CSSPWebAPI.Controllers
+{
+    [RoutePrefix("api/useOfSite")]
+    public partial class UseOfSiteController : BaseController
+    {
+        #region Variables
+        #endregion Variables
+
+        #region Properties
+        #endregion Properties
+
+        #region Constructors
+        public UseOfSiteController() : base()
+        {
+        }
+        public UseOfSiteController(DatabaseTypeEnum dbt = DatabaseTypeEnum.SqlServerTestDB) : base(dbt)
+        {
+        }
+        #endregion Constructors
+
+        #region Functions public
+        // GET api/useOfSite
+        [Route("")]
+        public IHttpActionResult GetUseOfSiteList([FromUri]string lang = "en", [FromUri]int skip = 0, [FromUri]int take = 200,
+            [FromUri]string asc = "", [FromUri]string desc = "", [FromUri]string where = "", [FromUri]string extra = "")
+        {
+            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
+            {
+                UseOfSiteService useOfSiteService = new UseOfSiteService(new Query() { Lang = lang }, db, ContactID);
+
+                if (extra == "A") // QueryString contains [extra=A]
+                {
+                   useOfSiteService.Query = useOfSiteService.FillQuery(typeof(UseOfSiteExtraA), lang, skip, take, asc, desc, where, extra);
+
+                    if (useOfSiteService.Query.HasErrors)
+                    {
+                        return Ok(new List<UseOfSiteExtraA>()
+                        {
+                            new UseOfSiteExtraA()
+                            {
+                                HasErrors = useOfSiteService.Query.HasErrors,
+                                ValidationResults = useOfSiteService.Query.ValidationResults,
+                            },
+                        }.ToList());
+                    }
+                    else
+                    {
+                        return Ok(useOfSiteService.GetUseOfSiteExtraAList().ToList());
+                    }
+                }
+                else if (extra == "B") // QueryString contains [extra=B]
+                {
+                   useOfSiteService.Query = useOfSiteService.FillQuery(typeof(UseOfSiteExtraB), lang, skip, take, asc, desc, where, extra);
+
+                    if (useOfSiteService.Query.HasErrors)
+                    {
+                        return Ok(new List<UseOfSiteExtraB>()
+                        {
+                            new UseOfSiteExtraB()
+                            {
+                                HasErrors = useOfSiteService.Query.HasErrors,
+                                ValidationResults = useOfSiteService.Query.ValidationResults,
+                            },
+                        }.ToList());
+                    }
+                    else
+                    {
+                        return Ok(useOfSiteService.GetUseOfSiteExtraBList().ToList());
+                    }
+                }
+                else // QueryString has no parameter [extra] or extra is empty
+                {
+                   useOfSiteService.Query = useOfSiteService.FillQuery(typeof(UseOfSite), lang, skip, take, asc, desc, where, extra);
+
+                    if (useOfSiteService.Query.HasErrors)
+                    {
+                        return Ok(new List<UseOfSite>()
+                        {
+                            new UseOfSite()
+                            {
+                                HasErrors = useOfSiteService.Query.HasErrors,
+                                ValidationResults = useOfSiteService.Query.ValidationResults,
+                            },
+                        }.ToList());
+                    }
+                    else
+                    {
+                        return Ok(useOfSiteService.GetUseOfSiteList().ToList());
+                    }
+                }
+            }
+        }
+        // GET api/useOfSite/1
+        [Route("{UseOfSiteID:int}")]
+        public IHttpActionResult GetUseOfSiteWithID([FromUri]int UseOfSiteID, [FromUri]string lang = "en", [FromUri]string extra = "")
+        {
+            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
+            {
+                UseOfSiteService useOfSiteService = new UseOfSiteService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+
+                useOfSiteService.Query = useOfSiteService.FillQuery(typeof(UseOfSite), lang, 0, 1, "", "", extra);
+
+                if (useOfSiteService.Query.Extra == "A")
+                {
+                    UseOfSiteExtraA useOfSiteExtraA = new UseOfSiteExtraA();
+                    useOfSiteExtraA = useOfSiteService.GetUseOfSiteExtraAWithUseOfSiteID(UseOfSiteID);
+
+                    if (useOfSiteExtraA == null)
+                    {
+                        return NotFound();
+                    }
+
+                    return Ok(useOfSiteExtraA);
+                }
+                else if (useOfSiteService.Query.Extra == "B")
+                {
+                    UseOfSiteExtraB useOfSiteExtraB = new UseOfSiteExtraB();
+                    useOfSiteExtraB = useOfSiteService.GetUseOfSiteExtraBWithUseOfSiteID(UseOfSiteID);
+
+                    if (useOfSiteExtraB == null)
+                    {
+                        return NotFound();
+                    }
+
+                    return Ok(useOfSiteExtraB);
+                }
+                else
+                {
+                    UseOfSite useOfSite = new UseOfSite();
+                    useOfSite = useOfSiteService.GetUseOfSiteWithUseOfSiteID(UseOfSiteID);
+
+                    if (useOfSite == null)
+                    {
+                        return NotFound();
+                    }
+
+                    return Ok(useOfSite);
+                }
+            }
+        }
+        // POST api/useOfSite
+        [Route("")]
+        public IHttpActionResult Post([FromBody]UseOfSite useOfSite, [FromUri]string lang = "en")
+        {
+            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
+            {
+                UseOfSiteService useOfSiteService = new UseOfSiteService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+
+                if (!useOfSiteService.Add(useOfSite))
+                {
+                    return BadRequest(String.Join("|||", useOfSite.ValidationResults));
+                }
+                else
+                {
+                    useOfSite.ValidationResults = null;
+                    return Created<UseOfSite>(new Uri(Request.RequestUri, useOfSite.UseOfSiteID.ToString()), useOfSite);
+                }
+            }
+        }
+        // PUT api/useOfSite
+        [Route("")]
+        public IHttpActionResult Put([FromBody]UseOfSite useOfSite, [FromUri]string lang = "en")
+        {
+            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
+            {
+                UseOfSiteService useOfSiteService = new UseOfSiteService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+
+                if (!useOfSiteService.Update(useOfSite))
+                {
+                    return BadRequest(String.Join("|||", useOfSite.ValidationResults));
+                }
+                else
+                {
+                    useOfSite.ValidationResults = null;
+                    return Ok(useOfSite);
+                }
+            }
+        }
+        // DELETE api/useOfSite
+        [Route("")]
+        public IHttpActionResult Delete([FromBody]UseOfSite useOfSite, [FromUri]string lang = "en")
+        {
+            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
+            {
+                UseOfSiteService useOfSiteService = new UseOfSiteService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+
+                if (!useOfSiteService.Delete(useOfSite))
+                {
+                    return BadRequest(String.Join("|||", useOfSite.ValidationResults));
+                }
+                else
+                {
+                    useOfSite.ValidationResults = null;
+                    return Ok(useOfSite);
+                }
+            }
+        }
+        #endregion Functions public
+
+        #region Functions private
+        #endregion Functions private
+    }
+}

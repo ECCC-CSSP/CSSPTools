@@ -1,0 +1,211 @@
+using CSSPEnums;
+using CSSPModels;
+using CSSPServices;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web.Http;
+
+namespace CSSPWebAPI.Controllers
+{
+    [RoutePrefix("api/boxModelResult")]
+    public partial class BoxModelResultController : BaseController
+    {
+        #region Variables
+        #endregion Variables
+
+        #region Properties
+        #endregion Properties
+
+        #region Constructors
+        public BoxModelResultController() : base()
+        {
+        }
+        public BoxModelResultController(DatabaseTypeEnum dbt = DatabaseTypeEnum.SqlServerTestDB) : base(dbt)
+        {
+        }
+        #endregion Constructors
+
+        #region Functions public
+        // GET api/boxModelResult
+        [Route("")]
+        public IHttpActionResult GetBoxModelResultList([FromUri]string lang = "en", [FromUri]int skip = 0, [FromUri]int take = 200,
+            [FromUri]string asc = "", [FromUri]string desc = "", [FromUri]string where = "", [FromUri]string extra = "")
+        {
+            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
+            {
+                BoxModelResultService boxModelResultService = new BoxModelResultService(new Query() { Lang = lang }, db, ContactID);
+
+                if (extra == "A") // QueryString contains [extra=A]
+                {
+                   boxModelResultService.Query = boxModelResultService.FillQuery(typeof(BoxModelResultExtraA), lang, skip, take, asc, desc, where, extra);
+
+                    if (boxModelResultService.Query.HasErrors)
+                    {
+                        return Ok(new List<BoxModelResultExtraA>()
+                        {
+                            new BoxModelResultExtraA()
+                            {
+                                HasErrors = boxModelResultService.Query.HasErrors,
+                                ValidationResults = boxModelResultService.Query.ValidationResults,
+                            },
+                        }.ToList());
+                    }
+                    else
+                    {
+                        return Ok(boxModelResultService.GetBoxModelResultExtraAList().ToList());
+                    }
+                }
+                else if (extra == "B") // QueryString contains [extra=B]
+                {
+                   boxModelResultService.Query = boxModelResultService.FillQuery(typeof(BoxModelResultExtraB), lang, skip, take, asc, desc, where, extra);
+
+                    if (boxModelResultService.Query.HasErrors)
+                    {
+                        return Ok(new List<BoxModelResultExtraB>()
+                        {
+                            new BoxModelResultExtraB()
+                            {
+                                HasErrors = boxModelResultService.Query.HasErrors,
+                                ValidationResults = boxModelResultService.Query.ValidationResults,
+                            },
+                        }.ToList());
+                    }
+                    else
+                    {
+                        return Ok(boxModelResultService.GetBoxModelResultExtraBList().ToList());
+                    }
+                }
+                else // QueryString has no parameter [extra] or extra is empty
+                {
+                   boxModelResultService.Query = boxModelResultService.FillQuery(typeof(BoxModelResult), lang, skip, take, asc, desc, where, extra);
+
+                    if (boxModelResultService.Query.HasErrors)
+                    {
+                        return Ok(new List<BoxModelResult>()
+                        {
+                            new BoxModelResult()
+                            {
+                                HasErrors = boxModelResultService.Query.HasErrors,
+                                ValidationResults = boxModelResultService.Query.ValidationResults,
+                            },
+                        }.ToList());
+                    }
+                    else
+                    {
+                        return Ok(boxModelResultService.GetBoxModelResultList().ToList());
+                    }
+                }
+            }
+        }
+        // GET api/boxModelResult/1
+        [Route("{BoxModelResultID:int}")]
+        public IHttpActionResult GetBoxModelResultWithID([FromUri]int BoxModelResultID, [FromUri]string lang = "en", [FromUri]string extra = "")
+        {
+            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
+            {
+                BoxModelResultService boxModelResultService = new BoxModelResultService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+
+                boxModelResultService.Query = boxModelResultService.FillQuery(typeof(BoxModelResult), lang, 0, 1, "", "", extra);
+
+                if (boxModelResultService.Query.Extra == "A")
+                {
+                    BoxModelResultExtraA boxModelResultExtraA = new BoxModelResultExtraA();
+                    boxModelResultExtraA = boxModelResultService.GetBoxModelResultExtraAWithBoxModelResultID(BoxModelResultID);
+
+                    if (boxModelResultExtraA == null)
+                    {
+                        return NotFound();
+                    }
+
+                    return Ok(boxModelResultExtraA);
+                }
+                else if (boxModelResultService.Query.Extra == "B")
+                {
+                    BoxModelResultExtraB boxModelResultExtraB = new BoxModelResultExtraB();
+                    boxModelResultExtraB = boxModelResultService.GetBoxModelResultExtraBWithBoxModelResultID(BoxModelResultID);
+
+                    if (boxModelResultExtraB == null)
+                    {
+                        return NotFound();
+                    }
+
+                    return Ok(boxModelResultExtraB);
+                }
+                else
+                {
+                    BoxModelResult boxModelResult = new BoxModelResult();
+                    boxModelResult = boxModelResultService.GetBoxModelResultWithBoxModelResultID(BoxModelResultID);
+
+                    if (boxModelResult == null)
+                    {
+                        return NotFound();
+                    }
+
+                    return Ok(boxModelResult);
+                }
+            }
+        }
+        // POST api/boxModelResult
+        [Route("")]
+        public IHttpActionResult Post([FromBody]BoxModelResult boxModelResult, [FromUri]string lang = "en")
+        {
+            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
+            {
+                BoxModelResultService boxModelResultService = new BoxModelResultService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+
+                if (!boxModelResultService.Add(boxModelResult))
+                {
+                    return BadRequest(String.Join("|||", boxModelResult.ValidationResults));
+                }
+                else
+                {
+                    boxModelResult.ValidationResults = null;
+                    return Created<BoxModelResult>(new Uri(Request.RequestUri, boxModelResult.BoxModelResultID.ToString()), boxModelResult);
+                }
+            }
+        }
+        // PUT api/boxModelResult
+        [Route("")]
+        public IHttpActionResult Put([FromBody]BoxModelResult boxModelResult, [FromUri]string lang = "en")
+        {
+            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
+            {
+                BoxModelResultService boxModelResultService = new BoxModelResultService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+
+                if (!boxModelResultService.Update(boxModelResult))
+                {
+                    return BadRequest(String.Join("|||", boxModelResult.ValidationResults));
+                }
+                else
+                {
+                    boxModelResult.ValidationResults = null;
+                    return Ok(boxModelResult);
+                }
+            }
+        }
+        // DELETE api/boxModelResult
+        [Route("")]
+        public IHttpActionResult Delete([FromBody]BoxModelResult boxModelResult, [FromUri]string lang = "en")
+        {
+            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
+            {
+                BoxModelResultService boxModelResultService = new BoxModelResultService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+
+                if (!boxModelResultService.Delete(boxModelResult))
+                {
+                    return BadRequest(String.Join("|||", boxModelResult.ValidationResults));
+                }
+                else
+                {
+                    boxModelResult.ValidationResults = null;
+                    return Ok(boxModelResult);
+                }
+            }
+        }
+        #endregion Functions public
+
+        #region Functions private
+        #endregion Functions private
+    }
+}

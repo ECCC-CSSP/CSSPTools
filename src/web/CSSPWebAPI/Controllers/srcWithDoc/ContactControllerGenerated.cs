@@ -1,0 +1,211 @@
+using CSSPEnums;
+using CSSPModels;
+using CSSPServices;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web.Http;
+
+namespace CSSPWebAPI.Controllers
+{
+    [RoutePrefix("api/contact")]
+    public partial class ContactController : BaseController
+    {
+        #region Variables
+        #endregion Variables
+
+        #region Properties
+        #endregion Properties
+
+        #region Constructors
+        public ContactController() : base()
+        {
+        }
+        public ContactController(DatabaseTypeEnum dbt = DatabaseTypeEnum.SqlServerTestDB) : base(dbt)
+        {
+        }
+        #endregion Constructors
+
+        #region Functions public
+        // GET api/contact
+        [Route("")]
+        public IHttpActionResult GetContactList([FromUri]string lang = "en", [FromUri]int skip = 0, [FromUri]int take = 200,
+            [FromUri]string asc = "", [FromUri]string desc = "", [FromUri]string where = "", [FromUri]string extra = "")
+        {
+            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
+            {
+                ContactService contactService = new ContactService(new Query() { Lang = lang }, db, ContactID);
+
+                if (extra == "A") // QueryString contains [extra=A]
+                {
+                   contactService.Query = contactService.FillQuery(typeof(ContactExtraA), lang, skip, take, asc, desc, where, extra);
+
+                    if (contactService.Query.HasErrors)
+                    {
+                        return Ok(new List<ContactExtraA>()
+                        {
+                            new ContactExtraA()
+                            {
+                                HasErrors = contactService.Query.HasErrors,
+                                ValidationResults = contactService.Query.ValidationResults,
+                            },
+                        }.ToList());
+                    }
+                    else
+                    {
+                        return Ok(contactService.GetContactExtraAList().ToList());
+                    }
+                }
+                else if (extra == "B") // QueryString contains [extra=B]
+                {
+                   contactService.Query = contactService.FillQuery(typeof(ContactExtraB), lang, skip, take, asc, desc, where, extra);
+
+                    if (contactService.Query.HasErrors)
+                    {
+                        return Ok(new List<ContactExtraB>()
+                        {
+                            new ContactExtraB()
+                            {
+                                HasErrors = contactService.Query.HasErrors,
+                                ValidationResults = contactService.Query.ValidationResults,
+                            },
+                        }.ToList());
+                    }
+                    else
+                    {
+                        return Ok(contactService.GetContactExtraBList().ToList());
+                    }
+                }
+                else // QueryString has no parameter [extra] or extra is empty
+                {
+                   contactService.Query = contactService.FillQuery(typeof(Contact), lang, skip, take, asc, desc, where, extra);
+
+                    if (contactService.Query.HasErrors)
+                    {
+                        return Ok(new List<Contact>()
+                        {
+                            new Contact()
+                            {
+                                HasErrors = contactService.Query.HasErrors,
+                                ValidationResults = contactService.Query.ValidationResults,
+                            },
+                        }.ToList());
+                    }
+                    else
+                    {
+                        return Ok(contactService.GetContactList().ToList());
+                    }
+                }
+            }
+        }
+        // GET api/contact/1
+        [Route("{ContactID:int}")]
+        public IHttpActionResult GetContactWithID([FromUri]int ContactID, [FromUri]string lang = "en", [FromUri]string extra = "")
+        {
+            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
+            {
+                ContactService contactService = new ContactService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+
+                contactService.Query = contactService.FillQuery(typeof(Contact), lang, 0, 1, "", "", extra);
+
+                if (contactService.Query.Extra == "A")
+                {
+                    ContactExtraA contactExtraA = new ContactExtraA();
+                    contactExtraA = contactService.GetContactExtraAWithContactID(ContactID);
+
+                    if (contactExtraA == null)
+                    {
+                        return NotFound();
+                    }
+
+                    return Ok(contactExtraA);
+                }
+                else if (contactService.Query.Extra == "B")
+                {
+                    ContactExtraB contactExtraB = new ContactExtraB();
+                    contactExtraB = contactService.GetContactExtraBWithContactID(ContactID);
+
+                    if (contactExtraB == null)
+                    {
+                        return NotFound();
+                    }
+
+                    return Ok(contactExtraB);
+                }
+                else
+                {
+                    Contact contact = new Contact();
+                    contact = contactService.GetContactWithContactID(ContactID);
+
+                    if (contact == null)
+                    {
+                        return NotFound();
+                    }
+
+                    return Ok(contact);
+                }
+            }
+        }
+        // POST api/contact
+        [Route("")]
+        public IHttpActionResult Post([FromBody]Contact contact, [FromUri]string lang = "en")
+        {
+            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
+            {
+                ContactService contactService = new ContactService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+
+                if (!contactService.Add(contact, AddContactTypeEnum.LoggedIn))
+                {
+                    return BadRequest(String.Join("|||", contact.ValidationResults));
+                }
+                else
+                {
+                    contact.ValidationResults = null;
+                    return Created<Contact>(new Uri(Request.RequestUri, contact.ContactID.ToString()), contact);
+                }
+            }
+        }
+        // PUT api/contact
+        [Route("")]
+        public IHttpActionResult Put([FromBody]Contact contact, [FromUri]string lang = "en")
+        {
+            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
+            {
+                ContactService contactService = new ContactService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+
+                if (!contactService.Update(contact))
+                {
+                    return BadRequest(String.Join("|||", contact.ValidationResults));
+                }
+                else
+                {
+                    contact.ValidationResults = null;
+                    return Ok(contact);
+                }
+            }
+        }
+        // DELETE api/contact
+        [Route("")]
+        public IHttpActionResult Delete([FromBody]Contact contact, [FromUri]string lang = "en")
+        {
+            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
+            {
+                ContactService contactService = new ContactService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+
+                if (!contactService.Delete(contact))
+                {
+                    return BadRequest(String.Join("|||", contact.ValidationResults));
+                }
+                else
+                {
+                    contact.ValidationResults = null;
+                    return Ok(contact);
+                }
+            }
+        }
+        #endregion Functions public
+
+        #region Functions private
+        #endregion Functions private
+    }
+}
