@@ -91,7 +91,7 @@ namespace CSSPWebAPI.Controllers
                 else
                 {
                     tvFileLanguage.ValidationResults = null;
-                    return Created<TVFileLanguage>(new Uri(Request.RequestUri, tvFileLanguage.TVFileLanguageID.ToString()), tvFileLanguage);
+                    return Created(Url.ToString(), tvFileLanguage);
                 }
             }
         }

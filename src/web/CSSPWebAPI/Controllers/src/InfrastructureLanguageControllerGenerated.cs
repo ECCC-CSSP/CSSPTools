@@ -91,7 +91,7 @@ namespace CSSPWebAPI.Controllers
                 else
                 {
                     infrastructureLanguage.ValidationResults = null;
-                    return Created<InfrastructureLanguage>(new Uri(Request.RequestUri, infrastructureLanguage.InfrastructureLanguageID.ToString()), infrastructureLanguage);
+                    return Created(Url.ToString(), infrastructureLanguage);
                 }
             }
         }

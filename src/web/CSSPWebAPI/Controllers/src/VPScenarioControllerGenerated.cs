@@ -91,7 +91,7 @@ namespace CSSPWebAPI.Controllers
                 else
                 {
                     vpScenario.ValidationResults = null;
-                    return Created<VPScenario>(new Uri(Request.RequestUri, vpScenario.VPScenarioID.ToString()), vpScenario);
+                    return Created(Url.ToString(), vpScenario);
                 }
             }
         }

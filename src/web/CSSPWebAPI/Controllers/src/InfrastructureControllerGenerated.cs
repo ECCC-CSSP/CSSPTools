@@ -91,7 +91,7 @@ namespace CSSPWebAPI.Controllers
                 else
                 {
                     infrastructure.ValidationResults = null;
-                    return Created<Infrastructure>(new Uri(Request.RequestUri, infrastructure.InfrastructureID.ToString()), infrastructure);
+                    return Created(Url.ToString(), infrastructure);
                 }
             }
         }

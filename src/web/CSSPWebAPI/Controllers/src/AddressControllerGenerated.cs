@@ -6,7 +6,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-
 namespace CSSPWebAPI.Controllers
 {
     [Route("api/address")]
@@ -92,7 +91,7 @@ namespace CSSPWebAPI.Controllers
                 else
                 {
                     address.ValidationResults = null;
-                    return Created<Address>(new Uri(Request.RequestUri, address.AddressID.ToString()), address);
+                    return Created(Url.ToString(), address);
                 }
             }
         }

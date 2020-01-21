@@ -212,7 +212,7 @@ namespace CSSPWebAPIGenerateCodeHelper
                     sb.AppendLine(@"                else");
                     sb.AppendLine(@"                {");
                     sb.AppendLine($@"                    { TypeNameLower }.ValidationResults = null;");
-                    sb.AppendLine($@"                    return Created<{ TypeName }>(new Uri(Request.RequestUri, { TypeNameLower }.{ TypeName }ID.ToString()), { TypeNameLower });");
+                    sb.AppendLine($@"                    return Created(Url.ToString(), { TypeNameLower });");
                     sb.AppendLine(@"                }");
                     sb.AppendLine(@"            }");
                     sb.AppendLine(@"        }");

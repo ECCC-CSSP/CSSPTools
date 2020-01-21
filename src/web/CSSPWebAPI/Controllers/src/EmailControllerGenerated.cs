@@ -91,7 +91,7 @@ namespace CSSPWebAPI.Controllers
                 else
                 {
                     email.ValidationResults = null;
-                    return Created<Email>(new Uri(Request.RequestUri, email.EmailID.ToString()), email);
+                    return Created(Url.ToString(), email);
                 }
             }
         }

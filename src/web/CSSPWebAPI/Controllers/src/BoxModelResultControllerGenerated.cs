@@ -91,7 +91,7 @@ namespace CSSPWebAPI.Controllers
                 else
                 {
                     boxModelResult.ValidationResults = null;
-                    return Created<BoxModelResult>(new Uri(Request.RequestUri, boxModelResult.BoxModelResultID.ToString()), boxModelResult);
+                    return Created(Url.ToString(), boxModelResult);
                 }
             }
         }

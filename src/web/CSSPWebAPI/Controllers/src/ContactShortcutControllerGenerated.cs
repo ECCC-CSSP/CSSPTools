@@ -91,7 +91,7 @@ namespace CSSPWebAPI.Controllers
                 else
                 {
                     contactShortcut.ValidationResults = null;
-                    return Created<ContactShortcut>(new Uri(Request.RequestUri, contactShortcut.ContactShortcutID.ToString()), contactShortcut);
+                    return Created(Url.ToString(), contactShortcut);
                 }
             }
         }

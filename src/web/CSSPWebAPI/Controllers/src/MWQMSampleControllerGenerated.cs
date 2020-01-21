@@ -91,7 +91,7 @@ namespace CSSPWebAPI.Controllers
                 else
                 {
                     mwqmSample.ValidationResults = null;
-                    return Created<MWQMSample>(new Uri(Request.RequestUri, mwqmSample.MWQMSampleID.ToString()), mwqmSample);
+                    return Created(Url.ToString(), mwqmSample);
                 }
             }
         }

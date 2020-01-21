@@ -91,7 +91,7 @@ namespace CSSPWebAPI.Controllers
                 else
                 {
                     reportType.ValidationResults = null;
-                    return Created<ReportType>(new Uri(Request.RequestUri, reportType.ReportTypeID.ToString()), reportType);
+                    return Created(Url.ToString(), reportType);
                 }
             }
         }

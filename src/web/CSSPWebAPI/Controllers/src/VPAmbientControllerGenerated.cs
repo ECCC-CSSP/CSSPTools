@@ -91,7 +91,7 @@ namespace CSSPWebAPI.Controllers
                 else
                 {
                     vpAmbient.ValidationResults = null;
-                    return Created<VPAmbient>(new Uri(Request.RequestUri, vpAmbient.VPAmbientID.ToString()), vpAmbient);
+                    return Created(Url.ToString(), vpAmbient);
                 }
             }
         }

@@ -91,7 +91,7 @@ namespace CSSPWebAPI.Controllers
                 else
                 {
                     climateDataValue.ValidationResults = null;
-                    return Created<ClimateDataValue>(new Uri(Request.RequestUri, climateDataValue.ClimateDataValueID.ToString()), climateDataValue);
+                    return Created(Url.ToString(), climateDataValue);
                 }
             }
         }

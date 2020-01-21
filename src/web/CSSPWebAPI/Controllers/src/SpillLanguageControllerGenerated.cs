@@ -91,7 +91,7 @@ namespace CSSPWebAPI.Controllers
                 else
                 {
                     spillLanguage.ValidationResults = null;
-                    return Created<SpillLanguage>(new Uri(Request.RequestUri, spillLanguage.SpillLanguageID.ToString()), spillLanguage);
+                    return Created(Url.ToString(), spillLanguage);
                 }
             }
         }

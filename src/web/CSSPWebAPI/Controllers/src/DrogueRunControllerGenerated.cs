@@ -91,7 +91,7 @@ namespace CSSPWebAPI.Controllers
                 else
                 {
                     drogueRun.ValidationResults = null;
-                    return Created<DrogueRun>(new Uri(Request.RequestUri, drogueRun.DrogueRunID.ToString()), drogueRun);
+                    return Created(Url.ToString(), drogueRun);
                 }
             }
         }

@@ -91,7 +91,7 @@ namespace CSSPWebAPI.Controllers
                 else
                 {
                     mikeScenarioResult.ValidationResults = null;
-                    return Created<MikeScenarioResult>(new Uri(Request.RequestUri, mikeScenarioResult.MikeScenarioResultID.ToString()), mikeScenarioResult);
+                    return Created(Url.ToString(), mikeScenarioResult);
                 }
             }
         }

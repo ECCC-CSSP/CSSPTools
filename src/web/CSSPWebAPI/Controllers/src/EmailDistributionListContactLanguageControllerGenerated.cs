@@ -91,7 +91,7 @@ namespace CSSPWebAPI.Controllers
                 else
                 {
                     emailDistributionListContactLanguage.ValidationResults = null;
-                    return Created<EmailDistributionListContactLanguage>(new Uri(Request.RequestUri, emailDistributionListContactLanguage.EmailDistributionListContactLanguageID.ToString()), emailDistributionListContactLanguage);
+                    return Created(Url.ToString(), emailDistributionListContactLanguage);
                 }
             }
         }

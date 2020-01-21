@@ -91,7 +91,7 @@ namespace CSSPWebAPI.Controllers
                 else
                 {
                     appTaskLanguage.ValidationResults = null;
-                    return Created<AppTaskLanguage>(new Uri(Request.RequestUri, appTaskLanguage.AppTaskLanguageID.ToString()), appTaskLanguage);
+                    return Created(Url.ToString(), appTaskLanguage);
                 }
             }
         }

@@ -91,7 +91,7 @@ namespace CSSPWebAPI.Controllers
                 else
                 {
                     mwqmAnalysisReportParameter.ValidationResults = null;
-                    return Created<MWQMAnalysisReportParameter>(new Uri(Request.RequestUri, mwqmAnalysisReportParameter.MWQMAnalysisReportParameterID.ToString()), mwqmAnalysisReportParameter);
+                    return Created(Url.ToString(), mwqmAnalysisReportParameter);
                 }
             }
         }

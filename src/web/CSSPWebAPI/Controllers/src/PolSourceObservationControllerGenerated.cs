@@ -91,7 +91,7 @@ namespace CSSPWebAPI.Controllers
                 else
                 {
                     polSourceObservation.ValidationResults = null;
-                    return Created<PolSourceObservation>(new Uri(Request.RequestUri, polSourceObservation.PolSourceObservationID.ToString()), polSourceObservation);
+                    return Created(Url.ToString(), polSourceObservation);
                 }
             }
         }

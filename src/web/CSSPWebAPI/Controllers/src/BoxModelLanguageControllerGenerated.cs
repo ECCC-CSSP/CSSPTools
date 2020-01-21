@@ -91,7 +91,7 @@ namespace CSSPWebAPI.Controllers
                 else
                 {
                     boxModelLanguage.ValidationResults = null;
-                    return Created<BoxModelLanguage>(new Uri(Request.RequestUri, boxModelLanguage.BoxModelLanguageID.ToString()), boxModelLanguage);
+                    return Created(Url.ToString(), boxModelLanguage);
                 }
             }
         }

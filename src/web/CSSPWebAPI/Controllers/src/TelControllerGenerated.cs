@@ -91,7 +91,7 @@ namespace CSSPWebAPI.Controllers
                 else
                 {
                     tel.ValidationResults = null;
-                    return Created<Tel>(new Uri(Request.RequestUri, tel.TelID.ToString()), tel);
+                    return Created(Url.ToString(), tel);
                 }
             }
         }

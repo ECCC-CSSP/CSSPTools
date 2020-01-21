@@ -91,7 +91,7 @@ namespace CSSPWebAPI.Controllers
                 else
                 {
                     mapInfoPoint.ValidationResults = null;
-                    return Created<MapInfoPoint>(new Uri(Request.RequestUri, mapInfoPoint.MapInfoPointID.ToString()), mapInfoPoint);
+                    return Created(Url.ToString(), mapInfoPoint);
                 }
             }
         }

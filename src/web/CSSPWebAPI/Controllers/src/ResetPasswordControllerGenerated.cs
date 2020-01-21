@@ -91,7 +91,7 @@ namespace CSSPWebAPI.Controllers
                 else
                 {
                     resetPassword.ValidationResults = null;
-                    return Created<ResetPassword>(new Uri(Request.RequestUri, resetPassword.ResetPasswordID.ToString()), resetPassword);
+                    return Created(Url.ToString(), resetPassword);
                 }
             }
         }

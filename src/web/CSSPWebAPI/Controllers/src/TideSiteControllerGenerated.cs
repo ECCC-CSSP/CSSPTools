@@ -91,7 +91,7 @@ namespace CSSPWebAPI.Controllers
                 else
                 {
                     tideSite.ValidationResults = null;
-                    return Created<TideSite>(new Uri(Request.RequestUri, tideSite.TideSiteID.ToString()), tideSite);
+                    return Created(Url.ToString(), tideSite);
                 }
             }
         }

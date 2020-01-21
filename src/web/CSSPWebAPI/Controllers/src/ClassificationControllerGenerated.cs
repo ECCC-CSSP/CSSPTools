@@ -91,7 +91,7 @@ namespace CSSPWebAPI.Controllers
                 else
                 {
                     classification.ValidationResults = null;
-                    return Created<Classification>(new Uri(Request.RequestUri, classification.ClassificationID.ToString()), classification);
+                    return Created(Url.ToString(), classification);
                 }
             }
         }

@@ -91,7 +91,7 @@ namespace CSSPWebAPI.Controllers
                 else
                 {
                     mwqmSiteStartEndDate.ValidationResults = null;
-                    return Created<MWQMSiteStartEndDate>(new Uri(Request.RequestUri, mwqmSiteStartEndDate.MWQMSiteStartEndDateID.ToString()), mwqmSiteStartEndDate);
+                    return Created(Url.ToString(), mwqmSiteStartEndDate);
                 }
             }
         }

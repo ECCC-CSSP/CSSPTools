@@ -91,7 +91,7 @@ namespace CSSPWebAPI.Controllers
                 else
                 {
                     useOfSite.ValidationResults = null;
-                    return Created<UseOfSite>(new Uri(Request.RequestUri, useOfSite.UseOfSiteID.ToString()), useOfSite);
+                    return Created(Url.ToString(), useOfSite);
                 }
             }
         }

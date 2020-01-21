@@ -91,7 +91,7 @@ namespace CSSPWebAPI.Controllers
                 else
                 {
                     docTemplate.ValidationResults = null;
-                    return Created<DocTemplate>(new Uri(Request.RequestUri, docTemplate.DocTemplateID.ToString()), docTemplate);
+                    return Created(Url.ToString(), docTemplate);
                 }
             }
         }

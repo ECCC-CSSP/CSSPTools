@@ -91,7 +91,7 @@ namespace CSSPWebAPI.Controllers
                 else
                 {
                     reportTypeLanguage.ValidationResults = null;
-                    return Created<ReportTypeLanguage>(new Uri(Request.RequestUri, reportTypeLanguage.ReportTypeLanguageID.ToString()), reportTypeLanguage);
+                    return Created(Url.ToString(), reportTypeLanguage);
                 }
             }
         }

@@ -91,7 +91,7 @@ namespace CSSPWebAPI.Controllers
                 else
                 {
                     ratingCurveValue.ValidationResults = null;
-                    return Created<RatingCurveValue>(new Uri(Request.RequestUri, ratingCurveValue.RatingCurveValueID.ToString()), ratingCurveValue);
+                    return Created(Url.ToString(), ratingCurveValue);
                 }
             }
         }

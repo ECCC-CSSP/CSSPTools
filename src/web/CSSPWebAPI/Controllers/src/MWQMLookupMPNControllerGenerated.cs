@@ -91,7 +91,7 @@ namespace CSSPWebAPI.Controllers
                 else
                 {
                     mwqmLookupMPN.ValidationResults = null;
-                    return Created<MWQMLookupMPN>(new Uri(Request.RequestUri, mwqmLookupMPN.MWQMLookupMPNID.ToString()), mwqmLookupMPN);
+                    return Created(Url.ToString(), mwqmLookupMPN);
                 }
             }
         }

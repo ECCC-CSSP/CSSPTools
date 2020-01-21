@@ -91,7 +91,7 @@ namespace CSSPWebAPI.Controllers
                 else
                 {
                     appErrLog.ValidationResults = null;
-                    return Created<AppErrLog>(new Uri(Request.RequestUri, appErrLog.AppErrLogID.ToString()), appErrLog);
+                    return Created(Url.ToString(), appErrLog);
                 }
             }
         }

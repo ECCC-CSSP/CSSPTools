@@ -91,7 +91,7 @@ namespace CSSPWebAPI.Controllers
                 else
                 {
                     mikeBoundaryCondition.ValidationResults = null;
-                    return Created<MikeBoundaryCondition>(new Uri(Request.RequestUri, mikeBoundaryCondition.MikeBoundaryConditionID.ToString()), mikeBoundaryCondition);
+                    return Created(Url.ToString(), mikeBoundaryCondition);
                 }
             }
         }

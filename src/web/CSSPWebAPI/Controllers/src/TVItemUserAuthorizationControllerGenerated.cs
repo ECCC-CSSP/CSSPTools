@@ -91,7 +91,7 @@ namespace CSSPWebAPI.Controllers
                 else
                 {
                     tvItemUserAuthorization.ValidationResults = null;
-                    return Created<TVItemUserAuthorization>(new Uri(Request.RequestUri, tvItemUserAuthorization.TVItemUserAuthorizationID.ToString()), tvItemUserAuthorization);
+                    return Created(Url.ToString(), tvItemUserAuthorization);
                 }
             }
         }

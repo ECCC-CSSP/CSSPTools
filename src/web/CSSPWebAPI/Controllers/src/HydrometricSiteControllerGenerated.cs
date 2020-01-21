@@ -91,7 +91,7 @@ namespace CSSPWebAPI.Controllers
                 else
                 {
                     hydrometricSite.ValidationResults = null;
-                    return Created<HydrometricSite>(new Uri(Request.RequestUri, hydrometricSite.HydrometricSiteID.ToString()), hydrometricSite);
+                    return Created(Url.ToString(), hydrometricSite);
                 }
             }
         }

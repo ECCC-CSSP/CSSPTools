@@ -91,7 +91,7 @@ namespace CSSPWebAPI.Controllers
                 else
                 {
                     vpScenarioLanguage.ValidationResults = null;
-                    return Created<VPScenarioLanguage>(new Uri(Request.RequestUri, vpScenarioLanguage.VPScenarioLanguageID.ToString()), vpScenarioLanguage);
+                    return Created(Url.ToString(), vpScenarioLanguage);
                 }
             }
         }

@@ -91,7 +91,7 @@ namespace CSSPWebAPI.Controllers
                 else
                 {
                     mwqmSubsector.ValidationResults = null;
-                    return Created<MWQMSubsector>(new Uri(Request.RequestUri, mwqmSubsector.MWQMSubsectorID.ToString()), mwqmSubsector);
+                    return Created(Url.ToString(), mwqmSubsector);
                 }
             }
         }

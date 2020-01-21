@@ -91,7 +91,7 @@ namespace CSSPWebAPI.Controllers
                 else
                 {
                     contactPreference.ValidationResults = null;
-                    return Created<ContactPreference>(new Uri(Request.RequestUri, contactPreference.ContactPreferenceID.ToString()), contactPreference);
+                    return Created(Url.ToString(), contactPreference);
                 }
             }
         }

@@ -91,7 +91,7 @@ namespace CSSPWebAPI.Controllers
                 else
                 {
                     rainExceedance.ValidationResults = null;
-                    return Created<RainExceedance>(new Uri(Request.RequestUri, rainExceedance.RainExceedanceID.ToString()), rainExceedance);
+                    return Created(Url.ToString(), rainExceedance);
                 }
             }
         }

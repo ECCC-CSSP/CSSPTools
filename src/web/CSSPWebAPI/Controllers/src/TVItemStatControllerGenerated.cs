@@ -91,7 +91,7 @@ namespace CSSPWebAPI.Controllers
                 else
                 {
                     tvItemStat.ValidationResults = null;
-                    return Created<TVItemStat>(new Uri(Request.RequestUri, tvItemStat.TVItemStatID.ToString()), tvItemStat);
+                    return Created(Url.ToString(), tvItemStat);
                 }
             }
         }

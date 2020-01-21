@@ -91,7 +91,7 @@ namespace CSSPWebAPI.Controllers
                 else
                 {
                     mwqmRunLanguage.ValidationResults = null;
-                    return Created<MWQMRunLanguage>(new Uri(Request.RequestUri, mwqmRunLanguage.MWQMRunLanguageID.ToString()), mwqmRunLanguage);
+                    return Created(Url.ToString(), mwqmRunLanguage);
                 }
             }
         }

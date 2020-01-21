@@ -91,7 +91,7 @@ namespace CSSPWebAPI.Controllers
                 else
                 {
                     samplingPlanSubsector.ValidationResults = null;
-                    return Created<SamplingPlanSubsector>(new Uri(Request.RequestUri, samplingPlanSubsector.SamplingPlanSubsectorID.ToString()), samplingPlanSubsector);
+                    return Created(Url.ToString(), samplingPlanSubsector);
                 }
             }
         }

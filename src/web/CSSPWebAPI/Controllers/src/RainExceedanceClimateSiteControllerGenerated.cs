@@ -91,7 +91,7 @@ namespace CSSPWebAPI.Controllers
                 else
                 {
                     rainExceedanceClimateSite.ValidationResults = null;
-                    return Created<RainExceedanceClimateSite>(new Uri(Request.RequestUri, rainExceedanceClimateSite.RainExceedanceClimateSiteID.ToString()), rainExceedanceClimateSite);
+                    return Created(Url.ToString(), rainExceedanceClimateSite);
                 }
             }
         }

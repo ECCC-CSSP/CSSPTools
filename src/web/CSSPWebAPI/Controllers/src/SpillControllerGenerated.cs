@@ -91,7 +91,7 @@ namespace CSSPWebAPI.Controllers
                 else
                 {
                     spill.ValidationResults = null;
-                    return Created<Spill>(new Uri(Request.RequestUri, spill.SpillID.ToString()), spill);
+                    return Created(Url.ToString(), spill);
                 }
             }
         }

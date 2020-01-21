@@ -91,7 +91,7 @@ namespace CSSPWebAPI.Controllers
                 else
                 {
                     polSourceSiteEffect.ValidationResults = null;
-                    return Created<PolSourceSiteEffect>(new Uri(Request.RequestUri, polSourceSiteEffect.PolSourceSiteEffectID.ToString()), polSourceSiteEffect);
+                    return Created(Url.ToString(), polSourceSiteEffect);
                 }
             }
         }

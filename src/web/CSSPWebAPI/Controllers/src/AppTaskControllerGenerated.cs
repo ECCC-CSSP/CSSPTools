@@ -91,7 +91,7 @@ namespace CSSPWebAPI.Controllers
                 else
                 {
                     appTask.ValidationResults = null;
-                    return Created<AppTask>(new Uri(Request.RequestUri, appTask.AppTaskID.ToString()), appTask);
+                    return Created(Url.ToString(), appTask);
                 }
             }
         }

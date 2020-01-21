@@ -91,7 +91,7 @@ namespace CSSPWebAPI.Controllers
                 else
                 {
                     labSheetTubeMPNDetail.ValidationResults = null;
-                    return Created<LabSheetTubeMPNDetail>(new Uri(Request.RequestUri, labSheetTubeMPNDetail.LabSheetTubeMPNDetailID.ToString()), labSheetTubeMPNDetail);
+                    return Created(Url.ToString(), labSheetTubeMPNDetail);
                 }
             }
         }
