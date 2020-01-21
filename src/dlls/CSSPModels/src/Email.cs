@@ -39,6 +39,10 @@ namespace CSSPModels
         [CSSPDescriptionEN(DescriptionEN = @"Email type")]
         [CSSPDescriptionFR(DescriptionFR = @"Type de courriel")]
         public EmailTypeEnum EmailType { get; set; }
+
+        [ForeignKey(nameof(EmailTVItemID))]
+        [InverseProperty(nameof(TVItem.Emails))]
+        public virtual TVItem EmailTVItem { get; set; }
         #endregion Properties in DB
 
         #region Constructors

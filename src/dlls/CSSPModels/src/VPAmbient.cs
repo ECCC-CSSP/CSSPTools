@@ -92,6 +92,10 @@ namespace CSSPModels
         [CSSPDescriptionEN(DescriptionEN = @"Far field diffusion coefficient")]
         [CSSPDescriptionFR(DescriptionFR = @"Coefficient de diffusion de loin")]
         public double? FarFieldDiffusionCoefficient { get; set; }
+
+        [ForeignKey(nameof(VPScenarioID))]
+        [InverseProperty(nameof(VPScenario.VPAmbients))]
+        public virtual VPScenario VPScenarioNavigation { get; set; }
         #endregion Properties in DB
 
         #region Constructors

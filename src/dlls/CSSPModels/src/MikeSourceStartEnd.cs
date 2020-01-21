@@ -87,6 +87,10 @@ namespace CSSPModels
         [CSSPDescriptionEN(DescriptionEN = @"End of source salinity (PSU)")]
         [CSSPDescriptionFR(DescriptionFR = @"Fin de salinité de source (PSU) (fr)")]
         public double SourceSalinityEnd_PSU { get; set; }
+
+        [ForeignKey(nameof(MikeSourceID))]
+        [InverseProperty(nameof(MikeSource.MikeSourceStartEnds))]
+        public virtual MikeSource MikeSourceNavigation { get; set; }
         #endregion Properties in DB
 
         #region Constructors

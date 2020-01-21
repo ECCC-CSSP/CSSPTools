@@ -100,6 +100,13 @@ namespace CSSPModels
         [CSSPDescriptionEN(DescriptionEN = @"Site comment")]
         [CSSPDescriptionFR(DescriptionFR = @"Commentaire relié au site")]
         public string SiteComment { get; set; }
+
+        [ForeignKey(nameof(LabSheetDetailID))]
+        [InverseProperty(nameof(LabSheetDetail.LabSheetTubeMPNDetails))]
+        public virtual LabSheetDetail LabSheetDetailNavigation { get; set; }
+        [ForeignKey(nameof(MWQMSiteTVItemID))]
+        [InverseProperty(nameof(TVItem.LabSheetTubeMPNDetails))]
+        public virtual TVItem MWQMSiteTVItem { get; set; }
         #endregion Properties in DB
 
         #region Constructors

@@ -62,6 +62,10 @@ namespace CSSPModels
         [CSSPDescriptionEN(DescriptionEN = @"Calculated direction (deg)")]
         [CSSPDescriptionFR(DescriptionFR = @"Calculated direction (deg) (fr)")]
         public double CalculatedDirection_deg { get; set; }
+
+        [ForeignKey(nameof(DrogueRunID))]
+        [InverseProperty(nameof(DrogueRun.DrogueRunPositions))]
+        public virtual DrogueRun DrogueRunNavigation { get; set; }
         #endregion Properties in DB
 
         #region Constructors

@@ -43,6 +43,12 @@ namespace CSSPModels
         [CSSPDescriptionEN(DescriptionEN = @"French effect term")]
         [CSSPDescriptionFR(DescriptionFR = @"Terme d'effet en français")]
         public string EffectTermFR { get; set; }
+
+        [ForeignKey(nameof(UnderGroupID))]
+        [InverseProperty(nameof(PolSourceSiteEffectTerm.InverseUnderGroup))]
+        public virtual PolSourceSiteEffectTerm UnderGroup { get; set; }
+        [InverseProperty(nameof(PolSourceSiteEffectTerm.UnderGroup))]
+        public virtual ICollection<PolSourceSiteEffectTerm> InverseUnderGroup { get; set; }
         #endregion Properties in DB
 
         #region Constructors

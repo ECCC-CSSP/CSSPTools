@@ -38,6 +38,10 @@ namespace CSSPModels
         [CSSPDescriptionEN(DescriptionEN = @"Shortcut address")]
         [CSSPDescriptionFR(DescriptionFR = @"Texte de l'address")]
         public string ShortCutAddress { get; set; }
+
+        [ForeignKey(nameof(ContactID))]
+        [InverseProperty(nameof(Contact.ContactShortcuts))]
+        public virtual Contact ContactNavigation { get; set; }
         #endregion Properties in DB
 
         #region Constructors

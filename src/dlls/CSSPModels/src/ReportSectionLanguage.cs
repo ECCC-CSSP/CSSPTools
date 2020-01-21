@@ -56,6 +56,10 @@ namespace CSSPModels
         [CSSPDescriptionEN(DescriptionEN = @"Translation status of the report section text")]
         [CSSPDescriptionFR(DescriptionFR = @"Le statut de la traduction du texte de la section du raport")]
         public TranslationStatusEnum TranslationStatusReportSectionText { get; set; }
+
+        [ForeignKey(nameof(ReportSectionID))]
+        [InverseProperty(nameof(ReportSection.ReportSectionLanguages))]
+        public virtual ReportSection ReportSectionNavigation { get; set; }
         #endregion Properties in DB
 
         #region Constructors

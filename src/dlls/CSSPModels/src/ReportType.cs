@@ -38,6 +38,11 @@ namespace CSSPModels
         [CSSPDescriptionEN(DescriptionEN = @"Unique code --- used in code for knowing which document and type of document to create")]
         [CSSPDescriptionFR(DescriptionFR = @"Type de filière --- utilisé dans le code afin de savoir quel document et type de document à créer")]
         public string UniqueCode { get; set; }
+
+        [InverseProperty("ReportType")]
+        public virtual ICollection<ReportSection> ReportSections { get; set; }
+        [InverseProperty("ReportType")]
+        public virtual ICollection<ReportTypeLanguage> ReportTypeLanguages { get; set; }
         #endregion Properties in DB
 
         #region Constructors

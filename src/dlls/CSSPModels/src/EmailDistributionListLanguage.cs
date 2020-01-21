@@ -44,6 +44,10 @@ namespace CSSPModels
         [CSSPDescriptionEN(DescriptionEN = @"Translation status of the region name")]
         [CSSPDescriptionFR(DescriptionFR = @"Le statut de la traduction du nom de la région")]
         public TranslationStatusEnum TranslationStatus { get; set; }
+
+        [ForeignKey(nameof(EmailDistributionListID))]
+        [InverseProperty(nameof(EmailDistributionList.EmailDistributionListLanguages))]
+        public virtual EmailDistributionList EmailDistributionListNavigation { get; set; }
         #endregion Properties in DB
 
         #region Constructors

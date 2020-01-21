@@ -68,6 +68,10 @@ namespace CSSPModels
         [CSSPDescriptionEN(DescriptionEN = @"Translation status of the start of file name")]
         [CSSPDescriptionFR(DescriptionFR = @"Le statut de la traduction du début du nom de la filière")]
         public TranslationStatusEnum TranslationStatusStartOfFileName { get; set; }
+
+        [ForeignKey(nameof(ReportTypeID))]
+        [InverseProperty(nameof(ReportType.ReportTypeLanguages))]
+        public virtual ReportType ReportTypeNavigation { get; set; }
         #endregion Properties in DB
 
         #region Constructors

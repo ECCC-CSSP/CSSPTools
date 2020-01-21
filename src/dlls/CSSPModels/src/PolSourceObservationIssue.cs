@@ -44,6 +44,10 @@ namespace CSSPModels
         [CSSPDescriptionEN(DescriptionEN = @"Extra comment")]
         [CSSPDescriptionFR(DescriptionFR = @"Commentaire d'extra")]
         public string ExtraComment { get; set; }
+
+        [ForeignKey(nameof(PolSourceObservationID))]
+        [InverseProperty(nameof(PolSourceObservation.PolSourceObservationIssues))]
+        public virtual PolSourceObservation PolSourceObservationNavigation { get; set; }
         #endregion Properties in DB
 
         #region Constructors

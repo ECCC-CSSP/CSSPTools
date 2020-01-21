@@ -38,6 +38,10 @@ namespace CSSPModels
         [CSSPDescriptionEN(DescriptionEN = @"Telephone type")]
         [CSSPDescriptionFR(DescriptionFR = @"Type de téléphone")]
         public TelTypeEnum TelType { get; set; }
+
+        [ForeignKey(nameof(TelTVItemID))]
+        [InverseProperty(nameof(TVItem.Tels))]
+        public virtual TVItem TelTVItem { get; set; }
         #endregion Properties in DB
 
         #region Constructors

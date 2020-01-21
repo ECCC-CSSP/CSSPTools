@@ -81,6 +81,10 @@ namespace CSSPModels
         [CSSPDescriptionEN(DescriptionEN = @"Tide text end")]
         [CSSPDescriptionFR(DescriptionFR = @"Tide text de fin")]
         public TideTextEnum? TideEnd { get; set; }
+
+        [ForeignKey(nameof(TideSiteTVItemID))]
+        [InverseProperty(nameof(TVItem.TideDataValues))]
+        public virtual TVItem TideSiteTVItem { get; set; }
         #endregion Properties in DB
 
         #region Constructors

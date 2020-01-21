@@ -37,6 +37,13 @@ namespace CSSPModels
         [CSSPDescriptionEN(DescriptionEN = @"Is duplicate")]
         [CSSPDescriptionFR(DescriptionFR = @"Est en double")]
         public bool IsDuplicate { get; set; }
+
+        [ForeignKey(nameof(MWQMSiteTVItemID))]
+        [InverseProperty(nameof(TVItem.SamplingPlanSubsectorSites))]
+        public virtual TVItem MWQMSiteTVItem { get; set; }
+        [ForeignKey(nameof(SamplingPlanSubsectorID))]
+        [InverseProperty(nameof(SamplingPlanSubsector.SamplingPlanSubsectorSites))]
+        public virtual SamplingPlanSubsector SamplingPlanSubsectorNavigation { get; set; }
         #endregion Properties in DB
 
         #region Constructors

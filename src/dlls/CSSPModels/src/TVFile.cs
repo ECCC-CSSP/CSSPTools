@@ -111,6 +111,12 @@ namespace CSSPModels
         [CSSPDescriptionEN(DescriptionEN = @"Server file path")]
         [CSSPDescriptionFR(DescriptionFR = @"Adress du fichier au serveur")]
         public string ServerFilePath { get; set; }
+
+        [ForeignKey(nameof(TVFileTVItemID))]
+        [InverseProperty(nameof(TVItem.TVFiles))]
+        public virtual TVItem TVFileTVItem { get; set; }
+        [InverseProperty("TVFile")]
+        public virtual ICollection<TVFileLanguage> TVFileLanguages { get; set; }
         #endregion Properties in DB
 
         #region Constructors

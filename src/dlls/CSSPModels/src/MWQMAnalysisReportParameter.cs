@@ -159,6 +159,13 @@ namespace CSSPModels
         [CSSPDescriptionEN(DescriptionEN = @"Analysis report export command")]
         [CSSPDescriptionFR(DescriptionFR = @"Commande d'exportation du raport d'analyse")]
         public AnalysisReportExportCommandEnum Command { get; set; }
+
+        [ForeignKey(nameof(ExcelTVFileTVItemID))]
+        [InverseProperty(nameof(TVItem.MWQMAnalysisReportParameterExcelTVFileTVItems))]
+        public virtual TVItem ExcelTVFileTVItem { get; set; }
+        [ForeignKey(nameof(SubsectorTVItemID))]
+        [InverseProperty(nameof(TVItem.MWQMAnalysisReportParameterSubsectorTVItems))]
+        public virtual TVItem SubsectorTVItem { get; set; }
         #endregion Properties in DB
 
         #region Constructors

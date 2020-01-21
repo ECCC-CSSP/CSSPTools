@@ -32,6 +32,15 @@ namespace CSSPModels
         [CSSPDescriptionEN(DescriptionEN = @"Link to the TVItems table representing the subsector")]
         [CSSPDescriptionFR(DescriptionFR = @"Lien à la table TVItems représentant le sous-secteur")]
         public int SubsectorTVItemID { get; set; }
+
+        [ForeignKey(nameof(SamplingPlanID))]
+        [InverseProperty(nameof(SamplingPlan.SamplingPlanSubsectors))]
+        public virtual SamplingPlan SamplingPlanNavigation { get; set; }
+        [ForeignKey(nameof(SubsectorTVItemID))]
+        [InverseProperty(nameof(TVItem.SamplingPlanSubsectors))]
+        public virtual TVItem SubsectorTVItem { get; set; }
+        [InverseProperty("SamplingPlanSubsector")]
+        public virtual ICollection<SamplingPlanSubsectorSite> SamplingPlanSubsectorSites { get; set; }
         #endregion Properties in DB
 
         #region Constructors

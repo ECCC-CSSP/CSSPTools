@@ -69,6 +69,15 @@ namespace CSSPModels
         [CSSPDescriptionEN(DescriptionEN = @"Link to the TVItems table representing the civic address")]
         [CSSPDescriptionFR(DescriptionFR = @"Lien à la table TVItems représentant l'adresse civique")]
         public int? CivicAddressTVItemID { get; set; }
+
+        [ForeignKey(nameof(CivicAddressTVItemID))]
+        [InverseProperty(nameof(TVItem.PolSourceSiteCivicAddressTVItems))]
+        public virtual TVItem CivicAddressTVItem { get; set; }
+        [ForeignKey(nameof(PolSourceSiteTVItemID))]
+        [InverseProperty(nameof(TVItem.PolSourceSitePolSourceSiteTVItems))]
+        public virtual TVItem PolSourceSiteTVItem { get; set; }
+        [InverseProperty("PolSourceSite")]
+        public virtual ICollection<PolSourceObservation> PolSourceObservations { get; set; }
         #endregion Properties in DB
 
         #region Constructors

@@ -66,6 +66,25 @@ namespace CSSPModels
         [CSSPDescriptionEN(DescriptionEN = @"Template report section ID --- not currently used")]
         [CSSPDescriptionFR(DescriptionFR = @"Gabari de la section du raport ID --- pas utilisé encore")]
         public int? TemplateReportSectionID { get; set; }
+
+        [ForeignKey(nameof(ParentReportSectionID))]
+        [InverseProperty(nameof(ReportSection.InverseParentReportSection))]
+        public virtual ReportSection ParentReportSection { get; set; }
+        [ForeignKey(nameof(ReportTypeID))]
+        [InverseProperty(nameof(ReportType.ReportSections))]
+        public virtual ReportType ReportTypeNavigation { get; set; }
+        [ForeignKey(nameof(TVItemID))]
+        [InverseProperty(nameof(TVItem.ReportSections))]
+        public virtual TVItem TVItemNavigation { get; set; }
+        [ForeignKey(nameof(TemplateReportSectionID))]
+        [InverseProperty(nameof(ReportSection.InverseTemplateReportSection))]
+        public virtual ReportSection TemplateReportSection { get; set; }
+        [InverseProperty(nameof(ReportSection.ParentReportSection))]
+        public virtual ICollection<ReportSection> InverseParentReportSection { get; set; }
+        [InverseProperty(nameof(ReportSection.TemplateReportSection))]
+        public virtual ICollection<ReportSection> InverseTemplateReportSection { get; set; }
+        [InverseProperty("ReportSection")]
+        public virtual ICollection<ReportSectionLanguage> ReportSectionLanguages { get; set; }
         #endregion Properties in DB
 
         #region Constructors

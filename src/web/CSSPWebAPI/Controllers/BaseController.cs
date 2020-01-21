@@ -30,6 +30,7 @@ namespace CSSPWebAPI.Controllers
         #endregion Constructors
 
         #region Functions override
+        override 
         protected override void Initialize(HttpControllerContext controllerContext)
         {
             if (!string.IsNullOrWhiteSpace(controllerContext.RequestContext.Principal.Identity.Name))

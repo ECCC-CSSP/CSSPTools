@@ -43,6 +43,10 @@ namespace CSSPModels
         [CSSPDescriptionEN(DescriptionEN = @"Translation status of the comment")]
         [CSSPDescriptionFR(DescriptionFR = @"Le statut de la traduction du commentaire")]
         public TranslationStatusEnum TranslationStatus { get; set; }
+
+        [ForeignKey(nameof(InfrastructureID))]
+        [InverseProperty(nameof(Infrastructure.InfrastructureLanguages))]
+        public virtual Infrastructure InfrastructureNavigation { get; set; }
         #endregion Properties in DB
 
         #region Constructors

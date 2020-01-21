@@ -32,6 +32,12 @@ namespace CSSPModels
         [CSSPDescriptionEN(DescriptionEN = @"Rating curve number")]
         [CSSPDescriptionFR(DescriptionFR = @"Numéro de la courbe de tarage")]
         public string RatingCurveNumber { get; set; }
+
+        [ForeignKey(nameof(HydrometricSiteID))]
+        [InverseProperty(nameof(HydrometricSite.RatingCurves))]
+        public virtual HydrometricSite HydrometricSiteNavigation { get; set; }
+        [InverseProperty("RatingCurve")]
+        public virtual ICollection<RatingCurveValue> RatingCurveValues { get; set; }
         #endregion Properties in DB
 
         #region Constructors

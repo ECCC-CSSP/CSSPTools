@@ -191,6 +191,15 @@ namespace CSSPModels
         [CSSPDescriptionEN(DescriptionEN = @"Estimated transport file size")]
         [CSSPDescriptionFR(DescriptionFR = @"Estimation de la taille du fichier transport")]
         public long? EstimatedTransFileSize { get; set; }
+
+        [ForeignKey(nameof(MikeScenarioTVItemID))]
+        [InverseProperty(nameof(TVItem.MikeScenarios))]
+        public virtual TVItem MikeScenarioTVItem { get; set; }
+        [ForeignKey(nameof(ParentMikeScenarioID))]
+        [InverseProperty(nameof(MikeScenario.InverseParentMikeScenario))]
+        public virtual MikeScenario ParentMikeScenario { get; set; }
+        [InverseProperty(nameof(MikeScenario.ParentMikeScenario))]
+        public virtual ICollection<MikeScenario> InverseParentMikeScenario { get; set; }
         #endregion Properties in DB
 
         #region Constructors

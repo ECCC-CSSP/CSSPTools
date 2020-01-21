@@ -44,6 +44,10 @@ namespace CSSPModels
         [CSSPDescriptionEN(DescriptionEN = @"Translation status of the file description")]
         [CSSPDescriptionFR(DescriptionFR = @"Le statut de la traduction de la description du fichier")]
         public TranslationStatusEnum TranslationStatus { get; set; }
+
+        [ForeignKey(nameof(TVFileID))]
+        [InverseProperty(nameof(TVFile.TVFileLanguages))]
+        public virtual TVFile TVFileNavigation { get; set; }
         #endregion Properties in DB
 
         #region Constructors

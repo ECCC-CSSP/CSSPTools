@@ -108,6 +108,10 @@ namespace CSSPModels
         [CSSPDescriptionEN(DescriptionEN = @"Left side line start longitude (deg) used to draw half circle on a map")]
         [CSSPDescriptionFR(DescriptionFR = @"Longitude de départ de la ligne latérale gauche (deg) utilisé pour dessiner un demi-cercle sur une carte")]
         public double? LeftSideLineStartLongitude { get; set; }
+
+        [ForeignKey(nameof(BoxModelID))]
+        [InverseProperty(nameof(BoxModel.BoxModelResults))]
+        public virtual BoxModel BoxModelNavigation { get; set; }
         #endregion Properties in DB
 
         #region Constructors

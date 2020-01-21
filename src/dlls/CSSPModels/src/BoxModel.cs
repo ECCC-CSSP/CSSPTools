@@ -86,6 +86,14 @@ namespace CSSPModels
         [CSSPDescriptionEN(DescriptionEN = @"Discharge duration (hour/day)")]
         [CSSPDescriptionFR(DescriptionFR = @"Durée de l'écoulement (heure/jour)")]
         public double DischargeDuration_hour { get; set; }
+
+        [ForeignKey(nameof(InfrastructureTVItemID))]
+        [InverseProperty(nameof(TVItem.BoxModels))]
+        public virtual TVItem InfrastructureTVItem { get; set; }
+        [InverseProperty("BoxModel")]
+        public virtual ICollection<BoxModelLanguage> BoxModelLanguages { get; set; }
+        [InverseProperty("BoxModel")]
+        public virtual ICollection<BoxModelResult> BoxModelResults { get; set; }
         #endregion Properties in DB
 
         #region Constructors

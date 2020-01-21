@@ -419,6 +419,18 @@ namespace CSSPModels
         [CSSPDescriptionEN(DescriptionEN = @"Intertech read is acceptable")]
         [CSSPDescriptionFR(DescriptionFR = @"Lecture intertech est acceptable")]
         public bool? IntertechReadAcceptable { get; set; }
+
+        [ForeignKey(nameof(LabSheetID))]
+        [InverseProperty(nameof(LabSheet.LabSheetDetails))]
+        public virtual LabSheet LabSheetNavigation { get; set; }
+        [ForeignKey(nameof(SamplingPlanID))]
+        [InverseProperty(nameof(SamplingPlan.LabSheetDetails))]
+        public virtual SamplingPlan SamplingPlanNavigation { get; set; }
+        [ForeignKey(nameof(SubsectorTVItemID))]
+        [InverseProperty(nameof(TVItem.LabSheetDetails))]
+        public virtual TVItem SubsectorTVItem { get; set; }
+        [InverseProperty("LabSheetDetail")]
+        public virtual ICollection<LabSheetTubeMPNDetail> LabSheetTubeMPNDetails { get; set; }
         #endregion Properties in DB
 
         #region Constructors

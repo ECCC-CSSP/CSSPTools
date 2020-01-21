@@ -51,6 +51,16 @@ namespace CSSPModels
         [CSSPDescriptionEN(DescriptionEN = @"Link to the TVItems table representing file")]
         [CSSPDescriptionFR(DescriptionFR = @"Lien à la table TVItems représentant une filière")]
         public int? AnalysisDocumentTVItemID { get; set; }
+
+        [ForeignKey(nameof(AnalysisDocumentTVItemID))]
+        [InverseProperty(nameof(TVItem.PolSourceSiteEffectAnalysisDocumentTVItems))]
+        public virtual TVItem AnalysisDocumentTVItem { get; set; }
+        [ForeignKey(nameof(MWQMSiteTVItemID))]
+        [InverseProperty(nameof(TVItem.PolSourceSiteEffectMWQMSiteTVItems))]
+        public virtual TVItem MWQMSiteTVItem { get; set; }
+        [ForeignKey(nameof(PolSourceSiteOrInfrastructureTVItemID))]
+        [InverseProperty(nameof(TVItem.PolSourceSiteEffectPolSourceSiteOrInfrastructureTVItems))]
+        public virtual TVItem PolSourceSiteOrInfrastructureTVItem { get; set; }
         #endregion Properties in DB
 
         #region Constructors

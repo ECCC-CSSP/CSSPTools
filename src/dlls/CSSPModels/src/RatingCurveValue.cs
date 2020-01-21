@@ -38,6 +38,10 @@ namespace CSSPModels
         [CSSPDescriptionEN(DescriptionEN = @"Discharge value in cubic meters per second")]
         [CSSPDescriptionFR(DescriptionFR = @"Valeur du débits en mètres cube par second")]
         public double DischargeValue_m3_s { get; set; }
+
+        [ForeignKey(nameof(RatingCurveID))]
+        [InverseProperty(nameof(RatingCurve.RatingCurveValues))]
+        public virtual RatingCurve RatingCurveNavigation { get; set; }
         #endregion Properties in DB
 
         #region Constructors

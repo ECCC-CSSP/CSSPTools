@@ -72,6 +72,10 @@ namespace CSSPModels
         [CSSPDescriptionEN(DescriptionEN = @"String containing hourly values")]
         [CSSPDescriptionFR(DescriptionFR = @"Texte contenant les valeurs horaires")]
         public string HourlyValues { get; set; }
+
+        [ForeignKey(nameof(HydrometricSiteID))]
+        [InverseProperty(nameof(HydrometricSite.HydrometricDataValues))]
+        public virtual HydrometricSite HydrometricSiteNavigation { get; set; }
         #endregion Properties in DB
 
         #region Constructors

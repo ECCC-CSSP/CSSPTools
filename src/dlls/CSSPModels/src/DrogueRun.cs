@@ -49,6 +49,12 @@ namespace CSSPModels
         [CSSPDescriptionEN(DescriptionEN = @"Is rising tide")]
         [CSSPDescriptionFR(DescriptionFR = @"Marée montante")]
         public bool IsRisingTide { get; set; }
+
+        [ForeignKey(nameof(SubsectorTVItemID))]
+        [InverseProperty(nameof(TVItem.DrogueRuns))]
+        public virtual TVItem SubsectorTVItem { get; set; }
+        [InverseProperty("DrogueRun")]
+        public virtual ICollection<DrogueRunPosition> DrogueRunPositions { get; set; }
         #endregion Properties in DB
 
         #region Constructors

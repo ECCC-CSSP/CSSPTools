@@ -43,6 +43,10 @@ namespace CSSPModels
         [CSSPDescriptionEN(DescriptionEN = @"Translation status of the spill comment")]
         [CSSPDescriptionFR(DescriptionFR = @"Le statut de la traduction du commentaire du déversement")]
         public TranslationStatusEnum TranslationStatus { get; set; }
+
+        [ForeignKey(nameof(SpillID))]
+        [InverseProperty(nameof(Spill.SpillLanguages))]
+        public virtual Spill SpillNavigation { get; set; }
         #endregion Properties in DB
 
         #region Constructors

@@ -38,6 +38,10 @@ namespace CSSPModels
         [CSSPDescriptionEN(DescriptionEN = @"Tree view authorization")]
         [CSSPDescriptionFR(DescriptionFR = @"Type d'authorization de l'arbre visuel")]
         public TVAuthEnum TVAuth { get; set; }
+
+        [ForeignKey(nameof(ContactTVItemID))]
+        [InverseProperty(nameof(TVItem.TVTypeUserAuthorizations))]
+        public virtual TVItem ContactTVItem { get; set; }
         #endregion Properties in DB
 
         #region Constructors

@@ -79,6 +79,10 @@ namespace CSSPModels
         [CSSPDescriptionEN(DescriptionEN = @"Tree view type")]
         [CSSPDescriptionFR(DescriptionFR = @"Type d'arbre visuel")]
         public TVTypeEnum TVType { get; set; }
+
+        [ForeignKey(nameof(MikeBoundaryConditionTVItemID))]
+        [InverseProperty(nameof(TVItem.MikeBoundaryConditions))]
+        public virtual TVItem MikeBoundaryConditionTVItem { get; set; }
         #endregion Properties in DB
 
         #region Constructors

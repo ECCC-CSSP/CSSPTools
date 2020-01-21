@@ -81,6 +81,18 @@ namespace CSSPModels
         [CSSPDescriptionEN(DescriptionEN = @"Parent tree view item link")]
         [CSSPDescriptionFR(DescriptionFR = @"Lien du parent de l'arbre visuel")]
         public int? ParentTVItemLinkID { get; set; }
+
+        [ForeignKey(nameof(FromTVItemID))]
+        [InverseProperty(nameof(TVItem.TVItemLinkFromTVItems))]
+        public virtual TVItem FromTVItem { get; set; }
+        [ForeignKey(nameof(ParentTVItemLinkID))]
+        [InverseProperty(nameof(TVItemLink.InverseParentTVItemLink))]
+        public virtual TVItemLink ParentTVItemLink { get; set; }
+        [ForeignKey(nameof(ToTVItemID))]
+        [InverseProperty(nameof(TVItem.TVItemLinkToTVItems))]
+        public virtual TVItem ToTVItem { get; set; }
+        [InverseProperty(nameof(TVItemLink.ParentTVItemLink))]
+        public virtual ICollection<TVItemLink> InverseParentTVItemLink { get; set; }
         #endregion Properties in DB
 
         #region Constructors

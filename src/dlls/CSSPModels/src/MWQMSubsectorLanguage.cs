@@ -57,6 +57,10 @@ namespace CSSPModels
         [CSSPDescriptionEN(DescriptionEN = @"Translation status of the log book")]
         [CSSPDescriptionFR(DescriptionFR = @"Le statut de la traduction du carnet de bord")]
         public TranslationStatusEnum? TranslationStatusLogBook { get; set; }
+
+        [ForeignKey(nameof(MWQMSubsectorID))]
+        [InverseProperty(nameof(MWQMSubsector.MWQMSubsectorLanguages))]
+        public virtual MWQMSubsector MWQMSubsectorNavigation { get; set; }
         #endregion Properties in DB
 
         #region Constructors

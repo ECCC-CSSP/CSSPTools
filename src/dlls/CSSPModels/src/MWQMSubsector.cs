@@ -39,6 +39,12 @@ namespace CSSPModels
         [CSSPDescriptionEN(DescriptionEN = @"Tide location SID text")]
         [CSSPDescriptionFR(DescriptionFR = @"Identifiants SID des site de marées")]
         public string TideLocationSIDText { get; set; }
+
+        [ForeignKey(nameof(MWQMSubsectorTVItemID))]
+        [InverseProperty(nameof(TVItem.MWQMSubsectors))]
+        public virtual TVItem MWQMSubsectorTVItem { get; set; }
+        [InverseProperty("MWQMSubsector")]
+        public virtual ICollection<MWQMSubsectorLanguage> MWQMSubsectorLanguages { get; set; }
         #endregion Properties in DB
 
         #region Constructors

@@ -58,6 +58,10 @@ namespace CSSPModels
         [CSSPDescriptionEN(DescriptionEN = @"Lab sheet rejected")]
         [CSSPDescriptionFR(DescriptionFR = @"Feuille de laboratoire rejeté")]
         public bool LabSheetRejected { get; set; }
+
+        [ForeignKey(nameof(SamplingPlanID))]
+        [InverseProperty(nameof(SamplingPlan.SamplingPlanEmails))]
+        public virtual SamplingPlan SamplingPlanNavigation { get; set; }
         #endregion Properties in DB
 
         #region Constructors

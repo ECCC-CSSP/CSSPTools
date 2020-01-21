@@ -99,6 +99,18 @@ namespace CSSPModels
         [CSSPDescriptionEN(DescriptionEN = @"Sampling planner for provinces")]
         [CSSPDescriptionFR(DescriptionFR = @"Planificateur d'échantillonnage pour les provinces")]
         public string SamplingPlanner_ProvincesTVItemID { get; set; }
+
+        [ForeignKey(nameof(ContactTVItemID))]
+        [InverseProperty(nameof(TVItem.Contacts))]
+        public virtual TVItem ContactTVItem { get; set; }
+        [ForeignKey(nameof(Id))]
+        [InverseProperty(nameof(AspNetUser.Contacts))]
+        public virtual AspNetUser IdNavigation { get; set; }
+        [InverseProperty("Contact")]
+        public virtual ICollection<ContactPreference> ContactPreferences { get; set; }
+        [InverseProperty("Contact")]
+        public virtual ICollection<ContactShortcut> ContactShortcuts { get; set; }
+
         #endregion Properties in DB
 
         #region Constructors

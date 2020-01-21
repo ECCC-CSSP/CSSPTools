@@ -62,6 +62,10 @@ namespace CSSPModels
         [CSSPDescriptionEN(DescriptionEN = @"Travel time in hours")]
         [CSSPDescriptionFR(DescriptionFR = @"Temps de dispersion en heures")]
         public double TravelTime_hour { get; set; }
+
+        [ForeignKey(nameof(VPScenarioID))]
+        [InverseProperty(nameof(VPScenario.VPResults))]
+        public virtual VPScenario VPScenarioNavigation { get; set; }
         #endregion Properties in DB
 
         #region Constructors

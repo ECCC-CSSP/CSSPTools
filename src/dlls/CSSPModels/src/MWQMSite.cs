@@ -50,6 +50,10 @@ namespace CSSPModels
         [CSSPDescriptionEN(DescriptionEN = @"Ordinal")]
         [CSSPDescriptionFR(DescriptionFR = @"Ordre")]
         public int Ordinal { get; set; }
+
+        [ForeignKey(nameof(MWQMSiteTVItemID))]
+        [InverseProperty(nameof(TVItem.MWQMSites))]
+        public virtual TVItem MWQMSiteTVItem { get; set; }
         #endregion Properties in DB
 
         #region Constructors
