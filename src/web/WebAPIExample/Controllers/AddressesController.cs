@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNet.OData;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -22,6 +23,7 @@ namespace WebAPIExample.Controllers
 
         // GET: api/Addresses
         [HttpGet]
+        [EnableQuery()]
         public async Task<ActionResult<IEnumerable<Addresses>>> GetAddresses()
         {
             return await _context.Addresses.ToListAsync();

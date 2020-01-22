@@ -2,21 +2,18 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNet.OData.Builder;
-using Microsoft.AspNet.OData.Extensions;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using WebApplication1.Data;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using Microsoft.OData.Edm;
-using WebAPIExample.Models;
 
-namespace WebAPIExample
+namespace WebApplication1
 {
     public class Startup
     {
@@ -30,14 +27,13 @@ namespace WebAPIExample
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<CSSPDBContext>(options =>
+            services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
-
-            //services.AddControllers(mvcOptions =>
-            //  mvcOptions.EnableEndpointRouting = false);
-
-            //services.AddOData();
+            services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+                .AddEntityFrameworkStores<ApplicationDbContext>();
+            services.AddControllersWithViews();
+            services.AddRazorPages();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -46,32 +42,29 @@ namespace WebAPIExample
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                app.UseDatabaseErrorPage();
             }
-
+            else
+            {
+                app.UseExceptionHandler("/Home/Error");
+                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+                app.UseHsts();
+            }
             app.UseHttpsRedirection();
+            app.UseStaticFiles();
 
             app.UseRouting();
 
-            //app.UseAuthorization();
-
-            //app.UseMvc(routeBuilder =>
-            //{
-            //    routeBuilder.Select().Filter();
-            //    routeBuilder.MapODataServiceRoute("odata", "odata", GetEdmModel());
-            //});
+            app.UseAuthentication();
+            app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapControllers();
+                endpoints.MapControllerRoute(
+                    name: "default",
+                    pattern: "{controller=Home}/{action=Index}/{id?}");
+                endpoints.MapRazorPages();
             });
         }
-
-        //IEdmModel GetEdmModel()
-        //{
-        //    var odataBuilder = new ODataConventionModelBuilder();
-        //    odataBuilder.EntitySet<Addresses>("Addresses");
-
-        //    return odataBuilder.GetEdmModel();
-        //}
     }
 }

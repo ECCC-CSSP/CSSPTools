@@ -2,21 +2,16 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNet.OData.Builder;
-using Microsoft.AspNet.OData.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using Microsoft.OData.Edm;
-using WebAPIExample.Models;
 
-namespace WebAPIExample
+namespace WebApplication2
 {
     public class Startup
     {
@@ -30,14 +25,7 @@ namespace WebAPIExample
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<CSSPDBContext>(options =>
-                options.UseSqlServer(
-                    Configuration.GetConnectionString("DefaultConnection")));
-
-            //services.AddControllers(mvcOptions =>
-            //  mvcOptions.EnableEndpointRouting = false);
-
-            //services.AddOData();
+            services.AddControllers();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -52,26 +40,12 @@ namespace WebAPIExample
 
             app.UseRouting();
 
-            //app.UseAuthorization();
-
-            //app.UseMvc(routeBuilder =>
-            //{
-            //    routeBuilder.Select().Filter();
-            //    routeBuilder.MapODataServiceRoute("odata", "odata", GetEdmModel());
-            //});
+            app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
             });
         }
-
-        //IEdmModel GetEdmModel()
-        //{
-        //    var odataBuilder = new ODataConventionModelBuilder();
-        //    odataBuilder.EntitySet<Addresses>("Addresses");
-
-        //    return odataBuilder.GetEdmModel();
-        //}
     }
 }
