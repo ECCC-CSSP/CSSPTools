@@ -1,11 +1,13 @@
 ﻿using CSSPEnums;
 using CSSPModels;
 using CSSPServices;
-using System.Web.Mvc;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using CSSPWebAPI;
 using CSSPWebAPI.Controllers;
 using System.Collections.Generic;
+using Microsoft.AspNetCore.TestHost;
+using Microsoft.AspNetCore.Hosting;
+using System.Net.Http;
 
 namespace CSSPWebAPI.Tests.Controllers
 {
@@ -21,6 +23,7 @@ namespace CSSPWebAPI.Tests.Controllers
         #endregion Variables
 
         #region Properties
+        public HttpClient httpClient { get; set; }
         #endregion Properties
 
         #region Constructors
@@ -31,6 +34,12 @@ namespace CSSPWebAPI.Tests.Controllers
             AdminContactID = 1; // charles leblanc is admin
             TestEmailValidatedContactID = 2; // testing
             TestEmailNotValidatedContactID = 3; // testing
+
+            var server = new TestServer(new WebHostBuilder()
+                .UseEnvironment("Development")
+                .UseStartup<Startup>());
+
+            httpClient = server.CreateClient();
         }
         #endregion Constructors
 
