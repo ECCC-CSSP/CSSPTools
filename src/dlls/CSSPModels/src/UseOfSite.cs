@@ -96,13 +96,6 @@ namespace CSSPModels
         [CSSPDescriptionEN(DescriptionEN = @"Parameter 4")]
         [CSSPDescriptionFR(DescriptionFR = @"Paramètre 4")]
         public double? Param4 { get; set; }
-
-        [ForeignKey(nameof(SiteTVItemID))]
-        [InverseProperty(nameof(TVItem.UseOfSiteSiteTVItems))]
-        public virtual TVItem SiteTVItem { get; set; }
-        [ForeignKey(nameof(SubsectorTVItemID))]
-        [InverseProperty(nameof(TVItem.UseOfSiteSubsectorTVItems))]
-        public virtual TVItem SubsectorTVItem { get; set; }
         #endregion Properties in DB
 
         #region Constructors

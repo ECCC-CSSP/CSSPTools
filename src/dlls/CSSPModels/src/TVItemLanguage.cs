@@ -44,10 +44,6 @@ namespace CSSPModels
         [CSSPDescriptionEN(DescriptionEN = @"Translation status of the tree view text")]
         [CSSPDescriptionFR(DescriptionFR = @"Le statut de la traduction du texte de l'arbre visuel")]
         public TranslationStatusEnum TranslationStatus { get; set; }
-
-        [ForeignKey(nameof(TVItemID))]
-        [InverseProperty(nameof(TVItem.TVItemLanguages))]
-        public virtual TVItem TVItemNavigation { get; set; }
         #endregion Properties in DB
 
         #region Constructors

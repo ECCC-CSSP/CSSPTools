@@ -44,10 +44,6 @@ namespace CSSPModels
         [CSSPDescriptionEN(DescriptionEN = @"Translation status of the scenario name")]
         [CSSPDescriptionFR(DescriptionFR = @"Le statut de la traduction du nom du scénario")]
         public TranslationStatusEnum TranslationStatus { get; set; }
-
-        [ForeignKey(nameof(BoxModelID))]
-        [InverseProperty(nameof(BoxModel.BoxModelLanguages))]
-        public virtual BoxModel BoxModelNavigation { get; set; }
         #endregion Properties in DB
 
         #region Constructors

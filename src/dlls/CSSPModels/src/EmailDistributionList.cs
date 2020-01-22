@@ -32,18 +32,6 @@ namespace CSSPModels
         [CSSPDescriptionEN(DescriptionEN = @"Ordinal")]
         [CSSPDescriptionFR(DescriptionFR = @"Ordre")]
         public int Ordinal { get; set; }
-
-        [ForeignKey(nameof(ParentTVItemID))]
-        [InverseProperty(nameof(TVItem.EmailDistributionLists))]
-        public virtual TVItem ParentTVItem { get; set; }
-        [InverseProperty("EmailDistributionList")]
-        public virtual ICollection<EmailDistributionListContact> EmailDistributionListContacts { get; set; }
-        [InverseProperty("EmailDistributionList")]
-        public virtual ICollection<EmailDistributionListLanguage> EmailDistributionListLanguages { get; set; }
-        [InverseProperty(nameof(RainExceedance.OnlyStaffEmailDistributionList))]
-        public virtual ICollection<RainExceedance> RainExceedancesOnlyStaffEmailDistributionList { get; set; }
-        [InverseProperty(nameof(RainExceedance.StakeholdersEmailDistributionList))]
-        public virtual ICollection<RainExceedance> RainExceedancesStakeholdersEmailDistributionList { get; set; }
         #endregion Properties in DB
 
         #region Constructors

@@ -44,10 +44,6 @@ namespace CSSPModels
         [CSSPDescriptionEN(DescriptionEN = @"Longitude")]
         [CSSPDescriptionFR(DescriptionFR = @"Longitude")]
         public double Lng { get; set; }
-
-        [ForeignKey(nameof(MapInfoID))]
-        [InverseProperty(nameof(MapInfo.MapInfoPoints))]
-        public virtual MapInfo MapInfoNavigation { get; set; }
         #endregion Properties in DB
 
         #region Constructors

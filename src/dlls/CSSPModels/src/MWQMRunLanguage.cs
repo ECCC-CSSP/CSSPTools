@@ -54,10 +54,6 @@ namespace CSSPModels
         [CSSPDescriptionEN(DescriptionEN = @"Translation status of the run weather comment")]
         [CSSPDescriptionFR(DescriptionFR = @"Le statut de la traduction du commentaire de la météo de la tournée")]
         public TranslationStatusEnum TranslationStatusRunWeatherComment { get; set; }
-
-        [ForeignKey(nameof(MWQMRunID))]
-        [InverseProperty(nameof(MWQMRun.MWQMRunLanguages))]
-        public virtual MWQMRun MWQMRunNavigation { get; set; }
         #endregion Properties in DB
 
         #region Constructors

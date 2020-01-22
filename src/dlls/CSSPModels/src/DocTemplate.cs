@@ -44,10 +44,6 @@ namespace CSSPModels
         [CSSPDescriptionEN(DescriptionEN = @"File name of the document template")]
         [CSSPDescriptionFR(DescriptionFR = @"Nom de la filière du document modèle")]
         public string FileName { get; set; }
-
-        [ForeignKey(nameof(TVFileTVItemID))]
-        [InverseProperty(nameof(TVItem.DocTemplates))]
-        public virtual TVItem TVFileTVItem { get; set; }
         #endregion Properties in DB
 
         #region Constructors

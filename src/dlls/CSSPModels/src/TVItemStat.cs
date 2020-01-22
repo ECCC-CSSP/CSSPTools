@@ -38,10 +38,6 @@ namespace CSSPModels
         [CSSPDescriptionEN(DescriptionEN = @"Child items number")]
         [CSSPDescriptionFR(DescriptionFR = @"Nombre sous items")]
         public int ChildCount { get; set; }
-
-        [ForeignKey(nameof(TVItemID))]
-        [InverseProperty(nameof(TVItem.TVItemStats))]
-        public virtual TVItem TVItemNavigation { get; set; }
         #endregion Properties in DB
 
         #region Constructors

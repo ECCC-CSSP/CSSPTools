@@ -48,15 +48,6 @@ namespace CSSPModels
         [CSSPDescriptionEN(DescriptionEN = @"Observation to be deleted")]
         [CSSPDescriptionFR(DescriptionFR = @"Observation qui va être effacé")]
         public string Observation_ToBeDeleted { get; set; }
-
-        [ForeignKey(nameof(ContactTVItemID))]
-        [InverseProperty(nameof(TVItem.PolSourceObservations))]
-        public virtual TVItem ContactTVItem { get; set; }
-        [ForeignKey(nameof(PolSourceSiteID))]
-        [InverseProperty(nameof(PolSourceSite.PolSourceObservations))]
-        public virtual PolSourceSite PolSourceSiteNavigation { get; set; }
-        [InverseProperty("PolSourceObservation")]
-        public virtual ICollection<PolSourceObservationIssue> PolSourceObservationIssues { get; set; }
         #endregion Properties in DB
 
         #region Constructors

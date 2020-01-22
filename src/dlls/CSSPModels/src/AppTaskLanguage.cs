@@ -52,10 +52,6 @@ namespace CSSPModels
         [CSSPDescriptionEN(DescriptionEN = @"Translation status of status text and error text")]
         [CSSPDescriptionFR(DescriptionFR = @"Le statut de la traduction du texte du statut et du texte de l'erreur")]
         public TranslationStatusEnum TranslationStatus { get; set; }
-
-        [ForeignKey(nameof(AppTaskID))]
-        [InverseProperty(nameof(AppTask.AppTaskLanguages))]
-        public virtual AppTask AppTaskNavigaton { get; set; }
         #endregion Properties in DB
 
         #region Constructors

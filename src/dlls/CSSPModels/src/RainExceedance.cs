@@ -73,16 +73,6 @@ namespace CSSPModels
         [CSSPDescriptionEN(DescriptionEN = @"The rain exceedance is active")]
         [CSSPDescriptionFR(DescriptionFR = @"L'excédance de pluie est actif")]
         public bool IsActive { get; set; }
-
-        [ForeignKey(nameof(OnlyStaffEmailDistributionListID))]
-        [InverseProperty(nameof(EmailDistributionList.RainExceedancesOnlyStaffEmailDistributionList))]
-        public virtual EmailDistributionList OnlyStaffEmailDistributionList { get; set; }
-        [ForeignKey(nameof(RainExceedanceTVItemID))]
-        [InverseProperty(nameof(TVItem.RainExceedances))]
-        public virtual TVItem RainExceedanceTVItem { get; set; }
-        [ForeignKey(nameof(StakeholdersEmailDistributionListID))]
-        [InverseProperty(nameof(EmailDistributionList.RainExceedancesStakeholdersEmailDistributionList))]
-        public virtual EmailDistributionList StakeholdersEmailDistributionList { get; set; }
         #endregion Properties in DB
 
         #region Constructors

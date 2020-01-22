@@ -86,15 +86,6 @@ namespace CSSPModels
         [CSSPDescriptionEN(DescriptionEN = @"App task time remaining (secondes)")]
         [CSSPDescriptionFR(DescriptionFR = @"Temps qui reste de la tâche App (secondes)")]
         public int? RemainingTime_second { get; set; }
-
-        [ForeignKey(nameof(TVItemID))]
-        [InverseProperty(nameof(TVItem.AppTaskTVItems))]
-        public virtual TVItem TVItemIDNavigation { get; set; }
-        [ForeignKey(nameof(TVItemID2))]
-        [InverseProperty(nameof(TVItem.AppTaskTVItemID2Navigations))]
-        public virtual TVItem TVItemID2Navigation { get; set; }
-        [InverseProperty("AppTask")]
-        public virtual ICollection<AppTaskLanguage> AppTaskLanguages { get; set; }
         #endregion Properties in DB
 
         #region Constructors

@@ -44,10 +44,6 @@ namespace CSSPModels
         [CSSPDescriptionEN(DescriptionEN = @"Translation status of the visual plumes scenario name")]
         [CSSPDescriptionFR(DescriptionFR = @"Le statut de la traduction du nom du scénario visual plumes")]
         public TranslationStatusEnum TranslationStatus { get; set; }
-
-        [ForeignKey(nameof(VPScenarioID))]
-        [InverseProperty(nameof(VPScenario.VPScenarioLanguages))]
-        public virtual VPScenario VPScenarioNavigation { get; set; }
         #endregion Properties in DB
 
         #region Constructors

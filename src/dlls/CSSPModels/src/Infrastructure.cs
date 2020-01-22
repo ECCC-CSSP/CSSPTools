@@ -300,18 +300,6 @@ namespace CSSPModels
         [CSSPDescriptionEN(DescriptionEN = @"Link to the TVItems table with the unique identifier")]
         [CSSPDescriptionFR(DescriptionFR = @"Lien à la table TVItems avec l'identifiant unique")]
         public int? CivicAddressTVItemID { get; set; }
-
-        [ForeignKey(nameof(CivicAddressTVItemID))]
-        [InverseProperty(nameof(TVItem.InfrastructureCivicAddressTVItems))]
-        public virtual TVItem CivicAddressTVItem { get; set; }
-        [ForeignKey(nameof(InfrastructureTVItemID))]
-        [InverseProperty(nameof(TVItem.InfrastructureInfrastructureTVItems))]
-        public virtual TVItem InfrastructureTVItem { get; set; }
-        [ForeignKey(nameof(SeeOtherMunicipalityTVItemID))]
-        [InverseProperty(nameof(TVItem.InfrastructureSeeOtherMunicipalityTVItems))]
-        public virtual TVItem SeeOtherMunicipalityTVItem { get; set; }
-        [InverseProperty("Infrastructure")]
-        public virtual ICollection<InfrastructureLanguage> InfrastructureLanguages { get; set; }
         #endregion Properties in DB
 
         #region Constructors

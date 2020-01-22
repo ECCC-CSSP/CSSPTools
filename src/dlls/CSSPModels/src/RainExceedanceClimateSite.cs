@@ -32,13 +32,6 @@ namespace CSSPModels
         [CSSPDescriptionEN(DescriptionEN = @"Link to the TVItems table representing climate site")]
         [CSSPDescriptionFR(DescriptionFR = @"Lien à la table TVItems représentant le site climatique")]
         public int ClimateSiteTVItemID { get; set; }
-
-        [ForeignKey(nameof(ClimateSiteTVItemID))]
-        [InverseProperty(nameof(TVItem.RainExceedanceClimateSiteClimateSiteTVItems))]
-        public virtual TVItem ClimateSiteTVItem { get; set; }
-        [ForeignKey(nameof(RainExceedanceTVItemID))]
-        [InverseProperty(nameof(TVItem.RainExceedanceClimateSiteRainExceedanceTVItems))]
-        public virtual TVItem RainExceedanceTVItem { get; set; }
         #endregion Properties in DB
 
         #region Constructors

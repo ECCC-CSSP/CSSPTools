@@ -39,10 +39,6 @@ namespace CSSPModels
         [CSSPDescriptionEN(DescriptionEN = @"End date")]
         [CSSPDescriptionFR(DescriptionFR = @"Date de fin")]
         public DateTime? EndDate { get; set; }
-
-        [ForeignKey(nameof(MWQMSiteTVItemID))]
-        [InverseProperty(nameof(TVItem.MWQMSiteStartEndDates))]
-        public virtual TVItem MWQMSiteTVItem { get; set; }
         #endregion Properties in DB
 
         #region Constructors

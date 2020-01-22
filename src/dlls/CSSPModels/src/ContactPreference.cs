@@ -38,10 +38,6 @@ namespace CSSPModels
         [CSSPDescriptionEN(DescriptionEN = @"Marker size")]
         [CSSPDescriptionFR(DescriptionFR = @"Taille du marqueur")]
         public int MarkerSize { get; set; }
-
-        [ForeignKey(nameof(ContactID))]
-        [InverseProperty(nameof(Contact.ContactPreferences))]
-        public virtual Contact ContactNavigation { get; set; }
         #endregion Properties in DB
 
         #region Constructors

@@ -56,13 +56,6 @@ namespace CSSPModels
         [CSSPDescriptionEN(DescriptionEN = @"Link to the TVItems table representing the tree view authorization")]
         [CSSPDescriptionFR(DescriptionFR = @"Lien à la table TVItems représentant l'authorization pour l'arbre visuel")]
         public TVAuthEnum TVAuth { get; set; }
-
-        [ForeignKey(nameof(ContactTVItemID))]
-        [InverseProperty(nameof(TVItem.TVItemUserAuthorizationContactTVItems))]
-        public virtual TVItem ContactTVItem { get; set; }
-        [ForeignKey(nameof(TVItemID1))]
-        [InverseProperty(nameof(TVItem.TVItemUserAuthorizationTVItemID1Navigations))]
-        public virtual TVItem TVItemID1Navigation { get; set; }
         #endregion Properties in DB
 
         #region Constructors

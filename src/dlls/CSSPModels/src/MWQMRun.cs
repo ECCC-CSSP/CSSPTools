@@ -263,18 +263,6 @@ namespace CSSPModels
         [CSSPDescriptionEN(DescriptionEN = @"Remove from statistics")]
         [CSSPDescriptionFR(DescriptionFR = @"Enlever des statistiques")]
         public bool? RemoveFromStat { get; set; }
-
-        [ForeignKey(nameof(LabSampleApprovalContactTVItemID))]
-        [InverseProperty(nameof(TVItem.MWQMRunLabSampleApprovalContactTVItems))]
-        public virtual TVItem LabSampleApprovalContactTVItem { get; set; }
-        [ForeignKey(nameof(MWQMRunTVItemID))]
-        [InverseProperty(nameof(TVItem.MWQMRunMWQMRunTVItems))]
-        public virtual TVItem MWQMRunTVItem { get; set; }
-        [ForeignKey(nameof(SubsectorTVItemID))]
-        [InverseProperty(nameof(TVItem.MWQMRunSubsectorTVItems))]
-        public virtual TVItem SubsectorTVItem { get; set; }
-        [InverseProperty("MWQMRun")]
-        public virtual ICollection<MWQMRunLanguage> MWQMRunLanguages { get; set; }
         #endregion Properties in DB
 
         #region Constructors

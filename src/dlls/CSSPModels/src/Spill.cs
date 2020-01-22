@@ -51,15 +51,6 @@ namespace CSSPModels
         [CSSPDescriptionEN(DescriptionEN = @"Average flow in cubic meters per day")]
         [CSSPDescriptionFR(DescriptionFR = @"Débit moyer en mètres cube par jour")]
         public double AverageFlow_m3_day { get; set; }
-
-        [ForeignKey(nameof(InfrastructureTVItemID))]
-        [InverseProperty(nameof(TVItem.SpillInfrastructureTVItems))]
-        public virtual TVItem InfrastructureTVItem { get; set; }
-        [ForeignKey(nameof(MunicipalityTVItemID))]
-        [InverseProperty(nameof(TVItem.SpillMunicipalityTVItems))]
-        public virtual TVItem MunicipalityTVItem { get; set; }
-        [InverseProperty("Spill")]
-        public virtual ICollection<SpillLanguage> SpillLanguages { get; set; }
         #endregion Properties in DB
 
         #region Constructors

@@ -114,15 +114,6 @@ namespace CSSPModels
         [CSSPDescriptionEN(DescriptionEN = @"Used for open data")]
         [CSSPDescriptionFR(DescriptionFR = @"Utilisé pour les données ouvertes")]
         public bool UseForOpenData { get; set; }
-
-        [ForeignKey(nameof(MWQMRunTVItemID))]
-        [InverseProperty(nameof(TVItem.MWQMSampleMWQMRunTVItems))]
-        public virtual TVItem MWQMRunTVItem { get; set; }
-        [ForeignKey(nameof(MWQMSiteTVItemID))]
-        [InverseProperty(nameof(TVItem.MWQMSampleMWQMSiteTVItems))]
-        public virtual TVItem MWQMSiteTVItem { get; set; }
-        [InverseProperty("MWQMSample")]
-        public virtual ICollection<MWQMSampleLanguage> MWQMSampleLanguages { get; set; }
         #endregion Properties in DB
 
         #region Constructors

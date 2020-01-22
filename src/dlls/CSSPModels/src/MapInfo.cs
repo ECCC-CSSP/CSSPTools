@@ -62,12 +62,6 @@ namespace CSSPModels
         [CSSPDescriptionEN(DescriptionEN = @"Map object draw type")]
         [CSSPDescriptionFR(DescriptionFR = @"Type d'object pour carte")]
         public MapInfoDrawTypeEnum MapInfoDrawType { get; set; }
-
-        [ForeignKey(nameof(TVItemID))]
-        [InverseProperty(nameof(TVItem.MapInfos))]
-        public virtual TVItem TVItemNavigation { get; set; }
-        [InverseProperty("MapInfo")]
-        public virtual ICollection<MapInfoPoint> MapInfoPoints { get; set; }
         #endregion Properties in DB
 
         #region Constructors

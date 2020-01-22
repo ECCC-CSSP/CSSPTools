@@ -120,10 +120,6 @@ namespace CSSPModels
         [CSSPDescriptionEN(DescriptionEN = @"Hourly values text stores all 24 hourly values of the parameters measured by the weather office")]
         [CSSPDescriptionFR(DescriptionFR = @"Texte des valeurs horaire sauvegarde toutes les 24 valeurs horaires des paramètres mesurés par weather office")]
         public string HourlyValues { get; set; }
-
-        [ForeignKey(nameof(ClimateSiteID))]
-        [InverseProperty(nameof(ClimateSite.ClimateDataValues))]
-        public virtual ClimateSite ClimateSiteNavigation { get; set; }
         #endregion Properties in DB
 
         #region Constructors

@@ -70,15 +70,6 @@ namespace CSSPModels
         [CSSPDescriptionEN(DescriptionEN = @"Source number")]
         [CSSPDescriptionFR(DescriptionFR = @"Nombre de source")]
         public string SourceNumberString { get; set; }
-
-        [ForeignKey(nameof(HydrometricTVItemID))]
-        [InverseProperty(nameof(TVItem.MikeSourceHydrometricTVItems))]
-        public virtual TVItem HydrometricTVItem { get; set; }
-        [ForeignKey(nameof(MikeSourceTVItemID))]
-        [InverseProperty(nameof(TVItem.MikeSourceMikeSourceTVItems))]
-        public virtual TVItem MikeSourceTVItem { get; set; }
-        [InverseProperty("MikeSource")]
-        public virtual ICollection<MikeSourceStartEnd> MikeSourceStartEnds { get; set; }
         #endregion Properties in DB
 
         #region Constructors

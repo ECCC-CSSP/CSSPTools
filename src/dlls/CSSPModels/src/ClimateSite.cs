@@ -144,12 +144,6 @@ namespace CSSPModels
         [CSSPDescriptionEN(DescriptionEN = @"Monthly now indicates if there are monthly data at this date")]
         [CSSPDescriptionFR(DescriptionFR = @"Mensuel maintenant indique s'il y a des données mensuelles maintenant")]
         public bool? MonthlyNow { get; set; }
-
-        [ForeignKey(nameof(ClimateSiteTVItemID))]
-        [InverseProperty(nameof(TVItem.ClimateSites))]
-        public virtual TVItem ClimateSiteTVItem { get; set; }
-        [InverseProperty("ClimateSite")]
-        public virtual ICollection<ClimateDataValue> ClimateDataValues { get; set; }
         #endregion Properties in DB
 
         #region Constructors

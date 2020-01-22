@@ -38,10 +38,6 @@ namespace CSSPModels
         [CSSPDescriptionEN(DescriptionEN = @"Ordinal number used to order the classification")]
         [CSSPDescriptionFR(DescriptionFR = @"Numéro indiquent l'ordre des classification")]
         public int Ordinal { get; set; }
-
-        [ForeignKey(nameof(ClassificationTVItemID))]
-        [InverseProperty(nameof(TVItem.Classifications))]
-        public virtual TVItem ClassificationTVItem { get; set; }
         #endregion Properties in DB
 
         #region Constructors

@@ -135,24 +135,6 @@ namespace CSSPModels
         [CSSPDescriptionEN(DescriptionEN = @"Backup directory")]
         [CSSPDescriptionFR(DescriptionFR = @"Répertoire de sauvegarde")]
         public string BackupDirectory { get; set; }
-
-        [ForeignKey(nameof(CreatorTVItemID))]
-        [InverseProperty(nameof(TVItem.SamplingPlanCreatorTVItems))]
-        public virtual TVItem CreatorTVItem { get; set; }
-        [ForeignKey(nameof(ProvinceTVItemID))]
-        [InverseProperty(nameof(TVItem.SamplingPlanProvinceTVItems))]
-        public virtual TVItem ProvinceTVItem { get; set; }
-        [ForeignKey(nameof(SamplingPlanFileTVItemID))]
-        [InverseProperty(nameof(TVItem.SamplingPlanSamplingPlanFileTVItems))]
-        public virtual TVItem SamplingPlanFileTVItem { get; set; }
-        [InverseProperty("SamplingPlan")]
-        public virtual ICollection<LabSheetDetail> LabSheetDetails { get; set; }
-        [InverseProperty("SamplingPlan")]
-        public virtual ICollection<LabSheet> LabSheets { get; set; }
-        [InverseProperty("SamplingPlan")]
-        public virtual ICollection<SamplingPlanEmail> SamplingPlanEmails { get; set; }
-        [InverseProperty("SamplingPlan")]
-        public virtual ICollection<SamplingPlanSubsector> SamplingPlanSubsectors { get; set; }
         #endregion Properties in DB
 
         #region Constructors

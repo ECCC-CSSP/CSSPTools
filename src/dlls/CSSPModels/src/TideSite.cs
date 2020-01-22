@@ -50,10 +50,6 @@ namespace CSSPModels
         [CSSPDescriptionEN(DescriptionEN = @"Zone")]
         [CSSPDescriptionFR(DescriptionFR = @"Zone")]
         public int Zone { get; set; }
-
-        [ForeignKey(nameof(TideSiteTVItemID))]
-        [InverseProperty(nameof(TVItem.TideSites))]
-        public virtual TVItem TideSiteTVItem { get; set; }
         #endregion Properties in DB
 
         #region Constructors

@@ -85,20 +85,6 @@ namespace CSSPModels
         [CSSPDescriptionEN(DescriptionEN = @"Google address provided by Google Location Service")]
         [CSSPDescriptionFR(DescriptionFR = @"Adresse Google fourni par le service Google Location")]
         public string GoogleAddressText { get; set; }
-
-        [ForeignKey(nameof(AddressTVItemID))]
-        [InverseProperty(nameof(TVItem.AddressAddressTVItems))]
-        public virtual TVItem AddressTVItem { get; set; }
-        [ForeignKey(nameof(CountryTVItemID))]
-        [InverseProperty(nameof(TVItem.AddressCountryTVItems))]
-        public virtual TVItem CountryTVItem { get; set; }
-        [ForeignKey(nameof(MunicipalityTVItemID))]
-        [InverseProperty(nameof(TVItem.AddressMunicipalityTVItems))]
-        public virtual TVItem MunicipalityTVItem { get; set; }
-        [ForeignKey(nameof(ProvinceTVItemID))]
-        [InverseProperty(nameof(TVItem.AddressProvinceTVItems))]
-        public virtual TVItem ProvinceTVItem { get; set; }
-
         #endregion Properties in DB
 
         #region Constructors

@@ -134,21 +134,6 @@ namespace CSSPModels
         [CSSPDescriptionEN(DescriptionEN = @"Reject reason")]
         [CSSPDescriptionFR(DescriptionFR = @"Raison du rejet")]
         public string RejectReason { get; set; }
-
-        [ForeignKey(nameof(AcceptedOrRejectedByContactTVItemID))]
-        [InverseProperty(nameof(TVItem.LabSheetAcceptedOrRejectedByContactTVItems))]
-        public virtual TVItem AcceptedOrRejectedByContactTVItem { get; set; }
-        [ForeignKey(nameof(MWQMRunTVItemID))]
-        [InverseProperty(nameof(TVItem.LabSheetMWQMRunTVItems))]
-        public virtual TVItem MWQMRunTVItem { get; set; }
-        [ForeignKey(nameof(SamplingPlanID))]
-        [InverseProperty(nameof(SamplingPlan.LabSheets))]
-        public virtual SamplingPlan SamplingPlanNavigation { get; set; }
-        [ForeignKey(nameof(SubsectorTVItemID))]
-        [InverseProperty(nameof(TVItem.LabSheetSubsectorTVItems))]
-        public virtual TVItem SubsectorTVItem { get; set; }
-        [InverseProperty("LabSheet")]
-        public virtual ICollection<LabSheetDetail> LabSheetDetails { get; set; }
         #endregion Properties in DB
 
         #region Constructors

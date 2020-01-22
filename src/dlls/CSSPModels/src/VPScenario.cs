@@ -133,16 +133,6 @@ namespace CSSPModels
         [CSSPDescriptionEN(DescriptionEN = @"Raw results")]
         [CSSPDescriptionFR(DescriptionFR = @"Résultats bruts")]
         public string RawResults { get; set; }
-
-        [ForeignKey(nameof(InfrastructureTVItemID))]
-        [InverseProperty(nameof(TVItem.VPScenarios))]
-        public virtual TVItem InfrastructureTVItem { get; set; }
-        [InverseProperty("VPScenario")]
-        public virtual ICollection<VPAmbient> VPAmbients { get; set; }
-        [InverseProperty("VPScenario")]
-        public virtual ICollection<VPResult> VPResults { get; set; }
-        [InverseProperty("VPScenario")]
-        public virtual ICollection<VPScenarioLanguage> VPScenarioLanguages { get; set; }
         #endregion Properties in DB
 
         #region Constructors

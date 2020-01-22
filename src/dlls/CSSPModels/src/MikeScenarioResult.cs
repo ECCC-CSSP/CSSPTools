@@ -32,10 +32,6 @@ namespace CSSPModels
         [CSSPDescriptionEN(DescriptionEN = @"MIKE scenario results in JSON format")]
         [CSSPDescriptionFR(DescriptionFR = @"Résultats du scenario MIKE en format JSON")]
         public string MikeResultsJSON { get; set; }
-
-        [ForeignKey(nameof(MikeScenarioTVItemID))]
-        [InverseProperty(nameof(TVItem.MikeScenarioResults))]
-        public virtual TVItem MikeScenarioTVItem { get; set; }
         #endregion Properties in DB
 
         #region Constructors

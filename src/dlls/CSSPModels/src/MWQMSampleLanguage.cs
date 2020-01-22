@@ -43,10 +43,6 @@ namespace CSSPModels
         [CSSPDescriptionEN(DescriptionEN = @"Translation status of the comment")]
         [CSSPDescriptionFR(DescriptionFR = @"Le statut de la traduction du commentaire")]
         public TranslationStatusEnum TranslationStatus { get; set; }
-
-        [ForeignKey(nameof(MWQMSampleID))]
-        [InverseProperty(nameof(MWQMSample.MWQMSampleLanguages))]
-        public virtual MWQMSample MWQMSampleNavigation { get; set; }
         #endregion Properties in DB
 
         #region Constructors

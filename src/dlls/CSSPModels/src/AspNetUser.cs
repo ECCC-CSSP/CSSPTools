@@ -87,9 +87,6 @@ namespace CSSPModels
         [CSSPDescriptionEN(DescriptionEN = @"User name should be identical to the Email field")]
         [CSSPDescriptionFR(DescriptionFR = @"Nombre d'utilisateur devrait être identique au champ Email")]
         public string UserName { get; set; }
-
-        [InverseProperty("IdNavigation")]
-        public virtual ICollection<Contact> Contacts { get; set; }
         #endregion Properties in DB
 
         #region Constructors

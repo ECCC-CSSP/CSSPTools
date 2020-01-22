@@ -69,12 +69,6 @@ namespace CSSPModels
         [CSSPDescriptionEN(DescriptionEN = @"Reopening All Types")]
         [CSSPDescriptionFR(DescriptionFR = @"Réouverture Tous Types")]
         public bool ReopeningAllTypes { get; set; }
-
-        [ForeignKey(nameof(EmailDistributionListID))]
-        [InverseProperty(nameof(EmailDistributionList.EmailDistributionListContacts))]
-        public virtual EmailDistributionList EmailDistributionListNavigation { get; set; }
-        [InverseProperty("EmailDistributionListContact")]
-        public virtual ICollection<EmailDistributionListContactLanguage> EmailDistributionListContactLanguages { get; set; }
         #endregion Properties in DB
 
         #region Constructors
