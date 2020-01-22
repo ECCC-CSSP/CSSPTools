@@ -1,14 +1,14 @@
 using CSSPEnums;
 using CSSPModels;
 using CSSPServices;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web.Http;
 
 namespace CSSPWebAPI.Controllers
 {
-    [RoutePrefix("api/mikeScenario")]
+    [Route("api/mikeScenario")]
     public partial class MikeScenarioController : BaseController
     {
         #region Variables
@@ -29,126 +29,56 @@ namespace CSSPWebAPI.Controllers
         #region Functions public
         // GET api/mikeScenario
         [Route("")]
-        public IHttpActionResult GetMikeScenarioList([FromUri]string lang = "en", [FromUri]int skip = 0, [FromUri]int take = 200,
-            [FromUri]string asc = "", [FromUri]string desc = "", [FromUri]string where = "", [FromUri]string extra = "")
+        public IActionResult GetMikeScenarioList([FromQuery]string lang = "en", [FromQuery]int skip = 0, [FromQuery]int take = 200,
+            [FromQuery]string asc = "", [FromQuery]string desc = "", [FromQuery]string where = "")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
                 MikeScenarioService mikeScenarioService = new MikeScenarioService(new Query() { Lang = lang }, db, ContactID);
 
-                if (extra == "A") // QueryString contains [extra=A]
-                {
-                   mikeScenarioService.Query = mikeScenarioService.FillQuery(typeof(MikeScenarioExtraA), lang, skip, take, asc, desc, where, extra);
+                mikeScenarioService.Query = mikeScenarioService.FillQuery(typeof(MikeScenario), lang, skip, take, asc, desc, where);
 
-                    if (mikeScenarioService.Query.HasErrors)
-                    {
-                        return Ok(new List<MikeScenarioExtraA>()
-                        {
-                            new MikeScenarioExtraA()
-                            {
-                                HasErrors = mikeScenarioService.Query.HasErrors,
-                                ValidationResults = mikeScenarioService.Query.ValidationResults,
-                            },
-                        }.ToList());
-                    }
-                    else
-                    {
-                        return Ok(mikeScenarioService.GetMikeScenarioExtraAList().ToList());
-                    }
-                }
-                else if (extra == "B") // QueryString contains [extra=B]
-                {
-                   mikeScenarioService.Query = mikeScenarioService.FillQuery(typeof(MikeScenarioExtraB), lang, skip, take, asc, desc, where, extra);
-
-                    if (mikeScenarioService.Query.HasErrors)
-                    {
-                        return Ok(new List<MikeScenarioExtraB>()
-                        {
-                            new MikeScenarioExtraB()
-                            {
-                                HasErrors = mikeScenarioService.Query.HasErrors,
-                                ValidationResults = mikeScenarioService.Query.ValidationResults,
-                            },
-                        }.ToList());
-                    }
-                    else
-                    {
-                        return Ok(mikeScenarioService.GetMikeScenarioExtraBList().ToList());
-                    }
-                }
-                else // QueryString has no parameter [extra] or extra is empty
-                {
-                   mikeScenarioService.Query = mikeScenarioService.FillQuery(typeof(MikeScenario), lang, skip, take, asc, desc, where, extra);
-
-                    if (mikeScenarioService.Query.HasErrors)
-                    {
-                        return Ok(new List<MikeScenario>()
-                        {
-                            new MikeScenario()
-                            {
-                                HasErrors = mikeScenarioService.Query.HasErrors,
-                                ValidationResults = mikeScenarioService.Query.ValidationResults,
-                            },
-                        }.ToList());
-                    }
-                    else
-                    {
-                        return Ok(mikeScenarioService.GetMikeScenarioList().ToList());
-                    }
-                }
+                 if (mikeScenarioService.Query.HasErrors)
+                 {
+                     return Ok(new List<MikeScenario>()
+                     {
+                         new MikeScenario()
+                         {
+                             HasErrors = mikeScenarioService.Query.HasErrors,
+                             ValidationResults = mikeScenarioService.Query.ValidationResults,
+                         },
+                     }.ToList());
+                 }
+                 else
+                 {
+                     return Ok(mikeScenarioService.GetMikeScenarioList().ToList());
+                 }
             }
         }
         // GET api/mikeScenario/1
         [Route("{MikeScenarioID:int}")]
-        public IHttpActionResult GetMikeScenarioWithID([FromUri]int MikeScenarioID, [FromUri]string lang = "en", [FromUri]string extra = "")
+        public IActionResult GetMikeScenarioWithID([FromQuery]int MikeScenarioID, [FromQuery]string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
                 MikeScenarioService mikeScenarioService = new MikeScenarioService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
 
-                mikeScenarioService.Query = mikeScenarioService.FillQuery(typeof(MikeScenario), lang, 0, 1, "", "", extra);
+                mikeScenarioService.Query = mikeScenarioService.FillQuery(typeof(MikeScenario), lang, 0, 1, "", "");
 
-                if (mikeScenarioService.Query.Extra == "A")
+                MikeScenario mikeScenario = new MikeScenario();
+                mikeScenario = mikeScenarioService.GetMikeScenarioWithMikeScenarioID(MikeScenarioID);
+
+                if (mikeScenario == null)
                 {
-                    MikeScenarioExtraA mikeScenarioExtraA = new MikeScenarioExtraA();
-                    mikeScenarioExtraA = mikeScenarioService.GetMikeScenarioExtraAWithMikeScenarioID(MikeScenarioID);
-
-                    if (mikeScenarioExtraA == null)
-                    {
-                        return NotFound();
-                    }
-
-                    return Ok(mikeScenarioExtraA);
+                    return NotFound();
                 }
-                else if (mikeScenarioService.Query.Extra == "B")
-                {
-                    MikeScenarioExtraB mikeScenarioExtraB = new MikeScenarioExtraB();
-                    mikeScenarioExtraB = mikeScenarioService.GetMikeScenarioExtraBWithMikeScenarioID(MikeScenarioID);
 
-                    if (mikeScenarioExtraB == null)
-                    {
-                        return NotFound();
-                    }
-
-                    return Ok(mikeScenarioExtraB);
-                }
-                else
-                {
-                    MikeScenario mikeScenario = new MikeScenario();
-                    mikeScenario = mikeScenarioService.GetMikeScenarioWithMikeScenarioID(MikeScenarioID);
-
-                    if (mikeScenario == null)
-                    {
-                        return NotFound();
-                    }
-
-                    return Ok(mikeScenario);
-                }
+                return Ok(mikeScenario);
             }
         }
         // POST api/mikeScenario
         [Route("")]
-        public IHttpActionResult Post([FromBody]MikeScenario mikeScenario, [FromUri]string lang = "en")
+        public IActionResult Post([FromBody]MikeScenario mikeScenario, [FromQuery]string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
@@ -161,13 +91,13 @@ namespace CSSPWebAPI.Controllers
                 else
                 {
                     mikeScenario.ValidationResults = null;
-                    return Created<MikeScenario>(new Uri(Request.RequestUri, mikeScenario.MikeScenarioID.ToString()), mikeScenario);
+                    return Created(Url.ToString(), mikeScenario);
                 }
             }
         }
         // PUT api/mikeScenario
         [Route("")]
-        public IHttpActionResult Put([FromBody]MikeScenario mikeScenario, [FromUri]string lang = "en")
+        public IActionResult Put([FromBody]MikeScenario mikeScenario, [FromQuery]string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
@@ -186,7 +116,7 @@ namespace CSSPWebAPI.Controllers
         }
         // DELETE api/mikeScenario
         [Route("")]
-        public IHttpActionResult Delete([FromBody]MikeScenario mikeScenario, [FromUri]string lang = "en")
+        public IActionResult Delete([FromBody]MikeScenario mikeScenario, [FromQuery]string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {

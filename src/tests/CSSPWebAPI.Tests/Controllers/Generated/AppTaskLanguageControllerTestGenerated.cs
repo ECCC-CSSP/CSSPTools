@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
 using System.Web.Http.Results;
+using Microsoft.AspNetCore.Mvc;
 
 namespace CSSPWebAPI.Tests.Controllers
 {
@@ -48,7 +49,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     }
 
                     // ok with AppTaskLanguage info
-                    IHttpActionResult jsonRet = appTaskLanguageController.GetAppTaskLanguageList();
+                    IActionResult jsonRet = appTaskLanguageController.GetAppTaskLanguageList();
                     Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<List<AppTaskLanguage>> ret = jsonRet as OkNegotiatedContentResult<List<AppTaskLanguage>>;
@@ -86,7 +87,7 @@ namespace CSSPWebAPI.Tests.Controllers
                            count = (query.Take > count ? query.Take : count);
 
                            // ok with AppTaskLanguage info
-                           IHttpActionResult jsonRet2 = appTaskLanguageController.GetAppTaskLanguageList(query.Language.ToString(), query.Skip, query.Take);
+                           IActionResult jsonRet2 = appTaskLanguageController.GetAppTaskLanguageList(query.Language.ToString(), query.Skip, query.Take);
                            Assert.NotNull(jsonRet2);
 
                            OkNegotiatedContentResult<List<AppTaskLanguage>> ret2 = jsonRet2 as OkNegotiatedContentResult<List<AppTaskLanguage>>;
@@ -119,7 +120,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     }
 
                     // ok with AppTaskLanguage info
-                    IHttpActionResult jsonRet = appTaskLanguageController.GetAppTaskLanguageWithID(appTaskLanguageFirst.AppTaskLanguageID);
+                    IActionResult jsonRet = appTaskLanguageController.GetAppTaskLanguageWithID(appTaskLanguageFirst.AppTaskLanguageID);
                     Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<AppTaskLanguage> Ret = jsonRet as OkNegotiatedContentResult<AppTaskLanguage>;
@@ -127,16 +128,16 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.Equal(appTaskLanguageFirst.AppTaskLanguageID, appTaskLanguageRet.AppTaskLanguageID);
 
                     BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
+                    Assert.Null(badRequest);
 
                     // Not Found
-                    IHttpActionResult jsonRet2 = appTaskLanguageController.GetAppTaskLanguageWithID(0);
+                    IActionResult jsonRet2 = appTaskLanguageController.GetAppTaskLanguageWithID(0);
                     Assert.NotNull(jsonRet2);
 
                     OkNegotiatedContentResult<AppTaskLanguage> appTaskLanguageRet2 = jsonRet2 as OkNegotiatedContentResult<AppTaskLanguage>;
-                    Assert.IsNull(appTaskLanguageRet2);
+                    Assert.Null(appTaskLanguageRet2);
 
-                    NotFoundResult notFoundRequest = jsonRet2 as NotFoundResult;
+                    NotFoundObjectResult notFoundRequest = jsonRet2 as NotFoundObjectResult;
                     Assert.NotNull(notFoundRequest);
                 }
             }
@@ -168,7 +169,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     }
 
                     // ok with AppTaskLanguage info
-                    IHttpActionResult jsonRet = appTaskLanguageController.GetAppTaskLanguageWithID(appTaskLanguageLast.AppTaskLanguageID);
+                    IActionResult jsonRet = appTaskLanguageController.GetAppTaskLanguageWithID(appTaskLanguageLast.AppTaskLanguageID);
                     Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<AppTaskLanguage> Ret = jsonRet as OkNegotiatedContentResult<AppTaskLanguage>;
@@ -176,14 +177,14 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.Equal(appTaskLanguageLast.AppTaskLanguageID, appTaskLanguageRet.AppTaskLanguageID);
 
                     BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
+                    Assert.Null(badRequest);
 
                     // Post to return CSSPError because AppTaskLanguageID exist
-                    IHttpActionResult jsonRet2 = appTaskLanguageController.Post(appTaskLanguageRet, LanguageRequest.ToString());
+                    IActionResult jsonRet2 = appTaskLanguageController.Post(appTaskLanguageRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet2);
 
                     OkNegotiatedContentResult<AppTaskLanguage> appTaskLanguageRet2 = jsonRet2 as OkNegotiatedContentResult<AppTaskLanguage>;
-                    Assert.IsNull(appTaskLanguageRet2);
+                    Assert.Null(appTaskLanguageRet2);
 
                     BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
                     Assert.NotNull(badRequest2);
@@ -192,23 +193,23 @@ namespace CSSPWebAPI.Tests.Controllers
                     appTaskLanguageRet.AppTaskLanguageID = 0;
                     appTaskLanguageController.Request = new System.Net.Http.HttpRequestMessage();
                     appTaskLanguageController.Request.RequestUri = new System.Uri("http://localhost:5000/api/appTaskLanguage");
-                    IHttpActionResult jsonRet3 = appTaskLanguageController.Post(appTaskLanguageRet, LanguageRequest.ToString());
+                    IActionResult jsonRet3 = appTaskLanguageController.Post(appTaskLanguageRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 
                     CreatedNegotiatedContentResult<AppTaskLanguage> appTaskLanguageRet3 = jsonRet3 as CreatedNegotiatedContentResult<AppTaskLanguage>;
                     Assert.NotNull(appTaskLanguageRet3);
 
                     BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest3);
+                    Assert.Null(badRequest3);
 
-                    IHttpActionResult jsonRet4 = appTaskLanguageController.Delete(appTaskLanguageRet, LanguageRequest.ToString());
+                    IActionResult jsonRet4 = appTaskLanguageController.Delete(appTaskLanguageRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet4);
 
                     OkNegotiatedContentResult<AppTaskLanguage> appTaskLanguageRet4 = jsonRet4 as OkNegotiatedContentResult<AppTaskLanguage>;
                     Assert.NotNull(appTaskLanguageRet4);
 
                     BadRequestErrorMessageResult badRequest4 = jsonRet4 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest4);
+                    Assert.Null(badRequest4);
                 }
             }
         }
@@ -237,7 +238,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     }
 
                     // ok with AppTaskLanguage info
-                    IHttpActionResult jsonRet = appTaskLanguageController.GetAppTaskLanguageWithID(appTaskLanguageLast.AppTaskLanguageID);
+                    IActionResult jsonRet = appTaskLanguageController.GetAppTaskLanguageWithID(appTaskLanguageLast.AppTaskLanguageID);
                     Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<AppTaskLanguage> Ret = jsonRet as OkNegotiatedContentResult<AppTaskLanguage>;
@@ -245,25 +246,25 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.Equal(appTaskLanguageLast.AppTaskLanguageID, appTaskLanguageRet.AppTaskLanguageID);
 
                     BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
+                    Assert.Null(badRequest);
 
                     // Put to return success
-                    IHttpActionResult jsonRet2 = appTaskLanguageController.Put(appTaskLanguageRet, LanguageRequest.ToString());
+                    IActionResult jsonRet2 = appTaskLanguageController.Put(appTaskLanguageRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet2);
 
                     OkNegotiatedContentResult<AppTaskLanguage> appTaskLanguageRet2 = jsonRet2 as OkNegotiatedContentResult<AppTaskLanguage>;
                     Assert.NotNull(appTaskLanguageRet2);
 
                     BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest2);
+                    Assert.Null(badRequest2);
 
                     // Put to return CSSPError because AppTaskLanguageID of 0 does not exist
                     appTaskLanguageRet.AppTaskLanguageID = 0;
-                    IHttpActionResult jsonRet3 = appTaskLanguageController.Put(appTaskLanguageRet, LanguageRequest.ToString());
+                    IActionResult jsonRet3 = appTaskLanguageController.Put(appTaskLanguageRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 
                     OkNegotiatedContentResult<AppTaskLanguage> appTaskLanguageRet3 = jsonRet3 as OkNegotiatedContentResult<AppTaskLanguage>;
-                    Assert.IsNull(appTaskLanguageRet3);
+                    Assert.Null(appTaskLanguageRet3);
 
                     BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
                     Assert.NotNull(badRequest3);
@@ -297,7 +298,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     }
 
                     // ok with AppTaskLanguage info
-                    IHttpActionResult jsonRet = appTaskLanguageController.GetAppTaskLanguageWithID(appTaskLanguageLast.AppTaskLanguageID);
+                    IActionResult jsonRet = appTaskLanguageController.GetAppTaskLanguageWithID(appTaskLanguageLast.AppTaskLanguageID);
                     Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<AppTaskLanguage> Ret = jsonRet as OkNegotiatedContentResult<AppTaskLanguage>;
@@ -305,13 +306,13 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.Equal(appTaskLanguageLast.AppTaskLanguageID, appTaskLanguageRet.AppTaskLanguageID);
 
                     BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
+                    Assert.Null(badRequest);
 
                     // Post to return newly added AppTaskLanguage
                     appTaskLanguageRet.AppTaskLanguageID = 0;
                     appTaskLanguageController.Request = new System.Net.Http.HttpRequestMessage();
                     appTaskLanguageController.Request.RequestUri = new System.Uri("http://localhost:5000/api/appTaskLanguage");
-                    IHttpActionResult jsonRet3 = appTaskLanguageController.Post(appTaskLanguageRet, LanguageRequest.ToString());
+                    IActionResult jsonRet3 = appTaskLanguageController.Post(appTaskLanguageRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 
                     CreatedNegotiatedContentResult<AppTaskLanguage> appTaskLanguageRet3 = jsonRet3 as CreatedNegotiatedContentResult<AppTaskLanguage>;
@@ -319,25 +320,25 @@ namespace CSSPWebAPI.Tests.Controllers
                     AppTaskLanguage appTaskLanguage = appTaskLanguageRet3.Content;
 
                     BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest3);
+                    Assert.Null(badRequest3);
 
                     // Delete to return success
-                    IHttpActionResult jsonRet2 = appTaskLanguageController.Delete(appTaskLanguageRet, LanguageRequest.ToString());
+                    IActionResult jsonRet2 = appTaskLanguageController.Delete(appTaskLanguageRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet2);
 
                     OkNegotiatedContentResult<AppTaskLanguage> appTaskLanguageRet2 = jsonRet2 as OkNegotiatedContentResult<AppTaskLanguage>;
                     Assert.NotNull(appTaskLanguageRet2);
 
                     BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest2);
+                    Assert.Null(badRequest2);
 
                     // Delete to return CSSPError because AppTaskLanguageID of 0 does not exist
                     appTaskLanguageRet.AppTaskLanguageID = 0;
-                    IHttpActionResult jsonRet4 = appTaskLanguageController.Delete(appTaskLanguageRet, LanguageRequest.ToString());
+                    IActionResult jsonRet4 = appTaskLanguageController.Delete(appTaskLanguageRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet4);
 
                     OkNegotiatedContentResult<AppTaskLanguage> appTaskLanguageRet4 = jsonRet4 as OkNegotiatedContentResult<AppTaskLanguage>;
-                    Assert.IsNull(appTaskLanguageRet4);
+                    Assert.Null(appTaskLanguageRet4);
 
                     BadRequestErrorMessageResult badRequest4 = jsonRet4 as BadRequestErrorMessageResult;
                     Assert.NotNull(badRequest4);

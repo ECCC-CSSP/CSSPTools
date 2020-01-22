@@ -1,14 +1,14 @@
 using CSSPEnums;
 using CSSPModels;
 using CSSPServices;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web.Http;
 
 namespace CSSPWebAPI.Controllers
 {
-    [RoutePrefix("api/tvItemStat")]
+    [Route("api/tvItemStat")]
     public partial class TVItemStatController : BaseController
     {
         #region Variables
@@ -29,126 +29,56 @@ namespace CSSPWebAPI.Controllers
         #region Functions public
         // GET api/tvItemStat
         [Route("")]
-        public IHttpActionResult GetTVItemStatList([FromUri]string lang = "en", [FromUri]int skip = 0, [FromUri]int take = 200,
-            [FromUri]string asc = "", [FromUri]string desc = "", [FromUri]string where = "", [FromUri]string extra = "")
+        public IActionResult GetTVItemStatList([FromQuery]string lang = "en", [FromQuery]int skip = 0, [FromQuery]int take = 200,
+            [FromQuery]string asc = "", [FromQuery]string desc = "", [FromQuery]string where = "")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
                 TVItemStatService tvItemStatService = new TVItemStatService(new Query() { Lang = lang }, db, ContactID);
 
-                if (extra == "A") // QueryString contains [extra=A]
-                {
-                   tvItemStatService.Query = tvItemStatService.FillQuery(typeof(TVItemStatExtraA), lang, skip, take, asc, desc, where, extra);
+                tvItemStatService.Query = tvItemStatService.FillQuery(typeof(TVItemStat), lang, skip, take, asc, desc, where);
 
-                    if (tvItemStatService.Query.HasErrors)
-                    {
-                        return Ok(new List<TVItemStatExtraA>()
-                        {
-                            new TVItemStatExtraA()
-                            {
-                                HasErrors = tvItemStatService.Query.HasErrors,
-                                ValidationResults = tvItemStatService.Query.ValidationResults,
-                            },
-                        }.ToList());
-                    }
-                    else
-                    {
-                        return Ok(tvItemStatService.GetTVItemStatExtraAList().ToList());
-                    }
-                }
-                else if (extra == "B") // QueryString contains [extra=B]
-                {
-                   tvItemStatService.Query = tvItemStatService.FillQuery(typeof(TVItemStatExtraB), lang, skip, take, asc, desc, where, extra);
-
-                    if (tvItemStatService.Query.HasErrors)
-                    {
-                        return Ok(new List<TVItemStatExtraB>()
-                        {
-                            new TVItemStatExtraB()
-                            {
-                                HasErrors = tvItemStatService.Query.HasErrors,
-                                ValidationResults = tvItemStatService.Query.ValidationResults,
-                            },
-                        }.ToList());
-                    }
-                    else
-                    {
-                        return Ok(tvItemStatService.GetTVItemStatExtraBList().ToList());
-                    }
-                }
-                else // QueryString has no parameter [extra] or extra is empty
-                {
-                   tvItemStatService.Query = tvItemStatService.FillQuery(typeof(TVItemStat), lang, skip, take, asc, desc, where, extra);
-
-                    if (tvItemStatService.Query.HasErrors)
-                    {
-                        return Ok(new List<TVItemStat>()
-                        {
-                            new TVItemStat()
-                            {
-                                HasErrors = tvItemStatService.Query.HasErrors,
-                                ValidationResults = tvItemStatService.Query.ValidationResults,
-                            },
-                        }.ToList());
-                    }
-                    else
-                    {
-                        return Ok(tvItemStatService.GetTVItemStatList().ToList());
-                    }
-                }
+                 if (tvItemStatService.Query.HasErrors)
+                 {
+                     return Ok(new List<TVItemStat>()
+                     {
+                         new TVItemStat()
+                         {
+                             HasErrors = tvItemStatService.Query.HasErrors,
+                             ValidationResults = tvItemStatService.Query.ValidationResults,
+                         },
+                     }.ToList());
+                 }
+                 else
+                 {
+                     return Ok(tvItemStatService.GetTVItemStatList().ToList());
+                 }
             }
         }
         // GET api/tvItemStat/1
         [Route("{TVItemStatID:int}")]
-        public IHttpActionResult GetTVItemStatWithID([FromUri]int TVItemStatID, [FromUri]string lang = "en", [FromUri]string extra = "")
+        public IActionResult GetTVItemStatWithID([FromQuery]int TVItemStatID, [FromQuery]string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
                 TVItemStatService tvItemStatService = new TVItemStatService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
 
-                tvItemStatService.Query = tvItemStatService.FillQuery(typeof(TVItemStat), lang, 0, 1, "", "", extra);
+                tvItemStatService.Query = tvItemStatService.FillQuery(typeof(TVItemStat), lang, 0, 1, "", "");
 
-                if (tvItemStatService.Query.Extra == "A")
+                TVItemStat tvItemStat = new TVItemStat();
+                tvItemStat = tvItemStatService.GetTVItemStatWithTVItemStatID(TVItemStatID);
+
+                if (tvItemStat == null)
                 {
-                    TVItemStatExtraA tvItemStatExtraA = new TVItemStatExtraA();
-                    tvItemStatExtraA = tvItemStatService.GetTVItemStatExtraAWithTVItemStatID(TVItemStatID);
-
-                    if (tvItemStatExtraA == null)
-                    {
-                        return NotFound();
-                    }
-
-                    return Ok(tvItemStatExtraA);
+                    return NotFound();
                 }
-                else if (tvItemStatService.Query.Extra == "B")
-                {
-                    TVItemStatExtraB tvItemStatExtraB = new TVItemStatExtraB();
-                    tvItemStatExtraB = tvItemStatService.GetTVItemStatExtraBWithTVItemStatID(TVItemStatID);
 
-                    if (tvItemStatExtraB == null)
-                    {
-                        return NotFound();
-                    }
-
-                    return Ok(tvItemStatExtraB);
-                }
-                else
-                {
-                    TVItemStat tvItemStat = new TVItemStat();
-                    tvItemStat = tvItemStatService.GetTVItemStatWithTVItemStatID(TVItemStatID);
-
-                    if (tvItemStat == null)
-                    {
-                        return NotFound();
-                    }
-
-                    return Ok(tvItemStat);
-                }
+                return Ok(tvItemStat);
             }
         }
         // POST api/tvItemStat
         [Route("")]
-        public IHttpActionResult Post([FromBody]TVItemStat tvItemStat, [FromUri]string lang = "en")
+        public IActionResult Post([FromBody]TVItemStat tvItemStat, [FromQuery]string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
@@ -161,13 +91,13 @@ namespace CSSPWebAPI.Controllers
                 else
                 {
                     tvItemStat.ValidationResults = null;
-                    return Created<TVItemStat>(new Uri(Request.RequestUri, tvItemStat.TVItemStatID.ToString()), tvItemStat);
+                    return Created(Url.ToString(), tvItemStat);
                 }
             }
         }
         // PUT api/tvItemStat
         [Route("")]
-        public IHttpActionResult Put([FromBody]TVItemStat tvItemStat, [FromUri]string lang = "en")
+        public IActionResult Put([FromBody]TVItemStat tvItemStat, [FromQuery]string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
@@ -186,7 +116,7 @@ namespace CSSPWebAPI.Controllers
         }
         // DELETE api/tvItemStat
         [Route("")]
-        public IHttpActionResult Delete([FromBody]TVItemStat tvItemStat, [FromUri]string lang = "en")
+        public IActionResult Delete([FromBody]TVItemStat tvItemStat, [FromQuery]string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {

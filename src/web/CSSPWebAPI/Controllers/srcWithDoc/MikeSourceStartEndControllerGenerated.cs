@@ -1,14 +1,14 @@
 using CSSPEnums;
 using CSSPModels;
 using CSSPServices;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web.Http;
 
 namespace CSSPWebAPI.Controllers
 {
-    [RoutePrefix("api/mikeSourceStartEnd")]
+    [Route("api/mikeSourceStartEnd")]
     public partial class MikeSourceStartEndController : BaseController
     {
         #region Variables
@@ -29,126 +29,56 @@ namespace CSSPWebAPI.Controllers
         #region Functions public
         // GET api/mikeSourceStartEnd
         [Route("")]
-        public IHttpActionResult GetMikeSourceStartEndList([FromUri]string lang = "en", [FromUri]int skip = 0, [FromUri]int take = 200,
-            [FromUri]string asc = "", [FromUri]string desc = "", [FromUri]string where = "", [FromUri]string extra = "")
+        public IActionResult GetMikeSourceStartEndList([FromQuery]string lang = "en", [FromQuery]int skip = 0, [FromQuery]int take = 200,
+            [FromQuery]string asc = "", [FromQuery]string desc = "", [FromQuery]string where = "")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
                 MikeSourceStartEndService mikeSourceStartEndService = new MikeSourceStartEndService(new Query() { Lang = lang }, db, ContactID);
 
-                if (extra == "A") // QueryString contains [extra=A]
-                {
-                   mikeSourceStartEndService.Query = mikeSourceStartEndService.FillQuery(typeof(MikeSourceStartEndExtraA), lang, skip, take, asc, desc, where, extra);
+                mikeSourceStartEndService.Query = mikeSourceStartEndService.FillQuery(typeof(MikeSourceStartEnd), lang, skip, take, asc, desc, where);
 
-                    if (mikeSourceStartEndService.Query.HasErrors)
-                    {
-                        return Ok(new List<MikeSourceStartEndExtraA>()
-                        {
-                            new MikeSourceStartEndExtraA()
-                            {
-                                HasErrors = mikeSourceStartEndService.Query.HasErrors,
-                                ValidationResults = mikeSourceStartEndService.Query.ValidationResults,
-                            },
-                        }.ToList());
-                    }
-                    else
-                    {
-                        return Ok(mikeSourceStartEndService.GetMikeSourceStartEndExtraAList().ToList());
-                    }
-                }
-                else if (extra == "B") // QueryString contains [extra=B]
-                {
-                   mikeSourceStartEndService.Query = mikeSourceStartEndService.FillQuery(typeof(MikeSourceStartEndExtraB), lang, skip, take, asc, desc, where, extra);
-
-                    if (mikeSourceStartEndService.Query.HasErrors)
-                    {
-                        return Ok(new List<MikeSourceStartEndExtraB>()
-                        {
-                            new MikeSourceStartEndExtraB()
-                            {
-                                HasErrors = mikeSourceStartEndService.Query.HasErrors,
-                                ValidationResults = mikeSourceStartEndService.Query.ValidationResults,
-                            },
-                        }.ToList());
-                    }
-                    else
-                    {
-                        return Ok(mikeSourceStartEndService.GetMikeSourceStartEndExtraBList().ToList());
-                    }
-                }
-                else // QueryString has no parameter [extra] or extra is empty
-                {
-                   mikeSourceStartEndService.Query = mikeSourceStartEndService.FillQuery(typeof(MikeSourceStartEnd), lang, skip, take, asc, desc, where, extra);
-
-                    if (mikeSourceStartEndService.Query.HasErrors)
-                    {
-                        return Ok(new List<MikeSourceStartEnd>()
-                        {
-                            new MikeSourceStartEnd()
-                            {
-                                HasErrors = mikeSourceStartEndService.Query.HasErrors,
-                                ValidationResults = mikeSourceStartEndService.Query.ValidationResults,
-                            },
-                        }.ToList());
-                    }
-                    else
-                    {
-                        return Ok(mikeSourceStartEndService.GetMikeSourceStartEndList().ToList());
-                    }
-                }
+                 if (mikeSourceStartEndService.Query.HasErrors)
+                 {
+                     return Ok(new List<MikeSourceStartEnd>()
+                     {
+                         new MikeSourceStartEnd()
+                         {
+                             HasErrors = mikeSourceStartEndService.Query.HasErrors,
+                             ValidationResults = mikeSourceStartEndService.Query.ValidationResults,
+                         },
+                     }.ToList());
+                 }
+                 else
+                 {
+                     return Ok(mikeSourceStartEndService.GetMikeSourceStartEndList().ToList());
+                 }
             }
         }
         // GET api/mikeSourceStartEnd/1
         [Route("{MikeSourceStartEndID:int}")]
-        public IHttpActionResult GetMikeSourceStartEndWithID([FromUri]int MikeSourceStartEndID, [FromUri]string lang = "en", [FromUri]string extra = "")
+        public IActionResult GetMikeSourceStartEndWithID([FromQuery]int MikeSourceStartEndID, [FromQuery]string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
                 MikeSourceStartEndService mikeSourceStartEndService = new MikeSourceStartEndService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
 
-                mikeSourceStartEndService.Query = mikeSourceStartEndService.FillQuery(typeof(MikeSourceStartEnd), lang, 0, 1, "", "", extra);
+                mikeSourceStartEndService.Query = mikeSourceStartEndService.FillQuery(typeof(MikeSourceStartEnd), lang, 0, 1, "", "");
 
-                if (mikeSourceStartEndService.Query.Extra == "A")
+                MikeSourceStartEnd mikeSourceStartEnd = new MikeSourceStartEnd();
+                mikeSourceStartEnd = mikeSourceStartEndService.GetMikeSourceStartEndWithMikeSourceStartEndID(MikeSourceStartEndID);
+
+                if (mikeSourceStartEnd == null)
                 {
-                    MikeSourceStartEndExtraA mikeSourceStartEndExtraA = new MikeSourceStartEndExtraA();
-                    mikeSourceStartEndExtraA = mikeSourceStartEndService.GetMikeSourceStartEndExtraAWithMikeSourceStartEndID(MikeSourceStartEndID);
-
-                    if (mikeSourceStartEndExtraA == null)
-                    {
-                        return NotFound();
-                    }
-
-                    return Ok(mikeSourceStartEndExtraA);
+                    return NotFound();
                 }
-                else if (mikeSourceStartEndService.Query.Extra == "B")
-                {
-                    MikeSourceStartEndExtraB mikeSourceStartEndExtraB = new MikeSourceStartEndExtraB();
-                    mikeSourceStartEndExtraB = mikeSourceStartEndService.GetMikeSourceStartEndExtraBWithMikeSourceStartEndID(MikeSourceStartEndID);
 
-                    if (mikeSourceStartEndExtraB == null)
-                    {
-                        return NotFound();
-                    }
-
-                    return Ok(mikeSourceStartEndExtraB);
-                }
-                else
-                {
-                    MikeSourceStartEnd mikeSourceStartEnd = new MikeSourceStartEnd();
-                    mikeSourceStartEnd = mikeSourceStartEndService.GetMikeSourceStartEndWithMikeSourceStartEndID(MikeSourceStartEndID);
-
-                    if (mikeSourceStartEnd == null)
-                    {
-                        return NotFound();
-                    }
-
-                    return Ok(mikeSourceStartEnd);
-                }
+                return Ok(mikeSourceStartEnd);
             }
         }
         // POST api/mikeSourceStartEnd
         [Route("")]
-        public IHttpActionResult Post([FromBody]MikeSourceStartEnd mikeSourceStartEnd, [FromUri]string lang = "en")
+        public IActionResult Post([FromBody]MikeSourceStartEnd mikeSourceStartEnd, [FromQuery]string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
@@ -161,13 +91,13 @@ namespace CSSPWebAPI.Controllers
                 else
                 {
                     mikeSourceStartEnd.ValidationResults = null;
-                    return Created<MikeSourceStartEnd>(new Uri(Request.RequestUri, mikeSourceStartEnd.MikeSourceStartEndID.ToString()), mikeSourceStartEnd);
+                    return Created(Url.ToString(), mikeSourceStartEnd);
                 }
             }
         }
         // PUT api/mikeSourceStartEnd
         [Route("")]
-        public IHttpActionResult Put([FromBody]MikeSourceStartEnd mikeSourceStartEnd, [FromUri]string lang = "en")
+        public IActionResult Put([FromBody]MikeSourceStartEnd mikeSourceStartEnd, [FromQuery]string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
@@ -186,7 +116,7 @@ namespace CSSPWebAPI.Controllers
         }
         // DELETE api/mikeSourceStartEnd
         [Route("")]
-        public IHttpActionResult Delete([FromBody]MikeSourceStartEnd mikeSourceStartEnd, [FromUri]string lang = "en")
+        public IActionResult Delete([FromBody]MikeSourceStartEnd mikeSourceStartEnd, [FromQuery]string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {

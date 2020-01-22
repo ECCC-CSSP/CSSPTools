@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
 using System.Web.Http.Results;
+using Microsoft.AspNetCore.Mvc;
 
 namespace CSSPWebAPI.Tests.Controllers
 {
@@ -48,7 +49,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     }
 
                     // ok with DrogueRunPosition info
-                    IHttpActionResult jsonRet = drogueRunPositionController.GetDrogueRunPositionList();
+                    IActionResult jsonRet = drogueRunPositionController.GetDrogueRunPositionList();
                     Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<List<DrogueRunPosition>> ret = jsonRet as OkNegotiatedContentResult<List<DrogueRunPosition>>;
@@ -86,7 +87,7 @@ namespace CSSPWebAPI.Tests.Controllers
                            count = (query.Take > count ? query.Take : count);
 
                            // ok with DrogueRunPosition info
-                           IHttpActionResult jsonRet2 = drogueRunPositionController.GetDrogueRunPositionList(query.Language.ToString(), query.Skip, query.Take);
+                           IActionResult jsonRet2 = drogueRunPositionController.GetDrogueRunPositionList(query.Language.ToString(), query.Skip, query.Take);
                            Assert.NotNull(jsonRet2);
 
                            OkNegotiatedContentResult<List<DrogueRunPosition>> ret2 = jsonRet2 as OkNegotiatedContentResult<List<DrogueRunPosition>>;
@@ -119,7 +120,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     }
 
                     // ok with DrogueRunPosition info
-                    IHttpActionResult jsonRet = drogueRunPositionController.GetDrogueRunPositionWithID(drogueRunPositionFirst.DrogueRunPositionID);
+                    IActionResult jsonRet = drogueRunPositionController.GetDrogueRunPositionWithID(drogueRunPositionFirst.DrogueRunPositionID);
                     Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<DrogueRunPosition> Ret = jsonRet as OkNegotiatedContentResult<DrogueRunPosition>;
@@ -127,16 +128,16 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.Equal(drogueRunPositionFirst.DrogueRunPositionID, drogueRunPositionRet.DrogueRunPositionID);
 
                     BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
+                    Assert.Null(badRequest);
 
                     // Not Found
-                    IHttpActionResult jsonRet2 = drogueRunPositionController.GetDrogueRunPositionWithID(0);
+                    IActionResult jsonRet2 = drogueRunPositionController.GetDrogueRunPositionWithID(0);
                     Assert.NotNull(jsonRet2);
 
                     OkNegotiatedContentResult<DrogueRunPosition> drogueRunPositionRet2 = jsonRet2 as OkNegotiatedContentResult<DrogueRunPosition>;
-                    Assert.IsNull(drogueRunPositionRet2);
+                    Assert.Null(drogueRunPositionRet2);
 
-                    NotFoundResult notFoundRequest = jsonRet2 as NotFoundResult;
+                    NotFoundObjectResult notFoundRequest = jsonRet2 as NotFoundObjectResult;
                     Assert.NotNull(notFoundRequest);
                 }
             }
@@ -168,7 +169,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     }
 
                     // ok with DrogueRunPosition info
-                    IHttpActionResult jsonRet = drogueRunPositionController.GetDrogueRunPositionWithID(drogueRunPositionLast.DrogueRunPositionID);
+                    IActionResult jsonRet = drogueRunPositionController.GetDrogueRunPositionWithID(drogueRunPositionLast.DrogueRunPositionID);
                     Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<DrogueRunPosition> Ret = jsonRet as OkNegotiatedContentResult<DrogueRunPosition>;
@@ -176,14 +177,14 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.Equal(drogueRunPositionLast.DrogueRunPositionID, drogueRunPositionRet.DrogueRunPositionID);
 
                     BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
+                    Assert.Null(badRequest);
 
                     // Post to return CSSPError because DrogueRunPositionID exist
-                    IHttpActionResult jsonRet2 = drogueRunPositionController.Post(drogueRunPositionRet, LanguageRequest.ToString());
+                    IActionResult jsonRet2 = drogueRunPositionController.Post(drogueRunPositionRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet2);
 
                     OkNegotiatedContentResult<DrogueRunPosition> drogueRunPositionRet2 = jsonRet2 as OkNegotiatedContentResult<DrogueRunPosition>;
-                    Assert.IsNull(drogueRunPositionRet2);
+                    Assert.Null(drogueRunPositionRet2);
 
                     BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
                     Assert.NotNull(badRequest2);
@@ -192,23 +193,23 @@ namespace CSSPWebAPI.Tests.Controllers
                     drogueRunPositionRet.DrogueRunPositionID = 0;
                     drogueRunPositionController.Request = new System.Net.Http.HttpRequestMessage();
                     drogueRunPositionController.Request.RequestUri = new System.Uri("http://localhost:5000/api/drogueRunPosition");
-                    IHttpActionResult jsonRet3 = drogueRunPositionController.Post(drogueRunPositionRet, LanguageRequest.ToString());
+                    IActionResult jsonRet3 = drogueRunPositionController.Post(drogueRunPositionRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 
                     CreatedNegotiatedContentResult<DrogueRunPosition> drogueRunPositionRet3 = jsonRet3 as CreatedNegotiatedContentResult<DrogueRunPosition>;
                     Assert.NotNull(drogueRunPositionRet3);
 
                     BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest3);
+                    Assert.Null(badRequest3);
 
-                    IHttpActionResult jsonRet4 = drogueRunPositionController.Delete(drogueRunPositionRet, LanguageRequest.ToString());
+                    IActionResult jsonRet4 = drogueRunPositionController.Delete(drogueRunPositionRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet4);
 
                     OkNegotiatedContentResult<DrogueRunPosition> drogueRunPositionRet4 = jsonRet4 as OkNegotiatedContentResult<DrogueRunPosition>;
                     Assert.NotNull(drogueRunPositionRet4);
 
                     BadRequestErrorMessageResult badRequest4 = jsonRet4 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest4);
+                    Assert.Null(badRequest4);
                 }
             }
         }
@@ -237,7 +238,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     }
 
                     // ok with DrogueRunPosition info
-                    IHttpActionResult jsonRet = drogueRunPositionController.GetDrogueRunPositionWithID(drogueRunPositionLast.DrogueRunPositionID);
+                    IActionResult jsonRet = drogueRunPositionController.GetDrogueRunPositionWithID(drogueRunPositionLast.DrogueRunPositionID);
                     Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<DrogueRunPosition> Ret = jsonRet as OkNegotiatedContentResult<DrogueRunPosition>;
@@ -245,25 +246,25 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.Equal(drogueRunPositionLast.DrogueRunPositionID, drogueRunPositionRet.DrogueRunPositionID);
 
                     BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
+                    Assert.Null(badRequest);
 
                     // Put to return success
-                    IHttpActionResult jsonRet2 = drogueRunPositionController.Put(drogueRunPositionRet, LanguageRequest.ToString());
+                    IActionResult jsonRet2 = drogueRunPositionController.Put(drogueRunPositionRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet2);
 
                     OkNegotiatedContentResult<DrogueRunPosition> drogueRunPositionRet2 = jsonRet2 as OkNegotiatedContentResult<DrogueRunPosition>;
                     Assert.NotNull(drogueRunPositionRet2);
 
                     BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest2);
+                    Assert.Null(badRequest2);
 
                     // Put to return CSSPError because DrogueRunPositionID of 0 does not exist
                     drogueRunPositionRet.DrogueRunPositionID = 0;
-                    IHttpActionResult jsonRet3 = drogueRunPositionController.Put(drogueRunPositionRet, LanguageRequest.ToString());
+                    IActionResult jsonRet3 = drogueRunPositionController.Put(drogueRunPositionRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 
                     OkNegotiatedContentResult<DrogueRunPosition> drogueRunPositionRet3 = jsonRet3 as OkNegotiatedContentResult<DrogueRunPosition>;
-                    Assert.IsNull(drogueRunPositionRet3);
+                    Assert.Null(drogueRunPositionRet3);
 
                     BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
                     Assert.NotNull(badRequest3);
@@ -297,7 +298,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     }
 
                     // ok with DrogueRunPosition info
-                    IHttpActionResult jsonRet = drogueRunPositionController.GetDrogueRunPositionWithID(drogueRunPositionLast.DrogueRunPositionID);
+                    IActionResult jsonRet = drogueRunPositionController.GetDrogueRunPositionWithID(drogueRunPositionLast.DrogueRunPositionID);
                     Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<DrogueRunPosition> Ret = jsonRet as OkNegotiatedContentResult<DrogueRunPosition>;
@@ -305,13 +306,13 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.Equal(drogueRunPositionLast.DrogueRunPositionID, drogueRunPositionRet.DrogueRunPositionID);
 
                     BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
+                    Assert.Null(badRequest);
 
                     // Post to return newly added DrogueRunPosition
                     drogueRunPositionRet.DrogueRunPositionID = 0;
                     drogueRunPositionController.Request = new System.Net.Http.HttpRequestMessage();
                     drogueRunPositionController.Request.RequestUri = new System.Uri("http://localhost:5000/api/drogueRunPosition");
-                    IHttpActionResult jsonRet3 = drogueRunPositionController.Post(drogueRunPositionRet, LanguageRequest.ToString());
+                    IActionResult jsonRet3 = drogueRunPositionController.Post(drogueRunPositionRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 
                     CreatedNegotiatedContentResult<DrogueRunPosition> drogueRunPositionRet3 = jsonRet3 as CreatedNegotiatedContentResult<DrogueRunPosition>;
@@ -319,25 +320,25 @@ namespace CSSPWebAPI.Tests.Controllers
                     DrogueRunPosition drogueRunPosition = drogueRunPositionRet3.Content;
 
                     BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest3);
+                    Assert.Null(badRequest3);
 
                     // Delete to return success
-                    IHttpActionResult jsonRet2 = drogueRunPositionController.Delete(drogueRunPositionRet, LanguageRequest.ToString());
+                    IActionResult jsonRet2 = drogueRunPositionController.Delete(drogueRunPositionRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet2);
 
                     OkNegotiatedContentResult<DrogueRunPosition> drogueRunPositionRet2 = jsonRet2 as OkNegotiatedContentResult<DrogueRunPosition>;
                     Assert.NotNull(drogueRunPositionRet2);
 
                     BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest2);
+                    Assert.Null(badRequest2);
 
                     // Delete to return CSSPError because DrogueRunPositionID of 0 does not exist
                     drogueRunPositionRet.DrogueRunPositionID = 0;
-                    IHttpActionResult jsonRet4 = drogueRunPositionController.Delete(drogueRunPositionRet, LanguageRequest.ToString());
+                    IActionResult jsonRet4 = drogueRunPositionController.Delete(drogueRunPositionRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet4);
 
                     OkNegotiatedContentResult<DrogueRunPosition> drogueRunPositionRet4 = jsonRet4 as OkNegotiatedContentResult<DrogueRunPosition>;
-                    Assert.IsNull(drogueRunPositionRet4);
+                    Assert.Null(drogueRunPositionRet4);
 
                     BadRequestErrorMessageResult badRequest4 = jsonRet4 as BadRequestErrorMessageResult;
                     Assert.NotNull(badRequest4);

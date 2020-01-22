@@ -1,14 +1,14 @@
 using CSSPEnums;
 using CSSPModels;
 using CSSPServices;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web.Http;
 
 namespace CSSPWebAPI.Controllers
 {
-    [RoutePrefix("api/address")]
+    [Route("api/address")]
     public partial class AddressController : BaseController
     {
         #region Variables
@@ -29,126 +29,56 @@ namespace CSSPWebAPI.Controllers
         #region Functions public
         // GET api/address
         [Route("")]
-        public IHttpActionResult GetAddressList([FromUri]string lang = "en", [FromUri]int skip = 0, [FromUri]int take = 200,
-            [FromUri]string asc = "", [FromUri]string desc = "", [FromUri]string where = "", [FromUri]string extra = "")
+        public IActionResult GetAddressList([FromQuery]string lang = "en", [FromQuery]int skip = 0, [FromQuery]int take = 200,
+            [FromQuery]string asc = "", [FromQuery]string desc = "", [FromQuery]string where = "")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
                 AddressService addressService = new AddressService(new Query() { Lang = lang }, db, ContactID);
 
-                if (extra == "A") // QueryString contains [extra=A]
-                {
-                   addressService.Query = addressService.FillQuery(typeof(AddressExtraA), lang, skip, take, asc, desc, where, extra);
+                addressService.Query = addressService.FillQuery(typeof(Address), lang, skip, take, asc, desc, where);
 
-                    if (addressService.Query.HasErrors)
-                    {
-                        return Ok(new List<AddressExtraA>()
-                        {
-                            new AddressExtraA()
-                            {
-                                HasErrors = addressService.Query.HasErrors,
-                                ValidationResults = addressService.Query.ValidationResults,
-                            },
-                        }.ToList());
-                    }
-                    else
-                    {
-                        return Ok(addressService.GetAddressExtraAList().ToList());
-                    }
-                }
-                else if (extra == "B") // QueryString contains [extra=B]
-                {
-                   addressService.Query = addressService.FillQuery(typeof(AddressExtraB), lang, skip, take, asc, desc, where, extra);
-
-                    if (addressService.Query.HasErrors)
-                    {
-                        return Ok(new List<AddressExtraB>()
-                        {
-                            new AddressExtraB()
-                            {
-                                HasErrors = addressService.Query.HasErrors,
-                                ValidationResults = addressService.Query.ValidationResults,
-                            },
-                        }.ToList());
-                    }
-                    else
-                    {
-                        return Ok(addressService.GetAddressExtraBList().ToList());
-                    }
-                }
-                else // QueryString has no parameter [extra] or extra is empty
-                {
-                   addressService.Query = addressService.FillQuery(typeof(Address), lang, skip, take, asc, desc, where, extra);
-
-                    if (addressService.Query.HasErrors)
-                    {
-                        return Ok(new List<Address>()
-                        {
-                            new Address()
-                            {
-                                HasErrors = addressService.Query.HasErrors,
-                                ValidationResults = addressService.Query.ValidationResults,
-                            },
-                        }.ToList());
-                    }
-                    else
-                    {
-                        return Ok(addressService.GetAddressList().ToList());
-                    }
-                }
+                 if (addressService.Query.HasErrors)
+                 {
+                     return Ok(new List<Address>()
+                     {
+                         new Address()
+                         {
+                             HasErrors = addressService.Query.HasErrors,
+                             ValidationResults = addressService.Query.ValidationResults,
+                         },
+                     }.ToList());
+                 }
+                 else
+                 {
+                     return Ok(addressService.GetAddressList().ToList());
+                 }
             }
         }
         // GET api/address/1
         [Route("{AddressID:int}")]
-        public IHttpActionResult GetAddressWithID([FromUri]int AddressID, [FromUri]string lang = "en", [FromUri]string extra = "")
+        public IActionResult GetAddressWithID([FromQuery]int AddressID, [FromQuery]string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
                 AddressService addressService = new AddressService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
 
-                addressService.Query = addressService.FillQuery(typeof(Address), lang, 0, 1, "", "", extra);
+                addressService.Query = addressService.FillQuery(typeof(Address), lang, 0, 1, "", "");
 
-                if (addressService.Query.Extra == "A")
+                Address address = new Address();
+                address = addressService.GetAddressWithAddressID(AddressID);
+
+                if (address == null)
                 {
-                    AddressExtraA addressExtraA = new AddressExtraA();
-                    addressExtraA = addressService.GetAddressExtraAWithAddressID(AddressID);
-
-                    if (addressExtraA == null)
-                    {
-                        return NotFound();
-                    }
-
-                    return Ok(addressExtraA);
+                    return NotFound();
                 }
-                else if (addressService.Query.Extra == "B")
-                {
-                    AddressExtraB addressExtraB = new AddressExtraB();
-                    addressExtraB = addressService.GetAddressExtraBWithAddressID(AddressID);
 
-                    if (addressExtraB == null)
-                    {
-                        return NotFound();
-                    }
-
-                    return Ok(addressExtraB);
-                }
-                else
-                {
-                    Address address = new Address();
-                    address = addressService.GetAddressWithAddressID(AddressID);
-
-                    if (address == null)
-                    {
-                        return NotFound();
-                    }
-
-                    return Ok(address);
-                }
+                return Ok(address);
             }
         }
         // POST api/address
         [Route("")]
-        public IHttpActionResult Post([FromBody]Address address, [FromUri]string lang = "en")
+        public IActionResult Post([FromBody]Address address, [FromQuery]string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
@@ -161,13 +91,13 @@ namespace CSSPWebAPI.Controllers
                 else
                 {
                     address.ValidationResults = null;
-                    return Created<Address>(new Uri(Request.RequestUri, address.AddressID.ToString()), address);
+                    return Created(Url.ToString(), address);
                 }
             }
         }
         // PUT api/address
         [Route("")]
-        public IHttpActionResult Put([FromBody]Address address, [FromUri]string lang = "en")
+        public IActionResult Put([FromBody]Address address, [FromQuery]string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
@@ -186,7 +116,7 @@ namespace CSSPWebAPI.Controllers
         }
         // DELETE api/address
         [Route("")]
-        public IHttpActionResult Delete([FromBody]Address address, [FromUri]string lang = "en")
+        public IActionResult Delete([FromBody]Address address, [FromQuery]string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {

@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
 using System.Web.Http.Results;
+using Microsoft.AspNetCore.Mvc;
 
 namespace CSSPWebAPI.Tests.Controllers
 {
@@ -48,7 +49,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     }
 
                     // ok with RatingCurve info
-                    IHttpActionResult jsonRet = ratingCurveController.GetRatingCurveList();
+                    IActionResult jsonRet = ratingCurveController.GetRatingCurveList();
                     Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<List<RatingCurve>> ret = jsonRet as OkNegotiatedContentResult<List<RatingCurve>>;
@@ -86,7 +87,7 @@ namespace CSSPWebAPI.Tests.Controllers
                            count = (query.Take > count ? query.Take : count);
 
                            // ok with RatingCurve info
-                           IHttpActionResult jsonRet2 = ratingCurveController.GetRatingCurveList(query.Language.ToString(), query.Skip, query.Take);
+                           IActionResult jsonRet2 = ratingCurveController.GetRatingCurveList(query.Language.ToString(), query.Skip, query.Take);
                            Assert.NotNull(jsonRet2);
 
                            OkNegotiatedContentResult<List<RatingCurve>> ret2 = jsonRet2 as OkNegotiatedContentResult<List<RatingCurve>>;
@@ -119,7 +120,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     }
 
                     // ok with RatingCurve info
-                    IHttpActionResult jsonRet = ratingCurveController.GetRatingCurveWithID(ratingCurveFirst.RatingCurveID);
+                    IActionResult jsonRet = ratingCurveController.GetRatingCurveWithID(ratingCurveFirst.RatingCurveID);
                     Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<RatingCurve> Ret = jsonRet as OkNegotiatedContentResult<RatingCurve>;
@@ -127,16 +128,16 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.Equal(ratingCurveFirst.RatingCurveID, ratingCurveRet.RatingCurveID);
 
                     BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
+                    Assert.Null(badRequest);
 
                     // Not Found
-                    IHttpActionResult jsonRet2 = ratingCurveController.GetRatingCurveWithID(0);
+                    IActionResult jsonRet2 = ratingCurveController.GetRatingCurveWithID(0);
                     Assert.NotNull(jsonRet2);
 
                     OkNegotiatedContentResult<RatingCurve> ratingCurveRet2 = jsonRet2 as OkNegotiatedContentResult<RatingCurve>;
-                    Assert.IsNull(ratingCurveRet2);
+                    Assert.Null(ratingCurveRet2);
 
-                    NotFoundResult notFoundRequest = jsonRet2 as NotFoundResult;
+                    NotFoundObjectResult notFoundRequest = jsonRet2 as NotFoundObjectResult;
                     Assert.NotNull(notFoundRequest);
                 }
             }
@@ -168,7 +169,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     }
 
                     // ok with RatingCurve info
-                    IHttpActionResult jsonRet = ratingCurveController.GetRatingCurveWithID(ratingCurveLast.RatingCurveID);
+                    IActionResult jsonRet = ratingCurveController.GetRatingCurveWithID(ratingCurveLast.RatingCurveID);
                     Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<RatingCurve> Ret = jsonRet as OkNegotiatedContentResult<RatingCurve>;
@@ -176,14 +177,14 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.Equal(ratingCurveLast.RatingCurveID, ratingCurveRet.RatingCurveID);
 
                     BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
+                    Assert.Null(badRequest);
 
                     // Post to return CSSPError because RatingCurveID exist
-                    IHttpActionResult jsonRet2 = ratingCurveController.Post(ratingCurveRet, LanguageRequest.ToString());
+                    IActionResult jsonRet2 = ratingCurveController.Post(ratingCurveRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet2);
 
                     OkNegotiatedContentResult<RatingCurve> ratingCurveRet2 = jsonRet2 as OkNegotiatedContentResult<RatingCurve>;
-                    Assert.IsNull(ratingCurveRet2);
+                    Assert.Null(ratingCurveRet2);
 
                     BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
                     Assert.NotNull(badRequest2);
@@ -192,23 +193,23 @@ namespace CSSPWebAPI.Tests.Controllers
                     ratingCurveRet.RatingCurveID = 0;
                     ratingCurveController.Request = new System.Net.Http.HttpRequestMessage();
                     ratingCurveController.Request.RequestUri = new System.Uri("http://localhost:5000/api/ratingCurve");
-                    IHttpActionResult jsonRet3 = ratingCurveController.Post(ratingCurveRet, LanguageRequest.ToString());
+                    IActionResult jsonRet3 = ratingCurveController.Post(ratingCurveRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 
                     CreatedNegotiatedContentResult<RatingCurve> ratingCurveRet3 = jsonRet3 as CreatedNegotiatedContentResult<RatingCurve>;
                     Assert.NotNull(ratingCurveRet3);
 
                     BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest3);
+                    Assert.Null(badRequest3);
 
-                    IHttpActionResult jsonRet4 = ratingCurveController.Delete(ratingCurveRet, LanguageRequest.ToString());
+                    IActionResult jsonRet4 = ratingCurveController.Delete(ratingCurveRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet4);
 
                     OkNegotiatedContentResult<RatingCurve> ratingCurveRet4 = jsonRet4 as OkNegotiatedContentResult<RatingCurve>;
                     Assert.NotNull(ratingCurveRet4);
 
                     BadRequestErrorMessageResult badRequest4 = jsonRet4 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest4);
+                    Assert.Null(badRequest4);
                 }
             }
         }
@@ -237,7 +238,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     }
 
                     // ok with RatingCurve info
-                    IHttpActionResult jsonRet = ratingCurveController.GetRatingCurveWithID(ratingCurveLast.RatingCurveID);
+                    IActionResult jsonRet = ratingCurveController.GetRatingCurveWithID(ratingCurveLast.RatingCurveID);
                     Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<RatingCurve> Ret = jsonRet as OkNegotiatedContentResult<RatingCurve>;
@@ -245,25 +246,25 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.Equal(ratingCurveLast.RatingCurveID, ratingCurveRet.RatingCurveID);
 
                     BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
+                    Assert.Null(badRequest);
 
                     // Put to return success
-                    IHttpActionResult jsonRet2 = ratingCurveController.Put(ratingCurveRet, LanguageRequest.ToString());
+                    IActionResult jsonRet2 = ratingCurveController.Put(ratingCurveRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet2);
 
                     OkNegotiatedContentResult<RatingCurve> ratingCurveRet2 = jsonRet2 as OkNegotiatedContentResult<RatingCurve>;
                     Assert.NotNull(ratingCurveRet2);
 
                     BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest2);
+                    Assert.Null(badRequest2);
 
                     // Put to return CSSPError because RatingCurveID of 0 does not exist
                     ratingCurveRet.RatingCurveID = 0;
-                    IHttpActionResult jsonRet3 = ratingCurveController.Put(ratingCurveRet, LanguageRequest.ToString());
+                    IActionResult jsonRet3 = ratingCurveController.Put(ratingCurveRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 
                     OkNegotiatedContentResult<RatingCurve> ratingCurveRet3 = jsonRet3 as OkNegotiatedContentResult<RatingCurve>;
-                    Assert.IsNull(ratingCurveRet3);
+                    Assert.Null(ratingCurveRet3);
 
                     BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
                     Assert.NotNull(badRequest3);
@@ -297,7 +298,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     }
 
                     // ok with RatingCurve info
-                    IHttpActionResult jsonRet = ratingCurveController.GetRatingCurveWithID(ratingCurveLast.RatingCurveID);
+                    IActionResult jsonRet = ratingCurveController.GetRatingCurveWithID(ratingCurveLast.RatingCurveID);
                     Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<RatingCurve> Ret = jsonRet as OkNegotiatedContentResult<RatingCurve>;
@@ -305,13 +306,13 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.Equal(ratingCurveLast.RatingCurveID, ratingCurveRet.RatingCurveID);
 
                     BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
+                    Assert.Null(badRequest);
 
                     // Post to return newly added RatingCurve
                     ratingCurveRet.RatingCurveID = 0;
                     ratingCurveController.Request = new System.Net.Http.HttpRequestMessage();
                     ratingCurveController.Request.RequestUri = new System.Uri("http://localhost:5000/api/ratingCurve");
-                    IHttpActionResult jsonRet3 = ratingCurveController.Post(ratingCurveRet, LanguageRequest.ToString());
+                    IActionResult jsonRet3 = ratingCurveController.Post(ratingCurveRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 
                     CreatedNegotiatedContentResult<RatingCurve> ratingCurveRet3 = jsonRet3 as CreatedNegotiatedContentResult<RatingCurve>;
@@ -319,25 +320,25 @@ namespace CSSPWebAPI.Tests.Controllers
                     RatingCurve ratingCurve = ratingCurveRet3.Content;
 
                     BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest3);
+                    Assert.Null(badRequest3);
 
                     // Delete to return success
-                    IHttpActionResult jsonRet2 = ratingCurveController.Delete(ratingCurveRet, LanguageRequest.ToString());
+                    IActionResult jsonRet2 = ratingCurveController.Delete(ratingCurveRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet2);
 
                     OkNegotiatedContentResult<RatingCurve> ratingCurveRet2 = jsonRet2 as OkNegotiatedContentResult<RatingCurve>;
                     Assert.NotNull(ratingCurveRet2);
 
                     BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest2);
+                    Assert.Null(badRequest2);
 
                     // Delete to return CSSPError because RatingCurveID of 0 does not exist
                     ratingCurveRet.RatingCurveID = 0;
-                    IHttpActionResult jsonRet4 = ratingCurveController.Delete(ratingCurveRet, LanguageRequest.ToString());
+                    IActionResult jsonRet4 = ratingCurveController.Delete(ratingCurveRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet4);
 
                     OkNegotiatedContentResult<RatingCurve> ratingCurveRet4 = jsonRet4 as OkNegotiatedContentResult<RatingCurve>;
-                    Assert.IsNull(ratingCurveRet4);
+                    Assert.Null(ratingCurveRet4);
 
                     BadRequestErrorMessageResult badRequest4 = jsonRet4 as BadRequestErrorMessageResult;
                     Assert.NotNull(badRequest4);

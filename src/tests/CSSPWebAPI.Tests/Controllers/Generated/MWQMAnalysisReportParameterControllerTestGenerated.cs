@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
 using System.Web.Http.Results;
+using Microsoft.AspNetCore.Mvc;
 
 namespace CSSPWebAPI.Tests.Controllers
 {
@@ -48,7 +49,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     }
 
                     // ok with MWQMAnalysisReportParameter info
-                    IHttpActionResult jsonRet = mwqmAnalysisReportParameterController.GetMWQMAnalysisReportParameterList();
+                    IActionResult jsonRet = mwqmAnalysisReportParameterController.GetMWQMAnalysisReportParameterList();
                     Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<List<MWQMAnalysisReportParameter>> ret = jsonRet as OkNegotiatedContentResult<List<MWQMAnalysisReportParameter>>;
@@ -86,7 +87,7 @@ namespace CSSPWebAPI.Tests.Controllers
                            count = (query.Take > count ? query.Take : count);
 
                            // ok with MWQMAnalysisReportParameter info
-                           IHttpActionResult jsonRet2 = mwqmAnalysisReportParameterController.GetMWQMAnalysisReportParameterList(query.Language.ToString(), query.Skip, query.Take);
+                           IActionResult jsonRet2 = mwqmAnalysisReportParameterController.GetMWQMAnalysisReportParameterList(query.Language.ToString(), query.Skip, query.Take);
                            Assert.NotNull(jsonRet2);
 
                            OkNegotiatedContentResult<List<MWQMAnalysisReportParameter>> ret2 = jsonRet2 as OkNegotiatedContentResult<List<MWQMAnalysisReportParameter>>;
@@ -119,7 +120,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     }
 
                     // ok with MWQMAnalysisReportParameter info
-                    IHttpActionResult jsonRet = mwqmAnalysisReportParameterController.GetMWQMAnalysisReportParameterWithID(mwqmAnalysisReportParameterFirst.MWQMAnalysisReportParameterID);
+                    IActionResult jsonRet = mwqmAnalysisReportParameterController.GetMWQMAnalysisReportParameterWithID(mwqmAnalysisReportParameterFirst.MWQMAnalysisReportParameterID);
                     Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<MWQMAnalysisReportParameter> Ret = jsonRet as OkNegotiatedContentResult<MWQMAnalysisReportParameter>;
@@ -127,16 +128,16 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.Equal(mwqmAnalysisReportParameterFirst.MWQMAnalysisReportParameterID, mwqmAnalysisReportParameterRet.MWQMAnalysisReportParameterID);
 
                     BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
+                    Assert.Null(badRequest);
 
                     // Not Found
-                    IHttpActionResult jsonRet2 = mwqmAnalysisReportParameterController.GetMWQMAnalysisReportParameterWithID(0);
+                    IActionResult jsonRet2 = mwqmAnalysisReportParameterController.GetMWQMAnalysisReportParameterWithID(0);
                     Assert.NotNull(jsonRet2);
 
                     OkNegotiatedContentResult<MWQMAnalysisReportParameter> mwqmAnalysisReportParameterRet2 = jsonRet2 as OkNegotiatedContentResult<MWQMAnalysisReportParameter>;
-                    Assert.IsNull(mwqmAnalysisReportParameterRet2);
+                    Assert.Null(mwqmAnalysisReportParameterRet2);
 
-                    NotFoundResult notFoundRequest = jsonRet2 as NotFoundResult;
+                    NotFoundObjectResult notFoundRequest = jsonRet2 as NotFoundObjectResult;
                     Assert.NotNull(notFoundRequest);
                 }
             }
@@ -168,7 +169,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     }
 
                     // ok with MWQMAnalysisReportParameter info
-                    IHttpActionResult jsonRet = mwqmAnalysisReportParameterController.GetMWQMAnalysisReportParameterWithID(mwqmAnalysisReportParameterLast.MWQMAnalysisReportParameterID);
+                    IActionResult jsonRet = mwqmAnalysisReportParameterController.GetMWQMAnalysisReportParameterWithID(mwqmAnalysisReportParameterLast.MWQMAnalysisReportParameterID);
                     Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<MWQMAnalysisReportParameter> Ret = jsonRet as OkNegotiatedContentResult<MWQMAnalysisReportParameter>;
@@ -176,14 +177,14 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.Equal(mwqmAnalysisReportParameterLast.MWQMAnalysisReportParameterID, mwqmAnalysisReportParameterRet.MWQMAnalysisReportParameterID);
 
                     BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
+                    Assert.Null(badRequest);
 
                     // Post to return CSSPError because MWQMAnalysisReportParameterID exist
-                    IHttpActionResult jsonRet2 = mwqmAnalysisReportParameterController.Post(mwqmAnalysisReportParameterRet, LanguageRequest.ToString());
+                    IActionResult jsonRet2 = mwqmAnalysisReportParameterController.Post(mwqmAnalysisReportParameterRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet2);
 
                     OkNegotiatedContentResult<MWQMAnalysisReportParameter> mwqmAnalysisReportParameterRet2 = jsonRet2 as OkNegotiatedContentResult<MWQMAnalysisReportParameter>;
-                    Assert.IsNull(mwqmAnalysisReportParameterRet2);
+                    Assert.Null(mwqmAnalysisReportParameterRet2);
 
                     BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
                     Assert.NotNull(badRequest2);
@@ -192,23 +193,23 @@ namespace CSSPWebAPI.Tests.Controllers
                     mwqmAnalysisReportParameterRet.MWQMAnalysisReportParameterID = 0;
                     mwqmAnalysisReportParameterController.Request = new System.Net.Http.HttpRequestMessage();
                     mwqmAnalysisReportParameterController.Request.RequestUri = new System.Uri("http://localhost:5000/api/mwqmAnalysisReportParameter");
-                    IHttpActionResult jsonRet3 = mwqmAnalysisReportParameterController.Post(mwqmAnalysisReportParameterRet, LanguageRequest.ToString());
+                    IActionResult jsonRet3 = mwqmAnalysisReportParameterController.Post(mwqmAnalysisReportParameterRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 
                     CreatedNegotiatedContentResult<MWQMAnalysisReportParameter> mwqmAnalysisReportParameterRet3 = jsonRet3 as CreatedNegotiatedContentResult<MWQMAnalysisReportParameter>;
                     Assert.NotNull(mwqmAnalysisReportParameterRet3);
 
                     BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest3);
+                    Assert.Null(badRequest3);
 
-                    IHttpActionResult jsonRet4 = mwqmAnalysisReportParameterController.Delete(mwqmAnalysisReportParameterRet, LanguageRequest.ToString());
+                    IActionResult jsonRet4 = mwqmAnalysisReportParameterController.Delete(mwqmAnalysisReportParameterRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet4);
 
                     OkNegotiatedContentResult<MWQMAnalysisReportParameter> mwqmAnalysisReportParameterRet4 = jsonRet4 as OkNegotiatedContentResult<MWQMAnalysisReportParameter>;
                     Assert.NotNull(mwqmAnalysisReportParameterRet4);
 
                     BadRequestErrorMessageResult badRequest4 = jsonRet4 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest4);
+                    Assert.Null(badRequest4);
                 }
             }
         }
@@ -237,7 +238,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     }
 
                     // ok with MWQMAnalysisReportParameter info
-                    IHttpActionResult jsonRet = mwqmAnalysisReportParameterController.GetMWQMAnalysisReportParameterWithID(mwqmAnalysisReportParameterLast.MWQMAnalysisReportParameterID);
+                    IActionResult jsonRet = mwqmAnalysisReportParameterController.GetMWQMAnalysisReportParameterWithID(mwqmAnalysisReportParameterLast.MWQMAnalysisReportParameterID);
                     Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<MWQMAnalysisReportParameter> Ret = jsonRet as OkNegotiatedContentResult<MWQMAnalysisReportParameter>;
@@ -245,25 +246,25 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.Equal(mwqmAnalysisReportParameterLast.MWQMAnalysisReportParameterID, mwqmAnalysisReportParameterRet.MWQMAnalysisReportParameterID);
 
                     BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
+                    Assert.Null(badRequest);
 
                     // Put to return success
-                    IHttpActionResult jsonRet2 = mwqmAnalysisReportParameterController.Put(mwqmAnalysisReportParameterRet, LanguageRequest.ToString());
+                    IActionResult jsonRet2 = mwqmAnalysisReportParameterController.Put(mwqmAnalysisReportParameterRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet2);
 
                     OkNegotiatedContentResult<MWQMAnalysisReportParameter> mwqmAnalysisReportParameterRet2 = jsonRet2 as OkNegotiatedContentResult<MWQMAnalysisReportParameter>;
                     Assert.NotNull(mwqmAnalysisReportParameterRet2);
 
                     BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest2);
+                    Assert.Null(badRequest2);
 
                     // Put to return CSSPError because MWQMAnalysisReportParameterID of 0 does not exist
                     mwqmAnalysisReportParameterRet.MWQMAnalysisReportParameterID = 0;
-                    IHttpActionResult jsonRet3 = mwqmAnalysisReportParameterController.Put(mwqmAnalysisReportParameterRet, LanguageRequest.ToString());
+                    IActionResult jsonRet3 = mwqmAnalysisReportParameterController.Put(mwqmAnalysisReportParameterRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 
                     OkNegotiatedContentResult<MWQMAnalysisReportParameter> mwqmAnalysisReportParameterRet3 = jsonRet3 as OkNegotiatedContentResult<MWQMAnalysisReportParameter>;
-                    Assert.IsNull(mwqmAnalysisReportParameterRet3);
+                    Assert.Null(mwqmAnalysisReportParameterRet3);
 
                     BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
                     Assert.NotNull(badRequest3);
@@ -297,7 +298,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     }
 
                     // ok with MWQMAnalysisReportParameter info
-                    IHttpActionResult jsonRet = mwqmAnalysisReportParameterController.GetMWQMAnalysisReportParameterWithID(mwqmAnalysisReportParameterLast.MWQMAnalysisReportParameterID);
+                    IActionResult jsonRet = mwqmAnalysisReportParameterController.GetMWQMAnalysisReportParameterWithID(mwqmAnalysisReportParameterLast.MWQMAnalysisReportParameterID);
                     Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<MWQMAnalysisReportParameter> Ret = jsonRet as OkNegotiatedContentResult<MWQMAnalysisReportParameter>;
@@ -305,13 +306,13 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.Equal(mwqmAnalysisReportParameterLast.MWQMAnalysisReportParameterID, mwqmAnalysisReportParameterRet.MWQMAnalysisReportParameterID);
 
                     BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
+                    Assert.Null(badRequest);
 
                     // Post to return newly added MWQMAnalysisReportParameter
                     mwqmAnalysisReportParameterRet.MWQMAnalysisReportParameterID = 0;
                     mwqmAnalysisReportParameterController.Request = new System.Net.Http.HttpRequestMessage();
                     mwqmAnalysisReportParameterController.Request.RequestUri = new System.Uri("http://localhost:5000/api/mwqmAnalysisReportParameter");
-                    IHttpActionResult jsonRet3 = mwqmAnalysisReportParameterController.Post(mwqmAnalysisReportParameterRet, LanguageRequest.ToString());
+                    IActionResult jsonRet3 = mwqmAnalysisReportParameterController.Post(mwqmAnalysisReportParameterRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 
                     CreatedNegotiatedContentResult<MWQMAnalysisReportParameter> mwqmAnalysisReportParameterRet3 = jsonRet3 as CreatedNegotiatedContentResult<MWQMAnalysisReportParameter>;
@@ -319,25 +320,25 @@ namespace CSSPWebAPI.Tests.Controllers
                     MWQMAnalysisReportParameter mwqmAnalysisReportParameter = mwqmAnalysisReportParameterRet3.Content;
 
                     BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest3);
+                    Assert.Null(badRequest3);
 
                     // Delete to return success
-                    IHttpActionResult jsonRet2 = mwqmAnalysisReportParameterController.Delete(mwqmAnalysisReportParameterRet, LanguageRequest.ToString());
+                    IActionResult jsonRet2 = mwqmAnalysisReportParameterController.Delete(mwqmAnalysisReportParameterRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet2);
 
                     OkNegotiatedContentResult<MWQMAnalysisReportParameter> mwqmAnalysisReportParameterRet2 = jsonRet2 as OkNegotiatedContentResult<MWQMAnalysisReportParameter>;
                     Assert.NotNull(mwqmAnalysisReportParameterRet2);
 
                     BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest2);
+                    Assert.Null(badRequest2);
 
                     // Delete to return CSSPError because MWQMAnalysisReportParameterID of 0 does not exist
                     mwqmAnalysisReportParameterRet.MWQMAnalysisReportParameterID = 0;
-                    IHttpActionResult jsonRet4 = mwqmAnalysisReportParameterController.Delete(mwqmAnalysisReportParameterRet, LanguageRequest.ToString());
+                    IActionResult jsonRet4 = mwqmAnalysisReportParameterController.Delete(mwqmAnalysisReportParameterRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet4);
 
                     OkNegotiatedContentResult<MWQMAnalysisReportParameter> mwqmAnalysisReportParameterRet4 = jsonRet4 as OkNegotiatedContentResult<MWQMAnalysisReportParameter>;
-                    Assert.IsNull(mwqmAnalysisReportParameterRet4);
+                    Assert.Null(mwqmAnalysisReportParameterRet4);
 
                     BadRequestErrorMessageResult badRequest4 = jsonRet4 as BadRequestErrorMessageResult;
                     Assert.NotNull(badRequest4);

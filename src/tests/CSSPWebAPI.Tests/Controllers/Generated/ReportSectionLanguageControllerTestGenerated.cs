@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
 using System.Web.Http.Results;
+using Microsoft.AspNetCore.Mvc;
 
 namespace CSSPWebAPI.Tests.Controllers
 {
@@ -48,7 +49,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     }
 
                     // ok with ReportSectionLanguage info
-                    IHttpActionResult jsonRet = reportSectionLanguageController.GetReportSectionLanguageList();
+                    IActionResult jsonRet = reportSectionLanguageController.GetReportSectionLanguageList();
                     Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<List<ReportSectionLanguage>> ret = jsonRet as OkNegotiatedContentResult<List<ReportSectionLanguage>>;
@@ -86,7 +87,7 @@ namespace CSSPWebAPI.Tests.Controllers
                            count = (query.Take > count ? query.Take : count);
 
                            // ok with ReportSectionLanguage info
-                           IHttpActionResult jsonRet2 = reportSectionLanguageController.GetReportSectionLanguageList(query.Language.ToString(), query.Skip, query.Take);
+                           IActionResult jsonRet2 = reportSectionLanguageController.GetReportSectionLanguageList(query.Language.ToString(), query.Skip, query.Take);
                            Assert.NotNull(jsonRet2);
 
                            OkNegotiatedContentResult<List<ReportSectionLanguage>> ret2 = jsonRet2 as OkNegotiatedContentResult<List<ReportSectionLanguage>>;
@@ -119,7 +120,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     }
 
                     // ok with ReportSectionLanguage info
-                    IHttpActionResult jsonRet = reportSectionLanguageController.GetReportSectionLanguageWithID(reportSectionLanguageFirst.ReportSectionLanguageID);
+                    IActionResult jsonRet = reportSectionLanguageController.GetReportSectionLanguageWithID(reportSectionLanguageFirst.ReportSectionLanguageID);
                     Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<ReportSectionLanguage> Ret = jsonRet as OkNegotiatedContentResult<ReportSectionLanguage>;
@@ -127,16 +128,16 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.Equal(reportSectionLanguageFirst.ReportSectionLanguageID, reportSectionLanguageRet.ReportSectionLanguageID);
 
                     BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
+                    Assert.Null(badRequest);
 
                     // Not Found
-                    IHttpActionResult jsonRet2 = reportSectionLanguageController.GetReportSectionLanguageWithID(0);
+                    IActionResult jsonRet2 = reportSectionLanguageController.GetReportSectionLanguageWithID(0);
                     Assert.NotNull(jsonRet2);
 
                     OkNegotiatedContentResult<ReportSectionLanguage> reportSectionLanguageRet2 = jsonRet2 as OkNegotiatedContentResult<ReportSectionLanguage>;
-                    Assert.IsNull(reportSectionLanguageRet2);
+                    Assert.Null(reportSectionLanguageRet2);
 
-                    NotFoundResult notFoundRequest = jsonRet2 as NotFoundResult;
+                    NotFoundObjectResult notFoundRequest = jsonRet2 as NotFoundObjectResult;
                     Assert.NotNull(notFoundRequest);
                 }
             }
@@ -168,7 +169,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     }
 
                     // ok with ReportSectionLanguage info
-                    IHttpActionResult jsonRet = reportSectionLanguageController.GetReportSectionLanguageWithID(reportSectionLanguageLast.ReportSectionLanguageID);
+                    IActionResult jsonRet = reportSectionLanguageController.GetReportSectionLanguageWithID(reportSectionLanguageLast.ReportSectionLanguageID);
                     Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<ReportSectionLanguage> Ret = jsonRet as OkNegotiatedContentResult<ReportSectionLanguage>;
@@ -176,14 +177,14 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.Equal(reportSectionLanguageLast.ReportSectionLanguageID, reportSectionLanguageRet.ReportSectionLanguageID);
 
                     BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
+                    Assert.Null(badRequest);
 
                     // Post to return CSSPError because ReportSectionLanguageID exist
-                    IHttpActionResult jsonRet2 = reportSectionLanguageController.Post(reportSectionLanguageRet, LanguageRequest.ToString());
+                    IActionResult jsonRet2 = reportSectionLanguageController.Post(reportSectionLanguageRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet2);
 
                     OkNegotiatedContentResult<ReportSectionLanguage> reportSectionLanguageRet2 = jsonRet2 as OkNegotiatedContentResult<ReportSectionLanguage>;
-                    Assert.IsNull(reportSectionLanguageRet2);
+                    Assert.Null(reportSectionLanguageRet2);
 
                     BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
                     Assert.NotNull(badRequest2);
@@ -192,23 +193,23 @@ namespace CSSPWebAPI.Tests.Controllers
                     reportSectionLanguageRet.ReportSectionLanguageID = 0;
                     reportSectionLanguageController.Request = new System.Net.Http.HttpRequestMessage();
                     reportSectionLanguageController.Request.RequestUri = new System.Uri("http://localhost:5000/api/reportSectionLanguage");
-                    IHttpActionResult jsonRet3 = reportSectionLanguageController.Post(reportSectionLanguageRet, LanguageRequest.ToString());
+                    IActionResult jsonRet3 = reportSectionLanguageController.Post(reportSectionLanguageRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 
                     CreatedNegotiatedContentResult<ReportSectionLanguage> reportSectionLanguageRet3 = jsonRet3 as CreatedNegotiatedContentResult<ReportSectionLanguage>;
                     Assert.NotNull(reportSectionLanguageRet3);
 
                     BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest3);
+                    Assert.Null(badRequest3);
 
-                    IHttpActionResult jsonRet4 = reportSectionLanguageController.Delete(reportSectionLanguageRet, LanguageRequest.ToString());
+                    IActionResult jsonRet4 = reportSectionLanguageController.Delete(reportSectionLanguageRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet4);
 
                     OkNegotiatedContentResult<ReportSectionLanguage> reportSectionLanguageRet4 = jsonRet4 as OkNegotiatedContentResult<ReportSectionLanguage>;
                     Assert.NotNull(reportSectionLanguageRet4);
 
                     BadRequestErrorMessageResult badRequest4 = jsonRet4 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest4);
+                    Assert.Null(badRequest4);
                 }
             }
         }
@@ -237,7 +238,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     }
 
                     // ok with ReportSectionLanguage info
-                    IHttpActionResult jsonRet = reportSectionLanguageController.GetReportSectionLanguageWithID(reportSectionLanguageLast.ReportSectionLanguageID);
+                    IActionResult jsonRet = reportSectionLanguageController.GetReportSectionLanguageWithID(reportSectionLanguageLast.ReportSectionLanguageID);
                     Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<ReportSectionLanguage> Ret = jsonRet as OkNegotiatedContentResult<ReportSectionLanguage>;
@@ -245,25 +246,25 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.Equal(reportSectionLanguageLast.ReportSectionLanguageID, reportSectionLanguageRet.ReportSectionLanguageID);
 
                     BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
+                    Assert.Null(badRequest);
 
                     // Put to return success
-                    IHttpActionResult jsonRet2 = reportSectionLanguageController.Put(reportSectionLanguageRet, LanguageRequest.ToString());
+                    IActionResult jsonRet2 = reportSectionLanguageController.Put(reportSectionLanguageRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet2);
 
                     OkNegotiatedContentResult<ReportSectionLanguage> reportSectionLanguageRet2 = jsonRet2 as OkNegotiatedContentResult<ReportSectionLanguage>;
                     Assert.NotNull(reportSectionLanguageRet2);
 
                     BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest2);
+                    Assert.Null(badRequest2);
 
                     // Put to return CSSPError because ReportSectionLanguageID of 0 does not exist
                     reportSectionLanguageRet.ReportSectionLanguageID = 0;
-                    IHttpActionResult jsonRet3 = reportSectionLanguageController.Put(reportSectionLanguageRet, LanguageRequest.ToString());
+                    IActionResult jsonRet3 = reportSectionLanguageController.Put(reportSectionLanguageRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 
                     OkNegotiatedContentResult<ReportSectionLanguage> reportSectionLanguageRet3 = jsonRet3 as OkNegotiatedContentResult<ReportSectionLanguage>;
-                    Assert.IsNull(reportSectionLanguageRet3);
+                    Assert.Null(reportSectionLanguageRet3);
 
                     BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
                     Assert.NotNull(badRequest3);
@@ -297,7 +298,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     }
 
                     // ok with ReportSectionLanguage info
-                    IHttpActionResult jsonRet = reportSectionLanguageController.GetReportSectionLanguageWithID(reportSectionLanguageLast.ReportSectionLanguageID);
+                    IActionResult jsonRet = reportSectionLanguageController.GetReportSectionLanguageWithID(reportSectionLanguageLast.ReportSectionLanguageID);
                     Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<ReportSectionLanguage> Ret = jsonRet as OkNegotiatedContentResult<ReportSectionLanguage>;
@@ -305,13 +306,13 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.Equal(reportSectionLanguageLast.ReportSectionLanguageID, reportSectionLanguageRet.ReportSectionLanguageID);
 
                     BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
+                    Assert.Null(badRequest);
 
                     // Post to return newly added ReportSectionLanguage
                     reportSectionLanguageRet.ReportSectionLanguageID = 0;
                     reportSectionLanguageController.Request = new System.Net.Http.HttpRequestMessage();
                     reportSectionLanguageController.Request.RequestUri = new System.Uri("http://localhost:5000/api/reportSectionLanguage");
-                    IHttpActionResult jsonRet3 = reportSectionLanguageController.Post(reportSectionLanguageRet, LanguageRequest.ToString());
+                    IActionResult jsonRet3 = reportSectionLanguageController.Post(reportSectionLanguageRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 
                     CreatedNegotiatedContentResult<ReportSectionLanguage> reportSectionLanguageRet3 = jsonRet3 as CreatedNegotiatedContentResult<ReportSectionLanguage>;
@@ -319,25 +320,25 @@ namespace CSSPWebAPI.Tests.Controllers
                     ReportSectionLanguage reportSectionLanguage = reportSectionLanguageRet3.Content;
 
                     BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest3);
+                    Assert.Null(badRequest3);
 
                     // Delete to return success
-                    IHttpActionResult jsonRet2 = reportSectionLanguageController.Delete(reportSectionLanguageRet, LanguageRequest.ToString());
+                    IActionResult jsonRet2 = reportSectionLanguageController.Delete(reportSectionLanguageRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet2);
 
                     OkNegotiatedContentResult<ReportSectionLanguage> reportSectionLanguageRet2 = jsonRet2 as OkNegotiatedContentResult<ReportSectionLanguage>;
                     Assert.NotNull(reportSectionLanguageRet2);
 
                     BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest2);
+                    Assert.Null(badRequest2);
 
                     // Delete to return CSSPError because ReportSectionLanguageID of 0 does not exist
                     reportSectionLanguageRet.ReportSectionLanguageID = 0;
-                    IHttpActionResult jsonRet4 = reportSectionLanguageController.Delete(reportSectionLanguageRet, LanguageRequest.ToString());
+                    IActionResult jsonRet4 = reportSectionLanguageController.Delete(reportSectionLanguageRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet4);
 
                     OkNegotiatedContentResult<ReportSectionLanguage> reportSectionLanguageRet4 = jsonRet4 as OkNegotiatedContentResult<ReportSectionLanguage>;
-                    Assert.IsNull(reportSectionLanguageRet4);
+                    Assert.Null(reportSectionLanguageRet4);
 
                     BadRequestErrorMessageResult badRequest4 = jsonRet4 as BadRequestErrorMessageResult;
                     Assert.NotNull(badRequest4);

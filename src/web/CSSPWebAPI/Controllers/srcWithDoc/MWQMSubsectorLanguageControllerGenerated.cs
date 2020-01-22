@@ -1,14 +1,14 @@
 using CSSPEnums;
 using CSSPModels;
 using CSSPServices;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web.Http;
 
 namespace CSSPWebAPI.Controllers
 {
-    [RoutePrefix("api/mwqmSubsectorLanguage")]
+    [Route("api/mwqmSubsectorLanguage")]
     public partial class MWQMSubsectorLanguageController : BaseController
     {
         #region Variables
@@ -29,126 +29,56 @@ namespace CSSPWebAPI.Controllers
         #region Functions public
         // GET api/mwqmSubsectorLanguage
         [Route("")]
-        public IHttpActionResult GetMWQMSubsectorLanguageList([FromUri]string lang = "en", [FromUri]int skip = 0, [FromUri]int take = 200,
-            [FromUri]string asc = "", [FromUri]string desc = "", [FromUri]string where = "", [FromUri]string extra = "")
+        public IActionResult GetMWQMSubsectorLanguageList([FromQuery]string lang = "en", [FromQuery]int skip = 0, [FromQuery]int take = 200,
+            [FromQuery]string asc = "", [FromQuery]string desc = "", [FromQuery]string where = "")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
                 MWQMSubsectorLanguageService mwqmSubsectorLanguageService = new MWQMSubsectorLanguageService(new Query() { Lang = lang }, db, ContactID);
 
-                if (extra == "A") // QueryString contains [extra=A]
-                {
-                   mwqmSubsectorLanguageService.Query = mwqmSubsectorLanguageService.FillQuery(typeof(MWQMSubsectorLanguageExtraA), lang, skip, take, asc, desc, where, extra);
+                mwqmSubsectorLanguageService.Query = mwqmSubsectorLanguageService.FillQuery(typeof(MWQMSubsectorLanguage), lang, skip, take, asc, desc, where);
 
-                    if (mwqmSubsectorLanguageService.Query.HasErrors)
-                    {
-                        return Ok(new List<MWQMSubsectorLanguageExtraA>()
-                        {
-                            new MWQMSubsectorLanguageExtraA()
-                            {
-                                HasErrors = mwqmSubsectorLanguageService.Query.HasErrors,
-                                ValidationResults = mwqmSubsectorLanguageService.Query.ValidationResults,
-                            },
-                        }.ToList());
-                    }
-                    else
-                    {
-                        return Ok(mwqmSubsectorLanguageService.GetMWQMSubsectorLanguageExtraAList().ToList());
-                    }
-                }
-                else if (extra == "B") // QueryString contains [extra=B]
-                {
-                   mwqmSubsectorLanguageService.Query = mwqmSubsectorLanguageService.FillQuery(typeof(MWQMSubsectorLanguageExtraB), lang, skip, take, asc, desc, where, extra);
-
-                    if (mwqmSubsectorLanguageService.Query.HasErrors)
-                    {
-                        return Ok(new List<MWQMSubsectorLanguageExtraB>()
-                        {
-                            new MWQMSubsectorLanguageExtraB()
-                            {
-                                HasErrors = mwqmSubsectorLanguageService.Query.HasErrors,
-                                ValidationResults = mwqmSubsectorLanguageService.Query.ValidationResults,
-                            },
-                        }.ToList());
-                    }
-                    else
-                    {
-                        return Ok(mwqmSubsectorLanguageService.GetMWQMSubsectorLanguageExtraBList().ToList());
-                    }
-                }
-                else // QueryString has no parameter [extra] or extra is empty
-                {
-                   mwqmSubsectorLanguageService.Query = mwqmSubsectorLanguageService.FillQuery(typeof(MWQMSubsectorLanguage), lang, skip, take, asc, desc, where, extra);
-
-                    if (mwqmSubsectorLanguageService.Query.HasErrors)
-                    {
-                        return Ok(new List<MWQMSubsectorLanguage>()
-                        {
-                            new MWQMSubsectorLanguage()
-                            {
-                                HasErrors = mwqmSubsectorLanguageService.Query.HasErrors,
-                                ValidationResults = mwqmSubsectorLanguageService.Query.ValidationResults,
-                            },
-                        }.ToList());
-                    }
-                    else
-                    {
-                        return Ok(mwqmSubsectorLanguageService.GetMWQMSubsectorLanguageList().ToList());
-                    }
-                }
+                 if (mwqmSubsectorLanguageService.Query.HasErrors)
+                 {
+                     return Ok(new List<MWQMSubsectorLanguage>()
+                     {
+                         new MWQMSubsectorLanguage()
+                         {
+                             HasErrors = mwqmSubsectorLanguageService.Query.HasErrors,
+                             ValidationResults = mwqmSubsectorLanguageService.Query.ValidationResults,
+                         },
+                     }.ToList());
+                 }
+                 else
+                 {
+                     return Ok(mwqmSubsectorLanguageService.GetMWQMSubsectorLanguageList().ToList());
+                 }
             }
         }
         // GET api/mwqmSubsectorLanguage/1
         [Route("{MWQMSubsectorLanguageID:int}")]
-        public IHttpActionResult GetMWQMSubsectorLanguageWithID([FromUri]int MWQMSubsectorLanguageID, [FromUri]string lang = "en", [FromUri]string extra = "")
+        public IActionResult GetMWQMSubsectorLanguageWithID([FromQuery]int MWQMSubsectorLanguageID, [FromQuery]string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
                 MWQMSubsectorLanguageService mwqmSubsectorLanguageService = new MWQMSubsectorLanguageService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
 
-                mwqmSubsectorLanguageService.Query = mwqmSubsectorLanguageService.FillQuery(typeof(MWQMSubsectorLanguage), lang, 0, 1, "", "", extra);
+                mwqmSubsectorLanguageService.Query = mwqmSubsectorLanguageService.FillQuery(typeof(MWQMSubsectorLanguage), lang, 0, 1, "", "");
 
-                if (mwqmSubsectorLanguageService.Query.Extra == "A")
+                MWQMSubsectorLanguage mwqmSubsectorLanguage = new MWQMSubsectorLanguage();
+                mwqmSubsectorLanguage = mwqmSubsectorLanguageService.GetMWQMSubsectorLanguageWithMWQMSubsectorLanguageID(MWQMSubsectorLanguageID);
+
+                if (mwqmSubsectorLanguage == null)
                 {
-                    MWQMSubsectorLanguageExtraA mwqmSubsectorLanguageExtraA = new MWQMSubsectorLanguageExtraA();
-                    mwqmSubsectorLanguageExtraA = mwqmSubsectorLanguageService.GetMWQMSubsectorLanguageExtraAWithMWQMSubsectorLanguageID(MWQMSubsectorLanguageID);
-
-                    if (mwqmSubsectorLanguageExtraA == null)
-                    {
-                        return NotFound();
-                    }
-
-                    return Ok(mwqmSubsectorLanguageExtraA);
+                    return NotFound();
                 }
-                else if (mwqmSubsectorLanguageService.Query.Extra == "B")
-                {
-                    MWQMSubsectorLanguageExtraB mwqmSubsectorLanguageExtraB = new MWQMSubsectorLanguageExtraB();
-                    mwqmSubsectorLanguageExtraB = mwqmSubsectorLanguageService.GetMWQMSubsectorLanguageExtraBWithMWQMSubsectorLanguageID(MWQMSubsectorLanguageID);
 
-                    if (mwqmSubsectorLanguageExtraB == null)
-                    {
-                        return NotFound();
-                    }
-
-                    return Ok(mwqmSubsectorLanguageExtraB);
-                }
-                else
-                {
-                    MWQMSubsectorLanguage mwqmSubsectorLanguage = new MWQMSubsectorLanguage();
-                    mwqmSubsectorLanguage = mwqmSubsectorLanguageService.GetMWQMSubsectorLanguageWithMWQMSubsectorLanguageID(MWQMSubsectorLanguageID);
-
-                    if (mwqmSubsectorLanguage == null)
-                    {
-                        return NotFound();
-                    }
-
-                    return Ok(mwqmSubsectorLanguage);
-                }
+                return Ok(mwqmSubsectorLanguage);
             }
         }
         // POST api/mwqmSubsectorLanguage
         [Route("")]
-        public IHttpActionResult Post([FromBody]MWQMSubsectorLanguage mwqmSubsectorLanguage, [FromUri]string lang = "en")
+        public IActionResult Post([FromBody]MWQMSubsectorLanguage mwqmSubsectorLanguage, [FromQuery]string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
@@ -161,13 +91,13 @@ namespace CSSPWebAPI.Controllers
                 else
                 {
                     mwqmSubsectorLanguage.ValidationResults = null;
-                    return Created<MWQMSubsectorLanguage>(new Uri(Request.RequestUri, mwqmSubsectorLanguage.MWQMSubsectorLanguageID.ToString()), mwqmSubsectorLanguage);
+                    return Created(Url.ToString(), mwqmSubsectorLanguage);
                 }
             }
         }
         // PUT api/mwqmSubsectorLanguage
         [Route("")]
-        public IHttpActionResult Put([FromBody]MWQMSubsectorLanguage mwqmSubsectorLanguage, [FromUri]string lang = "en")
+        public IActionResult Put([FromBody]MWQMSubsectorLanguage mwqmSubsectorLanguage, [FromQuery]string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
@@ -186,7 +116,7 @@ namespace CSSPWebAPI.Controllers
         }
         // DELETE api/mwqmSubsectorLanguage
         [Route("")]
-        public IHttpActionResult Delete([FromBody]MWQMSubsectorLanguage mwqmSubsectorLanguage, [FromUri]string lang = "en")
+        public IActionResult Delete([FromBody]MWQMSubsectorLanguage mwqmSubsectorLanguage, [FromQuery]string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {

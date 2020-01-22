@@ -1,14 +1,14 @@
 using CSSPEnums;
 using CSSPModels;
 using CSSPServices;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web.Http;
 
 namespace CSSPWebAPI.Controllers
 {
-    [RoutePrefix("api/mwqmSiteStartEndDate")]
+    [Route("api/mwqmSiteStartEndDate")]
     public partial class MWQMSiteStartEndDateController : BaseController
     {
         #region Variables
@@ -29,126 +29,56 @@ namespace CSSPWebAPI.Controllers
         #region Functions public
         // GET api/mwqmSiteStartEndDate
         [Route("")]
-        public IHttpActionResult GetMWQMSiteStartEndDateList([FromUri]string lang = "en", [FromUri]int skip = 0, [FromUri]int take = 200,
-            [FromUri]string asc = "", [FromUri]string desc = "", [FromUri]string where = "", [FromUri]string extra = "")
+        public IActionResult GetMWQMSiteStartEndDateList([FromQuery]string lang = "en", [FromQuery]int skip = 0, [FromQuery]int take = 200,
+            [FromQuery]string asc = "", [FromQuery]string desc = "", [FromQuery]string where = "")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
                 MWQMSiteStartEndDateService mwqmSiteStartEndDateService = new MWQMSiteStartEndDateService(new Query() { Lang = lang }, db, ContactID);
 
-                if (extra == "A") // QueryString contains [extra=A]
-                {
-                   mwqmSiteStartEndDateService.Query = mwqmSiteStartEndDateService.FillQuery(typeof(MWQMSiteStartEndDateExtraA), lang, skip, take, asc, desc, where, extra);
+                mwqmSiteStartEndDateService.Query = mwqmSiteStartEndDateService.FillQuery(typeof(MWQMSiteStartEndDate), lang, skip, take, asc, desc, where);
 
-                    if (mwqmSiteStartEndDateService.Query.HasErrors)
-                    {
-                        return Ok(new List<MWQMSiteStartEndDateExtraA>()
-                        {
-                            new MWQMSiteStartEndDateExtraA()
-                            {
-                                HasErrors = mwqmSiteStartEndDateService.Query.HasErrors,
-                                ValidationResults = mwqmSiteStartEndDateService.Query.ValidationResults,
-                            },
-                        }.ToList());
-                    }
-                    else
-                    {
-                        return Ok(mwqmSiteStartEndDateService.GetMWQMSiteStartEndDateExtraAList().ToList());
-                    }
-                }
-                else if (extra == "B") // QueryString contains [extra=B]
-                {
-                   mwqmSiteStartEndDateService.Query = mwqmSiteStartEndDateService.FillQuery(typeof(MWQMSiteStartEndDateExtraB), lang, skip, take, asc, desc, where, extra);
-
-                    if (mwqmSiteStartEndDateService.Query.HasErrors)
-                    {
-                        return Ok(new List<MWQMSiteStartEndDateExtraB>()
-                        {
-                            new MWQMSiteStartEndDateExtraB()
-                            {
-                                HasErrors = mwqmSiteStartEndDateService.Query.HasErrors,
-                                ValidationResults = mwqmSiteStartEndDateService.Query.ValidationResults,
-                            },
-                        }.ToList());
-                    }
-                    else
-                    {
-                        return Ok(mwqmSiteStartEndDateService.GetMWQMSiteStartEndDateExtraBList().ToList());
-                    }
-                }
-                else // QueryString has no parameter [extra] or extra is empty
-                {
-                   mwqmSiteStartEndDateService.Query = mwqmSiteStartEndDateService.FillQuery(typeof(MWQMSiteStartEndDate), lang, skip, take, asc, desc, where, extra);
-
-                    if (mwqmSiteStartEndDateService.Query.HasErrors)
-                    {
-                        return Ok(new List<MWQMSiteStartEndDate>()
-                        {
-                            new MWQMSiteStartEndDate()
-                            {
-                                HasErrors = mwqmSiteStartEndDateService.Query.HasErrors,
-                                ValidationResults = mwqmSiteStartEndDateService.Query.ValidationResults,
-                            },
-                        }.ToList());
-                    }
-                    else
-                    {
-                        return Ok(mwqmSiteStartEndDateService.GetMWQMSiteStartEndDateList().ToList());
-                    }
-                }
+                 if (mwqmSiteStartEndDateService.Query.HasErrors)
+                 {
+                     return Ok(new List<MWQMSiteStartEndDate>()
+                     {
+                         new MWQMSiteStartEndDate()
+                         {
+                             HasErrors = mwqmSiteStartEndDateService.Query.HasErrors,
+                             ValidationResults = mwqmSiteStartEndDateService.Query.ValidationResults,
+                         },
+                     }.ToList());
+                 }
+                 else
+                 {
+                     return Ok(mwqmSiteStartEndDateService.GetMWQMSiteStartEndDateList().ToList());
+                 }
             }
         }
         // GET api/mwqmSiteStartEndDate/1
         [Route("{MWQMSiteStartEndDateID:int}")]
-        public IHttpActionResult GetMWQMSiteStartEndDateWithID([FromUri]int MWQMSiteStartEndDateID, [FromUri]string lang = "en", [FromUri]string extra = "")
+        public IActionResult GetMWQMSiteStartEndDateWithID([FromQuery]int MWQMSiteStartEndDateID, [FromQuery]string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
                 MWQMSiteStartEndDateService mwqmSiteStartEndDateService = new MWQMSiteStartEndDateService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
 
-                mwqmSiteStartEndDateService.Query = mwqmSiteStartEndDateService.FillQuery(typeof(MWQMSiteStartEndDate), lang, 0, 1, "", "", extra);
+                mwqmSiteStartEndDateService.Query = mwqmSiteStartEndDateService.FillQuery(typeof(MWQMSiteStartEndDate), lang, 0, 1, "", "");
 
-                if (mwqmSiteStartEndDateService.Query.Extra == "A")
+                MWQMSiteStartEndDate mwqmSiteStartEndDate = new MWQMSiteStartEndDate();
+                mwqmSiteStartEndDate = mwqmSiteStartEndDateService.GetMWQMSiteStartEndDateWithMWQMSiteStartEndDateID(MWQMSiteStartEndDateID);
+
+                if (mwqmSiteStartEndDate == null)
                 {
-                    MWQMSiteStartEndDateExtraA mwqmSiteStartEndDateExtraA = new MWQMSiteStartEndDateExtraA();
-                    mwqmSiteStartEndDateExtraA = mwqmSiteStartEndDateService.GetMWQMSiteStartEndDateExtraAWithMWQMSiteStartEndDateID(MWQMSiteStartEndDateID);
-
-                    if (mwqmSiteStartEndDateExtraA == null)
-                    {
-                        return NotFound();
-                    }
-
-                    return Ok(mwqmSiteStartEndDateExtraA);
+                    return NotFound();
                 }
-                else if (mwqmSiteStartEndDateService.Query.Extra == "B")
-                {
-                    MWQMSiteStartEndDateExtraB mwqmSiteStartEndDateExtraB = new MWQMSiteStartEndDateExtraB();
-                    mwqmSiteStartEndDateExtraB = mwqmSiteStartEndDateService.GetMWQMSiteStartEndDateExtraBWithMWQMSiteStartEndDateID(MWQMSiteStartEndDateID);
 
-                    if (mwqmSiteStartEndDateExtraB == null)
-                    {
-                        return NotFound();
-                    }
-
-                    return Ok(mwqmSiteStartEndDateExtraB);
-                }
-                else
-                {
-                    MWQMSiteStartEndDate mwqmSiteStartEndDate = new MWQMSiteStartEndDate();
-                    mwqmSiteStartEndDate = mwqmSiteStartEndDateService.GetMWQMSiteStartEndDateWithMWQMSiteStartEndDateID(MWQMSiteStartEndDateID);
-
-                    if (mwqmSiteStartEndDate == null)
-                    {
-                        return NotFound();
-                    }
-
-                    return Ok(mwqmSiteStartEndDate);
-                }
+                return Ok(mwqmSiteStartEndDate);
             }
         }
         // POST api/mwqmSiteStartEndDate
         [Route("")]
-        public IHttpActionResult Post([FromBody]MWQMSiteStartEndDate mwqmSiteStartEndDate, [FromUri]string lang = "en")
+        public IActionResult Post([FromBody]MWQMSiteStartEndDate mwqmSiteStartEndDate, [FromQuery]string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
@@ -161,13 +91,13 @@ namespace CSSPWebAPI.Controllers
                 else
                 {
                     mwqmSiteStartEndDate.ValidationResults = null;
-                    return Created<MWQMSiteStartEndDate>(new Uri(Request.RequestUri, mwqmSiteStartEndDate.MWQMSiteStartEndDateID.ToString()), mwqmSiteStartEndDate);
+                    return Created(Url.ToString(), mwqmSiteStartEndDate);
                 }
             }
         }
         // PUT api/mwqmSiteStartEndDate
         [Route("")]
-        public IHttpActionResult Put([FromBody]MWQMSiteStartEndDate mwqmSiteStartEndDate, [FromUri]string lang = "en")
+        public IActionResult Put([FromBody]MWQMSiteStartEndDate mwqmSiteStartEndDate, [FromQuery]string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
@@ -186,7 +116,7 @@ namespace CSSPWebAPI.Controllers
         }
         // DELETE api/mwqmSiteStartEndDate
         [Route("")]
-        public IHttpActionResult Delete([FromBody]MWQMSiteStartEndDate mwqmSiteStartEndDate, [FromUri]string lang = "en")
+        public IActionResult Delete([FromBody]MWQMSiteStartEndDate mwqmSiteStartEndDate, [FromQuery]string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {

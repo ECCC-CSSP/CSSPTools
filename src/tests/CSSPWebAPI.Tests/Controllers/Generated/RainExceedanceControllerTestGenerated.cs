@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
 using System.Web.Http.Results;
+using Microsoft.AspNetCore.Mvc;
 
 namespace CSSPWebAPI.Tests.Controllers
 {
@@ -48,7 +49,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     }
 
                     // ok with RainExceedance info
-                    IHttpActionResult jsonRet = rainExceedanceController.GetRainExceedanceList();
+                    IActionResult jsonRet = rainExceedanceController.GetRainExceedanceList();
                     Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<List<RainExceedance>> ret = jsonRet as OkNegotiatedContentResult<List<RainExceedance>>;
@@ -86,7 +87,7 @@ namespace CSSPWebAPI.Tests.Controllers
                            count = (query.Take > count ? query.Take : count);
 
                            // ok with RainExceedance info
-                           IHttpActionResult jsonRet2 = rainExceedanceController.GetRainExceedanceList(query.Language.ToString(), query.Skip, query.Take);
+                           IActionResult jsonRet2 = rainExceedanceController.GetRainExceedanceList(query.Language.ToString(), query.Skip, query.Take);
                            Assert.NotNull(jsonRet2);
 
                            OkNegotiatedContentResult<List<RainExceedance>> ret2 = jsonRet2 as OkNegotiatedContentResult<List<RainExceedance>>;
@@ -119,7 +120,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     }
 
                     // ok with RainExceedance info
-                    IHttpActionResult jsonRet = rainExceedanceController.GetRainExceedanceWithID(rainExceedanceFirst.RainExceedanceID);
+                    IActionResult jsonRet = rainExceedanceController.GetRainExceedanceWithID(rainExceedanceFirst.RainExceedanceID);
                     Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<RainExceedance> Ret = jsonRet as OkNegotiatedContentResult<RainExceedance>;
@@ -127,16 +128,16 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.Equal(rainExceedanceFirst.RainExceedanceID, rainExceedanceRet.RainExceedanceID);
 
                     BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
+                    Assert.Null(badRequest);
 
                     // Not Found
-                    IHttpActionResult jsonRet2 = rainExceedanceController.GetRainExceedanceWithID(0);
+                    IActionResult jsonRet2 = rainExceedanceController.GetRainExceedanceWithID(0);
                     Assert.NotNull(jsonRet2);
 
                     OkNegotiatedContentResult<RainExceedance> rainExceedanceRet2 = jsonRet2 as OkNegotiatedContentResult<RainExceedance>;
-                    Assert.IsNull(rainExceedanceRet2);
+                    Assert.Null(rainExceedanceRet2);
 
-                    NotFoundResult notFoundRequest = jsonRet2 as NotFoundResult;
+                    NotFoundObjectResult notFoundRequest = jsonRet2 as NotFoundObjectResult;
                     Assert.NotNull(notFoundRequest);
                 }
             }
@@ -168,7 +169,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     }
 
                     // ok with RainExceedance info
-                    IHttpActionResult jsonRet = rainExceedanceController.GetRainExceedanceWithID(rainExceedanceLast.RainExceedanceID);
+                    IActionResult jsonRet = rainExceedanceController.GetRainExceedanceWithID(rainExceedanceLast.RainExceedanceID);
                     Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<RainExceedance> Ret = jsonRet as OkNegotiatedContentResult<RainExceedance>;
@@ -176,14 +177,14 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.Equal(rainExceedanceLast.RainExceedanceID, rainExceedanceRet.RainExceedanceID);
 
                     BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
+                    Assert.Null(badRequest);
 
                     // Post to return CSSPError because RainExceedanceID exist
-                    IHttpActionResult jsonRet2 = rainExceedanceController.Post(rainExceedanceRet, LanguageRequest.ToString());
+                    IActionResult jsonRet2 = rainExceedanceController.Post(rainExceedanceRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet2);
 
                     OkNegotiatedContentResult<RainExceedance> rainExceedanceRet2 = jsonRet2 as OkNegotiatedContentResult<RainExceedance>;
-                    Assert.IsNull(rainExceedanceRet2);
+                    Assert.Null(rainExceedanceRet2);
 
                     BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
                     Assert.NotNull(badRequest2);
@@ -192,23 +193,23 @@ namespace CSSPWebAPI.Tests.Controllers
                     rainExceedanceRet.RainExceedanceID = 0;
                     rainExceedanceController.Request = new System.Net.Http.HttpRequestMessage();
                     rainExceedanceController.Request.RequestUri = new System.Uri("http://localhost:5000/api/rainExceedance");
-                    IHttpActionResult jsonRet3 = rainExceedanceController.Post(rainExceedanceRet, LanguageRequest.ToString());
+                    IActionResult jsonRet3 = rainExceedanceController.Post(rainExceedanceRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 
                     CreatedNegotiatedContentResult<RainExceedance> rainExceedanceRet3 = jsonRet3 as CreatedNegotiatedContentResult<RainExceedance>;
                     Assert.NotNull(rainExceedanceRet3);
 
                     BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest3);
+                    Assert.Null(badRequest3);
 
-                    IHttpActionResult jsonRet4 = rainExceedanceController.Delete(rainExceedanceRet, LanguageRequest.ToString());
+                    IActionResult jsonRet4 = rainExceedanceController.Delete(rainExceedanceRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet4);
 
                     OkNegotiatedContentResult<RainExceedance> rainExceedanceRet4 = jsonRet4 as OkNegotiatedContentResult<RainExceedance>;
                     Assert.NotNull(rainExceedanceRet4);
 
                     BadRequestErrorMessageResult badRequest4 = jsonRet4 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest4);
+                    Assert.Null(badRequest4);
                 }
             }
         }
@@ -237,7 +238,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     }
 
                     // ok with RainExceedance info
-                    IHttpActionResult jsonRet = rainExceedanceController.GetRainExceedanceWithID(rainExceedanceLast.RainExceedanceID);
+                    IActionResult jsonRet = rainExceedanceController.GetRainExceedanceWithID(rainExceedanceLast.RainExceedanceID);
                     Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<RainExceedance> Ret = jsonRet as OkNegotiatedContentResult<RainExceedance>;
@@ -245,25 +246,25 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.Equal(rainExceedanceLast.RainExceedanceID, rainExceedanceRet.RainExceedanceID);
 
                     BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
+                    Assert.Null(badRequest);
 
                     // Put to return success
-                    IHttpActionResult jsonRet2 = rainExceedanceController.Put(rainExceedanceRet, LanguageRequest.ToString());
+                    IActionResult jsonRet2 = rainExceedanceController.Put(rainExceedanceRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet2);
 
                     OkNegotiatedContentResult<RainExceedance> rainExceedanceRet2 = jsonRet2 as OkNegotiatedContentResult<RainExceedance>;
                     Assert.NotNull(rainExceedanceRet2);
 
                     BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest2);
+                    Assert.Null(badRequest2);
 
                     // Put to return CSSPError because RainExceedanceID of 0 does not exist
                     rainExceedanceRet.RainExceedanceID = 0;
-                    IHttpActionResult jsonRet3 = rainExceedanceController.Put(rainExceedanceRet, LanguageRequest.ToString());
+                    IActionResult jsonRet3 = rainExceedanceController.Put(rainExceedanceRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 
                     OkNegotiatedContentResult<RainExceedance> rainExceedanceRet3 = jsonRet3 as OkNegotiatedContentResult<RainExceedance>;
-                    Assert.IsNull(rainExceedanceRet3);
+                    Assert.Null(rainExceedanceRet3);
 
                     BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
                     Assert.NotNull(badRequest3);
@@ -297,7 +298,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     }
 
                     // ok with RainExceedance info
-                    IHttpActionResult jsonRet = rainExceedanceController.GetRainExceedanceWithID(rainExceedanceLast.RainExceedanceID);
+                    IActionResult jsonRet = rainExceedanceController.GetRainExceedanceWithID(rainExceedanceLast.RainExceedanceID);
                     Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<RainExceedance> Ret = jsonRet as OkNegotiatedContentResult<RainExceedance>;
@@ -305,13 +306,13 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.Equal(rainExceedanceLast.RainExceedanceID, rainExceedanceRet.RainExceedanceID);
 
                     BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
+                    Assert.Null(badRequest);
 
                     // Post to return newly added RainExceedance
                     rainExceedanceRet.RainExceedanceID = 0;
                     rainExceedanceController.Request = new System.Net.Http.HttpRequestMessage();
                     rainExceedanceController.Request.RequestUri = new System.Uri("http://localhost:5000/api/rainExceedance");
-                    IHttpActionResult jsonRet3 = rainExceedanceController.Post(rainExceedanceRet, LanguageRequest.ToString());
+                    IActionResult jsonRet3 = rainExceedanceController.Post(rainExceedanceRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 
                     CreatedNegotiatedContentResult<RainExceedance> rainExceedanceRet3 = jsonRet3 as CreatedNegotiatedContentResult<RainExceedance>;
@@ -319,25 +320,25 @@ namespace CSSPWebAPI.Tests.Controllers
                     RainExceedance rainExceedance = rainExceedanceRet3.Content;
 
                     BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest3);
+                    Assert.Null(badRequest3);
 
                     // Delete to return success
-                    IHttpActionResult jsonRet2 = rainExceedanceController.Delete(rainExceedanceRet, LanguageRequest.ToString());
+                    IActionResult jsonRet2 = rainExceedanceController.Delete(rainExceedanceRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet2);
 
                     OkNegotiatedContentResult<RainExceedance> rainExceedanceRet2 = jsonRet2 as OkNegotiatedContentResult<RainExceedance>;
                     Assert.NotNull(rainExceedanceRet2);
 
                     BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest2);
+                    Assert.Null(badRequest2);
 
                     // Delete to return CSSPError because RainExceedanceID of 0 does not exist
                     rainExceedanceRet.RainExceedanceID = 0;
-                    IHttpActionResult jsonRet4 = rainExceedanceController.Delete(rainExceedanceRet, LanguageRequest.ToString());
+                    IActionResult jsonRet4 = rainExceedanceController.Delete(rainExceedanceRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet4);
 
                     OkNegotiatedContentResult<RainExceedance> rainExceedanceRet4 = jsonRet4 as OkNegotiatedContentResult<RainExceedance>;
-                    Assert.IsNull(rainExceedanceRet4);
+                    Assert.Null(rainExceedanceRet4);
 
                     BadRequestErrorMessageResult badRequest4 = jsonRet4 as BadRequestErrorMessageResult;
                     Assert.NotNull(badRequest4);

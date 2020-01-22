@@ -1,14 +1,14 @@
 using CSSPEnums;
 using CSSPModels;
 using CSSPServices;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web.Http;
 
 namespace CSSPWebAPI.Controllers
 {
-    [RoutePrefix("api/log")]
+    [Route("api/log")]
     public partial class LogController : BaseController
     {
         #region Variables
@@ -29,126 +29,56 @@ namespace CSSPWebAPI.Controllers
         #region Functions public
         // GET api/log
         [Route("")]
-        public IHttpActionResult GetLogList([FromUri]string lang = "en", [FromUri]int skip = 0, [FromUri]int take = 200,
-            [FromUri]string asc = "", [FromUri]string desc = "", [FromUri]string where = "", [FromUri]string extra = "")
+        public IActionResult GetLogList([FromQuery]string lang = "en", [FromQuery]int skip = 0, [FromQuery]int take = 200,
+            [FromQuery]string asc = "", [FromQuery]string desc = "", [FromQuery]string where = "")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
                 LogService logService = new LogService(new Query() { Lang = lang }, db, ContactID);
 
-                if (extra == "A") // QueryString contains [extra=A]
-                {
-                   logService.Query = logService.FillQuery(typeof(LogExtraA), lang, skip, take, asc, desc, where, extra);
+                logService.Query = logService.FillQuery(typeof(Log), lang, skip, take, asc, desc, where);
 
-                    if (logService.Query.HasErrors)
-                    {
-                        return Ok(new List<LogExtraA>()
-                        {
-                            new LogExtraA()
-                            {
-                                HasErrors = logService.Query.HasErrors,
-                                ValidationResults = logService.Query.ValidationResults,
-                            },
-                        }.ToList());
-                    }
-                    else
-                    {
-                        return Ok(logService.GetLogExtraAList().ToList());
-                    }
-                }
-                else if (extra == "B") // QueryString contains [extra=B]
-                {
-                   logService.Query = logService.FillQuery(typeof(LogExtraB), lang, skip, take, asc, desc, where, extra);
-
-                    if (logService.Query.HasErrors)
-                    {
-                        return Ok(new List<LogExtraB>()
-                        {
-                            new LogExtraB()
-                            {
-                                HasErrors = logService.Query.HasErrors,
-                                ValidationResults = logService.Query.ValidationResults,
-                            },
-                        }.ToList());
-                    }
-                    else
-                    {
-                        return Ok(logService.GetLogExtraBList().ToList());
-                    }
-                }
-                else // QueryString has no parameter [extra] or extra is empty
-                {
-                   logService.Query = logService.FillQuery(typeof(Log), lang, skip, take, asc, desc, where, extra);
-
-                    if (logService.Query.HasErrors)
-                    {
-                        return Ok(new List<Log>()
-                        {
-                            new Log()
-                            {
-                                HasErrors = logService.Query.HasErrors,
-                                ValidationResults = logService.Query.ValidationResults,
-                            },
-                        }.ToList());
-                    }
-                    else
-                    {
-                        return Ok(logService.GetLogList().ToList());
-                    }
-                }
+                 if (logService.Query.HasErrors)
+                 {
+                     return Ok(new List<Log>()
+                     {
+                         new Log()
+                         {
+                             HasErrors = logService.Query.HasErrors,
+                             ValidationResults = logService.Query.ValidationResults,
+                         },
+                     }.ToList());
+                 }
+                 else
+                 {
+                     return Ok(logService.GetLogList().ToList());
+                 }
             }
         }
         // GET api/log/1
         [Route("{LogID:int}")]
-        public IHttpActionResult GetLogWithID([FromUri]int LogID, [FromUri]string lang = "en", [FromUri]string extra = "")
+        public IActionResult GetLogWithID([FromQuery]int LogID, [FromQuery]string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
                 LogService logService = new LogService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
 
-                logService.Query = logService.FillQuery(typeof(Log), lang, 0, 1, "", "", extra);
+                logService.Query = logService.FillQuery(typeof(Log), lang, 0, 1, "", "");
 
-                if (logService.Query.Extra == "A")
+                Log log = new Log();
+                log = logService.GetLogWithLogID(LogID);
+
+                if (log == null)
                 {
-                    LogExtraA logExtraA = new LogExtraA();
-                    logExtraA = logService.GetLogExtraAWithLogID(LogID);
-
-                    if (logExtraA == null)
-                    {
-                        return NotFound();
-                    }
-
-                    return Ok(logExtraA);
+                    return NotFound();
                 }
-                else if (logService.Query.Extra == "B")
-                {
-                    LogExtraB logExtraB = new LogExtraB();
-                    logExtraB = logService.GetLogExtraBWithLogID(LogID);
 
-                    if (logExtraB == null)
-                    {
-                        return NotFound();
-                    }
-
-                    return Ok(logExtraB);
-                }
-                else
-                {
-                    Log log = new Log();
-                    log = logService.GetLogWithLogID(LogID);
-
-                    if (log == null)
-                    {
-                        return NotFound();
-                    }
-
-                    return Ok(log);
-                }
+                return Ok(log);
             }
         }
         // POST api/log
         [Route("")]
-        public IHttpActionResult Post([FromBody]Log log, [FromUri]string lang = "en")
+        public IActionResult Post([FromBody]Log log, [FromQuery]string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
@@ -161,13 +91,13 @@ namespace CSSPWebAPI.Controllers
                 else
                 {
                     log.ValidationResults = null;
-                    return Created<Log>(new Uri(Request.RequestUri, log.LogID.ToString()), log);
+                    return Created(Url.ToString(), log);
                 }
             }
         }
         // PUT api/log
         [Route("")]
-        public IHttpActionResult Put([FromBody]Log log, [FromUri]string lang = "en")
+        public IActionResult Put([FromBody]Log log, [FromQuery]string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
@@ -186,7 +116,7 @@ namespace CSSPWebAPI.Controllers
         }
         // DELETE api/log
         [Route("")]
-        public IHttpActionResult Delete([FromBody]Log log, [FromUri]string lang = "en")
+        public IActionResult Delete([FromBody]Log log, [FromQuery]string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {

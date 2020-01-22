@@ -1,14 +1,14 @@
 using CSSPEnums;
 using CSSPModels;
 using CSSPServices;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web.Http;
 
 namespace CSSPWebAPI.Controllers
 {
-    [RoutePrefix("api/emailDistributionListContact")]
+    [Route("api/emailDistributionListContact")]
     public partial class EmailDistributionListContactController : BaseController
     {
         #region Variables
@@ -29,126 +29,56 @@ namespace CSSPWebAPI.Controllers
         #region Functions public
         // GET api/emailDistributionListContact
         [Route("")]
-        public IHttpActionResult GetEmailDistributionListContactList([FromUri]string lang = "en", [FromUri]int skip = 0, [FromUri]int take = 200,
-            [FromUri]string asc = "", [FromUri]string desc = "", [FromUri]string where = "", [FromUri]string extra = "")
+        public IActionResult GetEmailDistributionListContactList([FromQuery]string lang = "en", [FromQuery]int skip = 0, [FromQuery]int take = 200,
+            [FromQuery]string asc = "", [FromQuery]string desc = "", [FromQuery]string where = "")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
                 EmailDistributionListContactService emailDistributionListContactService = new EmailDistributionListContactService(new Query() { Lang = lang }, db, ContactID);
 
-                if (extra == "A") // QueryString contains [extra=A]
-                {
-                   emailDistributionListContactService.Query = emailDistributionListContactService.FillQuery(typeof(EmailDistributionListContactExtraA), lang, skip, take, asc, desc, where, extra);
+                emailDistributionListContactService.Query = emailDistributionListContactService.FillQuery(typeof(EmailDistributionListContact), lang, skip, take, asc, desc, where);
 
-                    if (emailDistributionListContactService.Query.HasErrors)
-                    {
-                        return Ok(new List<EmailDistributionListContactExtraA>()
-                        {
-                            new EmailDistributionListContactExtraA()
-                            {
-                                HasErrors = emailDistributionListContactService.Query.HasErrors,
-                                ValidationResults = emailDistributionListContactService.Query.ValidationResults,
-                            },
-                        }.ToList());
-                    }
-                    else
-                    {
-                        return Ok(emailDistributionListContactService.GetEmailDistributionListContactExtraAList().ToList());
-                    }
-                }
-                else if (extra == "B") // QueryString contains [extra=B]
-                {
-                   emailDistributionListContactService.Query = emailDistributionListContactService.FillQuery(typeof(EmailDistributionListContactExtraB), lang, skip, take, asc, desc, where, extra);
-
-                    if (emailDistributionListContactService.Query.HasErrors)
-                    {
-                        return Ok(new List<EmailDistributionListContactExtraB>()
-                        {
-                            new EmailDistributionListContactExtraB()
-                            {
-                                HasErrors = emailDistributionListContactService.Query.HasErrors,
-                                ValidationResults = emailDistributionListContactService.Query.ValidationResults,
-                            },
-                        }.ToList());
-                    }
-                    else
-                    {
-                        return Ok(emailDistributionListContactService.GetEmailDistributionListContactExtraBList().ToList());
-                    }
-                }
-                else // QueryString has no parameter [extra] or extra is empty
-                {
-                   emailDistributionListContactService.Query = emailDistributionListContactService.FillQuery(typeof(EmailDistributionListContact), lang, skip, take, asc, desc, where, extra);
-
-                    if (emailDistributionListContactService.Query.HasErrors)
-                    {
-                        return Ok(new List<EmailDistributionListContact>()
-                        {
-                            new EmailDistributionListContact()
-                            {
-                                HasErrors = emailDistributionListContactService.Query.HasErrors,
-                                ValidationResults = emailDistributionListContactService.Query.ValidationResults,
-                            },
-                        }.ToList());
-                    }
-                    else
-                    {
-                        return Ok(emailDistributionListContactService.GetEmailDistributionListContactList().ToList());
-                    }
-                }
+                 if (emailDistributionListContactService.Query.HasErrors)
+                 {
+                     return Ok(new List<EmailDistributionListContact>()
+                     {
+                         new EmailDistributionListContact()
+                         {
+                             HasErrors = emailDistributionListContactService.Query.HasErrors,
+                             ValidationResults = emailDistributionListContactService.Query.ValidationResults,
+                         },
+                     }.ToList());
+                 }
+                 else
+                 {
+                     return Ok(emailDistributionListContactService.GetEmailDistributionListContactList().ToList());
+                 }
             }
         }
         // GET api/emailDistributionListContact/1
         [Route("{EmailDistributionListContactID:int}")]
-        public IHttpActionResult GetEmailDistributionListContactWithID([FromUri]int EmailDistributionListContactID, [FromUri]string lang = "en", [FromUri]string extra = "")
+        public IActionResult GetEmailDistributionListContactWithID([FromQuery]int EmailDistributionListContactID, [FromQuery]string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
                 EmailDistributionListContactService emailDistributionListContactService = new EmailDistributionListContactService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
 
-                emailDistributionListContactService.Query = emailDistributionListContactService.FillQuery(typeof(EmailDistributionListContact), lang, 0, 1, "", "", extra);
+                emailDistributionListContactService.Query = emailDistributionListContactService.FillQuery(typeof(EmailDistributionListContact), lang, 0, 1, "", "");
 
-                if (emailDistributionListContactService.Query.Extra == "A")
+                EmailDistributionListContact emailDistributionListContact = new EmailDistributionListContact();
+                emailDistributionListContact = emailDistributionListContactService.GetEmailDistributionListContactWithEmailDistributionListContactID(EmailDistributionListContactID);
+
+                if (emailDistributionListContact == null)
                 {
-                    EmailDistributionListContactExtraA emailDistributionListContactExtraA = new EmailDistributionListContactExtraA();
-                    emailDistributionListContactExtraA = emailDistributionListContactService.GetEmailDistributionListContactExtraAWithEmailDistributionListContactID(EmailDistributionListContactID);
-
-                    if (emailDistributionListContactExtraA == null)
-                    {
-                        return NotFound();
-                    }
-
-                    return Ok(emailDistributionListContactExtraA);
+                    return NotFound();
                 }
-                else if (emailDistributionListContactService.Query.Extra == "B")
-                {
-                    EmailDistributionListContactExtraB emailDistributionListContactExtraB = new EmailDistributionListContactExtraB();
-                    emailDistributionListContactExtraB = emailDistributionListContactService.GetEmailDistributionListContactExtraBWithEmailDistributionListContactID(EmailDistributionListContactID);
 
-                    if (emailDistributionListContactExtraB == null)
-                    {
-                        return NotFound();
-                    }
-
-                    return Ok(emailDistributionListContactExtraB);
-                }
-                else
-                {
-                    EmailDistributionListContact emailDistributionListContact = new EmailDistributionListContact();
-                    emailDistributionListContact = emailDistributionListContactService.GetEmailDistributionListContactWithEmailDistributionListContactID(EmailDistributionListContactID);
-
-                    if (emailDistributionListContact == null)
-                    {
-                        return NotFound();
-                    }
-
-                    return Ok(emailDistributionListContact);
-                }
+                return Ok(emailDistributionListContact);
             }
         }
         // POST api/emailDistributionListContact
         [Route("")]
-        public IHttpActionResult Post([FromBody]EmailDistributionListContact emailDistributionListContact, [FromUri]string lang = "en")
+        public IActionResult Post([FromBody]EmailDistributionListContact emailDistributionListContact, [FromQuery]string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
@@ -161,13 +91,13 @@ namespace CSSPWebAPI.Controllers
                 else
                 {
                     emailDistributionListContact.ValidationResults = null;
-                    return Created<EmailDistributionListContact>(new Uri(Request.RequestUri, emailDistributionListContact.EmailDistributionListContactID.ToString()), emailDistributionListContact);
+                    return Created(Url.ToString(), emailDistributionListContact);
                 }
             }
         }
         // PUT api/emailDistributionListContact
         [Route("")]
-        public IHttpActionResult Put([FromBody]EmailDistributionListContact emailDistributionListContact, [FromUri]string lang = "en")
+        public IActionResult Put([FromBody]EmailDistributionListContact emailDistributionListContact, [FromQuery]string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
@@ -186,7 +116,7 @@ namespace CSSPWebAPI.Controllers
         }
         // DELETE api/emailDistributionListContact
         [Route("")]
-        public IHttpActionResult Delete([FromBody]EmailDistributionListContact emailDistributionListContact, [FromUri]string lang = "en")
+        public IActionResult Delete([FromBody]EmailDistributionListContact emailDistributionListContact, [FromQuery]string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {

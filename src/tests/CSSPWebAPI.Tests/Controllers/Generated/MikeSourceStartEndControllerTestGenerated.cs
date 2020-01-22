@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
 using System.Web.Http.Results;
+using Microsoft.AspNetCore.Mvc;
 
 namespace CSSPWebAPI.Tests.Controllers
 {
@@ -48,7 +49,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     }
 
                     // ok with MikeSourceStartEnd info
-                    IHttpActionResult jsonRet = mikeSourceStartEndController.GetMikeSourceStartEndList();
+                    IActionResult jsonRet = mikeSourceStartEndController.GetMikeSourceStartEndList();
                     Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<List<MikeSourceStartEnd>> ret = jsonRet as OkNegotiatedContentResult<List<MikeSourceStartEnd>>;
@@ -86,7 +87,7 @@ namespace CSSPWebAPI.Tests.Controllers
                            count = (query.Take > count ? query.Take : count);
 
                            // ok with MikeSourceStartEnd info
-                           IHttpActionResult jsonRet2 = mikeSourceStartEndController.GetMikeSourceStartEndList(query.Language.ToString(), query.Skip, query.Take);
+                           IActionResult jsonRet2 = mikeSourceStartEndController.GetMikeSourceStartEndList(query.Language.ToString(), query.Skip, query.Take);
                            Assert.NotNull(jsonRet2);
 
                            OkNegotiatedContentResult<List<MikeSourceStartEnd>> ret2 = jsonRet2 as OkNegotiatedContentResult<List<MikeSourceStartEnd>>;
@@ -119,7 +120,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     }
 
                     // ok with MikeSourceStartEnd info
-                    IHttpActionResult jsonRet = mikeSourceStartEndController.GetMikeSourceStartEndWithID(mikeSourceStartEndFirst.MikeSourceStartEndID);
+                    IActionResult jsonRet = mikeSourceStartEndController.GetMikeSourceStartEndWithID(mikeSourceStartEndFirst.MikeSourceStartEndID);
                     Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<MikeSourceStartEnd> Ret = jsonRet as OkNegotiatedContentResult<MikeSourceStartEnd>;
@@ -127,16 +128,16 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.Equal(mikeSourceStartEndFirst.MikeSourceStartEndID, mikeSourceStartEndRet.MikeSourceStartEndID);
 
                     BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
+                    Assert.Null(badRequest);
 
                     // Not Found
-                    IHttpActionResult jsonRet2 = mikeSourceStartEndController.GetMikeSourceStartEndWithID(0);
+                    IActionResult jsonRet2 = mikeSourceStartEndController.GetMikeSourceStartEndWithID(0);
                     Assert.NotNull(jsonRet2);
 
                     OkNegotiatedContentResult<MikeSourceStartEnd> mikeSourceStartEndRet2 = jsonRet2 as OkNegotiatedContentResult<MikeSourceStartEnd>;
-                    Assert.IsNull(mikeSourceStartEndRet2);
+                    Assert.Null(mikeSourceStartEndRet2);
 
-                    NotFoundResult notFoundRequest = jsonRet2 as NotFoundResult;
+                    NotFoundObjectResult notFoundRequest = jsonRet2 as NotFoundObjectResult;
                     Assert.NotNull(notFoundRequest);
                 }
             }
@@ -168,7 +169,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     }
 
                     // ok with MikeSourceStartEnd info
-                    IHttpActionResult jsonRet = mikeSourceStartEndController.GetMikeSourceStartEndWithID(mikeSourceStartEndLast.MikeSourceStartEndID);
+                    IActionResult jsonRet = mikeSourceStartEndController.GetMikeSourceStartEndWithID(mikeSourceStartEndLast.MikeSourceStartEndID);
                     Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<MikeSourceStartEnd> Ret = jsonRet as OkNegotiatedContentResult<MikeSourceStartEnd>;
@@ -176,14 +177,14 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.Equal(mikeSourceStartEndLast.MikeSourceStartEndID, mikeSourceStartEndRet.MikeSourceStartEndID);
 
                     BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
+                    Assert.Null(badRequest);
 
                     // Post to return CSSPError because MikeSourceStartEndID exist
-                    IHttpActionResult jsonRet2 = mikeSourceStartEndController.Post(mikeSourceStartEndRet, LanguageRequest.ToString());
+                    IActionResult jsonRet2 = mikeSourceStartEndController.Post(mikeSourceStartEndRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet2);
 
                     OkNegotiatedContentResult<MikeSourceStartEnd> mikeSourceStartEndRet2 = jsonRet2 as OkNegotiatedContentResult<MikeSourceStartEnd>;
-                    Assert.IsNull(mikeSourceStartEndRet2);
+                    Assert.Null(mikeSourceStartEndRet2);
 
                     BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
                     Assert.NotNull(badRequest2);
@@ -192,23 +193,23 @@ namespace CSSPWebAPI.Tests.Controllers
                     mikeSourceStartEndRet.MikeSourceStartEndID = 0;
                     mikeSourceStartEndController.Request = new System.Net.Http.HttpRequestMessage();
                     mikeSourceStartEndController.Request.RequestUri = new System.Uri("http://localhost:5000/api/mikeSourceStartEnd");
-                    IHttpActionResult jsonRet3 = mikeSourceStartEndController.Post(mikeSourceStartEndRet, LanguageRequest.ToString());
+                    IActionResult jsonRet3 = mikeSourceStartEndController.Post(mikeSourceStartEndRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 
                     CreatedNegotiatedContentResult<MikeSourceStartEnd> mikeSourceStartEndRet3 = jsonRet3 as CreatedNegotiatedContentResult<MikeSourceStartEnd>;
                     Assert.NotNull(mikeSourceStartEndRet3);
 
                     BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest3);
+                    Assert.Null(badRequest3);
 
-                    IHttpActionResult jsonRet4 = mikeSourceStartEndController.Delete(mikeSourceStartEndRet, LanguageRequest.ToString());
+                    IActionResult jsonRet4 = mikeSourceStartEndController.Delete(mikeSourceStartEndRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet4);
 
                     OkNegotiatedContentResult<MikeSourceStartEnd> mikeSourceStartEndRet4 = jsonRet4 as OkNegotiatedContentResult<MikeSourceStartEnd>;
                     Assert.NotNull(mikeSourceStartEndRet4);
 
                     BadRequestErrorMessageResult badRequest4 = jsonRet4 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest4);
+                    Assert.Null(badRequest4);
                 }
             }
         }
@@ -237,7 +238,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     }
 
                     // ok with MikeSourceStartEnd info
-                    IHttpActionResult jsonRet = mikeSourceStartEndController.GetMikeSourceStartEndWithID(mikeSourceStartEndLast.MikeSourceStartEndID);
+                    IActionResult jsonRet = mikeSourceStartEndController.GetMikeSourceStartEndWithID(mikeSourceStartEndLast.MikeSourceStartEndID);
                     Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<MikeSourceStartEnd> Ret = jsonRet as OkNegotiatedContentResult<MikeSourceStartEnd>;
@@ -245,25 +246,25 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.Equal(mikeSourceStartEndLast.MikeSourceStartEndID, mikeSourceStartEndRet.MikeSourceStartEndID);
 
                     BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
+                    Assert.Null(badRequest);
 
                     // Put to return success
-                    IHttpActionResult jsonRet2 = mikeSourceStartEndController.Put(mikeSourceStartEndRet, LanguageRequest.ToString());
+                    IActionResult jsonRet2 = mikeSourceStartEndController.Put(mikeSourceStartEndRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet2);
 
                     OkNegotiatedContentResult<MikeSourceStartEnd> mikeSourceStartEndRet2 = jsonRet2 as OkNegotiatedContentResult<MikeSourceStartEnd>;
                     Assert.NotNull(mikeSourceStartEndRet2);
 
                     BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest2);
+                    Assert.Null(badRequest2);
 
                     // Put to return CSSPError because MikeSourceStartEndID of 0 does not exist
                     mikeSourceStartEndRet.MikeSourceStartEndID = 0;
-                    IHttpActionResult jsonRet3 = mikeSourceStartEndController.Put(mikeSourceStartEndRet, LanguageRequest.ToString());
+                    IActionResult jsonRet3 = mikeSourceStartEndController.Put(mikeSourceStartEndRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 
                     OkNegotiatedContentResult<MikeSourceStartEnd> mikeSourceStartEndRet3 = jsonRet3 as OkNegotiatedContentResult<MikeSourceStartEnd>;
-                    Assert.IsNull(mikeSourceStartEndRet3);
+                    Assert.Null(mikeSourceStartEndRet3);
 
                     BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
                     Assert.NotNull(badRequest3);
@@ -297,7 +298,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     }
 
                     // ok with MikeSourceStartEnd info
-                    IHttpActionResult jsonRet = mikeSourceStartEndController.GetMikeSourceStartEndWithID(mikeSourceStartEndLast.MikeSourceStartEndID);
+                    IActionResult jsonRet = mikeSourceStartEndController.GetMikeSourceStartEndWithID(mikeSourceStartEndLast.MikeSourceStartEndID);
                     Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<MikeSourceStartEnd> Ret = jsonRet as OkNegotiatedContentResult<MikeSourceStartEnd>;
@@ -305,13 +306,13 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.Equal(mikeSourceStartEndLast.MikeSourceStartEndID, mikeSourceStartEndRet.MikeSourceStartEndID);
 
                     BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
+                    Assert.Null(badRequest);
 
                     // Post to return newly added MikeSourceStartEnd
                     mikeSourceStartEndRet.MikeSourceStartEndID = 0;
                     mikeSourceStartEndController.Request = new System.Net.Http.HttpRequestMessage();
                     mikeSourceStartEndController.Request.RequestUri = new System.Uri("http://localhost:5000/api/mikeSourceStartEnd");
-                    IHttpActionResult jsonRet3 = mikeSourceStartEndController.Post(mikeSourceStartEndRet, LanguageRequest.ToString());
+                    IActionResult jsonRet3 = mikeSourceStartEndController.Post(mikeSourceStartEndRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 
                     CreatedNegotiatedContentResult<MikeSourceStartEnd> mikeSourceStartEndRet3 = jsonRet3 as CreatedNegotiatedContentResult<MikeSourceStartEnd>;
@@ -319,25 +320,25 @@ namespace CSSPWebAPI.Tests.Controllers
                     MikeSourceStartEnd mikeSourceStartEnd = mikeSourceStartEndRet3.Content;
 
                     BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest3);
+                    Assert.Null(badRequest3);
 
                     // Delete to return success
-                    IHttpActionResult jsonRet2 = mikeSourceStartEndController.Delete(mikeSourceStartEndRet, LanguageRequest.ToString());
+                    IActionResult jsonRet2 = mikeSourceStartEndController.Delete(mikeSourceStartEndRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet2);
 
                     OkNegotiatedContentResult<MikeSourceStartEnd> mikeSourceStartEndRet2 = jsonRet2 as OkNegotiatedContentResult<MikeSourceStartEnd>;
                     Assert.NotNull(mikeSourceStartEndRet2);
 
                     BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest2);
+                    Assert.Null(badRequest2);
 
                     // Delete to return CSSPError because MikeSourceStartEndID of 0 does not exist
                     mikeSourceStartEndRet.MikeSourceStartEndID = 0;
-                    IHttpActionResult jsonRet4 = mikeSourceStartEndController.Delete(mikeSourceStartEndRet, LanguageRequest.ToString());
+                    IActionResult jsonRet4 = mikeSourceStartEndController.Delete(mikeSourceStartEndRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet4);
 
                     OkNegotiatedContentResult<MikeSourceStartEnd> mikeSourceStartEndRet4 = jsonRet4 as OkNegotiatedContentResult<MikeSourceStartEnd>;
-                    Assert.IsNull(mikeSourceStartEndRet4);
+                    Assert.Null(mikeSourceStartEndRet4);
 
                     BadRequestErrorMessageResult badRequest4 = jsonRet4 as BadRequestErrorMessageResult;
                     Assert.NotNull(badRequest4);

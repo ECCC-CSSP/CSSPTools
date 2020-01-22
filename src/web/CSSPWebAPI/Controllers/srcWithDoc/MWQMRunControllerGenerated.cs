@@ -1,14 +1,14 @@
 using CSSPEnums;
 using CSSPModels;
 using CSSPServices;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web.Http;
 
 namespace CSSPWebAPI.Controllers
 {
-    [RoutePrefix("api/mwqmRun")]
+    [Route("api/mwqmRun")]
     public partial class MWQMRunController : BaseController
     {
         #region Variables
@@ -29,126 +29,56 @@ namespace CSSPWebAPI.Controllers
         #region Functions public
         // GET api/mwqmRun
         [Route("")]
-        public IHttpActionResult GetMWQMRunList([FromUri]string lang = "en", [FromUri]int skip = 0, [FromUri]int take = 200,
-            [FromUri]string asc = "", [FromUri]string desc = "", [FromUri]string where = "", [FromUri]string extra = "")
+        public IActionResult GetMWQMRunList([FromQuery]string lang = "en", [FromQuery]int skip = 0, [FromQuery]int take = 200,
+            [FromQuery]string asc = "", [FromQuery]string desc = "", [FromQuery]string where = "")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
                 MWQMRunService mwqmRunService = new MWQMRunService(new Query() { Lang = lang }, db, ContactID);
 
-                if (extra == "A") // QueryString contains [extra=A]
-                {
-                   mwqmRunService.Query = mwqmRunService.FillQuery(typeof(MWQMRunExtraA), lang, skip, take, asc, desc, where, extra);
+                mwqmRunService.Query = mwqmRunService.FillQuery(typeof(MWQMRun), lang, skip, take, asc, desc, where);
 
-                    if (mwqmRunService.Query.HasErrors)
-                    {
-                        return Ok(new List<MWQMRunExtraA>()
-                        {
-                            new MWQMRunExtraA()
-                            {
-                                HasErrors = mwqmRunService.Query.HasErrors,
-                                ValidationResults = mwqmRunService.Query.ValidationResults,
-                            },
-                        }.ToList());
-                    }
-                    else
-                    {
-                        return Ok(mwqmRunService.GetMWQMRunExtraAList().ToList());
-                    }
-                }
-                else if (extra == "B") // QueryString contains [extra=B]
-                {
-                   mwqmRunService.Query = mwqmRunService.FillQuery(typeof(MWQMRunExtraB), lang, skip, take, asc, desc, where, extra);
-
-                    if (mwqmRunService.Query.HasErrors)
-                    {
-                        return Ok(new List<MWQMRunExtraB>()
-                        {
-                            new MWQMRunExtraB()
-                            {
-                                HasErrors = mwqmRunService.Query.HasErrors,
-                                ValidationResults = mwqmRunService.Query.ValidationResults,
-                            },
-                        }.ToList());
-                    }
-                    else
-                    {
-                        return Ok(mwqmRunService.GetMWQMRunExtraBList().ToList());
-                    }
-                }
-                else // QueryString has no parameter [extra] or extra is empty
-                {
-                   mwqmRunService.Query = mwqmRunService.FillQuery(typeof(MWQMRun), lang, skip, take, asc, desc, where, extra);
-
-                    if (mwqmRunService.Query.HasErrors)
-                    {
-                        return Ok(new List<MWQMRun>()
-                        {
-                            new MWQMRun()
-                            {
-                                HasErrors = mwqmRunService.Query.HasErrors,
-                                ValidationResults = mwqmRunService.Query.ValidationResults,
-                            },
-                        }.ToList());
-                    }
-                    else
-                    {
-                        return Ok(mwqmRunService.GetMWQMRunList().ToList());
-                    }
-                }
+                 if (mwqmRunService.Query.HasErrors)
+                 {
+                     return Ok(new List<MWQMRun>()
+                     {
+                         new MWQMRun()
+                         {
+                             HasErrors = mwqmRunService.Query.HasErrors,
+                             ValidationResults = mwqmRunService.Query.ValidationResults,
+                         },
+                     }.ToList());
+                 }
+                 else
+                 {
+                     return Ok(mwqmRunService.GetMWQMRunList().ToList());
+                 }
             }
         }
         // GET api/mwqmRun/1
         [Route("{MWQMRunID:int}")]
-        public IHttpActionResult GetMWQMRunWithID([FromUri]int MWQMRunID, [FromUri]string lang = "en", [FromUri]string extra = "")
+        public IActionResult GetMWQMRunWithID([FromQuery]int MWQMRunID, [FromQuery]string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
                 MWQMRunService mwqmRunService = new MWQMRunService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
 
-                mwqmRunService.Query = mwqmRunService.FillQuery(typeof(MWQMRun), lang, 0, 1, "", "", extra);
+                mwqmRunService.Query = mwqmRunService.FillQuery(typeof(MWQMRun), lang, 0, 1, "", "");
 
-                if (mwqmRunService.Query.Extra == "A")
+                MWQMRun mwqmRun = new MWQMRun();
+                mwqmRun = mwqmRunService.GetMWQMRunWithMWQMRunID(MWQMRunID);
+
+                if (mwqmRun == null)
                 {
-                    MWQMRunExtraA mwqmRunExtraA = new MWQMRunExtraA();
-                    mwqmRunExtraA = mwqmRunService.GetMWQMRunExtraAWithMWQMRunID(MWQMRunID);
-
-                    if (mwqmRunExtraA == null)
-                    {
-                        return NotFound();
-                    }
-
-                    return Ok(mwqmRunExtraA);
+                    return NotFound();
                 }
-                else if (mwqmRunService.Query.Extra == "B")
-                {
-                    MWQMRunExtraB mwqmRunExtraB = new MWQMRunExtraB();
-                    mwqmRunExtraB = mwqmRunService.GetMWQMRunExtraBWithMWQMRunID(MWQMRunID);
 
-                    if (mwqmRunExtraB == null)
-                    {
-                        return NotFound();
-                    }
-
-                    return Ok(mwqmRunExtraB);
-                }
-                else
-                {
-                    MWQMRun mwqmRun = new MWQMRun();
-                    mwqmRun = mwqmRunService.GetMWQMRunWithMWQMRunID(MWQMRunID);
-
-                    if (mwqmRun == null)
-                    {
-                        return NotFound();
-                    }
-
-                    return Ok(mwqmRun);
-                }
+                return Ok(mwqmRun);
             }
         }
         // POST api/mwqmRun
         [Route("")]
-        public IHttpActionResult Post([FromBody]MWQMRun mwqmRun, [FromUri]string lang = "en")
+        public IActionResult Post([FromBody]MWQMRun mwqmRun, [FromQuery]string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
@@ -161,13 +91,13 @@ namespace CSSPWebAPI.Controllers
                 else
                 {
                     mwqmRun.ValidationResults = null;
-                    return Created<MWQMRun>(new Uri(Request.RequestUri, mwqmRun.MWQMRunID.ToString()), mwqmRun);
+                    return Created(Url.ToString(), mwqmRun);
                 }
             }
         }
         // PUT api/mwqmRun
         [Route("")]
-        public IHttpActionResult Put([FromBody]MWQMRun mwqmRun, [FromUri]string lang = "en")
+        public IActionResult Put([FromBody]MWQMRun mwqmRun, [FromQuery]string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
@@ -186,7 +116,7 @@ namespace CSSPWebAPI.Controllers
         }
         // DELETE api/mwqmRun
         [Route("")]
-        public IHttpActionResult Delete([FromBody]MWQMRun mwqmRun, [FromUri]string lang = "en")
+        public IActionResult Delete([FromBody]MWQMRun mwqmRun, [FromQuery]string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {

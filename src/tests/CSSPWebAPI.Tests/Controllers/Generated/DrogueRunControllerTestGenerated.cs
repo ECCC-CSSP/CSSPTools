@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
 using System.Web.Http.Results;
+using Microsoft.AspNetCore.Mvc;
 
 namespace CSSPWebAPI.Tests.Controllers
 {
@@ -48,7 +49,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     }
 
                     // ok with DrogueRun info
-                    IHttpActionResult jsonRet = drogueRunController.GetDrogueRunList();
+                    IActionResult jsonRet = drogueRunController.GetDrogueRunList();
                     Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<List<DrogueRun>> ret = jsonRet as OkNegotiatedContentResult<List<DrogueRun>>;
@@ -86,7 +87,7 @@ namespace CSSPWebAPI.Tests.Controllers
                            count = (query.Take > count ? query.Take : count);
 
                            // ok with DrogueRun info
-                           IHttpActionResult jsonRet2 = drogueRunController.GetDrogueRunList(query.Language.ToString(), query.Skip, query.Take);
+                           IActionResult jsonRet2 = drogueRunController.GetDrogueRunList(query.Language.ToString(), query.Skip, query.Take);
                            Assert.NotNull(jsonRet2);
 
                            OkNegotiatedContentResult<List<DrogueRun>> ret2 = jsonRet2 as OkNegotiatedContentResult<List<DrogueRun>>;
@@ -119,7 +120,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     }
 
                     // ok with DrogueRun info
-                    IHttpActionResult jsonRet = drogueRunController.GetDrogueRunWithID(drogueRunFirst.DrogueRunID);
+                    IActionResult jsonRet = drogueRunController.GetDrogueRunWithID(drogueRunFirst.DrogueRunID);
                     Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<DrogueRun> Ret = jsonRet as OkNegotiatedContentResult<DrogueRun>;
@@ -127,16 +128,16 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.Equal(drogueRunFirst.DrogueRunID, drogueRunRet.DrogueRunID);
 
                     BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
+                    Assert.Null(badRequest);
 
                     // Not Found
-                    IHttpActionResult jsonRet2 = drogueRunController.GetDrogueRunWithID(0);
+                    IActionResult jsonRet2 = drogueRunController.GetDrogueRunWithID(0);
                     Assert.NotNull(jsonRet2);
 
                     OkNegotiatedContentResult<DrogueRun> drogueRunRet2 = jsonRet2 as OkNegotiatedContentResult<DrogueRun>;
-                    Assert.IsNull(drogueRunRet2);
+                    Assert.Null(drogueRunRet2);
 
-                    NotFoundResult notFoundRequest = jsonRet2 as NotFoundResult;
+                    NotFoundObjectResult notFoundRequest = jsonRet2 as NotFoundObjectResult;
                     Assert.NotNull(notFoundRequest);
                 }
             }
@@ -168,7 +169,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     }
 
                     // ok with DrogueRun info
-                    IHttpActionResult jsonRet = drogueRunController.GetDrogueRunWithID(drogueRunLast.DrogueRunID);
+                    IActionResult jsonRet = drogueRunController.GetDrogueRunWithID(drogueRunLast.DrogueRunID);
                     Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<DrogueRun> Ret = jsonRet as OkNegotiatedContentResult<DrogueRun>;
@@ -176,14 +177,14 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.Equal(drogueRunLast.DrogueRunID, drogueRunRet.DrogueRunID);
 
                     BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
+                    Assert.Null(badRequest);
 
                     // Post to return CSSPError because DrogueRunID exist
-                    IHttpActionResult jsonRet2 = drogueRunController.Post(drogueRunRet, LanguageRequest.ToString());
+                    IActionResult jsonRet2 = drogueRunController.Post(drogueRunRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet2);
 
                     OkNegotiatedContentResult<DrogueRun> drogueRunRet2 = jsonRet2 as OkNegotiatedContentResult<DrogueRun>;
-                    Assert.IsNull(drogueRunRet2);
+                    Assert.Null(drogueRunRet2);
 
                     BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
                     Assert.NotNull(badRequest2);
@@ -192,23 +193,23 @@ namespace CSSPWebAPI.Tests.Controllers
                     drogueRunRet.DrogueRunID = 0;
                     drogueRunController.Request = new System.Net.Http.HttpRequestMessage();
                     drogueRunController.Request.RequestUri = new System.Uri("http://localhost:5000/api/drogueRun");
-                    IHttpActionResult jsonRet3 = drogueRunController.Post(drogueRunRet, LanguageRequest.ToString());
+                    IActionResult jsonRet3 = drogueRunController.Post(drogueRunRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 
                     CreatedNegotiatedContentResult<DrogueRun> drogueRunRet3 = jsonRet3 as CreatedNegotiatedContentResult<DrogueRun>;
                     Assert.NotNull(drogueRunRet3);
 
                     BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest3);
+                    Assert.Null(badRequest3);
 
-                    IHttpActionResult jsonRet4 = drogueRunController.Delete(drogueRunRet, LanguageRequest.ToString());
+                    IActionResult jsonRet4 = drogueRunController.Delete(drogueRunRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet4);
 
                     OkNegotiatedContentResult<DrogueRun> drogueRunRet4 = jsonRet4 as OkNegotiatedContentResult<DrogueRun>;
                     Assert.NotNull(drogueRunRet4);
 
                     BadRequestErrorMessageResult badRequest4 = jsonRet4 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest4);
+                    Assert.Null(badRequest4);
                 }
             }
         }
@@ -237,7 +238,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     }
 
                     // ok with DrogueRun info
-                    IHttpActionResult jsonRet = drogueRunController.GetDrogueRunWithID(drogueRunLast.DrogueRunID);
+                    IActionResult jsonRet = drogueRunController.GetDrogueRunWithID(drogueRunLast.DrogueRunID);
                     Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<DrogueRun> Ret = jsonRet as OkNegotiatedContentResult<DrogueRun>;
@@ -245,25 +246,25 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.Equal(drogueRunLast.DrogueRunID, drogueRunRet.DrogueRunID);
 
                     BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
+                    Assert.Null(badRequest);
 
                     // Put to return success
-                    IHttpActionResult jsonRet2 = drogueRunController.Put(drogueRunRet, LanguageRequest.ToString());
+                    IActionResult jsonRet2 = drogueRunController.Put(drogueRunRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet2);
 
                     OkNegotiatedContentResult<DrogueRun> drogueRunRet2 = jsonRet2 as OkNegotiatedContentResult<DrogueRun>;
                     Assert.NotNull(drogueRunRet2);
 
                     BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest2);
+                    Assert.Null(badRequest2);
 
                     // Put to return CSSPError because DrogueRunID of 0 does not exist
                     drogueRunRet.DrogueRunID = 0;
-                    IHttpActionResult jsonRet3 = drogueRunController.Put(drogueRunRet, LanguageRequest.ToString());
+                    IActionResult jsonRet3 = drogueRunController.Put(drogueRunRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 
                     OkNegotiatedContentResult<DrogueRun> drogueRunRet3 = jsonRet3 as OkNegotiatedContentResult<DrogueRun>;
-                    Assert.IsNull(drogueRunRet3);
+                    Assert.Null(drogueRunRet3);
 
                     BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
                     Assert.NotNull(badRequest3);
@@ -297,7 +298,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     }
 
                     // ok with DrogueRun info
-                    IHttpActionResult jsonRet = drogueRunController.GetDrogueRunWithID(drogueRunLast.DrogueRunID);
+                    IActionResult jsonRet = drogueRunController.GetDrogueRunWithID(drogueRunLast.DrogueRunID);
                     Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<DrogueRun> Ret = jsonRet as OkNegotiatedContentResult<DrogueRun>;
@@ -305,13 +306,13 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.Equal(drogueRunLast.DrogueRunID, drogueRunRet.DrogueRunID);
 
                     BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
+                    Assert.Null(badRequest);
 
                     // Post to return newly added DrogueRun
                     drogueRunRet.DrogueRunID = 0;
                     drogueRunController.Request = new System.Net.Http.HttpRequestMessage();
                     drogueRunController.Request.RequestUri = new System.Uri("http://localhost:5000/api/drogueRun");
-                    IHttpActionResult jsonRet3 = drogueRunController.Post(drogueRunRet, LanguageRequest.ToString());
+                    IActionResult jsonRet3 = drogueRunController.Post(drogueRunRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 
                     CreatedNegotiatedContentResult<DrogueRun> drogueRunRet3 = jsonRet3 as CreatedNegotiatedContentResult<DrogueRun>;
@@ -319,25 +320,25 @@ namespace CSSPWebAPI.Tests.Controllers
                     DrogueRun drogueRun = drogueRunRet3.Content;
 
                     BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest3);
+                    Assert.Null(badRequest3);
 
                     // Delete to return success
-                    IHttpActionResult jsonRet2 = drogueRunController.Delete(drogueRunRet, LanguageRequest.ToString());
+                    IActionResult jsonRet2 = drogueRunController.Delete(drogueRunRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet2);
 
                     OkNegotiatedContentResult<DrogueRun> drogueRunRet2 = jsonRet2 as OkNegotiatedContentResult<DrogueRun>;
                     Assert.NotNull(drogueRunRet2);
 
                     BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest2);
+                    Assert.Null(badRequest2);
 
                     // Delete to return CSSPError because DrogueRunID of 0 does not exist
                     drogueRunRet.DrogueRunID = 0;
-                    IHttpActionResult jsonRet4 = drogueRunController.Delete(drogueRunRet, LanguageRequest.ToString());
+                    IActionResult jsonRet4 = drogueRunController.Delete(drogueRunRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet4);
 
                     OkNegotiatedContentResult<DrogueRun> drogueRunRet4 = jsonRet4 as OkNegotiatedContentResult<DrogueRun>;
-                    Assert.IsNull(drogueRunRet4);
+                    Assert.Null(drogueRunRet4);
 
                     BadRequestErrorMessageResult badRequest4 = jsonRet4 as BadRequestErrorMessageResult;
                     Assert.NotNull(badRequest4);

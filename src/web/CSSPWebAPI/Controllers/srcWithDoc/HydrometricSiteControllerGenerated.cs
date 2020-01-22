@@ -1,14 +1,14 @@
 using CSSPEnums;
 using CSSPModels;
 using CSSPServices;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web.Http;
 
 namespace CSSPWebAPI.Controllers
 {
-    [RoutePrefix("api/hydrometricSite")]
+    [Route("api/hydrometricSite")]
     public partial class HydrometricSiteController : BaseController
     {
         #region Variables
@@ -29,126 +29,56 @@ namespace CSSPWebAPI.Controllers
         #region Functions public
         // GET api/hydrometricSite
         [Route("")]
-        public IHttpActionResult GetHydrometricSiteList([FromUri]string lang = "en", [FromUri]int skip = 0, [FromUri]int take = 200,
-            [FromUri]string asc = "", [FromUri]string desc = "", [FromUri]string where = "", [FromUri]string extra = "")
+        public IActionResult GetHydrometricSiteList([FromQuery]string lang = "en", [FromQuery]int skip = 0, [FromQuery]int take = 200,
+            [FromQuery]string asc = "", [FromQuery]string desc = "", [FromQuery]string where = "")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
                 HydrometricSiteService hydrometricSiteService = new HydrometricSiteService(new Query() { Lang = lang }, db, ContactID);
 
-                if (extra == "A") // QueryString contains [extra=A]
-                {
-                   hydrometricSiteService.Query = hydrometricSiteService.FillQuery(typeof(HydrometricSiteExtraA), lang, skip, take, asc, desc, where, extra);
+                hydrometricSiteService.Query = hydrometricSiteService.FillQuery(typeof(HydrometricSite), lang, skip, take, asc, desc, where);
 
-                    if (hydrometricSiteService.Query.HasErrors)
-                    {
-                        return Ok(new List<HydrometricSiteExtraA>()
-                        {
-                            new HydrometricSiteExtraA()
-                            {
-                                HasErrors = hydrometricSiteService.Query.HasErrors,
-                                ValidationResults = hydrometricSiteService.Query.ValidationResults,
-                            },
-                        }.ToList());
-                    }
-                    else
-                    {
-                        return Ok(hydrometricSiteService.GetHydrometricSiteExtraAList().ToList());
-                    }
-                }
-                else if (extra == "B") // QueryString contains [extra=B]
-                {
-                   hydrometricSiteService.Query = hydrometricSiteService.FillQuery(typeof(HydrometricSiteExtraB), lang, skip, take, asc, desc, where, extra);
-
-                    if (hydrometricSiteService.Query.HasErrors)
-                    {
-                        return Ok(new List<HydrometricSiteExtraB>()
-                        {
-                            new HydrometricSiteExtraB()
-                            {
-                                HasErrors = hydrometricSiteService.Query.HasErrors,
-                                ValidationResults = hydrometricSiteService.Query.ValidationResults,
-                            },
-                        }.ToList());
-                    }
-                    else
-                    {
-                        return Ok(hydrometricSiteService.GetHydrometricSiteExtraBList().ToList());
-                    }
-                }
-                else // QueryString has no parameter [extra] or extra is empty
-                {
-                   hydrometricSiteService.Query = hydrometricSiteService.FillQuery(typeof(HydrometricSite), lang, skip, take, asc, desc, where, extra);
-
-                    if (hydrometricSiteService.Query.HasErrors)
-                    {
-                        return Ok(new List<HydrometricSite>()
-                        {
-                            new HydrometricSite()
-                            {
-                                HasErrors = hydrometricSiteService.Query.HasErrors,
-                                ValidationResults = hydrometricSiteService.Query.ValidationResults,
-                            },
-                        }.ToList());
-                    }
-                    else
-                    {
-                        return Ok(hydrometricSiteService.GetHydrometricSiteList().ToList());
-                    }
-                }
+                 if (hydrometricSiteService.Query.HasErrors)
+                 {
+                     return Ok(new List<HydrometricSite>()
+                     {
+                         new HydrometricSite()
+                         {
+                             HasErrors = hydrometricSiteService.Query.HasErrors,
+                             ValidationResults = hydrometricSiteService.Query.ValidationResults,
+                         },
+                     }.ToList());
+                 }
+                 else
+                 {
+                     return Ok(hydrometricSiteService.GetHydrometricSiteList().ToList());
+                 }
             }
         }
         // GET api/hydrometricSite/1
         [Route("{HydrometricSiteID:int}")]
-        public IHttpActionResult GetHydrometricSiteWithID([FromUri]int HydrometricSiteID, [FromUri]string lang = "en", [FromUri]string extra = "")
+        public IActionResult GetHydrometricSiteWithID([FromQuery]int HydrometricSiteID, [FromQuery]string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
                 HydrometricSiteService hydrometricSiteService = new HydrometricSiteService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
 
-                hydrometricSiteService.Query = hydrometricSiteService.FillQuery(typeof(HydrometricSite), lang, 0, 1, "", "", extra);
+                hydrometricSiteService.Query = hydrometricSiteService.FillQuery(typeof(HydrometricSite), lang, 0, 1, "", "");
 
-                if (hydrometricSiteService.Query.Extra == "A")
+                HydrometricSite hydrometricSite = new HydrometricSite();
+                hydrometricSite = hydrometricSiteService.GetHydrometricSiteWithHydrometricSiteID(HydrometricSiteID);
+
+                if (hydrometricSite == null)
                 {
-                    HydrometricSiteExtraA hydrometricSiteExtraA = new HydrometricSiteExtraA();
-                    hydrometricSiteExtraA = hydrometricSiteService.GetHydrometricSiteExtraAWithHydrometricSiteID(HydrometricSiteID);
-
-                    if (hydrometricSiteExtraA == null)
-                    {
-                        return NotFound();
-                    }
-
-                    return Ok(hydrometricSiteExtraA);
+                    return NotFound();
                 }
-                else if (hydrometricSiteService.Query.Extra == "B")
-                {
-                    HydrometricSiteExtraB hydrometricSiteExtraB = new HydrometricSiteExtraB();
-                    hydrometricSiteExtraB = hydrometricSiteService.GetHydrometricSiteExtraBWithHydrometricSiteID(HydrometricSiteID);
 
-                    if (hydrometricSiteExtraB == null)
-                    {
-                        return NotFound();
-                    }
-
-                    return Ok(hydrometricSiteExtraB);
-                }
-                else
-                {
-                    HydrometricSite hydrometricSite = new HydrometricSite();
-                    hydrometricSite = hydrometricSiteService.GetHydrometricSiteWithHydrometricSiteID(HydrometricSiteID);
-
-                    if (hydrometricSite == null)
-                    {
-                        return NotFound();
-                    }
-
-                    return Ok(hydrometricSite);
-                }
+                return Ok(hydrometricSite);
             }
         }
         // POST api/hydrometricSite
         [Route("")]
-        public IHttpActionResult Post([FromBody]HydrometricSite hydrometricSite, [FromUri]string lang = "en")
+        public IActionResult Post([FromBody]HydrometricSite hydrometricSite, [FromQuery]string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
@@ -161,13 +91,13 @@ namespace CSSPWebAPI.Controllers
                 else
                 {
                     hydrometricSite.ValidationResults = null;
-                    return Created<HydrometricSite>(new Uri(Request.RequestUri, hydrometricSite.HydrometricSiteID.ToString()), hydrometricSite);
+                    return Created(Url.ToString(), hydrometricSite);
                 }
             }
         }
         // PUT api/hydrometricSite
         [Route("")]
-        public IHttpActionResult Put([FromBody]HydrometricSite hydrometricSite, [FromUri]string lang = "en")
+        public IActionResult Put([FromBody]HydrometricSite hydrometricSite, [FromQuery]string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
@@ -186,7 +116,7 @@ namespace CSSPWebAPI.Controllers
         }
         // DELETE api/hydrometricSite
         [Route("")]
-        public IHttpActionResult Delete([FromBody]HydrometricSite hydrometricSite, [FromUri]string lang = "en")
+        public IActionResult Delete([FromBody]HydrometricSite hydrometricSite, [FromQuery]string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {

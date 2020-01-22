@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
 using System.Web.Http.Results;
+using Microsoft.AspNetCore.Mvc;
 
 namespace CSSPWebAPI.Tests.Controllers
 {
@@ -48,7 +49,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     }
 
                     // ok with TideSite info
-                    IHttpActionResult jsonRet = tideSiteController.GetTideSiteList();
+                    IActionResult jsonRet = tideSiteController.GetTideSiteList();
                     Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<List<TideSite>> ret = jsonRet as OkNegotiatedContentResult<List<TideSite>>;
@@ -86,7 +87,7 @@ namespace CSSPWebAPI.Tests.Controllers
                            count = (query.Take > count ? query.Take : count);
 
                            // ok with TideSite info
-                           IHttpActionResult jsonRet2 = tideSiteController.GetTideSiteList(query.Language.ToString(), query.Skip, query.Take);
+                           IActionResult jsonRet2 = tideSiteController.GetTideSiteList(query.Language.ToString(), query.Skip, query.Take);
                            Assert.NotNull(jsonRet2);
 
                            OkNegotiatedContentResult<List<TideSite>> ret2 = jsonRet2 as OkNegotiatedContentResult<List<TideSite>>;
@@ -119,7 +120,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     }
 
                     // ok with TideSite info
-                    IHttpActionResult jsonRet = tideSiteController.GetTideSiteWithID(tideSiteFirst.TideSiteID);
+                    IActionResult jsonRet = tideSiteController.GetTideSiteWithID(tideSiteFirst.TideSiteID);
                     Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<TideSite> Ret = jsonRet as OkNegotiatedContentResult<TideSite>;
@@ -127,16 +128,16 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.Equal(tideSiteFirst.TideSiteID, tideSiteRet.TideSiteID);
 
                     BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
+                    Assert.Null(badRequest);
 
                     // Not Found
-                    IHttpActionResult jsonRet2 = tideSiteController.GetTideSiteWithID(0);
+                    IActionResult jsonRet2 = tideSiteController.GetTideSiteWithID(0);
                     Assert.NotNull(jsonRet2);
 
                     OkNegotiatedContentResult<TideSite> tideSiteRet2 = jsonRet2 as OkNegotiatedContentResult<TideSite>;
-                    Assert.IsNull(tideSiteRet2);
+                    Assert.Null(tideSiteRet2);
 
-                    NotFoundResult notFoundRequest = jsonRet2 as NotFoundResult;
+                    NotFoundObjectResult notFoundRequest = jsonRet2 as NotFoundObjectResult;
                     Assert.NotNull(notFoundRequest);
                 }
             }
@@ -168,7 +169,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     }
 
                     // ok with TideSite info
-                    IHttpActionResult jsonRet = tideSiteController.GetTideSiteWithID(tideSiteLast.TideSiteID);
+                    IActionResult jsonRet = tideSiteController.GetTideSiteWithID(tideSiteLast.TideSiteID);
                     Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<TideSite> Ret = jsonRet as OkNegotiatedContentResult<TideSite>;
@@ -176,14 +177,14 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.Equal(tideSiteLast.TideSiteID, tideSiteRet.TideSiteID);
 
                     BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
+                    Assert.Null(badRequest);
 
                     // Post to return CSSPError because TideSiteID exist
-                    IHttpActionResult jsonRet2 = tideSiteController.Post(tideSiteRet, LanguageRequest.ToString());
+                    IActionResult jsonRet2 = tideSiteController.Post(tideSiteRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet2);
 
                     OkNegotiatedContentResult<TideSite> tideSiteRet2 = jsonRet2 as OkNegotiatedContentResult<TideSite>;
-                    Assert.IsNull(tideSiteRet2);
+                    Assert.Null(tideSiteRet2);
 
                     BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
                     Assert.NotNull(badRequest2);
@@ -192,23 +193,23 @@ namespace CSSPWebAPI.Tests.Controllers
                     tideSiteRet.TideSiteID = 0;
                     tideSiteController.Request = new System.Net.Http.HttpRequestMessage();
                     tideSiteController.Request.RequestUri = new System.Uri("http://localhost:5000/api/tideSite");
-                    IHttpActionResult jsonRet3 = tideSiteController.Post(tideSiteRet, LanguageRequest.ToString());
+                    IActionResult jsonRet3 = tideSiteController.Post(tideSiteRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 
                     CreatedNegotiatedContentResult<TideSite> tideSiteRet3 = jsonRet3 as CreatedNegotiatedContentResult<TideSite>;
                     Assert.NotNull(tideSiteRet3);
 
                     BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest3);
+                    Assert.Null(badRequest3);
 
-                    IHttpActionResult jsonRet4 = tideSiteController.Delete(tideSiteRet, LanguageRequest.ToString());
+                    IActionResult jsonRet4 = tideSiteController.Delete(tideSiteRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet4);
 
                     OkNegotiatedContentResult<TideSite> tideSiteRet4 = jsonRet4 as OkNegotiatedContentResult<TideSite>;
                     Assert.NotNull(tideSiteRet4);
 
                     BadRequestErrorMessageResult badRequest4 = jsonRet4 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest4);
+                    Assert.Null(badRequest4);
                 }
             }
         }
@@ -237,7 +238,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     }
 
                     // ok with TideSite info
-                    IHttpActionResult jsonRet = tideSiteController.GetTideSiteWithID(tideSiteLast.TideSiteID);
+                    IActionResult jsonRet = tideSiteController.GetTideSiteWithID(tideSiteLast.TideSiteID);
                     Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<TideSite> Ret = jsonRet as OkNegotiatedContentResult<TideSite>;
@@ -245,25 +246,25 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.Equal(tideSiteLast.TideSiteID, tideSiteRet.TideSiteID);
 
                     BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
+                    Assert.Null(badRequest);
 
                     // Put to return success
-                    IHttpActionResult jsonRet2 = tideSiteController.Put(tideSiteRet, LanguageRequest.ToString());
+                    IActionResult jsonRet2 = tideSiteController.Put(tideSiteRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet2);
 
                     OkNegotiatedContentResult<TideSite> tideSiteRet2 = jsonRet2 as OkNegotiatedContentResult<TideSite>;
                     Assert.NotNull(tideSiteRet2);
 
                     BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest2);
+                    Assert.Null(badRequest2);
 
                     // Put to return CSSPError because TideSiteID of 0 does not exist
                     tideSiteRet.TideSiteID = 0;
-                    IHttpActionResult jsonRet3 = tideSiteController.Put(tideSiteRet, LanguageRequest.ToString());
+                    IActionResult jsonRet3 = tideSiteController.Put(tideSiteRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 
                     OkNegotiatedContentResult<TideSite> tideSiteRet3 = jsonRet3 as OkNegotiatedContentResult<TideSite>;
-                    Assert.IsNull(tideSiteRet3);
+                    Assert.Null(tideSiteRet3);
 
                     BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
                     Assert.NotNull(badRequest3);
@@ -297,7 +298,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     }
 
                     // ok with TideSite info
-                    IHttpActionResult jsonRet = tideSiteController.GetTideSiteWithID(tideSiteLast.TideSiteID);
+                    IActionResult jsonRet = tideSiteController.GetTideSiteWithID(tideSiteLast.TideSiteID);
                     Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<TideSite> Ret = jsonRet as OkNegotiatedContentResult<TideSite>;
@@ -305,13 +306,13 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.Equal(tideSiteLast.TideSiteID, tideSiteRet.TideSiteID);
 
                     BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
+                    Assert.Null(badRequest);
 
                     // Post to return newly added TideSite
                     tideSiteRet.TideSiteID = 0;
                     tideSiteController.Request = new System.Net.Http.HttpRequestMessage();
                     tideSiteController.Request.RequestUri = new System.Uri("http://localhost:5000/api/tideSite");
-                    IHttpActionResult jsonRet3 = tideSiteController.Post(tideSiteRet, LanguageRequest.ToString());
+                    IActionResult jsonRet3 = tideSiteController.Post(tideSiteRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 
                     CreatedNegotiatedContentResult<TideSite> tideSiteRet3 = jsonRet3 as CreatedNegotiatedContentResult<TideSite>;
@@ -319,25 +320,25 @@ namespace CSSPWebAPI.Tests.Controllers
                     TideSite tideSite = tideSiteRet3.Content;
 
                     BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest3);
+                    Assert.Null(badRequest3);
 
                     // Delete to return success
-                    IHttpActionResult jsonRet2 = tideSiteController.Delete(tideSiteRet, LanguageRequest.ToString());
+                    IActionResult jsonRet2 = tideSiteController.Delete(tideSiteRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet2);
 
                     OkNegotiatedContentResult<TideSite> tideSiteRet2 = jsonRet2 as OkNegotiatedContentResult<TideSite>;
                     Assert.NotNull(tideSiteRet2);
 
                     BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest2);
+                    Assert.Null(badRequest2);
 
                     // Delete to return CSSPError because TideSiteID of 0 does not exist
                     tideSiteRet.TideSiteID = 0;
-                    IHttpActionResult jsonRet4 = tideSiteController.Delete(tideSiteRet, LanguageRequest.ToString());
+                    IActionResult jsonRet4 = tideSiteController.Delete(tideSiteRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet4);
 
                     OkNegotiatedContentResult<TideSite> tideSiteRet4 = jsonRet4 as OkNegotiatedContentResult<TideSite>;
-                    Assert.IsNull(tideSiteRet4);
+                    Assert.Null(tideSiteRet4);
 
                     BadRequestErrorMessageResult badRequest4 = jsonRet4 as BadRequestErrorMessageResult;
                     Assert.NotNull(badRequest4);

@@ -1,14 +1,14 @@
 using CSSPEnums;
 using CSSPModels;
 using CSSPServices;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web.Http;
 
 namespace CSSPWebAPI.Controllers
 {
-    [RoutePrefix("api/tvItemUserAuthorization")]
+    [Route("api/tvItemUserAuthorization")]
     public partial class TVItemUserAuthorizationController : BaseController
     {
         #region Variables
@@ -29,126 +29,56 @@ namespace CSSPWebAPI.Controllers
         #region Functions public
         // GET api/tvItemUserAuthorization
         [Route("")]
-        public IHttpActionResult GetTVItemUserAuthorizationList([FromUri]string lang = "en", [FromUri]int skip = 0, [FromUri]int take = 200,
-            [FromUri]string asc = "", [FromUri]string desc = "", [FromUri]string where = "", [FromUri]string extra = "")
+        public IActionResult GetTVItemUserAuthorizationList([FromQuery]string lang = "en", [FromQuery]int skip = 0, [FromQuery]int take = 200,
+            [FromQuery]string asc = "", [FromQuery]string desc = "", [FromQuery]string where = "")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
                 TVItemUserAuthorizationService tvItemUserAuthorizationService = new TVItemUserAuthorizationService(new Query() { Lang = lang }, db, ContactID);
 
-                if (extra == "A") // QueryString contains [extra=A]
-                {
-                   tvItemUserAuthorizationService.Query = tvItemUserAuthorizationService.FillQuery(typeof(TVItemUserAuthorizationExtraA), lang, skip, take, asc, desc, where, extra);
+                tvItemUserAuthorizationService.Query = tvItemUserAuthorizationService.FillQuery(typeof(TVItemUserAuthorization), lang, skip, take, asc, desc, where);
 
-                    if (tvItemUserAuthorizationService.Query.HasErrors)
-                    {
-                        return Ok(new List<TVItemUserAuthorizationExtraA>()
-                        {
-                            new TVItemUserAuthorizationExtraA()
-                            {
-                                HasErrors = tvItemUserAuthorizationService.Query.HasErrors,
-                                ValidationResults = tvItemUserAuthorizationService.Query.ValidationResults,
-                            },
-                        }.ToList());
-                    }
-                    else
-                    {
-                        return Ok(tvItemUserAuthorizationService.GetTVItemUserAuthorizationExtraAList().ToList());
-                    }
-                }
-                else if (extra == "B") // QueryString contains [extra=B]
-                {
-                   tvItemUserAuthorizationService.Query = tvItemUserAuthorizationService.FillQuery(typeof(TVItemUserAuthorizationExtraB), lang, skip, take, asc, desc, where, extra);
-
-                    if (tvItemUserAuthorizationService.Query.HasErrors)
-                    {
-                        return Ok(new List<TVItemUserAuthorizationExtraB>()
-                        {
-                            new TVItemUserAuthorizationExtraB()
-                            {
-                                HasErrors = tvItemUserAuthorizationService.Query.HasErrors,
-                                ValidationResults = tvItemUserAuthorizationService.Query.ValidationResults,
-                            },
-                        }.ToList());
-                    }
-                    else
-                    {
-                        return Ok(tvItemUserAuthorizationService.GetTVItemUserAuthorizationExtraBList().ToList());
-                    }
-                }
-                else // QueryString has no parameter [extra] or extra is empty
-                {
-                   tvItemUserAuthorizationService.Query = tvItemUserAuthorizationService.FillQuery(typeof(TVItemUserAuthorization), lang, skip, take, asc, desc, where, extra);
-
-                    if (tvItemUserAuthorizationService.Query.HasErrors)
-                    {
-                        return Ok(new List<TVItemUserAuthorization>()
-                        {
-                            new TVItemUserAuthorization()
-                            {
-                                HasErrors = tvItemUserAuthorizationService.Query.HasErrors,
-                                ValidationResults = tvItemUserAuthorizationService.Query.ValidationResults,
-                            },
-                        }.ToList());
-                    }
-                    else
-                    {
-                        return Ok(tvItemUserAuthorizationService.GetTVItemUserAuthorizationList().ToList());
-                    }
-                }
+                 if (tvItemUserAuthorizationService.Query.HasErrors)
+                 {
+                     return Ok(new List<TVItemUserAuthorization>()
+                     {
+                         new TVItemUserAuthorization()
+                         {
+                             HasErrors = tvItemUserAuthorizationService.Query.HasErrors,
+                             ValidationResults = tvItemUserAuthorizationService.Query.ValidationResults,
+                         },
+                     }.ToList());
+                 }
+                 else
+                 {
+                     return Ok(tvItemUserAuthorizationService.GetTVItemUserAuthorizationList().ToList());
+                 }
             }
         }
         // GET api/tvItemUserAuthorization/1
         [Route("{TVItemUserAuthorizationID:int}")]
-        public IHttpActionResult GetTVItemUserAuthorizationWithID([FromUri]int TVItemUserAuthorizationID, [FromUri]string lang = "en", [FromUri]string extra = "")
+        public IActionResult GetTVItemUserAuthorizationWithID([FromQuery]int TVItemUserAuthorizationID, [FromQuery]string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
                 TVItemUserAuthorizationService tvItemUserAuthorizationService = new TVItemUserAuthorizationService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
 
-                tvItemUserAuthorizationService.Query = tvItemUserAuthorizationService.FillQuery(typeof(TVItemUserAuthorization), lang, 0, 1, "", "", extra);
+                tvItemUserAuthorizationService.Query = tvItemUserAuthorizationService.FillQuery(typeof(TVItemUserAuthorization), lang, 0, 1, "", "");
 
-                if (tvItemUserAuthorizationService.Query.Extra == "A")
+                TVItemUserAuthorization tvItemUserAuthorization = new TVItemUserAuthorization();
+                tvItemUserAuthorization = tvItemUserAuthorizationService.GetTVItemUserAuthorizationWithTVItemUserAuthorizationID(TVItemUserAuthorizationID);
+
+                if (tvItemUserAuthorization == null)
                 {
-                    TVItemUserAuthorizationExtraA tvItemUserAuthorizationExtraA = new TVItemUserAuthorizationExtraA();
-                    tvItemUserAuthorizationExtraA = tvItemUserAuthorizationService.GetTVItemUserAuthorizationExtraAWithTVItemUserAuthorizationID(TVItemUserAuthorizationID);
-
-                    if (tvItemUserAuthorizationExtraA == null)
-                    {
-                        return NotFound();
-                    }
-
-                    return Ok(tvItemUserAuthorizationExtraA);
+                    return NotFound();
                 }
-                else if (tvItemUserAuthorizationService.Query.Extra == "B")
-                {
-                    TVItemUserAuthorizationExtraB tvItemUserAuthorizationExtraB = new TVItemUserAuthorizationExtraB();
-                    tvItemUserAuthorizationExtraB = tvItemUserAuthorizationService.GetTVItemUserAuthorizationExtraBWithTVItemUserAuthorizationID(TVItemUserAuthorizationID);
 
-                    if (tvItemUserAuthorizationExtraB == null)
-                    {
-                        return NotFound();
-                    }
-
-                    return Ok(tvItemUserAuthorizationExtraB);
-                }
-                else
-                {
-                    TVItemUserAuthorization tvItemUserAuthorization = new TVItemUserAuthorization();
-                    tvItemUserAuthorization = tvItemUserAuthorizationService.GetTVItemUserAuthorizationWithTVItemUserAuthorizationID(TVItemUserAuthorizationID);
-
-                    if (tvItemUserAuthorization == null)
-                    {
-                        return NotFound();
-                    }
-
-                    return Ok(tvItemUserAuthorization);
-                }
+                return Ok(tvItemUserAuthorization);
             }
         }
         // POST api/tvItemUserAuthorization
         [Route("")]
-        public IHttpActionResult Post([FromBody]TVItemUserAuthorization tvItemUserAuthorization, [FromUri]string lang = "en")
+        public IActionResult Post([FromBody]TVItemUserAuthorization tvItemUserAuthorization, [FromQuery]string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
@@ -161,13 +91,13 @@ namespace CSSPWebAPI.Controllers
                 else
                 {
                     tvItemUserAuthorization.ValidationResults = null;
-                    return Created<TVItemUserAuthorization>(new Uri(Request.RequestUri, tvItemUserAuthorization.TVItemUserAuthorizationID.ToString()), tvItemUserAuthorization);
+                    return Created(Url.ToString(), tvItemUserAuthorization);
                 }
             }
         }
         // PUT api/tvItemUserAuthorization
         [Route("")]
-        public IHttpActionResult Put([FromBody]TVItemUserAuthorization tvItemUserAuthorization, [FromUri]string lang = "en")
+        public IActionResult Put([FromBody]TVItemUserAuthorization tvItemUserAuthorization, [FromQuery]string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
@@ -186,7 +116,7 @@ namespace CSSPWebAPI.Controllers
         }
         // DELETE api/tvItemUserAuthorization
         [Route("")]
-        public IHttpActionResult Delete([FromBody]TVItemUserAuthorization tvItemUserAuthorization, [FromUri]string lang = "en")
+        public IActionResult Delete([FromBody]TVItemUserAuthorization tvItemUserAuthorization, [FromQuery]string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {

@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
 using System.Web.Http.Results;
+using Microsoft.AspNetCore.Mvc;
 
 namespace CSSPWebAPI.Tests.Controllers
 {
@@ -48,7 +49,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     }
 
                     // ok with PolSourceSite info
-                    IHttpActionResult jsonRet = polSourceSiteController.GetPolSourceSiteList();
+                    IActionResult jsonRet = polSourceSiteController.GetPolSourceSiteList();
                     Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<List<PolSourceSite>> ret = jsonRet as OkNegotiatedContentResult<List<PolSourceSite>>;
@@ -86,7 +87,7 @@ namespace CSSPWebAPI.Tests.Controllers
                            count = (query.Take > count ? query.Take : count);
 
                            // ok with PolSourceSite info
-                           IHttpActionResult jsonRet2 = polSourceSiteController.GetPolSourceSiteList(query.Language.ToString(), query.Skip, query.Take);
+                           IActionResult jsonRet2 = polSourceSiteController.GetPolSourceSiteList(query.Language.ToString(), query.Skip, query.Take);
                            Assert.NotNull(jsonRet2);
 
                            OkNegotiatedContentResult<List<PolSourceSite>> ret2 = jsonRet2 as OkNegotiatedContentResult<List<PolSourceSite>>;
@@ -119,7 +120,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     }
 
                     // ok with PolSourceSite info
-                    IHttpActionResult jsonRet = polSourceSiteController.GetPolSourceSiteWithID(polSourceSiteFirst.PolSourceSiteID);
+                    IActionResult jsonRet = polSourceSiteController.GetPolSourceSiteWithID(polSourceSiteFirst.PolSourceSiteID);
                     Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<PolSourceSite> Ret = jsonRet as OkNegotiatedContentResult<PolSourceSite>;
@@ -127,16 +128,16 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.Equal(polSourceSiteFirst.PolSourceSiteID, polSourceSiteRet.PolSourceSiteID);
 
                     BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
+                    Assert.Null(badRequest);
 
                     // Not Found
-                    IHttpActionResult jsonRet2 = polSourceSiteController.GetPolSourceSiteWithID(0);
+                    IActionResult jsonRet2 = polSourceSiteController.GetPolSourceSiteWithID(0);
                     Assert.NotNull(jsonRet2);
 
                     OkNegotiatedContentResult<PolSourceSite> polSourceSiteRet2 = jsonRet2 as OkNegotiatedContentResult<PolSourceSite>;
-                    Assert.IsNull(polSourceSiteRet2);
+                    Assert.Null(polSourceSiteRet2);
 
-                    NotFoundResult notFoundRequest = jsonRet2 as NotFoundResult;
+                    NotFoundObjectResult notFoundRequest = jsonRet2 as NotFoundObjectResult;
                     Assert.NotNull(notFoundRequest);
                 }
             }
@@ -168,7 +169,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     }
 
                     // ok with PolSourceSite info
-                    IHttpActionResult jsonRet = polSourceSiteController.GetPolSourceSiteWithID(polSourceSiteLast.PolSourceSiteID);
+                    IActionResult jsonRet = polSourceSiteController.GetPolSourceSiteWithID(polSourceSiteLast.PolSourceSiteID);
                     Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<PolSourceSite> Ret = jsonRet as OkNegotiatedContentResult<PolSourceSite>;
@@ -176,14 +177,14 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.Equal(polSourceSiteLast.PolSourceSiteID, polSourceSiteRet.PolSourceSiteID);
 
                     BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
+                    Assert.Null(badRequest);
 
                     // Post to return CSSPError because PolSourceSiteID exist
-                    IHttpActionResult jsonRet2 = polSourceSiteController.Post(polSourceSiteRet, LanguageRequest.ToString());
+                    IActionResult jsonRet2 = polSourceSiteController.Post(polSourceSiteRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet2);
 
                     OkNegotiatedContentResult<PolSourceSite> polSourceSiteRet2 = jsonRet2 as OkNegotiatedContentResult<PolSourceSite>;
-                    Assert.IsNull(polSourceSiteRet2);
+                    Assert.Null(polSourceSiteRet2);
 
                     BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
                     Assert.NotNull(badRequest2);
@@ -192,23 +193,23 @@ namespace CSSPWebAPI.Tests.Controllers
                     polSourceSiteRet.PolSourceSiteID = 0;
                     polSourceSiteController.Request = new System.Net.Http.HttpRequestMessage();
                     polSourceSiteController.Request.RequestUri = new System.Uri("http://localhost:5000/api/polSourceSite");
-                    IHttpActionResult jsonRet3 = polSourceSiteController.Post(polSourceSiteRet, LanguageRequest.ToString());
+                    IActionResult jsonRet3 = polSourceSiteController.Post(polSourceSiteRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 
                     CreatedNegotiatedContentResult<PolSourceSite> polSourceSiteRet3 = jsonRet3 as CreatedNegotiatedContentResult<PolSourceSite>;
                     Assert.NotNull(polSourceSiteRet3);
 
                     BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest3);
+                    Assert.Null(badRequest3);
 
-                    IHttpActionResult jsonRet4 = polSourceSiteController.Delete(polSourceSiteRet, LanguageRequest.ToString());
+                    IActionResult jsonRet4 = polSourceSiteController.Delete(polSourceSiteRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet4);
 
                     OkNegotiatedContentResult<PolSourceSite> polSourceSiteRet4 = jsonRet4 as OkNegotiatedContentResult<PolSourceSite>;
                     Assert.NotNull(polSourceSiteRet4);
 
                     BadRequestErrorMessageResult badRequest4 = jsonRet4 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest4);
+                    Assert.Null(badRequest4);
                 }
             }
         }
@@ -237,7 +238,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     }
 
                     // ok with PolSourceSite info
-                    IHttpActionResult jsonRet = polSourceSiteController.GetPolSourceSiteWithID(polSourceSiteLast.PolSourceSiteID);
+                    IActionResult jsonRet = polSourceSiteController.GetPolSourceSiteWithID(polSourceSiteLast.PolSourceSiteID);
                     Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<PolSourceSite> Ret = jsonRet as OkNegotiatedContentResult<PolSourceSite>;
@@ -245,25 +246,25 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.Equal(polSourceSiteLast.PolSourceSiteID, polSourceSiteRet.PolSourceSiteID);
 
                     BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
+                    Assert.Null(badRequest);
 
                     // Put to return success
-                    IHttpActionResult jsonRet2 = polSourceSiteController.Put(polSourceSiteRet, LanguageRequest.ToString());
+                    IActionResult jsonRet2 = polSourceSiteController.Put(polSourceSiteRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet2);
 
                     OkNegotiatedContentResult<PolSourceSite> polSourceSiteRet2 = jsonRet2 as OkNegotiatedContentResult<PolSourceSite>;
                     Assert.NotNull(polSourceSiteRet2);
 
                     BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest2);
+                    Assert.Null(badRequest2);
 
                     // Put to return CSSPError because PolSourceSiteID of 0 does not exist
                     polSourceSiteRet.PolSourceSiteID = 0;
-                    IHttpActionResult jsonRet3 = polSourceSiteController.Put(polSourceSiteRet, LanguageRequest.ToString());
+                    IActionResult jsonRet3 = polSourceSiteController.Put(polSourceSiteRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 
                     OkNegotiatedContentResult<PolSourceSite> polSourceSiteRet3 = jsonRet3 as OkNegotiatedContentResult<PolSourceSite>;
-                    Assert.IsNull(polSourceSiteRet3);
+                    Assert.Null(polSourceSiteRet3);
 
                     BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
                     Assert.NotNull(badRequest3);
@@ -297,7 +298,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     }
 
                     // ok with PolSourceSite info
-                    IHttpActionResult jsonRet = polSourceSiteController.GetPolSourceSiteWithID(polSourceSiteLast.PolSourceSiteID);
+                    IActionResult jsonRet = polSourceSiteController.GetPolSourceSiteWithID(polSourceSiteLast.PolSourceSiteID);
                     Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<PolSourceSite> Ret = jsonRet as OkNegotiatedContentResult<PolSourceSite>;
@@ -305,13 +306,13 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.Equal(polSourceSiteLast.PolSourceSiteID, polSourceSiteRet.PolSourceSiteID);
 
                     BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
+                    Assert.Null(badRequest);
 
                     // Post to return newly added PolSourceSite
                     polSourceSiteRet.PolSourceSiteID = 0;
                     polSourceSiteController.Request = new System.Net.Http.HttpRequestMessage();
                     polSourceSiteController.Request.RequestUri = new System.Uri("http://localhost:5000/api/polSourceSite");
-                    IHttpActionResult jsonRet3 = polSourceSiteController.Post(polSourceSiteRet, LanguageRequest.ToString());
+                    IActionResult jsonRet3 = polSourceSiteController.Post(polSourceSiteRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 
                     CreatedNegotiatedContentResult<PolSourceSite> polSourceSiteRet3 = jsonRet3 as CreatedNegotiatedContentResult<PolSourceSite>;
@@ -319,25 +320,25 @@ namespace CSSPWebAPI.Tests.Controllers
                     PolSourceSite polSourceSite = polSourceSiteRet3.Content;
 
                     BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest3);
+                    Assert.Null(badRequest3);
 
                     // Delete to return success
-                    IHttpActionResult jsonRet2 = polSourceSiteController.Delete(polSourceSiteRet, LanguageRequest.ToString());
+                    IActionResult jsonRet2 = polSourceSiteController.Delete(polSourceSiteRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet2);
 
                     OkNegotiatedContentResult<PolSourceSite> polSourceSiteRet2 = jsonRet2 as OkNegotiatedContentResult<PolSourceSite>;
                     Assert.NotNull(polSourceSiteRet2);
 
                     BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest2);
+                    Assert.Null(badRequest2);
 
                     // Delete to return CSSPError because PolSourceSiteID of 0 does not exist
                     polSourceSiteRet.PolSourceSiteID = 0;
-                    IHttpActionResult jsonRet4 = polSourceSiteController.Delete(polSourceSiteRet, LanguageRequest.ToString());
+                    IActionResult jsonRet4 = polSourceSiteController.Delete(polSourceSiteRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet4);
 
                     OkNegotiatedContentResult<PolSourceSite> polSourceSiteRet4 = jsonRet4 as OkNegotiatedContentResult<PolSourceSite>;
-                    Assert.IsNull(polSourceSiteRet4);
+                    Assert.Null(polSourceSiteRet4);
 
                     BadRequestErrorMessageResult badRequest4 = jsonRet4 as BadRequestErrorMessageResult;
                     Assert.NotNull(badRequest4);

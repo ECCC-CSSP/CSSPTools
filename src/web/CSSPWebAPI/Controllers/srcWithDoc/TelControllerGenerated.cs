@@ -1,14 +1,14 @@
 using CSSPEnums;
 using CSSPModels;
 using CSSPServices;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web.Http;
 
 namespace CSSPWebAPI.Controllers
 {
-    [RoutePrefix("api/tel")]
+    [Route("api/tel")]
     public partial class TelController : BaseController
     {
         #region Variables
@@ -29,126 +29,56 @@ namespace CSSPWebAPI.Controllers
         #region Functions public
         // GET api/tel
         [Route("")]
-        public IHttpActionResult GetTelList([FromUri]string lang = "en", [FromUri]int skip = 0, [FromUri]int take = 200,
-            [FromUri]string asc = "", [FromUri]string desc = "", [FromUri]string where = "", [FromUri]string extra = "")
+        public IActionResult GetTelList([FromQuery]string lang = "en", [FromQuery]int skip = 0, [FromQuery]int take = 200,
+            [FromQuery]string asc = "", [FromQuery]string desc = "", [FromQuery]string where = "")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
                 TelService telService = new TelService(new Query() { Lang = lang }, db, ContactID);
 
-                if (extra == "A") // QueryString contains [extra=A]
-                {
-                   telService.Query = telService.FillQuery(typeof(TelExtraA), lang, skip, take, asc, desc, where, extra);
+                telService.Query = telService.FillQuery(typeof(Tel), lang, skip, take, asc, desc, where);
 
-                    if (telService.Query.HasErrors)
-                    {
-                        return Ok(new List<TelExtraA>()
-                        {
-                            new TelExtraA()
-                            {
-                                HasErrors = telService.Query.HasErrors,
-                                ValidationResults = telService.Query.ValidationResults,
-                            },
-                        }.ToList());
-                    }
-                    else
-                    {
-                        return Ok(telService.GetTelExtraAList().ToList());
-                    }
-                }
-                else if (extra == "B") // QueryString contains [extra=B]
-                {
-                   telService.Query = telService.FillQuery(typeof(TelExtraB), lang, skip, take, asc, desc, where, extra);
-
-                    if (telService.Query.HasErrors)
-                    {
-                        return Ok(new List<TelExtraB>()
-                        {
-                            new TelExtraB()
-                            {
-                                HasErrors = telService.Query.HasErrors,
-                                ValidationResults = telService.Query.ValidationResults,
-                            },
-                        }.ToList());
-                    }
-                    else
-                    {
-                        return Ok(telService.GetTelExtraBList().ToList());
-                    }
-                }
-                else // QueryString has no parameter [extra] or extra is empty
-                {
-                   telService.Query = telService.FillQuery(typeof(Tel), lang, skip, take, asc, desc, where, extra);
-
-                    if (telService.Query.HasErrors)
-                    {
-                        return Ok(new List<Tel>()
-                        {
-                            new Tel()
-                            {
-                                HasErrors = telService.Query.HasErrors,
-                                ValidationResults = telService.Query.ValidationResults,
-                            },
-                        }.ToList());
-                    }
-                    else
-                    {
-                        return Ok(telService.GetTelList().ToList());
-                    }
-                }
+                 if (telService.Query.HasErrors)
+                 {
+                     return Ok(new List<Tel>()
+                     {
+                         new Tel()
+                         {
+                             HasErrors = telService.Query.HasErrors,
+                             ValidationResults = telService.Query.ValidationResults,
+                         },
+                     }.ToList());
+                 }
+                 else
+                 {
+                     return Ok(telService.GetTelList().ToList());
+                 }
             }
         }
         // GET api/tel/1
         [Route("{TelID:int}")]
-        public IHttpActionResult GetTelWithID([FromUri]int TelID, [FromUri]string lang = "en", [FromUri]string extra = "")
+        public IActionResult GetTelWithID([FromQuery]int TelID, [FromQuery]string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
                 TelService telService = new TelService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
 
-                telService.Query = telService.FillQuery(typeof(Tel), lang, 0, 1, "", "", extra);
+                telService.Query = telService.FillQuery(typeof(Tel), lang, 0, 1, "", "");
 
-                if (telService.Query.Extra == "A")
+                Tel tel = new Tel();
+                tel = telService.GetTelWithTelID(TelID);
+
+                if (tel == null)
                 {
-                    TelExtraA telExtraA = new TelExtraA();
-                    telExtraA = telService.GetTelExtraAWithTelID(TelID);
-
-                    if (telExtraA == null)
-                    {
-                        return NotFound();
-                    }
-
-                    return Ok(telExtraA);
+                    return NotFound();
                 }
-                else if (telService.Query.Extra == "B")
-                {
-                    TelExtraB telExtraB = new TelExtraB();
-                    telExtraB = telService.GetTelExtraBWithTelID(TelID);
 
-                    if (telExtraB == null)
-                    {
-                        return NotFound();
-                    }
-
-                    return Ok(telExtraB);
-                }
-                else
-                {
-                    Tel tel = new Tel();
-                    tel = telService.GetTelWithTelID(TelID);
-
-                    if (tel == null)
-                    {
-                        return NotFound();
-                    }
-
-                    return Ok(tel);
-                }
+                return Ok(tel);
             }
         }
         // POST api/tel
         [Route("")]
-        public IHttpActionResult Post([FromBody]Tel tel, [FromUri]string lang = "en")
+        public IActionResult Post([FromBody]Tel tel, [FromQuery]string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
@@ -161,13 +91,13 @@ namespace CSSPWebAPI.Controllers
                 else
                 {
                     tel.ValidationResults = null;
-                    return Created<Tel>(new Uri(Request.RequestUri, tel.TelID.ToString()), tel);
+                    return Created(Url.ToString(), tel);
                 }
             }
         }
         // PUT api/tel
         [Route("")]
-        public IHttpActionResult Put([FromBody]Tel tel, [FromUri]string lang = "en")
+        public IActionResult Put([FromBody]Tel tel, [FromQuery]string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
@@ -186,7 +116,7 @@ namespace CSSPWebAPI.Controllers
         }
         // DELETE api/tel
         [Route("")]
-        public IHttpActionResult Delete([FromBody]Tel tel, [FromUri]string lang = "en")
+        public IActionResult Delete([FromBody]Tel tel, [FromQuery]string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {

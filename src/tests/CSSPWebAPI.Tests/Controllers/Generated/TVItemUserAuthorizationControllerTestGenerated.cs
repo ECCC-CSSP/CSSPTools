@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
 using System.Web.Http.Results;
+using Microsoft.AspNetCore.Mvc;
 
 namespace CSSPWebAPI.Tests.Controllers
 {
@@ -48,7 +49,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     }
 
                     // ok with TVItemUserAuthorization info
-                    IHttpActionResult jsonRet = tvItemUserAuthorizationController.GetTVItemUserAuthorizationList();
+                    IActionResult jsonRet = tvItemUserAuthorizationController.GetTVItemUserAuthorizationList();
                     Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<List<TVItemUserAuthorization>> ret = jsonRet as OkNegotiatedContentResult<List<TVItemUserAuthorization>>;
@@ -86,7 +87,7 @@ namespace CSSPWebAPI.Tests.Controllers
                            count = (query.Take > count ? query.Take : count);
 
                            // ok with TVItemUserAuthorization info
-                           IHttpActionResult jsonRet2 = tvItemUserAuthorizationController.GetTVItemUserAuthorizationList(query.Language.ToString(), query.Skip, query.Take);
+                           IActionResult jsonRet2 = tvItemUserAuthorizationController.GetTVItemUserAuthorizationList(query.Language.ToString(), query.Skip, query.Take);
                            Assert.NotNull(jsonRet2);
 
                            OkNegotiatedContentResult<List<TVItemUserAuthorization>> ret2 = jsonRet2 as OkNegotiatedContentResult<List<TVItemUserAuthorization>>;
@@ -119,7 +120,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     }
 
                     // ok with TVItemUserAuthorization info
-                    IHttpActionResult jsonRet = tvItemUserAuthorizationController.GetTVItemUserAuthorizationWithID(tvItemUserAuthorizationFirst.TVItemUserAuthorizationID);
+                    IActionResult jsonRet = tvItemUserAuthorizationController.GetTVItemUserAuthorizationWithID(tvItemUserAuthorizationFirst.TVItemUserAuthorizationID);
                     Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<TVItemUserAuthorization> Ret = jsonRet as OkNegotiatedContentResult<TVItemUserAuthorization>;
@@ -127,16 +128,16 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.Equal(tvItemUserAuthorizationFirst.TVItemUserAuthorizationID, tvItemUserAuthorizationRet.TVItemUserAuthorizationID);
 
                     BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
+                    Assert.Null(badRequest);
 
                     // Not Found
-                    IHttpActionResult jsonRet2 = tvItemUserAuthorizationController.GetTVItemUserAuthorizationWithID(0);
+                    IActionResult jsonRet2 = tvItemUserAuthorizationController.GetTVItemUserAuthorizationWithID(0);
                     Assert.NotNull(jsonRet2);
 
                     OkNegotiatedContentResult<TVItemUserAuthorization> tvItemUserAuthorizationRet2 = jsonRet2 as OkNegotiatedContentResult<TVItemUserAuthorization>;
-                    Assert.IsNull(tvItemUserAuthorizationRet2);
+                    Assert.Null(tvItemUserAuthorizationRet2);
 
-                    NotFoundResult notFoundRequest = jsonRet2 as NotFoundResult;
+                    NotFoundObjectResult notFoundRequest = jsonRet2 as NotFoundObjectResult;
                     Assert.NotNull(notFoundRequest);
                 }
             }
@@ -168,7 +169,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     }
 
                     // ok with TVItemUserAuthorization info
-                    IHttpActionResult jsonRet = tvItemUserAuthorizationController.GetTVItemUserAuthorizationWithID(tvItemUserAuthorizationLast.TVItemUserAuthorizationID);
+                    IActionResult jsonRet = tvItemUserAuthorizationController.GetTVItemUserAuthorizationWithID(tvItemUserAuthorizationLast.TVItemUserAuthorizationID);
                     Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<TVItemUserAuthorization> Ret = jsonRet as OkNegotiatedContentResult<TVItemUserAuthorization>;
@@ -176,14 +177,14 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.Equal(tvItemUserAuthorizationLast.TVItemUserAuthorizationID, tvItemUserAuthorizationRet.TVItemUserAuthorizationID);
 
                     BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
+                    Assert.Null(badRequest);
 
                     // Post to return CSSPError because TVItemUserAuthorizationID exist
-                    IHttpActionResult jsonRet2 = tvItemUserAuthorizationController.Post(tvItemUserAuthorizationRet, LanguageRequest.ToString());
+                    IActionResult jsonRet2 = tvItemUserAuthorizationController.Post(tvItemUserAuthorizationRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet2);
 
                     OkNegotiatedContentResult<TVItemUserAuthorization> tvItemUserAuthorizationRet2 = jsonRet2 as OkNegotiatedContentResult<TVItemUserAuthorization>;
-                    Assert.IsNull(tvItemUserAuthorizationRet2);
+                    Assert.Null(tvItemUserAuthorizationRet2);
 
                     BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
                     Assert.NotNull(badRequest2);
@@ -192,23 +193,23 @@ namespace CSSPWebAPI.Tests.Controllers
                     tvItemUserAuthorizationRet.TVItemUserAuthorizationID = 0;
                     tvItemUserAuthorizationController.Request = new System.Net.Http.HttpRequestMessage();
                     tvItemUserAuthorizationController.Request.RequestUri = new System.Uri("http://localhost:5000/api/tvItemUserAuthorization");
-                    IHttpActionResult jsonRet3 = tvItemUserAuthorizationController.Post(tvItemUserAuthorizationRet, LanguageRequest.ToString());
+                    IActionResult jsonRet3 = tvItemUserAuthorizationController.Post(tvItemUserAuthorizationRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 
                     CreatedNegotiatedContentResult<TVItemUserAuthorization> tvItemUserAuthorizationRet3 = jsonRet3 as CreatedNegotiatedContentResult<TVItemUserAuthorization>;
                     Assert.NotNull(tvItemUserAuthorizationRet3);
 
                     BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest3);
+                    Assert.Null(badRequest3);
 
-                    IHttpActionResult jsonRet4 = tvItemUserAuthorizationController.Delete(tvItemUserAuthorizationRet, LanguageRequest.ToString());
+                    IActionResult jsonRet4 = tvItemUserAuthorizationController.Delete(tvItemUserAuthorizationRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet4);
 
                     OkNegotiatedContentResult<TVItemUserAuthorization> tvItemUserAuthorizationRet4 = jsonRet4 as OkNegotiatedContentResult<TVItemUserAuthorization>;
                     Assert.NotNull(tvItemUserAuthorizationRet4);
 
                     BadRequestErrorMessageResult badRequest4 = jsonRet4 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest4);
+                    Assert.Null(badRequest4);
                 }
             }
         }
@@ -237,7 +238,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     }
 
                     // ok with TVItemUserAuthorization info
-                    IHttpActionResult jsonRet = tvItemUserAuthorizationController.GetTVItemUserAuthorizationWithID(tvItemUserAuthorizationLast.TVItemUserAuthorizationID);
+                    IActionResult jsonRet = tvItemUserAuthorizationController.GetTVItemUserAuthorizationWithID(tvItemUserAuthorizationLast.TVItemUserAuthorizationID);
                     Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<TVItemUserAuthorization> Ret = jsonRet as OkNegotiatedContentResult<TVItemUserAuthorization>;
@@ -245,25 +246,25 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.Equal(tvItemUserAuthorizationLast.TVItemUserAuthorizationID, tvItemUserAuthorizationRet.TVItemUserAuthorizationID);
 
                     BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
+                    Assert.Null(badRequest);
 
                     // Put to return success
-                    IHttpActionResult jsonRet2 = tvItemUserAuthorizationController.Put(tvItemUserAuthorizationRet, LanguageRequest.ToString());
+                    IActionResult jsonRet2 = tvItemUserAuthorizationController.Put(tvItemUserAuthorizationRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet2);
 
                     OkNegotiatedContentResult<TVItemUserAuthorization> tvItemUserAuthorizationRet2 = jsonRet2 as OkNegotiatedContentResult<TVItemUserAuthorization>;
                     Assert.NotNull(tvItemUserAuthorizationRet2);
 
                     BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest2);
+                    Assert.Null(badRequest2);
 
                     // Put to return CSSPError because TVItemUserAuthorizationID of 0 does not exist
                     tvItemUserAuthorizationRet.TVItemUserAuthorizationID = 0;
-                    IHttpActionResult jsonRet3 = tvItemUserAuthorizationController.Put(tvItemUserAuthorizationRet, LanguageRequest.ToString());
+                    IActionResult jsonRet3 = tvItemUserAuthorizationController.Put(tvItemUserAuthorizationRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 
                     OkNegotiatedContentResult<TVItemUserAuthorization> tvItemUserAuthorizationRet3 = jsonRet3 as OkNegotiatedContentResult<TVItemUserAuthorization>;
-                    Assert.IsNull(tvItemUserAuthorizationRet3);
+                    Assert.Null(tvItemUserAuthorizationRet3);
 
                     BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
                     Assert.NotNull(badRequest3);
@@ -297,7 +298,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     }
 
                     // ok with TVItemUserAuthorization info
-                    IHttpActionResult jsonRet = tvItemUserAuthorizationController.GetTVItemUserAuthorizationWithID(tvItemUserAuthorizationLast.TVItemUserAuthorizationID);
+                    IActionResult jsonRet = tvItemUserAuthorizationController.GetTVItemUserAuthorizationWithID(tvItemUserAuthorizationLast.TVItemUserAuthorizationID);
                     Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<TVItemUserAuthorization> Ret = jsonRet as OkNegotiatedContentResult<TVItemUserAuthorization>;
@@ -305,13 +306,13 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.Equal(tvItemUserAuthorizationLast.TVItemUserAuthorizationID, tvItemUserAuthorizationRet.TVItemUserAuthorizationID);
 
                     BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
+                    Assert.Null(badRequest);
 
                     // Post to return newly added TVItemUserAuthorization
                     tvItemUserAuthorizationRet.TVItemUserAuthorizationID = 0;
                     tvItemUserAuthorizationController.Request = new System.Net.Http.HttpRequestMessage();
                     tvItemUserAuthorizationController.Request.RequestUri = new System.Uri("http://localhost:5000/api/tvItemUserAuthorization");
-                    IHttpActionResult jsonRet3 = tvItemUserAuthorizationController.Post(tvItemUserAuthorizationRet, LanguageRequest.ToString());
+                    IActionResult jsonRet3 = tvItemUserAuthorizationController.Post(tvItemUserAuthorizationRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 
                     CreatedNegotiatedContentResult<TVItemUserAuthorization> tvItemUserAuthorizationRet3 = jsonRet3 as CreatedNegotiatedContentResult<TVItemUserAuthorization>;
@@ -319,25 +320,25 @@ namespace CSSPWebAPI.Tests.Controllers
                     TVItemUserAuthorization tvItemUserAuthorization = tvItemUserAuthorizationRet3.Content;
 
                     BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest3);
+                    Assert.Null(badRequest3);
 
                     // Delete to return success
-                    IHttpActionResult jsonRet2 = tvItemUserAuthorizationController.Delete(tvItemUserAuthorizationRet, LanguageRequest.ToString());
+                    IActionResult jsonRet2 = tvItemUserAuthorizationController.Delete(tvItemUserAuthorizationRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet2);
 
                     OkNegotiatedContentResult<TVItemUserAuthorization> tvItemUserAuthorizationRet2 = jsonRet2 as OkNegotiatedContentResult<TVItemUserAuthorization>;
                     Assert.NotNull(tvItemUserAuthorizationRet2);
 
                     BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest2);
+                    Assert.Null(badRequest2);
 
                     // Delete to return CSSPError because TVItemUserAuthorizationID of 0 does not exist
                     tvItemUserAuthorizationRet.TVItemUserAuthorizationID = 0;
-                    IHttpActionResult jsonRet4 = tvItemUserAuthorizationController.Delete(tvItemUserAuthorizationRet, LanguageRequest.ToString());
+                    IActionResult jsonRet4 = tvItemUserAuthorizationController.Delete(tvItemUserAuthorizationRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet4);
 
                     OkNegotiatedContentResult<TVItemUserAuthorization> tvItemUserAuthorizationRet4 = jsonRet4 as OkNegotiatedContentResult<TVItemUserAuthorization>;
-                    Assert.IsNull(tvItemUserAuthorizationRet4);
+                    Assert.Null(tvItemUserAuthorizationRet4);
 
                     BadRequestErrorMessageResult badRequest4 = jsonRet4 as BadRequestErrorMessageResult;
                     Assert.NotNull(badRequest4);

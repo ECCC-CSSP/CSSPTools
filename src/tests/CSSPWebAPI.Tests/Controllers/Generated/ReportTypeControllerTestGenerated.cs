@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
 using System.Web.Http.Results;
+using Microsoft.AspNetCore.Mvc;
 
 namespace CSSPWebAPI.Tests.Controllers
 {
@@ -48,7 +49,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     }
 
                     // ok with ReportType info
-                    IHttpActionResult jsonRet = reportTypeController.GetReportTypeList();
+                    IActionResult jsonRet = reportTypeController.GetReportTypeList();
                     Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<List<ReportType>> ret = jsonRet as OkNegotiatedContentResult<List<ReportType>>;
@@ -86,7 +87,7 @@ namespace CSSPWebAPI.Tests.Controllers
                            count = (query.Take > count ? query.Take : count);
 
                            // ok with ReportType info
-                           IHttpActionResult jsonRet2 = reportTypeController.GetReportTypeList(query.Language.ToString(), query.Skip, query.Take);
+                           IActionResult jsonRet2 = reportTypeController.GetReportTypeList(query.Language.ToString(), query.Skip, query.Take);
                            Assert.NotNull(jsonRet2);
 
                            OkNegotiatedContentResult<List<ReportType>> ret2 = jsonRet2 as OkNegotiatedContentResult<List<ReportType>>;
@@ -119,7 +120,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     }
 
                     // ok with ReportType info
-                    IHttpActionResult jsonRet = reportTypeController.GetReportTypeWithID(reportTypeFirst.ReportTypeID);
+                    IActionResult jsonRet = reportTypeController.GetReportTypeWithID(reportTypeFirst.ReportTypeID);
                     Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<ReportType> Ret = jsonRet as OkNegotiatedContentResult<ReportType>;
@@ -127,16 +128,16 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.Equal(reportTypeFirst.ReportTypeID, reportTypeRet.ReportTypeID);
 
                     BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
+                    Assert.Null(badRequest);
 
                     // Not Found
-                    IHttpActionResult jsonRet2 = reportTypeController.GetReportTypeWithID(0);
+                    IActionResult jsonRet2 = reportTypeController.GetReportTypeWithID(0);
                     Assert.NotNull(jsonRet2);
 
                     OkNegotiatedContentResult<ReportType> reportTypeRet2 = jsonRet2 as OkNegotiatedContentResult<ReportType>;
-                    Assert.IsNull(reportTypeRet2);
+                    Assert.Null(reportTypeRet2);
 
-                    NotFoundResult notFoundRequest = jsonRet2 as NotFoundResult;
+                    NotFoundObjectResult notFoundRequest = jsonRet2 as NotFoundObjectResult;
                     Assert.NotNull(notFoundRequest);
                 }
             }
@@ -168,7 +169,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     }
 
                     // ok with ReportType info
-                    IHttpActionResult jsonRet = reportTypeController.GetReportTypeWithID(reportTypeLast.ReportTypeID);
+                    IActionResult jsonRet = reportTypeController.GetReportTypeWithID(reportTypeLast.ReportTypeID);
                     Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<ReportType> Ret = jsonRet as OkNegotiatedContentResult<ReportType>;
@@ -176,14 +177,14 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.Equal(reportTypeLast.ReportTypeID, reportTypeRet.ReportTypeID);
 
                     BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
+                    Assert.Null(badRequest);
 
                     // Post to return CSSPError because ReportTypeID exist
-                    IHttpActionResult jsonRet2 = reportTypeController.Post(reportTypeRet, LanguageRequest.ToString());
+                    IActionResult jsonRet2 = reportTypeController.Post(reportTypeRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet2);
 
                     OkNegotiatedContentResult<ReportType> reportTypeRet2 = jsonRet2 as OkNegotiatedContentResult<ReportType>;
-                    Assert.IsNull(reportTypeRet2);
+                    Assert.Null(reportTypeRet2);
 
                     BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
                     Assert.NotNull(badRequest2);
@@ -192,23 +193,23 @@ namespace CSSPWebAPI.Tests.Controllers
                     reportTypeRet.ReportTypeID = 0;
                     reportTypeController.Request = new System.Net.Http.HttpRequestMessage();
                     reportTypeController.Request.RequestUri = new System.Uri("http://localhost:5000/api/reportType");
-                    IHttpActionResult jsonRet3 = reportTypeController.Post(reportTypeRet, LanguageRequest.ToString());
+                    IActionResult jsonRet3 = reportTypeController.Post(reportTypeRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 
                     CreatedNegotiatedContentResult<ReportType> reportTypeRet3 = jsonRet3 as CreatedNegotiatedContentResult<ReportType>;
                     Assert.NotNull(reportTypeRet3);
 
                     BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest3);
+                    Assert.Null(badRequest3);
 
-                    IHttpActionResult jsonRet4 = reportTypeController.Delete(reportTypeRet, LanguageRequest.ToString());
+                    IActionResult jsonRet4 = reportTypeController.Delete(reportTypeRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet4);
 
                     OkNegotiatedContentResult<ReportType> reportTypeRet4 = jsonRet4 as OkNegotiatedContentResult<ReportType>;
                     Assert.NotNull(reportTypeRet4);
 
                     BadRequestErrorMessageResult badRequest4 = jsonRet4 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest4);
+                    Assert.Null(badRequest4);
                 }
             }
         }
@@ -237,7 +238,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     }
 
                     // ok with ReportType info
-                    IHttpActionResult jsonRet = reportTypeController.GetReportTypeWithID(reportTypeLast.ReportTypeID);
+                    IActionResult jsonRet = reportTypeController.GetReportTypeWithID(reportTypeLast.ReportTypeID);
                     Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<ReportType> Ret = jsonRet as OkNegotiatedContentResult<ReportType>;
@@ -245,25 +246,25 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.Equal(reportTypeLast.ReportTypeID, reportTypeRet.ReportTypeID);
 
                     BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
+                    Assert.Null(badRequest);
 
                     // Put to return success
-                    IHttpActionResult jsonRet2 = reportTypeController.Put(reportTypeRet, LanguageRequest.ToString());
+                    IActionResult jsonRet2 = reportTypeController.Put(reportTypeRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet2);
 
                     OkNegotiatedContentResult<ReportType> reportTypeRet2 = jsonRet2 as OkNegotiatedContentResult<ReportType>;
                     Assert.NotNull(reportTypeRet2);
 
                     BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest2);
+                    Assert.Null(badRequest2);
 
                     // Put to return CSSPError because ReportTypeID of 0 does not exist
                     reportTypeRet.ReportTypeID = 0;
-                    IHttpActionResult jsonRet3 = reportTypeController.Put(reportTypeRet, LanguageRequest.ToString());
+                    IActionResult jsonRet3 = reportTypeController.Put(reportTypeRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 
                     OkNegotiatedContentResult<ReportType> reportTypeRet3 = jsonRet3 as OkNegotiatedContentResult<ReportType>;
-                    Assert.IsNull(reportTypeRet3);
+                    Assert.Null(reportTypeRet3);
 
                     BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
                     Assert.NotNull(badRequest3);
@@ -297,7 +298,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     }
 
                     // ok with ReportType info
-                    IHttpActionResult jsonRet = reportTypeController.GetReportTypeWithID(reportTypeLast.ReportTypeID);
+                    IActionResult jsonRet = reportTypeController.GetReportTypeWithID(reportTypeLast.ReportTypeID);
                     Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<ReportType> Ret = jsonRet as OkNegotiatedContentResult<ReportType>;
@@ -305,13 +306,13 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.Equal(reportTypeLast.ReportTypeID, reportTypeRet.ReportTypeID);
 
                     BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
+                    Assert.Null(badRequest);
 
                     // Post to return newly added ReportType
                     reportTypeRet.ReportTypeID = 0;
                     reportTypeController.Request = new System.Net.Http.HttpRequestMessage();
                     reportTypeController.Request.RequestUri = new System.Uri("http://localhost:5000/api/reportType");
-                    IHttpActionResult jsonRet3 = reportTypeController.Post(reportTypeRet, LanguageRequest.ToString());
+                    IActionResult jsonRet3 = reportTypeController.Post(reportTypeRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 
                     CreatedNegotiatedContentResult<ReportType> reportTypeRet3 = jsonRet3 as CreatedNegotiatedContentResult<ReportType>;
@@ -319,25 +320,25 @@ namespace CSSPWebAPI.Tests.Controllers
                     ReportType reportType = reportTypeRet3.Content;
 
                     BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest3);
+                    Assert.Null(badRequest3);
 
                     // Delete to return success
-                    IHttpActionResult jsonRet2 = reportTypeController.Delete(reportTypeRet, LanguageRequest.ToString());
+                    IActionResult jsonRet2 = reportTypeController.Delete(reportTypeRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet2);
 
                     OkNegotiatedContentResult<ReportType> reportTypeRet2 = jsonRet2 as OkNegotiatedContentResult<ReportType>;
                     Assert.NotNull(reportTypeRet2);
 
                     BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest2);
+                    Assert.Null(badRequest2);
 
                     // Delete to return CSSPError because ReportTypeID of 0 does not exist
                     reportTypeRet.ReportTypeID = 0;
-                    IHttpActionResult jsonRet4 = reportTypeController.Delete(reportTypeRet, LanguageRequest.ToString());
+                    IActionResult jsonRet4 = reportTypeController.Delete(reportTypeRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet4);
 
                     OkNegotiatedContentResult<ReportType> reportTypeRet4 = jsonRet4 as OkNegotiatedContentResult<ReportType>;
-                    Assert.IsNull(reportTypeRet4);
+                    Assert.Null(reportTypeRet4);
 
                     BadRequestErrorMessageResult badRequest4 = jsonRet4 as BadRequestErrorMessageResult;
                     Assert.NotNull(badRequest4);

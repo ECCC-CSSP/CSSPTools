@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
 using System.Web.Http.Results;
+using Microsoft.AspNetCore.Mvc;
 
 namespace CSSPWebAPI.Tests.Controllers
 {
@@ -48,7 +49,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     }
 
                     // ok with DocTemplate info
-                    IHttpActionResult jsonRet = docTemplateController.GetDocTemplateList();
+                    IActionResult jsonRet = docTemplateController.GetDocTemplateList();
                     Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<List<DocTemplate>> ret = jsonRet as OkNegotiatedContentResult<List<DocTemplate>>;
@@ -86,7 +87,7 @@ namespace CSSPWebAPI.Tests.Controllers
                            count = (query.Take > count ? query.Take : count);
 
                            // ok with DocTemplate info
-                           IHttpActionResult jsonRet2 = docTemplateController.GetDocTemplateList(query.Language.ToString(), query.Skip, query.Take);
+                           IActionResult jsonRet2 = docTemplateController.GetDocTemplateList(query.Language.ToString(), query.Skip, query.Take);
                            Assert.NotNull(jsonRet2);
 
                            OkNegotiatedContentResult<List<DocTemplate>> ret2 = jsonRet2 as OkNegotiatedContentResult<List<DocTemplate>>;
@@ -119,7 +120,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     }
 
                     // ok with DocTemplate info
-                    IHttpActionResult jsonRet = docTemplateController.GetDocTemplateWithID(docTemplateFirst.DocTemplateID);
+                    IActionResult jsonRet = docTemplateController.GetDocTemplateWithID(docTemplateFirst.DocTemplateID);
                     Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<DocTemplate> Ret = jsonRet as OkNegotiatedContentResult<DocTemplate>;
@@ -127,16 +128,16 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.Equal(docTemplateFirst.DocTemplateID, docTemplateRet.DocTemplateID);
 
                     BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
+                    Assert.Null(badRequest);
 
                     // Not Found
-                    IHttpActionResult jsonRet2 = docTemplateController.GetDocTemplateWithID(0);
+                    IActionResult jsonRet2 = docTemplateController.GetDocTemplateWithID(0);
                     Assert.NotNull(jsonRet2);
 
                     OkNegotiatedContentResult<DocTemplate> docTemplateRet2 = jsonRet2 as OkNegotiatedContentResult<DocTemplate>;
-                    Assert.IsNull(docTemplateRet2);
+                    Assert.Null(docTemplateRet2);
 
-                    NotFoundResult notFoundRequest = jsonRet2 as NotFoundResult;
+                    NotFoundObjectResult notFoundRequest = jsonRet2 as NotFoundObjectResult;
                     Assert.NotNull(notFoundRequest);
                 }
             }
@@ -168,7 +169,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     }
 
                     // ok with DocTemplate info
-                    IHttpActionResult jsonRet = docTemplateController.GetDocTemplateWithID(docTemplateLast.DocTemplateID);
+                    IActionResult jsonRet = docTemplateController.GetDocTemplateWithID(docTemplateLast.DocTemplateID);
                     Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<DocTemplate> Ret = jsonRet as OkNegotiatedContentResult<DocTemplate>;
@@ -176,14 +177,14 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.Equal(docTemplateLast.DocTemplateID, docTemplateRet.DocTemplateID);
 
                     BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
+                    Assert.Null(badRequest);
 
                     // Post to return CSSPError because DocTemplateID exist
-                    IHttpActionResult jsonRet2 = docTemplateController.Post(docTemplateRet, LanguageRequest.ToString());
+                    IActionResult jsonRet2 = docTemplateController.Post(docTemplateRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet2);
 
                     OkNegotiatedContentResult<DocTemplate> docTemplateRet2 = jsonRet2 as OkNegotiatedContentResult<DocTemplate>;
-                    Assert.IsNull(docTemplateRet2);
+                    Assert.Null(docTemplateRet2);
 
                     BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
                     Assert.NotNull(badRequest2);
@@ -192,23 +193,23 @@ namespace CSSPWebAPI.Tests.Controllers
                     docTemplateRet.DocTemplateID = 0;
                     docTemplateController.Request = new System.Net.Http.HttpRequestMessage();
                     docTemplateController.Request.RequestUri = new System.Uri("http://localhost:5000/api/docTemplate");
-                    IHttpActionResult jsonRet3 = docTemplateController.Post(docTemplateRet, LanguageRequest.ToString());
+                    IActionResult jsonRet3 = docTemplateController.Post(docTemplateRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 
                     CreatedNegotiatedContentResult<DocTemplate> docTemplateRet3 = jsonRet3 as CreatedNegotiatedContentResult<DocTemplate>;
                     Assert.NotNull(docTemplateRet3);
 
                     BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest3);
+                    Assert.Null(badRequest3);
 
-                    IHttpActionResult jsonRet4 = docTemplateController.Delete(docTemplateRet, LanguageRequest.ToString());
+                    IActionResult jsonRet4 = docTemplateController.Delete(docTemplateRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet4);
 
                     OkNegotiatedContentResult<DocTemplate> docTemplateRet4 = jsonRet4 as OkNegotiatedContentResult<DocTemplate>;
                     Assert.NotNull(docTemplateRet4);
 
                     BadRequestErrorMessageResult badRequest4 = jsonRet4 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest4);
+                    Assert.Null(badRequest4);
                 }
             }
         }
@@ -237,7 +238,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     }
 
                     // ok with DocTemplate info
-                    IHttpActionResult jsonRet = docTemplateController.GetDocTemplateWithID(docTemplateLast.DocTemplateID);
+                    IActionResult jsonRet = docTemplateController.GetDocTemplateWithID(docTemplateLast.DocTemplateID);
                     Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<DocTemplate> Ret = jsonRet as OkNegotiatedContentResult<DocTemplate>;
@@ -245,25 +246,25 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.Equal(docTemplateLast.DocTemplateID, docTemplateRet.DocTemplateID);
 
                     BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
+                    Assert.Null(badRequest);
 
                     // Put to return success
-                    IHttpActionResult jsonRet2 = docTemplateController.Put(docTemplateRet, LanguageRequest.ToString());
+                    IActionResult jsonRet2 = docTemplateController.Put(docTemplateRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet2);
 
                     OkNegotiatedContentResult<DocTemplate> docTemplateRet2 = jsonRet2 as OkNegotiatedContentResult<DocTemplate>;
                     Assert.NotNull(docTemplateRet2);
 
                     BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest2);
+                    Assert.Null(badRequest2);
 
                     // Put to return CSSPError because DocTemplateID of 0 does not exist
                     docTemplateRet.DocTemplateID = 0;
-                    IHttpActionResult jsonRet3 = docTemplateController.Put(docTemplateRet, LanguageRequest.ToString());
+                    IActionResult jsonRet3 = docTemplateController.Put(docTemplateRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 
                     OkNegotiatedContentResult<DocTemplate> docTemplateRet3 = jsonRet3 as OkNegotiatedContentResult<DocTemplate>;
-                    Assert.IsNull(docTemplateRet3);
+                    Assert.Null(docTemplateRet3);
 
                     BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
                     Assert.NotNull(badRequest3);
@@ -297,7 +298,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     }
 
                     // ok with DocTemplate info
-                    IHttpActionResult jsonRet = docTemplateController.GetDocTemplateWithID(docTemplateLast.DocTemplateID);
+                    IActionResult jsonRet = docTemplateController.GetDocTemplateWithID(docTemplateLast.DocTemplateID);
                     Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<DocTemplate> Ret = jsonRet as OkNegotiatedContentResult<DocTemplate>;
@@ -305,13 +306,13 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.Equal(docTemplateLast.DocTemplateID, docTemplateRet.DocTemplateID);
 
                     BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
+                    Assert.Null(badRequest);
 
                     // Post to return newly added DocTemplate
                     docTemplateRet.DocTemplateID = 0;
                     docTemplateController.Request = new System.Net.Http.HttpRequestMessage();
                     docTemplateController.Request.RequestUri = new System.Uri("http://localhost:5000/api/docTemplate");
-                    IHttpActionResult jsonRet3 = docTemplateController.Post(docTemplateRet, LanguageRequest.ToString());
+                    IActionResult jsonRet3 = docTemplateController.Post(docTemplateRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 
                     CreatedNegotiatedContentResult<DocTemplate> docTemplateRet3 = jsonRet3 as CreatedNegotiatedContentResult<DocTemplate>;
@@ -319,25 +320,25 @@ namespace CSSPWebAPI.Tests.Controllers
                     DocTemplate docTemplate = docTemplateRet3.Content;
 
                     BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest3);
+                    Assert.Null(badRequest3);
 
                     // Delete to return success
-                    IHttpActionResult jsonRet2 = docTemplateController.Delete(docTemplateRet, LanguageRequest.ToString());
+                    IActionResult jsonRet2 = docTemplateController.Delete(docTemplateRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet2);
 
                     OkNegotiatedContentResult<DocTemplate> docTemplateRet2 = jsonRet2 as OkNegotiatedContentResult<DocTemplate>;
                     Assert.NotNull(docTemplateRet2);
 
                     BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest2);
+                    Assert.Null(badRequest2);
 
                     // Delete to return CSSPError because DocTemplateID of 0 does not exist
                     docTemplateRet.DocTemplateID = 0;
-                    IHttpActionResult jsonRet4 = docTemplateController.Delete(docTemplateRet, LanguageRequest.ToString());
+                    IActionResult jsonRet4 = docTemplateController.Delete(docTemplateRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet4);
 
                     OkNegotiatedContentResult<DocTemplate> docTemplateRet4 = jsonRet4 as OkNegotiatedContentResult<DocTemplate>;
-                    Assert.IsNull(docTemplateRet4);
+                    Assert.Null(docTemplateRet4);
 
                     BadRequestErrorMessageResult badRequest4 = jsonRet4 as BadRequestErrorMessageResult;
                     Assert.NotNull(badRequest4);

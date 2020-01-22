@@ -1,14 +1,14 @@
 using CSSPEnums;
 using CSSPModels;
 using CSSPServices;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web.Http;
 
 namespace CSSPWebAPI.Controllers
 {
-    [RoutePrefix("api/spillLanguage")]
+    [Route("api/spillLanguage")]
     public partial class SpillLanguageController : BaseController
     {
         #region Variables
@@ -29,126 +29,56 @@ namespace CSSPWebAPI.Controllers
         #region Functions public
         // GET api/spillLanguage
         [Route("")]
-        public IHttpActionResult GetSpillLanguageList([FromUri]string lang = "en", [FromUri]int skip = 0, [FromUri]int take = 200,
-            [FromUri]string asc = "", [FromUri]string desc = "", [FromUri]string where = "", [FromUri]string extra = "")
+        public IActionResult GetSpillLanguageList([FromQuery]string lang = "en", [FromQuery]int skip = 0, [FromQuery]int take = 200,
+            [FromQuery]string asc = "", [FromQuery]string desc = "", [FromQuery]string where = "")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
                 SpillLanguageService spillLanguageService = new SpillLanguageService(new Query() { Lang = lang }, db, ContactID);
 
-                if (extra == "A") // QueryString contains [extra=A]
-                {
-                   spillLanguageService.Query = spillLanguageService.FillQuery(typeof(SpillLanguageExtraA), lang, skip, take, asc, desc, where, extra);
+                spillLanguageService.Query = spillLanguageService.FillQuery(typeof(SpillLanguage), lang, skip, take, asc, desc, where);
 
-                    if (spillLanguageService.Query.HasErrors)
-                    {
-                        return Ok(new List<SpillLanguageExtraA>()
-                        {
-                            new SpillLanguageExtraA()
-                            {
-                                HasErrors = spillLanguageService.Query.HasErrors,
-                                ValidationResults = spillLanguageService.Query.ValidationResults,
-                            },
-                        }.ToList());
-                    }
-                    else
-                    {
-                        return Ok(spillLanguageService.GetSpillLanguageExtraAList().ToList());
-                    }
-                }
-                else if (extra == "B") // QueryString contains [extra=B]
-                {
-                   spillLanguageService.Query = spillLanguageService.FillQuery(typeof(SpillLanguageExtraB), lang, skip, take, asc, desc, where, extra);
-
-                    if (spillLanguageService.Query.HasErrors)
-                    {
-                        return Ok(new List<SpillLanguageExtraB>()
-                        {
-                            new SpillLanguageExtraB()
-                            {
-                                HasErrors = spillLanguageService.Query.HasErrors,
-                                ValidationResults = spillLanguageService.Query.ValidationResults,
-                            },
-                        }.ToList());
-                    }
-                    else
-                    {
-                        return Ok(spillLanguageService.GetSpillLanguageExtraBList().ToList());
-                    }
-                }
-                else // QueryString has no parameter [extra] or extra is empty
-                {
-                   spillLanguageService.Query = spillLanguageService.FillQuery(typeof(SpillLanguage), lang, skip, take, asc, desc, where, extra);
-
-                    if (spillLanguageService.Query.HasErrors)
-                    {
-                        return Ok(new List<SpillLanguage>()
-                        {
-                            new SpillLanguage()
-                            {
-                                HasErrors = spillLanguageService.Query.HasErrors,
-                                ValidationResults = spillLanguageService.Query.ValidationResults,
-                            },
-                        }.ToList());
-                    }
-                    else
-                    {
-                        return Ok(spillLanguageService.GetSpillLanguageList().ToList());
-                    }
-                }
+                 if (spillLanguageService.Query.HasErrors)
+                 {
+                     return Ok(new List<SpillLanguage>()
+                     {
+                         new SpillLanguage()
+                         {
+                             HasErrors = spillLanguageService.Query.HasErrors,
+                             ValidationResults = spillLanguageService.Query.ValidationResults,
+                         },
+                     }.ToList());
+                 }
+                 else
+                 {
+                     return Ok(spillLanguageService.GetSpillLanguageList().ToList());
+                 }
             }
         }
         // GET api/spillLanguage/1
         [Route("{SpillLanguageID:int}")]
-        public IHttpActionResult GetSpillLanguageWithID([FromUri]int SpillLanguageID, [FromUri]string lang = "en", [FromUri]string extra = "")
+        public IActionResult GetSpillLanguageWithID([FromQuery]int SpillLanguageID, [FromQuery]string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
                 SpillLanguageService spillLanguageService = new SpillLanguageService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
 
-                spillLanguageService.Query = spillLanguageService.FillQuery(typeof(SpillLanguage), lang, 0, 1, "", "", extra);
+                spillLanguageService.Query = spillLanguageService.FillQuery(typeof(SpillLanguage), lang, 0, 1, "", "");
 
-                if (spillLanguageService.Query.Extra == "A")
+                SpillLanguage spillLanguage = new SpillLanguage();
+                spillLanguage = spillLanguageService.GetSpillLanguageWithSpillLanguageID(SpillLanguageID);
+
+                if (spillLanguage == null)
                 {
-                    SpillLanguageExtraA spillLanguageExtraA = new SpillLanguageExtraA();
-                    spillLanguageExtraA = spillLanguageService.GetSpillLanguageExtraAWithSpillLanguageID(SpillLanguageID);
-
-                    if (spillLanguageExtraA == null)
-                    {
-                        return NotFound();
-                    }
-
-                    return Ok(spillLanguageExtraA);
+                    return NotFound();
                 }
-                else if (spillLanguageService.Query.Extra == "B")
-                {
-                    SpillLanguageExtraB spillLanguageExtraB = new SpillLanguageExtraB();
-                    spillLanguageExtraB = spillLanguageService.GetSpillLanguageExtraBWithSpillLanguageID(SpillLanguageID);
 
-                    if (spillLanguageExtraB == null)
-                    {
-                        return NotFound();
-                    }
-
-                    return Ok(spillLanguageExtraB);
-                }
-                else
-                {
-                    SpillLanguage spillLanguage = new SpillLanguage();
-                    spillLanguage = spillLanguageService.GetSpillLanguageWithSpillLanguageID(SpillLanguageID);
-
-                    if (spillLanguage == null)
-                    {
-                        return NotFound();
-                    }
-
-                    return Ok(spillLanguage);
-                }
+                return Ok(spillLanguage);
             }
         }
         // POST api/spillLanguage
         [Route("")]
-        public IHttpActionResult Post([FromBody]SpillLanguage spillLanguage, [FromUri]string lang = "en")
+        public IActionResult Post([FromBody]SpillLanguage spillLanguage, [FromQuery]string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
@@ -161,13 +91,13 @@ namespace CSSPWebAPI.Controllers
                 else
                 {
                     spillLanguage.ValidationResults = null;
-                    return Created<SpillLanguage>(new Uri(Request.RequestUri, spillLanguage.SpillLanguageID.ToString()), spillLanguage);
+                    return Created(Url.ToString(), spillLanguage);
                 }
             }
         }
         // PUT api/spillLanguage
         [Route("")]
-        public IHttpActionResult Put([FromBody]SpillLanguage spillLanguage, [FromUri]string lang = "en")
+        public IActionResult Put([FromBody]SpillLanguage spillLanguage, [FromQuery]string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
@@ -186,7 +116,7 @@ namespace CSSPWebAPI.Controllers
         }
         // DELETE api/spillLanguage
         [Route("")]
-        public IHttpActionResult Delete([FromBody]SpillLanguage spillLanguage, [FromUri]string lang = "en")
+        public IActionResult Delete([FromBody]SpillLanguage spillLanguage, [FromQuery]string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {

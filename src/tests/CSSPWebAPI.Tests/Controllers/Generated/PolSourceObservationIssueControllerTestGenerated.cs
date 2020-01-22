@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
 using System.Web.Http.Results;
+using Microsoft.AspNetCore.Mvc;
 
 namespace CSSPWebAPI.Tests.Controllers
 {
@@ -48,7 +49,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     }
 
                     // ok with PolSourceObservationIssue info
-                    IHttpActionResult jsonRet = polSourceObservationIssueController.GetPolSourceObservationIssueList();
+                    IActionResult jsonRet = polSourceObservationIssueController.GetPolSourceObservationIssueList();
                     Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<List<PolSourceObservationIssue>> ret = jsonRet as OkNegotiatedContentResult<List<PolSourceObservationIssue>>;
@@ -86,7 +87,7 @@ namespace CSSPWebAPI.Tests.Controllers
                            count = (query.Take > count ? query.Take : count);
 
                            // ok with PolSourceObservationIssue info
-                           IHttpActionResult jsonRet2 = polSourceObservationIssueController.GetPolSourceObservationIssueList(query.Language.ToString(), query.Skip, query.Take);
+                           IActionResult jsonRet2 = polSourceObservationIssueController.GetPolSourceObservationIssueList(query.Language.ToString(), query.Skip, query.Take);
                            Assert.NotNull(jsonRet2);
 
                            OkNegotiatedContentResult<List<PolSourceObservationIssue>> ret2 = jsonRet2 as OkNegotiatedContentResult<List<PolSourceObservationIssue>>;
@@ -119,7 +120,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     }
 
                     // ok with PolSourceObservationIssue info
-                    IHttpActionResult jsonRet = polSourceObservationIssueController.GetPolSourceObservationIssueWithID(polSourceObservationIssueFirst.PolSourceObservationIssueID);
+                    IActionResult jsonRet = polSourceObservationIssueController.GetPolSourceObservationIssueWithID(polSourceObservationIssueFirst.PolSourceObservationIssueID);
                     Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<PolSourceObservationIssue> Ret = jsonRet as OkNegotiatedContentResult<PolSourceObservationIssue>;
@@ -127,16 +128,16 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.Equal(polSourceObservationIssueFirst.PolSourceObservationIssueID, polSourceObservationIssueRet.PolSourceObservationIssueID);
 
                     BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
+                    Assert.Null(badRequest);
 
                     // Not Found
-                    IHttpActionResult jsonRet2 = polSourceObservationIssueController.GetPolSourceObservationIssueWithID(0);
+                    IActionResult jsonRet2 = polSourceObservationIssueController.GetPolSourceObservationIssueWithID(0);
                     Assert.NotNull(jsonRet2);
 
                     OkNegotiatedContentResult<PolSourceObservationIssue> polSourceObservationIssueRet2 = jsonRet2 as OkNegotiatedContentResult<PolSourceObservationIssue>;
-                    Assert.IsNull(polSourceObservationIssueRet2);
+                    Assert.Null(polSourceObservationIssueRet2);
 
-                    NotFoundResult notFoundRequest = jsonRet2 as NotFoundResult;
+                    NotFoundObjectResult notFoundRequest = jsonRet2 as NotFoundObjectResult;
                     Assert.NotNull(notFoundRequest);
                 }
             }
@@ -168,7 +169,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     }
 
                     // ok with PolSourceObservationIssue info
-                    IHttpActionResult jsonRet = polSourceObservationIssueController.GetPolSourceObservationIssueWithID(polSourceObservationIssueLast.PolSourceObservationIssueID);
+                    IActionResult jsonRet = polSourceObservationIssueController.GetPolSourceObservationIssueWithID(polSourceObservationIssueLast.PolSourceObservationIssueID);
                     Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<PolSourceObservationIssue> Ret = jsonRet as OkNegotiatedContentResult<PolSourceObservationIssue>;
@@ -176,14 +177,14 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.Equal(polSourceObservationIssueLast.PolSourceObservationIssueID, polSourceObservationIssueRet.PolSourceObservationIssueID);
 
                     BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
+                    Assert.Null(badRequest);
 
                     // Post to return CSSPError because PolSourceObservationIssueID exist
-                    IHttpActionResult jsonRet2 = polSourceObservationIssueController.Post(polSourceObservationIssueRet, LanguageRequest.ToString());
+                    IActionResult jsonRet2 = polSourceObservationIssueController.Post(polSourceObservationIssueRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet2);
 
                     OkNegotiatedContentResult<PolSourceObservationIssue> polSourceObservationIssueRet2 = jsonRet2 as OkNegotiatedContentResult<PolSourceObservationIssue>;
-                    Assert.IsNull(polSourceObservationIssueRet2);
+                    Assert.Null(polSourceObservationIssueRet2);
 
                     BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
                     Assert.NotNull(badRequest2);
@@ -192,23 +193,23 @@ namespace CSSPWebAPI.Tests.Controllers
                     polSourceObservationIssueRet.PolSourceObservationIssueID = 0;
                     polSourceObservationIssueController.Request = new System.Net.Http.HttpRequestMessage();
                     polSourceObservationIssueController.Request.RequestUri = new System.Uri("http://localhost:5000/api/polSourceObservationIssue");
-                    IHttpActionResult jsonRet3 = polSourceObservationIssueController.Post(polSourceObservationIssueRet, LanguageRequest.ToString());
+                    IActionResult jsonRet3 = polSourceObservationIssueController.Post(polSourceObservationIssueRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 
                     CreatedNegotiatedContentResult<PolSourceObservationIssue> polSourceObservationIssueRet3 = jsonRet3 as CreatedNegotiatedContentResult<PolSourceObservationIssue>;
                     Assert.NotNull(polSourceObservationIssueRet3);
 
                     BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest3);
+                    Assert.Null(badRequest3);
 
-                    IHttpActionResult jsonRet4 = polSourceObservationIssueController.Delete(polSourceObservationIssueRet, LanguageRequest.ToString());
+                    IActionResult jsonRet4 = polSourceObservationIssueController.Delete(polSourceObservationIssueRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet4);
 
                     OkNegotiatedContentResult<PolSourceObservationIssue> polSourceObservationIssueRet4 = jsonRet4 as OkNegotiatedContentResult<PolSourceObservationIssue>;
                     Assert.NotNull(polSourceObservationIssueRet4);
 
                     BadRequestErrorMessageResult badRequest4 = jsonRet4 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest4);
+                    Assert.Null(badRequest4);
                 }
             }
         }
@@ -237,7 +238,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     }
 
                     // ok with PolSourceObservationIssue info
-                    IHttpActionResult jsonRet = polSourceObservationIssueController.GetPolSourceObservationIssueWithID(polSourceObservationIssueLast.PolSourceObservationIssueID);
+                    IActionResult jsonRet = polSourceObservationIssueController.GetPolSourceObservationIssueWithID(polSourceObservationIssueLast.PolSourceObservationIssueID);
                     Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<PolSourceObservationIssue> Ret = jsonRet as OkNegotiatedContentResult<PolSourceObservationIssue>;
@@ -245,25 +246,25 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.Equal(polSourceObservationIssueLast.PolSourceObservationIssueID, polSourceObservationIssueRet.PolSourceObservationIssueID);
 
                     BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
+                    Assert.Null(badRequest);
 
                     // Put to return success
-                    IHttpActionResult jsonRet2 = polSourceObservationIssueController.Put(polSourceObservationIssueRet, LanguageRequest.ToString());
+                    IActionResult jsonRet2 = polSourceObservationIssueController.Put(polSourceObservationIssueRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet2);
 
                     OkNegotiatedContentResult<PolSourceObservationIssue> polSourceObservationIssueRet2 = jsonRet2 as OkNegotiatedContentResult<PolSourceObservationIssue>;
                     Assert.NotNull(polSourceObservationIssueRet2);
 
                     BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest2);
+                    Assert.Null(badRequest2);
 
                     // Put to return CSSPError because PolSourceObservationIssueID of 0 does not exist
                     polSourceObservationIssueRet.PolSourceObservationIssueID = 0;
-                    IHttpActionResult jsonRet3 = polSourceObservationIssueController.Put(polSourceObservationIssueRet, LanguageRequest.ToString());
+                    IActionResult jsonRet3 = polSourceObservationIssueController.Put(polSourceObservationIssueRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 
                     OkNegotiatedContentResult<PolSourceObservationIssue> polSourceObservationIssueRet3 = jsonRet3 as OkNegotiatedContentResult<PolSourceObservationIssue>;
-                    Assert.IsNull(polSourceObservationIssueRet3);
+                    Assert.Null(polSourceObservationIssueRet3);
 
                     BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
                     Assert.NotNull(badRequest3);
@@ -297,7 +298,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     }
 
                     // ok with PolSourceObservationIssue info
-                    IHttpActionResult jsonRet = polSourceObservationIssueController.GetPolSourceObservationIssueWithID(polSourceObservationIssueLast.PolSourceObservationIssueID);
+                    IActionResult jsonRet = polSourceObservationIssueController.GetPolSourceObservationIssueWithID(polSourceObservationIssueLast.PolSourceObservationIssueID);
                     Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<PolSourceObservationIssue> Ret = jsonRet as OkNegotiatedContentResult<PolSourceObservationIssue>;
@@ -305,13 +306,13 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.Equal(polSourceObservationIssueLast.PolSourceObservationIssueID, polSourceObservationIssueRet.PolSourceObservationIssueID);
 
                     BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
+                    Assert.Null(badRequest);
 
                     // Post to return newly added PolSourceObservationIssue
                     polSourceObservationIssueRet.PolSourceObservationIssueID = 0;
                     polSourceObservationIssueController.Request = new System.Net.Http.HttpRequestMessage();
                     polSourceObservationIssueController.Request.RequestUri = new System.Uri("http://localhost:5000/api/polSourceObservationIssue");
-                    IHttpActionResult jsonRet3 = polSourceObservationIssueController.Post(polSourceObservationIssueRet, LanguageRequest.ToString());
+                    IActionResult jsonRet3 = polSourceObservationIssueController.Post(polSourceObservationIssueRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 
                     CreatedNegotiatedContentResult<PolSourceObservationIssue> polSourceObservationIssueRet3 = jsonRet3 as CreatedNegotiatedContentResult<PolSourceObservationIssue>;
@@ -319,25 +320,25 @@ namespace CSSPWebAPI.Tests.Controllers
                     PolSourceObservationIssue polSourceObservationIssue = polSourceObservationIssueRet3.Content;
 
                     BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest3);
+                    Assert.Null(badRequest3);
 
                     // Delete to return success
-                    IHttpActionResult jsonRet2 = polSourceObservationIssueController.Delete(polSourceObservationIssueRet, LanguageRequest.ToString());
+                    IActionResult jsonRet2 = polSourceObservationIssueController.Delete(polSourceObservationIssueRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet2);
 
                     OkNegotiatedContentResult<PolSourceObservationIssue> polSourceObservationIssueRet2 = jsonRet2 as OkNegotiatedContentResult<PolSourceObservationIssue>;
                     Assert.NotNull(polSourceObservationIssueRet2);
 
                     BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest2);
+                    Assert.Null(badRequest2);
 
                     // Delete to return CSSPError because PolSourceObservationIssueID of 0 does not exist
                     polSourceObservationIssueRet.PolSourceObservationIssueID = 0;
-                    IHttpActionResult jsonRet4 = polSourceObservationIssueController.Delete(polSourceObservationIssueRet, LanguageRequest.ToString());
+                    IActionResult jsonRet4 = polSourceObservationIssueController.Delete(polSourceObservationIssueRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet4);
 
                     OkNegotiatedContentResult<PolSourceObservationIssue> polSourceObservationIssueRet4 = jsonRet4 as OkNegotiatedContentResult<PolSourceObservationIssue>;
-                    Assert.IsNull(polSourceObservationIssueRet4);
+                    Assert.Null(polSourceObservationIssueRet4);
 
                     BadRequestErrorMessageResult badRequest4 = jsonRet4 as BadRequestErrorMessageResult;
                     Assert.NotNull(badRequest4);

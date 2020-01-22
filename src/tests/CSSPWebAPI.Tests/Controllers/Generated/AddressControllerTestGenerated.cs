@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
 using System.Web.Http.Results;
+using Microsoft.AspNetCore.Mvc;
 
 namespace CSSPWebAPI.Tests.Controllers
 {
@@ -48,7 +49,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     }
 
                     // ok with Address info
-                    IHttpActionResult jsonRet = addressController.GetAddressList();
+                    IActionResult jsonRet = addressController.GetAddressList();
                     Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<List<Address>> ret = jsonRet as OkNegotiatedContentResult<List<Address>>;
@@ -86,7 +87,7 @@ namespace CSSPWebAPI.Tests.Controllers
                            count = (query.Take > count ? query.Take : count);
 
                            // ok with Address info
-                           IHttpActionResult jsonRet2 = addressController.GetAddressList(query.Language.ToString(), query.Skip, query.Take);
+                           IActionResult jsonRet2 = addressController.GetAddressList(query.Language.ToString(), query.Skip, query.Take);
                            Assert.NotNull(jsonRet2);
 
                            OkNegotiatedContentResult<List<Address>> ret2 = jsonRet2 as OkNegotiatedContentResult<List<Address>>;
@@ -119,7 +120,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     }
 
                     // ok with Address info
-                    IHttpActionResult jsonRet = addressController.GetAddressWithID(addressFirst.AddressID);
+                    IActionResult jsonRet = addressController.GetAddressWithID(addressFirst.AddressID);
                     Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<Address> Ret = jsonRet as OkNegotiatedContentResult<Address>;
@@ -127,16 +128,16 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.Equal(addressFirst.AddressID, addressRet.AddressID);
 
                     BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
+                    Assert.Null(badRequest);
 
                     // Not Found
-                    IHttpActionResult jsonRet2 = addressController.GetAddressWithID(0);
+                    IActionResult jsonRet2 = addressController.GetAddressWithID(0);
                     Assert.NotNull(jsonRet2);
 
                     OkNegotiatedContentResult<Address> addressRet2 = jsonRet2 as OkNegotiatedContentResult<Address>;
-                    Assert.IsNull(addressRet2);
+                    Assert.Null(addressRet2);
 
-                    NotFoundResult notFoundRequest = jsonRet2 as NotFoundResult;
+                    NotFoundObjectResult notFoundRequest = jsonRet2 as NotFoundObjectResult;
                     Assert.NotNull(notFoundRequest);
                 }
             }
@@ -168,7 +169,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     }
 
                     // ok with Address info
-                    IHttpActionResult jsonRet = addressController.GetAddressWithID(addressLast.AddressID);
+                    IActionResult jsonRet = addressController.GetAddressWithID(addressLast.AddressID);
                     Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<Address> Ret = jsonRet as OkNegotiatedContentResult<Address>;
@@ -176,14 +177,14 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.Equal(addressLast.AddressID, addressRet.AddressID);
 
                     BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
+                    Assert.Null(badRequest);
 
                     // Post to return CSSPError because AddressID exist
-                    IHttpActionResult jsonRet2 = addressController.Post(addressRet, LanguageRequest.ToString());
+                    IActionResult jsonRet2 = addressController.Post(addressRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet2);
 
                     OkNegotiatedContentResult<Address> addressRet2 = jsonRet2 as OkNegotiatedContentResult<Address>;
-                    Assert.IsNull(addressRet2);
+                    Assert.Null(addressRet2);
 
                     BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
                     Assert.NotNull(badRequest2);
@@ -192,23 +193,23 @@ namespace CSSPWebAPI.Tests.Controllers
                     addressRet.AddressID = 0;
                     addressController.Request = new System.Net.Http.HttpRequestMessage();
                     addressController.Request.RequestUri = new System.Uri("http://localhost:5000/api/address");
-                    IHttpActionResult jsonRet3 = addressController.Post(addressRet, LanguageRequest.ToString());
+                    IActionResult jsonRet3 = addressController.Post(addressRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 
                     CreatedNegotiatedContentResult<Address> addressRet3 = jsonRet3 as CreatedNegotiatedContentResult<Address>;
                     Assert.NotNull(addressRet3);
 
                     BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest3);
+                    Assert.Null(badRequest3);
 
-                    IHttpActionResult jsonRet4 = addressController.Delete(addressRet, LanguageRequest.ToString());
+                    IActionResult jsonRet4 = addressController.Delete(addressRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet4);
 
                     OkNegotiatedContentResult<Address> addressRet4 = jsonRet4 as OkNegotiatedContentResult<Address>;
                     Assert.NotNull(addressRet4);
 
                     BadRequestErrorMessageResult badRequest4 = jsonRet4 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest4);
+                    Assert.Null(badRequest4);
                 }
             }
         }
@@ -237,7 +238,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     }
 
                     // ok with Address info
-                    IHttpActionResult jsonRet = addressController.GetAddressWithID(addressLast.AddressID);
+                    IActionResult jsonRet = addressController.GetAddressWithID(addressLast.AddressID);
                     Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<Address> Ret = jsonRet as OkNegotiatedContentResult<Address>;
@@ -245,25 +246,25 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.Equal(addressLast.AddressID, addressRet.AddressID);
 
                     BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
+                    Assert.Null(badRequest);
 
                     // Put to return success
-                    IHttpActionResult jsonRet2 = addressController.Put(addressRet, LanguageRequest.ToString());
+                    IActionResult jsonRet2 = addressController.Put(addressRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet2);
 
                     OkNegotiatedContentResult<Address> addressRet2 = jsonRet2 as OkNegotiatedContentResult<Address>;
                     Assert.NotNull(addressRet2);
 
                     BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest2);
+                    Assert.Null(badRequest2);
 
                     // Put to return CSSPError because AddressID of 0 does not exist
                     addressRet.AddressID = 0;
-                    IHttpActionResult jsonRet3 = addressController.Put(addressRet, LanguageRequest.ToString());
+                    IActionResult jsonRet3 = addressController.Put(addressRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 
                     OkNegotiatedContentResult<Address> addressRet3 = jsonRet3 as OkNegotiatedContentResult<Address>;
-                    Assert.IsNull(addressRet3);
+                    Assert.Null(addressRet3);
 
                     BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
                     Assert.NotNull(badRequest3);
@@ -297,7 +298,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     }
 
                     // ok with Address info
-                    IHttpActionResult jsonRet = addressController.GetAddressWithID(addressLast.AddressID);
+                    IActionResult jsonRet = addressController.GetAddressWithID(addressLast.AddressID);
                     Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<Address> Ret = jsonRet as OkNegotiatedContentResult<Address>;
@@ -305,13 +306,13 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.Equal(addressLast.AddressID, addressRet.AddressID);
 
                     BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
+                    Assert.Null(badRequest);
 
                     // Post to return newly added Address
                     addressRet.AddressID = 0;
                     addressController.Request = new System.Net.Http.HttpRequestMessage();
                     addressController.Request.RequestUri = new System.Uri("http://localhost:5000/api/address");
-                    IHttpActionResult jsonRet3 = addressController.Post(addressRet, LanguageRequest.ToString());
+                    IActionResult jsonRet3 = addressController.Post(addressRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 
                     CreatedNegotiatedContentResult<Address> addressRet3 = jsonRet3 as CreatedNegotiatedContentResult<Address>;
@@ -319,25 +320,25 @@ namespace CSSPWebAPI.Tests.Controllers
                     Address address = addressRet3.Content;
 
                     BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest3);
+                    Assert.Null(badRequest3);
 
                     // Delete to return success
-                    IHttpActionResult jsonRet2 = addressController.Delete(addressRet, LanguageRequest.ToString());
+                    IActionResult jsonRet2 = addressController.Delete(addressRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet2);
 
                     OkNegotiatedContentResult<Address> addressRet2 = jsonRet2 as OkNegotiatedContentResult<Address>;
                     Assert.NotNull(addressRet2);
 
                     BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest2);
+                    Assert.Null(badRequest2);
 
                     // Delete to return CSSPError because AddressID of 0 does not exist
                     addressRet.AddressID = 0;
-                    IHttpActionResult jsonRet4 = addressController.Delete(addressRet, LanguageRequest.ToString());
+                    IActionResult jsonRet4 = addressController.Delete(addressRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet4);
 
                     OkNegotiatedContentResult<Address> addressRet4 = jsonRet4 as OkNegotiatedContentResult<Address>;
-                    Assert.IsNull(addressRet4);
+                    Assert.Null(addressRet4);
 
                     BadRequestErrorMessageResult badRequest4 = jsonRet4 as BadRequestErrorMessageResult;
                     Assert.NotNull(badRequest4);

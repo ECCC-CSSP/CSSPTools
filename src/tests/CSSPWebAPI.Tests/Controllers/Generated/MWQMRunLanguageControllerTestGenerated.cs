@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
 using System.Web.Http.Results;
+using Microsoft.AspNetCore.Mvc;
 
 namespace CSSPWebAPI.Tests.Controllers
 {
@@ -48,7 +49,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     }
 
                     // ok with MWQMRunLanguage info
-                    IHttpActionResult jsonRet = mwqmRunLanguageController.GetMWQMRunLanguageList();
+                    IActionResult jsonRet = mwqmRunLanguageController.GetMWQMRunLanguageList();
                     Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<List<MWQMRunLanguage>> ret = jsonRet as OkNegotiatedContentResult<List<MWQMRunLanguage>>;
@@ -86,7 +87,7 @@ namespace CSSPWebAPI.Tests.Controllers
                            count = (query.Take > count ? query.Take : count);
 
                            // ok with MWQMRunLanguage info
-                           IHttpActionResult jsonRet2 = mwqmRunLanguageController.GetMWQMRunLanguageList(query.Language.ToString(), query.Skip, query.Take);
+                           IActionResult jsonRet2 = mwqmRunLanguageController.GetMWQMRunLanguageList(query.Language.ToString(), query.Skip, query.Take);
                            Assert.NotNull(jsonRet2);
 
                            OkNegotiatedContentResult<List<MWQMRunLanguage>> ret2 = jsonRet2 as OkNegotiatedContentResult<List<MWQMRunLanguage>>;
@@ -119,7 +120,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     }
 
                     // ok with MWQMRunLanguage info
-                    IHttpActionResult jsonRet = mwqmRunLanguageController.GetMWQMRunLanguageWithID(mwqmRunLanguageFirst.MWQMRunLanguageID);
+                    IActionResult jsonRet = mwqmRunLanguageController.GetMWQMRunLanguageWithID(mwqmRunLanguageFirst.MWQMRunLanguageID);
                     Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<MWQMRunLanguage> Ret = jsonRet as OkNegotiatedContentResult<MWQMRunLanguage>;
@@ -127,16 +128,16 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.Equal(mwqmRunLanguageFirst.MWQMRunLanguageID, mwqmRunLanguageRet.MWQMRunLanguageID);
 
                     BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
+                    Assert.Null(badRequest);
 
                     // Not Found
-                    IHttpActionResult jsonRet2 = mwqmRunLanguageController.GetMWQMRunLanguageWithID(0);
+                    IActionResult jsonRet2 = mwqmRunLanguageController.GetMWQMRunLanguageWithID(0);
                     Assert.NotNull(jsonRet2);
 
                     OkNegotiatedContentResult<MWQMRunLanguage> mwqmRunLanguageRet2 = jsonRet2 as OkNegotiatedContentResult<MWQMRunLanguage>;
-                    Assert.IsNull(mwqmRunLanguageRet2);
+                    Assert.Null(mwqmRunLanguageRet2);
 
-                    NotFoundResult notFoundRequest = jsonRet2 as NotFoundResult;
+                    NotFoundObjectResult notFoundRequest = jsonRet2 as NotFoundObjectResult;
                     Assert.NotNull(notFoundRequest);
                 }
             }
@@ -168,7 +169,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     }
 
                     // ok with MWQMRunLanguage info
-                    IHttpActionResult jsonRet = mwqmRunLanguageController.GetMWQMRunLanguageWithID(mwqmRunLanguageLast.MWQMRunLanguageID);
+                    IActionResult jsonRet = mwqmRunLanguageController.GetMWQMRunLanguageWithID(mwqmRunLanguageLast.MWQMRunLanguageID);
                     Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<MWQMRunLanguage> Ret = jsonRet as OkNegotiatedContentResult<MWQMRunLanguage>;
@@ -176,14 +177,14 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.Equal(mwqmRunLanguageLast.MWQMRunLanguageID, mwqmRunLanguageRet.MWQMRunLanguageID);
 
                     BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
+                    Assert.Null(badRequest);
 
                     // Post to return CSSPError because MWQMRunLanguageID exist
-                    IHttpActionResult jsonRet2 = mwqmRunLanguageController.Post(mwqmRunLanguageRet, LanguageRequest.ToString());
+                    IActionResult jsonRet2 = mwqmRunLanguageController.Post(mwqmRunLanguageRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet2);
 
                     OkNegotiatedContentResult<MWQMRunLanguage> mwqmRunLanguageRet2 = jsonRet2 as OkNegotiatedContentResult<MWQMRunLanguage>;
-                    Assert.IsNull(mwqmRunLanguageRet2);
+                    Assert.Null(mwqmRunLanguageRet2);
 
                     BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
                     Assert.NotNull(badRequest2);
@@ -192,23 +193,23 @@ namespace CSSPWebAPI.Tests.Controllers
                     mwqmRunLanguageRet.MWQMRunLanguageID = 0;
                     mwqmRunLanguageController.Request = new System.Net.Http.HttpRequestMessage();
                     mwqmRunLanguageController.Request.RequestUri = new System.Uri("http://localhost:5000/api/mwqmRunLanguage");
-                    IHttpActionResult jsonRet3 = mwqmRunLanguageController.Post(mwqmRunLanguageRet, LanguageRequest.ToString());
+                    IActionResult jsonRet3 = mwqmRunLanguageController.Post(mwqmRunLanguageRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 
                     CreatedNegotiatedContentResult<MWQMRunLanguage> mwqmRunLanguageRet3 = jsonRet3 as CreatedNegotiatedContentResult<MWQMRunLanguage>;
                     Assert.NotNull(mwqmRunLanguageRet3);
 
                     BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest3);
+                    Assert.Null(badRequest3);
 
-                    IHttpActionResult jsonRet4 = mwqmRunLanguageController.Delete(mwqmRunLanguageRet, LanguageRequest.ToString());
+                    IActionResult jsonRet4 = mwqmRunLanguageController.Delete(mwqmRunLanguageRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet4);
 
                     OkNegotiatedContentResult<MWQMRunLanguage> mwqmRunLanguageRet4 = jsonRet4 as OkNegotiatedContentResult<MWQMRunLanguage>;
                     Assert.NotNull(mwqmRunLanguageRet4);
 
                     BadRequestErrorMessageResult badRequest4 = jsonRet4 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest4);
+                    Assert.Null(badRequest4);
                 }
             }
         }
@@ -237,7 +238,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     }
 
                     // ok with MWQMRunLanguage info
-                    IHttpActionResult jsonRet = mwqmRunLanguageController.GetMWQMRunLanguageWithID(mwqmRunLanguageLast.MWQMRunLanguageID);
+                    IActionResult jsonRet = mwqmRunLanguageController.GetMWQMRunLanguageWithID(mwqmRunLanguageLast.MWQMRunLanguageID);
                     Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<MWQMRunLanguage> Ret = jsonRet as OkNegotiatedContentResult<MWQMRunLanguage>;
@@ -245,25 +246,25 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.Equal(mwqmRunLanguageLast.MWQMRunLanguageID, mwqmRunLanguageRet.MWQMRunLanguageID);
 
                     BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
+                    Assert.Null(badRequest);
 
                     // Put to return success
-                    IHttpActionResult jsonRet2 = mwqmRunLanguageController.Put(mwqmRunLanguageRet, LanguageRequest.ToString());
+                    IActionResult jsonRet2 = mwqmRunLanguageController.Put(mwqmRunLanguageRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet2);
 
                     OkNegotiatedContentResult<MWQMRunLanguage> mwqmRunLanguageRet2 = jsonRet2 as OkNegotiatedContentResult<MWQMRunLanguage>;
                     Assert.NotNull(mwqmRunLanguageRet2);
 
                     BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest2);
+                    Assert.Null(badRequest2);
 
                     // Put to return CSSPError because MWQMRunLanguageID of 0 does not exist
                     mwqmRunLanguageRet.MWQMRunLanguageID = 0;
-                    IHttpActionResult jsonRet3 = mwqmRunLanguageController.Put(mwqmRunLanguageRet, LanguageRequest.ToString());
+                    IActionResult jsonRet3 = mwqmRunLanguageController.Put(mwqmRunLanguageRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 
                     OkNegotiatedContentResult<MWQMRunLanguage> mwqmRunLanguageRet3 = jsonRet3 as OkNegotiatedContentResult<MWQMRunLanguage>;
-                    Assert.IsNull(mwqmRunLanguageRet3);
+                    Assert.Null(mwqmRunLanguageRet3);
 
                     BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
                     Assert.NotNull(badRequest3);
@@ -297,7 +298,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     }
 
                     // ok with MWQMRunLanguage info
-                    IHttpActionResult jsonRet = mwqmRunLanguageController.GetMWQMRunLanguageWithID(mwqmRunLanguageLast.MWQMRunLanguageID);
+                    IActionResult jsonRet = mwqmRunLanguageController.GetMWQMRunLanguageWithID(mwqmRunLanguageLast.MWQMRunLanguageID);
                     Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<MWQMRunLanguage> Ret = jsonRet as OkNegotiatedContentResult<MWQMRunLanguage>;
@@ -305,13 +306,13 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.Equal(mwqmRunLanguageLast.MWQMRunLanguageID, mwqmRunLanguageRet.MWQMRunLanguageID);
 
                     BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
+                    Assert.Null(badRequest);
 
                     // Post to return newly added MWQMRunLanguage
                     mwqmRunLanguageRet.MWQMRunLanguageID = 0;
                     mwqmRunLanguageController.Request = new System.Net.Http.HttpRequestMessage();
                     mwqmRunLanguageController.Request.RequestUri = new System.Uri("http://localhost:5000/api/mwqmRunLanguage");
-                    IHttpActionResult jsonRet3 = mwqmRunLanguageController.Post(mwqmRunLanguageRet, LanguageRequest.ToString());
+                    IActionResult jsonRet3 = mwqmRunLanguageController.Post(mwqmRunLanguageRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 
                     CreatedNegotiatedContentResult<MWQMRunLanguage> mwqmRunLanguageRet3 = jsonRet3 as CreatedNegotiatedContentResult<MWQMRunLanguage>;
@@ -319,25 +320,25 @@ namespace CSSPWebAPI.Tests.Controllers
                     MWQMRunLanguage mwqmRunLanguage = mwqmRunLanguageRet3.Content;
 
                     BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest3);
+                    Assert.Null(badRequest3);
 
                     // Delete to return success
-                    IHttpActionResult jsonRet2 = mwqmRunLanguageController.Delete(mwqmRunLanguageRet, LanguageRequest.ToString());
+                    IActionResult jsonRet2 = mwqmRunLanguageController.Delete(mwqmRunLanguageRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet2);
 
                     OkNegotiatedContentResult<MWQMRunLanguage> mwqmRunLanguageRet2 = jsonRet2 as OkNegotiatedContentResult<MWQMRunLanguage>;
                     Assert.NotNull(mwqmRunLanguageRet2);
 
                     BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest2);
+                    Assert.Null(badRequest2);
 
                     // Delete to return CSSPError because MWQMRunLanguageID of 0 does not exist
                     mwqmRunLanguageRet.MWQMRunLanguageID = 0;
-                    IHttpActionResult jsonRet4 = mwqmRunLanguageController.Delete(mwqmRunLanguageRet, LanguageRequest.ToString());
+                    IActionResult jsonRet4 = mwqmRunLanguageController.Delete(mwqmRunLanguageRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet4);
 
                     OkNegotiatedContentResult<MWQMRunLanguage> mwqmRunLanguageRet4 = jsonRet4 as OkNegotiatedContentResult<MWQMRunLanguage>;
-                    Assert.IsNull(mwqmRunLanguageRet4);
+                    Assert.Null(mwqmRunLanguageRet4);
 
                     BadRequestErrorMessageResult badRequest4 = jsonRet4 as BadRequestErrorMessageResult;
                     Assert.NotNull(badRequest4);

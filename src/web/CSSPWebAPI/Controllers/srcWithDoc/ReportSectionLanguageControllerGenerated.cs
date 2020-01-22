@@ -1,14 +1,14 @@
 using CSSPEnums;
 using CSSPModels;
 using CSSPServices;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web.Http;
 
 namespace CSSPWebAPI.Controllers
 {
-    [RoutePrefix("api/reportSectionLanguage")]
+    [Route("api/reportSectionLanguage")]
     public partial class ReportSectionLanguageController : BaseController
     {
         #region Variables
@@ -29,126 +29,56 @@ namespace CSSPWebAPI.Controllers
         #region Functions public
         // GET api/reportSectionLanguage
         [Route("")]
-        public IHttpActionResult GetReportSectionLanguageList([FromUri]string lang = "en", [FromUri]int skip = 0, [FromUri]int take = 200,
-            [FromUri]string asc = "", [FromUri]string desc = "", [FromUri]string where = "", [FromUri]string extra = "")
+        public IActionResult GetReportSectionLanguageList([FromQuery]string lang = "en", [FromQuery]int skip = 0, [FromQuery]int take = 200,
+            [FromQuery]string asc = "", [FromQuery]string desc = "", [FromQuery]string where = "")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
                 ReportSectionLanguageService reportSectionLanguageService = new ReportSectionLanguageService(new Query() { Lang = lang }, db, ContactID);
 
-                if (extra == "A") // QueryString contains [extra=A]
-                {
-                   reportSectionLanguageService.Query = reportSectionLanguageService.FillQuery(typeof(ReportSectionLanguageExtraA), lang, skip, take, asc, desc, where, extra);
+                reportSectionLanguageService.Query = reportSectionLanguageService.FillQuery(typeof(ReportSectionLanguage), lang, skip, take, asc, desc, where);
 
-                    if (reportSectionLanguageService.Query.HasErrors)
-                    {
-                        return Ok(new List<ReportSectionLanguageExtraA>()
-                        {
-                            new ReportSectionLanguageExtraA()
-                            {
-                                HasErrors = reportSectionLanguageService.Query.HasErrors,
-                                ValidationResults = reportSectionLanguageService.Query.ValidationResults,
-                            },
-                        }.ToList());
-                    }
-                    else
-                    {
-                        return Ok(reportSectionLanguageService.GetReportSectionLanguageExtraAList().ToList());
-                    }
-                }
-                else if (extra == "B") // QueryString contains [extra=B]
-                {
-                   reportSectionLanguageService.Query = reportSectionLanguageService.FillQuery(typeof(ReportSectionLanguageExtraB), lang, skip, take, asc, desc, where, extra);
-
-                    if (reportSectionLanguageService.Query.HasErrors)
-                    {
-                        return Ok(new List<ReportSectionLanguageExtraB>()
-                        {
-                            new ReportSectionLanguageExtraB()
-                            {
-                                HasErrors = reportSectionLanguageService.Query.HasErrors,
-                                ValidationResults = reportSectionLanguageService.Query.ValidationResults,
-                            },
-                        }.ToList());
-                    }
-                    else
-                    {
-                        return Ok(reportSectionLanguageService.GetReportSectionLanguageExtraBList().ToList());
-                    }
-                }
-                else // QueryString has no parameter [extra] or extra is empty
-                {
-                   reportSectionLanguageService.Query = reportSectionLanguageService.FillQuery(typeof(ReportSectionLanguage), lang, skip, take, asc, desc, where, extra);
-
-                    if (reportSectionLanguageService.Query.HasErrors)
-                    {
-                        return Ok(new List<ReportSectionLanguage>()
-                        {
-                            new ReportSectionLanguage()
-                            {
-                                HasErrors = reportSectionLanguageService.Query.HasErrors,
-                                ValidationResults = reportSectionLanguageService.Query.ValidationResults,
-                            },
-                        }.ToList());
-                    }
-                    else
-                    {
-                        return Ok(reportSectionLanguageService.GetReportSectionLanguageList().ToList());
-                    }
-                }
+                 if (reportSectionLanguageService.Query.HasErrors)
+                 {
+                     return Ok(new List<ReportSectionLanguage>()
+                     {
+                         new ReportSectionLanguage()
+                         {
+                             HasErrors = reportSectionLanguageService.Query.HasErrors,
+                             ValidationResults = reportSectionLanguageService.Query.ValidationResults,
+                         },
+                     }.ToList());
+                 }
+                 else
+                 {
+                     return Ok(reportSectionLanguageService.GetReportSectionLanguageList().ToList());
+                 }
             }
         }
         // GET api/reportSectionLanguage/1
         [Route("{ReportSectionLanguageID:int}")]
-        public IHttpActionResult GetReportSectionLanguageWithID([FromUri]int ReportSectionLanguageID, [FromUri]string lang = "en", [FromUri]string extra = "")
+        public IActionResult GetReportSectionLanguageWithID([FromQuery]int ReportSectionLanguageID, [FromQuery]string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
                 ReportSectionLanguageService reportSectionLanguageService = new ReportSectionLanguageService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
 
-                reportSectionLanguageService.Query = reportSectionLanguageService.FillQuery(typeof(ReportSectionLanguage), lang, 0, 1, "", "", extra);
+                reportSectionLanguageService.Query = reportSectionLanguageService.FillQuery(typeof(ReportSectionLanguage), lang, 0, 1, "", "");
 
-                if (reportSectionLanguageService.Query.Extra == "A")
+                ReportSectionLanguage reportSectionLanguage = new ReportSectionLanguage();
+                reportSectionLanguage = reportSectionLanguageService.GetReportSectionLanguageWithReportSectionLanguageID(ReportSectionLanguageID);
+
+                if (reportSectionLanguage == null)
                 {
-                    ReportSectionLanguageExtraA reportSectionLanguageExtraA = new ReportSectionLanguageExtraA();
-                    reportSectionLanguageExtraA = reportSectionLanguageService.GetReportSectionLanguageExtraAWithReportSectionLanguageID(ReportSectionLanguageID);
-
-                    if (reportSectionLanguageExtraA == null)
-                    {
-                        return NotFound();
-                    }
-
-                    return Ok(reportSectionLanguageExtraA);
+                    return NotFound();
                 }
-                else if (reportSectionLanguageService.Query.Extra == "B")
-                {
-                    ReportSectionLanguageExtraB reportSectionLanguageExtraB = new ReportSectionLanguageExtraB();
-                    reportSectionLanguageExtraB = reportSectionLanguageService.GetReportSectionLanguageExtraBWithReportSectionLanguageID(ReportSectionLanguageID);
 
-                    if (reportSectionLanguageExtraB == null)
-                    {
-                        return NotFound();
-                    }
-
-                    return Ok(reportSectionLanguageExtraB);
-                }
-                else
-                {
-                    ReportSectionLanguage reportSectionLanguage = new ReportSectionLanguage();
-                    reportSectionLanguage = reportSectionLanguageService.GetReportSectionLanguageWithReportSectionLanguageID(ReportSectionLanguageID);
-
-                    if (reportSectionLanguage == null)
-                    {
-                        return NotFound();
-                    }
-
-                    return Ok(reportSectionLanguage);
-                }
+                return Ok(reportSectionLanguage);
             }
         }
         // POST api/reportSectionLanguage
         [Route("")]
-        public IHttpActionResult Post([FromBody]ReportSectionLanguage reportSectionLanguage, [FromUri]string lang = "en")
+        public IActionResult Post([FromBody]ReportSectionLanguage reportSectionLanguage, [FromQuery]string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
@@ -161,13 +91,13 @@ namespace CSSPWebAPI.Controllers
                 else
                 {
                     reportSectionLanguage.ValidationResults = null;
-                    return Created<ReportSectionLanguage>(new Uri(Request.RequestUri, reportSectionLanguage.ReportSectionLanguageID.ToString()), reportSectionLanguage);
+                    return Created(Url.ToString(), reportSectionLanguage);
                 }
             }
         }
         // PUT api/reportSectionLanguage
         [Route("")]
-        public IHttpActionResult Put([FromBody]ReportSectionLanguage reportSectionLanguage, [FromUri]string lang = "en")
+        public IActionResult Put([FromBody]ReportSectionLanguage reportSectionLanguage, [FromQuery]string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
@@ -186,7 +116,7 @@ namespace CSSPWebAPI.Controllers
         }
         // DELETE api/reportSectionLanguage
         [Route("")]
-        public IHttpActionResult Delete([FromBody]ReportSectionLanguage reportSectionLanguage, [FromUri]string lang = "en")
+        public IActionResult Delete([FromBody]ReportSectionLanguage reportSectionLanguage, [FromQuery]string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {

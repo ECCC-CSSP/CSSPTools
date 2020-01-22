@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
 using System.Web.Http.Results;
+using Microsoft.AspNetCore.Mvc;
 
 namespace CSSPWebAPI.Tests.Controllers
 {
@@ -48,7 +49,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     }
 
                     // ok with EmailDistributionListLanguage info
-                    IHttpActionResult jsonRet = emailDistributionListLanguageController.GetEmailDistributionListLanguageList();
+                    IActionResult jsonRet = emailDistributionListLanguageController.GetEmailDistributionListLanguageList();
                     Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<List<EmailDistributionListLanguage>> ret = jsonRet as OkNegotiatedContentResult<List<EmailDistributionListLanguage>>;
@@ -86,7 +87,7 @@ namespace CSSPWebAPI.Tests.Controllers
                            count = (query.Take > count ? query.Take : count);
 
                            // ok with EmailDistributionListLanguage info
-                           IHttpActionResult jsonRet2 = emailDistributionListLanguageController.GetEmailDistributionListLanguageList(query.Language.ToString(), query.Skip, query.Take);
+                           IActionResult jsonRet2 = emailDistributionListLanguageController.GetEmailDistributionListLanguageList(query.Language.ToString(), query.Skip, query.Take);
                            Assert.NotNull(jsonRet2);
 
                            OkNegotiatedContentResult<List<EmailDistributionListLanguage>> ret2 = jsonRet2 as OkNegotiatedContentResult<List<EmailDistributionListLanguage>>;
@@ -119,7 +120,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     }
 
                     // ok with EmailDistributionListLanguage info
-                    IHttpActionResult jsonRet = emailDistributionListLanguageController.GetEmailDistributionListLanguageWithID(emailDistributionListLanguageFirst.EmailDistributionListLanguageID);
+                    IActionResult jsonRet = emailDistributionListLanguageController.GetEmailDistributionListLanguageWithID(emailDistributionListLanguageFirst.EmailDistributionListLanguageID);
                     Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<EmailDistributionListLanguage> Ret = jsonRet as OkNegotiatedContentResult<EmailDistributionListLanguage>;
@@ -127,16 +128,16 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.Equal(emailDistributionListLanguageFirst.EmailDistributionListLanguageID, emailDistributionListLanguageRet.EmailDistributionListLanguageID);
 
                     BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
+                    Assert.Null(badRequest);
 
                     // Not Found
-                    IHttpActionResult jsonRet2 = emailDistributionListLanguageController.GetEmailDistributionListLanguageWithID(0);
+                    IActionResult jsonRet2 = emailDistributionListLanguageController.GetEmailDistributionListLanguageWithID(0);
                     Assert.NotNull(jsonRet2);
 
                     OkNegotiatedContentResult<EmailDistributionListLanguage> emailDistributionListLanguageRet2 = jsonRet2 as OkNegotiatedContentResult<EmailDistributionListLanguage>;
-                    Assert.IsNull(emailDistributionListLanguageRet2);
+                    Assert.Null(emailDistributionListLanguageRet2);
 
-                    NotFoundResult notFoundRequest = jsonRet2 as NotFoundResult;
+                    NotFoundObjectResult notFoundRequest = jsonRet2 as NotFoundObjectResult;
                     Assert.NotNull(notFoundRequest);
                 }
             }
@@ -168,7 +169,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     }
 
                     // ok with EmailDistributionListLanguage info
-                    IHttpActionResult jsonRet = emailDistributionListLanguageController.GetEmailDistributionListLanguageWithID(emailDistributionListLanguageLast.EmailDistributionListLanguageID);
+                    IActionResult jsonRet = emailDistributionListLanguageController.GetEmailDistributionListLanguageWithID(emailDistributionListLanguageLast.EmailDistributionListLanguageID);
                     Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<EmailDistributionListLanguage> Ret = jsonRet as OkNegotiatedContentResult<EmailDistributionListLanguage>;
@@ -176,14 +177,14 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.Equal(emailDistributionListLanguageLast.EmailDistributionListLanguageID, emailDistributionListLanguageRet.EmailDistributionListLanguageID);
 
                     BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
+                    Assert.Null(badRequest);
 
                     // Post to return CSSPError because EmailDistributionListLanguageID exist
-                    IHttpActionResult jsonRet2 = emailDistributionListLanguageController.Post(emailDistributionListLanguageRet, LanguageRequest.ToString());
+                    IActionResult jsonRet2 = emailDistributionListLanguageController.Post(emailDistributionListLanguageRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet2);
 
                     OkNegotiatedContentResult<EmailDistributionListLanguage> emailDistributionListLanguageRet2 = jsonRet2 as OkNegotiatedContentResult<EmailDistributionListLanguage>;
-                    Assert.IsNull(emailDistributionListLanguageRet2);
+                    Assert.Null(emailDistributionListLanguageRet2);
 
                     BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
                     Assert.NotNull(badRequest2);
@@ -192,23 +193,23 @@ namespace CSSPWebAPI.Tests.Controllers
                     emailDistributionListLanguageRet.EmailDistributionListLanguageID = 0;
                     emailDistributionListLanguageController.Request = new System.Net.Http.HttpRequestMessage();
                     emailDistributionListLanguageController.Request.RequestUri = new System.Uri("http://localhost:5000/api/emailDistributionListLanguage");
-                    IHttpActionResult jsonRet3 = emailDistributionListLanguageController.Post(emailDistributionListLanguageRet, LanguageRequest.ToString());
+                    IActionResult jsonRet3 = emailDistributionListLanguageController.Post(emailDistributionListLanguageRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 
                     CreatedNegotiatedContentResult<EmailDistributionListLanguage> emailDistributionListLanguageRet3 = jsonRet3 as CreatedNegotiatedContentResult<EmailDistributionListLanguage>;
                     Assert.NotNull(emailDistributionListLanguageRet3);
 
                     BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest3);
+                    Assert.Null(badRequest3);
 
-                    IHttpActionResult jsonRet4 = emailDistributionListLanguageController.Delete(emailDistributionListLanguageRet, LanguageRequest.ToString());
+                    IActionResult jsonRet4 = emailDistributionListLanguageController.Delete(emailDistributionListLanguageRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet4);
 
                     OkNegotiatedContentResult<EmailDistributionListLanguage> emailDistributionListLanguageRet4 = jsonRet4 as OkNegotiatedContentResult<EmailDistributionListLanguage>;
                     Assert.NotNull(emailDistributionListLanguageRet4);
 
                     BadRequestErrorMessageResult badRequest4 = jsonRet4 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest4);
+                    Assert.Null(badRequest4);
                 }
             }
         }
@@ -237,7 +238,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     }
 
                     // ok with EmailDistributionListLanguage info
-                    IHttpActionResult jsonRet = emailDistributionListLanguageController.GetEmailDistributionListLanguageWithID(emailDistributionListLanguageLast.EmailDistributionListLanguageID);
+                    IActionResult jsonRet = emailDistributionListLanguageController.GetEmailDistributionListLanguageWithID(emailDistributionListLanguageLast.EmailDistributionListLanguageID);
                     Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<EmailDistributionListLanguage> Ret = jsonRet as OkNegotiatedContentResult<EmailDistributionListLanguage>;
@@ -245,25 +246,25 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.Equal(emailDistributionListLanguageLast.EmailDistributionListLanguageID, emailDistributionListLanguageRet.EmailDistributionListLanguageID);
 
                     BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
+                    Assert.Null(badRequest);
 
                     // Put to return success
-                    IHttpActionResult jsonRet2 = emailDistributionListLanguageController.Put(emailDistributionListLanguageRet, LanguageRequest.ToString());
+                    IActionResult jsonRet2 = emailDistributionListLanguageController.Put(emailDistributionListLanguageRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet2);
 
                     OkNegotiatedContentResult<EmailDistributionListLanguage> emailDistributionListLanguageRet2 = jsonRet2 as OkNegotiatedContentResult<EmailDistributionListLanguage>;
                     Assert.NotNull(emailDistributionListLanguageRet2);
 
                     BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest2);
+                    Assert.Null(badRequest2);
 
                     // Put to return CSSPError because EmailDistributionListLanguageID of 0 does not exist
                     emailDistributionListLanguageRet.EmailDistributionListLanguageID = 0;
-                    IHttpActionResult jsonRet3 = emailDistributionListLanguageController.Put(emailDistributionListLanguageRet, LanguageRequest.ToString());
+                    IActionResult jsonRet3 = emailDistributionListLanguageController.Put(emailDistributionListLanguageRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 
                     OkNegotiatedContentResult<EmailDistributionListLanguage> emailDistributionListLanguageRet3 = jsonRet3 as OkNegotiatedContentResult<EmailDistributionListLanguage>;
-                    Assert.IsNull(emailDistributionListLanguageRet3);
+                    Assert.Null(emailDistributionListLanguageRet3);
 
                     BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
                     Assert.NotNull(badRequest3);
@@ -297,7 +298,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     }
 
                     // ok with EmailDistributionListLanguage info
-                    IHttpActionResult jsonRet = emailDistributionListLanguageController.GetEmailDistributionListLanguageWithID(emailDistributionListLanguageLast.EmailDistributionListLanguageID);
+                    IActionResult jsonRet = emailDistributionListLanguageController.GetEmailDistributionListLanguageWithID(emailDistributionListLanguageLast.EmailDistributionListLanguageID);
                     Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<EmailDistributionListLanguage> Ret = jsonRet as OkNegotiatedContentResult<EmailDistributionListLanguage>;
@@ -305,13 +306,13 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.Equal(emailDistributionListLanguageLast.EmailDistributionListLanguageID, emailDistributionListLanguageRet.EmailDistributionListLanguageID);
 
                     BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
+                    Assert.Null(badRequest);
 
                     // Post to return newly added EmailDistributionListLanguage
                     emailDistributionListLanguageRet.EmailDistributionListLanguageID = 0;
                     emailDistributionListLanguageController.Request = new System.Net.Http.HttpRequestMessage();
                     emailDistributionListLanguageController.Request.RequestUri = new System.Uri("http://localhost:5000/api/emailDistributionListLanguage");
-                    IHttpActionResult jsonRet3 = emailDistributionListLanguageController.Post(emailDistributionListLanguageRet, LanguageRequest.ToString());
+                    IActionResult jsonRet3 = emailDistributionListLanguageController.Post(emailDistributionListLanguageRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 
                     CreatedNegotiatedContentResult<EmailDistributionListLanguage> emailDistributionListLanguageRet3 = jsonRet3 as CreatedNegotiatedContentResult<EmailDistributionListLanguage>;
@@ -319,25 +320,25 @@ namespace CSSPWebAPI.Tests.Controllers
                     EmailDistributionListLanguage emailDistributionListLanguage = emailDistributionListLanguageRet3.Content;
 
                     BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest3);
+                    Assert.Null(badRequest3);
 
                     // Delete to return success
-                    IHttpActionResult jsonRet2 = emailDistributionListLanguageController.Delete(emailDistributionListLanguageRet, LanguageRequest.ToString());
+                    IActionResult jsonRet2 = emailDistributionListLanguageController.Delete(emailDistributionListLanguageRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet2);
 
                     OkNegotiatedContentResult<EmailDistributionListLanguage> emailDistributionListLanguageRet2 = jsonRet2 as OkNegotiatedContentResult<EmailDistributionListLanguage>;
                     Assert.NotNull(emailDistributionListLanguageRet2);
 
                     BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest2);
+                    Assert.Null(badRequest2);
 
                     // Delete to return CSSPError because EmailDistributionListLanguageID of 0 does not exist
                     emailDistributionListLanguageRet.EmailDistributionListLanguageID = 0;
-                    IHttpActionResult jsonRet4 = emailDistributionListLanguageController.Delete(emailDistributionListLanguageRet, LanguageRequest.ToString());
+                    IActionResult jsonRet4 = emailDistributionListLanguageController.Delete(emailDistributionListLanguageRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet4);
 
                     OkNegotiatedContentResult<EmailDistributionListLanguage> emailDistributionListLanguageRet4 = jsonRet4 as OkNegotiatedContentResult<EmailDistributionListLanguage>;
-                    Assert.IsNull(emailDistributionListLanguageRet4);
+                    Assert.Null(emailDistributionListLanguageRet4);
 
                     BadRequestErrorMessageResult badRequest4 = jsonRet4 as BadRequestErrorMessageResult;
                     Assert.NotNull(badRequest4);

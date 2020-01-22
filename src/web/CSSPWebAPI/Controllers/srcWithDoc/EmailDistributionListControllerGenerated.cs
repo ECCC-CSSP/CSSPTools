@@ -1,14 +1,14 @@
 using CSSPEnums;
 using CSSPModels;
 using CSSPServices;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web.Http;
 
 namespace CSSPWebAPI.Controllers
 {
-    [RoutePrefix("api/emailDistributionList")]
+    [Route("api/emailDistributionList")]
     public partial class EmailDistributionListController : BaseController
     {
         #region Variables
@@ -29,126 +29,56 @@ namespace CSSPWebAPI.Controllers
         #region Functions public
         // GET api/emailDistributionList
         [Route("")]
-        public IHttpActionResult GetEmailDistributionListList([FromUri]string lang = "en", [FromUri]int skip = 0, [FromUri]int take = 200,
-            [FromUri]string asc = "", [FromUri]string desc = "", [FromUri]string where = "", [FromUri]string extra = "")
+        public IActionResult GetEmailDistributionListList([FromQuery]string lang = "en", [FromQuery]int skip = 0, [FromQuery]int take = 200,
+            [FromQuery]string asc = "", [FromQuery]string desc = "", [FromQuery]string where = "")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
                 EmailDistributionListService emailDistributionListService = new EmailDistributionListService(new Query() { Lang = lang }, db, ContactID);
 
-                if (extra == "A") // QueryString contains [extra=A]
-                {
-                   emailDistributionListService.Query = emailDistributionListService.FillQuery(typeof(EmailDistributionListExtraA), lang, skip, take, asc, desc, where, extra);
+                emailDistributionListService.Query = emailDistributionListService.FillQuery(typeof(EmailDistributionList), lang, skip, take, asc, desc, where);
 
-                    if (emailDistributionListService.Query.HasErrors)
-                    {
-                        return Ok(new List<EmailDistributionListExtraA>()
-                        {
-                            new EmailDistributionListExtraA()
-                            {
-                                HasErrors = emailDistributionListService.Query.HasErrors,
-                                ValidationResults = emailDistributionListService.Query.ValidationResults,
-                            },
-                        }.ToList());
-                    }
-                    else
-                    {
-                        return Ok(emailDistributionListService.GetEmailDistributionListExtraAList().ToList());
-                    }
-                }
-                else if (extra == "B") // QueryString contains [extra=B]
-                {
-                   emailDistributionListService.Query = emailDistributionListService.FillQuery(typeof(EmailDistributionListExtraB), lang, skip, take, asc, desc, where, extra);
-
-                    if (emailDistributionListService.Query.HasErrors)
-                    {
-                        return Ok(new List<EmailDistributionListExtraB>()
-                        {
-                            new EmailDistributionListExtraB()
-                            {
-                                HasErrors = emailDistributionListService.Query.HasErrors,
-                                ValidationResults = emailDistributionListService.Query.ValidationResults,
-                            },
-                        }.ToList());
-                    }
-                    else
-                    {
-                        return Ok(emailDistributionListService.GetEmailDistributionListExtraBList().ToList());
-                    }
-                }
-                else // QueryString has no parameter [extra] or extra is empty
-                {
-                   emailDistributionListService.Query = emailDistributionListService.FillQuery(typeof(EmailDistributionList), lang, skip, take, asc, desc, where, extra);
-
-                    if (emailDistributionListService.Query.HasErrors)
-                    {
-                        return Ok(new List<EmailDistributionList>()
-                        {
-                            new EmailDistributionList()
-                            {
-                                HasErrors = emailDistributionListService.Query.HasErrors,
-                                ValidationResults = emailDistributionListService.Query.ValidationResults,
-                            },
-                        }.ToList());
-                    }
-                    else
-                    {
-                        return Ok(emailDistributionListService.GetEmailDistributionListList().ToList());
-                    }
-                }
+                 if (emailDistributionListService.Query.HasErrors)
+                 {
+                     return Ok(new List<EmailDistributionList>()
+                     {
+                         new EmailDistributionList()
+                         {
+                             HasErrors = emailDistributionListService.Query.HasErrors,
+                             ValidationResults = emailDistributionListService.Query.ValidationResults,
+                         },
+                     }.ToList());
+                 }
+                 else
+                 {
+                     return Ok(emailDistributionListService.GetEmailDistributionListList().ToList());
+                 }
             }
         }
         // GET api/emailDistributionList/1
         [Route("{EmailDistributionListID:int}")]
-        public IHttpActionResult GetEmailDistributionListWithID([FromUri]int EmailDistributionListID, [FromUri]string lang = "en", [FromUri]string extra = "")
+        public IActionResult GetEmailDistributionListWithID([FromQuery]int EmailDistributionListID, [FromQuery]string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
                 EmailDistributionListService emailDistributionListService = new EmailDistributionListService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
 
-                emailDistributionListService.Query = emailDistributionListService.FillQuery(typeof(EmailDistributionList), lang, 0, 1, "", "", extra);
+                emailDistributionListService.Query = emailDistributionListService.FillQuery(typeof(EmailDistributionList), lang, 0, 1, "", "");
 
-                if (emailDistributionListService.Query.Extra == "A")
+                EmailDistributionList emailDistributionList = new EmailDistributionList();
+                emailDistributionList = emailDistributionListService.GetEmailDistributionListWithEmailDistributionListID(EmailDistributionListID);
+
+                if (emailDistributionList == null)
                 {
-                    EmailDistributionListExtraA emailDistributionListExtraA = new EmailDistributionListExtraA();
-                    emailDistributionListExtraA = emailDistributionListService.GetEmailDistributionListExtraAWithEmailDistributionListID(EmailDistributionListID);
-
-                    if (emailDistributionListExtraA == null)
-                    {
-                        return NotFound();
-                    }
-
-                    return Ok(emailDistributionListExtraA);
+                    return NotFound();
                 }
-                else if (emailDistributionListService.Query.Extra == "B")
-                {
-                    EmailDistributionListExtraB emailDistributionListExtraB = new EmailDistributionListExtraB();
-                    emailDistributionListExtraB = emailDistributionListService.GetEmailDistributionListExtraBWithEmailDistributionListID(EmailDistributionListID);
 
-                    if (emailDistributionListExtraB == null)
-                    {
-                        return NotFound();
-                    }
-
-                    return Ok(emailDistributionListExtraB);
-                }
-                else
-                {
-                    EmailDistributionList emailDistributionList = new EmailDistributionList();
-                    emailDistributionList = emailDistributionListService.GetEmailDistributionListWithEmailDistributionListID(EmailDistributionListID);
-
-                    if (emailDistributionList == null)
-                    {
-                        return NotFound();
-                    }
-
-                    return Ok(emailDistributionList);
-                }
+                return Ok(emailDistributionList);
             }
         }
         // POST api/emailDistributionList
         [Route("")]
-        public IHttpActionResult Post([FromBody]EmailDistributionList emailDistributionList, [FromUri]string lang = "en")
+        public IActionResult Post([FromBody]EmailDistributionList emailDistributionList, [FromQuery]string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
@@ -161,13 +91,13 @@ namespace CSSPWebAPI.Controllers
                 else
                 {
                     emailDistributionList.ValidationResults = null;
-                    return Created<EmailDistributionList>(new Uri(Request.RequestUri, emailDistributionList.EmailDistributionListID.ToString()), emailDistributionList);
+                    return Created(Url.ToString(), emailDistributionList);
                 }
             }
         }
         // PUT api/emailDistributionList
         [Route("")]
-        public IHttpActionResult Put([FromBody]EmailDistributionList emailDistributionList, [FromUri]string lang = "en")
+        public IActionResult Put([FromBody]EmailDistributionList emailDistributionList, [FromQuery]string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
@@ -186,7 +116,7 @@ namespace CSSPWebAPI.Controllers
         }
         // DELETE api/emailDistributionList
         [Route("")]
-        public IHttpActionResult Delete([FromBody]EmailDistributionList emailDistributionList, [FromUri]string lang = "en")
+        public IActionResult Delete([FromBody]EmailDistributionList emailDistributionList, [FromQuery]string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {

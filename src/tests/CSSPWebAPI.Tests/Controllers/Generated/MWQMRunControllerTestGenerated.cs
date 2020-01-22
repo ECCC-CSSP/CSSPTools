@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
 using System.Web.Http.Results;
+using Microsoft.AspNetCore.Mvc;
 
 namespace CSSPWebAPI.Tests.Controllers
 {
@@ -48,7 +49,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     }
 
                     // ok with MWQMRun info
-                    IHttpActionResult jsonRet = mwqmRunController.GetMWQMRunList();
+                    IActionResult jsonRet = mwqmRunController.GetMWQMRunList();
                     Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<List<MWQMRun>> ret = jsonRet as OkNegotiatedContentResult<List<MWQMRun>>;
@@ -86,7 +87,7 @@ namespace CSSPWebAPI.Tests.Controllers
                            count = (query.Take > count ? query.Take : count);
 
                            // ok with MWQMRun info
-                           IHttpActionResult jsonRet2 = mwqmRunController.GetMWQMRunList(query.Language.ToString(), query.Skip, query.Take);
+                           IActionResult jsonRet2 = mwqmRunController.GetMWQMRunList(query.Language.ToString(), query.Skip, query.Take);
                            Assert.NotNull(jsonRet2);
 
                            OkNegotiatedContentResult<List<MWQMRun>> ret2 = jsonRet2 as OkNegotiatedContentResult<List<MWQMRun>>;
@@ -119,7 +120,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     }
 
                     // ok with MWQMRun info
-                    IHttpActionResult jsonRet = mwqmRunController.GetMWQMRunWithID(mwqmRunFirst.MWQMRunID);
+                    IActionResult jsonRet = mwqmRunController.GetMWQMRunWithID(mwqmRunFirst.MWQMRunID);
                     Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<MWQMRun> Ret = jsonRet as OkNegotiatedContentResult<MWQMRun>;
@@ -127,16 +128,16 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.Equal(mwqmRunFirst.MWQMRunID, mwqmRunRet.MWQMRunID);
 
                     BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
+                    Assert.Null(badRequest);
 
                     // Not Found
-                    IHttpActionResult jsonRet2 = mwqmRunController.GetMWQMRunWithID(0);
+                    IActionResult jsonRet2 = mwqmRunController.GetMWQMRunWithID(0);
                     Assert.NotNull(jsonRet2);
 
                     OkNegotiatedContentResult<MWQMRun> mwqmRunRet2 = jsonRet2 as OkNegotiatedContentResult<MWQMRun>;
-                    Assert.IsNull(mwqmRunRet2);
+                    Assert.Null(mwqmRunRet2);
 
-                    NotFoundResult notFoundRequest = jsonRet2 as NotFoundResult;
+                    NotFoundObjectResult notFoundRequest = jsonRet2 as NotFoundObjectResult;
                     Assert.NotNull(notFoundRequest);
                 }
             }
@@ -168,7 +169,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     }
 
                     // ok with MWQMRun info
-                    IHttpActionResult jsonRet = mwqmRunController.GetMWQMRunWithID(mwqmRunLast.MWQMRunID);
+                    IActionResult jsonRet = mwqmRunController.GetMWQMRunWithID(mwqmRunLast.MWQMRunID);
                     Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<MWQMRun> Ret = jsonRet as OkNegotiatedContentResult<MWQMRun>;
@@ -176,14 +177,14 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.Equal(mwqmRunLast.MWQMRunID, mwqmRunRet.MWQMRunID);
 
                     BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
+                    Assert.Null(badRequest);
 
                     // Post to return CSSPError because MWQMRunID exist
-                    IHttpActionResult jsonRet2 = mwqmRunController.Post(mwqmRunRet, LanguageRequest.ToString());
+                    IActionResult jsonRet2 = mwqmRunController.Post(mwqmRunRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet2);
 
                     OkNegotiatedContentResult<MWQMRun> mwqmRunRet2 = jsonRet2 as OkNegotiatedContentResult<MWQMRun>;
-                    Assert.IsNull(mwqmRunRet2);
+                    Assert.Null(mwqmRunRet2);
 
                     BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
                     Assert.NotNull(badRequest2);
@@ -192,23 +193,23 @@ namespace CSSPWebAPI.Tests.Controllers
                     mwqmRunRet.MWQMRunID = 0;
                     mwqmRunController.Request = new System.Net.Http.HttpRequestMessage();
                     mwqmRunController.Request.RequestUri = new System.Uri("http://localhost:5000/api/mwqmRun");
-                    IHttpActionResult jsonRet3 = mwqmRunController.Post(mwqmRunRet, LanguageRequest.ToString());
+                    IActionResult jsonRet3 = mwqmRunController.Post(mwqmRunRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 
                     CreatedNegotiatedContentResult<MWQMRun> mwqmRunRet3 = jsonRet3 as CreatedNegotiatedContentResult<MWQMRun>;
                     Assert.NotNull(mwqmRunRet3);
 
                     BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest3);
+                    Assert.Null(badRequest3);
 
-                    IHttpActionResult jsonRet4 = mwqmRunController.Delete(mwqmRunRet, LanguageRequest.ToString());
+                    IActionResult jsonRet4 = mwqmRunController.Delete(mwqmRunRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet4);
 
                     OkNegotiatedContentResult<MWQMRun> mwqmRunRet4 = jsonRet4 as OkNegotiatedContentResult<MWQMRun>;
                     Assert.NotNull(mwqmRunRet4);
 
                     BadRequestErrorMessageResult badRequest4 = jsonRet4 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest4);
+                    Assert.Null(badRequest4);
                 }
             }
         }
@@ -237,7 +238,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     }
 
                     // ok with MWQMRun info
-                    IHttpActionResult jsonRet = mwqmRunController.GetMWQMRunWithID(mwqmRunLast.MWQMRunID);
+                    IActionResult jsonRet = mwqmRunController.GetMWQMRunWithID(mwqmRunLast.MWQMRunID);
                     Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<MWQMRun> Ret = jsonRet as OkNegotiatedContentResult<MWQMRun>;
@@ -245,25 +246,25 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.Equal(mwqmRunLast.MWQMRunID, mwqmRunRet.MWQMRunID);
 
                     BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
+                    Assert.Null(badRequest);
 
                     // Put to return success
-                    IHttpActionResult jsonRet2 = mwqmRunController.Put(mwqmRunRet, LanguageRequest.ToString());
+                    IActionResult jsonRet2 = mwqmRunController.Put(mwqmRunRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet2);
 
                     OkNegotiatedContentResult<MWQMRun> mwqmRunRet2 = jsonRet2 as OkNegotiatedContentResult<MWQMRun>;
                     Assert.NotNull(mwqmRunRet2);
 
                     BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest2);
+                    Assert.Null(badRequest2);
 
                     // Put to return CSSPError because MWQMRunID of 0 does not exist
                     mwqmRunRet.MWQMRunID = 0;
-                    IHttpActionResult jsonRet3 = mwqmRunController.Put(mwqmRunRet, LanguageRequest.ToString());
+                    IActionResult jsonRet3 = mwqmRunController.Put(mwqmRunRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 
                     OkNegotiatedContentResult<MWQMRun> mwqmRunRet3 = jsonRet3 as OkNegotiatedContentResult<MWQMRun>;
-                    Assert.IsNull(mwqmRunRet3);
+                    Assert.Null(mwqmRunRet3);
 
                     BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
                     Assert.NotNull(badRequest3);
@@ -297,7 +298,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     }
 
                     // ok with MWQMRun info
-                    IHttpActionResult jsonRet = mwqmRunController.GetMWQMRunWithID(mwqmRunLast.MWQMRunID);
+                    IActionResult jsonRet = mwqmRunController.GetMWQMRunWithID(mwqmRunLast.MWQMRunID);
                     Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<MWQMRun> Ret = jsonRet as OkNegotiatedContentResult<MWQMRun>;
@@ -305,13 +306,13 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.Equal(mwqmRunLast.MWQMRunID, mwqmRunRet.MWQMRunID);
 
                     BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
+                    Assert.Null(badRequest);
 
                     // Post to return newly added MWQMRun
                     mwqmRunRet.MWQMRunID = 0;
                     mwqmRunController.Request = new System.Net.Http.HttpRequestMessage();
                     mwqmRunController.Request.RequestUri = new System.Uri("http://localhost:5000/api/mwqmRun");
-                    IHttpActionResult jsonRet3 = mwqmRunController.Post(mwqmRunRet, LanguageRequest.ToString());
+                    IActionResult jsonRet3 = mwqmRunController.Post(mwqmRunRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 
                     CreatedNegotiatedContentResult<MWQMRun> mwqmRunRet3 = jsonRet3 as CreatedNegotiatedContentResult<MWQMRun>;
@@ -319,25 +320,25 @@ namespace CSSPWebAPI.Tests.Controllers
                     MWQMRun mwqmRun = mwqmRunRet3.Content;
 
                     BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest3);
+                    Assert.Null(badRequest3);
 
                     // Delete to return success
-                    IHttpActionResult jsonRet2 = mwqmRunController.Delete(mwqmRunRet, LanguageRequest.ToString());
+                    IActionResult jsonRet2 = mwqmRunController.Delete(mwqmRunRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet2);
 
                     OkNegotiatedContentResult<MWQMRun> mwqmRunRet2 = jsonRet2 as OkNegotiatedContentResult<MWQMRun>;
                     Assert.NotNull(mwqmRunRet2);
 
                     BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest2);
+                    Assert.Null(badRequest2);
 
                     // Delete to return CSSPError because MWQMRunID of 0 does not exist
                     mwqmRunRet.MWQMRunID = 0;
-                    IHttpActionResult jsonRet4 = mwqmRunController.Delete(mwqmRunRet, LanguageRequest.ToString());
+                    IActionResult jsonRet4 = mwqmRunController.Delete(mwqmRunRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet4);
 
                     OkNegotiatedContentResult<MWQMRun> mwqmRunRet4 = jsonRet4 as OkNegotiatedContentResult<MWQMRun>;
-                    Assert.IsNull(mwqmRunRet4);
+                    Assert.Null(mwqmRunRet4);
 
                     BadRequestErrorMessageResult badRequest4 = jsonRet4 as BadRequestErrorMessageResult;
                     Assert.NotNull(badRequest4);

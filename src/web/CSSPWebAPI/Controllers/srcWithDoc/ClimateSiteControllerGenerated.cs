@@ -1,14 +1,14 @@
 using CSSPEnums;
 using CSSPModels;
 using CSSPServices;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web.Http;
 
 namespace CSSPWebAPI.Controllers
 {
-    [RoutePrefix("api/climateSite")]
+    [Route("api/climateSite")]
     public partial class ClimateSiteController : BaseController
     {
         #region Variables
@@ -29,126 +29,56 @@ namespace CSSPWebAPI.Controllers
         #region Functions public
         // GET api/climateSite
         [Route("")]
-        public IHttpActionResult GetClimateSiteList([FromUri]string lang = "en", [FromUri]int skip = 0, [FromUri]int take = 200,
-            [FromUri]string asc = "", [FromUri]string desc = "", [FromUri]string where = "", [FromUri]string extra = "")
+        public IActionResult GetClimateSiteList([FromQuery]string lang = "en", [FromQuery]int skip = 0, [FromQuery]int take = 200,
+            [FromQuery]string asc = "", [FromQuery]string desc = "", [FromQuery]string where = "")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
                 ClimateSiteService climateSiteService = new ClimateSiteService(new Query() { Lang = lang }, db, ContactID);
 
-                if (extra == "A") // QueryString contains [extra=A]
-                {
-                   climateSiteService.Query = climateSiteService.FillQuery(typeof(ClimateSiteExtraA), lang, skip, take, asc, desc, where, extra);
+                climateSiteService.Query = climateSiteService.FillQuery(typeof(ClimateSite), lang, skip, take, asc, desc, where);
 
-                    if (climateSiteService.Query.HasErrors)
-                    {
-                        return Ok(new List<ClimateSiteExtraA>()
-                        {
-                            new ClimateSiteExtraA()
-                            {
-                                HasErrors = climateSiteService.Query.HasErrors,
-                                ValidationResults = climateSiteService.Query.ValidationResults,
-                            },
-                        }.ToList());
-                    }
-                    else
-                    {
-                        return Ok(climateSiteService.GetClimateSiteExtraAList().ToList());
-                    }
-                }
-                else if (extra == "B") // QueryString contains [extra=B]
-                {
-                   climateSiteService.Query = climateSiteService.FillQuery(typeof(ClimateSiteExtraB), lang, skip, take, asc, desc, where, extra);
-
-                    if (climateSiteService.Query.HasErrors)
-                    {
-                        return Ok(new List<ClimateSiteExtraB>()
-                        {
-                            new ClimateSiteExtraB()
-                            {
-                                HasErrors = climateSiteService.Query.HasErrors,
-                                ValidationResults = climateSiteService.Query.ValidationResults,
-                            },
-                        }.ToList());
-                    }
-                    else
-                    {
-                        return Ok(climateSiteService.GetClimateSiteExtraBList().ToList());
-                    }
-                }
-                else // QueryString has no parameter [extra] or extra is empty
-                {
-                   climateSiteService.Query = climateSiteService.FillQuery(typeof(ClimateSite), lang, skip, take, asc, desc, where, extra);
-
-                    if (climateSiteService.Query.HasErrors)
-                    {
-                        return Ok(new List<ClimateSite>()
-                        {
-                            new ClimateSite()
-                            {
-                                HasErrors = climateSiteService.Query.HasErrors,
-                                ValidationResults = climateSiteService.Query.ValidationResults,
-                            },
-                        }.ToList());
-                    }
-                    else
-                    {
-                        return Ok(climateSiteService.GetClimateSiteList().ToList());
-                    }
-                }
+                 if (climateSiteService.Query.HasErrors)
+                 {
+                     return Ok(new List<ClimateSite>()
+                     {
+                         new ClimateSite()
+                         {
+                             HasErrors = climateSiteService.Query.HasErrors,
+                             ValidationResults = climateSiteService.Query.ValidationResults,
+                         },
+                     }.ToList());
+                 }
+                 else
+                 {
+                     return Ok(climateSiteService.GetClimateSiteList().ToList());
+                 }
             }
         }
         // GET api/climateSite/1
         [Route("{ClimateSiteID:int}")]
-        public IHttpActionResult GetClimateSiteWithID([FromUri]int ClimateSiteID, [FromUri]string lang = "en", [FromUri]string extra = "")
+        public IActionResult GetClimateSiteWithID([FromQuery]int ClimateSiteID, [FromQuery]string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
                 ClimateSiteService climateSiteService = new ClimateSiteService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
 
-                climateSiteService.Query = climateSiteService.FillQuery(typeof(ClimateSite), lang, 0, 1, "", "", extra);
+                climateSiteService.Query = climateSiteService.FillQuery(typeof(ClimateSite), lang, 0, 1, "", "");
 
-                if (climateSiteService.Query.Extra == "A")
+                ClimateSite climateSite = new ClimateSite();
+                climateSite = climateSiteService.GetClimateSiteWithClimateSiteID(ClimateSiteID);
+
+                if (climateSite == null)
                 {
-                    ClimateSiteExtraA climateSiteExtraA = new ClimateSiteExtraA();
-                    climateSiteExtraA = climateSiteService.GetClimateSiteExtraAWithClimateSiteID(ClimateSiteID);
-
-                    if (climateSiteExtraA == null)
-                    {
-                        return NotFound();
-                    }
-
-                    return Ok(climateSiteExtraA);
+                    return NotFound();
                 }
-                else if (climateSiteService.Query.Extra == "B")
-                {
-                    ClimateSiteExtraB climateSiteExtraB = new ClimateSiteExtraB();
-                    climateSiteExtraB = climateSiteService.GetClimateSiteExtraBWithClimateSiteID(ClimateSiteID);
 
-                    if (climateSiteExtraB == null)
-                    {
-                        return NotFound();
-                    }
-
-                    return Ok(climateSiteExtraB);
-                }
-                else
-                {
-                    ClimateSite climateSite = new ClimateSite();
-                    climateSite = climateSiteService.GetClimateSiteWithClimateSiteID(ClimateSiteID);
-
-                    if (climateSite == null)
-                    {
-                        return NotFound();
-                    }
-
-                    return Ok(climateSite);
-                }
+                return Ok(climateSite);
             }
         }
         // POST api/climateSite
         [Route("")]
-        public IHttpActionResult Post([FromBody]ClimateSite climateSite, [FromUri]string lang = "en")
+        public IActionResult Post([FromBody]ClimateSite climateSite, [FromQuery]string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
@@ -161,13 +91,13 @@ namespace CSSPWebAPI.Controllers
                 else
                 {
                     climateSite.ValidationResults = null;
-                    return Created<ClimateSite>(new Uri(Request.RequestUri, climateSite.ClimateSiteID.ToString()), climateSite);
+                    return Created(Url.ToString(), climateSite);
                 }
             }
         }
         // PUT api/climateSite
         [Route("")]
-        public IHttpActionResult Put([FromBody]ClimateSite climateSite, [FromUri]string lang = "en")
+        public IActionResult Put([FromBody]ClimateSite climateSite, [FromQuery]string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
@@ -186,7 +116,7 @@ namespace CSSPWebAPI.Controllers
         }
         // DELETE api/climateSite
         [Route("")]
-        public IHttpActionResult Delete([FromBody]ClimateSite climateSite, [FromUri]string lang = "en")
+        public IActionResult Delete([FromBody]ClimateSite climateSite, [FromQuery]string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {

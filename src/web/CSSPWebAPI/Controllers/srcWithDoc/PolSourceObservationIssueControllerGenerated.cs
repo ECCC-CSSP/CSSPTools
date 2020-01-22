@@ -1,14 +1,14 @@
 using CSSPEnums;
 using CSSPModels;
 using CSSPServices;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web.Http;
 
 namespace CSSPWebAPI.Controllers
 {
-    [RoutePrefix("api/polSourceObservationIssue")]
+    [Route("api/polSourceObservationIssue")]
     public partial class PolSourceObservationIssueController : BaseController
     {
         #region Variables
@@ -29,126 +29,56 @@ namespace CSSPWebAPI.Controllers
         #region Functions public
         // GET api/polSourceObservationIssue
         [Route("")]
-        public IHttpActionResult GetPolSourceObservationIssueList([FromUri]string lang = "en", [FromUri]int skip = 0, [FromUri]int take = 200,
-            [FromUri]string asc = "", [FromUri]string desc = "", [FromUri]string where = "", [FromUri]string extra = "")
+        public IActionResult GetPolSourceObservationIssueList([FromQuery]string lang = "en", [FromQuery]int skip = 0, [FromQuery]int take = 200,
+            [FromQuery]string asc = "", [FromQuery]string desc = "", [FromQuery]string where = "")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
                 PolSourceObservationIssueService polSourceObservationIssueService = new PolSourceObservationIssueService(new Query() { Lang = lang }, db, ContactID);
 
-                if (extra == "A") // QueryString contains [extra=A]
-                {
-                   polSourceObservationIssueService.Query = polSourceObservationIssueService.FillQuery(typeof(PolSourceObservationIssueExtraA), lang, skip, take, asc, desc, where, extra);
+                polSourceObservationIssueService.Query = polSourceObservationIssueService.FillQuery(typeof(PolSourceObservationIssue), lang, skip, take, asc, desc, where);
 
-                    if (polSourceObservationIssueService.Query.HasErrors)
-                    {
-                        return Ok(new List<PolSourceObservationIssueExtraA>()
-                        {
-                            new PolSourceObservationIssueExtraA()
-                            {
-                                HasErrors = polSourceObservationIssueService.Query.HasErrors,
-                                ValidationResults = polSourceObservationIssueService.Query.ValidationResults,
-                            },
-                        }.ToList());
-                    }
-                    else
-                    {
-                        return Ok(polSourceObservationIssueService.GetPolSourceObservationIssueExtraAList().ToList());
-                    }
-                }
-                else if (extra == "B") // QueryString contains [extra=B]
-                {
-                   polSourceObservationIssueService.Query = polSourceObservationIssueService.FillQuery(typeof(PolSourceObservationIssueExtraB), lang, skip, take, asc, desc, where, extra);
-
-                    if (polSourceObservationIssueService.Query.HasErrors)
-                    {
-                        return Ok(new List<PolSourceObservationIssueExtraB>()
-                        {
-                            new PolSourceObservationIssueExtraB()
-                            {
-                                HasErrors = polSourceObservationIssueService.Query.HasErrors,
-                                ValidationResults = polSourceObservationIssueService.Query.ValidationResults,
-                            },
-                        }.ToList());
-                    }
-                    else
-                    {
-                        return Ok(polSourceObservationIssueService.GetPolSourceObservationIssueExtraBList().ToList());
-                    }
-                }
-                else // QueryString has no parameter [extra] or extra is empty
-                {
-                   polSourceObservationIssueService.Query = polSourceObservationIssueService.FillQuery(typeof(PolSourceObservationIssue), lang, skip, take, asc, desc, where, extra);
-
-                    if (polSourceObservationIssueService.Query.HasErrors)
-                    {
-                        return Ok(new List<PolSourceObservationIssue>()
-                        {
-                            new PolSourceObservationIssue()
-                            {
-                                HasErrors = polSourceObservationIssueService.Query.HasErrors,
-                                ValidationResults = polSourceObservationIssueService.Query.ValidationResults,
-                            },
-                        }.ToList());
-                    }
-                    else
-                    {
-                        return Ok(polSourceObservationIssueService.GetPolSourceObservationIssueList().ToList());
-                    }
-                }
+                 if (polSourceObservationIssueService.Query.HasErrors)
+                 {
+                     return Ok(new List<PolSourceObservationIssue>()
+                     {
+                         new PolSourceObservationIssue()
+                         {
+                             HasErrors = polSourceObservationIssueService.Query.HasErrors,
+                             ValidationResults = polSourceObservationIssueService.Query.ValidationResults,
+                         },
+                     }.ToList());
+                 }
+                 else
+                 {
+                     return Ok(polSourceObservationIssueService.GetPolSourceObservationIssueList().ToList());
+                 }
             }
         }
         // GET api/polSourceObservationIssue/1
         [Route("{PolSourceObservationIssueID:int}")]
-        public IHttpActionResult GetPolSourceObservationIssueWithID([FromUri]int PolSourceObservationIssueID, [FromUri]string lang = "en", [FromUri]string extra = "")
+        public IActionResult GetPolSourceObservationIssueWithID([FromQuery]int PolSourceObservationIssueID, [FromQuery]string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
                 PolSourceObservationIssueService polSourceObservationIssueService = new PolSourceObservationIssueService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
 
-                polSourceObservationIssueService.Query = polSourceObservationIssueService.FillQuery(typeof(PolSourceObservationIssue), lang, 0, 1, "", "", extra);
+                polSourceObservationIssueService.Query = polSourceObservationIssueService.FillQuery(typeof(PolSourceObservationIssue), lang, 0, 1, "", "");
 
-                if (polSourceObservationIssueService.Query.Extra == "A")
+                PolSourceObservationIssue polSourceObservationIssue = new PolSourceObservationIssue();
+                polSourceObservationIssue = polSourceObservationIssueService.GetPolSourceObservationIssueWithPolSourceObservationIssueID(PolSourceObservationIssueID);
+
+                if (polSourceObservationIssue == null)
                 {
-                    PolSourceObservationIssueExtraA polSourceObservationIssueExtraA = new PolSourceObservationIssueExtraA();
-                    polSourceObservationIssueExtraA = polSourceObservationIssueService.GetPolSourceObservationIssueExtraAWithPolSourceObservationIssueID(PolSourceObservationIssueID);
-
-                    if (polSourceObservationIssueExtraA == null)
-                    {
-                        return NotFound();
-                    }
-
-                    return Ok(polSourceObservationIssueExtraA);
+                    return NotFound();
                 }
-                else if (polSourceObservationIssueService.Query.Extra == "B")
-                {
-                    PolSourceObservationIssueExtraB polSourceObservationIssueExtraB = new PolSourceObservationIssueExtraB();
-                    polSourceObservationIssueExtraB = polSourceObservationIssueService.GetPolSourceObservationIssueExtraBWithPolSourceObservationIssueID(PolSourceObservationIssueID);
 
-                    if (polSourceObservationIssueExtraB == null)
-                    {
-                        return NotFound();
-                    }
-
-                    return Ok(polSourceObservationIssueExtraB);
-                }
-                else
-                {
-                    PolSourceObservationIssue polSourceObservationIssue = new PolSourceObservationIssue();
-                    polSourceObservationIssue = polSourceObservationIssueService.GetPolSourceObservationIssueWithPolSourceObservationIssueID(PolSourceObservationIssueID);
-
-                    if (polSourceObservationIssue == null)
-                    {
-                        return NotFound();
-                    }
-
-                    return Ok(polSourceObservationIssue);
-                }
+                return Ok(polSourceObservationIssue);
             }
         }
         // POST api/polSourceObservationIssue
         [Route("")]
-        public IHttpActionResult Post([FromBody]PolSourceObservationIssue polSourceObservationIssue, [FromUri]string lang = "en")
+        public IActionResult Post([FromBody]PolSourceObservationIssue polSourceObservationIssue, [FromQuery]string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
@@ -161,13 +91,13 @@ namespace CSSPWebAPI.Controllers
                 else
                 {
                     polSourceObservationIssue.ValidationResults = null;
-                    return Created<PolSourceObservationIssue>(new Uri(Request.RequestUri, polSourceObservationIssue.PolSourceObservationIssueID.ToString()), polSourceObservationIssue);
+                    return Created(Url.ToString(), polSourceObservationIssue);
                 }
             }
         }
         // PUT api/polSourceObservationIssue
         [Route("")]
-        public IHttpActionResult Put([FromBody]PolSourceObservationIssue polSourceObservationIssue, [FromUri]string lang = "en")
+        public IActionResult Put([FromBody]PolSourceObservationIssue polSourceObservationIssue, [FromQuery]string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
@@ -186,7 +116,7 @@ namespace CSSPWebAPI.Controllers
         }
         // DELETE api/polSourceObservationIssue
         [Route("")]
-        public IHttpActionResult Delete([FromBody]PolSourceObservationIssue polSourceObservationIssue, [FromUri]string lang = "en")
+        public IActionResult Delete([FromBody]PolSourceObservationIssue polSourceObservationIssue, [FromQuery]string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {

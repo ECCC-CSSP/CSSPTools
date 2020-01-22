@@ -1,14 +1,14 @@
 using CSSPEnums;
 using CSSPModels;
 using CSSPServices;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web.Http;
 
 namespace CSSPWebAPI.Controllers
 {
-    [RoutePrefix("api/mikeSource")]
+    [Route("api/mikeSource")]
     public partial class MikeSourceController : BaseController
     {
         #region Variables
@@ -29,126 +29,56 @@ namespace CSSPWebAPI.Controllers
         #region Functions public
         // GET api/mikeSource
         [Route("")]
-        public IHttpActionResult GetMikeSourceList([FromUri]string lang = "en", [FromUri]int skip = 0, [FromUri]int take = 200,
-            [FromUri]string asc = "", [FromUri]string desc = "", [FromUri]string where = "", [FromUri]string extra = "")
+        public IActionResult GetMikeSourceList([FromQuery]string lang = "en", [FromQuery]int skip = 0, [FromQuery]int take = 200,
+            [FromQuery]string asc = "", [FromQuery]string desc = "", [FromQuery]string where = "")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
                 MikeSourceService mikeSourceService = new MikeSourceService(new Query() { Lang = lang }, db, ContactID);
 
-                if (extra == "A") // QueryString contains [extra=A]
-                {
-                   mikeSourceService.Query = mikeSourceService.FillQuery(typeof(MikeSourceExtraA), lang, skip, take, asc, desc, where, extra);
+                mikeSourceService.Query = mikeSourceService.FillQuery(typeof(MikeSource), lang, skip, take, asc, desc, where);
 
-                    if (mikeSourceService.Query.HasErrors)
-                    {
-                        return Ok(new List<MikeSourceExtraA>()
-                        {
-                            new MikeSourceExtraA()
-                            {
-                                HasErrors = mikeSourceService.Query.HasErrors,
-                                ValidationResults = mikeSourceService.Query.ValidationResults,
-                            },
-                        }.ToList());
-                    }
-                    else
-                    {
-                        return Ok(mikeSourceService.GetMikeSourceExtraAList().ToList());
-                    }
-                }
-                else if (extra == "B") // QueryString contains [extra=B]
-                {
-                   mikeSourceService.Query = mikeSourceService.FillQuery(typeof(MikeSourceExtraB), lang, skip, take, asc, desc, where, extra);
-
-                    if (mikeSourceService.Query.HasErrors)
-                    {
-                        return Ok(new List<MikeSourceExtraB>()
-                        {
-                            new MikeSourceExtraB()
-                            {
-                                HasErrors = mikeSourceService.Query.HasErrors,
-                                ValidationResults = mikeSourceService.Query.ValidationResults,
-                            },
-                        }.ToList());
-                    }
-                    else
-                    {
-                        return Ok(mikeSourceService.GetMikeSourceExtraBList().ToList());
-                    }
-                }
-                else // QueryString has no parameter [extra] or extra is empty
-                {
-                   mikeSourceService.Query = mikeSourceService.FillQuery(typeof(MikeSource), lang, skip, take, asc, desc, where, extra);
-
-                    if (mikeSourceService.Query.HasErrors)
-                    {
-                        return Ok(new List<MikeSource>()
-                        {
-                            new MikeSource()
-                            {
-                                HasErrors = mikeSourceService.Query.HasErrors,
-                                ValidationResults = mikeSourceService.Query.ValidationResults,
-                            },
-                        }.ToList());
-                    }
-                    else
-                    {
-                        return Ok(mikeSourceService.GetMikeSourceList().ToList());
-                    }
-                }
+                 if (mikeSourceService.Query.HasErrors)
+                 {
+                     return Ok(new List<MikeSource>()
+                     {
+                         new MikeSource()
+                         {
+                             HasErrors = mikeSourceService.Query.HasErrors,
+                             ValidationResults = mikeSourceService.Query.ValidationResults,
+                         },
+                     }.ToList());
+                 }
+                 else
+                 {
+                     return Ok(mikeSourceService.GetMikeSourceList().ToList());
+                 }
             }
         }
         // GET api/mikeSource/1
         [Route("{MikeSourceID:int}")]
-        public IHttpActionResult GetMikeSourceWithID([FromUri]int MikeSourceID, [FromUri]string lang = "en", [FromUri]string extra = "")
+        public IActionResult GetMikeSourceWithID([FromQuery]int MikeSourceID, [FromQuery]string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
                 MikeSourceService mikeSourceService = new MikeSourceService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
 
-                mikeSourceService.Query = mikeSourceService.FillQuery(typeof(MikeSource), lang, 0, 1, "", "", extra);
+                mikeSourceService.Query = mikeSourceService.FillQuery(typeof(MikeSource), lang, 0, 1, "", "");
 
-                if (mikeSourceService.Query.Extra == "A")
+                MikeSource mikeSource = new MikeSource();
+                mikeSource = mikeSourceService.GetMikeSourceWithMikeSourceID(MikeSourceID);
+
+                if (mikeSource == null)
                 {
-                    MikeSourceExtraA mikeSourceExtraA = new MikeSourceExtraA();
-                    mikeSourceExtraA = mikeSourceService.GetMikeSourceExtraAWithMikeSourceID(MikeSourceID);
-
-                    if (mikeSourceExtraA == null)
-                    {
-                        return NotFound();
-                    }
-
-                    return Ok(mikeSourceExtraA);
+                    return NotFound();
                 }
-                else if (mikeSourceService.Query.Extra == "B")
-                {
-                    MikeSourceExtraB mikeSourceExtraB = new MikeSourceExtraB();
-                    mikeSourceExtraB = mikeSourceService.GetMikeSourceExtraBWithMikeSourceID(MikeSourceID);
 
-                    if (mikeSourceExtraB == null)
-                    {
-                        return NotFound();
-                    }
-
-                    return Ok(mikeSourceExtraB);
-                }
-                else
-                {
-                    MikeSource mikeSource = new MikeSource();
-                    mikeSource = mikeSourceService.GetMikeSourceWithMikeSourceID(MikeSourceID);
-
-                    if (mikeSource == null)
-                    {
-                        return NotFound();
-                    }
-
-                    return Ok(mikeSource);
-                }
+                return Ok(mikeSource);
             }
         }
         // POST api/mikeSource
         [Route("")]
-        public IHttpActionResult Post([FromBody]MikeSource mikeSource, [FromUri]string lang = "en")
+        public IActionResult Post([FromBody]MikeSource mikeSource, [FromQuery]string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
@@ -161,13 +91,13 @@ namespace CSSPWebAPI.Controllers
                 else
                 {
                     mikeSource.ValidationResults = null;
-                    return Created<MikeSource>(new Uri(Request.RequestUri, mikeSource.MikeSourceID.ToString()), mikeSource);
+                    return Created(Url.ToString(), mikeSource);
                 }
             }
         }
         // PUT api/mikeSource
         [Route("")]
-        public IHttpActionResult Put([FromBody]MikeSource mikeSource, [FromUri]string lang = "en")
+        public IActionResult Put([FromBody]MikeSource mikeSource, [FromQuery]string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
@@ -186,7 +116,7 @@ namespace CSSPWebAPI.Controllers
         }
         // DELETE api/mikeSource
         [Route("")]
-        public IHttpActionResult Delete([FromBody]MikeSource mikeSource, [FromUri]string lang = "en")
+        public IActionResult Delete([FromBody]MikeSource mikeSource, [FromQuery]string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {

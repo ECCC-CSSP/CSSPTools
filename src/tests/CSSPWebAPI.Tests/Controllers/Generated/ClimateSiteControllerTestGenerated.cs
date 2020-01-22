@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
 using System.Web.Http.Results;
+using Microsoft.AspNetCore.Mvc;
 
 namespace CSSPWebAPI.Tests.Controllers
 {
@@ -48,7 +49,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     }
 
                     // ok with ClimateSite info
-                    IHttpActionResult jsonRet = climateSiteController.GetClimateSiteList();
+                    IActionResult jsonRet = climateSiteController.GetClimateSiteList();
                     Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<List<ClimateSite>> ret = jsonRet as OkNegotiatedContentResult<List<ClimateSite>>;
@@ -86,7 +87,7 @@ namespace CSSPWebAPI.Tests.Controllers
                            count = (query.Take > count ? query.Take : count);
 
                            // ok with ClimateSite info
-                           IHttpActionResult jsonRet2 = climateSiteController.GetClimateSiteList(query.Language.ToString(), query.Skip, query.Take);
+                           IActionResult jsonRet2 = climateSiteController.GetClimateSiteList(query.Language.ToString(), query.Skip, query.Take);
                            Assert.NotNull(jsonRet2);
 
                            OkNegotiatedContentResult<List<ClimateSite>> ret2 = jsonRet2 as OkNegotiatedContentResult<List<ClimateSite>>;
@@ -119,7 +120,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     }
 
                     // ok with ClimateSite info
-                    IHttpActionResult jsonRet = climateSiteController.GetClimateSiteWithID(climateSiteFirst.ClimateSiteID);
+                    IActionResult jsonRet = climateSiteController.GetClimateSiteWithID(climateSiteFirst.ClimateSiteID);
                     Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<ClimateSite> Ret = jsonRet as OkNegotiatedContentResult<ClimateSite>;
@@ -127,16 +128,16 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.Equal(climateSiteFirst.ClimateSiteID, climateSiteRet.ClimateSiteID);
 
                     BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
+                    Assert.Null(badRequest);
 
                     // Not Found
-                    IHttpActionResult jsonRet2 = climateSiteController.GetClimateSiteWithID(0);
+                    IActionResult jsonRet2 = climateSiteController.GetClimateSiteWithID(0);
                     Assert.NotNull(jsonRet2);
 
                     OkNegotiatedContentResult<ClimateSite> climateSiteRet2 = jsonRet2 as OkNegotiatedContentResult<ClimateSite>;
-                    Assert.IsNull(climateSiteRet2);
+                    Assert.Null(climateSiteRet2);
 
-                    NotFoundResult notFoundRequest = jsonRet2 as NotFoundResult;
+                    NotFoundObjectResult notFoundRequest = jsonRet2 as NotFoundObjectResult;
                     Assert.NotNull(notFoundRequest);
                 }
             }
@@ -168,7 +169,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     }
 
                     // ok with ClimateSite info
-                    IHttpActionResult jsonRet = climateSiteController.GetClimateSiteWithID(climateSiteLast.ClimateSiteID);
+                    IActionResult jsonRet = climateSiteController.GetClimateSiteWithID(climateSiteLast.ClimateSiteID);
                     Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<ClimateSite> Ret = jsonRet as OkNegotiatedContentResult<ClimateSite>;
@@ -176,14 +177,14 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.Equal(climateSiteLast.ClimateSiteID, climateSiteRet.ClimateSiteID);
 
                     BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
+                    Assert.Null(badRequest);
 
                     // Post to return CSSPError because ClimateSiteID exist
-                    IHttpActionResult jsonRet2 = climateSiteController.Post(climateSiteRet, LanguageRequest.ToString());
+                    IActionResult jsonRet2 = climateSiteController.Post(climateSiteRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet2);
 
                     OkNegotiatedContentResult<ClimateSite> climateSiteRet2 = jsonRet2 as OkNegotiatedContentResult<ClimateSite>;
-                    Assert.IsNull(climateSiteRet2);
+                    Assert.Null(climateSiteRet2);
 
                     BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
                     Assert.NotNull(badRequest2);
@@ -192,23 +193,23 @@ namespace CSSPWebAPI.Tests.Controllers
                     climateSiteRet.ClimateSiteID = 0;
                     climateSiteController.Request = new System.Net.Http.HttpRequestMessage();
                     climateSiteController.Request.RequestUri = new System.Uri("http://localhost:5000/api/climateSite");
-                    IHttpActionResult jsonRet3 = climateSiteController.Post(climateSiteRet, LanguageRequest.ToString());
+                    IActionResult jsonRet3 = climateSiteController.Post(climateSiteRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 
                     CreatedNegotiatedContentResult<ClimateSite> climateSiteRet3 = jsonRet3 as CreatedNegotiatedContentResult<ClimateSite>;
                     Assert.NotNull(climateSiteRet3);
 
                     BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest3);
+                    Assert.Null(badRequest3);
 
-                    IHttpActionResult jsonRet4 = climateSiteController.Delete(climateSiteRet, LanguageRequest.ToString());
+                    IActionResult jsonRet4 = climateSiteController.Delete(climateSiteRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet4);
 
                     OkNegotiatedContentResult<ClimateSite> climateSiteRet4 = jsonRet4 as OkNegotiatedContentResult<ClimateSite>;
                     Assert.NotNull(climateSiteRet4);
 
                     BadRequestErrorMessageResult badRequest4 = jsonRet4 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest4);
+                    Assert.Null(badRequest4);
                 }
             }
         }
@@ -237,7 +238,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     }
 
                     // ok with ClimateSite info
-                    IHttpActionResult jsonRet = climateSiteController.GetClimateSiteWithID(climateSiteLast.ClimateSiteID);
+                    IActionResult jsonRet = climateSiteController.GetClimateSiteWithID(climateSiteLast.ClimateSiteID);
                     Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<ClimateSite> Ret = jsonRet as OkNegotiatedContentResult<ClimateSite>;
@@ -245,25 +246,25 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.Equal(climateSiteLast.ClimateSiteID, climateSiteRet.ClimateSiteID);
 
                     BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
+                    Assert.Null(badRequest);
 
                     // Put to return success
-                    IHttpActionResult jsonRet2 = climateSiteController.Put(climateSiteRet, LanguageRequest.ToString());
+                    IActionResult jsonRet2 = climateSiteController.Put(climateSiteRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet2);
 
                     OkNegotiatedContentResult<ClimateSite> climateSiteRet2 = jsonRet2 as OkNegotiatedContentResult<ClimateSite>;
                     Assert.NotNull(climateSiteRet2);
 
                     BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest2);
+                    Assert.Null(badRequest2);
 
                     // Put to return CSSPError because ClimateSiteID of 0 does not exist
                     climateSiteRet.ClimateSiteID = 0;
-                    IHttpActionResult jsonRet3 = climateSiteController.Put(climateSiteRet, LanguageRequest.ToString());
+                    IActionResult jsonRet3 = climateSiteController.Put(climateSiteRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 
                     OkNegotiatedContentResult<ClimateSite> climateSiteRet3 = jsonRet3 as OkNegotiatedContentResult<ClimateSite>;
-                    Assert.IsNull(climateSiteRet3);
+                    Assert.Null(climateSiteRet3);
 
                     BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
                     Assert.NotNull(badRequest3);
@@ -297,7 +298,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     }
 
                     // ok with ClimateSite info
-                    IHttpActionResult jsonRet = climateSiteController.GetClimateSiteWithID(climateSiteLast.ClimateSiteID);
+                    IActionResult jsonRet = climateSiteController.GetClimateSiteWithID(climateSiteLast.ClimateSiteID);
                     Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<ClimateSite> Ret = jsonRet as OkNegotiatedContentResult<ClimateSite>;
@@ -305,13 +306,13 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.Equal(climateSiteLast.ClimateSiteID, climateSiteRet.ClimateSiteID);
 
                     BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
+                    Assert.Null(badRequest);
 
                     // Post to return newly added ClimateSite
                     climateSiteRet.ClimateSiteID = 0;
                     climateSiteController.Request = new System.Net.Http.HttpRequestMessage();
                     climateSiteController.Request.RequestUri = new System.Uri("http://localhost:5000/api/climateSite");
-                    IHttpActionResult jsonRet3 = climateSiteController.Post(climateSiteRet, LanguageRequest.ToString());
+                    IActionResult jsonRet3 = climateSiteController.Post(climateSiteRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 
                     CreatedNegotiatedContentResult<ClimateSite> climateSiteRet3 = jsonRet3 as CreatedNegotiatedContentResult<ClimateSite>;
@@ -319,25 +320,25 @@ namespace CSSPWebAPI.Tests.Controllers
                     ClimateSite climateSite = climateSiteRet3.Content;
 
                     BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest3);
+                    Assert.Null(badRequest3);
 
                     // Delete to return success
-                    IHttpActionResult jsonRet2 = climateSiteController.Delete(climateSiteRet, LanguageRequest.ToString());
+                    IActionResult jsonRet2 = climateSiteController.Delete(climateSiteRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet2);
 
                     OkNegotiatedContentResult<ClimateSite> climateSiteRet2 = jsonRet2 as OkNegotiatedContentResult<ClimateSite>;
                     Assert.NotNull(climateSiteRet2);
 
                     BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest2);
+                    Assert.Null(badRequest2);
 
                     // Delete to return CSSPError because ClimateSiteID of 0 does not exist
                     climateSiteRet.ClimateSiteID = 0;
-                    IHttpActionResult jsonRet4 = climateSiteController.Delete(climateSiteRet, LanguageRequest.ToString());
+                    IActionResult jsonRet4 = climateSiteController.Delete(climateSiteRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet4);
 
                     OkNegotiatedContentResult<ClimateSite> climateSiteRet4 = jsonRet4 as OkNegotiatedContentResult<ClimateSite>;
-                    Assert.IsNull(climateSiteRet4);
+                    Assert.Null(climateSiteRet4);
 
                     BadRequestErrorMessageResult badRequest4 = jsonRet4 as BadRequestErrorMessageResult;
                     Assert.NotNull(badRequest4);

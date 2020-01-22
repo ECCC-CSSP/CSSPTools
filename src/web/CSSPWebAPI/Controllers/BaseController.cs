@@ -26,21 +26,15 @@ namespace CSSPWebAPI.Controllers
         public BaseController(DatabaseTypeEnum dbt = DatabaseTypeEnum.SqlServerTestDB)
         {
             DatabaseType = dbt;
-        }
-        #endregion Constructors
 
-        #region Functions override
-        override 
-        protected override void Initialize(HttpControllerContext controllerContext)
-        {
-            if (!string.IsNullOrWhiteSpace(controllerContext.RequestContext.Principal.Identity.Name))
+            if (!string.IsNullOrWhiteSpace(User.Identity.Name))
             {
-                if (controllerContext.RequestContext.Principal.Identity.IsAuthenticated)
+                if (User.Identity.IsAuthenticated)
                 {
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
                     {
                         ContactService contactService = new ContactService(new Query(), db, 1);
-                        Contact contact = (from c in db.Contacts select c).Where(c => c.LoginEmail == controllerContext.RequestContext.Principal.Identity.Name).FirstOrDefault();
+                        Contact contact = (from c in db.Contacts select c).Where(c => c.LoginEmail == User.Identity.Name).FirstOrDefault();
 
                         if (contact != null)
                         {
@@ -49,13 +43,10 @@ namespace CSSPWebAPI.Controllers
                     }
                 }
             }
-
-            base.Initialize(controllerContext);
         }
-        #endregion Functions override
+        #endregion Constructors
 
         #region Functions public
-
         #endregion Functions public
 
         #region Functions private

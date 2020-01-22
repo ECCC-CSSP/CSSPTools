@@ -1,14 +1,14 @@
 using CSSPEnums;
 using CSSPModels;
 using CSSPServices;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web.Http;
 
 namespace CSSPWebAPI.Controllers
 {
-    [RoutePrefix("api/vpResult")]
+    [Route("api/vpResult")]
     public partial class VPResultController : BaseController
     {
         #region Variables
@@ -29,126 +29,56 @@ namespace CSSPWebAPI.Controllers
         #region Functions public
         // GET api/vpResult
         [Route("")]
-        public IHttpActionResult GetVPResultList([FromUri]string lang = "en", [FromUri]int skip = 0, [FromUri]int take = 200,
-            [FromUri]string asc = "", [FromUri]string desc = "", [FromUri]string where = "", [FromUri]string extra = "")
+        public IActionResult GetVPResultList([FromQuery]string lang = "en", [FromQuery]int skip = 0, [FromQuery]int take = 200,
+            [FromQuery]string asc = "", [FromQuery]string desc = "", [FromQuery]string where = "")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
                 VPResultService vpResultService = new VPResultService(new Query() { Lang = lang }, db, ContactID);
 
-                if (extra == "A") // QueryString contains [extra=A]
-                {
-                   vpResultService.Query = vpResultService.FillQuery(typeof(VPResultExtraA), lang, skip, take, asc, desc, where, extra);
+                vpResultService.Query = vpResultService.FillQuery(typeof(VPResult), lang, skip, take, asc, desc, where);
 
-                    if (vpResultService.Query.HasErrors)
-                    {
-                        return Ok(new List<VPResultExtraA>()
-                        {
-                            new VPResultExtraA()
-                            {
-                                HasErrors = vpResultService.Query.HasErrors,
-                                ValidationResults = vpResultService.Query.ValidationResults,
-                            },
-                        }.ToList());
-                    }
-                    else
-                    {
-                        return Ok(vpResultService.GetVPResultExtraAList().ToList());
-                    }
-                }
-                else if (extra == "B") // QueryString contains [extra=B]
-                {
-                   vpResultService.Query = vpResultService.FillQuery(typeof(VPResultExtraB), lang, skip, take, asc, desc, where, extra);
-
-                    if (vpResultService.Query.HasErrors)
-                    {
-                        return Ok(new List<VPResultExtraB>()
-                        {
-                            new VPResultExtraB()
-                            {
-                                HasErrors = vpResultService.Query.HasErrors,
-                                ValidationResults = vpResultService.Query.ValidationResults,
-                            },
-                        }.ToList());
-                    }
-                    else
-                    {
-                        return Ok(vpResultService.GetVPResultExtraBList().ToList());
-                    }
-                }
-                else // QueryString has no parameter [extra] or extra is empty
-                {
-                   vpResultService.Query = vpResultService.FillQuery(typeof(VPResult), lang, skip, take, asc, desc, where, extra);
-
-                    if (vpResultService.Query.HasErrors)
-                    {
-                        return Ok(new List<VPResult>()
-                        {
-                            new VPResult()
-                            {
-                                HasErrors = vpResultService.Query.HasErrors,
-                                ValidationResults = vpResultService.Query.ValidationResults,
-                            },
-                        }.ToList());
-                    }
-                    else
-                    {
-                        return Ok(vpResultService.GetVPResultList().ToList());
-                    }
-                }
+                 if (vpResultService.Query.HasErrors)
+                 {
+                     return Ok(new List<VPResult>()
+                     {
+                         new VPResult()
+                         {
+                             HasErrors = vpResultService.Query.HasErrors,
+                             ValidationResults = vpResultService.Query.ValidationResults,
+                         },
+                     }.ToList());
+                 }
+                 else
+                 {
+                     return Ok(vpResultService.GetVPResultList().ToList());
+                 }
             }
         }
         // GET api/vpResult/1
         [Route("{VPResultID:int}")]
-        public IHttpActionResult GetVPResultWithID([FromUri]int VPResultID, [FromUri]string lang = "en", [FromUri]string extra = "")
+        public IActionResult GetVPResultWithID([FromQuery]int VPResultID, [FromQuery]string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
                 VPResultService vpResultService = new VPResultService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
 
-                vpResultService.Query = vpResultService.FillQuery(typeof(VPResult), lang, 0, 1, "", "", extra);
+                vpResultService.Query = vpResultService.FillQuery(typeof(VPResult), lang, 0, 1, "", "");
 
-                if (vpResultService.Query.Extra == "A")
+                VPResult vpResult = new VPResult();
+                vpResult = vpResultService.GetVPResultWithVPResultID(VPResultID);
+
+                if (vpResult == null)
                 {
-                    VPResultExtraA vpResultExtraA = new VPResultExtraA();
-                    vpResultExtraA = vpResultService.GetVPResultExtraAWithVPResultID(VPResultID);
-
-                    if (vpResultExtraA == null)
-                    {
-                        return NotFound();
-                    }
-
-                    return Ok(vpResultExtraA);
+                    return NotFound();
                 }
-                else if (vpResultService.Query.Extra == "B")
-                {
-                    VPResultExtraB vpResultExtraB = new VPResultExtraB();
-                    vpResultExtraB = vpResultService.GetVPResultExtraBWithVPResultID(VPResultID);
 
-                    if (vpResultExtraB == null)
-                    {
-                        return NotFound();
-                    }
-
-                    return Ok(vpResultExtraB);
-                }
-                else
-                {
-                    VPResult vpResult = new VPResult();
-                    vpResult = vpResultService.GetVPResultWithVPResultID(VPResultID);
-
-                    if (vpResult == null)
-                    {
-                        return NotFound();
-                    }
-
-                    return Ok(vpResult);
-                }
+                return Ok(vpResult);
             }
         }
         // POST api/vpResult
         [Route("")]
-        public IHttpActionResult Post([FromBody]VPResult vpResult, [FromUri]string lang = "en")
+        public IActionResult Post([FromBody]VPResult vpResult, [FromQuery]string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
@@ -161,13 +91,13 @@ namespace CSSPWebAPI.Controllers
                 else
                 {
                     vpResult.ValidationResults = null;
-                    return Created<VPResult>(new Uri(Request.RequestUri, vpResult.VPResultID.ToString()), vpResult);
+                    return Created(Url.ToString(), vpResult);
                 }
             }
         }
         // PUT api/vpResult
         [Route("")]
-        public IHttpActionResult Put([FromBody]VPResult vpResult, [FromUri]string lang = "en")
+        public IActionResult Put([FromBody]VPResult vpResult, [FromQuery]string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
@@ -186,7 +116,7 @@ namespace CSSPWebAPI.Controllers
         }
         // DELETE api/vpResult
         [Route("")]
-        public IHttpActionResult Delete([FromBody]VPResult vpResult, [FromUri]string lang = "en")
+        public IActionResult Delete([FromBody]VPResult vpResult, [FromQuery]string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {

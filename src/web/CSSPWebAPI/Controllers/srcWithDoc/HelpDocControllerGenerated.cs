@@ -1,14 +1,14 @@
 using CSSPEnums;
 using CSSPModels;
 using CSSPServices;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web.Http;
 
 namespace CSSPWebAPI.Controllers
 {
-    [RoutePrefix("api/helpDoc")]
+    [Route("api/helpDoc")]
     public partial class HelpDocController : BaseController
     {
         #region Variables
@@ -29,126 +29,56 @@ namespace CSSPWebAPI.Controllers
         #region Functions public
         // GET api/helpDoc
         [Route("")]
-        public IHttpActionResult GetHelpDocList([FromUri]string lang = "en", [FromUri]int skip = 0, [FromUri]int take = 200,
-            [FromUri]string asc = "", [FromUri]string desc = "", [FromUri]string where = "", [FromUri]string extra = "")
+        public IActionResult GetHelpDocList([FromQuery]string lang = "en", [FromQuery]int skip = 0, [FromQuery]int take = 200,
+            [FromQuery]string asc = "", [FromQuery]string desc = "", [FromQuery]string where = "")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
                 HelpDocService helpDocService = new HelpDocService(new Query() { Lang = lang }, db, ContactID);
 
-                if (extra == "A") // QueryString contains [extra=A]
-                {
-                   helpDocService.Query = helpDocService.FillQuery(typeof(HelpDocExtraA), lang, skip, take, asc, desc, where, extra);
+                helpDocService.Query = helpDocService.FillQuery(typeof(HelpDoc), lang, skip, take, asc, desc, where);
 
-                    if (helpDocService.Query.HasErrors)
-                    {
-                        return Ok(new List<HelpDocExtraA>()
-                        {
-                            new HelpDocExtraA()
-                            {
-                                HasErrors = helpDocService.Query.HasErrors,
-                                ValidationResults = helpDocService.Query.ValidationResults,
-                            },
-                        }.ToList());
-                    }
-                    else
-                    {
-                        return Ok(helpDocService.GetHelpDocExtraAList().ToList());
-                    }
-                }
-                else if (extra == "B") // QueryString contains [extra=B]
-                {
-                   helpDocService.Query = helpDocService.FillQuery(typeof(HelpDocExtraB), lang, skip, take, asc, desc, where, extra);
-
-                    if (helpDocService.Query.HasErrors)
-                    {
-                        return Ok(new List<HelpDocExtraB>()
-                        {
-                            new HelpDocExtraB()
-                            {
-                                HasErrors = helpDocService.Query.HasErrors,
-                                ValidationResults = helpDocService.Query.ValidationResults,
-                            },
-                        }.ToList());
-                    }
-                    else
-                    {
-                        return Ok(helpDocService.GetHelpDocExtraBList().ToList());
-                    }
-                }
-                else // QueryString has no parameter [extra] or extra is empty
-                {
-                   helpDocService.Query = helpDocService.FillQuery(typeof(HelpDoc), lang, skip, take, asc, desc, where, extra);
-
-                    if (helpDocService.Query.HasErrors)
-                    {
-                        return Ok(new List<HelpDoc>()
-                        {
-                            new HelpDoc()
-                            {
-                                HasErrors = helpDocService.Query.HasErrors,
-                                ValidationResults = helpDocService.Query.ValidationResults,
-                            },
-                        }.ToList());
-                    }
-                    else
-                    {
-                        return Ok(helpDocService.GetHelpDocList().ToList());
-                    }
-                }
+                 if (helpDocService.Query.HasErrors)
+                 {
+                     return Ok(new List<HelpDoc>()
+                     {
+                         new HelpDoc()
+                         {
+                             HasErrors = helpDocService.Query.HasErrors,
+                             ValidationResults = helpDocService.Query.ValidationResults,
+                         },
+                     }.ToList());
+                 }
+                 else
+                 {
+                     return Ok(helpDocService.GetHelpDocList().ToList());
+                 }
             }
         }
         // GET api/helpDoc/1
         [Route("{HelpDocID:int}")]
-        public IHttpActionResult GetHelpDocWithID([FromUri]int HelpDocID, [FromUri]string lang = "en", [FromUri]string extra = "")
+        public IActionResult GetHelpDocWithID([FromQuery]int HelpDocID, [FromQuery]string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
                 HelpDocService helpDocService = new HelpDocService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
 
-                helpDocService.Query = helpDocService.FillQuery(typeof(HelpDoc), lang, 0, 1, "", "", extra);
+                helpDocService.Query = helpDocService.FillQuery(typeof(HelpDoc), lang, 0, 1, "", "");
 
-                if (helpDocService.Query.Extra == "A")
+                HelpDoc helpDoc = new HelpDoc();
+                helpDoc = helpDocService.GetHelpDocWithHelpDocID(HelpDocID);
+
+                if (helpDoc == null)
                 {
-                    HelpDocExtraA helpDocExtraA = new HelpDocExtraA();
-                    helpDocExtraA = helpDocService.GetHelpDocExtraAWithHelpDocID(HelpDocID);
-
-                    if (helpDocExtraA == null)
-                    {
-                        return NotFound();
-                    }
-
-                    return Ok(helpDocExtraA);
+                    return NotFound();
                 }
-                else if (helpDocService.Query.Extra == "B")
-                {
-                    HelpDocExtraB helpDocExtraB = new HelpDocExtraB();
-                    helpDocExtraB = helpDocService.GetHelpDocExtraBWithHelpDocID(HelpDocID);
 
-                    if (helpDocExtraB == null)
-                    {
-                        return NotFound();
-                    }
-
-                    return Ok(helpDocExtraB);
-                }
-                else
-                {
-                    HelpDoc helpDoc = new HelpDoc();
-                    helpDoc = helpDocService.GetHelpDocWithHelpDocID(HelpDocID);
-
-                    if (helpDoc == null)
-                    {
-                        return NotFound();
-                    }
-
-                    return Ok(helpDoc);
-                }
+                return Ok(helpDoc);
             }
         }
         // POST api/helpDoc
         [Route("")]
-        public IHttpActionResult Post([FromBody]HelpDoc helpDoc, [FromUri]string lang = "en")
+        public IActionResult Post([FromBody]HelpDoc helpDoc, [FromQuery]string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
@@ -161,13 +91,13 @@ namespace CSSPWebAPI.Controllers
                 else
                 {
                     helpDoc.ValidationResults = null;
-                    return Created<HelpDoc>(new Uri(Request.RequestUri, helpDoc.HelpDocID.ToString()), helpDoc);
+                    return Created(Url.ToString(), helpDoc);
                 }
             }
         }
         // PUT api/helpDoc
         [Route("")]
-        public IHttpActionResult Put([FromBody]HelpDoc helpDoc, [FromUri]string lang = "en")
+        public IActionResult Put([FromBody]HelpDoc helpDoc, [FromQuery]string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
@@ -186,7 +116,7 @@ namespace CSSPWebAPI.Controllers
         }
         // DELETE api/helpDoc
         [Route("")]
-        public IHttpActionResult Delete([FromBody]HelpDoc helpDoc, [FromUri]string lang = "en")
+        public IActionResult Delete([FromBody]HelpDoc helpDoc, [FromQuery]string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {

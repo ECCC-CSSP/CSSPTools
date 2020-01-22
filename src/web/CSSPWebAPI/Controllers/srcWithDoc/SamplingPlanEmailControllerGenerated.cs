@@ -1,14 +1,14 @@
 using CSSPEnums;
 using CSSPModels;
 using CSSPServices;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web.Http;
 
 namespace CSSPWebAPI.Controllers
 {
-    [RoutePrefix("api/samplingPlanEmail")]
+    [Route("api/samplingPlanEmail")]
     public partial class SamplingPlanEmailController : BaseController
     {
         #region Variables
@@ -29,126 +29,56 @@ namespace CSSPWebAPI.Controllers
         #region Functions public
         // GET api/samplingPlanEmail
         [Route("")]
-        public IHttpActionResult GetSamplingPlanEmailList([FromUri]string lang = "en", [FromUri]int skip = 0, [FromUri]int take = 200,
-            [FromUri]string asc = "", [FromUri]string desc = "", [FromUri]string where = "", [FromUri]string extra = "")
+        public IActionResult GetSamplingPlanEmailList([FromQuery]string lang = "en", [FromQuery]int skip = 0, [FromQuery]int take = 200,
+            [FromQuery]string asc = "", [FromQuery]string desc = "", [FromQuery]string where = "")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
                 SamplingPlanEmailService samplingPlanEmailService = new SamplingPlanEmailService(new Query() { Lang = lang }, db, ContactID);
 
-                if (extra == "A") // QueryString contains [extra=A]
-                {
-                   samplingPlanEmailService.Query = samplingPlanEmailService.FillQuery(typeof(SamplingPlanEmailExtraA), lang, skip, take, asc, desc, where, extra);
+                samplingPlanEmailService.Query = samplingPlanEmailService.FillQuery(typeof(SamplingPlanEmail), lang, skip, take, asc, desc, where);
 
-                    if (samplingPlanEmailService.Query.HasErrors)
-                    {
-                        return Ok(new List<SamplingPlanEmailExtraA>()
-                        {
-                            new SamplingPlanEmailExtraA()
-                            {
-                                HasErrors = samplingPlanEmailService.Query.HasErrors,
-                                ValidationResults = samplingPlanEmailService.Query.ValidationResults,
-                            },
-                        }.ToList());
-                    }
-                    else
-                    {
-                        return Ok(samplingPlanEmailService.GetSamplingPlanEmailExtraAList().ToList());
-                    }
-                }
-                else if (extra == "B") // QueryString contains [extra=B]
-                {
-                   samplingPlanEmailService.Query = samplingPlanEmailService.FillQuery(typeof(SamplingPlanEmailExtraB), lang, skip, take, asc, desc, where, extra);
-
-                    if (samplingPlanEmailService.Query.HasErrors)
-                    {
-                        return Ok(new List<SamplingPlanEmailExtraB>()
-                        {
-                            new SamplingPlanEmailExtraB()
-                            {
-                                HasErrors = samplingPlanEmailService.Query.HasErrors,
-                                ValidationResults = samplingPlanEmailService.Query.ValidationResults,
-                            },
-                        }.ToList());
-                    }
-                    else
-                    {
-                        return Ok(samplingPlanEmailService.GetSamplingPlanEmailExtraBList().ToList());
-                    }
-                }
-                else // QueryString has no parameter [extra] or extra is empty
-                {
-                   samplingPlanEmailService.Query = samplingPlanEmailService.FillQuery(typeof(SamplingPlanEmail), lang, skip, take, asc, desc, where, extra);
-
-                    if (samplingPlanEmailService.Query.HasErrors)
-                    {
-                        return Ok(new List<SamplingPlanEmail>()
-                        {
-                            new SamplingPlanEmail()
-                            {
-                                HasErrors = samplingPlanEmailService.Query.HasErrors,
-                                ValidationResults = samplingPlanEmailService.Query.ValidationResults,
-                            },
-                        }.ToList());
-                    }
-                    else
-                    {
-                        return Ok(samplingPlanEmailService.GetSamplingPlanEmailList().ToList());
-                    }
-                }
+                 if (samplingPlanEmailService.Query.HasErrors)
+                 {
+                     return Ok(new List<SamplingPlanEmail>()
+                     {
+                         new SamplingPlanEmail()
+                         {
+                             HasErrors = samplingPlanEmailService.Query.HasErrors,
+                             ValidationResults = samplingPlanEmailService.Query.ValidationResults,
+                         },
+                     }.ToList());
+                 }
+                 else
+                 {
+                     return Ok(samplingPlanEmailService.GetSamplingPlanEmailList().ToList());
+                 }
             }
         }
         // GET api/samplingPlanEmail/1
         [Route("{SamplingPlanEmailID:int}")]
-        public IHttpActionResult GetSamplingPlanEmailWithID([FromUri]int SamplingPlanEmailID, [FromUri]string lang = "en", [FromUri]string extra = "")
+        public IActionResult GetSamplingPlanEmailWithID([FromQuery]int SamplingPlanEmailID, [FromQuery]string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
                 SamplingPlanEmailService samplingPlanEmailService = new SamplingPlanEmailService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
 
-                samplingPlanEmailService.Query = samplingPlanEmailService.FillQuery(typeof(SamplingPlanEmail), lang, 0, 1, "", "", extra);
+                samplingPlanEmailService.Query = samplingPlanEmailService.FillQuery(typeof(SamplingPlanEmail), lang, 0, 1, "", "");
 
-                if (samplingPlanEmailService.Query.Extra == "A")
+                SamplingPlanEmail samplingPlanEmail = new SamplingPlanEmail();
+                samplingPlanEmail = samplingPlanEmailService.GetSamplingPlanEmailWithSamplingPlanEmailID(SamplingPlanEmailID);
+
+                if (samplingPlanEmail == null)
                 {
-                    SamplingPlanEmailExtraA samplingPlanEmailExtraA = new SamplingPlanEmailExtraA();
-                    samplingPlanEmailExtraA = samplingPlanEmailService.GetSamplingPlanEmailExtraAWithSamplingPlanEmailID(SamplingPlanEmailID);
-
-                    if (samplingPlanEmailExtraA == null)
-                    {
-                        return NotFound();
-                    }
-
-                    return Ok(samplingPlanEmailExtraA);
+                    return NotFound();
                 }
-                else if (samplingPlanEmailService.Query.Extra == "B")
-                {
-                    SamplingPlanEmailExtraB samplingPlanEmailExtraB = new SamplingPlanEmailExtraB();
-                    samplingPlanEmailExtraB = samplingPlanEmailService.GetSamplingPlanEmailExtraBWithSamplingPlanEmailID(SamplingPlanEmailID);
 
-                    if (samplingPlanEmailExtraB == null)
-                    {
-                        return NotFound();
-                    }
-
-                    return Ok(samplingPlanEmailExtraB);
-                }
-                else
-                {
-                    SamplingPlanEmail samplingPlanEmail = new SamplingPlanEmail();
-                    samplingPlanEmail = samplingPlanEmailService.GetSamplingPlanEmailWithSamplingPlanEmailID(SamplingPlanEmailID);
-
-                    if (samplingPlanEmail == null)
-                    {
-                        return NotFound();
-                    }
-
-                    return Ok(samplingPlanEmail);
-                }
+                return Ok(samplingPlanEmail);
             }
         }
         // POST api/samplingPlanEmail
         [Route("")]
-        public IHttpActionResult Post([FromBody]SamplingPlanEmail samplingPlanEmail, [FromUri]string lang = "en")
+        public IActionResult Post([FromBody]SamplingPlanEmail samplingPlanEmail, [FromQuery]string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
@@ -161,13 +91,13 @@ namespace CSSPWebAPI.Controllers
                 else
                 {
                     samplingPlanEmail.ValidationResults = null;
-                    return Created<SamplingPlanEmail>(new Uri(Request.RequestUri, samplingPlanEmail.SamplingPlanEmailID.ToString()), samplingPlanEmail);
+                    return Created(Url.ToString(), samplingPlanEmail);
                 }
             }
         }
         // PUT api/samplingPlanEmail
         [Route("")]
-        public IHttpActionResult Put([FromBody]SamplingPlanEmail samplingPlanEmail, [FromUri]string lang = "en")
+        public IActionResult Put([FromBody]SamplingPlanEmail samplingPlanEmail, [FromQuery]string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
@@ -186,7 +116,7 @@ namespace CSSPWebAPI.Controllers
         }
         // DELETE api/samplingPlanEmail
         [Route("")]
-        public IHttpActionResult Delete([FromBody]SamplingPlanEmail samplingPlanEmail, [FromUri]string lang = "en")
+        public IActionResult Delete([FromBody]SamplingPlanEmail samplingPlanEmail, [FromQuery]string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {

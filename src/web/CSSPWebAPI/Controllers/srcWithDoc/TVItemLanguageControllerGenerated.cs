@@ -1,14 +1,14 @@
 using CSSPEnums;
 using CSSPModels;
 using CSSPServices;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web.Http;
 
 namespace CSSPWebAPI.Controllers
 {
-    [RoutePrefix("api/tvItemLanguage")]
+    [Route("api/tvItemLanguage")]
     public partial class TVItemLanguageController : BaseController
     {
         #region Variables
@@ -29,126 +29,56 @@ namespace CSSPWebAPI.Controllers
         #region Functions public
         // GET api/tvItemLanguage
         [Route("")]
-        public IHttpActionResult GetTVItemLanguageList([FromUri]string lang = "en", [FromUri]int skip = 0, [FromUri]int take = 200,
-            [FromUri]string asc = "", [FromUri]string desc = "", [FromUri]string where = "", [FromUri]string extra = "")
+        public IActionResult GetTVItemLanguageList([FromQuery]string lang = "en", [FromQuery]int skip = 0, [FromQuery]int take = 200,
+            [FromQuery]string asc = "", [FromQuery]string desc = "", [FromQuery]string where = "")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
                 TVItemLanguageService tvItemLanguageService = new TVItemLanguageService(new Query() { Lang = lang }, db, ContactID);
 
-                if (extra == "A") // QueryString contains [extra=A]
-                {
-                   tvItemLanguageService.Query = tvItemLanguageService.FillQuery(typeof(TVItemLanguageExtraA), lang, skip, take, asc, desc, where, extra);
+                tvItemLanguageService.Query = tvItemLanguageService.FillQuery(typeof(TVItemLanguage), lang, skip, take, asc, desc, where);
 
-                    if (tvItemLanguageService.Query.HasErrors)
-                    {
-                        return Ok(new List<TVItemLanguageExtraA>()
-                        {
-                            new TVItemLanguageExtraA()
-                            {
-                                HasErrors = tvItemLanguageService.Query.HasErrors,
-                                ValidationResults = tvItemLanguageService.Query.ValidationResults,
-                            },
-                        }.ToList());
-                    }
-                    else
-                    {
-                        return Ok(tvItemLanguageService.GetTVItemLanguageExtraAList().ToList());
-                    }
-                }
-                else if (extra == "B") // QueryString contains [extra=B]
-                {
-                   tvItemLanguageService.Query = tvItemLanguageService.FillQuery(typeof(TVItemLanguageExtraB), lang, skip, take, asc, desc, where, extra);
-
-                    if (tvItemLanguageService.Query.HasErrors)
-                    {
-                        return Ok(new List<TVItemLanguageExtraB>()
-                        {
-                            new TVItemLanguageExtraB()
-                            {
-                                HasErrors = tvItemLanguageService.Query.HasErrors,
-                                ValidationResults = tvItemLanguageService.Query.ValidationResults,
-                            },
-                        }.ToList());
-                    }
-                    else
-                    {
-                        return Ok(tvItemLanguageService.GetTVItemLanguageExtraBList().ToList());
-                    }
-                }
-                else // QueryString has no parameter [extra] or extra is empty
-                {
-                   tvItemLanguageService.Query = tvItemLanguageService.FillQuery(typeof(TVItemLanguage), lang, skip, take, asc, desc, where, extra);
-
-                    if (tvItemLanguageService.Query.HasErrors)
-                    {
-                        return Ok(new List<TVItemLanguage>()
-                        {
-                            new TVItemLanguage()
-                            {
-                                HasErrors = tvItemLanguageService.Query.HasErrors,
-                                ValidationResults = tvItemLanguageService.Query.ValidationResults,
-                            },
-                        }.ToList());
-                    }
-                    else
-                    {
-                        return Ok(tvItemLanguageService.GetTVItemLanguageList().ToList());
-                    }
-                }
+                 if (tvItemLanguageService.Query.HasErrors)
+                 {
+                     return Ok(new List<TVItemLanguage>()
+                     {
+                         new TVItemLanguage()
+                         {
+                             HasErrors = tvItemLanguageService.Query.HasErrors,
+                             ValidationResults = tvItemLanguageService.Query.ValidationResults,
+                         },
+                     }.ToList());
+                 }
+                 else
+                 {
+                     return Ok(tvItemLanguageService.GetTVItemLanguageList().ToList());
+                 }
             }
         }
         // GET api/tvItemLanguage/1
         [Route("{TVItemLanguageID:int}")]
-        public IHttpActionResult GetTVItemLanguageWithID([FromUri]int TVItemLanguageID, [FromUri]string lang = "en", [FromUri]string extra = "")
+        public IActionResult GetTVItemLanguageWithID([FromQuery]int TVItemLanguageID, [FromQuery]string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
                 TVItemLanguageService tvItemLanguageService = new TVItemLanguageService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
 
-                tvItemLanguageService.Query = tvItemLanguageService.FillQuery(typeof(TVItemLanguage), lang, 0, 1, "", "", extra);
+                tvItemLanguageService.Query = tvItemLanguageService.FillQuery(typeof(TVItemLanguage), lang, 0, 1, "", "");
 
-                if (tvItemLanguageService.Query.Extra == "A")
+                TVItemLanguage tvItemLanguage = new TVItemLanguage();
+                tvItemLanguage = tvItemLanguageService.GetTVItemLanguageWithTVItemLanguageID(TVItemLanguageID);
+
+                if (tvItemLanguage == null)
                 {
-                    TVItemLanguageExtraA tvItemLanguageExtraA = new TVItemLanguageExtraA();
-                    tvItemLanguageExtraA = tvItemLanguageService.GetTVItemLanguageExtraAWithTVItemLanguageID(TVItemLanguageID);
-
-                    if (tvItemLanguageExtraA == null)
-                    {
-                        return NotFound();
-                    }
-
-                    return Ok(tvItemLanguageExtraA);
+                    return NotFound();
                 }
-                else if (tvItemLanguageService.Query.Extra == "B")
-                {
-                    TVItemLanguageExtraB tvItemLanguageExtraB = new TVItemLanguageExtraB();
-                    tvItemLanguageExtraB = tvItemLanguageService.GetTVItemLanguageExtraBWithTVItemLanguageID(TVItemLanguageID);
 
-                    if (tvItemLanguageExtraB == null)
-                    {
-                        return NotFound();
-                    }
-
-                    return Ok(tvItemLanguageExtraB);
-                }
-                else
-                {
-                    TVItemLanguage tvItemLanguage = new TVItemLanguage();
-                    tvItemLanguage = tvItemLanguageService.GetTVItemLanguageWithTVItemLanguageID(TVItemLanguageID);
-
-                    if (tvItemLanguage == null)
-                    {
-                        return NotFound();
-                    }
-
-                    return Ok(tvItemLanguage);
-                }
+                return Ok(tvItemLanguage);
             }
         }
         // POST api/tvItemLanguage
         [Route("")]
-        public IHttpActionResult Post([FromBody]TVItemLanguage tvItemLanguage, [FromUri]string lang = "en")
+        public IActionResult Post([FromBody]TVItemLanguage tvItemLanguage, [FromQuery]string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
@@ -161,13 +91,13 @@ namespace CSSPWebAPI.Controllers
                 else
                 {
                     tvItemLanguage.ValidationResults = null;
-                    return Created<TVItemLanguage>(new Uri(Request.RequestUri, tvItemLanguage.TVItemLanguageID.ToString()), tvItemLanguage);
+                    return Created(Url.ToString(), tvItemLanguage);
                 }
             }
         }
         // PUT api/tvItemLanguage
         [Route("")]
-        public IHttpActionResult Put([FromBody]TVItemLanguage tvItemLanguage, [FromUri]string lang = "en")
+        public IActionResult Put([FromBody]TVItemLanguage tvItemLanguage, [FromQuery]string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
@@ -186,7 +116,7 @@ namespace CSSPWebAPI.Controllers
         }
         // DELETE api/tvItemLanguage
         [Route("")]
-        public IHttpActionResult Delete([FromBody]TVItemLanguage tvItemLanguage, [FromUri]string lang = "en")
+        public IActionResult Delete([FromBody]TVItemLanguage tvItemLanguage, [FromQuery]string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {

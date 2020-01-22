@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
 using System.Web.Http.Results;
+using Microsoft.AspNetCore.Mvc;
 
 namespace CSSPWebAPI.Tests.Controllers
 {
@@ -48,7 +49,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     }
 
                     // ok with EmailDistributionListContact info
-                    IHttpActionResult jsonRet = emailDistributionListContactController.GetEmailDistributionListContactList();
+                    IActionResult jsonRet = emailDistributionListContactController.GetEmailDistributionListContactList();
                     Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<List<EmailDistributionListContact>> ret = jsonRet as OkNegotiatedContentResult<List<EmailDistributionListContact>>;
@@ -86,7 +87,7 @@ namespace CSSPWebAPI.Tests.Controllers
                            count = (query.Take > count ? query.Take : count);
 
                            // ok with EmailDistributionListContact info
-                           IHttpActionResult jsonRet2 = emailDistributionListContactController.GetEmailDistributionListContactList(query.Language.ToString(), query.Skip, query.Take);
+                           IActionResult jsonRet2 = emailDistributionListContactController.GetEmailDistributionListContactList(query.Language.ToString(), query.Skip, query.Take);
                            Assert.NotNull(jsonRet2);
 
                            OkNegotiatedContentResult<List<EmailDistributionListContact>> ret2 = jsonRet2 as OkNegotiatedContentResult<List<EmailDistributionListContact>>;
@@ -119,7 +120,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     }
 
                     // ok with EmailDistributionListContact info
-                    IHttpActionResult jsonRet = emailDistributionListContactController.GetEmailDistributionListContactWithID(emailDistributionListContactFirst.EmailDistributionListContactID);
+                    IActionResult jsonRet = emailDistributionListContactController.GetEmailDistributionListContactWithID(emailDistributionListContactFirst.EmailDistributionListContactID);
                     Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<EmailDistributionListContact> Ret = jsonRet as OkNegotiatedContentResult<EmailDistributionListContact>;
@@ -127,16 +128,16 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.Equal(emailDistributionListContactFirst.EmailDistributionListContactID, emailDistributionListContactRet.EmailDistributionListContactID);
 
                     BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
+                    Assert.Null(badRequest);
 
                     // Not Found
-                    IHttpActionResult jsonRet2 = emailDistributionListContactController.GetEmailDistributionListContactWithID(0);
+                    IActionResult jsonRet2 = emailDistributionListContactController.GetEmailDistributionListContactWithID(0);
                     Assert.NotNull(jsonRet2);
 
                     OkNegotiatedContentResult<EmailDistributionListContact> emailDistributionListContactRet2 = jsonRet2 as OkNegotiatedContentResult<EmailDistributionListContact>;
-                    Assert.IsNull(emailDistributionListContactRet2);
+                    Assert.Null(emailDistributionListContactRet2);
 
-                    NotFoundResult notFoundRequest = jsonRet2 as NotFoundResult;
+                    NotFoundObjectResult notFoundRequest = jsonRet2 as NotFoundObjectResult;
                     Assert.NotNull(notFoundRequest);
                 }
             }
@@ -168,7 +169,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     }
 
                     // ok with EmailDistributionListContact info
-                    IHttpActionResult jsonRet = emailDistributionListContactController.GetEmailDistributionListContactWithID(emailDistributionListContactLast.EmailDistributionListContactID);
+                    IActionResult jsonRet = emailDistributionListContactController.GetEmailDistributionListContactWithID(emailDistributionListContactLast.EmailDistributionListContactID);
                     Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<EmailDistributionListContact> Ret = jsonRet as OkNegotiatedContentResult<EmailDistributionListContact>;
@@ -176,14 +177,14 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.Equal(emailDistributionListContactLast.EmailDistributionListContactID, emailDistributionListContactRet.EmailDistributionListContactID);
 
                     BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
+                    Assert.Null(badRequest);
 
                     // Post to return CSSPError because EmailDistributionListContactID exist
-                    IHttpActionResult jsonRet2 = emailDistributionListContactController.Post(emailDistributionListContactRet, LanguageRequest.ToString());
+                    IActionResult jsonRet2 = emailDistributionListContactController.Post(emailDistributionListContactRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet2);
 
                     OkNegotiatedContentResult<EmailDistributionListContact> emailDistributionListContactRet2 = jsonRet2 as OkNegotiatedContentResult<EmailDistributionListContact>;
-                    Assert.IsNull(emailDistributionListContactRet2);
+                    Assert.Null(emailDistributionListContactRet2);
 
                     BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
                     Assert.NotNull(badRequest2);
@@ -192,23 +193,23 @@ namespace CSSPWebAPI.Tests.Controllers
                     emailDistributionListContactRet.EmailDistributionListContactID = 0;
                     emailDistributionListContactController.Request = new System.Net.Http.HttpRequestMessage();
                     emailDistributionListContactController.Request.RequestUri = new System.Uri("http://localhost:5000/api/emailDistributionListContact");
-                    IHttpActionResult jsonRet3 = emailDistributionListContactController.Post(emailDistributionListContactRet, LanguageRequest.ToString());
+                    IActionResult jsonRet3 = emailDistributionListContactController.Post(emailDistributionListContactRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 
                     CreatedNegotiatedContentResult<EmailDistributionListContact> emailDistributionListContactRet3 = jsonRet3 as CreatedNegotiatedContentResult<EmailDistributionListContact>;
                     Assert.NotNull(emailDistributionListContactRet3);
 
                     BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest3);
+                    Assert.Null(badRequest3);
 
-                    IHttpActionResult jsonRet4 = emailDistributionListContactController.Delete(emailDistributionListContactRet, LanguageRequest.ToString());
+                    IActionResult jsonRet4 = emailDistributionListContactController.Delete(emailDistributionListContactRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet4);
 
                     OkNegotiatedContentResult<EmailDistributionListContact> emailDistributionListContactRet4 = jsonRet4 as OkNegotiatedContentResult<EmailDistributionListContact>;
                     Assert.NotNull(emailDistributionListContactRet4);
 
                     BadRequestErrorMessageResult badRequest4 = jsonRet4 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest4);
+                    Assert.Null(badRequest4);
                 }
             }
         }
@@ -237,7 +238,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     }
 
                     // ok with EmailDistributionListContact info
-                    IHttpActionResult jsonRet = emailDistributionListContactController.GetEmailDistributionListContactWithID(emailDistributionListContactLast.EmailDistributionListContactID);
+                    IActionResult jsonRet = emailDistributionListContactController.GetEmailDistributionListContactWithID(emailDistributionListContactLast.EmailDistributionListContactID);
                     Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<EmailDistributionListContact> Ret = jsonRet as OkNegotiatedContentResult<EmailDistributionListContact>;
@@ -245,25 +246,25 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.Equal(emailDistributionListContactLast.EmailDistributionListContactID, emailDistributionListContactRet.EmailDistributionListContactID);
 
                     BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
+                    Assert.Null(badRequest);
 
                     // Put to return success
-                    IHttpActionResult jsonRet2 = emailDistributionListContactController.Put(emailDistributionListContactRet, LanguageRequest.ToString());
+                    IActionResult jsonRet2 = emailDistributionListContactController.Put(emailDistributionListContactRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet2);
 
                     OkNegotiatedContentResult<EmailDistributionListContact> emailDistributionListContactRet2 = jsonRet2 as OkNegotiatedContentResult<EmailDistributionListContact>;
                     Assert.NotNull(emailDistributionListContactRet2);
 
                     BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest2);
+                    Assert.Null(badRequest2);
 
                     // Put to return CSSPError because EmailDistributionListContactID of 0 does not exist
                     emailDistributionListContactRet.EmailDistributionListContactID = 0;
-                    IHttpActionResult jsonRet3 = emailDistributionListContactController.Put(emailDistributionListContactRet, LanguageRequest.ToString());
+                    IActionResult jsonRet3 = emailDistributionListContactController.Put(emailDistributionListContactRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 
                     OkNegotiatedContentResult<EmailDistributionListContact> emailDistributionListContactRet3 = jsonRet3 as OkNegotiatedContentResult<EmailDistributionListContact>;
-                    Assert.IsNull(emailDistributionListContactRet3);
+                    Assert.Null(emailDistributionListContactRet3);
 
                     BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
                     Assert.NotNull(badRequest3);
@@ -297,7 +298,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     }
 
                     // ok with EmailDistributionListContact info
-                    IHttpActionResult jsonRet = emailDistributionListContactController.GetEmailDistributionListContactWithID(emailDistributionListContactLast.EmailDistributionListContactID);
+                    IActionResult jsonRet = emailDistributionListContactController.GetEmailDistributionListContactWithID(emailDistributionListContactLast.EmailDistributionListContactID);
                     Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<EmailDistributionListContact> Ret = jsonRet as OkNegotiatedContentResult<EmailDistributionListContact>;
@@ -305,13 +306,13 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.Equal(emailDistributionListContactLast.EmailDistributionListContactID, emailDistributionListContactRet.EmailDistributionListContactID);
 
                     BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
+                    Assert.Null(badRequest);
 
                     // Post to return newly added EmailDistributionListContact
                     emailDistributionListContactRet.EmailDistributionListContactID = 0;
                     emailDistributionListContactController.Request = new System.Net.Http.HttpRequestMessage();
                     emailDistributionListContactController.Request.RequestUri = new System.Uri("http://localhost:5000/api/emailDistributionListContact");
-                    IHttpActionResult jsonRet3 = emailDistributionListContactController.Post(emailDistributionListContactRet, LanguageRequest.ToString());
+                    IActionResult jsonRet3 = emailDistributionListContactController.Post(emailDistributionListContactRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 
                     CreatedNegotiatedContentResult<EmailDistributionListContact> emailDistributionListContactRet3 = jsonRet3 as CreatedNegotiatedContentResult<EmailDistributionListContact>;
@@ -319,25 +320,25 @@ namespace CSSPWebAPI.Tests.Controllers
                     EmailDistributionListContact emailDistributionListContact = emailDistributionListContactRet3.Content;
 
                     BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest3);
+                    Assert.Null(badRequest3);
 
                     // Delete to return success
-                    IHttpActionResult jsonRet2 = emailDistributionListContactController.Delete(emailDistributionListContactRet, LanguageRequest.ToString());
+                    IActionResult jsonRet2 = emailDistributionListContactController.Delete(emailDistributionListContactRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet2);
 
                     OkNegotiatedContentResult<EmailDistributionListContact> emailDistributionListContactRet2 = jsonRet2 as OkNegotiatedContentResult<EmailDistributionListContact>;
                     Assert.NotNull(emailDistributionListContactRet2);
 
                     BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest2);
+                    Assert.Null(badRequest2);
 
                     // Delete to return CSSPError because EmailDistributionListContactID of 0 does not exist
                     emailDistributionListContactRet.EmailDistributionListContactID = 0;
-                    IHttpActionResult jsonRet4 = emailDistributionListContactController.Delete(emailDistributionListContactRet, LanguageRequest.ToString());
+                    IActionResult jsonRet4 = emailDistributionListContactController.Delete(emailDistributionListContactRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet4);
 
                     OkNegotiatedContentResult<EmailDistributionListContact> emailDistributionListContactRet4 = jsonRet4 as OkNegotiatedContentResult<EmailDistributionListContact>;
-                    Assert.IsNull(emailDistributionListContactRet4);
+                    Assert.Null(emailDistributionListContactRet4);
 
                     BadRequestErrorMessageResult badRequest4 = jsonRet4 as BadRequestErrorMessageResult;
                     Assert.NotNull(badRequest4);

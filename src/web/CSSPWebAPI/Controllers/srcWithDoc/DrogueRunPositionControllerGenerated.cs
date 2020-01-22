@@ -1,14 +1,14 @@
 using CSSPEnums;
 using CSSPModels;
 using CSSPServices;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web.Http;
 
 namespace CSSPWebAPI.Controllers
 {
-    [RoutePrefix("api/drogueRunPosition")]
+    [Route("api/drogueRunPosition")]
     public partial class DrogueRunPositionController : BaseController
     {
         #region Variables
@@ -29,126 +29,56 @@ namespace CSSPWebAPI.Controllers
         #region Functions public
         // GET api/drogueRunPosition
         [Route("")]
-        public IHttpActionResult GetDrogueRunPositionList([FromUri]string lang = "en", [FromUri]int skip = 0, [FromUri]int take = 200,
-            [FromUri]string asc = "", [FromUri]string desc = "", [FromUri]string where = "", [FromUri]string extra = "")
+        public IActionResult GetDrogueRunPositionList([FromQuery]string lang = "en", [FromQuery]int skip = 0, [FromQuery]int take = 200,
+            [FromQuery]string asc = "", [FromQuery]string desc = "", [FromQuery]string where = "")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
                 DrogueRunPositionService drogueRunPositionService = new DrogueRunPositionService(new Query() { Lang = lang }, db, ContactID);
 
-                if (extra == "A") // QueryString contains [extra=A]
-                {
-                   drogueRunPositionService.Query = drogueRunPositionService.FillQuery(typeof(DrogueRunPositionExtraA), lang, skip, take, asc, desc, where, extra);
+                drogueRunPositionService.Query = drogueRunPositionService.FillQuery(typeof(DrogueRunPosition), lang, skip, take, asc, desc, where);
 
-                    if (drogueRunPositionService.Query.HasErrors)
-                    {
-                        return Ok(new List<DrogueRunPositionExtraA>()
-                        {
-                            new DrogueRunPositionExtraA()
-                            {
-                                HasErrors = drogueRunPositionService.Query.HasErrors,
-                                ValidationResults = drogueRunPositionService.Query.ValidationResults,
-                            },
-                        }.ToList());
-                    }
-                    else
-                    {
-                        return Ok(drogueRunPositionService.GetDrogueRunPositionExtraAList().ToList());
-                    }
-                }
-                else if (extra == "B") // QueryString contains [extra=B]
-                {
-                   drogueRunPositionService.Query = drogueRunPositionService.FillQuery(typeof(DrogueRunPositionExtraB), lang, skip, take, asc, desc, where, extra);
-
-                    if (drogueRunPositionService.Query.HasErrors)
-                    {
-                        return Ok(new List<DrogueRunPositionExtraB>()
-                        {
-                            new DrogueRunPositionExtraB()
-                            {
-                                HasErrors = drogueRunPositionService.Query.HasErrors,
-                                ValidationResults = drogueRunPositionService.Query.ValidationResults,
-                            },
-                        }.ToList());
-                    }
-                    else
-                    {
-                        return Ok(drogueRunPositionService.GetDrogueRunPositionExtraBList().ToList());
-                    }
-                }
-                else // QueryString has no parameter [extra] or extra is empty
-                {
-                   drogueRunPositionService.Query = drogueRunPositionService.FillQuery(typeof(DrogueRunPosition), lang, skip, take, asc, desc, where, extra);
-
-                    if (drogueRunPositionService.Query.HasErrors)
-                    {
-                        return Ok(new List<DrogueRunPosition>()
-                        {
-                            new DrogueRunPosition()
-                            {
-                                HasErrors = drogueRunPositionService.Query.HasErrors,
-                                ValidationResults = drogueRunPositionService.Query.ValidationResults,
-                            },
-                        }.ToList());
-                    }
-                    else
-                    {
-                        return Ok(drogueRunPositionService.GetDrogueRunPositionList().ToList());
-                    }
-                }
+                 if (drogueRunPositionService.Query.HasErrors)
+                 {
+                     return Ok(new List<DrogueRunPosition>()
+                     {
+                         new DrogueRunPosition()
+                         {
+                             HasErrors = drogueRunPositionService.Query.HasErrors,
+                             ValidationResults = drogueRunPositionService.Query.ValidationResults,
+                         },
+                     }.ToList());
+                 }
+                 else
+                 {
+                     return Ok(drogueRunPositionService.GetDrogueRunPositionList().ToList());
+                 }
             }
         }
         // GET api/drogueRunPosition/1
         [Route("{DrogueRunPositionID:int}")]
-        public IHttpActionResult GetDrogueRunPositionWithID([FromUri]int DrogueRunPositionID, [FromUri]string lang = "en", [FromUri]string extra = "")
+        public IActionResult GetDrogueRunPositionWithID([FromQuery]int DrogueRunPositionID, [FromQuery]string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
                 DrogueRunPositionService drogueRunPositionService = new DrogueRunPositionService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
 
-                drogueRunPositionService.Query = drogueRunPositionService.FillQuery(typeof(DrogueRunPosition), lang, 0, 1, "", "", extra);
+                drogueRunPositionService.Query = drogueRunPositionService.FillQuery(typeof(DrogueRunPosition), lang, 0, 1, "", "");
 
-                if (drogueRunPositionService.Query.Extra == "A")
+                DrogueRunPosition drogueRunPosition = new DrogueRunPosition();
+                drogueRunPosition = drogueRunPositionService.GetDrogueRunPositionWithDrogueRunPositionID(DrogueRunPositionID);
+
+                if (drogueRunPosition == null)
                 {
-                    DrogueRunPositionExtraA drogueRunPositionExtraA = new DrogueRunPositionExtraA();
-                    drogueRunPositionExtraA = drogueRunPositionService.GetDrogueRunPositionExtraAWithDrogueRunPositionID(DrogueRunPositionID);
-
-                    if (drogueRunPositionExtraA == null)
-                    {
-                        return NotFound();
-                    }
-
-                    return Ok(drogueRunPositionExtraA);
+                    return NotFound();
                 }
-                else if (drogueRunPositionService.Query.Extra == "B")
-                {
-                    DrogueRunPositionExtraB drogueRunPositionExtraB = new DrogueRunPositionExtraB();
-                    drogueRunPositionExtraB = drogueRunPositionService.GetDrogueRunPositionExtraBWithDrogueRunPositionID(DrogueRunPositionID);
 
-                    if (drogueRunPositionExtraB == null)
-                    {
-                        return NotFound();
-                    }
-
-                    return Ok(drogueRunPositionExtraB);
-                }
-                else
-                {
-                    DrogueRunPosition drogueRunPosition = new DrogueRunPosition();
-                    drogueRunPosition = drogueRunPositionService.GetDrogueRunPositionWithDrogueRunPositionID(DrogueRunPositionID);
-
-                    if (drogueRunPosition == null)
-                    {
-                        return NotFound();
-                    }
-
-                    return Ok(drogueRunPosition);
-                }
+                return Ok(drogueRunPosition);
             }
         }
         // POST api/drogueRunPosition
         [Route("")]
-        public IHttpActionResult Post([FromBody]DrogueRunPosition drogueRunPosition, [FromUri]string lang = "en")
+        public IActionResult Post([FromBody]DrogueRunPosition drogueRunPosition, [FromQuery]string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
@@ -161,13 +91,13 @@ namespace CSSPWebAPI.Controllers
                 else
                 {
                     drogueRunPosition.ValidationResults = null;
-                    return Created<DrogueRunPosition>(new Uri(Request.RequestUri, drogueRunPosition.DrogueRunPositionID.ToString()), drogueRunPosition);
+                    return Created(Url.ToString(), drogueRunPosition);
                 }
             }
         }
         // PUT api/drogueRunPosition
         [Route("")]
-        public IHttpActionResult Put([FromBody]DrogueRunPosition drogueRunPosition, [FromUri]string lang = "en")
+        public IActionResult Put([FromBody]DrogueRunPosition drogueRunPosition, [FromQuery]string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
@@ -186,7 +116,7 @@ namespace CSSPWebAPI.Controllers
         }
         // DELETE api/drogueRunPosition
         [Route("")]
-        public IHttpActionResult Delete([FromBody]DrogueRunPosition drogueRunPosition, [FromUri]string lang = "en")
+        public IActionResult Delete([FromBody]DrogueRunPosition drogueRunPosition, [FromQuery]string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {

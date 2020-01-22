@@ -1,14 +1,14 @@
 using CSSPEnums;
 using CSSPModels;
 using CSSPServices;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web.Http;
 
 namespace CSSPWebAPI.Controllers
 {
-    [RoutePrefix("api/vpAmbient")]
+    [Route("api/vpAmbient")]
     public partial class VPAmbientController : BaseController
     {
         #region Variables
@@ -29,126 +29,56 @@ namespace CSSPWebAPI.Controllers
         #region Functions public
         // GET api/vpAmbient
         [Route("")]
-        public IHttpActionResult GetVPAmbientList([FromUri]string lang = "en", [FromUri]int skip = 0, [FromUri]int take = 200,
-            [FromUri]string asc = "", [FromUri]string desc = "", [FromUri]string where = "", [FromUri]string extra = "")
+        public IActionResult GetVPAmbientList([FromQuery]string lang = "en", [FromQuery]int skip = 0, [FromQuery]int take = 200,
+            [FromQuery]string asc = "", [FromQuery]string desc = "", [FromQuery]string where = "")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
                 VPAmbientService vpAmbientService = new VPAmbientService(new Query() { Lang = lang }, db, ContactID);
 
-                if (extra == "A") // QueryString contains [extra=A]
-                {
-                   vpAmbientService.Query = vpAmbientService.FillQuery(typeof(VPAmbientExtraA), lang, skip, take, asc, desc, where, extra);
+                vpAmbientService.Query = vpAmbientService.FillQuery(typeof(VPAmbient), lang, skip, take, asc, desc, where);
 
-                    if (vpAmbientService.Query.HasErrors)
-                    {
-                        return Ok(new List<VPAmbientExtraA>()
-                        {
-                            new VPAmbientExtraA()
-                            {
-                                HasErrors = vpAmbientService.Query.HasErrors,
-                                ValidationResults = vpAmbientService.Query.ValidationResults,
-                            },
-                        }.ToList());
-                    }
-                    else
-                    {
-                        return Ok(vpAmbientService.GetVPAmbientExtraAList().ToList());
-                    }
-                }
-                else if (extra == "B") // QueryString contains [extra=B]
-                {
-                   vpAmbientService.Query = vpAmbientService.FillQuery(typeof(VPAmbientExtraB), lang, skip, take, asc, desc, where, extra);
-
-                    if (vpAmbientService.Query.HasErrors)
-                    {
-                        return Ok(new List<VPAmbientExtraB>()
-                        {
-                            new VPAmbientExtraB()
-                            {
-                                HasErrors = vpAmbientService.Query.HasErrors,
-                                ValidationResults = vpAmbientService.Query.ValidationResults,
-                            },
-                        }.ToList());
-                    }
-                    else
-                    {
-                        return Ok(vpAmbientService.GetVPAmbientExtraBList().ToList());
-                    }
-                }
-                else // QueryString has no parameter [extra] or extra is empty
-                {
-                   vpAmbientService.Query = vpAmbientService.FillQuery(typeof(VPAmbient), lang, skip, take, asc, desc, where, extra);
-
-                    if (vpAmbientService.Query.HasErrors)
-                    {
-                        return Ok(new List<VPAmbient>()
-                        {
-                            new VPAmbient()
-                            {
-                                HasErrors = vpAmbientService.Query.HasErrors,
-                                ValidationResults = vpAmbientService.Query.ValidationResults,
-                            },
-                        }.ToList());
-                    }
-                    else
-                    {
-                        return Ok(vpAmbientService.GetVPAmbientList().ToList());
-                    }
-                }
+                 if (vpAmbientService.Query.HasErrors)
+                 {
+                     return Ok(new List<VPAmbient>()
+                     {
+                         new VPAmbient()
+                         {
+                             HasErrors = vpAmbientService.Query.HasErrors,
+                             ValidationResults = vpAmbientService.Query.ValidationResults,
+                         },
+                     }.ToList());
+                 }
+                 else
+                 {
+                     return Ok(vpAmbientService.GetVPAmbientList().ToList());
+                 }
             }
         }
         // GET api/vpAmbient/1
         [Route("{VPAmbientID:int}")]
-        public IHttpActionResult GetVPAmbientWithID([FromUri]int VPAmbientID, [FromUri]string lang = "en", [FromUri]string extra = "")
+        public IActionResult GetVPAmbientWithID([FromQuery]int VPAmbientID, [FromQuery]string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
                 VPAmbientService vpAmbientService = new VPAmbientService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
 
-                vpAmbientService.Query = vpAmbientService.FillQuery(typeof(VPAmbient), lang, 0, 1, "", "", extra);
+                vpAmbientService.Query = vpAmbientService.FillQuery(typeof(VPAmbient), lang, 0, 1, "", "");
 
-                if (vpAmbientService.Query.Extra == "A")
+                VPAmbient vpAmbient = new VPAmbient();
+                vpAmbient = vpAmbientService.GetVPAmbientWithVPAmbientID(VPAmbientID);
+
+                if (vpAmbient == null)
                 {
-                    VPAmbientExtraA vpAmbientExtraA = new VPAmbientExtraA();
-                    vpAmbientExtraA = vpAmbientService.GetVPAmbientExtraAWithVPAmbientID(VPAmbientID);
-
-                    if (vpAmbientExtraA == null)
-                    {
-                        return NotFound();
-                    }
-
-                    return Ok(vpAmbientExtraA);
+                    return NotFound();
                 }
-                else if (vpAmbientService.Query.Extra == "B")
-                {
-                    VPAmbientExtraB vpAmbientExtraB = new VPAmbientExtraB();
-                    vpAmbientExtraB = vpAmbientService.GetVPAmbientExtraBWithVPAmbientID(VPAmbientID);
 
-                    if (vpAmbientExtraB == null)
-                    {
-                        return NotFound();
-                    }
-
-                    return Ok(vpAmbientExtraB);
-                }
-                else
-                {
-                    VPAmbient vpAmbient = new VPAmbient();
-                    vpAmbient = vpAmbientService.GetVPAmbientWithVPAmbientID(VPAmbientID);
-
-                    if (vpAmbient == null)
-                    {
-                        return NotFound();
-                    }
-
-                    return Ok(vpAmbient);
-                }
+                return Ok(vpAmbient);
             }
         }
         // POST api/vpAmbient
         [Route("")]
-        public IHttpActionResult Post([FromBody]VPAmbient vpAmbient, [FromUri]string lang = "en")
+        public IActionResult Post([FromBody]VPAmbient vpAmbient, [FromQuery]string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
@@ -161,13 +91,13 @@ namespace CSSPWebAPI.Controllers
                 else
                 {
                     vpAmbient.ValidationResults = null;
-                    return Created<VPAmbient>(new Uri(Request.RequestUri, vpAmbient.VPAmbientID.ToString()), vpAmbient);
+                    return Created(Url.ToString(), vpAmbient);
                 }
             }
         }
         // PUT api/vpAmbient
         [Route("")]
-        public IHttpActionResult Put([FromBody]VPAmbient vpAmbient, [FromUri]string lang = "en")
+        public IActionResult Put([FromBody]VPAmbient vpAmbient, [FromQuery]string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
@@ -186,7 +116,7 @@ namespace CSSPWebAPI.Controllers
         }
         // DELETE api/vpAmbient
         [Route("")]
-        public IHttpActionResult Delete([FromBody]VPAmbient vpAmbient, [FromUri]string lang = "en")
+        public IActionResult Delete([FromBody]VPAmbient vpAmbient, [FromQuery]string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {

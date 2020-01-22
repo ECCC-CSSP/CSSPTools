@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
 using System.Web.Http.Results;
+using Microsoft.AspNetCore.Mvc;
 
 namespace CSSPWebAPI.Tests.Controllers
 {
@@ -48,7 +49,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     }
 
                     // ok with InfrastructureLanguage info
-                    IHttpActionResult jsonRet = infrastructureLanguageController.GetInfrastructureLanguageList();
+                    IActionResult jsonRet = infrastructureLanguageController.GetInfrastructureLanguageList();
                     Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<List<InfrastructureLanguage>> ret = jsonRet as OkNegotiatedContentResult<List<InfrastructureLanguage>>;
@@ -86,7 +87,7 @@ namespace CSSPWebAPI.Tests.Controllers
                            count = (query.Take > count ? query.Take : count);
 
                            // ok with InfrastructureLanguage info
-                           IHttpActionResult jsonRet2 = infrastructureLanguageController.GetInfrastructureLanguageList(query.Language.ToString(), query.Skip, query.Take);
+                           IActionResult jsonRet2 = infrastructureLanguageController.GetInfrastructureLanguageList(query.Language.ToString(), query.Skip, query.Take);
                            Assert.NotNull(jsonRet2);
 
                            OkNegotiatedContentResult<List<InfrastructureLanguage>> ret2 = jsonRet2 as OkNegotiatedContentResult<List<InfrastructureLanguage>>;
@@ -119,7 +120,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     }
 
                     // ok with InfrastructureLanguage info
-                    IHttpActionResult jsonRet = infrastructureLanguageController.GetInfrastructureLanguageWithID(infrastructureLanguageFirst.InfrastructureLanguageID);
+                    IActionResult jsonRet = infrastructureLanguageController.GetInfrastructureLanguageWithID(infrastructureLanguageFirst.InfrastructureLanguageID);
                     Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<InfrastructureLanguage> Ret = jsonRet as OkNegotiatedContentResult<InfrastructureLanguage>;
@@ -127,16 +128,16 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.Equal(infrastructureLanguageFirst.InfrastructureLanguageID, infrastructureLanguageRet.InfrastructureLanguageID);
 
                     BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
+                    Assert.Null(badRequest);
 
                     // Not Found
-                    IHttpActionResult jsonRet2 = infrastructureLanguageController.GetInfrastructureLanguageWithID(0);
+                    IActionResult jsonRet2 = infrastructureLanguageController.GetInfrastructureLanguageWithID(0);
                     Assert.NotNull(jsonRet2);
 
                     OkNegotiatedContentResult<InfrastructureLanguage> infrastructureLanguageRet2 = jsonRet2 as OkNegotiatedContentResult<InfrastructureLanguage>;
-                    Assert.IsNull(infrastructureLanguageRet2);
+                    Assert.Null(infrastructureLanguageRet2);
 
-                    NotFoundResult notFoundRequest = jsonRet2 as NotFoundResult;
+                    NotFoundObjectResult notFoundRequest = jsonRet2 as NotFoundObjectResult;
                     Assert.NotNull(notFoundRequest);
                 }
             }
@@ -168,7 +169,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     }
 
                     // ok with InfrastructureLanguage info
-                    IHttpActionResult jsonRet = infrastructureLanguageController.GetInfrastructureLanguageWithID(infrastructureLanguageLast.InfrastructureLanguageID);
+                    IActionResult jsonRet = infrastructureLanguageController.GetInfrastructureLanguageWithID(infrastructureLanguageLast.InfrastructureLanguageID);
                     Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<InfrastructureLanguage> Ret = jsonRet as OkNegotiatedContentResult<InfrastructureLanguage>;
@@ -176,14 +177,14 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.Equal(infrastructureLanguageLast.InfrastructureLanguageID, infrastructureLanguageRet.InfrastructureLanguageID);
 
                     BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
+                    Assert.Null(badRequest);
 
                     // Post to return CSSPError because InfrastructureLanguageID exist
-                    IHttpActionResult jsonRet2 = infrastructureLanguageController.Post(infrastructureLanguageRet, LanguageRequest.ToString());
+                    IActionResult jsonRet2 = infrastructureLanguageController.Post(infrastructureLanguageRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet2);
 
                     OkNegotiatedContentResult<InfrastructureLanguage> infrastructureLanguageRet2 = jsonRet2 as OkNegotiatedContentResult<InfrastructureLanguage>;
-                    Assert.IsNull(infrastructureLanguageRet2);
+                    Assert.Null(infrastructureLanguageRet2);
 
                     BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
                     Assert.NotNull(badRequest2);
@@ -192,23 +193,23 @@ namespace CSSPWebAPI.Tests.Controllers
                     infrastructureLanguageRet.InfrastructureLanguageID = 0;
                     infrastructureLanguageController.Request = new System.Net.Http.HttpRequestMessage();
                     infrastructureLanguageController.Request.RequestUri = new System.Uri("http://localhost:5000/api/infrastructureLanguage");
-                    IHttpActionResult jsonRet3 = infrastructureLanguageController.Post(infrastructureLanguageRet, LanguageRequest.ToString());
+                    IActionResult jsonRet3 = infrastructureLanguageController.Post(infrastructureLanguageRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 
                     CreatedNegotiatedContentResult<InfrastructureLanguage> infrastructureLanguageRet3 = jsonRet3 as CreatedNegotiatedContentResult<InfrastructureLanguage>;
                     Assert.NotNull(infrastructureLanguageRet3);
 
                     BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest3);
+                    Assert.Null(badRequest3);
 
-                    IHttpActionResult jsonRet4 = infrastructureLanguageController.Delete(infrastructureLanguageRet, LanguageRequest.ToString());
+                    IActionResult jsonRet4 = infrastructureLanguageController.Delete(infrastructureLanguageRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet4);
 
                     OkNegotiatedContentResult<InfrastructureLanguage> infrastructureLanguageRet4 = jsonRet4 as OkNegotiatedContentResult<InfrastructureLanguage>;
                     Assert.NotNull(infrastructureLanguageRet4);
 
                     BadRequestErrorMessageResult badRequest4 = jsonRet4 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest4);
+                    Assert.Null(badRequest4);
                 }
             }
         }
@@ -237,7 +238,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     }
 
                     // ok with InfrastructureLanguage info
-                    IHttpActionResult jsonRet = infrastructureLanguageController.GetInfrastructureLanguageWithID(infrastructureLanguageLast.InfrastructureLanguageID);
+                    IActionResult jsonRet = infrastructureLanguageController.GetInfrastructureLanguageWithID(infrastructureLanguageLast.InfrastructureLanguageID);
                     Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<InfrastructureLanguage> Ret = jsonRet as OkNegotiatedContentResult<InfrastructureLanguage>;
@@ -245,25 +246,25 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.Equal(infrastructureLanguageLast.InfrastructureLanguageID, infrastructureLanguageRet.InfrastructureLanguageID);
 
                     BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
+                    Assert.Null(badRequest);
 
                     // Put to return success
-                    IHttpActionResult jsonRet2 = infrastructureLanguageController.Put(infrastructureLanguageRet, LanguageRequest.ToString());
+                    IActionResult jsonRet2 = infrastructureLanguageController.Put(infrastructureLanguageRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet2);
 
                     OkNegotiatedContentResult<InfrastructureLanguage> infrastructureLanguageRet2 = jsonRet2 as OkNegotiatedContentResult<InfrastructureLanguage>;
                     Assert.NotNull(infrastructureLanguageRet2);
 
                     BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest2);
+                    Assert.Null(badRequest2);
 
                     // Put to return CSSPError because InfrastructureLanguageID of 0 does not exist
                     infrastructureLanguageRet.InfrastructureLanguageID = 0;
-                    IHttpActionResult jsonRet3 = infrastructureLanguageController.Put(infrastructureLanguageRet, LanguageRequest.ToString());
+                    IActionResult jsonRet3 = infrastructureLanguageController.Put(infrastructureLanguageRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 
                     OkNegotiatedContentResult<InfrastructureLanguage> infrastructureLanguageRet3 = jsonRet3 as OkNegotiatedContentResult<InfrastructureLanguage>;
-                    Assert.IsNull(infrastructureLanguageRet3);
+                    Assert.Null(infrastructureLanguageRet3);
 
                     BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
                     Assert.NotNull(badRequest3);
@@ -297,7 +298,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     }
 
                     // ok with InfrastructureLanguage info
-                    IHttpActionResult jsonRet = infrastructureLanguageController.GetInfrastructureLanguageWithID(infrastructureLanguageLast.InfrastructureLanguageID);
+                    IActionResult jsonRet = infrastructureLanguageController.GetInfrastructureLanguageWithID(infrastructureLanguageLast.InfrastructureLanguageID);
                     Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<InfrastructureLanguage> Ret = jsonRet as OkNegotiatedContentResult<InfrastructureLanguage>;
@@ -305,13 +306,13 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.Equal(infrastructureLanguageLast.InfrastructureLanguageID, infrastructureLanguageRet.InfrastructureLanguageID);
 
                     BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
+                    Assert.Null(badRequest);
 
                     // Post to return newly added InfrastructureLanguage
                     infrastructureLanguageRet.InfrastructureLanguageID = 0;
                     infrastructureLanguageController.Request = new System.Net.Http.HttpRequestMessage();
                     infrastructureLanguageController.Request.RequestUri = new System.Uri("http://localhost:5000/api/infrastructureLanguage");
-                    IHttpActionResult jsonRet3 = infrastructureLanguageController.Post(infrastructureLanguageRet, LanguageRequest.ToString());
+                    IActionResult jsonRet3 = infrastructureLanguageController.Post(infrastructureLanguageRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 
                     CreatedNegotiatedContentResult<InfrastructureLanguage> infrastructureLanguageRet3 = jsonRet3 as CreatedNegotiatedContentResult<InfrastructureLanguage>;
@@ -319,25 +320,25 @@ namespace CSSPWebAPI.Tests.Controllers
                     InfrastructureLanguage infrastructureLanguage = infrastructureLanguageRet3.Content;
 
                     BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest3);
+                    Assert.Null(badRequest3);
 
                     // Delete to return success
-                    IHttpActionResult jsonRet2 = infrastructureLanguageController.Delete(infrastructureLanguageRet, LanguageRequest.ToString());
+                    IActionResult jsonRet2 = infrastructureLanguageController.Delete(infrastructureLanguageRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet2);
 
                     OkNegotiatedContentResult<InfrastructureLanguage> infrastructureLanguageRet2 = jsonRet2 as OkNegotiatedContentResult<InfrastructureLanguage>;
                     Assert.NotNull(infrastructureLanguageRet2);
 
                     BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest2);
+                    Assert.Null(badRequest2);
 
                     // Delete to return CSSPError because InfrastructureLanguageID of 0 does not exist
                     infrastructureLanguageRet.InfrastructureLanguageID = 0;
-                    IHttpActionResult jsonRet4 = infrastructureLanguageController.Delete(infrastructureLanguageRet, LanguageRequest.ToString());
+                    IActionResult jsonRet4 = infrastructureLanguageController.Delete(infrastructureLanguageRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet4);
 
                     OkNegotiatedContentResult<InfrastructureLanguage> infrastructureLanguageRet4 = jsonRet4 as OkNegotiatedContentResult<InfrastructureLanguage>;
-                    Assert.IsNull(infrastructureLanguageRet4);
+                    Assert.Null(infrastructureLanguageRet4);
 
                     BadRequestErrorMessageResult badRequest4 = jsonRet4 as BadRequestErrorMessageResult;
                     Assert.NotNull(badRequest4);

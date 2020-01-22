@@ -1,14 +1,14 @@
 using CSSPEnums;
 using CSSPModels;
 using CSSPServices;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web.Http;
 
 namespace CSSPWebAPI.Controllers
 {
-    [RoutePrefix("api/mwqmRunLanguage")]
+    [Route("api/mwqmRunLanguage")]
     public partial class MWQMRunLanguageController : BaseController
     {
         #region Variables
@@ -29,126 +29,56 @@ namespace CSSPWebAPI.Controllers
         #region Functions public
         // GET api/mwqmRunLanguage
         [Route("")]
-        public IHttpActionResult GetMWQMRunLanguageList([FromUri]string lang = "en", [FromUri]int skip = 0, [FromUri]int take = 200,
-            [FromUri]string asc = "", [FromUri]string desc = "", [FromUri]string where = "", [FromUri]string extra = "")
+        public IActionResult GetMWQMRunLanguageList([FromQuery]string lang = "en", [FromQuery]int skip = 0, [FromQuery]int take = 200,
+            [FromQuery]string asc = "", [FromQuery]string desc = "", [FromQuery]string where = "")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
                 MWQMRunLanguageService mwqmRunLanguageService = new MWQMRunLanguageService(new Query() { Lang = lang }, db, ContactID);
 
-                if (extra == "A") // QueryString contains [extra=A]
-                {
-                   mwqmRunLanguageService.Query = mwqmRunLanguageService.FillQuery(typeof(MWQMRunLanguageExtraA), lang, skip, take, asc, desc, where, extra);
+                mwqmRunLanguageService.Query = mwqmRunLanguageService.FillQuery(typeof(MWQMRunLanguage), lang, skip, take, asc, desc, where);
 
-                    if (mwqmRunLanguageService.Query.HasErrors)
-                    {
-                        return Ok(new List<MWQMRunLanguageExtraA>()
-                        {
-                            new MWQMRunLanguageExtraA()
-                            {
-                                HasErrors = mwqmRunLanguageService.Query.HasErrors,
-                                ValidationResults = mwqmRunLanguageService.Query.ValidationResults,
-                            },
-                        }.ToList());
-                    }
-                    else
-                    {
-                        return Ok(mwqmRunLanguageService.GetMWQMRunLanguageExtraAList().ToList());
-                    }
-                }
-                else if (extra == "B") // QueryString contains [extra=B]
-                {
-                   mwqmRunLanguageService.Query = mwqmRunLanguageService.FillQuery(typeof(MWQMRunLanguageExtraB), lang, skip, take, asc, desc, where, extra);
-
-                    if (mwqmRunLanguageService.Query.HasErrors)
-                    {
-                        return Ok(new List<MWQMRunLanguageExtraB>()
-                        {
-                            new MWQMRunLanguageExtraB()
-                            {
-                                HasErrors = mwqmRunLanguageService.Query.HasErrors,
-                                ValidationResults = mwqmRunLanguageService.Query.ValidationResults,
-                            },
-                        }.ToList());
-                    }
-                    else
-                    {
-                        return Ok(mwqmRunLanguageService.GetMWQMRunLanguageExtraBList().ToList());
-                    }
-                }
-                else // QueryString has no parameter [extra] or extra is empty
-                {
-                   mwqmRunLanguageService.Query = mwqmRunLanguageService.FillQuery(typeof(MWQMRunLanguage), lang, skip, take, asc, desc, where, extra);
-
-                    if (mwqmRunLanguageService.Query.HasErrors)
-                    {
-                        return Ok(new List<MWQMRunLanguage>()
-                        {
-                            new MWQMRunLanguage()
-                            {
-                                HasErrors = mwqmRunLanguageService.Query.HasErrors,
-                                ValidationResults = mwqmRunLanguageService.Query.ValidationResults,
-                            },
-                        }.ToList());
-                    }
-                    else
-                    {
-                        return Ok(mwqmRunLanguageService.GetMWQMRunLanguageList().ToList());
-                    }
-                }
+                 if (mwqmRunLanguageService.Query.HasErrors)
+                 {
+                     return Ok(new List<MWQMRunLanguage>()
+                     {
+                         new MWQMRunLanguage()
+                         {
+                             HasErrors = mwqmRunLanguageService.Query.HasErrors,
+                             ValidationResults = mwqmRunLanguageService.Query.ValidationResults,
+                         },
+                     }.ToList());
+                 }
+                 else
+                 {
+                     return Ok(mwqmRunLanguageService.GetMWQMRunLanguageList().ToList());
+                 }
             }
         }
         // GET api/mwqmRunLanguage/1
         [Route("{MWQMRunLanguageID:int}")]
-        public IHttpActionResult GetMWQMRunLanguageWithID([FromUri]int MWQMRunLanguageID, [FromUri]string lang = "en", [FromUri]string extra = "")
+        public IActionResult GetMWQMRunLanguageWithID([FromQuery]int MWQMRunLanguageID, [FromQuery]string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
                 MWQMRunLanguageService mwqmRunLanguageService = new MWQMRunLanguageService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
 
-                mwqmRunLanguageService.Query = mwqmRunLanguageService.FillQuery(typeof(MWQMRunLanguage), lang, 0, 1, "", "", extra);
+                mwqmRunLanguageService.Query = mwqmRunLanguageService.FillQuery(typeof(MWQMRunLanguage), lang, 0, 1, "", "");
 
-                if (mwqmRunLanguageService.Query.Extra == "A")
+                MWQMRunLanguage mwqmRunLanguage = new MWQMRunLanguage();
+                mwqmRunLanguage = mwqmRunLanguageService.GetMWQMRunLanguageWithMWQMRunLanguageID(MWQMRunLanguageID);
+
+                if (mwqmRunLanguage == null)
                 {
-                    MWQMRunLanguageExtraA mwqmRunLanguageExtraA = new MWQMRunLanguageExtraA();
-                    mwqmRunLanguageExtraA = mwqmRunLanguageService.GetMWQMRunLanguageExtraAWithMWQMRunLanguageID(MWQMRunLanguageID);
-
-                    if (mwqmRunLanguageExtraA == null)
-                    {
-                        return NotFound();
-                    }
-
-                    return Ok(mwqmRunLanguageExtraA);
+                    return NotFound();
                 }
-                else if (mwqmRunLanguageService.Query.Extra == "B")
-                {
-                    MWQMRunLanguageExtraB mwqmRunLanguageExtraB = new MWQMRunLanguageExtraB();
-                    mwqmRunLanguageExtraB = mwqmRunLanguageService.GetMWQMRunLanguageExtraBWithMWQMRunLanguageID(MWQMRunLanguageID);
 
-                    if (mwqmRunLanguageExtraB == null)
-                    {
-                        return NotFound();
-                    }
-
-                    return Ok(mwqmRunLanguageExtraB);
-                }
-                else
-                {
-                    MWQMRunLanguage mwqmRunLanguage = new MWQMRunLanguage();
-                    mwqmRunLanguage = mwqmRunLanguageService.GetMWQMRunLanguageWithMWQMRunLanguageID(MWQMRunLanguageID);
-
-                    if (mwqmRunLanguage == null)
-                    {
-                        return NotFound();
-                    }
-
-                    return Ok(mwqmRunLanguage);
-                }
+                return Ok(mwqmRunLanguage);
             }
         }
         // POST api/mwqmRunLanguage
         [Route("")]
-        public IHttpActionResult Post([FromBody]MWQMRunLanguage mwqmRunLanguage, [FromUri]string lang = "en")
+        public IActionResult Post([FromBody]MWQMRunLanguage mwqmRunLanguage, [FromQuery]string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
@@ -161,13 +91,13 @@ namespace CSSPWebAPI.Controllers
                 else
                 {
                     mwqmRunLanguage.ValidationResults = null;
-                    return Created<MWQMRunLanguage>(new Uri(Request.RequestUri, mwqmRunLanguage.MWQMRunLanguageID.ToString()), mwqmRunLanguage);
+                    return Created(Url.ToString(), mwqmRunLanguage);
                 }
             }
         }
         // PUT api/mwqmRunLanguage
         [Route("")]
-        public IHttpActionResult Put([FromBody]MWQMRunLanguage mwqmRunLanguage, [FromUri]string lang = "en")
+        public IActionResult Put([FromBody]MWQMRunLanguage mwqmRunLanguage, [FromQuery]string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
@@ -186,7 +116,7 @@ namespace CSSPWebAPI.Controllers
         }
         // DELETE api/mwqmRunLanguage
         [Route("")]
-        public IHttpActionResult Delete([FromBody]MWQMRunLanguage mwqmRunLanguage, [FromUri]string lang = "en")
+        public IActionResult Delete([FromBody]MWQMRunLanguage mwqmRunLanguage, [FromQuery]string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {

@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
 using System.Web.Http.Results;
+using Microsoft.AspNetCore.Mvc;
 
 namespace CSSPWebAPI.Tests.Controllers
 {
@@ -48,7 +49,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     }
 
                     // ok with TVItem info
-                    IHttpActionResult jsonRet = tvItemController.GetTVItemList();
+                    IActionResult jsonRet = tvItemController.GetTVItemList();
                     Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<List<TVItem>> ret = jsonRet as OkNegotiatedContentResult<List<TVItem>>;
@@ -86,7 +87,7 @@ namespace CSSPWebAPI.Tests.Controllers
                            count = (query.Take > count ? query.Take : count);
 
                            // ok with TVItem info
-                           IHttpActionResult jsonRet2 = tvItemController.GetTVItemList(query.Language.ToString(), query.Skip, query.Take);
+                           IActionResult jsonRet2 = tvItemController.GetTVItemList(query.Language.ToString(), query.Skip, query.Take);
                            Assert.NotNull(jsonRet2);
 
                            OkNegotiatedContentResult<List<TVItem>> ret2 = jsonRet2 as OkNegotiatedContentResult<List<TVItem>>;
@@ -119,7 +120,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     }
 
                     // ok with TVItem info
-                    IHttpActionResult jsonRet = tvItemController.GetTVItemWithID(tvItemFirst.TVItemID);
+                    IActionResult jsonRet = tvItemController.GetTVItemWithID(tvItemFirst.TVItemID);
                     Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<TVItem> Ret = jsonRet as OkNegotiatedContentResult<TVItem>;
@@ -127,16 +128,16 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.Equal(tvItemFirst.TVItemID, tvItemRet.TVItemID);
 
                     BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
+                    Assert.Null(badRequest);
 
                     // Not Found
-                    IHttpActionResult jsonRet2 = tvItemController.GetTVItemWithID(0);
+                    IActionResult jsonRet2 = tvItemController.GetTVItemWithID(0);
                     Assert.NotNull(jsonRet2);
 
                     OkNegotiatedContentResult<TVItem> tvItemRet2 = jsonRet2 as OkNegotiatedContentResult<TVItem>;
-                    Assert.IsNull(tvItemRet2);
+                    Assert.Null(tvItemRet2);
 
-                    NotFoundResult notFoundRequest = jsonRet2 as NotFoundResult;
+                    NotFoundObjectResult notFoundRequest = jsonRet2 as NotFoundObjectResult;
                     Assert.NotNull(notFoundRequest);
                 }
             }
@@ -168,7 +169,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     }
 
                     // ok with TVItem info
-                    IHttpActionResult jsonRet = tvItemController.GetTVItemWithID(tvItemLast.TVItemID);
+                    IActionResult jsonRet = tvItemController.GetTVItemWithID(tvItemLast.TVItemID);
                     Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<TVItem> Ret = jsonRet as OkNegotiatedContentResult<TVItem>;
@@ -176,14 +177,14 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.Equal(tvItemLast.TVItemID, tvItemRet.TVItemID);
 
                     BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
+                    Assert.Null(badRequest);
 
                     // Post to return CSSPError because TVItemID exist
-                    IHttpActionResult jsonRet2 = tvItemController.Post(tvItemRet, LanguageRequest.ToString());
+                    IActionResult jsonRet2 = tvItemController.Post(tvItemRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet2);
 
                     OkNegotiatedContentResult<TVItem> tvItemRet2 = jsonRet2 as OkNegotiatedContentResult<TVItem>;
-                    Assert.IsNull(tvItemRet2);
+                    Assert.Null(tvItemRet2);
 
                     BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
                     Assert.NotNull(badRequest2);
@@ -194,23 +195,23 @@ namespace CSSPWebAPI.Tests.Controllers
                     tvItemRet.TVType = TVTypeEnum.Contact;
                     tvItemController.Request = new System.Net.Http.HttpRequestMessage();
                     tvItemController.Request.RequestUri = new System.Uri("http://localhost:5000/api/tvItem");
-                    IHttpActionResult jsonRet3 = tvItemController.Post(tvItemRet, LanguageRequest.ToString());
+                    IActionResult jsonRet3 = tvItemController.Post(tvItemRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 
                     CreatedNegotiatedContentResult<TVItem> tvItemRet3 = jsonRet3 as CreatedNegotiatedContentResult<TVItem>;
                     Assert.NotNull(tvItemRet3);
 
                     BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest3);
+                    Assert.Null(badRequest3);
 
-                    IHttpActionResult jsonRet4 = tvItemController.Delete(tvItemRet, LanguageRequest.ToString());
+                    IActionResult jsonRet4 = tvItemController.Delete(tvItemRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet4);
 
                     OkNegotiatedContentResult<TVItem> tvItemRet4 = jsonRet4 as OkNegotiatedContentResult<TVItem>;
                     Assert.NotNull(tvItemRet4);
 
                     BadRequestErrorMessageResult badRequest4 = jsonRet4 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest4);
+                    Assert.Null(badRequest4);
                 }
             }
         }
@@ -239,7 +240,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     }
 
                     // ok with TVItem info
-                    IHttpActionResult jsonRet = tvItemController.GetTVItemWithID(tvItemLast.TVItemID);
+                    IActionResult jsonRet = tvItemController.GetTVItemWithID(tvItemLast.TVItemID);
                     Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<TVItem> Ret = jsonRet as OkNegotiatedContentResult<TVItem>;
@@ -247,25 +248,25 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.Equal(tvItemLast.TVItemID, tvItemRet.TVItemID);
 
                     BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
+                    Assert.Null(badRequest);
 
                     // Put to return success
-                    IHttpActionResult jsonRet2 = tvItemController.Put(tvItemRet, LanguageRequest.ToString());
+                    IActionResult jsonRet2 = tvItemController.Put(tvItemRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet2);
 
                     OkNegotiatedContentResult<TVItem> tvItemRet2 = jsonRet2 as OkNegotiatedContentResult<TVItem>;
                     Assert.NotNull(tvItemRet2);
 
                     BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest2);
+                    Assert.Null(badRequest2);
 
                     // Put to return CSSPError because TVItemID of 0 does not exist
                     tvItemRet.TVItemID = 0;
-                    IHttpActionResult jsonRet3 = tvItemController.Put(tvItemRet, LanguageRequest.ToString());
+                    IActionResult jsonRet3 = tvItemController.Put(tvItemRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 
                     OkNegotiatedContentResult<TVItem> tvItemRet3 = jsonRet3 as OkNegotiatedContentResult<TVItem>;
-                    Assert.IsNull(tvItemRet3);
+                    Assert.Null(tvItemRet3);
 
                     BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
                     Assert.NotNull(badRequest3);
@@ -299,7 +300,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     }
 
                     // ok with TVItem info
-                    IHttpActionResult jsonRet = tvItemController.GetTVItemWithID(tvItemLast.TVItemID);
+                    IActionResult jsonRet = tvItemController.GetTVItemWithID(tvItemLast.TVItemID);
                     Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<TVItem> Ret = jsonRet as OkNegotiatedContentResult<TVItem>;
@@ -307,7 +308,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.Equal(tvItemLast.TVItemID, tvItemRet.TVItemID);
 
                     BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
+                    Assert.Null(badRequest);
 
                     // Post to return newly added TVItem
                     tvItemRet.TVItemID = 0;
@@ -315,7 +316,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     tvItemRet.TVType = TVTypeEnum.Contact;
                     tvItemController.Request = new System.Net.Http.HttpRequestMessage();
                     tvItemController.Request.RequestUri = new System.Uri("http://localhost:5000/api/tvItem");
-                    IHttpActionResult jsonRet3 = tvItemController.Post(tvItemRet, LanguageRequest.ToString());
+                    IActionResult jsonRet3 = tvItemController.Post(tvItemRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 
                     CreatedNegotiatedContentResult<TVItem> tvItemRet3 = jsonRet3 as CreatedNegotiatedContentResult<TVItem>;
@@ -323,25 +324,25 @@ namespace CSSPWebAPI.Tests.Controllers
                     TVItem tvItem = tvItemRet3.Content;
 
                     BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest3);
+                    Assert.Null(badRequest3);
 
                     // Delete to return success
-                    IHttpActionResult jsonRet2 = tvItemController.Delete(tvItemRet, LanguageRequest.ToString());
+                    IActionResult jsonRet2 = tvItemController.Delete(tvItemRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet2);
 
                     OkNegotiatedContentResult<TVItem> tvItemRet2 = jsonRet2 as OkNegotiatedContentResult<TVItem>;
                     Assert.NotNull(tvItemRet2);
 
                     BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest2);
+                    Assert.Null(badRequest2);
 
                     // Delete to return CSSPError because TVItemID of 0 does not exist
                     tvItemRet.TVItemID = 0;
-                    IHttpActionResult jsonRet4 = tvItemController.Delete(tvItemRet, LanguageRequest.ToString());
+                    IActionResult jsonRet4 = tvItemController.Delete(tvItemRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet4);
 
                     OkNegotiatedContentResult<TVItem> tvItemRet4 = jsonRet4 as OkNegotiatedContentResult<TVItem>;
-                    Assert.IsNull(tvItemRet4);
+                    Assert.Null(tvItemRet4);
 
                     BadRequestErrorMessageResult badRequest4 = jsonRet4 as BadRequestErrorMessageResult;
                     Assert.NotNull(badRequest4);

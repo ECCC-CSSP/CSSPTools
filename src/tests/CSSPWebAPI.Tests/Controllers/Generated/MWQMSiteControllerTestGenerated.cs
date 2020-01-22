@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
 using System.Web.Http.Results;
+using Microsoft.AspNetCore.Mvc;
 
 namespace CSSPWebAPI.Tests.Controllers
 {
@@ -48,7 +49,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     }
 
                     // ok with MWQMSite info
-                    IHttpActionResult jsonRet = mwqmSiteController.GetMWQMSiteList();
+                    IActionResult jsonRet = mwqmSiteController.GetMWQMSiteList();
                     Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<List<MWQMSite>> ret = jsonRet as OkNegotiatedContentResult<List<MWQMSite>>;
@@ -86,7 +87,7 @@ namespace CSSPWebAPI.Tests.Controllers
                            count = (query.Take > count ? query.Take : count);
 
                            // ok with MWQMSite info
-                           IHttpActionResult jsonRet2 = mwqmSiteController.GetMWQMSiteList(query.Language.ToString(), query.Skip, query.Take);
+                           IActionResult jsonRet2 = mwqmSiteController.GetMWQMSiteList(query.Language.ToString(), query.Skip, query.Take);
                            Assert.NotNull(jsonRet2);
 
                            OkNegotiatedContentResult<List<MWQMSite>> ret2 = jsonRet2 as OkNegotiatedContentResult<List<MWQMSite>>;
@@ -119,7 +120,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     }
 
                     // ok with MWQMSite info
-                    IHttpActionResult jsonRet = mwqmSiteController.GetMWQMSiteWithID(mwqmSiteFirst.MWQMSiteID);
+                    IActionResult jsonRet = mwqmSiteController.GetMWQMSiteWithID(mwqmSiteFirst.MWQMSiteID);
                     Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<MWQMSite> Ret = jsonRet as OkNegotiatedContentResult<MWQMSite>;
@@ -127,16 +128,16 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.Equal(mwqmSiteFirst.MWQMSiteID, mwqmSiteRet.MWQMSiteID);
 
                     BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
+                    Assert.Null(badRequest);
 
                     // Not Found
-                    IHttpActionResult jsonRet2 = mwqmSiteController.GetMWQMSiteWithID(0);
+                    IActionResult jsonRet2 = mwqmSiteController.GetMWQMSiteWithID(0);
                     Assert.NotNull(jsonRet2);
 
                     OkNegotiatedContentResult<MWQMSite> mwqmSiteRet2 = jsonRet2 as OkNegotiatedContentResult<MWQMSite>;
-                    Assert.IsNull(mwqmSiteRet2);
+                    Assert.Null(mwqmSiteRet2);
 
-                    NotFoundResult notFoundRequest = jsonRet2 as NotFoundResult;
+                    NotFoundObjectResult notFoundRequest = jsonRet2 as NotFoundObjectResult;
                     Assert.NotNull(notFoundRequest);
                 }
             }
@@ -168,7 +169,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     }
 
                     // ok with MWQMSite info
-                    IHttpActionResult jsonRet = mwqmSiteController.GetMWQMSiteWithID(mwqmSiteLast.MWQMSiteID);
+                    IActionResult jsonRet = mwqmSiteController.GetMWQMSiteWithID(mwqmSiteLast.MWQMSiteID);
                     Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<MWQMSite> Ret = jsonRet as OkNegotiatedContentResult<MWQMSite>;
@@ -176,14 +177,14 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.Equal(mwqmSiteLast.MWQMSiteID, mwqmSiteRet.MWQMSiteID);
 
                     BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
+                    Assert.Null(badRequest);
 
                     // Post to return CSSPError because MWQMSiteID exist
-                    IHttpActionResult jsonRet2 = mwqmSiteController.Post(mwqmSiteRet, LanguageRequest.ToString());
+                    IActionResult jsonRet2 = mwqmSiteController.Post(mwqmSiteRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet2);
 
                     OkNegotiatedContentResult<MWQMSite> mwqmSiteRet2 = jsonRet2 as OkNegotiatedContentResult<MWQMSite>;
-                    Assert.IsNull(mwqmSiteRet2);
+                    Assert.Null(mwqmSiteRet2);
 
                     BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
                     Assert.NotNull(badRequest2);
@@ -192,23 +193,23 @@ namespace CSSPWebAPI.Tests.Controllers
                     mwqmSiteRet.MWQMSiteID = 0;
                     mwqmSiteController.Request = new System.Net.Http.HttpRequestMessage();
                     mwqmSiteController.Request.RequestUri = new System.Uri("http://localhost:5000/api/mwqmSite");
-                    IHttpActionResult jsonRet3 = mwqmSiteController.Post(mwqmSiteRet, LanguageRequest.ToString());
+                    IActionResult jsonRet3 = mwqmSiteController.Post(mwqmSiteRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 
                     CreatedNegotiatedContentResult<MWQMSite> mwqmSiteRet3 = jsonRet3 as CreatedNegotiatedContentResult<MWQMSite>;
                     Assert.NotNull(mwqmSiteRet3);
 
                     BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest3);
+                    Assert.Null(badRequest3);
 
-                    IHttpActionResult jsonRet4 = mwqmSiteController.Delete(mwqmSiteRet, LanguageRequest.ToString());
+                    IActionResult jsonRet4 = mwqmSiteController.Delete(mwqmSiteRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet4);
 
                     OkNegotiatedContentResult<MWQMSite> mwqmSiteRet4 = jsonRet4 as OkNegotiatedContentResult<MWQMSite>;
                     Assert.NotNull(mwqmSiteRet4);
 
                     BadRequestErrorMessageResult badRequest4 = jsonRet4 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest4);
+                    Assert.Null(badRequest4);
                 }
             }
         }
@@ -237,7 +238,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     }
 
                     // ok with MWQMSite info
-                    IHttpActionResult jsonRet = mwqmSiteController.GetMWQMSiteWithID(mwqmSiteLast.MWQMSiteID);
+                    IActionResult jsonRet = mwqmSiteController.GetMWQMSiteWithID(mwqmSiteLast.MWQMSiteID);
                     Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<MWQMSite> Ret = jsonRet as OkNegotiatedContentResult<MWQMSite>;
@@ -245,25 +246,25 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.Equal(mwqmSiteLast.MWQMSiteID, mwqmSiteRet.MWQMSiteID);
 
                     BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
+                    Assert.Null(badRequest);
 
                     // Put to return success
-                    IHttpActionResult jsonRet2 = mwqmSiteController.Put(mwqmSiteRet, LanguageRequest.ToString());
+                    IActionResult jsonRet2 = mwqmSiteController.Put(mwqmSiteRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet2);
 
                     OkNegotiatedContentResult<MWQMSite> mwqmSiteRet2 = jsonRet2 as OkNegotiatedContentResult<MWQMSite>;
                     Assert.NotNull(mwqmSiteRet2);
 
                     BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest2);
+                    Assert.Null(badRequest2);
 
                     // Put to return CSSPError because MWQMSiteID of 0 does not exist
                     mwqmSiteRet.MWQMSiteID = 0;
-                    IHttpActionResult jsonRet3 = mwqmSiteController.Put(mwqmSiteRet, LanguageRequest.ToString());
+                    IActionResult jsonRet3 = mwqmSiteController.Put(mwqmSiteRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 
                     OkNegotiatedContentResult<MWQMSite> mwqmSiteRet3 = jsonRet3 as OkNegotiatedContentResult<MWQMSite>;
-                    Assert.IsNull(mwqmSiteRet3);
+                    Assert.Null(mwqmSiteRet3);
 
                     BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
                     Assert.NotNull(badRequest3);
@@ -297,7 +298,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     }
 
                     // ok with MWQMSite info
-                    IHttpActionResult jsonRet = mwqmSiteController.GetMWQMSiteWithID(mwqmSiteLast.MWQMSiteID);
+                    IActionResult jsonRet = mwqmSiteController.GetMWQMSiteWithID(mwqmSiteLast.MWQMSiteID);
                     Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<MWQMSite> Ret = jsonRet as OkNegotiatedContentResult<MWQMSite>;
@@ -305,13 +306,13 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.Equal(mwqmSiteLast.MWQMSiteID, mwqmSiteRet.MWQMSiteID);
 
                     BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
+                    Assert.Null(badRequest);
 
                     // Post to return newly added MWQMSite
                     mwqmSiteRet.MWQMSiteID = 0;
                     mwqmSiteController.Request = new System.Net.Http.HttpRequestMessage();
                     mwqmSiteController.Request.RequestUri = new System.Uri("http://localhost:5000/api/mwqmSite");
-                    IHttpActionResult jsonRet3 = mwqmSiteController.Post(mwqmSiteRet, LanguageRequest.ToString());
+                    IActionResult jsonRet3 = mwqmSiteController.Post(mwqmSiteRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 
                     CreatedNegotiatedContentResult<MWQMSite> mwqmSiteRet3 = jsonRet3 as CreatedNegotiatedContentResult<MWQMSite>;
@@ -319,25 +320,25 @@ namespace CSSPWebAPI.Tests.Controllers
                     MWQMSite mwqmSite = mwqmSiteRet3.Content;
 
                     BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest3);
+                    Assert.Null(badRequest3);
 
                     // Delete to return success
-                    IHttpActionResult jsonRet2 = mwqmSiteController.Delete(mwqmSiteRet, LanguageRequest.ToString());
+                    IActionResult jsonRet2 = mwqmSiteController.Delete(mwqmSiteRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet2);
 
                     OkNegotiatedContentResult<MWQMSite> mwqmSiteRet2 = jsonRet2 as OkNegotiatedContentResult<MWQMSite>;
                     Assert.NotNull(mwqmSiteRet2);
 
                     BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest2);
+                    Assert.Null(badRequest2);
 
                     // Delete to return CSSPError because MWQMSiteID of 0 does not exist
                     mwqmSiteRet.MWQMSiteID = 0;
-                    IHttpActionResult jsonRet4 = mwqmSiteController.Delete(mwqmSiteRet, LanguageRequest.ToString());
+                    IActionResult jsonRet4 = mwqmSiteController.Delete(mwqmSiteRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet4);
 
                     OkNegotiatedContentResult<MWQMSite> mwqmSiteRet4 = jsonRet4 as OkNegotiatedContentResult<MWQMSite>;
-                    Assert.IsNull(mwqmSiteRet4);
+                    Assert.Null(mwqmSiteRet4);
 
                     BadRequestErrorMessageResult badRequest4 = jsonRet4 as BadRequestErrorMessageResult;
                     Assert.NotNull(badRequest4);

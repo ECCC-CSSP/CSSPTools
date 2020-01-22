@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
 using System.Web.Http.Results;
+using Microsoft.AspNetCore.Mvc;
 
 namespace CSSPWebAPI.Tests.Controllers
 {
@@ -48,7 +49,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     }
 
                     // ok with SamplingPlanSubsectorSite info
-                    IHttpActionResult jsonRet = samplingPlanSubsectorSiteController.GetSamplingPlanSubsectorSiteList();
+                    IActionResult jsonRet = samplingPlanSubsectorSiteController.GetSamplingPlanSubsectorSiteList();
                     Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<List<SamplingPlanSubsectorSite>> ret = jsonRet as OkNegotiatedContentResult<List<SamplingPlanSubsectorSite>>;
@@ -86,7 +87,7 @@ namespace CSSPWebAPI.Tests.Controllers
                            count = (query.Take > count ? query.Take : count);
 
                            // ok with SamplingPlanSubsectorSite info
-                           IHttpActionResult jsonRet2 = samplingPlanSubsectorSiteController.GetSamplingPlanSubsectorSiteList(query.Language.ToString(), query.Skip, query.Take);
+                           IActionResult jsonRet2 = samplingPlanSubsectorSiteController.GetSamplingPlanSubsectorSiteList(query.Language.ToString(), query.Skip, query.Take);
                            Assert.NotNull(jsonRet2);
 
                            OkNegotiatedContentResult<List<SamplingPlanSubsectorSite>> ret2 = jsonRet2 as OkNegotiatedContentResult<List<SamplingPlanSubsectorSite>>;
@@ -119,7 +120,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     }
 
                     // ok with SamplingPlanSubsectorSite info
-                    IHttpActionResult jsonRet = samplingPlanSubsectorSiteController.GetSamplingPlanSubsectorSiteWithID(samplingPlanSubsectorSiteFirst.SamplingPlanSubsectorSiteID);
+                    IActionResult jsonRet = samplingPlanSubsectorSiteController.GetSamplingPlanSubsectorSiteWithID(samplingPlanSubsectorSiteFirst.SamplingPlanSubsectorSiteID);
                     Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<SamplingPlanSubsectorSite> Ret = jsonRet as OkNegotiatedContentResult<SamplingPlanSubsectorSite>;
@@ -127,16 +128,16 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.Equal(samplingPlanSubsectorSiteFirst.SamplingPlanSubsectorSiteID, samplingPlanSubsectorSiteRet.SamplingPlanSubsectorSiteID);
 
                     BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
+                    Assert.Null(badRequest);
 
                     // Not Found
-                    IHttpActionResult jsonRet2 = samplingPlanSubsectorSiteController.GetSamplingPlanSubsectorSiteWithID(0);
+                    IActionResult jsonRet2 = samplingPlanSubsectorSiteController.GetSamplingPlanSubsectorSiteWithID(0);
                     Assert.NotNull(jsonRet2);
 
                     OkNegotiatedContentResult<SamplingPlanSubsectorSite> samplingPlanSubsectorSiteRet2 = jsonRet2 as OkNegotiatedContentResult<SamplingPlanSubsectorSite>;
-                    Assert.IsNull(samplingPlanSubsectorSiteRet2);
+                    Assert.Null(samplingPlanSubsectorSiteRet2);
 
-                    NotFoundResult notFoundRequest = jsonRet2 as NotFoundResult;
+                    NotFoundObjectResult notFoundRequest = jsonRet2 as NotFoundObjectResult;
                     Assert.NotNull(notFoundRequest);
                 }
             }
@@ -168,7 +169,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     }
 
                     // ok with SamplingPlanSubsectorSite info
-                    IHttpActionResult jsonRet = samplingPlanSubsectorSiteController.GetSamplingPlanSubsectorSiteWithID(samplingPlanSubsectorSiteLast.SamplingPlanSubsectorSiteID);
+                    IActionResult jsonRet = samplingPlanSubsectorSiteController.GetSamplingPlanSubsectorSiteWithID(samplingPlanSubsectorSiteLast.SamplingPlanSubsectorSiteID);
                     Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<SamplingPlanSubsectorSite> Ret = jsonRet as OkNegotiatedContentResult<SamplingPlanSubsectorSite>;
@@ -176,14 +177,14 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.Equal(samplingPlanSubsectorSiteLast.SamplingPlanSubsectorSiteID, samplingPlanSubsectorSiteRet.SamplingPlanSubsectorSiteID);
 
                     BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
+                    Assert.Null(badRequest);
 
                     // Post to return CSSPError because SamplingPlanSubsectorSiteID exist
-                    IHttpActionResult jsonRet2 = samplingPlanSubsectorSiteController.Post(samplingPlanSubsectorSiteRet, LanguageRequest.ToString());
+                    IActionResult jsonRet2 = samplingPlanSubsectorSiteController.Post(samplingPlanSubsectorSiteRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet2);
 
                     OkNegotiatedContentResult<SamplingPlanSubsectorSite> samplingPlanSubsectorSiteRet2 = jsonRet2 as OkNegotiatedContentResult<SamplingPlanSubsectorSite>;
-                    Assert.IsNull(samplingPlanSubsectorSiteRet2);
+                    Assert.Null(samplingPlanSubsectorSiteRet2);
 
                     BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
                     Assert.NotNull(badRequest2);
@@ -192,23 +193,23 @@ namespace CSSPWebAPI.Tests.Controllers
                     samplingPlanSubsectorSiteRet.SamplingPlanSubsectorSiteID = 0;
                     samplingPlanSubsectorSiteController.Request = new System.Net.Http.HttpRequestMessage();
                     samplingPlanSubsectorSiteController.Request.RequestUri = new System.Uri("http://localhost:5000/api/samplingPlanSubsectorSite");
-                    IHttpActionResult jsonRet3 = samplingPlanSubsectorSiteController.Post(samplingPlanSubsectorSiteRet, LanguageRequest.ToString());
+                    IActionResult jsonRet3 = samplingPlanSubsectorSiteController.Post(samplingPlanSubsectorSiteRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 
                     CreatedNegotiatedContentResult<SamplingPlanSubsectorSite> samplingPlanSubsectorSiteRet3 = jsonRet3 as CreatedNegotiatedContentResult<SamplingPlanSubsectorSite>;
                     Assert.NotNull(samplingPlanSubsectorSiteRet3);
 
                     BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest3);
+                    Assert.Null(badRequest3);
 
-                    IHttpActionResult jsonRet4 = samplingPlanSubsectorSiteController.Delete(samplingPlanSubsectorSiteRet, LanguageRequest.ToString());
+                    IActionResult jsonRet4 = samplingPlanSubsectorSiteController.Delete(samplingPlanSubsectorSiteRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet4);
 
                     OkNegotiatedContentResult<SamplingPlanSubsectorSite> samplingPlanSubsectorSiteRet4 = jsonRet4 as OkNegotiatedContentResult<SamplingPlanSubsectorSite>;
                     Assert.NotNull(samplingPlanSubsectorSiteRet4);
 
                     BadRequestErrorMessageResult badRequest4 = jsonRet4 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest4);
+                    Assert.Null(badRequest4);
                 }
             }
         }
@@ -237,7 +238,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     }
 
                     // ok with SamplingPlanSubsectorSite info
-                    IHttpActionResult jsonRet = samplingPlanSubsectorSiteController.GetSamplingPlanSubsectorSiteWithID(samplingPlanSubsectorSiteLast.SamplingPlanSubsectorSiteID);
+                    IActionResult jsonRet = samplingPlanSubsectorSiteController.GetSamplingPlanSubsectorSiteWithID(samplingPlanSubsectorSiteLast.SamplingPlanSubsectorSiteID);
                     Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<SamplingPlanSubsectorSite> Ret = jsonRet as OkNegotiatedContentResult<SamplingPlanSubsectorSite>;
@@ -245,25 +246,25 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.Equal(samplingPlanSubsectorSiteLast.SamplingPlanSubsectorSiteID, samplingPlanSubsectorSiteRet.SamplingPlanSubsectorSiteID);
 
                     BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
+                    Assert.Null(badRequest);
 
                     // Put to return success
-                    IHttpActionResult jsonRet2 = samplingPlanSubsectorSiteController.Put(samplingPlanSubsectorSiteRet, LanguageRequest.ToString());
+                    IActionResult jsonRet2 = samplingPlanSubsectorSiteController.Put(samplingPlanSubsectorSiteRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet2);
 
                     OkNegotiatedContentResult<SamplingPlanSubsectorSite> samplingPlanSubsectorSiteRet2 = jsonRet2 as OkNegotiatedContentResult<SamplingPlanSubsectorSite>;
                     Assert.NotNull(samplingPlanSubsectorSiteRet2);
 
                     BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest2);
+                    Assert.Null(badRequest2);
 
                     // Put to return CSSPError because SamplingPlanSubsectorSiteID of 0 does not exist
                     samplingPlanSubsectorSiteRet.SamplingPlanSubsectorSiteID = 0;
-                    IHttpActionResult jsonRet3 = samplingPlanSubsectorSiteController.Put(samplingPlanSubsectorSiteRet, LanguageRequest.ToString());
+                    IActionResult jsonRet3 = samplingPlanSubsectorSiteController.Put(samplingPlanSubsectorSiteRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 
                     OkNegotiatedContentResult<SamplingPlanSubsectorSite> samplingPlanSubsectorSiteRet3 = jsonRet3 as OkNegotiatedContentResult<SamplingPlanSubsectorSite>;
-                    Assert.IsNull(samplingPlanSubsectorSiteRet3);
+                    Assert.Null(samplingPlanSubsectorSiteRet3);
 
                     BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
                     Assert.NotNull(badRequest3);
@@ -297,7 +298,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     }
 
                     // ok with SamplingPlanSubsectorSite info
-                    IHttpActionResult jsonRet = samplingPlanSubsectorSiteController.GetSamplingPlanSubsectorSiteWithID(samplingPlanSubsectorSiteLast.SamplingPlanSubsectorSiteID);
+                    IActionResult jsonRet = samplingPlanSubsectorSiteController.GetSamplingPlanSubsectorSiteWithID(samplingPlanSubsectorSiteLast.SamplingPlanSubsectorSiteID);
                     Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<SamplingPlanSubsectorSite> Ret = jsonRet as OkNegotiatedContentResult<SamplingPlanSubsectorSite>;
@@ -305,13 +306,13 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.Equal(samplingPlanSubsectorSiteLast.SamplingPlanSubsectorSiteID, samplingPlanSubsectorSiteRet.SamplingPlanSubsectorSiteID);
 
                     BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
+                    Assert.Null(badRequest);
 
                     // Post to return newly added SamplingPlanSubsectorSite
                     samplingPlanSubsectorSiteRet.SamplingPlanSubsectorSiteID = 0;
                     samplingPlanSubsectorSiteController.Request = new System.Net.Http.HttpRequestMessage();
                     samplingPlanSubsectorSiteController.Request.RequestUri = new System.Uri("http://localhost:5000/api/samplingPlanSubsectorSite");
-                    IHttpActionResult jsonRet3 = samplingPlanSubsectorSiteController.Post(samplingPlanSubsectorSiteRet, LanguageRequest.ToString());
+                    IActionResult jsonRet3 = samplingPlanSubsectorSiteController.Post(samplingPlanSubsectorSiteRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 
                     CreatedNegotiatedContentResult<SamplingPlanSubsectorSite> samplingPlanSubsectorSiteRet3 = jsonRet3 as CreatedNegotiatedContentResult<SamplingPlanSubsectorSite>;
@@ -319,25 +320,25 @@ namespace CSSPWebAPI.Tests.Controllers
                     SamplingPlanSubsectorSite samplingPlanSubsectorSite = samplingPlanSubsectorSiteRet3.Content;
 
                     BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest3);
+                    Assert.Null(badRequest3);
 
                     // Delete to return success
-                    IHttpActionResult jsonRet2 = samplingPlanSubsectorSiteController.Delete(samplingPlanSubsectorSiteRet, LanguageRequest.ToString());
+                    IActionResult jsonRet2 = samplingPlanSubsectorSiteController.Delete(samplingPlanSubsectorSiteRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet2);
 
                     OkNegotiatedContentResult<SamplingPlanSubsectorSite> samplingPlanSubsectorSiteRet2 = jsonRet2 as OkNegotiatedContentResult<SamplingPlanSubsectorSite>;
                     Assert.NotNull(samplingPlanSubsectorSiteRet2);
 
                     BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest2);
+                    Assert.Null(badRequest2);
 
                     // Delete to return CSSPError because SamplingPlanSubsectorSiteID of 0 does not exist
                     samplingPlanSubsectorSiteRet.SamplingPlanSubsectorSiteID = 0;
-                    IHttpActionResult jsonRet4 = samplingPlanSubsectorSiteController.Delete(samplingPlanSubsectorSiteRet, LanguageRequest.ToString());
+                    IActionResult jsonRet4 = samplingPlanSubsectorSiteController.Delete(samplingPlanSubsectorSiteRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet4);
 
                     OkNegotiatedContentResult<SamplingPlanSubsectorSite> samplingPlanSubsectorSiteRet4 = jsonRet4 as OkNegotiatedContentResult<SamplingPlanSubsectorSite>;
-                    Assert.IsNull(samplingPlanSubsectorSiteRet4);
+                    Assert.Null(samplingPlanSubsectorSiteRet4);
 
                     BadRequestErrorMessageResult badRequest4 = jsonRet4 as BadRequestErrorMessageResult;
                     Assert.NotNull(badRequest4);

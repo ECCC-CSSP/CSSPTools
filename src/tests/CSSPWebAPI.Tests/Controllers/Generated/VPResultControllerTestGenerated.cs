@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
 using System.Web.Http.Results;
+using Microsoft.AspNetCore.Mvc;
 
 namespace CSSPWebAPI.Tests.Controllers
 {
@@ -48,7 +49,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     }
 
                     // ok with VPResult info
-                    IHttpActionResult jsonRet = vpResultController.GetVPResultList();
+                    IActionResult jsonRet = vpResultController.GetVPResultList();
                     Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<List<VPResult>> ret = jsonRet as OkNegotiatedContentResult<List<VPResult>>;
@@ -86,7 +87,7 @@ namespace CSSPWebAPI.Tests.Controllers
                            count = (query.Take > count ? query.Take : count);
 
                            // ok with VPResult info
-                           IHttpActionResult jsonRet2 = vpResultController.GetVPResultList(query.Language.ToString(), query.Skip, query.Take);
+                           IActionResult jsonRet2 = vpResultController.GetVPResultList(query.Language.ToString(), query.Skip, query.Take);
                            Assert.NotNull(jsonRet2);
 
                            OkNegotiatedContentResult<List<VPResult>> ret2 = jsonRet2 as OkNegotiatedContentResult<List<VPResult>>;
@@ -119,7 +120,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     }
 
                     // ok with VPResult info
-                    IHttpActionResult jsonRet = vpResultController.GetVPResultWithID(vpResultFirst.VPResultID);
+                    IActionResult jsonRet = vpResultController.GetVPResultWithID(vpResultFirst.VPResultID);
                     Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<VPResult> Ret = jsonRet as OkNegotiatedContentResult<VPResult>;
@@ -127,16 +128,16 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.Equal(vpResultFirst.VPResultID, vpResultRet.VPResultID);
 
                     BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
+                    Assert.Null(badRequest);
 
                     // Not Found
-                    IHttpActionResult jsonRet2 = vpResultController.GetVPResultWithID(0);
+                    IActionResult jsonRet2 = vpResultController.GetVPResultWithID(0);
                     Assert.NotNull(jsonRet2);
 
                     OkNegotiatedContentResult<VPResult> vpResultRet2 = jsonRet2 as OkNegotiatedContentResult<VPResult>;
-                    Assert.IsNull(vpResultRet2);
+                    Assert.Null(vpResultRet2);
 
-                    NotFoundResult notFoundRequest = jsonRet2 as NotFoundResult;
+                    NotFoundObjectResult notFoundRequest = jsonRet2 as NotFoundObjectResult;
                     Assert.NotNull(notFoundRequest);
                 }
             }
@@ -168,7 +169,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     }
 
                     // ok with VPResult info
-                    IHttpActionResult jsonRet = vpResultController.GetVPResultWithID(vpResultLast.VPResultID);
+                    IActionResult jsonRet = vpResultController.GetVPResultWithID(vpResultLast.VPResultID);
                     Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<VPResult> Ret = jsonRet as OkNegotiatedContentResult<VPResult>;
@@ -176,14 +177,14 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.Equal(vpResultLast.VPResultID, vpResultRet.VPResultID);
 
                     BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
+                    Assert.Null(badRequest);
 
                     // Post to return CSSPError because VPResultID exist
-                    IHttpActionResult jsonRet2 = vpResultController.Post(vpResultRet, LanguageRequest.ToString());
+                    IActionResult jsonRet2 = vpResultController.Post(vpResultRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet2);
 
                     OkNegotiatedContentResult<VPResult> vpResultRet2 = jsonRet2 as OkNegotiatedContentResult<VPResult>;
-                    Assert.IsNull(vpResultRet2);
+                    Assert.Null(vpResultRet2);
 
                     BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
                     Assert.NotNull(badRequest2);
@@ -192,23 +193,23 @@ namespace CSSPWebAPI.Tests.Controllers
                     vpResultRet.VPResultID = 0;
                     vpResultController.Request = new System.Net.Http.HttpRequestMessage();
                     vpResultController.Request.RequestUri = new System.Uri("http://localhost:5000/api/vpResult");
-                    IHttpActionResult jsonRet3 = vpResultController.Post(vpResultRet, LanguageRequest.ToString());
+                    IActionResult jsonRet3 = vpResultController.Post(vpResultRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 
                     CreatedNegotiatedContentResult<VPResult> vpResultRet3 = jsonRet3 as CreatedNegotiatedContentResult<VPResult>;
                     Assert.NotNull(vpResultRet3);
 
                     BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest3);
+                    Assert.Null(badRequest3);
 
-                    IHttpActionResult jsonRet4 = vpResultController.Delete(vpResultRet, LanguageRequest.ToString());
+                    IActionResult jsonRet4 = vpResultController.Delete(vpResultRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet4);
 
                     OkNegotiatedContentResult<VPResult> vpResultRet4 = jsonRet4 as OkNegotiatedContentResult<VPResult>;
                     Assert.NotNull(vpResultRet4);
 
                     BadRequestErrorMessageResult badRequest4 = jsonRet4 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest4);
+                    Assert.Null(badRequest4);
                 }
             }
         }
@@ -237,7 +238,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     }
 
                     // ok with VPResult info
-                    IHttpActionResult jsonRet = vpResultController.GetVPResultWithID(vpResultLast.VPResultID);
+                    IActionResult jsonRet = vpResultController.GetVPResultWithID(vpResultLast.VPResultID);
                     Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<VPResult> Ret = jsonRet as OkNegotiatedContentResult<VPResult>;
@@ -245,25 +246,25 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.Equal(vpResultLast.VPResultID, vpResultRet.VPResultID);
 
                     BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
+                    Assert.Null(badRequest);
 
                     // Put to return success
-                    IHttpActionResult jsonRet2 = vpResultController.Put(vpResultRet, LanguageRequest.ToString());
+                    IActionResult jsonRet2 = vpResultController.Put(vpResultRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet2);
 
                     OkNegotiatedContentResult<VPResult> vpResultRet2 = jsonRet2 as OkNegotiatedContentResult<VPResult>;
                     Assert.NotNull(vpResultRet2);
 
                     BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest2);
+                    Assert.Null(badRequest2);
 
                     // Put to return CSSPError because VPResultID of 0 does not exist
                     vpResultRet.VPResultID = 0;
-                    IHttpActionResult jsonRet3 = vpResultController.Put(vpResultRet, LanguageRequest.ToString());
+                    IActionResult jsonRet3 = vpResultController.Put(vpResultRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 
                     OkNegotiatedContentResult<VPResult> vpResultRet3 = jsonRet3 as OkNegotiatedContentResult<VPResult>;
-                    Assert.IsNull(vpResultRet3);
+                    Assert.Null(vpResultRet3);
 
                     BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
                     Assert.NotNull(badRequest3);
@@ -297,7 +298,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     }
 
                     // ok with VPResult info
-                    IHttpActionResult jsonRet = vpResultController.GetVPResultWithID(vpResultLast.VPResultID);
+                    IActionResult jsonRet = vpResultController.GetVPResultWithID(vpResultLast.VPResultID);
                     Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<VPResult> Ret = jsonRet as OkNegotiatedContentResult<VPResult>;
@@ -305,13 +306,13 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.Equal(vpResultLast.VPResultID, vpResultRet.VPResultID);
 
                     BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
+                    Assert.Null(badRequest);
 
                     // Post to return newly added VPResult
                     vpResultRet.VPResultID = 0;
                     vpResultController.Request = new System.Net.Http.HttpRequestMessage();
                     vpResultController.Request.RequestUri = new System.Uri("http://localhost:5000/api/vpResult");
-                    IHttpActionResult jsonRet3 = vpResultController.Post(vpResultRet, LanguageRequest.ToString());
+                    IActionResult jsonRet3 = vpResultController.Post(vpResultRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 
                     CreatedNegotiatedContentResult<VPResult> vpResultRet3 = jsonRet3 as CreatedNegotiatedContentResult<VPResult>;
@@ -319,25 +320,25 @@ namespace CSSPWebAPI.Tests.Controllers
                     VPResult vpResult = vpResultRet3.Content;
 
                     BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest3);
+                    Assert.Null(badRequest3);
 
                     // Delete to return success
-                    IHttpActionResult jsonRet2 = vpResultController.Delete(vpResultRet, LanguageRequest.ToString());
+                    IActionResult jsonRet2 = vpResultController.Delete(vpResultRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet2);
 
                     OkNegotiatedContentResult<VPResult> vpResultRet2 = jsonRet2 as OkNegotiatedContentResult<VPResult>;
                     Assert.NotNull(vpResultRet2);
 
                     BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest2);
+                    Assert.Null(badRequest2);
 
                     // Delete to return CSSPError because VPResultID of 0 does not exist
                     vpResultRet.VPResultID = 0;
-                    IHttpActionResult jsonRet4 = vpResultController.Delete(vpResultRet, LanguageRequest.ToString());
+                    IActionResult jsonRet4 = vpResultController.Delete(vpResultRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet4);
 
                     OkNegotiatedContentResult<VPResult> vpResultRet4 = jsonRet4 as OkNegotiatedContentResult<VPResult>;
-                    Assert.IsNull(vpResultRet4);
+                    Assert.Null(vpResultRet4);
 
                     BadRequestErrorMessageResult badRequest4 = jsonRet4 as BadRequestErrorMessageResult;
                     Assert.NotNull(badRequest4);

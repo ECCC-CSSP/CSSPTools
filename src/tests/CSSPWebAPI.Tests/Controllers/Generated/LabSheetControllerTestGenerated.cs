@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
 using System.Web.Http.Results;
+using Microsoft.AspNetCore.Mvc;
 
 namespace CSSPWebAPI.Tests.Controllers
 {
@@ -48,7 +49,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     }
 
                     // ok with LabSheet info
-                    IHttpActionResult jsonRet = labSheetController.GetLabSheetList();
+                    IActionResult jsonRet = labSheetController.GetLabSheetList();
                     Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<List<LabSheet>> ret = jsonRet as OkNegotiatedContentResult<List<LabSheet>>;
@@ -86,7 +87,7 @@ namespace CSSPWebAPI.Tests.Controllers
                            count = (query.Take > count ? query.Take : count);
 
                            // ok with LabSheet info
-                           IHttpActionResult jsonRet2 = labSheetController.GetLabSheetList(query.Language.ToString(), query.Skip, query.Take);
+                           IActionResult jsonRet2 = labSheetController.GetLabSheetList(query.Language.ToString(), query.Skip, query.Take);
                            Assert.NotNull(jsonRet2);
 
                            OkNegotiatedContentResult<List<LabSheet>> ret2 = jsonRet2 as OkNegotiatedContentResult<List<LabSheet>>;
@@ -119,7 +120,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     }
 
                     // ok with LabSheet info
-                    IHttpActionResult jsonRet = labSheetController.GetLabSheetWithID(labSheetFirst.LabSheetID);
+                    IActionResult jsonRet = labSheetController.GetLabSheetWithID(labSheetFirst.LabSheetID);
                     Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<LabSheet> Ret = jsonRet as OkNegotiatedContentResult<LabSheet>;
@@ -127,16 +128,16 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.Equal(labSheetFirst.LabSheetID, labSheetRet.LabSheetID);
 
                     BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
+                    Assert.Null(badRequest);
 
                     // Not Found
-                    IHttpActionResult jsonRet2 = labSheetController.GetLabSheetWithID(0);
+                    IActionResult jsonRet2 = labSheetController.GetLabSheetWithID(0);
                     Assert.NotNull(jsonRet2);
 
                     OkNegotiatedContentResult<LabSheet> labSheetRet2 = jsonRet2 as OkNegotiatedContentResult<LabSheet>;
-                    Assert.IsNull(labSheetRet2);
+                    Assert.Null(labSheetRet2);
 
-                    NotFoundResult notFoundRequest = jsonRet2 as NotFoundResult;
+                    NotFoundObjectResult notFoundRequest = jsonRet2 as NotFoundObjectResult;
                     Assert.NotNull(notFoundRequest);
                 }
             }
@@ -168,7 +169,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     }
 
                     // ok with LabSheet info
-                    IHttpActionResult jsonRet = labSheetController.GetLabSheetWithID(labSheetLast.LabSheetID);
+                    IActionResult jsonRet = labSheetController.GetLabSheetWithID(labSheetLast.LabSheetID);
                     Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<LabSheet> Ret = jsonRet as OkNegotiatedContentResult<LabSheet>;
@@ -176,14 +177,14 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.Equal(labSheetLast.LabSheetID, labSheetRet.LabSheetID);
 
                     BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
+                    Assert.Null(badRequest);
 
                     // Post to return CSSPError because LabSheetID exist
-                    IHttpActionResult jsonRet2 = labSheetController.Post(labSheetRet, LanguageRequest.ToString());
+                    IActionResult jsonRet2 = labSheetController.Post(labSheetRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet2);
 
                     OkNegotiatedContentResult<LabSheet> labSheetRet2 = jsonRet2 as OkNegotiatedContentResult<LabSheet>;
-                    Assert.IsNull(labSheetRet2);
+                    Assert.Null(labSheetRet2);
 
                     BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
                     Assert.NotNull(badRequest2);
@@ -192,23 +193,23 @@ namespace CSSPWebAPI.Tests.Controllers
                     labSheetRet.LabSheetID = 0;
                     labSheetController.Request = new System.Net.Http.HttpRequestMessage();
                     labSheetController.Request.RequestUri = new System.Uri("http://localhost:5000/api/labSheet");
-                    IHttpActionResult jsonRet3 = labSheetController.Post(labSheetRet, LanguageRequest.ToString());
+                    IActionResult jsonRet3 = labSheetController.Post(labSheetRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 
                     CreatedNegotiatedContentResult<LabSheet> labSheetRet3 = jsonRet3 as CreatedNegotiatedContentResult<LabSheet>;
                     Assert.NotNull(labSheetRet3);
 
                     BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest3);
+                    Assert.Null(badRequest3);
 
-                    IHttpActionResult jsonRet4 = labSheetController.Delete(labSheetRet, LanguageRequest.ToString());
+                    IActionResult jsonRet4 = labSheetController.Delete(labSheetRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet4);
 
                     OkNegotiatedContentResult<LabSheet> labSheetRet4 = jsonRet4 as OkNegotiatedContentResult<LabSheet>;
                     Assert.NotNull(labSheetRet4);
 
                     BadRequestErrorMessageResult badRequest4 = jsonRet4 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest4);
+                    Assert.Null(badRequest4);
                 }
             }
         }
@@ -237,7 +238,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     }
 
                     // ok with LabSheet info
-                    IHttpActionResult jsonRet = labSheetController.GetLabSheetWithID(labSheetLast.LabSheetID);
+                    IActionResult jsonRet = labSheetController.GetLabSheetWithID(labSheetLast.LabSheetID);
                     Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<LabSheet> Ret = jsonRet as OkNegotiatedContentResult<LabSheet>;
@@ -245,25 +246,25 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.Equal(labSheetLast.LabSheetID, labSheetRet.LabSheetID);
 
                     BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
+                    Assert.Null(badRequest);
 
                     // Put to return success
-                    IHttpActionResult jsonRet2 = labSheetController.Put(labSheetRet, LanguageRequest.ToString());
+                    IActionResult jsonRet2 = labSheetController.Put(labSheetRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet2);
 
                     OkNegotiatedContentResult<LabSheet> labSheetRet2 = jsonRet2 as OkNegotiatedContentResult<LabSheet>;
                     Assert.NotNull(labSheetRet2);
 
                     BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest2);
+                    Assert.Null(badRequest2);
 
                     // Put to return CSSPError because LabSheetID of 0 does not exist
                     labSheetRet.LabSheetID = 0;
-                    IHttpActionResult jsonRet3 = labSheetController.Put(labSheetRet, LanguageRequest.ToString());
+                    IActionResult jsonRet3 = labSheetController.Put(labSheetRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 
                     OkNegotiatedContentResult<LabSheet> labSheetRet3 = jsonRet3 as OkNegotiatedContentResult<LabSheet>;
-                    Assert.IsNull(labSheetRet3);
+                    Assert.Null(labSheetRet3);
 
                     BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
                     Assert.NotNull(badRequest3);
@@ -297,7 +298,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     }
 
                     // ok with LabSheet info
-                    IHttpActionResult jsonRet = labSheetController.GetLabSheetWithID(labSheetLast.LabSheetID);
+                    IActionResult jsonRet = labSheetController.GetLabSheetWithID(labSheetLast.LabSheetID);
                     Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<LabSheet> Ret = jsonRet as OkNegotiatedContentResult<LabSheet>;
@@ -305,13 +306,13 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.Equal(labSheetLast.LabSheetID, labSheetRet.LabSheetID);
 
                     BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
+                    Assert.Null(badRequest);
 
                     // Post to return newly added LabSheet
                     labSheetRet.LabSheetID = 0;
                     labSheetController.Request = new System.Net.Http.HttpRequestMessage();
                     labSheetController.Request.RequestUri = new System.Uri("http://localhost:5000/api/labSheet");
-                    IHttpActionResult jsonRet3 = labSheetController.Post(labSheetRet, LanguageRequest.ToString());
+                    IActionResult jsonRet3 = labSheetController.Post(labSheetRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 
                     CreatedNegotiatedContentResult<LabSheet> labSheetRet3 = jsonRet3 as CreatedNegotiatedContentResult<LabSheet>;
@@ -319,25 +320,25 @@ namespace CSSPWebAPI.Tests.Controllers
                     LabSheet labSheet = labSheetRet3.Content;
 
                     BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest3);
+                    Assert.Null(badRequest3);
 
                     // Delete to return success
-                    IHttpActionResult jsonRet2 = labSheetController.Delete(labSheetRet, LanguageRequest.ToString());
+                    IActionResult jsonRet2 = labSheetController.Delete(labSheetRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet2);
 
                     OkNegotiatedContentResult<LabSheet> labSheetRet2 = jsonRet2 as OkNegotiatedContentResult<LabSheet>;
                     Assert.NotNull(labSheetRet2);
 
                     BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest2);
+                    Assert.Null(badRequest2);
 
                     // Delete to return CSSPError because LabSheetID of 0 does not exist
                     labSheetRet.LabSheetID = 0;
-                    IHttpActionResult jsonRet4 = labSheetController.Delete(labSheetRet, LanguageRequest.ToString());
+                    IActionResult jsonRet4 = labSheetController.Delete(labSheetRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet4);
 
                     OkNegotiatedContentResult<LabSheet> labSheetRet4 = jsonRet4 as OkNegotiatedContentResult<LabSheet>;
-                    Assert.IsNull(labSheetRet4);
+                    Assert.Null(labSheetRet4);
 
                     BadRequestErrorMessageResult badRequest4 = jsonRet4 as BadRequestErrorMessageResult;
                     Assert.NotNull(badRequest4);

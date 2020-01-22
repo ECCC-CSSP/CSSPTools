@@ -54,7 +54,7 @@ namespace CSSPWebAPIGenerateCodeHelper
             sb.AppendLine(@"                    }");
             sb.AppendLine(@"");
             sb.AppendLine($@"                    // ok with { TypeName } info");
-            sb.AppendLine($@"                    IHttpActionResult jsonRet = { TypeNameLower }Controller.Get{ TypeName }List();");
+            sb.AppendLine($@"                    IActionResult jsonRet = { TypeNameLower }Controller.Get{ TypeName }List();");
             sb.AppendLine(@"                    Assert.NotNull(jsonRet);");
             sb.AppendLine(@"");
             sb.AppendLine($@"                    OkNegotiatedContentResult<List<{ TypeName }>> ret = jsonRet as OkNegotiatedContentResult<List<{ TypeName }>>;");
@@ -100,7 +100,7 @@ namespace CSSPWebAPIGenerateCodeHelper
             sb.AppendLine(@"                           count = (query.Take > count ? query.Take : count);");
             sb.AppendLine(@"");
             sb.AppendLine($@"                           // ok with { TypeName } info");
-            sb.AppendLine($@"                           IHttpActionResult jsonRet2 = { TypeNameLower }Controller.Get{ TypeName }List(query.Language.ToString(), query.Skip, query.Take);");
+            sb.AppendLine($@"                           IActionResult jsonRet2 = { TypeNameLower }Controller.Get{ TypeName }List(query.Language.ToString(), query.Skip, query.Take);");
             sb.AppendLine(@"                           Assert.NotNull(jsonRet2);");
             sb.AppendLine(@"");
             sb.AppendLine($@"                           OkNegotiatedContentResult<List<{ TypeName }>> ret2 = jsonRet2 as OkNegotiatedContentResult<List<{ TypeName }>>;");

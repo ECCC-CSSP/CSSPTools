@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
 using System.Web.Http.Results;
+using Microsoft.AspNetCore.Mvc;
 
 namespace CSSPWebAPI.Tests.Controllers
 {
@@ -48,7 +49,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     }
 
                     // ok with MWQMSubsectorLanguage info
-                    IHttpActionResult jsonRet = mwqmSubsectorLanguageController.GetMWQMSubsectorLanguageList();
+                    IActionResult jsonRet = mwqmSubsectorLanguageController.GetMWQMSubsectorLanguageList();
                     Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<List<MWQMSubsectorLanguage>> ret = jsonRet as OkNegotiatedContentResult<List<MWQMSubsectorLanguage>>;
@@ -86,7 +87,7 @@ namespace CSSPWebAPI.Tests.Controllers
                            count = (query.Take > count ? query.Take : count);
 
                            // ok with MWQMSubsectorLanguage info
-                           IHttpActionResult jsonRet2 = mwqmSubsectorLanguageController.GetMWQMSubsectorLanguageList(query.Language.ToString(), query.Skip, query.Take);
+                           IActionResult jsonRet2 = mwqmSubsectorLanguageController.GetMWQMSubsectorLanguageList(query.Language.ToString(), query.Skip, query.Take);
                            Assert.NotNull(jsonRet2);
 
                            OkNegotiatedContentResult<List<MWQMSubsectorLanguage>> ret2 = jsonRet2 as OkNegotiatedContentResult<List<MWQMSubsectorLanguage>>;
@@ -119,7 +120,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     }
 
                     // ok with MWQMSubsectorLanguage info
-                    IHttpActionResult jsonRet = mwqmSubsectorLanguageController.GetMWQMSubsectorLanguageWithID(mwqmSubsectorLanguageFirst.MWQMSubsectorLanguageID);
+                    IActionResult jsonRet = mwqmSubsectorLanguageController.GetMWQMSubsectorLanguageWithID(mwqmSubsectorLanguageFirst.MWQMSubsectorLanguageID);
                     Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<MWQMSubsectorLanguage> Ret = jsonRet as OkNegotiatedContentResult<MWQMSubsectorLanguage>;
@@ -127,16 +128,16 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.Equal(mwqmSubsectorLanguageFirst.MWQMSubsectorLanguageID, mwqmSubsectorLanguageRet.MWQMSubsectorLanguageID);
 
                     BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
+                    Assert.Null(badRequest);
 
                     // Not Found
-                    IHttpActionResult jsonRet2 = mwqmSubsectorLanguageController.GetMWQMSubsectorLanguageWithID(0);
+                    IActionResult jsonRet2 = mwqmSubsectorLanguageController.GetMWQMSubsectorLanguageWithID(0);
                     Assert.NotNull(jsonRet2);
 
                     OkNegotiatedContentResult<MWQMSubsectorLanguage> mwqmSubsectorLanguageRet2 = jsonRet2 as OkNegotiatedContentResult<MWQMSubsectorLanguage>;
-                    Assert.IsNull(mwqmSubsectorLanguageRet2);
+                    Assert.Null(mwqmSubsectorLanguageRet2);
 
-                    NotFoundResult notFoundRequest = jsonRet2 as NotFoundResult;
+                    NotFoundObjectResult notFoundRequest = jsonRet2 as NotFoundObjectResult;
                     Assert.NotNull(notFoundRequest);
                 }
             }
@@ -168,7 +169,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     }
 
                     // ok with MWQMSubsectorLanguage info
-                    IHttpActionResult jsonRet = mwqmSubsectorLanguageController.GetMWQMSubsectorLanguageWithID(mwqmSubsectorLanguageLast.MWQMSubsectorLanguageID);
+                    IActionResult jsonRet = mwqmSubsectorLanguageController.GetMWQMSubsectorLanguageWithID(mwqmSubsectorLanguageLast.MWQMSubsectorLanguageID);
                     Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<MWQMSubsectorLanguage> Ret = jsonRet as OkNegotiatedContentResult<MWQMSubsectorLanguage>;
@@ -176,14 +177,14 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.Equal(mwqmSubsectorLanguageLast.MWQMSubsectorLanguageID, mwqmSubsectorLanguageRet.MWQMSubsectorLanguageID);
 
                     BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
+                    Assert.Null(badRequest);
 
                     // Post to return CSSPError because MWQMSubsectorLanguageID exist
-                    IHttpActionResult jsonRet2 = mwqmSubsectorLanguageController.Post(mwqmSubsectorLanguageRet, LanguageRequest.ToString());
+                    IActionResult jsonRet2 = mwqmSubsectorLanguageController.Post(mwqmSubsectorLanguageRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet2);
 
                     OkNegotiatedContentResult<MWQMSubsectorLanguage> mwqmSubsectorLanguageRet2 = jsonRet2 as OkNegotiatedContentResult<MWQMSubsectorLanguage>;
-                    Assert.IsNull(mwqmSubsectorLanguageRet2);
+                    Assert.Null(mwqmSubsectorLanguageRet2);
 
                     BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
                     Assert.NotNull(badRequest2);
@@ -192,23 +193,23 @@ namespace CSSPWebAPI.Tests.Controllers
                     mwqmSubsectorLanguageRet.MWQMSubsectorLanguageID = 0;
                     mwqmSubsectorLanguageController.Request = new System.Net.Http.HttpRequestMessage();
                     mwqmSubsectorLanguageController.Request.RequestUri = new System.Uri("http://localhost:5000/api/mwqmSubsectorLanguage");
-                    IHttpActionResult jsonRet3 = mwqmSubsectorLanguageController.Post(mwqmSubsectorLanguageRet, LanguageRequest.ToString());
+                    IActionResult jsonRet3 = mwqmSubsectorLanguageController.Post(mwqmSubsectorLanguageRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 
                     CreatedNegotiatedContentResult<MWQMSubsectorLanguage> mwqmSubsectorLanguageRet3 = jsonRet3 as CreatedNegotiatedContentResult<MWQMSubsectorLanguage>;
                     Assert.NotNull(mwqmSubsectorLanguageRet3);
 
                     BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest3);
+                    Assert.Null(badRequest3);
 
-                    IHttpActionResult jsonRet4 = mwqmSubsectorLanguageController.Delete(mwqmSubsectorLanguageRet, LanguageRequest.ToString());
+                    IActionResult jsonRet4 = mwqmSubsectorLanguageController.Delete(mwqmSubsectorLanguageRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet4);
 
                     OkNegotiatedContentResult<MWQMSubsectorLanguage> mwqmSubsectorLanguageRet4 = jsonRet4 as OkNegotiatedContentResult<MWQMSubsectorLanguage>;
                     Assert.NotNull(mwqmSubsectorLanguageRet4);
 
                     BadRequestErrorMessageResult badRequest4 = jsonRet4 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest4);
+                    Assert.Null(badRequest4);
                 }
             }
         }
@@ -237,7 +238,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     }
 
                     // ok with MWQMSubsectorLanguage info
-                    IHttpActionResult jsonRet = mwqmSubsectorLanguageController.GetMWQMSubsectorLanguageWithID(mwqmSubsectorLanguageLast.MWQMSubsectorLanguageID);
+                    IActionResult jsonRet = mwqmSubsectorLanguageController.GetMWQMSubsectorLanguageWithID(mwqmSubsectorLanguageLast.MWQMSubsectorLanguageID);
                     Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<MWQMSubsectorLanguage> Ret = jsonRet as OkNegotiatedContentResult<MWQMSubsectorLanguage>;
@@ -245,25 +246,25 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.Equal(mwqmSubsectorLanguageLast.MWQMSubsectorLanguageID, mwqmSubsectorLanguageRet.MWQMSubsectorLanguageID);
 
                     BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
+                    Assert.Null(badRequest);
 
                     // Put to return success
-                    IHttpActionResult jsonRet2 = mwqmSubsectorLanguageController.Put(mwqmSubsectorLanguageRet, LanguageRequest.ToString());
+                    IActionResult jsonRet2 = mwqmSubsectorLanguageController.Put(mwqmSubsectorLanguageRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet2);
 
                     OkNegotiatedContentResult<MWQMSubsectorLanguage> mwqmSubsectorLanguageRet2 = jsonRet2 as OkNegotiatedContentResult<MWQMSubsectorLanguage>;
                     Assert.NotNull(mwqmSubsectorLanguageRet2);
 
                     BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest2);
+                    Assert.Null(badRequest2);
 
                     // Put to return CSSPError because MWQMSubsectorLanguageID of 0 does not exist
                     mwqmSubsectorLanguageRet.MWQMSubsectorLanguageID = 0;
-                    IHttpActionResult jsonRet3 = mwqmSubsectorLanguageController.Put(mwqmSubsectorLanguageRet, LanguageRequest.ToString());
+                    IActionResult jsonRet3 = mwqmSubsectorLanguageController.Put(mwqmSubsectorLanguageRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 
                     OkNegotiatedContentResult<MWQMSubsectorLanguage> mwqmSubsectorLanguageRet3 = jsonRet3 as OkNegotiatedContentResult<MWQMSubsectorLanguage>;
-                    Assert.IsNull(mwqmSubsectorLanguageRet3);
+                    Assert.Null(mwqmSubsectorLanguageRet3);
 
                     BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
                     Assert.NotNull(badRequest3);
@@ -297,7 +298,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     }
 
                     // ok with MWQMSubsectorLanguage info
-                    IHttpActionResult jsonRet = mwqmSubsectorLanguageController.GetMWQMSubsectorLanguageWithID(mwqmSubsectorLanguageLast.MWQMSubsectorLanguageID);
+                    IActionResult jsonRet = mwqmSubsectorLanguageController.GetMWQMSubsectorLanguageWithID(mwqmSubsectorLanguageLast.MWQMSubsectorLanguageID);
                     Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<MWQMSubsectorLanguage> Ret = jsonRet as OkNegotiatedContentResult<MWQMSubsectorLanguage>;
@@ -305,13 +306,13 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.Equal(mwqmSubsectorLanguageLast.MWQMSubsectorLanguageID, mwqmSubsectorLanguageRet.MWQMSubsectorLanguageID);
 
                     BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
+                    Assert.Null(badRequest);
 
                     // Post to return newly added MWQMSubsectorLanguage
                     mwqmSubsectorLanguageRet.MWQMSubsectorLanguageID = 0;
                     mwqmSubsectorLanguageController.Request = new System.Net.Http.HttpRequestMessage();
                     mwqmSubsectorLanguageController.Request.RequestUri = new System.Uri("http://localhost:5000/api/mwqmSubsectorLanguage");
-                    IHttpActionResult jsonRet3 = mwqmSubsectorLanguageController.Post(mwqmSubsectorLanguageRet, LanguageRequest.ToString());
+                    IActionResult jsonRet3 = mwqmSubsectorLanguageController.Post(mwqmSubsectorLanguageRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 
                     CreatedNegotiatedContentResult<MWQMSubsectorLanguage> mwqmSubsectorLanguageRet3 = jsonRet3 as CreatedNegotiatedContentResult<MWQMSubsectorLanguage>;
@@ -319,25 +320,25 @@ namespace CSSPWebAPI.Tests.Controllers
                     MWQMSubsectorLanguage mwqmSubsectorLanguage = mwqmSubsectorLanguageRet3.Content;
 
                     BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest3);
+                    Assert.Null(badRequest3);
 
                     // Delete to return success
-                    IHttpActionResult jsonRet2 = mwqmSubsectorLanguageController.Delete(mwqmSubsectorLanguageRet, LanguageRequest.ToString());
+                    IActionResult jsonRet2 = mwqmSubsectorLanguageController.Delete(mwqmSubsectorLanguageRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet2);
 
                     OkNegotiatedContentResult<MWQMSubsectorLanguage> mwqmSubsectorLanguageRet2 = jsonRet2 as OkNegotiatedContentResult<MWQMSubsectorLanguage>;
                     Assert.NotNull(mwqmSubsectorLanguageRet2);
 
                     BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest2);
+                    Assert.Null(badRequest2);
 
                     // Delete to return CSSPError because MWQMSubsectorLanguageID of 0 does not exist
                     mwqmSubsectorLanguageRet.MWQMSubsectorLanguageID = 0;
-                    IHttpActionResult jsonRet4 = mwqmSubsectorLanguageController.Delete(mwqmSubsectorLanguageRet, LanguageRequest.ToString());
+                    IActionResult jsonRet4 = mwqmSubsectorLanguageController.Delete(mwqmSubsectorLanguageRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet4);
 
                     OkNegotiatedContentResult<MWQMSubsectorLanguage> mwqmSubsectorLanguageRet4 = jsonRet4 as OkNegotiatedContentResult<MWQMSubsectorLanguage>;
-                    Assert.IsNull(mwqmSubsectorLanguageRet4);
+                    Assert.Null(mwqmSubsectorLanguageRet4);
 
                     BadRequestErrorMessageResult badRequest4 = jsonRet4 as BadRequestErrorMessageResult;
                     Assert.NotNull(badRequest4);

@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
 using System.Web.Http.Results;
+using Microsoft.AspNetCore.Mvc;
 
 namespace CSSPWebAPI.Tests.Controllers
 {
@@ -48,7 +49,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     }
 
                     // ok with ResetPassword info
-                    IHttpActionResult jsonRet = resetPasswordController.GetResetPasswordList();
+                    IActionResult jsonRet = resetPasswordController.GetResetPasswordList();
                     Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<List<ResetPassword>> ret = jsonRet as OkNegotiatedContentResult<List<ResetPassword>>;
@@ -86,7 +87,7 @@ namespace CSSPWebAPI.Tests.Controllers
                            count = (query.Take > count ? query.Take : count);
 
                            // ok with ResetPassword info
-                           IHttpActionResult jsonRet2 = resetPasswordController.GetResetPasswordList(query.Language.ToString(), query.Skip, query.Take);
+                           IActionResult jsonRet2 = resetPasswordController.GetResetPasswordList(query.Language.ToString(), query.Skip, query.Take);
                            Assert.NotNull(jsonRet2);
 
                            OkNegotiatedContentResult<List<ResetPassword>> ret2 = jsonRet2 as OkNegotiatedContentResult<List<ResetPassword>>;
@@ -119,7 +120,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     }
 
                     // ok with ResetPassword info
-                    IHttpActionResult jsonRet = resetPasswordController.GetResetPasswordWithID(resetPasswordFirst.ResetPasswordID);
+                    IActionResult jsonRet = resetPasswordController.GetResetPasswordWithID(resetPasswordFirst.ResetPasswordID);
                     Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<ResetPassword> Ret = jsonRet as OkNegotiatedContentResult<ResetPassword>;
@@ -127,16 +128,16 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.Equal(resetPasswordFirst.ResetPasswordID, resetPasswordRet.ResetPasswordID);
 
                     BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
+                    Assert.Null(badRequest);
 
                     // Not Found
-                    IHttpActionResult jsonRet2 = resetPasswordController.GetResetPasswordWithID(0);
+                    IActionResult jsonRet2 = resetPasswordController.GetResetPasswordWithID(0);
                     Assert.NotNull(jsonRet2);
 
                     OkNegotiatedContentResult<ResetPassword> resetPasswordRet2 = jsonRet2 as OkNegotiatedContentResult<ResetPassword>;
-                    Assert.IsNull(resetPasswordRet2);
+                    Assert.Null(resetPasswordRet2);
 
-                    NotFoundResult notFoundRequest = jsonRet2 as NotFoundResult;
+                    NotFoundObjectResult notFoundRequest = jsonRet2 as NotFoundObjectResult;
                     Assert.NotNull(notFoundRequest);
                 }
             }
@@ -168,7 +169,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     }
 
                     // ok with ResetPassword info
-                    IHttpActionResult jsonRet = resetPasswordController.GetResetPasswordWithID(resetPasswordLast.ResetPasswordID);
+                    IActionResult jsonRet = resetPasswordController.GetResetPasswordWithID(resetPasswordLast.ResetPasswordID);
                     Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<ResetPassword> Ret = jsonRet as OkNegotiatedContentResult<ResetPassword>;
@@ -176,14 +177,14 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.Equal(resetPasswordLast.ResetPasswordID, resetPasswordRet.ResetPasswordID);
 
                     BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
+                    Assert.Null(badRequest);
 
                     // Post to return CSSPError because ResetPasswordID exist
-                    IHttpActionResult jsonRet2 = resetPasswordController.Post(resetPasswordRet, LanguageRequest.ToString());
+                    IActionResult jsonRet2 = resetPasswordController.Post(resetPasswordRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet2);
 
                     OkNegotiatedContentResult<ResetPassword> resetPasswordRet2 = jsonRet2 as OkNegotiatedContentResult<ResetPassword>;
-                    Assert.IsNull(resetPasswordRet2);
+                    Assert.Null(resetPasswordRet2);
 
                     BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
                     Assert.NotNull(badRequest2);
@@ -192,23 +193,23 @@ namespace CSSPWebAPI.Tests.Controllers
                     resetPasswordRet.ResetPasswordID = 0;
                     resetPasswordController.Request = new System.Net.Http.HttpRequestMessage();
                     resetPasswordController.Request.RequestUri = new System.Uri("http://localhost:5000/api/resetPassword");
-                    IHttpActionResult jsonRet3 = resetPasswordController.Post(resetPasswordRet, LanguageRequest.ToString());
+                    IActionResult jsonRet3 = resetPasswordController.Post(resetPasswordRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 
                     CreatedNegotiatedContentResult<ResetPassword> resetPasswordRet3 = jsonRet3 as CreatedNegotiatedContentResult<ResetPassword>;
                     Assert.NotNull(resetPasswordRet3);
 
                     BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest3);
+                    Assert.Null(badRequest3);
 
-                    IHttpActionResult jsonRet4 = resetPasswordController.Delete(resetPasswordRet, LanguageRequest.ToString());
+                    IActionResult jsonRet4 = resetPasswordController.Delete(resetPasswordRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet4);
 
                     OkNegotiatedContentResult<ResetPassword> resetPasswordRet4 = jsonRet4 as OkNegotiatedContentResult<ResetPassword>;
                     Assert.NotNull(resetPasswordRet4);
 
                     BadRequestErrorMessageResult badRequest4 = jsonRet4 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest4);
+                    Assert.Null(badRequest4);
                 }
             }
         }
@@ -237,7 +238,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     }
 
                     // ok with ResetPassword info
-                    IHttpActionResult jsonRet = resetPasswordController.GetResetPasswordWithID(resetPasswordLast.ResetPasswordID);
+                    IActionResult jsonRet = resetPasswordController.GetResetPasswordWithID(resetPasswordLast.ResetPasswordID);
                     Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<ResetPassword> Ret = jsonRet as OkNegotiatedContentResult<ResetPassword>;
@@ -245,25 +246,25 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.Equal(resetPasswordLast.ResetPasswordID, resetPasswordRet.ResetPasswordID);
 
                     BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
+                    Assert.Null(badRequest);
 
                     // Put to return success
-                    IHttpActionResult jsonRet2 = resetPasswordController.Put(resetPasswordRet, LanguageRequest.ToString());
+                    IActionResult jsonRet2 = resetPasswordController.Put(resetPasswordRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet2);
 
                     OkNegotiatedContentResult<ResetPassword> resetPasswordRet2 = jsonRet2 as OkNegotiatedContentResult<ResetPassword>;
                     Assert.NotNull(resetPasswordRet2);
 
                     BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest2);
+                    Assert.Null(badRequest2);
 
                     // Put to return CSSPError because ResetPasswordID of 0 does not exist
                     resetPasswordRet.ResetPasswordID = 0;
-                    IHttpActionResult jsonRet3 = resetPasswordController.Put(resetPasswordRet, LanguageRequest.ToString());
+                    IActionResult jsonRet3 = resetPasswordController.Put(resetPasswordRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 
                     OkNegotiatedContentResult<ResetPassword> resetPasswordRet3 = jsonRet3 as OkNegotiatedContentResult<ResetPassword>;
-                    Assert.IsNull(resetPasswordRet3);
+                    Assert.Null(resetPasswordRet3);
 
                     BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
                     Assert.NotNull(badRequest3);
@@ -297,7 +298,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     }
 
                     // ok with ResetPassword info
-                    IHttpActionResult jsonRet = resetPasswordController.GetResetPasswordWithID(resetPasswordLast.ResetPasswordID);
+                    IActionResult jsonRet = resetPasswordController.GetResetPasswordWithID(resetPasswordLast.ResetPasswordID);
                     Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<ResetPassword> Ret = jsonRet as OkNegotiatedContentResult<ResetPassword>;
@@ -305,13 +306,13 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.Equal(resetPasswordLast.ResetPasswordID, resetPasswordRet.ResetPasswordID);
 
                     BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
+                    Assert.Null(badRequest);
 
                     // Post to return newly added ResetPassword
                     resetPasswordRet.ResetPasswordID = 0;
                     resetPasswordController.Request = new System.Net.Http.HttpRequestMessage();
                     resetPasswordController.Request.RequestUri = new System.Uri("http://localhost:5000/api/resetPassword");
-                    IHttpActionResult jsonRet3 = resetPasswordController.Post(resetPasswordRet, LanguageRequest.ToString());
+                    IActionResult jsonRet3 = resetPasswordController.Post(resetPasswordRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 
                     CreatedNegotiatedContentResult<ResetPassword> resetPasswordRet3 = jsonRet3 as CreatedNegotiatedContentResult<ResetPassword>;
@@ -319,25 +320,25 @@ namespace CSSPWebAPI.Tests.Controllers
                     ResetPassword resetPassword = resetPasswordRet3.Content;
 
                     BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest3);
+                    Assert.Null(badRequest3);
 
                     // Delete to return success
-                    IHttpActionResult jsonRet2 = resetPasswordController.Delete(resetPasswordRet, LanguageRequest.ToString());
+                    IActionResult jsonRet2 = resetPasswordController.Delete(resetPasswordRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet2);
 
                     OkNegotiatedContentResult<ResetPassword> resetPasswordRet2 = jsonRet2 as OkNegotiatedContentResult<ResetPassword>;
                     Assert.NotNull(resetPasswordRet2);
 
                     BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest2);
+                    Assert.Null(badRequest2);
 
                     // Delete to return CSSPError because ResetPasswordID of 0 does not exist
                     resetPasswordRet.ResetPasswordID = 0;
-                    IHttpActionResult jsonRet4 = resetPasswordController.Delete(resetPasswordRet, LanguageRequest.ToString());
+                    IActionResult jsonRet4 = resetPasswordController.Delete(resetPasswordRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet4);
 
                     OkNegotiatedContentResult<ResetPassword> resetPasswordRet4 = jsonRet4 as OkNegotiatedContentResult<ResetPassword>;
-                    Assert.IsNull(resetPasswordRet4);
+                    Assert.Null(resetPasswordRet4);
 
                     BadRequestErrorMessageResult badRequest4 = jsonRet4 as BadRequestErrorMessageResult;
                     Assert.NotNull(badRequest4);

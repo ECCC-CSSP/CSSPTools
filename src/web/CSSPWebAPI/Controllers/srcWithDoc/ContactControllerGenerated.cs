@@ -1,14 +1,14 @@
 using CSSPEnums;
 using CSSPModels;
 using CSSPServices;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web.Http;
 
 namespace CSSPWebAPI.Controllers
 {
-    [RoutePrefix("api/contact")]
+    [Route("api/contact")]
     public partial class ContactController : BaseController
     {
         #region Variables
@@ -29,126 +29,56 @@ namespace CSSPWebAPI.Controllers
         #region Functions public
         // GET api/contact
         [Route("")]
-        public IHttpActionResult GetContactList([FromUri]string lang = "en", [FromUri]int skip = 0, [FromUri]int take = 200,
-            [FromUri]string asc = "", [FromUri]string desc = "", [FromUri]string where = "", [FromUri]string extra = "")
+        public IActionResult GetContactList([FromQuery]string lang = "en", [FromQuery]int skip = 0, [FromQuery]int take = 200,
+            [FromQuery]string asc = "", [FromQuery]string desc = "", [FromQuery]string where = "")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
                 ContactService contactService = new ContactService(new Query() { Lang = lang }, db, ContactID);
 
-                if (extra == "A") // QueryString contains [extra=A]
-                {
-                   contactService.Query = contactService.FillQuery(typeof(ContactExtraA), lang, skip, take, asc, desc, where, extra);
+                contactService.Query = contactService.FillQuery(typeof(Contact), lang, skip, take, asc, desc, where);
 
-                    if (contactService.Query.HasErrors)
-                    {
-                        return Ok(new List<ContactExtraA>()
-                        {
-                            new ContactExtraA()
-                            {
-                                HasErrors = contactService.Query.HasErrors,
-                                ValidationResults = contactService.Query.ValidationResults,
-                            },
-                        }.ToList());
-                    }
-                    else
-                    {
-                        return Ok(contactService.GetContactExtraAList().ToList());
-                    }
-                }
-                else if (extra == "B") // QueryString contains [extra=B]
-                {
-                   contactService.Query = contactService.FillQuery(typeof(ContactExtraB), lang, skip, take, asc, desc, where, extra);
-
-                    if (contactService.Query.HasErrors)
-                    {
-                        return Ok(new List<ContactExtraB>()
-                        {
-                            new ContactExtraB()
-                            {
-                                HasErrors = contactService.Query.HasErrors,
-                                ValidationResults = contactService.Query.ValidationResults,
-                            },
-                        }.ToList());
-                    }
-                    else
-                    {
-                        return Ok(contactService.GetContactExtraBList().ToList());
-                    }
-                }
-                else // QueryString has no parameter [extra] or extra is empty
-                {
-                   contactService.Query = contactService.FillQuery(typeof(Contact), lang, skip, take, asc, desc, where, extra);
-
-                    if (contactService.Query.HasErrors)
-                    {
-                        return Ok(new List<Contact>()
-                        {
-                            new Contact()
-                            {
-                                HasErrors = contactService.Query.HasErrors,
-                                ValidationResults = contactService.Query.ValidationResults,
-                            },
-                        }.ToList());
-                    }
-                    else
-                    {
-                        return Ok(contactService.GetContactList().ToList());
-                    }
-                }
+                 if (contactService.Query.HasErrors)
+                 {
+                     return Ok(new List<Contact>()
+                     {
+                         new Contact()
+                         {
+                             HasErrors = contactService.Query.HasErrors,
+                             ValidationResults = contactService.Query.ValidationResults,
+                         },
+                     }.ToList());
+                 }
+                 else
+                 {
+                     return Ok(contactService.GetContactList().ToList());
+                 }
             }
         }
         // GET api/contact/1
         [Route("{ContactID:int}")]
-        public IHttpActionResult GetContactWithID([FromUri]int ContactID, [FromUri]string lang = "en", [FromUri]string extra = "")
+        public IActionResult GetContactWithID([FromQuery]int ContactID, [FromQuery]string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
                 ContactService contactService = new ContactService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
 
-                contactService.Query = contactService.FillQuery(typeof(Contact), lang, 0, 1, "", "", extra);
+                contactService.Query = contactService.FillQuery(typeof(Contact), lang, 0, 1, "", "");
 
-                if (contactService.Query.Extra == "A")
+                Contact contact = new Contact();
+                contact = contactService.GetContactWithContactID(ContactID);
+
+                if (contact == null)
                 {
-                    ContactExtraA contactExtraA = new ContactExtraA();
-                    contactExtraA = contactService.GetContactExtraAWithContactID(ContactID);
-
-                    if (contactExtraA == null)
-                    {
-                        return NotFound();
-                    }
-
-                    return Ok(contactExtraA);
+                    return NotFound();
                 }
-                else if (contactService.Query.Extra == "B")
-                {
-                    ContactExtraB contactExtraB = new ContactExtraB();
-                    contactExtraB = contactService.GetContactExtraBWithContactID(ContactID);
 
-                    if (contactExtraB == null)
-                    {
-                        return NotFound();
-                    }
-
-                    return Ok(contactExtraB);
-                }
-                else
-                {
-                    Contact contact = new Contact();
-                    contact = contactService.GetContactWithContactID(ContactID);
-
-                    if (contact == null)
-                    {
-                        return NotFound();
-                    }
-
-                    return Ok(contact);
-                }
+                return Ok(contact);
             }
         }
         // POST api/contact
         [Route("")]
-        public IHttpActionResult Post([FromBody]Contact contact, [FromUri]string lang = "en")
+        public IActionResult Post([FromBody]Contact contact, [FromQuery]string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
@@ -161,13 +91,13 @@ namespace CSSPWebAPI.Controllers
                 else
                 {
                     contact.ValidationResults = null;
-                    return Created<Contact>(new Uri(Request.RequestUri, contact.ContactID.ToString()), contact);
+                    return Created(Url.ToString(), contact);
                 }
             }
         }
         // PUT api/contact
         [Route("")]
-        public IHttpActionResult Put([FromBody]Contact contact, [FromUri]string lang = "en")
+        public IActionResult Put([FromBody]Contact contact, [FromQuery]string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
@@ -186,7 +116,7 @@ namespace CSSPWebAPI.Controllers
         }
         // DELETE api/contact
         [Route("")]
-        public IHttpActionResult Delete([FromBody]Contact contact, [FromUri]string lang = "en")
+        public IActionResult Delete([FromBody]Contact contact, [FromQuery]string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {

@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
 using System.Web.Http.Results;
+using Microsoft.AspNetCore.Mvc;
 
 namespace CSSPWebAPI.Tests.Controllers
 {
@@ -48,7 +49,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     }
 
                     // ok with VPAmbient info
-                    IHttpActionResult jsonRet = vpAmbientController.GetVPAmbientList();
+                    IActionResult jsonRet = vpAmbientController.GetVPAmbientList();
                     Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<List<VPAmbient>> ret = jsonRet as OkNegotiatedContentResult<List<VPAmbient>>;
@@ -86,7 +87,7 @@ namespace CSSPWebAPI.Tests.Controllers
                            count = (query.Take > count ? query.Take : count);
 
                            // ok with VPAmbient info
-                           IHttpActionResult jsonRet2 = vpAmbientController.GetVPAmbientList(query.Language.ToString(), query.Skip, query.Take);
+                           IActionResult jsonRet2 = vpAmbientController.GetVPAmbientList(query.Language.ToString(), query.Skip, query.Take);
                            Assert.NotNull(jsonRet2);
 
                            OkNegotiatedContentResult<List<VPAmbient>> ret2 = jsonRet2 as OkNegotiatedContentResult<List<VPAmbient>>;
@@ -119,7 +120,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     }
 
                     // ok with VPAmbient info
-                    IHttpActionResult jsonRet = vpAmbientController.GetVPAmbientWithID(vpAmbientFirst.VPAmbientID);
+                    IActionResult jsonRet = vpAmbientController.GetVPAmbientWithID(vpAmbientFirst.VPAmbientID);
                     Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<VPAmbient> Ret = jsonRet as OkNegotiatedContentResult<VPAmbient>;
@@ -127,16 +128,16 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.Equal(vpAmbientFirst.VPAmbientID, vpAmbientRet.VPAmbientID);
 
                     BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
+                    Assert.Null(badRequest);
 
                     // Not Found
-                    IHttpActionResult jsonRet2 = vpAmbientController.GetVPAmbientWithID(0);
+                    IActionResult jsonRet2 = vpAmbientController.GetVPAmbientWithID(0);
                     Assert.NotNull(jsonRet2);
 
                     OkNegotiatedContentResult<VPAmbient> vpAmbientRet2 = jsonRet2 as OkNegotiatedContentResult<VPAmbient>;
-                    Assert.IsNull(vpAmbientRet2);
+                    Assert.Null(vpAmbientRet2);
 
-                    NotFoundResult notFoundRequest = jsonRet2 as NotFoundResult;
+                    NotFoundObjectResult notFoundRequest = jsonRet2 as NotFoundObjectResult;
                     Assert.NotNull(notFoundRequest);
                 }
             }
@@ -168,7 +169,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     }
 
                     // ok with VPAmbient info
-                    IHttpActionResult jsonRet = vpAmbientController.GetVPAmbientWithID(vpAmbientLast.VPAmbientID);
+                    IActionResult jsonRet = vpAmbientController.GetVPAmbientWithID(vpAmbientLast.VPAmbientID);
                     Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<VPAmbient> Ret = jsonRet as OkNegotiatedContentResult<VPAmbient>;
@@ -176,14 +177,14 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.Equal(vpAmbientLast.VPAmbientID, vpAmbientRet.VPAmbientID);
 
                     BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
+                    Assert.Null(badRequest);
 
                     // Post to return CSSPError because VPAmbientID exist
-                    IHttpActionResult jsonRet2 = vpAmbientController.Post(vpAmbientRet, LanguageRequest.ToString());
+                    IActionResult jsonRet2 = vpAmbientController.Post(vpAmbientRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet2);
 
                     OkNegotiatedContentResult<VPAmbient> vpAmbientRet2 = jsonRet2 as OkNegotiatedContentResult<VPAmbient>;
-                    Assert.IsNull(vpAmbientRet2);
+                    Assert.Null(vpAmbientRet2);
 
                     BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
                     Assert.NotNull(badRequest2);
@@ -192,23 +193,23 @@ namespace CSSPWebAPI.Tests.Controllers
                     vpAmbientRet.VPAmbientID = 0;
                     vpAmbientController.Request = new System.Net.Http.HttpRequestMessage();
                     vpAmbientController.Request.RequestUri = new System.Uri("http://localhost:5000/api/vpAmbient");
-                    IHttpActionResult jsonRet3 = vpAmbientController.Post(vpAmbientRet, LanguageRequest.ToString());
+                    IActionResult jsonRet3 = vpAmbientController.Post(vpAmbientRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 
                     CreatedNegotiatedContentResult<VPAmbient> vpAmbientRet3 = jsonRet3 as CreatedNegotiatedContentResult<VPAmbient>;
                     Assert.NotNull(vpAmbientRet3);
 
                     BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest3);
+                    Assert.Null(badRequest3);
 
-                    IHttpActionResult jsonRet4 = vpAmbientController.Delete(vpAmbientRet, LanguageRequest.ToString());
+                    IActionResult jsonRet4 = vpAmbientController.Delete(vpAmbientRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet4);
 
                     OkNegotiatedContentResult<VPAmbient> vpAmbientRet4 = jsonRet4 as OkNegotiatedContentResult<VPAmbient>;
                     Assert.NotNull(vpAmbientRet4);
 
                     BadRequestErrorMessageResult badRequest4 = jsonRet4 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest4);
+                    Assert.Null(badRequest4);
                 }
             }
         }
@@ -237,7 +238,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     }
 
                     // ok with VPAmbient info
-                    IHttpActionResult jsonRet = vpAmbientController.GetVPAmbientWithID(vpAmbientLast.VPAmbientID);
+                    IActionResult jsonRet = vpAmbientController.GetVPAmbientWithID(vpAmbientLast.VPAmbientID);
                     Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<VPAmbient> Ret = jsonRet as OkNegotiatedContentResult<VPAmbient>;
@@ -245,25 +246,25 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.Equal(vpAmbientLast.VPAmbientID, vpAmbientRet.VPAmbientID);
 
                     BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
+                    Assert.Null(badRequest);
 
                     // Put to return success
-                    IHttpActionResult jsonRet2 = vpAmbientController.Put(vpAmbientRet, LanguageRequest.ToString());
+                    IActionResult jsonRet2 = vpAmbientController.Put(vpAmbientRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet2);
 
                     OkNegotiatedContentResult<VPAmbient> vpAmbientRet2 = jsonRet2 as OkNegotiatedContentResult<VPAmbient>;
                     Assert.NotNull(vpAmbientRet2);
 
                     BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest2);
+                    Assert.Null(badRequest2);
 
                     // Put to return CSSPError because VPAmbientID of 0 does not exist
                     vpAmbientRet.VPAmbientID = 0;
-                    IHttpActionResult jsonRet3 = vpAmbientController.Put(vpAmbientRet, LanguageRequest.ToString());
+                    IActionResult jsonRet3 = vpAmbientController.Put(vpAmbientRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 
                     OkNegotiatedContentResult<VPAmbient> vpAmbientRet3 = jsonRet3 as OkNegotiatedContentResult<VPAmbient>;
-                    Assert.IsNull(vpAmbientRet3);
+                    Assert.Null(vpAmbientRet3);
 
                     BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
                     Assert.NotNull(badRequest3);
@@ -297,7 +298,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     }
 
                     // ok with VPAmbient info
-                    IHttpActionResult jsonRet = vpAmbientController.GetVPAmbientWithID(vpAmbientLast.VPAmbientID);
+                    IActionResult jsonRet = vpAmbientController.GetVPAmbientWithID(vpAmbientLast.VPAmbientID);
                     Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<VPAmbient> Ret = jsonRet as OkNegotiatedContentResult<VPAmbient>;
@@ -305,13 +306,13 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.Equal(vpAmbientLast.VPAmbientID, vpAmbientRet.VPAmbientID);
 
                     BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
+                    Assert.Null(badRequest);
 
                     // Post to return newly added VPAmbient
                     vpAmbientRet.VPAmbientID = 0;
                     vpAmbientController.Request = new System.Net.Http.HttpRequestMessage();
                     vpAmbientController.Request.RequestUri = new System.Uri("http://localhost:5000/api/vpAmbient");
-                    IHttpActionResult jsonRet3 = vpAmbientController.Post(vpAmbientRet, LanguageRequest.ToString());
+                    IActionResult jsonRet3 = vpAmbientController.Post(vpAmbientRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 
                     CreatedNegotiatedContentResult<VPAmbient> vpAmbientRet3 = jsonRet3 as CreatedNegotiatedContentResult<VPAmbient>;
@@ -319,25 +320,25 @@ namespace CSSPWebAPI.Tests.Controllers
                     VPAmbient vpAmbient = vpAmbientRet3.Content;
 
                     BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest3);
+                    Assert.Null(badRequest3);
 
                     // Delete to return success
-                    IHttpActionResult jsonRet2 = vpAmbientController.Delete(vpAmbientRet, LanguageRequest.ToString());
+                    IActionResult jsonRet2 = vpAmbientController.Delete(vpAmbientRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet2);
 
                     OkNegotiatedContentResult<VPAmbient> vpAmbientRet2 = jsonRet2 as OkNegotiatedContentResult<VPAmbient>;
                     Assert.NotNull(vpAmbientRet2);
 
                     BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest2);
+                    Assert.Null(badRequest2);
 
                     // Delete to return CSSPError because VPAmbientID of 0 does not exist
                     vpAmbientRet.VPAmbientID = 0;
-                    IHttpActionResult jsonRet4 = vpAmbientController.Delete(vpAmbientRet, LanguageRequest.ToString());
+                    IActionResult jsonRet4 = vpAmbientController.Delete(vpAmbientRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet4);
 
                     OkNegotiatedContentResult<VPAmbient> vpAmbientRet4 = jsonRet4 as OkNegotiatedContentResult<VPAmbient>;
-                    Assert.IsNull(vpAmbientRet4);
+                    Assert.Null(vpAmbientRet4);
 
                     BadRequestErrorMessageResult badRequest4 = jsonRet4 as BadRequestErrorMessageResult;
                     Assert.NotNull(badRequest4);

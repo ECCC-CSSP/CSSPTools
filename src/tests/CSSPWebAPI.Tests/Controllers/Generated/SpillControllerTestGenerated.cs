@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
 using System.Web.Http.Results;
+using Microsoft.AspNetCore.Mvc;
 
 namespace CSSPWebAPI.Tests.Controllers
 {
@@ -48,7 +49,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     }
 
                     // ok with Spill info
-                    IHttpActionResult jsonRet = spillController.GetSpillList();
+                    IActionResult jsonRet = spillController.GetSpillList();
                     Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<List<Spill>> ret = jsonRet as OkNegotiatedContentResult<List<Spill>>;
@@ -86,7 +87,7 @@ namespace CSSPWebAPI.Tests.Controllers
                            count = (query.Take > count ? query.Take : count);
 
                            // ok with Spill info
-                           IHttpActionResult jsonRet2 = spillController.GetSpillList(query.Language.ToString(), query.Skip, query.Take);
+                           IActionResult jsonRet2 = spillController.GetSpillList(query.Language.ToString(), query.Skip, query.Take);
                            Assert.NotNull(jsonRet2);
 
                            OkNegotiatedContentResult<List<Spill>> ret2 = jsonRet2 as OkNegotiatedContentResult<List<Spill>>;
@@ -119,7 +120,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     }
 
                     // ok with Spill info
-                    IHttpActionResult jsonRet = spillController.GetSpillWithID(spillFirst.SpillID);
+                    IActionResult jsonRet = spillController.GetSpillWithID(spillFirst.SpillID);
                     Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<Spill> Ret = jsonRet as OkNegotiatedContentResult<Spill>;
@@ -127,16 +128,16 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.Equal(spillFirst.SpillID, spillRet.SpillID);
 
                     BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
+                    Assert.Null(badRequest);
 
                     // Not Found
-                    IHttpActionResult jsonRet2 = spillController.GetSpillWithID(0);
+                    IActionResult jsonRet2 = spillController.GetSpillWithID(0);
                     Assert.NotNull(jsonRet2);
 
                     OkNegotiatedContentResult<Spill> spillRet2 = jsonRet2 as OkNegotiatedContentResult<Spill>;
-                    Assert.IsNull(spillRet2);
+                    Assert.Null(spillRet2);
 
-                    NotFoundResult notFoundRequest = jsonRet2 as NotFoundResult;
+                    NotFoundObjectResult notFoundRequest = jsonRet2 as NotFoundObjectResult;
                     Assert.NotNull(notFoundRequest);
                 }
             }
@@ -168,7 +169,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     }
 
                     // ok with Spill info
-                    IHttpActionResult jsonRet = spillController.GetSpillWithID(spillLast.SpillID);
+                    IActionResult jsonRet = spillController.GetSpillWithID(spillLast.SpillID);
                     Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<Spill> Ret = jsonRet as OkNegotiatedContentResult<Spill>;
@@ -176,14 +177,14 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.Equal(spillLast.SpillID, spillRet.SpillID);
 
                     BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
+                    Assert.Null(badRequest);
 
                     // Post to return CSSPError because SpillID exist
-                    IHttpActionResult jsonRet2 = spillController.Post(spillRet, LanguageRequest.ToString());
+                    IActionResult jsonRet2 = spillController.Post(spillRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet2);
 
                     OkNegotiatedContentResult<Spill> spillRet2 = jsonRet2 as OkNegotiatedContentResult<Spill>;
-                    Assert.IsNull(spillRet2);
+                    Assert.Null(spillRet2);
 
                     BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
                     Assert.NotNull(badRequest2);
@@ -192,23 +193,23 @@ namespace CSSPWebAPI.Tests.Controllers
                     spillRet.SpillID = 0;
                     spillController.Request = new System.Net.Http.HttpRequestMessage();
                     spillController.Request.RequestUri = new System.Uri("http://localhost:5000/api/spill");
-                    IHttpActionResult jsonRet3 = spillController.Post(spillRet, LanguageRequest.ToString());
+                    IActionResult jsonRet3 = spillController.Post(spillRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 
                     CreatedNegotiatedContentResult<Spill> spillRet3 = jsonRet3 as CreatedNegotiatedContentResult<Spill>;
                     Assert.NotNull(spillRet3);
 
                     BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest3);
+                    Assert.Null(badRequest3);
 
-                    IHttpActionResult jsonRet4 = spillController.Delete(spillRet, LanguageRequest.ToString());
+                    IActionResult jsonRet4 = spillController.Delete(spillRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet4);
 
                     OkNegotiatedContentResult<Spill> spillRet4 = jsonRet4 as OkNegotiatedContentResult<Spill>;
                     Assert.NotNull(spillRet4);
 
                     BadRequestErrorMessageResult badRequest4 = jsonRet4 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest4);
+                    Assert.Null(badRequest4);
                 }
             }
         }
@@ -237,7 +238,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     }
 
                     // ok with Spill info
-                    IHttpActionResult jsonRet = spillController.GetSpillWithID(spillLast.SpillID);
+                    IActionResult jsonRet = spillController.GetSpillWithID(spillLast.SpillID);
                     Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<Spill> Ret = jsonRet as OkNegotiatedContentResult<Spill>;
@@ -245,25 +246,25 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.Equal(spillLast.SpillID, spillRet.SpillID);
 
                     BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
+                    Assert.Null(badRequest);
 
                     // Put to return success
-                    IHttpActionResult jsonRet2 = spillController.Put(spillRet, LanguageRequest.ToString());
+                    IActionResult jsonRet2 = spillController.Put(spillRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet2);
 
                     OkNegotiatedContentResult<Spill> spillRet2 = jsonRet2 as OkNegotiatedContentResult<Spill>;
                     Assert.NotNull(spillRet2);
 
                     BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest2);
+                    Assert.Null(badRequest2);
 
                     // Put to return CSSPError because SpillID of 0 does not exist
                     spillRet.SpillID = 0;
-                    IHttpActionResult jsonRet3 = spillController.Put(spillRet, LanguageRequest.ToString());
+                    IActionResult jsonRet3 = spillController.Put(spillRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 
                     OkNegotiatedContentResult<Spill> spillRet3 = jsonRet3 as OkNegotiatedContentResult<Spill>;
-                    Assert.IsNull(spillRet3);
+                    Assert.Null(spillRet3);
 
                     BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
                     Assert.NotNull(badRequest3);
@@ -297,7 +298,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     }
 
                     // ok with Spill info
-                    IHttpActionResult jsonRet = spillController.GetSpillWithID(spillLast.SpillID);
+                    IActionResult jsonRet = spillController.GetSpillWithID(spillLast.SpillID);
                     Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<Spill> Ret = jsonRet as OkNegotiatedContentResult<Spill>;
@@ -305,13 +306,13 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.Equal(spillLast.SpillID, spillRet.SpillID);
 
                     BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
+                    Assert.Null(badRequest);
 
                     // Post to return newly added Spill
                     spillRet.SpillID = 0;
                     spillController.Request = new System.Net.Http.HttpRequestMessage();
                     spillController.Request.RequestUri = new System.Uri("http://localhost:5000/api/spill");
-                    IHttpActionResult jsonRet3 = spillController.Post(spillRet, LanguageRequest.ToString());
+                    IActionResult jsonRet3 = spillController.Post(spillRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 
                     CreatedNegotiatedContentResult<Spill> spillRet3 = jsonRet3 as CreatedNegotiatedContentResult<Spill>;
@@ -319,25 +320,25 @@ namespace CSSPWebAPI.Tests.Controllers
                     Spill spill = spillRet3.Content;
 
                     BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest3);
+                    Assert.Null(badRequest3);
 
                     // Delete to return success
-                    IHttpActionResult jsonRet2 = spillController.Delete(spillRet, LanguageRequest.ToString());
+                    IActionResult jsonRet2 = spillController.Delete(spillRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet2);
 
                     OkNegotiatedContentResult<Spill> spillRet2 = jsonRet2 as OkNegotiatedContentResult<Spill>;
                     Assert.NotNull(spillRet2);
 
                     BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest2);
+                    Assert.Null(badRequest2);
 
                     // Delete to return CSSPError because SpillID of 0 does not exist
                     spillRet.SpillID = 0;
-                    IHttpActionResult jsonRet4 = spillController.Delete(spillRet, LanguageRequest.ToString());
+                    IActionResult jsonRet4 = spillController.Delete(spillRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet4);
 
                     OkNegotiatedContentResult<Spill> spillRet4 = jsonRet4 as OkNegotiatedContentResult<Spill>;
-                    Assert.IsNull(spillRet4);
+                    Assert.Null(spillRet4);
 
                     BadRequestErrorMessageResult badRequest4 = jsonRet4 as BadRequestErrorMessageResult;
                     Assert.NotNull(badRequest4);

@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
 using System.Web.Http.Results;
+using Microsoft.AspNetCore.Mvc;
 
 namespace CSSPWebAPI.Tests.Controllers
 {
@@ -48,7 +49,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     }
 
                     // ok with VPScenario info
-                    IHttpActionResult jsonRet = vpScenarioController.GetVPScenarioList();
+                    IActionResult jsonRet = vpScenarioController.GetVPScenarioList();
                     Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<List<VPScenario>> ret = jsonRet as OkNegotiatedContentResult<List<VPScenario>>;
@@ -86,7 +87,7 @@ namespace CSSPWebAPI.Tests.Controllers
                            count = (query.Take > count ? query.Take : count);
 
                            // ok with VPScenario info
-                           IHttpActionResult jsonRet2 = vpScenarioController.GetVPScenarioList(query.Language.ToString(), query.Skip, query.Take);
+                           IActionResult jsonRet2 = vpScenarioController.GetVPScenarioList(query.Language.ToString(), query.Skip, query.Take);
                            Assert.NotNull(jsonRet2);
 
                            OkNegotiatedContentResult<List<VPScenario>> ret2 = jsonRet2 as OkNegotiatedContentResult<List<VPScenario>>;
@@ -119,7 +120,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     }
 
                     // ok with VPScenario info
-                    IHttpActionResult jsonRet = vpScenarioController.GetVPScenarioWithID(vpScenarioFirst.VPScenarioID);
+                    IActionResult jsonRet = vpScenarioController.GetVPScenarioWithID(vpScenarioFirst.VPScenarioID);
                     Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<VPScenario> Ret = jsonRet as OkNegotiatedContentResult<VPScenario>;
@@ -127,16 +128,16 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.Equal(vpScenarioFirst.VPScenarioID, vpScenarioRet.VPScenarioID);
 
                     BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
+                    Assert.Null(badRequest);
 
                     // Not Found
-                    IHttpActionResult jsonRet2 = vpScenarioController.GetVPScenarioWithID(0);
+                    IActionResult jsonRet2 = vpScenarioController.GetVPScenarioWithID(0);
                     Assert.NotNull(jsonRet2);
 
                     OkNegotiatedContentResult<VPScenario> vpScenarioRet2 = jsonRet2 as OkNegotiatedContentResult<VPScenario>;
-                    Assert.IsNull(vpScenarioRet2);
+                    Assert.Null(vpScenarioRet2);
 
-                    NotFoundResult notFoundRequest = jsonRet2 as NotFoundResult;
+                    NotFoundObjectResult notFoundRequest = jsonRet2 as NotFoundObjectResult;
                     Assert.NotNull(notFoundRequest);
                 }
             }
@@ -168,7 +169,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     }
 
                     // ok with VPScenario info
-                    IHttpActionResult jsonRet = vpScenarioController.GetVPScenarioWithID(vpScenarioLast.VPScenarioID);
+                    IActionResult jsonRet = vpScenarioController.GetVPScenarioWithID(vpScenarioLast.VPScenarioID);
                     Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<VPScenario> Ret = jsonRet as OkNegotiatedContentResult<VPScenario>;
@@ -176,14 +177,14 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.Equal(vpScenarioLast.VPScenarioID, vpScenarioRet.VPScenarioID);
 
                     BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
+                    Assert.Null(badRequest);
 
                     // Post to return CSSPError because VPScenarioID exist
-                    IHttpActionResult jsonRet2 = vpScenarioController.Post(vpScenarioRet, LanguageRequest.ToString());
+                    IActionResult jsonRet2 = vpScenarioController.Post(vpScenarioRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet2);
 
                     OkNegotiatedContentResult<VPScenario> vpScenarioRet2 = jsonRet2 as OkNegotiatedContentResult<VPScenario>;
-                    Assert.IsNull(vpScenarioRet2);
+                    Assert.Null(vpScenarioRet2);
 
                     BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
                     Assert.NotNull(badRequest2);
@@ -192,23 +193,23 @@ namespace CSSPWebAPI.Tests.Controllers
                     vpScenarioRet.VPScenarioID = 0;
                     vpScenarioController.Request = new System.Net.Http.HttpRequestMessage();
                     vpScenarioController.Request.RequestUri = new System.Uri("http://localhost:5000/api/vpScenario");
-                    IHttpActionResult jsonRet3 = vpScenarioController.Post(vpScenarioRet, LanguageRequest.ToString());
+                    IActionResult jsonRet3 = vpScenarioController.Post(vpScenarioRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 
                     CreatedNegotiatedContentResult<VPScenario> vpScenarioRet3 = jsonRet3 as CreatedNegotiatedContentResult<VPScenario>;
                     Assert.NotNull(vpScenarioRet3);
 
                     BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest3);
+                    Assert.Null(badRequest3);
 
-                    IHttpActionResult jsonRet4 = vpScenarioController.Delete(vpScenarioRet, LanguageRequest.ToString());
+                    IActionResult jsonRet4 = vpScenarioController.Delete(vpScenarioRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet4);
 
                     OkNegotiatedContentResult<VPScenario> vpScenarioRet4 = jsonRet4 as OkNegotiatedContentResult<VPScenario>;
                     Assert.NotNull(vpScenarioRet4);
 
                     BadRequestErrorMessageResult badRequest4 = jsonRet4 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest4);
+                    Assert.Null(badRequest4);
                 }
             }
         }
@@ -237,7 +238,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     }
 
                     // ok with VPScenario info
-                    IHttpActionResult jsonRet = vpScenarioController.GetVPScenarioWithID(vpScenarioLast.VPScenarioID);
+                    IActionResult jsonRet = vpScenarioController.GetVPScenarioWithID(vpScenarioLast.VPScenarioID);
                     Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<VPScenario> Ret = jsonRet as OkNegotiatedContentResult<VPScenario>;
@@ -245,25 +246,25 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.Equal(vpScenarioLast.VPScenarioID, vpScenarioRet.VPScenarioID);
 
                     BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
+                    Assert.Null(badRequest);
 
                     // Put to return success
-                    IHttpActionResult jsonRet2 = vpScenarioController.Put(vpScenarioRet, LanguageRequest.ToString());
+                    IActionResult jsonRet2 = vpScenarioController.Put(vpScenarioRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet2);
 
                     OkNegotiatedContentResult<VPScenario> vpScenarioRet2 = jsonRet2 as OkNegotiatedContentResult<VPScenario>;
                     Assert.NotNull(vpScenarioRet2);
 
                     BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest2);
+                    Assert.Null(badRequest2);
 
                     // Put to return CSSPError because VPScenarioID of 0 does not exist
                     vpScenarioRet.VPScenarioID = 0;
-                    IHttpActionResult jsonRet3 = vpScenarioController.Put(vpScenarioRet, LanguageRequest.ToString());
+                    IActionResult jsonRet3 = vpScenarioController.Put(vpScenarioRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 
                     OkNegotiatedContentResult<VPScenario> vpScenarioRet3 = jsonRet3 as OkNegotiatedContentResult<VPScenario>;
-                    Assert.IsNull(vpScenarioRet3);
+                    Assert.Null(vpScenarioRet3);
 
                     BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
                     Assert.NotNull(badRequest3);
@@ -297,7 +298,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     }
 
                     // ok with VPScenario info
-                    IHttpActionResult jsonRet = vpScenarioController.GetVPScenarioWithID(vpScenarioLast.VPScenarioID);
+                    IActionResult jsonRet = vpScenarioController.GetVPScenarioWithID(vpScenarioLast.VPScenarioID);
                     Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<VPScenario> Ret = jsonRet as OkNegotiatedContentResult<VPScenario>;
@@ -305,13 +306,13 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.Equal(vpScenarioLast.VPScenarioID, vpScenarioRet.VPScenarioID);
 
                     BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
+                    Assert.Null(badRequest);
 
                     // Post to return newly added VPScenario
                     vpScenarioRet.VPScenarioID = 0;
                     vpScenarioController.Request = new System.Net.Http.HttpRequestMessage();
                     vpScenarioController.Request.RequestUri = new System.Uri("http://localhost:5000/api/vpScenario");
-                    IHttpActionResult jsonRet3 = vpScenarioController.Post(vpScenarioRet, LanguageRequest.ToString());
+                    IActionResult jsonRet3 = vpScenarioController.Post(vpScenarioRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 
                     CreatedNegotiatedContentResult<VPScenario> vpScenarioRet3 = jsonRet3 as CreatedNegotiatedContentResult<VPScenario>;
@@ -319,25 +320,25 @@ namespace CSSPWebAPI.Tests.Controllers
                     VPScenario vpScenario = vpScenarioRet3.Content;
 
                     BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest3);
+                    Assert.Null(badRequest3);
 
                     // Delete to return success
-                    IHttpActionResult jsonRet2 = vpScenarioController.Delete(vpScenarioRet, LanguageRequest.ToString());
+                    IActionResult jsonRet2 = vpScenarioController.Delete(vpScenarioRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet2);
 
                     OkNegotiatedContentResult<VPScenario> vpScenarioRet2 = jsonRet2 as OkNegotiatedContentResult<VPScenario>;
                     Assert.NotNull(vpScenarioRet2);
 
                     BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest2);
+                    Assert.Null(badRequest2);
 
                     // Delete to return CSSPError because VPScenarioID of 0 does not exist
                     vpScenarioRet.VPScenarioID = 0;
-                    IHttpActionResult jsonRet4 = vpScenarioController.Delete(vpScenarioRet, LanguageRequest.ToString());
+                    IActionResult jsonRet4 = vpScenarioController.Delete(vpScenarioRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet4);
 
                     OkNegotiatedContentResult<VPScenario> vpScenarioRet4 = jsonRet4 as OkNegotiatedContentResult<VPScenario>;
-                    Assert.IsNull(vpScenarioRet4);
+                    Assert.Null(vpScenarioRet4);
 
                     BadRequestErrorMessageResult badRequest4 = jsonRet4 as BadRequestErrorMessageResult;
                     Assert.NotNull(badRequest4);

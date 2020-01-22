@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
 using System.Web.Http.Results;
+using Microsoft.AspNetCore.Mvc;
 
 namespace CSSPWebAPI.Tests.Controllers
 {
@@ -48,7 +49,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     }
 
                     // ok with VPScenarioLanguage info
-                    IHttpActionResult jsonRet = vpScenarioLanguageController.GetVPScenarioLanguageList();
+                    IActionResult jsonRet = vpScenarioLanguageController.GetVPScenarioLanguageList();
                     Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<List<VPScenarioLanguage>> ret = jsonRet as OkNegotiatedContentResult<List<VPScenarioLanguage>>;
@@ -86,7 +87,7 @@ namespace CSSPWebAPI.Tests.Controllers
                            count = (query.Take > count ? query.Take : count);
 
                            // ok with VPScenarioLanguage info
-                           IHttpActionResult jsonRet2 = vpScenarioLanguageController.GetVPScenarioLanguageList(query.Language.ToString(), query.Skip, query.Take);
+                           IActionResult jsonRet2 = vpScenarioLanguageController.GetVPScenarioLanguageList(query.Language.ToString(), query.Skip, query.Take);
                            Assert.NotNull(jsonRet2);
 
                            OkNegotiatedContentResult<List<VPScenarioLanguage>> ret2 = jsonRet2 as OkNegotiatedContentResult<List<VPScenarioLanguage>>;
@@ -119,7 +120,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     }
 
                     // ok with VPScenarioLanguage info
-                    IHttpActionResult jsonRet = vpScenarioLanguageController.GetVPScenarioLanguageWithID(vpScenarioLanguageFirst.VPScenarioLanguageID);
+                    IActionResult jsonRet = vpScenarioLanguageController.GetVPScenarioLanguageWithID(vpScenarioLanguageFirst.VPScenarioLanguageID);
                     Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<VPScenarioLanguage> Ret = jsonRet as OkNegotiatedContentResult<VPScenarioLanguage>;
@@ -127,16 +128,16 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.Equal(vpScenarioLanguageFirst.VPScenarioLanguageID, vpScenarioLanguageRet.VPScenarioLanguageID);
 
                     BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
+                    Assert.Null(badRequest);
 
                     // Not Found
-                    IHttpActionResult jsonRet2 = vpScenarioLanguageController.GetVPScenarioLanguageWithID(0);
+                    IActionResult jsonRet2 = vpScenarioLanguageController.GetVPScenarioLanguageWithID(0);
                     Assert.NotNull(jsonRet2);
 
                     OkNegotiatedContentResult<VPScenarioLanguage> vpScenarioLanguageRet2 = jsonRet2 as OkNegotiatedContentResult<VPScenarioLanguage>;
-                    Assert.IsNull(vpScenarioLanguageRet2);
+                    Assert.Null(vpScenarioLanguageRet2);
 
-                    NotFoundResult notFoundRequest = jsonRet2 as NotFoundResult;
+                    NotFoundObjectResult notFoundRequest = jsonRet2 as NotFoundObjectResult;
                     Assert.NotNull(notFoundRequest);
                 }
             }
@@ -168,7 +169,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     }
 
                     // ok with VPScenarioLanguage info
-                    IHttpActionResult jsonRet = vpScenarioLanguageController.GetVPScenarioLanguageWithID(vpScenarioLanguageLast.VPScenarioLanguageID);
+                    IActionResult jsonRet = vpScenarioLanguageController.GetVPScenarioLanguageWithID(vpScenarioLanguageLast.VPScenarioLanguageID);
                     Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<VPScenarioLanguage> Ret = jsonRet as OkNegotiatedContentResult<VPScenarioLanguage>;
@@ -176,14 +177,14 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.Equal(vpScenarioLanguageLast.VPScenarioLanguageID, vpScenarioLanguageRet.VPScenarioLanguageID);
 
                     BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
+                    Assert.Null(badRequest);
 
                     // Post to return CSSPError because VPScenarioLanguageID exist
-                    IHttpActionResult jsonRet2 = vpScenarioLanguageController.Post(vpScenarioLanguageRet, LanguageRequest.ToString());
+                    IActionResult jsonRet2 = vpScenarioLanguageController.Post(vpScenarioLanguageRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet2);
 
                     OkNegotiatedContentResult<VPScenarioLanguage> vpScenarioLanguageRet2 = jsonRet2 as OkNegotiatedContentResult<VPScenarioLanguage>;
-                    Assert.IsNull(vpScenarioLanguageRet2);
+                    Assert.Null(vpScenarioLanguageRet2);
 
                     BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
                     Assert.NotNull(badRequest2);
@@ -192,23 +193,23 @@ namespace CSSPWebAPI.Tests.Controllers
                     vpScenarioLanguageRet.VPScenarioLanguageID = 0;
                     vpScenarioLanguageController.Request = new System.Net.Http.HttpRequestMessage();
                     vpScenarioLanguageController.Request.RequestUri = new System.Uri("http://localhost:5000/api/vpScenarioLanguage");
-                    IHttpActionResult jsonRet3 = vpScenarioLanguageController.Post(vpScenarioLanguageRet, LanguageRequest.ToString());
+                    IActionResult jsonRet3 = vpScenarioLanguageController.Post(vpScenarioLanguageRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 
                     CreatedNegotiatedContentResult<VPScenarioLanguage> vpScenarioLanguageRet3 = jsonRet3 as CreatedNegotiatedContentResult<VPScenarioLanguage>;
                     Assert.NotNull(vpScenarioLanguageRet3);
 
                     BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest3);
+                    Assert.Null(badRequest3);
 
-                    IHttpActionResult jsonRet4 = vpScenarioLanguageController.Delete(vpScenarioLanguageRet, LanguageRequest.ToString());
+                    IActionResult jsonRet4 = vpScenarioLanguageController.Delete(vpScenarioLanguageRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet4);
 
                     OkNegotiatedContentResult<VPScenarioLanguage> vpScenarioLanguageRet4 = jsonRet4 as OkNegotiatedContentResult<VPScenarioLanguage>;
                     Assert.NotNull(vpScenarioLanguageRet4);
 
                     BadRequestErrorMessageResult badRequest4 = jsonRet4 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest4);
+                    Assert.Null(badRequest4);
                 }
             }
         }
@@ -237,7 +238,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     }
 
                     // ok with VPScenarioLanguage info
-                    IHttpActionResult jsonRet = vpScenarioLanguageController.GetVPScenarioLanguageWithID(vpScenarioLanguageLast.VPScenarioLanguageID);
+                    IActionResult jsonRet = vpScenarioLanguageController.GetVPScenarioLanguageWithID(vpScenarioLanguageLast.VPScenarioLanguageID);
                     Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<VPScenarioLanguage> Ret = jsonRet as OkNegotiatedContentResult<VPScenarioLanguage>;
@@ -245,25 +246,25 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.Equal(vpScenarioLanguageLast.VPScenarioLanguageID, vpScenarioLanguageRet.VPScenarioLanguageID);
 
                     BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
+                    Assert.Null(badRequest);
 
                     // Put to return success
-                    IHttpActionResult jsonRet2 = vpScenarioLanguageController.Put(vpScenarioLanguageRet, LanguageRequest.ToString());
+                    IActionResult jsonRet2 = vpScenarioLanguageController.Put(vpScenarioLanguageRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet2);
 
                     OkNegotiatedContentResult<VPScenarioLanguage> vpScenarioLanguageRet2 = jsonRet2 as OkNegotiatedContentResult<VPScenarioLanguage>;
                     Assert.NotNull(vpScenarioLanguageRet2);
 
                     BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest2);
+                    Assert.Null(badRequest2);
 
                     // Put to return CSSPError because VPScenarioLanguageID of 0 does not exist
                     vpScenarioLanguageRet.VPScenarioLanguageID = 0;
-                    IHttpActionResult jsonRet3 = vpScenarioLanguageController.Put(vpScenarioLanguageRet, LanguageRequest.ToString());
+                    IActionResult jsonRet3 = vpScenarioLanguageController.Put(vpScenarioLanguageRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 
                     OkNegotiatedContentResult<VPScenarioLanguage> vpScenarioLanguageRet3 = jsonRet3 as OkNegotiatedContentResult<VPScenarioLanguage>;
-                    Assert.IsNull(vpScenarioLanguageRet3);
+                    Assert.Null(vpScenarioLanguageRet3);
 
                     BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
                     Assert.NotNull(badRequest3);
@@ -297,7 +298,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     }
 
                     // ok with VPScenarioLanguage info
-                    IHttpActionResult jsonRet = vpScenarioLanguageController.GetVPScenarioLanguageWithID(vpScenarioLanguageLast.VPScenarioLanguageID);
+                    IActionResult jsonRet = vpScenarioLanguageController.GetVPScenarioLanguageWithID(vpScenarioLanguageLast.VPScenarioLanguageID);
                     Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<VPScenarioLanguage> Ret = jsonRet as OkNegotiatedContentResult<VPScenarioLanguage>;
@@ -305,13 +306,13 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.Equal(vpScenarioLanguageLast.VPScenarioLanguageID, vpScenarioLanguageRet.VPScenarioLanguageID);
 
                     BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
+                    Assert.Null(badRequest);
 
                     // Post to return newly added VPScenarioLanguage
                     vpScenarioLanguageRet.VPScenarioLanguageID = 0;
                     vpScenarioLanguageController.Request = new System.Net.Http.HttpRequestMessage();
                     vpScenarioLanguageController.Request.RequestUri = new System.Uri("http://localhost:5000/api/vpScenarioLanguage");
-                    IHttpActionResult jsonRet3 = vpScenarioLanguageController.Post(vpScenarioLanguageRet, LanguageRequest.ToString());
+                    IActionResult jsonRet3 = vpScenarioLanguageController.Post(vpScenarioLanguageRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 
                     CreatedNegotiatedContentResult<VPScenarioLanguage> vpScenarioLanguageRet3 = jsonRet3 as CreatedNegotiatedContentResult<VPScenarioLanguage>;
@@ -319,25 +320,25 @@ namespace CSSPWebAPI.Tests.Controllers
                     VPScenarioLanguage vpScenarioLanguage = vpScenarioLanguageRet3.Content;
 
                     BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest3);
+                    Assert.Null(badRequest3);
 
                     // Delete to return success
-                    IHttpActionResult jsonRet2 = vpScenarioLanguageController.Delete(vpScenarioLanguageRet, LanguageRequest.ToString());
+                    IActionResult jsonRet2 = vpScenarioLanguageController.Delete(vpScenarioLanguageRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet2);
 
                     OkNegotiatedContentResult<VPScenarioLanguage> vpScenarioLanguageRet2 = jsonRet2 as OkNegotiatedContentResult<VPScenarioLanguage>;
                     Assert.NotNull(vpScenarioLanguageRet2);
 
                     BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest2);
+                    Assert.Null(badRequest2);
 
                     // Delete to return CSSPError because VPScenarioLanguageID of 0 does not exist
                     vpScenarioLanguageRet.VPScenarioLanguageID = 0;
-                    IHttpActionResult jsonRet4 = vpScenarioLanguageController.Delete(vpScenarioLanguageRet, LanguageRequest.ToString());
+                    IActionResult jsonRet4 = vpScenarioLanguageController.Delete(vpScenarioLanguageRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet4);
 
                     OkNegotiatedContentResult<VPScenarioLanguage> vpScenarioLanguageRet4 = jsonRet4 as OkNegotiatedContentResult<VPScenarioLanguage>;
-                    Assert.IsNull(vpScenarioLanguageRet4);
+                    Assert.Null(vpScenarioLanguageRet4);
 
                     BadRequestErrorMessageResult badRequest4 = jsonRet4 as BadRequestErrorMessageResult;
                     Assert.NotNull(badRequest4);

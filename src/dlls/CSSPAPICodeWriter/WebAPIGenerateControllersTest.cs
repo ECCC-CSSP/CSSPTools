@@ -110,6 +110,7 @@ namespace CSSPWebAPIGenerateCodeHelper
                     sb.AppendLine(@"using System.Linq;");
                     sb.AppendLine(@"using System.Web.Http;");
                     sb.AppendLine(@"using System.Web.Http.Results;");
+                    sb.AppendLine(@"using Microsoft.AspNetCore.Mvc;");
                     sb.AppendLine(@"");
                     sb.AppendLine(@"namespace CSSPWebAPI.Tests.Controllers");
                     sb.AppendLine(@"{");

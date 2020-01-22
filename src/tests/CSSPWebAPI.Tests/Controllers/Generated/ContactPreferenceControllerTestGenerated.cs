@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
 using System.Web.Http.Results;
+using Microsoft.AspNetCore.Mvc;
 
 namespace CSSPWebAPI.Tests.Controllers
 {
@@ -48,7 +49,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     }
 
                     // ok with ContactPreference info
-                    IHttpActionResult jsonRet = contactPreferenceController.GetContactPreferenceList();
+                    IActionResult jsonRet = contactPreferenceController.GetContactPreferenceList();
                     Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<List<ContactPreference>> ret = jsonRet as OkNegotiatedContentResult<List<ContactPreference>>;
@@ -86,7 +87,7 @@ namespace CSSPWebAPI.Tests.Controllers
                            count = (query.Take > count ? query.Take : count);
 
                            // ok with ContactPreference info
-                           IHttpActionResult jsonRet2 = contactPreferenceController.GetContactPreferenceList(query.Language.ToString(), query.Skip, query.Take);
+                           IActionResult jsonRet2 = contactPreferenceController.GetContactPreferenceList(query.Language.ToString(), query.Skip, query.Take);
                            Assert.NotNull(jsonRet2);
 
                            OkNegotiatedContentResult<List<ContactPreference>> ret2 = jsonRet2 as OkNegotiatedContentResult<List<ContactPreference>>;
@@ -119,7 +120,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     }
 
                     // ok with ContactPreference info
-                    IHttpActionResult jsonRet = contactPreferenceController.GetContactPreferenceWithID(contactPreferenceFirst.ContactPreferenceID);
+                    IActionResult jsonRet = contactPreferenceController.GetContactPreferenceWithID(contactPreferenceFirst.ContactPreferenceID);
                     Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<ContactPreference> Ret = jsonRet as OkNegotiatedContentResult<ContactPreference>;
@@ -127,16 +128,16 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.Equal(contactPreferenceFirst.ContactPreferenceID, contactPreferenceRet.ContactPreferenceID);
 
                     BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
+                    Assert.Null(badRequest);
 
                     // Not Found
-                    IHttpActionResult jsonRet2 = contactPreferenceController.GetContactPreferenceWithID(0);
+                    IActionResult jsonRet2 = contactPreferenceController.GetContactPreferenceWithID(0);
                     Assert.NotNull(jsonRet2);
 
                     OkNegotiatedContentResult<ContactPreference> contactPreferenceRet2 = jsonRet2 as OkNegotiatedContentResult<ContactPreference>;
-                    Assert.IsNull(contactPreferenceRet2);
+                    Assert.Null(contactPreferenceRet2);
 
-                    NotFoundResult notFoundRequest = jsonRet2 as NotFoundResult;
+                    NotFoundObjectResult notFoundRequest = jsonRet2 as NotFoundObjectResult;
                     Assert.NotNull(notFoundRequest);
                 }
             }
@@ -168,7 +169,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     }
 
                     // ok with ContactPreference info
-                    IHttpActionResult jsonRet = contactPreferenceController.GetContactPreferenceWithID(contactPreferenceLast.ContactPreferenceID);
+                    IActionResult jsonRet = contactPreferenceController.GetContactPreferenceWithID(contactPreferenceLast.ContactPreferenceID);
                     Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<ContactPreference> Ret = jsonRet as OkNegotiatedContentResult<ContactPreference>;
@@ -176,14 +177,14 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.Equal(contactPreferenceLast.ContactPreferenceID, contactPreferenceRet.ContactPreferenceID);
 
                     BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
+                    Assert.Null(badRequest);
 
                     // Post to return CSSPError because ContactPreferenceID exist
-                    IHttpActionResult jsonRet2 = contactPreferenceController.Post(contactPreferenceRet, LanguageRequest.ToString());
+                    IActionResult jsonRet2 = contactPreferenceController.Post(contactPreferenceRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet2);
 
                     OkNegotiatedContentResult<ContactPreference> contactPreferenceRet2 = jsonRet2 as OkNegotiatedContentResult<ContactPreference>;
-                    Assert.IsNull(contactPreferenceRet2);
+                    Assert.Null(contactPreferenceRet2);
 
                     BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
                     Assert.NotNull(badRequest2);
@@ -192,23 +193,23 @@ namespace CSSPWebAPI.Tests.Controllers
                     contactPreferenceRet.ContactPreferenceID = 0;
                     contactPreferenceController.Request = new System.Net.Http.HttpRequestMessage();
                     contactPreferenceController.Request.RequestUri = new System.Uri("http://localhost:5000/api/contactPreference");
-                    IHttpActionResult jsonRet3 = contactPreferenceController.Post(contactPreferenceRet, LanguageRequest.ToString());
+                    IActionResult jsonRet3 = contactPreferenceController.Post(contactPreferenceRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 
                     CreatedNegotiatedContentResult<ContactPreference> contactPreferenceRet3 = jsonRet3 as CreatedNegotiatedContentResult<ContactPreference>;
                     Assert.NotNull(contactPreferenceRet3);
 
                     BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest3);
+                    Assert.Null(badRequest3);
 
-                    IHttpActionResult jsonRet4 = contactPreferenceController.Delete(contactPreferenceRet, LanguageRequest.ToString());
+                    IActionResult jsonRet4 = contactPreferenceController.Delete(contactPreferenceRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet4);
 
                     OkNegotiatedContentResult<ContactPreference> contactPreferenceRet4 = jsonRet4 as OkNegotiatedContentResult<ContactPreference>;
                     Assert.NotNull(contactPreferenceRet4);
 
                     BadRequestErrorMessageResult badRequest4 = jsonRet4 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest4);
+                    Assert.Null(badRequest4);
                 }
             }
         }
@@ -237,7 +238,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     }
 
                     // ok with ContactPreference info
-                    IHttpActionResult jsonRet = contactPreferenceController.GetContactPreferenceWithID(contactPreferenceLast.ContactPreferenceID);
+                    IActionResult jsonRet = contactPreferenceController.GetContactPreferenceWithID(contactPreferenceLast.ContactPreferenceID);
                     Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<ContactPreference> Ret = jsonRet as OkNegotiatedContentResult<ContactPreference>;
@@ -245,25 +246,25 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.Equal(contactPreferenceLast.ContactPreferenceID, contactPreferenceRet.ContactPreferenceID);
 
                     BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
+                    Assert.Null(badRequest);
 
                     // Put to return success
-                    IHttpActionResult jsonRet2 = contactPreferenceController.Put(contactPreferenceRet, LanguageRequest.ToString());
+                    IActionResult jsonRet2 = contactPreferenceController.Put(contactPreferenceRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet2);
 
                     OkNegotiatedContentResult<ContactPreference> contactPreferenceRet2 = jsonRet2 as OkNegotiatedContentResult<ContactPreference>;
                     Assert.NotNull(contactPreferenceRet2);
 
                     BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest2);
+                    Assert.Null(badRequest2);
 
                     // Put to return CSSPError because ContactPreferenceID of 0 does not exist
                     contactPreferenceRet.ContactPreferenceID = 0;
-                    IHttpActionResult jsonRet3 = contactPreferenceController.Put(contactPreferenceRet, LanguageRequest.ToString());
+                    IActionResult jsonRet3 = contactPreferenceController.Put(contactPreferenceRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 
                     OkNegotiatedContentResult<ContactPreference> contactPreferenceRet3 = jsonRet3 as OkNegotiatedContentResult<ContactPreference>;
-                    Assert.IsNull(contactPreferenceRet3);
+                    Assert.Null(contactPreferenceRet3);
 
                     BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
                     Assert.NotNull(badRequest3);
@@ -297,7 +298,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     }
 
                     // ok with ContactPreference info
-                    IHttpActionResult jsonRet = contactPreferenceController.GetContactPreferenceWithID(contactPreferenceLast.ContactPreferenceID);
+                    IActionResult jsonRet = contactPreferenceController.GetContactPreferenceWithID(contactPreferenceLast.ContactPreferenceID);
                     Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<ContactPreference> Ret = jsonRet as OkNegotiatedContentResult<ContactPreference>;
@@ -305,13 +306,13 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.Equal(contactPreferenceLast.ContactPreferenceID, contactPreferenceRet.ContactPreferenceID);
 
                     BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
+                    Assert.Null(badRequest);
 
                     // Post to return newly added ContactPreference
                     contactPreferenceRet.ContactPreferenceID = 0;
                     contactPreferenceController.Request = new System.Net.Http.HttpRequestMessage();
                     contactPreferenceController.Request.RequestUri = new System.Uri("http://localhost:5000/api/contactPreference");
-                    IHttpActionResult jsonRet3 = contactPreferenceController.Post(contactPreferenceRet, LanguageRequest.ToString());
+                    IActionResult jsonRet3 = contactPreferenceController.Post(contactPreferenceRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 
                     CreatedNegotiatedContentResult<ContactPreference> contactPreferenceRet3 = jsonRet3 as CreatedNegotiatedContentResult<ContactPreference>;
@@ -319,25 +320,25 @@ namespace CSSPWebAPI.Tests.Controllers
                     ContactPreference contactPreference = contactPreferenceRet3.Content;
 
                     BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest3);
+                    Assert.Null(badRequest3);
 
                     // Delete to return success
-                    IHttpActionResult jsonRet2 = contactPreferenceController.Delete(contactPreferenceRet, LanguageRequest.ToString());
+                    IActionResult jsonRet2 = contactPreferenceController.Delete(contactPreferenceRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet2);
 
                     OkNegotiatedContentResult<ContactPreference> contactPreferenceRet2 = jsonRet2 as OkNegotiatedContentResult<ContactPreference>;
                     Assert.NotNull(contactPreferenceRet2);
 
                     BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest2);
+                    Assert.Null(badRequest2);
 
                     // Delete to return CSSPError because ContactPreferenceID of 0 does not exist
                     contactPreferenceRet.ContactPreferenceID = 0;
-                    IHttpActionResult jsonRet4 = contactPreferenceController.Delete(contactPreferenceRet, LanguageRequest.ToString());
+                    IActionResult jsonRet4 = contactPreferenceController.Delete(contactPreferenceRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet4);
 
                     OkNegotiatedContentResult<ContactPreference> contactPreferenceRet4 = jsonRet4 as OkNegotiatedContentResult<ContactPreference>;
-                    Assert.IsNull(contactPreferenceRet4);
+                    Assert.Null(contactPreferenceRet4);
 
                     BadRequestErrorMessageResult badRequest4 = jsonRet4 as BadRequestErrorMessageResult;
                     Assert.NotNull(badRequest4);

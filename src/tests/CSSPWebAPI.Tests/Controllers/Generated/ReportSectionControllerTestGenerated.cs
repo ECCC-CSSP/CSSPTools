@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
 using System.Web.Http.Results;
+using Microsoft.AspNetCore.Mvc;
 
 namespace CSSPWebAPI.Tests.Controllers
 {
@@ -48,7 +49,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     }
 
                     // ok with ReportSection info
-                    IHttpActionResult jsonRet = reportSectionController.GetReportSectionList();
+                    IActionResult jsonRet = reportSectionController.GetReportSectionList();
                     Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<List<ReportSection>> ret = jsonRet as OkNegotiatedContentResult<List<ReportSection>>;
@@ -86,7 +87,7 @@ namespace CSSPWebAPI.Tests.Controllers
                            count = (query.Take > count ? query.Take : count);
 
                            // ok with ReportSection info
-                           IHttpActionResult jsonRet2 = reportSectionController.GetReportSectionList(query.Language.ToString(), query.Skip, query.Take);
+                           IActionResult jsonRet2 = reportSectionController.GetReportSectionList(query.Language.ToString(), query.Skip, query.Take);
                            Assert.NotNull(jsonRet2);
 
                            OkNegotiatedContentResult<List<ReportSection>> ret2 = jsonRet2 as OkNegotiatedContentResult<List<ReportSection>>;
@@ -119,7 +120,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     }
 
                     // ok with ReportSection info
-                    IHttpActionResult jsonRet = reportSectionController.GetReportSectionWithID(reportSectionFirst.ReportSectionID);
+                    IActionResult jsonRet = reportSectionController.GetReportSectionWithID(reportSectionFirst.ReportSectionID);
                     Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<ReportSection> Ret = jsonRet as OkNegotiatedContentResult<ReportSection>;
@@ -127,16 +128,16 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.Equal(reportSectionFirst.ReportSectionID, reportSectionRet.ReportSectionID);
 
                     BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
+                    Assert.Null(badRequest);
 
                     // Not Found
-                    IHttpActionResult jsonRet2 = reportSectionController.GetReportSectionWithID(0);
+                    IActionResult jsonRet2 = reportSectionController.GetReportSectionWithID(0);
                     Assert.NotNull(jsonRet2);
 
                     OkNegotiatedContentResult<ReportSection> reportSectionRet2 = jsonRet2 as OkNegotiatedContentResult<ReportSection>;
-                    Assert.IsNull(reportSectionRet2);
+                    Assert.Null(reportSectionRet2);
 
-                    NotFoundResult notFoundRequest = jsonRet2 as NotFoundResult;
+                    NotFoundObjectResult notFoundRequest = jsonRet2 as NotFoundObjectResult;
                     Assert.NotNull(notFoundRequest);
                 }
             }
@@ -168,7 +169,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     }
 
                     // ok with ReportSection info
-                    IHttpActionResult jsonRet = reportSectionController.GetReportSectionWithID(reportSectionLast.ReportSectionID);
+                    IActionResult jsonRet = reportSectionController.GetReportSectionWithID(reportSectionLast.ReportSectionID);
                     Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<ReportSection> Ret = jsonRet as OkNegotiatedContentResult<ReportSection>;
@@ -176,14 +177,14 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.Equal(reportSectionLast.ReportSectionID, reportSectionRet.ReportSectionID);
 
                     BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
+                    Assert.Null(badRequest);
 
                     // Post to return CSSPError because ReportSectionID exist
-                    IHttpActionResult jsonRet2 = reportSectionController.Post(reportSectionRet, LanguageRequest.ToString());
+                    IActionResult jsonRet2 = reportSectionController.Post(reportSectionRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet2);
 
                     OkNegotiatedContentResult<ReportSection> reportSectionRet2 = jsonRet2 as OkNegotiatedContentResult<ReportSection>;
-                    Assert.IsNull(reportSectionRet2);
+                    Assert.Null(reportSectionRet2);
 
                     BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
                     Assert.NotNull(badRequest2);
@@ -192,23 +193,23 @@ namespace CSSPWebAPI.Tests.Controllers
                     reportSectionRet.ReportSectionID = 0;
                     reportSectionController.Request = new System.Net.Http.HttpRequestMessage();
                     reportSectionController.Request.RequestUri = new System.Uri("http://localhost:5000/api/reportSection");
-                    IHttpActionResult jsonRet3 = reportSectionController.Post(reportSectionRet, LanguageRequest.ToString());
+                    IActionResult jsonRet3 = reportSectionController.Post(reportSectionRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 
                     CreatedNegotiatedContentResult<ReportSection> reportSectionRet3 = jsonRet3 as CreatedNegotiatedContentResult<ReportSection>;
                     Assert.NotNull(reportSectionRet3);
 
                     BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest3);
+                    Assert.Null(badRequest3);
 
-                    IHttpActionResult jsonRet4 = reportSectionController.Delete(reportSectionRet, LanguageRequest.ToString());
+                    IActionResult jsonRet4 = reportSectionController.Delete(reportSectionRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet4);
 
                     OkNegotiatedContentResult<ReportSection> reportSectionRet4 = jsonRet4 as OkNegotiatedContentResult<ReportSection>;
                     Assert.NotNull(reportSectionRet4);
 
                     BadRequestErrorMessageResult badRequest4 = jsonRet4 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest4);
+                    Assert.Null(badRequest4);
                 }
             }
         }
@@ -237,7 +238,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     }
 
                     // ok with ReportSection info
-                    IHttpActionResult jsonRet = reportSectionController.GetReportSectionWithID(reportSectionLast.ReportSectionID);
+                    IActionResult jsonRet = reportSectionController.GetReportSectionWithID(reportSectionLast.ReportSectionID);
                     Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<ReportSection> Ret = jsonRet as OkNegotiatedContentResult<ReportSection>;
@@ -245,25 +246,25 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.Equal(reportSectionLast.ReportSectionID, reportSectionRet.ReportSectionID);
 
                     BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
+                    Assert.Null(badRequest);
 
                     // Put to return success
-                    IHttpActionResult jsonRet2 = reportSectionController.Put(reportSectionRet, LanguageRequest.ToString());
+                    IActionResult jsonRet2 = reportSectionController.Put(reportSectionRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet2);
 
                     OkNegotiatedContentResult<ReportSection> reportSectionRet2 = jsonRet2 as OkNegotiatedContentResult<ReportSection>;
                     Assert.NotNull(reportSectionRet2);
 
                     BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest2);
+                    Assert.Null(badRequest2);
 
                     // Put to return CSSPError because ReportSectionID of 0 does not exist
                     reportSectionRet.ReportSectionID = 0;
-                    IHttpActionResult jsonRet3 = reportSectionController.Put(reportSectionRet, LanguageRequest.ToString());
+                    IActionResult jsonRet3 = reportSectionController.Put(reportSectionRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 
                     OkNegotiatedContentResult<ReportSection> reportSectionRet3 = jsonRet3 as OkNegotiatedContentResult<ReportSection>;
-                    Assert.IsNull(reportSectionRet3);
+                    Assert.Null(reportSectionRet3);
 
                     BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
                     Assert.NotNull(badRequest3);
@@ -297,7 +298,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     }
 
                     // ok with ReportSection info
-                    IHttpActionResult jsonRet = reportSectionController.GetReportSectionWithID(reportSectionLast.ReportSectionID);
+                    IActionResult jsonRet = reportSectionController.GetReportSectionWithID(reportSectionLast.ReportSectionID);
                     Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<ReportSection> Ret = jsonRet as OkNegotiatedContentResult<ReportSection>;
@@ -305,13 +306,13 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.Equal(reportSectionLast.ReportSectionID, reportSectionRet.ReportSectionID);
 
                     BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
+                    Assert.Null(badRequest);
 
                     // Post to return newly added ReportSection
                     reportSectionRet.ReportSectionID = 0;
                     reportSectionController.Request = new System.Net.Http.HttpRequestMessage();
                     reportSectionController.Request.RequestUri = new System.Uri("http://localhost:5000/api/reportSection");
-                    IHttpActionResult jsonRet3 = reportSectionController.Post(reportSectionRet, LanguageRequest.ToString());
+                    IActionResult jsonRet3 = reportSectionController.Post(reportSectionRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 
                     CreatedNegotiatedContentResult<ReportSection> reportSectionRet3 = jsonRet3 as CreatedNegotiatedContentResult<ReportSection>;
@@ -319,25 +320,25 @@ namespace CSSPWebAPI.Tests.Controllers
                     ReportSection reportSection = reportSectionRet3.Content;
 
                     BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest3);
+                    Assert.Null(badRequest3);
 
                     // Delete to return success
-                    IHttpActionResult jsonRet2 = reportSectionController.Delete(reportSectionRet, LanguageRequest.ToString());
+                    IActionResult jsonRet2 = reportSectionController.Delete(reportSectionRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet2);
 
                     OkNegotiatedContentResult<ReportSection> reportSectionRet2 = jsonRet2 as OkNegotiatedContentResult<ReportSection>;
                     Assert.NotNull(reportSectionRet2);
 
                     BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest2);
+                    Assert.Null(badRequest2);
 
                     // Delete to return CSSPError because ReportSectionID of 0 does not exist
                     reportSectionRet.ReportSectionID = 0;
-                    IHttpActionResult jsonRet4 = reportSectionController.Delete(reportSectionRet, LanguageRequest.ToString());
+                    IActionResult jsonRet4 = reportSectionController.Delete(reportSectionRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet4);
 
                     OkNegotiatedContentResult<ReportSection> reportSectionRet4 = jsonRet4 as OkNegotiatedContentResult<ReportSection>;
-                    Assert.IsNull(reportSectionRet4);
+                    Assert.Null(reportSectionRet4);
 
                     BadRequestErrorMessageResult badRequest4 = jsonRet4 as BadRequestErrorMessageResult;
                     Assert.NotNull(badRequest4);

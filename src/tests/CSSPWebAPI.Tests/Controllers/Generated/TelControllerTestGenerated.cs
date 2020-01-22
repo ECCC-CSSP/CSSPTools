@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
 using System.Web.Http.Results;
+using Microsoft.AspNetCore.Mvc;
 
 namespace CSSPWebAPI.Tests.Controllers
 {
@@ -48,7 +49,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     }
 
                     // ok with Tel info
-                    IHttpActionResult jsonRet = telController.GetTelList();
+                    IActionResult jsonRet = telController.GetTelList();
                     Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<List<Tel>> ret = jsonRet as OkNegotiatedContentResult<List<Tel>>;
@@ -86,7 +87,7 @@ namespace CSSPWebAPI.Tests.Controllers
                            count = (query.Take > count ? query.Take : count);
 
                            // ok with Tel info
-                           IHttpActionResult jsonRet2 = telController.GetTelList(query.Language.ToString(), query.Skip, query.Take);
+                           IActionResult jsonRet2 = telController.GetTelList(query.Language.ToString(), query.Skip, query.Take);
                            Assert.NotNull(jsonRet2);
 
                            OkNegotiatedContentResult<List<Tel>> ret2 = jsonRet2 as OkNegotiatedContentResult<List<Tel>>;
@@ -119,7 +120,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     }
 
                     // ok with Tel info
-                    IHttpActionResult jsonRet = telController.GetTelWithID(telFirst.TelID);
+                    IActionResult jsonRet = telController.GetTelWithID(telFirst.TelID);
                     Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<Tel> Ret = jsonRet as OkNegotiatedContentResult<Tel>;
@@ -127,16 +128,16 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.Equal(telFirst.TelID, telRet.TelID);
 
                     BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
+                    Assert.Null(badRequest);
 
                     // Not Found
-                    IHttpActionResult jsonRet2 = telController.GetTelWithID(0);
+                    IActionResult jsonRet2 = telController.GetTelWithID(0);
                     Assert.NotNull(jsonRet2);
 
                     OkNegotiatedContentResult<Tel> telRet2 = jsonRet2 as OkNegotiatedContentResult<Tel>;
-                    Assert.IsNull(telRet2);
+                    Assert.Null(telRet2);
 
-                    NotFoundResult notFoundRequest = jsonRet2 as NotFoundResult;
+                    NotFoundObjectResult notFoundRequest = jsonRet2 as NotFoundObjectResult;
                     Assert.NotNull(notFoundRequest);
                 }
             }
@@ -168,7 +169,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     }
 
                     // ok with Tel info
-                    IHttpActionResult jsonRet = telController.GetTelWithID(telLast.TelID);
+                    IActionResult jsonRet = telController.GetTelWithID(telLast.TelID);
                     Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<Tel> Ret = jsonRet as OkNegotiatedContentResult<Tel>;
@@ -176,14 +177,14 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.Equal(telLast.TelID, telRet.TelID);
 
                     BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
+                    Assert.Null(badRequest);
 
                     // Post to return CSSPError because TelID exist
-                    IHttpActionResult jsonRet2 = telController.Post(telRet, LanguageRequest.ToString());
+                    IActionResult jsonRet2 = telController.Post(telRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet2);
 
                     OkNegotiatedContentResult<Tel> telRet2 = jsonRet2 as OkNegotiatedContentResult<Tel>;
-                    Assert.IsNull(telRet2);
+                    Assert.Null(telRet2);
 
                     BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
                     Assert.NotNull(badRequest2);
@@ -192,23 +193,23 @@ namespace CSSPWebAPI.Tests.Controllers
                     telRet.TelID = 0;
                     telController.Request = new System.Net.Http.HttpRequestMessage();
                     telController.Request.RequestUri = new System.Uri("http://localhost:5000/api/tel");
-                    IHttpActionResult jsonRet3 = telController.Post(telRet, LanguageRequest.ToString());
+                    IActionResult jsonRet3 = telController.Post(telRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 
                     CreatedNegotiatedContentResult<Tel> telRet3 = jsonRet3 as CreatedNegotiatedContentResult<Tel>;
                     Assert.NotNull(telRet3);
 
                     BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest3);
+                    Assert.Null(badRequest3);
 
-                    IHttpActionResult jsonRet4 = telController.Delete(telRet, LanguageRequest.ToString());
+                    IActionResult jsonRet4 = telController.Delete(telRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet4);
 
                     OkNegotiatedContentResult<Tel> telRet4 = jsonRet4 as OkNegotiatedContentResult<Tel>;
                     Assert.NotNull(telRet4);
 
                     BadRequestErrorMessageResult badRequest4 = jsonRet4 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest4);
+                    Assert.Null(badRequest4);
                 }
             }
         }
@@ -237,7 +238,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     }
 
                     // ok with Tel info
-                    IHttpActionResult jsonRet = telController.GetTelWithID(telLast.TelID);
+                    IActionResult jsonRet = telController.GetTelWithID(telLast.TelID);
                     Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<Tel> Ret = jsonRet as OkNegotiatedContentResult<Tel>;
@@ -245,25 +246,25 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.Equal(telLast.TelID, telRet.TelID);
 
                     BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
+                    Assert.Null(badRequest);
 
                     // Put to return success
-                    IHttpActionResult jsonRet2 = telController.Put(telRet, LanguageRequest.ToString());
+                    IActionResult jsonRet2 = telController.Put(telRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet2);
 
                     OkNegotiatedContentResult<Tel> telRet2 = jsonRet2 as OkNegotiatedContentResult<Tel>;
                     Assert.NotNull(telRet2);
 
                     BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest2);
+                    Assert.Null(badRequest2);
 
                     // Put to return CSSPError because TelID of 0 does not exist
                     telRet.TelID = 0;
-                    IHttpActionResult jsonRet3 = telController.Put(telRet, LanguageRequest.ToString());
+                    IActionResult jsonRet3 = telController.Put(telRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 
                     OkNegotiatedContentResult<Tel> telRet3 = jsonRet3 as OkNegotiatedContentResult<Tel>;
-                    Assert.IsNull(telRet3);
+                    Assert.Null(telRet3);
 
                     BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
                     Assert.NotNull(badRequest3);
@@ -297,7 +298,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     }
 
                     // ok with Tel info
-                    IHttpActionResult jsonRet = telController.GetTelWithID(telLast.TelID);
+                    IActionResult jsonRet = telController.GetTelWithID(telLast.TelID);
                     Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<Tel> Ret = jsonRet as OkNegotiatedContentResult<Tel>;
@@ -305,13 +306,13 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.Equal(telLast.TelID, telRet.TelID);
 
                     BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
+                    Assert.Null(badRequest);
 
                     // Post to return newly added Tel
                     telRet.TelID = 0;
                     telController.Request = new System.Net.Http.HttpRequestMessage();
                     telController.Request.RequestUri = new System.Uri("http://localhost:5000/api/tel");
-                    IHttpActionResult jsonRet3 = telController.Post(telRet, LanguageRequest.ToString());
+                    IActionResult jsonRet3 = telController.Post(telRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 
                     CreatedNegotiatedContentResult<Tel> telRet3 = jsonRet3 as CreatedNegotiatedContentResult<Tel>;
@@ -319,25 +320,25 @@ namespace CSSPWebAPI.Tests.Controllers
                     Tel tel = telRet3.Content;
 
                     BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest3);
+                    Assert.Null(badRequest3);
 
                     // Delete to return success
-                    IHttpActionResult jsonRet2 = telController.Delete(telRet, LanguageRequest.ToString());
+                    IActionResult jsonRet2 = telController.Delete(telRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet2);
 
                     OkNegotiatedContentResult<Tel> telRet2 = jsonRet2 as OkNegotiatedContentResult<Tel>;
                     Assert.NotNull(telRet2);
 
                     BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest2);
+                    Assert.Null(badRequest2);
 
                     // Delete to return CSSPError because TelID of 0 does not exist
                     telRet.TelID = 0;
-                    IHttpActionResult jsonRet4 = telController.Delete(telRet, LanguageRequest.ToString());
+                    IActionResult jsonRet4 = telController.Delete(telRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet4);
 
                     OkNegotiatedContentResult<Tel> telRet4 = jsonRet4 as OkNegotiatedContentResult<Tel>;
-                    Assert.IsNull(telRet4);
+                    Assert.Null(telRet4);
 
                     BadRequestErrorMessageResult badRequest4 = jsonRet4 as BadRequestErrorMessageResult;
                     Assert.NotNull(badRequest4);

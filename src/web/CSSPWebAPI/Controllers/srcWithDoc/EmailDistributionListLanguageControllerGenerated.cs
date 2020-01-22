@@ -1,14 +1,14 @@
 using CSSPEnums;
 using CSSPModels;
 using CSSPServices;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web.Http;
 
 namespace CSSPWebAPI.Controllers
 {
-    [RoutePrefix("api/emailDistributionListLanguage")]
+    [Route("api/emailDistributionListLanguage")]
     public partial class EmailDistributionListLanguageController : BaseController
     {
         #region Variables
@@ -29,126 +29,56 @@ namespace CSSPWebAPI.Controllers
         #region Functions public
         // GET api/emailDistributionListLanguage
         [Route("")]
-        public IHttpActionResult GetEmailDistributionListLanguageList([FromUri]string lang = "en", [FromUri]int skip = 0, [FromUri]int take = 200,
-            [FromUri]string asc = "", [FromUri]string desc = "", [FromUri]string where = "", [FromUri]string extra = "")
+        public IActionResult GetEmailDistributionListLanguageList([FromQuery]string lang = "en", [FromQuery]int skip = 0, [FromQuery]int take = 200,
+            [FromQuery]string asc = "", [FromQuery]string desc = "", [FromQuery]string where = "")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
                 EmailDistributionListLanguageService emailDistributionListLanguageService = new EmailDistributionListLanguageService(new Query() { Lang = lang }, db, ContactID);
 
-                if (extra == "A") // QueryString contains [extra=A]
-                {
-                   emailDistributionListLanguageService.Query = emailDistributionListLanguageService.FillQuery(typeof(EmailDistributionListLanguageExtraA), lang, skip, take, asc, desc, where, extra);
+                emailDistributionListLanguageService.Query = emailDistributionListLanguageService.FillQuery(typeof(EmailDistributionListLanguage), lang, skip, take, asc, desc, where);
 
-                    if (emailDistributionListLanguageService.Query.HasErrors)
-                    {
-                        return Ok(new List<EmailDistributionListLanguageExtraA>()
-                        {
-                            new EmailDistributionListLanguageExtraA()
-                            {
-                                HasErrors = emailDistributionListLanguageService.Query.HasErrors,
-                                ValidationResults = emailDistributionListLanguageService.Query.ValidationResults,
-                            },
-                        }.ToList());
-                    }
-                    else
-                    {
-                        return Ok(emailDistributionListLanguageService.GetEmailDistributionListLanguageExtraAList().ToList());
-                    }
-                }
-                else if (extra == "B") // QueryString contains [extra=B]
-                {
-                   emailDistributionListLanguageService.Query = emailDistributionListLanguageService.FillQuery(typeof(EmailDistributionListLanguageExtraB), lang, skip, take, asc, desc, where, extra);
-
-                    if (emailDistributionListLanguageService.Query.HasErrors)
-                    {
-                        return Ok(new List<EmailDistributionListLanguageExtraB>()
-                        {
-                            new EmailDistributionListLanguageExtraB()
-                            {
-                                HasErrors = emailDistributionListLanguageService.Query.HasErrors,
-                                ValidationResults = emailDistributionListLanguageService.Query.ValidationResults,
-                            },
-                        }.ToList());
-                    }
-                    else
-                    {
-                        return Ok(emailDistributionListLanguageService.GetEmailDistributionListLanguageExtraBList().ToList());
-                    }
-                }
-                else // QueryString has no parameter [extra] or extra is empty
-                {
-                   emailDistributionListLanguageService.Query = emailDistributionListLanguageService.FillQuery(typeof(EmailDistributionListLanguage), lang, skip, take, asc, desc, where, extra);
-
-                    if (emailDistributionListLanguageService.Query.HasErrors)
-                    {
-                        return Ok(new List<EmailDistributionListLanguage>()
-                        {
-                            new EmailDistributionListLanguage()
-                            {
-                                HasErrors = emailDistributionListLanguageService.Query.HasErrors,
-                                ValidationResults = emailDistributionListLanguageService.Query.ValidationResults,
-                            },
-                        }.ToList());
-                    }
-                    else
-                    {
-                        return Ok(emailDistributionListLanguageService.GetEmailDistributionListLanguageList().ToList());
-                    }
-                }
+                 if (emailDistributionListLanguageService.Query.HasErrors)
+                 {
+                     return Ok(new List<EmailDistributionListLanguage>()
+                     {
+                         new EmailDistributionListLanguage()
+                         {
+                             HasErrors = emailDistributionListLanguageService.Query.HasErrors,
+                             ValidationResults = emailDistributionListLanguageService.Query.ValidationResults,
+                         },
+                     }.ToList());
+                 }
+                 else
+                 {
+                     return Ok(emailDistributionListLanguageService.GetEmailDistributionListLanguageList().ToList());
+                 }
             }
         }
         // GET api/emailDistributionListLanguage/1
         [Route("{EmailDistributionListLanguageID:int}")]
-        public IHttpActionResult GetEmailDistributionListLanguageWithID([FromUri]int EmailDistributionListLanguageID, [FromUri]string lang = "en", [FromUri]string extra = "")
+        public IActionResult GetEmailDistributionListLanguageWithID([FromQuery]int EmailDistributionListLanguageID, [FromQuery]string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
                 EmailDistributionListLanguageService emailDistributionListLanguageService = new EmailDistributionListLanguageService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
 
-                emailDistributionListLanguageService.Query = emailDistributionListLanguageService.FillQuery(typeof(EmailDistributionListLanguage), lang, 0, 1, "", "", extra);
+                emailDistributionListLanguageService.Query = emailDistributionListLanguageService.FillQuery(typeof(EmailDistributionListLanguage), lang, 0, 1, "", "");
 
-                if (emailDistributionListLanguageService.Query.Extra == "A")
+                EmailDistributionListLanguage emailDistributionListLanguage = new EmailDistributionListLanguage();
+                emailDistributionListLanguage = emailDistributionListLanguageService.GetEmailDistributionListLanguageWithEmailDistributionListLanguageID(EmailDistributionListLanguageID);
+
+                if (emailDistributionListLanguage == null)
                 {
-                    EmailDistributionListLanguageExtraA emailDistributionListLanguageExtraA = new EmailDistributionListLanguageExtraA();
-                    emailDistributionListLanguageExtraA = emailDistributionListLanguageService.GetEmailDistributionListLanguageExtraAWithEmailDistributionListLanguageID(EmailDistributionListLanguageID);
-
-                    if (emailDistributionListLanguageExtraA == null)
-                    {
-                        return NotFound();
-                    }
-
-                    return Ok(emailDistributionListLanguageExtraA);
+                    return NotFound();
                 }
-                else if (emailDistributionListLanguageService.Query.Extra == "B")
-                {
-                    EmailDistributionListLanguageExtraB emailDistributionListLanguageExtraB = new EmailDistributionListLanguageExtraB();
-                    emailDistributionListLanguageExtraB = emailDistributionListLanguageService.GetEmailDistributionListLanguageExtraBWithEmailDistributionListLanguageID(EmailDistributionListLanguageID);
 
-                    if (emailDistributionListLanguageExtraB == null)
-                    {
-                        return NotFound();
-                    }
-
-                    return Ok(emailDistributionListLanguageExtraB);
-                }
-                else
-                {
-                    EmailDistributionListLanguage emailDistributionListLanguage = new EmailDistributionListLanguage();
-                    emailDistributionListLanguage = emailDistributionListLanguageService.GetEmailDistributionListLanguageWithEmailDistributionListLanguageID(EmailDistributionListLanguageID);
-
-                    if (emailDistributionListLanguage == null)
-                    {
-                        return NotFound();
-                    }
-
-                    return Ok(emailDistributionListLanguage);
-                }
+                return Ok(emailDistributionListLanguage);
             }
         }
         // POST api/emailDistributionListLanguage
         [Route("")]
-        public IHttpActionResult Post([FromBody]EmailDistributionListLanguage emailDistributionListLanguage, [FromUri]string lang = "en")
+        public IActionResult Post([FromBody]EmailDistributionListLanguage emailDistributionListLanguage, [FromQuery]string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
@@ -161,13 +91,13 @@ namespace CSSPWebAPI.Controllers
                 else
                 {
                     emailDistributionListLanguage.ValidationResults = null;
-                    return Created<EmailDistributionListLanguage>(new Uri(Request.RequestUri, emailDistributionListLanguage.EmailDistributionListLanguageID.ToString()), emailDistributionListLanguage);
+                    return Created(Url.ToString(), emailDistributionListLanguage);
                 }
             }
         }
         // PUT api/emailDistributionListLanguage
         [Route("")]
-        public IHttpActionResult Put([FromBody]EmailDistributionListLanguage emailDistributionListLanguage, [FromUri]string lang = "en")
+        public IActionResult Put([FromBody]EmailDistributionListLanguage emailDistributionListLanguage, [FromQuery]string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
@@ -186,7 +116,7 @@ namespace CSSPWebAPI.Controllers
         }
         // DELETE api/emailDistributionListLanguage
         [Route("")]
-        public IHttpActionResult Delete([FromBody]EmailDistributionListLanguage emailDistributionListLanguage, [FromUri]string lang = "en")
+        public IActionResult Delete([FromBody]EmailDistributionListLanguage emailDistributionListLanguage, [FromQuery]string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {

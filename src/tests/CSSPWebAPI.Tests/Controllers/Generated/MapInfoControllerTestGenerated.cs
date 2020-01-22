@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
 using System.Web.Http.Results;
+using Microsoft.AspNetCore.Mvc;
 
 namespace CSSPWebAPI.Tests.Controllers
 {
@@ -48,7 +49,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     }
 
                     // ok with MapInfo info
-                    IHttpActionResult jsonRet = mapInfoController.GetMapInfoList();
+                    IActionResult jsonRet = mapInfoController.GetMapInfoList();
                     Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<List<MapInfo>> ret = jsonRet as OkNegotiatedContentResult<List<MapInfo>>;
@@ -86,7 +87,7 @@ namespace CSSPWebAPI.Tests.Controllers
                            count = (query.Take > count ? query.Take : count);
 
                            // ok with MapInfo info
-                           IHttpActionResult jsonRet2 = mapInfoController.GetMapInfoList(query.Language.ToString(), query.Skip, query.Take);
+                           IActionResult jsonRet2 = mapInfoController.GetMapInfoList(query.Language.ToString(), query.Skip, query.Take);
                            Assert.NotNull(jsonRet2);
 
                            OkNegotiatedContentResult<List<MapInfo>> ret2 = jsonRet2 as OkNegotiatedContentResult<List<MapInfo>>;
@@ -119,7 +120,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     }
 
                     // ok with MapInfo info
-                    IHttpActionResult jsonRet = mapInfoController.GetMapInfoWithID(mapInfoFirst.MapInfoID);
+                    IActionResult jsonRet = mapInfoController.GetMapInfoWithID(mapInfoFirst.MapInfoID);
                     Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<MapInfo> Ret = jsonRet as OkNegotiatedContentResult<MapInfo>;
@@ -127,16 +128,16 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.Equal(mapInfoFirst.MapInfoID, mapInfoRet.MapInfoID);
 
                     BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
+                    Assert.Null(badRequest);
 
                     // Not Found
-                    IHttpActionResult jsonRet2 = mapInfoController.GetMapInfoWithID(0);
+                    IActionResult jsonRet2 = mapInfoController.GetMapInfoWithID(0);
                     Assert.NotNull(jsonRet2);
 
                     OkNegotiatedContentResult<MapInfo> mapInfoRet2 = jsonRet2 as OkNegotiatedContentResult<MapInfo>;
-                    Assert.IsNull(mapInfoRet2);
+                    Assert.Null(mapInfoRet2);
 
-                    NotFoundResult notFoundRequest = jsonRet2 as NotFoundResult;
+                    NotFoundObjectResult notFoundRequest = jsonRet2 as NotFoundObjectResult;
                     Assert.NotNull(notFoundRequest);
                 }
             }
@@ -168,7 +169,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     }
 
                     // ok with MapInfo info
-                    IHttpActionResult jsonRet = mapInfoController.GetMapInfoWithID(mapInfoLast.MapInfoID);
+                    IActionResult jsonRet = mapInfoController.GetMapInfoWithID(mapInfoLast.MapInfoID);
                     Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<MapInfo> Ret = jsonRet as OkNegotiatedContentResult<MapInfo>;
@@ -176,14 +177,14 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.Equal(mapInfoLast.MapInfoID, mapInfoRet.MapInfoID);
 
                     BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
+                    Assert.Null(badRequest);
 
                     // Post to return CSSPError because MapInfoID exist
-                    IHttpActionResult jsonRet2 = mapInfoController.Post(mapInfoRet, LanguageRequest.ToString());
+                    IActionResult jsonRet2 = mapInfoController.Post(mapInfoRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet2);
 
                     OkNegotiatedContentResult<MapInfo> mapInfoRet2 = jsonRet2 as OkNegotiatedContentResult<MapInfo>;
-                    Assert.IsNull(mapInfoRet2);
+                    Assert.Null(mapInfoRet2);
 
                     BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
                     Assert.NotNull(badRequest2);
@@ -192,23 +193,23 @@ namespace CSSPWebAPI.Tests.Controllers
                     mapInfoRet.MapInfoID = 0;
                     mapInfoController.Request = new System.Net.Http.HttpRequestMessage();
                     mapInfoController.Request.RequestUri = new System.Uri("http://localhost:5000/api/mapInfo");
-                    IHttpActionResult jsonRet3 = mapInfoController.Post(mapInfoRet, LanguageRequest.ToString());
+                    IActionResult jsonRet3 = mapInfoController.Post(mapInfoRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 
                     CreatedNegotiatedContentResult<MapInfo> mapInfoRet3 = jsonRet3 as CreatedNegotiatedContentResult<MapInfo>;
                     Assert.NotNull(mapInfoRet3);
 
                     BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest3);
+                    Assert.Null(badRequest3);
 
-                    IHttpActionResult jsonRet4 = mapInfoController.Delete(mapInfoRet, LanguageRequest.ToString());
+                    IActionResult jsonRet4 = mapInfoController.Delete(mapInfoRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet4);
 
                     OkNegotiatedContentResult<MapInfo> mapInfoRet4 = jsonRet4 as OkNegotiatedContentResult<MapInfo>;
                     Assert.NotNull(mapInfoRet4);
 
                     BadRequestErrorMessageResult badRequest4 = jsonRet4 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest4);
+                    Assert.Null(badRequest4);
                 }
             }
         }
@@ -237,7 +238,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     }
 
                     // ok with MapInfo info
-                    IHttpActionResult jsonRet = mapInfoController.GetMapInfoWithID(mapInfoLast.MapInfoID);
+                    IActionResult jsonRet = mapInfoController.GetMapInfoWithID(mapInfoLast.MapInfoID);
                     Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<MapInfo> Ret = jsonRet as OkNegotiatedContentResult<MapInfo>;
@@ -245,25 +246,25 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.Equal(mapInfoLast.MapInfoID, mapInfoRet.MapInfoID);
 
                     BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
+                    Assert.Null(badRequest);
 
                     // Put to return success
-                    IHttpActionResult jsonRet2 = mapInfoController.Put(mapInfoRet, LanguageRequest.ToString());
+                    IActionResult jsonRet2 = mapInfoController.Put(mapInfoRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet2);
 
                     OkNegotiatedContentResult<MapInfo> mapInfoRet2 = jsonRet2 as OkNegotiatedContentResult<MapInfo>;
                     Assert.NotNull(mapInfoRet2);
 
                     BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest2);
+                    Assert.Null(badRequest2);
 
                     // Put to return CSSPError because MapInfoID of 0 does not exist
                     mapInfoRet.MapInfoID = 0;
-                    IHttpActionResult jsonRet3 = mapInfoController.Put(mapInfoRet, LanguageRequest.ToString());
+                    IActionResult jsonRet3 = mapInfoController.Put(mapInfoRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 
                     OkNegotiatedContentResult<MapInfo> mapInfoRet3 = jsonRet3 as OkNegotiatedContentResult<MapInfo>;
-                    Assert.IsNull(mapInfoRet3);
+                    Assert.Null(mapInfoRet3);
 
                     BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
                     Assert.NotNull(badRequest3);
@@ -297,7 +298,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     }
 
                     // ok with MapInfo info
-                    IHttpActionResult jsonRet = mapInfoController.GetMapInfoWithID(mapInfoLast.MapInfoID);
+                    IActionResult jsonRet = mapInfoController.GetMapInfoWithID(mapInfoLast.MapInfoID);
                     Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<MapInfo> Ret = jsonRet as OkNegotiatedContentResult<MapInfo>;
@@ -305,13 +306,13 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.Equal(mapInfoLast.MapInfoID, mapInfoRet.MapInfoID);
 
                     BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
+                    Assert.Null(badRequest);
 
                     // Post to return newly added MapInfo
                     mapInfoRet.MapInfoID = 0;
                     mapInfoController.Request = new System.Net.Http.HttpRequestMessage();
                     mapInfoController.Request.RequestUri = new System.Uri("http://localhost:5000/api/mapInfo");
-                    IHttpActionResult jsonRet3 = mapInfoController.Post(mapInfoRet, LanguageRequest.ToString());
+                    IActionResult jsonRet3 = mapInfoController.Post(mapInfoRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 
                     CreatedNegotiatedContentResult<MapInfo> mapInfoRet3 = jsonRet3 as CreatedNegotiatedContentResult<MapInfo>;
@@ -319,25 +320,25 @@ namespace CSSPWebAPI.Tests.Controllers
                     MapInfo mapInfo = mapInfoRet3.Content;
 
                     BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest3);
+                    Assert.Null(badRequest3);
 
                     // Delete to return success
-                    IHttpActionResult jsonRet2 = mapInfoController.Delete(mapInfoRet, LanguageRequest.ToString());
+                    IActionResult jsonRet2 = mapInfoController.Delete(mapInfoRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet2);
 
                     OkNegotiatedContentResult<MapInfo> mapInfoRet2 = jsonRet2 as OkNegotiatedContentResult<MapInfo>;
                     Assert.NotNull(mapInfoRet2);
 
                     BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest2);
+                    Assert.Null(badRequest2);
 
                     // Delete to return CSSPError because MapInfoID of 0 does not exist
                     mapInfoRet.MapInfoID = 0;
-                    IHttpActionResult jsonRet4 = mapInfoController.Delete(mapInfoRet, LanguageRequest.ToString());
+                    IActionResult jsonRet4 = mapInfoController.Delete(mapInfoRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet4);
 
                     OkNegotiatedContentResult<MapInfo> mapInfoRet4 = jsonRet4 as OkNegotiatedContentResult<MapInfo>;
-                    Assert.IsNull(mapInfoRet4);
+                    Assert.Null(mapInfoRet4);
 
                     BadRequestErrorMessageResult badRequest4 = jsonRet4 as BadRequestErrorMessageResult;
                     Assert.NotNull(badRequest4);

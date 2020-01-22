@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
 using System.Web.Http.Results;
+using Microsoft.AspNetCore.Mvc;
 
 namespace CSSPWebAPI.Tests.Controllers
 {
@@ -48,7 +49,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     }
 
                     // ok with MWQMSubsector info
-                    IHttpActionResult jsonRet = mwqmSubsectorController.GetMWQMSubsectorList();
+                    IActionResult jsonRet = mwqmSubsectorController.GetMWQMSubsectorList();
                     Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<List<MWQMSubsector>> ret = jsonRet as OkNegotiatedContentResult<List<MWQMSubsector>>;
@@ -86,7 +87,7 @@ namespace CSSPWebAPI.Tests.Controllers
                            count = (query.Take > count ? query.Take : count);
 
                            // ok with MWQMSubsector info
-                           IHttpActionResult jsonRet2 = mwqmSubsectorController.GetMWQMSubsectorList(query.Language.ToString(), query.Skip, query.Take);
+                           IActionResult jsonRet2 = mwqmSubsectorController.GetMWQMSubsectorList(query.Language.ToString(), query.Skip, query.Take);
                            Assert.NotNull(jsonRet2);
 
                            OkNegotiatedContentResult<List<MWQMSubsector>> ret2 = jsonRet2 as OkNegotiatedContentResult<List<MWQMSubsector>>;
@@ -119,7 +120,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     }
 
                     // ok with MWQMSubsector info
-                    IHttpActionResult jsonRet = mwqmSubsectorController.GetMWQMSubsectorWithID(mwqmSubsectorFirst.MWQMSubsectorID);
+                    IActionResult jsonRet = mwqmSubsectorController.GetMWQMSubsectorWithID(mwqmSubsectorFirst.MWQMSubsectorID);
                     Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<MWQMSubsector> Ret = jsonRet as OkNegotiatedContentResult<MWQMSubsector>;
@@ -127,16 +128,16 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.Equal(mwqmSubsectorFirst.MWQMSubsectorID, mwqmSubsectorRet.MWQMSubsectorID);
 
                     BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
+                    Assert.Null(badRequest);
 
                     // Not Found
-                    IHttpActionResult jsonRet2 = mwqmSubsectorController.GetMWQMSubsectorWithID(0);
+                    IActionResult jsonRet2 = mwqmSubsectorController.GetMWQMSubsectorWithID(0);
                     Assert.NotNull(jsonRet2);
 
                     OkNegotiatedContentResult<MWQMSubsector> mwqmSubsectorRet2 = jsonRet2 as OkNegotiatedContentResult<MWQMSubsector>;
-                    Assert.IsNull(mwqmSubsectorRet2);
+                    Assert.Null(mwqmSubsectorRet2);
 
-                    NotFoundResult notFoundRequest = jsonRet2 as NotFoundResult;
+                    NotFoundObjectResult notFoundRequest = jsonRet2 as NotFoundObjectResult;
                     Assert.NotNull(notFoundRequest);
                 }
             }
@@ -168,7 +169,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     }
 
                     // ok with MWQMSubsector info
-                    IHttpActionResult jsonRet = mwqmSubsectorController.GetMWQMSubsectorWithID(mwqmSubsectorLast.MWQMSubsectorID);
+                    IActionResult jsonRet = mwqmSubsectorController.GetMWQMSubsectorWithID(mwqmSubsectorLast.MWQMSubsectorID);
                     Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<MWQMSubsector> Ret = jsonRet as OkNegotiatedContentResult<MWQMSubsector>;
@@ -176,14 +177,14 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.Equal(mwqmSubsectorLast.MWQMSubsectorID, mwqmSubsectorRet.MWQMSubsectorID);
 
                     BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
+                    Assert.Null(badRequest);
 
                     // Post to return CSSPError because MWQMSubsectorID exist
-                    IHttpActionResult jsonRet2 = mwqmSubsectorController.Post(mwqmSubsectorRet, LanguageRequest.ToString());
+                    IActionResult jsonRet2 = mwqmSubsectorController.Post(mwqmSubsectorRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet2);
 
                     OkNegotiatedContentResult<MWQMSubsector> mwqmSubsectorRet2 = jsonRet2 as OkNegotiatedContentResult<MWQMSubsector>;
-                    Assert.IsNull(mwqmSubsectorRet2);
+                    Assert.Null(mwqmSubsectorRet2);
 
                     BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
                     Assert.NotNull(badRequest2);
@@ -192,23 +193,23 @@ namespace CSSPWebAPI.Tests.Controllers
                     mwqmSubsectorRet.MWQMSubsectorID = 0;
                     mwqmSubsectorController.Request = new System.Net.Http.HttpRequestMessage();
                     mwqmSubsectorController.Request.RequestUri = new System.Uri("http://localhost:5000/api/mwqmSubsector");
-                    IHttpActionResult jsonRet3 = mwqmSubsectorController.Post(mwqmSubsectorRet, LanguageRequest.ToString());
+                    IActionResult jsonRet3 = mwqmSubsectorController.Post(mwqmSubsectorRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 
                     CreatedNegotiatedContentResult<MWQMSubsector> mwqmSubsectorRet3 = jsonRet3 as CreatedNegotiatedContentResult<MWQMSubsector>;
                     Assert.NotNull(mwqmSubsectorRet3);
 
                     BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest3);
+                    Assert.Null(badRequest3);
 
-                    IHttpActionResult jsonRet4 = mwqmSubsectorController.Delete(mwqmSubsectorRet, LanguageRequest.ToString());
+                    IActionResult jsonRet4 = mwqmSubsectorController.Delete(mwqmSubsectorRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet4);
 
                     OkNegotiatedContentResult<MWQMSubsector> mwqmSubsectorRet4 = jsonRet4 as OkNegotiatedContentResult<MWQMSubsector>;
                     Assert.NotNull(mwqmSubsectorRet4);
 
                     BadRequestErrorMessageResult badRequest4 = jsonRet4 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest4);
+                    Assert.Null(badRequest4);
                 }
             }
         }
@@ -237,7 +238,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     }
 
                     // ok with MWQMSubsector info
-                    IHttpActionResult jsonRet = mwqmSubsectorController.GetMWQMSubsectorWithID(mwqmSubsectorLast.MWQMSubsectorID);
+                    IActionResult jsonRet = mwqmSubsectorController.GetMWQMSubsectorWithID(mwqmSubsectorLast.MWQMSubsectorID);
                     Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<MWQMSubsector> Ret = jsonRet as OkNegotiatedContentResult<MWQMSubsector>;
@@ -245,25 +246,25 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.Equal(mwqmSubsectorLast.MWQMSubsectorID, mwqmSubsectorRet.MWQMSubsectorID);
 
                     BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
+                    Assert.Null(badRequest);
 
                     // Put to return success
-                    IHttpActionResult jsonRet2 = mwqmSubsectorController.Put(mwqmSubsectorRet, LanguageRequest.ToString());
+                    IActionResult jsonRet2 = mwqmSubsectorController.Put(mwqmSubsectorRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet2);
 
                     OkNegotiatedContentResult<MWQMSubsector> mwqmSubsectorRet2 = jsonRet2 as OkNegotiatedContentResult<MWQMSubsector>;
                     Assert.NotNull(mwqmSubsectorRet2);
 
                     BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest2);
+                    Assert.Null(badRequest2);
 
                     // Put to return CSSPError because MWQMSubsectorID of 0 does not exist
                     mwqmSubsectorRet.MWQMSubsectorID = 0;
-                    IHttpActionResult jsonRet3 = mwqmSubsectorController.Put(mwqmSubsectorRet, LanguageRequest.ToString());
+                    IActionResult jsonRet3 = mwqmSubsectorController.Put(mwqmSubsectorRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 
                     OkNegotiatedContentResult<MWQMSubsector> mwqmSubsectorRet3 = jsonRet3 as OkNegotiatedContentResult<MWQMSubsector>;
-                    Assert.IsNull(mwqmSubsectorRet3);
+                    Assert.Null(mwqmSubsectorRet3);
 
                     BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
                     Assert.NotNull(badRequest3);
@@ -297,7 +298,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     }
 
                     // ok with MWQMSubsector info
-                    IHttpActionResult jsonRet = mwqmSubsectorController.GetMWQMSubsectorWithID(mwqmSubsectorLast.MWQMSubsectorID);
+                    IActionResult jsonRet = mwqmSubsectorController.GetMWQMSubsectorWithID(mwqmSubsectorLast.MWQMSubsectorID);
                     Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<MWQMSubsector> Ret = jsonRet as OkNegotiatedContentResult<MWQMSubsector>;
@@ -305,13 +306,13 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.Equal(mwqmSubsectorLast.MWQMSubsectorID, mwqmSubsectorRet.MWQMSubsectorID);
 
                     BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
+                    Assert.Null(badRequest);
 
                     // Post to return newly added MWQMSubsector
                     mwqmSubsectorRet.MWQMSubsectorID = 0;
                     mwqmSubsectorController.Request = new System.Net.Http.HttpRequestMessage();
                     mwqmSubsectorController.Request.RequestUri = new System.Uri("http://localhost:5000/api/mwqmSubsector");
-                    IHttpActionResult jsonRet3 = mwqmSubsectorController.Post(mwqmSubsectorRet, LanguageRequest.ToString());
+                    IActionResult jsonRet3 = mwqmSubsectorController.Post(mwqmSubsectorRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 
                     CreatedNegotiatedContentResult<MWQMSubsector> mwqmSubsectorRet3 = jsonRet3 as CreatedNegotiatedContentResult<MWQMSubsector>;
@@ -319,25 +320,25 @@ namespace CSSPWebAPI.Tests.Controllers
                     MWQMSubsector mwqmSubsector = mwqmSubsectorRet3.Content;
 
                     BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest3);
+                    Assert.Null(badRequest3);
 
                     // Delete to return success
-                    IHttpActionResult jsonRet2 = mwqmSubsectorController.Delete(mwqmSubsectorRet, LanguageRequest.ToString());
+                    IActionResult jsonRet2 = mwqmSubsectorController.Delete(mwqmSubsectorRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet2);
 
                     OkNegotiatedContentResult<MWQMSubsector> mwqmSubsectorRet2 = jsonRet2 as OkNegotiatedContentResult<MWQMSubsector>;
                     Assert.NotNull(mwqmSubsectorRet2);
 
                     BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest2);
+                    Assert.Null(badRequest2);
 
                     // Delete to return CSSPError because MWQMSubsectorID of 0 does not exist
                     mwqmSubsectorRet.MWQMSubsectorID = 0;
-                    IHttpActionResult jsonRet4 = mwqmSubsectorController.Delete(mwqmSubsectorRet, LanguageRequest.ToString());
+                    IActionResult jsonRet4 = mwqmSubsectorController.Delete(mwqmSubsectorRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet4);
 
                     OkNegotiatedContentResult<MWQMSubsector> mwqmSubsectorRet4 = jsonRet4 as OkNegotiatedContentResult<MWQMSubsector>;
-                    Assert.IsNull(mwqmSubsectorRet4);
+                    Assert.Null(mwqmSubsectorRet4);
 
                     BadRequestErrorMessageResult badRequest4 = jsonRet4 as BadRequestErrorMessageResult;
                     Assert.NotNull(badRequest4);

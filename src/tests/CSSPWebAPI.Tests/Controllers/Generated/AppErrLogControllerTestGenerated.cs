@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
 using System.Web.Http.Results;
+using Microsoft.AspNetCore.Mvc;
 
 namespace CSSPWebAPI.Tests.Controllers
 {
@@ -48,7 +49,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     }
 
                     // ok with AppErrLog info
-                    IHttpActionResult jsonRet = appErrLogController.GetAppErrLogList();
+                    IActionResult jsonRet = appErrLogController.GetAppErrLogList();
                     Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<List<AppErrLog>> ret = jsonRet as OkNegotiatedContentResult<List<AppErrLog>>;
@@ -86,7 +87,7 @@ namespace CSSPWebAPI.Tests.Controllers
                            count = (query.Take > count ? query.Take : count);
 
                            // ok with AppErrLog info
-                           IHttpActionResult jsonRet2 = appErrLogController.GetAppErrLogList(query.Language.ToString(), query.Skip, query.Take);
+                           IActionResult jsonRet2 = appErrLogController.GetAppErrLogList(query.Language.ToString(), query.Skip, query.Take);
                            Assert.NotNull(jsonRet2);
 
                            OkNegotiatedContentResult<List<AppErrLog>> ret2 = jsonRet2 as OkNegotiatedContentResult<List<AppErrLog>>;
@@ -119,7 +120,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     }
 
                     // ok with AppErrLog info
-                    IHttpActionResult jsonRet = appErrLogController.GetAppErrLogWithID(appErrLogFirst.AppErrLogID);
+                    IActionResult jsonRet = appErrLogController.GetAppErrLogWithID(appErrLogFirst.AppErrLogID);
                     Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<AppErrLog> Ret = jsonRet as OkNegotiatedContentResult<AppErrLog>;
@@ -127,16 +128,16 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.Equal(appErrLogFirst.AppErrLogID, appErrLogRet.AppErrLogID);
 
                     BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
+                    Assert.Null(badRequest);
 
                     // Not Found
-                    IHttpActionResult jsonRet2 = appErrLogController.GetAppErrLogWithID(0);
+                    IActionResult jsonRet2 = appErrLogController.GetAppErrLogWithID(0);
                     Assert.NotNull(jsonRet2);
 
                     OkNegotiatedContentResult<AppErrLog> appErrLogRet2 = jsonRet2 as OkNegotiatedContentResult<AppErrLog>;
-                    Assert.IsNull(appErrLogRet2);
+                    Assert.Null(appErrLogRet2);
 
-                    NotFoundResult notFoundRequest = jsonRet2 as NotFoundResult;
+                    NotFoundObjectResult notFoundRequest = jsonRet2 as NotFoundObjectResult;
                     Assert.NotNull(notFoundRequest);
                 }
             }
@@ -168,7 +169,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     }
 
                     // ok with AppErrLog info
-                    IHttpActionResult jsonRet = appErrLogController.GetAppErrLogWithID(appErrLogLast.AppErrLogID);
+                    IActionResult jsonRet = appErrLogController.GetAppErrLogWithID(appErrLogLast.AppErrLogID);
                     Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<AppErrLog> Ret = jsonRet as OkNegotiatedContentResult<AppErrLog>;
@@ -176,14 +177,14 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.Equal(appErrLogLast.AppErrLogID, appErrLogRet.AppErrLogID);
 
                     BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
+                    Assert.Null(badRequest);
 
                     // Post to return CSSPError because AppErrLogID exist
-                    IHttpActionResult jsonRet2 = appErrLogController.Post(appErrLogRet, LanguageRequest.ToString());
+                    IActionResult jsonRet2 = appErrLogController.Post(appErrLogRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet2);
 
                     OkNegotiatedContentResult<AppErrLog> appErrLogRet2 = jsonRet2 as OkNegotiatedContentResult<AppErrLog>;
-                    Assert.IsNull(appErrLogRet2);
+                    Assert.Null(appErrLogRet2);
 
                     BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
                     Assert.NotNull(badRequest2);
@@ -192,23 +193,23 @@ namespace CSSPWebAPI.Tests.Controllers
                     appErrLogRet.AppErrLogID = 0;
                     appErrLogController.Request = new System.Net.Http.HttpRequestMessage();
                     appErrLogController.Request.RequestUri = new System.Uri("http://localhost:5000/api/appErrLog");
-                    IHttpActionResult jsonRet3 = appErrLogController.Post(appErrLogRet, LanguageRequest.ToString());
+                    IActionResult jsonRet3 = appErrLogController.Post(appErrLogRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 
                     CreatedNegotiatedContentResult<AppErrLog> appErrLogRet3 = jsonRet3 as CreatedNegotiatedContentResult<AppErrLog>;
                     Assert.NotNull(appErrLogRet3);
 
                     BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest3);
+                    Assert.Null(badRequest3);
 
-                    IHttpActionResult jsonRet4 = appErrLogController.Delete(appErrLogRet, LanguageRequest.ToString());
+                    IActionResult jsonRet4 = appErrLogController.Delete(appErrLogRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet4);
 
                     OkNegotiatedContentResult<AppErrLog> appErrLogRet4 = jsonRet4 as OkNegotiatedContentResult<AppErrLog>;
                     Assert.NotNull(appErrLogRet4);
 
                     BadRequestErrorMessageResult badRequest4 = jsonRet4 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest4);
+                    Assert.Null(badRequest4);
                 }
             }
         }
@@ -237,7 +238,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     }
 
                     // ok with AppErrLog info
-                    IHttpActionResult jsonRet = appErrLogController.GetAppErrLogWithID(appErrLogLast.AppErrLogID);
+                    IActionResult jsonRet = appErrLogController.GetAppErrLogWithID(appErrLogLast.AppErrLogID);
                     Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<AppErrLog> Ret = jsonRet as OkNegotiatedContentResult<AppErrLog>;
@@ -245,25 +246,25 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.Equal(appErrLogLast.AppErrLogID, appErrLogRet.AppErrLogID);
 
                     BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
+                    Assert.Null(badRequest);
 
                     // Put to return success
-                    IHttpActionResult jsonRet2 = appErrLogController.Put(appErrLogRet, LanguageRequest.ToString());
+                    IActionResult jsonRet2 = appErrLogController.Put(appErrLogRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet2);
 
                     OkNegotiatedContentResult<AppErrLog> appErrLogRet2 = jsonRet2 as OkNegotiatedContentResult<AppErrLog>;
                     Assert.NotNull(appErrLogRet2);
 
                     BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest2);
+                    Assert.Null(badRequest2);
 
                     // Put to return CSSPError because AppErrLogID of 0 does not exist
                     appErrLogRet.AppErrLogID = 0;
-                    IHttpActionResult jsonRet3 = appErrLogController.Put(appErrLogRet, LanguageRequest.ToString());
+                    IActionResult jsonRet3 = appErrLogController.Put(appErrLogRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 
                     OkNegotiatedContentResult<AppErrLog> appErrLogRet3 = jsonRet3 as OkNegotiatedContentResult<AppErrLog>;
-                    Assert.IsNull(appErrLogRet3);
+                    Assert.Null(appErrLogRet3);
 
                     BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
                     Assert.NotNull(badRequest3);
@@ -297,7 +298,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     }
 
                     // ok with AppErrLog info
-                    IHttpActionResult jsonRet = appErrLogController.GetAppErrLogWithID(appErrLogLast.AppErrLogID);
+                    IActionResult jsonRet = appErrLogController.GetAppErrLogWithID(appErrLogLast.AppErrLogID);
                     Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<AppErrLog> Ret = jsonRet as OkNegotiatedContentResult<AppErrLog>;
@@ -305,13 +306,13 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.Equal(appErrLogLast.AppErrLogID, appErrLogRet.AppErrLogID);
 
                     BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
+                    Assert.Null(badRequest);
 
                     // Post to return newly added AppErrLog
                     appErrLogRet.AppErrLogID = 0;
                     appErrLogController.Request = new System.Net.Http.HttpRequestMessage();
                     appErrLogController.Request.RequestUri = new System.Uri("http://localhost:5000/api/appErrLog");
-                    IHttpActionResult jsonRet3 = appErrLogController.Post(appErrLogRet, LanguageRequest.ToString());
+                    IActionResult jsonRet3 = appErrLogController.Post(appErrLogRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 
                     CreatedNegotiatedContentResult<AppErrLog> appErrLogRet3 = jsonRet3 as CreatedNegotiatedContentResult<AppErrLog>;
@@ -319,25 +320,25 @@ namespace CSSPWebAPI.Tests.Controllers
                     AppErrLog appErrLog = appErrLogRet3.Content;
 
                     BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest3);
+                    Assert.Null(badRequest3);
 
                     // Delete to return success
-                    IHttpActionResult jsonRet2 = appErrLogController.Delete(appErrLogRet, LanguageRequest.ToString());
+                    IActionResult jsonRet2 = appErrLogController.Delete(appErrLogRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet2);
 
                     OkNegotiatedContentResult<AppErrLog> appErrLogRet2 = jsonRet2 as OkNegotiatedContentResult<AppErrLog>;
                     Assert.NotNull(appErrLogRet2);
 
                     BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest2);
+                    Assert.Null(badRequest2);
 
                     // Delete to return CSSPError because AppErrLogID of 0 does not exist
                     appErrLogRet.AppErrLogID = 0;
-                    IHttpActionResult jsonRet4 = appErrLogController.Delete(appErrLogRet, LanguageRequest.ToString());
+                    IActionResult jsonRet4 = appErrLogController.Delete(appErrLogRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet4);
 
                     OkNegotiatedContentResult<AppErrLog> appErrLogRet4 = jsonRet4 as OkNegotiatedContentResult<AppErrLog>;
-                    Assert.IsNull(appErrLogRet4);
+                    Assert.Null(appErrLogRet4);
 
                     BadRequestErrorMessageResult badRequest4 = jsonRet4 as BadRequestErrorMessageResult;
                     Assert.NotNull(badRequest4);

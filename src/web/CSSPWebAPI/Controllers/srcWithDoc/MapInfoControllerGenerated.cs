@@ -1,14 +1,14 @@
 using CSSPEnums;
 using CSSPModels;
 using CSSPServices;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web.Http;
 
 namespace CSSPWebAPI.Controllers
 {
-    [RoutePrefix("api/mapInfo")]
+    [Route("api/mapInfo")]
     public partial class MapInfoController : BaseController
     {
         #region Variables
@@ -29,126 +29,56 @@ namespace CSSPWebAPI.Controllers
         #region Functions public
         // GET api/mapInfo
         [Route("")]
-        public IHttpActionResult GetMapInfoList([FromUri]string lang = "en", [FromUri]int skip = 0, [FromUri]int take = 200,
-            [FromUri]string asc = "", [FromUri]string desc = "", [FromUri]string where = "", [FromUri]string extra = "")
+        public IActionResult GetMapInfoList([FromQuery]string lang = "en", [FromQuery]int skip = 0, [FromQuery]int take = 200,
+            [FromQuery]string asc = "", [FromQuery]string desc = "", [FromQuery]string where = "")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
                 MapInfoService mapInfoService = new MapInfoService(new Query() { Lang = lang }, db, ContactID);
 
-                if (extra == "A") // QueryString contains [extra=A]
-                {
-                   mapInfoService.Query = mapInfoService.FillQuery(typeof(MapInfoExtraA), lang, skip, take, asc, desc, where, extra);
+                mapInfoService.Query = mapInfoService.FillQuery(typeof(MapInfo), lang, skip, take, asc, desc, where);
 
-                    if (mapInfoService.Query.HasErrors)
-                    {
-                        return Ok(new List<MapInfoExtraA>()
-                        {
-                            new MapInfoExtraA()
-                            {
-                                HasErrors = mapInfoService.Query.HasErrors,
-                                ValidationResults = mapInfoService.Query.ValidationResults,
-                            },
-                        }.ToList());
-                    }
-                    else
-                    {
-                        return Ok(mapInfoService.GetMapInfoExtraAList().ToList());
-                    }
-                }
-                else if (extra == "B") // QueryString contains [extra=B]
-                {
-                   mapInfoService.Query = mapInfoService.FillQuery(typeof(MapInfoExtraB), lang, skip, take, asc, desc, where, extra);
-
-                    if (mapInfoService.Query.HasErrors)
-                    {
-                        return Ok(new List<MapInfoExtraB>()
-                        {
-                            new MapInfoExtraB()
-                            {
-                                HasErrors = mapInfoService.Query.HasErrors,
-                                ValidationResults = mapInfoService.Query.ValidationResults,
-                            },
-                        }.ToList());
-                    }
-                    else
-                    {
-                        return Ok(mapInfoService.GetMapInfoExtraBList().ToList());
-                    }
-                }
-                else // QueryString has no parameter [extra] or extra is empty
-                {
-                   mapInfoService.Query = mapInfoService.FillQuery(typeof(MapInfo), lang, skip, take, asc, desc, where, extra);
-
-                    if (mapInfoService.Query.HasErrors)
-                    {
-                        return Ok(new List<MapInfo>()
-                        {
-                            new MapInfo()
-                            {
-                                HasErrors = mapInfoService.Query.HasErrors,
-                                ValidationResults = mapInfoService.Query.ValidationResults,
-                            },
-                        }.ToList());
-                    }
-                    else
-                    {
-                        return Ok(mapInfoService.GetMapInfoList().ToList());
-                    }
-                }
+                 if (mapInfoService.Query.HasErrors)
+                 {
+                     return Ok(new List<MapInfo>()
+                     {
+                         new MapInfo()
+                         {
+                             HasErrors = mapInfoService.Query.HasErrors,
+                             ValidationResults = mapInfoService.Query.ValidationResults,
+                         },
+                     }.ToList());
+                 }
+                 else
+                 {
+                     return Ok(mapInfoService.GetMapInfoList().ToList());
+                 }
             }
         }
         // GET api/mapInfo/1
         [Route("{MapInfoID:int}")]
-        public IHttpActionResult GetMapInfoWithID([FromUri]int MapInfoID, [FromUri]string lang = "en", [FromUri]string extra = "")
+        public IActionResult GetMapInfoWithID([FromQuery]int MapInfoID, [FromQuery]string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
                 MapInfoService mapInfoService = new MapInfoService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
 
-                mapInfoService.Query = mapInfoService.FillQuery(typeof(MapInfo), lang, 0, 1, "", "", extra);
+                mapInfoService.Query = mapInfoService.FillQuery(typeof(MapInfo), lang, 0, 1, "", "");
 
-                if (mapInfoService.Query.Extra == "A")
+                MapInfo mapInfo = new MapInfo();
+                mapInfo = mapInfoService.GetMapInfoWithMapInfoID(MapInfoID);
+
+                if (mapInfo == null)
                 {
-                    MapInfoExtraA mapInfoExtraA = new MapInfoExtraA();
-                    mapInfoExtraA = mapInfoService.GetMapInfoExtraAWithMapInfoID(MapInfoID);
-
-                    if (mapInfoExtraA == null)
-                    {
-                        return NotFound();
-                    }
-
-                    return Ok(mapInfoExtraA);
+                    return NotFound();
                 }
-                else if (mapInfoService.Query.Extra == "B")
-                {
-                    MapInfoExtraB mapInfoExtraB = new MapInfoExtraB();
-                    mapInfoExtraB = mapInfoService.GetMapInfoExtraBWithMapInfoID(MapInfoID);
 
-                    if (mapInfoExtraB == null)
-                    {
-                        return NotFound();
-                    }
-
-                    return Ok(mapInfoExtraB);
-                }
-                else
-                {
-                    MapInfo mapInfo = new MapInfo();
-                    mapInfo = mapInfoService.GetMapInfoWithMapInfoID(MapInfoID);
-
-                    if (mapInfo == null)
-                    {
-                        return NotFound();
-                    }
-
-                    return Ok(mapInfo);
-                }
+                return Ok(mapInfo);
             }
         }
         // POST api/mapInfo
         [Route("")]
-        public IHttpActionResult Post([FromBody]MapInfo mapInfo, [FromUri]string lang = "en")
+        public IActionResult Post([FromBody]MapInfo mapInfo, [FromQuery]string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
@@ -161,13 +91,13 @@ namespace CSSPWebAPI.Controllers
                 else
                 {
                     mapInfo.ValidationResults = null;
-                    return Created<MapInfo>(new Uri(Request.RequestUri, mapInfo.MapInfoID.ToString()), mapInfo);
+                    return Created(Url.ToString(), mapInfo);
                 }
             }
         }
         // PUT api/mapInfo
         [Route("")]
-        public IHttpActionResult Put([FromBody]MapInfo mapInfo, [FromUri]string lang = "en")
+        public IActionResult Put([FromBody]MapInfo mapInfo, [FromQuery]string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
@@ -186,7 +116,7 @@ namespace CSSPWebAPI.Controllers
         }
         // DELETE api/mapInfo
         [Route("")]
-        public IHttpActionResult Delete([FromBody]MapInfo mapInfo, [FromUri]string lang = "en")
+        public IActionResult Delete([FromBody]MapInfo mapInfo, [FromQuery]string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {

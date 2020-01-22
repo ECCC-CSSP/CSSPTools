@@ -54,7 +54,7 @@ namespace CSSPWebAPIGenerateCodeHelper
             sb.AppendLine(@"                    }");
             sb.AppendLine(@"");
             sb.AppendLine($@"                    // ok with { TypeName } info");
-            sb.AppendLine($@"                    IHttpActionResult jsonRet = { TypeNameLower }Controller.Get{ TypeName }WithID({ TypeNameLower }Last.{ TypeName }ID);");
+            sb.AppendLine($@"                    IActionResult jsonRet = { TypeNameLower }Controller.Get{ TypeName }WithID({ TypeNameLower }Last.{ TypeName }ID);");
             sb.AppendLine(@"                    Assert.NotNull(jsonRet);");
             sb.AppendLine(@"");
             sb.AppendLine($@"                    OkNegotiatedContentResult<{ TypeName }> Ret = jsonRet as OkNegotiatedContentResult<{ TypeName }>;");
@@ -62,7 +62,7 @@ namespace CSSPWebAPIGenerateCodeHelper
             sb.AppendLine($@"                    Assert.Equal({ TypeNameLower }Last.{ TypeName }ID, { TypeNameLower }Ret.{ TypeName }ID);");
             sb.AppendLine(@"");
             sb.AppendLine(@"                    BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;");
-            sb.AppendLine(@"                    Assert.IsNull(badRequest);");
+            sb.AppendLine(@"                    Assert.Null(badRequest);");
             sb.AppendLine(@"");
             sb.AppendLine($@"                    // Post to return newly added { TypeName }");
             sb.AppendLine($@"                    { TypeNameLower }Ret.{ TypeName }ID = 0;");
@@ -84,7 +84,7 @@ namespace CSSPWebAPIGenerateCodeHelper
             }
             sb.AppendLine($@"                    { TypeNameLower }Controller.Request = new System.Net.Http.HttpRequestMessage();");
             sb.AppendLine($@"                    { TypeNameLower }Controller.Request.RequestUri = new System.Uri(""http://localhost:5000/api/{ TypeNameLower }"");");
-            sb.AppendLine($@"                    IHttpActionResult jsonRet3 = { TypeNameLower }Controller.Post({ TypeNameLower }Ret, LanguageRequest.ToString());");
+            sb.AppendLine($@"                    IActionResult jsonRet3 = { TypeNameLower }Controller.Post({ TypeNameLower }Ret, LanguageRequest.ToString());");
             sb.AppendLine(@"                    Assert.NotNull(jsonRet3);");
             sb.AppendLine(@"");
             sb.AppendLine($@"                    CreatedNegotiatedContentResult<{ TypeName }> { TypeNameLower }Ret3 = jsonRet3 as CreatedNegotiatedContentResult<{ TypeName }>;");
@@ -92,25 +92,25 @@ namespace CSSPWebAPIGenerateCodeHelper
             sb.AppendLine($@"                    { TypeName } { TypeNameLower } = { TypeNameLower }Ret3.Content;");
             sb.AppendLine(@"");
             sb.AppendLine(@"                    BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;");
-            sb.AppendLine(@"                    Assert.IsNull(badRequest3);");
+            sb.AppendLine(@"                    Assert.Null(badRequest3);");
             sb.AppendLine(@"");
             sb.AppendLine($@"                    // Delete to return success");
-            sb.AppendLine($@"                    IHttpActionResult jsonRet2 = { TypeNameLower }Controller.Delete({ TypeNameLower }Ret, LanguageRequest.ToString());");
+            sb.AppendLine($@"                    IActionResult jsonRet2 = { TypeNameLower }Controller.Delete({ TypeNameLower }Ret, LanguageRequest.ToString());");
             sb.AppendLine(@"                    Assert.NotNull(jsonRet2);");
             sb.AppendLine(@"");
             sb.AppendLine($@"                    OkNegotiatedContentResult<{ TypeName }> { TypeNameLower }Ret2 = jsonRet2 as OkNegotiatedContentResult<{ TypeName }>;");
             sb.AppendLine($@"                    Assert.NotNull({ TypeNameLower }Ret2);");
             sb.AppendLine(@"");
             sb.AppendLine(@"                    BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;");
-            sb.AppendLine(@"                    Assert.IsNull(badRequest2);");
+            sb.AppendLine(@"                    Assert.Null(badRequest2);");
             sb.AppendLine(@"");
             sb.AppendLine($@"                    // Delete to return CSSPError because { TypeName }ID of 0 does not exist");
             sb.AppendLine($@"                    { TypeNameLower }Ret.{ TypeName }ID = 0;");
-            sb.AppendLine($@"                    IHttpActionResult jsonRet4 = { TypeNameLower }Controller.Delete({ TypeNameLower }Ret, LanguageRequest.ToString());");
+            sb.AppendLine($@"                    IActionResult jsonRet4 = { TypeNameLower }Controller.Delete({ TypeNameLower }Ret, LanguageRequest.ToString());");
             sb.AppendLine(@"                    Assert.NotNull(jsonRet4);");
             sb.AppendLine(@"");
             sb.AppendLine($@"                    OkNegotiatedContentResult<{ TypeName }> { TypeNameLower }Ret4 = jsonRet4 as OkNegotiatedContentResult<{ TypeName }>;");
-            sb.AppendLine($@"                    Assert.IsNull({ TypeNameLower }Ret4);");
+            sb.AppendLine($@"                    Assert.Null({ TypeNameLower }Ret4);");
             sb.AppendLine(@"");
             sb.AppendLine(@"                    BadRequestErrorMessageResult badRequest4 = jsonRet4 as BadRequestErrorMessageResult;");
             sb.AppendLine(@"                    Assert.NotNull(badRequest4);");

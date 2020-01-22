@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
 using System.Web.Http.Results;
+using Microsoft.AspNetCore.Mvc;
 
 namespace CSSPWebAPI.Tests.Controllers
 {
@@ -48,7 +49,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     }
 
                     // ok with BoxModelResult info
-                    IHttpActionResult jsonRet = boxModelResultController.GetBoxModelResultList();
+                    IActionResult jsonRet = boxModelResultController.GetBoxModelResultList();
                     Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<List<BoxModelResult>> ret = jsonRet as OkNegotiatedContentResult<List<BoxModelResult>>;
@@ -86,7 +87,7 @@ namespace CSSPWebAPI.Tests.Controllers
                            count = (query.Take > count ? query.Take : count);
 
                            // ok with BoxModelResult info
-                           IHttpActionResult jsonRet2 = boxModelResultController.GetBoxModelResultList(query.Language.ToString(), query.Skip, query.Take);
+                           IActionResult jsonRet2 = boxModelResultController.GetBoxModelResultList(query.Language.ToString(), query.Skip, query.Take);
                            Assert.NotNull(jsonRet2);
 
                            OkNegotiatedContentResult<List<BoxModelResult>> ret2 = jsonRet2 as OkNegotiatedContentResult<List<BoxModelResult>>;
@@ -119,7 +120,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     }
 
                     // ok with BoxModelResult info
-                    IHttpActionResult jsonRet = boxModelResultController.GetBoxModelResultWithID(boxModelResultFirst.BoxModelResultID);
+                    IActionResult jsonRet = boxModelResultController.GetBoxModelResultWithID(boxModelResultFirst.BoxModelResultID);
                     Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<BoxModelResult> Ret = jsonRet as OkNegotiatedContentResult<BoxModelResult>;
@@ -127,16 +128,16 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.Equal(boxModelResultFirst.BoxModelResultID, boxModelResultRet.BoxModelResultID);
 
                     BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
+                    Assert.Null(badRequest);
 
                     // Not Found
-                    IHttpActionResult jsonRet2 = boxModelResultController.GetBoxModelResultWithID(0);
+                    IActionResult jsonRet2 = boxModelResultController.GetBoxModelResultWithID(0);
                     Assert.NotNull(jsonRet2);
 
                     OkNegotiatedContentResult<BoxModelResult> boxModelResultRet2 = jsonRet2 as OkNegotiatedContentResult<BoxModelResult>;
-                    Assert.IsNull(boxModelResultRet2);
+                    Assert.Null(boxModelResultRet2);
 
-                    NotFoundResult notFoundRequest = jsonRet2 as NotFoundResult;
+                    NotFoundObjectResult notFoundRequest = jsonRet2 as NotFoundObjectResult;
                     Assert.NotNull(notFoundRequest);
                 }
             }
@@ -168,7 +169,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     }
 
                     // ok with BoxModelResult info
-                    IHttpActionResult jsonRet = boxModelResultController.GetBoxModelResultWithID(boxModelResultLast.BoxModelResultID);
+                    IActionResult jsonRet = boxModelResultController.GetBoxModelResultWithID(boxModelResultLast.BoxModelResultID);
                     Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<BoxModelResult> Ret = jsonRet as OkNegotiatedContentResult<BoxModelResult>;
@@ -176,14 +177,14 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.Equal(boxModelResultLast.BoxModelResultID, boxModelResultRet.BoxModelResultID);
 
                     BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
+                    Assert.Null(badRequest);
 
                     // Post to return CSSPError because BoxModelResultID exist
-                    IHttpActionResult jsonRet2 = boxModelResultController.Post(boxModelResultRet, LanguageRequest.ToString());
+                    IActionResult jsonRet2 = boxModelResultController.Post(boxModelResultRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet2);
 
                     OkNegotiatedContentResult<BoxModelResult> boxModelResultRet2 = jsonRet2 as OkNegotiatedContentResult<BoxModelResult>;
-                    Assert.IsNull(boxModelResultRet2);
+                    Assert.Null(boxModelResultRet2);
 
                     BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
                     Assert.NotNull(badRequest2);
@@ -192,23 +193,23 @@ namespace CSSPWebAPI.Tests.Controllers
                     boxModelResultRet.BoxModelResultID = 0;
                     boxModelResultController.Request = new System.Net.Http.HttpRequestMessage();
                     boxModelResultController.Request.RequestUri = new System.Uri("http://localhost:5000/api/boxModelResult");
-                    IHttpActionResult jsonRet3 = boxModelResultController.Post(boxModelResultRet, LanguageRequest.ToString());
+                    IActionResult jsonRet3 = boxModelResultController.Post(boxModelResultRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 
                     CreatedNegotiatedContentResult<BoxModelResult> boxModelResultRet3 = jsonRet3 as CreatedNegotiatedContentResult<BoxModelResult>;
                     Assert.NotNull(boxModelResultRet3);
 
                     BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest3);
+                    Assert.Null(badRequest3);
 
-                    IHttpActionResult jsonRet4 = boxModelResultController.Delete(boxModelResultRet, LanguageRequest.ToString());
+                    IActionResult jsonRet4 = boxModelResultController.Delete(boxModelResultRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet4);
 
                     OkNegotiatedContentResult<BoxModelResult> boxModelResultRet4 = jsonRet4 as OkNegotiatedContentResult<BoxModelResult>;
                     Assert.NotNull(boxModelResultRet4);
 
                     BadRequestErrorMessageResult badRequest4 = jsonRet4 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest4);
+                    Assert.Null(badRequest4);
                 }
             }
         }
@@ -237,7 +238,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     }
 
                     // ok with BoxModelResult info
-                    IHttpActionResult jsonRet = boxModelResultController.GetBoxModelResultWithID(boxModelResultLast.BoxModelResultID);
+                    IActionResult jsonRet = boxModelResultController.GetBoxModelResultWithID(boxModelResultLast.BoxModelResultID);
                     Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<BoxModelResult> Ret = jsonRet as OkNegotiatedContentResult<BoxModelResult>;
@@ -245,25 +246,25 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.Equal(boxModelResultLast.BoxModelResultID, boxModelResultRet.BoxModelResultID);
 
                     BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
+                    Assert.Null(badRequest);
 
                     // Put to return success
-                    IHttpActionResult jsonRet2 = boxModelResultController.Put(boxModelResultRet, LanguageRequest.ToString());
+                    IActionResult jsonRet2 = boxModelResultController.Put(boxModelResultRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet2);
 
                     OkNegotiatedContentResult<BoxModelResult> boxModelResultRet2 = jsonRet2 as OkNegotiatedContentResult<BoxModelResult>;
                     Assert.NotNull(boxModelResultRet2);
 
                     BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest2);
+                    Assert.Null(badRequest2);
 
                     // Put to return CSSPError because BoxModelResultID of 0 does not exist
                     boxModelResultRet.BoxModelResultID = 0;
-                    IHttpActionResult jsonRet3 = boxModelResultController.Put(boxModelResultRet, LanguageRequest.ToString());
+                    IActionResult jsonRet3 = boxModelResultController.Put(boxModelResultRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 
                     OkNegotiatedContentResult<BoxModelResult> boxModelResultRet3 = jsonRet3 as OkNegotiatedContentResult<BoxModelResult>;
-                    Assert.IsNull(boxModelResultRet3);
+                    Assert.Null(boxModelResultRet3);
 
                     BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
                     Assert.NotNull(badRequest3);
@@ -297,7 +298,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     }
 
                     // ok with BoxModelResult info
-                    IHttpActionResult jsonRet = boxModelResultController.GetBoxModelResultWithID(boxModelResultLast.BoxModelResultID);
+                    IActionResult jsonRet = boxModelResultController.GetBoxModelResultWithID(boxModelResultLast.BoxModelResultID);
                     Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<BoxModelResult> Ret = jsonRet as OkNegotiatedContentResult<BoxModelResult>;
@@ -305,13 +306,13 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.Equal(boxModelResultLast.BoxModelResultID, boxModelResultRet.BoxModelResultID);
 
                     BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
+                    Assert.Null(badRequest);
 
                     // Post to return newly added BoxModelResult
                     boxModelResultRet.BoxModelResultID = 0;
                     boxModelResultController.Request = new System.Net.Http.HttpRequestMessage();
                     boxModelResultController.Request.RequestUri = new System.Uri("http://localhost:5000/api/boxModelResult");
-                    IHttpActionResult jsonRet3 = boxModelResultController.Post(boxModelResultRet, LanguageRequest.ToString());
+                    IActionResult jsonRet3 = boxModelResultController.Post(boxModelResultRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 
                     CreatedNegotiatedContentResult<BoxModelResult> boxModelResultRet3 = jsonRet3 as CreatedNegotiatedContentResult<BoxModelResult>;
@@ -319,25 +320,25 @@ namespace CSSPWebAPI.Tests.Controllers
                     BoxModelResult boxModelResult = boxModelResultRet3.Content;
 
                     BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest3);
+                    Assert.Null(badRequest3);
 
                     // Delete to return success
-                    IHttpActionResult jsonRet2 = boxModelResultController.Delete(boxModelResultRet, LanguageRequest.ToString());
+                    IActionResult jsonRet2 = boxModelResultController.Delete(boxModelResultRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet2);
 
                     OkNegotiatedContentResult<BoxModelResult> boxModelResultRet2 = jsonRet2 as OkNegotiatedContentResult<BoxModelResult>;
                     Assert.NotNull(boxModelResultRet2);
 
                     BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest2);
+                    Assert.Null(badRequest2);
 
                     // Delete to return CSSPError because BoxModelResultID of 0 does not exist
                     boxModelResultRet.BoxModelResultID = 0;
-                    IHttpActionResult jsonRet4 = boxModelResultController.Delete(boxModelResultRet, LanguageRequest.ToString());
+                    IActionResult jsonRet4 = boxModelResultController.Delete(boxModelResultRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet4);
 
                     OkNegotiatedContentResult<BoxModelResult> boxModelResultRet4 = jsonRet4 as OkNegotiatedContentResult<BoxModelResult>;
-                    Assert.IsNull(boxModelResultRet4);
+                    Assert.Null(boxModelResultRet4);
 
                     BadRequestErrorMessageResult badRequest4 = jsonRet4 as BadRequestErrorMessageResult;
                     Assert.NotNull(badRequest4);

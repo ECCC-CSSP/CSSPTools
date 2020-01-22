@@ -1,14 +1,14 @@
 using CSSPEnums;
 using CSSPModels;
 using CSSPServices;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web.Http;
 
 namespace CSSPWebAPI.Controllers
 {
-    [RoutePrefix("api/resetPassword")]
+    [Route("api/resetPassword")]
     public partial class ResetPasswordController : BaseController
     {
         #region Variables
@@ -29,126 +29,56 @@ namespace CSSPWebAPI.Controllers
         #region Functions public
         // GET api/resetPassword
         [Route("")]
-        public IHttpActionResult GetResetPasswordList([FromUri]string lang = "en", [FromUri]int skip = 0, [FromUri]int take = 200,
-            [FromUri]string asc = "", [FromUri]string desc = "", [FromUri]string where = "", [FromUri]string extra = "")
+        public IActionResult GetResetPasswordList([FromQuery]string lang = "en", [FromQuery]int skip = 0, [FromQuery]int take = 200,
+            [FromQuery]string asc = "", [FromQuery]string desc = "", [FromQuery]string where = "")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
                 ResetPasswordService resetPasswordService = new ResetPasswordService(new Query() { Lang = lang }, db, ContactID);
 
-                if (extra == "A") // QueryString contains [extra=A]
-                {
-                   resetPasswordService.Query = resetPasswordService.FillQuery(typeof(ResetPasswordExtraA), lang, skip, take, asc, desc, where, extra);
+                resetPasswordService.Query = resetPasswordService.FillQuery(typeof(ResetPassword), lang, skip, take, asc, desc, where);
 
-                    if (resetPasswordService.Query.HasErrors)
-                    {
-                        return Ok(new List<ResetPasswordExtraA>()
-                        {
-                            new ResetPasswordExtraA()
-                            {
-                                HasErrors = resetPasswordService.Query.HasErrors,
-                                ValidationResults = resetPasswordService.Query.ValidationResults,
-                            },
-                        }.ToList());
-                    }
-                    else
-                    {
-                        return Ok(resetPasswordService.GetResetPasswordExtraAList().ToList());
-                    }
-                }
-                else if (extra == "B") // QueryString contains [extra=B]
-                {
-                   resetPasswordService.Query = resetPasswordService.FillQuery(typeof(ResetPasswordExtraB), lang, skip, take, asc, desc, where, extra);
-
-                    if (resetPasswordService.Query.HasErrors)
-                    {
-                        return Ok(new List<ResetPasswordExtraB>()
-                        {
-                            new ResetPasswordExtraB()
-                            {
-                                HasErrors = resetPasswordService.Query.HasErrors,
-                                ValidationResults = resetPasswordService.Query.ValidationResults,
-                            },
-                        }.ToList());
-                    }
-                    else
-                    {
-                        return Ok(resetPasswordService.GetResetPasswordExtraBList().ToList());
-                    }
-                }
-                else // QueryString has no parameter [extra] or extra is empty
-                {
-                   resetPasswordService.Query = resetPasswordService.FillQuery(typeof(ResetPassword), lang, skip, take, asc, desc, where, extra);
-
-                    if (resetPasswordService.Query.HasErrors)
-                    {
-                        return Ok(new List<ResetPassword>()
-                        {
-                            new ResetPassword()
-                            {
-                                HasErrors = resetPasswordService.Query.HasErrors,
-                                ValidationResults = resetPasswordService.Query.ValidationResults,
-                            },
-                        }.ToList());
-                    }
-                    else
-                    {
-                        return Ok(resetPasswordService.GetResetPasswordList().ToList());
-                    }
-                }
+                 if (resetPasswordService.Query.HasErrors)
+                 {
+                     return Ok(new List<ResetPassword>()
+                     {
+                         new ResetPassword()
+                         {
+                             HasErrors = resetPasswordService.Query.HasErrors,
+                             ValidationResults = resetPasswordService.Query.ValidationResults,
+                         },
+                     }.ToList());
+                 }
+                 else
+                 {
+                     return Ok(resetPasswordService.GetResetPasswordList().ToList());
+                 }
             }
         }
         // GET api/resetPassword/1
         [Route("{ResetPasswordID:int}")]
-        public IHttpActionResult GetResetPasswordWithID([FromUri]int ResetPasswordID, [FromUri]string lang = "en", [FromUri]string extra = "")
+        public IActionResult GetResetPasswordWithID([FromQuery]int ResetPasswordID, [FromQuery]string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
                 ResetPasswordService resetPasswordService = new ResetPasswordService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
 
-                resetPasswordService.Query = resetPasswordService.FillQuery(typeof(ResetPassword), lang, 0, 1, "", "", extra);
+                resetPasswordService.Query = resetPasswordService.FillQuery(typeof(ResetPassword), lang, 0, 1, "", "");
 
-                if (resetPasswordService.Query.Extra == "A")
+                ResetPassword resetPassword = new ResetPassword();
+                resetPassword = resetPasswordService.GetResetPasswordWithResetPasswordID(ResetPasswordID);
+
+                if (resetPassword == null)
                 {
-                    ResetPasswordExtraA resetPasswordExtraA = new ResetPasswordExtraA();
-                    resetPasswordExtraA = resetPasswordService.GetResetPasswordExtraAWithResetPasswordID(ResetPasswordID);
-
-                    if (resetPasswordExtraA == null)
-                    {
-                        return NotFound();
-                    }
-
-                    return Ok(resetPasswordExtraA);
+                    return NotFound();
                 }
-                else if (resetPasswordService.Query.Extra == "B")
-                {
-                    ResetPasswordExtraB resetPasswordExtraB = new ResetPasswordExtraB();
-                    resetPasswordExtraB = resetPasswordService.GetResetPasswordExtraBWithResetPasswordID(ResetPasswordID);
 
-                    if (resetPasswordExtraB == null)
-                    {
-                        return NotFound();
-                    }
-
-                    return Ok(resetPasswordExtraB);
-                }
-                else
-                {
-                    ResetPassword resetPassword = new ResetPassword();
-                    resetPassword = resetPasswordService.GetResetPasswordWithResetPasswordID(ResetPasswordID);
-
-                    if (resetPassword == null)
-                    {
-                        return NotFound();
-                    }
-
-                    return Ok(resetPassword);
-                }
+                return Ok(resetPassword);
             }
         }
         // POST api/resetPassword
         [Route("")]
-        public IHttpActionResult Post([FromBody]ResetPassword resetPassword, [FromUri]string lang = "en")
+        public IActionResult Post([FromBody]ResetPassword resetPassword, [FromQuery]string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
@@ -161,13 +91,13 @@ namespace CSSPWebAPI.Controllers
                 else
                 {
                     resetPassword.ValidationResults = null;
-                    return Created<ResetPassword>(new Uri(Request.RequestUri, resetPassword.ResetPasswordID.ToString()), resetPassword);
+                    return Created(Url.ToString(), resetPassword);
                 }
             }
         }
         // PUT api/resetPassword
         [Route("")]
-        public IHttpActionResult Put([FromBody]ResetPassword resetPassword, [FromUri]string lang = "en")
+        public IActionResult Put([FromBody]ResetPassword resetPassword, [FromQuery]string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
@@ -186,7 +116,7 @@ namespace CSSPWebAPI.Controllers
         }
         // DELETE api/resetPassword
         [Route("")]
-        public IHttpActionResult Delete([FromBody]ResetPassword resetPassword, [FromUri]string lang = "en")
+        public IActionResult Delete([FromBody]ResetPassword resetPassword, [FromQuery]string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {

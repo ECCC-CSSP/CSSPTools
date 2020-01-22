@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
 using System.Web.Http.Results;
+using Microsoft.AspNetCore.Mvc;
 
 namespace CSSPWebAPI.Tests.Controllers
 {
@@ -48,7 +49,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     }
 
                     // ok with Email info
-                    IHttpActionResult jsonRet = emailController.GetEmailList();
+                    IActionResult jsonRet = emailController.GetEmailList();
                     Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<List<Email>> ret = jsonRet as OkNegotiatedContentResult<List<Email>>;
@@ -86,7 +87,7 @@ namespace CSSPWebAPI.Tests.Controllers
                            count = (query.Take > count ? query.Take : count);
 
                            // ok with Email info
-                           IHttpActionResult jsonRet2 = emailController.GetEmailList(query.Language.ToString(), query.Skip, query.Take);
+                           IActionResult jsonRet2 = emailController.GetEmailList(query.Language.ToString(), query.Skip, query.Take);
                            Assert.NotNull(jsonRet2);
 
                            OkNegotiatedContentResult<List<Email>> ret2 = jsonRet2 as OkNegotiatedContentResult<List<Email>>;
@@ -119,7 +120,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     }
 
                     // ok with Email info
-                    IHttpActionResult jsonRet = emailController.GetEmailWithID(emailFirst.EmailID);
+                    IActionResult jsonRet = emailController.GetEmailWithID(emailFirst.EmailID);
                     Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<Email> Ret = jsonRet as OkNegotiatedContentResult<Email>;
@@ -127,16 +128,16 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.Equal(emailFirst.EmailID, emailRet.EmailID);
 
                     BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
+                    Assert.Null(badRequest);
 
                     // Not Found
-                    IHttpActionResult jsonRet2 = emailController.GetEmailWithID(0);
+                    IActionResult jsonRet2 = emailController.GetEmailWithID(0);
                     Assert.NotNull(jsonRet2);
 
                     OkNegotiatedContentResult<Email> emailRet2 = jsonRet2 as OkNegotiatedContentResult<Email>;
-                    Assert.IsNull(emailRet2);
+                    Assert.Null(emailRet2);
 
-                    NotFoundResult notFoundRequest = jsonRet2 as NotFoundResult;
+                    NotFoundObjectResult notFoundRequest = jsonRet2 as NotFoundObjectResult;
                     Assert.NotNull(notFoundRequest);
                 }
             }
@@ -168,7 +169,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     }
 
                     // ok with Email info
-                    IHttpActionResult jsonRet = emailController.GetEmailWithID(emailLast.EmailID);
+                    IActionResult jsonRet = emailController.GetEmailWithID(emailLast.EmailID);
                     Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<Email> Ret = jsonRet as OkNegotiatedContentResult<Email>;
@@ -176,14 +177,14 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.Equal(emailLast.EmailID, emailRet.EmailID);
 
                     BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
+                    Assert.Null(badRequest);
 
                     // Post to return CSSPError because EmailID exist
-                    IHttpActionResult jsonRet2 = emailController.Post(emailRet, LanguageRequest.ToString());
+                    IActionResult jsonRet2 = emailController.Post(emailRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet2);
 
                     OkNegotiatedContentResult<Email> emailRet2 = jsonRet2 as OkNegotiatedContentResult<Email>;
-                    Assert.IsNull(emailRet2);
+                    Assert.Null(emailRet2);
 
                     BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
                     Assert.NotNull(badRequest2);
@@ -192,23 +193,23 @@ namespace CSSPWebAPI.Tests.Controllers
                     emailRet.EmailID = 0;
                     emailController.Request = new System.Net.Http.HttpRequestMessage();
                     emailController.Request.RequestUri = new System.Uri("http://localhost:5000/api/email");
-                    IHttpActionResult jsonRet3 = emailController.Post(emailRet, LanguageRequest.ToString());
+                    IActionResult jsonRet3 = emailController.Post(emailRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 
                     CreatedNegotiatedContentResult<Email> emailRet3 = jsonRet3 as CreatedNegotiatedContentResult<Email>;
                     Assert.NotNull(emailRet3);
 
                     BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest3);
+                    Assert.Null(badRequest3);
 
-                    IHttpActionResult jsonRet4 = emailController.Delete(emailRet, LanguageRequest.ToString());
+                    IActionResult jsonRet4 = emailController.Delete(emailRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet4);
 
                     OkNegotiatedContentResult<Email> emailRet4 = jsonRet4 as OkNegotiatedContentResult<Email>;
                     Assert.NotNull(emailRet4);
 
                     BadRequestErrorMessageResult badRequest4 = jsonRet4 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest4);
+                    Assert.Null(badRequest4);
                 }
             }
         }
@@ -237,7 +238,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     }
 
                     // ok with Email info
-                    IHttpActionResult jsonRet = emailController.GetEmailWithID(emailLast.EmailID);
+                    IActionResult jsonRet = emailController.GetEmailWithID(emailLast.EmailID);
                     Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<Email> Ret = jsonRet as OkNegotiatedContentResult<Email>;
@@ -245,25 +246,25 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.Equal(emailLast.EmailID, emailRet.EmailID);
 
                     BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
+                    Assert.Null(badRequest);
 
                     // Put to return success
-                    IHttpActionResult jsonRet2 = emailController.Put(emailRet, LanguageRequest.ToString());
+                    IActionResult jsonRet2 = emailController.Put(emailRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet2);
 
                     OkNegotiatedContentResult<Email> emailRet2 = jsonRet2 as OkNegotiatedContentResult<Email>;
                     Assert.NotNull(emailRet2);
 
                     BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest2);
+                    Assert.Null(badRequest2);
 
                     // Put to return CSSPError because EmailID of 0 does not exist
                     emailRet.EmailID = 0;
-                    IHttpActionResult jsonRet3 = emailController.Put(emailRet, LanguageRequest.ToString());
+                    IActionResult jsonRet3 = emailController.Put(emailRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 
                     OkNegotiatedContentResult<Email> emailRet3 = jsonRet3 as OkNegotiatedContentResult<Email>;
-                    Assert.IsNull(emailRet3);
+                    Assert.Null(emailRet3);
 
                     BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
                     Assert.NotNull(badRequest3);
@@ -297,7 +298,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     }
 
                     // ok with Email info
-                    IHttpActionResult jsonRet = emailController.GetEmailWithID(emailLast.EmailID);
+                    IActionResult jsonRet = emailController.GetEmailWithID(emailLast.EmailID);
                     Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<Email> Ret = jsonRet as OkNegotiatedContentResult<Email>;
@@ -305,13 +306,13 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.Equal(emailLast.EmailID, emailRet.EmailID);
 
                     BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
+                    Assert.Null(badRequest);
 
                     // Post to return newly added Email
                     emailRet.EmailID = 0;
                     emailController.Request = new System.Net.Http.HttpRequestMessage();
                     emailController.Request.RequestUri = new System.Uri("http://localhost:5000/api/email");
-                    IHttpActionResult jsonRet3 = emailController.Post(emailRet, LanguageRequest.ToString());
+                    IActionResult jsonRet3 = emailController.Post(emailRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 
                     CreatedNegotiatedContentResult<Email> emailRet3 = jsonRet3 as CreatedNegotiatedContentResult<Email>;
@@ -319,25 +320,25 @@ namespace CSSPWebAPI.Tests.Controllers
                     Email email = emailRet3.Content;
 
                     BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest3);
+                    Assert.Null(badRequest3);
 
                     // Delete to return success
-                    IHttpActionResult jsonRet2 = emailController.Delete(emailRet, LanguageRequest.ToString());
+                    IActionResult jsonRet2 = emailController.Delete(emailRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet2);
 
                     OkNegotiatedContentResult<Email> emailRet2 = jsonRet2 as OkNegotiatedContentResult<Email>;
                     Assert.NotNull(emailRet2);
 
                     BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest2);
+                    Assert.Null(badRequest2);
 
                     // Delete to return CSSPError because EmailID of 0 does not exist
                     emailRet.EmailID = 0;
-                    IHttpActionResult jsonRet4 = emailController.Delete(emailRet, LanguageRequest.ToString());
+                    IActionResult jsonRet4 = emailController.Delete(emailRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet4);
 
                     OkNegotiatedContentResult<Email> emailRet4 = jsonRet4 as OkNegotiatedContentResult<Email>;
-                    Assert.IsNull(emailRet4);
+                    Assert.Null(emailRet4);
 
                     BadRequestErrorMessageResult badRequest4 = jsonRet4 as BadRequestErrorMessageResult;
                     Assert.NotNull(badRequest4);

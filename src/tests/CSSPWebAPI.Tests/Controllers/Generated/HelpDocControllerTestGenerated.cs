@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
 using System.Web.Http.Results;
+using Microsoft.AspNetCore.Mvc;
 
 namespace CSSPWebAPI.Tests.Controllers
 {
@@ -48,7 +49,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     }
 
                     // ok with HelpDoc info
-                    IHttpActionResult jsonRet = helpDocController.GetHelpDocList();
+                    IActionResult jsonRet = helpDocController.GetHelpDocList();
                     Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<List<HelpDoc>> ret = jsonRet as OkNegotiatedContentResult<List<HelpDoc>>;
@@ -86,7 +87,7 @@ namespace CSSPWebAPI.Tests.Controllers
                            count = (query.Take > count ? query.Take : count);
 
                            // ok with HelpDoc info
-                           IHttpActionResult jsonRet2 = helpDocController.GetHelpDocList(query.Language.ToString(), query.Skip, query.Take);
+                           IActionResult jsonRet2 = helpDocController.GetHelpDocList(query.Language.ToString(), query.Skip, query.Take);
                            Assert.NotNull(jsonRet2);
 
                            OkNegotiatedContentResult<List<HelpDoc>> ret2 = jsonRet2 as OkNegotiatedContentResult<List<HelpDoc>>;
@@ -119,7 +120,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     }
 
                     // ok with HelpDoc info
-                    IHttpActionResult jsonRet = helpDocController.GetHelpDocWithID(helpDocFirst.HelpDocID);
+                    IActionResult jsonRet = helpDocController.GetHelpDocWithID(helpDocFirst.HelpDocID);
                     Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<HelpDoc> Ret = jsonRet as OkNegotiatedContentResult<HelpDoc>;
@@ -127,16 +128,16 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.Equal(helpDocFirst.HelpDocID, helpDocRet.HelpDocID);
 
                     BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
+                    Assert.Null(badRequest);
 
                     // Not Found
-                    IHttpActionResult jsonRet2 = helpDocController.GetHelpDocWithID(0);
+                    IActionResult jsonRet2 = helpDocController.GetHelpDocWithID(0);
                     Assert.NotNull(jsonRet2);
 
                     OkNegotiatedContentResult<HelpDoc> helpDocRet2 = jsonRet2 as OkNegotiatedContentResult<HelpDoc>;
-                    Assert.IsNull(helpDocRet2);
+                    Assert.Null(helpDocRet2);
 
-                    NotFoundResult notFoundRequest = jsonRet2 as NotFoundResult;
+                    NotFoundObjectResult notFoundRequest = jsonRet2 as NotFoundObjectResult;
                     Assert.NotNull(notFoundRequest);
                 }
             }
@@ -168,7 +169,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     }
 
                     // ok with HelpDoc info
-                    IHttpActionResult jsonRet = helpDocController.GetHelpDocWithID(helpDocLast.HelpDocID);
+                    IActionResult jsonRet = helpDocController.GetHelpDocWithID(helpDocLast.HelpDocID);
                     Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<HelpDoc> Ret = jsonRet as OkNegotiatedContentResult<HelpDoc>;
@@ -176,14 +177,14 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.Equal(helpDocLast.HelpDocID, helpDocRet.HelpDocID);
 
                     BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
+                    Assert.Null(badRequest);
 
                     // Post to return CSSPError because HelpDocID exist
-                    IHttpActionResult jsonRet2 = helpDocController.Post(helpDocRet, LanguageRequest.ToString());
+                    IActionResult jsonRet2 = helpDocController.Post(helpDocRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet2);
 
                     OkNegotiatedContentResult<HelpDoc> helpDocRet2 = jsonRet2 as OkNegotiatedContentResult<HelpDoc>;
-                    Assert.IsNull(helpDocRet2);
+                    Assert.Null(helpDocRet2);
 
                     BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
                     Assert.NotNull(badRequest2);
@@ -192,23 +193,23 @@ namespace CSSPWebAPI.Tests.Controllers
                     helpDocRet.HelpDocID = 0;
                     helpDocController.Request = new System.Net.Http.HttpRequestMessage();
                     helpDocController.Request.RequestUri = new System.Uri("http://localhost:5000/api/helpDoc");
-                    IHttpActionResult jsonRet3 = helpDocController.Post(helpDocRet, LanguageRequest.ToString());
+                    IActionResult jsonRet3 = helpDocController.Post(helpDocRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 
                     CreatedNegotiatedContentResult<HelpDoc> helpDocRet3 = jsonRet3 as CreatedNegotiatedContentResult<HelpDoc>;
                     Assert.NotNull(helpDocRet3);
 
                     BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest3);
+                    Assert.Null(badRequest3);
 
-                    IHttpActionResult jsonRet4 = helpDocController.Delete(helpDocRet, LanguageRequest.ToString());
+                    IActionResult jsonRet4 = helpDocController.Delete(helpDocRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet4);
 
                     OkNegotiatedContentResult<HelpDoc> helpDocRet4 = jsonRet4 as OkNegotiatedContentResult<HelpDoc>;
                     Assert.NotNull(helpDocRet4);
 
                     BadRequestErrorMessageResult badRequest4 = jsonRet4 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest4);
+                    Assert.Null(badRequest4);
                 }
             }
         }
@@ -237,7 +238,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     }
 
                     // ok with HelpDoc info
-                    IHttpActionResult jsonRet = helpDocController.GetHelpDocWithID(helpDocLast.HelpDocID);
+                    IActionResult jsonRet = helpDocController.GetHelpDocWithID(helpDocLast.HelpDocID);
                     Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<HelpDoc> Ret = jsonRet as OkNegotiatedContentResult<HelpDoc>;
@@ -245,25 +246,25 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.Equal(helpDocLast.HelpDocID, helpDocRet.HelpDocID);
 
                     BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
+                    Assert.Null(badRequest);
 
                     // Put to return success
-                    IHttpActionResult jsonRet2 = helpDocController.Put(helpDocRet, LanguageRequest.ToString());
+                    IActionResult jsonRet2 = helpDocController.Put(helpDocRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet2);
 
                     OkNegotiatedContentResult<HelpDoc> helpDocRet2 = jsonRet2 as OkNegotiatedContentResult<HelpDoc>;
                     Assert.NotNull(helpDocRet2);
 
                     BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest2);
+                    Assert.Null(badRequest2);
 
                     // Put to return CSSPError because HelpDocID of 0 does not exist
                     helpDocRet.HelpDocID = 0;
-                    IHttpActionResult jsonRet3 = helpDocController.Put(helpDocRet, LanguageRequest.ToString());
+                    IActionResult jsonRet3 = helpDocController.Put(helpDocRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 
                     OkNegotiatedContentResult<HelpDoc> helpDocRet3 = jsonRet3 as OkNegotiatedContentResult<HelpDoc>;
-                    Assert.IsNull(helpDocRet3);
+                    Assert.Null(helpDocRet3);
 
                     BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
                     Assert.NotNull(badRequest3);
@@ -297,7 +298,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     }
 
                     // ok with HelpDoc info
-                    IHttpActionResult jsonRet = helpDocController.GetHelpDocWithID(helpDocLast.HelpDocID);
+                    IActionResult jsonRet = helpDocController.GetHelpDocWithID(helpDocLast.HelpDocID);
                     Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<HelpDoc> Ret = jsonRet as OkNegotiatedContentResult<HelpDoc>;
@@ -305,13 +306,13 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.Equal(helpDocLast.HelpDocID, helpDocRet.HelpDocID);
 
                     BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
+                    Assert.Null(badRequest);
 
                     // Post to return newly added HelpDoc
                     helpDocRet.HelpDocID = 0;
                     helpDocController.Request = new System.Net.Http.HttpRequestMessage();
                     helpDocController.Request.RequestUri = new System.Uri("http://localhost:5000/api/helpDoc");
-                    IHttpActionResult jsonRet3 = helpDocController.Post(helpDocRet, LanguageRequest.ToString());
+                    IActionResult jsonRet3 = helpDocController.Post(helpDocRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 
                     CreatedNegotiatedContentResult<HelpDoc> helpDocRet3 = jsonRet3 as CreatedNegotiatedContentResult<HelpDoc>;
@@ -319,25 +320,25 @@ namespace CSSPWebAPI.Tests.Controllers
                     HelpDoc helpDoc = helpDocRet3.Content;
 
                     BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest3);
+                    Assert.Null(badRequest3);
 
                     // Delete to return success
-                    IHttpActionResult jsonRet2 = helpDocController.Delete(helpDocRet, LanguageRequest.ToString());
+                    IActionResult jsonRet2 = helpDocController.Delete(helpDocRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet2);
 
                     OkNegotiatedContentResult<HelpDoc> helpDocRet2 = jsonRet2 as OkNegotiatedContentResult<HelpDoc>;
                     Assert.NotNull(helpDocRet2);
 
                     BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest2);
+                    Assert.Null(badRequest2);
 
                     // Delete to return CSSPError because HelpDocID of 0 does not exist
                     helpDocRet.HelpDocID = 0;
-                    IHttpActionResult jsonRet4 = helpDocController.Delete(helpDocRet, LanguageRequest.ToString());
+                    IActionResult jsonRet4 = helpDocController.Delete(helpDocRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet4);
 
                     OkNegotiatedContentResult<HelpDoc> helpDocRet4 = jsonRet4 as OkNegotiatedContentResult<HelpDoc>;
-                    Assert.IsNull(helpDocRet4);
+                    Assert.Null(helpDocRet4);
 
                     BadRequestErrorMessageResult badRequest4 = jsonRet4 as BadRequestErrorMessageResult;
                     Assert.NotNull(badRequest4);

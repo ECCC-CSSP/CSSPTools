@@ -1,14 +1,14 @@
 using CSSPEnums;
 using CSSPModels;
 using CSSPServices;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web.Http;
 
 namespace CSSPWebAPI.Controllers
 {
-    [RoutePrefix("api/tideSite")]
+    [Route("api/tideSite")]
     public partial class TideSiteController : BaseController
     {
         #region Variables
@@ -29,126 +29,56 @@ namespace CSSPWebAPI.Controllers
         #region Functions public
         // GET api/tideSite
         [Route("")]
-        public IHttpActionResult GetTideSiteList([FromUri]string lang = "en", [FromUri]int skip = 0, [FromUri]int take = 200,
-            [FromUri]string asc = "", [FromUri]string desc = "", [FromUri]string where = "", [FromUri]string extra = "")
+        public IActionResult GetTideSiteList([FromQuery]string lang = "en", [FromQuery]int skip = 0, [FromQuery]int take = 200,
+            [FromQuery]string asc = "", [FromQuery]string desc = "", [FromQuery]string where = "")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
                 TideSiteService tideSiteService = new TideSiteService(new Query() { Lang = lang }, db, ContactID);
 
-                if (extra == "A") // QueryString contains [extra=A]
-                {
-                   tideSiteService.Query = tideSiteService.FillQuery(typeof(TideSiteExtraA), lang, skip, take, asc, desc, where, extra);
+                tideSiteService.Query = tideSiteService.FillQuery(typeof(TideSite), lang, skip, take, asc, desc, where);
 
-                    if (tideSiteService.Query.HasErrors)
-                    {
-                        return Ok(new List<TideSiteExtraA>()
-                        {
-                            new TideSiteExtraA()
-                            {
-                                HasErrors = tideSiteService.Query.HasErrors,
-                                ValidationResults = tideSiteService.Query.ValidationResults,
-                            },
-                        }.ToList());
-                    }
-                    else
-                    {
-                        return Ok(tideSiteService.GetTideSiteExtraAList().ToList());
-                    }
-                }
-                else if (extra == "B") // QueryString contains [extra=B]
-                {
-                   tideSiteService.Query = tideSiteService.FillQuery(typeof(TideSiteExtraB), lang, skip, take, asc, desc, where, extra);
-
-                    if (tideSiteService.Query.HasErrors)
-                    {
-                        return Ok(new List<TideSiteExtraB>()
-                        {
-                            new TideSiteExtraB()
-                            {
-                                HasErrors = tideSiteService.Query.HasErrors,
-                                ValidationResults = tideSiteService.Query.ValidationResults,
-                            },
-                        }.ToList());
-                    }
-                    else
-                    {
-                        return Ok(tideSiteService.GetTideSiteExtraBList().ToList());
-                    }
-                }
-                else // QueryString has no parameter [extra] or extra is empty
-                {
-                   tideSiteService.Query = tideSiteService.FillQuery(typeof(TideSite), lang, skip, take, asc, desc, where, extra);
-
-                    if (tideSiteService.Query.HasErrors)
-                    {
-                        return Ok(new List<TideSite>()
-                        {
-                            new TideSite()
-                            {
-                                HasErrors = tideSiteService.Query.HasErrors,
-                                ValidationResults = tideSiteService.Query.ValidationResults,
-                            },
-                        }.ToList());
-                    }
-                    else
-                    {
-                        return Ok(tideSiteService.GetTideSiteList().ToList());
-                    }
-                }
+                 if (tideSiteService.Query.HasErrors)
+                 {
+                     return Ok(new List<TideSite>()
+                     {
+                         new TideSite()
+                         {
+                             HasErrors = tideSiteService.Query.HasErrors,
+                             ValidationResults = tideSiteService.Query.ValidationResults,
+                         },
+                     }.ToList());
+                 }
+                 else
+                 {
+                     return Ok(tideSiteService.GetTideSiteList().ToList());
+                 }
             }
         }
         // GET api/tideSite/1
         [Route("{TideSiteID:int}")]
-        public IHttpActionResult GetTideSiteWithID([FromUri]int TideSiteID, [FromUri]string lang = "en", [FromUri]string extra = "")
+        public IActionResult GetTideSiteWithID([FromQuery]int TideSiteID, [FromQuery]string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
                 TideSiteService tideSiteService = new TideSiteService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
 
-                tideSiteService.Query = tideSiteService.FillQuery(typeof(TideSite), lang, 0, 1, "", "", extra);
+                tideSiteService.Query = tideSiteService.FillQuery(typeof(TideSite), lang, 0, 1, "", "");
 
-                if (tideSiteService.Query.Extra == "A")
+                TideSite tideSite = new TideSite();
+                tideSite = tideSiteService.GetTideSiteWithTideSiteID(TideSiteID);
+
+                if (tideSite == null)
                 {
-                    TideSiteExtraA tideSiteExtraA = new TideSiteExtraA();
-                    tideSiteExtraA = tideSiteService.GetTideSiteExtraAWithTideSiteID(TideSiteID);
-
-                    if (tideSiteExtraA == null)
-                    {
-                        return NotFound();
-                    }
-
-                    return Ok(tideSiteExtraA);
+                    return NotFound();
                 }
-                else if (tideSiteService.Query.Extra == "B")
-                {
-                    TideSiteExtraB tideSiteExtraB = new TideSiteExtraB();
-                    tideSiteExtraB = tideSiteService.GetTideSiteExtraBWithTideSiteID(TideSiteID);
 
-                    if (tideSiteExtraB == null)
-                    {
-                        return NotFound();
-                    }
-
-                    return Ok(tideSiteExtraB);
-                }
-                else
-                {
-                    TideSite tideSite = new TideSite();
-                    tideSite = tideSiteService.GetTideSiteWithTideSiteID(TideSiteID);
-
-                    if (tideSite == null)
-                    {
-                        return NotFound();
-                    }
-
-                    return Ok(tideSite);
-                }
+                return Ok(tideSite);
             }
         }
         // POST api/tideSite
         [Route("")]
-        public IHttpActionResult Post([FromBody]TideSite tideSite, [FromUri]string lang = "en")
+        public IActionResult Post([FromBody]TideSite tideSite, [FromQuery]string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
@@ -161,13 +91,13 @@ namespace CSSPWebAPI.Controllers
                 else
                 {
                     tideSite.ValidationResults = null;
-                    return Created<TideSite>(new Uri(Request.RequestUri, tideSite.TideSiteID.ToString()), tideSite);
+                    return Created(Url.ToString(), tideSite);
                 }
             }
         }
         // PUT api/tideSite
         [Route("")]
-        public IHttpActionResult Put([FromBody]TideSite tideSite, [FromUri]string lang = "en")
+        public IActionResult Put([FromBody]TideSite tideSite, [FromQuery]string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
@@ -186,7 +116,7 @@ namespace CSSPWebAPI.Controllers
         }
         // DELETE api/tideSite
         [Route("")]
-        public IHttpActionResult Delete([FromBody]TideSite tideSite, [FromUri]string lang = "en")
+        public IActionResult Delete([FromBody]TideSite tideSite, [FromQuery]string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {

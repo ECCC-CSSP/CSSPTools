@@ -1,14 +1,14 @@
 using CSSPEnums;
 using CSSPModels;
 using CSSPServices;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web.Http;
 
 namespace CSSPWebAPI.Controllers
 {
-    [RoutePrefix("api/samplingPlanSubsector")]
+    [Route("api/samplingPlanSubsector")]
     public partial class SamplingPlanSubsectorController : BaseController
     {
         #region Variables
@@ -29,126 +29,56 @@ namespace CSSPWebAPI.Controllers
         #region Functions public
         // GET api/samplingPlanSubsector
         [Route("")]
-        public IHttpActionResult GetSamplingPlanSubsectorList([FromUri]string lang = "en", [FromUri]int skip = 0, [FromUri]int take = 200,
-            [FromUri]string asc = "", [FromUri]string desc = "", [FromUri]string where = "", [FromUri]string extra = "")
+        public IActionResult GetSamplingPlanSubsectorList([FromQuery]string lang = "en", [FromQuery]int skip = 0, [FromQuery]int take = 200,
+            [FromQuery]string asc = "", [FromQuery]string desc = "", [FromQuery]string where = "")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
                 SamplingPlanSubsectorService samplingPlanSubsectorService = new SamplingPlanSubsectorService(new Query() { Lang = lang }, db, ContactID);
 
-                if (extra == "A") // QueryString contains [extra=A]
-                {
-                   samplingPlanSubsectorService.Query = samplingPlanSubsectorService.FillQuery(typeof(SamplingPlanSubsectorExtraA), lang, skip, take, asc, desc, where, extra);
+                samplingPlanSubsectorService.Query = samplingPlanSubsectorService.FillQuery(typeof(SamplingPlanSubsector), lang, skip, take, asc, desc, where);
 
-                    if (samplingPlanSubsectorService.Query.HasErrors)
-                    {
-                        return Ok(new List<SamplingPlanSubsectorExtraA>()
-                        {
-                            new SamplingPlanSubsectorExtraA()
-                            {
-                                HasErrors = samplingPlanSubsectorService.Query.HasErrors,
-                                ValidationResults = samplingPlanSubsectorService.Query.ValidationResults,
-                            },
-                        }.ToList());
-                    }
-                    else
-                    {
-                        return Ok(samplingPlanSubsectorService.GetSamplingPlanSubsectorExtraAList().ToList());
-                    }
-                }
-                else if (extra == "B") // QueryString contains [extra=B]
-                {
-                   samplingPlanSubsectorService.Query = samplingPlanSubsectorService.FillQuery(typeof(SamplingPlanSubsectorExtraB), lang, skip, take, asc, desc, where, extra);
-
-                    if (samplingPlanSubsectorService.Query.HasErrors)
-                    {
-                        return Ok(new List<SamplingPlanSubsectorExtraB>()
-                        {
-                            new SamplingPlanSubsectorExtraB()
-                            {
-                                HasErrors = samplingPlanSubsectorService.Query.HasErrors,
-                                ValidationResults = samplingPlanSubsectorService.Query.ValidationResults,
-                            },
-                        }.ToList());
-                    }
-                    else
-                    {
-                        return Ok(samplingPlanSubsectorService.GetSamplingPlanSubsectorExtraBList().ToList());
-                    }
-                }
-                else // QueryString has no parameter [extra] or extra is empty
-                {
-                   samplingPlanSubsectorService.Query = samplingPlanSubsectorService.FillQuery(typeof(SamplingPlanSubsector), lang, skip, take, asc, desc, where, extra);
-
-                    if (samplingPlanSubsectorService.Query.HasErrors)
-                    {
-                        return Ok(new List<SamplingPlanSubsector>()
-                        {
-                            new SamplingPlanSubsector()
-                            {
-                                HasErrors = samplingPlanSubsectorService.Query.HasErrors,
-                                ValidationResults = samplingPlanSubsectorService.Query.ValidationResults,
-                            },
-                        }.ToList());
-                    }
-                    else
-                    {
-                        return Ok(samplingPlanSubsectorService.GetSamplingPlanSubsectorList().ToList());
-                    }
-                }
+                 if (samplingPlanSubsectorService.Query.HasErrors)
+                 {
+                     return Ok(new List<SamplingPlanSubsector>()
+                     {
+                         new SamplingPlanSubsector()
+                         {
+                             HasErrors = samplingPlanSubsectorService.Query.HasErrors,
+                             ValidationResults = samplingPlanSubsectorService.Query.ValidationResults,
+                         },
+                     }.ToList());
+                 }
+                 else
+                 {
+                     return Ok(samplingPlanSubsectorService.GetSamplingPlanSubsectorList().ToList());
+                 }
             }
         }
         // GET api/samplingPlanSubsector/1
         [Route("{SamplingPlanSubsectorID:int}")]
-        public IHttpActionResult GetSamplingPlanSubsectorWithID([FromUri]int SamplingPlanSubsectorID, [FromUri]string lang = "en", [FromUri]string extra = "")
+        public IActionResult GetSamplingPlanSubsectorWithID([FromQuery]int SamplingPlanSubsectorID, [FromQuery]string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
                 SamplingPlanSubsectorService samplingPlanSubsectorService = new SamplingPlanSubsectorService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
 
-                samplingPlanSubsectorService.Query = samplingPlanSubsectorService.FillQuery(typeof(SamplingPlanSubsector), lang, 0, 1, "", "", extra);
+                samplingPlanSubsectorService.Query = samplingPlanSubsectorService.FillQuery(typeof(SamplingPlanSubsector), lang, 0, 1, "", "");
 
-                if (samplingPlanSubsectorService.Query.Extra == "A")
+                SamplingPlanSubsector samplingPlanSubsector = new SamplingPlanSubsector();
+                samplingPlanSubsector = samplingPlanSubsectorService.GetSamplingPlanSubsectorWithSamplingPlanSubsectorID(SamplingPlanSubsectorID);
+
+                if (samplingPlanSubsector == null)
                 {
-                    SamplingPlanSubsectorExtraA samplingPlanSubsectorExtraA = new SamplingPlanSubsectorExtraA();
-                    samplingPlanSubsectorExtraA = samplingPlanSubsectorService.GetSamplingPlanSubsectorExtraAWithSamplingPlanSubsectorID(SamplingPlanSubsectorID);
-
-                    if (samplingPlanSubsectorExtraA == null)
-                    {
-                        return NotFound();
-                    }
-
-                    return Ok(samplingPlanSubsectorExtraA);
+                    return NotFound();
                 }
-                else if (samplingPlanSubsectorService.Query.Extra == "B")
-                {
-                    SamplingPlanSubsectorExtraB samplingPlanSubsectorExtraB = new SamplingPlanSubsectorExtraB();
-                    samplingPlanSubsectorExtraB = samplingPlanSubsectorService.GetSamplingPlanSubsectorExtraBWithSamplingPlanSubsectorID(SamplingPlanSubsectorID);
 
-                    if (samplingPlanSubsectorExtraB == null)
-                    {
-                        return NotFound();
-                    }
-
-                    return Ok(samplingPlanSubsectorExtraB);
-                }
-                else
-                {
-                    SamplingPlanSubsector samplingPlanSubsector = new SamplingPlanSubsector();
-                    samplingPlanSubsector = samplingPlanSubsectorService.GetSamplingPlanSubsectorWithSamplingPlanSubsectorID(SamplingPlanSubsectorID);
-
-                    if (samplingPlanSubsector == null)
-                    {
-                        return NotFound();
-                    }
-
-                    return Ok(samplingPlanSubsector);
-                }
+                return Ok(samplingPlanSubsector);
             }
         }
         // POST api/samplingPlanSubsector
         [Route("")]
-        public IHttpActionResult Post([FromBody]SamplingPlanSubsector samplingPlanSubsector, [FromUri]string lang = "en")
+        public IActionResult Post([FromBody]SamplingPlanSubsector samplingPlanSubsector, [FromQuery]string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
@@ -161,13 +91,13 @@ namespace CSSPWebAPI.Controllers
                 else
                 {
                     samplingPlanSubsector.ValidationResults = null;
-                    return Created<SamplingPlanSubsector>(new Uri(Request.RequestUri, samplingPlanSubsector.SamplingPlanSubsectorID.ToString()), samplingPlanSubsector);
+                    return Created(Url.ToString(), samplingPlanSubsector);
                 }
             }
         }
         // PUT api/samplingPlanSubsector
         [Route("")]
-        public IHttpActionResult Put([FromBody]SamplingPlanSubsector samplingPlanSubsector, [FromUri]string lang = "en")
+        public IActionResult Put([FromBody]SamplingPlanSubsector samplingPlanSubsector, [FromQuery]string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
@@ -186,7 +116,7 @@ namespace CSSPWebAPI.Controllers
         }
         // DELETE api/samplingPlanSubsector
         [Route("")]
-        public IHttpActionResult Delete([FromBody]SamplingPlanSubsector samplingPlanSubsector, [FromUri]string lang = "en")
+        public IActionResult Delete([FromBody]SamplingPlanSubsector samplingPlanSubsector, [FromQuery]string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {

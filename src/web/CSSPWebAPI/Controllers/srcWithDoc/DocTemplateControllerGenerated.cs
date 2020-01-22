@@ -1,14 +1,14 @@
 using CSSPEnums;
 using CSSPModels;
 using CSSPServices;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web.Http;
 
 namespace CSSPWebAPI.Controllers
 {
-    [RoutePrefix("api/docTemplate")]
+    [Route("api/docTemplate")]
     public partial class DocTemplateController : BaseController
     {
         #region Variables
@@ -29,126 +29,56 @@ namespace CSSPWebAPI.Controllers
         #region Functions public
         // GET api/docTemplate
         [Route("")]
-        public IHttpActionResult GetDocTemplateList([FromUri]string lang = "en", [FromUri]int skip = 0, [FromUri]int take = 200,
-            [FromUri]string asc = "", [FromUri]string desc = "", [FromUri]string where = "", [FromUri]string extra = "")
+        public IActionResult GetDocTemplateList([FromQuery]string lang = "en", [FromQuery]int skip = 0, [FromQuery]int take = 200,
+            [FromQuery]string asc = "", [FromQuery]string desc = "", [FromQuery]string where = "")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
                 DocTemplateService docTemplateService = new DocTemplateService(new Query() { Lang = lang }, db, ContactID);
 
-                if (extra == "A") // QueryString contains [extra=A]
-                {
-                   docTemplateService.Query = docTemplateService.FillQuery(typeof(DocTemplateExtraA), lang, skip, take, asc, desc, where, extra);
+                docTemplateService.Query = docTemplateService.FillQuery(typeof(DocTemplate), lang, skip, take, asc, desc, where);
 
-                    if (docTemplateService.Query.HasErrors)
-                    {
-                        return Ok(new List<DocTemplateExtraA>()
-                        {
-                            new DocTemplateExtraA()
-                            {
-                                HasErrors = docTemplateService.Query.HasErrors,
-                                ValidationResults = docTemplateService.Query.ValidationResults,
-                            },
-                        }.ToList());
-                    }
-                    else
-                    {
-                        return Ok(docTemplateService.GetDocTemplateExtraAList().ToList());
-                    }
-                }
-                else if (extra == "B") // QueryString contains [extra=B]
-                {
-                   docTemplateService.Query = docTemplateService.FillQuery(typeof(DocTemplateExtraB), lang, skip, take, asc, desc, where, extra);
-
-                    if (docTemplateService.Query.HasErrors)
-                    {
-                        return Ok(new List<DocTemplateExtraB>()
-                        {
-                            new DocTemplateExtraB()
-                            {
-                                HasErrors = docTemplateService.Query.HasErrors,
-                                ValidationResults = docTemplateService.Query.ValidationResults,
-                            },
-                        }.ToList());
-                    }
-                    else
-                    {
-                        return Ok(docTemplateService.GetDocTemplateExtraBList().ToList());
-                    }
-                }
-                else // QueryString has no parameter [extra] or extra is empty
-                {
-                   docTemplateService.Query = docTemplateService.FillQuery(typeof(DocTemplate), lang, skip, take, asc, desc, where, extra);
-
-                    if (docTemplateService.Query.HasErrors)
-                    {
-                        return Ok(new List<DocTemplate>()
-                        {
-                            new DocTemplate()
-                            {
-                                HasErrors = docTemplateService.Query.HasErrors,
-                                ValidationResults = docTemplateService.Query.ValidationResults,
-                            },
-                        }.ToList());
-                    }
-                    else
-                    {
-                        return Ok(docTemplateService.GetDocTemplateList().ToList());
-                    }
-                }
+                 if (docTemplateService.Query.HasErrors)
+                 {
+                     return Ok(new List<DocTemplate>()
+                     {
+                         new DocTemplate()
+                         {
+                             HasErrors = docTemplateService.Query.HasErrors,
+                             ValidationResults = docTemplateService.Query.ValidationResults,
+                         },
+                     }.ToList());
+                 }
+                 else
+                 {
+                     return Ok(docTemplateService.GetDocTemplateList().ToList());
+                 }
             }
         }
         // GET api/docTemplate/1
         [Route("{DocTemplateID:int}")]
-        public IHttpActionResult GetDocTemplateWithID([FromUri]int DocTemplateID, [FromUri]string lang = "en", [FromUri]string extra = "")
+        public IActionResult GetDocTemplateWithID([FromQuery]int DocTemplateID, [FromQuery]string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
                 DocTemplateService docTemplateService = new DocTemplateService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
 
-                docTemplateService.Query = docTemplateService.FillQuery(typeof(DocTemplate), lang, 0, 1, "", "", extra);
+                docTemplateService.Query = docTemplateService.FillQuery(typeof(DocTemplate), lang, 0, 1, "", "");
 
-                if (docTemplateService.Query.Extra == "A")
+                DocTemplate docTemplate = new DocTemplate();
+                docTemplate = docTemplateService.GetDocTemplateWithDocTemplateID(DocTemplateID);
+
+                if (docTemplate == null)
                 {
-                    DocTemplateExtraA docTemplateExtraA = new DocTemplateExtraA();
-                    docTemplateExtraA = docTemplateService.GetDocTemplateExtraAWithDocTemplateID(DocTemplateID);
-
-                    if (docTemplateExtraA == null)
-                    {
-                        return NotFound();
-                    }
-
-                    return Ok(docTemplateExtraA);
+                    return NotFound();
                 }
-                else if (docTemplateService.Query.Extra == "B")
-                {
-                    DocTemplateExtraB docTemplateExtraB = new DocTemplateExtraB();
-                    docTemplateExtraB = docTemplateService.GetDocTemplateExtraBWithDocTemplateID(DocTemplateID);
 
-                    if (docTemplateExtraB == null)
-                    {
-                        return NotFound();
-                    }
-
-                    return Ok(docTemplateExtraB);
-                }
-                else
-                {
-                    DocTemplate docTemplate = new DocTemplate();
-                    docTemplate = docTemplateService.GetDocTemplateWithDocTemplateID(DocTemplateID);
-
-                    if (docTemplate == null)
-                    {
-                        return NotFound();
-                    }
-
-                    return Ok(docTemplate);
-                }
+                return Ok(docTemplate);
             }
         }
         // POST api/docTemplate
         [Route("")]
-        public IHttpActionResult Post([FromBody]DocTemplate docTemplate, [FromUri]string lang = "en")
+        public IActionResult Post([FromBody]DocTemplate docTemplate, [FromQuery]string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
@@ -161,13 +91,13 @@ namespace CSSPWebAPI.Controllers
                 else
                 {
                     docTemplate.ValidationResults = null;
-                    return Created<DocTemplate>(new Uri(Request.RequestUri, docTemplate.DocTemplateID.ToString()), docTemplate);
+                    return Created(Url.ToString(), docTemplate);
                 }
             }
         }
         // PUT api/docTemplate
         [Route("")]
-        public IHttpActionResult Put([FromBody]DocTemplate docTemplate, [FromUri]string lang = "en")
+        public IActionResult Put([FromBody]DocTemplate docTemplate, [FromQuery]string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
@@ -186,7 +116,7 @@ namespace CSSPWebAPI.Controllers
         }
         // DELETE api/docTemplate
         [Route("")]
-        public IHttpActionResult Delete([FromBody]DocTemplate docTemplate, [FromUri]string lang = "en")
+        public IActionResult Delete([FromBody]DocTemplate docTemplate, [FromQuery]string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {

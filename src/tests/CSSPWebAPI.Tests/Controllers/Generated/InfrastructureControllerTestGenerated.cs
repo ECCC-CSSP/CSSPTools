@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
 using System.Web.Http.Results;
+using Microsoft.AspNetCore.Mvc;
 
 namespace CSSPWebAPI.Tests.Controllers
 {
@@ -48,7 +49,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     }
 
                     // ok with Infrastructure info
-                    IHttpActionResult jsonRet = infrastructureController.GetInfrastructureList();
+                    IActionResult jsonRet = infrastructureController.GetInfrastructureList();
                     Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<List<Infrastructure>> ret = jsonRet as OkNegotiatedContentResult<List<Infrastructure>>;
@@ -86,7 +87,7 @@ namespace CSSPWebAPI.Tests.Controllers
                            count = (query.Take > count ? query.Take : count);
 
                            // ok with Infrastructure info
-                           IHttpActionResult jsonRet2 = infrastructureController.GetInfrastructureList(query.Language.ToString(), query.Skip, query.Take);
+                           IActionResult jsonRet2 = infrastructureController.GetInfrastructureList(query.Language.ToString(), query.Skip, query.Take);
                            Assert.NotNull(jsonRet2);
 
                            OkNegotiatedContentResult<List<Infrastructure>> ret2 = jsonRet2 as OkNegotiatedContentResult<List<Infrastructure>>;
@@ -119,7 +120,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     }
 
                     // ok with Infrastructure info
-                    IHttpActionResult jsonRet = infrastructureController.GetInfrastructureWithID(infrastructureFirst.InfrastructureID);
+                    IActionResult jsonRet = infrastructureController.GetInfrastructureWithID(infrastructureFirst.InfrastructureID);
                     Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<Infrastructure> Ret = jsonRet as OkNegotiatedContentResult<Infrastructure>;
@@ -127,16 +128,16 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.Equal(infrastructureFirst.InfrastructureID, infrastructureRet.InfrastructureID);
 
                     BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
+                    Assert.Null(badRequest);
 
                     // Not Found
-                    IHttpActionResult jsonRet2 = infrastructureController.GetInfrastructureWithID(0);
+                    IActionResult jsonRet2 = infrastructureController.GetInfrastructureWithID(0);
                     Assert.NotNull(jsonRet2);
 
                     OkNegotiatedContentResult<Infrastructure> infrastructureRet2 = jsonRet2 as OkNegotiatedContentResult<Infrastructure>;
-                    Assert.IsNull(infrastructureRet2);
+                    Assert.Null(infrastructureRet2);
 
-                    NotFoundResult notFoundRequest = jsonRet2 as NotFoundResult;
+                    NotFoundObjectResult notFoundRequest = jsonRet2 as NotFoundObjectResult;
                     Assert.NotNull(notFoundRequest);
                 }
             }
@@ -168,7 +169,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     }
 
                     // ok with Infrastructure info
-                    IHttpActionResult jsonRet = infrastructureController.GetInfrastructureWithID(infrastructureLast.InfrastructureID);
+                    IActionResult jsonRet = infrastructureController.GetInfrastructureWithID(infrastructureLast.InfrastructureID);
                     Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<Infrastructure> Ret = jsonRet as OkNegotiatedContentResult<Infrastructure>;
@@ -176,14 +177,14 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.Equal(infrastructureLast.InfrastructureID, infrastructureRet.InfrastructureID);
 
                     BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
+                    Assert.Null(badRequest);
 
                     // Post to return CSSPError because InfrastructureID exist
-                    IHttpActionResult jsonRet2 = infrastructureController.Post(infrastructureRet, LanguageRequest.ToString());
+                    IActionResult jsonRet2 = infrastructureController.Post(infrastructureRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet2);
 
                     OkNegotiatedContentResult<Infrastructure> infrastructureRet2 = jsonRet2 as OkNegotiatedContentResult<Infrastructure>;
-                    Assert.IsNull(infrastructureRet2);
+                    Assert.Null(infrastructureRet2);
 
                     BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
                     Assert.NotNull(badRequest2);
@@ -192,23 +193,23 @@ namespace CSSPWebAPI.Tests.Controllers
                     infrastructureRet.InfrastructureID = 0;
                     infrastructureController.Request = new System.Net.Http.HttpRequestMessage();
                     infrastructureController.Request.RequestUri = new System.Uri("http://localhost:5000/api/infrastructure");
-                    IHttpActionResult jsonRet3 = infrastructureController.Post(infrastructureRet, LanguageRequest.ToString());
+                    IActionResult jsonRet3 = infrastructureController.Post(infrastructureRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 
                     CreatedNegotiatedContentResult<Infrastructure> infrastructureRet3 = jsonRet3 as CreatedNegotiatedContentResult<Infrastructure>;
                     Assert.NotNull(infrastructureRet3);
 
                     BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest3);
+                    Assert.Null(badRequest3);
 
-                    IHttpActionResult jsonRet4 = infrastructureController.Delete(infrastructureRet, LanguageRequest.ToString());
+                    IActionResult jsonRet4 = infrastructureController.Delete(infrastructureRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet4);
 
                     OkNegotiatedContentResult<Infrastructure> infrastructureRet4 = jsonRet4 as OkNegotiatedContentResult<Infrastructure>;
                     Assert.NotNull(infrastructureRet4);
 
                     BadRequestErrorMessageResult badRequest4 = jsonRet4 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest4);
+                    Assert.Null(badRequest4);
                 }
             }
         }
@@ -237,7 +238,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     }
 
                     // ok with Infrastructure info
-                    IHttpActionResult jsonRet = infrastructureController.GetInfrastructureWithID(infrastructureLast.InfrastructureID);
+                    IActionResult jsonRet = infrastructureController.GetInfrastructureWithID(infrastructureLast.InfrastructureID);
                     Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<Infrastructure> Ret = jsonRet as OkNegotiatedContentResult<Infrastructure>;
@@ -245,25 +246,25 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.Equal(infrastructureLast.InfrastructureID, infrastructureRet.InfrastructureID);
 
                     BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
+                    Assert.Null(badRequest);
 
                     // Put to return success
-                    IHttpActionResult jsonRet2 = infrastructureController.Put(infrastructureRet, LanguageRequest.ToString());
+                    IActionResult jsonRet2 = infrastructureController.Put(infrastructureRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet2);
 
                     OkNegotiatedContentResult<Infrastructure> infrastructureRet2 = jsonRet2 as OkNegotiatedContentResult<Infrastructure>;
                     Assert.NotNull(infrastructureRet2);
 
                     BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest2);
+                    Assert.Null(badRequest2);
 
                     // Put to return CSSPError because InfrastructureID of 0 does not exist
                     infrastructureRet.InfrastructureID = 0;
-                    IHttpActionResult jsonRet3 = infrastructureController.Put(infrastructureRet, LanguageRequest.ToString());
+                    IActionResult jsonRet3 = infrastructureController.Put(infrastructureRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 
                     OkNegotiatedContentResult<Infrastructure> infrastructureRet3 = jsonRet3 as OkNegotiatedContentResult<Infrastructure>;
-                    Assert.IsNull(infrastructureRet3);
+                    Assert.Null(infrastructureRet3);
 
                     BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
                     Assert.NotNull(badRequest3);
@@ -297,7 +298,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     }
 
                     // ok with Infrastructure info
-                    IHttpActionResult jsonRet = infrastructureController.GetInfrastructureWithID(infrastructureLast.InfrastructureID);
+                    IActionResult jsonRet = infrastructureController.GetInfrastructureWithID(infrastructureLast.InfrastructureID);
                     Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<Infrastructure> Ret = jsonRet as OkNegotiatedContentResult<Infrastructure>;
@@ -305,13 +306,13 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.Equal(infrastructureLast.InfrastructureID, infrastructureRet.InfrastructureID);
 
                     BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
+                    Assert.Null(badRequest);
 
                     // Post to return newly added Infrastructure
                     infrastructureRet.InfrastructureID = 0;
                     infrastructureController.Request = new System.Net.Http.HttpRequestMessage();
                     infrastructureController.Request.RequestUri = new System.Uri("http://localhost:5000/api/infrastructure");
-                    IHttpActionResult jsonRet3 = infrastructureController.Post(infrastructureRet, LanguageRequest.ToString());
+                    IActionResult jsonRet3 = infrastructureController.Post(infrastructureRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 
                     CreatedNegotiatedContentResult<Infrastructure> infrastructureRet3 = jsonRet3 as CreatedNegotiatedContentResult<Infrastructure>;
@@ -319,25 +320,25 @@ namespace CSSPWebAPI.Tests.Controllers
                     Infrastructure infrastructure = infrastructureRet3.Content;
 
                     BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest3);
+                    Assert.Null(badRequest3);
 
                     // Delete to return success
-                    IHttpActionResult jsonRet2 = infrastructureController.Delete(infrastructureRet, LanguageRequest.ToString());
+                    IActionResult jsonRet2 = infrastructureController.Delete(infrastructureRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet2);
 
                     OkNegotiatedContentResult<Infrastructure> infrastructureRet2 = jsonRet2 as OkNegotiatedContentResult<Infrastructure>;
                     Assert.NotNull(infrastructureRet2);
 
                     BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest2);
+                    Assert.Null(badRequest2);
 
                     // Delete to return CSSPError because InfrastructureID of 0 does not exist
                     infrastructureRet.InfrastructureID = 0;
-                    IHttpActionResult jsonRet4 = infrastructureController.Delete(infrastructureRet, LanguageRequest.ToString());
+                    IActionResult jsonRet4 = infrastructureController.Delete(infrastructureRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet4);
 
                     OkNegotiatedContentResult<Infrastructure> infrastructureRet4 = jsonRet4 as OkNegotiatedContentResult<Infrastructure>;
-                    Assert.IsNull(infrastructureRet4);
+                    Assert.Null(infrastructureRet4);
 
                     BadRequestErrorMessageResult badRequest4 = jsonRet4 as BadRequestErrorMessageResult;
                     Assert.NotNull(badRequest4);

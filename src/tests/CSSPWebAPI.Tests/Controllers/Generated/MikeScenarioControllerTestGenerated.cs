@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
 using System.Web.Http.Results;
+using Microsoft.AspNetCore.Mvc;
 
 namespace CSSPWebAPI.Tests.Controllers
 {
@@ -48,7 +49,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     }
 
                     // ok with MikeScenario info
-                    IHttpActionResult jsonRet = mikeScenarioController.GetMikeScenarioList();
+                    IActionResult jsonRet = mikeScenarioController.GetMikeScenarioList();
                     Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<List<MikeScenario>> ret = jsonRet as OkNegotiatedContentResult<List<MikeScenario>>;
@@ -86,7 +87,7 @@ namespace CSSPWebAPI.Tests.Controllers
                            count = (query.Take > count ? query.Take : count);
 
                            // ok with MikeScenario info
-                           IHttpActionResult jsonRet2 = mikeScenarioController.GetMikeScenarioList(query.Language.ToString(), query.Skip, query.Take);
+                           IActionResult jsonRet2 = mikeScenarioController.GetMikeScenarioList(query.Language.ToString(), query.Skip, query.Take);
                            Assert.NotNull(jsonRet2);
 
                            OkNegotiatedContentResult<List<MikeScenario>> ret2 = jsonRet2 as OkNegotiatedContentResult<List<MikeScenario>>;
@@ -119,7 +120,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     }
 
                     // ok with MikeScenario info
-                    IHttpActionResult jsonRet = mikeScenarioController.GetMikeScenarioWithID(mikeScenarioFirst.MikeScenarioID);
+                    IActionResult jsonRet = mikeScenarioController.GetMikeScenarioWithID(mikeScenarioFirst.MikeScenarioID);
                     Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<MikeScenario> Ret = jsonRet as OkNegotiatedContentResult<MikeScenario>;
@@ -127,16 +128,16 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.Equal(mikeScenarioFirst.MikeScenarioID, mikeScenarioRet.MikeScenarioID);
 
                     BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
+                    Assert.Null(badRequest);
 
                     // Not Found
-                    IHttpActionResult jsonRet2 = mikeScenarioController.GetMikeScenarioWithID(0);
+                    IActionResult jsonRet2 = mikeScenarioController.GetMikeScenarioWithID(0);
                     Assert.NotNull(jsonRet2);
 
                     OkNegotiatedContentResult<MikeScenario> mikeScenarioRet2 = jsonRet2 as OkNegotiatedContentResult<MikeScenario>;
-                    Assert.IsNull(mikeScenarioRet2);
+                    Assert.Null(mikeScenarioRet2);
 
-                    NotFoundResult notFoundRequest = jsonRet2 as NotFoundResult;
+                    NotFoundObjectResult notFoundRequest = jsonRet2 as NotFoundObjectResult;
                     Assert.NotNull(notFoundRequest);
                 }
             }
@@ -168,7 +169,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     }
 
                     // ok with MikeScenario info
-                    IHttpActionResult jsonRet = mikeScenarioController.GetMikeScenarioWithID(mikeScenarioLast.MikeScenarioID);
+                    IActionResult jsonRet = mikeScenarioController.GetMikeScenarioWithID(mikeScenarioLast.MikeScenarioID);
                     Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<MikeScenario> Ret = jsonRet as OkNegotiatedContentResult<MikeScenario>;
@@ -176,14 +177,14 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.Equal(mikeScenarioLast.MikeScenarioID, mikeScenarioRet.MikeScenarioID);
 
                     BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
+                    Assert.Null(badRequest);
 
                     // Post to return CSSPError because MikeScenarioID exist
-                    IHttpActionResult jsonRet2 = mikeScenarioController.Post(mikeScenarioRet, LanguageRequest.ToString());
+                    IActionResult jsonRet2 = mikeScenarioController.Post(mikeScenarioRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet2);
 
                     OkNegotiatedContentResult<MikeScenario> mikeScenarioRet2 = jsonRet2 as OkNegotiatedContentResult<MikeScenario>;
-                    Assert.IsNull(mikeScenarioRet2);
+                    Assert.Null(mikeScenarioRet2);
 
                     BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
                     Assert.NotNull(badRequest2);
@@ -192,23 +193,23 @@ namespace CSSPWebAPI.Tests.Controllers
                     mikeScenarioRet.MikeScenarioID = 0;
                     mikeScenarioController.Request = new System.Net.Http.HttpRequestMessage();
                     mikeScenarioController.Request.RequestUri = new System.Uri("http://localhost:5000/api/mikeScenario");
-                    IHttpActionResult jsonRet3 = mikeScenarioController.Post(mikeScenarioRet, LanguageRequest.ToString());
+                    IActionResult jsonRet3 = mikeScenarioController.Post(mikeScenarioRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 
                     CreatedNegotiatedContentResult<MikeScenario> mikeScenarioRet3 = jsonRet3 as CreatedNegotiatedContentResult<MikeScenario>;
                     Assert.NotNull(mikeScenarioRet3);
 
                     BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest3);
+                    Assert.Null(badRequest3);
 
-                    IHttpActionResult jsonRet4 = mikeScenarioController.Delete(mikeScenarioRet, LanguageRequest.ToString());
+                    IActionResult jsonRet4 = mikeScenarioController.Delete(mikeScenarioRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet4);
 
                     OkNegotiatedContentResult<MikeScenario> mikeScenarioRet4 = jsonRet4 as OkNegotiatedContentResult<MikeScenario>;
                     Assert.NotNull(mikeScenarioRet4);
 
                     BadRequestErrorMessageResult badRequest4 = jsonRet4 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest4);
+                    Assert.Null(badRequest4);
                 }
             }
         }
@@ -237,7 +238,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     }
 
                     // ok with MikeScenario info
-                    IHttpActionResult jsonRet = mikeScenarioController.GetMikeScenarioWithID(mikeScenarioLast.MikeScenarioID);
+                    IActionResult jsonRet = mikeScenarioController.GetMikeScenarioWithID(mikeScenarioLast.MikeScenarioID);
                     Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<MikeScenario> Ret = jsonRet as OkNegotiatedContentResult<MikeScenario>;
@@ -245,25 +246,25 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.Equal(mikeScenarioLast.MikeScenarioID, mikeScenarioRet.MikeScenarioID);
 
                     BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
+                    Assert.Null(badRequest);
 
                     // Put to return success
-                    IHttpActionResult jsonRet2 = mikeScenarioController.Put(mikeScenarioRet, LanguageRequest.ToString());
+                    IActionResult jsonRet2 = mikeScenarioController.Put(mikeScenarioRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet2);
 
                     OkNegotiatedContentResult<MikeScenario> mikeScenarioRet2 = jsonRet2 as OkNegotiatedContentResult<MikeScenario>;
                     Assert.NotNull(mikeScenarioRet2);
 
                     BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest2);
+                    Assert.Null(badRequest2);
 
                     // Put to return CSSPError because MikeScenarioID of 0 does not exist
                     mikeScenarioRet.MikeScenarioID = 0;
-                    IHttpActionResult jsonRet3 = mikeScenarioController.Put(mikeScenarioRet, LanguageRequest.ToString());
+                    IActionResult jsonRet3 = mikeScenarioController.Put(mikeScenarioRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 
                     OkNegotiatedContentResult<MikeScenario> mikeScenarioRet3 = jsonRet3 as OkNegotiatedContentResult<MikeScenario>;
-                    Assert.IsNull(mikeScenarioRet3);
+                    Assert.Null(mikeScenarioRet3);
 
                     BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
                     Assert.NotNull(badRequest3);
@@ -297,7 +298,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     }
 
                     // ok with MikeScenario info
-                    IHttpActionResult jsonRet = mikeScenarioController.GetMikeScenarioWithID(mikeScenarioLast.MikeScenarioID);
+                    IActionResult jsonRet = mikeScenarioController.GetMikeScenarioWithID(mikeScenarioLast.MikeScenarioID);
                     Assert.NotNull(jsonRet);
 
                     OkNegotiatedContentResult<MikeScenario> Ret = jsonRet as OkNegotiatedContentResult<MikeScenario>;
@@ -305,13 +306,13 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.Equal(mikeScenarioLast.MikeScenarioID, mikeScenarioRet.MikeScenarioID);
 
                     BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
+                    Assert.Null(badRequest);
 
                     // Post to return newly added MikeScenario
                     mikeScenarioRet.MikeScenarioID = 0;
                     mikeScenarioController.Request = new System.Net.Http.HttpRequestMessage();
                     mikeScenarioController.Request.RequestUri = new System.Uri("http://localhost:5000/api/mikeScenario");
-                    IHttpActionResult jsonRet3 = mikeScenarioController.Post(mikeScenarioRet, LanguageRequest.ToString());
+                    IActionResult jsonRet3 = mikeScenarioController.Post(mikeScenarioRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 
                     CreatedNegotiatedContentResult<MikeScenario> mikeScenarioRet3 = jsonRet3 as CreatedNegotiatedContentResult<MikeScenario>;
@@ -319,25 +320,25 @@ namespace CSSPWebAPI.Tests.Controllers
                     MikeScenario mikeScenario = mikeScenarioRet3.Content;
 
                     BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest3);
+                    Assert.Null(badRequest3);
 
                     // Delete to return success
-                    IHttpActionResult jsonRet2 = mikeScenarioController.Delete(mikeScenarioRet, LanguageRequest.ToString());
+                    IActionResult jsonRet2 = mikeScenarioController.Delete(mikeScenarioRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet2);
 
                     OkNegotiatedContentResult<MikeScenario> mikeScenarioRet2 = jsonRet2 as OkNegotiatedContentResult<MikeScenario>;
                     Assert.NotNull(mikeScenarioRet2);
 
                     BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest2);
+                    Assert.Null(badRequest2);
 
                     // Delete to return CSSPError because MikeScenarioID of 0 does not exist
                     mikeScenarioRet.MikeScenarioID = 0;
-                    IHttpActionResult jsonRet4 = mikeScenarioController.Delete(mikeScenarioRet, LanguageRequest.ToString());
+                    IActionResult jsonRet4 = mikeScenarioController.Delete(mikeScenarioRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet4);
 
                     OkNegotiatedContentResult<MikeScenario> mikeScenarioRet4 = jsonRet4 as OkNegotiatedContentResult<MikeScenario>;
-                    Assert.IsNull(mikeScenarioRet4);
+                    Assert.Null(mikeScenarioRet4);
 
                     BadRequestErrorMessageResult badRequest4 = jsonRet4 as BadRequestErrorMessageResult;
                     Assert.NotNull(badRequest4);

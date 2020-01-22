@@ -1,14 +1,14 @@
 using CSSPEnums;
 using CSSPModels;
 using CSSPServices;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web.Http;
 
 namespace CSSPWebAPI.Controllers
 {
-    [RoutePrefix("api/classification")]
+    [Route("api/classification")]
     public partial class ClassificationController : BaseController
     {
         #region Variables
@@ -29,126 +29,56 @@ namespace CSSPWebAPI.Controllers
         #region Functions public
         // GET api/classification
         [Route("")]
-        public IHttpActionResult GetClassificationList([FromUri]string lang = "en", [FromUri]int skip = 0, [FromUri]int take = 200,
-            [FromUri]string asc = "", [FromUri]string desc = "", [FromUri]string where = "", [FromUri]string extra = "")
+        public IActionResult GetClassificationList([FromQuery]string lang = "en", [FromQuery]int skip = 0, [FromQuery]int take = 200,
+            [FromQuery]string asc = "", [FromQuery]string desc = "", [FromQuery]string where = "")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
                 ClassificationService classificationService = new ClassificationService(new Query() { Lang = lang }, db, ContactID);
 
-                if (extra == "A") // QueryString contains [extra=A]
-                {
-                   classificationService.Query = classificationService.FillQuery(typeof(ClassificationExtraA), lang, skip, take, asc, desc, where, extra);
+                classificationService.Query = classificationService.FillQuery(typeof(Classification), lang, skip, take, asc, desc, where);
 
-                    if (classificationService.Query.HasErrors)
-                    {
-                        return Ok(new List<ClassificationExtraA>()
-                        {
-                            new ClassificationExtraA()
-                            {
-                                HasErrors = classificationService.Query.HasErrors,
-                                ValidationResults = classificationService.Query.ValidationResults,
-                            },
-                        }.ToList());
-                    }
-                    else
-                    {
-                        return Ok(classificationService.GetClassificationExtraAList().ToList());
-                    }
-                }
-                else if (extra == "B") // QueryString contains [extra=B]
-                {
-                   classificationService.Query = classificationService.FillQuery(typeof(ClassificationExtraB), lang, skip, take, asc, desc, where, extra);
-
-                    if (classificationService.Query.HasErrors)
-                    {
-                        return Ok(new List<ClassificationExtraB>()
-                        {
-                            new ClassificationExtraB()
-                            {
-                                HasErrors = classificationService.Query.HasErrors,
-                                ValidationResults = classificationService.Query.ValidationResults,
-                            },
-                        }.ToList());
-                    }
-                    else
-                    {
-                        return Ok(classificationService.GetClassificationExtraBList().ToList());
-                    }
-                }
-                else // QueryString has no parameter [extra] or extra is empty
-                {
-                   classificationService.Query = classificationService.FillQuery(typeof(Classification), lang, skip, take, asc, desc, where, extra);
-
-                    if (classificationService.Query.HasErrors)
-                    {
-                        return Ok(new List<Classification>()
-                        {
-                            new Classification()
-                            {
-                                HasErrors = classificationService.Query.HasErrors,
-                                ValidationResults = classificationService.Query.ValidationResults,
-                            },
-                        }.ToList());
-                    }
-                    else
-                    {
-                        return Ok(classificationService.GetClassificationList().ToList());
-                    }
-                }
+                 if (classificationService.Query.HasErrors)
+                 {
+                     return Ok(new List<Classification>()
+                     {
+                         new Classification()
+                         {
+                             HasErrors = classificationService.Query.HasErrors,
+                             ValidationResults = classificationService.Query.ValidationResults,
+                         },
+                     }.ToList());
+                 }
+                 else
+                 {
+                     return Ok(classificationService.GetClassificationList().ToList());
+                 }
             }
         }
         // GET api/classification/1
         [Route("{ClassificationID:int}")]
-        public IHttpActionResult GetClassificationWithID([FromUri]int ClassificationID, [FromUri]string lang = "en", [FromUri]string extra = "")
+        public IActionResult GetClassificationWithID([FromQuery]int ClassificationID, [FromQuery]string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
                 ClassificationService classificationService = new ClassificationService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
 
-                classificationService.Query = classificationService.FillQuery(typeof(Classification), lang, 0, 1, "", "", extra);
+                classificationService.Query = classificationService.FillQuery(typeof(Classification), lang, 0, 1, "", "");
 
-                if (classificationService.Query.Extra == "A")
+                Classification classification = new Classification();
+                classification = classificationService.GetClassificationWithClassificationID(ClassificationID);
+
+                if (classification == null)
                 {
-                    ClassificationExtraA classificationExtraA = new ClassificationExtraA();
-                    classificationExtraA = classificationService.GetClassificationExtraAWithClassificationID(ClassificationID);
-
-                    if (classificationExtraA == null)
-                    {
-                        return NotFound();
-                    }
-
-                    return Ok(classificationExtraA);
+                    return NotFound();
                 }
-                else if (classificationService.Query.Extra == "B")
-                {
-                    ClassificationExtraB classificationExtraB = new ClassificationExtraB();
-                    classificationExtraB = classificationService.GetClassificationExtraBWithClassificationID(ClassificationID);
 
-                    if (classificationExtraB == null)
-                    {
-                        return NotFound();
-                    }
-
-                    return Ok(classificationExtraB);
-                }
-                else
-                {
-                    Classification classification = new Classification();
-                    classification = classificationService.GetClassificationWithClassificationID(ClassificationID);
-
-                    if (classification == null)
-                    {
-                        return NotFound();
-                    }
-
-                    return Ok(classification);
-                }
+                return Ok(classification);
             }
         }
         // POST api/classification
         [Route("")]
-        public IHttpActionResult Post([FromBody]Classification classification, [FromUri]string lang = "en")
+        public IActionResult Post([FromBody]Classification classification, [FromQuery]string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
@@ -161,13 +91,13 @@ namespace CSSPWebAPI.Controllers
                 else
                 {
                     classification.ValidationResults = null;
-                    return Created<Classification>(new Uri(Request.RequestUri, classification.ClassificationID.ToString()), classification);
+                    return Created(Url.ToString(), classification);
                 }
             }
         }
         // PUT api/classification
         [Route("")]
-        public IHttpActionResult Put([FromBody]Classification classification, [FromUri]string lang = "en")
+        public IActionResult Put([FromBody]Classification classification, [FromQuery]string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
@@ -186,7 +116,7 @@ namespace CSSPWebAPI.Controllers
         }
         // DELETE api/classification
         [Route("")]
-        public IHttpActionResult Delete([FromBody]Classification classification, [FromUri]string lang = "en")
+        public IActionResult Delete([FromBody]Classification classification, [FromQuery]string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {

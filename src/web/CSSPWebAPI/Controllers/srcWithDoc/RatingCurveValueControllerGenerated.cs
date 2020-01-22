@@ -1,14 +1,14 @@
 using CSSPEnums;
 using CSSPModels;
 using CSSPServices;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web.Http;
 
 namespace CSSPWebAPI.Controllers
 {
-    [RoutePrefix("api/ratingCurveValue")]
+    [Route("api/ratingCurveValue")]
     public partial class RatingCurveValueController : BaseController
     {
         #region Variables
@@ -29,126 +29,56 @@ namespace CSSPWebAPI.Controllers
         #region Functions public
         // GET api/ratingCurveValue
         [Route("")]
-        public IHttpActionResult GetRatingCurveValueList([FromUri]string lang = "en", [FromUri]int skip = 0, [FromUri]int take = 200,
-            [FromUri]string asc = "", [FromUri]string desc = "", [FromUri]string where = "", [FromUri]string extra = "")
+        public IActionResult GetRatingCurveValueList([FromQuery]string lang = "en", [FromQuery]int skip = 0, [FromQuery]int take = 200,
+            [FromQuery]string asc = "", [FromQuery]string desc = "", [FromQuery]string where = "")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
                 RatingCurveValueService ratingCurveValueService = new RatingCurveValueService(new Query() { Lang = lang }, db, ContactID);
 
-                if (extra == "A") // QueryString contains [extra=A]
-                {
-                   ratingCurveValueService.Query = ratingCurveValueService.FillQuery(typeof(RatingCurveValueExtraA), lang, skip, take, asc, desc, where, extra);
+                ratingCurveValueService.Query = ratingCurveValueService.FillQuery(typeof(RatingCurveValue), lang, skip, take, asc, desc, where);
 
-                    if (ratingCurveValueService.Query.HasErrors)
-                    {
-                        return Ok(new List<RatingCurveValueExtraA>()
-                        {
-                            new RatingCurveValueExtraA()
-                            {
-                                HasErrors = ratingCurveValueService.Query.HasErrors,
-                                ValidationResults = ratingCurveValueService.Query.ValidationResults,
-                            },
-                        }.ToList());
-                    }
-                    else
-                    {
-                        return Ok(ratingCurveValueService.GetRatingCurveValueExtraAList().ToList());
-                    }
-                }
-                else if (extra == "B") // QueryString contains [extra=B]
-                {
-                   ratingCurveValueService.Query = ratingCurveValueService.FillQuery(typeof(RatingCurveValueExtraB), lang, skip, take, asc, desc, where, extra);
-
-                    if (ratingCurveValueService.Query.HasErrors)
-                    {
-                        return Ok(new List<RatingCurveValueExtraB>()
-                        {
-                            new RatingCurveValueExtraB()
-                            {
-                                HasErrors = ratingCurveValueService.Query.HasErrors,
-                                ValidationResults = ratingCurveValueService.Query.ValidationResults,
-                            },
-                        }.ToList());
-                    }
-                    else
-                    {
-                        return Ok(ratingCurveValueService.GetRatingCurveValueExtraBList().ToList());
-                    }
-                }
-                else // QueryString has no parameter [extra] or extra is empty
-                {
-                   ratingCurveValueService.Query = ratingCurveValueService.FillQuery(typeof(RatingCurveValue), lang, skip, take, asc, desc, where, extra);
-
-                    if (ratingCurveValueService.Query.HasErrors)
-                    {
-                        return Ok(new List<RatingCurveValue>()
-                        {
-                            new RatingCurveValue()
-                            {
-                                HasErrors = ratingCurveValueService.Query.HasErrors,
-                                ValidationResults = ratingCurveValueService.Query.ValidationResults,
-                            },
-                        }.ToList());
-                    }
-                    else
-                    {
-                        return Ok(ratingCurveValueService.GetRatingCurveValueList().ToList());
-                    }
-                }
+                 if (ratingCurveValueService.Query.HasErrors)
+                 {
+                     return Ok(new List<RatingCurveValue>()
+                     {
+                         new RatingCurveValue()
+                         {
+                             HasErrors = ratingCurveValueService.Query.HasErrors,
+                             ValidationResults = ratingCurveValueService.Query.ValidationResults,
+                         },
+                     }.ToList());
+                 }
+                 else
+                 {
+                     return Ok(ratingCurveValueService.GetRatingCurveValueList().ToList());
+                 }
             }
         }
         // GET api/ratingCurveValue/1
         [Route("{RatingCurveValueID:int}")]
-        public IHttpActionResult GetRatingCurveValueWithID([FromUri]int RatingCurveValueID, [FromUri]string lang = "en", [FromUri]string extra = "")
+        public IActionResult GetRatingCurveValueWithID([FromQuery]int RatingCurveValueID, [FromQuery]string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
                 RatingCurveValueService ratingCurveValueService = new RatingCurveValueService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
 
-                ratingCurveValueService.Query = ratingCurveValueService.FillQuery(typeof(RatingCurveValue), lang, 0, 1, "", "", extra);
+                ratingCurveValueService.Query = ratingCurveValueService.FillQuery(typeof(RatingCurveValue), lang, 0, 1, "", "");
 
-                if (ratingCurveValueService.Query.Extra == "A")
+                RatingCurveValue ratingCurveValue = new RatingCurveValue();
+                ratingCurveValue = ratingCurveValueService.GetRatingCurveValueWithRatingCurveValueID(RatingCurveValueID);
+
+                if (ratingCurveValue == null)
                 {
-                    RatingCurveValueExtraA ratingCurveValueExtraA = new RatingCurveValueExtraA();
-                    ratingCurveValueExtraA = ratingCurveValueService.GetRatingCurveValueExtraAWithRatingCurveValueID(RatingCurveValueID);
-
-                    if (ratingCurveValueExtraA == null)
-                    {
-                        return NotFound();
-                    }
-
-                    return Ok(ratingCurveValueExtraA);
+                    return NotFound();
                 }
-                else if (ratingCurveValueService.Query.Extra == "B")
-                {
-                    RatingCurveValueExtraB ratingCurveValueExtraB = new RatingCurveValueExtraB();
-                    ratingCurveValueExtraB = ratingCurveValueService.GetRatingCurveValueExtraBWithRatingCurveValueID(RatingCurveValueID);
 
-                    if (ratingCurveValueExtraB == null)
-                    {
-                        return NotFound();
-                    }
-
-                    return Ok(ratingCurveValueExtraB);
-                }
-                else
-                {
-                    RatingCurveValue ratingCurveValue = new RatingCurveValue();
-                    ratingCurveValue = ratingCurveValueService.GetRatingCurveValueWithRatingCurveValueID(RatingCurveValueID);
-
-                    if (ratingCurveValue == null)
-                    {
-                        return NotFound();
-                    }
-
-                    return Ok(ratingCurveValue);
-                }
+                return Ok(ratingCurveValue);
             }
         }
         // POST api/ratingCurveValue
         [Route("")]
-        public IHttpActionResult Post([FromBody]RatingCurveValue ratingCurveValue, [FromUri]string lang = "en")
+        public IActionResult Post([FromBody]RatingCurveValue ratingCurveValue, [FromQuery]string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
@@ -161,13 +91,13 @@ namespace CSSPWebAPI.Controllers
                 else
                 {
                     ratingCurveValue.ValidationResults = null;
-                    return Created<RatingCurveValue>(new Uri(Request.RequestUri, ratingCurveValue.RatingCurveValueID.ToString()), ratingCurveValue);
+                    return Created(Url.ToString(), ratingCurveValue);
                 }
             }
         }
         // PUT api/ratingCurveValue
         [Route("")]
-        public IHttpActionResult Put([FromBody]RatingCurveValue ratingCurveValue, [FromUri]string lang = "en")
+        public IActionResult Put([FromBody]RatingCurveValue ratingCurveValue, [FromQuery]string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
@@ -186,7 +116,7 @@ namespace CSSPWebAPI.Controllers
         }
         // DELETE api/ratingCurveValue
         [Route("")]
-        public IHttpActionResult Delete([FromBody]RatingCurveValue ratingCurveValue, [FromUri]string lang = "en")
+        public IActionResult Delete([FromBody]RatingCurveValue ratingCurveValue, [FromQuery]string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {

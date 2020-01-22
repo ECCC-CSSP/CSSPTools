@@ -1,14 +1,14 @@
 using CSSPEnums;
 using CSSPModels;
 using CSSPServices;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web.Http;
 
 namespace CSSPWebAPI.Controllers
 {
-    [RoutePrefix("api/contactPreference")]
+    [Route("api/contactPreference")]
     public partial class ContactPreferenceController : BaseController
     {
         #region Variables
@@ -29,126 +29,56 @@ namespace CSSPWebAPI.Controllers
         #region Functions public
         // GET api/contactPreference
         [Route("")]
-        public IHttpActionResult GetContactPreferenceList([FromUri]string lang = "en", [FromUri]int skip = 0, [FromUri]int take = 200,
-            [FromUri]string asc = "", [FromUri]string desc = "", [FromUri]string where = "", [FromUri]string extra = "")
+        public IActionResult GetContactPreferenceList([FromQuery]string lang = "en", [FromQuery]int skip = 0, [FromQuery]int take = 200,
+            [FromQuery]string asc = "", [FromQuery]string desc = "", [FromQuery]string where = "")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
                 ContactPreferenceService contactPreferenceService = new ContactPreferenceService(new Query() { Lang = lang }, db, ContactID);
 
-                if (extra == "A") // QueryString contains [extra=A]
-                {
-                   contactPreferenceService.Query = contactPreferenceService.FillQuery(typeof(ContactPreferenceExtraA), lang, skip, take, asc, desc, where, extra);
+                contactPreferenceService.Query = contactPreferenceService.FillQuery(typeof(ContactPreference), lang, skip, take, asc, desc, where);
 
-                    if (contactPreferenceService.Query.HasErrors)
-                    {
-                        return Ok(new List<ContactPreferenceExtraA>()
-                        {
-                            new ContactPreferenceExtraA()
-                            {
-                                HasErrors = contactPreferenceService.Query.HasErrors,
-                                ValidationResults = contactPreferenceService.Query.ValidationResults,
-                            },
-                        }.ToList());
-                    }
-                    else
-                    {
-                        return Ok(contactPreferenceService.GetContactPreferenceExtraAList().ToList());
-                    }
-                }
-                else if (extra == "B") // QueryString contains [extra=B]
-                {
-                   contactPreferenceService.Query = contactPreferenceService.FillQuery(typeof(ContactPreferenceExtraB), lang, skip, take, asc, desc, where, extra);
-
-                    if (contactPreferenceService.Query.HasErrors)
-                    {
-                        return Ok(new List<ContactPreferenceExtraB>()
-                        {
-                            new ContactPreferenceExtraB()
-                            {
-                                HasErrors = contactPreferenceService.Query.HasErrors,
-                                ValidationResults = contactPreferenceService.Query.ValidationResults,
-                            },
-                        }.ToList());
-                    }
-                    else
-                    {
-                        return Ok(contactPreferenceService.GetContactPreferenceExtraBList().ToList());
-                    }
-                }
-                else // QueryString has no parameter [extra] or extra is empty
-                {
-                   contactPreferenceService.Query = contactPreferenceService.FillQuery(typeof(ContactPreference), lang, skip, take, asc, desc, where, extra);
-
-                    if (contactPreferenceService.Query.HasErrors)
-                    {
-                        return Ok(new List<ContactPreference>()
-                        {
-                            new ContactPreference()
-                            {
-                                HasErrors = contactPreferenceService.Query.HasErrors,
-                                ValidationResults = contactPreferenceService.Query.ValidationResults,
-                            },
-                        }.ToList());
-                    }
-                    else
-                    {
-                        return Ok(contactPreferenceService.GetContactPreferenceList().ToList());
-                    }
-                }
+                 if (contactPreferenceService.Query.HasErrors)
+                 {
+                     return Ok(new List<ContactPreference>()
+                     {
+                         new ContactPreference()
+                         {
+                             HasErrors = contactPreferenceService.Query.HasErrors,
+                             ValidationResults = contactPreferenceService.Query.ValidationResults,
+                         },
+                     }.ToList());
+                 }
+                 else
+                 {
+                     return Ok(contactPreferenceService.GetContactPreferenceList().ToList());
+                 }
             }
         }
         // GET api/contactPreference/1
         [Route("{ContactPreferenceID:int}")]
-        public IHttpActionResult GetContactPreferenceWithID([FromUri]int ContactPreferenceID, [FromUri]string lang = "en", [FromUri]string extra = "")
+        public IActionResult GetContactPreferenceWithID([FromQuery]int ContactPreferenceID, [FromQuery]string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
                 ContactPreferenceService contactPreferenceService = new ContactPreferenceService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
 
-                contactPreferenceService.Query = contactPreferenceService.FillQuery(typeof(ContactPreference), lang, 0, 1, "", "", extra);
+                contactPreferenceService.Query = contactPreferenceService.FillQuery(typeof(ContactPreference), lang, 0, 1, "", "");
 
-                if (contactPreferenceService.Query.Extra == "A")
+                ContactPreference contactPreference = new ContactPreference();
+                contactPreference = contactPreferenceService.GetContactPreferenceWithContactPreferenceID(ContactPreferenceID);
+
+                if (contactPreference == null)
                 {
-                    ContactPreferenceExtraA contactPreferenceExtraA = new ContactPreferenceExtraA();
-                    contactPreferenceExtraA = contactPreferenceService.GetContactPreferenceExtraAWithContactPreferenceID(ContactPreferenceID);
-
-                    if (contactPreferenceExtraA == null)
-                    {
-                        return NotFound();
-                    }
-
-                    return Ok(contactPreferenceExtraA);
+                    return NotFound();
                 }
-                else if (contactPreferenceService.Query.Extra == "B")
-                {
-                    ContactPreferenceExtraB contactPreferenceExtraB = new ContactPreferenceExtraB();
-                    contactPreferenceExtraB = contactPreferenceService.GetContactPreferenceExtraBWithContactPreferenceID(ContactPreferenceID);
 
-                    if (contactPreferenceExtraB == null)
-                    {
-                        return NotFound();
-                    }
-
-                    return Ok(contactPreferenceExtraB);
-                }
-                else
-                {
-                    ContactPreference contactPreference = new ContactPreference();
-                    contactPreference = contactPreferenceService.GetContactPreferenceWithContactPreferenceID(ContactPreferenceID);
-
-                    if (contactPreference == null)
-                    {
-                        return NotFound();
-                    }
-
-                    return Ok(contactPreference);
-                }
+                return Ok(contactPreference);
             }
         }
         // POST api/contactPreference
         [Route("")]
-        public IHttpActionResult Post([FromBody]ContactPreference contactPreference, [FromUri]string lang = "en")
+        public IActionResult Post([FromBody]ContactPreference contactPreference, [FromQuery]string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
@@ -161,13 +91,13 @@ namespace CSSPWebAPI.Controllers
                 else
                 {
                     contactPreference.ValidationResults = null;
-                    return Created<ContactPreference>(new Uri(Request.RequestUri, contactPreference.ContactPreferenceID.ToString()), contactPreference);
+                    return Created(Url.ToString(), contactPreference);
                 }
             }
         }
         // PUT api/contactPreference
         [Route("")]
-        public IHttpActionResult Put([FromBody]ContactPreference contactPreference, [FromUri]string lang = "en")
+        public IActionResult Put([FromBody]ContactPreference contactPreference, [FromQuery]string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
@@ -186,7 +116,7 @@ namespace CSSPWebAPI.Controllers
         }
         // DELETE api/contactPreference
         [Route("")]
-        public IHttpActionResult Delete([FromBody]ContactPreference contactPreference, [FromUri]string lang = "en")
+        public IActionResult Delete([FromBody]ContactPreference contactPreference, [FromQuery]string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {

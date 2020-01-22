@@ -1,14 +1,14 @@
 using CSSPEnums;
 using CSSPModels;
 using CSSPServices;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web.Http;
 
 namespace CSSPWebAPI.Controllers
 {
-    [RoutePrefix("api/vpScenarioLanguage")]
+    [Route("api/vpScenarioLanguage")]
     public partial class VPScenarioLanguageController : BaseController
     {
         #region Variables
@@ -29,126 +29,56 @@ namespace CSSPWebAPI.Controllers
         #region Functions public
         // GET api/vpScenarioLanguage
         [Route("")]
-        public IHttpActionResult GetVPScenarioLanguageList([FromUri]string lang = "en", [FromUri]int skip = 0, [FromUri]int take = 200,
-            [FromUri]string asc = "", [FromUri]string desc = "", [FromUri]string where = "", [FromUri]string extra = "")
+        public IActionResult GetVPScenarioLanguageList([FromQuery]string lang = "en", [FromQuery]int skip = 0, [FromQuery]int take = 200,
+            [FromQuery]string asc = "", [FromQuery]string desc = "", [FromQuery]string where = "")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
                 VPScenarioLanguageService vpScenarioLanguageService = new VPScenarioLanguageService(new Query() { Lang = lang }, db, ContactID);
 
-                if (extra == "A") // QueryString contains [extra=A]
-                {
-                   vpScenarioLanguageService.Query = vpScenarioLanguageService.FillQuery(typeof(VPScenarioLanguageExtraA), lang, skip, take, asc, desc, where, extra);
+                vpScenarioLanguageService.Query = vpScenarioLanguageService.FillQuery(typeof(VPScenarioLanguage), lang, skip, take, asc, desc, where);
 
-                    if (vpScenarioLanguageService.Query.HasErrors)
-                    {
-                        return Ok(new List<VPScenarioLanguageExtraA>()
-                        {
-                            new VPScenarioLanguageExtraA()
-                            {
-                                HasErrors = vpScenarioLanguageService.Query.HasErrors,
-                                ValidationResults = vpScenarioLanguageService.Query.ValidationResults,
-                            },
-                        }.ToList());
-                    }
-                    else
-                    {
-                        return Ok(vpScenarioLanguageService.GetVPScenarioLanguageExtraAList().ToList());
-                    }
-                }
-                else if (extra == "B") // QueryString contains [extra=B]
-                {
-                   vpScenarioLanguageService.Query = vpScenarioLanguageService.FillQuery(typeof(VPScenarioLanguageExtraB), lang, skip, take, asc, desc, where, extra);
-
-                    if (vpScenarioLanguageService.Query.HasErrors)
-                    {
-                        return Ok(new List<VPScenarioLanguageExtraB>()
-                        {
-                            new VPScenarioLanguageExtraB()
-                            {
-                                HasErrors = vpScenarioLanguageService.Query.HasErrors,
-                                ValidationResults = vpScenarioLanguageService.Query.ValidationResults,
-                            },
-                        }.ToList());
-                    }
-                    else
-                    {
-                        return Ok(vpScenarioLanguageService.GetVPScenarioLanguageExtraBList().ToList());
-                    }
-                }
-                else // QueryString has no parameter [extra] or extra is empty
-                {
-                   vpScenarioLanguageService.Query = vpScenarioLanguageService.FillQuery(typeof(VPScenarioLanguage), lang, skip, take, asc, desc, where, extra);
-
-                    if (vpScenarioLanguageService.Query.HasErrors)
-                    {
-                        return Ok(new List<VPScenarioLanguage>()
-                        {
-                            new VPScenarioLanguage()
-                            {
-                                HasErrors = vpScenarioLanguageService.Query.HasErrors,
-                                ValidationResults = vpScenarioLanguageService.Query.ValidationResults,
-                            },
-                        }.ToList());
-                    }
-                    else
-                    {
-                        return Ok(vpScenarioLanguageService.GetVPScenarioLanguageList().ToList());
-                    }
-                }
+                 if (vpScenarioLanguageService.Query.HasErrors)
+                 {
+                     return Ok(new List<VPScenarioLanguage>()
+                     {
+                         new VPScenarioLanguage()
+                         {
+                             HasErrors = vpScenarioLanguageService.Query.HasErrors,
+                             ValidationResults = vpScenarioLanguageService.Query.ValidationResults,
+                         },
+                     }.ToList());
+                 }
+                 else
+                 {
+                     return Ok(vpScenarioLanguageService.GetVPScenarioLanguageList().ToList());
+                 }
             }
         }
         // GET api/vpScenarioLanguage/1
         [Route("{VPScenarioLanguageID:int}")]
-        public IHttpActionResult GetVPScenarioLanguageWithID([FromUri]int VPScenarioLanguageID, [FromUri]string lang = "en", [FromUri]string extra = "")
+        public IActionResult GetVPScenarioLanguageWithID([FromQuery]int VPScenarioLanguageID, [FromQuery]string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
                 VPScenarioLanguageService vpScenarioLanguageService = new VPScenarioLanguageService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
 
-                vpScenarioLanguageService.Query = vpScenarioLanguageService.FillQuery(typeof(VPScenarioLanguage), lang, 0, 1, "", "", extra);
+                vpScenarioLanguageService.Query = vpScenarioLanguageService.FillQuery(typeof(VPScenarioLanguage), lang, 0, 1, "", "");
 
-                if (vpScenarioLanguageService.Query.Extra == "A")
+                VPScenarioLanguage vpScenarioLanguage = new VPScenarioLanguage();
+                vpScenarioLanguage = vpScenarioLanguageService.GetVPScenarioLanguageWithVPScenarioLanguageID(VPScenarioLanguageID);
+
+                if (vpScenarioLanguage == null)
                 {
-                    VPScenarioLanguageExtraA vpScenarioLanguageExtraA = new VPScenarioLanguageExtraA();
-                    vpScenarioLanguageExtraA = vpScenarioLanguageService.GetVPScenarioLanguageExtraAWithVPScenarioLanguageID(VPScenarioLanguageID);
-
-                    if (vpScenarioLanguageExtraA == null)
-                    {
-                        return NotFound();
-                    }
-
-                    return Ok(vpScenarioLanguageExtraA);
+                    return NotFound();
                 }
-                else if (vpScenarioLanguageService.Query.Extra == "B")
-                {
-                    VPScenarioLanguageExtraB vpScenarioLanguageExtraB = new VPScenarioLanguageExtraB();
-                    vpScenarioLanguageExtraB = vpScenarioLanguageService.GetVPScenarioLanguageExtraBWithVPScenarioLanguageID(VPScenarioLanguageID);
 
-                    if (vpScenarioLanguageExtraB == null)
-                    {
-                        return NotFound();
-                    }
-
-                    return Ok(vpScenarioLanguageExtraB);
-                }
-                else
-                {
-                    VPScenarioLanguage vpScenarioLanguage = new VPScenarioLanguage();
-                    vpScenarioLanguage = vpScenarioLanguageService.GetVPScenarioLanguageWithVPScenarioLanguageID(VPScenarioLanguageID);
-
-                    if (vpScenarioLanguage == null)
-                    {
-                        return NotFound();
-                    }
-
-                    return Ok(vpScenarioLanguage);
-                }
+                return Ok(vpScenarioLanguage);
             }
         }
         // POST api/vpScenarioLanguage
         [Route("")]
-        public IHttpActionResult Post([FromBody]VPScenarioLanguage vpScenarioLanguage, [FromUri]string lang = "en")
+        public IActionResult Post([FromBody]VPScenarioLanguage vpScenarioLanguage, [FromQuery]string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
@@ -161,13 +91,13 @@ namespace CSSPWebAPI.Controllers
                 else
                 {
                     vpScenarioLanguage.ValidationResults = null;
-                    return Created<VPScenarioLanguage>(new Uri(Request.RequestUri, vpScenarioLanguage.VPScenarioLanguageID.ToString()), vpScenarioLanguage);
+                    return Created(Url.ToString(), vpScenarioLanguage);
                 }
             }
         }
         // PUT api/vpScenarioLanguage
         [Route("")]
-        public IHttpActionResult Put([FromBody]VPScenarioLanguage vpScenarioLanguage, [FromUri]string lang = "en")
+        public IActionResult Put([FromBody]VPScenarioLanguage vpScenarioLanguage, [FromQuery]string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
@@ -186,7 +116,7 @@ namespace CSSPWebAPI.Controllers
         }
         // DELETE api/vpScenarioLanguage
         [Route("")]
-        public IHttpActionResult Delete([FromBody]VPScenarioLanguage vpScenarioLanguage, [FromUri]string lang = "en")
+        public IActionResult Delete([FromBody]VPScenarioLanguage vpScenarioLanguage, [FromQuery]string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {

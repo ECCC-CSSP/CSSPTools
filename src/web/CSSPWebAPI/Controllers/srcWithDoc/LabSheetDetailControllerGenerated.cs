@@ -1,14 +1,14 @@
 using CSSPEnums;
 using CSSPModels;
 using CSSPServices;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web.Http;
 
 namespace CSSPWebAPI.Controllers
 {
-    [RoutePrefix("api/labSheetDetail")]
+    [Route("api/labSheetDetail")]
     public partial class LabSheetDetailController : BaseController
     {
         #region Variables
@@ -29,126 +29,56 @@ namespace CSSPWebAPI.Controllers
         #region Functions public
         // GET api/labSheetDetail
         [Route("")]
-        public IHttpActionResult GetLabSheetDetailList([FromUri]string lang = "en", [FromUri]int skip = 0, [FromUri]int take = 200,
-            [FromUri]string asc = "", [FromUri]string desc = "", [FromUri]string where = "", [FromUri]string extra = "")
+        public IActionResult GetLabSheetDetailList([FromQuery]string lang = "en", [FromQuery]int skip = 0, [FromQuery]int take = 200,
+            [FromQuery]string asc = "", [FromQuery]string desc = "", [FromQuery]string where = "")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
                 LabSheetDetailService labSheetDetailService = new LabSheetDetailService(new Query() { Lang = lang }, db, ContactID);
 
-                if (extra == "A") // QueryString contains [extra=A]
-                {
-                   labSheetDetailService.Query = labSheetDetailService.FillQuery(typeof(LabSheetDetailExtraA), lang, skip, take, asc, desc, where, extra);
+                labSheetDetailService.Query = labSheetDetailService.FillQuery(typeof(LabSheetDetail), lang, skip, take, asc, desc, where);
 
-                    if (labSheetDetailService.Query.HasErrors)
-                    {
-                        return Ok(new List<LabSheetDetailExtraA>()
-                        {
-                            new LabSheetDetailExtraA()
-                            {
-                                HasErrors = labSheetDetailService.Query.HasErrors,
-                                ValidationResults = labSheetDetailService.Query.ValidationResults,
-                            },
-                        }.ToList());
-                    }
-                    else
-                    {
-                        return Ok(labSheetDetailService.GetLabSheetDetailExtraAList().ToList());
-                    }
-                }
-                else if (extra == "B") // QueryString contains [extra=B]
-                {
-                   labSheetDetailService.Query = labSheetDetailService.FillQuery(typeof(LabSheetDetailExtraB), lang, skip, take, asc, desc, where, extra);
-
-                    if (labSheetDetailService.Query.HasErrors)
-                    {
-                        return Ok(new List<LabSheetDetailExtraB>()
-                        {
-                            new LabSheetDetailExtraB()
-                            {
-                                HasErrors = labSheetDetailService.Query.HasErrors,
-                                ValidationResults = labSheetDetailService.Query.ValidationResults,
-                            },
-                        }.ToList());
-                    }
-                    else
-                    {
-                        return Ok(labSheetDetailService.GetLabSheetDetailExtraBList().ToList());
-                    }
-                }
-                else // QueryString has no parameter [extra] or extra is empty
-                {
-                   labSheetDetailService.Query = labSheetDetailService.FillQuery(typeof(LabSheetDetail), lang, skip, take, asc, desc, where, extra);
-
-                    if (labSheetDetailService.Query.HasErrors)
-                    {
-                        return Ok(new List<LabSheetDetail>()
-                        {
-                            new LabSheetDetail()
-                            {
-                                HasErrors = labSheetDetailService.Query.HasErrors,
-                                ValidationResults = labSheetDetailService.Query.ValidationResults,
-                            },
-                        }.ToList());
-                    }
-                    else
-                    {
-                        return Ok(labSheetDetailService.GetLabSheetDetailList().ToList());
-                    }
-                }
+                 if (labSheetDetailService.Query.HasErrors)
+                 {
+                     return Ok(new List<LabSheetDetail>()
+                     {
+                         new LabSheetDetail()
+                         {
+                             HasErrors = labSheetDetailService.Query.HasErrors,
+                             ValidationResults = labSheetDetailService.Query.ValidationResults,
+                         },
+                     }.ToList());
+                 }
+                 else
+                 {
+                     return Ok(labSheetDetailService.GetLabSheetDetailList().ToList());
+                 }
             }
         }
         // GET api/labSheetDetail/1
         [Route("{LabSheetDetailID:int}")]
-        public IHttpActionResult GetLabSheetDetailWithID([FromUri]int LabSheetDetailID, [FromUri]string lang = "en", [FromUri]string extra = "")
+        public IActionResult GetLabSheetDetailWithID([FromQuery]int LabSheetDetailID, [FromQuery]string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
                 LabSheetDetailService labSheetDetailService = new LabSheetDetailService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
 
-                labSheetDetailService.Query = labSheetDetailService.FillQuery(typeof(LabSheetDetail), lang, 0, 1, "", "", extra);
+                labSheetDetailService.Query = labSheetDetailService.FillQuery(typeof(LabSheetDetail), lang, 0, 1, "", "");
 
-                if (labSheetDetailService.Query.Extra == "A")
+                LabSheetDetail labSheetDetail = new LabSheetDetail();
+                labSheetDetail = labSheetDetailService.GetLabSheetDetailWithLabSheetDetailID(LabSheetDetailID);
+
+                if (labSheetDetail == null)
                 {
-                    LabSheetDetailExtraA labSheetDetailExtraA = new LabSheetDetailExtraA();
-                    labSheetDetailExtraA = labSheetDetailService.GetLabSheetDetailExtraAWithLabSheetDetailID(LabSheetDetailID);
-
-                    if (labSheetDetailExtraA == null)
-                    {
-                        return NotFound();
-                    }
-
-                    return Ok(labSheetDetailExtraA);
+                    return NotFound();
                 }
-                else if (labSheetDetailService.Query.Extra == "B")
-                {
-                    LabSheetDetailExtraB labSheetDetailExtraB = new LabSheetDetailExtraB();
-                    labSheetDetailExtraB = labSheetDetailService.GetLabSheetDetailExtraBWithLabSheetDetailID(LabSheetDetailID);
 
-                    if (labSheetDetailExtraB == null)
-                    {
-                        return NotFound();
-                    }
-
-                    return Ok(labSheetDetailExtraB);
-                }
-                else
-                {
-                    LabSheetDetail labSheetDetail = new LabSheetDetail();
-                    labSheetDetail = labSheetDetailService.GetLabSheetDetailWithLabSheetDetailID(LabSheetDetailID);
-
-                    if (labSheetDetail == null)
-                    {
-                        return NotFound();
-                    }
-
-                    return Ok(labSheetDetail);
-                }
+                return Ok(labSheetDetail);
             }
         }
         // POST api/labSheetDetail
         [Route("")]
-        public IHttpActionResult Post([FromBody]LabSheetDetail labSheetDetail, [FromUri]string lang = "en")
+        public IActionResult Post([FromBody]LabSheetDetail labSheetDetail, [FromQuery]string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
@@ -161,13 +91,13 @@ namespace CSSPWebAPI.Controllers
                 else
                 {
                     labSheetDetail.ValidationResults = null;
-                    return Created<LabSheetDetail>(new Uri(Request.RequestUri, labSheetDetail.LabSheetDetailID.ToString()), labSheetDetail);
+                    return Created(Url.ToString(), labSheetDetail);
                 }
             }
         }
         // PUT api/labSheetDetail
         [Route("")]
-        public IHttpActionResult Put([FromBody]LabSheetDetail labSheetDetail, [FromUri]string lang = "en")
+        public IActionResult Put([FromBody]LabSheetDetail labSheetDetail, [FromQuery]string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
@@ -186,7 +116,7 @@ namespace CSSPWebAPI.Controllers
         }
         // DELETE api/labSheetDetail
         [Route("")]
-        public IHttpActionResult Delete([FromBody]LabSheetDetail labSheetDetail, [FromUri]string lang = "en")
+        public IActionResult Delete([FromBody]LabSheetDetail labSheetDetail, [FromQuery]string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
