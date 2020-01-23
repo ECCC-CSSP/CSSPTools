@@ -191,8 +191,6 @@ namespace CSSPWebAPI.Tests.Controllers
 
                     // Post to return newly added MikeBoundaryCondition
                     mikeBoundaryConditionRet.MikeBoundaryConditionID = 0;
-                    mikeBoundaryConditionController.Request = new System.Net.Http.HttpRequestMessage();
-                    mikeBoundaryConditionController.Request.RequestUri = new System.Uri("http://localhost:5000/api/mikeBoundaryCondition");
                     IActionResult jsonRet3 = mikeBoundaryConditionController.Post(mikeBoundaryConditionRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 
@@ -310,8 +308,6 @@ namespace CSSPWebAPI.Tests.Controllers
 
                     // Post to return newly added MikeBoundaryCondition
                     mikeBoundaryConditionRet.MikeBoundaryConditionID = 0;
-                    mikeBoundaryConditionController.Request = new System.Net.Http.HttpRequestMessage();
-                    mikeBoundaryConditionController.Request.RequestUri = new System.Uri("http://localhost:5000/api/mikeBoundaryCondition");
                     IActionResult jsonRet3 = mikeBoundaryConditionController.Post(mikeBoundaryConditionRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 

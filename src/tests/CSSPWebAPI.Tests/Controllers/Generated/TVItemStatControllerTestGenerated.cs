@@ -191,8 +191,6 @@ namespace CSSPWebAPI.Tests.Controllers
 
                     // Post to return newly added TVItemStat
                     tvItemStatRet.TVItemStatID = 0;
-                    tvItemStatController.Request = new System.Net.Http.HttpRequestMessage();
-                    tvItemStatController.Request.RequestUri = new System.Uri("http://localhost:5000/api/tvItemStat");
                     IActionResult jsonRet3 = tvItemStatController.Post(tvItemStatRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 
@@ -310,8 +308,6 @@ namespace CSSPWebAPI.Tests.Controllers
 
                     // Post to return newly added TVItemStat
                     tvItemStatRet.TVItemStatID = 0;
-                    tvItemStatController.Request = new System.Net.Http.HttpRequestMessage();
-                    tvItemStatController.Request.RequestUri = new System.Uri("http://localhost:5000/api/tvItemStat");
                     IActionResult jsonRet3 = tvItemStatController.Post(tvItemStatRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 

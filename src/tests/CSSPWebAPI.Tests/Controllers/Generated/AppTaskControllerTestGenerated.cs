@@ -191,8 +191,6 @@ namespace CSSPWebAPI.Tests.Controllers
 
                     // Post to return newly added AppTask
                     appTaskRet.AppTaskID = 0;
-                    appTaskController.Request = new System.Net.Http.HttpRequestMessage();
-                    appTaskController.Request.RequestUri = new System.Uri("http://localhost:5000/api/appTask");
                     IActionResult jsonRet3 = appTaskController.Post(appTaskRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 
@@ -310,8 +308,6 @@ namespace CSSPWebAPI.Tests.Controllers
 
                     // Post to return newly added AppTask
                     appTaskRet.AppTaskID = 0;
-                    appTaskController.Request = new System.Net.Http.HttpRequestMessage();
-                    appTaskController.Request.RequestUri = new System.Uri("http://localhost:5000/api/appTask");
                     IActionResult jsonRet3 = appTaskController.Post(appTaskRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 

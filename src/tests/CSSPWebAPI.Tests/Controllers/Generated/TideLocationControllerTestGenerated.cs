@@ -191,8 +191,6 @@ namespace CSSPWebAPI.Tests.Controllers
 
                     // Post to return newly added TideLocation
                     tideLocationRet.TideLocationID = 0;
-                    tideLocationController.Request = new System.Net.Http.HttpRequestMessage();
-                    tideLocationController.Request.RequestUri = new System.Uri("http://localhost:5000/api/tideLocation");
                     IActionResult jsonRet3 = tideLocationController.Post(tideLocationRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 
@@ -310,8 +308,6 @@ namespace CSSPWebAPI.Tests.Controllers
 
                     // Post to return newly added TideLocation
                     tideLocationRet.TideLocationID = 0;
-                    tideLocationController.Request = new System.Net.Http.HttpRequestMessage();
-                    tideLocationController.Request.RequestUri = new System.Uri("http://localhost:5000/api/tideLocation");
                     IActionResult jsonRet3 = tideLocationController.Post(tideLocationRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 

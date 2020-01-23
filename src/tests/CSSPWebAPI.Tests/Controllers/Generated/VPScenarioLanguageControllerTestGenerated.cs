@@ -191,8 +191,6 @@ namespace CSSPWebAPI.Tests.Controllers
 
                     // Post to return newly added VPScenarioLanguage
                     vpScenarioLanguageRet.VPScenarioLanguageID = 0;
-                    vpScenarioLanguageController.Request = new System.Net.Http.HttpRequestMessage();
-                    vpScenarioLanguageController.Request.RequestUri = new System.Uri("http://localhost:5000/api/vpScenarioLanguage");
                     IActionResult jsonRet3 = vpScenarioLanguageController.Post(vpScenarioLanguageRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 
@@ -310,8 +308,6 @@ namespace CSSPWebAPI.Tests.Controllers
 
                     // Post to return newly added VPScenarioLanguage
                     vpScenarioLanguageRet.VPScenarioLanguageID = 0;
-                    vpScenarioLanguageController.Request = new System.Net.Http.HttpRequestMessage();
-                    vpScenarioLanguageController.Request.RequestUri = new System.Uri("http://localhost:5000/api/vpScenarioLanguage");
                     IActionResult jsonRet3 = vpScenarioLanguageController.Post(vpScenarioLanguageRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 

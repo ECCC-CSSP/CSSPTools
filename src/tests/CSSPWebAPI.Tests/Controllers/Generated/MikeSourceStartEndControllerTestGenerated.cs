@@ -191,8 +191,6 @@ namespace CSSPWebAPI.Tests.Controllers
 
                     // Post to return newly added MikeSourceStartEnd
                     mikeSourceStartEndRet.MikeSourceStartEndID = 0;
-                    mikeSourceStartEndController.Request = new System.Net.Http.HttpRequestMessage();
-                    mikeSourceStartEndController.Request.RequestUri = new System.Uri("http://localhost:5000/api/mikeSourceStartEnd");
                     IActionResult jsonRet3 = mikeSourceStartEndController.Post(mikeSourceStartEndRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 
@@ -310,8 +308,6 @@ namespace CSSPWebAPI.Tests.Controllers
 
                     // Post to return newly added MikeSourceStartEnd
                     mikeSourceStartEndRet.MikeSourceStartEndID = 0;
-                    mikeSourceStartEndController.Request = new System.Net.Http.HttpRequestMessage();
-                    mikeSourceStartEndController.Request.RequestUri = new System.Uri("http://localhost:5000/api/mikeSourceStartEnd");
                     IActionResult jsonRet3 = mikeSourceStartEndController.Post(mikeSourceStartEndRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 

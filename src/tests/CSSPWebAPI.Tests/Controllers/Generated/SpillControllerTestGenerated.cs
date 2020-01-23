@@ -191,8 +191,6 @@ namespace CSSPWebAPI.Tests.Controllers
 
                     // Post to return newly added Spill
                     spillRet.SpillID = 0;
-                    spillController.Request = new System.Net.Http.HttpRequestMessage();
-                    spillController.Request.RequestUri = new System.Uri("http://localhost:5000/api/spill");
                     IActionResult jsonRet3 = spillController.Post(spillRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 
@@ -310,8 +308,6 @@ namespace CSSPWebAPI.Tests.Controllers
 
                     // Post to return newly added Spill
                     spillRet.SpillID = 0;
-                    spillController.Request = new System.Net.Http.HttpRequestMessage();
-                    spillController.Request.RequestUri = new System.Uri("http://localhost:5000/api/spill");
                     IActionResult jsonRet3 = spillController.Post(spillRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 

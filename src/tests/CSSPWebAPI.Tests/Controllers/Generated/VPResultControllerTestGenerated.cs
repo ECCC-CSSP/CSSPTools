@@ -191,8 +191,6 @@ namespace CSSPWebAPI.Tests.Controllers
 
                     // Post to return newly added VPResult
                     vpResultRet.VPResultID = 0;
-                    vpResultController.Request = new System.Net.Http.HttpRequestMessage();
-                    vpResultController.Request.RequestUri = new System.Uri("http://localhost:5000/api/vpResult");
                     IActionResult jsonRet3 = vpResultController.Post(vpResultRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 
@@ -310,8 +308,6 @@ namespace CSSPWebAPI.Tests.Controllers
 
                     // Post to return newly added VPResult
                     vpResultRet.VPResultID = 0;
-                    vpResultController.Request = new System.Net.Http.HttpRequestMessage();
-                    vpResultController.Request.RequestUri = new System.Uri("http://localhost:5000/api/vpResult");
                     IActionResult jsonRet3 = vpResultController.Post(vpResultRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 

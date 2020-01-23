@@ -191,8 +191,6 @@ namespace CSSPWebAPI.Tests.Controllers
 
                     // Post to return newly added MWQMSubsectorLanguage
                     mwqmSubsectorLanguageRet.MWQMSubsectorLanguageID = 0;
-                    mwqmSubsectorLanguageController.Request = new System.Net.Http.HttpRequestMessage();
-                    mwqmSubsectorLanguageController.Request.RequestUri = new System.Uri("http://localhost:5000/api/mwqmSubsectorLanguage");
                     IActionResult jsonRet3 = mwqmSubsectorLanguageController.Post(mwqmSubsectorLanguageRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 
@@ -310,8 +308,6 @@ namespace CSSPWebAPI.Tests.Controllers
 
                     // Post to return newly added MWQMSubsectorLanguage
                     mwqmSubsectorLanguageRet.MWQMSubsectorLanguageID = 0;
-                    mwqmSubsectorLanguageController.Request = new System.Net.Http.HttpRequestMessage();
-                    mwqmSubsectorLanguageController.Request.RequestUri = new System.Uri("http://localhost:5000/api/mwqmSubsectorLanguage");
                     IActionResult jsonRet3 = mwqmSubsectorLanguageController.Post(mwqmSubsectorLanguageRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 

@@ -191,8 +191,6 @@ namespace CSSPWebAPI.Tests.Controllers
 
                     // Post to return newly added MWQMSampleLanguage
                     mwqmSampleLanguageRet.MWQMSampleLanguageID = 0;
-                    mwqmSampleLanguageController.Request = new System.Net.Http.HttpRequestMessage();
-                    mwqmSampleLanguageController.Request.RequestUri = new System.Uri("http://localhost:5000/api/mwqmSampleLanguage");
                     IActionResult jsonRet3 = mwqmSampleLanguageController.Post(mwqmSampleLanguageRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 
@@ -310,8 +308,6 @@ namespace CSSPWebAPI.Tests.Controllers
 
                     // Post to return newly added MWQMSampleLanguage
                     mwqmSampleLanguageRet.MWQMSampleLanguageID = 0;
-                    mwqmSampleLanguageController.Request = new System.Net.Http.HttpRequestMessage();
-                    mwqmSampleLanguageController.Request.RequestUri = new System.Uri("http://localhost:5000/api/mwqmSampleLanguage");
                     IActionResult jsonRet3 = mwqmSampleLanguageController.Post(mwqmSampleLanguageRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 

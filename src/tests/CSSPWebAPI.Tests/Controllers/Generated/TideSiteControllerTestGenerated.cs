@@ -191,8 +191,6 @@ namespace CSSPWebAPI.Tests.Controllers
 
                     // Post to return newly added TideSite
                     tideSiteRet.TideSiteID = 0;
-                    tideSiteController.Request = new System.Net.Http.HttpRequestMessage();
-                    tideSiteController.Request.RequestUri = new System.Uri("http://localhost:5000/api/tideSite");
                     IActionResult jsonRet3 = tideSiteController.Post(tideSiteRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 
@@ -310,8 +308,6 @@ namespace CSSPWebAPI.Tests.Controllers
 
                     // Post to return newly added TideSite
                     tideSiteRet.TideSiteID = 0;
-                    tideSiteController.Request = new System.Net.Http.HttpRequestMessage();
-                    tideSiteController.Request.RequestUri = new System.Uri("http://localhost:5000/api/tideSite");
                     IActionResult jsonRet3 = tideSiteController.Post(tideSiteRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 

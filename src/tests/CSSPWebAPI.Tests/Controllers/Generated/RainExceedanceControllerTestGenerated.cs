@@ -191,8 +191,6 @@ namespace CSSPWebAPI.Tests.Controllers
 
                     // Post to return newly added RainExceedance
                     rainExceedanceRet.RainExceedanceID = 0;
-                    rainExceedanceController.Request = new System.Net.Http.HttpRequestMessage();
-                    rainExceedanceController.Request.RequestUri = new System.Uri("http://localhost:5000/api/rainExceedance");
                     IActionResult jsonRet3 = rainExceedanceController.Post(rainExceedanceRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 
@@ -310,8 +308,6 @@ namespace CSSPWebAPI.Tests.Controllers
 
                     // Post to return newly added RainExceedance
                     rainExceedanceRet.RainExceedanceID = 0;
-                    rainExceedanceController.Request = new System.Net.Http.HttpRequestMessage();
-                    rainExceedanceController.Request.RequestUri = new System.Uri("http://localhost:5000/api/rainExceedance");
                     IActionResult jsonRet3 = rainExceedanceController.Post(rainExceedanceRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 

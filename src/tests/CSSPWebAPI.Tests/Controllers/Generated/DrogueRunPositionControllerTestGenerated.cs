@@ -191,8 +191,6 @@ namespace CSSPWebAPI.Tests.Controllers
 
                     // Post to return newly added DrogueRunPosition
                     drogueRunPositionRet.DrogueRunPositionID = 0;
-                    drogueRunPositionController.Request = new System.Net.Http.HttpRequestMessage();
-                    drogueRunPositionController.Request.RequestUri = new System.Uri("http://localhost:5000/api/drogueRunPosition");
                     IActionResult jsonRet3 = drogueRunPositionController.Post(drogueRunPositionRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 
@@ -310,8 +308,6 @@ namespace CSSPWebAPI.Tests.Controllers
 
                     // Post to return newly added DrogueRunPosition
                     drogueRunPositionRet.DrogueRunPositionID = 0;
-                    drogueRunPositionController.Request = new System.Net.Http.HttpRequestMessage();
-                    drogueRunPositionController.Request.RequestUri = new System.Uri("http://localhost:5000/api/drogueRunPosition");
                     IActionResult jsonRet3 = drogueRunPositionController.Post(drogueRunPositionRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 

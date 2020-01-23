@@ -191,8 +191,6 @@ namespace CSSPWebAPI.Tests.Controllers
 
                     // Post to return newly added DrogueRun
                     drogueRunRet.DrogueRunID = 0;
-                    drogueRunController.Request = new System.Net.Http.HttpRequestMessage();
-                    drogueRunController.Request.RequestUri = new System.Uri("http://localhost:5000/api/drogueRun");
                     IActionResult jsonRet3 = drogueRunController.Post(drogueRunRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 
@@ -310,8 +308,6 @@ namespace CSSPWebAPI.Tests.Controllers
 
                     // Post to return newly added DrogueRun
                     drogueRunRet.DrogueRunID = 0;
-                    drogueRunController.Request = new System.Net.Http.HttpRequestMessage();
-                    drogueRunController.Request.RequestUri = new System.Uri("http://localhost:5000/api/drogueRun");
                     IActionResult jsonRet3 = drogueRunController.Post(drogueRunRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 

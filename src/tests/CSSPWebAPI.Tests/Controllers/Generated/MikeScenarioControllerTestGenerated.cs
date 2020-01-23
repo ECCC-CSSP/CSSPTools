@@ -191,8 +191,6 @@ namespace CSSPWebAPI.Tests.Controllers
 
                     // Post to return newly added MikeScenario
                     mikeScenarioRet.MikeScenarioID = 0;
-                    mikeScenarioController.Request = new System.Net.Http.HttpRequestMessage();
-                    mikeScenarioController.Request.RequestUri = new System.Uri("http://localhost:5000/api/mikeScenario");
                     IActionResult jsonRet3 = mikeScenarioController.Post(mikeScenarioRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 
@@ -310,8 +308,6 @@ namespace CSSPWebAPI.Tests.Controllers
 
                     // Post to return newly added MikeScenario
                     mikeScenarioRet.MikeScenarioID = 0;
-                    mikeScenarioController.Request = new System.Net.Http.HttpRequestMessage();
-                    mikeScenarioController.Request.RequestUri = new System.Uri("http://localhost:5000/api/mikeScenario");
                     IActionResult jsonRet3 = mikeScenarioController.Post(mikeScenarioRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 

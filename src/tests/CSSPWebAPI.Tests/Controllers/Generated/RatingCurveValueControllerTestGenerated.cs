@@ -191,8 +191,6 @@ namespace CSSPWebAPI.Tests.Controllers
 
                     // Post to return newly added RatingCurveValue
                     ratingCurveValueRet.RatingCurveValueID = 0;
-                    ratingCurveValueController.Request = new System.Net.Http.HttpRequestMessage();
-                    ratingCurveValueController.Request.RequestUri = new System.Uri("http://localhost:5000/api/ratingCurveValue");
                     IActionResult jsonRet3 = ratingCurveValueController.Post(ratingCurveValueRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 
@@ -310,8 +308,6 @@ namespace CSSPWebAPI.Tests.Controllers
 
                     // Post to return newly added RatingCurveValue
                     ratingCurveValueRet.RatingCurveValueID = 0;
-                    ratingCurveValueController.Request = new System.Net.Http.HttpRequestMessage();
-                    ratingCurveValueController.Request.RequestUri = new System.Uri("http://localhost:5000/api/ratingCurveValue");
                     IActionResult jsonRet3 = ratingCurveValueController.Post(ratingCurveValueRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 

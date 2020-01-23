@@ -191,8 +191,6 @@ namespace CSSPWebAPI.Tests.Controllers
 
                     // Post to return newly added TideDataValue
                     tideDataValueRet.TideDataValueID = 0;
-                    tideDataValueController.Request = new System.Net.Http.HttpRequestMessage();
-                    tideDataValueController.Request.RequestUri = new System.Uri("http://localhost:5000/api/tideDataValue");
                     IActionResult jsonRet3 = tideDataValueController.Post(tideDataValueRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 
@@ -310,8 +308,6 @@ namespace CSSPWebAPI.Tests.Controllers
 
                     // Post to return newly added TideDataValue
                     tideDataValueRet.TideDataValueID = 0;
-                    tideDataValueController.Request = new System.Net.Http.HttpRequestMessage();
-                    tideDataValueController.Request.RequestUri = new System.Uri("http://localhost:5000/api/tideDataValue");
                     IActionResult jsonRet3 = tideDataValueController.Post(tideDataValueRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 

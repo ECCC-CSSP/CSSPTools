@@ -191,8 +191,6 @@ namespace CSSPWebAPI.Tests.Controllers
 
                     // Post to return newly added Log
                     logRet.LogID = 0;
-                    logController.Request = new System.Net.Http.HttpRequestMessage();
-                    logController.Request.RequestUri = new System.Uri("http://localhost:5000/api/log");
                     IActionResult jsonRet3 = logController.Post(logRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 
@@ -310,8 +308,6 @@ namespace CSSPWebAPI.Tests.Controllers
 
                     // Post to return newly added Log
                     logRet.LogID = 0;
-                    logController.Request = new System.Net.Http.HttpRequestMessage();
-                    logController.Request.RequestUri = new System.Uri("http://localhost:5000/api/log");
                     IActionResult jsonRet3 = logController.Post(logRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 

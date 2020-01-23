@@ -8,7 +8,6 @@ using System.Linq;
 using System.Web.Http;
 using System.Web.Http.Results;
 using Microsoft.AspNetCore.Mvc;
-using System.Net.Http;
 
 namespace CSSPWebAPI.Tests.Controllers
 {
@@ -147,7 +146,7 @@ namespace CSSPWebAPI.Tests.Controllers
 
         #region Tests Generated for Class Controller Post Command
         [Fact]
-        public async Task Address_Controller_Post_Test()
+        public void Address_Controller_Post_Test()
         {
             foreach (LanguageEnum LanguageRequest in AllowableLanguages)
             {
@@ -192,11 +191,6 @@ namespace CSSPWebAPI.Tests.Controllers
 
                     // Post to return newly added Address
                     addressRet.AddressID = 0;
-                    var request = new HttpRequestMessage(new HttpMethod("post"), "http://localhost:5000/api/address");
-
-                    var response = await httpClient.PostAsync(request);
-                    addressController.Request = new System.Net.Http.HttpRequestMessage();
-                    addressController.Request.RequestUri = new System.Uri("http://localhost:5000/api/address");
                     IActionResult jsonRet3 = addressController.Post(addressRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 
@@ -314,8 +308,6 @@ namespace CSSPWebAPI.Tests.Controllers
 
                     // Post to return newly added Address
                     addressRet.AddressID = 0;
-                    addressController.Request = new System.Net.Http.HttpRequestMessage();
-                    addressController.Request.RequestUri = new System.Uri("http://localhost:5000/api/address");
                     IActionResult jsonRet3 = addressController.Post(addressRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 

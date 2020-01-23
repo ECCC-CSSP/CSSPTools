@@ -191,8 +191,6 @@ namespace CSSPWebAPI.Tests.Controllers
 
                     // Post to return newly added SpillLanguage
                     spillLanguageRet.SpillLanguageID = 0;
-                    spillLanguageController.Request = new System.Net.Http.HttpRequestMessage();
-                    spillLanguageController.Request.RequestUri = new System.Uri("http://localhost:5000/api/spillLanguage");
                     IActionResult jsonRet3 = spillLanguageController.Post(spillLanguageRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 
@@ -310,8 +308,6 @@ namespace CSSPWebAPI.Tests.Controllers
 
                     // Post to return newly added SpillLanguage
                     spillLanguageRet.SpillLanguageID = 0;
-                    spillLanguageController.Request = new System.Net.Http.HttpRequestMessage();
-                    spillLanguageController.Request.RequestUri = new System.Uri("http://localhost:5000/api/spillLanguage");
                     IActionResult jsonRet3 = spillLanguageController.Post(spillLanguageRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 

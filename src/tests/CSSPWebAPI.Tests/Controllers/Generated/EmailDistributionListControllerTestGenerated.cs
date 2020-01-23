@@ -191,8 +191,6 @@ namespace CSSPWebAPI.Tests.Controllers
 
                     // Post to return newly added EmailDistributionList
                     emailDistributionListRet.EmailDistributionListID = 0;
-                    emailDistributionListController.Request = new System.Net.Http.HttpRequestMessage();
-                    emailDistributionListController.Request.RequestUri = new System.Uri("http://localhost:5000/api/emailDistributionList");
                     IActionResult jsonRet3 = emailDistributionListController.Post(emailDistributionListRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 
@@ -310,8 +308,6 @@ namespace CSSPWebAPI.Tests.Controllers
 
                     // Post to return newly added EmailDistributionList
                     emailDistributionListRet.EmailDistributionListID = 0;
-                    emailDistributionListController.Request = new System.Net.Http.HttpRequestMessage();
-                    emailDistributionListController.Request.RequestUri = new System.Uri("http://localhost:5000/api/emailDistributionList");
                     IActionResult jsonRet3 = emailDistributionListController.Post(emailDistributionListRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 

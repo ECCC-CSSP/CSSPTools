@@ -193,8 +193,6 @@ namespace CSSPWebAPI.Tests.Controllers
                     tvItemRet.TVItemID = 0;
                     tvItemRet.TVLevel = 1;
                     tvItemRet.TVType = TVTypeEnum.Contact;
-                    tvItemController.Request = new System.Net.Http.HttpRequestMessage();
-                    tvItemController.Request.RequestUri = new System.Uri("http://localhost:5000/api/tvItem");
                     IActionResult jsonRet3 = tvItemController.Post(tvItemRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 
@@ -314,8 +312,6 @@ namespace CSSPWebAPI.Tests.Controllers
                     tvItemRet.TVItemID = 0;
                     tvItemRet.TVLevel = 1;
                     tvItemRet.TVType = TVTypeEnum.Contact;
-                    tvItemController.Request = new System.Net.Http.HttpRequestMessage();
-                    tvItemController.Request.RequestUri = new System.Uri("http://localhost:5000/api/tvItem");
                     IActionResult jsonRet3 = tvItemController.Post(tvItemRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 

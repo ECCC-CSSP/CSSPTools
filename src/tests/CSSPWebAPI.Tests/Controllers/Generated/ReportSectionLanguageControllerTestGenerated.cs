@@ -191,8 +191,6 @@ namespace CSSPWebAPI.Tests.Controllers
 
                     // Post to return newly added ReportSectionLanguage
                     reportSectionLanguageRet.ReportSectionLanguageID = 0;
-                    reportSectionLanguageController.Request = new System.Net.Http.HttpRequestMessage();
-                    reportSectionLanguageController.Request.RequestUri = new System.Uri("http://localhost:5000/api/reportSectionLanguage");
                     IActionResult jsonRet3 = reportSectionLanguageController.Post(reportSectionLanguageRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 
@@ -310,8 +308,6 @@ namespace CSSPWebAPI.Tests.Controllers
 
                     // Post to return newly added ReportSectionLanguage
                     reportSectionLanguageRet.ReportSectionLanguageID = 0;
-                    reportSectionLanguageController.Request = new System.Net.Http.HttpRequestMessage();
-                    reportSectionLanguageController.Request.RequestUri = new System.Uri("http://localhost:5000/api/reportSectionLanguage");
                     IActionResult jsonRet3 = reportSectionLanguageController.Post(reportSectionLanguageRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 

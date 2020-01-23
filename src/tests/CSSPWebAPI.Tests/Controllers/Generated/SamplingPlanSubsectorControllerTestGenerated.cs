@@ -191,8 +191,6 @@ namespace CSSPWebAPI.Tests.Controllers
 
                     // Post to return newly added SamplingPlanSubsector
                     samplingPlanSubsectorRet.SamplingPlanSubsectorID = 0;
-                    samplingPlanSubsectorController.Request = new System.Net.Http.HttpRequestMessage();
-                    samplingPlanSubsectorController.Request.RequestUri = new System.Uri("http://localhost:5000/api/samplingPlanSubsector");
                     IActionResult jsonRet3 = samplingPlanSubsectorController.Post(samplingPlanSubsectorRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 
@@ -310,8 +308,6 @@ namespace CSSPWebAPI.Tests.Controllers
 
                     // Post to return newly added SamplingPlanSubsector
                     samplingPlanSubsectorRet.SamplingPlanSubsectorID = 0;
-                    samplingPlanSubsectorController.Request = new System.Net.Http.HttpRequestMessage();
-                    samplingPlanSubsectorController.Request.RequestUri = new System.Uri("http://localhost:5000/api/samplingPlanSubsector");
                     IActionResult jsonRet3 = samplingPlanSubsectorController.Post(samplingPlanSubsectorRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 

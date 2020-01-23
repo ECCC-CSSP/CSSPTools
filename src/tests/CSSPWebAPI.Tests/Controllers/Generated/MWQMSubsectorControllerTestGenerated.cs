@@ -191,8 +191,6 @@ namespace CSSPWebAPI.Tests.Controllers
 
                     // Post to return newly added MWQMSubsector
                     mwqmSubsectorRet.MWQMSubsectorID = 0;
-                    mwqmSubsectorController.Request = new System.Net.Http.HttpRequestMessage();
-                    mwqmSubsectorController.Request.RequestUri = new System.Uri("http://localhost:5000/api/mwqmSubsector");
                     IActionResult jsonRet3 = mwqmSubsectorController.Post(mwqmSubsectorRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 
@@ -310,8 +308,6 @@ namespace CSSPWebAPI.Tests.Controllers
 
                     // Post to return newly added MWQMSubsector
                     mwqmSubsectorRet.MWQMSubsectorID = 0;
-                    mwqmSubsectorController.Request = new System.Net.Http.HttpRequestMessage();
-                    mwqmSubsectorController.Request.RequestUri = new System.Uri("http://localhost:5000/api/mwqmSubsector");
                     IActionResult jsonRet3 = mwqmSubsectorController.Post(mwqmSubsectorRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 

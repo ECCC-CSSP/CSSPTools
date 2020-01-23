@@ -191,8 +191,6 @@ namespace CSSPWebAPI.Tests.Controllers
 
                     // Post to return newly added VPAmbient
                     vpAmbientRet.VPAmbientID = 0;
-                    vpAmbientController.Request = new System.Net.Http.HttpRequestMessage();
-                    vpAmbientController.Request.RequestUri = new System.Uri("http://localhost:5000/api/vpAmbient");
                     IActionResult jsonRet3 = vpAmbientController.Post(vpAmbientRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 
@@ -310,8 +308,6 @@ namespace CSSPWebAPI.Tests.Controllers
 
                     // Post to return newly added VPAmbient
                     vpAmbientRet.VPAmbientID = 0;
-                    vpAmbientController.Request = new System.Net.Http.HttpRequestMessage();
-                    vpAmbientController.Request.RequestUri = new System.Uri("http://localhost:5000/api/vpAmbient");
                     IActionResult jsonRet3 = vpAmbientController.Post(vpAmbientRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 

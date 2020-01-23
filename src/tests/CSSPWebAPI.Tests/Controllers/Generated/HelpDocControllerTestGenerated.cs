@@ -191,8 +191,6 @@ namespace CSSPWebAPI.Tests.Controllers
 
                     // Post to return newly added HelpDoc
                     helpDocRet.HelpDocID = 0;
-                    helpDocController.Request = new System.Net.Http.HttpRequestMessage();
-                    helpDocController.Request.RequestUri = new System.Uri("http://localhost:5000/api/helpDoc");
                     IActionResult jsonRet3 = helpDocController.Post(helpDocRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 
@@ -310,8 +308,6 @@ namespace CSSPWebAPI.Tests.Controllers
 
                     // Post to return newly added HelpDoc
                     helpDocRet.HelpDocID = 0;
-                    helpDocController.Request = new System.Net.Http.HttpRequestMessage();
-                    helpDocController.Request.RequestUri = new System.Uri("http://localhost:5000/api/helpDoc");
                     IActionResult jsonRet3 = helpDocController.Post(helpDocRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 

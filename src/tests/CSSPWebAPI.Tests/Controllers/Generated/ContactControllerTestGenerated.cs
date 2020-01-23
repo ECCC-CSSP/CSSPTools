@@ -191,8 +191,6 @@ namespace CSSPWebAPI.Tests.Controllers
 
                     // Post to return newly added Contact
                     contactRet.ContactID = 0;
-                    contactController.Request = new System.Net.Http.HttpRequestMessage();
-                    contactController.Request.RequestUri = new System.Uri("http://localhost:5000/api/contact");
                     IActionResult jsonRet3 = contactController.Post(contactRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 
@@ -310,8 +308,6 @@ namespace CSSPWebAPI.Tests.Controllers
 
                     // Post to return newly added Contact
                     contactRet.ContactID = 0;
-                    contactController.Request = new System.Net.Http.HttpRequestMessage();
-                    contactController.Request.RequestUri = new System.Uri("http://localhost:5000/api/contact");
                     IActionResult jsonRet3 = contactController.Post(contactRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 

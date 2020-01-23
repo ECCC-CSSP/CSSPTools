@@ -191,8 +191,6 @@ namespace CSSPWebAPI.Tests.Controllers
 
                     // Post to return newly added AppTaskLanguage
                     appTaskLanguageRet.AppTaskLanguageID = 0;
-                    appTaskLanguageController.Request = new System.Net.Http.HttpRequestMessage();
-                    appTaskLanguageController.Request.RequestUri = new System.Uri("http://localhost:5000/api/appTaskLanguage");
                     IActionResult jsonRet3 = appTaskLanguageController.Post(appTaskLanguageRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 
@@ -310,8 +308,6 @@ namespace CSSPWebAPI.Tests.Controllers
 
                     // Post to return newly added AppTaskLanguage
                     appTaskLanguageRet.AppTaskLanguageID = 0;
-                    appTaskLanguageController.Request = new System.Net.Http.HttpRequestMessage();
-                    appTaskLanguageController.Request.RequestUri = new System.Uri("http://localhost:5000/api/appTaskLanguage");
                     IActionResult jsonRet3 = appTaskLanguageController.Post(appTaskLanguageRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 

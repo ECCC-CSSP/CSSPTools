@@ -191,8 +191,6 @@ namespace CSSPWebAPI.Tests.Controllers
 
                     // Post to return newly added ReportSection
                     reportSectionRet.ReportSectionID = 0;
-                    reportSectionController.Request = new System.Net.Http.HttpRequestMessage();
-                    reportSectionController.Request.RequestUri = new System.Uri("http://localhost:5000/api/reportSection");
                     IActionResult jsonRet3 = reportSectionController.Post(reportSectionRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 
@@ -310,8 +308,6 @@ namespace CSSPWebAPI.Tests.Controllers
 
                     // Post to return newly added ReportSection
                     reportSectionRet.ReportSectionID = 0;
-                    reportSectionController.Request = new System.Net.Http.HttpRequestMessage();
-                    reportSectionController.Request.RequestUri = new System.Uri("http://localhost:5000/api/reportSection");
                     IActionResult jsonRet3 = reportSectionController.Post(reportSectionRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 

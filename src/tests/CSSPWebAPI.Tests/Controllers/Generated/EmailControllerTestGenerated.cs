@@ -191,8 +191,6 @@ namespace CSSPWebAPI.Tests.Controllers
 
                     // Post to return newly added Email
                     emailRet.EmailID = 0;
-                    emailController.Request = new System.Net.Http.HttpRequestMessage();
-                    emailController.Request.RequestUri = new System.Uri("http://localhost:5000/api/email");
                     IActionResult jsonRet3 = emailController.Post(emailRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 
@@ -310,8 +308,6 @@ namespace CSSPWebAPI.Tests.Controllers
 
                     // Post to return newly added Email
                     emailRet.EmailID = 0;
-                    emailController.Request = new System.Net.Http.HttpRequestMessage();
-                    emailController.Request.RequestUri = new System.Uri("http://localhost:5000/api/email");
                     IActionResult jsonRet3 = emailController.Post(emailRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 

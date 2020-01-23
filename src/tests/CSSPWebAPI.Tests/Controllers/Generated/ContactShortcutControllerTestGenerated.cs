@@ -191,8 +191,6 @@ namespace CSSPWebAPI.Tests.Controllers
 
                     // Post to return newly added ContactShortcut
                     contactShortcutRet.ContactShortcutID = 0;
-                    contactShortcutController.Request = new System.Net.Http.HttpRequestMessage();
-                    contactShortcutController.Request.RequestUri = new System.Uri("http://localhost:5000/api/contactShortcut");
                     IActionResult jsonRet3 = contactShortcutController.Post(contactShortcutRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 
@@ -310,8 +308,6 @@ namespace CSSPWebAPI.Tests.Controllers
 
                     // Post to return newly added ContactShortcut
                     contactShortcutRet.ContactShortcutID = 0;
-                    contactShortcutController.Request = new System.Net.Http.HttpRequestMessage();
-                    contactShortcutController.Request.RequestUri = new System.Uri("http://localhost:5000/api/contactShortcut");
                     IActionResult jsonRet3 = contactShortcutController.Post(contactShortcutRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 

@@ -191,8 +191,6 @@ namespace CSSPWebAPI.Tests.Controllers
 
                     // Post to return newly added TVTypeUserAuthorization
                     tvTypeUserAuthorizationRet.TVTypeUserAuthorizationID = 0;
-                    tvTypeUserAuthorizationController.Request = new System.Net.Http.HttpRequestMessage();
-                    tvTypeUserAuthorizationController.Request.RequestUri = new System.Uri("http://localhost:5000/api/tvTypeUserAuthorization");
                     IActionResult jsonRet3 = tvTypeUserAuthorizationController.Post(tvTypeUserAuthorizationRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 
@@ -310,8 +308,6 @@ namespace CSSPWebAPI.Tests.Controllers
 
                     // Post to return newly added TVTypeUserAuthorization
                     tvTypeUserAuthorizationRet.TVTypeUserAuthorizationID = 0;
-                    tvTypeUserAuthorizationController.Request = new System.Net.Http.HttpRequestMessage();
-                    tvTypeUserAuthorizationController.Request.RequestUri = new System.Uri("http://localhost:5000/api/tvTypeUserAuthorization");
                     IActionResult jsonRet3 = tvTypeUserAuthorizationController.Post(tvTypeUserAuthorizationRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 

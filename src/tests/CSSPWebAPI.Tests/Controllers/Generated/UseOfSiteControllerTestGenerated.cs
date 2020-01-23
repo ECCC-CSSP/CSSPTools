@@ -191,8 +191,6 @@ namespace CSSPWebAPI.Tests.Controllers
 
                     // Post to return newly added UseOfSite
                     useOfSiteRet.UseOfSiteID = 0;
-                    useOfSiteController.Request = new System.Net.Http.HttpRequestMessage();
-                    useOfSiteController.Request.RequestUri = new System.Uri("http://localhost:5000/api/useOfSite");
                     IActionResult jsonRet3 = useOfSiteController.Post(useOfSiteRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 
@@ -310,8 +308,6 @@ namespace CSSPWebAPI.Tests.Controllers
 
                     // Post to return newly added UseOfSite
                     useOfSiteRet.UseOfSiteID = 0;
-                    useOfSiteController.Request = new System.Net.Http.HttpRequestMessage();
-                    useOfSiteController.Request.RequestUri = new System.Uri("http://localhost:5000/api/useOfSite");
                     IActionResult jsonRet3 = useOfSiteController.Post(useOfSiteRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 

@@ -191,8 +191,6 @@ namespace CSSPWebAPI.Tests.Controllers
 
                     // Post to return newly added MWQMSite
                     mwqmSiteRet.MWQMSiteID = 0;
-                    mwqmSiteController.Request = new System.Net.Http.HttpRequestMessage();
-                    mwqmSiteController.Request.RequestUri = new System.Uri("http://localhost:5000/api/mwqmSite");
                     IActionResult jsonRet3 = mwqmSiteController.Post(mwqmSiteRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 
@@ -310,8 +308,6 @@ namespace CSSPWebAPI.Tests.Controllers
 
                     // Post to return newly added MWQMSite
                     mwqmSiteRet.MWQMSiteID = 0;
-                    mwqmSiteController.Request = new System.Net.Http.HttpRequestMessage();
-                    mwqmSiteController.Request.RequestUri = new System.Uri("http://localhost:5000/api/mwqmSite");
                     IActionResult jsonRet3 = mwqmSiteController.Post(mwqmSiteRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 

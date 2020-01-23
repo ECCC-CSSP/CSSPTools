@@ -191,8 +191,6 @@ namespace CSSPWebAPI.Tests.Controllers
 
                     // Post to return newly added MWQMRunLanguage
                     mwqmRunLanguageRet.MWQMRunLanguageID = 0;
-                    mwqmRunLanguageController.Request = new System.Net.Http.HttpRequestMessage();
-                    mwqmRunLanguageController.Request.RequestUri = new System.Uri("http://localhost:5000/api/mwqmRunLanguage");
                     IActionResult jsonRet3 = mwqmRunLanguageController.Post(mwqmRunLanguageRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 
@@ -310,8 +308,6 @@ namespace CSSPWebAPI.Tests.Controllers
 
                     // Post to return newly added MWQMRunLanguage
                     mwqmRunLanguageRet.MWQMRunLanguageID = 0;
-                    mwqmRunLanguageController.Request = new System.Net.Http.HttpRequestMessage();
-                    mwqmRunLanguageController.Request.RequestUri = new System.Uri("http://localhost:5000/api/mwqmRunLanguage");
                     IActionResult jsonRet3 = mwqmRunLanguageController.Post(mwqmRunLanguageRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 

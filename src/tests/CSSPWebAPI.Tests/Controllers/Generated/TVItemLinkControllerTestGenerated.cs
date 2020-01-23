@@ -191,8 +191,6 @@ namespace CSSPWebAPI.Tests.Controllers
 
                     // Post to return newly added TVItemLink
                     tvItemLinkRet.TVItemLinkID = 0;
-                    tvItemLinkController.Request = new System.Net.Http.HttpRequestMessage();
-                    tvItemLinkController.Request.RequestUri = new System.Uri("http://localhost:5000/api/tvItemLink");
                     IActionResult jsonRet3 = tvItemLinkController.Post(tvItemLinkRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 
@@ -310,8 +308,6 @@ namespace CSSPWebAPI.Tests.Controllers
 
                     // Post to return newly added TVItemLink
                     tvItemLinkRet.TVItemLinkID = 0;
-                    tvItemLinkController.Request = new System.Net.Http.HttpRequestMessage();
-                    tvItemLinkController.Request.RequestUri = new System.Uri("http://localhost:5000/api/tvItemLink");
                     IActionResult jsonRet3 = tvItemLinkController.Post(tvItemLinkRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 

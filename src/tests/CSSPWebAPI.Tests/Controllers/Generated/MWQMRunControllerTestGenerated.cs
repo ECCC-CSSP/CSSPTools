@@ -191,8 +191,6 @@ namespace CSSPWebAPI.Tests.Controllers
 
                     // Post to return newly added MWQMRun
                     mwqmRunRet.MWQMRunID = 0;
-                    mwqmRunController.Request = new System.Net.Http.HttpRequestMessage();
-                    mwqmRunController.Request.RequestUri = new System.Uri("http://localhost:5000/api/mwqmRun");
                     IActionResult jsonRet3 = mwqmRunController.Post(mwqmRunRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 
@@ -310,8 +308,6 @@ namespace CSSPWebAPI.Tests.Controllers
 
                     // Post to return newly added MWQMRun
                     mwqmRunRet.MWQMRunID = 0;
-                    mwqmRunController.Request = new System.Net.Http.HttpRequestMessage();
-                    mwqmRunController.Request.RequestUri = new System.Uri("http://localhost:5000/api/mwqmRun");
                     IActionResult jsonRet3 = mwqmRunController.Post(mwqmRunRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 

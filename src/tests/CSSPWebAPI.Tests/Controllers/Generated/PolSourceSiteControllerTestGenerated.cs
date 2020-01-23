@@ -191,8 +191,6 @@ namespace CSSPWebAPI.Tests.Controllers
 
                     // Post to return newly added PolSourceSite
                     polSourceSiteRet.PolSourceSiteID = 0;
-                    polSourceSiteController.Request = new System.Net.Http.HttpRequestMessage();
-                    polSourceSiteController.Request.RequestUri = new System.Uri("http://localhost:5000/api/polSourceSite");
                     IActionResult jsonRet3 = polSourceSiteController.Post(polSourceSiteRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 
@@ -310,8 +308,6 @@ namespace CSSPWebAPI.Tests.Controllers
 
                     // Post to return newly added PolSourceSite
                     polSourceSiteRet.PolSourceSiteID = 0;
-                    polSourceSiteController.Request = new System.Net.Http.HttpRequestMessage();
-                    polSourceSiteController.Request.RequestUri = new System.Uri("http://localhost:5000/api/polSourceSite");
                     IActionResult jsonRet3 = polSourceSiteController.Post(polSourceSiteRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 

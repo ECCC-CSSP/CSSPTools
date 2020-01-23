@@ -191,8 +191,6 @@ namespace CSSPWebAPI.Tests.Controllers
 
                     // Post to return newly added Tel
                     telRet.TelID = 0;
-                    telController.Request = new System.Net.Http.HttpRequestMessage();
-                    telController.Request.RequestUri = new System.Uri("http://localhost:5000/api/tel");
                     IActionResult jsonRet3 = telController.Post(telRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 
@@ -310,8 +308,6 @@ namespace CSSPWebAPI.Tests.Controllers
 
                     // Post to return newly added Tel
                     telRet.TelID = 0;
-                    telController.Request = new System.Net.Http.HttpRequestMessage();
-                    telController.Request.RequestUri = new System.Uri("http://localhost:5000/api/tel");
                     IActionResult jsonRet3 = telController.Post(telRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 

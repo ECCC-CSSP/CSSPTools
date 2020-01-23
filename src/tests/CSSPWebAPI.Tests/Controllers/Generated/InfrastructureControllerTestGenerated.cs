@@ -191,8 +191,6 @@ namespace CSSPWebAPI.Tests.Controllers
 
                     // Post to return newly added Infrastructure
                     infrastructureRet.InfrastructureID = 0;
-                    infrastructureController.Request = new System.Net.Http.HttpRequestMessage();
-                    infrastructureController.Request.RequestUri = new System.Uri("http://localhost:5000/api/infrastructure");
                     IActionResult jsonRet3 = infrastructureController.Post(infrastructureRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 
@@ -310,8 +308,6 @@ namespace CSSPWebAPI.Tests.Controllers
 
                     // Post to return newly added Infrastructure
                     infrastructureRet.InfrastructureID = 0;
-                    infrastructureController.Request = new System.Net.Http.HttpRequestMessage();
-                    infrastructureController.Request.RequestUri = new System.Uri("http://localhost:5000/api/infrastructure");
                     IActionResult jsonRet3 = infrastructureController.Post(infrastructureRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 

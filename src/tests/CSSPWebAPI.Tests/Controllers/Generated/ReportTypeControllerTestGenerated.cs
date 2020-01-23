@@ -191,8 +191,6 @@ namespace CSSPWebAPI.Tests.Controllers
 
                     // Post to return newly added ReportType
                     reportTypeRet.ReportTypeID = 0;
-                    reportTypeController.Request = new System.Net.Http.HttpRequestMessage();
-                    reportTypeController.Request.RequestUri = new System.Uri("http://localhost:5000/api/reportType");
                     IActionResult jsonRet3 = reportTypeController.Post(reportTypeRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 
@@ -310,8 +308,6 @@ namespace CSSPWebAPI.Tests.Controllers
 
                     // Post to return newly added ReportType
                     reportTypeRet.ReportTypeID = 0;
-                    reportTypeController.Request = new System.Net.Http.HttpRequestMessage();
-                    reportTypeController.Request.RequestUri = new System.Uri("http://localhost:5000/api/reportType");
                     IActionResult jsonRet3 = reportTypeController.Post(reportTypeRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 

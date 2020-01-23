@@ -195,8 +195,6 @@ namespace CSSPWebAPI.Tests.Controllers
                     mwqmLookupMPNRet.Tubes1 = 1;
                     mwqmLookupMPNRet.Tubes10 = 1;
                     mwqmLookupMPNRet.MPN_100ml = 6;
-                    mwqmLookupMPNController.Request = new System.Net.Http.HttpRequestMessage();
-                    mwqmLookupMPNController.Request.RequestUri = new System.Uri("http://localhost:5000/api/mwqmLookupMPN");
                     IActionResult jsonRet3 = mwqmLookupMPNController.Post(mwqmLookupMPNRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 
@@ -318,8 +316,6 @@ namespace CSSPWebAPI.Tests.Controllers
                     mwqmLookupMPNRet.Tubes1 = 1;
                     mwqmLookupMPNRet.Tubes10 = 1;
                     mwqmLookupMPNRet.MPN_100ml = 6;
-                    mwqmLookupMPNController.Request = new System.Net.Http.HttpRequestMessage();
-                    mwqmLookupMPNController.Request.RequestUri = new System.Uri("http://localhost:5000/api/mwqmLookupMPN");
                     IActionResult jsonRet3 = mwqmLookupMPNController.Post(mwqmLookupMPNRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 

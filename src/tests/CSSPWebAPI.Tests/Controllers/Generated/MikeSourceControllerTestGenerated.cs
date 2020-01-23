@@ -191,8 +191,6 @@ namespace CSSPWebAPI.Tests.Controllers
 
                     // Post to return newly added MikeSource
                     mikeSourceRet.MikeSourceID = 0;
-                    mikeSourceController.Request = new System.Net.Http.HttpRequestMessage();
-                    mikeSourceController.Request.RequestUri = new System.Uri("http://localhost:5000/api/mikeSource");
                     IActionResult jsonRet3 = mikeSourceController.Post(mikeSourceRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 
@@ -310,8 +308,6 @@ namespace CSSPWebAPI.Tests.Controllers
 
                     // Post to return newly added MikeSource
                     mikeSourceRet.MikeSourceID = 0;
-                    mikeSourceController.Request = new System.Net.Http.HttpRequestMessage();
-                    mikeSourceController.Request.RequestUri = new System.Uri("http://localhost:5000/api/mikeSource");
                     IActionResult jsonRet3 = mikeSourceController.Post(mikeSourceRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 

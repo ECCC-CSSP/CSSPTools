@@ -82,8 +82,8 @@ namespace CSSPWebAPIGenerateCodeHelper
                 sb.AppendLine($@"                    { TypeNameLower }Ret.TVLevel = 1;");
                 sb.AppendLine($@"                    { TypeNameLower }Ret.TVType = TVTypeEnum.Contact;");
             }
-            sb.AppendLine($@"                    { TypeNameLower }Controller.Request = new System.Net.Http.HttpRequestMessage();");
-            sb.AppendLine($@"                    { TypeNameLower }Controller.Request.RequestUri = new System.Uri(""http://localhost:5000/api/{ TypeNameLower }"");");
+            //sb.AppendLine($@"                    { TypeNameLower }Controller.Request = new System.Net.Http.HttpRequestMessage();");
+            //sb.AppendLine($@"                    { TypeNameLower }Controller.Request.RequestUri = new System.Uri(""http://localhost:5000/api/{ TypeNameLower }"");");
             sb.AppendLine($@"                    IActionResult jsonRet3 = { TypeNameLower }Controller.Post({ TypeNameLower }Ret, LanguageRequest.ToString());");
             sb.AppendLine(@"                    Assert.NotNull(jsonRet3);");
             sb.AppendLine(@"");

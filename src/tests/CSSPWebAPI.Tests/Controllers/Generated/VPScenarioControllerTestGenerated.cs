@@ -191,8 +191,6 @@ namespace CSSPWebAPI.Tests.Controllers
 
                     // Post to return newly added VPScenario
                     vpScenarioRet.VPScenarioID = 0;
-                    vpScenarioController.Request = new System.Net.Http.HttpRequestMessage();
-                    vpScenarioController.Request.RequestUri = new System.Uri("http://localhost:5000/api/vpScenario");
                     IActionResult jsonRet3 = vpScenarioController.Post(vpScenarioRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 
@@ -310,8 +308,6 @@ namespace CSSPWebAPI.Tests.Controllers
 
                     // Post to return newly added VPScenario
                     vpScenarioRet.VPScenarioID = 0;
-                    vpScenarioController.Request = new System.Net.Http.HttpRequestMessage();
-                    vpScenarioController.Request.RequestUri = new System.Uri("http://localhost:5000/api/vpScenario");
                     IActionResult jsonRet3 = vpScenarioController.Post(vpScenarioRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 

@@ -191,8 +191,6 @@ namespace CSSPWebAPI.Tests.Controllers
 
                     // Post to return newly added Classification
                     classificationRet.ClassificationID = 0;
-                    classificationController.Request = new System.Net.Http.HttpRequestMessage();
-                    classificationController.Request.RequestUri = new System.Uri("http://localhost:5000/api/classification");
                     IActionResult jsonRet3 = classificationController.Post(classificationRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 
@@ -310,8 +308,6 @@ namespace CSSPWebAPI.Tests.Controllers
 
                     // Post to return newly added Classification
                     classificationRet.ClassificationID = 0;
-                    classificationController.Request = new System.Net.Http.HttpRequestMessage();
-                    classificationController.Request.RequestUri = new System.Uri("http://localhost:5000/api/classification");
                     IActionResult jsonRet3 = classificationController.Post(classificationRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 

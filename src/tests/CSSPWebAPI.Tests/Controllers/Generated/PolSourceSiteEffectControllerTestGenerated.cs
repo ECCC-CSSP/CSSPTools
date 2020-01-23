@@ -191,8 +191,6 @@ namespace CSSPWebAPI.Tests.Controllers
 
                     // Post to return newly added PolSourceSiteEffect
                     polSourceSiteEffectRet.PolSourceSiteEffectID = 0;
-                    polSourceSiteEffectController.Request = new System.Net.Http.HttpRequestMessage();
-                    polSourceSiteEffectController.Request.RequestUri = new System.Uri("http://localhost:5000/api/polSourceSiteEffect");
                     IActionResult jsonRet3 = polSourceSiteEffectController.Post(polSourceSiteEffectRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 
@@ -310,8 +308,6 @@ namespace CSSPWebAPI.Tests.Controllers
 
                     // Post to return newly added PolSourceSiteEffect
                     polSourceSiteEffectRet.PolSourceSiteEffectID = 0;
-                    polSourceSiteEffectController.Request = new System.Net.Http.HttpRequestMessage();
-                    polSourceSiteEffectController.Request.RequestUri = new System.Uri("http://localhost:5000/api/polSourceSiteEffect");
                     IActionResult jsonRet3 = polSourceSiteEffectController.Post(polSourceSiteEffectRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 

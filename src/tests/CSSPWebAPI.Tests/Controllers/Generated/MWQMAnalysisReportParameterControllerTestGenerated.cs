@@ -191,8 +191,6 @@ namespace CSSPWebAPI.Tests.Controllers
 
                     // Post to return newly added MWQMAnalysisReportParameter
                     mwqmAnalysisReportParameterRet.MWQMAnalysisReportParameterID = 0;
-                    mwqmAnalysisReportParameterController.Request = new System.Net.Http.HttpRequestMessage();
-                    mwqmAnalysisReportParameterController.Request.RequestUri = new System.Uri("http://localhost:5000/api/mwqmAnalysisReportParameter");
                     IActionResult jsonRet3 = mwqmAnalysisReportParameterController.Post(mwqmAnalysisReportParameterRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 
@@ -310,8 +308,6 @@ namespace CSSPWebAPI.Tests.Controllers
 
                     // Post to return newly added MWQMAnalysisReportParameter
                     mwqmAnalysisReportParameterRet.MWQMAnalysisReportParameterID = 0;
-                    mwqmAnalysisReportParameterController.Request = new System.Net.Http.HttpRequestMessage();
-                    mwqmAnalysisReportParameterController.Request.RequestUri = new System.Uri("http://localhost:5000/api/mwqmAnalysisReportParameter");
                     IActionResult jsonRet3 = mwqmAnalysisReportParameterController.Post(mwqmAnalysisReportParameterRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 

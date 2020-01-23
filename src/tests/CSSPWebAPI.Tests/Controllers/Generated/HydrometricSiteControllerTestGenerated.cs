@@ -191,8 +191,6 @@ namespace CSSPWebAPI.Tests.Controllers
 
                     // Post to return newly added HydrometricSite
                     hydrometricSiteRet.HydrometricSiteID = 0;
-                    hydrometricSiteController.Request = new System.Net.Http.HttpRequestMessage();
-                    hydrometricSiteController.Request.RequestUri = new System.Uri("http://localhost:5000/api/hydrometricSite");
                     IActionResult jsonRet3 = hydrometricSiteController.Post(hydrometricSiteRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 
@@ -310,8 +308,6 @@ namespace CSSPWebAPI.Tests.Controllers
 
                     // Post to return newly added HydrometricSite
                     hydrometricSiteRet.HydrometricSiteID = 0;
-                    hydrometricSiteController.Request = new System.Net.Http.HttpRequestMessage();
-                    hydrometricSiteController.Request.RequestUri = new System.Uri("http://localhost:5000/api/hydrometricSite");
                     IActionResult jsonRet3 = hydrometricSiteController.Post(hydrometricSiteRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 

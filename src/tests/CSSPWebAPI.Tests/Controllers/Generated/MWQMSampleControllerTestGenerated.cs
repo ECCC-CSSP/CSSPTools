@@ -191,8 +191,6 @@ namespace CSSPWebAPI.Tests.Controllers
 
                     // Post to return newly added MWQMSample
                     mwqmSampleRet.MWQMSampleID = 0;
-                    mwqmSampleController.Request = new System.Net.Http.HttpRequestMessage();
-                    mwqmSampleController.Request.RequestUri = new System.Uri("http://localhost:5000/api/mwqmSample");
                     IActionResult jsonRet3 = mwqmSampleController.Post(mwqmSampleRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 
@@ -310,8 +308,6 @@ namespace CSSPWebAPI.Tests.Controllers
 
                     // Post to return newly added MWQMSample
                     mwqmSampleRet.MWQMSampleID = 0;
-                    mwqmSampleController.Request = new System.Net.Http.HttpRequestMessage();
-                    mwqmSampleController.Request.RequestUri = new System.Uri("http://localhost:5000/api/mwqmSample");
                     IActionResult jsonRet3 = mwqmSampleController.Post(mwqmSampleRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 

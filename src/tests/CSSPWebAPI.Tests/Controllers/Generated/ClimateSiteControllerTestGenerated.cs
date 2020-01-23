@@ -191,8 +191,6 @@ namespace CSSPWebAPI.Tests.Controllers
 
                     // Post to return newly added ClimateSite
                     climateSiteRet.ClimateSiteID = 0;
-                    climateSiteController.Request = new System.Net.Http.HttpRequestMessage();
-                    climateSiteController.Request.RequestUri = new System.Uri("http://localhost:5000/api/climateSite");
                     IActionResult jsonRet3 = climateSiteController.Post(climateSiteRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 
@@ -310,8 +308,6 @@ namespace CSSPWebAPI.Tests.Controllers
 
                     // Post to return newly added ClimateSite
                     climateSiteRet.ClimateSiteID = 0;
-                    climateSiteController.Request = new System.Net.Http.HttpRequestMessage();
-                    climateSiteController.Request.RequestUri = new System.Uri("http://localhost:5000/api/climateSite");
                     IActionResult jsonRet3 = climateSiteController.Post(climateSiteRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 

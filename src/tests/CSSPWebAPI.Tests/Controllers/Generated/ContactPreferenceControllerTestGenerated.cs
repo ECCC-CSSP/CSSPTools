@@ -191,8 +191,6 @@ namespace CSSPWebAPI.Tests.Controllers
 
                     // Post to return newly added ContactPreference
                     contactPreferenceRet.ContactPreferenceID = 0;
-                    contactPreferenceController.Request = new System.Net.Http.HttpRequestMessage();
-                    contactPreferenceController.Request.RequestUri = new System.Uri("http://localhost:5000/api/contactPreference");
                     IActionResult jsonRet3 = contactPreferenceController.Post(contactPreferenceRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 
@@ -310,8 +308,6 @@ namespace CSSPWebAPI.Tests.Controllers
 
                     // Post to return newly added ContactPreference
                     contactPreferenceRet.ContactPreferenceID = 0;
-                    contactPreferenceController.Request = new System.Net.Http.HttpRequestMessage();
-                    contactPreferenceController.Request.RequestUri = new System.Uri("http://localhost:5000/api/contactPreference");
                     IActionResult jsonRet3 = contactPreferenceController.Post(contactPreferenceRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 

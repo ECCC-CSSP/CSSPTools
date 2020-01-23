@@ -191,8 +191,6 @@ namespace CSSPWebAPI.Tests.Controllers
 
                     // Post to return newly added MapInfoPoint
                     mapInfoPointRet.MapInfoPointID = 0;
-                    mapInfoPointController.Request = new System.Net.Http.HttpRequestMessage();
-                    mapInfoPointController.Request.RequestUri = new System.Uri("http://localhost:5000/api/mapInfoPoint");
                     IActionResult jsonRet3 = mapInfoPointController.Post(mapInfoPointRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 
@@ -310,8 +308,6 @@ namespace CSSPWebAPI.Tests.Controllers
 
                     // Post to return newly added MapInfoPoint
                     mapInfoPointRet.MapInfoPointID = 0;
-                    mapInfoPointController.Request = new System.Net.Http.HttpRequestMessage();
-                    mapInfoPointController.Request.RequestUri = new System.Uri("http://localhost:5000/api/mapInfoPoint");
                     IActionResult jsonRet3 = mapInfoPointController.Post(mapInfoPointRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 

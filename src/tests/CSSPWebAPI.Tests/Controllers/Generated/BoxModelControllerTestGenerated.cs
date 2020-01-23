@@ -191,8 +191,6 @@ namespace CSSPWebAPI.Tests.Controllers
 
                     // Post to return newly added BoxModel
                     boxModelRet.BoxModelID = 0;
-                    boxModelController.Request = new System.Net.Http.HttpRequestMessage();
-                    boxModelController.Request.RequestUri = new System.Uri("http://localhost:5000/api/boxModel");
                     IActionResult jsonRet3 = boxModelController.Post(boxModelRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 
@@ -310,8 +308,6 @@ namespace CSSPWebAPI.Tests.Controllers
 
                     // Post to return newly added BoxModel
                     boxModelRet.BoxModelID = 0;
-                    boxModelController.Request = new System.Net.Http.HttpRequestMessage();
-                    boxModelController.Request.RequestUri = new System.Uri("http://localhost:5000/api/boxModel");
                     IActionResult jsonRet3 = boxModelController.Post(boxModelRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 

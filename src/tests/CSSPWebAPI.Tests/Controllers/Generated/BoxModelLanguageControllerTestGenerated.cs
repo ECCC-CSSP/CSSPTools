@@ -191,8 +191,6 @@ namespace CSSPWebAPI.Tests.Controllers
 
                     // Post to return newly added BoxModelLanguage
                     boxModelLanguageRet.BoxModelLanguageID = 0;
-                    boxModelLanguageController.Request = new System.Net.Http.HttpRequestMessage();
-                    boxModelLanguageController.Request.RequestUri = new System.Uri("http://localhost:5000/api/boxModelLanguage");
                     IActionResult jsonRet3 = boxModelLanguageController.Post(boxModelLanguageRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 
@@ -310,8 +308,6 @@ namespace CSSPWebAPI.Tests.Controllers
 
                     // Post to return newly added BoxModelLanguage
                     boxModelLanguageRet.BoxModelLanguageID = 0;
-                    boxModelLanguageController.Request = new System.Net.Http.HttpRequestMessage();
-                    boxModelLanguageController.Request.RequestUri = new System.Uri("http://localhost:5000/api/boxModelLanguage");
                     IActionResult jsonRet3 = boxModelLanguageController.Post(boxModelLanguageRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 

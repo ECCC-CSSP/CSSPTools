@@ -191,8 +191,6 @@ namespace CSSPWebAPI.Tests.Controllers
 
                     // Post to return newly added PolSourceSiteEffectTerm
                     polSourceSiteEffectTermRet.PolSourceSiteEffectTermID = 0;
-                    polSourceSiteEffectTermController.Request = new System.Net.Http.HttpRequestMessage();
-                    polSourceSiteEffectTermController.Request.RequestUri = new System.Uri("http://localhost:5000/api/polSourceSiteEffectTerm");
                     IActionResult jsonRet3 = polSourceSiteEffectTermController.Post(polSourceSiteEffectTermRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 
@@ -310,8 +308,6 @@ namespace CSSPWebAPI.Tests.Controllers
 
                     // Post to return newly added PolSourceSiteEffectTerm
                     polSourceSiteEffectTermRet.PolSourceSiteEffectTermID = 0;
-                    polSourceSiteEffectTermController.Request = new System.Net.Http.HttpRequestMessage();
-                    polSourceSiteEffectTermController.Request.RequestUri = new System.Uri("http://localhost:5000/api/polSourceSiteEffectTerm");
                     IActionResult jsonRet3 = polSourceSiteEffectTermController.Post(polSourceSiteEffectTermRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 

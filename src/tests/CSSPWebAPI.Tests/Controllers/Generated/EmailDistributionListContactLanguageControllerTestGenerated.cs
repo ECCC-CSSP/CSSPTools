@@ -191,8 +191,6 @@ namespace CSSPWebAPI.Tests.Controllers
 
                     // Post to return newly added EmailDistributionListContactLanguage
                     emailDistributionListContactLanguageRet.EmailDistributionListContactLanguageID = 0;
-                    emailDistributionListContactLanguageController.Request = new System.Net.Http.HttpRequestMessage();
-                    emailDistributionListContactLanguageController.Request.RequestUri = new System.Uri("http://localhost:5000/api/emailDistributionListContactLanguage");
                     IActionResult jsonRet3 = emailDistributionListContactLanguageController.Post(emailDistributionListContactLanguageRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 
@@ -310,8 +308,6 @@ namespace CSSPWebAPI.Tests.Controllers
 
                     // Post to return newly added EmailDistributionListContactLanguage
                     emailDistributionListContactLanguageRet.EmailDistributionListContactLanguageID = 0;
-                    emailDistributionListContactLanguageController.Request = new System.Net.Http.HttpRequestMessage();
-                    emailDistributionListContactLanguageController.Request.RequestUri = new System.Uri("http://localhost:5000/api/emailDistributionListContactLanguage");
                     IActionResult jsonRet3 = emailDistributionListContactLanguageController.Post(emailDistributionListContactLanguageRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 

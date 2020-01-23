@@ -191,8 +191,6 @@ namespace CSSPWebAPI.Tests.Controllers
 
                     // Post to return newly added LabSheetDetail
                     labSheetDetailRet.LabSheetDetailID = 0;
-                    labSheetDetailController.Request = new System.Net.Http.HttpRequestMessage();
-                    labSheetDetailController.Request.RequestUri = new System.Uri("http://localhost:5000/api/labSheetDetail");
                     IActionResult jsonRet3 = labSheetDetailController.Post(labSheetDetailRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 
@@ -310,8 +308,6 @@ namespace CSSPWebAPI.Tests.Controllers
 
                     // Post to return newly added LabSheetDetail
                     labSheetDetailRet.LabSheetDetailID = 0;
-                    labSheetDetailController.Request = new System.Net.Http.HttpRequestMessage();
-                    labSheetDetailController.Request.RequestUri = new System.Uri("http://localhost:5000/api/labSheetDetail");
                     IActionResult jsonRet3 = labSheetDetailController.Post(labSheetDetailRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 

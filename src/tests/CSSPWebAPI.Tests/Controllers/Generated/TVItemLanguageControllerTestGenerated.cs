@@ -191,8 +191,6 @@ namespace CSSPWebAPI.Tests.Controllers
 
                     // Post to return newly added TVItemLanguage
                     tvItemLanguageRet.TVItemLanguageID = 0;
-                    tvItemLanguageController.Request = new System.Net.Http.HttpRequestMessage();
-                    tvItemLanguageController.Request.RequestUri = new System.Uri("http://localhost:5000/api/tvItemLanguage");
                     IActionResult jsonRet3 = tvItemLanguageController.Post(tvItemLanguageRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 
@@ -310,8 +308,6 @@ namespace CSSPWebAPI.Tests.Controllers
 
                     // Post to return newly added TVItemLanguage
                     tvItemLanguageRet.TVItemLanguageID = 0;
-                    tvItemLanguageController.Request = new System.Net.Http.HttpRequestMessage();
-                    tvItemLanguageController.Request.RequestUri = new System.Uri("http://localhost:5000/api/tvItemLanguage");
                     IActionResult jsonRet3 = tvItemLanguageController.Post(tvItemLanguageRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 

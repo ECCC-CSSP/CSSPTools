@@ -191,8 +191,6 @@ namespace CSSPWebAPI.Tests.Controllers
 
                     // Post to return newly added DocTemplate
                     docTemplateRet.DocTemplateID = 0;
-                    docTemplateController.Request = new System.Net.Http.HttpRequestMessage();
-                    docTemplateController.Request.RequestUri = new System.Uri("http://localhost:5000/api/docTemplate");
                     IActionResult jsonRet3 = docTemplateController.Post(docTemplateRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 
@@ -310,8 +308,6 @@ namespace CSSPWebAPI.Tests.Controllers
 
                     // Post to return newly added DocTemplate
                     docTemplateRet.DocTemplateID = 0;
-                    docTemplateController.Request = new System.Net.Http.HttpRequestMessage();
-                    docTemplateController.Request.RequestUri = new System.Uri("http://localhost:5000/api/docTemplate");
                     IActionResult jsonRet3 = docTemplateController.Post(docTemplateRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 

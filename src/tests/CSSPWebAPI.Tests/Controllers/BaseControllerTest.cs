@@ -1,7 +1,6 @@
 ﻿using CSSPEnums;
 using CSSPModels;
 using CSSPServices;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using CSSPWebAPI;
 using CSSPWebAPI.Controllers;
 using System.Collections.Generic;
@@ -11,7 +10,6 @@ using System.Net.Http;
 
 namespace CSSPWebAPI.Tests.Controllers
 {
-    [TestClass]
     public class BaseControllerTest
     {
         #region Variables

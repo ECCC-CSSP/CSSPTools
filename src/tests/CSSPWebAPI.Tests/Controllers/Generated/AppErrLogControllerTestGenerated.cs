@@ -191,8 +191,6 @@ namespace CSSPWebAPI.Tests.Controllers
 
                     // Post to return newly added AppErrLog
                     appErrLogRet.AppErrLogID = 0;
-                    appErrLogController.Request = new System.Net.Http.HttpRequestMessage();
-                    appErrLogController.Request.RequestUri = new System.Uri("http://localhost:5000/api/appErrLog");
                     IActionResult jsonRet3 = appErrLogController.Post(appErrLogRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 
@@ -310,8 +308,6 @@ namespace CSSPWebAPI.Tests.Controllers
 
                     // Post to return newly added AppErrLog
                     appErrLogRet.AppErrLogID = 0;
-                    appErrLogController.Request = new System.Net.Http.HttpRequestMessage();
-                    appErrLogController.Request.RequestUri = new System.Uri("http://localhost:5000/api/appErrLog");
                     IActionResult jsonRet3 = appErrLogController.Post(appErrLogRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 

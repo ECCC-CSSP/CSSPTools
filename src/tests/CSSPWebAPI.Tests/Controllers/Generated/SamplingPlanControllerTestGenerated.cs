@@ -192,8 +192,6 @@ namespace CSSPWebAPI.Tests.Controllers
                     // Post to return newly added SamplingPlan
                     samplingPlanRet.SamplingPlanID = 0;
                     samplingPlanRet.SamplingPlanName = samplingPlanRet.SamplingPlanName.Replace(".txt", "_a.txt");
-                    samplingPlanController.Request = new System.Net.Http.HttpRequestMessage();
-                    samplingPlanController.Request.RequestUri = new System.Uri("http://localhost:5000/api/samplingPlan");
                     IActionResult jsonRet3 = samplingPlanController.Post(samplingPlanRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 
@@ -312,8 +310,6 @@ namespace CSSPWebAPI.Tests.Controllers
                     // Post to return newly added SamplingPlan
                     samplingPlanRet.SamplingPlanID = 0;
                     samplingPlanRet.SamplingPlanName = samplingPlanRet.SamplingPlanName.Replace(".txt", "_a.txt");
-                    samplingPlanController.Request = new System.Net.Http.HttpRequestMessage();
-                    samplingPlanController.Request.RequestUri = new System.Uri("http://localhost:5000/api/samplingPlan");
                     IActionResult jsonRet3 = samplingPlanController.Post(samplingPlanRet, LanguageRequest.ToString());
                     Assert.NotNull(jsonRet3);
 
