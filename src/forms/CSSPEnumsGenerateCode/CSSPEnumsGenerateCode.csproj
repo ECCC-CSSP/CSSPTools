@@ -7,7 +7,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\dlls\CSSPEnumsDLL\CSSPEnumsDLL.csproj" />
+    <Reference Include="CSSPEnumsDLL">
+      <HintPath>..\..\..\..\CSSP Latest Code Old\CSSPEnumsDLL\CSSPEnumsDLL\bin\Debug\CSSPEnumsDLL.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
 </Project>

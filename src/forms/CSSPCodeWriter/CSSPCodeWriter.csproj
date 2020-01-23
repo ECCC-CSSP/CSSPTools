@@ -22,4 +22,10 @@
     <ProjectReference Include="..\..\dlls\PostCSSPDocCleanFiles\PostCSSPDocCleanFiles.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Reference Include="CSSPEnumsDLL">
+      <HintPath>..\..\..\..\CSSP Latest Code Old\CSSPEnumsDLL\CSSPEnumsDLL\bin\Debug\CSSPEnumsDLL.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
 </Project>
