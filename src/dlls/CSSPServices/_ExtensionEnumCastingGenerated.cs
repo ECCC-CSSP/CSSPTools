@@ -165,6 +165,8 @@ namespace CSSPServices
                    return (TVAuthEnum)whereInfo.ValueInt;
                case "TVTypeEnum":
                    return (TVTypeEnum)whereInfo.ValueInt;
+               case "ValveTypeEnum":
+                   return (ValveTypeEnum)whereInfo.ValueInt;
                case "WebTideDataSetEnum":
                    return (WebTideDataSetEnum)whereInfo.ValueInt;
                case "WhereOperatorEnum":

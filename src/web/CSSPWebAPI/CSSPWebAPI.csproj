@@ -7,13 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Controllers\srcWithDoc\**" />
-    <Content Remove="Controllers\srcWithDoc\**" />
-    <EmbeddedResource Remove="Controllers\srcWithDoc\**" />
-    <None Remove="Controllers\srcWithDoc\**" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Http.Features" Version="3.1.1" />
   </ItemGroup>
 

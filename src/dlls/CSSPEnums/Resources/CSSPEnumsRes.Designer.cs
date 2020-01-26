@@ -8274,6 +8274,24 @@ namespace CSSPEnums.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Automatically.
+        /// </summary>
+        public static string ValveTypeEnumAutomatically {
+            get {
+                return ResourceManager.GetString("ValveTypeEnumAutomatically", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Manually.
+        /// </summary>
+        public static string ValveTypeEnumManually {
+            get {
+                return ResourceManager.GetString("ValveTypeEnumManually", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to WebTideDataSet.
         /// </summary>
         public static string WebTideDataSet {

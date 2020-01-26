@@ -4497,6 +4497,41 @@ namespace CSSPEnums.Tests
             }
         }
         [Fact]
+        public void Enums_GetEnumText_ValveTypeEnum_Test()
+        {
+            foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
+            {
+                SetupTest(culture);
+
+                string retStr = enums.GetResValueForTypeAndID(typeof(ValveTypeEnum), -100);
+                Assert.Equal(CSSPEnumsRes.Empty, retStr);
+
+                retStr = enums.GetResValueForTypeAndID(typeof(ValveTypeEnum), 10000000);
+                Assert.Equal(CSSPEnumsRes.Empty, retStr);
+
+                retStr = enums.GetResValueForTypeAndID(typeof(ValveTypeEnum), null);
+                Assert.Equal(CSSPEnumsRes.Empty, retStr);
+
+                foreach (int i in Enum.GetValues(typeof(ValveTypeEnum)))
+                {
+                    retStr = enums.GetResValueForTypeAndID(typeof(ValveTypeEnum), i);
+        
+                    switch ((ValveTypeEnum)i)
+                    {
+                        case ValveTypeEnum.Manually:
+                            Assert.Equal(CSSPEnumsRes.ValveTypeEnumManually, retStr);
+                            break;
+                        case ValveTypeEnum.Automatically:
+                            Assert.Equal(CSSPEnumsRes.ValveTypeEnumAutomatically, retStr);
+                            break;
+                        default:
+                            Assert.Equal(CSSPEnumsRes.Empty, retStr);
+                            break;
+                    }
+                }
+            }
+        }
+        [Fact]
         public void Enums_GetEnumText_WebTideDataSetEnum_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
@@ -7715,6 +7750,39 @@ namespace CSSPEnums.Tests
                             break;
                         default:
                             Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "TVTypeEnum"), retStr);
+                            break;
+                    }
+                }
+            }
+        }
+        [Fact]
+        public void Enums_ValveTypeOK_Test()
+        {
+            foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
+            {
+                SetupTest(culture);
+
+                string retStr = enums.EnumTypeOK(typeof(ValveTypeEnum), null);
+                Assert.Equal("", retStr);
+
+                retStr = enums.EnumTypeOK(typeof(ValveTypeEnum), -100);
+                Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "ValveTypeEnum"), retStr);
+
+                retStr = enums.EnumTypeOK(typeof(ValveTypeEnum), 10000000);
+                Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "ValveTypeEnum"), retStr);
+
+                foreach (int i in Enum.GetValues(typeof(ValveTypeEnum)))
+                {
+                    retStr = enums.EnumTypeOK(typeof(ValveTypeEnum), i);
+
+                    switch ((ValveTypeEnum)i)
+                    {
+                        case ValveTypeEnum.Manually:
+                        case ValveTypeEnum.Automatically:
+                            Assert.Equal("", retStr);
+                            break;
+                        default:
+                            Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "ValveTypeEnum"), retStr);
                             break;
                     }
                 }
@@ -11445,6 +11513,33 @@ namespace CSSPEnums.Tests
                 enumTextOrderedList = enumTextOrderedList.OrderBy(c => c.EnumText).ToList();
 
                 List<EnumIDAndText> enumTextOrderedList2 = enums.GetEnumTextOrderedList(typeof(TVTypeEnum));
+                Assert.Equal(enumTextOrderedList.Count, enumTextOrderedList2.Count);
+
+                EnumIDAndText enumTextOrdered = new EnumIDAndText();
+                Assert.NotNull(enumTextOrdered);
+
+                for (int i = 0, count = enumTextOrderedList.Count; i < count; i++)
+                {
+                    Assert.Equal(enumTextOrderedList[i].EnumText, enumTextOrderedList2[i].EnumText);
+                    Assert.Equal(enumTextOrderedList[i].EnumID, enumTextOrderedList2[i].EnumID);
+                }
+            }
+        }
+        [Fact]
+        public void Enums_ValveTypeEnumTextOrdered_Test()
+        {
+            foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
+            {
+                SetupTest(culture);
+
+                List<EnumIDAndText> enumTextOrderedList = new List<EnumIDAndText>();
+                foreach (int i in Enum.GetValues(typeof(ValveTypeEnum)))
+                {
+                    enumTextOrderedList.Add(new EnumIDAndText() { EnumID = i, EnumText = enums.GetResValueForTypeAndID(typeof(ValveTypeEnum), i) });
+                }
+                enumTextOrderedList = enumTextOrderedList.OrderBy(c => c.EnumText).ToList();
+
+                List<EnumIDAndText> enumTextOrderedList2 = enums.GetEnumTextOrderedList(typeof(ValveTypeEnum));
                 Assert.Equal(enumTextOrderedList.Count, enumTextOrderedList2.Count);
 
                 EnumIDAndText enumTextOrdered = new EnumIDAndText();

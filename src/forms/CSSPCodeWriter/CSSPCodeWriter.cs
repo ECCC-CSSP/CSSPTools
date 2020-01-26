@@ -137,14 +137,13 @@ namespace CSSPCodeWriter
         {
             enumsCodeWriter.EnumsTestGenerate();
         }
-
-        private void butGenerateEnumsWithDoc_Click(object sender, EventArgs e)
-        {
-            enumsCodeWriter.EnumsAndPolSourceInfoEnumsWithDocGenerate();
-        }
         private void butGeneratePolSourceEnumCodeFiles_Click(object sender, EventArgs e)
         {
             enumsPolSourceCodeWriter.GeneratePolSourceRelatedFiles();
+        }
+        private void butGenerateWithDocEnums_Click(object sender, EventArgs e)
+        {
+            enumsCodeWriter.EnumsAndPolSourceInfoEnumsWithDocGenerate();
         }
         #endregion Events CSSPEnums
 
@@ -165,13 +164,13 @@ namespace CSSPCodeWriter
         {
             modelsCodeWriter.ModelsCompareOrModelsGeneratedWithDoc(false);
         }
-        private void butGenerateModelsWithHelp_Click(object sender, EventArgs e)
-        {
-            modelsCodeWriter.ModelsCompareOrModelsGeneratedWithDoc(true);
-        }
         private void butRunModelLint_Click(object sender, EventArgs e)
         {
             modelsCodeWriter.CompareDBFieldsAndCSSPModelsDLLProperties(CSSPDBConnectionString);
+        }
+        private void butGenerateWithDocModels_Click(object sender, EventArgs e)
+        {
+            modelsCodeWriter.ModelsCompareOrModelsGeneratedWithDoc(true);
         }
         #endregion Events CSSPModels
 
@@ -299,6 +298,8 @@ namespace CSSPCodeWriter
             panelCSSPWebAPIButtons.Visible = false;
             panelCSSPWebToolsAngButtons.Dock = DockStyle.Fill;
             panelCSSPWebToolsAngButtons.Visible = false;
+            panelCSSPDocButtons.Dock = DockStyle.Fill;
+            panelCSSPDocButtons.Visible = false;
             panelPostCSSPDocButtons.Dock = DockStyle.Fill;
             panelPostCSSPDocButtons.Visible = false;
 

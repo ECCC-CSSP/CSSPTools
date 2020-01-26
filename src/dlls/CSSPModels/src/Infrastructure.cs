@@ -77,6 +77,11 @@ namespace CSSPModels
         [CSSPDescriptionEN(DescriptionEN = @"Facility type --- Lagoon, Plant")]
         [CSSPDescriptionFR(DescriptionFR = @"Type de facilité --- Lagune, Usine")]
         public FacilityTypeEnum? FacilityType { get; set; }
+        [CSSPDisplayEN(DisplayEN = "Has backup power")]
+        [CSSPDisplayFR(DisplayFR = "A une alimentation de secours")]
+        [CSSPDescriptionEN(DescriptionEN = @"Has backup power")]
+        [CSSPDescriptionFR(DescriptionFR = @"A une alimentation de secours")]
+        public bool? HasBackupPower { get; set; }
         [CSSPDisplayEN(DisplayEN = "Is mechanically aerated")]
         [CSSPDisplayFR(DisplayFR = "Est mécaniquement aéré")]
         [CSSPDescriptionEN(DescriptionEN = @"Is mechanically aerated")]
@@ -186,6 +191,13 @@ namespace CSSPModels
         [CSSPDescriptionEN(DescriptionEN = @"Can overflow")]
         [CSSPDescriptionFR(DescriptionFR = @"Peut déverser")]
         public bool? CanOverflow { get; set; }
+        [CSSPEnumType]
+        [CSSPAllowNull]
+        [CSSPDisplayEN(DisplayEN = "Valve type")]
+        [CSSPDisplayFR(DisplayFR = "Type de vanne")]
+        [CSSPDescriptionEN(DescriptionEN = @"Valve type --- Manually, Automatically")]
+        [CSSPDescriptionFR(DescriptionFR = @"Type de vanne --- Manually, Automatically (fr)")]
+        public ValveTypeEnum? ValveType { get; set; }
         [Range(0.0D, 100.0D)]
         [CSSPDisplayEN(DisplayEN = "% of total flow")]
         [CSSPDisplayFR(DisplayFR = "% du débit total")]

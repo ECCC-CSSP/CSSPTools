@@ -32,34 +32,32 @@
             this.panelTopBottom = new System.Windows.Forms.Panel();
             this.panelPostCSSPDocButtons = new System.Windows.Forms.Panel();
             this.butPostCSSPDocCleanFiles = new System.Windows.Forms.Button();
+            this.panelCSSPDocButtons = new System.Windows.Forms.Panel();
             this.panelCSSPWebToolsAngButtons = new System.Windows.Forms.Panel();
             this.butAngularInterfacesGenerate = new System.Windows.Forms.Button();
             this.butAngularEnumsGenerate = new System.Windows.Forms.Button();
             this.panelCSSPWebAPIButtons = new System.Windows.Forms.Panel();
-            this.butGenerateControllersWithDoc = new System.Windows.Forms.Button();
             this.butGenerateControllersTest = new System.Windows.Forms.Button();
             this.butGenerateControllers = new System.Windows.Forms.Button();
             this.panelCSSPServicesButtons = new System.Windows.Forms.Panel();
             this.butCheckAllTablesInDBHasAtLeast10Items = new System.Windows.Forms.Button();
             this.butExtensionEnumCastingGenerate = new System.Windows.Forms.Button();
-            this.button3 = new System.Windows.Forms.Button();
             this.butRepopulateTesDB = new System.Windows.Forms.Button();
             this.butGenerateClassServiceGenerated = new System.Windows.Forms.Button();
             this.butGenerateClassServiceTestGenerated = new System.Windows.Forms.Button();
             this.panelCSSPModelsButtons = new System.Windows.Forms.Panel();
             this.butGenerateModelsNoHelp = new System.Windows.Forms.Button();
-            this.butGenerateModelsWithHelp = new System.Windows.Forms.Button();
             this.butGenerateSetupOnce = new System.Windows.Forms.Button();
             this.butGenerateResOnce = new System.Windows.Forms.Button();
             this.butRunModelLint = new System.Windows.Forms.Button();
             this.butGenerateModelsTest = new System.Windows.Forms.Button();
             this.panelCSSPEnumsButtons = new System.Windows.Forms.Panel();
             this.butGeneratePolSourceEnumCodeFiles = new System.Windows.Forms.Button();
-            this.butGenerateEnumWithHelp = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
             this.butCompareEnumsAndOldEnums = new System.Windows.Forms.Button();
             this.butGenerateAllCodeFiles = new System.Windows.Forms.Button();
             this.panelTopTop = new System.Windows.Forms.Panel();
+            this.CSSPDoc = new System.Windows.Forms.RadioButton();
             this.PostCSSPDoc = new System.Windows.Forms.RadioButton();
             this.CSSPWebToolsAng = new System.Windows.Forms.RadioButton();
             this.radioButtonCSSPWebAPI = new System.Windows.Forms.RadioButton();
@@ -72,8 +70,27 @@
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
             this.richTextBoxStatus = new System.Windows.Forms.RichTextBox();
             this.richTextBoxStatus2 = new System.Windows.Forms.RichTextBox();
+            this.button3 = new System.Windows.Forms.Button();
+            this.button4 = new System.Windows.Forms.Button();
+            this.button5 = new System.Windows.Forms.Button();
+            this.button9 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
+            this.splitContainer1.Panel1.SuspendLayout();
+            this.splitContainer1.Panel2.SuspendLayout();
+            this.panelTopBottom.SuspendLayout();
+            this.panelPostCSSPDocButtons.SuspendLayout();
+            this.panelCSSPDocButtons.SuspendLayout();
+            this.panelCSSPWebToolsAngButtons.SuspendLayout();
+            this.panelCSSPWebAPIButtons.SuspendLayout();
+            this.panelCSSPServicesButtons.SuspendLayout();
+            this.panelCSSPModelsButtons.SuspendLayout();
+            this.panelCSSPEnumsButtons.SuspendLayout();
+            this.panelTopTop.SuspendLayout();
+            this.panelStatus.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).BeginInit();
+            this.splitContainer2.Panel1.SuspendLayout();
+            this.splitContainer2.Panel2.SuspendLayout();
+            this.SuspendLayout();
             // 
             // splitContainer1
             // 
@@ -101,6 +118,7 @@
             // 
             this.panelTopBottom.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.panelTopBottom.Controls.Add(this.panelPostCSSPDocButtons);
+            this.panelTopBottom.Controls.Add(this.panelCSSPDocButtons);
             this.panelTopBottom.Controls.Add(this.panelCSSPWebToolsAngButtons);
             this.panelTopBottom.Controls.Add(this.panelCSSPWebAPIButtons);
             this.panelTopBottom.Controls.Add(this.panelCSSPServicesButtons);
@@ -117,7 +135,7 @@
             // 
             this.panelPostCSSPDocButtons.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.panelPostCSSPDocButtons.Controls.Add(this.butPostCSSPDocCleanFiles);
-            this.panelPostCSSPDocButtons.Location = new System.Drawing.Point(23, 389);
+            this.panelPostCSSPDocButtons.Location = new System.Drawing.Point(23, 492);
             this.panelPostCSSPDocButtons.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.panelPostCSSPDocButtons.Name = "panelPostCSSPDocButtons";
             this.panelPostCSSPDocButtons.Size = new System.Drawing.Size(1170, 59);
@@ -134,6 +152,20 @@
             this.butPostCSSPDocCleanFiles.Text = "Post CSSPDoc Clean Files";
             this.butPostCSSPDocCleanFiles.UseVisualStyleBackColor = true;
             this.butPostCSSPDocCleanFiles.Click += new System.EventHandler(this.butPostCSSPDocCleanFiles_Click);
+            // 
+            // panelCSSPDocButtons
+            // 
+            this.panelCSSPDocButtons.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panelCSSPDocButtons.Controls.Add(this.button5);
+            this.panelCSSPDocButtons.Controls.Add(this.button4);
+            this.panelCSSPDocButtons.Controls.Add(this.button9);
+            this.panelCSSPDocButtons.Controls.Add(this.button3);
+            this.panelCSSPDocButtons.Location = new System.Drawing.Point(23, 388);
+            this.panelCSSPDocButtons.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this.panelCSSPDocButtons.Name = "panelCSSPDocButtons";
+            this.panelCSSPDocButtons.Size = new System.Drawing.Size(1170, 98);
+            this.panelCSSPDocButtons.TabIndex = 5;
+            this.panelCSSPDocButtons.Tag = "CSSPDoc";
             // 
             // panelCSSPWebToolsAngButtons
             // 
@@ -172,7 +204,6 @@
             // panelCSSPWebAPIButtons
             // 
             this.panelCSSPWebAPIButtons.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panelCSSPWebAPIButtons.Controls.Add(this.butGenerateControllersWithDoc);
             this.panelCSSPWebAPIButtons.Controls.Add(this.butGenerateControllersTest);
             this.panelCSSPWebAPIButtons.Controls.Add(this.butGenerateControllers);
             this.panelCSSPWebAPIButtons.Location = new System.Drawing.Point(23, 256);
@@ -181,17 +212,6 @@
             this.panelCSSPWebAPIButtons.Size = new System.Drawing.Size(1170, 60);
             this.panelCSSPWebAPIButtons.TabIndex = 3;
             this.panelCSSPWebAPIButtons.Tag = "CSSPWebAPI";
-            // 
-            // butGenerateControllersWithDoc
-            // 
-            this.butGenerateControllersWithDoc.Location = new System.Drawing.Point(679, 3);
-            this.butGenerateControllersWithDoc.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.butGenerateControllersWithDoc.Name = "butGenerateControllersWithDoc";
-            this.butGenerateControllersWithDoc.Size = new System.Drawing.Size(410, 27);
-            this.butGenerateControllersWithDoc.TabIndex = 3;
-            this.butGenerateControllersWithDoc.Text = "\\srcWithDoc\\[ModelClassName]ControllerGenerated.cs";
-            this.butGenerateControllersWithDoc.UseVisualStyleBackColor = true;
-            this.butGenerateControllersWithDoc.Click += new System.EventHandler(this.butGenerateControllersWithDoc_Click);
             // 
             // butGenerateControllersTest
             // 
@@ -220,7 +240,6 @@
             this.panelCSSPServicesButtons.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.panelCSSPServicesButtons.Controls.Add(this.butCheckAllTablesInDBHasAtLeast10Items);
             this.panelCSSPServicesButtons.Controls.Add(this.butExtensionEnumCastingGenerate);
-            this.panelCSSPServicesButtons.Controls.Add(this.button3);
             this.panelCSSPServicesButtons.Controls.Add(this.butRepopulateTesDB);
             this.panelCSSPServicesButtons.Controls.Add(this.butGenerateClassServiceGenerated);
             this.panelCSSPServicesButtons.Controls.Add(this.butGenerateClassServiceTestGenerated);
@@ -252,17 +271,6 @@
             this.butExtensionEnumCastingGenerate.Text = "_ExtensionEnumCastingGenerated.cs";
             this.butExtensionEnumCastingGenerate.UseVisualStyleBackColor = true;
             this.butExtensionEnumCastingGenerate.Click += new System.EventHandler(this.butExtensionEnumCastingGenerated_Click);
-            // 
-            // button3
-            // 
-            this.button3.Location = new System.Drawing.Point(679, 3);
-            this.button3.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(285, 27);
-            this.button3.TabIndex = 36;
-            this.button3.Text = "\\srcWithDoc\\[ClassName]ServiceGenerated";
-            this.button3.UseVisualStyleBackColor = true;
-            this.button3.Click += new System.EventHandler(this.butClassNameServiceWithDocGenerated_Click);
             // 
             // butRepopulateTesDB
             // 
@@ -301,7 +309,6 @@
             // 
             this.panelCSSPModelsButtons.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.panelCSSPModelsButtons.Controls.Add(this.butGenerateModelsNoHelp);
-            this.panelCSSPModelsButtons.Controls.Add(this.butGenerateModelsWithHelp);
             this.panelCSSPModelsButtons.Controls.Add(this.butGenerateSetupOnce);
             this.panelCSSPModelsButtons.Controls.Add(this.butGenerateResOnce);
             this.panelCSSPModelsButtons.Controls.Add(this.butRunModelLint);
@@ -323,17 +330,6 @@
             this.butGenerateModelsNoHelp.Text = "\\src\\[ModelClassName].cs comparision with what would be generated";
             this.butGenerateModelsNoHelp.UseVisualStyleBackColor = true;
             this.butGenerateModelsNoHelp.Click += new System.EventHandler(this.butGenerateModelsNoHelp_Click);
-            // 
-            // butGenerateModelsWithHelp
-            // 
-            this.butGenerateModelsWithHelp.Location = new System.Drawing.Point(438, 37);
-            this.butGenerateModelsWithHelp.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.butGenerateModelsWithHelp.Name = "butGenerateModelsWithHelp";
-            this.butGenerateModelsWithHelp.Size = new System.Drawing.Size(307, 27);
-            this.butGenerateModelsWithHelp.TabIndex = 28;
-            this.butGenerateModelsWithHelp.Text = "\\srcWithDoc\\[ModelClassName]Generated.cs";
-            this.butGenerateModelsWithHelp.UseVisualStyleBackColor = true;
-            this.butGenerateModelsWithHelp.Click += new System.EventHandler(this.butGenerateModelsWithHelp_Click);
             // 
             // butGenerateSetupOnce
             // 
@@ -383,7 +379,6 @@
             // 
             this.panelCSSPEnumsButtons.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.panelCSSPEnumsButtons.Controls.Add(this.butGeneratePolSourceEnumCodeFiles);
-            this.panelCSSPEnumsButtons.Controls.Add(this.butGenerateEnumWithHelp);
             this.panelCSSPEnumsButtons.Controls.Add(this.button1);
             this.panelCSSPEnumsButtons.Controls.Add(this.butCompareEnumsAndOldEnums);
             this.panelCSSPEnumsButtons.Controls.Add(this.butGenerateAllCodeFiles);
@@ -404,17 +399,6 @@
             this.butGeneratePolSourceEnumCodeFiles.Text = "Generate PolSource Enum code files";
             this.butGeneratePolSourceEnumCodeFiles.UseVisualStyleBackColor = true;
             this.butGeneratePolSourceEnumCodeFiles.Click += new System.EventHandler(this.butGeneratePolSourceEnumCodeFiles_Click);
-            // 
-            // butGenerateEnumWithHelp
-            // 
-            this.butGenerateEnumWithHelp.Location = new System.Drawing.Point(4, 37);
-            this.butGenerateEnumWithHelp.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.butGenerateEnumWithHelp.Name = "butGenerateEnumWithHelp";
-            this.butGenerateEnumWithHelp.Size = new System.Drawing.Size(511, 27);
-            this.butGenerateEnumWithHelp.TabIndex = 27;
-            this.butGenerateEnumWithHelp.Text = "EnumsWithDocGenerated.cs - PolSourceObsInfoEnumWithDocGenerated.cs";
-            this.butGenerateEnumWithHelp.UseVisualStyleBackColor = true;
-            this.butGenerateEnumWithHelp.Click += new System.EventHandler(this.butGenerateEnumsWithDoc_Click);
             // 
             // button1
             // 
@@ -452,6 +436,7 @@
             // panelTopTop
             // 
             this.panelTopTop.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panelTopTop.Controls.Add(this.CSSPDoc);
             this.panelTopTop.Controls.Add(this.PostCSSPDoc);
             this.panelTopTop.Controls.Add(this.CSSPWebToolsAng);
             this.panelTopTop.Controls.Add(this.radioButtonCSSPWebAPI);
@@ -465,10 +450,23 @@
             this.panelTopTop.Size = new System.Drawing.Size(1223, 27);
             this.panelTopTop.TabIndex = 31;
             // 
+            // CSSPDoc
+            // 
+            this.CSSPDoc.AutoSize = true;
+            this.CSSPDoc.Location = new System.Drawing.Point(680, 4);
+            this.CSSPDoc.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this.CSSPDoc.Name = "CSSPDoc";
+            this.CSSPDoc.Size = new System.Drawing.Size(73, 19);
+            this.CSSPDoc.TabIndex = 5;
+            this.CSSPDoc.Tag = "CSSPDoc";
+            this.CSSPDoc.Text = "CSSPDoc";
+            this.CSSPDoc.UseVisualStyleBackColor = true;
+            this.CSSPDoc.Click += new System.EventHandler(this.ShowPanel);
+            // 
             // PostCSSPDoc
             // 
             this.PostCSSPDoc.AutoSize = true;
-            this.PostCSSPDoc.Location = new System.Drawing.Point(670, 3);
+            this.PostCSSPDoc.Location = new System.Drawing.Point(790, 3);
             this.PostCSSPDoc.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.PostCSSPDoc.Name = "PostCSSPDoc";
             this.PostCSSPDoc.Size = new System.Drawing.Size(96, 19);
@@ -614,6 +612,46 @@
             this.richTextBoxStatus2.TabIndex = 0;
             this.richTextBoxStatus2.Text = "";
             // 
+            // button3
+            // 
+            this.button3.Location = new System.Drawing.Point(194, 3);
+            this.button3.Name = "button3";
+            this.button3.Size = new System.Drawing.Size(183, 29);
+            this.button3.TabIndex = 1;
+            this.button3.Text = "Models with docs";
+            this.button3.UseVisualStyleBackColor = true;
+            this.button3.Click += new System.EventHandler(this.butGenerateWithDocModels_Click);
+            // 
+            // button4
+            // 
+            this.button4.Location = new System.Drawing.Point(383, 3);
+            this.button4.Name = "button4";
+            this.button4.Size = new System.Drawing.Size(226, 29);
+            this.button4.TabIndex = 2;
+            this.button4.Text = "Services with docs";
+            this.button4.UseVisualStyleBackColor = true;
+            this.button4.Click += new System.EventHandler(this.butClassNameServiceWithDocGenerated_Click);
+            // 
+            // button5
+            // 
+            this.button5.Location = new System.Drawing.Point(616, 3);
+            this.button5.Name = "button5";
+            this.button5.Size = new System.Drawing.Size(222, 29);
+            this.button5.TabIndex = 3;
+            this.button5.Text = "Web API with docs";
+            this.button5.UseVisualStyleBackColor = true;
+            this.button5.Click += new System.EventHandler(this.butGenerateControllersWithDoc_Click);
+            // 
+            // button9
+            // 
+            this.button9.Location = new System.Drawing.Point(4, 3);
+            this.button9.Name = "button9";
+            this.button9.Size = new System.Drawing.Size(184, 29);
+            this.button9.TabIndex = 0;
+            this.button9.Text = "Enums with docs";
+            this.button9.UseVisualStyleBackColor = true;
+            this.button9.Click += new System.EventHandler(this.butGenerateWithDocEnums_Click);
+            // 
             // CSSPCodeWriter
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -624,8 +662,25 @@
             this.Name = "CSSPCodeWriter";
             this.Text = "CSSPCode Writer";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
+            this.splitContainer1.Panel1.ResumeLayout(false);
+            this.splitContainer1.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
+            this.panelTopBottom.ResumeLayout(false);
+            this.panelPostCSSPDocButtons.ResumeLayout(false);
+            this.panelCSSPDocButtons.ResumeLayout(false);
+            this.panelCSSPWebToolsAngButtons.ResumeLayout(false);
+            this.panelCSSPWebAPIButtons.ResumeLayout(false);
+            this.panelCSSPServicesButtons.ResumeLayout(false);
+            this.panelCSSPModelsButtons.ResumeLayout(false);
+            this.panelCSSPEnumsButtons.ResumeLayout(false);
+            this.panelTopTop.ResumeLayout(false);
+            this.panelTopTop.PerformLayout();
+            this.panelStatus.ResumeLayout(false);
+            this.panelStatus.PerformLayout();
+            this.splitContainer2.Panel1.ResumeLayout(false);
+            this.splitContainer2.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).EndInit();
+            this.ResumeLayout(false);
 
         }
 
@@ -635,7 +690,6 @@
         private System.Windows.Forms.Panel panelTopBottom;
         private System.Windows.Forms.Panel panelCSSPEnumsButtons;
         private System.Windows.Forms.Button butGeneratePolSourceEnumCodeFiles;
-        private System.Windows.Forms.Button butGenerateEnumWithHelp;
         private System.Windows.Forms.Button butGenerateAllCodeFiles;
         private System.Windows.Forms.Panel panelTopTop;
         private System.Windows.Forms.RadioButton CSSPWebToolsAng;
@@ -659,14 +713,11 @@
         private System.Windows.Forms.Button butGenerateClassServiceTestGenerated;
         private System.Windows.Forms.Panel panelCSSPModelsButtons;
         private System.Windows.Forms.Button butGenerateModelsNoHelp;
-        private System.Windows.Forms.Button butGenerateModelsWithHelp;
         private System.Windows.Forms.Button butGenerateSetupOnce;
         private System.Windows.Forms.Button butGenerateResOnce;
         private System.Windows.Forms.Button butRunModelLint;
         private System.Windows.Forms.Button butGenerateModelsTest;
         private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Button button3;
-        private System.Windows.Forms.Button butGenerateControllersWithDoc;
         private System.Windows.Forms.Button butAngularEnumsGenerate;
         private System.Windows.Forms.Button butAngularInterfacesGenerate;
         private System.Windows.Forms.Panel panelPostCSSPDocButtons;
@@ -675,6 +726,12 @@
         private System.Windows.Forms.Button butCompareEnumsAndOldEnums;
         private System.Windows.Forms.Button butExtensionEnumCastingGenerate;
         private System.Windows.Forms.Button butCheckAllTablesInDBHasAtLeast10Items;
+        private System.Windows.Forms.Panel panelCSSPDocButtons;
+        private System.Windows.Forms.RadioButton CSSPDoc;
+        private System.Windows.Forms.Button button5;
+        private System.Windows.Forms.Button button4;
+        private System.Windows.Forms.Button button3;
+        private System.Windows.Forms.Button button9;
     }
 }
 

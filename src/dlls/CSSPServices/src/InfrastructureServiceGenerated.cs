@@ -296,6 +296,16 @@ namespace CSSPServices
                 }
             }
 
+            if (infrastructure.ValveType != null)
+            {
+                retStr = enums.EnumTypeOK(typeof(ValveTypeEnum), (int?)infrastructure.ValveType);
+                if (infrastructure.ValveType == null || !string.IsNullOrWhiteSpace(retStr))
+                {
+                    infrastructure.HasErrors = true;
+                    yield return new ValidationResult(string.Format(CSSPServicesRes._IsRequired, "ValveType"), new[] { "ValveType" });
+                }
+            }
+
             if (infrastructure.PercFlowOfTotal != null)
             {
                 if (infrastructure.PercFlowOfTotal < 0 || infrastructure.PercFlowOfTotal > 100)

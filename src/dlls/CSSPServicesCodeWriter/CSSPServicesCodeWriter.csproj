@@ -16,7 +16,12 @@
     <ProjectReference Include="..\CSSPEnums\CSSPEnums.csproj" />
     <ProjectReference Include="..\CSSPModelsCodeWriter\CSSPModelsCodeWriter.csproj" />
     <ProjectReference Include="..\CSSPModels\CSSPModels.csproj" />
-    <ProjectReference Include="..\CSSPServices\CSSPServices.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="CSSPServices">
+      <HintPath>..\CSSPServices\bin\Debug\netcoreapp3.1\CSSPServices.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
 </Project>

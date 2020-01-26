@@ -1044,6 +1044,11 @@ namespace CSSPEnums
         PolSourceSiteMikeScenario = 86,
         SubsectorTools = 87,
     }
+    public enum ValveTypeEnum
+    {
+        Manually = 1,
+        Automatically = 2,
+    }
     public enum WebTideDataSetEnum
     {
         arctic9 = 1,            // Arctic
