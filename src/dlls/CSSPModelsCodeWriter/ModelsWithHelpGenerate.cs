@@ -175,7 +175,7 @@ namespace CSSPModelsGenerateCodeHelper
                 else
                 {
                     sb.AppendLine(@"/*");
-                    sb.AppendLine(@" * Manually edited by Charles LeBlanc ");
+                    sb.AppendLine(@" * Manually edited");
                     sb.AppendLine(@" * ");
                     sb.AppendLine(@" */");
                 }

@@ -12,7 +12,6 @@
  * The same should be done for PolSourceObsInfoEnumWithDocGenerated.cs (to include in project) and 
  * PolSourceObsInfoEnumGenerated.cs (to exclude from project).
  * 
- * Last edited by Charles LeBlanc. 
  */
 using System.Globalization;
 using System.Threading;

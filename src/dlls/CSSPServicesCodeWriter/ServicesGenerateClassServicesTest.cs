@@ -18,6 +18,7 @@ namespace CSSPServicesGenerateCodeHelper
     public partial class ServicesCodeWriter
     {
         #region Variables
+        int CharlesLeBlancTVItemID = 2; // TVItemID for Charles LeBlanc
         #endregion Variables
 
         #region Properties
@@ -148,7 +149,7 @@ namespace CSSPServicesGenerateCodeHelper
                                 {
                                     case "AppTask":
                                         {
-                                            AppTaskService appTaskService = new AppTaskService(new Query(), dbTestDB, 2 /* charles LeBlanc */);
+                                            AppTaskService appTaskService = new AppTaskService(new Query(), dbTestDB, CharlesLeBlancTVItemID);
                                             AppTask appTask = appTaskService.GetAppTaskList().FirstOrDefault();
                                             if (appTask == null)
                                             {
@@ -162,7 +163,7 @@ namespace CSSPServicesGenerateCodeHelper
                                         break;
                                     case "BoxModel":
                                         {
-                                            BoxModelService boxModelService = new BoxModelService(new Query(), dbTestDB, 2 /* charles LeBlanc */);
+                                            BoxModelService boxModelService = new BoxModelService(new Query(), dbTestDB, CharlesLeBlancTVItemID);
                                             BoxModel boxModel = boxModelService.GetBoxModelList().FirstOrDefault();
                                             if (boxModel == null)
                                             {
@@ -176,7 +177,7 @@ namespace CSSPServicesGenerateCodeHelper
                                         break;
                                     case "ClimateSite":
                                         {
-                                            ClimateSiteService climateSiteService = new ClimateSiteService(new Query(), dbTestDB, 2 /* charles LeBlanc */);
+                                            ClimateSiteService climateSiteService = new ClimateSiteService(new Query(), dbTestDB, CharlesLeBlancTVItemID);
                                             ClimateSite climateSite = climateSiteService.GetClimateSiteList().FirstOrDefault();
                                             if (climateSite == null)
                                             {
@@ -190,7 +191,7 @@ namespace CSSPServicesGenerateCodeHelper
                                         break;
                                     case "Contact":
                                         {
-                                            ContactService contactService = new ContactService(new Query(), dbTestDB, 2 /* charles LeBlanc */);
+                                            ContactService contactService = new ContactService(new Query(), dbTestDB, CharlesLeBlancTVItemID);
                                             Contact contact = contactService.GetContactList().FirstOrDefault();
                                             if (contact == null)
                                             {
@@ -204,7 +205,7 @@ namespace CSSPServicesGenerateCodeHelper
                                         break;
                                     case "DrogueRun":
                                         {
-                                            DrogueRunService DrogueRunService = new DrogueRunService(new Query(), dbTestDB, 2 /* charles LeBlanc */);
+                                            DrogueRunService DrogueRunService = new DrogueRunService(new Query(), dbTestDB, CharlesLeBlancTVItemID);
                                             DrogueRun DrogueRun = DrogueRunService.GetDrogueRunList().FirstOrDefault();
                                             if (DrogueRun == null)
                                             {
@@ -218,7 +219,7 @@ namespace CSSPServicesGenerateCodeHelper
                                         break;
                                     case "EmailDistributionList":
                                         {
-                                            EmailDistributionListService emailDistributionListService = new EmailDistributionListService(new Query(), dbTestDB, 2 /* charles LeBlanc */);
+                                            EmailDistributionListService emailDistributionListService = new EmailDistributionListService(new Query(), dbTestDB, CharlesLeBlancTVItemID);
                                             EmailDistributionList emailDistributionList = emailDistributionListService.GetEmailDistributionListList().FirstOrDefault();
                                             if (emailDistributionList == null)
                                             {
@@ -232,7 +233,7 @@ namespace CSSPServicesGenerateCodeHelper
                                         break;
                                     case "EmailDistributionListContact":
                                         {
-                                            EmailDistributionListContactService emailDistributionListContactService = new EmailDistributionListContactService(new Query(), dbTestDB, 2 /* charles LeBlanc */);
+                                            EmailDistributionListContactService emailDistributionListContactService = new EmailDistributionListContactService(new Query(), dbTestDB, CharlesLeBlancTVItemID);
                                             EmailDistributionListContact emailDistributionListContact = emailDistributionListContactService.GetEmailDistributionListContactList().FirstOrDefault();
                                             if (emailDistributionListContact == null)
                                             {
@@ -246,7 +247,7 @@ namespace CSSPServicesGenerateCodeHelper
                                         break;
                                     case "HydrometricSite":
                                         {
-                                            HydrometricSiteService hydrometricSiteService = new HydrometricSiteService(new Query(), dbTestDB, 2 /* charles LeBlanc */);
+                                            HydrometricSiteService hydrometricSiteService = new HydrometricSiteService(new Query(), dbTestDB, CharlesLeBlancTVItemID);
                                             HydrometricSite hydrometricSite = hydrometricSiteService.GetHydrometricSiteList().FirstOrDefault();
                                             if (hydrometricSite == null)
                                             {
@@ -260,7 +261,7 @@ namespace CSSPServicesGenerateCodeHelper
                                         break;
                                     case "Infrastructure":
                                         {
-                                            InfrastructureService infrastructureService = new InfrastructureService(new Query(), dbTestDB, 2 /* charles LeBlanc */);
+                                            InfrastructureService infrastructureService = new InfrastructureService(new Query(), dbTestDB, CharlesLeBlancTVItemID);
                                             Infrastructure infrastructure = infrastructureService.GetInfrastructureList().FirstOrDefault();
                                             if (infrastructure == null)
                                             {
@@ -274,7 +275,7 @@ namespace CSSPServicesGenerateCodeHelper
                                         break;
                                     case "LabSheet":
                                         {
-                                            LabSheetService labSheetService = new LabSheetService(new Query(), dbTestDB, 2 /* charles LeBlanc */);
+                                            LabSheetService labSheetService = new LabSheetService(new Query(), dbTestDB, CharlesLeBlancTVItemID);
                                             LabSheet labSheet = labSheetService.GetLabSheetList().FirstOrDefault();
                                             if (labSheet == null)
                                             {
@@ -288,7 +289,7 @@ namespace CSSPServicesGenerateCodeHelper
                                         break;
                                     case "LabSheetDetail":
                                         {
-                                            LabSheetDetailService labSheetDetailService = new LabSheetDetailService(new Query(), dbTestDB, 2 /* charles LeBlanc */);
+                                            LabSheetDetailService labSheetDetailService = new LabSheetDetailService(new Query(), dbTestDB, CharlesLeBlancTVItemID);
                                             LabSheetDetail labSheetDetail = labSheetDetailService.GetLabSheetDetailList().FirstOrDefault();
                                             if (labSheetDetail == null)
                                             {
@@ -302,7 +303,7 @@ namespace CSSPServicesGenerateCodeHelper
                                         break;
                                     case "MapInfo":
                                         {
-                                            MapInfoService mapInfoService = new MapInfoService(new Query(), dbTestDB, 2 /* charles LeBlanc */);
+                                            MapInfoService mapInfoService = new MapInfoService(new Query(), dbTestDB, CharlesLeBlancTVItemID);
                                             MapInfo mapInfo = mapInfoService.GetMapInfoList().FirstOrDefault();
                                             if (mapInfo == null)
                                             {
@@ -316,7 +317,7 @@ namespace CSSPServicesGenerateCodeHelper
                                         break;
                                     case "MikeSource":
                                         {
-                                            MikeSourceService mikeSourceService = new MikeSourceService(new Query(), dbTestDB, 2 /* charles LeBlanc */);
+                                            MikeSourceService mikeSourceService = new MikeSourceService(new Query(), dbTestDB, CharlesLeBlancTVItemID);
                                             MikeSource mikeSource = mikeSourceService.GetMikeSourceList().FirstOrDefault();
                                             if (mikeSource == null)
                                             {
@@ -330,7 +331,7 @@ namespace CSSPServicesGenerateCodeHelper
                                         break;
                                     case "MWQMAnalysisReportParameter":
                                         {
-                                            MWQMAnalysisReportParameterService mwqmAnalysisReportParameterService = new MWQMAnalysisReportParameterService(new Query(), dbTestDB, 2 /* charles LeBlanc */);
+                                            MWQMAnalysisReportParameterService mwqmAnalysisReportParameterService = new MWQMAnalysisReportParameterService(new Query(), dbTestDB, CharlesLeBlancTVItemID);
                                             MWQMAnalysisReportParameter mwqmAnalysisReportParameter = mwqmAnalysisReportParameterService.GetMWQMAnalysisReportParameterList().FirstOrDefault();
                                             if (mwqmAnalysisReportParameter == null)
                                             {
@@ -344,7 +345,7 @@ namespace CSSPServicesGenerateCodeHelper
                                         break;
                                     case "MWQMRun":
                                         {
-                                            MWQMRunService mwqmRunService = new MWQMRunService(new Query(), dbTestDB, 2 /* charles LeBlanc */);
+                                            MWQMRunService mwqmRunService = new MWQMRunService(new Query(), dbTestDB, CharlesLeBlancTVItemID);
                                             MWQMRun mwqmRun = mwqmRunService.GetMWQMRunList().FirstOrDefault();
                                             if (mwqmRun == null)
                                             {
@@ -358,7 +359,7 @@ namespace CSSPServicesGenerateCodeHelper
                                         break;
                                     case "MWQMSample":
                                         {
-                                            MWQMSampleService mwqmSampleService = new MWQMSampleService(new Query(), dbTestDB, 2 /* charles LeBlanc */);
+                                            MWQMSampleService mwqmSampleService = new MWQMSampleService(new Query(), dbTestDB, CharlesLeBlancTVItemID);
                                             MWQMSample mwqmSample = mwqmSampleService.GetMWQMSampleList().FirstOrDefault();
                                             if (mwqmSample == null)
                                             {
@@ -372,7 +373,7 @@ namespace CSSPServicesGenerateCodeHelper
                                         break;
                                     case "MWQMSubsector":
                                         {
-                                            MWQMSubsectorService mwqmSubsectorService = new MWQMSubsectorService(new Query(), dbTestDB, 2 /* charles LeBlanc */);
+                                            MWQMSubsectorService mwqmSubsectorService = new MWQMSubsectorService(new Query(), dbTestDB, CharlesLeBlancTVItemID);
                                             MWQMSubsector mwqmSubsector = mwqmSubsectorService.GetMWQMSubsectorList().FirstOrDefault();
                                             if (mwqmSubsector == null)
                                             {
@@ -386,7 +387,7 @@ namespace CSSPServicesGenerateCodeHelper
                                         break;
                                     case "PolSourceObservation":
                                         {
-                                            PolSourceObservationService polSourceObservationService = new PolSourceObservationService(new Query(), dbTestDB, 2 /* charles LeBlanc */);
+                                            PolSourceObservationService polSourceObservationService = new PolSourceObservationService(new Query(), dbTestDB, CharlesLeBlancTVItemID);
                                             PolSourceObservation polSourceObservation = polSourceObservationService.GetPolSourceObservationList().FirstOrDefault();
                                             if (polSourceObservation == null)
                                             {
@@ -400,7 +401,7 @@ namespace CSSPServicesGenerateCodeHelper
                                         break;
                                     case "PolSourceSite":
                                         {
-                                            PolSourceSiteService polSourceSiteService = new PolSourceSiteService(new Query(), dbTestDB, 2 /* charles LeBlanc */);
+                                            PolSourceSiteService polSourceSiteService = new PolSourceSiteService(new Query(), dbTestDB, CharlesLeBlancTVItemID);
                                             PolSourceSite polSourceSite = polSourceSiteService.GetPolSourceSiteList().FirstOrDefault();
                                             if (polSourceSite == null)
                                             {
@@ -414,7 +415,7 @@ namespace CSSPServicesGenerateCodeHelper
                                         break;
                                     case "RatingCurve":
                                         {
-                                            RatingCurveService ratingCurveService = new RatingCurveService(new Query(), dbTestDB, 2 /* charles LeBlanc */);
+                                            RatingCurveService ratingCurveService = new RatingCurveService(new Query(), dbTestDB, CharlesLeBlancTVItemID);
                                             RatingCurve ratingCurve = ratingCurveService.GetRatingCurveList().FirstOrDefault();
                                             if (ratingCurve == null)
                                             {
@@ -428,7 +429,7 @@ namespace CSSPServicesGenerateCodeHelper
                                         break;
                                     case "ReportSection":
                                         {
-                                            ReportSectionService ReportSectionService = new ReportSectionService(new Query(), dbTestDB, 2 /* charles LeBlanc */);
+                                            ReportSectionService ReportSectionService = new ReportSectionService(new Query(), dbTestDB, CharlesLeBlancTVItemID);
                                             ReportSection ReportSection = ReportSectionService.GetReportSectionList().FirstOrDefault();
                                             if (ReportSection == null)
                                             {
@@ -442,7 +443,7 @@ namespace CSSPServicesGenerateCodeHelper
                                         break;
                                     case "ReportType":
                                         {
-                                            ReportTypeService reportTypeService = new ReportTypeService(new Query(), dbTestDB, 2 /* charles LeBlanc */);
+                                            ReportTypeService reportTypeService = new ReportTypeService(new Query(), dbTestDB, CharlesLeBlancTVItemID);
                                             ReportType reportType = reportTypeService.GetReportTypeList().FirstOrDefault();
                                             if (reportType == null)
                                             {
@@ -456,7 +457,7 @@ namespace CSSPServicesGenerateCodeHelper
                                         break;
                                     case "SamplingPlanSubsector":
                                         {
-                                            SamplingPlanSubsectorService samplingPlanSubsectorService = new SamplingPlanSubsectorService(new Query(), dbTestDB, 2 /* charles LeBlanc */);
+                                            SamplingPlanSubsectorService samplingPlanSubsectorService = new SamplingPlanSubsectorService(new Query(), dbTestDB, CharlesLeBlancTVItemID);
                                             SamplingPlanSubsector samplingPlanSubsector = samplingPlanSubsectorService.GetSamplingPlanSubsectorList().FirstOrDefault();
                                             if (samplingPlanSubsector == null)
                                             {
@@ -470,7 +471,7 @@ namespace CSSPServicesGenerateCodeHelper
                                         break;
                                     case "SamplingPlan":
                                         {
-                                            SamplingPlanService samplingPlanService = new SamplingPlanService(new Query(), dbTestDB, 2 /* charles LeBlanc */);
+                                            SamplingPlanService samplingPlanService = new SamplingPlanService(new Query(), dbTestDB, CharlesLeBlancTVItemID);
                                             SamplingPlan samplingPlan = samplingPlanService.GetSamplingPlanList().FirstOrDefault();
                                             if (samplingPlan == null)
                                             {
@@ -484,7 +485,7 @@ namespace CSSPServicesGenerateCodeHelper
                                         break;
                                     case "Spill":
                                         {
-                                            SpillService spillService = new SpillService(new Query(), dbTestDB, 2 /* charles LeBlanc */);
+                                            SpillService spillService = new SpillService(new Query(), dbTestDB, CharlesLeBlancTVItemID);
                                             Spill spill = spillService.GetSpillList().FirstOrDefault();
                                             if (spill == null)
                                             {
@@ -498,7 +499,7 @@ namespace CSSPServicesGenerateCodeHelper
                                         break;
                                     case "TVFile":
                                         {
-                                            TVFileService tvFileService = new TVFileService(new Query(), dbTestDB, 2 /* charles LeBlanc */);
+                                            TVFileService tvFileService = new TVFileService(new Query(), dbTestDB, CharlesLeBlancTVItemID);
                                             TVFile tvFile = tvFileService.GetTVFileList().FirstOrDefault();
                                             if (tvFile == null)
                                             {
@@ -512,7 +513,7 @@ namespace CSSPServicesGenerateCodeHelper
                                         break;
                                     case "VPScenario":
                                         {
-                                            VPScenarioService vpScenarioService = new VPScenarioService(new Query(), dbTestDB, 2 /* charles LeBlanc */);
+                                            VPScenarioService vpScenarioService = new VPScenarioService(new Query(), dbTestDB, CharlesLeBlancTVItemID);
                                             VPScenario vpScenario = vpScenarioService.GetVPScenarioList().FirstOrDefault();
                                             if (vpScenario == null)
                                             {
@@ -532,7 +533,7 @@ namespace CSSPServicesGenerateCodeHelper
                                             }
                                             else
                                             {
-                                                TVItemService tvItemService = new TVItemService(new Query(), dbTestDB, 2 /* charles LeBlanc */);
+                                                TVItemService tvItemService = new TVItemService(new Query(), dbTestDB, CharlesLeBlancTVItemID);
                                                 if (csspProp.AllowableTVTypeList.Count == 0)
                                                 {
                                                     sb.AppendLine($@"            // Need to implement (no items found, would need to add at least one in the TestDB) [{ TypeName } { csspProp.PropName } { csspProp.ExistTypeName } { csspProp.ExistFieldID }]");

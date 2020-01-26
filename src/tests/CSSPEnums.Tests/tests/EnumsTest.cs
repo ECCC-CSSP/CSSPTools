@@ -4,8 +4,6 @@
  * All testing function are generated under documents
  * EnumsTestGenerated.cs and EnumsPolSourceObsInfoEnumTestGenerated.cs
  * 
- * Last edited by Charles LeBlanc. 
- * 
  */
 using Xunit;
 using System.Globalization;

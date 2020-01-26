@@ -1,5 +1,5 @@
 ﻿/*
- * Manually edited by Charles LeBlanc 
+ * Manually edited
  * 
  */
 using CSSPEnums;
