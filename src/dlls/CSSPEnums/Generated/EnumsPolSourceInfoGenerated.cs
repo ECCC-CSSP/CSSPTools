@@ -5,6 +5,7 @@
  *
  */ 
 using CSSPEnums.Resources;
+using CSSPEnums.Resources.Generated;
 
 namespace CSSPEnums
 {

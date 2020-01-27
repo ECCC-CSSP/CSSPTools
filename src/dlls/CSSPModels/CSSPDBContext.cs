@@ -5,7 +5,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using CSSPEnums;
-using CSSPModels.Resources;
+using CSSPModels.Resources.Generated;
 
 namespace CSSPModels
 {

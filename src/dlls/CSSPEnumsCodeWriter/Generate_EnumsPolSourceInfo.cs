@@ -13,16 +13,16 @@ namespace PolSourceGroupingGenerateCodeHelper
     {
         /// <summary>
         /// Generates:
-        ///     C:\CSSPTools\src\dlls\CSSPEnums\EnumsPolSourceInfoGenerated.cs
+        ///     C:\CSSPTools\src\dlls\CSSPEnums\Generated\EnumsPolSourceInfoGenerated.cs
         /// 
         /// Requires:
         ///     C:\CSSPTools\src\assets\PolSourceGrouping.xlsm
         /// </summary>
-        private void EnumsPolSourceInfoGenerated()
+        private void Generate_EnumsPolSourceInfo()
         {
             StringBuilder sb = new StringBuilder();
 
-            string FileToGenerate = @"C:\CSSPTools\src\dlls\CSSPEnums\EnumsPolSourceInfoGenerated.cs";
+            string FileToGenerate = @"C:\CSSPTools\src\dlls\CSSPEnums\Generated\EnumsPolSourceInfoGenerated.cs";
             if (!CheckFileDirectoriesExist(FileToGenerate))
             {
                 return;
@@ -40,6 +40,7 @@ namespace PolSourceGroupingGenerateCodeHelper
             sb.AppendLine(@" *");
             sb.AppendLine(@" */ ");
             sb.AppendLine(@"using CSSPEnums.Resources;");
+            sb.AppendLine(@"using CSSPEnums.Resources.Generated;");
             sb.AppendLine(@"");
             sb.AppendLine(@"namespace CSSPEnums");
             sb.AppendLine(@"{");

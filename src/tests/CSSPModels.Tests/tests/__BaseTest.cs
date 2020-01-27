@@ -36,21 +36,21 @@ namespace CSSPModels.Tests
             csspAfterAttribute.Year = 34;
             Assert.Equal(34, csspAfterAttribute.Year);
             bool retBool = true;// csspAfterAttribute.IsValid(new object());
-            Assert.Equal(true, retBool);
+            Assert.True(retBool);
 
             CSSPAllowNullAttribute csspAllowNullAttribute = new CSSPAllowNullAttribute();
             retBool = csspAllowNullAttribute.IsValid(new object());
-            Assert.Equal(true, retBool);
+            Assert.True(retBool);
 
             CSSPBiggerAttribute csspBiggerAttribute = new CSSPBiggerAttribute();
             csspBiggerAttribute.OtherField = "Something";
             Assert.Equal("Something", csspBiggerAttribute.OtherField);
             retBool = csspBiggerAttribute.IsValid(new object());
-            Assert.Equal(true, retBool);
+            Assert.True(retBool);
 
             CSSPEnumTypeAttribute csspEnumTypeAttribute = new CSSPEnumTypeAttribute();
             retBool = csspEnumTypeAttribute.IsValid(new object());
-            Assert.Equal(true, retBool);
+            Assert.True(retBool);
 
             CSSPExistAttribute csspExistAttribute = new CSSPExistAttribute();
             csspExistAttribute.ExistTypeName = "Something";
@@ -75,7 +75,7 @@ namespace CSSPModels.Tests
             Assert.Equal("Something", csspFillAttribute.FillReturnField);
 
             retBool = csspExistAttribute.IsValid(new object());
-            Assert.Equal(true, retBool);
+            Assert.True(retBool);
 
         }
         #endregion Tests

@@ -18,7 +18,6 @@ namespace CSSPEnums.Tests
         #endregion Variables
 
         #region Properties
-
         #endregion Properties
 
         #region Constructors
@@ -33,7 +32,7 @@ namespace CSSPEnums.Tests
         #endregion Testing Methods private
 
         #region Functions private
-        public void SetupTest(CultureInfo culture)
+        private void SetupTest(CultureInfo culture)
         {
             Thread.CurrentThread.CurrentCulture = culture;
             Thread.CurrentThread.CurrentUICulture = culture;

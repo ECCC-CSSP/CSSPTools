@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace CSSPModels.Resources {
+namespace CSSPModels.Resources.Generated {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace CSSPModels.Resources {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("CSSPModels.Resources.CSSPModelsRes", typeof(CSSPModelsRes).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("CSSPModels.Resources.Generated.CSSPModelsRes", typeof(CSSPModelsRes).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;

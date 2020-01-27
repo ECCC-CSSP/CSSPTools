@@ -23,4 +23,8 @@
     <ProjectReference Include="..\..\dlls\CSSPEnums\CSSPEnums.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="tests\Generated\" />
+  </ItemGroup>
+
 </Project>

@@ -12,12 +12,12 @@ namespace CSSPEnumsGenerateCodeHelper
     {
         /// <summary>
         /// Generates:
-        ///     C:\CSSPTools\src\tests\CSSPEnums.Tests\tests\EnumsTestGenerated.cs file
+        ///     C:\CSSPTools\src\tests\CSSPEnums.Tests\tests\Generated\EnumsTestGenerated.cs file
         /// 
         /// Requires:
         ///     C:\CSSPTools\src\dlls\CSSPEnums\bin\Debug\netcoreapp3.1\CSSPEnums.dll
         /// </summary>
-        public void EnumsTestGenerate()
+        public void Generate_EnumsTest()
         {
             StatusTempEvent(new StatusEventArgs(""));
             ClearPermanentEvent(new StatusEventArgs("Starting ..."));
@@ -25,7 +25,7 @@ namespace CSSPEnumsGenerateCodeHelper
 
             StringBuilder sb = new StringBuilder();
             FileInfo fiDLL = new FileInfo(@"C:\CSSPTools\src\dlls\CSSPEnums\bin\Debug\netcoreapp3.1\CSSPEnums.dll");
-            FileInfo fi = new FileInfo(@"C:\CSSPTools\src\tests\CSSPEnums.Tests\tests\EnumsTestGenerated.cs");
+            FileInfo fi = new FileInfo(@"C:\CSSPTools\src\tests\CSSPEnums.Tests\tests\Generated\EnumsTestGenerated.cs");
 
             if (!fiDLL.Exists)
             {
@@ -53,7 +53,7 @@ namespace CSSPEnumsGenerateCodeHelper
             sb.AppendLine(@"");
 
             // Doing Testing Methods GetEnumText public
-            sb.AppendLine(@"        #region Testing Methods GetEnumText public");
+            sb.AppendLine(@"        #region Testing Method GetResValueForTypeAndID for each Enum value name");
             var importAssembly = Assembly.LoadFile(fiDLL.FullName);
             Type[] types = importAssembly.GetTypes();
             foreach (Type type in types)
@@ -65,7 +65,7 @@ namespace CSSPEnumsGenerateCodeHelper
                         continue;
 
                     sb.AppendLine(@"        [Fact]");
-                    sb.AppendLine($@"        public void Enums_GetEnumText_{ enumName }_Test()");
+                    sb.AppendLine($@"        public void GetResValueForTypeAndID_ForEnum_{ enumName }_Test()");
                     sb.AppendLine(@"        {");
                     sb.AppendLine(@"            foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo(""en-CA""), new CultureInfo(""fr-CA"") })");
                     sb.AppendLine(@"            {");
@@ -115,12 +115,12 @@ namespace CSSPEnumsGenerateCodeHelper
                 }
             }
             sb.AppendLine(@"");
-            sb.AppendLine(@"        #endregion Testing Methods GetEnumText public");
+            sb.AppendLine(@"        #endregion Testing Method GetResValueForTypeAndID for each Enum value name");
             sb.AppendLine(@"");
 
 
             // Doing Testing Methods Check OK public
-            sb.AppendLine(@"        #region Testing Methods Check OK public");
+            sb.AppendLine(@"        #region Testing Method EnumTypeListOK");
             sb.AppendLine(@"        [Fact]");
             sb.AppendLine(@"        public void Enums_EnumTypeListOK_Test()");
             sb.AppendLine(@"        {");
@@ -139,7 +139,11 @@ namespace CSSPEnumsGenerateCodeHelper
             sb.AppendLine(@"                Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, ""PolSourceObsInfoEnum""), retStr);");
             sb.AppendLine(@"            }");
             sb.AppendLine(@"        }");
+            sb.AppendLine(@"");
+            sb.AppendLine(@"        #endregion Testing Method EnumTypeListOK");
+            sb.AppendLine(@"");
 
+            sb.AppendLine(@"        #region Testing Method EnumTypeOK for each Enum value name");
             importAssembly = Assembly.LoadFile(fiDLL.FullName);
             types = importAssembly.GetTypes();
             foreach (Type type in types)
@@ -191,11 +195,12 @@ namespace CSSPEnumsGenerateCodeHelper
                 }
             }
             sb.AppendLine(@"");
-            sb.AppendLine(@"        #endregion Testing Methods Check OK public");
+            sb.AppendLine(@"        #endregion Testing Method EnumTypeOK for each Enum value name");
+            sb.AppendLine(@"");
 
 
             // Doing Testing Methods TextOrdered public
-            sb.AppendLine(@"        #region Testing Methods TextOrdered public");
+            sb.AppendLine(@"        #region Testing Method GetEnumTextOrderedList for each Enum value name");
             importAssembly = Assembly.LoadFile(fiDLL.FullName);
             types = importAssembly.GetTypes();
             foreach (Type type in types)
@@ -234,7 +239,7 @@ namespace CSSPEnumsGenerateCodeHelper
                 }
             }
             sb.AppendLine(@"");
-            sb.AppendLine(@"        #endregion Testing Methods TextOrdered public");
+            sb.AppendLine(@"        #endregion Testing Method GetEnumTextOrderedList for each Enum value name");
 
             sb.AppendLine(@"    }");
             sb.AppendLine(@"}");

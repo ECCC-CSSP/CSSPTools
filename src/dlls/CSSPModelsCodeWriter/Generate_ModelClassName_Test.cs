@@ -14,12 +14,12 @@ namespace CSSPModelsGenerateCodeHelper
         #region Functions public
         /// <summary>
         /// Generates:
-        ///     C:\CSSPTools\src\tests\CSSPModels.Tests\tests\[ModelClassName]TestGenerated.cs file
+        ///     C:\CSSPTools\src\tests\CSSPModels.Tests\tests\Generated\[ModelClassName]TestGenerated.cs file
         /// 
         /// Requires:
         ///     C:\CSSPTools\src\dlls\CSSPModels\bin\Debug\netcoreapp3.1\CSSPModels.dll
         /// </summary>
-        public void ModelClassName_TestGenerated()
+        public void Generate_ModelClassName_Test()
         {
             ClearPermanentEvent(new StatusEventArgs(""));
 
@@ -470,7 +470,7 @@ namespace CSSPModelsGenerateCodeHelper
                 sb.AppendLine(@"    }");
                 sb.AppendLine(@"}");
 
-                FileInfo fiOutput = new FileInfo($@"C:\CSSPTools\src\tests\CSSPModels.Tests\tests\{ type.Name }TestGenerated.cs");
+                FileInfo fiOutput = new FileInfo($@"C:\CSSPTools\src\tests\CSSPModels.Tests\tests\Generated\{ type.Name }TestGenerated.cs");
 
                 using (StreamWriter sw = fiOutput.CreateText())
                 {

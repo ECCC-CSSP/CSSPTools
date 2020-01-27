@@ -9,13 +9,14 @@ using Xunit;
 using System.Collections.Generic;
 using System.Globalization;
 using CSSPEnums.Resources;
+using CSSPEnums.Resources.Generated;
 
 namespace CSSPEnums.Tests
 {
     public partial class EnumsTest
     {
         [Fact]
-        public void BaseService_GetEnumText_PolSourceObsInfoEnum_Test()
+        public void GetResValueForTypeAndID_for_PolSourceObsInfoEnum_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
             {
@@ -10981,16 +10982,16 @@ namespace CSSPEnums.Tests
                     }
                 }
 
-            retStr = enums.GetResValueForTypeAndID(typeof(PolSourceObsInfoEnum), 1000000, null);
-            Assert.Equal(CSSPEnumsRes.CSSPError.ToString(), retStr);
-            retStrDesc = enums.GetResValueForTypeAndID(typeof(PolSourceObsInfoEnum), 1000000, PolSourceObsInfoTypeEnum.Description);
-            Assert.Equal(CSSPEnumsRes.CSSPError.ToString(), retStrDesc);
-            retStrReport = enums.GetResValueForTypeAndID(typeof(PolSourceObsInfoEnum), 1000000, PolSourceObsInfoTypeEnum.Report);
-            Assert.Equal("", retStrReport);
-            retStrText = enums.GetResValueForTypeAndID(typeof(PolSourceObsInfoEnum), 1000000, PolSourceObsInfoTypeEnum.Text);
-            Assert.Equal("", retStrText);
-            retStrInit = enums.GetResValueForTypeAndID(typeof(PolSourceObsInfoEnum), 1000000, PolSourceObsInfoTypeEnum.Initial);
-            Assert.Equal("", retStrInit);
+                retStr = enums.GetResValueForTypeAndID(typeof(PolSourceObsInfoEnum), 1000000, null);
+                Assert.Equal(CSSPEnumsRes.CSSPError.ToString(), retStr);
+                retStrDesc = enums.GetResValueForTypeAndID(typeof(PolSourceObsInfoEnum), 1000000, PolSourceObsInfoTypeEnum.Description);
+                Assert.Equal(CSSPEnumsRes.CSSPError.ToString(), retStrDesc);
+                retStrReport = enums.GetResValueForTypeAndID(typeof(PolSourceObsInfoEnum), 1000000, PolSourceObsInfoTypeEnum.Report);
+                Assert.Equal("", retStrReport);
+                retStrText = enums.GetResValueForTypeAndID(typeof(PolSourceObsInfoEnum), 1000000, PolSourceObsInfoTypeEnum.Text);
+                Assert.Equal("", retStrText);
+                retStrInit = enums.GetResValueForTypeAndID(typeof(PolSourceObsInfoEnum), 1000000, PolSourceObsInfoTypeEnum.Initial);
+                Assert.Equal("", retStrInit);
             }
         }
     }

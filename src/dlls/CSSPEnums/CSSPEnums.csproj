@@ -15,7 +15,7 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>CSSPEnumsRes.resx</DependentUpon>
     </Compile>
-    <Compile Update="Resources\PolSourceInfoEnumGeneratedRes.Designer.cs">
+    <Compile Update="Resources\Generated\PolSourceInfoEnumGeneratedRes.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>PolSourceInfoEnumGeneratedRes.resx</DependentUpon>
@@ -30,10 +30,10 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>CSSPEnumsRes.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Update="Resources\PolSourceInfoEnumGeneratedRes.fr.resx">
+    <EmbeddedResource Update="Resources\Generated\PolSourceInfoEnumGeneratedRes.fr.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="Resources\PolSourceInfoEnumGeneratedRes.resx">
+    <EmbeddedResource Update="Resources\Generated\PolSourceInfoEnumGeneratedRes.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>PolSourceInfoEnumGeneratedRes.Designer.cs</LastGenOutput>
     </EmbeddedResource>

@@ -298,7 +298,7 @@ namespace CSSPEnums
                     return "";
             }
         }
-        #endregion Function public
+        #endregion Enum Function public
 
         #region Functions private
         private string GetEnumText_ActionDBTypeEnum(ActionDBTypeEnum? actionDBType)
@@ -1042,6 +1042,8 @@ namespace CSSPEnums
                     return CSSPEnumsRes.FileTypeEnumKML;
                 case FileTypeEnum.CSV:
                     return CSSPEnumsRes.FileTypeEnumCSV;
+                case FileTypeEnum.WMV:
+                    return CSSPEnumsRes.FileTypeEnumWMV;
                 default:
                     return CSSPEnumsRes.Empty;
             }

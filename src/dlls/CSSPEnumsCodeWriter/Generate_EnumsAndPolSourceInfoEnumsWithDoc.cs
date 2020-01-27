@@ -14,15 +14,15 @@ namespace CSSPEnumsGenerateCodeHelper
     {
         /// <summary>
         /// Generates: 
-        ///     C:\CSSPTools\src\dlls\CSSPEnums\EnumsWithDocGenerated.cs file
-        ///     C:\CSSPTools\src\dlls\CSSPEnums\PolSourceObsInfoEnumWithDocGenerated.cs file
+        ///     C:\CSSPTools\src\dlls\CSSPEnums\Generated\EnumsWithDocGenerated.cs file
+        ///     C:\CSSPTools\src\dlls\CSSPEnums\Generated\PolSourceObsInfoEnumWithDocGenerated.cs file
         /// 
         /// Requires: 
         ///     C:\CSSPTools\src\dlls\CSSPEnums\bin\Debug\netcoreapp3.1\CSSPEnums.dll
         ///     C:\CSSPTools\src\dlls\CSSPModels\bin\Debug\netcoreapp3.1\CSSPModels.dll
         ///     C:\CSSPTools\src\dlls\CSSPServices\bin\Debug\netcoreapp3.1\CSSPServices.dll
         /// </summary>
-        public void EnumsAndPolSourceInfoEnumsWithDocGenerate()
+        public void Generate_EnumsAndPolSourceInfoEnumsWithDoc()
         {
             StatusTempEvent(new StatusEventArgs(""));
             ClearPermanentEvent(new StatusEventArgs("Starting ..."));
@@ -38,8 +38,8 @@ namespace CSSPEnumsGenerateCodeHelper
             FileInfo fiCSSPModelsDLL = new FileInfo(@"C:\CSSPTools\src\dlls\CSSPModels\bin\Debug\netcoreapp3.1\CSSPModels.dll");
             FileInfo fiCSSPServicesDLL = new FileInfo(@"C:\CSSPTools\src\dlls\CSSPServices\bin\Debug\netcoreapp3.1\CSSPServices.dll");
             FileInfo fiCSSPWebAPIDLL = new FileInfo(@"C:\CSSPTools\src\web\CSSPWebAPI\bin\Debug\netcoreapp3.1\CSSPWebAPI.dll");
-            FileInfo fi = new FileInfo(@"C:\CSSPTools\src\dlls\CSSPEnums\EnumsWithDocGenerated.cs");
-            FileInfo fiPol = new FileInfo(@"C:\CSSPTools\src\dlls\CSSPEnums\PolSourceObsInfoEnumWithDocGenerated.cs");
+            FileInfo fi = new FileInfo(@"C:\CSSPTools\src\dlls\CSSPEnums\Generated\EnumsWithDocGenerated.cs");
+            FileInfo fiPol = new FileInfo(@"C:\CSSPTools\src\dlls\CSSPEnums\Generated\PolSourceObsInfoEnumWithDocGenerated.cs");
 
             if (!fiCSSPEnumsDLL.Exists)
             {

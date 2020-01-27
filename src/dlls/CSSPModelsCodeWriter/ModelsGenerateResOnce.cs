@@ -55,8 +55,8 @@ namespace CSSPModelsGenerateCodeHelper
             }
 
             StatusPermanentEvent(new StatusEventArgs("Files: "));
-            StatusPermanentEvent(new StatusEventArgs(@"C:\CSSPTools\src\dlls\CSSPModels\Resources\CSSPModelsRes.resx"));
-            StatusPermanentEvent(new StatusEventArgs(@"C:\CSSPTools\src\dlls\CSSPModels\Resources\CSSPModelsRes.fr.resx"));
+            StatusPermanentEvent(new StatusEventArgs(@"C:\CSSPTools\src\dlls\CSSPModels\Resources\Generated\CSSPModelsRes.resx"));
+            StatusPermanentEvent(new StatusEventArgs(@"C:\CSSPTools\src\dlls\CSSPModels\Resources\Generated\CSSPModelsRes.fr.resx"));
             StatusPermanentEvent(new StatusEventArgs("were created"));
 
             StatusTempEvent(new StatusEventArgs("Done ..."));

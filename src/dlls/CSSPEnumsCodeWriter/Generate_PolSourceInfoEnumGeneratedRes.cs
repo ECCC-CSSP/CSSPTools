@@ -13,16 +13,16 @@ namespace PolSourceGroupingGenerateCodeHelper
     {
         /// <summary>
         /// Generates:
-        ///     C:\CSSPTools\src\dlls\CSSPEnums\Resources\PolSourceInfoEnumGeneratedRes.resx
+        ///     C:\CSSPTools\src\dlls\CSSPEnums\Resources\Generated\PolSourceInfoEnumGeneratedRes.resx
         /// 
         /// Requires:
         ///     C:\CSSPTools\src\assets\PolSourceGrouping.xlsm
         /// </summary>
-        private void PolSourceInfoEnumGeneratedRes()
+        private void Generate_PolSourceInfoEnumGeneratedRes_resx()
         {
             StringBuilder sb = new StringBuilder();
 
-            string FileToGenerate = @"C:\CSSPTools\src\dlls\CSSPEnums\Resources\PolSourceInfoEnumGeneratedRes.resx";
+            string FileToGenerate = @"C:\CSSPTools\src\dlls\CSSPEnums\Resources\Generated\PolSourceInfoEnumGeneratedRes.resx";
             if (!CheckFileDirectoriesExist(FileToGenerate))
             {
                 return;

@@ -214,7 +214,7 @@ namespace PolSourceGroupingGenerateCodeHelper
         /// Requires:
         ///     C:\CSSPTools\src\assets\PolSourceGrouping.xlsm
         /// </summary>
-        public void GeneratePolSourceRelatedFiles()
+        public void Generate_EnumPolSourceInfoRelatedFiles()
         {
             ClearPermanentEvent(new StatusEventArgs(""));
             StatusTempEvent(new StatusEventArgs(""));
@@ -250,12 +250,12 @@ namespace PolSourceGroupingGenerateCodeHelper
             StatusTempEvent(new StatusEventArgs("Reading Excel Document and Checking done..."));
             StatusPermanentEvent(new StatusEventArgs("Reading Excel Document and Checking done..."));
 
-            FillPolSourceObsInfoChildServiceGenerated();
-            EnumsPolSourceInfoGenerated();
-            PolSourceObsInfoEnumGenerated();          
-            EnumsPolSourceObsInfoEnumTestGenerated();
-            PolSourceInfoEnumGeneratedRes();
-            PolSourceInfoEnumGeneratedResFR();
+            Generate_FillPolSourceObsInfoChildService();
+            Generate_EnumsPolSourceInfo();
+            Generate_PolSourceObsInfoEnum();          
+            Generate_EnumsPolSourceObsInfoEnumTest();
+            Generate_PolSourceInfoEnumGeneratedRes_resx();
+            Generate_PolSourceInfoEnumGeneratedResFR_resx();
 
             StatusTempEvent(new StatusEventArgs("Done ..."));
             StatusPermanentEvent(new StatusEventArgs(""));

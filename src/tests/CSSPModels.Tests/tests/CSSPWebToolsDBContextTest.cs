@@ -6,7 +6,7 @@ using CSSPModels;
 using Microsoft.EntityFrameworkCore.Metadata;
 using System.Reflection;
 using CSSPEnums;
-using CSSPModels.Resources;
+using CSSPModels.Resources.Generated;
 
 namespace CSSPModels.Tests
 {
@@ -31,7 +31,7 @@ namespace CSSPModels.Tests
         {
             using (CSSPDBContext db = new CSSPDBContext())
             {
-                Assert.Equal(null, db.DatabaseType);
+                Assert.Null(db.DatabaseType);
                 Assert.Equal(string.Format(CSSPModelsRes._IsRequired, "DataType"), db.Error);
                 db.Error = "";
 
@@ -52,7 +52,7 @@ namespace CSSPModels.Tests
         {
             using (CSSPDBContext db = new CSSPDBContext(null))
             {
-                Assert.Equal(null, db.DatabaseType);
+                Assert.Null(db.DatabaseType);
                 Assert.Equal(string.Format(CSSPModelsRes._IsRequired, "DataType"), db.Error);
             }
         }
@@ -97,7 +97,7 @@ namespace CSSPModels.Tests
         {
             using (CSSPDBContext db = new CSSPDBContext((DatabaseTypeEnum)1000000))
             {
-                Assert.Equal(null, db.DatabaseType);
+                Assert.Null(db.DatabaseType);
                 Assert.Equal(string.Format(CSSPModelsRes._IsRequired, "DataType"), db.Error);
                 db.Error = "";
 

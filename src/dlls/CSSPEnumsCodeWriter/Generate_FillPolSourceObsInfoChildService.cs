@@ -13,16 +13,16 @@ namespace PolSourceGroupingGenerateCodeHelper
     {
         /// <summary>
         /// Generates:
-        ///     C:\CSSPTools\src\dlls\CSSPServices\FillPolSourceObsInfoChildServiceGenerated.cs file
+        ///     C:\CSSPTools\src\dlls\CSSPServices\Generated\FillPolSourceObsInfoChildServiceGenerated.cs file
         /// 
         /// Requires:
         ///     C:\CSSPTools\src\assets\PolSourceGrouping.xlsm
         /// </summary>
-        private void FillPolSourceObsInfoChildServiceGenerated()
+        private void Generate_FillPolSourceObsInfoChildService()
         {
             StringBuilder sb = new StringBuilder();
 
-            string FileToGenerate = @"C:\CSSPTools\src\dlls\CSSPServices\FillPolSourceObsInfoChildServiceGenerated.cs";
+            string FileToGenerate = @"C:\CSSPTools\src\dlls\CSSPServices\Generated\FillPolSourceObsInfoChildServiceGenerated.cs";
             if (!CheckFileDirectoriesExist(FileToGenerate))
             {
                 return;

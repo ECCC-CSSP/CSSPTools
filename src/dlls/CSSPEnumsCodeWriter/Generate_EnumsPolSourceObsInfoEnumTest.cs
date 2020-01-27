@@ -13,16 +13,16 @@ namespace PolSourceGroupingGenerateCodeHelper
     {
         /// <summary>
         /// Generates:
-        ///     C:\CSSPTools\src\tests\CSSPEnums.Tests\tests\EnumsPolSourceObsInfoEnumTestGenerated.cs
+        ///     C:\CSSPTools\src\tests\CSSPEnums.Tests\tests\Generated\EnumsPolSourceObsInfoEnumTestGenerated.cs
         /// 
         /// Requires:
         ///     C:\CSSPTools\src\assets\PolSourceGrouping.xlsm
         /// </summary>
-        private void EnumsPolSourceObsInfoEnumTestGenerated()
+        private void Generate_EnumsPolSourceObsInfoEnumTest()
         {
             StringBuilder sb = new StringBuilder();
 
-            string FileToGenerate = @"C:\CSSPTools\src\tests\CSSPEnums.Tests\tests\EnumsPolSourceObsInfoEnumTestGenerated.cs";
+            string FileToGenerate = @"C:\CSSPTools\src\tests\CSSPEnums.Tests\tests\Generated\EnumsPolSourceObsInfoEnumTestGenerated.cs";
             if (!CheckFileDirectoriesExist(FileToGenerate))
             {
                 return;
@@ -44,13 +44,14 @@ namespace PolSourceGroupingGenerateCodeHelper
             sb.AppendLine(@"using System.Collections.Generic;");
             sb.AppendLine(@"using System.Globalization;");
             sb.AppendLine(@"using CSSPEnums.Resources;");
+            sb.AppendLine(@"using CSSPEnums.Resources.Generated;");
             sb.AppendLine(@"");
             sb.AppendLine(@"namespace CSSPEnums.Tests");
             sb.AppendLine(@"{");
             sb.AppendLine(@"    public partial class EnumsTest");
             sb.AppendLine(@"    {");
             sb.AppendLine(@"        [Fact]");
-            sb.AppendLine(@"        public void BaseService_GetEnumText_PolSourceObsInfoEnum_Test()");
+            sb.AppendLine(@"        public void GetResValueForTypeAndID_for_PolSourceObsInfoEnum_Test()");
             sb.AppendLine(@"        {");
             sb.AppendLine(@"            foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo(""en-CA""), new CultureInfo(""fr-CA"") })");
             sb.AppendLine(@"            {");
@@ -105,16 +106,16 @@ namespace PolSourceGroupingGenerateCodeHelper
             sb.AppendLine(@"                    }");
             sb.AppendLine(@"                }");
             sb.AppendLine(@"");
-            sb.AppendLine(@"            retStr = enums.GetResValueForTypeAndID(typeof(PolSourceObsInfoEnum), 1000000, null);");
-            sb.AppendLine(@"            Assert.Equal(CSSPEnumsRes.CSSPError.ToString(), retStr);");
-            sb.AppendLine(@"            retStrDesc = enums.GetResValueForTypeAndID(typeof(PolSourceObsInfoEnum), 1000000, PolSourceObsInfoTypeEnum.Description);");
-            sb.AppendLine(@"            Assert.Equal(CSSPEnumsRes.CSSPError.ToString(), retStrDesc);");
-            sb.AppendLine(@"            retStrReport = enums.GetResValueForTypeAndID(typeof(PolSourceObsInfoEnum), 1000000, PolSourceObsInfoTypeEnum.Report);");
-            sb.AppendLine(@"            Assert.Equal("""", retStrReport);");
-            sb.AppendLine(@"            retStrText = enums.GetResValueForTypeAndID(typeof(PolSourceObsInfoEnum), 1000000, PolSourceObsInfoTypeEnum.Text);");
-            sb.AppendLine(@"            Assert.Equal("""", retStrText);");
-            sb.AppendLine(@"            retStrInit = enums.GetResValueForTypeAndID(typeof(PolSourceObsInfoEnum), 1000000, PolSourceObsInfoTypeEnum.Initial);");
-            sb.AppendLine(@"            Assert.Equal("""", retStrInit);");
+            sb.AppendLine(@"                retStr = enums.GetResValueForTypeAndID(typeof(PolSourceObsInfoEnum), 1000000, null);");
+            sb.AppendLine(@"                Assert.Equal(CSSPEnumsRes.CSSPError.ToString(), retStr);");
+            sb.AppendLine(@"                retStrDesc = enums.GetResValueForTypeAndID(typeof(PolSourceObsInfoEnum), 1000000, PolSourceObsInfoTypeEnum.Description);");
+            sb.AppendLine(@"                Assert.Equal(CSSPEnumsRes.CSSPError.ToString(), retStrDesc);");
+            sb.AppendLine(@"                retStrReport = enums.GetResValueForTypeAndID(typeof(PolSourceObsInfoEnum), 1000000, PolSourceObsInfoTypeEnum.Report);");
+            sb.AppendLine(@"                Assert.Equal("""", retStrReport);");
+            sb.AppendLine(@"                retStrText = enums.GetResValueForTypeAndID(typeof(PolSourceObsInfoEnum), 1000000, PolSourceObsInfoTypeEnum.Text);");
+            sb.AppendLine(@"                Assert.Equal("""", retStrText);");
+            sb.AppendLine(@"                retStrInit = enums.GetResValueForTypeAndID(typeof(PolSourceObsInfoEnum), 1000000, PolSourceObsInfoTypeEnum.Initial);");
+            sb.AppendLine(@"                Assert.Equal("""", retStrInit);");
             sb.AppendLine(@"            }");
             sb.AppendLine(@"        }");
             sb.AppendLine(@"    }");

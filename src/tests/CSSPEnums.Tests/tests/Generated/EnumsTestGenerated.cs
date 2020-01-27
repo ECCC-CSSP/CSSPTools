@@ -16,9 +16,9 @@ namespace CSSPEnums.Tests
     public partial class EnumsTest
     {
 
-        #region Testing Methods GetEnumText public
+        #region Testing Method GetResValueForTypeAndID for each Enum value name
         [Fact]
-        public void Enums_GetEnumText_ActionDBTypeEnum_Test()
+        public void GetResValueForTypeAndID_ForEnum_ActionDBTypeEnum_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
             {
@@ -59,7 +59,7 @@ namespace CSSPEnums.Tests
             }
         }
         [Fact]
-        public void Enums_GetEnumText_AddContactTypeEnum_Test()
+        public void GetResValueForTypeAndID_ForEnum_AddContactTypeEnum_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
             {
@@ -97,7 +97,7 @@ namespace CSSPEnums.Tests
             }
         }
         [Fact]
-        public void Enums_GetEnumText_DatabaseTypeEnum_Test()
+        public void GetResValueForTypeAndID_ForEnum_DatabaseTypeEnum_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
             {
@@ -138,7 +138,7 @@ namespace CSSPEnums.Tests
             }
         }
         [Fact]
-        public void Enums_GetEnumText_EntityQueryTypeEnum_Test()
+        public void GetResValueForTypeAndID_ForEnum_EntityQueryTypeEnum_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
             {
@@ -173,7 +173,7 @@ namespace CSSPEnums.Tests
             }
         }
         [Fact]
-        public void Enums_GetEnumText_PolSourceObsInfoTypeEnum_Test()
+        public void GetResValueForTypeAndID_ForEnum_PolSourceObsInfoTypeEnum_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
             {
@@ -214,7 +214,7 @@ namespace CSSPEnums.Tests
             }
         }
         [Fact]
-        public void Enums_GetEnumText_AddressTypeEnum_Test()
+        public void GetResValueForTypeAndID_ForEnum_AddressTypeEnum_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
             {
@@ -252,7 +252,7 @@ namespace CSSPEnums.Tests
             }
         }
         [Fact]
-        public void Enums_GetEnumText_AerationTypeEnum_Test()
+        public void GetResValueForTypeAndID_ForEnum_AerationTypeEnum_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
             {
@@ -287,7 +287,7 @@ namespace CSSPEnums.Tests
             }
         }
         [Fact]
-        public void Enums_GetEnumText_AlarmSystemTypeEnum_Test()
+        public void GetResValueForTypeAndID_ForEnum_AlarmSystemTypeEnum_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
             {
@@ -331,7 +331,7 @@ namespace CSSPEnums.Tests
             }
         }
         [Fact]
-        public void Enums_GetEnumText_AnalysisCalculationTypeEnum_Test()
+        public void GetResValueForTypeAndID_ForEnum_AnalysisCalculationTypeEnum_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
             {
@@ -381,7 +381,7 @@ namespace CSSPEnums.Tests
             }
         }
         [Fact]
-        public void Enums_GetEnumText_AnalysisReportExportCommandEnum_Test()
+        public void GetResValueForTypeAndID_ForEnum_AnalysisReportExportCommandEnum_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
             {
@@ -416,7 +416,7 @@ namespace CSSPEnums.Tests
             }
         }
         [Fact]
-        public void Enums_GetEnumText_AnalyzeMethodEnum_Test()
+        public void GetResValueForTypeAndID_ForEnum_AnalyzeMethodEnum_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
             {
@@ -481,7 +481,7 @@ namespace CSSPEnums.Tests
             }
         }
         [Fact]
-        public void Enums_GetEnumText_AppTaskCommandEnum_Test()
+        public void GetResValueForTypeAndID_ForEnum_AppTaskCommandEnum_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
             {
@@ -654,7 +654,7 @@ namespace CSSPEnums.Tests
             }
         }
         [Fact]
-        public void Enums_GetEnumText_AppTaskStatusEnum_Test()
+        public void GetResValueForTypeAndID_ForEnum_AppTaskStatusEnum_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
             {
@@ -695,7 +695,7 @@ namespace CSSPEnums.Tests
             }
         }
         [Fact]
-        public void Enums_GetEnumText_BeaufortScaleEnum_Test()
+        public void GetResValueForTypeAndID_ForEnum_BeaufortScaleEnum_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
             {
@@ -763,7 +763,7 @@ namespace CSSPEnums.Tests
             }
         }
         [Fact]
-        public void Enums_GetEnumText_BoxModelResultTypeEnum_Test()
+        public void GetResValueForTypeAndID_ForEnum_BoxModelResultTypeEnum_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
             {
@@ -807,7 +807,7 @@ namespace CSSPEnums.Tests
             }
         }
         [Fact]
-        public void Enums_GetEnumText_ClassificationTypeEnum_Test()
+        public void GetResValueForTypeAndID_ForEnum_ClassificationTypeEnum_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
             {
@@ -851,7 +851,7 @@ namespace CSSPEnums.Tests
             }
         }
         [Fact]
-        public void Enums_GetEnumText_CollectionSystemTypeEnum_Test()
+        public void GetResValueForTypeAndID_ForEnum_CollectionSystemTypeEnum_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
             {
@@ -913,7 +913,7 @@ namespace CSSPEnums.Tests
             }
         }
         [Fact]
-        public void Enums_GetEnumText_ContactTitleEnum_Test()
+        public void GetResValueForTypeAndID_ForEnum_ContactTitleEnum_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
             {
@@ -969,7 +969,7 @@ namespace CSSPEnums.Tests
             }
         }
         [Fact]
-        public void Enums_GetEnumText_CSSPWQInputSheetTypeEnum_Test()
+        public void GetResValueForTypeAndID_ForEnum_CSSPWQInputSheetTypeEnum_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
             {
@@ -1007,7 +1007,7 @@ namespace CSSPEnums.Tests
             }
         }
         [Fact]
-        public void Enums_GetEnumText_CSSPWQInputTypeEnum_Test()
+        public void GetResValueForTypeAndID_ForEnum_CSSPWQInputTypeEnum_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
             {
@@ -1042,7 +1042,7 @@ namespace CSSPEnums.Tests
             }
         }
         [Fact]
-        public void Enums_GetEnumText_DailyOrHourlyDataEnum_Test()
+        public void GetResValueForTypeAndID_ForEnum_DailyOrHourlyDataEnum_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
             {
@@ -1077,7 +1077,7 @@ namespace CSSPEnums.Tests
             }
         }
         [Fact]
-        public void Enums_GetEnumText_DisinfectionTypeEnum_Test()
+        public void GetResValueForTypeAndID_ForEnum_DisinfectionTypeEnum_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
             {
@@ -1127,7 +1127,7 @@ namespace CSSPEnums.Tests
             }
         }
         [Fact]
-        public void Enums_GetEnumText_DrogueTypeEnum_Test()
+        public void GetResValueForTypeAndID_ForEnum_DrogueTypeEnum_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
             {
@@ -1162,7 +1162,7 @@ namespace CSSPEnums.Tests
             }
         }
         [Fact]
-        public void Enums_GetEnumText_EmailTypeEnum_Test()
+        public void GetResValueForTypeAndID_ForEnum_EmailTypeEnum_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
             {
@@ -1203,7 +1203,7 @@ namespace CSSPEnums.Tests
             }
         }
         [Fact]
-        public void Enums_GetEnumText_ExcelExportShowDataTypeEnum_Test()
+        public void GetResValueForTypeAndID_ForEnum_ExcelExportShowDataTypeEnum_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
             {
@@ -1256,7 +1256,7 @@ namespace CSSPEnums.Tests
             }
         }
         [Fact]
-        public void Enums_GetEnumText_FacilityTypeEnum_Test()
+        public void GetResValueForTypeAndID_ForEnum_FacilityTypeEnum_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
             {
@@ -1291,7 +1291,7 @@ namespace CSSPEnums.Tests
             }
         }
         [Fact]
-        public void Enums_GetEnumText_FilePurposeEnum_Test()
+        public void GetResValueForTypeAndID_ForEnum_FilePurposeEnum_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
             {
@@ -1362,7 +1362,7 @@ namespace CSSPEnums.Tests
             }
         }
         [Fact]
-        public void Enums_GetEnumText_FileStatusEnum_Test()
+        public void GetResValueForTypeAndID_ForEnum_FileStatusEnum_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
             {
@@ -1406,7 +1406,7 @@ namespace CSSPEnums.Tests
             }
         }
         [Fact]
-        public void Enums_GetEnumText_FileTypeEnum_Test()
+        public void GetResValueForTypeAndID_ForEnum_FileTypeEnum_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
             {
@@ -1490,6 +1490,9 @@ namespace CSSPEnums.Tests
                         case FileTypeEnum.CSV:
                             Assert.Equal(CSSPEnumsRes.FileTypeEnumCSV, retStr);
                             break;
+                        case FileTypeEnum.WMV:
+                            Assert.Equal(CSSPEnumsRes.FileTypeEnumWMV, retStr);
+                            break;
                         default:
                             Assert.Equal(CSSPEnumsRes.Empty, retStr);
                             break;
@@ -1498,7 +1501,7 @@ namespace CSSPEnums.Tests
             }
         }
         [Fact]
-        public void Enums_GetEnumText_InfrastructureTypeEnum_Test()
+        public void GetResValueForTypeAndID_ForEnum_InfrastructureTypeEnum_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
             {
@@ -1542,7 +1545,7 @@ namespace CSSPEnums.Tests
             }
         }
         [Fact]
-        public void Enums_GetEnumText_KMZActionEnum_Test()
+        public void GetResValueForTypeAndID_ForEnum_KMZActionEnum_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
             {
@@ -1595,7 +1598,7 @@ namespace CSSPEnums.Tests
             }
         }
         [Fact]
-        public void Enums_GetEnumText_LaboratoryEnum_Test()
+        public void GetResValueForTypeAndID_ForEnum_LaboratoryEnum_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
             {
@@ -1714,7 +1717,7 @@ namespace CSSPEnums.Tests
             }
         }
         [Fact]
-        public void Enums_GetEnumText_LabSheetStatusEnum_Test()
+        public void GetResValueForTypeAndID_ForEnum_LabSheetStatusEnum_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
             {
@@ -1755,7 +1758,7 @@ namespace CSSPEnums.Tests
             }
         }
         [Fact]
-        public void Enums_GetEnumText_LabSheetTypeEnum_Test()
+        public void GetResValueForTypeAndID_ForEnum_LabSheetTypeEnum_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
             {
@@ -1793,7 +1796,7 @@ namespace CSSPEnums.Tests
             }
         }
         [Fact]
-        public void Enums_GetEnumText_LanguageEnum_Test()
+        public void GetResValueForTypeAndID_ForEnum_LanguageEnum_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
             {
@@ -1834,7 +1837,7 @@ namespace CSSPEnums.Tests
             }
         }
         [Fact]
-        public void Enums_GetEnumText_LogCommandEnum_Test()
+        public void GetResValueForTypeAndID_ForEnum_LogCommandEnum_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
             {
@@ -1872,7 +1875,7 @@ namespace CSSPEnums.Tests
             }
         }
         [Fact]
-        public void Enums_GetEnumText_MapInfoDrawTypeEnum_Test()
+        public void GetResValueForTypeAndID_ForEnum_MapInfoDrawTypeEnum_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
             {
@@ -1910,7 +1913,7 @@ namespace CSSPEnums.Tests
             }
         }
         [Fact]
-        public void Enums_GetEnumText_MikeBoundaryConditionLevelOrVelocityEnum_Test()
+        public void GetResValueForTypeAndID_ForEnum_MikeBoundaryConditionLevelOrVelocityEnum_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
             {
@@ -1945,7 +1948,7 @@ namespace CSSPEnums.Tests
             }
         }
         [Fact]
-        public void Enums_GetEnumText_MikeScenarioSpecialResultKMLTypeEnum_Test()
+        public void GetResValueForTypeAndID_ForEnum_MikeScenarioSpecialResultKMLTypeEnum_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
             {
@@ -1989,7 +1992,7 @@ namespace CSSPEnums.Tests
             }
         }
         [Fact]
-        public void Enums_GetEnumText_MWQMSiteLatestClassificationEnum_Test()
+        public void GetResValueForTypeAndID_ForEnum_MWQMSiteLatestClassificationEnum_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
             {
@@ -2036,7 +2039,7 @@ namespace CSSPEnums.Tests
             }
         }
         [Fact]
-        public void Enums_GetEnumText_PolSourceInactiveReasonEnum_Test()
+        public void GetResValueForTypeAndID_ForEnum_PolSourceInactiveReasonEnum_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
             {
@@ -2074,7 +2077,7 @@ namespace CSSPEnums.Tests
             }
         }
         [Fact]
-        public void Enums_GetEnumText_PolSourceIssueRiskEnum_Test()
+        public void GetResValueForTypeAndID_ForEnum_PolSourceIssueRiskEnum_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
             {
@@ -2112,7 +2115,7 @@ namespace CSSPEnums.Tests
             }
         }
         [Fact]
-        public void Enums_GetEnumText_PositionEnum_Test()
+        public void GetResValueForTypeAndID_ForEnum_PositionEnum_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
             {
@@ -2153,7 +2156,7 @@ namespace CSSPEnums.Tests
             }
         }
         [Fact]
-        public void Enums_GetEnumText_PreliminaryTreatmentTypeEnum_Test()
+        public void GetResValueForTypeAndID_ForEnum_PreliminaryTreatmentTypeEnum_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
             {
@@ -2194,7 +2197,7 @@ namespace CSSPEnums.Tests
             }
         }
         [Fact]
-        public void Enums_GetEnumText_PrimaryTreatmentTypeEnum_Test()
+        public void GetResValueForTypeAndID_ForEnum_PrimaryTreatmentTypeEnum_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
             {
@@ -2238,7 +2241,7 @@ namespace CSSPEnums.Tests
             }
         }
         [Fact]
-        public void Enums_GetEnumText_PropertyTypeEnum_Test()
+        public void GetResValueForTypeAndID_ForEnum_PropertyTypeEnum_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
             {
@@ -2285,7 +2288,7 @@ namespace CSSPEnums.Tests
             }
         }
         [Fact]
-        public void Enums_GetEnumText_ReportConditionEnum_Test()
+        public void GetResValueForTypeAndID_ForEnum_ReportConditionEnum_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
             {
@@ -2338,7 +2341,7 @@ namespace CSSPEnums.Tests
             }
         }
         [Fact]
-        public void Enums_GetEnumText_ReportFieldTypeEnum_Test()
+        public void GetResValueForTypeAndID_ForEnum_ReportFieldTypeEnum_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
             {
@@ -2505,7 +2508,7 @@ namespace CSSPEnums.Tests
             }
         }
         [Fact]
-        public void Enums_GetEnumText_ReportFileTypeEnum_Test()
+        public void GetResValueForTypeAndID_ForEnum_ReportFileTypeEnum_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
             {
@@ -2546,7 +2549,7 @@ namespace CSSPEnums.Tests
             }
         }
         [Fact]
-        public void Enums_GetEnumText_ReportFormatingDateEnum_Test()
+        public void GetResValueForTypeAndID_ForEnum_ReportFormatingDateEnum_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
             {
@@ -2614,7 +2617,7 @@ namespace CSSPEnums.Tests
             }
         }
         [Fact]
-        public void Enums_GetEnumText_ReportFormatingNumberEnum_Test()
+        public void GetResValueForTypeAndID_ForEnum_ReportFormatingNumberEnum_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
             {
@@ -2685,7 +2688,7 @@ namespace CSSPEnums.Tests
             }
         }
         [Fact]
-        public void Enums_GetEnumText_ReportGenerateObjectsKeywordEnum_Test()
+        public void GetResValueForTypeAndID_ForEnum_ReportGenerateObjectsKeywordEnum_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
             {
@@ -2783,7 +2786,7 @@ namespace CSSPEnums.Tests
             }
         }
         [Fact]
-        public void Enums_GetEnumText_ReportSortingEnum_Test()
+        public void GetResValueForTypeAndID_ForEnum_ReportSortingEnum_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
             {
@@ -2818,7 +2821,7 @@ namespace CSSPEnums.Tests
             }
         }
         [Fact]
-        public void Enums_GetEnumText_ReportTreeNodeSubTypeEnum_Test()
+        public void GetResValueForTypeAndID_ForEnum_ReportTreeNodeSubTypeEnum_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
             {
@@ -2859,7 +2862,7 @@ namespace CSSPEnums.Tests
             }
         }
         [Fact]
-        public void Enums_GetEnumText_ReportTreeNodeTypeEnum_Test()
+        public void GetResValueForTypeAndID_ForEnum_ReportTreeNodeTypeEnum_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
             {
@@ -3125,7 +3128,7 @@ namespace CSSPEnums.Tests
             }
         }
         [Fact]
-        public void Enums_GetEnumText_SameDayNextDayEnum_Test()
+        public void GetResValueForTypeAndID_ForEnum_SameDayNextDayEnum_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
             {
@@ -3160,7 +3163,7 @@ namespace CSSPEnums.Tests
             }
         }
         [Fact]
-        public void Enums_GetEnumText_SampleMatrixEnum_Test()
+        public void GetResValueForTypeAndID_ForEnum_SampleMatrixEnum_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
             {
@@ -3210,7 +3213,7 @@ namespace CSSPEnums.Tests
             }
         }
         [Fact]
-        public void Enums_GetEnumText_SampleStatusEnum_Test()
+        public void GetResValueForTypeAndID_ForEnum_SampleStatusEnum_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
             {
@@ -3254,7 +3257,7 @@ namespace CSSPEnums.Tests
             }
         }
         [Fact]
-        public void Enums_GetEnumText_SampleTypeEnum_Test()
+        public void GetResValueForTypeAndID_ForEnum_SampleTypeEnum_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
             {
@@ -3322,7 +3325,7 @@ namespace CSSPEnums.Tests
             }
         }
         [Fact]
-        public void Enums_GetEnumText_SamplingPlanTypeEnum_Test()
+        public void GetResValueForTypeAndID_ForEnum_SamplingPlanTypeEnum_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
             {
@@ -3357,7 +3360,7 @@ namespace CSSPEnums.Tests
             }
         }
         [Fact]
-        public void Enums_GetEnumText_ScenarioStatusEnum_Test()
+        public void GetResValueForTypeAndID_ForEnum_ScenarioStatusEnum_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
             {
@@ -3413,7 +3416,7 @@ namespace CSSPEnums.Tests
             }
         }
         [Fact]
-        public void Enums_GetEnumText_SearchTagEnum_Test()
+        public void GetResValueForTypeAndID_ForEnum_SearchTagEnum_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
             {
@@ -3550,7 +3553,7 @@ namespace CSSPEnums.Tests
             }
         }
         [Fact]
-        public void Enums_GetEnumText_SecondaryTreatmentTypeEnum_Test()
+        public void GetResValueForTypeAndID_ForEnum_SecondaryTreatmentTypeEnum_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
             {
@@ -3621,7 +3624,7 @@ namespace CSSPEnums.Tests
             }
         }
         [Fact]
-        public void Enums_GetEnumText_SiteTypeEnum_Test()
+        public void GetResValueForTypeAndID_ForEnum_SiteTypeEnum_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
             {
@@ -3659,7 +3662,7 @@ namespace CSSPEnums.Tests
             }
         }
         [Fact]
-        public void Enums_GetEnumText_SpecialTableTypeEnum_Test()
+        public void GetResValueForTypeAndID_ForEnum_SpecialTableTypeEnum_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
             {
@@ -3712,7 +3715,7 @@ namespace CSSPEnums.Tests
             }
         }
         [Fact]
-        public void Enums_GetEnumText_StorageDataTypeEnum_Test()
+        public void GetResValueForTypeAndID_ForEnum_StorageDataTypeEnum_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
             {
@@ -3750,7 +3753,7 @@ namespace CSSPEnums.Tests
             }
         }
         [Fact]
-        public void Enums_GetEnumText_StreetTypeEnum_Test()
+        public void GetResValueForTypeAndID_ForEnum_StreetTypeEnum_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
             {
@@ -3809,7 +3812,7 @@ namespace CSSPEnums.Tests
             }
         }
         [Fact]
-        public void Enums_GetEnumText_TelTypeEnum_Test()
+        public void GetResValueForTypeAndID_ForEnum_TelTypeEnum_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
             {
@@ -3856,7 +3859,7 @@ namespace CSSPEnums.Tests
             }
         }
         [Fact]
-        public void Enums_GetEnumText_TertiaryTreatmentTypeEnum_Test()
+        public void GetResValueForTypeAndID_ForEnum_TertiaryTreatmentTypeEnum_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
             {
@@ -3906,7 +3909,7 @@ namespace CSSPEnums.Tests
             }
         }
         [Fact]
-        public void Enums_GetEnumText_TideDataTypeEnum_Test()
+        public void GetResValueForTypeAndID_ForEnum_TideDataTypeEnum_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
             {
@@ -3941,7 +3944,7 @@ namespace CSSPEnums.Tests
             }
         }
         [Fact]
-        public void Enums_GetEnumText_TideTextEnum_Test()
+        public void GetResValueForTypeAndID_ForEnum_TideTextEnum_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
             {
@@ -3997,7 +4000,7 @@ namespace CSSPEnums.Tests
             }
         }
         [Fact]
-        public void Enums_GetEnumText_TranslationStatusEnum_Test()
+        public void GetResValueForTypeAndID_ForEnum_TranslationStatusEnum_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
             {
@@ -4035,7 +4038,7 @@ namespace CSSPEnums.Tests
             }
         }
         [Fact]
-        public void Enums_GetEnumText_TreatmentTypeEnum_Test()
+        public void GetResValueForTypeAndID_ForEnum_TreatmentTypeEnum_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
             {
@@ -4163,7 +4166,7 @@ namespace CSSPEnums.Tests
             }
         }
         [Fact]
-        public void Enums_GetEnumText_TVAuthEnum_Test()
+        public void GetResValueForTypeAndID_ForEnum_TVAuthEnum_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
             {
@@ -4210,7 +4213,7 @@ namespace CSSPEnums.Tests
             }
         }
         [Fact]
-        public void Enums_GetEnumText_TVTypeEnum_Test()
+        public void GetResValueForTypeAndID_ForEnum_TVTypeEnum_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
             {
@@ -4497,7 +4500,7 @@ namespace CSSPEnums.Tests
             }
         }
         [Fact]
-        public void Enums_GetEnumText_ValveTypeEnum_Test()
+        public void GetResValueForTypeAndID_ForEnum_ValveTypeEnum_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
             {
@@ -4532,7 +4535,7 @@ namespace CSSPEnums.Tests
             }
         }
         [Fact]
-        public void Enums_GetEnumText_WebTideDataSetEnum_Test()
+        public void GetResValueForTypeAndID_ForEnum_WebTideDataSetEnum_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
             {
@@ -4594,7 +4597,7 @@ namespace CSSPEnums.Tests
             }
         }
         [Fact]
-        public void Enums_GetEnumText_WhereOperatorEnum_Test()
+        public void GetResValueForTypeAndID_ForEnum_WhereOperatorEnum_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
             {
@@ -4641,9 +4644,9 @@ namespace CSSPEnums.Tests
             }
         }
 
-        #endregion Testing Methods GetEnumText public
+        #endregion Testing Method GetResValueForTypeAndID for each Enum value name
 
-        #region Testing Methods Check OK public
+        #region Testing Method EnumTypeListOK
         [Fact]
         public void Enums_EnumTypeListOK_Test()
         {
@@ -4662,6 +4665,10 @@ namespace CSSPEnums.Tests
                 Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "PolSourceObsInfoEnum"), retStr);
             }
         }
+
+        #endregion Testing Method EnumTypeListOK
+
+        #region Testing Method EnumTypeOK for each Enum value name
         [Fact]
         public void Enums_ActionDBTypeOK_Test()
         {
@@ -5765,6 +5772,7 @@ namespace CSSPEnums.Tests
                         case FileTypeEnum.XYZ:
                         case FileTypeEnum.KML:
                         case FileTypeEnum.CSV:
+                        case FileTypeEnum.WMV:
                             Assert.Equal("", retStr);
                             break;
                         default:
@@ -9498,8 +9506,9 @@ namespace CSSPEnums.Tests
             }
         }
 
-        #endregion Testing Methods Check OK public
-        #region Testing Methods TextOrdered public
+        #endregion Testing Method EnumTypeOK for each Enum value name
+
+        #region Testing Method GetEnumTextOrderedList for each Enum value name
         [Fact]
         public void Enums_ActionDBTypeEnumTextOrdered_Test()
         {
@@ -11634,6 +11643,6 @@ namespace CSSPEnums.Tests
             }
         }
 
-        #endregion Testing Methods TextOrdered public
+        #endregion Testing Method GetEnumTextOrderedList for each Enum value name
     }
 }

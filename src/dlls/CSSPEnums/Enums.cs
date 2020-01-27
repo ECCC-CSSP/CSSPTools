@@ -3,9 +3,9 @@
  * It's the only .cs document in CSSPEnums.proj the coder actually edits. 
  * Every other document is automatically generated using the CSSPCodeWriter.
  * 
- * You also need to edit the CSSPEnumsRes.resx and the CSSPEnumsRes.fr.resx
+ * You also need to edit the CSSPEnumsRes.resx and the CSSPEnumsRes.fr.resx for language
  * 
- * To produce documentation you need to include in project the EnumsWithDocGenerated.cs file
+ * To produce documentation within code you need to include in project the EnumsWithDocGenerated.cs file
  * while excluding from project the Enums.cs file before recompiling. You then use the CSSPDoc project
  * and compile to generate the documentation in the form of a web site.
  * 

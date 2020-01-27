@@ -2913,4 +2913,7 @@
   <data name="ValveTypeEnumManually" xml:space="preserve">
     <value>Manually</value>
   </data>
+  <data name="FileTypeEnumWMV" xml:space="preserve">
+    <value>WMV</value>
+  </data>
 </root>

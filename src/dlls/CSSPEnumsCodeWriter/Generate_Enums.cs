@@ -13,12 +13,12 @@ namespace CSSPEnumsGenerateCodeHelper
     {
         /// <summary>
         /// Generates:
-        ///     C:\CSSPTools\src\dlls\CSSPEnums\EnumsGenerated.cs file
+        ///     C:\CSSPTools\src\dlls\CSSPEnums\Generated\EnumsGenerated.cs file
         /// 
         /// Requires:
         ///     C:\CSSPTools\src\dlls\CSSPEnums\bin\Debug\netcoreapp3.1\CSSPEnums.dll
         /// </summary>
-        public void EnumsGenerate()
+        public void Generate_Enums()
         {
             StatusTempEvent(new StatusEventArgs(""));
             ClearPermanentEvent(new StatusEventArgs("Starting ..."));
@@ -26,7 +26,7 @@ namespace CSSPEnumsGenerateCodeHelper
 
             StringBuilder sb = new StringBuilder();
             FileInfo fiDLL = new FileInfo(@"C:\CSSPTools\src\dlls\CSSPEnums\bin\Debug\netcoreapp3.1\CSSPEnums.dll");
-            FileInfo fi = new FileInfo(@"C:\CSSPTools\src\dlls\CSSPEnums\EnumsGenerated.cs");
+            FileInfo fi = new FileInfo(@"C:\CSSPTools\src\dlls\CSSPEnums\Generated\EnumsGenerated.cs");
 
             if (!fiDLL.Exists)
             {
@@ -82,8 +82,8 @@ namespace CSSPEnumsGenerateCodeHelper
             sb.AppendLine(@"    public partial class Enums");
             sb.AppendLine(@"    {");
 
-            #region Doing Function public EnumTypeOK
             sb.AppendLine(@"        #region Enum Functions public");
+            #region Doing Function public EnumTypeOK
             sb.AppendLine(@"        /// <summary>");
             sb.AppendLine(@"        /// > [!NOTE]");
             sb.AppendLine($@"        /// > <para>**Allowable types** : { sbAllowableTypesText.Remove(sbAllowableTypesText.Length - 2, 2).ToString() }</para>");
@@ -231,9 +231,9 @@ namespace CSSPEnumsGenerateCodeHelper
             sb.AppendLine(@"                    return """";");
             sb.AppendLine(@"            }");
             sb.AppendLine(@"        }");
-            sb.AppendLine(@"        #endregion Function public");
-            sb.AppendLine(@"");
             #endregion Doing Function public GetResValueForTypeAndID
+            sb.AppendLine(@"        #endregion Enum Function public");
+            sb.AppendLine(@"");
 
             #region Doing Functions private
             sb.AppendLine(@"        #region Functions private");

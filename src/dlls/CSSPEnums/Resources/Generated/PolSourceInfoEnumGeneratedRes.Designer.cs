@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace CSSPEnums.Resources {
+namespace CSSPEnums.Resources.Generated {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace CSSPEnums.Resources {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("CSSPEnums.Resources.PolSourceInfoEnumGeneratedRes", typeof(PolSourceInfoEnumGeneratedRes).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("CSSPEnums.Resources.Generated.PolSourceInfoEnumGeneratedRes", typeof(PolSourceInfoEnumGeneratedRes).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -4669,7 +4669,7 @@ namespace CSSPEnums.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to If you don’t know the area this source could impact then this tool will give you an  estimate of the area needed to dilute the Source to acceptable concentrations.  Estimates are based on low tide and design for culverts up to 3 meters and watercourse up .
+        ///   Looks up a localized string similar to If you don’t know the area this source could impact then this tool will give you an  estimate of the area needed to dilute the Source to acceptable concentrations.  Estimates are based on low tide and design for culverts up to 3 meters and watercourse up to 10 m in width.  For a watercourse, you must know average depth and velocity over a 10 m length. .
         /// </summary>
         public static string PolSourceInfoEnumConductDilutionAnalysesStartDesc {
             get {
@@ -7864,7 +7864,7 @@ namespace CSSPEnums.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 2.E+05.
+        ///   Looks up a localized string similar to 154285.71428571429.
         /// </summary>
         public static string PolSourceInfoEnumDilutionVolumeA {
             get {
@@ -7909,7 +7909,7 @@ namespace CSSPEnums.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 3.E+05.
+        ///   Looks up a localized string similar to 308571.42857142858.
         /// </summary>
         public static string PolSourceInfoEnumDilutionVolumeB {
             get {
@@ -7954,7 +7954,7 @@ namespace CSSPEnums.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 6.E+05.
+        ///   Looks up a localized string similar to 617142.85714285716.
         /// </summary>
         public static string PolSourceInfoEnumDilutionVolumeC {
             get {
@@ -7999,7 +7999,7 @@ namespace CSSPEnums.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 9.E+05.
+        ///   Looks up a localized string similar to 925714.28571428568.
         /// </summary>
         public static string PolSourceInfoEnumDilutionVolumeD {
             get {
@@ -8044,7 +8044,7 @@ namespace CSSPEnums.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 1.E+06.
+        ///   Looks up a localized string similar to 1234285.7142857143.
         /// </summary>
         public static string PolSourceInfoEnumDilutionVolumeE {
             get {
@@ -8089,7 +8089,7 @@ namespace CSSPEnums.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 2.E+06.
+        ///   Looks up a localized string similar to 1542857.142857143.
         /// </summary>
         public static string PolSourceInfoEnumDilutionVolumeF {
             get {
@@ -8134,7 +8134,7 @@ namespace CSSPEnums.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 3.E+06.
+        ///   Looks up a localized string similar to 3085714.2857142859.
         /// </summary>
         public static string PolSourceInfoEnumDilutionVolumeG {
             get {
@@ -8179,7 +8179,7 @@ namespace CSSPEnums.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 5.E+06.
+        ///   Looks up a localized string similar to 5245714.2857142854.
         /// </summary>
         public static string PolSourceInfoEnumDilutionVolumeH {
             get {
@@ -27151,7 +27151,7 @@ namespace CSSPEnums.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 2.E+10.
+        ///   Looks up a localized string similar to 21600000000.
         /// </summary>
         public static string PolSourceInfoEnumLoadPerDayA {
             get {
@@ -27196,7 +27196,7 @@ namespace CSSPEnums.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 4.E+10.
+        ///   Looks up a localized string similar to 43200000000.
         /// </summary>
         public static string PolSourceInfoEnumLoadPerDayB {
             get {
@@ -27241,7 +27241,7 @@ namespace CSSPEnums.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 9.E+10.
+        ///   Looks up a localized string similar to 86400000000.
         /// </summary>
         public static string PolSourceInfoEnumLoadPerDayC {
             get {
@@ -27286,7 +27286,7 @@ namespace CSSPEnums.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 1.E+11.
+        ///   Looks up a localized string similar to 129600000000.
         /// </summary>
         public static string PolSourceInfoEnumLoadPerDayD {
             get {
@@ -27331,7 +27331,7 @@ namespace CSSPEnums.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 2.E+11.
+        ///   Looks up a localized string similar to 172800000000.
         /// </summary>
         public static string PolSourceInfoEnumLoadPerDayE {
             get {
@@ -27376,7 +27376,7 @@ namespace CSSPEnums.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 3.E+11.
+        ///   Looks up a localized string similar to 259200000000.
         /// </summary>
         public static string PolSourceInfoEnumLoadPerDayF {
             get {
@@ -27421,7 +27421,7 @@ namespace CSSPEnums.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 4.E+11.
+        ///   Looks up a localized string similar to 432000000000.
         /// </summary>
         public static string PolSourceInfoEnumLoadPerDayG {
             get {
@@ -27466,7 +27466,7 @@ namespace CSSPEnums.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 6.E+11.
+        ///   Looks up a localized string similar to 648000000000.
         /// </summary>
         public static string PolSourceInfoEnumLoadPerDayH {
             get {
@@ -29842,7 +29842,7 @@ namespace CSSPEnums.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The user can now select the Hazard that they feel best describes the Source.  Sometimes the description and the actual field observation differs so this option provides the User with initial control over the Source Classification throughout the remaining .
+        ///   Looks up a localized string similar to The user can now select the Hazard that they feel best describes the Source.  Sometimes the description and the actual field observation differs so this option provides the User with initial control over the Source Classification throughout the remaining Selections..
         /// </summary>
         public static string PolSourceInfoEnumObservationHazardousLevelStartDesc {
             get {
@@ -32254,7 +32254,7 @@ namespace CSSPEnums.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This observation is documented in the &apos;Municipality Tab&apos; of Webtools..
+        ///   Looks up a localized string similar to documented in the &apos;Municipality Tab&apos; of Webtools.  .
         /// </summary>
         public static string PolSourceInfoEnumPathwaySourceFirstMunicipalityOFFSITEReport {
             get {
@@ -32299,7 +32299,7 @@ namespace CSSPEnums.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This observation is documented in the &apos;Municipality Tab&apos; of Webtools..
+        ///   Looks up a localized string similar to documented in the &apos;Municipality Tab&apos; of Webtools.  .
         /// </summary>
         public static string PolSourceInfoEnumPathwaySourceFirstMunicipalityONSITEReport {
             get {
@@ -58525,7 +58525,7 @@ namespace CSSPEnums.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 396.
+        ///   Looks up a localized string similar to 396.42671213356169.
         /// </summary>
         public static string PolSourceInfoEnumSurfaceAreaImpactRadius1E6five {
             get {
@@ -58561,7 +58561,7 @@ namespace CSSPEnums.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 396.
+        ///   Looks up a localized string similar to 396.42671213356169.
         /// </summary>
         public static string PolSourceInfoEnumSurfaceAreaImpactRadius1E6fiveText {
             get {
@@ -58570,7 +58570,7 @@ namespace CSSPEnums.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 1214.
+        ///   Looks up a localized string similar to 1213.8039564205237.
         /// </summary>
         public static string PolSourceInfoEnumSurfaceAreaImpactRadius1E6fourteen {
             get {
@@ -58606,7 +58606,7 @@ namespace CSSPEnums.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 1214.
+        ///   Looks up a localized string similar to 1213.8039564205237.
         /// </summary>
         public static string PolSourceInfoEnumSurfaceAreaImpactRadius1E6fourteenText {
             get {
@@ -58615,7 +58615,7 @@ namespace CSSPEnums.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 157.
+        ///   Looks up a localized string similar to 156.70141695924539.
         /// </summary>
         public static string PolSourceInfoEnumSurfaceAreaImpactRadius1E6one {
             get {
@@ -58651,7 +58651,7 @@ namespace CSSPEnums.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 157.
+        ///   Looks up a localized string similar to 156.70141695924539.
         /// </summary>
         public static string PolSourceInfoEnumSurfaceAreaImpactRadius1E6oneText {
             get {
@@ -58660,7 +58660,7 @@ namespace CSSPEnums.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 271.
+        ///   Looks up a localized string similar to 271.41481579144835.
         /// </summary>
         public static string PolSourceInfoEnumSurfaceAreaImpactRadius1E6two {
             get {
@@ -58696,7 +58696,7 @@ namespace CSSPEnums.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 271.
+        ///   Looks up a localized string similar to 271.41481579144835.
         /// </summary>
         public static string PolSourceInfoEnumSurfaceAreaImpactRadius1E6twoText {
             get {
@@ -58705,7 +58705,7 @@ namespace CSSPEnums.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 459.
+        ///   Looks up a localized string similar to 458.77477272499829.
         /// </summary>
         public static string PolSourceInfoEnumSurfaceAreaImpactRadius2E5eight {
             get {
@@ -58741,7 +58741,7 @@ namespace CSSPEnums.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 459.
+        ///   Looks up a localized string similar to 458.77477272499829.
         /// </summary>
         public static string PolSourceInfoEnumSurfaceAreaImpactRadius2E5eightText {
             get {
@@ -58750,7 +58750,7 @@ namespace CSSPEnums.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 118.
+        ///   Looks up a localized string similar to 118.45513696160074.
         /// </summary>
         public static string PolSourceInfoEnumSurfaceAreaImpactRadius2E5five6E5one {
             get {
@@ -58786,7 +58786,7 @@ namespace CSSPEnums.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 118.
+        ///   Looks up a localized string similar to 118.45513696160074.
         /// </summary>
         public static string PolSourceInfoEnumSurfaceAreaImpactRadius2E5five6E5oneText {
             get {
@@ -58795,7 +58795,7 @@ namespace CSSPEnums.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 768.
+        ///   Looks up a localized string similar to 767.67702704252315.
         /// </summary>
         public static string PolSourceInfoEnumSurfaceAreaImpactRadius2E5fourteen {
             get {
@@ -58831,7 +58831,7 @@ namespace CSSPEnums.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 768.
+        ///   Looks up a localized string similar to 767.67702704252315.
         /// </summary>
         public static string PolSourceInfoEnumSurfaceAreaImpactRadius2E5fourteenText {
             get {
@@ -58840,7 +58840,7 @@ namespace CSSPEnums.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 84.
+        ///   Looks up a localized string similar to 83.760430611929138.
         /// </summary>
         public static string PolSourceInfoEnumSurfaceAreaImpactRadius2E5one {
             get {
@@ -58876,7 +58876,7 @@ namespace CSSPEnums.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 84.
+        ///   Looks up a localized string similar to 83.760430611929138.
         /// </summary>
         public static string PolSourceInfoEnumSurfaceAreaImpactRadius2E5oneText {
             get {
@@ -58885,7 +58885,7 @@ namespace CSSPEnums.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 222.
+        ///   Looks up a localized string similar to 221.60926910684617.
         /// </summary>
         public static string PolSourceInfoEnumSurfaceAreaImpactRadius2E5Two3E5Two {
             get {
@@ -58921,7 +58921,7 @@ namespace CSSPEnums.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 222.
+        ///   Looks up a localized string similar to 221.60926910684617.
         /// </summary>
         public static string PolSourceInfoEnumSurfaceAreaImpactRadius2E5Two3E5TwoText {
             get {
@@ -58930,7 +58930,7 @@ namespace CSSPEnums.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 627.
+        ///   Looks up a localized string similar to 626.80566783698157.
         /// </summary>
         public static string PolSourceInfoEnumSurfaceAreaImpactRadius2E6Eight2E6Eight3E6eight {
             get {
@@ -58966,7 +58966,7 @@ namespace CSSPEnums.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 627.
+        ///   Looks up a localized string similar to 626.80566783698157.
         /// </summary>
         public static string PolSourceInfoEnumSurfaceAreaImpactRadius2E6Eight2E6Eight3E6eightText {
             get {
@@ -58975,7 +58975,7 @@ namespace CSSPEnums.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 443.
+        ///   Looks up a localized string similar to 443.21853821369234.
         /// </summary>
         public static string PolSourceInfoEnumSurfaceAreaImpactRadius2E6Five3E6Five5E6five {
             get {
@@ -59011,7 +59011,7 @@ namespace CSSPEnums.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 443.
+        ///   Looks up a localized string similar to 443.21853821369234.
         /// </summary>
         public static string PolSourceInfoEnumSurfaceAreaImpactRadius2E6Five3E6Five5E6fiveText {
             get {
@@ -59020,7 +59020,7 @@ namespace CSSPEnums.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 1402.
+        ///   Looks up a localized string similar to 1401.5800819656445.
         /// </summary>
         public static string PolSourceInfoEnumSurfaceAreaImpactRadius2E6fourteen {
             get {
@@ -59056,7 +59056,7 @@ namespace CSSPEnums.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 1402.
+        ///   Looks up a localized string similar to 1401.5800819656445.
         /// </summary>
         public static string PolSourceInfoEnumSurfaceAreaImpactRadius2E6fourteenText {
             get {
@@ -59065,7 +59065,7 @@ namespace CSSPEnums.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 168.
+        ///   Looks up a localized string similar to 167.52086122385828.
         /// </summary>
         public static string PolSourceInfoEnumSurfaceAreaImpactRadius2E6one {
             get {
@@ -59101,7 +59101,7 @@ namespace CSSPEnums.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 168.
+        ///   Looks up a localized string similar to 167.52086122385828.
         /// </summary>
         public static string PolSourceInfoEnumSurfaceAreaImpactRadius2E6oneText {
             get {
@@ -59110,7 +59110,7 @@ namespace CSSPEnums.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 280.
+        ///   Looks up a localized string similar to 280.3160163931289.
         /// </summary>
         public static string PolSourceInfoEnumSurfaceAreaImpactRadius2E6two {
             get {
@@ -59146,7 +59146,7 @@ namespace CSSPEnums.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 280.
+        ///   Looks up a localized string similar to 280.3160163931289.
         /// </summary>
         public static string PolSourceInfoEnumSurfaceAreaImpactRadius2E6twoText {
             get {
@@ -59155,7 +59155,7 @@ namespace CSSPEnums.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 496.
+        ///   Looks up a localized string similar to 495.53339016695213.
         /// </summary>
         public static string PolSourceInfoEnumSurfaceAreaImpactRadius3E5eight {
             get {
@@ -59191,7 +59191,7 @@ namespace CSSPEnums.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 496.
+        ///   Looks up a localized string similar to 495.53339016695213.
         /// </summary>
         public static string PolSourceInfoEnumSurfaceAreaImpactRadius3E5eightText {
             get {
@@ -59200,7 +59200,7 @@ namespace CSSPEnums.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 343.
+        ///   Looks up a localized string similar to 343.31560344640519.
         /// </summary>
         public static string PolSourceInfoEnumSurfaceAreaImpactRadius3E5five {
             get {
@@ -59236,7 +59236,7 @@ namespace CSSPEnums.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 343.
+        ///   Looks up a localized string similar to 343.31560344640519.
         /// </summary>
         public static string PolSourceInfoEnumSurfaceAreaImpactRadius3E5fiveText {
             get {
@@ -59245,7 +59245,7 @@ namespace CSSPEnums.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 886.
+        ///   Looks up a localized string similar to 886.43707642738468.
         /// </summary>
         public static string PolSourceInfoEnumSurfaceAreaImpactRadius3E5fourteen {
             get {
@@ -59281,7 +59281,7 @@ namespace CSSPEnums.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 886.
+        ///   Looks up a localized string similar to 886.43707642738468.
         /// </summary>
         public static string PolSourceInfoEnumSurfaceAreaImpactRadius3E5fourteenText {
             get {
@@ -59290,7 +59290,7 @@ namespace CSSPEnums.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 111.
+        ///   Looks up a localized string similar to 110.80463455342309.
         /// </summary>
         public static string PolSourceInfoEnumSurfaceAreaImpactRadius3E5one {
             get {
@@ -59326,7 +59326,7 @@ namespace CSSPEnums.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 111.
+        ///   Looks up a localized string similar to 110.80463455342309.
         /// </summary>
         public static string PolSourceInfoEnumSurfaceAreaImpactRadius3E5oneText {
             get {
@@ -59335,7 +59335,7 @@ namespace CSSPEnums.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 1717.
+        ///   Looks up a localized string similar to 1716.578017232026.
         /// </summary>
         public static string PolSourceInfoEnumSurfaceAreaImpactRadius3E65E6fourteen {
             get {
@@ -59371,7 +59371,7 @@ namespace CSSPEnums.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 1717.
+        ///   Looks up a localized string similar to 1716.578017232026.
         /// </summary>
         public static string PolSourceInfoEnumSurfaceAreaImpactRadius3E65E6fourteenText {
             get {
@@ -59380,7 +59380,7 @@ namespace CSSPEnums.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 198.
+        ///   Looks up a localized string similar to 198.21335606678085.
         /// </summary>
         public static string PolSourceInfoEnumSurfaceAreaImpactRadius3E6one {
             get {
@@ -59416,7 +59416,7 @@ namespace CSSPEnums.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 198.
+        ///   Looks up a localized string similar to 198.21335606678085.
         /// </summary>
         public static string PolSourceInfoEnumSurfaceAreaImpactRadius3E6oneText {
             get {
@@ -59425,7 +59425,7 @@ namespace CSSPEnums.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 313.
+        ///   Looks up a localized string similar to 313.40283391849078.
         /// </summary>
         public static string PolSourceInfoEnumSurfaceAreaImpactRadius3E6Two5E6Two2E5five {
             get {
@@ -59461,7 +59461,7 @@ namespace CSSPEnums.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 313.
+        ///   Looks up a localized string similar to 313.40283391849078.
         /// </summary>
         public static string PolSourceInfoEnumSurfaceAreaImpactRadius3E6Two5E6Two2E5fiveText {
             get {
@@ -59470,7 +59470,7 @@ namespace CSSPEnums.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 701.
+        ///   Looks up a localized string similar to 700.79004098282223.
         /// </summary>
         public static string PolSourceInfoEnumSurfaceAreaImpactRadius5E6eight {
             get {
@@ -59506,7 +59506,7 @@ namespace CSSPEnums.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 701.
+        ///   Looks up a localized string similar to 700.79004098282223.
         /// </summary>
         public static string PolSourceInfoEnumSurfaceAreaImpactRadius5E6eightText {
             get {
@@ -59515,7 +59515,7 @@ namespace CSSPEnums.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 205.
+        ///   Looks up a localized string similar to 205.17031563502252.
         /// </summary>
         public static string PolSourceInfoEnumSurfaceAreaImpactRadius5E6one {
             get {
@@ -59551,7 +59551,7 @@ namespace CSSPEnums.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 205.
+        ///   Looks up a localized string similar to 205.17031563502252.
         /// </summary>
         public static string PolSourceInfoEnumSurfaceAreaImpactRadius5E6oneText {
             get {
@@ -59560,7 +59560,7 @@ namespace CSSPEnums.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 991.
+        ///   Looks up a localized string similar to 991.06678033390426.
         /// </summary>
         public static string PolSourceInfoEnumSurfaceAreaImpactRadius6E59E5fourteen {
             get {
@@ -59596,7 +59596,7 @@ namespace CSSPEnums.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 991.
+        ///   Looks up a localized string similar to 991.06678033390426.
         /// </summary>
         public static string PolSourceInfoEnumSurfaceAreaImpactRadius6E59E5fourteenText {
             get {
@@ -59605,7 +59605,7 @@ namespace CSSPEnums.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 543.
+        ///   Looks up a localized string similar to 542.8296315828967.
         /// </summary>
         public static string PolSourceInfoEnumSurfaceAreaImpactRadius6E5eight {
             get {
@@ -59641,7 +59641,7 @@ namespace CSSPEnums.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 543.
+        ///   Looks up a localized string similar to 542.8296315828967.
         /// </summary>
         public static string PolSourceInfoEnumSurfaceAreaImpactRadius6E5eightText {
             get {
@@ -59650,7 +59650,7 @@ namespace CSSPEnums.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 350.
+        ///   Looks up a localized string similar to 350.39502049141112.
         /// </summary>
         public static string PolSourceInfoEnumSurfaceAreaImpactRadius6E5five {
             get {
@@ -59686,7 +59686,7 @@ namespace CSSPEnums.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 350.
+        ///   Looks up a localized string similar to 350.39502049141112.
         /// </summary>
         public static string PolSourceInfoEnumSurfaceAreaImpactRadius6E5fiveText {
             get {
@@ -59695,7 +59695,7 @@ namespace CSSPEnums.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 237.
+        ///   Looks up a localized string similar to 236.91027392320149.
         /// </summary>
         public static string PolSourceInfoEnumSurfaceAreaImpactRadius6E5two {
             get {
@@ -59731,7 +59731,7 @@ namespace CSSPEnums.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 237.
+        ///   Looks up a localized string similar to 236.91027392320149.
         /// </summary>
         public static string PolSourceInfoEnumSurfaceAreaImpactRadius6E5twoText {
             get {
@@ -59740,7 +59740,7 @@ namespace CSSPEnums.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 607.
+        ///   Looks up a localized string similar to 606.90197821026186.
         /// </summary>
         public static string PolSourceInfoEnumSurfaceAreaImpactRadius9E5eight {
             get {
@@ -59776,7 +59776,7 @@ namespace CSSPEnums.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 607.
+        ///   Looks up a localized string similar to 606.90197821026186.
         /// </summary>
         public static string PolSourceInfoEnumSurfaceAreaImpactRadius9E5eightText {
             get {
@@ -59785,7 +59785,7 @@ namespace CSSPEnums.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 375.
+        ///   Looks up a localized string similar to 374.58803334585571.
         /// </summary>
         public static string PolSourceInfoEnumSurfaceAreaImpactRadius9E5five {
             get {
@@ -59821,7 +59821,7 @@ namespace CSSPEnums.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 375.
+        ///   Looks up a localized string similar to 374.58803334585571.
         /// </summary>
         public static string PolSourceInfoEnumSurfaceAreaImpactRadius9E5fiveText {
             get {
@@ -59830,7 +59830,7 @@ namespace CSSPEnums.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 140.
+        ///   Looks up a localized string similar to 140.15800819656445.
         /// </summary>
         public static string PolSourceInfoEnumSurfaceAreaImpactRadius9E5one {
             get {
@@ -59866,7 +59866,7 @@ namespace CSSPEnums.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 140.
+        ///   Looks up a localized string similar to 140.15800819656445.
         /// </summary>
         public static string PolSourceInfoEnumSurfaceAreaImpactRadius9E5oneText {
             get {
@@ -59875,7 +59875,7 @@ namespace CSSPEnums.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 265.
+        ///   Looks up a localized string similar to 264.87373853018715.
         /// </summary>
         public static string PolSourceInfoEnumSurfaceAreaImpactRadius9E5two {
             get {
@@ -59911,7 +59911,7 @@ namespace CSSPEnums.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 265.
+        ///   Looks up a localized string similar to 264.87373853018715.
         /// </summary>
         public static string PolSourceInfoEnumSurfaceAreaImpactRadius9E5twoText {
             get {
@@ -60919,7 +60919,7 @@ namespace CSSPEnums.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 11705,11706,11707,11708.
+        ///   Looks up a localized string similar to 11706,11707,11708,11709.
         /// </summary>
         public static string PolSourceInfoEnumTypesOfLivestockDogsHide {
             get {
@@ -62503,7 +62503,7 @@ namespace CSSPEnums.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 11601,11602,11603,11604.
+        ///   Looks up a localized string similar to .
         /// </summary>
         public static string PolSourceInfoEnumVesselCountNotApplicableHide {
             get {
@@ -62521,7 +62521,7 @@ namespace CSSPEnums.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Activities include a floating board-walk or a platform used for relaxation and  .
+        ///   Looks up a localized string similar to Activities include a floating board-walk or a platform used for relaxation. .
         /// </summary>
         public static string PolSourceInfoEnumVesselCountNotApplicableReport {
             get {

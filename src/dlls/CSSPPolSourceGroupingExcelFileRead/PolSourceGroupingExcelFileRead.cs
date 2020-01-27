@@ -1026,7 +1026,7 @@ namespace CSSPPolSourceGroupingExcelFileRead
         private bool ReadExcelFile()
         {
             groupChoiceChildLevelList = new List<GroupChoiceChildLevel>();
-            OnStatus(new StatusEventArgs() { status = "Reading spreadsheet ..." });
+            OnStatus(new StatusEventArgs() { status = $"Reading spreadsheet [{ FullFileName }] ..." });
 
             FileInfo fi = new FileInfo(FullFileName);
 

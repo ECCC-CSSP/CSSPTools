@@ -2639,6 +2639,15 @@ namespace CSSPEnums.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to WMV.
+        /// </summary>
+        public static string FileTypeEnumWMV {
+            get {
+                return ResourceManager.GetString("FileTypeEnumWMV", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to XLSX.
         /// </summary>
         public static string FileTypeEnumXLSX {

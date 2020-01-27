@@ -131,26 +131,26 @@ namespace CSSPCodeWriter
         }
         private void butEnumsGenerated_Click(object sender, EventArgs e)
         {
-            enumsCodeWriter.EnumsGenerate();
+            enumsCodeWriter.Generate_Enums();
         }
         private void butEnumsTestGenerated_Click(object sender, EventArgs e)
         {
-            enumsCodeWriter.EnumsTestGenerate();
+            enumsCodeWriter.Generate_EnumsTest();
         }
         private void butGeneratePolSourceEnumCodeFiles_Click(object sender, EventArgs e)
         {
-            enumsPolSourceCodeWriter.GeneratePolSourceRelatedFiles();
+            enumsPolSourceCodeWriter.Generate_EnumPolSourceInfoRelatedFiles();
         }
         private void butGenerateWithDocEnums_Click(object sender, EventArgs e)
         {
-            enumsCodeWriter.EnumsAndPolSourceInfoEnumsWithDocGenerate();
+            enumsCodeWriter.Generate_EnumsAndPolSourceInfoEnumsWithDoc();
         }
         #endregion Events CSSPEnums
 
         #region Events CSSPModels
         private void butGenerateModelsTest_Click(object sender, EventArgs e)
         {
-            modelsCodeWriter.ModelClassName_TestGenerated();
+            modelsCodeWriter.Generate_ModelClassName_Test();
         }
         private void butGenerateResOnce_Click(object sender, EventArgs e)
         {
