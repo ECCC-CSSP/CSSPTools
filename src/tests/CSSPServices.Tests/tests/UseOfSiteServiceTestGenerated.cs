@@ -21,7 +21,6 @@ using CSSPEnums.Resources;
 
 namespace CSSPServices.Tests
 {
-
     public partial class UseOfSiteServiceTest : TestHelper
     {
         #region Variables
@@ -202,13 +201,13 @@ namespace CSSPServices.Tests
                     useOfSite.Ordinal = -1;
                     Assert.False(useOfSiteService.Add(useOfSite));
                     Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "Ordinal", "0", "1000"), useOfSite.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, useOfSiteService.GetUseOfSiteList().Count());
+                    Assert.Equal(count, (int)useOfSiteService.GetUseOfSiteList().Count());
                     useOfSite = null;
                     useOfSite = GetFilledRandomUseOfSite("");
                     useOfSite.Ordinal = 1001;
                     Assert.False(useOfSiteService.Add(useOfSite));
                     Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "Ordinal", "0", "1000"), useOfSite.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, useOfSiteService.GetUseOfSiteList().Count());
+                    Assert.Equal(count, (int)useOfSiteService.GetUseOfSiteList().Count());
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -221,13 +220,13 @@ namespace CSSPServices.Tests
                     useOfSite.StartYear = 1979;
                     Assert.False(useOfSiteService.Add(useOfSite));
                     Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "StartYear", "1980", "2050"), useOfSite.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, useOfSiteService.GetUseOfSiteList().Count());
+                    Assert.Equal(count, (int)useOfSiteService.GetUseOfSiteList().Count());
                     useOfSite = null;
                     useOfSite = GetFilledRandomUseOfSite("");
                     useOfSite.StartYear = 2051;
                     Assert.False(useOfSiteService.Add(useOfSite));
                     Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "StartYear", "1980", "2050"), useOfSite.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, useOfSiteService.GetUseOfSiteList().Count());
+                    Assert.Equal(count, (int)useOfSiteService.GetUseOfSiteList().Count());
 
                     // -----------------------------------
                     // Is Nullable
@@ -240,13 +239,13 @@ namespace CSSPServices.Tests
                     useOfSite.EndYear = 1979;
                     Assert.False(useOfSiteService.Add(useOfSite));
                     Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "EndYear", "1980", "2050"), useOfSite.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, useOfSiteService.GetUseOfSiteList().Count());
+                    Assert.Equal(count, (int)useOfSiteService.GetUseOfSiteList().Count());
                     useOfSite = null;
                     useOfSite = GetFilledRandomUseOfSite("");
                     useOfSite.EndYear = 2051;
                     Assert.False(useOfSiteService.Add(useOfSite));
                     Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "EndYear", "1980", "2050"), useOfSite.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, useOfSiteService.GetUseOfSiteList().Count());
+                    Assert.Equal(count, (int)useOfSiteService.GetUseOfSiteList().Count());
 
                     // -----------------------------------
                     // Is Nullable
@@ -269,13 +268,13 @@ namespace CSSPServices.Tests
                     useOfSite.Weight_perc = -1.0D;
                     Assert.False(useOfSiteService.Add(useOfSite));
                     Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "Weight_perc", "0", "100"), useOfSite.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, useOfSiteService.GetUseOfSiteList().Count());
+                    Assert.Equal(count, (int)useOfSiteService.GetUseOfSiteList().Count());
                     useOfSite = null;
                     useOfSite = GetFilledRandomUseOfSite("");
                     useOfSite.Weight_perc = 101.0D;
                     Assert.False(useOfSiteService.Add(useOfSite));
                     Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "Weight_perc", "0", "100"), useOfSite.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, useOfSiteService.GetUseOfSiteList().Count());
+                    Assert.Equal(count, (int)useOfSiteService.GetUseOfSiteList().Count());
 
                     // -----------------------------------
                     // Is Nullable
@@ -298,13 +297,13 @@ namespace CSSPServices.Tests
                     useOfSite.Param1 = -1.0D;
                     Assert.False(useOfSiteService.Add(useOfSite));
                     Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "Param1", "0", "100"), useOfSite.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, useOfSiteService.GetUseOfSiteList().Count());
+                    Assert.Equal(count, (int)useOfSiteService.GetUseOfSiteList().Count());
                     useOfSite = null;
                     useOfSite = GetFilledRandomUseOfSite("");
                     useOfSite.Param1 = 101.0D;
                     Assert.False(useOfSiteService.Add(useOfSite));
                     Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "Param1", "0", "100"), useOfSite.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, useOfSiteService.GetUseOfSiteList().Count());
+                    Assert.Equal(count, (int)useOfSiteService.GetUseOfSiteList().Count());
 
                     // -----------------------------------
                     // Is Nullable
@@ -321,13 +320,13 @@ namespace CSSPServices.Tests
                     useOfSite.Param2 = -1.0D;
                     Assert.False(useOfSiteService.Add(useOfSite));
                     Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "Param2", "0", "100"), useOfSite.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, useOfSiteService.GetUseOfSiteList().Count());
+                    Assert.Equal(count, (int)useOfSiteService.GetUseOfSiteList().Count());
                     useOfSite = null;
                     useOfSite = GetFilledRandomUseOfSite("");
                     useOfSite.Param2 = 101.0D;
                     Assert.False(useOfSiteService.Add(useOfSite));
                     Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "Param2", "0", "100"), useOfSite.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, useOfSiteService.GetUseOfSiteList().Count());
+                    Assert.Equal(count, (int)useOfSiteService.GetUseOfSiteList().Count());
 
                     // -----------------------------------
                     // Is Nullable
@@ -344,13 +343,13 @@ namespace CSSPServices.Tests
                     useOfSite.Param3 = -1.0D;
                     Assert.False(useOfSiteService.Add(useOfSite));
                     Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "Param3", "0", "100"), useOfSite.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, useOfSiteService.GetUseOfSiteList().Count());
+                    Assert.Equal(count, (int)useOfSiteService.GetUseOfSiteList().Count());
                     useOfSite = null;
                     useOfSite = GetFilledRandomUseOfSite("");
                     useOfSite.Param3 = 101.0D;
                     Assert.False(useOfSiteService.Add(useOfSite));
                     Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "Param3", "0", "100"), useOfSite.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, useOfSiteService.GetUseOfSiteList().Count());
+                    Assert.Equal(count, (int)useOfSiteService.GetUseOfSiteList().Count());
 
                     // -----------------------------------
                     // Is Nullable
@@ -367,13 +366,13 @@ namespace CSSPServices.Tests
                     useOfSite.Param4 = -1.0D;
                     Assert.False(useOfSiteService.Add(useOfSite));
                     Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "Param4", "0", "100"), useOfSite.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, useOfSiteService.GetUseOfSiteList().Count());
+                    Assert.Equal(count, (int)useOfSiteService.GetUseOfSiteList().Count());
                     useOfSite = null;
                     useOfSite = GetFilledRandomUseOfSite("");
                     useOfSite.Param4 = 101.0D;
                     Assert.False(useOfSiteService.Add(useOfSite));
                     Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "Param4", "0", "100"), useOfSite.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, useOfSiteService.GetUseOfSiteList().Count());
+                    Assert.Equal(count, (int)useOfSiteService.GetUseOfSiteList().Count());
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -735,12 +734,6 @@ namespace CSSPServices.Tests
         #region Functions private
         private void CheckUseOfSiteFields(List<UseOfSite> useOfSiteList)
         {
-            Assert.NotNull(useOfSiteList[0].UseOfSiteID);
-            Assert.NotNull(useOfSiteList[0].SiteTVItemID);
-            Assert.NotNull(useOfSiteList[0].SubsectorTVItemID);
-            Assert.NotNull(useOfSiteList[0].TVType);
-            Assert.NotNull(useOfSiteList[0].Ordinal);
-            Assert.NotNull(useOfSiteList[0].StartYear);
             if (useOfSiteList[0].EndYear != null)
             {
                 Assert.NotNull(useOfSiteList[0].EndYear);
@@ -773,9 +766,6 @@ namespace CSSPServices.Tests
             {
                 Assert.NotNull(useOfSiteList[0].Param4);
             }
-            Assert.NotNull(useOfSiteList[0].LastUpdateDate_UTC);
-            Assert.NotNull(useOfSiteList[0].LastUpdateContactTVItemID);
-            Assert.NotNull(useOfSiteList[0].HasErrors);
         }
         private UseOfSite GetFilledRandomUseOfSite(string OmitPropName)
         {

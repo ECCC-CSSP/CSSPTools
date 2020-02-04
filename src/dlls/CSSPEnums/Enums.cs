@@ -1048,6 +1048,7 @@ namespace CSSPEnums
     {
         Manually = 1,
         Automatically = 2,
+        None = 3,
     }
     public enum WebTideDataSetEnum
     {

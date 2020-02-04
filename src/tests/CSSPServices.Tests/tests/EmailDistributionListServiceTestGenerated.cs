@@ -21,7 +21,6 @@ using CSSPEnums.Resources;
 
 namespace CSSPServices.Tests
 {
-
     public partial class EmailDistributionListServiceTest : TestHelper
     {
         #region Variables
@@ -170,13 +169,13 @@ namespace CSSPServices.Tests
                     emailDistributionList.Ordinal = -1;
                     Assert.False(emailDistributionListService.Add(emailDistributionList));
                     Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "Ordinal", "0", "1000"), emailDistributionList.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, emailDistributionListService.GetEmailDistributionListList().Count());
+                    Assert.Equal(count, (int)emailDistributionListService.GetEmailDistributionListList().Count());
                     emailDistributionList = null;
                     emailDistributionList = GetFilledRandomEmailDistributionList("");
                     emailDistributionList.Ordinal = 1001;
                     Assert.False(emailDistributionListService.Add(emailDistributionList));
                     Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "Ordinal", "0", "1000"), emailDistributionList.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, emailDistributionListService.GetEmailDistributionListList().Count());
+                    Assert.Equal(count, (int)emailDistributionListService.GetEmailDistributionListList().Count());
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -538,12 +537,6 @@ namespace CSSPServices.Tests
         #region Functions private
         private void CheckEmailDistributionListFields(List<EmailDistributionList> emailDistributionListList)
         {
-            Assert.NotNull(emailDistributionListList[0].EmailDistributionListID);
-            Assert.NotNull(emailDistributionListList[0].ParentTVItemID);
-            Assert.NotNull(emailDistributionListList[0].Ordinal);
-            Assert.NotNull(emailDistributionListList[0].LastUpdateDate_UTC);
-            Assert.NotNull(emailDistributionListList[0].LastUpdateContactTVItemID);
-            Assert.NotNull(emailDistributionListList[0].HasErrors);
         }
         private EmailDistributionList GetFilledRandomEmailDistributionList(string OmitPropName)
         {

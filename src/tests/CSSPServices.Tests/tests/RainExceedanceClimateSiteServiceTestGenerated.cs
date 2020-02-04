@@ -21,7 +21,6 @@ using CSSPEnums.Resources;
 
 namespace CSSPServices.Tests
 {
-
     public partial class RainExceedanceClimateSiteServiceTest : TestHelper
     {
         #region Variables
@@ -538,12 +537,6 @@ namespace CSSPServices.Tests
         #region Functions private
         private void CheckRainExceedanceClimateSiteFields(List<RainExceedanceClimateSite> rainExceedanceClimateSiteList)
         {
-            Assert.NotNull(rainExceedanceClimateSiteList[0].RainExceedanceClimateSiteID);
-            Assert.NotNull(rainExceedanceClimateSiteList[0].RainExceedanceTVItemID);
-            Assert.NotNull(rainExceedanceClimateSiteList[0].ClimateSiteTVItemID);
-            Assert.NotNull(rainExceedanceClimateSiteList[0].LastUpdateDate_UTC);
-            Assert.NotNull(rainExceedanceClimateSiteList[0].LastUpdateContactTVItemID);
-            Assert.NotNull(rainExceedanceClimateSiteList[0].HasErrors);
         }
         private RainExceedanceClimateSite GetFilledRandomRainExceedanceClimateSite(string OmitPropName)
         {

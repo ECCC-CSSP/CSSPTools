@@ -21,7 +21,6 @@ using CSSPEnums.Resources;
 
 namespace CSSPServices.Tests
 {
-
     public partial class HydrometricSiteServiceTest : TestHelper
     {
         #region Variables
@@ -170,7 +169,7 @@ namespace CSSPServices.Tests
                     hydrometricSite.FedSiteNumber = GetRandomString("", 8);
                     Assert.False(hydrometricSiteService.Add(hydrometricSite));
                     Assert.Equal(string.Format(CSSPServicesRes._MaxLengthIs_, "FedSiteNumber", "7"), hydrometricSite.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, hydrometricSiteService.GetHydrometricSiteList().Count());
+                    Assert.Equal(count, (int)hydrometricSiteService.GetHydrometricSiteList().Count());
 
                     // -----------------------------------
                     // Is Nullable
@@ -183,7 +182,7 @@ namespace CSSPServices.Tests
                     hydrometricSite.QuebecSiteNumber = GetRandomString("", 8);
                     Assert.False(hydrometricSiteService.Add(hydrometricSite));
                     Assert.Equal(string.Format(CSSPServicesRes._MaxLengthIs_, "QuebecSiteNumber", "7"), hydrometricSite.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, hydrometricSiteService.GetHydrometricSiteList().Count());
+                    Assert.Equal(count, (int)hydrometricSiteService.GetHydrometricSiteList().Count());
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -194,17 +193,17 @@ namespace CSSPServices.Tests
                     hydrometricSite = null;
                     hydrometricSite = GetFilledRandomHydrometricSite("HydrometricSiteName");
                     Assert.False(hydrometricSiteService.Add(hydrometricSite));
-                    Assert.Equal(1, hydrometricSite.ValidationResults.Count());
+                    Assert.Equal(1, (int)hydrometricSite.ValidationResults.Count());
                     Assert.True(hydrometricSite.ValidationResults.Where(c => c.ErrorMessage == string.Format(CSSPServicesRes._IsRequired, "HydrometricSiteName")).Any());
                     Assert.Null(hydrometricSite.HydrometricSiteName);
-                    Assert.Equal(count, hydrometricSiteService.GetHydrometricSiteList().Count());
+                    Assert.Equal(count, (int)hydrometricSiteService.GetHydrometricSiteList().Count());
 
                     hydrometricSite = null;
                     hydrometricSite = GetFilledRandomHydrometricSite("");
                     hydrometricSite.HydrometricSiteName = GetRandomString("", 201);
                     Assert.False(hydrometricSiteService.Add(hydrometricSite));
                     Assert.Equal(string.Format(CSSPServicesRes._MaxLengthIs_, "HydrometricSiteName", "200"), hydrometricSite.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, hydrometricSiteService.GetHydrometricSiteList().Count());
+                    Assert.Equal(count, (int)hydrometricSiteService.GetHydrometricSiteList().Count());
 
                     // -----------------------------------
                     // Is Nullable
@@ -217,7 +216,7 @@ namespace CSSPServices.Tests
                     hydrometricSite.Description = GetRandomString("", 201);
                     Assert.False(hydrometricSiteService.Add(hydrometricSite));
                     Assert.Equal(string.Format(CSSPServicesRes._MaxLengthIs_, "Description", "200"), hydrometricSite.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, hydrometricSiteService.GetHydrometricSiteList().Count());
+                    Assert.Equal(count, (int)hydrometricSiteService.GetHydrometricSiteList().Count());
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -228,17 +227,17 @@ namespace CSSPServices.Tests
                     hydrometricSite = null;
                     hydrometricSite = GetFilledRandomHydrometricSite("Province");
                     Assert.False(hydrometricSiteService.Add(hydrometricSite));
-                    Assert.Equal(1, hydrometricSite.ValidationResults.Count());
+                    Assert.Equal(1, (int)hydrometricSite.ValidationResults.Count());
                     Assert.True(hydrometricSite.ValidationResults.Where(c => c.ErrorMessage == string.Format(CSSPServicesRes._IsRequired, "Province")).Any());
                     Assert.Null(hydrometricSite.Province);
-                    Assert.Equal(count, hydrometricSiteService.GetHydrometricSiteList().Count());
+                    Assert.Equal(count, (int)hydrometricSiteService.GetHydrometricSiteList().Count());
 
                     hydrometricSite = null;
                     hydrometricSite = GetFilledRandomHydrometricSite("");
                     hydrometricSite.Province = GetRandomString("", 5);
                     Assert.False(hydrometricSiteService.Add(hydrometricSite));
                     Assert.Equal(string.Format(CSSPServicesRes._MaxLengthIs_, "Province", "4"), hydrometricSite.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, hydrometricSiteService.GetHydrometricSiteList().Count());
+                    Assert.Equal(count, (int)hydrometricSiteService.GetHydrometricSiteList().Count());
 
                     // -----------------------------------
                     // Is Nullable
@@ -255,13 +254,13 @@ namespace CSSPServices.Tests
                     hydrometricSite.Elevation_m = -1.0D;
                     Assert.False(hydrometricSiteService.Add(hydrometricSite));
                     Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "Elevation_m", "0", "10000"), hydrometricSite.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, hydrometricSiteService.GetHydrometricSiteList().Count());
+                    Assert.Equal(count, (int)hydrometricSiteService.GetHydrometricSiteList().Count());
                     hydrometricSite = null;
                     hydrometricSite = GetFilledRandomHydrometricSite("");
                     hydrometricSite.Elevation_m = 10001.0D;
                     Assert.False(hydrometricSiteService.Add(hydrometricSite));
                     Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "Elevation_m", "0", "10000"), hydrometricSite.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, hydrometricSiteService.GetHydrometricSiteList().Count());
+                    Assert.Equal(count, (int)hydrometricSiteService.GetHydrometricSiteList().Count());
 
                     // -----------------------------------
                     // Is Nullable
@@ -303,13 +302,13 @@ namespace CSSPServices.Tests
                     hydrometricSite.TimeOffset_hour = -11.0D;
                     Assert.False(hydrometricSiteService.Add(hydrometricSite));
                     Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "TimeOffset_hour", "-10", "0"), hydrometricSite.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, hydrometricSiteService.GetHydrometricSiteList().Count());
+                    Assert.Equal(count, (int)hydrometricSiteService.GetHydrometricSiteList().Count());
                     hydrometricSite = null;
                     hydrometricSite = GetFilledRandomHydrometricSite("");
                     hydrometricSite.TimeOffset_hour = 1.0D;
                     Assert.False(hydrometricSiteService.Add(hydrometricSite));
                     Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "TimeOffset_hour", "-10", "0"), hydrometricSite.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, hydrometricSiteService.GetHydrometricSiteList().Count());
+                    Assert.Equal(count, (int)hydrometricSiteService.GetHydrometricSiteList().Count());
 
                     // -----------------------------------
                     // Is Nullable
@@ -326,13 +325,13 @@ namespace CSSPServices.Tests
                     hydrometricSite.DrainageArea_km2 = -1.0D;
                     Assert.False(hydrometricSiteService.Add(hydrometricSite));
                     Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "DrainageArea_km2", "0", "1000000"), hydrometricSite.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, hydrometricSiteService.GetHydrometricSiteList().Count());
+                    Assert.Equal(count, (int)hydrometricSiteService.GetHydrometricSiteList().Count());
                     hydrometricSite = null;
                     hydrometricSite = GetFilledRandomHydrometricSite("");
                     hydrometricSite.DrainageArea_km2 = 1000001.0D;
                     Assert.False(hydrometricSiteService.Add(hydrometricSite));
                     Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "DrainageArea_km2", "0", "1000000"), hydrometricSite.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, hydrometricSiteService.GetHydrometricSiteList().Count());
+                    Assert.Equal(count, (int)hydrometricSiteService.GetHydrometricSiteList().Count());
 
                     // -----------------------------------
                     // Is Nullable
@@ -742,8 +741,6 @@ namespace CSSPServices.Tests
         #region Functions private
         private void CheckHydrometricSiteFields(List<HydrometricSite> hydrometricSiteList)
         {
-            Assert.NotNull(hydrometricSiteList[0].HydrometricSiteID);
-            Assert.NotNull(hydrometricSiteList[0].HydrometricSiteTVItemID);
             if (!string.IsNullOrWhiteSpace(hydrometricSiteList[0].FedSiteNumber))
             {
                 Assert.False(string.IsNullOrWhiteSpace(hydrometricSiteList[0].FedSiteNumber));
@@ -810,9 +807,6 @@ namespace CSSPServices.Tests
             {
                 Assert.NotNull(hydrometricSiteList[0].HasRatingCurve);
             }
-            Assert.NotNull(hydrometricSiteList[0].LastUpdateDate_UTC);
-            Assert.NotNull(hydrometricSiteList[0].LastUpdateContactTVItemID);
-            Assert.NotNull(hydrometricSiteList[0].HasErrors);
         }
         private HydrometricSite GetFilledRandomHydrometricSite(string OmitPropName)
         {

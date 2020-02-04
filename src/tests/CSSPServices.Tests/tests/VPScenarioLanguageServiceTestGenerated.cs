@@ -21,7 +21,6 @@ using CSSPEnums.Resources;
 
 namespace CSSPServices.Tests
 {
-
     public partial class VPScenarioLanguageServiceTest : TestHelper
     {
         #region Variables
@@ -175,17 +174,17 @@ namespace CSSPServices.Tests
                     vpScenarioLanguage = null;
                     vpScenarioLanguage = GetFilledRandomVPScenarioLanguage("VPScenarioName");
                     Assert.False(vpScenarioLanguageService.Add(vpScenarioLanguage));
-                    Assert.Equal(1, vpScenarioLanguage.ValidationResults.Count());
+                    Assert.Equal(1, (int)vpScenarioLanguage.ValidationResults.Count());
                     Assert.True(vpScenarioLanguage.ValidationResults.Where(c => c.ErrorMessage == string.Format(CSSPServicesRes._IsRequired, "VPScenarioName")).Any());
                     Assert.Null(vpScenarioLanguage.VPScenarioName);
-                    Assert.Equal(count, vpScenarioLanguageService.GetVPScenarioLanguageList().Count());
+                    Assert.Equal(count, (int)vpScenarioLanguageService.GetVPScenarioLanguageList().Count());
 
                     vpScenarioLanguage = null;
                     vpScenarioLanguage = GetFilledRandomVPScenarioLanguage("");
                     vpScenarioLanguage.VPScenarioName = GetRandomString("", 101);
                     Assert.False(vpScenarioLanguageService.Add(vpScenarioLanguage));
                     Assert.Equal(string.Format(CSSPServicesRes._MaxLengthIs_, "VPScenarioName", "100"), vpScenarioLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, vpScenarioLanguageService.GetVPScenarioLanguageList().Count());
+                    Assert.Equal(count, (int)vpScenarioLanguageService.GetVPScenarioLanguageList().Count());
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -560,14 +559,7 @@ namespace CSSPServices.Tests
         #region Functions private
         private void CheckVPScenarioLanguageFields(List<VPScenarioLanguage> vpScenarioLanguageList)
         {
-            Assert.NotNull(vpScenarioLanguageList[0].VPScenarioLanguageID);
-            Assert.NotNull(vpScenarioLanguageList[0].VPScenarioID);
-            Assert.NotNull(vpScenarioLanguageList[0].Language);
             Assert.False(string.IsNullOrWhiteSpace(vpScenarioLanguageList[0].VPScenarioName));
-            Assert.NotNull(vpScenarioLanguageList[0].TranslationStatus);
-            Assert.NotNull(vpScenarioLanguageList[0].LastUpdateDate_UTC);
-            Assert.NotNull(vpScenarioLanguageList[0].LastUpdateContactTVItemID);
-            Assert.NotNull(vpScenarioLanguageList[0].HasErrors);
         }
         private VPScenarioLanguage GetFilledRandomVPScenarioLanguage(string OmitPropName)
         {

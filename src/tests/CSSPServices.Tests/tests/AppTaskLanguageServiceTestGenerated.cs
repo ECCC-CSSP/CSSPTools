@@ -21,7 +21,6 @@ using CSSPEnums.Resources;
 
 namespace CSSPServices.Tests
 {
-
     public partial class AppTaskLanguageServiceTest : TestHelper
     {
         #region Variables
@@ -177,7 +176,7 @@ namespace CSSPServices.Tests
                     appTaskLanguage.StatusText = GetRandomString("", 251);
                     Assert.False(appTaskLanguageService.Add(appTaskLanguage));
                     Assert.Equal(string.Format(CSSPServicesRes._MaxLengthIs_, "StatusText", "250"), appTaskLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, appTaskLanguageService.GetAppTaskLanguageList().Count());
+                    Assert.Equal(count, (int)appTaskLanguageService.GetAppTaskLanguageList().Count());
 
                     // -----------------------------------
                     // Is Nullable
@@ -190,7 +189,7 @@ namespace CSSPServices.Tests
                     appTaskLanguage.ErrorText = GetRandomString("", 251);
                     Assert.False(appTaskLanguageService.Add(appTaskLanguage));
                     Assert.Equal(string.Format(CSSPServicesRes._MaxLengthIs_, "ErrorText", "250"), appTaskLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, appTaskLanguageService.GetAppTaskLanguageList().Count());
+                    Assert.Equal(count, (int)appTaskLanguageService.GetAppTaskLanguageList().Count());
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -565,9 +564,6 @@ namespace CSSPServices.Tests
         #region Functions private
         private void CheckAppTaskLanguageFields(List<AppTaskLanguage> appTaskLanguageList)
         {
-            Assert.NotNull(appTaskLanguageList[0].AppTaskLanguageID);
-            Assert.NotNull(appTaskLanguageList[0].AppTaskID);
-            Assert.NotNull(appTaskLanguageList[0].Language);
             if (!string.IsNullOrWhiteSpace(appTaskLanguageList[0].StatusText))
             {
                 Assert.False(string.IsNullOrWhiteSpace(appTaskLanguageList[0].StatusText));
@@ -576,10 +572,6 @@ namespace CSSPServices.Tests
             {
                 Assert.False(string.IsNullOrWhiteSpace(appTaskLanguageList[0].ErrorText));
             }
-            Assert.NotNull(appTaskLanguageList[0].TranslationStatus);
-            Assert.NotNull(appTaskLanguageList[0].LastUpdateDate_UTC);
-            Assert.NotNull(appTaskLanguageList[0].LastUpdateContactTVItemID);
-            Assert.NotNull(appTaskLanguageList[0].HasErrors);
         }
         private AppTaskLanguage GetFilledRandomAppTaskLanguage(string OmitPropName)
         {

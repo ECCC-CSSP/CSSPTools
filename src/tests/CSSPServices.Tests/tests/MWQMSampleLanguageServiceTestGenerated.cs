@@ -21,7 +21,6 @@ using CSSPEnums.Resources;
 
 namespace CSSPServices.Tests
 {
-
     public partial class MWQMSampleLanguageServiceTest : TestHelper
     {
         #region Variables
@@ -174,10 +173,10 @@ namespace CSSPServices.Tests
                     mwqmSampleLanguage = null;
                     mwqmSampleLanguage = GetFilledRandomMWQMSampleLanguage("MWQMSampleNote");
                     Assert.False(mwqmSampleLanguageService.Add(mwqmSampleLanguage));
-                    Assert.Equal(1, mwqmSampleLanguage.ValidationResults.Count());
+                    Assert.Equal(1, (int)mwqmSampleLanguage.ValidationResults.Count());
                     Assert.True(mwqmSampleLanguage.ValidationResults.Where(c => c.ErrorMessage == string.Format(CSSPServicesRes._IsRequired, "MWQMSampleNote")).Any());
                     Assert.Null(mwqmSampleLanguage.MWQMSampleNote);
-                    Assert.Equal(count, mwqmSampleLanguageService.GetMWQMSampleLanguageList().Count());
+                    Assert.Equal(count, (int)mwqmSampleLanguageService.GetMWQMSampleLanguageList().Count());
 
 
                     // -----------------------------------
@@ -553,14 +552,7 @@ namespace CSSPServices.Tests
         #region Functions private
         private void CheckMWQMSampleLanguageFields(List<MWQMSampleLanguage> mwqmSampleLanguageList)
         {
-            Assert.NotNull(mwqmSampleLanguageList[0].MWQMSampleLanguageID);
-            Assert.NotNull(mwqmSampleLanguageList[0].MWQMSampleID);
-            Assert.NotNull(mwqmSampleLanguageList[0].Language);
             Assert.False(string.IsNullOrWhiteSpace(mwqmSampleLanguageList[0].MWQMSampleNote));
-            Assert.NotNull(mwqmSampleLanguageList[0].TranslationStatus);
-            Assert.NotNull(mwqmSampleLanguageList[0].LastUpdateDate_UTC);
-            Assert.NotNull(mwqmSampleLanguageList[0].LastUpdateContactTVItemID);
-            Assert.NotNull(mwqmSampleLanguageList[0].HasErrors);
         }
         private MWQMSampleLanguage GetFilledRandomMWQMSampleLanguage(string OmitPropName)
         {

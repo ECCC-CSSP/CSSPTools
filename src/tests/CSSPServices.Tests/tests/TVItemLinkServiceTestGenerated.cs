@@ -21,7 +21,6 @@ using CSSPEnums.Resources;
 
 namespace CSSPServices.Tests
 {
-
     public partial class TVItemLinkServiceTest : TestHelper
     {
         #region Variables
@@ -240,13 +239,13 @@ namespace CSSPServices.Tests
                     tvItemLink.Ordinal = -1;
                     Assert.False(tvItemLinkService.Add(tvItemLink));
                     Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "Ordinal", "0", "100"), tvItemLink.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, tvItemLinkService.GetTVItemLinkList().Count());
+                    Assert.Equal(count, (int)tvItemLinkService.GetTVItemLinkList().Count());
                     tvItemLink = null;
                     tvItemLink = GetFilledRandomTVItemLink("");
                     tvItemLink.Ordinal = 101;
                     Assert.False(tvItemLinkService.Add(tvItemLink));
                     Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "Ordinal", "0", "100"), tvItemLink.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, tvItemLinkService.GetTVItemLinkList().Count());
+                    Assert.Equal(count, (int)tvItemLinkService.GetTVItemLinkList().Count());
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -259,13 +258,13 @@ namespace CSSPServices.Tests
                     tvItemLink.TVLevel = -1;
                     Assert.False(tvItemLinkService.Add(tvItemLink));
                     Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "TVLevel", "0", "100"), tvItemLink.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, tvItemLinkService.GetTVItemLinkList().Count());
+                    Assert.Equal(count, (int)tvItemLinkService.GetTVItemLinkList().Count());
                     tvItemLink = null;
                     tvItemLink = GetFilledRandomTVItemLink("");
                     tvItemLink.TVLevel = 101;
                     Assert.False(tvItemLinkService.Add(tvItemLink));
                     Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "TVLevel", "0", "100"), tvItemLink.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, tvItemLinkService.GetTVItemLinkList().Count());
+                    Assert.Equal(count, (int)tvItemLinkService.GetTVItemLinkList().Count());
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -276,17 +275,17 @@ namespace CSSPServices.Tests
                     tvItemLink = null;
                     tvItemLink = GetFilledRandomTVItemLink("TVPath");
                     Assert.False(tvItemLinkService.Add(tvItemLink));
-                    Assert.Equal(1, tvItemLink.ValidationResults.Count());
+                    Assert.Equal(1, (int)tvItemLink.ValidationResults.Count());
                     Assert.True(tvItemLink.ValidationResults.Where(c => c.ErrorMessage == string.Format(CSSPServicesRes._IsRequired, "TVPath")).Any());
                     Assert.Null(tvItemLink.TVPath);
-                    Assert.Equal(count, tvItemLinkService.GetTVItemLinkList().Count());
+                    Assert.Equal(count, (int)tvItemLinkService.GetTVItemLinkList().Count());
 
                     tvItemLink = null;
                     tvItemLink = GetFilledRandomTVItemLink("");
                     tvItemLink.TVPath = GetRandomString("", 251);
                     Assert.False(tvItemLinkService.Add(tvItemLink));
                     Assert.Equal(string.Format(CSSPServicesRes._MaxLengthIs_, "TVPath", "250"), tvItemLink.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, tvItemLinkService.GetTVItemLinkList().Count());
+                    Assert.Equal(count, (int)tvItemLinkService.GetTVItemLinkList().Count());
 
                     // -----------------------------------
                     // Is Nullable
@@ -661,11 +660,6 @@ namespace CSSPServices.Tests
         #region Functions private
         private void CheckTVItemLinkFields(List<TVItemLink> tvItemLinkList)
         {
-            Assert.NotNull(tvItemLinkList[0].TVItemLinkID);
-            Assert.NotNull(tvItemLinkList[0].FromTVItemID);
-            Assert.NotNull(tvItemLinkList[0].ToTVItemID);
-            Assert.NotNull(tvItemLinkList[0].FromTVType);
-            Assert.NotNull(tvItemLinkList[0].ToTVType);
             if (tvItemLinkList[0].StartDateTime_Local != null)
             {
                 Assert.NotNull(tvItemLinkList[0].StartDateTime_Local);
@@ -674,16 +668,11 @@ namespace CSSPServices.Tests
             {
                 Assert.NotNull(tvItemLinkList[0].EndDateTime_Local);
             }
-            Assert.NotNull(tvItemLinkList[0].Ordinal);
-            Assert.NotNull(tvItemLinkList[0].TVLevel);
             Assert.False(string.IsNullOrWhiteSpace(tvItemLinkList[0].TVPath));
             if (tvItemLinkList[0].ParentTVItemLinkID != null)
             {
                 Assert.NotNull(tvItemLinkList[0].ParentTVItemLinkID);
             }
-            Assert.NotNull(tvItemLinkList[0].LastUpdateDate_UTC);
-            Assert.NotNull(tvItemLinkList[0].LastUpdateContactTVItemID);
-            Assert.NotNull(tvItemLinkList[0].HasErrors);
         }
         private TVItemLink GetFilledRandomTVItemLink(string OmitPropName)
         {
@@ -698,7 +687,7 @@ namespace CSSPServices.Tests
             if (OmitPropName != "Ordinal") tvItemLink.Ordinal = GetRandomInt(0, 100);
             if (OmitPropName != "TVLevel") tvItemLink.TVLevel = GetRandomInt(0, 100);
             if (OmitPropName != "TVPath") tvItemLink.TVPath = GetRandomString("", 5);
-            // Need to implement [TVItemLink ParentTVItemLinkID TVItemLink TVItemLinkID]
+            if (OmitPropName != "ParentTVItemLinkID") tvItemLink.ParentTVItemLinkID = 1;
             if (OmitPropName != "LastUpdateDate_UTC") tvItemLink.LastUpdateDate_UTC = new DateTime(2005, 3, 6);
             if (OmitPropName != "LastUpdateContactTVItemID") tvItemLink.LastUpdateContactTVItemID = 2;
 

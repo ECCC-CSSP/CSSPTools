@@ -21,7 +21,6 @@ using CSSPEnums.Resources;
 
 namespace CSSPServices.Tests
 {
-
     public partial class MWQMSiteStartEndDateServiceTest : TestHelper
     {
         #region Variables
@@ -549,16 +548,10 @@ namespace CSSPServices.Tests
         #region Functions private
         private void CheckMWQMSiteStartEndDateFields(List<MWQMSiteStartEndDate> mwqmSiteStartEndDateList)
         {
-            Assert.NotNull(mwqmSiteStartEndDateList[0].MWQMSiteStartEndDateID);
-            Assert.NotNull(mwqmSiteStartEndDateList[0].MWQMSiteTVItemID);
-            Assert.NotNull(mwqmSiteStartEndDateList[0].StartDate);
             if (mwqmSiteStartEndDateList[0].EndDate != null)
             {
                 Assert.NotNull(mwqmSiteStartEndDateList[0].EndDate);
             }
-            Assert.NotNull(mwqmSiteStartEndDateList[0].LastUpdateDate_UTC);
-            Assert.NotNull(mwqmSiteStartEndDateList[0].LastUpdateContactTVItemID);
-            Assert.NotNull(mwqmSiteStartEndDateList[0].HasErrors);
         }
         private MWQMSiteStartEndDate GetFilledRandomMWQMSiteStartEndDate(string OmitPropName)
         {

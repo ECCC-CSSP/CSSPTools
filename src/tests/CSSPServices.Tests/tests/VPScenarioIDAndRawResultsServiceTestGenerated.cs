@@ -21,7 +21,6 @@ using CSSPEnums.Resources;
 
 namespace CSSPServices.Tests
 {
-
     public partial class VPScenarioIDAndRawResultsServiceTest : TestHelper
     {
         #region Variables

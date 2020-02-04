@@ -21,7 +21,6 @@ using CSSPEnums.Resources;
 
 namespace CSSPServices.Tests
 {
-
     public partial class TideSiteServiceTest : TestHelper
     {
         #region Variables
@@ -168,17 +167,17 @@ namespace CSSPServices.Tests
                     tideSite = null;
                     tideSite = GetFilledRandomTideSite("TideSiteName");
                     Assert.False(tideSiteService.Add(tideSite));
-                    Assert.Equal(1, tideSite.ValidationResults.Count());
+                    Assert.Equal(1, (int)tideSite.ValidationResults.Count());
                     Assert.True(tideSite.ValidationResults.Where(c => c.ErrorMessage == string.Format(CSSPServicesRes._IsRequired, "TideSiteName")).Any());
                     Assert.Null(tideSite.TideSiteName);
-                    Assert.Equal(count, tideSiteService.GetTideSiteList().Count());
+                    Assert.Equal(count, (int)tideSiteService.GetTideSiteList().Count());
 
                     tideSite = null;
                     tideSite = GetFilledRandomTideSite("");
                     tideSite.TideSiteName = GetRandomString("", 101);
                     Assert.False(tideSiteService.Add(tideSite));
                     Assert.Equal(string.Format(CSSPServicesRes._MaxLengthIs_, "TideSiteName", "100"), tideSite.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, tideSiteService.GetTideSiteList().Count());
+                    Assert.Equal(count, (int)tideSiteService.GetTideSiteList().Count());
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -189,23 +188,23 @@ namespace CSSPServices.Tests
                     tideSite = null;
                     tideSite = GetFilledRandomTideSite("Province");
                     Assert.False(tideSiteService.Add(tideSite));
-                    Assert.Equal(1, tideSite.ValidationResults.Count());
+                    Assert.Equal(1, (int)tideSite.ValidationResults.Count());
                     Assert.True(tideSite.ValidationResults.Where(c => c.ErrorMessage == string.Format(CSSPServicesRes._IsRequired, "Province")).Any());
                     Assert.Null(tideSite.Province);
-                    Assert.Equal(count, tideSiteService.GetTideSiteList().Count());
+                    Assert.Equal(count, (int)tideSiteService.GetTideSiteList().Count());
 
                     tideSite = null;
                     tideSite = GetFilledRandomTideSite("");
                     tideSite.Province = GetRandomString("", 1);
                     Assert.False(tideSiteService.Add(tideSite));
                     Assert.Equal(string.Format(CSSPServicesRes._LengthShouldBeBetween_And_, "Province", "2", "2"), tideSite.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, tideSiteService.GetTideSiteList().Count());
+                    Assert.Equal(count, (int)tideSiteService.GetTideSiteList().Count());
                     tideSite = null;
                     tideSite = GetFilledRandomTideSite("");
                     tideSite.Province = GetRandomString("", 3);
                     Assert.False(tideSiteService.Add(tideSite));
                     Assert.Equal(string.Format(CSSPServicesRes._LengthShouldBeBetween_And_, "Province", "2", "2"), tideSite.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, tideSiteService.GetTideSiteList().Count());
+                    Assert.Equal(count, (int)tideSiteService.GetTideSiteList().Count());
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -218,13 +217,13 @@ namespace CSSPServices.Tests
                     tideSite.sid = -1;
                     Assert.False(tideSiteService.Add(tideSite));
                     Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "sid", "0", "10000"), tideSite.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, tideSiteService.GetTideSiteList().Count());
+                    Assert.Equal(count, (int)tideSiteService.GetTideSiteList().Count());
                     tideSite = null;
                     tideSite = GetFilledRandomTideSite("");
                     tideSite.sid = 10001;
                     Assert.False(tideSiteService.Add(tideSite));
                     Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "sid", "0", "10000"), tideSite.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, tideSiteService.GetTideSiteList().Count());
+                    Assert.Equal(count, (int)tideSiteService.GetTideSiteList().Count());
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -237,13 +236,13 @@ namespace CSSPServices.Tests
                     tideSite.Zone = -1;
                     Assert.False(tideSiteService.Add(tideSite));
                     Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "Zone", "0", "10000"), tideSite.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, tideSiteService.GetTideSiteList().Count());
+                    Assert.Equal(count, (int)tideSiteService.GetTideSiteList().Count());
                     tideSite = null;
                     tideSite = GetFilledRandomTideSite("");
                     tideSite.Zone = 10001;
                     Assert.False(tideSiteService.Add(tideSite));
                     Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "Zone", "0", "10000"), tideSite.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, tideSiteService.GetTideSiteList().Count());
+                    Assert.Equal(count, (int)tideSiteService.GetTideSiteList().Count());
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -605,15 +604,8 @@ namespace CSSPServices.Tests
         #region Functions private
         private void CheckTideSiteFields(List<TideSite> tideSiteList)
         {
-            Assert.NotNull(tideSiteList[0].TideSiteID);
-            Assert.NotNull(tideSiteList[0].TideSiteTVItemID);
             Assert.False(string.IsNullOrWhiteSpace(tideSiteList[0].TideSiteName));
             Assert.False(string.IsNullOrWhiteSpace(tideSiteList[0].Province));
-            Assert.NotNull(tideSiteList[0].sid);
-            Assert.NotNull(tideSiteList[0].Zone);
-            Assert.NotNull(tideSiteList[0].LastUpdateDate_UTC);
-            Assert.NotNull(tideSiteList[0].LastUpdateContactTVItemID);
-            Assert.NotNull(tideSiteList[0].HasErrors);
         }
         private TideSite GetFilledRandomTideSite(string OmitPropName)
         {

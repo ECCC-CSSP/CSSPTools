@@ -21,7 +21,6 @@ using CSSPEnums.Resources;
 
 namespace CSSPServices.Tests
 {
-
     public partial class TVItemStatServiceTest : TestHelper
     {
         #region Variables
@@ -183,13 +182,13 @@ namespace CSSPServices.Tests
                     tvItemStat.ChildCount = -1;
                     Assert.False(tvItemStatService.Add(tvItemStat));
                     Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "ChildCount", "0", "10000000"), tvItemStat.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, tvItemStatService.GetTVItemStatList().Count());
+                    Assert.Equal(count, (int)tvItemStatService.GetTVItemStatList().Count());
                     tvItemStat = null;
                     tvItemStat = GetFilledRandomTVItemStat("");
                     tvItemStat.ChildCount = 10000001;
                     Assert.False(tvItemStatService.Add(tvItemStat));
                     Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "ChildCount", "0", "10000000"), tvItemStat.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, tvItemStatService.GetTVItemStatList().Count());
+                    Assert.Equal(count, (int)tvItemStatService.GetTVItemStatList().Count());
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -551,13 +550,6 @@ namespace CSSPServices.Tests
         #region Functions private
         private void CheckTVItemStatFields(List<TVItemStat> tvItemStatList)
         {
-            Assert.NotNull(tvItemStatList[0].TVItemStatID);
-            Assert.NotNull(tvItemStatList[0].TVItemID);
-            Assert.NotNull(tvItemStatList[0].TVType);
-            Assert.NotNull(tvItemStatList[0].ChildCount);
-            Assert.NotNull(tvItemStatList[0].LastUpdateDate_UTC);
-            Assert.NotNull(tvItemStatList[0].LastUpdateContactTVItemID);
-            Assert.NotNull(tvItemStatList[0].HasErrors);
         }
         private TVItemStat GetFilledRandomTVItemStat(string OmitPropName)
         {

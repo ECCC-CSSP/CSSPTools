@@ -21,7 +21,6 @@ using CSSPEnums.Resources;
 
 namespace CSSPServices.Tests
 {
-
     public partial class LabSheetServiceTest : TestHelper
     {
         #region Variables
@@ -151,7 +150,7 @@ namespace CSSPServices.Tests
                     labSheet.OtherServerLabSheetID = 0;
                     Assert.False(labSheetService.Add(labSheet));
                     Assert.Equal(string.Format(CSSPServicesRes._MinValueIs_, "OtherServerLabSheetID", "1"), labSheet.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, labSheetService.GetLabSheetList().Count());
+                    Assert.Equal(count, (int)labSheetService.GetLabSheetList().Count());
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -175,10 +174,10 @@ namespace CSSPServices.Tests
                     labSheet = null;
                     labSheet = GetFilledRandomLabSheet("SamplingPlanName");
                     Assert.False(labSheetService.Add(labSheet));
-                    Assert.Equal(1, labSheet.ValidationResults.Count());
+                    Assert.Equal(1, (int)labSheet.ValidationResults.Count());
                     Assert.True(labSheet.ValidationResults.Where(c => c.ErrorMessage == string.Format(CSSPServicesRes._IsRequired, "SamplingPlanName")).Any());
                     Assert.Null(labSheet.SamplingPlanName);
-                    Assert.Equal(count, labSheetService.GetLabSheetList().Count());
+                    Assert.Equal(count, (int)labSheetService.GetLabSheetList().Count());
 
                     labSheet = null;
                     labSheet = GetFilledRandomLabSheet("");
@@ -187,7 +186,7 @@ namespace CSSPServices.Tests
                     labSheet.SamplingPlanName = GetRandomString("", 251);
                     Assert.False(labSheetService.Add(labSheet));
                     Assert.Equal(string.Format(CSSPServicesRes._LengthShouldBeBetween_And_, "SamplingPlanName", "1", "250"), labSheet.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, labSheetService.GetLabSheetList().Count());
+                    Assert.Equal(count, (int)labSheetService.GetLabSheetList().Count());
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -200,7 +199,7 @@ namespace CSSPServices.Tests
                     labSheet.Year = 1979;
                     Assert.False(labSheetService.Add(labSheet));
                     Assert.Equal(string.Format(CSSPServicesRes._MinValueIs_, "Year", "1980"), labSheet.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, labSheetService.GetLabSheetList().Count());
+                    Assert.Equal(count, (int)labSheetService.GetLabSheetList().Count());
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -213,13 +212,13 @@ namespace CSSPServices.Tests
                     labSheet.Month = 0;
                     Assert.False(labSheetService.Add(labSheet));
                     Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "Month", "1", "12"), labSheet.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, labSheetService.GetLabSheetList().Count());
+                    Assert.Equal(count, (int)labSheetService.GetLabSheetList().Count());
                     labSheet = null;
                     labSheet = GetFilledRandomLabSheet("");
                     labSheet.Month = 13;
                     Assert.False(labSheetService.Add(labSheet));
                     Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "Month", "1", "12"), labSheet.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, labSheetService.GetLabSheetList().Count());
+                    Assert.Equal(count, (int)labSheetService.GetLabSheetList().Count());
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -232,13 +231,13 @@ namespace CSSPServices.Tests
                     labSheet.Day = 0;
                     Assert.False(labSheetService.Add(labSheet));
                     Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "Day", "1", "31"), labSheet.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, labSheetService.GetLabSheetList().Count());
+                    Assert.Equal(count, (int)labSheetService.GetLabSheetList().Count());
                     labSheet = null;
                     labSheet = GetFilledRandomLabSheet("");
                     labSheet.Day = 32;
                     Assert.False(labSheetService.Add(labSheet));
                     Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "Day", "1", "31"), labSheet.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, labSheetService.GetLabSheetList().Count());
+                    Assert.Equal(count, (int)labSheetService.GetLabSheetList().Count());
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -251,13 +250,13 @@ namespace CSSPServices.Tests
                     labSheet.RunNumber = 0;
                     Assert.False(labSheetService.Add(labSheet));
                     Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "RunNumber", "1", "100"), labSheet.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, labSheetService.GetLabSheetList().Count());
+                    Assert.Equal(count, (int)labSheetService.GetLabSheetList().Count());
                     labSheet = null;
                     labSheet = GetFilledRandomLabSheet("");
                     labSheet.RunNumber = 101;
                     Assert.False(labSheetService.Add(labSheet));
                     Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "RunNumber", "1", "100"), labSheet.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, labSheetService.GetLabSheetList().Count());
+                    Assert.Equal(count, (int)labSheetService.GetLabSheetList().Count());
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -358,10 +357,10 @@ namespace CSSPServices.Tests
                     labSheet = null;
                     labSheet = GetFilledRandomLabSheet("FileName");
                     Assert.False(labSheetService.Add(labSheet));
-                    Assert.Equal(1, labSheet.ValidationResults.Count());
+                    Assert.Equal(1, (int)labSheet.ValidationResults.Count());
                     Assert.True(labSheet.ValidationResults.Where(c => c.ErrorMessage == string.Format(CSSPServicesRes._IsRequired, "FileName")).Any());
                     Assert.Null(labSheet.FileName);
-                    Assert.Equal(count, labSheetService.GetLabSheetList().Count());
+                    Assert.Equal(count, (int)labSheetService.GetLabSheetList().Count());
 
                     labSheet = null;
                     labSheet = GetFilledRandomLabSheet("");
@@ -370,7 +369,7 @@ namespace CSSPServices.Tests
                     labSheet.FileName = GetRandomString("", 251);
                     Assert.False(labSheetService.Add(labSheet));
                     Assert.Equal(string.Format(CSSPServicesRes._LengthShouldBeBetween_And_, "FileName", "1", "250"), labSheet.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, labSheetService.GetLabSheetList().Count());
+                    Assert.Equal(count, (int)labSheetService.GetLabSheetList().Count());
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -397,10 +396,10 @@ namespace CSSPServices.Tests
                     labSheet = null;
                     labSheet = GetFilledRandomLabSheet("FileContent");
                     Assert.False(labSheetService.Add(labSheet));
-                    Assert.Equal(1, labSheet.ValidationResults.Count());
+                    Assert.Equal(1, (int)labSheet.ValidationResults.Count());
                     Assert.True(labSheet.ValidationResults.Where(c => c.ErrorMessage == string.Format(CSSPServicesRes._IsRequired, "FileContent")).Any());
                     Assert.Null(labSheet.FileContent);
-                    Assert.Equal(count, labSheetService.GetLabSheetList().Count());
+                    Assert.Equal(count, (int)labSheetService.GetLabSheetList().Count());
 
 
                     // -----------------------------------
@@ -445,7 +444,7 @@ namespace CSSPServices.Tests
                     labSheet.RejectReason = GetRandomString("", 251);
                     Assert.False(labSheetService.Add(labSheet));
                     Assert.Equal(string.Format(CSSPServicesRes._MaxLengthIs_, "RejectReason", "250"), labSheet.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, labSheetService.GetLabSheetList().Count());
+                    Assert.Equal(count, (int)labSheetService.GetLabSheetList().Count());
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -807,25 +806,12 @@ namespace CSSPServices.Tests
         #region Functions private
         private void CheckLabSheetFields(List<LabSheet> labSheetList)
         {
-            Assert.NotNull(labSheetList[0].LabSheetID);
-            Assert.NotNull(labSheetList[0].OtherServerLabSheetID);
-            Assert.NotNull(labSheetList[0].SamplingPlanID);
             Assert.False(string.IsNullOrWhiteSpace(labSheetList[0].SamplingPlanName));
-            Assert.NotNull(labSheetList[0].Year);
-            Assert.NotNull(labSheetList[0].Month);
-            Assert.NotNull(labSheetList[0].Day);
-            Assert.NotNull(labSheetList[0].RunNumber);
-            Assert.NotNull(labSheetList[0].SubsectorTVItemID);
             if (labSheetList[0].MWQMRunTVItemID != null)
             {
                 Assert.NotNull(labSheetList[0].MWQMRunTVItemID);
             }
-            Assert.NotNull(labSheetList[0].SamplingPlanType);
-            Assert.NotNull(labSheetList[0].SampleType);
-            Assert.NotNull(labSheetList[0].LabSheetType);
-            Assert.NotNull(labSheetList[0].LabSheetStatus);
             Assert.False(string.IsNullOrWhiteSpace(labSheetList[0].FileName));
-            Assert.NotNull(labSheetList[0].FileLastModifiedDate_Local);
             Assert.False(string.IsNullOrWhiteSpace(labSheetList[0].FileContent));
             if (labSheetList[0].AcceptedOrRejectedByContactTVItemID != null)
             {
@@ -839,9 +825,6 @@ namespace CSSPServices.Tests
             {
                 Assert.False(string.IsNullOrWhiteSpace(labSheetList[0].RejectReason));
             }
-            Assert.NotNull(labSheetList[0].LastUpdateDate_UTC);
-            Assert.NotNull(labSheetList[0].LastUpdateContactTVItemID);
-            Assert.NotNull(labSheetList[0].HasErrors);
         }
         private LabSheet GetFilledRandomLabSheet(string OmitPropName)
         {

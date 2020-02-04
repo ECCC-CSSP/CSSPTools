@@ -21,7 +21,6 @@ using CSSPEnums.Resources;
 
 namespace CSSPServices.Tests
 {
-
     public partial class DocTemplateServiceTest : TestHelper
     {
         #region Variables
@@ -194,17 +193,17 @@ namespace CSSPServices.Tests
                     docTemplate = null;
                     docTemplate = GetFilledRandomDocTemplate("FileName");
                     Assert.False(docTemplateService.Add(docTemplate));
-                    Assert.Equal(1, docTemplate.ValidationResults.Count());
+                    Assert.Equal(1, (int)docTemplate.ValidationResults.Count());
                     Assert.True(docTemplate.ValidationResults.Where(c => c.ErrorMessage == string.Format(CSSPServicesRes._IsRequired, "FileName")).Any());
                     Assert.Null(docTemplate.FileName);
-                    Assert.Equal(count, docTemplateService.GetDocTemplateList().Count());
+                    Assert.Equal(count, (int)docTemplateService.GetDocTemplateList().Count());
 
                     docTemplate = null;
                     docTemplate = GetFilledRandomDocTemplate("");
                     docTemplate.FileName = GetRandomString("", 151);
                     Assert.False(docTemplateService.Add(docTemplate));
                     Assert.Equal(string.Format(CSSPServicesRes._MaxLengthIs_, "FileName", "150"), docTemplate.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, docTemplateService.GetDocTemplateList().Count());
+                    Assert.Equal(count, (int)docTemplateService.GetDocTemplateList().Count());
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -566,14 +565,7 @@ namespace CSSPServices.Tests
         #region Functions private
         private void CheckDocTemplateFields(List<DocTemplate> docTemplateList)
         {
-            Assert.NotNull(docTemplateList[0].DocTemplateID);
-            Assert.NotNull(docTemplateList[0].Language);
-            Assert.NotNull(docTemplateList[0].TVType);
-            Assert.NotNull(docTemplateList[0].TVFileTVItemID);
             Assert.False(string.IsNullOrWhiteSpace(docTemplateList[0].FileName));
-            Assert.NotNull(docTemplateList[0].LastUpdateDate_UTC);
-            Assert.NotNull(docTemplateList[0].LastUpdateContactTVItemID);
-            Assert.NotNull(docTemplateList[0].HasErrors);
         }
         private DocTemplate GetFilledRandomDocTemplate(string OmitPropName)
         {

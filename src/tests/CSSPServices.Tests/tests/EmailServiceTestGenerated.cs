@@ -21,7 +21,6 @@ using CSSPEnums.Resources;
 
 namespace CSSPServices.Tests
 {
-
     public partial class EmailServiceTest : TestHelper
     {
         #region Variables
@@ -169,17 +168,17 @@ namespace CSSPServices.Tests
                     email = null;
                     email = GetFilledRandomEmail("EmailAddress");
                     Assert.False(emailService.Add(email));
-                    Assert.Equal(1, email.ValidationResults.Count());
+                    Assert.Equal(1, (int)email.ValidationResults.Count());
                     Assert.True(email.ValidationResults.Where(c => c.ErrorMessage == string.Format(CSSPServicesRes._IsRequired, "EmailAddress")).Any());
                     Assert.Null(email.EmailAddress);
-                    Assert.Equal(count, emailService.GetEmailList().Count());
+                    Assert.Equal(count, (int)emailService.GetEmailList().Count());
 
                     email = null;
                     email = GetFilledRandomEmail("");
                     email.EmailAddress = GetRandomString("", 256);
                     Assert.False(emailService.Add(email));
                     Assert.Equal(string.Format(CSSPServicesRes._MaxLengthIs_, "EmailAddress", "255"), email.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, emailService.GetEmailList().Count());
+                    Assert.Equal(count, (int)emailService.GetEmailList().Count());
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -554,13 +553,7 @@ namespace CSSPServices.Tests
         #region Functions private
         private void CheckEmailFields(List<Email> emailList)
         {
-            Assert.NotNull(emailList[0].EmailID);
-            Assert.NotNull(emailList[0].EmailTVItemID);
             Assert.False(string.IsNullOrWhiteSpace(emailList[0].EmailAddress));
-            Assert.NotNull(emailList[0].EmailType);
-            Assert.NotNull(emailList[0].LastUpdateDate_UTC);
-            Assert.NotNull(emailList[0].LastUpdateContactTVItemID);
-            Assert.NotNull(emailList[0].HasErrors);
         }
         private Email GetFilledRandomEmail(string OmitPropName)
         {

@@ -21,7 +21,6 @@ using CSSPEnums.Resources;
 
 namespace CSSPServices.Tests
 {
-
     public partial class TVItemServiceTest : TestHelper
     {
         #region Variables
@@ -151,13 +150,13 @@ namespace CSSPServices.Tests
                     tvItem.TVLevel = -1;
                     Assert.False(tvItemService.Add(tvItem));
                     Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "TVLevel", "0", "100"), tvItem.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, tvItemService.GetTVItemList().Count());
+                    Assert.Equal(count, (int)tvItemService.GetTVItemList().Count());
                     tvItem = null;
                     tvItem = GetFilledRandomTVItem("");
                     tvItem.TVLevel = 101;
                     Assert.False(tvItemService.Add(tvItem));
                     Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "TVLevel", "0", "100"), tvItem.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, tvItemService.GetTVItemList().Count());
+                    Assert.Equal(count, (int)tvItemService.GetTVItemList().Count());
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -168,17 +167,17 @@ namespace CSSPServices.Tests
                     tvItem = null;
                     tvItem = GetFilledRandomTVItem("TVPath");
                     Assert.False(tvItemService.Add(tvItem));
-                    Assert.Equal(1, tvItem.ValidationResults.Count());
+                    Assert.Equal(1, (int)tvItem.ValidationResults.Count());
                     Assert.True(tvItem.ValidationResults.Where(c => c.ErrorMessage == string.Format(CSSPServicesRes._IsRequired, "TVPath")).Any());
                     Assert.Null(tvItem.TVPath);
-                    Assert.Equal(count, tvItemService.GetTVItemList().Count());
+                    Assert.Equal(count, (int)tvItemService.GetTVItemList().Count());
 
                     tvItem = null;
                     tvItem = GetFilledRandomTVItem("");
                     tvItem.TVPath = GetRandomString("", 251);
                     Assert.False(tvItemService.Add(tvItem));
                     Assert.Equal(string.Format(CSSPServicesRes._MaxLengthIs_, "TVPath", "250"), tvItem.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, tvItemService.GetTVItemList().Count());
+                    Assert.Equal(count, (int)tvItemService.GetTVItemList().Count());
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -578,15 +577,7 @@ namespace CSSPServices.Tests
         #region Functions private
         private void CheckTVItemFields(List<TVItem> tvItemList)
         {
-            Assert.NotNull(tvItemList[0].TVItemID);
-            Assert.NotNull(tvItemList[0].TVLevel);
             Assert.False(string.IsNullOrWhiteSpace(tvItemList[0].TVPath));
-            Assert.NotNull(tvItemList[0].TVType);
-            Assert.NotNull(tvItemList[0].ParentID);
-            Assert.NotNull(tvItemList[0].IsActive);
-            Assert.NotNull(tvItemList[0].LastUpdateDate_UTC);
-            Assert.NotNull(tvItemList[0].LastUpdateContactTVItemID);
-            Assert.NotNull(tvItemList[0].HasErrors);
         }
         private TVItem GetFilledRandomTVItem(string OmitPropName)
         {

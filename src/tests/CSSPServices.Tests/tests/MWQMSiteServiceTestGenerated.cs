@@ -21,7 +21,6 @@ using CSSPEnums.Resources;
 
 namespace CSSPServices.Tests
 {
-
     public partial class MWQMSiteServiceTest : TestHelper
     {
         #region Variables
@@ -168,17 +167,17 @@ namespace CSSPServices.Tests
                     mwqmSite = null;
                     mwqmSite = GetFilledRandomMWQMSite("MWQMSiteNumber");
                     Assert.False(mwqmSiteService.Add(mwqmSite));
-                    Assert.Equal(1, mwqmSite.ValidationResults.Count());
+                    Assert.Equal(1, (int)mwqmSite.ValidationResults.Count());
                     Assert.True(mwqmSite.ValidationResults.Where(c => c.ErrorMessage == string.Format(CSSPServicesRes._IsRequired, "MWQMSiteNumber")).Any());
                     Assert.Null(mwqmSite.MWQMSiteNumber);
-                    Assert.Equal(count, mwqmSiteService.GetMWQMSiteList().Count());
+                    Assert.Equal(count, (int)mwqmSiteService.GetMWQMSiteList().Count());
 
                     mwqmSite = null;
                     mwqmSite = GetFilledRandomMWQMSite("");
                     mwqmSite.MWQMSiteNumber = GetRandomString("", 9);
                     Assert.False(mwqmSiteService.Add(mwqmSite));
                     Assert.Equal(string.Format(CSSPServicesRes._MaxLengthIs_, "MWQMSiteNumber", "8"), mwqmSite.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, mwqmSiteService.GetMWQMSiteList().Count());
+                    Assert.Equal(count, (int)mwqmSiteService.GetMWQMSiteList().Count());
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -189,17 +188,17 @@ namespace CSSPServices.Tests
                     mwqmSite = null;
                     mwqmSite = GetFilledRandomMWQMSite("MWQMSiteDescription");
                     Assert.False(mwqmSiteService.Add(mwqmSite));
-                    Assert.Equal(1, mwqmSite.ValidationResults.Count());
+                    Assert.Equal(1, (int)mwqmSite.ValidationResults.Count());
                     Assert.True(mwqmSite.ValidationResults.Where(c => c.ErrorMessage == string.Format(CSSPServicesRes._IsRequired, "MWQMSiteDescription")).Any());
                     Assert.Null(mwqmSite.MWQMSiteDescription);
-                    Assert.Equal(count, mwqmSiteService.GetMWQMSiteList().Count());
+                    Assert.Equal(count, (int)mwqmSiteService.GetMWQMSiteList().Count());
 
                     mwqmSite = null;
                     mwqmSite = GetFilledRandomMWQMSite("");
                     mwqmSite.MWQMSiteDescription = GetRandomString("", 201);
                     Assert.False(mwqmSiteService.Add(mwqmSite));
                     Assert.Equal(string.Format(CSSPServicesRes._MaxLengthIs_, "MWQMSiteDescription", "200"), mwqmSite.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, mwqmSiteService.GetMWQMSiteList().Count());
+                    Assert.Equal(count, (int)mwqmSiteService.GetMWQMSiteList().Count());
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -225,13 +224,13 @@ namespace CSSPServices.Tests
                     mwqmSite.Ordinal = -1;
                     Assert.False(mwqmSiteService.Add(mwqmSite));
                     Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "Ordinal", "0", "1000"), mwqmSite.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, mwqmSiteService.GetMWQMSiteList().Count());
+                    Assert.Equal(count, (int)mwqmSiteService.GetMWQMSiteList().Count());
                     mwqmSite = null;
                     mwqmSite = GetFilledRandomMWQMSite("");
                     mwqmSite.Ordinal = 1001;
                     Assert.False(mwqmSiteService.Add(mwqmSite));
                     Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "Ordinal", "0", "1000"), mwqmSite.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, mwqmSiteService.GetMWQMSiteList().Count());
+                    Assert.Equal(count, (int)mwqmSiteService.GetMWQMSiteList().Count());
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -593,15 +592,8 @@ namespace CSSPServices.Tests
         #region Functions private
         private void CheckMWQMSiteFields(List<MWQMSite> mwqmSiteList)
         {
-            Assert.NotNull(mwqmSiteList[0].MWQMSiteID);
-            Assert.NotNull(mwqmSiteList[0].MWQMSiteTVItemID);
             Assert.False(string.IsNullOrWhiteSpace(mwqmSiteList[0].MWQMSiteNumber));
             Assert.False(string.IsNullOrWhiteSpace(mwqmSiteList[0].MWQMSiteDescription));
-            Assert.NotNull(mwqmSiteList[0].MWQMSiteLatestClassification);
-            Assert.NotNull(mwqmSiteList[0].Ordinal);
-            Assert.NotNull(mwqmSiteList[0].LastUpdateDate_UTC);
-            Assert.NotNull(mwqmSiteList[0].LastUpdateContactTVItemID);
-            Assert.NotNull(mwqmSiteList[0].HasErrors);
         }
         private MWQMSite GetFilledRandomMWQMSite(string OmitPropName)
         {

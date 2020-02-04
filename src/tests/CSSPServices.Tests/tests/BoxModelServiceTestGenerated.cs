@@ -21,7 +21,6 @@ using CSSPEnums.Resources;
 
 namespace CSSPServices.Tests
 {
-
     public partial class BoxModelServiceTest : TestHelper
     {
         #region Variables
@@ -174,13 +173,13 @@ namespace CSSPServices.Tests
                     boxModel.Discharge_m3_day = -1.0D;
                     Assert.False(boxModelService.Add(boxModel));
                     Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "Discharge_m3_day", "0", "10000"), boxModel.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, boxModelService.GetBoxModelList().Count());
+                    Assert.Equal(count, (int)boxModelService.GetBoxModelList().Count());
                     boxModel = null;
                     boxModel = GetFilledRandomBoxModel("");
                     boxModel.Discharge_m3_day = 10001.0D;
                     Assert.False(boxModelService.Add(boxModel));
                     Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "Discharge_m3_day", "0", "10000"), boxModel.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, boxModelService.GetBoxModelList().Count());
+                    Assert.Equal(count, (int)boxModelService.GetBoxModelList().Count());
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -197,13 +196,13 @@ namespace CSSPServices.Tests
                     boxModel.Depth_m = -1.0D;
                     Assert.False(boxModelService.Add(boxModel));
                     Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "Depth_m", "0", "1000"), boxModel.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, boxModelService.GetBoxModelList().Count());
+                    Assert.Equal(count, (int)boxModelService.GetBoxModelList().Count());
                     boxModel = null;
                     boxModel = GetFilledRandomBoxModel("");
                     boxModel.Depth_m = 1001.0D;
                     Assert.False(boxModelService.Add(boxModel));
                     Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "Depth_m", "0", "1000"), boxModel.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, boxModelService.GetBoxModelList().Count());
+                    Assert.Equal(count, (int)boxModelService.GetBoxModelList().Count());
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -220,13 +219,13 @@ namespace CSSPServices.Tests
                     boxModel.Temperature_C = -16.0D;
                     Assert.False(boxModelService.Add(boxModel));
                     Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "Temperature_C", "-15", "40"), boxModel.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, boxModelService.GetBoxModelList().Count());
+                    Assert.Equal(count, (int)boxModelService.GetBoxModelList().Count());
                     boxModel = null;
                     boxModel = GetFilledRandomBoxModel("");
                     boxModel.Temperature_C = 41.0D;
                     Assert.False(boxModelService.Add(boxModel));
                     Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "Temperature_C", "-15", "40"), boxModel.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, boxModelService.GetBoxModelList().Count());
+                    Assert.Equal(count, (int)boxModelService.GetBoxModelList().Count());
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -239,13 +238,13 @@ namespace CSSPServices.Tests
                     boxModel.Dilution = -1;
                     Assert.False(boxModelService.Add(boxModel));
                     Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "Dilution", "0", "10000000"), boxModel.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, boxModelService.GetBoxModelList().Count());
+                    Assert.Equal(count, (int)boxModelService.GetBoxModelList().Count());
                     boxModel = null;
                     boxModel = GetFilledRandomBoxModel("");
                     boxModel.Dilution = 10000001;
                     Assert.False(boxModelService.Add(boxModel));
                     Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "Dilution", "0", "10000000"), boxModel.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, boxModelService.GetBoxModelList().Count());
+                    Assert.Equal(count, (int)boxModelService.GetBoxModelList().Count());
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -262,13 +261,13 @@ namespace CSSPServices.Tests
                     boxModel.DecayRate_per_day = -1.0D;
                     Assert.False(boxModelService.Add(boxModel));
                     Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "DecayRate_per_day", "0", "100"), boxModel.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, boxModelService.GetBoxModelList().Count());
+                    Assert.Equal(count, (int)boxModelService.GetBoxModelList().Count());
                     boxModel = null;
                     boxModel = GetFilledRandomBoxModel("");
                     boxModel.DecayRate_per_day = 101.0D;
                     Assert.False(boxModelService.Add(boxModel));
                     Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "DecayRate_per_day", "0", "100"), boxModel.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, boxModelService.GetBoxModelList().Count());
+                    Assert.Equal(count, (int)boxModelService.GetBoxModelList().Count());
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -281,13 +280,13 @@ namespace CSSPServices.Tests
                     boxModel.FCUntreated_MPN_100ml = -1;
                     Assert.False(boxModelService.Add(boxModel));
                     Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "FCUntreated_MPN_100ml", "0", "10000000"), boxModel.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, boxModelService.GetBoxModelList().Count());
+                    Assert.Equal(count, (int)boxModelService.GetBoxModelList().Count());
                     boxModel = null;
                     boxModel = GetFilledRandomBoxModel("");
                     boxModel.FCUntreated_MPN_100ml = 10000001;
                     Assert.False(boxModelService.Add(boxModel));
                     Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "FCUntreated_MPN_100ml", "0", "10000000"), boxModel.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, boxModelService.GetBoxModelList().Count());
+                    Assert.Equal(count, (int)boxModelService.GetBoxModelList().Count());
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -300,13 +299,13 @@ namespace CSSPServices.Tests
                     boxModel.FCPreDisinfection_MPN_100ml = -1;
                     Assert.False(boxModelService.Add(boxModel));
                     Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "FCPreDisinfection_MPN_100ml", "0", "10000000"), boxModel.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, boxModelService.GetBoxModelList().Count());
+                    Assert.Equal(count, (int)boxModelService.GetBoxModelList().Count());
                     boxModel = null;
                     boxModel = GetFilledRandomBoxModel("");
                     boxModel.FCPreDisinfection_MPN_100ml = 10000001;
                     Assert.False(boxModelService.Add(boxModel));
                     Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "FCPreDisinfection_MPN_100ml", "0", "10000000"), boxModel.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, boxModelService.GetBoxModelList().Count());
+                    Assert.Equal(count, (int)boxModelService.GetBoxModelList().Count());
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -319,13 +318,13 @@ namespace CSSPServices.Tests
                     boxModel.Concentration_MPN_100ml = -1;
                     Assert.False(boxModelService.Add(boxModel));
                     Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "Concentration_MPN_100ml", "0", "10000000"), boxModel.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, boxModelService.GetBoxModelList().Count());
+                    Assert.Equal(count, (int)boxModelService.GetBoxModelList().Count());
                     boxModel = null;
                     boxModel = GetFilledRandomBoxModel("");
                     boxModel.Concentration_MPN_100ml = 10000001;
                     Assert.False(boxModelService.Add(boxModel));
                     Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "Concentration_MPN_100ml", "0", "10000000"), boxModel.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, boxModelService.GetBoxModelList().Count());
+                    Assert.Equal(count, (int)boxModelService.GetBoxModelList().Count());
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -342,7 +341,7 @@ namespace CSSPServices.Tests
                     boxModel.T90_hour = -1.0D;
                     Assert.False(boxModelService.Add(boxModel));
                     Assert.Equal(string.Format(CSSPServicesRes._MinValueIs_, "T90_hour", "0"), boxModel.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, boxModelService.GetBoxModelList().Count());
+                    Assert.Equal(count, (int)boxModelService.GetBoxModelList().Count());
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -359,13 +358,13 @@ namespace CSSPServices.Tests
                     boxModel.DischargeDuration_hour = -1.0D;
                     Assert.False(boxModelService.Add(boxModel));
                     Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "DischargeDuration_hour", "0", "24"), boxModel.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, boxModelService.GetBoxModelList().Count());
+                    Assert.Equal(count, (int)boxModelService.GetBoxModelList().Count());
                     boxModel = null;
                     boxModel = GetFilledRandomBoxModel("");
                     boxModel.DischargeDuration_hour = 25.0D;
                     Assert.False(boxModelService.Add(boxModel));
                     Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "DischargeDuration_hour", "0", "24"), boxModel.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, boxModelService.GetBoxModelList().Count());
+                    Assert.Equal(count, (int)boxModelService.GetBoxModelList().Count());
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -727,21 +726,6 @@ namespace CSSPServices.Tests
         #region Functions private
         private void CheckBoxModelFields(List<BoxModel> boxModelList)
         {
-            Assert.NotNull(boxModelList[0].BoxModelID);
-            Assert.NotNull(boxModelList[0].InfrastructureTVItemID);
-            Assert.NotNull(boxModelList[0].Discharge_m3_day);
-            Assert.NotNull(boxModelList[0].Depth_m);
-            Assert.NotNull(boxModelList[0].Temperature_C);
-            Assert.NotNull(boxModelList[0].Dilution);
-            Assert.NotNull(boxModelList[0].DecayRate_per_day);
-            Assert.NotNull(boxModelList[0].FCUntreated_MPN_100ml);
-            Assert.NotNull(boxModelList[0].FCPreDisinfection_MPN_100ml);
-            Assert.NotNull(boxModelList[0].Concentration_MPN_100ml);
-            Assert.NotNull(boxModelList[0].T90_hour);
-            Assert.NotNull(boxModelList[0].DischargeDuration_hour);
-            Assert.NotNull(boxModelList[0].LastUpdateDate_UTC);
-            Assert.NotNull(boxModelList[0].LastUpdateContactTVItemID);
-            Assert.NotNull(boxModelList[0].HasErrors);
         }
         private BoxModel GetFilledRandomBoxModel(string OmitPropName)
         {

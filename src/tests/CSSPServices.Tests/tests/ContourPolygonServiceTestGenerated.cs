@@ -21,7 +21,6 @@ using CSSPEnums.Resources;
 
 namespace CSSPServices.Tests
 {
-
     public partial class ContourPolygonServiceTest : TestHelper
     {
         #region Variables

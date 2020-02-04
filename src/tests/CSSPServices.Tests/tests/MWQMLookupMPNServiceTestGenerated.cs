@@ -21,7 +21,6 @@ using CSSPEnums.Resources;
 
 namespace CSSPServices.Tests
 {
-
     public partial class MWQMLookupMPNServiceTest : TestHelper
     {
         #region Variables
@@ -151,13 +150,13 @@ namespace CSSPServices.Tests
                     mwqmLookupMPN.Tubes10 = -1;
                     Assert.False(mwqmLookupMPNService.Add(mwqmLookupMPN));
                     Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "Tubes10", "0", "5"), mwqmLookupMPN.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, mwqmLookupMPNService.GetMWQMLookupMPNList().Count());
+                    Assert.Equal(count, (int)mwqmLookupMPNService.GetMWQMLookupMPNList().Count());
                     mwqmLookupMPN = null;
                     mwqmLookupMPN = GetFilledRandomMWQMLookupMPN("");
                     mwqmLookupMPN.Tubes10 = 6;
                     Assert.False(mwqmLookupMPNService.Add(mwqmLookupMPN));
                     Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "Tubes10", "0", "5"), mwqmLookupMPN.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, mwqmLookupMPNService.GetMWQMLookupMPNList().Count());
+                    Assert.Equal(count, (int)mwqmLookupMPNService.GetMWQMLookupMPNList().Count());
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -170,13 +169,13 @@ namespace CSSPServices.Tests
                     mwqmLookupMPN.Tubes1 = -1;
                     Assert.False(mwqmLookupMPNService.Add(mwqmLookupMPN));
                     Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "Tubes1", "0", "5"), mwqmLookupMPN.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, mwqmLookupMPNService.GetMWQMLookupMPNList().Count());
+                    Assert.Equal(count, (int)mwqmLookupMPNService.GetMWQMLookupMPNList().Count());
                     mwqmLookupMPN = null;
                     mwqmLookupMPN = GetFilledRandomMWQMLookupMPN("");
                     mwqmLookupMPN.Tubes1 = 6;
                     Assert.False(mwqmLookupMPNService.Add(mwqmLookupMPN));
                     Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "Tubes1", "0", "5"), mwqmLookupMPN.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, mwqmLookupMPNService.GetMWQMLookupMPNList().Count());
+                    Assert.Equal(count, (int)mwqmLookupMPNService.GetMWQMLookupMPNList().Count());
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -189,13 +188,13 @@ namespace CSSPServices.Tests
                     mwqmLookupMPN.Tubes01 = -1;
                     Assert.False(mwqmLookupMPNService.Add(mwqmLookupMPN));
                     Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "Tubes01", "0", "5"), mwqmLookupMPN.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, mwqmLookupMPNService.GetMWQMLookupMPNList().Count());
+                    Assert.Equal(count, (int)mwqmLookupMPNService.GetMWQMLookupMPNList().Count());
                     mwqmLookupMPN = null;
                     mwqmLookupMPN = GetFilledRandomMWQMLookupMPN("");
                     mwqmLookupMPN.Tubes01 = 6;
                     Assert.False(mwqmLookupMPNService.Add(mwqmLookupMPN));
                     Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "Tubes01", "0", "5"), mwqmLookupMPN.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, mwqmLookupMPNService.GetMWQMLookupMPNList().Count());
+                    Assert.Equal(count, (int)mwqmLookupMPNService.GetMWQMLookupMPNList().Count());
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -208,13 +207,13 @@ namespace CSSPServices.Tests
                     mwqmLookupMPN.MPN_100ml = 0;
                     Assert.False(mwqmLookupMPNService.Add(mwqmLookupMPN));
                     Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "MPN_100ml", "1", "10000"), mwqmLookupMPN.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, mwqmLookupMPNService.GetMWQMLookupMPNList().Count());
+                    Assert.Equal(count, (int)mwqmLookupMPNService.GetMWQMLookupMPNList().Count());
                     mwqmLookupMPN = null;
                     mwqmLookupMPN = GetFilledRandomMWQMLookupMPN("");
                     mwqmLookupMPN.MPN_100ml = 10001;
                     Assert.False(mwqmLookupMPNService.Add(mwqmLookupMPN));
                     Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "MPN_100ml", "1", "10000"), mwqmLookupMPN.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, mwqmLookupMPNService.GetMWQMLookupMPNList().Count());
+                    Assert.Equal(count, (int)mwqmLookupMPNService.GetMWQMLookupMPNList().Count());
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -576,14 +575,6 @@ namespace CSSPServices.Tests
         #region Functions private
         private void CheckMWQMLookupMPNFields(List<MWQMLookupMPN> mwqmLookupMPNList)
         {
-            Assert.NotNull(mwqmLookupMPNList[0].MWQMLookupMPNID);
-            Assert.NotNull(mwqmLookupMPNList[0].Tubes10);
-            Assert.NotNull(mwqmLookupMPNList[0].Tubes1);
-            Assert.NotNull(mwqmLookupMPNList[0].Tubes01);
-            Assert.NotNull(mwqmLookupMPNList[0].MPN_100ml);
-            Assert.NotNull(mwqmLookupMPNList[0].LastUpdateDate_UTC);
-            Assert.NotNull(mwqmLookupMPNList[0].LastUpdateContactTVItemID);
-            Assert.NotNull(mwqmLookupMPNList[0].HasErrors);
         }
         private MWQMLookupMPN GetFilledRandomMWQMLookupMPN(string OmitPropName)
         {

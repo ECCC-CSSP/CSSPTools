@@ -21,7 +21,6 @@ using CSSPEnums.Resources;
 
 namespace CSSPServices.Tests
 {
-
     public partial class MWQMRunServiceTest : TestHelper
     {
         #region Variables
@@ -219,13 +218,13 @@ namespace CSSPServices.Tests
                     mwqmRun.RunNumber = 0;
                     Assert.False(mwqmRunService.Add(mwqmRun));
                     Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "RunNumber", "1", "1000"), mwqmRun.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, mwqmRunService.GetMWQMRunList().Count());
+                    Assert.Equal(count, (int)mwqmRunService.GetMWQMRunList().Count());
                     mwqmRun = null;
                     mwqmRun = GetFilledRandomMWQMRun("");
                     mwqmRun.RunNumber = 1001;
                     Assert.False(mwqmRunService.Add(mwqmRun));
                     Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "RunNumber", "1", "1000"), mwqmRun.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, mwqmRunService.GetMWQMRunList().Count());
+                    Assert.Equal(count, (int)mwqmRunService.GetMWQMRunList().Count());
 
                     // -----------------------------------
                     // Is Nullable
@@ -279,13 +278,13 @@ namespace CSSPServices.Tests
                     mwqmRun.TemperatureControl1_C = -11.0D;
                     Assert.False(mwqmRunService.Add(mwqmRun));
                     Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "TemperatureControl1_C", "-10", "40"), mwqmRun.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, mwqmRunService.GetMWQMRunList().Count());
+                    Assert.Equal(count, (int)mwqmRunService.GetMWQMRunList().Count());
                     mwqmRun = null;
                     mwqmRun = GetFilledRandomMWQMRun("");
                     mwqmRun.TemperatureControl1_C = 41.0D;
                     Assert.False(mwqmRunService.Add(mwqmRun));
                     Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "TemperatureControl1_C", "-10", "40"), mwqmRun.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, mwqmRunService.GetMWQMRunList().Count());
+                    Assert.Equal(count, (int)mwqmRunService.GetMWQMRunList().Count());
 
                     // -----------------------------------
                     // Is Nullable
@@ -302,13 +301,13 @@ namespace CSSPServices.Tests
                     mwqmRun.TemperatureControl2_C = -11.0D;
                     Assert.False(mwqmRunService.Add(mwqmRun));
                     Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "TemperatureControl2_C", "-10", "40"), mwqmRun.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, mwqmRunService.GetMWQMRunList().Count());
+                    Assert.Equal(count, (int)mwqmRunService.GetMWQMRunList().Count());
                     mwqmRun = null;
                     mwqmRun = GetFilledRandomMWQMRun("");
                     mwqmRun.TemperatureControl2_C = 41.0D;
                     Assert.False(mwqmRunService.Add(mwqmRun));
                     Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "TemperatureControl2_C", "-10", "40"), mwqmRun.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, mwqmRunService.GetMWQMRunList().Count());
+                    Assert.Equal(count, (int)mwqmRunService.GetMWQMRunList().Count());
 
                     // -----------------------------------
                     // Is Nullable
@@ -351,13 +350,13 @@ namespace CSSPServices.Tests
                     mwqmRun.WaterLevelAtBrook_m = -1.0D;
                     Assert.False(mwqmRunService.Add(mwqmRun));
                     Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "WaterLevelAtBrook_m", "0", "100"), mwqmRun.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, mwqmRunService.GetMWQMRunList().Count());
+                    Assert.Equal(count, (int)mwqmRunService.GetMWQMRunList().Count());
                     mwqmRun = null;
                     mwqmRun = GetFilledRandomMWQMRun("");
                     mwqmRun.WaterLevelAtBrook_m = 101.0D;
                     Assert.False(mwqmRunService.Add(mwqmRun));
                     Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "WaterLevelAtBrook_m", "0", "100"), mwqmRun.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, mwqmRunService.GetMWQMRunList().Count());
+                    Assert.Equal(count, (int)mwqmRunService.GetMWQMRunList().Count());
 
                     // -----------------------------------
                     // Is Nullable
@@ -374,13 +373,13 @@ namespace CSSPServices.Tests
                     mwqmRun.WaveHightAtStart_m = -1.0D;
                     Assert.False(mwqmRunService.Add(mwqmRun));
                     Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "WaveHightAtStart_m", "0", "100"), mwqmRun.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, mwqmRunService.GetMWQMRunList().Count());
+                    Assert.Equal(count, (int)mwqmRunService.GetMWQMRunList().Count());
                     mwqmRun = null;
                     mwqmRun = GetFilledRandomMWQMRun("");
                     mwqmRun.WaveHightAtStart_m = 101.0D;
                     Assert.False(mwqmRunService.Add(mwqmRun));
                     Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "WaveHightAtStart_m", "0", "100"), mwqmRun.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, mwqmRunService.GetMWQMRunList().Count());
+                    Assert.Equal(count, (int)mwqmRunService.GetMWQMRunList().Count());
 
                     // -----------------------------------
                     // Is Nullable
@@ -397,13 +396,13 @@ namespace CSSPServices.Tests
                     mwqmRun.WaveHightAtEnd_m = -1.0D;
                     Assert.False(mwqmRunService.Add(mwqmRun));
                     Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "WaveHightAtEnd_m", "0", "100"), mwqmRun.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, mwqmRunService.GetMWQMRunList().Count());
+                    Assert.Equal(count, (int)mwqmRunService.GetMWQMRunList().Count());
                     mwqmRun = null;
                     mwqmRun = GetFilledRandomMWQMRun("");
                     mwqmRun.WaveHightAtEnd_m = 101.0D;
                     Assert.False(mwqmRunService.Add(mwqmRun));
                     Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "WaveHightAtEnd_m", "0", "100"), mwqmRun.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, mwqmRunService.GetMWQMRunList().Count());
+                    Assert.Equal(count, (int)mwqmRunService.GetMWQMRunList().Count());
 
                     // -----------------------------------
                     // Is Nullable
@@ -416,7 +415,7 @@ namespace CSSPServices.Tests
                     mwqmRun.SampleCrewInitials = GetRandomString("", 21);
                     Assert.False(mwqmRunService.Add(mwqmRun));
                     Assert.Equal(string.Format(CSSPServicesRes._MaxLengthIs_, "SampleCrewInitials", "20"), mwqmRun.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, mwqmRunService.GetMWQMRunList().Count());
+                    Assert.Equal(count, (int)mwqmRunService.GetMWQMRunList().Count());
 
                     // -----------------------------------
                     // Is Nullable
@@ -578,13 +577,13 @@ namespace CSSPServices.Tests
                     mwqmRun.RainDay0_mm = -1.0D;
                     Assert.False(mwqmRunService.Add(mwqmRun));
                     Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "RainDay0_mm", "0", "300"), mwqmRun.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, mwqmRunService.GetMWQMRunList().Count());
+                    Assert.Equal(count, (int)mwqmRunService.GetMWQMRunList().Count());
                     mwqmRun = null;
                     mwqmRun = GetFilledRandomMWQMRun("");
                     mwqmRun.RainDay0_mm = 301.0D;
                     Assert.False(mwqmRunService.Add(mwqmRun));
                     Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "RainDay0_mm", "0", "300"), mwqmRun.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, mwqmRunService.GetMWQMRunList().Count());
+                    Assert.Equal(count, (int)mwqmRunService.GetMWQMRunList().Count());
 
                     // -----------------------------------
                     // Is Nullable
@@ -601,13 +600,13 @@ namespace CSSPServices.Tests
                     mwqmRun.RainDay1_mm = -1.0D;
                     Assert.False(mwqmRunService.Add(mwqmRun));
                     Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "RainDay1_mm", "0", "300"), mwqmRun.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, mwqmRunService.GetMWQMRunList().Count());
+                    Assert.Equal(count, (int)mwqmRunService.GetMWQMRunList().Count());
                     mwqmRun = null;
                     mwqmRun = GetFilledRandomMWQMRun("");
                     mwqmRun.RainDay1_mm = 301.0D;
                     Assert.False(mwqmRunService.Add(mwqmRun));
                     Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "RainDay1_mm", "0", "300"), mwqmRun.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, mwqmRunService.GetMWQMRunList().Count());
+                    Assert.Equal(count, (int)mwqmRunService.GetMWQMRunList().Count());
 
                     // -----------------------------------
                     // Is Nullable
@@ -624,13 +623,13 @@ namespace CSSPServices.Tests
                     mwqmRun.RainDay2_mm = -1.0D;
                     Assert.False(mwqmRunService.Add(mwqmRun));
                     Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "RainDay2_mm", "0", "300"), mwqmRun.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, mwqmRunService.GetMWQMRunList().Count());
+                    Assert.Equal(count, (int)mwqmRunService.GetMWQMRunList().Count());
                     mwqmRun = null;
                     mwqmRun = GetFilledRandomMWQMRun("");
                     mwqmRun.RainDay2_mm = 301.0D;
                     Assert.False(mwqmRunService.Add(mwqmRun));
                     Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "RainDay2_mm", "0", "300"), mwqmRun.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, mwqmRunService.GetMWQMRunList().Count());
+                    Assert.Equal(count, (int)mwqmRunService.GetMWQMRunList().Count());
 
                     // -----------------------------------
                     // Is Nullable
@@ -647,13 +646,13 @@ namespace CSSPServices.Tests
                     mwqmRun.RainDay3_mm = -1.0D;
                     Assert.False(mwqmRunService.Add(mwqmRun));
                     Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "RainDay3_mm", "0", "300"), mwqmRun.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, mwqmRunService.GetMWQMRunList().Count());
+                    Assert.Equal(count, (int)mwqmRunService.GetMWQMRunList().Count());
                     mwqmRun = null;
                     mwqmRun = GetFilledRandomMWQMRun("");
                     mwqmRun.RainDay3_mm = 301.0D;
                     Assert.False(mwqmRunService.Add(mwqmRun));
                     Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "RainDay3_mm", "0", "300"), mwqmRun.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, mwqmRunService.GetMWQMRunList().Count());
+                    Assert.Equal(count, (int)mwqmRunService.GetMWQMRunList().Count());
 
                     // -----------------------------------
                     // Is Nullable
@@ -670,13 +669,13 @@ namespace CSSPServices.Tests
                     mwqmRun.RainDay4_mm = -1.0D;
                     Assert.False(mwqmRunService.Add(mwqmRun));
                     Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "RainDay4_mm", "0", "300"), mwqmRun.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, mwqmRunService.GetMWQMRunList().Count());
+                    Assert.Equal(count, (int)mwqmRunService.GetMWQMRunList().Count());
                     mwqmRun = null;
                     mwqmRun = GetFilledRandomMWQMRun("");
                     mwqmRun.RainDay4_mm = 301.0D;
                     Assert.False(mwqmRunService.Add(mwqmRun));
                     Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "RainDay4_mm", "0", "300"), mwqmRun.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, mwqmRunService.GetMWQMRunList().Count());
+                    Assert.Equal(count, (int)mwqmRunService.GetMWQMRunList().Count());
 
                     // -----------------------------------
                     // Is Nullable
@@ -693,13 +692,13 @@ namespace CSSPServices.Tests
                     mwqmRun.RainDay5_mm = -1.0D;
                     Assert.False(mwqmRunService.Add(mwqmRun));
                     Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "RainDay5_mm", "0", "300"), mwqmRun.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, mwqmRunService.GetMWQMRunList().Count());
+                    Assert.Equal(count, (int)mwqmRunService.GetMWQMRunList().Count());
                     mwqmRun = null;
                     mwqmRun = GetFilledRandomMWQMRun("");
                     mwqmRun.RainDay5_mm = 301.0D;
                     Assert.False(mwqmRunService.Add(mwqmRun));
                     Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "RainDay5_mm", "0", "300"), mwqmRun.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, mwqmRunService.GetMWQMRunList().Count());
+                    Assert.Equal(count, (int)mwqmRunService.GetMWQMRunList().Count());
 
                     // -----------------------------------
                     // Is Nullable
@@ -716,13 +715,13 @@ namespace CSSPServices.Tests
                     mwqmRun.RainDay6_mm = -1.0D;
                     Assert.False(mwqmRunService.Add(mwqmRun));
                     Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "RainDay6_mm", "0", "300"), mwqmRun.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, mwqmRunService.GetMWQMRunList().Count());
+                    Assert.Equal(count, (int)mwqmRunService.GetMWQMRunList().Count());
                     mwqmRun = null;
                     mwqmRun = GetFilledRandomMWQMRun("");
                     mwqmRun.RainDay6_mm = 301.0D;
                     Assert.False(mwqmRunService.Add(mwqmRun));
                     Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "RainDay6_mm", "0", "300"), mwqmRun.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, mwqmRunService.GetMWQMRunList().Count());
+                    Assert.Equal(count, (int)mwqmRunService.GetMWQMRunList().Count());
 
                     // -----------------------------------
                     // Is Nullable
@@ -739,13 +738,13 @@ namespace CSSPServices.Tests
                     mwqmRun.RainDay7_mm = -1.0D;
                     Assert.False(mwqmRunService.Add(mwqmRun));
                     Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "RainDay7_mm", "0", "300"), mwqmRun.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, mwqmRunService.GetMWQMRunList().Count());
+                    Assert.Equal(count, (int)mwqmRunService.GetMWQMRunList().Count());
                     mwqmRun = null;
                     mwqmRun = GetFilledRandomMWQMRun("");
                     mwqmRun.RainDay7_mm = 301.0D;
                     Assert.False(mwqmRunService.Add(mwqmRun));
                     Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "RainDay7_mm", "0", "300"), mwqmRun.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, mwqmRunService.GetMWQMRunList().Count());
+                    Assert.Equal(count, (int)mwqmRunService.GetMWQMRunList().Count());
 
                     // -----------------------------------
                     // Is Nullable
@@ -762,13 +761,13 @@ namespace CSSPServices.Tests
                     mwqmRun.RainDay8_mm = -1.0D;
                     Assert.False(mwqmRunService.Add(mwqmRun));
                     Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "RainDay8_mm", "0", "300"), mwqmRun.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, mwqmRunService.GetMWQMRunList().Count());
+                    Assert.Equal(count, (int)mwqmRunService.GetMWQMRunList().Count());
                     mwqmRun = null;
                     mwqmRun = GetFilledRandomMWQMRun("");
                     mwqmRun.RainDay8_mm = 301.0D;
                     Assert.False(mwqmRunService.Add(mwqmRun));
                     Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "RainDay8_mm", "0", "300"), mwqmRun.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, mwqmRunService.GetMWQMRunList().Count());
+                    Assert.Equal(count, (int)mwqmRunService.GetMWQMRunList().Count());
 
                     // -----------------------------------
                     // Is Nullable
@@ -785,13 +784,13 @@ namespace CSSPServices.Tests
                     mwqmRun.RainDay9_mm = -1.0D;
                     Assert.False(mwqmRunService.Add(mwqmRun));
                     Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "RainDay9_mm", "0", "300"), mwqmRun.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, mwqmRunService.GetMWQMRunList().Count());
+                    Assert.Equal(count, (int)mwqmRunService.GetMWQMRunList().Count());
                     mwqmRun = null;
                     mwqmRun = GetFilledRandomMWQMRun("");
                     mwqmRun.RainDay9_mm = 301.0D;
                     Assert.False(mwqmRunService.Add(mwqmRun));
                     Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "RainDay9_mm", "0", "300"), mwqmRun.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, mwqmRunService.GetMWQMRunList().Count());
+                    Assert.Equal(count, (int)mwqmRunService.GetMWQMRunList().Count());
 
                     // -----------------------------------
                     // Is Nullable
@@ -808,13 +807,13 @@ namespace CSSPServices.Tests
                     mwqmRun.RainDay10_mm = -1.0D;
                     Assert.False(mwqmRunService.Add(mwqmRun));
                     Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "RainDay10_mm", "0", "300"), mwqmRun.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, mwqmRunService.GetMWQMRunList().Count());
+                    Assert.Equal(count, (int)mwqmRunService.GetMWQMRunList().Count());
                     mwqmRun = null;
                     mwqmRun = GetFilledRandomMWQMRun("");
                     mwqmRun.RainDay10_mm = 301.0D;
                     Assert.False(mwqmRunService.Add(mwqmRun));
                     Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "RainDay10_mm", "0", "300"), mwqmRun.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, mwqmRunService.GetMWQMRunList().Count());
+                    Assert.Equal(count, (int)mwqmRunService.GetMWQMRunList().Count());
 
                     // -----------------------------------
                     // Is Nullable
@@ -1182,12 +1181,6 @@ namespace CSSPServices.Tests
         #region Functions private
         private void CheckMWQMRunFields(List<MWQMRun> mwqmRunList)
         {
-            Assert.NotNull(mwqmRunList[0].MWQMRunID);
-            Assert.NotNull(mwqmRunList[0].SubsectorTVItemID);
-            Assert.NotNull(mwqmRunList[0].MWQMRunTVItemID);
-            Assert.NotNull(mwqmRunList[0].RunSampleType);
-            Assert.NotNull(mwqmRunList[0].DateTime_Local);
-            Assert.NotNull(mwqmRunList[0].RunNumber);
             if (mwqmRunList[0].StartDateTime_Local != null)
             {
                 Assert.NotNull(mwqmRunList[0].StartDateTime_Local);
@@ -1324,9 +1317,6 @@ namespace CSSPServices.Tests
             {
                 Assert.NotNull(mwqmRunList[0].RemoveFromStat);
             }
-            Assert.NotNull(mwqmRunList[0].LastUpdateDate_UTC);
-            Assert.NotNull(mwqmRunList[0].LastUpdateContactTVItemID);
-            Assert.NotNull(mwqmRunList[0].HasErrors);
         }
         private MWQMRun GetFilledRandomMWQMRun(string OmitPropName)
         {

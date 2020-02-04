@@ -21,7 +21,6 @@ using CSSPEnums.Resources;
 
 namespace CSSPServices.Tests
 {
-
     public partial class MikeSourceServiceTest : TestHelper
     {
         #region Variables
@@ -217,13 +216,13 @@ namespace CSSPServices.Tests
                     mikeSource.DrainageArea_km2 = -1.0D;
                     Assert.False(mikeSourceService.Add(mikeSource));
                     Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "DrainageArea_km2", "0", "1000000"), mikeSource.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, mikeSourceService.GetMikeSourceList().Count());
+                    Assert.Equal(count, (int)mikeSourceService.GetMikeSourceList().Count());
                     mikeSource = null;
                     mikeSource = GetFilledRandomMikeSource("");
                     mikeSource.DrainageArea_km2 = 1000001.0D;
                     Assert.False(mikeSourceService.Add(mikeSource));
                     Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "DrainageArea_km2", "0", "1000000"), mikeSource.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, mikeSourceService.GetMikeSourceList().Count());
+                    Assert.Equal(count, (int)mikeSourceService.GetMikeSourceList().Count());
 
                     // -----------------------------------
                     // Is Nullable
@@ -240,13 +239,13 @@ namespace CSSPServices.Tests
                     mikeSource.Factor = -1.0D;
                     Assert.False(mikeSourceService.Add(mikeSource));
                     Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "Factor", "0", "1000000"), mikeSource.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, mikeSourceService.GetMikeSourceList().Count());
+                    Assert.Equal(count, (int)mikeSourceService.GetMikeSourceList().Count());
                     mikeSource = null;
                     mikeSource = GetFilledRandomMikeSource("");
                     mikeSource.Factor = 1000001.0D;
                     Assert.False(mikeSourceService.Add(mikeSource));
                     Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "Factor", "0", "1000000"), mikeSource.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, mikeSourceService.GetMikeSourceList().Count());
+                    Assert.Equal(count, (int)mikeSourceService.GetMikeSourceList().Count());
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -257,17 +256,17 @@ namespace CSSPServices.Tests
                     mikeSource = null;
                     mikeSource = GetFilledRandomMikeSource("SourceNumberString");
                     Assert.False(mikeSourceService.Add(mikeSource));
-                    Assert.Equal(1, mikeSource.ValidationResults.Count());
+                    Assert.Equal(1, (int)mikeSource.ValidationResults.Count());
                     Assert.True(mikeSource.ValidationResults.Where(c => c.ErrorMessage == string.Format(CSSPServicesRes._IsRequired, "SourceNumberString")).Any());
                     Assert.Null(mikeSource.SourceNumberString);
-                    Assert.Equal(count, mikeSourceService.GetMikeSourceList().Count());
+                    Assert.Equal(count, (int)mikeSourceService.GetMikeSourceList().Count());
 
                     mikeSource = null;
                     mikeSource = GetFilledRandomMikeSource("");
                     mikeSource.SourceNumberString = GetRandomString("", 51);
                     Assert.False(mikeSourceService.Add(mikeSource));
                     Assert.Equal(string.Format(CSSPServicesRes._MaxLengthIs_, "SourceNumberString", "50"), mikeSource.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, mikeSourceService.GetMikeSourceList().Count());
+                    Assert.Equal(count, (int)mikeSourceService.GetMikeSourceList().Count());
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -629,12 +628,6 @@ namespace CSSPServices.Tests
         #region Functions private
         private void CheckMikeSourceFields(List<MikeSource> mikeSourceList)
         {
-            Assert.NotNull(mikeSourceList[0].MikeSourceID);
-            Assert.NotNull(mikeSourceList[0].MikeSourceTVItemID);
-            Assert.NotNull(mikeSourceList[0].IsContinuous);
-            Assert.NotNull(mikeSourceList[0].Include);
-            Assert.NotNull(mikeSourceList[0].IsRiver);
-            Assert.NotNull(mikeSourceList[0].UseHydrometric);
             if (mikeSourceList[0].HydrometricTVItemID != null)
             {
                 Assert.NotNull(mikeSourceList[0].HydrometricTVItemID);
@@ -648,9 +641,6 @@ namespace CSSPServices.Tests
                 Assert.NotNull(mikeSourceList[0].Factor);
             }
             Assert.False(string.IsNullOrWhiteSpace(mikeSourceList[0].SourceNumberString));
-            Assert.NotNull(mikeSourceList[0].LastUpdateDate_UTC);
-            Assert.NotNull(mikeSourceList[0].LastUpdateContactTVItemID);
-            Assert.NotNull(mikeSourceList[0].HasErrors);
         }
         private MikeSource GetFilledRandomMikeSource(string OmitPropName)
         {

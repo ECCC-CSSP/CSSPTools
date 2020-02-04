@@ -21,7 +21,6 @@ using CSSPEnums.Resources;
 
 namespace CSSPServices.Tests
 {
-
     public partial class RatingCurveValueServiceTest : TestHelper
     {
         #region Variables
@@ -168,13 +167,13 @@ namespace CSSPServices.Tests
                     ratingCurveValue.StageValue_m = -1.0D;
                     Assert.False(ratingCurveValueService.Add(ratingCurveValue));
                     Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "StageValue_m", "0", "1000"), ratingCurveValue.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, ratingCurveValueService.GetRatingCurveValueList().Count());
+                    Assert.Equal(count, (int)ratingCurveValueService.GetRatingCurveValueList().Count());
                     ratingCurveValue = null;
                     ratingCurveValue = GetFilledRandomRatingCurveValue("");
                     ratingCurveValue.StageValue_m = 1001.0D;
                     Assert.False(ratingCurveValueService.Add(ratingCurveValue));
                     Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "StageValue_m", "0", "1000"), ratingCurveValue.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, ratingCurveValueService.GetRatingCurveValueList().Count());
+                    Assert.Equal(count, (int)ratingCurveValueService.GetRatingCurveValueList().Count());
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -191,13 +190,13 @@ namespace CSSPServices.Tests
                     ratingCurveValue.DischargeValue_m3_s = -1.0D;
                     Assert.False(ratingCurveValueService.Add(ratingCurveValue));
                     Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "DischargeValue_m3_s", "0", "1000000"), ratingCurveValue.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, ratingCurveValueService.GetRatingCurveValueList().Count());
+                    Assert.Equal(count, (int)ratingCurveValueService.GetRatingCurveValueList().Count());
                     ratingCurveValue = null;
                     ratingCurveValue = GetFilledRandomRatingCurveValue("");
                     ratingCurveValue.DischargeValue_m3_s = 1000001.0D;
                     Assert.False(ratingCurveValueService.Add(ratingCurveValue));
                     Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "DischargeValue_m3_s", "0", "1000000"), ratingCurveValue.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, ratingCurveValueService.GetRatingCurveValueList().Count());
+                    Assert.Equal(count, (int)ratingCurveValueService.GetRatingCurveValueList().Count());
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -559,13 +558,6 @@ namespace CSSPServices.Tests
         #region Functions private
         private void CheckRatingCurveValueFields(List<RatingCurveValue> ratingCurveValueList)
         {
-            Assert.NotNull(ratingCurveValueList[0].RatingCurveValueID);
-            Assert.NotNull(ratingCurveValueList[0].RatingCurveID);
-            Assert.NotNull(ratingCurveValueList[0].StageValue_m);
-            Assert.NotNull(ratingCurveValueList[0].DischargeValue_m3_s);
-            Assert.NotNull(ratingCurveValueList[0].LastUpdateDate_UTC);
-            Assert.NotNull(ratingCurveValueList[0].LastUpdateContactTVItemID);
-            Assert.NotNull(ratingCurveValueList[0].HasErrors);
         }
         private RatingCurveValue GetFilledRandomRatingCurveValue(string OmitPropName)
         {

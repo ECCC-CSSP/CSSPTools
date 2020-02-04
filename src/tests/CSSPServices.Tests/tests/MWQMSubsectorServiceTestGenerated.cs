@@ -21,7 +21,6 @@ using CSSPEnums.Resources;
 
 namespace CSSPServices.Tests
 {
-
     public partial class MWQMSubsectorServiceTest : TestHelper
     {
         #region Variables
@@ -168,17 +167,17 @@ namespace CSSPServices.Tests
                     mwqmSubsector = null;
                     mwqmSubsector = GetFilledRandomMWQMSubsector("SubsectorHistoricKey");
                     Assert.False(mwqmSubsectorService.Add(mwqmSubsector));
-                    Assert.Equal(1, mwqmSubsector.ValidationResults.Count());
+                    Assert.Equal(1, (int)mwqmSubsector.ValidationResults.Count());
                     Assert.True(mwqmSubsector.ValidationResults.Where(c => c.ErrorMessage == string.Format(CSSPServicesRes._IsRequired, "SubsectorHistoricKey")).Any());
                     Assert.Null(mwqmSubsector.SubsectorHistoricKey);
-                    Assert.Equal(count, mwqmSubsectorService.GetMWQMSubsectorList().Count());
+                    Assert.Equal(count, (int)mwqmSubsectorService.GetMWQMSubsectorList().Count());
 
                     mwqmSubsector = null;
                     mwqmSubsector = GetFilledRandomMWQMSubsector("");
                     mwqmSubsector.SubsectorHistoricKey = GetRandomString("", 21);
                     Assert.False(mwqmSubsectorService.Add(mwqmSubsector));
                     Assert.Equal(string.Format(CSSPServicesRes._MaxLengthIs_, "SubsectorHistoricKey", "20"), mwqmSubsector.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, mwqmSubsectorService.GetMWQMSubsectorList().Count());
+                    Assert.Equal(count, (int)mwqmSubsectorService.GetMWQMSubsectorList().Count());
 
                     // -----------------------------------
                     // Is Nullable
@@ -191,7 +190,7 @@ namespace CSSPServices.Tests
                     mwqmSubsector.TideLocationSIDText = GetRandomString("", 21);
                     Assert.False(mwqmSubsectorService.Add(mwqmSubsector));
                     Assert.Equal(string.Format(CSSPServicesRes._MaxLengthIs_, "TideLocationSIDText", "20"), mwqmSubsector.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, mwqmSubsectorService.GetMWQMSubsectorList().Count());
+                    Assert.Equal(count, (int)mwqmSubsectorService.GetMWQMSubsectorList().Count());
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -553,16 +552,11 @@ namespace CSSPServices.Tests
         #region Functions private
         private void CheckMWQMSubsectorFields(List<MWQMSubsector> mwqmSubsectorList)
         {
-            Assert.NotNull(mwqmSubsectorList[0].MWQMSubsectorID);
-            Assert.NotNull(mwqmSubsectorList[0].MWQMSubsectorTVItemID);
             Assert.False(string.IsNullOrWhiteSpace(mwqmSubsectorList[0].SubsectorHistoricKey));
             if (!string.IsNullOrWhiteSpace(mwqmSubsectorList[0].TideLocationSIDText))
             {
                 Assert.False(string.IsNullOrWhiteSpace(mwqmSubsectorList[0].TideLocationSIDText));
             }
-            Assert.NotNull(mwqmSubsectorList[0].LastUpdateDate_UTC);
-            Assert.NotNull(mwqmSubsectorList[0].LastUpdateContactTVItemID);
-            Assert.NotNull(mwqmSubsectorList[0].HasErrors);
         }
         private MWQMSubsector GetFilledRandomMWQMSubsector(string OmitPropName)
         {

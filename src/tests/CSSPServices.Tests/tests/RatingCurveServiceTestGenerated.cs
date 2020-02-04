@@ -21,7 +21,6 @@ using CSSPEnums.Resources;
 
 namespace CSSPServices.Tests
 {
-
     public partial class RatingCurveServiceTest : TestHelper
     {
         #region Variables
@@ -162,17 +161,17 @@ namespace CSSPServices.Tests
                     ratingCurve = null;
                     ratingCurve = GetFilledRandomRatingCurve("RatingCurveNumber");
                     Assert.False(ratingCurveService.Add(ratingCurve));
-                    Assert.Equal(1, ratingCurve.ValidationResults.Count());
+                    Assert.Equal(1, (int)ratingCurve.ValidationResults.Count());
                     Assert.True(ratingCurve.ValidationResults.Where(c => c.ErrorMessage == string.Format(CSSPServicesRes._IsRequired, "RatingCurveNumber")).Any());
                     Assert.Null(ratingCurve.RatingCurveNumber);
-                    Assert.Equal(count, ratingCurveService.GetRatingCurveList().Count());
+                    Assert.Equal(count, (int)ratingCurveService.GetRatingCurveList().Count());
 
                     ratingCurve = null;
                     ratingCurve = GetFilledRandomRatingCurve("");
                     ratingCurve.RatingCurveNumber = GetRandomString("", 51);
                     Assert.False(ratingCurveService.Add(ratingCurve));
                     Assert.Equal(string.Format(CSSPServicesRes._MaxLengthIs_, "RatingCurveNumber", "50"), ratingCurve.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, ratingCurveService.GetRatingCurveList().Count());
+                    Assert.Equal(count, (int)ratingCurveService.GetRatingCurveList().Count());
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -534,12 +533,7 @@ namespace CSSPServices.Tests
         #region Functions private
         private void CheckRatingCurveFields(List<RatingCurve> ratingCurveList)
         {
-            Assert.NotNull(ratingCurveList[0].RatingCurveID);
-            Assert.NotNull(ratingCurveList[0].HydrometricSiteID);
             Assert.False(string.IsNullOrWhiteSpace(ratingCurveList[0].RatingCurveNumber));
-            Assert.NotNull(ratingCurveList[0].LastUpdateDate_UTC);
-            Assert.NotNull(ratingCurveList[0].LastUpdateContactTVItemID);
-            Assert.NotNull(ratingCurveList[0].HasErrors);
         }
         private RatingCurve GetFilledRandomRatingCurve(string OmitPropName)
         {

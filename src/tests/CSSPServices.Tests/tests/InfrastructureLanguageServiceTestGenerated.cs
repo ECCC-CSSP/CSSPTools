@@ -21,7 +21,6 @@ using CSSPEnums.Resources;
 
 namespace CSSPServices.Tests
 {
-
     public partial class InfrastructureLanguageServiceTest : TestHelper
     {
         #region Variables
@@ -174,10 +173,10 @@ namespace CSSPServices.Tests
                     infrastructureLanguage = null;
                     infrastructureLanguage = GetFilledRandomInfrastructureLanguage("Comment");
                     Assert.False(infrastructureLanguageService.Add(infrastructureLanguage));
-                    Assert.Equal(1, infrastructureLanguage.ValidationResults.Count());
+                    Assert.Equal(1, (int)infrastructureLanguage.ValidationResults.Count());
                     Assert.True(infrastructureLanguage.ValidationResults.Where(c => c.ErrorMessage == string.Format(CSSPServicesRes._IsRequired, "Comment")).Any());
                     Assert.Null(infrastructureLanguage.Comment);
-                    Assert.Equal(count, infrastructureLanguageService.GetInfrastructureLanguageList().Count());
+                    Assert.Equal(count, (int)infrastructureLanguageService.GetInfrastructureLanguageList().Count());
 
 
                     // -----------------------------------
@@ -553,14 +552,7 @@ namespace CSSPServices.Tests
         #region Functions private
         private void CheckInfrastructureLanguageFields(List<InfrastructureLanguage> infrastructureLanguageList)
         {
-            Assert.NotNull(infrastructureLanguageList[0].InfrastructureLanguageID);
-            Assert.NotNull(infrastructureLanguageList[0].InfrastructureID);
-            Assert.NotNull(infrastructureLanguageList[0].Language);
             Assert.False(string.IsNullOrWhiteSpace(infrastructureLanguageList[0].Comment));
-            Assert.NotNull(infrastructureLanguageList[0].TranslationStatus);
-            Assert.NotNull(infrastructureLanguageList[0].LastUpdateDate_UTC);
-            Assert.NotNull(infrastructureLanguageList[0].LastUpdateContactTVItemID);
-            Assert.NotNull(infrastructureLanguageList[0].HasErrors);
         }
         private InfrastructureLanguage GetFilledRandomInfrastructureLanguage(string OmitPropName)
         {

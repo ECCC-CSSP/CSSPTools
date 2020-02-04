@@ -21,7 +21,6 @@ using CSSPEnums.Resources;
 
 namespace CSSPServices.Tests
 {
-
     public partial class BoxModelResultServiceTest : TestHelper
     {
         #region Variables
@@ -181,7 +180,7 @@ namespace CSSPServices.Tests
                     boxModelResult.Volume_m3 = -1.0D;
                     Assert.False(boxModelResultService.Add(boxModelResult));
                     Assert.Equal(string.Format(CSSPServicesRes._MinValueIs_, "Volume_m3", "0"), boxModelResult.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, boxModelResultService.GetBoxModelResultList().Count());
+                    Assert.Equal(count, (int)boxModelResultService.GetBoxModelResultList().Count());
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -198,7 +197,7 @@ namespace CSSPServices.Tests
                     boxModelResult.Surface_m2 = -1.0D;
                     Assert.False(boxModelResultService.Add(boxModelResult));
                     Assert.Equal(string.Format(CSSPServicesRes._MinValueIs_, "Surface_m2", "0"), boxModelResult.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, boxModelResultService.GetBoxModelResultList().Count());
+                    Assert.Equal(count, (int)boxModelResultService.GetBoxModelResultList().Count());
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -215,13 +214,13 @@ namespace CSSPServices.Tests
                     boxModelResult.Radius_m = -1.0D;
                     Assert.False(boxModelResultService.Add(boxModelResult));
                     Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "Radius_m", "0", "100000"), boxModelResult.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, boxModelResultService.GetBoxModelResultList().Count());
+                    Assert.Equal(count, (int)boxModelResultService.GetBoxModelResultList().Count());
                     boxModelResult = null;
                     boxModelResult = GetFilledRandomBoxModelResult("");
                     boxModelResult.Radius_m = 100001.0D;
                     Assert.False(boxModelResultService.Add(boxModelResult));
                     Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "Radius_m", "0", "100000"), boxModelResult.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, boxModelResultService.GetBoxModelResultList().Count());
+                    Assert.Equal(count, (int)boxModelResultService.GetBoxModelResultList().Count());
 
                     // -----------------------------------
                     // Is Nullable
@@ -238,13 +237,13 @@ namespace CSSPServices.Tests
                     boxModelResult.LeftSideDiameterLineAngle_deg = -1.0D;
                     Assert.False(boxModelResultService.Add(boxModelResult));
                     Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "LeftSideDiameterLineAngle_deg", "0", "360"), boxModelResult.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, boxModelResultService.GetBoxModelResultList().Count());
+                    Assert.Equal(count, (int)boxModelResultService.GetBoxModelResultList().Count());
                     boxModelResult = null;
                     boxModelResult = GetFilledRandomBoxModelResult("");
                     boxModelResult.LeftSideDiameterLineAngle_deg = 361.0D;
                     Assert.False(boxModelResultService.Add(boxModelResult));
                     Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "LeftSideDiameterLineAngle_deg", "0", "360"), boxModelResult.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, boxModelResultService.GetBoxModelResultList().Count());
+                    Assert.Equal(count, (int)boxModelResultService.GetBoxModelResultList().Count());
 
                     // -----------------------------------
                     // Is Nullable
@@ -261,13 +260,13 @@ namespace CSSPServices.Tests
                     boxModelResult.CircleCenterLatitude = -91.0D;
                     Assert.False(boxModelResultService.Add(boxModelResult));
                     Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "CircleCenterLatitude", "-90", "90"), boxModelResult.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, boxModelResultService.GetBoxModelResultList().Count());
+                    Assert.Equal(count, (int)boxModelResultService.GetBoxModelResultList().Count());
                     boxModelResult = null;
                     boxModelResult = GetFilledRandomBoxModelResult("");
                     boxModelResult.CircleCenterLatitude = 91.0D;
                     Assert.False(boxModelResultService.Add(boxModelResult));
                     Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "CircleCenterLatitude", "-90", "90"), boxModelResult.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, boxModelResultService.GetBoxModelResultList().Count());
+                    Assert.Equal(count, (int)boxModelResultService.GetBoxModelResultList().Count());
 
                     // -----------------------------------
                     // Is Nullable
@@ -284,13 +283,13 @@ namespace CSSPServices.Tests
                     boxModelResult.CircleCenterLongitude = -181.0D;
                     Assert.False(boxModelResultService.Add(boxModelResult));
                     Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "CircleCenterLongitude", "-180", "180"), boxModelResult.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, boxModelResultService.GetBoxModelResultList().Count());
+                    Assert.Equal(count, (int)boxModelResultService.GetBoxModelResultList().Count());
                     boxModelResult = null;
                     boxModelResult = GetFilledRandomBoxModelResult("");
                     boxModelResult.CircleCenterLongitude = 181.0D;
                     Assert.False(boxModelResultService.Add(boxModelResult));
                     Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "CircleCenterLongitude", "-180", "180"), boxModelResult.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, boxModelResultService.GetBoxModelResultList().Count());
+                    Assert.Equal(count, (int)boxModelResultService.GetBoxModelResultList().Count());
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -319,13 +318,13 @@ namespace CSSPServices.Tests
                     boxModelResult.RectLength_m = -1.0D;
                     Assert.False(boxModelResultService.Add(boxModelResult));
                     Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "RectLength_m", "0", "100000"), boxModelResult.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, boxModelResultService.GetBoxModelResultList().Count());
+                    Assert.Equal(count, (int)boxModelResultService.GetBoxModelResultList().Count());
                     boxModelResult = null;
                     boxModelResult = GetFilledRandomBoxModelResult("");
                     boxModelResult.RectLength_m = 100001.0D;
                     Assert.False(boxModelResultService.Add(boxModelResult));
                     Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "RectLength_m", "0", "100000"), boxModelResult.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, boxModelResultService.GetBoxModelResultList().Count());
+                    Assert.Equal(count, (int)boxModelResultService.GetBoxModelResultList().Count());
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -342,13 +341,13 @@ namespace CSSPServices.Tests
                     boxModelResult.RectWidth_m = -1.0D;
                     Assert.False(boxModelResultService.Add(boxModelResult));
                     Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "RectWidth_m", "0", "100000"), boxModelResult.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, boxModelResultService.GetBoxModelResultList().Count());
+                    Assert.Equal(count, (int)boxModelResultService.GetBoxModelResultList().Count());
                     boxModelResult = null;
                     boxModelResult = GetFilledRandomBoxModelResult("");
                     boxModelResult.RectWidth_m = 100001.0D;
                     Assert.False(boxModelResultService.Add(boxModelResult));
                     Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "RectWidth_m", "0", "100000"), boxModelResult.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, boxModelResultService.GetBoxModelResultList().Count());
+                    Assert.Equal(count, (int)boxModelResultService.GetBoxModelResultList().Count());
 
                     // -----------------------------------
                     // Is Nullable
@@ -365,13 +364,13 @@ namespace CSSPServices.Tests
                     boxModelResult.LeftSideLineAngle_deg = -1.0D;
                     Assert.False(boxModelResultService.Add(boxModelResult));
                     Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "LeftSideLineAngle_deg", "0", "360"), boxModelResult.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, boxModelResultService.GetBoxModelResultList().Count());
+                    Assert.Equal(count, (int)boxModelResultService.GetBoxModelResultList().Count());
                     boxModelResult = null;
                     boxModelResult = GetFilledRandomBoxModelResult("");
                     boxModelResult.LeftSideLineAngle_deg = 361.0D;
                     Assert.False(boxModelResultService.Add(boxModelResult));
                     Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "LeftSideLineAngle_deg", "0", "360"), boxModelResult.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, boxModelResultService.GetBoxModelResultList().Count());
+                    Assert.Equal(count, (int)boxModelResultService.GetBoxModelResultList().Count());
 
                     // -----------------------------------
                     // Is Nullable
@@ -388,13 +387,13 @@ namespace CSSPServices.Tests
                     boxModelResult.LeftSideLineStartLatitude = -91.0D;
                     Assert.False(boxModelResultService.Add(boxModelResult));
                     Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "LeftSideLineStartLatitude", "-90", "90"), boxModelResult.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, boxModelResultService.GetBoxModelResultList().Count());
+                    Assert.Equal(count, (int)boxModelResultService.GetBoxModelResultList().Count());
                     boxModelResult = null;
                     boxModelResult = GetFilledRandomBoxModelResult("");
                     boxModelResult.LeftSideLineStartLatitude = 91.0D;
                     Assert.False(boxModelResultService.Add(boxModelResult));
                     Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "LeftSideLineStartLatitude", "-90", "90"), boxModelResult.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, boxModelResultService.GetBoxModelResultList().Count());
+                    Assert.Equal(count, (int)boxModelResultService.GetBoxModelResultList().Count());
 
                     // -----------------------------------
                     // Is Nullable
@@ -411,13 +410,13 @@ namespace CSSPServices.Tests
                     boxModelResult.LeftSideLineStartLongitude = -181.0D;
                     Assert.False(boxModelResultService.Add(boxModelResult));
                     Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "LeftSideLineStartLongitude", "-180", "180"), boxModelResult.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, boxModelResultService.GetBoxModelResultList().Count());
+                    Assert.Equal(count, (int)boxModelResultService.GetBoxModelResultList().Count());
                     boxModelResult = null;
                     boxModelResult = GetFilledRandomBoxModelResult("");
                     boxModelResult.LeftSideLineStartLongitude = 181.0D;
                     Assert.False(boxModelResultService.Add(boxModelResult));
                     Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "LeftSideLineStartLongitude", "-180", "180"), boxModelResult.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, boxModelResultService.GetBoxModelResultList().Count());
+                    Assert.Equal(count, (int)boxModelResultService.GetBoxModelResultList().Count());
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -779,12 +778,6 @@ namespace CSSPServices.Tests
         #region Functions private
         private void CheckBoxModelResultFields(List<BoxModelResult> boxModelResultList)
         {
-            Assert.NotNull(boxModelResultList[0].BoxModelResultID);
-            Assert.NotNull(boxModelResultList[0].BoxModelID);
-            Assert.NotNull(boxModelResultList[0].BoxModelResultType);
-            Assert.NotNull(boxModelResultList[0].Volume_m3);
-            Assert.NotNull(boxModelResultList[0].Surface_m2);
-            Assert.NotNull(boxModelResultList[0].Radius_m);
             if (boxModelResultList[0].LeftSideDiameterLineAngle_deg != null)
             {
                 Assert.NotNull(boxModelResultList[0].LeftSideDiameterLineAngle_deg);
@@ -797,10 +790,6 @@ namespace CSSPServices.Tests
             {
                 Assert.NotNull(boxModelResultList[0].CircleCenterLongitude);
             }
-            Assert.NotNull(boxModelResultList[0].FixLength);
-            Assert.NotNull(boxModelResultList[0].FixWidth);
-            Assert.NotNull(boxModelResultList[0].RectLength_m);
-            Assert.NotNull(boxModelResultList[0].RectWidth_m);
             if (boxModelResultList[0].LeftSideLineAngle_deg != null)
             {
                 Assert.NotNull(boxModelResultList[0].LeftSideLineAngle_deg);
@@ -813,9 +802,6 @@ namespace CSSPServices.Tests
             {
                 Assert.NotNull(boxModelResultList[0].LeftSideLineStartLongitude);
             }
-            Assert.NotNull(boxModelResultList[0].LastUpdateDate_UTC);
-            Assert.NotNull(boxModelResultList[0].LastUpdateContactTVItemID);
-            Assert.NotNull(boxModelResultList[0].HasErrors);
         }
         private BoxModelResult GetFilledRandomBoxModelResult(string OmitPropName)
         {

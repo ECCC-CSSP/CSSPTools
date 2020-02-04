@@ -21,7 +21,6 @@ using CSSPEnums.Resources;
 
 namespace CSSPServices.Tests
 {
-
     public partial class ContactServiceTest : TestHelper
     {
         #region Variables
@@ -150,17 +149,17 @@ namespace CSSPServices.Tests
                     contact = null;
                     contact = GetFilledRandomContact("Id");
                     Assert.False(contactService.Add(contact, AddContactTypeEnum.LoggedIn));
-                    Assert.Equal(2, contact.ValidationResults.Count());
+                    Assert.Equal(2, (int)contact.ValidationResults.Count());
                     Assert.True(contact.ValidationResults.Where(c => c.ErrorMessage == string.Format(CSSPServicesRes._IsRequired, "Id")).Any());
                     Assert.Null(contact.Id);
-                    Assert.Equal(count, contactService.GetContactList().Count());
+                    Assert.Equal(count, (int)contactService.GetContactList().Count());
 
                     contact = null;
                     contact = GetFilledRandomContact("");
                     contact.Id = GetRandomString("", 129);
                     Assert.False(contactService.Add(contact, AddContactTypeEnum.First));
                     Assert.Equal(string.Format(CSSPServicesRes._MaxLengthIs_, "Id", "128"), contact.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, contactService.GetContactList().Count());
+                    Assert.Equal(count, (int)contactService.GetContactList().Count());
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -191,23 +190,23 @@ namespace CSSPServices.Tests
                     contact = null;
                     contact = GetFilledRandomContact("LoginEmail");
                     Assert.False(contactService.Add(contact, AddContactTypeEnum.LoggedIn));
-                    Assert.Equal(1, contact.ValidationResults.Count());
+                    Assert.Equal(1, (int)contact.ValidationResults.Count());
                     Assert.True(contact.ValidationResults.Where(c => c.ErrorMessage == string.Format(CSSPServicesRes._IsRequired, "LoginEmail")).Any());
                     Assert.Null(contact.LoginEmail);
-                    Assert.Equal(count, contactService.GetContactList().Count());
+                    Assert.Equal(count, (int)contactService.GetContactList().Count());
 
                     contact = null;
                     contact = GetFilledRandomContact("");
                     contact.LoginEmail = GetRandomString("", 5);
                     Assert.False(contactService.Add(contact, AddContactTypeEnum.First));
                     Assert.Equal(string.Format(CSSPServicesRes._LengthShouldBeBetween_And_, "LoginEmail", "6", "255"), contact.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, contactService.GetContactList().Count());
+                    Assert.Equal(count, (int)contactService.GetContactList().Count());
                     contact = null;
                     contact = GetFilledRandomContact("");
                     contact.LoginEmail = GetRandomString("", 256);
                     Assert.False(contactService.Add(contact, AddContactTypeEnum.First));
                     Assert.Equal(string.Format(CSSPServicesRes._LengthShouldBeBetween_And_, "LoginEmail", "6", "255"), contact.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, contactService.GetContactList().Count());
+                    Assert.Equal(count, (int)contactService.GetContactList().Count());
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -218,17 +217,17 @@ namespace CSSPServices.Tests
                     contact = null;
                     contact = GetFilledRandomContact("FirstName");
                     Assert.False(contactService.Add(contact, AddContactTypeEnum.LoggedIn));
-                    Assert.Equal(1, contact.ValidationResults.Count());
+                    Assert.Equal(1, (int)contact.ValidationResults.Count());
                     Assert.True(contact.ValidationResults.Where(c => c.ErrorMessage == string.Format(CSSPServicesRes._IsRequired, "FirstName")).Any());
                     Assert.Null(contact.FirstName);
-                    Assert.Equal(count, contactService.GetContactList().Count());
+                    Assert.Equal(count, (int)contactService.GetContactList().Count());
 
                     contact = null;
                     contact = GetFilledRandomContact("");
                     contact.FirstName = GetRandomString("", 101);
                     Assert.False(contactService.Add(contact, AddContactTypeEnum.First));
                     Assert.Equal(string.Format(CSSPServicesRes._MaxLengthIs_, "FirstName", "100"), contact.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, contactService.GetContactList().Count());
+                    Assert.Equal(count, (int)contactService.GetContactList().Count());
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -239,17 +238,17 @@ namespace CSSPServices.Tests
                     contact = null;
                     contact = GetFilledRandomContact("LastName");
                     Assert.False(contactService.Add(contact, AddContactTypeEnum.LoggedIn));
-                    Assert.Equal(1, contact.ValidationResults.Count());
+                    Assert.Equal(1, (int)contact.ValidationResults.Count());
                     Assert.True(contact.ValidationResults.Where(c => c.ErrorMessage == string.Format(CSSPServicesRes._IsRequired, "LastName")).Any());
                     Assert.Null(contact.LastName);
-                    Assert.Equal(count, contactService.GetContactList().Count());
+                    Assert.Equal(count, (int)contactService.GetContactList().Count());
 
                     contact = null;
                     contact = GetFilledRandomContact("");
                     contact.LastName = GetRandomString("", 101);
                     Assert.False(contactService.Add(contact, AddContactTypeEnum.First));
                     Assert.Equal(string.Format(CSSPServicesRes._MaxLengthIs_, "LastName", "100"), contact.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, contactService.GetContactList().Count());
+                    Assert.Equal(count, (int)contactService.GetContactList().Count());
 
                     // -----------------------------------
                     // Is Nullable
@@ -262,7 +261,7 @@ namespace CSSPServices.Tests
                     contact.Initial = GetRandomString("", 51);
                     Assert.False(contactService.Add(contact, AddContactTypeEnum.First));
                     Assert.Equal(string.Format(CSSPServicesRes._MaxLengthIs_, "Initial", "50"), contact.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, contactService.GetContactList().Count());
+                    Assert.Equal(count, (int)contactService.GetContactList().Count());
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -273,17 +272,17 @@ namespace CSSPServices.Tests
                     contact = null;
                     contact = GetFilledRandomContact("WebName");
                     Assert.False(contactService.Add(contact, AddContactTypeEnum.LoggedIn));
-                    Assert.Equal(1, contact.ValidationResults.Count());
+                    Assert.Equal(1, (int)contact.ValidationResults.Count());
                     Assert.True(contact.ValidationResults.Where(c => c.ErrorMessage == string.Format(CSSPServicesRes._IsRequired, "WebName")).Any());
                     Assert.Null(contact.WebName);
-                    Assert.Equal(count, contactService.GetContactList().Count());
+                    Assert.Equal(count, (int)contactService.GetContactList().Count());
 
                     contact = null;
                     contact = GetFilledRandomContact("");
                     contact.WebName = GetRandomString("", 101);
                     Assert.False(contactService.Add(contact, AddContactTypeEnum.First));
                     Assert.Equal(string.Format(CSSPServicesRes._MaxLengthIs_, "WebName", "100"), contact.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, contactService.GetContactList().Count());
+                    Assert.Equal(count, (int)contactService.GetContactList().Count());
 
                     // -----------------------------------
                     // Is Nullable
@@ -333,7 +332,7 @@ namespace CSSPServices.Tests
                     contact.SamplingPlanner_ProvincesTVItemID = GetRandomString("", 201);
                     Assert.False(contactService.Add(contact, AddContactTypeEnum.First));
                     Assert.Equal(string.Format(CSSPServicesRes._MaxLengthIs_, "SamplingPlanner_ProvincesTVItemID", "200"), contact.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, contactService.GetContactList().Count());
+                    Assert.Equal(count, (int)contactService.GetContactList().Count());
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -695,9 +694,7 @@ namespace CSSPServices.Tests
         #region Functions private
         private void CheckContactFields(List<Contact> contactList)
         {
-            Assert.NotNull(contactList[0].ContactID);
             Assert.False(string.IsNullOrWhiteSpace(contactList[0].Id));
-            Assert.NotNull(contactList[0].ContactTVItemID);
             Assert.False(string.IsNullOrWhiteSpace(contactList[0].LoginEmail));
             Assert.False(string.IsNullOrWhiteSpace(contactList[0].FirstName));
             Assert.False(string.IsNullOrWhiteSpace(contactList[0].LastName));
@@ -710,17 +707,10 @@ namespace CSSPServices.Tests
             {
                 Assert.NotNull(contactList[0].ContactTitle);
             }
-            Assert.NotNull(contactList[0].IsAdmin);
-            Assert.NotNull(contactList[0].EmailValidated);
-            Assert.NotNull(contactList[0].Disabled);
-            Assert.NotNull(contactList[0].IsNew);
             if (!string.IsNullOrWhiteSpace(contactList[0].SamplingPlanner_ProvincesTVItemID))
             {
                 Assert.False(string.IsNullOrWhiteSpace(contactList[0].SamplingPlanner_ProvincesTVItemID));
             }
-            Assert.NotNull(contactList[0].LastUpdateDate_UTC);
-            Assert.NotNull(contactList[0].LastUpdateContactTVItemID);
-            Assert.NotNull(contactList[0].HasErrors);
         }
         private Contact GetFilledRandomContact(string OmitPropName)
         {

@@ -21,7 +21,6 @@ using CSSPEnums.Resources;
 
 namespace CSSPServices.Tests
 {
-
     public partial class SamplingPlanServiceTest : TestHelper
     {
         #region Variables
@@ -155,17 +154,17 @@ namespace CSSPServices.Tests
                     samplingPlan = null;
                     samplingPlan = GetFilledRandomSamplingPlan("SamplingPlanName");
                     Assert.False(samplingPlanService.Add(samplingPlan));
-                    Assert.Equal(1, samplingPlan.ValidationResults.Count());
+                    Assert.Equal(1, (int)samplingPlan.ValidationResults.Count());
                     Assert.True(samplingPlan.ValidationResults.Where(c => c.ErrorMessage == string.Format(CSSPServicesRes._IsRequired, "SamplingPlanName")).Any());
                     Assert.Null(samplingPlan.SamplingPlanName);
-                    Assert.Equal(count, samplingPlanService.GetSamplingPlanList().Count());
+                    Assert.Equal(count, (int)samplingPlanService.GetSamplingPlanList().Count());
 
                     samplingPlan = null;
                     samplingPlan = GetFilledRandomSamplingPlan("");
                     samplingPlan.SamplingPlanName = GetRandomString("", 201);
                     Assert.False(samplingPlanService.Add(samplingPlan));
                     Assert.Equal(string.Format(CSSPServicesRes._MaxLengthIs_, "SamplingPlanName", "200"), samplingPlan.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, samplingPlanService.GetSamplingPlanList().Count());
+                    Assert.Equal(count, (int)samplingPlanService.GetSamplingPlanList().Count());
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -176,17 +175,17 @@ namespace CSSPServices.Tests
                     samplingPlan = null;
                     samplingPlan = GetFilledRandomSamplingPlan("ForGroupName");
                     Assert.False(samplingPlanService.Add(samplingPlan));
-                    Assert.Equal(1, samplingPlan.ValidationResults.Count());
+                    Assert.Equal(1, (int)samplingPlan.ValidationResults.Count());
                     Assert.True(samplingPlan.ValidationResults.Where(c => c.ErrorMessage == string.Format(CSSPServicesRes._IsRequired, "ForGroupName")).Any());
                     Assert.Null(samplingPlan.ForGroupName);
-                    Assert.Equal(count, samplingPlanService.GetSamplingPlanList().Count());
+                    Assert.Equal(count, (int)samplingPlanService.GetSamplingPlanList().Count());
 
                     samplingPlan = null;
                     samplingPlan = GetFilledRandomSamplingPlan("");
                     samplingPlan.ForGroupName = GetRandomString("", 101);
                     Assert.False(samplingPlanService.Add(samplingPlan));
                     Assert.Equal(string.Format(CSSPServicesRes._MaxLengthIs_, "ForGroupName", "100"), samplingPlan.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, samplingPlanService.GetSamplingPlanList().Count());
+                    Assert.Equal(count, (int)samplingPlanService.GetSamplingPlanList().Count());
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -276,13 +275,13 @@ namespace CSSPServices.Tests
                     samplingPlan.Year = 1999;
                     Assert.False(samplingPlanService.Add(samplingPlan));
                     Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "Year", "2000", "2050"), samplingPlan.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, samplingPlanService.GetSamplingPlanList().Count());
+                    Assert.Equal(count, (int)samplingPlanService.GetSamplingPlanList().Count());
                     samplingPlan = null;
                     samplingPlan = GetFilledRandomSamplingPlan("");
                     samplingPlan.Year = 2051;
                     Assert.False(samplingPlanService.Add(samplingPlan));
                     Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "Year", "2000", "2050"), samplingPlan.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, samplingPlanService.GetSamplingPlanList().Count());
+                    Assert.Equal(count, (int)samplingPlanService.GetSamplingPlanList().Count());
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -293,17 +292,17 @@ namespace CSSPServices.Tests
                     samplingPlan = null;
                     samplingPlan = GetFilledRandomSamplingPlan("AccessCode");
                     Assert.False(samplingPlanService.Add(samplingPlan));
-                    Assert.Equal(1, samplingPlan.ValidationResults.Count());
+                    Assert.Equal(1, (int)samplingPlan.ValidationResults.Count());
                     Assert.True(samplingPlan.ValidationResults.Where(c => c.ErrorMessage == string.Format(CSSPServicesRes._IsRequired, "AccessCode")).Any());
                     Assert.Null(samplingPlan.AccessCode);
-                    Assert.Equal(count, samplingPlanService.GetSamplingPlanList().Count());
+                    Assert.Equal(count, (int)samplingPlanService.GetSamplingPlanList().Count());
 
                     samplingPlan = null;
                     samplingPlan = GetFilledRandomSamplingPlan("");
                     samplingPlan.AccessCode = GetRandomString("", 16);
                     Assert.False(samplingPlanService.Add(samplingPlan));
                     Assert.Equal(string.Format(CSSPServicesRes._MaxLengthIs_, "AccessCode", "15"), samplingPlan.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, samplingPlanService.GetSamplingPlanList().Count());
+                    Assert.Equal(count, (int)samplingPlanService.GetSamplingPlanList().Count());
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -320,13 +319,13 @@ namespace CSSPServices.Tests
                     samplingPlan.DailyDuplicatePrecisionCriteria = -1.0D;
                     Assert.False(samplingPlanService.Add(samplingPlan));
                     Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "DailyDuplicatePrecisionCriteria", "0", "100"), samplingPlan.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, samplingPlanService.GetSamplingPlanList().Count());
+                    Assert.Equal(count, (int)samplingPlanService.GetSamplingPlanList().Count());
                     samplingPlan = null;
                     samplingPlan = GetFilledRandomSamplingPlan("");
                     samplingPlan.DailyDuplicatePrecisionCriteria = 101.0D;
                     Assert.False(samplingPlanService.Add(samplingPlan));
                     Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "DailyDuplicatePrecisionCriteria", "0", "100"), samplingPlan.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, samplingPlanService.GetSamplingPlanList().Count());
+                    Assert.Equal(count, (int)samplingPlanService.GetSamplingPlanList().Count());
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -343,13 +342,13 @@ namespace CSSPServices.Tests
                     samplingPlan.IntertechDuplicatePrecisionCriteria = -1.0D;
                     Assert.False(samplingPlanService.Add(samplingPlan));
                     Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "IntertechDuplicatePrecisionCriteria", "0", "100"), samplingPlan.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, samplingPlanService.GetSamplingPlanList().Count());
+                    Assert.Equal(count, (int)samplingPlanService.GetSamplingPlanList().Count());
                     samplingPlan = null;
                     samplingPlan = GetFilledRandomSamplingPlan("");
                     samplingPlan.IntertechDuplicatePrecisionCriteria = 101.0D;
                     Assert.False(samplingPlanService.Add(samplingPlan));
                     Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "IntertechDuplicatePrecisionCriteria", "0", "100"), samplingPlan.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, samplingPlanService.GetSamplingPlanList().Count());
+                    Assert.Equal(count, (int)samplingPlanService.GetSamplingPlanList().Count());
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -366,17 +365,17 @@ namespace CSSPServices.Tests
                     samplingPlan = null;
                     samplingPlan = GetFilledRandomSamplingPlan("ApprovalCode");
                     Assert.False(samplingPlanService.Add(samplingPlan));
-                    Assert.Equal(1, samplingPlan.ValidationResults.Count());
+                    Assert.Equal(1, (int)samplingPlan.ValidationResults.Count());
                     Assert.True(samplingPlan.ValidationResults.Where(c => c.ErrorMessage == string.Format(CSSPServicesRes._IsRequired, "ApprovalCode")).Any());
                     Assert.Null(samplingPlan.ApprovalCode);
-                    Assert.Equal(count, samplingPlanService.GetSamplingPlanList().Count());
+                    Assert.Equal(count, (int)samplingPlanService.GetSamplingPlanList().Count());
 
                     samplingPlan = null;
                     samplingPlan = GetFilledRandomSamplingPlan("");
                     samplingPlan.ApprovalCode = GetRandomString("", 16);
                     Assert.False(samplingPlanService.Add(samplingPlan));
                     Assert.Equal(string.Format(CSSPServicesRes._MaxLengthIs_, "ApprovalCode", "15"), samplingPlan.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, samplingPlanService.GetSamplingPlanList().Count());
+                    Assert.Equal(count, (int)samplingPlanService.GetSamplingPlanList().Count());
 
                     // -----------------------------------
                     // Is Nullable
@@ -445,17 +444,17 @@ namespace CSSPServices.Tests
                     samplingPlan = null;
                     samplingPlan = GetFilledRandomSamplingPlan("BackupDirectory");
                     Assert.False(samplingPlanService.Add(samplingPlan));
-                    Assert.Equal(1, samplingPlan.ValidationResults.Count());
+                    Assert.Equal(1, (int)samplingPlan.ValidationResults.Count());
                     Assert.True(samplingPlan.ValidationResults.Where(c => c.ErrorMessage == string.Format(CSSPServicesRes._IsRequired, "BackupDirectory")).Any());
                     Assert.Null(samplingPlan.BackupDirectory);
-                    Assert.Equal(count, samplingPlanService.GetSamplingPlanList().Count());
+                    Assert.Equal(count, (int)samplingPlanService.GetSamplingPlanList().Count());
 
                     samplingPlan = null;
                     samplingPlan = GetFilledRandomSamplingPlan("");
                     samplingPlan.BackupDirectory = GetRandomString("", 251);
                     Assert.False(samplingPlanService.Add(samplingPlan));
                     Assert.Equal(string.Format(CSSPServicesRes._MaxLengthIs_, "BackupDirectory", "250"), samplingPlan.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, samplingPlanService.GetSamplingPlanList().Count());
+                    Assert.Equal(count, (int)samplingPlanService.GetSamplingPlanList().Count());
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -817,20 +816,9 @@ namespace CSSPServices.Tests
         #region Functions private
         private void CheckSamplingPlanFields(List<SamplingPlan> samplingPlanList)
         {
-            Assert.NotNull(samplingPlanList[0].SamplingPlanID);
-            Assert.NotNull(samplingPlanList[0].IsActive);
             Assert.False(string.IsNullOrWhiteSpace(samplingPlanList[0].SamplingPlanName));
             Assert.False(string.IsNullOrWhiteSpace(samplingPlanList[0].ForGroupName));
-            Assert.NotNull(samplingPlanList[0].SampleType);
-            Assert.NotNull(samplingPlanList[0].SamplingPlanType);
-            Assert.NotNull(samplingPlanList[0].LabSheetType);
-            Assert.NotNull(samplingPlanList[0].ProvinceTVItemID);
-            Assert.NotNull(samplingPlanList[0].CreatorTVItemID);
-            Assert.NotNull(samplingPlanList[0].Year);
             Assert.False(string.IsNullOrWhiteSpace(samplingPlanList[0].AccessCode));
-            Assert.NotNull(samplingPlanList[0].DailyDuplicatePrecisionCriteria);
-            Assert.NotNull(samplingPlanList[0].IntertechDuplicatePrecisionCriteria);
-            Assert.NotNull(samplingPlanList[0].IncludeLaboratoryQAQC);
             Assert.False(string.IsNullOrWhiteSpace(samplingPlanList[0].ApprovalCode));
             if (samplingPlanList[0].SamplingPlanFileTVItemID != null)
             {
@@ -849,9 +837,6 @@ namespace CSSPServices.Tests
                 Assert.NotNull(samplingPlanList[0].LaboratoryDefault);
             }
             Assert.False(string.IsNullOrWhiteSpace(samplingPlanList[0].BackupDirectory));
-            Assert.NotNull(samplingPlanList[0].LastUpdateDate_UTC);
-            Assert.NotNull(samplingPlanList[0].LastUpdateContactTVItemID);
-            Assert.NotNull(samplingPlanList[0].HasErrors);
         }
         private SamplingPlan GetFilledRandomSamplingPlan(string OmitPropName)
         {

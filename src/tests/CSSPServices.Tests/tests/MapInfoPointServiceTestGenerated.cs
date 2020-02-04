@@ -21,7 +21,6 @@ using CSSPEnums.Resources;
 
 namespace CSSPServices.Tests
 {
-
     public partial class MapInfoPointServiceTest : TestHelper
     {
         #region Variables
@@ -164,7 +163,7 @@ namespace CSSPServices.Tests
                     mapInfoPoint.Ordinal = -1;
                     Assert.False(mapInfoPointService.Add(mapInfoPoint));
                     Assert.Equal(string.Format(CSSPServicesRes._MinValueIs_, "Ordinal", "0"), mapInfoPoint.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, mapInfoPointService.GetMapInfoPointList().Count());
+                    Assert.Equal(count, (int)mapInfoPointService.GetMapInfoPointList().Count());
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -181,13 +180,13 @@ namespace CSSPServices.Tests
                     mapInfoPoint.Lat = -91.0D;
                     Assert.False(mapInfoPointService.Add(mapInfoPoint));
                     Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "Lat", "-90", "90"), mapInfoPoint.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, mapInfoPointService.GetMapInfoPointList().Count());
+                    Assert.Equal(count, (int)mapInfoPointService.GetMapInfoPointList().Count());
                     mapInfoPoint = null;
                     mapInfoPoint = GetFilledRandomMapInfoPoint("");
                     mapInfoPoint.Lat = 91.0D;
                     Assert.False(mapInfoPointService.Add(mapInfoPoint));
                     Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "Lat", "-90", "90"), mapInfoPoint.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, mapInfoPointService.GetMapInfoPointList().Count());
+                    Assert.Equal(count, (int)mapInfoPointService.GetMapInfoPointList().Count());
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -204,13 +203,13 @@ namespace CSSPServices.Tests
                     mapInfoPoint.Lng = -181.0D;
                     Assert.False(mapInfoPointService.Add(mapInfoPoint));
                     Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "Lng", "-180", "180"), mapInfoPoint.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, mapInfoPointService.GetMapInfoPointList().Count());
+                    Assert.Equal(count, (int)mapInfoPointService.GetMapInfoPointList().Count());
                     mapInfoPoint = null;
                     mapInfoPoint = GetFilledRandomMapInfoPoint("");
                     mapInfoPoint.Lng = 181.0D;
                     Assert.False(mapInfoPointService.Add(mapInfoPoint));
                     Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "Lng", "-180", "180"), mapInfoPoint.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, mapInfoPointService.GetMapInfoPointList().Count());
+                    Assert.Equal(count, (int)mapInfoPointService.GetMapInfoPointList().Count());
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -572,14 +571,6 @@ namespace CSSPServices.Tests
         #region Functions private
         private void CheckMapInfoPointFields(List<MapInfoPoint> mapInfoPointList)
         {
-            Assert.NotNull(mapInfoPointList[0].MapInfoPointID);
-            Assert.NotNull(mapInfoPointList[0].MapInfoID);
-            Assert.NotNull(mapInfoPointList[0].Ordinal);
-            Assert.NotNull(mapInfoPointList[0].Lat);
-            Assert.NotNull(mapInfoPointList[0].Lng);
-            Assert.NotNull(mapInfoPointList[0].LastUpdateDate_UTC);
-            Assert.NotNull(mapInfoPointList[0].LastUpdateContactTVItemID);
-            Assert.NotNull(mapInfoPointList[0].HasErrors);
         }
         private MapInfoPoint GetFilledRandomMapInfoPoint(string OmitPropName)
         {

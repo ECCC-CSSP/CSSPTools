@@ -21,7 +21,6 @@ using CSSPEnums.Resources;
 
 namespace CSSPServices.Tests
 {
-
     public partial class EmailDistributionListLanguageServiceTest : TestHelper
     {
         #region Variables
@@ -175,10 +174,10 @@ namespace CSSPServices.Tests
                     emailDistributionListLanguage = null;
                     emailDistributionListLanguage = GetFilledRandomEmailDistributionListLanguage("EmailListName");
                     Assert.False(emailDistributionListLanguageService.Add(emailDistributionListLanguage));
-                    Assert.Equal(1, emailDistributionListLanguage.ValidationResults.Count());
+                    Assert.Equal(1, (int)emailDistributionListLanguage.ValidationResults.Count());
                     Assert.True(emailDistributionListLanguage.ValidationResults.Where(c => c.ErrorMessage == string.Format(CSSPServicesRes._IsRequired, "EmailListName")).Any());
                     Assert.Null(emailDistributionListLanguage.EmailListName);
-                    Assert.Equal(count, emailDistributionListLanguageService.GetEmailDistributionListLanguageList().Count());
+                    Assert.Equal(count, (int)emailDistributionListLanguageService.GetEmailDistributionListLanguageList().Count());
 
                     emailDistributionListLanguage = null;
                     emailDistributionListLanguage = GetFilledRandomEmailDistributionListLanguage("");
@@ -187,7 +186,7 @@ namespace CSSPServices.Tests
                     emailDistributionListLanguage.EmailListName = GetRandomString("", 101);
                     Assert.False(emailDistributionListLanguageService.Add(emailDistributionListLanguage));
                     Assert.Equal(string.Format(CSSPServicesRes._LengthShouldBeBetween_And_, "EmailListName", "1", "100"), emailDistributionListLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, emailDistributionListLanguageService.GetEmailDistributionListLanguageList().Count());
+                    Assert.Equal(count, (int)emailDistributionListLanguageService.GetEmailDistributionListLanguageList().Count());
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -562,14 +561,7 @@ namespace CSSPServices.Tests
         #region Functions private
         private void CheckEmailDistributionListLanguageFields(List<EmailDistributionListLanguage> emailDistributionListLanguageList)
         {
-            Assert.NotNull(emailDistributionListLanguageList[0].EmailDistributionListLanguageID);
-            Assert.NotNull(emailDistributionListLanguageList[0].EmailDistributionListID);
-            Assert.NotNull(emailDistributionListLanguageList[0].Language);
             Assert.False(string.IsNullOrWhiteSpace(emailDistributionListLanguageList[0].EmailListName));
-            Assert.NotNull(emailDistributionListLanguageList[0].TranslationStatus);
-            Assert.NotNull(emailDistributionListLanguageList[0].LastUpdateDate_UTC);
-            Assert.NotNull(emailDistributionListLanguageList[0].LastUpdateContactTVItemID);
-            Assert.NotNull(emailDistributionListLanguageList[0].HasErrors);
         }
         private EmailDistributionListLanguage GetFilledRandomEmailDistributionListLanguage(string OmitPropName)
         {

@@ -21,7 +21,6 @@ using CSSPEnums.Resources;
 
 namespace CSSPServices.Tests
 {
-
     public partial class SamplingPlanEmailServiceTest : TestHelper
     {
         #region Variables
@@ -163,17 +162,17 @@ namespace CSSPServices.Tests
                     samplingPlanEmail = null;
                     samplingPlanEmail = GetFilledRandomSamplingPlanEmail("Email");
                     Assert.False(samplingPlanEmailService.Add(samplingPlanEmail));
-                    Assert.Equal(1, samplingPlanEmail.ValidationResults.Count());
+                    Assert.Equal(1, (int)samplingPlanEmail.ValidationResults.Count());
                     Assert.True(samplingPlanEmail.ValidationResults.Where(c => c.ErrorMessage == string.Format(CSSPServicesRes._IsRequired, "Email")).Any());
                     Assert.Null(samplingPlanEmail.Email);
-                    Assert.Equal(count, samplingPlanEmailService.GetSamplingPlanEmailList().Count());
+                    Assert.Equal(count, (int)samplingPlanEmailService.GetSamplingPlanEmailList().Count());
 
                     samplingPlanEmail = null;
                     samplingPlanEmail = GetFilledRandomSamplingPlanEmail("");
                     samplingPlanEmail.Email = GetRandomString("", 151);
                     Assert.False(samplingPlanEmailService.Add(samplingPlanEmail));
                     Assert.Equal(string.Format(CSSPServicesRes._MaxLengthIs_, "Email", "150"), samplingPlanEmail.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, samplingPlanEmailService.GetSamplingPlanEmailList().Count());
+                    Assert.Equal(count, (int)samplingPlanEmailService.GetSamplingPlanEmailList().Count());
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -565,17 +564,7 @@ namespace CSSPServices.Tests
         #region Functions private
         private void CheckSamplingPlanEmailFields(List<SamplingPlanEmail> samplingPlanEmailList)
         {
-            Assert.NotNull(samplingPlanEmailList[0].SamplingPlanEmailID);
-            Assert.NotNull(samplingPlanEmailList[0].SamplingPlanID);
             Assert.False(string.IsNullOrWhiteSpace(samplingPlanEmailList[0].Email));
-            Assert.NotNull(samplingPlanEmailList[0].IsContractor);
-            Assert.NotNull(samplingPlanEmailList[0].LabSheetHasValueOver500);
-            Assert.NotNull(samplingPlanEmailList[0].LabSheetReceived);
-            Assert.NotNull(samplingPlanEmailList[0].LabSheetAccepted);
-            Assert.NotNull(samplingPlanEmailList[0].LabSheetRejected);
-            Assert.NotNull(samplingPlanEmailList[0].LastUpdateDate_UTC);
-            Assert.NotNull(samplingPlanEmailList[0].LastUpdateContactTVItemID);
-            Assert.NotNull(samplingPlanEmailList[0].HasErrors);
         }
         private SamplingPlanEmail GetFilledRandomSamplingPlanEmail(string OmitPropName)
         {

@@ -21,7 +21,6 @@ using CSSPEnums.Resources;
 
 namespace CSSPServices.Tests
 {
-
     public partial class LogServiceTest : TestHelper
     {
         #region Variables
@@ -149,17 +148,17 @@ namespace CSSPServices.Tests
                     log = null;
                     log = GetFilledRandomLog("TableName");
                     Assert.False(logService.Add(log));
-                    Assert.Equal(1, log.ValidationResults.Count());
+                    Assert.Equal(1, (int)log.ValidationResults.Count());
                     Assert.True(log.ValidationResults.Where(c => c.ErrorMessage == string.Format(CSSPServicesRes._IsRequired, "TableName")).Any());
                     Assert.Null(log.TableName);
-                    Assert.Equal(count, logService.GetLogList().Count());
+                    Assert.Equal(count, (int)logService.GetLogList().Count());
 
                     log = null;
                     log = GetFilledRandomLog("");
                     log.TableName = GetRandomString("", 51);
                     Assert.False(logService.Add(log));
                     Assert.Equal(string.Format(CSSPServicesRes._MaxLengthIs_, "TableName", "50"), log.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, logService.GetLogList().Count());
+                    Assert.Equal(count, (int)logService.GetLogList().Count());
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -172,7 +171,7 @@ namespace CSSPServices.Tests
                     log.ID = 0;
                     Assert.False(logService.Add(log));
                     Assert.Equal(string.Format(CSSPServicesRes._MinValueIs_, "ID", "1"), log.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, logService.GetLogList().Count());
+                    Assert.Equal(count, (int)logService.GetLogList().Count());
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -195,10 +194,10 @@ namespace CSSPServices.Tests
                     log = null;
                     log = GetFilledRandomLog("Information");
                     Assert.False(logService.Add(log));
-                    Assert.Equal(1, log.ValidationResults.Count());
+                    Assert.Equal(1, (int)log.ValidationResults.Count());
                     Assert.True(log.ValidationResults.Where(c => c.ErrorMessage == string.Format(CSSPServicesRes._IsRequired, "Information")).Any());
                     Assert.Null(log.Information);
-                    Assert.Equal(count, logService.GetLogList().Count());
+                    Assert.Equal(count, (int)logService.GetLogList().Count());
 
 
                     // -----------------------------------
@@ -561,14 +560,8 @@ namespace CSSPServices.Tests
         #region Functions private
         private void CheckLogFields(List<Log> logList)
         {
-            Assert.NotNull(logList[0].LogID);
             Assert.False(string.IsNullOrWhiteSpace(logList[0].TableName));
-            Assert.NotNull(logList[0].ID);
-            Assert.NotNull(logList[0].LogCommand);
             Assert.False(string.IsNullOrWhiteSpace(logList[0].Information));
-            Assert.NotNull(logList[0].LastUpdateDate_UTC);
-            Assert.NotNull(logList[0].LastUpdateContactTVItemID);
-            Assert.NotNull(logList[0].HasErrors);
         }
         private Log GetFilledRandomLog(string OmitPropName)
         {

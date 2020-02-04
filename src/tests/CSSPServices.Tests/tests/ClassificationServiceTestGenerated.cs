@@ -21,7 +21,6 @@ using CSSPEnums.Resources;
 
 namespace CSSPServices.Tests
 {
-
     public partial class ClassificationServiceTest : TestHelper
     {
         #region Variables
@@ -183,13 +182,13 @@ namespace CSSPServices.Tests
                     classification.Ordinal = -1;
                     Assert.False(classificationService.Add(classification));
                     Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "Ordinal", "0", "10000"), classification.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, classificationService.GetClassificationList().Count());
+                    Assert.Equal(count, (int)classificationService.GetClassificationList().Count());
                     classification = null;
                     classification = GetFilledRandomClassification("");
                     classification.Ordinal = 10001;
                     Assert.False(classificationService.Add(classification));
                     Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "Ordinal", "0", "10000"), classification.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, classificationService.GetClassificationList().Count());
+                    Assert.Equal(count, (int)classificationService.GetClassificationList().Count());
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -551,13 +550,6 @@ namespace CSSPServices.Tests
         #region Functions private
         private void CheckClassificationFields(List<Classification> classificationList)
         {
-            Assert.NotNull(classificationList[0].ClassificationID);
-            Assert.NotNull(classificationList[0].ClassificationTVItemID);
-            Assert.NotNull(classificationList[0].ClassificationType);
-            Assert.NotNull(classificationList[0].Ordinal);
-            Assert.NotNull(classificationList[0].LastUpdateDate_UTC);
-            Assert.NotNull(classificationList[0].LastUpdateContactTVItemID);
-            Assert.NotNull(classificationList[0].HasErrors);
         }
         private Classification GetFilledRandomClassification(string OmitPropName)
         {

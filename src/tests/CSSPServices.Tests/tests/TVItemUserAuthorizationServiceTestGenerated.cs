@@ -21,7 +21,6 @@ using CSSPEnums.Resources;
 
 namespace CSSPServices.Tests
 {
-
     public partial class TVItemUserAuthorizationServiceTest : TestHelper
     {
         #region Variables
@@ -608,9 +607,6 @@ namespace CSSPServices.Tests
         #region Functions private
         private void CheckTVItemUserAuthorizationFields(List<TVItemUserAuthorization> tvItemUserAuthorizationList)
         {
-            Assert.NotNull(tvItemUserAuthorizationList[0].TVItemUserAuthorizationID);
-            Assert.NotNull(tvItemUserAuthorizationList[0].ContactTVItemID);
-            Assert.NotNull(tvItemUserAuthorizationList[0].TVItemID1);
             if (tvItemUserAuthorizationList[0].TVItemID2 != null)
             {
                 Assert.NotNull(tvItemUserAuthorizationList[0].TVItemID2);
@@ -623,10 +619,6 @@ namespace CSSPServices.Tests
             {
                 Assert.NotNull(tvItemUserAuthorizationList[0].TVItemID4);
             }
-            Assert.NotNull(tvItemUserAuthorizationList[0].TVAuth);
-            Assert.NotNull(tvItemUserAuthorizationList[0].LastUpdateDate_UTC);
-            Assert.NotNull(tvItemUserAuthorizationList[0].LastUpdateContactTVItemID);
-            Assert.NotNull(tvItemUserAuthorizationList[0].HasErrors);
         }
         private TVItemUserAuthorization GetFilledRandomTVItemUserAuthorization(string OmitPropName)
         {

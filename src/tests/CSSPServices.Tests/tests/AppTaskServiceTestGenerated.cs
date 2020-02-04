@@ -21,7 +21,6 @@ using CSSPEnums.Resources;
 
 namespace CSSPServices.Tests
 {
-
     public partial class AppTaskServiceTest : TestHelper
     {
         #region Variables
@@ -215,13 +214,13 @@ namespace CSSPServices.Tests
                     appTask.PercentCompleted = -1;
                     Assert.False(appTaskService.Add(appTask));
                     Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "PercentCompleted", "0", "100"), appTask.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, appTaskService.GetAppTaskList().Count());
+                    Assert.Equal(count, (int)appTaskService.GetAppTaskList().Count());
                     appTask = null;
                     appTask = GetFilledRandomAppTask("");
                     appTask.PercentCompleted = 101;
                     Assert.False(appTaskService.Add(appTask));
                     Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "PercentCompleted", "0", "100"), appTask.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, appTaskService.GetAppTaskList().Count());
+                    Assert.Equal(count, (int)appTaskService.GetAppTaskList().Count());
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -231,10 +230,10 @@ namespace CSSPServices.Tests
                     appTask = null;
                     appTask = GetFilledRandomAppTask("Parameters");
                     Assert.False(appTaskService.Add(appTask));
-                    Assert.Equal(1, appTask.ValidationResults.Count());
+                    Assert.Equal(1, (int)appTask.ValidationResults.Count());
                     Assert.True(appTask.ValidationResults.Where(c => c.ErrorMessage == string.Format(CSSPServicesRes._IsRequired, "Parameters")).Any());
                     Assert.Null(appTask.Parameters);
-                    Assert.Equal(count, appTaskService.GetAppTaskList().Count());
+                    Assert.Equal(count, (int)appTaskService.GetAppTaskList().Count());
 
 
                     // -----------------------------------
@@ -291,13 +290,13 @@ namespace CSSPServices.Tests
                     appTask.EstimatedLength_second = -1;
                     Assert.False(appTaskService.Add(appTask));
                     Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "EstimatedLength_second", "0", "1000000"), appTask.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, appTaskService.GetAppTaskList().Count());
+                    Assert.Equal(count, (int)appTaskService.GetAppTaskList().Count());
                     appTask = null;
                     appTask = GetFilledRandomAppTask("");
                     appTask.EstimatedLength_second = 1000001;
                     Assert.False(appTaskService.Add(appTask));
                     Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "EstimatedLength_second", "0", "1000000"), appTask.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, appTaskService.GetAppTaskList().Count());
+                    Assert.Equal(count, (int)appTaskService.GetAppTaskList().Count());
 
                     // -----------------------------------
                     // Is Nullable
@@ -310,13 +309,13 @@ namespace CSSPServices.Tests
                     appTask.RemainingTime_second = -1;
                     Assert.False(appTaskService.Add(appTask));
                     Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "RemainingTime_second", "0", "1000000"), appTask.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, appTaskService.GetAppTaskList().Count());
+                    Assert.Equal(count, (int)appTaskService.GetAppTaskList().Count());
                     appTask = null;
                     appTask = GetFilledRandomAppTask("");
                     appTask.RemainingTime_second = 1000001;
                     Assert.False(appTaskService.Add(appTask));
                     Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "RemainingTime_second", "0", "1000000"), appTask.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, appTaskService.GetAppTaskList().Count());
+                    Assert.Equal(count, (int)appTaskService.GetAppTaskList().Count());
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -678,15 +677,7 @@ namespace CSSPServices.Tests
         #region Functions private
         private void CheckAppTaskFields(List<AppTask> appTaskList)
         {
-            Assert.NotNull(appTaskList[0].AppTaskID);
-            Assert.NotNull(appTaskList[0].TVItemID);
-            Assert.NotNull(appTaskList[0].TVItemID2);
-            Assert.NotNull(appTaskList[0].AppTaskCommand);
-            Assert.NotNull(appTaskList[0].AppTaskStatus);
-            Assert.NotNull(appTaskList[0].PercentCompleted);
             Assert.False(string.IsNullOrWhiteSpace(appTaskList[0].Parameters));
-            Assert.NotNull(appTaskList[0].Language);
-            Assert.NotNull(appTaskList[0].StartDateTime_UTC);
             if (appTaskList[0].EndDateTime_UTC != null)
             {
                 Assert.NotNull(appTaskList[0].EndDateTime_UTC);
@@ -699,9 +690,6 @@ namespace CSSPServices.Tests
             {
                 Assert.NotNull(appTaskList[0].RemainingTime_second);
             }
-            Assert.NotNull(appTaskList[0].LastUpdateDate_UTC);
-            Assert.NotNull(appTaskList[0].LastUpdateContactTVItemID);
-            Assert.NotNull(appTaskList[0].HasErrors);
         }
         private AppTask GetFilledRandomAppTask(string OmitPropName)
         {

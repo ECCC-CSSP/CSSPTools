@@ -21,7 +21,6 @@ using CSSPEnums.Resources;
 
 namespace CSSPServices.Tests
 {
-
     public partial class SamplingPlanSubsectorSiteServiceTest : TestHelper
     {
         #region Variables
@@ -538,13 +537,6 @@ namespace CSSPServices.Tests
         #region Functions private
         private void CheckSamplingPlanSubsectorSiteFields(List<SamplingPlanSubsectorSite> samplingPlanSubsectorSiteList)
         {
-            Assert.NotNull(samplingPlanSubsectorSiteList[0].SamplingPlanSubsectorSiteID);
-            Assert.NotNull(samplingPlanSubsectorSiteList[0].SamplingPlanSubsectorID);
-            Assert.NotNull(samplingPlanSubsectorSiteList[0].MWQMSiteTVItemID);
-            Assert.NotNull(samplingPlanSubsectorSiteList[0].IsDuplicate);
-            Assert.NotNull(samplingPlanSubsectorSiteList[0].LastUpdateDate_UTC);
-            Assert.NotNull(samplingPlanSubsectorSiteList[0].LastUpdateContactTVItemID);
-            Assert.NotNull(samplingPlanSubsectorSiteList[0].HasErrors);
         }
         private SamplingPlanSubsectorSite GetFilledRandomSamplingPlanSubsectorSite(string OmitPropName)
         {

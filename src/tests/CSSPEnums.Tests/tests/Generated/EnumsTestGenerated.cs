@@ -4527,6 +4527,9 @@ namespace CSSPEnums.Tests
                         case ValveTypeEnum.Automatically:
                             Assert.Equal(CSSPEnumsRes.ValveTypeEnumAutomatically, retStr);
                             break;
+                        case ValveTypeEnum.None:
+                            Assert.Equal(CSSPEnumsRes.ValveTypeEnumNone, retStr);
+                            break;
                         default:
                             Assert.Equal(CSSPEnumsRes.Empty, retStr);
                             break;
@@ -7787,6 +7790,7 @@ namespace CSSPEnums.Tests
                     {
                         case ValveTypeEnum.Manually:
                         case ValveTypeEnum.Automatically:
+                        case ValveTypeEnum.None:
                             Assert.Equal("", retStr);
                             break;
                         default:

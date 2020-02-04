@@ -21,7 +21,6 @@ using CSSPEnums.Resources;
 
 namespace CSSPServices.Tests
 {
-
     public partial class SpillLanguageServiceTest : TestHelper
     {
         #region Variables
@@ -174,10 +173,10 @@ namespace CSSPServices.Tests
                     spillLanguage = null;
                     spillLanguage = GetFilledRandomSpillLanguage("SpillComment");
                     Assert.False(spillLanguageService.Add(spillLanguage));
-                    Assert.Equal(1, spillLanguage.ValidationResults.Count());
+                    Assert.Equal(1, (int)spillLanguage.ValidationResults.Count());
                     Assert.True(spillLanguage.ValidationResults.Where(c => c.ErrorMessage == string.Format(CSSPServicesRes._IsRequired, "SpillComment")).Any());
                     Assert.Null(spillLanguage.SpillComment);
-                    Assert.Equal(count, spillLanguageService.GetSpillLanguageList().Count());
+                    Assert.Equal(count, (int)spillLanguageService.GetSpillLanguageList().Count());
 
 
                     // -----------------------------------
@@ -553,14 +552,7 @@ namespace CSSPServices.Tests
         #region Functions private
         private void CheckSpillLanguageFields(List<SpillLanguage> spillLanguageList)
         {
-            Assert.NotNull(spillLanguageList[0].SpillLanguageID);
-            Assert.NotNull(spillLanguageList[0].SpillID);
-            Assert.NotNull(spillLanguageList[0].Language);
             Assert.False(string.IsNullOrWhiteSpace(spillLanguageList[0].SpillComment));
-            Assert.NotNull(spillLanguageList[0].TranslationStatus);
-            Assert.NotNull(spillLanguageList[0].LastUpdateDate_UTC);
-            Assert.NotNull(spillLanguageList[0].LastUpdateContactTVItemID);
-            Assert.NotNull(spillLanguageList[0].HasErrors);
         }
         private SpillLanguage GetFilledRandomSpillLanguage(string OmitPropName)
         {

@@ -29,7 +29,7 @@ namespace CSSPServicesGenerateCodeHelper
         #endregion Constructors
 
         #region Functions private
-              /// <summary>
+        /// <summary>
         ///     <code>
         ///         Write code part for the current model property to test CRUD
         ///     </code>       
@@ -76,7 +76,7 @@ namespace CSSPServicesGenerateCodeHelper
             sb.AppendLine(@"                    }");
             sb.AppendLine($@"                    Assert.Equal(count, { TypeNameLower }Service.Get{ TypeName }List().Count());");
         }
-              /// <summary>
+        /// <summary>
         ///     <code>
         ///         Write code part for the current model property to test key
         ///     </code>       
@@ -413,6 +413,34 @@ namespace CSSPServicesGenerateCodeHelper
                                             }
                                         }
                                         break;
+                                    case "PolSourceSiteEffect":
+                                        {
+                                            PolSourceSiteEffectService polSourceSiteEffectService = new PolSourceSiteEffectService(new Query(), dbTestDB, CharlesLeBlancTVItemID);
+                                            PolSourceSiteEffect polSourceSiteEffect = polSourceSiteEffectService.GetPolSourceSiteEffectList().FirstOrDefault();
+                                            if (polSourceSiteEffect == null)
+                                            {
+                                                sb.AppendLine($@"            // Need to implement (no items found, would need to add at least one in the TestDB) [{ TypeName } { csspProp.PropName } { csspProp.ExistTypeName } { csspProp.ExistFieldID }]");
+                                            }
+                                            else
+                                            {
+                                                sb.AppendLine($@"            if (OmitPropName != ""{ prop.Name }"") { TypeNameLower }.{ prop.Name } = { polSourceSiteEffect.PolSourceSiteEffectID };");
+                                            }
+                                        }
+                                        break;
+                                    case "PolSourceSiteEffectTerm":
+                                        {
+                                            PolSourceSiteEffectTermService polSourceSiteEffectTermService = new PolSourceSiteEffectTermService(new Query(), dbTestDB, CharlesLeBlancTVItemID);
+                                            PolSourceSiteEffectTerm polSourceSiteEffectTerm = polSourceSiteEffectTermService.GetPolSourceSiteEffectTermList().FirstOrDefault();
+                                            if (polSourceSiteEffectTerm == null)
+                                            {
+                                                sb.AppendLine($@"            // Need to implement (no items found, would need to add at least one in the TestDB) [{ TypeName } { csspProp.PropName } { csspProp.ExistTypeName } { csspProp.ExistFieldID }]");
+                                            }
+                                            else
+                                            {
+                                                sb.AppendLine($@"            if (OmitPropName != ""{ prop.Name }"") { TypeNameLower }.{ prop.Name } = { polSourceSiteEffectTerm.PolSourceSiteEffectTermID };");
+                                            }
+                                        }
+                                        break;
                                     case "RatingCurve":
                                         {
                                             RatingCurveService ratingCurveService = new RatingCurveService(new Query(), dbTestDB, CharlesLeBlancTVItemID);
@@ -550,6 +578,20 @@ namespace CSSPServicesGenerateCodeHelper
                                                         sb.AppendLine($@"            if (OmitPropName != ""{ prop.Name }"") { TypeNameLower }.{ prop.Name } = { tvItem.TVItemID };");
                                                     }
                                                 }
+                                            }
+                                        }
+                                        break;
+                                    case "TVItemLink":
+                                        {
+                                            TVItemLinkService tvItemLinkService = new TVItemLinkService(new Query(), dbTestDB, CharlesLeBlancTVItemID);
+                                            TVItemLink tvItemLink = tvItemLinkService.GetTVItemLinkList().FirstOrDefault();
+                                            if (tvItemLink == null)
+                                            {
+                                                sb.AppendLine($@"            // Need to implement (no items found, would need to add at least one in the TestDB) [{ TypeName } { csspProp.PropName } { csspProp.ExistTypeName } { csspProp.ExistFieldID }]");
+                                            }
+                                            else
+                                            {
+                                                sb.AppendLine($@"            if (OmitPropName != ""{ prop.Name }"") { TypeNameLower }.{ prop.Name } = { tvItemLink.TVItemLinkID };");
                                             }
                                         }
                                         break;
@@ -859,10 +901,10 @@ namespace CSSPServicesGenerateCodeHelper
                     }
                 }
 
-                if (TypeName != "DrogueRunPosition")
-                {
-                    continue;
-                }
+                //if (TypeName != "DrogueRunPosition")
+                //{
+                //    continue;
+                //}
 
                 sb.AppendLine(@" /* Auto generated from the CSSPCodeWriter.proj by clicking on the [\src\[ClassName]ServiceGenerated.cs] button");
                 sb.AppendLine(@" *");
@@ -978,7 +1020,10 @@ namespace CSSPServicesGenerateCodeHelper
                         }
                         else
                         {
-                            sb.AppendLine($@"            { (csspProp.IsNullable ? "    " : "") }Assert.NotNull({ TypeNameLower }List[0].{ csspProp.PropName });");
+                            if (csspProp.IsNullable)
+                            {
+                                sb.AppendLine($@"            { (csspProp.IsNullable ? "    " : "") }Assert.NotNull({ TypeNameLower }List[0].{ csspProp.PropName });");
+                            }
                         }
                         if (csspProp.IsNullable)
                         {

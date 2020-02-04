@@ -21,7 +21,6 @@ using CSSPEnums.Resources;
 
 namespace CSSPServices.Tests
 {
-
     public partial class ReportSectionServiceTest : TestHelper
     {
         #region Variables
@@ -183,13 +182,13 @@ namespace CSSPServices.Tests
                     reportSection.Ordinal = -1;
                     Assert.False(reportSectionService.Add(reportSection));
                     Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "Ordinal", "0", "1000"), reportSection.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, reportSectionService.GetReportSectionList().Count());
+                    Assert.Equal(count, (int)reportSectionService.GetReportSectionList().Count());
                     reportSection = null;
                     reportSection = GetFilledRandomReportSection("");
                     reportSection.Ordinal = 1001;
                     Assert.False(reportSectionService.Add(reportSection));
                     Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "Ordinal", "0", "1000"), reportSection.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, reportSectionService.GetReportSectionList().Count());
+                    Assert.Equal(count, (int)reportSectionService.GetReportSectionList().Count());
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -221,13 +220,13 @@ namespace CSSPServices.Tests
                     reportSection.Year = 1978;
                     Assert.False(reportSectionService.Add(reportSection));
                     Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "Year", "1979", "2050"), reportSection.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, reportSectionService.GetReportSectionList().Count());
+                    Assert.Equal(count, (int)reportSectionService.GetReportSectionList().Count());
                     reportSection = null;
                     reportSection = GetFilledRandomReportSection("");
                     reportSection.Year = 2051;
                     Assert.False(reportSectionService.Add(reportSection));
                     Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "Year", "1979", "2050"), reportSection.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, reportSectionService.GetReportSectionList().Count());
+                    Assert.Equal(count, (int)reportSectionService.GetReportSectionList().Count());
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -608,14 +607,10 @@ namespace CSSPServices.Tests
         #region Functions private
         private void CheckReportSectionFields(List<ReportSection> reportSectionList)
         {
-            Assert.NotNull(reportSectionList[0].ReportSectionID);
-            Assert.NotNull(reportSectionList[0].ReportTypeID);
             if (reportSectionList[0].TVItemID != null)
             {
                 Assert.NotNull(reportSectionList[0].TVItemID);
             }
-            Assert.NotNull(reportSectionList[0].Ordinal);
-            Assert.NotNull(reportSectionList[0].IsStatic);
             if (reportSectionList[0].ParentReportSectionID != null)
             {
                 Assert.NotNull(reportSectionList[0].ParentReportSectionID);
@@ -624,14 +619,10 @@ namespace CSSPServices.Tests
             {
                 Assert.NotNull(reportSectionList[0].Year);
             }
-            Assert.NotNull(reportSectionList[0].Locked);
             if (reportSectionList[0].TemplateReportSectionID != null)
             {
                 Assert.NotNull(reportSectionList[0].TemplateReportSectionID);
             }
-            Assert.NotNull(reportSectionList[0].LastUpdateDate_UTC);
-            Assert.NotNull(reportSectionList[0].LastUpdateContactTVItemID);
-            Assert.NotNull(reportSectionList[0].HasErrors);
         }
         private ReportSection GetFilledRandomReportSection(string OmitPropName)
         {

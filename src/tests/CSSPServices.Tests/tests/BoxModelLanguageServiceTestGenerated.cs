@@ -21,7 +21,6 @@ using CSSPEnums.Resources;
 
 namespace CSSPServices.Tests
 {
-
     public partial class BoxModelLanguageServiceTest : TestHelper
     {
         #region Variables
@@ -175,17 +174,17 @@ namespace CSSPServices.Tests
                     boxModelLanguage = null;
                     boxModelLanguage = GetFilledRandomBoxModelLanguage("ScenarioName");
                     Assert.False(boxModelLanguageService.Add(boxModelLanguage));
-                    Assert.Equal(1, boxModelLanguage.ValidationResults.Count());
+                    Assert.Equal(1, (int)boxModelLanguage.ValidationResults.Count());
                     Assert.True(boxModelLanguage.ValidationResults.Where(c => c.ErrorMessage == string.Format(CSSPServicesRes._IsRequired, "ScenarioName")).Any());
                     Assert.Null(boxModelLanguage.ScenarioName);
-                    Assert.Equal(count, boxModelLanguageService.GetBoxModelLanguageList().Count());
+                    Assert.Equal(count, (int)boxModelLanguageService.GetBoxModelLanguageList().Count());
 
                     boxModelLanguage = null;
                     boxModelLanguage = GetFilledRandomBoxModelLanguage("");
                     boxModelLanguage.ScenarioName = GetRandomString("", 251);
                     Assert.False(boxModelLanguageService.Add(boxModelLanguage));
                     Assert.Equal(string.Format(CSSPServicesRes._MaxLengthIs_, "ScenarioName", "250"), boxModelLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, boxModelLanguageService.GetBoxModelLanguageList().Count());
+                    Assert.Equal(count, (int)boxModelLanguageService.GetBoxModelLanguageList().Count());
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -560,14 +559,7 @@ namespace CSSPServices.Tests
         #region Functions private
         private void CheckBoxModelLanguageFields(List<BoxModelLanguage> boxModelLanguageList)
         {
-            Assert.NotNull(boxModelLanguageList[0].BoxModelLanguageID);
-            Assert.NotNull(boxModelLanguageList[0].BoxModelID);
-            Assert.NotNull(boxModelLanguageList[0].Language);
             Assert.False(string.IsNullOrWhiteSpace(boxModelLanguageList[0].ScenarioName));
-            Assert.NotNull(boxModelLanguageList[0].TranslationStatus);
-            Assert.NotNull(boxModelLanguageList[0].LastUpdateDate_UTC);
-            Assert.NotNull(boxModelLanguageList[0].LastUpdateContactTVItemID);
-            Assert.NotNull(boxModelLanguageList[0].HasErrors);
         }
         private BoxModelLanguage GetFilledRandomBoxModelLanguage(string OmitPropName)
         {

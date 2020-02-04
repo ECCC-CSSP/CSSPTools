@@ -21,7 +21,6 @@ using CSSPEnums.Resources;
 
 namespace CSSPServices.Tests
 {
-
     public partial class DrogueRunServiceTest : TestHelper
     {
         #region Variables
@@ -170,13 +169,13 @@ namespace CSSPServices.Tests
                     drogueRun.DrogueNumber = -1;
                     Assert.False(drogueRunService.Add(drogueRun));
                     Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "DrogueNumber", "0", "100"), drogueRun.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, drogueRunService.GetDrogueRunList().Count());
+                    Assert.Equal(count, (int)drogueRunService.GetDrogueRunList().Count());
                     drogueRun = null;
                     drogueRun = GetFilledRandomDrogueRun("");
                     drogueRun.DrogueNumber = 101;
                     Assert.False(drogueRunService.Add(drogueRun));
                     Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "DrogueNumber", "0", "100"), drogueRun.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, drogueRunService.GetDrogueRunList().Count());
+                    Assert.Equal(count, (int)drogueRunService.GetDrogueRunList().Count());
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -574,15 +573,6 @@ namespace CSSPServices.Tests
         #region Functions private
         private void CheckDrogueRunFields(List<DrogueRun> drogueRunList)
         {
-            Assert.NotNull(drogueRunList[0].DrogueRunID);
-            Assert.NotNull(drogueRunList[0].SubsectorTVItemID);
-            Assert.NotNull(drogueRunList[0].DrogueNumber);
-            Assert.NotNull(drogueRunList[0].DrogueType);
-            Assert.NotNull(drogueRunList[0].RunStartDateTime);
-            Assert.NotNull(drogueRunList[0].IsRisingTide);
-            Assert.NotNull(drogueRunList[0].LastUpdateDate_UTC);
-            Assert.NotNull(drogueRunList[0].LastUpdateContactTVItemID);
-            Assert.NotNull(drogueRunList[0].HasErrors);
         }
         private DrogueRun GetFilledRandomDrogueRun(string OmitPropName)
         {

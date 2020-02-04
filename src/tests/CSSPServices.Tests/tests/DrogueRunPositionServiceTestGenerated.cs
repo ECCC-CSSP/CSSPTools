@@ -163,13 +163,13 @@ namespace CSSPServices.Tests
                     drogueRunPosition.Ordinal = -1;
                     Assert.False(drogueRunPositionService.Add(drogueRunPosition));
                     Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "Ordinal", "0", "100000"), drogueRunPosition.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, drogueRunPositionService.GetDrogueRunPositionList().Count());
+                    Assert.Equal(count, (int)drogueRunPositionService.GetDrogueRunPositionList().Count());
                     drogueRunPosition = null;
                     drogueRunPosition = GetFilledRandomDrogueRunPosition("");
                     drogueRunPosition.Ordinal = 100001;
                     Assert.False(drogueRunPositionService.Add(drogueRunPosition));
                     Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "Ordinal", "0", "100000"), drogueRunPosition.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, drogueRunPositionService.GetDrogueRunPositionList().Count());
+                    Assert.Equal(count, (int)drogueRunPositionService.GetDrogueRunPositionList().Count());
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -186,13 +186,13 @@ namespace CSSPServices.Tests
                     drogueRunPosition.StepLat = -181.0D;
                     Assert.False(drogueRunPositionService.Add(drogueRunPosition));
                     Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "StepLat", "-180", "180"), drogueRunPosition.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, drogueRunPositionService.GetDrogueRunPositionList().Count());
+                    Assert.Equal(count, (int)drogueRunPositionService.GetDrogueRunPositionList().Count());
                     drogueRunPosition = null;
                     drogueRunPosition = GetFilledRandomDrogueRunPosition("");
                     drogueRunPosition.StepLat = 181.0D;
                     Assert.False(drogueRunPositionService.Add(drogueRunPosition));
                     Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "StepLat", "-180", "180"), drogueRunPosition.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, drogueRunPositionService.GetDrogueRunPositionList().Count());
+                    Assert.Equal(count, (int)drogueRunPositionService.GetDrogueRunPositionList().Count());
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -209,13 +209,13 @@ namespace CSSPServices.Tests
                     drogueRunPosition.StepLng = -91.0D;
                     Assert.False(drogueRunPositionService.Add(drogueRunPosition));
                     Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "StepLng", "-90", "90"), drogueRunPosition.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, drogueRunPositionService.GetDrogueRunPositionList().Count());
+                    Assert.Equal(count, (int)drogueRunPositionService.GetDrogueRunPositionList().Count());
                     drogueRunPosition = null;
                     drogueRunPosition = GetFilledRandomDrogueRunPosition("");
                     drogueRunPosition.StepLng = 91.0D;
                     Assert.False(drogueRunPositionService.Add(drogueRunPosition));
                     Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "StepLng", "-90", "90"), drogueRunPosition.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, drogueRunPositionService.GetDrogueRunPositionList().Count());
+                    Assert.Equal(count, (int)drogueRunPositionService.GetDrogueRunPositionList().Count());
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -249,13 +249,13 @@ namespace CSSPServices.Tests
                     drogueRunPosition.CalculatedSpeed_m_s = -1.0D;
                     Assert.False(drogueRunPositionService.Add(drogueRunPosition));
                     Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "CalculatedSpeed_m_s", "0", "10"), drogueRunPosition.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, drogueRunPositionService.GetDrogueRunPositionList().Count());
+                    Assert.Equal(count, (int)drogueRunPositionService.GetDrogueRunPositionList().Count());
                     drogueRunPosition = null;
                     drogueRunPosition = GetFilledRandomDrogueRunPosition("");
                     drogueRunPosition.CalculatedSpeed_m_s = 11.0D;
                     Assert.False(drogueRunPositionService.Add(drogueRunPosition));
                     Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "CalculatedSpeed_m_s", "0", "10"), drogueRunPosition.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, drogueRunPositionService.GetDrogueRunPositionList().Count());
+                    Assert.Equal(count, (int)drogueRunPositionService.GetDrogueRunPositionList().Count());
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -272,13 +272,13 @@ namespace CSSPServices.Tests
                     drogueRunPosition.CalculatedDirection_deg = -1.0D;
                     Assert.False(drogueRunPositionService.Add(drogueRunPosition));
                     Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "CalculatedDirection_deg", "0", "360"), drogueRunPosition.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, drogueRunPositionService.GetDrogueRunPositionList().Count());
+                    Assert.Equal(count, (int)drogueRunPositionService.GetDrogueRunPositionList().Count());
                     drogueRunPosition = null;
                     drogueRunPosition = GetFilledRandomDrogueRunPosition("");
                     drogueRunPosition.CalculatedDirection_deg = 361.0D;
                     Assert.False(drogueRunPositionService.Add(drogueRunPosition));
                     Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "CalculatedDirection_deg", "0", "360"), drogueRunPosition.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, drogueRunPositionService.GetDrogueRunPositionList().Count());
+                    Assert.Equal(count, (int)drogueRunPositionService.GetDrogueRunPositionList().Count());
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -640,17 +640,6 @@ namespace CSSPServices.Tests
         #region Functions private
         private void CheckDrogueRunPositionFields(List<DrogueRunPosition> drogueRunPositionList)
         {
-            Assert.NotNull(drogueRunPositionList[0].DrogueRunPositionID);
-            Assert.NotNull(drogueRunPositionList[0].DrogueRunID);
-            Assert.NotNull(drogueRunPositionList[0].Ordinal);
-            Assert.NotNull(drogueRunPositionList[0].StepLat);
-            Assert.NotNull(drogueRunPositionList[0].StepLng);
-            Assert.NotNull(drogueRunPositionList[0].StepDateTime_Local);
-            Assert.NotNull(drogueRunPositionList[0].CalculatedSpeed_m_s);
-            Assert.NotNull(drogueRunPositionList[0].CalculatedDirection_deg);
-            Assert.NotNull(drogueRunPositionList[0].LastUpdateDate_UTC);
-            Assert.NotNull(drogueRunPositionList[0].LastUpdateContactTVItemID);
-            Assert.NotNull(drogueRunPositionList[0].HasErrors);
         }
         private DrogueRunPosition GetFilledRandomDrogueRunPosition(string OmitPropName)
         {

@@ -21,7 +21,6 @@ using CSSPEnums.Resources;
 
 namespace CSSPServices.Tests
 {
-
     public partial class AddressServiceTest : TestHelper
     {
         #region Variables
@@ -240,7 +239,7 @@ namespace CSSPServices.Tests
                     address.StreetName = GetRandomString("", 201);
                     Assert.False(addressService.Add(address));
                     Assert.Equal(string.Format(CSSPServicesRes._MaxLengthIs_, "StreetName", "200"), address.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, addressService.GetAddressList().Count());
+                    Assert.Equal(count, (int)addressService.GetAddressList().Count());
 
                     // -----------------------------------
                     // Is Nullable
@@ -253,7 +252,7 @@ namespace CSSPServices.Tests
                     address.StreetNumber = GetRandomString("", 51);
                     Assert.False(addressService.Add(address));
                     Assert.Equal(string.Format(CSSPServicesRes._MaxLengthIs_, "StreetNumber", "50"), address.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, addressService.GetAddressList().Count());
+                    Assert.Equal(count, (int)addressService.GetAddressList().Count());
 
                     // -----------------------------------
                     // Is Nullable
@@ -279,13 +278,13 @@ namespace CSSPServices.Tests
                     address.PostalCode = GetRandomString("", 5);
                     Assert.False(addressService.Add(address));
                     Assert.Equal(string.Format(CSSPServicesRes._LengthShouldBeBetween_And_, "PostalCode", "6", "11"), address.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, addressService.GetAddressList().Count());
+                    Assert.Equal(count, (int)addressService.GetAddressList().Count());
                     address = null;
                     address = GetFilledRandomAddress("");
                     address.PostalCode = GetRandomString("", 12);
                     Assert.False(addressService.Add(address));
                     Assert.Equal(string.Format(CSSPServicesRes._LengthShouldBeBetween_And_, "PostalCode", "6", "11"), address.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, addressService.GetAddressList().Count());
+                    Assert.Equal(count, (int)addressService.GetAddressList().Count());
 
                     // -----------------------------------
                     // Is Nullable
@@ -298,13 +297,13 @@ namespace CSSPServices.Tests
                     address.GoogleAddressText = GetRandomString("", 9);
                     Assert.False(addressService.Add(address));
                     Assert.Equal(string.Format(CSSPServicesRes._LengthShouldBeBetween_And_, "GoogleAddressText", "10", "200"), address.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, addressService.GetAddressList().Count());
+                    Assert.Equal(count, (int)addressService.GetAddressList().Count());
                     address = null;
                     address = GetFilledRandomAddress("");
                     address.GoogleAddressText = GetRandomString("", 201);
                     Assert.False(addressService.Add(address));
                     Assert.Equal(string.Format(CSSPServicesRes._LengthShouldBeBetween_And_, "GoogleAddressText", "10", "200"), address.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, addressService.GetAddressList().Count());
+                    Assert.Equal(count, (int)addressService.GetAddressList().Count());
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -666,12 +665,6 @@ namespace CSSPServices.Tests
         #region Functions private
         private void CheckAddressFields(List<Address> addressList)
         {
-            Assert.NotNull(addressList[0].AddressID);
-            Assert.NotNull(addressList[0].AddressTVItemID);
-            Assert.NotNull(addressList[0].AddressType);
-            Assert.NotNull(addressList[0].CountryTVItemID);
-            Assert.NotNull(addressList[0].ProvinceTVItemID);
-            Assert.NotNull(addressList[0].MunicipalityTVItemID);
             if (!string.IsNullOrWhiteSpace(addressList[0].StreetName))
             {
                 Assert.False(string.IsNullOrWhiteSpace(addressList[0].StreetName));
@@ -692,9 +685,6 @@ namespace CSSPServices.Tests
             {
                 Assert.False(string.IsNullOrWhiteSpace(addressList[0].GoogleAddressText));
             }
-            Assert.NotNull(addressList[0].LastUpdateDate_UTC);
-            Assert.NotNull(addressList[0].LastUpdateContactTVItemID);
-            Assert.NotNull(addressList[0].HasErrors);
         }
         private Address GetFilledRandomAddress(string OmitPropName)
         {

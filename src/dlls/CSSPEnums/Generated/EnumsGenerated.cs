@@ -2675,6 +2675,8 @@ namespace CSSPEnums
                     return CSSPEnumsRes.ValveTypeEnumManually;
                 case ValveTypeEnum.Automatically:
                     return CSSPEnumsRes.ValveTypeEnumAutomatically;
+                case ValveTypeEnum.None:
+                    return CSSPEnumsRes.ValveTypeEnumNone;
                 default:
                     return CSSPEnumsRes.Empty;
             }

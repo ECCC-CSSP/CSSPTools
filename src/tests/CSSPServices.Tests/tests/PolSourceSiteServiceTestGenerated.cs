@@ -21,7 +21,6 @@ using CSSPEnums.Resources;
 
 namespace CSSPServices.Tests
 {
-
     public partial class PolSourceSiteServiceTest : TestHelper
     {
         #region Variables
@@ -170,7 +169,7 @@ namespace CSSPServices.Tests
                     polSourceSite.Temp_Locator_CanDelete = GetRandomString("", 51);
                     Assert.False(polSourceSiteService.Add(polSourceSite));
                     Assert.Equal(string.Format(CSSPServicesRes._MaxLengthIs_, "Temp_Locator_CanDelete", "50"), polSourceSite.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, polSourceSiteService.GetPolSourceSiteList().Count());
+                    Assert.Equal(count, (int)polSourceSiteService.GetPolSourceSiteList().Count());
 
                     // -----------------------------------
                     // Is Nullable
@@ -183,13 +182,13 @@ namespace CSSPServices.Tests
                     polSourceSite.Oldsiteid = -1;
                     Assert.False(polSourceSiteService.Add(polSourceSite));
                     Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "Oldsiteid", "0", "1000"), polSourceSite.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, polSourceSiteService.GetPolSourceSiteList().Count());
+                    Assert.Equal(count, (int)polSourceSiteService.GetPolSourceSiteList().Count());
                     polSourceSite = null;
                     polSourceSite = GetFilledRandomPolSourceSite("");
                     polSourceSite.Oldsiteid = 1001;
                     Assert.False(polSourceSiteService.Add(polSourceSite));
                     Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "Oldsiteid", "0", "1000"), polSourceSite.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, polSourceSiteService.GetPolSourceSiteList().Count());
+                    Assert.Equal(count, (int)polSourceSiteService.GetPolSourceSiteList().Count());
 
                     // -----------------------------------
                     // Is Nullable
@@ -202,13 +201,13 @@ namespace CSSPServices.Tests
                     polSourceSite.Site = -1;
                     Assert.False(polSourceSiteService.Add(polSourceSite));
                     Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "Site", "0", "1000"), polSourceSite.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, polSourceSiteService.GetPolSourceSiteList().Count());
+                    Assert.Equal(count, (int)polSourceSiteService.GetPolSourceSiteList().Count());
                     polSourceSite = null;
                     polSourceSite = GetFilledRandomPolSourceSite("");
                     polSourceSite.Site = 1001;
                     Assert.False(polSourceSiteService.Add(polSourceSite));
                     Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "Site", "0", "1000"), polSourceSite.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, polSourceSiteService.GetPolSourceSiteList().Count());
+                    Assert.Equal(count, (int)polSourceSiteService.GetPolSourceSiteList().Count());
 
                     // -----------------------------------
                     // Is Nullable
@@ -221,13 +220,13 @@ namespace CSSPServices.Tests
                     polSourceSite.SiteID = -1;
                     Assert.False(polSourceSiteService.Add(polSourceSite));
                     Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "SiteID", "0", "1000"), polSourceSite.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, polSourceSiteService.GetPolSourceSiteList().Count());
+                    Assert.Equal(count, (int)polSourceSiteService.GetPolSourceSiteList().Count());
                     polSourceSite = null;
                     polSourceSite = GetFilledRandomPolSourceSite("");
                     polSourceSite.SiteID = 1001;
                     Assert.False(polSourceSiteService.Add(polSourceSite));
                     Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "SiteID", "0", "1000"), polSourceSite.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, polSourceSiteService.GetPolSourceSiteList().Count());
+                    Assert.Equal(count, (int)polSourceSiteService.GetPolSourceSiteList().Count());
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -627,8 +626,6 @@ namespace CSSPServices.Tests
         #region Functions private
         private void CheckPolSourceSiteFields(List<PolSourceSite> polSourceSiteList)
         {
-            Assert.NotNull(polSourceSiteList[0].PolSourceSiteID);
-            Assert.NotNull(polSourceSiteList[0].PolSourceSiteTVItemID);
             if (!string.IsNullOrWhiteSpace(polSourceSiteList[0].Temp_Locator_CanDelete))
             {
                 Assert.False(string.IsNullOrWhiteSpace(polSourceSiteList[0].Temp_Locator_CanDelete));
@@ -645,7 +642,6 @@ namespace CSSPServices.Tests
             {
                 Assert.NotNull(polSourceSiteList[0].SiteID);
             }
-            Assert.NotNull(polSourceSiteList[0].IsPointSource);
             if (polSourceSiteList[0].InactiveReason != null)
             {
                 Assert.NotNull(polSourceSiteList[0].InactiveReason);
@@ -654,9 +650,6 @@ namespace CSSPServices.Tests
             {
                 Assert.NotNull(polSourceSiteList[0].CivicAddressTVItemID);
             }
-            Assert.NotNull(polSourceSiteList[0].LastUpdateDate_UTC);
-            Assert.NotNull(polSourceSiteList[0].LastUpdateContactTVItemID);
-            Assert.NotNull(polSourceSiteList[0].HasErrors);
         }
         private PolSourceSite GetFilledRandomPolSourceSite(string OmitPropName)
         {

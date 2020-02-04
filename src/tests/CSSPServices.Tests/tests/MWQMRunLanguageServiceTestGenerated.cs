@@ -21,7 +21,6 @@ using CSSPEnums.Resources;
 
 namespace CSSPServices.Tests
 {
-
     public partial class MWQMRunLanguageServiceTest : TestHelper
     {
         #region Variables
@@ -174,10 +173,10 @@ namespace CSSPServices.Tests
                     mwqmRunLanguage = null;
                     mwqmRunLanguage = GetFilledRandomMWQMRunLanguage("RunComment");
                     Assert.False(mwqmRunLanguageService.Add(mwqmRunLanguage));
-                    Assert.Equal(1, mwqmRunLanguage.ValidationResults.Count());
+                    Assert.Equal(1, (int)mwqmRunLanguage.ValidationResults.Count());
                     Assert.True(mwqmRunLanguage.ValidationResults.Where(c => c.ErrorMessage == string.Format(CSSPServicesRes._IsRequired, "RunComment")).Any());
                     Assert.Null(mwqmRunLanguage.RunComment);
-                    Assert.Equal(count, mwqmRunLanguageService.GetMWQMRunLanguageList().Count());
+                    Assert.Equal(count, (int)mwqmRunLanguageService.GetMWQMRunLanguageList().Count());
 
 
                     // -----------------------------------
@@ -201,10 +200,10 @@ namespace CSSPServices.Tests
                     mwqmRunLanguage = null;
                     mwqmRunLanguage = GetFilledRandomMWQMRunLanguage("RunWeatherComment");
                     Assert.False(mwqmRunLanguageService.Add(mwqmRunLanguage));
-                    Assert.Equal(1, mwqmRunLanguage.ValidationResults.Count());
+                    Assert.Equal(1, (int)mwqmRunLanguage.ValidationResults.Count());
                     Assert.True(mwqmRunLanguage.ValidationResults.Where(c => c.ErrorMessage == string.Format(CSSPServicesRes._IsRequired, "RunWeatherComment")).Any());
                     Assert.Null(mwqmRunLanguage.RunWeatherComment);
-                    Assert.Equal(count, mwqmRunLanguageService.GetMWQMRunLanguageList().Count());
+                    Assert.Equal(count, (int)mwqmRunLanguageService.GetMWQMRunLanguageList().Count());
 
 
                     // -----------------------------------
@@ -580,16 +579,8 @@ namespace CSSPServices.Tests
         #region Functions private
         private void CheckMWQMRunLanguageFields(List<MWQMRunLanguage> mwqmRunLanguageList)
         {
-            Assert.NotNull(mwqmRunLanguageList[0].MWQMRunLanguageID);
-            Assert.NotNull(mwqmRunLanguageList[0].MWQMRunID);
-            Assert.NotNull(mwqmRunLanguageList[0].Language);
             Assert.False(string.IsNullOrWhiteSpace(mwqmRunLanguageList[0].RunComment));
-            Assert.NotNull(mwqmRunLanguageList[0].TranslationStatusRunComment);
             Assert.False(string.IsNullOrWhiteSpace(mwqmRunLanguageList[0].RunWeatherComment));
-            Assert.NotNull(mwqmRunLanguageList[0].TranslationStatusRunWeatherComment);
-            Assert.NotNull(mwqmRunLanguageList[0].LastUpdateDate_UTC);
-            Assert.NotNull(mwqmRunLanguageList[0].LastUpdateContactTVItemID);
-            Assert.NotNull(mwqmRunLanguageList[0].HasErrors);
         }
         private MWQMRunLanguage GetFilledRandomMWQMRunLanguage(string OmitPropName)
         {

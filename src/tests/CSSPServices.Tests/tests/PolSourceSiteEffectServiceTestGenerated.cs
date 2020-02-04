@@ -21,7 +21,6 @@ using CSSPEnums.Resources;
 
 namespace CSSPServices.Tests
 {
-
     public partial class PolSourceSiteEffectServiceTest : TestHelper
     {
         #region Variables
@@ -189,7 +188,7 @@ namespace CSSPServices.Tests
                     polSourceSiteEffect.PolSourceSiteEffectTermIDs = GetRandomString("", 251);
                     Assert.False(polSourceSiteEffectService.Add(polSourceSiteEffect));
                     Assert.Equal(string.Format(CSSPServicesRes._MaxLengthIs_, "PolSourceSiteEffectTermIDs", "250"), polSourceSiteEffect.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, polSourceSiteEffectService.GetPolSourceSiteEffectList().Count());
+                    Assert.Equal(count, (int)polSourceSiteEffectService.GetPolSourceSiteEffectList().Count());
 
                     // -----------------------------------
                     // Is Nullable
@@ -576,9 +575,6 @@ namespace CSSPServices.Tests
         #region Functions private
         private void CheckPolSourceSiteEffectFields(List<PolSourceSiteEffect> polSourceSiteEffectList)
         {
-            Assert.NotNull(polSourceSiteEffectList[0].PolSourceSiteEffectID);
-            Assert.NotNull(polSourceSiteEffectList[0].PolSourceSiteOrInfrastructureTVItemID);
-            Assert.NotNull(polSourceSiteEffectList[0].MWQMSiteTVItemID);
             if (!string.IsNullOrWhiteSpace(polSourceSiteEffectList[0].PolSourceSiteEffectTermIDs))
             {
                 Assert.False(string.IsNullOrWhiteSpace(polSourceSiteEffectList[0].PolSourceSiteEffectTermIDs));
@@ -591,9 +587,6 @@ namespace CSSPServices.Tests
             {
                 Assert.NotNull(polSourceSiteEffectList[0].AnalysisDocumentTVItemID);
             }
-            Assert.NotNull(polSourceSiteEffectList[0].LastUpdateDate_UTC);
-            Assert.NotNull(polSourceSiteEffectList[0].LastUpdateContactTVItemID);
-            Assert.NotNull(polSourceSiteEffectList[0].HasErrors);
         }
         private PolSourceSiteEffect GetFilledRandomPolSourceSiteEffect(string OmitPropName)
         {

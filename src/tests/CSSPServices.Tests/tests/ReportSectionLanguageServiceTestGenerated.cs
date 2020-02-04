@@ -21,7 +21,6 @@ using CSSPEnums.Resources;
 
 namespace CSSPServices.Tests
 {
-
     public partial class ReportSectionLanguageServiceTest : TestHelper
     {
         #region Variables
@@ -175,17 +174,17 @@ namespace CSSPServices.Tests
                     reportSectionLanguage = null;
                     reportSectionLanguage = GetFilledRandomReportSectionLanguage("ReportSectionName");
                     Assert.False(reportSectionLanguageService.Add(reportSectionLanguage));
-                    Assert.Equal(1, reportSectionLanguage.ValidationResults.Count());
+                    Assert.Equal(1, (int)reportSectionLanguage.ValidationResults.Count());
                     Assert.True(reportSectionLanguage.ValidationResults.Where(c => c.ErrorMessage == string.Format(CSSPServicesRes._IsRequired, "ReportSectionName")).Any());
                     Assert.Null(reportSectionLanguage.ReportSectionName);
-                    Assert.Equal(count, reportSectionLanguageService.GetReportSectionLanguageList().Count());
+                    Assert.Equal(count, (int)reportSectionLanguageService.GetReportSectionLanguageList().Count());
 
                     reportSectionLanguage = null;
                     reportSectionLanguage = GetFilledRandomReportSectionLanguage("");
                     reportSectionLanguage.ReportSectionName = GetRandomString("", 101);
                     Assert.False(reportSectionLanguageService.Add(reportSectionLanguage));
                     Assert.Equal(string.Format(CSSPServicesRes._MaxLengthIs_, "ReportSectionName", "100"), reportSectionLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, reportSectionLanguageService.GetReportSectionLanguageList().Count());
+                    Assert.Equal(count, (int)reportSectionLanguageService.GetReportSectionLanguageList().Count());
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -209,17 +208,17 @@ namespace CSSPServices.Tests
                     reportSectionLanguage = null;
                     reportSectionLanguage = GetFilledRandomReportSectionLanguage("ReportSectionText");
                     Assert.False(reportSectionLanguageService.Add(reportSectionLanguage));
-                    Assert.Equal(1, reportSectionLanguage.ValidationResults.Count());
+                    Assert.Equal(1, (int)reportSectionLanguage.ValidationResults.Count());
                     Assert.True(reportSectionLanguage.ValidationResults.Where(c => c.ErrorMessage == string.Format(CSSPServicesRes._IsRequired, "ReportSectionText")).Any());
                     Assert.Null(reportSectionLanguage.ReportSectionText);
-                    Assert.Equal(count, reportSectionLanguageService.GetReportSectionLanguageList().Count());
+                    Assert.Equal(count, (int)reportSectionLanguageService.GetReportSectionLanguageList().Count());
 
                     reportSectionLanguage = null;
                     reportSectionLanguage = GetFilledRandomReportSectionLanguage("");
                     reportSectionLanguage.ReportSectionText = GetRandomString("", 10001);
                     Assert.False(reportSectionLanguageService.Add(reportSectionLanguage));
                     Assert.Equal(string.Format(CSSPServicesRes._MaxLengthIs_, "ReportSectionText", "10000"), reportSectionLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, reportSectionLanguageService.GetReportSectionLanguageList().Count());
+                    Assert.Equal(count, (int)reportSectionLanguageService.GetReportSectionLanguageList().Count());
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -594,16 +593,8 @@ namespace CSSPServices.Tests
         #region Functions private
         private void CheckReportSectionLanguageFields(List<ReportSectionLanguage> reportSectionLanguageList)
         {
-            Assert.NotNull(reportSectionLanguageList[0].ReportSectionLanguageID);
-            Assert.NotNull(reportSectionLanguageList[0].ReportSectionID);
-            Assert.NotNull(reportSectionLanguageList[0].Language);
             Assert.False(string.IsNullOrWhiteSpace(reportSectionLanguageList[0].ReportSectionName));
-            Assert.NotNull(reportSectionLanguageList[0].TranslationStatusReportSectionName);
             Assert.False(string.IsNullOrWhiteSpace(reportSectionLanguageList[0].ReportSectionText));
-            Assert.NotNull(reportSectionLanguageList[0].TranslationStatusReportSectionText);
-            Assert.NotNull(reportSectionLanguageList[0].LastUpdateDate_UTC);
-            Assert.NotNull(reportSectionLanguageList[0].LastUpdateContactTVItemID);
-            Assert.NotNull(reportSectionLanguageList[0].HasErrors);
         }
         private ReportSectionLanguage GetFilledRandomReportSectionLanguage(string OmitPropName)
         {

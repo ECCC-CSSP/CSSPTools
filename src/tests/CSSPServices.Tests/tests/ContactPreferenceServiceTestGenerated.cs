@@ -21,7 +21,6 @@ using CSSPEnums.Resources;
 
 namespace CSSPServices.Tests
 {
-
     public partial class ContactPreferenceServiceTest : TestHelper
     {
         #region Variables
@@ -177,13 +176,13 @@ namespace CSSPServices.Tests
                     contactPreference.MarkerSize = 0;
                     Assert.False(contactPreferenceService.Add(contactPreference));
                     Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "MarkerSize", "1", "1000"), contactPreference.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, contactPreferenceService.GetContactPreferenceList().Count());
+                    Assert.Equal(count, (int)contactPreferenceService.GetContactPreferenceList().Count());
                     contactPreference = null;
                     contactPreference = GetFilledRandomContactPreference("");
                     contactPreference.MarkerSize = 1001;
                     Assert.False(contactPreferenceService.Add(contactPreference));
                     Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "MarkerSize", "1", "1000"), contactPreference.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, contactPreferenceService.GetContactPreferenceList().Count());
+                    Assert.Equal(count, (int)contactPreferenceService.GetContactPreferenceList().Count());
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -545,13 +544,6 @@ namespace CSSPServices.Tests
         #region Functions private
         private void CheckContactPreferenceFields(List<ContactPreference> contactPreferenceList)
         {
-            Assert.NotNull(contactPreferenceList[0].ContactPreferenceID);
-            Assert.NotNull(contactPreferenceList[0].ContactID);
-            Assert.NotNull(contactPreferenceList[0].TVType);
-            Assert.NotNull(contactPreferenceList[0].MarkerSize);
-            Assert.NotNull(contactPreferenceList[0].LastUpdateDate_UTC);
-            Assert.NotNull(contactPreferenceList[0].LastUpdateContactTVItemID);
-            Assert.NotNull(contactPreferenceList[0].HasErrors);
         }
         private ContactPreference GetFilledRandomContactPreference(string OmitPropName)
         {

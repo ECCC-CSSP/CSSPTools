@@ -21,7 +21,6 @@ using CSSPEnums.Resources;
 
 namespace CSSPServices.Tests
 {
-
     public partial class SpillServiceTest : TestHelper
     {
         #region Variables
@@ -223,13 +222,13 @@ namespace CSSPServices.Tests
                     spill.AverageFlow_m3_day = -1.0D;
                     Assert.False(spillService.Add(spill));
                     Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "AverageFlow_m3_day", "0", "1000000"), spill.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, spillService.GetSpillList().Count());
+                    Assert.Equal(count, (int)spillService.GetSpillList().Count());
                     spill = null;
                     spill = GetFilledRandomSpill("");
                     spill.AverageFlow_m3_day = 1000001.0D;
                     Assert.False(spillService.Add(spill));
                     Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "AverageFlow_m3_day", "0", "1000000"), spill.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, spillService.GetSpillList().Count());
+                    Assert.Equal(count, (int)spillService.GetSpillList().Count());
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -591,21 +590,14 @@ namespace CSSPServices.Tests
         #region Functions private
         private void CheckSpillFields(List<Spill> spillList)
         {
-            Assert.NotNull(spillList[0].SpillID);
-            Assert.NotNull(spillList[0].MunicipalityTVItemID);
             if (spillList[0].InfrastructureTVItemID != null)
             {
                 Assert.NotNull(spillList[0].InfrastructureTVItemID);
             }
-            Assert.NotNull(spillList[0].StartDateTime_Local);
             if (spillList[0].EndDateTime_Local != null)
             {
                 Assert.NotNull(spillList[0].EndDateTime_Local);
             }
-            Assert.NotNull(spillList[0].AverageFlow_m3_day);
-            Assert.NotNull(spillList[0].LastUpdateDate_UTC);
-            Assert.NotNull(spillList[0].LastUpdateContactTVItemID);
-            Assert.NotNull(spillList[0].HasErrors);
         }
         private Spill GetFilledRandomSpill(string OmitPropName)
         {

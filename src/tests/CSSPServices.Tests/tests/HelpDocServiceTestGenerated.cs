@@ -21,7 +21,6 @@ using CSSPEnums.Resources;
 
 namespace CSSPServices.Tests
 {
-
     public partial class HelpDocServiceTest : TestHelper
     {
         #region Variables
@@ -149,17 +148,17 @@ namespace CSSPServices.Tests
                     helpDoc = null;
                     helpDoc = GetFilledRandomHelpDoc("DocKey");
                     Assert.False(helpDocService.Add(helpDoc));
-                    Assert.Equal(1, helpDoc.ValidationResults.Count());
+                    Assert.Equal(1, (int)helpDoc.ValidationResults.Count());
                     Assert.True(helpDoc.ValidationResults.Where(c => c.ErrorMessage == string.Format(CSSPServicesRes._IsRequired, "DocKey")).Any());
                     Assert.Null(helpDoc.DocKey);
-                    Assert.Equal(count, helpDocService.GetHelpDocList().Count());
+                    Assert.Equal(count, (int)helpDocService.GetHelpDocList().Count());
 
                     helpDoc = null;
                     helpDoc = GetFilledRandomHelpDoc("");
                     helpDoc.DocKey = GetRandomString("", 101);
                     Assert.False(helpDocService.Add(helpDoc));
                     Assert.Equal(string.Format(CSSPServicesRes._MaxLengthIs_, "DocKey", "100"), helpDoc.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, helpDocService.GetHelpDocList().Count());
+                    Assert.Equal(count, (int)helpDocService.GetHelpDocList().Count());
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -183,17 +182,17 @@ namespace CSSPServices.Tests
                     helpDoc = null;
                     helpDoc = GetFilledRandomHelpDoc("DocHTMLText");
                     Assert.False(helpDocService.Add(helpDoc));
-                    Assert.Equal(1, helpDoc.ValidationResults.Count());
+                    Assert.Equal(1, (int)helpDoc.ValidationResults.Count());
                     Assert.True(helpDoc.ValidationResults.Where(c => c.ErrorMessage == string.Format(CSSPServicesRes._IsRequired, "DocHTMLText")).Any());
                     Assert.Null(helpDoc.DocHTMLText);
-                    Assert.Equal(count, helpDocService.GetHelpDocList().Count());
+                    Assert.Equal(count, (int)helpDocService.GetHelpDocList().Count());
 
                     helpDoc = null;
                     helpDoc = GetFilledRandomHelpDoc("");
                     helpDoc.DocHTMLText = GetRandomString("", 100001);
                     Assert.False(helpDocService.Add(helpDoc));
                     Assert.Equal(string.Format(CSSPServicesRes._MaxLengthIs_, "DocHTMLText", "100000"), helpDoc.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, helpDocService.GetHelpDocList().Count());
+                    Assert.Equal(count, (int)helpDocService.GetHelpDocList().Count());
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -555,13 +554,8 @@ namespace CSSPServices.Tests
         #region Functions private
         private void CheckHelpDocFields(List<HelpDoc> helpDocList)
         {
-            Assert.NotNull(helpDocList[0].HelpDocID);
             Assert.False(string.IsNullOrWhiteSpace(helpDocList[0].DocKey));
-            Assert.NotNull(helpDocList[0].Language);
             Assert.False(string.IsNullOrWhiteSpace(helpDocList[0].DocHTMLText));
-            Assert.NotNull(helpDocList[0].LastUpdateDate_UTC);
-            Assert.NotNull(helpDocList[0].LastUpdateContactTVItemID);
-            Assert.NotNull(helpDocList[0].HasErrors);
         }
         private HelpDoc GetFilledRandomHelpDoc(string OmitPropName)
         {

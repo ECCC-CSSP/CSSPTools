@@ -21,7 +21,6 @@ using CSSPEnums.Resources;
 
 namespace CSSPServices.Tests
 {
-
     public partial class TideDataValueServiceTest : TestHelper
     {
         #region Variables
@@ -223,13 +222,13 @@ namespace CSSPServices.Tests
                     tideDataValue.Depth_m = -1.0D;
                     Assert.False(tideDataValueService.Add(tideDataValue));
                     Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "Depth_m", "0", "10000"), tideDataValue.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, tideDataValueService.GetTideDataValueList().Count());
+                    Assert.Equal(count, (int)tideDataValueService.GetTideDataValueList().Count());
                     tideDataValue = null;
                     tideDataValue = GetFilledRandomTideDataValue("");
                     tideDataValue.Depth_m = 10001.0D;
                     Assert.False(tideDataValueService.Add(tideDataValue));
                     Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "Depth_m", "0", "10000"), tideDataValue.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, tideDataValueService.GetTideDataValueList().Count());
+                    Assert.Equal(count, (int)tideDataValueService.GetTideDataValueList().Count());
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -246,13 +245,13 @@ namespace CSSPServices.Tests
                     tideDataValue.UVelocity_m_s = -1.0D;
                     Assert.False(tideDataValueService.Add(tideDataValue));
                     Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "UVelocity_m_s", "0", "10"), tideDataValue.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, tideDataValueService.GetTideDataValueList().Count());
+                    Assert.Equal(count, (int)tideDataValueService.GetTideDataValueList().Count());
                     tideDataValue = null;
                     tideDataValue = GetFilledRandomTideDataValue("");
                     tideDataValue.UVelocity_m_s = 11.0D;
                     Assert.False(tideDataValueService.Add(tideDataValue));
                     Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "UVelocity_m_s", "0", "10"), tideDataValue.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, tideDataValueService.GetTideDataValueList().Count());
+                    Assert.Equal(count, (int)tideDataValueService.GetTideDataValueList().Count());
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -269,13 +268,13 @@ namespace CSSPServices.Tests
                     tideDataValue.VVelocity_m_s = -1.0D;
                     Assert.False(tideDataValueService.Add(tideDataValue));
                     Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "VVelocity_m_s", "0", "10"), tideDataValue.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, tideDataValueService.GetTideDataValueList().Count());
+                    Assert.Equal(count, (int)tideDataValueService.GetTideDataValueList().Count());
                     tideDataValue = null;
                     tideDataValue = GetFilledRandomTideDataValue("");
                     tideDataValue.VVelocity_m_s = 11.0D;
                     Assert.False(tideDataValueService.Add(tideDataValue));
                     Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "VVelocity_m_s", "0", "10"), tideDataValue.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, tideDataValueService.GetTideDataValueList().Count());
+                    Assert.Equal(count, (int)tideDataValueService.GetTideDataValueList().Count());
 
                     // -----------------------------------
                     // Is Nullable
@@ -663,15 +662,6 @@ namespace CSSPServices.Tests
         #region Functions private
         private void CheckTideDataValueFields(List<TideDataValue> tideDataValueList)
         {
-            Assert.NotNull(tideDataValueList[0].TideDataValueID);
-            Assert.NotNull(tideDataValueList[0].TideSiteTVItemID);
-            Assert.NotNull(tideDataValueList[0].DateTime_Local);
-            Assert.NotNull(tideDataValueList[0].Keep);
-            Assert.NotNull(tideDataValueList[0].TideDataType);
-            Assert.NotNull(tideDataValueList[0].StorageDataType);
-            Assert.NotNull(tideDataValueList[0].Depth_m);
-            Assert.NotNull(tideDataValueList[0].UVelocity_m_s);
-            Assert.NotNull(tideDataValueList[0].VVelocity_m_s);
             if (tideDataValueList[0].TideStart != null)
             {
                 Assert.NotNull(tideDataValueList[0].TideStart);
@@ -680,9 +670,6 @@ namespace CSSPServices.Tests
             {
                 Assert.NotNull(tideDataValueList[0].TideEnd);
             }
-            Assert.NotNull(tideDataValueList[0].LastUpdateDate_UTC);
-            Assert.NotNull(tideDataValueList[0].LastUpdateContactTVItemID);
-            Assert.NotNull(tideDataValueList[0].HasErrors);
         }
         private TideDataValue GetFilledRandomTideDataValue(string OmitPropName)
         {

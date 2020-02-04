@@ -21,7 +21,6 @@ using CSSPEnums.Resources;
 
 namespace CSSPServices.Tests
 {
-
     public partial class TelServiceTest : TestHelper
     {
         #region Variables
@@ -168,17 +167,17 @@ namespace CSSPServices.Tests
                     tel = null;
                     tel = GetFilledRandomTel("TelNumber");
                     Assert.False(telService.Add(tel));
-                    Assert.Equal(1, tel.ValidationResults.Count());
+                    Assert.Equal(1, (int)tel.ValidationResults.Count());
                     Assert.True(tel.ValidationResults.Where(c => c.ErrorMessage == string.Format(CSSPServicesRes._IsRequired, "TelNumber")).Any());
                     Assert.Null(tel.TelNumber);
-                    Assert.Equal(count, telService.GetTelList().Count());
+                    Assert.Equal(count, (int)telService.GetTelList().Count());
 
                     tel = null;
                     tel = GetFilledRandomTel("");
                     tel.TelNumber = GetRandomString("", 51);
                     Assert.False(telService.Add(tel));
                     Assert.Equal(string.Format(CSSPServicesRes._MaxLengthIs_, "TelNumber", "50"), tel.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, telService.GetTelList().Count());
+                    Assert.Equal(count, (int)telService.GetTelList().Count());
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -553,13 +552,7 @@ namespace CSSPServices.Tests
         #region Functions private
         private void CheckTelFields(List<Tel> telList)
         {
-            Assert.NotNull(telList[0].TelID);
-            Assert.NotNull(telList[0].TelTVItemID);
             Assert.False(string.IsNullOrWhiteSpace(telList[0].TelNumber));
-            Assert.NotNull(telList[0].TelType);
-            Assert.NotNull(telList[0].LastUpdateDate_UTC);
-            Assert.NotNull(telList[0].LastUpdateContactTVItemID);
-            Assert.NotNull(telList[0].HasErrors);
         }
         private Tel GetFilledRandomTel(string OmitPropName)
         {

@@ -21,7 +21,6 @@ using CSSPEnums.Resources;
 
 namespace CSSPServices.Tests
 {
-
     public partial class LabSheetTubeMPNDetailServiceTest : TestHelper
     {
         #region Variables
@@ -164,13 +163,13 @@ namespace CSSPServices.Tests
                     labSheetTubeMPNDetail.Ordinal = -1;
                     Assert.False(labSheetTubeMPNDetailService.Add(labSheetTubeMPNDetail));
                     Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "Ordinal", "0", "1000"), labSheetTubeMPNDetail.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, labSheetTubeMPNDetailService.GetLabSheetTubeMPNDetailList().Count());
+                    Assert.Equal(count, (int)labSheetTubeMPNDetailService.GetLabSheetTubeMPNDetailList().Count());
                     labSheetTubeMPNDetail = null;
                     labSheetTubeMPNDetail = GetFilledRandomLabSheetTubeMPNDetail("");
                     labSheetTubeMPNDetail.Ordinal = 1001;
                     Assert.False(labSheetTubeMPNDetailService.Add(labSheetTubeMPNDetail));
                     Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "Ordinal", "0", "1000"), labSheetTubeMPNDetail.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, labSheetTubeMPNDetailService.GetLabSheetTubeMPNDetailList().Count());
+                    Assert.Equal(count, (int)labSheetTubeMPNDetailService.GetLabSheetTubeMPNDetailList().Count());
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -214,13 +213,13 @@ namespace CSSPServices.Tests
                     labSheetTubeMPNDetail.MPN = 0;
                     Assert.False(labSheetTubeMPNDetailService.Add(labSheetTubeMPNDetail));
                     Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "MPN", "1", "10000000"), labSheetTubeMPNDetail.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, labSheetTubeMPNDetailService.GetLabSheetTubeMPNDetailList().Count());
+                    Assert.Equal(count, (int)labSheetTubeMPNDetailService.GetLabSheetTubeMPNDetailList().Count());
                     labSheetTubeMPNDetail = null;
                     labSheetTubeMPNDetail = GetFilledRandomLabSheetTubeMPNDetail("");
                     labSheetTubeMPNDetail.MPN = 10000001;
                     Assert.False(labSheetTubeMPNDetailService.Add(labSheetTubeMPNDetail));
                     Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "MPN", "1", "10000000"), labSheetTubeMPNDetail.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, labSheetTubeMPNDetailService.GetLabSheetTubeMPNDetailList().Count());
+                    Assert.Equal(count, (int)labSheetTubeMPNDetailService.GetLabSheetTubeMPNDetailList().Count());
 
                     // -----------------------------------
                     // Is Nullable
@@ -233,13 +232,13 @@ namespace CSSPServices.Tests
                     labSheetTubeMPNDetail.Tube10 = -1;
                     Assert.False(labSheetTubeMPNDetailService.Add(labSheetTubeMPNDetail));
                     Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "Tube10", "0", "5"), labSheetTubeMPNDetail.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, labSheetTubeMPNDetailService.GetLabSheetTubeMPNDetailList().Count());
+                    Assert.Equal(count, (int)labSheetTubeMPNDetailService.GetLabSheetTubeMPNDetailList().Count());
                     labSheetTubeMPNDetail = null;
                     labSheetTubeMPNDetail = GetFilledRandomLabSheetTubeMPNDetail("");
                     labSheetTubeMPNDetail.Tube10 = 6;
                     Assert.False(labSheetTubeMPNDetailService.Add(labSheetTubeMPNDetail));
                     Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "Tube10", "0", "5"), labSheetTubeMPNDetail.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, labSheetTubeMPNDetailService.GetLabSheetTubeMPNDetailList().Count());
+                    Assert.Equal(count, (int)labSheetTubeMPNDetailService.GetLabSheetTubeMPNDetailList().Count());
 
                     // -----------------------------------
                     // Is Nullable
@@ -252,13 +251,13 @@ namespace CSSPServices.Tests
                     labSheetTubeMPNDetail.Tube1_0 = -1;
                     Assert.False(labSheetTubeMPNDetailService.Add(labSheetTubeMPNDetail));
                     Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "Tube1_0", "0", "5"), labSheetTubeMPNDetail.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, labSheetTubeMPNDetailService.GetLabSheetTubeMPNDetailList().Count());
+                    Assert.Equal(count, (int)labSheetTubeMPNDetailService.GetLabSheetTubeMPNDetailList().Count());
                     labSheetTubeMPNDetail = null;
                     labSheetTubeMPNDetail = GetFilledRandomLabSheetTubeMPNDetail("");
                     labSheetTubeMPNDetail.Tube1_0 = 6;
                     Assert.False(labSheetTubeMPNDetailService.Add(labSheetTubeMPNDetail));
                     Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "Tube1_0", "0", "5"), labSheetTubeMPNDetail.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, labSheetTubeMPNDetailService.GetLabSheetTubeMPNDetailList().Count());
+                    Assert.Equal(count, (int)labSheetTubeMPNDetailService.GetLabSheetTubeMPNDetailList().Count());
 
                     // -----------------------------------
                     // Is Nullable
@@ -271,13 +270,13 @@ namespace CSSPServices.Tests
                     labSheetTubeMPNDetail.Tube0_1 = -1;
                     Assert.False(labSheetTubeMPNDetailService.Add(labSheetTubeMPNDetail));
                     Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "Tube0_1", "0", "5"), labSheetTubeMPNDetail.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, labSheetTubeMPNDetailService.GetLabSheetTubeMPNDetailList().Count());
+                    Assert.Equal(count, (int)labSheetTubeMPNDetailService.GetLabSheetTubeMPNDetailList().Count());
                     labSheetTubeMPNDetail = null;
                     labSheetTubeMPNDetail = GetFilledRandomLabSheetTubeMPNDetail("");
                     labSheetTubeMPNDetail.Tube0_1 = 6;
                     Assert.False(labSheetTubeMPNDetailService.Add(labSheetTubeMPNDetail));
                     Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "Tube0_1", "0", "5"), labSheetTubeMPNDetail.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, labSheetTubeMPNDetailService.GetLabSheetTubeMPNDetailList().Count());
+                    Assert.Equal(count, (int)labSheetTubeMPNDetailService.GetLabSheetTubeMPNDetailList().Count());
 
                     // -----------------------------------
                     // Is Nullable
@@ -294,13 +293,13 @@ namespace CSSPServices.Tests
                     labSheetTubeMPNDetail.Salinity = -1.0D;
                     Assert.False(labSheetTubeMPNDetailService.Add(labSheetTubeMPNDetail));
                     Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "Salinity", "0", "40"), labSheetTubeMPNDetail.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, labSheetTubeMPNDetailService.GetLabSheetTubeMPNDetailList().Count());
+                    Assert.Equal(count, (int)labSheetTubeMPNDetailService.GetLabSheetTubeMPNDetailList().Count());
                     labSheetTubeMPNDetail = null;
                     labSheetTubeMPNDetail = GetFilledRandomLabSheetTubeMPNDetail("");
                     labSheetTubeMPNDetail.Salinity = 41.0D;
                     Assert.False(labSheetTubeMPNDetailService.Add(labSheetTubeMPNDetail));
                     Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "Salinity", "0", "40"), labSheetTubeMPNDetail.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, labSheetTubeMPNDetailService.GetLabSheetTubeMPNDetailList().Count());
+                    Assert.Equal(count, (int)labSheetTubeMPNDetailService.GetLabSheetTubeMPNDetailList().Count());
 
                     // -----------------------------------
                     // Is Nullable
@@ -317,13 +316,13 @@ namespace CSSPServices.Tests
                     labSheetTubeMPNDetail.Temperature = -11.0D;
                     Assert.False(labSheetTubeMPNDetailService.Add(labSheetTubeMPNDetail));
                     Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "Temperature", "-10", "40"), labSheetTubeMPNDetail.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, labSheetTubeMPNDetailService.GetLabSheetTubeMPNDetailList().Count());
+                    Assert.Equal(count, (int)labSheetTubeMPNDetailService.GetLabSheetTubeMPNDetailList().Count());
                     labSheetTubeMPNDetail = null;
                     labSheetTubeMPNDetail = GetFilledRandomLabSheetTubeMPNDetail("");
                     labSheetTubeMPNDetail.Temperature = 41.0D;
                     Assert.False(labSheetTubeMPNDetailService.Add(labSheetTubeMPNDetail));
                     Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "Temperature", "-10", "40"), labSheetTubeMPNDetail.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, labSheetTubeMPNDetailService.GetLabSheetTubeMPNDetailList().Count());
+                    Assert.Equal(count, (int)labSheetTubeMPNDetailService.GetLabSheetTubeMPNDetailList().Count());
 
                     // -----------------------------------
                     // Is Nullable
@@ -336,7 +335,7 @@ namespace CSSPServices.Tests
                     labSheetTubeMPNDetail.ProcessedBy = GetRandomString("", 11);
                     Assert.False(labSheetTubeMPNDetailService.Add(labSheetTubeMPNDetail));
                     Assert.Equal(string.Format(CSSPServicesRes._MaxLengthIs_, "ProcessedBy", "10"), labSheetTubeMPNDetail.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, labSheetTubeMPNDetailService.GetLabSheetTubeMPNDetailList().Count());
+                    Assert.Equal(count, (int)labSheetTubeMPNDetailService.GetLabSheetTubeMPNDetailList().Count());
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -362,7 +361,7 @@ namespace CSSPServices.Tests
                     labSheetTubeMPNDetail.SiteComment = GetRandomString("", 251);
                     Assert.False(labSheetTubeMPNDetailService.Add(labSheetTubeMPNDetail));
                     Assert.Equal(string.Format(CSSPServicesRes._MaxLengthIs_, "SiteComment", "250"), labSheetTubeMPNDetail.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, labSheetTubeMPNDetailService.GetLabSheetTubeMPNDetailList().Count());
+                    Assert.Equal(count, (int)labSheetTubeMPNDetailService.GetLabSheetTubeMPNDetailList().Count());
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -724,10 +723,6 @@ namespace CSSPServices.Tests
         #region Functions private
         private void CheckLabSheetTubeMPNDetailFields(List<LabSheetTubeMPNDetail> labSheetTubeMPNDetailList)
         {
-            Assert.NotNull(labSheetTubeMPNDetailList[0].LabSheetTubeMPNDetailID);
-            Assert.NotNull(labSheetTubeMPNDetailList[0].LabSheetDetailID);
-            Assert.NotNull(labSheetTubeMPNDetailList[0].Ordinal);
-            Assert.NotNull(labSheetTubeMPNDetailList[0].MWQMSiteTVItemID);
             if (labSheetTubeMPNDetailList[0].SampleDateTime != null)
             {
                 Assert.NotNull(labSheetTubeMPNDetailList[0].SampleDateTime);
@@ -760,14 +755,10 @@ namespace CSSPServices.Tests
             {
                 Assert.False(string.IsNullOrWhiteSpace(labSheetTubeMPNDetailList[0].ProcessedBy));
             }
-            Assert.NotNull(labSheetTubeMPNDetailList[0].SampleType);
             if (!string.IsNullOrWhiteSpace(labSheetTubeMPNDetailList[0].SiteComment))
             {
                 Assert.False(string.IsNullOrWhiteSpace(labSheetTubeMPNDetailList[0].SiteComment));
             }
-            Assert.NotNull(labSheetTubeMPNDetailList[0].LastUpdateDate_UTC);
-            Assert.NotNull(labSheetTubeMPNDetailList[0].LastUpdateContactTVItemID);
-            Assert.NotNull(labSheetTubeMPNDetailList[0].HasErrors);
         }
         private LabSheetTubeMPNDetail GetFilledRandomLabSheetTubeMPNDetail(string OmitPropName)
         {

@@ -21,7 +21,6 @@ using CSSPEnums.Resources;
 
 namespace CSSPServices.Tests
 {
-
     public partial class PolSourceSiteEffectTermServiceTest : TestHelper
     {
         #region Variables
@@ -168,17 +167,17 @@ namespace CSSPServices.Tests
                     polSourceSiteEffectTerm = null;
                     polSourceSiteEffectTerm = GetFilledRandomPolSourceSiteEffectTerm("EffectTermEN");
                     Assert.False(polSourceSiteEffectTermService.Add(polSourceSiteEffectTerm));
-                    Assert.Equal(1, polSourceSiteEffectTerm.ValidationResults.Count());
+                    Assert.Equal(1, (int)polSourceSiteEffectTerm.ValidationResults.Count());
                     Assert.True(polSourceSiteEffectTerm.ValidationResults.Where(c => c.ErrorMessage == string.Format(CSSPServicesRes._IsRequired, "EffectTermEN")).Any());
                     Assert.Null(polSourceSiteEffectTerm.EffectTermEN);
-                    Assert.Equal(count, polSourceSiteEffectTermService.GetPolSourceSiteEffectTermList().Count());
+                    Assert.Equal(count, (int)polSourceSiteEffectTermService.GetPolSourceSiteEffectTermList().Count());
 
                     polSourceSiteEffectTerm = null;
                     polSourceSiteEffectTerm = GetFilledRandomPolSourceSiteEffectTerm("");
                     polSourceSiteEffectTerm.EffectTermEN = GetRandomString("", 101);
                     Assert.False(polSourceSiteEffectTermService.Add(polSourceSiteEffectTerm));
                     Assert.Equal(string.Format(CSSPServicesRes._MaxLengthIs_, "EffectTermEN", "100"), polSourceSiteEffectTerm.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, polSourceSiteEffectTermService.GetPolSourceSiteEffectTermList().Count());
+                    Assert.Equal(count, (int)polSourceSiteEffectTermService.GetPolSourceSiteEffectTermList().Count());
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -189,17 +188,17 @@ namespace CSSPServices.Tests
                     polSourceSiteEffectTerm = null;
                     polSourceSiteEffectTerm = GetFilledRandomPolSourceSiteEffectTerm("EffectTermFR");
                     Assert.False(polSourceSiteEffectTermService.Add(polSourceSiteEffectTerm));
-                    Assert.Equal(1, polSourceSiteEffectTerm.ValidationResults.Count());
+                    Assert.Equal(1, (int)polSourceSiteEffectTerm.ValidationResults.Count());
                     Assert.True(polSourceSiteEffectTerm.ValidationResults.Where(c => c.ErrorMessage == string.Format(CSSPServicesRes._IsRequired, "EffectTermFR")).Any());
                     Assert.Null(polSourceSiteEffectTerm.EffectTermFR);
-                    Assert.Equal(count, polSourceSiteEffectTermService.GetPolSourceSiteEffectTermList().Count());
+                    Assert.Equal(count, (int)polSourceSiteEffectTermService.GetPolSourceSiteEffectTermList().Count());
 
                     polSourceSiteEffectTerm = null;
                     polSourceSiteEffectTerm = GetFilledRandomPolSourceSiteEffectTerm("");
                     polSourceSiteEffectTerm.EffectTermFR = GetRandomString("", 101);
                     Assert.False(polSourceSiteEffectTermService.Add(polSourceSiteEffectTerm));
                     Assert.Equal(string.Format(CSSPServicesRes._MaxLengthIs_, "EffectTermFR", "100"), polSourceSiteEffectTerm.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, polSourceSiteEffectTermService.GetPolSourceSiteEffectTermList().Count());
+                    Assert.Equal(count, (int)polSourceSiteEffectTermService.GetPolSourceSiteEffectTermList().Count());
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -561,24 +560,19 @@ namespace CSSPServices.Tests
         #region Functions private
         private void CheckPolSourceSiteEffectTermFields(List<PolSourceSiteEffectTerm> polSourceSiteEffectTermList)
         {
-            Assert.NotNull(polSourceSiteEffectTermList[0].PolSourceSiteEffectTermID);
-            Assert.NotNull(polSourceSiteEffectTermList[0].IsGroup);
             if (polSourceSiteEffectTermList[0].UnderGroupID != null)
             {
                 Assert.NotNull(polSourceSiteEffectTermList[0].UnderGroupID);
             }
             Assert.False(string.IsNullOrWhiteSpace(polSourceSiteEffectTermList[0].EffectTermEN));
             Assert.False(string.IsNullOrWhiteSpace(polSourceSiteEffectTermList[0].EffectTermFR));
-            Assert.NotNull(polSourceSiteEffectTermList[0].LastUpdateDate_UTC);
-            Assert.NotNull(polSourceSiteEffectTermList[0].LastUpdateContactTVItemID);
-            Assert.NotNull(polSourceSiteEffectTermList[0].HasErrors);
         }
         private PolSourceSiteEffectTerm GetFilledRandomPolSourceSiteEffectTerm(string OmitPropName)
         {
             PolSourceSiteEffectTerm polSourceSiteEffectTerm = new PolSourceSiteEffectTerm();
 
             if (OmitPropName != "IsGroup") polSourceSiteEffectTerm.IsGroup = true;
-            // Need to implement [PolSourceSiteEffectTerm UnderGroupID PolSourceSiteEffectTerm PolSourceSiteEffectTermID]
+            if (OmitPropName != "UnderGroupID") polSourceSiteEffectTerm.UnderGroupID = 1;
             if (OmitPropName != "EffectTermEN") polSourceSiteEffectTerm.EffectTermEN = GetRandomString("", 5);
             if (OmitPropName != "EffectTermFR") polSourceSiteEffectTerm.EffectTermFR = GetRandomString("", 5);
             if (OmitPropName != "LastUpdateDate_UTC") polSourceSiteEffectTerm.LastUpdateDate_UTC = new DateTime(2005, 3, 6);

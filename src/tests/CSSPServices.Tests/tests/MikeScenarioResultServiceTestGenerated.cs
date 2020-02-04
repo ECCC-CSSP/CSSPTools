@@ -21,7 +21,6 @@ using CSSPEnums.Resources;
 
 namespace CSSPServices.Tests
 {
-
     public partial class MikeScenarioResultServiceTest : TestHelper
     {
         #region Variables
@@ -525,15 +524,10 @@ namespace CSSPServices.Tests
         #region Functions private
         private void CheckMikeScenarioResultFields(List<MikeScenarioResult> mikeScenarioResultList)
         {
-            Assert.NotNull(mikeScenarioResultList[0].MikeScenarioResultID);
-            Assert.NotNull(mikeScenarioResultList[0].MikeScenarioTVItemID);
             if (!string.IsNullOrWhiteSpace(mikeScenarioResultList[0].MikeResultsJSON))
             {
                 Assert.False(string.IsNullOrWhiteSpace(mikeScenarioResultList[0].MikeResultsJSON));
             }
-            Assert.NotNull(mikeScenarioResultList[0].LastUpdateDate_UTC);
-            Assert.NotNull(mikeScenarioResultList[0].LastUpdateContactTVItemID);
-            Assert.NotNull(mikeScenarioResultList[0].HasErrors);
         }
         private MikeScenarioResult GetFilledRandomMikeScenarioResult(string OmitPropName)
         {

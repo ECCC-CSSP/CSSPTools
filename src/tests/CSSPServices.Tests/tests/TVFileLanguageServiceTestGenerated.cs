@@ -21,7 +21,6 @@ using CSSPEnums.Resources;
 
 namespace CSSPServices.Tests
 {
-
     public partial class TVFileLanguageServiceTest : TestHelper
     {
         #region Variables
@@ -545,17 +544,10 @@ namespace CSSPServices.Tests
         #region Functions private
         private void CheckTVFileLanguageFields(List<TVFileLanguage> tvFileLanguageList)
         {
-            Assert.NotNull(tvFileLanguageList[0].TVFileLanguageID);
-            Assert.NotNull(tvFileLanguageList[0].TVFileID);
-            Assert.NotNull(tvFileLanguageList[0].Language);
             if (!string.IsNullOrWhiteSpace(tvFileLanguageList[0].FileDescription))
             {
                 Assert.False(string.IsNullOrWhiteSpace(tvFileLanguageList[0].FileDescription));
             }
-            Assert.NotNull(tvFileLanguageList[0].TranslationStatus);
-            Assert.NotNull(tvFileLanguageList[0].LastUpdateDate_UTC);
-            Assert.NotNull(tvFileLanguageList[0].LastUpdateContactTVItemID);
-            Assert.NotNull(tvFileLanguageList[0].HasErrors);
         }
         private TVFileLanguage GetFilledRandomTVFileLanguage(string OmitPropName)
         {

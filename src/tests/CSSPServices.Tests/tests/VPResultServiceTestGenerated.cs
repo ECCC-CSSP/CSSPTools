@@ -21,7 +21,6 @@ using CSSPEnums.Resources;
 
 namespace CSSPServices.Tests
 {
-
     public partial class VPResultServiceTest : TestHelper
     {
         #region Variables
@@ -164,13 +163,13 @@ namespace CSSPServices.Tests
                     vpResult.Ordinal = -1;
                     Assert.False(vpResultService.Add(vpResult));
                     Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "Ordinal", "0", "1000"), vpResult.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, vpResultService.GetVPResultList().Count());
+                    Assert.Equal(count, (int)vpResultService.GetVPResultList().Count());
                     vpResult = null;
                     vpResult = GetFilledRandomVPResult("");
                     vpResult.Ordinal = 1001;
                     Assert.False(vpResultService.Add(vpResult));
                     Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "Ordinal", "0", "1000"), vpResult.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, vpResultService.GetVPResultList().Count());
+                    Assert.Equal(count, (int)vpResultService.GetVPResultList().Count());
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -183,13 +182,13 @@ namespace CSSPServices.Tests
                     vpResult.Concentration_MPN_100ml = -1;
                     Assert.False(vpResultService.Add(vpResult));
                     Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "Concentration_MPN_100ml", "0", "10000000"), vpResult.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, vpResultService.GetVPResultList().Count());
+                    Assert.Equal(count, (int)vpResultService.GetVPResultList().Count());
                     vpResult = null;
                     vpResult = GetFilledRandomVPResult("");
                     vpResult.Concentration_MPN_100ml = 10000001;
                     Assert.False(vpResultService.Add(vpResult));
                     Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "Concentration_MPN_100ml", "0", "10000000"), vpResult.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, vpResultService.GetVPResultList().Count());
+                    Assert.Equal(count, (int)vpResultService.GetVPResultList().Count());
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -206,13 +205,13 @@ namespace CSSPServices.Tests
                     vpResult.Dilution = -1.0D;
                     Assert.False(vpResultService.Add(vpResult));
                     Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "Dilution", "0", "1000000"), vpResult.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, vpResultService.GetVPResultList().Count());
+                    Assert.Equal(count, (int)vpResultService.GetVPResultList().Count());
                     vpResult = null;
                     vpResult = GetFilledRandomVPResult("");
                     vpResult.Dilution = 1000001.0D;
                     Assert.False(vpResultService.Add(vpResult));
                     Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "Dilution", "0", "1000000"), vpResult.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, vpResultService.GetVPResultList().Count());
+                    Assert.Equal(count, (int)vpResultService.GetVPResultList().Count());
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -229,13 +228,13 @@ namespace CSSPServices.Tests
                     vpResult.FarFieldWidth_m = -1.0D;
                     Assert.False(vpResultService.Add(vpResult));
                     Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "FarFieldWidth_m", "0", "10000"), vpResult.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, vpResultService.GetVPResultList().Count());
+                    Assert.Equal(count, (int)vpResultService.GetVPResultList().Count());
                     vpResult = null;
                     vpResult = GetFilledRandomVPResult("");
                     vpResult.FarFieldWidth_m = 10001.0D;
                     Assert.False(vpResultService.Add(vpResult));
                     Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "FarFieldWidth_m", "0", "10000"), vpResult.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, vpResultService.GetVPResultList().Count());
+                    Assert.Equal(count, (int)vpResultService.GetVPResultList().Count());
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -252,13 +251,13 @@ namespace CSSPServices.Tests
                     vpResult.DispersionDistance_m = -1.0D;
                     Assert.False(vpResultService.Add(vpResult));
                     Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "DispersionDistance_m", "0", "100000"), vpResult.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, vpResultService.GetVPResultList().Count());
+                    Assert.Equal(count, (int)vpResultService.GetVPResultList().Count());
                     vpResult = null;
                     vpResult = GetFilledRandomVPResult("");
                     vpResult.DispersionDistance_m = 100001.0D;
                     Assert.False(vpResultService.Add(vpResult));
                     Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "DispersionDistance_m", "0", "100000"), vpResult.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, vpResultService.GetVPResultList().Count());
+                    Assert.Equal(count, (int)vpResultService.GetVPResultList().Count());
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -275,13 +274,13 @@ namespace CSSPServices.Tests
                     vpResult.TravelTime_hour = -1.0D;
                     Assert.False(vpResultService.Add(vpResult));
                     Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "TravelTime_hour", "0", "100"), vpResult.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, vpResultService.GetVPResultList().Count());
+                    Assert.Equal(count, (int)vpResultService.GetVPResultList().Count());
                     vpResult = null;
                     vpResult = GetFilledRandomVPResult("");
                     vpResult.TravelTime_hour = 101.0D;
                     Assert.False(vpResultService.Add(vpResult));
                     Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "TravelTime_hour", "0", "100"), vpResult.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, vpResultService.GetVPResultList().Count());
+                    Assert.Equal(count, (int)vpResultService.GetVPResultList().Count());
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -643,17 +642,6 @@ namespace CSSPServices.Tests
         #region Functions private
         private void CheckVPResultFields(List<VPResult> vpResultList)
         {
-            Assert.NotNull(vpResultList[0].VPResultID);
-            Assert.NotNull(vpResultList[0].VPScenarioID);
-            Assert.NotNull(vpResultList[0].Ordinal);
-            Assert.NotNull(vpResultList[0].Concentration_MPN_100ml);
-            Assert.NotNull(vpResultList[0].Dilution);
-            Assert.NotNull(vpResultList[0].FarFieldWidth_m);
-            Assert.NotNull(vpResultList[0].DispersionDistance_m);
-            Assert.NotNull(vpResultList[0].TravelTime_hour);
-            Assert.NotNull(vpResultList[0].LastUpdateDate_UTC);
-            Assert.NotNull(vpResultList[0].LastUpdateContactTVItemID);
-            Assert.NotNull(vpResultList[0].HasErrors);
         }
         private VPResult GetFilledRandomVPResult(string OmitPropName)
         {

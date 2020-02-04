@@ -21,7 +21,6 @@ using CSSPEnums.Resources;
 
 namespace CSSPServices.Tests
 {
-
     public partial class HydrometricDataValueServiceTest : TestHelper
     {
         #region Variables
@@ -210,13 +209,13 @@ namespace CSSPServices.Tests
                     hydrometricDataValue.Discharge_m3_s = -1.0D;
                     Assert.False(hydrometricDataValueService.Add(hydrometricDataValue));
                     Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "Discharge_m3_s", "0", "100000"), hydrometricDataValue.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, hydrometricDataValueService.GetHydrometricDataValueList().Count());
+                    Assert.Equal(count, (int)hydrometricDataValueService.GetHydrometricDataValueList().Count());
                     hydrometricDataValue = null;
                     hydrometricDataValue = GetFilledRandomHydrometricDataValue("");
                     hydrometricDataValue.Discharge_m3_s = 100001.0D;
                     Assert.False(hydrometricDataValueService.Add(hydrometricDataValue));
                     Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "Discharge_m3_s", "0", "100000"), hydrometricDataValue.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, hydrometricDataValueService.GetHydrometricDataValueList().Count());
+                    Assert.Equal(count, (int)hydrometricDataValueService.GetHydrometricDataValueList().Count());
 
                     // -----------------------------------
                     // Is Nullable
@@ -233,13 +232,13 @@ namespace CSSPServices.Tests
                     hydrometricDataValue.DischargeEntered_m3_s = -1.0D;
                     Assert.False(hydrometricDataValueService.Add(hydrometricDataValue));
                     Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "DischargeEntered_m3_s", "0", "100000"), hydrometricDataValue.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, hydrometricDataValueService.GetHydrometricDataValueList().Count());
+                    Assert.Equal(count, (int)hydrometricDataValueService.GetHydrometricDataValueList().Count());
                     hydrometricDataValue = null;
                     hydrometricDataValue = GetFilledRandomHydrometricDataValue("");
                     hydrometricDataValue.DischargeEntered_m3_s = 100001.0D;
                     Assert.False(hydrometricDataValueService.Add(hydrometricDataValue));
                     Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "DischargeEntered_m3_s", "0", "100000"), hydrometricDataValue.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, hydrometricDataValueService.GetHydrometricDataValueList().Count());
+                    Assert.Equal(count, (int)hydrometricDataValueService.GetHydrometricDataValueList().Count());
 
                     // -----------------------------------
                     // Is Nullable
@@ -256,13 +255,13 @@ namespace CSSPServices.Tests
                     hydrometricDataValue.Level_m = -1.0D;
                     Assert.False(hydrometricDataValueService.Add(hydrometricDataValue));
                     Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "Level_m", "0", "10000"), hydrometricDataValue.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, hydrometricDataValueService.GetHydrometricDataValueList().Count());
+                    Assert.Equal(count, (int)hydrometricDataValueService.GetHydrometricDataValueList().Count());
                     hydrometricDataValue = null;
                     hydrometricDataValue = GetFilledRandomHydrometricDataValue("");
                     hydrometricDataValue.Level_m = 10001.0D;
                     Assert.False(hydrometricDataValueService.Add(hydrometricDataValue));
                     Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "Level_m", "0", "10000"), hydrometricDataValue.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, hydrometricDataValueService.GetHydrometricDataValueList().Count());
+                    Assert.Equal(count, (int)hydrometricDataValueService.GetHydrometricDataValueList().Count());
 
                     // -----------------------------------
                     // Is Nullable
@@ -630,12 +629,6 @@ namespace CSSPServices.Tests
         #region Functions private
         private void CheckHydrometricDataValueFields(List<HydrometricDataValue> hydrometricDataValueList)
         {
-            Assert.NotNull(hydrometricDataValueList[0].HydrometricDataValueID);
-            Assert.NotNull(hydrometricDataValueList[0].HydrometricSiteID);
-            Assert.NotNull(hydrometricDataValueList[0].DateTime_Local);
-            Assert.NotNull(hydrometricDataValueList[0].Keep);
-            Assert.NotNull(hydrometricDataValueList[0].StorageDataType);
-            Assert.NotNull(hydrometricDataValueList[0].HasBeenRead);
             if (hydrometricDataValueList[0].Discharge_m3_s != null)
             {
                 Assert.NotNull(hydrometricDataValueList[0].Discharge_m3_s);
@@ -652,9 +645,6 @@ namespace CSSPServices.Tests
             {
                 Assert.False(string.IsNullOrWhiteSpace(hydrometricDataValueList[0].HourlyValues));
             }
-            Assert.NotNull(hydrometricDataValueList[0].LastUpdateDate_UTC);
-            Assert.NotNull(hydrometricDataValueList[0].LastUpdateContactTVItemID);
-            Assert.NotNull(hydrometricDataValueList[0].HasErrors);
         }
         private HydrometricDataValue GetFilledRandomHydrometricDataValue(string OmitPropName)
         {

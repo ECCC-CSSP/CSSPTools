@@ -21,7 +21,6 @@ using CSSPEnums.Resources;
 
 namespace CSSPServices.Tests
 {
-
     public partial class RainExceedanceServiceTest : TestHelper
     {
         #region Variables
@@ -170,13 +169,13 @@ namespace CSSPServices.Tests
                     rainExceedance.StartMonth = 0;
                     Assert.False(rainExceedanceService.Add(rainExceedance));
                     Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "StartMonth", "1", "12"), rainExceedance.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, rainExceedanceService.GetRainExceedanceList().Count());
+                    Assert.Equal(count, (int)rainExceedanceService.GetRainExceedanceList().Count());
                     rainExceedance = null;
                     rainExceedance = GetFilledRandomRainExceedance("");
                     rainExceedance.StartMonth = 13;
                     Assert.False(rainExceedanceService.Add(rainExceedance));
                     Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "StartMonth", "1", "12"), rainExceedance.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, rainExceedanceService.GetRainExceedanceList().Count());
+                    Assert.Equal(count, (int)rainExceedanceService.GetRainExceedanceList().Count());
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -189,13 +188,13 @@ namespace CSSPServices.Tests
                     rainExceedance.StartDay = 0;
                     Assert.False(rainExceedanceService.Add(rainExceedance));
                     Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "StartDay", "1", "31"), rainExceedance.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, rainExceedanceService.GetRainExceedanceList().Count());
+                    Assert.Equal(count, (int)rainExceedanceService.GetRainExceedanceList().Count());
                     rainExceedance = null;
                     rainExceedance = GetFilledRandomRainExceedance("");
                     rainExceedance.StartDay = 32;
                     Assert.False(rainExceedanceService.Add(rainExceedance));
                     Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "StartDay", "1", "31"), rainExceedance.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, rainExceedanceService.GetRainExceedanceList().Count());
+                    Assert.Equal(count, (int)rainExceedanceService.GetRainExceedanceList().Count());
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -208,13 +207,13 @@ namespace CSSPServices.Tests
                     rainExceedance.EndMonth = 0;
                     Assert.False(rainExceedanceService.Add(rainExceedance));
                     Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "EndMonth", "1", "12"), rainExceedance.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, rainExceedanceService.GetRainExceedanceList().Count());
+                    Assert.Equal(count, (int)rainExceedanceService.GetRainExceedanceList().Count());
                     rainExceedance = null;
                     rainExceedance = GetFilledRandomRainExceedance("");
                     rainExceedance.EndMonth = 13;
                     Assert.False(rainExceedanceService.Add(rainExceedance));
                     Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "EndMonth", "1", "12"), rainExceedance.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, rainExceedanceService.GetRainExceedanceList().Count());
+                    Assert.Equal(count, (int)rainExceedanceService.GetRainExceedanceList().Count());
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -227,13 +226,13 @@ namespace CSSPServices.Tests
                     rainExceedance.EndDay = 0;
                     Assert.False(rainExceedanceService.Add(rainExceedance));
                     Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "EndDay", "1", "31"), rainExceedance.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, rainExceedanceService.GetRainExceedanceList().Count());
+                    Assert.Equal(count, (int)rainExceedanceService.GetRainExceedanceList().Count());
                     rainExceedance = null;
                     rainExceedance = GetFilledRandomRainExceedance("");
                     rainExceedance.EndDay = 32;
                     Assert.False(rainExceedanceService.Add(rainExceedance));
                     Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "EndDay", "1", "31"), rainExceedance.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, rainExceedanceService.GetRainExceedanceList().Count());
+                    Assert.Equal(count, (int)rainExceedanceService.GetRainExceedanceList().Count());
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -250,13 +249,13 @@ namespace CSSPServices.Tests
                     rainExceedance.RainMaximum_mm = -1.0D;
                     Assert.False(rainExceedanceService.Add(rainExceedance));
                     Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "RainMaximum_mm", "0", "300"), rainExceedance.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, rainExceedanceService.GetRainExceedanceList().Count());
+                    Assert.Equal(count, (int)rainExceedanceService.GetRainExceedanceList().Count());
                     rainExceedance = null;
                     rainExceedance = GetFilledRandomRainExceedance("");
                     rainExceedance.RainMaximum_mm = 301.0D;
                     Assert.False(rainExceedanceService.Add(rainExceedance));
                     Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "RainMaximum_mm", "0", "300"), rainExceedance.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, rainExceedanceService.GetRainExceedanceList().Count());
+                    Assert.Equal(count, (int)rainExceedanceService.GetRainExceedanceList().Count());
 
                     // -----------------------------------
                     // Is Nullable
@@ -650,13 +649,6 @@ namespace CSSPServices.Tests
         #region Functions private
         private void CheckRainExceedanceFields(List<RainExceedance> rainExceedanceList)
         {
-            Assert.NotNull(rainExceedanceList[0].RainExceedanceID);
-            Assert.NotNull(rainExceedanceList[0].RainExceedanceTVItemID);
-            Assert.NotNull(rainExceedanceList[0].StartMonth);
-            Assert.NotNull(rainExceedanceList[0].StartDay);
-            Assert.NotNull(rainExceedanceList[0].EndMonth);
-            Assert.NotNull(rainExceedanceList[0].EndDay);
-            Assert.NotNull(rainExceedanceList[0].RainMaximum_mm);
             if (rainExceedanceList[0].StakeholdersEmailDistributionListID != null)
             {
                 Assert.NotNull(rainExceedanceList[0].StakeholdersEmailDistributionListID);
@@ -665,10 +657,6 @@ namespace CSSPServices.Tests
             {
                 Assert.NotNull(rainExceedanceList[0].OnlyStaffEmailDistributionListID);
             }
-            Assert.NotNull(rainExceedanceList[0].IsActive);
-            Assert.NotNull(rainExceedanceList[0].LastUpdateDate_UTC);
-            Assert.NotNull(rainExceedanceList[0].LastUpdateContactTVItemID);
-            Assert.NotNull(rainExceedanceList[0].HasErrors);
         }
         private RainExceedance GetFilledRandomRainExceedance(string OmitPropName)
         {

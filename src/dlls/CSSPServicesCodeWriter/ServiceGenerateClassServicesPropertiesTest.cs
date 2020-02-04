@@ -261,7 +261,7 @@ namespace CSSPServicesGenerateCodeHelper
                             {
                                 sb.AppendLine($@"                    Assert.Equal(string.Format(CSSPServicesRes._MinValueIs_, ""{ csspProp.PropName }"", ""{ csspProp.Min.ToString() }""), { TypeNameLower }.ValidationResults.FirstOrDefault().ErrorMessage);");
                             }
-                            sb.AppendLine($@"                    Assert.Equal(count, { TypeNameLower }Service.Get{ TypeName }List().Count());");
+                            sb.AppendLine($@"                    Assert.Equal(count, (int){ TypeNameLower }Service.Get{ TypeName }List().Count());");
                         }
                         if (csspProp.Max != null)
                         {
@@ -285,7 +285,7 @@ namespace CSSPServicesGenerateCodeHelper
                             {
                                 sb.AppendLine($@"                    Assert.Equal(string.Format(CSSPServicesRes._MaxValueIs_, ""{ csspProp.PropName }"", ""{ csspProp.Max.ToString() }""), { TypeNameLower }.ValidationResults.FirstOrDefault().ErrorMessage);");
                             }
-                            sb.AppendLine($@"                    Assert.Equal(count, { TypeNameLower }Service.Get{ TypeName }List().Count());");
+                            sb.AppendLine($@"                    Assert.Equal(count, (int){ TypeNameLower }Service.Get{ TypeName }List().Count());");
                         }
                     }
                     break;
@@ -326,7 +326,7 @@ namespace CSSPServicesGenerateCodeHelper
                                 {
                                     sb.AppendLine($@"                    Assert.Equal(string.Format(CSSPServicesRes._MinLengthIs_, ""{ csspProp.PropName }"", ""{ csspProp.Min.ToString() }""), { TypeNameLower }.ValidationResults.FirstOrDefault().ErrorMessage);");
                                 }
-                                sb.AppendLine($@"                    Assert.Equal(count, { TypeNameLower }Service.Get{ TypeName }List().Count());");
+                                sb.AppendLine($@"                    Assert.Equal(count, (int){ TypeNameLower }Service.Get{ TypeName }List().Count());");
                             }
                         }
                         if (csspProp.Max > 0)
@@ -351,7 +351,7 @@ namespace CSSPServicesGenerateCodeHelper
                             {
                                 sb.AppendLine($@"                    Assert.Equal(string.Format(CSSPServicesRes._MaxLengthIs_, ""{ csspProp.PropName }"", ""{ csspProp.Max.ToString() }""), { TypeNameLower }.ValidationResults.FirstOrDefault().ErrorMessage);");
                             }
-                            sb.AppendLine($@"                    Assert.Equal(count, { TypeNameLower }Service.Get{ TypeName }List().Count());");
+                            sb.AppendLine($@"                    Assert.Equal(count, (int){ TypeNameLower }Service.Get{ TypeName }List().Count());");
                         }
                     }
                     break;
@@ -421,15 +421,15 @@ namespace CSSPServicesGenerateCodeHelper
                             }
                             if (TypeName == "Contact" && csspProp.PropName == "Id")
                             {
-                                sb.AppendLine($@"                    Assert.Equal(2, { TypeNameLower }.ValidationResults.Count());");
+                                sb.AppendLine($@"                    Assert.Equal(2, (int){ TypeNameLower }.ValidationResults.Count());");
                             }
                             else
                             {
-                                sb.AppendLine($@"                    Assert.Equal(1, { TypeNameLower }.ValidationResults.Count());");
+                                sb.AppendLine($@"                    Assert.Equal(1, (int){ TypeNameLower }.ValidationResults.Count());");
                             }
                             sb.AppendLine($@"                    Assert.True({ TypeNameLower }.ValidationResults.Where(c => c.ErrorMessage == string.Format(CSSPServicesRes._IsRequired, ""{ csspProp.PropName }"")).Any());");
-                            sb.AppendLine($@"                    Assert.Equal(null, { TypeNameLower }.{ csspProp.PropName });");
-                            sb.AppendLine($@"                    Assert.Equal(count, { TypeNameLower }Service.Get{ TypeName }List().Count());");
+                            sb.AppendLine($@"                    Assert.Null({ TypeNameLower }.{ csspProp.PropName });");
+                            sb.AppendLine($@"                    Assert.Equal(count, (int){ TypeNameLower }Service.Get{ TypeName }List().Count());");
                             sb.AppendLine(@"");
                         }
                     }
@@ -449,7 +449,7 @@ namespace CSSPServicesGenerateCodeHelper
                                 sb.AppendLine($@"                    { TypeNameLower } = null;");
                                 sb.AppendLine($@"                    { TypeNameLower } = GetFilledRandom{ TypeName }("""");");
                                 sb.AppendLine($@"                    { TypeNameLower }.{ TypeName }{ EndText } = null;");
-                                sb.AppendLine($@"                    Assert.IsNull({ TypeNameLower }.{ TypeName }{ EndText });");
+                                sb.AppendLine($@"                    Assert.Null({ TypeNameLower }.{ TypeName }{ EndText });");
                                 sb.AppendLine(@"");
                                 sb.AppendLine($@"                    { TypeNameLower } = null;");
                                 sb.AppendLine($@"                    { TypeNameLower } = GetFilledRandom{ TypeName }("""");");

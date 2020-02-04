@@ -21,7 +21,6 @@ using CSSPEnums.Resources;
 
 namespace CSSPServices.Tests
 {
-
     public partial class EmailDistributionListContactServiceTest : TestHelper
     {
         #region Variables
@@ -168,17 +167,17 @@ namespace CSSPServices.Tests
                     emailDistributionListContact = null;
                     emailDistributionListContact = GetFilledRandomEmailDistributionListContact("Name");
                     Assert.False(emailDistributionListContactService.Add(emailDistributionListContact));
-                    Assert.Equal(1, emailDistributionListContact.ValidationResults.Count());
+                    Assert.Equal(1, (int)emailDistributionListContact.ValidationResults.Count());
                     Assert.True(emailDistributionListContact.ValidationResults.Where(c => c.ErrorMessage == string.Format(CSSPServicesRes._IsRequired, "Name")).Any());
                     Assert.Null(emailDistributionListContact.Name);
-                    Assert.Equal(count, emailDistributionListContactService.GetEmailDistributionListContactList().Count());
+                    Assert.Equal(count, (int)emailDistributionListContactService.GetEmailDistributionListContactList().Count());
 
                     emailDistributionListContact = null;
                     emailDistributionListContact = GetFilledRandomEmailDistributionListContact("");
                     emailDistributionListContact.Name = GetRandomString("", 101);
                     Assert.False(emailDistributionListContactService.Add(emailDistributionListContact));
                     Assert.Equal(string.Format(CSSPServicesRes._MaxLengthIs_, "Name", "100"), emailDistributionListContact.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, emailDistributionListContactService.GetEmailDistributionListContactList().Count());
+                    Assert.Equal(count, (int)emailDistributionListContactService.GetEmailDistributionListContactList().Count());
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -190,17 +189,17 @@ namespace CSSPServices.Tests
                     emailDistributionListContact = null;
                     emailDistributionListContact = GetFilledRandomEmailDistributionListContact("Email");
                     Assert.False(emailDistributionListContactService.Add(emailDistributionListContact));
-                    Assert.Equal(1, emailDistributionListContact.ValidationResults.Count());
+                    Assert.Equal(1, (int)emailDistributionListContact.ValidationResults.Count());
                     Assert.True(emailDistributionListContact.ValidationResults.Where(c => c.ErrorMessage == string.Format(CSSPServicesRes._IsRequired, "Email")).Any());
                     Assert.Null(emailDistributionListContact.Email);
-                    Assert.Equal(count, emailDistributionListContactService.GetEmailDistributionListContactList().Count());
+                    Assert.Equal(count, (int)emailDistributionListContactService.GetEmailDistributionListContactList().Count());
 
                     emailDistributionListContact = null;
                     emailDistributionListContact = GetFilledRandomEmailDistributionListContact("");
                     emailDistributionListContact.Email = GetRandomString("", 201);
                     Assert.False(emailDistributionListContactService.Add(emailDistributionListContact));
                     Assert.Equal(string.Format(CSSPServicesRes._MaxLengthIs_, "Email", "200"), emailDistributionListContact.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, emailDistributionListContactService.GetEmailDistributionListContactList().Count());
+                    Assert.Equal(count, (int)emailDistributionListContactService.GetEmailDistributionListContactList().Count());
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -592,19 +591,8 @@ namespace CSSPServices.Tests
         #region Functions private
         private void CheckEmailDistributionListContactFields(List<EmailDistributionListContact> emailDistributionListContactList)
         {
-            Assert.NotNull(emailDistributionListContactList[0].EmailDistributionListContactID);
-            Assert.NotNull(emailDistributionListContactList[0].EmailDistributionListID);
-            Assert.NotNull(emailDistributionListContactList[0].IsCC);
             Assert.False(string.IsNullOrWhiteSpace(emailDistributionListContactList[0].Name));
             Assert.False(string.IsNullOrWhiteSpace(emailDistributionListContactList[0].Email));
-            Assert.NotNull(emailDistributionListContactList[0].CMPRainfallSeasonal);
-            Assert.NotNull(emailDistributionListContactList[0].CMPWastewater);
-            Assert.NotNull(emailDistributionListContactList[0].EmergencyWeather);
-            Assert.NotNull(emailDistributionListContactList[0].EmergencyWastewater);
-            Assert.NotNull(emailDistributionListContactList[0].ReopeningAllTypes);
-            Assert.NotNull(emailDistributionListContactList[0].LastUpdateDate_UTC);
-            Assert.NotNull(emailDistributionListContactList[0].LastUpdateContactTVItemID);
-            Assert.NotNull(emailDistributionListContactList[0].HasErrors);
         }
         private EmailDistributionListContact GetFilledRandomEmailDistributionListContact(string OmitPropName)
         {

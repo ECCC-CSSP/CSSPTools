@@ -21,7 +21,6 @@ using CSSPEnums.Resources;
 
 namespace CSSPServices.Tests
 {
-
     public partial class ResetPasswordServiceTest : TestHelper
     {
         #region Variables
@@ -150,17 +149,17 @@ namespace CSSPServices.Tests
                     resetPassword = null;
                     resetPassword = GetFilledRandomResetPassword("Email");
                     Assert.False(resetPasswordService.Add(resetPassword));
-                    Assert.Equal(1, resetPassword.ValidationResults.Count());
+                    Assert.Equal(1, (int)resetPassword.ValidationResults.Count());
                     Assert.True(resetPassword.ValidationResults.Where(c => c.ErrorMessage == string.Format(CSSPServicesRes._IsRequired, "Email")).Any());
                     Assert.Null(resetPassword.Email);
-                    Assert.Equal(count, resetPasswordService.GetResetPasswordList().Count());
+                    Assert.Equal(count, (int)resetPasswordService.GetResetPasswordList().Count());
 
                     resetPassword = null;
                     resetPassword = GetFilledRandomResetPassword("");
                     resetPassword.Email = GetRandomString("", 257);
                     Assert.False(resetPasswordService.Add(resetPassword));
                     Assert.Equal(string.Format(CSSPServicesRes._MaxLengthIs_, "Email", "256"), resetPassword.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, resetPasswordService.GetResetPasswordList().Count());
+                    Assert.Equal(count, (int)resetPasswordService.GetResetPasswordList().Count());
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -188,17 +187,17 @@ namespace CSSPServices.Tests
                     resetPassword = null;
                     resetPassword = GetFilledRandomResetPassword("Code");
                     Assert.False(resetPasswordService.Add(resetPassword));
-                    Assert.Equal(1, resetPassword.ValidationResults.Count());
+                    Assert.Equal(1, (int)resetPassword.ValidationResults.Count());
                     Assert.True(resetPassword.ValidationResults.Where(c => c.ErrorMessage == string.Format(CSSPServicesRes._IsRequired, "Code")).Any());
                     Assert.Null(resetPassword.Code);
-                    Assert.Equal(count, resetPasswordService.GetResetPasswordList().Count());
+                    Assert.Equal(count, (int)resetPasswordService.GetResetPasswordList().Count());
 
                     resetPassword = null;
                     resetPassword = GetFilledRandomResetPassword("");
                     resetPassword.Code = GetRandomString("", 9);
                     Assert.False(resetPasswordService.Add(resetPassword));
                     Assert.Equal(string.Format(CSSPServicesRes._MaxLengthIs_, "Code", "8"), resetPassword.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, resetPasswordService.GetResetPasswordList().Count());
+                    Assert.Equal(count, (int)resetPasswordService.GetResetPasswordList().Count());
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -560,13 +559,8 @@ namespace CSSPServices.Tests
         #region Functions private
         private void CheckResetPasswordFields(List<ResetPassword> resetPasswordList)
         {
-            Assert.NotNull(resetPasswordList[0].ResetPasswordID);
             Assert.False(string.IsNullOrWhiteSpace(resetPasswordList[0].Email));
-            Assert.NotNull(resetPasswordList[0].ExpireDate_Local);
             Assert.False(string.IsNullOrWhiteSpace(resetPasswordList[0].Code));
-            Assert.NotNull(resetPasswordList[0].LastUpdateDate_UTC);
-            Assert.NotNull(resetPasswordList[0].LastUpdateContactTVItemID);
-            Assert.NotNull(resetPasswordList[0].HasErrors);
         }
         private ResetPassword GetFilledRandomResetPassword(string OmitPropName)
         {

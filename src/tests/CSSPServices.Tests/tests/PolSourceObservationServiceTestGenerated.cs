@@ -21,7 +21,6 @@ using CSSPEnums.Resources;
 
 namespace CSSPServices.Tests
 {
-
     public partial class PolSourceObservationServiceTest : TestHelper
     {
         #region Variables
@@ -203,10 +202,10 @@ namespace CSSPServices.Tests
                     polSourceObservation = null;
                     polSourceObservation = GetFilledRandomPolSourceObservation("Observation_ToBeDeleted");
                     Assert.False(polSourceObservationService.Add(polSourceObservation));
-                    Assert.Equal(1, polSourceObservation.ValidationResults.Count());
+                    Assert.Equal(1, (int)polSourceObservation.ValidationResults.Count());
                     Assert.True(polSourceObservation.ValidationResults.Where(c => c.ErrorMessage == string.Format(CSSPServicesRes._IsRequired, "Observation_ToBeDeleted")).Any());
                     Assert.Null(polSourceObservation.Observation_ToBeDeleted);
-                    Assert.Equal(count, polSourceObservationService.GetPolSourceObservationList().Count());
+                    Assert.Equal(count, (int)polSourceObservationService.GetPolSourceObservationList().Count());
 
 
                     // -----------------------------------
@@ -569,15 +568,7 @@ namespace CSSPServices.Tests
         #region Functions private
         private void CheckPolSourceObservationFields(List<PolSourceObservation> polSourceObservationList)
         {
-            Assert.NotNull(polSourceObservationList[0].PolSourceObservationID);
-            Assert.NotNull(polSourceObservationList[0].PolSourceSiteID);
-            Assert.NotNull(polSourceObservationList[0].ObservationDate_Local);
-            Assert.NotNull(polSourceObservationList[0].ContactTVItemID);
-            Assert.NotNull(polSourceObservationList[0].DesktopReviewed);
             Assert.False(string.IsNullOrWhiteSpace(polSourceObservationList[0].Observation_ToBeDeleted));
-            Assert.NotNull(polSourceObservationList[0].LastUpdateDate_UTC);
-            Assert.NotNull(polSourceObservationList[0].LastUpdateContactTVItemID);
-            Assert.NotNull(polSourceObservationList[0].HasErrors);
         }
         private PolSourceObservation GetFilledRandomPolSourceObservation(string OmitPropName)
         {

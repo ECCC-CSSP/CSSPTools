@@ -21,7 +21,6 @@ using CSSPEnums.Resources;
 
 namespace CSSPServices.Tests
 {
-
     public partial class TVItemLanguageServiceTest : TestHelper
     {
         #region Variables
@@ -181,17 +180,17 @@ namespace CSSPServices.Tests
                     tvItemLanguage = null;
                     tvItemLanguage = GetFilledRandomTVItemLanguage("TVText");
                     Assert.False(tvItemLanguageService.Add(tvItemLanguage));
-                    Assert.Equal(1, tvItemLanguage.ValidationResults.Count());
+                    Assert.Equal(1, (int)tvItemLanguage.ValidationResults.Count());
                     Assert.True(tvItemLanguage.ValidationResults.Where(c => c.ErrorMessage == string.Format(CSSPServicesRes._IsRequired, "TVText")).Any());
                     Assert.Null(tvItemLanguage.TVText);
-                    Assert.Equal(count, tvItemLanguageService.GetTVItemLanguageList().Count());
+                    Assert.Equal(count, (int)tvItemLanguageService.GetTVItemLanguageList().Count());
 
                     tvItemLanguage = null;
                     tvItemLanguage = GetFilledRandomTVItemLanguage("");
                     tvItemLanguage.TVText = GetRandomString("", 201);
                     Assert.False(tvItemLanguageService.Add(tvItemLanguage));
                     Assert.Equal(string.Format(CSSPServicesRes._MaxLengthIs_, "TVText", "200"), tvItemLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, tvItemLanguageService.GetTVItemLanguageList().Count());
+                    Assert.Equal(count, (int)tvItemLanguageService.GetTVItemLanguageList().Count());
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -566,14 +565,7 @@ namespace CSSPServices.Tests
         #region Functions private
         private void CheckTVItemLanguageFields(List<TVItemLanguage> tvItemLanguageList)
         {
-            Assert.NotNull(tvItemLanguageList[0].TVItemLanguageID);
-            Assert.NotNull(tvItemLanguageList[0].TVItemID);
-            Assert.NotNull(tvItemLanguageList[0].Language);
             Assert.False(string.IsNullOrWhiteSpace(tvItemLanguageList[0].TVText));
-            Assert.NotNull(tvItemLanguageList[0].TranslationStatus);
-            Assert.NotNull(tvItemLanguageList[0].LastUpdateDate_UTC);
-            Assert.NotNull(tvItemLanguageList[0].LastUpdateContactTVItemID);
-            Assert.NotNull(tvItemLanguageList[0].HasErrors);
         }
         private TVItemLanguage GetFilledRandomTVItemLanguage(string OmitPropName)
         {

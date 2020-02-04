@@ -21,7 +21,6 @@ using CSSPEnums.Resources;
 
 namespace CSSPServices.Tests
 {
-
     public partial class ReportTypeServiceTest : TestHelper
     {
         #region Variables
@@ -175,17 +174,17 @@ namespace CSSPServices.Tests
                     reportType = null;
                     reportType = GetFilledRandomReportType("UniqueCode");
                     Assert.False(reportTypeService.Add(reportType));
-                    Assert.Equal(1, reportType.ValidationResults.Count());
+                    Assert.Equal(1, (int)reportType.ValidationResults.Count());
                     Assert.True(reportType.ValidationResults.Where(c => c.ErrorMessage == string.Format(CSSPServicesRes._IsRequired, "UniqueCode")).Any());
                     Assert.Null(reportType.UniqueCode);
-                    Assert.Equal(count, reportTypeService.GetReportTypeList().Count());
+                    Assert.Equal(count, (int)reportTypeService.GetReportTypeList().Count());
 
                     reportType = null;
                     reportType = GetFilledRandomReportType("");
                     reportType.UniqueCode = GetRandomString("", 101);
                     Assert.False(reportTypeService.Add(reportType));
                     Assert.Equal(string.Format(CSSPServicesRes._MaxLengthIs_, "UniqueCode", "100"), reportType.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, reportTypeService.GetReportTypeList().Count());
+                    Assert.Equal(count, (int)reportTypeService.GetReportTypeList().Count());
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -547,13 +546,7 @@ namespace CSSPServices.Tests
         #region Functions private
         private void CheckReportTypeFields(List<ReportType> reportTypeList)
         {
-            Assert.NotNull(reportTypeList[0].ReportTypeID);
-            Assert.NotNull(reportTypeList[0].TVType);
-            Assert.NotNull(reportTypeList[0].FileType);
             Assert.False(string.IsNullOrWhiteSpace(reportTypeList[0].UniqueCode));
-            Assert.NotNull(reportTypeList[0].LastUpdateDate_UTC);
-            Assert.NotNull(reportTypeList[0].LastUpdateContactTVItemID);
-            Assert.NotNull(reportTypeList[0].HasErrors);
         }
         private ReportType GetFilledRandomReportType(string OmitPropName)
         {

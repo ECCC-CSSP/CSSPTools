@@ -21,7 +21,6 @@ using CSSPEnums.Resources;
 
 namespace CSSPServices.Tests
 {
-
     public partial class MikeBoundaryConditionServiceTest : TestHelper
     {
         #region Variables
@@ -168,17 +167,17 @@ namespace CSSPServices.Tests
                     mikeBoundaryCondition = null;
                     mikeBoundaryCondition = GetFilledRandomMikeBoundaryCondition("MikeBoundaryConditionCode");
                     Assert.False(mikeBoundaryConditionService.Add(mikeBoundaryCondition));
-                    Assert.Equal(1, mikeBoundaryCondition.ValidationResults.Count());
+                    Assert.Equal(1, (int)mikeBoundaryCondition.ValidationResults.Count());
                     Assert.True(mikeBoundaryCondition.ValidationResults.Where(c => c.ErrorMessage == string.Format(CSSPServicesRes._IsRequired, "MikeBoundaryConditionCode")).Any());
                     Assert.Null(mikeBoundaryCondition.MikeBoundaryConditionCode);
-                    Assert.Equal(count, mikeBoundaryConditionService.GetMikeBoundaryConditionList().Count());
+                    Assert.Equal(count, (int)mikeBoundaryConditionService.GetMikeBoundaryConditionList().Count());
 
                     mikeBoundaryCondition = null;
                     mikeBoundaryCondition = GetFilledRandomMikeBoundaryCondition("");
                     mikeBoundaryCondition.MikeBoundaryConditionCode = GetRandomString("", 101);
                     Assert.False(mikeBoundaryConditionService.Add(mikeBoundaryCondition));
                     Assert.Equal(string.Format(CSSPServicesRes._MaxLengthIs_, "MikeBoundaryConditionCode", "100"), mikeBoundaryCondition.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, mikeBoundaryConditionService.GetMikeBoundaryConditionList().Count());
+                    Assert.Equal(count, (int)mikeBoundaryConditionService.GetMikeBoundaryConditionList().Count());
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -189,17 +188,17 @@ namespace CSSPServices.Tests
                     mikeBoundaryCondition = null;
                     mikeBoundaryCondition = GetFilledRandomMikeBoundaryCondition("MikeBoundaryConditionName");
                     Assert.False(mikeBoundaryConditionService.Add(mikeBoundaryCondition));
-                    Assert.Equal(1, mikeBoundaryCondition.ValidationResults.Count());
+                    Assert.Equal(1, (int)mikeBoundaryCondition.ValidationResults.Count());
                     Assert.True(mikeBoundaryCondition.ValidationResults.Where(c => c.ErrorMessage == string.Format(CSSPServicesRes._IsRequired, "MikeBoundaryConditionName")).Any());
                     Assert.Null(mikeBoundaryCondition.MikeBoundaryConditionName);
-                    Assert.Equal(count, mikeBoundaryConditionService.GetMikeBoundaryConditionList().Count());
+                    Assert.Equal(count, (int)mikeBoundaryConditionService.GetMikeBoundaryConditionList().Count());
 
                     mikeBoundaryCondition = null;
                     mikeBoundaryCondition = GetFilledRandomMikeBoundaryCondition("");
                     mikeBoundaryCondition.MikeBoundaryConditionName = GetRandomString("", 101);
                     Assert.False(mikeBoundaryConditionService.Add(mikeBoundaryCondition));
                     Assert.Equal(string.Format(CSSPServicesRes._MaxLengthIs_, "MikeBoundaryConditionName", "100"), mikeBoundaryCondition.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, mikeBoundaryConditionService.GetMikeBoundaryConditionList().Count());
+                    Assert.Equal(count, (int)mikeBoundaryConditionService.GetMikeBoundaryConditionList().Count());
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -216,13 +215,13 @@ namespace CSSPServices.Tests
                     mikeBoundaryCondition.MikeBoundaryConditionLength_m = 0.0D;
                     Assert.False(mikeBoundaryConditionService.Add(mikeBoundaryCondition));
                     Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "MikeBoundaryConditionLength_m", "1", "100000"), mikeBoundaryCondition.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, mikeBoundaryConditionService.GetMikeBoundaryConditionList().Count());
+                    Assert.Equal(count, (int)mikeBoundaryConditionService.GetMikeBoundaryConditionList().Count());
                     mikeBoundaryCondition = null;
                     mikeBoundaryCondition = GetFilledRandomMikeBoundaryCondition("");
                     mikeBoundaryCondition.MikeBoundaryConditionLength_m = 100001.0D;
                     Assert.False(mikeBoundaryConditionService.Add(mikeBoundaryCondition));
                     Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "MikeBoundaryConditionLength_m", "1", "100000"), mikeBoundaryCondition.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, mikeBoundaryConditionService.GetMikeBoundaryConditionList().Count());
+                    Assert.Equal(count, (int)mikeBoundaryConditionService.GetMikeBoundaryConditionList().Count());
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -233,17 +232,17 @@ namespace CSSPServices.Tests
                     mikeBoundaryCondition = null;
                     mikeBoundaryCondition = GetFilledRandomMikeBoundaryCondition("MikeBoundaryConditionFormat");
                     Assert.False(mikeBoundaryConditionService.Add(mikeBoundaryCondition));
-                    Assert.Equal(1, mikeBoundaryCondition.ValidationResults.Count());
+                    Assert.Equal(1, (int)mikeBoundaryCondition.ValidationResults.Count());
                     Assert.True(mikeBoundaryCondition.ValidationResults.Where(c => c.ErrorMessage == string.Format(CSSPServicesRes._IsRequired, "MikeBoundaryConditionFormat")).Any());
                     Assert.Null(mikeBoundaryCondition.MikeBoundaryConditionFormat);
-                    Assert.Equal(count, mikeBoundaryConditionService.GetMikeBoundaryConditionList().Count());
+                    Assert.Equal(count, (int)mikeBoundaryConditionService.GetMikeBoundaryConditionList().Count());
 
                     mikeBoundaryCondition = null;
                     mikeBoundaryCondition = GetFilledRandomMikeBoundaryCondition("");
                     mikeBoundaryCondition.MikeBoundaryConditionFormat = GetRandomString("", 101);
                     Assert.False(mikeBoundaryConditionService.Add(mikeBoundaryCondition));
                     Assert.Equal(string.Format(CSSPServicesRes._MaxLengthIs_, "MikeBoundaryConditionFormat", "100"), mikeBoundaryCondition.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, mikeBoundaryConditionService.GetMikeBoundaryConditionList().Count());
+                    Assert.Equal(count, (int)mikeBoundaryConditionService.GetMikeBoundaryConditionList().Count());
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -282,13 +281,13 @@ namespace CSSPServices.Tests
                     mikeBoundaryCondition.NumberOfWebTideNodes = -1;
                     Assert.False(mikeBoundaryConditionService.Add(mikeBoundaryCondition));
                     Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "NumberOfWebTideNodes", "0", "1000"), mikeBoundaryCondition.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, mikeBoundaryConditionService.GetMikeBoundaryConditionList().Count());
+                    Assert.Equal(count, (int)mikeBoundaryConditionService.GetMikeBoundaryConditionList().Count());
                     mikeBoundaryCondition = null;
                     mikeBoundaryCondition = GetFilledRandomMikeBoundaryCondition("");
                     mikeBoundaryCondition.NumberOfWebTideNodes = 1001;
                     Assert.False(mikeBoundaryConditionService.Add(mikeBoundaryCondition));
                     Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "NumberOfWebTideNodes", "0", "1000"), mikeBoundaryCondition.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, mikeBoundaryConditionService.GetMikeBoundaryConditionList().Count());
+                    Assert.Equal(count, (int)mikeBoundaryConditionService.GetMikeBoundaryConditionList().Count());
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -298,10 +297,10 @@ namespace CSSPServices.Tests
                     mikeBoundaryCondition = null;
                     mikeBoundaryCondition = GetFilledRandomMikeBoundaryCondition("WebTideDataFromStartToEndDate");
                     Assert.False(mikeBoundaryConditionService.Add(mikeBoundaryCondition));
-                    Assert.Equal(1, mikeBoundaryCondition.ValidationResults.Count());
+                    Assert.Equal(1, (int)mikeBoundaryCondition.ValidationResults.Count());
                     Assert.True(mikeBoundaryCondition.ValidationResults.Where(c => c.ErrorMessage == string.Format(CSSPServicesRes._IsRequired, "WebTideDataFromStartToEndDate")).Any());
                     Assert.Null(mikeBoundaryCondition.WebTideDataFromStartToEndDate);
-                    Assert.Equal(count, mikeBoundaryConditionService.GetMikeBoundaryConditionList().Count());
+                    Assert.Equal(count, (int)mikeBoundaryConditionService.GetMikeBoundaryConditionList().Count());
 
 
                     // -----------------------------------
@@ -677,20 +676,10 @@ namespace CSSPServices.Tests
         #region Functions private
         private void CheckMikeBoundaryConditionFields(List<MikeBoundaryCondition> mikeBoundaryConditionList)
         {
-            Assert.NotNull(mikeBoundaryConditionList[0].MikeBoundaryConditionID);
-            Assert.NotNull(mikeBoundaryConditionList[0].MikeBoundaryConditionTVItemID);
             Assert.False(string.IsNullOrWhiteSpace(mikeBoundaryConditionList[0].MikeBoundaryConditionCode));
             Assert.False(string.IsNullOrWhiteSpace(mikeBoundaryConditionList[0].MikeBoundaryConditionName));
-            Assert.NotNull(mikeBoundaryConditionList[0].MikeBoundaryConditionLength_m);
             Assert.False(string.IsNullOrWhiteSpace(mikeBoundaryConditionList[0].MikeBoundaryConditionFormat));
-            Assert.NotNull(mikeBoundaryConditionList[0].MikeBoundaryConditionLevelOrVelocity);
-            Assert.NotNull(mikeBoundaryConditionList[0].WebTideDataSet);
-            Assert.NotNull(mikeBoundaryConditionList[0].NumberOfWebTideNodes);
             Assert.False(string.IsNullOrWhiteSpace(mikeBoundaryConditionList[0].WebTideDataFromStartToEndDate));
-            Assert.NotNull(mikeBoundaryConditionList[0].TVType);
-            Assert.NotNull(mikeBoundaryConditionList[0].LastUpdateDate_UTC);
-            Assert.NotNull(mikeBoundaryConditionList[0].LastUpdateContactTVItemID);
-            Assert.NotNull(mikeBoundaryConditionList[0].HasErrors);
         }
         private MikeBoundaryCondition GetFilledRandomMikeBoundaryCondition(string OmitPropName)
         {

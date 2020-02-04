@@ -21,7 +21,6 @@ using CSSPEnums.Resources;
 
 namespace CSSPServices.Tests
 {
-
     public partial class LastUpdateAndTVTextServiceTest : TestHelper
     {
         #region Variables

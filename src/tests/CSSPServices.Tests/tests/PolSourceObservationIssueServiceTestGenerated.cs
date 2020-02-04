@@ -21,7 +21,6 @@ using CSSPEnums.Resources;
 
 namespace CSSPServices.Tests
 {
-
     public partial class PolSourceObservationIssueServiceTest : TestHelper
     {
         #region Variables
@@ -162,17 +161,17 @@ namespace CSSPServices.Tests
                     polSourceObservationIssue = null;
                     polSourceObservationIssue = GetFilledRandomPolSourceObservationIssue("ObservationInfo");
                     Assert.False(polSourceObservationIssueService.Add(polSourceObservationIssue));
-                    Assert.Equal(1, polSourceObservationIssue.ValidationResults.Count());
+                    Assert.Equal(1, (int)polSourceObservationIssue.ValidationResults.Count());
                     Assert.True(polSourceObservationIssue.ValidationResults.Where(c => c.ErrorMessage == string.Format(CSSPServicesRes._IsRequired, "ObservationInfo")).Any());
                     Assert.Null(polSourceObservationIssue.ObservationInfo);
-                    Assert.Equal(count, polSourceObservationIssueService.GetPolSourceObservationIssueList().Count());
+                    Assert.Equal(count, (int)polSourceObservationIssueService.GetPolSourceObservationIssueList().Count());
 
                     polSourceObservationIssue = null;
                     polSourceObservationIssue = GetFilledRandomPolSourceObservationIssue("");
                     polSourceObservationIssue.ObservationInfo = GetRandomString("", 251);
                     Assert.False(polSourceObservationIssueService.Add(polSourceObservationIssue));
                     Assert.Equal(string.Format(CSSPServicesRes._MaxLengthIs_, "ObservationInfo", "250"), polSourceObservationIssue.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, polSourceObservationIssueService.GetPolSourceObservationIssueList().Count());
+                    Assert.Equal(count, (int)polSourceObservationIssueService.GetPolSourceObservationIssueList().Count());
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -185,13 +184,13 @@ namespace CSSPServices.Tests
                     polSourceObservationIssue.Ordinal = -1;
                     Assert.False(polSourceObservationIssueService.Add(polSourceObservationIssue));
                     Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "Ordinal", "0", "1000"), polSourceObservationIssue.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, polSourceObservationIssueService.GetPolSourceObservationIssueList().Count());
+                    Assert.Equal(count, (int)polSourceObservationIssueService.GetPolSourceObservationIssueList().Count());
                     polSourceObservationIssue = null;
                     polSourceObservationIssue = GetFilledRandomPolSourceObservationIssue("");
                     polSourceObservationIssue.Ordinal = 1001;
                     Assert.False(polSourceObservationIssueService.Add(polSourceObservationIssue));
                     Assert.Equal(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "Ordinal", "0", "1000"), polSourceObservationIssue.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, polSourceObservationIssueService.GetPolSourceObservationIssueList().Count());
+                    Assert.Equal(count, (int)polSourceObservationIssueService.GetPolSourceObservationIssueList().Count());
 
                     // -----------------------------------
                     // Is Nullable
@@ -559,17 +558,11 @@ namespace CSSPServices.Tests
         #region Functions private
         private void CheckPolSourceObservationIssueFields(List<PolSourceObservationIssue> polSourceObservationIssueList)
         {
-            Assert.NotNull(polSourceObservationIssueList[0].PolSourceObservationIssueID);
-            Assert.NotNull(polSourceObservationIssueList[0].PolSourceObservationID);
             Assert.False(string.IsNullOrWhiteSpace(polSourceObservationIssueList[0].ObservationInfo));
-            Assert.NotNull(polSourceObservationIssueList[0].Ordinal);
             if (!string.IsNullOrWhiteSpace(polSourceObservationIssueList[0].ExtraComment))
             {
                 Assert.False(string.IsNullOrWhiteSpace(polSourceObservationIssueList[0].ExtraComment));
             }
-            Assert.NotNull(polSourceObservationIssueList[0].LastUpdateDate_UTC);
-            Assert.NotNull(polSourceObservationIssueList[0].LastUpdateContactTVItemID);
-            Assert.NotNull(polSourceObservationIssueList[0].HasErrors);
         }
         private PolSourceObservationIssue GetFilledRandomPolSourceObservationIssue(string OmitPropName)
         {

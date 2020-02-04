@@ -21,7 +21,6 @@ using CSSPEnums.Resources;
 
 namespace CSSPServices.Tests
 {
-
     public partial class MWQMSubsectorLanguageServiceTest : TestHelper
     {
         #region Variables
@@ -175,17 +174,17 @@ namespace CSSPServices.Tests
                     mwqmSubsectorLanguage = null;
                     mwqmSubsectorLanguage = GetFilledRandomMWQMSubsectorLanguage("SubsectorDesc");
                     Assert.False(mwqmSubsectorLanguageService.Add(mwqmSubsectorLanguage));
-                    Assert.Equal(1, mwqmSubsectorLanguage.ValidationResults.Count());
+                    Assert.Equal(1, (int)mwqmSubsectorLanguage.ValidationResults.Count());
                     Assert.True(mwqmSubsectorLanguage.ValidationResults.Where(c => c.ErrorMessage == string.Format(CSSPServicesRes._IsRequired, "SubsectorDesc")).Any());
                     Assert.Null(mwqmSubsectorLanguage.SubsectorDesc);
-                    Assert.Equal(count, mwqmSubsectorLanguageService.GetMWQMSubsectorLanguageList().Count());
+                    Assert.Equal(count, (int)mwqmSubsectorLanguageService.GetMWQMSubsectorLanguageList().Count());
 
                     mwqmSubsectorLanguage = null;
                     mwqmSubsectorLanguage = GetFilledRandomMWQMSubsectorLanguage("");
                     mwqmSubsectorLanguage.SubsectorDesc = GetRandomString("", 251);
                     Assert.False(mwqmSubsectorLanguageService.Add(mwqmSubsectorLanguage));
                     Assert.Equal(string.Format(CSSPServicesRes._MaxLengthIs_, "SubsectorDesc", "250"), mwqmSubsectorLanguage.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, mwqmSubsectorLanguageService.GetMWQMSubsectorLanguageList().Count());
+                    Assert.Equal(count, (int)mwqmSubsectorLanguageService.GetMWQMSubsectorLanguageList().Count());
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -579,11 +578,7 @@ namespace CSSPServices.Tests
         #region Functions private
         private void CheckMWQMSubsectorLanguageFields(List<MWQMSubsectorLanguage> mwqmSubsectorLanguageList)
         {
-            Assert.NotNull(mwqmSubsectorLanguageList[0].MWQMSubsectorLanguageID);
-            Assert.NotNull(mwqmSubsectorLanguageList[0].MWQMSubsectorID);
-            Assert.NotNull(mwqmSubsectorLanguageList[0].Language);
             Assert.False(string.IsNullOrWhiteSpace(mwqmSubsectorLanguageList[0].SubsectorDesc));
-            Assert.NotNull(mwqmSubsectorLanguageList[0].TranslationStatusSubsectorDesc);
             if (!string.IsNullOrWhiteSpace(mwqmSubsectorLanguageList[0].LogBook))
             {
                 Assert.False(string.IsNullOrWhiteSpace(mwqmSubsectorLanguageList[0].LogBook));
@@ -592,9 +587,6 @@ namespace CSSPServices.Tests
             {
                 Assert.NotNull(mwqmSubsectorLanguageList[0].TranslationStatusLogBook);
             }
-            Assert.NotNull(mwqmSubsectorLanguageList[0].LastUpdateDate_UTC);
-            Assert.NotNull(mwqmSubsectorLanguageList[0].LastUpdateContactTVItemID);
-            Assert.NotNull(mwqmSubsectorLanguageList[0].HasErrors);
         }
         private MWQMSubsectorLanguage GetFilledRandomMWQMSubsectorLanguage(string OmitPropName)
         {

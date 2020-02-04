@@ -21,7 +21,6 @@ using CSSPEnums.Resources;
 
 namespace CSSPServices.Tests
 {
-
     public partial class ContactShortcutServiceTest : TestHelper
     {
         #region Variables
@@ -162,17 +161,17 @@ namespace CSSPServices.Tests
                     contactShortcut = null;
                     contactShortcut = GetFilledRandomContactShortcut("ShortCutText");
                     Assert.False(contactShortcutService.Add(contactShortcut));
-                    Assert.Equal(1, contactShortcut.ValidationResults.Count());
+                    Assert.Equal(1, (int)contactShortcut.ValidationResults.Count());
                     Assert.True(contactShortcut.ValidationResults.Where(c => c.ErrorMessage == string.Format(CSSPServicesRes._IsRequired, "ShortCutText")).Any());
                     Assert.Null(contactShortcut.ShortCutText);
-                    Assert.Equal(count, contactShortcutService.GetContactShortcutList().Count());
+                    Assert.Equal(count, (int)contactShortcutService.GetContactShortcutList().Count());
 
                     contactShortcut = null;
                     contactShortcut = GetFilledRandomContactShortcut("");
                     contactShortcut.ShortCutText = GetRandomString("", 101);
                     Assert.False(contactShortcutService.Add(contactShortcut));
                     Assert.Equal(string.Format(CSSPServicesRes._MaxLengthIs_, "ShortCutText", "100"), contactShortcut.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, contactShortcutService.GetContactShortcutList().Count());
+                    Assert.Equal(count, (int)contactShortcutService.GetContactShortcutList().Count());
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -183,17 +182,17 @@ namespace CSSPServices.Tests
                     contactShortcut = null;
                     contactShortcut = GetFilledRandomContactShortcut("ShortCutAddress");
                     Assert.False(contactShortcutService.Add(contactShortcut));
-                    Assert.Equal(1, contactShortcut.ValidationResults.Count());
+                    Assert.Equal(1, (int)contactShortcut.ValidationResults.Count());
                     Assert.True(contactShortcut.ValidationResults.Where(c => c.ErrorMessage == string.Format(CSSPServicesRes._IsRequired, "ShortCutAddress")).Any());
                     Assert.Null(contactShortcut.ShortCutAddress);
-                    Assert.Equal(count, contactShortcutService.GetContactShortcutList().Count());
+                    Assert.Equal(count, (int)contactShortcutService.GetContactShortcutList().Count());
 
                     contactShortcut = null;
                     contactShortcut = GetFilledRandomContactShortcut("");
                     contactShortcut.ShortCutAddress = GetRandomString("", 201);
                     Assert.False(contactShortcutService.Add(contactShortcut));
                     Assert.Equal(string.Format(CSSPServicesRes._MaxLengthIs_, "ShortCutAddress", "200"), contactShortcut.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, contactShortcutService.GetContactShortcutList().Count());
+                    Assert.Equal(count, (int)contactShortcutService.GetContactShortcutList().Count());
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -555,13 +554,8 @@ namespace CSSPServices.Tests
         #region Functions private
         private void CheckContactShortcutFields(List<ContactShortcut> contactShortcutList)
         {
-            Assert.NotNull(contactShortcutList[0].ContactShortcutID);
-            Assert.NotNull(contactShortcutList[0].ContactID);
             Assert.False(string.IsNullOrWhiteSpace(contactShortcutList[0].ShortCutText));
             Assert.False(string.IsNullOrWhiteSpace(contactShortcutList[0].ShortCutAddress));
-            Assert.NotNull(contactShortcutList[0].LastUpdateDate_UTC);
-            Assert.NotNull(contactShortcutList[0].LastUpdateContactTVItemID);
-            Assert.NotNull(contactShortcutList[0].HasErrors);
         }
         private ContactShortcut GetFilledRandomContactShortcut(string OmitPropName)
         {

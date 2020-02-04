@@ -21,7 +21,6 @@ using CSSPEnums.Resources;
 
 namespace CSSPServices.Tests
 {
-
     public partial class AppErrLogServiceTest : TestHelper
     {
         #region Variables
@@ -149,17 +148,17 @@ namespace CSSPServices.Tests
                     appErrLog = null;
                     appErrLog = GetFilledRandomAppErrLog("Tag");
                     Assert.False(appErrLogService.Add(appErrLog));
-                    Assert.Equal(1, appErrLog.ValidationResults.Count());
+                    Assert.Equal(1, (int)appErrLog.ValidationResults.Count());
                     Assert.True(appErrLog.ValidationResults.Where(c => c.ErrorMessage == string.Format(CSSPServicesRes._IsRequired, "Tag")).Any());
                     Assert.Null(appErrLog.Tag);
-                    Assert.Equal(count, appErrLogService.GetAppErrLogList().Count());
+                    Assert.Equal(count, (int)appErrLogService.GetAppErrLogList().Count());
 
                     appErrLog = null;
                     appErrLog = GetFilledRandomAppErrLog("");
                     appErrLog.Tag = GetRandomString("", 101);
                     Assert.False(appErrLogService.Add(appErrLog));
                     Assert.Equal(string.Format(CSSPServicesRes._MaxLengthIs_, "Tag", "100"), appErrLog.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, appErrLogService.GetAppErrLogList().Count());
+                    Assert.Equal(count, (int)appErrLogService.GetAppErrLogList().Count());
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -172,7 +171,7 @@ namespace CSSPServices.Tests
                     appErrLog.LineNumber = 0;
                     Assert.False(appErrLogService.Add(appErrLog));
                     Assert.Equal(string.Format(CSSPServicesRes._MinValueIs_, "LineNumber", "1"), appErrLog.ValidationResults.FirstOrDefault().ErrorMessage);
-                    Assert.Equal(count, appErrLogService.GetAppErrLogList().Count());
+                    Assert.Equal(count, (int)appErrLogService.GetAppErrLogList().Count());
 
                     // -----------------------------------
                     // Is NOT Nullable
@@ -182,10 +181,10 @@ namespace CSSPServices.Tests
                     appErrLog = null;
                     appErrLog = GetFilledRandomAppErrLog("Source");
                     Assert.False(appErrLogService.Add(appErrLog));
-                    Assert.Equal(1, appErrLog.ValidationResults.Count());
+                    Assert.Equal(1, (int)appErrLog.ValidationResults.Count());
                     Assert.True(appErrLog.ValidationResults.Where(c => c.ErrorMessage == string.Format(CSSPServicesRes._IsRequired, "Source")).Any());
                     Assert.Null(appErrLog.Source);
-                    Assert.Equal(count, appErrLogService.GetAppErrLogList().Count());
+                    Assert.Equal(count, (int)appErrLogService.GetAppErrLogList().Count());
 
 
                     // -----------------------------------
@@ -196,10 +195,10 @@ namespace CSSPServices.Tests
                     appErrLog = null;
                     appErrLog = GetFilledRandomAppErrLog("Message");
                     Assert.False(appErrLogService.Add(appErrLog));
-                    Assert.Equal(1, appErrLog.ValidationResults.Count());
+                    Assert.Equal(1, (int)appErrLog.ValidationResults.Count());
                     Assert.True(appErrLog.ValidationResults.Where(c => c.ErrorMessage == string.Format(CSSPServicesRes._IsRequired, "Message")).Any());
                     Assert.Null(appErrLog.Message);
-                    Assert.Equal(count, appErrLogService.GetAppErrLogList().Count());
+                    Assert.Equal(count, (int)appErrLogService.GetAppErrLogList().Count());
 
 
                     // -----------------------------------
@@ -579,15 +578,9 @@ namespace CSSPServices.Tests
         #region Functions private
         private void CheckAppErrLogFields(List<AppErrLog> appErrLogList)
         {
-            Assert.NotNull(appErrLogList[0].AppErrLogID);
             Assert.False(string.IsNullOrWhiteSpace(appErrLogList[0].Tag));
-            Assert.NotNull(appErrLogList[0].LineNumber);
             Assert.False(string.IsNullOrWhiteSpace(appErrLogList[0].Source));
             Assert.False(string.IsNullOrWhiteSpace(appErrLogList[0].Message));
-            Assert.NotNull(appErrLogList[0].DateTime_UTC);
-            Assert.NotNull(appErrLogList[0].LastUpdateDate_UTC);
-            Assert.NotNull(appErrLogList[0].LastUpdateContactTVItemID);
-            Assert.NotNull(appErrLogList[0].HasErrors);
         }
         private AppErrLog GetFilledRandomAppErrLog(string OmitPropName)
         {
