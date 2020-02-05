@@ -1,0 +1,90 @@
+﻿@model WebApplicationPrototype.Models.Addresses
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>Addresses</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.AddressType)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.AddressType)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.StreetName)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.StreetName)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.StreetNumber)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.StreetNumber)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.StreetType)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.StreetType)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.PostalCode)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.PostalCode)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.GoogleAddressText)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.GoogleAddressText)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.LastUpdateDate_UTC)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.LastUpdateDate_UTC)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.LastUpdateContactTVItemID)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.LastUpdateContactTVItemID)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.AddressTVItem)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.AddressTVItem.TVPath)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.CountryTVItem)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.CountryTVItem.TVPath)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.MunicipalityTVItem)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.MunicipalityTVItem.TVPath)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.ProvinceTVItem)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.ProvinceTVItem.TVPath)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.AddressID">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

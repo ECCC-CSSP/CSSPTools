@@ -11,12 +11,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\dlls\CSSPEnums\CSSPEnums.csproj" />
-    <ProjectReference Include="..\..\dlls\CSSPModels\CSSPModels.csproj" />
-    <ProjectReference Include="..\..\dlls\CSSPServices\CSSPServices.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
+    <Reference Include="CSSPEnums">
+      <HintPath>..\..\dlls\CSSPEnums\bin\Debug\netcoreapp3.1\CSSPEnums.dll</HintPath>
+    </Reference>
+    <Reference Include="CSSPModels">
+      <HintPath>..\..\dlls\CSSPModels\bin\Debug\netcoreapp3.1\CSSPModels.dll</HintPath>
+    </Reference>
     <Reference Include="CSSPServices">
       <HintPath>..\..\dlls\CSSPServices\bin\Debug\netcoreapp3.1\CSSPServices.dll</HintPath>
     </Reference>
