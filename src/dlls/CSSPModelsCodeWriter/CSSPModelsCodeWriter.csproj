@@ -9,8 +9,15 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\CSSPCodeWriterBase\CSSPCodeWriterBase.csproj" />
-    <ProjectReference Include="..\CSSPEnums\CSSPEnums.csproj" />
+    <Reference Include="CSSPCodeWriterBase">
+      <HintPath>..\CSSPCodeWriterBase\bin\Debug\netcoreapp3.1\CSSPCodeWriterBase.dll</HintPath>
+    </Reference>
+    <Reference Include="CSSPEnums">
+      <HintPath>..\CSSPEnums\bin\Debug\netcoreapp3.1\CSSPEnums.dll</HintPath>
+    </Reference>
+    <Reference Include="CSSPModels">
+      <HintPath>..\CSSPModels\bin\Debug\netcoreapp3.1\CSSPModels.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
 </Project>

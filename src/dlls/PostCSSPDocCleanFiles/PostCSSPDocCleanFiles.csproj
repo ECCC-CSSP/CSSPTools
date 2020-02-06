@@ -5,7 +5,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\CSSPCodeWriterBase\CSSPCodeWriterBase.csproj" />
+    <Reference Include="CSSPCodeWriterBase">
+      <HintPath>..\CSSPCodeWriterBase\bin\Debug\netcoreapp3.1\CSSPCodeWriterBase.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
 </Project>

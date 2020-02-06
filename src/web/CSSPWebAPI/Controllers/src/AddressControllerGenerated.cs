@@ -18,9 +18,9 @@ namespace CSSPWebAPI.Controllers
         #endregion Properties
 
         #region Constructors
-        public AddressController() : base()
-        {
-        }
+        //public AddressController() : base()
+        //{
+        //}
         public AddressController(DatabaseTypeEnum dbt = DatabaseTypeEnum.SqlServerTestDB) : base(dbt)
         {
         }
@@ -29,6 +29,7 @@ namespace CSSPWebAPI.Controllers
         #region Functions public
         // GET api/address
         [Route("")]
+        [HttpGet]
         public IActionResult GetAddressList([FromQuery]string lang = "en", [FromQuery]int skip = 0, [FromQuery]int take = 200,
             [FromQuery]string asc = "", [FromQuery]string desc = "", [FromQuery]string where = "")
         {
@@ -57,6 +58,7 @@ namespace CSSPWebAPI.Controllers
         }
         // GET api/address/1
         [Route("{AddressID:int}")]
+        [HttpGet("{AddressID}")]
         public IActionResult GetAddressWithID([FromQuery]int AddressID, [FromQuery]string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
@@ -78,6 +80,7 @@ namespace CSSPWebAPI.Controllers
         }
         // POST api/address
         [Route("")]
+        [HttpPost]
         public IActionResult Post([FromBody]Address address, [FromQuery]string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
@@ -97,6 +100,7 @@ namespace CSSPWebAPI.Controllers
         }
         // PUT api/address
         [Route("")]
+        [HttpPut("{id}")]
         public IActionResult Put([FromBody]Address address, [FromQuery]string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
@@ -116,6 +120,7 @@ namespace CSSPWebAPI.Controllers
         }
         // DELETE api/address
         [Route("")]
+        [HttpDelete("{id}")]
         public IActionResult Delete([FromBody]Address address, [FromQuery]string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))

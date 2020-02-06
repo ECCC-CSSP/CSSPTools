@@ -20,11 +20,13 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\dlls\CSSPEnums\CSSPEnums.csproj" />
+    <Folder Include="tests\Generated\" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="tests\Generated\" />
+    <Reference Include="CSSPEnums">
+      <HintPath>..\..\dlls\CSSPEnums\bin\Debug\netcoreapp3.1\CSSPEnums.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
 </Project>

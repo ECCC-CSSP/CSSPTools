@@ -45,6 +45,8 @@ namespace CSSPServices
                    return (BeaufortScaleEnum)whereInfo.ValueInt;
                case "BoxModelResultTypeEnum":
                    return (BoxModelResultTypeEnum)whereInfo.ValueInt;
+               case "CanOverflowTypeEnum":
+                   return (CanOverflowTypeEnum)whereInfo.ValueInt;
                case "ClassificationTypeEnum":
                    return (ClassificationTypeEnum)whereInfo.ValueInt;
                case "CollectionSystemTypeEnum":

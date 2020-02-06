@@ -807,6 +807,44 @@ namespace CSSPEnums.Tests
             }
         }
         [Fact]
+        public void GetResValueForTypeAndID_ForEnum_CanOverflowTypeEnum_Test()
+        {
+            foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
+            {
+                SetupTest(culture);
+
+                string retStr = enums.GetResValueForTypeAndID(typeof(CanOverflowTypeEnum), -100);
+                Assert.Equal(CSSPEnumsRes.Empty, retStr);
+
+                retStr = enums.GetResValueForTypeAndID(typeof(CanOverflowTypeEnum), 10000000);
+                Assert.Equal(CSSPEnumsRes.Empty, retStr);
+
+                retStr = enums.GetResValueForTypeAndID(typeof(CanOverflowTypeEnum), null);
+                Assert.Equal(CSSPEnumsRes.Empty, retStr);
+
+                foreach (int i in Enum.GetValues(typeof(CanOverflowTypeEnum)))
+                {
+                    retStr = enums.GetResValueForTypeAndID(typeof(CanOverflowTypeEnum), i);
+        
+                    switch ((CanOverflowTypeEnum)i)
+                    {
+                        case CanOverflowTypeEnum.Yes:
+                            Assert.Equal(CSSPEnumsRes.CanOverflowTypeEnumYes, retStr);
+                            break;
+                        case CanOverflowTypeEnum.No:
+                            Assert.Equal(CSSPEnumsRes.CanOverflowTypeEnumNo, retStr);
+                            break;
+                        case CanOverflowTypeEnum.Unknown:
+                            Assert.Equal(CSSPEnumsRes.CanOverflowTypeEnumUnknown, retStr);
+                            break;
+                        default:
+                            Assert.Equal(CSSPEnumsRes.Empty, retStr);
+                            break;
+                    }
+                }
+            }
+        }
+        [Fact]
         public void GetResValueForTypeAndID_ForEnum_ClassificationTypeEnum_Test()
         {
             foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
@@ -5250,6 +5288,40 @@ namespace CSSPEnums.Tests
                             break;
                         default:
                             Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "BoxModelResultTypeEnum"), retStr);
+                            break;
+                    }
+                }
+            }
+        }
+        [Fact]
+        public void Enums_CanOverflowTypeOK_Test()
+        {
+            foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
+            {
+                SetupTest(culture);
+
+                string retStr = enums.EnumTypeOK(typeof(CanOverflowTypeEnum), null);
+                Assert.Equal("", retStr);
+
+                retStr = enums.EnumTypeOK(typeof(CanOverflowTypeEnum), -100);
+                Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "CanOverflowTypeEnum"), retStr);
+
+                retStr = enums.EnumTypeOK(typeof(CanOverflowTypeEnum), 10000000);
+                Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "CanOverflowTypeEnum"), retStr);
+
+                foreach (int i in Enum.GetValues(typeof(CanOverflowTypeEnum)))
+                {
+                    retStr = enums.EnumTypeOK(typeof(CanOverflowTypeEnum), i);
+
+                    switch ((CanOverflowTypeEnum)i)
+                    {
+                        case CanOverflowTypeEnum.Yes:
+                        case CanOverflowTypeEnum.No:
+                        case CanOverflowTypeEnum.Unknown:
+                            Assert.Equal("", retStr);
+                            break;
+                        default:
+                            Assert.Equal(string.Format(CSSPEnumsRes._IsRequired, "CanOverflowTypeEnum"), retStr);
                             break;
                     }
                 }
@@ -9906,6 +9978,33 @@ namespace CSSPEnums.Tests
                 enumTextOrderedList = enumTextOrderedList.OrderBy(c => c.EnumText).ToList();
 
                 List<EnumIDAndText> enumTextOrderedList2 = enums.GetEnumTextOrderedList(typeof(BoxModelResultTypeEnum));
+                Assert.Equal(enumTextOrderedList.Count, enumTextOrderedList2.Count);
+
+                EnumIDAndText enumTextOrdered = new EnumIDAndText();
+                Assert.NotNull(enumTextOrdered);
+
+                for (int i = 0, count = enumTextOrderedList.Count; i < count; i++)
+                {
+                    Assert.Equal(enumTextOrderedList[i].EnumText, enumTextOrderedList2[i].EnumText);
+                    Assert.Equal(enumTextOrderedList[i].EnumID, enumTextOrderedList2[i].EnumID);
+                }
+            }
+        }
+        [Fact]
+        public void Enums_CanOverflowTypeEnumTextOrdered_Test()
+        {
+            foreach (CultureInfo culture in new List<CultureInfo>() { new CultureInfo("en-CA"), new CultureInfo("fr-CA") })
+            {
+                SetupTest(culture);
+
+                List<EnumIDAndText> enumTextOrderedList = new List<EnumIDAndText>();
+                foreach (int i in Enum.GetValues(typeof(CanOverflowTypeEnum)))
+                {
+                    enumTextOrderedList.Add(new EnumIDAndText() { EnumID = i, EnumText = enums.GetResValueForTypeAndID(typeof(CanOverflowTypeEnum), i) });
+                }
+                enumTextOrderedList = enumTextOrderedList.OrderBy(c => c.EnumText).ToList();
+
+                List<EnumIDAndText> enumTextOrderedList2 = enums.GetEnumTextOrderedList(typeof(CanOverflowTypeEnum));
                 Assert.Equal(enumTextOrderedList.Count, enumTextOrderedList2.Count);
 
                 EnumIDAndText enumTextOrdered = new EnumIDAndText();

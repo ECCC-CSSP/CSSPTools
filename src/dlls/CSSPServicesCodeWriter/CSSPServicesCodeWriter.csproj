@@ -7,18 +7,25 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.Data.SqlClient" Version="2.0.0-preview1.20021.1" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="3.1.1" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.1" />
     <PackageReference Include="Microsoft.Extensions.Configuration" Version="3.1.1" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="3.1.1" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\CSSPCodeWriterBase\CSSPCodeWriterBase.csproj" />
-    <ProjectReference Include="..\CSSPEnums\CSSPEnums.csproj" />
-    <ProjectReference Include="..\CSSPModelsCodeWriter\CSSPModelsCodeWriter.csproj" />
-    <ProjectReference Include="..\CSSPModels\CSSPModels.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
+    <Reference Include="CSSPCodeWriterBase">
+      <HintPath>..\CSSPCodeWriterBase\bin\Debug\netcoreapp3.1\CSSPCodeWriterBase.dll</HintPath>
+    </Reference>
+    <Reference Include="CSSPEnums">
+      <HintPath>..\CSSPEnums\bin\Debug\netcoreapp3.1\CSSPEnums.dll</HintPath>
+    </Reference>
+    <Reference Include="CSSPModels">
+      <HintPath>..\CSSPModels\bin\Debug\netcoreapp3.1\CSSPModels.dll</HintPath>
+    </Reference>
+    <Reference Include="CSSPModelsCodeWriter">
+      <HintPath>..\CSSPModelsCodeWriter\bin\Debug\netcoreapp3.1\CSSPModelsCodeWriter.dll</HintPath>
+    </Reference>
     <Reference Include="CSSPServices">
       <HintPath>..\CSSPServices\bin\Debug\netcoreapp3.1\CSSPServices.dll</HintPath>
     </Reference>

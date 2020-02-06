@@ -7,7 +7,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\dlls\CSSPPolSourceGroupingExcelFileRead\CSSPPolSourceGroupingExcelFileRead.csproj" />
+    <Reference Include="CSSPPolSourceGroupingExcelFileRead">
+      <HintPath>..\..\dlls\CSSPPolSourceGroupingExcelFileRead\bin\Debug\netcoreapp3.1\CSSPPolSourceGroupingExcelFileRead.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
 </Project>

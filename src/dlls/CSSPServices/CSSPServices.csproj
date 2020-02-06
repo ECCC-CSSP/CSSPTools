@@ -19,11 +19,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\CSSPEnums\CSSPEnums.csproj" />
-    <ProjectReference Include="..\CSSPModels\CSSPModels.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Compile Update="Resources\CSSPServicesRes.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
@@ -43,6 +38,15 @@
 
   <ItemGroup>
     <Folder Include="Generated\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="CSSPEnums">
+      <HintPath>..\CSSPEnums\bin\Debug\netcoreapp3.1\CSSPEnums.dll</HintPath>
+    </Reference>
+    <Reference Include="CSSPModels">
+      <HintPath>..\CSSPModels\bin\Debug\netcoreapp3.1\CSSPModels.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
 </Project>

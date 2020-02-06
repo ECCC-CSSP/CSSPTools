@@ -27,18 +27,21 @@ namespace CSSPWebAPI.Controllers
         {
             DatabaseType = dbt;
 
-            if (!string.IsNullOrWhiteSpace(User.Identity.Name))
+            if (User != null)
             {
-                if (User.Identity.IsAuthenticated)
+                if (!string.IsNullOrWhiteSpace(User.Identity.Name))
                 {
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
+                    if (User.Identity.IsAuthenticated)
                     {
-                        ContactService contactService = new ContactService(new Query(), db, 1);
-                        Contact contact = (from c in db.Contacts select c).Where(c => c.LoginEmail == User.Identity.Name).FirstOrDefault();
-
-                        if (contact != null)
+                        using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
                         {
-                            ContactID = contact.ContactID;
+                            ContactService contactService = new ContactService(new Query(), db, 1);
+                            Contact contact = (from c in db.Contacts select c).Where(c => c.LoginEmail == User.Identity.Name).FirstOrDefault();
+
+                            if (contact != null)
+                            {
+                                ContactID = contact.ContactID;
+                            }
                         }
                     }
                 }

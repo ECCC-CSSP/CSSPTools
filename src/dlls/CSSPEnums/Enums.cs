@@ -211,6 +211,12 @@ namespace CSSPEnums
         DecayUntreated = 4,
         DecayPreDisinfection = 5,
     }
+    public enum CanOverflowTypeEnum
+    {
+        Yes = 1,
+        No = 2,
+        Unknown = 3,
+    }
     public enum ClassificationTypeEnum
     {
         Approved = 1,

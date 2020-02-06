@@ -19,7 +19,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\CSSPEnums\CSSPEnums.csproj" />
+    <Reference Include="CSSPEnums">
+      <HintPath>..\CSSPEnums\bin\Debug\netcoreapp3.1\CSSPEnums.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
   <ItemGroup>
