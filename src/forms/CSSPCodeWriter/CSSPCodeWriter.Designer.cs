@@ -33,6 +33,10 @@
             this.panelPostCSSPDocButtons = new System.Windows.Forms.Panel();
             this.butPostCSSPDocCleanFiles = new System.Windows.Forms.Button();
             this.panelCSSPDocButtons = new System.Windows.Forms.Panel();
+            this.button5 = new System.Windows.Forms.Button();
+            this.button4 = new System.Windows.Forms.Button();
+            this.button9 = new System.Windows.Forms.Button();
+            this.button3 = new System.Windows.Forms.Button();
             this.panelCSSPWebToolsAngButtons = new System.Windows.Forms.Panel();
             this.butAngularInterfacesGenerate = new System.Windows.Forms.Button();
             this.butAngularEnumsGenerate = new System.Windows.Forms.Button();
@@ -70,10 +74,6 @@
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
             this.richTextBoxStatus = new System.Windows.Forms.RichTextBox();
             this.richTextBoxStatus2 = new System.Windows.Forms.RichTextBox();
-            this.button3 = new System.Windows.Forms.Button();
-            this.button4 = new System.Windows.Forms.Button();
-            this.button5 = new System.Windows.Forms.Button();
-            this.button9 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -167,6 +167,46 @@
             this.panelCSSPDocButtons.TabIndex = 5;
             this.panelCSSPDocButtons.Tag = "CSSPDoc";
             // 
+            // button5
+            // 
+            this.button5.Location = new System.Drawing.Point(616, 3);
+            this.button5.Name = "button5";
+            this.button5.Size = new System.Drawing.Size(222, 29);
+            this.button5.TabIndex = 3;
+            this.button5.Text = "Web API with docs";
+            this.button5.UseVisualStyleBackColor = true;
+            this.button5.Click += new System.EventHandler(this.butGenerateControllersWithDoc_Click);
+            // 
+            // button4
+            // 
+            this.button4.Location = new System.Drawing.Point(383, 3);
+            this.button4.Name = "button4";
+            this.button4.Size = new System.Drawing.Size(226, 29);
+            this.button4.TabIndex = 2;
+            this.button4.Text = "Services with docs";
+            this.button4.UseVisualStyleBackColor = true;
+            this.button4.Click += new System.EventHandler(this.butClassNameServiceWithDocGenerated_Click);
+            // 
+            // button9
+            // 
+            this.button9.Location = new System.Drawing.Point(4, 3);
+            this.button9.Name = "button9";
+            this.button9.Size = new System.Drawing.Size(184, 29);
+            this.button9.TabIndex = 0;
+            this.button9.Text = "Enums with docs";
+            this.button9.UseVisualStyleBackColor = true;
+            this.button9.Click += new System.EventHandler(this.butGenerateWithDocEnums_Click);
+            // 
+            // button3
+            // 
+            this.button3.Location = new System.Drawing.Point(194, 3);
+            this.button3.Name = "button3";
+            this.button3.Size = new System.Drawing.Size(183, 29);
+            this.button3.TabIndex = 1;
+            this.button3.Text = "Models with docs";
+            this.button3.UseVisualStyleBackColor = true;
+            this.button3.Click += new System.EventHandler(this.butGenerateWithDocModels_Click);
+            // 
             // panelCSSPWebToolsAngButtons
             // 
             this.panelCSSPWebToolsAngButtons.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
@@ -231,7 +271,7 @@
             this.butGenerateControllers.Name = "butGenerateControllers";
             this.butGenerateControllers.Size = new System.Drawing.Size(357, 27);
             this.butGenerateControllers.TabIndex = 2;
-            this.butGenerateControllers.Text = "\\src\\[ModelClassName]ControllerGenerated.cs";
+            this.butGenerateControllers.Text = "[ModelClassName]ControllerGenerated.cs";
             this.butGenerateControllers.UseVisualStyleBackColor = true;
             this.butGenerateControllers.Click += new System.EventHandler(this.butGenerateControllers_Click);
             // 
@@ -290,7 +330,7 @@
             this.butGenerateClassServiceGenerated.Name = "butGenerateClassServiceGenerated";
             this.butGenerateClassServiceGenerated.Size = new System.Drawing.Size(232, 27);
             this.butGenerateClassServiceGenerated.TabIndex = 28;
-            this.butGenerateClassServiceGenerated.Text = "\\src\\[ClassName]ServiceGenerated";
+            this.butGenerateClassServiceGenerated.Text = "[ClassName]ServiceGenerated";
             this.butGenerateClassServiceGenerated.UseVisualStyleBackColor = true;
             this.butGenerateClassServiceGenerated.Click += new System.EventHandler(this.butClassNameServiceGenerated_Click);
             // 
@@ -327,7 +367,7 @@
             this.butGenerateModelsNoHelp.Name = "butGenerateModelsNoHelp";
             this.butGenerateModelsNoHelp.Size = new System.Drawing.Size(427, 27);
             this.butGenerateModelsNoHelp.TabIndex = 27;
-            this.butGenerateModelsNoHelp.Text = "\\src\\[ModelClassName].cs comparision with what would be generated";
+            this.butGenerateModelsNoHelp.Text = "[ModelClassName].cs comparision with what would be generated";
             this.butGenerateModelsNoHelp.UseVisualStyleBackColor = true;
             this.butGenerateModelsNoHelp.Click += new System.EventHandler(this.butGenerateModelsNoHelp_Click);
             // 
@@ -611,46 +651,6 @@
             this.richTextBoxStatus2.Size = new System.Drawing.Size(632, 126);
             this.richTextBoxStatus2.TabIndex = 0;
             this.richTextBoxStatus2.Text = "";
-            // 
-            // button3
-            // 
-            this.button3.Location = new System.Drawing.Point(194, 3);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(183, 29);
-            this.button3.TabIndex = 1;
-            this.button3.Text = "Models with docs";
-            this.button3.UseVisualStyleBackColor = true;
-            this.button3.Click += new System.EventHandler(this.butGenerateWithDocModels_Click);
-            // 
-            // button4
-            // 
-            this.button4.Location = new System.Drawing.Point(383, 3);
-            this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(226, 29);
-            this.button4.TabIndex = 2;
-            this.button4.Text = "Services with docs";
-            this.button4.UseVisualStyleBackColor = true;
-            this.button4.Click += new System.EventHandler(this.butClassNameServiceWithDocGenerated_Click);
-            // 
-            // button5
-            // 
-            this.button5.Location = new System.Drawing.Point(616, 3);
-            this.button5.Name = "button5";
-            this.button5.Size = new System.Drawing.Size(222, 29);
-            this.button5.TabIndex = 3;
-            this.button5.Text = "Web API with docs";
-            this.button5.UseVisualStyleBackColor = true;
-            this.button5.Click += new System.EventHandler(this.butGenerateControllersWithDoc_Click);
-            // 
-            // button9
-            // 
-            this.button9.Location = new System.Drawing.Point(4, 3);
-            this.button9.Name = "button9";
-            this.button9.Size = new System.Drawing.Size(184, 29);
-            this.button9.TabIndex = 0;
-            this.button9.Text = "Enums with docs";
-            this.button9.UseVisualStyleBackColor = true;
-            this.button9.Click += new System.EventHandler(this.butGenerateWithDocEnums_Click);
             // 
             // CSSPCodeWriter
             // 
