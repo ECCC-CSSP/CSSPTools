@@ -15,7 +15,7 @@ using System.Linq;
 
 namespace CSSPWebAPI.Controllers
 {
-    [Route("api/mikeSourceStartEnd")]
+    [Route("api/[controller]")]
     public partial class MikeSourceStartEndController : BaseController
     {
         #region Variables
@@ -25,9 +25,6 @@ namespace CSSPWebAPI.Controllers
         #endregion Properties
 
         #region Constructors
-        public MikeSourceStartEndController() : base()
-        {
-        }
         public MikeSourceStartEndController(DatabaseTypeEnum dbt = DatabaseTypeEnum.SqlServerTestDB) : base(dbt)
         {
         }
@@ -35,9 +32,9 @@ namespace CSSPWebAPI.Controllers
 
         #region Functions public
         // GET api/mikeSourceStartEnd
-        [Route("")]
-        public IActionResult GetMikeSourceStartEndList([FromQuery]string lang = "en", [FromQuery]int skip = 0, [FromQuery]int take = 200,
-            [FromQuery]string asc = "", [FromQuery]string desc = "", [FromQuery]string where = "")
+        [HttpGet]
+        public IActionResult GetMikeSourceStartEndList(string lang = "en", int skip = 0, int take = 200,
+            string asc = "", string desc = "", string where = "")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
@@ -63,12 +60,12 @@ namespace CSSPWebAPI.Controllers
             }
         }
         // GET api/mikeSourceStartEnd/1
-        [Route("{MikeSourceStartEndID:int}")]
-        public IActionResult GetMikeSourceStartEndWithID([FromQuery]int MikeSourceStartEndID, [FromQuery]string lang = "en")
+        [HttpGet("{MikeSourceStartEndID}")]
+        public IActionResult GetMikeSourceStartEndWithID(int MikeSourceStartEndID, string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
-                MikeSourceStartEndService mikeSourceStartEndService = new MikeSourceStartEndService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+                MikeSourceStartEndService mikeSourceStartEndService = new MikeSourceStartEndService(new Query() { Lang = lang }, db, ContactID);
 
                 mikeSourceStartEndService.Query = mikeSourceStartEndService.FillQuery(typeof(MikeSourceStartEnd), lang, 0, 1, "", "");
 
@@ -84,12 +81,12 @@ namespace CSSPWebAPI.Controllers
             }
         }
         // POST api/mikeSourceStartEnd
-        [Route("")]
-        public IActionResult Post([FromBody]MikeSourceStartEnd mikeSourceStartEnd, [FromQuery]string lang = "en")
+        [HttpPost]
+        public IActionResult Post(MikeSourceStartEnd mikeSourceStartEnd, string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
-                MikeSourceStartEndService mikeSourceStartEndService = new MikeSourceStartEndService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+                MikeSourceStartEndService mikeSourceStartEndService = new MikeSourceStartEndService(new Query() { Lang = lang }, db, ContactID);
 
                 if (!mikeSourceStartEndService.Add(mikeSourceStartEnd))
                 {
@@ -103,12 +100,12 @@ namespace CSSPWebAPI.Controllers
             }
         }
         // PUT api/mikeSourceStartEnd
-        [Route("")]
-        public IActionResult Put([FromBody]MikeSourceStartEnd mikeSourceStartEnd, [FromQuery]string lang = "en")
+        [HttpPut]
+        public IActionResult Put(MikeSourceStartEnd mikeSourceStartEnd, string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
-                MikeSourceStartEndService mikeSourceStartEndService = new MikeSourceStartEndService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+                MikeSourceStartEndService mikeSourceStartEndService = new MikeSourceStartEndService(new Query() { Lang = lang }, db, ContactID);
 
                 if (!mikeSourceStartEndService.Update(mikeSourceStartEnd))
                 {
@@ -122,12 +119,12 @@ namespace CSSPWebAPI.Controllers
             }
         }
         // DELETE api/mikeSourceStartEnd
-        [Route("")]
-        public IActionResult Delete([FromBody]MikeSourceStartEnd mikeSourceStartEnd, [FromQuery]string lang = "en")
+        [HttpDelete]
+        public IActionResult Delete(MikeSourceStartEnd mikeSourceStartEnd, string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
-                MikeSourceStartEndService mikeSourceStartEndService = new MikeSourceStartEndService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+                MikeSourceStartEndService mikeSourceStartEndService = new MikeSourceStartEndService(new Query() { Lang = lang }, db, ContactID);
 
                 if (!mikeSourceStartEndService.Delete(mikeSourceStartEnd))
                 {

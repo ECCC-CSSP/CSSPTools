@@ -15,7 +15,7 @@ using System.Linq;
 
 namespace CSSPWebAPI.Controllers
 {
-    [Route("api/rainExceedanceClimateSite")]
+    [Route("api/[controller]")]
     public partial class RainExceedanceClimateSiteController : BaseController
     {
         #region Variables
@@ -25,9 +25,6 @@ namespace CSSPWebAPI.Controllers
         #endregion Properties
 
         #region Constructors
-        public RainExceedanceClimateSiteController() : base()
-        {
-        }
         public RainExceedanceClimateSiteController(DatabaseTypeEnum dbt = DatabaseTypeEnum.SqlServerTestDB) : base(dbt)
         {
         }
@@ -35,9 +32,9 @@ namespace CSSPWebAPI.Controllers
 
         #region Functions public
         // GET api/rainExceedanceClimateSite
-        [Route("")]
-        public IActionResult GetRainExceedanceClimateSiteList([FromQuery]string lang = "en", [FromQuery]int skip = 0, [FromQuery]int take = 200,
-            [FromQuery]string asc = "", [FromQuery]string desc = "", [FromQuery]string where = "")
+        [HttpGet]
+        public IActionResult GetRainExceedanceClimateSiteList(string lang = "en", int skip = 0, int take = 200,
+            string asc = "", string desc = "", string where = "")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
@@ -63,12 +60,12 @@ namespace CSSPWebAPI.Controllers
             }
         }
         // GET api/rainExceedanceClimateSite/1
-        [Route("{RainExceedanceClimateSiteID:int}")]
-        public IActionResult GetRainExceedanceClimateSiteWithID([FromQuery]int RainExceedanceClimateSiteID, [FromQuery]string lang = "en")
+        [HttpGet("{RainExceedanceClimateSiteID}")]
+        public IActionResult GetRainExceedanceClimateSiteWithID(int RainExceedanceClimateSiteID, string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
-                RainExceedanceClimateSiteService rainExceedanceClimateSiteService = new RainExceedanceClimateSiteService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+                RainExceedanceClimateSiteService rainExceedanceClimateSiteService = new RainExceedanceClimateSiteService(new Query() { Lang = lang }, db, ContactID);
 
                 rainExceedanceClimateSiteService.Query = rainExceedanceClimateSiteService.FillQuery(typeof(RainExceedanceClimateSite), lang, 0, 1, "", "");
 
@@ -84,12 +81,12 @@ namespace CSSPWebAPI.Controllers
             }
         }
         // POST api/rainExceedanceClimateSite
-        [Route("")]
-        public IActionResult Post([FromBody]RainExceedanceClimateSite rainExceedanceClimateSite, [FromQuery]string lang = "en")
+        [HttpPost]
+        public IActionResult Post(RainExceedanceClimateSite rainExceedanceClimateSite, string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
-                RainExceedanceClimateSiteService rainExceedanceClimateSiteService = new RainExceedanceClimateSiteService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+                RainExceedanceClimateSiteService rainExceedanceClimateSiteService = new RainExceedanceClimateSiteService(new Query() { Lang = lang }, db, ContactID);
 
                 if (!rainExceedanceClimateSiteService.Add(rainExceedanceClimateSite))
                 {
@@ -103,12 +100,12 @@ namespace CSSPWebAPI.Controllers
             }
         }
         // PUT api/rainExceedanceClimateSite
-        [Route("")]
-        public IActionResult Put([FromBody]RainExceedanceClimateSite rainExceedanceClimateSite, [FromQuery]string lang = "en")
+        [HttpPut]
+        public IActionResult Put(RainExceedanceClimateSite rainExceedanceClimateSite, string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
-                RainExceedanceClimateSiteService rainExceedanceClimateSiteService = new RainExceedanceClimateSiteService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+                RainExceedanceClimateSiteService rainExceedanceClimateSiteService = new RainExceedanceClimateSiteService(new Query() { Lang = lang }, db, ContactID);
 
                 if (!rainExceedanceClimateSiteService.Update(rainExceedanceClimateSite))
                 {
@@ -122,12 +119,12 @@ namespace CSSPWebAPI.Controllers
             }
         }
         // DELETE api/rainExceedanceClimateSite
-        [Route("")]
-        public IActionResult Delete([FromBody]RainExceedanceClimateSite rainExceedanceClimateSite, [FromQuery]string lang = "en")
+        [HttpDelete]
+        public IActionResult Delete(RainExceedanceClimateSite rainExceedanceClimateSite, string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
-                RainExceedanceClimateSiteService rainExceedanceClimateSiteService = new RainExceedanceClimateSiteService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+                RainExceedanceClimateSiteService rainExceedanceClimateSiteService = new RainExceedanceClimateSiteService(new Query() { Lang = lang }, db, ContactID);
 
                 if (!rainExceedanceClimateSiteService.Delete(rainExceedanceClimateSite))
                 {

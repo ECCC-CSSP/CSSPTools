@@ -15,7 +15,7 @@ using System.Linq;
 
 namespace CSSPWebAPI.Controllers
 {
-    [Route("api/mikeScenario")]
+    [Route("api/[controller]")]
     public partial class MikeScenarioController : BaseController
     {
         #region Variables
@@ -25,9 +25,6 @@ namespace CSSPWebAPI.Controllers
         #endregion Properties
 
         #region Constructors
-        public MikeScenarioController() : base()
-        {
-        }
         public MikeScenarioController(DatabaseTypeEnum dbt = DatabaseTypeEnum.SqlServerTestDB) : base(dbt)
         {
         }
@@ -35,9 +32,9 @@ namespace CSSPWebAPI.Controllers
 
         #region Functions public
         // GET api/mikeScenario
-        [Route("")]
-        public IActionResult GetMikeScenarioList([FromQuery]string lang = "en", [FromQuery]int skip = 0, [FromQuery]int take = 200,
-            [FromQuery]string asc = "", [FromQuery]string desc = "", [FromQuery]string where = "")
+        [HttpGet]
+        public IActionResult GetMikeScenarioList(string lang = "en", int skip = 0, int take = 200,
+            string asc = "", string desc = "", string where = "")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
@@ -63,12 +60,12 @@ namespace CSSPWebAPI.Controllers
             }
         }
         // GET api/mikeScenario/1
-        [Route("{MikeScenarioID:int}")]
-        public IActionResult GetMikeScenarioWithID([FromQuery]int MikeScenarioID, [FromQuery]string lang = "en")
+        [HttpGet("{MikeScenarioID}")]
+        public IActionResult GetMikeScenarioWithID(int MikeScenarioID, string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
-                MikeScenarioService mikeScenarioService = new MikeScenarioService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+                MikeScenarioService mikeScenarioService = new MikeScenarioService(new Query() { Lang = lang }, db, ContactID);
 
                 mikeScenarioService.Query = mikeScenarioService.FillQuery(typeof(MikeScenario), lang, 0, 1, "", "");
 
@@ -84,12 +81,12 @@ namespace CSSPWebAPI.Controllers
             }
         }
         // POST api/mikeScenario
-        [Route("")]
-        public IActionResult Post([FromBody]MikeScenario mikeScenario, [FromQuery]string lang = "en")
+        [HttpPost]
+        public IActionResult Post(MikeScenario mikeScenario, string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
-                MikeScenarioService mikeScenarioService = new MikeScenarioService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+                MikeScenarioService mikeScenarioService = new MikeScenarioService(new Query() { Lang = lang }, db, ContactID);
 
                 if (!mikeScenarioService.Add(mikeScenario))
                 {
@@ -103,12 +100,12 @@ namespace CSSPWebAPI.Controllers
             }
         }
         // PUT api/mikeScenario
-        [Route("")]
-        public IActionResult Put([FromBody]MikeScenario mikeScenario, [FromQuery]string lang = "en")
+        [HttpPut]
+        public IActionResult Put(MikeScenario mikeScenario, string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
-                MikeScenarioService mikeScenarioService = new MikeScenarioService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+                MikeScenarioService mikeScenarioService = new MikeScenarioService(new Query() { Lang = lang }, db, ContactID);
 
                 if (!mikeScenarioService.Update(mikeScenario))
                 {
@@ -122,12 +119,12 @@ namespace CSSPWebAPI.Controllers
             }
         }
         // DELETE api/mikeScenario
-        [Route("")]
-        public IActionResult Delete([FromBody]MikeScenario mikeScenario, [FromQuery]string lang = "en")
+        [HttpDelete]
+        public IActionResult Delete(MikeScenario mikeScenario, string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
-                MikeScenarioService mikeScenarioService = new MikeScenarioService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+                MikeScenarioService mikeScenarioService = new MikeScenarioService(new Query() { Lang = lang }, db, ContactID);
 
                 if (!mikeScenarioService.Delete(mikeScenario))
                 {

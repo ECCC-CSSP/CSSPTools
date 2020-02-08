@@ -15,7 +15,7 @@ using System.Linq;
 
 namespace CSSPWebAPI.Controllers
 {
-    [Route("api/docTemplate")]
+    [Route("api/[controller]")]
     public partial class DocTemplateController : BaseController
     {
         #region Variables
@@ -25,9 +25,6 @@ namespace CSSPWebAPI.Controllers
         #endregion Properties
 
         #region Constructors
-        public DocTemplateController() : base()
-        {
-        }
         public DocTemplateController(DatabaseTypeEnum dbt = DatabaseTypeEnum.SqlServerTestDB) : base(dbt)
         {
         }
@@ -35,9 +32,9 @@ namespace CSSPWebAPI.Controllers
 
         #region Functions public
         // GET api/docTemplate
-        [Route("")]
-        public IActionResult GetDocTemplateList([FromQuery]string lang = "en", [FromQuery]int skip = 0, [FromQuery]int take = 200,
-            [FromQuery]string asc = "", [FromQuery]string desc = "", [FromQuery]string where = "")
+        [HttpGet]
+        public IActionResult GetDocTemplateList(string lang = "en", int skip = 0, int take = 200,
+            string asc = "", string desc = "", string where = "")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
@@ -63,12 +60,12 @@ namespace CSSPWebAPI.Controllers
             }
         }
         // GET api/docTemplate/1
-        [Route("{DocTemplateID:int}")]
-        public IActionResult GetDocTemplateWithID([FromQuery]int DocTemplateID, [FromQuery]string lang = "en")
+        [HttpGet("{DocTemplateID}")]
+        public IActionResult GetDocTemplateWithID(int DocTemplateID, string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
-                DocTemplateService docTemplateService = new DocTemplateService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+                DocTemplateService docTemplateService = new DocTemplateService(new Query() { Lang = lang }, db, ContactID);
 
                 docTemplateService.Query = docTemplateService.FillQuery(typeof(DocTemplate), lang, 0, 1, "", "");
 
@@ -84,12 +81,12 @@ namespace CSSPWebAPI.Controllers
             }
         }
         // POST api/docTemplate
-        [Route("")]
-        public IActionResult Post([FromBody]DocTemplate docTemplate, [FromQuery]string lang = "en")
+        [HttpPost]
+        public IActionResult Post(DocTemplate docTemplate, string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
-                DocTemplateService docTemplateService = new DocTemplateService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+                DocTemplateService docTemplateService = new DocTemplateService(new Query() { Lang = lang }, db, ContactID);
 
                 if (!docTemplateService.Add(docTemplate))
                 {
@@ -103,12 +100,12 @@ namespace CSSPWebAPI.Controllers
             }
         }
         // PUT api/docTemplate
-        [Route("")]
-        public IActionResult Put([FromBody]DocTemplate docTemplate, [FromQuery]string lang = "en")
+        [HttpPut]
+        public IActionResult Put(DocTemplate docTemplate, string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
-                DocTemplateService docTemplateService = new DocTemplateService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+                DocTemplateService docTemplateService = new DocTemplateService(new Query() { Lang = lang }, db, ContactID);
 
                 if (!docTemplateService.Update(docTemplate))
                 {
@@ -122,12 +119,12 @@ namespace CSSPWebAPI.Controllers
             }
         }
         // DELETE api/docTemplate
-        [Route("")]
-        public IActionResult Delete([FromBody]DocTemplate docTemplate, [FromQuery]string lang = "en")
+        [HttpDelete]
+        public IActionResult Delete(DocTemplate docTemplate, string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
-                DocTemplateService docTemplateService = new DocTemplateService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+                DocTemplateService docTemplateService = new DocTemplateService(new Query() { Lang = lang }, db, ContactID);
 
                 if (!docTemplateService.Delete(docTemplate))
                 {

@@ -15,7 +15,7 @@ using System.Linq;
 
 namespace CSSPWebAPI.Controllers
 {
-    [Route("api/boxModelLanguage")]
+    [Route("api/[controller]")]
     public partial class BoxModelLanguageController : BaseController
     {
         #region Variables
@@ -25,9 +25,6 @@ namespace CSSPWebAPI.Controllers
         #endregion Properties
 
         #region Constructors
-        public BoxModelLanguageController() : base()
-        {
-        }
         public BoxModelLanguageController(DatabaseTypeEnum dbt = DatabaseTypeEnum.SqlServerTestDB) : base(dbt)
         {
         }
@@ -35,9 +32,9 @@ namespace CSSPWebAPI.Controllers
 
         #region Functions public
         // GET api/boxModelLanguage
-        [Route("")]
-        public IActionResult GetBoxModelLanguageList([FromQuery]string lang = "en", [FromQuery]int skip = 0, [FromQuery]int take = 200,
-            [FromQuery]string asc = "", [FromQuery]string desc = "", [FromQuery]string where = "")
+        [HttpGet]
+        public IActionResult GetBoxModelLanguageList(string lang = "en", int skip = 0, int take = 200,
+            string asc = "", string desc = "", string where = "")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
@@ -63,12 +60,12 @@ namespace CSSPWebAPI.Controllers
             }
         }
         // GET api/boxModelLanguage/1
-        [Route("{BoxModelLanguageID:int}")]
-        public IActionResult GetBoxModelLanguageWithID([FromQuery]int BoxModelLanguageID, [FromQuery]string lang = "en")
+        [HttpGet("{BoxModelLanguageID}")]
+        public IActionResult GetBoxModelLanguageWithID(int BoxModelLanguageID, string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
-                BoxModelLanguageService boxModelLanguageService = new BoxModelLanguageService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+                BoxModelLanguageService boxModelLanguageService = new BoxModelLanguageService(new Query() { Lang = lang }, db, ContactID);
 
                 boxModelLanguageService.Query = boxModelLanguageService.FillQuery(typeof(BoxModelLanguage), lang, 0, 1, "", "");
 
@@ -84,12 +81,12 @@ namespace CSSPWebAPI.Controllers
             }
         }
         // POST api/boxModelLanguage
-        [Route("")]
-        public IActionResult Post([FromBody]BoxModelLanguage boxModelLanguage, [FromQuery]string lang = "en")
+        [HttpPost]
+        public IActionResult Post(BoxModelLanguage boxModelLanguage, string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
-                BoxModelLanguageService boxModelLanguageService = new BoxModelLanguageService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+                BoxModelLanguageService boxModelLanguageService = new BoxModelLanguageService(new Query() { Lang = lang }, db, ContactID);
 
                 if (!boxModelLanguageService.Add(boxModelLanguage))
                 {
@@ -103,12 +100,12 @@ namespace CSSPWebAPI.Controllers
             }
         }
         // PUT api/boxModelLanguage
-        [Route("")]
-        public IActionResult Put([FromBody]BoxModelLanguage boxModelLanguage, [FromQuery]string lang = "en")
+        [HttpPut]
+        public IActionResult Put(BoxModelLanguage boxModelLanguage, string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
-                BoxModelLanguageService boxModelLanguageService = new BoxModelLanguageService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+                BoxModelLanguageService boxModelLanguageService = new BoxModelLanguageService(new Query() { Lang = lang }, db, ContactID);
 
                 if (!boxModelLanguageService.Update(boxModelLanguage))
                 {
@@ -122,12 +119,12 @@ namespace CSSPWebAPI.Controllers
             }
         }
         // DELETE api/boxModelLanguage
-        [Route("")]
-        public IActionResult Delete([FromBody]BoxModelLanguage boxModelLanguage, [FromQuery]string lang = "en")
+        [HttpDelete]
+        public IActionResult Delete(BoxModelLanguage boxModelLanguage, string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
-                BoxModelLanguageService boxModelLanguageService = new BoxModelLanguageService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+                BoxModelLanguageService boxModelLanguageService = new BoxModelLanguageService(new Query() { Lang = lang }, db, ContactID);
 
                 if (!boxModelLanguageService.Delete(boxModelLanguage))
                 {

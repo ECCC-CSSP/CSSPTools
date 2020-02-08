@@ -15,7 +15,7 @@ using System.Linq;
 
 namespace CSSPWebAPI.Controllers
 {
-    [Route("api/vpAmbient")]
+    [Route("api/[controller]")]
     public partial class VPAmbientController : BaseController
     {
         #region Variables
@@ -25,9 +25,6 @@ namespace CSSPWebAPI.Controllers
         #endregion Properties
 
         #region Constructors
-        public VPAmbientController() : base()
-        {
-        }
         public VPAmbientController(DatabaseTypeEnum dbt = DatabaseTypeEnum.SqlServerTestDB) : base(dbt)
         {
         }
@@ -35,9 +32,9 @@ namespace CSSPWebAPI.Controllers
 
         #region Functions public
         // GET api/vpAmbient
-        [Route("")]
-        public IActionResult GetVPAmbientList([FromQuery]string lang = "en", [FromQuery]int skip = 0, [FromQuery]int take = 200,
-            [FromQuery]string asc = "", [FromQuery]string desc = "", [FromQuery]string where = "")
+        [HttpGet]
+        public IActionResult GetVPAmbientList(string lang = "en", int skip = 0, int take = 200,
+            string asc = "", string desc = "", string where = "")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
@@ -63,12 +60,12 @@ namespace CSSPWebAPI.Controllers
             }
         }
         // GET api/vpAmbient/1
-        [Route("{VPAmbientID:int}")]
-        public IActionResult GetVPAmbientWithID([FromQuery]int VPAmbientID, [FromQuery]string lang = "en")
+        [HttpGet("{VPAmbientID}")]
+        public IActionResult GetVPAmbientWithID(int VPAmbientID, string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
-                VPAmbientService vpAmbientService = new VPAmbientService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+                VPAmbientService vpAmbientService = new VPAmbientService(new Query() { Lang = lang }, db, ContactID);
 
                 vpAmbientService.Query = vpAmbientService.FillQuery(typeof(VPAmbient), lang, 0, 1, "", "");
 
@@ -84,12 +81,12 @@ namespace CSSPWebAPI.Controllers
             }
         }
         // POST api/vpAmbient
-        [Route("")]
-        public IActionResult Post([FromBody]VPAmbient vpAmbient, [FromQuery]string lang = "en")
+        [HttpPost]
+        public IActionResult Post(VPAmbient vpAmbient, string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
-                VPAmbientService vpAmbientService = new VPAmbientService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+                VPAmbientService vpAmbientService = new VPAmbientService(new Query() { Lang = lang }, db, ContactID);
 
                 if (!vpAmbientService.Add(vpAmbient))
                 {
@@ -103,12 +100,12 @@ namespace CSSPWebAPI.Controllers
             }
         }
         // PUT api/vpAmbient
-        [Route("")]
-        public IActionResult Put([FromBody]VPAmbient vpAmbient, [FromQuery]string lang = "en")
+        [HttpPut]
+        public IActionResult Put(VPAmbient vpAmbient, string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
-                VPAmbientService vpAmbientService = new VPAmbientService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+                VPAmbientService vpAmbientService = new VPAmbientService(new Query() { Lang = lang }, db, ContactID);
 
                 if (!vpAmbientService.Update(vpAmbient))
                 {
@@ -122,12 +119,12 @@ namespace CSSPWebAPI.Controllers
             }
         }
         // DELETE api/vpAmbient
-        [Route("")]
-        public IActionResult Delete([FromBody]VPAmbient vpAmbient, [FromQuery]string lang = "en")
+        [HttpDelete]
+        public IActionResult Delete(VPAmbient vpAmbient, string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
-                VPAmbientService vpAmbientService = new VPAmbientService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+                VPAmbientService vpAmbientService = new VPAmbientService(new Query() { Lang = lang }, db, ContactID);
 
                 if (!vpAmbientService.Delete(vpAmbient))
                 {

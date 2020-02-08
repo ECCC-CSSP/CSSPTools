@@ -15,7 +15,7 @@ using System.Linq;
 
 namespace CSSPWebAPI.Controllers
 {
-    [Route("api/vpResult")]
+    [Route("api/[controller]")]
     public partial class VPResultController : BaseController
     {
         #region Variables
@@ -25,9 +25,6 @@ namespace CSSPWebAPI.Controllers
         #endregion Properties
 
         #region Constructors
-        public VPResultController() : base()
-        {
-        }
         public VPResultController(DatabaseTypeEnum dbt = DatabaseTypeEnum.SqlServerTestDB) : base(dbt)
         {
         }
@@ -35,9 +32,9 @@ namespace CSSPWebAPI.Controllers
 
         #region Functions public
         // GET api/vpResult
-        [Route("")]
-        public IActionResult GetVPResultList([FromQuery]string lang = "en", [FromQuery]int skip = 0, [FromQuery]int take = 200,
-            [FromQuery]string asc = "", [FromQuery]string desc = "", [FromQuery]string where = "")
+        [HttpGet]
+        public IActionResult GetVPResultList(string lang = "en", int skip = 0, int take = 200,
+            string asc = "", string desc = "", string where = "")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
@@ -63,12 +60,12 @@ namespace CSSPWebAPI.Controllers
             }
         }
         // GET api/vpResult/1
-        [Route("{VPResultID:int}")]
-        public IActionResult GetVPResultWithID([FromQuery]int VPResultID, [FromQuery]string lang = "en")
+        [HttpGet("{VPResultID}")]
+        public IActionResult GetVPResultWithID(int VPResultID, string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
-                VPResultService vpResultService = new VPResultService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+                VPResultService vpResultService = new VPResultService(new Query() { Lang = lang }, db, ContactID);
 
                 vpResultService.Query = vpResultService.FillQuery(typeof(VPResult), lang, 0, 1, "", "");
 
@@ -84,12 +81,12 @@ namespace CSSPWebAPI.Controllers
             }
         }
         // POST api/vpResult
-        [Route("")]
-        public IActionResult Post([FromBody]VPResult vpResult, [FromQuery]string lang = "en")
+        [HttpPost]
+        public IActionResult Post(VPResult vpResult, string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
-                VPResultService vpResultService = new VPResultService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+                VPResultService vpResultService = new VPResultService(new Query() { Lang = lang }, db, ContactID);
 
                 if (!vpResultService.Add(vpResult))
                 {
@@ -103,12 +100,12 @@ namespace CSSPWebAPI.Controllers
             }
         }
         // PUT api/vpResult
-        [Route("")]
-        public IActionResult Put([FromBody]VPResult vpResult, [FromQuery]string lang = "en")
+        [HttpPut]
+        public IActionResult Put(VPResult vpResult, string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
-                VPResultService vpResultService = new VPResultService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+                VPResultService vpResultService = new VPResultService(new Query() { Lang = lang }, db, ContactID);
 
                 if (!vpResultService.Update(vpResult))
                 {
@@ -122,12 +119,12 @@ namespace CSSPWebAPI.Controllers
             }
         }
         // DELETE api/vpResult
-        [Route("")]
-        public IActionResult Delete([FromBody]VPResult vpResult, [FromQuery]string lang = "en")
+        [HttpDelete]
+        public IActionResult Delete(VPResult vpResult, string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
-                VPResultService vpResultService = new VPResultService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+                VPResultService vpResultService = new VPResultService(new Query() { Lang = lang }, db, ContactID);
 
                 if (!vpResultService.Delete(vpResult))
                 {

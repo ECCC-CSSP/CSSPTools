@@ -15,7 +15,7 @@ using System.Linq;
 
 namespace CSSPWebAPI.Controllers
 {
-    [Route("api/emailDistributionListLanguage")]
+    [Route("api/[controller]")]
     public partial class EmailDistributionListLanguageController : BaseController
     {
         #region Variables
@@ -25,9 +25,6 @@ namespace CSSPWebAPI.Controllers
         #endregion Properties
 
         #region Constructors
-        public EmailDistributionListLanguageController() : base()
-        {
-        }
         public EmailDistributionListLanguageController(DatabaseTypeEnum dbt = DatabaseTypeEnum.SqlServerTestDB) : base(dbt)
         {
         }
@@ -35,9 +32,9 @@ namespace CSSPWebAPI.Controllers
 
         #region Functions public
         // GET api/emailDistributionListLanguage
-        [Route("")]
-        public IActionResult GetEmailDistributionListLanguageList([FromQuery]string lang = "en", [FromQuery]int skip = 0, [FromQuery]int take = 200,
-            [FromQuery]string asc = "", [FromQuery]string desc = "", [FromQuery]string where = "")
+        [HttpGet]
+        public IActionResult GetEmailDistributionListLanguageList(string lang = "en", int skip = 0, int take = 200,
+            string asc = "", string desc = "", string where = "")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
@@ -63,12 +60,12 @@ namespace CSSPWebAPI.Controllers
             }
         }
         // GET api/emailDistributionListLanguage/1
-        [Route("{EmailDistributionListLanguageID:int}")]
-        public IActionResult GetEmailDistributionListLanguageWithID([FromQuery]int EmailDistributionListLanguageID, [FromQuery]string lang = "en")
+        [HttpGet("{EmailDistributionListLanguageID}")]
+        public IActionResult GetEmailDistributionListLanguageWithID(int EmailDistributionListLanguageID, string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
-                EmailDistributionListLanguageService emailDistributionListLanguageService = new EmailDistributionListLanguageService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+                EmailDistributionListLanguageService emailDistributionListLanguageService = new EmailDistributionListLanguageService(new Query() { Lang = lang }, db, ContactID);
 
                 emailDistributionListLanguageService.Query = emailDistributionListLanguageService.FillQuery(typeof(EmailDistributionListLanguage), lang, 0, 1, "", "");
 
@@ -84,12 +81,12 @@ namespace CSSPWebAPI.Controllers
             }
         }
         // POST api/emailDistributionListLanguage
-        [Route("")]
-        public IActionResult Post([FromBody]EmailDistributionListLanguage emailDistributionListLanguage, [FromQuery]string lang = "en")
+        [HttpPost]
+        public IActionResult Post(EmailDistributionListLanguage emailDistributionListLanguage, string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
-                EmailDistributionListLanguageService emailDistributionListLanguageService = new EmailDistributionListLanguageService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+                EmailDistributionListLanguageService emailDistributionListLanguageService = new EmailDistributionListLanguageService(new Query() { Lang = lang }, db, ContactID);
 
                 if (!emailDistributionListLanguageService.Add(emailDistributionListLanguage))
                 {
@@ -103,12 +100,12 @@ namespace CSSPWebAPI.Controllers
             }
         }
         // PUT api/emailDistributionListLanguage
-        [Route("")]
-        public IActionResult Put([FromBody]EmailDistributionListLanguage emailDistributionListLanguage, [FromQuery]string lang = "en")
+        [HttpPut]
+        public IActionResult Put(EmailDistributionListLanguage emailDistributionListLanguage, string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
-                EmailDistributionListLanguageService emailDistributionListLanguageService = new EmailDistributionListLanguageService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+                EmailDistributionListLanguageService emailDistributionListLanguageService = new EmailDistributionListLanguageService(new Query() { Lang = lang }, db, ContactID);
 
                 if (!emailDistributionListLanguageService.Update(emailDistributionListLanguage))
                 {
@@ -122,12 +119,12 @@ namespace CSSPWebAPI.Controllers
             }
         }
         // DELETE api/emailDistributionListLanguage
-        [Route("")]
-        public IActionResult Delete([FromBody]EmailDistributionListLanguage emailDistributionListLanguage, [FromQuery]string lang = "en")
+        [HttpDelete]
+        public IActionResult Delete(EmailDistributionListLanguage emailDistributionListLanguage, string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
-                EmailDistributionListLanguageService emailDistributionListLanguageService = new EmailDistributionListLanguageService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+                EmailDistributionListLanguageService emailDistributionListLanguageService = new EmailDistributionListLanguageService(new Query() { Lang = lang }, db, ContactID);
 
                 if (!emailDistributionListLanguageService.Delete(emailDistributionListLanguage))
                 {

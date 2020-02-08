@@ -15,7 +15,7 @@ using System.Linq;
 
 namespace CSSPWebAPI.Controllers
 {
-    [Route("api/drogueRunPosition")]
+    [Route("api/[controller]")]
     public partial class DrogueRunPositionController : BaseController
     {
         #region Variables
@@ -25,9 +25,6 @@ namespace CSSPWebAPI.Controllers
         #endregion Properties
 
         #region Constructors
-        public DrogueRunPositionController() : base()
-        {
-        }
         public DrogueRunPositionController(DatabaseTypeEnum dbt = DatabaseTypeEnum.SqlServerTestDB) : base(dbt)
         {
         }
@@ -35,9 +32,9 @@ namespace CSSPWebAPI.Controllers
 
         #region Functions public
         // GET api/drogueRunPosition
-        [Route("")]
-        public IActionResult GetDrogueRunPositionList([FromQuery]string lang = "en", [FromQuery]int skip = 0, [FromQuery]int take = 200,
-            [FromQuery]string asc = "", [FromQuery]string desc = "", [FromQuery]string where = "")
+        [HttpGet]
+        public IActionResult GetDrogueRunPositionList(string lang = "en", int skip = 0, int take = 200,
+            string asc = "", string desc = "", string where = "")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
@@ -63,12 +60,12 @@ namespace CSSPWebAPI.Controllers
             }
         }
         // GET api/drogueRunPosition/1
-        [Route("{DrogueRunPositionID:int}")]
-        public IActionResult GetDrogueRunPositionWithID([FromQuery]int DrogueRunPositionID, [FromQuery]string lang = "en")
+        [HttpGet("{DrogueRunPositionID}")]
+        public IActionResult GetDrogueRunPositionWithID(int DrogueRunPositionID, string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
-                DrogueRunPositionService drogueRunPositionService = new DrogueRunPositionService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+                DrogueRunPositionService drogueRunPositionService = new DrogueRunPositionService(new Query() { Lang = lang }, db, ContactID);
 
                 drogueRunPositionService.Query = drogueRunPositionService.FillQuery(typeof(DrogueRunPosition), lang, 0, 1, "", "");
 
@@ -84,12 +81,12 @@ namespace CSSPWebAPI.Controllers
             }
         }
         // POST api/drogueRunPosition
-        [Route("")]
-        public IActionResult Post([FromBody]DrogueRunPosition drogueRunPosition, [FromQuery]string lang = "en")
+        [HttpPost]
+        public IActionResult Post(DrogueRunPosition drogueRunPosition, string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
-                DrogueRunPositionService drogueRunPositionService = new DrogueRunPositionService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+                DrogueRunPositionService drogueRunPositionService = new DrogueRunPositionService(new Query() { Lang = lang }, db, ContactID);
 
                 if (!drogueRunPositionService.Add(drogueRunPosition))
                 {
@@ -103,12 +100,12 @@ namespace CSSPWebAPI.Controllers
             }
         }
         // PUT api/drogueRunPosition
-        [Route("")]
-        public IActionResult Put([FromBody]DrogueRunPosition drogueRunPosition, [FromQuery]string lang = "en")
+        [HttpPut]
+        public IActionResult Put(DrogueRunPosition drogueRunPosition, string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
-                DrogueRunPositionService drogueRunPositionService = new DrogueRunPositionService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+                DrogueRunPositionService drogueRunPositionService = new DrogueRunPositionService(new Query() { Lang = lang }, db, ContactID);
 
                 if (!drogueRunPositionService.Update(drogueRunPosition))
                 {
@@ -122,12 +119,12 @@ namespace CSSPWebAPI.Controllers
             }
         }
         // DELETE api/drogueRunPosition
-        [Route("")]
-        public IActionResult Delete([FromBody]DrogueRunPosition drogueRunPosition, [FromQuery]string lang = "en")
+        [HttpDelete]
+        public IActionResult Delete(DrogueRunPosition drogueRunPosition, string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
-                DrogueRunPositionService drogueRunPositionService = new DrogueRunPositionService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+                DrogueRunPositionService drogueRunPositionService = new DrogueRunPositionService(new Query() { Lang = lang }, db, ContactID);
 
                 if (!drogueRunPositionService.Delete(drogueRunPosition))
                 {

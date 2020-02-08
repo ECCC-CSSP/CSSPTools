@@ -15,7 +15,7 @@ using System.Linq;
 
 namespace CSSPWebAPI.Controllers
 {
-    [Route("api/mwqmSubsector")]
+    [Route("api/[controller]")]
     public partial class MWQMSubsectorController : BaseController
     {
         #region Variables
@@ -25,9 +25,6 @@ namespace CSSPWebAPI.Controllers
         #endregion Properties
 
         #region Constructors
-        public MWQMSubsectorController() : base()
-        {
-        }
         public MWQMSubsectorController(DatabaseTypeEnum dbt = DatabaseTypeEnum.SqlServerTestDB) : base(dbt)
         {
         }
@@ -35,9 +32,9 @@ namespace CSSPWebAPI.Controllers
 
         #region Functions public
         // GET api/mwqmSubsector
-        [Route("")]
-        public IActionResult GetMWQMSubsectorList([FromQuery]string lang = "en", [FromQuery]int skip = 0, [FromQuery]int take = 200,
-            [FromQuery]string asc = "", [FromQuery]string desc = "", [FromQuery]string where = "")
+        [HttpGet]
+        public IActionResult GetMWQMSubsectorList(string lang = "en", int skip = 0, int take = 200,
+            string asc = "", string desc = "", string where = "")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
@@ -63,12 +60,12 @@ namespace CSSPWebAPI.Controllers
             }
         }
         // GET api/mwqmSubsector/1
-        [Route("{MWQMSubsectorID:int}")]
-        public IActionResult GetMWQMSubsectorWithID([FromQuery]int MWQMSubsectorID, [FromQuery]string lang = "en")
+        [HttpGet("{MWQMSubsectorID}")]
+        public IActionResult GetMWQMSubsectorWithID(int MWQMSubsectorID, string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
-                MWQMSubsectorService mwqmSubsectorService = new MWQMSubsectorService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+                MWQMSubsectorService mwqmSubsectorService = new MWQMSubsectorService(new Query() { Lang = lang }, db, ContactID);
 
                 mwqmSubsectorService.Query = mwqmSubsectorService.FillQuery(typeof(MWQMSubsector), lang, 0, 1, "", "");
 
@@ -84,12 +81,12 @@ namespace CSSPWebAPI.Controllers
             }
         }
         // POST api/mwqmSubsector
-        [Route("")]
-        public IActionResult Post([FromBody]MWQMSubsector mwqmSubsector, [FromQuery]string lang = "en")
+        [HttpPost]
+        public IActionResult Post(MWQMSubsector mwqmSubsector, string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
-                MWQMSubsectorService mwqmSubsectorService = new MWQMSubsectorService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+                MWQMSubsectorService mwqmSubsectorService = new MWQMSubsectorService(new Query() { Lang = lang }, db, ContactID);
 
                 if (!mwqmSubsectorService.Add(mwqmSubsector))
                 {
@@ -103,12 +100,12 @@ namespace CSSPWebAPI.Controllers
             }
         }
         // PUT api/mwqmSubsector
-        [Route("")]
-        public IActionResult Put([FromBody]MWQMSubsector mwqmSubsector, [FromQuery]string lang = "en")
+        [HttpPut]
+        public IActionResult Put(MWQMSubsector mwqmSubsector, string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
-                MWQMSubsectorService mwqmSubsectorService = new MWQMSubsectorService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+                MWQMSubsectorService mwqmSubsectorService = new MWQMSubsectorService(new Query() { Lang = lang }, db, ContactID);
 
                 if (!mwqmSubsectorService.Update(mwqmSubsector))
                 {
@@ -122,12 +119,12 @@ namespace CSSPWebAPI.Controllers
             }
         }
         // DELETE api/mwqmSubsector
-        [Route("")]
-        public IActionResult Delete([FromBody]MWQMSubsector mwqmSubsector, [FromQuery]string lang = "en")
+        [HttpDelete]
+        public IActionResult Delete(MWQMSubsector mwqmSubsector, string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
-                MWQMSubsectorService mwqmSubsectorService = new MWQMSubsectorService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+                MWQMSubsectorService mwqmSubsectorService = new MWQMSubsectorService(new Query() { Lang = lang }, db, ContactID);
 
                 if (!mwqmSubsectorService.Delete(mwqmSubsector))
                 {

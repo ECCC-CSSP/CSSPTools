@@ -15,7 +15,7 @@ using System.Linq;
 
 namespace CSSPWebAPI.Controllers
 {
-    [Route("api/drogueRun")]
+    [Route("api/[controller]")]
     public partial class DrogueRunController : BaseController
     {
         #region Variables
@@ -25,9 +25,6 @@ namespace CSSPWebAPI.Controllers
         #endregion Properties
 
         #region Constructors
-        public DrogueRunController() : base()
-        {
-        }
         public DrogueRunController(DatabaseTypeEnum dbt = DatabaseTypeEnum.SqlServerTestDB) : base(dbt)
         {
         }
@@ -35,9 +32,9 @@ namespace CSSPWebAPI.Controllers
 
         #region Functions public
         // GET api/drogueRun
-        [Route("")]
-        public IActionResult GetDrogueRunList([FromQuery]string lang = "en", [FromQuery]int skip = 0, [FromQuery]int take = 200,
-            [FromQuery]string asc = "", [FromQuery]string desc = "", [FromQuery]string where = "")
+        [HttpGet]
+        public IActionResult GetDrogueRunList(string lang = "en", int skip = 0, int take = 200,
+            string asc = "", string desc = "", string where = "")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
@@ -63,12 +60,12 @@ namespace CSSPWebAPI.Controllers
             }
         }
         // GET api/drogueRun/1
-        [Route("{DrogueRunID:int}")]
-        public IActionResult GetDrogueRunWithID([FromQuery]int DrogueRunID, [FromQuery]string lang = "en")
+        [HttpGet("{DrogueRunID}")]
+        public IActionResult GetDrogueRunWithID(int DrogueRunID, string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
-                DrogueRunService drogueRunService = new DrogueRunService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+                DrogueRunService drogueRunService = new DrogueRunService(new Query() { Lang = lang }, db, ContactID);
 
                 drogueRunService.Query = drogueRunService.FillQuery(typeof(DrogueRun), lang, 0, 1, "", "");
 
@@ -84,12 +81,12 @@ namespace CSSPWebAPI.Controllers
             }
         }
         // POST api/drogueRun
-        [Route("")]
-        public IActionResult Post([FromBody]DrogueRun drogueRun, [FromQuery]string lang = "en")
+        [HttpPost]
+        public IActionResult Post(DrogueRun drogueRun, string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
-                DrogueRunService drogueRunService = new DrogueRunService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+                DrogueRunService drogueRunService = new DrogueRunService(new Query() { Lang = lang }, db, ContactID);
 
                 if (!drogueRunService.Add(drogueRun))
                 {
@@ -103,12 +100,12 @@ namespace CSSPWebAPI.Controllers
             }
         }
         // PUT api/drogueRun
-        [Route("")]
-        public IActionResult Put([FromBody]DrogueRun drogueRun, [FromQuery]string lang = "en")
+        [HttpPut]
+        public IActionResult Put(DrogueRun drogueRun, string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
-                DrogueRunService drogueRunService = new DrogueRunService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+                DrogueRunService drogueRunService = new DrogueRunService(new Query() { Lang = lang }, db, ContactID);
 
                 if (!drogueRunService.Update(drogueRun))
                 {
@@ -122,12 +119,12 @@ namespace CSSPWebAPI.Controllers
             }
         }
         // DELETE api/drogueRun
-        [Route("")]
-        public IActionResult Delete([FromBody]DrogueRun drogueRun, [FromQuery]string lang = "en")
+        [HttpDelete]
+        public IActionResult Delete(DrogueRun drogueRun, string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
-                DrogueRunService drogueRunService = new DrogueRunService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+                DrogueRunService drogueRunService = new DrogueRunService(new Query() { Lang = lang }, db, ContactID);
 
                 if (!drogueRunService.Delete(drogueRun))
                 {

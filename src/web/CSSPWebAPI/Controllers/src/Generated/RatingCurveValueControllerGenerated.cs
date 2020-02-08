@@ -15,7 +15,7 @@ using System.Linq;
 
 namespace CSSPWebAPI.Controllers
 {
-    [Route("api/ratingCurveValue")]
+    [Route("api/[controller]")]
     public partial class RatingCurveValueController : BaseController
     {
         #region Variables
@@ -25,9 +25,6 @@ namespace CSSPWebAPI.Controllers
         #endregion Properties
 
         #region Constructors
-        public RatingCurveValueController() : base()
-        {
-        }
         public RatingCurveValueController(DatabaseTypeEnum dbt = DatabaseTypeEnum.SqlServerTestDB) : base(dbt)
         {
         }
@@ -35,9 +32,9 @@ namespace CSSPWebAPI.Controllers
 
         #region Functions public
         // GET api/ratingCurveValue
-        [Route("")]
-        public IActionResult GetRatingCurveValueList([FromQuery]string lang = "en", [FromQuery]int skip = 0, [FromQuery]int take = 200,
-            [FromQuery]string asc = "", [FromQuery]string desc = "", [FromQuery]string where = "")
+        [HttpGet]
+        public IActionResult GetRatingCurveValueList(string lang = "en", int skip = 0, int take = 200,
+            string asc = "", string desc = "", string where = "")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
@@ -63,12 +60,12 @@ namespace CSSPWebAPI.Controllers
             }
         }
         // GET api/ratingCurveValue/1
-        [Route("{RatingCurveValueID:int}")]
-        public IActionResult GetRatingCurveValueWithID([FromQuery]int RatingCurveValueID, [FromQuery]string lang = "en")
+        [HttpGet("{RatingCurveValueID}")]
+        public IActionResult GetRatingCurveValueWithID(int RatingCurveValueID, string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
-                RatingCurveValueService ratingCurveValueService = new RatingCurveValueService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+                RatingCurveValueService ratingCurveValueService = new RatingCurveValueService(new Query() { Lang = lang }, db, ContactID);
 
                 ratingCurveValueService.Query = ratingCurveValueService.FillQuery(typeof(RatingCurveValue), lang, 0, 1, "", "");
 
@@ -84,12 +81,12 @@ namespace CSSPWebAPI.Controllers
             }
         }
         // POST api/ratingCurveValue
-        [Route("")]
-        public IActionResult Post([FromBody]RatingCurveValue ratingCurveValue, [FromQuery]string lang = "en")
+        [HttpPost]
+        public IActionResult Post(RatingCurveValue ratingCurveValue, string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
-                RatingCurveValueService ratingCurveValueService = new RatingCurveValueService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+                RatingCurveValueService ratingCurveValueService = new RatingCurveValueService(new Query() { Lang = lang }, db, ContactID);
 
                 if (!ratingCurveValueService.Add(ratingCurveValue))
                 {
@@ -103,12 +100,12 @@ namespace CSSPWebAPI.Controllers
             }
         }
         // PUT api/ratingCurveValue
-        [Route("")]
-        public IActionResult Put([FromBody]RatingCurveValue ratingCurveValue, [FromQuery]string lang = "en")
+        [HttpPut]
+        public IActionResult Put(RatingCurveValue ratingCurveValue, string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
-                RatingCurveValueService ratingCurveValueService = new RatingCurveValueService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+                RatingCurveValueService ratingCurveValueService = new RatingCurveValueService(new Query() { Lang = lang }, db, ContactID);
 
                 if (!ratingCurveValueService.Update(ratingCurveValue))
                 {
@@ -122,12 +119,12 @@ namespace CSSPWebAPI.Controllers
             }
         }
         // DELETE api/ratingCurveValue
-        [Route("")]
-        public IActionResult Delete([FromBody]RatingCurveValue ratingCurveValue, [FromQuery]string lang = "en")
+        [HttpDelete]
+        public IActionResult Delete(RatingCurveValue ratingCurveValue, string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
-                RatingCurveValueService ratingCurveValueService = new RatingCurveValueService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+                RatingCurveValueService ratingCurveValueService = new RatingCurveValueService(new Query() { Lang = lang }, db, ContactID);
 
                 if (!ratingCurveValueService.Delete(ratingCurveValue))
                 {

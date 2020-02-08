@@ -15,7 +15,7 @@ using System.Linq;
 
 namespace CSSPWebAPI.Controllers
 {
-    [Route("api/log")]
+    [Route("api/[controller]")]
     public partial class LogController : BaseController
     {
         #region Variables
@@ -25,9 +25,6 @@ namespace CSSPWebAPI.Controllers
         #endregion Properties
 
         #region Constructors
-        public LogController() : base()
-        {
-        }
         public LogController(DatabaseTypeEnum dbt = DatabaseTypeEnum.SqlServerTestDB) : base(dbt)
         {
         }
@@ -35,9 +32,9 @@ namespace CSSPWebAPI.Controllers
 
         #region Functions public
         // GET api/log
-        [Route("")]
-        public IActionResult GetLogList([FromQuery]string lang = "en", [FromQuery]int skip = 0, [FromQuery]int take = 200,
-            [FromQuery]string asc = "", [FromQuery]string desc = "", [FromQuery]string where = "")
+        [HttpGet]
+        public IActionResult GetLogList(string lang = "en", int skip = 0, int take = 200,
+            string asc = "", string desc = "", string where = "")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
@@ -63,12 +60,12 @@ namespace CSSPWebAPI.Controllers
             }
         }
         // GET api/log/1
-        [Route("{LogID:int}")]
-        public IActionResult GetLogWithID([FromQuery]int LogID, [FromQuery]string lang = "en")
+        [HttpGet("{LogID}")]
+        public IActionResult GetLogWithID(int LogID, string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
-                LogService logService = new LogService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+                LogService logService = new LogService(new Query() { Lang = lang }, db, ContactID);
 
                 logService.Query = logService.FillQuery(typeof(Log), lang, 0, 1, "", "");
 
@@ -84,12 +81,12 @@ namespace CSSPWebAPI.Controllers
             }
         }
         // POST api/log
-        [Route("")]
-        public IActionResult Post([FromBody]Log log, [FromQuery]string lang = "en")
+        [HttpPost]
+        public IActionResult Post(Log log, string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
-                LogService logService = new LogService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+                LogService logService = new LogService(new Query() { Lang = lang }, db, ContactID);
 
                 if (!logService.Add(log))
                 {
@@ -103,12 +100,12 @@ namespace CSSPWebAPI.Controllers
             }
         }
         // PUT api/log
-        [Route("")]
-        public IActionResult Put([FromBody]Log log, [FromQuery]string lang = "en")
+        [HttpPut]
+        public IActionResult Put(Log log, string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
-                LogService logService = new LogService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+                LogService logService = new LogService(new Query() { Lang = lang }, db, ContactID);
 
                 if (!logService.Update(log))
                 {
@@ -122,12 +119,12 @@ namespace CSSPWebAPI.Controllers
             }
         }
         // DELETE api/log
-        [Route("")]
-        public IActionResult Delete([FromBody]Log log, [FromQuery]string lang = "en")
+        [HttpDelete]
+        public IActionResult Delete(Log log, string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
-                LogService logService = new LogService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+                LogService logService = new LogService(new Query() { Lang = lang }, db, ContactID);
 
                 if (!logService.Delete(log))
                 {

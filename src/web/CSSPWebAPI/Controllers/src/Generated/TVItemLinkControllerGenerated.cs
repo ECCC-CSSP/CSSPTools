@@ -15,7 +15,7 @@ using System.Linq;
 
 namespace CSSPWebAPI.Controllers
 {
-    [Route("api/tvItemLink")]
+    [Route("api/[controller]")]
     public partial class TVItemLinkController : BaseController
     {
         #region Variables
@@ -25,9 +25,6 @@ namespace CSSPWebAPI.Controllers
         #endregion Properties
 
         #region Constructors
-        public TVItemLinkController() : base()
-        {
-        }
         public TVItemLinkController(DatabaseTypeEnum dbt = DatabaseTypeEnum.SqlServerTestDB) : base(dbt)
         {
         }
@@ -35,9 +32,9 @@ namespace CSSPWebAPI.Controllers
 
         #region Functions public
         // GET api/tvItemLink
-        [Route("")]
-        public IActionResult GetTVItemLinkList([FromQuery]string lang = "en", [FromQuery]int skip = 0, [FromQuery]int take = 200,
-            [FromQuery]string asc = "", [FromQuery]string desc = "", [FromQuery]string where = "")
+        [HttpGet]
+        public IActionResult GetTVItemLinkList(string lang = "en", int skip = 0, int take = 200,
+            string asc = "", string desc = "", string where = "")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
@@ -63,12 +60,12 @@ namespace CSSPWebAPI.Controllers
             }
         }
         // GET api/tvItemLink/1
-        [Route("{TVItemLinkID:int}")]
-        public IActionResult GetTVItemLinkWithID([FromQuery]int TVItemLinkID, [FromQuery]string lang = "en")
+        [HttpGet("{TVItemLinkID}")]
+        public IActionResult GetTVItemLinkWithID(int TVItemLinkID, string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
-                TVItemLinkService tvItemLinkService = new TVItemLinkService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+                TVItemLinkService tvItemLinkService = new TVItemLinkService(new Query() { Lang = lang }, db, ContactID);
 
                 tvItemLinkService.Query = tvItemLinkService.FillQuery(typeof(TVItemLink), lang, 0, 1, "", "");
 
@@ -84,12 +81,12 @@ namespace CSSPWebAPI.Controllers
             }
         }
         // POST api/tvItemLink
-        [Route("")]
-        public IActionResult Post([FromBody]TVItemLink tvItemLink, [FromQuery]string lang = "en")
+        [HttpPost]
+        public IActionResult Post(TVItemLink tvItemLink, string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
-                TVItemLinkService tvItemLinkService = new TVItemLinkService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+                TVItemLinkService tvItemLinkService = new TVItemLinkService(new Query() { Lang = lang }, db, ContactID);
 
                 if (!tvItemLinkService.Add(tvItemLink))
                 {
@@ -103,12 +100,12 @@ namespace CSSPWebAPI.Controllers
             }
         }
         // PUT api/tvItemLink
-        [Route("")]
-        public IActionResult Put([FromBody]TVItemLink tvItemLink, [FromQuery]string lang = "en")
+        [HttpPut]
+        public IActionResult Put(TVItemLink tvItemLink, string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
-                TVItemLinkService tvItemLinkService = new TVItemLinkService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+                TVItemLinkService tvItemLinkService = new TVItemLinkService(new Query() { Lang = lang }, db, ContactID);
 
                 if (!tvItemLinkService.Update(tvItemLink))
                 {
@@ -122,12 +119,12 @@ namespace CSSPWebAPI.Controllers
             }
         }
         // DELETE api/tvItemLink
-        [Route("")]
-        public IActionResult Delete([FromBody]TVItemLink tvItemLink, [FromQuery]string lang = "en")
+        [HttpDelete]
+        public IActionResult Delete(TVItemLink tvItemLink, string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
-                TVItemLinkService tvItemLinkService = new TVItemLinkService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+                TVItemLinkService tvItemLinkService = new TVItemLinkService(new Query() { Lang = lang }, db, ContactID);
 
                 if (!tvItemLinkService.Delete(tvItemLink))
                 {

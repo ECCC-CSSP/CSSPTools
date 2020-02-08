@@ -15,7 +15,7 @@ using System.Linq;
 
 namespace CSSPWebAPI.Controllers
 {
-    [Route("api/mwqmLookupMPN")]
+    [Route("api/[controller]")]
     public partial class MWQMLookupMPNController : BaseController
     {
         #region Variables
@@ -25,9 +25,6 @@ namespace CSSPWebAPI.Controllers
         #endregion Properties
 
         #region Constructors
-        public MWQMLookupMPNController() : base()
-        {
-        }
         public MWQMLookupMPNController(DatabaseTypeEnum dbt = DatabaseTypeEnum.SqlServerTestDB) : base(dbt)
         {
         }
@@ -35,9 +32,9 @@ namespace CSSPWebAPI.Controllers
 
         #region Functions public
         // GET api/mwqmLookupMPN
-        [Route("")]
-        public IActionResult GetMWQMLookupMPNList([FromQuery]string lang = "en", [FromQuery]int skip = 0, [FromQuery]int take = 200,
-            [FromQuery]string asc = "", [FromQuery]string desc = "", [FromQuery]string where = "")
+        [HttpGet]
+        public IActionResult GetMWQMLookupMPNList(string lang = "en", int skip = 0, int take = 200,
+            string asc = "", string desc = "", string where = "")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
@@ -63,12 +60,12 @@ namespace CSSPWebAPI.Controllers
             }
         }
         // GET api/mwqmLookupMPN/1
-        [Route("{MWQMLookupMPNID:int}")]
-        public IActionResult GetMWQMLookupMPNWithID([FromQuery]int MWQMLookupMPNID, [FromQuery]string lang = "en")
+        [HttpGet("{MWQMLookupMPNID}")]
+        public IActionResult GetMWQMLookupMPNWithID(int MWQMLookupMPNID, string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
-                MWQMLookupMPNService mwqmLookupMPNService = new MWQMLookupMPNService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+                MWQMLookupMPNService mwqmLookupMPNService = new MWQMLookupMPNService(new Query() { Lang = lang }, db, ContactID);
 
                 mwqmLookupMPNService.Query = mwqmLookupMPNService.FillQuery(typeof(MWQMLookupMPN), lang, 0, 1, "", "");
 
@@ -84,12 +81,12 @@ namespace CSSPWebAPI.Controllers
             }
         }
         // POST api/mwqmLookupMPN
-        [Route("")]
-        public IActionResult Post([FromBody]MWQMLookupMPN mwqmLookupMPN, [FromQuery]string lang = "en")
+        [HttpPost]
+        public IActionResult Post(MWQMLookupMPN mwqmLookupMPN, string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
-                MWQMLookupMPNService mwqmLookupMPNService = new MWQMLookupMPNService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+                MWQMLookupMPNService mwqmLookupMPNService = new MWQMLookupMPNService(new Query() { Lang = lang }, db, ContactID);
 
                 if (!mwqmLookupMPNService.Add(mwqmLookupMPN))
                 {
@@ -103,12 +100,12 @@ namespace CSSPWebAPI.Controllers
             }
         }
         // PUT api/mwqmLookupMPN
-        [Route("")]
-        public IActionResult Put([FromBody]MWQMLookupMPN mwqmLookupMPN, [FromQuery]string lang = "en")
+        [HttpPut]
+        public IActionResult Put(MWQMLookupMPN mwqmLookupMPN, string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
-                MWQMLookupMPNService mwqmLookupMPNService = new MWQMLookupMPNService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+                MWQMLookupMPNService mwqmLookupMPNService = new MWQMLookupMPNService(new Query() { Lang = lang }, db, ContactID);
 
                 if (!mwqmLookupMPNService.Update(mwqmLookupMPN))
                 {
@@ -122,12 +119,12 @@ namespace CSSPWebAPI.Controllers
             }
         }
         // DELETE api/mwqmLookupMPN
-        [Route("")]
-        public IActionResult Delete([FromBody]MWQMLookupMPN mwqmLookupMPN, [FromQuery]string lang = "en")
+        [HttpDelete]
+        public IActionResult Delete(MWQMLookupMPN mwqmLookupMPN, string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
-                MWQMLookupMPNService mwqmLookupMPNService = new MWQMLookupMPNService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+                MWQMLookupMPNService mwqmLookupMPNService = new MWQMLookupMPNService(new Query() { Lang = lang }, db, ContactID);
 
                 if (!mwqmLookupMPNService.Delete(mwqmLookupMPN))
                 {

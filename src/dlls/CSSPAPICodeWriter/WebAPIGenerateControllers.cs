@@ -122,7 +122,8 @@ namespace CSSPWebAPIGenerateCodeHelper
                     sb.AppendLine(@"");
                     sb.AppendLine(@"namespace CSSPWebAPI.Controllers");
                     sb.AppendLine(@"{");
-                    sb.AppendLine($@"    [Route(""api/{ TypeNameLower }"")]");
+                    //sb.AppendLine($@"    [Route(""api/{ TypeNameLower }"")]");
+                    sb.AppendLine($@"    [Route(""api/[controller]"")]");
                     sb.AppendLine($@"    public partial class { TypeName }Controller : BaseController");
                     sb.AppendLine(@"    {");
                     sb.AppendLine(@"        #region Variables");
@@ -132,9 +133,9 @@ namespace CSSPWebAPIGenerateCodeHelper
                     sb.AppendLine(@"        #endregion Properties");
                     sb.AppendLine(@"");
                     sb.AppendLine(@"        #region Constructors");
-                    sb.AppendLine($@"        public { TypeName }Controller() : base()");
-                    sb.AppendLine(@"        {");
-                    sb.AppendLine(@"        }");
+                    //sb.AppendLine($@"        public { TypeName }Controller() : base()");
+                    //sb.AppendLine(@"        {");
+                    //sb.AppendLine(@"        }");
                     sb.AppendLine($@"        public { TypeName }Controller(DatabaseTypeEnum dbt = DatabaseTypeEnum.SqlServerTestDB) : base(dbt)");
                     sb.AppendLine(@"        {");
                     sb.AppendLine(@"        }");
@@ -143,9 +144,12 @@ namespace CSSPWebAPIGenerateCodeHelper
                     sb.AppendLine(@"        #region Functions public");
 
                     sb.AppendLine($@"        // GET api/{ TypeNameLower }");
-                    sb.AppendLine(@"        [Route("""")]");
-                    sb.AppendLine($@"        public IActionResult Get{ TypeName }List([FromQuery]string lang = ""en"", [FromQuery]int skip = 0, [FromQuery]int take = 200,");
-                    sb.AppendLine($@"            [FromQuery]string asc = """", [FromQuery]string desc = """", [FromQuery]string where = """")");
+                    //sb.AppendLine(@"        [Route("""")]");
+                    sb.AppendLine($@"        [HttpGet]");
+                    sb.AppendLine($@"        public IActionResult Get{ TypeName }List(string lang = ""en"", int skip = 0, int take = 200,");
+                    sb.AppendLine($@"            string asc = """", string desc = """", string where = """")");
+                    //sb.AppendLine($@"        public IActionResult Get{ TypeName }List([FromQuery]string lang = ""en"", [FromQuery]int skip = 0, [FromQuery]int take = 200,");
+                    //sb.AppendLine($@"            [FromQuery]string asc = """", [FromQuery]string desc = """", [FromQuery]string where = """")");
                     sb.AppendLine(@"        {");
                     sb.AppendLine(@"            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))");
                     sb.AppendLine(@"            {");
@@ -174,12 +178,14 @@ namespace CSSPWebAPIGenerateCodeHelper
 
 
                     sb.AppendLine($@"        // GET api/{ TypeNameLower }/1");
-                    sb.AppendLine($@"        [Route(""{{{ TypeName }ID:int}}"")]");
-                    sb.AppendLine($@"        public IActionResult Get{ TypeName }WithID([FromQuery]int { TypeName }ID, [FromQuery]string lang = ""en"")");
+                    //sb.AppendLine($@"        [Route(""{{{ TypeName }ID:int}}"")]");
+                    sb.AppendLine(@"        [HttpGet(""{" + $@"{ TypeName }ID" + @"}"")]");
+                    sb.AppendLine($@"        public IActionResult Get{ TypeName }WithID(int { TypeName }ID, string lang = ""en"")");
+                    //sb.AppendLine($@"        public IActionResult Get{ TypeName }WithID([FromQuery]int { TypeName }ID, [FromQuery]string lang = ""en"")");
                     sb.AppendLine(@"        {");
                     sb.AppendLine(@"            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))");
                     sb.AppendLine(@"            {");
-                    QueryStr = @"new Query() { Language = (lang == ""fr"" ? LanguageEnum.fr : LanguageEnum.en) }";
+                    QueryStr = @"new Query() { Lang = lang }";
                     sb.AppendLine($@"                { TypeName }Service { TypeNameLower }Service = new { TypeName }Service({ QueryStr }, db, ContactID);");
                     sb.AppendLine(@"");
                     sb.AppendLine($@"                { TypeNameLower }Service.Query = { TypeNameLower }Service.FillQuery(typeof({ TypeName }), lang, 0, 1, """", """");");
@@ -197,12 +203,13 @@ namespace CSSPWebAPIGenerateCodeHelper
                     sb.AppendLine(@"        }");
 
                     sb.AppendLine($@"        // POST api/{ TypeNameLower }");
-                    sb.AppendLine(@"        [Route("""")]");
-                    sb.AppendLine($@"        public IActionResult Post([FromBody]{ TypeName } { TypeNameLower }, [FromQuery]string lang = ""en"")");
+                    //sb.AppendLine(@"        [Route("""")]");
+                    sb.AppendLine(@"        [HttpPost]");
+                    sb.AppendLine($@"        public IActionResult Post({ TypeName } { TypeNameLower }, string lang = ""en"")");
                     sb.AppendLine(@"        {");
                     sb.AppendLine(@"            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))");
                     sb.AppendLine(@"            {");
-                    QueryStr = @"new Query() { Language = (lang == ""fr"" ? LanguageEnum.fr : LanguageEnum.en) }";
+                    QueryStr = @"new Query() { Lang = lang }";
                     sb.AppendLine($@"                { TypeName }Service { TypeNameLower }Service = new { TypeName }Service({ QueryStr }, db, ContactID);");
                     sb.AppendLine(@"");
                     if (TypeName == "Contact")
@@ -225,12 +232,13 @@ namespace CSSPWebAPIGenerateCodeHelper
                     sb.AppendLine(@"        }");
 
                     sb.AppendLine($@"        // PUT api/{ TypeNameLower }");
-                    sb.AppendLine(@"        [Route("""")]");
-                    sb.AppendLine($@"        public IActionResult Put([FromBody]{ TypeName } { TypeNameLower }, [FromQuery]string lang = ""en"")");
+                    //sb.AppendLine(@"        [Route("""")]");
+                    sb.AppendLine(@"        [HttpPut]");
+                    sb.AppendLine($@"        public IActionResult Put({ TypeName } { TypeNameLower }, string lang = ""en"")");
                     sb.AppendLine(@"        {");
                     sb.AppendLine(@"            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))");
                     sb.AppendLine(@"            {");
-                    QueryStr = @"new Query() { Language = (lang == ""fr"" ? LanguageEnum.fr : LanguageEnum.en) }";
+                    QueryStr = @"new Query() { Lang = lang }";
                     sb.AppendLine($@"                { TypeName }Service { TypeNameLower }Service = new { TypeName }Service({ QueryStr }, db, ContactID);");
                     sb.AppendLine(@"");
                     if (TypeName == "Contact")
@@ -253,12 +261,13 @@ namespace CSSPWebAPIGenerateCodeHelper
                     sb.AppendLine(@"        }");
 
                     sb.AppendLine($@"        // DELETE api/{ TypeNameLower }");
-                    sb.AppendLine(@"        [Route("""")]");
-                    sb.AppendLine($@"        public IActionResult Delete([FromBody]{ TypeName } { TypeNameLower }, [FromQuery]string lang = ""en"")");
+                    //sb.AppendLine(@"        [Route("""")]");
+                    sb.AppendLine(@"        [HttpDelete]");
+                    sb.AppendLine($@"        public IActionResult Delete({ TypeName } { TypeNameLower }, string lang = ""en"")");
                     sb.AppendLine(@"        {");
                     sb.AppendLine(@"            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))");
                     sb.AppendLine(@"            {");
-                    QueryStr = @"new Query() { Language = (lang == ""fr"" ? LanguageEnum.fr : LanguageEnum.en) }";
+                    QueryStr = @"new Query() { Lang = lang }";
                     sb.AppendLine($@"                { TypeName }Service { TypeNameLower }Service = new { TypeName }Service({ QueryStr }, db, ContactID);");
                     sb.AppendLine(@"");
                     if (TypeName == "Contact")

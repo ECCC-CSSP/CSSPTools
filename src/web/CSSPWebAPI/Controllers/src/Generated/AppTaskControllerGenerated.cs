@@ -15,7 +15,7 @@ using System.Linq;
 
 namespace CSSPWebAPI.Controllers
 {
-    [Route("api/appTask")]
+    [Route("api/[controller]")]
     public partial class AppTaskController : BaseController
     {
         #region Variables
@@ -25,9 +25,6 @@ namespace CSSPWebAPI.Controllers
         #endregion Properties
 
         #region Constructors
-        public AppTaskController() : base()
-        {
-        }
         public AppTaskController(DatabaseTypeEnum dbt = DatabaseTypeEnum.SqlServerTestDB) : base(dbt)
         {
         }
@@ -35,9 +32,9 @@ namespace CSSPWebAPI.Controllers
 
         #region Functions public
         // GET api/appTask
-        [Route("")]
-        public IActionResult GetAppTaskList([FromQuery]string lang = "en", [FromQuery]int skip = 0, [FromQuery]int take = 200,
-            [FromQuery]string asc = "", [FromQuery]string desc = "", [FromQuery]string where = "")
+        [HttpGet]
+        public IActionResult GetAppTaskList(string lang = "en", int skip = 0, int take = 200,
+            string asc = "", string desc = "", string where = "")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
@@ -63,12 +60,12 @@ namespace CSSPWebAPI.Controllers
             }
         }
         // GET api/appTask/1
-        [Route("{AppTaskID:int}")]
-        public IActionResult GetAppTaskWithID([FromQuery]int AppTaskID, [FromQuery]string lang = "en")
+        [HttpGet("{AppTaskID}")]
+        public IActionResult GetAppTaskWithID(int AppTaskID, string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
-                AppTaskService appTaskService = new AppTaskService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+                AppTaskService appTaskService = new AppTaskService(new Query() { Lang = lang }, db, ContactID);
 
                 appTaskService.Query = appTaskService.FillQuery(typeof(AppTask), lang, 0, 1, "", "");
 
@@ -84,12 +81,12 @@ namespace CSSPWebAPI.Controllers
             }
         }
         // POST api/appTask
-        [Route("")]
-        public IActionResult Post([FromBody]AppTask appTask, [FromQuery]string lang = "en")
+        [HttpPost]
+        public IActionResult Post(AppTask appTask, string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
-                AppTaskService appTaskService = new AppTaskService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+                AppTaskService appTaskService = new AppTaskService(new Query() { Lang = lang }, db, ContactID);
 
                 if (!appTaskService.Add(appTask))
                 {
@@ -103,12 +100,12 @@ namespace CSSPWebAPI.Controllers
             }
         }
         // PUT api/appTask
-        [Route("")]
-        public IActionResult Put([FromBody]AppTask appTask, [FromQuery]string lang = "en")
+        [HttpPut]
+        public IActionResult Put(AppTask appTask, string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
-                AppTaskService appTaskService = new AppTaskService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+                AppTaskService appTaskService = new AppTaskService(new Query() { Lang = lang }, db, ContactID);
 
                 if (!appTaskService.Update(appTask))
                 {
@@ -122,12 +119,12 @@ namespace CSSPWebAPI.Controllers
             }
         }
         // DELETE api/appTask
-        [Route("")]
-        public IActionResult Delete([FromBody]AppTask appTask, [FromQuery]string lang = "en")
+        [HttpDelete]
+        public IActionResult Delete(AppTask appTask, string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
-                AppTaskService appTaskService = new AppTaskService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+                AppTaskService appTaskService = new AppTaskService(new Query() { Lang = lang }, db, ContactID);
 
                 if (!appTaskService.Delete(appTask))
                 {

@@ -15,7 +15,7 @@ using System.Linq;
 
 namespace CSSPWebAPI.Controllers
 {
-    [Route("api/climateDataValue")]
+    [Route("api/[controller]")]
     public partial class ClimateDataValueController : BaseController
     {
         #region Variables
@@ -25,9 +25,6 @@ namespace CSSPWebAPI.Controllers
         #endregion Properties
 
         #region Constructors
-        public ClimateDataValueController() : base()
-        {
-        }
         public ClimateDataValueController(DatabaseTypeEnum dbt = DatabaseTypeEnum.SqlServerTestDB) : base(dbt)
         {
         }
@@ -35,9 +32,9 @@ namespace CSSPWebAPI.Controllers
 
         #region Functions public
         // GET api/climateDataValue
-        [Route("")]
-        public IActionResult GetClimateDataValueList([FromQuery]string lang = "en", [FromQuery]int skip = 0, [FromQuery]int take = 200,
-            [FromQuery]string asc = "", [FromQuery]string desc = "", [FromQuery]string where = "")
+        [HttpGet]
+        public IActionResult GetClimateDataValueList(string lang = "en", int skip = 0, int take = 200,
+            string asc = "", string desc = "", string where = "")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
@@ -63,12 +60,12 @@ namespace CSSPWebAPI.Controllers
             }
         }
         // GET api/climateDataValue/1
-        [Route("{ClimateDataValueID:int}")]
-        public IActionResult GetClimateDataValueWithID([FromQuery]int ClimateDataValueID, [FromQuery]string lang = "en")
+        [HttpGet("{ClimateDataValueID}")]
+        public IActionResult GetClimateDataValueWithID(int ClimateDataValueID, string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
-                ClimateDataValueService climateDataValueService = new ClimateDataValueService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+                ClimateDataValueService climateDataValueService = new ClimateDataValueService(new Query() { Lang = lang }, db, ContactID);
 
                 climateDataValueService.Query = climateDataValueService.FillQuery(typeof(ClimateDataValue), lang, 0, 1, "", "");
 
@@ -84,12 +81,12 @@ namespace CSSPWebAPI.Controllers
             }
         }
         // POST api/climateDataValue
-        [Route("")]
-        public IActionResult Post([FromBody]ClimateDataValue climateDataValue, [FromQuery]string lang = "en")
+        [HttpPost]
+        public IActionResult Post(ClimateDataValue climateDataValue, string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
-                ClimateDataValueService climateDataValueService = new ClimateDataValueService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+                ClimateDataValueService climateDataValueService = new ClimateDataValueService(new Query() { Lang = lang }, db, ContactID);
 
                 if (!climateDataValueService.Add(climateDataValue))
                 {
@@ -103,12 +100,12 @@ namespace CSSPWebAPI.Controllers
             }
         }
         // PUT api/climateDataValue
-        [Route("")]
-        public IActionResult Put([FromBody]ClimateDataValue climateDataValue, [FromQuery]string lang = "en")
+        [HttpPut]
+        public IActionResult Put(ClimateDataValue climateDataValue, string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
-                ClimateDataValueService climateDataValueService = new ClimateDataValueService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+                ClimateDataValueService climateDataValueService = new ClimateDataValueService(new Query() { Lang = lang }, db, ContactID);
 
                 if (!climateDataValueService.Update(climateDataValue))
                 {
@@ -122,12 +119,12 @@ namespace CSSPWebAPI.Controllers
             }
         }
         // DELETE api/climateDataValue
-        [Route("")]
-        public IActionResult Delete([FromBody]ClimateDataValue climateDataValue, [FromQuery]string lang = "en")
+        [HttpDelete]
+        public IActionResult Delete(ClimateDataValue climateDataValue, string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
-                ClimateDataValueService climateDataValueService = new ClimateDataValueService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+                ClimateDataValueService climateDataValueService = new ClimateDataValueService(new Query() { Lang = lang }, db, ContactID);
 
                 if (!climateDataValueService.Delete(climateDataValue))
                 {

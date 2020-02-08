@@ -15,7 +15,7 @@ using System.Linq;
 
 namespace CSSPWebAPI.Controllers
 {
-    [Route("api/tvItemStat")]
+    [Route("api/[controller]")]
     public partial class TVItemStatController : BaseController
     {
         #region Variables
@@ -25,9 +25,6 @@ namespace CSSPWebAPI.Controllers
         #endregion Properties
 
         #region Constructors
-        public TVItemStatController() : base()
-        {
-        }
         public TVItemStatController(DatabaseTypeEnum dbt = DatabaseTypeEnum.SqlServerTestDB) : base(dbt)
         {
         }
@@ -35,9 +32,9 @@ namespace CSSPWebAPI.Controllers
 
         #region Functions public
         // GET api/tvItemStat
-        [Route("")]
-        public IActionResult GetTVItemStatList([FromQuery]string lang = "en", [FromQuery]int skip = 0, [FromQuery]int take = 200,
-            [FromQuery]string asc = "", [FromQuery]string desc = "", [FromQuery]string where = "")
+        [HttpGet]
+        public IActionResult GetTVItemStatList(string lang = "en", int skip = 0, int take = 200,
+            string asc = "", string desc = "", string where = "")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
@@ -63,12 +60,12 @@ namespace CSSPWebAPI.Controllers
             }
         }
         // GET api/tvItemStat/1
-        [Route("{TVItemStatID:int}")]
-        public IActionResult GetTVItemStatWithID([FromQuery]int TVItemStatID, [FromQuery]string lang = "en")
+        [HttpGet("{TVItemStatID}")]
+        public IActionResult GetTVItemStatWithID(int TVItemStatID, string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
-                TVItemStatService tvItemStatService = new TVItemStatService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+                TVItemStatService tvItemStatService = new TVItemStatService(new Query() { Lang = lang }, db, ContactID);
 
                 tvItemStatService.Query = tvItemStatService.FillQuery(typeof(TVItemStat), lang, 0, 1, "", "");
 
@@ -84,12 +81,12 @@ namespace CSSPWebAPI.Controllers
             }
         }
         // POST api/tvItemStat
-        [Route("")]
-        public IActionResult Post([FromBody]TVItemStat tvItemStat, [FromQuery]string lang = "en")
+        [HttpPost]
+        public IActionResult Post(TVItemStat tvItemStat, string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
-                TVItemStatService tvItemStatService = new TVItemStatService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+                TVItemStatService tvItemStatService = new TVItemStatService(new Query() { Lang = lang }, db, ContactID);
 
                 if (!tvItemStatService.Add(tvItemStat))
                 {
@@ -103,12 +100,12 @@ namespace CSSPWebAPI.Controllers
             }
         }
         // PUT api/tvItemStat
-        [Route("")]
-        public IActionResult Put([FromBody]TVItemStat tvItemStat, [FromQuery]string lang = "en")
+        [HttpPut]
+        public IActionResult Put(TVItemStat tvItemStat, string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
-                TVItemStatService tvItemStatService = new TVItemStatService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+                TVItemStatService tvItemStatService = new TVItemStatService(new Query() { Lang = lang }, db, ContactID);
 
                 if (!tvItemStatService.Update(tvItemStat))
                 {
@@ -122,12 +119,12 @@ namespace CSSPWebAPI.Controllers
             }
         }
         // DELETE api/tvItemStat
-        [Route("")]
-        public IActionResult Delete([FromBody]TVItemStat tvItemStat, [FromQuery]string lang = "en")
+        [HttpDelete]
+        public IActionResult Delete(TVItemStat tvItemStat, string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
-                TVItemStatService tvItemStatService = new TVItemStatService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+                TVItemStatService tvItemStatService = new TVItemStatService(new Query() { Lang = lang }, db, ContactID);
 
                 if (!tvItemStatService.Delete(tvItemStat))
                 {

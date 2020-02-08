@@ -10,6 +10,7 @@ using System.Net.Http.Headers;
 
 namespace CSSPWebAPI.Controllers
 {
+    [ApiController]
     public class BaseController : ControllerBase
     {
         #region Variables

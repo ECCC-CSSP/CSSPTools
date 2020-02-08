@@ -15,7 +15,7 @@ using System.Linq;
 
 namespace CSSPWebAPI.Controllers
 {
-    [Route("api/tvTypeUserAuthorization")]
+    [Route("api/[controller]")]
     public partial class TVTypeUserAuthorizationController : BaseController
     {
         #region Variables
@@ -25,9 +25,6 @@ namespace CSSPWebAPI.Controllers
         #endregion Properties
 
         #region Constructors
-        public TVTypeUserAuthorizationController() : base()
-        {
-        }
         public TVTypeUserAuthorizationController(DatabaseTypeEnum dbt = DatabaseTypeEnum.SqlServerTestDB) : base(dbt)
         {
         }
@@ -35,9 +32,9 @@ namespace CSSPWebAPI.Controllers
 
         #region Functions public
         // GET api/tvTypeUserAuthorization
-        [Route("")]
-        public IActionResult GetTVTypeUserAuthorizationList([FromQuery]string lang = "en", [FromQuery]int skip = 0, [FromQuery]int take = 200,
-            [FromQuery]string asc = "", [FromQuery]string desc = "", [FromQuery]string where = "")
+        [HttpGet]
+        public IActionResult GetTVTypeUserAuthorizationList(string lang = "en", int skip = 0, int take = 200,
+            string asc = "", string desc = "", string where = "")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
@@ -63,12 +60,12 @@ namespace CSSPWebAPI.Controllers
             }
         }
         // GET api/tvTypeUserAuthorization/1
-        [Route("{TVTypeUserAuthorizationID:int}")]
-        public IActionResult GetTVTypeUserAuthorizationWithID([FromQuery]int TVTypeUserAuthorizationID, [FromQuery]string lang = "en")
+        [HttpGet("{TVTypeUserAuthorizationID}")]
+        public IActionResult GetTVTypeUserAuthorizationWithID(int TVTypeUserAuthorizationID, string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
-                TVTypeUserAuthorizationService tvTypeUserAuthorizationService = new TVTypeUserAuthorizationService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+                TVTypeUserAuthorizationService tvTypeUserAuthorizationService = new TVTypeUserAuthorizationService(new Query() { Lang = lang }, db, ContactID);
 
                 tvTypeUserAuthorizationService.Query = tvTypeUserAuthorizationService.FillQuery(typeof(TVTypeUserAuthorization), lang, 0, 1, "", "");
 
@@ -84,12 +81,12 @@ namespace CSSPWebAPI.Controllers
             }
         }
         // POST api/tvTypeUserAuthorization
-        [Route("")]
-        public IActionResult Post([FromBody]TVTypeUserAuthorization tvTypeUserAuthorization, [FromQuery]string lang = "en")
+        [HttpPost]
+        public IActionResult Post(TVTypeUserAuthorization tvTypeUserAuthorization, string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
-                TVTypeUserAuthorizationService tvTypeUserAuthorizationService = new TVTypeUserAuthorizationService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+                TVTypeUserAuthorizationService tvTypeUserAuthorizationService = new TVTypeUserAuthorizationService(new Query() { Lang = lang }, db, ContactID);
 
                 if (!tvTypeUserAuthorizationService.Add(tvTypeUserAuthorization))
                 {
@@ -103,12 +100,12 @@ namespace CSSPWebAPI.Controllers
             }
         }
         // PUT api/tvTypeUserAuthorization
-        [Route("")]
-        public IActionResult Put([FromBody]TVTypeUserAuthorization tvTypeUserAuthorization, [FromQuery]string lang = "en")
+        [HttpPut]
+        public IActionResult Put(TVTypeUserAuthorization tvTypeUserAuthorization, string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
-                TVTypeUserAuthorizationService tvTypeUserAuthorizationService = new TVTypeUserAuthorizationService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+                TVTypeUserAuthorizationService tvTypeUserAuthorizationService = new TVTypeUserAuthorizationService(new Query() { Lang = lang }, db, ContactID);
 
                 if (!tvTypeUserAuthorizationService.Update(tvTypeUserAuthorization))
                 {
@@ -122,12 +119,12 @@ namespace CSSPWebAPI.Controllers
             }
         }
         // DELETE api/tvTypeUserAuthorization
-        [Route("")]
-        public IActionResult Delete([FromBody]TVTypeUserAuthorization tvTypeUserAuthorization, [FromQuery]string lang = "en")
+        [HttpDelete]
+        public IActionResult Delete(TVTypeUserAuthorization tvTypeUserAuthorization, string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
-                TVTypeUserAuthorizationService tvTypeUserAuthorizationService = new TVTypeUserAuthorizationService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+                TVTypeUserAuthorizationService tvTypeUserAuthorizationService = new TVTypeUserAuthorizationService(new Query() { Lang = lang }, db, ContactID);
 
                 if (!tvTypeUserAuthorizationService.Delete(tvTypeUserAuthorization))
                 {

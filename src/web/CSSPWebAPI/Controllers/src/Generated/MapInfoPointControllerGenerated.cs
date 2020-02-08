@@ -15,7 +15,7 @@ using System.Linq;
 
 namespace CSSPWebAPI.Controllers
 {
-    [Route("api/mapInfoPoint")]
+    [Route("api/[controller]")]
     public partial class MapInfoPointController : BaseController
     {
         #region Variables
@@ -25,9 +25,6 @@ namespace CSSPWebAPI.Controllers
         #endregion Properties
 
         #region Constructors
-        public MapInfoPointController() : base()
-        {
-        }
         public MapInfoPointController(DatabaseTypeEnum dbt = DatabaseTypeEnum.SqlServerTestDB) : base(dbt)
         {
         }
@@ -35,9 +32,9 @@ namespace CSSPWebAPI.Controllers
 
         #region Functions public
         // GET api/mapInfoPoint
-        [Route("")]
-        public IActionResult GetMapInfoPointList([FromQuery]string lang = "en", [FromQuery]int skip = 0, [FromQuery]int take = 200,
-            [FromQuery]string asc = "", [FromQuery]string desc = "", [FromQuery]string where = "")
+        [HttpGet]
+        public IActionResult GetMapInfoPointList(string lang = "en", int skip = 0, int take = 200,
+            string asc = "", string desc = "", string where = "")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
@@ -63,12 +60,12 @@ namespace CSSPWebAPI.Controllers
             }
         }
         // GET api/mapInfoPoint/1
-        [Route("{MapInfoPointID:int}")]
-        public IActionResult GetMapInfoPointWithID([FromQuery]int MapInfoPointID, [FromQuery]string lang = "en")
+        [HttpGet("{MapInfoPointID}")]
+        public IActionResult GetMapInfoPointWithID(int MapInfoPointID, string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
-                MapInfoPointService mapInfoPointService = new MapInfoPointService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+                MapInfoPointService mapInfoPointService = new MapInfoPointService(new Query() { Lang = lang }, db, ContactID);
 
                 mapInfoPointService.Query = mapInfoPointService.FillQuery(typeof(MapInfoPoint), lang, 0, 1, "", "");
 
@@ -84,12 +81,12 @@ namespace CSSPWebAPI.Controllers
             }
         }
         // POST api/mapInfoPoint
-        [Route("")]
-        public IActionResult Post([FromBody]MapInfoPoint mapInfoPoint, [FromQuery]string lang = "en")
+        [HttpPost]
+        public IActionResult Post(MapInfoPoint mapInfoPoint, string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
-                MapInfoPointService mapInfoPointService = new MapInfoPointService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+                MapInfoPointService mapInfoPointService = new MapInfoPointService(new Query() { Lang = lang }, db, ContactID);
 
                 if (!mapInfoPointService.Add(mapInfoPoint))
                 {
@@ -103,12 +100,12 @@ namespace CSSPWebAPI.Controllers
             }
         }
         // PUT api/mapInfoPoint
-        [Route("")]
-        public IActionResult Put([FromBody]MapInfoPoint mapInfoPoint, [FromQuery]string lang = "en")
+        [HttpPut]
+        public IActionResult Put(MapInfoPoint mapInfoPoint, string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
-                MapInfoPointService mapInfoPointService = new MapInfoPointService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+                MapInfoPointService mapInfoPointService = new MapInfoPointService(new Query() { Lang = lang }, db, ContactID);
 
                 if (!mapInfoPointService.Update(mapInfoPoint))
                 {
@@ -122,12 +119,12 @@ namespace CSSPWebAPI.Controllers
             }
         }
         // DELETE api/mapInfoPoint
-        [Route("")]
-        public IActionResult Delete([FromBody]MapInfoPoint mapInfoPoint, [FromQuery]string lang = "en")
+        [HttpDelete]
+        public IActionResult Delete(MapInfoPoint mapInfoPoint, string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
-                MapInfoPointService mapInfoPointService = new MapInfoPointService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+                MapInfoPointService mapInfoPointService = new MapInfoPointService(new Query() { Lang = lang }, db, ContactID);
 
                 if (!mapInfoPointService.Delete(mapInfoPoint))
                 {

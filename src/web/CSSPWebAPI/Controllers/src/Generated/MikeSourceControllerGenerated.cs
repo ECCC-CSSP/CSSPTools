@@ -15,7 +15,7 @@ using System.Linq;
 
 namespace CSSPWebAPI.Controllers
 {
-    [Route("api/mikeSource")]
+    [Route("api/[controller]")]
     public partial class MikeSourceController : BaseController
     {
         #region Variables
@@ -25,9 +25,6 @@ namespace CSSPWebAPI.Controllers
         #endregion Properties
 
         #region Constructors
-        public MikeSourceController() : base()
-        {
-        }
         public MikeSourceController(DatabaseTypeEnum dbt = DatabaseTypeEnum.SqlServerTestDB) : base(dbt)
         {
         }
@@ -35,9 +32,9 @@ namespace CSSPWebAPI.Controllers
 
         #region Functions public
         // GET api/mikeSource
-        [Route("")]
-        public IActionResult GetMikeSourceList([FromQuery]string lang = "en", [FromQuery]int skip = 0, [FromQuery]int take = 200,
-            [FromQuery]string asc = "", [FromQuery]string desc = "", [FromQuery]string where = "")
+        [HttpGet]
+        public IActionResult GetMikeSourceList(string lang = "en", int skip = 0, int take = 200,
+            string asc = "", string desc = "", string where = "")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
@@ -63,12 +60,12 @@ namespace CSSPWebAPI.Controllers
             }
         }
         // GET api/mikeSource/1
-        [Route("{MikeSourceID:int}")]
-        public IActionResult GetMikeSourceWithID([FromQuery]int MikeSourceID, [FromQuery]string lang = "en")
+        [HttpGet("{MikeSourceID}")]
+        public IActionResult GetMikeSourceWithID(int MikeSourceID, string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
-                MikeSourceService mikeSourceService = new MikeSourceService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+                MikeSourceService mikeSourceService = new MikeSourceService(new Query() { Lang = lang }, db, ContactID);
 
                 mikeSourceService.Query = mikeSourceService.FillQuery(typeof(MikeSource), lang, 0, 1, "", "");
 
@@ -84,12 +81,12 @@ namespace CSSPWebAPI.Controllers
             }
         }
         // POST api/mikeSource
-        [Route("")]
-        public IActionResult Post([FromBody]MikeSource mikeSource, [FromQuery]string lang = "en")
+        [HttpPost]
+        public IActionResult Post(MikeSource mikeSource, string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
-                MikeSourceService mikeSourceService = new MikeSourceService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+                MikeSourceService mikeSourceService = new MikeSourceService(new Query() { Lang = lang }, db, ContactID);
 
                 if (!mikeSourceService.Add(mikeSource))
                 {
@@ -103,12 +100,12 @@ namespace CSSPWebAPI.Controllers
             }
         }
         // PUT api/mikeSource
-        [Route("")]
-        public IActionResult Put([FromBody]MikeSource mikeSource, [FromQuery]string lang = "en")
+        [HttpPut]
+        public IActionResult Put(MikeSource mikeSource, string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
-                MikeSourceService mikeSourceService = new MikeSourceService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+                MikeSourceService mikeSourceService = new MikeSourceService(new Query() { Lang = lang }, db, ContactID);
 
                 if (!mikeSourceService.Update(mikeSource))
                 {
@@ -122,12 +119,12 @@ namespace CSSPWebAPI.Controllers
             }
         }
         // DELETE api/mikeSource
-        [Route("")]
-        public IActionResult Delete([FromBody]MikeSource mikeSource, [FromQuery]string lang = "en")
+        [HttpDelete]
+        public IActionResult Delete(MikeSource mikeSource, string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
-                MikeSourceService mikeSourceService = new MikeSourceService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+                MikeSourceService mikeSourceService = new MikeSourceService(new Query() { Lang = lang }, db, ContactID);
 
                 if (!mikeSourceService.Delete(mikeSource))
                 {

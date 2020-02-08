@@ -15,7 +15,7 @@ using System.Linq;
 
 namespace CSSPWebAPI.Controllers
 {
-    [Route("api/vpScenario")]
+    [Route("api/[controller]")]
     public partial class VPScenarioController : BaseController
     {
         #region Variables
@@ -25,9 +25,6 @@ namespace CSSPWebAPI.Controllers
         #endregion Properties
 
         #region Constructors
-        public VPScenarioController() : base()
-        {
-        }
         public VPScenarioController(DatabaseTypeEnum dbt = DatabaseTypeEnum.SqlServerTestDB) : base(dbt)
         {
         }
@@ -35,9 +32,9 @@ namespace CSSPWebAPI.Controllers
 
         #region Functions public
         // GET api/vpScenario
-        [Route("")]
-        public IActionResult GetVPScenarioList([FromQuery]string lang = "en", [FromQuery]int skip = 0, [FromQuery]int take = 200,
-            [FromQuery]string asc = "", [FromQuery]string desc = "", [FromQuery]string where = "")
+        [HttpGet]
+        public IActionResult GetVPScenarioList(string lang = "en", int skip = 0, int take = 200,
+            string asc = "", string desc = "", string where = "")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
@@ -63,12 +60,12 @@ namespace CSSPWebAPI.Controllers
             }
         }
         // GET api/vpScenario/1
-        [Route("{VPScenarioID:int}")]
-        public IActionResult GetVPScenarioWithID([FromQuery]int VPScenarioID, [FromQuery]string lang = "en")
+        [HttpGet("{VPScenarioID}")]
+        public IActionResult GetVPScenarioWithID(int VPScenarioID, string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
-                VPScenarioService vpScenarioService = new VPScenarioService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+                VPScenarioService vpScenarioService = new VPScenarioService(new Query() { Lang = lang }, db, ContactID);
 
                 vpScenarioService.Query = vpScenarioService.FillQuery(typeof(VPScenario), lang, 0, 1, "", "");
 
@@ -84,12 +81,12 @@ namespace CSSPWebAPI.Controllers
             }
         }
         // POST api/vpScenario
-        [Route("")]
-        public IActionResult Post([FromBody]VPScenario vpScenario, [FromQuery]string lang = "en")
+        [HttpPost]
+        public IActionResult Post(VPScenario vpScenario, string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
-                VPScenarioService vpScenarioService = new VPScenarioService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+                VPScenarioService vpScenarioService = new VPScenarioService(new Query() { Lang = lang }, db, ContactID);
 
                 if (!vpScenarioService.Add(vpScenario))
                 {
@@ -103,12 +100,12 @@ namespace CSSPWebAPI.Controllers
             }
         }
         // PUT api/vpScenario
-        [Route("")]
-        public IActionResult Put([FromBody]VPScenario vpScenario, [FromQuery]string lang = "en")
+        [HttpPut]
+        public IActionResult Put(VPScenario vpScenario, string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
-                VPScenarioService vpScenarioService = new VPScenarioService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+                VPScenarioService vpScenarioService = new VPScenarioService(new Query() { Lang = lang }, db, ContactID);
 
                 if (!vpScenarioService.Update(vpScenario))
                 {
@@ -122,12 +119,12 @@ namespace CSSPWebAPI.Controllers
             }
         }
         // DELETE api/vpScenario
-        [Route("")]
-        public IActionResult Delete([FromBody]VPScenario vpScenario, [FromQuery]string lang = "en")
+        [HttpDelete]
+        public IActionResult Delete(VPScenario vpScenario, string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
-                VPScenarioService vpScenarioService = new VPScenarioService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+                VPScenarioService vpScenarioService = new VPScenarioService(new Query() { Lang = lang }, db, ContactID);
 
                 if (!vpScenarioService.Delete(vpScenario))
                 {

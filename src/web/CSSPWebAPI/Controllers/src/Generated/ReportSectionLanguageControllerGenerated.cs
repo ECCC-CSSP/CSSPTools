@@ -15,7 +15,7 @@ using System.Linq;
 
 namespace CSSPWebAPI.Controllers
 {
-    [Route("api/reportSectionLanguage")]
+    [Route("api/[controller]")]
     public partial class ReportSectionLanguageController : BaseController
     {
         #region Variables
@@ -25,9 +25,6 @@ namespace CSSPWebAPI.Controllers
         #endregion Properties
 
         #region Constructors
-        public ReportSectionLanguageController() : base()
-        {
-        }
         public ReportSectionLanguageController(DatabaseTypeEnum dbt = DatabaseTypeEnum.SqlServerTestDB) : base(dbt)
         {
         }
@@ -35,9 +32,9 @@ namespace CSSPWebAPI.Controllers
 
         #region Functions public
         // GET api/reportSectionLanguage
-        [Route("")]
-        public IActionResult GetReportSectionLanguageList([FromQuery]string lang = "en", [FromQuery]int skip = 0, [FromQuery]int take = 200,
-            [FromQuery]string asc = "", [FromQuery]string desc = "", [FromQuery]string where = "")
+        [HttpGet]
+        public IActionResult GetReportSectionLanguageList(string lang = "en", int skip = 0, int take = 200,
+            string asc = "", string desc = "", string where = "")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
@@ -63,12 +60,12 @@ namespace CSSPWebAPI.Controllers
             }
         }
         // GET api/reportSectionLanguage/1
-        [Route("{ReportSectionLanguageID:int}")]
-        public IActionResult GetReportSectionLanguageWithID([FromQuery]int ReportSectionLanguageID, [FromQuery]string lang = "en")
+        [HttpGet("{ReportSectionLanguageID}")]
+        public IActionResult GetReportSectionLanguageWithID(int ReportSectionLanguageID, string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
-                ReportSectionLanguageService reportSectionLanguageService = new ReportSectionLanguageService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+                ReportSectionLanguageService reportSectionLanguageService = new ReportSectionLanguageService(new Query() { Lang = lang }, db, ContactID);
 
                 reportSectionLanguageService.Query = reportSectionLanguageService.FillQuery(typeof(ReportSectionLanguage), lang, 0, 1, "", "");
 
@@ -84,12 +81,12 @@ namespace CSSPWebAPI.Controllers
             }
         }
         // POST api/reportSectionLanguage
-        [Route("")]
-        public IActionResult Post([FromBody]ReportSectionLanguage reportSectionLanguage, [FromQuery]string lang = "en")
+        [HttpPost]
+        public IActionResult Post(ReportSectionLanguage reportSectionLanguage, string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
-                ReportSectionLanguageService reportSectionLanguageService = new ReportSectionLanguageService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+                ReportSectionLanguageService reportSectionLanguageService = new ReportSectionLanguageService(new Query() { Lang = lang }, db, ContactID);
 
                 if (!reportSectionLanguageService.Add(reportSectionLanguage))
                 {
@@ -103,12 +100,12 @@ namespace CSSPWebAPI.Controllers
             }
         }
         // PUT api/reportSectionLanguage
-        [Route("")]
-        public IActionResult Put([FromBody]ReportSectionLanguage reportSectionLanguage, [FromQuery]string lang = "en")
+        [HttpPut]
+        public IActionResult Put(ReportSectionLanguage reportSectionLanguage, string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
-                ReportSectionLanguageService reportSectionLanguageService = new ReportSectionLanguageService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+                ReportSectionLanguageService reportSectionLanguageService = new ReportSectionLanguageService(new Query() { Lang = lang }, db, ContactID);
 
                 if (!reportSectionLanguageService.Update(reportSectionLanguage))
                 {
@@ -122,12 +119,12 @@ namespace CSSPWebAPI.Controllers
             }
         }
         // DELETE api/reportSectionLanguage
-        [Route("")]
-        public IActionResult Delete([FromBody]ReportSectionLanguage reportSectionLanguage, [FromQuery]string lang = "en")
+        [HttpDelete]
+        public IActionResult Delete(ReportSectionLanguage reportSectionLanguage, string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
-                ReportSectionLanguageService reportSectionLanguageService = new ReportSectionLanguageService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+                ReportSectionLanguageService reportSectionLanguageService = new ReportSectionLanguageService(new Query() { Lang = lang }, db, ContactID);
 
                 if (!reportSectionLanguageService.Delete(reportSectionLanguage))
                 {

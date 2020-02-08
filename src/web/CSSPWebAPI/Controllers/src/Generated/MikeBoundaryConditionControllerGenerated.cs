@@ -15,7 +15,7 @@ using System.Linq;
 
 namespace CSSPWebAPI.Controllers
 {
-    [Route("api/mikeBoundaryCondition")]
+    [Route("api/[controller]")]
     public partial class MikeBoundaryConditionController : BaseController
     {
         #region Variables
@@ -25,9 +25,6 @@ namespace CSSPWebAPI.Controllers
         #endregion Properties
 
         #region Constructors
-        public MikeBoundaryConditionController() : base()
-        {
-        }
         public MikeBoundaryConditionController(DatabaseTypeEnum dbt = DatabaseTypeEnum.SqlServerTestDB) : base(dbt)
         {
         }
@@ -35,9 +32,9 @@ namespace CSSPWebAPI.Controllers
 
         #region Functions public
         // GET api/mikeBoundaryCondition
-        [Route("")]
-        public IActionResult GetMikeBoundaryConditionList([FromQuery]string lang = "en", [FromQuery]int skip = 0, [FromQuery]int take = 200,
-            [FromQuery]string asc = "", [FromQuery]string desc = "", [FromQuery]string where = "")
+        [HttpGet]
+        public IActionResult GetMikeBoundaryConditionList(string lang = "en", int skip = 0, int take = 200,
+            string asc = "", string desc = "", string where = "")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
@@ -63,12 +60,12 @@ namespace CSSPWebAPI.Controllers
             }
         }
         // GET api/mikeBoundaryCondition/1
-        [Route("{MikeBoundaryConditionID:int}")]
-        public IActionResult GetMikeBoundaryConditionWithID([FromQuery]int MikeBoundaryConditionID, [FromQuery]string lang = "en")
+        [HttpGet("{MikeBoundaryConditionID}")]
+        public IActionResult GetMikeBoundaryConditionWithID(int MikeBoundaryConditionID, string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
-                MikeBoundaryConditionService mikeBoundaryConditionService = new MikeBoundaryConditionService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+                MikeBoundaryConditionService mikeBoundaryConditionService = new MikeBoundaryConditionService(new Query() { Lang = lang }, db, ContactID);
 
                 mikeBoundaryConditionService.Query = mikeBoundaryConditionService.FillQuery(typeof(MikeBoundaryCondition), lang, 0, 1, "", "");
 
@@ -84,12 +81,12 @@ namespace CSSPWebAPI.Controllers
             }
         }
         // POST api/mikeBoundaryCondition
-        [Route("")]
-        public IActionResult Post([FromBody]MikeBoundaryCondition mikeBoundaryCondition, [FromQuery]string lang = "en")
+        [HttpPost]
+        public IActionResult Post(MikeBoundaryCondition mikeBoundaryCondition, string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
-                MikeBoundaryConditionService mikeBoundaryConditionService = new MikeBoundaryConditionService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+                MikeBoundaryConditionService mikeBoundaryConditionService = new MikeBoundaryConditionService(new Query() { Lang = lang }, db, ContactID);
 
                 if (!mikeBoundaryConditionService.Add(mikeBoundaryCondition))
                 {
@@ -103,12 +100,12 @@ namespace CSSPWebAPI.Controllers
             }
         }
         // PUT api/mikeBoundaryCondition
-        [Route("")]
-        public IActionResult Put([FromBody]MikeBoundaryCondition mikeBoundaryCondition, [FromQuery]string lang = "en")
+        [HttpPut]
+        public IActionResult Put(MikeBoundaryCondition mikeBoundaryCondition, string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
-                MikeBoundaryConditionService mikeBoundaryConditionService = new MikeBoundaryConditionService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+                MikeBoundaryConditionService mikeBoundaryConditionService = new MikeBoundaryConditionService(new Query() { Lang = lang }, db, ContactID);
 
                 if (!mikeBoundaryConditionService.Update(mikeBoundaryCondition))
                 {
@@ -122,12 +119,12 @@ namespace CSSPWebAPI.Controllers
             }
         }
         // DELETE api/mikeBoundaryCondition
-        [Route("")]
-        public IActionResult Delete([FromBody]MikeBoundaryCondition mikeBoundaryCondition, [FromQuery]string lang = "en")
+        [HttpDelete]
+        public IActionResult Delete(MikeBoundaryCondition mikeBoundaryCondition, string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
-                MikeBoundaryConditionService mikeBoundaryConditionService = new MikeBoundaryConditionService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+                MikeBoundaryConditionService mikeBoundaryConditionService = new MikeBoundaryConditionService(new Query() { Lang = lang }, db, ContactID);
 
                 if (!mikeBoundaryConditionService.Delete(mikeBoundaryCondition))
                 {

@@ -15,7 +15,7 @@ using System.Linq;
 
 namespace CSSPWebAPI.Controllers
 {
-    [Route("api/address")]
+    [Route("api/[controller]")]
     public partial class AddressController : BaseController
     {
         #region Variables
@@ -25,9 +25,6 @@ namespace CSSPWebAPI.Controllers
         #endregion Properties
 
         #region Constructors
-        public AddressController() : base()
-        {
-        }
         public AddressController(DatabaseTypeEnum dbt = DatabaseTypeEnum.SqlServerTestDB) : base(dbt)
         {
         }
@@ -35,9 +32,9 @@ namespace CSSPWebAPI.Controllers
 
         #region Functions public
         // GET api/address
-        [Route("")]
-        public IActionResult GetAddressList([FromQuery]string lang = "en", [FromQuery]int skip = 0, [FromQuery]int take = 200,
-            [FromQuery]string asc = "", [FromQuery]string desc = "", [FromQuery]string where = "")
+        [HttpGet]
+        public IActionResult GetAddressList(string lang = "en", int skip = 0, int take = 200,
+            string asc = "", string desc = "", string where = "")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
@@ -63,12 +60,12 @@ namespace CSSPWebAPI.Controllers
             }
         }
         // GET api/address/1
-        [Route("{AddressID:int}")]
-        public IActionResult GetAddressWithID([FromQuery]int AddressID, [FromQuery]string lang = "en")
+        [HttpGet("{AddressID}")]
+        public IActionResult GetAddressWithID(int AddressID, string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
-                AddressService addressService = new AddressService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+                AddressService addressService = new AddressService(new Query() { Lang = lang }, db, ContactID);
 
                 addressService.Query = addressService.FillQuery(typeof(Address), lang, 0, 1, "", "");
 
@@ -84,12 +81,12 @@ namespace CSSPWebAPI.Controllers
             }
         }
         // POST api/address
-        [Route("")]
-        public IActionResult Post([FromBody]Address address, [FromQuery]string lang = "en")
+        [HttpPost]
+        public IActionResult Post(Address address, string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
-                AddressService addressService = new AddressService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+                AddressService addressService = new AddressService(new Query() { Lang = lang }, db, ContactID);
 
                 if (!addressService.Add(address))
                 {
@@ -103,12 +100,12 @@ namespace CSSPWebAPI.Controllers
             }
         }
         // PUT api/address
-        [Route("")]
-        public IActionResult Put([FromBody]Address address, [FromQuery]string lang = "en")
+        [HttpPut]
+        public IActionResult Put(Address address, string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
-                AddressService addressService = new AddressService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+                AddressService addressService = new AddressService(new Query() { Lang = lang }, db, ContactID);
 
                 if (!addressService.Update(address))
                 {
@@ -122,12 +119,12 @@ namespace CSSPWebAPI.Controllers
             }
         }
         // DELETE api/address
-        [Route("")]
-        public IActionResult Delete([FromBody]Address address, [FromQuery]string lang = "en")
+        [HttpDelete]
+        public IActionResult Delete(Address address, string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
-                AddressService addressService = new AddressService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+                AddressService addressService = new AddressService(new Query() { Lang = lang }, db, ContactID);
 
                 if (!addressService.Delete(address))
                 {

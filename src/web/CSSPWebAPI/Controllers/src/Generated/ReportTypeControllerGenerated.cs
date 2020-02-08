@@ -15,7 +15,7 @@ using System.Linq;
 
 namespace CSSPWebAPI.Controllers
 {
-    [Route("api/reportType")]
+    [Route("api/[controller]")]
     public partial class ReportTypeController : BaseController
     {
         #region Variables
@@ -25,9 +25,6 @@ namespace CSSPWebAPI.Controllers
         #endregion Properties
 
         #region Constructors
-        public ReportTypeController() : base()
-        {
-        }
         public ReportTypeController(DatabaseTypeEnum dbt = DatabaseTypeEnum.SqlServerTestDB) : base(dbt)
         {
         }
@@ -35,9 +32,9 @@ namespace CSSPWebAPI.Controllers
 
         #region Functions public
         // GET api/reportType
-        [Route("")]
-        public IActionResult GetReportTypeList([FromQuery]string lang = "en", [FromQuery]int skip = 0, [FromQuery]int take = 200,
-            [FromQuery]string asc = "", [FromQuery]string desc = "", [FromQuery]string where = "")
+        [HttpGet]
+        public IActionResult GetReportTypeList(string lang = "en", int skip = 0, int take = 200,
+            string asc = "", string desc = "", string where = "")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
@@ -63,12 +60,12 @@ namespace CSSPWebAPI.Controllers
             }
         }
         // GET api/reportType/1
-        [Route("{ReportTypeID:int}")]
-        public IActionResult GetReportTypeWithID([FromQuery]int ReportTypeID, [FromQuery]string lang = "en")
+        [HttpGet("{ReportTypeID}")]
+        public IActionResult GetReportTypeWithID(int ReportTypeID, string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
-                ReportTypeService reportTypeService = new ReportTypeService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+                ReportTypeService reportTypeService = new ReportTypeService(new Query() { Lang = lang }, db, ContactID);
 
                 reportTypeService.Query = reportTypeService.FillQuery(typeof(ReportType), lang, 0, 1, "", "");
 
@@ -84,12 +81,12 @@ namespace CSSPWebAPI.Controllers
             }
         }
         // POST api/reportType
-        [Route("")]
-        public IActionResult Post([FromBody]ReportType reportType, [FromQuery]string lang = "en")
+        [HttpPost]
+        public IActionResult Post(ReportType reportType, string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
-                ReportTypeService reportTypeService = new ReportTypeService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+                ReportTypeService reportTypeService = new ReportTypeService(new Query() { Lang = lang }, db, ContactID);
 
                 if (!reportTypeService.Add(reportType))
                 {
@@ -103,12 +100,12 @@ namespace CSSPWebAPI.Controllers
             }
         }
         // PUT api/reportType
-        [Route("")]
-        public IActionResult Put([FromBody]ReportType reportType, [FromQuery]string lang = "en")
+        [HttpPut]
+        public IActionResult Put(ReportType reportType, string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
-                ReportTypeService reportTypeService = new ReportTypeService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+                ReportTypeService reportTypeService = new ReportTypeService(new Query() { Lang = lang }, db, ContactID);
 
                 if (!reportTypeService.Update(reportType))
                 {
@@ -122,12 +119,12 @@ namespace CSSPWebAPI.Controllers
             }
         }
         // DELETE api/reportType
-        [Route("")]
-        public IActionResult Delete([FromBody]ReportType reportType, [FromQuery]string lang = "en")
+        [HttpDelete]
+        public IActionResult Delete(ReportType reportType, string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
-                ReportTypeService reportTypeService = new ReportTypeService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+                ReportTypeService reportTypeService = new ReportTypeService(new Query() { Lang = lang }, db, ContactID);
 
                 if (!reportTypeService.Delete(reportType))
                 {

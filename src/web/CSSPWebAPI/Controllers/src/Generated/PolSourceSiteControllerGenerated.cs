@@ -15,7 +15,7 @@ using System.Linq;
 
 namespace CSSPWebAPI.Controllers
 {
-    [Route("api/polSourceSite")]
+    [Route("api/[controller]")]
     public partial class PolSourceSiteController : BaseController
     {
         #region Variables
@@ -25,9 +25,6 @@ namespace CSSPWebAPI.Controllers
         #endregion Properties
 
         #region Constructors
-        public PolSourceSiteController() : base()
-        {
-        }
         public PolSourceSiteController(DatabaseTypeEnum dbt = DatabaseTypeEnum.SqlServerTestDB) : base(dbt)
         {
         }
@@ -35,9 +32,9 @@ namespace CSSPWebAPI.Controllers
 
         #region Functions public
         // GET api/polSourceSite
-        [Route("")]
-        public IActionResult GetPolSourceSiteList([FromQuery]string lang = "en", [FromQuery]int skip = 0, [FromQuery]int take = 200,
-            [FromQuery]string asc = "", [FromQuery]string desc = "", [FromQuery]string where = "")
+        [HttpGet]
+        public IActionResult GetPolSourceSiteList(string lang = "en", int skip = 0, int take = 200,
+            string asc = "", string desc = "", string where = "")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
@@ -63,12 +60,12 @@ namespace CSSPWebAPI.Controllers
             }
         }
         // GET api/polSourceSite/1
-        [Route("{PolSourceSiteID:int}")]
-        public IActionResult GetPolSourceSiteWithID([FromQuery]int PolSourceSiteID, [FromQuery]string lang = "en")
+        [HttpGet("{PolSourceSiteID}")]
+        public IActionResult GetPolSourceSiteWithID(int PolSourceSiteID, string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
-                PolSourceSiteService polSourceSiteService = new PolSourceSiteService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+                PolSourceSiteService polSourceSiteService = new PolSourceSiteService(new Query() { Lang = lang }, db, ContactID);
 
                 polSourceSiteService.Query = polSourceSiteService.FillQuery(typeof(PolSourceSite), lang, 0, 1, "", "");
 
@@ -84,12 +81,12 @@ namespace CSSPWebAPI.Controllers
             }
         }
         // POST api/polSourceSite
-        [Route("")]
-        public IActionResult Post([FromBody]PolSourceSite polSourceSite, [FromQuery]string lang = "en")
+        [HttpPost]
+        public IActionResult Post(PolSourceSite polSourceSite, string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
-                PolSourceSiteService polSourceSiteService = new PolSourceSiteService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+                PolSourceSiteService polSourceSiteService = new PolSourceSiteService(new Query() { Lang = lang }, db, ContactID);
 
                 if (!polSourceSiteService.Add(polSourceSite))
                 {
@@ -103,12 +100,12 @@ namespace CSSPWebAPI.Controllers
             }
         }
         // PUT api/polSourceSite
-        [Route("")]
-        public IActionResult Put([FromBody]PolSourceSite polSourceSite, [FromQuery]string lang = "en")
+        [HttpPut]
+        public IActionResult Put(PolSourceSite polSourceSite, string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
-                PolSourceSiteService polSourceSiteService = new PolSourceSiteService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+                PolSourceSiteService polSourceSiteService = new PolSourceSiteService(new Query() { Lang = lang }, db, ContactID);
 
                 if (!polSourceSiteService.Update(polSourceSite))
                 {
@@ -122,12 +119,12 @@ namespace CSSPWebAPI.Controllers
             }
         }
         // DELETE api/polSourceSite
-        [Route("")]
-        public IActionResult Delete([FromBody]PolSourceSite polSourceSite, [FromQuery]string lang = "en")
+        [HttpDelete]
+        public IActionResult Delete(PolSourceSite polSourceSite, string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
-                PolSourceSiteService polSourceSiteService = new PolSourceSiteService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+                PolSourceSiteService polSourceSiteService = new PolSourceSiteService(new Query() { Lang = lang }, db, ContactID);
 
                 if (!polSourceSiteService.Delete(polSourceSite))
                 {

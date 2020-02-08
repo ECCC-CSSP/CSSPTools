@@ -15,7 +15,7 @@ using System.Linq;
 
 namespace CSSPWebAPI.Controllers
 {
-    [Route("api/spillLanguage")]
+    [Route("api/[controller]")]
     public partial class SpillLanguageController : BaseController
     {
         #region Variables
@@ -25,9 +25,6 @@ namespace CSSPWebAPI.Controllers
         #endregion Properties
 
         #region Constructors
-        public SpillLanguageController() : base()
-        {
-        }
         public SpillLanguageController(DatabaseTypeEnum dbt = DatabaseTypeEnum.SqlServerTestDB) : base(dbt)
         {
         }
@@ -35,9 +32,9 @@ namespace CSSPWebAPI.Controllers
 
         #region Functions public
         // GET api/spillLanguage
-        [Route("")]
-        public IActionResult GetSpillLanguageList([FromQuery]string lang = "en", [FromQuery]int skip = 0, [FromQuery]int take = 200,
-            [FromQuery]string asc = "", [FromQuery]string desc = "", [FromQuery]string where = "")
+        [HttpGet]
+        public IActionResult GetSpillLanguageList(string lang = "en", int skip = 0, int take = 200,
+            string asc = "", string desc = "", string where = "")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
@@ -63,12 +60,12 @@ namespace CSSPWebAPI.Controllers
             }
         }
         // GET api/spillLanguage/1
-        [Route("{SpillLanguageID:int}")]
-        public IActionResult GetSpillLanguageWithID([FromQuery]int SpillLanguageID, [FromQuery]string lang = "en")
+        [HttpGet("{SpillLanguageID}")]
+        public IActionResult GetSpillLanguageWithID(int SpillLanguageID, string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
-                SpillLanguageService spillLanguageService = new SpillLanguageService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+                SpillLanguageService spillLanguageService = new SpillLanguageService(new Query() { Lang = lang }, db, ContactID);
 
                 spillLanguageService.Query = spillLanguageService.FillQuery(typeof(SpillLanguage), lang, 0, 1, "", "");
 
@@ -84,12 +81,12 @@ namespace CSSPWebAPI.Controllers
             }
         }
         // POST api/spillLanguage
-        [Route("")]
-        public IActionResult Post([FromBody]SpillLanguage spillLanguage, [FromQuery]string lang = "en")
+        [HttpPost]
+        public IActionResult Post(SpillLanguage spillLanguage, string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
-                SpillLanguageService spillLanguageService = new SpillLanguageService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+                SpillLanguageService spillLanguageService = new SpillLanguageService(new Query() { Lang = lang }, db, ContactID);
 
                 if (!spillLanguageService.Add(spillLanguage))
                 {
@@ -103,12 +100,12 @@ namespace CSSPWebAPI.Controllers
             }
         }
         // PUT api/spillLanguage
-        [Route("")]
-        public IActionResult Put([FromBody]SpillLanguage spillLanguage, [FromQuery]string lang = "en")
+        [HttpPut]
+        public IActionResult Put(SpillLanguage spillLanguage, string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
-                SpillLanguageService spillLanguageService = new SpillLanguageService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+                SpillLanguageService spillLanguageService = new SpillLanguageService(new Query() { Lang = lang }, db, ContactID);
 
                 if (!spillLanguageService.Update(spillLanguage))
                 {
@@ -122,12 +119,12 @@ namespace CSSPWebAPI.Controllers
             }
         }
         // DELETE api/spillLanguage
-        [Route("")]
-        public IActionResult Delete([FromBody]SpillLanguage spillLanguage, [FromQuery]string lang = "en")
+        [HttpDelete]
+        public IActionResult Delete(SpillLanguage spillLanguage, string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
-                SpillLanguageService spillLanguageService = new SpillLanguageService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+                SpillLanguageService spillLanguageService = new SpillLanguageService(new Query() { Lang = lang }, db, ContactID);
 
                 if (!spillLanguageService.Delete(spillLanguage))
                 {

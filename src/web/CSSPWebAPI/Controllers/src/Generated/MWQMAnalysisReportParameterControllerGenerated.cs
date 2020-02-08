@@ -15,7 +15,7 @@ using System.Linq;
 
 namespace CSSPWebAPI.Controllers
 {
-    [Route("api/mwqmAnalysisReportParameter")]
+    [Route("api/[controller]")]
     public partial class MWQMAnalysisReportParameterController : BaseController
     {
         #region Variables
@@ -25,9 +25,6 @@ namespace CSSPWebAPI.Controllers
         #endregion Properties
 
         #region Constructors
-        public MWQMAnalysisReportParameterController() : base()
-        {
-        }
         public MWQMAnalysisReportParameterController(DatabaseTypeEnum dbt = DatabaseTypeEnum.SqlServerTestDB) : base(dbt)
         {
         }
@@ -35,9 +32,9 @@ namespace CSSPWebAPI.Controllers
 
         #region Functions public
         // GET api/mwqmAnalysisReportParameter
-        [Route("")]
-        public IActionResult GetMWQMAnalysisReportParameterList([FromQuery]string lang = "en", [FromQuery]int skip = 0, [FromQuery]int take = 200,
-            [FromQuery]string asc = "", [FromQuery]string desc = "", [FromQuery]string where = "")
+        [HttpGet]
+        public IActionResult GetMWQMAnalysisReportParameterList(string lang = "en", int skip = 0, int take = 200,
+            string asc = "", string desc = "", string where = "")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
@@ -63,12 +60,12 @@ namespace CSSPWebAPI.Controllers
             }
         }
         // GET api/mwqmAnalysisReportParameter/1
-        [Route("{MWQMAnalysisReportParameterID:int}")]
-        public IActionResult GetMWQMAnalysisReportParameterWithID([FromQuery]int MWQMAnalysisReportParameterID, [FromQuery]string lang = "en")
+        [HttpGet("{MWQMAnalysisReportParameterID}")]
+        public IActionResult GetMWQMAnalysisReportParameterWithID(int MWQMAnalysisReportParameterID, string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
-                MWQMAnalysisReportParameterService mwqmAnalysisReportParameterService = new MWQMAnalysisReportParameterService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+                MWQMAnalysisReportParameterService mwqmAnalysisReportParameterService = new MWQMAnalysisReportParameterService(new Query() { Lang = lang }, db, ContactID);
 
                 mwqmAnalysisReportParameterService.Query = mwqmAnalysisReportParameterService.FillQuery(typeof(MWQMAnalysisReportParameter), lang, 0, 1, "", "");
 
@@ -84,12 +81,12 @@ namespace CSSPWebAPI.Controllers
             }
         }
         // POST api/mwqmAnalysisReportParameter
-        [Route("")]
-        public IActionResult Post([FromBody]MWQMAnalysisReportParameter mwqmAnalysisReportParameter, [FromQuery]string lang = "en")
+        [HttpPost]
+        public IActionResult Post(MWQMAnalysisReportParameter mwqmAnalysisReportParameter, string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
-                MWQMAnalysisReportParameterService mwqmAnalysisReportParameterService = new MWQMAnalysisReportParameterService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+                MWQMAnalysisReportParameterService mwqmAnalysisReportParameterService = new MWQMAnalysisReportParameterService(new Query() { Lang = lang }, db, ContactID);
 
                 if (!mwqmAnalysisReportParameterService.Add(mwqmAnalysisReportParameter))
                 {
@@ -103,12 +100,12 @@ namespace CSSPWebAPI.Controllers
             }
         }
         // PUT api/mwqmAnalysisReportParameter
-        [Route("")]
-        public IActionResult Put([FromBody]MWQMAnalysisReportParameter mwqmAnalysisReportParameter, [FromQuery]string lang = "en")
+        [HttpPut]
+        public IActionResult Put(MWQMAnalysisReportParameter mwqmAnalysisReportParameter, string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
-                MWQMAnalysisReportParameterService mwqmAnalysisReportParameterService = new MWQMAnalysisReportParameterService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+                MWQMAnalysisReportParameterService mwqmAnalysisReportParameterService = new MWQMAnalysisReportParameterService(new Query() { Lang = lang }, db, ContactID);
 
                 if (!mwqmAnalysisReportParameterService.Update(mwqmAnalysisReportParameter))
                 {
@@ -122,12 +119,12 @@ namespace CSSPWebAPI.Controllers
             }
         }
         // DELETE api/mwqmAnalysisReportParameter
-        [Route("")]
-        public IActionResult Delete([FromBody]MWQMAnalysisReportParameter mwqmAnalysisReportParameter, [FromQuery]string lang = "en")
+        [HttpDelete]
+        public IActionResult Delete(MWQMAnalysisReportParameter mwqmAnalysisReportParameter, string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
-                MWQMAnalysisReportParameterService mwqmAnalysisReportParameterService = new MWQMAnalysisReportParameterService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+                MWQMAnalysisReportParameterService mwqmAnalysisReportParameterService = new MWQMAnalysisReportParameterService(new Query() { Lang = lang }, db, ContactID);
 
                 if (!mwqmAnalysisReportParameterService.Delete(mwqmAnalysisReportParameter))
                 {

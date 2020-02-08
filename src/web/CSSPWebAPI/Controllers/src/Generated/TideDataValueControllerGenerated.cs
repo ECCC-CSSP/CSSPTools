@@ -15,7 +15,7 @@ using System.Linq;
 
 namespace CSSPWebAPI.Controllers
 {
-    [Route("api/tideDataValue")]
+    [Route("api/[controller]")]
     public partial class TideDataValueController : BaseController
     {
         #region Variables
@@ -25,9 +25,6 @@ namespace CSSPWebAPI.Controllers
         #endregion Properties
 
         #region Constructors
-        public TideDataValueController() : base()
-        {
-        }
         public TideDataValueController(DatabaseTypeEnum dbt = DatabaseTypeEnum.SqlServerTestDB) : base(dbt)
         {
         }
@@ -35,9 +32,9 @@ namespace CSSPWebAPI.Controllers
 
         #region Functions public
         // GET api/tideDataValue
-        [Route("")]
-        public IActionResult GetTideDataValueList([FromQuery]string lang = "en", [FromQuery]int skip = 0, [FromQuery]int take = 200,
-            [FromQuery]string asc = "", [FromQuery]string desc = "", [FromQuery]string where = "")
+        [HttpGet]
+        public IActionResult GetTideDataValueList(string lang = "en", int skip = 0, int take = 200,
+            string asc = "", string desc = "", string where = "")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
@@ -63,12 +60,12 @@ namespace CSSPWebAPI.Controllers
             }
         }
         // GET api/tideDataValue/1
-        [Route("{TideDataValueID:int}")]
-        public IActionResult GetTideDataValueWithID([FromQuery]int TideDataValueID, [FromQuery]string lang = "en")
+        [HttpGet("{TideDataValueID}")]
+        public IActionResult GetTideDataValueWithID(int TideDataValueID, string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
-                TideDataValueService tideDataValueService = new TideDataValueService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+                TideDataValueService tideDataValueService = new TideDataValueService(new Query() { Lang = lang }, db, ContactID);
 
                 tideDataValueService.Query = tideDataValueService.FillQuery(typeof(TideDataValue), lang, 0, 1, "", "");
 
@@ -84,12 +81,12 @@ namespace CSSPWebAPI.Controllers
             }
         }
         // POST api/tideDataValue
-        [Route("")]
-        public IActionResult Post([FromBody]TideDataValue tideDataValue, [FromQuery]string lang = "en")
+        [HttpPost]
+        public IActionResult Post(TideDataValue tideDataValue, string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
-                TideDataValueService tideDataValueService = new TideDataValueService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+                TideDataValueService tideDataValueService = new TideDataValueService(new Query() { Lang = lang }, db, ContactID);
 
                 if (!tideDataValueService.Add(tideDataValue))
                 {
@@ -103,12 +100,12 @@ namespace CSSPWebAPI.Controllers
             }
         }
         // PUT api/tideDataValue
-        [Route("")]
-        public IActionResult Put([FromBody]TideDataValue tideDataValue, [FromQuery]string lang = "en")
+        [HttpPut]
+        public IActionResult Put(TideDataValue tideDataValue, string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
-                TideDataValueService tideDataValueService = new TideDataValueService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+                TideDataValueService tideDataValueService = new TideDataValueService(new Query() { Lang = lang }, db, ContactID);
 
                 if (!tideDataValueService.Update(tideDataValue))
                 {
@@ -122,12 +119,12 @@ namespace CSSPWebAPI.Controllers
             }
         }
         // DELETE api/tideDataValue
-        [Route("")]
-        public IActionResult Delete([FromBody]TideDataValue tideDataValue, [FromQuery]string lang = "en")
+        [HttpDelete]
+        public IActionResult Delete(TideDataValue tideDataValue, string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
-                TideDataValueService tideDataValueService = new TideDataValueService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+                TideDataValueService tideDataValueService = new TideDataValueService(new Query() { Lang = lang }, db, ContactID);
 
                 if (!tideDataValueService.Delete(tideDataValue))
                 {

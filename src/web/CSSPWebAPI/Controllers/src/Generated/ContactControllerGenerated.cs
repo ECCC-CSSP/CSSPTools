@@ -15,7 +15,7 @@ using System.Linq;
 
 namespace CSSPWebAPI.Controllers
 {
-    [Route("api/contact")]
+    [Route("api/[controller]")]
     public partial class ContactController : BaseController
     {
         #region Variables
@@ -25,9 +25,6 @@ namespace CSSPWebAPI.Controllers
         #endregion Properties
 
         #region Constructors
-        public ContactController() : base()
-        {
-        }
         public ContactController(DatabaseTypeEnum dbt = DatabaseTypeEnum.SqlServerTestDB) : base(dbt)
         {
         }
@@ -35,9 +32,9 @@ namespace CSSPWebAPI.Controllers
 
         #region Functions public
         // GET api/contact
-        [Route("")]
-        public IActionResult GetContactList([FromQuery]string lang = "en", [FromQuery]int skip = 0, [FromQuery]int take = 200,
-            [FromQuery]string asc = "", [FromQuery]string desc = "", [FromQuery]string where = "")
+        [HttpGet]
+        public IActionResult GetContactList(string lang = "en", int skip = 0, int take = 200,
+            string asc = "", string desc = "", string where = "")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
@@ -63,12 +60,12 @@ namespace CSSPWebAPI.Controllers
             }
         }
         // GET api/contact/1
-        [Route("{ContactID:int}")]
-        public IActionResult GetContactWithID([FromQuery]int ContactID, [FromQuery]string lang = "en")
+        [HttpGet("{ContactID}")]
+        public IActionResult GetContactWithID(int ContactID, string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
-                ContactService contactService = new ContactService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+                ContactService contactService = new ContactService(new Query() { Lang = lang }, db, ContactID);
 
                 contactService.Query = contactService.FillQuery(typeof(Contact), lang, 0, 1, "", "");
 
@@ -84,12 +81,12 @@ namespace CSSPWebAPI.Controllers
             }
         }
         // POST api/contact
-        [Route("")]
-        public IActionResult Post([FromBody]Contact contact, [FromQuery]string lang = "en")
+        [HttpPost]
+        public IActionResult Post(Contact contact, string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
-                ContactService contactService = new ContactService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+                ContactService contactService = new ContactService(new Query() { Lang = lang }, db, ContactID);
 
                 if (!contactService.Add(contact, AddContactTypeEnum.LoggedIn))
                 {
@@ -103,12 +100,12 @@ namespace CSSPWebAPI.Controllers
             }
         }
         // PUT api/contact
-        [Route("")]
-        public IActionResult Put([FromBody]Contact contact, [FromQuery]string lang = "en")
+        [HttpPut]
+        public IActionResult Put(Contact contact, string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
-                ContactService contactService = new ContactService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+                ContactService contactService = new ContactService(new Query() { Lang = lang }, db, ContactID);
 
                 if (!contactService.Update(contact))
                 {
@@ -122,12 +119,12 @@ namespace CSSPWebAPI.Controllers
             }
         }
         // DELETE api/contact
-        [Route("")]
-        public IActionResult Delete([FromBody]Contact contact, [FromQuery]string lang = "en")
+        [HttpDelete]
+        public IActionResult Delete(Contact contact, string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
-                ContactService contactService = new ContactService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+                ContactService contactService = new ContactService(new Query() { Lang = lang }, db, ContactID);
 
                 if (!contactService.Delete(contact))
                 {

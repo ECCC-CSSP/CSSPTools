@@ -15,7 +15,7 @@ using System.Linq;
 
 namespace CSSPWebAPI.Controllers
 {
-    [Route("api/climateSite")]
+    [Route("api/[controller]")]
     public partial class ClimateSiteController : BaseController
     {
         #region Variables
@@ -25,9 +25,6 @@ namespace CSSPWebAPI.Controllers
         #endregion Properties
 
         #region Constructors
-        public ClimateSiteController() : base()
-        {
-        }
         public ClimateSiteController(DatabaseTypeEnum dbt = DatabaseTypeEnum.SqlServerTestDB) : base(dbt)
         {
         }
@@ -35,9 +32,9 @@ namespace CSSPWebAPI.Controllers
 
         #region Functions public
         // GET api/climateSite
-        [Route("")]
-        public IActionResult GetClimateSiteList([FromQuery]string lang = "en", [FromQuery]int skip = 0, [FromQuery]int take = 200,
-            [FromQuery]string asc = "", [FromQuery]string desc = "", [FromQuery]string where = "")
+        [HttpGet]
+        public IActionResult GetClimateSiteList(string lang = "en", int skip = 0, int take = 200,
+            string asc = "", string desc = "", string where = "")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
@@ -63,12 +60,12 @@ namespace CSSPWebAPI.Controllers
             }
         }
         // GET api/climateSite/1
-        [Route("{ClimateSiteID:int}")]
-        public IActionResult GetClimateSiteWithID([FromQuery]int ClimateSiteID, [FromQuery]string lang = "en")
+        [HttpGet("{ClimateSiteID}")]
+        public IActionResult GetClimateSiteWithID(int ClimateSiteID, string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
-                ClimateSiteService climateSiteService = new ClimateSiteService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+                ClimateSiteService climateSiteService = new ClimateSiteService(new Query() { Lang = lang }, db, ContactID);
 
                 climateSiteService.Query = climateSiteService.FillQuery(typeof(ClimateSite), lang, 0, 1, "", "");
 
@@ -84,12 +81,12 @@ namespace CSSPWebAPI.Controllers
             }
         }
         // POST api/climateSite
-        [Route("")]
-        public IActionResult Post([FromBody]ClimateSite climateSite, [FromQuery]string lang = "en")
+        [HttpPost]
+        public IActionResult Post(ClimateSite climateSite, string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
-                ClimateSiteService climateSiteService = new ClimateSiteService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+                ClimateSiteService climateSiteService = new ClimateSiteService(new Query() { Lang = lang }, db, ContactID);
 
                 if (!climateSiteService.Add(climateSite))
                 {
@@ -103,12 +100,12 @@ namespace CSSPWebAPI.Controllers
             }
         }
         // PUT api/climateSite
-        [Route("")]
-        public IActionResult Put([FromBody]ClimateSite climateSite, [FromQuery]string lang = "en")
+        [HttpPut]
+        public IActionResult Put(ClimateSite climateSite, string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
-                ClimateSiteService climateSiteService = new ClimateSiteService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+                ClimateSiteService climateSiteService = new ClimateSiteService(new Query() { Lang = lang }, db, ContactID);
 
                 if (!climateSiteService.Update(climateSite))
                 {
@@ -122,12 +119,12 @@ namespace CSSPWebAPI.Controllers
             }
         }
         // DELETE api/climateSite
-        [Route("")]
-        public IActionResult Delete([FromBody]ClimateSite climateSite, [FromQuery]string lang = "en")
+        [HttpDelete]
+        public IActionResult Delete(ClimateSite climateSite, string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
-                ClimateSiteService climateSiteService = new ClimateSiteService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+                ClimateSiteService climateSiteService = new ClimateSiteService(new Query() { Lang = lang }, db, ContactID);
 
                 if (!climateSiteService.Delete(climateSite))
                 {

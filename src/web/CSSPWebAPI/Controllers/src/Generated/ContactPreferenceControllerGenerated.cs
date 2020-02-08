@@ -15,7 +15,7 @@ using System.Linq;
 
 namespace CSSPWebAPI.Controllers
 {
-    [Route("api/contactPreference")]
+    [Route("api/[controller]")]
     public partial class ContactPreferenceController : BaseController
     {
         #region Variables
@@ -25,9 +25,6 @@ namespace CSSPWebAPI.Controllers
         #endregion Properties
 
         #region Constructors
-        public ContactPreferenceController() : base()
-        {
-        }
         public ContactPreferenceController(DatabaseTypeEnum dbt = DatabaseTypeEnum.SqlServerTestDB) : base(dbt)
         {
         }
@@ -35,9 +32,9 @@ namespace CSSPWebAPI.Controllers
 
         #region Functions public
         // GET api/contactPreference
-        [Route("")]
-        public IActionResult GetContactPreferenceList([FromQuery]string lang = "en", [FromQuery]int skip = 0, [FromQuery]int take = 200,
-            [FromQuery]string asc = "", [FromQuery]string desc = "", [FromQuery]string where = "")
+        [HttpGet]
+        public IActionResult GetContactPreferenceList(string lang = "en", int skip = 0, int take = 200,
+            string asc = "", string desc = "", string where = "")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
@@ -63,12 +60,12 @@ namespace CSSPWebAPI.Controllers
             }
         }
         // GET api/contactPreference/1
-        [Route("{ContactPreferenceID:int}")]
-        public IActionResult GetContactPreferenceWithID([FromQuery]int ContactPreferenceID, [FromQuery]string lang = "en")
+        [HttpGet("{ContactPreferenceID}")]
+        public IActionResult GetContactPreferenceWithID(int ContactPreferenceID, string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
-                ContactPreferenceService contactPreferenceService = new ContactPreferenceService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+                ContactPreferenceService contactPreferenceService = new ContactPreferenceService(new Query() { Lang = lang }, db, ContactID);
 
                 contactPreferenceService.Query = contactPreferenceService.FillQuery(typeof(ContactPreference), lang, 0, 1, "", "");
 
@@ -84,12 +81,12 @@ namespace CSSPWebAPI.Controllers
             }
         }
         // POST api/contactPreference
-        [Route("")]
-        public IActionResult Post([FromBody]ContactPreference contactPreference, [FromQuery]string lang = "en")
+        [HttpPost]
+        public IActionResult Post(ContactPreference contactPreference, string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
-                ContactPreferenceService contactPreferenceService = new ContactPreferenceService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+                ContactPreferenceService contactPreferenceService = new ContactPreferenceService(new Query() { Lang = lang }, db, ContactID);
 
                 if (!contactPreferenceService.Add(contactPreference))
                 {
@@ -103,12 +100,12 @@ namespace CSSPWebAPI.Controllers
             }
         }
         // PUT api/contactPreference
-        [Route("")]
-        public IActionResult Put([FromBody]ContactPreference contactPreference, [FromQuery]string lang = "en")
+        [HttpPut]
+        public IActionResult Put(ContactPreference contactPreference, string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
-                ContactPreferenceService contactPreferenceService = new ContactPreferenceService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+                ContactPreferenceService contactPreferenceService = new ContactPreferenceService(new Query() { Lang = lang }, db, ContactID);
 
                 if (!contactPreferenceService.Update(contactPreference))
                 {
@@ -122,12 +119,12 @@ namespace CSSPWebAPI.Controllers
             }
         }
         // DELETE api/contactPreference
-        [Route("")]
-        public IActionResult Delete([FromBody]ContactPreference contactPreference, [FromQuery]string lang = "en")
+        [HttpDelete]
+        public IActionResult Delete(ContactPreference contactPreference, string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
-                ContactPreferenceService contactPreferenceService = new ContactPreferenceService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+                ContactPreferenceService contactPreferenceService = new ContactPreferenceService(new Query() { Lang = lang }, db, ContactID);
 
                 if (!contactPreferenceService.Delete(contactPreference))
                 {

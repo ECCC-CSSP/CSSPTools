@@ -15,7 +15,7 @@ using System.Linq;
 
 namespace CSSPWebAPI.Controllers
 {
-    [Route("api/mwqmSampleLanguage")]
+    [Route("api/[controller]")]
     public partial class MWQMSampleLanguageController : BaseController
     {
         #region Variables
@@ -25,9 +25,6 @@ namespace CSSPWebAPI.Controllers
         #endregion Properties
 
         #region Constructors
-        public MWQMSampleLanguageController() : base()
-        {
-        }
         public MWQMSampleLanguageController(DatabaseTypeEnum dbt = DatabaseTypeEnum.SqlServerTestDB) : base(dbt)
         {
         }
@@ -35,9 +32,9 @@ namespace CSSPWebAPI.Controllers
 
         #region Functions public
         // GET api/mwqmSampleLanguage
-        [Route("")]
-        public IActionResult GetMWQMSampleLanguageList([FromQuery]string lang = "en", [FromQuery]int skip = 0, [FromQuery]int take = 200,
-            [FromQuery]string asc = "", [FromQuery]string desc = "", [FromQuery]string where = "")
+        [HttpGet]
+        public IActionResult GetMWQMSampleLanguageList(string lang = "en", int skip = 0, int take = 200,
+            string asc = "", string desc = "", string where = "")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
@@ -63,12 +60,12 @@ namespace CSSPWebAPI.Controllers
             }
         }
         // GET api/mwqmSampleLanguage/1
-        [Route("{MWQMSampleLanguageID:int}")]
-        public IActionResult GetMWQMSampleLanguageWithID([FromQuery]int MWQMSampleLanguageID, [FromQuery]string lang = "en")
+        [HttpGet("{MWQMSampleLanguageID}")]
+        public IActionResult GetMWQMSampleLanguageWithID(int MWQMSampleLanguageID, string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
-                MWQMSampleLanguageService mwqmSampleLanguageService = new MWQMSampleLanguageService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+                MWQMSampleLanguageService mwqmSampleLanguageService = new MWQMSampleLanguageService(new Query() { Lang = lang }, db, ContactID);
 
                 mwqmSampleLanguageService.Query = mwqmSampleLanguageService.FillQuery(typeof(MWQMSampleLanguage), lang, 0, 1, "", "");
 
@@ -84,12 +81,12 @@ namespace CSSPWebAPI.Controllers
             }
         }
         // POST api/mwqmSampleLanguage
-        [Route("")]
-        public IActionResult Post([FromBody]MWQMSampleLanguage mwqmSampleLanguage, [FromQuery]string lang = "en")
+        [HttpPost]
+        public IActionResult Post(MWQMSampleLanguage mwqmSampleLanguage, string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
-                MWQMSampleLanguageService mwqmSampleLanguageService = new MWQMSampleLanguageService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+                MWQMSampleLanguageService mwqmSampleLanguageService = new MWQMSampleLanguageService(new Query() { Lang = lang }, db, ContactID);
 
                 if (!mwqmSampleLanguageService.Add(mwqmSampleLanguage))
                 {
@@ -103,12 +100,12 @@ namespace CSSPWebAPI.Controllers
             }
         }
         // PUT api/mwqmSampleLanguage
-        [Route("")]
-        public IActionResult Put([FromBody]MWQMSampleLanguage mwqmSampleLanguage, [FromQuery]string lang = "en")
+        [HttpPut]
+        public IActionResult Put(MWQMSampleLanguage mwqmSampleLanguage, string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
-                MWQMSampleLanguageService mwqmSampleLanguageService = new MWQMSampleLanguageService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+                MWQMSampleLanguageService mwqmSampleLanguageService = new MWQMSampleLanguageService(new Query() { Lang = lang }, db, ContactID);
 
                 if (!mwqmSampleLanguageService.Update(mwqmSampleLanguage))
                 {
@@ -122,12 +119,12 @@ namespace CSSPWebAPI.Controllers
             }
         }
         // DELETE api/mwqmSampleLanguage
-        [Route("")]
-        public IActionResult Delete([FromBody]MWQMSampleLanguage mwqmSampleLanguage, [FromQuery]string lang = "en")
+        [HttpDelete]
+        public IActionResult Delete(MWQMSampleLanguage mwqmSampleLanguage, string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
-                MWQMSampleLanguageService mwqmSampleLanguageService = new MWQMSampleLanguageService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+                MWQMSampleLanguageService mwqmSampleLanguageService = new MWQMSampleLanguageService(new Query() { Lang = lang }, db, ContactID);
 
                 if (!mwqmSampleLanguageService.Delete(mwqmSampleLanguage))
                 {

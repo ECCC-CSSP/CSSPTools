@@ -15,7 +15,7 @@ using System.Linq;
 
 namespace CSSPWebAPI.Controllers
 {
-    [Route("api/vpScenarioLanguage")]
+    [Route("api/[controller]")]
     public partial class VPScenarioLanguageController : BaseController
     {
         #region Variables
@@ -25,9 +25,6 @@ namespace CSSPWebAPI.Controllers
         #endregion Properties
 
         #region Constructors
-        public VPScenarioLanguageController() : base()
-        {
-        }
         public VPScenarioLanguageController(DatabaseTypeEnum dbt = DatabaseTypeEnum.SqlServerTestDB) : base(dbt)
         {
         }
@@ -35,9 +32,9 @@ namespace CSSPWebAPI.Controllers
 
         #region Functions public
         // GET api/vpScenarioLanguage
-        [Route("")]
-        public IActionResult GetVPScenarioLanguageList([FromQuery]string lang = "en", [FromQuery]int skip = 0, [FromQuery]int take = 200,
-            [FromQuery]string asc = "", [FromQuery]string desc = "", [FromQuery]string where = "")
+        [HttpGet]
+        public IActionResult GetVPScenarioLanguageList(string lang = "en", int skip = 0, int take = 200,
+            string asc = "", string desc = "", string where = "")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
@@ -63,12 +60,12 @@ namespace CSSPWebAPI.Controllers
             }
         }
         // GET api/vpScenarioLanguage/1
-        [Route("{VPScenarioLanguageID:int}")]
-        public IActionResult GetVPScenarioLanguageWithID([FromQuery]int VPScenarioLanguageID, [FromQuery]string lang = "en")
+        [HttpGet("{VPScenarioLanguageID}")]
+        public IActionResult GetVPScenarioLanguageWithID(int VPScenarioLanguageID, string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
-                VPScenarioLanguageService vpScenarioLanguageService = new VPScenarioLanguageService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+                VPScenarioLanguageService vpScenarioLanguageService = new VPScenarioLanguageService(new Query() { Lang = lang }, db, ContactID);
 
                 vpScenarioLanguageService.Query = vpScenarioLanguageService.FillQuery(typeof(VPScenarioLanguage), lang, 0, 1, "", "");
 
@@ -84,12 +81,12 @@ namespace CSSPWebAPI.Controllers
             }
         }
         // POST api/vpScenarioLanguage
-        [Route("")]
-        public IActionResult Post([FromBody]VPScenarioLanguage vpScenarioLanguage, [FromQuery]string lang = "en")
+        [HttpPost]
+        public IActionResult Post(VPScenarioLanguage vpScenarioLanguage, string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
-                VPScenarioLanguageService vpScenarioLanguageService = new VPScenarioLanguageService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+                VPScenarioLanguageService vpScenarioLanguageService = new VPScenarioLanguageService(new Query() { Lang = lang }, db, ContactID);
 
                 if (!vpScenarioLanguageService.Add(vpScenarioLanguage))
                 {
@@ -103,12 +100,12 @@ namespace CSSPWebAPI.Controllers
             }
         }
         // PUT api/vpScenarioLanguage
-        [Route("")]
-        public IActionResult Put([FromBody]VPScenarioLanguage vpScenarioLanguage, [FromQuery]string lang = "en")
+        [HttpPut]
+        public IActionResult Put(VPScenarioLanguage vpScenarioLanguage, string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
-                VPScenarioLanguageService vpScenarioLanguageService = new VPScenarioLanguageService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+                VPScenarioLanguageService vpScenarioLanguageService = new VPScenarioLanguageService(new Query() { Lang = lang }, db, ContactID);
 
                 if (!vpScenarioLanguageService.Update(vpScenarioLanguage))
                 {
@@ -122,12 +119,12 @@ namespace CSSPWebAPI.Controllers
             }
         }
         // DELETE api/vpScenarioLanguage
-        [Route("")]
-        public IActionResult Delete([FromBody]VPScenarioLanguage vpScenarioLanguage, [FromQuery]string lang = "en")
+        [HttpDelete]
+        public IActionResult Delete(VPScenarioLanguage vpScenarioLanguage, string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
-                VPScenarioLanguageService vpScenarioLanguageService = new VPScenarioLanguageService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+                VPScenarioLanguageService vpScenarioLanguageService = new VPScenarioLanguageService(new Query() { Lang = lang }, db, ContactID);
 
                 if (!vpScenarioLanguageService.Delete(vpScenarioLanguage))
                 {

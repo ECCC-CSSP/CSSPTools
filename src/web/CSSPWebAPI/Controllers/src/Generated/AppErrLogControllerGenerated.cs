@@ -15,7 +15,7 @@ using System.Linq;
 
 namespace CSSPWebAPI.Controllers
 {
-    [Route("api/appErrLog")]
+    [Route("api/[controller]")]
     public partial class AppErrLogController : BaseController
     {
         #region Variables
@@ -25,9 +25,6 @@ namespace CSSPWebAPI.Controllers
         #endregion Properties
 
         #region Constructors
-        public AppErrLogController() : base()
-        {
-        }
         public AppErrLogController(DatabaseTypeEnum dbt = DatabaseTypeEnum.SqlServerTestDB) : base(dbt)
         {
         }
@@ -35,9 +32,9 @@ namespace CSSPWebAPI.Controllers
 
         #region Functions public
         // GET api/appErrLog
-        [Route("")]
-        public IActionResult GetAppErrLogList([FromQuery]string lang = "en", [FromQuery]int skip = 0, [FromQuery]int take = 200,
-            [FromQuery]string asc = "", [FromQuery]string desc = "", [FromQuery]string where = "")
+        [HttpGet]
+        public IActionResult GetAppErrLogList(string lang = "en", int skip = 0, int take = 200,
+            string asc = "", string desc = "", string where = "")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
@@ -63,12 +60,12 @@ namespace CSSPWebAPI.Controllers
             }
         }
         // GET api/appErrLog/1
-        [Route("{AppErrLogID:int}")]
-        public IActionResult GetAppErrLogWithID([FromQuery]int AppErrLogID, [FromQuery]string lang = "en")
+        [HttpGet("{AppErrLogID}")]
+        public IActionResult GetAppErrLogWithID(int AppErrLogID, string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
-                AppErrLogService appErrLogService = new AppErrLogService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+                AppErrLogService appErrLogService = new AppErrLogService(new Query() { Lang = lang }, db, ContactID);
 
                 appErrLogService.Query = appErrLogService.FillQuery(typeof(AppErrLog), lang, 0, 1, "", "");
 
@@ -84,12 +81,12 @@ namespace CSSPWebAPI.Controllers
             }
         }
         // POST api/appErrLog
-        [Route("")]
-        public IActionResult Post([FromBody]AppErrLog appErrLog, [FromQuery]string lang = "en")
+        [HttpPost]
+        public IActionResult Post(AppErrLog appErrLog, string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
-                AppErrLogService appErrLogService = new AppErrLogService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+                AppErrLogService appErrLogService = new AppErrLogService(new Query() { Lang = lang }, db, ContactID);
 
                 if (!appErrLogService.Add(appErrLog))
                 {
@@ -103,12 +100,12 @@ namespace CSSPWebAPI.Controllers
             }
         }
         // PUT api/appErrLog
-        [Route("")]
-        public IActionResult Put([FromBody]AppErrLog appErrLog, [FromQuery]string lang = "en")
+        [HttpPut]
+        public IActionResult Put(AppErrLog appErrLog, string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
-                AppErrLogService appErrLogService = new AppErrLogService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+                AppErrLogService appErrLogService = new AppErrLogService(new Query() { Lang = lang }, db, ContactID);
 
                 if (!appErrLogService.Update(appErrLog))
                 {
@@ -122,12 +119,12 @@ namespace CSSPWebAPI.Controllers
             }
         }
         // DELETE api/appErrLog
-        [Route("")]
-        public IActionResult Delete([FromBody]AppErrLog appErrLog, [FromQuery]string lang = "en")
+        [HttpDelete]
+        public IActionResult Delete(AppErrLog appErrLog, string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
-                AppErrLogService appErrLogService = new AppErrLogService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+                AppErrLogService appErrLogService = new AppErrLogService(new Query() { Lang = lang }, db, ContactID);
 
                 if (!appErrLogService.Delete(appErrLog))
                 {

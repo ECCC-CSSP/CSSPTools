@@ -15,7 +15,7 @@ using System.Linq;
 
 namespace CSSPWebAPI.Controllers
 {
-    [Route("api/samplingPlanSubsector")]
+    [Route("api/[controller]")]
     public partial class SamplingPlanSubsectorController : BaseController
     {
         #region Variables
@@ -25,9 +25,6 @@ namespace CSSPWebAPI.Controllers
         #endregion Properties
 
         #region Constructors
-        public SamplingPlanSubsectorController() : base()
-        {
-        }
         public SamplingPlanSubsectorController(DatabaseTypeEnum dbt = DatabaseTypeEnum.SqlServerTestDB) : base(dbt)
         {
         }
@@ -35,9 +32,9 @@ namespace CSSPWebAPI.Controllers
 
         #region Functions public
         // GET api/samplingPlanSubsector
-        [Route("")]
-        public IActionResult GetSamplingPlanSubsectorList([FromQuery]string lang = "en", [FromQuery]int skip = 0, [FromQuery]int take = 200,
-            [FromQuery]string asc = "", [FromQuery]string desc = "", [FromQuery]string where = "")
+        [HttpGet]
+        public IActionResult GetSamplingPlanSubsectorList(string lang = "en", int skip = 0, int take = 200,
+            string asc = "", string desc = "", string where = "")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
@@ -63,12 +60,12 @@ namespace CSSPWebAPI.Controllers
             }
         }
         // GET api/samplingPlanSubsector/1
-        [Route("{SamplingPlanSubsectorID:int}")]
-        public IActionResult GetSamplingPlanSubsectorWithID([FromQuery]int SamplingPlanSubsectorID, [FromQuery]string lang = "en")
+        [HttpGet("{SamplingPlanSubsectorID}")]
+        public IActionResult GetSamplingPlanSubsectorWithID(int SamplingPlanSubsectorID, string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
-                SamplingPlanSubsectorService samplingPlanSubsectorService = new SamplingPlanSubsectorService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+                SamplingPlanSubsectorService samplingPlanSubsectorService = new SamplingPlanSubsectorService(new Query() { Lang = lang }, db, ContactID);
 
                 samplingPlanSubsectorService.Query = samplingPlanSubsectorService.FillQuery(typeof(SamplingPlanSubsector), lang, 0, 1, "", "");
 
@@ -84,12 +81,12 @@ namespace CSSPWebAPI.Controllers
             }
         }
         // POST api/samplingPlanSubsector
-        [Route("")]
-        public IActionResult Post([FromBody]SamplingPlanSubsector samplingPlanSubsector, [FromQuery]string lang = "en")
+        [HttpPost]
+        public IActionResult Post(SamplingPlanSubsector samplingPlanSubsector, string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
-                SamplingPlanSubsectorService samplingPlanSubsectorService = new SamplingPlanSubsectorService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+                SamplingPlanSubsectorService samplingPlanSubsectorService = new SamplingPlanSubsectorService(new Query() { Lang = lang }, db, ContactID);
 
                 if (!samplingPlanSubsectorService.Add(samplingPlanSubsector))
                 {
@@ -103,12 +100,12 @@ namespace CSSPWebAPI.Controllers
             }
         }
         // PUT api/samplingPlanSubsector
-        [Route("")]
-        public IActionResult Put([FromBody]SamplingPlanSubsector samplingPlanSubsector, [FromQuery]string lang = "en")
+        [HttpPut]
+        public IActionResult Put(SamplingPlanSubsector samplingPlanSubsector, string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
-                SamplingPlanSubsectorService samplingPlanSubsectorService = new SamplingPlanSubsectorService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+                SamplingPlanSubsectorService samplingPlanSubsectorService = new SamplingPlanSubsectorService(new Query() { Lang = lang }, db, ContactID);
 
                 if (!samplingPlanSubsectorService.Update(samplingPlanSubsector))
                 {
@@ -122,12 +119,12 @@ namespace CSSPWebAPI.Controllers
             }
         }
         // DELETE api/samplingPlanSubsector
-        [Route("")]
-        public IActionResult Delete([FromBody]SamplingPlanSubsector samplingPlanSubsector, [FromQuery]string lang = "en")
+        [HttpDelete]
+        public IActionResult Delete(SamplingPlanSubsector samplingPlanSubsector, string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
-                SamplingPlanSubsectorService samplingPlanSubsectorService = new SamplingPlanSubsectorService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+                SamplingPlanSubsectorService samplingPlanSubsectorService = new SamplingPlanSubsectorService(new Query() { Lang = lang }, db, ContactID);
 
                 if (!samplingPlanSubsectorService.Delete(samplingPlanSubsector))
                 {

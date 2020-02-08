@@ -15,7 +15,7 @@ using System.Linq;
 
 namespace CSSPWebAPI.Controllers
 {
-    [Route("api/useOfSite")]
+    [Route("api/[controller]")]
     public partial class UseOfSiteController : BaseController
     {
         #region Variables
@@ -25,9 +25,6 @@ namespace CSSPWebAPI.Controllers
         #endregion Properties
 
         #region Constructors
-        public UseOfSiteController() : base()
-        {
-        }
         public UseOfSiteController(DatabaseTypeEnum dbt = DatabaseTypeEnum.SqlServerTestDB) : base(dbt)
         {
         }
@@ -35,9 +32,9 @@ namespace CSSPWebAPI.Controllers
 
         #region Functions public
         // GET api/useOfSite
-        [Route("")]
-        public IActionResult GetUseOfSiteList([FromQuery]string lang = "en", [FromQuery]int skip = 0, [FromQuery]int take = 200,
-            [FromQuery]string asc = "", [FromQuery]string desc = "", [FromQuery]string where = "")
+        [HttpGet]
+        public IActionResult GetUseOfSiteList(string lang = "en", int skip = 0, int take = 200,
+            string asc = "", string desc = "", string where = "")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
@@ -63,12 +60,12 @@ namespace CSSPWebAPI.Controllers
             }
         }
         // GET api/useOfSite/1
-        [Route("{UseOfSiteID:int}")]
-        public IActionResult GetUseOfSiteWithID([FromQuery]int UseOfSiteID, [FromQuery]string lang = "en")
+        [HttpGet("{UseOfSiteID}")]
+        public IActionResult GetUseOfSiteWithID(int UseOfSiteID, string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
-                UseOfSiteService useOfSiteService = new UseOfSiteService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+                UseOfSiteService useOfSiteService = new UseOfSiteService(new Query() { Lang = lang }, db, ContactID);
 
                 useOfSiteService.Query = useOfSiteService.FillQuery(typeof(UseOfSite), lang, 0, 1, "", "");
 
@@ -84,12 +81,12 @@ namespace CSSPWebAPI.Controllers
             }
         }
         // POST api/useOfSite
-        [Route("")]
-        public IActionResult Post([FromBody]UseOfSite useOfSite, [FromQuery]string lang = "en")
+        [HttpPost]
+        public IActionResult Post(UseOfSite useOfSite, string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
-                UseOfSiteService useOfSiteService = new UseOfSiteService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+                UseOfSiteService useOfSiteService = new UseOfSiteService(new Query() { Lang = lang }, db, ContactID);
 
                 if (!useOfSiteService.Add(useOfSite))
                 {
@@ -103,12 +100,12 @@ namespace CSSPWebAPI.Controllers
             }
         }
         // PUT api/useOfSite
-        [Route("")]
-        public IActionResult Put([FromBody]UseOfSite useOfSite, [FromQuery]string lang = "en")
+        [HttpPut]
+        public IActionResult Put(UseOfSite useOfSite, string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
-                UseOfSiteService useOfSiteService = new UseOfSiteService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+                UseOfSiteService useOfSiteService = new UseOfSiteService(new Query() { Lang = lang }, db, ContactID);
 
                 if (!useOfSiteService.Update(useOfSite))
                 {
@@ -122,12 +119,12 @@ namespace CSSPWebAPI.Controllers
             }
         }
         // DELETE api/useOfSite
-        [Route("")]
-        public IActionResult Delete([FromBody]UseOfSite useOfSite, [FromQuery]string lang = "en")
+        [HttpDelete]
+        public IActionResult Delete(UseOfSite useOfSite, string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
-                UseOfSiteService useOfSiteService = new UseOfSiteService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+                UseOfSiteService useOfSiteService = new UseOfSiteService(new Query() { Lang = lang }, db, ContactID);
 
                 if (!useOfSiteService.Delete(useOfSite))
                 {

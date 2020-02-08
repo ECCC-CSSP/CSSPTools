@@ -15,7 +15,7 @@ using System.Linq;
 
 namespace CSSPWebAPI.Controllers
 {
-    [Route("api/email")]
+    [Route("api/[controller]")]
     public partial class EmailController : BaseController
     {
         #region Variables
@@ -25,9 +25,6 @@ namespace CSSPWebAPI.Controllers
         #endregion Properties
 
         #region Constructors
-        public EmailController() : base()
-        {
-        }
         public EmailController(DatabaseTypeEnum dbt = DatabaseTypeEnum.SqlServerTestDB) : base(dbt)
         {
         }
@@ -35,9 +32,9 @@ namespace CSSPWebAPI.Controllers
 
         #region Functions public
         // GET api/email
-        [Route("")]
-        public IActionResult GetEmailList([FromQuery]string lang = "en", [FromQuery]int skip = 0, [FromQuery]int take = 200,
-            [FromQuery]string asc = "", [FromQuery]string desc = "", [FromQuery]string where = "")
+        [HttpGet]
+        public IActionResult GetEmailList(string lang = "en", int skip = 0, int take = 200,
+            string asc = "", string desc = "", string where = "")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
@@ -63,12 +60,12 @@ namespace CSSPWebAPI.Controllers
             }
         }
         // GET api/email/1
-        [Route("{EmailID:int}")]
-        public IActionResult GetEmailWithID([FromQuery]int EmailID, [FromQuery]string lang = "en")
+        [HttpGet("{EmailID}")]
+        public IActionResult GetEmailWithID(int EmailID, string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
-                EmailService emailService = new EmailService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+                EmailService emailService = new EmailService(new Query() { Lang = lang }, db, ContactID);
 
                 emailService.Query = emailService.FillQuery(typeof(Email), lang, 0, 1, "", "");
 
@@ -84,12 +81,12 @@ namespace CSSPWebAPI.Controllers
             }
         }
         // POST api/email
-        [Route("")]
-        public IActionResult Post([FromBody]Email email, [FromQuery]string lang = "en")
+        [HttpPost]
+        public IActionResult Post(Email email, string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
-                EmailService emailService = new EmailService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+                EmailService emailService = new EmailService(new Query() { Lang = lang }, db, ContactID);
 
                 if (!emailService.Add(email))
                 {
@@ -103,12 +100,12 @@ namespace CSSPWebAPI.Controllers
             }
         }
         // PUT api/email
-        [Route("")]
-        public IActionResult Put([FromBody]Email email, [FromQuery]string lang = "en")
+        [HttpPut]
+        public IActionResult Put(Email email, string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
-                EmailService emailService = new EmailService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+                EmailService emailService = new EmailService(new Query() { Lang = lang }, db, ContactID);
 
                 if (!emailService.Update(email))
                 {
@@ -122,12 +119,12 @@ namespace CSSPWebAPI.Controllers
             }
         }
         // DELETE api/email
-        [Route("")]
-        public IActionResult Delete([FromBody]Email email, [FromQuery]string lang = "en")
+        [HttpDelete]
+        public IActionResult Delete(Email email, string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
-                EmailService emailService = new EmailService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+                EmailService emailService = new EmailService(new Query() { Lang = lang }, db, ContactID);
 
                 if (!emailService.Delete(email))
                 {

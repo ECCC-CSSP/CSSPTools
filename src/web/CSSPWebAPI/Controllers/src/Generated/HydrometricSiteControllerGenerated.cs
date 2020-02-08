@@ -15,7 +15,7 @@ using System.Linq;
 
 namespace CSSPWebAPI.Controllers
 {
-    [Route("api/hydrometricSite")]
+    [Route("api/[controller]")]
     public partial class HydrometricSiteController : BaseController
     {
         #region Variables
@@ -25,9 +25,6 @@ namespace CSSPWebAPI.Controllers
         #endregion Properties
 
         #region Constructors
-        public HydrometricSiteController() : base()
-        {
-        }
         public HydrometricSiteController(DatabaseTypeEnum dbt = DatabaseTypeEnum.SqlServerTestDB) : base(dbt)
         {
         }
@@ -35,9 +32,9 @@ namespace CSSPWebAPI.Controllers
 
         #region Functions public
         // GET api/hydrometricSite
-        [Route("")]
-        public IActionResult GetHydrometricSiteList([FromQuery]string lang = "en", [FromQuery]int skip = 0, [FromQuery]int take = 200,
-            [FromQuery]string asc = "", [FromQuery]string desc = "", [FromQuery]string where = "")
+        [HttpGet]
+        public IActionResult GetHydrometricSiteList(string lang = "en", int skip = 0, int take = 200,
+            string asc = "", string desc = "", string where = "")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
@@ -63,12 +60,12 @@ namespace CSSPWebAPI.Controllers
             }
         }
         // GET api/hydrometricSite/1
-        [Route("{HydrometricSiteID:int}")]
-        public IActionResult GetHydrometricSiteWithID([FromQuery]int HydrometricSiteID, [FromQuery]string lang = "en")
+        [HttpGet("{HydrometricSiteID}")]
+        public IActionResult GetHydrometricSiteWithID(int HydrometricSiteID, string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
-                HydrometricSiteService hydrometricSiteService = new HydrometricSiteService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+                HydrometricSiteService hydrometricSiteService = new HydrometricSiteService(new Query() { Lang = lang }, db, ContactID);
 
                 hydrometricSiteService.Query = hydrometricSiteService.FillQuery(typeof(HydrometricSite), lang, 0, 1, "", "");
 
@@ -84,12 +81,12 @@ namespace CSSPWebAPI.Controllers
             }
         }
         // POST api/hydrometricSite
-        [Route("")]
-        public IActionResult Post([FromBody]HydrometricSite hydrometricSite, [FromQuery]string lang = "en")
+        [HttpPost]
+        public IActionResult Post(HydrometricSite hydrometricSite, string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
-                HydrometricSiteService hydrometricSiteService = new HydrometricSiteService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+                HydrometricSiteService hydrometricSiteService = new HydrometricSiteService(new Query() { Lang = lang }, db, ContactID);
 
                 if (!hydrometricSiteService.Add(hydrometricSite))
                 {
@@ -103,12 +100,12 @@ namespace CSSPWebAPI.Controllers
             }
         }
         // PUT api/hydrometricSite
-        [Route("")]
-        public IActionResult Put([FromBody]HydrometricSite hydrometricSite, [FromQuery]string lang = "en")
+        [HttpPut]
+        public IActionResult Put(HydrometricSite hydrometricSite, string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
-                HydrometricSiteService hydrometricSiteService = new HydrometricSiteService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+                HydrometricSiteService hydrometricSiteService = new HydrometricSiteService(new Query() { Lang = lang }, db, ContactID);
 
                 if (!hydrometricSiteService.Update(hydrometricSite))
                 {
@@ -122,12 +119,12 @@ namespace CSSPWebAPI.Controllers
             }
         }
         // DELETE api/hydrometricSite
-        [Route("")]
-        public IActionResult Delete([FromBody]HydrometricSite hydrometricSite, [FromQuery]string lang = "en")
+        [HttpDelete]
+        public IActionResult Delete(HydrometricSite hydrometricSite, string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
-                HydrometricSiteService hydrometricSiteService = new HydrometricSiteService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+                HydrometricSiteService hydrometricSiteService = new HydrometricSiteService(new Query() { Lang = lang }, db, ContactID);
 
                 if (!hydrometricSiteService.Delete(hydrometricSite))
                 {

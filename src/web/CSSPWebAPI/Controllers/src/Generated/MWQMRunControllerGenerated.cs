@@ -15,7 +15,7 @@ using System.Linq;
 
 namespace CSSPWebAPI.Controllers
 {
-    [Route("api/mwqmRun")]
+    [Route("api/[controller]")]
     public partial class MWQMRunController : BaseController
     {
         #region Variables
@@ -25,9 +25,6 @@ namespace CSSPWebAPI.Controllers
         #endregion Properties
 
         #region Constructors
-        public MWQMRunController() : base()
-        {
-        }
         public MWQMRunController(DatabaseTypeEnum dbt = DatabaseTypeEnum.SqlServerTestDB) : base(dbt)
         {
         }
@@ -35,9 +32,9 @@ namespace CSSPWebAPI.Controllers
 
         #region Functions public
         // GET api/mwqmRun
-        [Route("")]
-        public IActionResult GetMWQMRunList([FromQuery]string lang = "en", [FromQuery]int skip = 0, [FromQuery]int take = 200,
-            [FromQuery]string asc = "", [FromQuery]string desc = "", [FromQuery]string where = "")
+        [HttpGet]
+        public IActionResult GetMWQMRunList(string lang = "en", int skip = 0, int take = 200,
+            string asc = "", string desc = "", string where = "")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
@@ -63,12 +60,12 @@ namespace CSSPWebAPI.Controllers
             }
         }
         // GET api/mwqmRun/1
-        [Route("{MWQMRunID:int}")]
-        public IActionResult GetMWQMRunWithID([FromQuery]int MWQMRunID, [FromQuery]string lang = "en")
+        [HttpGet("{MWQMRunID}")]
+        public IActionResult GetMWQMRunWithID(int MWQMRunID, string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
-                MWQMRunService mwqmRunService = new MWQMRunService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+                MWQMRunService mwqmRunService = new MWQMRunService(new Query() { Lang = lang }, db, ContactID);
 
                 mwqmRunService.Query = mwqmRunService.FillQuery(typeof(MWQMRun), lang, 0, 1, "", "");
 
@@ -84,12 +81,12 @@ namespace CSSPWebAPI.Controllers
             }
         }
         // POST api/mwqmRun
-        [Route("")]
-        public IActionResult Post([FromBody]MWQMRun mwqmRun, [FromQuery]string lang = "en")
+        [HttpPost]
+        public IActionResult Post(MWQMRun mwqmRun, string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
-                MWQMRunService mwqmRunService = new MWQMRunService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+                MWQMRunService mwqmRunService = new MWQMRunService(new Query() { Lang = lang }, db, ContactID);
 
                 if (!mwqmRunService.Add(mwqmRun))
                 {
@@ -103,12 +100,12 @@ namespace CSSPWebAPI.Controllers
             }
         }
         // PUT api/mwqmRun
-        [Route("")]
-        public IActionResult Put([FromBody]MWQMRun mwqmRun, [FromQuery]string lang = "en")
+        [HttpPut]
+        public IActionResult Put(MWQMRun mwqmRun, string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
-                MWQMRunService mwqmRunService = new MWQMRunService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+                MWQMRunService mwqmRunService = new MWQMRunService(new Query() { Lang = lang }, db, ContactID);
 
                 if (!mwqmRunService.Update(mwqmRun))
                 {
@@ -122,12 +119,12 @@ namespace CSSPWebAPI.Controllers
             }
         }
         // DELETE api/mwqmRun
-        [Route("")]
-        public IActionResult Delete([FromBody]MWQMRun mwqmRun, [FromQuery]string lang = "en")
+        [HttpDelete]
+        public IActionResult Delete(MWQMRun mwqmRun, string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
-                MWQMRunService mwqmRunService = new MWQMRunService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+                MWQMRunService mwqmRunService = new MWQMRunService(new Query() { Lang = lang }, db, ContactID);
 
                 if (!mwqmRunService.Delete(mwqmRun))
                 {

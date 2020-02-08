@@ -15,7 +15,7 @@ using System.Linq;
 
 namespace CSSPWebAPI.Controllers
 {
-    [Route("api/contactShortcut")]
+    [Route("api/[controller]")]
     public partial class ContactShortcutController : BaseController
     {
         #region Variables
@@ -25,9 +25,6 @@ namespace CSSPWebAPI.Controllers
         #endregion Properties
 
         #region Constructors
-        public ContactShortcutController() : base()
-        {
-        }
         public ContactShortcutController(DatabaseTypeEnum dbt = DatabaseTypeEnum.SqlServerTestDB) : base(dbt)
         {
         }
@@ -35,9 +32,9 @@ namespace CSSPWebAPI.Controllers
 
         #region Functions public
         // GET api/contactShortcut
-        [Route("")]
-        public IActionResult GetContactShortcutList([FromQuery]string lang = "en", [FromQuery]int skip = 0, [FromQuery]int take = 200,
-            [FromQuery]string asc = "", [FromQuery]string desc = "", [FromQuery]string where = "")
+        [HttpGet]
+        public IActionResult GetContactShortcutList(string lang = "en", int skip = 0, int take = 200,
+            string asc = "", string desc = "", string where = "")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
@@ -63,12 +60,12 @@ namespace CSSPWebAPI.Controllers
             }
         }
         // GET api/contactShortcut/1
-        [Route("{ContactShortcutID:int}")]
-        public IActionResult GetContactShortcutWithID([FromQuery]int ContactShortcutID, [FromQuery]string lang = "en")
+        [HttpGet("{ContactShortcutID}")]
+        public IActionResult GetContactShortcutWithID(int ContactShortcutID, string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
-                ContactShortcutService contactShortcutService = new ContactShortcutService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+                ContactShortcutService contactShortcutService = new ContactShortcutService(new Query() { Lang = lang }, db, ContactID);
 
                 contactShortcutService.Query = contactShortcutService.FillQuery(typeof(ContactShortcut), lang, 0, 1, "", "");
 
@@ -84,12 +81,12 @@ namespace CSSPWebAPI.Controllers
             }
         }
         // POST api/contactShortcut
-        [Route("")]
-        public IActionResult Post([FromBody]ContactShortcut contactShortcut, [FromQuery]string lang = "en")
+        [HttpPost]
+        public IActionResult Post(ContactShortcut contactShortcut, string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
-                ContactShortcutService contactShortcutService = new ContactShortcutService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+                ContactShortcutService contactShortcutService = new ContactShortcutService(new Query() { Lang = lang }, db, ContactID);
 
                 if (!contactShortcutService.Add(contactShortcut))
                 {
@@ -103,12 +100,12 @@ namespace CSSPWebAPI.Controllers
             }
         }
         // PUT api/contactShortcut
-        [Route("")]
-        public IActionResult Put([FromBody]ContactShortcut contactShortcut, [FromQuery]string lang = "en")
+        [HttpPut]
+        public IActionResult Put(ContactShortcut contactShortcut, string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
-                ContactShortcutService contactShortcutService = new ContactShortcutService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+                ContactShortcutService contactShortcutService = new ContactShortcutService(new Query() { Lang = lang }, db, ContactID);
 
                 if (!contactShortcutService.Update(contactShortcut))
                 {
@@ -122,12 +119,12 @@ namespace CSSPWebAPI.Controllers
             }
         }
         // DELETE api/contactShortcut
-        [Route("")]
-        public IActionResult Delete([FromBody]ContactShortcut contactShortcut, [FromQuery]string lang = "en")
+        [HttpDelete]
+        public IActionResult Delete(ContactShortcut contactShortcut, string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
-                ContactShortcutService contactShortcutService = new ContactShortcutService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+                ContactShortcutService contactShortcutService = new ContactShortcutService(new Query() { Lang = lang }, db, ContactID);
 
                 if (!contactShortcutService.Delete(contactShortcut))
                 {

@@ -15,7 +15,7 @@ using System.Linq;
 
 namespace CSSPWebAPI.Controllers
 {
-    [Route("api/polSourceSiteEffect")]
+    [Route("api/[controller]")]
     public partial class PolSourceSiteEffectController : BaseController
     {
         #region Variables
@@ -25,9 +25,6 @@ namespace CSSPWebAPI.Controllers
         #endregion Properties
 
         #region Constructors
-        public PolSourceSiteEffectController() : base()
-        {
-        }
         public PolSourceSiteEffectController(DatabaseTypeEnum dbt = DatabaseTypeEnum.SqlServerTestDB) : base(dbt)
         {
         }
@@ -35,9 +32,9 @@ namespace CSSPWebAPI.Controllers
 
         #region Functions public
         // GET api/polSourceSiteEffect
-        [Route("")]
-        public IActionResult GetPolSourceSiteEffectList([FromQuery]string lang = "en", [FromQuery]int skip = 0, [FromQuery]int take = 200,
-            [FromQuery]string asc = "", [FromQuery]string desc = "", [FromQuery]string where = "")
+        [HttpGet]
+        public IActionResult GetPolSourceSiteEffectList(string lang = "en", int skip = 0, int take = 200,
+            string asc = "", string desc = "", string where = "")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
@@ -63,12 +60,12 @@ namespace CSSPWebAPI.Controllers
             }
         }
         // GET api/polSourceSiteEffect/1
-        [Route("{PolSourceSiteEffectID:int}")]
-        public IActionResult GetPolSourceSiteEffectWithID([FromQuery]int PolSourceSiteEffectID, [FromQuery]string lang = "en")
+        [HttpGet("{PolSourceSiteEffectID}")]
+        public IActionResult GetPolSourceSiteEffectWithID(int PolSourceSiteEffectID, string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
-                PolSourceSiteEffectService polSourceSiteEffectService = new PolSourceSiteEffectService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+                PolSourceSiteEffectService polSourceSiteEffectService = new PolSourceSiteEffectService(new Query() { Lang = lang }, db, ContactID);
 
                 polSourceSiteEffectService.Query = polSourceSiteEffectService.FillQuery(typeof(PolSourceSiteEffect), lang, 0, 1, "", "");
 
@@ -84,12 +81,12 @@ namespace CSSPWebAPI.Controllers
             }
         }
         // POST api/polSourceSiteEffect
-        [Route("")]
-        public IActionResult Post([FromBody]PolSourceSiteEffect polSourceSiteEffect, [FromQuery]string lang = "en")
+        [HttpPost]
+        public IActionResult Post(PolSourceSiteEffect polSourceSiteEffect, string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
-                PolSourceSiteEffectService polSourceSiteEffectService = new PolSourceSiteEffectService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+                PolSourceSiteEffectService polSourceSiteEffectService = new PolSourceSiteEffectService(new Query() { Lang = lang }, db, ContactID);
 
                 if (!polSourceSiteEffectService.Add(polSourceSiteEffect))
                 {
@@ -103,12 +100,12 @@ namespace CSSPWebAPI.Controllers
             }
         }
         // PUT api/polSourceSiteEffect
-        [Route("")]
-        public IActionResult Put([FromBody]PolSourceSiteEffect polSourceSiteEffect, [FromQuery]string lang = "en")
+        [HttpPut]
+        public IActionResult Put(PolSourceSiteEffect polSourceSiteEffect, string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
-                PolSourceSiteEffectService polSourceSiteEffectService = new PolSourceSiteEffectService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+                PolSourceSiteEffectService polSourceSiteEffectService = new PolSourceSiteEffectService(new Query() { Lang = lang }, db, ContactID);
 
                 if (!polSourceSiteEffectService.Update(polSourceSiteEffect))
                 {
@@ -122,12 +119,12 @@ namespace CSSPWebAPI.Controllers
             }
         }
         // DELETE api/polSourceSiteEffect
-        [Route("")]
-        public IActionResult Delete([FromBody]PolSourceSiteEffect polSourceSiteEffect, [FromQuery]string lang = "en")
+        [HttpDelete]
+        public IActionResult Delete(PolSourceSiteEffect polSourceSiteEffect, string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
-                PolSourceSiteEffectService polSourceSiteEffectService = new PolSourceSiteEffectService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+                PolSourceSiteEffectService polSourceSiteEffectService = new PolSourceSiteEffectService(new Query() { Lang = lang }, db, ContactID);
 
                 if (!polSourceSiteEffectService.Delete(polSourceSiteEffect))
                 {

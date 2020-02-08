@@ -15,7 +15,7 @@ using System.Linq;
 
 namespace CSSPWebAPI.Controllers
 {
-    [Route("api/tvFileLanguage")]
+    [Route("api/[controller]")]
     public partial class TVFileLanguageController : BaseController
     {
         #region Variables
@@ -25,9 +25,6 @@ namespace CSSPWebAPI.Controllers
         #endregion Properties
 
         #region Constructors
-        public TVFileLanguageController() : base()
-        {
-        }
         public TVFileLanguageController(DatabaseTypeEnum dbt = DatabaseTypeEnum.SqlServerTestDB) : base(dbt)
         {
         }
@@ -35,9 +32,9 @@ namespace CSSPWebAPI.Controllers
 
         #region Functions public
         // GET api/tvFileLanguage
-        [Route("")]
-        public IActionResult GetTVFileLanguageList([FromQuery]string lang = "en", [FromQuery]int skip = 0, [FromQuery]int take = 200,
-            [FromQuery]string asc = "", [FromQuery]string desc = "", [FromQuery]string where = "")
+        [HttpGet]
+        public IActionResult GetTVFileLanguageList(string lang = "en", int skip = 0, int take = 200,
+            string asc = "", string desc = "", string where = "")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
@@ -63,12 +60,12 @@ namespace CSSPWebAPI.Controllers
             }
         }
         // GET api/tvFileLanguage/1
-        [Route("{TVFileLanguageID:int}")]
-        public IActionResult GetTVFileLanguageWithID([FromQuery]int TVFileLanguageID, [FromQuery]string lang = "en")
+        [HttpGet("{TVFileLanguageID}")]
+        public IActionResult GetTVFileLanguageWithID(int TVFileLanguageID, string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
-                TVFileLanguageService tvFileLanguageService = new TVFileLanguageService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+                TVFileLanguageService tvFileLanguageService = new TVFileLanguageService(new Query() { Lang = lang }, db, ContactID);
 
                 tvFileLanguageService.Query = tvFileLanguageService.FillQuery(typeof(TVFileLanguage), lang, 0, 1, "", "");
 
@@ -84,12 +81,12 @@ namespace CSSPWebAPI.Controllers
             }
         }
         // POST api/tvFileLanguage
-        [Route("")]
-        public IActionResult Post([FromBody]TVFileLanguage tvFileLanguage, [FromQuery]string lang = "en")
+        [HttpPost]
+        public IActionResult Post(TVFileLanguage tvFileLanguage, string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
-                TVFileLanguageService tvFileLanguageService = new TVFileLanguageService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+                TVFileLanguageService tvFileLanguageService = new TVFileLanguageService(new Query() { Lang = lang }, db, ContactID);
 
                 if (!tvFileLanguageService.Add(tvFileLanguage))
                 {
@@ -103,12 +100,12 @@ namespace CSSPWebAPI.Controllers
             }
         }
         // PUT api/tvFileLanguage
-        [Route("")]
-        public IActionResult Put([FromBody]TVFileLanguage tvFileLanguage, [FromQuery]string lang = "en")
+        [HttpPut]
+        public IActionResult Put(TVFileLanguage tvFileLanguage, string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
-                TVFileLanguageService tvFileLanguageService = new TVFileLanguageService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+                TVFileLanguageService tvFileLanguageService = new TVFileLanguageService(new Query() { Lang = lang }, db, ContactID);
 
                 if (!tvFileLanguageService.Update(tvFileLanguage))
                 {
@@ -122,12 +119,12 @@ namespace CSSPWebAPI.Controllers
             }
         }
         // DELETE api/tvFileLanguage
-        [Route("")]
-        public IActionResult Delete([FromBody]TVFileLanguage tvFileLanguage, [FromQuery]string lang = "en")
+        [HttpDelete]
+        public IActionResult Delete(TVFileLanguage tvFileLanguage, string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
-                TVFileLanguageService tvFileLanguageService = new TVFileLanguageService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+                TVFileLanguageService tvFileLanguageService = new TVFileLanguageService(new Query() { Lang = lang }, db, ContactID);
 
                 if (!tvFileLanguageService.Delete(tvFileLanguage))
                 {

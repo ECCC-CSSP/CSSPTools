@@ -15,7 +15,7 @@ using System.Linq;
 
 namespace CSSPWebAPI.Controllers
 {
-    [Route("api/labSheetTubeMPNDetail")]
+    [Route("api/[controller]")]
     public partial class LabSheetTubeMPNDetailController : BaseController
     {
         #region Variables
@@ -25,9 +25,6 @@ namespace CSSPWebAPI.Controllers
         #endregion Properties
 
         #region Constructors
-        public LabSheetTubeMPNDetailController() : base()
-        {
-        }
         public LabSheetTubeMPNDetailController(DatabaseTypeEnum dbt = DatabaseTypeEnum.SqlServerTestDB) : base(dbt)
         {
         }
@@ -35,9 +32,9 @@ namespace CSSPWebAPI.Controllers
 
         #region Functions public
         // GET api/labSheetTubeMPNDetail
-        [Route("")]
-        public IActionResult GetLabSheetTubeMPNDetailList([FromQuery]string lang = "en", [FromQuery]int skip = 0, [FromQuery]int take = 200,
-            [FromQuery]string asc = "", [FromQuery]string desc = "", [FromQuery]string where = "")
+        [HttpGet]
+        public IActionResult GetLabSheetTubeMPNDetailList(string lang = "en", int skip = 0, int take = 200,
+            string asc = "", string desc = "", string where = "")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
@@ -63,12 +60,12 @@ namespace CSSPWebAPI.Controllers
             }
         }
         // GET api/labSheetTubeMPNDetail/1
-        [Route("{LabSheetTubeMPNDetailID:int}")]
-        public IActionResult GetLabSheetTubeMPNDetailWithID([FromQuery]int LabSheetTubeMPNDetailID, [FromQuery]string lang = "en")
+        [HttpGet("{LabSheetTubeMPNDetailID}")]
+        public IActionResult GetLabSheetTubeMPNDetailWithID(int LabSheetTubeMPNDetailID, string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
-                LabSheetTubeMPNDetailService labSheetTubeMPNDetailService = new LabSheetTubeMPNDetailService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+                LabSheetTubeMPNDetailService labSheetTubeMPNDetailService = new LabSheetTubeMPNDetailService(new Query() { Lang = lang }, db, ContactID);
 
                 labSheetTubeMPNDetailService.Query = labSheetTubeMPNDetailService.FillQuery(typeof(LabSheetTubeMPNDetail), lang, 0, 1, "", "");
 
@@ -84,12 +81,12 @@ namespace CSSPWebAPI.Controllers
             }
         }
         // POST api/labSheetTubeMPNDetail
-        [Route("")]
-        public IActionResult Post([FromBody]LabSheetTubeMPNDetail labSheetTubeMPNDetail, [FromQuery]string lang = "en")
+        [HttpPost]
+        public IActionResult Post(LabSheetTubeMPNDetail labSheetTubeMPNDetail, string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
-                LabSheetTubeMPNDetailService labSheetTubeMPNDetailService = new LabSheetTubeMPNDetailService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+                LabSheetTubeMPNDetailService labSheetTubeMPNDetailService = new LabSheetTubeMPNDetailService(new Query() { Lang = lang }, db, ContactID);
 
                 if (!labSheetTubeMPNDetailService.Add(labSheetTubeMPNDetail))
                 {
@@ -103,12 +100,12 @@ namespace CSSPWebAPI.Controllers
             }
         }
         // PUT api/labSheetTubeMPNDetail
-        [Route("")]
-        public IActionResult Put([FromBody]LabSheetTubeMPNDetail labSheetTubeMPNDetail, [FromQuery]string lang = "en")
+        [HttpPut]
+        public IActionResult Put(LabSheetTubeMPNDetail labSheetTubeMPNDetail, string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
-                LabSheetTubeMPNDetailService labSheetTubeMPNDetailService = new LabSheetTubeMPNDetailService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+                LabSheetTubeMPNDetailService labSheetTubeMPNDetailService = new LabSheetTubeMPNDetailService(new Query() { Lang = lang }, db, ContactID);
 
                 if (!labSheetTubeMPNDetailService.Update(labSheetTubeMPNDetail))
                 {
@@ -122,12 +119,12 @@ namespace CSSPWebAPI.Controllers
             }
         }
         // DELETE api/labSheetTubeMPNDetail
-        [Route("")]
-        public IActionResult Delete([FromBody]LabSheetTubeMPNDetail labSheetTubeMPNDetail, [FromQuery]string lang = "en")
+        [HttpDelete]
+        public IActionResult Delete(LabSheetTubeMPNDetail labSheetTubeMPNDetail, string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
-                LabSheetTubeMPNDetailService labSheetTubeMPNDetailService = new LabSheetTubeMPNDetailService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+                LabSheetTubeMPNDetailService labSheetTubeMPNDetailService = new LabSheetTubeMPNDetailService(new Query() { Lang = lang }, db, ContactID);
 
                 if (!labSheetTubeMPNDetailService.Delete(labSheetTubeMPNDetail))
                 {

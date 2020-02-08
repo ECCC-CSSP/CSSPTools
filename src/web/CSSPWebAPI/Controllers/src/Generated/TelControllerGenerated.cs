@@ -15,7 +15,7 @@ using System.Linq;
 
 namespace CSSPWebAPI.Controllers
 {
-    [Route("api/tel")]
+    [Route("api/[controller]")]
     public partial class TelController : BaseController
     {
         #region Variables
@@ -25,9 +25,6 @@ namespace CSSPWebAPI.Controllers
         #endregion Properties
 
         #region Constructors
-        public TelController() : base()
-        {
-        }
         public TelController(DatabaseTypeEnum dbt = DatabaseTypeEnum.SqlServerTestDB) : base(dbt)
         {
         }
@@ -35,9 +32,9 @@ namespace CSSPWebAPI.Controllers
 
         #region Functions public
         // GET api/tel
-        [Route("")]
-        public IActionResult GetTelList([FromQuery]string lang = "en", [FromQuery]int skip = 0, [FromQuery]int take = 200,
-            [FromQuery]string asc = "", [FromQuery]string desc = "", [FromQuery]string where = "")
+        [HttpGet]
+        public IActionResult GetTelList(string lang = "en", int skip = 0, int take = 200,
+            string asc = "", string desc = "", string where = "")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
@@ -63,12 +60,12 @@ namespace CSSPWebAPI.Controllers
             }
         }
         // GET api/tel/1
-        [Route("{TelID:int}")]
-        public IActionResult GetTelWithID([FromQuery]int TelID, [FromQuery]string lang = "en")
+        [HttpGet("{TelID}")]
+        public IActionResult GetTelWithID(int TelID, string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
-                TelService telService = new TelService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+                TelService telService = new TelService(new Query() { Lang = lang }, db, ContactID);
 
                 telService.Query = telService.FillQuery(typeof(Tel), lang, 0, 1, "", "");
 
@@ -84,12 +81,12 @@ namespace CSSPWebAPI.Controllers
             }
         }
         // POST api/tel
-        [Route("")]
-        public IActionResult Post([FromBody]Tel tel, [FromQuery]string lang = "en")
+        [HttpPost]
+        public IActionResult Post(Tel tel, string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
-                TelService telService = new TelService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+                TelService telService = new TelService(new Query() { Lang = lang }, db, ContactID);
 
                 if (!telService.Add(tel))
                 {
@@ -103,12 +100,12 @@ namespace CSSPWebAPI.Controllers
             }
         }
         // PUT api/tel
-        [Route("")]
-        public IActionResult Put([FromBody]Tel tel, [FromQuery]string lang = "en")
+        [HttpPut]
+        public IActionResult Put(Tel tel, string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
-                TelService telService = new TelService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+                TelService telService = new TelService(new Query() { Lang = lang }, db, ContactID);
 
                 if (!telService.Update(tel))
                 {
@@ -122,12 +119,12 @@ namespace CSSPWebAPI.Controllers
             }
         }
         // DELETE api/tel
-        [Route("")]
-        public IActionResult Delete([FromBody]Tel tel, [FromQuery]string lang = "en")
+        [HttpDelete]
+        public IActionResult Delete(Tel tel, string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
-                TelService telService = new TelService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+                TelService telService = new TelService(new Query() { Lang = lang }, db, ContactID);
 
                 if (!telService.Delete(tel))
                 {

@@ -15,7 +15,7 @@ using System.Linq;
 
 namespace CSSPWebAPI.Controllers
 {
-    [Route("api/labSheetDetail")]
+    [Route("api/[controller]")]
     public partial class LabSheetDetailController : BaseController
     {
         #region Variables
@@ -25,9 +25,6 @@ namespace CSSPWebAPI.Controllers
         #endregion Properties
 
         #region Constructors
-        public LabSheetDetailController() : base()
-        {
-        }
         public LabSheetDetailController(DatabaseTypeEnum dbt = DatabaseTypeEnum.SqlServerTestDB) : base(dbt)
         {
         }
@@ -35,9 +32,9 @@ namespace CSSPWebAPI.Controllers
 
         #region Functions public
         // GET api/labSheetDetail
-        [Route("")]
-        public IActionResult GetLabSheetDetailList([FromQuery]string lang = "en", [FromQuery]int skip = 0, [FromQuery]int take = 200,
-            [FromQuery]string asc = "", [FromQuery]string desc = "", [FromQuery]string where = "")
+        [HttpGet]
+        public IActionResult GetLabSheetDetailList(string lang = "en", int skip = 0, int take = 200,
+            string asc = "", string desc = "", string where = "")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
@@ -63,12 +60,12 @@ namespace CSSPWebAPI.Controllers
             }
         }
         // GET api/labSheetDetail/1
-        [Route("{LabSheetDetailID:int}")]
-        public IActionResult GetLabSheetDetailWithID([FromQuery]int LabSheetDetailID, [FromQuery]string lang = "en")
+        [HttpGet("{LabSheetDetailID}")]
+        public IActionResult GetLabSheetDetailWithID(int LabSheetDetailID, string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
-                LabSheetDetailService labSheetDetailService = new LabSheetDetailService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+                LabSheetDetailService labSheetDetailService = new LabSheetDetailService(new Query() { Lang = lang }, db, ContactID);
 
                 labSheetDetailService.Query = labSheetDetailService.FillQuery(typeof(LabSheetDetail), lang, 0, 1, "", "");
 
@@ -84,12 +81,12 @@ namespace CSSPWebAPI.Controllers
             }
         }
         // POST api/labSheetDetail
-        [Route("")]
-        public IActionResult Post([FromBody]LabSheetDetail labSheetDetail, [FromQuery]string lang = "en")
+        [HttpPost]
+        public IActionResult Post(LabSheetDetail labSheetDetail, string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
-                LabSheetDetailService labSheetDetailService = new LabSheetDetailService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+                LabSheetDetailService labSheetDetailService = new LabSheetDetailService(new Query() { Lang = lang }, db, ContactID);
 
                 if (!labSheetDetailService.Add(labSheetDetail))
                 {
@@ -103,12 +100,12 @@ namespace CSSPWebAPI.Controllers
             }
         }
         // PUT api/labSheetDetail
-        [Route("")]
-        public IActionResult Put([FromBody]LabSheetDetail labSheetDetail, [FromQuery]string lang = "en")
+        [HttpPut]
+        public IActionResult Put(LabSheetDetail labSheetDetail, string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
-                LabSheetDetailService labSheetDetailService = new LabSheetDetailService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+                LabSheetDetailService labSheetDetailService = new LabSheetDetailService(new Query() { Lang = lang }, db, ContactID);
 
                 if (!labSheetDetailService.Update(labSheetDetail))
                 {
@@ -122,12 +119,12 @@ namespace CSSPWebAPI.Controllers
             }
         }
         // DELETE api/labSheetDetail
-        [Route("")]
-        public IActionResult Delete([FromBody]LabSheetDetail labSheetDetail, [FromQuery]string lang = "en")
+        [HttpDelete]
+        public IActionResult Delete(LabSheetDetail labSheetDetail, string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
-                LabSheetDetailService labSheetDetailService = new LabSheetDetailService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+                LabSheetDetailService labSheetDetailService = new LabSheetDetailService(new Query() { Lang = lang }, db, ContactID);
 
                 if (!labSheetDetailService.Delete(labSheetDetail))
                 {

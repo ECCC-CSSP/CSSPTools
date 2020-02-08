@@ -15,7 +15,7 @@ using System.Linq;
 
 namespace CSSPWebAPI.Controllers
 {
-    [Route("api/reportTypeLanguage")]
+    [Route("api/[controller]")]
     public partial class ReportTypeLanguageController : BaseController
     {
         #region Variables
@@ -25,9 +25,6 @@ namespace CSSPWebAPI.Controllers
         #endregion Properties
 
         #region Constructors
-        public ReportTypeLanguageController() : base()
-        {
-        }
         public ReportTypeLanguageController(DatabaseTypeEnum dbt = DatabaseTypeEnum.SqlServerTestDB) : base(dbt)
         {
         }
@@ -35,9 +32,9 @@ namespace CSSPWebAPI.Controllers
 
         #region Functions public
         // GET api/reportTypeLanguage
-        [Route("")]
-        public IActionResult GetReportTypeLanguageList([FromQuery]string lang = "en", [FromQuery]int skip = 0, [FromQuery]int take = 200,
-            [FromQuery]string asc = "", [FromQuery]string desc = "", [FromQuery]string where = "")
+        [HttpGet]
+        public IActionResult GetReportTypeLanguageList(string lang = "en", int skip = 0, int take = 200,
+            string asc = "", string desc = "", string where = "")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
@@ -63,12 +60,12 @@ namespace CSSPWebAPI.Controllers
             }
         }
         // GET api/reportTypeLanguage/1
-        [Route("{ReportTypeLanguageID:int}")]
-        public IActionResult GetReportTypeLanguageWithID([FromQuery]int ReportTypeLanguageID, [FromQuery]string lang = "en")
+        [HttpGet("{ReportTypeLanguageID}")]
+        public IActionResult GetReportTypeLanguageWithID(int ReportTypeLanguageID, string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
-                ReportTypeLanguageService reportTypeLanguageService = new ReportTypeLanguageService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+                ReportTypeLanguageService reportTypeLanguageService = new ReportTypeLanguageService(new Query() { Lang = lang }, db, ContactID);
 
                 reportTypeLanguageService.Query = reportTypeLanguageService.FillQuery(typeof(ReportTypeLanguage), lang, 0, 1, "", "");
 
@@ -84,12 +81,12 @@ namespace CSSPWebAPI.Controllers
             }
         }
         // POST api/reportTypeLanguage
-        [Route("")]
-        public IActionResult Post([FromBody]ReportTypeLanguage reportTypeLanguage, [FromQuery]string lang = "en")
+        [HttpPost]
+        public IActionResult Post(ReportTypeLanguage reportTypeLanguage, string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
-                ReportTypeLanguageService reportTypeLanguageService = new ReportTypeLanguageService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+                ReportTypeLanguageService reportTypeLanguageService = new ReportTypeLanguageService(new Query() { Lang = lang }, db, ContactID);
 
                 if (!reportTypeLanguageService.Add(reportTypeLanguage))
                 {
@@ -103,12 +100,12 @@ namespace CSSPWebAPI.Controllers
             }
         }
         // PUT api/reportTypeLanguage
-        [Route("")]
-        public IActionResult Put([FromBody]ReportTypeLanguage reportTypeLanguage, [FromQuery]string lang = "en")
+        [HttpPut]
+        public IActionResult Put(ReportTypeLanguage reportTypeLanguage, string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
-                ReportTypeLanguageService reportTypeLanguageService = new ReportTypeLanguageService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+                ReportTypeLanguageService reportTypeLanguageService = new ReportTypeLanguageService(new Query() { Lang = lang }, db, ContactID);
 
                 if (!reportTypeLanguageService.Update(reportTypeLanguage))
                 {
@@ -122,12 +119,12 @@ namespace CSSPWebAPI.Controllers
             }
         }
         // DELETE api/reportTypeLanguage
-        [Route("")]
-        public IActionResult Delete([FromBody]ReportTypeLanguage reportTypeLanguage, [FromQuery]string lang = "en")
+        [HttpDelete]
+        public IActionResult Delete(ReportTypeLanguage reportTypeLanguage, string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
-                ReportTypeLanguageService reportTypeLanguageService = new ReportTypeLanguageService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+                ReportTypeLanguageService reportTypeLanguageService = new ReportTypeLanguageService(new Query() { Lang = lang }, db, ContactID);
 
                 if (!reportTypeLanguageService.Delete(reportTypeLanguage))
                 {

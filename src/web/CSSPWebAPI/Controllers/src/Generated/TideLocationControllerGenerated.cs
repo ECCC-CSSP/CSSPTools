@@ -15,7 +15,7 @@ using System.Linq;
 
 namespace CSSPWebAPI.Controllers
 {
-    [Route("api/tideLocation")]
+    [Route("api/[controller]")]
     public partial class TideLocationController : BaseController
     {
         #region Variables
@@ -25,9 +25,6 @@ namespace CSSPWebAPI.Controllers
         #endregion Properties
 
         #region Constructors
-        public TideLocationController() : base()
-        {
-        }
         public TideLocationController(DatabaseTypeEnum dbt = DatabaseTypeEnum.SqlServerTestDB) : base(dbt)
         {
         }
@@ -35,9 +32,9 @@ namespace CSSPWebAPI.Controllers
 
         #region Functions public
         // GET api/tideLocation
-        [Route("")]
-        public IActionResult GetTideLocationList([FromQuery]string lang = "en", [FromQuery]int skip = 0, [FromQuery]int take = 200,
-            [FromQuery]string asc = "", [FromQuery]string desc = "", [FromQuery]string where = "")
+        [HttpGet]
+        public IActionResult GetTideLocationList(string lang = "en", int skip = 0, int take = 200,
+            string asc = "", string desc = "", string where = "")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
@@ -63,12 +60,12 @@ namespace CSSPWebAPI.Controllers
             }
         }
         // GET api/tideLocation/1
-        [Route("{TideLocationID:int}")]
-        public IActionResult GetTideLocationWithID([FromQuery]int TideLocationID, [FromQuery]string lang = "en")
+        [HttpGet("{TideLocationID}")]
+        public IActionResult GetTideLocationWithID(int TideLocationID, string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
-                TideLocationService tideLocationService = new TideLocationService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+                TideLocationService tideLocationService = new TideLocationService(new Query() { Lang = lang }, db, ContactID);
 
                 tideLocationService.Query = tideLocationService.FillQuery(typeof(TideLocation), lang, 0, 1, "", "");
 
@@ -84,12 +81,12 @@ namespace CSSPWebAPI.Controllers
             }
         }
         // POST api/tideLocation
-        [Route("")]
-        public IActionResult Post([FromBody]TideLocation tideLocation, [FromQuery]string lang = "en")
+        [HttpPost]
+        public IActionResult Post(TideLocation tideLocation, string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
-                TideLocationService tideLocationService = new TideLocationService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+                TideLocationService tideLocationService = new TideLocationService(new Query() { Lang = lang }, db, ContactID);
 
                 if (!tideLocationService.Add(tideLocation))
                 {
@@ -103,12 +100,12 @@ namespace CSSPWebAPI.Controllers
             }
         }
         // PUT api/tideLocation
-        [Route("")]
-        public IActionResult Put([FromBody]TideLocation tideLocation, [FromQuery]string lang = "en")
+        [HttpPut]
+        public IActionResult Put(TideLocation tideLocation, string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
-                TideLocationService tideLocationService = new TideLocationService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+                TideLocationService tideLocationService = new TideLocationService(new Query() { Lang = lang }, db, ContactID);
 
                 if (!tideLocationService.Update(tideLocation))
                 {
@@ -122,12 +119,12 @@ namespace CSSPWebAPI.Controllers
             }
         }
         // DELETE api/tideLocation
-        [Route("")]
-        public IActionResult Delete([FromBody]TideLocation tideLocation, [FromQuery]string lang = "en")
+        [HttpDelete]
+        public IActionResult Delete(TideLocation tideLocation, string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
-                TideLocationService tideLocationService = new TideLocationService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+                TideLocationService tideLocationService = new TideLocationService(new Query() { Lang = lang }, db, ContactID);
 
                 if (!tideLocationService.Delete(tideLocation))
                 {

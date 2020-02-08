@@ -15,7 +15,7 @@ using System.Linq;
 
 namespace CSSPWebAPI.Controllers
 {
-    [Route("api/samplingPlanEmail")]
+    [Route("api/[controller]")]
     public partial class SamplingPlanEmailController : BaseController
     {
         #region Variables
@@ -25,9 +25,6 @@ namespace CSSPWebAPI.Controllers
         #endregion Properties
 
         #region Constructors
-        public SamplingPlanEmailController() : base()
-        {
-        }
         public SamplingPlanEmailController(DatabaseTypeEnum dbt = DatabaseTypeEnum.SqlServerTestDB) : base(dbt)
         {
         }
@@ -35,9 +32,9 @@ namespace CSSPWebAPI.Controllers
 
         #region Functions public
         // GET api/samplingPlanEmail
-        [Route("")]
-        public IActionResult GetSamplingPlanEmailList([FromQuery]string lang = "en", [FromQuery]int skip = 0, [FromQuery]int take = 200,
-            [FromQuery]string asc = "", [FromQuery]string desc = "", [FromQuery]string where = "")
+        [HttpGet]
+        public IActionResult GetSamplingPlanEmailList(string lang = "en", int skip = 0, int take = 200,
+            string asc = "", string desc = "", string where = "")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
@@ -63,12 +60,12 @@ namespace CSSPWebAPI.Controllers
             }
         }
         // GET api/samplingPlanEmail/1
-        [Route("{SamplingPlanEmailID:int}")]
-        public IActionResult GetSamplingPlanEmailWithID([FromQuery]int SamplingPlanEmailID, [FromQuery]string lang = "en")
+        [HttpGet("{SamplingPlanEmailID}")]
+        public IActionResult GetSamplingPlanEmailWithID(int SamplingPlanEmailID, string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
-                SamplingPlanEmailService samplingPlanEmailService = new SamplingPlanEmailService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+                SamplingPlanEmailService samplingPlanEmailService = new SamplingPlanEmailService(new Query() { Lang = lang }, db, ContactID);
 
                 samplingPlanEmailService.Query = samplingPlanEmailService.FillQuery(typeof(SamplingPlanEmail), lang, 0, 1, "", "");
 
@@ -84,12 +81,12 @@ namespace CSSPWebAPI.Controllers
             }
         }
         // POST api/samplingPlanEmail
-        [Route("")]
-        public IActionResult Post([FromBody]SamplingPlanEmail samplingPlanEmail, [FromQuery]string lang = "en")
+        [HttpPost]
+        public IActionResult Post(SamplingPlanEmail samplingPlanEmail, string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
-                SamplingPlanEmailService samplingPlanEmailService = new SamplingPlanEmailService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+                SamplingPlanEmailService samplingPlanEmailService = new SamplingPlanEmailService(new Query() { Lang = lang }, db, ContactID);
 
                 if (!samplingPlanEmailService.Add(samplingPlanEmail))
                 {
@@ -103,12 +100,12 @@ namespace CSSPWebAPI.Controllers
             }
         }
         // PUT api/samplingPlanEmail
-        [Route("")]
-        public IActionResult Put([FromBody]SamplingPlanEmail samplingPlanEmail, [FromQuery]string lang = "en")
+        [HttpPut]
+        public IActionResult Put(SamplingPlanEmail samplingPlanEmail, string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
-                SamplingPlanEmailService samplingPlanEmailService = new SamplingPlanEmailService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+                SamplingPlanEmailService samplingPlanEmailService = new SamplingPlanEmailService(new Query() { Lang = lang }, db, ContactID);
 
                 if (!samplingPlanEmailService.Update(samplingPlanEmail))
                 {
@@ -122,12 +119,12 @@ namespace CSSPWebAPI.Controllers
             }
         }
         // DELETE api/samplingPlanEmail
-        [Route("")]
-        public IActionResult Delete([FromBody]SamplingPlanEmail samplingPlanEmail, [FromQuery]string lang = "en")
+        [HttpDelete]
+        public IActionResult Delete(SamplingPlanEmail samplingPlanEmail, string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
-                SamplingPlanEmailService samplingPlanEmailService = new SamplingPlanEmailService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+                SamplingPlanEmailService samplingPlanEmailService = new SamplingPlanEmailService(new Query() { Lang = lang }, db, ContactID);
 
                 if (!samplingPlanEmailService.Delete(samplingPlanEmail))
                 {

@@ -15,7 +15,7 @@ using System.Linq;
 
 namespace CSSPWebAPI.Controllers
 {
-    [Route("api/classification")]
+    [Route("api/[controller]")]
     public partial class ClassificationController : BaseController
     {
         #region Variables
@@ -25,9 +25,6 @@ namespace CSSPWebAPI.Controllers
         #endregion Properties
 
         #region Constructors
-        public ClassificationController() : base()
-        {
-        }
         public ClassificationController(DatabaseTypeEnum dbt = DatabaseTypeEnum.SqlServerTestDB) : base(dbt)
         {
         }
@@ -35,9 +32,9 @@ namespace CSSPWebAPI.Controllers
 
         #region Functions public
         // GET api/classification
-        [Route("")]
-        public IActionResult GetClassificationList([FromQuery]string lang = "en", [FromQuery]int skip = 0, [FromQuery]int take = 200,
-            [FromQuery]string asc = "", [FromQuery]string desc = "", [FromQuery]string where = "")
+        [HttpGet]
+        public IActionResult GetClassificationList(string lang = "en", int skip = 0, int take = 200,
+            string asc = "", string desc = "", string where = "")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
@@ -63,12 +60,12 @@ namespace CSSPWebAPI.Controllers
             }
         }
         // GET api/classification/1
-        [Route("{ClassificationID:int}")]
-        public IActionResult GetClassificationWithID([FromQuery]int ClassificationID, [FromQuery]string lang = "en")
+        [HttpGet("{ClassificationID}")]
+        public IActionResult GetClassificationWithID(int ClassificationID, string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
-                ClassificationService classificationService = new ClassificationService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+                ClassificationService classificationService = new ClassificationService(new Query() { Lang = lang }, db, ContactID);
 
                 classificationService.Query = classificationService.FillQuery(typeof(Classification), lang, 0, 1, "", "");
 
@@ -84,12 +81,12 @@ namespace CSSPWebAPI.Controllers
             }
         }
         // POST api/classification
-        [Route("")]
-        public IActionResult Post([FromBody]Classification classification, [FromQuery]string lang = "en")
+        [HttpPost]
+        public IActionResult Post(Classification classification, string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
-                ClassificationService classificationService = new ClassificationService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+                ClassificationService classificationService = new ClassificationService(new Query() { Lang = lang }, db, ContactID);
 
                 if (!classificationService.Add(classification))
                 {
@@ -103,12 +100,12 @@ namespace CSSPWebAPI.Controllers
             }
         }
         // PUT api/classification
-        [Route("")]
-        public IActionResult Put([FromBody]Classification classification, [FromQuery]string lang = "en")
+        [HttpPut]
+        public IActionResult Put(Classification classification, string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
-                ClassificationService classificationService = new ClassificationService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+                ClassificationService classificationService = new ClassificationService(new Query() { Lang = lang }, db, ContactID);
 
                 if (!classificationService.Update(classification))
                 {
@@ -122,12 +119,12 @@ namespace CSSPWebAPI.Controllers
             }
         }
         // DELETE api/classification
-        [Route("")]
-        public IActionResult Delete([FromBody]Classification classification, [FromQuery]string lang = "en")
+        [HttpDelete]
+        public IActionResult Delete(Classification classification, string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
-                ClassificationService classificationService = new ClassificationService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+                ClassificationService classificationService = new ClassificationService(new Query() { Lang = lang }, db, ContactID);
 
                 if (!classificationService.Delete(classification))
                 {

@@ -15,7 +15,7 @@ using System.Linq;
 
 namespace CSSPWebAPI.Controllers
 {
-    [Route("api/hydrometricDataValue")]
+    [Route("api/[controller]")]
     public partial class HydrometricDataValueController : BaseController
     {
         #region Variables
@@ -25,9 +25,6 @@ namespace CSSPWebAPI.Controllers
         #endregion Properties
 
         #region Constructors
-        public HydrometricDataValueController() : base()
-        {
-        }
         public HydrometricDataValueController(DatabaseTypeEnum dbt = DatabaseTypeEnum.SqlServerTestDB) : base(dbt)
         {
         }
@@ -35,9 +32,9 @@ namespace CSSPWebAPI.Controllers
 
         #region Functions public
         // GET api/hydrometricDataValue
-        [Route("")]
-        public IActionResult GetHydrometricDataValueList([FromQuery]string lang = "en", [FromQuery]int skip = 0, [FromQuery]int take = 200,
-            [FromQuery]string asc = "", [FromQuery]string desc = "", [FromQuery]string where = "")
+        [HttpGet]
+        public IActionResult GetHydrometricDataValueList(string lang = "en", int skip = 0, int take = 200,
+            string asc = "", string desc = "", string where = "")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
@@ -63,12 +60,12 @@ namespace CSSPWebAPI.Controllers
             }
         }
         // GET api/hydrometricDataValue/1
-        [Route("{HydrometricDataValueID:int}")]
-        public IActionResult GetHydrometricDataValueWithID([FromQuery]int HydrometricDataValueID, [FromQuery]string lang = "en")
+        [HttpGet("{HydrometricDataValueID}")]
+        public IActionResult GetHydrometricDataValueWithID(int HydrometricDataValueID, string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
-                HydrometricDataValueService hydrometricDataValueService = new HydrometricDataValueService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+                HydrometricDataValueService hydrometricDataValueService = new HydrometricDataValueService(new Query() { Lang = lang }, db, ContactID);
 
                 hydrometricDataValueService.Query = hydrometricDataValueService.FillQuery(typeof(HydrometricDataValue), lang, 0, 1, "", "");
 
@@ -84,12 +81,12 @@ namespace CSSPWebAPI.Controllers
             }
         }
         // POST api/hydrometricDataValue
-        [Route("")]
-        public IActionResult Post([FromBody]HydrometricDataValue hydrometricDataValue, [FromQuery]string lang = "en")
+        [HttpPost]
+        public IActionResult Post(HydrometricDataValue hydrometricDataValue, string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
-                HydrometricDataValueService hydrometricDataValueService = new HydrometricDataValueService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+                HydrometricDataValueService hydrometricDataValueService = new HydrometricDataValueService(new Query() { Lang = lang }, db, ContactID);
 
                 if (!hydrometricDataValueService.Add(hydrometricDataValue))
                 {
@@ -103,12 +100,12 @@ namespace CSSPWebAPI.Controllers
             }
         }
         // PUT api/hydrometricDataValue
-        [Route("")]
-        public IActionResult Put([FromBody]HydrometricDataValue hydrometricDataValue, [FromQuery]string lang = "en")
+        [HttpPut]
+        public IActionResult Put(HydrometricDataValue hydrometricDataValue, string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
-                HydrometricDataValueService hydrometricDataValueService = new HydrometricDataValueService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+                HydrometricDataValueService hydrometricDataValueService = new HydrometricDataValueService(new Query() { Lang = lang }, db, ContactID);
 
                 if (!hydrometricDataValueService.Update(hydrometricDataValue))
                 {
@@ -122,12 +119,12 @@ namespace CSSPWebAPI.Controllers
             }
         }
         // DELETE api/hydrometricDataValue
-        [Route("")]
-        public IActionResult Delete([FromBody]HydrometricDataValue hydrometricDataValue, [FromQuery]string lang = "en")
+        [HttpDelete]
+        public IActionResult Delete(HydrometricDataValue hydrometricDataValue, string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
-                HydrometricDataValueService hydrometricDataValueService = new HydrometricDataValueService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+                HydrometricDataValueService hydrometricDataValueService = new HydrometricDataValueService(new Query() { Lang = lang }, db, ContactID);
 
                 if (!hydrometricDataValueService.Delete(hydrometricDataValue))
                 {

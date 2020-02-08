@@ -15,7 +15,7 @@ using System.Linq;
 
 namespace CSSPWebAPI.Controllers
 {
-    [Route("api/polSourceObservationIssue")]
+    [Route("api/[controller]")]
     public partial class PolSourceObservationIssueController : BaseController
     {
         #region Variables
@@ -25,9 +25,6 @@ namespace CSSPWebAPI.Controllers
         #endregion Properties
 
         #region Constructors
-        public PolSourceObservationIssueController() : base()
-        {
-        }
         public PolSourceObservationIssueController(DatabaseTypeEnum dbt = DatabaseTypeEnum.SqlServerTestDB) : base(dbt)
         {
         }
@@ -35,9 +32,9 @@ namespace CSSPWebAPI.Controllers
 
         #region Functions public
         // GET api/polSourceObservationIssue
-        [Route("")]
-        public IActionResult GetPolSourceObservationIssueList([FromQuery]string lang = "en", [FromQuery]int skip = 0, [FromQuery]int take = 200,
-            [FromQuery]string asc = "", [FromQuery]string desc = "", [FromQuery]string where = "")
+        [HttpGet]
+        public IActionResult GetPolSourceObservationIssueList(string lang = "en", int skip = 0, int take = 200,
+            string asc = "", string desc = "", string where = "")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
@@ -63,12 +60,12 @@ namespace CSSPWebAPI.Controllers
             }
         }
         // GET api/polSourceObservationIssue/1
-        [Route("{PolSourceObservationIssueID:int}")]
-        public IActionResult GetPolSourceObservationIssueWithID([FromQuery]int PolSourceObservationIssueID, [FromQuery]string lang = "en")
+        [HttpGet("{PolSourceObservationIssueID}")]
+        public IActionResult GetPolSourceObservationIssueWithID(int PolSourceObservationIssueID, string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
-                PolSourceObservationIssueService polSourceObservationIssueService = new PolSourceObservationIssueService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+                PolSourceObservationIssueService polSourceObservationIssueService = new PolSourceObservationIssueService(new Query() { Lang = lang }, db, ContactID);
 
                 polSourceObservationIssueService.Query = polSourceObservationIssueService.FillQuery(typeof(PolSourceObservationIssue), lang, 0, 1, "", "");
 
@@ -84,12 +81,12 @@ namespace CSSPWebAPI.Controllers
             }
         }
         // POST api/polSourceObservationIssue
-        [Route("")]
-        public IActionResult Post([FromBody]PolSourceObservationIssue polSourceObservationIssue, [FromQuery]string lang = "en")
+        [HttpPost]
+        public IActionResult Post(PolSourceObservationIssue polSourceObservationIssue, string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
-                PolSourceObservationIssueService polSourceObservationIssueService = new PolSourceObservationIssueService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+                PolSourceObservationIssueService polSourceObservationIssueService = new PolSourceObservationIssueService(new Query() { Lang = lang }, db, ContactID);
 
                 if (!polSourceObservationIssueService.Add(polSourceObservationIssue))
                 {
@@ -103,12 +100,12 @@ namespace CSSPWebAPI.Controllers
             }
         }
         // PUT api/polSourceObservationIssue
-        [Route("")]
-        public IActionResult Put([FromBody]PolSourceObservationIssue polSourceObservationIssue, [FromQuery]string lang = "en")
+        [HttpPut]
+        public IActionResult Put(PolSourceObservationIssue polSourceObservationIssue, string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
-                PolSourceObservationIssueService polSourceObservationIssueService = new PolSourceObservationIssueService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+                PolSourceObservationIssueService polSourceObservationIssueService = new PolSourceObservationIssueService(new Query() { Lang = lang }, db, ContactID);
 
                 if (!polSourceObservationIssueService.Update(polSourceObservationIssue))
                 {
@@ -122,12 +119,12 @@ namespace CSSPWebAPI.Controllers
             }
         }
         // DELETE api/polSourceObservationIssue
-        [Route("")]
-        public IActionResult Delete([FromBody]PolSourceObservationIssue polSourceObservationIssue, [FromQuery]string lang = "en")
+        [HttpDelete]
+        public IActionResult Delete(PolSourceObservationIssue polSourceObservationIssue, string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
-                PolSourceObservationIssueService polSourceObservationIssueService = new PolSourceObservationIssueService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+                PolSourceObservationIssueService polSourceObservationIssueService = new PolSourceObservationIssueService(new Query() { Lang = lang }, db, ContactID);
 
                 if (!polSourceObservationIssueService.Delete(polSourceObservationIssue))
                 {

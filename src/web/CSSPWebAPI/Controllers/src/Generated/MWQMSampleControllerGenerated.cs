@@ -15,7 +15,7 @@ using System.Linq;
 
 namespace CSSPWebAPI.Controllers
 {
-    [Route("api/mwqmSample")]
+    [Route("api/[controller]")]
     public partial class MWQMSampleController : BaseController
     {
         #region Variables
@@ -25,9 +25,6 @@ namespace CSSPWebAPI.Controllers
         #endregion Properties
 
         #region Constructors
-        public MWQMSampleController() : base()
-        {
-        }
         public MWQMSampleController(DatabaseTypeEnum dbt = DatabaseTypeEnum.SqlServerTestDB) : base(dbt)
         {
         }
@@ -35,9 +32,9 @@ namespace CSSPWebAPI.Controllers
 
         #region Functions public
         // GET api/mwqmSample
-        [Route("")]
-        public IActionResult GetMWQMSampleList([FromQuery]string lang = "en", [FromQuery]int skip = 0, [FromQuery]int take = 200,
-            [FromQuery]string asc = "", [FromQuery]string desc = "", [FromQuery]string where = "")
+        [HttpGet]
+        public IActionResult GetMWQMSampleList(string lang = "en", int skip = 0, int take = 200,
+            string asc = "", string desc = "", string where = "")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
@@ -63,12 +60,12 @@ namespace CSSPWebAPI.Controllers
             }
         }
         // GET api/mwqmSample/1
-        [Route("{MWQMSampleID:int}")]
-        public IActionResult GetMWQMSampleWithID([FromQuery]int MWQMSampleID, [FromQuery]string lang = "en")
+        [HttpGet("{MWQMSampleID}")]
+        public IActionResult GetMWQMSampleWithID(int MWQMSampleID, string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
-                MWQMSampleService mwqmSampleService = new MWQMSampleService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+                MWQMSampleService mwqmSampleService = new MWQMSampleService(new Query() { Lang = lang }, db, ContactID);
 
                 mwqmSampleService.Query = mwqmSampleService.FillQuery(typeof(MWQMSample), lang, 0, 1, "", "");
 
@@ -84,12 +81,12 @@ namespace CSSPWebAPI.Controllers
             }
         }
         // POST api/mwqmSample
-        [Route("")]
-        public IActionResult Post([FromBody]MWQMSample mwqmSample, [FromQuery]string lang = "en")
+        [HttpPost]
+        public IActionResult Post(MWQMSample mwqmSample, string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
-                MWQMSampleService mwqmSampleService = new MWQMSampleService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+                MWQMSampleService mwqmSampleService = new MWQMSampleService(new Query() { Lang = lang }, db, ContactID);
 
                 if (!mwqmSampleService.Add(mwqmSample))
                 {
@@ -103,12 +100,12 @@ namespace CSSPWebAPI.Controllers
             }
         }
         // PUT api/mwqmSample
-        [Route("")]
-        public IActionResult Put([FromBody]MWQMSample mwqmSample, [FromQuery]string lang = "en")
+        [HttpPut]
+        public IActionResult Put(MWQMSample mwqmSample, string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
-                MWQMSampleService mwqmSampleService = new MWQMSampleService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+                MWQMSampleService mwqmSampleService = new MWQMSampleService(new Query() { Lang = lang }, db, ContactID);
 
                 if (!mwqmSampleService.Update(mwqmSample))
                 {
@@ -122,12 +119,12 @@ namespace CSSPWebAPI.Controllers
             }
         }
         // DELETE api/mwqmSample
-        [Route("")]
-        public IActionResult Delete([FromBody]MWQMSample mwqmSample, [FromQuery]string lang = "en")
+        [HttpDelete]
+        public IActionResult Delete(MWQMSample mwqmSample, string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
-                MWQMSampleService mwqmSampleService = new MWQMSampleService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+                MWQMSampleService mwqmSampleService = new MWQMSampleService(new Query() { Lang = lang }, db, ContactID);
 
                 if (!mwqmSampleService.Delete(mwqmSample))
                 {

@@ -15,7 +15,7 @@ using System.Linq;
 
 namespace CSSPWebAPI.Controllers
 {
-    [Route("api/mwqmSiteStartEndDate")]
+    [Route("api/[controller]")]
     public partial class MWQMSiteStartEndDateController : BaseController
     {
         #region Variables
@@ -25,9 +25,6 @@ namespace CSSPWebAPI.Controllers
         #endregion Properties
 
         #region Constructors
-        public MWQMSiteStartEndDateController() : base()
-        {
-        }
         public MWQMSiteStartEndDateController(DatabaseTypeEnum dbt = DatabaseTypeEnum.SqlServerTestDB) : base(dbt)
         {
         }
@@ -35,9 +32,9 @@ namespace CSSPWebAPI.Controllers
 
         #region Functions public
         // GET api/mwqmSiteStartEndDate
-        [Route("")]
-        public IActionResult GetMWQMSiteStartEndDateList([FromQuery]string lang = "en", [FromQuery]int skip = 0, [FromQuery]int take = 200,
-            [FromQuery]string asc = "", [FromQuery]string desc = "", [FromQuery]string where = "")
+        [HttpGet]
+        public IActionResult GetMWQMSiteStartEndDateList(string lang = "en", int skip = 0, int take = 200,
+            string asc = "", string desc = "", string where = "")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
@@ -63,12 +60,12 @@ namespace CSSPWebAPI.Controllers
             }
         }
         // GET api/mwqmSiteStartEndDate/1
-        [Route("{MWQMSiteStartEndDateID:int}")]
-        public IActionResult GetMWQMSiteStartEndDateWithID([FromQuery]int MWQMSiteStartEndDateID, [FromQuery]string lang = "en")
+        [HttpGet("{MWQMSiteStartEndDateID}")]
+        public IActionResult GetMWQMSiteStartEndDateWithID(int MWQMSiteStartEndDateID, string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
-                MWQMSiteStartEndDateService mwqmSiteStartEndDateService = new MWQMSiteStartEndDateService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+                MWQMSiteStartEndDateService mwqmSiteStartEndDateService = new MWQMSiteStartEndDateService(new Query() { Lang = lang }, db, ContactID);
 
                 mwqmSiteStartEndDateService.Query = mwqmSiteStartEndDateService.FillQuery(typeof(MWQMSiteStartEndDate), lang, 0, 1, "", "");
 
@@ -84,12 +81,12 @@ namespace CSSPWebAPI.Controllers
             }
         }
         // POST api/mwqmSiteStartEndDate
-        [Route("")]
-        public IActionResult Post([FromBody]MWQMSiteStartEndDate mwqmSiteStartEndDate, [FromQuery]string lang = "en")
+        [HttpPost]
+        public IActionResult Post(MWQMSiteStartEndDate mwqmSiteStartEndDate, string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
-                MWQMSiteStartEndDateService mwqmSiteStartEndDateService = new MWQMSiteStartEndDateService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+                MWQMSiteStartEndDateService mwqmSiteStartEndDateService = new MWQMSiteStartEndDateService(new Query() { Lang = lang }, db, ContactID);
 
                 if (!mwqmSiteStartEndDateService.Add(mwqmSiteStartEndDate))
                 {
@@ -103,12 +100,12 @@ namespace CSSPWebAPI.Controllers
             }
         }
         // PUT api/mwqmSiteStartEndDate
-        [Route("")]
-        public IActionResult Put([FromBody]MWQMSiteStartEndDate mwqmSiteStartEndDate, [FromQuery]string lang = "en")
+        [HttpPut]
+        public IActionResult Put(MWQMSiteStartEndDate mwqmSiteStartEndDate, string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
-                MWQMSiteStartEndDateService mwqmSiteStartEndDateService = new MWQMSiteStartEndDateService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+                MWQMSiteStartEndDateService mwqmSiteStartEndDateService = new MWQMSiteStartEndDateService(new Query() { Lang = lang }, db, ContactID);
 
                 if (!mwqmSiteStartEndDateService.Update(mwqmSiteStartEndDate))
                 {
@@ -122,12 +119,12 @@ namespace CSSPWebAPI.Controllers
             }
         }
         // DELETE api/mwqmSiteStartEndDate
-        [Route("")]
-        public IActionResult Delete([FromBody]MWQMSiteStartEndDate mwqmSiteStartEndDate, [FromQuery]string lang = "en")
+        [HttpDelete]
+        public IActionResult Delete(MWQMSiteStartEndDate mwqmSiteStartEndDate, string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
-                MWQMSiteStartEndDateService mwqmSiteStartEndDateService = new MWQMSiteStartEndDateService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+                MWQMSiteStartEndDateService mwqmSiteStartEndDateService = new MWQMSiteStartEndDateService(new Query() { Lang = lang }, db, ContactID);
 
                 if (!mwqmSiteStartEndDateService.Delete(mwqmSiteStartEndDate))
                 {

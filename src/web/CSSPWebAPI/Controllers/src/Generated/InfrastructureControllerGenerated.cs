@@ -15,7 +15,7 @@ using System.Linq;
 
 namespace CSSPWebAPI.Controllers
 {
-    [Route("api/infrastructure")]
+    [Route("api/[controller]")]
     public partial class InfrastructureController : BaseController
     {
         #region Variables
@@ -25,9 +25,6 @@ namespace CSSPWebAPI.Controllers
         #endregion Properties
 
         #region Constructors
-        public InfrastructureController() : base()
-        {
-        }
         public InfrastructureController(DatabaseTypeEnum dbt = DatabaseTypeEnum.SqlServerTestDB) : base(dbt)
         {
         }
@@ -35,9 +32,9 @@ namespace CSSPWebAPI.Controllers
 
         #region Functions public
         // GET api/infrastructure
-        [Route("")]
-        public IActionResult GetInfrastructureList([FromQuery]string lang = "en", [FromQuery]int skip = 0, [FromQuery]int take = 200,
-            [FromQuery]string asc = "", [FromQuery]string desc = "", [FromQuery]string where = "")
+        [HttpGet]
+        public IActionResult GetInfrastructureList(string lang = "en", int skip = 0, int take = 200,
+            string asc = "", string desc = "", string where = "")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
@@ -63,12 +60,12 @@ namespace CSSPWebAPI.Controllers
             }
         }
         // GET api/infrastructure/1
-        [Route("{InfrastructureID:int}")]
-        public IActionResult GetInfrastructureWithID([FromQuery]int InfrastructureID, [FromQuery]string lang = "en")
+        [HttpGet("{InfrastructureID}")]
+        public IActionResult GetInfrastructureWithID(int InfrastructureID, string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
-                InfrastructureService infrastructureService = new InfrastructureService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+                InfrastructureService infrastructureService = new InfrastructureService(new Query() { Lang = lang }, db, ContactID);
 
                 infrastructureService.Query = infrastructureService.FillQuery(typeof(Infrastructure), lang, 0, 1, "", "");
 
@@ -84,12 +81,12 @@ namespace CSSPWebAPI.Controllers
             }
         }
         // POST api/infrastructure
-        [Route("")]
-        public IActionResult Post([FromBody]Infrastructure infrastructure, [FromQuery]string lang = "en")
+        [HttpPost]
+        public IActionResult Post(Infrastructure infrastructure, string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
-                InfrastructureService infrastructureService = new InfrastructureService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+                InfrastructureService infrastructureService = new InfrastructureService(new Query() { Lang = lang }, db, ContactID);
 
                 if (!infrastructureService.Add(infrastructure))
                 {
@@ -103,12 +100,12 @@ namespace CSSPWebAPI.Controllers
             }
         }
         // PUT api/infrastructure
-        [Route("")]
-        public IActionResult Put([FromBody]Infrastructure infrastructure, [FromQuery]string lang = "en")
+        [HttpPut]
+        public IActionResult Put(Infrastructure infrastructure, string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
-                InfrastructureService infrastructureService = new InfrastructureService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+                InfrastructureService infrastructureService = new InfrastructureService(new Query() { Lang = lang }, db, ContactID);
 
                 if (!infrastructureService.Update(infrastructure))
                 {
@@ -122,12 +119,12 @@ namespace CSSPWebAPI.Controllers
             }
         }
         // DELETE api/infrastructure
-        [Route("")]
-        public IActionResult Delete([FromBody]Infrastructure infrastructure, [FromQuery]string lang = "en")
+        [HttpDelete]
+        public IActionResult Delete(Infrastructure infrastructure, string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
-                InfrastructureService infrastructureService = new InfrastructureService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+                InfrastructureService infrastructureService = new InfrastructureService(new Query() { Lang = lang }, db, ContactID);
 
                 if (!infrastructureService.Delete(infrastructure))
                 {

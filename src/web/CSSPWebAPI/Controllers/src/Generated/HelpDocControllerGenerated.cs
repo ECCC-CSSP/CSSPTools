@@ -15,7 +15,7 @@ using System.Linq;
 
 namespace CSSPWebAPI.Controllers
 {
-    [Route("api/helpDoc")]
+    [Route("api/[controller]")]
     public partial class HelpDocController : BaseController
     {
         #region Variables
@@ -25,9 +25,6 @@ namespace CSSPWebAPI.Controllers
         #endregion Properties
 
         #region Constructors
-        public HelpDocController() : base()
-        {
-        }
         public HelpDocController(DatabaseTypeEnum dbt = DatabaseTypeEnum.SqlServerTestDB) : base(dbt)
         {
         }
@@ -35,9 +32,9 @@ namespace CSSPWebAPI.Controllers
 
         #region Functions public
         // GET api/helpDoc
-        [Route("")]
-        public IActionResult GetHelpDocList([FromQuery]string lang = "en", [FromQuery]int skip = 0, [FromQuery]int take = 200,
-            [FromQuery]string asc = "", [FromQuery]string desc = "", [FromQuery]string where = "")
+        [HttpGet]
+        public IActionResult GetHelpDocList(string lang = "en", int skip = 0, int take = 200,
+            string asc = "", string desc = "", string where = "")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
@@ -63,12 +60,12 @@ namespace CSSPWebAPI.Controllers
             }
         }
         // GET api/helpDoc/1
-        [Route("{HelpDocID:int}")]
-        public IActionResult GetHelpDocWithID([FromQuery]int HelpDocID, [FromQuery]string lang = "en")
+        [HttpGet("{HelpDocID}")]
+        public IActionResult GetHelpDocWithID(int HelpDocID, string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
-                HelpDocService helpDocService = new HelpDocService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+                HelpDocService helpDocService = new HelpDocService(new Query() { Lang = lang }, db, ContactID);
 
                 helpDocService.Query = helpDocService.FillQuery(typeof(HelpDoc), lang, 0, 1, "", "");
 
@@ -84,12 +81,12 @@ namespace CSSPWebAPI.Controllers
             }
         }
         // POST api/helpDoc
-        [Route("")]
-        public IActionResult Post([FromBody]HelpDoc helpDoc, [FromQuery]string lang = "en")
+        [HttpPost]
+        public IActionResult Post(HelpDoc helpDoc, string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
-                HelpDocService helpDocService = new HelpDocService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+                HelpDocService helpDocService = new HelpDocService(new Query() { Lang = lang }, db, ContactID);
 
                 if (!helpDocService.Add(helpDoc))
                 {
@@ -103,12 +100,12 @@ namespace CSSPWebAPI.Controllers
             }
         }
         // PUT api/helpDoc
-        [Route("")]
-        public IActionResult Put([FromBody]HelpDoc helpDoc, [FromQuery]string lang = "en")
+        [HttpPut]
+        public IActionResult Put(HelpDoc helpDoc, string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
-                HelpDocService helpDocService = new HelpDocService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+                HelpDocService helpDocService = new HelpDocService(new Query() { Lang = lang }, db, ContactID);
 
                 if (!helpDocService.Update(helpDoc))
                 {
@@ -122,12 +119,12 @@ namespace CSSPWebAPI.Controllers
             }
         }
         // DELETE api/helpDoc
-        [Route("")]
-        public IActionResult Delete([FromBody]HelpDoc helpDoc, [FromQuery]string lang = "en")
+        [HttpDelete]
+        public IActionResult Delete(HelpDoc helpDoc, string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
-                HelpDocService helpDocService = new HelpDocService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+                HelpDocService helpDocService = new HelpDocService(new Query() { Lang = lang }, db, ContactID);
 
                 if (!helpDocService.Delete(helpDoc))
                 {

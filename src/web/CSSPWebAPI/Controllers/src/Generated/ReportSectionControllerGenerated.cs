@@ -15,7 +15,7 @@ using System.Linq;
 
 namespace CSSPWebAPI.Controllers
 {
-    [Route("api/reportSection")]
+    [Route("api/[controller]")]
     public partial class ReportSectionController : BaseController
     {
         #region Variables
@@ -25,9 +25,6 @@ namespace CSSPWebAPI.Controllers
         #endregion Properties
 
         #region Constructors
-        public ReportSectionController() : base()
-        {
-        }
         public ReportSectionController(DatabaseTypeEnum dbt = DatabaseTypeEnum.SqlServerTestDB) : base(dbt)
         {
         }
@@ -35,9 +32,9 @@ namespace CSSPWebAPI.Controllers
 
         #region Functions public
         // GET api/reportSection
-        [Route("")]
-        public IActionResult GetReportSectionList([FromQuery]string lang = "en", [FromQuery]int skip = 0, [FromQuery]int take = 200,
-            [FromQuery]string asc = "", [FromQuery]string desc = "", [FromQuery]string where = "")
+        [HttpGet]
+        public IActionResult GetReportSectionList(string lang = "en", int skip = 0, int take = 200,
+            string asc = "", string desc = "", string where = "")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
@@ -63,12 +60,12 @@ namespace CSSPWebAPI.Controllers
             }
         }
         // GET api/reportSection/1
-        [Route("{ReportSectionID:int}")]
-        public IActionResult GetReportSectionWithID([FromQuery]int ReportSectionID, [FromQuery]string lang = "en")
+        [HttpGet("{ReportSectionID}")]
+        public IActionResult GetReportSectionWithID(int ReportSectionID, string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
-                ReportSectionService reportSectionService = new ReportSectionService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+                ReportSectionService reportSectionService = new ReportSectionService(new Query() { Lang = lang }, db, ContactID);
 
                 reportSectionService.Query = reportSectionService.FillQuery(typeof(ReportSection), lang, 0, 1, "", "");
 
@@ -84,12 +81,12 @@ namespace CSSPWebAPI.Controllers
             }
         }
         // POST api/reportSection
-        [Route("")]
-        public IActionResult Post([FromBody]ReportSection reportSection, [FromQuery]string lang = "en")
+        [HttpPost]
+        public IActionResult Post(ReportSection reportSection, string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
-                ReportSectionService reportSectionService = new ReportSectionService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+                ReportSectionService reportSectionService = new ReportSectionService(new Query() { Lang = lang }, db, ContactID);
 
                 if (!reportSectionService.Add(reportSection))
                 {
@@ -103,12 +100,12 @@ namespace CSSPWebAPI.Controllers
             }
         }
         // PUT api/reportSection
-        [Route("")]
-        public IActionResult Put([FromBody]ReportSection reportSection, [FromQuery]string lang = "en")
+        [HttpPut]
+        public IActionResult Put(ReportSection reportSection, string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
-                ReportSectionService reportSectionService = new ReportSectionService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+                ReportSectionService reportSectionService = new ReportSectionService(new Query() { Lang = lang }, db, ContactID);
 
                 if (!reportSectionService.Update(reportSection))
                 {
@@ -122,12 +119,12 @@ namespace CSSPWebAPI.Controllers
             }
         }
         // DELETE api/reportSection
-        [Route("")]
-        public IActionResult Delete([FromBody]ReportSection reportSection, [FromQuery]string lang = "en")
+        [HttpDelete]
+        public IActionResult Delete(ReportSection reportSection, string lang = "en")
         {
             using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
             {
-                ReportSectionService reportSectionService = new ReportSectionService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
+                ReportSectionService reportSectionService = new ReportSectionService(new Query() { Lang = lang }, db, ContactID);
 
                 if (!reportSectionService.Delete(reportSection))
                 {
