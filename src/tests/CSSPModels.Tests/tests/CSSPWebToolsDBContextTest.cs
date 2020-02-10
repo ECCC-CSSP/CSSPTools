@@ -33,18 +33,6 @@ namespace CSSPModels.Tests
             {
                 Assert.Null(db.DatabaseType);
                 Assert.Equal(string.Format(CSSPModelsRes._IsRequired, "DataType"), db.Error);
-                db.Error = "";
-
-                try
-                {
-                    var values = db.TVItems.FirstOrDefault();
-                }
-                catch (Exception)
-                {
-                    // nothing
-                }
-
-                Assert.Equal(string.Format(CSSPModelsRes._IsRequired, "DataType"), db.Error);
             }
         }
         [Fact]
@@ -98,18 +86,6 @@ namespace CSSPModels.Tests
             using (CSSPDBContext db = new CSSPDBContext((DatabaseTypeEnum)1000000))
             {
                 Assert.Null(db.DatabaseType);
-                Assert.Equal(string.Format(CSSPModelsRes._IsRequired, "DataType"), db.Error);
-                db.Error = "";
-
-                try
-                {
-                    var values = db.TVItems.FirstOrDefault();
-                }
-                catch (Exception)
-                {
-                    // nothing
-                }
-
                 Assert.Equal(string.Format(CSSPModelsRes._IsRequired, "DataType"), db.Error);
             }
         }

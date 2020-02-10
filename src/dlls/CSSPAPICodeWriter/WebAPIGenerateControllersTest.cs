@@ -131,13 +131,13 @@ namespace CSSPWebAPIGenerateCodeHelper
 
                     GenerateControllersGetClassList(TypeName, TypeNameLower, sb);
 
-                    GenerateControllersGetClassWithID(TypeName, TypeNameLower, sb);
+                    //GenerateControllersGetClassWithID(TypeName, TypeNameLower, sb);
 
-                    GenerateControllersPostClass(TypeName, TypeNameLower, sb);
+                    //GenerateControllersPostClass(TypeName, TypeNameLower, sb);
 
-                    GenerateControllersPutClass(TypeName, TypeNameLower, sb);
+                    //GenerateControllersPutClass(TypeName, TypeNameLower, sb);
 
-                    GenerateControllersDeleteClass(TypeName, TypeNameLower, sb);
+                    //GenerateControllersDeleteClass(TypeName, TypeNameLower, sb);
 
                     sb.AppendLine(@"    }");
                     sb.AppendLine(@"}");

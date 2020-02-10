@@ -140,37 +140,41 @@ namespace CSSPModels
         #region Overrides
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            Configuration = new ConfigurationBuilder()
+            if (!optionsBuilder.IsConfigured)
+            {
+
+                Configuration = new ConfigurationBuilder()
                  .AddJsonFile(fullPath, optional: true, reloadOnChange: true)
                  .Build();
 
-            string CSSPDBConnectionString = Configuration.GetConnectionString("CSSPDB");
-            string TestDBConnectionString = Configuration.GetConnectionString("TestDB");
+                string CSSPDBConnectionString = Configuration.GetConnectionString("CSSPDB");
+                string TestDBConnectionString = Configuration.GetConnectionString("TestDB");
 
-            if (DatabaseType == null)
-            {
-                this.Error = string.Format(CSSPModelsRes._IsRequired, "DataType");
-                return;
+                if (DatabaseType == null)
+                {
+                    this.Error = string.Format(CSSPModelsRes._IsRequired, "DataType");
+                    return;
+                }
+
+                if (DatabaseType == DatabaseTypeEnum.MemoryTestDB)
+                {
+                    optionsBuilder.UseInMemoryDatabase(TestDBConnectionString);
+                }
+                else if (DatabaseType == DatabaseTypeEnum.MemoryCSSPDB)
+                {
+                    optionsBuilder.UseInMemoryDatabase(CSSPDBConnectionString);
+                }
+                else if (DatabaseType == DatabaseTypeEnum.SqlServerCSSPDB)
+                {
+                    optionsBuilder.UseSqlServer(CSSPDBConnectionString);
+                }
+                else //if (DatabaseType == DatabaseTypeEnum.SqlServerTestDB)
+                {
+                    optionsBuilder.UseSqlServer(TestDBConnectionString);
+                }
             }
 
-            if (DatabaseType == DatabaseTypeEnum.MemoryTestDB)
-            {
-                optionsBuilder.UseInMemoryDatabase(TestDBConnectionString);
-            }
-            else if (DatabaseType == DatabaseTypeEnum.MemoryCSSPDB)
-            {
-                optionsBuilder.UseInMemoryDatabase(CSSPDBConnectionString);
-            }
-            else if (DatabaseType == DatabaseTypeEnum.SqlServerCSSPDB)
-            {
-                optionsBuilder.UseSqlServer(CSSPDBConnectionString);
-            }
-            else //if (DatabaseType == DatabaseTypeEnum.SqlServerTestDB)
-            {
-                optionsBuilder.UseSqlServer(TestDBConnectionString);
-            }
-
-            base.OnConfiguring(optionsBuilder);
+            //base.OnConfiguring(optionsBuilder);
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
