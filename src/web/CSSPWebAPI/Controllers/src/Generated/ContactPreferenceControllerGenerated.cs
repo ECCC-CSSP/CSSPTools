@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using CSSPWebAPI.Controllers.Resources;
 
 namespace CSSPWebAPI.Controllers
 {
@@ -95,7 +96,7 @@ namespace CSSPWebAPI.Controllers
                 else
                 {
                     contactPreference.ValidationResults = null;
-                    return Created(Url.ToString(), contactPreference);
+                    return Created("/api/contactPreference/" + contactPreference.ContactPreferenceID, contactPreference);
                 }
             }
         }

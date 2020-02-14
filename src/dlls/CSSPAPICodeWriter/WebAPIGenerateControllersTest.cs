@@ -108,9 +108,9 @@ namespace CSSPWebAPIGenerateCodeHelper
                     sb.AppendLine(@"using CSSPWebAPI.Controllers;");
                     sb.AppendLine(@"using System.Collections.Generic;");
                     sb.AppendLine(@"using System.Linq;");
-                    sb.AppendLine(@"using System.Web.Http;");
-                    sb.AppendLine(@"using System.Web.Http.Results;");
                     sb.AppendLine(@"using Microsoft.AspNetCore.Mvc;");
+                    sb.AppendLine(@"using System;");
+                    sb.AppendLine(@"using CSSPWebAPI.Controllers.Resources;");
                     sb.AppendLine(@"");
                     sb.AppendLine(@"namespace CSSPWebAPI.Tests.Controllers");
                     sb.AppendLine(@"{");
@@ -131,13 +131,13 @@ namespace CSSPWebAPIGenerateCodeHelper
 
                     GenerateControllersGetClassList(TypeName, TypeNameLower, sb);
 
-                    //GenerateControllersGetClassWithID(TypeName, TypeNameLower, sb);
+                    GenerateControllersGetClassWithID(TypeName, TypeNameLower, sb);
 
-                    //GenerateControllersPostClass(TypeName, TypeNameLower, sb);
+                    GenerateControllersPostClass(TypeName, TypeNameLower, sb);
 
-                    //GenerateControllersPutClass(TypeName, TypeNameLower, sb);
+                    GenerateControllersPutClass(TypeName, TypeNameLower, sb);
 
-                    //GenerateControllersDeleteClass(TypeName, TypeNameLower, sb);
+                    GenerateControllersDeleteClass(TypeName, TypeNameLower, sb);
 
                     sb.AppendLine(@"    }");
                     sb.AppendLine(@"}");

@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using CSSPWebAPI.Controllers.Resources;
 
 namespace CSSPWebAPI.Controllers
 {
@@ -95,7 +96,7 @@ namespace CSSPWebAPI.Controllers
                 else
                 {
                     tideDataValue.ValidationResults = null;
-                    return Created(Url.ToString(), tideDataValue);
+                    return Created("/api/tideDataValue/" + tideDataValue.TideDataValueID, tideDataValue);
                 }
             }
         }

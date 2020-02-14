@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using CSSPWebAPI.Controllers.Resources;
 
 namespace CSSPWebAPI.Controllers
 {
@@ -95,7 +96,7 @@ namespace CSSPWebAPI.Controllers
                 else
                 {
                     appTaskLanguage.ValidationResults = null;
-                    return Created(Url.ToString(), appTaskLanguage);
+                    return Created("/api/appTaskLanguage/" + appTaskLanguage.AppTaskLanguageID, appTaskLanguage);
                 }
             }
         }

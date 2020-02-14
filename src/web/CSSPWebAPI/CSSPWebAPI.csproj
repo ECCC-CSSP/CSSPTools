@@ -37,4 +37,28 @@
     <Folder Include="Controllers\src\Generated\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Compile Update="Controllers\Resources\ControllersRes.fr.Designer.cs">
+      <DependentUpon>ControllersRes.fr.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Update="Controllers\Resources\ControllersRes.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>ControllersRes.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Controllers\Resources\ControllersRes.fr.resx">
+      <LastGenOutput>Controllers.Designer.cs</LastGenOutput>
+      <Generator>PublicResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Controllers\Resources\ControllersRes.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>ControllersRes.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+
 </Project>

@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using CSSPWebAPI.Controllers.Resources;
 
 namespace CSSPWebAPI.Controllers
 {
@@ -95,7 +96,7 @@ namespace CSSPWebAPI.Controllers
                 else
                 {
                     mikeSourceStartEnd.ValidationResults = null;
-                    return Created(Url.ToString(), mikeSourceStartEnd);
+                    return Created("/api/mikeSourceStartEnd/" + mikeSourceStartEnd.MikeSourceStartEndID, mikeSourceStartEnd);
                 }
             }
         }

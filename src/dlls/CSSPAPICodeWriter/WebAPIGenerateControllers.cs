@@ -119,6 +119,7 @@ namespace CSSPWebAPIGenerateCodeHelper
                     sb.AppendLine(@"using System;");
                     sb.AppendLine(@"using System.Collections.Generic;");
                     sb.AppendLine(@"using System.Linq;");
+                    sb.AppendLine(@"using CSSPWebAPI.Controllers.Resources;");
                     sb.AppendLine(@"");
                     sb.AppendLine(@"namespace CSSPWebAPI.Controllers");
                     sb.AppendLine(@"{");
@@ -226,7 +227,7 @@ namespace CSSPWebAPIGenerateCodeHelper
                     sb.AppendLine(@"                else");
                     sb.AppendLine(@"                {");
                     sb.AppendLine($@"                    { TypeNameLower }.ValidationResults = null;");
-                    sb.AppendLine($@"                    return Created(Url.ToString(), { TypeNameLower });");
+                    sb.AppendLine($@"                    return Created(""/api/{ TypeNameLower }/"" + { TypeNameLower }.{ TypeName }ID, { TypeNameLower });");
                     sb.AppendLine(@"                }");
                     sb.AppendLine(@"            }");
                     sb.AppendLine(@"        }");
