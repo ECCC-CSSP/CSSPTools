@@ -156,7 +156,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.NotNull(labSheetDetailController);
                     Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, labSheetDetailController.DatabaseType);
 
-                    LabSheetDetail labSheetDetailLast = new LabSheetDetail();
+                    LabSheetDetail labSheetDetailFirst = new LabSheetDetail();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
                     {
                         Query query = new Query();
@@ -165,16 +165,16 @@ namespace CSSPWebAPI.Tests.Controllers
                         query.Desc = "";
 
                         LabSheetDetailService labSheetDetailService = new LabSheetDetailService(query, db, ContactID);
-                        labSheetDetailLast = (from c in db.LabSheetDetails select c).FirstOrDefault();
+                        labSheetDetailFirst = (from c in db.LabSheetDetails select c).FirstOrDefault();
                     }
 
                     // ok with LabSheetDetail info
-                    IActionResult jsonRet = labSheetDetailController.GetLabSheetDetailWithID(labSheetDetailLast.LabSheetDetailID);
+                    IActionResult jsonRet = labSheetDetailController.GetLabSheetDetailWithID(labSheetDetailFirst.LabSheetDetailID);
                     Assert.IsType<OkObjectResult>(jsonRet);
 
                     OkObjectResult ret = jsonRet as OkObjectResult;
                     LabSheetDetail labSheetDetailRet = (LabSheetDetail)ret.Value;
-                    Assert.Equal(labSheetDetailLast.LabSheetDetailID, labSheetDetailRet.LabSheetDetailID);
+                    Assert.Equal(labSheetDetailFirst.LabSheetDetailID, labSheetDetailRet.LabSheetDetailID);
 
                     BadRequestResult badRequest = jsonRet as BadRequestResult;
                     Assert.Null(badRequest);
@@ -225,23 +225,23 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.NotNull(labSheetDetailController);
                     Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, labSheetDetailController.DatabaseType);
 
-                    LabSheetDetail labSheetDetailLast = new LabSheetDetail();
+                    LabSheetDetail labSheetDetailFirst = new LabSheetDetail();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
                     {
                         Query query = new Query();
                         query.Language = LanguageRequest;
 
                         LabSheetDetailService labSheetDetailService = new LabSheetDetailService(query, db, ContactID);
-                        labSheetDetailLast = (from c in db.LabSheetDetails select c).FirstOrDefault();
+                        labSheetDetailFirst = (from c in db.LabSheetDetails select c).FirstOrDefault();
                     }
 
                     // ok with LabSheetDetail info
-                    IActionResult jsonRet = labSheetDetailController.GetLabSheetDetailWithID(labSheetDetailLast.LabSheetDetailID);
+                    IActionResult jsonRet = labSheetDetailController.GetLabSheetDetailWithID(labSheetDetailFirst.LabSheetDetailID);
                     Assert.IsType<OkObjectResult>(jsonRet);
 
                     OkObjectResult Ret = jsonRet as OkObjectResult;
                     LabSheetDetail labSheetDetailRet = (LabSheetDetail)Ret.Value;
-                    Assert.Equal(labSheetDetailLast.LabSheetDetailID, labSheetDetailRet.LabSheetDetailID);
+                    Assert.Equal(labSheetDetailFirst.LabSheetDetailID, labSheetDetailRet.LabSheetDetailID);
 
                     BadRequestResult badRequest = jsonRet as BadRequestResult;
                     Assert.Null(badRequest);
@@ -283,7 +283,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.NotNull(labSheetDetailController);
                     Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, labSheetDetailController.DatabaseType);
 
-                    LabSheetDetail labSheetDetailLast = new LabSheetDetail();
+                    LabSheetDetail labSheetDetailFirst = new LabSheetDetail();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
                     {
                         Query query = new Query();
@@ -292,16 +292,16 @@ namespace CSSPWebAPI.Tests.Controllers
                         query.Desc = "";
 
                         LabSheetDetailService labSheetDetailService = new LabSheetDetailService(query, db, ContactID);
-                        labSheetDetailLast = (from c in db.LabSheetDetails select c).FirstOrDefault();
+                        labSheetDetailFirst = (from c in db.LabSheetDetails select c).FirstOrDefault();
                     }
 
                     // ok with LabSheetDetail info
-                    IActionResult jsonRet = labSheetDetailController.GetLabSheetDetailWithID(labSheetDetailLast.LabSheetDetailID);
+                    IActionResult jsonRet = labSheetDetailController.GetLabSheetDetailWithID(labSheetDetailFirst.LabSheetDetailID);
                     Assert.IsType<OkObjectResult>(jsonRet);
 
                     OkObjectResult Ret = jsonRet as OkObjectResult;
                     LabSheetDetail labSheetDetailRet = (LabSheetDetail)Ret.Value;
-                    Assert.Equal(labSheetDetailLast.LabSheetDetailID, labSheetDetailRet.LabSheetDetailID);
+                    Assert.Equal(labSheetDetailFirst.LabSheetDetailID, labSheetDetailRet.LabSheetDetailID);
 
                     BadRequestResult badRequest = jsonRet as BadRequestResult;
                     Assert.Null(badRequest);

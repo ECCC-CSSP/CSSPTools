@@ -156,7 +156,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.NotNull(tideDataValueController);
                     Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, tideDataValueController.DatabaseType);
 
-                    TideDataValue tideDataValueLast = new TideDataValue();
+                    TideDataValue tideDataValueFirst = new TideDataValue();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
                     {
                         Query query = new Query();
@@ -165,16 +165,16 @@ namespace CSSPWebAPI.Tests.Controllers
                         query.Desc = "";
 
                         TideDataValueService tideDataValueService = new TideDataValueService(query, db, ContactID);
-                        tideDataValueLast = (from c in db.TideDataValues select c).FirstOrDefault();
+                        tideDataValueFirst = (from c in db.TideDataValues select c).FirstOrDefault();
                     }
 
                     // ok with TideDataValue info
-                    IActionResult jsonRet = tideDataValueController.GetTideDataValueWithID(tideDataValueLast.TideDataValueID);
+                    IActionResult jsonRet = tideDataValueController.GetTideDataValueWithID(tideDataValueFirst.TideDataValueID);
                     Assert.IsType<OkObjectResult>(jsonRet);
 
                     OkObjectResult ret = jsonRet as OkObjectResult;
                     TideDataValue tideDataValueRet = (TideDataValue)ret.Value;
-                    Assert.Equal(tideDataValueLast.TideDataValueID, tideDataValueRet.TideDataValueID);
+                    Assert.Equal(tideDataValueFirst.TideDataValueID, tideDataValueRet.TideDataValueID);
 
                     BadRequestResult badRequest = jsonRet as BadRequestResult;
                     Assert.Null(badRequest);
@@ -225,23 +225,23 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.NotNull(tideDataValueController);
                     Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, tideDataValueController.DatabaseType);
 
-                    TideDataValue tideDataValueLast = new TideDataValue();
+                    TideDataValue tideDataValueFirst = new TideDataValue();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
                     {
                         Query query = new Query();
                         query.Language = LanguageRequest;
 
                         TideDataValueService tideDataValueService = new TideDataValueService(query, db, ContactID);
-                        tideDataValueLast = (from c in db.TideDataValues select c).FirstOrDefault();
+                        tideDataValueFirst = (from c in db.TideDataValues select c).FirstOrDefault();
                     }
 
                     // ok with TideDataValue info
-                    IActionResult jsonRet = tideDataValueController.GetTideDataValueWithID(tideDataValueLast.TideDataValueID);
+                    IActionResult jsonRet = tideDataValueController.GetTideDataValueWithID(tideDataValueFirst.TideDataValueID);
                     Assert.IsType<OkObjectResult>(jsonRet);
 
                     OkObjectResult Ret = jsonRet as OkObjectResult;
                     TideDataValue tideDataValueRet = (TideDataValue)Ret.Value;
-                    Assert.Equal(tideDataValueLast.TideDataValueID, tideDataValueRet.TideDataValueID);
+                    Assert.Equal(tideDataValueFirst.TideDataValueID, tideDataValueRet.TideDataValueID);
 
                     BadRequestResult badRequest = jsonRet as BadRequestResult;
                     Assert.Null(badRequest);
@@ -283,7 +283,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.NotNull(tideDataValueController);
                     Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, tideDataValueController.DatabaseType);
 
-                    TideDataValue tideDataValueLast = new TideDataValue();
+                    TideDataValue tideDataValueFirst = new TideDataValue();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
                     {
                         Query query = new Query();
@@ -292,16 +292,16 @@ namespace CSSPWebAPI.Tests.Controllers
                         query.Desc = "";
 
                         TideDataValueService tideDataValueService = new TideDataValueService(query, db, ContactID);
-                        tideDataValueLast = (from c in db.TideDataValues select c).FirstOrDefault();
+                        tideDataValueFirst = (from c in db.TideDataValues select c).FirstOrDefault();
                     }
 
                     // ok with TideDataValue info
-                    IActionResult jsonRet = tideDataValueController.GetTideDataValueWithID(tideDataValueLast.TideDataValueID);
+                    IActionResult jsonRet = tideDataValueController.GetTideDataValueWithID(tideDataValueFirst.TideDataValueID);
                     Assert.IsType<OkObjectResult>(jsonRet);
 
                     OkObjectResult Ret = jsonRet as OkObjectResult;
                     TideDataValue tideDataValueRet = (TideDataValue)Ret.Value;
-                    Assert.Equal(tideDataValueLast.TideDataValueID, tideDataValueRet.TideDataValueID);
+                    Assert.Equal(tideDataValueFirst.TideDataValueID, tideDataValueRet.TideDataValueID);
 
                     BadRequestResult badRequest = jsonRet as BadRequestResult;
                     Assert.Null(badRequest);

@@ -156,7 +156,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.NotNull(mwqmSiteController);
                     Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, mwqmSiteController.DatabaseType);
 
-                    MWQMSite mwqmSiteLast = new MWQMSite();
+                    MWQMSite mwqmSiteFirst = new MWQMSite();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
                     {
                         Query query = new Query();
@@ -165,16 +165,16 @@ namespace CSSPWebAPI.Tests.Controllers
                         query.Desc = "";
 
                         MWQMSiteService mwqmSiteService = new MWQMSiteService(query, db, ContactID);
-                        mwqmSiteLast = (from c in db.MWQMSites select c).FirstOrDefault();
+                        mwqmSiteFirst = (from c in db.MWQMSites select c).FirstOrDefault();
                     }
 
                     // ok with MWQMSite info
-                    IActionResult jsonRet = mwqmSiteController.GetMWQMSiteWithID(mwqmSiteLast.MWQMSiteID);
+                    IActionResult jsonRet = mwqmSiteController.GetMWQMSiteWithID(mwqmSiteFirst.MWQMSiteID);
                     Assert.IsType<OkObjectResult>(jsonRet);
 
                     OkObjectResult ret = jsonRet as OkObjectResult;
                     MWQMSite mwqmSiteRet = (MWQMSite)ret.Value;
-                    Assert.Equal(mwqmSiteLast.MWQMSiteID, mwqmSiteRet.MWQMSiteID);
+                    Assert.Equal(mwqmSiteFirst.MWQMSiteID, mwqmSiteRet.MWQMSiteID);
 
                     BadRequestResult badRequest = jsonRet as BadRequestResult;
                     Assert.Null(badRequest);
@@ -225,23 +225,23 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.NotNull(mwqmSiteController);
                     Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, mwqmSiteController.DatabaseType);
 
-                    MWQMSite mwqmSiteLast = new MWQMSite();
+                    MWQMSite mwqmSiteFirst = new MWQMSite();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
                     {
                         Query query = new Query();
                         query.Language = LanguageRequest;
 
                         MWQMSiteService mwqmSiteService = new MWQMSiteService(query, db, ContactID);
-                        mwqmSiteLast = (from c in db.MWQMSites select c).FirstOrDefault();
+                        mwqmSiteFirst = (from c in db.MWQMSites select c).FirstOrDefault();
                     }
 
                     // ok with MWQMSite info
-                    IActionResult jsonRet = mwqmSiteController.GetMWQMSiteWithID(mwqmSiteLast.MWQMSiteID);
+                    IActionResult jsonRet = mwqmSiteController.GetMWQMSiteWithID(mwqmSiteFirst.MWQMSiteID);
                     Assert.IsType<OkObjectResult>(jsonRet);
 
                     OkObjectResult Ret = jsonRet as OkObjectResult;
                     MWQMSite mwqmSiteRet = (MWQMSite)Ret.Value;
-                    Assert.Equal(mwqmSiteLast.MWQMSiteID, mwqmSiteRet.MWQMSiteID);
+                    Assert.Equal(mwqmSiteFirst.MWQMSiteID, mwqmSiteRet.MWQMSiteID);
 
                     BadRequestResult badRequest = jsonRet as BadRequestResult;
                     Assert.Null(badRequest);
@@ -283,7 +283,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.NotNull(mwqmSiteController);
                     Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, mwqmSiteController.DatabaseType);
 
-                    MWQMSite mwqmSiteLast = new MWQMSite();
+                    MWQMSite mwqmSiteFirst = new MWQMSite();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
                     {
                         Query query = new Query();
@@ -292,16 +292,16 @@ namespace CSSPWebAPI.Tests.Controllers
                         query.Desc = "";
 
                         MWQMSiteService mwqmSiteService = new MWQMSiteService(query, db, ContactID);
-                        mwqmSiteLast = (from c in db.MWQMSites select c).FirstOrDefault();
+                        mwqmSiteFirst = (from c in db.MWQMSites select c).FirstOrDefault();
                     }
 
                     // ok with MWQMSite info
-                    IActionResult jsonRet = mwqmSiteController.GetMWQMSiteWithID(mwqmSiteLast.MWQMSiteID);
+                    IActionResult jsonRet = mwqmSiteController.GetMWQMSiteWithID(mwqmSiteFirst.MWQMSiteID);
                     Assert.IsType<OkObjectResult>(jsonRet);
 
                     OkObjectResult Ret = jsonRet as OkObjectResult;
                     MWQMSite mwqmSiteRet = (MWQMSite)Ret.Value;
-                    Assert.Equal(mwqmSiteLast.MWQMSiteID, mwqmSiteRet.MWQMSiteID);
+                    Assert.Equal(mwqmSiteFirst.MWQMSiteID, mwqmSiteRet.MWQMSiteID);
 
                     BadRequestResult badRequest = jsonRet as BadRequestResult;
                     Assert.Null(badRequest);

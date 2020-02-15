@@ -156,7 +156,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.NotNull(emailController);
                     Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, emailController.DatabaseType);
 
-                    Email emailLast = new Email();
+                    Email emailFirst = new Email();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
                     {
                         Query query = new Query();
@@ -165,16 +165,16 @@ namespace CSSPWebAPI.Tests.Controllers
                         query.Desc = "";
 
                         EmailService emailService = new EmailService(query, db, ContactID);
-                        emailLast = (from c in db.Emails select c).FirstOrDefault();
+                        emailFirst = (from c in db.Emails select c).FirstOrDefault();
                     }
 
                     // ok with Email info
-                    IActionResult jsonRet = emailController.GetEmailWithID(emailLast.EmailID);
+                    IActionResult jsonRet = emailController.GetEmailWithID(emailFirst.EmailID);
                     Assert.IsType<OkObjectResult>(jsonRet);
 
                     OkObjectResult ret = jsonRet as OkObjectResult;
                     Email emailRet = (Email)ret.Value;
-                    Assert.Equal(emailLast.EmailID, emailRet.EmailID);
+                    Assert.Equal(emailFirst.EmailID, emailRet.EmailID);
 
                     BadRequestResult badRequest = jsonRet as BadRequestResult;
                     Assert.Null(badRequest);
@@ -225,23 +225,23 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.NotNull(emailController);
                     Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, emailController.DatabaseType);
 
-                    Email emailLast = new Email();
+                    Email emailFirst = new Email();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
                     {
                         Query query = new Query();
                         query.Language = LanguageRequest;
 
                         EmailService emailService = new EmailService(query, db, ContactID);
-                        emailLast = (from c in db.Emails select c).FirstOrDefault();
+                        emailFirst = (from c in db.Emails select c).FirstOrDefault();
                     }
 
                     // ok with Email info
-                    IActionResult jsonRet = emailController.GetEmailWithID(emailLast.EmailID);
+                    IActionResult jsonRet = emailController.GetEmailWithID(emailFirst.EmailID);
                     Assert.IsType<OkObjectResult>(jsonRet);
 
                     OkObjectResult Ret = jsonRet as OkObjectResult;
                     Email emailRet = (Email)Ret.Value;
-                    Assert.Equal(emailLast.EmailID, emailRet.EmailID);
+                    Assert.Equal(emailFirst.EmailID, emailRet.EmailID);
 
                     BadRequestResult badRequest = jsonRet as BadRequestResult;
                     Assert.Null(badRequest);
@@ -283,7 +283,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.NotNull(emailController);
                     Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, emailController.DatabaseType);
 
-                    Email emailLast = new Email();
+                    Email emailFirst = new Email();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
                     {
                         Query query = new Query();
@@ -292,16 +292,16 @@ namespace CSSPWebAPI.Tests.Controllers
                         query.Desc = "";
 
                         EmailService emailService = new EmailService(query, db, ContactID);
-                        emailLast = (from c in db.Emails select c).FirstOrDefault();
+                        emailFirst = (from c in db.Emails select c).FirstOrDefault();
                     }
 
                     // ok with Email info
-                    IActionResult jsonRet = emailController.GetEmailWithID(emailLast.EmailID);
+                    IActionResult jsonRet = emailController.GetEmailWithID(emailFirst.EmailID);
                     Assert.IsType<OkObjectResult>(jsonRet);
 
                     OkObjectResult Ret = jsonRet as OkObjectResult;
                     Email emailRet = (Email)Ret.Value;
-                    Assert.Equal(emailLast.EmailID, emailRet.EmailID);
+                    Assert.Equal(emailFirst.EmailID, emailRet.EmailID);
 
                     BadRequestResult badRequest = jsonRet as BadRequestResult;
                     Assert.Null(badRequest);

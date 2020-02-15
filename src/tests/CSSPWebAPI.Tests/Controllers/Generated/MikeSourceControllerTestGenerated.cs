@@ -156,7 +156,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.NotNull(mikeSourceController);
                     Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, mikeSourceController.DatabaseType);
 
-                    MikeSource mikeSourceLast = new MikeSource();
+                    MikeSource mikeSourceFirst = new MikeSource();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
                     {
                         Query query = new Query();
@@ -165,16 +165,16 @@ namespace CSSPWebAPI.Tests.Controllers
                         query.Desc = "";
 
                         MikeSourceService mikeSourceService = new MikeSourceService(query, db, ContactID);
-                        mikeSourceLast = (from c in db.MikeSources select c).FirstOrDefault();
+                        mikeSourceFirst = (from c in db.MikeSources select c).FirstOrDefault();
                     }
 
                     // ok with MikeSource info
-                    IActionResult jsonRet = mikeSourceController.GetMikeSourceWithID(mikeSourceLast.MikeSourceID);
+                    IActionResult jsonRet = mikeSourceController.GetMikeSourceWithID(mikeSourceFirst.MikeSourceID);
                     Assert.IsType<OkObjectResult>(jsonRet);
 
                     OkObjectResult ret = jsonRet as OkObjectResult;
                     MikeSource mikeSourceRet = (MikeSource)ret.Value;
-                    Assert.Equal(mikeSourceLast.MikeSourceID, mikeSourceRet.MikeSourceID);
+                    Assert.Equal(mikeSourceFirst.MikeSourceID, mikeSourceRet.MikeSourceID);
 
                     BadRequestResult badRequest = jsonRet as BadRequestResult;
                     Assert.Null(badRequest);
@@ -225,23 +225,23 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.NotNull(mikeSourceController);
                     Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, mikeSourceController.DatabaseType);
 
-                    MikeSource mikeSourceLast = new MikeSource();
+                    MikeSource mikeSourceFirst = new MikeSource();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
                     {
                         Query query = new Query();
                         query.Language = LanguageRequest;
 
                         MikeSourceService mikeSourceService = new MikeSourceService(query, db, ContactID);
-                        mikeSourceLast = (from c in db.MikeSources select c).FirstOrDefault();
+                        mikeSourceFirst = (from c in db.MikeSources select c).FirstOrDefault();
                     }
 
                     // ok with MikeSource info
-                    IActionResult jsonRet = mikeSourceController.GetMikeSourceWithID(mikeSourceLast.MikeSourceID);
+                    IActionResult jsonRet = mikeSourceController.GetMikeSourceWithID(mikeSourceFirst.MikeSourceID);
                     Assert.IsType<OkObjectResult>(jsonRet);
 
                     OkObjectResult Ret = jsonRet as OkObjectResult;
                     MikeSource mikeSourceRet = (MikeSource)Ret.Value;
-                    Assert.Equal(mikeSourceLast.MikeSourceID, mikeSourceRet.MikeSourceID);
+                    Assert.Equal(mikeSourceFirst.MikeSourceID, mikeSourceRet.MikeSourceID);
 
                     BadRequestResult badRequest = jsonRet as BadRequestResult;
                     Assert.Null(badRequest);
@@ -283,7 +283,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.NotNull(mikeSourceController);
                     Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, mikeSourceController.DatabaseType);
 
-                    MikeSource mikeSourceLast = new MikeSource();
+                    MikeSource mikeSourceFirst = new MikeSource();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
                     {
                         Query query = new Query();
@@ -292,16 +292,16 @@ namespace CSSPWebAPI.Tests.Controllers
                         query.Desc = "";
 
                         MikeSourceService mikeSourceService = new MikeSourceService(query, db, ContactID);
-                        mikeSourceLast = (from c in db.MikeSources select c).FirstOrDefault();
+                        mikeSourceFirst = (from c in db.MikeSources select c).FirstOrDefault();
                     }
 
                     // ok with MikeSource info
-                    IActionResult jsonRet = mikeSourceController.GetMikeSourceWithID(mikeSourceLast.MikeSourceID);
+                    IActionResult jsonRet = mikeSourceController.GetMikeSourceWithID(mikeSourceFirst.MikeSourceID);
                     Assert.IsType<OkObjectResult>(jsonRet);
 
                     OkObjectResult Ret = jsonRet as OkObjectResult;
                     MikeSource mikeSourceRet = (MikeSource)Ret.Value;
-                    Assert.Equal(mikeSourceLast.MikeSourceID, mikeSourceRet.MikeSourceID);
+                    Assert.Equal(mikeSourceFirst.MikeSourceID, mikeSourceRet.MikeSourceID);
 
                     BadRequestResult badRequest = jsonRet as BadRequestResult;
                     Assert.Null(badRequest);

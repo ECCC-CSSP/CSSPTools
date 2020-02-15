@@ -156,7 +156,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.NotNull(vpResultController);
                     Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, vpResultController.DatabaseType);
 
-                    VPResult vpResultLast = new VPResult();
+                    VPResult vpResultFirst = new VPResult();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
                     {
                         Query query = new Query();
@@ -165,16 +165,16 @@ namespace CSSPWebAPI.Tests.Controllers
                         query.Desc = "";
 
                         VPResultService vpResultService = new VPResultService(query, db, ContactID);
-                        vpResultLast = (from c in db.VPResults select c).FirstOrDefault();
+                        vpResultFirst = (from c in db.VPResults select c).FirstOrDefault();
                     }
 
                     // ok with VPResult info
-                    IActionResult jsonRet = vpResultController.GetVPResultWithID(vpResultLast.VPResultID);
+                    IActionResult jsonRet = vpResultController.GetVPResultWithID(vpResultFirst.VPResultID);
                     Assert.IsType<OkObjectResult>(jsonRet);
 
                     OkObjectResult ret = jsonRet as OkObjectResult;
                     VPResult vpResultRet = (VPResult)ret.Value;
-                    Assert.Equal(vpResultLast.VPResultID, vpResultRet.VPResultID);
+                    Assert.Equal(vpResultFirst.VPResultID, vpResultRet.VPResultID);
 
                     BadRequestResult badRequest = jsonRet as BadRequestResult;
                     Assert.Null(badRequest);
@@ -225,23 +225,23 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.NotNull(vpResultController);
                     Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, vpResultController.DatabaseType);
 
-                    VPResult vpResultLast = new VPResult();
+                    VPResult vpResultFirst = new VPResult();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
                     {
                         Query query = new Query();
                         query.Language = LanguageRequest;
 
                         VPResultService vpResultService = new VPResultService(query, db, ContactID);
-                        vpResultLast = (from c in db.VPResults select c).FirstOrDefault();
+                        vpResultFirst = (from c in db.VPResults select c).FirstOrDefault();
                     }
 
                     // ok with VPResult info
-                    IActionResult jsonRet = vpResultController.GetVPResultWithID(vpResultLast.VPResultID);
+                    IActionResult jsonRet = vpResultController.GetVPResultWithID(vpResultFirst.VPResultID);
                     Assert.IsType<OkObjectResult>(jsonRet);
 
                     OkObjectResult Ret = jsonRet as OkObjectResult;
                     VPResult vpResultRet = (VPResult)Ret.Value;
-                    Assert.Equal(vpResultLast.VPResultID, vpResultRet.VPResultID);
+                    Assert.Equal(vpResultFirst.VPResultID, vpResultRet.VPResultID);
 
                     BadRequestResult badRequest = jsonRet as BadRequestResult;
                     Assert.Null(badRequest);
@@ -283,7 +283,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.NotNull(vpResultController);
                     Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, vpResultController.DatabaseType);
 
-                    VPResult vpResultLast = new VPResult();
+                    VPResult vpResultFirst = new VPResult();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
                     {
                         Query query = new Query();
@@ -292,16 +292,16 @@ namespace CSSPWebAPI.Tests.Controllers
                         query.Desc = "";
 
                         VPResultService vpResultService = new VPResultService(query, db, ContactID);
-                        vpResultLast = (from c in db.VPResults select c).FirstOrDefault();
+                        vpResultFirst = (from c in db.VPResults select c).FirstOrDefault();
                     }
 
                     // ok with VPResult info
-                    IActionResult jsonRet = vpResultController.GetVPResultWithID(vpResultLast.VPResultID);
+                    IActionResult jsonRet = vpResultController.GetVPResultWithID(vpResultFirst.VPResultID);
                     Assert.IsType<OkObjectResult>(jsonRet);
 
                     OkObjectResult Ret = jsonRet as OkObjectResult;
                     VPResult vpResultRet = (VPResult)Ret.Value;
-                    Assert.Equal(vpResultLast.VPResultID, vpResultRet.VPResultID);
+                    Assert.Equal(vpResultFirst.VPResultID, vpResultRet.VPResultID);
 
                     BadRequestResult badRequest = jsonRet as BadRequestResult;
                     Assert.Null(badRequest);

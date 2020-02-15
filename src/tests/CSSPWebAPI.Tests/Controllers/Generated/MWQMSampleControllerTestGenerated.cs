@@ -156,7 +156,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.NotNull(mwqmSampleController);
                     Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, mwqmSampleController.DatabaseType);
 
-                    MWQMSample mwqmSampleLast = new MWQMSample();
+                    MWQMSample mwqmSampleFirst = new MWQMSample();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
                     {
                         Query query = new Query();
@@ -165,16 +165,16 @@ namespace CSSPWebAPI.Tests.Controllers
                         query.Desc = "";
 
                         MWQMSampleService mwqmSampleService = new MWQMSampleService(query, db, ContactID);
-                        mwqmSampleLast = (from c in db.MWQMSamples select c).FirstOrDefault();
+                        mwqmSampleFirst = (from c in db.MWQMSamples select c).FirstOrDefault();
                     }
 
                     // ok with MWQMSample info
-                    IActionResult jsonRet = mwqmSampleController.GetMWQMSampleWithID(mwqmSampleLast.MWQMSampleID);
+                    IActionResult jsonRet = mwqmSampleController.GetMWQMSampleWithID(mwqmSampleFirst.MWQMSampleID);
                     Assert.IsType<OkObjectResult>(jsonRet);
 
                     OkObjectResult ret = jsonRet as OkObjectResult;
                     MWQMSample mwqmSampleRet = (MWQMSample)ret.Value;
-                    Assert.Equal(mwqmSampleLast.MWQMSampleID, mwqmSampleRet.MWQMSampleID);
+                    Assert.Equal(mwqmSampleFirst.MWQMSampleID, mwqmSampleRet.MWQMSampleID);
 
                     BadRequestResult badRequest = jsonRet as BadRequestResult;
                     Assert.Null(badRequest);
@@ -225,23 +225,23 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.NotNull(mwqmSampleController);
                     Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, mwqmSampleController.DatabaseType);
 
-                    MWQMSample mwqmSampleLast = new MWQMSample();
+                    MWQMSample mwqmSampleFirst = new MWQMSample();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
                     {
                         Query query = new Query();
                         query.Language = LanguageRequest;
 
                         MWQMSampleService mwqmSampleService = new MWQMSampleService(query, db, ContactID);
-                        mwqmSampleLast = (from c in db.MWQMSamples select c).FirstOrDefault();
+                        mwqmSampleFirst = (from c in db.MWQMSamples select c).FirstOrDefault();
                     }
 
                     // ok with MWQMSample info
-                    IActionResult jsonRet = mwqmSampleController.GetMWQMSampleWithID(mwqmSampleLast.MWQMSampleID);
+                    IActionResult jsonRet = mwqmSampleController.GetMWQMSampleWithID(mwqmSampleFirst.MWQMSampleID);
                     Assert.IsType<OkObjectResult>(jsonRet);
 
                     OkObjectResult Ret = jsonRet as OkObjectResult;
                     MWQMSample mwqmSampleRet = (MWQMSample)Ret.Value;
-                    Assert.Equal(mwqmSampleLast.MWQMSampleID, mwqmSampleRet.MWQMSampleID);
+                    Assert.Equal(mwqmSampleFirst.MWQMSampleID, mwqmSampleRet.MWQMSampleID);
 
                     BadRequestResult badRequest = jsonRet as BadRequestResult;
                     Assert.Null(badRequest);
@@ -283,7 +283,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.NotNull(mwqmSampleController);
                     Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, mwqmSampleController.DatabaseType);
 
-                    MWQMSample mwqmSampleLast = new MWQMSample();
+                    MWQMSample mwqmSampleFirst = new MWQMSample();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
                     {
                         Query query = new Query();
@@ -292,16 +292,16 @@ namespace CSSPWebAPI.Tests.Controllers
                         query.Desc = "";
 
                         MWQMSampleService mwqmSampleService = new MWQMSampleService(query, db, ContactID);
-                        mwqmSampleLast = (from c in db.MWQMSamples select c).FirstOrDefault();
+                        mwqmSampleFirst = (from c in db.MWQMSamples select c).FirstOrDefault();
                     }
 
                     // ok with MWQMSample info
-                    IActionResult jsonRet = mwqmSampleController.GetMWQMSampleWithID(mwqmSampleLast.MWQMSampleID);
+                    IActionResult jsonRet = mwqmSampleController.GetMWQMSampleWithID(mwqmSampleFirst.MWQMSampleID);
                     Assert.IsType<OkObjectResult>(jsonRet);
 
                     OkObjectResult Ret = jsonRet as OkObjectResult;
                     MWQMSample mwqmSampleRet = (MWQMSample)Ret.Value;
-                    Assert.Equal(mwqmSampleLast.MWQMSampleID, mwqmSampleRet.MWQMSampleID);
+                    Assert.Equal(mwqmSampleFirst.MWQMSampleID, mwqmSampleRet.MWQMSampleID);
 
                     BadRequestResult badRequest = jsonRet as BadRequestResult;
                     Assert.Null(badRequest);

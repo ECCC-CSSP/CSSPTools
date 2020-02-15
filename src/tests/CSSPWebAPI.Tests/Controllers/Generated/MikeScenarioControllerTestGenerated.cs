@@ -156,7 +156,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.NotNull(mikeScenarioController);
                     Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, mikeScenarioController.DatabaseType);
 
-                    MikeScenario mikeScenarioLast = new MikeScenario();
+                    MikeScenario mikeScenarioFirst = new MikeScenario();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
                     {
                         Query query = new Query();
@@ -165,16 +165,16 @@ namespace CSSPWebAPI.Tests.Controllers
                         query.Desc = "";
 
                         MikeScenarioService mikeScenarioService = new MikeScenarioService(query, db, ContactID);
-                        mikeScenarioLast = (from c in db.MikeScenarios select c).FirstOrDefault();
+                        mikeScenarioFirst = (from c in db.MikeScenarios select c).FirstOrDefault();
                     }
 
                     // ok with MikeScenario info
-                    IActionResult jsonRet = mikeScenarioController.GetMikeScenarioWithID(mikeScenarioLast.MikeScenarioID);
+                    IActionResult jsonRet = mikeScenarioController.GetMikeScenarioWithID(mikeScenarioFirst.MikeScenarioID);
                     Assert.IsType<OkObjectResult>(jsonRet);
 
                     OkObjectResult ret = jsonRet as OkObjectResult;
                     MikeScenario mikeScenarioRet = (MikeScenario)ret.Value;
-                    Assert.Equal(mikeScenarioLast.MikeScenarioID, mikeScenarioRet.MikeScenarioID);
+                    Assert.Equal(mikeScenarioFirst.MikeScenarioID, mikeScenarioRet.MikeScenarioID);
 
                     BadRequestResult badRequest = jsonRet as BadRequestResult;
                     Assert.Null(badRequest);
@@ -225,23 +225,23 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.NotNull(mikeScenarioController);
                     Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, mikeScenarioController.DatabaseType);
 
-                    MikeScenario mikeScenarioLast = new MikeScenario();
+                    MikeScenario mikeScenarioFirst = new MikeScenario();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
                     {
                         Query query = new Query();
                         query.Language = LanguageRequest;
 
                         MikeScenarioService mikeScenarioService = new MikeScenarioService(query, db, ContactID);
-                        mikeScenarioLast = (from c in db.MikeScenarios select c).FirstOrDefault();
+                        mikeScenarioFirst = (from c in db.MikeScenarios select c).FirstOrDefault();
                     }
 
                     // ok with MikeScenario info
-                    IActionResult jsonRet = mikeScenarioController.GetMikeScenarioWithID(mikeScenarioLast.MikeScenarioID);
+                    IActionResult jsonRet = mikeScenarioController.GetMikeScenarioWithID(mikeScenarioFirst.MikeScenarioID);
                     Assert.IsType<OkObjectResult>(jsonRet);
 
                     OkObjectResult Ret = jsonRet as OkObjectResult;
                     MikeScenario mikeScenarioRet = (MikeScenario)Ret.Value;
-                    Assert.Equal(mikeScenarioLast.MikeScenarioID, mikeScenarioRet.MikeScenarioID);
+                    Assert.Equal(mikeScenarioFirst.MikeScenarioID, mikeScenarioRet.MikeScenarioID);
 
                     BadRequestResult badRequest = jsonRet as BadRequestResult;
                     Assert.Null(badRequest);
@@ -283,7 +283,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.NotNull(mikeScenarioController);
                     Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, mikeScenarioController.DatabaseType);
 
-                    MikeScenario mikeScenarioLast = new MikeScenario();
+                    MikeScenario mikeScenarioFirst = new MikeScenario();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
                     {
                         Query query = new Query();
@@ -292,16 +292,16 @@ namespace CSSPWebAPI.Tests.Controllers
                         query.Desc = "";
 
                         MikeScenarioService mikeScenarioService = new MikeScenarioService(query, db, ContactID);
-                        mikeScenarioLast = (from c in db.MikeScenarios select c).FirstOrDefault();
+                        mikeScenarioFirst = (from c in db.MikeScenarios select c).FirstOrDefault();
                     }
 
                     // ok with MikeScenario info
-                    IActionResult jsonRet = mikeScenarioController.GetMikeScenarioWithID(mikeScenarioLast.MikeScenarioID);
+                    IActionResult jsonRet = mikeScenarioController.GetMikeScenarioWithID(mikeScenarioFirst.MikeScenarioID);
                     Assert.IsType<OkObjectResult>(jsonRet);
 
                     OkObjectResult Ret = jsonRet as OkObjectResult;
                     MikeScenario mikeScenarioRet = (MikeScenario)Ret.Value;
-                    Assert.Equal(mikeScenarioLast.MikeScenarioID, mikeScenarioRet.MikeScenarioID);
+                    Assert.Equal(mikeScenarioFirst.MikeScenarioID, mikeScenarioRet.MikeScenarioID);
 
                     BadRequestResult badRequest = jsonRet as BadRequestResult;
                     Assert.Null(badRequest);

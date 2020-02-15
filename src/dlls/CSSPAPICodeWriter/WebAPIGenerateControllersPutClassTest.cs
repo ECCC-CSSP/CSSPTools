@@ -34,7 +34,7 @@ namespace CSSPWebAPIGenerateCodeHelper
             sb.AppendLine($@"                    Assert.NotNull({ TypeNameLower }Controller);");
             sb.AppendLine($@"                    Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, { TypeNameLower }Controller.DatabaseType);");
             sb.AppendLine(@"");
-            sb.AppendLine($@"                    { TypeName } { TypeNameLower }Last = new { TypeName }();");
+            sb.AppendLine($@"                    { TypeName } { TypeNameLower }First = new { TypeName }();");
             sb.AppendLine(@"                    using (CSSPDBContext db = new CSSPDBContext(DatabaseType))");
             sb.AppendLine(@"                    {");
             sb.AppendLine(@"                        Query query = new Query();");
@@ -43,35 +43,28 @@ namespace CSSPWebAPIGenerateCodeHelper
             sb.AppendLine($@"                        { TypeName }Service { TypeNameLower }Service = new { TypeName }Service(query, db, ContactID);");
             if (TypeName == "TVItem")
             {
-                if (TypeName == "Address")
-                {
-                    sb.AppendLine($@"                        { TypeNameLower }Last = (from c in db.{ TypeName }es select c).LastOrDefault();");
-                }
-                else
-                {
-                    sb.AppendLine($@"                        { TypeNameLower }Last = (from c in db.{ TypeName }s select c).LastOrDefault();");
-                }
+                sb.AppendLine($@"                        { TypeNameLower }First = (from c in db.{ TypeName }s select c).Skip(2).FirstOrDefault();");
             }
             else
             {
                 if (TypeName == "Address")
                 {
-                    sb.AppendLine($@"                        { TypeNameLower }Last = (from c in db.{ TypeName }es select c).FirstOrDefault();");
+                    sb.AppendLine($@"                        { TypeNameLower }First = (from c in db.{ TypeName }es select c).FirstOrDefault();");
                 }
                 else
                 {
-                    sb.AppendLine($@"                        { TypeNameLower }Last = (from c in db.{ TypeName }s select c).FirstOrDefault();");
+                    sb.AppendLine($@"                        { TypeNameLower }First = (from c in db.{ TypeName }s select c).FirstOrDefault();");
                 }
             }
             sb.AppendLine(@"                    }");
             sb.AppendLine(@"");
             sb.AppendLine($@"                    // ok with { TypeName } info");
-            sb.AppendLine($@"                    IActionResult jsonRet = { TypeNameLower }Controller.Get{ TypeName }WithID({ TypeNameLower }Last.{ TypeName }ID);");
+            sb.AppendLine($@"                    IActionResult jsonRet = { TypeNameLower }Controller.Get{ TypeName }WithID({ TypeNameLower }First.{ TypeName }ID);");
             sb.AppendLine(@"                    Assert.IsType<OkObjectResult>(jsonRet);");
             sb.AppendLine(@"");
             sb.AppendLine($@"                    OkObjectResult Ret = jsonRet as OkObjectResult;");
             sb.AppendLine($@"                    { TypeName } { TypeNameLower }Ret = ({ TypeName })Ret.Value;");
-            sb.AppendLine($@"                    Assert.Equal({ TypeNameLower }Last.{ TypeName }ID, { TypeNameLower }Ret.{ TypeName }ID);");
+            sb.AppendLine($@"                    Assert.Equal({ TypeNameLower }First.{ TypeName }ID, { TypeNameLower }Ret.{ TypeName }ID);");
             sb.AppendLine(@"");
             sb.AppendLine(@"                    BadRequestResult badRequest = jsonRet as BadRequestResult;");
             sb.AppendLine(@"                    Assert.Null(badRequest);");

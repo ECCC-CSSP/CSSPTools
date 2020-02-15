@@ -156,7 +156,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.NotNull(hydrometricSiteController);
                     Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, hydrometricSiteController.DatabaseType);
 
-                    HydrometricSite hydrometricSiteLast = new HydrometricSite();
+                    HydrometricSite hydrometricSiteFirst = new HydrometricSite();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
                     {
                         Query query = new Query();
@@ -165,16 +165,16 @@ namespace CSSPWebAPI.Tests.Controllers
                         query.Desc = "";
 
                         HydrometricSiteService hydrometricSiteService = new HydrometricSiteService(query, db, ContactID);
-                        hydrometricSiteLast = (from c in db.HydrometricSites select c).FirstOrDefault();
+                        hydrometricSiteFirst = (from c in db.HydrometricSites select c).FirstOrDefault();
                     }
 
                     // ok with HydrometricSite info
-                    IActionResult jsonRet = hydrometricSiteController.GetHydrometricSiteWithID(hydrometricSiteLast.HydrometricSiteID);
+                    IActionResult jsonRet = hydrometricSiteController.GetHydrometricSiteWithID(hydrometricSiteFirst.HydrometricSiteID);
                     Assert.IsType<OkObjectResult>(jsonRet);
 
                     OkObjectResult ret = jsonRet as OkObjectResult;
                     HydrometricSite hydrometricSiteRet = (HydrometricSite)ret.Value;
-                    Assert.Equal(hydrometricSiteLast.HydrometricSiteID, hydrometricSiteRet.HydrometricSiteID);
+                    Assert.Equal(hydrometricSiteFirst.HydrometricSiteID, hydrometricSiteRet.HydrometricSiteID);
 
                     BadRequestResult badRequest = jsonRet as BadRequestResult;
                     Assert.Null(badRequest);
@@ -225,23 +225,23 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.NotNull(hydrometricSiteController);
                     Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, hydrometricSiteController.DatabaseType);
 
-                    HydrometricSite hydrometricSiteLast = new HydrometricSite();
+                    HydrometricSite hydrometricSiteFirst = new HydrometricSite();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
                     {
                         Query query = new Query();
                         query.Language = LanguageRequest;
 
                         HydrometricSiteService hydrometricSiteService = new HydrometricSiteService(query, db, ContactID);
-                        hydrometricSiteLast = (from c in db.HydrometricSites select c).FirstOrDefault();
+                        hydrometricSiteFirst = (from c in db.HydrometricSites select c).FirstOrDefault();
                     }
 
                     // ok with HydrometricSite info
-                    IActionResult jsonRet = hydrometricSiteController.GetHydrometricSiteWithID(hydrometricSiteLast.HydrometricSiteID);
+                    IActionResult jsonRet = hydrometricSiteController.GetHydrometricSiteWithID(hydrometricSiteFirst.HydrometricSiteID);
                     Assert.IsType<OkObjectResult>(jsonRet);
 
                     OkObjectResult Ret = jsonRet as OkObjectResult;
                     HydrometricSite hydrometricSiteRet = (HydrometricSite)Ret.Value;
-                    Assert.Equal(hydrometricSiteLast.HydrometricSiteID, hydrometricSiteRet.HydrometricSiteID);
+                    Assert.Equal(hydrometricSiteFirst.HydrometricSiteID, hydrometricSiteRet.HydrometricSiteID);
 
                     BadRequestResult badRequest = jsonRet as BadRequestResult;
                     Assert.Null(badRequest);
@@ -283,7 +283,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.NotNull(hydrometricSiteController);
                     Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, hydrometricSiteController.DatabaseType);
 
-                    HydrometricSite hydrometricSiteLast = new HydrometricSite();
+                    HydrometricSite hydrometricSiteFirst = new HydrometricSite();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
                     {
                         Query query = new Query();
@@ -292,16 +292,16 @@ namespace CSSPWebAPI.Tests.Controllers
                         query.Desc = "";
 
                         HydrometricSiteService hydrometricSiteService = new HydrometricSiteService(query, db, ContactID);
-                        hydrometricSiteLast = (from c in db.HydrometricSites select c).FirstOrDefault();
+                        hydrometricSiteFirst = (from c in db.HydrometricSites select c).FirstOrDefault();
                     }
 
                     // ok with HydrometricSite info
-                    IActionResult jsonRet = hydrometricSiteController.GetHydrometricSiteWithID(hydrometricSiteLast.HydrometricSiteID);
+                    IActionResult jsonRet = hydrometricSiteController.GetHydrometricSiteWithID(hydrometricSiteFirst.HydrometricSiteID);
                     Assert.IsType<OkObjectResult>(jsonRet);
 
                     OkObjectResult Ret = jsonRet as OkObjectResult;
                     HydrometricSite hydrometricSiteRet = (HydrometricSite)Ret.Value;
-                    Assert.Equal(hydrometricSiteLast.HydrometricSiteID, hydrometricSiteRet.HydrometricSiteID);
+                    Assert.Equal(hydrometricSiteFirst.HydrometricSiteID, hydrometricSiteRet.HydrometricSiteID);
 
                     BadRequestResult badRequest = jsonRet as BadRequestResult;
                     Assert.Null(badRequest);

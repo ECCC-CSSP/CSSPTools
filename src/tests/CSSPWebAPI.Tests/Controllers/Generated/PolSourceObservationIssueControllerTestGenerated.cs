@@ -156,7 +156,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.NotNull(polSourceObservationIssueController);
                     Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, polSourceObservationIssueController.DatabaseType);
 
-                    PolSourceObservationIssue polSourceObservationIssueLast = new PolSourceObservationIssue();
+                    PolSourceObservationIssue polSourceObservationIssueFirst = new PolSourceObservationIssue();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
                     {
                         Query query = new Query();
@@ -165,16 +165,16 @@ namespace CSSPWebAPI.Tests.Controllers
                         query.Desc = "";
 
                         PolSourceObservationIssueService polSourceObservationIssueService = new PolSourceObservationIssueService(query, db, ContactID);
-                        polSourceObservationIssueLast = (from c in db.PolSourceObservationIssues select c).FirstOrDefault();
+                        polSourceObservationIssueFirst = (from c in db.PolSourceObservationIssues select c).FirstOrDefault();
                     }
 
                     // ok with PolSourceObservationIssue info
-                    IActionResult jsonRet = polSourceObservationIssueController.GetPolSourceObservationIssueWithID(polSourceObservationIssueLast.PolSourceObservationIssueID);
+                    IActionResult jsonRet = polSourceObservationIssueController.GetPolSourceObservationIssueWithID(polSourceObservationIssueFirst.PolSourceObservationIssueID);
                     Assert.IsType<OkObjectResult>(jsonRet);
 
                     OkObjectResult ret = jsonRet as OkObjectResult;
                     PolSourceObservationIssue polSourceObservationIssueRet = (PolSourceObservationIssue)ret.Value;
-                    Assert.Equal(polSourceObservationIssueLast.PolSourceObservationIssueID, polSourceObservationIssueRet.PolSourceObservationIssueID);
+                    Assert.Equal(polSourceObservationIssueFirst.PolSourceObservationIssueID, polSourceObservationIssueRet.PolSourceObservationIssueID);
 
                     BadRequestResult badRequest = jsonRet as BadRequestResult;
                     Assert.Null(badRequest);
@@ -225,23 +225,23 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.NotNull(polSourceObservationIssueController);
                     Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, polSourceObservationIssueController.DatabaseType);
 
-                    PolSourceObservationIssue polSourceObservationIssueLast = new PolSourceObservationIssue();
+                    PolSourceObservationIssue polSourceObservationIssueFirst = new PolSourceObservationIssue();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
                     {
                         Query query = new Query();
                         query.Language = LanguageRequest;
 
                         PolSourceObservationIssueService polSourceObservationIssueService = new PolSourceObservationIssueService(query, db, ContactID);
-                        polSourceObservationIssueLast = (from c in db.PolSourceObservationIssues select c).FirstOrDefault();
+                        polSourceObservationIssueFirst = (from c in db.PolSourceObservationIssues select c).FirstOrDefault();
                     }
 
                     // ok with PolSourceObservationIssue info
-                    IActionResult jsonRet = polSourceObservationIssueController.GetPolSourceObservationIssueWithID(polSourceObservationIssueLast.PolSourceObservationIssueID);
+                    IActionResult jsonRet = polSourceObservationIssueController.GetPolSourceObservationIssueWithID(polSourceObservationIssueFirst.PolSourceObservationIssueID);
                     Assert.IsType<OkObjectResult>(jsonRet);
 
                     OkObjectResult Ret = jsonRet as OkObjectResult;
                     PolSourceObservationIssue polSourceObservationIssueRet = (PolSourceObservationIssue)Ret.Value;
-                    Assert.Equal(polSourceObservationIssueLast.PolSourceObservationIssueID, polSourceObservationIssueRet.PolSourceObservationIssueID);
+                    Assert.Equal(polSourceObservationIssueFirst.PolSourceObservationIssueID, polSourceObservationIssueRet.PolSourceObservationIssueID);
 
                     BadRequestResult badRequest = jsonRet as BadRequestResult;
                     Assert.Null(badRequest);
@@ -283,7 +283,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.NotNull(polSourceObservationIssueController);
                     Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, polSourceObservationIssueController.DatabaseType);
 
-                    PolSourceObservationIssue polSourceObservationIssueLast = new PolSourceObservationIssue();
+                    PolSourceObservationIssue polSourceObservationIssueFirst = new PolSourceObservationIssue();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
                     {
                         Query query = new Query();
@@ -292,16 +292,16 @@ namespace CSSPWebAPI.Tests.Controllers
                         query.Desc = "";
 
                         PolSourceObservationIssueService polSourceObservationIssueService = new PolSourceObservationIssueService(query, db, ContactID);
-                        polSourceObservationIssueLast = (from c in db.PolSourceObservationIssues select c).FirstOrDefault();
+                        polSourceObservationIssueFirst = (from c in db.PolSourceObservationIssues select c).FirstOrDefault();
                     }
 
                     // ok with PolSourceObservationIssue info
-                    IActionResult jsonRet = polSourceObservationIssueController.GetPolSourceObservationIssueWithID(polSourceObservationIssueLast.PolSourceObservationIssueID);
+                    IActionResult jsonRet = polSourceObservationIssueController.GetPolSourceObservationIssueWithID(polSourceObservationIssueFirst.PolSourceObservationIssueID);
                     Assert.IsType<OkObjectResult>(jsonRet);
 
                     OkObjectResult Ret = jsonRet as OkObjectResult;
                     PolSourceObservationIssue polSourceObservationIssueRet = (PolSourceObservationIssue)Ret.Value;
-                    Assert.Equal(polSourceObservationIssueLast.PolSourceObservationIssueID, polSourceObservationIssueRet.PolSourceObservationIssueID);
+                    Assert.Equal(polSourceObservationIssueFirst.PolSourceObservationIssueID, polSourceObservationIssueRet.PolSourceObservationIssueID);
 
                     BadRequestResult badRequest = jsonRet as BadRequestResult;
                     Assert.Null(badRequest);

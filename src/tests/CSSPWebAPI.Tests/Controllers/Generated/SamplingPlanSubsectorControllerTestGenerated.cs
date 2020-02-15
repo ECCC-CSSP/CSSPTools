@@ -156,7 +156,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.NotNull(samplingPlanSubsectorController);
                     Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, samplingPlanSubsectorController.DatabaseType);
 
-                    SamplingPlanSubsector samplingPlanSubsectorLast = new SamplingPlanSubsector();
+                    SamplingPlanSubsector samplingPlanSubsectorFirst = new SamplingPlanSubsector();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
                     {
                         Query query = new Query();
@@ -165,16 +165,16 @@ namespace CSSPWebAPI.Tests.Controllers
                         query.Desc = "";
 
                         SamplingPlanSubsectorService samplingPlanSubsectorService = new SamplingPlanSubsectorService(query, db, ContactID);
-                        samplingPlanSubsectorLast = (from c in db.SamplingPlanSubsectors select c).FirstOrDefault();
+                        samplingPlanSubsectorFirst = (from c in db.SamplingPlanSubsectors select c).FirstOrDefault();
                     }
 
                     // ok with SamplingPlanSubsector info
-                    IActionResult jsonRet = samplingPlanSubsectorController.GetSamplingPlanSubsectorWithID(samplingPlanSubsectorLast.SamplingPlanSubsectorID);
+                    IActionResult jsonRet = samplingPlanSubsectorController.GetSamplingPlanSubsectorWithID(samplingPlanSubsectorFirst.SamplingPlanSubsectorID);
                     Assert.IsType<OkObjectResult>(jsonRet);
 
                     OkObjectResult ret = jsonRet as OkObjectResult;
                     SamplingPlanSubsector samplingPlanSubsectorRet = (SamplingPlanSubsector)ret.Value;
-                    Assert.Equal(samplingPlanSubsectorLast.SamplingPlanSubsectorID, samplingPlanSubsectorRet.SamplingPlanSubsectorID);
+                    Assert.Equal(samplingPlanSubsectorFirst.SamplingPlanSubsectorID, samplingPlanSubsectorRet.SamplingPlanSubsectorID);
 
                     BadRequestResult badRequest = jsonRet as BadRequestResult;
                     Assert.Null(badRequest);
@@ -225,23 +225,23 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.NotNull(samplingPlanSubsectorController);
                     Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, samplingPlanSubsectorController.DatabaseType);
 
-                    SamplingPlanSubsector samplingPlanSubsectorLast = new SamplingPlanSubsector();
+                    SamplingPlanSubsector samplingPlanSubsectorFirst = new SamplingPlanSubsector();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
                     {
                         Query query = new Query();
                         query.Language = LanguageRequest;
 
                         SamplingPlanSubsectorService samplingPlanSubsectorService = new SamplingPlanSubsectorService(query, db, ContactID);
-                        samplingPlanSubsectorLast = (from c in db.SamplingPlanSubsectors select c).FirstOrDefault();
+                        samplingPlanSubsectorFirst = (from c in db.SamplingPlanSubsectors select c).FirstOrDefault();
                     }
 
                     // ok with SamplingPlanSubsector info
-                    IActionResult jsonRet = samplingPlanSubsectorController.GetSamplingPlanSubsectorWithID(samplingPlanSubsectorLast.SamplingPlanSubsectorID);
+                    IActionResult jsonRet = samplingPlanSubsectorController.GetSamplingPlanSubsectorWithID(samplingPlanSubsectorFirst.SamplingPlanSubsectorID);
                     Assert.IsType<OkObjectResult>(jsonRet);
 
                     OkObjectResult Ret = jsonRet as OkObjectResult;
                     SamplingPlanSubsector samplingPlanSubsectorRet = (SamplingPlanSubsector)Ret.Value;
-                    Assert.Equal(samplingPlanSubsectorLast.SamplingPlanSubsectorID, samplingPlanSubsectorRet.SamplingPlanSubsectorID);
+                    Assert.Equal(samplingPlanSubsectorFirst.SamplingPlanSubsectorID, samplingPlanSubsectorRet.SamplingPlanSubsectorID);
 
                     BadRequestResult badRequest = jsonRet as BadRequestResult;
                     Assert.Null(badRequest);
@@ -283,7 +283,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.NotNull(samplingPlanSubsectorController);
                     Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, samplingPlanSubsectorController.DatabaseType);
 
-                    SamplingPlanSubsector samplingPlanSubsectorLast = new SamplingPlanSubsector();
+                    SamplingPlanSubsector samplingPlanSubsectorFirst = new SamplingPlanSubsector();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
                     {
                         Query query = new Query();
@@ -292,16 +292,16 @@ namespace CSSPWebAPI.Tests.Controllers
                         query.Desc = "";
 
                         SamplingPlanSubsectorService samplingPlanSubsectorService = new SamplingPlanSubsectorService(query, db, ContactID);
-                        samplingPlanSubsectorLast = (from c in db.SamplingPlanSubsectors select c).FirstOrDefault();
+                        samplingPlanSubsectorFirst = (from c in db.SamplingPlanSubsectors select c).FirstOrDefault();
                     }
 
                     // ok with SamplingPlanSubsector info
-                    IActionResult jsonRet = samplingPlanSubsectorController.GetSamplingPlanSubsectorWithID(samplingPlanSubsectorLast.SamplingPlanSubsectorID);
+                    IActionResult jsonRet = samplingPlanSubsectorController.GetSamplingPlanSubsectorWithID(samplingPlanSubsectorFirst.SamplingPlanSubsectorID);
                     Assert.IsType<OkObjectResult>(jsonRet);
 
                     OkObjectResult Ret = jsonRet as OkObjectResult;
                     SamplingPlanSubsector samplingPlanSubsectorRet = (SamplingPlanSubsector)Ret.Value;
-                    Assert.Equal(samplingPlanSubsectorLast.SamplingPlanSubsectorID, samplingPlanSubsectorRet.SamplingPlanSubsectorID);
+                    Assert.Equal(samplingPlanSubsectorFirst.SamplingPlanSubsectorID, samplingPlanSubsectorRet.SamplingPlanSubsectorID);
 
                     BadRequestResult badRequest = jsonRet as BadRequestResult;
                     Assert.Null(badRequest);

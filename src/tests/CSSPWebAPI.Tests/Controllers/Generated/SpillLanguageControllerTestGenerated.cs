@@ -156,7 +156,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.NotNull(spillLanguageController);
                     Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, spillLanguageController.DatabaseType);
 
-                    SpillLanguage spillLanguageLast = new SpillLanguage();
+                    SpillLanguage spillLanguageFirst = new SpillLanguage();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
                     {
                         Query query = new Query();
@@ -165,16 +165,16 @@ namespace CSSPWebAPI.Tests.Controllers
                         query.Desc = "";
 
                         SpillLanguageService spillLanguageService = new SpillLanguageService(query, db, ContactID);
-                        spillLanguageLast = (from c in db.SpillLanguages select c).FirstOrDefault();
+                        spillLanguageFirst = (from c in db.SpillLanguages select c).FirstOrDefault();
                     }
 
                     // ok with SpillLanguage info
-                    IActionResult jsonRet = spillLanguageController.GetSpillLanguageWithID(spillLanguageLast.SpillLanguageID);
+                    IActionResult jsonRet = spillLanguageController.GetSpillLanguageWithID(spillLanguageFirst.SpillLanguageID);
                     Assert.IsType<OkObjectResult>(jsonRet);
 
                     OkObjectResult ret = jsonRet as OkObjectResult;
                     SpillLanguage spillLanguageRet = (SpillLanguage)ret.Value;
-                    Assert.Equal(spillLanguageLast.SpillLanguageID, spillLanguageRet.SpillLanguageID);
+                    Assert.Equal(spillLanguageFirst.SpillLanguageID, spillLanguageRet.SpillLanguageID);
 
                     BadRequestResult badRequest = jsonRet as BadRequestResult;
                     Assert.Null(badRequest);
@@ -225,23 +225,23 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.NotNull(spillLanguageController);
                     Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, spillLanguageController.DatabaseType);
 
-                    SpillLanguage spillLanguageLast = new SpillLanguage();
+                    SpillLanguage spillLanguageFirst = new SpillLanguage();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
                     {
                         Query query = new Query();
                         query.Language = LanguageRequest;
 
                         SpillLanguageService spillLanguageService = new SpillLanguageService(query, db, ContactID);
-                        spillLanguageLast = (from c in db.SpillLanguages select c).FirstOrDefault();
+                        spillLanguageFirst = (from c in db.SpillLanguages select c).FirstOrDefault();
                     }
 
                     // ok with SpillLanguage info
-                    IActionResult jsonRet = spillLanguageController.GetSpillLanguageWithID(spillLanguageLast.SpillLanguageID);
+                    IActionResult jsonRet = spillLanguageController.GetSpillLanguageWithID(spillLanguageFirst.SpillLanguageID);
                     Assert.IsType<OkObjectResult>(jsonRet);
 
                     OkObjectResult Ret = jsonRet as OkObjectResult;
                     SpillLanguage spillLanguageRet = (SpillLanguage)Ret.Value;
-                    Assert.Equal(spillLanguageLast.SpillLanguageID, spillLanguageRet.SpillLanguageID);
+                    Assert.Equal(spillLanguageFirst.SpillLanguageID, spillLanguageRet.SpillLanguageID);
 
                     BadRequestResult badRequest = jsonRet as BadRequestResult;
                     Assert.Null(badRequest);
@@ -283,7 +283,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.NotNull(spillLanguageController);
                     Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, spillLanguageController.DatabaseType);
 
-                    SpillLanguage spillLanguageLast = new SpillLanguage();
+                    SpillLanguage spillLanguageFirst = new SpillLanguage();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
                     {
                         Query query = new Query();
@@ -292,16 +292,16 @@ namespace CSSPWebAPI.Tests.Controllers
                         query.Desc = "";
 
                         SpillLanguageService spillLanguageService = new SpillLanguageService(query, db, ContactID);
-                        spillLanguageLast = (from c in db.SpillLanguages select c).FirstOrDefault();
+                        spillLanguageFirst = (from c in db.SpillLanguages select c).FirstOrDefault();
                     }
 
                     // ok with SpillLanguage info
-                    IActionResult jsonRet = spillLanguageController.GetSpillLanguageWithID(spillLanguageLast.SpillLanguageID);
+                    IActionResult jsonRet = spillLanguageController.GetSpillLanguageWithID(spillLanguageFirst.SpillLanguageID);
                     Assert.IsType<OkObjectResult>(jsonRet);
 
                     OkObjectResult Ret = jsonRet as OkObjectResult;
                     SpillLanguage spillLanguageRet = (SpillLanguage)Ret.Value;
-                    Assert.Equal(spillLanguageLast.SpillLanguageID, spillLanguageRet.SpillLanguageID);
+                    Assert.Equal(spillLanguageFirst.SpillLanguageID, spillLanguageRet.SpillLanguageID);
 
                     BadRequestResult badRequest = jsonRet as BadRequestResult;
                     Assert.Null(badRequest);

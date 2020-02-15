@@ -156,7 +156,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.NotNull(reportTypeLanguageController);
                     Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, reportTypeLanguageController.DatabaseType);
 
-                    ReportTypeLanguage reportTypeLanguageLast = new ReportTypeLanguage();
+                    ReportTypeLanguage reportTypeLanguageFirst = new ReportTypeLanguage();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
                     {
                         Query query = new Query();
@@ -165,16 +165,16 @@ namespace CSSPWebAPI.Tests.Controllers
                         query.Desc = "";
 
                         ReportTypeLanguageService reportTypeLanguageService = new ReportTypeLanguageService(query, db, ContactID);
-                        reportTypeLanguageLast = (from c in db.ReportTypeLanguages select c).FirstOrDefault();
+                        reportTypeLanguageFirst = (from c in db.ReportTypeLanguages select c).FirstOrDefault();
                     }
 
                     // ok with ReportTypeLanguage info
-                    IActionResult jsonRet = reportTypeLanguageController.GetReportTypeLanguageWithID(reportTypeLanguageLast.ReportTypeLanguageID);
+                    IActionResult jsonRet = reportTypeLanguageController.GetReportTypeLanguageWithID(reportTypeLanguageFirst.ReportTypeLanguageID);
                     Assert.IsType<OkObjectResult>(jsonRet);
 
                     OkObjectResult ret = jsonRet as OkObjectResult;
                     ReportTypeLanguage reportTypeLanguageRet = (ReportTypeLanguage)ret.Value;
-                    Assert.Equal(reportTypeLanguageLast.ReportTypeLanguageID, reportTypeLanguageRet.ReportTypeLanguageID);
+                    Assert.Equal(reportTypeLanguageFirst.ReportTypeLanguageID, reportTypeLanguageRet.ReportTypeLanguageID);
 
                     BadRequestResult badRequest = jsonRet as BadRequestResult;
                     Assert.Null(badRequest);
@@ -225,23 +225,23 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.NotNull(reportTypeLanguageController);
                     Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, reportTypeLanguageController.DatabaseType);
 
-                    ReportTypeLanguage reportTypeLanguageLast = new ReportTypeLanguage();
+                    ReportTypeLanguage reportTypeLanguageFirst = new ReportTypeLanguage();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
                     {
                         Query query = new Query();
                         query.Language = LanguageRequest;
 
                         ReportTypeLanguageService reportTypeLanguageService = new ReportTypeLanguageService(query, db, ContactID);
-                        reportTypeLanguageLast = (from c in db.ReportTypeLanguages select c).FirstOrDefault();
+                        reportTypeLanguageFirst = (from c in db.ReportTypeLanguages select c).FirstOrDefault();
                     }
 
                     // ok with ReportTypeLanguage info
-                    IActionResult jsonRet = reportTypeLanguageController.GetReportTypeLanguageWithID(reportTypeLanguageLast.ReportTypeLanguageID);
+                    IActionResult jsonRet = reportTypeLanguageController.GetReportTypeLanguageWithID(reportTypeLanguageFirst.ReportTypeLanguageID);
                     Assert.IsType<OkObjectResult>(jsonRet);
 
                     OkObjectResult Ret = jsonRet as OkObjectResult;
                     ReportTypeLanguage reportTypeLanguageRet = (ReportTypeLanguage)Ret.Value;
-                    Assert.Equal(reportTypeLanguageLast.ReportTypeLanguageID, reportTypeLanguageRet.ReportTypeLanguageID);
+                    Assert.Equal(reportTypeLanguageFirst.ReportTypeLanguageID, reportTypeLanguageRet.ReportTypeLanguageID);
 
                     BadRequestResult badRequest = jsonRet as BadRequestResult;
                     Assert.Null(badRequest);
@@ -283,7 +283,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.NotNull(reportTypeLanguageController);
                     Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, reportTypeLanguageController.DatabaseType);
 
-                    ReportTypeLanguage reportTypeLanguageLast = new ReportTypeLanguage();
+                    ReportTypeLanguage reportTypeLanguageFirst = new ReportTypeLanguage();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
                     {
                         Query query = new Query();
@@ -292,16 +292,16 @@ namespace CSSPWebAPI.Tests.Controllers
                         query.Desc = "";
 
                         ReportTypeLanguageService reportTypeLanguageService = new ReportTypeLanguageService(query, db, ContactID);
-                        reportTypeLanguageLast = (from c in db.ReportTypeLanguages select c).FirstOrDefault();
+                        reportTypeLanguageFirst = (from c in db.ReportTypeLanguages select c).FirstOrDefault();
                     }
 
                     // ok with ReportTypeLanguage info
-                    IActionResult jsonRet = reportTypeLanguageController.GetReportTypeLanguageWithID(reportTypeLanguageLast.ReportTypeLanguageID);
+                    IActionResult jsonRet = reportTypeLanguageController.GetReportTypeLanguageWithID(reportTypeLanguageFirst.ReportTypeLanguageID);
                     Assert.IsType<OkObjectResult>(jsonRet);
 
                     OkObjectResult Ret = jsonRet as OkObjectResult;
                     ReportTypeLanguage reportTypeLanguageRet = (ReportTypeLanguage)Ret.Value;
-                    Assert.Equal(reportTypeLanguageLast.ReportTypeLanguageID, reportTypeLanguageRet.ReportTypeLanguageID);
+                    Assert.Equal(reportTypeLanguageFirst.ReportTypeLanguageID, reportTypeLanguageRet.ReportTypeLanguageID);
 
                     BadRequestResult badRequest = jsonRet as BadRequestResult;
                     Assert.Null(badRequest);

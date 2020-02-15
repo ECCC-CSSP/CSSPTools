@@ -156,7 +156,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.NotNull(appTaskController);
                     Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, appTaskController.DatabaseType);
 
-                    AppTask appTaskLast = new AppTask();
+                    AppTask appTaskFirst = new AppTask();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
                     {
                         Query query = new Query();
@@ -165,16 +165,16 @@ namespace CSSPWebAPI.Tests.Controllers
                         query.Desc = "";
 
                         AppTaskService appTaskService = new AppTaskService(query, db, ContactID);
-                        appTaskLast = (from c in db.AppTasks select c).FirstOrDefault();
+                        appTaskFirst = (from c in db.AppTasks select c).FirstOrDefault();
                     }
 
                     // ok with AppTask info
-                    IActionResult jsonRet = appTaskController.GetAppTaskWithID(appTaskLast.AppTaskID);
+                    IActionResult jsonRet = appTaskController.GetAppTaskWithID(appTaskFirst.AppTaskID);
                     Assert.IsType<OkObjectResult>(jsonRet);
 
                     OkObjectResult ret = jsonRet as OkObjectResult;
                     AppTask appTaskRet = (AppTask)ret.Value;
-                    Assert.Equal(appTaskLast.AppTaskID, appTaskRet.AppTaskID);
+                    Assert.Equal(appTaskFirst.AppTaskID, appTaskRet.AppTaskID);
 
                     BadRequestResult badRequest = jsonRet as BadRequestResult;
                     Assert.Null(badRequest);
@@ -225,23 +225,23 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.NotNull(appTaskController);
                     Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, appTaskController.DatabaseType);
 
-                    AppTask appTaskLast = new AppTask();
+                    AppTask appTaskFirst = new AppTask();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
                     {
                         Query query = new Query();
                         query.Language = LanguageRequest;
 
                         AppTaskService appTaskService = new AppTaskService(query, db, ContactID);
-                        appTaskLast = (from c in db.AppTasks select c).FirstOrDefault();
+                        appTaskFirst = (from c in db.AppTasks select c).FirstOrDefault();
                     }
 
                     // ok with AppTask info
-                    IActionResult jsonRet = appTaskController.GetAppTaskWithID(appTaskLast.AppTaskID);
+                    IActionResult jsonRet = appTaskController.GetAppTaskWithID(appTaskFirst.AppTaskID);
                     Assert.IsType<OkObjectResult>(jsonRet);
 
                     OkObjectResult Ret = jsonRet as OkObjectResult;
                     AppTask appTaskRet = (AppTask)Ret.Value;
-                    Assert.Equal(appTaskLast.AppTaskID, appTaskRet.AppTaskID);
+                    Assert.Equal(appTaskFirst.AppTaskID, appTaskRet.AppTaskID);
 
                     BadRequestResult badRequest = jsonRet as BadRequestResult;
                     Assert.Null(badRequest);
@@ -283,7 +283,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.NotNull(appTaskController);
                     Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, appTaskController.DatabaseType);
 
-                    AppTask appTaskLast = new AppTask();
+                    AppTask appTaskFirst = new AppTask();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
                     {
                         Query query = new Query();
@@ -292,16 +292,16 @@ namespace CSSPWebAPI.Tests.Controllers
                         query.Desc = "";
 
                         AppTaskService appTaskService = new AppTaskService(query, db, ContactID);
-                        appTaskLast = (from c in db.AppTasks select c).FirstOrDefault();
+                        appTaskFirst = (from c in db.AppTasks select c).FirstOrDefault();
                     }
 
                     // ok with AppTask info
-                    IActionResult jsonRet = appTaskController.GetAppTaskWithID(appTaskLast.AppTaskID);
+                    IActionResult jsonRet = appTaskController.GetAppTaskWithID(appTaskFirst.AppTaskID);
                     Assert.IsType<OkObjectResult>(jsonRet);
 
                     OkObjectResult Ret = jsonRet as OkObjectResult;
                     AppTask appTaskRet = (AppTask)Ret.Value;
-                    Assert.Equal(appTaskLast.AppTaskID, appTaskRet.AppTaskID);
+                    Assert.Equal(appTaskFirst.AppTaskID, appTaskRet.AppTaskID);
 
                     BadRequestResult badRequest = jsonRet as BadRequestResult;
                     Assert.Null(badRequest);

@@ -156,7 +156,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.NotNull(ratingCurveValueController);
                     Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, ratingCurveValueController.DatabaseType);
 
-                    RatingCurveValue ratingCurveValueLast = new RatingCurveValue();
+                    RatingCurveValue ratingCurveValueFirst = new RatingCurveValue();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
                     {
                         Query query = new Query();
@@ -165,16 +165,16 @@ namespace CSSPWebAPI.Tests.Controllers
                         query.Desc = "";
 
                         RatingCurveValueService ratingCurveValueService = new RatingCurveValueService(query, db, ContactID);
-                        ratingCurveValueLast = (from c in db.RatingCurveValues select c).FirstOrDefault();
+                        ratingCurveValueFirst = (from c in db.RatingCurveValues select c).FirstOrDefault();
                     }
 
                     // ok with RatingCurveValue info
-                    IActionResult jsonRet = ratingCurveValueController.GetRatingCurveValueWithID(ratingCurveValueLast.RatingCurveValueID);
+                    IActionResult jsonRet = ratingCurveValueController.GetRatingCurveValueWithID(ratingCurveValueFirst.RatingCurveValueID);
                     Assert.IsType<OkObjectResult>(jsonRet);
 
                     OkObjectResult ret = jsonRet as OkObjectResult;
                     RatingCurveValue ratingCurveValueRet = (RatingCurveValue)ret.Value;
-                    Assert.Equal(ratingCurveValueLast.RatingCurveValueID, ratingCurveValueRet.RatingCurveValueID);
+                    Assert.Equal(ratingCurveValueFirst.RatingCurveValueID, ratingCurveValueRet.RatingCurveValueID);
 
                     BadRequestResult badRequest = jsonRet as BadRequestResult;
                     Assert.Null(badRequest);
@@ -225,23 +225,23 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.NotNull(ratingCurveValueController);
                     Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, ratingCurveValueController.DatabaseType);
 
-                    RatingCurveValue ratingCurveValueLast = new RatingCurveValue();
+                    RatingCurveValue ratingCurveValueFirst = new RatingCurveValue();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
                     {
                         Query query = new Query();
                         query.Language = LanguageRequest;
 
                         RatingCurveValueService ratingCurveValueService = new RatingCurveValueService(query, db, ContactID);
-                        ratingCurveValueLast = (from c in db.RatingCurveValues select c).FirstOrDefault();
+                        ratingCurveValueFirst = (from c in db.RatingCurveValues select c).FirstOrDefault();
                     }
 
                     // ok with RatingCurveValue info
-                    IActionResult jsonRet = ratingCurveValueController.GetRatingCurveValueWithID(ratingCurveValueLast.RatingCurveValueID);
+                    IActionResult jsonRet = ratingCurveValueController.GetRatingCurveValueWithID(ratingCurveValueFirst.RatingCurveValueID);
                     Assert.IsType<OkObjectResult>(jsonRet);
 
                     OkObjectResult Ret = jsonRet as OkObjectResult;
                     RatingCurveValue ratingCurveValueRet = (RatingCurveValue)Ret.Value;
-                    Assert.Equal(ratingCurveValueLast.RatingCurveValueID, ratingCurveValueRet.RatingCurveValueID);
+                    Assert.Equal(ratingCurveValueFirst.RatingCurveValueID, ratingCurveValueRet.RatingCurveValueID);
 
                     BadRequestResult badRequest = jsonRet as BadRequestResult;
                     Assert.Null(badRequest);
@@ -283,7 +283,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.NotNull(ratingCurveValueController);
                     Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, ratingCurveValueController.DatabaseType);
 
-                    RatingCurveValue ratingCurveValueLast = new RatingCurveValue();
+                    RatingCurveValue ratingCurveValueFirst = new RatingCurveValue();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
                     {
                         Query query = new Query();
@@ -292,16 +292,16 @@ namespace CSSPWebAPI.Tests.Controllers
                         query.Desc = "";
 
                         RatingCurveValueService ratingCurveValueService = new RatingCurveValueService(query, db, ContactID);
-                        ratingCurveValueLast = (from c in db.RatingCurveValues select c).FirstOrDefault();
+                        ratingCurveValueFirst = (from c in db.RatingCurveValues select c).FirstOrDefault();
                     }
 
                     // ok with RatingCurveValue info
-                    IActionResult jsonRet = ratingCurveValueController.GetRatingCurveValueWithID(ratingCurveValueLast.RatingCurveValueID);
+                    IActionResult jsonRet = ratingCurveValueController.GetRatingCurveValueWithID(ratingCurveValueFirst.RatingCurveValueID);
                     Assert.IsType<OkObjectResult>(jsonRet);
 
                     OkObjectResult Ret = jsonRet as OkObjectResult;
                     RatingCurveValue ratingCurveValueRet = (RatingCurveValue)Ret.Value;
-                    Assert.Equal(ratingCurveValueLast.RatingCurveValueID, ratingCurveValueRet.RatingCurveValueID);
+                    Assert.Equal(ratingCurveValueFirst.RatingCurveValueID, ratingCurveValueRet.RatingCurveValueID);
 
                     BadRequestResult badRequest = jsonRet as BadRequestResult;
                     Assert.Null(badRequest);

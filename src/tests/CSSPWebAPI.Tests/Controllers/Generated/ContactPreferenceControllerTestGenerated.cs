@@ -156,7 +156,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.NotNull(contactPreferenceController);
                     Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, contactPreferenceController.DatabaseType);
 
-                    ContactPreference contactPreferenceLast = new ContactPreference();
+                    ContactPreference contactPreferenceFirst = new ContactPreference();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
                     {
                         Query query = new Query();
@@ -165,16 +165,16 @@ namespace CSSPWebAPI.Tests.Controllers
                         query.Desc = "";
 
                         ContactPreferenceService contactPreferenceService = new ContactPreferenceService(query, db, ContactID);
-                        contactPreferenceLast = (from c in db.ContactPreferences select c).FirstOrDefault();
+                        contactPreferenceFirst = (from c in db.ContactPreferences select c).FirstOrDefault();
                     }
 
                     // ok with ContactPreference info
-                    IActionResult jsonRet = contactPreferenceController.GetContactPreferenceWithID(contactPreferenceLast.ContactPreferenceID);
+                    IActionResult jsonRet = contactPreferenceController.GetContactPreferenceWithID(contactPreferenceFirst.ContactPreferenceID);
                     Assert.IsType<OkObjectResult>(jsonRet);
 
                     OkObjectResult ret = jsonRet as OkObjectResult;
                     ContactPreference contactPreferenceRet = (ContactPreference)ret.Value;
-                    Assert.Equal(contactPreferenceLast.ContactPreferenceID, contactPreferenceRet.ContactPreferenceID);
+                    Assert.Equal(contactPreferenceFirst.ContactPreferenceID, contactPreferenceRet.ContactPreferenceID);
 
                     BadRequestResult badRequest = jsonRet as BadRequestResult;
                     Assert.Null(badRequest);
@@ -225,23 +225,23 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.NotNull(contactPreferenceController);
                     Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, contactPreferenceController.DatabaseType);
 
-                    ContactPreference contactPreferenceLast = new ContactPreference();
+                    ContactPreference contactPreferenceFirst = new ContactPreference();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
                     {
                         Query query = new Query();
                         query.Language = LanguageRequest;
 
                         ContactPreferenceService contactPreferenceService = new ContactPreferenceService(query, db, ContactID);
-                        contactPreferenceLast = (from c in db.ContactPreferences select c).FirstOrDefault();
+                        contactPreferenceFirst = (from c in db.ContactPreferences select c).FirstOrDefault();
                     }
 
                     // ok with ContactPreference info
-                    IActionResult jsonRet = contactPreferenceController.GetContactPreferenceWithID(contactPreferenceLast.ContactPreferenceID);
+                    IActionResult jsonRet = contactPreferenceController.GetContactPreferenceWithID(contactPreferenceFirst.ContactPreferenceID);
                     Assert.IsType<OkObjectResult>(jsonRet);
 
                     OkObjectResult Ret = jsonRet as OkObjectResult;
                     ContactPreference contactPreferenceRet = (ContactPreference)Ret.Value;
-                    Assert.Equal(contactPreferenceLast.ContactPreferenceID, contactPreferenceRet.ContactPreferenceID);
+                    Assert.Equal(contactPreferenceFirst.ContactPreferenceID, contactPreferenceRet.ContactPreferenceID);
 
                     BadRequestResult badRequest = jsonRet as BadRequestResult;
                     Assert.Null(badRequest);
@@ -283,7 +283,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.NotNull(contactPreferenceController);
                     Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, contactPreferenceController.DatabaseType);
 
-                    ContactPreference contactPreferenceLast = new ContactPreference();
+                    ContactPreference contactPreferenceFirst = new ContactPreference();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
                     {
                         Query query = new Query();
@@ -292,16 +292,16 @@ namespace CSSPWebAPI.Tests.Controllers
                         query.Desc = "";
 
                         ContactPreferenceService contactPreferenceService = new ContactPreferenceService(query, db, ContactID);
-                        contactPreferenceLast = (from c in db.ContactPreferences select c).FirstOrDefault();
+                        contactPreferenceFirst = (from c in db.ContactPreferences select c).FirstOrDefault();
                     }
 
                     // ok with ContactPreference info
-                    IActionResult jsonRet = contactPreferenceController.GetContactPreferenceWithID(contactPreferenceLast.ContactPreferenceID);
+                    IActionResult jsonRet = contactPreferenceController.GetContactPreferenceWithID(contactPreferenceFirst.ContactPreferenceID);
                     Assert.IsType<OkObjectResult>(jsonRet);
 
                     OkObjectResult Ret = jsonRet as OkObjectResult;
                     ContactPreference contactPreferenceRet = (ContactPreference)Ret.Value;
-                    Assert.Equal(contactPreferenceLast.ContactPreferenceID, contactPreferenceRet.ContactPreferenceID);
+                    Assert.Equal(contactPreferenceFirst.ContactPreferenceID, contactPreferenceRet.ContactPreferenceID);
 
                     BadRequestResult badRequest = jsonRet as BadRequestResult;
                     Assert.Null(badRequest);

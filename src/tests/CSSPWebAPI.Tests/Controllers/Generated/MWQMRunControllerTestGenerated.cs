@@ -156,7 +156,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.NotNull(mwqmRunController);
                     Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, mwqmRunController.DatabaseType);
 
-                    MWQMRun mwqmRunLast = new MWQMRun();
+                    MWQMRun mwqmRunFirst = new MWQMRun();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
                     {
                         Query query = new Query();
@@ -165,16 +165,16 @@ namespace CSSPWebAPI.Tests.Controllers
                         query.Desc = "";
 
                         MWQMRunService mwqmRunService = new MWQMRunService(query, db, ContactID);
-                        mwqmRunLast = (from c in db.MWQMRuns select c).FirstOrDefault();
+                        mwqmRunFirst = (from c in db.MWQMRuns select c).FirstOrDefault();
                     }
 
                     // ok with MWQMRun info
-                    IActionResult jsonRet = mwqmRunController.GetMWQMRunWithID(mwqmRunLast.MWQMRunID);
+                    IActionResult jsonRet = mwqmRunController.GetMWQMRunWithID(mwqmRunFirst.MWQMRunID);
                     Assert.IsType<OkObjectResult>(jsonRet);
 
                     OkObjectResult ret = jsonRet as OkObjectResult;
                     MWQMRun mwqmRunRet = (MWQMRun)ret.Value;
-                    Assert.Equal(mwqmRunLast.MWQMRunID, mwqmRunRet.MWQMRunID);
+                    Assert.Equal(mwqmRunFirst.MWQMRunID, mwqmRunRet.MWQMRunID);
 
                     BadRequestResult badRequest = jsonRet as BadRequestResult;
                     Assert.Null(badRequest);
@@ -225,23 +225,23 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.NotNull(mwqmRunController);
                     Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, mwqmRunController.DatabaseType);
 
-                    MWQMRun mwqmRunLast = new MWQMRun();
+                    MWQMRun mwqmRunFirst = new MWQMRun();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
                     {
                         Query query = new Query();
                         query.Language = LanguageRequest;
 
                         MWQMRunService mwqmRunService = new MWQMRunService(query, db, ContactID);
-                        mwqmRunLast = (from c in db.MWQMRuns select c).FirstOrDefault();
+                        mwqmRunFirst = (from c in db.MWQMRuns select c).FirstOrDefault();
                     }
 
                     // ok with MWQMRun info
-                    IActionResult jsonRet = mwqmRunController.GetMWQMRunWithID(mwqmRunLast.MWQMRunID);
+                    IActionResult jsonRet = mwqmRunController.GetMWQMRunWithID(mwqmRunFirst.MWQMRunID);
                     Assert.IsType<OkObjectResult>(jsonRet);
 
                     OkObjectResult Ret = jsonRet as OkObjectResult;
                     MWQMRun mwqmRunRet = (MWQMRun)Ret.Value;
-                    Assert.Equal(mwqmRunLast.MWQMRunID, mwqmRunRet.MWQMRunID);
+                    Assert.Equal(mwqmRunFirst.MWQMRunID, mwqmRunRet.MWQMRunID);
 
                     BadRequestResult badRequest = jsonRet as BadRequestResult;
                     Assert.Null(badRequest);
@@ -283,7 +283,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.NotNull(mwqmRunController);
                     Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, mwqmRunController.DatabaseType);
 
-                    MWQMRun mwqmRunLast = new MWQMRun();
+                    MWQMRun mwqmRunFirst = new MWQMRun();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
                     {
                         Query query = new Query();
@@ -292,16 +292,16 @@ namespace CSSPWebAPI.Tests.Controllers
                         query.Desc = "";
 
                         MWQMRunService mwqmRunService = new MWQMRunService(query, db, ContactID);
-                        mwqmRunLast = (from c in db.MWQMRuns select c).FirstOrDefault();
+                        mwqmRunFirst = (from c in db.MWQMRuns select c).FirstOrDefault();
                     }
 
                     // ok with MWQMRun info
-                    IActionResult jsonRet = mwqmRunController.GetMWQMRunWithID(mwqmRunLast.MWQMRunID);
+                    IActionResult jsonRet = mwqmRunController.GetMWQMRunWithID(mwqmRunFirst.MWQMRunID);
                     Assert.IsType<OkObjectResult>(jsonRet);
 
                     OkObjectResult Ret = jsonRet as OkObjectResult;
                     MWQMRun mwqmRunRet = (MWQMRun)Ret.Value;
-                    Assert.Equal(mwqmRunLast.MWQMRunID, mwqmRunRet.MWQMRunID);
+                    Assert.Equal(mwqmRunFirst.MWQMRunID, mwqmRunRet.MWQMRunID);
 
                     BadRequestResult badRequest = jsonRet as BadRequestResult;
                     Assert.Null(badRequest);

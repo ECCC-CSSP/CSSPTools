@@ -156,7 +156,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.NotNull(labSheetTubeMPNDetailController);
                     Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, labSheetTubeMPNDetailController.DatabaseType);
 
-                    LabSheetTubeMPNDetail labSheetTubeMPNDetailLast = new LabSheetTubeMPNDetail();
+                    LabSheetTubeMPNDetail labSheetTubeMPNDetailFirst = new LabSheetTubeMPNDetail();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
                     {
                         Query query = new Query();
@@ -165,16 +165,16 @@ namespace CSSPWebAPI.Tests.Controllers
                         query.Desc = "";
 
                         LabSheetTubeMPNDetailService labSheetTubeMPNDetailService = new LabSheetTubeMPNDetailService(query, db, ContactID);
-                        labSheetTubeMPNDetailLast = (from c in db.LabSheetTubeMPNDetails select c).FirstOrDefault();
+                        labSheetTubeMPNDetailFirst = (from c in db.LabSheetTubeMPNDetails select c).FirstOrDefault();
                     }
 
                     // ok with LabSheetTubeMPNDetail info
-                    IActionResult jsonRet = labSheetTubeMPNDetailController.GetLabSheetTubeMPNDetailWithID(labSheetTubeMPNDetailLast.LabSheetTubeMPNDetailID);
+                    IActionResult jsonRet = labSheetTubeMPNDetailController.GetLabSheetTubeMPNDetailWithID(labSheetTubeMPNDetailFirst.LabSheetTubeMPNDetailID);
                     Assert.IsType<OkObjectResult>(jsonRet);
 
                     OkObjectResult ret = jsonRet as OkObjectResult;
                     LabSheetTubeMPNDetail labSheetTubeMPNDetailRet = (LabSheetTubeMPNDetail)ret.Value;
-                    Assert.Equal(labSheetTubeMPNDetailLast.LabSheetTubeMPNDetailID, labSheetTubeMPNDetailRet.LabSheetTubeMPNDetailID);
+                    Assert.Equal(labSheetTubeMPNDetailFirst.LabSheetTubeMPNDetailID, labSheetTubeMPNDetailRet.LabSheetTubeMPNDetailID);
 
                     BadRequestResult badRequest = jsonRet as BadRequestResult;
                     Assert.Null(badRequest);
@@ -225,23 +225,23 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.NotNull(labSheetTubeMPNDetailController);
                     Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, labSheetTubeMPNDetailController.DatabaseType);
 
-                    LabSheetTubeMPNDetail labSheetTubeMPNDetailLast = new LabSheetTubeMPNDetail();
+                    LabSheetTubeMPNDetail labSheetTubeMPNDetailFirst = new LabSheetTubeMPNDetail();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
                     {
                         Query query = new Query();
                         query.Language = LanguageRequest;
 
                         LabSheetTubeMPNDetailService labSheetTubeMPNDetailService = new LabSheetTubeMPNDetailService(query, db, ContactID);
-                        labSheetTubeMPNDetailLast = (from c in db.LabSheetTubeMPNDetails select c).FirstOrDefault();
+                        labSheetTubeMPNDetailFirst = (from c in db.LabSheetTubeMPNDetails select c).FirstOrDefault();
                     }
 
                     // ok with LabSheetTubeMPNDetail info
-                    IActionResult jsonRet = labSheetTubeMPNDetailController.GetLabSheetTubeMPNDetailWithID(labSheetTubeMPNDetailLast.LabSheetTubeMPNDetailID);
+                    IActionResult jsonRet = labSheetTubeMPNDetailController.GetLabSheetTubeMPNDetailWithID(labSheetTubeMPNDetailFirst.LabSheetTubeMPNDetailID);
                     Assert.IsType<OkObjectResult>(jsonRet);
 
                     OkObjectResult Ret = jsonRet as OkObjectResult;
                     LabSheetTubeMPNDetail labSheetTubeMPNDetailRet = (LabSheetTubeMPNDetail)Ret.Value;
-                    Assert.Equal(labSheetTubeMPNDetailLast.LabSheetTubeMPNDetailID, labSheetTubeMPNDetailRet.LabSheetTubeMPNDetailID);
+                    Assert.Equal(labSheetTubeMPNDetailFirst.LabSheetTubeMPNDetailID, labSheetTubeMPNDetailRet.LabSheetTubeMPNDetailID);
 
                     BadRequestResult badRequest = jsonRet as BadRequestResult;
                     Assert.Null(badRequest);
@@ -283,7 +283,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.NotNull(labSheetTubeMPNDetailController);
                     Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, labSheetTubeMPNDetailController.DatabaseType);
 
-                    LabSheetTubeMPNDetail labSheetTubeMPNDetailLast = new LabSheetTubeMPNDetail();
+                    LabSheetTubeMPNDetail labSheetTubeMPNDetailFirst = new LabSheetTubeMPNDetail();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
                     {
                         Query query = new Query();
@@ -292,16 +292,16 @@ namespace CSSPWebAPI.Tests.Controllers
                         query.Desc = "";
 
                         LabSheetTubeMPNDetailService labSheetTubeMPNDetailService = new LabSheetTubeMPNDetailService(query, db, ContactID);
-                        labSheetTubeMPNDetailLast = (from c in db.LabSheetTubeMPNDetails select c).FirstOrDefault();
+                        labSheetTubeMPNDetailFirst = (from c in db.LabSheetTubeMPNDetails select c).FirstOrDefault();
                     }
 
                     // ok with LabSheetTubeMPNDetail info
-                    IActionResult jsonRet = labSheetTubeMPNDetailController.GetLabSheetTubeMPNDetailWithID(labSheetTubeMPNDetailLast.LabSheetTubeMPNDetailID);
+                    IActionResult jsonRet = labSheetTubeMPNDetailController.GetLabSheetTubeMPNDetailWithID(labSheetTubeMPNDetailFirst.LabSheetTubeMPNDetailID);
                     Assert.IsType<OkObjectResult>(jsonRet);
 
                     OkObjectResult Ret = jsonRet as OkObjectResult;
                     LabSheetTubeMPNDetail labSheetTubeMPNDetailRet = (LabSheetTubeMPNDetail)Ret.Value;
-                    Assert.Equal(labSheetTubeMPNDetailLast.LabSheetTubeMPNDetailID, labSheetTubeMPNDetailRet.LabSheetTubeMPNDetailID);
+                    Assert.Equal(labSheetTubeMPNDetailFirst.LabSheetTubeMPNDetailID, labSheetTubeMPNDetailRet.LabSheetTubeMPNDetailID);
 
                     BadRequestResult badRequest = jsonRet as BadRequestResult;
                     Assert.Null(badRequest);

@@ -156,7 +156,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.NotNull(telController);
                     Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, telController.DatabaseType);
 
-                    Tel telLast = new Tel();
+                    Tel telFirst = new Tel();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
                     {
                         Query query = new Query();
@@ -165,16 +165,16 @@ namespace CSSPWebAPI.Tests.Controllers
                         query.Desc = "";
 
                         TelService telService = new TelService(query, db, ContactID);
-                        telLast = (from c in db.Tels select c).FirstOrDefault();
+                        telFirst = (from c in db.Tels select c).FirstOrDefault();
                     }
 
                     // ok with Tel info
-                    IActionResult jsonRet = telController.GetTelWithID(telLast.TelID);
+                    IActionResult jsonRet = telController.GetTelWithID(telFirst.TelID);
                     Assert.IsType<OkObjectResult>(jsonRet);
 
                     OkObjectResult ret = jsonRet as OkObjectResult;
                     Tel telRet = (Tel)ret.Value;
-                    Assert.Equal(telLast.TelID, telRet.TelID);
+                    Assert.Equal(telFirst.TelID, telRet.TelID);
 
                     BadRequestResult badRequest = jsonRet as BadRequestResult;
                     Assert.Null(badRequest);
@@ -225,23 +225,23 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.NotNull(telController);
                     Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, telController.DatabaseType);
 
-                    Tel telLast = new Tel();
+                    Tel telFirst = new Tel();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
                     {
                         Query query = new Query();
                         query.Language = LanguageRequest;
 
                         TelService telService = new TelService(query, db, ContactID);
-                        telLast = (from c in db.Tels select c).FirstOrDefault();
+                        telFirst = (from c in db.Tels select c).FirstOrDefault();
                     }
 
                     // ok with Tel info
-                    IActionResult jsonRet = telController.GetTelWithID(telLast.TelID);
+                    IActionResult jsonRet = telController.GetTelWithID(telFirst.TelID);
                     Assert.IsType<OkObjectResult>(jsonRet);
 
                     OkObjectResult Ret = jsonRet as OkObjectResult;
                     Tel telRet = (Tel)Ret.Value;
-                    Assert.Equal(telLast.TelID, telRet.TelID);
+                    Assert.Equal(telFirst.TelID, telRet.TelID);
 
                     BadRequestResult badRequest = jsonRet as BadRequestResult;
                     Assert.Null(badRequest);
@@ -283,7 +283,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.NotNull(telController);
                     Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, telController.DatabaseType);
 
-                    Tel telLast = new Tel();
+                    Tel telFirst = new Tel();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
                     {
                         Query query = new Query();
@@ -292,16 +292,16 @@ namespace CSSPWebAPI.Tests.Controllers
                         query.Desc = "";
 
                         TelService telService = new TelService(query, db, ContactID);
-                        telLast = (from c in db.Tels select c).FirstOrDefault();
+                        telFirst = (from c in db.Tels select c).FirstOrDefault();
                     }
 
                     // ok with Tel info
-                    IActionResult jsonRet = telController.GetTelWithID(telLast.TelID);
+                    IActionResult jsonRet = telController.GetTelWithID(telFirst.TelID);
                     Assert.IsType<OkObjectResult>(jsonRet);
 
                     OkObjectResult Ret = jsonRet as OkObjectResult;
                     Tel telRet = (Tel)Ret.Value;
-                    Assert.Equal(telLast.TelID, telRet.TelID);
+                    Assert.Equal(telFirst.TelID, telRet.TelID);
 
                     BadRequestResult badRequest = jsonRet as BadRequestResult;
                     Assert.Null(badRequest);

@@ -156,7 +156,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.NotNull(classificationController);
                     Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, classificationController.DatabaseType);
 
-                    Classification classificationLast = new Classification();
+                    Classification classificationFirst = new Classification();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
                     {
                         Query query = new Query();
@@ -165,16 +165,16 @@ namespace CSSPWebAPI.Tests.Controllers
                         query.Desc = "";
 
                         ClassificationService classificationService = new ClassificationService(query, db, ContactID);
-                        classificationLast = (from c in db.Classifications select c).FirstOrDefault();
+                        classificationFirst = (from c in db.Classifications select c).FirstOrDefault();
                     }
 
                     // ok with Classification info
-                    IActionResult jsonRet = classificationController.GetClassificationWithID(classificationLast.ClassificationID);
+                    IActionResult jsonRet = classificationController.GetClassificationWithID(classificationFirst.ClassificationID);
                     Assert.IsType<OkObjectResult>(jsonRet);
 
                     OkObjectResult ret = jsonRet as OkObjectResult;
                     Classification classificationRet = (Classification)ret.Value;
-                    Assert.Equal(classificationLast.ClassificationID, classificationRet.ClassificationID);
+                    Assert.Equal(classificationFirst.ClassificationID, classificationRet.ClassificationID);
 
                     BadRequestResult badRequest = jsonRet as BadRequestResult;
                     Assert.Null(badRequest);
@@ -225,23 +225,23 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.NotNull(classificationController);
                     Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, classificationController.DatabaseType);
 
-                    Classification classificationLast = new Classification();
+                    Classification classificationFirst = new Classification();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
                     {
                         Query query = new Query();
                         query.Language = LanguageRequest;
 
                         ClassificationService classificationService = new ClassificationService(query, db, ContactID);
-                        classificationLast = (from c in db.Classifications select c).FirstOrDefault();
+                        classificationFirst = (from c in db.Classifications select c).FirstOrDefault();
                     }
 
                     // ok with Classification info
-                    IActionResult jsonRet = classificationController.GetClassificationWithID(classificationLast.ClassificationID);
+                    IActionResult jsonRet = classificationController.GetClassificationWithID(classificationFirst.ClassificationID);
                     Assert.IsType<OkObjectResult>(jsonRet);
 
                     OkObjectResult Ret = jsonRet as OkObjectResult;
                     Classification classificationRet = (Classification)Ret.Value;
-                    Assert.Equal(classificationLast.ClassificationID, classificationRet.ClassificationID);
+                    Assert.Equal(classificationFirst.ClassificationID, classificationRet.ClassificationID);
 
                     BadRequestResult badRequest = jsonRet as BadRequestResult;
                     Assert.Null(badRequest);
@@ -283,7 +283,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.NotNull(classificationController);
                     Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, classificationController.DatabaseType);
 
-                    Classification classificationLast = new Classification();
+                    Classification classificationFirst = new Classification();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
                     {
                         Query query = new Query();
@@ -292,16 +292,16 @@ namespace CSSPWebAPI.Tests.Controllers
                         query.Desc = "";
 
                         ClassificationService classificationService = new ClassificationService(query, db, ContactID);
-                        classificationLast = (from c in db.Classifications select c).FirstOrDefault();
+                        classificationFirst = (from c in db.Classifications select c).FirstOrDefault();
                     }
 
                     // ok with Classification info
-                    IActionResult jsonRet = classificationController.GetClassificationWithID(classificationLast.ClassificationID);
+                    IActionResult jsonRet = classificationController.GetClassificationWithID(classificationFirst.ClassificationID);
                     Assert.IsType<OkObjectResult>(jsonRet);
 
                     OkObjectResult Ret = jsonRet as OkObjectResult;
                     Classification classificationRet = (Classification)Ret.Value;
-                    Assert.Equal(classificationLast.ClassificationID, classificationRet.ClassificationID);
+                    Assert.Equal(classificationFirst.ClassificationID, classificationRet.ClassificationID);
 
                     BadRequestResult badRequest = jsonRet as BadRequestResult;
                     Assert.Null(badRequest);

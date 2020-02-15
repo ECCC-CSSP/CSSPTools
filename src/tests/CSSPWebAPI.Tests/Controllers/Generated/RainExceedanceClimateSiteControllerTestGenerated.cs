@@ -156,7 +156,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.NotNull(rainExceedanceClimateSiteController);
                     Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, rainExceedanceClimateSiteController.DatabaseType);
 
-                    RainExceedanceClimateSite rainExceedanceClimateSiteLast = new RainExceedanceClimateSite();
+                    RainExceedanceClimateSite rainExceedanceClimateSiteFirst = new RainExceedanceClimateSite();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
                     {
                         Query query = new Query();
@@ -165,16 +165,16 @@ namespace CSSPWebAPI.Tests.Controllers
                         query.Desc = "";
 
                         RainExceedanceClimateSiteService rainExceedanceClimateSiteService = new RainExceedanceClimateSiteService(query, db, ContactID);
-                        rainExceedanceClimateSiteLast = (from c in db.RainExceedanceClimateSites select c).FirstOrDefault();
+                        rainExceedanceClimateSiteFirst = (from c in db.RainExceedanceClimateSites select c).FirstOrDefault();
                     }
 
                     // ok with RainExceedanceClimateSite info
-                    IActionResult jsonRet = rainExceedanceClimateSiteController.GetRainExceedanceClimateSiteWithID(rainExceedanceClimateSiteLast.RainExceedanceClimateSiteID);
+                    IActionResult jsonRet = rainExceedanceClimateSiteController.GetRainExceedanceClimateSiteWithID(rainExceedanceClimateSiteFirst.RainExceedanceClimateSiteID);
                     Assert.IsType<OkObjectResult>(jsonRet);
 
                     OkObjectResult ret = jsonRet as OkObjectResult;
                     RainExceedanceClimateSite rainExceedanceClimateSiteRet = (RainExceedanceClimateSite)ret.Value;
-                    Assert.Equal(rainExceedanceClimateSiteLast.RainExceedanceClimateSiteID, rainExceedanceClimateSiteRet.RainExceedanceClimateSiteID);
+                    Assert.Equal(rainExceedanceClimateSiteFirst.RainExceedanceClimateSiteID, rainExceedanceClimateSiteRet.RainExceedanceClimateSiteID);
 
                     BadRequestResult badRequest = jsonRet as BadRequestResult;
                     Assert.Null(badRequest);
@@ -225,23 +225,23 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.NotNull(rainExceedanceClimateSiteController);
                     Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, rainExceedanceClimateSiteController.DatabaseType);
 
-                    RainExceedanceClimateSite rainExceedanceClimateSiteLast = new RainExceedanceClimateSite();
+                    RainExceedanceClimateSite rainExceedanceClimateSiteFirst = new RainExceedanceClimateSite();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
                     {
                         Query query = new Query();
                         query.Language = LanguageRequest;
 
                         RainExceedanceClimateSiteService rainExceedanceClimateSiteService = new RainExceedanceClimateSiteService(query, db, ContactID);
-                        rainExceedanceClimateSiteLast = (from c in db.RainExceedanceClimateSites select c).FirstOrDefault();
+                        rainExceedanceClimateSiteFirst = (from c in db.RainExceedanceClimateSites select c).FirstOrDefault();
                     }
 
                     // ok with RainExceedanceClimateSite info
-                    IActionResult jsonRet = rainExceedanceClimateSiteController.GetRainExceedanceClimateSiteWithID(rainExceedanceClimateSiteLast.RainExceedanceClimateSiteID);
+                    IActionResult jsonRet = rainExceedanceClimateSiteController.GetRainExceedanceClimateSiteWithID(rainExceedanceClimateSiteFirst.RainExceedanceClimateSiteID);
                     Assert.IsType<OkObjectResult>(jsonRet);
 
                     OkObjectResult Ret = jsonRet as OkObjectResult;
                     RainExceedanceClimateSite rainExceedanceClimateSiteRet = (RainExceedanceClimateSite)Ret.Value;
-                    Assert.Equal(rainExceedanceClimateSiteLast.RainExceedanceClimateSiteID, rainExceedanceClimateSiteRet.RainExceedanceClimateSiteID);
+                    Assert.Equal(rainExceedanceClimateSiteFirst.RainExceedanceClimateSiteID, rainExceedanceClimateSiteRet.RainExceedanceClimateSiteID);
 
                     BadRequestResult badRequest = jsonRet as BadRequestResult;
                     Assert.Null(badRequest);
@@ -283,7 +283,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.NotNull(rainExceedanceClimateSiteController);
                     Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, rainExceedanceClimateSiteController.DatabaseType);
 
-                    RainExceedanceClimateSite rainExceedanceClimateSiteLast = new RainExceedanceClimateSite();
+                    RainExceedanceClimateSite rainExceedanceClimateSiteFirst = new RainExceedanceClimateSite();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
                     {
                         Query query = new Query();
@@ -292,16 +292,16 @@ namespace CSSPWebAPI.Tests.Controllers
                         query.Desc = "";
 
                         RainExceedanceClimateSiteService rainExceedanceClimateSiteService = new RainExceedanceClimateSiteService(query, db, ContactID);
-                        rainExceedanceClimateSiteLast = (from c in db.RainExceedanceClimateSites select c).FirstOrDefault();
+                        rainExceedanceClimateSiteFirst = (from c in db.RainExceedanceClimateSites select c).FirstOrDefault();
                     }
 
                     // ok with RainExceedanceClimateSite info
-                    IActionResult jsonRet = rainExceedanceClimateSiteController.GetRainExceedanceClimateSiteWithID(rainExceedanceClimateSiteLast.RainExceedanceClimateSiteID);
+                    IActionResult jsonRet = rainExceedanceClimateSiteController.GetRainExceedanceClimateSiteWithID(rainExceedanceClimateSiteFirst.RainExceedanceClimateSiteID);
                     Assert.IsType<OkObjectResult>(jsonRet);
 
                     OkObjectResult Ret = jsonRet as OkObjectResult;
                     RainExceedanceClimateSite rainExceedanceClimateSiteRet = (RainExceedanceClimateSite)Ret.Value;
-                    Assert.Equal(rainExceedanceClimateSiteLast.RainExceedanceClimateSiteID, rainExceedanceClimateSiteRet.RainExceedanceClimateSiteID);
+                    Assert.Equal(rainExceedanceClimateSiteFirst.RainExceedanceClimateSiteID, rainExceedanceClimateSiteRet.RainExceedanceClimateSiteID);
 
                     BadRequestResult badRequest = jsonRet as BadRequestResult;
                     Assert.Null(badRequest);

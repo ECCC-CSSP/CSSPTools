@@ -156,7 +156,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.NotNull(addressController);
                     Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, addressController.DatabaseType);
 
-                    Address addressLast = new Address();
+                    Address addressFirst = new Address();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
                     {
                         Query query = new Query();
@@ -165,16 +165,16 @@ namespace CSSPWebAPI.Tests.Controllers
                         query.Desc = "";
 
                         AddressService addressService = new AddressService(query, db, ContactID);
-                        addressLast = (from c in db.Addresses select c).FirstOrDefault();
+                        addressFirst = (from c in db.Addresses select c).FirstOrDefault();
                     }
 
                     // ok with Address info
-                    IActionResult jsonRet = addressController.GetAddressWithID(addressLast.AddressID);
+                    IActionResult jsonRet = addressController.GetAddressWithID(addressFirst.AddressID);
                     Assert.IsType<OkObjectResult>(jsonRet);
 
                     OkObjectResult ret = jsonRet as OkObjectResult;
                     Address addressRet = (Address)ret.Value;
-                    Assert.Equal(addressLast.AddressID, addressRet.AddressID);
+                    Assert.Equal(addressFirst.AddressID, addressRet.AddressID);
 
                     BadRequestResult badRequest = jsonRet as BadRequestResult;
                     Assert.Null(badRequest);
@@ -225,23 +225,23 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.NotNull(addressController);
                     Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, addressController.DatabaseType);
 
-                    Address addressLast = new Address();
+                    Address addressFirst = new Address();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
                     {
                         Query query = new Query();
                         query.Language = LanguageRequest;
 
                         AddressService addressService = new AddressService(query, db, ContactID);
-                        addressLast = (from c in db.Addresses select c).FirstOrDefault();
+                        addressFirst = (from c in db.Addresses select c).FirstOrDefault();
                     }
 
                     // ok with Address info
-                    IActionResult jsonRet = addressController.GetAddressWithID(addressLast.AddressID);
+                    IActionResult jsonRet = addressController.GetAddressWithID(addressFirst.AddressID);
                     Assert.IsType<OkObjectResult>(jsonRet);
 
                     OkObjectResult Ret = jsonRet as OkObjectResult;
                     Address addressRet = (Address)Ret.Value;
-                    Assert.Equal(addressLast.AddressID, addressRet.AddressID);
+                    Assert.Equal(addressFirst.AddressID, addressRet.AddressID);
 
                     BadRequestResult badRequest = jsonRet as BadRequestResult;
                     Assert.Null(badRequest);
@@ -283,7 +283,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.NotNull(addressController);
                     Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, addressController.DatabaseType);
 
-                    Address addressLast = new Address();
+                    Address addressFirst = new Address();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
                     {
                         Query query = new Query();
@@ -292,16 +292,16 @@ namespace CSSPWebAPI.Tests.Controllers
                         query.Desc = "";
 
                         AddressService addressService = new AddressService(query, db, ContactID);
-                        addressLast = (from c in db.Addresses select c).FirstOrDefault();
+                        addressFirst = (from c in db.Addresses select c).FirstOrDefault();
                     }
 
                     // ok with Address info
-                    IActionResult jsonRet = addressController.GetAddressWithID(addressLast.AddressID);
+                    IActionResult jsonRet = addressController.GetAddressWithID(addressFirst.AddressID);
                     Assert.IsType<OkObjectResult>(jsonRet);
 
                     OkObjectResult Ret = jsonRet as OkObjectResult;
                     Address addressRet = (Address)Ret.Value;
-                    Assert.Equal(addressLast.AddressID, addressRet.AddressID);
+                    Assert.Equal(addressFirst.AddressID, addressRet.AddressID);
 
                     BadRequestResult badRequest = jsonRet as BadRequestResult;
                     Assert.Null(badRequest);

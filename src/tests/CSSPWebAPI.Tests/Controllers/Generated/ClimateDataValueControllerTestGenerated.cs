@@ -156,7 +156,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.NotNull(climateDataValueController);
                     Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, climateDataValueController.DatabaseType);
 
-                    ClimateDataValue climateDataValueLast = new ClimateDataValue();
+                    ClimateDataValue climateDataValueFirst = new ClimateDataValue();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
                     {
                         Query query = new Query();
@@ -165,16 +165,16 @@ namespace CSSPWebAPI.Tests.Controllers
                         query.Desc = "";
 
                         ClimateDataValueService climateDataValueService = new ClimateDataValueService(query, db, ContactID);
-                        climateDataValueLast = (from c in db.ClimateDataValues select c).FirstOrDefault();
+                        climateDataValueFirst = (from c in db.ClimateDataValues select c).FirstOrDefault();
                     }
 
                     // ok with ClimateDataValue info
-                    IActionResult jsonRet = climateDataValueController.GetClimateDataValueWithID(climateDataValueLast.ClimateDataValueID);
+                    IActionResult jsonRet = climateDataValueController.GetClimateDataValueWithID(climateDataValueFirst.ClimateDataValueID);
                     Assert.IsType<OkObjectResult>(jsonRet);
 
                     OkObjectResult ret = jsonRet as OkObjectResult;
                     ClimateDataValue climateDataValueRet = (ClimateDataValue)ret.Value;
-                    Assert.Equal(climateDataValueLast.ClimateDataValueID, climateDataValueRet.ClimateDataValueID);
+                    Assert.Equal(climateDataValueFirst.ClimateDataValueID, climateDataValueRet.ClimateDataValueID);
 
                     BadRequestResult badRequest = jsonRet as BadRequestResult;
                     Assert.Null(badRequest);
@@ -225,23 +225,23 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.NotNull(climateDataValueController);
                     Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, climateDataValueController.DatabaseType);
 
-                    ClimateDataValue climateDataValueLast = new ClimateDataValue();
+                    ClimateDataValue climateDataValueFirst = new ClimateDataValue();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
                     {
                         Query query = new Query();
                         query.Language = LanguageRequest;
 
                         ClimateDataValueService climateDataValueService = new ClimateDataValueService(query, db, ContactID);
-                        climateDataValueLast = (from c in db.ClimateDataValues select c).FirstOrDefault();
+                        climateDataValueFirst = (from c in db.ClimateDataValues select c).FirstOrDefault();
                     }
 
                     // ok with ClimateDataValue info
-                    IActionResult jsonRet = climateDataValueController.GetClimateDataValueWithID(climateDataValueLast.ClimateDataValueID);
+                    IActionResult jsonRet = climateDataValueController.GetClimateDataValueWithID(climateDataValueFirst.ClimateDataValueID);
                     Assert.IsType<OkObjectResult>(jsonRet);
 
                     OkObjectResult Ret = jsonRet as OkObjectResult;
                     ClimateDataValue climateDataValueRet = (ClimateDataValue)Ret.Value;
-                    Assert.Equal(climateDataValueLast.ClimateDataValueID, climateDataValueRet.ClimateDataValueID);
+                    Assert.Equal(climateDataValueFirst.ClimateDataValueID, climateDataValueRet.ClimateDataValueID);
 
                     BadRequestResult badRequest = jsonRet as BadRequestResult;
                     Assert.Null(badRequest);
@@ -283,7 +283,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.NotNull(climateDataValueController);
                     Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, climateDataValueController.DatabaseType);
 
-                    ClimateDataValue climateDataValueLast = new ClimateDataValue();
+                    ClimateDataValue climateDataValueFirst = new ClimateDataValue();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
                     {
                         Query query = new Query();
@@ -292,16 +292,16 @@ namespace CSSPWebAPI.Tests.Controllers
                         query.Desc = "";
 
                         ClimateDataValueService climateDataValueService = new ClimateDataValueService(query, db, ContactID);
-                        climateDataValueLast = (from c in db.ClimateDataValues select c).FirstOrDefault();
+                        climateDataValueFirst = (from c in db.ClimateDataValues select c).FirstOrDefault();
                     }
 
                     // ok with ClimateDataValue info
-                    IActionResult jsonRet = climateDataValueController.GetClimateDataValueWithID(climateDataValueLast.ClimateDataValueID);
+                    IActionResult jsonRet = climateDataValueController.GetClimateDataValueWithID(climateDataValueFirst.ClimateDataValueID);
                     Assert.IsType<OkObjectResult>(jsonRet);
 
                     OkObjectResult Ret = jsonRet as OkObjectResult;
                     ClimateDataValue climateDataValueRet = (ClimateDataValue)Ret.Value;
-                    Assert.Equal(climateDataValueLast.ClimateDataValueID, climateDataValueRet.ClimateDataValueID);
+                    Assert.Equal(climateDataValueFirst.ClimateDataValueID, climateDataValueRet.ClimateDataValueID);
 
                     BadRequestResult badRequest = jsonRet as BadRequestResult;
                     Assert.Null(badRequest);

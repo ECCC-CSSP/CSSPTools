@@ -156,7 +156,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.NotNull(contactShortcutController);
                     Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, contactShortcutController.DatabaseType);
 
-                    ContactShortcut contactShortcutLast = new ContactShortcut();
+                    ContactShortcut contactShortcutFirst = new ContactShortcut();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
                     {
                         Query query = new Query();
@@ -165,16 +165,16 @@ namespace CSSPWebAPI.Tests.Controllers
                         query.Desc = "";
 
                         ContactShortcutService contactShortcutService = new ContactShortcutService(query, db, ContactID);
-                        contactShortcutLast = (from c in db.ContactShortcuts select c).FirstOrDefault();
+                        contactShortcutFirst = (from c in db.ContactShortcuts select c).FirstOrDefault();
                     }
 
                     // ok with ContactShortcut info
-                    IActionResult jsonRet = contactShortcutController.GetContactShortcutWithID(contactShortcutLast.ContactShortcutID);
+                    IActionResult jsonRet = contactShortcutController.GetContactShortcutWithID(contactShortcutFirst.ContactShortcutID);
                     Assert.IsType<OkObjectResult>(jsonRet);
 
                     OkObjectResult ret = jsonRet as OkObjectResult;
                     ContactShortcut contactShortcutRet = (ContactShortcut)ret.Value;
-                    Assert.Equal(contactShortcutLast.ContactShortcutID, contactShortcutRet.ContactShortcutID);
+                    Assert.Equal(contactShortcutFirst.ContactShortcutID, contactShortcutRet.ContactShortcutID);
 
                     BadRequestResult badRequest = jsonRet as BadRequestResult;
                     Assert.Null(badRequest);
@@ -225,23 +225,23 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.NotNull(contactShortcutController);
                     Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, contactShortcutController.DatabaseType);
 
-                    ContactShortcut contactShortcutLast = new ContactShortcut();
+                    ContactShortcut contactShortcutFirst = new ContactShortcut();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
                     {
                         Query query = new Query();
                         query.Language = LanguageRequest;
 
                         ContactShortcutService contactShortcutService = new ContactShortcutService(query, db, ContactID);
-                        contactShortcutLast = (from c in db.ContactShortcuts select c).FirstOrDefault();
+                        contactShortcutFirst = (from c in db.ContactShortcuts select c).FirstOrDefault();
                     }
 
                     // ok with ContactShortcut info
-                    IActionResult jsonRet = contactShortcutController.GetContactShortcutWithID(contactShortcutLast.ContactShortcutID);
+                    IActionResult jsonRet = contactShortcutController.GetContactShortcutWithID(contactShortcutFirst.ContactShortcutID);
                     Assert.IsType<OkObjectResult>(jsonRet);
 
                     OkObjectResult Ret = jsonRet as OkObjectResult;
                     ContactShortcut contactShortcutRet = (ContactShortcut)Ret.Value;
-                    Assert.Equal(contactShortcutLast.ContactShortcutID, contactShortcutRet.ContactShortcutID);
+                    Assert.Equal(contactShortcutFirst.ContactShortcutID, contactShortcutRet.ContactShortcutID);
 
                     BadRequestResult badRequest = jsonRet as BadRequestResult;
                     Assert.Null(badRequest);
@@ -283,7 +283,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.NotNull(contactShortcutController);
                     Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, contactShortcutController.DatabaseType);
 
-                    ContactShortcut contactShortcutLast = new ContactShortcut();
+                    ContactShortcut contactShortcutFirst = new ContactShortcut();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
                     {
                         Query query = new Query();
@@ -292,16 +292,16 @@ namespace CSSPWebAPI.Tests.Controllers
                         query.Desc = "";
 
                         ContactShortcutService contactShortcutService = new ContactShortcutService(query, db, ContactID);
-                        contactShortcutLast = (from c in db.ContactShortcuts select c).FirstOrDefault();
+                        contactShortcutFirst = (from c in db.ContactShortcuts select c).FirstOrDefault();
                     }
 
                     // ok with ContactShortcut info
-                    IActionResult jsonRet = contactShortcutController.GetContactShortcutWithID(contactShortcutLast.ContactShortcutID);
+                    IActionResult jsonRet = contactShortcutController.GetContactShortcutWithID(contactShortcutFirst.ContactShortcutID);
                     Assert.IsType<OkObjectResult>(jsonRet);
 
                     OkObjectResult Ret = jsonRet as OkObjectResult;
                     ContactShortcut contactShortcutRet = (ContactShortcut)Ret.Value;
-                    Assert.Equal(contactShortcutLast.ContactShortcutID, contactShortcutRet.ContactShortcutID);
+                    Assert.Equal(contactShortcutFirst.ContactShortcutID, contactShortcutRet.ContactShortcutID);
 
                     BadRequestResult badRequest = jsonRet as BadRequestResult;
                     Assert.Null(badRequest);

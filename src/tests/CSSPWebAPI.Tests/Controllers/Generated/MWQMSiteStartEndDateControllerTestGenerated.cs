@@ -156,7 +156,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.NotNull(mwqmSiteStartEndDateController);
                     Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, mwqmSiteStartEndDateController.DatabaseType);
 
-                    MWQMSiteStartEndDate mwqmSiteStartEndDateLast = new MWQMSiteStartEndDate();
+                    MWQMSiteStartEndDate mwqmSiteStartEndDateFirst = new MWQMSiteStartEndDate();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
                     {
                         Query query = new Query();
@@ -165,16 +165,16 @@ namespace CSSPWebAPI.Tests.Controllers
                         query.Desc = "";
 
                         MWQMSiteStartEndDateService mwqmSiteStartEndDateService = new MWQMSiteStartEndDateService(query, db, ContactID);
-                        mwqmSiteStartEndDateLast = (from c in db.MWQMSiteStartEndDates select c).FirstOrDefault();
+                        mwqmSiteStartEndDateFirst = (from c in db.MWQMSiteStartEndDates select c).FirstOrDefault();
                     }
 
                     // ok with MWQMSiteStartEndDate info
-                    IActionResult jsonRet = mwqmSiteStartEndDateController.GetMWQMSiteStartEndDateWithID(mwqmSiteStartEndDateLast.MWQMSiteStartEndDateID);
+                    IActionResult jsonRet = mwqmSiteStartEndDateController.GetMWQMSiteStartEndDateWithID(mwqmSiteStartEndDateFirst.MWQMSiteStartEndDateID);
                     Assert.IsType<OkObjectResult>(jsonRet);
 
                     OkObjectResult ret = jsonRet as OkObjectResult;
                     MWQMSiteStartEndDate mwqmSiteStartEndDateRet = (MWQMSiteStartEndDate)ret.Value;
-                    Assert.Equal(mwqmSiteStartEndDateLast.MWQMSiteStartEndDateID, mwqmSiteStartEndDateRet.MWQMSiteStartEndDateID);
+                    Assert.Equal(mwqmSiteStartEndDateFirst.MWQMSiteStartEndDateID, mwqmSiteStartEndDateRet.MWQMSiteStartEndDateID);
 
                     BadRequestResult badRequest = jsonRet as BadRequestResult;
                     Assert.Null(badRequest);
@@ -225,23 +225,23 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.NotNull(mwqmSiteStartEndDateController);
                     Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, mwqmSiteStartEndDateController.DatabaseType);
 
-                    MWQMSiteStartEndDate mwqmSiteStartEndDateLast = new MWQMSiteStartEndDate();
+                    MWQMSiteStartEndDate mwqmSiteStartEndDateFirst = new MWQMSiteStartEndDate();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
                     {
                         Query query = new Query();
                         query.Language = LanguageRequest;
 
                         MWQMSiteStartEndDateService mwqmSiteStartEndDateService = new MWQMSiteStartEndDateService(query, db, ContactID);
-                        mwqmSiteStartEndDateLast = (from c in db.MWQMSiteStartEndDates select c).FirstOrDefault();
+                        mwqmSiteStartEndDateFirst = (from c in db.MWQMSiteStartEndDates select c).FirstOrDefault();
                     }
 
                     // ok with MWQMSiteStartEndDate info
-                    IActionResult jsonRet = mwqmSiteStartEndDateController.GetMWQMSiteStartEndDateWithID(mwqmSiteStartEndDateLast.MWQMSiteStartEndDateID);
+                    IActionResult jsonRet = mwqmSiteStartEndDateController.GetMWQMSiteStartEndDateWithID(mwqmSiteStartEndDateFirst.MWQMSiteStartEndDateID);
                     Assert.IsType<OkObjectResult>(jsonRet);
 
                     OkObjectResult Ret = jsonRet as OkObjectResult;
                     MWQMSiteStartEndDate mwqmSiteStartEndDateRet = (MWQMSiteStartEndDate)Ret.Value;
-                    Assert.Equal(mwqmSiteStartEndDateLast.MWQMSiteStartEndDateID, mwqmSiteStartEndDateRet.MWQMSiteStartEndDateID);
+                    Assert.Equal(mwqmSiteStartEndDateFirst.MWQMSiteStartEndDateID, mwqmSiteStartEndDateRet.MWQMSiteStartEndDateID);
 
                     BadRequestResult badRequest = jsonRet as BadRequestResult;
                     Assert.Null(badRequest);
@@ -283,7 +283,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.NotNull(mwqmSiteStartEndDateController);
                     Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, mwqmSiteStartEndDateController.DatabaseType);
 
-                    MWQMSiteStartEndDate mwqmSiteStartEndDateLast = new MWQMSiteStartEndDate();
+                    MWQMSiteStartEndDate mwqmSiteStartEndDateFirst = new MWQMSiteStartEndDate();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
                     {
                         Query query = new Query();
@@ -292,16 +292,16 @@ namespace CSSPWebAPI.Tests.Controllers
                         query.Desc = "";
 
                         MWQMSiteStartEndDateService mwqmSiteStartEndDateService = new MWQMSiteStartEndDateService(query, db, ContactID);
-                        mwqmSiteStartEndDateLast = (from c in db.MWQMSiteStartEndDates select c).FirstOrDefault();
+                        mwqmSiteStartEndDateFirst = (from c in db.MWQMSiteStartEndDates select c).FirstOrDefault();
                     }
 
                     // ok with MWQMSiteStartEndDate info
-                    IActionResult jsonRet = mwqmSiteStartEndDateController.GetMWQMSiteStartEndDateWithID(mwqmSiteStartEndDateLast.MWQMSiteStartEndDateID);
+                    IActionResult jsonRet = mwqmSiteStartEndDateController.GetMWQMSiteStartEndDateWithID(mwqmSiteStartEndDateFirst.MWQMSiteStartEndDateID);
                     Assert.IsType<OkObjectResult>(jsonRet);
 
                     OkObjectResult Ret = jsonRet as OkObjectResult;
                     MWQMSiteStartEndDate mwqmSiteStartEndDateRet = (MWQMSiteStartEndDate)Ret.Value;
-                    Assert.Equal(mwqmSiteStartEndDateLast.MWQMSiteStartEndDateID, mwqmSiteStartEndDateRet.MWQMSiteStartEndDateID);
+                    Assert.Equal(mwqmSiteStartEndDateFirst.MWQMSiteStartEndDateID, mwqmSiteStartEndDateRet.MWQMSiteStartEndDateID);
 
                     BadRequestResult badRequest = jsonRet as BadRequestResult;
                     Assert.Null(badRequest);

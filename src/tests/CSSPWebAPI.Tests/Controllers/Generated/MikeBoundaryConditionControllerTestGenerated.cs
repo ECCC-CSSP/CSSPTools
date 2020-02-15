@@ -156,7 +156,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.NotNull(mikeBoundaryConditionController);
                     Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, mikeBoundaryConditionController.DatabaseType);
 
-                    MikeBoundaryCondition mikeBoundaryConditionLast = new MikeBoundaryCondition();
+                    MikeBoundaryCondition mikeBoundaryConditionFirst = new MikeBoundaryCondition();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
                     {
                         Query query = new Query();
@@ -165,16 +165,16 @@ namespace CSSPWebAPI.Tests.Controllers
                         query.Desc = "";
 
                         MikeBoundaryConditionService mikeBoundaryConditionService = new MikeBoundaryConditionService(query, db, ContactID);
-                        mikeBoundaryConditionLast = (from c in db.MikeBoundaryConditions select c).FirstOrDefault();
+                        mikeBoundaryConditionFirst = (from c in db.MikeBoundaryConditions select c).FirstOrDefault();
                     }
 
                     // ok with MikeBoundaryCondition info
-                    IActionResult jsonRet = mikeBoundaryConditionController.GetMikeBoundaryConditionWithID(mikeBoundaryConditionLast.MikeBoundaryConditionID);
+                    IActionResult jsonRet = mikeBoundaryConditionController.GetMikeBoundaryConditionWithID(mikeBoundaryConditionFirst.MikeBoundaryConditionID);
                     Assert.IsType<OkObjectResult>(jsonRet);
 
                     OkObjectResult ret = jsonRet as OkObjectResult;
                     MikeBoundaryCondition mikeBoundaryConditionRet = (MikeBoundaryCondition)ret.Value;
-                    Assert.Equal(mikeBoundaryConditionLast.MikeBoundaryConditionID, mikeBoundaryConditionRet.MikeBoundaryConditionID);
+                    Assert.Equal(mikeBoundaryConditionFirst.MikeBoundaryConditionID, mikeBoundaryConditionRet.MikeBoundaryConditionID);
 
                     BadRequestResult badRequest = jsonRet as BadRequestResult;
                     Assert.Null(badRequest);
@@ -225,23 +225,23 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.NotNull(mikeBoundaryConditionController);
                     Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, mikeBoundaryConditionController.DatabaseType);
 
-                    MikeBoundaryCondition mikeBoundaryConditionLast = new MikeBoundaryCondition();
+                    MikeBoundaryCondition mikeBoundaryConditionFirst = new MikeBoundaryCondition();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
                     {
                         Query query = new Query();
                         query.Language = LanguageRequest;
 
                         MikeBoundaryConditionService mikeBoundaryConditionService = new MikeBoundaryConditionService(query, db, ContactID);
-                        mikeBoundaryConditionLast = (from c in db.MikeBoundaryConditions select c).FirstOrDefault();
+                        mikeBoundaryConditionFirst = (from c in db.MikeBoundaryConditions select c).FirstOrDefault();
                     }
 
                     // ok with MikeBoundaryCondition info
-                    IActionResult jsonRet = mikeBoundaryConditionController.GetMikeBoundaryConditionWithID(mikeBoundaryConditionLast.MikeBoundaryConditionID);
+                    IActionResult jsonRet = mikeBoundaryConditionController.GetMikeBoundaryConditionWithID(mikeBoundaryConditionFirst.MikeBoundaryConditionID);
                     Assert.IsType<OkObjectResult>(jsonRet);
 
                     OkObjectResult Ret = jsonRet as OkObjectResult;
                     MikeBoundaryCondition mikeBoundaryConditionRet = (MikeBoundaryCondition)Ret.Value;
-                    Assert.Equal(mikeBoundaryConditionLast.MikeBoundaryConditionID, mikeBoundaryConditionRet.MikeBoundaryConditionID);
+                    Assert.Equal(mikeBoundaryConditionFirst.MikeBoundaryConditionID, mikeBoundaryConditionRet.MikeBoundaryConditionID);
 
                     BadRequestResult badRequest = jsonRet as BadRequestResult;
                     Assert.Null(badRequest);
@@ -283,7 +283,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.NotNull(mikeBoundaryConditionController);
                     Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, mikeBoundaryConditionController.DatabaseType);
 
-                    MikeBoundaryCondition mikeBoundaryConditionLast = new MikeBoundaryCondition();
+                    MikeBoundaryCondition mikeBoundaryConditionFirst = new MikeBoundaryCondition();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
                     {
                         Query query = new Query();
@@ -292,16 +292,16 @@ namespace CSSPWebAPI.Tests.Controllers
                         query.Desc = "";
 
                         MikeBoundaryConditionService mikeBoundaryConditionService = new MikeBoundaryConditionService(query, db, ContactID);
-                        mikeBoundaryConditionLast = (from c in db.MikeBoundaryConditions select c).FirstOrDefault();
+                        mikeBoundaryConditionFirst = (from c in db.MikeBoundaryConditions select c).FirstOrDefault();
                     }
 
                     // ok with MikeBoundaryCondition info
-                    IActionResult jsonRet = mikeBoundaryConditionController.GetMikeBoundaryConditionWithID(mikeBoundaryConditionLast.MikeBoundaryConditionID);
+                    IActionResult jsonRet = mikeBoundaryConditionController.GetMikeBoundaryConditionWithID(mikeBoundaryConditionFirst.MikeBoundaryConditionID);
                     Assert.IsType<OkObjectResult>(jsonRet);
 
                     OkObjectResult Ret = jsonRet as OkObjectResult;
                     MikeBoundaryCondition mikeBoundaryConditionRet = (MikeBoundaryCondition)Ret.Value;
-                    Assert.Equal(mikeBoundaryConditionLast.MikeBoundaryConditionID, mikeBoundaryConditionRet.MikeBoundaryConditionID);
+                    Assert.Equal(mikeBoundaryConditionFirst.MikeBoundaryConditionID, mikeBoundaryConditionRet.MikeBoundaryConditionID);
 
                     BadRequestResult badRequest = jsonRet as BadRequestResult;
                     Assert.Null(badRequest);

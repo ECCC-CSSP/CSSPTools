@@ -156,7 +156,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.NotNull(infrastructureController);
                     Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, infrastructureController.DatabaseType);
 
-                    Infrastructure infrastructureLast = new Infrastructure();
+                    Infrastructure infrastructureFirst = new Infrastructure();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
                     {
                         Query query = new Query();
@@ -165,16 +165,16 @@ namespace CSSPWebAPI.Tests.Controllers
                         query.Desc = "";
 
                         InfrastructureService infrastructureService = new InfrastructureService(query, db, ContactID);
-                        infrastructureLast = (from c in db.Infrastructures select c).FirstOrDefault();
+                        infrastructureFirst = (from c in db.Infrastructures select c).FirstOrDefault();
                     }
 
                     // ok with Infrastructure info
-                    IActionResult jsonRet = infrastructureController.GetInfrastructureWithID(infrastructureLast.InfrastructureID);
+                    IActionResult jsonRet = infrastructureController.GetInfrastructureWithID(infrastructureFirst.InfrastructureID);
                     Assert.IsType<OkObjectResult>(jsonRet);
 
                     OkObjectResult ret = jsonRet as OkObjectResult;
                     Infrastructure infrastructureRet = (Infrastructure)ret.Value;
-                    Assert.Equal(infrastructureLast.InfrastructureID, infrastructureRet.InfrastructureID);
+                    Assert.Equal(infrastructureFirst.InfrastructureID, infrastructureRet.InfrastructureID);
 
                     BadRequestResult badRequest = jsonRet as BadRequestResult;
                     Assert.Null(badRequest);
@@ -225,23 +225,23 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.NotNull(infrastructureController);
                     Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, infrastructureController.DatabaseType);
 
-                    Infrastructure infrastructureLast = new Infrastructure();
+                    Infrastructure infrastructureFirst = new Infrastructure();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
                     {
                         Query query = new Query();
                         query.Language = LanguageRequest;
 
                         InfrastructureService infrastructureService = new InfrastructureService(query, db, ContactID);
-                        infrastructureLast = (from c in db.Infrastructures select c).FirstOrDefault();
+                        infrastructureFirst = (from c in db.Infrastructures select c).FirstOrDefault();
                     }
 
                     // ok with Infrastructure info
-                    IActionResult jsonRet = infrastructureController.GetInfrastructureWithID(infrastructureLast.InfrastructureID);
+                    IActionResult jsonRet = infrastructureController.GetInfrastructureWithID(infrastructureFirst.InfrastructureID);
                     Assert.IsType<OkObjectResult>(jsonRet);
 
                     OkObjectResult Ret = jsonRet as OkObjectResult;
                     Infrastructure infrastructureRet = (Infrastructure)Ret.Value;
-                    Assert.Equal(infrastructureLast.InfrastructureID, infrastructureRet.InfrastructureID);
+                    Assert.Equal(infrastructureFirst.InfrastructureID, infrastructureRet.InfrastructureID);
 
                     BadRequestResult badRequest = jsonRet as BadRequestResult;
                     Assert.Null(badRequest);
@@ -283,7 +283,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.NotNull(infrastructureController);
                     Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, infrastructureController.DatabaseType);
 
-                    Infrastructure infrastructureLast = new Infrastructure();
+                    Infrastructure infrastructureFirst = new Infrastructure();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
                     {
                         Query query = new Query();
@@ -292,16 +292,16 @@ namespace CSSPWebAPI.Tests.Controllers
                         query.Desc = "";
 
                         InfrastructureService infrastructureService = new InfrastructureService(query, db, ContactID);
-                        infrastructureLast = (from c in db.Infrastructures select c).FirstOrDefault();
+                        infrastructureFirst = (from c in db.Infrastructures select c).FirstOrDefault();
                     }
 
                     // ok with Infrastructure info
-                    IActionResult jsonRet = infrastructureController.GetInfrastructureWithID(infrastructureLast.InfrastructureID);
+                    IActionResult jsonRet = infrastructureController.GetInfrastructureWithID(infrastructureFirst.InfrastructureID);
                     Assert.IsType<OkObjectResult>(jsonRet);
 
                     OkObjectResult Ret = jsonRet as OkObjectResult;
                     Infrastructure infrastructureRet = (Infrastructure)Ret.Value;
-                    Assert.Equal(infrastructureLast.InfrastructureID, infrastructureRet.InfrastructureID);
+                    Assert.Equal(infrastructureFirst.InfrastructureID, infrastructureRet.InfrastructureID);
 
                     BadRequestResult badRequest = jsonRet as BadRequestResult;
                     Assert.Null(badRequest);

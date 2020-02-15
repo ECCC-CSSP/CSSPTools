@@ -156,7 +156,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.NotNull(tvItemLinkController);
                     Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, tvItemLinkController.DatabaseType);
 
-                    TVItemLink tvItemLinkLast = new TVItemLink();
+                    TVItemLink tvItemLinkFirst = new TVItemLink();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
                     {
                         Query query = new Query();
@@ -165,16 +165,16 @@ namespace CSSPWebAPI.Tests.Controllers
                         query.Desc = "";
 
                         TVItemLinkService tvItemLinkService = new TVItemLinkService(query, db, ContactID);
-                        tvItemLinkLast = (from c in db.TVItemLinks select c).FirstOrDefault();
+                        tvItemLinkFirst = (from c in db.TVItemLinks select c).FirstOrDefault();
                     }
 
                     // ok with TVItemLink info
-                    IActionResult jsonRet = tvItemLinkController.GetTVItemLinkWithID(tvItemLinkLast.TVItemLinkID);
+                    IActionResult jsonRet = tvItemLinkController.GetTVItemLinkWithID(tvItemLinkFirst.TVItemLinkID);
                     Assert.IsType<OkObjectResult>(jsonRet);
 
                     OkObjectResult ret = jsonRet as OkObjectResult;
                     TVItemLink tvItemLinkRet = (TVItemLink)ret.Value;
-                    Assert.Equal(tvItemLinkLast.TVItemLinkID, tvItemLinkRet.TVItemLinkID);
+                    Assert.Equal(tvItemLinkFirst.TVItemLinkID, tvItemLinkRet.TVItemLinkID);
 
                     BadRequestResult badRequest = jsonRet as BadRequestResult;
                     Assert.Null(badRequest);
@@ -225,23 +225,23 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.NotNull(tvItemLinkController);
                     Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, tvItemLinkController.DatabaseType);
 
-                    TVItemLink tvItemLinkLast = new TVItemLink();
+                    TVItemLink tvItemLinkFirst = new TVItemLink();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
                     {
                         Query query = new Query();
                         query.Language = LanguageRequest;
 
                         TVItemLinkService tvItemLinkService = new TVItemLinkService(query, db, ContactID);
-                        tvItemLinkLast = (from c in db.TVItemLinks select c).FirstOrDefault();
+                        tvItemLinkFirst = (from c in db.TVItemLinks select c).FirstOrDefault();
                     }
 
                     // ok with TVItemLink info
-                    IActionResult jsonRet = tvItemLinkController.GetTVItemLinkWithID(tvItemLinkLast.TVItemLinkID);
+                    IActionResult jsonRet = tvItemLinkController.GetTVItemLinkWithID(tvItemLinkFirst.TVItemLinkID);
                     Assert.IsType<OkObjectResult>(jsonRet);
 
                     OkObjectResult Ret = jsonRet as OkObjectResult;
                     TVItemLink tvItemLinkRet = (TVItemLink)Ret.Value;
-                    Assert.Equal(tvItemLinkLast.TVItemLinkID, tvItemLinkRet.TVItemLinkID);
+                    Assert.Equal(tvItemLinkFirst.TVItemLinkID, tvItemLinkRet.TVItemLinkID);
 
                     BadRequestResult badRequest = jsonRet as BadRequestResult;
                     Assert.Null(badRequest);
@@ -283,7 +283,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.NotNull(tvItemLinkController);
                     Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, tvItemLinkController.DatabaseType);
 
-                    TVItemLink tvItemLinkLast = new TVItemLink();
+                    TVItemLink tvItemLinkFirst = new TVItemLink();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
                     {
                         Query query = new Query();
@@ -292,16 +292,16 @@ namespace CSSPWebAPI.Tests.Controllers
                         query.Desc = "";
 
                         TVItemLinkService tvItemLinkService = new TVItemLinkService(query, db, ContactID);
-                        tvItemLinkLast = (from c in db.TVItemLinks select c).FirstOrDefault();
+                        tvItemLinkFirst = (from c in db.TVItemLinks select c).FirstOrDefault();
                     }
 
                     // ok with TVItemLink info
-                    IActionResult jsonRet = tvItemLinkController.GetTVItemLinkWithID(tvItemLinkLast.TVItemLinkID);
+                    IActionResult jsonRet = tvItemLinkController.GetTVItemLinkWithID(tvItemLinkFirst.TVItemLinkID);
                     Assert.IsType<OkObjectResult>(jsonRet);
 
                     OkObjectResult Ret = jsonRet as OkObjectResult;
                     TVItemLink tvItemLinkRet = (TVItemLink)Ret.Value;
-                    Assert.Equal(tvItemLinkLast.TVItemLinkID, tvItemLinkRet.TVItemLinkID);
+                    Assert.Equal(tvItemLinkFirst.TVItemLinkID, tvItemLinkRet.TVItemLinkID);
 
                     BadRequestResult badRequest = jsonRet as BadRequestResult;
                     Assert.Null(badRequest);

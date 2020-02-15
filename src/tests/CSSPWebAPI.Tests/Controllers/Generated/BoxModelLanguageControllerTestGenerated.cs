@@ -156,7 +156,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.NotNull(boxModelLanguageController);
                     Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, boxModelLanguageController.DatabaseType);
 
-                    BoxModelLanguage boxModelLanguageLast = new BoxModelLanguage();
+                    BoxModelLanguage boxModelLanguageFirst = new BoxModelLanguage();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
                     {
                         Query query = new Query();
@@ -165,16 +165,16 @@ namespace CSSPWebAPI.Tests.Controllers
                         query.Desc = "";
 
                         BoxModelLanguageService boxModelLanguageService = new BoxModelLanguageService(query, db, ContactID);
-                        boxModelLanguageLast = (from c in db.BoxModelLanguages select c).FirstOrDefault();
+                        boxModelLanguageFirst = (from c in db.BoxModelLanguages select c).FirstOrDefault();
                     }
 
                     // ok with BoxModelLanguage info
-                    IActionResult jsonRet = boxModelLanguageController.GetBoxModelLanguageWithID(boxModelLanguageLast.BoxModelLanguageID);
+                    IActionResult jsonRet = boxModelLanguageController.GetBoxModelLanguageWithID(boxModelLanguageFirst.BoxModelLanguageID);
                     Assert.IsType<OkObjectResult>(jsonRet);
 
                     OkObjectResult ret = jsonRet as OkObjectResult;
                     BoxModelLanguage boxModelLanguageRet = (BoxModelLanguage)ret.Value;
-                    Assert.Equal(boxModelLanguageLast.BoxModelLanguageID, boxModelLanguageRet.BoxModelLanguageID);
+                    Assert.Equal(boxModelLanguageFirst.BoxModelLanguageID, boxModelLanguageRet.BoxModelLanguageID);
 
                     BadRequestResult badRequest = jsonRet as BadRequestResult;
                     Assert.Null(badRequest);
@@ -225,23 +225,23 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.NotNull(boxModelLanguageController);
                     Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, boxModelLanguageController.DatabaseType);
 
-                    BoxModelLanguage boxModelLanguageLast = new BoxModelLanguage();
+                    BoxModelLanguage boxModelLanguageFirst = new BoxModelLanguage();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
                     {
                         Query query = new Query();
                         query.Language = LanguageRequest;
 
                         BoxModelLanguageService boxModelLanguageService = new BoxModelLanguageService(query, db, ContactID);
-                        boxModelLanguageLast = (from c in db.BoxModelLanguages select c).FirstOrDefault();
+                        boxModelLanguageFirst = (from c in db.BoxModelLanguages select c).FirstOrDefault();
                     }
 
                     // ok with BoxModelLanguage info
-                    IActionResult jsonRet = boxModelLanguageController.GetBoxModelLanguageWithID(boxModelLanguageLast.BoxModelLanguageID);
+                    IActionResult jsonRet = boxModelLanguageController.GetBoxModelLanguageWithID(boxModelLanguageFirst.BoxModelLanguageID);
                     Assert.IsType<OkObjectResult>(jsonRet);
 
                     OkObjectResult Ret = jsonRet as OkObjectResult;
                     BoxModelLanguage boxModelLanguageRet = (BoxModelLanguage)Ret.Value;
-                    Assert.Equal(boxModelLanguageLast.BoxModelLanguageID, boxModelLanguageRet.BoxModelLanguageID);
+                    Assert.Equal(boxModelLanguageFirst.BoxModelLanguageID, boxModelLanguageRet.BoxModelLanguageID);
 
                     BadRequestResult badRequest = jsonRet as BadRequestResult;
                     Assert.Null(badRequest);
@@ -283,7 +283,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.NotNull(boxModelLanguageController);
                     Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, boxModelLanguageController.DatabaseType);
 
-                    BoxModelLanguage boxModelLanguageLast = new BoxModelLanguage();
+                    BoxModelLanguage boxModelLanguageFirst = new BoxModelLanguage();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
                     {
                         Query query = new Query();
@@ -292,16 +292,16 @@ namespace CSSPWebAPI.Tests.Controllers
                         query.Desc = "";
 
                         BoxModelLanguageService boxModelLanguageService = new BoxModelLanguageService(query, db, ContactID);
-                        boxModelLanguageLast = (from c in db.BoxModelLanguages select c).FirstOrDefault();
+                        boxModelLanguageFirst = (from c in db.BoxModelLanguages select c).FirstOrDefault();
                     }
 
                     // ok with BoxModelLanguage info
-                    IActionResult jsonRet = boxModelLanguageController.GetBoxModelLanguageWithID(boxModelLanguageLast.BoxModelLanguageID);
+                    IActionResult jsonRet = boxModelLanguageController.GetBoxModelLanguageWithID(boxModelLanguageFirst.BoxModelLanguageID);
                     Assert.IsType<OkObjectResult>(jsonRet);
 
                     OkObjectResult Ret = jsonRet as OkObjectResult;
                     BoxModelLanguage boxModelLanguageRet = (BoxModelLanguage)Ret.Value;
-                    Assert.Equal(boxModelLanguageLast.BoxModelLanguageID, boxModelLanguageRet.BoxModelLanguageID);
+                    Assert.Equal(boxModelLanguageFirst.BoxModelLanguageID, boxModelLanguageRet.BoxModelLanguageID);
 
                     BadRequestResult badRequest = jsonRet as BadRequestResult;
                     Assert.Null(badRequest);

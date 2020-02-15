@@ -156,7 +156,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.NotNull(tvTypeUserAuthorizationController);
                     Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, tvTypeUserAuthorizationController.DatabaseType);
 
-                    TVTypeUserAuthorization tvTypeUserAuthorizationLast = new TVTypeUserAuthorization();
+                    TVTypeUserAuthorization tvTypeUserAuthorizationFirst = new TVTypeUserAuthorization();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
                     {
                         Query query = new Query();
@@ -165,16 +165,16 @@ namespace CSSPWebAPI.Tests.Controllers
                         query.Desc = "";
 
                         TVTypeUserAuthorizationService tvTypeUserAuthorizationService = new TVTypeUserAuthorizationService(query, db, ContactID);
-                        tvTypeUserAuthorizationLast = (from c in db.TVTypeUserAuthorizations select c).FirstOrDefault();
+                        tvTypeUserAuthorizationFirst = (from c in db.TVTypeUserAuthorizations select c).FirstOrDefault();
                     }
 
                     // ok with TVTypeUserAuthorization info
-                    IActionResult jsonRet = tvTypeUserAuthorizationController.GetTVTypeUserAuthorizationWithID(tvTypeUserAuthorizationLast.TVTypeUserAuthorizationID);
+                    IActionResult jsonRet = tvTypeUserAuthorizationController.GetTVTypeUserAuthorizationWithID(tvTypeUserAuthorizationFirst.TVTypeUserAuthorizationID);
                     Assert.IsType<OkObjectResult>(jsonRet);
 
                     OkObjectResult ret = jsonRet as OkObjectResult;
                     TVTypeUserAuthorization tvTypeUserAuthorizationRet = (TVTypeUserAuthorization)ret.Value;
-                    Assert.Equal(tvTypeUserAuthorizationLast.TVTypeUserAuthorizationID, tvTypeUserAuthorizationRet.TVTypeUserAuthorizationID);
+                    Assert.Equal(tvTypeUserAuthorizationFirst.TVTypeUserAuthorizationID, tvTypeUserAuthorizationRet.TVTypeUserAuthorizationID);
 
                     BadRequestResult badRequest = jsonRet as BadRequestResult;
                     Assert.Null(badRequest);
@@ -225,23 +225,23 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.NotNull(tvTypeUserAuthorizationController);
                     Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, tvTypeUserAuthorizationController.DatabaseType);
 
-                    TVTypeUserAuthorization tvTypeUserAuthorizationLast = new TVTypeUserAuthorization();
+                    TVTypeUserAuthorization tvTypeUserAuthorizationFirst = new TVTypeUserAuthorization();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
                     {
                         Query query = new Query();
                         query.Language = LanguageRequest;
 
                         TVTypeUserAuthorizationService tvTypeUserAuthorizationService = new TVTypeUserAuthorizationService(query, db, ContactID);
-                        tvTypeUserAuthorizationLast = (from c in db.TVTypeUserAuthorizations select c).FirstOrDefault();
+                        tvTypeUserAuthorizationFirst = (from c in db.TVTypeUserAuthorizations select c).FirstOrDefault();
                     }
 
                     // ok with TVTypeUserAuthorization info
-                    IActionResult jsonRet = tvTypeUserAuthorizationController.GetTVTypeUserAuthorizationWithID(tvTypeUserAuthorizationLast.TVTypeUserAuthorizationID);
+                    IActionResult jsonRet = tvTypeUserAuthorizationController.GetTVTypeUserAuthorizationWithID(tvTypeUserAuthorizationFirst.TVTypeUserAuthorizationID);
                     Assert.IsType<OkObjectResult>(jsonRet);
 
                     OkObjectResult Ret = jsonRet as OkObjectResult;
                     TVTypeUserAuthorization tvTypeUserAuthorizationRet = (TVTypeUserAuthorization)Ret.Value;
-                    Assert.Equal(tvTypeUserAuthorizationLast.TVTypeUserAuthorizationID, tvTypeUserAuthorizationRet.TVTypeUserAuthorizationID);
+                    Assert.Equal(tvTypeUserAuthorizationFirst.TVTypeUserAuthorizationID, tvTypeUserAuthorizationRet.TVTypeUserAuthorizationID);
 
                     BadRequestResult badRequest = jsonRet as BadRequestResult;
                     Assert.Null(badRequest);
@@ -283,7 +283,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.NotNull(tvTypeUserAuthorizationController);
                     Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, tvTypeUserAuthorizationController.DatabaseType);
 
-                    TVTypeUserAuthorization tvTypeUserAuthorizationLast = new TVTypeUserAuthorization();
+                    TVTypeUserAuthorization tvTypeUserAuthorizationFirst = new TVTypeUserAuthorization();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
                     {
                         Query query = new Query();
@@ -292,16 +292,16 @@ namespace CSSPWebAPI.Tests.Controllers
                         query.Desc = "";
 
                         TVTypeUserAuthorizationService tvTypeUserAuthorizationService = new TVTypeUserAuthorizationService(query, db, ContactID);
-                        tvTypeUserAuthorizationLast = (from c in db.TVTypeUserAuthorizations select c).FirstOrDefault();
+                        tvTypeUserAuthorizationFirst = (from c in db.TVTypeUserAuthorizations select c).FirstOrDefault();
                     }
 
                     // ok with TVTypeUserAuthorization info
-                    IActionResult jsonRet = tvTypeUserAuthorizationController.GetTVTypeUserAuthorizationWithID(tvTypeUserAuthorizationLast.TVTypeUserAuthorizationID);
+                    IActionResult jsonRet = tvTypeUserAuthorizationController.GetTVTypeUserAuthorizationWithID(tvTypeUserAuthorizationFirst.TVTypeUserAuthorizationID);
                     Assert.IsType<OkObjectResult>(jsonRet);
 
                     OkObjectResult Ret = jsonRet as OkObjectResult;
                     TVTypeUserAuthorization tvTypeUserAuthorizationRet = (TVTypeUserAuthorization)Ret.Value;
-                    Assert.Equal(tvTypeUserAuthorizationLast.TVTypeUserAuthorizationID, tvTypeUserAuthorizationRet.TVTypeUserAuthorizationID);
+                    Assert.Equal(tvTypeUserAuthorizationFirst.TVTypeUserAuthorizationID, tvTypeUserAuthorizationRet.TVTypeUserAuthorizationID);
 
                     BadRequestResult badRequest = jsonRet as BadRequestResult;
                     Assert.Null(badRequest);

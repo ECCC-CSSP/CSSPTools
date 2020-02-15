@@ -156,7 +156,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.NotNull(emailDistributionListContactController);
                     Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, emailDistributionListContactController.DatabaseType);
 
-                    EmailDistributionListContact emailDistributionListContactLast = new EmailDistributionListContact();
+                    EmailDistributionListContact emailDistributionListContactFirst = new EmailDistributionListContact();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
                     {
                         Query query = new Query();
@@ -165,16 +165,16 @@ namespace CSSPWebAPI.Tests.Controllers
                         query.Desc = "";
 
                         EmailDistributionListContactService emailDistributionListContactService = new EmailDistributionListContactService(query, db, ContactID);
-                        emailDistributionListContactLast = (from c in db.EmailDistributionListContacts select c).FirstOrDefault();
+                        emailDistributionListContactFirst = (from c in db.EmailDistributionListContacts select c).FirstOrDefault();
                     }
 
                     // ok with EmailDistributionListContact info
-                    IActionResult jsonRet = emailDistributionListContactController.GetEmailDistributionListContactWithID(emailDistributionListContactLast.EmailDistributionListContactID);
+                    IActionResult jsonRet = emailDistributionListContactController.GetEmailDistributionListContactWithID(emailDistributionListContactFirst.EmailDistributionListContactID);
                     Assert.IsType<OkObjectResult>(jsonRet);
 
                     OkObjectResult ret = jsonRet as OkObjectResult;
                     EmailDistributionListContact emailDistributionListContactRet = (EmailDistributionListContact)ret.Value;
-                    Assert.Equal(emailDistributionListContactLast.EmailDistributionListContactID, emailDistributionListContactRet.EmailDistributionListContactID);
+                    Assert.Equal(emailDistributionListContactFirst.EmailDistributionListContactID, emailDistributionListContactRet.EmailDistributionListContactID);
 
                     BadRequestResult badRequest = jsonRet as BadRequestResult;
                     Assert.Null(badRequest);
@@ -225,23 +225,23 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.NotNull(emailDistributionListContactController);
                     Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, emailDistributionListContactController.DatabaseType);
 
-                    EmailDistributionListContact emailDistributionListContactLast = new EmailDistributionListContact();
+                    EmailDistributionListContact emailDistributionListContactFirst = new EmailDistributionListContact();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
                     {
                         Query query = new Query();
                         query.Language = LanguageRequest;
 
                         EmailDistributionListContactService emailDistributionListContactService = new EmailDistributionListContactService(query, db, ContactID);
-                        emailDistributionListContactLast = (from c in db.EmailDistributionListContacts select c).FirstOrDefault();
+                        emailDistributionListContactFirst = (from c in db.EmailDistributionListContacts select c).FirstOrDefault();
                     }
 
                     // ok with EmailDistributionListContact info
-                    IActionResult jsonRet = emailDistributionListContactController.GetEmailDistributionListContactWithID(emailDistributionListContactLast.EmailDistributionListContactID);
+                    IActionResult jsonRet = emailDistributionListContactController.GetEmailDistributionListContactWithID(emailDistributionListContactFirst.EmailDistributionListContactID);
                     Assert.IsType<OkObjectResult>(jsonRet);
 
                     OkObjectResult Ret = jsonRet as OkObjectResult;
                     EmailDistributionListContact emailDistributionListContactRet = (EmailDistributionListContact)Ret.Value;
-                    Assert.Equal(emailDistributionListContactLast.EmailDistributionListContactID, emailDistributionListContactRet.EmailDistributionListContactID);
+                    Assert.Equal(emailDistributionListContactFirst.EmailDistributionListContactID, emailDistributionListContactRet.EmailDistributionListContactID);
 
                     BadRequestResult badRequest = jsonRet as BadRequestResult;
                     Assert.Null(badRequest);
@@ -283,7 +283,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.NotNull(emailDistributionListContactController);
                     Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, emailDistributionListContactController.DatabaseType);
 
-                    EmailDistributionListContact emailDistributionListContactLast = new EmailDistributionListContact();
+                    EmailDistributionListContact emailDistributionListContactFirst = new EmailDistributionListContact();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
                     {
                         Query query = new Query();
@@ -292,16 +292,16 @@ namespace CSSPWebAPI.Tests.Controllers
                         query.Desc = "";
 
                         EmailDistributionListContactService emailDistributionListContactService = new EmailDistributionListContactService(query, db, ContactID);
-                        emailDistributionListContactLast = (from c in db.EmailDistributionListContacts select c).FirstOrDefault();
+                        emailDistributionListContactFirst = (from c in db.EmailDistributionListContacts select c).FirstOrDefault();
                     }
 
                     // ok with EmailDistributionListContact info
-                    IActionResult jsonRet = emailDistributionListContactController.GetEmailDistributionListContactWithID(emailDistributionListContactLast.EmailDistributionListContactID);
+                    IActionResult jsonRet = emailDistributionListContactController.GetEmailDistributionListContactWithID(emailDistributionListContactFirst.EmailDistributionListContactID);
                     Assert.IsType<OkObjectResult>(jsonRet);
 
                     OkObjectResult Ret = jsonRet as OkObjectResult;
                     EmailDistributionListContact emailDistributionListContactRet = (EmailDistributionListContact)Ret.Value;
-                    Assert.Equal(emailDistributionListContactLast.EmailDistributionListContactID, emailDistributionListContactRet.EmailDistributionListContactID);
+                    Assert.Equal(emailDistributionListContactFirst.EmailDistributionListContactID, emailDistributionListContactRet.EmailDistributionListContactID);
 
                     BadRequestResult badRequest = jsonRet as BadRequestResult;
                     Assert.Null(badRequest);

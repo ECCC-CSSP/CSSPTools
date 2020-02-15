@@ -156,7 +156,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.NotNull(tideLocationController);
                     Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, tideLocationController.DatabaseType);
 
-                    TideLocation tideLocationLast = new TideLocation();
+                    TideLocation tideLocationFirst = new TideLocation();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
                     {
                         Query query = new Query();
@@ -165,16 +165,16 @@ namespace CSSPWebAPI.Tests.Controllers
                         query.Desc = "";
 
                         TideLocationService tideLocationService = new TideLocationService(query, db, ContactID);
-                        tideLocationLast = (from c in db.TideLocations select c).FirstOrDefault();
+                        tideLocationFirst = (from c in db.TideLocations select c).FirstOrDefault();
                     }
 
                     // ok with TideLocation info
-                    IActionResult jsonRet = tideLocationController.GetTideLocationWithID(tideLocationLast.TideLocationID);
+                    IActionResult jsonRet = tideLocationController.GetTideLocationWithID(tideLocationFirst.TideLocationID);
                     Assert.IsType<OkObjectResult>(jsonRet);
 
                     OkObjectResult ret = jsonRet as OkObjectResult;
                     TideLocation tideLocationRet = (TideLocation)ret.Value;
-                    Assert.Equal(tideLocationLast.TideLocationID, tideLocationRet.TideLocationID);
+                    Assert.Equal(tideLocationFirst.TideLocationID, tideLocationRet.TideLocationID);
 
                     BadRequestResult badRequest = jsonRet as BadRequestResult;
                     Assert.Null(badRequest);
@@ -225,23 +225,23 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.NotNull(tideLocationController);
                     Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, tideLocationController.DatabaseType);
 
-                    TideLocation tideLocationLast = new TideLocation();
+                    TideLocation tideLocationFirst = new TideLocation();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
                     {
                         Query query = new Query();
                         query.Language = LanguageRequest;
 
                         TideLocationService tideLocationService = new TideLocationService(query, db, ContactID);
-                        tideLocationLast = (from c in db.TideLocations select c).FirstOrDefault();
+                        tideLocationFirst = (from c in db.TideLocations select c).FirstOrDefault();
                     }
 
                     // ok with TideLocation info
-                    IActionResult jsonRet = tideLocationController.GetTideLocationWithID(tideLocationLast.TideLocationID);
+                    IActionResult jsonRet = tideLocationController.GetTideLocationWithID(tideLocationFirst.TideLocationID);
                     Assert.IsType<OkObjectResult>(jsonRet);
 
                     OkObjectResult Ret = jsonRet as OkObjectResult;
                     TideLocation tideLocationRet = (TideLocation)Ret.Value;
-                    Assert.Equal(tideLocationLast.TideLocationID, tideLocationRet.TideLocationID);
+                    Assert.Equal(tideLocationFirst.TideLocationID, tideLocationRet.TideLocationID);
 
                     BadRequestResult badRequest = jsonRet as BadRequestResult;
                     Assert.Null(badRequest);
@@ -283,7 +283,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.NotNull(tideLocationController);
                     Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, tideLocationController.DatabaseType);
 
-                    TideLocation tideLocationLast = new TideLocation();
+                    TideLocation tideLocationFirst = new TideLocation();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
                     {
                         Query query = new Query();
@@ -292,16 +292,16 @@ namespace CSSPWebAPI.Tests.Controllers
                         query.Desc = "";
 
                         TideLocationService tideLocationService = new TideLocationService(query, db, ContactID);
-                        tideLocationLast = (from c in db.TideLocations select c).FirstOrDefault();
+                        tideLocationFirst = (from c in db.TideLocations select c).FirstOrDefault();
                     }
 
                     // ok with TideLocation info
-                    IActionResult jsonRet = tideLocationController.GetTideLocationWithID(tideLocationLast.TideLocationID);
+                    IActionResult jsonRet = tideLocationController.GetTideLocationWithID(tideLocationFirst.TideLocationID);
                     Assert.IsType<OkObjectResult>(jsonRet);
 
                     OkObjectResult Ret = jsonRet as OkObjectResult;
                     TideLocation tideLocationRet = (TideLocation)Ret.Value;
-                    Assert.Equal(tideLocationLast.TideLocationID, tideLocationRet.TideLocationID);
+                    Assert.Equal(tideLocationFirst.TideLocationID, tideLocationRet.TideLocationID);
 
                     BadRequestResult badRequest = jsonRet as BadRequestResult;
                     Assert.Null(badRequest);

@@ -156,7 +156,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.NotNull(samplingPlanController);
                     Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, samplingPlanController.DatabaseType);
 
-                    SamplingPlan samplingPlanLast = new SamplingPlan();
+                    SamplingPlan samplingPlanFirst = new SamplingPlan();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
                     {
                         Query query = new Query();
@@ -165,16 +165,16 @@ namespace CSSPWebAPI.Tests.Controllers
                         query.Desc = "";
 
                         SamplingPlanService samplingPlanService = new SamplingPlanService(query, db, ContactID);
-                        samplingPlanLast = (from c in db.SamplingPlans select c).FirstOrDefault();
+                        samplingPlanFirst = (from c in db.SamplingPlans select c).FirstOrDefault();
                     }
 
                     // ok with SamplingPlan info
-                    IActionResult jsonRet = samplingPlanController.GetSamplingPlanWithID(samplingPlanLast.SamplingPlanID);
+                    IActionResult jsonRet = samplingPlanController.GetSamplingPlanWithID(samplingPlanFirst.SamplingPlanID);
                     Assert.IsType<OkObjectResult>(jsonRet);
 
                     OkObjectResult ret = jsonRet as OkObjectResult;
                     SamplingPlan samplingPlanRet = (SamplingPlan)ret.Value;
-                    Assert.Equal(samplingPlanLast.SamplingPlanID, samplingPlanRet.SamplingPlanID);
+                    Assert.Equal(samplingPlanFirst.SamplingPlanID, samplingPlanRet.SamplingPlanID);
 
                     BadRequestResult badRequest = jsonRet as BadRequestResult;
                     Assert.Null(badRequest);
@@ -226,23 +226,23 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.NotNull(samplingPlanController);
                     Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, samplingPlanController.DatabaseType);
 
-                    SamplingPlan samplingPlanLast = new SamplingPlan();
+                    SamplingPlan samplingPlanFirst = new SamplingPlan();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
                     {
                         Query query = new Query();
                         query.Language = LanguageRequest;
 
                         SamplingPlanService samplingPlanService = new SamplingPlanService(query, db, ContactID);
-                        samplingPlanLast = (from c in db.SamplingPlans select c).FirstOrDefault();
+                        samplingPlanFirst = (from c in db.SamplingPlans select c).FirstOrDefault();
                     }
 
                     // ok with SamplingPlan info
-                    IActionResult jsonRet = samplingPlanController.GetSamplingPlanWithID(samplingPlanLast.SamplingPlanID);
+                    IActionResult jsonRet = samplingPlanController.GetSamplingPlanWithID(samplingPlanFirst.SamplingPlanID);
                     Assert.IsType<OkObjectResult>(jsonRet);
 
                     OkObjectResult Ret = jsonRet as OkObjectResult;
                     SamplingPlan samplingPlanRet = (SamplingPlan)Ret.Value;
-                    Assert.Equal(samplingPlanLast.SamplingPlanID, samplingPlanRet.SamplingPlanID);
+                    Assert.Equal(samplingPlanFirst.SamplingPlanID, samplingPlanRet.SamplingPlanID);
 
                     BadRequestResult badRequest = jsonRet as BadRequestResult;
                     Assert.Null(badRequest);
@@ -284,7 +284,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.NotNull(samplingPlanController);
                     Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, samplingPlanController.DatabaseType);
 
-                    SamplingPlan samplingPlanLast = new SamplingPlan();
+                    SamplingPlan samplingPlanFirst = new SamplingPlan();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
                     {
                         Query query = new Query();
@@ -293,16 +293,16 @@ namespace CSSPWebAPI.Tests.Controllers
                         query.Desc = "";
 
                         SamplingPlanService samplingPlanService = new SamplingPlanService(query, db, ContactID);
-                        samplingPlanLast = (from c in db.SamplingPlans select c).FirstOrDefault();
+                        samplingPlanFirst = (from c in db.SamplingPlans select c).FirstOrDefault();
                     }
 
                     // ok with SamplingPlan info
-                    IActionResult jsonRet = samplingPlanController.GetSamplingPlanWithID(samplingPlanLast.SamplingPlanID);
+                    IActionResult jsonRet = samplingPlanController.GetSamplingPlanWithID(samplingPlanFirst.SamplingPlanID);
                     Assert.IsType<OkObjectResult>(jsonRet);
 
                     OkObjectResult Ret = jsonRet as OkObjectResult;
                     SamplingPlan samplingPlanRet = (SamplingPlan)Ret.Value;
-                    Assert.Equal(samplingPlanLast.SamplingPlanID, samplingPlanRet.SamplingPlanID);
+                    Assert.Equal(samplingPlanFirst.SamplingPlanID, samplingPlanRet.SamplingPlanID);
 
                     BadRequestResult badRequest = jsonRet as BadRequestResult;
                     Assert.Null(badRequest);

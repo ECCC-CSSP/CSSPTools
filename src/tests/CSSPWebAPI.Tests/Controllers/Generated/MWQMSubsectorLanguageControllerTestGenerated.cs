@@ -156,7 +156,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.NotNull(mwqmSubsectorLanguageController);
                     Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, mwqmSubsectorLanguageController.DatabaseType);
 
-                    MWQMSubsectorLanguage mwqmSubsectorLanguageLast = new MWQMSubsectorLanguage();
+                    MWQMSubsectorLanguage mwqmSubsectorLanguageFirst = new MWQMSubsectorLanguage();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
                     {
                         Query query = new Query();
@@ -165,16 +165,16 @@ namespace CSSPWebAPI.Tests.Controllers
                         query.Desc = "";
 
                         MWQMSubsectorLanguageService mwqmSubsectorLanguageService = new MWQMSubsectorLanguageService(query, db, ContactID);
-                        mwqmSubsectorLanguageLast = (from c in db.MWQMSubsectorLanguages select c).FirstOrDefault();
+                        mwqmSubsectorLanguageFirst = (from c in db.MWQMSubsectorLanguages select c).FirstOrDefault();
                     }
 
                     // ok with MWQMSubsectorLanguage info
-                    IActionResult jsonRet = mwqmSubsectorLanguageController.GetMWQMSubsectorLanguageWithID(mwqmSubsectorLanguageLast.MWQMSubsectorLanguageID);
+                    IActionResult jsonRet = mwqmSubsectorLanguageController.GetMWQMSubsectorLanguageWithID(mwqmSubsectorLanguageFirst.MWQMSubsectorLanguageID);
                     Assert.IsType<OkObjectResult>(jsonRet);
 
                     OkObjectResult ret = jsonRet as OkObjectResult;
                     MWQMSubsectorLanguage mwqmSubsectorLanguageRet = (MWQMSubsectorLanguage)ret.Value;
-                    Assert.Equal(mwqmSubsectorLanguageLast.MWQMSubsectorLanguageID, mwqmSubsectorLanguageRet.MWQMSubsectorLanguageID);
+                    Assert.Equal(mwqmSubsectorLanguageFirst.MWQMSubsectorLanguageID, mwqmSubsectorLanguageRet.MWQMSubsectorLanguageID);
 
                     BadRequestResult badRequest = jsonRet as BadRequestResult;
                     Assert.Null(badRequest);
@@ -225,23 +225,23 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.NotNull(mwqmSubsectorLanguageController);
                     Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, mwqmSubsectorLanguageController.DatabaseType);
 
-                    MWQMSubsectorLanguage mwqmSubsectorLanguageLast = new MWQMSubsectorLanguage();
+                    MWQMSubsectorLanguage mwqmSubsectorLanguageFirst = new MWQMSubsectorLanguage();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
                     {
                         Query query = new Query();
                         query.Language = LanguageRequest;
 
                         MWQMSubsectorLanguageService mwqmSubsectorLanguageService = new MWQMSubsectorLanguageService(query, db, ContactID);
-                        mwqmSubsectorLanguageLast = (from c in db.MWQMSubsectorLanguages select c).FirstOrDefault();
+                        mwqmSubsectorLanguageFirst = (from c in db.MWQMSubsectorLanguages select c).FirstOrDefault();
                     }
 
                     // ok with MWQMSubsectorLanguage info
-                    IActionResult jsonRet = mwqmSubsectorLanguageController.GetMWQMSubsectorLanguageWithID(mwqmSubsectorLanguageLast.MWQMSubsectorLanguageID);
+                    IActionResult jsonRet = mwqmSubsectorLanguageController.GetMWQMSubsectorLanguageWithID(mwqmSubsectorLanguageFirst.MWQMSubsectorLanguageID);
                     Assert.IsType<OkObjectResult>(jsonRet);
 
                     OkObjectResult Ret = jsonRet as OkObjectResult;
                     MWQMSubsectorLanguage mwqmSubsectorLanguageRet = (MWQMSubsectorLanguage)Ret.Value;
-                    Assert.Equal(mwqmSubsectorLanguageLast.MWQMSubsectorLanguageID, mwqmSubsectorLanguageRet.MWQMSubsectorLanguageID);
+                    Assert.Equal(mwqmSubsectorLanguageFirst.MWQMSubsectorLanguageID, mwqmSubsectorLanguageRet.MWQMSubsectorLanguageID);
 
                     BadRequestResult badRequest = jsonRet as BadRequestResult;
                     Assert.Null(badRequest);
@@ -283,7 +283,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.NotNull(mwqmSubsectorLanguageController);
                     Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, mwqmSubsectorLanguageController.DatabaseType);
 
-                    MWQMSubsectorLanguage mwqmSubsectorLanguageLast = new MWQMSubsectorLanguage();
+                    MWQMSubsectorLanguage mwqmSubsectorLanguageFirst = new MWQMSubsectorLanguage();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
                     {
                         Query query = new Query();
@@ -292,16 +292,16 @@ namespace CSSPWebAPI.Tests.Controllers
                         query.Desc = "";
 
                         MWQMSubsectorLanguageService mwqmSubsectorLanguageService = new MWQMSubsectorLanguageService(query, db, ContactID);
-                        mwqmSubsectorLanguageLast = (from c in db.MWQMSubsectorLanguages select c).FirstOrDefault();
+                        mwqmSubsectorLanguageFirst = (from c in db.MWQMSubsectorLanguages select c).FirstOrDefault();
                     }
 
                     // ok with MWQMSubsectorLanguage info
-                    IActionResult jsonRet = mwqmSubsectorLanguageController.GetMWQMSubsectorLanguageWithID(mwqmSubsectorLanguageLast.MWQMSubsectorLanguageID);
+                    IActionResult jsonRet = mwqmSubsectorLanguageController.GetMWQMSubsectorLanguageWithID(mwqmSubsectorLanguageFirst.MWQMSubsectorLanguageID);
                     Assert.IsType<OkObjectResult>(jsonRet);
 
                     OkObjectResult Ret = jsonRet as OkObjectResult;
                     MWQMSubsectorLanguage mwqmSubsectorLanguageRet = (MWQMSubsectorLanguage)Ret.Value;
-                    Assert.Equal(mwqmSubsectorLanguageLast.MWQMSubsectorLanguageID, mwqmSubsectorLanguageRet.MWQMSubsectorLanguageID);
+                    Assert.Equal(mwqmSubsectorLanguageFirst.MWQMSubsectorLanguageID, mwqmSubsectorLanguageRet.MWQMSubsectorLanguageID);
 
                     BadRequestResult badRequest = jsonRet as BadRequestResult;
                     Assert.Null(badRequest);

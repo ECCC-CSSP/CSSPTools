@@ -156,7 +156,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.NotNull(drogueRunController);
                     Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, drogueRunController.DatabaseType);
 
-                    DrogueRun drogueRunLast = new DrogueRun();
+                    DrogueRun drogueRunFirst = new DrogueRun();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
                     {
                         Query query = new Query();
@@ -165,16 +165,16 @@ namespace CSSPWebAPI.Tests.Controllers
                         query.Desc = "";
 
                         DrogueRunService drogueRunService = new DrogueRunService(query, db, ContactID);
-                        drogueRunLast = (from c in db.DrogueRuns select c).FirstOrDefault();
+                        drogueRunFirst = (from c in db.DrogueRuns select c).FirstOrDefault();
                     }
 
                     // ok with DrogueRun info
-                    IActionResult jsonRet = drogueRunController.GetDrogueRunWithID(drogueRunLast.DrogueRunID);
+                    IActionResult jsonRet = drogueRunController.GetDrogueRunWithID(drogueRunFirst.DrogueRunID);
                     Assert.IsType<OkObjectResult>(jsonRet);
 
                     OkObjectResult ret = jsonRet as OkObjectResult;
                     DrogueRun drogueRunRet = (DrogueRun)ret.Value;
-                    Assert.Equal(drogueRunLast.DrogueRunID, drogueRunRet.DrogueRunID);
+                    Assert.Equal(drogueRunFirst.DrogueRunID, drogueRunRet.DrogueRunID);
 
                     BadRequestResult badRequest = jsonRet as BadRequestResult;
                     Assert.Null(badRequest);
@@ -225,23 +225,23 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.NotNull(drogueRunController);
                     Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, drogueRunController.DatabaseType);
 
-                    DrogueRun drogueRunLast = new DrogueRun();
+                    DrogueRun drogueRunFirst = new DrogueRun();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
                     {
                         Query query = new Query();
                         query.Language = LanguageRequest;
 
                         DrogueRunService drogueRunService = new DrogueRunService(query, db, ContactID);
-                        drogueRunLast = (from c in db.DrogueRuns select c).FirstOrDefault();
+                        drogueRunFirst = (from c in db.DrogueRuns select c).FirstOrDefault();
                     }
 
                     // ok with DrogueRun info
-                    IActionResult jsonRet = drogueRunController.GetDrogueRunWithID(drogueRunLast.DrogueRunID);
+                    IActionResult jsonRet = drogueRunController.GetDrogueRunWithID(drogueRunFirst.DrogueRunID);
                     Assert.IsType<OkObjectResult>(jsonRet);
 
                     OkObjectResult Ret = jsonRet as OkObjectResult;
                     DrogueRun drogueRunRet = (DrogueRun)Ret.Value;
-                    Assert.Equal(drogueRunLast.DrogueRunID, drogueRunRet.DrogueRunID);
+                    Assert.Equal(drogueRunFirst.DrogueRunID, drogueRunRet.DrogueRunID);
 
                     BadRequestResult badRequest = jsonRet as BadRequestResult;
                     Assert.Null(badRequest);
@@ -283,7 +283,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.NotNull(drogueRunController);
                     Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, drogueRunController.DatabaseType);
 
-                    DrogueRun drogueRunLast = new DrogueRun();
+                    DrogueRun drogueRunFirst = new DrogueRun();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
                     {
                         Query query = new Query();
@@ -292,16 +292,16 @@ namespace CSSPWebAPI.Tests.Controllers
                         query.Desc = "";
 
                         DrogueRunService drogueRunService = new DrogueRunService(query, db, ContactID);
-                        drogueRunLast = (from c in db.DrogueRuns select c).FirstOrDefault();
+                        drogueRunFirst = (from c in db.DrogueRuns select c).FirstOrDefault();
                     }
 
                     // ok with DrogueRun info
-                    IActionResult jsonRet = drogueRunController.GetDrogueRunWithID(drogueRunLast.DrogueRunID);
+                    IActionResult jsonRet = drogueRunController.GetDrogueRunWithID(drogueRunFirst.DrogueRunID);
                     Assert.IsType<OkObjectResult>(jsonRet);
 
                     OkObjectResult Ret = jsonRet as OkObjectResult;
                     DrogueRun drogueRunRet = (DrogueRun)Ret.Value;
-                    Assert.Equal(drogueRunLast.DrogueRunID, drogueRunRet.DrogueRunID);
+                    Assert.Equal(drogueRunFirst.DrogueRunID, drogueRunRet.DrogueRunID);
 
                     BadRequestResult badRequest = jsonRet as BadRequestResult;
                     Assert.Null(badRequest);

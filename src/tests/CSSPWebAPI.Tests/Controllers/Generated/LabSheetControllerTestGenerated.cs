@@ -156,7 +156,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.NotNull(labSheetController);
                     Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, labSheetController.DatabaseType);
 
-                    LabSheet labSheetLast = new LabSheet();
+                    LabSheet labSheetFirst = new LabSheet();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
                     {
                         Query query = new Query();
@@ -165,16 +165,16 @@ namespace CSSPWebAPI.Tests.Controllers
                         query.Desc = "";
 
                         LabSheetService labSheetService = new LabSheetService(query, db, ContactID);
-                        labSheetLast = (from c in db.LabSheets select c).FirstOrDefault();
+                        labSheetFirst = (from c in db.LabSheets select c).FirstOrDefault();
                     }
 
                     // ok with LabSheet info
-                    IActionResult jsonRet = labSheetController.GetLabSheetWithID(labSheetLast.LabSheetID);
+                    IActionResult jsonRet = labSheetController.GetLabSheetWithID(labSheetFirst.LabSheetID);
                     Assert.IsType<OkObjectResult>(jsonRet);
 
                     OkObjectResult ret = jsonRet as OkObjectResult;
                     LabSheet labSheetRet = (LabSheet)ret.Value;
-                    Assert.Equal(labSheetLast.LabSheetID, labSheetRet.LabSheetID);
+                    Assert.Equal(labSheetFirst.LabSheetID, labSheetRet.LabSheetID);
 
                     BadRequestResult badRequest = jsonRet as BadRequestResult;
                     Assert.Null(badRequest);
@@ -225,23 +225,23 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.NotNull(labSheetController);
                     Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, labSheetController.DatabaseType);
 
-                    LabSheet labSheetLast = new LabSheet();
+                    LabSheet labSheetFirst = new LabSheet();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
                     {
                         Query query = new Query();
                         query.Language = LanguageRequest;
 
                         LabSheetService labSheetService = new LabSheetService(query, db, ContactID);
-                        labSheetLast = (from c in db.LabSheets select c).FirstOrDefault();
+                        labSheetFirst = (from c in db.LabSheets select c).FirstOrDefault();
                     }
 
                     // ok with LabSheet info
-                    IActionResult jsonRet = labSheetController.GetLabSheetWithID(labSheetLast.LabSheetID);
+                    IActionResult jsonRet = labSheetController.GetLabSheetWithID(labSheetFirst.LabSheetID);
                     Assert.IsType<OkObjectResult>(jsonRet);
 
                     OkObjectResult Ret = jsonRet as OkObjectResult;
                     LabSheet labSheetRet = (LabSheet)Ret.Value;
-                    Assert.Equal(labSheetLast.LabSheetID, labSheetRet.LabSheetID);
+                    Assert.Equal(labSheetFirst.LabSheetID, labSheetRet.LabSheetID);
 
                     BadRequestResult badRequest = jsonRet as BadRequestResult;
                     Assert.Null(badRequest);
@@ -283,7 +283,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.NotNull(labSheetController);
                     Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, labSheetController.DatabaseType);
 
-                    LabSheet labSheetLast = new LabSheet();
+                    LabSheet labSheetFirst = new LabSheet();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
                     {
                         Query query = new Query();
@@ -292,16 +292,16 @@ namespace CSSPWebAPI.Tests.Controllers
                         query.Desc = "";
 
                         LabSheetService labSheetService = new LabSheetService(query, db, ContactID);
-                        labSheetLast = (from c in db.LabSheets select c).FirstOrDefault();
+                        labSheetFirst = (from c in db.LabSheets select c).FirstOrDefault();
                     }
 
                     // ok with LabSheet info
-                    IActionResult jsonRet = labSheetController.GetLabSheetWithID(labSheetLast.LabSheetID);
+                    IActionResult jsonRet = labSheetController.GetLabSheetWithID(labSheetFirst.LabSheetID);
                     Assert.IsType<OkObjectResult>(jsonRet);
 
                     OkObjectResult Ret = jsonRet as OkObjectResult;
                     LabSheet labSheetRet = (LabSheet)Ret.Value;
-                    Assert.Equal(labSheetLast.LabSheetID, labSheetRet.LabSheetID);
+                    Assert.Equal(labSheetFirst.LabSheetID, labSheetRet.LabSheetID);
 
                     BadRequestResult badRequest = jsonRet as BadRequestResult;
                     Assert.Null(badRequest);

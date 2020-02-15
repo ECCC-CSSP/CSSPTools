@@ -95,11 +95,11 @@ namespace CSSPModels
         public virtual DbSet<TideSite> TideSites { get; set; }
         public virtual DbSet<TVFileLanguage> TVFileLanguages { get; set; }
         public virtual DbSet<TVFile> TVFiles { get; set; }
+        public virtual DbSet<TVItem> TVItems { get; set; }
         public virtual DbSet<TVItemLanguage> TVItemLanguages { get; set; }
         public virtual DbSet<TVItemLink> TVItemLinks { get; set; }
         public virtual DbSet<TVItemStat> TVItemStats { get; set; }
         public virtual DbSet<TVItemUserAuthorization> TVItemUserAuthorizations { get; set; }
-        public virtual DbSet<TVItem> TVItems { get; set; }
         public virtual DbSet<TVTypeUserAuthorization> TVTypeUserAuthorizations { get; set; }
         public virtual DbSet<UseOfSite> UseOfSites { get; set; }
         public virtual DbSet<VPAmbient> VPAmbients { get; set; }

@@ -156,7 +156,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.NotNull(resetPasswordController);
                     Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, resetPasswordController.DatabaseType);
 
-                    ResetPassword resetPasswordLast = new ResetPassword();
+                    ResetPassword resetPasswordFirst = new ResetPassword();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
                     {
                         Query query = new Query();
@@ -165,16 +165,16 @@ namespace CSSPWebAPI.Tests.Controllers
                         query.Desc = "";
 
                         ResetPasswordService resetPasswordService = new ResetPasswordService(query, db, ContactID);
-                        resetPasswordLast = (from c in db.ResetPasswords select c).FirstOrDefault();
+                        resetPasswordFirst = (from c in db.ResetPasswords select c).FirstOrDefault();
                     }
 
                     // ok with ResetPassword info
-                    IActionResult jsonRet = resetPasswordController.GetResetPasswordWithID(resetPasswordLast.ResetPasswordID);
+                    IActionResult jsonRet = resetPasswordController.GetResetPasswordWithID(resetPasswordFirst.ResetPasswordID);
                     Assert.IsType<OkObjectResult>(jsonRet);
 
                     OkObjectResult ret = jsonRet as OkObjectResult;
                     ResetPassword resetPasswordRet = (ResetPassword)ret.Value;
-                    Assert.Equal(resetPasswordLast.ResetPasswordID, resetPasswordRet.ResetPasswordID);
+                    Assert.Equal(resetPasswordFirst.ResetPasswordID, resetPasswordRet.ResetPasswordID);
 
                     BadRequestResult badRequest = jsonRet as BadRequestResult;
                     Assert.Null(badRequest);
@@ -225,23 +225,23 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.NotNull(resetPasswordController);
                     Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, resetPasswordController.DatabaseType);
 
-                    ResetPassword resetPasswordLast = new ResetPassword();
+                    ResetPassword resetPasswordFirst = new ResetPassword();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
                     {
                         Query query = new Query();
                         query.Language = LanguageRequest;
 
                         ResetPasswordService resetPasswordService = new ResetPasswordService(query, db, ContactID);
-                        resetPasswordLast = (from c in db.ResetPasswords select c).FirstOrDefault();
+                        resetPasswordFirst = (from c in db.ResetPasswords select c).FirstOrDefault();
                     }
 
                     // ok with ResetPassword info
-                    IActionResult jsonRet = resetPasswordController.GetResetPasswordWithID(resetPasswordLast.ResetPasswordID);
+                    IActionResult jsonRet = resetPasswordController.GetResetPasswordWithID(resetPasswordFirst.ResetPasswordID);
                     Assert.IsType<OkObjectResult>(jsonRet);
 
                     OkObjectResult Ret = jsonRet as OkObjectResult;
                     ResetPassword resetPasswordRet = (ResetPassword)Ret.Value;
-                    Assert.Equal(resetPasswordLast.ResetPasswordID, resetPasswordRet.ResetPasswordID);
+                    Assert.Equal(resetPasswordFirst.ResetPasswordID, resetPasswordRet.ResetPasswordID);
 
                     BadRequestResult badRequest = jsonRet as BadRequestResult;
                     Assert.Null(badRequest);
@@ -283,7 +283,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.NotNull(resetPasswordController);
                     Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, resetPasswordController.DatabaseType);
 
-                    ResetPassword resetPasswordLast = new ResetPassword();
+                    ResetPassword resetPasswordFirst = new ResetPassword();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
                     {
                         Query query = new Query();
@@ -292,16 +292,16 @@ namespace CSSPWebAPI.Tests.Controllers
                         query.Desc = "";
 
                         ResetPasswordService resetPasswordService = new ResetPasswordService(query, db, ContactID);
-                        resetPasswordLast = (from c in db.ResetPasswords select c).FirstOrDefault();
+                        resetPasswordFirst = (from c in db.ResetPasswords select c).FirstOrDefault();
                     }
 
                     // ok with ResetPassword info
-                    IActionResult jsonRet = resetPasswordController.GetResetPasswordWithID(resetPasswordLast.ResetPasswordID);
+                    IActionResult jsonRet = resetPasswordController.GetResetPasswordWithID(resetPasswordFirst.ResetPasswordID);
                     Assert.IsType<OkObjectResult>(jsonRet);
 
                     OkObjectResult Ret = jsonRet as OkObjectResult;
                     ResetPassword resetPasswordRet = (ResetPassword)Ret.Value;
-                    Assert.Equal(resetPasswordLast.ResetPasswordID, resetPasswordRet.ResetPasswordID);
+                    Assert.Equal(resetPasswordFirst.ResetPasswordID, resetPasswordRet.ResetPasswordID);
 
                     BadRequestResult badRequest = jsonRet as BadRequestResult;
                     Assert.Null(badRequest);

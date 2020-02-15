@@ -156,7 +156,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.NotNull(helpDocController);
                     Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, helpDocController.DatabaseType);
 
-                    HelpDoc helpDocLast = new HelpDoc();
+                    HelpDoc helpDocFirst = new HelpDoc();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
                     {
                         Query query = new Query();
@@ -165,16 +165,16 @@ namespace CSSPWebAPI.Tests.Controllers
                         query.Desc = "";
 
                         HelpDocService helpDocService = new HelpDocService(query, db, ContactID);
-                        helpDocLast = (from c in db.HelpDocs select c).FirstOrDefault();
+                        helpDocFirst = (from c in db.HelpDocs select c).FirstOrDefault();
                     }
 
                     // ok with HelpDoc info
-                    IActionResult jsonRet = helpDocController.GetHelpDocWithID(helpDocLast.HelpDocID);
+                    IActionResult jsonRet = helpDocController.GetHelpDocWithID(helpDocFirst.HelpDocID);
                     Assert.IsType<OkObjectResult>(jsonRet);
 
                     OkObjectResult ret = jsonRet as OkObjectResult;
                     HelpDoc helpDocRet = (HelpDoc)ret.Value;
-                    Assert.Equal(helpDocLast.HelpDocID, helpDocRet.HelpDocID);
+                    Assert.Equal(helpDocFirst.HelpDocID, helpDocRet.HelpDocID);
 
                     BadRequestResult badRequest = jsonRet as BadRequestResult;
                     Assert.Null(badRequest);
@@ -225,23 +225,23 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.NotNull(helpDocController);
                     Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, helpDocController.DatabaseType);
 
-                    HelpDoc helpDocLast = new HelpDoc();
+                    HelpDoc helpDocFirst = new HelpDoc();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
                     {
                         Query query = new Query();
                         query.Language = LanguageRequest;
 
                         HelpDocService helpDocService = new HelpDocService(query, db, ContactID);
-                        helpDocLast = (from c in db.HelpDocs select c).FirstOrDefault();
+                        helpDocFirst = (from c in db.HelpDocs select c).FirstOrDefault();
                     }
 
                     // ok with HelpDoc info
-                    IActionResult jsonRet = helpDocController.GetHelpDocWithID(helpDocLast.HelpDocID);
+                    IActionResult jsonRet = helpDocController.GetHelpDocWithID(helpDocFirst.HelpDocID);
                     Assert.IsType<OkObjectResult>(jsonRet);
 
                     OkObjectResult Ret = jsonRet as OkObjectResult;
                     HelpDoc helpDocRet = (HelpDoc)Ret.Value;
-                    Assert.Equal(helpDocLast.HelpDocID, helpDocRet.HelpDocID);
+                    Assert.Equal(helpDocFirst.HelpDocID, helpDocRet.HelpDocID);
 
                     BadRequestResult badRequest = jsonRet as BadRequestResult;
                     Assert.Null(badRequest);
@@ -283,7 +283,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.NotNull(helpDocController);
                     Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, helpDocController.DatabaseType);
 
-                    HelpDoc helpDocLast = new HelpDoc();
+                    HelpDoc helpDocFirst = new HelpDoc();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
                     {
                         Query query = new Query();
@@ -292,16 +292,16 @@ namespace CSSPWebAPI.Tests.Controllers
                         query.Desc = "";
 
                         HelpDocService helpDocService = new HelpDocService(query, db, ContactID);
-                        helpDocLast = (from c in db.HelpDocs select c).FirstOrDefault();
+                        helpDocFirst = (from c in db.HelpDocs select c).FirstOrDefault();
                     }
 
                     // ok with HelpDoc info
-                    IActionResult jsonRet = helpDocController.GetHelpDocWithID(helpDocLast.HelpDocID);
+                    IActionResult jsonRet = helpDocController.GetHelpDocWithID(helpDocFirst.HelpDocID);
                     Assert.IsType<OkObjectResult>(jsonRet);
 
                     OkObjectResult Ret = jsonRet as OkObjectResult;
                     HelpDoc helpDocRet = (HelpDoc)Ret.Value;
-                    Assert.Equal(helpDocLast.HelpDocID, helpDocRet.HelpDocID);
+                    Assert.Equal(helpDocFirst.HelpDocID, helpDocRet.HelpDocID);
 
                     BadRequestResult badRequest = jsonRet as BadRequestResult;
                     Assert.Null(badRequest);

@@ -156,7 +156,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.NotNull(mikeSourceStartEndController);
                     Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, mikeSourceStartEndController.DatabaseType);
 
-                    MikeSourceStartEnd mikeSourceStartEndLast = new MikeSourceStartEnd();
+                    MikeSourceStartEnd mikeSourceStartEndFirst = new MikeSourceStartEnd();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
                     {
                         Query query = new Query();
@@ -165,16 +165,16 @@ namespace CSSPWebAPI.Tests.Controllers
                         query.Desc = "";
 
                         MikeSourceStartEndService mikeSourceStartEndService = new MikeSourceStartEndService(query, db, ContactID);
-                        mikeSourceStartEndLast = (from c in db.MikeSourceStartEnds select c).FirstOrDefault();
+                        mikeSourceStartEndFirst = (from c in db.MikeSourceStartEnds select c).FirstOrDefault();
                     }
 
                     // ok with MikeSourceStartEnd info
-                    IActionResult jsonRet = mikeSourceStartEndController.GetMikeSourceStartEndWithID(mikeSourceStartEndLast.MikeSourceStartEndID);
+                    IActionResult jsonRet = mikeSourceStartEndController.GetMikeSourceStartEndWithID(mikeSourceStartEndFirst.MikeSourceStartEndID);
                     Assert.IsType<OkObjectResult>(jsonRet);
 
                     OkObjectResult ret = jsonRet as OkObjectResult;
                     MikeSourceStartEnd mikeSourceStartEndRet = (MikeSourceStartEnd)ret.Value;
-                    Assert.Equal(mikeSourceStartEndLast.MikeSourceStartEndID, mikeSourceStartEndRet.MikeSourceStartEndID);
+                    Assert.Equal(mikeSourceStartEndFirst.MikeSourceStartEndID, mikeSourceStartEndRet.MikeSourceStartEndID);
 
                     BadRequestResult badRequest = jsonRet as BadRequestResult;
                     Assert.Null(badRequest);
@@ -225,23 +225,23 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.NotNull(mikeSourceStartEndController);
                     Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, mikeSourceStartEndController.DatabaseType);
 
-                    MikeSourceStartEnd mikeSourceStartEndLast = new MikeSourceStartEnd();
+                    MikeSourceStartEnd mikeSourceStartEndFirst = new MikeSourceStartEnd();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
                     {
                         Query query = new Query();
                         query.Language = LanguageRequest;
 
                         MikeSourceStartEndService mikeSourceStartEndService = new MikeSourceStartEndService(query, db, ContactID);
-                        mikeSourceStartEndLast = (from c in db.MikeSourceStartEnds select c).FirstOrDefault();
+                        mikeSourceStartEndFirst = (from c in db.MikeSourceStartEnds select c).FirstOrDefault();
                     }
 
                     // ok with MikeSourceStartEnd info
-                    IActionResult jsonRet = mikeSourceStartEndController.GetMikeSourceStartEndWithID(mikeSourceStartEndLast.MikeSourceStartEndID);
+                    IActionResult jsonRet = mikeSourceStartEndController.GetMikeSourceStartEndWithID(mikeSourceStartEndFirst.MikeSourceStartEndID);
                     Assert.IsType<OkObjectResult>(jsonRet);
 
                     OkObjectResult Ret = jsonRet as OkObjectResult;
                     MikeSourceStartEnd mikeSourceStartEndRet = (MikeSourceStartEnd)Ret.Value;
-                    Assert.Equal(mikeSourceStartEndLast.MikeSourceStartEndID, mikeSourceStartEndRet.MikeSourceStartEndID);
+                    Assert.Equal(mikeSourceStartEndFirst.MikeSourceStartEndID, mikeSourceStartEndRet.MikeSourceStartEndID);
 
                     BadRequestResult badRequest = jsonRet as BadRequestResult;
                     Assert.Null(badRequest);
@@ -283,7 +283,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.NotNull(mikeSourceStartEndController);
                     Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, mikeSourceStartEndController.DatabaseType);
 
-                    MikeSourceStartEnd mikeSourceStartEndLast = new MikeSourceStartEnd();
+                    MikeSourceStartEnd mikeSourceStartEndFirst = new MikeSourceStartEnd();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
                     {
                         Query query = new Query();
@@ -292,16 +292,16 @@ namespace CSSPWebAPI.Tests.Controllers
                         query.Desc = "";
 
                         MikeSourceStartEndService mikeSourceStartEndService = new MikeSourceStartEndService(query, db, ContactID);
-                        mikeSourceStartEndLast = (from c in db.MikeSourceStartEnds select c).FirstOrDefault();
+                        mikeSourceStartEndFirst = (from c in db.MikeSourceStartEnds select c).FirstOrDefault();
                     }
 
                     // ok with MikeSourceStartEnd info
-                    IActionResult jsonRet = mikeSourceStartEndController.GetMikeSourceStartEndWithID(mikeSourceStartEndLast.MikeSourceStartEndID);
+                    IActionResult jsonRet = mikeSourceStartEndController.GetMikeSourceStartEndWithID(mikeSourceStartEndFirst.MikeSourceStartEndID);
                     Assert.IsType<OkObjectResult>(jsonRet);
 
                     OkObjectResult Ret = jsonRet as OkObjectResult;
                     MikeSourceStartEnd mikeSourceStartEndRet = (MikeSourceStartEnd)Ret.Value;
-                    Assert.Equal(mikeSourceStartEndLast.MikeSourceStartEndID, mikeSourceStartEndRet.MikeSourceStartEndID);
+                    Assert.Equal(mikeSourceStartEndFirst.MikeSourceStartEndID, mikeSourceStartEndRet.MikeSourceStartEndID);
 
                     BadRequestResult badRequest = jsonRet as BadRequestResult;
                     Assert.Null(badRequest);

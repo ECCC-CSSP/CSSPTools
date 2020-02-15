@@ -156,7 +156,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.NotNull(reportTypeController);
                     Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, reportTypeController.DatabaseType);
 
-                    ReportType reportTypeLast = new ReportType();
+                    ReportType reportTypeFirst = new ReportType();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
                     {
                         Query query = new Query();
@@ -165,16 +165,16 @@ namespace CSSPWebAPI.Tests.Controllers
                         query.Desc = "";
 
                         ReportTypeService reportTypeService = new ReportTypeService(query, db, ContactID);
-                        reportTypeLast = (from c in db.ReportTypes select c).FirstOrDefault();
+                        reportTypeFirst = (from c in db.ReportTypes select c).FirstOrDefault();
                     }
 
                     // ok with ReportType info
-                    IActionResult jsonRet = reportTypeController.GetReportTypeWithID(reportTypeLast.ReportTypeID);
+                    IActionResult jsonRet = reportTypeController.GetReportTypeWithID(reportTypeFirst.ReportTypeID);
                     Assert.IsType<OkObjectResult>(jsonRet);
 
                     OkObjectResult ret = jsonRet as OkObjectResult;
                     ReportType reportTypeRet = (ReportType)ret.Value;
-                    Assert.Equal(reportTypeLast.ReportTypeID, reportTypeRet.ReportTypeID);
+                    Assert.Equal(reportTypeFirst.ReportTypeID, reportTypeRet.ReportTypeID);
 
                     BadRequestResult badRequest = jsonRet as BadRequestResult;
                     Assert.Null(badRequest);
@@ -225,23 +225,23 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.NotNull(reportTypeController);
                     Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, reportTypeController.DatabaseType);
 
-                    ReportType reportTypeLast = new ReportType();
+                    ReportType reportTypeFirst = new ReportType();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
                     {
                         Query query = new Query();
                         query.Language = LanguageRequest;
 
                         ReportTypeService reportTypeService = new ReportTypeService(query, db, ContactID);
-                        reportTypeLast = (from c in db.ReportTypes select c).FirstOrDefault();
+                        reportTypeFirst = (from c in db.ReportTypes select c).FirstOrDefault();
                     }
 
                     // ok with ReportType info
-                    IActionResult jsonRet = reportTypeController.GetReportTypeWithID(reportTypeLast.ReportTypeID);
+                    IActionResult jsonRet = reportTypeController.GetReportTypeWithID(reportTypeFirst.ReportTypeID);
                     Assert.IsType<OkObjectResult>(jsonRet);
 
                     OkObjectResult Ret = jsonRet as OkObjectResult;
                     ReportType reportTypeRet = (ReportType)Ret.Value;
-                    Assert.Equal(reportTypeLast.ReportTypeID, reportTypeRet.ReportTypeID);
+                    Assert.Equal(reportTypeFirst.ReportTypeID, reportTypeRet.ReportTypeID);
 
                     BadRequestResult badRequest = jsonRet as BadRequestResult;
                     Assert.Null(badRequest);
@@ -283,7 +283,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.NotNull(reportTypeController);
                     Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, reportTypeController.DatabaseType);
 
-                    ReportType reportTypeLast = new ReportType();
+                    ReportType reportTypeFirst = new ReportType();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
                     {
                         Query query = new Query();
@@ -292,16 +292,16 @@ namespace CSSPWebAPI.Tests.Controllers
                         query.Desc = "";
 
                         ReportTypeService reportTypeService = new ReportTypeService(query, db, ContactID);
-                        reportTypeLast = (from c in db.ReportTypes select c).FirstOrDefault();
+                        reportTypeFirst = (from c in db.ReportTypes select c).FirstOrDefault();
                     }
 
                     // ok with ReportType info
-                    IActionResult jsonRet = reportTypeController.GetReportTypeWithID(reportTypeLast.ReportTypeID);
+                    IActionResult jsonRet = reportTypeController.GetReportTypeWithID(reportTypeFirst.ReportTypeID);
                     Assert.IsType<OkObjectResult>(jsonRet);
 
                     OkObjectResult Ret = jsonRet as OkObjectResult;
                     ReportType reportTypeRet = (ReportType)Ret.Value;
-                    Assert.Equal(reportTypeLast.ReportTypeID, reportTypeRet.ReportTypeID);
+                    Assert.Equal(reportTypeFirst.ReportTypeID, reportTypeRet.ReportTypeID);
 
                     BadRequestResult badRequest = jsonRet as BadRequestResult;
                     Assert.Null(badRequest);

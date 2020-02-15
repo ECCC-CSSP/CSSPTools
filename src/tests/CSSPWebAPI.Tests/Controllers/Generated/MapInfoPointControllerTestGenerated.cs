@@ -156,7 +156,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.NotNull(mapInfoPointController);
                     Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, mapInfoPointController.DatabaseType);
 
-                    MapInfoPoint mapInfoPointLast = new MapInfoPoint();
+                    MapInfoPoint mapInfoPointFirst = new MapInfoPoint();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
                     {
                         Query query = new Query();
@@ -165,16 +165,16 @@ namespace CSSPWebAPI.Tests.Controllers
                         query.Desc = "";
 
                         MapInfoPointService mapInfoPointService = new MapInfoPointService(query, db, ContactID);
-                        mapInfoPointLast = (from c in db.MapInfoPoints select c).FirstOrDefault();
+                        mapInfoPointFirst = (from c in db.MapInfoPoints select c).FirstOrDefault();
                     }
 
                     // ok with MapInfoPoint info
-                    IActionResult jsonRet = mapInfoPointController.GetMapInfoPointWithID(mapInfoPointLast.MapInfoPointID);
+                    IActionResult jsonRet = mapInfoPointController.GetMapInfoPointWithID(mapInfoPointFirst.MapInfoPointID);
                     Assert.IsType<OkObjectResult>(jsonRet);
 
                     OkObjectResult ret = jsonRet as OkObjectResult;
                     MapInfoPoint mapInfoPointRet = (MapInfoPoint)ret.Value;
-                    Assert.Equal(mapInfoPointLast.MapInfoPointID, mapInfoPointRet.MapInfoPointID);
+                    Assert.Equal(mapInfoPointFirst.MapInfoPointID, mapInfoPointRet.MapInfoPointID);
 
                     BadRequestResult badRequest = jsonRet as BadRequestResult;
                     Assert.Null(badRequest);
@@ -225,23 +225,23 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.NotNull(mapInfoPointController);
                     Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, mapInfoPointController.DatabaseType);
 
-                    MapInfoPoint mapInfoPointLast = new MapInfoPoint();
+                    MapInfoPoint mapInfoPointFirst = new MapInfoPoint();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
                     {
                         Query query = new Query();
                         query.Language = LanguageRequest;
 
                         MapInfoPointService mapInfoPointService = new MapInfoPointService(query, db, ContactID);
-                        mapInfoPointLast = (from c in db.MapInfoPoints select c).FirstOrDefault();
+                        mapInfoPointFirst = (from c in db.MapInfoPoints select c).FirstOrDefault();
                     }
 
                     // ok with MapInfoPoint info
-                    IActionResult jsonRet = mapInfoPointController.GetMapInfoPointWithID(mapInfoPointLast.MapInfoPointID);
+                    IActionResult jsonRet = mapInfoPointController.GetMapInfoPointWithID(mapInfoPointFirst.MapInfoPointID);
                     Assert.IsType<OkObjectResult>(jsonRet);
 
                     OkObjectResult Ret = jsonRet as OkObjectResult;
                     MapInfoPoint mapInfoPointRet = (MapInfoPoint)Ret.Value;
-                    Assert.Equal(mapInfoPointLast.MapInfoPointID, mapInfoPointRet.MapInfoPointID);
+                    Assert.Equal(mapInfoPointFirst.MapInfoPointID, mapInfoPointRet.MapInfoPointID);
 
                     BadRequestResult badRequest = jsonRet as BadRequestResult;
                     Assert.Null(badRequest);
@@ -283,7 +283,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.NotNull(mapInfoPointController);
                     Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, mapInfoPointController.DatabaseType);
 
-                    MapInfoPoint mapInfoPointLast = new MapInfoPoint();
+                    MapInfoPoint mapInfoPointFirst = new MapInfoPoint();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
                     {
                         Query query = new Query();
@@ -292,16 +292,16 @@ namespace CSSPWebAPI.Tests.Controllers
                         query.Desc = "";
 
                         MapInfoPointService mapInfoPointService = new MapInfoPointService(query, db, ContactID);
-                        mapInfoPointLast = (from c in db.MapInfoPoints select c).FirstOrDefault();
+                        mapInfoPointFirst = (from c in db.MapInfoPoints select c).FirstOrDefault();
                     }
 
                     // ok with MapInfoPoint info
-                    IActionResult jsonRet = mapInfoPointController.GetMapInfoPointWithID(mapInfoPointLast.MapInfoPointID);
+                    IActionResult jsonRet = mapInfoPointController.GetMapInfoPointWithID(mapInfoPointFirst.MapInfoPointID);
                     Assert.IsType<OkObjectResult>(jsonRet);
 
                     OkObjectResult Ret = jsonRet as OkObjectResult;
                     MapInfoPoint mapInfoPointRet = (MapInfoPoint)Ret.Value;
-                    Assert.Equal(mapInfoPointLast.MapInfoPointID, mapInfoPointRet.MapInfoPointID);
+                    Assert.Equal(mapInfoPointFirst.MapInfoPointID, mapInfoPointRet.MapInfoPointID);
 
                     BadRequestResult badRequest = jsonRet as BadRequestResult;
                     Assert.Null(badRequest);

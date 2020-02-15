@@ -156,7 +156,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.NotNull(samplingPlanEmailController);
                     Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, samplingPlanEmailController.DatabaseType);
 
-                    SamplingPlanEmail samplingPlanEmailLast = new SamplingPlanEmail();
+                    SamplingPlanEmail samplingPlanEmailFirst = new SamplingPlanEmail();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
                     {
                         Query query = new Query();
@@ -165,16 +165,16 @@ namespace CSSPWebAPI.Tests.Controllers
                         query.Desc = "";
 
                         SamplingPlanEmailService samplingPlanEmailService = new SamplingPlanEmailService(query, db, ContactID);
-                        samplingPlanEmailLast = (from c in db.SamplingPlanEmails select c).FirstOrDefault();
+                        samplingPlanEmailFirst = (from c in db.SamplingPlanEmails select c).FirstOrDefault();
                     }
 
                     // ok with SamplingPlanEmail info
-                    IActionResult jsonRet = samplingPlanEmailController.GetSamplingPlanEmailWithID(samplingPlanEmailLast.SamplingPlanEmailID);
+                    IActionResult jsonRet = samplingPlanEmailController.GetSamplingPlanEmailWithID(samplingPlanEmailFirst.SamplingPlanEmailID);
                     Assert.IsType<OkObjectResult>(jsonRet);
 
                     OkObjectResult ret = jsonRet as OkObjectResult;
                     SamplingPlanEmail samplingPlanEmailRet = (SamplingPlanEmail)ret.Value;
-                    Assert.Equal(samplingPlanEmailLast.SamplingPlanEmailID, samplingPlanEmailRet.SamplingPlanEmailID);
+                    Assert.Equal(samplingPlanEmailFirst.SamplingPlanEmailID, samplingPlanEmailRet.SamplingPlanEmailID);
 
                     BadRequestResult badRequest = jsonRet as BadRequestResult;
                     Assert.Null(badRequest);
@@ -225,23 +225,23 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.NotNull(samplingPlanEmailController);
                     Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, samplingPlanEmailController.DatabaseType);
 
-                    SamplingPlanEmail samplingPlanEmailLast = new SamplingPlanEmail();
+                    SamplingPlanEmail samplingPlanEmailFirst = new SamplingPlanEmail();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
                     {
                         Query query = new Query();
                         query.Language = LanguageRequest;
 
                         SamplingPlanEmailService samplingPlanEmailService = new SamplingPlanEmailService(query, db, ContactID);
-                        samplingPlanEmailLast = (from c in db.SamplingPlanEmails select c).FirstOrDefault();
+                        samplingPlanEmailFirst = (from c in db.SamplingPlanEmails select c).FirstOrDefault();
                     }
 
                     // ok with SamplingPlanEmail info
-                    IActionResult jsonRet = samplingPlanEmailController.GetSamplingPlanEmailWithID(samplingPlanEmailLast.SamplingPlanEmailID);
+                    IActionResult jsonRet = samplingPlanEmailController.GetSamplingPlanEmailWithID(samplingPlanEmailFirst.SamplingPlanEmailID);
                     Assert.IsType<OkObjectResult>(jsonRet);
 
                     OkObjectResult Ret = jsonRet as OkObjectResult;
                     SamplingPlanEmail samplingPlanEmailRet = (SamplingPlanEmail)Ret.Value;
-                    Assert.Equal(samplingPlanEmailLast.SamplingPlanEmailID, samplingPlanEmailRet.SamplingPlanEmailID);
+                    Assert.Equal(samplingPlanEmailFirst.SamplingPlanEmailID, samplingPlanEmailRet.SamplingPlanEmailID);
 
                     BadRequestResult badRequest = jsonRet as BadRequestResult;
                     Assert.Null(badRequest);
@@ -283,7 +283,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.NotNull(samplingPlanEmailController);
                     Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, samplingPlanEmailController.DatabaseType);
 
-                    SamplingPlanEmail samplingPlanEmailLast = new SamplingPlanEmail();
+                    SamplingPlanEmail samplingPlanEmailFirst = new SamplingPlanEmail();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
                     {
                         Query query = new Query();
@@ -292,16 +292,16 @@ namespace CSSPWebAPI.Tests.Controllers
                         query.Desc = "";
 
                         SamplingPlanEmailService samplingPlanEmailService = new SamplingPlanEmailService(query, db, ContactID);
-                        samplingPlanEmailLast = (from c in db.SamplingPlanEmails select c).FirstOrDefault();
+                        samplingPlanEmailFirst = (from c in db.SamplingPlanEmails select c).FirstOrDefault();
                     }
 
                     // ok with SamplingPlanEmail info
-                    IActionResult jsonRet = samplingPlanEmailController.GetSamplingPlanEmailWithID(samplingPlanEmailLast.SamplingPlanEmailID);
+                    IActionResult jsonRet = samplingPlanEmailController.GetSamplingPlanEmailWithID(samplingPlanEmailFirst.SamplingPlanEmailID);
                     Assert.IsType<OkObjectResult>(jsonRet);
 
                     OkObjectResult Ret = jsonRet as OkObjectResult;
                     SamplingPlanEmail samplingPlanEmailRet = (SamplingPlanEmail)Ret.Value;
-                    Assert.Equal(samplingPlanEmailLast.SamplingPlanEmailID, samplingPlanEmailRet.SamplingPlanEmailID);
+                    Assert.Equal(samplingPlanEmailFirst.SamplingPlanEmailID, samplingPlanEmailRet.SamplingPlanEmailID);
 
                     BadRequestResult badRequest = jsonRet as BadRequestResult;
                     Assert.Null(badRequest);

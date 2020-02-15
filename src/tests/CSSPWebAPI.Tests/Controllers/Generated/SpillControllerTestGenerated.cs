@@ -156,7 +156,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.NotNull(spillController);
                     Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, spillController.DatabaseType);
 
-                    Spill spillLast = new Spill();
+                    Spill spillFirst = new Spill();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
                     {
                         Query query = new Query();
@@ -165,16 +165,16 @@ namespace CSSPWebAPI.Tests.Controllers
                         query.Desc = "";
 
                         SpillService spillService = new SpillService(query, db, ContactID);
-                        spillLast = (from c in db.Spills select c).FirstOrDefault();
+                        spillFirst = (from c in db.Spills select c).FirstOrDefault();
                     }
 
                     // ok with Spill info
-                    IActionResult jsonRet = spillController.GetSpillWithID(spillLast.SpillID);
+                    IActionResult jsonRet = spillController.GetSpillWithID(spillFirst.SpillID);
                     Assert.IsType<OkObjectResult>(jsonRet);
 
                     OkObjectResult ret = jsonRet as OkObjectResult;
                     Spill spillRet = (Spill)ret.Value;
-                    Assert.Equal(spillLast.SpillID, spillRet.SpillID);
+                    Assert.Equal(spillFirst.SpillID, spillRet.SpillID);
 
                     BadRequestResult badRequest = jsonRet as BadRequestResult;
                     Assert.Null(badRequest);
@@ -225,23 +225,23 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.NotNull(spillController);
                     Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, spillController.DatabaseType);
 
-                    Spill spillLast = new Spill();
+                    Spill spillFirst = new Spill();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
                     {
                         Query query = new Query();
                         query.Language = LanguageRequest;
 
                         SpillService spillService = new SpillService(query, db, ContactID);
-                        spillLast = (from c in db.Spills select c).FirstOrDefault();
+                        spillFirst = (from c in db.Spills select c).FirstOrDefault();
                     }
 
                     // ok with Spill info
-                    IActionResult jsonRet = spillController.GetSpillWithID(spillLast.SpillID);
+                    IActionResult jsonRet = spillController.GetSpillWithID(spillFirst.SpillID);
                     Assert.IsType<OkObjectResult>(jsonRet);
 
                     OkObjectResult Ret = jsonRet as OkObjectResult;
                     Spill spillRet = (Spill)Ret.Value;
-                    Assert.Equal(spillLast.SpillID, spillRet.SpillID);
+                    Assert.Equal(spillFirst.SpillID, spillRet.SpillID);
 
                     BadRequestResult badRequest = jsonRet as BadRequestResult;
                     Assert.Null(badRequest);
@@ -283,7 +283,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.NotNull(spillController);
                     Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, spillController.DatabaseType);
 
-                    Spill spillLast = new Spill();
+                    Spill spillFirst = new Spill();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
                     {
                         Query query = new Query();
@@ -292,16 +292,16 @@ namespace CSSPWebAPI.Tests.Controllers
                         query.Desc = "";
 
                         SpillService spillService = new SpillService(query, db, ContactID);
-                        spillLast = (from c in db.Spills select c).FirstOrDefault();
+                        spillFirst = (from c in db.Spills select c).FirstOrDefault();
                     }
 
                     // ok with Spill info
-                    IActionResult jsonRet = spillController.GetSpillWithID(spillLast.SpillID);
+                    IActionResult jsonRet = spillController.GetSpillWithID(spillFirst.SpillID);
                     Assert.IsType<OkObjectResult>(jsonRet);
 
                     OkObjectResult Ret = jsonRet as OkObjectResult;
                     Spill spillRet = (Spill)Ret.Value;
-                    Assert.Equal(spillLast.SpillID, spillRet.SpillID);
+                    Assert.Equal(spillFirst.SpillID, spillRet.SpillID);
 
                     BadRequestResult badRequest = jsonRet as BadRequestResult;
                     Assert.Null(badRequest);

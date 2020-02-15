@@ -156,7 +156,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.NotNull(appTaskLanguageController);
                     Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, appTaskLanguageController.DatabaseType);
 
-                    AppTaskLanguage appTaskLanguageLast = new AppTaskLanguage();
+                    AppTaskLanguage appTaskLanguageFirst = new AppTaskLanguage();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
                     {
                         Query query = new Query();
@@ -165,16 +165,16 @@ namespace CSSPWebAPI.Tests.Controllers
                         query.Desc = "";
 
                         AppTaskLanguageService appTaskLanguageService = new AppTaskLanguageService(query, db, ContactID);
-                        appTaskLanguageLast = (from c in db.AppTaskLanguages select c).FirstOrDefault();
+                        appTaskLanguageFirst = (from c in db.AppTaskLanguages select c).FirstOrDefault();
                     }
 
                     // ok with AppTaskLanguage info
-                    IActionResult jsonRet = appTaskLanguageController.GetAppTaskLanguageWithID(appTaskLanguageLast.AppTaskLanguageID);
+                    IActionResult jsonRet = appTaskLanguageController.GetAppTaskLanguageWithID(appTaskLanguageFirst.AppTaskLanguageID);
                     Assert.IsType<OkObjectResult>(jsonRet);
 
                     OkObjectResult ret = jsonRet as OkObjectResult;
                     AppTaskLanguage appTaskLanguageRet = (AppTaskLanguage)ret.Value;
-                    Assert.Equal(appTaskLanguageLast.AppTaskLanguageID, appTaskLanguageRet.AppTaskLanguageID);
+                    Assert.Equal(appTaskLanguageFirst.AppTaskLanguageID, appTaskLanguageRet.AppTaskLanguageID);
 
                     BadRequestResult badRequest = jsonRet as BadRequestResult;
                     Assert.Null(badRequest);
@@ -225,23 +225,23 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.NotNull(appTaskLanguageController);
                     Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, appTaskLanguageController.DatabaseType);
 
-                    AppTaskLanguage appTaskLanguageLast = new AppTaskLanguage();
+                    AppTaskLanguage appTaskLanguageFirst = new AppTaskLanguage();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
                     {
                         Query query = new Query();
                         query.Language = LanguageRequest;
 
                         AppTaskLanguageService appTaskLanguageService = new AppTaskLanguageService(query, db, ContactID);
-                        appTaskLanguageLast = (from c in db.AppTaskLanguages select c).FirstOrDefault();
+                        appTaskLanguageFirst = (from c in db.AppTaskLanguages select c).FirstOrDefault();
                     }
 
                     // ok with AppTaskLanguage info
-                    IActionResult jsonRet = appTaskLanguageController.GetAppTaskLanguageWithID(appTaskLanguageLast.AppTaskLanguageID);
+                    IActionResult jsonRet = appTaskLanguageController.GetAppTaskLanguageWithID(appTaskLanguageFirst.AppTaskLanguageID);
                     Assert.IsType<OkObjectResult>(jsonRet);
 
                     OkObjectResult Ret = jsonRet as OkObjectResult;
                     AppTaskLanguage appTaskLanguageRet = (AppTaskLanguage)Ret.Value;
-                    Assert.Equal(appTaskLanguageLast.AppTaskLanguageID, appTaskLanguageRet.AppTaskLanguageID);
+                    Assert.Equal(appTaskLanguageFirst.AppTaskLanguageID, appTaskLanguageRet.AppTaskLanguageID);
 
                     BadRequestResult badRequest = jsonRet as BadRequestResult;
                     Assert.Null(badRequest);
@@ -283,7 +283,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.NotNull(appTaskLanguageController);
                     Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, appTaskLanguageController.DatabaseType);
 
-                    AppTaskLanguage appTaskLanguageLast = new AppTaskLanguage();
+                    AppTaskLanguage appTaskLanguageFirst = new AppTaskLanguage();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
                     {
                         Query query = new Query();
@@ -292,16 +292,16 @@ namespace CSSPWebAPI.Tests.Controllers
                         query.Desc = "";
 
                         AppTaskLanguageService appTaskLanguageService = new AppTaskLanguageService(query, db, ContactID);
-                        appTaskLanguageLast = (from c in db.AppTaskLanguages select c).FirstOrDefault();
+                        appTaskLanguageFirst = (from c in db.AppTaskLanguages select c).FirstOrDefault();
                     }
 
                     // ok with AppTaskLanguage info
-                    IActionResult jsonRet = appTaskLanguageController.GetAppTaskLanguageWithID(appTaskLanguageLast.AppTaskLanguageID);
+                    IActionResult jsonRet = appTaskLanguageController.GetAppTaskLanguageWithID(appTaskLanguageFirst.AppTaskLanguageID);
                     Assert.IsType<OkObjectResult>(jsonRet);
 
                     OkObjectResult Ret = jsonRet as OkObjectResult;
                     AppTaskLanguage appTaskLanguageRet = (AppTaskLanguage)Ret.Value;
-                    Assert.Equal(appTaskLanguageLast.AppTaskLanguageID, appTaskLanguageRet.AppTaskLanguageID);
+                    Assert.Equal(appTaskLanguageFirst.AppTaskLanguageID, appTaskLanguageRet.AppTaskLanguageID);
 
                     BadRequestResult badRequest = jsonRet as BadRequestResult;
                     Assert.Null(badRequest);

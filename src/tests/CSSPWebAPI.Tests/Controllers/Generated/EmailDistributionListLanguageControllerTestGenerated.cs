@@ -156,7 +156,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.NotNull(emailDistributionListLanguageController);
                     Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, emailDistributionListLanguageController.DatabaseType);
 
-                    EmailDistributionListLanguage emailDistributionListLanguageLast = new EmailDistributionListLanguage();
+                    EmailDistributionListLanguage emailDistributionListLanguageFirst = new EmailDistributionListLanguage();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
                     {
                         Query query = new Query();
@@ -165,16 +165,16 @@ namespace CSSPWebAPI.Tests.Controllers
                         query.Desc = "";
 
                         EmailDistributionListLanguageService emailDistributionListLanguageService = new EmailDistributionListLanguageService(query, db, ContactID);
-                        emailDistributionListLanguageLast = (from c in db.EmailDistributionListLanguages select c).FirstOrDefault();
+                        emailDistributionListLanguageFirst = (from c in db.EmailDistributionListLanguages select c).FirstOrDefault();
                     }
 
                     // ok with EmailDistributionListLanguage info
-                    IActionResult jsonRet = emailDistributionListLanguageController.GetEmailDistributionListLanguageWithID(emailDistributionListLanguageLast.EmailDistributionListLanguageID);
+                    IActionResult jsonRet = emailDistributionListLanguageController.GetEmailDistributionListLanguageWithID(emailDistributionListLanguageFirst.EmailDistributionListLanguageID);
                     Assert.IsType<OkObjectResult>(jsonRet);
 
                     OkObjectResult ret = jsonRet as OkObjectResult;
                     EmailDistributionListLanguage emailDistributionListLanguageRet = (EmailDistributionListLanguage)ret.Value;
-                    Assert.Equal(emailDistributionListLanguageLast.EmailDistributionListLanguageID, emailDistributionListLanguageRet.EmailDistributionListLanguageID);
+                    Assert.Equal(emailDistributionListLanguageFirst.EmailDistributionListLanguageID, emailDistributionListLanguageRet.EmailDistributionListLanguageID);
 
                     BadRequestResult badRequest = jsonRet as BadRequestResult;
                     Assert.Null(badRequest);
@@ -225,23 +225,23 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.NotNull(emailDistributionListLanguageController);
                     Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, emailDistributionListLanguageController.DatabaseType);
 
-                    EmailDistributionListLanguage emailDistributionListLanguageLast = new EmailDistributionListLanguage();
+                    EmailDistributionListLanguage emailDistributionListLanguageFirst = new EmailDistributionListLanguage();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
                     {
                         Query query = new Query();
                         query.Language = LanguageRequest;
 
                         EmailDistributionListLanguageService emailDistributionListLanguageService = new EmailDistributionListLanguageService(query, db, ContactID);
-                        emailDistributionListLanguageLast = (from c in db.EmailDistributionListLanguages select c).FirstOrDefault();
+                        emailDistributionListLanguageFirst = (from c in db.EmailDistributionListLanguages select c).FirstOrDefault();
                     }
 
                     // ok with EmailDistributionListLanguage info
-                    IActionResult jsonRet = emailDistributionListLanguageController.GetEmailDistributionListLanguageWithID(emailDistributionListLanguageLast.EmailDistributionListLanguageID);
+                    IActionResult jsonRet = emailDistributionListLanguageController.GetEmailDistributionListLanguageWithID(emailDistributionListLanguageFirst.EmailDistributionListLanguageID);
                     Assert.IsType<OkObjectResult>(jsonRet);
 
                     OkObjectResult Ret = jsonRet as OkObjectResult;
                     EmailDistributionListLanguage emailDistributionListLanguageRet = (EmailDistributionListLanguage)Ret.Value;
-                    Assert.Equal(emailDistributionListLanguageLast.EmailDistributionListLanguageID, emailDistributionListLanguageRet.EmailDistributionListLanguageID);
+                    Assert.Equal(emailDistributionListLanguageFirst.EmailDistributionListLanguageID, emailDistributionListLanguageRet.EmailDistributionListLanguageID);
 
                     BadRequestResult badRequest = jsonRet as BadRequestResult;
                     Assert.Null(badRequest);
@@ -283,7 +283,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.NotNull(emailDistributionListLanguageController);
                     Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, emailDistributionListLanguageController.DatabaseType);
 
-                    EmailDistributionListLanguage emailDistributionListLanguageLast = new EmailDistributionListLanguage();
+                    EmailDistributionListLanguage emailDistributionListLanguageFirst = new EmailDistributionListLanguage();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
                     {
                         Query query = new Query();
@@ -292,16 +292,16 @@ namespace CSSPWebAPI.Tests.Controllers
                         query.Desc = "";
 
                         EmailDistributionListLanguageService emailDistributionListLanguageService = new EmailDistributionListLanguageService(query, db, ContactID);
-                        emailDistributionListLanguageLast = (from c in db.EmailDistributionListLanguages select c).FirstOrDefault();
+                        emailDistributionListLanguageFirst = (from c in db.EmailDistributionListLanguages select c).FirstOrDefault();
                     }
 
                     // ok with EmailDistributionListLanguage info
-                    IActionResult jsonRet = emailDistributionListLanguageController.GetEmailDistributionListLanguageWithID(emailDistributionListLanguageLast.EmailDistributionListLanguageID);
+                    IActionResult jsonRet = emailDistributionListLanguageController.GetEmailDistributionListLanguageWithID(emailDistributionListLanguageFirst.EmailDistributionListLanguageID);
                     Assert.IsType<OkObjectResult>(jsonRet);
 
                     OkObjectResult Ret = jsonRet as OkObjectResult;
                     EmailDistributionListLanguage emailDistributionListLanguageRet = (EmailDistributionListLanguage)Ret.Value;
-                    Assert.Equal(emailDistributionListLanguageLast.EmailDistributionListLanguageID, emailDistributionListLanguageRet.EmailDistributionListLanguageID);
+                    Assert.Equal(emailDistributionListLanguageFirst.EmailDistributionListLanguageID, emailDistributionListLanguageRet.EmailDistributionListLanguageID);
 
                     BadRequestResult badRequest = jsonRet as BadRequestResult;
                     Assert.Null(badRequest);

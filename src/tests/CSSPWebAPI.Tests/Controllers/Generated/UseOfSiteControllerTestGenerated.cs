@@ -156,7 +156,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.NotNull(useOfSiteController);
                     Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, useOfSiteController.DatabaseType);
 
-                    UseOfSite useOfSiteLast = new UseOfSite();
+                    UseOfSite useOfSiteFirst = new UseOfSite();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
                     {
                         Query query = new Query();
@@ -165,16 +165,16 @@ namespace CSSPWebAPI.Tests.Controllers
                         query.Desc = "";
 
                         UseOfSiteService useOfSiteService = new UseOfSiteService(query, db, ContactID);
-                        useOfSiteLast = (from c in db.UseOfSites select c).FirstOrDefault();
+                        useOfSiteFirst = (from c in db.UseOfSites select c).FirstOrDefault();
                     }
 
                     // ok with UseOfSite info
-                    IActionResult jsonRet = useOfSiteController.GetUseOfSiteWithID(useOfSiteLast.UseOfSiteID);
+                    IActionResult jsonRet = useOfSiteController.GetUseOfSiteWithID(useOfSiteFirst.UseOfSiteID);
                     Assert.IsType<OkObjectResult>(jsonRet);
 
                     OkObjectResult ret = jsonRet as OkObjectResult;
                     UseOfSite useOfSiteRet = (UseOfSite)ret.Value;
-                    Assert.Equal(useOfSiteLast.UseOfSiteID, useOfSiteRet.UseOfSiteID);
+                    Assert.Equal(useOfSiteFirst.UseOfSiteID, useOfSiteRet.UseOfSiteID);
 
                     BadRequestResult badRequest = jsonRet as BadRequestResult;
                     Assert.Null(badRequest);
@@ -225,23 +225,23 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.NotNull(useOfSiteController);
                     Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, useOfSiteController.DatabaseType);
 
-                    UseOfSite useOfSiteLast = new UseOfSite();
+                    UseOfSite useOfSiteFirst = new UseOfSite();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
                     {
                         Query query = new Query();
                         query.Language = LanguageRequest;
 
                         UseOfSiteService useOfSiteService = new UseOfSiteService(query, db, ContactID);
-                        useOfSiteLast = (from c in db.UseOfSites select c).FirstOrDefault();
+                        useOfSiteFirst = (from c in db.UseOfSites select c).FirstOrDefault();
                     }
 
                     // ok with UseOfSite info
-                    IActionResult jsonRet = useOfSiteController.GetUseOfSiteWithID(useOfSiteLast.UseOfSiteID);
+                    IActionResult jsonRet = useOfSiteController.GetUseOfSiteWithID(useOfSiteFirst.UseOfSiteID);
                     Assert.IsType<OkObjectResult>(jsonRet);
 
                     OkObjectResult Ret = jsonRet as OkObjectResult;
                     UseOfSite useOfSiteRet = (UseOfSite)Ret.Value;
-                    Assert.Equal(useOfSiteLast.UseOfSiteID, useOfSiteRet.UseOfSiteID);
+                    Assert.Equal(useOfSiteFirst.UseOfSiteID, useOfSiteRet.UseOfSiteID);
 
                     BadRequestResult badRequest = jsonRet as BadRequestResult;
                     Assert.Null(badRequest);
@@ -283,7 +283,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.NotNull(useOfSiteController);
                     Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, useOfSiteController.DatabaseType);
 
-                    UseOfSite useOfSiteLast = new UseOfSite();
+                    UseOfSite useOfSiteFirst = new UseOfSite();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
                     {
                         Query query = new Query();
@@ -292,16 +292,16 @@ namespace CSSPWebAPI.Tests.Controllers
                         query.Desc = "";
 
                         UseOfSiteService useOfSiteService = new UseOfSiteService(query, db, ContactID);
-                        useOfSiteLast = (from c in db.UseOfSites select c).FirstOrDefault();
+                        useOfSiteFirst = (from c in db.UseOfSites select c).FirstOrDefault();
                     }
 
                     // ok with UseOfSite info
-                    IActionResult jsonRet = useOfSiteController.GetUseOfSiteWithID(useOfSiteLast.UseOfSiteID);
+                    IActionResult jsonRet = useOfSiteController.GetUseOfSiteWithID(useOfSiteFirst.UseOfSiteID);
                     Assert.IsType<OkObjectResult>(jsonRet);
 
                     OkObjectResult Ret = jsonRet as OkObjectResult;
                     UseOfSite useOfSiteRet = (UseOfSite)Ret.Value;
-                    Assert.Equal(useOfSiteLast.UseOfSiteID, useOfSiteRet.UseOfSiteID);
+                    Assert.Equal(useOfSiteFirst.UseOfSiteID, useOfSiteRet.UseOfSiteID);
 
                     BadRequestResult badRequest = jsonRet as BadRequestResult;
                     Assert.Null(badRequest);

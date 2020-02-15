@@ -156,7 +156,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.NotNull(mwqmSampleLanguageController);
                     Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, mwqmSampleLanguageController.DatabaseType);
 
-                    MWQMSampleLanguage mwqmSampleLanguageLast = new MWQMSampleLanguage();
+                    MWQMSampleLanguage mwqmSampleLanguageFirst = new MWQMSampleLanguage();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
                     {
                         Query query = new Query();
@@ -165,16 +165,16 @@ namespace CSSPWebAPI.Tests.Controllers
                         query.Desc = "";
 
                         MWQMSampleLanguageService mwqmSampleLanguageService = new MWQMSampleLanguageService(query, db, ContactID);
-                        mwqmSampleLanguageLast = (from c in db.MWQMSampleLanguages select c).FirstOrDefault();
+                        mwqmSampleLanguageFirst = (from c in db.MWQMSampleLanguages select c).FirstOrDefault();
                     }
 
                     // ok with MWQMSampleLanguage info
-                    IActionResult jsonRet = mwqmSampleLanguageController.GetMWQMSampleLanguageWithID(mwqmSampleLanguageLast.MWQMSampleLanguageID);
+                    IActionResult jsonRet = mwqmSampleLanguageController.GetMWQMSampleLanguageWithID(mwqmSampleLanguageFirst.MWQMSampleLanguageID);
                     Assert.IsType<OkObjectResult>(jsonRet);
 
                     OkObjectResult ret = jsonRet as OkObjectResult;
                     MWQMSampleLanguage mwqmSampleLanguageRet = (MWQMSampleLanguage)ret.Value;
-                    Assert.Equal(mwqmSampleLanguageLast.MWQMSampleLanguageID, mwqmSampleLanguageRet.MWQMSampleLanguageID);
+                    Assert.Equal(mwqmSampleLanguageFirst.MWQMSampleLanguageID, mwqmSampleLanguageRet.MWQMSampleLanguageID);
 
                     BadRequestResult badRequest = jsonRet as BadRequestResult;
                     Assert.Null(badRequest);
@@ -225,23 +225,23 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.NotNull(mwqmSampleLanguageController);
                     Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, mwqmSampleLanguageController.DatabaseType);
 
-                    MWQMSampleLanguage mwqmSampleLanguageLast = new MWQMSampleLanguage();
+                    MWQMSampleLanguage mwqmSampleLanguageFirst = new MWQMSampleLanguage();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
                     {
                         Query query = new Query();
                         query.Language = LanguageRequest;
 
                         MWQMSampleLanguageService mwqmSampleLanguageService = new MWQMSampleLanguageService(query, db, ContactID);
-                        mwqmSampleLanguageLast = (from c in db.MWQMSampleLanguages select c).FirstOrDefault();
+                        mwqmSampleLanguageFirst = (from c in db.MWQMSampleLanguages select c).FirstOrDefault();
                     }
 
                     // ok with MWQMSampleLanguage info
-                    IActionResult jsonRet = mwqmSampleLanguageController.GetMWQMSampleLanguageWithID(mwqmSampleLanguageLast.MWQMSampleLanguageID);
+                    IActionResult jsonRet = mwqmSampleLanguageController.GetMWQMSampleLanguageWithID(mwqmSampleLanguageFirst.MWQMSampleLanguageID);
                     Assert.IsType<OkObjectResult>(jsonRet);
 
                     OkObjectResult Ret = jsonRet as OkObjectResult;
                     MWQMSampleLanguage mwqmSampleLanguageRet = (MWQMSampleLanguage)Ret.Value;
-                    Assert.Equal(mwqmSampleLanguageLast.MWQMSampleLanguageID, mwqmSampleLanguageRet.MWQMSampleLanguageID);
+                    Assert.Equal(mwqmSampleLanguageFirst.MWQMSampleLanguageID, mwqmSampleLanguageRet.MWQMSampleLanguageID);
 
                     BadRequestResult badRequest = jsonRet as BadRequestResult;
                     Assert.Null(badRequest);
@@ -283,7 +283,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.NotNull(mwqmSampleLanguageController);
                     Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, mwqmSampleLanguageController.DatabaseType);
 
-                    MWQMSampleLanguage mwqmSampleLanguageLast = new MWQMSampleLanguage();
+                    MWQMSampleLanguage mwqmSampleLanguageFirst = new MWQMSampleLanguage();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
                     {
                         Query query = new Query();
@@ -292,16 +292,16 @@ namespace CSSPWebAPI.Tests.Controllers
                         query.Desc = "";
 
                         MWQMSampleLanguageService mwqmSampleLanguageService = new MWQMSampleLanguageService(query, db, ContactID);
-                        mwqmSampleLanguageLast = (from c in db.MWQMSampleLanguages select c).FirstOrDefault();
+                        mwqmSampleLanguageFirst = (from c in db.MWQMSampleLanguages select c).FirstOrDefault();
                     }
 
                     // ok with MWQMSampleLanguage info
-                    IActionResult jsonRet = mwqmSampleLanguageController.GetMWQMSampleLanguageWithID(mwqmSampleLanguageLast.MWQMSampleLanguageID);
+                    IActionResult jsonRet = mwqmSampleLanguageController.GetMWQMSampleLanguageWithID(mwqmSampleLanguageFirst.MWQMSampleLanguageID);
                     Assert.IsType<OkObjectResult>(jsonRet);
 
                     OkObjectResult Ret = jsonRet as OkObjectResult;
                     MWQMSampleLanguage mwqmSampleLanguageRet = (MWQMSampleLanguage)Ret.Value;
-                    Assert.Equal(mwqmSampleLanguageLast.MWQMSampleLanguageID, mwqmSampleLanguageRet.MWQMSampleLanguageID);
+                    Assert.Equal(mwqmSampleLanguageFirst.MWQMSampleLanguageID, mwqmSampleLanguageRet.MWQMSampleLanguageID);
 
                     BadRequestResult badRequest = jsonRet as BadRequestResult;
                     Assert.Null(badRequest);

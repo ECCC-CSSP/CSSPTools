@@ -156,7 +156,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.NotNull(boxModelController);
                     Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, boxModelController.DatabaseType);
 
-                    BoxModel boxModelLast = new BoxModel();
+                    BoxModel boxModelFirst = new BoxModel();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
                     {
                         Query query = new Query();
@@ -165,16 +165,16 @@ namespace CSSPWebAPI.Tests.Controllers
                         query.Desc = "";
 
                         BoxModelService boxModelService = new BoxModelService(query, db, ContactID);
-                        boxModelLast = (from c in db.BoxModels select c).FirstOrDefault();
+                        boxModelFirst = (from c in db.BoxModels select c).FirstOrDefault();
                     }
 
                     // ok with BoxModel info
-                    IActionResult jsonRet = boxModelController.GetBoxModelWithID(boxModelLast.BoxModelID);
+                    IActionResult jsonRet = boxModelController.GetBoxModelWithID(boxModelFirst.BoxModelID);
                     Assert.IsType<OkObjectResult>(jsonRet);
 
                     OkObjectResult ret = jsonRet as OkObjectResult;
                     BoxModel boxModelRet = (BoxModel)ret.Value;
-                    Assert.Equal(boxModelLast.BoxModelID, boxModelRet.BoxModelID);
+                    Assert.Equal(boxModelFirst.BoxModelID, boxModelRet.BoxModelID);
 
                     BadRequestResult badRequest = jsonRet as BadRequestResult;
                     Assert.Null(badRequest);
@@ -225,23 +225,23 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.NotNull(boxModelController);
                     Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, boxModelController.DatabaseType);
 
-                    BoxModel boxModelLast = new BoxModel();
+                    BoxModel boxModelFirst = new BoxModel();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
                     {
                         Query query = new Query();
                         query.Language = LanguageRequest;
 
                         BoxModelService boxModelService = new BoxModelService(query, db, ContactID);
-                        boxModelLast = (from c in db.BoxModels select c).FirstOrDefault();
+                        boxModelFirst = (from c in db.BoxModels select c).FirstOrDefault();
                     }
 
                     // ok with BoxModel info
-                    IActionResult jsonRet = boxModelController.GetBoxModelWithID(boxModelLast.BoxModelID);
+                    IActionResult jsonRet = boxModelController.GetBoxModelWithID(boxModelFirst.BoxModelID);
                     Assert.IsType<OkObjectResult>(jsonRet);
 
                     OkObjectResult Ret = jsonRet as OkObjectResult;
                     BoxModel boxModelRet = (BoxModel)Ret.Value;
-                    Assert.Equal(boxModelLast.BoxModelID, boxModelRet.BoxModelID);
+                    Assert.Equal(boxModelFirst.BoxModelID, boxModelRet.BoxModelID);
 
                     BadRequestResult badRequest = jsonRet as BadRequestResult;
                     Assert.Null(badRequest);
@@ -283,7 +283,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.NotNull(boxModelController);
                     Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, boxModelController.DatabaseType);
 
-                    BoxModel boxModelLast = new BoxModel();
+                    BoxModel boxModelFirst = new BoxModel();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
                     {
                         Query query = new Query();
@@ -292,16 +292,16 @@ namespace CSSPWebAPI.Tests.Controllers
                         query.Desc = "";
 
                         BoxModelService boxModelService = new BoxModelService(query, db, ContactID);
-                        boxModelLast = (from c in db.BoxModels select c).FirstOrDefault();
+                        boxModelFirst = (from c in db.BoxModels select c).FirstOrDefault();
                     }
 
                     // ok with BoxModel info
-                    IActionResult jsonRet = boxModelController.GetBoxModelWithID(boxModelLast.BoxModelID);
+                    IActionResult jsonRet = boxModelController.GetBoxModelWithID(boxModelFirst.BoxModelID);
                     Assert.IsType<OkObjectResult>(jsonRet);
 
                     OkObjectResult Ret = jsonRet as OkObjectResult;
                     BoxModel boxModelRet = (BoxModel)Ret.Value;
-                    Assert.Equal(boxModelLast.BoxModelID, boxModelRet.BoxModelID);
+                    Assert.Equal(boxModelFirst.BoxModelID, boxModelRet.BoxModelID);
 
                     BadRequestResult badRequest = jsonRet as BadRequestResult;
                     Assert.Null(badRequest);

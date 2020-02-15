@@ -156,7 +156,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.NotNull(mwqmLookupMPNController);
                     Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, mwqmLookupMPNController.DatabaseType);
 
-                    MWQMLookupMPN mwqmLookupMPNLast = new MWQMLookupMPN();
+                    MWQMLookupMPN mwqmLookupMPNFirst = new MWQMLookupMPN();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
                     {
                         Query query = new Query();
@@ -165,16 +165,16 @@ namespace CSSPWebAPI.Tests.Controllers
                         query.Desc = "";
 
                         MWQMLookupMPNService mwqmLookupMPNService = new MWQMLookupMPNService(query, db, ContactID);
-                        mwqmLookupMPNLast = (from c in db.MWQMLookupMPNs select c).FirstOrDefault();
+                        mwqmLookupMPNFirst = (from c in db.MWQMLookupMPNs select c).FirstOrDefault();
                     }
 
                     // ok with MWQMLookupMPN info
-                    IActionResult jsonRet = mwqmLookupMPNController.GetMWQMLookupMPNWithID(mwqmLookupMPNLast.MWQMLookupMPNID);
+                    IActionResult jsonRet = mwqmLookupMPNController.GetMWQMLookupMPNWithID(mwqmLookupMPNFirst.MWQMLookupMPNID);
                     Assert.IsType<OkObjectResult>(jsonRet);
 
                     OkObjectResult ret = jsonRet as OkObjectResult;
                     MWQMLookupMPN mwqmLookupMPNRet = (MWQMLookupMPN)ret.Value;
-                    Assert.Equal(mwqmLookupMPNLast.MWQMLookupMPNID, mwqmLookupMPNRet.MWQMLookupMPNID);
+                    Assert.Equal(mwqmLookupMPNFirst.MWQMLookupMPNID, mwqmLookupMPNRet.MWQMLookupMPNID);
 
                     BadRequestResult badRequest = jsonRet as BadRequestResult;
                     Assert.Null(badRequest);
@@ -229,23 +229,23 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.NotNull(mwqmLookupMPNController);
                     Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, mwqmLookupMPNController.DatabaseType);
 
-                    MWQMLookupMPN mwqmLookupMPNLast = new MWQMLookupMPN();
+                    MWQMLookupMPN mwqmLookupMPNFirst = new MWQMLookupMPN();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
                     {
                         Query query = new Query();
                         query.Language = LanguageRequest;
 
                         MWQMLookupMPNService mwqmLookupMPNService = new MWQMLookupMPNService(query, db, ContactID);
-                        mwqmLookupMPNLast = (from c in db.MWQMLookupMPNs select c).FirstOrDefault();
+                        mwqmLookupMPNFirst = (from c in db.MWQMLookupMPNs select c).FirstOrDefault();
                     }
 
                     // ok with MWQMLookupMPN info
-                    IActionResult jsonRet = mwqmLookupMPNController.GetMWQMLookupMPNWithID(mwqmLookupMPNLast.MWQMLookupMPNID);
+                    IActionResult jsonRet = mwqmLookupMPNController.GetMWQMLookupMPNWithID(mwqmLookupMPNFirst.MWQMLookupMPNID);
                     Assert.IsType<OkObjectResult>(jsonRet);
 
                     OkObjectResult Ret = jsonRet as OkObjectResult;
                     MWQMLookupMPN mwqmLookupMPNRet = (MWQMLookupMPN)Ret.Value;
-                    Assert.Equal(mwqmLookupMPNLast.MWQMLookupMPNID, mwqmLookupMPNRet.MWQMLookupMPNID);
+                    Assert.Equal(mwqmLookupMPNFirst.MWQMLookupMPNID, mwqmLookupMPNRet.MWQMLookupMPNID);
 
                     BadRequestResult badRequest = jsonRet as BadRequestResult;
                     Assert.Null(badRequest);
@@ -287,7 +287,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.NotNull(mwqmLookupMPNController);
                     Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, mwqmLookupMPNController.DatabaseType);
 
-                    MWQMLookupMPN mwqmLookupMPNLast = new MWQMLookupMPN();
+                    MWQMLookupMPN mwqmLookupMPNFirst = new MWQMLookupMPN();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
                     {
                         Query query = new Query();
@@ -296,16 +296,16 @@ namespace CSSPWebAPI.Tests.Controllers
                         query.Desc = "";
 
                         MWQMLookupMPNService mwqmLookupMPNService = new MWQMLookupMPNService(query, db, ContactID);
-                        mwqmLookupMPNLast = (from c in db.MWQMLookupMPNs select c).FirstOrDefault();
+                        mwqmLookupMPNFirst = (from c in db.MWQMLookupMPNs select c).FirstOrDefault();
                     }
 
                     // ok with MWQMLookupMPN info
-                    IActionResult jsonRet = mwqmLookupMPNController.GetMWQMLookupMPNWithID(mwqmLookupMPNLast.MWQMLookupMPNID);
+                    IActionResult jsonRet = mwqmLookupMPNController.GetMWQMLookupMPNWithID(mwqmLookupMPNFirst.MWQMLookupMPNID);
                     Assert.IsType<OkObjectResult>(jsonRet);
 
                     OkObjectResult Ret = jsonRet as OkObjectResult;
                     MWQMLookupMPN mwqmLookupMPNRet = (MWQMLookupMPN)Ret.Value;
-                    Assert.Equal(mwqmLookupMPNLast.MWQMLookupMPNID, mwqmLookupMPNRet.MWQMLookupMPNID);
+                    Assert.Equal(mwqmLookupMPNFirst.MWQMLookupMPNID, mwqmLookupMPNRet.MWQMLookupMPNID);
 
                     BadRequestResult badRequest = jsonRet as BadRequestResult;
                     Assert.Null(badRequest);

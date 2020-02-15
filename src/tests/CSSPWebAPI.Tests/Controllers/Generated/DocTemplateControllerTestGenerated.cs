@@ -156,7 +156,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.NotNull(docTemplateController);
                     Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, docTemplateController.DatabaseType);
 
-                    DocTemplate docTemplateLast = new DocTemplate();
+                    DocTemplate docTemplateFirst = new DocTemplate();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
                     {
                         Query query = new Query();
@@ -165,16 +165,16 @@ namespace CSSPWebAPI.Tests.Controllers
                         query.Desc = "";
 
                         DocTemplateService docTemplateService = new DocTemplateService(query, db, ContactID);
-                        docTemplateLast = (from c in db.DocTemplates select c).FirstOrDefault();
+                        docTemplateFirst = (from c in db.DocTemplates select c).FirstOrDefault();
                     }
 
                     // ok with DocTemplate info
-                    IActionResult jsonRet = docTemplateController.GetDocTemplateWithID(docTemplateLast.DocTemplateID);
+                    IActionResult jsonRet = docTemplateController.GetDocTemplateWithID(docTemplateFirst.DocTemplateID);
                     Assert.IsType<OkObjectResult>(jsonRet);
 
                     OkObjectResult ret = jsonRet as OkObjectResult;
                     DocTemplate docTemplateRet = (DocTemplate)ret.Value;
-                    Assert.Equal(docTemplateLast.DocTemplateID, docTemplateRet.DocTemplateID);
+                    Assert.Equal(docTemplateFirst.DocTemplateID, docTemplateRet.DocTemplateID);
 
                     BadRequestResult badRequest = jsonRet as BadRequestResult;
                     Assert.Null(badRequest);
@@ -225,23 +225,23 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.NotNull(docTemplateController);
                     Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, docTemplateController.DatabaseType);
 
-                    DocTemplate docTemplateLast = new DocTemplate();
+                    DocTemplate docTemplateFirst = new DocTemplate();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
                     {
                         Query query = new Query();
                         query.Language = LanguageRequest;
 
                         DocTemplateService docTemplateService = new DocTemplateService(query, db, ContactID);
-                        docTemplateLast = (from c in db.DocTemplates select c).FirstOrDefault();
+                        docTemplateFirst = (from c in db.DocTemplates select c).FirstOrDefault();
                     }
 
                     // ok with DocTemplate info
-                    IActionResult jsonRet = docTemplateController.GetDocTemplateWithID(docTemplateLast.DocTemplateID);
+                    IActionResult jsonRet = docTemplateController.GetDocTemplateWithID(docTemplateFirst.DocTemplateID);
                     Assert.IsType<OkObjectResult>(jsonRet);
 
                     OkObjectResult Ret = jsonRet as OkObjectResult;
                     DocTemplate docTemplateRet = (DocTemplate)Ret.Value;
-                    Assert.Equal(docTemplateLast.DocTemplateID, docTemplateRet.DocTemplateID);
+                    Assert.Equal(docTemplateFirst.DocTemplateID, docTemplateRet.DocTemplateID);
 
                     BadRequestResult badRequest = jsonRet as BadRequestResult;
                     Assert.Null(badRequest);
@@ -283,7 +283,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.NotNull(docTemplateController);
                     Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, docTemplateController.DatabaseType);
 
-                    DocTemplate docTemplateLast = new DocTemplate();
+                    DocTemplate docTemplateFirst = new DocTemplate();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
                     {
                         Query query = new Query();
@@ -292,16 +292,16 @@ namespace CSSPWebAPI.Tests.Controllers
                         query.Desc = "";
 
                         DocTemplateService docTemplateService = new DocTemplateService(query, db, ContactID);
-                        docTemplateLast = (from c in db.DocTemplates select c).FirstOrDefault();
+                        docTemplateFirst = (from c in db.DocTemplates select c).FirstOrDefault();
                     }
 
                     // ok with DocTemplate info
-                    IActionResult jsonRet = docTemplateController.GetDocTemplateWithID(docTemplateLast.DocTemplateID);
+                    IActionResult jsonRet = docTemplateController.GetDocTemplateWithID(docTemplateFirst.DocTemplateID);
                     Assert.IsType<OkObjectResult>(jsonRet);
 
                     OkObjectResult Ret = jsonRet as OkObjectResult;
                     DocTemplate docTemplateRet = (DocTemplate)Ret.Value;
-                    Assert.Equal(docTemplateLast.DocTemplateID, docTemplateRet.DocTemplateID);
+                    Assert.Equal(docTemplateFirst.DocTemplateID, docTemplateRet.DocTemplateID);
 
                     BadRequestResult badRequest = jsonRet as BadRequestResult;
                     Assert.Null(badRequest);

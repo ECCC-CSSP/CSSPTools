@@ -156,7 +156,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.NotNull(vpAmbientController);
                     Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, vpAmbientController.DatabaseType);
 
-                    VPAmbient vpAmbientLast = new VPAmbient();
+                    VPAmbient vpAmbientFirst = new VPAmbient();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
                     {
                         Query query = new Query();
@@ -165,16 +165,16 @@ namespace CSSPWebAPI.Tests.Controllers
                         query.Desc = "";
 
                         VPAmbientService vpAmbientService = new VPAmbientService(query, db, ContactID);
-                        vpAmbientLast = (from c in db.VPAmbients select c).FirstOrDefault();
+                        vpAmbientFirst = (from c in db.VPAmbients select c).FirstOrDefault();
                     }
 
                     // ok with VPAmbient info
-                    IActionResult jsonRet = vpAmbientController.GetVPAmbientWithID(vpAmbientLast.VPAmbientID);
+                    IActionResult jsonRet = vpAmbientController.GetVPAmbientWithID(vpAmbientFirst.VPAmbientID);
                     Assert.IsType<OkObjectResult>(jsonRet);
 
                     OkObjectResult ret = jsonRet as OkObjectResult;
                     VPAmbient vpAmbientRet = (VPAmbient)ret.Value;
-                    Assert.Equal(vpAmbientLast.VPAmbientID, vpAmbientRet.VPAmbientID);
+                    Assert.Equal(vpAmbientFirst.VPAmbientID, vpAmbientRet.VPAmbientID);
 
                     BadRequestResult badRequest = jsonRet as BadRequestResult;
                     Assert.Null(badRequest);
@@ -225,23 +225,23 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.NotNull(vpAmbientController);
                     Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, vpAmbientController.DatabaseType);
 
-                    VPAmbient vpAmbientLast = new VPAmbient();
+                    VPAmbient vpAmbientFirst = new VPAmbient();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
                     {
                         Query query = new Query();
                         query.Language = LanguageRequest;
 
                         VPAmbientService vpAmbientService = new VPAmbientService(query, db, ContactID);
-                        vpAmbientLast = (from c in db.VPAmbients select c).FirstOrDefault();
+                        vpAmbientFirst = (from c in db.VPAmbients select c).FirstOrDefault();
                     }
 
                     // ok with VPAmbient info
-                    IActionResult jsonRet = vpAmbientController.GetVPAmbientWithID(vpAmbientLast.VPAmbientID);
+                    IActionResult jsonRet = vpAmbientController.GetVPAmbientWithID(vpAmbientFirst.VPAmbientID);
                     Assert.IsType<OkObjectResult>(jsonRet);
 
                     OkObjectResult Ret = jsonRet as OkObjectResult;
                     VPAmbient vpAmbientRet = (VPAmbient)Ret.Value;
-                    Assert.Equal(vpAmbientLast.VPAmbientID, vpAmbientRet.VPAmbientID);
+                    Assert.Equal(vpAmbientFirst.VPAmbientID, vpAmbientRet.VPAmbientID);
 
                     BadRequestResult badRequest = jsonRet as BadRequestResult;
                     Assert.Null(badRequest);
@@ -283,7 +283,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.NotNull(vpAmbientController);
                     Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, vpAmbientController.DatabaseType);
 
-                    VPAmbient vpAmbientLast = new VPAmbient();
+                    VPAmbient vpAmbientFirst = new VPAmbient();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
                     {
                         Query query = new Query();
@@ -292,16 +292,16 @@ namespace CSSPWebAPI.Tests.Controllers
                         query.Desc = "";
 
                         VPAmbientService vpAmbientService = new VPAmbientService(query, db, ContactID);
-                        vpAmbientLast = (from c in db.VPAmbients select c).FirstOrDefault();
+                        vpAmbientFirst = (from c in db.VPAmbients select c).FirstOrDefault();
                     }
 
                     // ok with VPAmbient info
-                    IActionResult jsonRet = vpAmbientController.GetVPAmbientWithID(vpAmbientLast.VPAmbientID);
+                    IActionResult jsonRet = vpAmbientController.GetVPAmbientWithID(vpAmbientFirst.VPAmbientID);
                     Assert.IsType<OkObjectResult>(jsonRet);
 
                     OkObjectResult Ret = jsonRet as OkObjectResult;
                     VPAmbient vpAmbientRet = (VPAmbient)Ret.Value;
-                    Assert.Equal(vpAmbientLast.VPAmbientID, vpAmbientRet.VPAmbientID);
+                    Assert.Equal(vpAmbientFirst.VPAmbientID, vpAmbientRet.VPAmbientID);
 
                     BadRequestResult badRequest = jsonRet as BadRequestResult;
                     Assert.Null(badRequest);

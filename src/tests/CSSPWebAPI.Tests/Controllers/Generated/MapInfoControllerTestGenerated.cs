@@ -156,7 +156,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.NotNull(mapInfoController);
                     Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, mapInfoController.DatabaseType);
 
-                    MapInfo mapInfoLast = new MapInfo();
+                    MapInfo mapInfoFirst = new MapInfo();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
                     {
                         Query query = new Query();
@@ -165,16 +165,16 @@ namespace CSSPWebAPI.Tests.Controllers
                         query.Desc = "";
 
                         MapInfoService mapInfoService = new MapInfoService(query, db, ContactID);
-                        mapInfoLast = (from c in db.MapInfos select c).FirstOrDefault();
+                        mapInfoFirst = (from c in db.MapInfos select c).FirstOrDefault();
                     }
 
                     // ok with MapInfo info
-                    IActionResult jsonRet = mapInfoController.GetMapInfoWithID(mapInfoLast.MapInfoID);
+                    IActionResult jsonRet = mapInfoController.GetMapInfoWithID(mapInfoFirst.MapInfoID);
                     Assert.IsType<OkObjectResult>(jsonRet);
 
                     OkObjectResult ret = jsonRet as OkObjectResult;
                     MapInfo mapInfoRet = (MapInfo)ret.Value;
-                    Assert.Equal(mapInfoLast.MapInfoID, mapInfoRet.MapInfoID);
+                    Assert.Equal(mapInfoFirst.MapInfoID, mapInfoRet.MapInfoID);
 
                     BadRequestResult badRequest = jsonRet as BadRequestResult;
                     Assert.Null(badRequest);
@@ -225,23 +225,23 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.NotNull(mapInfoController);
                     Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, mapInfoController.DatabaseType);
 
-                    MapInfo mapInfoLast = new MapInfo();
+                    MapInfo mapInfoFirst = new MapInfo();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
                     {
                         Query query = new Query();
                         query.Language = LanguageRequest;
 
                         MapInfoService mapInfoService = new MapInfoService(query, db, ContactID);
-                        mapInfoLast = (from c in db.MapInfos select c).FirstOrDefault();
+                        mapInfoFirst = (from c in db.MapInfos select c).FirstOrDefault();
                     }
 
                     // ok with MapInfo info
-                    IActionResult jsonRet = mapInfoController.GetMapInfoWithID(mapInfoLast.MapInfoID);
+                    IActionResult jsonRet = mapInfoController.GetMapInfoWithID(mapInfoFirst.MapInfoID);
                     Assert.IsType<OkObjectResult>(jsonRet);
 
                     OkObjectResult Ret = jsonRet as OkObjectResult;
                     MapInfo mapInfoRet = (MapInfo)Ret.Value;
-                    Assert.Equal(mapInfoLast.MapInfoID, mapInfoRet.MapInfoID);
+                    Assert.Equal(mapInfoFirst.MapInfoID, mapInfoRet.MapInfoID);
 
                     BadRequestResult badRequest = jsonRet as BadRequestResult;
                     Assert.Null(badRequest);
@@ -283,7 +283,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.NotNull(mapInfoController);
                     Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, mapInfoController.DatabaseType);
 
-                    MapInfo mapInfoLast = new MapInfo();
+                    MapInfo mapInfoFirst = new MapInfo();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
                     {
                         Query query = new Query();
@@ -292,16 +292,16 @@ namespace CSSPWebAPI.Tests.Controllers
                         query.Desc = "";
 
                         MapInfoService mapInfoService = new MapInfoService(query, db, ContactID);
-                        mapInfoLast = (from c in db.MapInfos select c).FirstOrDefault();
+                        mapInfoFirst = (from c in db.MapInfos select c).FirstOrDefault();
                     }
 
                     // ok with MapInfo info
-                    IActionResult jsonRet = mapInfoController.GetMapInfoWithID(mapInfoLast.MapInfoID);
+                    IActionResult jsonRet = mapInfoController.GetMapInfoWithID(mapInfoFirst.MapInfoID);
                     Assert.IsType<OkObjectResult>(jsonRet);
 
                     OkObjectResult Ret = jsonRet as OkObjectResult;
                     MapInfo mapInfoRet = (MapInfo)Ret.Value;
-                    Assert.Equal(mapInfoLast.MapInfoID, mapInfoRet.MapInfoID);
+                    Assert.Equal(mapInfoFirst.MapInfoID, mapInfoRet.MapInfoID);
 
                     BadRequestResult badRequest = jsonRet as BadRequestResult;
                     Assert.Null(badRequest);

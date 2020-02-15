@@ -156,7 +156,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.NotNull(infrastructureLanguageController);
                     Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, infrastructureLanguageController.DatabaseType);
 
-                    InfrastructureLanguage infrastructureLanguageLast = new InfrastructureLanguage();
+                    InfrastructureLanguage infrastructureLanguageFirst = new InfrastructureLanguage();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
                     {
                         Query query = new Query();
@@ -165,16 +165,16 @@ namespace CSSPWebAPI.Tests.Controllers
                         query.Desc = "";
 
                         InfrastructureLanguageService infrastructureLanguageService = new InfrastructureLanguageService(query, db, ContactID);
-                        infrastructureLanguageLast = (from c in db.InfrastructureLanguages select c).FirstOrDefault();
+                        infrastructureLanguageFirst = (from c in db.InfrastructureLanguages select c).FirstOrDefault();
                     }
 
                     // ok with InfrastructureLanguage info
-                    IActionResult jsonRet = infrastructureLanguageController.GetInfrastructureLanguageWithID(infrastructureLanguageLast.InfrastructureLanguageID);
+                    IActionResult jsonRet = infrastructureLanguageController.GetInfrastructureLanguageWithID(infrastructureLanguageFirst.InfrastructureLanguageID);
                     Assert.IsType<OkObjectResult>(jsonRet);
 
                     OkObjectResult ret = jsonRet as OkObjectResult;
                     InfrastructureLanguage infrastructureLanguageRet = (InfrastructureLanguage)ret.Value;
-                    Assert.Equal(infrastructureLanguageLast.InfrastructureLanguageID, infrastructureLanguageRet.InfrastructureLanguageID);
+                    Assert.Equal(infrastructureLanguageFirst.InfrastructureLanguageID, infrastructureLanguageRet.InfrastructureLanguageID);
 
                     BadRequestResult badRequest = jsonRet as BadRequestResult;
                     Assert.Null(badRequest);
@@ -225,23 +225,23 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.NotNull(infrastructureLanguageController);
                     Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, infrastructureLanguageController.DatabaseType);
 
-                    InfrastructureLanguage infrastructureLanguageLast = new InfrastructureLanguage();
+                    InfrastructureLanguage infrastructureLanguageFirst = new InfrastructureLanguage();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
                     {
                         Query query = new Query();
                         query.Language = LanguageRequest;
 
                         InfrastructureLanguageService infrastructureLanguageService = new InfrastructureLanguageService(query, db, ContactID);
-                        infrastructureLanguageLast = (from c in db.InfrastructureLanguages select c).FirstOrDefault();
+                        infrastructureLanguageFirst = (from c in db.InfrastructureLanguages select c).FirstOrDefault();
                     }
 
                     // ok with InfrastructureLanguage info
-                    IActionResult jsonRet = infrastructureLanguageController.GetInfrastructureLanguageWithID(infrastructureLanguageLast.InfrastructureLanguageID);
+                    IActionResult jsonRet = infrastructureLanguageController.GetInfrastructureLanguageWithID(infrastructureLanguageFirst.InfrastructureLanguageID);
                     Assert.IsType<OkObjectResult>(jsonRet);
 
                     OkObjectResult Ret = jsonRet as OkObjectResult;
                     InfrastructureLanguage infrastructureLanguageRet = (InfrastructureLanguage)Ret.Value;
-                    Assert.Equal(infrastructureLanguageLast.InfrastructureLanguageID, infrastructureLanguageRet.InfrastructureLanguageID);
+                    Assert.Equal(infrastructureLanguageFirst.InfrastructureLanguageID, infrastructureLanguageRet.InfrastructureLanguageID);
 
                     BadRequestResult badRequest = jsonRet as BadRequestResult;
                     Assert.Null(badRequest);
@@ -283,7 +283,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.NotNull(infrastructureLanguageController);
                     Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, infrastructureLanguageController.DatabaseType);
 
-                    InfrastructureLanguage infrastructureLanguageLast = new InfrastructureLanguage();
+                    InfrastructureLanguage infrastructureLanguageFirst = new InfrastructureLanguage();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
                     {
                         Query query = new Query();
@@ -292,16 +292,16 @@ namespace CSSPWebAPI.Tests.Controllers
                         query.Desc = "";
 
                         InfrastructureLanguageService infrastructureLanguageService = new InfrastructureLanguageService(query, db, ContactID);
-                        infrastructureLanguageLast = (from c in db.InfrastructureLanguages select c).FirstOrDefault();
+                        infrastructureLanguageFirst = (from c in db.InfrastructureLanguages select c).FirstOrDefault();
                     }
 
                     // ok with InfrastructureLanguage info
-                    IActionResult jsonRet = infrastructureLanguageController.GetInfrastructureLanguageWithID(infrastructureLanguageLast.InfrastructureLanguageID);
+                    IActionResult jsonRet = infrastructureLanguageController.GetInfrastructureLanguageWithID(infrastructureLanguageFirst.InfrastructureLanguageID);
                     Assert.IsType<OkObjectResult>(jsonRet);
 
                     OkObjectResult Ret = jsonRet as OkObjectResult;
                     InfrastructureLanguage infrastructureLanguageRet = (InfrastructureLanguage)Ret.Value;
-                    Assert.Equal(infrastructureLanguageLast.InfrastructureLanguageID, infrastructureLanguageRet.InfrastructureLanguageID);
+                    Assert.Equal(infrastructureLanguageFirst.InfrastructureLanguageID, infrastructureLanguageRet.InfrastructureLanguageID);
 
                     BadRequestResult badRequest = jsonRet as BadRequestResult;
                     Assert.Null(badRequest);

@@ -156,7 +156,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.NotNull(mwqmSubsectorController);
                     Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, mwqmSubsectorController.DatabaseType);
 
-                    MWQMSubsector mwqmSubsectorLast = new MWQMSubsector();
+                    MWQMSubsector mwqmSubsectorFirst = new MWQMSubsector();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
                     {
                         Query query = new Query();
@@ -165,16 +165,16 @@ namespace CSSPWebAPI.Tests.Controllers
                         query.Desc = "";
 
                         MWQMSubsectorService mwqmSubsectorService = new MWQMSubsectorService(query, db, ContactID);
-                        mwqmSubsectorLast = (from c in db.MWQMSubsectors select c).FirstOrDefault();
+                        mwqmSubsectorFirst = (from c in db.MWQMSubsectors select c).FirstOrDefault();
                     }
 
                     // ok with MWQMSubsector info
-                    IActionResult jsonRet = mwqmSubsectorController.GetMWQMSubsectorWithID(mwqmSubsectorLast.MWQMSubsectorID);
+                    IActionResult jsonRet = mwqmSubsectorController.GetMWQMSubsectorWithID(mwqmSubsectorFirst.MWQMSubsectorID);
                     Assert.IsType<OkObjectResult>(jsonRet);
 
                     OkObjectResult ret = jsonRet as OkObjectResult;
                     MWQMSubsector mwqmSubsectorRet = (MWQMSubsector)ret.Value;
-                    Assert.Equal(mwqmSubsectorLast.MWQMSubsectorID, mwqmSubsectorRet.MWQMSubsectorID);
+                    Assert.Equal(mwqmSubsectorFirst.MWQMSubsectorID, mwqmSubsectorRet.MWQMSubsectorID);
 
                     BadRequestResult badRequest = jsonRet as BadRequestResult;
                     Assert.Null(badRequest);
@@ -225,23 +225,23 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.NotNull(mwqmSubsectorController);
                     Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, mwqmSubsectorController.DatabaseType);
 
-                    MWQMSubsector mwqmSubsectorLast = new MWQMSubsector();
+                    MWQMSubsector mwqmSubsectorFirst = new MWQMSubsector();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
                     {
                         Query query = new Query();
                         query.Language = LanguageRequest;
 
                         MWQMSubsectorService mwqmSubsectorService = new MWQMSubsectorService(query, db, ContactID);
-                        mwqmSubsectorLast = (from c in db.MWQMSubsectors select c).FirstOrDefault();
+                        mwqmSubsectorFirst = (from c in db.MWQMSubsectors select c).FirstOrDefault();
                     }
 
                     // ok with MWQMSubsector info
-                    IActionResult jsonRet = mwqmSubsectorController.GetMWQMSubsectorWithID(mwqmSubsectorLast.MWQMSubsectorID);
+                    IActionResult jsonRet = mwqmSubsectorController.GetMWQMSubsectorWithID(mwqmSubsectorFirst.MWQMSubsectorID);
                     Assert.IsType<OkObjectResult>(jsonRet);
 
                     OkObjectResult Ret = jsonRet as OkObjectResult;
                     MWQMSubsector mwqmSubsectorRet = (MWQMSubsector)Ret.Value;
-                    Assert.Equal(mwqmSubsectorLast.MWQMSubsectorID, mwqmSubsectorRet.MWQMSubsectorID);
+                    Assert.Equal(mwqmSubsectorFirst.MWQMSubsectorID, mwqmSubsectorRet.MWQMSubsectorID);
 
                     BadRequestResult badRequest = jsonRet as BadRequestResult;
                     Assert.Null(badRequest);
@@ -283,7 +283,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.NotNull(mwqmSubsectorController);
                     Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, mwqmSubsectorController.DatabaseType);
 
-                    MWQMSubsector mwqmSubsectorLast = new MWQMSubsector();
+                    MWQMSubsector mwqmSubsectorFirst = new MWQMSubsector();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
                     {
                         Query query = new Query();
@@ -292,16 +292,16 @@ namespace CSSPWebAPI.Tests.Controllers
                         query.Desc = "";
 
                         MWQMSubsectorService mwqmSubsectorService = new MWQMSubsectorService(query, db, ContactID);
-                        mwqmSubsectorLast = (from c in db.MWQMSubsectors select c).FirstOrDefault();
+                        mwqmSubsectorFirst = (from c in db.MWQMSubsectors select c).FirstOrDefault();
                     }
 
                     // ok with MWQMSubsector info
-                    IActionResult jsonRet = mwqmSubsectorController.GetMWQMSubsectorWithID(mwqmSubsectorLast.MWQMSubsectorID);
+                    IActionResult jsonRet = mwqmSubsectorController.GetMWQMSubsectorWithID(mwqmSubsectorFirst.MWQMSubsectorID);
                     Assert.IsType<OkObjectResult>(jsonRet);
 
                     OkObjectResult Ret = jsonRet as OkObjectResult;
                     MWQMSubsector mwqmSubsectorRet = (MWQMSubsector)Ret.Value;
-                    Assert.Equal(mwqmSubsectorLast.MWQMSubsectorID, mwqmSubsectorRet.MWQMSubsectorID);
+                    Assert.Equal(mwqmSubsectorFirst.MWQMSubsectorID, mwqmSubsectorRet.MWQMSubsectorID);
 
                     BadRequestResult badRequest = jsonRet as BadRequestResult;
                     Assert.Null(badRequest);

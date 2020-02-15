@@ -156,7 +156,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.NotNull(vpScenarioLanguageController);
                     Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, vpScenarioLanguageController.DatabaseType);
 
-                    VPScenarioLanguage vpScenarioLanguageLast = new VPScenarioLanguage();
+                    VPScenarioLanguage vpScenarioLanguageFirst = new VPScenarioLanguage();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
                     {
                         Query query = new Query();
@@ -165,16 +165,16 @@ namespace CSSPWebAPI.Tests.Controllers
                         query.Desc = "";
 
                         VPScenarioLanguageService vpScenarioLanguageService = new VPScenarioLanguageService(query, db, ContactID);
-                        vpScenarioLanguageLast = (from c in db.VPScenarioLanguages select c).FirstOrDefault();
+                        vpScenarioLanguageFirst = (from c in db.VPScenarioLanguages select c).FirstOrDefault();
                     }
 
                     // ok with VPScenarioLanguage info
-                    IActionResult jsonRet = vpScenarioLanguageController.GetVPScenarioLanguageWithID(vpScenarioLanguageLast.VPScenarioLanguageID);
+                    IActionResult jsonRet = vpScenarioLanguageController.GetVPScenarioLanguageWithID(vpScenarioLanguageFirst.VPScenarioLanguageID);
                     Assert.IsType<OkObjectResult>(jsonRet);
 
                     OkObjectResult ret = jsonRet as OkObjectResult;
                     VPScenarioLanguage vpScenarioLanguageRet = (VPScenarioLanguage)ret.Value;
-                    Assert.Equal(vpScenarioLanguageLast.VPScenarioLanguageID, vpScenarioLanguageRet.VPScenarioLanguageID);
+                    Assert.Equal(vpScenarioLanguageFirst.VPScenarioLanguageID, vpScenarioLanguageRet.VPScenarioLanguageID);
 
                     BadRequestResult badRequest = jsonRet as BadRequestResult;
                     Assert.Null(badRequest);
@@ -225,23 +225,23 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.NotNull(vpScenarioLanguageController);
                     Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, vpScenarioLanguageController.DatabaseType);
 
-                    VPScenarioLanguage vpScenarioLanguageLast = new VPScenarioLanguage();
+                    VPScenarioLanguage vpScenarioLanguageFirst = new VPScenarioLanguage();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
                     {
                         Query query = new Query();
                         query.Language = LanguageRequest;
 
                         VPScenarioLanguageService vpScenarioLanguageService = new VPScenarioLanguageService(query, db, ContactID);
-                        vpScenarioLanguageLast = (from c in db.VPScenarioLanguages select c).FirstOrDefault();
+                        vpScenarioLanguageFirst = (from c in db.VPScenarioLanguages select c).FirstOrDefault();
                     }
 
                     // ok with VPScenarioLanguage info
-                    IActionResult jsonRet = vpScenarioLanguageController.GetVPScenarioLanguageWithID(vpScenarioLanguageLast.VPScenarioLanguageID);
+                    IActionResult jsonRet = vpScenarioLanguageController.GetVPScenarioLanguageWithID(vpScenarioLanguageFirst.VPScenarioLanguageID);
                     Assert.IsType<OkObjectResult>(jsonRet);
 
                     OkObjectResult Ret = jsonRet as OkObjectResult;
                     VPScenarioLanguage vpScenarioLanguageRet = (VPScenarioLanguage)Ret.Value;
-                    Assert.Equal(vpScenarioLanguageLast.VPScenarioLanguageID, vpScenarioLanguageRet.VPScenarioLanguageID);
+                    Assert.Equal(vpScenarioLanguageFirst.VPScenarioLanguageID, vpScenarioLanguageRet.VPScenarioLanguageID);
 
                     BadRequestResult badRequest = jsonRet as BadRequestResult;
                     Assert.Null(badRequest);
@@ -283,7 +283,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.NotNull(vpScenarioLanguageController);
                     Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, vpScenarioLanguageController.DatabaseType);
 
-                    VPScenarioLanguage vpScenarioLanguageLast = new VPScenarioLanguage();
+                    VPScenarioLanguage vpScenarioLanguageFirst = new VPScenarioLanguage();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
                     {
                         Query query = new Query();
@@ -292,16 +292,16 @@ namespace CSSPWebAPI.Tests.Controllers
                         query.Desc = "";
 
                         VPScenarioLanguageService vpScenarioLanguageService = new VPScenarioLanguageService(query, db, ContactID);
-                        vpScenarioLanguageLast = (from c in db.VPScenarioLanguages select c).FirstOrDefault();
+                        vpScenarioLanguageFirst = (from c in db.VPScenarioLanguages select c).FirstOrDefault();
                     }
 
                     // ok with VPScenarioLanguage info
-                    IActionResult jsonRet = vpScenarioLanguageController.GetVPScenarioLanguageWithID(vpScenarioLanguageLast.VPScenarioLanguageID);
+                    IActionResult jsonRet = vpScenarioLanguageController.GetVPScenarioLanguageWithID(vpScenarioLanguageFirst.VPScenarioLanguageID);
                     Assert.IsType<OkObjectResult>(jsonRet);
 
                     OkObjectResult Ret = jsonRet as OkObjectResult;
                     VPScenarioLanguage vpScenarioLanguageRet = (VPScenarioLanguage)Ret.Value;
-                    Assert.Equal(vpScenarioLanguageLast.VPScenarioLanguageID, vpScenarioLanguageRet.VPScenarioLanguageID);
+                    Assert.Equal(vpScenarioLanguageFirst.VPScenarioLanguageID, vpScenarioLanguageRet.VPScenarioLanguageID);
 
                     BadRequestResult badRequest = jsonRet as BadRequestResult;
                     Assert.Null(badRequest);

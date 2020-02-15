@@ -156,7 +156,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.NotNull(appErrLogController);
                     Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, appErrLogController.DatabaseType);
 
-                    AppErrLog appErrLogLast = new AppErrLog();
+                    AppErrLog appErrLogFirst = new AppErrLog();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
                     {
                         Query query = new Query();
@@ -165,16 +165,16 @@ namespace CSSPWebAPI.Tests.Controllers
                         query.Desc = "";
 
                         AppErrLogService appErrLogService = new AppErrLogService(query, db, ContactID);
-                        appErrLogLast = (from c in db.AppErrLogs select c).FirstOrDefault();
+                        appErrLogFirst = (from c in db.AppErrLogs select c).FirstOrDefault();
                     }
 
                     // ok with AppErrLog info
-                    IActionResult jsonRet = appErrLogController.GetAppErrLogWithID(appErrLogLast.AppErrLogID);
+                    IActionResult jsonRet = appErrLogController.GetAppErrLogWithID(appErrLogFirst.AppErrLogID);
                     Assert.IsType<OkObjectResult>(jsonRet);
 
                     OkObjectResult ret = jsonRet as OkObjectResult;
                     AppErrLog appErrLogRet = (AppErrLog)ret.Value;
-                    Assert.Equal(appErrLogLast.AppErrLogID, appErrLogRet.AppErrLogID);
+                    Assert.Equal(appErrLogFirst.AppErrLogID, appErrLogRet.AppErrLogID);
 
                     BadRequestResult badRequest = jsonRet as BadRequestResult;
                     Assert.Null(badRequest);
@@ -225,23 +225,23 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.NotNull(appErrLogController);
                     Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, appErrLogController.DatabaseType);
 
-                    AppErrLog appErrLogLast = new AppErrLog();
+                    AppErrLog appErrLogFirst = new AppErrLog();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
                     {
                         Query query = new Query();
                         query.Language = LanguageRequest;
 
                         AppErrLogService appErrLogService = new AppErrLogService(query, db, ContactID);
-                        appErrLogLast = (from c in db.AppErrLogs select c).FirstOrDefault();
+                        appErrLogFirst = (from c in db.AppErrLogs select c).FirstOrDefault();
                     }
 
                     // ok with AppErrLog info
-                    IActionResult jsonRet = appErrLogController.GetAppErrLogWithID(appErrLogLast.AppErrLogID);
+                    IActionResult jsonRet = appErrLogController.GetAppErrLogWithID(appErrLogFirst.AppErrLogID);
                     Assert.IsType<OkObjectResult>(jsonRet);
 
                     OkObjectResult Ret = jsonRet as OkObjectResult;
                     AppErrLog appErrLogRet = (AppErrLog)Ret.Value;
-                    Assert.Equal(appErrLogLast.AppErrLogID, appErrLogRet.AppErrLogID);
+                    Assert.Equal(appErrLogFirst.AppErrLogID, appErrLogRet.AppErrLogID);
 
                     BadRequestResult badRequest = jsonRet as BadRequestResult;
                     Assert.Null(badRequest);
@@ -283,7 +283,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.NotNull(appErrLogController);
                     Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, appErrLogController.DatabaseType);
 
-                    AppErrLog appErrLogLast = new AppErrLog();
+                    AppErrLog appErrLogFirst = new AppErrLog();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
                     {
                         Query query = new Query();
@@ -292,16 +292,16 @@ namespace CSSPWebAPI.Tests.Controllers
                         query.Desc = "";
 
                         AppErrLogService appErrLogService = new AppErrLogService(query, db, ContactID);
-                        appErrLogLast = (from c in db.AppErrLogs select c).FirstOrDefault();
+                        appErrLogFirst = (from c in db.AppErrLogs select c).FirstOrDefault();
                     }
 
                     // ok with AppErrLog info
-                    IActionResult jsonRet = appErrLogController.GetAppErrLogWithID(appErrLogLast.AppErrLogID);
+                    IActionResult jsonRet = appErrLogController.GetAppErrLogWithID(appErrLogFirst.AppErrLogID);
                     Assert.IsType<OkObjectResult>(jsonRet);
 
                     OkObjectResult Ret = jsonRet as OkObjectResult;
                     AppErrLog appErrLogRet = (AppErrLog)Ret.Value;
-                    Assert.Equal(appErrLogLast.AppErrLogID, appErrLogRet.AppErrLogID);
+                    Assert.Equal(appErrLogFirst.AppErrLogID, appErrLogRet.AppErrLogID);
 
                     BadRequestResult badRequest = jsonRet as BadRequestResult;
                     Assert.Null(badRequest);

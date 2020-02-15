@@ -156,7 +156,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.NotNull(tvFileController);
                     Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, tvFileController.DatabaseType);
 
-                    TVFile tvFileLast = new TVFile();
+                    TVFile tvFileFirst = new TVFile();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
                     {
                         Query query = new Query();
@@ -165,16 +165,16 @@ namespace CSSPWebAPI.Tests.Controllers
                         query.Desc = "";
 
                         TVFileService tvFileService = new TVFileService(query, db, ContactID);
-                        tvFileLast = (from c in db.TVFiles select c).FirstOrDefault();
+                        tvFileFirst = (from c in db.TVFiles select c).FirstOrDefault();
                     }
 
                     // ok with TVFile info
-                    IActionResult jsonRet = tvFileController.GetTVFileWithID(tvFileLast.TVFileID);
+                    IActionResult jsonRet = tvFileController.GetTVFileWithID(tvFileFirst.TVFileID);
                     Assert.IsType<OkObjectResult>(jsonRet);
 
                     OkObjectResult ret = jsonRet as OkObjectResult;
                     TVFile tvFileRet = (TVFile)ret.Value;
-                    Assert.Equal(tvFileLast.TVFileID, tvFileRet.TVFileID);
+                    Assert.Equal(tvFileFirst.TVFileID, tvFileRet.TVFileID);
 
                     BadRequestResult badRequest = jsonRet as BadRequestResult;
                     Assert.Null(badRequest);
@@ -225,23 +225,23 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.NotNull(tvFileController);
                     Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, tvFileController.DatabaseType);
 
-                    TVFile tvFileLast = new TVFile();
+                    TVFile tvFileFirst = new TVFile();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
                     {
                         Query query = new Query();
                         query.Language = LanguageRequest;
 
                         TVFileService tvFileService = new TVFileService(query, db, ContactID);
-                        tvFileLast = (from c in db.TVFiles select c).FirstOrDefault();
+                        tvFileFirst = (from c in db.TVFiles select c).FirstOrDefault();
                     }
 
                     // ok with TVFile info
-                    IActionResult jsonRet = tvFileController.GetTVFileWithID(tvFileLast.TVFileID);
+                    IActionResult jsonRet = tvFileController.GetTVFileWithID(tvFileFirst.TVFileID);
                     Assert.IsType<OkObjectResult>(jsonRet);
 
                     OkObjectResult Ret = jsonRet as OkObjectResult;
                     TVFile tvFileRet = (TVFile)Ret.Value;
-                    Assert.Equal(tvFileLast.TVFileID, tvFileRet.TVFileID);
+                    Assert.Equal(tvFileFirst.TVFileID, tvFileRet.TVFileID);
 
                     BadRequestResult badRequest = jsonRet as BadRequestResult;
                     Assert.Null(badRequest);
@@ -283,7 +283,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.NotNull(tvFileController);
                     Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, tvFileController.DatabaseType);
 
-                    TVFile tvFileLast = new TVFile();
+                    TVFile tvFileFirst = new TVFile();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
                     {
                         Query query = new Query();
@@ -292,16 +292,16 @@ namespace CSSPWebAPI.Tests.Controllers
                         query.Desc = "";
 
                         TVFileService tvFileService = new TVFileService(query, db, ContactID);
-                        tvFileLast = (from c in db.TVFiles select c).FirstOrDefault();
+                        tvFileFirst = (from c in db.TVFiles select c).FirstOrDefault();
                     }
 
                     // ok with TVFile info
-                    IActionResult jsonRet = tvFileController.GetTVFileWithID(tvFileLast.TVFileID);
+                    IActionResult jsonRet = tvFileController.GetTVFileWithID(tvFileFirst.TVFileID);
                     Assert.IsType<OkObjectResult>(jsonRet);
 
                     OkObjectResult Ret = jsonRet as OkObjectResult;
                     TVFile tvFileRet = (TVFile)Ret.Value;
-                    Assert.Equal(tvFileLast.TVFileID, tvFileRet.TVFileID);
+                    Assert.Equal(tvFileFirst.TVFileID, tvFileRet.TVFileID);
 
                     BadRequestResult badRequest = jsonRet as BadRequestResult;
                     Assert.Null(badRequest);

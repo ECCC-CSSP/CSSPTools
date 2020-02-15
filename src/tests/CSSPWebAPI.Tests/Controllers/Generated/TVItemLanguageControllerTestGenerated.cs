@@ -156,7 +156,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.NotNull(tvItemLanguageController);
                     Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, tvItemLanguageController.DatabaseType);
 
-                    TVItemLanguage tvItemLanguageLast = new TVItemLanguage();
+                    TVItemLanguage tvItemLanguageFirst = new TVItemLanguage();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
                     {
                         Query query = new Query();
@@ -165,16 +165,16 @@ namespace CSSPWebAPI.Tests.Controllers
                         query.Desc = "";
 
                         TVItemLanguageService tvItemLanguageService = new TVItemLanguageService(query, db, ContactID);
-                        tvItemLanguageLast = (from c in db.TVItemLanguages select c).FirstOrDefault();
+                        tvItemLanguageFirst = (from c in db.TVItemLanguages select c).FirstOrDefault();
                     }
 
                     // ok with TVItemLanguage info
-                    IActionResult jsonRet = tvItemLanguageController.GetTVItemLanguageWithID(tvItemLanguageLast.TVItemLanguageID);
+                    IActionResult jsonRet = tvItemLanguageController.GetTVItemLanguageWithID(tvItemLanguageFirst.TVItemLanguageID);
                     Assert.IsType<OkObjectResult>(jsonRet);
 
                     OkObjectResult ret = jsonRet as OkObjectResult;
                     TVItemLanguage tvItemLanguageRet = (TVItemLanguage)ret.Value;
-                    Assert.Equal(tvItemLanguageLast.TVItemLanguageID, tvItemLanguageRet.TVItemLanguageID);
+                    Assert.Equal(tvItemLanguageFirst.TVItemLanguageID, tvItemLanguageRet.TVItemLanguageID);
 
                     BadRequestResult badRequest = jsonRet as BadRequestResult;
                     Assert.Null(badRequest);
@@ -225,23 +225,23 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.NotNull(tvItemLanguageController);
                     Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, tvItemLanguageController.DatabaseType);
 
-                    TVItemLanguage tvItemLanguageLast = new TVItemLanguage();
+                    TVItemLanguage tvItemLanguageFirst = new TVItemLanguage();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
                     {
                         Query query = new Query();
                         query.Language = LanguageRequest;
 
                         TVItemLanguageService tvItemLanguageService = new TVItemLanguageService(query, db, ContactID);
-                        tvItemLanguageLast = (from c in db.TVItemLanguages select c).FirstOrDefault();
+                        tvItemLanguageFirst = (from c in db.TVItemLanguages select c).FirstOrDefault();
                     }
 
                     // ok with TVItemLanguage info
-                    IActionResult jsonRet = tvItemLanguageController.GetTVItemLanguageWithID(tvItemLanguageLast.TVItemLanguageID);
+                    IActionResult jsonRet = tvItemLanguageController.GetTVItemLanguageWithID(tvItemLanguageFirst.TVItemLanguageID);
                     Assert.IsType<OkObjectResult>(jsonRet);
 
                     OkObjectResult Ret = jsonRet as OkObjectResult;
                     TVItemLanguage tvItemLanguageRet = (TVItemLanguage)Ret.Value;
-                    Assert.Equal(tvItemLanguageLast.TVItemLanguageID, tvItemLanguageRet.TVItemLanguageID);
+                    Assert.Equal(tvItemLanguageFirst.TVItemLanguageID, tvItemLanguageRet.TVItemLanguageID);
 
                     BadRequestResult badRequest = jsonRet as BadRequestResult;
                     Assert.Null(badRequest);
@@ -283,7 +283,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.NotNull(tvItemLanguageController);
                     Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, tvItemLanguageController.DatabaseType);
 
-                    TVItemLanguage tvItemLanguageLast = new TVItemLanguage();
+                    TVItemLanguage tvItemLanguageFirst = new TVItemLanguage();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
                     {
                         Query query = new Query();
@@ -292,16 +292,16 @@ namespace CSSPWebAPI.Tests.Controllers
                         query.Desc = "";
 
                         TVItemLanguageService tvItemLanguageService = new TVItemLanguageService(query, db, ContactID);
-                        tvItemLanguageLast = (from c in db.TVItemLanguages select c).FirstOrDefault();
+                        tvItemLanguageFirst = (from c in db.TVItemLanguages select c).FirstOrDefault();
                     }
 
                     // ok with TVItemLanguage info
-                    IActionResult jsonRet = tvItemLanguageController.GetTVItemLanguageWithID(tvItemLanguageLast.TVItemLanguageID);
+                    IActionResult jsonRet = tvItemLanguageController.GetTVItemLanguageWithID(tvItemLanguageFirst.TVItemLanguageID);
                     Assert.IsType<OkObjectResult>(jsonRet);
 
                     OkObjectResult Ret = jsonRet as OkObjectResult;
                     TVItemLanguage tvItemLanguageRet = (TVItemLanguage)Ret.Value;
-                    Assert.Equal(tvItemLanguageLast.TVItemLanguageID, tvItemLanguageRet.TVItemLanguageID);
+                    Assert.Equal(tvItemLanguageFirst.TVItemLanguageID, tvItemLanguageRet.TVItemLanguageID);
 
                     BadRequestResult badRequest = jsonRet as BadRequestResult;
                     Assert.Null(badRequest);

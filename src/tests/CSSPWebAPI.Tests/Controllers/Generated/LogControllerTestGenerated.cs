@@ -156,7 +156,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.NotNull(logController);
                     Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, logController.DatabaseType);
 
-                    Log logLast = new Log();
+                    Log logFirst = new Log();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
                     {
                         Query query = new Query();
@@ -165,16 +165,16 @@ namespace CSSPWebAPI.Tests.Controllers
                         query.Desc = "";
 
                         LogService logService = new LogService(query, db, ContactID);
-                        logLast = (from c in db.Logs select c).FirstOrDefault();
+                        logFirst = (from c in db.Logs select c).FirstOrDefault();
                     }
 
                     // ok with Log info
-                    IActionResult jsonRet = logController.GetLogWithID(logLast.LogID);
+                    IActionResult jsonRet = logController.GetLogWithID(logFirst.LogID);
                     Assert.IsType<OkObjectResult>(jsonRet);
 
                     OkObjectResult ret = jsonRet as OkObjectResult;
                     Log logRet = (Log)ret.Value;
-                    Assert.Equal(logLast.LogID, logRet.LogID);
+                    Assert.Equal(logFirst.LogID, logRet.LogID);
 
                     BadRequestResult badRequest = jsonRet as BadRequestResult;
                     Assert.Null(badRequest);
@@ -225,23 +225,23 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.NotNull(logController);
                     Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, logController.DatabaseType);
 
-                    Log logLast = new Log();
+                    Log logFirst = new Log();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
                     {
                         Query query = new Query();
                         query.Language = LanguageRequest;
 
                         LogService logService = new LogService(query, db, ContactID);
-                        logLast = (from c in db.Logs select c).FirstOrDefault();
+                        logFirst = (from c in db.Logs select c).FirstOrDefault();
                     }
 
                     // ok with Log info
-                    IActionResult jsonRet = logController.GetLogWithID(logLast.LogID);
+                    IActionResult jsonRet = logController.GetLogWithID(logFirst.LogID);
                     Assert.IsType<OkObjectResult>(jsonRet);
 
                     OkObjectResult Ret = jsonRet as OkObjectResult;
                     Log logRet = (Log)Ret.Value;
-                    Assert.Equal(logLast.LogID, logRet.LogID);
+                    Assert.Equal(logFirst.LogID, logRet.LogID);
 
                     BadRequestResult badRequest = jsonRet as BadRequestResult;
                     Assert.Null(badRequest);
@@ -283,7 +283,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.NotNull(logController);
                     Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, logController.DatabaseType);
 
-                    Log logLast = new Log();
+                    Log logFirst = new Log();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
                     {
                         Query query = new Query();
@@ -292,16 +292,16 @@ namespace CSSPWebAPI.Tests.Controllers
                         query.Desc = "";
 
                         LogService logService = new LogService(query, db, ContactID);
-                        logLast = (from c in db.Logs select c).FirstOrDefault();
+                        logFirst = (from c in db.Logs select c).FirstOrDefault();
                     }
 
                     // ok with Log info
-                    IActionResult jsonRet = logController.GetLogWithID(logLast.LogID);
+                    IActionResult jsonRet = logController.GetLogWithID(logFirst.LogID);
                     Assert.IsType<OkObjectResult>(jsonRet);
 
                     OkObjectResult Ret = jsonRet as OkObjectResult;
                     Log logRet = (Log)Ret.Value;
-                    Assert.Equal(logLast.LogID, logRet.LogID);
+                    Assert.Equal(logFirst.LogID, logRet.LogID);
 
                     BadRequestResult badRequest = jsonRet as BadRequestResult;
                     Assert.Null(badRequest);

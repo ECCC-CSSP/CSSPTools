@@ -148,7 +148,7 @@
             this.butPostCSSPDocCleanFiles.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.butPostCSSPDocCleanFiles.Name = "butPostCSSPDocCleanFiles";
             this.butPostCSSPDocCleanFiles.Size = new System.Drawing.Size(206, 27);
-            this.butPostCSSPDocCleanFiles.TabIndex = 29;
+            this.butPostCSSPDocCleanFiles.TabIndex = 1;
             this.butPostCSSPDocCleanFiles.Text = "Post CSSPDoc Clean Files";
             this.butPostCSSPDocCleanFiles.UseVisualStyleBackColor = true;
             this.butPostCSSPDocCleanFiles.Click += new System.EventHandler(this.butPostCSSPDocCleanFiles_Click);
@@ -172,7 +172,7 @@
             this.button5.Location = new System.Drawing.Point(616, 3);
             this.button5.Name = "button5";
             this.button5.Size = new System.Drawing.Size(222, 29);
-            this.button5.TabIndex = 3;
+            this.button5.TabIndex = 4;
             this.button5.Text = "Web API with docs";
             this.button5.UseVisualStyleBackColor = true;
             this.button5.Click += new System.EventHandler(this.butGenerateControllersWithDoc_Click);
@@ -182,7 +182,7 @@
             this.button4.Location = new System.Drawing.Point(383, 3);
             this.button4.Name = "button4";
             this.button4.Size = new System.Drawing.Size(226, 29);
-            this.button4.TabIndex = 2;
+            this.button4.TabIndex = 3;
             this.button4.Text = "Services with docs";
             this.button4.UseVisualStyleBackColor = true;
             this.button4.Click += new System.EventHandler(this.butClassNameServiceWithDocGenerated_Click);
@@ -192,7 +192,7 @@
             this.button9.Location = new System.Drawing.Point(4, 3);
             this.button9.Name = "button9";
             this.button9.Size = new System.Drawing.Size(184, 29);
-            this.button9.TabIndex = 0;
+            this.button9.TabIndex = 1;
             this.button9.Text = "Enums with docs";
             this.button9.UseVisualStyleBackColor = true;
             this.button9.Click += new System.EventHandler(this.butGenerateWithDocEnums_Click);
@@ -202,7 +202,7 @@
             this.button3.Location = new System.Drawing.Point(194, 3);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(183, 29);
-            this.button3.TabIndex = 1;
+            this.button3.TabIndex = 2;
             this.button3.Text = "Models with docs";
             this.button3.UseVisualStyleBackColor = true;
             this.button3.Click += new System.EventHandler(this.butGenerateWithDocModels_Click);
@@ -225,7 +225,7 @@
             this.butAngularInterfacesGenerate.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.butAngularInterfacesGenerate.Name = "butAngularInterfacesGenerate";
             this.butAngularInterfacesGenerate.Size = new System.Drawing.Size(209, 27);
-            this.butAngularInterfacesGenerate.TabIndex = 30;
+            this.butAngularInterfacesGenerate.TabIndex = 2;
             this.butAngularInterfacesGenerate.Text = "AngularInterfacesGenerated.cs";
             this.butAngularInterfacesGenerate.UseVisualStyleBackColor = true;
             this.butAngularInterfacesGenerate.Click += new System.EventHandler(this.butAngularInterfacesGenerate_Click);
@@ -236,7 +236,7 @@
             this.butAngularEnumsGenerate.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.butAngularEnumsGenerate.Name = "butAngularEnumsGenerate";
             this.butAngularEnumsGenerate.Size = new System.Drawing.Size(190, 27);
-            this.butAngularEnumsGenerate.TabIndex = 29;
+            this.butAngularEnumsGenerate.TabIndex = 1;
             this.butAngularEnumsGenerate.Text = "AngularEnumsGenerated.cs";
             this.butAngularEnumsGenerate.UseVisualStyleBackColor = true;
             this.butAngularEnumsGenerate.Click += new System.EventHandler(this.butAngularEnumsGenerate_Click);
@@ -296,7 +296,7 @@
             this.butCheckAllTablesInDBHasAtLeast10Items.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.butCheckAllTablesInDBHasAtLeast10Items.Name = "butCheckAllTablesInDBHasAtLeast10Items";
             this.butCheckAllTablesInDBHasAtLeast10Items.Size = new System.Drawing.Size(338, 27);
-            this.butCheckAllTablesInDBHasAtLeast10Items.TabIndex = 38;
+            this.butCheckAllTablesInDBHasAtLeast10Items.TabIndex = 5;
             this.butCheckAllTablesInDBHasAtLeast10Items.Text = "CheckAllTablesInDBHasAtLeast10Items.cs";
             this.butCheckAllTablesInDBHasAtLeast10Items.UseVisualStyleBackColor = true;
             this.butCheckAllTablesInDBHasAtLeast10Items.Click += new System.EventHandler(this.butCheckAllTablesInDBHasAtLeast10Items_Click);
@@ -307,7 +307,7 @@
             this.butExtensionEnumCastingGenerate.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.butExtensionEnumCastingGenerate.Name = "butExtensionEnumCastingGenerate";
             this.butExtensionEnumCastingGenerate.Size = new System.Drawing.Size(338, 27);
-            this.butExtensionEnumCastingGenerate.TabIndex = 37;
+            this.butExtensionEnumCastingGenerate.TabIndex = 4;
             this.butExtensionEnumCastingGenerate.Text = "_ExtensionEnumCastingGenerated.cs";
             this.butExtensionEnumCastingGenerate.UseVisualStyleBackColor = true;
             this.butExtensionEnumCastingGenerate.Click += new System.EventHandler(this.butExtensionEnumCastingGenerated_Click);
@@ -318,7 +318,7 @@
             this.butRepopulateTesDB.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.butRepopulateTesDB.Name = "butRepopulateTesDB";
             this.butRepopulateTesDB.Size = new System.Drawing.Size(155, 27);
-            this.butRepopulateTesDB.TabIndex = 27;
+            this.butRepopulateTesDB.TabIndex = 1;
             this.butRepopulateTesDB.Text = "Repopulate TestDB";
             this.butRepopulateTesDB.UseVisualStyleBackColor = true;
             this.butRepopulateTesDB.Click += new System.EventHandler(this.butRepopulateTesDB_Click);
@@ -329,7 +329,7 @@
             this.butGenerateClassServiceGenerated.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.butGenerateClassServiceGenerated.Name = "butGenerateClassServiceGenerated";
             this.butGenerateClassServiceGenerated.Size = new System.Drawing.Size(232, 27);
-            this.butGenerateClassServiceGenerated.TabIndex = 28;
+            this.butGenerateClassServiceGenerated.TabIndex = 3;
             this.butGenerateClassServiceGenerated.Text = "[ClassName]ServiceGenerated";
             this.butGenerateClassServiceGenerated.UseVisualStyleBackColor = true;
             this.butGenerateClassServiceGenerated.Click += new System.EventHandler(this.butClassNameServiceGenerated_Click);
@@ -340,7 +340,7 @@
             this.butGenerateClassServiceTestGenerated.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.butGenerateClassServiceTestGenerated.Name = "butGenerateClassServiceTestGenerated";
             this.butGenerateClassServiceTestGenerated.Size = new System.Drawing.Size(267, 27);
-            this.butGenerateClassServiceTestGenerated.TabIndex = 29;
+            this.butGenerateClassServiceTestGenerated.TabIndex = 2;
             this.butGenerateClassServiceTestGenerated.Text = "[ClassName]ServiceTestGenerated.cs";
             this.butGenerateClassServiceTestGenerated.UseVisualStyleBackColor = true;
             this.butGenerateClassServiceTestGenerated.Click += new System.EventHandler(this.butClassNameServiceTestGenerated_Click);
@@ -366,7 +366,7 @@
             this.butGenerateModelsNoHelp.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.butGenerateModelsNoHelp.Name = "butGenerateModelsNoHelp";
             this.butGenerateModelsNoHelp.Size = new System.Drawing.Size(427, 27);
-            this.butGenerateModelsNoHelp.TabIndex = 27;
+            this.butGenerateModelsNoHelp.TabIndex = 5;
             this.butGenerateModelsNoHelp.Text = "[ModelClassName].cs comparision with what would be generated";
             this.butGenerateModelsNoHelp.UseVisualStyleBackColor = true;
             this.butGenerateModelsNoHelp.Click += new System.EventHandler(this.butGenerateModelsNoHelp_Click);
@@ -377,7 +377,7 @@
             this.butGenerateSetupOnce.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.butGenerateSetupOnce.Name = "butGenerateSetupOnce";
             this.butGenerateSetupOnce.Size = new System.Drawing.Size(178, 27);
-            this.butGenerateSetupOnce.TabIndex = 29;
+            this.butGenerateSetupOnce.TabIndex = 3;
             this.butGenerateSetupOnce.Text = "[ModelClassName]Test.cs";
             this.butGenerateSetupOnce.UseVisualStyleBackColor = true;
             this.butGenerateSetupOnce.Click += new System.EventHandler(this.butGenerateSetupOnce_Click);
@@ -388,7 +388,7 @@
             this.butGenerateResOnce.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.butGenerateResOnce.Name = "butGenerateResOnce";
             this.butGenerateResOnce.Size = new System.Drawing.Size(187, 27);
-            this.butGenerateResOnce.TabIndex = 30;
+            this.butGenerateResOnce.TabIndex = 2;
             this.butGenerateResOnce.Text = "CSSPModelsRes [en, fr]";
             this.butGenerateResOnce.UseVisualStyleBackColor = true;
             this.butGenerateResOnce.Click += new System.EventHandler(this.butGenerateResOnce_Click);
@@ -399,7 +399,7 @@
             this.butRunModelLint.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.butRunModelLint.Name = "butRunModelLint";
             this.butRunModelLint.Size = new System.Drawing.Size(331, 27);
-            this.butRunModelLint.TabIndex = 31;
+            this.butRunModelLint.TabIndex = 4;
             this.butRunModelLint.Text = "Compare DB Fields And CSSPModels DLL Properties";
             this.butRunModelLint.UseVisualStyleBackColor = true;
             this.butRunModelLint.Click += new System.EventHandler(this.butRunModelLint_Click);
@@ -410,7 +410,7 @@
             this.butGenerateModelsTest.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.butGenerateModelsTest.Name = "butGenerateModelsTest";
             this.butGenerateModelsTest.Size = new System.Drawing.Size(229, 27);
-            this.butGenerateModelsTest.TabIndex = 32;
+            this.butGenerateModelsTest.TabIndex = 1;
             this.butGenerateModelsTest.Text = "[ModelClassName]TestGenerated.cs";
             this.butGenerateModelsTest.UseVisualStyleBackColor = true;
             this.butGenerateModelsTest.Click += new System.EventHandler(this.butGenerateModelsTest_Click);
@@ -435,7 +435,7 @@
             this.butGeneratePolSourceEnumCodeFiles.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.butGeneratePolSourceEnumCodeFiles.Name = "butGeneratePolSourceEnumCodeFiles";
             this.butGeneratePolSourceEnumCodeFiles.Size = new System.Drawing.Size(248, 27);
-            this.butGeneratePolSourceEnumCodeFiles.TabIndex = 30;
+            this.butGeneratePolSourceEnumCodeFiles.TabIndex = 4;
             this.butGeneratePolSourceEnumCodeFiles.Text = "Generate PolSource Enum code files";
             this.butGeneratePolSourceEnumCodeFiles.UseVisualStyleBackColor = true;
             this.butGeneratePolSourceEnumCodeFiles.Click += new System.EventHandler(this.butGeneratePolSourceEnumCodeFiles_Click);
@@ -446,7 +446,7 @@
             this.button1.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(190, 27);
-            this.button1.TabIndex = 28;
+            this.button1.TabIndex = 3;
             this.button1.Text = "EnumsTestGenerated.cs";
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.butEnumsTestGenerated_Click);
@@ -457,7 +457,7 @@
             this.butCompareEnumsAndOldEnums.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.butCompareEnumsAndOldEnums.Name = "butCompareEnumsAndOldEnums";
             this.butCompareEnumsAndOldEnums.Size = new System.Drawing.Size(245, 27);
-            this.butCompareEnumsAndOldEnums.TabIndex = 28;
+            this.butCompareEnumsAndOldEnums.TabIndex = 1;
             this.butCompareEnumsAndOldEnums.Text = "Compare Enums And Old Enums";
             this.butCompareEnumsAndOldEnums.UseVisualStyleBackColor = true;
             this.butCompareEnumsAndOldEnums.Click += new System.EventHandler(this.butCompareEnumsAndOldEnums_Click);
@@ -468,7 +468,7 @@
             this.butGenerateAllCodeFiles.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.butGenerateAllCodeFiles.Name = "butGenerateAllCodeFiles";
             this.butGenerateAllCodeFiles.Size = new System.Drawing.Size(190, 27);
-            this.butGenerateAllCodeFiles.TabIndex = 28;
+            this.butGenerateAllCodeFiles.TabIndex = 2;
             this.butGenerateAllCodeFiles.Text = "EnumsGenerated.cs";
             this.butGenerateAllCodeFiles.UseVisualStyleBackColor = true;
             this.butGenerateAllCodeFiles.Click += new System.EventHandler(this.butEnumsGenerated_Click);

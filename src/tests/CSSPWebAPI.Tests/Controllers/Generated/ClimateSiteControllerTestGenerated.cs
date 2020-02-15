@@ -156,7 +156,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.NotNull(climateSiteController);
                     Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, climateSiteController.DatabaseType);
 
-                    ClimateSite climateSiteLast = new ClimateSite();
+                    ClimateSite climateSiteFirst = new ClimateSite();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
                     {
                         Query query = new Query();
@@ -165,16 +165,16 @@ namespace CSSPWebAPI.Tests.Controllers
                         query.Desc = "";
 
                         ClimateSiteService climateSiteService = new ClimateSiteService(query, db, ContactID);
-                        climateSiteLast = (from c in db.ClimateSites select c).FirstOrDefault();
+                        climateSiteFirst = (from c in db.ClimateSites select c).FirstOrDefault();
                     }
 
                     // ok with ClimateSite info
-                    IActionResult jsonRet = climateSiteController.GetClimateSiteWithID(climateSiteLast.ClimateSiteID);
+                    IActionResult jsonRet = climateSiteController.GetClimateSiteWithID(climateSiteFirst.ClimateSiteID);
                     Assert.IsType<OkObjectResult>(jsonRet);
 
                     OkObjectResult ret = jsonRet as OkObjectResult;
                     ClimateSite climateSiteRet = (ClimateSite)ret.Value;
-                    Assert.Equal(climateSiteLast.ClimateSiteID, climateSiteRet.ClimateSiteID);
+                    Assert.Equal(climateSiteFirst.ClimateSiteID, climateSiteRet.ClimateSiteID);
 
                     BadRequestResult badRequest = jsonRet as BadRequestResult;
                     Assert.Null(badRequest);
@@ -225,23 +225,23 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.NotNull(climateSiteController);
                     Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, climateSiteController.DatabaseType);
 
-                    ClimateSite climateSiteLast = new ClimateSite();
+                    ClimateSite climateSiteFirst = new ClimateSite();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
                     {
                         Query query = new Query();
                         query.Language = LanguageRequest;
 
                         ClimateSiteService climateSiteService = new ClimateSiteService(query, db, ContactID);
-                        climateSiteLast = (from c in db.ClimateSites select c).FirstOrDefault();
+                        climateSiteFirst = (from c in db.ClimateSites select c).FirstOrDefault();
                     }
 
                     // ok with ClimateSite info
-                    IActionResult jsonRet = climateSiteController.GetClimateSiteWithID(climateSiteLast.ClimateSiteID);
+                    IActionResult jsonRet = climateSiteController.GetClimateSiteWithID(climateSiteFirst.ClimateSiteID);
                     Assert.IsType<OkObjectResult>(jsonRet);
 
                     OkObjectResult Ret = jsonRet as OkObjectResult;
                     ClimateSite climateSiteRet = (ClimateSite)Ret.Value;
-                    Assert.Equal(climateSiteLast.ClimateSiteID, climateSiteRet.ClimateSiteID);
+                    Assert.Equal(climateSiteFirst.ClimateSiteID, climateSiteRet.ClimateSiteID);
 
                     BadRequestResult badRequest = jsonRet as BadRequestResult;
                     Assert.Null(badRequest);
@@ -283,7 +283,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.NotNull(climateSiteController);
                     Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, climateSiteController.DatabaseType);
 
-                    ClimateSite climateSiteLast = new ClimateSite();
+                    ClimateSite climateSiteFirst = new ClimateSite();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
                     {
                         Query query = new Query();
@@ -292,16 +292,16 @@ namespace CSSPWebAPI.Tests.Controllers
                         query.Desc = "";
 
                         ClimateSiteService climateSiteService = new ClimateSiteService(query, db, ContactID);
-                        climateSiteLast = (from c in db.ClimateSites select c).FirstOrDefault();
+                        climateSiteFirst = (from c in db.ClimateSites select c).FirstOrDefault();
                     }
 
                     // ok with ClimateSite info
-                    IActionResult jsonRet = climateSiteController.GetClimateSiteWithID(climateSiteLast.ClimateSiteID);
+                    IActionResult jsonRet = climateSiteController.GetClimateSiteWithID(climateSiteFirst.ClimateSiteID);
                     Assert.IsType<OkObjectResult>(jsonRet);
 
                     OkObjectResult Ret = jsonRet as OkObjectResult;
                     ClimateSite climateSiteRet = (ClimateSite)Ret.Value;
-                    Assert.Equal(climateSiteLast.ClimateSiteID, climateSiteRet.ClimateSiteID);
+                    Assert.Equal(climateSiteFirst.ClimateSiteID, climateSiteRet.ClimateSiteID);
 
                     BadRequestResult badRequest = jsonRet as BadRequestResult;
                     Assert.Null(badRequest);

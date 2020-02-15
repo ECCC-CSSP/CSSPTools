@@ -156,7 +156,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.NotNull(mwqmAnalysisReportParameterController);
                     Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, mwqmAnalysisReportParameterController.DatabaseType);
 
-                    MWQMAnalysisReportParameter mwqmAnalysisReportParameterLast = new MWQMAnalysisReportParameter();
+                    MWQMAnalysisReportParameter mwqmAnalysisReportParameterFirst = new MWQMAnalysisReportParameter();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
                     {
                         Query query = new Query();
@@ -165,16 +165,16 @@ namespace CSSPWebAPI.Tests.Controllers
                         query.Desc = "";
 
                         MWQMAnalysisReportParameterService mwqmAnalysisReportParameterService = new MWQMAnalysisReportParameterService(query, db, ContactID);
-                        mwqmAnalysisReportParameterLast = (from c in db.MWQMAnalysisReportParameters select c).FirstOrDefault();
+                        mwqmAnalysisReportParameterFirst = (from c in db.MWQMAnalysisReportParameters select c).FirstOrDefault();
                     }
 
                     // ok with MWQMAnalysisReportParameter info
-                    IActionResult jsonRet = mwqmAnalysisReportParameterController.GetMWQMAnalysisReportParameterWithID(mwqmAnalysisReportParameterLast.MWQMAnalysisReportParameterID);
+                    IActionResult jsonRet = mwqmAnalysisReportParameterController.GetMWQMAnalysisReportParameterWithID(mwqmAnalysisReportParameterFirst.MWQMAnalysisReportParameterID);
                     Assert.IsType<OkObjectResult>(jsonRet);
 
                     OkObjectResult ret = jsonRet as OkObjectResult;
                     MWQMAnalysisReportParameter mwqmAnalysisReportParameterRet = (MWQMAnalysisReportParameter)ret.Value;
-                    Assert.Equal(mwqmAnalysisReportParameterLast.MWQMAnalysisReportParameterID, mwqmAnalysisReportParameterRet.MWQMAnalysisReportParameterID);
+                    Assert.Equal(mwqmAnalysisReportParameterFirst.MWQMAnalysisReportParameterID, mwqmAnalysisReportParameterRet.MWQMAnalysisReportParameterID);
 
                     BadRequestResult badRequest = jsonRet as BadRequestResult;
                     Assert.Null(badRequest);
@@ -225,23 +225,23 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.NotNull(mwqmAnalysisReportParameterController);
                     Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, mwqmAnalysisReportParameterController.DatabaseType);
 
-                    MWQMAnalysisReportParameter mwqmAnalysisReportParameterLast = new MWQMAnalysisReportParameter();
+                    MWQMAnalysisReportParameter mwqmAnalysisReportParameterFirst = new MWQMAnalysisReportParameter();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
                     {
                         Query query = new Query();
                         query.Language = LanguageRequest;
 
                         MWQMAnalysisReportParameterService mwqmAnalysisReportParameterService = new MWQMAnalysisReportParameterService(query, db, ContactID);
-                        mwqmAnalysisReportParameterLast = (from c in db.MWQMAnalysisReportParameters select c).FirstOrDefault();
+                        mwqmAnalysisReportParameterFirst = (from c in db.MWQMAnalysisReportParameters select c).FirstOrDefault();
                     }
 
                     // ok with MWQMAnalysisReportParameter info
-                    IActionResult jsonRet = mwqmAnalysisReportParameterController.GetMWQMAnalysisReportParameterWithID(mwqmAnalysisReportParameterLast.MWQMAnalysisReportParameterID);
+                    IActionResult jsonRet = mwqmAnalysisReportParameterController.GetMWQMAnalysisReportParameterWithID(mwqmAnalysisReportParameterFirst.MWQMAnalysisReportParameterID);
                     Assert.IsType<OkObjectResult>(jsonRet);
 
                     OkObjectResult Ret = jsonRet as OkObjectResult;
                     MWQMAnalysisReportParameter mwqmAnalysisReportParameterRet = (MWQMAnalysisReportParameter)Ret.Value;
-                    Assert.Equal(mwqmAnalysisReportParameterLast.MWQMAnalysisReportParameterID, mwqmAnalysisReportParameterRet.MWQMAnalysisReportParameterID);
+                    Assert.Equal(mwqmAnalysisReportParameterFirst.MWQMAnalysisReportParameterID, mwqmAnalysisReportParameterRet.MWQMAnalysisReportParameterID);
 
                     BadRequestResult badRequest = jsonRet as BadRequestResult;
                     Assert.Null(badRequest);
@@ -283,7 +283,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.NotNull(mwqmAnalysisReportParameterController);
                     Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, mwqmAnalysisReportParameterController.DatabaseType);
 
-                    MWQMAnalysisReportParameter mwqmAnalysisReportParameterLast = new MWQMAnalysisReportParameter();
+                    MWQMAnalysisReportParameter mwqmAnalysisReportParameterFirst = new MWQMAnalysisReportParameter();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
                     {
                         Query query = new Query();
@@ -292,16 +292,16 @@ namespace CSSPWebAPI.Tests.Controllers
                         query.Desc = "";
 
                         MWQMAnalysisReportParameterService mwqmAnalysisReportParameterService = new MWQMAnalysisReportParameterService(query, db, ContactID);
-                        mwqmAnalysisReportParameterLast = (from c in db.MWQMAnalysisReportParameters select c).FirstOrDefault();
+                        mwqmAnalysisReportParameterFirst = (from c in db.MWQMAnalysisReportParameters select c).FirstOrDefault();
                     }
 
                     // ok with MWQMAnalysisReportParameter info
-                    IActionResult jsonRet = mwqmAnalysisReportParameterController.GetMWQMAnalysisReportParameterWithID(mwqmAnalysisReportParameterLast.MWQMAnalysisReportParameterID);
+                    IActionResult jsonRet = mwqmAnalysisReportParameterController.GetMWQMAnalysisReportParameterWithID(mwqmAnalysisReportParameterFirst.MWQMAnalysisReportParameterID);
                     Assert.IsType<OkObjectResult>(jsonRet);
 
                     OkObjectResult Ret = jsonRet as OkObjectResult;
                     MWQMAnalysisReportParameter mwqmAnalysisReportParameterRet = (MWQMAnalysisReportParameter)Ret.Value;
-                    Assert.Equal(mwqmAnalysisReportParameterLast.MWQMAnalysisReportParameterID, mwqmAnalysisReportParameterRet.MWQMAnalysisReportParameterID);
+                    Assert.Equal(mwqmAnalysisReportParameterFirst.MWQMAnalysisReportParameterID, mwqmAnalysisReportParameterRet.MWQMAnalysisReportParameterID);
 
                     BadRequestResult badRequest = jsonRet as BadRequestResult;
                     Assert.Null(badRequest);

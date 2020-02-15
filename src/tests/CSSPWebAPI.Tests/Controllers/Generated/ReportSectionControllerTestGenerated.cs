@@ -156,7 +156,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.NotNull(reportSectionController);
                     Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, reportSectionController.DatabaseType);
 
-                    ReportSection reportSectionLast = new ReportSection();
+                    ReportSection reportSectionFirst = new ReportSection();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
                     {
                         Query query = new Query();
@@ -165,16 +165,16 @@ namespace CSSPWebAPI.Tests.Controllers
                         query.Desc = "";
 
                         ReportSectionService reportSectionService = new ReportSectionService(query, db, ContactID);
-                        reportSectionLast = (from c in db.ReportSections select c).FirstOrDefault();
+                        reportSectionFirst = (from c in db.ReportSections select c).FirstOrDefault();
                     }
 
                     // ok with ReportSection info
-                    IActionResult jsonRet = reportSectionController.GetReportSectionWithID(reportSectionLast.ReportSectionID);
+                    IActionResult jsonRet = reportSectionController.GetReportSectionWithID(reportSectionFirst.ReportSectionID);
                     Assert.IsType<OkObjectResult>(jsonRet);
 
                     OkObjectResult ret = jsonRet as OkObjectResult;
                     ReportSection reportSectionRet = (ReportSection)ret.Value;
-                    Assert.Equal(reportSectionLast.ReportSectionID, reportSectionRet.ReportSectionID);
+                    Assert.Equal(reportSectionFirst.ReportSectionID, reportSectionRet.ReportSectionID);
 
                     BadRequestResult badRequest = jsonRet as BadRequestResult;
                     Assert.Null(badRequest);
@@ -225,23 +225,23 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.NotNull(reportSectionController);
                     Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, reportSectionController.DatabaseType);
 
-                    ReportSection reportSectionLast = new ReportSection();
+                    ReportSection reportSectionFirst = new ReportSection();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
                     {
                         Query query = new Query();
                         query.Language = LanguageRequest;
 
                         ReportSectionService reportSectionService = new ReportSectionService(query, db, ContactID);
-                        reportSectionLast = (from c in db.ReportSections select c).FirstOrDefault();
+                        reportSectionFirst = (from c in db.ReportSections select c).FirstOrDefault();
                     }
 
                     // ok with ReportSection info
-                    IActionResult jsonRet = reportSectionController.GetReportSectionWithID(reportSectionLast.ReportSectionID);
+                    IActionResult jsonRet = reportSectionController.GetReportSectionWithID(reportSectionFirst.ReportSectionID);
                     Assert.IsType<OkObjectResult>(jsonRet);
 
                     OkObjectResult Ret = jsonRet as OkObjectResult;
                     ReportSection reportSectionRet = (ReportSection)Ret.Value;
-                    Assert.Equal(reportSectionLast.ReportSectionID, reportSectionRet.ReportSectionID);
+                    Assert.Equal(reportSectionFirst.ReportSectionID, reportSectionRet.ReportSectionID);
 
                     BadRequestResult badRequest = jsonRet as BadRequestResult;
                     Assert.Null(badRequest);
@@ -283,7 +283,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.NotNull(reportSectionController);
                     Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, reportSectionController.DatabaseType);
 
-                    ReportSection reportSectionLast = new ReportSection();
+                    ReportSection reportSectionFirst = new ReportSection();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
                     {
                         Query query = new Query();
@@ -292,16 +292,16 @@ namespace CSSPWebAPI.Tests.Controllers
                         query.Desc = "";
 
                         ReportSectionService reportSectionService = new ReportSectionService(query, db, ContactID);
-                        reportSectionLast = (from c in db.ReportSections select c).FirstOrDefault();
+                        reportSectionFirst = (from c in db.ReportSections select c).FirstOrDefault();
                     }
 
                     // ok with ReportSection info
-                    IActionResult jsonRet = reportSectionController.GetReportSectionWithID(reportSectionLast.ReportSectionID);
+                    IActionResult jsonRet = reportSectionController.GetReportSectionWithID(reportSectionFirst.ReportSectionID);
                     Assert.IsType<OkObjectResult>(jsonRet);
 
                     OkObjectResult Ret = jsonRet as OkObjectResult;
                     ReportSection reportSectionRet = (ReportSection)Ret.Value;
-                    Assert.Equal(reportSectionLast.ReportSectionID, reportSectionRet.ReportSectionID);
+                    Assert.Equal(reportSectionFirst.ReportSectionID, reportSectionRet.ReportSectionID);
 
                     BadRequestResult badRequest = jsonRet as BadRequestResult;
                     Assert.Null(badRequest);

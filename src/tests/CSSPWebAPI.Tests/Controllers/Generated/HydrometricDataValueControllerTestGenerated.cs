@@ -156,7 +156,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.NotNull(hydrometricDataValueController);
                     Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, hydrometricDataValueController.DatabaseType);
 
-                    HydrometricDataValue hydrometricDataValueLast = new HydrometricDataValue();
+                    HydrometricDataValue hydrometricDataValueFirst = new HydrometricDataValue();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
                     {
                         Query query = new Query();
@@ -165,16 +165,16 @@ namespace CSSPWebAPI.Tests.Controllers
                         query.Desc = "";
 
                         HydrometricDataValueService hydrometricDataValueService = new HydrometricDataValueService(query, db, ContactID);
-                        hydrometricDataValueLast = (from c in db.HydrometricDataValues select c).FirstOrDefault();
+                        hydrometricDataValueFirst = (from c in db.HydrometricDataValues select c).FirstOrDefault();
                     }
 
                     // ok with HydrometricDataValue info
-                    IActionResult jsonRet = hydrometricDataValueController.GetHydrometricDataValueWithID(hydrometricDataValueLast.HydrometricDataValueID);
+                    IActionResult jsonRet = hydrometricDataValueController.GetHydrometricDataValueWithID(hydrometricDataValueFirst.HydrometricDataValueID);
                     Assert.IsType<OkObjectResult>(jsonRet);
 
                     OkObjectResult ret = jsonRet as OkObjectResult;
                     HydrometricDataValue hydrometricDataValueRet = (HydrometricDataValue)ret.Value;
-                    Assert.Equal(hydrometricDataValueLast.HydrometricDataValueID, hydrometricDataValueRet.HydrometricDataValueID);
+                    Assert.Equal(hydrometricDataValueFirst.HydrometricDataValueID, hydrometricDataValueRet.HydrometricDataValueID);
 
                     BadRequestResult badRequest = jsonRet as BadRequestResult;
                     Assert.Null(badRequest);
@@ -225,23 +225,23 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.NotNull(hydrometricDataValueController);
                     Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, hydrometricDataValueController.DatabaseType);
 
-                    HydrometricDataValue hydrometricDataValueLast = new HydrometricDataValue();
+                    HydrometricDataValue hydrometricDataValueFirst = new HydrometricDataValue();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
                     {
                         Query query = new Query();
                         query.Language = LanguageRequest;
 
                         HydrometricDataValueService hydrometricDataValueService = new HydrometricDataValueService(query, db, ContactID);
-                        hydrometricDataValueLast = (from c in db.HydrometricDataValues select c).FirstOrDefault();
+                        hydrometricDataValueFirst = (from c in db.HydrometricDataValues select c).FirstOrDefault();
                     }
 
                     // ok with HydrometricDataValue info
-                    IActionResult jsonRet = hydrometricDataValueController.GetHydrometricDataValueWithID(hydrometricDataValueLast.HydrometricDataValueID);
+                    IActionResult jsonRet = hydrometricDataValueController.GetHydrometricDataValueWithID(hydrometricDataValueFirst.HydrometricDataValueID);
                     Assert.IsType<OkObjectResult>(jsonRet);
 
                     OkObjectResult Ret = jsonRet as OkObjectResult;
                     HydrometricDataValue hydrometricDataValueRet = (HydrometricDataValue)Ret.Value;
-                    Assert.Equal(hydrometricDataValueLast.HydrometricDataValueID, hydrometricDataValueRet.HydrometricDataValueID);
+                    Assert.Equal(hydrometricDataValueFirst.HydrometricDataValueID, hydrometricDataValueRet.HydrometricDataValueID);
 
                     BadRequestResult badRequest = jsonRet as BadRequestResult;
                     Assert.Null(badRequest);
@@ -283,7 +283,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.NotNull(hydrometricDataValueController);
                     Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, hydrometricDataValueController.DatabaseType);
 
-                    HydrometricDataValue hydrometricDataValueLast = new HydrometricDataValue();
+                    HydrometricDataValue hydrometricDataValueFirst = new HydrometricDataValue();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
                     {
                         Query query = new Query();
@@ -292,16 +292,16 @@ namespace CSSPWebAPI.Tests.Controllers
                         query.Desc = "";
 
                         HydrometricDataValueService hydrometricDataValueService = new HydrometricDataValueService(query, db, ContactID);
-                        hydrometricDataValueLast = (from c in db.HydrometricDataValues select c).FirstOrDefault();
+                        hydrometricDataValueFirst = (from c in db.HydrometricDataValues select c).FirstOrDefault();
                     }
 
                     // ok with HydrometricDataValue info
-                    IActionResult jsonRet = hydrometricDataValueController.GetHydrometricDataValueWithID(hydrometricDataValueLast.HydrometricDataValueID);
+                    IActionResult jsonRet = hydrometricDataValueController.GetHydrometricDataValueWithID(hydrometricDataValueFirst.HydrometricDataValueID);
                     Assert.IsType<OkObjectResult>(jsonRet);
 
                     OkObjectResult Ret = jsonRet as OkObjectResult;
                     HydrometricDataValue hydrometricDataValueRet = (HydrometricDataValue)Ret.Value;
-                    Assert.Equal(hydrometricDataValueLast.HydrometricDataValueID, hydrometricDataValueRet.HydrometricDataValueID);
+                    Assert.Equal(hydrometricDataValueFirst.HydrometricDataValueID, hydrometricDataValueRet.HydrometricDataValueID);
 
                     BadRequestResult badRequest = jsonRet as BadRequestResult;
                     Assert.Null(badRequest);

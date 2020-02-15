@@ -156,7 +156,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.NotNull(vpScenarioController);
                     Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, vpScenarioController.DatabaseType);
 
-                    VPScenario vpScenarioLast = new VPScenario();
+                    VPScenario vpScenarioFirst = new VPScenario();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
                     {
                         Query query = new Query();
@@ -165,16 +165,16 @@ namespace CSSPWebAPI.Tests.Controllers
                         query.Desc = "";
 
                         VPScenarioService vpScenarioService = new VPScenarioService(query, db, ContactID);
-                        vpScenarioLast = (from c in db.VPScenarios select c).FirstOrDefault();
+                        vpScenarioFirst = (from c in db.VPScenarios select c).FirstOrDefault();
                     }
 
                     // ok with VPScenario info
-                    IActionResult jsonRet = vpScenarioController.GetVPScenarioWithID(vpScenarioLast.VPScenarioID);
+                    IActionResult jsonRet = vpScenarioController.GetVPScenarioWithID(vpScenarioFirst.VPScenarioID);
                     Assert.IsType<OkObjectResult>(jsonRet);
 
                     OkObjectResult ret = jsonRet as OkObjectResult;
                     VPScenario vpScenarioRet = (VPScenario)ret.Value;
-                    Assert.Equal(vpScenarioLast.VPScenarioID, vpScenarioRet.VPScenarioID);
+                    Assert.Equal(vpScenarioFirst.VPScenarioID, vpScenarioRet.VPScenarioID);
 
                     BadRequestResult badRequest = jsonRet as BadRequestResult;
                     Assert.Null(badRequest);
@@ -225,23 +225,23 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.NotNull(vpScenarioController);
                     Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, vpScenarioController.DatabaseType);
 
-                    VPScenario vpScenarioLast = new VPScenario();
+                    VPScenario vpScenarioFirst = new VPScenario();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
                     {
                         Query query = new Query();
                         query.Language = LanguageRequest;
 
                         VPScenarioService vpScenarioService = new VPScenarioService(query, db, ContactID);
-                        vpScenarioLast = (from c in db.VPScenarios select c).FirstOrDefault();
+                        vpScenarioFirst = (from c in db.VPScenarios select c).FirstOrDefault();
                     }
 
                     // ok with VPScenario info
-                    IActionResult jsonRet = vpScenarioController.GetVPScenarioWithID(vpScenarioLast.VPScenarioID);
+                    IActionResult jsonRet = vpScenarioController.GetVPScenarioWithID(vpScenarioFirst.VPScenarioID);
                     Assert.IsType<OkObjectResult>(jsonRet);
 
                     OkObjectResult Ret = jsonRet as OkObjectResult;
                     VPScenario vpScenarioRet = (VPScenario)Ret.Value;
-                    Assert.Equal(vpScenarioLast.VPScenarioID, vpScenarioRet.VPScenarioID);
+                    Assert.Equal(vpScenarioFirst.VPScenarioID, vpScenarioRet.VPScenarioID);
 
                     BadRequestResult badRequest = jsonRet as BadRequestResult;
                     Assert.Null(badRequest);
@@ -283,7 +283,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.NotNull(vpScenarioController);
                     Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, vpScenarioController.DatabaseType);
 
-                    VPScenario vpScenarioLast = new VPScenario();
+                    VPScenario vpScenarioFirst = new VPScenario();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
                     {
                         Query query = new Query();
@@ -292,16 +292,16 @@ namespace CSSPWebAPI.Tests.Controllers
                         query.Desc = "";
 
                         VPScenarioService vpScenarioService = new VPScenarioService(query, db, ContactID);
-                        vpScenarioLast = (from c in db.VPScenarios select c).FirstOrDefault();
+                        vpScenarioFirst = (from c in db.VPScenarios select c).FirstOrDefault();
                     }
 
                     // ok with VPScenario info
-                    IActionResult jsonRet = vpScenarioController.GetVPScenarioWithID(vpScenarioLast.VPScenarioID);
+                    IActionResult jsonRet = vpScenarioController.GetVPScenarioWithID(vpScenarioFirst.VPScenarioID);
                     Assert.IsType<OkObjectResult>(jsonRet);
 
                     OkObjectResult Ret = jsonRet as OkObjectResult;
                     VPScenario vpScenarioRet = (VPScenario)Ret.Value;
-                    Assert.Equal(vpScenarioLast.VPScenarioID, vpScenarioRet.VPScenarioID);
+                    Assert.Equal(vpScenarioFirst.VPScenarioID, vpScenarioRet.VPScenarioID);
 
                     BadRequestResult badRequest = jsonRet as BadRequestResult;
                     Assert.Null(badRequest);

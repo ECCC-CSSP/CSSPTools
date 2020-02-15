@@ -156,7 +156,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.NotNull(polSourceSiteEffectController);
                     Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, polSourceSiteEffectController.DatabaseType);
 
-                    PolSourceSiteEffect polSourceSiteEffectLast = new PolSourceSiteEffect();
+                    PolSourceSiteEffect polSourceSiteEffectFirst = new PolSourceSiteEffect();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
                     {
                         Query query = new Query();
@@ -165,16 +165,16 @@ namespace CSSPWebAPI.Tests.Controllers
                         query.Desc = "";
 
                         PolSourceSiteEffectService polSourceSiteEffectService = new PolSourceSiteEffectService(query, db, ContactID);
-                        polSourceSiteEffectLast = (from c in db.PolSourceSiteEffects select c).FirstOrDefault();
+                        polSourceSiteEffectFirst = (from c in db.PolSourceSiteEffects select c).FirstOrDefault();
                     }
 
                     // ok with PolSourceSiteEffect info
-                    IActionResult jsonRet = polSourceSiteEffectController.GetPolSourceSiteEffectWithID(polSourceSiteEffectLast.PolSourceSiteEffectID);
+                    IActionResult jsonRet = polSourceSiteEffectController.GetPolSourceSiteEffectWithID(polSourceSiteEffectFirst.PolSourceSiteEffectID);
                     Assert.IsType<OkObjectResult>(jsonRet);
 
                     OkObjectResult ret = jsonRet as OkObjectResult;
                     PolSourceSiteEffect polSourceSiteEffectRet = (PolSourceSiteEffect)ret.Value;
-                    Assert.Equal(polSourceSiteEffectLast.PolSourceSiteEffectID, polSourceSiteEffectRet.PolSourceSiteEffectID);
+                    Assert.Equal(polSourceSiteEffectFirst.PolSourceSiteEffectID, polSourceSiteEffectRet.PolSourceSiteEffectID);
 
                     BadRequestResult badRequest = jsonRet as BadRequestResult;
                     Assert.Null(badRequest);
@@ -225,23 +225,23 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.NotNull(polSourceSiteEffectController);
                     Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, polSourceSiteEffectController.DatabaseType);
 
-                    PolSourceSiteEffect polSourceSiteEffectLast = new PolSourceSiteEffect();
+                    PolSourceSiteEffect polSourceSiteEffectFirst = new PolSourceSiteEffect();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
                     {
                         Query query = new Query();
                         query.Language = LanguageRequest;
 
                         PolSourceSiteEffectService polSourceSiteEffectService = new PolSourceSiteEffectService(query, db, ContactID);
-                        polSourceSiteEffectLast = (from c in db.PolSourceSiteEffects select c).FirstOrDefault();
+                        polSourceSiteEffectFirst = (from c in db.PolSourceSiteEffects select c).FirstOrDefault();
                     }
 
                     // ok with PolSourceSiteEffect info
-                    IActionResult jsonRet = polSourceSiteEffectController.GetPolSourceSiteEffectWithID(polSourceSiteEffectLast.PolSourceSiteEffectID);
+                    IActionResult jsonRet = polSourceSiteEffectController.GetPolSourceSiteEffectWithID(polSourceSiteEffectFirst.PolSourceSiteEffectID);
                     Assert.IsType<OkObjectResult>(jsonRet);
 
                     OkObjectResult Ret = jsonRet as OkObjectResult;
                     PolSourceSiteEffect polSourceSiteEffectRet = (PolSourceSiteEffect)Ret.Value;
-                    Assert.Equal(polSourceSiteEffectLast.PolSourceSiteEffectID, polSourceSiteEffectRet.PolSourceSiteEffectID);
+                    Assert.Equal(polSourceSiteEffectFirst.PolSourceSiteEffectID, polSourceSiteEffectRet.PolSourceSiteEffectID);
 
                     BadRequestResult badRequest = jsonRet as BadRequestResult;
                     Assert.Null(badRequest);
@@ -283,7 +283,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.NotNull(polSourceSiteEffectController);
                     Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, polSourceSiteEffectController.DatabaseType);
 
-                    PolSourceSiteEffect polSourceSiteEffectLast = new PolSourceSiteEffect();
+                    PolSourceSiteEffect polSourceSiteEffectFirst = new PolSourceSiteEffect();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
                     {
                         Query query = new Query();
@@ -292,16 +292,16 @@ namespace CSSPWebAPI.Tests.Controllers
                         query.Desc = "";
 
                         PolSourceSiteEffectService polSourceSiteEffectService = new PolSourceSiteEffectService(query, db, ContactID);
-                        polSourceSiteEffectLast = (from c in db.PolSourceSiteEffects select c).FirstOrDefault();
+                        polSourceSiteEffectFirst = (from c in db.PolSourceSiteEffects select c).FirstOrDefault();
                     }
 
                     // ok with PolSourceSiteEffect info
-                    IActionResult jsonRet = polSourceSiteEffectController.GetPolSourceSiteEffectWithID(polSourceSiteEffectLast.PolSourceSiteEffectID);
+                    IActionResult jsonRet = polSourceSiteEffectController.GetPolSourceSiteEffectWithID(polSourceSiteEffectFirst.PolSourceSiteEffectID);
                     Assert.IsType<OkObjectResult>(jsonRet);
 
                     OkObjectResult Ret = jsonRet as OkObjectResult;
                     PolSourceSiteEffect polSourceSiteEffectRet = (PolSourceSiteEffect)Ret.Value;
-                    Assert.Equal(polSourceSiteEffectLast.PolSourceSiteEffectID, polSourceSiteEffectRet.PolSourceSiteEffectID);
+                    Assert.Equal(polSourceSiteEffectFirst.PolSourceSiteEffectID, polSourceSiteEffectRet.PolSourceSiteEffectID);
 
                     BadRequestResult badRequest = jsonRet as BadRequestResult;
                     Assert.Null(badRequest);

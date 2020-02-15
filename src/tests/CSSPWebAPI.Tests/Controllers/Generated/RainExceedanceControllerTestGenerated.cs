@@ -156,7 +156,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.NotNull(rainExceedanceController);
                     Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, rainExceedanceController.DatabaseType);
 
-                    RainExceedance rainExceedanceLast = new RainExceedance();
+                    RainExceedance rainExceedanceFirst = new RainExceedance();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
                     {
                         Query query = new Query();
@@ -165,16 +165,16 @@ namespace CSSPWebAPI.Tests.Controllers
                         query.Desc = "";
 
                         RainExceedanceService rainExceedanceService = new RainExceedanceService(query, db, ContactID);
-                        rainExceedanceLast = (from c in db.RainExceedances select c).FirstOrDefault();
+                        rainExceedanceFirst = (from c in db.RainExceedances select c).FirstOrDefault();
                     }
 
                     // ok with RainExceedance info
-                    IActionResult jsonRet = rainExceedanceController.GetRainExceedanceWithID(rainExceedanceLast.RainExceedanceID);
+                    IActionResult jsonRet = rainExceedanceController.GetRainExceedanceWithID(rainExceedanceFirst.RainExceedanceID);
                     Assert.IsType<OkObjectResult>(jsonRet);
 
                     OkObjectResult ret = jsonRet as OkObjectResult;
                     RainExceedance rainExceedanceRet = (RainExceedance)ret.Value;
-                    Assert.Equal(rainExceedanceLast.RainExceedanceID, rainExceedanceRet.RainExceedanceID);
+                    Assert.Equal(rainExceedanceFirst.RainExceedanceID, rainExceedanceRet.RainExceedanceID);
 
                     BadRequestResult badRequest = jsonRet as BadRequestResult;
                     Assert.Null(badRequest);
@@ -225,23 +225,23 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.NotNull(rainExceedanceController);
                     Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, rainExceedanceController.DatabaseType);
 
-                    RainExceedance rainExceedanceLast = new RainExceedance();
+                    RainExceedance rainExceedanceFirst = new RainExceedance();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
                     {
                         Query query = new Query();
                         query.Language = LanguageRequest;
 
                         RainExceedanceService rainExceedanceService = new RainExceedanceService(query, db, ContactID);
-                        rainExceedanceLast = (from c in db.RainExceedances select c).FirstOrDefault();
+                        rainExceedanceFirst = (from c in db.RainExceedances select c).FirstOrDefault();
                     }
 
                     // ok with RainExceedance info
-                    IActionResult jsonRet = rainExceedanceController.GetRainExceedanceWithID(rainExceedanceLast.RainExceedanceID);
+                    IActionResult jsonRet = rainExceedanceController.GetRainExceedanceWithID(rainExceedanceFirst.RainExceedanceID);
                     Assert.IsType<OkObjectResult>(jsonRet);
 
                     OkObjectResult Ret = jsonRet as OkObjectResult;
                     RainExceedance rainExceedanceRet = (RainExceedance)Ret.Value;
-                    Assert.Equal(rainExceedanceLast.RainExceedanceID, rainExceedanceRet.RainExceedanceID);
+                    Assert.Equal(rainExceedanceFirst.RainExceedanceID, rainExceedanceRet.RainExceedanceID);
 
                     BadRequestResult badRequest = jsonRet as BadRequestResult;
                     Assert.Null(badRequest);
@@ -283,7 +283,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.NotNull(rainExceedanceController);
                     Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, rainExceedanceController.DatabaseType);
 
-                    RainExceedance rainExceedanceLast = new RainExceedance();
+                    RainExceedance rainExceedanceFirst = new RainExceedance();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
                     {
                         Query query = new Query();
@@ -292,16 +292,16 @@ namespace CSSPWebAPI.Tests.Controllers
                         query.Desc = "";
 
                         RainExceedanceService rainExceedanceService = new RainExceedanceService(query, db, ContactID);
-                        rainExceedanceLast = (from c in db.RainExceedances select c).FirstOrDefault();
+                        rainExceedanceFirst = (from c in db.RainExceedances select c).FirstOrDefault();
                     }
 
                     // ok with RainExceedance info
-                    IActionResult jsonRet = rainExceedanceController.GetRainExceedanceWithID(rainExceedanceLast.RainExceedanceID);
+                    IActionResult jsonRet = rainExceedanceController.GetRainExceedanceWithID(rainExceedanceFirst.RainExceedanceID);
                     Assert.IsType<OkObjectResult>(jsonRet);
 
                     OkObjectResult Ret = jsonRet as OkObjectResult;
                     RainExceedance rainExceedanceRet = (RainExceedance)Ret.Value;
-                    Assert.Equal(rainExceedanceLast.RainExceedanceID, rainExceedanceRet.RainExceedanceID);
+                    Assert.Equal(rainExceedanceFirst.RainExceedanceID, rainExceedanceRet.RainExceedanceID);
 
                     BadRequestResult badRequest = jsonRet as BadRequestResult;
                     Assert.Null(badRequest);

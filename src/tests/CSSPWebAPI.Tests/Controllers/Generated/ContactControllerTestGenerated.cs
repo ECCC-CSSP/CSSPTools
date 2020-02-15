@@ -156,7 +156,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.NotNull(contactController);
                     Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, contactController.DatabaseType);
 
-                    Contact contactLast = new Contact();
+                    Contact contactFirst = new Contact();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
                     {
                         Query query = new Query();
@@ -165,16 +165,16 @@ namespace CSSPWebAPI.Tests.Controllers
                         query.Desc = "";
 
                         ContactService contactService = new ContactService(query, db, ContactID);
-                        contactLast = (from c in db.Contacts select c).FirstOrDefault();
+                        contactFirst = (from c in db.Contacts select c).FirstOrDefault();
                     }
 
                     // ok with Contact info
-                    IActionResult jsonRet = contactController.GetContactWithID(contactLast.ContactID);
+                    IActionResult jsonRet = contactController.GetContactWithID(contactFirst.ContactID);
                     Assert.IsType<OkObjectResult>(jsonRet);
 
                     OkObjectResult ret = jsonRet as OkObjectResult;
                     Contact contactRet = (Contact)ret.Value;
-                    Assert.Equal(contactLast.ContactID, contactRet.ContactID);
+                    Assert.Equal(contactFirst.ContactID, contactRet.ContactID);
 
                     BadRequestResult badRequest = jsonRet as BadRequestResult;
                     Assert.Null(badRequest);
@@ -225,23 +225,23 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.NotNull(contactController);
                     Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, contactController.DatabaseType);
 
-                    Contact contactLast = new Contact();
+                    Contact contactFirst = new Contact();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
                     {
                         Query query = new Query();
                         query.Language = LanguageRequest;
 
                         ContactService contactService = new ContactService(query, db, ContactID);
-                        contactLast = (from c in db.Contacts select c).FirstOrDefault();
+                        contactFirst = (from c in db.Contacts select c).FirstOrDefault();
                     }
 
                     // ok with Contact info
-                    IActionResult jsonRet = contactController.GetContactWithID(contactLast.ContactID);
+                    IActionResult jsonRet = contactController.GetContactWithID(contactFirst.ContactID);
                     Assert.IsType<OkObjectResult>(jsonRet);
 
                     OkObjectResult Ret = jsonRet as OkObjectResult;
                     Contact contactRet = (Contact)Ret.Value;
-                    Assert.Equal(contactLast.ContactID, contactRet.ContactID);
+                    Assert.Equal(contactFirst.ContactID, contactRet.ContactID);
 
                     BadRequestResult badRequest = jsonRet as BadRequestResult;
                     Assert.Null(badRequest);
@@ -283,7 +283,7 @@ namespace CSSPWebAPI.Tests.Controllers
                     Assert.NotNull(contactController);
                     Assert.Equal(DatabaseTypeEnum.SqlServerTestDB, contactController.DatabaseType);
 
-                    Contact contactLast = new Contact();
+                    Contact contactFirst = new Contact();
                     using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
                     {
                         Query query = new Query();
@@ -292,16 +292,16 @@ namespace CSSPWebAPI.Tests.Controllers
                         query.Desc = "";
 
                         ContactService contactService = new ContactService(query, db, ContactID);
-                        contactLast = (from c in db.Contacts select c).FirstOrDefault();
+                        contactFirst = (from c in db.Contacts select c).FirstOrDefault();
                     }
 
                     // ok with Contact info
-                    IActionResult jsonRet = contactController.GetContactWithID(contactLast.ContactID);
+                    IActionResult jsonRet = contactController.GetContactWithID(contactFirst.ContactID);
                     Assert.IsType<OkObjectResult>(jsonRet);
 
                     OkObjectResult Ret = jsonRet as OkObjectResult;
                     Contact contactRet = (Contact)Ret.Value;
-                    Assert.Equal(contactLast.ContactID, contactRet.ContactID);
+                    Assert.Equal(contactFirst.ContactID, contactRet.ContactID);
 
                     BadRequestResult badRequest = jsonRet as BadRequestResult;
                     Assert.Null(badRequest);
