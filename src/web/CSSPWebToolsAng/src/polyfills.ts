@@ -2,6 +2,22 @@
  * Load `$localize` onto the global scope - used if i18n tags appear in Angular templates.
  */
 import '@angular/localize/init';
+import { loadTranslations } from '@angular/localize';
+
+export function LoadEN() {
+  loadTranslations({
+    AAA: 'English',
+    HelloID: 'Hi this is translated'
+  });
+}
+
+export function LoadFR() {
+  loadTranslations({
+    AAA: 'Français',
+    HelloID: 'Bonjour ceci est traduits'
+  });
+}
+
 /**
  * This file includes polyfills needed by Angular and is loaded before the app.
  * You can add your own extra polyfills to this file.

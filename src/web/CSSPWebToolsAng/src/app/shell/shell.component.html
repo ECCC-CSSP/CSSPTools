@@ -1,0 +1,7 @@
+<h1><button mat-flat-button routerLink="allo">Allo</button> --- <button mat-button routerLink="bonjour">Bonjour</button>
+-----
+    <button mat-raised-button *ngIf="!enLang" (click)="changeLang()">English</button>
+    <button mat-raised-button *ngIf="enLang" (click)="changeLang()">Français</button>
+</h1>
+
+<router-outlet></router-outlet>

@@ -20,16 +20,17 @@ describe('AppComponent', () => {
     expect(app).toBeTruthy();
   });
 
-  it(`should have as title 'CSSPWebToolsAng'`, () => {
+  it(`should have as title 'ang-ivy'`, () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.componentInstance;
-    expect(app.title).toEqual('CSSPWebToolsAng');
+    expect(app.title).toEqual('ang-ivy');
   });
 
-  it('should render title', () => {
+  it('@@HelloID ' + $localize`:@@HelloID:`, () => {
     const fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();
     const compiled = fixture.nativeElement;
-    expect(compiled.querySelector('.content span').textContent).toContain('CSSPWebToolsAng app is running!');
+    expect(compiled.querySelector('h1').textContent).toContain($localize`:@@HelloID:`);
+    expect(compiled.querySelectorAll('h1')[1].textContent).toContain($localize`:@@AAA:`);
   });
 });
