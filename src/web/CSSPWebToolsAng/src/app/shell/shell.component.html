@@ -19,17 +19,38 @@
         <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
       </button>
       <span class="mat-spacer"></span>
-      <span>{{shellText.CSSPWebTools}}&nbsp;&nbsp;</span>
-      <a mat-raised-button routerLink="/{{shellText.Locale}}/allo">allo</a>
-      <a mat-raised-button routerLink="/{{shellText.Locale}}/bonjour">bonjour</a>
-      <a mat-raised-button routerLink="/{{shellText.Locale}}/login">login</a>
-      <a mat-raised-button routerLink="/{{shellText.Locale}}/register">Register</a>
+      <a mat-button routerLink="/{{shellText.Locale}}/">{{shellText.CSSPWebTools}}</a>
+      <span>&nbsp;&nbsp;</span>
+      <a mat-button routerLink="/{{shellText.Locale}}/allo">allo</a>
+      <span>&nbsp;&nbsp;</span>
+      <a mat-button routerLink="/{{shellText.Locale}}/bonjour">bonjour</a>
+      <span>&nbsp;&nbsp;</span>
+      <a mat-button routerLink="/{{shellText.Locale}}/login">login</a>
+      <span>&nbsp;&nbsp;</span>
+      <a mat-button routerLink="/{{shellText.Locale}}/register">Register</a>
       <span class="shell-toobar-spacer"></span>
       <span>{{ rootService.root.baseApiURL }}&nbsp;&nbsp;</span>
+      <span>&nbsp;&nbsp;</span>
       <button mat-raised-button *ngIf="!enLang" (click)="changeLang()">{{shellText.English}}</button>
       <button mat-raised-button *ngIf="enLang" (click)="changeLang()">{{shellText.Francais}}</button>
-      <span class="mat-spacer"></span>
-      <mat-icon aria-label="Side nav toggle icon">more_vert</mat-icon>
+      <span>&nbsp;&nbsp;</span>
+      <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Extra Menu Items">
+        <mat-icon>more_vert</mat-icon>
+      </button>
+      <mat-menu #menu="matMenu">
+        <button mat-menu-item>
+          <mat-icon>dialpad</mat-icon>
+          <span>Redial</span>
+        </button>
+        <button mat-menu-item disabled>
+          <mat-icon>voicemail</mat-icon>
+          <span>Check voice mail</span>
+        </button>
+        <button mat-menu-item>
+          <mat-icon>notifications_off</mat-icon>
+          <span>Disable alerts</span>
+        </button>
+      </mat-menu>
     </mat-toolbar>
   </mat-sidenav-content>
   <!-- EO: Side nav content-->
