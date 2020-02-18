@@ -1,7 +1,38 @@
-<h1><button mat-flat-button routerLink="allo">Allo</button> --- <button mat-button routerLink="bonjour">Bonjour</button>
------
-    <button mat-raised-button *ngIf="!enLang" (click)="changeLang()">English</button>
-    <button mat-raised-button *ngIf="enLang" (click)="changeLang()">Français</button>
-</h1>
+<mat-sidenav-container>
 
+  <!-- The side nav -->
+  <mat-sidenav #drawer fixedInViewport="true" [mode]="push" [opened]="false">
+    <mat-toolbar color="primary">Menu</mat-toolbar>
+    <mat-nav-list>
+      <a mat-list-item href="#">ITEM1</a>
+      <a mat-list-item href="#">ITEM2</a>
+      <a mat-list-item href="#">ITEM3</a>
+      <a mat-list-item href="#">ITEM4</a>
+    </mat-nav-list>
+  </mat-sidenav>
+  <!-- EO: Side nav-->
+
+  <!-- Side nav content-->
+  <mat-sidenav-content>
+    <mat-toolbar color="primary">
+      <button type="button" aria-label="Toggle sidenav" mat-icon-button (click)="drawer.toggle()">
+        <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
+      </button>
+      <span class="mat-spacer"></span>
+      <span>{{shellText.CSSPWebTools}}&nbsp;&nbsp;</span>
+      <a mat-raised-button routerLink="/{{shellText.Locale}}/allo">allo</a>
+      <a mat-raised-button routerLink="/{{shellText.Locale}}/bonjour">bonjour</a>
+      <a mat-raised-button routerLink="/{{shellText.Locale}}/login">login</a>
+      <a mat-raised-button routerLink="/{{shellText.Locale}}/register">Register</a>
+      <span class="shell-toobar-spacer"></span>
+      <span>{{ rootService.root.baseApiURL }}&nbsp;&nbsp;</span>
+      <button mat-raised-button *ngIf="!enLang" (click)="changeLang()">{{shellText.English}}</button>
+      <button mat-raised-button *ngIf="enLang" (click)="changeLang()">{{shellText.Francais}}</button>
+      <span class="mat-spacer"></span>
+      <mat-icon aria-label="Side nav toggle icon">more_vert</mat-icon>
+    </mat-toolbar>
+  </mat-sidenav-content>
+  <!-- EO: Side nav content-->
+
+</mat-sidenav-container>
 <router-outlet></router-outlet>

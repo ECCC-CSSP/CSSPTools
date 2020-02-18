@@ -11,7 +11,7 @@ export class AppComponent implements OnInit {
   AAA: string;
   HelloID: string;
 
-  constructor(public rootService: RootService) {
+  constructor() {
   }
 
   ngOnInit() { }

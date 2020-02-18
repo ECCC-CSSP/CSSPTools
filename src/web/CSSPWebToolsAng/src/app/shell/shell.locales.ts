@@ -1,16 +1,18 @@
 import { loadTranslations } from '@angular/localize';
 
-export function LoadLocales(rouge: string) {
+export function LoadLocales() {
   if ($localize.locale === 'fr-CA') {
     loadTranslations({
-      'shell.AAA': 'Français',
-      'shell.HelloID': `Bonjour ceci est ${rouge} traduits`
+      'shell.CSSPWebTools': 'CSSP Web Tools (fr)',
+      'shell.Francais': `Français (fr)`,
+      'shell.English': `English (fr)`
     });
   }
   else {
     loadTranslations({
-      'shell.AAA': 'English',
-      'shell.HelloID': `Hi this ${rouge} is translated`
+      'shell.CSSPWebTools': 'CSSP Web Tools',
+      'shell.Francais': `Français`,
+      'shell.English': `English`
     });
   }
 }

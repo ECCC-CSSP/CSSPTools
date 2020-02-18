@@ -2,6 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { LoadLocales } from './shell.locales';
 import { Router } from '@angular/router';
 import { UserService } from '../user.service';
+import { RootService } from '../services/root.service';
+import { MatDrawerMode } from '@angular/material/sidenav';
+import { ShellText } from './shell.interfaces';
 
 @Component({
   selector: 'app-shell',
@@ -9,35 +12,39 @@ import { UserService } from '../user.service';
   styleUrls: ['./shell.component.css']
 })
 export class ShellComponent implements OnInit {
-  HelloID: string;
-  AAA: string;
   enLang = true;
-  constructor(public userService: UserService, private router: Router) { }
+  push: MatDrawerMode = 'push';
+
+  shellText = <ShellText>{};
+
+  constructor(public userService: UserService, public rootService: RootService, private router: Router) { }
 
   ngOnInit() {
-    let rouge = 'red';
     if (this.router.url.indexOf('fr-CA') > 0) {
       $localize.locale = 'fr-CA';
-      rouge = 'rouge';
       this.enLang = false;
     }
     else {
       $localize.locale = 'en-CA';
     }
-    LoadLocales(rouge);
-    this.HelloID = $localize`:@@shell.HelloID:`
-    this.AAA = $localize`:@@shell.AAA:`
+    this.FillLocales();
   }
 
   changeLang() {
     if (this.router.url.indexOf('fr-CA') > 0) {
-      const lastPart: string = this.router.url.substring(this.router.url.indexOf('fr-CA') + 5);
-      this.router.navigateByUrl('/en-CA' + lastPart);
+      this.router.navigateByUrl('/en-CA' + this.router.url.substring(this.router.url.indexOf('fr-CA') + 5));
     }
     else {
-      const lastPart: string = this.router.url.substring(this.router.url.indexOf('en-CA') + 5);
-      this.router.navigateByUrl('/fr-CA' + lastPart);
+      this.router.navigateByUrl('/fr-CA' + this.router.url.substring(this.router.url.indexOf('en-CA') + 5));
     }
 
+  }
+
+  FillLocales() {
+    LoadLocales();
+    this.shellText.CSSPWebTools = $localize`:@@shell.CSSPWebTools:`;
+    this.shellText.Francais = $localize`:@@shell.Francais:`;
+    this.shellText.English = $localize`:@@shell.English:`;
+    this.shellText.Locale = $localize.locale;
   }
 }
