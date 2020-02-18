@@ -1,18 +1,24 @@
 import { loadTranslations } from '@angular/localize';
 
-export function LoadLocales(value: number) {
+export function LoadLocales() {
   if ($localize.locale === 'fr-CA') {
     loadTranslations({
-      'login.BBB': `Ceci est BBB nombre ${value}`,
-      'login.AAA': `Ceci est AAA`,
-      'login.HelloID': `Ceci est HelloID`,
+      'login.Login': `Login (fr)`,
+      'login.UserName': `User Name (fr)`,
+      'login.UserNameIsRequired': `User name is required (fr)`,
+      'login.Password': `Password (fr)`,
+      'login.PasswordIsRequired': `Password is required (fr)`,
+      'login.Register': `Register (fr)`,
     });
   }
   else {
     loadTranslations({
-      'login.BBB': `This is BBB number ${value}`,
-      'login.AAA': `This is AAA`,
-      'login.HelloID': `This is HelloID`,
+      'login.Login': `Login`,
+      'login.UserName': `User Name`,
+      'login.UserNameIsRequired': `User name is required`,
+      'login.Password': `Password`,
+      'login.PasswordIsRequired': `Password is required`,
+      'login.Register': `Register`,
     });
   }
 }

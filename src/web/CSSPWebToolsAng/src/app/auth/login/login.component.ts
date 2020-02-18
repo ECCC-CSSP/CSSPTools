@@ -4,17 +4,21 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { first } from 'rxjs/operators';
 
 import { AlertService, AuthenticationService } from '../services';
+import { LoadLocales } from './login.locales';
+import { LoginText } from './login.interfaces';
 
 @Component({
     selector: 'app-login',
     templateUrl: './login.component.html',
     styleUrls: ['./login.component.css']
-  })
+})
 export class LoginComponent implements OnInit {
     loginForm: FormGroup;
     loading = false;
     submitted = false;
     returnUrl: string;
+
+    loginText = <LoginText>{};
 
     constructor(
         private formBuilder: FormBuilder,
@@ -30,6 +34,8 @@ export class LoginComponent implements OnInit {
     }
 
     ngOnInit() {
+        this.FillLocales();
+        
         this.loginForm = this.formBuilder.group({
             username: ['', Validators.required],
             password: ['', Validators.required]
@@ -65,4 +71,16 @@ export class LoginComponent implements OnInit {
                     this.loading = false;
                 });
     }
+
+    FillLocales() {
+        LoadLocales();
+        this.loginText.Login = $localize`:@@login.Login:`;
+        this.loginText.UserName = $localize`:@@login.UserName:`;
+        this.loginText.UserNameIsRequired = $localize`:@@login.UserNameIsRequired:`;
+        this.loginText.Password = $localize`:@@login.Password:`;
+        this.loginText.PasswordIsRequired = $localize`:@@login.PasswordIsRequired:`;
+        this.loginText.Register = $localize`:@@login.Register:`;
+        this.loginText.Locale = $localize.locale;
+    }
 }
+

@@ -4,6 +4,8 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { first } from 'rxjs/operators';
 
 import { AlertService, UserService, AuthenticationService } from '../services';
+import { LoadLocales } from './register.locales';
+import { RegisterText } from './register.interfaces';
 
 @Component({
     selector: 'app-register',
@@ -14,6 +16,8 @@ export class RegisterComponent implements OnInit {
     registerForm: FormGroup;
     loading = false;
     submitted = false;
+
+    registerText = <RegisterText>{};
 
     constructor(
         private formBuilder: FormBuilder,
@@ -29,6 +33,8 @@ export class RegisterComponent implements OnInit {
     }
 
     ngOnInit() {
+        this.FillLocales();       
+
         this.registerForm = this.formBuilder.group({
             firstName: ['', Validators.required],
             lastName: ['', Validators.required],
@@ -63,5 +69,21 @@ export class RegisterComponent implements OnInit {
                     this.alertService.error(error);
                     this.loading = false;
                 });
+    }
+
+    FillLocales() {
+        LoadLocales();
+        this.registerText.Register = $localize`:@@register.Register:`;
+        this.registerText.FirstName = $localize`:@@register.FirstName:`;
+        this.registerText.FirstNameIsRequired = $localize`:@@register.FirstNameIsRequired:`;
+        this.registerText.LastName = $localize`:@@register.LastName:`;
+        this.registerText.LastNameIsRequired = $localize`:@@register.LastNameIsRequired:`;
+        this.registerText.UserName = $localize`:@@register.UserName:`;
+        this.registerText.UserNameIsRequired = $localize`:@@register.UserNameIsRequired:`;
+        this.registerText.Password = $localize`:@@register.Password:`;
+        this.registerText.PasswordIsRequired = $localize`:@@register.PasswordIsRequired:`;
+        this.registerText.PasswordMustBeAtLeast6Characters = $localize`:@@register.PasswordMustBeAtLeast6Characters:`;
+        this.registerText.Cancel = $localize`:@@register.Cancel:`;
+        this.registerText.Locale = $localize.locale;
     }
 }
