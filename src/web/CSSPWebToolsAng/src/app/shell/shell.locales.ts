@@ -8,7 +8,7 @@ export function LoadLocales() {
       'shell.English': `English (fr)`
     });
   }
-  else {
+  else { // en-CA
     loadTranslations({
       'shell.CSSPWebTools': 'CSSP Web Tools',
       'shell.Francais': `Français`,

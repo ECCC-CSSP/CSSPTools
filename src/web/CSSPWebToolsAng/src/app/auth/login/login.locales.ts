@@ -11,7 +11,7 @@ export function LoadLocales() {
       'login.Register': `Register (fr)`,
     });
   }
-  else {
+  else { // en-CA
     loadTranslations({
       'login.Login': `Login`,
       'login.UserName': `User Name`,

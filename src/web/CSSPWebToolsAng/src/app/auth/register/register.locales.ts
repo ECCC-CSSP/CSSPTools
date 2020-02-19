@@ -16,7 +16,7 @@ export function LoadLocales() {
       'register.Cancel': `Cancel (fr)`,
     });
   }
-  else {
+  else { // en-CA
     loadTranslations({
       'register.Register': `Register`,
       'register.FirstName': `First name`,
