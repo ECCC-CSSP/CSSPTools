@@ -321,4 +321,16 @@
   <data name="_NeedsToBeAValidEnumTextFor_OfModel_AllowableValuesAre_" xml:space="preserve">
     <value>[{0}] needs to be a valid Enum text for [{1}] of model [{2}] allowable values are [{3}]</value>
   </data>
+  <data name="CouldNot_Error_" xml:space="preserve">
+    <value>Could not {0}. Error [{1}].</value>
+  </data>
+  <data name="Create" xml:space="preserve">
+    <value>Create</value>
+  </data>
+  <data name="Delete" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="Update" xml:space="preserve">
+    <value>Update</value>
+  </data>
 </root>

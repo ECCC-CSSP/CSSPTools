@@ -33,7 +33,7 @@ namespace CSSPServicesGenerateCodeHelper
         #region Functions public
         /// <summary>
         /// Generates:
-        ///     C:\CSSPTools\src\dlls\CSSPServices\_ExtensionEnumCastingGenerated.cs file
+        ///     C:\CSSPTools\src\dlls\CSSPServices\Generated\_ExtensionEnumCastingGenerated.cs file
         /// 
         /// Requires:
         ///     C:\CSSPTools\src\dlls\CSSPEnums\bin\Debug\netcoreapp3.1\CSSPEnums.dll
@@ -94,7 +94,7 @@ namespace CSSPServicesGenerateCodeHelper
             sb.AppendLine(@"    }");
             sb.AppendLine(@"}");
 
-            FileInfo fiOutputGen = new FileInfo($@"C:\CSSPTools\src\dlls\CSSPServices\_ExtensionEnumCastingGenerated.cs");
+            FileInfo fiOutputGen = new FileInfo($@"C:\CSSPTools\src\dlls\CSSPServices\Generated\_ExtensionEnumCastingGenerated.cs");
             using (StreamWriter sw = fiOutputGen.CreateText())
             {
                 sw.Write(sb.ToString());

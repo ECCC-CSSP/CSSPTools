@@ -439,6 +439,15 @@ namespace CSSPServices.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Could not {0}. Error [{1}]..
+        /// </summary>
+        public static string CouldNot_Error_ {
+            get {
+                return ResourceManager.GetString("CouldNot_Error_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Could not add {0}. Error: {1}.
         /// </summary>
         public static string CouldNotAdd_Error_ {
@@ -480,6 +489,24 @@ namespace CSSPServices.Resources {
         public static string CouldNotFindRoot {
             get {
                 return ResourceManager.GetString("CouldNotFindRoot", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Create.
+        /// </summary>
+        public static string Create {
+            get {
+                return ResourceManager.GetString("Create", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Delete.
+        /// </summary>
+        public static string Delete {
+            get {
+                return ResourceManager.GetString("Delete", resourceCulture);
             }
         }
         
@@ -615,6 +642,15 @@ namespace CSSPServices.Resources {
         public static string TVText {
             get {
                 return ResourceManager.GetString("TVText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Update.
+        /// </summary>
+        public static string Update {
+            get {
+                return ResourceManager.GetString("Update", resourceCulture);
             }
         }
         
