@@ -21,14 +21,6 @@ GO
 DROP TABLE [dbo].[AspNetUserClaims]
 GO
 
-/* ---------------------- Deleting DeviceCodes -----------------------------*/
-DROP TABLE [dbo].[DeviceCodes]
-GO
-
-/* ---------------------- Deleting PersistedGrants -----------------------------*/
-DROP TABLE [dbo].[PersistedGrants]
-GO
-
 /* ---------------------- Deleting AspNetRoles -----------------------------*/
 DROP TABLE [dbo].[AspNetRoles]
 GO
@@ -203,55 +195,52 @@ ALTER TABLE [dbo].[AspNetUserRoles] CHECK CONSTRAINT [FK_AspNetUserRoles_AspNetU
 GO
 
 
-/* ------------------ Creating DeviceCodes --------------------------*/
+/* ------------------ Alter AspNetUsers --------------------------*/
 SET ANSI_NULLS ON
 GO
 
 SET QUOTED_IDENTIFIER ON
 GO
 
-CREATE TABLE [dbo].[DeviceCodes](
-	[UserCode] [nvarchar](200) NOT NULL,
-	[DeviceCode] [nvarchar](200) NOT NULL,
-	[SubjectId] [nvarchar](200) NULL,
-	[ClientId] [nvarchar](200) NOT NULL,
-	[CreationTime] [datetime2](7) NOT NULL,
-	[Expiration] [datetime2](7) NOT NULL,
-	[Data] [nvarchar](max) NOT NULL,
- CONSTRAINT [PK_DeviceCodes] PRIMARY KEY CLUSTERED 
-(
-	[UserCode] ASC
-)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
-) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+
+
+ALTER TABLE [dbo].[AspNetUsers]
+	ALTER COLUMN [Id] [nvarchar](450) NOT NULL;
 GO
 
+IF COL_LENGTH('AspNetUsers', 'NormalizedUserName') IS NULL
+BEGIN
+    ALTER TABLE [dbo].[AspNetUsers]
+	ADD [NormalizedUserName] [nvarchar](256) NULL;
+END 
+GO	
 
-/* ------------------ Creating PersistedGrants --------------------------*/
-SET ANSI_NULLS ON
-GO
+IF COL_LENGTH('AspNetUsers', 'NormalizedEmail') IS NULL
+BEGIN
+	ALTER TABLE [dbo].[AspNetUsers]
+	ADD	[NormalizedEmail] [nvarchar](256) NULL;
+END 
+GO	
 
-SET QUOTED_IDENTIFIER ON
-GO
+IF COL_LENGTH('AspNetUsers', 'ConcurrencyStamp') IS NULL
+BEGIN
+	ALTER TABLE [dbo].[AspNetUsers]
+	ADD	[ConcurrencyStamp] [nvarchar](max) NULL;
+END 
+GO	
 
-CREATE TABLE [dbo].[PersistedGrants](
-	[Key] [nvarchar](200) NOT NULL,
-	[Type] [nvarchar](50) NOT NULL,
-	[SubjectId] [nvarchar](200) NULL,
-	[ClientId] [nvarchar](200) NOT NULL,
-	[CreationTime] [datetime2](7) NOT NULL,
-	[Expiration] [datetime2](7) NULL,
-	[Data] [nvarchar](max) NOT NULL,
- CONSTRAINT [PK_PersistedGrants] PRIMARY KEY CLUSTERED 
-(
-	[Key] ASC
-)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
-) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
-GO
+IF COL_LENGTH('AspNetUsers', 'LockoutEnd') IS NULL
+BEGIN
+	ALTER TABLE [dbo].[AspNetUsers]
+	ADD	[LockoutEnd] [datetimeoffset](7) NULL;
+END 
+GO	
 
+UPDATE       CSSPDB2.dbo.AspNetUsers
+SET                PasswordHash = [PN].PasswordHash, SecurityStamp = [PN].SecurityStamp
+FROM            CSSPDB.dbo.AspNetUsers AS PN INNER JOIN
+                         CSSPDB2.dbo.AspNetUsers ON [PN].Id = CSSPDB2.dbo.AspNetUsers.Id
 
-UPDATE       AspNetUsers
-SET                NormalizedUserName = UPPER(UserName), NormalizedEmail = UPPER(Email)
-GO
 
 UPDATE       AspNetUsers
 SET                EmailConfirmed = 1
