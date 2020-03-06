@@ -1,6 +1,12 @@
 USE [CSSPDB2]
 GO
 
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
 /* ---------------------- Deleting AspNetUserRoles -----------------------------*/
 DROP TABLE [dbo].[AspNetUserRoles]
 GO
@@ -26,13 +32,8 @@ DROP TABLE [dbo].[AspNetRoles]
 GO
 
 
+
 /* --------------------- Creating AspNetRoles ----------------------------*/
-SET ANSI_NULLS ON
-GO
-
-SET QUOTED_IDENTIFIER ON
-GO
-
 CREATE TABLE [dbo].[AspNetRoles](
 	[Id] [nvarchar](450) NOT NULL,
 	[Name] [nvarchar](256) NULL,
@@ -46,12 +47,6 @@ CREATE TABLE [dbo].[AspNetRoles](
 GO
 
 /* --------------------- Creating AspNetUserTokens ----------------------------*/
-SET ANSI_NULLS ON
-GO
-
-SET QUOTED_IDENTIFIER ON
-GO
-
 CREATE TABLE [dbo].[AspNetUserTokens](
 	[UserId] [nvarchar](450) NOT NULL,
 	[LoginProvider] [nvarchar](128) NOT NULL,
@@ -76,12 +71,6 @@ GO
 
 
 /* --------------------- Creating AspNetRoleClaims ----------------------------*/
-SET ANSI_NULLS ON
-GO
-
-SET QUOTED_IDENTIFIER ON
-GO
-
 CREATE TABLE [dbo].[AspNetRoleClaims](
 	[Id] [int] IDENTITY(1,1) NOT NULL,
 	[RoleId] [nvarchar](450) NOT NULL,
@@ -104,12 +93,6 @@ GO
 
 
 /* --------------------- Creating AspNetUserClaims ----------------------------*/
-SET ANSI_NULLS ON
-GO
-
-SET QUOTED_IDENTIFIER ON
-GO
-
 CREATE TABLE [dbo].[AspNetUserClaims](
 	[Id] [int] IDENTITY(1,1) NOT NULL,
 	[UserId] [nvarchar](450) NOT NULL,
@@ -132,12 +115,6 @@ GO
 
 
 /* ------------------ Creating AspNetUserLogins --------------------------*/
-SET ANSI_NULLS ON
-GO
-
-SET QUOTED_IDENTIFIER ON
-GO
-
 CREATE TABLE [dbo].[AspNetUserLogins](
 	[LoginProvider] [nvarchar](128) NOT NULL,
 	[ProviderKey] [nvarchar](128) NOT NULL,
@@ -161,12 +138,6 @@ GO
 
 
 /* ------------------ Creating AspNetUserRoles --------------------------*/
-SET ANSI_NULLS ON
-GO
-
-SET QUOTED_IDENTIFIER ON
-GO
-
 CREATE TABLE [dbo].[AspNetUserRoles](
 	[UserId] [nvarchar](450) NOT NULL,
 	[RoleId] [nvarchar](450) NOT NULL,
@@ -196,14 +167,6 @@ GO
 
 
 /* ------------------ Alter AspNetUsers --------------------------*/
-SET ANSI_NULLS ON
-GO
-
-SET QUOTED_IDENTIFIER ON
-GO
-
-
-
 ALTER TABLE [dbo].[AspNetUsers]
 	ALTER COLUMN [Id] [nvarchar](450) NOT NULL;
 GO
@@ -236,11 +199,15 @@ BEGIN
 END 
 GO	
 
-UPDATE       CSSPDB2.dbo.AspNetUsers
-SET                PasswordHash = [PN].PasswordHash, SecurityStamp = [PN].SecurityStamp
-FROM            CSSPDB.dbo.AspNetUsers AS PN INNER JOIN
-                         CSSPDB2.dbo.AspNetUsers ON [PN].Id = CSSPDB2.dbo.AspNetUsers.Id
+UPDATE  AspNetUsers
+SET    PasswordHash = [PN].PasswordHash, SecurityStamp = [PN].SecurityStamp
+FROM   CSSPDB.dbo.AspNetUsers AS PN INNER JOIN
+       AspNetUsers ON [PN].Id = AspNetUsers.Id
+GO
 
+UPDATE AspNetUsers
+SET  NormalizedUserName = UPPER(UserName), NormalizedEmail = UPPER(Email)
+GO
 
 UPDATE       AspNetUsers
 SET                EmailConfirmed = 1
@@ -271,3 +238,4 @@ or (Email LIKE 'martin.deschenes@canada.ca')
 or (Email LIKE 'Julieanne.Richard@Canada.ca')
 or (Email LIKE 'cody.bannister2@canada.ca')
 or (Email LIKE 'julie.savaria@canada.ca')
+GO
