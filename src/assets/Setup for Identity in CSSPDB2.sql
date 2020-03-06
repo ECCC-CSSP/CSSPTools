@@ -7,6 +7,39 @@ GO
 SET QUOTED_IDENTIFIER ON
 GO
 
+/* ------------------ Alter AspNetUsers --------------------------*/
+ALTER TABLE [dbo].[AspNetUsers]
+	ALTER COLUMN [Id] [nvarchar](450) NOT NULL;
+GO
+
+IF COL_LENGTH('AspNetUsers', 'NormalizedUserName') IS NULL
+BEGIN
+    ALTER TABLE [dbo].[AspNetUsers]
+	ADD [NormalizedUserName] [nvarchar](256) NULL;
+END 
+GO	
+
+IF COL_LENGTH('AspNetUsers', 'NormalizedEmail') IS NULL
+BEGIN
+	ALTER TABLE [dbo].[AspNetUsers]
+	ADD	[NormalizedEmail] [nvarchar](256) NULL;
+END 
+GO	
+
+IF COL_LENGTH('AspNetUsers', 'ConcurrencyStamp') IS NULL
+BEGIN
+	ALTER TABLE [dbo].[AspNetUsers]
+	ADD	[ConcurrencyStamp] [nvarchar](max) NULL;
+END 
+GO	
+
+IF COL_LENGTH('AspNetUsers', 'LockoutEnd') IS NULL
+BEGIN
+	ALTER TABLE [dbo].[AspNetUsers]
+	ADD	[LockoutEnd] [datetimeoffset](7) NULL;
+END 
+GO	
+
 /* ---------------------- Deleting AspNetUserRoles -----------------------------*/
 DROP TABLE [dbo].[AspNetUserRoles]
 GO
@@ -165,39 +198,6 @@ GO
 ALTER TABLE [dbo].[AspNetUserRoles] CHECK CONSTRAINT [FK_AspNetUserRoles_AspNetUsers_UserId]
 GO
 
-
-/* ------------------ Alter AspNetUsers --------------------------*/
-ALTER TABLE [dbo].[AspNetUsers]
-	ALTER COLUMN [Id] [nvarchar](450) NOT NULL;
-GO
-
-IF COL_LENGTH('AspNetUsers', 'NormalizedUserName') IS NULL
-BEGIN
-    ALTER TABLE [dbo].[AspNetUsers]
-	ADD [NormalizedUserName] [nvarchar](256) NULL;
-END 
-GO	
-
-IF COL_LENGTH('AspNetUsers', 'NormalizedEmail') IS NULL
-BEGIN
-	ALTER TABLE [dbo].[AspNetUsers]
-	ADD	[NormalizedEmail] [nvarchar](256) NULL;
-END 
-GO	
-
-IF COL_LENGTH('AspNetUsers', 'ConcurrencyStamp') IS NULL
-BEGIN
-	ALTER TABLE [dbo].[AspNetUsers]
-	ADD	[ConcurrencyStamp] [nvarchar](max) NULL;
-END 
-GO	
-
-IF COL_LENGTH('AspNetUsers', 'LockoutEnd') IS NULL
-BEGIN
-	ALTER TABLE [dbo].[AspNetUsers]
-	ADD	[LockoutEnd] [datetimeoffset](7) NULL;
-END 
-GO	
 
 UPDATE  AspNetUsers
 SET    PasswordHash = [PN].PasswordHash, SecurityStamp = [PN].SecurityStamp
