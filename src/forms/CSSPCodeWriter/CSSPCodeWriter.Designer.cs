@@ -77,6 +77,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
+            this.splitContainer1.SuspendLayout();
             this.panelTopBottom.SuspendLayout();
             this.panelPostCSSPDocButtons.SuspendLayout();
             this.panelCSSPDocButtons.SuspendLayout();
@@ -90,6 +91,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).BeginInit();
             this.splitContainer2.Panel1.SuspendLayout();
             this.splitContainer2.Panel2.SuspendLayout();
+            this.splitContainer2.SuspendLayout();
             this.SuspendLayout();
             // 
             // splitContainer1
@@ -100,13 +102,13 @@
             this.splitContainer1.Name = "splitContainer1";
             this.splitContainer1.Orientation = System.Windows.Forms.Orientation.Horizontal;
             // 
-            // 
+            // splitContainer1.Panel1
             // 
             this.splitContainer1.Panel1.Controls.Add(this.panelTopBottom);
             this.splitContainer1.Panel1.Controls.Add(this.panelTopTop);
             this.splitContainer1.Panel1.Controls.Add(this.panelStatus);
             // 
-            // 
+            // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.splitContainer2);
             this.splitContainer1.Size = new System.Drawing.Size(1223, 848);
@@ -522,7 +524,7 @@
             this.CSSPWebToolsAng.Location = new System.Drawing.Point(519, 3);
             this.CSSPWebToolsAng.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.CSSPWebToolsAng.Name = "CSSPWebToolsAng";
-            this.CSSPWebToolsAng.Size = new System.Drawing.Size(126, 19);
+            this.CSSPWebToolsAng.Size = new System.Drawing.Size(125, 19);
             this.CSSPWebToolsAng.TabIndex = 4;
             this.CSSPWebToolsAng.Tag = "CSSPWebToolsAng";
             this.CSSPWebToolsAng.Text = "CSSPWebToolsAng";
@@ -620,11 +622,11 @@
             this.splitContainer2.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.splitContainer2.Name = "splitContainer2";
             // 
-            // 
+            // splitContainer2.Panel1
             // 
             this.splitContainer2.Panel1.Controls.Add(this.richTextBoxStatus);
             // 
-            // 
+            // splitContainer2.Panel2
             // 
             this.splitContainer2.Panel2.Controls.Add(this.richTextBoxStatus2);
             this.splitContainer2.Size = new System.Drawing.Size(1223, 126);
@@ -665,6 +667,7 @@
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
+            this.splitContainer1.ResumeLayout(false);
             this.panelTopBottom.ResumeLayout(false);
             this.panelPostCSSPDocButtons.ResumeLayout(false);
             this.panelCSSPDocButtons.ResumeLayout(false);
@@ -680,6 +683,7 @@
             this.splitContainer2.Panel1.ResumeLayout(false);
             this.splitContainer2.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).EndInit();
+            this.splitContainer2.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }

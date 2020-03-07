@@ -14,7 +14,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSSPEnumsCodeWriter", "src\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSSPServicesCodeWriter", "src\dlls\CSSPServicesCodeWriter\CSSPServicesCodeWriter.csproj", "{37230A61-8DD6-4F67-ACB0-D0050EE5076C}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSSPWebAPICodeWriter", "src\dlls\CSSPAPICodeWriter\CSSPWebAPICodeWriter.csproj", "{25DC9C8B-FFE5-427D-B9F2-0C90DA49E7EB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSSPWebAPIsCodeWriter", "src\dlls\CSSPAPICodeWriter\CSSPWebAPIsCodeWriter.csproj", "{25DC9C8B-FFE5-427D-B9F2-0C90DA49E7EB}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSSPWebToolsAngCodeWriter", "src\dlls\CSSPWebToolsAngCodeWriter\CSSPWebToolsAngCodeWriter.csproj", "{DE1F767D-A9AF-4F90-8877-E3AF8ACCF979}"
 EndProject
