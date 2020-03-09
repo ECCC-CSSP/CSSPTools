@@ -18,7 +18,7 @@ using System.Text;
 namespace CSSPServices.Tests
 {
 
-    public partial class _BaseServiceTest : TestHelper
+    public partial class BaseServiceTest : TestHelper
     {
         #region Variables
         #endregion Variables
@@ -27,7 +27,7 @@ namespace CSSPServices.Tests
         #endregion Properties
 
         #region Constructors
-        public _BaseServiceTest() : base()
+        public BaseServiceTest() : base()
         {
         }
         #endregion Constructors
