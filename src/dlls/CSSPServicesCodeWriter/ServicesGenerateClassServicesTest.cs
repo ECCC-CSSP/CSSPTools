@@ -745,17 +745,17 @@ namespace CSSPServicesGenerateCodeHelper
                                             {
                                                 using (CSSPDBContext db = new CSSPDBContext(DatabaseTypeEnum.SqlServerTestDB))
                                                 {
-                                                    AspNetUserService aspNetUserService = new AspNetUserService(new Query(), db, 2);
-                                                    AspNetUser AspNetUser = aspNetUserService.GetAspNetUserList().FirstOrDefault();
+                                                    //AspNetUserService aspNetUserService = new AspNetUserService(new Query(), db, 2);
+                                                    //AspNetUser AspNetUser = aspNetUserService.GetAspNetUserList().FirstOrDefault();
 
-                                                    if (AspNetUser == null)
-                                                    {
-                                                        sb.AppendLine($@"            // Need to implement (no items found, would need to add at least one in the TestDB) [{ TypeName } { csspProp.PropName } { csspProp.ExistTypeName } { csspProp.ExistFieldID }]");
-                                                    }
-                                                    else
-                                                    {
-                                                        sb.AppendLine($@"            if (OmitPropName != ""{ prop.Name }"") { TypeNameLower }.{ prop.Name } = ""{ AspNetUser.Id }"";");
-                                                    }
+                                                    //if (AspNetUser == null)
+                                                    //{
+                                                    //    sb.AppendLine($@"            // Need to implement (no items found, would need to add at least one in the TestDB) [{ TypeName } { csspProp.PropName } { csspProp.ExistTypeName } { csspProp.ExistFieldID }]");
+                                                    //}
+                                                    //else
+                                                    //{
+                                                    //    sb.AppendLine($@"            if (OmitPropName != ""{ prop.Name }"") { TypeNameLower }.{ prop.Name } = ""{ AspNetUser.Id }"";");
+                                                    //}
                                                 }
                                             }
                                             break;
