@@ -29,9 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(CSSPTaskRunnerForm));
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-            this.button1 = new System.Windows.Forms.Button();
             this.lblLastAppTaskCheckDate = new System.Windows.Forms.Label();
             this.lblLastAppTaskCheck = new System.Windows.Forms.Label();
             this.richTextBoxStatus = new System.Windows.Forms.RichTextBox();
@@ -46,48 +44,40 @@
             // 
             this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.splitContainer1.Location = new System.Drawing.Point(0, 0);
+            this.splitContainer1.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.splitContainer1.Name = "splitContainer1";
             this.splitContainer1.Orientation = System.Windows.Forms.Orientation.Horizontal;
             // 
             // splitContainer1.Panel1
             // 
-            this.splitContainer1.Panel1.Controls.Add(this.button1);
             this.splitContainer1.Panel1.Controls.Add(this.lblLastAppTaskCheckDate);
             this.splitContainer1.Panel1.Controls.Add(this.lblLastAppTaskCheck);
             // 
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.richTextBoxStatus);
-            this.splitContainer1.Size = new System.Drawing.Size(1151, 705);
-            this.splitContainer1.SplitterDistance = 71;
+            this.splitContainer1.Size = new System.Drawing.Size(1343, 813);
+            this.splitContainer1.SplitterDistance = 81;
+            this.splitContainer1.SplitterWidth = 5;
             this.splitContainer1.TabIndex = 0;
-            // 
-            // button1
-            // 
-            this.button1.Enabled = false;
-            this.button1.Location = new System.Drawing.Point(531, 23);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 2;
-            this.button1.Text = "button1";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // lblLastAppTaskCheckDate
             // 
             this.lblLastAppTaskCheckDate.AutoSize = true;
-            this.lblLastAppTaskCheckDate.Location = new System.Drawing.Point(132, 13);
+            this.lblLastAppTaskCheckDate.Location = new System.Drawing.Point(154, 15);
+            this.lblLastAppTaskCheckDate.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblLastAppTaskCheckDate.Name = "lblLastAppTaskCheckDate";
-            this.lblLastAppTaskCheckDate.Size = new System.Drawing.Size(41, 13);
+            this.lblLastAppTaskCheckDate.Size = new System.Drawing.Size(49, 15);
             this.lblLastAppTaskCheckDate.TabIndex = 1;
             this.lblLastAppTaskCheckDate.Text = "[empty]";
             // 
             // lblLastAppTaskCheck
             // 
             this.lblLastAppTaskCheck.AutoSize = true;
-            this.lblLastAppTaskCheck.Location = new System.Drawing.Point(13, 13);
+            this.lblLastAppTaskCheck.Location = new System.Drawing.Point(15, 15);
+            this.lblLastAppTaskCheck.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblLastAppTaskCheck.Name = "lblLastAppTaskCheck";
-            this.lblLastAppTaskCheck.Size = new System.Drawing.Size(113, 13);
+            this.lblLastAppTaskCheck.Size = new System.Drawing.Size(118, 15);
             this.lblLastAppTaskCheck.TabIndex = 0;
             this.lblLastAppTaskCheck.Text = "Last AppTask Check: ";
             // 
@@ -95,8 +85,9 @@
             // 
             this.richTextBoxStatus.Dock = System.Windows.Forms.DockStyle.Fill;
             this.richTextBoxStatus.Location = new System.Drawing.Point(0, 0);
+            this.richTextBoxStatus.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.richTextBoxStatus.Name = "richTextBoxStatus";
-            this.richTextBoxStatus.Size = new System.Drawing.Size(1151, 630);
+            this.richTextBoxStatus.Size = new System.Drawing.Size(1343, 727);
             this.richTextBoxStatus.TabIndex = 0;
             this.richTextBoxStatus.Text = "";
             // 
@@ -105,14 +96,14 @@
             this.timerCheckTask.Interval = 1000;
             this.timerCheckTask.Tick += new System.EventHandler(this.timerCheckTask_Tick);
             // 
-            // CSSPWebToolsTaskRunner
+            // CSSPTaskRunnerForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1151, 705);
+            this.ClientSize = new System.Drawing.Size(1343, 813);
             this.Controls.Add(this.splitContainer1);
-            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Name = "CSSPWebToolsTaskRunner";
+            this.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this.Name = "CSSPTaskRunnerForm";
             this.Text = "CSSP Web Tools Task Runner";
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel1.PerformLayout();
@@ -130,7 +121,6 @@
         private System.Windows.Forms.Timer timerCheckTask;
         private System.Windows.Forms.Label lblLastAppTaskCheckDate;
         private System.Windows.Forms.Label lblLastAppTaskCheck;
-        private System.Windows.Forms.Button button1;
     }
 }
 
