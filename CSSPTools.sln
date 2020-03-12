@@ -48,9 +48,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AuthTest.API", "src\webs\to
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSSPWebAPIs", "src\webs\CSSPWebAPIs\CSSPWebAPIs.csproj", "{BC738B59-F0E9-4558-8B4E-04E38EA5B59C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleWithLogin", "src\junk\ConsoleWithLogin\ConsoleWithLogin.csproj", "{67C32DAD-9AD7-4A61-B1BE-A30FE05EB43D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsoleWithLogin", "src\junk\ConsoleWithLogin\ConsoleWithLogin.csproj", "{67C32DAD-9AD7-4A61-B1BE-A30FE05EB43D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleHTTPSRequest", "src\junk\ConsoleHTTPSRequest\ConsoleHTTPSRequest.csproj", "{AD83893C-4411-41C4-A9D4-915FF6AAA1AC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsoleHTTPSRequest", "src\junk\ConsoleHTTPSRequest\ConsoleHTTPSRequest.csproj", "{AD83893C-4411-41C4-A9D4-915FF6AAA1AC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CSSPTaskRunner", "src\forms\CSSPTaskRunner\CSSPTaskRunner.csproj", "{F635F7B7-5895-4524-B8F5-F09DEF500980}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CSSPWebAPIs.Tests", "src\tests\CSSPWebAPIs.Tests\CSSPWebAPIs.Tests.csproj", "{C0202D19-3D88-4DCD-96E4-AD0E30C9C78F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -338,6 +342,30 @@ Global
 		{AD83893C-4411-41C4-A9D4-915FF6AAA1AC}.Release|x64.Build.0 = Release|Any CPU
 		{AD83893C-4411-41C4-A9D4-915FF6AAA1AC}.Release|x86.ActiveCfg = Release|Any CPU
 		{AD83893C-4411-41C4-A9D4-915FF6AAA1AC}.Release|x86.Build.0 = Release|Any CPU
+		{F635F7B7-5895-4524-B8F5-F09DEF500980}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F635F7B7-5895-4524-B8F5-F09DEF500980}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F635F7B7-5895-4524-B8F5-F09DEF500980}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{F635F7B7-5895-4524-B8F5-F09DEF500980}.Debug|x64.Build.0 = Debug|Any CPU
+		{F635F7B7-5895-4524-B8F5-F09DEF500980}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{F635F7B7-5895-4524-B8F5-F09DEF500980}.Debug|x86.Build.0 = Debug|Any CPU
+		{F635F7B7-5895-4524-B8F5-F09DEF500980}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F635F7B7-5895-4524-B8F5-F09DEF500980}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F635F7B7-5895-4524-B8F5-F09DEF500980}.Release|x64.ActiveCfg = Release|Any CPU
+		{F635F7B7-5895-4524-B8F5-F09DEF500980}.Release|x64.Build.0 = Release|Any CPU
+		{F635F7B7-5895-4524-B8F5-F09DEF500980}.Release|x86.ActiveCfg = Release|Any CPU
+		{F635F7B7-5895-4524-B8F5-F09DEF500980}.Release|x86.Build.0 = Release|Any CPU
+		{C0202D19-3D88-4DCD-96E4-AD0E30C9C78F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C0202D19-3D88-4DCD-96E4-AD0E30C9C78F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C0202D19-3D88-4DCD-96E4-AD0E30C9C78F}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{C0202D19-3D88-4DCD-96E4-AD0E30C9C78F}.Debug|x64.Build.0 = Debug|Any CPU
+		{C0202D19-3D88-4DCD-96E4-AD0E30C9C78F}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{C0202D19-3D88-4DCD-96E4-AD0E30C9C78F}.Debug|x86.Build.0 = Debug|Any CPU
+		{C0202D19-3D88-4DCD-96E4-AD0E30C9C78F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C0202D19-3D88-4DCD-96E4-AD0E30C9C78F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C0202D19-3D88-4DCD-96E4-AD0E30C9C78F}.Release|x64.ActiveCfg = Release|Any CPU
+		{C0202D19-3D88-4DCD-96E4-AD0E30C9C78F}.Release|x64.Build.0 = Release|Any CPU
+		{C0202D19-3D88-4DCD-96E4-AD0E30C9C78F}.Release|x86.ActiveCfg = Release|Any CPU
+		{C0202D19-3D88-4DCD-96E4-AD0E30C9C78F}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
