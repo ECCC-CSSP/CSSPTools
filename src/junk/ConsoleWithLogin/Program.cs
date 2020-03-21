@@ -21,7 +21,7 @@ namespace ConsoleWithLogin
             services.AddDbContext<ApplicationDbContext>(options =>
             {
                 options.UseSqlServer("Server=.\\sqlexpress;Database=CSSPDB2;Trusted_Connection=True;MultipleActiveResultSets=true");
-            });
+            }, );
 
             services.AddIdentityCore<ApplicationUser>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();

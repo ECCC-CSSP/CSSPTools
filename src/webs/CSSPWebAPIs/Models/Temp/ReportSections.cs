@@ -9,18 +9,20 @@ namespace CSSPWebAPIs.Models.Temp
         {
             InverseParentReportSection = new HashSet<ReportSections>();
             InverseTemplateReportSection = new HashSet<ReportSections>();
-            ReportSectionLanguages = new HashSet<ReportSectionLanguages>();
         }
 
         public int ReportSectionID { get; set; }
         public int ReportTypeID { get; set; }
         public int? TVItemID { get; set; }
+        public int? Language { get; set; }
         public int Ordinal { get; set; }
         public bool IsStatic { get; set; }
         public int? ParentReportSectionID { get; set; }
         public int? Year { get; set; }
         public bool Locked { get; set; }
         public int? TemplateReportSectionID { get; set; }
+        public string ReportSectionName { get; set; }
+        public string ReportSectionText { get; set; }
         public DateTime LastUpdateDate_UTC { get; set; }
         public int LastUpdateContactTVItemID { get; set; }
 
@@ -30,6 +32,5 @@ namespace CSSPWebAPIs.Models.Temp
         public virtual ReportSections TemplateReportSection { get; set; }
         public virtual ICollection<ReportSections> InverseParentReportSection { get; set; }
         public virtual ICollection<ReportSections> InverseTemplateReportSection { get; set; }
-        public virtual ICollection<ReportSectionLanguages> ReportSectionLanguages { get; set; }
     }
 }

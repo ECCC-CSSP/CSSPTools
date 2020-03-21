@@ -6,55 +6,57 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using CSSPWebAPIs.Models.Temp;
+using Microsoft.AspNet.OData;
 using Microsoft.AspNetCore.Authorization;
 
-namespace CSSPWebAPIs.Controllers
+namespace CSSPWebAPIs.Controllers.Temp
 {
     [Route("api/[controller]")]
     [ApiController]
     [Authorize]
-    public class AppErrLogsController : ControllerBase
+    public class EmailsController : ControllerBase
     {
         private readonly CSSPDB2Context _context;
 
-        public AppErrLogsController(CSSPDB2Context context)
+        public EmailsController(CSSPDB2Context context)
         {
             _context = context;
         }
 
-        // GET: api/AppErrLogs
+        // GET: api/Emails
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<AppErrLogs>>> GetAppErrLogs()
+        [EnableQuery]
+        public async Task<ActionResult<IEnumerable<Emails>>> GetEmails()
         {
-            return await _context.AppErrLogs.ToListAsync();
+            return await _context.Emails.ToListAsync();
         }
 
-        // GET: api/AppErrLogs/5
+        // GET: api/Emails/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<AppErrLogs>> GetAppErrLogs(int id)
+        public async Task<ActionResult<Emails>> GetEmails(int id)
         {
-            var appErrLogs = await _context.AppErrLogs.FindAsync(id);
+            var emails = await _context.Emails.FindAsync(id);
 
-            if (appErrLogs == null)
+            if (emails == null)
             {
                 return NotFound();
             }
 
-            return appErrLogs;
+            return emails;
         }
 
-        // PUT: api/AppErrLogs/5
+        // PUT: api/Emails/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see https://aka.ms/RazorPagesCRUD.
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutAppErrLogs(int id, AppErrLogs appErrLogs)
+        public async Task<IActionResult> PutEmails(int id, Emails emails)
         {
-            if (id != appErrLogs.AppErrLogID)
+            if (id != emails.EmailID)
             {
                 return BadRequest();
             }
 
-            _context.Entry(appErrLogs).State = EntityState.Modified;
+            _context.Entry(emails).State = EntityState.Modified;
 
             try
             {
@@ -62,7 +64,7 @@ namespace CSSPWebAPIs.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!AppErrLogsExists(id))
+                if (!EmailsExists(id))
                 {
                     return NotFound();
                 }
@@ -75,37 +77,37 @@ namespace CSSPWebAPIs.Controllers
             return NoContent();
         }
 
-        // POST: api/AppErrLogs
+        // POST: api/Emails
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see https://aka.ms/RazorPagesCRUD.
         [HttpPost]
-        public async Task<ActionResult<AppErrLogs>> PostAppErrLogs(AppErrLogs appErrLogs)
+        public async Task<ActionResult<Emails>> PostEmails(Emails emails)
         {
-            _context.AppErrLogs.Add(appErrLogs);
+            _context.Emails.Add(emails);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetAppErrLogs", new { id = appErrLogs.AppErrLogID }, appErrLogs);
+            return CreatedAtAction("GetEmails", new { id = emails.EmailID }, emails);
         }
 
-        // DELETE: api/AppErrLogs/5
+        // DELETE: api/Emails/5
         [HttpDelete("{id}")]
-        public async Task<ActionResult<AppErrLogs>> DeleteAppErrLogs(int id)
+        public async Task<ActionResult<Emails>> DeleteEmails(int id)
         {
-            var appErrLogs = await _context.AppErrLogs.FindAsync(id);
-            if (appErrLogs == null)
+            var emails = await _context.Emails.FindAsync(id);
+            if (emails == null)
             {
                 return NotFound();
             }
 
-            _context.AppErrLogs.Remove(appErrLogs);
+            _context.Emails.Remove(emails);
             await _context.SaveChangesAsync();
 
-            return appErrLogs;
+            return emails;
         }
 
-        private bool AppErrLogsExists(int id)
+        private bool EmailsExists(int id)
         {
-            return _context.AppErrLogs.Any(e => e.AppErrLogID == id);
+            return _context.Emails.Any(e => e.EmailID == id);
         }
     }
 }

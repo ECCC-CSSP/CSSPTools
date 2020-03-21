@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using CSSPWebAPIs.Models.Temp;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNet.OData;
 
 namespace CSSPWebAPIs.Controllers.Temp
 {
@@ -24,6 +25,7 @@ namespace CSSPWebAPIs.Controllers.Temp
 
         // GET: api/Tels
         [HttpGet]
+        [EnableQuery]
         public async Task<ActionResult<IEnumerable<Tels>>> GetTels()
         {
             return await _context.Tels.ToListAsync();

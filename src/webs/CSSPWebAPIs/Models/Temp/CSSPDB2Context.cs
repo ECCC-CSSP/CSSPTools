@@ -78,9 +78,7 @@ namespace CSSPWebAPIs.Models.Temp
         public virtual DbSet<RainExceedances> RainExceedances { get; set; }
         public virtual DbSet<RatingCurveValues> RatingCurveValues { get; set; }
         public virtual DbSet<RatingCurves> RatingCurves { get; set; }
-        public virtual DbSet<ReportSectionLanguages> ReportSectionLanguages { get; set; }
         public virtual DbSet<ReportSections> ReportSections { get; set; }
-        public virtual DbSet<ReportTypeLanguages> ReportTypeLanguages { get; set; }
         public virtual DbSet<ReportTypes> ReportTypes { get; set; }
         public virtual DbSet<ResetPasswords> ResetPasswords { get; set; }
         public virtual DbSet<SamplingPlanEmails> SamplingPlanEmails { get; set; }
@@ -112,7 +110,7 @@ namespace CSSPWebAPIs.Models.Temp
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
-                optionsBuilder.UseSqlServer("Server=.\\sqlexpress;Database=CSSPDB2;Trusted_Connection=True;");
+                optionsBuilder.UseSqlServer("Server=.\\SQLExpress;Database=CSSPDB2;Trusted_Connection=True;");
             }
         }
 
@@ -3059,49 +3057,6 @@ namespace CSSPWebAPIs.Models.Temp
                     .HasConstraintName("FK_RatingCurves_HydrometricSites");
             });
 
-            modelBuilder.Entity<ReportSectionLanguages>(entity =>
-            {
-                entity.HasKey(e => e.ReportSectionLanguageID);
-
-                entity.HasIndex(e => e.Language)
-                    .HasName("IX_Language");
-
-                entity.HasIndex(e => e.LastUpdateContactTVItemID)
-                    .HasName("IX_LastUpdateContactTVItemID");
-
-                entity.HasIndex(e => e.LastUpdateDate_UTC)
-                    .HasName("IX_LastUpdateDate_UTC");
-
-                entity.HasIndex(e => e.ReportSectionID)
-                    .HasName("IX_ReportSectionID");
-
-                entity.HasIndex(e => e.ReportSectionName)
-                    .HasName("IX_ReportSectionName");
-
-                entity.HasIndex(e => e.TranslationStatusReportSectionName)
-                    .HasName("IX_TranslationStatusReportSectionName");
-
-                entity.HasIndex(e => e.TranslationStatusReportSectionText)
-                    .HasName("IX_TranslationStatusReportSectionText");
-
-                entity.Property(e => e.LastUpdateDate_UTC).HasColumnType("datetime");
-
-                entity.Property(e => e.ReportSectionName)
-                    .IsRequired()
-                    .HasMaxLength(100);
-
-                entity.Property(e => e.ReportSectionText)
-                    .IsRequired()
-                    .HasColumnType("text");
-
-                entity.Property(e => e.TranslationStatusReportSectionName).HasComment("Error -1, Not Translated = 1, Electronically Translated = 2, Translated = 3");
-
-                entity.HasOne(d => d.ReportSection)
-                    .WithMany(p => p.ReportSectionLanguages)
-                    .HasForeignKey(d => d.ReportSectionID)
-                    .HasConstraintName("FK_ReportSectionLanguages_ReportSections");
-            });
-
             modelBuilder.Entity<ReportSections>(entity =>
             {
                 entity.HasKey(e => e.ReportSectionID);
@@ -3132,6 +3087,10 @@ namespace CSSPWebAPIs.Models.Temp
 
                 entity.Property(e => e.LastUpdateDate_UTC).HasColumnType("datetime");
 
+                entity.Property(e => e.ReportSectionName).HasMaxLength(100);
+
+                entity.Property(e => e.ReportSectionText).HasColumnType("text");
+
                 entity.HasOne(d => d.ParentReportSection)
                     .WithMany(p => p.InverseParentReportSection)
                     .HasForeignKey(d => d.ParentReportSectionID)
@@ -3154,44 +3113,6 @@ namespace CSSPWebAPIs.Models.Temp
                     .HasConstraintName("FK_ReportSections_ReportSections1");
             });
 
-            modelBuilder.Entity<ReportTypeLanguages>(entity =>
-            {
-                entity.HasKey(e => e.ReportTypeLanguageID);
-
-                entity.HasIndex(e => e.Language)
-                    .HasName("IX_Language");
-
-                entity.HasIndex(e => e.LastUpdateContactTVItemID)
-                    .HasName("IX_LastUpdateContactTVItemID");
-
-                entity.HasIndex(e => e.LastUpdateDate_UTC)
-                    .HasName("IX_LastUpdateDate_UTC");
-
-                entity.HasIndex(e => e.ReportTypeID)
-                    .HasName("IX_ReportTypeID");
-
-                entity.Property(e => e.Description)
-                    .IsRequired()
-                    .HasColumnType("text");
-
-                entity.Property(e => e.LastUpdateDate_UTC).HasColumnType("datetime");
-
-                entity.Property(e => e.Name)
-                    .IsRequired()
-                    .HasMaxLength(100);
-
-                entity.Property(e => e.StartOfFileName)
-                    .IsRequired()
-                    .HasMaxLength(100);
-
-                entity.Property(e => e.TranslationStatusName).HasComment("Error -1, Not Translated = 1, Electronically Translated = 2, Translated = 3");
-
-                entity.HasOne(d => d.ReportType)
-                    .WithMany(p => p.ReportTypeLanguages)
-                    .HasForeignKey(d => d.ReportTypeID)
-                    .HasConstraintName("FK_ReportTypeLanguages_ReportTypes");
-            });
-
             modelBuilder.Entity<ReportTypes>(entity =>
             {
                 entity.HasKey(e => e.ReportTypeID);
@@ -3208,7 +3129,13 @@ namespace CSSPWebAPIs.Models.Temp
                 entity.HasIndex(e => e.UniqueCode)
                     .HasName("IX_UniqueCode");
 
+                entity.Property(e => e.Description).HasColumnType("text");
+
                 entity.Property(e => e.LastUpdateDate_UTC).HasColumnType("datetime");
+
+                entity.Property(e => e.Name).HasMaxLength(100);
+
+                entity.Property(e => e.StartOfFileName).HasMaxLength(100);
 
                 entity.Property(e => e.UniqueCode)
                     .IsRequired()
