@@ -18,6 +18,7 @@ using Microsoft.OData.Edm;
 using Microsoft.AspNet.OData.Builder;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json.Serialization;
+using Microsoft.OpenApi.Models;
 
 namespace CSSPWebAPIs
 {
@@ -47,6 +48,11 @@ namespace CSSPWebAPIs
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
             services.AddOData();
+
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "My API", Version = "v1" });
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -66,6 +72,14 @@ namespace CSSPWebAPIs
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
+
+            app.UseSwagger();
+
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+            });
+            
             app.UseRouting();
 
             app.UseAuthentication();
@@ -81,6 +95,7 @@ namespace CSSPWebAPIs
                 endpoints.EnableDependencyInjection();
                 endpoints.Select().Filter().OrderBy().Count().MaxTop(10).Expand();
             });
+
         }
     }
 }
