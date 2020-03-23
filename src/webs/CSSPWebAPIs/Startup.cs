@@ -73,13 +73,6 @@ namespace CSSPWebAPIs
             app.UseStaticFiles();
 
 
-            app.UseSwagger();
-
-            app.UseSwaggerUI(c =>
-            {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
-            });
-            
             app.UseRouting();
 
             app.UseAuthentication();
@@ -95,6 +88,14 @@ namespace CSSPWebAPIs
                 endpoints.EnableDependencyInjection();
                 endpoints.Select().Filter().OrderBy().Count().MaxTop(10).Expand();
             });
+
+            app.UseSwagger();
+
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+            });
+
 
         }
     }
