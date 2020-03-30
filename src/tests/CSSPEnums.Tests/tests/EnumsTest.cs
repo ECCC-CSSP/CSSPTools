@@ -37,7 +37,8 @@ namespace CSSPEnums.Tests
             Thread.CurrentThread.CurrentCulture = culture;
             Thread.CurrentThread.CurrentUICulture = culture;
 
-            enums = new Enums((culture.TwoLetterISOLanguageName == "fr" ? LanguageEnum.fr : LanguageEnum.en));
+            enums = new Enums();
+            enums.SetResourcesCulture(culture);
         }
         #endregion Functions private
 

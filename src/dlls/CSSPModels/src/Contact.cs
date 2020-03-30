@@ -99,6 +99,13 @@ namespace CSSPModels
         [CSSPDescriptionEN(DescriptionEN = @"Sampling planner for provinces")]
         [CSSPDescriptionFR(DescriptionFR = @"Planificateur d'échantillonnage pour les provinces")]
         public string SamplingPlanner_ProvincesTVItemID { get; set; }
+        [StringLength(255)]
+        [CSSPAllowNull]
+        [CSSPDisplayEN(DisplayEN = "JWT Token")]
+        [CSSPDisplayFR(DisplayFR = "JWT Token (fr)")]
+        [CSSPDescriptionEN(DescriptionEN = @"Javascript Web Token")]
+        [CSSPDescriptionFR(DescriptionFR = @"Javascript Web Token (fr)")]
+        public string Token { get; set; }
         #endregion Properties in DB
 
         #region Constructors

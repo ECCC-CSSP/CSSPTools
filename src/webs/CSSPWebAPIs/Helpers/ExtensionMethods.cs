@@ -1,4 +1,5 @@
-﻿using CSSPWebAPIs.Entities;
+﻿using CSSPModels;
+using CSSPWebAPIs.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,15 +9,15 @@ namespace CSSPWebAPIs.Helpers
 {
     public static class ExtensionMethods
     {
-        public static IEnumerable<User> WithoutPasswords(this IEnumerable<User> users)
+        public static IEnumerable<Contact> Cleaned(this IEnumerable<Contact> contacts)
         {
-            return users.Select(x => x.WithoutPassword());
+            return contacts.Select(x => x.Cleaned());
         }
 
-        public static User WithoutPassword(this User user)
+        public static Contact Cleaned(this Contact contact)
         {
-            user.Password = null;
-            return user;
+            //contact.SamplingPlanner_ProvincesTVItemID = null;
+            return contact;
         }
     }
 }

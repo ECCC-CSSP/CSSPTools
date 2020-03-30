@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using CSSPEnums;
 using System.Net;
+using System.Globalization;
 
 namespace CSSPEnumsGenerateCodeHelper
 {
@@ -28,8 +29,11 @@ namespace CSSPEnumsGenerateCodeHelper
             ClearPermanentEvent(new StatusEventArgs("Starting ..."));
             StatusPermanentEvent(new StatusEventArgs(""));
 
-            Enums enumsEn = new Enums(LanguageEnum.en);
-            Enums enumsFr = new Enums(LanguageEnum.fr);
+            Enums enumsEn = new Enums();
+            enumsEn.SetResourcesCulture(new CultureInfo("en-CA"));
+
+            Enums enumsFr = new Enums();
+            enumsFr.SetResourcesCulture(new CultureInfo("fr-CA"));
 
             StringBuilder sb = new StringBuilder();
             StringBuilder sbPol = new StringBuilder();
@@ -111,30 +115,37 @@ namespace CSSPEnumsGenerateCodeHelper
             sb.AppendLine(@" * You can then re-include this file to the project while excluding Enums.cs");
             sb.AppendLine(@" * ");
             sb.AppendLine(@" */");
+            sb.AppendLine(@"using CSSPEnum.Resources;");
+            sb.AppendLine(@"using CSSPEnum.Resources.Generated;");
             sb.AppendLine(@"using System.Globalization;");
             sb.AppendLine(@"using System.Threading;");
+            sb.AppendLine(@"using System.Threading.Tasks;");
             sb.AppendLine(@"");
             sb.AppendLine(@"namespace CSSPEnums");
             sb.AppendLine(@"{");
+            sb.AppendLine(@"    /// <summary>");
+            sb.AppendLine(@"    /// > [!NOTE]");
+            sb.AppendLine(@"    /// > <para>Interface used with Enums</para>");
+            sb.AppendLine(@"    /// </summary>");
+            sb.AppendLine(@"    #region Interfaces");
+            sb.AppendLine(@"    public interface IEnums");
+            sb.AppendLine(@"    {");
+            sb.AppendLine(@"        // will be generated in Generated\IEnumsGenerated.cs");
+            sb.AppendLine(@"    }");
+            sb.AppendLine(@"    #endregion Interfaces");
+            sb.AppendLine(@"");
             sb.AppendLine(@"    /// <summary>");
             sb.AppendLine(@"    /// > [!NOTE]");
             sb.AppendLine(@"    /// > <para>Class holding all Enum used in CSSP applications and methods used to get text associated with the Enum in both languages [LanguageEnum.en, LanguageEnum.fr]</para>");
             sb.AppendLine(@"    /// > <para>**Used by** : [CSSPModels](CSSPModels.html), [CSSPServices](CSSPServices.html)</para>");
             sb.AppendLine(@"    /// > <para>**Return to [CSSPEnums](CSSPEnums.html)**</para>");
             sb.AppendLine(@"    /// </summary>");
-            sb.AppendLine(@"    public partial class Enums");
+            sb.AppendLine(@"    public partial class Enums : IEnums");
             sb.AppendLine(@"    {");
             sb.AppendLine(@"        #region Variables");
             sb.AppendLine(@"        #endregion Variables");
             sb.AppendLine(@"");
             sb.AppendLine(@"        #region Properties");
-            sb.AppendLine(@"        /// <summary>");
-            sb.AppendLine(@"        /// > [!NOTE]");
-            sb.AppendLine(@"        /// > <para>**Language requested for accessing text representing the enumeration**</para>");
-            sb.AppendLine(@"        /// > <para>**Allowable values are [LanguageEnum.en, LanguageEnum.fr]**</para>");
-            sb.AppendLine(@"        /// </summary>");
-            sb.AppendLine(@"        /// <param name=""LanguageRequest"">The language to use when getting the text of the enumerations</param>");
-            sb.AppendLine(@"        public LanguageEnum LanguageRequest { get; set; }");
             sb.AppendLine(@"        #endregion Properties");
             sb.AppendLine(@"");
             sb.AppendLine(@"        #region Constructors");
@@ -161,22 +172,13 @@ namespace CSSPEnumsGenerateCodeHelper
             sb.AppendLine(@"        ///         Enums enums = new Enums(LanguageEnum.fr)</c>");
             sb.AppendLine(@"        ///     </code>");
             sb.AppendLine(@"        /// </example>");
-            sb.AppendLine(@"        public Enums(LanguageEnum LanguageRequest)");
+            sb.AppendLine(@"        public Enums()");
             sb.AppendLine(@"        {");
-            sb.AppendLine(@"            this.LanguageRequest = LanguageRequest;");
-            sb.AppendLine(@"            if (this.LanguageRequest == LanguageEnum.fr)");
-            sb.AppendLine(@"            {");
-            sb.AppendLine(@"                Thread.CurrentThread.CurrentCulture = new CultureInfo(""fr-CA"");");
-            sb.AppendLine(@"                Thread.CurrentThread.CurrentUICulture = new CultureInfo(""fr-CA"");");
-            sb.AppendLine(@"            }");
-            sb.AppendLine(@"            else");
-            sb.AppendLine(@"            {");
-            sb.AppendLine(@"                Thread.CurrentThread.CurrentCulture = new CultureInfo(""en-CA"");");
-            sb.AppendLine(@"                Thread.CurrentThread.CurrentUICulture = new CultureInfo(""en-CA"");");
-            sb.AppendLine(@"            }");
             sb.AppendLine(@"        }");
             sb.AppendLine(@"        #endregion Construtors");
             sb.AppendLine(@"");
+            sb.AppendLine(@"        #region Functions public");
+            sb.AppendLine(@"        #endregion Functions public");
             sb.AppendLine(@"    }");
             #endregion Top part Enums.cs
 
@@ -203,6 +205,7 @@ namespace CSSPEnumsGenerateCodeHelper
             #endregion Top part PolSourceObsInfoEnumGenerated.cs
 
             int EnumsCount = 0;
+            sb.AppendLine(@"    #region Enum");
             foreach (DLLTypeInfo dllTypeInfoEnums in DLLTypeInfoCSSPEnumsList)
             {
                 StringBuilder sbType = new StringBuilder();
@@ -296,7 +299,9 @@ namespace CSSPEnumsGenerateCodeHelper
                 }
 
             }
+            sb.AppendLine(@"    #endregion Enum");
             sb.AppendLine(@"");
+            sb.AppendLine(@"    #region Models");
             sb.AppendLine(@"    /// <summary>");
             sb.AppendLine(@"    /// > [!NOTE]");
             sb.AppendLine(@"    /// > Class representing the Enumeration ID and Text in allowable languages LanguageEnum.en, LanguageEnum.fr");
@@ -314,6 +319,7 @@ namespace CSSPEnumsGenerateCodeHelper
             sb.AppendLine(@"        /// <param name=""EnumText"">The text associated with the Enumeration ID</param>");
             sb.AppendLine(@"        public string EnumText { get; set; }");
             sb.AppendLine(@"    }");
+            sb.AppendLine(@"    #region Models");
             sb.AppendLine(@"");
             sb.AppendLine(@"}");
 

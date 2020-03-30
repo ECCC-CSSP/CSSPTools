@@ -38,6 +38,34 @@ namespace CSSPModels
         [CSSPDescriptionEN(DescriptionEN = @"Unique code --- used in code for knowing which document and type of document to create")]
         [CSSPDescriptionFR(DescriptionFR = @"Type de filière --- utilisé dans le code afin de savoir quel document et type de document à créer")]
         public string UniqueCode { get; set; }
+        [CSSPEnumType]
+        [CSSPAllowNull]
+        [CSSPDisplayEN(DisplayEN = "Language")]
+        [CSSPDisplayFR(DisplayFR = "Langage")]
+        [CSSPDescriptionEN(DescriptionEN = @"Language of item")]
+        [CSSPDescriptionFR(DescriptionFR = @"Langage de l'item")]
+        public LanguageEnum? Language { get; set; }
+        [StringLength(100)]
+        [CSSPAllowNull]
+        [CSSPDisplayEN(DisplayEN = "Name")]
+        [CSSPDisplayFR(DisplayFR = "Nom")]
+        [CSSPDescriptionEN(DescriptionEN = @"Name of the report type")]
+        [CSSPDescriptionFR(DescriptionFR = @"Nom du type de raport")]
+        public string Name { get; set; }
+        [StringLength(1000)]
+        [CSSPAllowNull]
+        [CSSPDisplayEN(DisplayEN = "Description")]
+        [CSSPDisplayFR(DisplayFR = "Description")]
+        [CSSPDescriptionEN(DescriptionEN = @"Description of the report type")]
+        [CSSPDescriptionFR(DescriptionFR = @"Description du type de raport")]
+        public string Description { get; set; }
+        [StringLength(100)]
+        [CSSPAllowNull]
+        [CSSPDisplayEN(DisplayEN = "Start of file name")]
+        [CSSPDisplayFR(DisplayFR = "Début du nom de la filière")]
+        [CSSPDescriptionEN(DescriptionEN = @"Start of file name")]
+        [CSSPDescriptionFR(DescriptionFR = @"Début du nom de la filière")]
+        public string StartOfFileName { get; set; }
         #endregion Properties in DB
 
         #region Constructors

@@ -39,7 +39,7 @@ namespace CSSPModels.Tests
         [Fact]
         public void Contact_Properties_Test()
         {
-            List<string> propNameList = new List<string>() { "ContactID", "Id", "ContactTVItemID", "LoginEmail", "FirstName", "LastName", "Initial", "WebName", "ContactTitle", "IsAdmin", "EmailValidated", "Disabled", "IsNew", "SamplingPlanner_ProvincesTVItemID", "LastUpdateDate_UTC", "LastUpdateContactTVItemID",  }.OrderBy(c => c).ToList();
+            List<string> propNameList = new List<string>() { "ContactID", "Id", "ContactTVItemID", "LoginEmail", "FirstName", "LastName", "Initial", "WebName", "ContactTitle", "IsAdmin", "EmailValidated", "Disabled", "IsNew", "SamplingPlanner_ProvincesTVItemID", "Token", "LastUpdateDate_UTC", "LastUpdateContactTVItemID",  }.OrderBy(c => c).ToList();
             List<string> propNameNotMappedList = new List<string>() { "HasErrors",  }.OrderBy(c => c).ToList();
 
             int index = 0;
@@ -155,18 +155,21 @@ namespace CSSPModels.Tests
                string val14 = "Some text";
                contact.SamplingPlanner_ProvincesTVItemID = val14;
                Assert.Equal(val14, contact.SamplingPlanner_ProvincesTVItemID);
-               DateTime val15 = new DateTime(2010, 3, 4);
-               contact.LastUpdateDate_UTC = val15;
-               Assert.Equal(val15, contact.LastUpdateDate_UTC);
-               int val16 = 45;
-               contact.LastUpdateContactTVItemID = val16;
-               Assert.Equal(val16, contact.LastUpdateContactTVItemID);
-               bool val17 = true;
-               contact.HasErrors = val17;
-               Assert.Equal(val17, contact.HasErrors);
-               IEnumerable<ValidationResult> val54 = new List<ValidationResult>() { new ValidationResult("First CSSPError Message") }.AsEnumerable();
-               contact.ValidationResults = val54;
-               Assert.Equal(val54, contact.ValidationResults);
+               string val15 = "Some text";
+               contact.Token = val15;
+               Assert.Equal(val15, contact.Token);
+               DateTime val16 = new DateTime(2010, 3, 4);
+               contact.LastUpdateDate_UTC = val16;
+               Assert.Equal(val16, contact.LastUpdateDate_UTC);
+               int val17 = 45;
+               contact.LastUpdateContactTVItemID = val17;
+               Assert.Equal(val17, contact.LastUpdateContactTVItemID);
+               bool val18 = true;
+               contact.HasErrors = val18;
+               Assert.Equal(val18, contact.HasErrors);
+               IEnumerable<ValidationResult> val57 = new List<ValidationResult>() { new ValidationResult("First CSSPError Message") }.AsEnumerable();
+               contact.ValidationResults = val57;
+               Assert.Equal(val57, contact.ValidationResults);
         }
         #endregion Tests Functions public
     }

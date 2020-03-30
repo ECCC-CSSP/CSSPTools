@@ -2712,24 +2712,6 @@
   <data name="TVTypeEnumRestricted" xml:space="preserve">
     <value>Restricted</value>
   </data>
-  <data name="WhereOperatorEnumContains" xml:space="preserve">
-    <value>Contains</value>
-  </data>
-  <data name="WhereOperatorEnumEndsWith" xml:space="preserve">
-    <value>EndsWith</value>
-  </data>
-  <data name="WhereOperatorEnumEqual" xml:space="preserve">
-    <value>Equal</value>
-  </data>
-  <data name="WhereOperatorEnumGreaterThan" xml:space="preserve">
-    <value>GreaterThan</value>
-  </data>
-  <data name="WhereOperatorEnumLessThan" xml:space="preserve">
-    <value>LessThan</value>
-  </data>
-  <data name="WhereOperatorEnumStartsWith" xml:space="preserve">
-    <value>StartsWith</value>
-  </data>
   <data name="StreetTypeEnumLane" xml:space="preserve">
     <value>Lane</value>
   </data>
@@ -2927,5 +2909,11 @@
   </data>
   <data name="CanOverflowTypeEnumYes" xml:space="preserve">
     <value>Yes</value>
+  </data>
+  <data name="ReportGenerateObjectsKeywordEnumSUBSECTOR_MUNICIPALITIES_COMPACT" xml:space="preserve">
+    <value>SUBSECTOR_MUNICIPALITIES_COMPACT</value>
+  </data>
+  <data name="ReportGenerateObjectsKeywordEnumSUBSECTOR_MUNICIPALITIES_FULL" xml:space="preserve">
+    <value>SUBSECTOR_MUNICIPALITIES_FULL</value>
   </data>
 </root>

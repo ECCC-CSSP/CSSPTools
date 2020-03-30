@@ -39,7 +39,7 @@ namespace CSSPModels.Tests
         [Fact]
         public void ReportSection_Properties_Test()
         {
-            List<string> propNameList = new List<string>() { "ReportSectionID", "ReportTypeID", "TVItemID", "Ordinal", "IsStatic", "ParentReportSectionID", "Year", "Locked", "TemplateReportSectionID", "LastUpdateDate_UTC", "LastUpdateContactTVItemID",  }.OrderBy(c => c).ToList();
+            List<string> propNameList = new List<string>() { "ReportSectionID", "ReportTypeID", "TVItemID", "Language", "Ordinal", "IsStatic", "ParentReportSectionID", "Year", "Locked", "TemplateReportSectionID", "ReportSectionName", "ReportSectionText", "LastUpdateDate_UTC", "LastUpdateContactTVItemID",  }.OrderBy(c => c).ToList();
             List<string> propNameNotMappedList = new List<string>() { "HasErrors",  }.OrderBy(c => c).ToList();
 
             int index = 0;
@@ -122,36 +122,45 @@ namespace CSSPModels.Tests
                int val3 = 45;
                reportSection.TVItemID = val3;
                Assert.Equal(val3, reportSection.TVItemID);
-               int val4 = 45;
-               reportSection.Ordinal = val4;
-               Assert.Equal(val4, reportSection.Ordinal);
-               bool val5 = true;
-               reportSection.IsStatic = val5;
-               Assert.Equal(val5, reportSection.IsStatic);
-               int val6 = 45;
-               reportSection.ParentReportSectionID = val6;
-               Assert.Equal(val6, reportSection.ParentReportSectionID);
+               LanguageEnum val4 = (LanguageEnum)3;
+               reportSection.Language = val4;
+               Assert.Equal(val4, reportSection.Language);
+               int val5 = 45;
+               reportSection.Ordinal = val5;
+               Assert.Equal(val5, reportSection.Ordinal);
+               bool val6 = true;
+               reportSection.IsStatic = val6;
+               Assert.Equal(val6, reportSection.IsStatic);
                int val7 = 45;
-               reportSection.Year = val7;
-               Assert.Equal(val7, reportSection.Year);
-               bool val8 = true;
-               reportSection.Locked = val8;
-               Assert.Equal(val8, reportSection.Locked);
-               int val9 = 45;
-               reportSection.TemplateReportSectionID = val9;
-               Assert.Equal(val9, reportSection.TemplateReportSectionID);
-               DateTime val10 = new DateTime(2010, 3, 4);
-               reportSection.LastUpdateDate_UTC = val10;
-               Assert.Equal(val10, reportSection.LastUpdateDate_UTC);
-               int val11 = 45;
-               reportSection.LastUpdateContactTVItemID = val11;
-               Assert.Equal(val11, reportSection.LastUpdateContactTVItemID);
-               bool val12 = true;
-               reportSection.HasErrors = val12;
-               Assert.Equal(val12, reportSection.HasErrors);
-               IEnumerable<ValidationResult> val39 = new List<ValidationResult>() { new ValidationResult("First CSSPError Message") }.AsEnumerable();
-               reportSection.ValidationResults = val39;
-               Assert.Equal(val39, reportSection.ValidationResults);
+               reportSection.ParentReportSectionID = val7;
+               Assert.Equal(val7, reportSection.ParentReportSectionID);
+               int val8 = 45;
+               reportSection.Year = val8;
+               Assert.Equal(val8, reportSection.Year);
+               bool val9 = true;
+               reportSection.Locked = val9;
+               Assert.Equal(val9, reportSection.Locked);
+               int val10 = 45;
+               reportSection.TemplateReportSectionID = val10;
+               Assert.Equal(val10, reportSection.TemplateReportSectionID);
+               string val11 = "Some text";
+               reportSection.ReportSectionName = val11;
+               Assert.Equal(val11, reportSection.ReportSectionName);
+               string val12 = "Some text";
+               reportSection.ReportSectionText = val12;
+               Assert.Equal(val12, reportSection.ReportSectionText);
+               DateTime val13 = new DateTime(2010, 3, 4);
+               reportSection.LastUpdateDate_UTC = val13;
+               Assert.Equal(val13, reportSection.LastUpdateDate_UTC);
+               int val14 = 45;
+               reportSection.LastUpdateContactTVItemID = val14;
+               Assert.Equal(val14, reportSection.LastUpdateContactTVItemID);
+               bool val15 = true;
+               reportSection.HasErrors = val15;
+               Assert.Equal(val15, reportSection.HasErrors);
+               IEnumerable<ValidationResult> val48 = new List<ValidationResult>() { new ValidationResult("First CSSPError Message") }.AsEnumerable();
+               reportSection.ValidationResults = val48;
+               Assert.Equal(val48, reportSection.ValidationResults);
         }
         #endregion Tests Functions public
     }

@@ -39,7 +39,7 @@ namespace CSSPModels.Tests
         [Fact]
         public void ReportType_Properties_Test()
         {
-            List<string> propNameList = new List<string>() { "ReportTypeID", "TVType", "FileType", "UniqueCode", "LastUpdateDate_UTC", "LastUpdateContactTVItemID",  }.OrderBy(c => c).ToList();
+            List<string> propNameList = new List<string>() { "ReportTypeID", "TVType", "FileType", "UniqueCode", "Language", "Name", "Description", "StartOfFileName", "LastUpdateDate_UTC", "LastUpdateContactTVItemID",  }.OrderBy(c => c).ToList();
             List<string> propNameNotMappedList = new List<string>() { "HasErrors",  }.OrderBy(c => c).ToList();
 
             int index = 0;
@@ -125,18 +125,30 @@ namespace CSSPModels.Tests
                string val4 = "Some text";
                reportType.UniqueCode = val4;
                Assert.Equal(val4, reportType.UniqueCode);
-               DateTime val5 = new DateTime(2010, 3, 4);
-               reportType.LastUpdateDate_UTC = val5;
-               Assert.Equal(val5, reportType.LastUpdateDate_UTC);
-               int val6 = 45;
-               reportType.LastUpdateContactTVItemID = val6;
-               Assert.Equal(val6, reportType.LastUpdateContactTVItemID);
-               bool val7 = true;
-               reportType.HasErrors = val7;
-               Assert.Equal(val7, reportType.HasErrors);
-               IEnumerable<ValidationResult> val24 = new List<ValidationResult>() { new ValidationResult("First CSSPError Message") }.AsEnumerable();
-               reportType.ValidationResults = val24;
-               Assert.Equal(val24, reportType.ValidationResults);
+               LanguageEnum val5 = (LanguageEnum)3;
+               reportType.Language = val5;
+               Assert.Equal(val5, reportType.Language);
+               string val6 = "Some text";
+               reportType.Name = val6;
+               Assert.Equal(val6, reportType.Name);
+               string val7 = "Some text";
+               reportType.Description = val7;
+               Assert.Equal(val7, reportType.Description);
+               string val8 = "Some text";
+               reportType.StartOfFileName = val8;
+               Assert.Equal(val8, reportType.StartOfFileName);
+               DateTime val9 = new DateTime(2010, 3, 4);
+               reportType.LastUpdateDate_UTC = val9;
+               Assert.Equal(val9, reportType.LastUpdateDate_UTC);
+               int val10 = 45;
+               reportType.LastUpdateContactTVItemID = val10;
+               Assert.Equal(val10, reportType.LastUpdateContactTVItemID);
+               bool val11 = true;
+               reportType.HasErrors = val11;
+               Assert.Equal(val11, reportType.HasErrors);
+               IEnumerable<ValidationResult> val36 = new List<ValidationResult>() { new ValidationResult("First CSSPError Message") }.AsEnumerable();
+               reportType.ValidationResults = val36;
+               Assert.Equal(val36, reportType.ValidationResults);
         }
         #endregion Tests Functions public
     }

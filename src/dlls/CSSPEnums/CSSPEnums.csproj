@@ -6,6 +6,10 @@
 
   <ItemGroup>
     <Compile Remove="EnumsWithDocGenerated.cs" />
+    <Compile Remove="Generated\EnumsGenerated - Copy.cs" />
+    <Compile Remove="Generated\EnumsPolSourceInfoGenerated - Copy.cs" />
+    <Compile Remove="Generated\IEnumsGenerated - Copy.cs" />
+    <Compile Remove="Generated\PolSourceObsInfoEnumGenerated - Copy.cs" />
     <Compile Remove="PolSourceObsInfoEnumWithDocGenerated.cs" />
   </ItemGroup>
 

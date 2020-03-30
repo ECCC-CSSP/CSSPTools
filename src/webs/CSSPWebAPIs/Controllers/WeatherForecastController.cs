@@ -9,7 +9,7 @@ using Microsoft.Extensions.Logging;
 namespace CSSPWebAPIs.Controllers
 {
     [ApiController]
-    [Route(@"[controller]")]
+    [Route(@"api/{culture}/[controller]")]
     [Authorize]
     public class WeatherForecastController : ControllerBase
     {

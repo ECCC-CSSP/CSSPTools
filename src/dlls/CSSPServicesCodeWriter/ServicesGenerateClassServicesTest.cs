@@ -743,7 +743,7 @@ namespace CSSPServicesGenerateCodeHelper
                                     {
                                         case "AspNetUser":
                                             {
-                                                using (CSSPDBContext db = new CSSPDBContext(DatabaseTypeEnum.SqlServerTestDB))
+                                                using (CSSPDBContext db = new CSSPDBContext())
                                                 {
                                                     //AspNetUserService aspNetUserService = new AspNetUserService(new Query(), db, 2);
                                                     //AspNetUser AspNetUser = aspNetUserService.GetAspNetUserList().FirstOrDefault();

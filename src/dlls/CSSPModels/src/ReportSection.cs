@@ -32,6 +32,13 @@ namespace CSSPModels
         [CSSPDescriptionEN(DescriptionEN = @"Link to the TVItems table representing the item")]
         [CSSPDescriptionFR(DescriptionFR = @"Lien à la table TVItems représentant l'item")]
         public int? TVItemID { get; set; }
+        [CSSPEnumType]
+        [CSSPAllowNull]
+        [CSSPDisplayEN(DisplayEN = "Language")]
+        [CSSPDisplayFR(DisplayFR = "Langage")]
+        [CSSPDescriptionEN(DescriptionEN = @"Language of item")]
+        [CSSPDescriptionFR(DescriptionFR = @"Langage de l'item")]
+        public LanguageEnum? Language { get; set; }
         [Range(0, 1000)]
         [CSSPDisplayEN(DisplayEN = "Ordinal")]
         [CSSPDisplayFR(DisplayFR = "Ordre")]
@@ -66,6 +73,20 @@ namespace CSSPModels
         [CSSPDescriptionEN(DescriptionEN = @"Template report section ID --- not currently used")]
         [CSSPDescriptionFR(DescriptionFR = @"Gabari de la section du raport ID --- pas utilisé encore")]
         public int? TemplateReportSectionID { get; set; }
+        [StringLength(100)]
+        [CSSPAllowNull]
+        [CSSPDisplayEN(DisplayEN = "Report section name")]
+        [CSSPDisplayFR(DisplayFR = "Nom de la section du raport")]
+        [CSSPDescriptionEN(DescriptionEN = @"Report section name")]
+        [CSSPDescriptionFR(DescriptionFR = @"Nom de la section du raport")]
+        public string ReportSectionName { get; set; }
+        [StringLength(10000)]
+        [CSSPAllowNull]
+        [CSSPDisplayEN(DisplayEN = "Report section text")]
+        [CSSPDisplayFR(DisplayFR = "Texte de la section du raport")]
+        [CSSPDescriptionEN(DescriptionEN = @"Report section text")]
+        [CSSPDescriptionFR(DescriptionFR = @"Texte de la section du raport")]
+        public string ReportSectionText { get; set; }
         #endregion Properties in DB
 
         #region Constructors

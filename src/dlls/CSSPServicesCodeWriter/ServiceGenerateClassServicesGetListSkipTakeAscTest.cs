@@ -27,7 +27,7 @@ namespace CSSPServicesGenerateCodeHelper
             sb.AppendLine(@"            {");
             sb.AppendLine(@"                ChangeCulture(culture);");
             sb.AppendLine(@"");
-            sb.AppendLine(@"                using (CSSPDBContext dbTestDB = new CSSPDBContext(DatabaseTypeEnum.SqlServerTestDB))");
+            sb.AppendLine(@"                using (CSSPDBContext dbTestDB = new CSSPDBContext())");
             sb.AppendLine(@"                {");
             sb.AppendLine($@"                    { TypeName }Service { TypeNameLower }Service = new { TypeName }Service(new Query() {{ Lang = culture.TwoLetterISOLanguageName }}, dbTestDB, ContactID);");
             sb.AppendLine(@"");

@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -7,7 +7,14 @@ using CSSPWebAPIs.Services;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-
+using Microsoft.EntityFrameworkCore;
+using CSSPModels;
+using Microsoft.AspNet.OData.Extensions;
+using CSSPWebAPIs.Models;
+using Microsoft.AspNetCore.Identity;
+using CSSPWebAPIs.Resources;
+using System.Globalization;
+using Microsoft.AspNetCore.Localization;
 
 namespace CSSPWebAPIs
 {
@@ -24,7 +31,7 @@ namespace CSSPWebAPIs
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddCors();
-            services.AddControllers();
+            services.AddControllers().AddNewtonsoftJson();
 
             // configure strongly typed settings objects
             var appSettingsSection = Configuration.GetSection("AppSettings");
@@ -51,8 +58,36 @@ namespace CSSPWebAPIs
                 };
             });
 
-            // configure DI for application services
-            services.AddScoped<IUserService, UserService>();
+
+            //// using CSSPDB
+            //services.AddDbContext<CSSPDBContext>(options =>
+            //        options.UseSqlServer(Configuration.GetConnectionString("CSSPDB")));
+
+            // using CSSPDB2
+            services.AddDbContext<CSSPDBContext>(options =>
+                    options.UseSqlServer(Configuration.GetConnectionString("CSSPDB2")));
+
+            //// using In Memory CSSPDB2
+            //services.AddDbContext<CSSPDBContext>(options =>
+            //        options.UseInMemoryDatabase(Configuration.GetConnectionString("CSSPDB2")));
+
+            //// using TestDB
+            //services.AddDbContext<CSSPDBContext>(options =>
+            //        options.UseSqlServer(Configuration.GetConnectionString("TestDB")));
+
+            services.AddDbContext<ApplicationDbContext>(options =>
+                    options.UseSqlServer(Configuration.GetConnectionString("CSSPDB2")));
+            
+            //services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+            //    .AddEntityFrameworkStores<ApplicationDbContext>();
+
+            services.AddIdentityCore<ApplicationUser>()
+                .AddEntityFrameworkStores<ApplicationDbContext>();
+
+            services.AddScoped<IContactService, ContactService>();
+
+            services.AddOData();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -69,8 +104,11 @@ namespace CSSPWebAPIs
             app.UseAuthentication();
             app.UseAuthorization();
 
-            app.UseEndpoints(endpoints => {
+            app.UseEndpoints(endpoints =>
+            {
                 endpoints.MapControllers();
+                endpoints.EnableDependencyInjection();
+                endpoints.Select().Filter().OrderBy().Count().MaxTop(10);
             });
         }
     }

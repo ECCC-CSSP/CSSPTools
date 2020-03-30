@@ -13,39 +13,40 @@
  * PolSourceObsInfoEnumGenerated.cs (to exclude from project).
  * 
  */
+using CSSPEnums.Resources;
+using CSSPEnums.Resources.Generated;
 using System.Globalization;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace CSSPEnums
 {
+    #region Interfaces
+    partial interface IEnums
+    {
+        // will be generated in Generated\IEnumsGenerated.cs
+    }
+    #endregion Interfaces
 
-    public partial class Enums
+    public partial class Enums : IEnums
     {
         #region Variables
         #endregion Variables
 
         #region Properties
-        LanguageEnum LanguageRequest { get; set; }
         #endregion Properties
 
         #region Constructors
-        public Enums(LanguageEnum LanguageRequest)
+        public Enums()
         {
-            this.LanguageRequest = LanguageRequest;
-            if (LanguageRequest == LanguageEnum.fr)
-            {
-                Thread.CurrentThread.CurrentCulture = new CultureInfo("fr-CA");
-                Thread.CurrentThread.CurrentUICulture = new CultureInfo("fr-CA");
-            }
-            else
-            {
-                Thread.CurrentThread.CurrentCulture = new CultureInfo("en-CA");
-                Thread.CurrentThread.CurrentUICulture = new CultureInfo("en-CA");
-            }
         }
         #endregion Construtors
 
+        #region Functions public
+        #endregion Functions public
     }
+
+    #region Enums
     public enum ActionDBTypeEnum
     {
         Create = 1,
@@ -58,13 +59,6 @@ namespace CSSPEnums
         First = 1,
         Register = 2,
         LoggedIn = 3,
-    }
-    public enum DatabaseTypeEnum
-    {
-        MemoryCSSPDB = 1,
-        MemoryTestDB = 2,
-        SqlServerCSSPDB = 3,
-        SqlServerTestDB = 4,
     }
     public enum EntityQueryTypeEnum
     {
@@ -620,16 +614,15 @@ namespace CSSPEnums
         SUBSECTOR_MWQM_SITES_TEMPERATURE_TABLE = 11,
         SUBSECTOR_POLLUTION_SOURCE_SITES = 12,
         SUBSECTOR_POLLUTION_SOURCE_SITES_COMPACT = 13,
-        SUBSECTOR_MUNICIPALITIES = 14,
-        SUBSECTOR_MUNICIPALITY_INFRASTRUCTURE_MAP = 15,
-        SUBSECTOR_MUNICIPALITY_CONTACTS = 16,
-        SUBSECTOR_MUNICIPALITY_INFRASTRUCTURE_DETAIL = 17,
-        SUBSECTOR_ECCC_AND_SWCP_LOGO = 18,
-        SUBSECTOR_CSSP_LOGO = 19,
-        SUBSECTOR_LOCATION_OF_SURVEY_AREA_MAP = 21,
-        SUBSECTOR_CURRENT_CLASSIFICATION_AND_SAMPLING_LOCATION_MAP = 22,
-        SUBSECTOR_RECOMMENDED_CLASSIFICATION_MAP = 24,
-        SUBSECTOR_POLLUTION_SOURCE_LOCATIONS_MAP = 25,
+        SUBSECTOR_MUNICIPALITIES_COMPACT = 14,
+        SUBSECTOR_MUNICIPALITIES_FULL = 15,
+        SUBSECTOR_MUNICIPALITY_INFRASTRUCTURE_MAP = 16,
+        SUBSECTOR_ECCC_AND_SWCP_LOGO = 17,
+        SUBSECTOR_CSSP_LOGO = 18,
+        SUBSECTOR_LOCATION_OF_SURVEY_AREA_MAP = 19,
+        SUBSECTOR_CURRENT_CLASSIFICATION_AND_SAMPLING_LOCATION_MAP = 20,
+        SUBSECTOR_RECOMMENDED_CLASSIFICATION_MAP = 21,
+        SUBSECTOR_POLLUTION_SOURCE_LOCATIONS_MAP = 22,
     }
     public enum ReportSortingEnum
     {
@@ -1070,22 +1063,13 @@ namespace CSSPEnums
         flood = 10,             // Upper Bay of Fundy
         vigf8 = 11,             // Vancouver Island (Mike Foreman)
     }
+    #endregion
 
-    #region Extra enums not in the old version
-    public enum WhereOperatorEnum
-    {
-        Equal = 1,
-        LessThan = 2,
-        GreaterThan = 3,
-        Contains = 4,
-        StartsWith = 5,
-        EndsWith = 6,
-    }
-    #endregion Extra enums not in the old version
+    #region Models
     public class EnumIDAndText
     {
         public int? EnumID { get; set; }
         public string EnumText { get; set; }
     }
-
+    #endregion Models
 }

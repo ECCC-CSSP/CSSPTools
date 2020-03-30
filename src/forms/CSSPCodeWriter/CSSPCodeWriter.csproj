@@ -17,14 +17,16 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\dlls\CSSPEnumsCodeWriter\CSSPEnumsCodeWriter.csproj" />
+    <ProjectReference Include="..\..\dlls\CSSPModels\CSSPModels.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Reference Include="CSSPCodeWriterBase">
       <HintPath>..\..\dlls\CSSPCodeWriterBase\bin\Debug\netcoreapp3.1\CSSPCodeWriterBase.dll</HintPath>
     </Reference>
     <Reference Include="CSSPEnums">
       <HintPath>..\..\dlls\CSSPEnums\bin\Debug\netcoreapp3.1\CSSPEnums.dll</HintPath>
-    </Reference>
-    <Reference Include="CSSPEnumsCodeWriter">
-      <HintPath>..\..\dlls\CSSPEnumsCodeWriter\bin\Debug\netcoreapp3.1\CSSPEnumsCodeWriter.dll</HintPath>
     </Reference>
     <Reference Include="CSSPEnumsDLL">
       <HintPath>..\..\..\..\CSSP Latest Code Old\CSSPEnumsDLL\CSSPEnumsDLL\bin\Debug\CSSPEnumsDLL.dll</HintPath>
@@ -34,21 +36,6 @@
     </Reference>
     <Reference Include="CSSPModelsCodeWriter">
       <HintPath>..\..\dlls\CSSPModelsCodeWriter\bin\Debug\netcoreapp3.1\CSSPModelsCodeWriter.dll</HintPath>
-    </Reference>
-    <Reference Include="CSSPServices">
-      <HintPath>..\..\dlls\CSSPServices\bin\Debug\netcoreapp3.1\CSSPServices.dll</HintPath>
-    </Reference>
-    <Reference Include="CSSPServicesCodeWriter">
-      <HintPath>..\..\dlls\CSSPServicesCodeWriter\bin\Debug\netcoreapp3.1\CSSPServicesCodeWriter.dll</HintPath>
-    </Reference>
-    <Reference Include="CSSPWebAPICodeWriter">
-      <HintPath>..\..\dlls\CSSPAPICodeWriter\bin\Debug\netcoreapp3.1\CSSPWebAPICodeWriter.dll</HintPath>
-    </Reference>
-    <Reference Include="CSSPWebToolsAngCodeWriter">
-      <HintPath>..\..\dlls\CSSPWebToolsAngCodeWriter\bin\Debug\netcoreapp3.1\CSSPWebToolsAngCodeWriter.dll</HintPath>
-    </Reference>
-    <Reference Include="PostCSSPDocCleanFiles">
-      <HintPath>..\..\dlls\PostCSSPDocCleanFiles\bin\Debug\netcoreapp3.1\PostCSSPDocCleanFiles.dll</HintPath>
     </Reference>
   </ItemGroup>
 

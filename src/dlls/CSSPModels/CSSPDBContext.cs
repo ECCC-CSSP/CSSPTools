@@ -18,7 +18,6 @@ namespace CSSPModels
 
         #region Properties
         public IConfigurationRoot Configuration { get; set; }
-        public DatabaseTypeEnum? DatabaseType { get; set; }
         public string Error { get; set; }
 
         public virtual DbSet<Address> Addresses { get; set; }
@@ -79,9 +78,7 @@ namespace CSSPModels
         public virtual DbSet<RainExceedanceClimateSite> RainExceedanceClimateSites { get; set; }
         public virtual DbSet<RatingCurve> RatingCurves { get; set; }
         public virtual DbSet<ResetPassword> ResetPasswords { get; set; }
-        public virtual DbSet<ReportSectionLanguage> ReportSectionLanguages { get; set; }
         public virtual DbSet<ReportSection> ReportSections { get; set; }
-        public virtual DbSet<ReportTypeLanguage> ReportTypeLanguages { get; set; }
         public virtual DbSet<ReportType> ReportTypes { get; set; }
         public virtual DbSet<SamplingPlanSubsectorSite> SamplingPlanSubsectorSites { get; set; }
         public virtual DbSet<SamplingPlanSubsector> SamplingPlanSubsectors { get; set; }
@@ -111,30 +108,8 @@ namespace CSSPModels
         #region Constructors
         public CSSPDBContext()
         {
-            this.Error = string.Format(CSSPModelsRes._IsRequired, "DataType");
-            DatabaseType = null;
         }
-        public CSSPDBContext(DatabaseTypeEnum? DatabaseType)
-        {
-            this.Error = "";
-            switch (DatabaseType)
-            {
-                case DatabaseTypeEnum.MemoryCSSPDB:
-                case DatabaseTypeEnum.MemoryTestDB:
-                case DatabaseTypeEnum.SqlServerCSSPDB:
-                case DatabaseTypeEnum.SqlServerTestDB:
-                    {
-                        this.DatabaseType = DatabaseType;
-                    }
-                    break;
-                default:
-                    {
-                        this.Error = string.Format(CSSPModelsRes._IsRequired, "DataType");
-                        this.DatabaseType = null;
-                    }
-                    break;
-            }
-        }
+
         #endregion Constructors
 
         #region Overrides
@@ -147,34 +122,11 @@ namespace CSSPModels
                  .AddJsonFile(fullPath, optional: true, reloadOnChange: true)
                  .Build();
 
-                string CSSPDBConnectionString = Configuration.GetConnectionString("CSSPDB");
+                string CSSPDBConnectionString = Configuration.GetConnectionString("CSSPDB2");
                 string TestDBConnectionString = Configuration.GetConnectionString("TestDB");
 
-                if (DatabaseType == null)
-                {
-                    this.Error = string.Format(CSSPModelsRes._IsRequired, "DataType");
-                    return;
-                }
-
-                if (DatabaseType == DatabaseTypeEnum.MemoryTestDB)
-                {
-                    optionsBuilder.UseInMemoryDatabase(TestDBConnectionString);
-                }
-                else if (DatabaseType == DatabaseTypeEnum.MemoryCSSPDB)
-                {
-                    optionsBuilder.UseInMemoryDatabase(CSSPDBConnectionString);
-                }
-                else if (DatabaseType == DatabaseTypeEnum.SqlServerCSSPDB)
-                {
-                    optionsBuilder.UseSqlServer(CSSPDBConnectionString);
-                }
-                else //if (DatabaseType == DatabaseTypeEnum.SqlServerTestDB)
-                {
-                    optionsBuilder.UseSqlServer(TestDBConnectionString);
-                }
+                optionsBuilder.UseSqlServer(TestDBConnectionString);
             }
-
-            //base.OnConfiguring(optionsBuilder);
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

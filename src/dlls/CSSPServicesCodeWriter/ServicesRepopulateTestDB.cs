@@ -1048,7 +1048,7 @@ namespace CSSPServicesGenerateCodeHelper
             if (!AddObject("Address", address)) return false;
 
             //string TVText = "";
-            //using (CSSPDBContext db2 = new CSSPDBContext(DatabaseTypeEnum.SqlServerTestDB))
+            //using (CSSPDBContext db2 = new CSSPDBContext())
             //{
             //    AddressService addressService = new AddressService(new Query(), db2, contactCharles.ContactID);
             //    TVText = addressService.FillAddressTVText(address);
@@ -2548,7 +2548,7 @@ namespace CSSPServicesGenerateCodeHelper
             StatusTempEvent(new StatusEventArgs("doing ... Adding up to 10 items in Addresses"));
 
             #region Addresses
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseTypeEnum.SqlServerTestDB))
+            using (CSSPDBContext db = new CSSPDBContext())
             {
                 count = (from c in db.Addresses select c).Count();
                 if (count < 10)
@@ -2576,7 +2576,7 @@ namespace CSSPServicesGenerateCodeHelper
             StatusTempEvent(new StatusEventArgs("doing ... Adding up to 10 items in AppErrLogs"));
 
             #region AppErrLogs
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseTypeEnum.SqlServerTestDB))
+            using (CSSPDBContext db = new CSSPDBContext())
             {
                 count = (from c in db.AppErrLogs select c).Count();
                 if (count < 10)
@@ -2604,7 +2604,7 @@ namespace CSSPServicesGenerateCodeHelper
             StatusTempEvent(new StatusEventArgs("doing ... Adding up to 10 items in AppTasks"));
 
             #region AppTasks
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseTypeEnum.SqlServerTestDB))
+            using (CSSPDBContext db = new CSSPDBContext())
             {
                 count = (from c in db.AppTasks select c).Count();
                 if (count < 10)
@@ -2644,7 +2644,7 @@ namespace CSSPServicesGenerateCodeHelper
             StatusTempEvent(new StatusEventArgs("doing ... Adding up to 10 items in BoxModels"));
 
             #region BoxModels
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseTypeEnum.SqlServerTestDB))
+            using (CSSPDBContext db = new CSSPDBContext())
             {
                 count = (from c in db.BoxModels select c).Count();
                 if (count < 10)
@@ -2693,7 +2693,7 @@ namespace CSSPServicesGenerateCodeHelper
             StatusTempEvent(new StatusEventArgs("doing ... Adding up to 10 items in ClimateSites"));
 
             #region ClimateSites
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseTypeEnum.SqlServerTestDB))
+            using (CSSPDBContext db = new CSSPDBContext())
             {
                 count = (from c in db.ClimateSites select c).Count();
                 if (count < 10)
@@ -2730,7 +2730,7 @@ namespace CSSPServicesGenerateCodeHelper
             StatusTempEvent(new StatusEventArgs("doing ... Adding up to 10 items in ContactPreferences"));
 
             #region ContactPreferences
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseTypeEnum.SqlServerTestDB))
+            using (CSSPDBContext db = new CSSPDBContext())
             {
                 count = (from c in db.ContactPreferences select c).Count();
                 if (count < 10)
@@ -2758,7 +2758,7 @@ namespace CSSPServicesGenerateCodeHelper
             StatusTempEvent(new StatusEventArgs("doing ... Adding up to 10 items in Contacts"));
 
             #region Contacts
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseTypeEnum.SqlServerTestDB))
+            using (CSSPDBContext db = new CSSPDBContext())
             {
                 count = (from c in db.Contacts select c).Count();
                 if (count < 10)
@@ -2786,7 +2786,7 @@ namespace CSSPServicesGenerateCodeHelper
             StatusTempEvent(new StatusEventArgs("doing ... Adding up to 10 items in ContactShortcuts"));
 
             #region ContactShortcuts
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseTypeEnum.SqlServerTestDB))
+            using (CSSPDBContext db = new CSSPDBContext())
             {
                 count = (from c in db.ContactShortcuts select c).Count();
                 if (count < 10)
@@ -2814,7 +2814,7 @@ namespace CSSPServicesGenerateCodeHelper
             StatusTempEvent(new StatusEventArgs("doing ... Adding up to 10 items in DocTemplates"));
 
             #region DocTemplates
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseTypeEnum.SqlServerTestDB))
+            using (CSSPDBContext db = new CSSPDBContext())
             {
                 count = (from c in db.DocTemplates select c).Count();
                 if (count < 10)
@@ -2842,7 +2842,7 @@ namespace CSSPServicesGenerateCodeHelper
             StatusTempEvent(new StatusEventArgs("doing ... Adding up to 10 items in DrogueRuns"));
 
             #region DrogueRuns
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseTypeEnum.SqlServerTestDB))
+            using (CSSPDBContext db = new CSSPDBContext())
             {
                 count = (from c in db.DrogueRuns select c).Count();
                 if (count < 10)
@@ -2878,7 +2878,7 @@ namespace CSSPServicesGenerateCodeHelper
             StatusTempEvent(new StatusEventArgs("doing ... Adding up to 10 items in EmailDistributionListContactLanguages"));
 
             #region EmailDistributionListContactLanguages
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseTypeEnum.SqlServerTestDB))
+            using (CSSPDBContext db = new CSSPDBContext())
             {
                 count = (from c in db.EmailDistributionLists select c).Count();
                 if (count < 10)
@@ -2934,7 +2934,7 @@ namespace CSSPServicesGenerateCodeHelper
             StatusTempEvent(new StatusEventArgs("doing ... Adding up to 10 items in Emails"));
 
             #region Emails
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseTypeEnum.SqlServerTestDB))
+            using (CSSPDBContext db = new CSSPDBContext())
             {
                 count = (from c in db.Emails select c).Count();
                 if (count < 10)
@@ -2962,7 +2962,7 @@ namespace CSSPServicesGenerateCodeHelper
             StatusTempEvent(new StatusEventArgs("doing ... Adding up to 10 items in HelpDoc"));
 
             #region HelpDocs
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseTypeEnum.SqlServerTestDB))
+            using (CSSPDBContext db = new CSSPDBContext())
             {
                 count = (from c in db.HelpDocs select c).Count();
                 if (count < 10)
@@ -2989,7 +2989,7 @@ namespace CSSPServicesGenerateCodeHelper
             StatusTempEvent(new StatusEventArgs("doing ... Adding up to 10 items in HydrometricSites"));
 
             #region HydrometricSites
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseTypeEnum.SqlServerTestDB))
+            using (CSSPDBContext db = new CSSPDBContext())
             {
                 count = (from c in db.HydrometricSites select c).Count();
                 if (count < 10)
@@ -3027,7 +3027,7 @@ namespace CSSPServicesGenerateCodeHelper
             StatusTempEvent(new StatusEventArgs("doing ... Adding up to 10 items in Infrastructures"));
 
             #region Infrastructures
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseTypeEnum.SqlServerTestDB))
+            using (CSSPDBContext db = new CSSPDBContext())
             {
                 count = (from c in db.Infrastructures select c).Count();
                 if (count < 10)
@@ -3067,7 +3067,7 @@ namespace CSSPServicesGenerateCodeHelper
             StatusTempEvent(new StatusEventArgs("doing ... Adding up to 10 items in LabSheets"));
 
             #region LabSheets
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseTypeEnum.SqlServerTestDB))
+            using (CSSPDBContext db = new CSSPDBContext())
             {
                 count = (from c in db.LabSheets select c).Count();
                 if (count < 10)
@@ -3108,7 +3108,7 @@ namespace CSSPServicesGenerateCodeHelper
             StatusTempEvent(new StatusEventArgs("doing ... Adding up to 10 items in Logs"));
 
             #region Logs
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseTypeEnum.SqlServerTestDB))
+            using (CSSPDBContext db = new CSSPDBContext())
             {
                 count = (from c in db.Logs select c).Count();
                 if (count < 10)
@@ -3136,7 +3136,7 @@ namespace CSSPServicesGenerateCodeHelper
             StatusTempEvent(new StatusEventArgs("doing ... Adding up to 10 items in MikeBoundaryConditions"));
 
             #region MikeBoundaryConditions
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseTypeEnum.SqlServerTestDB))
+            using (CSSPDBContext db = new CSSPDBContext())
             {
                 count = (from c in db.MikeBoundaryConditions select c).Count();
                 if (count < 10)
@@ -3164,7 +3164,7 @@ namespace CSSPServicesGenerateCodeHelper
             StatusTempEvent(new StatusEventArgs("doing ... Adding up to 10 items in MikeScenarios"));
 
             #region MikeScenarios
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseTypeEnum.SqlServerTestDB))
+            using (CSSPDBContext db = new CSSPDBContext())
             {
                 count = (from c in db.MikeScenarios select c).Count();
                 if (count < 10)
@@ -3192,7 +3192,7 @@ namespace CSSPServicesGenerateCodeHelper
             StatusTempEvent(new StatusEventArgs("doing ... Adding up to 10 items in MikeScenarioResults"));
 
             #region MikeScenarioResults
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseTypeEnum.SqlServerTestDB))
+            using (CSSPDBContext db = new CSSPDBContext())
             {
                 count = (from c in db.MikeScenarioResults select c).Count();
                 if (count < 10)
@@ -3219,7 +3219,7 @@ namespace CSSPServicesGenerateCodeHelper
             StatusTempEvent(new StatusEventArgs("doing ... Adding up to 10 items in MikeSources"));
 
             #region MikeSources
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseTypeEnum.SqlServerTestDB))
+            using (CSSPDBContext db = new CSSPDBContext())
             {
                 count = (from c in db.MikeSources select c).Count();
                 if (count < 10)
@@ -3254,7 +3254,7 @@ namespace CSSPServicesGenerateCodeHelper
             StatusTempEvent(new StatusEventArgs("doing ... Adding up to 10 items in MWQMAnalysisReportParameters"));
 
             #region MWQMAnalysisReportParameters
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseTypeEnum.SqlServerTestDB))
+            using (CSSPDBContext db = new CSSPDBContext())
             {
                 count = (from c in db.MWQMAnalysisReportParameters select c).Count();
                 if (count < 10)
@@ -3282,7 +3282,7 @@ namespace CSSPServicesGenerateCodeHelper
             StatusTempEvent(new StatusEventArgs("doing ... Adding up to 10 items in MWQMRuns"));
 
             #region MWQMRuns
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseTypeEnum.SqlServerTestDB))
+            using (CSSPDBContext db = new CSSPDBContext())
             {
                 count = (from c in db.MWQMRuns select c).Count();
                 if (count < 10)
@@ -3318,7 +3318,7 @@ namespace CSSPServicesGenerateCodeHelper
             StatusTempEvent(new StatusEventArgs("doing ... Adding up to 10 items in MWQMSamples"));
 
             #region MWQMSamples
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseTypeEnum.SqlServerTestDB))
+            using (CSSPDBContext db = new CSSPDBContext())
             {
                 count = (from c in db.MWQMSamples select c).Count();
                 if (count < 10)
@@ -3354,7 +3354,7 @@ namespace CSSPServicesGenerateCodeHelper
             StatusTempEvent(new StatusEventArgs("doing ... Adding up to 10 items in MWQMSites"));
 
             #region MWQMSites
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseTypeEnum.SqlServerTestDB))
+            using (CSSPDBContext db = new CSSPDBContext())
             {
                 count = (from c in db.MWQMSites select c).Count();
                 if (count < 10)
@@ -3388,7 +3388,7 @@ namespace CSSPServicesGenerateCodeHelper
             StatusTempEvent(new StatusEventArgs("doing ... Adding up to 10 items in MWQMSubsectors"));
 
             #region MWQMSubsectors
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseTypeEnum.SqlServerTestDB))
+            using (CSSPDBContext db = new CSSPDBContext())
             {
                 count = (from c in db.MWQMSubsectors select c).Count();
                 if (count < 10)
@@ -3424,7 +3424,7 @@ namespace CSSPServicesGenerateCodeHelper
             StatusTempEvent(new StatusEventArgs("doing ... Adding up to 10 items in PolSourceSites"));
 
             #region PolSourceSites
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseTypeEnum.SqlServerTestDB))
+            using (CSSPDBContext db = new CSSPDBContext())
             {
                 count = (from c in db.PolSourceSites select c).Count();
                 if (count < 10)
@@ -3465,7 +3465,7 @@ namespace CSSPServicesGenerateCodeHelper
             StatusTempEvent(new StatusEventArgs("doing ... Adding up to 10 items in RainExceedances"));
 
             #region RainExceedances
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseTypeEnum.SqlServerTestDB))
+            using (CSSPDBContext db = new CSSPDBContext())
             {
                 count = (from c in db.RainExceedances select c).Count();
                 if (count < 10)
@@ -3493,7 +3493,7 @@ namespace CSSPServicesGenerateCodeHelper
             StatusTempEvent(new StatusEventArgs("doing ... Adding up to 10 items in RainExceedanceClimateSites"));
 
             #region RainExceedanceClimateSites
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseTypeEnum.SqlServerTestDB))
+            using (CSSPDBContext db = new CSSPDBContext())
             {
                 count = (from c in db.RainExceedanceClimateSites select c).Count();
                 if (count < 10)
@@ -3520,7 +3520,7 @@ namespace CSSPServicesGenerateCodeHelper
             StatusTempEvent(new StatusEventArgs("doing ... Adding up to 10 items in RetingCurves"));
 
             #region RatingCurves
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseTypeEnum.SqlServerTestDB))
+            using (CSSPDBContext db = new CSSPDBContext())
             {
                 count = (from c in db.RatingCurves select c).Count();
                 if (count < 10)
@@ -3554,7 +3554,7 @@ namespace CSSPServicesGenerateCodeHelper
             StatusTempEvent(new StatusEventArgs("doing ... Adding up to 10 items in ReportSections"));
 
             #region ReportSections
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseTypeEnum.SqlServerTestDB))
+            using (CSSPDBContext db = new CSSPDBContext())
             {
                 count = (from c in db.ReportSections select c).Count();
                 if (count < 10)
@@ -3591,7 +3591,7 @@ namespace CSSPServicesGenerateCodeHelper
             StatusTempEvent(new StatusEventArgs("doing ... Adding up to 10 items in ReportTypes"));
 
             #region ReportTypes
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseTypeEnum.SqlServerTestDB))
+            using (CSSPDBContext db = new CSSPDBContext())
             {
                 count = (from c in db.ReportTypes select c).Count();
                 if (count < 10)
@@ -3628,7 +3628,7 @@ namespace CSSPServicesGenerateCodeHelper
             StatusTempEvent(new StatusEventArgs("doing ... Adding up to 10 items in ResetPasswords"));
 
             #region ResetPasswords
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseTypeEnum.SqlServerTestDB))
+            using (CSSPDBContext db = new CSSPDBContext())
             {
                 count = (from c in db.ResetPasswords select c).Count();
                 if (count < 10)
@@ -3656,7 +3656,7 @@ namespace CSSPServicesGenerateCodeHelper
             StatusTempEvent(new StatusEventArgs("doing ... Adding up to 10 items in SamplingPlans"));
 
             #region SamplingPlans
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseTypeEnum.SqlServerTestDB))
+            using (CSSPDBContext db = new CSSPDBContext())
             {
                 count = (from c in db.SamplingPlans select c).Count();
                 if (count < 10)
@@ -3701,7 +3701,7 @@ namespace CSSPServicesGenerateCodeHelper
             StatusTempEvent(new StatusEventArgs("doing ... Adding up to 10 items in Spills"));
 
             #region Spills
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseTypeEnum.SqlServerTestDB))
+            using (CSSPDBContext db = new CSSPDBContext())
             {
                 count = (from c in db.Spills select c).Count();
                 if (count < 10)
@@ -3737,7 +3737,7 @@ namespace CSSPServicesGenerateCodeHelper
             StatusTempEvent(new StatusEventArgs("doing ... Adding up to 10 items in Tels"));
 
             #region Tels
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseTypeEnum.SqlServerTestDB))
+            using (CSSPDBContext db = new CSSPDBContext())
             {
                 count = (from c in db.Tels select c).Count();
                 if (count < 10)
@@ -3765,7 +3765,7 @@ namespace CSSPServicesGenerateCodeHelper
             StatusTempEvent(new StatusEventArgs("doing ... Adding up to 10 items in TideDataValues"));
 
             #region TideDataValues
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseTypeEnum.SqlServerTestDB))
+            using (CSSPDBContext db = new CSSPDBContext())
             {
                 count = (from c in db.TideDataValues select c).Count();
                 if (count < 10)
@@ -3793,7 +3793,7 @@ namespace CSSPServicesGenerateCodeHelper
             StatusTempEvent(new StatusEventArgs("doing ... Adding up to 10 items in TideLocations"));
 
             #region TideLocations
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseTypeEnum.SqlServerTestDB))
+            using (CSSPDBContext db = new CSSPDBContext())
             {
                 count = (from c in db.TideLocations select c).Count();
                 if (count < 10)
@@ -3821,7 +3821,7 @@ namespace CSSPServicesGenerateCodeHelper
             StatusTempEvent(new StatusEventArgs("doing ... Adding up to 10 items in TideSites"));
 
             #region TideSites
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseTypeEnum.SqlServerTestDB))
+            using (CSSPDBContext db = new CSSPDBContext())
             {
                 count = (from c in db.TideSites select c).Count();
                 if (count < 10)
@@ -3849,7 +3849,7 @@ namespace CSSPServicesGenerateCodeHelper
             StatusTempEvent(new StatusEventArgs("doing ... Adding up to 10 items in TVFiles"));
 
             #region TVFiles
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseTypeEnum.SqlServerTestDB))
+            using (CSSPDBContext db = new CSSPDBContext())
             {
                 count = (from c in db.TVFiles select c).Count();
                 if (count < 10)
@@ -3885,7 +3885,7 @@ namespace CSSPServicesGenerateCodeHelper
             StatusTempEvent(new StatusEventArgs("doing ... Adding up to 10 items in TVItemLinks"));
 
             #region TVItemLinks
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseTypeEnum.SqlServerTestDB))
+            using (CSSPDBContext db = new CSSPDBContext())
             {
                 count = (from c in db.TVItemLinks select c).Count();
                 if (count < 10)
@@ -3913,7 +3913,7 @@ namespace CSSPServicesGenerateCodeHelper
             StatusTempEvent(new StatusEventArgs("doing ... Adding up to 10 items in TVItemStats"));
 
             #region TVItemStats
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseTypeEnum.SqlServerTestDB))
+            using (CSSPDBContext db = new CSSPDBContext())
             {
                 count = (from c in db.TVItemStats select c).Count();
                 if (count < 10)
@@ -3941,7 +3941,7 @@ namespace CSSPServicesGenerateCodeHelper
             StatusTempEvent(new StatusEventArgs("doing ... Adding up to 10 items in TVItemUserAuthorizations"));
 
             #region TVItemUserAuthorizations
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseTypeEnum.SqlServerTestDB))
+            using (CSSPDBContext db = new CSSPDBContext())
             {
                 count = (from c in db.TVItemUserAuthorizations select c).Count();
                 if (count < 10)
@@ -3968,7 +3968,7 @@ namespace CSSPServicesGenerateCodeHelper
             StatusTempEvent(new StatusEventArgs("doing ... Adding up to 10 items in TVTypeUserAuthorizations"));
 
             #region TVTypeUserAuthorizations
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseTypeEnum.SqlServerTestDB))
+            using (CSSPDBContext db = new CSSPDBContext())
             {
                 count = (from c in db.TVTypeUserAuthorizations select c).Count();
                 if (count < 10)
@@ -3995,7 +3995,7 @@ namespace CSSPServicesGenerateCodeHelper
             StatusTempEvent(new StatusEventArgs("doing ... Adding up to 10 items in UseOfSites"));
 
             #region UseOfSites
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseTypeEnum.SqlServerTestDB))
+            using (CSSPDBContext db = new CSSPDBContext())
             {
                 count = (from c in db.UseOfSites select c).Count();
                 if (count < 10)
@@ -4023,7 +4023,7 @@ namespace CSSPServicesGenerateCodeHelper
             StatusTempEvent(new StatusEventArgs("doing ... Adding up to 10 items in VPScenarios"));
 
             #region VPScenarios
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseTypeEnum.SqlServerTestDB))
+            using (CSSPDBContext db = new CSSPDBContext())
             {
                 count = (from c in db.VPScenarios select c).Count();
                 if (count < 10)
@@ -4073,7 +4073,7 @@ namespace CSSPServicesGenerateCodeHelper
             StatusTempEvent(new StatusEventArgs("doing ... Adding up to 10 items in PolSourceSiteEffects"));
 
             #region PolSourceSiteEffects
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseTypeEnum.SqlServerTestDB))
+            using (CSSPDBContext db = new CSSPDBContext())
             {
                 count = (from c in db.PolSourceSiteEffects select c).Count();
                 if (count < 10)
@@ -4101,7 +4101,7 @@ namespace CSSPServicesGenerateCodeHelper
             StatusTempEvent(new StatusEventArgs("doing ... Adding up to 10 items in PolSourceSiteEffectTerms"));
 
             #region PolSourceSiteEffectTerms
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseTypeEnum.SqlServerTestDB))
+            using (CSSPDBContext db = new CSSPDBContext())
             {
                 count = (from c in db.PolSourceSiteEffectTerms select c).Count();
                 if (count < 10)

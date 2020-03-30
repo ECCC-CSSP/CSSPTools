@@ -4710,6 +4710,24 @@ namespace CSSPEnums.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to SUBSECTOR_MUNICIPALITIES_COMPACT.
+        /// </summary>
+        public static string ReportGenerateObjectsKeywordEnumSUBSECTOR_MUNICIPALITIES_COMPACT {
+            get {
+                return ResourceManager.GetString("ReportGenerateObjectsKeywordEnumSUBSECTOR_MUNICIPALITIES_COMPACT", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to SUBSECTOR_MUNICIPALITIES_FULL.
+        /// </summary>
+        public static string ReportGenerateObjectsKeywordEnumSUBSECTOR_MUNICIPALITIES_FULL {
+            get {
+                return ResourceManager.GetString("ReportGenerateObjectsKeywordEnumSUBSECTOR_MUNICIPALITIES_FULL", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to SUBSECTOR_MUNICIPALITY_CONTACTS.
         /// </summary>
         public static string ReportGenerateObjectsKeywordEnumSUBSECTOR_MUNICIPALITY_CONTACTS {
@@ -8441,60 +8459,6 @@ namespace CSSPEnums.Resources {
         public static string WebTideDataSetEnumvigf8 {
             get {
                 return ResourceManager.GetString("WebTideDataSetEnumvigf8", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Contains.
-        /// </summary>
-        public static string WhereOperatorEnumContains {
-            get {
-                return ResourceManager.GetString("WhereOperatorEnumContains", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to EndsWith.
-        /// </summary>
-        public static string WhereOperatorEnumEndsWith {
-            get {
-                return ResourceManager.GetString("WhereOperatorEnumEndsWith", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Equal.
-        /// </summary>
-        public static string WhereOperatorEnumEqual {
-            get {
-                return ResourceManager.GetString("WhereOperatorEnumEqual", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to GreaterThan.
-        /// </summary>
-        public static string WhereOperatorEnumGreaterThan {
-            get {
-                return ResourceManager.GetString("WhereOperatorEnumGreaterThan", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to LessThan.
-        /// </summary>
-        public static string WhereOperatorEnumLessThan {
-            get {
-                return ResourceManager.GetString("WhereOperatorEnumLessThan", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to StartsWith.
-        /// </summary>
-        public static string WhereOperatorEnumStartsWith {
-            get {
-                return ResourceManager.GetString("WhereOperatorEnumStartsWith", resourceCulture);
             }
         }
     }
