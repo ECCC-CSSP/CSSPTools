@@ -3,29 +3,28 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "first": {
+    "codeenums": {
       "projectType": "application",
       "schematics": {},
-      "root": "projects/first",
-      "sourceRoot": "projects/first/src",
+      "root": "projects/codeenums",
+      "sourceRoot": "projects/codeenums/src",
       "prefix": "app",
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/first",
-            "index": "projects/first/src/index.html",
-            "main": "projects/first/src/main.ts",
-            "polyfills": "projects/first/src/polyfills.ts",
-            "tsConfig": "projects/first/tsconfig.app.json",
+            "outputPath": "dist/codeenums",
+            "index": "projects/codeenums/src/index.html",
+            "main": "projects/codeenums/src/main.ts",
+            "polyfills": "projects/codeenums/src/polyfills.ts",
+            "tsConfig": "projects/codeenums/tsconfig.app.json",
             "aot": true,
             "assets": [
-              "projects/first/src/favicon.ico",
-              "projects/first/src/assets"
+              "projects/codeenums/src/favicon.ico",
+              "projects/codeenums/src/assets"
             ],
             "styles": [
-              "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
-              "projects/first/src/styles.css"
+              "projects/codeenums/src/styles.css"
             ],
             "scripts": []
           },
@@ -33,8 +32,8 @@
             "production": {
               "fileReplacements": [
                 {
-                  "replace": "projects/first/src/environments/environment.ts",
-                  "with": "projects/first/src/environments/environment.prod.ts"
+                  "replace": "projects/codeenums/src/environments/environment.ts",
+                  "with": "projects/codeenums/src/environments/environment.prod.ts"
                 }
               ],
               "optimization": true,
@@ -63,34 +62,33 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "first:build"
+            "browserTarget": "codeenums:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "first:build:production"
+              "browserTarget": "codeenums:build:production"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "first:build"
+            "browserTarget": "codeenums:build"
           }
         },
         "test": {
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
-            "main": "projects/first/src/test.ts",
-            "polyfills": "projects/first/src/polyfills.ts",
-            "tsConfig": "projects/first/tsconfig.spec.json",
-            "karmaConfig": "projects/first/karma.conf.js",
+            "main": "projects/codeenums/src/test.ts",
+            "polyfills": "projects/codeenums/src/polyfills.ts",
+            "tsConfig": "projects/codeenums/tsconfig.spec.json",
+            "karmaConfig": "projects/codeenums/karma.conf.js",
             "assets": [
-              "projects/first/src/favicon.ico",
-              "projects/first/src/assets"
+              "projects/codeenums/src/favicon.ico",
+              "projects/codeenums/src/assets"
             ],
             "styles": [
-              "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
-              "projects/first/src/styles.css"
+              "projects/codeenums/src/styles.css"
             ],
             "scripts": []
           }
@@ -99,9 +97,9 @@
           "builder": "@angular-devkit/build-angular:tslint",
           "options": {
             "tsConfig": [
-              "projects/first/tsconfig.app.json",
-              "projects/first/tsconfig.spec.json",
-              "projects/first/e2e/tsconfig.json"
+              "projects/codeenums/tsconfig.app.json",
+              "projects/codeenums/tsconfig.spec.json",
+              "projects/codeenums/e2e/tsconfig.json"
             ],
             "exclude": [
               "**/node_modules/**"
@@ -111,40 +109,39 @@
         "e2e": {
           "builder": "@angular-devkit/build-angular:protractor",
           "options": {
-            "protractorConfig": "projects/first/e2e/protractor.conf.js",
-            "devServerTarget": "first:serve"
+            "protractorConfig": "projects/codeenums/e2e/protractor.conf.js",
+            "devServerTarget": "codeenums:serve"
           },
           "configurations": {
             "production": {
-              "devServerTarget": "first:serve:production"
+              "devServerTarget": "codeenums:serve:production"
             }
           }
         }
       }
     },
-    "second": {
+    "codemodels": {
       "projectType": "application",
       "schematics": {},
-      "root": "projects/second",
-      "sourceRoot": "projects/second/src",
+      "root": "projects/codemodels",
+      "sourceRoot": "projects/codemodels/src",
       "prefix": "app",
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/second",
-            "index": "projects/second/src/index.html",
-            "main": "projects/second/src/main.ts",
-            "polyfills": "projects/second/src/polyfills.ts",
-            "tsConfig": "projects/second/tsconfig.app.json",
+            "outputPath": "dist/codemodels",
+            "index": "projects/codemodels/src/index.html",
+            "main": "projects/codemodels/src/main.ts",
+            "polyfills": "projects/codemodels/src/polyfills.ts",
+            "tsConfig": "projects/codemodels/tsconfig.app.json",
             "aot": true,
             "assets": [
-              "projects/second/src/favicon.ico",
-              "projects/second/src/assets"
+              "projects/codemodels/src/favicon.ico",
+              "projects/codemodels/src/assets"
             ],
             "styles": [
-              "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
-              "projects/second/src/styles.css"
+              "projects/codemodels/src/styles.css"
             ],
             "scripts": []
           },
@@ -152,8 +149,8 @@
             "production": {
               "fileReplacements": [
                 {
-                  "replace": "projects/second/src/environments/environment.ts",
-                  "with": "projects/second/src/environments/environment.prod.ts"
+                  "replace": "projects/codemodels/src/environments/environment.ts",
+                  "with": "projects/codemodels/src/environments/environment.prod.ts"
                 }
               ],
               "optimization": true,
@@ -182,34 +179,33 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "second:build"
+            "browserTarget": "codemodels:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "second:build:production"
+              "browserTarget": "codemodels:build:production"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "second:build"
+            "browserTarget": "codemodels:build"
           }
         },
         "test": {
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
-            "main": "projects/second/src/test.ts",
-            "polyfills": "projects/second/src/polyfills.ts",
-            "tsConfig": "projects/second/tsconfig.spec.json",
-            "karmaConfig": "projects/second/karma.conf.js",
+            "main": "projects/codemodels/src/test.ts",
+            "polyfills": "projects/codemodels/src/polyfills.ts",
+            "tsConfig": "projects/codemodels/tsconfig.spec.json",
+            "karmaConfig": "projects/codemodels/karma.conf.js",
             "assets": [
-              "projects/second/src/favicon.ico",
-              "projects/second/src/assets"
+              "projects/codemodels/src/favicon.ico",
+              "projects/codemodels/src/assets"
             ],
             "styles": [
-              "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
-              "projects/second/src/styles.css"
+              "projects/codemodels/src/styles.css"
             ],
             "scripts": []
           }
@@ -218,9 +214,9 @@
           "builder": "@angular-devkit/build-angular:tslint",
           "options": {
             "tsConfig": [
-              "projects/second/tsconfig.app.json",
-              "projects/second/tsconfig.spec.json",
-              "projects/second/e2e/tsconfig.json"
+              "projects/codemodels/tsconfig.app.json",
+              "projects/codemodels/tsconfig.spec.json",
+              "projects/codemodels/e2e/tsconfig.json"
             ],
             "exclude": [
               "**/node_modules/**"
@@ -230,40 +226,39 @@
         "e2e": {
           "builder": "@angular-devkit/build-angular:protractor",
           "options": {
-            "protractorConfig": "projects/second/e2e/protractor.conf.js",
-            "devServerTarget": "second:serve"
+            "protractorConfig": "projects/codemodels/e2e/protractor.conf.js",
+            "devServerTarget": "codemodels:serve"
           },
           "configurations": {
             "production": {
-              "devServerTarget": "second:serve:production"
+              "devServerTarget": "codemodels:serve:production"
             }
           }
         }
       }
     },
-    "auth": {
+    "codeservices": {
       "projectType": "application",
       "schematics": {},
-      "root": "projects/auth",
-      "sourceRoot": "projects/auth/src",
+      "root": "projects/codeservices",
+      "sourceRoot": "projects/codeservices/src",
       "prefix": "app",
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/auth",
-            "index": "projects/auth/src/index.html",
-            "main": "projects/auth/src/main.ts",
-            "polyfills": "projects/auth/src/polyfills.ts",
-            "tsConfig": "projects/auth/tsconfig.app.json",
+            "outputPath": "dist/codeservices",
+            "index": "projects/codeservices/src/index.html",
+            "main": "projects/codeservices/src/main.ts",
+            "polyfills": "projects/codeservices/src/polyfills.ts",
+            "tsConfig": "projects/codeservices/tsconfig.app.json",
             "aot": true,
             "assets": [
-              "projects/auth/src/favicon.ico",
-              "projects/auth/src/assets"
+              "projects/codeservices/src/favicon.ico",
+              "projects/codeservices/src/assets"
             ],
             "styles": [
-              "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
-              "projects/auth/src/styles.css"
+              "projects/codeservices/src/styles.css"
             ],
             "scripts": []
           },
@@ -271,8 +266,8 @@
             "production": {
               "fileReplacements": [
                 {
-                  "replace": "projects/auth/src/environments/environment.ts",
-                  "with": "projects/auth/src/environments/environment.prod.ts"
+                  "replace": "projects/codeservices/src/environments/environment.ts",
+                  "with": "projects/codeservices/src/environments/environment.prod.ts"
                 }
               ],
               "optimization": true,
@@ -301,34 +296,33 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "auth:build"
+            "browserTarget": "codeservices:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "auth:build:production"
+              "browserTarget": "codeservices:build:production"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "auth:build"
+            "browserTarget": "codeservices:build"
           }
         },
         "test": {
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
-            "main": "projects/auth/src/test.ts",
-            "polyfills": "projects/auth/src/polyfills.ts",
-            "tsConfig": "projects/auth/tsconfig.spec.json",
-            "karmaConfig": "projects/auth/karma.conf.js",
+            "main": "projects/codeservices/src/test.ts",
+            "polyfills": "projects/codeservices/src/polyfills.ts",
+            "tsConfig": "projects/codeservices/tsconfig.spec.json",
+            "karmaConfig": "projects/codeservices/karma.conf.js",
             "assets": [
-              "projects/auth/src/favicon.ico",
-              "projects/auth/src/assets"
+              "projects/codeservices/src/favicon.ico",
+              "projects/codeservices/src/assets"
             ],
             "styles": [
-              "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
-              "projects/auth/src/styles.css"
+              "projects/codeservices/src/styles.css"
             ],
             "scripts": []
           }
@@ -337,9 +331,9 @@
           "builder": "@angular-devkit/build-angular:tslint",
           "options": {
             "tsConfig": [
-              "projects/auth/tsconfig.app.json",
-              "projects/auth/tsconfig.spec.json",
-              "projects/auth/e2e/tsconfig.json"
+              "projects/codeservices/tsconfig.app.json",
+              "projects/codeservices/tsconfig.spec.json",
+              "projects/codeservices/e2e/tsconfig.json"
             ],
             "exclude": [
               "**/node_modules/**"
@@ -349,17 +343,17 @@
         "e2e": {
           "builder": "@angular-devkit/build-angular:protractor",
           "options": {
-            "protractorConfig": "projects/auth/e2e/protractor.conf.js",
-            "devServerTarget": "auth:serve"
+            "protractorConfig": "projects/codeservices/e2e/protractor.conf.js",
+            "devServerTarget": "codeservices:serve"
           },
           "configurations": {
             "production": {
-              "devServerTarget": "auth:serve:production"
+              "devServerTarget": "codeservices:serve:production"
             }
           }
         }
       }
     }
   },
-  "defaultProject": "first"
+  "defaultProject": "codeenums"
 }
