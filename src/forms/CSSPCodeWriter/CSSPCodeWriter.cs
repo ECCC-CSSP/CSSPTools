@@ -33,11 +33,11 @@ namespace CSSPCodeWriter
         #region Properties
         public IConfigurationRoot Configuration { get; }
 
-        public CSSPDBContext db { get; set; }
+        //public CSSPDBContext db { get; set; }
         public EnumsCodeWriter enumsCodeWriter { get; set; }
         public EnumsPolSourceCodeWriter enumsPolSourceCodeWriter { get; set; }
         public ModelsCodeWriter modelsCodeWriter { get; set; }
-        //public ServicesCodeWriter servicesCodeWriter { get; set; }
+        public ServicesCodeWriter servicesCodeWriter { get; set; }
         //public WebAPICodeWriter WebAPICodeWriter { get; set; }
         //public AngularCodeWriter AngularCodeWriter { get; set; }
         //public PostCSSPDocCleanFiles PostCSSPDocCleanFiles { get; set; }
@@ -179,27 +179,27 @@ namespace CSSPCodeWriter
         #region Events CSSPServices
         private void butRepopulateTesDB_Click(object sender, EventArgs e)
         {
-            //servicesCodeWriter.RepopulateTestDB();
+            servicesCodeWriter.RepopulateTestDB();
         }
         private void butClassNameServiceGenerated_Click(object sender, EventArgs e)
         {
-            //servicesCodeWriter.ClassNameServiceGenerated(false);
+            servicesCodeWriter.ClassNameServiceGenerated(false);
         }
         private void butClassNameServiceWithDocGenerated_Click(object sender, EventArgs e)
         {
-            //servicesCodeWriter.ClassNameServiceGenerated(true);
+            servicesCodeWriter.ClassNameServiceGenerated(true);
         }
         private void butClassNameServiceTestGenerated_Click(object sender, EventArgs e)
         {
-            //servicesCodeWriter.ClassNameServiceTestGenerated();
+            servicesCodeWriter.ClassNameServiceTestGenerated();
         }
         private void butExtensionEnumCastingGenerated_Click(object sender, EventArgs e)
         {
-            //servicesCodeWriter.ExtensionEnumCastingGenerated();
+            servicesCodeWriter.ExtensionEnumCastingGenerated();
         }
         private void butCheckAllTablesInDBHasAtLeast10Items_Click(object sender, EventArgs e)
         {
-            //servicesCodeWriter.CheckAllTablesInTestDBHasAtLeast10Items();
+            servicesCodeWriter.CheckAllTablesInTestDBHasAtLeast10Items();
         }
         #endregion Events CSSPServices
 
@@ -250,27 +250,6 @@ namespace CSSPCodeWriter
         #endregion Functions private CSSPModels
 
         #region Functions private CSSPServices
-        //private void GetRecursiveType(CSSPDBContext db, int level)
-        //{
-        //    List<TVTypeEnum> tvTypeList = (from c in db.TVItems
-        //                                   where c.TVLevel == level
-        //                                   select c.TVType).Distinct().ToList();
-
-        //    if (tvTypeList.Count > 0)
-        //    {
-        //        foreach (TVTypeEnum tvType in tvTypeList)
-        //        {
-        //            for (int i = 0, count = level; i < count; i++)
-        //            {
-        //                richTextBoxStatus.AppendText("\t");
-
-        //            }
-        //            richTextBoxStatus.AppendText($"{tvType.ToString() }\r\n");
-        //        }
-
-        //        GetRecursiveType(db, level + 1);
-        //    }
-        //}
         #endregion Functions private CSSPServices
 
         #region Functions private CSSPWebAPI
@@ -327,21 +306,20 @@ namespace CSSPCodeWriter
             modelsCodeWriter.ClearPermanentHandler += ClearPermanentHandler;
             modelsCodeWriter.ClearPermanent2Handler += ClearPermanent2Handler;
 
-            db = new CSSPDBContext();
             CSSPDBConnectionString = Configuration.GetConnectionString("CSSPDB");
             TestDBConnectionString = Configuration.GetConnectionString("TestDB");
             #endregion CSSPModels
 
-            //#region CSSPServices
-            //servicesCodeWriter = new ServicesCodeWriter();
+            #region CSSPServices
+            servicesCodeWriter = new ServicesCodeWriter();
 
-            //servicesCodeWriter.CSSPErrorHandler += CSSPErrorHandler;
-            //servicesCodeWriter.StatusPermanentHandler += StatusPermanentHandler;
-            //servicesCodeWriter.StatusPermanent2Handler += StatusPermanent2Handler;
-            //servicesCodeWriter.StatusTempHandler += StatusTempHandler;
-            //servicesCodeWriter.ClearPermanentHandler += ClearPermanentHandler;
-            //servicesCodeWriter.ClearPermanent2Handler += ClearPermanent2Handler;
-            //#endregion CSSPServices
+            servicesCodeWriter.CSSPErrorHandler += CSSPErrorHandler;
+            servicesCodeWriter.StatusPermanentHandler += StatusPermanentHandler;
+            servicesCodeWriter.StatusPermanent2Handler += StatusPermanent2Handler;
+            servicesCodeWriter.StatusTempHandler += StatusTempHandler;
+            servicesCodeWriter.ClearPermanentHandler += ClearPermanentHandler;
+            servicesCodeWriter.ClearPermanent2Handler += ClearPermanent2Handler;
+            #endregion CSSPServices
 
             //#region CSSPWebAPI
             //WebAPICodeWriter = new WebAPICodeWriter();

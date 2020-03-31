@@ -807,45 +807,21 @@ namespace CSSPServicesGenerateCodeHelper
             tvItemLanguageFRBouctoucheWWTP.TVItemID = tvItemBouctoucheWWTP.TVItemID;
             if (!AddObject("TVItemLanguage", tvItemLanguageFRBouctoucheWWTP)) return false;
             #endregion TVItem Municipality Bouctouche WWTP 
-            #region ReportType and ReportTypeLanguage
+            #region ReportType
             StatusTempEvent(new StatusEventArgs("doing ... ReportTypes and ReportTypeLanguages"));
             ReportType reportType = dbCSSPDB.ReportTypes.AsNoTracking().FirstOrDefault();
             int ReportTypeIDOld = reportType.ReportTypeID;
             reportType.ReportTypeID = 0;
             if (!AddObject("ReportType", reportType)) return false;
-
-            // ReportTypeLanguage EN 
-            ReportTypeLanguage reportTypeLanguageEN = dbCSSPDB.ReportTypeLanguages.AsNoTracking().Where(c => c.ReportTypeID == ReportTypeIDOld && c.Language == LanguageEnum.en).FirstOrDefault();
-            reportTypeLanguageEN.ReportTypeLanguageID = 0;
-            reportTypeLanguageEN.ReportTypeID = reportType.ReportTypeID;
-            if (!AddObject("ReportTypeLanguage", reportTypeLanguageEN)) return false;
-
-            // ReportTypeLanguage FR 
-            ReportTypeLanguage reportTypeLanguageFR = dbCSSPDB.ReportTypeLanguages.AsNoTracking().Where(c => c.ReportTypeID == ReportTypeIDOld && c.Language == LanguageEnum.fr).FirstOrDefault();
-            reportTypeLanguageFR.ReportTypeLanguageID = 0;
-            reportTypeLanguageFR.ReportTypeID = reportType.ReportTypeID;
-            if (!AddObject("ReportTypeLanguage", reportTypeLanguageFR)) return false;
-            #endregion ReportType and ReportTypeLanguage
-            #region ReportSection and ReportSectionLanguage
-            StatusTempEvent(new StatusEventArgs("doing ... ReportSections and ReportSectionLanguages"));
+            #endregion ReportType
+            #region ReportSection
+            StatusTempEvent(new StatusEventArgs("doing ... ReportSections"));
             ReportSection reportSection = dbCSSPDB.ReportSections.AsNoTracking().Where(c => c.ReportTypeID == ReportTypeIDOld).FirstOrDefault();
             int ReportSectionIDOld = reportSection.ReportSectionID;
             reportSection.ReportSectionID = 0;
             reportSection.ReportTypeID = reportType.ReportTypeID;
             if (!AddObject("ReportSection", reportSection)) return false;
-
-            // ReportSectionLanguage EN 
-            ReportSectionLanguage reportSectionLanguageEN = dbCSSPDB.ReportSectionLanguages.AsNoTracking().Where(c => c.ReportSectionID == ReportSectionIDOld && c.Language == LanguageEnum.en).FirstOrDefault();
-            reportSectionLanguageEN.ReportSectionLanguageID = 0;
-            reportSectionLanguageEN.ReportSectionID = reportSection.ReportSectionID;
-            if (!AddObject("ReportSectionLanguage", reportSectionLanguageEN)) return false;
-
-            // ReportSectionLanguage FR 
-            ReportSectionLanguage reportSectionLanguageFR = dbCSSPDB.ReportSectionLanguages.AsNoTracking().Where(c => c.ReportSectionID == ReportSectionIDOld && c.Language == LanguageEnum.fr).FirstOrDefault();
-            reportSectionLanguageFR.ReportSectionLanguageID = 0;
-            reportSectionLanguageFR.ReportSectionID = reportSection.ReportSectionID;
-            if (!AddObject("ReportSectionLanguage", reportSectionLanguageFR)) return false;
-            #endregion ReportSection and ReportSectionLanguage
+            #endregion ReportSection
             #region TVItem TVFile Bouctouche WWTP 
             StatusTempEvent(new StatusEventArgs("doing ... Bouctouche WWTP TVFile"));
             // TVItem TVFile Bouctouche WWTP TVItemID = 28689
@@ -2256,25 +2232,11 @@ namespace CSSPServicesGenerateCodeHelper
                         dbTestDB.ReportSections.Add((ReportSection)objTarget);
                     }
                     break;
-                case "ReportSectionLanguage":
-                    {
-                        ((ReportSectionLanguage)objTarget).ReportSectionLanguageID = 0;
-                        ((ReportSectionLanguage)objTarget).LastUpdateContactTVItemID = 2;
-                        dbTestDB.ReportSectionLanguages.Add((ReportSectionLanguage)objTarget);
-                    }
-                    break;
                 case "ReportType":
                     {
                         ((ReportType)objTarget).ReportTypeID = 0;
                         ((ReportType)objTarget).LastUpdateContactTVItemID = 2;
                         dbTestDB.ReportTypes.Add((ReportType)objTarget);
-                    }
-                    break;
-                case "ReportTypeLanguage":
-                    {
-                        ((ReportTypeLanguage)objTarget).ReportTypeLanguageID = 0;
-                        ((ReportTypeLanguage)objTarget).LastUpdateContactTVItemID = 2;
-                        dbTestDB.ReportTypeLanguages.Add((ReportTypeLanguage)objTarget);
                     }
                     break;
                 case "ResetPassword":
@@ -3562,20 +3524,11 @@ namespace CSSPServicesGenerateCodeHelper
                     for (int i = count; i < 10; i++)
                     {
                         ReportSection ReportSection = (from c in db.ReportSections select c).OrderByDescending(c => c.ReportSectionID).FirstOrDefault();
-                        List<ReportSectionLanguage> ReportSectionLanguageList = (from c in db.ReportSectionLanguages select c).OrderByDescending(c => c.ReportSectionLanguageID).Take(2).ToList();
                         try
                         {
                             ReportSection.ReportSectionID = 0;
                             ReportSection.Year = ReportSection.Year + 1;
                             if (!AddObject("ReportSection", ReportSection)) return false;
-
-                            foreach (ReportSectionLanguage ReportSectionLanguage in ReportSectionLanguageList)
-                            {
-                                ReportSectionLanguage.ReportSectionLanguageID = 0;
-                                ReportSectionLanguage.ReportSectionID = ReportSection.ReportSectionID;
-                                ReportSectionLanguage.ReportSectionName = $"{ ReportSectionLanguage.ReportSectionName }a";
-                                if (!AddObject("ReportSectionLanguage", ReportSectionLanguage)) return false;
-                            }
                         }
                         catch (Exception ex)
                         {
@@ -3599,20 +3552,11 @@ namespace CSSPServicesGenerateCodeHelper
                     for (int i = count; i < 10; i++)
                     {
                         ReportType ReportType = (from c in db.ReportTypes select c).OrderByDescending(c => c.ReportTypeID).FirstOrDefault();
-                        List<ReportTypeLanguage> ReportTypeLanguageList = (from c in db.ReportTypeLanguages select c).OrderByDescending(c => c.ReportTypeLanguageID).Take(2).ToList();
                         try
                         {
                             ReportType.ReportTypeID = 0;
                             ReportType.UniqueCode = $"{ ReportType.UniqueCode }a";
                             if (!AddObject("ReportType", ReportType)) return false;
-
-                            foreach (ReportTypeLanguage ReportTypeLanguage in ReportTypeLanguageList)
-                            {
-                                ReportTypeLanguage.ReportTypeLanguageID = 0;
-                                ReportTypeLanguage.ReportTypeID = ReportType.ReportTypeID;
-                                ReportTypeLanguage.Name = $"{ ReportTypeLanguage.Name }a";
-                                if (!AddObject("ReportTypeLanguage", ReportTypeLanguage)) return false;
-                            }
                         }
                         catch (Exception ex)
                         {

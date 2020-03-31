@@ -5,6 +5,26 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="ServiceGenerateClassServicesCRUDTest.cs" />
+    <Compile Remove="ServiceGenerateClassServicesGetList2WhereTest.cs" />
+    <Compile Remove="ServiceGenerateClassServicesGetListSkipTake2AscTest.cs" />
+    <Compile Remove="ServiceGenerateClassServicesGetListSkipTake2DescTest.cs" />
+    <Compile Remove="ServiceGenerateClassServicesGetListSkipTakeAsc2WhereTest.cs" />
+    <Compile Remove="ServiceGenerateClassServicesGetListSkipTakeAscTest.cs" />
+    <Compile Remove="ServiceGenerateClassServicesGetListSkipTakeAscWhereTest.cs" />
+    <Compile Remove="ServiceGenerateClassServicesGetListSkipTakeDesc2WhereTest.cs" />
+    <Compile Remove="ServiceGenerateClassServicesGetListSkipTakeDescTest.cs" />
+    <Compile Remove="ServiceGenerateClassServicesGetListSkipTakeDescWhereTest.cs" />
+    <Compile Remove="ServiceGenerateClassServicesGetListSkipTakeTest.cs" />
+    <Compile Remove="ServiceGenerateClassServicesGetListTest.cs" />
+    <Compile Remove="ServiceGenerateClassServicesGetWithIDTest.cs" />
+    <Compile Remove="ServiceGenerateClassServicesPropertiesTest.cs" />
+    <Compile Remove="ServicesGenerateClassServicesTest.cs" />
+    <Compile Remove="ServicesGenerateExtensionEnumCastingGenerated.cs" />
+    <Compile Remove="ServicesRepopulateTestDB.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.Data.SqlClient" Version="2.0.0-preview1.20021.1" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.2" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="3.1.2" />

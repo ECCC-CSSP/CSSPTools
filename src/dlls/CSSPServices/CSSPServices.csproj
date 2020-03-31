@@ -21,14 +21,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="Resources\CSSPServicesRes.Designer.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>CSSPServicesRes.resx</DependentUpon>
-    </Compile>
-  </ItemGroup>
-
-  <ItemGroup>
     <EmbeddedResource Update="Resources\CSSPServicesRes.fr.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
     </EmbeddedResource>
@@ -50,6 +42,14 @@
     <Reference Include="CSSPModels">
       <HintPath>..\CSSPModels\bin\Debug\netcoreapp3.1\CSSPModels.dll</HintPath>
     </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Resources\CSSPServicesRes.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>CSSPServicesRes.resx</DependentUpon>
+    </Compile>
   </ItemGroup>
 
 </Project>

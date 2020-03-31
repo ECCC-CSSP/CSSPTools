@@ -110,6 +110,11 @@ namespace CSSPModels
         {
         }
 
+        public CSSPDBContext(DbContextOptions<CSSPDBContext> options)
+            : base(options)
+        {
+        }
+
         #endregion Constructors
 
         #region Overrides
