@@ -36,7 +36,7 @@ export class ShellComponent implements OnInit {
       this.router.navigateByUrl('/en-CA');
     }
     else {
-        this.router.navigateByUrl('/fr-CA');
+      this.router.navigateByUrl('/fr-CA');
     }
 
   }
