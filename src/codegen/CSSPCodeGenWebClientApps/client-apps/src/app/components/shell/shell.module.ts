@@ -1,12 +1,13 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { HttpClientModule } from '@angular/common/http';
+import { ShellComponent } from './shell.component';
+import { RouterModule } from '@angular/router';
 
 @NgModule({
-  declarations: [],
+  declarations: [ ShellComponent ],
   imports: [
     CommonModule,
-    HttpClientModule
+    RouterModule
   ]
 })
 export class ShellModule { }
