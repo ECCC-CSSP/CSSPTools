@@ -8,8 +8,8 @@ import { Router } from '@angular/router';
   styleUrls: ['./shell.component.css']
 })
 export class ShellComponent implements OnInit {
-  language: string;
   isEnglish: boolean = true;
+  hello: string;
 
   constructor(private router: Router) { }
 
@@ -23,7 +23,7 @@ export class ShellComponent implements OnInit {
       this.isEnglish = true;
     }
     LoadLocales();
-    this.language = $localize`:@@shell.language:`;
+    this.hello = $localize`:@@shell.hello:`;
   }
 
   changeLang() {
