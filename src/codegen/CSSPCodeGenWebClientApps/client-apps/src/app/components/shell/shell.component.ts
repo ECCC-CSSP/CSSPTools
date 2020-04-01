@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { LoadLocales } from './shell.locales';
 import { Router } from '@angular/router';
 import { Title } from '@angular/platform-browser';
+import { AppVariablesService } from 'src/app/services/app-variables.service';
 
 @Component({
   selector: 'app-shell',
@@ -13,7 +14,7 @@ export class ShellComponent implements OnInit {
   hello: string;
   openCode: string;
 
-  constructor(private router: Router, private title: Title) { }
+  constructor(private appVariablesService: AppVariablesService, private router: Router, private title: Title) { }
 
   ngOnInit() {
     if (this.router.url.indexOf('fr-CA') > 0) {
@@ -32,12 +33,10 @@ export class ShellComponent implements OnInit {
 
   changeLang() {
     if (this.router.url.indexOf('fr-CA') > 0) {
-      const lastPart: string = this.router.url.substring(this.router.url.indexOf('fr-CA') + 5);
-      this.router.navigateByUrl('/en-CA' + lastPart);
+      this.router.navigateByUrl('/en-CA');
     }
     else {
-      const lastPart: string = this.router.url.substring(this.router.url.indexOf('en-CA') + 5);
-      this.router.navigateByUrl('/fr-CA' + lastPart);
+        this.router.navigateByUrl('/fr-CA');
     }
 
   }

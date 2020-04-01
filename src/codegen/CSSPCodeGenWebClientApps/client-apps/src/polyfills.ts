@@ -4,17 +4,19 @@
 import '@angular/localize/init';
 import { loadTranslations } from '@angular/localize';
 
-export function LoadEN() {
-  loadTranslations({
-    title: 'Angular Client Apps',
-  });
-}
+$localize.locale = 'en-CA';
 
-export function LoadFR() {
-  loadTranslations({
-    title: 'Applications Client de Angular',
-  });
-}
+// export function LoadEN() {
+//   loadTranslations({
+//     title: 'Angular Client Apps',
+//   });
+// }
+
+// export function LoadFR() {
+//   loadTranslations({
+//     title: 'Applications Client de Angular',
+//   });
+// }
 
 /**
  * This file includes polyfills needed by Angular and is loaded before the app.
