@@ -1,6 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { LoadLocales } from './app.locale';
-import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -8,13 +6,10 @@ import { Router } from '@angular/router';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
-  title = 'Loading...';
 
-  constructor(private router: Router) {
+  constructor() {
   }
 
   ngOnInit() {
-    LoadLocales();
-    this.title = $localize`:@@app.title:`;
   }
 }

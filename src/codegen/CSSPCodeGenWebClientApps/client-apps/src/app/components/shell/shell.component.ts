@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { LoadLocales } from './shell.locales';
 import { Router } from '@angular/router';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-shell',
@@ -10,8 +11,9 @@ import { Router } from '@angular/router';
 export class ShellComponent implements OnInit {
   isEnglish: boolean = true;
   hello: string;
+  openCode: string;
 
-  constructor(private router: Router) { }
+  constructor(private router: Router, private title: Title) { }
 
   ngOnInit() {
     if (this.router.url.indexOf('fr-CA') > 0) {
@@ -23,7 +25,9 @@ export class ShellComponent implements OnInit {
       this.isEnglish = true;
     }
     LoadLocales();
+    this.title.setTitle($localize`:@@shell.title:`);
     this.hello = $localize`:@@shell.hello:`;
+    this.openCode = $localize`:@@shell.opencode:`;
   }
 
   changeLang() {
