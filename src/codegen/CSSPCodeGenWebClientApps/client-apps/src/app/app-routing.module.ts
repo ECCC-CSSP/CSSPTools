@@ -5,12 +5,12 @@ import { ShellComponent } from './components/shell';
 const routes: Routes = [
   {
     path: 'en-CA', component: ShellComponent, children: [
-      { path: 'codeenums', loadChildren: () => import('./components/codeenums/codeenums.module').then(mod => mod.CodeEnumsModule) },
+      { path: 'code', loadChildren: () => import('./components/code/code.module').then(mod => mod.CodeModule) },
     ]
   },
   {
     path: 'fr-CA', component: ShellComponent, children: [
-      { path: 'codeenums', loadChildren: () => import('./components/codeenums/codeenums.module').then(mod => mod.CodeEnumsModule) },
+      { path: 'code', loadChildren: () => import('./components/code/code.module').then(mod => mod.CodeModule) },
     ]
   },
   { path: '', redirectTo: 'en-CA', pathMatch: 'full' }

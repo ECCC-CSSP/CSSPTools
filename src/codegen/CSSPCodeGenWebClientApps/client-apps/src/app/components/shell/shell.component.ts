@@ -23,7 +23,7 @@ export class ShellComponent implements OnInit {
       this.isEnglish = true;
     }
     LoadLocales();
-    this.language = $localize`:@@shell.language:`
+    this.language = $localize`:@@shell.language:`;
   }
 
   changeLang() {
