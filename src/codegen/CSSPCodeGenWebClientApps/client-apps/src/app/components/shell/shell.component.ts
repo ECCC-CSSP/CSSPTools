@@ -10,6 +10,7 @@ import { AppVariablesService } from 'src/app/services/app-variables.service';
   styleUrls: ['./shell.component.css']
 })
 export class ShellComponent implements OnInit {
+  showFiller = false;
   isEnglish: boolean = true;
   hello: string;
   openCode: string;

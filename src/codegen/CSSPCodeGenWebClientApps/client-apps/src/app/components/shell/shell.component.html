@@ -1,8 +1,25 @@
-<p>
-    <button mat-raised-button *ngIf="!isEnglish" (click)="changeLang()">English</button>
-    <button mat-raised-button *ngIf="isEnglish" (click)="changeLang()">Français</button>
-</p>
-<p>{{ hello }}</p>
 
-<button mat-raised-button routerLink="code">{{ openCode }}</button>
-<router-outlet></router-outlet>
+<mat-drawer-container class="example-container" >
+    <mat-drawer #drawer class="example-sidenav" mode="side">
+        <p>Auto-resizing sidenav</p>
+        <p *ngIf="showFiller">Lorem, ipsum dolor sit amet consectetur.</p>
+        <button (click)="showFiller = !showFiller" mat-raised-button>
+            Toggle extra text
+        </button>
+    </mat-drawer>
+
+    <div class="margin20">
+        <button type="button" mat-button (click)="drawer.toggle()">
+            <span><mat-icon>vertical_split</mat-icon></span>
+        </button>
+        <p>
+            <button mat-raised-button *ngIf="!isEnglish" (click)="changeLang()">English</button>
+            <button mat-raised-button *ngIf="isEnglish" (click)="changeLang()">Français</button>
+        </p>
+        <p>{{ hello }}</p>
+
+        <button mat-raised-button routerLink="code">{{ openCode }}</button>
+        <router-outlet></router-outlet>
+    </div>
+
+</mat-drawer-container>
