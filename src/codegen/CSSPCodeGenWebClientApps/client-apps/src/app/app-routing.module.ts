@@ -1,16 +1,16 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { HomeComponent } from './components/home/home.component';
+import { ShellComponent } from './components/shell';
 
 const routes: Routes = [
   {
-    path: 'en-CA', component: HomeComponent, children: [
-      { path: 'home', loadChildren: () => import('./components/home/home.module').then(mod => mod.HomeModule) },
+    path: 'en-CA', component: ShellComponent, children: [
+      { path: 'code', loadChildren: () => import('./components/code/code.module').then(mod => mod.CodeModule) },
     ]
   },
   {
-    path: 'fr-CA', component: HomeComponent, children: [
-      { path: 'home', loadChildren: () => import('./components/home/home.module').then(mod => mod.HomeModule) },
+    path: 'fr-CA', component: ShellComponent, children: [
+      { path: 'code', loadChildren: () => import('./components/code/code.module').then(mod => mod.CodeModule) },
     ]
   },
   { path: '', redirectTo: 'en-CA', pathMatch: 'full' }

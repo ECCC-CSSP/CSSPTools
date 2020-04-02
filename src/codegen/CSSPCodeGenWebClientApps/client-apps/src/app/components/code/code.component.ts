@@ -3,8 +3,6 @@ import { LoadLocales } from './code.locales';
 import { WeatherService } from 'src/app/services/weather.service';
 import { Subscription, Observable, BehaviorSubject } from 'rxjs';
 import { WeatherForecast } from 'src/app/models/WeatherForecast.interface';
-import { AppVariablesService } from 'src/app/services/app-variables.service';
-import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-code',

@@ -1,3 +1,3 @@
 export interface AppVariables {
-    CurrentURL: string;
+    ReloadURL: string;
 }
