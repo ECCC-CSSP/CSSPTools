@@ -98,7 +98,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSSPWebClientApps", "src\we
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSSPCodeGenWebClientApps", "src\codegen\CSSPCodeGenWebClientApps\CSSPCodeGenWebClientApps.csproj", "{F826244E-23AA-467F-8908-321EE8D3E099}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSSPCodeGenWebAPI", "src\codegen\CSSPCodeGenWebAPI\CSSPCodeGenWebAPI.csproj", "{BD212787-339D-46F6-962C-A3367BD0F579}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CSSPCodeGenWebAPI", "src\codegen\CSSPCodeGenWebAPI\CSSPCodeGenWebAPI.csproj", "{BD212787-339D-46F6-962C-A3367BD0F579}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

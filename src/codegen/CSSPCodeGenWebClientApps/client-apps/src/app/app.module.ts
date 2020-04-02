@@ -4,24 +4,16 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MaterialModule } from './app-material.module';
+import { ShellComponent } from './components/shell';
 import { HttpClientModule } from '@angular/common/http';
-import { MatDrawerContainer, MatDrawerContent, MatDrawer } from '@angular/material/sidenav';
-import { MatIcon } from '@angular/material/icon';
-import { MatToolbar } from '@angular/material/toolbar';
-import { RouterModule } from '@angular/router';
 
 @NgModule({
   declarations: [
     AppComponent,
-    MatDrawerContainer,
-    MatDrawerContent,
-    MatDrawer,
-    MatIcon,
-    MatToolbar
+    ShellComponent
   ],
   imports: [
     BrowserModule,
-    RouterModule,
     AppRoutingModule,
     BrowserAnimationsModule,
     MaterialModule,

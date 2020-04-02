@@ -42,6 +42,7 @@ namespace CSSPCodeGenWebAPI
 
             app.UseRouting();
 
+            // global cors policy
             app.UseCors(x => x
                 .AllowAnyOrigin()
                 .AllowAnyMethod()
