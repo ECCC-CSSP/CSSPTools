@@ -12,7 +12,7 @@ import { Router } from '@angular/router';
   styleUrls: ['./code.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class CodeComponent implements OnInit, OnDestroy {
+export class Code3Component implements OnInit, OnDestroy {
   generate: string;
   getTheWeather: string;
   getMoreWeather: string;
