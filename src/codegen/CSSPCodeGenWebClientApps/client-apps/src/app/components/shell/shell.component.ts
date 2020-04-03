@@ -11,7 +11,7 @@ import { MatDrawer } from '@angular/material/sidenav';
   styleUrls: ['./shell.component.css']
 })
 export class ShellComponent implements OnInit {
-  shellVar: ShellVar = { isEnglish: true };
+  shellVar: ShellVar = { isEnglish: true, leftIconsVisible: true };
 
   constructor(private appVariablesService: AppVariablesService, private router: Router, private title: Title) { }
 
@@ -46,6 +46,10 @@ export class ShellComponent implements OnInit {
       this.shellVar.currentButtonSelect = buttonOption;
     }
   }
+
+  toggleIcons() {
+    this.shellVar.leftIconsVisible = !this.shellVar.leftIconsVisible;
+  }
 }
 
 export interface ShellVar {
@@ -53,6 +57,9 @@ export interface ShellVar {
   appTitle?: string;
   menuTitle?: string;
   currentButtonSelect?: ButtonTypeOptions;
+  leftIconsVisible?: boolean;
+  showIcons?: string;
+  hideIcons?: string;
 }
 
 export type ButtonTypeOptions = 'First' | 'Second' | 'Third';

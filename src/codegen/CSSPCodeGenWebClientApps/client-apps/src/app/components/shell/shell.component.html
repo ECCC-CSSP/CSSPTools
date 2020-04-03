@@ -1,11 +1,13 @@
 <mat-toolbar>
     <span class="top">
-        <button mat-button [matMenuTriggerFor]="menu">Menu</button>
+        <button mat-button [matMenuTriggerFor]="menu">
+            <mat-icon>menu</mat-icon>
+        </button>
         <mat-menu #menu="matMenu">
-          <button mat-menu-item>Item 1</button>
-          <button mat-menu-item>Item 2</button>
+            <button *ngIf="!shellVar.leftIconsVisible" mat-menu-item (click)="toggleIcons()">{{ shellVar.showIcons }}</button>
+            <button *ngIf="shellVar.leftIconsVisible" mat-menu-item (click)="toggleIcons()">{{ shellVar.hideIcons }}</button>
         </mat-menu>
-                <a mat-button>{{ shellVar.appTitle }}
+        <a mat-button>{{ shellVar.appTitle }}
         </a>
         <span class="right">
             <button mat-button *ngIf="!shellVar.isEnglish" (click)="changeLang()">English</button>
@@ -13,7 +15,7 @@
         </span>
     </span>
 </mat-toolbar>
-<div class="left">
+<div *ngIf="shellVar.leftIconsVisible" class="left">
     <p>
         <a mat-button routerLink="code" routerLinkActive="active-link" (click)="selectButton('First', drawer)">
             <mat-icon>apps</mat-icon>
