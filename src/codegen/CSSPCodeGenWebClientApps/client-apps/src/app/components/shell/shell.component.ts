@@ -3,6 +3,7 @@ import { LoadLocales } from './shell.locales';
 import { Router } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 import { AppVariablesService } from 'src/app/services/app-variables.service';
+import { MatDrawer } from '@angular/material/sidenav';
 
 @Component({
   selector: 'app-shell',
@@ -10,26 +11,21 @@ import { AppVariablesService } from 'src/app/services/app-variables.service';
   styleUrls: ['./shell.component.css']
 })
 export class ShellComponent implements OnInit {
-  showFiller = false;
-  isEnglish: boolean = true;
-  hello: string;
-  openCode: string;
+  shellVar: ShellVar = { isEnglish: true };
 
   constructor(private appVariablesService: AppVariablesService, private router: Router, private title: Title) { }
 
   ngOnInit() {
     if (this.router.url.indexOf('fr-CA') > 0) {
       $localize.locale = 'fr-CA';
-      this.isEnglish = false;
+      this.shellVar.isEnglish = false;
     }
     else {
       $localize.locale = 'en-CA';
-      this.isEnglish = true;
+      this.shellVar.isEnglish = true;
     }
-    LoadLocales();
-    this.title.setTitle($localize`:@@shell.title:`);
-    this.hello = $localize`:@@shell.hello:`;
-    this.openCode = $localize`:@@shell.opencode:`;
+    LoadLocales(this.shellVar);
+    this.title.setTitle(this.shellVar.appTitle);
   }
 
   changeLang() {
@@ -39,6 +35,24 @@ export class ShellComponent implements OnInit {
     else {
       this.router.navigateByUrl('/fr-CA');
     }
+  }
 
+  selectButton(buttonOption: ButtonTypeOptions, drawer: MatDrawer) {
+    if (buttonOption === this.shellVar.currentButtonSelect) {
+      drawer.toggle();
+    }
+    else
+    {
+      this.shellVar.currentButtonSelect = buttonOption;
+    }
   }
 }
+
+export interface ShellVar {
+  isEnglish?: boolean;
+  appTitle?: string;
+  menuTitle?: string;
+  currentButtonSelect?: ButtonTypeOptions;
+}
+
+export type ButtonTypeOptions = 'First' | 'Second' | 'Third';

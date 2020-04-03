@@ -1,18 +1,20 @@
 import { loadTranslations } from '@angular/localize';
+import { ShellVar } from './shell.component';
 
-export function LoadLocales() {
+export function LoadLocales(shellVar: ShellVar) {
   if ($localize.locale === 'fr-CA') {
     loadTranslations({
-      'shell.title': "ACA - Coquille",
-      'shell.hello': 'Bonjour',
-      'shell.opencode': 'Ouvrir code'
+      'shell.appTitle': "ACA - Coquille",
+      'shell.menuTitle': 'Ouvre menu avec plus d\'options'
     });
   }
   else {
     loadTranslations({
-      'shell.title': "ACA - Shell",
-      'shell.hello': 'Hello',
-      'shell.opencode': 'Open code'
+      'shell.appTitle': "ACA - Shell",
+      'shell.menuTitle': 'Opens menu with more options'
     });
   }
+
+  shellVar.appTitle = $localize`:@@shell.appTitle:`;
+  shellVar.menuTitle = $localize`:@@shell.menuTitle:`;
 }

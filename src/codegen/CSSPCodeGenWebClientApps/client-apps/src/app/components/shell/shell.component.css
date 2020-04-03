@@ -1,9 +1,12 @@
-  
-  .margin20 {
-    margin: 20px;
-  }
-  
-  .example-sidenav {
-    padding: 20px;
-  }
-  
+.left {
+  float: left;
+}
+.right {
+  float: right;
+}
+.top {
+  flex: 1 1 auto;
+}
+.active-link {
+  background-color: blueviolet;
+}

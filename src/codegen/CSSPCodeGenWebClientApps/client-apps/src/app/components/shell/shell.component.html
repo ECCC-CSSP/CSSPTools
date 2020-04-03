@@ -1,25 +1,50 @@
-
-<mat-drawer-container class="example-container" >
-    <mat-drawer #drawer class="example-sidenav" mode="side">
-        <p>Auto-resizing sidenav</p>
-        <p *ngIf="showFiller">Lorem, ipsum dolor sit amet consectetur.</p>
-        <button (click)="showFiller = !showFiller" mat-raised-button>
-            Toggle extra text
-        </button>
-    </mat-drawer>
-
-    <div class="margin20">
-        <button type="button" mat-button (click)="drawer.toggle()">
-            <span><mat-icon>vertical_split</mat-icon></span>
-        </button>
-        <p>
-            <button mat-raised-button *ngIf="!isEnglish" (click)="changeLang()">English</button>
-            <button mat-raised-button *ngIf="isEnglish" (click)="changeLang()">Français</button>
-        </p>
-        <p>{{ hello }}</p>
-
-        <button mat-raised-button routerLink="code">{{ openCode }}</button>
-        <router-outlet></router-outlet>
-    </div>
-
-</mat-drawer-container>
+<mat-toolbar>
+    <span class="top">
+        <button mat-button [matMenuTriggerFor]="menu">Menu</button>
+        <mat-menu #menu="matMenu">
+          <button mat-menu-item>Item 1</button>
+          <button mat-menu-item>Item 2</button>
+        </mat-menu>
+                <a mat-button>{{ shellVar.appTitle }}
+        </a>
+        <span class="right">
+            <button mat-button *ngIf="!shellVar.isEnglish" (click)="changeLang()">English</button>
+            <button mat-button *ngIf="shellVar.isEnglish" (click)="changeLang()">Français</button>
+        </span>
+    </span>
+</mat-toolbar>
+<div class="left">
+    <p>
+        <a mat-button routerLink="code" routerLinkActive="active-link" (click)="selectButton('First', drawer)">
+            <mat-icon>apps</mat-icon>
+        </a>
+    </p>
+    <p>
+        <a mat-button routerLink="code2" routerLinkActive="active-link" (click)="selectButton('Second', drawer)">
+            <mat-icon>child_care</mat-icon>
+        </a>
+    </p>
+    <p>
+        <a mat-button routerLink="code3" routerLinkActive="active-link" (click)="selectButton('Third', drawer)">
+            <mat-icon>apartment</mat-icon>
+        </a>
+    </p>
+</div>
+<div clas="right">
+    <mat-drawer-container>
+        <mat-drawer #drawer mode="side">
+            <div *ngIf="shellVar.currentButtonSelect === 'First'">
+                First
+            </div>
+            <div *ngIf="shellVar.currentButtonSelect === 'Second'">
+                Second
+            </div>
+            <div *ngIf="shellVar.currentButtonSelect === 'Third'">
+                Third
+            </div>
+        </mat-drawer>
+        <div class="margin20">
+            <router-outlet></router-outlet>
+        </div>
+    </mat-drawer-container>
+</div>
