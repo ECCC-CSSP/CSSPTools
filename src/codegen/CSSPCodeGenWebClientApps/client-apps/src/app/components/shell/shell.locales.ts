@@ -1,7 +1,8 @@
 import { loadTranslations } from '@angular/localize';
-import { ShellVar } from './shell.component';
+import { AppShellService } from 'src/app/services/app-shell.service';
+import { AppShell } from 'src/app/interfaces/app-shell.interfaces';
 
-export function LoadLocales(shellVar: ShellVar) {
+export function LoadLocales(appShellService: AppShellService) {
   if ($localize.locale === 'fr-CA') {
     loadTranslations({
       'shell.appTitle': "ACA - Coquille",
@@ -19,8 +20,11 @@ export function LoadLocales(shellVar: ShellVar) {
     });
   }
 
-  shellVar.appTitle = $localize`:@@shell.appTitle:`;
-  shellVar.menuTitle = $localize`:@@shell.menuTitle:`;
-  shellVar.showIcons = $localize`:@@shell.showIcons:`;
-  shellVar.hideIcons = $localize`:@@shell.hideIcons:`;
+  let appShell: AppShell = { 
+    appTitle: $localize`:@@shell.appTitle:`, 
+    menuTitle: $localize`:@@shell.menuTitle:`,
+    showIcons: $localize`:@@shell.showIcons:`,
+    hideIcons: $localize`:@@shell.hideIcons:`
+  }
+  appShellService.Update(appShell);
 }

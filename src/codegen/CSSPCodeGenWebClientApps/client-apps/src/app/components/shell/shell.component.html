@@ -4,18 +4,18 @@
             <mat-icon>menu</mat-icon>
         </button>
         <mat-menu #menu="matMenu">
-            <button *ngIf="!shellVar.leftIconsVisible" mat-menu-item (click)="toggleIcons()">{{ shellVar.showIcons }}</button>
-            <button *ngIf="shellVar.leftIconsVisible" mat-menu-item (click)="toggleIcons()">{{ shellVar.hideIcons }}</button>
+            <button *ngIf="!appShell.leftIconsVisible" mat-menu-item (click)="toggleIcons()">{{ appShell.showIcons }}</button>
+            <button *ngIf="appShell.leftIconsVisible" mat-menu-item (click)="toggleIcons()">{{ appShell.hideIcons }}</button>
         </mat-menu>
-        <a mat-button>{{ shellVar.appTitle }}
+        <a mat-button>{{ appShell.appTitle }}
         </a>
         <span class="right">
-            <button mat-button *ngIf="!shellVar.isEnglish" (click)="changeLang()">English</button>
-            <button mat-button *ngIf="shellVar.isEnglish" (click)="changeLang()">Français</button>
+            <button mat-button *ngIf="!appShell.isEnglish" (click)="changeLang()">English</button>
+            <button mat-button *ngIf="appShell.isEnglish" (click)="changeLang()">Français</button>
         </span>
     </span>
 </mat-toolbar>
-<div *ngIf="shellVar.leftIconsVisible" class="left">
+<div *ngIf="appShell.leftIconsVisible" class="left">
     <p>
         <a mat-button routerLink="code" routerLinkActive="active-link" (click)="selectButton('First', drawer)">
             <mat-icon>apps</mat-icon>
@@ -35,13 +35,13 @@
 <div clas="right">
     <mat-drawer-container>
         <mat-drawer #drawer mode="side">
-            <div *ngIf="shellVar.currentButtonSelect === 'First'">
+            <div *ngIf="appShell.currentButtonSelect === 'First'">
                 First
             </div>
-            <div *ngIf="shellVar.currentButtonSelect === 'Second'">
+            <div *ngIf="appShell.currentButtonSelect === 'Second'">
                 Second
             </div>
-            <div *ngIf="shellVar.currentButtonSelect === 'Third'">
+            <div *ngIf="appShell.currentButtonSelect === 'Third'">
                 Third
             </div>
         </mat-drawer>

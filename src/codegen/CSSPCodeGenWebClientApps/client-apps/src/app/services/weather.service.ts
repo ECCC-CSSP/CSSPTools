@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { WeatherForecast } from '../models/WeatherForecast.interface';
+import { WeatherForecast } from '../interfaces/weather-forecast.interface';
 import { BehaviorSubject, Subscription, concat } from 'rxjs';
 
 @Injectable({
@@ -11,15 +11,15 @@ export class WeatherService {
 
   constructor(private httpClient: HttpClient) { }
 
-  GetWeather() {
+  Get() {
     return this.httpClient.get<WeatherForecast[]>('http://localhost:4444/weatherforecast');
   }
 
-  GetMoreWeather() {
+  GetMore() {
     return this.httpClient.get<WeatherForecast[]>('http://localhost:4444/weatherforecast');
   }
 
-  ClearWeather() {
+  Clear() {
     this.weather$ = new BehaviorSubject<WeatherForecast[]>([]);
   }
 

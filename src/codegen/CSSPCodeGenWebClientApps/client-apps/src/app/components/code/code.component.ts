@@ -2,7 +2,6 @@ import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/
 import { LoadLocales } from './code.locales';
 import { WeatherService } from 'src/app/services/weather.service';
 import { Subscription, Observable, BehaviorSubject } from 'rxjs';
-import { WeatherForecast } from 'src/app/models/WeatherForecast.interface';
 
 @Component({
   selector: 'app-code',
@@ -29,11 +28,11 @@ export class CodeComponent implements OnInit, OnDestroy {
   }
 
   ClearWeather() {
-    this.weatherService.ClearWeather();
+    this.weatherService.Clear();
   }
 
   GetWeather() {
-    let w = this.weatherService.GetWeather();
+    let w = this.weatherService.Get();
     this.sub = w.subscribe((a) => {
       let wea = a;
       this.weatherService.weather$.next(wea);
@@ -41,7 +40,7 @@ export class CodeComponent implements OnInit, OnDestroy {
   }
 
   GetMoreWeather() {
-    let w = this.weatherService.GetMoreWeather();
+    let w = this.weatherService.GetMore();
     this.sub = w.subscribe((a) => {
       let wea = this.weatherService.weather$.getValue().concat(a);
       this.weatherService.weather$.next(wea);

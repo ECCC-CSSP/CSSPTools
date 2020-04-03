@@ -1,31 +1,36 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { LoadLocales } from './shell.locales';
 import { Router } from '@angular/router';
 import { Title } from '@angular/platform-browser';
-import { AppVariablesService } from 'src/app/services/app-variables.service';
 import { MatDrawer } from '@angular/material/sidenav';
+import { AppShellService } from 'src/app/services/app-shell.service';
+import { ButtonTypeOptions, AppShell } from 'src/app/interfaces/app-shell.interfaces';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-shell',
   templateUrl: './shell.component.html',
   styleUrls: ['./shell.component.css']
 })
-export class ShellComponent implements OnInit {
-  shellVar: ShellVar = { isEnglish: true, leftIconsVisible: true };
+export class ShellComponent implements OnInit, OnDestroy {
+  sub: Subscription;
+  appShell: AppShell;
 
-  constructor(private appVariablesService: AppVariablesService, private router: Router, private title: Title) { }
+  constructor(public appShellService: AppShellService, private router: Router, private title: Title) { }
 
   ngOnInit() {
+    this.appShell = { isEnglish: true, leftIconsVisible: true }
     if (this.router.url.indexOf('fr-CA') > 0) {
       $localize.locale = 'fr-CA';
-      this.shellVar.isEnglish = false;
+      this.appShell.isEnglish = false;
     }
     else {
       $localize.locale = 'en-CA';
-      this.shellVar.isEnglish = true;
+      this.appShell.isEnglish = true;
     }
-    LoadLocales(this.shellVar);
-    this.title.setTitle(this.shellVar.appTitle);
+    LoadLocales(this.appShellService); // this will update the AppShell
+    this.sub = this.appShellService.appShell$.subscribe(x => this.appShell = x);
+    this.title.setTitle(this.appShell.appTitle);
   }
 
   changeLang() {
@@ -38,28 +43,23 @@ export class ShellComponent implements OnInit {
   }
 
   selectButton(buttonOption: ButtonTypeOptions, drawer: MatDrawer) {
-    if (buttonOption === this.shellVar.currentButtonSelect) {
+    if (buttonOption === this.appShell.currentButtonSelect) {
       drawer.toggle();
     }
     else
     {
-      this.shellVar.currentButtonSelect = buttonOption;
+      this.appShell.currentButtonSelect = buttonOption;
+      this.appShellService.Update(this.appShell);
     }
   }
 
   toggleIcons() {
-    this.shellVar.leftIconsVisible = !this.shellVar.leftIconsVisible;
+    this.appShell.leftIconsVisible = !this.appShell.leftIconsVisible;
+    this.appShellService.Update(this.appShell);
+  }
+
+  ngOnDestroy()
+  {
+    this.sub.unsubscribe();
   }
 }
-
-export interface ShellVar {
-  isEnglish?: boolean;
-  appTitle?: string;
-  menuTitle?: string;
-  currentButtonSelect?: ButtonTypeOptions;
-  leftIconsVisible?: boolean;
-  showIcons?: string;
-  hideIcons?: string;
-}
-
-export type ButtonTypeOptions = 'First' | 'Second' | 'Third';

@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { AppVariablesService } from './app-variables.service';
+import { AppShellService } from './app-shell.service';
 
-describe('AppService', () => {
-  let service: AppVariablesService;
+describe('AppShellService', () => {
+  let service: AppShellService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(AppVariablesService);
+    service = TestBed.inject(AppShellService);
   });
 
   it('should be created', () => {
