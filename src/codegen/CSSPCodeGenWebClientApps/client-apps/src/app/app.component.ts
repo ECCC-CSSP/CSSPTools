@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
-import { AppRootService } from './services/app-root.service';
-import { AppRoot } from './interfaces/app-root.interfaces';
+import { AppService } from './app.service';
+import { AppModel } from './app.models';
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -11,13 +11,13 @@ import { Subscription } from 'rxjs';
 })
 export class AppComponent implements OnInit, OnDestroy {
   sub: Subscription;
-  appRoot: AppRoot = {};
+  appModel: AppModel = {};
 
-  constructor(public appRootService: AppRootService) {
+  constructor(public appService: AppService) {
   }
 
   ngOnInit() {
-    this.sub = this.appRootService.appRoot$.subscribe(x => this.appRoot = x);
+    this.sub = this.appService.appModel$.subscribe(x => this.appModel = x);
   }
 
   ngOnDestroy() {
