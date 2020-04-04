@@ -1,18 +1,17 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ShellComponent } from './shell.component';
 import { RouterModule } from '@angular/router';
+import { ServicesRoutingModule } from './services-routing.module';
 import { MaterialModule } from 'src/app/app-material.module';
-import { ShellRoutingModule } from './shell-routing.module';
+import { ServicesComponent } from './services.component';
 
 @NgModule({
-  declarations: [ShellComponent],
+  declarations: [ServicesComponent],
   imports: [
     CommonModule,
     RouterModule,
-    ShellRoutingModule,
+    ServicesRoutingModule,
     MaterialModule
-  ],
-  exports: [ShellComponent]
+  ]
 })
-export class ShellModule { }
+export class ServicesModule { }

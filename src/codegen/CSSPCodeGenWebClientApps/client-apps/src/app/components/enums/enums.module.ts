@@ -1,18 +1,17 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ShellComponent } from './shell.component';
 import { RouterModule } from '@angular/router';
+import { EnumsRoutingModule } from './enums-routing.module';
 import { MaterialModule } from 'src/app/app-material.module';
-import { ShellRoutingModule } from './shell-routing.module';
+import { EnumsComponent } from './enums.component';
 
 @NgModule({
-  declarations: [ShellComponent],
+  declarations: [ EnumsComponent ],
   imports: [
     CommonModule,
     RouterModule,
-    ShellRoutingModule,
+    EnumsRoutingModule,
     MaterialModule
-  ],
-  exports: [ShellComponent]
+  ]
 })
-export class ShellModule { }
+export class EnumsModule { }

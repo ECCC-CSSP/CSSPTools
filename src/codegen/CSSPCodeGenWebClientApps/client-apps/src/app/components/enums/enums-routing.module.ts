@@ -1,13 +1,13 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { Code2Component } from './code.component';
+import { EnumsComponent } from './enums.component';
 
 const routes: Routes = [
-  { path: '', component: Code2Component }
+  { path: '', component: EnumsComponent }
 ];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
-export class CodeRoutingModule { }
+export class EnumsRoutingModule { }

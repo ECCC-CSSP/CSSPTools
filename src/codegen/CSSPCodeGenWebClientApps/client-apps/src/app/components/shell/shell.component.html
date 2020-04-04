@@ -17,17 +17,17 @@
 </mat-toolbar>
 <div *ngIf="shellModel.leftIconsVisible" class="left">
     <p>
-        <a mat-button routerLink="code" routerLinkActive="active-link" (click)="selectButton('First', drawer)">
+        <a mat-button routerLink="enums" title="Open Enums" routerLinkActive="active-link" (click)="selectButton('First', drawer)">
             <mat-icon>apps</mat-icon>
         </a>
     </p>
     <p>
-        <a mat-button routerLink="code2" routerLinkActive="active-link" (click)="selectButton('Second', drawer)">
+        <a mat-button routerLink="models" title="Open Models" routerLinkActive="active-link" (click)="selectButton('Second', drawer)">
             <mat-icon>child_care</mat-icon>
         </a>
     </p>
     <p>
-        <a mat-button routerLink="code3" routerLinkActive="active-link" (click)="selectButton('Third', drawer)">
+        <a mat-button routerLink="services" title="Open Services" routerLinkActive="active-link" (click)="selectButton('Third', drawer)">
             <mat-icon>apartment</mat-icon>
         </a>
     </p>

@@ -17,9 +17,9 @@ export class ShellComponent implements OnInit, OnDestroy {
   sub: Subscription;
   shellModel: ShellModel = {};
 
-  constructor(public shellService: ShellService, private router: Router, private title: Title) { }
+  constructor(private shellService: ShellService, private router: Router, private title: Title) { }
 
-  ngOnInit() {
+  ngOnInit(): void {
     if (this.router.url.indexOf('fr-CA') > 0) {
       $localize.locale = 'fr-CA';
       this.shellModel.isEnglish = false;
@@ -34,7 +34,7 @@ export class ShellComponent implements OnInit, OnDestroy {
     this.title.setTitle(this.shellModel.appTitle);
   }
 
-  changeLang() {
+  changeLang(): void {
     if (this.router.url.indexOf('fr-CA') > 0) {
       this.shellModel.isEnglish = true;
       this.shellService.Update(this.shellModel);
@@ -47,24 +47,22 @@ export class ShellComponent implements OnInit, OnDestroy {
     }
   }
 
-  selectButton(buttonOption: ButtonTypeOptions, drawer: MatDrawer) {
+  selectButton(buttonOption: ButtonTypeOptions, drawer: MatDrawer): void {
     if (buttonOption === this.shellModel.currentButtonSelect) {
       drawer.toggle();
     }
-    else
-    {
+    else {
       this.shellModel.currentButtonSelect = buttonOption;
       this.shellService.Update(this.shellModel);
     }
   }
-  
-  toggleIcons() {
+
+  toggleIcons(): void {
     this.shellModel.leftIconsVisible = !this.shellModel.leftIconsVisible;
     this.shellService.Update(this.shellModel);
   }
 
-  ngOnDestroy()
-  {
+  ngOnDestroy(): void {
     this.sub?.unsubscribe();
   }
 }

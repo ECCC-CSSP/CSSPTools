@@ -6,16 +6,16 @@ import { NoPageFoundComponent } from './components/no-page-found/no-page-found.c
 const routes: Routes = [
   {
     path: 'en-CA', component: ShellComponent, children: [
-      { path: 'code', loadChildren: () => import('./components/code/code.module').then(mod => mod.CodeModule) },
-      { path: 'code2', loadChildren: () => import('./components/code2/code.module').then(mod => mod.Code2Module) },
-      { path: 'code3', loadChildren: () => import('./components/code3/code.module').then(mod => mod.Code3Module) },
+      { path: 'enums', loadChildren: () => import('./components/enums/enums.module').then(mod => mod.EnumsModule) },
+      { path: 'models', loadChildren: () => import('./components/models/models.module').then(mod => mod.ModelsModule) },
+      { path: 'services', loadChildren: () => import('./components/services/services.module').then(mod => mod.ServicesModule) },
     ]
   },
   {
     path: 'fr-CA', component: ShellComponent, children: [
-      { path: 'code', loadChildren: () => import('./components/code/code.module').then(mod => mod.CodeModule) },
-      { path: 'code2', loadChildren: () => import('./components/code2/code.module').then(mod => mod.Code2Module) },
-      { path: 'code3', loadChildren: () => import('./components/code3/code.module').then(mod => mod.Code3Module) },
+      { path: 'enums', loadChildren: () => import('./components/enums/enums.module').then(mod => mod.EnumsModule) },
+      { path: 'models', loadChildren: () => import('./components/models/models.module').then(mod => mod.ModelsModule) },
+      { path: 'services', loadChildren: () => import('./components/services/services.module').then(mod => mod.ServicesModule) },
     ]
   },
   { path: '', redirectTo: 'en-CA', pathMatch: 'full' },
