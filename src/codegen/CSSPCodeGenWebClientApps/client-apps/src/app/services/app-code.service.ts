@@ -8,10 +8,17 @@ import { AppCode } from '../interfaces/app-code.interfaces';
 export class AppCodeService {
   appCode$: BehaviorSubject<AppCode> = new BehaviorSubject<AppCode>(<AppCode>{});
 
-  constructor() { }
+  constructor() {
+    this.Init();
+   }
 
-  ClearAppCode()
+  Init()
   {
-    this.appCode$ = new BehaviorSubject<AppCode>(<AppCode>{});
+    this.Update(<AppCode>{ buttonColor: 'primary' });
+  } 
+  Update(appCode: AppCode)
+  {
+    let appCodeTemp: AppCode = {...this.appCode$.getValue(), ...appCode};
+    this.appCode$ = new BehaviorSubject<AppCode>(appCodeTemp);
   }
 }

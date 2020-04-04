@@ -8,10 +8,17 @@ import { AppRoot } from '../interfaces/app-root.interfaces';
 export class AppRootService {
   appRoot$: BehaviorSubject<AppRoot> = new BehaviorSubject<AppRoot>(<AppRoot>{});
 
-  constructor() { }
+  constructor() {
+    this.Init();
+   }
 
-  ClearAppRoot()
+  Init()
   {
-    this.appRoot$ = new BehaviorSubject<AppRoot>(<AppRoot>{}); 
+    this.Update(<AppRoot>{ CurrentURL: '' });
+  }
+  Update(appRoot: AppRoot)
+  {
+    let appRootTemp: AppRoot = {...this.appRoot$.getValue(), ...appRoot};
+    this.appRoot$ = new BehaviorSubject<AppRoot>(appRootTemp);
   }
 }

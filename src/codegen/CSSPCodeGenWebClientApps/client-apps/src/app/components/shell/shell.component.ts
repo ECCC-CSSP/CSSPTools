@@ -14,12 +14,11 @@ import { Subscription } from 'rxjs';
 })
 export class ShellComponent implements OnInit, OnDestroy {
   sub: Subscription;
-  appShell: AppShell;
+  appShell: AppShell = {};
 
   constructor(public appShellService: AppShellService, private router: Router, private title: Title) { }
 
   ngOnInit() {
-    this.appShell = { isEnglish: true, leftIconsVisible: true }
     if (this.router.url.indexOf('fr-CA') > 0) {
       $localize.locale = 'fr-CA';
       this.appShell.isEnglish = false;
@@ -28,17 +27,22 @@ export class ShellComponent implements OnInit, OnDestroy {
       $localize.locale = 'en-CA';
       this.appShell.isEnglish = true;
     }
-    LoadLocales(this.appShellService); // this will update the AppShell
+    this.appShellService.Update(this.appShell);
+    LoadLocales(this.appShellService);
     this.sub = this.appShellService.appShell$.subscribe(x => this.appShell = x);
     this.title.setTitle(this.appShell.appTitle);
   }
 
   changeLang() {
     if (this.router.url.indexOf('fr-CA') > 0) {
-      this.router.navigateByUrl('/en-CA');
+      this.appShell.isEnglish = true;
+      this.appShellService.Update(this.appShell);
+      this.router.navigateByUrl(this.router.url.replace('fr-CA', 'en-CA'));
     }
     else {
-      this.router.navigateByUrl('/fr-CA');
+      this.appShell.isEnglish = false;
+      this.appShellService.Update(this.appShell);
+      this.router.navigateByUrl(this.router.url.replace('en-CA', 'fr-CA'));
     }
   }
 
@@ -52,7 +56,7 @@ export class ShellComponent implements OnInit, OnDestroy {
       this.appShellService.Update(this.appShell);
     }
   }
-
+  
   toggleIcons() {
     this.appShell.leftIconsVisible = !this.appShell.leftIconsVisible;
     this.appShellService.Update(this.appShell);
@@ -60,6 +64,6 @@ export class ShellComponent implements OnInit, OnDestroy {
 
   ngOnDestroy()
   {
-    this.sub.unsubscribe();
+    this.sub?.unsubscribe();
   }
 }

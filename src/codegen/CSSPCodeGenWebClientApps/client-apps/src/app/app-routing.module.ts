@@ -17,7 +17,8 @@ const routes: Routes = [
       { path: 'code3', loadChildren: () => import('./components/code3/code.module').then(mod => mod.Code3Module) },
     ]
   },
-  { path: '', redirectTo: 'en-CA', pathMatch: 'full' }
+  { path: '', redirectTo: 'en-CA', pathMatch: 'full' },
+  { path: '**', component: NoPageFoundComponent }
 ];
 
 @NgModule({

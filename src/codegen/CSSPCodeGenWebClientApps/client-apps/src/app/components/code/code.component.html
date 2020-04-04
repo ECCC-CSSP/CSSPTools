@@ -1,4 +1,7 @@
 <p>code works!</p>
+<p *ngIf="(appShellService.appShell$ | async) as p">
+    {{ p | json }}
+</p>
 
 <button mat-raised-button color="primary">{{ generate }}</button>
 <span>&nbsp;&nbsp;&nbsp;</span>
@@ -7,6 +10,10 @@
 <button mat-raised-button color="primary" (click)="GetMoreWeather()">{{ getMoreWeather }}</button>
 <span>&nbsp;&nbsp;&nbsp;</span>
 <button mat-raised-button color="primary" (click)="ClearWeather()">{{ clearWeather }}</button>
+<span>&nbsp;&nbsp;&nbsp;</span>
+<button mat-raised-button color="primary" (click)="setPrimary()">{{ setPrimaryColor }}</button>
+<span>&nbsp;&nbsp;&nbsp;</span>
+<button mat-raised-button color="primary" (click)="setWarn()">{{ setWarnColor }}</button>
 
 <ul *ngIf="(weatherService.weather$ | async) as wfs">
     <li *ngFor="let wf of wfs">

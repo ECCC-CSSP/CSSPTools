@@ -8,13 +8,14 @@ import { AppShell } from '../interfaces/app-shell.interfaces';
 export class AppShellService {
   appShell$: BehaviorSubject<AppShell> = new BehaviorSubject<AppShell>(<AppShell>{});
 
-  constructor() { }
+  constructor() {
+    this.Init();
+   }
 
-  Clear()
+  Init()
   {
-    this.appShell$ = new BehaviorSubject<AppShell>(<AppShell>{});
-  }
-
+    this.Update(<AppShell>{ isEnglish: true, leftIconsVisible: true });
+  } 
   Update(appShell: AppShell)
   {
     let appShellTemp: AppShell = {...this.appShell$.getValue(), ...appShell};

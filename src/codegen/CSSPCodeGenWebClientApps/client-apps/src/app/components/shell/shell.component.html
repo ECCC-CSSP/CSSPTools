@@ -1,13 +1,13 @@
+<mat-menu #menu>
+    <button *ngIf="!appShell.leftIconsVisible" mat-menu-item (click)="toggleIcons()">{{ appShell.showIcons }}</button>
+    <button *ngIf="appShell.leftIconsVisible" mat-menu-item (click)="toggleIcons()">{{ appShell.hideIcons }}</button>
+</mat-menu>
 <mat-toolbar>
     <span class="top">
         <button mat-button [matMenuTriggerFor]="menu">
             <mat-icon>menu</mat-icon>
         </button>
-        <mat-menu #menu="matMenu">
-            <button *ngIf="!appShell.leftIconsVisible" mat-menu-item (click)="toggleIcons()">{{ appShell.showIcons }}</button>
-            <button *ngIf="appShell.leftIconsVisible" mat-menu-item (click)="toggleIcons()">{{ appShell.hideIcons }}</button>
-        </mat-menu>
-        <a mat-button>{{ appShell.appTitle }}
+        <a mat-button routerLink="">{{ appShell.appTitle }}
         </a>
         <span class="right">
             <button mat-button *ngIf="!appShell.isEnglish" (click)="changeLang()">English</button>

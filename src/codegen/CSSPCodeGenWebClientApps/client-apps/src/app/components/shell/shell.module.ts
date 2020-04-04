@@ -2,23 +2,15 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ShellComponent } from './shell.component';
 import { RouterModule } from '@angular/router';
-import { MatDrawerContainer, MatDrawerContent, MatDrawer } from '@angular/material/sidenav';
-import { MatIcon } from '@angular/material/icon';
-import { MatToolbar } from '@angular/material/toolbar';
-import { MatMenu, MatMenuTrigger } from '@angular/material/menu';
+import { MaterialModule } from 'src/app/app-material.module';
 
 @NgModule({
-  declarations: [ShellComponent,
-    MatDrawerContainer,
-    MatDrawerContent,
-    MatDrawer,
-    MatIcon,
-    MatToolbar,
-    MatMenu,
-    MatMenuTrigger],
+  declarations: [ShellComponent],
   imports: [
     CommonModule,
-    RouterModule
-  ]
+    RouterModule,
+    MaterialModule
+  ],
+  exports: [ShellComponent]
 })
 export class ShellModule { }
