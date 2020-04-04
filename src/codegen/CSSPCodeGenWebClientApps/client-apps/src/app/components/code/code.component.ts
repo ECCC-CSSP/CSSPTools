@@ -2,8 +2,7 @@ import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/
 import { LoadLocales } from './code.locales';
 import { WeatherService } from 'src/app/services/weather.service';
 import { Subscription } from 'rxjs';
-import { AppShellService } from 'src/app/services/app-shell.service';
-import { AppShell } from 'src/app/interfaces/app-shell.interfaces';
+import { ShellService, ShellModel } from 'src/app/components/shell';
 import { AppCodeService } from 'src/app/services/app-code.service';
 import { AppCode } from 'src/app/interfaces/app-code.interfaces';
 
@@ -15,7 +14,7 @@ import { AppCode } from 'src/app/interfaces/app-code.interfaces';
 })
 export class CodeComponent implements OnInit, OnDestroy {
   appCode: AppCode = {};
-  appShell: AppShell;
+  shellModel: ShellModel;
   generate: string;
   getTheWeather: string;
   getMoreWeather: string;
@@ -25,11 +24,11 @@ export class CodeComponent implements OnInit, OnDestroy {
   setWarnColor: 'warn';
 
 
-  constructor(public appCodeService: AppCodeService, public appShellService: AppShellService, public weatherService: WeatherService) { }
+  constructor(public appCodeService: AppCodeService, public shellService: ShellService, public weatherService: WeatherService) { }
 
   ngOnInit() {
     this.sub = this.appCodeService.appCode$.subscribe(x => this.appCode = x);
-    this.sub = this.appShellService.appShell$.subscribe(x => this.appShell = x);
+    this.sub = this.shellService.shellModel$.subscribe(x => this.shellModel = x);
 
     LoadLocales();
     this.generate = $localize`:@@code.generate:`;

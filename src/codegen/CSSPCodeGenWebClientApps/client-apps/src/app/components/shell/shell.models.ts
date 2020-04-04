@@ -1,4 +1,4 @@
-export interface AppShell {
+export interface ShellModel {
     isEnglish?: boolean;
     appTitle?: string;
     menuTitle?: string;

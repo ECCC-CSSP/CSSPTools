@@ -1,23 +1,35 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { AppNoPageFound } from 'src/app/interfaces/app-no-page-found.interfaces';
-import { AppNoPageFoundService } from 'src/app/services/app-no-page-found.service';
+import { NoPageFoundModel } from './no-page-found.models';
+import { NoPageFoundService } from './no-page-found.service';
 import { LoadLocales } from './no-page-found.localize';
+import { Location } from '@angular/common';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-no-page-found',
   templateUrl: './no-page-found.component.html',
-  styleUrls: ['./no-page-found.component.css']
+  styleUrls: ['./no-page-found.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class NoPageFoundComponent implements OnInit, OnDestroy {
   sub: Subscription;
-  appNoPageFound: AppNoPageFound = {};
+  noPageFoundModel: NoPageFoundModel = {};
 
-  constructor(public appNoPageFoundService: AppNoPageFoundService) { }
+  constructor(public noPageFoundService: NoPageFoundService, private location: Location, private router: Router) { }
 
   ngOnInit() {
-    LoadLocales(this.appNoPageFoundService);
-    this.sub = this.appNoPageFoundService.appNoPageFound$.subscribe(x => this.appNoPageFound = x);
+    LoadLocales(this.noPageFoundService);
+    this.sub = this.noPageFoundService.noPageFoundModel$.subscribe(x => this.noPageFoundModel = x);
+  }
+
+  restart()
+  {
+    this.router.navigateByUrl('');
+  }
+  goBack()
+  {
+    this.location.back();
   }
   ngOnDestroy()
   {

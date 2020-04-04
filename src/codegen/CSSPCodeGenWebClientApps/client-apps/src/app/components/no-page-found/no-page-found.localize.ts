@@ -1,14 +1,18 @@
-import { AppNoPageFoundService } from 'src/app/services/app-no-page-found.service';
-import { AppNoPageFound } from 'src/app/interfaces/app-no-page-found.interfaces';
+import { NoPageFoundService } from './no-page-found.service';
+import { NoPageFoundModel } from './no-page-found.models';
 
-export function LoadLocales(appNoPageFoundService: AppNoPageFoundService) {
-    let appNoPageFound: AppNoPageFound = {
-        Title: 'Hello english',
+export function LoadLocales(noPageFoundService: NoPageFoundService) {
+    let noPageFoundModel: NoPageFoundModel = {
+        SorryPageNotFound: 'Sorry Page Not Found',
+        Restart: 'Restart',
+        GoBack: 'Go Back',
     }
 
     if ($localize.locale === 'fr-CA') {
-        appNoPageFound.Title = 'Bonjour français';
+        noPageFoundModel.SorryPageNotFound = 'Nos excuses. La page est introuvable';
+        noPageFoundModel.Restart =  'Recommencer';
+        noPageFoundModel.GoBack = 'Reculer d\'une page';
     }
 
-    appNoPageFoundService.Update(appNoPageFound);
+    noPageFoundService.Update(noPageFoundModel);
 }

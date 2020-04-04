@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
 import { LoadLocales } from './code.locales';
 import { WeatherService } from 'src/app/services/weather.service';
-import { Subscription, Observable, BehaviorSubject } from 'rxjs';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-code',
