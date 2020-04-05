@@ -1,1 +1,47 @@
-<p>register works!</p>
+<div class="RegisterCard">
+    <mat-card>
+        <mat-card-content>
+            <h2>Register</h2>
+            <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+                <mat-form-field>
+                    <mat-label for="firstName">First Name</mat-label>
+                    <input matInput type="text" formControlName="firstName"
+                        [ngClass]="{ 'is-invalid': submitted && f.firstName.errors }" />
+                    <mat-error *ngIf="submitted && f.firstName.errors">
+                        <span *ngIf="f.firstName.errors.required">First Name is required</span>
+                    </mat-error>
+                </mat-form-field>
+                <mat-form-field>
+                    <mat-label for="lastName">Last Name</mat-label>
+                    <input matInput type="text" formControlName="lastName"
+                        [ngClass]="{ 'is-invalid': submitted && f.lastName.errors }" />
+                    <mat-error *ngIf="submitted && f.lastName.errors">
+                        <span *ngIf="f.lastName.errors.required">Last Name is required</span>
+                    </mat-error>
+                </mat-form-field>
+                <mat-form-field>
+                    <mat-label for="username">Username</mat-label>
+                    <input matInput type="text" formControlName="username"
+                        [ngClass]="{ 'is-invalid': submitted && f.username.errors }" />
+                    <mat-error *ngIf="submitted && f.username.errors">
+                        <span *ngIf="f.username.errors.required">Username is required</span>
+                    </mat-error>
+                </mat-form-field>
+                <mat-form-field>
+                    <mat-label for="password">Password</mat-label>
+                    <input matInput type="password" formControlName="password" class="form-control"
+                        [ngClass]="{ 'is-invalid': submitted && f.password.errors }" />
+                    <mat-error *ngIf="submitted && f.password.errors" class="invalid-feedback">
+                        <div *ngIf="f.password.errors.required">Password is required</div>
+                        <div *ngIf="f.password.errors.minlength">Password must be at least 6 characters</div>
+                    </mat-error>
+                </mat-form-field>
+                <button [disabled]="loading" class="btn btn-primary">
+                    <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+                    Register
+                </button>
+                <a routerLink="/login" class="btn btn-link">Cancel</a>
+            </form>
+        </mat-card-content>
+    </mat-card>
+</div>
