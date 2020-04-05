@@ -1,11 +1,7 @@
 export interface ShellModel {
-    isEnglish?: boolean;
-    appTitle?: string;
-    menuTitle?: string;
-    currentButtonSelect?: ButtonTypeOptions;
-    leftIconsVisible?: boolean;
-    showIcons?: string;
-    hideIcons?: string;    
+    IsEnglish?: boolean;
+    AppTitle?: string;
+    ShowIcons?: string;
+    HideIcons?: string;   
+    Login?: string; 
 }
-
-export type ButtonTypeOptions = 'First' | 'Second' | 'Third';

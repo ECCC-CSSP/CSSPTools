@@ -10,14 +10,17 @@
         <button mat-button (click)="drawer.toggle()">
             <mat-icon>menu</mat-icon>
         </button>
-        <a mat-button routerLink="">{{ shellModel.appTitle }}
+        <a mat-button routerLink="">{{ shellModel.AppTitle }}
         </a>
         <span class="right">
+            <a mat-button routerLink="login">
+                {{ shellModel.Login }}
+            </a>
             <button mat-button [matMenuTriggerFor]="menuSettings">
                 <mat-icon>settings</mat-icon>
             </button>
-            <button mat-button *ngIf="!shellModel.isEnglish" (click)="changeLang()">English</button>
-            <button mat-button *ngIf="shellModel.isEnglish" (click)="changeLang()">Français</button>
+            <button mat-button *ngIf="!shellModel.IsEnglish" (click)="changeLang()">English</button>
+            <button mat-button *ngIf="shellModel.IsEnglish" (click)="changeLang()">Français</button>
         </span>
     </span>
 </mat-toolbar>

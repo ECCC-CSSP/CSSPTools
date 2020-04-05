@@ -3,17 +3,17 @@ import { ShellModel } from './shell.models';
 
 export function LoadLocales(shellService: ShellService) {
   let shellModel: ShellModel = { 
-    appTitle: 'ACA - Shell', 
-    menuTitle: 'Opens menu with more options',
-    showIcons: 'Show Icons',
-    hideIcons: 'Hide Icons'
+    AppTitle: 'ACA - Shell', 
+    ShowIcons: 'Show Icons',
+    HideIcons: 'Hide Icons',
+    Login: "Login"
   }
 
   if ($localize.locale === 'fr-CA') {
-    shellModel.appTitle = "ACA - Coquille";
-    shellModel.menuTitle = 'Ouvre menu avec plus d\'options';
-    shellModel.showIcons = 'Voir Icons';
-    shellModel.hideIcons = 'Cacher Icons';
+    shellModel.AppTitle = "ACA - Coquille";
+    shellModel.ShowIcons = 'Voir Icons';
+    shellModel.HideIcons = 'Cacher Icons';
+    shellModel.Login = 'Connextion';
   }
 
   shellService.Update(shellModel);

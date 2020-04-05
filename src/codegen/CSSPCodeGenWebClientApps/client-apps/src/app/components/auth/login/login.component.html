@@ -1,0 +1,38 @@
+<div class="loginCard">
+    <mat-card>
+        <mat-card-content>
+            <h2>Login</h2>
+            <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+                <p>
+                    <mat-form-field>
+                        <mat-label for="LoginEmail">Login Email</mat-label>
+                        <input matInput type="text" formControlName="LoginEmail"
+                            [ngClass]="{ 'is-invalid': loginModel.Submitted && f.LoginEmail.errors }" />
+                        <mat-error *ngIf="loginModel.Submitted && f.LoginEmail.errors">
+                            <span *ngIf="f.LoginEmail.errors.required">Login Email is required</span>
+                        </mat-error>
+                        <!-- <mat-hint>Hint for Login Email</mat-hint> -->
+                    </mat-form-field>
+                </p>
+                <p>
+                    <mat-form-field>
+                        <mat-label for="Password">Password</mat-label>
+                        <input matInput type="password" formControlName="Password"
+                            [ngClass]="{ 'is-invalid': loginModel.Submitted && f.Password.errors }" />
+                        <mat-error *ngIf="loginModel.Submitted && f.Password.errors">
+                            <span *ngIf="f.Password.errors.required">Password is required</span>
+                        </mat-error>
+                        <!-- <mat-hint>Hint for Password</mat-hint> -->
+                    </mat-form-field>
+                </p>
+                <p>
+                    <button mat-raised-button [disabled]="loginModel.Loading">
+                        <mat-spinner *ngIf="loginModel.Loading"></mat-spinner>
+                        Login
+                    </button>
+                    <a mat-button routerLink="/register">Register</a>
+                </p>
+            </form>
+        </mat-card-content>
+    </mat-card>
+</div>
