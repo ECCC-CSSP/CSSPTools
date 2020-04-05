@@ -20,12 +20,11 @@ export class WeatherService {
 
   GetMore(): void {
     this.httpClient.get<WeatherForecast[]>('/api/weatherforecast').subscribe((x) => {
-      let wea = this.weather$.getValue().concat(x);
-      this.weather$.next(wea);
+      this.weather$.next(this.weather$.getValue().concat(x));
     });
   }
 
   Clear(): void {
-    this.weather$ = new BehaviorSubject<WeatherForecast[]>([]);
+    this.weather$.next([]);
   }
 }

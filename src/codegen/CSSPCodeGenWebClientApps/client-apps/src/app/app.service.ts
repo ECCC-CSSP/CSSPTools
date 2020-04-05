@@ -9,16 +9,11 @@ export class AppService {
   appModel$: BehaviorSubject<AppModel> = new BehaviorSubject<AppModel>(<AppModel>{});
 
   constructor() {
-    this.Init();
+    this.Update(<AppModel>{ CurrentUrl: '', BaseApiUrl: 'http://localhost:4444/api/'});
    }
 
-  Init()
-  {
-    this.Update(<AppModel>{ CurrentUrl: '', BaseApiUrl: 'http://localhost:4444/api/'});
-  }
   Update(appModel: AppModel)
   {
-    let appModelTemp: AppModel = {...this.appModel$.getValue(), ...appModel};
-    this.appModel$ = new BehaviorSubject<AppModel>(appModelTemp);
+    this.appModel$.next(<AppModel>{...this.appModel$.getValue(), ...appModel});
   }
 }

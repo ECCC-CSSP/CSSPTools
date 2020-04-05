@@ -9,16 +9,11 @@ export class ModelsService {
   modelsModel$: BehaviorSubject<ModelsModel> = new BehaviorSubject<ModelsModel>(<ModelsModel>{});
 
   constructor() {
-    this.Init();
+    this.Update(<ModelsModel>{ Title: 'Some title' });
    }
 
-  Init()
-  {
-    this.Update(<ModelsModel>{ Title: 'allo' });
-  } 
   Update(modelsModel: ModelsModel)
   {
-    let modelsModelTemp: ModelsModel = {...this.modelsModel$.getValue(), ...modelsModel};
-    this.modelsModel$ = new BehaviorSubject<ModelsModel>(modelsModelTemp);
+    this.modelsModel$.next({...this.modelsModel$.getValue(), ...modelsModel});
   }
 }

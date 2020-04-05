@@ -9,16 +9,11 @@ export class EnumsService {
   enumsModel$: BehaviorSubject<EnumsModel> = new BehaviorSubject<EnumsModel>(<EnumsModel>{});
 
   constructor() {
-    this.Init();
+    this.Update(<EnumsModel>{ Title: 'Title of the app' });
    }
 
-  Init()
+   Update(enumsModel: EnumsModel)
   {
-    this.Update(<EnumsModel>{ Title: 'allo' });
-  } 
-  Update(enumsModel: EnumsModel)
-  {
-    let enumsModelTemp: EnumsModel = {...this.enumsModel$.getValue(), ...enumsModel};
-    this.enumsModel$ = new BehaviorSubject<EnumsModel>(enumsModelTemp);
+    this.enumsModel$.next(<EnumsModel>{...this.enumsModel$.getValue(), ...enumsModel});
   }
 }
