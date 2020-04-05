@@ -1,3 +1,4 @@
 export interface AppModel {
-  CurrentURL?: string;
+  CurrentUrl?: string;
+  BaseApiUrl?: string;
 }

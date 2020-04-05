@@ -9,18 +9,23 @@ import { BehaviorSubject, Subscription, concat } from 'rxjs';
 export class WeatherService {
   weather$: BehaviorSubject<WeatherForecast[]> = new BehaviorSubject<WeatherForecast[]>([]);
 
-  constructor(private httpClient: HttpClient) { }
+  constructor(private httpClient: HttpClient) {
+   }
 
-  Get() {
-    return this.httpClient.get<WeatherForecast[]>('http://localhost:4444/weatherforecast');
+  Get(): void {
+    this.httpClient.get<WeatherForecast[]>('/api/weatherforecast').subscribe((x) => {
+      this.weather$.next(x);
+    });
   }
 
-  GetMore() {
-    return this.httpClient.get<WeatherForecast[]>('http://localhost:4444/weatherforecast');
+  GetMore(): void {
+    this.httpClient.get<WeatherForecast[]>('/api/weatherforecast').subscribe((x) => {
+      let wea = this.weather$.getValue().concat(x);
+      this.weather$.next(wea);
+    });
   }
 
-  Clear() {
+  Clear(): void {
     this.weather$ = new BehaviorSubject<WeatherForecast[]>([]);
   }
-
 }

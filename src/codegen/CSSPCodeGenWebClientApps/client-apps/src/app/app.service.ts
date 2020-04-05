@@ -14,7 +14,7 @@ export class AppService {
 
   Init()
   {
-    this.Update(<AppModel>{ CurrentURL: '' });
+    this.Update(<AppModel>{ CurrentUrl: '', BaseApiUrl: 'http://localhost:4444/api/'});
   }
   Update(appModel: AppModel)
   {
