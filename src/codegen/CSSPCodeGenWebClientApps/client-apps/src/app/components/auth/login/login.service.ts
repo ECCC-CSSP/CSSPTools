@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { LoginModel, UserModel } from '.';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { ShellService } from '../../shell';
+import { ShellService, ShellModel } from '../../shell';
 
 @Injectable({
   providedIn: 'root'
@@ -26,12 +26,11 @@ export class LoginService {
 
   Login(loginEmail: string, password: string): void {
     this.userModel$.next({...this.userModel$.getValue(), ...{ Submitted: true, Loading: true }});
-    this.httpClient.post<UserModel>('/api/auth/login', { LoginEmail: loginEmail, Password: password }).subscribe((x) => {
+    this.httpClient.post<UserModel>('/api/Auth/Token', { LoginEmail: loginEmail, Password: password }).subscribe((x) => {
       localStorage.setItem('currentUser', JSON.stringify(x));
       this.userModel$.next({...this.userModel$.getValue(), ...x})
       this.userModel$.next(x);
-      this.shellService.shellModel$.value.UserModel = x;
-      this.shellService.shellModel$.next(this.shellService.shellModel$.getValue());
+      this.shellService.UpdateShell(<ShellModel>{ UserModel: x});
     },
     (e: any) => {
       this.loginModel$.next({...this.loginModel$.getValue(), ...{ Error: (<HttpErrorResponse>e).message }});

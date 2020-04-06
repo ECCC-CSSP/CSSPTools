@@ -55,4 +55,11 @@ export class ShellComponent implements OnInit {
     this.shellModel = this.shellService.shellModel$.getValue();
     this.title.setTitle(this.shellModel.AppTitle);
   }
+
+  Logout() {
+    // remove user from local storage and set current user to null
+    localStorage.removeItem('currentLoginModel');
+    this.shellService.UpdateShell(null);
+    this.shellModel = this.shellService.shellModel$.getValue();
+}
 }

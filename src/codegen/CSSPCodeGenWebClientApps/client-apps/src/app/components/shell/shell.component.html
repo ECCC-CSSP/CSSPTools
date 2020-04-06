@@ -21,6 +21,9 @@
         <a mat-button routerLink="">{{ shellModel.AppTitle }}
         </a>
         <span class="right">
+            <button *ngIf="shellModel.UserModel?.Token" mat-button (click)="Logout()">
+                Logout
+            </button>
             <button *ngIf="shellModel.UserModel?.Token" mat-button [matMenuTriggerFor]="menuUser">
                 {{ shellModel.UserModel.LoginEmail }}
             </button>
