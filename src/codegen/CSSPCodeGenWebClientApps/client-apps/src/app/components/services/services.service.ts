@@ -9,10 +9,10 @@ export class ServicesService {
   servicesModel$: BehaviorSubject<ServicesModel> = new BehaviorSubject<ServicesModel>(<ServicesModel>{});
 
   constructor() {
-    this.Update(<ServicesModel>{ Title: 'allo' });
+    this.UpdateServices(<ServicesModel>{ Title: 'allo' });
    }
 
-  Update(servicesModel: ServicesModel)
+  UpdateServices(servicesModel: ServicesModel)
   {
     this.servicesModel$.next({...this.servicesModel$.getValue(), ...servicesModel});
   }

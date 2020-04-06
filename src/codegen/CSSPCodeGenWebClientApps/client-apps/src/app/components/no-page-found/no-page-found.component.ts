@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/
 import { Subscription } from 'rxjs';
 import { NoPageFoundModel } from './no-page-found.models';
 import { NoPageFoundService } from './no-page-found.service';
-import { LoadLocales } from './no-page-found.localize';
+import { LoadLocalesNoPageFound } from './no-page-found.localize';
 import { Location } from '@angular/common';
 import { Router } from '@angular/router';
 
@@ -19,7 +19,7 @@ export class NoPageFoundComponent implements OnInit, OnDestroy {
   constructor(public noPageFoundService: NoPageFoundService, private location: Location, private router: Router) { }
 
   ngOnInit() {
-    LoadLocales(this.noPageFoundService);
+    LoadLocalesNoPageFound(this.noPageFoundService);
     this.sub = this.noPageFoundService.noPageFoundModel$.subscribe(x => this.noPageFoundModel = x);
   }
 

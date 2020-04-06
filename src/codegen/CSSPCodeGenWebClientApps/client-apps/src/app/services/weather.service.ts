@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { WeatherForecast } from '../interfaces/weather-forecast.interface';
-import { BehaviorSubject, Subscription, concat } from 'rxjs';
+import { WeatherForecast } from '../models/weather-forecast.models';
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'

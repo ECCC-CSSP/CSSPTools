@@ -9,10 +9,10 @@ export class ShellService {
   shellModel$: BehaviorSubject<ShellModel> = new BehaviorSubject<ShellModel>(<ShellModel>{});
 
   constructor() {
-    this.Update(<ShellModel>{ isEnglish: true, leftIconsVisible: true });
+    this.UpdateShell(<ShellModel>{ isEnglish: true, leftIconsVisible: true });
    }
 
-  Update(shellModel: ShellModel)
+  UpdateShell(shellModel: ShellModel)
   {
     this.shellModel$.next(<ShellModel>{...this.shellModel$.getValue(), ...shellModel});
   }

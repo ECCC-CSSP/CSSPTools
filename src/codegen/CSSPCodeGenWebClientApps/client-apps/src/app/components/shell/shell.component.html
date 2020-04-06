@@ -4,6 +4,14 @@
     <button mat-menu-item (click)="nothing()">Settings Second Menu</button>
 </mat-menu>
 
+<!-- User Menu -->
+<mat-menu #menuUser>
+    <button mat-menu-item (click)="nothing()">User Id {{ shellModel?.UserModel?.Id }}</button>
+    <button mat-menu-item (click)="nothing()">User FirstName {{ shellModel?.UserModel?.FirstName }}</button>
+    <button mat-menu-item (click)="nothing()">User LastName {{ shellModel?.UserModel?.LastName }}</button>
+    <button mat-menu-item (click)="nothing()">User LoginEmail {{ shellModel?.UserModel?.LoginEmail }}</button>
+</mat-menu>
+
 <!-- Top Toolbar -->
 <mat-toolbar>
     <span class="top">
@@ -13,14 +21,20 @@
         <a mat-button routerLink="">{{ shellModel.AppTitle }}
         </a>
         <span class="right">
-            <a mat-button routerLink="login">
+            <button *ngIf="shellModel.UserModel?.Token" mat-button [matMenuTriggerFor]="menuUser">
+                {{ shellModel.UserModel.LoginEmail }}
+            </button>
+            <a *ngIf="!shellModel.UserModel?.Token" mat-button routerLink="register" routerLinkActive="active-link">
+                {{ shellModel.Register }}
+            </a>
+            <a *ngIf="!shellModel.UserModel?.Token" mat-button routerLink="login" routerLinkActive="active-link">
                 {{ shellModel.Login }}
             </a>
             <button mat-button [matMenuTriggerFor]="menuSettings">
                 <mat-icon>settings</mat-icon>
             </button>
-            <button mat-button *ngIf="!shellModel.IsEnglish" (click)="changeLang()">English</button>
-            <button mat-button *ngIf="shellModel.IsEnglish" (click)="changeLang()">Français</button>
+            <button mat-button *ngIf="shellModel.Language === 'fr-CA'" (click)="changeLang()">English</button>
+            <button mat-button *ngIf="shellModel.Language === 'en-CA'" (click)="changeLang()">Français</button>
         </span>
     </span>
 </mat-toolbar>

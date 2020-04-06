@@ -1,7 +1,7 @@
 import { EnumsService } from './enums.service';
 import { EnumsModel } from './enums.models';
 
-export function LoadLocales(enumsService: EnumsService) {
+export function LoadLocalesEnums(enumsService: EnumsService) {
   let enumsModel: EnumsModel = { 
     Title: 'somethng', 
     Generate: 'Generate',
@@ -20,5 +20,5 @@ export function LoadLocales(enumsService: EnumsService) {
       enumsModel.ClearWeather = 'Videz les données';
   }
 
-  enumsService.Update(enumsModel);
+  enumsService.UpdateEnums(enumsModel);
 }

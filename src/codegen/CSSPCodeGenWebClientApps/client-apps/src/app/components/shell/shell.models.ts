@@ -1,7 +1,12 @@
+import { UserModel } from '../auth/login';
+
 export interface ShellModel {
-    IsEnglish?: boolean;
+    Language?: string;
     AppTitle?: string;
     ShowIcons?: string;
     HideIcons?: string;   
-    Login?: string; 
+    Login?: string;
+    Register?: string;
+    Error?: string;
+    UserModel?: UserModel;
 }

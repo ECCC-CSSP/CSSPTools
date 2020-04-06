@@ -1,46 +1,74 @@
-<div class="RegisterCard">
+<div class="registerCard">
     <mat-card>
         <mat-card-content>
-            <h2>Register</h2>
+            <h2>{{ registerModel.Register }}</h2>
             <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
-                <mat-form-field>
-                    <mat-label for="firstName">First Name</mat-label>
-                    <input matInput type="text" formControlName="firstName"
-                        [ngClass]="{ 'is-invalid': submitted && f.firstName.errors }" />
-                    <mat-error *ngIf="submitted && f.firstName.errors">
-                        <span *ngIf="f.firstName.errors.required">First Name is required</span>
-                    </mat-error>
-                </mat-form-field>
-                <mat-form-field>
-                    <mat-label for="lastName">Last Name</mat-label>
-                    <input matInput type="text" formControlName="lastName"
-                        [ngClass]="{ 'is-invalid': submitted && f.lastName.errors }" />
-                    <mat-error *ngIf="submitted && f.lastName.errors">
-                        <span *ngIf="f.lastName.errors.required">Last Name is required</span>
-                    </mat-error>
-                </mat-form-field>
-                <mat-form-field>
-                    <mat-label for="username">Username</mat-label>
-                    <input matInput type="text" formControlName="username"
-                        [ngClass]="{ 'is-invalid': submitted && f.username.errors }" />
-                    <mat-error *ngIf="submitted && f.username.errors">
-                        <span *ngIf="f.username.errors.required">Username is required</span>
-                    </mat-error>
-                </mat-form-field>
-                <mat-form-field>
-                    <mat-label for="password">Password</mat-label>
-                    <input matInput type="password" formControlName="password" class="form-control"
-                        [ngClass]="{ 'is-invalid': submitted && f.password.errors }" />
-                    <mat-error *ngIf="submitted && f.password.errors" class="invalid-feedback">
-                        <div *ngIf="f.password.errors.required">Password is required</div>
-                        <div *ngIf="f.password.errors.minlength">Password must be at least 6 characters</div>
-                    </mat-error>
-                </mat-form-field>
-                <button [disabled]="loading" class="btn btn-primary">
-                    <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+                <p>
+                    <mat-form-field>
+                        <mat-label for="FirstName">{{ registerModel.FirstName }}</mat-label>
+                        <input matInput type="text" formControlName="FirstName"
+                            [ngClass]="{ 'is-invalid': registerModel.Submitted && f.FirstName.errors }" />
+                        <mat-error *ngIf="registerModel.Submitted && f.FirstName.errors">
+                            <span *ngIf="f.FirstName.errors.required">{{ registerModel.FirstNameIsRequired }}</span>
+                        </mat-error>
+                    </mat-form-field>
+                </p>
+                <p>
+                    <mat-form-field>
+                        <mat-label for="Initial">{{ registerModel.Initial }}</mat-label>
+                        <input matInput type="text" formControlName="Initial"
+                            [ngClass]="{ 'is-invalid': registerModel.Submitted && f.Initial.errors }" />
+                        <mat-error *ngIf="registerModel.Submitted && f.Initial.errors">
+                            <span *ngIf="f.Initial.errors.required">{{ registerModel.InitialIsRequired }}</span>
+                        </mat-error>
+                    </mat-form-field>
+                </p>
+                <p>
+                    <mat-form-field>
+                        <mat-label for="LastName">{{ registerModel.LastName}}</mat-label>
+                        <input matInput type="text" formControlName="LastName"
+                            [ngClass]="{ 'is-invalid': registerModel.Submitted && f.LastName.errors }" />
+                        <mat-error *ngIf="registerModel.Submitted && f.LastName.errors">
+                            <span *ngIf="f.LastName.errors.required">{{ registerModel.LastNameIsRequired }}</span>
+                        </mat-error>
+                    </mat-form-field>
+                </p>
+                <p>
+                    <mat-form-field>
+                        <mat-label for="LoginEmail">{{ registerModel.LoginEmail }}</mat-label>
+                        <input matInput type="text" formControlName="LoginEmail"
+                            [ngClass]="{ 'is-invalid': registerModel.Submitted && f.LoginEmail.errors }" />
+                        <mat-error *ngIf="registerModel.Submitted && f.LoginEmail.errors">
+                            <span *ngIf="f.LoginEmail.errors.required">{{ registerModel.LoginEmailIsRequired }}</span>
+                        </mat-error>
+                    </mat-form-field>
+                </p>
+                <p>
+                    <mat-form-field>
+                        <mat-label for="Password">{{ registerModel.Password }}</mat-label>
+                        <input matInput type="password" formControlName="Password"
+                            [ngClass]="{ 'is-invalid': registerModel.Submitted && f.Password.errors }" />
+                        <mat-error *ngIf="registerModel.Submitted && f.Password.errors">
+                            <div *ngIf="f.Password.errors.required">{{ registerModel.PasswordIsRequired }}</div>
+                            <div *ngIf="f.Password.errors.minlength">{{ registerModel.PasswordMustBeAtLeast6Characters }}</div>
+                        </mat-error>
+                    </mat-form-field>
+                </p>
+                <p>
+                    <mat-form-field>
+                        <mat-label for="ConfirmPassword">{{ registerModel.ConfirmPassword }}</mat-label>
+                        <input matInput type="password" formControlName="ConfirmPassword"
+                            [ngClass]="{ 'is-invalid': registerModel.Submitted && f.ConfirmPassword.errors }" />
+                        <mat-error *ngIf="registerModel.Submitted && f.ConfirmPassword.errors">
+                            <div *ngIf="f.ConfirmPassword.errors.required">{{ registerModel.ConfirmPasswordIsRequired }}</div>
+                        </mat-error>
+                    </mat-form-field>
+                </p>
+                <button mat-raised-button [disabled]="registerModel.Loading">
+                    <mat-spinner *ngIf="registerModel.Loading"></mat-spinner>
                     Register
                 </button>
-                <a routerLink="/login" class="btn btn-link">Cancel</a>
+                <a mat-button routerLink="/{{ registerModel.Language }}/login">Cancel</a>
             </form>
         </mat-card-content>
     </mat-card>

@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { RegisterModel } from './register.models';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
 import { RegisterService } from './register.service';
+import { LoadLocalesRegister } from './register.locale';
 
 @Component({
   selector: 'app-register',
@@ -17,7 +17,6 @@ export class RegisterComponent implements OnInit {
 
   constructor(
     private formBuilder: FormBuilder,
-    private router: Router,
     private registerService: RegisterService,
   ) {
   }
@@ -25,13 +24,16 @@ export class RegisterComponent implements OnInit {
   ngOnInit() {
     this.registerForm = this.formBuilder.group({
       FirstName: ['', Validators.required],
-      Intial: [''],
+      Initial: [''],
       LastName: ['', Validators.required],
       LoginEmail: ['', Validators.required],
-      Password: ['', [Validators.required, Validators.minLength(6)]]
+      Password: ['', [Validators.required, Validators.minLength(6)]],
+      ConfirmPassword: ['', Validators.required]
     });
+    LoadLocalesRegister(this.registerService);
 
     this.registerModel = this.registerService.registerModel$.getValue();
+    this.registerService.UpdateRegister({ ...this.registerModel, ...{ Language: $localize.locale } });
   }
 
   // convenience getter for easy access to form fields
@@ -39,17 +41,15 @@ export class RegisterComponent implements OnInit {
 
   onSubmit() {
 
-    this.registerService.Update({...this.registerModel, ...{ Submitted: true }});
+    this.registerService.UpdateRegister({...this.registerModel, ...{ Submitted: true }});
     this.registerModel = this.registerService.registerModel$.getValue();
 
     if (this.registerForm.invalid) {
       return;
     }
 
-    this.registerService.Update({ ...this.registerModel, ...{ Loading: true } });
+    this.registerService.UpdateRegister({ ...this.registerModel, ...{ Loading: true } });
     this.registerModel = this.registerService.registerModel$.getValue();
     this.registerService.Register(this.f);
   }
-
-
 }

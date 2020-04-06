@@ -9,10 +9,10 @@ export class EnumsService {
   enumsModel$: BehaviorSubject<EnumsModel> = new BehaviorSubject<EnumsModel>(<EnumsModel>{});
 
   constructor() {
-    this.Update(<EnumsModel>{ Title: 'Title of the app' });
+    this.UpdateEnums(<EnumsModel>{ Title: 'Title of the app' });
    }
 
-   Update(enumsModel: EnumsModel)
+   UpdateEnums(enumsModel: EnumsModel)
   {
     this.enumsModel$.next(<EnumsModel>{...this.enumsModel$.getValue(), ...enumsModel});
   }

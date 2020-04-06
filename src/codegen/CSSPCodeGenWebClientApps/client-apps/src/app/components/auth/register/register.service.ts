@@ -11,10 +11,10 @@ export class RegisterService {
   registerModel$: BehaviorSubject<RegisterModel> = new BehaviorSubject<RegisterModel>(<RegisterModel>{});
 
   constructor(private httpClient: HttpClient) {
-    this.Update(<RegisterModel>{});
+    this.UpdateRegister(<RegisterModel>{});
    }
 
-  Update(registerModel: RegisterModel)
+  UpdateRegister(registerModel: RegisterModel)
   {
     this.registerModel$.next({...this.registerModel$.getValue(), ...registerModel});
   }

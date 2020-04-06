@@ -3,8 +3,8 @@ import { EnumsModel } from './enums.models';
 import { EnumsService } from './enums.service';
 import { ShellService, ShellModel } from '../shell';
 import { WeatherService } from 'src/app/services/weather.service';
-import { LoadLocales } from './enums.locales';
-import { LoadLocales as LoadLocalesShell } from '../shell/shell.locales';
+import { LoadLocalesEnums } from './enums.locales';
+import { LoadLocalesShell } from '../shell/shell.locales';
 
 @Component({
   selector: 'app-enums',
@@ -19,7 +19,7 @@ export class EnumsComponent implements OnInit {
   constructor(private enumsService: EnumsService, public shellService: ShellService, public weatherService: WeatherService) { }
 
   ngOnInit(): void {
-    LoadLocales(this.enumsService);
+    LoadLocalesEnums(this.enumsService);
     LoadLocalesShell(this.shellService);
     this.enumsModel = this.enumsService.enumsModel$.getValue();
     this.shellModel = this.shellService.shellModel$.getValue();

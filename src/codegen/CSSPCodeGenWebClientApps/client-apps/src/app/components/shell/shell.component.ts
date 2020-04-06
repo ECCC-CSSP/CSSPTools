@@ -1,5 +1,5 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
-import { LoadLocales } from './shell.locales';
+import { LoadLocalesShell } from './shell.locales';
 import { Router } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 import { ShellService } from './shell.service';
@@ -21,13 +21,15 @@ export class ShellComponent implements OnInit {
    */
   changeLang(): void {
     if (this.router.url.indexOf('fr-CA') > 0) {
-      this.shellModel.IsEnglish = true;
-      this.shellService.Update(this.shellModel);
+      $localize.locale = 'en-CA';
+      this.shellModel.Language = $localize.locale;
+      this.shellService.UpdateShell(this.shellModel);
       this.router.navigateByUrl(this.router.url.replace('fr-CA', 'en-CA'));
     }
     else {
-      this.shellModel.IsEnglish = false;
-      this.shellService.Update(this.shellModel);
+      $localize.locale = 'fr-CA';
+      this.shellModel.Language = $localize.locale;
+      this.shellService.UpdateShell(this.shellModel);
       this.router.navigateByUrl(this.router.url.replace('en-CA', 'fr-CA'));
     }
   }
@@ -42,14 +44,14 @@ export class ShellComponent implements OnInit {
     this.shellModel = this.shellService.shellModel$.getValue();
     if (this.router.url.indexOf('fr-CA') > 0) {
       $localize.locale = 'fr-CA';
-      this.shellModel.IsEnglish = false;
+      this.shellModel.Language = $localize.locale;
     }
     else {
       $localize.locale = 'en-CA';
-      this.shellModel.IsEnglish = true;
+      this.shellModel.Language = $localize.locale;
     }
-    this.shellService.Update(this.shellModel);
-    LoadLocales(this.shellService);
+    this.shellService.UpdateShell(this.shellModel);
+    LoadLocalesShell(this.shellService);
     this.shellModel = this.shellService.shellModel$.getValue();
     this.title.setTitle(this.shellModel.AppTitle);
   }

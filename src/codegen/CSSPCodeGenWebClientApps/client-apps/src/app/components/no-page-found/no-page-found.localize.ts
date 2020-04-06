@@ -1,7 +1,7 @@
 import { NoPageFoundService } from './no-page-found.service';
 import { NoPageFoundModel } from './no-page-found.models';
 
-export function LoadLocales(noPageFoundService: NoPageFoundService) {
+export function LoadLocalesNoPageFound(noPageFoundService: NoPageFoundService) {
     let noPageFoundModel: NoPageFoundModel = {
         SorryPageNotFound: 'Sorry Page Not Found',
         Restart: 'Restart',
@@ -14,5 +14,5 @@ export function LoadLocales(noPageFoundService: NoPageFoundService) {
         noPageFoundModel.GoBack = 'Reculer d\'une page';
     }
 
-    noPageFoundService.Update(noPageFoundModel);
+    noPageFoundService.UpdateNoPageFound(noPageFoundModel);
 }

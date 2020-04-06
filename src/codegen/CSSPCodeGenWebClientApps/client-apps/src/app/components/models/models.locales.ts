@@ -1,7 +1,7 @@
 import { ModelsService } from './models.service';
 import { ModelsModel } from './models.models';
 
-export function LoadLocales(modelsService: ModelsService) {
+export function LoadLocalesModels(modelsService: ModelsService) {
   let modelsModel: ModelsModel = { 
     Title: 'somethng', 
   }
@@ -10,5 +10,5 @@ export function LoadLocales(modelsService: ModelsService) {
     modelsModel.Title = "something";
   }
 
-  modelsService.Update(modelsModel);
+  modelsService.UpdateModels(modelsModel);
 }

@@ -14,9 +14,9 @@ export class NoPageFoundService {
 
   Init()
   {
-    this.Update(<NoPageFoundModel>{ /* add initial properties here */ });
+    this.UpdateNoPageFound(<NoPageFoundModel>{ /* add initial properties here */ });
   } 
-  Update(noPageFoundModel: NoPageFoundModel)
+  UpdateNoPageFound(noPageFoundModel: NoPageFoundModel)
   {
     let noPageFoundModelTemp: NoPageFoundModel = {...this.noPageFoundModel$.getValue(), ...noPageFoundModel};
     this.noPageFoundModel$ = new BehaviorSubject<NoPageFoundModel>(noPageFoundModelTemp);
