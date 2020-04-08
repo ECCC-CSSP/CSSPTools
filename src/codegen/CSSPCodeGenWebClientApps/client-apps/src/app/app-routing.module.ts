@@ -8,18 +8,18 @@ const routes: Routes = [
     path: 'en-CA', component: ShellComponent, children: [
       { path: 'login', loadChildren: () => import('./components/auth/login/login.module').then(mod => mod.LoginModule) },
       { path: 'register', loadChildren: () => import('./components/auth/register/register.module').then(mod => mod.RegisterModule) },
-      { path: 'enums', loadChildren: () => import('./components/enums/enums.module').then(mod => mod.EnumsModule) },
-      { path: 'models', loadChildren: () => import('./components/models/models.module').then(mod => mod.ModelsModule) },
-      { path: 'services', loadChildren: () => import('./components/services/services.module').then(mod => mod.ServicesModule) },
+      { path: 'enums', loadChildren: () => import('./components/generate-enums/generate-enums.module').then(mod => mod.GenerateEnumsModule) },
+      { path: 'models', loadChildren: () => import('./components/generate-models/generate-models.module').then(mod => mod.GenerateModelsModule) },
+      { path: 'services', loadChildren: () => import('./components/generate-services/generate-services.module').then(mod => mod.GenerateServicesModule) },
     ]
   },
   {
     path: 'fr-CA', component: ShellComponent, children: [
       { path: 'login', loadChildren: () => import('./components/auth/login/login.module').then(mod => mod.LoginModule) },
       { path: 'register', loadChildren: () => import('./components/auth/register/register.module').then(mod => mod.RegisterModule) },
-      { path: 'enums', loadChildren: () => import('./components/enums/enums.module').then(mod => mod.EnumsModule) },
-      { path: 'models', loadChildren: () => import('./components/models/models.module').then(mod => mod.ModelsModule) },
-      { path: 'services', loadChildren: () => import('./components/services/services.module').then(mod => mod.ServicesModule) },
+      { path: 'enums', loadChildren: () => import('./components/generate-enums/generate-enums.module').then(mod => mod.GenerateEnumsModule) },
+      { path: 'models', loadChildren: () => import('./components/generate-models/generate-models.module').then(mod => mod.GenerateModelsModule) },
+      { path: 'services', loadChildren: () => import('./components/generate-services/generate-services.module').then(mod => mod.GenerateServicesModule) },
     ]
   },
   { path: '', redirectTo: 'en-CA', pathMatch: 'full' },
