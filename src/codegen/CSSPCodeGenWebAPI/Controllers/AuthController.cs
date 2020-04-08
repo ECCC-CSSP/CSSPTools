@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using CSSPCodeGenWebAPI.Model;
+using CSSPCodeGenWebAPI.Services.Resources;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
@@ -13,7 +16,7 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace CSSPCodeGenWebAPI.Controllers
 {
-    [Route("api/Auth/[controller]")]
+    [Route("api/{culture}/Auth/[controller]")]
     [ApiController]
     public class TokenController : ControllerBase
     {
@@ -29,13 +32,17 @@ namespace CSSPCodeGenWebAPI.Controllers
         [HttpPost]
         public async Task<ActionResult<UserModel>> Post(LoginModel loginModel)
         {
+            ServicesRes.Culture = new CultureInfo(Request.RouteValues["culture"].ToString());
+
             UserModel userModel = await _userService.CheckPassword(loginModel);
 
             // return null if user not found
             if (userModel == null)
-                return null;
+                return BadRequest();
 
-            // authentication successful so generate jwt token
+            if (!string.IsNullOrWhiteSpace(userModel.Error))
+                return BadRequest(new { message = userModel.Error });
+
             JwtSecurityTokenHandler tokenHandler = new JwtSecurityTokenHandler();
             byte[] key = Encoding.ASCII.GetBytes(_appSettings.Secret);
             SecurityTokenDescriptor tokenDescriptor = new SecurityTokenDescriptor
@@ -64,6 +71,7 @@ namespace CSSPCodeGenWebAPI.Controllers
         public string LastName { get; set; }
         public string Initial { get; set; }
         public string Token { get; set; }
+        public string Error { get; set; }
     }
 
     public class LoginModel

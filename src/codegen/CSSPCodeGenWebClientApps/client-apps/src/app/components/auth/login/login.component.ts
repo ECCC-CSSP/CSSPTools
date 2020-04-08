@@ -29,8 +29,8 @@ export class LoginComponent implements OnInit {
   ngOnInit() {
     LoadLocalesLogin(this.loginService);
     this.loginForm = this.formBuilder.group({
-      LoginEmail: ['', Validators.required],
-      Password: ['', Validators.required]
+      LoginEmail: [this.loginService.loginModel$.value?.LoginEmail, Validators.required],
+      Password: [this.loginService.loginModel$.value?.Password, Validators.required]
     });
 
     this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
@@ -53,6 +53,7 @@ export class LoginComponent implements OnInit {
       return;
     }
 
+    this.loginService.UpdateLogin(<LoginModel>{ LoginEmail: this.f.LoginEmail.value, Password: this.f.Password.value })
     this.userService.Login(this.f.LoginEmail.value, this.f.Password.value, this.router,  $localize.locale);
   }
 }

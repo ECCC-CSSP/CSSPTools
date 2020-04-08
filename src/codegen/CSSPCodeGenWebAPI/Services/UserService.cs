@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 using System.Linq;
+using CSSPCodeGenWebAPI.Services.Resources;
 
 namespace CSSPCodeGenWebAPI.Model
 {
@@ -42,30 +43,46 @@ namespace CSSPCodeGenWebAPI.Model
 
         public async Task<UserModel> CheckPassword(LoginModel loginModel)
         {
-            ApplicationUser appUser = await _userManager.FindByNameAsync(loginModel.LoginEmail);
-
-            bool HasPassword = await _userManager.CheckPasswordAsync(appUser, loginModel.Password);
-
-            if (HasPassword == true)
+            try
             {
-                Contact contact = (from c in _csspDBContext.Contacts
-                                   where c.Id == appUser.Id
-                                   select c).AsNoTracking().FirstOrDefault();
-                if (contact == null)
+                ApplicationUser appUser = await _userManager.FindByNameAsync(loginModel.LoginEmail);
+
+                if (appUser == null)
                 {
-                    return null;
+                    return new UserModel() { Error = String.Format(ServicesRes.__CouldNotBeFound, ServicesRes.Email, loginModel.LoginEmail) };
                 }
 
-                return new UserModel()
+                bool HasPassword = await _userManager.CheckPasswordAsync(appUser, loginModel.Password);
+                if (!HasPassword)
                 {
-                    ContactID = contact.ContactID,
-                    Id = contact.Id,
-                    ContactTVItemID = contact.ContactTVItemID,
-                    LoginEmail = contact.LoginEmail,
-                    FirstName = contact.FirstName,
-                    Initial = contact.Initial,
-                    LastName = contact.LastName
-                };
+                    return new UserModel() { Error = String.Format(ServicesRes.UnableToLoginAs_WithProvidedPassword, loginModel.LoginEmail) };
+                }
+
+                if (HasPassword == true)
+                {
+                    Contact contact = (from c in _csspDBContext.Contacts
+                                       where c.Id == appUser.Id
+                                       select c).AsNoTracking().FirstOrDefault();
+                    if (contact == null)
+                    {
+                        return null;
+                    }
+
+                    return new UserModel()
+                    {
+                        ContactID = contact.ContactID,
+                        Id = contact.Id,
+                        ContactTVItemID = contact.ContactTVItemID,
+                        LoginEmail = contact.LoginEmail,
+                        FirstName = contact.FirstName,
+                        Initial = contact.Initial,
+                        LastName = contact.LastName
+                    };
+                }
+            }
+            catch (Exception ex)
+            {
+                return new UserModel() { Error = String.Format(ServicesRes.Error_, ex.Message) };
             }
 
             return null;

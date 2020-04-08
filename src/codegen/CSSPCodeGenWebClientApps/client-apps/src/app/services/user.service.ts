@@ -34,7 +34,7 @@ export class UserService {
       });
     },
       (e: any) => {
-        this.UpdateUser(<UserModel>{ Loading: false, Error: (<HttpErrorResponse>e).message });
+        this.UpdateUser(<UserModel>{ Loading: false, Error: (<HttpErrorResponse>e).error.message });
         console.debug(e);
         router.navigateByUrl('', { skipLocationChange: true }).then(() => {
           router.navigate([`/${language}/login`]);

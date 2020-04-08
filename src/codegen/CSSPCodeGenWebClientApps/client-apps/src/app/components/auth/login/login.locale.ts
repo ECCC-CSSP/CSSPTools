@@ -3,21 +3,21 @@ import { LoginModel } from './login.models';
 
 export function LoadLocalesLogin(loginService: LoginService) {
   let loginModel: LoginModel = { 
-    Login: 'Login',
-    LoginEmail: 'Login Email',
-    LoginEmailIsRequired: 'Login Email is required',
-    Password: 'Password',
-    PasswordIsRequired: 'Password is required',
-    Register: 'Register',
+    Locale_Login: 'Login',
+    Locale_LoginEmail: 'Login Email',
+    Locale_LoginEmailIsRequired: 'Login Email is required',
+    Locale_Password: 'Password',
+    Locale_PasswordIsRequired: 'Password is required',
+    Locale_Register: 'Register',
   }
 
   if ($localize.locale === 'fr-CA') {
-    loginModel.Login = 'S\'inscrire';
-    loginModel.LoginEmail = 'Courriel d\'inscription';
-    loginModel.LoginEmailIsRequired = 'Le courriel d\'inscription est requis';
-    loginModel.Password = 'Mot de passe';
-    loginModel.PasswordIsRequired = 'Mot de passe est requis';
-    loginModel.Register = 'S\'enregistrer';
+    loginModel.Locale_Login = 'S\'inscrire';
+    loginModel.Locale_LoginEmail = 'Courriel d\'inscription';
+    loginModel.Locale_LoginEmailIsRequired = 'Le courriel d\'inscription est requis';
+    loginModel.Locale_Password = 'Mot de passe';
+    loginModel.Locale_PasswordIsRequired = 'Mot de passe est requis';
+    loginModel.Locale_Register = 'S\'enregistrer';
   }
 
   loginService.UpdateLogin(loginModel);

@@ -1,45 +1,45 @@
 <div class="loginCard">
     <mat-card>
         <mat-card-content>
-            <p *ngIf="userService.userModel$.value.Error">
-                <mat-error>
-                    {{ userService.userModel$.value.Error }}
-                </mat-error>
-            </p>
-            <h2>{{ loginService.loginModel$.value.Login }}</h2>
+            <h2>{{ loginService.loginModel$.value.Locale_Login }}</h2>
             <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
                 <p>
                     <mat-form-field>
-                        <mat-label for="LoginEmail">{{ loginService.loginModel$.value.LoginEmail }}</mat-label>
+                        <mat-label for="LoginEmail">{{ loginService.loginModel$.value.Locale_LoginEmail }}</mat-label>
                         <input matInput type="text" formControlName="LoginEmail"
                             [ngClass]="{ 'is-invalid': userService.userModel$.value.Submitted && f.LoginEmail.errors }" />
                         <mat-error *ngIf="userService.userModel$.value.Submitted && f.LoginEmail.errors">
                             <span
-                                *ngIf="f.LoginEmail.errors.required">{{ loginService.loginModel$.value.LoginEmailIsRequired }}</span>
+                                *ngIf="f.LoginEmail.errors.required">{{ loginService.loginModel$.value.Locale_LoginEmailIsRequired }}</span>
                         </mat-error>
                         <!-- <mat-hint>Hint for Login Email</mat-hint> -->
                     </mat-form-field>
                 </p>
                 <p>
                     <mat-form-field>
-                        <mat-label for="Password">{{ loginService.loginModel$.value.Password }}</mat-label>
+                        <mat-label for="Password">{{ loginService.loginModel$.value.Locale_Password }}</mat-label>
                         <input matInput type="password" formControlName="Password"
                             [ngClass]="{ 'is-invalid': userService.userModel$.value.Submitted && f.Password.errors }" />
                         <mat-error *ngIf="userService.userModel$.value.Submitted && f.Password.errors">
                             <span
-                                *ngIf="f.Password.errors.required">{{ loginService.loginModel$.value.PasswordIsRequired }}</span>
+                                *ngIf="f.Password.errors.required">{{ loginService.loginModel$.value.Locale_PasswordIsRequired }}</span>
                         </mat-error>
                         <!-- <mat-hint>Hint for Password</mat-hint> -->
                     </mat-form-field>
                 </p>
+                <p *ngIf="userService.userModel$.value.Error">
+                    <mat-error>
+                        {{ userService.userModel$.value.Error }}
+                    </mat-error>
+                </p>
                 <p>
                     <button mat-raised-button [disabled]="userService.userModel$.value.Loading">
                         <mat-spinner *ngIf="userService.userModel$.value.Loading"></mat-spinner>
-                        {{ loginService.loginModel$.value.Login }}
+                        {{ loginService.loginModel$.value.Locale_Login }}
                     </button>
 
                     <a mat-button
-                        routerLink="/{{ loginService.loginModel$.value.Language }}/register">{{ loginService.loginModel$.value.Register }}</a>
+                        routerLink="/{{ loginService.loginModel$.value.Language }}/register">{{ loginService.loginModel$.value.Locale_Register }}</a>
                 </p>
             </form>
         </mat-card-content>

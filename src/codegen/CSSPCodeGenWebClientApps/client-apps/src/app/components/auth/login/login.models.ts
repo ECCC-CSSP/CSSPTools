@@ -1,12 +1,14 @@
 export interface LoginModel {
     Language?: string;
     ReturnUrl?: string;
-    //
-    Login?: string;
     LoginEmail?: string;
-    LoginEmailIsRequired?: string;
     Password?: string;
-    PasswordIsRequired?: string;
-    Register?: string;
-}
 
+    Locale_Login?: string;
+    Locale_LoginEmail?: string;
+    Locale_LoginEmailIsRequired?: string;
+    Locale_Password?: string;
+    Locale_PasswordIsRequired?: string;
+    Locale_Register?: string;
+
+}

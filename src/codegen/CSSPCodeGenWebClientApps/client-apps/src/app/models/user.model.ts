@@ -1,3 +1,5 @@
+import { HttpErrorResponse } from '@angular/common/http';
+
 export interface UserModel {
     ContactID?: number,
     Id?: string,
@@ -8,7 +10,7 @@ export interface UserModel {
     Initial?: string,
     Password?: string,
     Token?: string,
-    Error?: string|null;
+    Error?: string;
     Loading?: boolean;
     Submitted?: boolean;
 }

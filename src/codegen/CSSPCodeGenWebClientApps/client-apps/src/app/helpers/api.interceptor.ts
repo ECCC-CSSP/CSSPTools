@@ -20,7 +20,7 @@ export class ApiInterceptor implements HttpInterceptor {
       // setHeaders: {
       //   Authorization: `Bearer ${currentUser.token}`
       // },
-      url: request.url.replace('/api/', appModel.BaseApiUrl),
+      url: request.url.replace('/api/', appModel.BaseApiUrl + $localize.locale + '/'),
     });
 
     return next.handle(request);
