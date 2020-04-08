@@ -1,9 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using System.Security.Claims;
+using System.Text;
 using System.Threading.Tasks;
+using CSSPCodeGenWebAPI.Model;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
 
 namespace CSSPCodeGenWebAPI.Controllers
 {
@@ -11,43 +17,40 @@ namespace CSSPCodeGenWebAPI.Controllers
     [ApiController]
     public class TokenController : ControllerBase
     {
-        public TokenController()
-        {
+        private readonly AppSettings _appSettings;
+        private readonly IUserService _userService;
 
+        public TokenController(IOptions<AppSettings> appSettings, IUserService userService)
+        {
+            _appSettings = appSettings.Value;
+            _userService = userService;
         }
 
         [HttpPost]
         public async Task<ActionResult<UserModel>> Post(LoginModel loginModel)
         {
-            List<UserModel> userModelList = new List<UserModel>() {
-                new UserModel()
-                {
-                    ContactID = 2,
-                    Id = "IdIdIDidididididididi",
-                    ContactTVItemID = 34,
-                    LoginEmail = loginModel.LoginEmail,
-                    FirstName = "Charles",
-                    Initial = "G",
-                    LastName = "LeBlanc",
-                    Password = loginModel.Password,
-                    Token = "Thisifjlsjflsj lefj token",
-                },
-                    new UserModel()
-                {
-                    ContactID = 4,
-                    Id = "IdIdIDidididididididi",
-                    ContactTVItemID = 34,
-                    LoginEmail = loginModel.LoginEmail,
-                    FirstName = "Charles",
-                    Initial = "G",
-                    LastName = "LeBlanc",
-                    Password = loginModel.Password,
-                    Token = "Thisifjlsjflsj lefj token",
-                },
-            };
+            UserModel userModel = await _userService.CheckPassword(loginModel);
 
-            return (from c in userModelList
-                    select c).FirstOrDefault();
+            // return null if user not found
+            if (userModel == null)
+                return null;
+
+            // authentication successful so generate jwt token
+            JwtSecurityTokenHandler tokenHandler = new JwtSecurityTokenHandler();
+            byte[] key = Encoding.ASCII.GetBytes(_appSettings.Secret);
+            SecurityTokenDescriptor tokenDescriptor = new SecurityTokenDescriptor
+            {
+                Subject = new ClaimsIdentity(new Claim[]
+                {
+                    new Claim(ClaimTypes.Name, userModel.Id.ToString())
+                }),
+                Expires = DateTime.UtcNow.AddDays(2),
+                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+            };
+            SecurityToken token = tokenHandler.CreateToken(tokenDescriptor);
+            userModel.Token = tokenHandler.WriteToken(token);
+
+            return userModel;
         }
     }
 
@@ -60,7 +63,6 @@ namespace CSSPCodeGenWebAPI.Controllers
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Initial { get; set; }
-        public string Password { get; set; }
         public string Token { get; set; }
     }
 

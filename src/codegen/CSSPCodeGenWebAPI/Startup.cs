@@ -10,6 +10,12 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using System.Text;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using CSSPModels;
+using Microsoft.EntityFrameworkCore;
+using CSSPCodeGenWebAPI.Model;
 
 namespace CSSPCodeGenWebAPI
 {
@@ -30,6 +36,59 @@ namespace CSSPCodeGenWebAPI
         .       AddJsonOptions(options => {
                 options.JsonSerializerOptions.PropertyNamingPolicy = null;
             });
+
+            // configure strongly typed settings objects
+            var appSettingsSection = Configuration.GetSection("AppSettings");
+            services.Configure<AppSettings>(appSettingsSection);
+
+            // configure jwt authentication
+            var appSettings = appSettingsSection.Get<AppSettings>();
+            var key = Encoding.ASCII.GetBytes(appSettings.Secret);
+            services.AddAuthentication(x =>
+            {
+                x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+            .AddJwtBearer(x =>
+            {
+                x.RequireHttpsMetadata = false;
+                x.SaveToken = true;
+                x.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(key),
+                    ValidateIssuer = false,
+                    ValidateAudience = false
+                };
+            });
+
+            //// using CSSPDB
+            //services.AddDbContext<CSSPDBContext>(options =>
+            //        options.UseSqlServer(Configuration.GetConnectionString("CSSPDB")));
+
+            // using CSSPDB2
+            services.AddDbContext<CSSPDBContext>(options =>
+                    options.UseSqlServer(Configuration.GetConnectionString("CSSPDB2")));
+
+            //// using In Memory CSSPDB2
+            //services.AddDbContext<CSSPDBContext>(options =>
+            //        options.UseInMemoryDatabase(Configuration.GetConnectionString("CSSPDB2")));
+
+            //// using TestDB
+            //services.AddDbContext<CSSPDBContext>(options =>
+            //        options.UseSqlServer(Configuration.GetConnectionString("TestDB")));
+
+            services.AddDbContext<ApplicationDbContext>(options =>
+                    options.UseSqlServer(Configuration.GetConnectionString("CSSPDB2")));
+
+            //services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+            //    .AddEntityFrameworkStores<ApplicationDbContext>();
+
+            services.AddIdentityCore<ApplicationUser>()
+                .AddEntityFrameworkStores<ApplicationDbContext>();
+
+            services.AddScoped<IUserService, UserService>();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -55,5 +114,10 @@ namespace CSSPCodeGenWebAPI
                 endpoints.MapControllers();
             });
         }
+    }
+
+    public class AppSettings
+    {
+        public string Secret { get; set; }
     }
 }

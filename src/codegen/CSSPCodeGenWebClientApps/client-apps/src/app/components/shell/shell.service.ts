@@ -9,7 +9,7 @@ export class ShellService {
   shellModel$: BehaviorSubject<ShellModel> = new BehaviorSubject<ShellModel>(<ShellModel>{});
 
   constructor() {
-    this.UpdateShell(<ShellModel>{ isEnglish: true, leftIconsVisible: true });
+    this.UpdateShell(<ShellModel>{ Language: $localize.locale });
    }
 
   UpdateShell(shellModel: ShellModel)

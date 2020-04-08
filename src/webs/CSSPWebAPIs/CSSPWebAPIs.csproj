@@ -33,11 +33,16 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\dlls\CSSPEnums\CSSPEnums.csproj" />
-    <ProjectReference Include="..\..\dlls\CSSPModels\CSSPModels.csproj" />
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="Data\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="CSSPModels">
+      <HintPath>..\..\dlls\CSSPModels\bin\Debug\netcoreapp3.1\CSSPModels.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
   <ItemGroup>

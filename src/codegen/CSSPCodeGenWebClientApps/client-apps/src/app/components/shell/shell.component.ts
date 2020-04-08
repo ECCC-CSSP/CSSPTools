@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 import { ShellService } from './shell.service';
 import { ShellModel } from './shell.models';
+import { UserService } from 'src/app/services/user.service';
 
 @Component({
   selector: 'app-shell',
@@ -12,27 +13,24 @@ import { ShellModel } from './shell.models';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ShellComponent implements OnInit {
-  shellModel: ShellModel = {};
 
-  constructor(private shellService: ShellService, private router: Router, private title: Title) { }
+  constructor(public shellService: ShellService, public userService: UserService, private router: Router, private title: Title) { }
 
   /*
    * functions public
    */
   changeLang(): void {
+    let oldLocal = $localize.locale;
     if (this.router.url.indexOf('fr-CA') > 0) {
       $localize.locale = 'en-CA';
-      this.shellModel.Language = $localize.locale;
-      this.shellService.UpdateShell(this.shellModel);
-      this.router.navigateByUrl(this.router.url.replace('fr-CA', 'en-CA'));
     }
     else {
       $localize.locale = 'fr-CA';
-      this.shellModel.Language = $localize.locale;
-      this.shellService.UpdateShell(this.shellModel);
-      this.router.navigateByUrl(this.router.url.replace('en-CA', 'fr-CA'));
     }
+    this.shellService.UpdateShell(<ShellModel>{ Language: $localize.locale });
+    this.router.navigateByUrl(this.router.url.replace(oldLocal, $localize.locale));
   }
+
   nothing(): void {
     // nothing for now
   }
@@ -41,25 +39,18 @@ export class ShellComponent implements OnInit {
     Events
    */
   ngOnInit(): void {
-    this.shellModel = this.shellService.shellModel$.getValue();
     if (this.router.url.indexOf('fr-CA') > 0) {
       $localize.locale = 'fr-CA';
-      this.shellModel.Language = $localize.locale;
     }
     else {
       $localize.locale = 'en-CA';
-      this.shellModel.Language = $localize.locale;
     }
-    this.shellService.UpdateShell(this.shellModel);
+    this.shellService.UpdateShell(<ShellModel>{ Language: $localize.locale });
     LoadLocalesShell(this.shellService);
-    this.shellModel = this.shellService.shellModel$.getValue();
-    this.title.setTitle(this.shellModel.AppTitle);
+    this.title.setTitle(this.shellService.shellModel$.value.AppTitle);
   }
 
   Logout() {
-    // remove user from local storage and set current user to null
-    localStorage.removeItem('currentLoginModel');
-    this.shellService.UpdateShell(null);
-    this.shellModel = this.shellService.shellModel$.getValue();
-}
+    this.userService.Logout(this.router, $localize.locale);
+  }
 }

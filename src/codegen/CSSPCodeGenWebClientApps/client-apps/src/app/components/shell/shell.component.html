@@ -6,10 +6,10 @@
 
 <!-- User Menu -->
 <mat-menu #menuUser>
-    <button mat-menu-item (click)="nothing()">User Id {{ shellModel?.UserModel?.Id }}</button>
-    <button mat-menu-item (click)="nothing()">User FirstName {{ shellModel?.UserModel?.FirstName }}</button>
-    <button mat-menu-item (click)="nothing()">User LastName {{ shellModel?.UserModel?.LastName }}</button>
-    <button mat-menu-item (click)="nothing()">User LoginEmail {{ shellModel?.UserModel?.LoginEmail }}</button>
+    <button mat-menu-item (click)="nothing()">User Id {{ userService.userModel$?.value?.Id }}</button>
+    <button mat-menu-item (click)="nothing()">User FirstName {{ userService.userModel$?.value?.FirstName }}</button>
+    <button mat-menu-item (click)="nothing()">User LastName {{ userService.userModel$?.value?.LastName }}</button>
+    <button mat-menu-item (click)="nothing()">User LoginEmail {{ userService.userModel$?.value?.LoginEmail }}</button>
 </mat-menu>
 
 <!-- Top Toolbar -->
@@ -18,26 +18,30 @@
         <button mat-button (click)="drawer.toggle()">
             <mat-icon>menu</mat-icon>
         </button>
-        <a mat-button routerLink="">{{ shellModel.AppTitle }}
+        <a mat-button routerLink="">{{ shellService.shellModel$.value.AppTitle }}
         </a>
         <span class="right">
-            <button *ngIf="shellModel.UserModel?.Token" mat-button (click)="Logout()">
-                Logout
+            <button *ngIf="userService.userModel$?.value?.Token" mat-button (click)="Logout()">
+                {{ shellService.shellModel$.value.Logout }}
             </button>
-            <button *ngIf="shellModel.UserModel?.Token" mat-button [matMenuTriggerFor]="menuUser">
-                {{ shellModel.UserModel.LoginEmail }}
+            <button *ngIf="userService.userModel$?.value?.Token" mat-button [matMenuTriggerFor]="menuUser">
+                {{ userService.userModel$?.value?.LoginEmail }}
             </button>
-            <a *ngIf="!shellModel.UserModel?.Token" mat-button routerLink="register" routerLinkActive="active-link">
-                {{ shellModel.Register }}
+            <a *ngIf="!userService.userModel$?.value?.Token" mat-button routerLink="register"
+                routerLinkActive="active-link">
+                {{ shellService.shellModel$.value.Register }}
             </a>
-            <a *ngIf="!shellModel.UserModel?.Token" mat-button routerLink="login" routerLinkActive="active-link">
-                {{ shellModel.Login }}
+            <a *ngIf="!userService.userModel$?.value?.Token" mat-button routerLink="login"
+                routerLinkActive="active-link">
+                {{ shellService.shellModel$.value.Login }}
             </a>
             <button mat-button [matMenuTriggerFor]="menuSettings">
                 <mat-icon>settings</mat-icon>
             </button>
-            <button mat-button *ngIf="shellModel.Language === 'fr-CA'" (click)="changeLang()">English</button>
-            <button mat-button *ngIf="shellModel.Language === 'en-CA'" (click)="changeLang()">Français</button>
+            <button mat-button *ngIf="shellService.shellModel$.value.Language === 'fr-CA'"
+                (click)="changeLang()">English</button>
+            <button mat-button *ngIf="shellService.shellModel$.value.Language === 'en-CA'"
+                (click)="changeLang()">Français</button>
         </span>
     </span>
 </mat-toolbar>
@@ -46,18 +50,18 @@
 <mat-drawer-container>
     <mat-drawer #drawer opened mode="side">
         <p>
-            <a mat-button routerLink="enums" title="Open Enums" routerLinkActive="active-link">
-                Enums
+            <a mat-button routerLink="generate-enums" title="Open Enums" routerLinkActive="active-link">
+                Generate Enums
             </a>
         </p>
         <p>
-            <a mat-button routerLink="models" title="Open Models" routerLinkActive="active-link">
-                Models
+            <a mat-button routerLink="generate-models" title="Open Models" routerLinkActive="active-link">
+                Generate Models
             </a>
         </p>
         <p>
-            <a mat-button routerLink="services" title="Open Services" routerLinkActive="active-link">
-                Services
+            <a mat-button routerLink="generate-services" title="Open Services" routerLinkActive="active-link">
+                Generate Services
             </a>
         </p>
     </mat-drawer>
