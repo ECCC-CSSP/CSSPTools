@@ -1,4 +1,4 @@
-<div class="loginCard">
+<div class="loginCard" >
     <mat-card>
         <mat-card-content>
             <h2>{{ loginService.loginModel$.value.Locale_Login }}</h2>
@@ -34,7 +34,7 @@
                 </p>
                 <p>
                     <button mat-raised-button [disabled]="userService.userModel$.value.Loading">
-                        <mat-spinner *ngIf="userService.userModel$.value.Loading"></mat-spinner>
+                        <mat-progress-bar *ngIf="userService.userModel$.value.Loading" mode="indeterminate"></mat-progress-bar>
                         {{ loginService.loginModel$.value.Locale_Login }}
                     </button>
 

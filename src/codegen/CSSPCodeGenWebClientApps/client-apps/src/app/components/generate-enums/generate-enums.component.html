@@ -1,21 +1,40 @@
-<p>generate-enums works!</p>
+<h1>Generate Enums</h1>
 
-<p>{{ generateEnumsModel.Title }}</p>
+<button (click)="CompareEnumsAndOldEnums()" mat-raised-button color="primary">
+    <mat-progress-bar *ngIf="generateEnumsService.generateEnumsModel$.value.CompareEnumsAndOldEnumsWorking"
+        mode="indeterminate"></mat-progress-bar>
+    {{ generateEnumsService.generateEnumsModel$.value.CompareEnumsAndOldEnums }}
+</button>
+<button (click)="EnumsGenerated_cs()" mat-raised-button color="primary">
+    <mat-progress-bar *ngIf="generateEnumsService.generateEnumsModel$.value.EnumsGenerated_csWorking"
+        mode="indeterminate"></mat-progress-bar>
+    {{generateEnumsService.generateEnumsModel$.value.EnumsGenerated_cs}}
+</button>
+<button (click)="EnumsTestGenerated_cs()" mat-raised-button color="primary">
+    <mat-progress-bar *ngIf="generateEnumsService.generateEnumsModel$.value.EnumsTestGenerated_csWorking"
+        mode="indeterminate"></mat-progress-bar>
+    {{generateEnumsService.generateEnumsModel$.value.EnumsTestGenerated_cs}}
+</button>
+<button (click)="GeneratePolSourceEnumCodeFiles()" mat-raised-button color="primary">
+    <mat-progress-bar *ngIf="generateEnumsService.generateEnumsModel$.value.GeneratePolSourceEnumCodeFilesWorking"
+        mode="indeterminate"></mat-progress-bar>
+    {{generateEnumsService.generateEnumsModel$.value.GeneratePolSourceEnumCodeFiles}}
+</button>
 
-<p>code works!</p>
-<p *ngIf="shellModel">
-    {{ shellModel | json }}
+<mat-progress-bar *ngIf="generateEnumsService.generateEnumsModel$.value.Working" mode="indeterminate">
+</mat-progress-bar>
+
+<p *ngIf="generateEnumsService.generateEnumsModel$.value.Error">
+    <mat-error>
+        {{ generateEnumsService.generateEnumsModel$.value.Error | json }}
+    </mat-error>
 </p>
+<div>
+    <pre *ngIf="generateEnumsService.generateEnumsModel$.value.Status">
+        {{ generateEnumsService.generateEnumsModel$.value.Status }}
+    </pre>
+</div>
 
-<button mat-raised-button color="primary">{{ generateEnumsModel.Generate }}</button>
-<span>&nbsp;&nbsp;&nbsp;</span>
-<button mat-raised-button color="primary" (click)="GetWeather()">{{ generateEnumsModel.GetTheWeather }}</button>
-<span>&nbsp;&nbsp;&nbsp;</span>
-<button mat-raised-button color="primary" (click)="GetMoreWeather()">{{ generateEnumsModel.GetMoreWeather }}</button>
-<span>&nbsp;&nbsp;&nbsp;</span>
-<button mat-raised-button color="primary" (click)="ClearWeather()">{{ generateEnumsModel.ClearWeather }}</button>
-
-<ul *ngIf="(weatherService.weather$ | async) as wfs">
-    <li *ngFor="let wf of wfs">
-        {{ wf.Date }} - {{ wf.TemperatureC }} - {{ wf.TemperatureF }} - {{ wf.Summary }} </li>
-</ul>
+<!-- <div>
+    <p>--------------------------- Final --------------------------------------</p>
+</div> -->

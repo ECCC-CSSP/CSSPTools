@@ -53,7 +53,7 @@ export class LoginComponent implements OnInit {
       return;
     }
 
-    this.loginService.UpdateLogin(<LoginModel>{ LoginEmail: this.f.LoginEmail.value, Password: this.f.Password.value })
+    this.loginService.UpdateLogin(<LoginModel>{ LoginEmail: this.f.LoginEmail.value })
     this.userService.Login(this.f.LoginEmail.value, this.f.Password.value, this.router,  $localize.locale);
   }
 }

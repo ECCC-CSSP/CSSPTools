@@ -27,10 +27,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Controllers\Resources\" />
-  </ItemGroup>
-
-  <ItemGroup>
+    <Compile Update="Controllers\Resources\ControllersRes.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>ControllersRes.resx</DependentUpon>
+    </Compile>
     <Compile Update="Services\Resources\ServicesRes.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
@@ -39,6 +40,14 @@
   </ItemGroup>
 
   <ItemGroup>
+    <EmbeddedResource Update="Controllers\Resources\ControllersRes.fr.resx">
+      <LastGenOutput>ControllersRes.Designer.cs</LastGenOutput>
+      <Generator>PublicResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Controllers\Resources\ControllersRes.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>ControllersRes.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Update="Services\Resources\ServicesRes.fr.resx">
       <LastGenOutput>ServicesRes.Designer.cs</LastGenOutput>
       <Generator>PublicResXFileCodeGenerator</Generator>

@@ -3,21 +3,17 @@ import { GenerateEnumsModel } from './generate-enums.models';
 
 export function LoadLocalesEnums(generateEnumsService: GenerateEnumsService) {
   let generateEnumsModel: GenerateEnumsModel = { 
-    Title: 'somethng', 
-    Generate: 'Generate',
-    OpenCode: 'Open code',
-    GetTheWeather: 'Get Weather',
-    GetMoreWeather: 'Get More Weather',
-    ClearWeather: 'Empty the data',
+    CompareEnumsAndOldEnums: 'Compare Enums And Old Enums', 
+    EnumsGenerated_cs: 'EnumsGenerated.cs',
+    EnumsTestGenerated_cs: 'EnumsTestGenerated.cs',
+    GeneratePolSourceEnumCodeFiles: 'Generate Pollution Source Enum Code Files',
 }
 
   if ($localize.locale === 'fr-CA') {
-      generateEnumsModel.Title = 'Quelque chose';
-      generateEnumsModel.Generate = 'Générer';
-      generateEnumsModel.OpenCode = 'Ouvrire le code';
-      generateEnumsModel.GetTheWeather = 'Aller chercher météo';
-      generateEnumsModel.GetMoreWeather = 'Aller chercher plus de météo';
-      generateEnumsModel.ClearWeather = 'Videz les données';
+      generateEnumsModel.CompareEnumsAndOldEnums = 'Compare Enums And Old Enums';
+      generateEnumsModel.EnumsGenerated_cs = 'EnumsGenerated.cs';
+      generateEnumsModel.EnumsTestGenerated_cs = 'EnumsTestGenerated.cs';
+      generateEnumsModel.GeneratePolSourceEnumCodeFiles = 'Generate Pollution Source Enum Code Files';
   }
 
   generateEnumsService.UpdateEnums(generateEnumsModel);

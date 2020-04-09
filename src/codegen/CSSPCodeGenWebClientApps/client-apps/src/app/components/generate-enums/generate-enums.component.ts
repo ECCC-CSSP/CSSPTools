@@ -1,10 +1,9 @@
-import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
-import { GenerateEnumsModel } from './generate-enums.models';
+import { Component, OnInit, ChangeDetectionStrategy, OnDestroy } from '@angular/core';
 import { GenerateEnumsService } from './generate-enums.service';
-import { ShellService, ShellModel } from '../shell';
-import { WeatherService } from 'src/app/services/weather.service';
 import { LoadLocalesEnums } from './generate-enums.locales';
-import { LoadLocalesShell } from '../shell/shell.locales';
+import { GenerateEnumsModel } from '.';
+import { Subscription } from 'rxjs';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-enums',
@@ -12,28 +11,33 @@ import { LoadLocalesShell } from '../shell/shell.locales';
   styleUrls: ['./generate-enums.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class GenerateEnumsComponent implements OnInit {
-  generateEnumsModel: GenerateEnumsModel;
-  shellModel: ShellModel;
+export class GenerateEnumsComponent implements OnInit, OnDestroy {
+  sub: Subscription;
 
-  constructor(private generateEnumsService: GenerateEnumsService, public shellService: ShellService, public weatherService: WeatherService) { }
+  constructor(public generateEnumsService: GenerateEnumsService, private router: Router) { }
 
   ngOnInit(): void {
     LoadLocalesEnums(this.generateEnumsService);
-    LoadLocalesShell(this.shellService);
-    this.generateEnumsModel = this.generateEnumsService.generateEnumsModel$.getValue();
-    this.shellModel = this.shellService.shellModel$.getValue();
   }
 
-  ClearWeather() {
-    this.weatherService.Clear();
+  ngOnDestroy()
+  {
+    this.sub.unsubscribe();
   }
 
-  GetWeather() {
-    this.weatherService.Get();
+  CompareEnumsAndOldEnums() {
+    this.sub = this.generateEnumsService.CompareEnumsAndOldEnums(this.router).subscribe();
   }
 
-  GetMoreWeather() {
-    this.weatherService.GetMore();
+  EnumsGenerated_cs() {
+    this.sub = this.generateEnumsService.EnumsGenerated_cs(this.router).subscribe();
+  }
+
+  EnumsTestGenerated_cs() {
+    this.sub = this.generateEnumsService.EnumsTestGenerated_cs(this.router).subscribe();
  }
+
+ GeneratePolSourceEnumCodeFiles() {
+  this.sub = this.generateEnumsService.GeneratePolSourceEnumCodeFiles(this.router).subscribe();
+}
 }

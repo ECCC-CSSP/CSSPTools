@@ -32,6 +32,8 @@ namespace CSSPCodeGenWebAPI.Controllers
         [HttpPost]
         public async Task<ActionResult<UserModel>> Post(LoginModel loginModel)
         {
+            Thread.Sleep(1000);
+
             ServicesRes.Culture = new CultureInfo(Request.RouteValues["culture"].ToString());
 
             UserModel userModel = await _userService.CheckPassword(loginModel);
