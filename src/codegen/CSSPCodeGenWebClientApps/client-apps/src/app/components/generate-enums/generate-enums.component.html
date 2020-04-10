@@ -1,28 +1,24 @@
 <h1>Generate Enums</h1>
 
-<button (click)="CompareEnumsAndOldEnums()" mat-raised-button color="primary">
-    <mat-progress-bar *ngIf="generateEnumsService.generateEnumsModel$.value.CompareEnumsAndOldEnumsWorking"
-        mode="indeterminate"></mat-progress-bar>
+<button disabled="{{ generateEnumsService.generateEnumsModel$.value.Working }}" 
+    (click)="GenerateEnums('CompareEnumsAndOldEnums')" mat-raised-button color="primary">
     {{ generateEnumsService.generateEnumsModel$.value.CompareEnumsAndOldEnums }}
 </button>
-<button (click)="EnumsGenerated_cs()" mat-raised-button color="primary">
-    <mat-progress-bar *ngIf="generateEnumsService.generateEnumsModel$.value.EnumsGenerated_csWorking"
-        mode="indeterminate"></mat-progress-bar>
+<button disabled="{{ generateEnumsService.generateEnumsModel$.value.Working }}" 
+    (click)="GenerateEnums('EnumsGenerated_cs')" mat-raised-button color="primary">
     {{generateEnumsService.generateEnumsModel$.value.EnumsGenerated_cs}}
 </button>
-<button (click)="EnumsTestGenerated_cs()" mat-raised-button color="primary">
-    <mat-progress-bar *ngIf="generateEnumsService.generateEnumsModel$.value.EnumsTestGenerated_csWorking"
-        mode="indeterminate"></mat-progress-bar>
+<button disabled="{{ generateEnumsService.generateEnumsModel$.value.Working }}" 
+    (click)="GenerateEnums('EnumsTestGenerated_cs')" mat-raised-button color="primary">
     {{generateEnumsService.generateEnumsModel$.value.EnumsTestGenerated_cs}}
 </button>
-<button (click)="GeneratePolSourceEnumCodeFiles()" mat-raised-button color="primary">
-    <mat-progress-bar *ngIf="generateEnumsService.generateEnumsModel$.value.GeneratePolSourceEnumCodeFilesWorking"
-        mode="indeterminate"></mat-progress-bar>
+<button disabled="{{ generateEnumsService.generateEnumsModel$.value.Working }}" 
+    (click)="GenerateEnums('GeneratePolSourceEnumCodeFiles')" mat-raised-button color="primary">
     {{generateEnumsService.generateEnumsModel$.value.GeneratePolSourceEnumCodeFiles}}
 </button>
 
-<mat-progress-bar *ngIf="generateEnumsService.generateEnumsModel$.value.Working" mode="indeterminate">
-</mat-progress-bar>
+<mat-progress-bar *ngIf="generateEnumsService.generateEnumsModel$.value.Working" 
+    mode="indeterminate"></mat-progress-bar>
 
 <p *ngIf="generateEnumsService.generateEnumsModel$.value.Error">
     <mat-error>
@@ -34,7 +30,3 @@
         {{ generateEnumsService.generateEnumsModel$.value.Status }}
     </pre>
 </div>
-
-<!-- <div>
-    <p>--------------------------- Final --------------------------------------</p>
-</div> -->

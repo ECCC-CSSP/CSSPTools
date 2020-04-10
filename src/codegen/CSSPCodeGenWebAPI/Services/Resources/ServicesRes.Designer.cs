@@ -70,6 +70,33 @@ namespace CSSPCodeGenWebAPI.Services.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Command [{0}] is not implemented.
+        /// </summary>
+        public static string Command_IsNotImplemented {
+            get {
+                return ResourceManager.GetString("Command_IsNotImplemented", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Could not delete status file [{0}]. Error: [{1}].
+        /// </summary>
+        public static string CouldNotDeleteStatusFile_Error_ {
+            get {
+                return ResourceManager.GetString("CouldNotDeleteStatusFile_Error_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Could not find exePath [{0}].
+        /// </summary>
+        public static string CouldNotFindExePath_ {
+            get {
+                return ResourceManager.GetString("CouldNotFindExePath_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Email.
         /// </summary>
         public static string Email {

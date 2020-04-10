@@ -1,7 +1,6 @@
 import { Component, OnInit, ChangeDetectionStrategy, OnDestroy } from '@angular/core';
 import { GenerateEnumsService } from './generate-enums.service';
 import { LoadLocalesEnums } from './generate-enums.locales';
-import { GenerateEnumsModel } from '.';
 import { Subscription } from 'rxjs';
 import { Router } from '@angular/router';
 
@@ -16,28 +15,18 @@ export class GenerateEnumsComponent implements OnInit, OnDestroy {
 
   constructor(public generateEnumsService: GenerateEnumsService, private router: Router) { }
 
+  GenerateEnums(command: string)
+  {
+    this.sub = this.generateEnumsService.GenerateEnums(this.router, command).subscribe();
+  }
+
   ngOnInit(): void {
     LoadLocalesEnums(this.generateEnumsService);
   }
 
   ngOnDestroy()
   {
-    this.sub.unsubscribe();
+    this.sub?.unsubscribe();
   }
 
-  CompareEnumsAndOldEnums() {
-    this.sub = this.generateEnumsService.CompareEnumsAndOldEnums(this.router).subscribe();
-  }
-
-  EnumsGenerated_cs() {
-    this.sub = this.generateEnumsService.EnumsGenerated_cs(this.router).subscribe();
-  }
-
-  EnumsTestGenerated_cs() {
-    this.sub = this.generateEnumsService.EnumsTestGenerated_cs(this.router).subscribe();
- }
-
- GeneratePolSourceEnumCodeFiles() {
-  this.sub = this.generateEnumsService.GeneratePolSourceEnumCodeFiles(this.router).subscribe();
-}
 }

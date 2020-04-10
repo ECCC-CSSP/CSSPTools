@@ -19,8 +19,7 @@ export class GenerateEnumsService {
     this.generateEnumsModel$.next(<GenerateEnumsModel>{ ...this.generateEnumsModel$.getValue(), ...generateEnumsModel });
   }
 
-  SendEnumsCommand(router: Router, command: GenerateEnumsType)
-  {
+  GenerateEnums(router: Router, command: string) {
     let oldURL = router.url;
     this.UpdateEnums(<GenerateEnumsModel>{ Working: true, Error: null, Status: '' });
     return this.httpClient.post<ActionReturn>('/api/GenerateEnums', { Command: command }).pipe(
@@ -29,15 +28,15 @@ export class GenerateEnumsService {
         this.UpdateEnums(<GenerateEnumsModel>{ Working: false, Error: null, Status: (<ActionReturn>x).OKText });
         router.navigateByUrl('', { skipLocationChange: true }).then(() => {
           router.navigate([`/${oldURL}`]);
-        });    
+        });
       }),
       catchError(e => of(e).pipe(map(e => {
         this.UpdateEnums(<GenerateEnumsModel>{ Working: false, Error: <HttpErrorResponse>e, Status: '' });
         console.debug(`${command} ERROR. Return: ${this.generateEnumsModel$.value.Error}`);
         router.navigateByUrl('', { skipLocationChange: true }).then(() => {
           router.navigate([`/${oldURL}`]);
-        });    
-       }))) 
+        });
+      })))
       //,
       // finalize(() => {
       //   this.UpdateEnums(<GenerateEnumsModel>{ Working: false });
@@ -45,27 +44,9 @@ export class GenerateEnumsService {
       // })
     );
   }
-
-  CompareEnumsAndOldEnums(router: Router) {
-    return this.SendEnumsCommand(router, 'CompareEnumsAndOldEnums');
-  }
-
-  EnumsGenerated_cs(router: Router) {
-    return this.SendEnumsCommand(router, 'EnumsGenerated_cs');
-  }
-
-  EnumsTestGenerated_cs(router: Router) {
-    return this.SendEnumsCommand(router, 'EnumsTestGenerated_cs');
-  }
-
-  GeneratePolSourceEnumCodeFiles(router: Router) {
-    return this.SendEnumsCommand(router, 'GeneratePolSourceEnumCodeFiles');
-  }
 }
 
 export interface ActionReturn {
   OKText: string;
   ErrorText: string;
 }
-
-export type GenerateEnumsType = 'CompareEnumsAndOldEnums' | 'EnumsGenerated_cs' | 'EnumsTestGenerated_cs' | 'GeneratePolSourceEnumCodeFiles';

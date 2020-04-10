@@ -16,6 +16,7 @@ using Microsoft.IdentityModel.Tokens;
 using CSSPModels;
 using Microsoft.EntityFrameworkCore;
 using CSSPCodeGenWebAPI.Model;
+using CSSPCodeGenWebAPI.Services;
 
 namespace CSSPCodeGenWebAPI
 {
@@ -88,6 +89,7 @@ namespace CSSPCodeGenWebAPI
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
             services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IGenerateEnumsService, GenerateEnumsService>();
 
         }
 
@@ -107,6 +109,7 @@ namespace CSSPCodeGenWebAPI
                 .AllowAnyMethod()
                 .AllowAnyHeader());
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

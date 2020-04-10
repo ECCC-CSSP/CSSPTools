@@ -117,6 +117,15 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Command_IsNotImplemented" xml:space="preserve">
+    <value>Command [{0}] is not implemented</value>
+  </data>
+  <data name="CouldNotDeleteStatusFile_Error_" xml:space="preserve">
+    <value>Could not delete status file [{0}]. Error: [{1}]</value>
+  </data>
+  <data name="CouldNotFindExePath_" xml:space="preserve">
+    <value>Could not find exePath [{0}]</value>
+  </data>
   <data name="Email" xml:space="preserve">
     <value>Email</value>
   </data>
