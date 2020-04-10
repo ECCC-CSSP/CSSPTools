@@ -98,7 +98,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSSPWebClientApps", "src\we
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSSPCodeGenWebClientApps", "src\codegen\CSSPCodeGenWebClientApps\CSSPCodeGenWebClientApps.csproj", "{F826244E-23AA-467F-8908-321EE8D3E099}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CSSPCodeGenWebAPI", "src\codegen\CSSPCodeGenWebAPI\CSSPCodeGenWebAPI.csproj", "{BD212787-339D-46F6-962C-A3367BD0F579}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSSPCodeGenWebAPI", "src\codegen\CSSPCodeGenWebAPI\CSSPCodeGenWebAPI.csproj", "{BD212787-339D-46F6-962C-A3367BD0F579}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CompareEnumsAndOldEnums", "src\console\CompareEnumsAndOldEnums\CompareEnumsAndOldEnums.csproj", "{551291ED-3B52-4AF8-B555-0CE417076169}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -674,6 +676,18 @@ Global
 		{BD212787-339D-46F6-962C-A3367BD0F579}.Release|x64.Build.0 = Release|Any CPU
 		{BD212787-339D-46F6-962C-A3367BD0F579}.Release|x86.ActiveCfg = Release|Any CPU
 		{BD212787-339D-46F6-962C-A3367BD0F579}.Release|x86.Build.0 = Release|Any CPU
+		{551291ED-3B52-4AF8-B555-0CE417076169}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{551291ED-3B52-4AF8-B555-0CE417076169}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{551291ED-3B52-4AF8-B555-0CE417076169}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{551291ED-3B52-4AF8-B555-0CE417076169}.Debug|x64.Build.0 = Debug|Any CPU
+		{551291ED-3B52-4AF8-B555-0CE417076169}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{551291ED-3B52-4AF8-B555-0CE417076169}.Debug|x86.Build.0 = Debug|Any CPU
+		{551291ED-3B52-4AF8-B555-0CE417076169}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{551291ED-3B52-4AF8-B555-0CE417076169}.Release|Any CPU.Build.0 = Release|Any CPU
+		{551291ED-3B52-4AF8-B555-0CE417076169}.Release|x64.ActiveCfg = Release|Any CPU
+		{551291ED-3B52-4AF8-B555-0CE417076169}.Release|x64.Build.0 = Release|Any CPU
+		{551291ED-3B52-4AF8-B555-0CE417076169}.Release|x86.ActiveCfg = Release|Any CPU
+		{551291ED-3B52-4AF8-B555-0CE417076169}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
