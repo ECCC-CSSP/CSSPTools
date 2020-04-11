@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Reference Include="CSSPEnums">
+      <HintPath>..\CSSPEnums\bin\Debug\netcoreapp3.1\CSSPEnums.dll</HintPath>
+    </Reference>
+    <Reference Include="CSSPModels">
+      <HintPath>..\CSSPModels\bin\Debug\netcoreapp3.1\CSSPModels.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+</Project>

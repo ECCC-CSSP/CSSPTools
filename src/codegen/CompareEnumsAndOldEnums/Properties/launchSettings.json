@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "CompareEnumsAndOldEnums": {
+      "commandName": "Project",
+      "commandLineArgs": "en-CA"
+    }
+  }
+}
