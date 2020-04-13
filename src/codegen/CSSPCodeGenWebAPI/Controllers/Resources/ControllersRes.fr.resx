@@ -123,6 +123,9 @@
   <data name="CouldNotDeleteStatusFile_Error_" xml:space="preserve">
     <value>Impossible d'effacer la filière status [{0}]. Erreur: [{1}]</value>
   </data>
+  <data name="CouldNotFindCommand_StatusInDB" xml:space="preserve">
+    <value>Could not find command [{0}] status in DB (fr)</value>
+  </data>
   <data name="CouldNotFindExePath_" xml:space="preserve">
     <value>Impossible de trouver exePath [{0}]</value>
   </data>

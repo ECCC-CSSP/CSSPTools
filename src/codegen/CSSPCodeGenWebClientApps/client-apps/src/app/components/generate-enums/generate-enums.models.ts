@@ -8,4 +8,6 @@ export interface GenerateEnumsModel {
     Error?: HttpErrorResponse;
     Status?: string;
     Working?: boolean;
+    StatusTitle?: string;
+    WorkingText?: string;
 }

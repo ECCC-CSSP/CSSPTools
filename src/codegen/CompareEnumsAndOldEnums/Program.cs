@@ -1,41 +1,52 @@
-﻿using CompareEnumsAndOldEnums.Models;
-using CompareEnumsAndOldEnums.Resources;
+﻿using CompareEnumsAndOldEnums.Resources;
 using CompareEnumsAndOldEnums.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using StatusAndResultsDBService.Models;
+using StatusAndResultsDBService.Services;
 using System;
+using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 
 namespace CompareEnumsAndOldEnums
 {
-    class Program
+    partial class Program
     {
+        #region Variables
         public static IConfigurationRoot configuration;
+        public static IServiceCollection serviceCollection;
+        #endregion Variables
 
+        #region Entry
         static void Main(string[] args)
         {
-            var serviceCollection = new ServiceCollection();
+            serviceCollection = new ServiceCollection();
+            string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+            FileInfo fiDB = new FileInfo($@"{appDataPath}\CSSP\GenerateCodeStatus.db");
 
             configuration = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetParent(AppContext.BaseDirectory).FullName)
                 .AddJsonFile("appsettings.json", false)
                 .Build();
 
-            // Add access to generic IConfigurationRoot
             serviceCollection.AddSingleton<IConfigurationRoot>(configuration);
 
-            string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
-
-            FileInfo fiDB = new FileInfo($@"{appDataPath}\CSSP\GenerateCodeStatus.db");
-
-
-            Console.WriteLine("appsettings.json");
+            Console.WriteLine($"{ AppRes.Application } CompareEnumsAndOldEnums");
             Console.WriteLine("");
-            Console.WriteLine(configuration.GetValue<string>("NewEnumsDll"));
-            Console.WriteLine(configuration.GetValue<string>("OldEnumsDll"));
-            Console.WriteLine($"Will save status in [{fiDB.FullName}]");
-            Console.WriteLine("");
+
+            if (!string.IsNullOrWhiteSpace(VerifyAppSettings())) return;
+
+            AppRes.Culture = new CultureInfo(configuration.GetValue<string>("Culture"));
+
+            if (args.Length == 1)
+            {
+                if (!(args[0] == "en-CA" || args[0] == "fr-CA"))
+                {
+                    AppRes.Culture = new CultureInfo(args[0]);
+                }
+            }
 
 
             serviceCollection.AddDbContext<GenerateCodeStatusContext>(options =>
@@ -44,39 +55,25 @@ namespace CompareEnumsAndOldEnums
             });
 
             serviceCollection.AddScoped<IGenerateService, GenerateService>();
+            serviceCollection.AddScoped<IStatusAndResultsService, StatusAndResultsService>();
 
             var provider = serviceCollection.BuildServiceProvider();
 
-            var userService = provider.GetService<IGenerateService>();
+            IGenerateService generateService = provider.GetService<IGenerateService>();
 
+            IStatusAndResultsService statusAndResultsService = provider.GetService<IStatusAndResultsService>();
 
-            if (args.Length != 1 || !(args[0].ToLower() == "en-ca" || args[0].ToLower() == "fr-ca"))
+            statusAndResultsService.SetCulture(AppRes.Culture);
+
+            if (generateService != null)
             {
-                WriteConsoleHelp();
-                return;
+                generateService.Start(configuration, statusAndResultsService).GetAwaiter().GetResult();
             }
-
-            string retStr = userService.Start(configuration).GetAwaiter().GetResult();
-            
-            Console.WriteLine(retStr);
         }
 
-        static void WriteConsoleHelp()
-        {
-            string AppName = AppRes.CompareEnumsAndOldEnums;
+        #endregion Entry
 
-            Console.WriteLine($"\t{ AppRes.Application } { AppName }");
-            Console.WriteLine("\t---------------------------------------------------------");
-            Console.WriteLine($"\t{ AppRes.HowToUse }");
-            Console.WriteLine($"\t{ AppName } { AppRes.en_CA } | { AppRes.fr_CA }");
-            Console.WriteLine($"\t{ AppRes.Example }: { AppName } { AppRes.en_CA }");
-            Console.WriteLine("\t----------");
-            Console.WriteLine($"\t{ AppRes.Result } { AppRes.WillCompare }");
-            Console.WriteLine($"\t" + configuration.GetValue<string>("NewEnumsDll"));
-            Console.WriteLine("\tand");
-            Console.WriteLine($"\t" + configuration.GetValue<string>("OldEnumsDll"));
-            Console.WriteLine($"\t{ AppRes.ToSeeIfTheNewEnumsDllHasTheSameEnumsAsTheOld }");
-
-        }
+        #region Functions private
+        #endregion Functions private
     }
 }

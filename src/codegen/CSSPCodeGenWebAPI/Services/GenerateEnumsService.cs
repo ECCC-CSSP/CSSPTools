@@ -1,4 +1,6 @@
 ﻿using CSSPCodeGenWebAPI.Services.Resources;
+using StatusAndResultsDBService.Models;
+using StatusAndResultsDBService.Services;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -19,10 +21,8 @@ namespace CSSPCodeGenWebAPI.Services
         /// <param name="culture">Current culture setting for multilanguage error message</param>
         /// <param name="sbStatus">Will hold all the status text during the running of the application</param>
         /// <returns></returns>
-        public async Task<string> GenerateEnums(string command, CultureInfo culture, StringBuilder sbStatus)
+        public async Task GenerateEnums(string command, CultureInfo culture, IStatusAndResultsService statusAndResultsService)
         {
-            string RunResult = "";
-
             try
             {
                 ServicesRes.Culture = culture;
@@ -33,19 +33,19 @@ namespace CSSPCodeGenWebAPI.Services
                 {
                     case "CompareEnumsAndOldEnums":
                         {
-                            exePath = $@"C:\CSSPTools\src\execs\CompareEnumsAndOldEnums.exe";
+                            exePath = $@"C:\CSSPTools\src\codegen\CompareEnumsAndOldEnums\bin\Debug\netcoreapp3.1\CompareEnumsAndOldEnums.exe";
                             args = $" { culture.Name }";
                         }
                         break;
                     case "EnumsGenerated_cs":
                         {
-                            exePath = $@"C:\CSSPTools\src\execs\EnumsGenerated_cs.exe";
+                            exePath = $@"C:\CSSPTools\src\codegen\EnumsGenerated_cs\bin\Debug\netcoreapp3.1\EnumsGenerated_cs.exe";
                             args = $" { culture.Name }";
                         }
                         break;
                     case "EnumsTestGenerated_cs":
                         {
-                            exePath = $@"C:\CSSPTools\src\execs\EnumsTestGenerated_cs.exe";
+                            exePath = $@"C:\CSSPTools\src\codegen\EnumsTestGenerated_cs\bin\Debug\netcoreapp3.1\EnumsTestGenerated_cs.exe";
                             args = $" { culture.Name }";
                         }
                         break;
@@ -56,47 +56,33 @@ namespace CSSPCodeGenWebAPI.Services
                         }
                         break;
                     default:
-                        return String.Format(ServicesRes.Command_IsNotImplemented, command);
+                        {
+                            await statusAndResultsService.Update(command, String.Format(ServicesRes.Command_IsNotImplemented, command), "", 0);
+                            return;
+                        }
 
                 }
 
-                RunResult = await RunApplication(exePath, args, sbStatus);
+                FileInfo fiApp = new FileInfo(exePath);
+                if (!fiApp.Exists)
+                {
+                    await statusAndResultsService.Update(command, String.Format(ServicesRes.CouldNotFindExePath_, exePath), "", 0);
+                    return;
+                }
 
+                RunApplication(exePath, args);
             }
             catch (Exception ex)
             {
-                return $"Unmanaged Server Error: {ex.Message}";
+                await statusAndResultsService.Update(command, String.Format(ServicesRes.UnmanagedServerError_, ex.Message), "", 0);
+                return;
             }
 
-            // temp code to test OKText
-            //RunResult = $"Everything worked for {command}. Life is good.";
-
-            return RunResult;
+            return;
         }
 
-        private async Task<string> RunApplication(string exePath, string args, StringBuilder sbStatus)
+        private void RunApplication(string exePath, string args)
         {
-            // verify that the exePath application exist
-            FileInfo fiApp = new FileInfo(exePath);
-            if (!fiApp.Exists)
-            {
-                return String.Format(ServicesRes.CouldNotFindExePath_, exePath);
-            }
-
-            // deleting status file if already exist
-            FileInfo fiStatus = new FileInfo($"{fiApp.DirectoryName}/status.txt");
-            if (fiStatus.Exists)
-            {
-                try
-                {
-                    fiStatus.Delete();
-                }
-                catch (Exception ex)
-                {
-                    return String.Format(ServicesRes.CouldNotDeleteStatusFile_Error_, fiStatus.FullName, ex.Message);
-                }
-            }
-
             // run exePath application
             Process process = new Process();
             process = Process.Start(exePath, args);
@@ -105,12 +91,6 @@ namespace CSSPCodeGenWebAPI.Services
             {
                 // report progress is needed
             }
-
-            StreamReader sr = fiStatus.OpenText();
-            sbStatus = new StringBuilder(sr.ReadToEnd());
-            sr.Close();
-
-            return "";
         }
     }
 }

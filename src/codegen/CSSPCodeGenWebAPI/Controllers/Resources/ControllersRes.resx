@@ -123,6 +123,9 @@
   <data name="CouldNotDeleteStatusFile_Error_" xml:space="preserve">
     <value>Could not delete status file [{0}]. Error: [{1}]</value>
   </data>
+  <data name="CouldNotFindCommand_StatusInDB" xml:space="preserve">
+    <value>Could not find command [{0}] status in DB</value>
+  </data>
   <data name="CouldNotFindExePath_" xml:space="preserve">
     <value>Could not find exePath [{0}]</value>
   </data>

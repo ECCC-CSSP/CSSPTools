@@ -135,6 +135,9 @@
   <data name="UnableToLoginAs_WithProvidedPassword" xml:space="preserve">
     <value>Impossible de se connecter en tant que [{0}] avec le mot de passe fourni</value>
   </data>
+  <data name="UnmanagedServerError_" xml:space="preserve">
+    <value>Unmanaged server error: [{0}] (fr)</value>
+  </data>
   <data name="__CouldNotBeFound" xml:space="preserve">
     <value>{0}: [{1}] n'a pu être trouvé</value>
   </data>

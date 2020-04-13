@@ -1,32 +1,31 @@
 <h1>Generate Enums</h1>
 
-<button disabled="{{ generateEnumsService.generateEnumsModel$.value.Working }}" 
+<button disabled="{{ generateEnumsService.generateEnumsModel$.value.Working }}"
     (click)="GenerateEnums('CompareEnumsAndOldEnums')" mat-raised-button color="primary">
     {{ generateEnumsService.generateEnumsModel$.value.CompareEnumsAndOldEnums }}
 </button>
-<button disabled="{{ generateEnumsService.generateEnumsModel$.value.Working }}" 
+<button disabled="{{ generateEnumsService.generateEnumsModel$.value.Working }}"
     (click)="GenerateEnums('EnumsGenerated_cs')" mat-raised-button color="primary">
     {{generateEnumsService.generateEnumsModel$.value.EnumsGenerated_cs}}
 </button>
-<button disabled="{{ generateEnumsService.generateEnumsModel$.value.Working }}" 
+<button disabled="{{ generateEnumsService.generateEnumsModel$.value.Working }}"
     (click)="GenerateEnums('EnumsTestGenerated_cs')" mat-raised-button color="primary">
     {{generateEnumsService.generateEnumsModel$.value.EnumsTestGenerated_cs}}
 </button>
-<button disabled="{{ generateEnumsService.generateEnumsModel$.value.Working }}" 
+<button disabled="{{ generateEnumsService.generateEnumsModel$.value.Working }}"
     (click)="GenerateEnums('GeneratePolSourceEnumCodeFiles')" mat-raised-button color="primary">
     {{generateEnumsService.generateEnumsModel$.value.GeneratePolSourceEnumCodeFiles}}
 </button>
 
-<mat-progress-bar *ngIf="generateEnumsService.generateEnumsModel$.value.Working" 
-    mode="indeterminate"></mat-progress-bar>
+<mat-progress-bar *ngIf="generateEnumsService.generateEnumsModel$.value.Working" mode="indeterminate">
+</mat-progress-bar>
 
 <p *ngIf="generateEnumsService.generateEnumsModel$.value.Error">
-    <mat-error>
-        {{ generateEnumsService.generateEnumsModel$.value.Error | json }}
-    </mat-error>
+    <mat-error>{{ generateEnumsService.generateEnumsModel$.value.Error.error.ErrorText }} </mat-error>
 </p>
 <div>
+    <h1>{{ generateEnumsService.generateEnumsModel$.value.StatusTitle }}</h1>
     <pre *ngIf="generateEnumsService.generateEnumsModel$.value.Status">
-        {{ generateEnumsService.generateEnumsModel$.value.Status }}
+{{ generateEnumsService.generateEnumsModel$.value.Status }}
     </pre>
 </div>

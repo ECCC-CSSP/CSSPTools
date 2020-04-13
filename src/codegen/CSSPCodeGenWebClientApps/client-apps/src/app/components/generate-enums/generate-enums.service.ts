@@ -21,7 +21,7 @@ export class GenerateEnumsService {
 
   GenerateEnums(router: Router, command: string) {
     let oldURL = router.url;
-    this.UpdateEnums(<GenerateEnumsModel>{ Working: true, Error: null, Status: '' });
+    this.UpdateEnums(<GenerateEnumsModel>{ Working: true, Error: null, Status: this.generateEnumsModel$.value.WorkingText });
     return this.httpClient.post<ActionReturn>('/api/GenerateEnums', { Command: command }).pipe(
       map((x: any) => {
         console.debug(`${command} OK. Return: ${x.Return}`);

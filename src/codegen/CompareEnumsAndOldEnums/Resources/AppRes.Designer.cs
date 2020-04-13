@@ -88,6 +88,15 @@ namespace CompareEnumsAndOldEnums.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Could not find parameter.
+        /// </summary>
+        public static string CouldNotFindParameter {
+            get {
+                return ResourceManager.GetString("CouldNotFindParameter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Done.
         /// </summary>
         public static string Done {
@@ -133,6 +142,15 @@ namespace CompareEnumsAndOldEnums.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Exist.
+        /// </summary>
+        public static string Exist {
+            get {
+                return ResourceManager.GetString("Exist", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to fr-CA.
         /// </summary>
         public static string fr_CA {
@@ -147,6 +165,15 @@ namespace CompareEnumsAndOldEnums.Resources {
         public static string HowToUse {
             get {
                 return ResourceManager.GetString("HowToUse", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please use appsettings.json to setup application run parameters.
+        /// </summary>
+        public static string PleaseUseAppSettings_JsonToSetupApplicationRunParameters {
+            get {
+                return ResourceManager.GetString("PleaseUseAppSettings_JsonToSetupApplicationRunParameters", resourceCulture);
             }
         }
         
@@ -192,6 +219,15 @@ namespace CompareEnumsAndOldEnums.Resources {
         public static string Type_NotFound {
             get {
                 return ResourceManager.GetString("Type_NotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Verify appsettings.json file.
+        /// </summary>
+        public static string VerifyAppSettingsFile {
+            get {
+                return ResourceManager.GetString("VerifyAppSettingsFile", resourceCulture);
             }
         }
         

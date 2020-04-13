@@ -79,6 +79,15 @@ namespace CSSPCodeGenWebAPI.Controllers.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Could not find command [{0}] status in DB.
+        /// </summary>
+        public static string CouldNotFindCommand_StatusInDB {
+            get {
+                return ResourceManager.GetString("CouldNotFindCommand_StatusInDB", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Could not find exePath [{0}].
         /// </summary>
         public static string CouldNotFindExePath_ {

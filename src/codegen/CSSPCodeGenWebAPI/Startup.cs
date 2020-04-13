@@ -17,6 +17,9 @@ using CSSPModels;
 using Microsoft.EntityFrameworkCore;
 using CSSPCodeGenWebAPI.Model;
 using CSSPCodeGenWebAPI.Services;
+using StatusAndResultsDBService.Services;
+using System.IO;
+using StatusAndResultsDBService.Models;
 
 namespace CSSPCodeGenWebAPI
 {
@@ -88,8 +91,18 @@ namespace CSSPCodeGenWebAPI
             services.AddIdentityCore<ApplicationUser>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
+            string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+
+            FileInfo fiDB = new FileInfo($@"{appDataPath}\CSSP\GenerateCodeStatus.db");
+
+            services.AddDbContext<GenerateCodeStatusContext>(options =>
+            {
+                options.UseSqlite($"DataSource={fiDB.FullName}");
+            });
+
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IGenerateEnumsService, GenerateEnumsService>();
+            services.AddScoped<IStatusAndResultsService, StatusAndResultsService>();
 
         }
 

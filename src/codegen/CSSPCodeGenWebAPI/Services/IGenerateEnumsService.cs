@@ -1,4 +1,5 @@
-﻿using System;
+﻿using StatusAndResultsDBService.Services;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -9,6 +10,6 @@ namespace CSSPCodeGenWebAPI.Services
 {
     public interface IGenerateEnumsService
     {
-        Task<string> GenerateEnums(string command, CultureInfo culture, StringBuilder sbStatus);
+        Task GenerateEnums(string command, CultureInfo culture, IStatusAndResultsService statusAndResultsService);
     }
 }

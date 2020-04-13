@@ -14,6 +14,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient.Server;
+using StatusAndResultsDBService.Models;
+using StatusAndResultsDBService.Services;
 
 namespace CSSPCodeGenWebAPI.Controllers
 {
@@ -23,24 +25,44 @@ namespace CSSPCodeGenWebAPI.Controllers
     public class GenerateEnumsController : ControllerBase
     {
         private readonly IGenerateEnumsService _geneerateEnumsService;
+        private readonly IStatusAndResultsService _statusAndResultsService;
 
-        public GenerateEnumsController(IGenerateEnumsService generateEnumsService)
+        public GenerateEnumsController(IGenerateEnumsService generateEnumsService, IStatusAndResultsService statusAndResultsService)
         {
             _geneerateEnumsService = generateEnumsService;
+            _statusAndResultsService = statusAndResultsService;
         }
 
         [HttpPost]
         public async Task<ActionResult<ActionReturn>> post(GenerateEnumsCommand command)
         {
-            Thread.Sleep(1000);
+            //Thread.Sleep(1000);
 
             ActionReturn actionReturn = new ActionReturn();
             CultureInfo culture = new CultureInfo(Request.RouteValues["culture"].ToString());
-            StringBuilder sbStatus = new StringBuilder();
-            string genStr = await _geneerateEnumsService.GenerateEnums(command.Command, culture, sbStatus);
 
-            actionReturn.OKText = sbStatus.ToString();
-            actionReturn.ErrorText = genStr;
+            await _geneerateEnumsService.GenerateEnums(command.Command, culture, _statusAndResultsService);
+
+            StatusAndResults statusAndResults = await _statusAndResultsService.Get(command.Command);
+
+            if (statusAndResults != null)
+            {
+                if (!string.IsNullOrWhiteSpace(statusAndResults.ErrorText))
+                {
+                    actionReturn.ErrorText = statusAndResults.ErrorText;
+                    actionReturn.OKText = "";
+                }
+                else
+                {
+                    actionReturn.ErrorText = "";
+                    actionReturn.OKText = statusAndResults.StatusText;
+                }
+            }
+            else
+            {
+                actionReturn.ErrorText = String.Format(ControllersRes.CouldNotFindCommand_StatusInDB, command.Command);
+                actionReturn.OKText = "";
+            }
 
             if (string.IsNullOrWhiteSpace(actionReturn.ErrorText))
             {

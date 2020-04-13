@@ -1,5 +1,5 @@
-﻿using CompareEnumsAndOldEnums.Models;
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Extensions.Configuration;
+using StatusAndResultsDBService.Services;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -9,6 +9,6 @@ namespace CompareEnumsAndOldEnums.Services
 {
     public interface IGenerateService
     {
-        Task<string> Start(IConfigurationRoot configuration);
+        Task Start(IConfigurationRoot configuration, IStatusAndResultsService statusAndResultsService);
     }
 }

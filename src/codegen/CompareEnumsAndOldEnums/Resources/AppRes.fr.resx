@@ -126,6 +126,9 @@
   <data name="CouldNotCreateNewStatusAndResultsItemInDB_" xml:space="preserve">
     <value>Could not create new StatusAndResults item in DB [{0}] (fr)</value>
   </data>
+  <data name="CouldNotFindParameter" xml:space="preserve">
+    <value>Could not find parameter (fr)</value>
+  </data>
   <data name="Done" xml:space="preserve">
     <value>Done (fr)</value>
   </data>
@@ -141,11 +144,17 @@
   <data name="Example" xml:space="preserve">
     <value>Example (fr)</value>
   </data>
+  <data name="Exist" xml:space="preserve">
+    <value>Exist (fr)</value>
+  </data>
   <data name="fr_CA" xml:space="preserve">
     <value>fr_CA</value>
   </data>
   <data name="HowToUse" xml:space="preserve">
     <value>How To Use (fr)</value>
+  </data>
+  <data name="PleaseUseAppSettings_JsonToSetupApplicationRunParameters" xml:space="preserve">
+    <value>Please use appsettings.json to setup application run parameters (fr)</value>
   </data>
   <data name="Result" xml:space="preserve">
     <value>Result (fr)</value>
@@ -161,6 +170,9 @@
   </data>
   <data name="Type_NotFound" xml:space="preserve">
     <value>Type [{0}] ---------------------- not found (fr)</value>
+  </data>
+  <data name="VerifyAppSettingsFile" xml:space="preserve">
+    <value>Verify appsettings.json file (fr)</value>
   </data>
   <data name="WillCompare" xml:space="preserve">
     <value>will compare (fr)</value>

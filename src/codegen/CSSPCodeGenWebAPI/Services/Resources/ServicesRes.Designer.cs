@@ -122,5 +122,14 @@ namespace CSSPCodeGenWebAPI.Services.Resources {
                 return ResourceManager.GetString("UnableToLoginAs_WithProvidedPassword", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unmanaged server error: [{0}].
+        /// </summary>
+        public static string UnmanagedServerError_ {
+            get {
+                return ResourceManager.GetString("UnmanagedServerError_", resourceCulture);
+            }
+        }
     }
 }

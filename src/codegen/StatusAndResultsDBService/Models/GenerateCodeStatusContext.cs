@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 
-namespace CompareEnumsAndOldEnums.Models
+namespace StatusAndResultsDBService.Models
 {
     public partial class GenerateCodeStatusContext : DbContext
     {
@@ -43,7 +43,9 @@ namespace CompareEnumsAndOldEnums.Models
 
                 entity.Property(e => e.LastUpdateDate).IsRequired();
 
-                entity.Property(e => e.StatusText).IsRequired();
+                entity.Property(e => e.ErrorText);
+
+                entity.Property(e => e.StatusText);
             });
 
             OnModelCreatingPartial(modelBuilder);
