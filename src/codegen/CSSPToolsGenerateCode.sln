@@ -29,11 +29,15 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CompareEnumsAndOldEnums", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StatusAndResultsDBService", "StatusAndResultsDBService\StatusAndResultsDBService.csproj", "{A02ABBB7-E3A9-453B-8578-AF8301AEE17B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EnumsGenerated_cs", "EnumsGenerated_cs\EnumsGenerated_cs.csproj", "{E1A2445F-DC45-48B3-AF17-721658EECE17}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EnumsGenerated_cs", "EnumsGenerated_cs\EnumsGenerated_cs.csproj", "{E1A2445F-DC45-48B3-AF17-721658EECE17}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GenerateCodeBase", "GenerateCodeBase\GenerateCodeBase.csproj", "{3ABCC877-C30D-4B96-AC2B-A561E2D36AD5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GenerateCodeBase", "GenerateCodeBase\GenerateCodeBase.csproj", "{3ABCC877-C30D-4B96-AC2B-A561E2D36AD5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EnumsTestGenerated_cs", "EnumsTestGenerated_cs\EnumsTestGenerated_cs.csproj", "{41D23FA1-C4BD-45B1-A1DF-6CB6576A16CC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EnumsTestGenerated_cs", "EnumsTestGenerated_cs\EnumsTestGenerated_cs.csproj", "{41D23FA1-C4BD-45B1-A1DF-6CB6576A16CC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EnumsPolSourceInfoRelatedFiles", "EnumsPolSourceInfoRelatedFiles\EnumsPolSourceInfoRelatedFiles.csproj", "{87A78F16-A572-4D72-83C5-BBD501AE63DA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PolSourceGroupingExcelFileRead", "PolSourceGroupingExcelFileRead\PolSourceGroupingExcelFileRead.csproj", "{C2CC6E26-21C1-4E14-8A23-A08015048B10}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -237,6 +241,30 @@ Global
 		{41D23FA1-C4BD-45B1-A1DF-6CB6576A16CC}.Release|x64.Build.0 = Release|Any CPU
 		{41D23FA1-C4BD-45B1-A1DF-6CB6576A16CC}.Release|x86.ActiveCfg = Release|Any CPU
 		{41D23FA1-C4BD-45B1-A1DF-6CB6576A16CC}.Release|x86.Build.0 = Release|Any CPU
+		{87A78F16-A572-4D72-83C5-BBD501AE63DA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{87A78F16-A572-4D72-83C5-BBD501AE63DA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{87A78F16-A572-4D72-83C5-BBD501AE63DA}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{87A78F16-A572-4D72-83C5-BBD501AE63DA}.Debug|x64.Build.0 = Debug|Any CPU
+		{87A78F16-A572-4D72-83C5-BBD501AE63DA}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{87A78F16-A572-4D72-83C5-BBD501AE63DA}.Debug|x86.Build.0 = Debug|Any CPU
+		{87A78F16-A572-4D72-83C5-BBD501AE63DA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{87A78F16-A572-4D72-83C5-BBD501AE63DA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{87A78F16-A572-4D72-83C5-BBD501AE63DA}.Release|x64.ActiveCfg = Release|Any CPU
+		{87A78F16-A572-4D72-83C5-BBD501AE63DA}.Release|x64.Build.0 = Release|Any CPU
+		{87A78F16-A572-4D72-83C5-BBD501AE63DA}.Release|x86.ActiveCfg = Release|Any CPU
+		{87A78F16-A572-4D72-83C5-BBD501AE63DA}.Release|x86.Build.0 = Release|Any CPU
+		{C2CC6E26-21C1-4E14-8A23-A08015048B10}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C2CC6E26-21C1-4E14-8A23-A08015048B10}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C2CC6E26-21C1-4E14-8A23-A08015048B10}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{C2CC6E26-21C1-4E14-8A23-A08015048B10}.Debug|x64.Build.0 = Debug|Any CPU
+		{C2CC6E26-21C1-4E14-8A23-A08015048B10}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{C2CC6E26-21C1-4E14-8A23-A08015048B10}.Debug|x86.Build.0 = Debug|Any CPU
+		{C2CC6E26-21C1-4E14-8A23-A08015048B10}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C2CC6E26-21C1-4E14-8A23-A08015048B10}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C2CC6E26-21C1-4E14-8A23-A08015048B10}.Release|x64.ActiveCfg = Release|Any CPU
+		{C2CC6E26-21C1-4E14-8A23-A08015048B10}.Release|x64.Build.0 = Release|Any CPU
+		{C2CC6E26-21C1-4E14-8A23-A08015048B10}.Release|x86.ActiveCfg = Release|Any CPU
+		{C2CC6E26-21C1-4E14-8A23-A08015048B10}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
