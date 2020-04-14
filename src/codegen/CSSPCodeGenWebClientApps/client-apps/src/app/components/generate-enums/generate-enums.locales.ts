@@ -7,7 +7,7 @@ export function LoadLocalesEnums(generateEnumsService: GenerateEnumsService) {
     EnumsGenerated_cs: 'EnumsGenerated.cs',
     EnumsTestGenerated_cs: 'EnumsTestGenerated.cs',
     GeneratePolSourceEnumCodeFiles: 'Generate Pollution Source Enum Code Files',
-    StatusTitle: 'Current Status of execution',
+    CurrentStatus: 'Current Status',
     WorkingText: 'Working...',
 }
 
@@ -16,7 +16,7 @@ export function LoadLocalesEnums(generateEnumsService: GenerateEnumsService) {
       generateEnumsModel.EnumsGenerated_cs = 'EnumsGenerated.cs';
       generateEnumsModel.EnumsTestGenerated_cs = 'EnumsTestGenerated.cs';
       generateEnumsModel.GeneratePolSourceEnumCodeFiles = 'Generate Pollution Source Enum Code Files';
-      generateEnumsModel.StatusTitle = 'Status actuel de l\'exécution';
+      generateEnumsModel.CurrentStatus = 'États actuel';
       generateEnumsModel.WorkingText = 'Traitement en cour';
     }
 

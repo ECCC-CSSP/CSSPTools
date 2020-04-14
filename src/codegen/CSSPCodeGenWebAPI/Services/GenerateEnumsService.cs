@@ -1,4 +1,5 @@
 ﻿using CSSPCodeGenWebAPI.Services.Resources;
+using Microsoft.Extensions.Configuration;
 using StatusAndResultsDBService.Models;
 using StatusAndResultsDBService.Services;
 using System;
@@ -8,6 +9,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace CSSPCodeGenWebAPI.Services
@@ -21,7 +23,7 @@ namespace CSSPCodeGenWebAPI.Services
         /// <param name="culture">Current culture setting for multilanguage error message</param>
         /// <param name="sbStatus">Will hold all the status text during the running of the application</param>
         /// <returns></returns>
-        public async Task GenerateEnums(string command, CultureInfo culture, IStatusAndResultsService statusAndResultsService)
+        public async Task GenerateEnums(string command, CultureInfo culture, IConfiguration configuration, IStatusAndResultsService statusAndResultsService)
         {
             try
             {
@@ -32,26 +34,11 @@ namespace CSSPCodeGenWebAPI.Services
                 switch (command)
                 {
                     case "CompareEnumsAndOldEnums":
-                        {
-                            exePath = $@"C:\CSSPTools\src\codegen\CompareEnumsAndOldEnums\bin\Debug\netcoreapp3.1\CompareEnumsAndOldEnums.exe";
-                            args = $" { culture.Name }";
-                        }
-                        break;
                     case "EnumsGenerated_cs":
-                        {
-                            exePath = $@"C:\CSSPTools\src\codegen\EnumsGenerated_cs\bin\Debug\netcoreapp3.1\EnumsGenerated_cs.exe";
-                            args = $" { culture.Name }";
-                        }
-                        break;
                     case "EnumsTestGenerated_cs":
-                        {
-                            exePath = $@"C:\CSSPTools\src\codegen\EnumsTestGenerated_cs\bin\Debug\netcoreapp3.1\EnumsTestGenerated_cs.exe";
-                            args = $" { culture.Name }";
-                        }
-                        break;
                     case "GeneratePolSourceEnumCodeFiles":
                         {
-                            exePath = $@"C:\CSSPTools\src\execs\GeneratePolSourceEnumCodeFiles.exe";
+                            exePath = configuration.GetSection($"{ command }:Runs").GetChildren().ToList().Select(x => x.Value).ToList().FirstOrDefault();
                             args = $" { culture.Name }";
                         }
                         break;

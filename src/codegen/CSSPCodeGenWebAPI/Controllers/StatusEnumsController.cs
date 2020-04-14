@@ -24,15 +24,15 @@ namespace CSSPCodeGenWebAPI.Controllers
     [Route("api/{culture}/[controller]")]
     [ApiController]
     [Authorize]
-    public class GenerateEnumsController : ControllerBase
+    public class StatusEnumsController : ControllerBase
     {
-        private readonly IGenerateEnumsService _generateEnumsService;
+        private readonly IStatusEnumsService _statusEnumsService;
         private readonly IStatusAndResultsService _statusAndResultsService;
         private readonly IConfiguration _configuration;
 
-        public GenerateEnumsController(IGenerateEnumsService generateEnumsService, IStatusAndResultsService statusAndResultsService, IConfiguration configuration)
+        public StatusEnumsController(IStatusEnumsService statusEnumsService, IStatusAndResultsService statusAndResultsService, IConfiguration configuration)
         {
-            _generateEnumsService = generateEnumsService;
+            _statusEnumsService = statusEnumsService;
             _statusAndResultsService = statusAndResultsService;
             _configuration = configuration;
         }
@@ -45,7 +45,7 @@ namespace CSSPCodeGenWebAPI.Controllers
             ActionReturn actionReturn = new ActionReturn();
             CultureInfo culture = new CultureInfo(Request.RouteValues["culture"].ToString());
 
-            await _generateEnumsService.GenerateEnums(command.Command, culture, _configuration, _statusAndResultsService);
+            await _statusEnumsService.StatusEnums(command.Command, culture, _configuration, _statusAndResultsService);
 
             StatusAndResults statusAndResults = await _statusAndResultsService.Get(command.Command);
 

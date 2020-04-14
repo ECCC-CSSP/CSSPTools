@@ -132,6 +132,12 @@
   <data name="Error_" xml:space="preserve">
     <value>Erreur: {0}</value>
   </data>
+  <data name="FileNotFound_" xml:space="preserve">
+    <value>File not found [{0}] (fr)</value>
+  </data>
+  <data name="NoFileToVerify" xml:space="preserve">
+    <value>No file to verify (fr)</value>
+  </data>
   <data name="UnableToLoginAs_WithProvidedPassword" xml:space="preserve">
     <value>Impossible de se connecter en tant que [{0}] avec le mot de passe fourni</value>
   </data>

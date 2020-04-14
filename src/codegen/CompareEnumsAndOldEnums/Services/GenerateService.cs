@@ -38,8 +38,6 @@ namespace CompareEnumsAndOldEnums.Services
 
             FileInfo fiDB = new FileInfo(dbFileNamePartial.Replace("{AppDataPath}", appDataPath));
 
-            Console.WriteLine($"{ AppRes.Starting }...");
-
             sbStatus.AppendLine($"{ AppRes.Starting }...");
 
             statusAndResults = await statusAndResultsService.Get(Command);
@@ -59,6 +57,8 @@ namespace CompareEnumsAndOldEnums.Services
                     return;
                 }
             }
+
+            await statusAndResultsService.Update(Command, "", "", 0);
 
             FileInfo fiDLL = new FileInfo(configuration.GetValue<string>("NewEnumsDll"));
             FileInfo fiOldDLL = new FileInfo(configuration.GetValue<string>("OldEnumsDll"));
@@ -82,7 +82,7 @@ namespace CompareEnumsAndOldEnums.Services
                 if (typeExist == null)
                 {
                     sbError.AppendLine($"{ String.Format(AppRes.Type_NotFound, type.Name) }");
-                    statusAndResults = await statusAndResultsService.Update(Command, sbError.ToString(), sbStatus.ToString(), 0);
+                    await statusAndResultsService.Update(Command, sbError.ToString(), sbStatus.ToString(), 0);
                     return;
                 }
                 else
@@ -104,7 +104,7 @@ namespace CompareEnumsAndOldEnums.Services
                         if (string.IsNullOrWhiteSpace(EnumStrExist))
                         {
                             sbError.AppendLine($"{ String.Format(AppRes.Type_Enum_NotFound, type.Name, EnumStr) }");
-                            statusAndResults = await statusAndResultsService.Update(Command, sbError.ToString(), sbStatus.ToString(), 0);
+                            await statusAndResultsService.Update(Command, sbError.ToString(), sbStatus.ToString(), 0);
                             return;
                         }
                         else
@@ -116,10 +116,13 @@ namespace CompareEnumsAndOldEnums.Services
                 }
             }
 
-            Console.WriteLine($"{ AppRes.Done }...");
 
             sbStatus.AppendLine($"{ AppRes.Done }...");
-            statusAndResults = await statusAndResultsService.Update(Command, sbError.ToString(), sbStatus.ToString(), 100);
+            await statusAndResultsService.Update(Command, sbError.ToString(), sbStatus.ToString(), 100);
+
+            Console.WriteLine(sbError.ToString());
+            Console.WriteLine(sbStatus.ToString());
+
             return;
         }
         #endregion Functions public

@@ -102,6 +102,7 @@ namespace CSSPCodeGenWebAPI
 
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IGenerateEnumsService, GenerateEnumsService>();
+            services.AddScoped<IStatusEnumsService, StatusEnumsService>();
             services.AddScoped<IStatusAndResultsService, StatusAndResultsService>();
 
         }

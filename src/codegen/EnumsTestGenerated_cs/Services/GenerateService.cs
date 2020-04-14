@@ -38,8 +38,6 @@ namespace EnumsTestGenerated_cs.Services
 
             FileInfo fiDB = new FileInfo(dbFileNamePartial.Replace("{AppDataPath}", appDataPath));
 
-            Console.WriteLine($"{ AppRes.Starting }...");
-
             sbStatus.AppendLine($"{ AppRes.Starting }...");
 
             statusAndResults = await statusAndResultsService.Get(Command);
@@ -282,9 +280,10 @@ namespace EnumsTestGenerated_cs.Services
 
             sbStatus.AppendLine($"{ AppRes.Created } [{ fi.FullName }] ...");
             sbStatus.AppendLine($"{ AppRes.Done } ...");
-            statusAndResults = await statusAndResultsService.Update(Command, sbError.ToString(), sbStatus.ToString(), 100);
+            await statusAndResultsService.Update(Command, sbError.ToString(), sbStatus.ToString(), 100);
 
-            Console.WriteLine($"{ AppRes.Done }...");
+            Console.WriteLine(sbError.ToString());
+            Console.WriteLine(sbStatus.ToString());
 
             return;
         }

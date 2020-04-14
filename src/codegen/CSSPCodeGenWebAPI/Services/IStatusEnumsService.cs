@@ -9,8 +9,8 @@ using System.Threading.Tasks;
 
 namespace CSSPCodeGenWebAPI.Services
 {
-    public interface IGenerateEnumsService
+    public interface IStatusEnumsService
     {
-        Task GenerateEnums(string command, CultureInfo culture, IConfiguration configuration, IStatusAndResultsService statusAndResultsService);
+        Task StatusEnums(string command, CultureInfo culture, IConfiguration configuration, IStatusAndResultsService statusAndResultsService);
     }
 }

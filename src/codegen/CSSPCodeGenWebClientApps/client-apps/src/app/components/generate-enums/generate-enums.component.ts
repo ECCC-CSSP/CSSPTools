@@ -20,6 +20,11 @@ export class GenerateEnumsComponent implements OnInit, OnDestroy {
     this.sub = this.generateEnumsService.GenerateEnums(this.router, command).subscribe();
   }
 
+  StatusEnums(command: string)
+  {
+    this.sub = this.generateEnumsService.StatusEnums(this.router, command).subscribe();
+  }
+
   ngOnInit(): void {
     LoadLocalesEnums(this.generateEnumsService);
   }

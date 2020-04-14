@@ -115,6 +115,24 @@ namespace CSSPCodeGenWebAPI.Services.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to File not found [{0}].
+        /// </summary>
+        public static string FileNotFound_ {
+            get {
+                return ResourceManager.GetString("FileNotFound_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No file to verify.
+        /// </summary>
+        public static string NoFileToVerify {
+            get {
+                return ResourceManager.GetString("NoFileToVerify", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Unable to login as [{0}] with provided password.
         /// </summary>
         public static string UnableToLoginAs_WithProvidedPassword {

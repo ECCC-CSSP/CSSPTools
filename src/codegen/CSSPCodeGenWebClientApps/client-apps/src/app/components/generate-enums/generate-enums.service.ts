@@ -44,6 +44,33 @@ export class GenerateEnumsService {
       // })
     );
   }
+
+  StatusEnums(router: Router, command: string) {
+    let oldURL = router.url;
+    this.UpdateEnums(<GenerateEnumsModel>{ Working: true, Error: null, Status: this.generateEnumsModel$.value.WorkingText });
+    return this.httpClient.post<ActionReturn>('/api/StatusEnums', { Command: command }).pipe(
+      map((x: any) => {
+        console.debug(`${command} OK. Return: ${x.Return}`);
+        this.UpdateEnums(<GenerateEnumsModel>{ Working: false, Error: null, Status: (<ActionReturn>x).OKText });
+        router.navigateByUrl('', { skipLocationChange: true }).then(() => {
+          router.navigate([`/${oldURL}`]);
+        });
+      }),
+      catchError(e => of(e).pipe(map(e => {
+        this.UpdateEnums(<GenerateEnumsModel>{ Working: false, Error: <HttpErrorResponse>e, Status: '' });
+        console.debug(`${command} ERROR. Return: ${this.generateEnumsModel$.value.Error}`);
+        router.navigateByUrl('', { skipLocationChange: true }).then(() => {
+          router.navigate([`/${oldURL}`]);
+        });
+      })))
+      //,
+      // finalize(() => {
+      //   this.UpdateEnums(<GenerateEnumsModel>{ Working: false });
+      //   console.debug(`${command} COMPLETED`);
+      // })
+    );
+  }
+
 }
 
 export interface ActionReturn {
