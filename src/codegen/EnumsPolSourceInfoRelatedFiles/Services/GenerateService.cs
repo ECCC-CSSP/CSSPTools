@@ -1,4 +1,6 @@
-﻿using EnumsPolSourceInfoRelatedFiles.Resources;
+﻿using CSSPPolSourceGroupingExcelFileRead.Models;
+using CSSPPolSourceGroupingExcelFileRead.Services;
+using EnumsPolSourceInfoRelatedFiles.Resources;
 using Microsoft.Extensions.Configuration;
 using StatusAndResultsDBService.Models;
 using StatusAndResultsDBService.Services;
@@ -12,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace EnumsPolSourceInfoRelatedFiles.Services
 {
-    public class GenerateService : IGenerateService
+    public partial class GenerateService : IGenerateService
     {
         #region Variables
         #endregion Variables
@@ -24,7 +26,7 @@ namespace EnumsPolSourceInfoRelatedFiles.Services
         #endregion Constructors
 
         #region Functions public
-        public async Task Start(IConfigurationRoot configuration, IStatusAndResultsService statusAndResultsService)
+        public async Task Start(IConfigurationRoot configuration, IStatusAndResultsService statusAndResultsService, IPolSourceGroupingExcelFileRead polSourceGroupingExcelFileRead)
         {
             string Command = configuration.GetValue<string>("Command");
 
@@ -63,50 +65,34 @@ namespace EnumsPolSourceInfoRelatedFiles.Services
             FileInfo fiInterface = new FileInfo(configuration.GetValue<string>("IEnumsGenerated"));
             FileInfo fi = new FileInfo(configuration.GetValue<string>("EnumsGenerated"));
 
-            ClearPermanentEvent(new StatusEventArgs(""));
-            StatusTempEvent(new StatusEventArgs(""));
+            sbStatus.AppendLine($"{ AppRes.ReadingExcelDocumentAndChecking }");
+            await statusAndResultsService.Update(Command, sbError.ToString(), sbStatus.ToString(), 0);
 
-            polSourceGroupingExcelFileRead = new PolSourceGroupingExcelFileRead();
-            polSourceGroupingExcelFileRead.Status += PolSourceGroupingExcelFileRead_Status;
-            polSourceGroupingExcelFileRead.CSSPError += PolSourceGroupingExcelFileRead_CSSPError;
+            FileInfo fiExcel = new FileInfo(configuration.GetValue<string>("ExcelFileName"));
 
-            string ExcelFileName = @"C:\CSSPTools\src\assets\PolSourceGrouping.xlsm";
-
-            if (!CheckFileDirectoriesExist(ExcelFileName))
+            if (! await polSourceGroupingExcelFileRead.ReadExcelSheet(fiExcel.FullName, false, sbError, sbStatus, Command, statusAndResultsService))
             {
                 return;
             }
-
-            StatusPermanentEvent(new StatusEventArgs(ExcelFileName));
-            StatusTempEvent(new StatusEventArgs(ExcelFileName));
-
-            if (!polSourceGroupingExcelFileRead.ReadExcelSheet(ExcelFileName, false))
-            {
-                return;
-            }
-
-            StatusPermanentEvent(new StatusEventArgs("Reading Group Choice Child Level List"));
-            StatusTempEvent(new StatusEventArgs("Reading Group Choice Child Level List"));
 
             if (polSourceGroupingExcelFileRead.groupChoiceChildLevelList.Count() == 0)
             {
-                ClearPermanentEvent(new StatusEventArgs("\r\nCSSPError: groupChoiceChildLevelList is equal to 0"));
+                string ErrorText = String.Format(AppRes.ERROR_IsEqualTo0, "_groupChoiceChildLevelList");
+                sbError.AppendLine($"{ ErrorText }");
+                await statusAndResultsService.Update(Command, sbError.ToString(), sbStatus.ToString(), 0);
+
                 return;
             }
 
-            StatusTempEvent(new StatusEventArgs("Reading Excel Document and Checking done..."));
-            StatusPermanentEvent(new StatusEventArgs("Reading Excel Document and Checking done..."));
+            sbStatus.AppendLine($"{ AppRes.ReadingExcelDocumentAndChecking } { AppRes.Done } ...");
+            await statusAndResultsService.Update(Command, sbError.ToString(), sbStatus.ToString(), 0);
 
-            Generate_FillPolSourceObsInfoChildService();
-            Generate_EnumsPolSourceInfo();
-            Generate_PolSourceObsInfoEnum();
-            Generate_EnumsPolSourceObsInfoEnumTest();
-            Generate_PolSourceInfoEnumGeneratedRes_resx();
-            Generate_PolSourceInfoEnumGeneratedResFR_resx();
-
-            StatusTempEvent(new StatusEventArgs("Done ..."));
-            StatusPermanentEvent(new StatusEventArgs(""));
-            StatusPermanentEvent(new StatusEventArgs("Done ..."));
+            await Generate_FillPolSourceObsInfoChildService(configuration, statusAndResultsService, polSourceGroupingExcelFileRead);
+            await Generate_EnumsPolSourceInfo(configuration, statusAndResultsService, polSourceGroupingExcelFileRead);
+            await Generate_PolSourceObsInfoEnum(configuration, statusAndResultsService, polSourceGroupingExcelFileRead);
+            await Generate_EnumsPolSourceObsInfoEnumTest(configuration, statusAndResultsService, polSourceGroupingExcelFileRead);
+            await Generate_PolSourceInfoEnumGeneratedRes_resx(configuration, statusAndResultsService, polSourceGroupingExcelFileRead);
+            await Generate_PolSourceInfoEnumGeneratedResFR_resx(configuration, statusAndResultsService, polSourceGroupingExcelFileRead);
 
             sbStatus.AppendLine($"{ AppRes.Created } [{ fi.FullName }] ...");
             sbStatus.AppendLine($"{ AppRes.Done } ...");

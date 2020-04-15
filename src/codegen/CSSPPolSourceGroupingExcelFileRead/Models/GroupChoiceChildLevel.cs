@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace PolSourceGroupingExcelFileRead.Models
+namespace CSSPPolSourceGroupingExcelFileRead.Models
 {
     public class GroupChoiceChildLevel
     {

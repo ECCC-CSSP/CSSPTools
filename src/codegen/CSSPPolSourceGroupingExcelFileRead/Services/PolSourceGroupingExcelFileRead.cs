@@ -1,13 +1,17 @@
-﻿using PolSourceGroupingExcelFileRead.Models;
-using PolSourceGroupingExcelFileRead.Resources;
+﻿using DocumentFormat.OpenXml.Packaging;
+using DocumentFormat.OpenXml.Spreadsheet;
+using CSSPPolSourceGroupingExcelFileRead.Models;
+using CSSPPolSourceGroupingExcelFileRead.Resources;
+using StatusAndResultsDBService.Services;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PolSourceGroupingExcelFileRead.Services
+namespace CSSPPolSourceGroupingExcelFileRead.Services
 {
     public class PolSourceGroupingExcelFileRead : IPolSourceGroupingExcelFileRead
     {
@@ -17,7 +21,7 @@ namespace PolSourceGroupingExcelFileRead.Services
         #endregion Variables
 
         #region Properties
-        public List<GroupChoiceChildLevel> groupChoiceChildLevelList { get; set; }
+        public  List<GroupChoiceChildLevel> groupChoiceChildLevelList { get; set; }
         #endregion Properties
 
         #region Constructors
@@ -27,19 +31,19 @@ namespace PolSourceGroupingExcelFileRead.Services
         #endregion Constructors
 
         #region Functions public
-        public async Task<bool> ReadExcelSheet(string FullFileName, bool DoCheck, StringBuilder sbError, StringBuilder sbStatus)
+        public async Task<bool> ReadExcelSheet(string FullFileName, bool DoCheck, StringBuilder sbError, StringBuilder sbStatus, string command, IStatusAndResultsService statusAndResultsService)
         {
             this.FullFileName = FullFileName;
             groupChoiceChildLevelList = new List<GroupChoiceChildLevel>();
 
-            if (!ReadExcelFile())
+            if (!await ReadExcelFile(sbError, sbStatus, command, statusAndResultsService))
             {
                 return false;
             }
 
             if (DoCheck)
             {
-                if (!CheckSpreadsheet())
+                if (! await CheckSpreadsheet(sbError, sbStatus, command, statusAndResultsService))
                 {
                     return false;
                 }
@@ -60,7 +64,8 @@ namespace PolSourceGroupingExcelFileRead.Services
                         int endPos = childCSSPID.IndexOf("-") + 1;
                         if (childCSSPID.Length <= endPos)
                         {
-                            OnCSSPError(new CSSPErrorEventArgs() { CSSPError = $"CSSPID [{ groupChoiceChildLevel.CSSPID }] Hide cell contains [{ childCSSPID }] missing end value" });
+                            sbError.AppendLine($"CSSPID [{ groupChoiceChildLevel.CSSPID }] { PolSourceGroupingExcelFileReadRes.HideCellContains } [{ childCSSPID }] { PolSourceGroupingExcelFileReadRes.MissingEndValue }");
+                            await statusAndResultsService.Update(command, sbError.ToString(), sbStatus.ToString(), 0);
                             return false;
                         }
 
@@ -68,7 +73,8 @@ namespace PolSourceGroupingExcelFileRead.Services
 
                         if (fromCSSPID >= toCSSPID)
                         {
-                            OnCSSPError(new CSSPErrorEventArgs() { CSSPError = $"CSSPID [{ groupChoiceChildLevel.CSSPID }] Hide cell contains [{ childCSSPID }] which the first value is >= then the last value" });
+                            sbError.AppendLine($"CSSPID [{ groupChoiceChildLevel.CSSPID }] { PolSourceGroupingExcelFileReadRes.HideCellContains } [{ childCSSPID }] { PolSourceGroupingExcelFileReadRes.WhichTheFirstValueIs }  >= { PolSourceGroupingExcelFileReadRes.ThanTheLastValue }");
+                            await statusAndResultsService.Update(command, sbError.ToString(), sbStatus.ToString(), 0);
                             return false;
                         }
                     }
@@ -79,7 +85,8 @@ namespace PolSourceGroupingExcelFileRead.Services
                         {
                             if (CSSPIDList2.Contains(id.ToString()) || CSSPIDList.Contains(id.ToString()))
                             {
-                                OnCSSPError(new CSSPErrorEventArgs() { CSSPError = $"CSSPID [{ groupChoiceChildLevel.CSSPID }] Hide cell contains [{ childCSSPID }] which will duplicate [{ id.ToString() }]" });
+                                sbError.AppendLine($"CSSPID [{ groupChoiceChildLevel.CSSPID }] { PolSourceGroupingExcelFileReadRes.HideCellContains } [{ childCSSPID }] { PolSourceGroupingExcelFileReadRes.WhichWillDuplicate } [{ id.ToString() }]");
+                                await statusAndResultsService.Update(command, sbError.ToString(), sbStatus.ToString(), 0);
                                 return false;
                             }
 
@@ -99,26 +106,33 @@ namespace PolSourceGroupingExcelFileRead.Services
                 groupChoiceChildLevel.ID = int.Parse(groupChoiceChildLevel.CSSPID);
             }
 
-            OnStatus(new StatusEventArgs() { status = "Excel doc read completed ... " });
+            sbStatus.AppendLine($"{ PolSourceGroupingExcelFileReadRes.ExcelDocReadCompleted } ... ");
+            await statusAndResultsService.Update(command, sbError.ToString(), sbStatus.ToString(), 0);
 
             return true;
         }
-        public async Task<bool> GetRecursiveForShowAllPaths(string s, List<string> textList, int Level, bool RaiseEvents, StringBuilder sb)
+        public async Task<bool> GetRecursiveForShowAllPaths(string s, List<string> textList, int Level, bool RaiseEvents, StringBuilder sb, StringBuilder sbError, StringBuilder sbStatus, string command, IStatusAndResultsService statusAndResultsService)
         {
             textList.RemoveRange(Level, (textList.Count - Level));
 
             if (textList.Contains(s))
             {
-                OnCSSPError(new CSSPErrorEventArgs() { CSSPError = "Recursive Found ...\r\n\r\n" });
+                sbError.AppendLine($"{ PolSourceGroupingExcelFileReadRes.RecursiveFound } ...");
+                sbError.AppendLine("");
+                await statusAndResultsService.Update(command, sbError.ToString(), sbStatus.ToString(), 0);
                 foreach (string sp in textList)
                 {
-                    OnCSSPError(new CSSPErrorEventArgs() { CSSPError = $"{ sp }\r\n" });
+                    sbError.AppendLine($"{ sp }");
+                    await statusAndResultsService.Update(command, sbError.ToString(), sbStatus.ToString(), 0);
                 }
-                OnCSSPError(new CSSPErrorEventArgs() { CSSPError = $"{ s }\r\n" });
+                sbError.AppendLine($"{ s }");
+                await statusAndResultsService.Update(command, sbError.ToString(), sbStatus.ToString(), 0);
+
                 return false;
             }
 
-            OnStatus(new StatusEventArgs() { status = $"doing ... { s }" });
+            sbStatus.AppendLine($"{ PolSourceGroupingExcelFileReadRes.Doing } ... { s }");
+            await statusAndResultsService.Update(command, sbError.ToString(), sbStatus.ToString(), 0);
 
             if (RaiseEvents)
             {
@@ -127,10 +141,8 @@ namespace PolSourceGroupingExcelFileRead.Services
                 {
                     sb2.Append($"{ text }\t");
                 }
-                //sb.AppendLine("");
 
                 sb.AppendLine(sb2.ToString());
-                //OnCSSPError(new CSSPErrorEventArgs() { CSSPError = sb.ToString() });
             }
 
             Level = Level + 1;
@@ -141,12 +153,13 @@ namespace PolSourceGroupingExcelFileRead.Services
             {
                 foreach (string child in groupChoiceChildLevelChildList.Select(c => c.Child).Distinct())
                 {
-                    if (!GetRecursiveForShowAllPaths(child, textList, Level, RaiseEvents, sb))
+                    if (! await GetRecursiveForShowAllPaths(child, textList, Level, RaiseEvents, sb, sbError, sbStatus, command, statusAndResultsService))
                         return false;
                 }
             }
 
-            OnStatus(new StatusEventArgs() { status = "" });
+            sbStatus.AppendLine($"");
+            await statusAndResultsService.Update(command, sbError.ToString(), sbStatus.ToString(), 0);
 
             return true;
         }
@@ -157,7 +170,7 @@ namespace PolSourceGroupingExcelFileRead.Services
         #endregion Functions public
 
         #region Functions private
-        private bool CheckSpreadsheet()
+        private async Task<bool> CheckSpreadsheet(StringBuilder sbError, StringBuilder sbStatus, string command, IStatusAndResultsService statusAndResultsService)
         {
             if (groupChoiceChildLevelList.Count == 0)
                 return false;
@@ -174,7 +187,8 @@ namespace PolSourceGroupingExcelFileRead.Services
 
                 if (countChild % 200 == 0)
                 {
-                    OnStatus(new StatusEventArgs() { status = $"Checking ... that { child } exist on Column Group" });
+                    sbStatus.AppendLine($"{ PolSourceGroupingExcelFileReadRes.Checking } ... { PolSourceGroupingExcelFileReadRes.That } { child } { PolSourceGroupingExcelFileReadRes.ExistOnColumnGroup }");
+                    await statusAndResultsService.Update(command, sbError.ToString(), sbStatus.ToString(), 0);
                 }
 
                 GroupChoiceChildLevel groupChoiceChildLevelExist = (from c in groupChoiceChildLevelList
@@ -183,18 +197,26 @@ namespace PolSourceGroupingExcelFileRead.Services
 
                 if (groupChoiceChildLevelExist == null)
                 {
-                    OnCSSPError(new CSSPErrorEventArgs() { CSSPError = $"{ child } ----- does not exist on Column Group\r\n\r\n" });
+                    sbError.AppendLine($"{ child } ----- { PolSourceGroupingExcelFileReadRes.DoesNotExistOnColumnGroup }");
+                    sbError.AppendLine("");
+                    await statusAndResultsService.Update(command, sbError.ToString(), sbStatus.ToString(), 0);
+
                     return false;
                 }
             }
 
-            OnCSSPError(new CSSPErrorEventArgs() { CSSPError = "All Child do exist on Column Group\r\n\r\n" });
+            sbStatus.AppendLine($"{ PolSourceGroupingExcelFileReadRes.AllChildDoExistOnColumnGroup }");
+            sbStatus.AppendLine("");
+            await statusAndResultsService.Update(command, sbError.ToString(), sbStatus.ToString(), 0);
 
             foreach (GroupChoiceChildLevel groupChoiceChildLevel in groupChoiceChildLevelList)
             {
                 if (groupChoiceChildLevel.Group.Length < 5)
                 {
-                    OnCSSPError(new CSSPErrorEventArgs() { CSSPError = $"Group: { groupChoiceChildLevel.CSSPID } potential empty row above. \r\n\r\n" });
+                    sbError.AppendLine($"{ PolSourceGroupingExcelFileReadRes.Group }: { groupChoiceChildLevel.CSSPID } { PolSourceGroupingExcelFileReadRes.PotentialEmptyRowAbove }.");
+                    sbError.AppendLine("");
+                    await statusAndResultsService.Update(command, sbError.ToString(), sbStatus.ToString(), 0);
+
                     return false;
                 }
             }
@@ -211,12 +233,16 @@ namespace PolSourceGroupingExcelFileRead.Services
 
                 if (countChild % 200 == 0)
                 {
-                    OnStatus(new StatusEventArgs() { status = $"Checking ... that group { groupChoiceChildLevel.Group }--- EN/FR: { groupChoiceChildLevel.EN } has EN/FR text" });
+                    sbStatus.AppendLine($"{ PolSourceGroupingExcelFileReadRes.Checking } ... { PolSourceGroupingExcelFileReadRes.ThatGroup } { groupChoiceChildLevel.Group }--- EN/FR: { groupChoiceChildLevel.EN } { PolSourceGroupingExcelFileReadRes.HasENFRText }");
+                    await statusAndResultsService.Update(command, sbError.ToString(), sbStatus.ToString(), 0);
                 }
 
                 if (string.IsNullOrWhiteSpace(groupChoiceChildLevel.EN))
                 {
-                    OnCSSPError(new CSSPErrorEventArgs() { CSSPError = $"Group: { groupChoiceChildLevel.Group } --- EN: { groupChoiceChildLevel.EN } ----- does not have EN text\r\n\r\n" });
+                    sbError.AppendLine($"Group: { groupChoiceChildLevel.Group } --- EN: { groupChoiceChildLevel.EN } ----- { PolSourceGroupingExcelFileReadRes.DoesNotHaveENText }");
+                    sbError.AppendLine("");
+                    await statusAndResultsService.Update(command, sbError.ToString(), sbStatus.ToString(), 0);
+
                     return false;
                 }
 
@@ -224,13 +250,18 @@ namespace PolSourceGroupingExcelFileRead.Services
 
                 if (string.IsNullOrWhiteSpace(groupChoiceChildLevel.FR))
                 {
-                    OnCSSPError(new CSSPErrorEventArgs() { CSSPError = $"Group: { groupChoiceChildLevel.Group } --- EN: { groupChoiceChildLevel.FR } ----- does not have FR text\r\n\r\n" });
+                    sbError.AppendLine($"Group: { groupChoiceChildLevel.Group } --- EN: { groupChoiceChildLevel.FR } ----- { PolSourceGroupingExcelFileReadRes.DoesNotHaveFRText }");
+                    sbError.AppendLine("");
+                    await statusAndResultsService.Update(command, sbError.ToString(), sbStatus.ToString(), 0);
+
                     return false;
                 }
 
             }
 
-            OnCSSPError(new CSSPErrorEventArgs() { CSSPError = "Each Group with ending name = 'Start' does have EN and FR text.\r\n\r\n" });
+            sbStatus.AppendLine($"{ PolSourceGroupingExcelFileReadRes.EachGroupWithEndingName } = 'Start' { PolSourceGroupingExcelFileReadRes.DoesHaveENandFRText }.");
+            sbStatus.AppendLine("");
+            await statusAndResultsService.Update(command, sbError.ToString(), sbStatus.ToString(), 0);
 
             // Checking DescEN and DescFR text exist for Group ending with Start
             List<GroupChoiceChildLevel> groupChoiceChildLevelGroupDescList = (from c in groupChoiceChildLevelList
@@ -246,24 +277,34 @@ namespace PolSourceGroupingExcelFileRead.Services
 
                     if (countChild % 200 == 0)
                     {
-                        OnStatus(new StatusEventArgs() { status = $"Checking ... that group { groupChoiceChildLevel.Group } --- EN/FR: { groupChoiceChildLevel.EN } has DescEN/DescFR text" });
+                        sbStatus.AppendLine($"{ PolSourceGroupingExcelFileReadRes.Checking } ... { PolSourceGroupingExcelFileReadRes.ThatGroup } { groupChoiceChildLevel.Group } --- EN/FR: { groupChoiceChildLevel.EN } { PolSourceGroupingExcelFileReadRes.HasDescENDescFRText }");
+                        sbStatus.AppendLine("");
+                        await statusAndResultsService.Update(command, sbError.ToString(), sbStatus.ToString(), 0);
                     }
 
                     if (string.IsNullOrWhiteSpace(groupChoiceChildLevel.DescEN))
                     {
-                        OnCSSPError(new CSSPErrorEventArgs() { CSSPError = $"Group: { groupChoiceChildLevel.Group } --- EN: { groupChoiceChildLevel.EN } ----- does not have DescEN text\r\n\r\n" });
+                        sbError.AppendLine($"{ PolSourceGroupingExcelFileReadRes.Group}: { groupChoiceChildLevel.Group } --- EN: { groupChoiceChildLevel.EN } ----- { PolSourceGroupingExcelFileReadRes.DoesNotHaveDescENText }");
+                        sbError.AppendLine("");
+                        await statusAndResultsService.Update(command, sbError.ToString(), sbStatus.ToString(), 0);
+
                         return false;
                     }
 
                     if (string.IsNullOrWhiteSpace(groupChoiceChildLevel.DescFR))
                     {
-                        OnCSSPError(new CSSPErrorEventArgs() { CSSPError = $"Group: { groupChoiceChildLevel.Group } --- EN: { groupChoiceChildLevel.FR } ----- does not have DescFR text\r\n\r\n" });
+                        sbError.AppendLine($"{ PolSourceGroupingExcelFileReadRes.Group}: { groupChoiceChildLevel.Group } --- FR: { groupChoiceChildLevel.FR } ----- { PolSourceGroupingExcelFileReadRes.DoesNotHaveDescFRText }");
+                        sbError.AppendLine("");
+                        await statusAndResultsService.Update(command, sbError.ToString(), sbStatus.ToString(), 0);
+
                         return false;
                     }
                 }
             }
 
-            OnCSSPError(new CSSPErrorEventArgs() { CSSPError = "Each Group with ending name = 'Start' does have DescEN and DescFR text.\r\n\r\n" });
+            sbStatus.AppendLine($"{ PolSourceGroupingExcelFileReadRes.EachGroupWithEndingName} = 'Start' { PolSourceGroupingExcelFileReadRes.DoesHaveDescENAndDescFRText }.");
+            sbStatus.AppendLine("");
+            await statusAndResultsService.Update(command, sbError.ToString(), sbStatus.ToString(), 0);
 
             // Checking EN and FR text exist for Choice.Length > 0
             List<GroupChoiceChildLevel> groupChoiceChildLevelChoiceList = (from c in groupChoiceChildLevelList
@@ -277,24 +318,34 @@ namespace PolSourceGroupingExcelFileRead.Services
 
                 if (countChild % 200 == 0)
                 {
-                    OnStatus(new StatusEventArgs() { status = $"Checking ... that group { groupChoiceChildLevel.Group } --- EN/FR: { groupChoiceChildLevel.EN } has EN/FR text" });
+                    sbStatus.AppendLine($"{ PolSourceGroupingExcelFileReadRes.Checking } ... { PolSourceGroupingExcelFileReadRes.ThatGroup } { groupChoiceChildLevel.Group } --- EN/FR: { groupChoiceChildLevel.EN } { PolSourceGroupingExcelFileReadRes.HasENFRText }");
+                    sbStatus.AppendLine("");
+                    await statusAndResultsService.Update(command, sbError.ToString(), sbStatus.ToString(), 0);
                 }
 
                 if (string.IsNullOrWhiteSpace(groupChoiceChildLevel.EN))
                 {
-                    OnCSSPError(new CSSPErrorEventArgs() { CSSPError = $"Group: { groupChoiceChildLevel.Group } --- EN: { groupChoiceChildLevel.EN } ----- does not have EN text\r\n\r\n" });
+                    sbError.AppendLine($"{ PolSourceGroupingExcelFileReadRes.Group }: { groupChoiceChildLevel.Group } --- EN: { groupChoiceChildLevel.EN } ----- { PolSourceGroupingExcelFileReadRes.DoesNotHaveENText }");
+                    sbError.AppendLine("");
+                    await statusAndResultsService.Update(command, sbError.ToString(), sbStatus.ToString(), 0);
+
                     return false;
                 }
 
                 if (string.IsNullOrWhiteSpace(groupChoiceChildLevel.FR))
                 {
-                    OnCSSPError(new CSSPErrorEventArgs() { CSSPError = $"Group: { groupChoiceChildLevel.Group } --- FR: { groupChoiceChildLevel.FR } ----- does not have FR text\r\n\r\n" });
+                    sbError.AppendLine($"{ PolSourceGroupingExcelFileReadRes.Group }: { groupChoiceChildLevel.Group } --- FR: { groupChoiceChildLevel.FR } ----- { PolSourceGroupingExcelFileReadRes.DoesNotHaveFRText }");
+                    sbError.AppendLine("");
+                    await statusAndResultsService.Update(command, sbError.ToString(), sbStatus.ToString(), 0);
+
                     return false;
                 }
 
             }
 
-            OnCSSPError(new CSSPErrorEventArgs() { CSSPError = "Each Choice does have EN and FR text.\r\n\r\n" });
+            sbStatus.AppendLine($"{ PolSourceGroupingExcelFileReadRes.EachChoiceDoesHaveENAndFRText }.");
+            sbStatus.AppendLine("");
+            await statusAndResultsService.Update(command, sbError.ToString(), sbStatus.ToString(), 0);
 
             // Checking ReportEN and ReportFR text exist for Child.Length > 0
             groupChoiceChildLevelChoiceList = (from c in groupChoiceChildLevelList
@@ -308,28 +359,37 @@ namespace PolSourceGroupingExcelFileRead.Services
 
                 if (countChild % 200 == 0)
                 {
-                    OnStatus(new StatusEventArgs() { status = $"Checking ... that group { groupChoiceChildLevel.Group } --- EN/FR: { groupChoiceChildLevel.EN } has ReportEN/ReportFR text. You can add a space to fix the problem." });
+                    sbStatus.AppendLine($"{ PolSourceGroupingExcelFileReadRes.Checking } ... { PolSourceGroupingExcelFileReadRes.ThatGroup } { groupChoiceChildLevel.Group } --- EN/FR: { groupChoiceChildLevel.EN } { PolSourceGroupingExcelFileReadRes.HasReportENReportFRText }. { PolSourceGroupingExcelFileReadRes.YouCanAddASpaceToFixTheProblem }.");
+                    sbStatus.AppendLine("");
+                    await statusAndResultsService.Update(command, sbError.ToString(), sbStatus.ToString(), 0);
                 }
 
                 if (string.IsNullOrWhiteSpace(groupChoiceChildLevel.ReportEN) && groupChoiceChildLevel.ReportEN.Length == 0)
                 {
-                    OnCSSPError(new CSSPErrorEventArgs() { CSSPError = $"Group: { groupChoiceChildLevel.Group } --- EN: { groupChoiceChildLevel.EN } ----- does not have ReportEN text. You can add a space to fix the problem.\r\n\r\n" });
+                    sbError.AppendLine($"{ PolSourceGroupingExcelFileReadRes.Group}: { groupChoiceChildLevel.Group } --- EN: { groupChoiceChildLevel.EN } ----- { PolSourceGroupingExcelFileReadRes.DoesNotHaveReportENText }. { PolSourceGroupingExcelFileReadRes.YouCanAddASpaceToFixTheProblem }.");
+                    sbError.AppendLine("");
+                    await statusAndResultsService.Update(command, sbError.ToString(), sbStatus.ToString(), 0);
+
                     return false;
                 }
 
                 if (string.IsNullOrWhiteSpace(groupChoiceChildLevel.ReportFR) && groupChoiceChildLevel.ReportFR.Length == 0)
                 {
-                    OnCSSPError(new CSSPErrorEventArgs() { CSSPError = $"Group: { groupChoiceChildLevel.Group } --- FR: { groupChoiceChildLevel.FR } ----- does not have ReportFR text. You can add a space to fix the problem.\r\n\r\n" });
+                    sbError.AppendLine($"{ PolSourceGroupingExcelFileReadRes.Group}: { groupChoiceChildLevel.Group } --- FR: { groupChoiceChildLevel.FR } ----- { PolSourceGroupingExcelFileReadRes.DoesNotHaveReportFRText }. { PolSourceGroupingExcelFileReadRes.YouCanAddASpaceToFixTheProblem }.");
+                    sbError.AppendLine("");
+                    await statusAndResultsService.Update(command, sbError.ToString(), sbStatus.ToString(), 0);
+
                     return false;
                 }
 
             }
 
-            OnCSSPError(new CSSPErrorEventArgs() { CSSPError = "Each Choice does have ReportEN and ReportFR text.\r\n\r\n" });
+            sbStatus.AppendLine($"{ PolSourceGroupingExcelFileReadRes.EachChoiceDoesHaveReportENAndReportFRText }.");
+            sbStatus.AppendLine("");
+            await statusAndResultsService.Update(command, sbError.ToString(), sbStatus.ToString(), 0);
 
             // Checking for duplicates in column Group
             List<GroupChoiceChildLevel> groupChoiceChildLevelStraitList = new List<GroupChoiceChildLevel>();
-            OnStatus(new StatusEventArgs() { status = "Each Choice does have ReportEN and ReportFR text.\r\n\r\n" });
 
             FileInfo fi = new FileInfo(FullFileName);
 
@@ -391,7 +451,10 @@ namespace PolSourceGroupingExcelFileRead.Services
                                                     {
                                                         if ((item.Text.Text + "") != FieldNameList[cellcount])
                                                         {
-                                                            OnCSSPError(new CSSPErrorEventArgs() { CSSPError = $"{ fi.FullName } PolSourceGrouping { item.Text } is not equal to { FieldNameList[cellcount] }\r\n" });
+                                                            sbError.AppendLine($"{ fi.FullName } { PolSourceGroupingExcelFileReadRes.PolSourceGrouping } { item.Text } { PolSourceGroupingExcelFileReadRes.IsNotEqualTo } { FieldNameList[cellcount] }");
+                                                            sbError.AppendLine("");
+                                                            await statusAndResultsService.Update(command, sbError.ToString(), sbStatus.ToString(), 0);
+
                                                             return false;
                                                         }
                                                     }
@@ -400,7 +463,10 @@ namespace PolSourceGroupingExcelFileRead.Services
                                                         currentcellvalue = item.InnerText;
                                                         if (currentcellvalue != FieldNameList[cellcount])
                                                         {
-                                                            OnCSSPError(new CSSPErrorEventArgs() { CSSPError = $"{ fi.FullName } PolSourceGrouping { item.Text } is not equal to { FieldNameList[cellcount] }\r\n" });
+                                                            sbError.AppendLine($"{ fi.FullName } { PolSourceGroupingExcelFileReadRes.PolSourceGrouping } { item.Text } { PolSourceGroupingExcelFileReadRes.IsNotEqualTo } { FieldNameList[cellcount] }");
+                                                            sbError.AppendLine("");
+                                                            await statusAndResultsService.Update(command, sbError.ToString(), sbStatus.ToString(), 0);
+
                                                             return false;
                                                         }
                                                     }
@@ -409,7 +475,10 @@ namespace PolSourceGroupingExcelFileRead.Services
                                                         currentcellvalue = item.InnerXml;
                                                         if (currentcellvalue != FieldNameList[cellcount])
                                                         {
-                                                            OnCSSPError(new CSSPErrorEventArgs() { CSSPError = $"{ fi.FullName } PolSourceGrouping { item.Text } is not equal to { FieldNameList[cellcount] }\r\n" });
+                                                            sbError.AppendLine($"{ fi.FullName } { PolSourceGroupingExcelFileReadRes.PolSourceGrouping } { item.Text } { PolSourceGroupingExcelFileReadRes.IsNotEqualTo }  { FieldNameList[cellcount] }");
+                                                            sbError.AppendLine("");
+                                                            await statusAndResultsService.Update(command, sbError.ToString(), sbStatus.ToString(), 0);
+
                                                             return false;
                                                         }
                                                     }
@@ -420,7 +489,10 @@ namespace PolSourceGroupingExcelFileRead.Services
                                         {
                                             if ((thecurrentcell.InnerText + " ") != FieldNameList[cellcount])
                                             {
-                                                OnCSSPError(new CSSPErrorEventArgs() { CSSPError = $"{ fi.FullName } PolSourceGrouping { (thecurrentcell.InnerText + " ") } is not equal to { FieldNameList[cellcount] }\r\n" });
+                                                sbError.AppendLine($"{ fi.FullName } { PolSourceGroupingExcelFileReadRes.PolSourceGrouping } { (thecurrentcell.InnerText + " ") } { PolSourceGroupingExcelFileReadRes.IsNotEqualTo } { FieldNameList[cellcount] }");
+                                                sbError.AppendLine("");
+                                                await statusAndResultsService.Update(command, sbError.ToString(), sbStatus.ToString(), 0);
+
                                                 return false;
                                             }
                                         }
@@ -655,7 +727,9 @@ namespace PolSourceGroupingExcelFileRead.Services
 
                                     if (rowCount % 200 == 0)
                                     {
-                                        OnStatus(new StatusEventArgs() { status = $"Reading spreadsheet ... { rowCount }" });
+                                        sbStatus.AppendLine($"{ PolSourceGroupingExcelFileReadRes.ReadingSpreadsheet } ... { rowCount }");
+                                        sbStatus.AppendLine("");
+                                        await statusAndResultsService.Update(command, sbError.ToString(), sbStatus.ToString(), 0);
                                     }
 
                                     if (!string.IsNullOrWhiteSpace(CSSPID))
@@ -687,133 +761,12 @@ namespace PolSourceGroupingExcelFileRead.Services
             }
             catch (Exception ex)
             {
-                OnCSSPError(new CSSPErrorEventArgs() { CSSPError = $"{ ex.Message }" });
+                sbError.AppendLine($"{ ex.Message }");
+                sbError.AppendLine("");
+                await statusAndResultsService.Update(command, sbError.ToString(), sbStatus.ToString(), 0);
+
                 return false;
             }
-
-            #region Old Text
-            //string connectionString = $@"Provider=Microsoft.ACE.OLEDB.12.0;Data Source={ fi.FullName };Extended Properties=Excel 12.0 Xml;HDR=YES";
-            //OleDbConnection conn = new OleDbConnection(connectionString);
-
-            //try
-            //{
-            //    conn.Open();
-            //}
-            //catch (Exception ex)
-            //{
-            //    string InnerException = (ex.InnerException == null ? "" : $" InnerException: { ex.InnerException.Message }");
-            //    OnCSSPError(new CSSPErrorEventArgs() { CSSPError = $"{ ex.Message }{ InnerException }" });
-            //    return false;
-            //}
-            //OleDbDataReader reader;
-
-            //OleDbCommand comm = new OleDbCommand("Select * from [PolSourceGrouping$];");
-
-
-            //comm.Connection = conn;
-            //reader = comm.ExecuteReader();
-
-
-            ////List<string> FieldNameList = new List<string>();
-            ////FieldNameList = new List<string>() { "CSSPID", "Group", "Child", "Hide", "EN", "InitEN", "DescEN", "ReportEN", "TextEN", "FR", "InitFR", "DescFR", "ReportFR", "TextFR" };
-            ////for (int j = 0; j < reader.FieldCount; j++)
-            ////{
-            ////    if (reader.GetName(j) != FieldNameList[j])
-            ////    {
-            ////        OnCSSPError(new CSSPErrorEventArgs() { CSSPError = $"{ fi.FullName } PolSourceGrouping { reader.GetName(j) } is not equal to { FieldNameList[j] }\r\n" });
-            ////        return false;
-            ////    }
-            ////}
-            //reader.Close();
-
-            //reader = comm.ExecuteReader();
-
-            //string CSSPID = "";
-            //string Group = "";
-            //string Choice = "";
-            //string Child = "";
-            //string Hide = "";
-            //string EN = "";
-            //string InitEN = "";
-            //string DescEN = "";
-            //string ReportEN = "";
-            //string TextEN = "";
-            //string FR = "";
-            //string InitFR = "";
-            //string DescFR = "";
-            //string ReportFR = "";
-            //string TextFR = "";
-
-            //int CountRead = 0;
-            //while (reader.Read())
-            //{
-            //    CountRead += 1;
-
-            //    if (CountRead % 200 == 0)
-            //    {
-            //        OnStatus(new StatusEventArgs() { status = $"Reading spreadsheet ... { CountRead }" });
-            //    }
-
-            //    if (reader.GetValue(1).GetType() == typeof(DBNull) || string.IsNullOrEmpty(reader.GetValue(1).ToString()))
-            //    {
-            //        CSSPID = "";
-            //        Group = "";
-            //        Choice = "";
-            //        Child = "";
-            //        Hide = "";
-            //        EN = "";
-            //        InitEN = "";
-            //        DescEN = "";
-            //        ReportEN = "";
-            //        TextEN = "";
-            //        FR = "";
-            //        InitFR = "";
-            //        DescFR = "";
-            //        ReportFR = "";
-            //        TextFR = "";
-            //        continue;
-            //    }
-            //    else
-            //    {
-            //        CSSPID = reader.GetValue(0).ToString();
-            //        Group = reader.GetValue(1).ToString();
-            //        Child = reader.GetValue(2).ToString();
-            //        Hide = reader.GetValue(3).ToString();
-            //        EN = reader.GetValue(4).ToString();
-            //        InitEN = reader.GetValue(5).ToString();
-            //        DescEN = reader.GetValue(6).ToString();
-            //        ReportEN = reader.GetValue(7).ToString();
-            //        TextEN = reader.GetValue(8).ToString();
-            //        FR = reader.GetValue(9).ToString();
-            //        InitFR = reader.GetValue(10).ToString();
-            //        DescFR = reader.GetValue(11).ToString();
-            //        ReportFR = reader.GetValue(12).ToString();
-            //        TextFR = reader.GetValue(13).ToString();
-            //    }
-            //    groupChoiceChildLevelStraitList.Add(new GroupChoiceChildLevel()
-            //    {
-            //        CSSPID = CSSPID,
-            //        Group = Group,
-            //        Choice = Choice,
-            //        Child = Child,
-            //        Hide = Hide,
-            //        EN = EN,
-            //        InitEN = InitEN,
-            //        DescEN = DescEN,
-            //        ReportEN = ReportEN,
-            //        TextEN = TextEN,
-            //        FR = FR,
-            //        InitFR = InitFR,
-            //        DescFR = DescFR,
-            //        ReportFR = ReportFR,
-            //        TextFR = TextFR,
-            //    });
-            //}
-            //reader.Close();
-
-            //conn.Close();
-
-            #endregion Old Text
 
             List<GroupChoiceChildLevel> groupChoiceChildLevelOrderedList = (from c in groupChoiceChildLevelStraitList
                                                                             orderby c.Group
@@ -823,18 +776,24 @@ namespace PolSourceGroupingExcelFileRead.Services
             {
                 if (i % 200 == 0)
                 {
-                    OnStatus(new StatusEventArgs() { status = $"Checking ... that group { groupChoiceChildLevelOrderedList[i].Group } ---- has no duplicates" });
+                    sbStatus.AppendLine($"{ PolSourceGroupingExcelFileReadRes.Checking } ... { PolSourceGroupingExcelFileReadRes.ThatGroup } { groupChoiceChildLevelOrderedList[i].Group } ---- { PolSourceGroupingExcelFileReadRes.HasNoDuplicates }");
+                    sbStatus.AppendLine("");
+                    await statusAndResultsService.Update(command, sbError.ToString(), sbStatus.ToString(), 0);
                 }
 
                 if (groupChoiceChildLevelOrderedList[i].Group == groupChoiceChildLevelOrderedList[i + 1].Group)
                 {
-                    OnCSSPError(new CSSPErrorEventArgs() { CSSPError = $"{ groupChoiceChildLevelOrderedList[i].Group } ---- has duplicates" });
+                    sbError.AppendLine($"{ groupChoiceChildLevelOrderedList[i].Group } ---- { PolSourceGroupingExcelFileReadRes.HasDuplicates }");
+                    sbError.AppendLine("");
+                    await statusAndResultsService.Update(command, sbError.ToString(), sbStatus.ToString(), 0);
+
                     return false;
                 }
             }
 
-
-            OnCSSPError(new CSSPErrorEventArgs() { CSSPError = "Column Group does not have duplicates.\r\n\r\n" });
+            sbStatus.AppendLine($"{ PolSourceGroupingExcelFileReadRes.ColumnGroupDoesNotHaveDuplicates }.");
+            sbStatus.AppendLine("");
+            await statusAndResultsService.Update(command, sbError.ToString(), sbStatus.ToString(), 0);
 
             for (int i = 0, count = groupChoiceChildLevelOrderedList.Count; i < count; i++)
             {
@@ -842,12 +801,17 @@ namespace PolSourceGroupingExcelFileRead.Services
                 {
                     if (i % 200 == 0)
                     {
-                        OnStatus(new StatusEventArgs() { status = $"Checking ... that group { groupChoiceChildLevelOrderedList[i].Group } ---- should not contain space" });
+                        sbStatus.AppendLine($"{ PolSourceGroupingExcelFileReadRes.Checking } ... { PolSourceGroupingExcelFileReadRes.ThatGroup } { groupChoiceChildLevelOrderedList[i].Group } ---- { PolSourceGroupingExcelFileReadRes.ShouldNotContainSpace }");
+                        sbStatus.AppendLine("");
+                        await statusAndResultsService.Update(command, sbError.ToString(), sbStatus.ToString(), 0);
                     }
 
                     if (groupChoiceChildLevelOrderedList[i].Group.Contains(" "))
                     {
-                        OnCSSPError(new CSSPErrorEventArgs() { CSSPError = $"Group --- { groupChoiceChildLevelOrderedList[i].Group } ---- should not contain space" });
+                        sbError.AppendLine($"{ PolSourceGroupingExcelFileReadRes.Group} --- { groupChoiceChildLevelOrderedList[i].Group } ---- { PolSourceGroupingExcelFileReadRes.ShouldNotContainSpace}");
+                        sbError.AppendLine("");
+                        await statusAndResultsService.Update(command, sbError.ToString(), sbStatus.ToString(), 0);
+
                         return false;
                     }
                 }
@@ -855,19 +819,26 @@ namespace PolSourceGroupingExcelFileRead.Services
                 {
                     if (i % 200 == 0)
                     {
-                        OnStatus(new StatusEventArgs() { status = $"Checking ... that group { groupChoiceChildLevelOrderedList[i].Child } ---- should not contain space" });
+                        sbStatus.AppendLine($"{ PolSourceGroupingExcelFileReadRes.Checking} ... { PolSourceGroupingExcelFileReadRes.ThatGroup} { groupChoiceChildLevelOrderedList[i].Child } ---- { PolSourceGroupingExcelFileReadRes.ShouldNotContainSpace}");
+                        sbStatus.AppendLine("");
+                        await statusAndResultsService.Update(command, sbError.ToString(), sbStatus.ToString(), 0);
                     }
 
                     if (groupChoiceChildLevelOrderedList[i].Child.Contains(" "))
                     {
-                        OnCSSPError(new CSSPErrorEventArgs() { CSSPError = $"Child --- { groupChoiceChildLevelOrderedList[i].Child } ---- should not contain space" });
+                        sbError.AppendLine($"{ PolSourceGroupingExcelFileReadRes.Child } --- { groupChoiceChildLevelOrderedList[i].Child } ---- { PolSourceGroupingExcelFileReadRes.ShouldNotContainSpace }");
+                        sbError.AppendLine("");
+                        await statusAndResultsService.Update(command, sbError.ToString(), sbStatus.ToString(), 0);
+
                         return false;
                     }
                 }
 
             }
 
-            OnCSSPError(new CSSPErrorEventArgs() { CSSPError = "All Text in Group and Child Columns does not contain space.\r\n\r\n" });
+            sbStatus.AppendLine($"{ PolSourceGroupingExcelFileReadRes.AllTextInGroupAndChildColumnsDoesNotContainSpace }.");
+            sbStatus.AppendLine("");
+            await statusAndResultsService.Update(command, sbError.ToString(), sbStatus.ToString(), 0);
 
             string AllowableChar = "abcdefghijklmnopqrstuvwxyz_ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
 
@@ -875,14 +846,19 @@ namespace PolSourceGroupingExcelFileRead.Services
             {
                 if (i % 200 == 0)
                 {
-                    OnStatus(new StatusEventArgs() { status = $"Checking ... that group { groupChoiceChildLevelOrderedList[i].Group } ---- should only contain characters like [{ AllowableChar }]" });
+                    sbStatus.AppendLine($"{ PolSourceGroupingExcelFileReadRes.Checking} ... { PolSourceGroupingExcelFileReadRes.ThatGroup} { groupChoiceChildLevelOrderedList[i].Group } ---- { PolSourceGroupingExcelFileReadRes.ShouldOnlyContainCharactersLike } [{ AllowableChar }]");
+                    sbStatus.AppendLine("");
+                    await statusAndResultsService.Update(command, sbError.ToString(), sbStatus.ToString(), 0);
                 }
 
                 foreach (char c in groupChoiceChildLevelOrderedList[i].Group)
                 {
                     if (!AllowableChar.Contains(c))
                     {
-                        OnCSSPError(new CSSPErrorEventArgs() { CSSPError = $"Group --- { groupChoiceChildLevelOrderedList[i].Group } ---- should not contain [{ c }]. Allowable characters are [{ AllowableChar }]" });
+                        sbError.AppendLine($"{ PolSourceGroupingExcelFileReadRes.Group} --- { groupChoiceChildLevelOrderedList[i].Group } ---- { PolSourceGroupingExcelFileReadRes.ShouldNotContain } [{ c }]. { PolSourceGroupingExcelFileReadRes.AllowableCharactersAre } [{ AllowableChar }]");
+                        sbError.AppendLine("");
+                        await statusAndResultsService.Update(command, sbError.ToString(), sbStatus.ToString(), 0);
+
                         return false;
                     }
                 }
@@ -890,18 +866,25 @@ namespace PolSourceGroupingExcelFileRead.Services
                 {
                     if (i % 200 == 0)
                     {
-                        OnStatus(new StatusEventArgs() { status = $"Checking ... that group { groupChoiceChildLevelOrderedList[i].Child } ---- should only contain characters like [{ AllowableChar }]" });
+                        sbStatus.AppendLine($"{ PolSourceGroupingExcelFileReadRes.Checking} ... { PolSourceGroupingExcelFileReadRes.ThatGroup } { groupChoiceChildLevelOrderedList[i].Child } ---- { PolSourceGroupingExcelFileReadRes.ShouldOnlyContainCharactersLike } [{ AllowableChar }]");
+                        sbStatus.AppendLine("");
+                        await statusAndResultsService.Update(command, sbError.ToString(), sbStatus.ToString(), 0);
                     }
 
                     if (!AllowableChar.Contains(c))
                     {
-                        OnCSSPError(new CSSPErrorEventArgs() { CSSPError = $"Child --- { groupChoiceChildLevelOrderedList[i].Child } ---- should not contain [{ c }]. Allowable characters are [{ AllowableChar }]" });
+                        sbError.AppendLine($"{ PolSourceGroupingExcelFileReadRes.Child } --- { groupChoiceChildLevelOrderedList[i].Child } ---- { PolSourceGroupingExcelFileReadRes.ShouldNotContain} [{ c }]. { PolSourceGroupingExcelFileReadRes.AllowableCharactersAre } [{ AllowableChar }]");
+                        sbError.AppendLine("");
+                        await statusAndResultsService.Update(command, sbError.ToString(), sbStatus.ToString(), 0);
+
                         return false;
                     }
                 }
             }
 
-            OnCSSPError(new CSSPErrorEventArgs() { CSSPError = "All Text in Group and Child Columns does not contain space.\r\n\r\n" });
+            sbStatus.AppendLine($"{ PolSourceGroupingExcelFileReadRes.AllTextInGroupAndChildColumnsDoesNotContainSpace }.");
+            sbStatus.AppendLine("");
+            await statusAndResultsService.Update(command, sbError.ToString(), sbStatus.ToString(), 0);
 
             for (int i = 0, count = groupChoiceChildLevelOrderedList.Count; i < count; i++)
             {
@@ -909,12 +892,17 @@ namespace PolSourceGroupingExcelFileRead.Services
                 {
                     if (i % 200 == 0)
                     {
-                        OnStatus(new StatusEventArgs() { status = $"Checking ... that CSSPID { groupChoiceChildLevelOrderedList[i].Group } ---- does not contain space" });
+                        sbStatus.AppendLine($"{ PolSourceGroupingExcelFileReadRes.Checking} ... { PolSourceGroupingExcelFileReadRes.ThatCSSPID } { groupChoiceChildLevelOrderedList[i].Group } ---- { PolSourceGroupingExcelFileReadRes.DoesNotContainSpace }");
+                        sbStatus.AppendLine("");
+                        await statusAndResultsService.Update(command, sbError.ToString(), sbStatus.ToString(), 0);
                     }
 
                     if (groupChoiceChildLevelOrderedList[i].CSSPID.Contains(" "))
                     {
-                        OnCSSPError(new CSSPErrorEventArgs() { CSSPError = $"CSSPID --- { groupChoiceChildLevelOrderedList[i].Group } ---- should not contain space" });
+                        sbError.AppendLine($"{ PolSourceGroupingExcelFileReadRes.CSSPID } --- { groupChoiceChildLevelOrderedList[i].Group } ---- { PolSourceGroupingExcelFileReadRes.ShouldNotContainSpace }");
+                        sbError.AppendLine("");
+                        await statusAndResultsService.Update(command, sbError.ToString(), sbStatus.ToString(), 0);
+
                         return false;
                     }
                 }
@@ -922,19 +910,26 @@ namespace PolSourceGroupingExcelFileRead.Services
                 {
                     if (i % 200 == 0)
                     {
-                        OnStatus(new StatusEventArgs() { status = $"Checking ... that CSSPID { groupChoiceChildLevelOrderedList[i].Child } ---- does not contain space" });
+                        sbStatus.AppendLine($"{ PolSourceGroupingExcelFileReadRes.Checking} ... { PolSourceGroupingExcelFileReadRes.ThatCSSPID } { groupChoiceChildLevelOrderedList[i].Child } ---- { PolSourceGroupingExcelFileReadRes.DoesNotContainSpace }");
+                        sbStatus.AppendLine("");
+                        await statusAndResultsService.Update(command, sbError.ToString(), sbStatus.ToString(), 0);
                     }
 
                     if (groupChoiceChildLevelOrderedList[i].CSSPID.Contains(" "))
                     {
-                        OnCSSPError(new CSSPErrorEventArgs() { CSSPError = $"CSSPID --- { groupChoiceChildLevelOrderedList[i].Child } ---- should not contain space" });
+                        sbError.AppendLine($"{ PolSourceGroupingExcelFileReadRes.CSSPID } --- { groupChoiceChildLevelOrderedList[i].Child } ---- { PolSourceGroupingExcelFileReadRes.ShouldNotContainSpace }");
+                        sbError.AppendLine("");
+                        await statusAndResultsService.Update(command, sbError.ToString(), sbStatus.ToString(), 0);
+
                         return false;
                     }
                 }
 
             }
 
-            OnCSSPError(new CSSPErrorEventArgs() { CSSPError = "All Text in CSSPID column does not contain space.\r\n\r\n" });
+            sbStatus.AppendLine($"{ PolSourceGroupingExcelFileReadRes.AllTextInCSSPIDColumnDoesNotContainSpace }.");
+            sbStatus.AppendLine("");
+            await statusAndResultsService.Update(command, sbError.ToString(), sbStatus.ToString(), 0);
 
             List<string> UniqueCSSPIDList = new List<string>();
             for (int i = 0, count = groupChoiceChildLevelOrderedList.Count; i < count; i++)
@@ -943,12 +938,17 @@ namespace PolSourceGroupingExcelFileRead.Services
                 {
                     if (i % 200 == 0)
                     {
-                        OnStatus(new StatusEventArgs() { status = $"Checking ... that Group CSSPID { groupChoiceChildLevelOrderedList[i].Group } ---- is unique." });
+                        sbStatus.AppendLine($"{ PolSourceGroupingExcelFileReadRes.Checking} ... { PolSourceGroupingExcelFileReadRes.ThatGroupCSSPID } { groupChoiceChildLevelOrderedList[i].Group } ---- { PolSourceGroupingExcelFileReadRes.IsUnique }.");
+                        sbStatus.AppendLine("");
+                        await statusAndResultsService.Update(command, sbError.ToString(), sbStatus.ToString(), 0);
                     }
 
                     if (string.IsNullOrWhiteSpace(groupChoiceChildLevelOrderedList[i].CSSPID))
                     {
-                        OnCSSPError(new CSSPErrorEventArgs() { CSSPError = $"Group --- { groupChoiceChildLevelOrderedList[i].Group } ---- required a unique number in first column." });
+                        sbError.AppendLine($"{ PolSourceGroupingExcelFileReadRes.Group} --- { groupChoiceChildLevelOrderedList[i].Group } ---- { PolSourceGroupingExcelFileReadRes.RequiredAUniqueNumberInFirstColumn }.");
+                        sbError.AppendLine("");
+                        await statusAndResultsService.Update(command, sbError.ToString(), sbStatus.ToString(), 0);
+
                         return false;
                     }
                 }
@@ -956,32 +956,47 @@ namespace PolSourceGroupingExcelFileRead.Services
                 {
                     if (i % 200 == 0)
                     {
-                        OnStatus(new StatusEventArgs() { status = $"Checking ... that Group CSSPID { groupChoiceChildLevelOrderedList[i].Child } ---- is unique." });
+                        sbStatus.AppendLine($"{ PolSourceGroupingExcelFileReadRes.Checking} ... { PolSourceGroupingExcelFileReadRes.ThatGroupCSSPID } { groupChoiceChildLevelOrderedList[i].Child } ---- { PolSourceGroupingExcelFileReadRes.IsUnique }.");
+                        sbStatus.AppendLine("");
+                        await statusAndResultsService.Update(command, sbError.ToString(), sbStatus.ToString(), 0);
                     }
 
                     if (string.IsNullOrWhiteSpace(groupChoiceChildLevelOrderedList[i].CSSPID))
                     {
-                        OnCSSPError(new CSSPErrorEventArgs() { CSSPError = $"Child --- { groupChoiceChildLevelOrderedList[i].Child } ---- required a unique number in first column" });
+                        sbError.AppendLine($"{ PolSourceGroupingExcelFileReadRes.Child } --- { groupChoiceChildLevelOrderedList[i].Child } ---- { PolSourceGroupingExcelFileReadRes.RequiredAUniqueNumberInFirstColumn }");
+                        sbError.AppendLine("");
+                        await statusAndResultsService.Update(command, sbError.ToString(), sbStatus.ToString(), 0);
+
                         return false;
                     }
                 }
 
                 if (i % 200 == 0)
                 {
-                    OnStatus(new StatusEventArgs() { status = $"Checking ... that CSSPID { groupChoiceChildLevelOrderedList[i].Child } ---- is not empty." });
+                    sbStatus.AppendLine($"{ PolSourceGroupingExcelFileReadRes.Checking} ... { PolSourceGroupingExcelFileReadRes.ThatCSSPID } { groupChoiceChildLevelOrderedList[i].Child } ---- { PolSourceGroupingExcelFileReadRes.IsNotEmpty }.");
+                    sbStatus.AppendLine("");
+                    await statusAndResultsService.Update(command, sbError.ToString(), sbStatus.ToString(), 0);
                 }
 
                 if (string.IsNullOrWhiteSpace(groupChoiceChildLevelOrderedList[i].CSSPID))
                 {
-                    OnCSSPError(new CSSPErrorEventArgs() { CSSPError = $"CSSPID is required for Group or Child [{ (groupChoiceChildLevelOrderedList[i].Choice.Length > 0 ? groupChoiceChildLevelOrderedList[i].Choice : groupChoiceChildLevelOrderedList[i].Group) }]" });
+                    sbError.AppendLine($"{ PolSourceGroupingExcelFileReadRes.CSSPIDIsRequiredForGroupOrChild } [{ (groupChoiceChildLevelOrderedList[i].Choice.Length > 0 ? groupChoiceChildLevelOrderedList[i].Choice : groupChoiceChildLevelOrderedList[i].Group) }]");
+                    sbError.AppendLine("");
+                    await statusAndResultsService.Update(command, sbError.ToString(), sbStatus.ToString(), 0);
+
                     return false;
                 }
 
-                OnStatus(new StatusEventArgs() { status = $"Checking ... that CSSPID { groupChoiceChildLevelOrderedList[i].Child } ---- is unique." });
+                sbStatus.AppendLine($"{ PolSourceGroupingExcelFileReadRes.Checking } ... { PolSourceGroupingExcelFileReadRes.ThatCSSPID } { groupChoiceChildLevelOrderedList[i].Child } ---- { PolSourceGroupingExcelFileReadRes.IsUnique }.");
+                sbStatus.AppendLine("");
+                await statusAndResultsService.Update(command, sbError.ToString(), sbStatus.ToString(), 0);
 
                 if (UniqueCSSPIDList.Contains(groupChoiceChildLevelOrderedList[i].CSSPID))
                 {
-                    OnCSSPError(new CSSPErrorEventArgs() { CSSPError = $"CSSPID [{ groupChoiceChildLevelOrderedList[i].CSSPID }] is not unique" });
+                    sbError.AppendLine($"{ PolSourceGroupingExcelFileReadRes.CSSPID } [{ groupChoiceChildLevelOrderedList[i].CSSPID }] { PolSourceGroupingExcelFileReadRes.IsNotUnique }");
+                    sbError.AppendLine("");
+                    await statusAndResultsService.Update(command, sbError.ToString(), sbStatus.ToString(), 0);
+
                     return false;
                 }
 
@@ -989,7 +1004,9 @@ namespace PolSourceGroupingExcelFileRead.Services
 
                 if (i % 200 == 0)
                 {
-                    OnStatus(new StatusEventArgs() { status = "Checking ... that each Hide cell with information contains valid child id, CSSPID are not duplicated, CSSPID with '-' are well formed." });
+                    sbStatus.AppendLine($"{ PolSourceGroupingExcelFileReadRes.Checking } ... { PolSourceGroupingExcelFileReadRes.ThatEachHideCellWithInformationContainsValidChildID }, { PolSourceGroupingExcelFileReadRes.CSSPIDAreNotDupliate }, { PolSourceGroupingExcelFileReadRes.CSSPIDWithDashAreWellFormed }.");
+                    sbStatus.AppendLine("");
+                    await statusAndResultsService.Update(command, sbError.ToString(), sbStatus.ToString(), 0);
                 }
 
                 if (!groupChoiceChildLevelOrderedList[i].CSSPID.EndsWith("00"))
@@ -1007,7 +1024,10 @@ namespace PolSourceGroupingExcelFileRead.Services
                                 List<string> stringList = childCSSPID.Split("-".ToCharArray(), StringSplitOptions.None).ToList();
                                 if (stringList.Count > 2)
                                 {
-                                    OnCSSPError(new CSSPErrorEventArgs() { CSSPError = $"CSSPID [{ groupChoiceChildLevelOrderedList[i].CSSPID }] Hide cell contains [{ childCSSPID }] please remove a '-'" });
+                                    sbError.AppendLine($"{ PolSourceGroupingExcelFileReadRes.CSSPID } [{ groupChoiceChildLevelOrderedList[i].CSSPID }] { PolSourceGroupingExcelFileReadRes.HideCellContains } [{ childCSSPID }] { PolSourceGroupingExcelFileReadRes.PleaseRemoveADash }");
+                                    sbError.AppendLine("");
+                                    await statusAndResultsService.Update(command, sbError.ToString(), sbStatus.ToString(), 0);
+
                                     return false;
                                 }
 
@@ -1015,7 +1035,10 @@ namespace PolSourceGroupingExcelFileRead.Services
                                 {
                                     if (!NumberAndDashOnlyList.Contains(s.ToString()))
                                     {
-                                        OnCSSPError(new CSSPErrorEventArgs() { CSSPError = $"CSSPID [{ groupChoiceChildLevelOrderedList[i].CSSPID }] Hide cell contains [{ childCSSPID }]. Allowable characters are [{ String.Join(",", NumberAndDashOnlyList) }]" });
+                                        sbError.AppendLine($"{ PolSourceGroupingExcelFileReadRes.CSSPID} [{ groupChoiceChildLevelOrderedList[i].CSSPID }] { PolSourceGroupingExcelFileReadRes.HideCellContains } [{ childCSSPID }]. { PolSourceGroupingExcelFileReadRes.AllowableCharactersAre } [{ String.Join(",", NumberAndDashOnlyList) }]");
+                                        sbError.AppendLine("");
+                                        await statusAndResultsService.Update(command, sbError.ToString(), sbStatus.ToString(), 0);
+
                                         return false;
                                     }
                                 }
@@ -1024,7 +1047,10 @@ namespace PolSourceGroupingExcelFileRead.Services
                                 int endPos = childCSSPID.IndexOf("-") + 1;
                                 if (childCSSPID.Length <= endPos)
                                 {
-                                    OnCSSPError(new CSSPErrorEventArgs() { CSSPError = $"CSSPID [{ groupChoiceChildLevelOrderedList[i].CSSPID }] Hide cell contains [{ childCSSPID }] missing end value" });
+                                    sbError.AppendLine($"{ PolSourceGroupingExcelFileReadRes.CSSPID } [{ groupChoiceChildLevelOrderedList[i].CSSPID }] { PolSourceGroupingExcelFileReadRes.HideCellContains } [{ childCSSPID }] { PolSourceGroupingExcelFileReadRes.MissingEndValue }");
+                                    sbError.AppendLine("");
+                                    await statusAndResultsService.Update(command, sbError.ToString(), sbStatus.ToString(), 0);
+
                                     return false;
                                 }
 
@@ -1032,7 +1058,10 @@ namespace PolSourceGroupingExcelFileRead.Services
 
                                 if (fromCSSPID >= toCSSPID)
                                 {
-                                    OnCSSPError(new CSSPErrorEventArgs() { CSSPError = $"CSSPID [{ groupChoiceChildLevelOrderedList[i].CSSPID }] Hide cell contains [{ childCSSPID }] which the first value is >= then the last value" });
+                                    sbError.AppendLine($"{ PolSourceGroupingExcelFileReadRes.CSSPID } [{ groupChoiceChildLevelOrderedList[i].CSSPID }] { PolSourceGroupingExcelFileReadRes.HideCellContains } [{ childCSSPID }] { PolSourceGroupingExcelFileReadRes.WhichTheFirstValueIs } >= { PolSourceGroupingExcelFileReadRes.ThanTheLastValue }");
+                                    sbError.AppendLine("");
+                                    await statusAndResultsService.Update(command, sbError.ToString(), sbStatus.ToString(), 0);
+
                                     return false;
                                 }
                             }
@@ -1043,7 +1072,10 @@ namespace PolSourceGroupingExcelFileRead.Services
                                 {
                                     if (CSSPIDList2.Contains(id.ToString()) || CSSPIDList.Contains(id.ToString()))
                                     {
-                                        OnCSSPError(new CSSPErrorEventArgs() { CSSPError = $"CSSPID [{ groupChoiceChildLevelOrderedList[i].CSSPID }] Hide cell contains [{ childCSSPID }] which will duplicate [{ id.ToString() }]" });
+                                        sbError.AppendLine($"{ PolSourceGroupingExcelFileReadRes.CSSPID } [{ groupChoiceChildLevelOrderedList[i].CSSPID }] { PolSourceGroupingExcelFileReadRes.HideCellContains } [{ childCSSPID }] { PolSourceGroupingExcelFileReadRes.WhichWillDuplicate } [{ id.ToString() }]");
+                                        sbError.AppendLine("");
+                                        await statusAndResultsService.Update(command, sbError.ToString(), sbStatus.ToString(), 0);
+
                                         return false;
                                     }
 
@@ -1063,7 +1095,10 @@ namespace PolSourceGroupingExcelFileRead.Services
                         {
                             if (oldCSSPID == csspID)
                             {
-                                OnCSSPError(new CSSPErrorEventArgs() { CSSPError = $"CSSPID [{ groupChoiceChildLevelOrderedList[i].CSSPID }] Hide cell has duplicate [{ csspID }]" });
+                                sbError.AppendLine($"{ PolSourceGroupingExcelFileReadRes.CSSPID } [{ groupChoiceChildLevelOrderedList[i].CSSPID }] { PolSourceGroupingExcelFileReadRes.HideCellHasDuplicate } [{ csspID }]");
+                                sbError.AppendLine("");
+                                await statusAndResultsService.Update(command, sbError.ToString(), sbStatus.ToString(), 0);
+
                                 return false;
                             }
                             oldCSSPID = csspID;
@@ -1073,7 +1108,10 @@ namespace PolSourceGroupingExcelFileRead.Services
                             GroupChoiceChildLevel groupChoiceChildLevelChild = groupChoiceChildLevelOrderedList.Where(c => c.CSSPID == childCSSPID).FirstOrDefault();
                             if (groupChoiceChildLevelChild == null)
                             {
-                                OnCSSPError(new CSSPErrorEventArgs() { CSSPError = $"CSSPID [{ groupChoiceChildLevelOrderedList[i].CSSPID }] Hide cell contains id [{ childCSSPID.ToString() }] which does not exist" });
+                                sbError.AppendLine($"{ PolSourceGroupingExcelFileReadRes.CSSPID } [{ groupChoiceChildLevelOrderedList[i].CSSPID }] { PolSourceGroupingExcelFileReadRes.HideCellContainsID } [{ childCSSPID.ToString() }] { PolSourceGroupingExcelFileReadRes.WhichDoesNotExist }");
+                                sbError.AppendLine("");
+                                await statusAndResultsService.Update(command, sbError.ToString(), sbStatus.ToString(), 0);
+
                                 return false;
                             }
                             string startCSSPID = $"{ childCSSPID.Substring(0, 3) }00";
@@ -1082,14 +1120,20 @@ namespace PolSourceGroupingExcelFileRead.Services
 
                             if (groupChoiceChildLevel == null)
                             {
-                                OnCSSPError(new CSSPErrorEventArgs() { CSSPError = $"CSSPID [{ groupChoiceChildLevelOrderedList[i].CSSPID }] Group Choice child level is null for startCSSPID [{ startCSSPID.ToString() }]" });
+                                sbError.AppendLine($"{ PolSourceGroupingExcelFileReadRes.CSSPID } [{ groupChoiceChildLevelOrderedList[i].CSSPID }] { PolSourceGroupingExcelFileReadRes.GroupChoiceChildLevelIsNullForStartCSSPID } [{ startCSSPID.ToString() }]");
+                                sbError.AppendLine("");
+                                await statusAndResultsService.Update(command, sbError.ToString(), sbStatus.ToString(), 0);
+
                                 return false;
                             }
 
                             string group = groupChoiceChildLevel.Group;
                             if (groupChoiceChildLevelOrderedList[i].Child != group)
                             {
-                                OnCSSPError(new CSSPErrorEventArgs() { CSSPError = $"CSSPID [{ groupChoiceChildLevelOrderedList[i].CSSPID }] Hide cell contains id [{ childCSSPID.ToString() }] which is not a direct child" });
+                                sbError.AppendLine($"{ PolSourceGroupingExcelFileReadRes.CSSPID } [{ groupChoiceChildLevelOrderedList[i].CSSPID }] { PolSourceGroupingExcelFileReadRes.HideCellContainsID } [{ childCSSPID.ToString() }] { PolSourceGroupingExcelFileReadRes.WhichIsNotADirectChild }");
+                                sbError.AppendLine("");
+                                await statusAndResultsService.Update(command, sbError.ToString(), sbStatus.ToString(), 0);
+
                                 return false;
                             }
                         }
@@ -1100,7 +1144,10 @@ namespace PolSourceGroupingExcelFileRead.Services
                             GroupChoiceChildLevel groupChoiceChildLevelChild = groupChoiceChildLevelOrderedList.Where(c => c.CSSPID == childCSSPID).FirstOrDefault();
                             if (groupChoiceChildLevelChild == null)
                             {
-                                OnCSSPError(new CSSPErrorEventArgs() { CSSPError = $"CSSPID [{ groupChoiceChildLevelOrderedList[i].CSSPID }] Hide cell contains id [{ childCSSPID.ToString() }] which does not exist" });
+                                sbError.AppendLine($"{ PolSourceGroupingExcelFileReadRes.CSSPID } [{ groupChoiceChildLevelOrderedList[i].CSSPID }] { PolSourceGroupingExcelFileReadRes.HideCellContainsID } [{ childCSSPID.ToString() }] { PolSourceGroupingExcelFileReadRes.WhichDoesNotExist}");
+                                sbError.AppendLine("");
+                                await statusAndResultsService.Update(command, sbError.ToString(), sbStatus.ToString(), 0);
+
                                 return false;
                             }
                             string start3CharCSSPID = $"{ childCSSPID.Substring(0, 3) }";
@@ -1109,7 +1156,10 @@ namespace PolSourceGroupingExcelFileRead.Services
 
                             if (CSSPIDList.Count == CountChild)
                             {
-                                OnCSSPError(new CSSPErrorEventArgs() { CSSPError = $"CSSPID [{ groupChoiceChildLevelOrderedList[i].CSSPID }] is hiding all possible selection" });
+                                sbError.AppendLine($"{ PolSourceGroupingExcelFileReadRes.CSSPID } [{ groupChoiceChildLevelOrderedList[i].CSSPID }] { PolSourceGroupingExcelFileReadRes.IsHidingAllPossibleSelection }");
+                                sbError.AppendLine("");
+                                await statusAndResultsService.Update(command, sbError.ToString(), sbStatus.ToString(), 0);
+
                                 return false;
 
                             }
@@ -1118,18 +1168,25 @@ namespace PolSourceGroupingExcelFileRead.Services
                 }
             }
 
-            OnCSSPError(new CSSPErrorEventArgs() { CSSPError = "All Groups and Choices Columns have a unique CSSPID.\r\n\r\n" });
+            sbStatus.AppendLine($"{ PolSourceGroupingExcelFileReadRes.AllGroupsAndChoicesColumnsHaveAUniqueCSSPID }.");
+            sbStatus.AppendLine("");
 
-            OnCSSPError(new CSSPErrorEventArgs() { CSSPError = "All Hide Columns with information has valid CSSPID (i.e. exist and is child).\r\n\r\n" });
+            sbStatus.AppendLine($"{ PolSourceGroupingExcelFileReadRes.AllHideColumnsWithInformationHasValidCSSPIDIEExistAndIsChild }.");
+            sbStatus.AppendLine("");
 
-            OnCSSPError(new CSSPErrorEventArgs() { CSSPError = "Everything is OK" });
+            sbStatus.AppendLine($"{ PolSourceGroupingExcelFileReadRes.EverythingIsOK }.");
+            sbStatus.AppendLine("");
+            await statusAndResultsService.Update(command, sbError.ToString(), sbStatus.ToString(), 0);
 
             return true;
         }
-        private bool ReadExcelFile()
+        private async Task<bool> ReadExcelFile(StringBuilder sbError, StringBuilder sbStatus, string command, IStatusAndResultsService statusAndResultsService)
         {
             groupChoiceChildLevelList = new List<GroupChoiceChildLevel>();
-            OnStatus(new StatusEventArgs() { status = $"Reading spreadsheet [{ FullFileName }] ..." });
+
+            sbStatus.AppendLine($"{ PolSourceGroupingExcelFileReadRes.ReadingSpreadsheet } [{ FullFileName }]");
+            sbStatus.AppendLine("");
+            await statusAndResultsService.Update(command, sbError.ToString(), sbStatus.ToString(), 0);
 
             FileInfo fi = new FileInfo(FullFileName);
 
@@ -1191,7 +1248,10 @@ namespace PolSourceGroupingExcelFileRead.Services
                                                     {
                                                         if ((item.Text.Text + "") != FieldNameList[cellcount])
                                                         {
-                                                            OnCSSPError(new CSSPErrorEventArgs() { CSSPError = $"{ fi.FullName } PolSourceGrouping { item.Text } is not equal to { FieldNameList[cellcount] }\r\n" });
+                                                            sbError.AppendLine($"{ fi.FullName } { PolSourceGroupingExcelFileReadRes.PolSourceGrouping } { item.Text } { PolSourceGroupingExcelFileReadRes.IsNotEqualTo } { FieldNameList[cellcount] }");
+                                                            sbError.AppendLine("");
+                                                            await statusAndResultsService.Update(command, sbError.ToString(), sbStatus.ToString(), 0);
+
                                                             return false;
                                                         }
                                                     }
@@ -1200,7 +1260,10 @@ namespace PolSourceGroupingExcelFileRead.Services
                                                         currentcellvalue = item.InnerText;
                                                         if (currentcellvalue != FieldNameList[cellcount])
                                                         {
-                                                            OnCSSPError(new CSSPErrorEventArgs() { CSSPError = $"{ fi.FullName } PolSourceGrouping { item.Text } is not equal to { FieldNameList[cellcount] }\r\n" });
+                                                            sbError.AppendLine($"{ fi.FullName } { PolSourceGroupingExcelFileReadRes.PolSourceGrouping } { item.Text } { PolSourceGroupingExcelFileReadRes.IsNotEqualTo } { FieldNameList[cellcount] }");
+                                                            sbError.AppendLine("");
+                                                            await statusAndResultsService.Update(command, sbError.ToString(), sbStatus.ToString(), 0);
+
                                                             return false;
                                                         }
                                                     }
@@ -1209,7 +1272,10 @@ namespace PolSourceGroupingExcelFileRead.Services
                                                         currentcellvalue = item.InnerXml;
                                                         if (currentcellvalue != FieldNameList[cellcount])
                                                         {
-                                                            OnCSSPError(new CSSPErrorEventArgs() { CSSPError = $"{ fi.FullName } PolSourceGrouping { item.Text } is not equal to { FieldNameList[cellcount] }\r\n" });
+                                                            sbError.AppendLine($"{ fi.FullName } { PolSourceGroupingExcelFileReadRes.PolSourceGrouping } { item.Text } { PolSourceGroupingExcelFileReadRes.IsNotEqualTo } { FieldNameList[cellcount] }");
+                                                            sbError.AppendLine("");
+                                                            await statusAndResultsService.Update(command, sbError.ToString(), sbStatus.ToString(), 0);
+
                                                             return false;
                                                         }
                                                     }
@@ -1220,7 +1286,10 @@ namespace PolSourceGroupingExcelFileRead.Services
                                         {
                                             if ((thecurrentcell.InnerText + " ") != FieldNameList[cellcount])
                                             {
-                                                OnCSSPError(new CSSPErrorEventArgs() { CSSPError = $"{ fi.FullName } PolSourceGrouping { (thecurrentcell.InnerText + " ") } is not equal to { FieldNameList[cellcount] }\r\n" });
+                                                sbError.AppendLine($"{ fi.FullName } { PolSourceGroupingExcelFileReadRes.PolSourceGrouping } { (thecurrentcell.InnerText + " ") } { PolSourceGroupingExcelFileReadRes.IsNotEqualTo } { FieldNameList[cellcount] }");
+                                                sbError.AppendLine("");
+                                                await statusAndResultsService.Update(command, sbError.ToString(), sbStatus.ToString(), 0);
+
                                                 return false;
                                             }
                                         }
@@ -1477,7 +1546,9 @@ namespace PolSourceGroupingExcelFileRead.Services
 
                                     if (rowCount % 200 == 0)
                                     {
-                                        OnStatus(new StatusEventArgs() { status = $"Reading spreadsheet ... { rowCount }" });
+                                        sbStatus.AppendLine($"{ PolSourceGroupingExcelFileReadRes.ReadingSpreadsheet } ... { rowCount }");
+                                        sbStatus.AppendLine("");
+                                        await statusAndResultsService.Update(command, sbError.ToString(), sbStatus.ToString(), 0);
                                     }
 
                                     if (!string.IsNullOrWhiteSpace(CSSPID))
@@ -1510,194 +1581,18 @@ namespace PolSourceGroupingExcelFileRead.Services
             }
             catch (Exception ex)
             {
-                OnCSSPError(new CSSPErrorEventArgs() { CSSPError = $"{ ex.Message }" });
+                sbError.AppendLine($"{ ex.Message }");
+                sbError.AppendLine("");
+                await statusAndResultsService.Update(command, sbError.ToString(), sbStatus.ToString(), 0);
+
                 return false;
             }
 
-            #region Old Text
-
-            //string connectionString = $@"Provider=Microsoft.ACE.OLEDB.12.0;Data Source={ fi.FullName };Extended Properties=Excel 12.0 Xml;HDR=YES";
-            //OleDbConnection conn = new OleDbConnection(connectionString);
-
-            //try
-            //{
-            //    conn.Open();
-            //}
-            //catch (Exception ex)
-            //{
-            //    string InnerException = (ex.InnerException == null ? "" : $" InnerException: { ex.InnerException.Message }");
-            //    OnCSSPError(new CSSPErrorEventArgs() { CSSPError = $"{ ex.Message }{ InnerException }" });
-            //    return false;
-            //}
-            //OleDbDataReader reader;
-
-            //OleDbCommand comm = new OleDbCommand("Select * from [PolSourceGrouping$];");
-
-            //try
-            //{
-            //    comm.Connection = conn;
-            //    reader = comm.ExecuteReader();
-
-            //}
-            //catch (Exception ex)
-            //{
-            //    OnCSSPError(new CSSPErrorEventArgs() { CSSPError = $"CSSPError 'comm.ExecuteReader' { ex.Message }\r\n" });
-            //    return false;
-            //}
-
-            //if (reader.FieldCount != 14)
-            //{
-            //    OnCSSPError(new CSSPErrorEventArgs() { CSSPError = $"CSSPError Column count is [{ reader.FieldCount }]. It should be 14.\r\n" });
-            //    return false;
-            //}
-
-            //List<string> FieldNameList = new List<string>();
-            //FieldNameList = new List<string>() { "CSSPID", "Group", "Child", "Hide", "EN", "InitEN", "DescEN", "ReportEN", "TextEN", "FR", "InitFR", "DescFR", "ReportFR", "TextFR" };
-            //for (int j = 0; j < reader.FieldCount; j++)
-            //{
-            //    if (reader.GetName(j) != FieldNameList[j])
-            //    {
-            //        OnStatus(new StatusEventArgs() { status = $"{ fi.FullName } PolSourceGrouping { reader.GetName(j) } is not equal to { FieldNameList[j] }\r\n" });
-            //        return false;
-            //    }
-            //}
-            //reader.Close();
-
-            //reader = comm.ExecuteReader();
-
-            //string CSSPID = "";
-            //string Group = "";
-            //string Choice = "";
-            //string Child = "";
-            //string Hide = "";
-            //string EN = "";
-            //string InitEN = "";
-            //string DescEN = "";
-            //string ReportEN = "";
-            //string TextEN = "";
-            //string FR = "";
-            //string InitFR = "";
-            //string DescFR = "";
-            //string ReportFR = "";
-            //string TextFR = "";
-
-            //int CountRead = 0;
-            //while (reader.Read())
-            //{
-            //    CountRead += 1;
-
-            //    if (CountRead % 200 == 0)
-            //    {
-            //        OnStatus(new StatusEventArgs() { status = $"Reading spreadsheet ... { CountRead }" });
-            //    }
-
-            //    if (reader.GetValue(1).GetType() == typeof(DBNull) || string.IsNullOrEmpty(reader.GetValue(1).ToString()))
-            //    {
-            //        CSSPID = "";
-            //        Group = "";
-            //        Choice = "";
-            //        Child = "";
-            //        Hide = "";
-            //        EN = "";
-            //        InitEN = "";
-            //        DescEN = "";
-            //        ReportEN = "";
-            //        TextEN = "";
-            //        FR = "";
-            //        InitFR = "";
-            //        DescFR = "";
-            //        ReportFR = "";
-            //        TextFR = "";
-            //        continue;
-            //    }
-            //    else
-            //    {
-            //        string TempStr = reader.GetValue(1).ToString();
-            //        if (TempStr.Length > 0)
-            //        {
-            //            if (TempStr.Substring(TempStr.Length - 5) == "Start")
-            //            {
-            //                CSSPID = reader.GetValue(0).ToString();
-            //                Group = TempStr;
-            //                Choice = "";
-            //                Child = "";
-            //                Hide = "";
-            //                EN = reader.GetValue(4).ToString();
-            //                InitEN = reader.GetValue(5).ToString();
-            //                DescEN = reader.GetValue(6).ToString();
-            //                ReportEN = reader.GetValue(7).ToString();
-            //                TextEN = reader.GetValue(8).ToString();
-            //                FR = reader.GetValue(9).ToString();
-            //                InitFR = reader.GetValue(10).ToString();
-            //                DescFR = reader.GetValue(11).ToString();
-            //                ReportFR = reader.GetValue(12).ToString();
-            //                TextFR = reader.GetValue(13).ToString();
-            //            }
-            //            else
-            //            {
-            //                CSSPID = reader.GetValue(0).ToString();
-            //                Choice = TempStr;
-            //                if (reader.GetValue(2).GetType() == typeof(DBNull) || string.IsNullOrEmpty(reader.GetValue(2).ToString()))
-            //                {
-            //                    Child = "";
-            //                }
-            //                else
-            //                {
-            //                    Child = reader.GetValue(2).ToString();
-            //                }
-            //                if (reader.GetValue(3).GetType() == typeof(DBNull) || string.IsNullOrEmpty(reader.GetValue(3).ToString()))
-            //                {
-            //                    Hide = "";
-            //                }
-            //                else
-            //                {
-            //                    Hide = reader.GetValue(3).ToString();
-            //                }
-            //                EN = reader.GetValue(4).ToString();
-            //                InitEN = reader.GetValue(5).ToString();
-            //                DescEN = reader.GetValue(6).ToString();
-            //                ReportEN = reader.GetValue(7).ToString();
-            //                TextEN = reader.GetValue(8).ToString();
-            //                FR = reader.GetValue(9).ToString();
-            //                InitFR = reader.GetValue(10).ToString();
-            //                DescFR = reader.GetValue(11).ToString();
-            //                ReportFR = reader.GetValue(12).ToString();
-            //                TextFR = reader.GetValue(13).ToString();
-            //            }
-
-            //            groupChoiceChildLevelList.Add(new GroupChoiceChildLevel()
-            //            {
-            //                CSSPID = CSSPID,
-            //                Group = Group,
-            //                Choice = Choice,
-            //                Child = Child,
-            //                Hide = Hide,
-            //                EN = EN,
-            //                InitEN = InitEN,
-            //                DescEN = DescEN,
-            //                ReportEN = ReportEN,
-            //                TextEN = TextEN,
-            //                FR = FR,
-            //                InitFR = InitFR,
-            //                DescFR = DescFR,
-            //                ReportFR = ReportFR,
-            //                TextFR = TextFR,
-            //            });
-            //        }
-            //    }
-
-
-            //}
-            //reader.Close();
-
-            //conn.Close();
-
-            #endregion Old Text
 
             int Level = 0;
             List<string> textList = new List<string>();
             StringBuilder sb = new StringBuilder();
-            if (!GetRecursiveForShowAllPaths("Start", textList, Level, false, sb))
+            if (! await GetRecursiveForShowAllPaths("Start", textList, Level, false, sb, sbError, sbStatus, command, statusAndResultsService))
             {
                 return false;
             }

@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using CSSPPolSourceGroupingExcelFileRead.Services;
+using Microsoft.Extensions.Configuration;
 using StatusAndResultsDBService.Services;
 using System;
 using System.Collections.Generic;
@@ -9,6 +10,6 @@ namespace EnumsPolSourceInfoRelatedFiles.Services
 {
     public interface IGenerateService
     {
-        Task Start(IConfigurationRoot configuration, IStatusAndResultsService statusAndResultsService);
+        Task Start(IConfigurationRoot configuration, IStatusAndResultsService statusAndResultsService, IPolSourceGroupingExcelFileRead polSourceGroupingExcelFileRead);
     }
 }

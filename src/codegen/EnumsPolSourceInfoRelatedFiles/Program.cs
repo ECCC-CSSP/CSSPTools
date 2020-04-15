@@ -8,6 +8,7 @@ using System.Globalization;
 using System.IO;
 using StatusAndResultsDBService.Models;
 using StatusAndResultsDBService.Services;
+using CSSPPolSourceGroupingExcelFileRead.Services;
 
 namespace EnumsPolSourceInfoRelatedFiles
 {
@@ -47,7 +48,6 @@ namespace EnumsPolSourceInfoRelatedFiles
                 }
             }
 
-
             serviceCollection.AddDbContext<GenerateCodeStatusContext>(options =>
             {
                 options.UseSqlite($"DataSource={fiDB.FullName}");
@@ -55,18 +55,20 @@ namespace EnumsPolSourceInfoRelatedFiles
 
             serviceCollection.AddScoped<IGenerateService, GenerateService>();
             serviceCollection.AddScoped<IStatusAndResultsService, StatusAndResultsService>();
+            serviceCollection.AddScoped<IPolSourceGroupingExcelFileRead, PolSourceGroupingExcelFileRead>();
 
             var provider = serviceCollection.BuildServiceProvider();
 
             IGenerateService generateService = provider.GetService<IGenerateService>();
 
             IStatusAndResultsService statusAndResultsService = provider.GetService<IStatusAndResultsService>();
+            IPolSourceGroupingExcelFileRead polSourceGroupingExcelFileRead = provider.GetService<IPolSourceGroupingExcelFileRead>();
 
             statusAndResultsService.SetCulture(AppRes.Culture);
 
             if (generateService != null)
             {
-                generateService.Start(configuration, statusAndResultsService).GetAwaiter().GetResult();
+                generateService.Start(configuration, statusAndResultsService, polSourceGroupingExcelFileRead).GetAwaiter().GetResult();
             }
         }
         #endregion Entry

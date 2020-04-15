@@ -132,8 +132,14 @@
   <data name="ErrorFileDoesNotExist_" xml:space="preserve">
     <value>Error: File does not exist [{0}] (fr)</value>
   </data>
+  <data name="ERROR_IsEqualTo0" xml:space="preserve">
+    <value>ERROR [{0}] is equal to 0 (fr)</value>
+  </data>
   <data name="Exist" xml:space="preserve">
     <value>Exist (fr)</value>
+  </data>
+  <data name="ReadingExcelDocumentAndChecking" xml:space="preserve">
+    <value>Reading Excel document and checking (fr)</value>
   </data>
   <data name="Starting" xml:space="preserve">
     <value>Starting (fr)</value>

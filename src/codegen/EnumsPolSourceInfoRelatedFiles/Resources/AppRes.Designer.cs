@@ -97,6 +97,15 @@ namespace EnumsPolSourceInfoRelatedFiles.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to ERROR [{0}] is equal to 0.
+        /// </summary>
+        public static string ERROR_IsEqualTo0 {
+            get {
+                return ResourceManager.GetString("ERROR_IsEqualTo0", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Error: File does not exist [{0}].
         /// </summary>
         public static string ErrorFileDoesNotExist_ {
@@ -111,6 +120,15 @@ namespace EnumsPolSourceInfoRelatedFiles.Resources {
         public static string Exist {
             get {
                 return ResourceManager.GetString("Exist", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Reading Excel document and checking.
+        /// </summary>
+        public static string ReadingExcelDocumentAndChecking {
+            get {
+                return ResourceManager.GetString("ReadingExcelDocumentAndChecking", resourceCulture);
             }
         }
         

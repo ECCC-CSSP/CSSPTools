@@ -23,6 +23,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Reference Include="CSSPPolSourceGroupingExcelFileRead">
+      <HintPath>..\CSSPPolSourceGroupingExcelFileRead\bin\Debug\netcoreapp3.1\CSSPPolSourceGroupingExcelFileRead.dll</HintPath>
+    </Reference>
     <Reference Include="StatusAndResultsDBService">
       <HintPath>..\StatusAndResultsDBService\bin\Debug\netcoreapp3.1\StatusAndResultsDBService.dll</HintPath>
     </Reference>

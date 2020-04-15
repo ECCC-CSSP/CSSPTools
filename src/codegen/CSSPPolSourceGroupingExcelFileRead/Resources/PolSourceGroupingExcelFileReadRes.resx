@@ -1,0 +1,318 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="AllChildDoExistOnColumnGroup" xml:space="preserve">
+    <value>All Child do exist on Column Group</value>
+  </data>
+  <data name="AllGroupsAndChoicesColumnsHaveAUniqueCSSPID" xml:space="preserve">
+    <value>All Groups and Choices Columns have a unique CSSPID</value>
+  </data>
+  <data name="AllHideColumnsWithInformationHasValidCSSPIDIEExistAndIsChild" xml:space="preserve">
+    <value>All Hide Columns with information has valid CSSPID (i.e. exist and is child)</value>
+  </data>
+  <data name="AllowableCharactersAre" xml:space="preserve">
+    <value>Allowable characters are</value>
+  </data>
+  <data name="AllTextInCSSPIDColumnDoesNotContainSpace" xml:space="preserve">
+    <value>All Text in CSSPID column does not contain space</value>
+  </data>
+  <data name="AllTextInGroupAndChildColumnsDoesNotContainSpace" xml:space="preserve">
+    <value>All Text in Group and Child Columns does not contain space</value>
+  </data>
+  <data name="Checking" xml:space="preserve">
+    <value>Checking</value>
+  </data>
+  <data name="Child" xml:space="preserve">
+    <value>Child</value>
+  </data>
+  <data name="ColumnGroupDoesNotHaveDuplicates" xml:space="preserve">
+    <value>Column Group does not have duplicates</value>
+  </data>
+  <data name="CSSPID" xml:space="preserve">
+    <value>CSSPID</value>
+  </data>
+  <data name="CSSPIDAreNotDupliate" xml:space="preserve">
+    <value>CSSPID are not duplicated</value>
+  </data>
+  <data name="CSSPIDIsRequiredForGroupOrChild" xml:space="preserve">
+    <value>CSSPID is required for Group or Child</value>
+  </data>
+  <data name="CSSPIDWithDashAreWellFormed" xml:space="preserve">
+    <value>CSSPID with '-' are well formed</value>
+  </data>
+  <data name="DoesHaveDescENAndDescFRText" xml:space="preserve">
+    <value>does have DescEN and DescFR text</value>
+  </data>
+  <data name="DoesHaveENandFRText" xml:space="preserve">
+    <value>does have EN and FR text</value>
+  </data>
+  <data name="DoesNotContainSpace" xml:space="preserve">
+    <value>does not contain space</value>
+  </data>
+  <data name="DoesNotExistOnColumnGroup" xml:space="preserve">
+    <value>does not exist on Column Group</value>
+  </data>
+  <data name="DoesNotHaveDescENText" xml:space="preserve">
+    <value>does not have DescEN text</value>
+  </data>
+  <data name="DoesNotHaveDescFRText" xml:space="preserve">
+    <value>does not have DescFR text</value>
+  </data>
+  <data name="DoesNotHaveENText" xml:space="preserve">
+    <value>does not have EN text</value>
+  </data>
+  <data name="DoesNotHaveFRText" xml:space="preserve">
+    <value>does not have FR text</value>
+  </data>
+  <data name="DoesNotHaveReportENText" xml:space="preserve">
+    <value>does not have ReportEN text</value>
+  </data>
+  <data name="DoesNotHaveReportFRText" xml:space="preserve">
+    <value>does not have ReportFR text</value>
+  </data>
+  <data name="Doing" xml:space="preserve">
+    <value>doing</value>
+  </data>
+  <data name="EachChoiceDoesHaveENAndFRText" xml:space="preserve">
+    <value>Each Choice does have EN and FR text</value>
+  </data>
+  <data name="EachChoiceDoesHaveReportENAndReportFRText" xml:space="preserve">
+    <value>Each Choice does have ReportEN and ReportFR text</value>
+  </data>
+  <data name="EachGroupWithEndingName" xml:space="preserve">
+    <value>Each Group with ending name</value>
+  </data>
+  <data name="EverythingIsOK" xml:space="preserve">
+    <value>Everythiing is OK</value>
+  </data>
+  <data name="ExcelDocReadCompleted" xml:space="preserve">
+    <value>Excel doc read completed</value>
+  </data>
+  <data name="ExistOnColumnGroup" xml:space="preserve">
+    <value>exist on column group</value>
+  </data>
+  <data name="Group" xml:space="preserve">
+    <value>Group</value>
+  </data>
+  <data name="GroupChoiceChildLevelIsNullForStartCSSPID" xml:space="preserve">
+    <value>Group Choice child level is null for startCSSPID</value>
+  </data>
+  <data name="HasDescENDescFRText" xml:space="preserve">
+    <value>has DescEN/DescFR text</value>
+  </data>
+  <data name="HasDuplicates" xml:space="preserve">
+    <value>has duplicates</value>
+  </data>
+  <data name="HasENFRText" xml:space="preserve">
+    <value>has EN/FR text</value>
+  </data>
+  <data name="HasNoDuplicates" xml:space="preserve">
+    <value>has no duplicates</value>
+  </data>
+  <data name="HasReportENReportFRText" xml:space="preserve">
+    <value>has ReportEN/ReportFR text</value>
+  </data>
+  <data name="HideCellContains" xml:space="preserve">
+    <value>Hide cell contains</value>
+  </data>
+  <data name="HideCellContainsID" xml:space="preserve">
+    <value>Hide cell contains id</value>
+  </data>
+  <data name="HideCellHasDuplicate" xml:space="preserve">
+    <value>Hide cell has duplicate</value>
+  </data>
+  <data name="IsHidingAllPossibleSelection" xml:space="preserve">
+    <value>is hiding all possible selection</value>
+  </data>
+  <data name="IsNotEmpty" xml:space="preserve">
+    <value>is not empty</value>
+  </data>
+  <data name="IsNotEqualTo" xml:space="preserve">
+    <value>is not equal to</value>
+  </data>
+  <data name="IsNotUnique" xml:space="preserve">
+    <value>is not unique</value>
+  </data>
+  <data name="IsUnique" xml:space="preserve">
+    <value>is unique</value>
+  </data>
+  <data name="MissingEndValue" xml:space="preserve">
+    <value>missing end value</value>
+  </data>
+  <data name="PleaseRemoveADash" xml:space="preserve">
+    <value>please remove a '-'</value>
+  </data>
+  <data name="PolSourceGrouping" xml:space="preserve">
+    <value>PolSourceGrouping</value>
+  </data>
+  <data name="PotentialEmptyRowAbove" xml:space="preserve">
+    <value>potential empty row above</value>
+  </data>
+  <data name="ReadingSpreadsheet" xml:space="preserve">
+    <value>Reading spreadsheet</value>
+  </data>
+  <data name="RecursiveFound" xml:space="preserve">
+    <value>Recursive found</value>
+  </data>
+  <data name="RequiredAUniqueNumberInFirstColumn" xml:space="preserve">
+    <value>required a unique number in first column</value>
+  </data>
+  <data name="ShouldNotContain" xml:space="preserve">
+    <value>should not contain</value>
+  </data>
+  <data name="ShouldNotContainSpace" xml:space="preserve">
+    <value>should not contain space</value>
+  </data>
+  <data name="ShouldOnlyContainCharactersLike" xml:space="preserve">
+    <value>should only contain characters like</value>
+  </data>
+  <data name="ThanTheLastValue" xml:space="preserve">
+    <value>then the last value</value>
+  </data>
+  <data name="That" xml:space="preserve">
+    <value>that</value>
+  </data>
+  <data name="ThatCSSPID" xml:space="preserve">
+    <value>That CSSPID</value>
+  </data>
+  <data name="ThatEachHideCellWithInformationContainsValidChildID" xml:space="preserve">
+    <value>that each Hide cell with information contains valid child id</value>
+  </data>
+  <data name="ThatGroup" xml:space="preserve">
+    <value>that group</value>
+  </data>
+  <data name="ThatGroupCSSPID" xml:space="preserve">
+    <value>that Group CSSPID</value>
+  </data>
+  <data name="WhichDoesNotExist" xml:space="preserve">
+    <value>which does not exist</value>
+  </data>
+  <data name="WhichIsNotADirectChild" xml:space="preserve">
+    <value>which is not a direct child</value>
+  </data>
+  <data name="WhichTheFirstValueIs" xml:space="preserve">
+    <value>which the first value is</value>
+  </data>
+  <data name="WhichWillDuplicate" xml:space="preserve">
+    <value>which will dupliate</value>
+  </data>
+  <data name="YouCanAddASpaceToFixTheProblem" xml:space="preserve">
+    <value>You can add a space to fix the problem</value>
+  </data>
+</root>

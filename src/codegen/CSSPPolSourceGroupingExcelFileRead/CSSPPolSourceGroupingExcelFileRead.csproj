@@ -11,6 +11,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Reference Include="StatusAndResultsDBService">
+      <HintPath>..\StatusAndResultsDBService\bin\Debug\netcoreapp3.1\StatusAndResultsDBService.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
     <Compile Update="Resources\PolSourceGroupingExcelFileReadRes.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
