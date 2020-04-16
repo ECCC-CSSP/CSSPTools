@@ -20,8 +20,13 @@ namespace CSSPCodeGenWebAPI
             Host.CreateDefaultBuilder(args)
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
-                    webBuilder.UseStartup<Startup>()
+                    webBuilder.ConfigureAppConfiguration(config =>
+                    {
+                        config.AddJsonFile("generateenumssettings.json");
+                        config.AddJsonFile("generatemodelssettings.json");
+                    }).UseStartup<Startup>()
                     .UseUrls("http://localhost:2345");
                 });
+
     }
 }

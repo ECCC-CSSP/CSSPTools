@@ -1,11 +1,11 @@
 <h1>Generate Enums</h1>
 
 <button disabled="{{ generateEnumsService.generateEnumsModel$.value.Working }}"
-    (click)="GenerateEnums('CompareEnumsAndOldEnums')" mat-raised-button color="primary">
+    (click)="GenerateEnums('EnumsCompareWithOldEnums')" mat-raised-button color="primary">
     {{ generateEnumsService.generateEnumsModel$.value.CompareEnumsAndOldEnums }}
 </button>
 <button class="status" disabled="{{ generateEnumsService.generateEnumsModel$.value.Working }}"
-    (click)="StatusEnums('CompareEnumsAndOldEnums')" mat-raised-button color="primary">
+    (click)="StatusEnums('EnumsCompareWithOldEnums')" mat-raised-button color="primary">
     S
 </button>
 <span>&nbsp;&nbsp;&nbsp;</span>

@@ -20,17 +20,18 @@ using CSSPCodeGenWebAPI.Services;
 using StatusAndResultsDBService.Services;
 using System.IO;
 using StatusAndResultsDBService.Models;
+using CSSPCodeGenWebAPI.Models;
 
 namespace CSSPCodeGenWebAPI
 {
     public class Startup
     {
+        public IConfiguration Configuration { get; }
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
         }
-
-        public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
@@ -41,13 +42,12 @@ namespace CSSPCodeGenWebAPI
                 options.JsonSerializerOptions.PropertyNamingPolicy = null;
             });
 
-            // configure strongly typed settings objects
-            var appSettingsSection = Configuration.GetSection("AppSettings");
-            services.Configure<AppSettings>(appSettingsSection);
+            IConfigurationSection apiSettingsSection = Configuration.GetSection("ApiSettings");
+            services.Configure<ApiSettingsModel>(apiSettingsSection);
 
-            // configure jwt authentication
-            var appSettings = appSettingsSection.Get<AppSettings>();
-            var key = Encoding.ASCII.GetBytes(appSettings.Secret);
+            ApiSettingsModel apiSettings = apiSettingsSection.Get<ApiSettingsModel>();
+            byte[] key = Encoding.ASCII.GetBytes(apiSettings.APISecret);
+
             services.AddAuthentication(x =>
             {
                 x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -66,24 +66,29 @@ namespace CSSPCodeGenWebAPI
                 };
             });
 
+            IConfigurationSection connectionStringsSection = Configuration.GetSection("ConnectionStrings");
+            services.Configure<ConnectionStringsModel>(connectionStringsSection);
+
+            ConnectionStringsModel connectionStrings = connectionStringsSection.Get<ConnectionStringsModel>();
+
             //// using CSSPDB
             //services.AddDbContext<CSSPDBContext>(options =>
-            //        options.UseSqlServer(Configuration.GetConnectionString("CSSPDB")));
+            //        options.UseSqlServer(connectionStrings.CSSPDB));
 
             // using CSSPDB2
             services.AddDbContext<CSSPDBContext>(options =>
-                    options.UseSqlServer(Configuration.GetConnectionString("CSSPDB2")));
+                    options.UseSqlServer(connectionStrings.CSSPDB2));
 
             //// using In Memory CSSPDB2
             //services.AddDbContext<CSSPDBContext>(options =>
-            //        options.UseInMemoryDatabase(Configuration.GetConnectionString("CSSPDB2")));
+            //        options.UseInMemoryDatabase(connectionStrings.CSSPDB2));
 
             //// using TestDB
             //services.AddDbContext<CSSPDBContext>(options =>
-            //        options.UseSqlServer(Configuration.GetConnectionString("TestDB")));
+            //        options.UseSqlServer(connectionStrings.TestDB));
 
             services.AddDbContext<ApplicationDbContext>(options =>
-                    options.UseSqlServer(Configuration.GetConnectionString("CSSPDB2")));
+                    options.UseSqlServer(connectionStrings.CSSPDB2));
 
             //services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
             //    .AddEntityFrameworkStores<ApplicationDbContext>();
@@ -93,7 +98,7 @@ namespace CSSPCodeGenWebAPI
 
             string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
 
-            FileInfo fiDB = new FileInfo($@"{appDataPath}\CSSP\GenerateCodeStatus.db");
+            FileInfo fiDB = new FileInfo(connectionStrings.GenerateCodeSatusDB.Replace("{appDataPath}", appDataPath));
 
             services.AddDbContext<GenerateCodeStatusContext>(options =>
             {
@@ -133,8 +138,5 @@ namespace CSSPCodeGenWebAPI
         }
     }
 
-    public class AppSettings
-    {
-        public string Secret { get; set; }
-    }
+
 }

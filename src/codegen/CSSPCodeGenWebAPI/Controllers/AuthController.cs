@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using CSSPCodeGenWebAPI.Model;
+using CSSPCodeGenWebAPI.Models;
 using CSSPCodeGenWebAPI.Services.Resources;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -20,10 +21,10 @@ namespace CSSPCodeGenWebAPI.Controllers
     [ApiController]
     public class TokenController : ControllerBase
     {
-        private readonly AppSettings _appSettings;
+        private readonly ApiSettingsModel _appSettings;
         private readonly IUserService _userService;
 
-        public TokenController(IOptions<AppSettings> appSettings, IUserService userService)
+        public TokenController(IOptions<ApiSettingsModel> appSettings, IUserService userService)
         {
             _appSettings = appSettings.Value;
             _userService = userService;
@@ -46,7 +47,7 @@ namespace CSSPCodeGenWebAPI.Controllers
                 return BadRequest(new { message = userModel.Error });
 
             JwtSecurityTokenHandler tokenHandler = new JwtSecurityTokenHandler();
-            byte[] key = Encoding.ASCII.GetBytes(_appSettings.Secret);
+            byte[] key = Encoding.ASCII.GetBytes(_appSettings.APISecret);
             SecurityTokenDescriptor tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(new Claim[]
@@ -61,24 +62,5 @@ namespace CSSPCodeGenWebAPI.Controllers
 
             return userModel;
         }
-    }
-
-    public class UserModel
-    {
-        public int ContactID { get; set; }
-        public string Id { get; set; }
-        public int ContactTVItemID { get; set; }
-        public string LoginEmail { get; set; }
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
-        public string Initial { get; set; }
-        public string Token { get; set; }
-        public string Error { get; set; }
-    }
-
-    public class LoginModel
-    {
-        public string LoginEmail { get; set; }
-        public string Password { get; set; }
     }
 }

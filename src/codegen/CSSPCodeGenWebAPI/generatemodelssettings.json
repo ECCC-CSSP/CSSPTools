@@ -1,0 +1,70 @@
+{
+  "aaaaaaa": {
+    "Runs": [
+      "C:\\CSSPTools\\src\\codegen\\EnumsCompareWithOldEnums\\bin\\Debug\\netcoreapp3.1\\EnumsCompareWithOldEnums.exe"
+    ],
+    "Required": [
+      "{AppDataPath}\\CSSP\\GenerateCodeStatus.db",
+      "C:\\CSSPTools\\src\\dlls\\CSSPEnums\\bin\\Debug\\netcoreapp3.1\\CSSPEnums.dll",
+      "C:\\CSSP Latest Code Old\\CSSPEnumsDLL\\CSSPEnumsDLL\\bin\\Debug\\CSSPEnumsDLL.dll"
+    ],
+    "Created": [
+
+    ],
+    "Compiled": [
+
+    ]
+  },
+  "bbbbbbbb": {
+    "Runs": [
+      "C:\\CSSPTools\\src\\codegen\\EnumsGenerated_cs\\bin\\Debug\\netcoreapp3.1\\EnumsGenerated_cs.exe"
+    ],
+    "Required": [
+      "{AppDataPath}\\CSSP\\GenerateCodeStatus.db",
+      "C:\\CSSPTools\\src\\dlls\\CSSPEnums\\bin\\Debug\\netcoreapp3.1\\CSSPEnums.dll"
+    ],
+    "Created": [
+      "C:\\CSSPTools\\src\\dlls\\CSSPEnums\\Generated\\IEnumsGenerated.cs",
+      "C:\\CSSPTools\\src\\dlls\\CSSPEnums\\Generated\\EnumsGenerated.cs"
+    ],
+    "Compiled": [
+      "C:\\CSSPTools\\src\\dlls\\CSSPEnums\\bin\\Debug\\netcoreapp3.1\\CSSPEnums.dll"
+    ]
+  },
+  "cccccc": {
+    "Runs": [
+      "C:\\CSSPTools\\src\\codegen\\EnumsTestGenerated_cs\\bin\\Debug\\netcoreapp3.1\\EnumsTestGenerated_cs.exe"
+    ],
+    "Required": [
+      "{AppDataPath}\\CSSP\\GenerateCodeStatus.db",
+      "C:\\CSSPTools\\src\\dlls\\CSSPEnums\\bin\\Debug\\netcoreapp3.1\\CSSPEnums.dll"
+    ],
+    "Created": [
+      "C:\\CSSPTools\\src\\tests\\CSSPEnums.Tests\\tests\\Generated\\EnumsTestGenerated.cs"
+    ],
+    "Compiled": [
+      "C:\\CSSPTools\\src\\codegen\\EnumsTestGenerated_cs\\bin\\Debug\\netcoreapp3.1\\EnumsTestGenerated_cs.exe"
+    ]
+  },
+  "ddddddddd": {
+    "Runs": [
+      "C:\\CSSPTools\\src\\codegen\\EnumsPolSourceInfoRelatedFiles\\bin\\Debug\\netcoreapp3.1\\EnumsPolSourceInfoRelatedFiles.exe"
+    ],
+    "Required": [
+      "{AppDataPath}\\CSSP\\GenerateCodeStatus.db",
+      "C:\\CSSPTools\\src\\dlls\\CSSPEnums\\bin\\Debug\\netcoreapp3.1\\CSSPEnums.dll",
+      "C:\\CSSPTools\\src\\assets\\PolSourceGrouping.xlsm"
+    ],
+    "Created": [
+      "C:\\CSSPTools\\src\\dlls\\CSSPServices\\Generated\\FillPolSourceObsInfoChildServiceGenerated.cs",
+      "C:\\CSSPTools\\src\\dlls\\CSSPEnums\\Generated\\EnumsPolSourceInfoGenerated.cs",
+      "C:\\CSSPTools\\src\\dlls\\CSSPEnums\\Generated\\PolSourceObsInfoEnumGenerated.cs",
+      "C:\\CSSPTools\\src\\tests\\CSSPEnums.Tests\\tests\\Generated\\EnumsPolSourceObsInfoEnumTestGenerated.cs",
+      "C:\\CSSPTools\\src\\dlls\\CSSPEnums\\Resources\\Generated\\PolSourceInfoEnumGeneratedRes.resx",
+      "C:\\CSSPTools\\src\\dlls\\CSSPEnums\\Resources\\Generated\\PolSourceInfoEnumGeneratedRes.fr.resx"
+    ],
+    "Compiled": [
+      "C:\\CSSPTools\\src\\dlls\\CSSPEnums\\bin\\Debug\\netcoreapp3.1\\CSSPEnums.dll"
+    ]
+  }
+}

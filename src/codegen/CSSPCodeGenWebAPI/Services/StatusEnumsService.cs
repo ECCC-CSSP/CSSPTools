@@ -50,7 +50,7 @@ namespace CSSPCodeGenWebAPI.Services
 
                 switch (command)
                 {
-                    case "CompareEnumsAndOldEnums":
+                    case "EnumsCompareWithOldEnums":
                     case "EnumsGenerated_cs":
                     case "EnumsTestGenerated_cs":
                     case "EnumsPolSourceInfoRelatedFiles":

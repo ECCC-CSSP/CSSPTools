@@ -15,7 +15,7 @@ using System.Threading.Tasks;
 
 namespace CSSPCodeGenWebAPI.Services
 {
-    public class GenerateEnumsService : IGenerateEnumsService
+    public class GenerateModelsService : IGenerateModelsService
     {
         /// <summary>
         /// Will try to run a console application    
@@ -24,7 +24,7 @@ namespace CSSPCodeGenWebAPI.Services
         /// <param name="culture">Current culture setting for multilanguage error message</param>
         /// <param name="sbStatus">Will hold all the status text during the running of the application</param>
         /// <returns></returns>
-        public async Task GenerateEnums(string command, CultureInfo culture, IConfiguration configuration, IStatusAndResultsService statusAndResultsService)
+        public async Task GenerateModels(string command, CultureInfo culture, IConfiguration configuration, IStatusAndResultsService statusAndResultsService)
         {
             try
             {
@@ -34,10 +34,10 @@ namespace CSSPCodeGenWebAPI.Services
                 string args = "";
                 switch (command)
                 {
-                    case "EnumsCompareWithOldEnums":
-                    case "EnumsGenerated_cs":
-                    case "EnumsTestGenerated_cs":
-                    case "EnumsPolSourceInfoRelatedFiles":
+                    case "ModelsGenerate_a":
+                    case "ModelsGenerated_b":
+                    case "ModelsTestGenerated_c":
+                    case "ModelsGenerate_d":
                         {
                             exePath = configuration.GetSection($"{ command }:Runs").GetChildren().ToList().Select(x => x.Value).ToList().FirstOrDefault();
                             args = $" { culture.Name }";
