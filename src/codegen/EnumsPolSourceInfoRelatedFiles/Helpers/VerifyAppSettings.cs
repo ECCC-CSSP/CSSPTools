@@ -29,11 +29,11 @@ namespace EnumsPolSourceInfoRelatedFiles
 
                 if (!string.IsNullOrWhiteSpace(retConf))
                 {
-                    Console.WriteLine($"\tOK\t{param} { AppRes.Exist}");
+                    Console.WriteLine($"\tOK\t{ AppRes.Parameter }\t{param} { AppRes.Exist}");
                 }
                 else
                 {
-                    Console.WriteLine($"\tERROR\t{param} { AppRes.CouldNotFindParameter }");
+                    Console.WriteLine($"\tERROR\t{ AppRes.Parameter }\t{param} { AppRes.CouldNotFindParameter }");
                     hasError = true;
                 }
             }
@@ -50,12 +50,12 @@ namespace EnumsPolSourceInfoRelatedFiles
                             string command = "EnumsPolSourceInfoRelatedFiles";
                             if (retConf != command)
                             {
-                                Console.WriteLine($"\tERROR\t{param} {retConf} != " + command);
+                                Console.WriteLine($"\tERROR\t{param} != " + command);
                                 hasError = true;
                             }
                             else
                             {
-                                Console.WriteLine($"\tOK\t{param} {retConf} == " + command);
+                                Console.WriteLine($"\tOK\t{param} == " + command);
                             }
                         }
                         break;
@@ -63,12 +63,12 @@ namespace EnumsPolSourceInfoRelatedFiles
                         {
                             if (!(retConf == "en-CA" || retConf == "fr-CA"))
                             {
-                                Console.WriteLine($"\tERROR\t{param} {retConf} != en-CA || fr-CA");
+                                Console.WriteLine($"\tERROR\t{param} != en-CA || fr-CA");
                                 hasError = true;
                             }
                             else
                             {
-                                Console.WriteLine($"\tOK\t{param} {retConf} == en-CA || fr-CA");
+                                Console.WriteLine($"\tOK\t{param} == en-CA || fr-CA");
                             }
                         }
                         break;
@@ -77,12 +77,12 @@ namespace EnumsPolSourceInfoRelatedFiles
                             string fileName = "{AppDataPath}\\CSSP\\GenerateCodeStatus.db";
                             if (retConf != fileName)
                             {
-                                Console.WriteLine($"\tERROR\t{param} {retConf} != " + fileName);
+                                Console.WriteLine($"\tERROR\t{param} != " + fileName);
                                 hasError = true;
                             }
                             else
                             {
-                                Console.WriteLine($"\tOK\t{param} {retConf} == " + fileName);
+                                Console.WriteLine($"\tOK\t{param} == " + fileName);
                             }
 
                             string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
@@ -91,12 +91,12 @@ namespace EnumsPolSourceInfoRelatedFiles
 
                             if (!fiDB.Exists)
                             {
-                                Console.WriteLine($"\tERROR\t{param} {retConf} != { fiDB.FullName }");
+                                Console.WriteLine($"\tERROR\t{param} != { fiDB.FullName }");
                                 hasError = true;
                             }
                             else
                             {
-                                Console.WriteLine($"\tOK\t{param} {retConf} = { fiDB.FullName }");
+                                Console.WriteLine($"\tOK\t{param} == { fiDB.FullName }");
                             }
                         }
                         break;
@@ -105,12 +105,12 @@ namespace EnumsPolSourceInfoRelatedFiles
                             string fileName = "C:\\CSSPTools\\src\\assets\\PolSourceGrouping.xlsm";
                             if (retConf != fileName)
                             {
-                                Console.WriteLine($"\tERROR\t{param} {retConf} != " + fileName);
+                                Console.WriteLine($"\tERROR\t{param} != " + fileName);
                                 hasError = true;
                             }
                             else
                             {
-                                Console.WriteLine($"\tOK\t{param} {retConf} == " + fileName);
+                                Console.WriteLine($"\tOK\t{param} == " + fileName);
                             }
 
                             FileInfo fiTest = new FileInfo(retConf);
@@ -130,23 +130,12 @@ namespace EnumsPolSourceInfoRelatedFiles
                             string fileName = "C:\\CSSPTools\\src\\dlls\\CSSPServices\\Generated\\FillPolSourceObsInfoChildServiceGenerated.cs";
                             if (retConf != fileName)
                             {
-                                Console.WriteLine($"\tERROR\t{param} {retConf} != " + fileName);
+                                Console.WriteLine($"\tERROR\t{param} != " + fileName);
                                 hasError = true;
                             }
                             else
                             {
-                                Console.WriteLine($"\tOK\t{param} {retConf} == " + fileName);
-                            }
-
-                            FileInfo fiTest = new FileInfo(retConf);
-                            if (!fiTest.Exists)
-                            {
-                                Console.WriteLine($"\tERROR\t{param} {retConf} { AppRes.ErrorFileDoesNotExist_}");
-                                hasError = true;
-                            }
-                            else
-                            {
-                                Console.WriteLine($"\tOK\t{param} {retConf} { AppRes.Exist}");
+                                Console.WriteLine($"\tOK\t{param} == " + fileName);
                             }
                         }
                         break;
@@ -155,23 +144,12 @@ namespace EnumsPolSourceInfoRelatedFiles
                             string fileName = "C:\\CSSPTools\\src\\dlls\\CSSPEnums\\Generated\\EnumsPolSourceInfoGenerated.cs";
                             if (retConf != fileName)
                             {
-                                Console.WriteLine($"\tERROR\t{param} {retConf} != " + fileName);
+                                Console.WriteLine($"\tERROR\t{param} != " + fileName);
                                 hasError = true;
                             }
                             else
                             {
-                                Console.WriteLine($"\tOK\t{param} {retConf} == " + fileName);
-                            }
-
-                            FileInfo fiTest = new FileInfo(retConf);
-                            if (!fiTest.Exists)
-                            {
-                                Console.WriteLine($"\tERROR\t{param} {retConf} { AppRes.ErrorFileDoesNotExist_}");
-                                hasError = true;
-                            }
-                            else
-                            {
-                                Console.WriteLine($"\tOK\t{param} {retConf} { AppRes.Exist}");
+                                Console.WriteLine($"\tOK\t{param} == " + fileName);
                             }
                         }
                         break;
@@ -180,23 +158,12 @@ namespace EnumsPolSourceInfoRelatedFiles
                             string fileName = "C:\\CSSPTools\\src\\tests\\CSSPEnums.Tests\\tests\\Generated\\EnumsPolSourceObsInfoEnumTestGenerated.cs";
                             if (retConf != fileName)
                             {
-                                Console.WriteLine($"\tERROR\t{param} {retConf} != " + fileName);
+                                Console.WriteLine($"\tERROR\t{param} != " + fileName);
                                 hasError = true;
                             }
                             else
                             {
-                                Console.WriteLine($"\tOK\t{param} {retConf} == " + fileName);
-                            }
-
-                            FileInfo fiTest = new FileInfo(retConf);
-                            if (!fiTest.Exists)
-                            {
-                                Console.WriteLine($"\tERROR\t{param} {retConf} { AppRes.ErrorFileDoesNotExist_}");
-                                hasError = true;
-                            }
-                            else
-                            {
-                                Console.WriteLine($"\tOK\t{param} {retConf} { AppRes.Exist}");
+                                Console.WriteLine($"\tOK\t{param} == " + fileName);
                             }
                         }
                         break;
@@ -205,23 +172,12 @@ namespace EnumsPolSourceInfoRelatedFiles
                             string fileName = "C:\\CSSPTools\\src\\dlls\\CSSPEnums\\Resources\\Generated\\PolSourceInfoEnumGeneratedRes.resx";
                             if (retConf != fileName)
                             {
-                                Console.WriteLine($"\tERROR\t{param} {retConf} != " + fileName);
+                                Console.WriteLine($"\tERROR\t{param} != " + fileName);
                                 hasError = true;
                             }
                             else
                             {
-                                Console.WriteLine($"\tOK\t{param} {retConf} == " + fileName);
-                            }
-
-                            FileInfo fiTest = new FileInfo(retConf);
-                            if (!fiTest.Exists)
-                            {
-                                Console.WriteLine($"\tERROR\t{param} {retConf} { AppRes.ErrorFileDoesNotExist_}");
-                                hasError = true;
-                            }
-                            else
-                            {
-                                Console.WriteLine($"\tOK\t{param} {retConf} { AppRes.Exist}");
+                                Console.WriteLine($"\tOK\t{param} == " + fileName);
                             }
                         }
                         break;
@@ -230,23 +186,12 @@ namespace EnumsPolSourceInfoRelatedFiles
                             string fileName = "C:\\CSSPTools\\src\\dlls\\CSSPEnums\\Resources\\Generated\\PolSourceInfoEnumGeneratedRes.fr.resx";
                             if (retConf != fileName)
                             {
-                                Console.WriteLine($"\tERROR\t{param} {retConf} != " + fileName);
+                                Console.WriteLine($"\tERROR\t{param} != " + fileName);
                                 hasError = true;
                             }
                             else
                             {
-                                Console.WriteLine($"\tOK\t{param} {retConf} == " + fileName);
-                            }
-
-                            FileInfo fiTest = new FileInfo(retConf);
-                            if (!fiTest.Exists)
-                            {
-                                Console.WriteLine($"\tERROR\t{param} {retConf} { AppRes.ErrorFileDoesNotExist_}");
-                                hasError = true;
-                            }
-                            else
-                            {
-                                Console.WriteLine($"\tOK\t{param} {retConf} { AppRes.Exist}");
+                                Console.WriteLine($"\tOK\t{param} == " + fileName);
                             }
                         }
                         break;

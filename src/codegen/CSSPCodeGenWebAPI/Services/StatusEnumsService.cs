@@ -53,7 +53,7 @@ namespace CSSPCodeGenWebAPI.Services
                     case "CompareEnumsAndOldEnums":
                     case "EnumsGenerated_cs":
                     case "EnumsTestGenerated_cs":
-                    case "GeneratePolSourceEnumCodeFiles":
+                    case "EnumsPolSourceInfoRelatedFiles":
                         {
                             await VerifyCommandStatus(command, configuration, statusAndResultsService);
                         }

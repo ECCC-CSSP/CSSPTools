@@ -68,7 +68,7 @@ namespace EnumsPolSourceInfoRelatedFiles
 
             if (generateService != null)
             {
-                generateService.Start(configuration, statusAndResultsService, polSourceGroupingExcelFileRead).GetAwaiter().GetResult();
+                generateService.Start().GetAwaiter().GetResult();
             }
         }
         #endregion Entry

@@ -126,8 +126,14 @@
   <data name="Created" xml:space="preserve">
     <value>Created (fr)</value>
   </data>
+  <data name="Creating" xml:space="preserve">
+    <value>Creating (fr)</value>
+  </data>
   <data name="Done" xml:space="preserve">
     <value>Done (fr)</value>
+  </data>
+  <data name="Error" xml:space="preserve">
+    <value>Error (fr)</value>
   </data>
   <data name="ErrorFileDoesNotExist_" xml:space="preserve">
     <value>Error: File does not exist [{0}] (fr)</value>
@@ -137,6 +143,9 @@
   </data>
   <data name="Exist" xml:space="preserve">
     <value>Exist (fr)</value>
+  </data>
+  <data name="Parameter" xml:space="preserve">
+    <value>Parameter (fr)</value>
   </data>
   <data name="ReadingExcelDocumentAndChecking" xml:space="preserve">
     <value>Reading Excel document and checking (fr)</value>

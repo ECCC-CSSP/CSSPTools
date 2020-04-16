@@ -26,7 +26,7 @@ namespace EnumsPolSourceInfoRelatedFiles.Services
         #endregion Functions public
 
         #region Functions private
-        private async Task ResxTopPart(StringBuilder sb, IConfigurationRoot configuration, IStatusAndResultsService statusAndResultsService, IPolSourceGroupingExcelFileRead polSourceGroupingExcelFileRead)
+        private async Task ResxTopPart(StringBuilder sb)
         {
             sb.AppendLine(@"<?xml version=""1.0"" encoding=""utf-8""?>");
             sb.AppendLine(@"<root>");

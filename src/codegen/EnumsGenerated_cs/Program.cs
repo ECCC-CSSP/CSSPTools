@@ -66,7 +66,7 @@ namespace EnumsGenerated_cs
 
             if (generateService != null)
             {
-                generateService.Start(configuration, statusAndResultsService).GetAwaiter().GetResult();
+                generateService.Start().GetAwaiter().GetResult();
             }
         }
 

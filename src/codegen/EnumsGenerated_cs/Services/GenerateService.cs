@@ -15,18 +15,22 @@ namespace EnumsGenerated_cs.Services
     public class GenerateService : IGenerateService
     {
         #region Variables
+        private readonly IConfigurationRoot _configuration;
+        private readonly IStatusAndResultsService _statusAndResultsService;
         #endregion Variables
 
         #region Constructors
-        public GenerateService()
+        public GenerateService(IConfigurationRoot configuration, IStatusAndResultsService statusAndResultsService)
         {
+            _configuration = configuration;
+            _statusAndResultsService = statusAndResultsService;
         }
         #endregion Constructors
 
         #region Functions public
-        public async Task Start(IConfigurationRoot configuration, IStatusAndResultsService statusAndResultsService)
+        public async Task Start()
         {
-            string Command = configuration.GetValue<string>("Command");
+            string Command = _configuration.GetValue<string>("Command");
 
             StringBuilder sbError = new StringBuilder();
             StringBuilder sbStatus = new StringBuilder();
@@ -34,23 +38,23 @@ namespace EnumsGenerated_cs.Services
 
             string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
 
-            string dbFileNamePartial = configuration.GetValue<string>("DBFileName");
+            string dbFileNamePartial = _configuration.GetValue<string>("DBFileName");
 
             FileInfo fiDB = new FileInfo(dbFileNamePartial.Replace("{AppDataPath}", appDataPath));
 
             sbStatus.AppendLine($"{ AppRes.Starting }...");
 
-            statusAndResults = await statusAndResultsService.Get(Command);
+            statusAndResults = await _statusAndResultsService.Get(Command);
 
             if (statusAndResults == null)
             {
-                statusAndResults = await statusAndResultsService.Create(Command);
+                statusAndResults = await _statusAndResultsService.Create(Command);
                 if (statusAndResults == null)
                 {
                     return;
                 }
 
-                statusAndResults = await statusAndResultsService.Get(Command);
+                statusAndResults = await _statusAndResultsService.Get(Command);
 
                 if (statusAndResults == null)
                 {
@@ -59,9 +63,9 @@ namespace EnumsGenerated_cs.Services
             }
 
             StringBuilder sb = new StringBuilder();
-            FileInfo fiDLL = new FileInfo(configuration.GetValue<string>("CSSPEnums"));
-            FileInfo fiInterface = new FileInfo(configuration.GetValue<string>("IEnumsGenerated"));
-            FileInfo fi = new FileInfo(configuration.GetValue<string>("EnumsGenerated"));
+            FileInfo fiDLL = new FileInfo(_configuration.GetValue<string>("CSSPEnums"));
+            FileInfo fiInterface = new FileInfo(_configuration.GetValue<string>("IEnumsGenerated"));
+            FileInfo fi = new FileInfo(_configuration.GetValue<string>("EnumsGenerated"));
 
             var importAssembly = Assembly.LoadFile(fiDLL.FullName);
             Type[] types = importAssembly.GetTypes();
@@ -124,7 +128,7 @@ namespace EnumsGenerated_cs.Services
             }
             
             sbStatus.AppendLine($"{ AppRes.Created } [{ fiInterface.FullName }] ...");
-            await statusAndResultsService.Update(Command, sbError.ToString(), sbStatus.ToString(), 50);
+            await _statusAndResultsService.Update(Command, sbError.ToString(), sbStatus.ToString(), 50);
 
             sb = new StringBuilder();
 
@@ -357,7 +361,7 @@ namespace EnumsGenerated_cs.Services
             sbStatus.AppendLine($"{ AppRes.Created } [{ fi.FullName }] ...");
             sbStatus.AppendLine($"{ AppRes.Done } ...");
 
-            await statusAndResultsService.Update(Command, sbError.ToString(), sbStatus.ToString(), 100);
+            await _statusAndResultsService.Update(Command, sbError.ToString(), sbStatus.ToString(), 100);
 
             Console.WriteLine(sbError.ToString());
             Console.WriteLine(sbStatus.ToString());

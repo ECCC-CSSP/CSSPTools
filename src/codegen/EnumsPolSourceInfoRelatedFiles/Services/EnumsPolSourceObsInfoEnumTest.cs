@@ -26,13 +26,13 @@ namespace EnumsPolSourceInfoRelatedFiles.Services
         #endregion Functions public
 
         #region Functions private
-        private async Task Generate_EnumsPolSourceObsInfoEnumTest(IConfigurationRoot configuration, IStatusAndResultsService statusAndResultsService, IPolSourceGroupingExcelFileRead polSourceGroupingExcelFileRead)
+        private async Task Generate_EnumsPolSourceObsInfoEnumTest()
         {
             StringBuilder sb = new StringBuilder();
 
-            FileInfo fi = new FileInfo(configuration.GetValue<string>("EnumsPolSourceObsInfoEnumTestGenerated_cs"));
+            FileInfo fi = new FileInfo(_configuration.GetValue<string>("EnumsPolSourceObsInfoEnumTestGenerated_cs"));
 
-            List<string> groupList = (from c in polSourceGroupingExcelFileRead.groupChoiceChildLevelList
+            List<string> groupList = (from c in _polSourceGroupingExcelFileRead.groupChoiceChildLevelList
                                       select c.Group).Distinct().ToList();
 
             sb.AppendLine(@"/*");
@@ -80,7 +80,7 @@ namespace EnumsPolSourceInfoRelatedFiles.Services
             sb.AppendLine(@"");
             sb.AppendLine(@"                    switch ((PolSourceObsInfoEnum)i)");
             sb.AppendLine(@"                    {");
-            foreach (GroupChoiceChildLevel groupChoiceChildLevel in polSourceGroupingExcelFileRead.groupChoiceChildLevelList.Where(c => c.Group.Substring(c.Group.Length - 5) == "Start" && c.Choice == "").Distinct().ToList())
+            foreach (GroupChoiceChildLevel groupChoiceChildLevel in _polSourceGroupingExcelFileRead.groupChoiceChildLevelList.Where(c => c.Group.Substring(c.Group.Length - 5) == "Start" && c.Choice == "").Distinct().ToList())
             {
                 sb.AppendLine($@"                        case PolSourceObsInfoEnum.{ groupChoiceChildLevel.Group }:");
                 sb.AppendLine(@"                        {");
@@ -89,7 +89,7 @@ namespace EnumsPolSourceInfoRelatedFiles.Services
                 sb.AppendLine(@"                        }");
                 sb.AppendLine(@"                        break;");
             }
-            foreach (GroupChoiceChildLevel groupChoiceChildLevel in polSourceGroupingExcelFileRead.groupChoiceChildLevelList)
+            foreach (GroupChoiceChildLevel groupChoiceChildLevel in _polSourceGroupingExcelFileRead.groupChoiceChildLevelList)
             {
                 if (!string.IsNullOrWhiteSpace(groupChoiceChildLevel.Choice))
                 {
@@ -131,13 +131,16 @@ namespace EnumsPolSourceInfoRelatedFiles.Services
             }
             catch (Exception ex)
             {
-                StatusPermanentEvent(new StatusEventArgs($"CSSPError creating [{ fi.FullName }]\r\n"));
+                sbError.AppendLine($"{ AppRes.Creating } [{ fi.FullName }] ...");
                 string InnerException = (ex.InnerException != null ? $"Inner: { ex.InnerException.Message }" : "");
-                StatusPermanentEvent(new StatusEventArgs($"CSSPError: { ex.Message } { InnerException  }\r\n"));
+                sbError.AppendLine($"{ AppRes.Error }: { ex.Message }{ InnerException  }");
+                //await _statusAndResultsService.Update(command, sbError.ToString(), sbStatus.ToString(), 0);
+
                 return;
             }
-            StatusPermanentEvent(new StatusEventArgs($"Created: { fi.FullName }"));
-            StatusTempEvent(new StatusEventArgs($"Created: { FileToGenerate }"));
+
+            sbStatus.AppendLine($"{ AppRes.Created }: { fi.FullName }");
+            //await _statusAndResultsService.Update(command, sbError.ToString(), sbStatus.ToString(), 0);
         }
         #endregion Functions private
     }

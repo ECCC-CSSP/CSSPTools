@@ -9,6 +9,6 @@ namespace EnumsGenerated_cs.Services
 {
     public interface IGenerateService
     {
-        Task Start(IConfigurationRoot configuration, IStatusAndResultsService statusAndResultsService);
+        Task Start();
     }
 }
