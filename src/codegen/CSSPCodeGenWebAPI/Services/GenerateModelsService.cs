@@ -34,7 +34,7 @@ namespace CSSPCodeGenWebAPI.Services
                 string args = "";
                 switch (command)
                 {
-                    case "ModelsGenerate_a":
+                    case "Models_ModelClassName_Test":
                     case "ModelsGenerated_b":
                     case "ModelsTestGenerated_c":
                     case "ModelsGenerate_d":

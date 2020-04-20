@@ -1,4 +1,4 @@
-﻿using GenerateCodeBase;
+﻿using CSSPGenerateCodeBase;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -17,6 +17,7 @@ namespace Models_ModelClassName_Test
         #region Variables
         public static IConfigurationRoot configuration;
         public static IServiceCollection serviceCollection;
+        public static IGenerateCodeBase generateCodeBase;
         #endregion Variables
 
         #region Entry
@@ -56,13 +57,13 @@ namespace Models_ModelClassName_Test
 
             serviceCollection.AddScoped<IGenerateService, GenerateService>();
             serviceCollection.AddScoped<IStatusAndResultsService, StatusAndResultsService>();
-            serviceCollection.AddScoped<IGenerateCode, GenerateCodeBase>();
+            serviceCollection.AddScoped<IGenerateCodeBase, GenerateCodeBase>();
 
             var provider = serviceCollection.BuildServiceProvider();
 
             IGenerateService generateService = provider.GetService<IGenerateService>();
-
             IStatusAndResultsService statusAndResultsService = provider.GetService<IStatusAndResultsService>();
+            IGenerateCodeBase generateCodeBase = provider.GetService<IGenerateCodeBase>();
 
             statusAndResultsService.SetCulture(AppRes.Culture);
 

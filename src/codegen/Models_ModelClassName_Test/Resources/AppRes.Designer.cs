@@ -88,6 +88,15 @@ namespace Models_ModelClassName_Test.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Created [{0}].
+        /// </summary>
+        public static string Created_ {
+            get {
+                return ResourceManager.GetString("Created_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Done.
         /// </summary>
         public static string Done {
@@ -102,6 +111,15 @@ namespace Models_ModelClassName_Test.Resources {
         public static string ErrorFileDoesNotExist_ {
             get {
                 return ResourceManager.GetString("ErrorFileDoesNotExist_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Error while creating code [{0}].
+        /// </summary>
+        public static string ErrorWhileCreatingCode_ {
+            get {
+                return ResourceManager.GetString("ErrorWhileCreatingCode_", resourceCulture);
             }
         }
         

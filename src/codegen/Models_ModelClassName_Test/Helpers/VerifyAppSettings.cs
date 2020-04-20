@@ -16,7 +16,7 @@ namespace Models_ModelClassName_Test
             bool hasError = false;
             List<string> ParamListShouldExist = new List<string>()
             {
-                "Command", "Culture", "DBFileName", "CSSPEnums", "IEnumsGenerated", "EnumsGenerated"
+                "Command", "Culture", "DBFileName", "CSSPModels", "ModelTestGenerated"
             };
 
             Console.WriteLine(AppRes.VerifyAppSettingsFile);
@@ -46,7 +46,7 @@ namespace Models_ModelClassName_Test
                 {
                     case "Command":
                         {
-                            string command = "EnumsGenerated_cs";
+                            string command = "Models_ModelClassName_Test";
                             if (retConf != command)
                             {
                                 Console.WriteLine($"\tERROR\t{param} {retConf} != " + command);
@@ -124,9 +124,9 @@ namespace Models_ModelClassName_Test
                             }
                         }
                         break;
-                    case "IEnumsGenerated":
+                    case "ModelTestGenerated":
                         {
-                            string fileName = "C:\\CSSPTools\\src\\dlls\\CSSPEnums\\Generated\\IEnumsGenerated.cs";
+                            string fileName = "C:\\CSSPTools\\src\\tests\\CSSPModels.Tests\\tests\\Generated\\{TypeName}TestGenerated.cs";
                             if (retConf != fileName)
                             {
                                 Console.WriteLine($"\tERROR\t{param} {retConf} != " + fileName);
@@ -135,42 +135,6 @@ namespace Models_ModelClassName_Test
                             else
                             {
                                 Console.WriteLine($"\tOK\t{param} {retConf} == " + fileName);
-                            }
-
-                            FileInfo fiTest = new FileInfo(retConf);
-                            if (!fiTest.Exists)
-                            {
-                                Console.WriteLine($"\tERROR\t{param} {retConf} { AppRes.ErrorFileDoesNotExist_}");
-                                hasError = true;
-                            }
-                            else
-                            {
-                                Console.WriteLine($"\tOK\t{param} {retConf} { AppRes.Exist}");
-                            }
-                        }
-                        break;
-                    case "EnumsGenerated":
-                        {
-                            string fileName = "C:\\CSSPTools\\src\\dlls\\CSSPEnums\\Generated\\EnumsGenerated.cs";
-                            if (retConf != fileName)
-                            {
-                                Console.WriteLine($"\tERROR\t{param} {retConf} != " + fileName);
-                                hasError = true;
-                            }
-                            else
-                            {
-                                Console.WriteLine($"\tOK\t{param} {retConf} == " + fileName);
-                            }
-
-                            FileInfo fiTest = new FileInfo(retConf);
-                            if (!fiTest.Exists)
-                            {
-                                Console.WriteLine($"\tERROR\t{param} {retConf} { AppRes.ErrorFileDoesNotExist_}");
-                                hasError = true;
-                            }
-                            else
-                            {
-                                Console.WriteLine($"\tOK\t{param} {retConf} { AppRes.Exist}");
                             }
                         }
                         break;

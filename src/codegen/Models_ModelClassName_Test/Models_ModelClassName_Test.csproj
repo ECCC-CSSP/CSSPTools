@@ -23,8 +23,15 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Reference Include="GenerateCodeBase">
-      <HintPath>..\GenerateCodeBase\bin\Debug\netcoreapp3.1\GenerateCodeBase.dll</HintPath>
+    <ProjectReference Include="..\CSSPGenerateCodeBase\CSSPGenerateCodeBase.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="CSSPEnums">
+      <HintPath>..\..\dlls\CSSPEnums\bin\Debug\netcoreapp3.1\CSSPEnums.dll</HintPath>
+    </Reference>
+    <Reference Include="CSSPGenerateCodeBase">
+      <HintPath>..\CSSPGenerateCodeBase\bin\Debug\netcoreapp3.1\CSSPGenerateCodeBase.dll</HintPath>
     </Reference>
     <Reference Include="StatusAndResultsDBService">
       <HintPath>..\StatusAndResultsDBService\bin\Debug\netcoreapp3.1\StatusAndResultsDBService.dll</HintPath>

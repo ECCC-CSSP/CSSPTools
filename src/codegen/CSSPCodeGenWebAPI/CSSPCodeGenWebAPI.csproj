@@ -42,7 +42,7 @@
     <Content Update="generatemodelssettings.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Update="generateenumssettings.json">
+    <Content Update="generateModelssettings.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Update="appsettings.json">

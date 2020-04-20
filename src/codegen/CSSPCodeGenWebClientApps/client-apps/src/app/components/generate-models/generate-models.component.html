@@ -1,3 +1,51 @@
-<p>generate models works!</p>
+<h1>Generate Models</h1>
 
-<p>{{ generateModelsModel.Title }}</p>
+<button disabled="{{ generateModelsService.generateModelsModel$.value.Working }}"
+    (click)="GenerateModels('Models_ModelClassName_Test')" mat-raised-button color="primary">
+    {{ generateModelsService.generateModelsModel$.value.Models_ModelClassName_Test }}
+</button>
+<button class="status" disabled="{{ generateModelsService.generateModelsModel$.value.Working }}"
+    (click)="StatusModels('Models_ModelClassName_Test')" mat-raised-button color="primary">
+    S
+</button>
+<span>&nbsp;&nbsp;&nbsp;</span>
+<button disabled="{{ generateModelsService.generateModelsModel$.value.Working }}"
+    (click)="GenerateModels('ModelsGenerated_cs')" mat-raised-button color="primary">
+    {{generateModelsService.generateModelsModel$.value.ModelsGenerated_cs}}
+</button>
+<button disabled="{{ generateModelsService.generateModelsModel$.value.Working }}"
+    (click)="StatusModels('ModelsGenerated_cs')" mat-raised-button color="primary">
+    S
+</button>
+<span>&nbsp;&nbsp;&nbsp;</span>
+<button disabled="{{ generateModelsService.generateModelsModel$.value.Working }}"
+    (click)="GenerateModels('ModelsTestGenerated_cs')" mat-raised-button color="primary">
+    {{generateModelsService.generateModelsModel$.value.ModelsTestGenerated_cs}}
+</button>
+<button disabled="{{ generateModelsService.generateModelsModel$.value.Working }}"
+    (click)="StatusModels('ModelsTestGenerated_cs')" mat-raised-button color="primary">
+    S
+</button>
+<span>&nbsp;&nbsp;&nbsp;</span>
+<button disabled="{{ generateModelsService.generateModelsModel$.value.Working }}"
+    (click)="GenerateModels('ModelsPolSourceInfoRelatedFiles')" mat-raised-button color="primary">
+    {{generateModelsService.generateModelsModel$.value.GeneratePolSourceEnumCodeFiles}}
+</button>
+<button disabled="{{ generateModelsService.generateModelsModel$.value.Working }}"
+    (click)="StatusModels('ModelsPolSourceInfoRelatedFiles')" mat-raised-button color="primary">
+    S
+</button>
+<span>&nbsp;&nbsp;&nbsp;</span>
+
+<mat-progress-bar *ngIf="generateModelsService.generateModelsModel$.value.Working" mode="indeterminate">
+</mat-progress-bar>
+
+<p *ngIf="generateModelsService.generateModelsModel$.value.Error">
+    <mat-error>{{ generateModelsService.generateModelsModel$.value.Error.error.ErrorText }} </mat-error>
+</p>
+<div *ngIf="generateModelsService.generateModelsModel$.value.Status">
+    <h1>{{ generateModelsService.generateModelsModel$.value.CurrentStatus }}</h1>
+    <pre>
+{{ generateModelsService.generateModelsModel$.value.Status }}
+    </pre>
+</div>

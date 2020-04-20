@@ -9,6 +9,8 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using CSSPGenerateCodeBase;
+using CSSPGenerateCodeBase.Models;
 
 namespace Models_ModelClassName_Test.Services
 {
@@ -17,13 +19,15 @@ namespace Models_ModelClassName_Test.Services
         #region Variables
         private readonly IConfigurationRoot _configuration;
         private readonly IStatusAndResultsService _statusAndResultsService;
+        private readonly IGenerateCodeBase _generateCodeBase;
         #endregion Variables
 
         #region Constructors
-        public GenerateService(IConfigurationRoot configuration, IStatusAndResultsService statusAndResultsService)
+        public GenerateService(IConfigurationRoot configuration, IStatusAndResultsService statusAndResultsService, IGenerateCodeBase generateCodeBase)
         {
             _configuration = configuration;
             _statusAndResultsService = statusAndResultsService;
+            _generateCodeBase = generateCodeBase;
         }
         #endregion Constructors
 
@@ -63,8 +67,6 @@ namespace Models_ModelClassName_Test.Services
             }
 
             FileInfo fiDLL = new FileInfo(_configuration.GetValue<string>("CSSPModels"));
-            FileInfo fiInterface = new FileInfo(_configuration.GetValue<string>("IEnumsGenerated"));
-            FileInfo fi = new FileInfo(_configuration.GetValue<string>("EnumsGenerated"));
 
             var importAssembly = Assembly.LoadFile(fiDLL.FullName);
             Type[] types = importAssembly.GetTypes();
@@ -75,7 +77,7 @@ namespace Models_ModelClassName_Test.Services
 
                 sbStatus.AppendLine(type.Name);
 
-                if (SkipType(type))
+                if (await _generateCodeBase.SkipType(type))
                 {
                     continue;
                 }
@@ -304,9 +306,11 @@ namespace Models_ModelClassName_Test.Services
                     if (!prop.GetGetMethod().IsVirtual && !prop.Name.Contains("ValidationResults"))
                     {
                         CSSPProp csspProp = new CSSPProp();
-                        if (! await FillCSSPProp(prop, csspProp, currentType))
+                        if (! await _generateCodeBase.FillCSSPProp(prop, csspProp, currentType))
                         {
-                            CSSPErrorEvent(new CSSPErrorEventArgs($"CSSPError while creating code [{ csspProp.CSSPError }]"));
+                            sbError.AppendLine($"{ String.Format(AppRes.ErrorWhileCreatingCode_, csspProp.CSSPError) }");
+                            await _statusAndResultsService.Update(Command, sbError.ToString(), sbStatus.ToString(), 0);
+
                             return;
                         }
                         switch (csspProp.PropType)
@@ -458,9 +462,11 @@ namespace Models_ModelClassName_Test.Services
                     if (prop.GetGetMethod().IsVirtual)
                     {
                         CSSPProp csspProp = new CSSPProp();
-                        if (!FillCSSPProp(prop, csspProp, currentType))
+                        if (!await _generateCodeBase.FillCSSPProp(prop, csspProp, currentType))
                         {
-                            CSSPErrorEvent(new CSSPErrorEventArgs($"CSSPError while creating code [{ csspProp.CSSPError }]"));
+                            sbError.AppendLine($"{ String.Format(AppRes.ErrorWhileCreatingCode_, csspProp.CSSPError) }");
+                            await _statusAndResultsService.Update(Command, sbError.ToString(), sbStatus.ToString(), 0);
+
                             return;
                         }
                         if (csspProp.IsCollection)
@@ -487,9 +493,11 @@ namespace Models_ModelClassName_Test.Services
                     if (prop.Name.Contains("ValidationResults"))
                     {
                         CSSPProp csspProp = new CSSPProp();
-                        if (!FillCSSPProp(prop, csspProp, currentType))
+                        if (!await _generateCodeBase.FillCSSPProp(prop, csspProp, currentType))
                         {
-                            CSSPErrorEvent(new CSSPErrorEventArgs($"CSSPError while creating code [{ csspProp.CSSPError }]"));
+                            sbError.AppendLine($"{ String.Format(AppRes.ErrorWhileCreatingCode_, csspProp.CSSPError) }");
+                            await _statusAndResultsService.Update(Command, sbError.ToString(), sbStatus.ToString(), 0);
+
                             return;
                         }
                         sb.AppendLine($@"               IEnumerable<ValidationResult> val{ count.ToString() } = new List<ValidationResult>() {{ new ValidationResult(""First CSSPError Message"") }}.AsEnumerable();");
@@ -504,21 +512,20 @@ namespace Models_ModelClassName_Test.Services
                 sb.AppendLine(@"    }");
                 sb.AppendLine(@"}");
 
-                FileInfo fiOutput = new FileInfo($@"C:\CSSPTools\src\tests\CSSPModels.Tests\tests\Generated\{ type.Name }TestGenerated.cs");
+                string fileCreatedName = _configuration.GetValue<string>("ModelTestGenerated");
+
+                FileInfo fiOutput = new FileInfo(fileCreatedName.Replace("{TypeName}", type.Name));
 
                 using (StreamWriter sw = fiOutput.CreateText())
                 {
                     sw.Write(sb.ToString());
                 }
-                StatusPermanentEvent(new StatusEventArgs($"Created [{ fiOutput.FullName }] ..."));
+
+                sbStatus.AppendLine($"{ String.Format(AppRes.Created_, fiOutput.FullName) }");
+                await _statusAndResultsService.Update(Command, sbError.ToString(), sbStatus.ToString(), 0);
             }
 
-            StatusTempEvent(new StatusEventArgs("Done ..."));
-            StatusPermanentEvent(new StatusEventArgs(""));
-            StatusPermanentEvent(new StatusEventArgs("Done ..."));
-
             sbStatus.AppendLine($"{ AppRes.Done } ...");
-
             await _statusAndResultsService.Update(Command, sbError.ToString(), sbStatus.ToString(), 100);
 
             Console.WriteLine(sbError.ToString());

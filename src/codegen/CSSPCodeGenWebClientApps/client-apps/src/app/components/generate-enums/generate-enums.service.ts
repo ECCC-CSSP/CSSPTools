@@ -4,6 +4,7 @@ import { BehaviorSubject, of, Observable } from 'rxjs';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { map, catchError, finalize } from 'rxjs/operators';
 import { Router } from '@angular/router';
+import { ActionReturn } from 'src/app/app.models';
 
 @Injectable({
   providedIn: 'root'
@@ -73,7 +74,4 @@ export class GenerateEnumsService {
 
 }
 
-export interface ActionReturn {
-  OKText: string;
-  ErrorText: string;
-}
+

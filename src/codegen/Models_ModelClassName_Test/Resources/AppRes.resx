@@ -126,11 +126,17 @@
   <data name="Created" xml:space="preserve">
     <value>Created</value>
   </data>
+  <data name="Created_" xml:space="preserve">
+    <value>Created [{0}]</value>
+  </data>
   <data name="Done" xml:space="preserve">
     <value>Done</value>
   </data>
   <data name="ErrorFileDoesNotExist_" xml:space="preserve">
     <value>Error: File does not exist [{0}]</value>
+  </data>
+  <data name="ErrorWhileCreatingCode_" xml:space="preserve">
+    <value>Error while creating code [{0}]</value>
   </data>
   <data name="Exist" xml:space="preserve">
     <value>Exist</value>
