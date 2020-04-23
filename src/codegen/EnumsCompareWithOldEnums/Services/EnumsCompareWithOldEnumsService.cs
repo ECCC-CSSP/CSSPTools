@@ -1,8 +1,7 @@
-﻿using CSSPGenerateCodeBase.Services;
-using EnumsCompareWithOldEnums.Resources;
+﻿using EnumsCompareWithOldEnums.Resources;
+using GenerateCodeStatusDB.Models;
+using GenerateCodeStatusDB.Services;
 using Microsoft.Extensions.Configuration;
-using StatusAndResultsDBService.Models;
-using StatusAndResultsDBService.Services;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -18,36 +17,36 @@ namespace EnumsCompareWithOldEnums.Services
     {
         #region Variables
         private readonly IConfigurationRoot _configuration;
-        private readonly IStatusAndResultsService _statusAndResultsService;
+        private readonly IGenerateCodeStatusDBService _generateCodeStatusDBService;
         #endregion Variables
 
         #region Properties
         #endregion Properties
 
         #region Constructors
-        public EnumsCompareWithOldEnumsService(IConfigurationRoot configuration, IStatusAndResultsService statusAndResultsService)
+        public EnumsCompareWithOldEnumsService(IConfigurationRoot configuration, IGenerateCodeStatusDBService generateCodeStatusDBService)
         {
             _configuration = configuration;
-            _statusAndResultsService = statusAndResultsService;
+            _generateCodeStatusDBService = generateCodeStatusDBService;
         }
         #endregion Constructors
 
         #region Functions public
         public async Task Start()
         {
-            StatusAndResults statusAndResults = new StatusAndResults();
+            GenerateCodeStatus statusAndResults = new GenerateCodeStatus();
             string NewEnumsDLL = "NewEnumsDLL";
             string OldEnumsDLL = "OldEnumsDLL";
 
 
-            statusAndResults = await _statusAndResultsService.GetOrCreate();
+            statusAndResults = await _generateCodeStatusDBService.GetOrCreate();
 
             if (statusAndResults == null)
             {
-                _statusAndResultsService.Error.AppendLine($"{ String.Format(AppRes.CouldNotGetOrCreateObject_InDB_, _statusAndResultsService.Command, _statusAndResultsService.DBFileFullName) }");
+                _generateCodeStatusDBService.Error.AppendLine($"{ String.Format(AppRes.CouldNotGetOrCreateObject_InDB_, _generateCodeStatusDBService.Command, _generateCodeStatusDBService.DBFileFullName) }");
             }
 
-            await _statusAndResultsService.Update(0);
+            await _generateCodeStatusDBService.Update(0);
 
             FileInfo fiDLL = new FileInfo(_configuration.GetValue<string>(NewEnumsDLL));
             FileInfo fiOldDLL = new FileInfo(_configuration.GetValue<string>(OldEnumsDLL));
@@ -70,8 +69,8 @@ namespace EnumsCompareWithOldEnums.Services
 
                 if (typeExist == null)
                 {
-                    _statusAndResultsService.Error.AppendLine($"{ String.Format(AppRes.Type_NotFound, type.Name) }");
-                    await _statusAndResultsService.Update(0);
+                    _generateCodeStatusDBService.Error.AppendLine($"{ String.Format(AppRes.Type_NotFound, type.Name) }");
+                    await _generateCodeStatusDBService.Update(0);
                     return;
                 }
                 else
@@ -92,8 +91,8 @@ namespace EnumsCompareWithOldEnums.Services
 
                         if (string.IsNullOrWhiteSpace(EnumStrExist))
                         {
-                            _statusAndResultsService.Error.AppendLine($"{ String.Format(AppRes.Type_Enum_NotFound, type.Name, EnumStr) }");
-                            await _statusAndResultsService.Update(0);
+                            _generateCodeStatusDBService.Error.AppendLine($"{ String.Format(AppRes.Type_Enum_NotFound, type.Name, EnumStr) }");
+                            await _generateCodeStatusDBService.Update(0);
                             return;
                         }
                         else
@@ -107,7 +106,6 @@ namespace EnumsCompareWithOldEnums.Services
 
             return;
         }
-
         #endregion Functions public
 
         #region Functions private

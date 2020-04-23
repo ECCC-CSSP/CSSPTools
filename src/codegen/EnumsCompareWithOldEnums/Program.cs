@@ -1,12 +1,13 @@
-﻿using CSSPGenerateCodeBase.Models;
-using CSSPGenerateCodeBase.Services;
-using EnumsCompareWithOldEnums.Resources;
+﻿using EnumsCompareWithOldEnums.Resources;
 using EnumsCompareWithOldEnums.Services;
+using GenerateCodeBase.Models;
+using GenerateCodeBase.Services;
+using GenerateCodeCompile.Services;
+using GenerateCodeStatusDB.Models;
+using GenerateCodeStatusDB.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using StatusAndResultsDBService.Models;
-using StatusAndResultsDBService.Services;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -46,23 +47,46 @@ namespace EnumsCompareWithOldEnums
                 return;
             }
 
-            IStatusAndResultsService statusAndResultsService = provider.GetService<IStatusAndResultsService>();
-            SettingStatusAndResultsService(statusAndResultsService);
+            IGenerateCodeStatusDBService generateCodeStatusDBService = provider.GetService<IGenerateCodeStatusDBService>();
+            SettingGenerateCodeStatusDBService(generateCodeStatusDBService);
+
+            generateCodeStatusDBService.Update(0);
 
             IValidateAppSettingsService validateAppSettingsService = provider.GetService<IValidateAppSettingsService>();
             SettingsValidateAppSettingsService(validateAppSettingsService);
 
-            statusAndResultsService.Update(0);
-
-            validateAppSettingsService.VerifyAppSettings();
-
-            statusAndResultsService.Update(0);
-
-            if (!string.IsNullOrWhiteSpace(statusAndResultsService.Error.ToString()))
+            if (validateAppSettingsService != null)
             {
-                Console.WriteLine($"{ statusAndResultsService.Status }");
+                validateAppSettingsService.VerifyAppSettings();
+            }
+
+            if (!string.IsNullOrWhiteSpace(generateCodeStatusDBService.Error.ToString()))
+            {
+                Console.WriteLine($"{ generateCodeStatusDBService.Error }");
+                Console.WriteLine("");
+                Console.WriteLine($"{ generateCodeStatusDBService.Status }");
+                Console.WriteLine("");
+            }
+
+            generateCodeStatusDBService.Update(3);
+
+            if (!string.IsNullOrWhiteSpace(generateCodeStatusDBService.Error.ToString()))
+            {
+                Console.WriteLine($"{ generateCodeStatusDBService.Status }");
                 Console.WriteLine("");
                 return;
+            }
+
+            IGenerateCodeCompileService generateCodeCompileService = provider.GetService<IGenerateCodeCompileService>();
+
+            if (generateCodeCompileService != null)
+            {
+                generateCodeCompileService.Compile(configuration.GetValue<string>("PreBuildNewEnumsDLL")).GetAwaiter().GetResult();
+            }
+
+            if (!string.IsNullOrWhiteSpace(generateCodeStatusDBService.Error.ToString()))
+            {
+                Console.WriteLine($"{ generateCodeStatusDBService.Error }");
             }
 
             IEnumsCompareWithOldEnumsService enumsCompareWithOldEnumsService = provider.GetService<IEnumsCompareWithOldEnumsService>();
@@ -72,14 +96,24 @@ namespace EnumsCompareWithOldEnums
                 enumsCompareWithOldEnumsService.Start().GetAwaiter().GetResult();
             }
 
-            if (!string.IsNullOrWhiteSpace(statusAndResultsService.Error.ToString()))
+            if (!string.IsNullOrWhiteSpace(generateCodeStatusDBService.Error.ToString()))
             {
-                Console.WriteLine($"{ statusAndResultsService.Error }");
+                Console.WriteLine($"{ generateCodeStatusDBService.Error }");
             }
 
-            statusAndResultsService.Update(100);
+            if (generateCodeCompileService != null)
+            {
+                generateCodeCompileService.Compile(configuration.GetValue<string>("PostBuildNewEnumsDLL")).GetAwaiter().GetResult();
+            }
 
-            Console.WriteLine($"{ statusAndResultsService.Status }");
+            if (!string.IsNullOrWhiteSpace(generateCodeStatusDBService.Error.ToString()))
+            {
+                Console.WriteLine($"{ generateCodeStatusDBService.Error }");
+            }
+
+            generateCodeStatusDBService.Update(100);
+
+            Console.WriteLine($"{ generateCodeStatusDBService.Status }");
             Console.WriteLine("");
             Console.WriteLine($"{ AppRes.Done }");
         }
@@ -118,27 +152,30 @@ namespace EnumsCompareWithOldEnums
             {
                 options.UseSqlite($"DataSource={fiDB.FullName}");
             });
-            serviceCollection.AddSingleton<IStatusAndResultsService, StatusAndResultsService>();
+            serviceCollection.AddSingleton<IGenerateCodeStatusDBService, GenerateCodeStatusDBService>();
             serviceCollection.AddSingleton<IValidateAppSettingsService, ValidateAppSettingsService>();
             serviceCollection.AddSingleton<IEnumsCompareWithOldEnumsService, EnumsCompareWithOldEnumsService>();
+            serviceCollection.AddSingleton<IGenerateCodeCompileService, GenerateCodeCompileService>();
 
             return serviceCollection.BuildServiceProvider();
         }
-        private static void SettingStatusAndResultsService(IStatusAndResultsService statusAndResultsService)
+        private static void SettingGenerateCodeStatusDBService(IGenerateCodeStatusDBService generateCodeStatusDBService)
         {
-            statusAndResultsService.DBFileFullName = DBFullName;
-            statusAndResultsService.Command = configuration.GetValue<string>("Command");
-            statusAndResultsService.SetCulture(AppRes.Culture);
+            generateCodeStatusDBService.DBFileFullName = DBFullName;
+            generateCodeStatusDBService.Command = configuration.GetValue<string>("Command");
+            generateCodeStatusDBService.SetCulture(AppRes.Culture);
         }
         private static void SettingsValidateAppSettingsService(IValidateAppSettingsService validateAppSettingsService)
         {
             validateAppSettingsService.AppSettingParameterList = new List<AppSettingParameter>()
             {
-                new AppSettingParameter() { Parameter = "Command", ExpectedValue = "EnumsCompareWithOldEnums", IsCulture = false, IsFile = false, CheckExist = false },
-                new AppSettingParameter() { Parameter = "Culture", ExpectedValue = "", IsCulture = true, IsFile = false, CheckExist = false },
-                new AppSettingParameter() { Parameter = "DBFileName", ExpectedValue = "{AppDataPath}\\CSSP\\GenerateCodeStatus.db", IsCulture = false, IsFile = true, CheckExist = true },
-                new AppSettingParameter() { Parameter = "NewEnumsDLL", ExpectedValue = "C:\\CSSPTools\\src\\dlls\\CSSPEnums\\bin\\Debug\\netcoreapp3.1\\CSSPEnums.dll", IsCulture = false, IsFile = true, CheckExist = true },
-                new AppSettingParameter() { Parameter = "OldEnumsDLL", ExpectedValue = "C:\\CSSP Latest Code Old\\CSSPEnumsDLL\\CSSPEnumsDLL\\bin\\Debug\\CSSPEnumsDLL.dll", IsCulture = false, IsFile = true, CheckExist = true }
+                new AppSettingParameter() { Parameter = "Command", ExpectedValue = "EnumsCompareWithOldEnums" },
+                new AppSettingParameter() { Parameter = "Culture", ExpectedValue = "", IsCulture = true },
+                new AppSettingParameter() { Parameter = "DBFileName", ExpectedValue = "{AppDataPath}\\CSSP\\GenerateCodeStatus.db", IsFile = true, CheckExist = true },
+                new AppSettingParameter() { Parameter = "NewEnumsDLL", ExpectedValue = "C:\\CSSPTools\\src\\dlls\\CSSPEnums\\bin\\Debug\\netcoreapp3.1\\CSSPEnums.dll", IsFile = true, CheckExist = true },
+                new AppSettingParameter() { Parameter = "OldEnumsDLL", ExpectedValue = "C:\\CSSP Latest Code Old\\CSSPEnumsDLL\\CSSPEnumsDLL\\bin\\Debug\\CSSPEnumsDLL.dll", IsFile = true, CheckExist = true },
+                new AppSettingParameter() { Parameter = "PreBuildNewEnumsDLL", ExpectedValue = "C:\\CSSPTools\\src\\dlls\\CSSPEnums\\CSSPEnums.sln", IsFile = true, CheckExist = true, PreCompile = true },
+                new AppSettingParameter() { Parameter = "PostBuildNewEnumsDLL", ExpectedValue = "C:\\CSSPTools\\src\\dlls\\CSSPEnums\\CSSPEnums.sln", IsFile = true, CheckExist = true, PostCompile = true }
             };
         }
         #endregion Functions private
