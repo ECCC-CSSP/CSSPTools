@@ -1,9 +1,11 @@
-﻿using EnumsCompareWithOldEnums.Resources;
+﻿using CSSPGenerateCodeBase.Services;
+using EnumsCompareWithOldEnums.Resources;
 using Microsoft.Extensions.Configuration;
 using StatusAndResultsDBService.Models;
 using StatusAndResultsDBService.Services;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -12,56 +14,43 @@ using System.Threading.Tasks;
 
 namespace EnumsCompareWithOldEnums.Services
 {
-    public class GenerateService : IGenerateService
+    public class EnumsCompareWithOldEnumsService : IEnumsCompareWithOldEnumsService
     {
         #region Variables
+        private readonly IConfigurationRoot _configuration;
+        private readonly IStatusAndResultsService _statusAndResultsService;
         #endregion Variables
 
+        #region Properties
+        #endregion Properties
+
         #region Constructors
-        public GenerateService()
+        public EnumsCompareWithOldEnumsService(IConfigurationRoot configuration, IStatusAndResultsService statusAndResultsService)
         {
+            _configuration = configuration;
+            _statusAndResultsService = statusAndResultsService;
         }
         #endregion Constructors
 
         #region Functions public
-        public async Task Start(IConfigurationRoot configuration, IStatusAndResultsService statusAndResultsService)
+        public async Task Start()
         {
-            string Command = configuration.GetValue<string>("Command");
-
-            StringBuilder sbError = new StringBuilder();
-            StringBuilder sbStatus = new StringBuilder();
             StatusAndResults statusAndResults = new StatusAndResults();
+            string NewEnumsDLL = "NewEnumsDLL";
+            string OldEnumsDLL = "OldEnumsDLL";
 
-            string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
 
-            string dbFileNamePartial = configuration.GetValue<string>("DBFileName");
-
-            FileInfo fiDB = new FileInfo(dbFileNamePartial.Replace("{AppDataPath}", appDataPath));
-
-            sbStatus.AppendLine($"{ AppRes.Starting }...");
-
-            statusAndResults = await statusAndResultsService.Get(Command);
+            statusAndResults = await _statusAndResultsService.GetOrCreate();
 
             if (statusAndResults == null)
             {
-                statusAndResults = await statusAndResultsService.Create(Command);
-                if (statusAndResults == null)
-                {
-                    return;
-                }
-
-                statusAndResults = await statusAndResultsService.Get(Command);
-
-                if (statusAndResults == null)
-                {
-                    return;
-                }
+                _statusAndResultsService.Error.AppendLine($"{ String.Format(AppRes.CouldNotGetOrCreateObject_InDB_, _statusAndResultsService.Command, _statusAndResultsService.DBFileFullName) }");
             }
 
-            await statusAndResultsService.Update(Command, "", "", 0);
+            await _statusAndResultsService.Update(0);
 
-            FileInfo fiDLL = new FileInfo(configuration.GetValue<string>("NewEnumsDll"));
-            FileInfo fiOldDLL = new FileInfo(configuration.GetValue<string>("OldEnumsDll"));
+            FileInfo fiDLL = new FileInfo(_configuration.GetValue<string>(NewEnumsDLL));
+            FileInfo fiOldDLL = new FileInfo(_configuration.GetValue<string>(OldEnumsDLL));
 
             var importAssembly = Assembly.LoadFile(fiDLL.FullName);
             List<Type> typeList = importAssembly.GetTypes().ToList();
@@ -81,8 +70,8 @@ namespace EnumsCompareWithOldEnums.Services
 
                 if (typeExist == null)
                 {
-                    sbError.AppendLine($"{ String.Format(AppRes.Type_NotFound, type.Name) }");
-                    await statusAndResultsService.Update(Command, sbError.ToString(), sbStatus.ToString(), 0);
+                    _statusAndResultsService.Error.AppendLine($"{ String.Format(AppRes.Type_NotFound, type.Name) }");
+                    await _statusAndResultsService.Update(0);
                     return;
                 }
                 else
@@ -103,8 +92,8 @@ namespace EnumsCompareWithOldEnums.Services
 
                         if (string.IsNullOrWhiteSpace(EnumStrExist))
                         {
-                            sbError.AppendLine($"{ String.Format(AppRes.Type_Enum_NotFound, type.Name, EnumStr) }");
-                            await statusAndResultsService.Update(Command, sbError.ToString(), sbStatus.ToString(), 0);
+                            _statusAndResultsService.Error.AppendLine($"{ String.Format(AppRes.Type_Enum_NotFound, type.Name, EnumStr) }");
+                            await _statusAndResultsService.Update(0);
                             return;
                         }
                         else
@@ -116,15 +105,9 @@ namespace EnumsCompareWithOldEnums.Services
                 }
             }
 
-
-            sbStatus.AppendLine($"{ AppRes.Done }...");
-            await statusAndResultsService.Update(Command, sbError.ToString(), sbStatus.ToString(), 100);
-
-            Console.WriteLine(sbError.ToString());
-            Console.WriteLine(sbStatus.ToString());
-
             return;
         }
+
         #endregion Functions public
 
         #region Functions private

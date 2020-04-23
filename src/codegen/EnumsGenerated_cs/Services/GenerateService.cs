@@ -44,17 +44,17 @@ namespace EnumsGenerated_cs.Services
 
             sbStatus.AppendLine($"{ AppRes.Starting }...");
 
-            statusAndResults = await _statusAndResultsService.Get(Command);
+            statusAndResults = await _statusAndResultsService.Get();
 
             if (statusAndResults == null)
             {
-                statusAndResults = await _statusAndResultsService.Create(Command);
+                statusAndResults = await _statusAndResultsService.Create();
                 if (statusAndResults == null)
                 {
                     return;
                 }
 
-                statusAndResults = await _statusAndResultsService.Get(Command);
+                statusAndResults = await _statusAndResultsService.Get();
 
                 if (statusAndResults == null)
                 {
@@ -128,7 +128,7 @@ namespace EnumsGenerated_cs.Services
             }
             
             sbStatus.AppendLine($"{ AppRes.Created } [{ fiInterface.FullName }] ...");
-            await _statusAndResultsService.Update(Command, sbError.ToString(), sbStatus.ToString(), 50);
+            await _statusAndResultsService.Update(50);
 
             sb = new StringBuilder();
 
@@ -361,7 +361,7 @@ namespace EnumsGenerated_cs.Services
             sbStatus.AppendLine($"{ AppRes.Created } [{ fi.FullName }] ...");
             sbStatus.AppendLine($"{ AppRes.Done } ...");
 
-            await _statusAndResultsService.Update(Command, sbError.ToString(), sbStatus.ToString(), 100);
+            await _statusAndResultsService.Update(100);
 
             Console.WriteLine(sbError.ToString());
             Console.WriteLine(sbStatus.ToString());

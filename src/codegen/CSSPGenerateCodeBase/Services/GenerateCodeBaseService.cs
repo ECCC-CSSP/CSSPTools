@@ -1,5 +1,7 @@
 ﻿using CSSPEnums;
 using CSSPGenerateCodeBase.Models;
+using Microsoft.Extensions.Configuration;
+using StatusAndResultsDBService.Services;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -9,20 +11,23 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CSSPGenerateCodeBase
+namespace CSSPGenerateCodeBase.Services
 {
-    public partial class GenerateCodeBase : IGenerateCodeBase
+    public partial class GenerateCodeBaseService : IGenerateCodeBaseService
     {
         #region Variables
+        private readonly IConfigurationRoot _configuration;
+        private readonly IStatusAndResultsService _statusAndResultsService;
         #endregion Variables
 
         #region Properties
         #endregion Properties
 
         #region Constructors
-        public GenerateCodeBase()
+        public GenerateCodeBaseService(IConfigurationRoot configuration, IStatusAndResultsService statusAndResultsService)
         {
-
+            _configuration = configuration;
+            _statusAndResultsService = statusAndResultsService;
         }
         #endregion Constructors
 

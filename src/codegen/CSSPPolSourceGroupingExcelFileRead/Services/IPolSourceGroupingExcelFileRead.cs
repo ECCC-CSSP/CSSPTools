@@ -13,8 +13,8 @@ namespace CSSPPolSourceGroupingExcelFileRead.Services
     {
         List<GroupChoiceChildLevel> groupChoiceChildLevelList { get; set; }
 
-        Task<bool> ReadExcelSheet(string FullFileName, bool DoCheck, StringBuilder sbError, StringBuilder sbStatus, string command, IStatusAndResultsService statusAndResultsService);
-        Task<bool> GetRecursiveForShowAllPaths(string s, List<string> textList, int Level, bool RaiseEvents, StringBuilder sb, StringBuilder sbError, StringBuilder sbStatus, string command, IStatusAndResultsService statusAndResultsService);
+        Task<bool> ReadExcelSheet(string FullFileName, bool DoCheck, string command, IStatusAndResultsService statusAndResultsService);
+        Task<bool> GetRecursiveForShowAllPaths(string s, List<string> textList, int Level, bool RaiseEvents, StringBuilder sb, string command, IStatusAndResultsService statusAndResultsService);
         Task SetCulture(CultureInfo Culture);
     }
 }

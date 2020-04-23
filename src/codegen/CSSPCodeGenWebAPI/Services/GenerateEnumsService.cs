@@ -51,6 +51,12 @@ namespace CSSPCodeGenWebAPI.Services
 
                 }
 
+                if (string.IsNullOrWhiteSpace(exePath))
+                {
+                    await statusAndResultsService.Update(command, ServicesRes.ExePathIsEmpty, "", 0);
+                    return;
+                }
+
                 FileInfo fiApp = new FileInfo(exePath);
                 if (!fiApp.Exists)
                 {

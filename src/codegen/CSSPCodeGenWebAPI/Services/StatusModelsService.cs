@@ -8,6 +8,7 @@ using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -50,7 +51,7 @@ namespace CSSPCodeGenWebAPI.Services
 
                 switch (command)
                 {
-                    case "ModelsCompareWithOldModels":
+                    case "Models_ModelClassName_Test":
                     case "ModelsGenerated_cs":
                     case "ModelsTestGenerated_cs":
                     case "ModelsPolSourceInfoRelatedFiles":
@@ -84,7 +85,7 @@ namespace CSSPCodeGenWebAPI.Services
                 "Runs", "Required", "Created", "Compiled"
             };
 
-            foreach(string fileType in fileTypeList)
+            foreach (string fileType in fileTypeList)
             {
                 List<string> fileList = configuration.GetSection($"{ command }:{ fileType }").GetChildren().ToList().Select(x => x.Value).ToList();
 
@@ -101,18 +102,58 @@ namespace CSSPCodeGenWebAPI.Services
                             CheckFile = file.Replace("{AppDataPath}", appDataPath);
                         }
 
-                        FileInfo fi = new FileInfo(CheckFile);
-                        if (!fi.Exists)
+                        if (file.Contains("{TypeName}"))
                         {
-                            sbError.AppendLine(String.Format(ServicesRes.FileNotFound_, fi.FullName));
-                            //await statusAndResultsService.Update(command, sbError.ToString(), sbStatus.ToString(), 0);
-                            //return;
+                            if (command == "Models_ModelClassName_Test")
+                            {
+
+                                List<string> fileRequiredList = configuration.GetSection($"{ command }:Required").GetChildren().ToList().Select(x => x.Value).ToList();
+
+                                foreach (string s in fileRequiredList)
+                                {
+                                    if (s.EndsWith("CSSPModels.dll"))
+                                    {
+                                        FileInfo fiDLL = new FileInfo(s);
+
+
+                                        var importAssembly = Assembly.LoadFile(fiDLL.FullName);
+                                        Type[] types = importAssembly.GetTypes();
+                                        foreach (Type type in types)
+                                        {
+                                            bool ClassNotMapped = false;
+                                            StringBuilder sb = new StringBuilder();
+
+                                            //sbStatus.AppendLine(type.Name);
+
+                                            if (await _generateCodeBase.SkipType(type))
+                                            {
+                                                continue;
+                                            }
+                                        }
+
+                                        break;
+                                    }
+                                }
+
+                            }
+                            CheckFile = file.Replace("{TypeName}", appDataPath);
                         }
                         else
                         {
-                            sbStatus.AppendLine($"{ fi.LastWriteTime.ToString("yyyy MM dd : HH:mm:ss") } { fi.FullName }");
-                            //await statusAndResultsService.Update(command, sbError.ToString(), sbStatus.ToString(), 0);
+                            FileInfo fi = new FileInfo(CheckFile);
+                            if (!fi.Exists)
+                            {
+                                sbError.AppendLine(String.Format(ServicesRes.FileNotFound_, fi.FullName));
+                                //await statusAndResultsService.Update(command, sbError.ToString(), sbStatus.ToString(), 0);
+                                //return;
+                            }
+                            else
+                            {
+                                sbStatus.AppendLine($"{ fi.LastWriteTime.ToString("yyyy MM dd : HH:mm:ss") } { fi.FullName }");
+                                //await statusAndResultsService.Update(command, sbError.ToString(), sbStatus.ToString(), 0);
+                            }
                         }
+
                     }
                 }
                 else

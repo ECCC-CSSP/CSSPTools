@@ -10,21 +10,21 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="Resources\StatusAndResultsServiceRes.Designer.cs">
+    <Compile Update="Resources\AppRes.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
-      <DependentUpon>StatusAndResultsServiceRes.resx</DependentUpon>
+      <DependentUpon>AppRes.resx</DependentUpon>
     </Compile>
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Update="Resources\StatusAndResultsServiceRes.fr.resx">
+    <EmbeddedResource Update="Resources\AppRes.fr.resx">
       <LastGenOutput>StatusAndResultsServiceRes.Designer.cs</LastGenOutput>
       <Generator>PublicResXFileCodeGenerator</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="Resources\StatusAndResultsServiceRes.resx">
+    <EmbeddedResource Update="Resources\AppRes.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>StatusAndResultsServiceRes.Designer.cs</LastGenOutput>
+      <LastGenOutput>AppRes.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
 

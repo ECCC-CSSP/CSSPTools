@@ -75,7 +75,7 @@ namespace Models_ModelClassName_Test.Services
                 bool ClassNotMapped = false;
                 StringBuilder sb = new StringBuilder();
 
-                sbStatus.AppendLine(type.Name);
+                //sbStatus.AppendLine(type.Name);
 
                 if (await _generateCodeBase.SkipType(type))
                 {

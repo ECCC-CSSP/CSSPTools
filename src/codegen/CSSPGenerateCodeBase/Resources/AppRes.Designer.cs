@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace StatusAndResultsDBService.Resources {
+namespace CSSPGenerateCodeBase.Resources {
     using System;
     
     
@@ -22,14 +22,14 @@ namespace StatusAndResultsDBService.Resources {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public class StatusAndResultsServiceRes {
+    public class AppRes {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal StatusAndResultsServiceRes() {
+        internal AppRes() {
         }
         
         /// <summary>
@@ -39,7 +39,7 @@ namespace StatusAndResultsDBService.Resources {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("StatusAndResultsDBService.Resources.StatusAndResultsServiceRes", typeof(StatusAndResultsServiceRes).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("CSSPGenerateCodeBase.Resources.AppRes", typeof(AppRes).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -61,20 +61,56 @@ namespace StatusAndResultsDBService.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Could not find [{0}] with command equal [{1}].
+        ///   Looks up a localized string similar to Could not find parameter.
         /// </summary>
-        public static string CouldNotFind_WithCommandEqual_ {
+        public static string CouldNotFindParameter {
             get {
-                return ResourceManager.GetString("CouldNotFind_WithCommandEqual_", resourceCulture);
+                return ResourceManager.GetString("CouldNotFindParameter", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Error [{0}] is null.
+        ///   Looks up a localized string similar to Does not exist.
         /// </summary>
-        public static string Error_IsNull {
+        public static string DoesNotExist {
             get {
-                return ResourceManager.GetString("Error_IsNull", resourceCulture);
+                return ResourceManager.GetString("DoesNotExist", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ERROR.
+        /// </summary>
+        public static string Error {
+            get {
+                return ResourceManager.GetString("Error", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Exist.
+        /// </summary>
+        public static string Exist {
+            get {
+                return ResourceManager.GetString("Exist", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to OK.
+        /// </summary>
+        public static string OK {
+            get {
+                return ResourceManager.GetString("OK", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Verify appsettings.json file.
+        /// </summary>
+        public static string VerifyAppSettingsFile {
+            get {
+                return ResourceManager.GetString("VerifyAppSettingsFile", resourceCulture);
             }
         }
     }

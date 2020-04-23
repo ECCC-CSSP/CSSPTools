@@ -117,10 +117,22 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="CouldNotFind_WithCommandEqual_" xml:space="preserve">
-    <value>Could not find [{0}] with command equal [{1}] (fr)</value>
+  <data name="CouldNotFindParameter" xml:space="preserve">
+    <value>Could not find parameter</value>
   </data>
-  <data name="Error_IsNull" xml:space="preserve">
-    <value>Error [{0}] is null (fr)</value>
+  <data name="DoesNotExist" xml:space="preserve">
+    <value>Does not exist</value>
+  </data>
+  <data name="Error" xml:space="preserve">
+    <value>ERROR</value>
+  </data>
+  <data name="Exist" xml:space="preserve">
+    <value>Exist</value>
+  </data>
+  <data name="OK" xml:space="preserve">
+    <value>OK</value>
+  </data>
+  <data name="VerifyAppSettingsFile" xml:space="preserve">
+    <value>Verify appsettings.json file</value>
   </data>
 </root>

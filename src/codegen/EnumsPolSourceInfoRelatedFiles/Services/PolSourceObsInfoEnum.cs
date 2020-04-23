@@ -74,15 +74,15 @@ namespace EnumsPolSourceInfoRelatedFiles.Services
             }
             catch (Exception ex)
             {
-                sbError.AppendLine($"{ AppRes.Creating } [{ fi.FullName }] ...");
+                _statusAndResultsService.Error.AppendLine($"{ AppRes.Creating } [{ fi.FullName }] ...");
                 string InnerException = (ex.InnerException != null ? $"Inner: { ex.InnerException.Message }" : "");
-                sbError.AppendLine($"{ AppRes.Error }: { ex.Message }{ InnerException  }");
+                _statusAndResultsService.Error.AppendLine($"{ AppRes.Error }: { ex.Message }{ InnerException  }");
                 //await _statusAndResultsService.Update(command, sbError.ToString(), sbStatus.ToString(), 0);
 
                 return;
             }
 
-            sbStatus.AppendLine($"{ AppRes.Created }: { fi.FullName }");
+            _statusAndResultsService.Status.AppendLine($"{ AppRes.Created }: { fi.FullName }");
             //await _statusAndResultsService.Update(command, sbError.ToString(), sbStatus.ToString(), 0);
         }
         #endregion Functions private

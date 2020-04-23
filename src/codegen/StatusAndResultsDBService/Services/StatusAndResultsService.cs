@@ -13,19 +13,31 @@ namespace StatusAndResultsDBService.Services
     public class StatusAndResultsService : IStatusAndResultsService
     {
         #region Variables
-        private readonly GenerateCodeStatusContext _generateCodeStatusContext;
+        private readonly GenerateCodeStatusContext db;
         #endregion Variables
 
+        #region Properties
+        public string DBFileFullName { get; set; }
+        public string Command { get; set; }
+        public StringBuilder Error { get; set; }
+        public StringBuilder Status { get; set; }
+        #endregion Properties
+
         #region Constructors
-        public StatusAndResultsService(GenerateCodeStatusContext generateCodeStatusContext)
+        public StatusAndResultsService(GenerateCodeStatusContext db)
         {
-            _generateCodeStatusContext = generateCodeStatusContext;
+            this.db = db;
+            Command = "";
+            Error = new StringBuilder();
+            Status = new StringBuilder();
         }
         #endregion Constructors
 
-        public async Task<StatusAndResults> Create(string command)
+        public async Task<StatusAndResults> Create()
         {
-            long? LastID = (from c in _generateCodeStatusContext.StatusAndResults
+            if (Command == "") return null;
+
+            long? LastID = (from c in db.StatusAndResults
                           orderby c.StatusAndResultID descending
                           select c.StatusAndResultID).FirstOrDefault();
 
@@ -38,7 +50,7 @@ namespace StatusAndResultsDBService.Services
             StatusAndResults statusAndResults = new StatusAndResults()
             {
                 StatusAndResultID = (long)LastID + 1,
-                Command = command,
+                Command = Command,
                 ErrorText = "",
                 StatusText = "",
                 PercentCompleted = 0,
@@ -47,8 +59,8 @@ namespace StatusAndResultsDBService.Services
 
             try
             {
-                _generateCodeStatusContext.StatusAndResults.Add(statusAndResults);
-                _generateCodeStatusContext.SaveChanges();
+                db.StatusAndResults.Add(statusAndResults);
+                db.SaveChanges();
             }
             catch (Exception ex)
             {
@@ -57,20 +69,22 @@ namespace StatusAndResultsDBService.Services
 
             return statusAndResults;
         }
-        public async Task<StatusAndResults> Delete(string command)
+        public async Task<StatusAndResults> Delete()
         {
-            StatusAndResults statusAndResults = await Get(command);
+            if (Command == "") return null;
+
+            StatusAndResults statusAndResults = await Get();
 
             if (statusAndResults == null)
             {
                 return null;
             }
 
-            _generateCodeStatusContext.StatusAndResults.Remove(statusAndResults);
+            db.StatusAndResults.Remove(statusAndResults);
 
             try
             {
-                _generateCodeStatusContext.SaveChanges();
+                db.SaveChanges();
             }
             catch (Exception ex)
             {
@@ -79,10 +93,12 @@ namespace StatusAndResultsDBService.Services
 
             return statusAndResults;
         }
-        public async Task<StatusAndResults> Get(string command)
+        public async Task<StatusAndResults> Get()
         {
-            StatusAndResults statusAndResults = (from c in _generateCodeStatusContext.StatusAndResults
-                                                 where c.Command == command
+            if (Command == "") return null;
+
+            StatusAndResults statusAndResults = (from c in db.StatusAndResults
+                                                 where c.Command == Command
                                                  select c).FirstOrDefault();
 
             if (statusAndResults == null)
@@ -92,23 +108,47 @@ namespace StatusAndResultsDBService.Services
 
             return statusAndResults;
         }
-        public async Task<StatusAndResults> Update(string command, string errorText, string statusText, int percentCompleted)
+        public async Task<StatusAndResults> GetOrCreate()
         {
-            StatusAndResults statusAndResults = await Get(command);
+            if (Command == "") return null;
+
+            StatusAndResults statusAndResults = await Get();
+
+            if (statusAndResults == null)
+            {
+                statusAndResults = await Create();
+                if (statusAndResults == null)
+                {
+                    return null;
+                }
+
+                statusAndResults = await Get();
+
+                if (statusAndResults == null)
+                {
+                    return null;
+                }
+            }
+
+            return statusAndResults;
+        }
+        public async Task<StatusAndResults> Update(int percentCompleted)
+        {
+            StatusAndResults statusAndResults = await Get();
 
             if (statusAndResults == null)
             {
                 return null;
             }
 
-            statusAndResults.ErrorText = errorText;
-            statusAndResults.StatusText = statusText;
+            statusAndResults.ErrorText = Error.ToString();
+            statusAndResults.StatusText = Status.ToString();
             statusAndResults.PercentCompleted = percentCompleted;
             statusAndResults.LastUpdateDate = DateTime.UtcNow.ToString();
 
             try
             {
-                _generateCodeStatusContext.SaveChanges();
+                db.SaveChanges();
             }
             catch (Exception ex)
             {
@@ -117,9 +157,13 @@ namespace StatusAndResultsDBService.Services
 
             return statusAndResults;
         }
-        public async Task SetCulture(CultureInfo Culture)
+        public async Task SetCommand(string command)
         {
-            StatusAndResultsServiceRes.Culture = Culture;
+            Command = command;
+        }
+        public async Task SetCulture(CultureInfo culture)
+        {
+            AppRes.Culture = culture;
         }
 
     }

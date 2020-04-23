@@ -120,50 +120,11 @@
   <data name="Application" xml:space="preserve">
     <value>Application</value>
   </data>
-  <data name="EnumsCompareWithOldEnums" xml:space="preserve">
-    <value>EnumsCompareWithOldEnums</value>
-  </data>
-  <data name="CouldNotCreateNewStatusAndResultsItemInDB_" xml:space="preserve">
-    <value>Could not create new StatusAndResults item in DB [{0}]</value>
-  </data>
-  <data name="CouldNotFindParameter" xml:space="preserve">
-    <value>Could not find parameter</value>
-  </data>
   <data name="Done" xml:space="preserve">
     <value>Done</value>
   </data>
-  <data name="en-CA" xml:space="preserve">
-    <value>en-CA</value>
-  </data>
-  <data name="ErrorFileDoesNotExist_" xml:space="preserve">
-    <value>Error: File does not exist [{0}]</value>
-  </data>
-  <data name="Error_IsNull" xml:space="preserve">
-    <value>Error [{0}] is null</value>
-  </data>
-  <data name="Example" xml:space="preserve">
-    <value>Example</value>
-  </data>
-  <data name="Exist" xml:space="preserve">
-    <value>Exist</value>
-  </data>
-  <data name="fr-CA" xml:space="preserve">
-    <value>fr-CA</value>
-  </data>
-  <data name="HowToUse" xml:space="preserve">
-    <value>How To Use</value>
-  </data>
-  <data name="PleaseUseAppSettings_JsonToSetupApplicationRunParameters" xml:space="preserve">
-    <value>Please use appsettings.json to setup application run parameters</value>
-  </data>
-  <data name="Result" xml:space="preserve">
-    <value>Result</value>
-  </data>
   <data name="Starting" xml:space="preserve">
     <value>Starting</value>
-  </data>
-  <data name="ToSeeIfTheNewEnumsDllHasTheSameEnumsAsTheOld" xml:space="preserve">
-    <value>to see if the new Enums dll has the same Enums as the old dll</value>
   </data>
   <data name="Type_Enum_NotFound" xml:space="preserve">
     <value>Type [{0}]\tEnum [{1}] -------------- not found</value>
@@ -171,10 +132,13 @@
   <data name="Type_NotFound" xml:space="preserve">
     <value>Type [{0}] ---------------------- not found</value>
   </data>
-  <data name="VerifyAppSettingsFile" xml:space="preserve">
-    <value>Verify appsettings.json file</value>
+  <data name="CouldNotGetOrCreateObject_InDB_" xml:space="preserve">
+    <value>Could not get or create object [{0}] in DB [{1}]</value>
   </data>
-  <data name="WillCompare" xml:space="preserve">
-    <value>will compare</value>
+  <data name="Running" xml:space="preserve">
+    <value>Running</value>
+  </data>
+  <data name="CouldNotFindParameter_InAppSettingsJSON" xml:space="preserve">
+    <value>Could not find parameter [{0}] in appsettings.json</value>
   </data>
 </root>

@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace EnumsCompareWithOldEnums.Resources {
+namespace StatusAndResultsDBService.Resources {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace EnumsCompareWithOldEnums.Resources {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("EnumsCompareWithOldEnums.Resources.AppRes", typeof(AppRes).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("StatusAndResultsDBService.Resources.AppRes", typeof(AppRes).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -61,74 +61,11 @@ namespace EnumsCompareWithOldEnums.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Application.
+        ///   Looks up a localized string similar to Test.
         /// </summary>
-        public static string Application {
+        public static string Test {
             get {
-                return ResourceManager.GetString("Application", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Could not find parameter [{0}] in appsettings.json.
-        /// </summary>
-        public static string CouldNotFindParameter_InAppSettingsJSON {
-            get {
-                return ResourceManager.GetString("CouldNotFindParameter_InAppSettingsJSON", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Could not get or create object [{0}] in DB [{1}].
-        /// </summary>
-        public static string CouldNotGetOrCreateObject_InDB_ {
-            get {
-                return ResourceManager.GetString("CouldNotGetOrCreateObject_InDB_", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Done.
-        /// </summary>
-        public static string Done {
-            get {
-                return ResourceManager.GetString("Done", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Running.
-        /// </summary>
-        public static string Running {
-            get {
-                return ResourceManager.GetString("Running", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Starting.
-        /// </summary>
-        public static string Starting {
-            get {
-                return ResourceManager.GetString("Starting", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Type [{0}]\tEnum [{1}] -------------- not found.
-        /// </summary>
-        public static string Type_Enum_NotFound {
-            get {
-                return ResourceManager.GetString("Type_Enum_NotFound", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Type [{0}] ---------------------- not found.
-        /// </summary>
-        public static string Type_NotFound {
-            get {
-                return ResourceManager.GetString("Type_NotFound", resourceCulture);
+                return ResourceManager.GetString("Test", resourceCulture);
             }
         }
     }

@@ -132,6 +132,9 @@
   <data name="Error_" xml:space="preserve">
     <value>Erreur: {0}</value>
   </data>
+  <data name="ExePathIsEmpty" xml:space="preserve">
+    <value>exePath is empty (fr)</value>
+  </data>
   <data name="FileNotFound_" xml:space="preserve">
     <value>File not found [{0}] (fr)</value>
   </data>

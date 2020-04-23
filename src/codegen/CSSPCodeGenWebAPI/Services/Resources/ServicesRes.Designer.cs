@@ -115,6 +115,15 @@ namespace CSSPCodeGenWebAPI.Services.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to exePath is empty.
+        /// </summary>
+        public static string ExePathIsEmpty {
+            get {
+                return ResourceManager.GetString("ExePathIsEmpty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to File not found [{0}].
         /// </summary>
         public static string FileNotFound_ {

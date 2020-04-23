@@ -7,9 +7,9 @@ using System.Reflection;
 using System.IO;
 using CSSPGenerateCodeBase.Models;
 
-namespace CSSPGenerateCodeBase
+namespace CSSPGenerateCodeBase.Services
 {
-    public interface IGenerateCodeBase
+    public interface IGenerateCodeBaseService
     {
         Task<bool> FillCSSPProp(PropertyInfo propInfo, CSSPProp csspProp, Type type);
         Task<bool> FillDLLTypeInfoList(FileInfo fiDLL, List<DLLTypeInfo> DLLTypeInfoList);

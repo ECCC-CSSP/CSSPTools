@@ -40,17 +40,17 @@ namespace EnumsTestGenerated_cs.Services
 
             sbStatus.AppendLine($"{ AppRes.Starting }...");
 
-            statusAndResults = await statusAndResultsService.Get(Command);
+            statusAndResults = await statusAndResultsService.Get();
              
             if (statusAndResults == null)
             {
-                statusAndResults = await statusAndResultsService.Create(Command);
+                statusAndResults = await statusAndResultsService.Create();
                 if (statusAndResults == null)
                 {
                     return;
                 }
 
-                statusAndResults = await statusAndResultsService.Get(Command);
+                statusAndResults = await statusAndResultsService.Get();
 
                 if (statusAndResults == null)
                 {
@@ -280,7 +280,7 @@ namespace EnumsTestGenerated_cs.Services
 
             sbStatus.AppendLine($"{ AppRes.Created } [{ fi.FullName }] ...");
             sbStatus.AppendLine($"{ AppRes.Done } ...");
-            await statusAndResultsService.Update(Command, sbError.ToString(), sbStatus.ToString(), 100);
+            await statusAndResultsService.Update(100);
 
             Console.WriteLine(sbError.ToString());
             Console.WriteLine(sbStatus.ToString());

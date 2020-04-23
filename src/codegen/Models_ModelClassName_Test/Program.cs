@@ -17,7 +17,7 @@ namespace Models_ModelClassName_Test
         #region Variables
         public static IConfigurationRoot configuration;
         public static IServiceCollection serviceCollection;
-        public static IGenerateCodeBase generateCodeBase;
+        public static IGenerateCodeBaseService generateCodeBase;
         #endregion Variables
 
         #region Entry

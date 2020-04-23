@@ -1,18 +1,18 @@
 {
-  "aaaaaaa": {
+  "Models_ModelClassName_Test": {
     "Runs": [
-      "C:\\CSSPTools\\src\\codegen\\EnumsCompareWithOldEnums\\bin\\Debug\\netcoreapp3.1\\EnumsCompareWithOldEnums.exe"
+      "C:\\CSSPTools\\src\\codegen\\Models_ModelClassName_Test\\bin\\Debug\\netcoreapp3.1\\Models_ModelClassName_Test.exe"
     ],
     "Required": [
       "{AppDataPath}\\CSSP\\GenerateCodeStatus.db",
       "C:\\CSSPTools\\src\\dlls\\CSSPEnums\\bin\\Debug\\netcoreapp3.1\\CSSPEnums.dll",
-      "C:\\CSSP Latest Code Old\\CSSPEnumsDLL\\CSSPEnumsDLL\\bin\\Debug\\CSSPEnumsDLL.dll"
+      "C:\\CSSPTools\\src\\dlls\\CSSPModels\\bin\\Debug\\netcoreapp3.1\\CSSPModels.dll"
     ],
     "Created": [
-
+      "C:\\CSSPTools\\src\\tests\\CSSPModels.Tests\\tests\\Generated\\{TypeName}TestGenerated.cs"
     ],
     "Compiled": [
-
+      "C:\\CSSPTools\\src\\tests\\CSSPModels.Tests\\bin\\Debug\\netcoreapp3.1\\CSSPModels.Tests.dll"
     ]
   },
   "bbbbbbbb": {

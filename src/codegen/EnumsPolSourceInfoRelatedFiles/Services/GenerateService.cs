@@ -23,8 +23,6 @@ namespace EnumsPolSourceInfoRelatedFiles.Services
         #endregion Variables
 
         #region Properties
-        private StringBuilder sbError { get; set; }
-        private StringBuilder sbStatus { get; set; }
         private string command { get; set; }
         private StatusAndResults statusAndResults { get; set; }
         #endregion Properties
@@ -38,8 +36,6 @@ namespace EnumsPolSourceInfoRelatedFiles.Services
 
             command = _configuration.GetValue<string>("Command");
 
-            sbError = new StringBuilder();
-            sbStatus = new StringBuilder();
             statusAndResults = new StatusAndResults();
         }
         #endregion Constructors
@@ -53,19 +49,19 @@ namespace EnumsPolSourceInfoRelatedFiles.Services
 
             FileInfo fiDB = new FileInfo(dbFileNamePartial.Replace("{AppDataPath}", appDataPath));
 
-            sbStatus.AppendLine($"{ AppRes.Starting }...");
+            _statusAndResultsService.Status.AppendLine($"{ AppRes.Starting }...");
 
-            statusAndResults = await _statusAndResultsService.Get(command);
+            statusAndResults = await _statusAndResultsService.Get();
 
             if (statusAndResults == null)
             {
-                statusAndResults = await _statusAndResultsService.Create(command);
+                statusAndResults = await _statusAndResultsService.Create();
                 if (statusAndResults == null)
                 {
                     return;
                 }
 
-                statusAndResults = await _statusAndResultsService.Get(command);
+                statusAndResults = await _statusAndResultsService.Get();
 
                 if (statusAndResults == null)
                 {
@@ -73,12 +69,12 @@ namespace EnumsPolSourceInfoRelatedFiles.Services
                 }
             }
 
-            sbStatus.AppendLine($"{ AppRes.ReadingExcelDocumentAndChecking }");
+            _statusAndResultsService.Status.AppendLine($"{ AppRes.ReadingExcelDocumentAndChecking }");
             //await _statusAndResultsService.Update(command, sbError.ToString(), sbStatus.ToString(), 0);
 
             FileInfo fiExcel = new FileInfo(_configuration.GetValue<string>("ExcelFileName"));
 
-            if (! await _polSourceGroupingExcelFileRead.ReadExcelSheet(fiExcel.FullName, false, sbError, sbStatus, command, _statusAndResultsService))
+            if (! await _polSourceGroupingExcelFileRead.ReadExcelSheet(fiExcel.FullName, false, command, _statusAndResultsService))
             {
                 return;
             }
@@ -86,13 +82,13 @@ namespace EnumsPolSourceInfoRelatedFiles.Services
             if (_polSourceGroupingExcelFileRead.groupChoiceChildLevelList.Count() == 0)
             {
                 string ErrorText = String.Format(AppRes.ERROR_IsEqualTo0, "_groupChoiceChildLevelList");
-                sbError.AppendLine($"{ ErrorText }");
-                await _statusAndResultsService.Update(command, sbError.ToString(), sbStatus.ToString(), 0);
+                _statusAndResultsService.Error.AppendLine($"{ ErrorText }");
+                await _statusAndResultsService.Update(0);
 
                 return;
             }
 
-            sbStatus.AppendLine($"{ AppRes.ReadingExcelDocumentAndChecking } { AppRes.Done } ...");
+            _statusAndResultsService.Status.AppendLine($"{ AppRes.ReadingExcelDocumentAndChecking } { AppRes.Done } ...");
             //await _statusAndResultsService.Update(command, sbError.ToString(), sbStatus.ToString(), 0);
 
             await Generate_FillPolSourceObsInfoChildService();
@@ -102,12 +98,12 @@ namespace EnumsPolSourceInfoRelatedFiles.Services
             await Generate_PolSourceInfoEnumGeneratedRes_resx();
             await Generate_PolSourceInfoEnumGeneratedResFR_resx();
 
-            sbStatus.AppendLine($"{ AppRes.Done } ...");
+            _statusAndResultsService.Status.AppendLine($"{ AppRes.Done } ...");
 
-            await _statusAndResultsService.Update(command, sbError.ToString(), sbStatus.ToString(), 100);
+            await _statusAndResultsService.Update(100);
 
-            Console.WriteLine(sbError.ToString());
-            Console.WriteLine(sbStatus.ToString());
+            Console.WriteLine(_statusAndResultsService.Error.ToString());
+            Console.WriteLine(_statusAndResultsService.Status.ToString());
 
             return;
         }
