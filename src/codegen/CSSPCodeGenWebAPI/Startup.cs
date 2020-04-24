@@ -17,10 +17,10 @@ using CSSPModels;
 using Microsoft.EntityFrameworkCore;
 using CSSPCodeGenWebAPI.Model;
 using CSSPCodeGenWebAPI.Services;
-using StatusAndResultsDBService.Services;
 using System.IO;
-using StatusAndResultsDBService.Models;
 using CSSPCodeGenWebAPI.Models;
+using GenerateCodeStatusDB.Models;
+using GenerateCodeStatusDB.Services;
 
 namespace CSSPCodeGenWebAPI
 {
@@ -108,12 +108,12 @@ namespace CSSPCodeGenWebAPI
             services.AddScoped<IUserService, UserService>();
 
             services.AddScoped<IGenerateEnumsService, GenerateEnumsService>();
-            services.AddScoped<IStatusEnumsService, StatusEnumsService>();
+            //services.AddScoped<IStatusEnumsService, StatusEnumsService>();
 
-            services.AddScoped<IGenerateModelsService, GenerateModelsService>();
-            services.AddScoped<IStatusModelsService, StatusModelsService>();
+            //services.AddScoped<IGenerateModelsService, GenerateModelsService>();
+            //services.AddScoped<IStatusModelsService, StatusModelsService>();
 
-            services.AddScoped<IStatusAndResultsService, StatusAndResultsService>();
+            services.AddScoped<IGenerateCodeStatusDBService, GenerateCodeStatusDBService>();
 
         }
 

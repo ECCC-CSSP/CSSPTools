@@ -123,6 +123,9 @@
   <data name="CouldNotFindParameter" xml:space="preserve">
     <value>Could not find parameter (fr)</value>
   </data>
+  <data name="CouldNotFindParameter_InAppSettingsJSON" xml:space="preserve">
+    <value>Could not find parameter [{0}] in appsettings.json (fr)</value>
+  </data>
   <data name="Created" xml:space="preserve">
     <value>Created (fr)</value>
   </data>
@@ -134,6 +137,9 @@
   </data>
   <data name="Exist" xml:space="preserve">
     <value>Exist (fr)</value>
+  </data>
+  <data name="Running" xml:space="preserve">
+    <value>Running (fr)</value>
   </data>
   <data name="Starting" xml:space="preserve">
     <value>Starting (fr)</value>

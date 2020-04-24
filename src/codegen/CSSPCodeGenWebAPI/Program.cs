@@ -22,8 +22,7 @@ namespace CSSPCodeGenWebAPI
                 {
                     webBuilder.ConfigureAppConfiguration(config =>
                     {
-                        config.AddJsonFile("generateenumssettings.json");
-                        config.AddJsonFile("generatemodelssettings.json");
+                        //config.AddJsonFile("appsettings.json");
                     }).UseStartup<Startup>()
                     .UseUrls("http://localhost:2345");
                 });

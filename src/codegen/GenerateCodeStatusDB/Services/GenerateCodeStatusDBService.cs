@@ -17,6 +17,7 @@ namespace GenerateCodeStatusDB.Services
         #endregion Variables
 
         #region Properties
+        public CultureInfo Culture { get; set; }
         public string DBFileFullName { get; set; }
         public string Command { get; set; }
         public StringBuilder Error { get; set; }
@@ -163,6 +164,7 @@ namespace GenerateCodeStatusDB.Services
         }
         public async Task SetCulture(CultureInfo culture)
         {
+            Culture = culture;
             AppRes.Culture = culture;
         }
 

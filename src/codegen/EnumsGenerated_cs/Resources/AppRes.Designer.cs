@@ -79,6 +79,15 @@ namespace EnumsGenerated_cs.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Could not find parameter [{0}] in appsettings.json.
+        /// </summary>
+        public static string CouldNotFindParameter_InAppSettingsJSON {
+            get {
+                return ResourceManager.GetString("CouldNotFindParameter_InAppSettingsJSON", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Created.
         /// </summary>
         public static string Created {
@@ -111,6 +120,15 @@ namespace EnumsGenerated_cs.Resources {
         public static string Exist {
             get {
                 return ResourceManager.GetString("Exist", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Running.
+        /// </summary>
+        public static string Running {
+            get {
+                return ResourceManager.GetString("Running", resourceCulture);
             }
         }
         

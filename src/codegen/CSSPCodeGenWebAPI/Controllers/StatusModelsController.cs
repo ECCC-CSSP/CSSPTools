@@ -11,13 +11,13 @@ using CSSPCodeGenWebAPI.Controllers.Resources;
 using CSSPCodeGenWebAPI.Models;
 using CSSPCodeGenWebAPI.Services;
 using CSSPCodeGenWebAPI.Services.Resources;
+using GenerateCodeStatusDB.Models;
+using GenerateCodeStatusDB.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient.Server;
 using Microsoft.Extensions.Configuration;
-using StatusAndResultsDBService.Models;
-using StatusAndResultsDBService.Services;
 
 namespace CSSPCodeGenWebAPI.Controllers
 {
@@ -26,40 +26,43 @@ namespace CSSPCodeGenWebAPI.Controllers
     [Authorize]
     public class StatusModelsController : ControllerBase
     {
-        private readonly IStatusModelsService _statusModelsService;
-        private readonly IStatusAndResultsService _statusAndResultsService;
+        #region Variables
+        private readonly IGenerateCodeStatusDBService _generateCodeStatusDBService;
         private readonly IConfiguration _configuration;
+        #endregion Variables
 
-        public StatusModelsController(IStatusModelsService statusModelsService, IStatusAndResultsService statusAndResultsService, IConfiguration configuration)
+        #region Constructors
+        public StatusModelsController(IGenerateCodeStatusDBService generateCodeStatusDBService, IConfiguration configuration)
         {
-            _statusModelsService = statusModelsService;
-            _statusAndResultsService = statusAndResultsService;
+            _generateCodeStatusDBService = generateCodeStatusDBService;
             _configuration = configuration;
         }
+        #endregion Constructors
 
+        #region Functions public
         [HttpPost]
         public async Task<ActionResult<ActionReturn>> post(GenerateCommand command)
         {
             //Thread.Sleep(1000);
 
             ActionReturn actionReturn = new ActionReturn();
-            CultureInfo culture = new CultureInfo(Request.RouteValues["culture"].ToString());
+          
+            _generateCodeStatusDBService.Culture = new CultureInfo(Request.RouteValues["culture"].ToString());
+            _generateCodeStatusDBService.Command = command.Command;
 
-            await _statusModelsService.StatusModels(command.Command, culture, _configuration, _statusAndResultsService);
+            GenerateCodeStatus generateCodeStatus = await _generateCodeStatusDBService.Get();
 
-            StatusAndResults statusAndResults = await _statusAndResultsService.Get(command.Command);
-
-            if (statusAndResults != null)
+            if (generateCodeStatus != null)
             {
-                if (!string.IsNullOrWhiteSpace(statusAndResults.ErrorText))
+                if (!string.IsNullOrWhiteSpace(generateCodeStatus.ErrorText))
                 {
-                    actionReturn.ErrorText = statusAndResults.ErrorText;
+                    actionReturn.ErrorText = generateCodeStatus.ErrorText;
                     actionReturn.OKText = "";
                 }
                 else
                 {
                     actionReturn.ErrorText = "";
-                    actionReturn.OKText = statusAndResults.StatusText;
+                    actionReturn.OKText = generateCodeStatus.StatusText;
                 }
             }
             else
@@ -75,8 +78,9 @@ namespace CSSPCodeGenWebAPI.Controllers
 
             return BadRequest(actionReturn);
         }
+        #endregion Functions public
 
-
+        #region Functions private
+        #endregion Functions private
     }
-
 }

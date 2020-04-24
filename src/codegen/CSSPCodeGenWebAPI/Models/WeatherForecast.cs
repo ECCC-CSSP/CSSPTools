@@ -1,6 +1,6 @@
 using System;
 
-namespace CSSPCodeGenWebAPI
+namespace CSSPCodeGenWebAPI.Models
 {
     public class WeatherForecast
     {

@@ -16,8 +16,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient.Server;
 using Microsoft.Extensions.Configuration;
-using StatusAndResultsDBService.Models;
-using StatusAndResultsDBService.Services;
+using GenerateCodeStatusDB.Services;
+using GenerateCodeStatusDB.Models;
 
 namespace CSSPCodeGenWebAPI.Controllers
 {
@@ -26,40 +26,47 @@ namespace CSSPCodeGenWebAPI.Controllers
     [Authorize]
     public class GenerateEnumsController : ControllerBase
     {
+        #region Variables
         private readonly IGenerateEnumsService _generateEnumsService;
-        private readonly IStatusAndResultsService _statusAndResultsService;
+        private readonly IGenerateCodeStatusDBService _generateCodeStatusDBService;
         private readonly IConfiguration _configuration;
+        #endregion Variables
 
-        public GenerateEnumsController(IGenerateEnumsService generateEnumsService, IStatusAndResultsService statusAndResultsService, IConfiguration configuration)
+        #region Constructors
+        public GenerateEnumsController(IGenerateEnumsService generateEnumsService, IGenerateCodeStatusDBService generateCodeStatusService, IConfiguration configuration)
         {
             _generateEnumsService = generateEnumsService;
-            _statusAndResultsService = statusAndResultsService;
+            _generateCodeStatusDBService = generateCodeStatusService;
             _configuration = configuration;
         }
+        #endregion Constructors
 
+        #region Functions public
         [HttpPost]
         public async Task<ActionResult<ActionReturn>> post(GenerateCommand command)
         {
             //Thread.Sleep(1000);
 
             ActionReturn actionReturn = new ActionReturn();
-            CultureInfo culture = new CultureInfo(Request.RouteValues["culture"].ToString());
 
-            await _generateEnumsService.GenerateEnums(command.Command, culture, _configuration, _statusAndResultsService);
+            _generateCodeStatusDBService.Culture = new CultureInfo(Request.RouteValues["culture"].ToString());
+            _generateCodeStatusDBService.Command = command.Command;
 
-            StatusAndResults statusAndResults = await _statusAndResultsService.Get(command.Command);
+            await _generateEnumsService.GenerateEnums();
 
-            if (statusAndResults != null)
+            GenerateCodeStatus generateCodeStatus = await _generateCodeStatusDBService.Get();
+
+            if (generateCodeStatus != null)
             {
-                if (!string.IsNullOrWhiteSpace(statusAndResults.ErrorText))
+                if (!string.IsNullOrWhiteSpace(generateCodeStatus.ErrorText))
                 {
-                    actionReturn.ErrorText = statusAndResults.ErrorText;
+                    actionReturn.ErrorText = generateCodeStatus.ErrorText;
                     actionReturn.OKText = "";
                 }
                 else
                 {
                     actionReturn.ErrorText = "";
-                    actionReturn.OKText = statusAndResults.StatusText;
+                    actionReturn.OKText = generateCodeStatus.StatusText;
                 }
             }
             else
@@ -75,7 +82,10 @@ namespace CSSPCodeGenWebAPI.Controllers
 
             return BadRequest(actionReturn);
         }
+        #endregion Functions public
 
+        #region Functions private
+        #endregion Functions private
 
     }
 

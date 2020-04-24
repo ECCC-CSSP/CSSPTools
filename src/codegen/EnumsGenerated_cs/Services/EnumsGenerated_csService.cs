@@ -1,7 +1,7 @@
 ﻿using EnumsGenerated_cs.Resources;
+using GenerateCodeStatusDB.Models;
+using GenerateCodeStatusDB.Services;
 using Microsoft.Extensions.Configuration;
-using StatusAndResultsDBService.Models;
-using StatusAndResultsDBService.Services;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -12,51 +12,45 @@ using System.Threading.Tasks;
 
 namespace EnumsGenerated_cs.Services
 {
-    public class GenerateService : IGenerateService
+    public class EnumsGenerated_csService : IEnumsGenerated_csService
     {
         #region Variables
         private readonly IConfigurationRoot _configuration;
-        private readonly IStatusAndResultsService _statusAndResultsService;
+        private readonly IGenerateCodeStatusDBService _generateCodeStatusDBService;
         #endregion Variables
 
         #region Constructors
-        public GenerateService(IConfigurationRoot configuration, IStatusAndResultsService statusAndResultsService)
+        public EnumsGenerated_csService(IConfigurationRoot configuration, IGenerateCodeStatusDBService generateCodeStatusDBService)
         {
             _configuration = configuration;
-            _statusAndResultsService = statusAndResultsService;
+            _generateCodeStatusDBService = generateCodeStatusDBService;
         }
         #endregion Constructors
 
         #region Functions public
         public async Task Start()
         {
-            string Command = _configuration.GetValue<string>("Command");
-
-            StringBuilder sbError = new StringBuilder();
-            StringBuilder sbStatus = new StringBuilder();
-            StatusAndResults statusAndResults = new StatusAndResults();
-
             string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
 
             string dbFileNamePartial = _configuration.GetValue<string>("DBFileName");
 
             FileInfo fiDB = new FileInfo(dbFileNamePartial.Replace("{AppDataPath}", appDataPath));
 
-            sbStatus.AppendLine($"{ AppRes.Starting }...");
+            _generateCodeStatusDBService.Status.AppendLine($"{ AppRes.Starting }...");
 
-            statusAndResults = await _statusAndResultsService.Get();
-
-            if (statusAndResults == null)
+            GenerateCodeStatus generateCodeStatus = await _generateCodeStatusDBService.Get();
+             
+            if (generateCodeStatus == null)
             {
-                statusAndResults = await _statusAndResultsService.Create();
-                if (statusAndResults == null)
+                generateCodeStatus = await _generateCodeStatusDBService.Create();
+                if (generateCodeStatus == null)
                 {
                     return;
                 }
 
-                statusAndResults = await _statusAndResultsService.Get();
+                generateCodeStatus = await _generateCodeStatusDBService.Get();
 
-                if (statusAndResults == null)
+                if (generateCodeStatus == null)
                 {
                     return;
                 }
@@ -126,9 +120,9 @@ namespace EnumsGenerated_cs.Services
             {
                 sw.Write(sb.ToString());
             }
-            
-            sbStatus.AppendLine($"{ AppRes.Created } [{ fiInterface.FullName }] ...");
-            await _statusAndResultsService.Update(50);
+
+            _generateCodeStatusDBService.Status.AppendLine($"{ AppRes.Created } [{ fiInterface.FullName }] ...");
+            await _generateCodeStatusDBService.Update(50);
 
             sb = new StringBuilder();
 
@@ -358,13 +352,13 @@ namespace EnumsGenerated_cs.Services
                 sw.Write(sb.ToString());
             }
 
-            sbStatus.AppendLine($"{ AppRes.Created } [{ fi.FullName }] ...");
-            sbStatus.AppendLine($"{ AppRes.Done } ...");
+            _generateCodeStatusDBService.Status.AppendLine($"{ AppRes.Created } [{ fi.FullName }] ...");
+            _generateCodeStatusDBService.Status.AppendLine($"{ AppRes.Done } ...");
 
-            await _statusAndResultsService.Update(100);
+            await _generateCodeStatusDBService.Update(100);
 
-            Console.WriteLine(sbError.ToString());
-            Console.WriteLine(sbStatus.ToString());
+            Console.WriteLine(_generateCodeStatusDBService.Error.ToString());
+            Console.WriteLine(_generateCodeStatusDBService.Status.ToString());
 
             return;
         }

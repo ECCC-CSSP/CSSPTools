@@ -1,6 +1,5 @@
 ﻿using CSSPCodeGenWebAPI.Models;
 using Microsoft.Extensions.Configuration;
-using StatusAndResultsDBService.Services;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -12,6 +11,6 @@ namespace CSSPCodeGenWebAPI.Services
 {
     public interface IGenerateModelsService
     {
-        Task GenerateModels(string command, CultureInfo culture, IConfiguration configuration, IStatusAndResultsService statusAndResultsService);
+        Task GenerateModels();
     }
 }

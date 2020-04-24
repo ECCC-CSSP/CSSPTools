@@ -21,15 +21,20 @@ namespace CSSPCodeGenWebAPI.Controllers
     [ApiController]
     public class TokenController : ControllerBase
     {
+        #region Variables
         private readonly ApiSettingsModel _appSettings;
         private readonly IUserService _userService;
+        #endregion Variables
 
+        #region Constructors
         public TokenController(IOptions<ApiSettingsModel> appSettings, IUserService userService)
         {
             _appSettings = appSettings.Value;
             _userService = userService;
         }
+        #endregion Constructors
 
+        #region Functions public
         [HttpPost]
         public async Task<ActionResult<UserModel>> Post(LoginModel loginModel)
         {
@@ -62,5 +67,9 @@ namespace CSSPCodeGenWebAPI.Controllers
 
             return userModel;
         }
+        #endregion Functions public
+
+        #region Functions private
+        #endregion Functions private
     }
 }

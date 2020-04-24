@@ -10,6 +10,7 @@ namespace GenerateCodeStatusDB.Services
 {
     public interface IGenerateCodeStatusDBService
     {
+        public CultureInfo Culture { get; set; }
         string DBFileFullName { get; set; }
         string Command { get; set; }
         StringBuilder Error { get; set; }

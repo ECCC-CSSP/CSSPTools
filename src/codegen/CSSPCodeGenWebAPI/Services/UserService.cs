@@ -15,15 +15,20 @@ namespace CSSPCodeGenWebAPI.Model
 {
     public class UserService : IUserService
     {
-        public readonly UserManager<ApplicationUser> _userManager;
-        public CSSPDBContext _csspDBContext;
+        #region Variables
+        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly CSSPDBContext _csspDBContext;
+        #endregion Variables
 
+        #region Constructors
         public UserService(UserManager<ApplicationUser> userManager, CSSPDBContext csspDBContext)
         {
             _userManager = userManager;
             _csspDBContext = csspDBContext;
         }
+        #endregion Constructors
 
+        #region Functions public
         //public async Task CreateUser()
         //{
         //    var user = new ApplicationUser { UserName = "TestUser", Email = "test@example.com" };
@@ -88,5 +93,9 @@ namespace CSSPCodeGenWebAPI.Model
 
             return null;
         }
+        #endregion Functions public
+
+        #region Functions private
+        #endregion Functions private
     }
 }

@@ -1,8 +1,7 @@
 ﻿using CSSPCodeGenWebAPI.Models;
 using CSSPCodeGenWebAPI.Services.Resources;
+using GenerateCodeStatusDB.Services;
 using Microsoft.Extensions.Configuration;
-using StatusAndResultsDBService.Models;
-using StatusAndResultsDBService.Services;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -17,35 +16,43 @@ namespace CSSPCodeGenWebAPI.Services
 {
     public class GenerateEnumsService : IGenerateEnumsService
     {
-        /// <summary>
-        /// Will try to run a console application    
-        /// </summary>
-        /// <param name="command">String indicating the console application to run</param>
-        /// <param name="culture">Current culture setting for multilanguage error message</param>
-        /// <param name="sbStatus">Will hold all the status text during the running of the application</param>
-        /// <returns></returns>
-        public async Task GenerateEnums(string command, CultureInfo culture, IConfiguration configuration, IStatusAndResultsService statusAndResultsService)
+        #region Variables
+        private readonly IConfiguration _configuration;
+        private readonly IGenerateCodeStatusDBService _generateCodeStatusDBService;
+        #endregion Variables
+
+        #region Constructors
+        public GenerateEnumsService(IConfiguration configuration, IGenerateCodeStatusDBService generateCodeStatusDBService)
+        {
+            _configuration = configuration;
+            _generateCodeStatusDBService = generateCodeStatusDBService;
+        }
+        #endregion Constructors
+
+        #region Functions public
+        public async Task GenerateEnums()
         {
             try
             {
-                ServicesRes.Culture = culture;
+                ServicesRes.Culture = _generateCodeStatusDBService.Culture;
 
                 string exePath = "";
                 string args = "";
-                switch (command)
+                switch (_generateCodeStatusDBService.Command)
                 {
                     case "EnumsCompareWithOldEnums":
                     case "EnumsGenerated_cs":
                     case "EnumsTestGenerated_cs":
                     case "EnumsPolSourceInfoRelatedFiles":
                         {
-                            exePath = configuration.GetSection($"{ command }:Runs").GetChildren().ToList().Select(x => x.Value).ToList().FirstOrDefault();
-                            args = $" { culture.Name }";
+                            exePath = _configuration.GetValue<string>($"{ _generateCodeStatusDBService.Command }");
+                            args = $" { _generateCodeStatusDBService.Culture.Name }";
                         }
                         break;
                     default:
                         {
-                            await statusAndResultsService.Update(command, String.Format(ServicesRes.Command_IsNotImplemented, command), "", 0);
+                            _generateCodeStatusDBService.Error.AppendLine(String.Format(ServicesRes.Command_IsNotImplemented, _generateCodeStatusDBService.Command));
+                            await _generateCodeStatusDBService.Update(0);
                             return;
                         }
 
@@ -53,14 +60,16 @@ namespace CSSPCodeGenWebAPI.Services
 
                 if (string.IsNullOrWhiteSpace(exePath))
                 {
-                    await statusAndResultsService.Update(command, ServicesRes.ExePathIsEmpty, "", 0);
+                    _generateCodeStatusDBService.Error.AppendLine(ServicesRes.ExePathIsEmpty);
+                    await _generateCodeStatusDBService.Update(0);
                     return;
                 }
 
                 FileInfo fiApp = new FileInfo(exePath);
                 if (!fiApp.Exists)
                 {
-                    await statusAndResultsService.Update(command, String.Format(ServicesRes.CouldNotFindExePath_, exePath), "", 0);
+                    _generateCodeStatusDBService.Error.AppendLine(String.Format(ServicesRes.CouldNotFindExePath_, exePath));
+                    await _generateCodeStatusDBService.Update(0);
                     return;
                 }
 
@@ -68,13 +77,16 @@ namespace CSSPCodeGenWebAPI.Services
             }
             catch (Exception ex)
             {
-                await statusAndResultsService.Update(command, String.Format(ServicesRes.UnmanagedServerError_, ex.Message), "", 0);
+                _generateCodeStatusDBService.Error.AppendLine(String.Format(ServicesRes.UnmanagedServerError_, ex.Message));
+                await _generateCodeStatusDBService.Update(0);
                 return;
             }
 
             return;
         }
+        #endregion Functions public
 
+        #region Functions private
         private void RunApplication(string exePath, string args)
         {
             // run exePath application
@@ -86,5 +98,6 @@ namespace CSSPCodeGenWebAPI.Services
                 // report progress is needed
             }
         }
+        #endregion Functions private
     }
 }
