@@ -38,7 +38,6 @@ namespace EnumsCompareWithOldEnums.Services
             string NewEnumsDLL = "NewEnumsDLL";
             string OldEnumsDLL = "OldEnumsDLL";
 
-
             statusAndResults = await _generateCodeStatusDBService.GetOrCreate();
 
             if (statusAndResults == null)

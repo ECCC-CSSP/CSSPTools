@@ -57,20 +57,11 @@ namespace GenerateCodeCompile.Services
             Directory.SetCurrentDirectory(di.FullName);
 
             string command = $"dotnet";
-            string arg = $" build logfile={ LogFileName }";
+            string arg = $" build /flp:v=m; /flp:logfile={ LogFileName }";
             _generateCodeStatusDBService.Status.AppendLine($"{ string.Format(AppRes.RunningCommand_UnderDirectory_, command + arg, di.FullName) }");
 
-            //ProcessStartInfo processStartInfo = new ProcessStartInfo();
-            //processStartInfo.Arguments = $" build /flp:logfile={ LogFileName }";
-            //processStartInfo.WindowStyle = ProcessWindowStyle.Normal; //.Hidden;
-            //processStartInfo.FileName = $@"dotnet";
-            //processStartInfo.CreateNoWindow = false;
-
-            //Process process = new Process();
-            //process = Process.Start(processStartInfo);
-
             Process process = new Process();
-            process = Process.Start($"dotnet", $" build /flp:v=m; /flp:logfile=CompileLog.txt");
+            process = Process.Start($"{ command }", $" { arg }");
             process.WaitForExit();
 
             FileInfo fiLog = new FileInfo(fi.FullName.Replace(fi.Name, LogFileName));
