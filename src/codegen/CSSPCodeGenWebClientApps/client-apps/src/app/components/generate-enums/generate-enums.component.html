@@ -1,51 +1,51 @@
 <h1>Generate Enums</h1>
 
-<button disabled="{{ generateEnumsService.generateEnumsModel$.value.Working }}"
-    (click)="GenerateEnums('EnumsCompareWithOldEnums')" mat-raised-button color="primary">
+<button disabled="{{ dotNetService.dotNetModel$.value.Working }}"
+    (click)="RunEnums('EnumsCompareWithOldEnums')" mat-raised-button color="primary">
     {{ generateEnumsService.generateEnumsModel$.value.CompareEnumsAndOldEnums }}
 </button>
-<button class="status" disabled="{{ generateEnumsService.generateEnumsModel$.value.Working }}"
-    (click)="StatusEnums('EnumsCompareWithOldEnums')" mat-raised-button color="primary">
+<button class="status" disabled="{{ dotNetService.dotNetModel$.value.Working }}"
+    (click)="RunStatus('EnumsCompareWithOldEnums')" mat-raised-button color="primary">
     S
 </button>
 <span>&nbsp;&nbsp;&nbsp;</span>
-<button disabled="{{ generateEnumsService.generateEnumsModel$.value.Working }}"
-    (click)="GenerateEnums('EnumsGenerated_cs')" mat-raised-button color="primary">
+<button disabled="{{ dotNetService.dotNetModel$.value.Working }}"
+    (click)="RunEnums('EnumsGenerated_cs')" mat-raised-button color="primary">
     {{generateEnumsService.generateEnumsModel$.value.EnumsGenerated_cs}}
 </button>
-<button disabled="{{ generateEnumsService.generateEnumsModel$.value.Working }}"
-    (click)="StatusEnums('EnumsGenerated_cs')" mat-raised-button color="primary">
+<button disabled="{{ dotNetService.dotNetModel$.value.Working }}"
+    (click)="RunStatus('EnumsGenerated_cs')" mat-raised-button color="primary">
     S
 </button>
 <span>&nbsp;&nbsp;&nbsp;</span>
-<button disabled="{{ generateEnumsService.generateEnumsModel$.value.Working }}"
-    (click)="GenerateEnums('EnumsTestGenerated_cs')" mat-raised-button color="primary">
+<button disabled="{{ dotNetService.dotNetModel$.value.Working }}"
+    (click)="RunEnums('EnumsTestGenerated_cs')" mat-raised-button color="primary">
     {{generateEnumsService.generateEnumsModel$.value.EnumsTestGenerated_cs}}
 </button>
-<button disabled="{{ generateEnumsService.generateEnumsModel$.value.Working }}"
-    (click)="StatusEnums('EnumsTestGenerated_cs')" mat-raised-button color="primary">
+<button disabled="{{ dotNetService.dotNetModel$.value.Working }}"
+    (click)="RunStatus('EnumsTestGenerated_cs')" mat-raised-button color="primary">
     S
 </button>
 <span>&nbsp;&nbsp;&nbsp;</span>
-<button disabled="{{ generateEnumsService.generateEnumsModel$.value.Working }}"
-    (click)="GenerateEnums('EnumsPolSourceInfoRelatedFiles')" mat-raised-button color="primary">
+<button disabled="{{ dotNetService.dotNetModel$.value.Working }}"
+    (click)="RunEnums('EnumsPolSourceInfoRelatedFiles')" mat-raised-button color="primary">
     {{generateEnumsService.generateEnumsModel$.value.GeneratePolSourceEnumCodeFiles}}
 </button>
-<button disabled="{{ generateEnumsService.generateEnumsModel$.value.Working }}"
-    (click)="StatusEnums('EnumsPolSourceInfoRelatedFiles')" mat-raised-button color="primary">
+<button disabled="{{ dotNetService.dotNetModel$.value.Working }}"
+    (click)="RunStatus('EnumsPolSourceInfoRelatedFiles')" mat-raised-button color="primary">
     S
 </button>
 <span>&nbsp;&nbsp;&nbsp;</span>
 
-<mat-progress-bar *ngIf="generateEnumsService.generateEnumsModel$.value.Working" mode="indeterminate">
+<mat-progress-bar *ngIf="dotNetService.dotNetModel$.value.Working" mode="indeterminate">
 </mat-progress-bar>
 
-<p *ngIf="generateEnumsService.generateEnumsModel$.value.Error">
-    <mat-error>{{ generateEnumsService.generateEnumsModel$.value.Error.error.ErrorText }} </mat-error>
+<p *ngIf="dotNetService.dotNetModel$.value.Error">
+    <mat-error>{{ dotNetService.dotNetModel$.value.Error.error.ErrorText }} </mat-error>
 </p>
-<div *ngIf="generateEnumsService.generateEnumsModel$.value.Status">
-    <h1>{{ generateEnumsService.generateEnumsModel$.value.CurrentStatus }}</h1>
+<div *ngIf="dotNetService.dotNetModel$.value.Status">
+    <h1>{{ dotNetService.dotNetModel$.value.CurrentStatus }}</h1>
     <pre>
-{{ generateEnumsService.generateEnumsModel$.value.Status }}
+{{ dotNetService.dotNetModel$.value.Status }}
     </pre>
 </div>

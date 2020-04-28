@@ -17,7 +17,7 @@ namespace GenerateCodeBase.Services
     public partial class ValidateAppSettingsService : IValidateAppSettingsService
     {
         #region Variables
-        private readonly IConfigurationRoot _configuration;
+        private readonly IConfiguration _configuration;
         private readonly IGenerateCodeStatusDBService _generateCodeStatusDBService;
         #endregion Variables
 
@@ -26,7 +26,7 @@ namespace GenerateCodeBase.Services
         #endregion Properties
 
         #region Constructors
-        public ValidateAppSettingsService(IConfigurationRoot configuration, IGenerateCodeStatusDBService generateCodeStatusDBService)
+        public ValidateAppSettingsService(IConfiguration configuration, IGenerateCodeStatusDBService generateCodeStatusDBService)
         {
             _configuration = configuration;
             _generateCodeStatusDBService = generateCodeStatusDBService;

@@ -13,15 +13,11 @@ namespace GenerateCodeBase.Models
             IsCulture = false;
             IsFile = false;
             CheckExist = false;
-            PreCompile = false;
-            PostCompile = false;
         }
         public string Parameter { get; set; }
         public string ExpectedValue { get; set; }
         public bool IsCulture { get; set; }
         public bool IsFile { get; set; }
         public bool CheckExist { get; set; }
-        public bool PreCompile { get; set; }
-        public bool PostCompile { get; set; }
     }
 }

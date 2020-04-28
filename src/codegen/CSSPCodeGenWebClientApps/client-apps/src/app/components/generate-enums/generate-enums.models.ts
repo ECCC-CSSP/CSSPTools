@@ -5,9 +5,9 @@ export interface GenerateEnumsModel {
     EnumsGenerated_cs?: string;
     EnumsTestGenerated_cs?: string;
     GeneratePolSourceEnumCodeFiles?: string;
-    Error?: HttpErrorResponse;
-    Status?: string;
-    Working?: boolean;
-    CurrentStatus?: string;
-    WorkingText?: string;
+    // Error?: HttpErrorResponse;
+    // Status?: string;
+    // Working?: boolean;
+    // CurrentStatus?: string;
+    // WorkingText?: string;
 }

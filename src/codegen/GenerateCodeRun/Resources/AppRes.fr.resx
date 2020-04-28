@@ -117,28 +117,16 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Application" xml:space="preserve">
-    <value>Application</value>
+  <data name="CouldNotFindDirectoryOfSolutionFile_" xml:space="preserve">
+    <value>Could not find directory of solution file [{0}] (fr)</value>
   </data>
-  <data name="Done" xml:space="preserve">
-    <value>Done (fr)</value>
+  <data name="CouldNotFindFile_" xml:space="preserve">
+    <value>Could not find file [{0}] (fr)</value>
   </data>
-  <data name="Starting" xml:space="preserve">
-    <value>Starting (fr)</value>
+  <data name="CouldNotFindSolutionFile_ToCompile" xml:space="preserve">
+    <value>Could not find solution file [{0}] to compile (fr)</value>
   </data>
-  <data name="Type_Enum_NotFound" xml:space="preserve">
-    <value>Type [{0}]\tEnum [{1}] -------------- not found (fr)</value>
-  </data>
-  <data name="Type_NotFound" xml:space="preserve">
-    <value>Type [{0}] ---------------------- not found (fr)</value>
-  </data>
-  <data name="CouldNotGetOrCreateObject_InDB_" xml:space="preserve">
-    <value>Could not get or create object [{0}] in DB [{1}] (fr)</value>
-  </data>
-  <data name="Running" xml:space="preserve">
-    <value>Running (fr)</value>
-  </data>
-  <data name="CouldNotFindParameter_InAppSettingsJSON" xml:space="preserve">
-    <value>Could not find parameter [{0}] in appsettings.json (fr)</value>
+  <data name="RunningCommand_UnderDirectory_" xml:space="preserve">
+    <value>Running command [{0}] under directory [{1}] (fr)</value>
   </data>
 </root>

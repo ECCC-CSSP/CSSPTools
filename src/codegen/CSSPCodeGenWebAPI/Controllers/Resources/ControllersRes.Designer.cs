@@ -95,5 +95,14 @@ namespace CSSPCodeGenWebAPI.Controllers.Resources {
                 return ResourceManager.GetString("CouldNotFindExePath_", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Server command [{0}] Error: [{1}].
+        /// </summary>
+        public static string ServerCommand_Error_ {
+            get {
+                return ResourceManager.GetString("ServerCommand_Error_", resourceCulture);
+            }
+        }
     }
 }

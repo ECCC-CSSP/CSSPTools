@@ -5,8 +5,18 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Controllers\GenerateEnumsController.cs" />
+    <Compile Remove="Controllers\GenerateModelsController.cs" />
+    <Compile Remove="Controllers\StatusEnumsController.cs" />
+    <Compile Remove="Controllers\StatusModelsController.cs" />
+    <Compile Remove="Services\GenerateEnumsService.cs" />
+    <Compile Remove="Services\GenerateModelsService.cs" />
+    <Compile Remove="Services\IGenerateEnumsService.cs" />
+    <Compile Remove="Services\IGenerateModelsService.cs" />
+    <Compile Remove="Services\IRunService.cs" />
     <Compile Remove="Services\IStatusEnumsService.cs" />
     <Compile Remove="Services\IStatusModelsService.cs" />
+    <Compile Remove="Services\RunService.cs" />
     <Compile Remove="Services\StatusEnumsService.cs" />
     <Compile Remove="Services\StatusModelsService.cs" />
   </ItemGroup>

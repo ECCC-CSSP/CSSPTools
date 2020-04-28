@@ -129,4 +129,7 @@
   <data name="CouldNotFindExePath_" xml:space="preserve">
     <value>Impossible de trouver exePath [{0}]</value>
   </data>
+  <data name="ServerCommand_Error_" xml:space="preserve">
+    <value>La commande [{0}] a retournée un erreur: [{1}]</value>
+  </data>
 </root>

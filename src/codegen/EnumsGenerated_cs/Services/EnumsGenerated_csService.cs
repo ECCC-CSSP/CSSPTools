@@ -15,12 +15,12 @@ namespace EnumsGenerated_cs.Services
     public class EnumsGenerated_csService : IEnumsGenerated_csService
     {
         #region Variables
-        private readonly IConfigurationRoot _configuration;
+        private readonly IConfiguration _configuration;
         private readonly IGenerateCodeStatusDBService _generateCodeStatusDBService;
         #endregion Variables
 
         #region Constructors
-        public EnumsGenerated_csService(IConfigurationRoot configuration, IGenerateCodeStatusDBService generateCodeStatusDBService)
+        public EnumsGenerated_csService(IConfiguration configuration, IGenerateCodeStatusDBService generateCodeStatusDBService)
         {
             _configuration = configuration;
             _generateCodeStatusDBService = generateCodeStatusDBService;

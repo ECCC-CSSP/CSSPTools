@@ -18,7 +18,7 @@ namespace EnumsGenerated_cs
     partial class Program
     {
         #region Variables
-        public static IConfigurationRoot configuration;
+        public static IConfiguration configuration;
         public static IServiceCollection serviceCollection;
         private static string DBFullName;
         #endregion Variables
@@ -60,7 +60,6 @@ namespace EnumsGenerated_cs
             // getting all other objects fom DI and checking if not null
             IValidateAppSettingsService validateAppSettingsService = provider.GetService<IValidateAppSettingsService>();
             IEnumsGenerated_csService enumsGenerated_csService = provider.GetService<IEnumsGenerated_csService>();
-            IGenerateCodeCompileService generateCodeCompileService = provider.GetService<IGenerateCodeCompileService>();
 
             if (validateAppSettingsService == null)
             {
@@ -70,11 +69,6 @@ namespace EnumsGenerated_cs
             if (enumsGenerated_csService == null)
             {
                 ServiceIsNull(generateCodeStatusDBService, "enumsGenerated_csService");
-                return;
-            }
-            if (generateCodeCompileService == null)
-            {
-                ServiceIsNull(generateCodeStatusDBService, "generateCodeCompileService");
                 return;
             }
 
@@ -93,10 +87,6 @@ namespace EnumsGenerated_cs
 
             // running the compare with old enums service
             enumsGenerated_csService.Start().GetAwaiter().GetResult();
-            if (ErrorFound(generateCodeStatusDBService)) return;
-
-            // recompiling the required dll or exe
-            generateCodeCompileService.Compile(configuration.GetValue<string>("PostBuildNewEnumsDLL")).GetAwaiter().GetResult();
             if (ErrorFound(generateCodeStatusDBService)) return;
 
             generateCodeStatusDBService.Status.AppendLine($"{ AppRes.Done } ...");
@@ -156,7 +146,7 @@ namespace EnumsGenerated_cs
 
             DBFullName = fiDB.FullName;
 
-            serviceCollection.AddSingleton<IConfigurationRoot>(configuration);
+            serviceCollection.AddSingleton<IConfiguration>(configuration);
             serviceCollection.AddDbContext<GenerateCodeStatusContext>(options =>
             {
                 options.UseSqlite($"DataSource={fiDB.FullName}");
@@ -184,7 +174,6 @@ namespace EnumsGenerated_cs
                 new AppSettingParameter() { Parameter = "CSSPEnums", ExpectedValue = "C:\\CSSPTools\\src\\dlls\\CSSPEnums\\bin\\Debug\\netcoreapp3.1\\CSSPEnums.dll", IsFile = true, CheckExist = true },
                 new AppSettingParameter() { Parameter = "IEnumsGenerated", ExpectedValue = "C:\\CSSPTools\\src\\dlls\\CSSPEnums\\Generated\\IEnumsGenerated.cs", IsFile = true, CheckExist = true },
                 new AppSettingParameter() { Parameter = "EnumsGenerated", ExpectedValue = "C:\\CSSPTools\\src\\dlls\\CSSPEnums\\Generated\\EnumsGenerated.cs", IsFile = true, CheckExist = true },
-                new AppSettingParameter() { Parameter = "PostBuildNewEnumsDLL", ExpectedValue = "C:\\CSSPTools\\src\\dlls\\CSSPEnums\\CSSPEnums.sln", IsFile = true, CheckExist = true, PostCompile = true }
             };
         }
         #endregion Functions private

@@ -16,15 +16,15 @@ namespace GenerateCodeBase.Services
     public partial class GenerateCodeBaseService : IGenerateCodeBaseService
     {
         #region Variables
-        private readonly IConfigurationRoot _configuration;
-        private readonly IGenerateCodeStatusDBService _generateCodeStatusDBService;
+        public static IConfiguration _configuration;
+        public static IGenerateCodeStatusDBService _generateCodeStatusDBService;
         #endregion Variables
 
         #region Properties
         #endregion Properties
 
         #region Constructors
-        public GenerateCodeBaseService(IConfigurationRoot configuration, IGenerateCodeStatusDBService generateCodeStatusDBService)
+        public GenerateCodeBaseService(IConfiguration configuration, IGenerateCodeStatusDBService generateCodeStatusDBService)
         {
             _configuration = configuration;
             _generateCodeStatusDBService = generateCodeStatusDBService;

@@ -1,8 +1,9 @@
 import { Component, OnInit, ChangeDetectionStrategy, OnDestroy } from '@angular/core';
-import { GenerateEnumsService } from './generate-enums.service';
 import { LoadLocalesEnums } from './generate-enums.locales';
 import { Subscription } from 'rxjs';
 import { Router } from '@angular/router';
+import { GenerateEnumsService } from './index';
+import { DotNetService } from 'src/app/services/dotnet';
 
 @Component({
   selector: 'app-enums',
@@ -13,16 +14,16 @@ import { Router } from '@angular/router';
 export class GenerateEnumsComponent implements OnInit, OnDestroy {
   sub: Subscription;
 
-  constructor(public generateEnumsService: GenerateEnumsService, private router: Router) { }
+  constructor(public dotNetService: DotNetService, public generateEnumsService: GenerateEnumsService, private router: Router) { }
 
-  GenerateEnums(command: string)
+  RunEnums(solutionFileName: string)
   {
-    this.sub = this.generateEnumsService.GenerateEnums(this.router, command).subscribe();
+    this.sub = this.dotNetService.DotNet(this.router, "Run", solutionFileName).subscribe();
   }
 
-  StatusEnums(command: string)
+  RunStatus(solutionFileName: string)
   {
-    this.sub = this.generateEnumsService.StatusEnums(this.router, command).subscribe();
+    this.sub = this.dotNetService.DotNetStatus(this.router, "Status", solutionFileName).subscribe();
   }
 
   ngOnInit(): void {
