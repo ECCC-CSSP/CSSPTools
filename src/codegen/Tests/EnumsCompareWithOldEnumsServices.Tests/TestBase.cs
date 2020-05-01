@@ -46,7 +46,7 @@ namespace EnumsCompareWithOldEnumsServices.Tests
 
             GenerateCodeStatusContext db = new GenerateCodeStatusContext();
             generateCodeStatusDBService = new GenerateCodeStatusDBService(db);
-            enumsCompareWithOldEnumsService = new EnumsCompareWithOldEnumsService(_configuration, generateCodeStatusDBService);
+            //enumsCompareWithOldEnumsService = new EnumsCompareWithOldEnumsService(_configuration, generateCodeStatusDBService);
         }
         #endregion Constructors
 

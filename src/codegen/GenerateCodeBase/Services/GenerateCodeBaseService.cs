@@ -1,10 +1,12 @@
 ﻿using CSSPEnums;
 using GenerateCodeBase.Models;
+using GenerateCodeBase.Resources;
 using GenerateCodeStatusDB.Services;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -21,6 +23,7 @@ namespace GenerateCodeBase.Services
         #endregion Variables
 
         #region Properties
+        public CultureInfo Culture { get; set; }
         #endregion Properties
 
         #region Constructors
@@ -597,6 +600,11 @@ namespace GenerateCodeBase.Services
             }
 
             return false;
+        }
+        public async Task SetCulture(CultureInfo culture)
+        {
+            Culture = culture;
+            AppRes.Culture = culture;
         }
         #endregion Functions public
 

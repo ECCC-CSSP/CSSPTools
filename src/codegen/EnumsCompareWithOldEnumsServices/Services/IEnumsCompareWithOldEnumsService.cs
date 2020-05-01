@@ -9,6 +9,6 @@ namespace EnumsCompareWithOldEnumsServices.Services
     public interface IEnumsCompareWithOldEnumsService
     {
         Task Run(string[] args);
-        //Task Start();
+        Task Setup();
     }
 }

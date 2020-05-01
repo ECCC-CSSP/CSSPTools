@@ -1,4 +1,6 @@
 ﻿using ExecuteDotNetCommandServices.Models;
+using GenerateCodeBase.Services;
+using GenerateCodeStatusDB.Services;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -8,12 +10,7 @@ namespace ExecuteDotNetCommandServices.Services
 {
     public interface IExecuteDotNetCommandService
     {
-        //DotNetCommand dotNetCommand { get; set; }
-        //List<string> Args0Allowables { get; set; }
-        //List<string> Args1Allowables { get; set; }
-        //List<string> Args2Allowables { get; set; }
-        Task Run(string[] args);
-        //Task ExecuteDotNet(string FileName);
-        //Task ReadArgs(string[] args);
+        IGenerateCodeStatusDBService generateCodeStatusDBService { get; set; }
+        Task<bool> Run(string[] args);
     }
 }

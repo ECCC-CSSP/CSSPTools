@@ -70,6 +70,15 @@ namespace EnumsCompareWithOldEnumsServices.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Could not find file [{0}].
+        /// </summary>
+        public static string CouldNotFindFile_ {
+            get {
+                return ResourceManager.GetString("CouldNotFindFile_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Could not find parameter [{0}] in appsettings.json.
         /// </summary>
         public static string CouldNotFindParameter_InAppSettingsJSON {

@@ -47,25 +47,28 @@ namespace GenerateCodeStatusDB.Services
                 LastID = 0;
             }
 
+            GenerateCodeStatus generateCodeStatus = await Get();
+            if (generateCodeStatus == null)
+            {
+                generateCodeStatus = new GenerateCodeStatus()
+                {
+                    StatusID = (long)LastID + 1,
+                    Command = Command,
+                    ErrorText = "",
+                    StatusText = "",
+                    PercentCompleted = 0,
+                    LastUpdateDate = DateTime.UtcNow.ToString(),
+                };
 
-            GenerateCodeStatus generateCodeStatus = new GenerateCodeStatus()
-            {
-                StatusID = (long)LastID + 1,
-                Command = Command,
-                ErrorText = "",
-                StatusText = "",
-                PercentCompleted = 0,
-                LastUpdateDate = DateTime.UtcNow.ToString(),
-            };
-
-            try
-            {
-                db.Status.Add(generateCodeStatus);
-                db.SaveChanges();
-            }
-            catch (Exception ex)
-            {
-                return null;
+                try
+                {
+                    db.Status.Add(generateCodeStatus);
+                    db.SaveChanges();
+                }
+                catch (Exception ex)
+                {
+                    return null;
+                }
             }
 
             return generateCodeStatus;

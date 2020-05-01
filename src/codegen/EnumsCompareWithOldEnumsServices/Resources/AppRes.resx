@@ -147,4 +147,7 @@
   <data name="Parameter_ShouldBe_" xml:space="preserve">
     <value>Parameter #{0} should be {1}</value>
   </data>
+  <data name="CouldNotFindFile_" xml:space="preserve">
+    <value>Could not find file [{0}]</value>
+  </data>
 </root>

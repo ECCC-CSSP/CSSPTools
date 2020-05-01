@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "ExecuteDotNetCommand": {
+      "commandName": "Project",
+      "commandLineArgs": "en-CA run EnumsCompareWithOldEnums"
+    }
+  }
+}
