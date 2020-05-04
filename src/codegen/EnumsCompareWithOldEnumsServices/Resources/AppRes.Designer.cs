@@ -61,6 +61,15 @@ namespace EnumsCompareWithOldEnumsServices.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Abnormal completion.
+        /// </summary>
+        public static string AbnormalCompletion {
+            get {
+                return ResourceManager.GetString("AbnormalCompletion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Application.
         /// </summary>
         public static string Application {

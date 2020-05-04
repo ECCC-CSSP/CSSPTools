@@ -22,214 +22,103 @@ namespace EnumsCompareWithOldEnumsServices.Services
     public class EnumsCompareWithOldEnumsService : IEnumsCompareWithOldEnumsService
     {
         #region Variables
-        private static IServiceCollection serviceCollection;
-        private static IConfiguration configuration;
-        private static IGenerateCodeStatusDBService generateCodeStatusDBService;
-        private static IValidateAppSettingsService validateAppSettingsService;
         #endregion Variables
 
         #region Properties
-        private List<string> Args0Allowables { get; set; } = new List<string>() { "en-CA", "fr-CA" };
-        private string DBFileName { get; set; } = "DBFileName";
-        private ServiceProvider provider { get; set; }
-        private FileInfo fiDB { get; set; }
+        //public IServiceCollection serviceCollection { get; set; }
+        public IConfiguration configuration { get; set; }
+        public IGenerateCodeStatusDBService generateCodeStatusDBService { get; set; }
+        public IValidateAppSettingsService validateAppSettingsService { get; set; }
+
+        public List<string> Args0Allowables { get; set; } = new List<string>() { "en-CA", "fr-CA" };
+        public string DBFileName { get; set; } = "DBFileName";
+        //public IServiceProvider provider { get; set; }
+        public FileInfo fiDB { get; set; }
         #endregion Properties
 
         #region Constructors
-        public EnumsCompareWithOldEnumsService()
+        public EnumsCompareWithOldEnumsService(IConfiguration configuration,
+            IGenerateCodeStatusDBService generateCodeStatusDBService,
+            IValidateAppSettingsService validateAppSettingsService)
         {
+            this.configuration = configuration;
+            this.generateCodeStatusDBService = generateCodeStatusDBService;
+            this.validateAppSettingsService = validateAppSettingsService;
+            //serviceCollection = new ServiceCollection();
+
+
+            string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+            if (configuration.GetValue<string>(DBFileName) == null)
+            {
+                Console.WriteLine($"{ String.Format(AppRes.CouldNotFindParameter_InAppSettingsJSON, DBFileName) }");
+                return;
+            }
+
+            fiDB = new FileInfo(configuration.GetValue<string>(DBFileName).Replace("{AppDataPath}", appDataPath));
+
+            if (!fiDB.Exists)
+            {
+                Console.WriteLine($"{ String.Format(AppRes.CouldNotFindFile_, fiDB.FullName) }");
+                return;
+            }
+
+            generateCodeStatusDBService.DBFileFullName = fiDB.FullName;
+            generateCodeStatusDBService.Command = configuration.GetValue<string>("Command");
+            generateCodeStatusDBService.Culture = new CultureInfo(configuration.GetValue<string>("Culture"));
+
+            try
+            {
+                generateCodeStatusDBService.GetOrCreate();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return;
+            }
         }
         #endregion Constructors
 
         #region Functions public
-        public async Task Setup()
+        public async Task<bool> Run(string[] args)
         {
-            ConsoleWriteStart();
+            await ConsoleWriteStart();
 
-            serviceCollection = new ServiceCollection();
+            if (!await Setup()) return false;
 
-            SetupConfigure();
+            if (!await CompareDLLs()) return false;
 
-            SetupGenerateCodeStatusDB();
+            await ConsoleWriteEnd();
 
-            serviceCollection.AddSingleton<IValidateAppSettingsService, ValidateAppSettingsService>();
-
-            SettingProvider();
-
-            FillGenerateCodeStatusDB();
-
-            DoValidateAppSettings();
+            return true;
         }
-        public async Task Run(string[] args)
+        public async Task<bool> Setup()
         {
-            await CompareDLLs();
+            if (!await SetupConfigure()) return false;
 
-            ConsoleWriteEnd();
+            if (!await SetupGenerateCodeStatusDBService()) return false;
+
+            if (!await SetupValidateAppSettingsService()) return false;
+
+            if (!await SettingProvider()) return false;
+
+            if (!await FillGenerateCodeStatusDB()) return false;
+
+            if (!await DoValidateAppSettings()) return false;
+
+            return true;
         }
-        #endregion Functions public
-
-        #region Functions private
-        private void ConsoleWriteEnd()
-        {
-            generateCodeStatusDBService.Status.AppendLine($"{ AppRes.Done } ...");
-            generateCodeStatusDBService.Status.AppendLine("");
-            generateCodeStatusDBService.Update(100);
-
-            if (!string.IsNullOrWhiteSpace(generateCodeStatusDBService.Error.ToString()))
-            {
-                Console.WriteLine(generateCodeStatusDBService.Error.ToString());
-            }
-
-            Console.WriteLine(generateCodeStatusDBService.Status.ToString());
-        }
-        private void ConsoleWriteStart()
-        {
-            Console.WriteLine($"{ AppRes.Running } { AppRes.Application } { AppDomain.CurrentDomain.FriendlyName }");
-            Console.WriteLine("");
-            Console.WriteLine($"{ AppRes.Starting } ...");
-            Console.WriteLine("");
-        }
-        private void DoValidateAppSettings()
-        {
-            try
-            {
-                validateAppSettingsService = provider.GetService<IValidateAppSettingsService>();
-                if (validateAppSettingsService == null)
-                {
-                    return;
-                }
-
-                validateAppSettingsService.Culture = new CultureInfo(configuration.GetValue<string>("Culture"));
-
-                validateAppSettingsService.AppSettingParameterList = new List<AppSettingParameter>()
-            {
-                new AppSettingParameter() { Parameter = "Command", ExpectedValue = "EnumsCompareWithOldEnums" },
-                new AppSettingParameter() { Parameter = "Culture", ExpectedValue = "", IsCulture = true },
-                new AppSettingParameter() { Parameter = "DBFileName", ExpectedValue = "{AppDataPath}\\CSSP\\GenerateCodeStatus.db", IsFile = true, CheckExist = true },
-                new AppSettingParameter() { Parameter = "NewEnumsDLL", ExpectedValue = "C:\\CSSPTools\\src\\dlls\\CSSPEnums\\bin\\Debug\\netcoreapp3.1\\CSSPEnums.dll", IsFile = true, CheckExist = true },
-                new AppSettingParameter() { Parameter = "OldEnumsDLL", ExpectedValue = "C:\\CSSP Latest Code Old\\CSSPEnumsDLL\\CSSPEnumsDLL\\bin\\Debug\\CSSPEnumsDLL.dll", IsFile = true, CheckExist = true },
-            };
-
-                validateAppSettingsService.VerifyAppSettings();
-                if (!string.IsNullOrWhiteSpace(generateCodeStatusDBService.Error.ToString()))
-                {
-                    generateCodeStatusDBService.Update(0);
-                    Console.WriteLine(generateCodeStatusDBService.Error.ToString());
-                    Console.WriteLine(generateCodeStatusDBService.Status.ToString());
-                    return;
-                }
-            }
-            catch (Exception ex)
-            {
-
-                throw ex;
-            }
-        }
-        private void FillGenerateCodeStatusDB()
-        {
-            try
-            {
-                generateCodeStatusDBService = provider.GetService<IGenerateCodeStatusDBService>();
-                if (generateCodeStatusDBService == null || true)
-                {
-                    generateCodeStatusDBService.Error.AppendLine("EnumsCompareWithOldEnumsService generateCodeStatusDBService == null");
-                    generateCodeStatusDBService.Update(0);
-                    throw new Exception("EnumsCompareWithOldEnumsService generateCodeStatusDBService == null");
-                }
-
-                generateCodeStatusDBService.DBFileFullName = fiDB.FullName;
-                generateCodeStatusDBService.Command = configuration.GetValue<string>("Command");
-                generateCodeStatusDBService.Culture = new CultureInfo(configuration.GetValue<string>("Culture"));
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(generateCodeStatusDBService.Error.ToString());
-                Console.WriteLine(generateCodeStatusDBService.Status.ToString());
-                throw ex;
-            }
-        }
-        private void SettingProvider()
-        {
-            try
-            {
-                provider = serviceCollection.BuildServiceProvider();
-                if (provider == null)
-                {
-                    generateCodeStatusDBService.Error.AppendLine("provider == null");
-                    generateCodeStatusDBService.Update(0);
-                    Console.WriteLine(generateCodeStatusDBService.Error.ToString());
-                    Console.WriteLine(generateCodeStatusDBService.Status.ToString());
-                    throw new Exception("provider == null");
-                }
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-        }
-        private void SetupConfigure()
-        {
-            try
-            {
-                configuration = new ConfigurationBuilder()
-                    .SetBasePath(Directory.GetParent(AppContext.BaseDirectory).FullName)
-                    .AddJsonFile("appsettings.json")
-                    .Build();
-
-                serviceCollection.AddSingleton<IConfiguration>(configuration);
-            }
-            catch (Exception ex)
-            {
-                generateCodeStatusDBService.Error.AppendLine($"{ ex.Message }");
-                generateCodeStatusDBService.Update(0);
-                Console.WriteLine(generateCodeStatusDBService.Error.ToString());
-                Console.WriteLine(generateCodeStatusDBService.Status.ToString());
-                throw ex;
-            }
-        }
-        private void SetupGenerateCodeStatusDB()
-        {
-            try
-            {
-                string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
-                if (configuration.GetValue<string>(DBFileName) == null)
-                {
-                    generateCodeStatusDBService.Error.AppendLine($"{ String.Format(AppRes.CouldNotFindParameter_InAppSettingsJSON, DBFileName) }");
-                    generateCodeStatusDBService.Error.AppendLine("");
-                    return;
-                }
-
-                fiDB = new FileInfo(configuration.GetValue<string>(DBFileName).Replace("{AppDataPath}", appDataPath));
-
-                if (!fiDB.Exists)
-                {
-                    generateCodeStatusDBService.Error.AppendLine($"{ String.Format(AppRes.CouldNotFindFile_, fiDB.FullName) }");
-                    generateCodeStatusDBService.Error.AppendLine("");
-                    return;
-                }
-
-                serviceCollection.AddDbContext<GenerateCodeStatusContext>(options =>
-                {
-                    options.UseSqlite($"DataSource={fiDB.FullName}");
-                });
-
-                serviceCollection.AddSingleton<IGenerateCodeStatusDBService, GenerateCodeStatusDBService>();
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-        }
-        private async Task CompareDLLs()
+        public async Task<bool> CompareDLLs()
         {
             string NewEnumsDLL = "NewEnumsDLL";
             string OldEnumsDLL = "OldEnumsDLL";
 
             GenerateCodeStatus generateCodeStatus = await generateCodeStatusDBService.GetOrCreate();
 
+            generateCodeStatusDBService.Status.AppendLine("CompareDLLs Starting...");
             if (generateCodeStatus == null)
             {
-                generateCodeStatusDBService.Error.AppendLine($"{ String.Format(AppRes.CouldNotGetOrCreateObject_InDB_, generateCodeStatusDBService.Command, generateCodeStatusDBService.DBFileFullName) }");
+                ConsoleWriteError("generateCodeStatus == null");
+                return false;
             }
 
             await generateCodeStatusDBService.Update(0);
@@ -255,9 +144,8 @@ namespace EnumsCompareWithOldEnumsServices.Services
 
                 if (typeExist == null)
                 {
-                    generateCodeStatusDBService.Error.AppendLine($"{ String.Format(AppRes.Type_NotFound, type.Name) }");
-                    await generateCodeStatusDBService.Update(0);
-                    return;
+                    await ConsoleWriteError($"{ String.Format(AppRes.Type_NotFound, type.Name) }");
+                    return false;
                 }
                 else
                 {
@@ -277,21 +165,185 @@ namespace EnumsCompareWithOldEnumsServices.Services
 
                         if (string.IsNullOrWhiteSpace(EnumStrExist))
                         {
-                            generateCodeStatusDBService.Error.AppendLine($"{ String.Format(AppRes.Type_Enum_NotFound, type.Name, EnumStr) }");
-                            await generateCodeStatusDBService.Update(0);
-                            return;
+                            await ConsoleWriteError($"{ String.Format(AppRes.Type_Enum_NotFound, type.Name, EnumStr) }");
+                            return false;
                         }
                         else
                         {
                             // nothing
                         }
-
                     }
                 }
             }
 
-            return;
+            generateCodeStatusDBService.Status.AppendLine("CompareDLLs Finished...");
+
+            return true;
         }
+
+
+        public async Task ConsoleWriteEnd()
+        {
+            generateCodeStatusDBService.Status.AppendLine($"{ AppRes.Done } ...");
+            generateCodeStatusDBService.Status.AppendLine("");
+            await generateCodeStatusDBService.Update(100);
+
+            if (!string.IsNullOrWhiteSpace(generateCodeStatusDBService.Error.ToString()))
+            {
+                Console.WriteLine(generateCodeStatusDBService.Error.ToString());
+            }
+
+            Console.WriteLine(generateCodeStatusDBService.Status.ToString());
+        }
+        public async Task ConsoleWriteError(string errMessage)
+        {
+            generateCodeStatusDBService.Error.AppendLine(errMessage);
+            await generateCodeStatusDBService.Update(0);
+            Console.WriteLine(generateCodeStatusDBService.Error.ToString());
+            Console.WriteLine(generateCodeStatusDBService.Status.ToString());
+        }
+        public async Task ConsoleWriteStart()
+        {
+            Console.WriteLine($"{ AppRes.Running } { AppRes.Application } { AppDomain.CurrentDomain.FriendlyName }");
+            Console.WriteLine("");
+            Console.WriteLine($"{ AppRes.Starting } ...");
+            Console.WriteLine("");
+        }
+        public async Task<bool> DoValidateAppSettings()
+        {
+            //validateAppSettingsService = provider.GetService<IValidateAppSettingsService>();
+            //if (validateAppSettingsService == null)
+            //{
+            //    await ConsoleWriteError("validateAppSettingsService == null");
+            //    return false;
+            //}
+
+            validateAppSettingsService.Culture = new CultureInfo(configuration.GetValue<string>("Culture"));
+
+            validateAppSettingsService.AppSettingParameterList = new List<AppSettingParameter>()
+            {
+                new AppSettingParameter() { Parameter = "Command", ExpectedValue = "EnumsCompareWithOldEnums" },
+                new AppSettingParameter() { Parameter = "Culture", ExpectedValue = "", IsCulture = true },
+                new AppSettingParameter() { Parameter = "DBFileName", ExpectedValue = "{AppDataPath}\\CSSP\\GenerateCodeStatus.db", IsFile = true, CheckExist = true },
+                new AppSettingParameter() { Parameter = "NewEnumsDLL", ExpectedValue = "C:\\CSSPTools\\src\\dlls\\CSSPEnums\\bin\\Debug\\netcoreapp3.1\\CSSPEnums.dll", IsFile = true, CheckExist = true },
+                new AppSettingParameter() { Parameter = "OldEnumsDLL", ExpectedValue = "C:\\CSSP Latest Code Old\\CSSPEnumsDLL\\CSSPEnumsDLL\\bin\\Debug\\CSSPEnumsDLL.dll", IsFile = true, CheckExist = true },
+            };
+
+            await validateAppSettingsService.VerifyAppSettings();
+            if (!string.IsNullOrWhiteSpace(generateCodeStatusDBService.Error.ToString()))
+            {
+                await ConsoleWriteError("");
+                return false;
+            }
+
+            return true;
+        }
+        public async Task<bool> FillGenerateCodeStatusDB()
+        {
+            //generateCodeStatusDBService = provider.GetService<IGenerateCodeStatusDBService>();
+            //if (generateCodeStatusDBService == null)
+            //{
+            //    Console.WriteLine("EnumsCompareWithOldEnumsService generateCodeStatusDBService == null");
+            //    return false;
+            //}
+
+            generateCodeStatusDBService.DBFileFullName = fiDB.FullName;
+            generateCodeStatusDBService.Command = configuration.GetValue<string>("Command");
+            generateCodeStatusDBService.Culture = new CultureInfo(configuration.GetValue<string>("Culture"));
+
+            try
+            {
+                await generateCodeStatusDBService.GetOrCreate();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return false;
+            }
+
+            return true;
+        }
+        public async Task<bool> SettingProvider()
+        {
+            //provider = serviceCollection.BuildServiceProvider();
+            //if (provider == null)
+            //{
+            //    Console.WriteLine("provider == null");
+            //    return false;
+            //}
+
+            return true;
+        }
+        public async Task<bool> SetupConfigure()
+        {
+            //try
+            //{
+            //    configuration = new ConfigurationBuilder()
+            //        .SetBasePath(Directory.GetParent(AppContext.BaseDirectory).FullName)
+            //        .AddJsonFile("appsettings.json")
+            //        .Build();
+
+            //    serviceCollection.AddSingleton<IConfiguration>(configuration);
+            //}
+            //catch (Exception ex)
+            //{
+            //    Console.WriteLine(ex.Message);
+            //    return false;
+            //}
+
+            return true;
+        }
+        public async Task<bool> SetupGenerateCodeStatusDBService()
+        {
+            //string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+            //if (configuration.GetValue<string>(DBFileName) == null)
+            //{
+            //    Console.WriteLine($"{ String.Format(AppRes.CouldNotFindParameter_InAppSettingsJSON, DBFileName) }");
+            //    return false;
+            //}
+
+            //fiDB = new FileInfo(configuration.GetValue<string>(DBFileName).Replace("{AppDataPath}", appDataPath));
+
+            //if (!fiDB.Exists)
+            //{
+            //    Console.WriteLine($"{ String.Format(AppRes.CouldNotFindFile_, fiDB.FullName) }");
+            //    return false;
+            //}
+
+            //try
+            //{
+            //    serviceCollection.AddDbContext<GenerateCodeStatusContext>(options =>
+            //    {
+            //        options.UseSqlite($"DataSource={fiDB.FullName}");
+            //    });
+
+            //    serviceCollection.AddSingleton<IGenerateCodeStatusDBService, GenerateCodeStatusDBService>();
+            //}
+            //catch (Exception ex)
+            //{
+            //    Console.WriteLine(ex.Message);
+            //    return false;
+            //}
+
+            return true;
+        }
+        public async Task<bool> SetupValidateAppSettingsService()
+        {
+            //try
+            //{
+            //    serviceCollection.AddSingleton<IValidateAppSettingsService, ValidateAppSettingsService>();
+            //}
+            //catch (Exception ex)
+            //{
+            //    Console.WriteLine(ex.Message);
+            //    return false;
+            //}
+            return true;
+        }
+
+        #endregion Functions public
+
+        #region Functions private
         #endregion Functions private
     }
 }

@@ -150,4 +150,7 @@
   <data name="CouldNotFindFile_" xml:space="preserve">
     <value>Could not find file [{0}] (fr)</value>
   </data>
+  <data name="AbnormalCompletion" xml:space="preserve">
+    <value>Abnormal completion (fr)</value>
+  </data>
 </root>
