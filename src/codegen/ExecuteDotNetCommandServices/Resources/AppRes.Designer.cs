@@ -61,11 +61,29 @@ namespace ExecuteDotNetCommandServices.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Abnormal completion.
+        /// </summary>
+        public static string AbnormalCompletion {
+            get {
+                return ResourceManager.GetString("AbnormalCompletion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Action - Options: run || test || build.
         /// </summary>
         public static string ActionOptionsRunTestBuild {
             get {
                 return ResourceManager.GetString("ActionOptionsRunTestBuild", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Allowable cultures [{0}].
+        /// </summary>
+        public static string AllowableCultures_ {
+            get {
+                return ResourceManager.GetString("AllowableCultures_", resourceCulture);
             }
         }
         
@@ -165,6 +183,15 @@ namespace ExecuteDotNetCommandServices.Resources {
         public static string ErrorFileDoesNotExist_ {
             get {
                 return ResourceManager.GetString("ErrorFileDoesNotExist_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Error while running command [{0}] under directory [{1}].
+        /// </summary>
+        public static string ErrorWhileRunningCommand_UnderDirectory_ {
+            get {
+                return ResourceManager.GetString("ErrorWhileRunningCommand_UnderDirectory_", resourceCulture);
             }
         }
         

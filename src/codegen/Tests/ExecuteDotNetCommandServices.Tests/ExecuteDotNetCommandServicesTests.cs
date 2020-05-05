@@ -18,112 +18,108 @@ using Xunit;
 
 namespace ExecuteDotNetCommandServices.Tests
 {
-    public partial class ExecuteDotNetCommandServicesTests
+    public partial class ExecuteDotNetCommandServiceTests
     {
         #region Variables
-        public static IConfiguration configuration;
-        public static IServiceCollection serviceCollection;
-        public static IGenerateCodeStatusDBService generateCodeStatusDBService;
-        public static IValidateAppSettingsService validateAppSettingsService;
-        public static IExecuteDotNetCommandService executeDotNetCommandService;
         #endregion Variables
 
         #region Properties
-        private DotNetCommand dotNetCommand;
+        private IConfiguration configuration { get; set; }
+        private IServiceCollection serviceCollection { get; set; }
+        private IExecuteDotNetCommandService executeDotNetCommandService { get; set; }
+        private IServiceProvider provider { get; set; }
+        private string DBFileName { get; set; } = "DBFileName";
         #endregion Properties
 
         #region Constructors
-        public ExecuteDotNetCommandServicesTests()
+        public ExecuteDotNetCommandServiceTests()
         {
-            Setup();
-            Init(new CultureInfo("en-CA"));
+            Init();
         }
         #endregion Constructors
 
         #region Functions public
-        [Fact]
-        public void ExecuteDotNetCommandServicesConstructorsOKTest()
+        [Theory]
+        [InlineData("en-CA")]
+        [InlineData("fr-CA")]
+        public void ExecuteDotNetCommandServices_Constructors_Good_Test(string culture)
         {
-            foreach (string culture in new List<string>() { "en-CA", "fr-CA" })
-            {
-                Init(new CultureInfo(culture));
+            Init();
 
-                Assert.NotNull(configuration);
-                Assert.NotNull(serviceCollection);
-                Assert.NotNull(generateCodeStatusDBService);
-                Assert.NotNull(validateAppSettingsService);
-                Assert.NotNull(executeDotNetCommandService);
+            Assert.NotNull(configuration);
+            Assert.NotNull(serviceCollection);
+            Assert.NotNull(executeDotNetCommandService);
 
-                Assert.Equal(new CultureInfo(culture), generateCodeStatusDBService.Culture);
-                Assert.Equal("ExecuteDotNetCommandServices.Tests", generateCodeStatusDBService.Command);
-                Assert.Equal("", generateCodeStatusDBService.Error.ToString());
-                Assert.Equal("", generateCodeStatusDBService.Status.ToString());
+            string[] args = new List<string>() { culture, "run", "EnumsCompareWithOldEnums" }.ToArray();
 
-                Assert.Equal(new List<AppSettingParameter>(), validateAppSettingsService.AppSettingParameterList);
-            }
+            Assert.Equal(culture, args[0]);
         }
-        [Fact]
-        public void ExecuteDotNetCommandServicesRunOKTest()
+        [Theory]
+        [InlineData("en-CA")] // good
+        [InlineData("fr-CA")] // good
+        [InlineData("es-TU")] // good will default to en-CA
+        [InlineData("en-GB")] // good will default to en-CA
+        public void ExecuteDotNetCommandServices_Run_EnumsCompareWithOldEnums_Good_Test(string culture)
         {
-            foreach (string culture in new List<string>() { "en-CA", "fr-CA" })
-            {
-                Init(new CultureInfo(culture));
+            Init();
 
-                string[] args = new List<string>() { culture, "run", "EnumsCompareWithOldEnums" }.ToArray();
+            string[] args = new List<string>() { culture, "run", "EnumsCompareWithOldEnums" }.ToArray();
 
-                executeDotNetCommandService.Run(args);
-                Assert.Equal("", generateCodeStatusDBService.Error.ToString());
-            }
+            bool retBool = executeDotNetCommandService.Run(args).GetAwaiter().GetResult();
+            Assert.True(retBool);
+        }
+        [Theory]
+        [InlineData("en-CA")] // good
+        [InlineData("fr-CA")] // good
+        [InlineData("es-TU")] // good will default to en-CA
+        [InlineData("en-GB")] // good will default to en-CA
+        public void ExecuteDotNetCommandServices_Build_CSSPEnums_Good_Test(string culture)
+        {
+            Init();
+
+            string[] args = new List<string>() { culture, "build", "CSSPEnums" }.ToArray();
+
+            bool retBool = executeDotNetCommandService.Run(args).GetAwaiter().GetResult();
+            Assert.True(retBool);
         }
         #endregion Functions public
 
         #region Functions private
-        private void Init(CultureInfo culture)
+        private void Init()
         {
-            generateCodeStatusDBService.Culture = culture;
-            generateCodeStatusDBService.Command = configuration.GetValue<string>("Command");
-            generateCodeStatusDBService.Error = new StringBuilder();
-            generateCodeStatusDBService.Status = new StringBuilder();
+            configuration = new ConfigurationBuilder()
+               .SetBasePath(Directory.GetParent(AppContext.BaseDirectory).FullName)
+               .AddJsonFile("appsettings.json")
+               .Build();
 
-            validateAppSettingsService.Culture = culture;
-            validateAppSettingsService.AppSettingParameterList = new List<AppSettingParameter>();
-        }
-        private void Setup()
-        {
+            Assert.NotNull(configuration);
+
             serviceCollection = new ServiceCollection();
 
-            configuration = new ConfigurationBuilder()
-                .SetBasePath(Directory.GetParent(AppContext.BaseDirectory).FullName)
-                .AddJsonFile("appsettings.json")
-                .Build();
-
+            serviceCollection.AddSingleton<IConfiguration>(configuration);
+            serviceCollection.AddSingleton<IExecuteDotNetCommandService, ExecuteDotNetCommandService>();
+            serviceCollection.AddSingleton<IGenerateCodeStatusDBService, GenerateCodeStatusDBService>();
+            serviceCollection.AddSingleton<IValidateAppSettingsService, ValidateAppSettingsService>();
 
             string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+            Assert.False(string.IsNullOrWhiteSpace(appDataPath));
 
-            FileInfo fiDB = new FileInfo($"{appDataPath}\\CSSP\\GenerateCodeStatusTest.db");
+            string fileName = configuration.GetValue<string>(DBFileName);
+            Assert.False(string.IsNullOrWhiteSpace(fileName));
 
-            serviceCollection.AddSingleton<IConfiguration>(configuration);
+            FileInfo fiDB = new FileInfo(fileName.Replace("{AppDataPath}", appDataPath));
+            Assert.True(fiDB.Exists);
+
             serviceCollection.AddDbContext<GenerateCodeStatusContext>(options =>
             {
                 options.UseSqlite($"DataSource={fiDB.FullName}");
             });
-            serviceCollection.AddSingleton<IGenerateCodeStatusDBService, GenerateCodeStatusDBService>();
-            serviceCollection.AddSingleton<IValidateAppSettingsService, ValidateAppSettingsService>();
-            serviceCollection.AddSingleton<IExecuteDotNetCommandService, ExecuteDotNetCommandService>();
 
-            ServiceProvider provider = serviceCollection.BuildServiceProvider();
+            provider = serviceCollection.BuildServiceProvider();
+            Assert.NotNull(provider);
 
-            generateCodeStatusDBService = provider.GetService<IGenerateCodeStatusDBService>();
-            validateAppSettingsService = provider.GetService<IValidateAppSettingsService>();
             executeDotNetCommandService = provider.GetService<IExecuteDotNetCommandService>();
-
-            dotNetCommand = new DotNetCommand()
-            {
-                CultureName = "en-CA",
-                Action = "run",
-                SolutionFileName = @"C:\CSSPTools\src\codegen\EnumsCompareWithOldEnums\bin\Debug\netcoreapp3.1\EnumsCompareWithOldEnums.exe"
-            };
-
+            Assert.NotNull(executeDotNetCommandService);
         }
         #endregion Functions private
     }

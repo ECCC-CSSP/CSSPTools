@@ -10,7 +10,6 @@ namespace ExecuteDotNetCommandServices.Services
 {
     public interface IExecuteDotNetCommandService
     {
-        IGenerateCodeStatusDBService generateCodeStatusDBService { get; set; }
         Task<bool> Run(string[] args);
     }
 }

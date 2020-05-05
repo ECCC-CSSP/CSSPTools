@@ -40,36 +40,29 @@ namespace GenerateCodeBase.Services
         #endregion Events
 
         #region Functions public
-        public async Task VerifyAppSettings()
+        public void VerifyAppSettings()
         {
-            _generateCodeStatusDBService.Status.AppendLine($"{ AppRes.VerifyAppSettingsFile }");
-            _generateCodeStatusDBService.Status.AppendLine("");
-
-            await CheckParameterExist();
-
-            _generateCodeStatusDBService.Status.AppendLine("");
+            CheckParameterExist();
 
             foreach (AppSettingParameter appSettingParameter in AppSettingParameterList)
             {
                 if (appSettingParameter.IsFile)
                 {
-                    await CheckFileParameterValue(appSettingParameter.Parameter, appSettingParameter.ExpectedValue, appSettingParameter.CheckExist);
+                    CheckFileParameterValue(appSettingParameter.Parameter, appSettingParameter.ExpectedValue, appSettingParameter.CheckExist);
                 }
                 else if (appSettingParameter.IsCulture)
                 {
-                    await CheckCultureParameterValue(appSettingParameter.Parameter);
+                    CheckCultureParameterValue(appSettingParameter.Parameter);
                 }
                 else
                 {
-                    await CheckParameterValue(appSettingParameter.Parameter, appSettingParameter.ExpectedValue);
+                    CheckParameterValue(appSettingParameter.Parameter, appSettingParameter.ExpectedValue);
                 }
             }
 
-            _generateCodeStatusDBService.Status.AppendLine("");
-
             return;
         }
-        public async Task SetCulture(CultureInfo culture)
+        public void SetCulture(CultureInfo culture)
         {
             Culture = culture;
             AppRes.Culture = culture;
@@ -77,7 +70,7 @@ namespace GenerateCodeBase.Services
         #endregion Functions public
 
         #region Functions private
-        private async Task CheckParameterExist()
+        private void CheckParameterExist()
         {
             foreach (AppSettingParameter appSettingParameter in AppSettingParameterList)
             {
@@ -88,11 +81,9 @@ namespace GenerateCodeBase.Services
                     _generateCodeStatusDBService.Error.AppendLine($"{ AppRes.Error }\t{ appSettingParameter.Parameter } != { AppRes.CouldNotFindParameter }");
                     return;
                 }
-
-                _generateCodeStatusDBService.Status.AppendLine($"{ AppRes.OK }\t{ appSettingParameter.Parameter } == { AppRes.Exist}");
             }
         }
-        private async Task CheckParameterValue(string param, string shouldHaveValue)
+        private void CheckParameterValue(string param, string shouldHaveValue)
         {
             string retValue = _configuration.GetValue<string>(param);
             if (retValue != shouldHaveValue)
@@ -100,10 +91,8 @@ namespace GenerateCodeBase.Services
                 _generateCodeStatusDBService.Error.AppendLine($"{ AppRes.Error }\t{ param } != { shouldHaveValue }");
                 return;
             }
-
-            _generateCodeStatusDBService.Status.AppendLine($"{ AppRes.OK }\t{ param } == { shouldHaveValue }");
         }
-        private async Task CheckCultureParameterValue(string param)
+        private void CheckCultureParameterValue(string param)
         {
             string retValue = _configuration.GetValue<string>(param);
             if (!(retValue == "en-CA" || retValue == "fr-CA"))
@@ -111,10 +100,8 @@ namespace GenerateCodeBase.Services
                 _generateCodeStatusDBService.Error.AppendLine($"{ AppRes.Error }\t{ param } != en-CA || fr-CA");
                 return;
             }
-
-            _generateCodeStatusDBService.Status.AppendLine($"{ AppRes.OK }\t{ param } == en-CA || fr-CA");
         }
-        private async Task CheckFileParameterValue(string param, string shouldHaveValue, bool CheckIfExist)
+        private void CheckFileParameterValue(string param, string shouldHaveValue, bool CheckIfExist)
         {
             string retValue = _configuration.GetValue<string>(param);
 
@@ -123,8 +110,6 @@ namespace GenerateCodeBase.Services
                 _generateCodeStatusDBService.Error.AppendLine($"{ AppRes.Error }\t{ param } != { shouldHaveValue }");
                 return;
             }
-
-            _generateCodeStatusDBService.Status.AppendLine($"{ AppRes.OK }\t{ param } == { shouldHaveValue }");
 
 
             if (CheckIfExist)
@@ -138,8 +123,6 @@ namespace GenerateCodeBase.Services
                     _generateCodeStatusDBService.Error.AppendLine($"{ AppRes.Error }\t{ AppRes.DoesNotExist }\t{ fiDB.FullName }");
                     return;
                 }
-
-                _generateCodeStatusDBService.Status.AppendLine($"{ AppRes.OK }\t{ AppRes.Exist }\t{ fiDB.FullName }");
             }
         }
         #endregion Functions private

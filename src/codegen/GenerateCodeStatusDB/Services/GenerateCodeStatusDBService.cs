@@ -18,7 +18,7 @@ namespace GenerateCodeStatusDB.Services
 
         #region Properties
         public CultureInfo Culture { get; set; }
-        public string DBFileFullName { get; set; }
+        //public string DBFileFullName { get; set; }
         public string Command { get; set; }
         public StringBuilder Error { get; set; }
         public StringBuilder Status { get; set; }

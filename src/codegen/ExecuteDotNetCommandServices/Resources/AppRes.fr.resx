@@ -117,8 +117,14 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="AbnormalCompletion" xml:space="preserve">
+    <value>Abnormal completion (fr)</value>
+  </data>
   <data name="ActionOptionsRunTestBuild" xml:space="preserve">
     <value>Action - Options: run || test || build (fr)</value>
+  </data>
+  <data name="AllowableCultures_" xml:space="preserve">
+    <value>Allowable cultures [{0}] (fr)</value>
   </data>
   <data name="Application" xml:space="preserve">
     <value>Application (fr)</value>
@@ -152,6 +158,9 @@
   </data>
   <data name="ErrorFileDoesNotExist_" xml:space="preserve">
     <value>Error: File does not exist [{0}] (fr)</value>
+  </data>
+  <data name="ErrorWhileRunningCommand_UnderDirectory_" xml:space="preserve">
+    <value>Error while running command [{0}] under directory [{1}] (fr)</value>
   </data>
   <data name="Example" xml:space="preserve">
     <value>Example (fr)</value>

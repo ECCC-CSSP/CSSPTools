@@ -50,7 +50,7 @@ namespace GenerateCodeStatusDB.Tests
 
                 await generateCodeStatusDBService.SetCulture(new CultureInfo(culture));
                 Assert.Equal(new CultureInfo(culture), AppRes.Culture);
-                Assert.Null(generateCodeStatusDBService.DBFileFullName);
+                //Assert.Null(generateCodeStatusDBService.DBFileFullName);
             }
         }
         [Fact]

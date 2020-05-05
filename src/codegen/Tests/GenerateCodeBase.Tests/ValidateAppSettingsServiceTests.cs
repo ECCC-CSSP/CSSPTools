@@ -180,7 +180,7 @@ namespace GenerateCodeBase.Tests
         //    }
         //}
         [Fact]
-        public async Task ValidateAppSettingsServiceVerifyAppSettingsTest()
+        public void ValidateAppSettingsServiceVerifyAppSettingsTest()
         {
             foreach (string culture in new List<string>() { "en-CA", "fr-CA" })
             {
@@ -204,18 +204,18 @@ namespace GenerateCodeBase.Tests
                     //new AppSettingParameter() { Parameter = "build:CSSPServices", ExpectedValue = "C:\\CSSPTools\\src\\dlls\\CSSPServices\\CSSPServices.sln", IsFile = true, CheckExist = true },
                 };
 
-                await validateAppSettingsService.VerifyAppSettings();
+                /*await*/ validateAppSettingsService.VerifyAppSettings();
                 Assert.Equal("", generateCodeStatusDBService.Error.ToString());
             }
         }
         [Fact]
-        public async Task ValidateAppSettingsServiceSetCultureTest()
+        public void ValidateAppSettingsServiceSetCultureTest()
         {
             foreach (string culture in new List<string>() { "en-CA", "fr-CA" })
             {
                 Init(new CultureInfo(culture));
 
-                await validateAppSettingsService.SetCulture(new CultureInfo(culture));
+                /*await*/ validateAppSettingsService.SetCulture(new CultureInfo(culture));
                 Assert.Equal(new CultureInfo(culture), validateAppSettingsService.Culture);
                 Assert.Equal(new CultureInfo(culture), AppRes.Culture);
             }

@@ -14,12 +14,8 @@ namespace GenerateCodeBase.Services
     {
         public CultureInfo Culture { get; set; }
         List<AppSettingParameter> AppSettingParameterList { get; set; }
-        //Task CheckParameterExist();
-        //Task CheckParameterValue(string param, string shouldHaveValue);
-        //Task CheckCultureParameterValue(string param);
-        //Task CheckFileParameterValue(string param, string shouldHaveValue, bool CheckIfExist);
-        Task VerifyAppSettings();
-        Task SetCulture(CultureInfo culture);
+        void VerifyAppSettings();
+        void SetCulture(CultureInfo culture);
 
     }
 }

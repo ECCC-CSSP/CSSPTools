@@ -38,7 +38,7 @@ namespace GenerateCodeBase.Services
         #endregion Events
 
         #region Functions public
-        public async Task<bool> FillCSSPProp(PropertyInfo propInfo, CSSPProp csspProp, Type type)
+        public bool FillCSSPProp(PropertyInfo propInfo, CSSPProp csspProp, Type type)
         {
             csspProp.PropName = propInfo.Name;
 
@@ -438,7 +438,7 @@ namespace GenerateCodeBase.Services
 
             return true;
         }
-        public async Task<bool> FillDLLTypeInfoList(FileInfo fiDLL, List<DLLTypeInfo> DLLTypeInfoList)
+        public bool FillDLLTypeInfoList(FileInfo fiDLL, List<DLLTypeInfo> DLLTypeInfoList)
         {
             var importAssembly = Assembly.LoadFile(fiDLL.FullName);
             List<Type> typeList = importAssembly.GetTypes().ToList();
@@ -507,7 +507,7 @@ namespace GenerateCodeBase.Services
                     dllPropertyInfo.PropertyInfo = propertyInfo;
 
                     CSSPProp csspProp = new CSSPProp();
-                    if (! await FillCSSPProp(propertyInfo, csspProp, type))
+                    if (!FillCSSPProp(propertyInfo, csspProp, type))
                     {
                         //////////////CSSPErrorEvent(new CSSPErrorEventArgs("CSSPError while filling CSSPProp"));
                         return false;
@@ -574,7 +574,7 @@ namespace GenerateCodeBase.Services
 
             return false;
         }
-        public async Task<bool> SkipType(Type type)
+        public bool SkipType(Type type)
         {
             if (type.Name.StartsWith("<")
                 || type.Name.StartsWith("CSSPModelsRes")
@@ -601,7 +601,7 @@ namespace GenerateCodeBase.Services
 
             return false;
         }
-        public async Task SetCulture(CultureInfo culture)
+        public void SetCulture(CultureInfo culture)
         {
             Culture = culture;
             AppRes.Culture = culture;

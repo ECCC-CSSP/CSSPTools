@@ -23,28 +23,15 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Reference Include="StatusAndResultsDBService">
-      <HintPath>..\StatusAndResultsDBService\bin\Debug\netcoreapp3.1\StatusAndResultsDBService.dll</HintPath>
+    <Reference Include="EnumsTestGenerated_csServices">
+      <HintPath>..\EnumsTestGenerated_csServices\bin\Debug\netcoreapp3.1\EnumsTestGenerated_csServices.dll</HintPath>
     </Reference>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Compile Update="Resources\AppRes.Designer.cs">
-      <DependentUpon>AppRes.resx</DependentUpon>
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-    </Compile>
-  </ItemGroup>
-
-  <ItemGroup>
-    <EmbeddedResource Update="Resources\AppRes.fr.resx">
-      <LastGenOutput>AppRes.Designer.cs</LastGenOutput>
-      <Generator>PublicResXFileCodeGenerator</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Resources\AppRes.resx">
-      <LastGenOutput>AppRes.Designer.cs</LastGenOutput>
-      <Generator>PublicResXFileCodeGenerator</Generator>
-    </EmbeddedResource>
+    <Reference Include="GenerateCodeBase">
+      <HintPath>..\GenerateCodeBase\bin\Debug\netcoreapp3.1\GenerateCodeBase.dll</HintPath>
+    </Reference>
+    <Reference Include="GenerateCodeStatusDB">
+      <HintPath>..\GenerateCodeStatusDB\bin\Debug\netcoreapp3.1\GenerateCodeStatusDB.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
   <ItemGroup>

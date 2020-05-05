@@ -6,9 +6,9 @@ using GenerateCodeStatusDB.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Moq;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -17,19 +17,21 @@ using Xunit;
 
 namespace EnumsCompareWithOldEnumsServices.Tests
 {
-    public class EnumsCompareWithOldEnumsServicesTests
+    public class EnumsCompareWithOldEnumsServiceTests
     {
         #region Variables
-        private static IServiceCollection serviceCollection;
-        private static IEnumsCompareWithOldEnumsService enumsCompareWithOldEnumsService;
-        private static IServiceProvider provider;
         #endregion Variables
 
         #region Properties
+        private IConfiguration configuration { get; set; }
+        private IServiceCollection serviceCollection { get; set; }
+        private IEnumsCompareWithOldEnumsService enumsCompareWithOldEnumsService { get; set; }
+        private IServiceProvider provider { get; set; }
+        private string DBFileName { get; set; } = "DBFileName";
         #endregion Properties
 
         #region Constructors
-        public EnumsCompareWithOldEnumsServicesTests()
+        public EnumsCompareWithOldEnumsServiceTests()
         {
             Init();
         }
@@ -43,115 +45,61 @@ namespace EnumsCompareWithOldEnumsServices.Tests
         {
             Init();
 
+            Assert.NotNull(configuration);
             Assert.NotNull(serviceCollection);
             Assert.NotNull(provider);
             Assert.NotNull(enumsCompareWithOldEnumsService);
-            Assert.Equal(2, enumsCompareWithOldEnumsService.Args0Allowables.Count);
-            Assert.Equal("en-CA", enumsCompareWithOldEnumsService.Args0Allowables[0]);
-            Assert.Equal("fr-CA", enumsCompareWithOldEnumsService.Args0Allowables[1]);
-            Assert.Equal("DBFileName", enumsCompareWithOldEnumsService.DBFileName);
-            Assert.Null(enumsCompareWithOldEnumsService.fiDB);
+
+            string[] args = new List<string>() { culture }.ToArray();
+
+            Assert.Equal(culture, args[0]);
         }
         [Theory]
-        [InlineData("en-CA")]
-        [InlineData("fr-CA")]
-        public async Task EnumsCompareWithOldEnumsServices_ConsoleWriteEnd_Good_Test(string culture)
+        [InlineData("en-CA")] // good
+        [InlineData("fr-CA")] // good
+        [InlineData("es-TU")] // good will default to en-CA
+        [InlineData("en-GB")] // good will default to en-CA
+        public void EnumsCompareWithOldEnumsServices_Run_Good_Test(string culture)
         {
             Init();
 
-            bool retBool = await enumsCompareWithOldEnumsService.Setup();
+            string[] args = new List<string>() { culture }.ToArray();
+
+            bool retBool = enumsCompareWithOldEnumsService.Run(args).GetAwaiter().GetResult();
             Assert.True(retBool);
-
-            enumsCompareWithOldEnumsService.generateCodeStatusDBService.Error = new StringBuilder();
-
-            await enumsCompareWithOldEnumsService.ConsoleWriteEnd();
-            Assert.Equal("", enumsCompareWithOldEnumsService.generateCodeStatusDBService.Error.ToString());
-            Assert.Contains(AppRes.Done, enumsCompareWithOldEnumsService.generateCodeStatusDBService.Status.ToString());
-
-            enumsCompareWithOldEnumsService.generateCodeStatusDBService.Error = new StringBuilder();
-            enumsCompareWithOldEnumsService.generateCodeStatusDBService.Status = new StringBuilder();
-
-            enumsCompareWithOldEnumsService.generateCodeStatusDBService.Error.AppendLine("rouge");
-
-            await enumsCompareWithOldEnumsService.ConsoleWriteEnd();
-            Assert.Contains("rouge", enumsCompareWithOldEnumsService.generateCodeStatusDBService.Error.ToString());
-            Assert.Contains(AppRes.Done, enumsCompareWithOldEnumsService.generateCodeStatusDBService.Status.ToString());
-
-        }
-        [Theory]
-        [InlineData("en-CA")]
-        [InlineData("fr-CA")]
-        public async Task EnumsCompareWithOldEnumsServices_ConsoleWriteError_Good_Test(string culture)
-        {
-            Init();
-
-            bool retBool = await enumsCompareWithOldEnumsService.Setup();
-            Assert.True(retBool);
-
-            enumsCompareWithOldEnumsService.generateCodeStatusDBService.Error = new StringBuilder();
-
-            await enumsCompareWithOldEnumsService.ConsoleWriteError("testing");
-            Assert.Equal("testing\r\n", enumsCompareWithOldEnumsService.generateCodeStatusDBService.Error.ToString());
-        }
-        [Theory]
-        [InlineData("en-CA")]
-        [InlineData("fr-CA")]
-        public async Task EnumsCompareWithOldEnumsServices_ConsoleWriteStart_Good_Test(string culture)
-        {
-            Init();
-
-            bool retBool = await enumsCompareWithOldEnumsService.Setup();
-            Assert.True(retBool);
-
-            enumsCompareWithOldEnumsService.generateCodeStatusDBService.Error = new StringBuilder();
-
-            await enumsCompareWithOldEnumsService.ConsoleWriteStart();
-            Assert.Equal("", enumsCompareWithOldEnumsService.generateCodeStatusDBService.Error.ToString());
-        }
-        [Theory]
-        [InlineData("en-CA")]
-        [InlineData("fr-CA")]
-        public async Task EnumsCompareWithOldEnumsServices_DoValidateAppSettings_Good_Test(string culture)
-        {
-            Init();
-
-            bool retBool = await enumsCompareWithOldEnumsService.Setup();
-            Assert.True(retBool);
-
-            enumsCompareWithOldEnumsService.generateCodeStatusDBService.Error = new StringBuilder();
-
-            await enumsCompareWithOldEnumsService.DoValidateAppSettings();
-            Assert.Equal("", enumsCompareWithOldEnumsService.generateCodeStatusDBService.Error.ToString());
-        }
-        [Theory]
-        [InlineData("en-CA")]
-        [InlineData("fr-CA")]
-        public async Task EnumsCompareWithOldEnumsServices_DoValidateAppSettings_Error_Test(string culture)
-        {
-            Init();
-
-            bool retBool = await enumsCompareWithOldEnumsService.Setup();
-            Assert.True(retBool);
-
-            enumsCompareWithOldEnumsService.generateCodeStatusDBService.Error = new StringBuilder();
-
-            var mockServiceProvider = new Mock<IValidateAppSettingsService>();
-                mockServiceProvider.Setup(x => x.VerifyAppSettings()).Callback(() =>
-                {
-                    enumsCompareWithOldEnumsService.generateCodeStatusDBService.Error.AppendLine("aaaa");
-                });
-
-            await enumsCompareWithOldEnumsService.DoValidateAppSettings();
-            Assert.Contains("aaaa", enumsCompareWithOldEnumsService.generateCodeStatusDBService.Error.ToString());
         }
         #endregion Functions public
 
         #region Functions private
         private void Init()
         {
+            configuration = new ConfigurationBuilder()
+               .SetBasePath(Directory.GetParent(AppContext.BaseDirectory).FullName)
+               .AddJsonFile("appsettings.json")
+               .Build();
+
+            Assert.NotNull(configuration);
+
             serviceCollection = new ServiceCollection();
 
+            serviceCollection.AddSingleton<IConfiguration>(configuration);
             serviceCollection.AddSingleton<IEnumsCompareWithOldEnumsService, EnumsCompareWithOldEnumsService>();
+            serviceCollection.AddSingleton<IGenerateCodeStatusDBService, GenerateCodeStatusDBService>();
+            serviceCollection.AddSingleton<IValidateAppSettingsService, ValidateAppSettingsService>();
+
+            string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+            Assert.False(string.IsNullOrWhiteSpace(appDataPath));
+
+            string fileName = configuration.GetValue<string>(DBFileName);
+            Assert.False(string.IsNullOrWhiteSpace(fileName));
+
+            FileInfo fiDB = new FileInfo(fileName.Replace("{AppDataPath}", appDataPath));
+            Assert.True(fiDB.Exists);
+
+            serviceCollection.AddDbContext<GenerateCodeStatusContext>(options =>
+            {
+                options.UseSqlite($"DataSource={fiDB.FullName}");
+            });
 
             provider = serviceCollection.BuildServiceProvider();
             Assert.NotNull(provider);

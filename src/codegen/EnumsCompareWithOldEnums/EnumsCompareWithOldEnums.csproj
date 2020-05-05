@@ -29,9 +29,6 @@
     <Reference Include="GenerateCodeBase">
       <HintPath>..\GenerateCodeBase\bin\Debug\netcoreapp3.1\GenerateCodeBase.dll</HintPath>
     </Reference>
-    <Reference Include="GenerateCodeCompile">
-      <HintPath>..\GenerateCodeCompile\bin\Debug\netcoreapp3.1\GenerateCodeCompile.dll</HintPath>
-    </Reference>
     <Reference Include="GenerateCodeStatusDB">
       <HintPath>..\GenerateCodeStatusDB\bin\Debug\netcoreapp3.1\GenerateCodeStatusDB.dll</HintPath>
     </Reference>

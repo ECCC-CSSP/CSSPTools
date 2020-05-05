@@ -14,10 +14,10 @@ namespace GenerateCodeBase.Services
     {
         public CultureInfo Culture { get; set; }
 
-        Task<bool> FillCSSPProp(PropertyInfo propInfo, CSSPProp csspProp, Type type);
-        Task<bool> FillDLLTypeInfoList(FileInfo fiDLL, List<DLLTypeInfo> DLLTypeInfoList);
-        Task<bool> SkipType(Type type);
-        Task SetCulture(CultureInfo culture);
+        bool FillCSSPProp(PropertyInfo propInfo, CSSPProp csspProp, Type type);
+        bool FillDLLTypeInfoList(FileInfo fiDLL, List<DLLTypeInfo> DLLTypeInfoList);
+        bool SkipType(Type type);
+        void SetCulture(CultureInfo culture);
 
     }
 }

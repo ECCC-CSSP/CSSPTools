@@ -2,7 +2,7 @@
   "profiles": {
     "ExecuteDotNetCommand": {
       "commandName": "Project",
-      "commandLineArgs": "en-CA run EnumsCompareWithOldEnums"
+      "commandLineArgs": "en-CA run EnumsTestGenerated_cs"
     }
   }
 }

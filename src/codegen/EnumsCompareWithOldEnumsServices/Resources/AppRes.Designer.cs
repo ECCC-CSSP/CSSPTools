@@ -70,6 +70,15 @@ namespace EnumsCompareWithOldEnumsServices.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Allowable cultures [{0}].
+        /// </summary>
+        public static string AllowableCultures_ {
+            get {
+                return ResourceManager.GetString("AllowableCultures_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Application.
         /// </summary>
         public static string Application {

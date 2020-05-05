@@ -153,4 +153,7 @@
   <data name="AbnormalCompletion" xml:space="preserve">
     <value>Abnormal completion (fr)</value>
   </data>
+  <data name="AllowableCultures_" xml:space="preserve">
+    <value>Allowable cultures [{0}] (fr)</value>
+  </data>
 </root>
