@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
@@ -32,8 +32,8 @@
     <Reference Include="GenerateCodeStatusDB">
       <HintPath>..\..\GenerateCodeStatusDB\bin\Debug\netcoreapp3.1\GenerateCodeStatusDB.dll</HintPath>
     </Reference>
-    <Reference Include="ModelsCSSPModelsResServices">
-      <HintPath>..\..\ModelsCSSPModelsResServices\bin\Debug\netcoreapp3.1\ModelsCSSPModelsResServices.dll</HintPath>
+    <Reference Include="ModelsModelClassNameTestServices">
+      <HintPath>..\..\ModelsModelClassNameTestServices\bin\Debug\netcoreapp3.1\ModelsModelClassNameTestServices.dll</HintPath>
     </Reference>
   </ItemGroup>
 
@@ -42,5 +42,5 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
- 
+
 </Project>

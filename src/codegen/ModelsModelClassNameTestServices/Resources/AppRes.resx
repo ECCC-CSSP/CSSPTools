@@ -118,51 +118,51 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="AbnormalCompletion" xml:space="preserve">
-    <value>Abnormal completion (fr)</value>
+    <value>Abnormal completion</value>
   </data>
   <data name="AllowableCultures_" xml:space="preserve">
-    <value>Allowable cultures [{0}] (fr)</value>
+    <value>Allowable cultures [{0}]</value>
   </data>
   <data name="AlreadyCreated_" xml:space="preserve">
-    <value>Already created [{0}] (fr)</value>
+    <value>Already created [{0}]</value>
   </data>
   <data name="Application" xml:space="preserve">
-    <value>Application (fr)</value>
+    <value>Application</value>
   </data>
   <data name="CouldNotFindFile_" xml:space="preserve">
-    <value>Could not find file [{0}] (fr)</value>
+    <value>Could not find file [{0}]</value>
   </data>
   <data name="CouldNotFindParameter" xml:space="preserve">
-    <value>Could not find parameter (fr)</value>
+    <value>Could not find parameter</value>
   </data>
   <data name="CouldNotFindParameter_InAppSettingsJSON" xml:space="preserve">
-    <value>Could not find parameter [{0}] in appsettings.json (fr)</value>
+    <value>Could not find parameter [{0}] in appsettings.json</value>
   </data>
   <data name="CreatedNew_" xml:space="preserve">
-    <value>Created new [{0}] (fr)</value>
+    <value>Created new [{0}]</value>
   </data>
   <data name="Created_" xml:space="preserve">
-    <value>Created [{0}] (fr)</value>
+    <value>Created [{0}]</value>
   </data>
   <data name="Done" xml:space="preserve">
-    <value>Done (fr)</value>
+    <value>Done</value>
   </data>
   <data name="ErrorFileDoesNotExist_" xml:space="preserve">
-    <value>Error: File does not exist [{0}] (fr)</value>
+    <value>Error: File does not exist [{0}]</value>
   </data>
   <data name="ErrorWhileCreatingCode_" xml:space="preserve">
-    <value>Error while creating code [{0}] (fr)</value>
+    <value>Error while creating code [{0}]</value>
   </data>
   <data name="Exist" xml:space="preserve">
-    <value>Exist (fr)</value>
+    <value>Exist</value>
   </data>
   <data name="Running" xml:space="preserve">
-    <value>Running (fr)</value>
+    <value>Running</value>
   </data>
   <data name="Starting" xml:space="preserve">
-    <value>Starting (fr)</value>
+    <value>Starting</value>
   </data>
   <data name="VerifyAppSettingsFile" xml:space="preserve">
-    <value>Verify appsettings.json file (fr)</value>
+    <value>Verify appsettings.json file</value>
   </data>
 </root>
