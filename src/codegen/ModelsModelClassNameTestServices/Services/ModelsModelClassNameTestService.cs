@@ -117,7 +117,7 @@ namespace ModelsCSSPModelsResServices.Services
                 sb.AppendLine(@"    }");
                 sb.AppendLine(@"}");
 
-                FileInfo fiOutputGen = new FileInfo($@"C:\CSSPTools\src\tests\CSSPModels.Tests\tests\{ type.Name }Test.cs");
+                FileInfo fiOutputGen = new FileInfo(configuration.GetValue<string>("TypeNameTest").Replace("{TypeName}", type.Name));
                 if (!fiOutputGen.Exists)
                 {
                     using (StreamWriter sw2 = fiOutputGen.CreateText())
@@ -204,6 +204,7 @@ namespace ModelsCSSPModelsResServices.Services
                 new AppSettingParameter() { Parameter = "Culture", ExpectedValue = "", IsCulture = true },
                 new AppSettingParameter() { Parameter = "DBFileName", ExpectedValue = "{AppDataPath}\\CSSP\\GenerateCodeStatus.db", IsFile = true, CheckExist = true },
                 new AppSettingParameter() { Parameter = "CSSPModels", ExpectedValue = "C:\\CSSPTools\\src\\dlls\\CSSPModels\\bin\\Debug\\netcoreapp3.1\\CSSPModels.dll", IsFile = true, CheckExist = true },
+                new AppSettingParameter() { Parameter = "TypeNameTest", ExpectedValue = "C:\\CSSPTools\\src\\tests\\CSSPModels.Tests\\tests\\{TypeName}Test.cs" },
             };
 
             validateAppSettingsService.VerifyAppSettings();

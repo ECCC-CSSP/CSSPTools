@@ -512,7 +512,7 @@ namespace ModelsModelClassNameTestGenerated_csServices.Services
                 sb.AppendLine(@"    }");
                 sb.AppendLine(@"}");
 
-                FileInfo fiOutput = new FileInfo($@"C:\CSSPTools\src\tests\CSSPModels.Tests\tests\Generated\{ type.Name }TestGenerated.cs");
+                FileInfo fiOutput = new FileInfo(configuration.GetValue<string>("TypeNameTestGenerated").Replace("{TypeName}", type.Name));
 
                 using (StreamWriter sw = fiOutput.CreateText())
                 {
@@ -593,6 +593,7 @@ namespace ModelsModelClassNameTestGenerated_csServices.Services
                 new AppSettingParameter() { Parameter = "Culture", ExpectedValue = "", IsCulture = true },
                 new AppSettingParameter() { Parameter = "DBFileName", ExpectedValue = "{AppDataPath}\\CSSP\\GenerateCodeStatus.db", IsFile = true, CheckExist = true },
                 new AppSettingParameter() { Parameter = "CSSPModels", ExpectedValue = "C:\\CSSPTools\\src\\dlls\\CSSPModels\\bin\\Debug\\netcoreapp3.1\\CSSPModels.dll", IsFile = true, CheckExist = true },
+                new AppSettingParameter() { Parameter = "TypeNameTestGenerated", ExpectedValue = "C:\\CSSPTools\\src\\tests\\CSSPModels.Tests\\tests\\Generated\\{TypeName}TestGenerated.cs" },
             };
 
             validateAppSettingsService.VerifyAppSettings();
