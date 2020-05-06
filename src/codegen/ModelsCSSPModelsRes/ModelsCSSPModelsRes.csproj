@@ -23,40 +23,17 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\CSSPGenerateCodeBase\CSSPGenerateCodeBase.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Reference Include="CSSPEnums">
-      <HintPath>..\..\dlls\CSSPEnums\bin\Debug\netcoreapp3.1\CSSPEnums.dll</HintPath>
+    <Reference Include="GenerateCodeBase">
+      <HintPath>..\GenerateCodeBase\bin\Debug\netcoreapp3.1\GenerateCodeBase.dll</HintPath>
     </Reference>
-    <Reference Include="CSSPGenerateCodeBase">
-      <HintPath>..\CSSPGenerateCodeBase\bin\Debug\netcoreapp3.1\CSSPGenerateCodeBase.dll</HintPath>
+    <Reference Include="GenerateCodeStatusDB">
+      <HintPath>..\GenerateCodeStatusDB\bin\Debug\netcoreapp3.1\GenerateCodeStatusDB.dll</HintPath>
     </Reference>
-    <Reference Include="StatusAndResultsDBService">
-      <HintPath>..\StatusAndResultsDBService\bin\Debug\netcoreapp3.1\StatusAndResultsDBService.dll</HintPath>
+    <Reference Include="ModelsCSSPModelsResServices">
+      <HintPath>..\ModelsCSSPModelsResServices\bin\Debug\netcoreapp3.1\ModelsCSSPModelsResServices.dll</HintPath>
     </Reference>
   </ItemGroup>
-
-  <ItemGroup>
-    <Compile Update="Resources\AppRes.Designer.cs">
-      <DependentUpon>AppRes.resx</DependentUpon>
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-    </Compile>
-  </ItemGroup>
-
-  <ItemGroup>
-    <EmbeddedResource Update="Resources\AppRes.fr.resx">
-      <LastGenOutput>AppRes.Designer.cs</LastGenOutput>
-      <Generator>PublicResXFileCodeGenerator</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Resources\AppRes.resx">
-      <LastGenOutput>AppRes.Designer.cs</LastGenOutput>
-      <Generator>PublicResXFileCodeGenerator</Generator>
-    </EmbeddedResource>
-  </ItemGroup>
-
+  
   <ItemGroup>
     <None Update="appsettings.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

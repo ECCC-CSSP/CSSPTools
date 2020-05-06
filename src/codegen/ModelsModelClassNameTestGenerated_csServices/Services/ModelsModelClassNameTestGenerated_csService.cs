@@ -1,72 +1,78 @@
-﻿using Models_ModelClassName_Test.Resources;
+﻿using GenerateCodeBase.Models;
+using GenerateCodeBase.Services;
+using GenerateCodeStatusDB.Models;
+using GenerateCodeStatusDB.Services;
 using Microsoft.Extensions.Configuration;
-using StatusAndResultsDBService.Models;
-using StatusAndResultsDBService.Services;
+using ModelsModelClassNameTestGenerated_csServices.Resources;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
-using CSSPGenerateCodeBase;
-using CSSPGenerateCodeBase.Models;
 
-namespace Models_ModelClassName_Test.Services
+namespace ModelsModelClassNameTestGenerated_csServices.Services
 {
-    public class GenerateService : IGenerateService
+    public class ModelsModelClassNameTestGenerated_csService : IModelsModelClassNameTestGenerated_csService
     {
         #region Variables
-        private readonly IConfigurationRoot _configuration;
-        private readonly IStatusAndResultsService _statusAndResultsService;
-        private readonly IGenerateCodeBase _generateCodeBase;
         #endregion Variables
 
+        #region Properties
+        private IConfiguration configuration { get; set; }
+        private IGenerateCodeStatusDBService generateCodeStatusDBService { get; set; }
+        private IValidateAppSettingsService validateAppSettingsService { get; set; }
+        private IGenerateCodeBaseService generateCodeBaseService { get; set; }
+        private List<string> AllowableCultures { get; set; } = new List<string>() { "en-CA", "fr-CA" };
+        #endregion Properties
+
         #region Constructors
-        public GenerateService(IConfigurationRoot configuration, IStatusAndResultsService statusAndResultsService, IGenerateCodeBase generateCodeBase)
+        public ModelsModelClassNameTestGenerated_csService(IConfiguration configuration,
+            IGenerateCodeStatusDBService generateCodeStatusDBService,
+            IValidateAppSettingsService validateAppSettingsService,
+            IGenerateCodeBaseService generateCodeBaseService)
         {
-            _configuration = configuration;
-            _statusAndResultsService = statusAndResultsService;
-            _generateCodeBase = generateCodeBase;
+            this.configuration = configuration;
+            this.generateCodeStatusDBService = generateCodeStatusDBService;
+            this.validateAppSettingsService = validateAppSettingsService;
+            this.generateCodeBaseService = generateCodeBaseService;
         }
         #endregion Constructors
 
         #region Functions public
-        public async Task Start()
+        public async Task<bool> Run(string[] args)
         {
-            string Command = _configuration.GetValue<string>("Command");
+            SetCulture(args);
 
-            StringBuilder sbError = new StringBuilder();
-            StringBuilder sbStatus = new StringBuilder();
-            StatusAndResults statusAndResults = new StatusAndResults();
+            ConsoleWriteStart();
 
-            string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+            if (!await Setup()) return false;
 
-            string dbFileNamePartial = _configuration.GetValue<string>("DBFileName");
+            if (!await Generate()) return false;
 
-            FileInfo fiDB = new FileInfo(dbFileNamePartial.Replace("{AppDataPath}", appDataPath));
+            await ConsoleWriteEnd();
 
-            sbStatus.AppendLine($"{ AppRes.Starting }...");
+            return true;
+        }
+        #endregion Functions public
 
-            statusAndResults = await _statusAndResultsService.Get(Command);
+        #region Functions private
+        private async Task<bool> Generate()
+        {
+            GenerateCodeStatus generateCodeStatus = await generateCodeStatusDBService.GetOrCreate();
 
-            if (statusAndResults == null)
+            if (generateCodeStatus == null)
             {
-                statusAndResults = await _statusAndResultsService.Create(Command);
-                if (statusAndResults == null)
-                {
-                    return;
-                }
-
-                statusAndResults = await _statusAndResultsService.Get(Command);
-
-                if (statusAndResults == null)
-                {
-                    return;
-                }
+                await ConsoleWriteError("generateCodeStatus == null");
+                return false;
             }
 
-            FileInfo fiDLL = new FileInfo(_configuration.GetValue<string>("CSSPModels"));
+            generateCodeStatusDBService.Status.AppendLine("Generate Starting ...");
+            await generateCodeStatusDBService.Update(10);
+
+            FileInfo fiDLL = new FileInfo(configuration.GetValue<string>("CSSPModels"));
 
             var importAssembly = Assembly.LoadFile(fiDLL.FullName);
             Type[] types = importAssembly.GetTypes();
@@ -75,9 +81,9 @@ namespace Models_ModelClassName_Test.Services
                 bool ClassNotMapped = false;
                 StringBuilder sb = new StringBuilder();
 
-                //sbStatus.AppendLine(type.Name);
+                //generateCodeStatusDBService.Status.AppendLine($"{ type.Name }");
 
-                if (await _generateCodeBase.SkipType(type))
+                if (generateCodeBaseService.SkipType(type))
                 {
                     continue;
                 }
@@ -306,12 +312,10 @@ namespace Models_ModelClassName_Test.Services
                     if (!prop.GetGetMethod().IsVirtual && !prop.Name.Contains("ValidationResults"))
                     {
                         CSSPProp csspProp = new CSSPProp();
-                        if (! await _generateCodeBase.FillCSSPProp(prop, csspProp, currentType))
+                        if (!generateCodeBaseService.FillCSSPProp(prop, csspProp, currentType))
                         {
-                            sbError.AppendLine($"{ String.Format(AppRes.ErrorWhileCreatingCode_, csspProp.CSSPError) }");
-                            await _statusAndResultsService.Update(Command, sbError.ToString(), sbStatus.ToString(), 0);
-
-                            return;
+                            generateCodeStatusDBService.Error.AppendLine($"{ string.Format(AppRes.ErrorWhileCreatingCode_, csspProp.CSSPError) }");
+                            return false;
                         }
                         switch (csspProp.PropType)
                         {
@@ -462,12 +466,10 @@ namespace Models_ModelClassName_Test.Services
                     if (prop.GetGetMethod().IsVirtual)
                     {
                         CSSPProp csspProp = new CSSPProp();
-                        if (!await _generateCodeBase.FillCSSPProp(prop, csspProp, currentType))
+                        if (!generateCodeBaseService.FillCSSPProp(prop, csspProp, currentType))
                         {
-                            sbError.AppendLine($"{ String.Format(AppRes.ErrorWhileCreatingCode_, csspProp.CSSPError) }");
-                            await _statusAndResultsService.Update(Command, sbError.ToString(), sbStatus.ToString(), 0);
-
-                            return;
+                            generateCodeStatusDBService.Error.AppendLine($"{ string.Format(AppRes.ErrorWhileCreatingCode_, csspProp.CSSPError) }");
+                            return false;
                         }
                         if (csspProp.IsCollection)
                         {
@@ -493,12 +495,10 @@ namespace Models_ModelClassName_Test.Services
                     if (prop.Name.Contains("ValidationResults"))
                     {
                         CSSPProp csspProp = new CSSPProp();
-                        if (!await _generateCodeBase.FillCSSPProp(prop, csspProp, currentType))
+                        if (!generateCodeBaseService.FillCSSPProp(prop, csspProp, currentType))
                         {
-                            sbError.AppendLine($"{ String.Format(AppRes.ErrorWhileCreatingCode_, csspProp.CSSPError) }");
-                            await _statusAndResultsService.Update(Command, sbError.ToString(), sbStatus.ToString(), 0);
-
-                            return;
+                            generateCodeStatusDBService.Error.AppendLine($"{ string.Format(AppRes.ErrorWhileCreatingCode_, csspProp.CSSPError) }");
+                            return false;
                         }
                         sb.AppendLine($@"               IEnumerable<ValidationResult> val{ count.ToString() } = new List<ValidationResult>() {{ new ValidationResult(""First CSSPError Message"") }}.AsEnumerable();");
                         sb.AppendLine($@"               { currentType.Name.Substring(0, 1).ToLower() }{ currentType.Name.Substring(1) }.{ prop.Name } = val{ count.ToString() };");
@@ -512,30 +512,98 @@ namespace Models_ModelClassName_Test.Services
                 sb.AppendLine(@"    }");
                 sb.AppendLine(@"}");
 
-                string fileCreatedName = _configuration.GetValue<string>("ModelTestGenerated");
-
-                FileInfo fiOutput = new FileInfo(fileCreatedName.Replace("{TypeName}", type.Name));
+                FileInfo fiOutput = new FileInfo($@"C:\CSSPTools\src\tests\CSSPModels.Tests\tests\Generated\{ type.Name }TestGenerated.cs");
 
                 using (StreamWriter sw = fiOutput.CreateText())
                 {
                     sw.Write(sb.ToString());
                 }
-
-                sbStatus.AppendLine($"{ String.Format(AppRes.Created_, fiOutput.FullName) }");
-                await _statusAndResultsService.Update(Command, sbError.ToString(), sbStatus.ToString(), 0);
+                generateCodeStatusDBService.Status.AppendLine($"{ string.Format(AppRes.Created_, fiOutput.FullName) }");
             }
 
-            sbStatus.AppendLine($"{ AppRes.Done } ...");
-            await _statusAndResultsService.Update(Command, sbError.ToString(), sbStatus.ToString(), 100);
+            generateCodeStatusDBService.Status.AppendLine("");
+            generateCodeStatusDBService.Status.AppendLine($"{ AppRes.Done } ...");
+            generateCodeStatusDBService.Status.AppendLine("");
+            generateCodeStatusDBService.Status.AppendLine("Generate Finished ...");
+            await generateCodeStatusDBService.Update(100);
 
-            Console.WriteLine(sbError.ToString());
-            Console.WriteLine(sbStatus.ToString());
-
-            return;
+            return true;
         }
-        #endregion Functions public
+        private async Task ConsoleWriteEnd()
+        {
+            generateCodeStatusDBService.Status.AppendLine("");
+            generateCodeStatusDBService.Status.AppendLine($"{ AppRes.Done } ...");
+            generateCodeStatusDBService.Status.AppendLine("");
+            await generateCodeStatusDBService.Update(100);
 
-        #region Functions private
+            if (!string.IsNullOrWhiteSpace(generateCodeStatusDBService.Error.ToString()))
+            {
+                Console.WriteLine(generateCodeStatusDBService.Error.ToString());
+            }
+
+            Console.WriteLine(generateCodeStatusDBService.Status.ToString());
+        }
+        private async Task ConsoleWriteError(string errMessage)
+        {
+            generateCodeStatusDBService.Error.AppendLine(errMessage);
+            await generateCodeStatusDBService.Update(0);
+            Console.WriteLine(generateCodeStatusDBService.Error.ToString());
+            Console.WriteLine(generateCodeStatusDBService.Status.ToString());
+        }
+        private void ConsoleWriteStart()
+        {
+            Console.WriteLine($"{ AppRes.Running } { AppRes.Application } { AppDomain.CurrentDomain.FriendlyName }");
+            Console.WriteLine("");
+            Console.WriteLine($"{ AppRes.Starting } ...");
+            Console.WriteLine("");
+        }
+        private void SetCulture(string[] args)
+        {
+            string culture = AllowableCultures[0];
+
+            if (args.Count() > 0)
+            {
+                if (AllowableCultures.Contains(args[0]))
+                {
+                    culture = args[0];
+                }
+            }
+
+            AppRes.Culture = new CultureInfo(culture);
+        }
+        private async Task<bool> Setup()
+        {
+            generateCodeStatusDBService.Command = configuration.GetValue<string>("Command");
+            generateCodeStatusDBService.Culture = new CultureInfo(configuration.GetValue<string>("Culture"));
+            validateAppSettingsService.Culture = new CultureInfo(configuration.GetValue<string>("Culture"));
+
+            try
+            {
+                await generateCodeStatusDBService.GetOrCreate();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return false;
+            }
+
+            validateAppSettingsService.AppSettingParameterList = new List<AppSettingParameter>()
+            {
+                new AppSettingParameter() { Parameter = "Command", ExpectedValue = "EnumsTestGenerated_cs" },
+                new AppSettingParameter() { Parameter = "Culture", ExpectedValue = "", IsCulture = true },
+                new AppSettingParameter() { Parameter = "DBFileName", ExpectedValue = "{AppDataPath}\\CSSP\\GenerateCodeStatus.db", IsFile = true, CheckExist = true },
+                new AppSettingParameter() { Parameter = "CSSPModels", ExpectedValue = "C:\\CSSPTools\\src\\dlls\\CSSPModels\\bin\\Debug\\netcoreapp3.1\\CSSPModels.dll", IsFile = true, CheckExist = true },
+            };
+
+            validateAppSettingsService.VerifyAppSettings();
+            if (!string.IsNullOrWhiteSpace(generateCodeStatusDBService.Error.ToString()))
+            {
+                await ConsoleWriteError("");
+                return false;
+            }
+
+            return true;
+        }
         #endregion Functions private
     }
 }

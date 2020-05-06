@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Models_ModelClassName_Test.Resources {
+namespace ModelsCSSPModelsResServices.Resources {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace Models_ModelClassName_Test.Resources {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Models_ModelClassName_Test.Resources.AppRes", typeof(AppRes).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("ModelsCSSPModelsResServices.Resources.AppRes", typeof(AppRes).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -61,11 +61,38 @@ namespace Models_ModelClassName_Test.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Abnormal completion.
+        /// </summary>
+        public static string AbnormalCompletion {
+            get {
+                return ResourceManager.GetString("AbnormalCompletion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Allowable cultures [{0}].
+        /// </summary>
+        public static string AllowableCultures_ {
+            get {
+                return ResourceManager.GetString("AllowableCultures_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Application.
         /// </summary>
         public static string Application {
             get {
                 return ResourceManager.GetString("Application", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Could not find file [{0}].
+        /// </summary>
+        public static string CouldNotFindFile_ {
+            get {
+                return ResourceManager.GetString("CouldNotFindFile_", resourceCulture);
             }
         }
         
@@ -79,11 +106,11 @@ namespace Models_ModelClassName_Test.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Created.
+        ///   Looks up a localized string similar to Could not find parameter [{0}] in appsettings.json.
         /// </summary>
-        public static string Created {
+        public static string CouldNotFindParameter_InAppSettingsJSON {
             get {
-                return ResourceManager.GetString("Created", resourceCulture);
+                return ResourceManager.GetString("CouldNotFindParameter_InAppSettingsJSON", resourceCulture);
             }
         }
         
@@ -129,6 +156,15 @@ namespace Models_ModelClassName_Test.Resources {
         public static string Exist {
             get {
                 return ResourceManager.GetString("Exist", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Running.
+        /// </summary>
+        public static string Running {
+            get {
+                return ResourceManager.GetString("Running", resourceCulture);
             }
         }
         

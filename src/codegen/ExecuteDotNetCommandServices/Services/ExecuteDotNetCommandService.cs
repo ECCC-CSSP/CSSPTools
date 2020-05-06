@@ -32,7 +32,7 @@ namespace ExecuteDotNetCommandServices.Services
         private List<string> Args0Allowables { get; set; } = new List<string>() { "en-CA", "fr-CA" };
         private List<string> Args1Allowables { get; set; } = new List<string>() { "run", "test", "build" };
         private List<string> ArgsRunAllowables { get; set; } = new List<string>() { "EnumsCompareWithOldEnums", "EnumsGenerated_cs", "EnumsTestGenerated_cs", "EnumsPolSourceInfoRelatedFiles" };
-        private List<string> ArgsTestAllowables { get; set; } = new List<string>() { "CSSPEnumsTests", "CSSPModelsTests", "CSSPServicesTests" };
+        private List<string> ArgsTestAllowables { get; set; } = new List<string>() { "CSSPEnums", "CSSPModels", "CSSPServices" };
         private List<string> ArgsBuildAllowables { get; set; } = new List<string>() { "CSSPEnums", "CSSPModels", "CSSPServices" };
         #endregion Properties
 
@@ -326,9 +326,9 @@ namespace ExecuteDotNetCommandServices.Services
                 new AppSettingParameter() { Parameter = "run:EnumsGenerated_cs", ExpectedValue = "C:\\CSSPTools\\src\\codegen\\EnumsGenerated_cs\\bin\\Debug\\netcoreapp3.1\\EnumsGenerated_cs.exe", IsFile = true, CheckExist = true },
                 new AppSettingParameter() { Parameter = "run:EnumsTestGenerated_cs", ExpectedValue = "C:\\CSSPTools\\src\\codegen\\EnumsTestGenerated_cs\\bin\\Debug\\netcoreapp3.1\\EnumsTestGenerated_cs.exe", IsFile = true, CheckExist = true },
                 new AppSettingParameter() { Parameter = "run:EnumsPolSourceInfoRelatedFiles", ExpectedValue = "C:\\CSSPTools\\src\\codegen\\EnumsPolSourceInfoRelatedFiles\\bin\\Debug\\netcoreapp3.1\\EnumsPolSourceInfoRelatedFiles.exe", IsFile = true, CheckExist = true },
-                new AppSettingParameter() { Parameter = "test:CSSPEnumsTests", ExpectedValue = "C:\\CSSPTools\\src\\tests\\CSSPEnums.Tests\\CSSPEnums.Tests.sln", IsFile = true, CheckExist = true },
-                new AppSettingParameter() { Parameter = "test:CSSPModelsTests", ExpectedValue = "C:\\CSSPTools\\src\\tests\\CSSPModels.Tests\\CSSPModels.Tests.sln", IsFile = true, CheckExist = true },
-                new AppSettingParameter() { Parameter = "test:CSSPServicesTests", ExpectedValue = "C:\\CSSPTools\\src\\tests\\CSSPServices.Tests\\CSSPServices.Tests.sln", IsFile = true, CheckExist = true },
+                new AppSettingParameter() { Parameter = "test:CSSPEnums", ExpectedValue = "C:\\CSSPTools\\src\\tests\\CSSPEnums.Tests\\CSSPEnums.Tests.sln", IsFile = true, CheckExist = true },
+                new AppSettingParameter() { Parameter = "test:CSSPModels", ExpectedValue = "C:\\CSSPTools\\src\\tests\\CSSPModels.Tests\\CSSPModels.Tests.sln", IsFile = true, CheckExist = true },
+                new AppSettingParameter() { Parameter = "test:CSSPServices", ExpectedValue = "C:\\CSSPTools\\src\\tests\\CSSPServices.Tests\\CSSPServices.Tests.sln", IsFile = true, CheckExist = true },
                 new AppSettingParameter() { Parameter = "build:CSSPEnums", ExpectedValue = "C:\\CSSPTools\\src\\dlls\\CSSPEnums\\CSSPEnums.sln", IsFile = true, CheckExist = true },
                 new AppSettingParameter() { Parameter = "build:CSSPModels", ExpectedValue = "C:\\CSSPTools\\src\\dlls\\CSSPModels\\CSSPModels.sln", IsFile = true, CheckExist = true },
                 //new AppSettingParameter() { Parameter = "build:CSSPServices", ExpectedValue = "C:\\CSSPTools\\src\\dlls\\CSSPServices\\CSSPServices.sln", IsFile = true, CheckExist = true },
