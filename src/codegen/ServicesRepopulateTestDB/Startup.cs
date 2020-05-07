@@ -5,6 +5,8 @@ using GenerateCodeStatusDB.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using ServicesRepopulateTestDBServices.Resources;
+using ServicesRepopulateTestDBServices.Services;
 using System;
 using System.IO;
 
@@ -18,7 +20,7 @@ namespace ModelsCompare
         #region Properties
         private IConfiguration Configuration { get; set; }
         private ServiceProvider provider { get; set; }
-        private IModelsCompareService modelsCompareService { get; set; }
+        private IServicesRepopulateTestDBService servicesRepopulateTestDBService { get; set; }
         private string DBFileName { get; set; } = "DBFileName";
         #endregion Properties
 
@@ -30,7 +32,7 @@ namespace ModelsCompare
         public string ConfigureServices(IServiceCollection serviceCollection)
         {
             serviceCollection.AddSingleton<IConfiguration>(Configuration);
-            serviceCollection.AddSingleton<IModelsCompareService, ModelsCompareService>();
+            serviceCollection.AddSingleton<IServicesRepopulateTestDBService, ServicesRepopulateTestDBService>();
             serviceCollection.AddSingleton<IGenerateCodeBaseService, GenerateCodeBaseService>();
             serviceCollection.AddSingleton<IGenerateCodeStatusDBService, GenerateCodeStatusDBService>();
             serviceCollection.AddSingleton<IValidateAppSettingsService, ValidateAppSettingsService>();
@@ -47,6 +49,12 @@ namespace ModelsCompare
                 return retStr;
             }
 
+            retStr = ConfigureTestDBContext(serviceCollection);
+            if (!string.IsNullOrWhiteSpace(retStr))
+            {
+                return retStr;
+            }
+
             provider = serviceCollection.BuildServiceProvider();
             if (provider == null)
             {
@@ -57,13 +65,13 @@ namespace ModelsCompare
         }
         public string Run(string[] args)
         {
-            modelsCompareService = provider.GetService<IModelsCompareService>();
-            if (modelsCompareService == null)
+            servicesRepopulateTestDBService = provider.GetService<IServicesRepopulateTestDBService>();
+            if (servicesRepopulateTestDBService == null)
             {
                 return $"{ AppDomain.CurrentDomain.FriendlyName } enumsGenerated_csService == null";
             }
 
-            if (!modelsCompareService.Run(args).GetAwaiter().GetResult())
+            if (!servicesRepopulateTestDBService.Run(args).GetAwaiter().GetResult())
             {
                 return AppRes.AbnormalCompletion;
             }
@@ -75,10 +83,10 @@ namespace ModelsCompare
         #region Functions private
         private string ConfigureCSSPDBContext(IServiceCollection serviceCollection)
         {
-            string CSSPDBConnString = Configuration.GetValue<string>("CSSPDB");
+            string CSSPDBConnString = Configuration.GetValue<string>("CSSPDBConnectionString");
             if (CSSPDBConnString == null)
             {
-                return $"{ String.Format(AppRes.CouldNotFindParameter_InAppSettingsJSON, "CSSPDB") }";
+                return $"{ String.Format(AppRes.CouldNotFindParameter_InAppSettingsJSON, "CSSPDBConnectionString") }";
             }
 
             try
@@ -97,10 +105,10 @@ namespace ModelsCompare
         }
         private string ConfigureTestDBContext(IServiceCollection serviceCollection)
         {
-            string TestDBConnString = Configuration.GetValue<string>("TestDB");
+            string TestDBConnString = Configuration.GetValue<string>("TestDBConnectionString");
             if (TestDBConnString == null)
             {
-                return $"{ String.Format(AppRes.CouldNotFindParameter_InAppSettingsJSON, "TestDB") }";
+                return $"{ String.Format(AppRes.CouldNotFindParameter_InAppSettingsJSON, "TestDBConnectionString") }";
             }
 
             try

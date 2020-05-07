@@ -1,4 +1,5 @@
-﻿using GenerateCodeBase.Services;
+﻿using CSSPModels;
+using GenerateCodeBase.Services;
 using GenerateCodeStatusDB.Models;
 using GenerateCodeStatusDB.Services;
 using Microsoft.EntityFrameworkCore;
@@ -24,7 +25,7 @@ namespace ServicesRepopulateTestDBServices.Tests
         #region Properties
         private IConfiguration configuration { get; set; }
         private IServiceCollection serviceCollection { get; set; }
-        private IServicesRepopulateTestDBService modelsCompareService { get; set; }
+        private IServicesRepopulateTestDBService servicesRepopulateTestDBService { get; set; }
         private IServiceProvider provider { get; set; }
         private string DBFileName { get; set; } = "DBFileName";
         #endregion Properties
@@ -39,15 +40,15 @@ namespace ServicesRepopulateTestDBServices.Tests
         #region Functions public
         [Theory]
         [InlineData("en-CA")]
-        [InlineData("fr-CA")]
-        public void ModelsModelClassNameTestServices_Constructor_Good_Test(string culture)
+        //[InlineData("fr-CA")]
+        public void ServicesRepopulateTestDBServices_Constructor_Good_Test(string culture)
         {
             Init();
 
             Assert.NotNull(configuration);
             Assert.NotNull(serviceCollection);
             Assert.NotNull(provider);
-            Assert.NotNull(modelsCompareService);
+            Assert.NotNull(servicesRepopulateTestDBService);
 
             string[] args = new List<string>() { culture }.ToArray();
 
@@ -55,16 +56,16 @@ namespace ServicesRepopulateTestDBServices.Tests
         }
         [Theory]
         [InlineData("en-CA")] // good
-        [InlineData("fr-CA")] // good
-        [InlineData("es-TU")] // good will default to en-CA
-        [InlineData("en-GB")] // good will default to en-CA
-        public void ModelsModelClassNameTestServices_Run_Good_Test(string culture)
+        //[InlineData("fr-CA")] // good
+        //[InlineData("es-TU")] // good will default to en-CA
+        //[InlineData("en-GB")] // good will default to en-CA
+        public void ServicesRepopulateTestDBServices_Run_Good_Test(string culture)
         {
             Init();
 
             string[] args = new List<string>() { culture }.ToArray();
 
-            bool retBool = modelsCompareService.Run(args).GetAwaiter().GetResult();
+            bool retBool = servicesRepopulateTestDBService.Run(args).GetAwaiter().GetResult();
             Assert.True(retBool);
         }
         #endregion Functions public
@@ -85,7 +86,7 @@ namespace ServicesRepopulateTestDBServices.Tests
             serviceCollection.AddSingleton<IGenerateCodeBaseService, GenerateCodeBaseService>();
             serviceCollection.AddSingleton<IGenerateCodeStatusDBService, GenerateCodeStatusDBService>();
             serviceCollection.AddSingleton<IValidateAppSettingsService, ValidateAppSettingsService>();
-            serviceCollection.AddSingleton<IModelsCompareService, ModelsCompareService>();
+            serviceCollection.AddSingleton<IServicesRepopulateTestDBService, ServicesRepopulateTestDBService>();
 
             string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
             Assert.False(string.IsNullOrWhiteSpace(appDataPath));
@@ -101,11 +102,28 @@ namespace ServicesRepopulateTestDBServices.Tests
                 options.UseSqlite($"DataSource={fiDB.FullName}");
             });
 
+            string CSSPDBConnString = configuration.GetValue<string>("CSSPDBConnectionString");
+            Assert.NotNull(CSSPDBConnString);
+
+            serviceCollection.AddDbContext<CSSPDBContext>(options =>
+            {
+                options.UseSqlServer(CSSPDBConnString);
+            });
+
+            string TestDBConnString = configuration.GetValue<string>("TestDBConnectionString");
+            Assert.NotNull(TestDBConnString);
+
+            serviceCollection.AddDbContext<TestDBContext>(options =>
+            {
+                options.UseSqlServer(TestDBConnString);
+            });
+
+
             provider = serviceCollection.BuildServiceProvider();
             Assert.NotNull(provider);
 
-            modelsCompareService = provider.GetService<IModelsCompareService>();
-            Assert.NotNull(modelsCompareService);
+            servicesRepopulateTestDBService = provider.GetService<IServicesRepopulateTestDBService>();
+            Assert.NotNull(servicesRepopulateTestDBService);
         }
         #endregion Functions private
     }

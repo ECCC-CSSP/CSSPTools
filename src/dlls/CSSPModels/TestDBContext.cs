@@ -120,18 +120,18 @@ namespace CSSPModels
         #region Overrides
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            if (!optionsBuilder.IsConfigured)
-            {
+            //if (!optionsBuilder.IsConfigured)
+            //{
 
-                Configuration = new ConfigurationBuilder()
-                 .AddJsonFile(fullPath, optional: true, reloadOnChange: true)
-                 .Build();
+            //    Configuration = new ConfigurationBuilder()
+            //     .AddJsonFile(fullPath, optional: true, reloadOnChange: true)
+            //     .Build();
 
-                string CSSPDBConnectionString = Configuration.GetConnectionString("CSSPDB2");
-                string TestDBConnectionString = Configuration.GetConnectionString("TestDB");
+            //    string CSSPDBConnectionString = Configuration.GetConnectionString("CSSPDB2");
+            //    string TestDBConnectionString = Configuration.GetConnectionString("TestDB");
 
-                optionsBuilder.UseSqlServer(TestDBConnectionString);
-            }
+            //    optionsBuilder.UseSqlServer(TestDBConnectionString);
+            //}
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

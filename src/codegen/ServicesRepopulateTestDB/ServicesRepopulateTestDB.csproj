@@ -32,6 +32,9 @@
     <Reference Include="GenerateCodeStatusDB">
       <HintPath>..\GenerateCodeStatusDB\bin\Debug\netcoreapp3.1\GenerateCodeStatusDB.dll</HintPath>
     </Reference>
+    <Reference Include="ServicesRepopulateTestDBServices">
+      <HintPath>..\ServicesRepopulateTestDBServices\bin\Debug\netcoreapp3.1\ServicesRepopulateTestDBServices.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
   <ItemGroup>
