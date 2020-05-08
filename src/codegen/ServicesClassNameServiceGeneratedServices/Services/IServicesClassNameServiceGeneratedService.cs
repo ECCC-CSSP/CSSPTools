@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ServicesClassNameServiceTestGeneratedServices.Services
+namespace ServicesClassNameServiceGeneratedServices.Services
 {
-    public interface IServicesClassNameServiceTestGeneratedService
+    public interface IServicesClassNameServiceGeneratedService
     {
         Task<bool> Run(string[] args);
     }

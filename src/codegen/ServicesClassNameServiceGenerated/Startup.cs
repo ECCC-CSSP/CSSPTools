@@ -5,12 +5,12 @@ using GenerateCodeStatusDB.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using ServicesRepopulateTestDBServices.Resources;
-using ServicesRepopulateTestDBServices.Services;
+using ServicesClassNameServiceGeneratedServices.Resources;
+using ServicesClassNameServiceGeneratedServices.Services;
 using System;
 using System.IO;
 
-namespace ServicesRepopulateTestDB
+namespace ServicesClassNameServiceGenerated
 {
     public class Startup
     {
@@ -20,7 +20,7 @@ namespace ServicesRepopulateTestDB
         #region Properties
         private IConfiguration Configuration { get; set; }
         private ServiceProvider provider { get; set; }
-        private IServicesRepopulateTestDBService servicesRepopulateTestDBService { get; set; }
+        private IServicesClassNameServiceGeneratedService servicesClassNameServiceGeneratedService { get; set; }
         private string DBFileName { get; set; } = "DBFileName";
         #endregion Properties
 
@@ -32,7 +32,7 @@ namespace ServicesRepopulateTestDB
         public string ConfigureServices(IServiceCollection serviceCollection)
         {
             serviceCollection.AddSingleton<IConfiguration>(Configuration);
-            serviceCollection.AddSingleton<IServicesRepopulateTestDBService, ServicesRepopulateTestDBService>();
+            serviceCollection.AddSingleton<IServicesClassNameServiceGeneratedService, ServicesClassNameServiceGeneratedService>();
             serviceCollection.AddSingleton<IGenerateCodeBaseService, GenerateCodeBaseService>();
             serviceCollection.AddSingleton<IGenerateCodeStatusDBService, GenerateCodeStatusDBService>();
             serviceCollection.AddSingleton<IValidateAppSettingsService, ValidateAppSettingsService>();
@@ -65,13 +65,13 @@ namespace ServicesRepopulateTestDB
         }
         public string Run(string[] args)
         {
-            servicesRepopulateTestDBService = provider.GetService<IServicesRepopulateTestDBService>();
-            if (servicesRepopulateTestDBService == null)
+            servicesClassNameServiceGeneratedService = provider.GetService<IServicesClassNameServiceGeneratedService>();
+            if (servicesClassNameServiceGeneratedService == null)
             {
                 return $"{ AppDomain.CurrentDomain.FriendlyName } enumsGenerated_csService == null";
             }
 
-            if (!servicesRepopulateTestDBService.Run(args).GetAwaiter().GetResult())
+            if (!servicesClassNameServiceGeneratedService.Run(args).GetAwaiter().GetResult())
             {
                 return AppRes.AbnormalCompletion;
             }

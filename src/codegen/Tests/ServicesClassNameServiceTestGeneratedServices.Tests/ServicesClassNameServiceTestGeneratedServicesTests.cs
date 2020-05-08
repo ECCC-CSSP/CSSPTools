@@ -5,7 +5,7 @@ using GenerateCodeStatusDB.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using ServicesRepopulateTestDBServices.Services;
+using ServicesClassNameServiceTestGeneratedServices.Services;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -15,9 +15,9 @@ using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace ServicesRepopulateTestDBServices.Tests
+namespace ServicesClassNameServiceTestGeneratedServices.Tests
 {
-    public class ServicesRepopulateTestDBServicesTests
+    public class ServicesClassNameServiceTestGeneratedServicesTests
     {
         #region Variables
         #endregion Variables
@@ -25,13 +25,13 @@ namespace ServicesRepopulateTestDBServices.Tests
         #region Properties
         private IConfiguration configuration { get; set; }
         private IServiceCollection serviceCollection { get; set; }
-        private IServicesRepopulateTestDBService servicesRepopulateTestDBService { get; set; }
+        private IServicesClassNameServiceTestGeneratedService servicesClassNameServiceTestGeneratedService { get; set; }
         private IServiceProvider provider { get; set; }
         private string DBFileName { get; set; } = "DBFileName";
         #endregion Properties
 
         #region Constructors
-        public ServicesRepopulateTestDBServicesTests()
+        public ServicesClassNameServiceTestGeneratedServicesTests()
         {
             Init();
         }
@@ -48,7 +48,7 @@ namespace ServicesRepopulateTestDBServices.Tests
             Assert.NotNull(configuration);
             Assert.NotNull(serviceCollection);
             Assert.NotNull(provider);
-            Assert.NotNull(servicesRepopulateTestDBService);
+            Assert.NotNull(servicesClassNameServiceTestGeneratedService);
 
             string[] args = new List<string>() { culture }.ToArray();
 
@@ -65,7 +65,7 @@ namespace ServicesRepopulateTestDBServices.Tests
 
             string[] args = new List<string>() { culture }.ToArray();
 
-            bool retBool = servicesRepopulateTestDBService.Run(args).GetAwaiter().GetResult();
+            bool retBool = servicesClassNameServiceTestGeneratedService.Run(args).GetAwaiter().GetResult();
             Assert.True(retBool);
         }
         #endregion Functions public
@@ -86,7 +86,7 @@ namespace ServicesRepopulateTestDBServices.Tests
             serviceCollection.AddSingleton<IGenerateCodeBaseService, GenerateCodeBaseService>();
             serviceCollection.AddSingleton<IGenerateCodeStatusDBService, GenerateCodeStatusDBService>();
             serviceCollection.AddSingleton<IValidateAppSettingsService, ValidateAppSettingsService>();
-            serviceCollection.AddSingleton<IServicesRepopulateTestDBService, ServicesRepopulateTestDBService>();
+            serviceCollection.AddSingleton<IServicesClassNameServiceTestGeneratedService, ServicesClassNameServiceTestGeneratedService>();
 
             string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
             Assert.False(string.IsNullOrWhiteSpace(appDataPath));
@@ -122,8 +122,8 @@ namespace ServicesRepopulateTestDBServices.Tests
             provider = serviceCollection.BuildServiceProvider();
             Assert.NotNull(provider);
 
-            servicesRepopulateTestDBService = provider.GetService<IServicesRepopulateTestDBService>();
-            Assert.NotNull(servicesRepopulateTestDBService);
+            servicesClassNameServiceTestGeneratedService = provider.GetService<IServicesClassNameServiceTestGeneratedService>();
+            Assert.NotNull(servicesClassNameServiceTestGeneratedService);
         }
         #endregion Functions private
     }

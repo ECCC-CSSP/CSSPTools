@@ -18,7 +18,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ServicesRepopulateTestDBServices.Services
+namespace ServicesClassNameServiceTestGeneratedServices.Services
 {
     public class ServicesClassNameServiceTestGeneratedService : IServicesClassNameServiceTestGeneratedService
     {
@@ -358,7 +358,7 @@ namespace ServicesRepopulateTestDBServices.Services
                 sb.AppendLine(@"    }");
                 sb.AppendLine(@"}");
 
-                FileInfo fiOutputGen = new FileInfo($@"C:\CSSPCode\CSSPServices\CSSPServices.Tests\{ TypeName }ServiceTestGenerated.cs");
+                FileInfo fiOutputGen = new FileInfo(configuration.GetValue<string>("ClassNameFile").Replace("{TypeName}", TypeName));
                 using (StreamWriter sw2 = fiOutputGen.CreateText())
                 {
                     sw2.Write(sb.ToString());
@@ -443,6 +443,7 @@ namespace ServicesRepopulateTestDBServices.Services
                 new AppSettingParameter() { Parameter = "CSSPServices", ExpectedValue = "C:\\CSSPTools\\src\\dlls\\CSSPServices\\bin\\Debug\\netcoreapp3.1\\CSSPServices.dll", IsFile = true, CheckExist = true },
                 new AppSettingParameter() { Parameter = "CSSPDBConnectionString", ExpectedValue = "Data Source=.\\sqlexpress;Initial Catalog=CSSPDB;Integrated Security=True" },
                 new AppSettingParameter() { Parameter = "TestDBConnectionString", ExpectedValue = "Data Source=.\\sqlexpress;Initial Catalog=TestDB;Integrated Security=True" },
+                new AppSettingParameter() { Parameter = "ClassNameFile", ExpectedValue = "C:\\CSSPCode\\CSSPServices\\CSSPServices.Tests\\{TypeName}ServiceTestGenerated.cs" },
             };
 
             validateAppSettingsService.VerifyAppSettings();
@@ -586,8 +587,7 @@ namespace ServicesRepopulateTestDBServices.Services
                                 {
                                     case "AppTask":
                                         {
-                                            AppTaskService appTaskService = new AppTaskService(new Query(), dbTestDB, 2 /* charles LeBlanc */);
-                                            AppTask appTask = appTaskService.GetAppTaskList().FirstOrDefault();
+                                            AppTask appTask = dbTestDB.AppTasks.AsNoTracking().FirstOrDefault();
                                             if (appTask == null)
                                             {
                                                 sb.AppendLine($@"            // Need to implement (no items found, would need to add at least one in the TestDB) [{ TypeName } { csspProp.PropName } { csspProp.ExistTypeName } { csspProp.ExistFieldID }]");
@@ -600,8 +600,7 @@ namespace ServicesRepopulateTestDBServices.Services
                                         break;
                                     case "BoxModel":
                                         {
-                                            BoxModelService boxModelService = new BoxModelService(new Query(), dbTestDB, 2 /* charles LeBlanc */);
-                                            BoxModel boxModel = boxModelService.GetBoxModelList().FirstOrDefault();
+                                            BoxModel boxModel = dbTestDB.BoxModels.AsNoTracking().FirstOrDefault();
                                             if (boxModel == null)
                                             {
                                                 sb.AppendLine($@"            // Need to implement (no items found, would need to add at least one in the TestDB) [{ TypeName } { csspProp.PropName } { csspProp.ExistTypeName } { csspProp.ExistFieldID }]");
@@ -614,8 +613,7 @@ namespace ServicesRepopulateTestDBServices.Services
                                         break;
                                     case "ClimateSite":
                                         {
-                                            ClimateSiteService climateSiteService = new ClimateSiteService(new Query(), dbTestDB, 2 /* charles LeBlanc */);
-                                            ClimateSite climateSite = climateSiteService.GetClimateSiteList().FirstOrDefault();
+                                            ClimateSite climateSite = dbTestDB.ClimateSites.AsNoTracking().FirstOrDefault();
                                             if (climateSite == null)
                                             {
                                                 sb.AppendLine($@"            // Need to implement (no items found, would need to add at least one in the TestDB) [{ TypeName } { csspProp.PropName } { csspProp.ExistTypeName } { csspProp.ExistFieldID }]");
@@ -628,8 +626,7 @@ namespace ServicesRepopulateTestDBServices.Services
                                         break;
                                     case "Contact":
                                         {
-                                            ContactService contactService = new ContactService(new Query(), dbTestDB, 2 /* charles LeBlanc */);
-                                            Contact contact = contactService.GetContactList().FirstOrDefault();
+                                            Contact contact = dbTestDB.Contacts.AsNoTracking().FirstOrDefault();
                                             if (contact == null)
                                             {
                                                 sb.AppendLine($@"            // Need to implement (no items found, would need to add at least one in the TestDB) [{ TypeName } { csspProp.PropName } { csspProp.ExistTypeName } { csspProp.ExistFieldID }]");
@@ -642,8 +639,7 @@ namespace ServicesRepopulateTestDBServices.Services
                                         break;
                                     case "EmailDistributionList":
                                         {
-                                            EmailDistributionListService emailDistributionListService = new EmailDistributionListService(new Query(), dbTestDB, 2 /* charles LeBlanc */);
-                                            EmailDistributionList emailDistributionList = emailDistributionListService.GetEmailDistributionListList().FirstOrDefault();
+                                            EmailDistributionList emailDistributionList = dbTestDB.EmailDistributionLists.AsNoTracking().FirstOrDefault();
                                             if (emailDistributionList == null)
                                             {
                                                 sb.AppendLine($@"            // Need to implement (no items found, would need to add at least one in the TestDB) [{ TypeName } { csspProp.PropName } { csspProp.ExistTypeName } { csspProp.ExistFieldID }]");
@@ -656,8 +652,7 @@ namespace ServicesRepopulateTestDBServices.Services
                                         break;
                                     case "EmailDistributionListContact":
                                         {
-                                            EmailDistributionListContactService emailDistributionListContactService = new EmailDistributionListContactService(new Query(), dbTestDB, 2 /* charles LeBlanc */);
-                                            EmailDistributionListContact emailDistributionListContact = emailDistributionListContactService.GetEmailDistributionListContactList().FirstOrDefault();
+                                            EmailDistributionListContact emailDistributionListContact = dbTestDB.EmailDistributionListContacts.AsNoTracking().FirstOrDefault();
                                             if (emailDistributionListContact == null)
                                             {
                                                 sb.AppendLine($@"            // Need to implement (no items found, would need to add at least one in the TestDB) [{ TypeName } { csspProp.PropName } { csspProp.ExistTypeName } { csspProp.ExistFieldID }]");
@@ -670,8 +665,7 @@ namespace ServicesRepopulateTestDBServices.Services
                                         break;
                                     case "HydrometricSite":
                                         {
-                                            HydrometricSiteService hydrometricSiteService = new HydrometricSiteService(new Query(), dbTestDB, 2 /* charles LeBlanc */);
-                                            HydrometricSite hydrometricSite = hydrometricSiteService.GetHydrometricSiteList().FirstOrDefault();
+                                            HydrometricSite hydrometricSite = dbTestDB.HydrometricSites.AsNoTracking().FirstOrDefault();
                                             if (hydrometricSite == null)
                                             {
                                                 sb.AppendLine($@"            // Need to implement (no items found, would need to add at least one in the TestDB) [{ TypeName } { csspProp.PropName } { csspProp.ExistTypeName } { csspProp.ExistFieldID }]");
@@ -684,8 +678,7 @@ namespace ServicesRepopulateTestDBServices.Services
                                         break;
                                     case "Infrastructure":
                                         {
-                                            InfrastructureService infrastructureService = new InfrastructureService(new Query(), dbTestDB, 2 /* charles LeBlanc */);
-                                            Infrastructure infrastructure = infrastructureService.GetInfrastructureList().FirstOrDefault();
+                                            Infrastructure infrastructure = dbTestDB.Infrastructures.AsNoTracking().FirstOrDefault();
                                             if (infrastructure == null)
                                             {
                                                 sb.AppendLine($@"            // Need to implement (no items found, would need to add at least one in the TestDB) [{ TypeName } { csspProp.PropName } { csspProp.ExistTypeName } { csspProp.ExistFieldID }]");
@@ -698,8 +691,7 @@ namespace ServicesRepopulateTestDBServices.Services
                                         break;
                                     case "LabSheet":
                                         {
-                                            LabSheetService labSheetService = new LabSheetService(new Query(), dbTestDB, 2 /* charles LeBlanc */);
-                                            LabSheet labSheet = labSheetService.GetLabSheetList().FirstOrDefault();
+                                            LabSheet labSheet = dbTestDB.LabSheets.AsNoTracking().FirstOrDefault();
                                             if (labSheet == null)
                                             {
                                                 sb.AppendLine($@"            // Need to implement (no items found, would need to add at least one in the TestDB) [{ TypeName } { csspProp.PropName } { csspProp.ExistTypeName } { csspProp.ExistFieldID }]");
@@ -712,8 +704,7 @@ namespace ServicesRepopulateTestDBServices.Services
                                         break;
                                     case "LabSheetDetail":
                                         {
-                                            LabSheetDetailService labSheetDetailService = new LabSheetDetailService(new Query(), dbTestDB, 2 /* charles LeBlanc */);
-                                            LabSheetDetail labSheetDetail = labSheetDetailService.GetLabSheetDetailList().FirstOrDefault();
+                                            LabSheetDetail labSheetDetail = dbTestDB.LabSheetDetails.AsNoTracking().FirstOrDefault();
                                             if (labSheetDetail == null)
                                             {
                                                 sb.AppendLine($@"            // Need to implement (no items found, would need to add at least one in the TestDB) [{ TypeName } { csspProp.PropName } { csspProp.ExistTypeName } { csspProp.ExistFieldID }]");
@@ -726,8 +717,7 @@ namespace ServicesRepopulateTestDBServices.Services
                                         break;
                                     case "MapInfo":
                                         {
-                                            MapInfoService mapInfoService = new MapInfoService(new Query(), dbTestDB, 2 /* charles LeBlanc */);
-                                            MapInfo mapInfo = mapInfoService.GetMapInfoList().FirstOrDefault();
+                                            MapInfo mapInfo = dbTestDB.MapInfos.AsNoTracking().FirstOrDefault();
                                             if (mapInfo == null)
                                             {
                                                 sb.AppendLine($@"            // Need to implement (no items found, would need to add at least one in the TestDB) [{ TypeName } { csspProp.PropName } { csspProp.ExistTypeName } { csspProp.ExistFieldID }]");
@@ -740,8 +730,7 @@ namespace ServicesRepopulateTestDBServices.Services
                                         break;
                                     case "MikeSource":
                                         {
-                                            MikeSourceService mikeSourceService = new MikeSourceService(new Query(), dbTestDB, 2 /* charles LeBlanc */);
-                                            MikeSource mikeSource = mikeSourceService.GetMikeSourceList().FirstOrDefault();
+                                            MikeSource mikeSource = dbTestDB.MikeSources.AsNoTracking().FirstOrDefault();
                                             if (mikeSource == null)
                                             {
                                                 sb.AppendLine($@"            // Need to implement (no items found, would need to add at least one in the TestDB) [{ TypeName } { csspProp.PropName } { csspProp.ExistTypeName } { csspProp.ExistFieldID }]");
@@ -754,8 +743,7 @@ namespace ServicesRepopulateTestDBServices.Services
                                         break;
                                     case "MWQMAnalysisReportParameter":
                                         {
-                                            MWQMAnalysisReportParameterService mwqmAnalysisReportParameterService = new MWQMAnalysisReportParameterService(new Query(), dbTestDB, 2 /* charles LeBlanc */);
-                                            MWQMAnalysisReportParameter mwqmAnalysisReportParameter = mwqmAnalysisReportParameterService.GetMWQMAnalysisReportParameterList().FirstOrDefault();
+                                            MWQMAnalysisReportParameter mwqmAnalysisReportParameter = dbTestDB.MWQMAnalysisReportParameters.AsNoTracking().FirstOrDefault();
                                             if (mwqmAnalysisReportParameter == null)
                                             {
                                                 sb.AppendLine($@"            // Need to implement (no items found, would need to add at least one in the TestDB) [{ TypeName } { csspProp.PropName } { csspProp.ExistTypeName } { csspProp.ExistFieldID }]");
@@ -768,8 +756,7 @@ namespace ServicesRepopulateTestDBServices.Services
                                         break;
                                     case "MWQMRun":
                                         {
-                                            MWQMRunService mwqmRunService = new MWQMRunService(new Query(), dbTestDB, 2 /* charles LeBlanc */);
-                                            MWQMRun mwqmRun = mwqmRunService.GetMWQMRunList().FirstOrDefault();
+                                            MWQMRun mwqmRun = dbTestDB.MWQMRuns.AsNoTracking().FirstOrDefault();
                                             if (mwqmRun == null)
                                             {
                                                 sb.AppendLine($@"            // Need to implement (no items found, would need to add at least one in the TestDB) [{ TypeName } { csspProp.PropName } { csspProp.ExistTypeName } { csspProp.ExistFieldID }]");
@@ -782,8 +769,7 @@ namespace ServicesRepopulateTestDBServices.Services
                                         break;
                                     case "MWQMSample":
                                         {
-                                            MWQMSampleService mwqmSampleService = new MWQMSampleService(new Query(), dbTestDB, 2 /* charles LeBlanc */);
-                                            MWQMSample mwqmSample = mwqmSampleService.GetMWQMSampleList().FirstOrDefault();
+                                            MWQMSample mwqmSample = dbTestDB.MWQMSamples.AsNoTracking().FirstOrDefault();
                                             if (mwqmSample == null)
                                             {
                                                 sb.AppendLine($@"            // Need to implement (no items found, would need to add at least one in the TestDB) [{ TypeName } { csspProp.PropName } { csspProp.ExistTypeName } { csspProp.ExistFieldID }]");
@@ -796,8 +782,7 @@ namespace ServicesRepopulateTestDBServices.Services
                                         break;
                                     case "MWQMSubsector":
                                         {
-                                            MWQMSubsectorService mwqmSubsectorService = new MWQMSubsectorService(new Query(), dbTestDB, 2 /* charles LeBlanc */);
-                                            MWQMSubsector mwqmSubsector = mwqmSubsectorService.GetMWQMSubsectorList().FirstOrDefault();
+                                            MWQMSubsector mwqmSubsector = dbTestDB.MWQMSubsectors.AsNoTracking().FirstOrDefault();
                                             if (mwqmSubsector == null)
                                             {
                                                 sb.AppendLine($@"            // Need to implement (no items found, would need to add at least one in the TestDB) [{ TypeName } { csspProp.PropName } { csspProp.ExistTypeName } { csspProp.ExistFieldID }]");
@@ -810,8 +795,7 @@ namespace ServicesRepopulateTestDBServices.Services
                                         break;
                                     case "PolSourceObservation":
                                         {
-                                            PolSourceObservationService polSourceObservationService = new PolSourceObservationService(new Query(), dbTestDB, 2 /* charles LeBlanc */);
-                                            PolSourceObservation polSourceObservation = polSourceObservationService.GetPolSourceObservationList().FirstOrDefault();
+                                            PolSourceObservation polSourceObservation = dbTestDB.PolSourceObservations.AsNoTracking().FirstOrDefault();
                                             if (polSourceObservation == null)
                                             {
                                                 sb.AppendLine($@"            // Need to implement (no items found, would need to add at least one in the TestDB) [{ TypeName } { csspProp.PropName } { csspProp.ExistTypeName } { csspProp.ExistFieldID }]");

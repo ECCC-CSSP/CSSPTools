@@ -5,12 +5,12 @@ using GenerateCodeStatusDB.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using ServicesRepopulateTestDBServices.Resources;
-using ServicesRepopulateTestDBServices.Services;
+using ServicesClassNameServiceGeneratedServices.Services;
+using ServicesExtensionEnumCastingGeneratedServices.Resources;
 using System;
 using System.IO;
 
-namespace ServicesRepopulateTestDB
+namespace ServicesExtensionEnumCastingGenerated
 {
     public class Startup
     {
@@ -20,7 +20,7 @@ namespace ServicesRepopulateTestDB
         #region Properties
         private IConfiguration Configuration { get; set; }
         private ServiceProvider provider { get; set; }
-        private IServicesRepopulateTestDBService servicesRepopulateTestDBService { get; set; }
+        private IServicesExtensionEnumCastingGeneratedService servicesExtensionEnumCastingGeneratedService { get; set; }
         private string DBFileName { get; set; } = "DBFileName";
         #endregion Properties
 
@@ -32,24 +32,12 @@ namespace ServicesRepopulateTestDB
         public string ConfigureServices(IServiceCollection serviceCollection)
         {
             serviceCollection.AddSingleton<IConfiguration>(Configuration);
-            serviceCollection.AddSingleton<IServicesRepopulateTestDBService, ServicesRepopulateTestDBService>();
+            serviceCollection.AddSingleton<IServicesExtensionEnumCastingGeneratedService, ServicesExtensionEnumCastingGeneratedService>();
             serviceCollection.AddSingleton<IGenerateCodeBaseService, GenerateCodeBaseService>();
             serviceCollection.AddSingleton<IGenerateCodeStatusDBService, GenerateCodeStatusDBService>();
             serviceCollection.AddSingleton<IValidateAppSettingsService, ValidateAppSettingsService>();
 
             string retStr = ConfigureGenerateCodeStatusContext(serviceCollection);
-            if (!string.IsNullOrWhiteSpace(retStr))
-            {
-                return retStr;
-            }
-
-            retStr = ConfigureCSSPDBContext(serviceCollection);
-            if (!string.IsNullOrWhiteSpace(retStr))
-            {
-                return retStr;
-            }
-
-            retStr = ConfigureTestDBContext(serviceCollection);
             if (!string.IsNullOrWhiteSpace(retStr))
             {
                 return retStr;
@@ -65,13 +53,13 @@ namespace ServicesRepopulateTestDB
         }
         public string Run(string[] args)
         {
-            servicesRepopulateTestDBService = provider.GetService<IServicesRepopulateTestDBService>();
-            if (servicesRepopulateTestDBService == null)
+            servicesExtensionEnumCastingGeneratedService = provider.GetService<IServicesExtensionEnumCastingGeneratedService>();
+            if (servicesExtensionEnumCastingGeneratedService == null)
             {
                 return $"{ AppDomain.CurrentDomain.FriendlyName } enumsGenerated_csService == null";
             }
 
-            if (!servicesRepopulateTestDBService.Run(args).GetAwaiter().GetResult())
+            if (!servicesExtensionEnumCastingGeneratedService.Run(args).GetAwaiter().GetResult())
             {
                 return AppRes.AbnormalCompletion;
             }
@@ -81,50 +69,6 @@ namespace ServicesRepopulateTestDB
         #endregion Constructors
 
         #region Functions private
-        private string ConfigureCSSPDBContext(IServiceCollection serviceCollection)
-        {
-            string CSSPDBConnString = Configuration.GetValue<string>("CSSPDBConnectionString");
-            if (CSSPDBConnString == null)
-            {
-                return $"{ String.Format(AppRes.CouldNotFindParameter_InAppSettingsJSON, "CSSPDBConnectionString") }";
-            }
-
-            try
-            {
-                serviceCollection.AddDbContext<CSSPDBContext>(options =>
-                {
-                    options.UseSqlServer(CSSPDBConnString);
-                });
-            }
-            catch (Exception ex)
-            {
-                return ex.Message;
-            }
-
-            return "";
-        }
-        private string ConfigureTestDBContext(IServiceCollection serviceCollection)
-        {
-            string TestDBConnString = Configuration.GetValue<string>("TestDBConnectionString");
-            if (TestDBConnString == null)
-            {
-                return $"{ String.Format(AppRes.CouldNotFindParameter_InAppSettingsJSON, "TestDBConnectionString") }";
-            }
-
-            try
-            {
-                serviceCollection.AddDbContext<TestDBContext>(options =>
-                {
-                    options.UseSqlServer(TestDBConnString);
-                });
-            }
-            catch (Exception ex)
-            {
-                return ex.Message;
-            }
-
-            return "";
-        }
         private string ConfigureGenerateCodeStatusContext(IServiceCollection serviceCollection)
         {
             string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);

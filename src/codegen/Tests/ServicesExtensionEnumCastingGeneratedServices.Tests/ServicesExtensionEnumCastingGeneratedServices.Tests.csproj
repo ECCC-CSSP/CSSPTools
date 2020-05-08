@@ -42,8 +42,8 @@
     <Reference Include="GenerateCodeStatusDB">
       <HintPath>..\..\GenerateCodeStatusDB\bin\Debug\netcoreapp3.1\GenerateCodeStatusDB.dll</HintPath>
     </Reference>
-    <Reference Include="ServicesClassNameServiceTestGeneratedServices">
-      <HintPath>..\..\ServicesClassNameServiceTestGeneratedServices\bin\Debug\netcoreapp3.1\ServicesClassNameServiceTestGeneratedServices.dll</HintPath>
+    <Reference Include="ServicesExtensionEnumCastingGeneratedServices">
+      <HintPath>..\..\ServicesExtensionEnumCastingGeneratedServices\bin\Debug\netcoreapp3.1\ServicesExtensionEnumCastingGeneratedServices.dll</HintPath>
     </Reference>
   </ItemGroup>
 
@@ -52,6 +52,5 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
-
 
 </Project>

@@ -6,11 +6,11 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using ServicesClassNameServiceTestGeneratedServices.Resources;
-using ServicesRepopulateTestDBServices.Services;
+using ServicesClassNameServiceTestGeneratedServices.Services;
 using System;
 using System.IO;
 
-namespace ModelsCompare
+namespace ServicesClassNameServiceTestGenerated
 {
     public class Startup
     {

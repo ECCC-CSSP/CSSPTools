@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
@@ -42,16 +42,15 @@
     <Reference Include="GenerateCodeStatusDB">
       <HintPath>..\..\GenerateCodeStatusDB\bin\Debug\netcoreapp3.1\GenerateCodeStatusDB.dll</HintPath>
     </Reference>
-    <Reference Include="ServicesClassNameServiceTestGeneratedServices">
-      <HintPath>..\..\ServicesClassNameServiceTestGeneratedServices\bin\Debug\netcoreapp3.1\ServicesClassNameServiceTestGeneratedServices.dll</HintPath>
+    <Reference Include="ServicesClassNameServiceGeneratedServices">
+      <HintPath>..\..\ServicesClassNameServiceGeneratedServices\bin\Debug\netcoreapp3.1\ServicesClassNameServiceGeneratedServices.dll</HintPath>
     </Reference>
   </ItemGroup>
-
+  
   <ItemGroup>
     <None Update="appsettings.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
-
 
 </Project>
