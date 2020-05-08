@@ -60,7 +60,13 @@ namespace ServicesClassNameServiceGeneratedServices.Services
 
             ConsoleWriteStart();
 
-            if (!await Setup()) return false;
+            if (!await Setup())
+            {
+                Console.WriteLine(generateCodeStatusDBService.Error.ToString());
+                Console.WriteLine("");
+                Console.WriteLine(generateCodeStatusDBService.Status.ToString());
+                return false;
+            }
 
             if (!await Generate())
             {
@@ -353,7 +359,7 @@ namespace ServicesClassNameServiceGeneratedServices.Services
 
             validateAppSettingsService.AppSettingParameterList = new List<AppSettingParameter>()
             {
-                new AppSettingParameter() { Parameter = "Command", ExpectedValue = "ServicesRepopulateTestDB" },
+                new AppSettingParameter() { Parameter = "Command", ExpectedValue = "ServicesClassNameServiceGenerated" },
                 new AppSettingParameter() { Parameter = "Culture", ExpectedValue = "", IsCulture = true },
                 new AppSettingParameter() { Parameter = "DBFileName", ExpectedValue = "{AppDataPath}\\CSSP\\GenerateCodeStatus.db", IsFile = true, CheckExist = true },
                 new AppSettingParameter() { Parameter = "CSSPEnums", ExpectedValue = "C:\\CSSPTools\\src\\dlls\\CSSPEnums\\bin\\Debug\\netcoreapp3.1\\CSSPEnums.dll", IsFile = true, CheckExist = true },

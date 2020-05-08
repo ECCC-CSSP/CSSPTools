@@ -49,9 +49,21 @@ namespace EnumsPolSourceInfoRelatedFilesServices.Services
 
             ConsoleWriteStart();
 
-            if (!await Setup()) return false;
+            if (!await Setup())
+            {
+                Console.WriteLine(generateCodeStatusDBService.Error.ToString());
+                Console.WriteLine("");
+                Console.WriteLine(generateCodeStatusDBService.Status.ToString());
+                return false;
+            }
 
-            if (!await Generate()) return false;
+            if (!await Generate())
+            {
+                Console.WriteLine(generateCodeStatusDBService.Error.ToString());
+                Console.WriteLine("");
+                Console.WriteLine(generateCodeStatusDBService.Status.ToString());
+                return false;
+            }
 
             await ConsoleWriteEnd();
 

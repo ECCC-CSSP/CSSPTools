@@ -580,6 +580,7 @@ namespace GenerateCodeBase.Services
                 || type.Name.StartsWith("CSSPModelsRes")
                 || type.Name.StartsWith("Application")
                 || type.Name.StartsWith("CSSPDBContext")
+                || type.Name.StartsWith("TestDBContext")
                 || type.Name.StartsWith("CSSPAfter")
                 || type.Name.StartsWith("CSSPAllowNull")
                 || type.Name.StartsWith("CSSPBigger")

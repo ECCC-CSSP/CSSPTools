@@ -83,7 +83,7 @@ namespace GenerateCodeBase.Tests
 
             string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
 
-            FileInfo fiDB = new FileInfo(configuration.GetValue<string>("DBFileNameTest").Replace("{AppDataPath}", appDataPath));
+            FileInfo fiDB = new FileInfo(configuration.GetValue<string>("DBFileName").Replace("{AppDataPath}", appDataPath));
 
             if (!fiDB.Exists)
             {

@@ -48,9 +48,21 @@ namespace ModelsCompareServices.Services
 
             ConsoleWriteStart();
 
-            if (!await Setup()) return false;
+            if (!await Setup())
+            {
+                Console.WriteLine(generateCodeStatusDBService.Error.ToString());
+                Console.WriteLine("");
+                Console.WriteLine(generateCodeStatusDBService.Status.ToString());
+                return false;
+            }
 
-            if (!await Generate()) return false;
+            if (!await Generate())
+            {
+                Console.WriteLine(generateCodeStatusDBService.Error.ToString());
+                Console.WriteLine("");
+                Console.WriteLine(generateCodeStatusDBService.Status.ToString());
+                return false;
+            }
 
             await ConsoleWriteEnd();
 
@@ -427,7 +439,7 @@ namespace ModelsCompareServices.Services
 
             validateAppSettingsService.AppSettingParameterList = new List<AppSettingParameter>()
             {
-                new AppSettingParameter() { Parameter = "Command", ExpectedValue = "ModelsModelClassNameTest" },
+                new AppSettingParameter() { Parameter = "Command", ExpectedValue = "ModelsCompare" },
                 new AppSettingParameter() { Parameter = "Culture", ExpectedValue = "", IsCulture = true },
                 new AppSettingParameter() { Parameter = "DBFileName", ExpectedValue = "{AppDataPath}\\CSSP\\GenerateCodeStatus.db", IsFile = true, CheckExist = true },
                 new AppSettingParameter() { Parameter = "CSSPModels", ExpectedValue = "C:\\CSSPTools\\src\\dlls\\CSSPModels\\bin\\Debug\\netcoreapp3.1\\CSSPModels.dll", IsFile = true, CheckExist = true },

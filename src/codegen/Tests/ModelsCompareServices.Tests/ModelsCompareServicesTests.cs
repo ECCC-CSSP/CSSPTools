@@ -40,7 +40,7 @@ namespace ModelsCompareServices.Tests
         [Theory]
         [InlineData("en-CA")]
         [InlineData("fr-CA")]
-        public void ModelsModelClassNameTestServices_Constructor_Good_Test(string culture)
+        public void ModelsCompareService_Constructor_Good_Test(string culture)
         {
             Init();
 
@@ -58,7 +58,7 @@ namespace ModelsCompareServices.Tests
         [InlineData("fr-CA")] // good
         [InlineData("es-TU")] // good will default to en-CA
         [InlineData("en-GB")] // good will default to en-CA
-        public void ModelsModelClassNameTestServices_Run_Good_Test(string culture)
+        public void ModelsCompareService_Run_Good_Test(string culture)
         {
             Init();
 
