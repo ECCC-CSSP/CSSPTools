@@ -17,19 +17,19 @@ namespace CSSPCodeGenWebAPI.Services
     public class DotNetService : IDotNetService
     {
         #region Variables
-        private readonly IConfiguration _configuration;
-        private readonly IGenerateCodeStatusDBService _generateCodeStatusDBService;
+        private readonly IConfiguration configuration;
+        private readonly IGenerateCodeStatusDBService generateCodeStatusDBService;
         #endregion Variables
 
         #region Properties
-        private DotNetCommand _dotNetCommand { get; set; }
+        private DotNetCommand dotNetCommand { get; set; }
         #endregion Properties
 
         #region Constructors
         public DotNetService(IConfiguration configuration, IGenerateCodeStatusDBService generateCodeStatusDBService)
         {
-            _configuration = configuration;
-            _generateCodeStatusDBService = generateCodeStatusDBService;
+            this.configuration = configuration;
+            this.generateCodeStatusDBService = generateCodeStatusDBService;
         }
         #endregion Constructors
 
@@ -38,21 +38,21 @@ namespace CSSPCodeGenWebAPI.Services
         {
             try
             {
-                ServicesRes.Culture = _generateCodeStatusDBService.Culture;
+                ServicesRes.Culture = generateCodeStatusDBService.Culture;
 
-                string exePath = _configuration.GetValue<string>("ExecuteDotNetCommandAppPath");
+                string exePath = configuration.GetValue<string>("ExecuteDotNetCommandAppPath");
                 string args = $" { dotNetCommand.CultureName } { dotNetCommand.Action } { dotNetCommand.SolutionFileName }";
 
                 if (string.IsNullOrWhiteSpace(exePath))
                 {
-                    _generateCodeStatusDBService.Error.AppendLine(ServicesRes.ExePathIsEmpty);
+                    generateCodeStatusDBService.Error.AppendLine(ServicesRes.ExePathIsEmpty);
                     return;
                 }
 
                 FileInfo fiApp = new FileInfo(exePath);
                 if (!fiApp.Exists)
                 {
-                    _generateCodeStatusDBService.Error.AppendLine(String.Format(ServicesRes.CouldNotFindExePath_, exePath));
+                    generateCodeStatusDBService.Error.AppendLine(String.Format(ServicesRes.CouldNotFindExePath_, exePath));
                     return;
                 }
 
@@ -66,7 +66,7 @@ namespace CSSPCodeGenWebAPI.Services
             }
             catch (Exception ex)
             {
-                _generateCodeStatusDBService.Error.AppendLine(String.Format(ServicesRes.UnmanagedServerError_, ex.Message));
+                generateCodeStatusDBService.Error.AppendLine(String.Format(ServicesRes.UnmanagedServerError_, ex.Message));
                 return;
             }
         }

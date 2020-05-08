@@ -27,17 +27,17 @@ namespace CSSPCodeGenWebAPI.Controllers
     public class DotNetController : ControllerBase
     {
         #region Variables
-        private readonly IDotNetService _dotNetService;
-        private readonly IGenerateCodeStatusDBService _generateCodeStatusDBService;
-        private readonly IConfiguration _configuration;
+        private readonly IConfiguration configuration;
+        private readonly IDotNetService dotNetService;
+        private readonly IGenerateCodeStatusDBService generateCodeStatusDBService;
         #endregion Variables
 
         #region Constructors
-        public DotNetController(IDotNetService dotNetService, IGenerateCodeStatusDBService generateCodeStatusService, IConfiguration configuration)
+        public DotNetController(IConfiguration configuration, IDotNetService dotNetService, IGenerateCodeStatusDBService generateCodeStatusService)
         {
-            _dotNetService = dotNetService;
-            _generateCodeStatusDBService = generateCodeStatusService;
-            _configuration = configuration;
+            this.configuration = configuration;
+            this.dotNetService = dotNetService;
+            this.generateCodeStatusDBService = generateCodeStatusService;
         }
         #endregion Constructors
 
@@ -51,8 +51,8 @@ namespace CSSPCodeGenWebAPI.Controllers
 
             try
             {
-                _generateCodeStatusDBService.Culture = new CultureInfo(Request.RouteValues["culture"].ToString());
-                _generateCodeStatusDBService.Command = $"{ dotNetActionOnFile.Action }:{ dotNetActionOnFile.SolutionFileName }";
+                generateCodeStatusDBService.Culture = new CultureInfo(Request.RouteValues["culture"].ToString());
+                generateCodeStatusDBService.Command = $"{ dotNetActionOnFile.Action }:{ dotNetActionOnFile.SolutionFileName }";
 
                 DotNetCommand dotNetCommand = new DotNetCommand()
                 {
@@ -61,9 +61,9 @@ namespace CSSPCodeGenWebAPI.Controllers
                     SolutionFileName = dotNetActionOnFile.SolutionFileName,
                 };
 
-                await _dotNetService.DotNet(dotNetCommand);
+                await dotNetService.DotNet(dotNetCommand);
 
-                GenerateCodeStatus generateCodeStatus = await _generateCodeStatusDBService.GetOrCreate();
+                GenerateCodeStatus generateCodeStatus = await generateCodeStatusDBService.GetOrCreate();
 
                 if (generateCodeStatus != null)
                 {
