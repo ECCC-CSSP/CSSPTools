@@ -15,12 +15,14 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using CSSPModels;
 using Microsoft.EntityFrameworkCore;
-using CSSPCodeGenWebAPI.Model;
 using CSSPCodeGenWebAPI.Services;
 using System.IO;
 using CSSPCodeGenWebAPI.Models;
-using GenerateCodeStatusDB.Models;
-using GenerateCodeStatusDB.Services;
+using ActionCommandDBServices.Models;
+using ActionCommandDBServices.Services;
+using UserServices.Models;
+using UserServices.Services;
+using ActionCommandServices.Services;
 
 namespace CSSPCodeGenWebAPI
 {
@@ -98,22 +100,22 @@ namespace CSSPCodeGenWebAPI
 
             string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
 
-            FileInfo fiDB = new FileInfo(connectionStrings.GenerateCodeSatusDB.Replace("{appDataPath}", appDataPath));
+            FileInfo fiDB = new FileInfo(connectionStrings.ActionCommandDB.Replace("{appDataPath}", appDataPath));
 
-            services.AddDbContext<GenerateCodeStatusContext>(options =>
+            services.AddDbContext<ActionCommandContext>(options =>
             {
                 options.UseSqlite($"DataSource={fiDB.FullName}");
             });
 
             services.AddScoped<IUserService, UserService>();
 
-            services.AddScoped<IDotNetService, DotNetService>();
+            services.AddScoped<IActionCommandService, ActionCommandService>();
             //services.AddScoped<IStatusEnumsService, StatusEnumsService>();
 
             //services.AddScoped<IGenerateModelsService, GenerateModelsService>();
             //services.AddScoped<IStatusModelsService, StatusModelsService>();
 
-            services.AddScoped<IGenerateCodeStatusDBService, GenerateCodeStatusDBService>();
+            services.AddScoped<IActionCommandDBService, ActionCommandDBService>();
 
         }
 

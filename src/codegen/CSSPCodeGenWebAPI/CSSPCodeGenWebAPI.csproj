@@ -1,24 +1,22 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Controllers\GenerateEnumsController.cs" />
-    <Compile Remove="Controllers\GenerateModelsController.cs" />
-    <Compile Remove="Controllers\StatusEnumsController.cs" />
-    <Compile Remove="Controllers\StatusModelsController.cs" />
-    <Compile Remove="Services\GenerateEnumsService.cs" />
-    <Compile Remove="Services\GenerateModelsService.cs" />
-    <Compile Remove="Services\IGenerateEnumsService.cs" />
-    <Compile Remove="Services\IGenerateModelsService.cs" />
-    <Compile Remove="Services\IRunService.cs" />
-    <Compile Remove="Services\IStatusEnumsService.cs" />
-    <Compile Remove="Services\IStatusModelsService.cs" />
-    <Compile Remove="Services\RunService.cs" />
-    <Compile Remove="Services\StatusEnumsService.cs" />
-    <Compile Remove="Services\StatusModelsService.cs" />
+    <Compile Remove="Models\ApiSettingsModel.cs" />
+    <Compile Remove="Models\ApplicationDBContext.cs" />
+    <Compile Remove="Models\ApplicationUser.cs" />
+    <Compile Remove="Models\ConnectionStringsModel.cs" />
+    <Compile Remove="Models\DotNetActionOnFile.cs" />
+    <Compile Remove="Models\DotNetCommand.cs" />
+    <Compile Remove="Models\LoginModel.cs" />
+    <Compile Remove="Models\UserModel.cs" />
+    <Compile Remove="Services\DotNetService.cs" />
+    <Compile Remove="Services\IDotNetService.cs" />
+    <Compile Remove="Services\IUserService.cs" />
+    <Compile Remove="Services\UserService.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -34,14 +32,20 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Reference Include="ActionCommandDBServices">
+      <HintPath>..\ActionCommandDBServices\bin\Debug\netcoreapp3.1\ActionCommandDBServices.dll</HintPath>
+    </Reference>
+    <Reference Include="ActionCommandServices">
+      <HintPath>..\ActionCommandServices\bin\Debug\netcoreapp3.1\ActionCommandServices.dll</HintPath>
+    </Reference>
     <Reference Include="CSSPModels">
       <HintPath>..\..\dlls\CSSPModels\bin\Debug\netcoreapp3.1\CSSPModels.dll</HintPath>
     </Reference>
-    <Reference Include="GenerateCodeBase">
-      <HintPath>..\GenerateCodeBase\bin\Debug\netcoreapp3.1\GenerateCodeBase.dll</HintPath>
+    <Reference Include="GenerateCodeBaseServices">
+      <HintPath>..\GenerateCodeBaseServices\bin\Debug\netcoreapp3.1\GenerateCodeBaseServices.dll</HintPath>
     </Reference>
-    <Reference Include="GenerateCodeStatusDB">
-      <HintPath>..\GenerateCodeStatusDB\bin\Debug\netcoreapp3.1\GenerateCodeStatusDB.dll</HintPath>
+    <Reference Include="UserServices">
+      <HintPath>..\UserServices\bin\Debug\netcoreapp3.1\UserServices.dll</HintPath>
     </Reference>
   </ItemGroup>
 

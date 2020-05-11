@@ -6,12 +6,11 @@ using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using GenerateCodeStatusDB.Services;
 
 namespace CSSPCodeGenWebAPI.Services
 {
     public interface IDotNetService
     {
-        Task DotNet(DotNetCommand dotNetCommand);
+        Task<string> RunDotNetCommand(DotNetCommand dotNetCommand);
     }
 }

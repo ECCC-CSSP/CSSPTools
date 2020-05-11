@@ -1,0 +1,28 @@
+<h1>Commands</h1>
+
+<ul>
+    <li *ngFor="let dotNetActionCommand of dotNetActionCommandList">
+        <button disabled="{{ dotNetActionCommand.Working }}"
+            (click)="RunDotNetCommand(dotNetActionCommand, false)" mat-button color="primary">
+            {{ dotNetActionCommand.FileName }}
+        </button>
+        &nbsp;&nbsp;&nbsp;
+        <button class="status" disabled="{{ dotNetActionCommand.Working }}"
+            (click)="RunDotNetCommand(dotNetActionCommand, true)" mat-button color="primary">
+            Status
+        </button>
+
+        <mat-progress-bar *ngIf="dotNetActionCommand.Working" mode="indeterminate">
+        </mat-progress-bar>
+
+        <p *ngIf="dotNetActionCommand.Error">
+            <mat-error>{{ dotNetActionCommand.Error.error.ErrorText }} </mat-error>
+        </p>
+        <div *ngIf="dotNetActionCommand.Status">
+            <h1>{{ dotNetActionCommand.CurrentStatus }}</h1>
+            <pre>
+        {{ dotNetService.dotNetModel$.value.Status }}
+            </pre>
+        </div>
+    </li>
+</ul>

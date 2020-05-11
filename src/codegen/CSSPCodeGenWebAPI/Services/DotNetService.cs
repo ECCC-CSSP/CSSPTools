@@ -1,6 +1,6 @@
 ﻿using CSSPCodeGenWebAPI.Models;
 using CSSPCodeGenWebAPI.Services.Resources;
-using GenerateCodeStatusDB.Services;
+using ActionCommandDBServices.Services;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
@@ -17,58 +17,57 @@ namespace CSSPCodeGenWebAPI.Services
     public class DotNetService : IDotNetService
     {
         #region Variables
-        private readonly IConfiguration configuration;
-        private readonly IGenerateCodeStatusDBService generateCodeStatusDBService;
         #endregion Variables
 
         #region Properties
-        private DotNetCommand dotNetCommand { get; set; }
+        private IConfiguration configuration { get; }
         #endregion Properties
 
         #region Constructors
-        public DotNetService(IConfiguration configuration, IGenerateCodeStatusDBService generateCodeStatusDBService)
+        public DotNetService(IConfiguration configuration)
         {
             this.configuration = configuration;
-            this.generateCodeStatusDBService = generateCodeStatusDBService;
         }
         #endregion Constructors
 
         #region Functions public
-        public async Task DotNet(DotNetCommand dotNetCommand)
+        public async Task<string> RunDotNetCommand(DotNetCommand dotNetCommand)
         {
             try
             {
-                ServicesRes.Culture = generateCodeStatusDBService.Culture;
-
-                string exePath = configuration.GetValue<string>("ExecuteDotNetCommandAppPath");
-                string args = $" { dotNetCommand.CultureName } { dotNetCommand.Action } { dotNetCommand.SolutionFileName }";
-
-                if (string.IsNullOrWhiteSpace(exePath))
+                if (!dotNetCommand.StatusOnly)
                 {
-                    generateCodeStatusDBService.Error.AppendLine(ServicesRes.ExePathIsEmpty);
-                    return;
-                }
+                    ServicesRes.Culture = new CultureInfo(dotNetCommand.CultureName);
 
-                FileInfo fiApp = new FileInfo(exePath);
-                if (!fiApp.Exists)
-                {
-                    generateCodeStatusDBService.Error.AppendLine(String.Format(ServicesRes.CouldNotFindExePath_, exePath));
-                    return;
-                }
+                    string exePath = configuration.GetValue<string>("ExecuteDotNetCommandAppPath");
+                    string args = $" { dotNetCommand.CultureName } { dotNetCommand.Action } { dotNetCommand.FileName }";
 
-                Process process = new Process();
-                process = Process.Start(exePath, args);
+                    if (string.IsNullOrWhiteSpace(exePath))
+                    {
+                        return ServicesRes.ExePathIsEmpty;
+                    }
 
-                while (!process.HasExited)
-                {
-                    // report progress is needed
+                    FileInfo fiApp = new FileInfo(exePath);
+                    if (!fiApp.Exists)
+                    {
+                        return String.Format(ServicesRes.CouldNotFindExePath_, exePath);
+                    }
+
+                    Process process = new Process();
+                    process = Process.Start(exePath, args);
+
+                    while (!process.HasExited)
+                    {
+                        // report progress is needed
+                    }
                 }
             }
             catch (Exception ex)
             {
-                generateCodeStatusDBService.Error.AppendLine(String.Format(ServicesRes.UnmanagedServerError_, ex.Message));
-                return;
+                return String.Format(ServicesRes.UnmanagedServerError_, ex.Message);
             }
+
+            return "";
         }
         #endregion Functions public
 
