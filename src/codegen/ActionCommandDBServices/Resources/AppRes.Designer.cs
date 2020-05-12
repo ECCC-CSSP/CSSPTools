@@ -61,6 +61,24 @@ namespace ActionCommandDBServices.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to {0} is required.
+        /// </summary>
+        public static string _IsRequied {
+            get {
+                return ResourceManager.GetString("_IsRequied", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Could not find ActionCommand to delete with Action [{0}] and Command [{1}].
+        /// </summary>
+        public static string CouldNotFindActionCommandToDeleteWithAction_AndCommand_ {
+            get {
+                return ResourceManager.GetString("CouldNotFindActionCommandToDeleteWithAction_AndCommand_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Could not find file [{0}].
         /// </summary>
         public static string CouldNotFindFile_ {

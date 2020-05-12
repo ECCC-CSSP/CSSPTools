@@ -17,8 +17,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsoleMLPlay", "..\play\Co
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "testSqlite", "..\junk\testSqlite\testSqlite\testSqlite.csproj", "{6392CFE2-B32B-4317-ACF7-B97CDA881333}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSSPCodeGenWebClientApps", "CSSPCodeGenWebClientApps\CSSPCodeGenWebClientApps.csproj", "{F826244E-23AA-467F-8908-321EE8D3E099}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSSPCodeGenWebAPI", "CSSPCodeGenWebAPI\CSSPCodeGenWebAPI.csproj", "{BD212787-339D-46F6-962C-A3367BD0F579}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EnumsGenerated_cs", "EnumsGenerated_cs\EnumsGenerated_cs.csproj", "{E1A2445F-DC45-48B3-AF17-721658EECE17}"
@@ -145,13 +143,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ActionCommandDBServices", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ActionCommandDBServices.Tests", "Tests\ActionCommandDBServices.Tests\ActionCommandDBServices.Tests.csproj", "{03C44495-7F97-4C33-BC7C-3E8D791CA11B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UserServices", "UserServices\UserServices.csproj", "{DE3A07E3-C179-427C-BAE8-A038C58B59AB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UserServices", "UserServices\UserServices.csproj", "{DE3A07E3-C179-427C-BAE8-A038C58B59AB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UserServices.Tests", "tests\UserServices.Tests\UserServices.Tests.csproj", "{94168A3F-EA01-445A-A989-0282A1E5D456}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UserServices.Tests", "tests\UserServices.Tests\UserServices.Tests.csproj", "{94168A3F-EA01-445A-A989-0282A1E5D456}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ActionCommandServices", "ActionCommandServices\ActionCommandServices.csproj", "{03748399-3093-4AC8-9289-7356D1EE91C5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ActionCommandServices", "ActionCommandServices\ActionCommandServices.csproj", "{03748399-3093-4AC8-9289-7356D1EE91C5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ActionCommandServices.Tests", "tests\ActionCommandServices.Tests\ActionCommandServices.Tests.csproj", "{01AED1E8-ECED-440A-AA87-F557B1B077EF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ActionCommandServices.Tests", "tests\ActionCommandServices.Tests\ActionCommandServices.Tests.csproj", "{01AED1E8-ECED-440A-AA87-F557B1B077EF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -247,18 +245,6 @@ Global
 		{6392CFE2-B32B-4317-ACF7-B97CDA881333}.Release|x64.Build.0 = Release|Any CPU
 		{6392CFE2-B32B-4317-ACF7-B97CDA881333}.Release|x86.ActiveCfg = Release|Any CPU
 		{6392CFE2-B32B-4317-ACF7-B97CDA881333}.Release|x86.Build.0 = Release|Any CPU
-		{F826244E-23AA-467F-8908-321EE8D3E099}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F826244E-23AA-467F-8908-321EE8D3E099}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F826244E-23AA-467F-8908-321EE8D3E099}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{F826244E-23AA-467F-8908-321EE8D3E099}.Debug|x64.Build.0 = Debug|Any CPU
-		{F826244E-23AA-467F-8908-321EE8D3E099}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{F826244E-23AA-467F-8908-321EE8D3E099}.Debug|x86.Build.0 = Debug|Any CPU
-		{F826244E-23AA-467F-8908-321EE8D3E099}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F826244E-23AA-467F-8908-321EE8D3E099}.Release|Any CPU.Build.0 = Release|Any CPU
-		{F826244E-23AA-467F-8908-321EE8D3E099}.Release|x64.ActiveCfg = Release|Any CPU
-		{F826244E-23AA-467F-8908-321EE8D3E099}.Release|x64.Build.0 = Release|Any CPU
-		{F826244E-23AA-467F-8908-321EE8D3E099}.Release|x86.ActiveCfg = Release|Any CPU
-		{F826244E-23AA-467F-8908-321EE8D3E099}.Release|x86.Build.0 = Release|Any CPU
 		{BD212787-339D-46F6-962C-A3367BD0F579}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{BD212787-339D-46F6-962C-A3367BD0F579}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BD212787-339D-46F6-962C-A3367BD0F579}.Debug|x64.ActiveCfg = Debug|Any CPU

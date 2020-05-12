@@ -14,6 +14,7 @@ using System.Globalization;
 using Microsoft.Extensions.Configuration;
 using Xunit;
 using ActionCommandDBServices.Resources;
+using Microsoft.AspNetCore.Mvc;
 
 namespace GenerateCodeBaseServices.Tests
 {
@@ -39,7 +40,7 @@ namespace GenerateCodeBaseServices.Tests
         [Theory]
         [InlineData("en-CA")]
         [InlineData("fr-CA")]
-        public void GenerateCodeBaseConstructorsOKTest(string culture)
+        public void GenerateCodeBaseService_Constructors_Good_Test(string culture)
         {
             Setup(new CultureInfo(culture));
 

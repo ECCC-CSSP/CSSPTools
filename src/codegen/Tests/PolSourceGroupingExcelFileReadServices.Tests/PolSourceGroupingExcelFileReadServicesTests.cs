@@ -1,5 +1,5 @@
-﻿using GenerateCodeStatusDB.Models;
-using GenerateCodeStatusDB.Services;
+﻿using ActionCommandDBServices.Models;
+using ActionCommandDBServices.Services;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -71,7 +71,7 @@ namespace CSSPPolSourceGroupingExcelFileRead.Tests
 
             serviceCollection.AddSingleton<IConfiguration>(configuration);
             serviceCollection.AddSingleton<IPolSourceGroupingExcelFileReadService, PolSourceGroupingExcelFileReadService>();
-            serviceCollection.AddSingleton<IGenerateCodeStatusDBService, GenerateCodeStatusDBService>();
+            serviceCollection.AddSingleton<IActionCommandDBService, ActionCommandDBService>();
 
             string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
             Assert.False(string.IsNullOrWhiteSpace(appDataPath));
@@ -82,7 +82,7 @@ namespace CSSPPolSourceGroupingExcelFileRead.Tests
             FileInfo fiDB = new FileInfo(fileName.Replace("{AppDataPath}", appDataPath));
             Assert.True(fiDB.Exists);
 
-            serviceCollection.AddDbContext<GenerateCodeStatusContext>(options =>
+            serviceCollection.AddDbContext<ActionCommandContext>(options =>
             {
                 options.UseSqlite($"DataSource={fiDB.FullName}");
             });

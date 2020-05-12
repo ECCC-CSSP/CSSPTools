@@ -1,7 +1,7 @@
-﻿using GenerateCodeBase.Models;
-using GenerateCodeBase.Services;
-using GenerateCodeStatusDB.Models;
-using GenerateCodeStatusDB.Services;
+﻿using GenerateCodeBaseServices.Models;
+using GenerateCodeBaseServices.Services;
+using ActionCommandDBServices.Models;
+using ActionCommandDBServices.Services;
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
 using ModelsCompareDBFieldsAndCSSPModelsDLLPropServices.Resources;
@@ -15,6 +15,9 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using ValidateAppSettingsServices.Services;
+using ValidateAppSettingsServices.Models;
+using Microsoft.AspNetCore.Mvc;
 
 namespace ModelsCompareDBFieldsAndCSSPModelsDLLPropServices.Services
 {
@@ -25,7 +28,7 @@ namespace ModelsCompareDBFieldsAndCSSPModelsDLLPropServices.Services
 
         #region Properties
         private IConfiguration configuration { get; set; }
-        private IGenerateCodeStatusDBService generateCodeStatusDBService { get; set; }
+        private IActionCommandDBService actionCommandDBService { get; set; }
         private IValidateAppSettingsService validateAppSettingsService { get; set; }
         private IGenerateCodeBaseService generateCodeBaseService { get; set; }
         private List<string> AllowableCultures { get; set; } = new List<string>() { "en-CA", "fr-CA" };
@@ -37,12 +40,12 @@ namespace ModelsCompareDBFieldsAndCSSPModelsDLLPropServices.Services
 
         #region Constructors
         public ModelsCompareDBFieldsAndCSSPModelsDLLPropService(IConfiguration configuration,
-            IGenerateCodeStatusDBService generateCodeStatusDBService,
+            IActionCommandDBService actionCommandDBService,
             IValidateAppSettingsService validateAppSettingsService,
             IGenerateCodeBaseService generateCodeBaseService)
         {
             this.configuration = configuration;
-            this.generateCodeStatusDBService = generateCodeStatusDBService;
+            this.actionCommandDBService = actionCommandDBService;
             this.validateAppSettingsService = validateAppSettingsService;
             this.generateCodeBaseService = generateCodeBaseService;
         }
@@ -57,17 +60,17 @@ namespace ModelsCompareDBFieldsAndCSSPModelsDLLPropServices.Services
 
             if (!await Setup())
             {
-                Console.WriteLine(generateCodeStatusDBService.Error.ToString());
+                Console.WriteLine(actionCommandDBService.ErrorText.ToString());
                 Console.WriteLine("");
-                Console.WriteLine(generateCodeStatusDBService.Status.ToString());
+                Console.WriteLine(actionCommandDBService.ExecutionStatusText.ToString());
                 return false;
             }
 
             if (!await Generate())
             {
-                Console.WriteLine(generateCodeStatusDBService.Error.ToString());
+                Console.WriteLine(actionCommandDBService.ErrorText.ToString());
                 Console.WriteLine("");
-                Console.WriteLine(generateCodeStatusDBService.Status.ToString());
+                Console.WriteLine(actionCommandDBService.ExecutionStatusText.ToString());
                 return false;
             }
 
@@ -80,11 +83,11 @@ namespace ModelsCompareDBFieldsAndCSSPModelsDLLPropServices.Services
         #region Functions private
         private async Task<bool> Generate()
         {
-            GenerateCodeStatus generateCodeStatus = await generateCodeStatusDBService.GetOrCreate();
+            ActionResult<ActionCommand> actionActionCommand = await actionCommandDBService.GetOrCreate();
 
-            if (generateCodeStatus == null)
+            if (((ObjectResult)actionActionCommand.Result).StatusCode == 400)
             {
-                await ConsoleWriteError("generateCodeStatus == null");
+                await ConsoleWriteError("actionCommand == null");
                 return false;
             }
 
@@ -96,8 +99,9 @@ namespace ModelsCompareDBFieldsAndCSSPModelsDLLPropServices.Services
                 return false;
             }
 
-            generateCodeStatusDBService.Status.AppendLine("Generate Starting ...");
-            await generateCodeStatusDBService.Update(10);
+            actionCommandDBService.ExecutionStatusText.AppendLine("Generate Starting ...");
+            actionCommandDBService.PercentCompleted = 10;
+            await actionCommandDBService.Update();
 
             FillPublicList();
 
@@ -122,11 +126,13 @@ namespace ModelsCompareDBFieldsAndCSSPModelsDLLPropServices.Services
                 return false;
             }
 
-            generateCodeStatusDBService.Status.AppendLine("");
-            generateCodeStatusDBService.Status.AppendLine($"{ AppRes.Done } ...");
-            generateCodeStatusDBService.Status.AppendLine("");
-            generateCodeStatusDBService.Status.AppendLine("Generate Finished ...");
-            await generateCodeStatusDBService.Update(100);
+            actionCommandDBService.ExecutionStatusText.AppendLine("");
+            actionCommandDBService.ExecutionStatusText.AppendLine($"{ AppRes.Done } ...");
+            actionCommandDBService.ExecutionStatusText.AppendLine("");
+            actionCommandDBService.ExecutionStatusText.AppendLine("Generate Finished ...");
+            actionCommandDBService.PercentCompleted = 100;
+            await actionCommandDBService.Update();
+
 
             return true;
         }
@@ -424,31 +430,35 @@ namespace ModelsCompareDBFieldsAndCSSPModelsDLLPropServices.Services
                 }
             }
 
-            generateCodeStatusDBService.Status.AppendLine(sb.ToString());
+            actionCommandDBService.ExecutionStatusText.AppendLine(sb.ToString());
             //StatusPermanentEvent(new StatusEventArgs(sb.ToString()));
 
             return true;
         }
         private async Task ConsoleWriteEnd()
         {
-            generateCodeStatusDBService.Status.AppendLine("");
-            generateCodeStatusDBService.Status.AppendLine($"{ AppRes.Done } ...");
-            generateCodeStatusDBService.Status.AppendLine("");
-            await generateCodeStatusDBService.Update(100);
+            actionCommandDBService.ExecutionStatusText.AppendLine("");
+            actionCommandDBService.ExecutionStatusText.AppendLine($"{ AppRes.Done } ...");
+            actionCommandDBService.ExecutionStatusText.AppendLine("");
+            actionCommandDBService.PercentCompleted = 100;
+            await actionCommandDBService.Update();
 
-            if (!string.IsNullOrWhiteSpace(generateCodeStatusDBService.Error.ToString()))
+
+            if (!string.IsNullOrWhiteSpace(actionCommandDBService.ErrorText.ToString()))
             {
-                Console.WriteLine(generateCodeStatusDBService.Error.ToString());
+                Console.WriteLine(actionCommandDBService.ErrorText.ToString());
             }
 
-            Console.WriteLine(generateCodeStatusDBService.Status.ToString());
+            Console.WriteLine(actionCommandDBService.ExecutionStatusText.ToString());
         }
         private async Task ConsoleWriteError(string errMessage)
         {
-            generateCodeStatusDBService.Error.AppendLine(errMessage);
-            await generateCodeStatusDBService.Update(0);
-            Console.WriteLine(generateCodeStatusDBService.Error.ToString());
-            Console.WriteLine(generateCodeStatusDBService.Status.ToString());
+            actionCommandDBService.ErrorText.AppendLine(errMessage);
+            actionCommandDBService.PercentCompleted = 0;
+            await actionCommandDBService.Update();
+
+            Console.WriteLine(actionCommandDBService.ErrorText.ToString());
+            Console.WriteLine(actionCommandDBService.ExecutionStatusText.ToString());
         }
         private void ConsoleWriteStart()
         {
@@ -546,7 +556,7 @@ namespace ModelsCompareDBFieldsAndCSSPModelsDLLPropServices.Services
             }
             catch (Exception ex)
             {
-                generateCodeStatusDBService.Error.AppendLine(ex.Message);
+                actionCommandDBService.ErrorText.AppendLine(ex.Message);
                 return false;
             }
 
@@ -596,7 +606,7 @@ namespace ModelsCompareDBFieldsAndCSSPModelsDLLPropServices.Services
                         CSSPProp csspProp = new CSSPProp();
                         if (!generateCodeBaseService.FillCSSPProp(propertyInfo, csspProp, type))
                         {
-                            generateCodeStatusDBService.Error.AppendLine($"{ string.Format(AppRes.ErrorWhileCreatingCode_, csspProp.CSSPError) }");
+                            //actionCommandDBService.ErrorText.AppendLine($"{ string.Format(AppRes.ErrorWhileCreatingCode_, csspProp.CSSPError) }");
                             return false;
                         }
 
@@ -609,7 +619,7 @@ namespace ModelsCompareDBFieldsAndCSSPModelsDLLPropServices.Services
             }
             catch (Exception ex)
             {
-                generateCodeStatusDBService.Error.AppendLine(ex.Message);
+                actionCommandDBService.ErrorText.AppendLine(ex.Message);
                 return false;
             }
 
@@ -631,13 +641,13 @@ namespace ModelsCompareDBFieldsAndCSSPModelsDLLPropServices.Services
         }
         private async Task<bool> Setup()
         {
-            generateCodeStatusDBService.Command = configuration.GetValue<string>("Command");
-            generateCodeStatusDBService.Culture = new CultureInfo(configuration.GetValue<string>("Culture"));
-            validateAppSettingsService.Culture = new CultureInfo(configuration.GetValue<string>("Culture"));
+            actionCommandDBService.Command = configuration.GetValue<string>("Command");
+            await actionCommandDBService.SetCulture(new CultureInfo(configuration.GetValue<string>("Culture")));
+            await validateAppSettingsService.SetCulture(new CultureInfo(configuration.GetValue<string>("Culture")));
 
             try
             {
-                await generateCodeStatusDBService.GetOrCreate();
+                await actionCommandDBService.GetOrCreate();
             }
             catch (Exception ex)
             {
@@ -649,13 +659,13 @@ namespace ModelsCompareDBFieldsAndCSSPModelsDLLPropServices.Services
             {
                 new AppSettingParameter() { Parameter = "Command", ExpectedValue = "ModelsCompareDBFieldsAndCSSPModelsDLLProp" },
                 new AppSettingParameter() { Parameter = "Culture", ExpectedValue = "", IsCulture = true },
-                new AppSettingParameter() { Parameter = "DBFileName", ExpectedValue = "{AppDataPath}\\CSSP\\GenerateCodeStatus.db", IsFile = true, CheckExist = true },
+                new AppSettingParameter() { Parameter = "DBFileName", ExpectedValue = "{AppDataPath}\\CSSP\\ActionCommandDB.db", IsFile = true, CheckExist = true },
                 new AppSettingParameter() { Parameter = "CSSPModels", ExpectedValue = "C:\\CSSPTools\\src\\dlls\\CSSPModels\\bin\\Debug\\netcoreapp3.1\\CSSPModels.dll", IsFile = true, CheckExist = true },
                 new AppSettingParameter() { Parameter = "CSSPDBConnectionString", ExpectedValue = "Server=.\\sqlexpress;Database=CSSPDB;Trusted_Connection=True;MultipleActiveResultSets=true" },
             };
 
-            validateAppSettingsService.VerifyAppSettings();
-            if (!string.IsNullOrWhiteSpace(generateCodeStatusDBService.Error.ToString()))
+            await validateAppSettingsService.VerifyAppSettings();
+            if (!string.IsNullOrWhiteSpace(actionCommandDBService.ErrorText.ToString()))
             {
                 await ConsoleWriteError("");
                 return false;

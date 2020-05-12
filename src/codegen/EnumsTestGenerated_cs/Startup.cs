@@ -1,13 +1,14 @@
 ﻿using EnumsTestGenerated_cs.Services;
 using EnumsTestGenerated_csServices.Resources;
-using GenerateCodeBase.Services;
-using GenerateCodeStatusDB.Models;
-using GenerateCodeStatusDB.Services;
+using GenerateCodeBaseServices.Services;
+using ActionCommandDBServices.Models;
+using ActionCommandDBServices.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.IO;
+using ValidateAppSettingsServices.Services;
 
 namespace EnumsTestGenerated_cs
 {
@@ -32,7 +33,7 @@ namespace EnumsTestGenerated_cs
         {
             serviceCollection.AddSingleton<IConfiguration>(Configuration);
             serviceCollection.AddSingleton<IEnumsTestGenerated_csService, EnumsTestGenerated_csService>();
-            serviceCollection.AddSingleton<IGenerateCodeStatusDBService, GenerateCodeStatusDBService>();
+            serviceCollection.AddSingleton<IActionCommandDBService, ActionCommandDBService>();
             serviceCollection.AddSingleton<IValidateAppSettingsService, ValidateAppSettingsService>();
 
             string retStr = ConfigureGenerateCodeStatusContext(serviceCollection);
@@ -84,7 +85,7 @@ namespace EnumsTestGenerated_cs
 
             try
             {
-                serviceCollection.AddDbContext<GenerateCodeStatusContext>(options =>
+                serviceCollection.AddDbContext<ActionCommandContext>(options =>
                 {
                     options.UseSqlite($"DataSource={fiDB.FullName}");
                 });

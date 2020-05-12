@@ -1,8 +1,8 @@
 ﻿using EnumsGenerated_csServices.Resources;
-using GenerateCodeBase.Models;
-using GenerateCodeBase.Services;
-using GenerateCodeStatusDB.Models;
-using GenerateCodeStatusDB.Services;
+using GenerateCodeBaseServices.Models;
+using GenerateCodeBaseServices.Services;
+using ActionCommandDBServices.Models;
+using ActionCommandDBServices.Services;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
@@ -12,6 +12,9 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using ValidateAppSettingsServices.Services;
+using ValidateAppSettingsServices.Models;
+using Microsoft.AspNetCore.Mvc;
 
 namespace EnumsGenerated_csServices.Services
 {
@@ -19,18 +22,18 @@ namespace EnumsGenerated_csServices.Services
     {
         #region Variables
         private IConfiguration configuration { get; set; }
-        private IGenerateCodeStatusDBService generateCodeStatusDBService { get; set; }
+        private IActionCommandDBService actionCommandDBService { get; set; }
         private IValidateAppSettingsService validateAppSettingsService { get; set; }
         private List<string> AllowableCultures { get; set; } = new List<string>() { "en-CA", "fr-CA" };
         #endregion Variables
 
         #region Constructors
         public EnumsGenerated_csService(IConfiguration configuration,
-            IGenerateCodeStatusDBService generateCodeStatusDBService,
+            IActionCommandDBService actionCommandDBService,
             IValidateAppSettingsService validateAppSettingsService)
         {
             this.configuration = configuration;
-            this.generateCodeStatusDBService = generateCodeStatusDBService;
+            this.actionCommandDBService = actionCommandDBService;
             this.validateAppSettingsService = validateAppSettingsService;
         }
         #endregion Constructors
@@ -44,17 +47,17 @@ namespace EnumsGenerated_csServices.Services
 
             if (!await Setup())
             {
-                Console.WriteLine(generateCodeStatusDBService.Error.ToString());
+                Console.WriteLine(actionCommandDBService.ErrorText.ToString());
                 Console.WriteLine("");
-                Console.WriteLine(generateCodeStatusDBService.Status.ToString());
+                Console.WriteLine(actionCommandDBService.ExecutionStatusText.ToString());
                 return false;
             }
 
             if (!await Generate())
             {
-                Console.WriteLine(generateCodeStatusDBService.Error.ToString());
+                Console.WriteLine(actionCommandDBService.ErrorText.ToString());
                 Console.WriteLine("");
-                Console.WriteLine(generateCodeStatusDBService.Status.ToString());
+                Console.WriteLine(actionCommandDBService.ExecutionStatusText.ToString());
                 return false;
             }
 
@@ -67,16 +70,17 @@ namespace EnumsGenerated_csServices.Services
         #region Functions private
         private async Task<bool> Generate()
         {
-            GenerateCodeStatus generateCodeStatus = await generateCodeStatusDBService.GetOrCreate();
+            ActionResult<ActionCommand> actionActionCommand = await actionCommandDBService.GetOrCreate();
 
-            if (generateCodeStatus == null)
+            if (((ObjectResult)actionActionCommand.Result).StatusCode == 400)
             {
-                await ConsoleWriteError("generateCodeStatus == null");
+                await ConsoleWriteError("actionCommand == null");
                 return false;
             }
 
-            generateCodeStatusDBService.Status.AppendLine("Generate Starting ...");
-            await generateCodeStatusDBService.Update(10);
+            actionCommandDBService.ExecutionStatusText.AppendLine("Generate Starting ...");
+            actionCommandDBService.PercentCompleted = 10;
+            await actionCommandDBService.Update();
 
             StringBuilder sb = new StringBuilder();
             FileInfo fiDLL = new FileInfo(configuration.GetValue<string>("CSSPEnums"));
@@ -143,8 +147,9 @@ namespace EnumsGenerated_csServices.Services
                 sw.Write(sb.ToString());
             }
 
-            generateCodeStatusDBService.Status.AppendLine($"{ AppRes.Created } [{ fiInterface.FullName }] ...");
-            await generateCodeStatusDBService.Update(50);
+            actionCommandDBService.ExecutionStatusText.AppendLine($"{ AppRes.Created } [{ fiInterface.FullName }] ...");
+            actionCommandDBService.PercentCompleted = 50;
+            await actionCommandDBService.Update();
 
             sb = new StringBuilder();
 
@@ -374,34 +379,39 @@ namespace EnumsGenerated_csServices.Services
                 sw.Write(sb.ToString());
             }
 
-            generateCodeStatusDBService.Status.AppendLine($"{ AppRes.Created } [{ fi.FullName }] ...");
-            generateCodeStatusDBService.Status.AppendLine($"{ AppRes.Done } ...");
-            generateCodeStatusDBService.Status.AppendLine("");
-            generateCodeStatusDBService.Status.AppendLine("Generate Finished ...");
-            await generateCodeStatusDBService.Update(100);
+            actionCommandDBService.ExecutionStatusText.AppendLine($"{ AppRes.Created } [{ fi.FullName }] ...");
+            actionCommandDBService.ExecutionStatusText.AppendLine($"{ AppRes.Done } ...");
+            actionCommandDBService.ExecutionStatusText.AppendLine("");
+            actionCommandDBService.ExecutionStatusText.AppendLine("Generate Finished ...");
+            actionCommandDBService.PercentCompleted = 100;
+            await actionCommandDBService.Update();
 
             return true;
         }
         private async Task ConsoleWriteEnd()
         {
-            generateCodeStatusDBService.Status.AppendLine("");
-            generateCodeStatusDBService.Status.AppendLine($"{ AppRes.Done } ...");
-            generateCodeStatusDBService.Status.AppendLine("");
-            await generateCodeStatusDBService.Update(100);
+            actionCommandDBService.ExecutionStatusText.AppendLine("");
+            actionCommandDBService.ExecutionStatusText.AppendLine($"{ AppRes.Done } ...");
+            actionCommandDBService.ExecutionStatusText.AppendLine("");
+            actionCommandDBService.PercentCompleted = 100;
+            await actionCommandDBService.Update();
 
-            if (!string.IsNullOrWhiteSpace(generateCodeStatusDBService.Error.ToString()))
+
+            if (!string.IsNullOrWhiteSpace(actionCommandDBService.ErrorText.ToString()))
             {
-                Console.WriteLine(generateCodeStatusDBService.Error.ToString());
+                Console.WriteLine(actionCommandDBService.ErrorText.ToString());
             }
 
-            Console.WriteLine(generateCodeStatusDBService.Status.ToString());
+            Console.WriteLine(actionCommandDBService.ExecutionStatusText.ToString());
         }
         private async Task ConsoleWriteError(string errMessage)
         {
-            generateCodeStatusDBService.Error.AppendLine(errMessage);
-            await generateCodeStatusDBService.Update(0);
-            Console.WriteLine(generateCodeStatusDBService.Error.ToString());
-            Console.WriteLine(generateCodeStatusDBService.Status.ToString());
+            actionCommandDBService.ErrorText.AppendLine(errMessage);
+            actionCommandDBService.PercentCompleted = 0;
+            await actionCommandDBService.Update();
+
+            Console.WriteLine(actionCommandDBService.ErrorText.ToString());
+            Console.WriteLine(actionCommandDBService.ExecutionStatusText.ToString());
         }
         private void ConsoleWriteStart()
         {
@@ -426,13 +436,13 @@ namespace EnumsGenerated_csServices.Services
         }
         private async Task<bool> Setup()
         {
-            generateCodeStatusDBService.Command = configuration.GetValue<string>("Command");
-            generateCodeStatusDBService.Culture = new CultureInfo(configuration.GetValue<string>("Culture"));
-            validateAppSettingsService.Culture = new CultureInfo(configuration.GetValue<string>("Culture"));
+            actionCommandDBService.Command = configuration.GetValue<string>("Command");
+            await actionCommandDBService.SetCulture(new CultureInfo(configuration.GetValue<string>("Culture")));
+            await validateAppSettingsService.SetCulture(new CultureInfo(configuration.GetValue<string>("Culture")));
 
             try
             {
-                await generateCodeStatusDBService.GetOrCreate();
+                await actionCommandDBService.GetOrCreate();
             }
             catch (Exception ex)
             {
@@ -444,14 +454,14 @@ namespace EnumsGenerated_csServices.Services
             {
                 new AppSettingParameter() { Parameter = "Command", ExpectedValue = "EnumsGenerated_cs" },
                 new AppSettingParameter() { Parameter = "Culture", ExpectedValue = "", IsCulture = true },
-                new AppSettingParameter() { Parameter = "DBFileName", ExpectedValue = "{AppDataPath}\\CSSP\\GenerateCodeStatus.db", IsFile = true, CheckExist = true },
+                new AppSettingParameter() { Parameter = "DBFileName", ExpectedValue = "{AppDataPath}\\CSSP\\ActionCommandDB.db", IsFile = true, CheckExist = true },
                 new AppSettingParameter() { Parameter = "CSSPEnums", ExpectedValue = "C:\\CSSPTools\\src\\dlls\\CSSPEnums\\bin\\Debug\\netcoreapp3.1\\CSSPEnums.dll", IsFile = true, CheckExist = true },
                 new AppSettingParameter() { Parameter = "IEnumsGenerated", ExpectedValue = "C:\\CSSPTools\\src\\dlls\\CSSPEnums\\Generated\\IEnumsGenerated.cs", IsFile = true, CheckExist = true },
                 new AppSettingParameter() { Parameter = "EnumsGenerated", ExpectedValue = "C:\\CSSPTools\\src\\dlls\\CSSPEnums\\Generated\\EnumsGenerated.cs", IsFile = true, CheckExist = true },
             };
 
-            validateAppSettingsService.VerifyAppSettings();
-            if (!string.IsNullOrWhiteSpace(generateCodeStatusDBService.Error.ToString()))
+            await validateAppSettingsService.VerifyAppSettings();
+            if (!string.IsNullOrWhiteSpace(actionCommandDBService.ErrorText.ToString()))
             {
                 await ConsoleWriteError("");
                 return false;

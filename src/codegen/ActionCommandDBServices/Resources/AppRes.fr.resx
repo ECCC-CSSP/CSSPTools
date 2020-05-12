@@ -123,4 +123,7 @@
   <data name="CouldNotFindParameter_InAppSettingsJSON" xml:space="preserve">
     <value>Could not find parameter [{0}] in appsettings.json (fr)</value>
   </data>
+  <data name="_IsRequied" xml:space="preserve">
+    <value>{0} is required (fr)</value>
+  </data>
 </root>

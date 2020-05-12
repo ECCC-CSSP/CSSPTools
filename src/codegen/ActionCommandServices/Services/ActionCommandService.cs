@@ -41,13 +41,9 @@ namespace ActionCommandServices.Services
         {
             try
             {
-                actionCommandDBService.ActionCommandID = actionCommand.ActionCommandID;
                 actionCommandDBService.Action = actionCommand.Action;
                 actionCommandDBService.Command = actionCommand.Command;
-                actionCommandDBService.FullFileName = actionCommand.FullFileName;
 
-                //if (!actionCommand.StatusOnly)
-                //{
                 string exePath = configuration.GetValue<string>("ExecuteDotNetCommandAppPath");
                 string args = $" { AppRes.Culture.Name } { actionCommand.Action } { actionCommand.FullFileName }";
 
@@ -76,32 +72,12 @@ namespace ActionCommandServices.Services
                     // report progress is needed
                 }
 
-                actionCommand = await actionCommandDBService.Get();
-
-                if (actionCommand == null)
-                {
-                    actionCommandDBService.ErrorText.AppendLine(string.Format(AppRes.CouldNotFindCommand_StatusInDB, $"{ actionCommand.Action }:{ actionCommand.FullFileName }"));
-                    actionCommandDBService.PercentCompleted = 0;
-                    await actionCommandDBService.Update();
-                    return BadRequest(actionCommandDBService.ErrorText.ToString());
-                }
-                else
-                {
-                    if (string.IsNullOrWhiteSpace(actionCommand.ErrorText))
-                    {
-                        return Ok(actionCommand);
-                    }
-                }
-
-
-                //}
+                return await actionCommandDBService.GetOrCreate();
             }
             catch (Exception ex)
             {
                 return BadRequest(string.Format(AppRes.UnmanagedServerError_, ex.Message));
             }
-
-            return BadRequest(actionCommand.ErrorText);
         }
         public async Task SetCulture(CultureInfo culture)
         {

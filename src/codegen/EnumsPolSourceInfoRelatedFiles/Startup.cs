@@ -1,14 +1,15 @@
 ﻿using EnumsPolSourceInfoRelatedFilesServices.Resources;
 using EnumsPolSourceInfoRelatedFilesServices.Services;
-using GenerateCodeBase.Services;
-using GenerateCodeStatusDB.Models;
-using GenerateCodeStatusDB.Services;
+using GenerateCodeBaseServices.Services;
+using ActionCommandDBServices.Models;
+using ActionCommandDBServices.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using PolSourceGroupingExcelFileReadServices.Services;
 using System;
 using System.IO;
+using ValidateAppSettingsServices.Services;
 
 namespace EnumsPolSourceInfoRelatedFiles
 {
@@ -32,7 +33,7 @@ namespace EnumsPolSourceInfoRelatedFiles
         public string ConfigureServices(IServiceCollection serviceCollection)
         {
             serviceCollection.AddSingleton<IConfiguration>(Configuration);
-            serviceCollection.AddSingleton<IGenerateCodeStatusDBService, GenerateCodeStatusDBService>();
+            serviceCollection.AddSingleton<IActionCommandDBService, ActionCommandDBService>();
             serviceCollection.AddSingleton<IValidateAppSettingsService, ValidateAppSettingsService>();
             serviceCollection.AddSingleton<IPolSourceGroupingExcelFileReadService, PolSourceGroupingExcelFileReadService>();
             serviceCollection.AddSingleton<IEnumsPolSourceInfoRelatedFilesService, EnumsPolSourceInfoRelatedFilesService>();
@@ -86,7 +87,7 @@ namespace EnumsPolSourceInfoRelatedFiles
 
             try
             {
-                serviceCollection.AddDbContext<GenerateCodeStatusContext>(options =>
+                serviceCollection.AddDbContext<ActionCommandContext>(options =>
                 {
                     options.UseSqlite($"DataSource={fiDB.FullName}");
                 });

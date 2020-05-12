@@ -12,6 +12,7 @@ using System.Globalization;
 using Microsoft.Extensions.Configuration;
 using Xunit;
 using ActionCommandDBServices.Resources;
+using Microsoft.AspNetCore.Mvc;
 
 namespace ActionCommandDBServices.Tests
 {
@@ -72,82 +73,342 @@ namespace ActionCommandDBServices.Tests
             actionCommandDBService.ActionCommandID = 0;
             actionCommandDBService.Action = "TestingAction";
             actionCommandDBService.Command = "TestingCommand";
-            actionCommandDBService.FullFileName = "C:\\some\\path\\file.txt";
-            actionCommandDBService.Description = "This would be the description";
-            actionCommandDBService.TempStatusText = new StringBuilder("Some Temp Status Text");
-            actionCommandDBService.ErrorText = new StringBuilder("Some Error Text");
-            actionCommandDBService.ExecutionStatusText = new StringBuilder("Some Execution Status Text");
-            actionCommandDBService.FilesStatusText = new StringBuilder("Some Files Status Text");
-            actionCommandDBService.PercentCompleted = 10;
 
             // Clearing object in DB
-            ActionCommand actionCommand = await actionCommandDBService.Get();
+            var actionActionCommand = await actionCommandDBService.Get();
 
-            if (actionCommand != null)
+            if (((ObjectResult)actionActionCommand.Result).StatusCode == 200)
             {
                 await actionCommandDBService.Delete();
-                actionCommand = await actionCommandDBService.Get();
-                Assert.Null(actionCommand);
+                actionActionCommand = await actionCommandDBService.Get();
+                Assert.Equal(400, ((ObjectResult)actionActionCommand.Result).StatusCode);
             }
 
-            actionCommand = await actionCommandDBService.Get();
-            Assert.Null(actionCommand);
+            actionActionCommand = await actionCommandDBService.Get();
+            Assert.Equal(400, ((ObjectResult)actionActionCommand.Result).StatusCode);
 
             // Creating object in DB
-            actionCommand = await actionCommandDBService.Create();
-            Assert.NotNull(actionCommand);
+            actionCommandDBService.Action = "TestingAction";
+            actionCommandDBService.Command = "TestingCommand";
+
+            actionActionCommand = await actionCommandDBService.Create();
+            Assert.Equal(200, ((ObjectResult)actionActionCommand.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionActionCommand.Result).Value);
+            ActionCommand actionCommand = (ActionCommand)((OkObjectResult)actionActionCommand.Result).Value;
+            Assert.Equal(actionCommandDBService.Action, actionCommand.Action);
+            Assert.Equal(actionCommandDBService.Command, actionCommand.Command);
+            Assert.True(actionCommand.ActionCommandID > 0);
 
             // Should not create a second objct but just return the existing one
-            actionCommand = await actionCommandDBService.Create();
-            Assert.NotNull(actionCommand);
+            actionActionCommand = await actionCommandDBService.Create();
+            Assert.Equal(200, ((ObjectResult)actionActionCommand.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionActionCommand.Result).Value);
+            actionCommand = (ActionCommand)((OkObjectResult)actionActionCommand.Result).Value;
+            Assert.Equal(actionCommandDBService.Action, actionCommand.Action);
+            Assert.Equal(actionCommandDBService.Command, actionCommand.Command);
+            Assert.True(actionCommand.ActionCommandID > 0);
 
             // Should delete the object
-            actionCommand = await actionCommandDBService.Delete();
-            Assert.NotNull(actionCommand);
+            actionActionCommand = await actionCommandDBService.Delete();
+            Assert.Equal(200, ((ObjectResult)actionActionCommand.Result).StatusCode);
 
             actionCommandDBService.ActionCommandID = 0;
             actionCommandDBService.Action = "TestingAction";
             actionCommandDBService.Command = "TestingCommand";
-            actionCommandDBService.FullFileName = "C:\\some\\path\\file.txt";
-            actionCommandDBService.Description = "This would be the description";
-            actionCommandDBService.TempStatusText = new StringBuilder("Some Temp Status Text");
-            actionCommandDBService.ErrorText = new StringBuilder("Some Error Text");
-            actionCommandDBService.ExecutionStatusText = new StringBuilder("Some Execution Status Text");
-            actionCommandDBService.FilesStatusText = new StringBuilder("Some Files Status Text");
-            actionCommandDBService.PercentCompleted = 10;
 
-            actionCommand = await actionCommandDBService.Get();
-            Assert.Null(actionCommand);
+            actionActionCommand = await actionCommandDBService.Get();
+            Assert.Equal(400, ((ObjectResult)actionActionCommand.Result).StatusCode);
 
             // Recreating the object in DB using the GetOrCreate
-            actionCommand = await actionCommandDBService.GetOrCreate();
-            Assert.NotNull(actionCommand);
+            actionActionCommand = await actionCommandDBService.GetOrCreate();
+            Assert.Equal(200, ((ObjectResult)actionActionCommand.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionActionCommand.Result).Value);
+            actionCommand = (ActionCommand)((OkObjectResult)actionActionCommand.Result).Value;
+            Assert.Equal(actionCommandDBService.Action, actionCommand.Action);
+            Assert.Equal(actionCommandDBService.Command, actionCommand.Command);
+            Assert.True(actionCommand.ActionCommandID > 0);
 
-            actionCommand = await actionCommandDBService.Get();
-            Assert.NotNull(actionCommand);
+            actionActionCommand = await actionCommandDBService.Get();
+            Assert.Equal(200, ((ObjectResult)actionActionCommand.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionActionCommand.Result).Value);
+            actionCommand = (ActionCommand)((OkObjectResult)actionActionCommand.Result).Value;
+            Assert.Equal(actionCommandDBService.Action, actionCommand.Action);
+            Assert.Equal(actionCommandDBService.Command, actionCommand.Command);
+            Assert.True(actionCommand.ActionCommandID > 0);
 
             // Should just return the existing object
-            actionCommand = await actionCommandDBService.GetOrCreate();
-            Assert.NotNull(actionCommand);
+            actionActionCommand = await actionCommandDBService.GetOrCreate();
+            Assert.Equal(200, ((ObjectResult)actionActionCommand.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionActionCommand.Result).Value);
+            actionCommand = (ActionCommand)((OkObjectResult)actionActionCommand.Result).Value;
+            Assert.Equal(actionCommandDBService.Action, actionCommand.Action);
+            Assert.Equal(actionCommandDBService.Command, actionCommand.Command);
+            Assert.True(actionCommand.ActionCommandID > 0);
 
             // Should update the existing object with info
             actionCommandDBService.ErrorText = new StringBuilder("Testing");
             actionCommandDBService.TempStatusText = new StringBuilder("Bonjour");
             actionCommandDBService.PercentCompleted = 33;
-            actionCommand = await actionCommandDBService.Update();
-            Assert.NotNull(actionCommand);
-
-            actionCommand = await actionCommandDBService.Get();
+            actionActionCommand = await actionCommandDBService.Update();
+            Assert.Equal(200, ((ObjectResult)actionActionCommand.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionActionCommand.Result).Value);
+            actionCommand = (ActionCommand)((OkObjectResult)actionActionCommand.Result).Value;
+            Assert.Equal(actionCommandDBService.Action, actionCommand.Action);
+            Assert.Equal(actionCommandDBService.Command, actionCommand.Command);
+            Assert.True(actionCommand.ActionCommandID > 0);
             Assert.Equal("Testing", actionCommand.ErrorText);
             Assert.Equal("Bonjour", actionCommand.TempStatusText);
             Assert.Equal(33, actionCommand.PercentCompleted);
 
-            actionCommand = await actionCommandDBService.Get();
-            Assert.NotNull(actionCommand);
+            actionActionCommand = await actionCommandDBService.Get();
+            Assert.Equal(200, ((ObjectResult)actionActionCommand.Result).StatusCode);
 
             await actionCommandDBService.Delete();
-            actionCommand = await actionCommandDBService.Get();
-            Assert.Null(actionCommand);
+            actionActionCommand = await actionCommandDBService.Get();
+            Assert.Equal(400, ((ObjectResult)actionActionCommand.Result).StatusCode);
+        }
+        [Theory]
+        [InlineData("en-CA")]
+        [InlineData("fr-CA")]
+        public async Task ActionCommandDBService_Create_BadRequests_Test(string culture)
+        {
+            Setup(new CultureInfo(culture));
+
+            actionCommandDBService.ActionCommandID = 0;
+            actionCommandDBService.Action = "TestingAction";
+            actionCommandDBService.Command = "TestingCommand";
+
+            // Clearing object in DB
+            var actionActionCommand = await actionCommandDBService.Get();
+
+            if (((ObjectResult)actionActionCommand.Result).StatusCode == 200)
+            {
+                await actionCommandDBService.Delete();
+                actionActionCommand = await actionCommandDBService.Get();
+                Assert.Equal(400, ((ObjectResult)actionActionCommand.Result).StatusCode);
+            }
+
+            actionActionCommand = await actionCommandDBService.Get();
+            Assert.Equal(400, ((ObjectResult)actionActionCommand.Result).StatusCode);
+
+            // Creating object in DB
+            actionCommandDBService.Action = "";
+            actionCommandDBService.Command = "TestingCommand";
+
+            actionActionCommand = await actionCommandDBService.Create();
+            Assert.Equal(400, ((ObjectResult)actionActionCommand.Result).StatusCode);
+            Assert.Equal($"{ string.Format(AppRes._IsRequied, "Action") }", ((BadRequestObjectResult)actionActionCommand.Result).Value);
+
+            // Creating object in DB
+            actionCommandDBService.Action = "TestingAction";
+            actionCommandDBService.Command = "";
+
+            actionActionCommand = await actionCommandDBService.Create();
+            Assert.Equal(400, ((ObjectResult)actionActionCommand.Result).StatusCode);
+            Assert.Equal($"{ string.Format(AppRes._IsRequied, "Command") }", ((BadRequestObjectResult)actionActionCommand.Result).Value);
+        }
+        [Theory]
+        [InlineData("en-CA")]
+        [InlineData("fr-CA")]
+        public async Task ActionCommandDBService_Delete_BadRequests_Test(string culture)
+        {
+            Setup(new CultureInfo(culture));
+
+            actionCommandDBService.ActionCommandID = 0;
+            actionCommandDBService.Action = "TestingAction";
+            actionCommandDBService.Command = "TestingCommand";
+
+            // Clearing object in DB
+            var actionActionCommand = await actionCommandDBService.Get();
+
+            if (((ObjectResult)actionActionCommand.Result).StatusCode == 200)
+            {
+                await actionCommandDBService.Delete();
+                actionActionCommand = await actionCommandDBService.Get();
+                Assert.Equal(400, ((ObjectResult)actionActionCommand.Result).StatusCode);
+            }
+
+            actionActionCommand = await actionCommandDBService.Get();
+            Assert.Equal(400, ((ObjectResult)actionActionCommand.Result).StatusCode);
+
+            // Creating object in DB
+            actionCommandDBService.Action = "TestingAction";
+            actionCommandDBService.Command = "TestingCommand";
+
+            actionActionCommand = await actionCommandDBService.Create();
+            Assert.Equal(200, ((ObjectResult)actionActionCommand.Result).StatusCode);
+
+            actionCommandDBService.Action = "TestingAction_NotExist";
+            actionActionCommand = await actionCommandDBService.Delete();
+            Assert.Equal(400, ((ObjectResult)actionActionCommand.Result).StatusCode);
+
+            // Delete object in DB
+            actionCommandDBService.Action = "TestingAction";
+            actionCommandDBService.Command = "";
+
+            actionActionCommand = await actionCommandDBService.Delete();
+            Assert.Equal(400, ((ObjectResult)actionActionCommand.Result).StatusCode);
+            Assert.Equal($"{ string.Format(AppRes._IsRequied, "Command") }", ((BadRequestObjectResult)actionActionCommand.Result).Value);
+
+            // Delete object in DB
+            actionCommandDBService.Action = "";
+            actionCommandDBService.Command = "TestingCommand";
+
+            actionActionCommand = await actionCommandDBService.Delete();
+            Assert.Equal(400, ((ObjectResult)actionActionCommand.Result).StatusCode);
+            Assert.Equal($"{ string.Format(AppRes._IsRequied, "Action") }", ((BadRequestObjectResult)actionActionCommand.Result).Value);
+
+            actionCommandDBService.Action = "TestingAction";
+            actionCommandDBService.Command = "TestingCommand";
+
+            actionActionCommand = await actionCommandDBService.Delete();
+            Assert.Equal(200, ((ObjectResult)actionActionCommand.Result).StatusCode);
+        }
+        [Theory]
+        [InlineData("en-CA")]
+        [InlineData("fr-CA")]
+        public async Task ActionCommandDBService_Get_BadRequests_Test(string culture)
+        {
+            Setup(new CultureInfo(culture));
+
+            actionCommandDBService.ActionCommandID = 0;
+            actionCommandDBService.Action = "TestingAction";
+            actionCommandDBService.Command = "TestingCommand";
+
+            // Clearing object in DB
+            var actionActionCommand = await actionCommandDBService.Get();
+
+            if (((ObjectResult)actionActionCommand.Result).StatusCode == 200)
+            {
+                await actionCommandDBService.Delete();
+                actionActionCommand = await actionCommandDBService.Get();
+                Assert.Equal(400, ((ObjectResult)actionActionCommand.Result).StatusCode);
+            }
+
+            actionActionCommand = await actionCommandDBService.Get();
+            Assert.Equal(400, ((ObjectResult)actionActionCommand.Result).StatusCode);
+
+            // Creating object in DB
+            actionCommandDBService.Action = "TestingAction";
+            actionCommandDBService.Command = "TestingCommand";
+
+            actionActionCommand = await actionCommandDBService.Create();
+            Assert.Equal(200, ((ObjectResult)actionActionCommand.Result).StatusCode);
+
+            actionCommandDBService.Action = "TestingAction_NotExist";
+            actionActionCommand = await actionCommandDBService.Get();
+            Assert.Equal(400, ((ObjectResult)actionActionCommand.Result).StatusCode);
+            Assert.Equal($"{ string.Format(AppRes.CouldNotFindActionCommandToDeleteWithAction_AndCommand_, actionCommandDBService.Action, actionCommandDBService.Command) }", ((BadRequestObjectResult)actionActionCommand.Result).Value);
+
+            // Delete object in DB
+            actionCommandDBService.Action = "TestingAction";
+            actionCommandDBService.Command = "";
+
+            actionActionCommand = await actionCommandDBService.Get();
+            Assert.Equal(400, ((ObjectResult)actionActionCommand.Result).StatusCode);
+            Assert.Equal($"{ string.Format(AppRes._IsRequied, "Command") }", ((BadRequestObjectResult)actionActionCommand.Result).Value);
+
+            // Delete object in DB
+            actionCommandDBService.Action = "";
+            actionCommandDBService.Command = "TestingCommand";
+
+            actionActionCommand = await actionCommandDBService.Get();
+            Assert.Equal(400, ((ObjectResult)actionActionCommand.Result).StatusCode);
+            Assert.Equal($"{ string.Format(AppRes._IsRequied, "Action") }", ((BadRequestObjectResult)actionActionCommand.Result).Value);
+        }
+        [Theory]
+        [InlineData("en-CA")]
+        [InlineData("fr-CA")]
+        public async Task ActionCommandDBService_GetOrCreate_BadRequests_Test(string culture)
+        {
+            Setup(new CultureInfo(culture));
+
+            actionCommandDBService.ActionCommandID = 0;
+            actionCommandDBService.Action = "TestingAction";
+            actionCommandDBService.Command = "TestingCommand";
+
+            // Clearing object in DB
+            var actionActionCommand = await actionCommandDBService.Get();
+
+            if (((ObjectResult)actionActionCommand.Result).StatusCode == 200)
+            {
+                await actionCommandDBService.Delete();
+                actionActionCommand = await actionCommandDBService.Get();
+                Assert.Equal(400, ((ObjectResult)actionActionCommand.Result).StatusCode);
+            }
+
+            actionActionCommand = await actionCommandDBService.Get();
+            Assert.Equal(400, ((ObjectResult)actionActionCommand.Result).StatusCode);
+
+            // Creating object in DB
+            actionCommandDBService.Action = "TestingAction";
+            actionCommandDBService.Command = "TestingCommand";
+
+            actionActionCommand = await actionCommandDBService.Create();
+            Assert.Equal(200, ((ObjectResult)actionActionCommand.Result).StatusCode);
+
+            // Delete object in DB
+            actionCommandDBService.Action = "TestingAction";
+            actionCommandDBService.Command = "";
+
+            actionActionCommand = await actionCommandDBService.GetOrCreate();
+            Assert.Equal(400, ((ObjectResult)actionActionCommand.Result).StatusCode);
+            Assert.Equal($"{ string.Format(AppRes._IsRequied, "Command") }", ((BadRequestObjectResult)actionActionCommand.Result).Value);
+
+            // Delete object in DB
+            actionCommandDBService.Action = "";
+            actionCommandDBService.Command = "TestingCommand";
+
+            actionActionCommand = await actionCommandDBService.GetOrCreate();
+            Assert.Equal(400, ((ObjectResult)actionActionCommand.Result).StatusCode);
+            Assert.Equal($"{ string.Format(AppRes._IsRequied, "Action") }", ((BadRequestObjectResult)actionActionCommand.Result).Value);
+        }
+        [Theory]
+        [InlineData("en-CA")]
+        [InlineData("fr-CA")]
+        public async Task ActionCommandDBService_Update_BadRequests_Test(string culture)
+        {
+            Setup(new CultureInfo(culture));
+
+            actionCommandDBService.ActionCommandID = 0;
+            actionCommandDBService.Action = "TestingAction";
+            actionCommandDBService.Command = "TestingCommand";
+
+            // Clearing object in DB
+            var actionActionCommand = await actionCommandDBService.Get();
+
+            if (((ObjectResult)actionActionCommand.Result).StatusCode == 200)
+            {
+                await actionCommandDBService.Delete();
+                actionActionCommand = await actionCommandDBService.Get();
+                Assert.Equal(400, ((ObjectResult)actionActionCommand.Result).StatusCode);
+            }
+
+            actionActionCommand = await actionCommandDBService.Get();
+            Assert.Equal(400, ((ObjectResult)actionActionCommand.Result).StatusCode);
+
+            // Creating object in DB
+            actionCommandDBService.Action = "TestingAction";
+            actionCommandDBService.Command = "TestingCommand";
+
+            actionActionCommand = await actionCommandDBService.Create();
+            Assert.Equal(200, ((ObjectResult)actionActionCommand.Result).StatusCode);
+
+            // Delete object in DB
+            actionCommandDBService.Action = "TestingAction";
+            actionCommandDBService.Command = "";
+
+            actionActionCommand = await actionCommandDBService.Update();
+            Assert.Equal(400, ((ObjectResult)actionActionCommand.Result).StatusCode);
+            Assert.Equal($"{ string.Format(AppRes._IsRequied, "Command") }", ((BadRequestObjectResult)actionActionCommand.Result).Value);
+
+            // Delete object in DB
+            actionCommandDBService.Action = "";
+            actionCommandDBService.Command = "TestingCommand";
+
+            actionActionCommand = await actionCommandDBService.Update();
+            Assert.Equal(400, ((ObjectResult)actionActionCommand.Result).StatusCode);
+            Assert.Equal($"{ string.Format(AppRes._IsRequied, "Action") }", ((BadRequestObjectResult)actionActionCommand.Result).Value);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -186,7 +447,7 @@ namespace ActionCommandDBServices.Tests
             {
                 serviceCollection.AddDbContext<ActionCommandContext>(options =>
                 {
-                    options.UseSqlite($"DataSource={fiDB.FullName}");
+                    options.UseInMemoryDatabase($"DataSource={fiDB.FullName}");
                 });
             }
             catch (Exception ex)

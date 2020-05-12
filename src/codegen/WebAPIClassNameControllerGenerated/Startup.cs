@@ -1,7 +1,7 @@
 ﻿using CSSPModels;
-using GenerateCodeBase.Services;
-using GenerateCodeStatusDB.Models;
-using GenerateCodeStatusDB.Services;
+using GenerateCodeBaseServices.Services;
+using ActionCommandDBServices.Models;
+using ActionCommandDBServices.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -9,6 +9,7 @@ using System;
 using System.IO;
 using WebAPIClassNameControllerGeneratedServices.Resources;
 using WebAPIClassNameControllerGeneratedServices.Services;
+using ValidateAppSettingsServices.Services;
 
 namespace WebAPIClassNameControllerGeneratedServices
 {
@@ -34,7 +35,7 @@ namespace WebAPIClassNameControllerGeneratedServices
             serviceCollection.AddSingleton<IConfiguration>(Configuration);
             serviceCollection.AddSingleton<IWebAPIClassNameControllerGeneratedService, WebAPIClassNameControllerGeneratedService>();
             serviceCollection.AddSingleton<IGenerateCodeBaseService, GenerateCodeBaseService>();
-            serviceCollection.AddSingleton<IGenerateCodeStatusDBService, GenerateCodeStatusDBService>();
+            serviceCollection.AddSingleton<IActionCommandDBService, ActionCommandDBService>();
             serviceCollection.AddSingleton<IValidateAppSettingsService, ValidateAppSettingsService>();
 
             string retStr = ConfigureGenerateCodeStatusContext(serviceCollection);
@@ -86,7 +87,7 @@ namespace WebAPIClassNameControllerGeneratedServices
 
             try
             {
-                serviceCollection.AddDbContext<GenerateCodeStatusContext>(options =>
+                serviceCollection.AddDbContext<ActionCommandContext>(options =>
                 {
                     options.UseSqlite($"DataSource={fiDB.FullName}");
                 });

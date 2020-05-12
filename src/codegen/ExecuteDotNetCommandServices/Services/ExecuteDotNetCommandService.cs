@@ -1,9 +1,9 @@
 ﻿using ExecuteDotNetCommandServices.Models;
 using ExecuteDotNetCommandServices.Resources;
-using GenerateCodeBase.Models;
-using GenerateCodeBase.Services;
-using GenerateCodeStatusDB.Models;
-using GenerateCodeStatusDB.Services;
+using GenerateCodeBaseServices.Models;
+using GenerateCodeBaseServices.Services;
+using ActionCommandDBServices.Models;
+using ActionCommandDBServices.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -16,6 +16,9 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using ValidateAppSettingsServices.Services;
+using ValidateAppSettingsServices.Models;
+using Microsoft.AspNetCore.Mvc;
 
 namespace ExecuteDotNetCommandServices.Services
 {
@@ -23,7 +26,7 @@ namespace ExecuteDotNetCommandServices.Services
     {
         #region Variables
         private IConfiguration configuration { get; set; }
-        private IGenerateCodeStatusDBService generateCodeStatusDBService { get; set; }
+        private IActionCommandDBService actionCommandDBService { get; set; }
         private IValidateAppSettingsService validateAppSettingsService { get; set; }
         #endregion Variables
 
@@ -67,13 +70,13 @@ namespace ExecuteDotNetCommandServices.Services
         #endregion Properties
 
         #region Constructors
-        public ExecuteDotNetCommandService(IConfiguration configuration, IGenerateCodeStatusDBService generateCodeStatusDBService, IValidateAppSettingsService validateAppSettingsService)
+        public ExecuteDotNetCommandService(IConfiguration configuration, IActionCommandDBService actionCommandDBService, IValidateAppSettingsService validateAppSettingsService)
         {
             this.configuration = configuration;
-            this.generateCodeStatusDBService = generateCodeStatusDBService;
-            this.generateCodeStatusDBService.Culture = new CultureInfo(Args0Allowables[0]);
+            this.actionCommandDBService = actionCommandDBService;
+            this.actionCommandDBService.SetCulture(new CultureInfo(Args0Allowables[0]));
             this.validateAppSettingsService = validateAppSettingsService;
-            this.validateAppSettingsService.Culture = new CultureInfo(Args0Allowables[0]);
+            this.validateAppSettingsService.SetCulture(new CultureInfo(Args0Allowables[0]));
         }
         #endregion Constructors
 
@@ -86,29 +89,29 @@ namespace ExecuteDotNetCommandServices.Services
 
             if (!await ReadArgs(args))
             {
-                if (!string.IsNullOrWhiteSpace(generateCodeStatusDBService.Error.ToString()))
+                if (!string.IsNullOrWhiteSpace(actionCommandDBService.ErrorText.ToString()))
                 {
-                    Console.WriteLine(generateCodeStatusDBService.Error.ToString());
+                    Console.WriteLine(actionCommandDBService.ErrorText.ToString());
                 }
 
-                Console.WriteLine(generateCodeStatusDBService.Status.ToString());
+                Console.WriteLine(actionCommandDBService.ExecutionStatusText.ToString());
 
                 return false;
             }
 
             if (!await Setup())
             {
-                Console.WriteLine(generateCodeStatusDBService.Error.ToString());
+                Console.WriteLine(actionCommandDBService.ErrorText.ToString());
                 Console.WriteLine("");
-                Console.WriteLine(generateCodeStatusDBService.Status.ToString());
+                Console.WriteLine(actionCommandDBService.ExecutionStatusText.ToString());
                 return false;
             }
 
             if (!await ExecuteDotNet())
             {
-                Console.WriteLine(generateCodeStatusDBService.Error.ToString());
+                Console.WriteLine(actionCommandDBService.ErrorText.ToString());
                 Console.WriteLine("");
-                Console.WriteLine(generateCodeStatusDBService.Status.ToString());
+                Console.WriteLine(actionCommandDBService.ExecutionStatusText.ToString());
                 return false;
             }
 
@@ -121,11 +124,13 @@ namespace ExecuteDotNetCommandServices.Services
         #region Functions private
         private async Task<bool> ExecuteDotNet()
         {
-            generateCodeStatusDBService.Status.AppendLine("ExecuteDotNet Starting...");
-            generateCodeStatusDBService.Status.AppendLine("");
-            generateCodeStatusDBService.Status.AppendLine($"args = { dotNetCommand.CultureName }  { dotNetCommand.Action } { dotNetCommand.SolutionFileName }");
-            generateCodeStatusDBService.Status.AppendLine("");
-            await generateCodeStatusDBService.Update(0);
+            actionCommandDBService.ExecutionStatusText.AppendLine("ExecuteDotNet Starting...");
+            actionCommandDBService.ExecutionStatusText.AppendLine("");
+            actionCommandDBService.ExecutionStatusText.AppendLine($"args = { dotNetCommand.CultureName }  { dotNetCommand.Action } { dotNetCommand.SolutionFileName }");
+            actionCommandDBService.ExecutionStatusText.AppendLine("");
+            actionCommandDBService.PercentCompleted = 0;
+            await actionCommandDBService.Update();
+
 
             string FileName = configuration.GetValue<string>($"{ dotNetCommand.Action }:{ dotNetCommand.SolutionFileName }");
 
@@ -135,14 +140,14 @@ namespace ExecuteDotNetCommandServices.Services
 
             if (!fi.Exists)
             {
-                generateCodeStatusDBService.Error.AppendLine($"{ string.Format(AppRes.CouldNotFindSolutionFile_ToCompile, fi.FullName) }");
+                actionCommandDBService.ErrorText.AppendLine($"{ string.Format(AppRes.CouldNotFindSolutionFile_ToCompile, fi.FullName) }");
                 return false;
             }
 
             DirectoryInfo di = fi.Directory;
             if (!di.Exists)
             {
-                generateCodeStatusDBService.Error.AppendLine($"{ string.Format(AppRes.CouldNotFindDirectoryOfSolutionFile_, fi.Directory) }");
+                actionCommandDBService.ErrorText.AppendLine($"{ string.Format(AppRes.CouldNotFindDirectoryOfSolutionFile_, fi.Directory) }");
                 return false;
             }
 
@@ -164,8 +169,8 @@ namespace ExecuteDotNetCommandServices.Services
 
             if (process.ExitCode != 0)
             {
-                generateCodeStatusDBService.Error.AppendLine("");
-                generateCodeStatusDBService.Error.AppendLine($"{ string.Format(AppRes.ErrorWhileRunningCommand_UnderDirectory_, command + " " + arg, di.FullName) }");
+                actionCommandDBService.ErrorText.AppendLine("");
+                actionCommandDBService.ErrorText.AppendLine($"{ string.Format(AppRes.ErrorWhileRunningCommand_UnderDirectory_, command + " " + arg, di.FullName) }");
                 return false;
             }
 
@@ -175,7 +180,7 @@ namespace ExecuteDotNetCommandServices.Services
 
                 if (!fiLog.Exists)
                 {
-                    generateCodeStatusDBService.Error.AppendLine($"{ string.Format(AppRes.CouldNotFindFile_, fiLog.FullName) }");
+                    actionCommandDBService.ErrorText.AppendLine($"{ string.Format(AppRes.CouldNotFindFile_, fiLog.FullName) }");
                     return false;
                 }
 
@@ -183,9 +188,9 @@ namespace ExecuteDotNetCommandServices.Services
                 string logText = sr.ReadToEnd();
                 sr.Close();
 
-                generateCodeStatusDBService.Status.AppendLine($"");
-                generateCodeStatusDBService.Status.AppendLine($"{ logText }");
-                generateCodeStatusDBService.Status.AppendLine($"");
+                actionCommandDBService.ExecutionStatusText.AppendLine($"");
+                actionCommandDBService.ExecutionStatusText.AppendLine($"{ logText }");
+                actionCommandDBService.ExecutionStatusText.AppendLine($"");
 
                 try
                 {
@@ -193,12 +198,12 @@ namespace ExecuteDotNetCommandServices.Services
                 }
                 catch (Exception ex)
                 {
-                    generateCodeStatusDBService.Error.AppendLine($"{ ex.Message }");
+                    actionCommandDBService.ErrorText.AppendLine($"{ ex.Message }");
                     return false;
                 }
             }
 
-            generateCodeStatusDBService.Status.AppendLine("ExecuteDotNet Finished...");
+            actionCommandDBService.ExecutionStatusText.AppendLine("ExecuteDotNet Finished...");
 
             return true;
         }
@@ -206,16 +211,16 @@ namespace ExecuteDotNetCommandServices.Services
         {
             if (args.Count() != 3)
             {
-                generateCodeStatusDBService.Error.AppendLine($"{ AppRes.ApplicationRequires3ParametersSeparatedBySpace }");
-                generateCodeStatusDBService.Error.AppendLine("");
-                generateCodeStatusDBService.Error.AppendLine($"{ AppRes.Example } ExecuteDotNetCommand en-CA run CSSPEnums");
-                generateCodeStatusDBService.Error.AppendLine("");
-                generateCodeStatusDBService.Error.AppendLine($"\t#0:\t{ AppRes.CultureOptionsEnCAFrCA }");
-                generateCodeStatusDBService.Error.AppendLine("");
-                generateCodeStatusDBService.Error.AppendLine($"\t#1:\t{ AppRes.ActionOptionsRunTestBuild }");
-                generateCodeStatusDBService.Error.AppendLine("");
-                generateCodeStatusDBService.Error.AppendLine($"\t#2:\t{ AppRes.SolutionFileNameExampleCSSPRunsCSSPModelsCSSPServices }");
-                generateCodeStatusDBService.Error.AppendLine("");
+                actionCommandDBService.ErrorText.AppendLine($"{ AppRes.ApplicationRequires3ParametersSeparatedBySpace }");
+                actionCommandDBService.ErrorText.AppendLine("");
+                actionCommandDBService.ErrorText.AppendLine($"{ AppRes.Example } ExecuteDotNetCommand en-CA run CSSPEnums");
+                actionCommandDBService.ErrorText.AppendLine("");
+                actionCommandDBService.ErrorText.AppendLine($"\t#0:\t{ AppRes.CultureOptionsEnCAFrCA }");
+                actionCommandDBService.ErrorText.AppendLine("");
+                actionCommandDBService.ErrorText.AppendLine($"\t#1:\t{ AppRes.ActionOptionsRunTestBuild }");
+                actionCommandDBService.ErrorText.AppendLine("");
+                actionCommandDBService.ErrorText.AppendLine($"\t#2:\t{ AppRes.SolutionFileNameExampleCSSPRunsCSSPModelsCSSPServices }");
+                actionCommandDBService.ErrorText.AppendLine("");
                 return false;
             }
             else
@@ -242,8 +247,8 @@ namespace ExecuteDotNetCommandServices.Services
 
                 if (!(Args1Allowables.Contains(args[1])))
                 {
-                    generateCodeStatusDBService.Error.AppendLine($"\t#1:\t{ string.Format(AppRes.Parameter_ShouldBe_, "1", string.Join(" || ", Args1Allowables)) }");
-                    generateCodeStatusDBService.Error.AppendLine("");
+                    actionCommandDBService.ErrorText.AppendLine($"\t#1:\t{ string.Format(AppRes.Parameter_ShouldBe_, "1", string.Join(" || ", Args1Allowables)) }");
+                    actionCommandDBService.ErrorText.AppendLine("");
                     return false;
                 }
                 else
@@ -255,8 +260,8 @@ namespace ExecuteDotNetCommandServices.Services
                 {
                     if (!(ArgsRunAllowables.Contains(args[2])))
                     {
-                        generateCodeStatusDBService.Error.AppendLine($"\t#2:\t{ string.Format(AppRes.Parameter_ShouldBe_, "2", string.Join(" || ", ArgsRunAllowables)) }");
-                        generateCodeStatusDBService.Error.AppendLine("");
+                        actionCommandDBService.ErrorText.AppendLine($"\t#2:\t{ string.Format(AppRes.Parameter_ShouldBe_, "2", string.Join(" || ", ArgsRunAllowables)) }");
+                        actionCommandDBService.ErrorText.AppendLine("");
                         return false;
                     }
                     else
@@ -268,8 +273,8 @@ namespace ExecuteDotNetCommandServices.Services
                 {
                     if (!(ArgsTestAllowables.Contains(args[2])))
                     {
-                        generateCodeStatusDBService.Error.AppendLine($"\t#2:\t{ string.Format(AppRes.Parameter_ShouldBe_, "2", string.Join(" || ", ArgsTestAllowables)) }");
-                        generateCodeStatusDBService.Error.AppendLine("");
+                        actionCommandDBService.ErrorText.AppendLine($"\t#2:\t{ string.Format(AppRes.Parameter_ShouldBe_, "2", string.Join(" || ", ArgsTestAllowables)) }");
+                        actionCommandDBService.ErrorText.AppendLine("");
                         return false;
                     }
                     else
@@ -281,8 +286,8 @@ namespace ExecuteDotNetCommandServices.Services
                 {
                     if (!(ArgsBuildAllowables.Contains(args[2])))
                     {
-                        generateCodeStatusDBService.Error.AppendLine($"\t#2:\t{ string.Format(AppRes.Parameter_ShouldBe_, "2", string.Join(" || ", ArgsBuildAllowables)) }");
-                        generateCodeStatusDBService.Error.AppendLine("");
+                        actionCommandDBService.ErrorText.AppendLine($"\t#2:\t{ string.Format(AppRes.Parameter_ShouldBe_, "2", string.Join(" || ", ArgsBuildAllowables)) }");
+                        actionCommandDBService.ErrorText.AppendLine("");
                         return false;
                     }
                     else
@@ -296,24 +301,27 @@ namespace ExecuteDotNetCommandServices.Services
         }
         private async Task ConsoleWriteEnd()
         {
-            generateCodeStatusDBService.Status.AppendLine("");
-            generateCodeStatusDBService.Status.AppendLine($"{ AppRes.Done } ...");
-            generateCodeStatusDBService.Status.AppendLine("");
-            await generateCodeStatusDBService.Update(100);
+            actionCommandDBService.ExecutionStatusText.AppendLine("");
+            actionCommandDBService.ExecutionStatusText.AppendLine($"{ AppRes.Done } ...");
+            actionCommandDBService.ExecutionStatusText.AppendLine("");
+            actionCommandDBService.PercentCompleted = 100;
+            await actionCommandDBService.Update();
 
-            if (!string.IsNullOrWhiteSpace(generateCodeStatusDBService.Error.ToString()))
+            if (!string.IsNullOrWhiteSpace(actionCommandDBService.ErrorText.ToString()))
             {
-                Console.WriteLine(generateCodeStatusDBService.Error.ToString());
+                Console.WriteLine(actionCommandDBService.ErrorText.ToString());
             }
 
-            Console.WriteLine(generateCodeStatusDBService.Status.ToString());
+            Console.WriteLine(actionCommandDBService.ExecutionStatusText.ToString());
         }
         private async Task ConsoleWriteError(string errMessage)
         {
-            generateCodeStatusDBService.Error.AppendLine(errMessage);
-            await generateCodeStatusDBService.Update(0);
-            Console.WriteLine(generateCodeStatusDBService.Error.ToString());
-            Console.WriteLine(generateCodeStatusDBService.Status.ToString());
+            actionCommandDBService.ErrorText.AppendLine(errMessage);
+            actionCommandDBService.PercentCompleted = 0;
+            await actionCommandDBService.Update();
+
+            Console.WriteLine(actionCommandDBService.ErrorText.ToString());
+            Console.WriteLine(actionCommandDBService.ExecutionStatusText.ToString());
         }
         private void ConsoleWriteStart()
         {
@@ -338,20 +346,21 @@ namespace ExecuteDotNetCommandServices.Services
         }
         private async Task<bool> Setup()
         {
-            generateCodeStatusDBService.Command = $"{ dotNetCommand.Action }:{ dotNetCommand.SolutionFileName}";
-            generateCodeStatusDBService.Culture = new CultureInfo(configuration.GetValue<string>("Culture"));
-            validateAppSettingsService.Culture = new CultureInfo(configuration.GetValue<string>("Culture"));
+            actionCommandDBService.Command = $"{ dotNetCommand.Action }:{ dotNetCommand.SolutionFileName}";
+            await actionCommandDBService.SetCulture(new CultureInfo(configuration.GetValue<string>("Culture")));
+            await validateAppSettingsService.SetCulture(new CultureInfo(configuration.GetValue<string>("Culture")));
 
-            GenerateCodeStatus generateCodeStatus = await generateCodeStatusDBService.GetOrCreate();
-            if (generateCodeStatus == null)
+            ActionResult<ActionCommand> actionActionCommand = await actionCommandDBService.GetOrCreate();
+
+            if (((ObjectResult)actionActionCommand.Result).StatusCode == 400)
             {
-                generateCodeStatusDBService.Error.AppendLine("generateCodeStatus == null");
-                if (!string.IsNullOrWhiteSpace(generateCodeStatusDBService.Error.ToString()))
+                actionCommandDBService.ErrorText.AppendLine("actionCommand == null");
+                if (!string.IsNullOrWhiteSpace(actionCommandDBService.ErrorText.ToString()))
                 {
-                    Console.WriteLine(generateCodeStatusDBService.Error.ToString());
+                    Console.WriteLine(actionCommandDBService.ErrorText.ToString());
                 }
 
-                Console.WriteLine(generateCodeStatusDBService.Status.ToString());
+                Console.WriteLine(actionCommandDBService.ExecutionStatusText.ToString());
                 return false;
             }
 
@@ -359,7 +368,7 @@ namespace ExecuteDotNetCommandServices.Services
             {
                 new AppSettingParameter() { Parameter = "Command", ExpectedValue = "ExecuteDotNetCommand" },
                 new AppSettingParameter() { Parameter = "Culture", ExpectedValue = "", IsCulture = true },
-                new AppSettingParameter() { Parameter = "DBFileName", ExpectedValue = "{AppDataPath}\\CSSP\\GenerateCodeStatus.db", IsFile = true, CheckExist = true },
+                new AppSettingParameter() { Parameter = "DBFileName", ExpectedValue = "{AppDataPath}\\CSSP\\ActionCommandDB.db", IsFile = true, CheckExist = true },
                 new AppSettingParameter() { Parameter = "run:AngularEnumsGenerated", ExpectedValue = "C:\\CSSPTools\\src\\codegen\\AngularEnumsGenerated\\bin\\Debug\\netcoreapp3.1\\AngularEnumsGenerated.exe", IsFile = true, CheckExist = true },
                 new AppSettingParameter() { Parameter = "run:AngularInterfacesGenerated", ExpectedValue = "C:\\CSSPTools\\src\\codegen\\AngularInterfacesGenerated\\bin\\Debug\\netcoreapp3.1\\AngularInterfacesGenerated.exe", IsFile = true, CheckExist = true },
                 new AppSettingParameter() { Parameter = "run:EnumsCompareWithOldEnums", ExpectedValue = "C:\\CSSPTools\\src\\codegen\\EnumsCompareWithOldEnums\\bin\\Debug\\netcoreapp3.1\\EnumsCompareWithOldEnums.exe", IsFile = true, CheckExist = true },
@@ -444,8 +453,8 @@ namespace ExecuteDotNetCommandServices.Services
                 new AppSettingParameter() { Parameter = "build:CSSPServices", ExpectedValue = "C:\\CSSPTools\\src\\dlls\\CSSPServices\\CSSPServices.csproj", IsFile = true, CheckExist = true },
             };
 
-            validateAppSettingsService.VerifyAppSettings();
-            if (!string.IsNullOrWhiteSpace(generateCodeStatusDBService.Error.ToString()))
+            await validateAppSettingsService.VerifyAppSettings();
+            if (!string.IsNullOrWhiteSpace(actionCommandDBService.ErrorText.ToString()))
             {
                 await ConsoleWriteError("");
                 return false;

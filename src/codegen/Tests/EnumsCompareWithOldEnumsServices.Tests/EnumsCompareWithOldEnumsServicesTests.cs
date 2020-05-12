@@ -1,8 +1,8 @@
 ﻿using EnumsCompareWithOldEnumsServices.Resources;
 using EnumsCompareWithOldEnumsServices.Services;
-using GenerateCodeBase.Services;
-using GenerateCodeStatusDB.Models;
-using GenerateCodeStatusDB.Services;
+using GenerateCodeBaseServices.Services;
+using ActionCommandDBServices.Models;
+using ActionCommandDBServices.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -14,6 +14,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Xunit;
+using ValidateAppSettingsServices.Services;
 
 namespace EnumsCompareWithOldEnumsServices.Tests
 {
@@ -84,7 +85,7 @@ namespace EnumsCompareWithOldEnumsServices.Tests
 
             serviceCollection.AddSingleton<IConfiguration>(configuration);
             serviceCollection.AddSingleton<IEnumsCompareWithOldEnumsService, EnumsCompareWithOldEnumsService>();
-            serviceCollection.AddSingleton<IGenerateCodeStatusDBService, GenerateCodeStatusDBService>();
+            serviceCollection.AddSingleton<IActionCommandDBService, ActionCommandDBService>();
             serviceCollection.AddSingleton<IValidateAppSettingsService, ValidateAppSettingsService>();
 
             string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
@@ -96,7 +97,7 @@ namespace EnumsCompareWithOldEnumsServices.Tests
             FileInfo fiDB = new FileInfo(fileName.Replace("{AppDataPath}", appDataPath));
             Assert.True(fiDB.Exists);
 
-            serviceCollection.AddDbContext<GenerateCodeStatusContext>(options =>
+            serviceCollection.AddDbContext<ActionCommandContext>(options =>
             {
                 options.UseSqlite($"DataSource={fiDB.FullName}");
             });

@@ -117,10 +117,16 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="CouldNotFindActionCommandToDeleteWithAction_AndCommand_" xml:space="preserve">
+    <value>Could not find ActionCommand to delete with Action [{0}] and Command [{1}]</value>
+  </data>
   <data name="CouldNotFindFile_" xml:space="preserve">
     <value>Could not find file [{0}]</value>
   </data>
   <data name="CouldNotFindParameter_InAppSettingsJSON" xml:space="preserve">
     <value>Could not find parameter [{0}] in appsettings.json</value>
+  </data>
+  <data name="_IsRequied" xml:space="preserve">
+    <value>{0} is required</value>
   </data>
 </root>

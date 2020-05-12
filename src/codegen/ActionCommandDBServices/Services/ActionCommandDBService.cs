@@ -7,14 +7,11 @@ using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Microsoft.Extensions.Configuration;
-using System.IO;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Mvc;
 
 namespace ActionCommandDBServices.Services
 {
-    public class ActionCommandDBService : IActionCommandDBService
+    public class ActionCommandDBService : ControllerBase, IActionCommandDBService
     {
         #region Variables
         #endregion Variables
@@ -44,11 +41,10 @@ namespace ActionCommandDBServices.Services
         #endregion Constructors
 
         #region Functions public
-        public async Task<ActionCommand> Create()
+        public async Task<ActionResult<ActionCommand>> Create()
         {
-            if (Action == "") return null;
-            if (Command == "") return null;
-            if (FullFileName == "") return null;
+            if (Action == "") return BadRequest($"{ string.Format(AppRes._IsRequied, "Action") }");
+            if (Command == "") return BadRequest($"{ string.Format(AppRes._IsRequied, "Command") }");
 
             long? LastID = (from c in db.ActionCommands
                             orderby c.ActionCommandID descending
@@ -59,7 +55,7 @@ namespace ActionCommandDBServices.Services
                 LastID = 0;
             }
 
-            ActionCommand actionCommand = await Get();
+            ActionCommand actionCommand = GetActionCommand();
             if (actionCommand == null)
             {
                 actionCommand = new ActionCommand()
@@ -84,23 +80,24 @@ namespace ActionCommandDBServices.Services
 
                     ActionCommandID = actionCommand.ActionCommandID;
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
-                    return null;
+                    return BadRequest(ex.Message);
                 }
             }
 
-            return actionCommand;
+            return Ok(actionCommand);
         }
-        public async Task<ActionCommand> Delete()
+        public async Task<ActionResult<ActionCommand>> Delete()
         {
-            if (ActionCommandID == 0) return null;
+            if (Action == "") return BadRequest($"{ string.Format(AppRes._IsRequied, "Action") }");
+            if (Command == "") return BadRequest($"{ string.Format(AppRes._IsRequied, "Command") }");
 
-            ActionCommand actionCommand = await Get();
+            ActionCommand actionCommand = GetActionCommand();
 
             if (actionCommand == null)
             {
-                return null;
+                return BadRequest(actionCommand);
             }
 
             db.ActionCommands.Remove(actionCommand);
@@ -115,38 +112,50 @@ namespace ActionCommandDBServices.Services
                 return null;
             }
 
-            return await Task.FromResult(actionCommand);
+            return Ok(actionCommand);
         }
-        public async Task<ActionCommand> Get()
+        public async Task<ActionResult<ActionCommand>> Get()
         {
-            if (ActionCommandID == 0) return null;
+            if (Action == "") return BadRequest($"{ string.Format(AppRes._IsRequied, "Action") }");
+            if (Command == "") return BadRequest($"{ string.Format(AppRes._IsRequied, "Command") }");
 
-            ActionCommand actionCommand = (from c in db.ActionCommands
-                             where c.ActionCommandID == ActionCommandID
-                             select c).FirstOrDefault();
+            ActionCommand actionCommand = GetActionCommand();
 
             if (actionCommand == null)
             {
-                return null;
+                return BadRequest($"{ string.Format(AppRes.CouldNotFindActionCommandToDeleteWithAction_AndCommand_, Action, Command) }");
             }
 
-            return await Task.FromResult(actionCommand);
+            return Ok(actionCommand);
         }
-        public async Task<ActionCommand> GetOrCreate()
+        public async Task<ActionResult<ActionCommand>> GetOrCreate()
         {
-            return ActionCommandID == 0 ? await Create() : await Get();
-        }
-        public async Task<ActionCommand> Update()
-        {
-            ActionCommand actionCommand = await Get();
-            
+            if (Action == "") return BadRequest($"{ string.Format(AppRes._IsRequied, "Action") }");
+            if (Command == "") return BadRequest($"{ string.Format(AppRes._IsRequied, "Command") }");
+
+            ActionCommand actionCommand = GetActionCommand();
             if (actionCommand == null)
             {
-                return null;
+                return await Create();
             }
 
-            actionCommand.Action = Action;
-            actionCommand.Command = Command;
+            return Ok(actionCommand);
+        }
+        public async Task<ActionResult<ActionCommand>> Update()
+        {
+            if (Action == "") return BadRequest($"{ string.Format(AppRes._IsRequied, "Action") }");
+            if (Command == "") return BadRequest($"{ string.Format(AppRes._IsRequied, "Command") }");
+
+            ActionCommand actionCommand = GetActionCommand();
+            if (actionCommand == null)
+            {
+                return BadRequest(actionCommand);
+            }
+
+
+            //actionCommand.ActionCommandID = ActionCommandID;
+            //actionCommand.Action = Action;
+            //actionCommand.Command = Command;
             actionCommand.FullFileName = FullFileName;
             actionCommand.Description = Description;
             actionCommand.TempStatusText = TempStatusText.ToString();
@@ -160,12 +169,12 @@ namespace ActionCommandDBServices.Services
             {
                 db.SaveChanges();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                return null;
+                return BadRequest(ex.Message);
             }
 
-            return actionCommand;
+            return Ok(actionCommand);
         }
         public async Task SetCulture(CultureInfo culture)
         {
@@ -185,7 +194,14 @@ namespace ActionCommandDBServices.Services
             ErrorText = new StringBuilder();
             ExecutionStatusText = new StringBuilder();
             FilesStatusText = new StringBuilder();
-            PercentCompleted = 0;        
+            PercentCompleted = 0;
+        }
+        private ActionCommand GetActionCommand()
+        {
+            return (from c in db.ActionCommands
+                    where c.Action == Action
+                    && c.Command == Command
+                    select c).FirstOrDefault();
         }
         #endregion Functions private
     }

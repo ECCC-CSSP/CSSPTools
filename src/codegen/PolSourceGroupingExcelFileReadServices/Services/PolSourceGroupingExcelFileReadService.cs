@@ -9,7 +9,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using GenerateCodeStatusDB.Services;
+using ActionCommandDBServices.Services;
 
 namespace PolSourceGroupingExcelFileReadServices.Services
 {
@@ -21,14 +21,14 @@ namespace PolSourceGroupingExcelFileReadServices.Services
         #endregion Variables
 
         #region Properties
-        private IGenerateCodeStatusDBService generateCodeStatusDBService { get; set; }
+        private IActionCommandDBService actionCommandDBService { get; set; }
         public List<GroupChoiceChildLevel> groupChoiceChildLevelList { get; set; }
         #endregion Properties
 
         #region Constructors
-        public PolSourceGroupingExcelFileReadService(IGenerateCodeStatusDBService generateCodeStatusDBService)
+        public PolSourceGroupingExcelFileReadService(IActionCommandDBService actionCommandDBService)
         {
-            this.generateCodeStatusDBService = generateCodeStatusDBService;
+            this.actionCommandDBService = actionCommandDBService;
         }
         #endregion Constructors
 
@@ -66,8 +66,10 @@ namespace PolSourceGroupingExcelFileReadServices.Services
                         int endPos = childCSSPID.IndexOf("-") + 1;
                         if (childCSSPID.Length <= endPos)
                         {
-                            generateCodeStatusDBService.Error.AppendLine($"CSSPID [{ groupChoiceChildLevel.CSSPID }] { PolSourceGroupingExcelFileReadServicesRes.HideCellContains } [{ childCSSPID }] { PolSourceGroupingExcelFileReadServicesRes.MissingEndValue }");
-                            await generateCodeStatusDBService.Update(0);
+                            actionCommandDBService.ErrorText.AppendLine($"CSSPID [{ groupChoiceChildLevel.CSSPID }] { PolSourceGroupingExcelFileReadServicesRes.HideCellContains } [{ childCSSPID }] { PolSourceGroupingExcelFileReadServicesRes.MissingEndValue }");
+                            actionCommandDBService.PercentCompleted = 0;
+                            await actionCommandDBService.Update();
+
                             return false;
                         }
 
@@ -75,8 +77,10 @@ namespace PolSourceGroupingExcelFileReadServices.Services
 
                         if (fromCSSPID >= toCSSPID)
                         {
-                            generateCodeStatusDBService.Error.AppendLine($"CSSPID [{ groupChoiceChildLevel.CSSPID }] { PolSourceGroupingExcelFileReadServicesRes.HideCellContains } [{ childCSSPID }] { PolSourceGroupingExcelFileReadServicesRes.WhichTheFirstValueIs }  >= { PolSourceGroupingExcelFileReadServicesRes.ThanTheLastValue }");
-                            await generateCodeStatusDBService.Update(0);
+                            actionCommandDBService.ErrorText.AppendLine($"CSSPID [{ groupChoiceChildLevel.CSSPID }] { PolSourceGroupingExcelFileReadServicesRes.HideCellContains } [{ childCSSPID }] { PolSourceGroupingExcelFileReadServicesRes.WhichTheFirstValueIs }  >= { PolSourceGroupingExcelFileReadServicesRes.ThanTheLastValue }");
+                            actionCommandDBService.PercentCompleted = 0;
+                            await actionCommandDBService.Update();
+
                             return false;
                         }
                     }
@@ -87,8 +91,10 @@ namespace PolSourceGroupingExcelFileReadServices.Services
                         {
                             if (CSSPIDList2.Contains(id.ToString()) || CSSPIDList.Contains(id.ToString()))
                             {
-                                generateCodeStatusDBService.Error.AppendLine($"CSSPID [{ groupChoiceChildLevel.CSSPID }] { PolSourceGroupingExcelFileReadServicesRes.HideCellContains } [{ childCSSPID }] { PolSourceGroupingExcelFileReadServicesRes.WhichWillDuplicate } [{ id.ToString() }]");
-                                await generateCodeStatusDBService.Update(0);
+                                actionCommandDBService.ErrorText.AppendLine($"CSSPID [{ groupChoiceChildLevel.CSSPID }] { PolSourceGroupingExcelFileReadServicesRes.HideCellContains } [{ childCSSPID }] { PolSourceGroupingExcelFileReadServicesRes.WhichWillDuplicate } [{ id.ToString() }]");
+                                actionCommandDBService.PercentCompleted = 0;
+                                await actionCommandDBService.Update();
+
                                 return false;
                             }
 
@@ -108,8 +114,8 @@ namespace PolSourceGroupingExcelFileReadServices.Services
                 groupChoiceChildLevel.ID = int.Parse(groupChoiceChildLevel.CSSPID);
             }
 
-            generateCodeStatusDBService.Status.AppendLine($"{ PolSourceGroupingExcelFileReadServicesRes.ExcelDocReadCompleted } ... ");
-            //await generateCodeStatusDBService.Update( 0);
+            actionCommandDBService.ExecutionStatusText.AppendLine($"{ PolSourceGroupingExcelFileReadServicesRes.ExcelDocReadCompleted } ... ");
+            //await actionCommandDBService.Update( 0);
 
             return true;
         }
@@ -119,22 +125,28 @@ namespace PolSourceGroupingExcelFileReadServices.Services
 
             if (textList.Contains(s))
             {
-                generateCodeStatusDBService.Error.AppendLine($"{ PolSourceGroupingExcelFileReadServicesRes.RecursiveFound } ...");
-                generateCodeStatusDBService.Error.AppendLine("");
-                await generateCodeStatusDBService.Update(0);
+                actionCommandDBService.ErrorText.AppendLine($"{ PolSourceGroupingExcelFileReadServicesRes.RecursiveFound } ...");
+                actionCommandDBService.ErrorText.AppendLine("");
+                actionCommandDBService.PercentCompleted = 0;
+                await actionCommandDBService.Update();
+
                 foreach (string sp in textList)
                 {
-                    generateCodeStatusDBService.Error.AppendLine($"{ sp }");
-                    await generateCodeStatusDBService.Update(0);
+                    actionCommandDBService.ErrorText.AppendLine($"{ sp }");
+                    actionCommandDBService.PercentCompleted = 0;
+                    await actionCommandDBService.Update();
+
                 }
-                generateCodeStatusDBService.Error.AppendLine($"{ s }");
-                await generateCodeStatusDBService.Update(0);
+                actionCommandDBService.ErrorText.AppendLine($"{ s }");
+                actionCommandDBService.PercentCompleted = 0;
+                await actionCommandDBService.Update();
+
 
                 return false;
             }
 
-            generateCodeStatusDBService.Status.AppendLine($"{ PolSourceGroupingExcelFileReadServicesRes.Doing } ... { s }");
-            //await generateCodeStatusDBService.Update( 0);
+            actionCommandDBService.ExecutionStatusText.AppendLine($"{ PolSourceGroupingExcelFileReadServicesRes.Doing } ... { s }");
+            //await actionCommandDBService.Update( 0);
 
             if (RaiseEvents)
             {
@@ -160,8 +172,8 @@ namespace PolSourceGroupingExcelFileReadServices.Services
                 }
             }
 
-            generateCodeStatusDBService.Status.AppendLine($"");
-            //await generateCodeStatusDBService.Update( 0);
+            actionCommandDBService.ExecutionStatusText.AppendLine($"");
+            //await actionCommandDBService.Update( 0);
 
             return true;
         }
@@ -189,8 +201,8 @@ namespace PolSourceGroupingExcelFileReadServices.Services
 
                 if (countChild % 200 == 0)
                 {
-                    generateCodeStatusDBService.Status.AppendLine($"{ PolSourceGroupingExcelFileReadServicesRes.Checking } ... { PolSourceGroupingExcelFileReadServicesRes.That } { child } { PolSourceGroupingExcelFileReadServicesRes.ExistOnColumnGroup }");
-                    //await generateCodeStatusDBService.Update( 0);
+                    actionCommandDBService.ExecutionStatusText.AppendLine($"{ PolSourceGroupingExcelFileReadServicesRes.Checking } ... { PolSourceGroupingExcelFileReadServicesRes.That } { child } { PolSourceGroupingExcelFileReadServicesRes.ExistOnColumnGroup }");
+                    //await actionCommandDBService.Update( 0);
                 }
 
                 GroupChoiceChildLevel groupChoiceChildLevelExist = (from c in groupChoiceChildLevelList
@@ -199,25 +211,29 @@ namespace PolSourceGroupingExcelFileReadServices.Services
 
                 if (groupChoiceChildLevelExist == null)
                 {
-                    generateCodeStatusDBService.Error.AppendLine($"{ child } ----- { PolSourceGroupingExcelFileReadServicesRes.DoesNotExistOnColumnGroup }");
-                    generateCodeStatusDBService.Error.AppendLine("");
-                    await generateCodeStatusDBService.Update(0);
+                    actionCommandDBService.ErrorText.AppendLine($"{ child } ----- { PolSourceGroupingExcelFileReadServicesRes.DoesNotExistOnColumnGroup }");
+                    actionCommandDBService.ErrorText.AppendLine("");
+                    actionCommandDBService.PercentCompleted = 0;
+                    await actionCommandDBService.Update();
+
 
                     return false;
                 }
             }
 
-            generateCodeStatusDBService.Status.AppendLine($"{ PolSourceGroupingExcelFileReadServicesRes.AllChildDoExistOnColumnGroup }");
-            generateCodeStatusDBService.Status.AppendLine("");
-            //await generateCodeStatusDBService.Update( 0);
+            actionCommandDBService.ExecutionStatusText.AppendLine($"{ PolSourceGroupingExcelFileReadServicesRes.AllChildDoExistOnColumnGroup }");
+            actionCommandDBService.ExecutionStatusText.AppendLine("");
+            //await actionCommandDBService.Update( 0);
 
             foreach (GroupChoiceChildLevel groupChoiceChildLevel in groupChoiceChildLevelList)
             {
                 if (groupChoiceChildLevel.Group.Length < 5)
                 {
-                    generateCodeStatusDBService.Error.AppendLine($"{ PolSourceGroupingExcelFileReadServicesRes.Group }: { groupChoiceChildLevel.CSSPID } { PolSourceGroupingExcelFileReadServicesRes.PotentialEmptyRowAbove }.");
-                    generateCodeStatusDBService.Error.AppendLine("");
-                    await generateCodeStatusDBService.Update(0);
+                    actionCommandDBService.ErrorText.AppendLine($"{ PolSourceGroupingExcelFileReadServicesRes.Group }: { groupChoiceChildLevel.CSSPID } { PolSourceGroupingExcelFileReadServicesRes.PotentialEmptyRowAbove }.");
+                    actionCommandDBService.ErrorText.AppendLine("");
+                    actionCommandDBService.PercentCompleted = 0;
+                    await actionCommandDBService.Update();
+
 
                     return false;
                 }
@@ -235,15 +251,17 @@ namespace PolSourceGroupingExcelFileReadServices.Services
 
                 if (countChild % 200 == 0)
                 {
-                    generateCodeStatusDBService.Status.AppendLine($"{ PolSourceGroupingExcelFileReadServicesRes.Checking } ... { PolSourceGroupingExcelFileReadServicesRes.ThatGroup } { groupChoiceChildLevel.Group }--- EN/FR: { groupChoiceChildLevel.EN } { PolSourceGroupingExcelFileReadServicesRes.HasENFRText }");
-                    //await generateCodeStatusDBService.Update( 0);
+                    actionCommandDBService.ExecutionStatusText.AppendLine($"{ PolSourceGroupingExcelFileReadServicesRes.Checking } ... { PolSourceGroupingExcelFileReadServicesRes.ThatGroup } { groupChoiceChildLevel.Group }--- EN/FR: { groupChoiceChildLevel.EN } { PolSourceGroupingExcelFileReadServicesRes.HasENFRText }");
+                    //await actionCommandDBService.Update( 0);
                 }
 
                 if (string.IsNullOrWhiteSpace(groupChoiceChildLevel.EN))
                 {
-                    generateCodeStatusDBService.Error.AppendLine($"Group: { groupChoiceChildLevel.Group } --- EN: { groupChoiceChildLevel.EN } ----- { PolSourceGroupingExcelFileReadServicesRes.DoesNotHaveENText }");
-                    generateCodeStatusDBService.Error.AppendLine("");
-                    await generateCodeStatusDBService.Update(0);
+                    actionCommandDBService.ErrorText.AppendLine($"Group: { groupChoiceChildLevel.Group } --- EN: { groupChoiceChildLevel.EN } ----- { PolSourceGroupingExcelFileReadServicesRes.DoesNotHaveENText }");
+                    actionCommandDBService.ErrorText.AppendLine("");
+                    actionCommandDBService.PercentCompleted = 0;
+                    await actionCommandDBService.Update();
+
 
                     return false;
                 }
@@ -252,18 +270,20 @@ namespace PolSourceGroupingExcelFileReadServices.Services
 
                 if (string.IsNullOrWhiteSpace(groupChoiceChildLevel.FR))
                 {
-                    generateCodeStatusDBService.Error.AppendLine($"Group: { groupChoiceChildLevel.Group } --- EN: { groupChoiceChildLevel.FR } ----- { PolSourceGroupingExcelFileReadServicesRes.DoesNotHaveFRText }");
-                    generateCodeStatusDBService.Error.AppendLine("");
-                    await generateCodeStatusDBService.Update(0);
+                    actionCommandDBService.ErrorText.AppendLine($"Group: { groupChoiceChildLevel.Group } --- EN: { groupChoiceChildLevel.FR } ----- { PolSourceGroupingExcelFileReadServicesRes.DoesNotHaveFRText }");
+                    actionCommandDBService.ErrorText.AppendLine("");
+                    actionCommandDBService.PercentCompleted = 0;
+                    await actionCommandDBService.Update();
+
 
                     return false;
                 }
 
             }
 
-            generateCodeStatusDBService.Status.AppendLine($"{ PolSourceGroupingExcelFileReadServicesRes.EachGroupWithEndingName } = 'Start' { PolSourceGroupingExcelFileReadServicesRes.DoesHaveENandFRText }.");
-            generateCodeStatusDBService.Status.AppendLine("");
-            //await generateCodeStatusDBService.Update( 0);
+            actionCommandDBService.ExecutionStatusText.AppendLine($"{ PolSourceGroupingExcelFileReadServicesRes.EachGroupWithEndingName } = 'Start' { PolSourceGroupingExcelFileReadServicesRes.DoesHaveENandFRText }.");
+            actionCommandDBService.ExecutionStatusText.AppendLine("");
+            //await actionCommandDBService.Update( 0);
 
             // Checking DescEN and DescFR text exist for Group ending with Start
             List<GroupChoiceChildLevel> groupChoiceChildLevelGroupDescList = (from c in groupChoiceChildLevelList
@@ -279,34 +299,38 @@ namespace PolSourceGroupingExcelFileReadServices.Services
 
                     if (countChild % 200 == 0)
                     {
-                        generateCodeStatusDBService.Status.AppendLine($"{ PolSourceGroupingExcelFileReadServicesRes.Checking } ... { PolSourceGroupingExcelFileReadServicesRes.ThatGroup } { groupChoiceChildLevel.Group } --- EN/FR: { groupChoiceChildLevel.EN } { PolSourceGroupingExcelFileReadServicesRes.HasDescENDescFRText }");
-                        generateCodeStatusDBService.Status.AppendLine("");
-                        //await generateCodeStatusDBService.Update( 0);
+                        actionCommandDBService.ExecutionStatusText.AppendLine($"{ PolSourceGroupingExcelFileReadServicesRes.Checking } ... { PolSourceGroupingExcelFileReadServicesRes.ThatGroup } { groupChoiceChildLevel.Group } --- EN/FR: { groupChoiceChildLevel.EN } { PolSourceGroupingExcelFileReadServicesRes.HasDescENDescFRText }");
+                        actionCommandDBService.ExecutionStatusText.AppendLine("");
+                        //await actionCommandDBService.Update( 0);
                     }
 
                     if (string.IsNullOrWhiteSpace(groupChoiceChildLevel.DescEN))
                     {
-                        generateCodeStatusDBService.Error.AppendLine($"{ PolSourceGroupingExcelFileReadServicesRes.Group}: { groupChoiceChildLevel.Group } --- EN: { groupChoiceChildLevel.EN } ----- { PolSourceGroupingExcelFileReadServicesRes.DoesNotHaveDescENText }");
-                        generateCodeStatusDBService.Error.AppendLine("");
-                        await generateCodeStatusDBService.Update(0);
+                        actionCommandDBService.ErrorText.AppendLine($"{ PolSourceGroupingExcelFileReadServicesRes.Group}: { groupChoiceChildLevel.Group } --- EN: { groupChoiceChildLevel.EN } ----- { PolSourceGroupingExcelFileReadServicesRes.DoesNotHaveDescENText }");
+                        actionCommandDBService.ErrorText.AppendLine("");
+                        actionCommandDBService.PercentCompleted = 0;
+                        await actionCommandDBService.Update();
+
 
                         return false;
                     }
 
                     if (string.IsNullOrWhiteSpace(groupChoiceChildLevel.DescFR))
                     {
-                        generateCodeStatusDBService.Error.AppendLine($"{ PolSourceGroupingExcelFileReadServicesRes.Group}: { groupChoiceChildLevel.Group } --- FR: { groupChoiceChildLevel.FR } ----- { PolSourceGroupingExcelFileReadServicesRes.DoesNotHaveDescFRText }");
-                        generateCodeStatusDBService.Error.AppendLine("");
-                        await generateCodeStatusDBService.Update(0);
+                        actionCommandDBService.ErrorText.AppendLine($"{ PolSourceGroupingExcelFileReadServicesRes.Group}: { groupChoiceChildLevel.Group } --- FR: { groupChoiceChildLevel.FR } ----- { PolSourceGroupingExcelFileReadServicesRes.DoesNotHaveDescFRText }");
+                        actionCommandDBService.ErrorText.AppendLine("");
+                        actionCommandDBService.PercentCompleted = 0;
+                        await actionCommandDBService.Update();
+
 
                         return false;
                     }
                 }
             }
 
-            generateCodeStatusDBService.Status.AppendLine($"{ PolSourceGroupingExcelFileReadServicesRes.EachGroupWithEndingName} = 'Start' { PolSourceGroupingExcelFileReadServicesRes.DoesHaveDescENAndDescFRText }.");
-            generateCodeStatusDBService.Status.AppendLine("");
-            //await generateCodeStatusDBService.Update( 0);
+            actionCommandDBService.ExecutionStatusText.AppendLine($"{ PolSourceGroupingExcelFileReadServicesRes.EachGroupWithEndingName} = 'Start' { PolSourceGroupingExcelFileReadServicesRes.DoesHaveDescENAndDescFRText }.");
+            actionCommandDBService.ExecutionStatusText.AppendLine("");
+            //await actionCommandDBService.Update( 0);
 
             // Checking EN and FR text exist for Choice.Length > 0
             List<GroupChoiceChildLevel> groupChoiceChildLevelChoiceList = (from c in groupChoiceChildLevelList
@@ -320,34 +344,38 @@ namespace PolSourceGroupingExcelFileReadServices.Services
 
                 if (countChild % 200 == 0)
                 {
-                    generateCodeStatusDBService.Status.AppendLine($"{ PolSourceGroupingExcelFileReadServicesRes.Checking } ... { PolSourceGroupingExcelFileReadServicesRes.ThatGroup } { groupChoiceChildLevel.Group } --- EN/FR: { groupChoiceChildLevel.EN } { PolSourceGroupingExcelFileReadServicesRes.HasENFRText }");
-                    generateCodeStatusDBService.Status.AppendLine("");
-                    //await generateCodeStatusDBService.Update( 0);
+                    actionCommandDBService.ExecutionStatusText.AppendLine($"{ PolSourceGroupingExcelFileReadServicesRes.Checking } ... { PolSourceGroupingExcelFileReadServicesRes.ThatGroup } { groupChoiceChildLevel.Group } --- EN/FR: { groupChoiceChildLevel.EN } { PolSourceGroupingExcelFileReadServicesRes.HasENFRText }");
+                    actionCommandDBService.ExecutionStatusText.AppendLine("");
+                    //await actionCommandDBService.Update( 0);
                 }
 
                 if (string.IsNullOrWhiteSpace(groupChoiceChildLevel.EN))
                 {
-                    generateCodeStatusDBService.Error.AppendLine($"{ PolSourceGroupingExcelFileReadServicesRes.Group }: { groupChoiceChildLevel.Group } --- EN: { groupChoiceChildLevel.EN } ----- { PolSourceGroupingExcelFileReadServicesRes.DoesNotHaveENText }");
-                    generateCodeStatusDBService.Error.AppendLine("");
-                    await generateCodeStatusDBService.Update(0);
+                    actionCommandDBService.ErrorText.AppendLine($"{ PolSourceGroupingExcelFileReadServicesRes.Group }: { groupChoiceChildLevel.Group } --- EN: { groupChoiceChildLevel.EN } ----- { PolSourceGroupingExcelFileReadServicesRes.DoesNotHaveENText }");
+                    actionCommandDBService.ErrorText.AppendLine("");
+                    actionCommandDBService.PercentCompleted = 0;
+                    await actionCommandDBService.Update();
+
 
                     return false;
                 }
 
                 if (string.IsNullOrWhiteSpace(groupChoiceChildLevel.FR))
                 {
-                    generateCodeStatusDBService.Error.AppendLine($"{ PolSourceGroupingExcelFileReadServicesRes.Group }: { groupChoiceChildLevel.Group } --- FR: { groupChoiceChildLevel.FR } ----- { PolSourceGroupingExcelFileReadServicesRes.DoesNotHaveFRText }");
-                    generateCodeStatusDBService.Error.AppendLine("");
-                    await generateCodeStatusDBService.Update(0);
+                    actionCommandDBService.ErrorText.AppendLine($"{ PolSourceGroupingExcelFileReadServicesRes.Group }: { groupChoiceChildLevel.Group } --- FR: { groupChoiceChildLevel.FR } ----- { PolSourceGroupingExcelFileReadServicesRes.DoesNotHaveFRText }");
+                    actionCommandDBService.ErrorText.AppendLine("");
+                    actionCommandDBService.PercentCompleted = 0;
+                    await actionCommandDBService.Update();
+
 
                     return false;
                 }
 
             }
 
-            generateCodeStatusDBService.Status.AppendLine($"{ PolSourceGroupingExcelFileReadServicesRes.EachChoiceDoesHaveENAndFRText }.");
-            generateCodeStatusDBService.Status.AppendLine("");
-            //await generateCodeStatusDBService.Update( 0);
+            actionCommandDBService.ExecutionStatusText.AppendLine($"{ PolSourceGroupingExcelFileReadServicesRes.EachChoiceDoesHaveENAndFRText }.");
+            actionCommandDBService.ExecutionStatusText.AppendLine("");
+            //await actionCommandDBService.Update( 0);
 
             // Checking ReportEN and ReportFR text exist for Child.Length > 0
             groupChoiceChildLevelChoiceList = (from c in groupChoiceChildLevelList
@@ -361,34 +389,38 @@ namespace PolSourceGroupingExcelFileReadServices.Services
 
                 if (countChild % 200 == 0)
                 {
-                    generateCodeStatusDBService.Status.AppendLine($"{ PolSourceGroupingExcelFileReadServicesRes.Checking } ... { PolSourceGroupingExcelFileReadServicesRes.ThatGroup } { groupChoiceChildLevel.Group } --- EN/FR: { groupChoiceChildLevel.EN } { PolSourceGroupingExcelFileReadServicesRes.HasReportENReportFRText }. { PolSourceGroupingExcelFileReadServicesRes.YouCanAddASpaceToFixTheProblem }.");
-                    generateCodeStatusDBService.Status.AppendLine("");
-                    //await generateCodeStatusDBService.Update( 0);
+                    actionCommandDBService.ExecutionStatusText.AppendLine($"{ PolSourceGroupingExcelFileReadServicesRes.Checking } ... { PolSourceGroupingExcelFileReadServicesRes.ThatGroup } { groupChoiceChildLevel.Group } --- EN/FR: { groupChoiceChildLevel.EN } { PolSourceGroupingExcelFileReadServicesRes.HasReportENReportFRText }. { PolSourceGroupingExcelFileReadServicesRes.YouCanAddASpaceToFixTheProblem }.");
+                    actionCommandDBService.ExecutionStatusText.AppendLine("");
+                    //await actionCommandDBService.Update( 0);
                 }
 
                 if (string.IsNullOrWhiteSpace(groupChoiceChildLevel.ReportEN) && groupChoiceChildLevel.ReportEN.Length == 0)
                 {
-                    generateCodeStatusDBService.Error.AppendLine($"{ PolSourceGroupingExcelFileReadServicesRes.Group}: { groupChoiceChildLevel.Group } --- EN: { groupChoiceChildLevel.EN } ----- { PolSourceGroupingExcelFileReadServicesRes.DoesNotHaveReportENText }. { PolSourceGroupingExcelFileReadServicesRes.YouCanAddASpaceToFixTheProblem }.");
-                    generateCodeStatusDBService.Error.AppendLine("");
-                    await generateCodeStatusDBService.Update(0);
+                    actionCommandDBService.ErrorText.AppendLine($"{ PolSourceGroupingExcelFileReadServicesRes.Group}: { groupChoiceChildLevel.Group } --- EN: { groupChoiceChildLevel.EN } ----- { PolSourceGroupingExcelFileReadServicesRes.DoesNotHaveReportENText }. { PolSourceGroupingExcelFileReadServicesRes.YouCanAddASpaceToFixTheProblem }.");
+                    actionCommandDBService.ErrorText.AppendLine("");
+                    actionCommandDBService.PercentCompleted = 0;
+                    await actionCommandDBService.Update();
+
 
                     return false;
                 }
 
                 if (string.IsNullOrWhiteSpace(groupChoiceChildLevel.ReportFR) && groupChoiceChildLevel.ReportFR.Length == 0)
                 {
-                    generateCodeStatusDBService.Error.AppendLine($"{ PolSourceGroupingExcelFileReadServicesRes.Group}: { groupChoiceChildLevel.Group } --- FR: { groupChoiceChildLevel.FR } ----- { PolSourceGroupingExcelFileReadServicesRes.DoesNotHaveReportFRText }. { PolSourceGroupingExcelFileReadServicesRes.YouCanAddASpaceToFixTheProblem }.");
-                    generateCodeStatusDBService.Error.AppendLine("");
-                    await generateCodeStatusDBService.Update(0);
+                    actionCommandDBService.ErrorText.AppendLine($"{ PolSourceGroupingExcelFileReadServicesRes.Group}: { groupChoiceChildLevel.Group } --- FR: { groupChoiceChildLevel.FR } ----- { PolSourceGroupingExcelFileReadServicesRes.DoesNotHaveReportFRText }. { PolSourceGroupingExcelFileReadServicesRes.YouCanAddASpaceToFixTheProblem }.");
+                    actionCommandDBService.ErrorText.AppendLine("");
+                    actionCommandDBService.PercentCompleted = 0;
+                    await actionCommandDBService.Update();
+
 
                     return false;
                 }
 
             }
 
-            generateCodeStatusDBService.Status.AppendLine($"{ PolSourceGroupingExcelFileReadServicesRes.EachChoiceDoesHaveReportENAndReportFRText }.");
-            generateCodeStatusDBService.Status.AppendLine("");
-            //await generateCodeStatusDBService.Update( 0);
+            actionCommandDBService.ExecutionStatusText.AppendLine($"{ PolSourceGroupingExcelFileReadServicesRes.EachChoiceDoesHaveReportENAndReportFRText }.");
+            actionCommandDBService.ExecutionStatusText.AppendLine("");
+            //await actionCommandDBService.Update( 0);
 
             // Checking for duplicates in column Group
             List<GroupChoiceChildLevel> groupChoiceChildLevelStraitList = new List<GroupChoiceChildLevel>();
@@ -453,9 +485,11 @@ namespace PolSourceGroupingExcelFileReadServices.Services
                                                     {
                                                         if ((item.Text.Text + "") != FieldNameList[cellcount])
                                                         {
-                                                            generateCodeStatusDBService.Error.AppendLine($"{ fi.FullName } { PolSourceGroupingExcelFileReadServicesRes.PolSourceGrouping } { item.Text } { PolSourceGroupingExcelFileReadServicesRes.IsNotEqualTo } { FieldNameList[cellcount] }");
-                                                            generateCodeStatusDBService.Error.AppendLine("");
-                                                            await generateCodeStatusDBService.Update(0);
+                                                            actionCommandDBService.ErrorText.AppendLine($"{ fi.FullName } { PolSourceGroupingExcelFileReadServicesRes.PolSourceGrouping } { item.Text } { PolSourceGroupingExcelFileReadServicesRes.IsNotEqualTo } { FieldNameList[cellcount] }");
+                                                            actionCommandDBService.ErrorText.AppendLine("");
+                                                            actionCommandDBService.PercentCompleted = 0;
+                                                            await actionCommandDBService.Update();
+
 
                                                             return false;
                                                         }
@@ -465,9 +499,11 @@ namespace PolSourceGroupingExcelFileReadServices.Services
                                                         currentcellvalue = item.InnerText;
                                                         if (currentcellvalue != FieldNameList[cellcount])
                                                         {
-                                                            generateCodeStatusDBService.Error.AppendLine($"{ fi.FullName } { PolSourceGroupingExcelFileReadServicesRes.PolSourceGrouping } { item.Text } { PolSourceGroupingExcelFileReadServicesRes.IsNotEqualTo } { FieldNameList[cellcount] }");
-                                                            generateCodeStatusDBService.Error.AppendLine("");
-                                                            await generateCodeStatusDBService.Update(0);
+                                                            actionCommandDBService.ErrorText.AppendLine($"{ fi.FullName } { PolSourceGroupingExcelFileReadServicesRes.PolSourceGrouping } { item.Text } { PolSourceGroupingExcelFileReadServicesRes.IsNotEqualTo } { FieldNameList[cellcount] }");
+                                                            actionCommandDBService.ErrorText.AppendLine("");
+                                                            actionCommandDBService.PercentCompleted = 0;
+                                                            await actionCommandDBService.Update();
+
 
                                                             return false;
                                                         }
@@ -477,9 +513,11 @@ namespace PolSourceGroupingExcelFileReadServices.Services
                                                         currentcellvalue = item.InnerXml;
                                                         if (currentcellvalue != FieldNameList[cellcount])
                                                         {
-                                                            generateCodeStatusDBService.Error.AppendLine($"{ fi.FullName } { PolSourceGroupingExcelFileReadServicesRes.PolSourceGrouping } { item.Text } { PolSourceGroupingExcelFileReadServicesRes.IsNotEqualTo }  { FieldNameList[cellcount] }");
-                                                            generateCodeStatusDBService.Error.AppendLine("");
-                                                            await generateCodeStatusDBService.Update(0);
+                                                            actionCommandDBService.ErrorText.AppendLine($"{ fi.FullName } { PolSourceGroupingExcelFileReadServicesRes.PolSourceGrouping } { item.Text } { PolSourceGroupingExcelFileReadServicesRes.IsNotEqualTo }  { FieldNameList[cellcount] }");
+                                                            actionCommandDBService.ErrorText.AppendLine("");
+                                                            actionCommandDBService.PercentCompleted = 0;
+                                                            await actionCommandDBService.Update();
+
 
                                                             return false;
                                                         }
@@ -491,9 +529,11 @@ namespace PolSourceGroupingExcelFileReadServices.Services
                                         {
                                             if ((thecurrentcell.InnerText + " ") != FieldNameList[cellcount])
                                             {
-                                                generateCodeStatusDBService.Error.AppendLine($"{ fi.FullName } { PolSourceGroupingExcelFileReadServicesRes.PolSourceGrouping } { (thecurrentcell.InnerText + " ") } { PolSourceGroupingExcelFileReadServicesRes.IsNotEqualTo } { FieldNameList[cellcount] }");
-                                                generateCodeStatusDBService.Error.AppendLine("");
-                                                await generateCodeStatusDBService.Update(0);
+                                                actionCommandDBService.ErrorText.AppendLine($"{ fi.FullName } { PolSourceGroupingExcelFileReadServicesRes.PolSourceGrouping } { (thecurrentcell.InnerText + " ") } { PolSourceGroupingExcelFileReadServicesRes.IsNotEqualTo } { FieldNameList[cellcount] }");
+                                                actionCommandDBService.ErrorText.AppendLine("");
+                                                actionCommandDBService.PercentCompleted = 0;
+                                                await actionCommandDBService.Update();
+
 
                                                 return false;
                                             }
@@ -729,9 +769,9 @@ namespace PolSourceGroupingExcelFileReadServices.Services
 
                                     if (rowCount % 200 == 0)
                                     {
-                                        generateCodeStatusDBService.Status.AppendLine($"{ PolSourceGroupingExcelFileReadServicesRes.ReadingSpreadsheet } ... { rowCount }");
-                                        generateCodeStatusDBService.Status.AppendLine("");
-                                        //await generateCodeStatusDBService.Update( 0);
+                                        actionCommandDBService.ExecutionStatusText.AppendLine($"{ PolSourceGroupingExcelFileReadServicesRes.ReadingSpreadsheet } ... { rowCount }");
+                                        actionCommandDBService.ExecutionStatusText.AppendLine("");
+                                        //await actionCommandDBService.Update( 0);
                                     }
 
                                     if (!string.IsNullOrWhiteSpace(CSSPID))
@@ -763,9 +803,11 @@ namespace PolSourceGroupingExcelFileReadServices.Services
             }
             catch (Exception ex)
             {
-                generateCodeStatusDBService.Error.AppendLine($"{ ex.Message }");
-                generateCodeStatusDBService.Error.AppendLine("");
-                await generateCodeStatusDBService.Update(0);
+                actionCommandDBService.ErrorText.AppendLine($"{ ex.Message }");
+                actionCommandDBService.ErrorText.AppendLine("");
+                actionCommandDBService.PercentCompleted = 0;
+                await actionCommandDBService.Update();
+
 
                 return false;
             }
@@ -778,24 +820,26 @@ namespace PolSourceGroupingExcelFileReadServices.Services
             {
                 if (i % 200 == 0)
                 {
-                    generateCodeStatusDBService.Status.AppendLine($"{ PolSourceGroupingExcelFileReadServicesRes.Checking } ... { PolSourceGroupingExcelFileReadServicesRes.ThatGroup } { groupChoiceChildLevelOrderedList[i].Group } ---- { PolSourceGroupingExcelFileReadServicesRes.HasNoDuplicates }");
-                    generateCodeStatusDBService.Status.AppendLine("");
-                    //await generateCodeStatusDBService.Update( 0);
+                    actionCommandDBService.ExecutionStatusText.AppendLine($"{ PolSourceGroupingExcelFileReadServicesRes.Checking } ... { PolSourceGroupingExcelFileReadServicesRes.ThatGroup } { groupChoiceChildLevelOrderedList[i].Group } ---- { PolSourceGroupingExcelFileReadServicesRes.HasNoDuplicates }");
+                    actionCommandDBService.ExecutionStatusText.AppendLine("");
+                    //await actionCommandDBService.Update( 0);
                 }
 
                 if (groupChoiceChildLevelOrderedList[i].Group == groupChoiceChildLevelOrderedList[i + 1].Group)
                 {
-                    generateCodeStatusDBService.Error.AppendLine($"{ groupChoiceChildLevelOrderedList[i].Group } ---- { PolSourceGroupingExcelFileReadServicesRes.HasDuplicates }");
-                    generateCodeStatusDBService.Error.AppendLine("");
-                    await generateCodeStatusDBService.Update(0);
+                    actionCommandDBService.ErrorText.AppendLine($"{ groupChoiceChildLevelOrderedList[i].Group } ---- { PolSourceGroupingExcelFileReadServicesRes.HasDuplicates }");
+                    actionCommandDBService.ErrorText.AppendLine("");
+                    actionCommandDBService.PercentCompleted = 0;
+                    await actionCommandDBService.Update();
+
 
                     return false;
                 }
             }
 
-            generateCodeStatusDBService.Status.AppendLine($"{ PolSourceGroupingExcelFileReadServicesRes.ColumnGroupDoesNotHaveDuplicates }.");
-            generateCodeStatusDBService.Status.AppendLine("");
-            //await generateCodeStatusDBService.Update( 0);
+            actionCommandDBService.ExecutionStatusText.AppendLine($"{ PolSourceGroupingExcelFileReadServicesRes.ColumnGroupDoesNotHaveDuplicates }.");
+            actionCommandDBService.ExecutionStatusText.AppendLine("");
+            //await actionCommandDBService.Update( 0);
 
             for (int i = 0, count = groupChoiceChildLevelOrderedList.Count; i < count; i++)
             {
@@ -803,16 +847,18 @@ namespace PolSourceGroupingExcelFileReadServices.Services
                 {
                     if (i % 200 == 0)
                     {
-                        generateCodeStatusDBService.Status.AppendLine($"{ PolSourceGroupingExcelFileReadServicesRes.Checking } ... { PolSourceGroupingExcelFileReadServicesRes.ThatGroup } { groupChoiceChildLevelOrderedList[i].Group } ---- { PolSourceGroupingExcelFileReadServicesRes.ShouldNotContainSpace }");
-                        generateCodeStatusDBService.Status.AppendLine("");
-                        //await generateCodeStatusDBService.Update( 0);
+                        actionCommandDBService.ExecutionStatusText.AppendLine($"{ PolSourceGroupingExcelFileReadServicesRes.Checking } ... { PolSourceGroupingExcelFileReadServicesRes.ThatGroup } { groupChoiceChildLevelOrderedList[i].Group } ---- { PolSourceGroupingExcelFileReadServicesRes.ShouldNotContainSpace }");
+                        actionCommandDBService.ExecutionStatusText.AppendLine("");
+                        //await actionCommandDBService.Update( 0);
                     }
 
                     if (groupChoiceChildLevelOrderedList[i].Group.Contains(" "))
                     {
-                        generateCodeStatusDBService.Error.AppendLine($"{ PolSourceGroupingExcelFileReadServicesRes.Group} --- { groupChoiceChildLevelOrderedList[i].Group } ---- { PolSourceGroupingExcelFileReadServicesRes.ShouldNotContainSpace}");
-                        generateCodeStatusDBService.Error.AppendLine("");
-                        await generateCodeStatusDBService.Update(0);
+                        actionCommandDBService.ErrorText.AppendLine($"{ PolSourceGroupingExcelFileReadServicesRes.Group} --- { groupChoiceChildLevelOrderedList[i].Group } ---- { PolSourceGroupingExcelFileReadServicesRes.ShouldNotContainSpace}");
+                        actionCommandDBService.ErrorText.AppendLine("");
+                        actionCommandDBService.PercentCompleted = 0;
+                        await actionCommandDBService.Update();
+
 
                         return false;
                     }
@@ -821,16 +867,18 @@ namespace PolSourceGroupingExcelFileReadServices.Services
                 {
                     if (i % 200 == 0)
                     {
-                        generateCodeStatusDBService.Status.AppendLine($"{ PolSourceGroupingExcelFileReadServicesRes.Checking} ... { PolSourceGroupingExcelFileReadServicesRes.ThatGroup} { groupChoiceChildLevelOrderedList[i].Child } ---- { PolSourceGroupingExcelFileReadServicesRes.ShouldNotContainSpace}");
-                        generateCodeStatusDBService.Status.AppendLine("");
-                        //await generateCodeStatusDBService.Update( 0);
+                        actionCommandDBService.ExecutionStatusText.AppendLine($"{ PolSourceGroupingExcelFileReadServicesRes.Checking} ... { PolSourceGroupingExcelFileReadServicesRes.ThatGroup} { groupChoiceChildLevelOrderedList[i].Child } ---- { PolSourceGroupingExcelFileReadServicesRes.ShouldNotContainSpace}");
+                        actionCommandDBService.ExecutionStatusText.AppendLine("");
+                        //await actionCommandDBService.Update( 0);
                     }
 
                     if (groupChoiceChildLevelOrderedList[i].Child.Contains(" "))
                     {
-                        generateCodeStatusDBService.Error.AppendLine($"{ PolSourceGroupingExcelFileReadServicesRes.Child } --- { groupChoiceChildLevelOrderedList[i].Child } ---- { PolSourceGroupingExcelFileReadServicesRes.ShouldNotContainSpace }");
-                        generateCodeStatusDBService.Error.AppendLine("");
-                        await generateCodeStatusDBService.Update(0);
+                        actionCommandDBService.ErrorText.AppendLine($"{ PolSourceGroupingExcelFileReadServicesRes.Child } --- { groupChoiceChildLevelOrderedList[i].Child } ---- { PolSourceGroupingExcelFileReadServicesRes.ShouldNotContainSpace }");
+                        actionCommandDBService.ErrorText.AppendLine("");
+                        actionCommandDBService.PercentCompleted = 0;
+                        await actionCommandDBService.Update();
+
 
                         return false;
                     }
@@ -838,9 +886,9 @@ namespace PolSourceGroupingExcelFileReadServices.Services
 
             }
 
-            generateCodeStatusDBService.Status.AppendLine($"{ PolSourceGroupingExcelFileReadServicesRes.AllTextInGroupAndChildColumnsDoesNotContainSpace }.");
-            generateCodeStatusDBService.Status.AppendLine("");
-            //await generateCodeStatusDBService.Update( 0);
+            actionCommandDBService.ExecutionStatusText.AppendLine($"{ PolSourceGroupingExcelFileReadServicesRes.AllTextInGroupAndChildColumnsDoesNotContainSpace }.");
+            actionCommandDBService.ExecutionStatusText.AppendLine("");
+            //await actionCommandDBService.Update( 0);
 
             string AllowableChar = "abcdefghijklmnopqrstuvwxyz_ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
 
@@ -848,18 +896,20 @@ namespace PolSourceGroupingExcelFileReadServices.Services
             {
                 if (i % 200 == 0)
                 {
-                    generateCodeStatusDBService.Status.AppendLine($"{ PolSourceGroupingExcelFileReadServicesRes.Checking} ... { PolSourceGroupingExcelFileReadServicesRes.ThatGroup} { groupChoiceChildLevelOrderedList[i].Group } ---- { PolSourceGroupingExcelFileReadServicesRes.ShouldOnlyContainCharactersLike } [{ AllowableChar }]");
-                    generateCodeStatusDBService.Status.AppendLine("");
-                    //await generateCodeStatusDBService.Update( 0);
+                    actionCommandDBService.ExecutionStatusText.AppendLine($"{ PolSourceGroupingExcelFileReadServicesRes.Checking} ... { PolSourceGroupingExcelFileReadServicesRes.ThatGroup} { groupChoiceChildLevelOrderedList[i].Group } ---- { PolSourceGroupingExcelFileReadServicesRes.ShouldOnlyContainCharactersLike } [{ AllowableChar }]");
+                    actionCommandDBService.ExecutionStatusText.AppendLine("");
+                    //await actionCommandDBService.Update( 0);
                 }
 
                 foreach (char c in groupChoiceChildLevelOrderedList[i].Group)
                 {
                     if (!AllowableChar.Contains(c))
                     {
-                        generateCodeStatusDBService.Error.AppendLine($"{ PolSourceGroupingExcelFileReadServicesRes.Group} --- { groupChoiceChildLevelOrderedList[i].Group } ---- { PolSourceGroupingExcelFileReadServicesRes.ShouldNotContain } [{ c }]. { PolSourceGroupingExcelFileReadServicesRes.AllowableCharactersAre } [{ AllowableChar }]");
-                        generateCodeStatusDBService.Error.AppendLine("");
-                        await generateCodeStatusDBService.Update(0);
+                        actionCommandDBService.ErrorText.AppendLine($"{ PolSourceGroupingExcelFileReadServicesRes.Group} --- { groupChoiceChildLevelOrderedList[i].Group } ---- { PolSourceGroupingExcelFileReadServicesRes.ShouldNotContain } [{ c }]. { PolSourceGroupingExcelFileReadServicesRes.AllowableCharactersAre } [{ AllowableChar }]");
+                        actionCommandDBService.ErrorText.AppendLine("");
+                        actionCommandDBService.PercentCompleted = 0;
+                        await actionCommandDBService.Update();
+
 
                         return false;
                     }
@@ -868,25 +918,27 @@ namespace PolSourceGroupingExcelFileReadServices.Services
                 {
                     if (i % 200 == 0)
                     {
-                        generateCodeStatusDBService.Status.AppendLine($"{ PolSourceGroupingExcelFileReadServicesRes.Checking} ... { PolSourceGroupingExcelFileReadServicesRes.ThatGroup } { groupChoiceChildLevelOrderedList[i].Child } ---- { PolSourceGroupingExcelFileReadServicesRes.ShouldOnlyContainCharactersLike } [{ AllowableChar }]");
-                        generateCodeStatusDBService.Status.AppendLine("");
-                        //await generateCodeStatusDBService.Update( 0);
+                        actionCommandDBService.ExecutionStatusText.AppendLine($"{ PolSourceGroupingExcelFileReadServicesRes.Checking} ... { PolSourceGroupingExcelFileReadServicesRes.ThatGroup } { groupChoiceChildLevelOrderedList[i].Child } ---- { PolSourceGroupingExcelFileReadServicesRes.ShouldOnlyContainCharactersLike } [{ AllowableChar }]");
+                        actionCommandDBService.ExecutionStatusText.AppendLine("");
+                        //await actionCommandDBService.Update( 0);
                     }
 
                     if (!AllowableChar.Contains(c))
                     {
-                        generateCodeStatusDBService.Error.AppendLine($"{ PolSourceGroupingExcelFileReadServicesRes.Child } --- { groupChoiceChildLevelOrderedList[i].Child } ---- { PolSourceGroupingExcelFileReadServicesRes.ShouldNotContain} [{ c }]. { PolSourceGroupingExcelFileReadServicesRes.AllowableCharactersAre } [{ AllowableChar }]");
-                        generateCodeStatusDBService.Error.AppendLine("");
-                        await generateCodeStatusDBService.Update(0);
+                        actionCommandDBService.ErrorText.AppendLine($"{ PolSourceGroupingExcelFileReadServicesRes.Child } --- { groupChoiceChildLevelOrderedList[i].Child } ---- { PolSourceGroupingExcelFileReadServicesRes.ShouldNotContain} [{ c }]. { PolSourceGroupingExcelFileReadServicesRes.AllowableCharactersAre } [{ AllowableChar }]");
+                        actionCommandDBService.ErrorText.AppendLine("");
+                        actionCommandDBService.PercentCompleted = 0;
+                        await actionCommandDBService.Update();
+
 
                         return false;
                     }
                 }
             }
 
-            generateCodeStatusDBService.Status.AppendLine($"{ PolSourceGroupingExcelFileReadServicesRes.AllTextInGroupAndChildColumnsDoesNotContainSpace }.");
-            generateCodeStatusDBService.Status.AppendLine("");
-            //await generateCodeStatusDBService.Update( 0);
+            actionCommandDBService.ExecutionStatusText.AppendLine($"{ PolSourceGroupingExcelFileReadServicesRes.AllTextInGroupAndChildColumnsDoesNotContainSpace }.");
+            actionCommandDBService.ExecutionStatusText.AppendLine("");
+            //await actionCommandDBService.Update( 0);
 
             for (int i = 0, count = groupChoiceChildLevelOrderedList.Count; i < count; i++)
             {
@@ -894,16 +946,18 @@ namespace PolSourceGroupingExcelFileReadServices.Services
                 {
                     if (i % 200 == 0)
                     {
-                        generateCodeStatusDBService.Status.AppendLine($"{ PolSourceGroupingExcelFileReadServicesRes.Checking} ... { PolSourceGroupingExcelFileReadServicesRes.ThatCSSPID } { groupChoiceChildLevelOrderedList[i].Group } ---- { PolSourceGroupingExcelFileReadServicesRes.DoesNotContainSpace }");
-                        generateCodeStatusDBService.Status.AppendLine("");
-                        //await generateCodeStatusDBService.Update( 0);
+                        actionCommandDBService.ExecutionStatusText.AppendLine($"{ PolSourceGroupingExcelFileReadServicesRes.Checking} ... { PolSourceGroupingExcelFileReadServicesRes.ThatCSSPID } { groupChoiceChildLevelOrderedList[i].Group } ---- { PolSourceGroupingExcelFileReadServicesRes.DoesNotContainSpace }");
+                        actionCommandDBService.ExecutionStatusText.AppendLine("");
+                        //await actionCommandDBService.Update( 0);
                     }
 
                     if (groupChoiceChildLevelOrderedList[i].CSSPID.Contains(" "))
                     {
-                        generateCodeStatusDBService.Error.AppendLine($"{ PolSourceGroupingExcelFileReadServicesRes.CSSPID } --- { groupChoiceChildLevelOrderedList[i].Group } ---- { PolSourceGroupingExcelFileReadServicesRes.ShouldNotContainSpace }");
-                        generateCodeStatusDBService.Error.AppendLine("");
-                        await generateCodeStatusDBService.Update(0);
+                        actionCommandDBService.ErrorText.AppendLine($"{ PolSourceGroupingExcelFileReadServicesRes.CSSPID } --- { groupChoiceChildLevelOrderedList[i].Group } ---- { PolSourceGroupingExcelFileReadServicesRes.ShouldNotContainSpace }");
+                        actionCommandDBService.ErrorText.AppendLine("");
+                        actionCommandDBService.PercentCompleted = 0;
+                        await actionCommandDBService.Update();
+
 
                         return false;
                     }
@@ -912,16 +966,18 @@ namespace PolSourceGroupingExcelFileReadServices.Services
                 {
                     if (i % 200 == 0)
                     {
-                        generateCodeStatusDBService.Status.AppendLine($"{ PolSourceGroupingExcelFileReadServicesRes.Checking} ... { PolSourceGroupingExcelFileReadServicesRes.ThatCSSPID } { groupChoiceChildLevelOrderedList[i].Child } ---- { PolSourceGroupingExcelFileReadServicesRes.DoesNotContainSpace }");
-                        generateCodeStatusDBService.Status.AppendLine("");
-                        //await generateCodeStatusDBService.Update( 0);
+                        actionCommandDBService.ExecutionStatusText.AppendLine($"{ PolSourceGroupingExcelFileReadServicesRes.Checking} ... { PolSourceGroupingExcelFileReadServicesRes.ThatCSSPID } { groupChoiceChildLevelOrderedList[i].Child } ---- { PolSourceGroupingExcelFileReadServicesRes.DoesNotContainSpace }");
+                        actionCommandDBService.ExecutionStatusText.AppendLine("");
+                        //await actionCommandDBService.Update( 0);
                     }
 
                     if (groupChoiceChildLevelOrderedList[i].CSSPID.Contains(" "))
                     {
-                        generateCodeStatusDBService.Error.AppendLine($"{ PolSourceGroupingExcelFileReadServicesRes.CSSPID } --- { groupChoiceChildLevelOrderedList[i].Child } ---- { PolSourceGroupingExcelFileReadServicesRes.ShouldNotContainSpace }");
-                        generateCodeStatusDBService.Error.AppendLine("");
-                        await generateCodeStatusDBService.Update(0);
+                        actionCommandDBService.ErrorText.AppendLine($"{ PolSourceGroupingExcelFileReadServicesRes.CSSPID } --- { groupChoiceChildLevelOrderedList[i].Child } ---- { PolSourceGroupingExcelFileReadServicesRes.ShouldNotContainSpace }");
+                        actionCommandDBService.ErrorText.AppendLine("");
+                        actionCommandDBService.PercentCompleted = 0;
+                        await actionCommandDBService.Update();
+
 
                         return false;
                     }
@@ -929,9 +985,9 @@ namespace PolSourceGroupingExcelFileReadServices.Services
 
             }
 
-            generateCodeStatusDBService.Status.AppendLine($"{ PolSourceGroupingExcelFileReadServicesRes.AllTextInCSSPIDColumnDoesNotContainSpace }.");
-            generateCodeStatusDBService.Status.AppendLine("");
-            //await generateCodeStatusDBService.Update( 0);
+            actionCommandDBService.ExecutionStatusText.AppendLine($"{ PolSourceGroupingExcelFileReadServicesRes.AllTextInCSSPIDColumnDoesNotContainSpace }.");
+            actionCommandDBService.ExecutionStatusText.AppendLine("");
+            //await actionCommandDBService.Update( 0);
 
             List<string> UniqueCSSPIDList = new List<string>();
             for (int i = 0, count = groupChoiceChildLevelOrderedList.Count; i < count; i++)
@@ -940,16 +996,18 @@ namespace PolSourceGroupingExcelFileReadServices.Services
                 {
                     if (i % 200 == 0)
                     {
-                        generateCodeStatusDBService.Status.AppendLine($"{ PolSourceGroupingExcelFileReadServicesRes.Checking} ... { PolSourceGroupingExcelFileReadServicesRes.ThatGroupCSSPID } { groupChoiceChildLevelOrderedList[i].Group } ---- { PolSourceGroupingExcelFileReadServicesRes.IsUnique }.");
-                        generateCodeStatusDBService.Status.AppendLine("");
-                        //await generateCodeStatusDBService.Update( 0);
+                        actionCommandDBService.ExecutionStatusText.AppendLine($"{ PolSourceGroupingExcelFileReadServicesRes.Checking} ... { PolSourceGroupingExcelFileReadServicesRes.ThatGroupCSSPID } { groupChoiceChildLevelOrderedList[i].Group } ---- { PolSourceGroupingExcelFileReadServicesRes.IsUnique }.");
+                        actionCommandDBService.ExecutionStatusText.AppendLine("");
+                        //await actionCommandDBService.Update( 0);
                     }
 
                     if (string.IsNullOrWhiteSpace(groupChoiceChildLevelOrderedList[i].CSSPID))
                     {
-                        generateCodeStatusDBService.Error.AppendLine($"{ PolSourceGroupingExcelFileReadServicesRes.Group} --- { groupChoiceChildLevelOrderedList[i].Group } ---- { PolSourceGroupingExcelFileReadServicesRes.RequiredAUniqueNumberInFirstColumn }.");
-                        generateCodeStatusDBService.Error.AppendLine("");
-                        await generateCodeStatusDBService.Update(0);
+                        actionCommandDBService.ErrorText.AppendLine($"{ PolSourceGroupingExcelFileReadServicesRes.Group} --- { groupChoiceChildLevelOrderedList[i].Group } ---- { PolSourceGroupingExcelFileReadServicesRes.RequiredAUniqueNumberInFirstColumn }.");
+                        actionCommandDBService.ErrorText.AppendLine("");
+                        actionCommandDBService.PercentCompleted = 0;
+                        await actionCommandDBService.Update();
+
 
                         return false;
                     }
@@ -958,16 +1016,18 @@ namespace PolSourceGroupingExcelFileReadServices.Services
                 {
                     if (i % 200 == 0)
                     {
-                        generateCodeStatusDBService.Status.AppendLine($"{ PolSourceGroupingExcelFileReadServicesRes.Checking} ... { PolSourceGroupingExcelFileReadServicesRes.ThatGroupCSSPID } { groupChoiceChildLevelOrderedList[i].Child } ---- { PolSourceGroupingExcelFileReadServicesRes.IsUnique }.");
-                        generateCodeStatusDBService.Status.AppendLine("");
-                        //await generateCodeStatusDBService.Update( 0);
+                        actionCommandDBService.ExecutionStatusText.AppendLine($"{ PolSourceGroupingExcelFileReadServicesRes.Checking} ... { PolSourceGroupingExcelFileReadServicesRes.ThatGroupCSSPID } { groupChoiceChildLevelOrderedList[i].Child } ---- { PolSourceGroupingExcelFileReadServicesRes.IsUnique }.");
+                        actionCommandDBService.ExecutionStatusText.AppendLine("");
+                        //await actionCommandDBService.Update( 0);
                     }
 
                     if (string.IsNullOrWhiteSpace(groupChoiceChildLevelOrderedList[i].CSSPID))
                     {
-                        generateCodeStatusDBService.Error.AppendLine($"{ PolSourceGroupingExcelFileReadServicesRes.Child } --- { groupChoiceChildLevelOrderedList[i].Child } ---- { PolSourceGroupingExcelFileReadServicesRes.RequiredAUniqueNumberInFirstColumn }");
-                        generateCodeStatusDBService.Error.AppendLine("");
-                        await generateCodeStatusDBService.Update(0);
+                        actionCommandDBService.ErrorText.AppendLine($"{ PolSourceGroupingExcelFileReadServicesRes.Child } --- { groupChoiceChildLevelOrderedList[i].Child } ---- { PolSourceGroupingExcelFileReadServicesRes.RequiredAUniqueNumberInFirstColumn }");
+                        actionCommandDBService.ErrorText.AppendLine("");
+                        actionCommandDBService.PercentCompleted = 0;
+                        await actionCommandDBService.Update();
+
 
                         return false;
                     }
@@ -975,29 +1035,33 @@ namespace PolSourceGroupingExcelFileReadServices.Services
 
                 if (i % 200 == 0)
                 {
-                    generateCodeStatusDBService.Status.AppendLine($"{ PolSourceGroupingExcelFileReadServicesRes.Checking} ... { PolSourceGroupingExcelFileReadServicesRes.ThatCSSPID } { groupChoiceChildLevelOrderedList[i].Child } ---- { PolSourceGroupingExcelFileReadServicesRes.IsNotEmpty }.");
-                    generateCodeStatusDBService.Status.AppendLine("");
-                    //await generateCodeStatusDBService.Update( 0);
+                    actionCommandDBService.ExecutionStatusText.AppendLine($"{ PolSourceGroupingExcelFileReadServicesRes.Checking} ... { PolSourceGroupingExcelFileReadServicesRes.ThatCSSPID } { groupChoiceChildLevelOrderedList[i].Child } ---- { PolSourceGroupingExcelFileReadServicesRes.IsNotEmpty }.");
+                    actionCommandDBService.ExecutionStatusText.AppendLine("");
+                    //await actionCommandDBService.Update( 0);
                 }
 
                 if (string.IsNullOrWhiteSpace(groupChoiceChildLevelOrderedList[i].CSSPID))
                 {
-                    generateCodeStatusDBService.Error.AppendLine($"{ PolSourceGroupingExcelFileReadServicesRes.CSSPIDIsRequiredForGroupOrChild } [{ (groupChoiceChildLevelOrderedList[i].Choice.Length > 0 ? groupChoiceChildLevelOrderedList[i].Choice : groupChoiceChildLevelOrderedList[i].Group) }]");
-                    generateCodeStatusDBService.Error.AppendLine("");
-                    await generateCodeStatusDBService.Update(0);
+                    actionCommandDBService.ErrorText.AppendLine($"{ PolSourceGroupingExcelFileReadServicesRes.CSSPIDIsRequiredForGroupOrChild } [{ (groupChoiceChildLevelOrderedList[i].Choice.Length > 0 ? groupChoiceChildLevelOrderedList[i].Choice : groupChoiceChildLevelOrderedList[i].Group) }]");
+                    actionCommandDBService.ErrorText.AppendLine("");
+                    actionCommandDBService.PercentCompleted = 0;
+                    await actionCommandDBService.Update();
+
 
                     return false;
                 }
 
-                generateCodeStatusDBService.Status.AppendLine($"{ PolSourceGroupingExcelFileReadServicesRes.Checking } ... { PolSourceGroupingExcelFileReadServicesRes.ThatCSSPID } { groupChoiceChildLevelOrderedList[i].Child } ---- { PolSourceGroupingExcelFileReadServicesRes.IsUnique }.");
-                generateCodeStatusDBService.Status.AppendLine("");
-                //await generateCodeStatusDBService.Update( 0);
+                actionCommandDBService.ExecutionStatusText.AppendLine($"{ PolSourceGroupingExcelFileReadServicesRes.Checking } ... { PolSourceGroupingExcelFileReadServicesRes.ThatCSSPID } { groupChoiceChildLevelOrderedList[i].Child } ---- { PolSourceGroupingExcelFileReadServicesRes.IsUnique }.");
+                actionCommandDBService.ExecutionStatusText.AppendLine("");
+                //await actionCommandDBService.Update( 0);
 
                 if (UniqueCSSPIDList.Contains(groupChoiceChildLevelOrderedList[i].CSSPID))
                 {
-                    generateCodeStatusDBService.Error.AppendLine($"{ PolSourceGroupingExcelFileReadServicesRes.CSSPID } [{ groupChoiceChildLevelOrderedList[i].CSSPID }] { PolSourceGroupingExcelFileReadServicesRes.IsNotUnique }");
-                    generateCodeStatusDBService.Error.AppendLine("");
-                    await generateCodeStatusDBService.Update(0);
+                    actionCommandDBService.ErrorText.AppendLine($"{ PolSourceGroupingExcelFileReadServicesRes.CSSPID } [{ groupChoiceChildLevelOrderedList[i].CSSPID }] { PolSourceGroupingExcelFileReadServicesRes.IsNotUnique }");
+                    actionCommandDBService.ErrorText.AppendLine("");
+                    actionCommandDBService.PercentCompleted = 0;
+                    await actionCommandDBService.Update();
+
 
                     return false;
                 }
@@ -1006,9 +1070,9 @@ namespace PolSourceGroupingExcelFileReadServices.Services
 
                 if (i % 200 == 0)
                 {
-                    generateCodeStatusDBService.Status.AppendLine($"{ PolSourceGroupingExcelFileReadServicesRes.Checking } ... { PolSourceGroupingExcelFileReadServicesRes.ThatEachHideCellWithInformationContainsValidChildID }, { PolSourceGroupingExcelFileReadServicesRes.CSSPIDAreNotDupliate }, { PolSourceGroupingExcelFileReadServicesRes.CSSPIDWithDashAreWellFormed }.");
-                    generateCodeStatusDBService.Status.AppendLine("");
-                    //await generateCodeStatusDBService.Update( 0);
+                    actionCommandDBService.ExecutionStatusText.AppendLine($"{ PolSourceGroupingExcelFileReadServicesRes.Checking } ... { PolSourceGroupingExcelFileReadServicesRes.ThatEachHideCellWithInformationContainsValidChildID }, { PolSourceGroupingExcelFileReadServicesRes.CSSPIDAreNotDupliate }, { PolSourceGroupingExcelFileReadServicesRes.CSSPIDWithDashAreWellFormed }.");
+                    actionCommandDBService.ExecutionStatusText.AppendLine("");
+                    //await actionCommandDBService.Update( 0);
                 }
 
                 if (!groupChoiceChildLevelOrderedList[i].CSSPID.EndsWith("00"))
@@ -1026,9 +1090,11 @@ namespace PolSourceGroupingExcelFileReadServices.Services
                                 List<string> stringList = childCSSPID.Split("-".ToCharArray(), StringSplitOptions.None).ToList();
                                 if (stringList.Count > 2)
                                 {
-                                    generateCodeStatusDBService.Error.AppendLine($"{ PolSourceGroupingExcelFileReadServicesRes.CSSPID } [{ groupChoiceChildLevelOrderedList[i].CSSPID }] { PolSourceGroupingExcelFileReadServicesRes.HideCellContains } [{ childCSSPID }] { PolSourceGroupingExcelFileReadServicesRes.PleaseRemoveADash }");
-                                    generateCodeStatusDBService.Error.AppendLine("");
-                                    await generateCodeStatusDBService.Update(0);
+                                    actionCommandDBService.ErrorText.AppendLine($"{ PolSourceGroupingExcelFileReadServicesRes.CSSPID } [{ groupChoiceChildLevelOrderedList[i].CSSPID }] { PolSourceGroupingExcelFileReadServicesRes.HideCellContains } [{ childCSSPID }] { PolSourceGroupingExcelFileReadServicesRes.PleaseRemoveADash }");
+                                    actionCommandDBService.ErrorText.AppendLine("");
+                                    actionCommandDBService.PercentCompleted = 0;
+                                    await actionCommandDBService.Update();
+
 
                                     return false;
                                 }
@@ -1037,9 +1103,11 @@ namespace PolSourceGroupingExcelFileReadServices.Services
                                 {
                                     if (!NumberAndDashOnlyList.Contains(s.ToString()))
                                     {
-                                        generateCodeStatusDBService.Error.AppendLine($"{ PolSourceGroupingExcelFileReadServicesRes.CSSPID} [{ groupChoiceChildLevelOrderedList[i].CSSPID }] { PolSourceGroupingExcelFileReadServicesRes.HideCellContains } [{ childCSSPID }]. { PolSourceGroupingExcelFileReadServicesRes.AllowableCharactersAre } [{ String.Join(",", NumberAndDashOnlyList) }]");
-                                        generateCodeStatusDBService.Error.AppendLine("");
-                                        await generateCodeStatusDBService.Update(0);
+                                        actionCommandDBService.ErrorText.AppendLine($"{ PolSourceGroupingExcelFileReadServicesRes.CSSPID} [{ groupChoiceChildLevelOrderedList[i].CSSPID }] { PolSourceGroupingExcelFileReadServicesRes.HideCellContains } [{ childCSSPID }]. { PolSourceGroupingExcelFileReadServicesRes.AllowableCharactersAre } [{ String.Join(",", NumberAndDashOnlyList) }]");
+                                        actionCommandDBService.ErrorText.AppendLine("");
+                                        actionCommandDBService.PercentCompleted = 0;
+                                        await actionCommandDBService.Update();
+
 
                                         return false;
                                     }
@@ -1049,9 +1117,11 @@ namespace PolSourceGroupingExcelFileReadServices.Services
                                 int endPos = childCSSPID.IndexOf("-") + 1;
                                 if (childCSSPID.Length <= endPos)
                                 {
-                                    generateCodeStatusDBService.Error.AppendLine($"{ PolSourceGroupingExcelFileReadServicesRes.CSSPID } [{ groupChoiceChildLevelOrderedList[i].CSSPID }] { PolSourceGroupingExcelFileReadServicesRes.HideCellContains } [{ childCSSPID }] { PolSourceGroupingExcelFileReadServicesRes.MissingEndValue }");
-                                    generateCodeStatusDBService.Error.AppendLine("");
-                                    await generateCodeStatusDBService.Update(0);
+                                    actionCommandDBService.ErrorText.AppendLine($"{ PolSourceGroupingExcelFileReadServicesRes.CSSPID } [{ groupChoiceChildLevelOrderedList[i].CSSPID }] { PolSourceGroupingExcelFileReadServicesRes.HideCellContains } [{ childCSSPID }] { PolSourceGroupingExcelFileReadServicesRes.MissingEndValue }");
+                                    actionCommandDBService.ErrorText.AppendLine("");
+                                    actionCommandDBService.PercentCompleted = 0;
+                                    await actionCommandDBService.Update();
+
 
                                     return false;
                                 }
@@ -1060,9 +1130,11 @@ namespace PolSourceGroupingExcelFileReadServices.Services
 
                                 if (fromCSSPID >= toCSSPID)
                                 {
-                                    generateCodeStatusDBService.Error.AppendLine($"{ PolSourceGroupingExcelFileReadServicesRes.CSSPID } [{ groupChoiceChildLevelOrderedList[i].CSSPID }] { PolSourceGroupingExcelFileReadServicesRes.HideCellContains } [{ childCSSPID }] { PolSourceGroupingExcelFileReadServicesRes.WhichTheFirstValueIs } >= { PolSourceGroupingExcelFileReadServicesRes.ThanTheLastValue }");
-                                    generateCodeStatusDBService.Error.AppendLine("");
-                                    await generateCodeStatusDBService.Update(0);
+                                    actionCommandDBService.ErrorText.AppendLine($"{ PolSourceGroupingExcelFileReadServicesRes.CSSPID } [{ groupChoiceChildLevelOrderedList[i].CSSPID }] { PolSourceGroupingExcelFileReadServicesRes.HideCellContains } [{ childCSSPID }] { PolSourceGroupingExcelFileReadServicesRes.WhichTheFirstValueIs } >= { PolSourceGroupingExcelFileReadServicesRes.ThanTheLastValue }");
+                                    actionCommandDBService.ErrorText.AppendLine("");
+                                    actionCommandDBService.PercentCompleted = 0;
+                                    await actionCommandDBService.Update();
+
 
                                     return false;
                                 }
@@ -1074,9 +1146,11 @@ namespace PolSourceGroupingExcelFileReadServices.Services
                                 {
                                     if (CSSPIDList2.Contains(id.ToString()) || CSSPIDList.Contains(id.ToString()))
                                     {
-                                        generateCodeStatusDBService.Error.AppendLine($"{ PolSourceGroupingExcelFileReadServicesRes.CSSPID } [{ groupChoiceChildLevelOrderedList[i].CSSPID }] { PolSourceGroupingExcelFileReadServicesRes.HideCellContains } [{ childCSSPID }] { PolSourceGroupingExcelFileReadServicesRes.WhichWillDuplicate } [{ id.ToString() }]");
-                                        generateCodeStatusDBService.Error.AppendLine("");
-                                        await generateCodeStatusDBService.Update(0);
+                                        actionCommandDBService.ErrorText.AppendLine($"{ PolSourceGroupingExcelFileReadServicesRes.CSSPID } [{ groupChoiceChildLevelOrderedList[i].CSSPID }] { PolSourceGroupingExcelFileReadServicesRes.HideCellContains } [{ childCSSPID }] { PolSourceGroupingExcelFileReadServicesRes.WhichWillDuplicate } [{ id.ToString() }]");
+                                        actionCommandDBService.ErrorText.AppendLine("");
+                                        actionCommandDBService.PercentCompleted = 0;
+                                        await actionCommandDBService.Update();
+
 
                                         return false;
                                     }
@@ -1097,9 +1171,11 @@ namespace PolSourceGroupingExcelFileReadServices.Services
                         {
                             if (oldCSSPID == csspID)
                             {
-                                generateCodeStatusDBService.Error.AppendLine($"{ PolSourceGroupingExcelFileReadServicesRes.CSSPID } [{ groupChoiceChildLevelOrderedList[i].CSSPID }] { PolSourceGroupingExcelFileReadServicesRes.HideCellHasDuplicate } [{ csspID }]");
-                                generateCodeStatusDBService.Error.AppendLine("");
-                                await generateCodeStatusDBService.Update(0);
+                                actionCommandDBService.ErrorText.AppendLine($"{ PolSourceGroupingExcelFileReadServicesRes.CSSPID } [{ groupChoiceChildLevelOrderedList[i].CSSPID }] { PolSourceGroupingExcelFileReadServicesRes.HideCellHasDuplicate } [{ csspID }]");
+                                actionCommandDBService.ErrorText.AppendLine("");
+                                actionCommandDBService.PercentCompleted = 0;
+                                await actionCommandDBService.Update();
+
 
                                 return false;
                             }
@@ -1110,9 +1186,11 @@ namespace PolSourceGroupingExcelFileReadServices.Services
                             GroupChoiceChildLevel groupChoiceChildLevelChild = groupChoiceChildLevelOrderedList.Where(c => c.CSSPID == childCSSPID).FirstOrDefault();
                             if (groupChoiceChildLevelChild == null)
                             {
-                                generateCodeStatusDBService.Error.AppendLine($"{ PolSourceGroupingExcelFileReadServicesRes.CSSPID } [{ groupChoiceChildLevelOrderedList[i].CSSPID }] { PolSourceGroupingExcelFileReadServicesRes.HideCellContainsID } [{ childCSSPID.ToString() }] { PolSourceGroupingExcelFileReadServicesRes.WhichDoesNotExist }");
-                                generateCodeStatusDBService.Error.AppendLine("");
-                                await generateCodeStatusDBService.Update(0);
+                                actionCommandDBService.ErrorText.AppendLine($"{ PolSourceGroupingExcelFileReadServicesRes.CSSPID } [{ groupChoiceChildLevelOrderedList[i].CSSPID }] { PolSourceGroupingExcelFileReadServicesRes.HideCellContainsID } [{ childCSSPID.ToString() }] { PolSourceGroupingExcelFileReadServicesRes.WhichDoesNotExist }");
+                                actionCommandDBService.ErrorText.AppendLine("");
+                                actionCommandDBService.PercentCompleted = 0;
+                                await actionCommandDBService.Update();
+
 
                                 return false;
                             }
@@ -1122,9 +1200,11 @@ namespace PolSourceGroupingExcelFileReadServices.Services
 
                             if (groupChoiceChildLevel == null)
                             {
-                                generateCodeStatusDBService.Error.AppendLine($"{ PolSourceGroupingExcelFileReadServicesRes.CSSPID } [{ groupChoiceChildLevelOrderedList[i].CSSPID }] { PolSourceGroupingExcelFileReadServicesRes.GroupChoiceChildLevelIsNullForStartCSSPID } [{ startCSSPID.ToString() }]");
-                                generateCodeStatusDBService.Error.AppendLine("");
-                                await generateCodeStatusDBService.Update(0);
+                                actionCommandDBService.ErrorText.AppendLine($"{ PolSourceGroupingExcelFileReadServicesRes.CSSPID } [{ groupChoiceChildLevelOrderedList[i].CSSPID }] { PolSourceGroupingExcelFileReadServicesRes.GroupChoiceChildLevelIsNullForStartCSSPID } [{ startCSSPID.ToString() }]");
+                                actionCommandDBService.ErrorText.AppendLine("");
+                                actionCommandDBService.PercentCompleted = 0;
+                                await actionCommandDBService.Update();
+
 
                                 return false;
                             }
@@ -1132,9 +1212,11 @@ namespace PolSourceGroupingExcelFileReadServices.Services
                             string group = groupChoiceChildLevel.Group;
                             if (groupChoiceChildLevelOrderedList[i].Child != group)
                             {
-                                generateCodeStatusDBService.Error.AppendLine($"{ PolSourceGroupingExcelFileReadServicesRes.CSSPID } [{ groupChoiceChildLevelOrderedList[i].CSSPID }] { PolSourceGroupingExcelFileReadServicesRes.HideCellContainsID } [{ childCSSPID.ToString() }] { PolSourceGroupingExcelFileReadServicesRes.WhichIsNotADirectChild }");
-                                generateCodeStatusDBService.Error.AppendLine("");
-                                await generateCodeStatusDBService.Update(0);
+                                actionCommandDBService.ErrorText.AppendLine($"{ PolSourceGroupingExcelFileReadServicesRes.CSSPID } [{ groupChoiceChildLevelOrderedList[i].CSSPID }] { PolSourceGroupingExcelFileReadServicesRes.HideCellContainsID } [{ childCSSPID.ToString() }] { PolSourceGroupingExcelFileReadServicesRes.WhichIsNotADirectChild }");
+                                actionCommandDBService.ErrorText.AppendLine("");
+                                actionCommandDBService.PercentCompleted = 0;
+                                await actionCommandDBService.Update();
+
 
                                 return false;
                             }
@@ -1146,9 +1228,11 @@ namespace PolSourceGroupingExcelFileReadServices.Services
                             GroupChoiceChildLevel groupChoiceChildLevelChild = groupChoiceChildLevelOrderedList.Where(c => c.CSSPID == childCSSPID).FirstOrDefault();
                             if (groupChoiceChildLevelChild == null)
                             {
-                                generateCodeStatusDBService.Error.AppendLine($"{ PolSourceGroupingExcelFileReadServicesRes.CSSPID } [{ groupChoiceChildLevelOrderedList[i].CSSPID }] { PolSourceGroupingExcelFileReadServicesRes.HideCellContainsID } [{ childCSSPID.ToString() }] { PolSourceGroupingExcelFileReadServicesRes.WhichDoesNotExist}");
-                                generateCodeStatusDBService.Error.AppendLine("");
-                                await generateCodeStatusDBService.Update(0);
+                                actionCommandDBService.ErrorText.AppendLine($"{ PolSourceGroupingExcelFileReadServicesRes.CSSPID } [{ groupChoiceChildLevelOrderedList[i].CSSPID }] { PolSourceGroupingExcelFileReadServicesRes.HideCellContainsID } [{ childCSSPID.ToString() }] { PolSourceGroupingExcelFileReadServicesRes.WhichDoesNotExist}");
+                                actionCommandDBService.ErrorText.AppendLine("");
+                                actionCommandDBService.PercentCompleted = 0;
+                                await actionCommandDBService.Update();
+
 
                                 return false;
                             }
@@ -1158,9 +1242,11 @@ namespace PolSourceGroupingExcelFileReadServices.Services
 
                             if (CSSPIDList.Count == CountChild)
                             {
-                                generateCodeStatusDBService.Error.AppendLine($"{ PolSourceGroupingExcelFileReadServicesRes.CSSPID } [{ groupChoiceChildLevelOrderedList[i].CSSPID }] { PolSourceGroupingExcelFileReadServicesRes.IsHidingAllPossibleSelection }");
-                                generateCodeStatusDBService.Error.AppendLine("");
-                                await generateCodeStatusDBService.Update(0);
+                                actionCommandDBService.ErrorText.AppendLine($"{ PolSourceGroupingExcelFileReadServicesRes.CSSPID } [{ groupChoiceChildLevelOrderedList[i].CSSPID }] { PolSourceGroupingExcelFileReadServicesRes.IsHidingAllPossibleSelection }");
+                                actionCommandDBService.ErrorText.AppendLine("");
+                                actionCommandDBService.PercentCompleted = 0;
+                                await actionCommandDBService.Update();
+
 
                                 return false;
 
@@ -1170,15 +1256,15 @@ namespace PolSourceGroupingExcelFileReadServices.Services
                 }
             }
 
-            generateCodeStatusDBService.Status.AppendLine($"{ PolSourceGroupingExcelFileReadServicesRes.AllGroupsAndChoicesColumnsHaveAUniqueCSSPID }.");
-            generateCodeStatusDBService.Status.AppendLine("");
+            actionCommandDBService.ExecutionStatusText.AppendLine($"{ PolSourceGroupingExcelFileReadServicesRes.AllGroupsAndChoicesColumnsHaveAUniqueCSSPID }.");
+            actionCommandDBService.ExecutionStatusText.AppendLine("");
 
-            generateCodeStatusDBService.Status.AppendLine($"{ PolSourceGroupingExcelFileReadServicesRes.AllHideColumnsWithInformationHasValidCSSPIDIEExistAndIsChild }.");
-            generateCodeStatusDBService.Status.AppendLine("");
+            actionCommandDBService.ExecutionStatusText.AppendLine($"{ PolSourceGroupingExcelFileReadServicesRes.AllHideColumnsWithInformationHasValidCSSPIDIEExistAndIsChild }.");
+            actionCommandDBService.ExecutionStatusText.AppendLine("");
 
-            generateCodeStatusDBService.Status.AppendLine($"{ PolSourceGroupingExcelFileReadServicesRes.EverythingIsOK }.");
-            generateCodeStatusDBService.Status.AppendLine("");
-            //await generateCodeStatusDBService.Update( 0);
+            actionCommandDBService.ExecutionStatusText.AppendLine($"{ PolSourceGroupingExcelFileReadServicesRes.EverythingIsOK }.");
+            actionCommandDBService.ExecutionStatusText.AppendLine("");
+            //await actionCommandDBService.Update( 0);
 
             return true;
         }
@@ -1186,9 +1272,9 @@ namespace PolSourceGroupingExcelFileReadServices.Services
         {
             groupChoiceChildLevelList = new List<GroupChoiceChildLevel>();
 
-            generateCodeStatusDBService.Status.AppendLine($"{ PolSourceGroupingExcelFileReadServicesRes.ReadingSpreadsheet } [{ FullFileName }]");
-            generateCodeStatusDBService.Status.AppendLine("");
-            //await generateCodeStatusDBService.Update( 0);
+            actionCommandDBService.ExecutionStatusText.AppendLine($"{ PolSourceGroupingExcelFileReadServicesRes.ReadingSpreadsheet } [{ FullFileName }]");
+            actionCommandDBService.ExecutionStatusText.AppendLine("");
+            //await actionCommandDBService.Update( 0);
 
             FileInfo fi = new FileInfo(FullFileName);
 
@@ -1250,9 +1336,11 @@ namespace PolSourceGroupingExcelFileReadServices.Services
                                                     {
                                                         if ((item.Text.Text + "") != FieldNameList[cellcount])
                                                         {
-                                                            generateCodeStatusDBService.Error.AppendLine($"{ fi.FullName } { PolSourceGroupingExcelFileReadServicesRes.PolSourceGrouping } { item.Text } { PolSourceGroupingExcelFileReadServicesRes.IsNotEqualTo } { FieldNameList[cellcount] }");
-                                                            generateCodeStatusDBService.Error.AppendLine("");
-                                                            await generateCodeStatusDBService.Update(0);
+                                                            actionCommandDBService.ErrorText.AppendLine($"{ fi.FullName } { PolSourceGroupingExcelFileReadServicesRes.PolSourceGrouping } { item.Text } { PolSourceGroupingExcelFileReadServicesRes.IsNotEqualTo } { FieldNameList[cellcount] }");
+                                                            actionCommandDBService.ErrorText.AppendLine("");
+                                                            actionCommandDBService.PercentCompleted = 0;
+                                                            await actionCommandDBService.Update();
+
 
                                                             return false;
                                                         }
@@ -1262,9 +1350,11 @@ namespace PolSourceGroupingExcelFileReadServices.Services
                                                         currentcellvalue = item.InnerText;
                                                         if (currentcellvalue != FieldNameList[cellcount])
                                                         {
-                                                            generateCodeStatusDBService.Error.AppendLine($"{ fi.FullName } { PolSourceGroupingExcelFileReadServicesRes.PolSourceGrouping } { item.Text } { PolSourceGroupingExcelFileReadServicesRes.IsNotEqualTo } { FieldNameList[cellcount] }");
-                                                            generateCodeStatusDBService.Error.AppendLine("");
-                                                            await generateCodeStatusDBService.Update(0);
+                                                            actionCommandDBService.ErrorText.AppendLine($"{ fi.FullName } { PolSourceGroupingExcelFileReadServicesRes.PolSourceGrouping } { item.Text } { PolSourceGroupingExcelFileReadServicesRes.IsNotEqualTo } { FieldNameList[cellcount] }");
+                                                            actionCommandDBService.ErrorText.AppendLine("");
+                                                            actionCommandDBService.PercentCompleted = 0;
+                                                            await actionCommandDBService.Update();
+
 
                                                             return false;
                                                         }
@@ -1274,9 +1364,11 @@ namespace PolSourceGroupingExcelFileReadServices.Services
                                                         currentcellvalue = item.InnerXml;
                                                         if (currentcellvalue != FieldNameList[cellcount])
                                                         {
-                                                            generateCodeStatusDBService.Error.AppendLine($"{ fi.FullName } { PolSourceGroupingExcelFileReadServicesRes.PolSourceGrouping } { item.Text } { PolSourceGroupingExcelFileReadServicesRes.IsNotEqualTo } { FieldNameList[cellcount] }");
-                                                            generateCodeStatusDBService.Error.AppendLine("");
-                                                            await generateCodeStatusDBService.Update(0);
+                                                            actionCommandDBService.ErrorText.AppendLine($"{ fi.FullName } { PolSourceGroupingExcelFileReadServicesRes.PolSourceGrouping } { item.Text } { PolSourceGroupingExcelFileReadServicesRes.IsNotEqualTo } { FieldNameList[cellcount] }");
+                                                            actionCommandDBService.ErrorText.AppendLine("");
+                                                            actionCommandDBService.PercentCompleted = 0;
+                                                            await actionCommandDBService.Update();
+
 
                                                             return false;
                                                         }
@@ -1288,9 +1380,11 @@ namespace PolSourceGroupingExcelFileReadServices.Services
                                         {
                                             if ((thecurrentcell.InnerText + " ") != FieldNameList[cellcount])
                                             {
-                                                generateCodeStatusDBService.Error.AppendLine($"{ fi.FullName } { PolSourceGroupingExcelFileReadServicesRes.PolSourceGrouping } { (thecurrentcell.InnerText + " ") } { PolSourceGroupingExcelFileReadServicesRes.IsNotEqualTo } { FieldNameList[cellcount] }");
-                                                generateCodeStatusDBService.Error.AppendLine("");
-                                                await generateCodeStatusDBService.Update(0);
+                                                actionCommandDBService.ErrorText.AppendLine($"{ fi.FullName } { PolSourceGroupingExcelFileReadServicesRes.PolSourceGrouping } { (thecurrentcell.InnerText + " ") } { PolSourceGroupingExcelFileReadServicesRes.IsNotEqualTo } { FieldNameList[cellcount] }");
+                                                actionCommandDBService.ErrorText.AppendLine("");
+                                                actionCommandDBService.PercentCompleted = 0;
+                                                await actionCommandDBService.Update();
+
 
                                                 return false;
                                             }
@@ -1544,9 +1638,9 @@ namespace PolSourceGroupingExcelFileReadServices.Services
 
                                     if (rowCount % 200 == 0)
                                     {
-                                        generateCodeStatusDBService.Status.AppendLine($"{ PolSourceGroupingExcelFileReadServicesRes.ReadingSpreadsheet } ... { rowCount }");
-                                        generateCodeStatusDBService.Status.AppendLine("");
-                                        //await generateCodeStatusDBService.Update( 0);
+                                        actionCommandDBService.ExecutionStatusText.AppendLine($"{ PolSourceGroupingExcelFileReadServicesRes.ReadingSpreadsheet } ... { rowCount }");
+                                        actionCommandDBService.ExecutionStatusText.AppendLine("");
+                                        //await actionCommandDBService.Update( 0);
                                     }
 
                                     if (!string.IsNullOrWhiteSpace(CSSPID))
@@ -1579,9 +1673,11 @@ namespace PolSourceGroupingExcelFileReadServices.Services
             }
             catch (Exception ex)
             {
-                generateCodeStatusDBService.Error.AppendLine($"{ ex.Message }");
-                generateCodeStatusDBService.Error.AppendLine("");
-                await generateCodeStatusDBService.Update(0);
+                actionCommandDBService.ErrorText.AppendLine($"{ ex.Message }");
+                actionCommandDBService.ErrorText.AppendLine("");
+                actionCommandDBService.PercentCompleted = 0;
+                await actionCommandDBService.Update();
+
 
                 return false;
             }

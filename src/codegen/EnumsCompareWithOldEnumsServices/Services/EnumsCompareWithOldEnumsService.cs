@@ -1,8 +1,8 @@
 ﻿using EnumsCompareWithOldEnumsServices.Resources;
-using GenerateCodeBase.Models;
-using GenerateCodeBase.Services;
-using GenerateCodeStatusDB.Models;
-using GenerateCodeStatusDB.Services;
+using GenerateCodeBaseServices.Models;
+using GenerateCodeBaseServices.Services;
+using ActionCommandDBServices.Models;
+using ActionCommandDBServices.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -15,6 +15,9 @@ using System.Reflection;
 using System.Reflection.Metadata.Ecma335;
 using System.Text;
 using System.Threading.Tasks;
+using ValidateAppSettingsServices.Services;
+using ValidateAppSettingsServices.Models;
+using Microsoft.AspNetCore.Mvc;
 
 namespace EnumsCompareWithOldEnumsServices.Services
 {
@@ -25,18 +28,18 @@ namespace EnumsCompareWithOldEnumsServices.Services
 
         #region Properties
         private IConfiguration configuration { get; set; }
-        private IGenerateCodeStatusDBService generateCodeStatusDBService { get; set; }
+        private IActionCommandDBService actionCommandDBService { get; set; }
         private IValidateAppSettingsService validateAppSettingsService { get; set; }
         private List<string> AllowableCultures { get; set; } = new List<string>() { "en-CA", "fr-CA" };
         #endregion Properties
 
         #region Constructors
         public EnumsCompareWithOldEnumsService(IConfiguration configuration,
-            IGenerateCodeStatusDBService generateCodeStatusDBService,
+            IActionCommandDBService actionCommandDBService,
             IValidateAppSettingsService validateAppSettingsService)
         {
             this.configuration = configuration;
-            this.generateCodeStatusDBService = generateCodeStatusDBService;
+            this.actionCommandDBService = actionCommandDBService;
             this.validateAppSettingsService = validateAppSettingsService;
         }
         #endregion Constructors
@@ -50,17 +53,17 @@ namespace EnumsCompareWithOldEnumsServices.Services
 
             if (!await Setup())
             {
-                Console.WriteLine(generateCodeStatusDBService.Error.ToString());
+                Console.WriteLine(actionCommandDBService.ErrorText.ToString());
                 Console.WriteLine("");
-                Console.WriteLine(generateCodeStatusDBService.Status.ToString());
+                Console.WriteLine(actionCommandDBService.ExecutionStatusText.ToString());
                 return false;
             }
 
             if (!await CompareDLLs())
             {
-                Console.WriteLine(generateCodeStatusDBService.Error.ToString());
+                Console.WriteLine(actionCommandDBService.ErrorText.ToString());
                 Console.WriteLine("");
-                Console.WriteLine(generateCodeStatusDBService.Status.ToString());
+                Console.WriteLine(actionCommandDBService.ExecutionStatusText.ToString());
                 return false;
             }
 
@@ -76,16 +79,18 @@ namespace EnumsCompareWithOldEnumsServices.Services
             string NewEnumsDLL = "NewEnumsDLL";
             string OldEnumsDLL = "OldEnumsDLL";
 
-            GenerateCodeStatus generateCodeStatus = await generateCodeStatusDBService.GetOrCreate();
+            ActionResult<ActionCommand> actionActionCommand = await actionCommandDBService.GetOrCreate();
 
-            if (generateCodeStatus == null)
+            if (((ObjectResult)actionActionCommand.Result).StatusCode == 400)
             {
-                await ConsoleWriteError("generateCodeStatus == null");
+                await ConsoleWriteError("actionCommand == null");
                 return false;
             }
 
-            generateCodeStatusDBService.Status.AppendLine("CompareDLLs Starting...");
-            await generateCodeStatusDBService.Update(0);
+            actionCommandDBService.ExecutionStatusText.AppendLine("CompareDLLs Starting...");
+            actionCommandDBService.PercentCompleted = 0;
+            await actionCommandDBService.Update();
+
 
             FileInfo fiDLL = new FileInfo(configuration.GetValue<string>(NewEnumsDLL));
             FileInfo fiOldDLL = new FileInfo(configuration.GetValue<string>(OldEnumsDLL));
@@ -140,30 +145,33 @@ namespace EnumsCompareWithOldEnumsServices.Services
                 }
             }
 
-            generateCodeStatusDBService.Status.AppendLine("CompareDLLs Finished...");
+            actionCommandDBService.ExecutionStatusText.AppendLine("CompareDLLs Finished...");
 
             return true;
         }
         private async Task ConsoleWriteEnd()
         {
-            generateCodeStatusDBService.Status.AppendLine("");
-            generateCodeStatusDBService.Status.AppendLine($"{ AppRes.Done } ...");
-            generateCodeStatusDBService.Status.AppendLine("");
-            await generateCodeStatusDBService.Update(100);
+            actionCommandDBService.ExecutionStatusText.AppendLine("");
+            actionCommandDBService.ExecutionStatusText.AppendLine($"{ AppRes.Done } ...");
+            actionCommandDBService.ExecutionStatusText.AppendLine("");
+            actionCommandDBService.PercentCompleted = 100;
+            await actionCommandDBService.Update();
 
-            if (!string.IsNullOrWhiteSpace(generateCodeStatusDBService.Error.ToString()))
+            if (!string.IsNullOrWhiteSpace(actionCommandDBService.ErrorText.ToString()))
             {
-                Console.WriteLine(generateCodeStatusDBService.Error.ToString());
+                Console.WriteLine(actionCommandDBService.ErrorText.ToString());
             }
 
-            Console.WriteLine(generateCodeStatusDBService.Status.ToString());
+            Console.WriteLine(actionCommandDBService.ExecutionStatusText.ToString());
         }
         private async Task ConsoleWriteError(string errMessage)
         {
-            generateCodeStatusDBService.Error.AppendLine(errMessage);
-            await generateCodeStatusDBService.Update(0);
-            Console.WriteLine(generateCodeStatusDBService.Error.ToString());
-            Console.WriteLine(generateCodeStatusDBService.Status.ToString());
+            actionCommandDBService.ErrorText.AppendLine(errMessage);
+            actionCommandDBService.PercentCompleted = 0;
+            await actionCommandDBService.Update();
+
+            Console.WriteLine(actionCommandDBService.ErrorText.ToString());
+            Console.WriteLine(actionCommandDBService.ExecutionStatusText.ToString());
         }
         private void ConsoleWriteStart()
         {
@@ -188,13 +196,13 @@ namespace EnumsCompareWithOldEnumsServices.Services
         }
         private async Task<bool> Setup()
         {
-            generateCodeStatusDBService.Command = configuration.GetValue<string>("Command");
-            generateCodeStatusDBService.Culture = new CultureInfo(configuration.GetValue<string>("Culture"));
-            validateAppSettingsService.Culture = new CultureInfo(configuration.GetValue<string>("Culture"));
+            actionCommandDBService.Command = configuration.GetValue<string>("Command");
+            await actionCommandDBService.SetCulture(new CultureInfo(configuration.GetValue<string>("Culture")));
+            await validateAppSettingsService.SetCulture(new CultureInfo(configuration.GetValue<string>("Culture")));
 
             try
             {
-                await generateCodeStatusDBService.GetOrCreate();
+                await actionCommandDBService.GetOrCreate();
             }
             catch (Exception ex)
             {
@@ -206,13 +214,13 @@ namespace EnumsCompareWithOldEnumsServices.Services
             {
                 new AppSettingParameter() { Parameter = "Command", ExpectedValue = "EnumsCompareWithOldEnums" },
                 new AppSettingParameter() { Parameter = "Culture", ExpectedValue = "", IsCulture = true },
-                new AppSettingParameter() { Parameter = "DBFileName", ExpectedValue = "{AppDataPath}\\CSSP\\GenerateCodeStatus.db", IsFile = true, CheckExist = true },
+                new AppSettingParameter() { Parameter = "DBFileName", ExpectedValue = "{AppDataPath}\\CSSP\\ActionCommandDB.db", IsFile = true, CheckExist = true },
                 new AppSettingParameter() { Parameter = "NewEnumsDLL", ExpectedValue = "C:\\CSSPTools\\src\\dlls\\CSSPEnums\\bin\\Debug\\netcoreapp3.1\\CSSPEnums.dll", IsFile = true, CheckExist = true },
                 new AppSettingParameter() { Parameter = "OldEnumsDLL", ExpectedValue = "C:\\CSSP Latest Code Old\\CSSPEnumsDLL\\CSSPEnumsDLL\\bin\\Debug\\CSSPEnumsDLL.dll", IsFile = true, CheckExist = true },
             };
 
-            validateAppSettingsService.VerifyAppSettings();
-            if (!string.IsNullOrWhiteSpace(generateCodeStatusDBService.Error.ToString()))
+            await validateAppSettingsService.VerifyAppSettings();
+            if (!string.IsNullOrWhiteSpace(actionCommandDBService.ErrorText.ToString()))
             {
                 await ConsoleWriteError("");
                 return false;

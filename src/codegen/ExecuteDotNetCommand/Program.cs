@@ -1,10 +1,10 @@
 ﻿using ExecuteDotNetCommandServices.Models;
 using ExecuteDotNetCommandServices.Resources;
 using ExecuteDotNetCommandServices.Services;
-using GenerateCodeBase.Models;
-using GenerateCodeBase.Services;
-using GenerateCodeStatusDB.Models;
-using GenerateCodeStatusDB.Services;
+using GenerateCodeBaseServices.Models;
+using GenerateCodeBaseServices.Services;
+using ActionCommandDBServices.Models;
+using ActionCommandDBServices.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;

@@ -1,9 +1,9 @@
 ﻿using CSSPEnums;
 using CSSPModels;
-using GenerateCodeBase.Models;
-using GenerateCodeBase.Services;
-using GenerateCodeStatusDB.Models;
-using GenerateCodeStatusDB.Services;
+using GenerateCodeBaseServices.Models;
+using GenerateCodeBaseServices.Services;
+using ActionCommandDBServices.Models;
+using ActionCommandDBServices.Services;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -17,6 +17,9 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
+using ValidateAppSettingsServices.Services;
+using ValidateAppSettingsServices.Models;
 
 namespace ServicesClassNameServiceTestGeneratedServices.Services
 {
@@ -27,7 +30,7 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
 
         #region Properties
         private IConfiguration configuration { get; set; }
-        private IGenerateCodeStatusDBService generateCodeStatusDBService { get; set; }
+        private IActionCommandDBService actionCommandDBService { get; set; }
         private IValidateAppSettingsService validateAppSettingsService { get; set; }
         private IGenerateCodeBaseService generateCodeBaseService { get; set; }
         private List<string> AllowableCultures { get; set; } = new List<string>() { "en-CA", "fr-CA" };
@@ -37,14 +40,14 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
 
         #region Constructors
         public ServicesClassNameServiceTestGeneratedService(IConfiguration configuration,
-            IGenerateCodeStatusDBService generateCodeStatusDBService,
+            IActionCommandDBService actionCommandDBService,
             IValidateAppSettingsService validateAppSettingsService,
             IGenerateCodeBaseService generateCodeBaseService,
             CSSPDBContext dbCSSPDB,
             TestDBContext dbTestDB)
         {
             this.configuration = configuration;
-            this.generateCodeStatusDBService = generateCodeStatusDBService;
+            this.actionCommandDBService = actionCommandDBService;
             this.validateAppSettingsService = validateAppSettingsService;
             this.generateCodeBaseService = generateCodeBaseService;
             this.dbCSSPDB = dbCSSPDB;
@@ -61,17 +64,17 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
 
             if (!await Setup())
             {
-                Console.WriteLine(generateCodeStatusDBService.Error.ToString());
+                Console.WriteLine(actionCommandDBService.ErrorText.ToString());
                 Console.WriteLine("");
-                Console.WriteLine(generateCodeStatusDBService.Status.ToString());
+                Console.WriteLine(actionCommandDBService.ExecutionStatusText.ToString());
                 return false;
             }
 
             if (!await Generate())
             {
-                Console.WriteLine(generateCodeStatusDBService.Error.ToString());
+                Console.WriteLine(actionCommandDBService.ErrorText.ToString());
                 Console.WriteLine("");
-                Console.WriteLine(generateCodeStatusDBService.Status.ToString());
+                Console.WriteLine(actionCommandDBService.ExecutionStatusText.ToString());
                 return false;
             }
 
@@ -84,16 +87,17 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
         #region Functions private
         private async Task<bool> Generate()
         {
-            GenerateCodeStatus generateCodeStatus = await generateCodeStatusDBService.GetOrCreate();
+            ActionResult<ActionCommand> actionActionCommand = await actionCommandDBService.GetOrCreate();
 
-            if (generateCodeStatus == null)
+            if (((ObjectResult)actionActionCommand.Result).StatusCode == 400)
             {
-                await ConsoleWriteError("generateCodeStatus == null");
+                await ConsoleWriteError("actionCommand == null");
                 return false;
             }
 
-            generateCodeStatusDBService.Status.AppendLine("Generate Starting ...");
-            await generateCodeStatusDBService.Update(10);
+            actionCommandDBService.ExecutionStatusText.AppendLine("Generate Starting ...");
+            actionCommandDBService.PercentCompleted = 10;
+            await actionCommandDBService.Update();
 
             string CSSPDBConnectionString = configuration.GetValue<string>("CSSPDBConnectionString");
             string TestDBConnectionString = configuration.GetValue<string>("TestDBConnectionString");
@@ -370,37 +374,43 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
                     sw2.Write(sb.ToString());
                 }
 
-                generateCodeStatusDBService.Status.AppendLine($"Created [{ fiOutputGen.FullName }] ...");
+                actionCommandDBService.ExecutionStatusText.AppendLine($"Created [{ fiOutputGen.FullName }] ...");
             }
 
-            generateCodeStatusDBService.Status.AppendLine("");
-            generateCodeStatusDBService.Status.AppendLine($"{ AppRes.Done } ...");
-            generateCodeStatusDBService.Status.AppendLine("");
-            generateCodeStatusDBService.Status.AppendLine("Generate Finished ...");
-            await generateCodeStatusDBService.Update(100);
+            actionCommandDBService.ExecutionStatusText.AppendLine("");
+            actionCommandDBService.ExecutionStatusText.AppendLine($"{ AppRes.Done } ...");
+            actionCommandDBService.ExecutionStatusText.AppendLine("");
+            actionCommandDBService.ExecutionStatusText.AppendLine("Generate Finished ...");
+            actionCommandDBService.PercentCompleted = 100;
+            await actionCommandDBService.Update();
+
 
             return true;
         }
         private async Task ConsoleWriteEnd()
         {
-            generateCodeStatusDBService.Status.AppendLine("");
-            generateCodeStatusDBService.Status.AppendLine($"{ AppRes.Done } ...");
-            generateCodeStatusDBService.Status.AppendLine("");
-            await generateCodeStatusDBService.Update(100);
+            actionCommandDBService.ExecutionStatusText.AppendLine("");
+            actionCommandDBService.ExecutionStatusText.AppendLine($"{ AppRes.Done } ...");
+            actionCommandDBService.ExecutionStatusText.AppendLine("");
+            actionCommandDBService.PercentCompleted = 100;
+            await actionCommandDBService.Update();
 
-            if (!string.IsNullOrWhiteSpace(generateCodeStatusDBService.Error.ToString()))
+
+            if (!string.IsNullOrWhiteSpace(actionCommandDBService.ErrorText.ToString()))
             {
-                Console.WriteLine(generateCodeStatusDBService.Error.ToString());
+                Console.WriteLine(actionCommandDBService.ErrorText.ToString());
             }
 
-            Console.WriteLine(generateCodeStatusDBService.Status.ToString());
+            Console.WriteLine(actionCommandDBService.ExecutionStatusText.ToString());
         }
         private async Task ConsoleWriteError(string errMessage)
         {
-            generateCodeStatusDBService.Error.AppendLine(errMessage);
-            await generateCodeStatusDBService.Update(0);
-            Console.WriteLine(generateCodeStatusDBService.Error.ToString());
-            Console.WriteLine(generateCodeStatusDBService.Status.ToString());
+            actionCommandDBService.ErrorText.AppendLine(errMessage);
+            actionCommandDBService.PercentCompleted = 0;
+            await actionCommandDBService.Update();
+
+            Console.WriteLine(actionCommandDBService.ErrorText.ToString());
+            Console.WriteLine(actionCommandDBService.ExecutionStatusText.ToString());
         }
         private void ConsoleWriteStart()
         {
@@ -425,13 +435,13 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
         }
         private async Task<bool> Setup()
         {
-            generateCodeStatusDBService.Command = configuration.GetValue<string>("Command");
-            generateCodeStatusDBService.Culture = new CultureInfo(configuration.GetValue<string>("Culture"));
-            validateAppSettingsService.Culture = new CultureInfo(configuration.GetValue<string>("Culture"));
+            actionCommandDBService.Command = configuration.GetValue<string>("Command");
+            await actionCommandDBService.SetCulture(new CultureInfo(configuration.GetValue<string>("Culture")));
+            await validateAppSettingsService.SetCulture(new CultureInfo(configuration.GetValue<string>("Culture")));
 
             try
             {
-                await generateCodeStatusDBService.GetOrCreate();
+                await actionCommandDBService.GetOrCreate();
             }
             catch (Exception ex)
             {
@@ -443,7 +453,7 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
             {
                 new AppSettingParameter() { Parameter = "Command", ExpectedValue = "ServicesClassNameServiceTestGenerated" },
                 new AppSettingParameter() { Parameter = "Culture", ExpectedValue = "", IsCulture = true },
-                new AppSettingParameter() { Parameter = "DBFileName", ExpectedValue = "{AppDataPath}\\CSSP\\GenerateCodeStatus.db", IsFile = true, CheckExist = true },
+                new AppSettingParameter() { Parameter = "DBFileName", ExpectedValue = "{AppDataPath}\\CSSP\\ActionCommandDB.db", IsFile = true, CheckExist = true },
                 new AppSettingParameter() { Parameter = "CSSPEnums", ExpectedValue = "C:\\CSSPTools\\src\\dlls\\CSSPEnums\\bin\\Debug\\netcoreapp3.1\\CSSPEnums.dll", IsFile = true, CheckExist = true },
                 new AppSettingParameter() { Parameter = "CSSPModels", ExpectedValue = "C:\\CSSPTools\\src\\dlls\\CSSPModels\\bin\\Debug\\netcoreapp3.1\\CSSPModels.dll", IsFile = true, CheckExist = true },
                 new AppSettingParameter() { Parameter = "CSSPServices", ExpectedValue = "C:\\CSSPTools\\src\\dlls\\CSSPServices\\bin\\Debug\\netcoreapp3.1\\CSSPServices.dll", IsFile = true, CheckExist = true },
@@ -452,8 +462,8 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
                 new AppSettingParameter() { Parameter = "ClassNameFile", ExpectedValue = "C:\\CSSPCode\\CSSPServices\\CSSPServices.Tests\\{TypeName}ServiceTestGenerated.cs" },
             };
 
-            validateAppSettingsService.VerifyAppSettings();
-            if (!string.IsNullOrWhiteSpace(generateCodeStatusDBService.Error.ToString()))
+            await validateAppSettingsService.VerifyAppSettings();
+            if (!string.IsNullOrWhiteSpace(actionCommandDBService.ErrorText.ToString()))
             {
                 await ConsoleWriteError("");
                 return false;

@@ -74,7 +74,7 @@ namespace ValidateAppSettingsServices.Services
             }
             return retBool;
         }
-        public void SetCulture(CultureInfo culture)
+        public async Task SetCulture(CultureInfo culture)
         {
             actionCommandDBService.SetCulture(culture);
             AppRes.Culture = culture;

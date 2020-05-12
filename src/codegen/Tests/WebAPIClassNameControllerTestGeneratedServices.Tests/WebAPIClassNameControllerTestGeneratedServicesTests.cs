@@ -1,7 +1,7 @@
 ﻿using CSSPModels;
-using GenerateCodeBase.Services;
-using GenerateCodeStatusDB.Models;
-using GenerateCodeStatusDB.Services;
+using GenerateCodeBaseServices.Services;
+using ActionCommandDBServices.Models;
+using ActionCommandDBServices.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -14,6 +14,7 @@ using System.Text;
 using System.Threading.Tasks;
 using WebAPIClassNameControllerTestGeneratedServices.Services;
 using Xunit;
+using ValidateAppSettingsServices.Services;
 
 namespace WebAPIClassNameControllerTestGeneratedServices.Tests
 {
@@ -84,7 +85,7 @@ namespace WebAPIClassNameControllerTestGeneratedServices.Tests
 
             serviceCollection.AddSingleton<IConfiguration>(configuration);
             serviceCollection.AddSingleton<IGenerateCodeBaseService, GenerateCodeBaseService>();
-            serviceCollection.AddSingleton<IGenerateCodeStatusDBService, GenerateCodeStatusDBService>();
+            serviceCollection.AddSingleton<IActionCommandDBService, ActionCommandDBService>();
             serviceCollection.AddSingleton<IValidateAppSettingsService, ValidateAppSettingsService>();
             serviceCollection.AddSingleton<IWebAPIClassNameControllerTestGeneratedService, WebAPIClassNameControllerTestGeneratedService>();
 
@@ -97,7 +98,7 @@ namespace WebAPIClassNameControllerTestGeneratedServices.Tests
             FileInfo fiDB = new FileInfo(fileName.Replace("{AppDataPath}", appDataPath));
             Assert.True(fiDB.Exists);
 
-            serviceCollection.AddDbContext<GenerateCodeStatusContext>(options =>
+            serviceCollection.AddDbContext<ActionCommandContext>(options =>
             {
                 options.UseSqlite($"DataSource={fiDB.FullName}");
             });

@@ -1,9 +1,9 @@
 ﻿using CSSPEnums;
 using CSSPModels;
-using GenerateCodeBase.Models;
-using GenerateCodeBase.Services;
-using GenerateCodeStatusDB.Models;
-using GenerateCodeStatusDB.Services;
+using GenerateCodeBaseServices.Models;
+using GenerateCodeBaseServices.Services;
+using ActionCommandDBServices.Models;
+using ActionCommandDBServices.Services;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -17,6 +17,9 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
+using ValidateAppSettingsServices.Services;
+using ValidateAppSettingsServices.Models;
 
 namespace ServicesRepopulateTestDBServices.Services
 {
@@ -27,7 +30,7 @@ namespace ServicesRepopulateTestDBServices.Services
 
         #region Properties
         private IConfiguration configuration { get; set; }
-        private IGenerateCodeStatusDBService generateCodeStatusDBService { get; set; }
+        private IActionCommandDBService actionCommandDBService { get; set; }
         private IValidateAppSettingsService validateAppSettingsService { get; set; }
         private IGenerateCodeBaseService generateCodeBaseService { get; set; }
         private List<string> AllowableCultures { get; set; } = new List<string>() { "en-CA", "fr-CA" };
@@ -37,14 +40,14 @@ namespace ServicesRepopulateTestDBServices.Services
 
         #region Constructors
         public ServicesRepopulateTestDBService(IConfiguration configuration,
-            IGenerateCodeStatusDBService generateCodeStatusDBService,
+            IActionCommandDBService actionCommandDBService,
             IValidateAppSettingsService validateAppSettingsService,
             IGenerateCodeBaseService generateCodeBaseService,
             CSSPDBContext dbCSSPDB,
             TestDBContext dbTestDB)
         {
             this.configuration = configuration;
-            this.generateCodeStatusDBService = generateCodeStatusDBService;
+            this.actionCommandDBService = actionCommandDBService;
             this.validateAppSettingsService = validateAppSettingsService;
             this.generateCodeBaseService = generateCodeBaseService;
             this.dbCSSPDB = dbCSSPDB;
@@ -61,17 +64,17 @@ namespace ServicesRepopulateTestDBServices.Services
 
             if (!await Setup())
             {
-                Console.WriteLine(generateCodeStatusDBService.Error.ToString());
+                Console.WriteLine(actionCommandDBService.ErrorText.ToString());
                 Console.WriteLine("");
-                Console.WriteLine(generateCodeStatusDBService.Status.ToString());
+                Console.WriteLine(actionCommandDBService.ExecutionStatusText.ToString());
                 return false;
             }
 
             if (!await Generate())
             {
-                Console.WriteLine(generateCodeStatusDBService.Error.ToString());
+                Console.WriteLine(actionCommandDBService.ErrorText.ToString());
                 Console.WriteLine("");
-                Console.WriteLine(generateCodeStatusDBService.Status.ToString());
+                Console.WriteLine(actionCommandDBService.ExecutionStatusText.ToString());
                 return false;
             }
 
@@ -84,16 +87,17 @@ namespace ServicesRepopulateTestDBServices.Services
         #region Functions private
         private async Task<bool> Generate()
         {
-            GenerateCodeStatus generateCodeStatus = await generateCodeStatusDBService.GetOrCreate();
+            ActionResult<ActionCommand> actionActionCommand = await actionCommandDBService.GetOrCreate();
 
-            if (generateCodeStatus == null)
+            if (((ObjectResult)actionActionCommand.Result).StatusCode == 400)
             {
-                await ConsoleWriteError("generateCodeStatus == null");
+                await ConsoleWriteError("actionCommand == null");
                 return false;
             }
 
-            generateCodeStatusDBService.Status.AppendLine("Generate Starting ...");
-            await generateCodeStatusDBService.Update(10);
+            actionCommandDBService.ExecutionStatusText.AppendLine("Generate Starting ...");
+            actionCommandDBService.PercentCompleted = 10;
+            await actionCommandDBService.Update();
 
             string CSSPDBConnectionString = configuration.GetValue<string>("CSSPDBConnectionString");
             string TestDBConnectionString = configuration.GetValue<string>("TestDBConnectionString");
@@ -101,90 +105,96 @@ namespace ServicesRepopulateTestDBServices.Services
             List<Table> tableCSSPDBList = new List<Table>();
             List<Table> tableTestDBList = new List<Table>();
 
-            generateCodeStatusDBService.Status.AppendLine("Loading CSSPDB table information ...");
+            actionCommandDBService.ExecutionStatusText.AppendLine("Loading CSSPDB table information ...");
             if (!LoadDBInfo(tableCSSPDBList, CSSPDBConnectionString))
             {
                 return false;
             }
 
-            generateCodeStatusDBService.Status.AppendLine("Loading TestWeb table information ...");
+            actionCommandDBService.ExecutionStatusText.AppendLine("Loading TestWeb table information ...");
             if (!LoadDBInfo(tableTestDBList, TestDBConnectionString))
             {
                 return false;
             }
 
-            generateCodeStatusDBService.Status.AppendLine("Comparing tables ...");
+            actionCommandDBService.ExecutionStatusText.AppendLine("Comparing tables ...");
             if (!CompareDBs(tableCSSPDBList, tableTestDBList))
             {
-                Console.WriteLine(generateCodeStatusDBService.Error.ToString());
+                Console.WriteLine(actionCommandDBService.ErrorText.ToString());
                 Console.WriteLine("");
-                Console.WriteLine(generateCodeStatusDBService.Status.ToString());
+                Console.WriteLine(actionCommandDBService.ExecutionStatusText.ToString());
                 Console.WriteLine("");
                 return false;
             }
-            generateCodeStatusDBService.Status.AppendLine("Done comparing ... everything ok");
+            actionCommandDBService.ExecutionStatusText.AppendLine("Done comparing ... everything ok");
 
-            generateCodeStatusDBService.Status.AppendLine("Cleaning TestDB ...");
+            actionCommandDBService.ExecutionStatusText.AppendLine("Cleaning TestDB ...");
             if (!CleanTestDB(tableTestDBList, TestDBConnectionString))
             {
-                Console.WriteLine(generateCodeStatusDBService.Error.ToString());
+                Console.WriteLine(actionCommandDBService.ErrorText.ToString());
                 Console.WriteLine("");
-                Console.WriteLine(generateCodeStatusDBService.Status.ToString());
+                Console.WriteLine(actionCommandDBService.ExecutionStatusText.ToString());
                 Console.WriteLine("");
                 return false;
             }
-            generateCodeStatusDBService.Status.AppendLine("Done Cleaning TestDB ... everything ok");
+            actionCommandDBService.ExecutionStatusText.AppendLine("Done Cleaning TestDB ... everything ok");
 
-            generateCodeStatusDBService.Status.AppendLine("Filling TestDB ...");
+            actionCommandDBService.ExecutionStatusText.AppendLine("Filling TestDB ...");
             if (!FillTestDB(tableTestDBList))
             {
-                Console.WriteLine(generateCodeStatusDBService.Error.ToString());
+                Console.WriteLine(actionCommandDBService.ErrorText.ToString());
                 Console.WriteLine("");
-                Console.WriteLine(generateCodeStatusDBService.Status.ToString());
+                Console.WriteLine(actionCommandDBService.ExecutionStatusText.ToString());
                 Console.WriteLine("");
                 return false;
             }
-            generateCodeStatusDBService.Status.AppendLine("Done Filling TestDB ... everything ok");
+            actionCommandDBService.ExecutionStatusText.AppendLine("Done Filling TestDB ... everything ok");
 
-            generateCodeStatusDBService.Status.AppendLine("Making sure every table within TestDB has at least 10 items ...");
+            actionCommandDBService.ExecutionStatusText.AppendLine("Making sure every table within TestDB has at least 10 items ...");
             if (!MakingSureEveryTableHasEnoughItemsInTestDB())
             {
-                Console.WriteLine(generateCodeStatusDBService.Error.ToString());
+                Console.WriteLine(actionCommandDBService.ErrorText.ToString());
                 Console.WriteLine("");
-                Console.WriteLine(generateCodeStatusDBService.Status.ToString());
+                Console.WriteLine(actionCommandDBService.ExecutionStatusText.ToString());
                 Console.WriteLine("");
                 return false;
             }
-            generateCodeStatusDBService.Status.AppendLine("Done Making sure every table within TestDB has at least 10 items");
+            actionCommandDBService.ExecutionStatusText.AppendLine("Done Making sure every table within TestDB has at least 10 items");
 
-            generateCodeStatusDBService.Status.AppendLine("");
-            generateCodeStatusDBService.Status.AppendLine($"{ AppRes.Done } ...");
-            generateCodeStatusDBService.Status.AppendLine("");
-            generateCodeStatusDBService.Status.AppendLine("Generate Finished ...");
-            await generateCodeStatusDBService.Update(100);
+            actionCommandDBService.ExecutionStatusText.AppendLine("");
+            actionCommandDBService.ExecutionStatusText.AppendLine($"{ AppRes.Done } ...");
+            actionCommandDBService.ExecutionStatusText.AppendLine("");
+            actionCommandDBService.ExecutionStatusText.AppendLine("Generate Finished ...");
+            actionCommandDBService.PercentCompleted = 100;
+            await actionCommandDBService.Update();
+
 
             return true;
         }
         private async Task ConsoleWriteEnd()
         {
-            generateCodeStatusDBService.Status.AppendLine("");
-            generateCodeStatusDBService.Status.AppendLine($"{ AppRes.Done } ...");
-            generateCodeStatusDBService.Status.AppendLine("");
-            await generateCodeStatusDBService.Update(100);
+            actionCommandDBService.ExecutionStatusText.AppendLine("");
+            actionCommandDBService.ExecutionStatusText.AppendLine($"{ AppRes.Done } ...");
+            actionCommandDBService.ExecutionStatusText.AppendLine("");
+            actionCommandDBService.PercentCompleted = 100;
+            await actionCommandDBService.Update();
 
-            if (!string.IsNullOrWhiteSpace(generateCodeStatusDBService.Error.ToString()))
+
+            if (!string.IsNullOrWhiteSpace(actionCommandDBService.ErrorText.ToString()))
             {
-                Console.WriteLine(generateCodeStatusDBService.Error.ToString());
+                Console.WriteLine(actionCommandDBService.ErrorText.ToString());
             }
 
-            Console.WriteLine(generateCodeStatusDBService.Status.ToString());
+            Console.WriteLine(actionCommandDBService.ExecutionStatusText.ToString());
         }
         private async Task ConsoleWriteError(string errMessage)
         {
-            generateCodeStatusDBService.Error.AppendLine(errMessage);
-            await generateCodeStatusDBService.Update(0);
-            Console.WriteLine(generateCodeStatusDBService.Error.ToString());
-            Console.WriteLine(generateCodeStatusDBService.Status.ToString());
+            actionCommandDBService.ErrorText.AppendLine(errMessage);
+            actionCommandDBService.PercentCompleted = 0;
+            await actionCommandDBService.Update();
+
+            Console.WriteLine(actionCommandDBService.ErrorText.ToString());
+            Console.WriteLine(actionCommandDBService.ExecutionStatusText.ToString());
         }
         private void ConsoleWriteStart()
         {
@@ -209,13 +219,13 @@ namespace ServicesRepopulateTestDBServices.Services
         }
         private async Task<bool> Setup()
         {
-            generateCodeStatusDBService.Command = configuration.GetValue<string>("Command");
-            generateCodeStatusDBService.Culture = new CultureInfo(configuration.GetValue<string>("Culture"));
-            validateAppSettingsService.Culture = new CultureInfo(configuration.GetValue<string>("Culture"));
+            actionCommandDBService.Command = configuration.GetValue<string>("Command");
+            await actionCommandDBService.SetCulture(new CultureInfo(configuration.GetValue<string>("Culture")));
+            await validateAppSettingsService.SetCulture(new CultureInfo(configuration.GetValue<string>("Culture")));
 
             try
             {
-                await generateCodeStatusDBService.GetOrCreate();
+                await actionCommandDBService.GetOrCreate();
             }
             catch (Exception ex)
             {
@@ -227,7 +237,7 @@ namespace ServicesRepopulateTestDBServices.Services
             {
                 new AppSettingParameter() { Parameter = "Command", ExpectedValue = "ServicesRepopulateTestDB" },
                 new AppSettingParameter() { Parameter = "Culture", ExpectedValue = "", IsCulture = true },
-                new AppSettingParameter() { Parameter = "DBFileName", ExpectedValue = "{AppDataPath}\\CSSP\\GenerateCodeStatus.db", IsFile = true, CheckExist = true },
+                new AppSettingParameter() { Parameter = "DBFileName", ExpectedValue = "{AppDataPath}\\CSSP\\ActionCommandDB.db", IsFile = true, CheckExist = true },
                 new AppSettingParameter() { Parameter = "CSSPEnums", ExpectedValue = "C:\\CSSPTools\\src\\dlls\\CSSPEnums\\bin\\Debug\\netcoreapp3.1\\CSSPEnums.dll", IsFile = true, CheckExist = true },
                 new AppSettingParameter() { Parameter = "CSSPModels", ExpectedValue = "C:\\CSSPTools\\src\\dlls\\CSSPModels\\bin\\Debug\\netcoreapp3.1\\CSSPModels.dll", IsFile = true, CheckExist = true },
                 new AppSettingParameter() { Parameter = "CSSPServices", ExpectedValue = "C:\\CSSPTools\\src\\dlls\\CSSPServices\\bin\\Debug\\netcoreapp3.1\\CSSPServices.dll", IsFile = true, CheckExist = true },
@@ -235,8 +245,8 @@ namespace ServicesRepopulateTestDBServices.Services
                 new AppSettingParameter() { Parameter = "TestDBConnectionString", ExpectedValue = "Data Source=.\\sqlexpress;Initial Catalog=TestDB;Integrated Security=True" },
             };
 
-            validateAppSettingsService.VerifyAppSettings();
-            if (!string.IsNullOrWhiteSpace(generateCodeStatusDBService.Error.ToString()))
+            await validateAppSettingsService.VerifyAppSettings();
+            if (!string.IsNullOrWhiteSpace(actionCommandDBService.ErrorText.ToString()))
             {
                 await ConsoleWriteError("");
                 return false;
@@ -281,7 +291,7 @@ namespace ServicesRepopulateTestDBServices.Services
             catch (Exception ex)
             {
                 string InnerException = (ex.InnerException != null ? $" Inner: [{ ex.InnerException.Message }]" : "");
-                generateCodeStatusDBService.Error.AppendLine($"{ ex.Message }{ InnerException }");
+                actionCommandDBService.ErrorText.AppendLine($"{ ex.Message }{ InnerException }");
                 return false;
             }
 
@@ -293,7 +303,7 @@ namespace ServicesRepopulateTestDBServices.Services
 
             foreach (Table tableCSSP in tableCSSPDBList)
             {
-                //generateCodeStatusDBService.Status.AppendLine($"{ tableCSSP.TableName }");
+                //actionCommandDBService.ExecutionStatusText.AppendLine($"{ tableCSSP.TableName }");
 
                 if (tableCSSP.TableName == "sysdiagrams") continue;
 
@@ -309,7 +319,7 @@ namespace ServicesRepopulateTestDBServices.Services
 
                 foreach (Col col in tableCSSP.colList)
                 {
-                    //generateCodeStatusDBService.Status.AppendLine($"{ tableCSSP.TableName }    { col.FieldName }");
+                    //actionCommandDBService.ExecutionStatusText.AppendLine($"{ tableCSSP.TableName }    { col.FieldName }");
 
                     Col colTest = (from c in tableTest.colList
                                    where c.FieldName == col.FieldName
@@ -339,7 +349,7 @@ namespace ServicesRepopulateTestDBServices.Services
 
             if (sb.ToString().Length > 0)
             {
-                generateCodeStatusDBService.Error.AppendLine($"{ sb.ToString() }");
+                actionCommandDBService.ErrorText.AppendLine($"{ sb.ToString() }");
                 return false;
             }
 
@@ -351,7 +361,7 @@ namespace ServicesRepopulateTestDBServices.Services
             {
 
                 #region TVItem Root
-                generateCodeStatusDBService.Status.AppendLine($"doing ... root");
+                actionCommandDBService.ExecutionStatusText.AppendLine($"doing ... root");
                 // TVItem Root TVItemID = 1
                 TVItem tvItemRoot = dbCSSPDB.TVItems.AsNoTracking().Where(c => c.TVItemID == c.ParentID && c.TVLevel == 0).FirstOrDefault();
                 int RootTVItemID = tvItemRoot.TVItemID;
@@ -368,7 +378,7 @@ namespace ServicesRepopulateTestDBServices.Services
                 if (!AddObject("TVItemLanguage", tvItemLanguageFRRoot)) return false;
                 #endregion  TVItem Root
                 #region Contact Charles with TVItem
-                generateCodeStatusDBService.Status.AppendLine($"doing ... Contact Charles with TVItem");
+                actionCommandDBService.ExecutionStatusText.AppendLine($"doing ... Contact Charles with TVItem");
                 // TVItem Charles G. LeBlanc TVItemID = 2
                 TVItem tvItemContactCharles = dbCSSPDB.TVItems.AsNoTracking().Where(c => c.TVItemID == 2).FirstOrDefault();
                 tvItemContactCharles.ParentID = tvItemRoot.TVItemID;
@@ -385,7 +395,7 @@ namespace ServicesRepopulateTestDBServices.Services
                 tvItemLanguageFRContactCharles.TVItemID = tvItemContactCharles.TVItemID;
                 if (!AddObject("TVItemLanguage", tvItemLanguageFRContactCharles)) return false;
 
-                //generateCodeStatusDBService.Status.AppendLine($"doing ... Contact Charles with TVItem");
+                //actionCommandDBService.ExecutionStatusText.AppendLine($"doing ... Contact Charles with TVItem");
 
                 //ContactService contactService = new ContactService(new Query(), dbTestDB, 2);
 
@@ -396,7 +406,7 @@ namespace ServicesRepopulateTestDBServices.Services
                 if (!AddObject("Contact", contactCharles)) return false;
                 #endregion Contact Charles with TVItem
                 #region Contact Test User 1 with TVItem
-                generateCodeStatusDBService.Status.AppendLine($"doing ... TVItem Contact and Contact Login test user 1");
+                actionCommandDBService.ExecutionStatusText.AppendLine($"doing ... TVItem Contact and Contact Login test user 1");
                 // TVItem Test User 1 TVItemID = 3
                 TVItem tvItemContactTestUser1 = dbCSSPDB.TVItems.AsNoTracking().Where(c => c.TVItemID == 3).FirstOrDefault();
                 tvItemContactTestUser1.ParentID = tvItemRoot.TVItemID;
@@ -420,7 +430,7 @@ namespace ServicesRepopulateTestDBServices.Services
                 if (!AddObject("Contact", contactTestUser1)) return false;
                 #endregion Contact Test User 1 with TVItem
                 #region Contact Test User 2 with TVItem
-                generateCodeStatusDBService.Status.AppendLine($"doing ... TVItem Contact and Contact Login test user 1");
+                actionCommandDBService.ExecutionStatusText.AppendLine($"doing ... TVItem Contact and Contact Login test user 1");
 
                 // TVItem Test User 2 TVItemID = 4
                 TVItem tvItemContactTestUser2 = dbCSSPDB.TVItems.AsNoTracking().Where(c => c.TVItemID == 4).FirstOrDefault();
@@ -445,7 +455,7 @@ namespace ServicesRepopulateTestDBServices.Services
                 if (!AddObject("Contact", contactTestUser2)) return false;
                 #endregion Contact Test User 2 with TVItem
                 #region TVItem Country Canada
-                generateCodeStatusDBService.Status.AppendLine($"doing ... Canada");
+                actionCommandDBService.ExecutionStatusText.AppendLine($"doing ... Canada");
                 // TVItem Canada TVItemID = 5
                 TVItem tvItemCanada = dbCSSPDB.TVItems.AsNoTracking().Where(c => c.TVItemID == 5).FirstOrDefault();
                 tvItemCanada.ParentID = tvItemRoot.TVItemID;
@@ -464,7 +474,7 @@ namespace ServicesRepopulateTestDBServices.Services
                 if (!AddObject("TVItemLanguage", tvItemLanguageFRCanada)) return false;
                 #endregion TVItem Country Canada
                 #region TVItem Province NB
-                generateCodeStatusDBService.Status.AppendLine($"doing ... New Brunswick");
+                actionCommandDBService.ExecutionStatusText.AppendLine($"doing ... New Brunswick");
                 // TVItem Province NB TVItemID = 7
                 TVItem tvItemNB = dbCSSPDB.TVItems.AsNoTracking().Where(c => c.TVItemID == 7).FirstOrDefault();
                 int NBTVItemID = tvItemNB.TVItemID;
@@ -484,7 +494,7 @@ namespace ServicesRepopulateTestDBServices.Services
                 if (!AddObject("TVItemLanguage", tvItemLanguageFRNB)) return false;
                 #endregion TVItem Province NB
                 #region TVItem ClimateSite Bouctouche CDA
-                generateCodeStatusDBService.Status.AppendLine($"doing ... Climate Site");
+                actionCommandDBService.ExecutionStatusText.AppendLine($"doing ... Climate Site");
                 // TVItem ClimateSite Bouctouche CDA TVItemID = 229528
                 TVItem tvItemNBClimateSiteBouctoucheCDA = dbCSSPDB.TVItems.AsNoTracking().Where(c => c.TVItemID == 229528).FirstOrDefault();
                 tvItemNBClimateSiteBouctoucheCDA.ParentID = tvItemNB.TVItemID;
@@ -520,7 +530,7 @@ namespace ServicesRepopulateTestDBServices.Services
                 }
                 #endregion ClimateSite Bouctouche CDA
                 #region TVItem HydrometricSite Big Tracadie 01BL003 
-                generateCodeStatusDBService.Status.AppendLine($"doing ... Hydrometric Site");
+                actionCommandDBService.ExecutionStatusText.AppendLine($"doing ... Hydrometric Site");
                 // TVItem HydrometricSite Big Tracadie 01BL003 TVItemID = 55401
                 TVItem tvItemNBHydrometricSiteBigTracadie = dbCSSPDB.TVItems.AsNoTracking().Where(c => c.TVItemID == 55401).FirstOrDefault();
                 tvItemNBHydrometricSiteBigTracadie.ParentID = tvItemNB.TVItemID;
@@ -561,7 +571,7 @@ namespace ServicesRepopulateTestDBServices.Services
                 if (!AddObject("HydrometricDataValue", hydrometricDataValue)) return false;
                 #endregion HydrometricSite Big Tracadie 01BL003 
                 #region RatingCurve Big Tracadie 01BL003 
-                generateCodeStatusDBService.Status.AppendLine($"doing ... Rating Curve");
+                actionCommandDBService.ExecutionStatusText.AppendLine($"doing ... Rating Curve");
 
                 // NB Hydrometric site Big Tracadie where HydrometricSiteTVItemID = 55401
                 RatingCurve ratingCurve = dbCSSPDB.RatingCurves.AsNoTracking().Where(c => c.HydrometricSiteID == HydrometricSiteID).FirstOrDefault();
@@ -570,7 +580,7 @@ namespace ServicesRepopulateTestDBServices.Services
                 if (!AddObject("RatingCurve", ratingCurve)) return false;
                 #endregion RatingCurve Big Tracadie 01BL003 
                 #region RatingCurveValue Big Tracadie 01BL003 
-                generateCodeStatusDBService.Status.AppendLine($"doing ... Rating Curve");
+                actionCommandDBService.ExecutionStatusText.AppendLine($"doing ... Rating Curve");
                 // NB Hydrometric site Big Tracadie where HydrometricSiteTVItemID = 55401
                 List<RatingCurveValue> ratingCurveValueList = dbCSSPDB.RatingCurveValues.AsNoTracking().Where(c => c.RatingCurveID == RatingCurveID).Take(5).ToList();
                 foreach (RatingCurveValue ratingCurveValue in ratingCurveValueList)
@@ -580,7 +590,7 @@ namespace ServicesRepopulateTestDBServices.Services
                 }
                 #endregion RatingCurve Big Tracadie 01BL003 
                 #region TVItem Area NB-06 
-                generateCodeStatusDBService.Status.AppendLine($"doing ... Area NB-06");
+                actionCommandDBService.ExecutionStatusText.AppendLine($"doing ... Area NB-06");
                 // TVItem Area NB-06 TVItemID = 629
                 TVItem tvItemNB_06 = dbCSSPDB.TVItems.AsNoTracking().Where(c => c.TVItemID == 629).FirstOrDefault();
                 tvItemNB_06.ParentID = tvItemNB.TVItemID;
@@ -599,7 +609,7 @@ namespace ServicesRepopulateTestDBServices.Services
                 if (!AddObject("TVItemLanguage", tvItemLanguageFRNB_06)) return false;
                 #endregion TVItem Area NB-06 
                 #region TVItem Sector NB-06-020 
-                generateCodeStatusDBService.Status.AppendLine($"doing ... Sector NB-06-020");
+                actionCommandDBService.ExecutionStatusText.AppendLine($"doing ... Sector NB-06-020");
                 // TVItem Sector NB-06_020 TVItemID = 633
                 TVItem tvItemNB_06_020 = dbCSSPDB.TVItems.AsNoTracking().Where(c => c.TVItemID == 633).FirstOrDefault();
                 tvItemNB_06_020.ParentID = tvItemNB_06.TVItemID;
@@ -618,7 +628,7 @@ namespace ServicesRepopulateTestDBServices.Services
                 if (!AddObject("TVItemLanguage", tvItemLanguageFRNB_06_020)) return false;
                 #endregion TVItem Sector NB-06-020 
                 #region TVItem Subsector NB-06_020_001 
-                generateCodeStatusDBService.Status.AppendLine($"doing ... Sector NB-06-020-001");
+                actionCommandDBService.ExecutionStatusText.AppendLine($"doing ... Sector NB-06-020-001");
                 // TVItem Subsector NB-06_020_001 TVItemID = 634
                 TVItem tvItemNB_06_020_001 = dbCSSPDB.TVItems.AsNoTracking().Where(c => c.TVItemID == 634).FirstOrDefault();
                 tvItemNB_06_020_001.ParentID = tvItemNB_06_020.TVItemID;
@@ -637,7 +647,7 @@ namespace ServicesRepopulateTestDBServices.Services
                 if (!AddObject("TVItemLanguage", tvItemLanguageFRNB_06_020_001)) return false;
                 #endregion TVItem Subsector NB-06_020_001 
                 #region MWQMSubsector NB-06_020_001 and MWQMSubsectorLanguage
-                generateCodeStatusDBService.Status.AppendLine($"doing ... MWQM Subsector NB-06-020-001");
+                actionCommandDBService.ExecutionStatusText.AppendLine($"doing ... MWQM Subsector NB-06-020-001");
                 // MWQMSubsector NB-06_020_001 TVItemID = 634
                 MWQMSubsector mwqmSubsector001 = dbCSSPDB.MWQMSubsectors.AsNoTracking().Where(c => c.MWQMSubsectorTVItemID == 634).FirstOrDefault();
                 int MWQMSubsector001ID = mwqmSubsector001.MWQMSubsectorID;
@@ -657,7 +667,7 @@ namespace ServicesRepopulateTestDBServices.Services
                 if (!AddObject("MWQMSubsectorLanguage", mwqmSubsector001FR)) return false;
                 #endregion TVItem Subsector NB-06_020_001 
                 #region TVItem Subsector NB-06_020_002 
-                generateCodeStatusDBService.Status.AppendLine($"doing ... Subsector NB-06-020-002");
+                actionCommandDBService.ExecutionStatusText.AppendLine($"doing ... Subsector NB-06-020-002");
                 // TVItem Subsector NB-06_020_002 TVItemID = 635
                 TVItem tvItemNB_06_020_002 = dbCSSPDB.TVItems.AsNoTracking().Where(c => c.TVItemID == 635).FirstOrDefault();
                 tvItemNB_06_020_002.ParentID = tvItemNB_06_020.TVItemID;
@@ -676,7 +686,7 @@ namespace ServicesRepopulateTestDBServices.Services
                 if (!AddObject("TVItemLanguage", tvItemLanguageFRNB_06_020_002)) return false;
                 #endregion TVItem Subsector NB-06_020_001 
                 #region MWQMSubsector NB-06_020_002 and MWQMSubsectorLanguage
-                generateCodeStatusDBService.Status.AppendLine($"doing ... MWQM Subsector NB-06-020-002");
+                actionCommandDBService.ExecutionStatusText.AppendLine($"doing ... MWQM Subsector NB-06-020-002");
                 // MWQMSubsector NB-06_020_002 TVItemID = 635
                 MWQMSubsector mwqmSubsector002 = dbCSSPDB.MWQMSubsectors.AsNoTracking().Where(c => c.MWQMSubsectorTVItemID == 635).FirstOrDefault();
                 int MWQMSubsector002ID = mwqmSubsector002.MWQMSubsectorID;
@@ -696,7 +706,7 @@ namespace ServicesRepopulateTestDBServices.Services
                 if (!AddObject("MWQMSubsectorLanguage", mwqmSubsector002FR)) return false;
                 #endregion TVItem Subsector NB-06_020_002 
                 #region TVItem Classification  and Classification
-                generateCodeStatusDBService.Status.AppendLine($"doing ... Classification");
+                actionCommandDBService.ExecutionStatusText.AppendLine($"doing ... Classification");
                 // TVItem Classification where parent TVItemID = 635
                 List<TVItem> tvItemClassificationList = dbCSSPDB.TVItems.AsNoTracking().Where(c => c.ParentID == 635 && c.TVType == TVTypeEnum.Classification).ToList();
                 foreach (TVItem tvItem in tvItemClassificationList)
@@ -726,7 +736,7 @@ namespace ServicesRepopulateTestDBServices.Services
                 }
                 #endregion TVItem Classification and Classification
                 #region TideSites (Cap Pelé)
-                generateCodeStatusDBService.Status.AppendLine($"doing ... Cap Pelé");
+                actionCommandDBService.ExecutionStatusText.AppendLine($"doing ... Cap Pelé");
                 // TVItem Cap Pelé TVItemID = 369979
                 TVItem tvItemCapPeleTideSite = dbCSSPDB.TVItems.AsNoTracking().Where(c => c.TVItemID == 369979).FirstOrDefault();
                 tvItemCapPeleTideSite.ParentID = tvItemNB.TVItemID;
@@ -744,7 +754,7 @@ namespace ServicesRepopulateTestDBServices.Services
                 tvItemLanguageFRCapPele.TVItemID = tvItemCapPeleTideSite.TVItemID;
                 if (!AddObject("TVItemLanguage", tvItemLanguageFRCapPele)) return false;
 
-                generateCodeStatusDBService.Status.AppendLine($"doing ... Tide Site");
+                actionCommandDBService.ExecutionStatusText.AppendLine($"doing ... Tide Site");
                 // TideSite where TideSiteTVItemID = 369979
                 TideSite tideSite = dbCSSPDB.TideSites.AsNoTracking().Where(c => c.TideSiteTVItemID == 369979).FirstOrDefault();
                 tideSite.TideSiteTVItemID = tvItemCapPeleTideSite.TVItemID;
@@ -782,7 +792,7 @@ namespace ServicesRepopulateTestDBServices.Services
                 }
                 #endregion TideDataValues
                 #region TVItem Municipality Bouctouche
-                generateCodeStatusDBService.Status.AppendLine($"doing ... Bouctouche");
+                actionCommandDBService.ExecutionStatusText.AppendLine($"doing ... Bouctouche");
                 // TVItem Municipality Bouctouche TVItemID = 27764
                 TVItem tvItemBouctouche = dbCSSPDB.TVItems.AsNoTracking().Where(c => c.TVItemID == 27764).FirstOrDefault();
                 tvItemBouctouche.ParentID = tvItemNB.TVItemID;
@@ -801,7 +811,7 @@ namespace ServicesRepopulateTestDBServices.Services
                 if (!AddObject("TVItemLanguage", tvItemLanguageFRBouctouche)) return false;
                 #endregion TVItem Municipality Bouctouche
                 #region TVItem Municipality Ste Marie de Kent 
-                generateCodeStatusDBService.Status.AppendLine($"doing ... Ste-Marie-de-Kent");
+                actionCommandDBService.ExecutionStatusText.AppendLine($"doing ... Ste-Marie-de-Kent");
                 // TVItem Municipality Ste Marie de Kent TVItemID = 44855
                 TVItem tvItemSteMarieDeKent = dbCSSPDB.TVItems.AsNoTracking().Where(c => c.TVItemID == 44855).FirstOrDefault();
                 tvItemSteMarieDeKent.ParentID = tvItemNB.TVItemID;
@@ -820,7 +830,7 @@ namespace ServicesRepopulateTestDBServices.Services
                 if (!AddObject("TVItemLanguage", tvItemLanguageFRSteMarieDeKent)) return false;
                 #endregion TVItem Municipality Ste Marie de Kent 
                 #region TVItem Municipality Bouctouche WWTP 
-                generateCodeStatusDBService.Status.AppendLine($"doing ... Bouctouche WWTP");
+                actionCommandDBService.ExecutionStatusText.AppendLine($"doing ... Bouctouche WWTP");
                 // TVItem Municipality Bouctouche WWTP TVItemID = 28689
                 TVItem tvItemBouctoucheWWTP = dbCSSPDB.TVItems.AsNoTracking().Where(c => c.TVItemID == 28689).FirstOrDefault();
                 tvItemBouctoucheWWTP.ParentID = tvItemBouctouche.TVItemID;
@@ -841,7 +851,7 @@ namespace ServicesRepopulateTestDBServices.Services
                 if (!AddObject("TVItemLanguage", tvItemLanguageFRBouctoucheWWTP)) return false;
                 #endregion TVItem Municipality Bouctouche WWTP 
                 #region ReportType and ReportTypeLanguage
-                generateCodeStatusDBService.Status.AppendLine($"doing ... ReportTypes and ReportTypeLanguages");
+                actionCommandDBService.ExecutionStatusText.AppendLine($"doing ... ReportTypes and ReportTypeLanguages");
                 ReportType reportType = dbCSSPDB.ReportTypes.AsNoTracking().FirstOrDefault();
                 int ReportTypeIDOld = reportType.ReportTypeID;
                 reportType.ReportTypeID = 0;
@@ -860,7 +870,7 @@ namespace ServicesRepopulateTestDBServices.Services
                 //if (!AddObject("ReportTypeLanguage", reportTypeLanguageFR)) return false;
                 #endregion ReportType and ReportTypeLanguage
                 #region ReportSection and ReportSectionLanguage
-                generateCodeStatusDBService.Status.AppendLine($"doing ... ReportSections and ReportSectionLanguages");
+                actionCommandDBService.ExecutionStatusText.AppendLine($"doing ... ReportSections and ReportSectionLanguages");
                 ReportSection reportSection = dbCSSPDB.ReportSections.AsNoTracking().Where(c => c.ReportTypeID == ReportTypeIDOld).FirstOrDefault();
                 int ReportSectionIDOld = reportSection.ReportSectionID;
                 reportSection.ReportSectionID = 0;
@@ -881,7 +891,7 @@ namespace ServicesRepopulateTestDBServices.Services
                 #endregion ReportSection and ReportSectionLanguage
 
                 #region TVItem TVFile Bouctouche WWTP 
-                generateCodeStatusDBService.Status.AppendLine($"doing ... Bouctouche WWTP TVFile");
+                actionCommandDBService.ExecutionStatusText.AppendLine($"doing ... Bouctouche WWTP TVFile");
                 // TVItem TVFile Bouctouche WWTP TVItemID = 28689
                 TVItem TempBouctWWTP = dbCSSPDB.TVItems.AsNoTracking().Where(c => c.TVItemID == 28689).FirstOrDefault();
                 TVItem tvItemBouctoucheWWTPTVFile = dbCSSPDB.TVItems.AsNoTracking().Where(c => c.TVPath.StartsWith($"{ TempBouctWWTP.TVPath }p") && c.TVType == TVTypeEnum.File).FirstOrDefault();
@@ -902,7 +912,7 @@ namespace ServicesRepopulateTestDBServices.Services
                 if (!AddObject("TVItemLanguage", tvItemBouctoucheWWTPTVFileImageFR)) return false;
                 #endregion TVItem TVFile Bouctouche WWTP 
                 #region TVFile Bouctouche WWTP 
-                generateCodeStatusDBService.Status.AppendLine($"doing ... Bouctouche WWTP TVFile");
+                actionCommandDBService.ExecutionStatusText.AppendLine($"doing ... Bouctouche WWTP TVFile");
                 // TVFile Bouctouche WWTP TVItemID = 28689
                 TVFile tvFileBouctoucheWWTP = dbCSSPDB.TVFiles.AsNoTracking().Where(c => c.TVFileTVItemID == TempTVItemID).FirstOrDefault();
                 int TVFileID = tvFileBouctoucheWWTP.TVFileID;
@@ -920,7 +930,7 @@ namespace ServicesRepopulateTestDBServices.Services
                 if (!AddObject("TVFileLanguage", tvFileLanguageFRBouctoucheWWTP)) return false;
                 #endregion TVFile Bouctouche WWTP 
                 #region Infrastructure Bouctouche WWTP
-                generateCodeStatusDBService.Status.AppendLine($"doing ... Bouctouche WWTP Infrastructure");
+                actionCommandDBService.ExecutionStatusText.AppendLine($"doing ... Bouctouche WWTP Infrastructure");
                 // Infrastructure Bouctouche WWTP TVItemID = 28689
                 Infrastructure infrastructureBouctoucheWWTP = dbCSSPDB.Infrastructures.AsNoTracking().Where(c => c.InfrastructureTVItemID == 28689).FirstOrDefault();
                 int InfrastructureID = infrastructureBouctoucheWWTP.InfrastructureID;
@@ -938,7 +948,7 @@ namespace ServicesRepopulateTestDBServices.Services
                 if (!AddObject("InfrastructureLanguage", infrastructureLanguageFRBouctoucheWWTP)) return false;
                 #endregion Infrastructure Bouctouche WWTP
                 #region BoxModel Bouctouche WWTP
-                generateCodeStatusDBService.Status.AppendLine($"doing ... Bouctouche WWTP Infrastructure Box Model");
+                actionCommandDBService.ExecutionStatusText.AppendLine($"doing ... Bouctouche WWTP Infrastructure Box Model");
                 // BoxModel Bouctouche WWTP TVItemID = 28689
                 BoxModel boxModel = dbCSSPDB.BoxModels.AsNoTracking().Where(c => c.InfrastructureTVItemID == 28689).FirstOrDefault();
                 int BoxModelID = boxModel.BoxModelID;
@@ -956,7 +966,7 @@ namespace ServicesRepopulateTestDBServices.Services
                 if (!AddObject("BoxModelLanguage", boxModelLanguageFR)) return false;
                 #endregion BoxModel Bouctouche WWTP
                 #region BoxModelResult Bouctouche WWTP
-                generateCodeStatusDBService.Status.AppendLine($"doing ... Bouctouche WWTP Infrastructure Box Model Result");
+                actionCommandDBService.ExecutionStatusText.AppendLine($"doing ... Bouctouche WWTP Infrastructure Box Model Result");
 
                 // BoxModelResult Bouctouche WWTP TVItemID = 28689
                 for (int i = 1; i < 6; i++)
@@ -968,7 +978,7 @@ namespace ServicesRepopulateTestDBServices.Services
                 }
                 #endregion BoxModelResult Bouctouche WWTP
                 #region VPScenario Bouctouche WWTP 
-                generateCodeStatusDBService.Status.AppendLine($"doing ... Bouctouche WWTP Infrastructure VPScenario");
+                actionCommandDBService.ExecutionStatusText.AppendLine($"doing ... Bouctouche WWTP Infrastructure VPScenario");
 
                 // VPScenario Bouctouche WWTP TVItemID = 28689
                 VPScenario VPScenario = dbCSSPDB.VPScenarios.AsNoTracking().Where(c => c.InfrastructureTVItemID == 28689).FirstOrDefault();
@@ -1003,7 +1013,7 @@ namespace ServicesRepopulateTestDBServices.Services
                 }
                 #endregion VPScenario Bouctouche WWTP 
                 #region TVItem Municipality Bouctouche LS 2 Rue Acadie
-                generateCodeStatusDBService.Status.AppendLine($"doing ... Bouctouche LS 2");
+                actionCommandDBService.ExecutionStatusText.AppendLine($"doing ... Bouctouche LS 2");
 
                 // TVItem Municipality Bouctouche LS 2 Rue Acadie TVItemID = 28695
                 TVItem tvItemBouctoucheLS2RueAcadie = dbCSSPDB.TVItems.AsNoTracking().Where(c => c.TVItemID == 28695).FirstOrDefault();
@@ -1025,7 +1035,7 @@ namespace ServicesRepopulateTestDBServices.Services
                 if (!AddObject("TVItemLanguage", tvItemLanguageFRBouctoucheLS2RueAcadie)) return false;
                 #endregion TVItem Municipality Bouctouche LS 2 Rue Acadie
                 #region TVItem Subsector NB-06_020_002 MWQM Site 0001
-                generateCodeStatusDBService.Status.AppendLine($"doing ... Subsector NB-06-020-002 MWQM site 001");
+                actionCommandDBService.ExecutionStatusText.AppendLine($"doing ... Subsector NB-06-020-002 MWQM site 001");
                 // TVItem Subsector NB-06_020_002 MWQM Site 0001 TVItemID = 7460
                 TVItem tvItemNB_06_020_002Site0001 = dbCSSPDB.TVItems.AsNoTracking().Where(c => c.TVItemID == 7460).FirstOrDefault();
                 int MWQMSiteID0001 = tvItemNB_06_020_002Site0001.TVItemID;
@@ -1045,7 +1055,7 @@ namespace ServicesRepopulateTestDBServices.Services
                 if (!AddObject("TVItemLanguage", tvItemLanguageFRNB_06_020_002Site0001)) return false;
                 #endregion TVItem Subsector NB-06_020_002 MWQM Site 0001
                 #region TVItem Subsector NB-06_020_002 MWQM Site 0002
-                generateCodeStatusDBService.Status.AppendLine($"doing ... Subsector NB-06-020-002 MWQM site 002");
+                actionCommandDBService.ExecutionStatusText.AppendLine($"doing ... Subsector NB-06-020-002 MWQM site 002");
                 // TVItem Subsector NB-06_020_002 MWQM Site 0001 TVItemID = 7462
                 TVItem tvItemNB_06_020_002Site0002 = dbCSSPDB.TVItems.AsNoTracking().Where(c => c.TVItemID == 7462).FirstOrDefault();
                 int MWQMSiteID0002 = tvItemNB_06_020_002Site0002.TVItemID;
@@ -1065,7 +1075,7 @@ namespace ServicesRepopulateTestDBServices.Services
                 if (!AddObject("TVItemLanguage", tvItemLanguageFRNB_06_020_002Site0002)) return false;
                 #endregion TVItem Subsector NB-06_020_002 MWQM Site 0002
                 #region TVItem Address and Address
-                generateCodeStatusDBService.Status.AppendLine($"doing ... Address");
+                actionCommandDBService.ExecutionStatusText.AppendLine($"doing ... Address");
                 // TVItem Address 730 Chemin de la Pointe, Richibouctou, NB E4W, Canada TVItemID = 232655
                 TVItem tvItemAddress = dbCSSPDB.TVItems.AsNoTracking().Where(c => c.TVItemID == 232655).FirstOrDefault();
                 tvItemAddress.ParentID = tvItemRoot.TVItemID;
@@ -1099,7 +1109,7 @@ namespace ServicesRepopulateTestDBServices.Services
                 if (!AddObject("TVItemLanguage", tvItemLanguageFRAddress)) return false;
                 #endregion TVItem Address and Address
                 #region TVItem Subsector NB-06_020_002 Pol Source Site 000023
-                generateCodeStatusDBService.Status.AppendLine($"doing ... Subsector NB-06-020-002 PolSource site 00023");
+                actionCommandDBService.ExecutionStatusText.AppendLine($"doing ... Subsector NB-06-020-002 PolSource site 00023");
                 // TVItem Subsector NB-06_020_002 Pol Source Site 000023 TVItemID = 202466
                 TVItem tvItemNB_06_020_002PolSite000023 = dbCSSPDB.TVItems.AsNoTracking().Where(c => c.TVItemID == 202466).FirstOrDefault();
                 tvItemNB_06_020_002PolSite000023.ParentID = tvItemNB_06_020_002.TVItemID;
@@ -1118,7 +1128,7 @@ namespace ServicesRepopulateTestDBServices.Services
                 if (!AddObject("TVItemLanguage", tvItemLanguageFRNB_06_020_002PolSite000023)) return false;
                 #endregion TVItem Subsector NB-06_020_002 Pol Source Site 000023
                 #region PolSourceSite, PolSourceObservation, PolSourceObservationIssue Subsector NB-06_020_002 Pol Source Site 000023
-                generateCodeStatusDBService.Status.AppendLine($"doing ... Subsector NB-06-020-002 PolSource site 00023 Observation");
+                actionCommandDBService.ExecutionStatusText.AppendLine($"doing ... Subsector NB-06-020-002 PolSource site 00023 Observation");
                 // PolSourceSite with PolSourceSiteTVItemID = 202466
                 PolSourceSite polSourceSitePolSite000023 = dbCSSPDB.PolSourceSites.AsNoTracking().Where(c => c.PolSourceSiteTVItemID == 202466).FirstOrDefault();
                 int PolSourceSiteID = polSourceSitePolSite000023.PolSourceSiteID;
@@ -1143,7 +1153,7 @@ namespace ServicesRepopulateTestDBServices.Services
                 if (!AddObject("PolSourceObservationIssue", polSourceSitePolSite000023ObsIssue)) return false;
                 #endregion PolSourceSite, PolSourceObservation, PolSourceObservationIssue Subsector NB-06_020_002 Pol Source Site 000023
                 #region PolSourceSite, PolSourceObservation, PolSourceObservationIssue Subsector NB-06_020_002 Pol Source Site 000024
-                generateCodeStatusDBService.Status.AppendLine($"doing ... Subsector NB-06-020-002 PolSource site 00024");
+                actionCommandDBService.ExecutionStatusText.AppendLine($"doing ... Subsector NB-06-020-002 PolSource site 00024");
                 // TVItem Subsector NB-06_020_002 Pol Source Site 000024 TVItemID = 202467
                 TVItem tvItemNB_06_020_002PolSite000024 = dbCSSPDB.TVItems.AsNoTracking().Where(c => c.TVItemID == 202467).FirstOrDefault();
                 tvItemNB_06_020_002PolSite000024.ParentID = tvItemNB_06_020_002.TVItemID;
@@ -1162,7 +1172,7 @@ namespace ServicesRepopulateTestDBServices.Services
                 if (!AddObject("TVItemLanguage", tvItemLanguageFRNB_06_020_002PolSite000024)) return false;
                 #endregion PolSourceSite, PolSourceObservation, PolSourceObservationIssue Subsector NB-06_020_002 Pol Source Site 000024
                 #region DrogueRun, DrogueRunPositon Subsector NB-06_020_002
-                generateCodeStatusDBService.Status.AppendLine($"doing ... Subsector NB-06-020-002 DrogueRun");
+                actionCommandDBService.ExecutionStatusText.AppendLine($"doing ... Subsector NB-06-020-002 DrogueRun");
                 DrogueRun drogueRun = dbCSSPDB.DrogueRuns.AsNoTracking().FirstOrDefault();
                 int DrogueRunID = drogueRun.DrogueRunID;
                 drogueRun.SubsectorTVItemID = tvItemNB_06_020_002.TVItemID;
@@ -1178,13 +1188,13 @@ namespace ServicesRepopulateTestDBServices.Services
                 }
                 #endregion DrogueRun, DrogueRunPositon Subsector NB-06_020_002
                 #region HelpDoc
-                generateCodeStatusDBService.Status.AppendLine($"doing ... HelpDoc");
+                actionCommandDBService.ExecutionStatusText.AppendLine($"doing ... HelpDoc");
                 HelpDoc helpDoc = dbCSSPDB.HelpDocs.AsNoTracking().FirstOrDefault();
                 int HelpDocID = helpDoc.HelpDocID;
                 if (!AddObject("HelpDoc", helpDoc)) return false;
                 #endregion HelpDoc
                 //#region MWQMSitePolSourceSite
-                //generateCodeStatusDBService.Status.AppendLine($"doing ... MWQMSitePolSourceSite");
+                //actionCommandDBService.ExecutionStatusText.AppendLine($"doing ... MWQMSitePolSourceSite");
                 //MWQMSitePolSourceSite mwqmSitePolSourceSite = new MWQMSitePolSourceSite()
                 //{
                 //    MWQMSiteTVItemID = tvItemNB_06_020_002Site0001.TVItemID,
@@ -1197,7 +1207,7 @@ namespace ServicesRepopulateTestDBServices.Services
                 //if (!AddObject("MWQMSitePolSourceSite", mwqmSitePolSourceSite)) return false;
                 //#endregion MWQMSitePolSourceSite
                 #region TVItem SamplingPlan, SamplingPlanSubsector, SamplingPlanSubsectorSite, SamplingPlanEmail
-                generateCodeStatusDBService.Status.AppendLine($"doing ... Sampling Plan");
+                actionCommandDBService.ExecutionStatusText.AppendLine($"doing ... Sampling Plan");
                 // NB TVItem Sampling Plan with SamplingPlanID = 78 and TVFileTVItemID = 370708
                 TVItem tvItemNBSamplingPlanFileTVItem = dbCSSPDB.TVItems.AsNoTracking().Where(c => c.TVItemID == 370708).FirstOrDefault();
                 tvItemNBSamplingPlanFileTVItem.ParentID = tvItemNB.TVItemID;
@@ -1255,7 +1265,7 @@ namespace ServicesRepopulateTestDBServices.Services
                 if (!AddObject("SamplingPlanEmail", samplingPlanEmail)) return false;
                 #endregion TVItem SamplingPlan, SamplingPlanSubsector, SamplingPlanSubsectorSite, SamplingPlanEmail
                 #region TVItem MWQMRun with Subsector NB-06_020_002 and MWQMSite 0001
-                generateCodeStatusDBService.Status.AppendLine($"doing ... MWQM Run");
+                actionCommandDBService.ExecutionStatusText.AppendLine($"doing ... MWQM Run");
                 // TVItem MWQMRun with Subsector NB-06_020_002 TVItemID = 635 MWQMSite 0001 TVItemID = 7460 MWQMRunTVItemID = 324152
                 TVItem tvItemRun = dbCSSPDB.TVItems.AsNoTracking().Where(c => c.TVItemID == 324152).FirstOrDefault();
                 tvItemRun.ParentID = tvItemNB_06_020_002.TVItemID;
@@ -1292,7 +1302,7 @@ namespace ServicesRepopulateTestDBServices.Services
                 if (!AddObject("MWQMRunLanguage", MWQMRunLanguageFR)) return false;
                 #endregion TVItem MWQMRun with Subsector NB-06_020_002 and MWQMSite 0001
                 #region UseOfSite
-                generateCodeStatusDBService.Status.AppendLine($"doing ... UseOfSite");
+                actionCommandDBService.ExecutionStatusText.AppendLine($"doing ... UseOfSite");
                 // NB UseOfSite with SubsectorTVItemID = 635 ClimateSiteTVItemID = 229528
                 UseOfSite useOfSite = dbCSSPDB.UseOfSites.AsNoTracking().Where(c => c.SubsectorTVItemID == 635 && c.SiteTVItemID == 229528).FirstOrDefault();
                 useOfSite.SubsectorTVItemID = tvItemNB_06_020_002.TVItemID;
@@ -1306,7 +1316,7 @@ namespace ServicesRepopulateTestDBServices.Services
                 //if (!AddObject("UseOfSite", useOfSite)) return false;
                 #endregion UseOfSite
                 #region MWQMSamples
-                generateCodeStatusDBService.Status.AppendLine($"doing ... MWQMSamples");
+                actionCommandDBService.ExecutionStatusText.AppendLine($"doing ... MWQMSamples");
                 // NB MWQMSamples with MWQMSiteTVItemID = 7460 and MWQMRunTVItemID = 324152
                 MWQMSample mwqmSample = dbCSSPDB.MWQMSamples.AsNoTracking().Where(c => c.MWQMSiteTVItemID == 7460 && c.MWQMRunTVItemID == 324152).FirstOrDefault();
                 int MWQMSampleID = mwqmSample.MWQMSampleID;
@@ -1325,7 +1335,7 @@ namespace ServicesRepopulateTestDBServices.Services
                 if (!AddObject("MWQMSampleLanguage", mwqmSampleLanguageFR)) return false;
                 #endregion MWQMSamples
                 #region MWQMSite, MWQMSiteStartEndDate
-                generateCodeStatusDBService.Status.AppendLine($"doing ... MWQMSite and MWQMSiteStartEndDate");
+                actionCommandDBService.ExecutionStatusText.AppendLine($"doing ... MWQMSite and MWQMSiteStartEndDate");
                 // NB MWQMSite with MWQMSiteTVItemID = 7460
                 MWQMSite mwqmSite0001 = dbCSSPDB.MWQMSites.AsNoTracking().Where(c => c.MWQMSiteTVItemID == 7460).FirstOrDefault();
                 mwqmSite0001.MWQMSiteTVItemID = tvItemNB_06_020_002Site0001.TVItemID;
@@ -1347,7 +1357,7 @@ namespace ServicesRepopulateTestDBServices.Services
                 if (!AddObject("MWQMSiteStartEndDate", mwqmSiteStartEndDate0002)) return false;
                 #endregion MWQMSite, MWQMSiteStartEndDate
                 #region MikeScenario, MikeScenarioResult, MikeBoundaryCondition, MikeSource, MikeSourceStartEnd
-                generateCodeStatusDBService.Status.AppendLine($"doing ... MikeScenario, MikeBoundaryCondition, MikeSource, MikeSourceStartEnd");
+                actionCommandDBService.ExecutionStatusText.AppendLine($"doing ... MikeScenario, MikeBoundaryCondition, MikeSource, MikeSourceStartEnd");
                 // TVItem MikeScenario with MikeScenairoTVItemID = 28475 under Bouctouche
                 TVItem tvItemMikeScenario = dbCSSPDB.TVItems.AsNoTracking().Where(c => c.TVItemID == 28475).FirstOrDefault();
                 int MikeScenarioTVItemID = tvItemMikeScenario.TVItemID;
@@ -1430,7 +1440,7 @@ namespace ServicesRepopulateTestDBServices.Services
                 if (!AddObject("MikeSourceStartEnd", mikeSourceStartEnd)) return false;
                 #endregion MikeScenario, MikeBoundaryCondition, MikeSource, MikeSourceStartEnd
                 #region LabSheet, LabSheetDetail, LabSheetTubeMPNDetail
-                generateCodeStatusDBService.Status.AppendLine($"doing ... LabSheet, LabSheetDetail, LabSheetTubeMPNDetail");
+                actionCommandDBService.ExecutionStatusText.AppendLine($"doing ... LabSheet, LabSheetDetail, LabSheetTubeMPNDetail");
                 // LabSheet with SubsectorTVItemID = 635 and MWQMRunTVItemID = 324152 under Bouctouche harbour subsector
                 LabSheet labSheet = dbCSSPDB.LabSheets.AsNoTracking().Where(c => c.SubsectorTVItemID == 635 && c.MWQMRunTVItemID == 324152).FirstOrDefault();
                 int LabSheetID = labSheet.LabSheetID;
@@ -1455,7 +1465,7 @@ namespace ServicesRepopulateTestDBServices.Services
                 if (!AddObject("LabSheetTubeMPNDetail", labSheetTubeMPNDetail)) return false;
                 #endregion LabSheet, LabSheetDetail, LabSheetTubeMPNDetail
                 #region TVItem Email and Email
-                generateCodeStatusDBService.Status.AppendLine($"doing ... Email");
+                actionCommandDBService.ExecutionStatusText.AppendLine($"doing ... Email");
 
                 // Email Charles.LeBlanc@ec.gc.ca TVItemID = 110249
                 TVItem tvItemEmail = dbCSSPDB.TVItems.AsNoTracking().Where(c => c.TVItemID == 110249).FirstOrDefault();
@@ -1480,7 +1490,7 @@ namespace ServicesRepopulateTestDBServices.Services
                 if (!AddObject("Email", email)) return false;
                 #endregion TVItem Email and Email
                 #region TVItem Tel and Tel
-                generateCodeStatusDBService.Status.AppendLine($"doing ... Tel");
+                actionCommandDBService.ExecutionStatusText.AppendLine($"doing ... Tel");
                 // Tel Charles.LeBlanc@ec.gc.ca TVItemID = 108984
                 TVItem tvItemTel = dbCSSPDB.TVItems.AsNoTracking().Where(c => c.TVItemID == 108984).FirstOrDefault();
                 tvItemTel.ParentID = tvItemRoot.TVItemID;
@@ -1504,7 +1514,7 @@ namespace ServicesRepopulateTestDBServices.Services
                 if (!AddObject("Tel", tel)) return false;
                 #endregion TVItem Tel and Tel
                 #region TVItemLink
-                generateCodeStatusDBService.Status.AppendLine($"doing ... TVItemLink");
+                actionCommandDBService.ExecutionStatusText.AppendLine($"doing ... TVItemLink");
                 TVItemLink tvItemLinkMunicContact = dbCSSPDB.TVItemLinks.AsNoTracking().Where(c => c.FromTVItemID == 27764 && c.ToTVItemID == 305006).FirstOrDefault();
                 tvItemLinkMunicContact.FromTVItemID = tvItemBouctouche.TVItemID;
                 tvItemLinkMunicContact.ToTVItemID = tvItemContactCharles.TVItemID;
@@ -1524,7 +1534,7 @@ namespace ServicesRepopulateTestDBServices.Services
                 if (!AddObject("TVItemLink", tvItemLinkContactEmail)) return false;
                 #endregion TVItemLink
                 #region PolSourceSiteEffects and PolSourceSiteEffectTerms where PolSourceSiteEffectID = 36
-                generateCodeStatusDBService.Status.AppendLine($"doing ... TVItemLink");
+                actionCommandDBService.ExecutionStatusText.AppendLine($"doing ... TVItemLink");
                 PolSourceSiteEffect polSourceSiteEffect36 = dbCSSPDB.PolSourceSiteEffects.AsNoTracking().Where(c => c.PolSourceSiteEffectID == 36).FirstOrDefault();
                 polSourceSiteEffect36.PolSourceSiteOrInfrastructureTVItemID = polSourceSitePolSite000023.PolSourceSiteTVItemID;
                 polSourceSiteEffect36.MWQMSiteTVItemID = mwqmSite0001.MWQMSiteTVItemID;
@@ -1546,7 +1556,7 @@ namespace ServicesRepopulateTestDBServices.Services
                 if (!AddObject("PolSourceSiteEffect", polSourceSiteEffect36)) return false;
                 #endregion  PolSourceSiteEffects and PolSourceSiteEffectTerms where PolSourceSiteEffectID = 36
                 #region Spill and SpillLanguage
-                generateCodeStatusDBService.Status.AppendLine($"doing ... Spill and SpillLanguage");
+                actionCommandDBService.ExecutionStatusText.AppendLine($"doing ... Spill and SpillLanguage");
                 Spill spill = new Spill();
                 spill.MunicipalityTVItemID = tvItemBouctouche.TVItemID;
                 spill.InfrastructureTVItemID = tvItemBouctoucheWWTP.TVItemID;
@@ -1576,7 +1586,7 @@ namespace ServicesRepopulateTestDBServices.Services
                 if (!AddObject("SpillLanguage", spillLanguageFR)) return false;
                 #endregion Spill and SpillLanguage
                 #region EmailDistributionList and EmailDistributionListContact
-                generateCodeStatusDBService.Status.AppendLine($"doing ... EmailDistributionList and EmailDistributionListContact");
+                actionCommandDBService.ExecutionStatusText.AppendLine($"doing ... EmailDistributionList and EmailDistributionListContact");
                 EmailDistributionList emailDistributionList = dbCSSPDB.EmailDistributionLists.AsNoTracking().FirstOrDefault();
                 int EmailDistributionListID = emailDistributionList.EmailDistributionListID;
                 emailDistributionList.ParentTVItemID = tvItemCanada.TVItemID;
@@ -1609,7 +1619,7 @@ namespace ServicesRepopulateTestDBServices.Services
                 }
                 #endregion EmailDistributionList and EmailDistributionListContact
                 #region AppTask and AppTaskLanguage
-                generateCodeStatusDBService.Status.AppendLine($"doing ... AppTask and AppTaskLanguage");
+                actionCommandDBService.ExecutionStatusText.AppendLine($"doing ... AppTask and AppTaskLanguage");
                 AppTask appTask = new AppTask();
                 appTask.TVItemID = tvItemCanada.TVItemID;
                 appTask.TVItemID2 = tvItemCanada.TVItemID;
@@ -1647,7 +1657,7 @@ namespace ServicesRepopulateTestDBServices.Services
                 if (!AddObject("AppTaskLanguage", appTaskLanguageFR)) return false;
                 #endregion AppTask and AppTaskLanguage
                 #region AppErrLog
-                generateCodeStatusDBService.Status.AppendLine($"doing ... AppErrLog");
+                actionCommandDBService.ExecutionStatusText.AppendLine($"doing ... AppErrLog");
                 AppErrLog appErrLog = new AppErrLog();
                 appErrLog.Tag = "SomeTag";
                 appErrLog.LineNumber = 234;
@@ -1659,7 +1669,7 @@ namespace ServicesRepopulateTestDBServices.Services
                 if (!AddObject("AppErrLog", appErrLog)) return false;
                 #endregion AppErrLog
                 #region ContactPreference
-                generateCodeStatusDBService.Status.AppendLine($"doing ... ContactPreference");
+                actionCommandDBService.ExecutionStatusText.AppendLine($"doing ... ContactPreference");
                 ContactPreference contactPreference = new ContactPreference();
                 contactPreference.ContactID = contactCharles.ContactID;
                 contactPreference.TVType = TVTypeEnum.ClimateSite;
@@ -1669,7 +1679,7 @@ namespace ServicesRepopulateTestDBServices.Services
                 if (!AddObject("ContactPreference", contactPreference)) return false;
                 #endregion ContactPreference
                 #region ContactShortcut
-                generateCodeStatusDBService.Status.AppendLine($"doing ... ContactShortcut");
+                actionCommandDBService.ExecutionStatusText.AppendLine($"doing ... ContactShortcut");
                 ContactShortcut contactShortcut = new ContactShortcut();
                 contactShortcut.ContactID = contactCharles.ContactID;
                 contactShortcut.ShortCutText = "Some shortcut text";
@@ -1679,7 +1689,7 @@ namespace ServicesRepopulateTestDBServices.Services
                 if (!AddObject("ContactShortcut", contactShortcut)) return false;
                 #endregion ContactShortcut
                 #region DocTemplate
-                generateCodeStatusDBService.Status.AppendLine($"doing ... DocTemplate");
+                actionCommandDBService.ExecutionStatusText.AppendLine($"doing ... DocTemplate");
                 DocTemplate docTemplate = new DocTemplate();
                 docTemplate.Language = LanguageEnum.en;
                 docTemplate.TVType = TVTypeEnum.Subsector;
@@ -1690,7 +1700,7 @@ namespace ServicesRepopulateTestDBServices.Services
                 if (!AddObject("DocTemplate", docTemplate)) return false;
                 #endregion DocTemplate
                 #region Log
-                generateCodeStatusDBService.Status.AppendLine($"doing ... Log");
+                actionCommandDBService.ExecutionStatusText.AppendLine($"doing ... Log");
                 Log log = new Log();
                 log.TableName = "TVItems";
                 log.ID = 20;
@@ -1701,7 +1711,7 @@ namespace ServicesRepopulateTestDBServices.Services
                 if (!AddObject("Log", log)) return false;
                 #endregion Log
                 #region MWQMLookupMPN
-                generateCodeStatusDBService.Status.AppendLine($"doing ... MWQMLookupMPN");
+                actionCommandDBService.ExecutionStatusText.AppendLine($"doing ... MWQMLookupMPN");
                 List<MWQMLookupMPN> mwqmLookupMPNList = dbCSSPDB.MWQMLookupMPNs.AsNoTracking().Take(12).ToList();
                 foreach (MWQMLookupMPN mwqmLookupMPN2 in mwqmLookupMPNList)
                 {
@@ -1716,7 +1726,7 @@ namespace ServicesRepopulateTestDBServices.Services
                 }
                 #endregion MWQMLookupMPN
                 #region RainExceedance and RainExceedanceClimateSite
-                generateCodeStatusDBService.Status.AppendLine($"doing ... RainExceedance");
+                actionCommandDBService.ExecutionStatusText.AppendLine($"doing ... RainExceedance");
 
                 TVItem tvItemRainExceedance = dbCSSPDB.TVItems.AsNoTracking().Where(c => c.TVItemID == 374858).FirstOrDefault();
                 tvItemEmail.ParentID = tvItemCanada.TVItemID;
@@ -1756,7 +1766,7 @@ namespace ServicesRepopulateTestDBServices.Services
                 if (!AddObject("RainExceedanceClimateSite", rainExceedanceClimateSite)) return false;
                 #endregion RainExceedance and RainExceedanceClimateSite
                 #region ResetPassword
-                generateCodeStatusDBService.Status.AppendLine($"doing ... ResetPassword");
+                actionCommandDBService.ExecutionStatusText.AppendLine($"doing ... ResetPassword");
                 ResetPassword resetPassword = new ResetPassword();
                 resetPassword.Email = contactCharles.LoginEmail;
                 resetPassword.ExpireDate_Local = DateTime.Now;
@@ -1766,7 +1776,7 @@ namespace ServicesRepopulateTestDBServices.Services
                 if (!AddObject("ResetPassword", resetPassword)) return false;
                 #endregion ResetPassword
                 #region TideLocation
-                generateCodeStatusDBService.Status.AppendLine($"doing ... TideLocation");
+                actionCommandDBService.ExecutionStatusText.AppendLine($"doing ... TideLocation");
                 foreach (int TideLocationSID in new List<int>() { 1815, 1812, 1810 })
                 {
                     TideLocation tideLocation = dbCSSPDB.TideLocations.AsNoTracking().Where(c => c.sid == TideLocationSID).FirstOrDefault();
@@ -1779,7 +1789,7 @@ namespace ServicesRepopulateTestDBServices.Services
                 }
                 #endregion TideLocation
                 #region TVItemStat
-                generateCodeStatusDBService.Status.AppendLine($"doing ... TVItemStat");
+                actionCommandDBService.ExecutionStatusText.AppendLine($"doing ... TVItemStat");
                 TVItemStat tvItemStat = dbCSSPDB.TVItemStats.AsNoTracking().Where(c => c.TVItemID == RootTVItemID && c.TVType == TVTypeEnum.Municipality).FirstOrDefault();
 
                 if (tvItemStat != null)
@@ -1791,7 +1801,7 @@ namespace ServicesRepopulateTestDBServices.Services
                 }
                 #endregion TVItemStat
                 #region TVItemUserAuthorization
-                generateCodeStatusDBService.Status.AppendLine($"doing ... TVItemUserAuthorization");
+                actionCommandDBService.ExecutionStatusText.AppendLine($"doing ... TVItemUserAuthorization");
                 TVItemUserAuthorization tvItemUserAuthorization = dbCSSPDB.TVItemUserAuthorizations.AsNoTracking().FirstOrDefault();
 
                 if (tvItemUserAuthorization != null)
@@ -1803,7 +1813,7 @@ namespace ServicesRepopulateTestDBServices.Services
                 }
                 #endregion TVItemUserAuthorization
                 #region TVTypeUserAuthorization
-                generateCodeStatusDBService.Status.AppendLine($"doing ... TVTypeUserAuthorization");
+                actionCommandDBService.ExecutionStatusText.AppendLine($"doing ... TVTypeUserAuthorization");
                 TVTypeUserAuthorization tvTypeUserAuthorization = dbCSSPDB.TVTypeUserAuthorizations.AsNoTracking().FirstOrDefault();
 
                 if (tvTypeUserAuthorization != null)
@@ -1815,7 +1825,7 @@ namespace ServicesRepopulateTestDBServices.Services
                 }
                 #endregion TVTypeUserAuthorization
                 #region MWQMAnalysisReportParameter
-                generateCodeStatusDBService.Status.AppendLine($"doing ... MWQMAnalysisReportParameter");
+                actionCommandDBService.ExecutionStatusText.AppendLine($"doing ... MWQMAnalysisReportParameter");
                 MWQMAnalysisReportParameter mwqmAnalysisReportParameter = new MWQMAnalysisReportParameter();
                 mwqmAnalysisReportParameter.SubsectorTVItemID = tvItemNB_06_020_002.TVItemID;
                 mwqmAnalysisReportParameter.AnalysisName = "Name of analysis report parameter";
@@ -1847,9 +1857,9 @@ namespace ServicesRepopulateTestDBServices.Services
             }
             catch (Exception ex)
             {
-                Console.WriteLine(generateCodeStatusDBService.Error.ToString());
+                Console.WriteLine(actionCommandDBService.ErrorText.ToString());
                 Console.WriteLine("");
-                Console.WriteLine(generateCodeStatusDBService.Status.ToString());
+                Console.WriteLine(actionCommandDBService.ExecutionStatusText.ToString());
                 Console.WriteLine("");
                 Console.WriteLine(ex.Message);
             }
@@ -1866,7 +1876,7 @@ namespace ServicesRepopulateTestDBServices.Services
                 {
                     if (!cnn.ConnectionString.Contains("TestDB"))
                     {
-                        generateCodeStatusDBService.Error.AppendLine("Only use this command for the TestDB as it remove all the information from the DB and Reseed all tables");
+                        actionCommandDBService.ErrorText.AppendLine("Only use this command for the TestDB as it remove all the information from the DB and Reseed all tables");
                         return false;
                     }
 
@@ -1874,7 +1884,7 @@ namespace ServicesRepopulateTestDBServices.Services
 
                     foreach (Table table in tableTestDBList.OrderBy(c => c.ordinalToDelete))
                     {
-                        //generateCodeStatusDBService.Status.AppendLine($"Deleting Table  [{ table.TableName }]");
+                        //actionCommandDBService.ExecutionStatusText.AppendLine($"Deleting Table  [{ table.TableName }]");
 
                         string queryString = "";
 
@@ -1919,7 +1929,7 @@ namespace ServicesRepopulateTestDBServices.Services
             catch (Exception ex)
             {
                 string InnerExceptiion = (ex.InnerException != null ? $" Inner: [{ ex.InnerException.Message }]" : "");
-                generateCodeStatusDBService.Error.AppendLine($"{ ex.Message }{ InnerExceptiion }");
+                actionCommandDBService.ErrorText.AppendLine($"{ ex.Message }{ InnerExceptiion }");
                 return false;
             }
 
@@ -1941,7 +1951,7 @@ namespace ServicesRepopulateTestDBServices.Services
                 mapInfo.MapInfoID = 0;
                 if (mapInfo.ValidationResults.Count() > 0)
                 {
-                    generateCodeStatusDBService.Error.AppendLine(mapInfo.ValidationResults.First().ErrorMessage);
+                    actionCommandDBService.ErrorText.AppendLine(mapInfo.ValidationResults.First().ErrorMessage);
                     return false;
                 }
                 try
@@ -1952,7 +1962,7 @@ namespace ServicesRepopulateTestDBServices.Services
                 catch (Exception ex)
                 {
                     string InnerExceptiion = (ex.InnerException != null ? $" Inner: [{ ex.InnerException.Message }]" : "");
-                    generateCodeStatusDBService.Error.AppendLine($"{ ex.Message }{ InnerExceptiion }");
+                    actionCommandDBService.ErrorText.AppendLine($"{ ex.Message }{ InnerExceptiion }");
                     return false;
                 }
 
@@ -1968,7 +1978,7 @@ namespace ServicesRepopulateTestDBServices.Services
 
                     if (mapInfoPoint.ValidationResults.Count() > 0)
                     {
-                        generateCodeStatusDBService.Error.AppendLine(mapInfoPoint.ValidationResults.First().ErrorMessage);
+                        actionCommandDBService.ErrorText.AppendLine(mapInfoPoint.ValidationResults.First().ErrorMessage);
                         return false;
                     }
                     try
@@ -1979,7 +1989,7 @@ namespace ServicesRepopulateTestDBServices.Services
                     catch (Exception ex)
                     {
                         string InnerExceptiion = (ex.InnerException != null ? $" Inner: [{ ex.InnerException.Message }]" : "");
-                        generateCodeStatusDBService.Error.AppendLine($"{ ex.Message }{ InnerExceptiion }");
+                        actionCommandDBService.ErrorText.AppendLine($"{ ex.Message }{ InnerExceptiion }");
                         return false;
                     }
                 }
@@ -2557,7 +2567,7 @@ namespace ServicesRepopulateTestDBServices.Services
                     break;
                 default:
                     {
-                        generateCodeStatusDBService.Error.AppendLine($"Type [{ TypeName }] not implemented");
+                        actionCommandDBService.ErrorText.AppendLine($"Type [{ TypeName }] not implemented");
                         return false;
                     }
             }
@@ -2569,7 +2579,7 @@ namespace ServicesRepopulateTestDBServices.Services
             catch (Exception ex)
             {
                 string InnerException = (ex.InnerException != null ? $" Inner: [{ ex.InnerException.Message }]" : "");
-                generateCodeStatusDBService.Error.AppendLine($"{ ex.Message }{ InnerException }");
+                actionCommandDBService.ErrorText.AppendLine($"{ ex.Message }{ InnerException }");
                 return false;
             }
 
@@ -2586,7 +2596,7 @@ namespace ServicesRepopulateTestDBServices.Services
             catch (Exception ex)
             {
                 string InnerException = (ex.InnerException != null ? $" Inner: [{ ex.InnerException.Message }]" : "");
-                generateCodeStatusDBService.Error.AppendLine($"{ ex.Message }{ InnerException }");
+                actionCommandDBService.ErrorText.AppendLine($"{ ex.Message }{ InnerException }");
                 return false;
             }
 
@@ -2596,7 +2606,7 @@ namespace ServicesRepopulateTestDBServices.Services
         {
             int count = 0;
 
-            generateCodeStatusDBService.Status.AppendLine("doing ... Adding up to 10 items in Addresses");
+            actionCommandDBService.ExecutionStatusText.AppendLine("doing ... Adding up to 10 items in Addresses");
 
             #region Addresses
             count = (from c in dbTestDB.Addresses.AsNoTracking() select c).Count();
@@ -2614,14 +2624,14 @@ namespace ServicesRepopulateTestDBServices.Services
                     catch (Exception ex)
                     {
                         string InnerException = (ex.InnerException != null ? $" Inner: [{ ex.InnerException.Message }]" : "");
-                        generateCodeStatusDBService.Error.AppendLine($"{ ex.Message }{ InnerException }");
+                        actionCommandDBService.ErrorText.AppendLine($"{ ex.Message }{ InnerException }");
                         return false;
                     }
                 }
             }
             #endregion Addresses
 
-            generateCodeStatusDBService.Status.AppendLine("doing ... Adding up to 10 items in AppErrLogs");
+            actionCommandDBService.ExecutionStatusText.AppendLine("doing ... Adding up to 10 items in AppErrLogs");
 
             #region AppErrLogs
             count = (from c in dbTestDB.AppErrLogs.AsNoTracking() select c).Count();
@@ -2639,14 +2649,14 @@ namespace ServicesRepopulateTestDBServices.Services
                     catch (Exception ex)
                     {
                         string InnerException = (ex.InnerException != null ? $" Inner: [{ ex.InnerException.Message }]" : "");
-                        generateCodeStatusDBService.Status.AppendLine($"{ ex.Message }{ InnerException }");
+                        actionCommandDBService.ExecutionStatusText.AppendLine($"{ ex.Message }{ InnerException }");
                         return false;
                     }
                 }
             }
             #endregion AppErrLogs
 
-            generateCodeStatusDBService.Status.AppendLine("doing ... Adding up to 10 items in AppTasks");
+            actionCommandDBService.ExecutionStatusText.AppendLine("doing ... Adding up to 10 items in AppTasks");
 
             #region AppTasks
             count = (from c in dbTestDB.AppTasks.AsNoTracking() select c).Count();
@@ -2676,14 +2686,14 @@ namespace ServicesRepopulateTestDBServices.Services
                     catch (Exception ex)
                     {
                         string InnerException = (ex.InnerException != null ? $" Inner: [{ ex.InnerException.Message }]" : "");
-                        generateCodeStatusDBService.Status.AppendLine($"{ ex.Message }{ InnerException }");
+                        actionCommandDBService.ExecutionStatusText.AppendLine($"{ ex.Message }{ InnerException }");
                         return false;
                     }
                 }
             }
             #endregion AppTasks
 
-            generateCodeStatusDBService.Status.AppendLine("doing ... Adding up to 10 items in BoxModels");
+            actionCommandDBService.ExecutionStatusText.AppendLine("doing ... Adding up to 10 items in BoxModels");
 
             #region BoxModels
             count = (from c in dbTestDB.BoxModels.AsNoTracking() select c).Count();
@@ -2722,14 +2732,14 @@ namespace ServicesRepopulateTestDBServices.Services
                     catch (Exception ex)
                     {
                         string InnerException = (ex.InnerException != null ? $" Inner: [{ ex.InnerException.Message }]" : "");
-                        generateCodeStatusDBService.Status.AppendLine($"{ ex.Message }{ InnerException }");
+                        actionCommandDBService.ExecutionStatusText.AppendLine($"{ ex.Message }{ InnerException }");
                         return false;
                     }
                 }
             }
             #endregion BoxModels
 
-            generateCodeStatusDBService.Status.AppendLine("doing ... Adding up to 10 items in ClimateSites");
+            actionCommandDBService.ExecutionStatusText.AppendLine("doing ... Adding up to 10 items in ClimateSites");
 
             #region ClimateSites
             count = (from c in dbTestDB.ClimateSites.AsNoTracking() select c).Count();
@@ -2756,14 +2766,14 @@ namespace ServicesRepopulateTestDBServices.Services
                     catch (Exception ex)
                     {
                         string InnerException = (ex.InnerException != null ? $" Inner: [{ ex.InnerException.Message }]" : "");
-                        generateCodeStatusDBService.Status.AppendLine($"{ ex.Message }{ InnerException }");
+                        actionCommandDBService.ExecutionStatusText.AppendLine($"{ ex.Message }{ InnerException }");
                         return false;
                     }
                 }
             }
             #endregion ClimateSites
 
-            generateCodeStatusDBService.Status.AppendLine("doing ... Adding up to 10 items in ContactPreferences");
+            actionCommandDBService.ExecutionStatusText.AppendLine("doing ... Adding up to 10 items in ContactPreferences");
 
             #region ContactPreferences
             count = (from c in dbTestDB.ContactPreferences.AsNoTracking() select c).Count();
@@ -2781,14 +2791,14 @@ namespace ServicesRepopulateTestDBServices.Services
                     catch (Exception ex)
                     {
                         string InnerException = (ex.InnerException != null ? $" Inner: [{ ex.InnerException.Message }]" : "");
-                        generateCodeStatusDBService.Status.AppendLine($"{ ex.Message }{ InnerException }");
+                        actionCommandDBService.ExecutionStatusText.AppendLine($"{ ex.Message }{ InnerException }");
                         return false;
                     }
                 }
             }
             #endregion ContactPreferences
 
-            generateCodeStatusDBService.Status.AppendLine("doing ... Adding up to 10 items in Contacts");
+            actionCommandDBService.ExecutionStatusText.AppendLine("doing ... Adding up to 10 items in Contacts");
 
             #region Contacts
             count = (from c in dbTestDB.Contacts.AsNoTracking() select c).Count();
@@ -2806,14 +2816,14 @@ namespace ServicesRepopulateTestDBServices.Services
                     catch (Exception ex)
                     {
                         string InnerException = (ex.InnerException != null ? $" Inner: [{ ex.InnerException.Message }]" : "");
-                        generateCodeStatusDBService.Status.AppendLine($"{ ex.Message }{ InnerException }");
+                        actionCommandDBService.ExecutionStatusText.AppendLine($"{ ex.Message }{ InnerException }");
                         return false;
                     }
                 }
             }
             #endregion Contacts
 
-            generateCodeStatusDBService.Status.AppendLine("doing ... Adding up to 10 items in ContactShortcuts");
+            actionCommandDBService.ExecutionStatusText.AppendLine("doing ... Adding up to 10 items in ContactShortcuts");
 
             #region ContactShortcuts
             count = (from c in dbTestDB.ContactShortcuts.AsNoTracking() select c).Count();
@@ -2831,14 +2841,14 @@ namespace ServicesRepopulateTestDBServices.Services
                     catch (Exception ex)
                     {
                         string InnerException = (ex.InnerException != null ? $" Inner: [{ ex.InnerException.Message }]" : "");
-                        generateCodeStatusDBService.Error.AppendLine($"{ ex.Message }{ InnerException }");
+                        actionCommandDBService.ErrorText.AppendLine($"{ ex.Message }{ InnerException }");
                         return false;
                     }
                 }
             }
             #endregion ContactShortcuts
 
-            generateCodeStatusDBService.Status.AppendLine("doing ... Adding up to 10 items in DocTemplates");
+            actionCommandDBService.ExecutionStatusText.AppendLine("doing ... Adding up to 10 items in DocTemplates");
 
             #region DocTemplates
             count = (from c in dbTestDB.DocTemplates.AsNoTracking() select c).Count();
@@ -2856,14 +2866,14 @@ namespace ServicesRepopulateTestDBServices.Services
                     catch (Exception ex)
                     {
                         string InnerException = (ex.InnerException != null ? $" Inner: [{ ex.InnerException.Message }]" : "");
-                        generateCodeStatusDBService.Status.AppendLine($"{ ex.Message }{ InnerException }");
+                        actionCommandDBService.ExecutionStatusText.AppendLine($"{ ex.Message }{ InnerException }");
                         return false;
                     }
                 }
             }
             #endregion DocTemplates
 
-            generateCodeStatusDBService.Status.AppendLine("doing ... Adding up to 10 items in DrogueRuns");
+            actionCommandDBService.ExecutionStatusText.AppendLine("doing ... Adding up to 10 items in DrogueRuns");
 
             #region DrogueRuns
             count = (from c in dbTestDB.DrogueRuns.AsNoTracking() select c).Count();
@@ -2889,14 +2899,14 @@ namespace ServicesRepopulateTestDBServices.Services
                     catch (Exception ex)
                     {
                         string InnerException = (ex.InnerException != null ? $" Inner: [{ ex.InnerException.Message }]" : "");
-                        generateCodeStatusDBService.Status.AppendLine($"{ ex.Message }{ InnerException }");
+                        actionCommandDBService.ExecutionStatusText.AppendLine($"{ ex.Message }{ InnerException }");
                         return false;
                     }
                 }
             }
             #endregion DrogueRuns
 
-            generateCodeStatusDBService.Status.AppendLine("doing ... Adding up to 10 items in EmailDistributionListContactLanguages");
+            actionCommandDBService.ExecutionStatusText.AppendLine("doing ... Adding up to 10 items in EmailDistributionListContactLanguages");
 
             #region EmailDistributionListContactLanguages
             count = (from c in dbTestDB.EmailDistributionLists.AsNoTracking() select c).Count();
@@ -2942,14 +2952,14 @@ namespace ServicesRepopulateTestDBServices.Services
                     catch (Exception ex)
                     {
                         string InnerException = (ex.InnerException != null ? $" Inner: [{ ex.InnerException.Message }]" : "");
-                        generateCodeStatusDBService.Status.AppendLine($"{ ex.Message }{ InnerException }");
+                        actionCommandDBService.ExecutionStatusText.AppendLine($"{ ex.Message }{ InnerException }");
                         return false;
                     }
                 }
             }
             #endregion EmailDistributionLists
 
-            generateCodeStatusDBService.Status.AppendLine("doing ... Adding up to 10 items in Emails");
+            actionCommandDBService.ExecutionStatusText.AppendLine("doing ... Adding up to 10 items in Emails");
 
             #region Emails
             count = (from c in dbTestDB.Emails.AsNoTracking() select c).Count();
@@ -2967,14 +2977,14 @@ namespace ServicesRepopulateTestDBServices.Services
                     catch (Exception ex)
                     {
                         string InnerException = (ex.InnerException != null ? $" Inner: [{ ex.InnerException.Message }]" : "");
-                        generateCodeStatusDBService.Error.AppendLine($"{ ex.Message }{ InnerException }");
+                        actionCommandDBService.ErrorText.AppendLine($"{ ex.Message }{ InnerException }");
                         return false;
                     }
                 }
             }
             #endregion Emails
 
-            generateCodeStatusDBService.Status.AppendLine("doing ... Adding up to 10 items in HelpDoc");
+            actionCommandDBService.ExecutionStatusText.AppendLine("doing ... Adding up to 10 items in HelpDoc");
 
             #region HelpDocs
             count = (from c in dbTestDB.HelpDocs.AsNoTracking() select c).Count();
@@ -2991,14 +3001,14 @@ namespace ServicesRepopulateTestDBServices.Services
                     catch (Exception ex)
                     {
                         string InnerException = (ex.InnerException != null ? $" Inner: [{ ex.InnerException.Message }]" : "");
-                        generateCodeStatusDBService.Status.AppendLine($"{ ex.Message }{ InnerException }");
+                        actionCommandDBService.ExecutionStatusText.AppendLine($"{ ex.Message }{ InnerException }");
                         return false;
                     }
                 }
             }
             #endregion HelpDocs
 
-            generateCodeStatusDBService.Status.AppendLine("doing ... Adding up to 10 items in HydrometricSites");
+            actionCommandDBService.ExecutionStatusText.AppendLine("doing ... Adding up to 10 items in HydrometricSites");
 
             #region HydrometricSites
             count = (from c in dbTestDB.HydrometricSites.AsNoTracking() select c).Count();
@@ -3026,14 +3036,14 @@ namespace ServicesRepopulateTestDBServices.Services
                     catch (Exception ex)
                     {
                         string InnerException = (ex.InnerException != null ? $" Inner: [{ ex.InnerException.Message }]" : "");
-                        generateCodeStatusDBService.Status.AppendLine($"{ ex.Message }{ InnerException }");
+                        actionCommandDBService.ExecutionStatusText.AppendLine($"{ ex.Message }{ InnerException }");
                         return false;
                     }
                 }
             }
             #endregion HydrometricSites
 
-            generateCodeStatusDBService.Status.AppendLine("doing ... Adding up to 10 items in Infrastructures");
+            actionCommandDBService.ExecutionStatusText.AppendLine("doing ... Adding up to 10 items in Infrastructures");
 
             #region Infrastructures
             count = (from c in dbTestDB.Infrastructures.AsNoTracking() select c).Count();
@@ -3063,14 +3073,14 @@ namespace ServicesRepopulateTestDBServices.Services
                     catch (Exception ex)
                     {
                         string InnerException = (ex.InnerException != null ? $" Inner: [{ ex.InnerException.Message }]" : "");
-                        generateCodeStatusDBService.Status.AppendLine($"{ ex.Message }{ InnerException }");
+                        actionCommandDBService.ExecutionStatusText.AppendLine($"{ ex.Message }{ InnerException }");
                         return false;
                     }
                 }
             }
             #endregion Infrastructures
 
-            generateCodeStatusDBService.Status.AppendLine("doing ... Adding up to 10 items in LabSheets");
+            actionCommandDBService.ExecutionStatusText.AppendLine("doing ... Adding up to 10 items in LabSheets");
 
             #region LabSheets
             count = (from c in dbTestDB.LabSheets.AsNoTracking() select c).Count();
@@ -3101,14 +3111,14 @@ namespace ServicesRepopulateTestDBServices.Services
                     catch (Exception ex)
                     {
                         string InnerException = (ex.InnerException != null ? $" Inner: [{ ex.InnerException.Message }]" : "");
-                        generateCodeStatusDBService.Status.AppendLine($"{ ex.Message }{ InnerException }");
+                        actionCommandDBService.ExecutionStatusText.AppendLine($"{ ex.Message }{ InnerException }");
                         return false;
                     }
                 }
             }
             #endregion LabSheets
 
-            generateCodeStatusDBService.Status.AppendLine("doing ... Adding up to 10 items in Logs");
+            actionCommandDBService.ExecutionStatusText.AppendLine("doing ... Adding up to 10 items in Logs");
 
             #region Logs
             count = (from c in dbTestDB.Logs.AsNoTracking() select c).Count();
@@ -3126,14 +3136,14 @@ namespace ServicesRepopulateTestDBServices.Services
                     catch (Exception ex)
                     {
                         string InnerException = (ex.InnerException != null ? $" Inner: [{ ex.InnerException.Message }]" : "");
-                        generateCodeStatusDBService.Status.AppendLine($"{ ex.Message }{ InnerException }");
+                        actionCommandDBService.ExecutionStatusText.AppendLine($"{ ex.Message }{ InnerException }");
                         return false;
                     }
                 }
             }
             #endregion Logs
 
-            generateCodeStatusDBService.Status.AppendLine("doing ... Adding up to 10 items in MikeBoundaryConditions");
+            actionCommandDBService.ExecutionStatusText.AppendLine("doing ... Adding up to 10 items in MikeBoundaryConditions");
 
             #region MikeBoundaryConditions
             count = (from c in dbTestDB.MikeBoundaryConditions.AsNoTracking() select c).Count();
@@ -3151,14 +3161,14 @@ namespace ServicesRepopulateTestDBServices.Services
                     catch (Exception ex)
                     {
                         string InnerException = (ex.InnerException != null ? $" Inner: [{ ex.InnerException.Message }]" : "");
-                        generateCodeStatusDBService.Status.AppendLine($"{ ex.Message }{ InnerException }");
+                        actionCommandDBService.ExecutionStatusText.AppendLine($"{ ex.Message }{ InnerException }");
                         return false;
                     }
                 }
             }
             #endregion MikeBoundaryConditions
 
-            generateCodeStatusDBService.Status.AppendLine("doing ... Adding up to 10 items in MikeScenarios");
+            actionCommandDBService.ExecutionStatusText.AppendLine("doing ... Adding up to 10 items in MikeScenarios");
 
             #region MikeScenarios
             count = (from c in dbTestDB.MikeScenarios.AsNoTracking() select c).Count();
@@ -3176,14 +3186,14 @@ namespace ServicesRepopulateTestDBServices.Services
                     catch (Exception ex)
                     {
                         string InnerException = (ex.InnerException != null ? $" Inner: [{ ex.InnerException.Message }]" : "");
-                        generateCodeStatusDBService.Status.AppendLine($"{ ex.Message }{ InnerException }");
+                        actionCommandDBService.ExecutionStatusText.AppendLine($"{ ex.Message }{ InnerException }");
                         return false;
                     }
                 }
             }
             #endregion MikeScenarios
 
-            generateCodeStatusDBService.Status.AppendLine("doing ... Adding up to 10 items in MikeScenarioResults");
+            actionCommandDBService.ExecutionStatusText.AppendLine("doing ... Adding up to 10 items in MikeScenarioResults");
 
             #region MikeScenarioResults
             count = (from c in dbTestDB.MikeScenarioResults.AsNoTracking() select c).Count();
@@ -3200,14 +3210,14 @@ namespace ServicesRepopulateTestDBServices.Services
                     catch (Exception ex)
                     {
                         string InnerException = (ex.InnerException != null ? $" Inner: [{ ex.InnerException.Message }]" : "");
-                        generateCodeStatusDBService.Error.AppendLine($"{ ex.Message }{ InnerException }");
+                        actionCommandDBService.ErrorText.AppendLine($"{ ex.Message }{ InnerException }");
                         return false;
                     }
                 }
             }
             #endregion MikeScenarioResults
 
-            generateCodeStatusDBService.Status.AppendLine("doing ... Adding up to 10 items in MikeSources");
+            actionCommandDBService.ExecutionStatusText.AppendLine("doing ... Adding up to 10 items in MikeSources");
 
             #region MikeSources
             count = (from c in dbTestDB.MikeSources.AsNoTracking() select c).Count();
@@ -3232,14 +3242,14 @@ namespace ServicesRepopulateTestDBServices.Services
                     catch (Exception ex)
                     {
                         string InnerException = (ex.InnerException != null ? $" Inner: [{ ex.InnerException.Message }]" : "");
-                        generateCodeStatusDBService.Status.AppendLine($"{ ex.Message }{ InnerException }");
+                        actionCommandDBService.ExecutionStatusText.AppendLine($"{ ex.Message }{ InnerException }");
                         return false;
                     }
                 }
             }
             #endregion MikeSources
 
-            generateCodeStatusDBService.Status.AppendLine("doing ... Adding up to 10 items in MWQMAnalysisReportParameters");
+            actionCommandDBService.ExecutionStatusText.AppendLine("doing ... Adding up to 10 items in MWQMAnalysisReportParameters");
 
             #region MWQMAnalysisReportParameters
             count = (from c in dbTestDB.MWQMAnalysisReportParameters.AsNoTracking() select c).Count();
@@ -3257,14 +3267,14 @@ namespace ServicesRepopulateTestDBServices.Services
                     catch (Exception ex)
                     {
                         string InnerException = (ex.InnerException != null ? $" Inner: [{ ex.InnerException.Message }]" : "");
-                        generateCodeStatusDBService.Error.AppendLine($"{ ex.Message }{ InnerException }");
+                        actionCommandDBService.ErrorText.AppendLine($"{ ex.Message }{ InnerException }");
                         return false;
                     }
                 }
             }
             #endregion MWQMAnalysisReportParameters            
 
-            generateCodeStatusDBService.Status.AppendLine("doing ... Adding up to 10 items in MWQMRuns");
+            actionCommandDBService.ExecutionStatusText.AppendLine("doing ... Adding up to 10 items in MWQMRuns");
 
             #region MWQMRuns
             count = (from c in dbTestDB.MWQMRuns.AsNoTracking() select c).Count();
@@ -3290,14 +3300,14 @@ namespace ServicesRepopulateTestDBServices.Services
                     catch (Exception ex)
                     {
                         string InnerException = (ex.InnerException != null ? $" Inner: [{ ex.InnerException.Message }]" : "");
-                        generateCodeStatusDBService.Status.AppendLine($"{ ex.Message }{ InnerException }");
+                        actionCommandDBService.ExecutionStatusText.AppendLine($"{ ex.Message }{ InnerException }");
                         return false;
                     }
                 }
             }
             #endregion MWQMRuns
 
-            generateCodeStatusDBService.Status.AppendLine("doing ... Adding up to 10 items in MWQMSamples");
+            actionCommandDBService.ExecutionStatusText.AppendLine("doing ... Adding up to 10 items in MWQMSamples");
 
             #region MWQMSamples
             count = (from c in dbTestDB.MWQMSamples.AsNoTracking() select c).Count();
@@ -3323,14 +3333,14 @@ namespace ServicesRepopulateTestDBServices.Services
                     catch (Exception ex)
                     {
                         string InnerException = (ex.InnerException != null ? $" Inner: [{ ex.InnerException.Message }]" : "");
-                        generateCodeStatusDBService.Status.AppendLine($"{ ex.Message }{ InnerException }");
+                        actionCommandDBService.ExecutionStatusText.AppendLine($"{ ex.Message }{ InnerException }");
                         return false;
                     }
                 }
             }
             #endregion MWQMSamples
 
-            generateCodeStatusDBService.Status.AppendLine("doing ... Adding up to 10 items in MWQMSites");
+            actionCommandDBService.ExecutionStatusText.AppendLine("doing ... Adding up to 10 items in MWQMSites");
 
             #region MWQMSites
             count = (from c in dbTestDB.MWQMSites.AsNoTracking() select c).Count();
@@ -3354,14 +3364,14 @@ namespace ServicesRepopulateTestDBServices.Services
                     catch (Exception ex)
                     {
                         string InnerException = (ex.InnerException != null ? $" Inner: [{ ex.InnerException.Message }]" : "");
-                        generateCodeStatusDBService.Status.AppendLine($"{ ex.Message }{ InnerException }");
+                        actionCommandDBService.ExecutionStatusText.AppendLine($"{ ex.Message }{ InnerException }");
                         return false;
                     }
                 }
             }
             #endregion MWQMSites
 
-            generateCodeStatusDBService.Status.AppendLine("doing ... Adding up to 10 items in MWQMSubsectors");
+            actionCommandDBService.ExecutionStatusText.AppendLine("doing ... Adding up to 10 items in MWQMSubsectors");
 
             #region MWQMSubsectors
             count = (from c in dbTestDB.MWQMSubsectors.AsNoTracking() select c).Count();
@@ -3387,14 +3397,14 @@ namespace ServicesRepopulateTestDBServices.Services
                     catch (Exception ex)
                     {
                         string InnerException = (ex.InnerException != null ? $" Inner: [{ ex.InnerException.Message }]" : "");
-                        generateCodeStatusDBService.Status.AppendLine($"{ ex.Message }{ InnerException }");
+                        actionCommandDBService.ExecutionStatusText.AppendLine($"{ ex.Message }{ InnerException }");
                         return false;
                     }
                 }
             }
             #endregion MWQMSubsectors
 
-            generateCodeStatusDBService.Status.AppendLine("doing ... Adding up to 10 items in PolSourceSites");
+            actionCommandDBService.ExecutionStatusText.AppendLine("doing ... Adding up to 10 items in PolSourceSites");
 
             #region PolSourceSites
             count = (from c in dbTestDB.PolSourceSites.AsNoTracking() select c).Count();
@@ -3425,14 +3435,14 @@ namespace ServicesRepopulateTestDBServices.Services
                     catch (Exception ex)
                     {
                         string InnerException = (ex.InnerException != null ? $" Inner: [{ ex.InnerException.Message }]" : "");
-                        generateCodeStatusDBService.Status.AppendLine($"{ ex.Message }{ InnerException }");
+                        actionCommandDBService.ExecutionStatusText.AppendLine($"{ ex.Message }{ InnerException }");
                         return false;
                     }
                 }
             }
             #endregion PolSourceSites
 
-            generateCodeStatusDBService.Status.AppendLine("doing ... Adding up to 10 items in MWQMSitePolSourceSites");
+            actionCommandDBService.ExecutionStatusText.AppendLine("doing ... Adding up to 10 items in MWQMSitePolSourceSites");
 
             //#region MWQMSitePolSourceSites
             //using (TestDBContext db = new TestDBContext())
@@ -3452,7 +3462,7 @@ namespace ServicesRepopulateTestDBServices.Services
             //            catch (Exception ex)
             //            {
             //                string InnerException = (ex.InnerException != null ? $" Inner: [{ ex.InnerException.Message }]" : "");
-            //                generateCodeStatusDBService.Status.AppendLine($"{ ex.Message }{ InnerException }");
+            //                actionCommandDBService.ExecutionStatusText.AppendLine($"{ ex.Message }{ InnerException }");
             //                return false;
             //            }
             //        }
@@ -3460,7 +3470,7 @@ namespace ServicesRepopulateTestDBServices.Services
             //}
             //#endregion MWQMSitePolSourceSites
 
-            generateCodeStatusDBService.Status.AppendLine("doing ... Adding up to 10 items in RainExceedances");
+            actionCommandDBService.ExecutionStatusText.AppendLine("doing ... Adding up to 10 items in RainExceedances");
 
             #region RainExceedances
             count = (from c in dbTestDB.RainExceedances.AsNoTracking() select c).Count();
@@ -3478,7 +3488,7 @@ namespace ServicesRepopulateTestDBServices.Services
                     catch (Exception ex)
                     {
                         string InnerException = (ex.InnerException != null ? $" Inner: [{ ex.InnerException.Message }]" : "");
-                        generateCodeStatusDBService.Status.AppendLine($"{ ex.Message }{ InnerException }");
+                        actionCommandDBService.ExecutionStatusText.AppendLine($"{ ex.Message }{ InnerException }");
                         return false;
                     }
                 }
@@ -3503,14 +3513,14 @@ namespace ServicesRepopulateTestDBServices.Services
                     catch (Exception ex)
                     {
                         string InnerException = (ex.InnerException != null ? $" Inner: [{ ex.InnerException.Message }]" : "");
-                        generateCodeStatusDBService.Status.AppendLine($"{ ex.Message }{ InnerException }");
+                        actionCommandDBService.ExecutionStatusText.AppendLine($"{ ex.Message }{ InnerException }");
                         return false;
                     }
                 }
             }
             #endregion RainExceedanceClimateSites
 
-            generateCodeStatusDBService.Status.AppendLine("doing ... Adding up to 10 items in RetingCurves");
+            actionCommandDBService.ExecutionStatusText.AppendLine("doing ... Adding up to 10 items in RetingCurves");
 
             #region RatingCurves
             count = (from c in dbTestDB.RatingCurves.AsNoTracking() select c).Count();
@@ -3534,14 +3544,14 @@ namespace ServicesRepopulateTestDBServices.Services
                     catch (Exception ex)
                     {
                         string InnerException = (ex.InnerException != null ? $" Inner: [{ ex.InnerException.Message }]" : "");
-                        generateCodeStatusDBService.Status.AppendLine($"{ ex.Message }{ InnerException }");
+                        actionCommandDBService.ExecutionStatusText.AppendLine($"{ ex.Message }{ InnerException }");
                         return false;
                     }
                 }
             }
             #endregion RatingCurves
 
-            generateCodeStatusDBService.Status.AppendLine("doing ... Adding up to 10 items in ReportSections");
+            actionCommandDBService.ExecutionStatusText.AppendLine("doing ... Adding up to 10 items in ReportSections");
 
             #region ReportSections
             count = (from c in dbTestDB.ReportSections.AsNoTracking() select c).Count();
@@ -3568,14 +3578,14 @@ namespace ServicesRepopulateTestDBServices.Services
                     catch (Exception ex)
                     {
                         string InnerException = (ex.InnerException != null ? $" Inner: [{ ex.InnerException.Message }]" : "");
-                        generateCodeStatusDBService.Status.AppendLine($"{ ex.Message }{ InnerException }");
+                        actionCommandDBService.ExecutionStatusText.AppendLine($"{ ex.Message }{ InnerException }");
                         return false;
                     }
                 }
             }
             #endregion ReportSections
 
-            generateCodeStatusDBService.Status.AppendLine("doing ... Adding up to 10 items in ReportTypes");
+            actionCommandDBService.ExecutionStatusText.AppendLine("doing ... Adding up to 10 items in ReportTypes");
 
             #region ReportTypes
             count = (from c in dbTestDB.ReportTypes.AsNoTracking() select c).Count();
@@ -3602,14 +3612,14 @@ namespace ServicesRepopulateTestDBServices.Services
                     catch (Exception ex)
                     {
                         string InnerException = (ex.InnerException != null ? $" Inner: [{ ex.InnerException.Message }]" : "");
-                        generateCodeStatusDBService.Status.AppendLine($"{ ex.Message }{ InnerException }");
+                        actionCommandDBService.ExecutionStatusText.AppendLine($"{ ex.Message }{ InnerException }");
                         return false;
                     }
                 }
             }
             #endregion ReportTypes
 
-            generateCodeStatusDBService.Status.AppendLine("doing ... Adding up to 10 items in ResetPasswords");
+            actionCommandDBService.ExecutionStatusText.AppendLine("doing ... Adding up to 10 items in ResetPasswords");
 
             #region ResetPasswords
             count = (from c in dbTestDB.ResetPasswords.AsNoTracking() select c).Count();
@@ -3627,14 +3637,14 @@ namespace ServicesRepopulateTestDBServices.Services
                     catch (Exception ex)
                     {
                         string InnerException = (ex.InnerException != null ? $" Inner: [{ ex.InnerException.Message }]" : "");
-                        generateCodeStatusDBService.Status.AppendLine($"{ ex.Message }{ InnerException }");
+                        actionCommandDBService.ExecutionStatusText.AppendLine($"{ ex.Message }{ InnerException }");
                         return false;
                     }
                 }
             }
             #endregion ResetPasswords
 
-            generateCodeStatusDBService.Status.AppendLine("doing ... Adding up to 10 items in SamplingPlans");
+            actionCommandDBService.ExecutionStatusText.AppendLine("doing ... Adding up to 10 items in SamplingPlans");
 
             #region SamplingPlans
             count = (from c in dbTestDB.SamplingPlans.AsNoTracking() select c).Count();
@@ -3669,14 +3679,14 @@ namespace ServicesRepopulateTestDBServices.Services
                     catch (Exception ex)
                     {
                         string InnerException = (ex.InnerException != null ? $" Inner: [{ ex.InnerException.Message }]" : "");
-                        generateCodeStatusDBService.Status.AppendLine($"{ ex.Message }{ InnerException }");
+                        actionCommandDBService.ExecutionStatusText.AppendLine($"{ ex.Message }{ InnerException }");
                         return false;
                     }
                 }
             }
             #endregion SamplingPlans
 
-            generateCodeStatusDBService.Status.AppendLine("doing ... Adding up to 10 items in Spills");
+            actionCommandDBService.ExecutionStatusText.AppendLine("doing ... Adding up to 10 items in Spills");
 
             #region Spills
             count = (from c in dbTestDB.Spills.AsNoTracking() select c).Count();
@@ -3702,14 +3712,14 @@ namespace ServicesRepopulateTestDBServices.Services
                     catch (Exception ex)
                     {
                         string InnerException = (ex.InnerException != null ? $" Inner: [{ ex.InnerException.Message }]" : "");
-                        generateCodeStatusDBService.Status.AppendLine($"{ ex.Message }{ InnerException }");
+                        actionCommandDBService.ExecutionStatusText.AppendLine($"{ ex.Message }{ InnerException }");
                         return false;
                     }
                 }
             }
             #endregion Spills
 
-            generateCodeStatusDBService.Status.AppendLine("doing ... Adding up to 10 items in Tels");
+            actionCommandDBService.ExecutionStatusText.AppendLine("doing ... Adding up to 10 items in Tels");
 
             #region Tels
             count = (from c in dbTestDB.Tels.AsNoTracking() select c).Count();
@@ -3727,14 +3737,14 @@ namespace ServicesRepopulateTestDBServices.Services
                     catch (Exception ex)
                     {
                         string InnerException = (ex.InnerException != null ? $" Inner: [{ ex.InnerException.Message }]" : "");
-                        generateCodeStatusDBService.Status.AppendLine($"{ ex.Message }{ InnerException }");
+                        actionCommandDBService.ExecutionStatusText.AppendLine($"{ ex.Message }{ InnerException }");
                         return false;
                     }
                 }
             }
             #endregion Tels
 
-            generateCodeStatusDBService.Status.AppendLine("doing ... Adding up to 10 items in TideDataValues");
+            actionCommandDBService.ExecutionStatusText.AppendLine("doing ... Adding up to 10 items in TideDataValues");
 
             #region TideDataValues
             count = (from c in dbTestDB.TideDataValues.AsNoTracking() select c).Count();
@@ -3752,14 +3762,14 @@ namespace ServicesRepopulateTestDBServices.Services
                     catch (Exception ex)
                     {
                         string InnerException = (ex.InnerException != null ? $" Inner: [{ ex.InnerException.Message }]" : "");
-                        generateCodeStatusDBService.Status.AppendLine($"{ ex.Message }{ InnerException }");
+                        actionCommandDBService.ExecutionStatusText.AppendLine($"{ ex.Message }{ InnerException }");
                         return false;
                     }
                 }
             }
             #endregion TideDataValues
 
-            generateCodeStatusDBService.Status.AppendLine("doing ... Adding up to 10 items in TideLocations");
+            actionCommandDBService.ExecutionStatusText.AppendLine("doing ... Adding up to 10 items in TideLocations");
 
             #region TideLocations
             count = (from c in dbTestDB.TideLocations.AsNoTracking() select c).Count();
@@ -3777,14 +3787,14 @@ namespace ServicesRepopulateTestDBServices.Services
                     catch (Exception ex)
                     {
                         string InnerException = (ex.InnerException != null ? $" Inner: [{ ex.InnerException.Message }]" : "");
-                        generateCodeStatusDBService.Status.AppendLine($"{ ex.Message }{ InnerException }");
+                        actionCommandDBService.ExecutionStatusText.AppendLine($"{ ex.Message }{ InnerException }");
                         return false;
                     }
                 }
             }
             #endregion TideLocations
 
-            generateCodeStatusDBService.Status.AppendLine("doing ... Adding up to 10 items in TideSites");
+            actionCommandDBService.ExecutionStatusText.AppendLine("doing ... Adding up to 10 items in TideSites");
 
             #region TideSites
             count = (from c in dbTestDB.TideSites.AsNoTracking() select c).Count();
@@ -3802,14 +3812,14 @@ namespace ServicesRepopulateTestDBServices.Services
                     catch (Exception ex)
                     {
                         string InnerException = (ex.InnerException != null ? $" Inner: [{ ex.InnerException.Message }]" : "");
-                        generateCodeStatusDBService.Status.AppendLine($"{ ex.Message }{ InnerException }");
+                        actionCommandDBService.ExecutionStatusText.AppendLine($"{ ex.Message }{ InnerException }");
                         return false;
                     }
                 }
             }
             #endregion TideSites
 
-            generateCodeStatusDBService.Status.AppendLine("doing ... Adding up to 10 items in TVFiles");
+            actionCommandDBService.ExecutionStatusText.AppendLine("doing ... Adding up to 10 items in TVFiles");
 
             #region TVFiles
             count = (from c in dbTestDB.TVFiles.AsNoTracking() select c).Count();
@@ -3835,14 +3845,14 @@ namespace ServicesRepopulateTestDBServices.Services
                     catch (Exception ex)
                     {
                         string InnerException = (ex.InnerException != null ? $" Inner: [{ ex.InnerException.Message }]" : "");
-                        generateCodeStatusDBService.Status.AppendLine($"{ ex.Message }{ InnerException }");
+                        actionCommandDBService.ExecutionStatusText.AppendLine($"{ ex.Message }{ InnerException }");
                         return false;
                     }
                 }
             }
             #endregion TVFiles
 
-            generateCodeStatusDBService.Status.AppendLine("doing ... Adding up to 10 items in TVItemLinks");
+            actionCommandDBService.ExecutionStatusText.AppendLine("doing ... Adding up to 10 items in TVItemLinks");
 
             #region TVItemLinks
             count = (from c in dbTestDB.TVItemLinks.AsNoTracking() select c).Count();
@@ -3860,14 +3870,14 @@ namespace ServicesRepopulateTestDBServices.Services
                     catch (Exception ex)
                     {
                         string InnerException = (ex.InnerException != null ? $" Inner: [{ ex.InnerException.Message }]" : "");
-                        generateCodeStatusDBService.Status.AppendLine($"{ ex.Message }{ InnerException }");
+                        actionCommandDBService.ExecutionStatusText.AppendLine($"{ ex.Message }{ InnerException }");
                         return false;
                     }
                 }
             }
             #endregion TVItemLinks
 
-            generateCodeStatusDBService.Status.AppendLine("doing ... Adding up to 10 items in TVItemStats");
+            actionCommandDBService.ExecutionStatusText.AppendLine("doing ... Adding up to 10 items in TVItemStats");
 
             #region TVItemStats
             count = (from c in dbTestDB.TVItemStats.AsNoTracking() select c).Count();
@@ -3885,14 +3895,14 @@ namespace ServicesRepopulateTestDBServices.Services
                     catch (Exception ex)
                     {
                         string InnerException = (ex.InnerException != null ? $" Inner: [{ ex.InnerException.Message }]" : "");
-                        generateCodeStatusDBService.Status.AppendLine($"{ ex.Message }{ InnerException }");
+                        actionCommandDBService.ExecutionStatusText.AppendLine($"{ ex.Message }{ InnerException }");
                         return false;
                     }
                 }
             }
             #endregion TVItemStats
 
-            generateCodeStatusDBService.Status.AppendLine("doing ... Adding up to 10 items in TVItemUserAuthorizations");
+            actionCommandDBService.ExecutionStatusText.AppendLine("doing ... Adding up to 10 items in TVItemUserAuthorizations");
 
             #region TVItemUserAuthorizations
             count = (from c in dbTestDB.TVItemUserAuthorizations.AsNoTracking() select c).Count();
@@ -3909,14 +3919,14 @@ namespace ServicesRepopulateTestDBServices.Services
                     catch (Exception ex)
                     {
                         string InnerException = (ex.InnerException != null ? $" Inner: [{ ex.InnerException.Message }]" : "");
-                        generateCodeStatusDBService.Status.AppendLine($"{ ex.Message }{ InnerException }");
+                        actionCommandDBService.ExecutionStatusText.AppendLine($"{ ex.Message }{ InnerException }");
                         return false;
                     }
                 }
             }
             #endregion TVItemUserAuthorizations
 
-            generateCodeStatusDBService.Status.AppendLine("doing ... Adding up to 10 items in TVTypeUserAuthorizations");
+            actionCommandDBService.ExecutionStatusText.AppendLine("doing ... Adding up to 10 items in TVTypeUserAuthorizations");
 
             #region TVTypeUserAuthorizations
             count = (from c in dbTestDB.TVTypeUserAuthorizations.AsNoTracking() select c).Count();
@@ -3933,14 +3943,14 @@ namespace ServicesRepopulateTestDBServices.Services
                     catch (Exception ex)
                     {
                         string InnerException = (ex.InnerException != null ? $" Inner: [{ ex.InnerException.Message }]" : "");
-                        generateCodeStatusDBService.Status.AppendLine($"{ ex.Message }{ InnerException }");
+                        actionCommandDBService.ExecutionStatusText.AppendLine($"{ ex.Message }{ InnerException }");
                         return false;
                     }
                 }
             }
             #endregion TVTypeUserAuthorizations
 
-            generateCodeStatusDBService.Status.AppendLine("doing ... Adding up to 10 items in UseOfSites");
+            actionCommandDBService.ExecutionStatusText.AppendLine("doing ... Adding up to 10 items in UseOfSites");
 
             #region UseOfSites
             count = (from c in dbTestDB.UseOfSites.AsNoTracking() select c).Count();
@@ -3958,14 +3968,14 @@ namespace ServicesRepopulateTestDBServices.Services
                     catch (Exception ex)
                     {
                         string InnerException = (ex.InnerException != null ? $" Inner: [{ ex.InnerException.Message }]" : "");
-                        generateCodeStatusDBService.Status.AppendLine($"{ ex.Message }{ InnerException }");
+                        actionCommandDBService.ExecutionStatusText.AppendLine($"{ ex.Message }{ InnerException }");
                         return false;
                     }
                 }
             }
             #endregion UseOfSites
 
-            generateCodeStatusDBService.Status.AppendLine("doing ... Adding up to 10 items in VPScenarios");
+            actionCommandDBService.ExecutionStatusText.AppendLine("doing ... Adding up to 10 items in VPScenarios");
 
             #region VPScenarios
             count = (from c in dbTestDB.VPScenarios.AsNoTracking() select c).Count();
@@ -4005,7 +4015,7 @@ namespace ServicesRepopulateTestDBServices.Services
                     catch (Exception ex)
                     {
                         string InnerException = (ex.InnerException != null ? $" Inner: [{ ex.InnerException.Message }]" : "");
-                        generateCodeStatusDBService.Status.AppendLine($"{ ex.Message }{ InnerException }");
+                        actionCommandDBService.ExecutionStatusText.AppendLine($"{ ex.Message }{ InnerException }");
                         return false;
                     }
                 }
@@ -4027,7 +4037,7 @@ namespace ServicesRepopulateTestDBServices.Services
                     catch (Exception ex)
                     {
                         string InnerException = (ex.InnerException != null ? $" Inner: [{ ex.InnerException.Message }]" : "");
-                        generateCodeStatusDBService.Status.AppendLine($"{ ex.Message }{ InnerException }");
+                        actionCommandDBService.ExecutionStatusText.AppendLine($"{ ex.Message }{ InnerException }");
                         return false;
                     }
                 }
@@ -4050,7 +4060,7 @@ namespace ServicesRepopulateTestDBServices.Services
                     catch (Exception ex)
                     {
                         string InnerException = (ex.InnerException != null ? $" Inner: [{ ex.InnerException.Message }]" : "");
-                        generateCodeStatusDBService.Status.AppendLine($"{ ex.Message }{ InnerException }");
+                        actionCommandDBService.ExecutionStatusText.AppendLine($"{ ex.Message }{ InnerException }");
                         return false;
                     }
                 }
@@ -4160,7 +4170,7 @@ namespace ServicesRepopulateTestDBServices.Services
             {
                 if (!ListTableToDelete.Where(c => c == table.TableName).Any())
                 {
-                    generateCodeStatusDBService.Status.AppendLine($"{ table.TableName } is missing in the list of table to delete");
+                    actionCommandDBService.ExecutionStatusText.AppendLine($"{ table.TableName } is missing in the list of table to delete");
                     return false;
                 }
             }
@@ -4176,7 +4186,7 @@ namespace ServicesRepopulateTestDBServices.Services
 
                 if (table == null)
                 {
-                    generateCodeStatusDBService.Status.AppendLine($"{ s } is missing in the list of table");
+                    actionCommandDBService.ExecutionStatusText.AppendLine($"{ s } is missing in the list of table");
                     return false;
                 }
 

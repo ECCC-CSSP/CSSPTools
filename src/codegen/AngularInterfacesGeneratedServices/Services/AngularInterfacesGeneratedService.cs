@@ -1,10 +1,10 @@
 ﻿using AngularInterfacesGeneratedServices.Resources;
 using CSSPEnums;
 using CSSPModels;
-using GenerateCodeBase.Models;
-using GenerateCodeBase.Services;
-using GenerateCodeStatusDB.Models;
-using GenerateCodeStatusDB.Services;
+using GenerateCodeBaseServices.Models;
+using GenerateCodeBaseServices.Services;
+using ActionCommandDBServices.Models;
+using ActionCommandDBServices.Services;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -18,6 +18,9 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using ValidateAppSettingsServices.Services;
+using ValidateAppSettingsServices.Models;
+using Microsoft.AspNetCore.Mvc;
 
 namespace AngularInterfacesGeneratedServices.Services
 {
@@ -28,7 +31,7 @@ namespace AngularInterfacesGeneratedServices.Services
 
         #region Properties
         private IConfiguration configuration { get; set; }
-        private IGenerateCodeStatusDBService generateCodeStatusDBService { get; set; }
+        private IActionCommandDBService actionCommandDBService { get; set; }
         private IValidateAppSettingsService validateAppSettingsService { get; set; }
         private IGenerateCodeBaseService generateCodeBaseService { get; set; }
         private List<string> AllowableCultures { get; set; } = new List<string>() { "en-CA", "fr-CA" };
@@ -36,12 +39,12 @@ namespace AngularInterfacesGeneratedServices.Services
 
         #region Constructors
         public AngularInterfacesGeneratedService(IConfiguration configuration,
-            IGenerateCodeStatusDBService generateCodeStatusDBService,
+            IActionCommandDBService actionCommandDBService,
             IValidateAppSettingsService validateAppSettingsService,
             IGenerateCodeBaseService generateCodeBaseService)
         {
             this.configuration = configuration;
-            this.generateCodeStatusDBService = generateCodeStatusDBService;
+            this.actionCommandDBService = actionCommandDBService;
             this.validateAppSettingsService = validateAppSettingsService;
             this.generateCodeBaseService = generateCodeBaseService;
         }
@@ -56,17 +59,17 @@ namespace AngularInterfacesGeneratedServices.Services
 
             if (!await Setup())
             {
-                Console.WriteLine(generateCodeStatusDBService.Error.ToString());
+                Console.WriteLine(actionCommandDBService.ErrorText.ToString());
                 Console.WriteLine("");
-                Console.WriteLine(generateCodeStatusDBService.Status.ToString());
+                Console.WriteLine(actionCommandDBService.ExecutionStatusText.ToString());
                 return false;
             }
 
             if (!await Generate())
             {
-                Console.WriteLine(generateCodeStatusDBService.Error.ToString());
+                Console.WriteLine(actionCommandDBService.ErrorText.ToString());
                 Console.WriteLine("");
-                Console.WriteLine(generateCodeStatusDBService.Status.ToString());
+                Console.WriteLine(actionCommandDBService.ExecutionStatusText.ToString());
                 return false;
             }
 
@@ -79,16 +82,17 @@ namespace AngularInterfacesGeneratedServices.Services
         #region Functions private
         private async Task<bool> Generate()
         {
-            GenerateCodeStatus generateCodeStatus = await generateCodeStatusDBService.GetOrCreate();
+           ActionResult<ActionCommand> actionActionCommand = await actionCommandDBService.GetOrCreate();
 
-            if (generateCodeStatus == null)
+            if (((ObjectResult)actionActionCommand.Result).StatusCode == 400)
             {
-                await ConsoleWriteError("generateCodeStatus == null");
+                await ConsoleWriteError("actionCommand == null");
                 return false;
             }
 
-            generateCodeStatusDBService.Status.AppendLine("Generate Starting ...");
-            await generateCodeStatusDBService.Update(10);
+            actionCommandDBService.ExecutionStatusText.AppendLine("Generate Starting ...");
+            actionCommandDBService.PercentCompleted = 10;
+            await actionCommandDBService.Update();
 
             DirectoryInfo diOutputGen = new DirectoryInfo(configuration.GetValue<string>("OutputDir"));
             if (!diOutputGen.Exists)
@@ -99,7 +103,7 @@ namespace AngularInterfacesGeneratedServices.Services
                 }
                 catch (Exception)
                 {
-                    generateCodeStatusDBService.Error.AppendLine($"{ string.Format(AppRes.CouldNotCreateDirectory_, diOutputGen.FullName) }");
+                    actionCommandDBService.ErrorText.AppendLine($"{ string.Format(AppRes.CouldNotCreateDirectory_, diOutputGen.FullName) }");
                     return false;
                 }
             }
@@ -108,24 +112,24 @@ namespace AngularInterfacesGeneratedServices.Services
             FileInfo fiCSSPModelsDLL = new FileInfo(configuration.GetValue<string>("CSSPModels"));
 
 
-            generateCodeStatusDBService.Status.AppendLine($"Reading [{ fiCSSPEnumsDLL.FullName }] ...");
+            actionCommandDBService.ExecutionStatusText.AppendLine($"Reading [{ fiCSSPEnumsDLL.FullName }] ...");
             List<DLLTypeInfo> DLLTypeInfoCSSPEnumsList = new List<DLLTypeInfo>();
             if (generateCodeBaseService.FillDLLTypeInfoList(fiCSSPEnumsDLL, DLLTypeInfoCSSPEnumsList))
             {
-                generateCodeStatusDBService.Error.AppendLine($"{ string.Format(AppRes.CouldNotReadFile_, diOutputGen.FullName) }");
+                actionCommandDBService.ErrorText.AppendLine($"{ string.Format(AppRes.CouldNotReadFile_, diOutputGen.FullName) }");
                 return false;
             }
-            generateCodeStatusDBService.Status.AppendLine($"Loaded [{ fiCSSPEnumsDLL.FullName }] ...");
+            actionCommandDBService.ExecutionStatusText.AppendLine($"Loaded [{ fiCSSPEnumsDLL.FullName }] ...");
 
 
-            generateCodeStatusDBService.Status.AppendLine($"Reading [{ fiCSSPModelsDLL.FullName }] ...");
+            actionCommandDBService.ExecutionStatusText.AppendLine($"Reading [{ fiCSSPModelsDLL.FullName }] ...");
             List<DLLTypeInfo> DLLTypeInfoCSSPModelsList = new List<DLLTypeInfo>();
             if (generateCodeBaseService.FillDLLTypeInfoList(fiCSSPModelsDLL, DLLTypeInfoCSSPModelsList))
             {
-                generateCodeStatusDBService.Error.AppendLine($"{ string.Format(AppRes.CouldNotReadFile_, diOutputGen.FullName) }");
+                actionCommandDBService.ErrorText.AppendLine($"{ string.Format(AppRes.CouldNotReadFile_, diOutputGen.FullName) }");
                 return false;
             }
-            generateCodeStatusDBService.Status.AppendLine($"Loaded [{ fiCSSPModelsDLL.FullName }] ...");
+            actionCommandDBService.ExecutionStatusText.AppendLine($"Loaded [{ fiCSSPModelsDLL.FullName }] ...");
 
             CreateValidationResultTypeFile();
 
@@ -148,34 +152,37 @@ namespace AngularInterfacesGeneratedServices.Services
                 }
             }
 
-            generateCodeStatusDBService.Status.AppendLine("");
-            generateCodeStatusDBService.Status.AppendLine($"{ AppRes.Done } ...");
-            generateCodeStatusDBService.Status.AppendLine("");
-            generateCodeStatusDBService.Status.AppendLine("Generate Finished ...");
-            await generateCodeStatusDBService.Update(100);
+            actionCommandDBService.ExecutionStatusText.AppendLine("");
+            actionCommandDBService.ExecutionStatusText.AppendLine($"{ AppRes.Done } ...");
+            actionCommandDBService.ExecutionStatusText.AppendLine("");
+            actionCommandDBService.ExecutionStatusText.AppendLine("Generate Finished ...");
+            actionCommandDBService.PercentCompleted = 100;
+            await actionCommandDBService.Update();
 
             return true;
         }
         private async Task ConsoleWriteEnd()
         {
-            generateCodeStatusDBService.Status.AppendLine("");
-            generateCodeStatusDBService.Status.AppendLine($"{ AppRes.Done } ...");
-            generateCodeStatusDBService.Status.AppendLine("");
-            await generateCodeStatusDBService.Update(100);
+            actionCommandDBService.ExecutionStatusText.AppendLine("");
+            actionCommandDBService.ExecutionStatusText.AppendLine($"{ AppRes.Done } ...");
+            actionCommandDBService.ExecutionStatusText.AppendLine("");
+            actionCommandDBService.PercentCompleted = 100;
+            await actionCommandDBService.Update();
 
-            if (!string.IsNullOrWhiteSpace(generateCodeStatusDBService.Error.ToString()))
+            if (!string.IsNullOrWhiteSpace(actionCommandDBService.ErrorText.ToString()))
             {
-                Console.WriteLine(generateCodeStatusDBService.Error.ToString());
+                Console.WriteLine(actionCommandDBService.ErrorText.ToString());
             }
 
-            Console.WriteLine(generateCodeStatusDBService.Status.ToString());
+            Console.WriteLine(actionCommandDBService.ExecutionStatusText.ToString());
         }
         private async Task ConsoleWriteError(string errMessage)
         {
-            generateCodeStatusDBService.Error.AppendLine(errMessage);
-            await generateCodeStatusDBService.Update(0);
-            Console.WriteLine(generateCodeStatusDBService.Error.ToString());
-            Console.WriteLine(generateCodeStatusDBService.Status.ToString());
+            actionCommandDBService.ErrorText.AppendLine(errMessage);
+            actionCommandDBService.PercentCompleted = 0;
+            await actionCommandDBService.Update();
+            Console.WriteLine(actionCommandDBService.ErrorText.ToString());
+            Console.WriteLine(actionCommandDBService.ExecutionStatusText.ToString());
         }
         private void ConsoleWriteStart()
         {
@@ -200,13 +207,14 @@ namespace AngularInterfacesGeneratedServices.Services
         }
         private async Task<bool> Setup()
         {
-            generateCodeStatusDBService.Command = configuration.GetValue<string>("Command");
-            generateCodeStatusDBService.Culture = new CultureInfo(configuration.GetValue<string>("Culture"));
-            validateAppSettingsService.Culture = new CultureInfo(configuration.GetValue<string>("Culture"));
+            actionCommandDBService.Action = configuration.GetValue<string>("Action");
+            actionCommandDBService.Command = configuration.GetValue<string>("Command");
+            await actionCommandDBService.SetCulture(new CultureInfo(configuration.GetValue<string>("Culture")));
+            await validateAppSettingsService.SetCulture(new CultureInfo(configuration.GetValue<string>("Culture")));
 
             try
             {
-                await generateCodeStatusDBService.GetOrCreate();
+                await actionCommandDBService.GetOrCreate();
             }
             catch (Exception ex)
             {
@@ -218,7 +226,7 @@ namespace AngularInterfacesGeneratedServices.Services
             {
                 new AppSettingParameter() { Parameter = "Command", ExpectedValue = "AngularInterfacesGenerated" },
                 new AppSettingParameter() { Parameter = "Culture", ExpectedValue = "", IsCulture = true },
-                new AppSettingParameter() { Parameter = "DBFileName", ExpectedValue = "{AppDataPath}\\CSSP\\GenerateCodeStatus.db", IsFile = true, CheckExist = true },
+                new AppSettingParameter() { Parameter = "DBFileName", ExpectedValue = "{AppDataPath}\\CSSP\\ActionCommandDB.db", IsFile = true, CheckExist = true },
                 new AppSettingParameter() { Parameter = "CSSPEnums", ExpectedValue = "C:\\CSSPTools\\src\\dlls\\CSSPEnums\\bin\\Debug\\netcoreapp3.1\\CSSPEnums.dll", IsFile = true, CheckExist = true },
                 new AppSettingParameter() { Parameter = "CSSPModels", ExpectedValue = "C:\\CSSPTools\\src\\dlls\\CSSPModels\\bin\\Debug\\netcoreapp3.1\\CSSPModels.dll", IsFile = true, CheckExist = true },
                 new AppSettingParameter() { Parameter = "OutputDir", ExpectedValue = "C:\\CSSPCode\\CSSPWebToolsAng\\src\\app\\interfaces\\generated\\" },
@@ -226,8 +234,8 @@ namespace AngularInterfacesGeneratedServices.Services
                 new AppSettingParameter() { Parameter = "InterfaceFileName", ExpectedValue = "C:\\CSSPCode\\CSSPWebToolsAng\\src\\app\\interfaces\\generated\\{TypeName}.interface.ts" },
             };
 
-            validateAppSettingsService.VerifyAppSettings();
-            if (!string.IsNullOrWhiteSpace(generateCodeStatusDBService.Error.ToString()))
+            await validateAppSettingsService.VerifyAppSettings();
+            if (!string.IsNullOrWhiteSpace(actionCommandDBService.ErrorText.ToString()))
             {
                 await ConsoleWriteError("");
                 return false;
@@ -254,7 +262,7 @@ namespace AngularInterfacesGeneratedServices.Services
             using (StreamWriter sw2 = fiOutputGen.CreateText())
             {
                 sw2.Write(sb.ToString());
-                generateCodeStatusDBService.Status.AppendLine($"Created [{ fiOutputGen }]");
+                actionCommandDBService.ExecutionStatusText.AppendLine($"Created [{ fiOutputGen }]");
             }
         }
         private void CreateTypeFile(DLLTypeInfo dllTypeInfoModels, List<DLLTypeInfo> DLLTypeInfoCSSPModelsList)
@@ -542,7 +550,7 @@ namespace AngularInterfacesGeneratedServices.Services
             using (StreamWriter sw2 = fiOutputGen.CreateText())
             {
                 sw2.Write(sb.ToString());
-                generateCodeStatusDBService.Status.AppendLine($"{ string.Format(AppRes.Created_, fiOutputGen.FullName) }");
+                actionCommandDBService.ExecutionStatusText.AppendLine($"{ string.Format(AppRes.Created_, fiOutputGen.FullName) }");
             }
         }
         #endregion Functions private

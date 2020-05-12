@@ -95,16 +95,16 @@ namespace EnumsPolSourceInfoRelatedFilesServices.Services
             }
             catch (Exception ex)
             {
-                generateCodeStatusDBService.Error.AppendLine($"{ AppRes.Creating } [{ fi.FullName }] ...");
+                actionCommandDBService.ErrorText.AppendLine($"{ AppRes.Creating } [{ fi.FullName }] ...");
                 string InnerException = (ex.InnerException != null ? $"Inner: { ex.InnerException.Message }" : "");
-                generateCodeStatusDBService.Error.AppendLine($"{ AppRes.Error }: { ex.Message }{ InnerException  }");
-                //await generateCodeStatusDBService.Update(command, sbError.ToString(), sbStatus.ToString(), 0);
+                actionCommandDBService.ErrorText.AppendLine($"{ AppRes.Error }: { ex.Message }{ InnerException  }");
+                //await actionCommandDBService.Update(command, sbError.ToString(), sbStatus.ToString(), 0);
 
                 return;
             }
 
-            generateCodeStatusDBService.Status.AppendLine($"{ AppRes.Created }: { fi.FullName }");
-            //await generateCodeStatusDBService.Update(command, sbError.ToString(), sbStatus.ToString(), 0);
+            actionCommandDBService.ExecutionStatusText.AppendLine($"{ AppRes.Created }: { fi.FullName }");
+            //await actionCommandDBService.Update(command, sbError.ToString(), sbStatus.ToString(), 0);
         }
         #endregion Functions private
     }

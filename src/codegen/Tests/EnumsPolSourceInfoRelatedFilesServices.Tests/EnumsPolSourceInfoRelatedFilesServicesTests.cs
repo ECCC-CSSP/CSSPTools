@@ -1,7 +1,7 @@
 ﻿using EnumsPolSourceInfoRelatedFilesServices.Services;
-using GenerateCodeBase.Services;
-using GenerateCodeStatusDB.Models;
-using GenerateCodeStatusDB.Services;
+using GenerateCodeBaseServices.Services;
+using ActionCommandDBServices.Models;
+using ActionCommandDBServices.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -14,6 +14,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Xunit;
+using ValidateAppSettingsServices.Services;
 
 namespace EnumsPolSourceInfoRelatedFilesServices.Tests
 {
@@ -84,7 +85,7 @@ namespace EnumsPolSourceInfoRelatedFilesServices.Tests
             serviceCollection = new ServiceCollection();
 
             serviceCollection.AddSingleton<IConfiguration>(configuration);
-            serviceCollection.AddSingleton<IGenerateCodeStatusDBService, GenerateCodeStatusDBService>();
+            serviceCollection.AddSingleton<IActionCommandDBService, ActionCommandDBService>();
             serviceCollection.AddSingleton<IValidateAppSettingsService, ValidateAppSettingsService>();
             serviceCollection.AddSingleton<IPolSourceGroupingExcelFileReadService, PolSourceGroupingExcelFileReadService>();
             serviceCollection.AddSingleton<IEnumsPolSourceInfoRelatedFilesService, EnumsPolSourceInfoRelatedFilesService>();
@@ -98,7 +99,7 @@ namespace EnumsPolSourceInfoRelatedFilesServices.Tests
             FileInfo fiDB = new FileInfo(fileName.Replace("{AppDataPath}", appDataPath));
             Assert.True(fiDB.Exists);
 
-            serviceCollection.AddDbContext<GenerateCodeStatusContext>(options =>
+            serviceCollection.AddDbContext<ActionCommandContext>(options =>
             {
                 options.UseSqlite($"DataSource={fiDB.FullName}");
             });

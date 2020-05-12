@@ -1,4 +1,5 @@
 ﻿using ActionCommandDBServices.Models;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -21,11 +22,11 @@ namespace ActionCommandDBServices.Services
         public StringBuilder FilesStatusText { get; set; }
         public long PercentCompleted { get; set; }
 
-        Task<ActionCommand> Create();
-        Task<ActionCommand> Delete();
-        Task<ActionCommand> Get();
-        Task<ActionCommand> GetOrCreate();
-        Task<ActionCommand> Update();
+        Task<ActionResult<ActionCommand>> Create();
+        Task<ActionResult<ActionCommand>> Delete();
+        Task<ActionResult<ActionCommand>> Get();
+        Task<ActionResult<ActionCommand>> GetOrCreate();
+        Task<ActionResult<ActionCommand>> Update();
         Task SetCulture(CultureInfo culture);
     }
 }

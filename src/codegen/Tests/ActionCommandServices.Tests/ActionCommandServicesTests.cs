@@ -14,6 +14,7 @@ using Xunit;
 using ActionCommandServices.Resources;
 using ActionCommandServices.Services;
 using ActionCommandServices.Models;
+using Microsoft.AspNetCore.Mvc;
 
 namespace ActionCommandDBServices.Tests
 {
@@ -43,7 +44,7 @@ namespace ActionCommandDBServices.Tests
         [InlineData("fr-CA")]
         public async Task ActionCommandService_Constructors_Good_Test(string culture)
         {
-            Setup(new CultureInfo(culture));
+            Setup(new CultureInfo(culture), "appsettings.json");
 
             Assert.NotNull(configuration);
             Assert.NotNull(serviceCollection);
@@ -57,7 +58,7 @@ namespace ActionCommandDBServices.Tests
         [InlineData("fr-CA")]
         public async Task ActionCommandService_SetCulture_Good_Test(string culture)
         {
-            Setup(new CultureInfo(culture));
+            Setup(new CultureInfo(culture), "appsettings.json");
 
             await actionCommandService.SetCulture(new CultureInfo(culture));
             Assert.Equal(new CultureInfo(culture), AppRes.Culture);
@@ -67,35 +68,73 @@ namespace ActionCommandDBServices.Tests
         [InlineData("fr-CA")]
         public async Task ActionCommandService_RunActionCommand_Good_Test(string culture)
         {
-            Setup(new CultureInfo(culture));
+            Setup(new CultureInfo(culture), "appsettings.json");
 
             ActionCommand actionCommand = new ActionCommand()
             {
                 Action = "run",
                 Command = "EnumsGenerated_cs",
-                FullFileName = "C:\\CSSPTools\\src\\codegen\\EnumsGenerated_cs\\bin\\Debug\\netcoreapp3.1\\EnumsGenerated_cs.exe",
+                //FullFileName = "C:\\CSSPTools\\src\\codegen\\EnumsGenerated_cs\\bin\\Debug\\netcoreapp3.1\\EnumsGenerated_cs.exe",
             };
 
-            var retValue = await actionCommandService.RunActionCommand(actionCommand);
-            Assert.IsType<ActionCommand>(retValue.Value);
-            Assert.Null(retValue.Result);
-            ActionCommand actionCommandRet = retValue.Value;
-            Assert.Equal("", actionCommandRet.ErrorText);
-            Assert.True(actionCommandRet.ActionCommandID > 0);
-            Assert.Equal(actionCommand.Action, actionCommandRet.Action);
-            Assert.Equal(actionCommand.Command, actionCommandRet.Command);
-            Assert.Equal(actionCommand.FullFileName, actionCommandRet.FullFileName);
+            var actionActionCommand = await actionCommandService.RunActionCommand(actionCommand);
+            Assert.Equal(200, ((ObjectResult)actionActionCommand.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionActionCommand.Result).Value);
+            actionCommand = (ActionCommand)((OkObjectResult)actionActionCommand.Result).Value;
+            Assert.Equal(actionCommandDBService.Action, actionCommand.Action);
+            Assert.Equal(actionCommandDBService.Command, actionCommand.Command);
+            Assert.True(actionCommand.ActionCommandID > 0);
+        }
+        [Theory]
+        [InlineData("en-CA")]
+        [InlineData("fr-CA")]
+        public async Task ActionCommandService_RunActionCommand_ExePath_Error_Test(string culture)
+        {
+            Setup(new CultureInfo(culture), "appsettings_bad1.json");
+
+            ActionCommand actionCommand = new ActionCommand()
+            {
+                Action = "run",
+                Command = "EnumsGenerated_cs",
+                //FullFileName = "C:\\CSSPTools\\src\\codegen\\EnumsGenerated_cs\\bin\\Debug\\netcoreapp3.1\\EnumsGenerated_cs.exe",
+            };
+
+            var actionActionCommand = await actionCommandService.RunActionCommand(actionCommand);
+            Assert.Equal(400, ((ObjectResult)actionActionCommand.Result).StatusCode);
+            Assert.NotNull(((BadRequestObjectResult)actionActionCommand.Result).Value);
+            Assert.Contains(AppRes.ExePathIsEmpty, (string)((BadRequestObjectResult)actionActionCommand.Result).Value);
+        }
+        [Theory]
+        [InlineData("en-CA")]
+        [InlineData("fr-CA")]
+        public async Task ActionCommandService_RunActionCommand_CouldNotFindExePath_Error_Test(string culture)
+        {
+            Setup(new CultureInfo(culture), "appsettings_bad2.json");
+
+            ActionCommand actionCommand = new ActionCommand()
+            {
+                Action = "run",
+                Command = "EnumsGenerated_cs",
+                //FullFileName = "C:\\CSSPTools\\src\\codegen\\EnumsGenerated_cs\\bin\\Debug\\netcoreapp3.1\\EnumsGenerated_cs.exe",
+            };
+
+            var actionActionCommand = await actionCommandService.RunActionCommand(actionCommand);
+            Assert.Equal(400, ((ObjectResult)actionActionCommand.Result).StatusCode);
+            Assert.NotNull(((BadRequestObjectResult)actionActionCommand.Result).Value);
+
+            string exePath = configuration.GetValue<string>("ExecuteDotNetCommandAppPath");
+            Assert.Contains(string.Format(AppRes.CouldNotFindExePath_, exePath), (string)((BadRequestObjectResult)actionActionCommand.Result).Value);
         }
         #endregion Functions public
 
         #region Functions private
-        private void Setup(CultureInfo culture)
+        private void Setup(CultureInfo culture, string appsettingfilename)
         {
             AppRes.Culture = culture;
 
             configuration = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetParent(AppContext.BaseDirectory).FullName)
-                .AddJsonFile("appsettings.json")
+                .AddJsonFile(appsettingfilename)
                 .Build();
 
             serviceCollection = new ServiceCollection();
