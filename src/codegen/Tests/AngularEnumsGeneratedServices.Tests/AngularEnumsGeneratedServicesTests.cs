@@ -15,6 +15,8 @@ using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 using ValidateAppSettingsServices.Services;
+using ActionCommandDBServices.Resources;
+using AngularEnumsGeneratedServices.Resources;
 
 namespace AngularEnumsGeneratedServices.Tests
 {
@@ -34,17 +36,16 @@ namespace AngularEnumsGeneratedServices.Tests
         #region Constructors
         public AngularEnumsGeneratedServicesTests()
         {
-            Init();
         }
         #endregion Constructors
 
         #region Functions public
         [Theory]
         [InlineData("en-CA")]
-        //[InlineData("fr-CA")]
+        [InlineData("fr-CA")]
         public void AngularEnumsGeneratedService_Constructor_Good_Test(string culture)
         {
-            Init();
+            Setup(new CultureInfo(culture));
 
             Assert.NotNull(configuration);
             Assert.NotNull(serviceCollection);
@@ -57,22 +58,22 @@ namespace AngularEnumsGeneratedServices.Tests
         }
         [Theory]
         [InlineData("en-CA")] // good
-        //[InlineData("fr-CA")] // good
-        //[InlineData("es-TU")] // good will default to en-CA
-        //[InlineData("en-GB")] // good will default to en-CA
-        public void AngularEnumsGeneratedService_Run_Good_Test(string culture)
+        [InlineData("fr-CA")] // good
+        [InlineData("es-TU")] // good will default to en-CA
+        [InlineData("en-GB")] // good will default to en-CA
+        public async Task AngularEnumsGeneratedService_Run_Good_Test(string culture)
         {
-            Init();
+            Setup(new CultureInfo(culture));
 
             string[] args = new List<string>() { culture }.ToArray();
 
-            bool retBool = angularEnumsGeneratedService.Run(args).GetAwaiter().GetResult();
+            bool retBool = await angularEnumsGeneratedService.Run(args);
             Assert.True(retBool);
         }
         #endregion Functions public
 
         #region Functions private
-        private void Init()
+        private void Setup(CultureInfo culture)
         {
             configuration = new ConfigurationBuilder()
                .SetBasePath(Directory.GetParent(AppContext.BaseDirectory).FullName)
@@ -108,6 +109,9 @@ namespace AngularEnumsGeneratedServices.Tests
 
             angularEnumsGeneratedService = provider.GetService<IAngularEnumsGeneratedService>();
             Assert.NotNull(angularEnumsGeneratedService);
+
+            angularEnumsGeneratedService.SetCulture(culture);
+            Assert.Equal(culture, AngularEnumsGeneratedServicesRes.Culture);
         }
         #endregion Functions private
     }

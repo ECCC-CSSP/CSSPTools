@@ -34,10 +34,10 @@ namespace GenerateCodeBaseServices.Services
         #endregion Constructors
 
         #region Functions public
-        public void SetCulture(CultureInfo culture)
+        public async Task SetCulture(CultureInfo culture)
         {
-            actionCommandDBService.SetCulture(culture);
-            AppRes.Culture = culture;
+            await actionCommandDBService.SetCulture(culture);
+            GenerateCodeBaseServicesRes.Culture = culture;
         }
         #endregion Functions public
 

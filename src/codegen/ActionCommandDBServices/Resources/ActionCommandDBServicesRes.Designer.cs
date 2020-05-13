@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace EnumsCompareWithOldEnumsServices.Resources {
+namespace ActionCommandDBServices.Resources {
     using System;
     
     
@@ -22,14 +22,14 @@ namespace EnumsCompareWithOldEnumsServices.Resources {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public class AppRes {
+    public class ActionCommandDBServicesRes {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal AppRes() {
+        internal ActionCommandDBServicesRes() {
         }
         
         /// <summary>
@@ -39,7 +39,7 @@ namespace EnumsCompareWithOldEnumsServices.Resources {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("EnumsCompareWithOldEnumsServices.Resources.AppRes", typeof(AppRes).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("ActionCommandDBServices.Resources.ActionCommandDBServicesRes", typeof(ActionCommandDBServicesRes).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -57,6 +57,15 @@ namespace EnumsCompareWithOldEnumsServices.Resources {
             }
             set {
                 resourceCulture = value;
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} is required.
+        /// </summary>
+        public static string _IsRequied {
+            get {
+                return ResourceManager.GetString("_IsRequied", resourceCulture);
             }
         }
         
@@ -79,11 +88,47 @@ namespace EnumsCompareWithOldEnumsServices.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Already created [{0}].
+        /// </summary>
+        public static string AlreadyCreated_ {
+            get {
+                return ResourceManager.GetString("AlreadyCreated_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Application.
         /// </summary>
         public static string Application {
             get {
                 return ResourceManager.GetString("Application", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Compared OK.
+        /// </summary>
+        public static string ComparedOK {
+            get {
+                return ResourceManager.GetString("ComparedOK", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Could not create directory [{0}].
+        /// </summary>
+        public static string CouldNotCreateDirectory_ {
+            get {
+                return ResourceManager.GetString("CouldNotCreateDirectory_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Could not find ActionCommand to delete with Action [{0}] and Command [{1}].
+        /// </summary>
+        public static string CouldNotFindActionCommandToDeleteWithAction_AndCommand_ {
+            get {
+                return ResourceManager.GetString("CouldNotFindActionCommandToDeleteWithAction_AndCommand_", resourceCulture);
             }
         }
         
@@ -97,6 +142,15 @@ namespace EnumsCompareWithOldEnumsServices.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Could not find parameter.
+        /// </summary>
+        public static string CouldNotFindParameter {
+            get {
+                return ResourceManager.GetString("CouldNotFindParameter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Could not find parameter [{0}] in appsettings.json.
         /// </summary>
         public static string CouldNotFindParameter_InAppSettingsJSON {
@@ -106,11 +160,38 @@ namespace EnumsCompareWithOldEnumsServices.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Could not get or create object [{0}] in DB [{1}].
+        ///   Looks up a localized string similar to Could not find parameter [{0}] in appsettings.json.
         /// </summary>
-        public static string CouldNotGetOrCreateObject_InDB_ {
+        public static string CouldNotFindParameter_InAppSettingsJSON1 {
             get {
-                return ResourceManager.GetString("CouldNotGetOrCreateObject_InDB_", resourceCulture);
+                return ResourceManager.GetString("CouldNotFindParameter_InAppSettingsJSON1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Could not read file [{0}].
+        /// </summary>
+        public static string CouldNotReadFile_ {
+            get {
+                return ResourceManager.GetString("CouldNotReadFile_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Created [{0}].
+        /// </summary>
+        public static string Created_ {
+            get {
+                return ResourceManager.GetString("Created_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Created new [{0}].
+        /// </summary>
+        public static string CreatedNew_ {
+            get {
+                return ResourceManager.GetString("CreatedNew_", resourceCulture);
             }
         }
         
@@ -124,20 +205,38 @@ namespace EnumsCompareWithOldEnumsServices.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to is null.
+        ///   Looks up a localized string similar to Error: File does not exist [{0}].
         /// </summary>
-        public static string IsNull {
+        public static string ErrorFileDoesNotExist_ {
             get {
-                return ResourceManager.GetString("IsNull", resourceCulture);
+                return ResourceManager.GetString("ErrorFileDoesNotExist_", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Parameter #{0} should be {1}.
+        ///   Looks up a localized string similar to Error while creating code [{0}].
         /// </summary>
-        public static string Parameter_ShouldBe_ {
+        public static string ErrorWhileCreatingCode_ {
             get {
-                return ResourceManager.GetString("Parameter_ShouldBe_", resourceCulture);
+                return ResourceManager.GetString("ErrorWhileCreatingCode_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Exist.
+        /// </summary>
+        public static string Exist {
+            get {
+                return ResourceManager.GetString("Exist", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to is not implemented.
+        /// </summary>
+        public static string IsNotImplemented {
+            get {
+                return ResourceManager.GetString("IsNotImplemented", resourceCulture);
             }
         }
         
@@ -160,20 +259,11 @@ namespace EnumsCompareWithOldEnumsServices.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Type [{0}]\tEnum [{1}] -------------- not found.
+        ///   Looks up a localized string similar to Verify appsettings.json file.
         /// </summary>
-        public static string Type_Enum_NotFound {
+        public static string VerifyAppSettingsFile {
             get {
-                return ResourceManager.GetString("Type_Enum_NotFound", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Type [{0}] ---------------------- not found.
-        /// </summary>
-        public static string Type_NotFound {
-            get {
-                return ResourceManager.GetString("Type_NotFound", resourceCulture);
+                return ResourceManager.GetString("VerifyAppSettingsFile", resourceCulture);
             }
         }
     }

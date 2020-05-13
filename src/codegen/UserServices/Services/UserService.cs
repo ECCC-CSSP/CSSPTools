@@ -76,13 +76,13 @@ namespace UserServices.Services
 
                 if (appUser == null)
                 {
-                    return BadRequest(String.Format(AppRes.__CouldNotBeFound, AppRes.Email, loginModel.LoginEmail));
+                    return BadRequest(String.Format(UserServicesRes.__CouldNotBeFound, UserServicesRes.Email, loginModel.LoginEmail));
                 }
 
                 bool HasPassword = await userManager.CheckPasswordAsync(appUser, loginModel.Password);
                 if (!HasPassword)
                 {
-                    return BadRequest(String.Format(AppRes.UnableToLoginAs_WithProvidedPassword, loginModel.LoginEmail));
+                    return BadRequest(String.Format(UserServicesRes.UnableToLoginAs_WithProvidedPassword, loginModel.LoginEmail));
                 }
 
                 if (HasPassword == true)
@@ -92,7 +92,7 @@ namespace UserServices.Services
                                        select c).AsNoTracking().FirstOrDefault();
                     if (contact == null)
                     {
-                        return BadRequest(String.Format(AppRes.UnableToLoginAs_WithProvidedPassword, loginModel.LoginEmail));
+                        return BadRequest(String.Format(UserServicesRes.UnableToLoginAs_WithProvidedPassword, loginModel.LoginEmail));
                     }
 
                     UserModel userModel = new UserModel()
@@ -126,14 +126,14 @@ namespace UserServices.Services
             }
             catch (Exception ex)
             {
-                return BadRequest(String.Format(AppRes.Error_, ex.Message));
+                return BadRequest(String.Format(UserServicesRes.Error_, ex.Message));
             }
 
-            return BadRequest(String.Format(AppRes.UnableToLoginAs_WithProvidedPassword, loginModel.LoginEmail));
+            return BadRequest(String.Format(UserServicesRes.UnableToLoginAs_WithProvidedPassword, loginModel.LoginEmail));
         }
         public async Task SetCulture(CultureInfo culture)
         {
-            AppRes.Culture = culture;
+            UserServicesRes.Culture = culture;
         }
         #endregion Functions public
 

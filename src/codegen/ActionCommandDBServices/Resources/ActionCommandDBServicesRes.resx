@@ -117,14 +117,71 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="AbnormalCompletion" xml:space="preserve">
+    <value>Abnormal completion</value>
+  </data>
+  <data name="AllowableCultures_" xml:space="preserve">
+    <value>Allowable cultures [{0}]</value>
+  </data>
+  <data name="AlreadyCreated_" xml:space="preserve">
+    <value>Already created [{0}]</value>
+  </data>
+  <data name="Application" xml:space="preserve">
+    <value>Application</value>
+  </data>
+  <data name="ComparedOK" xml:space="preserve">
+    <value>Compared OK</value>
+  </data>
+  <data name="CouldNotCreateDirectory_" xml:space="preserve">
+    <value>Could not create directory [{0}]</value>
+  </data>
   <data name="CouldNotFindActionCommandToDeleteWithAction_AndCommand_" xml:space="preserve">
     <value>Could not find ActionCommand to delete with Action [{0}] and Command [{1}]</value>
   </data>
   <data name="CouldNotFindFile_" xml:space="preserve">
     <value>Could not find file [{0}]</value>
   </data>
+  <data name="CouldNotFindParameter" xml:space="preserve">
+    <value>Could not find parameter</value>
+  </data>
   <data name="CouldNotFindParameter_InAppSettingsJSON" xml:space="preserve">
     <value>Could not find parameter [{0}] in appsettings.json</value>
+  </data>
+  <data name="CouldNotFindParameter_InAppSettingsJSON1" xml:space="preserve">
+    <value>Could not find parameter [{0}] in appsettings.json</value>
+  </data>
+  <data name="CouldNotReadFile_" xml:space="preserve">
+    <value>Could not read file [{0}]</value>
+  </data>
+  <data name="CreatedNew_" xml:space="preserve">
+    <value>Created new [{0}]</value>
+  </data>
+  <data name="Created_" xml:space="preserve">
+    <value>Created [{0}]</value>
+  </data>
+  <data name="Done" xml:space="preserve">
+    <value>Done</value>
+  </data>
+  <data name="ErrorFileDoesNotExist_" xml:space="preserve">
+    <value>Error: File does not exist [{0}]</value>
+  </data>
+  <data name="ErrorWhileCreatingCode_" xml:space="preserve">
+    <value>Error while creating code [{0}]</value>
+  </data>
+  <data name="Exist" xml:space="preserve">
+    <value>Exist</value>
+  </data>
+  <data name="IsNotImplemented" xml:space="preserve">
+    <value>is not implemented</value>
+  </data>
+  <data name="Running" xml:space="preserve">
+    <value>Running</value>
+  </data>
+  <data name="Starting" xml:space="preserve">
+    <value>Starting</value>
+  </data>
+  <data name="VerifyAppSettingsFile" xml:space="preserve">
+    <value>Verify appsettings.json file</value>
   </data>
   <data name="_IsRequied" xml:space="preserve">
     <value>{0} is required</value>

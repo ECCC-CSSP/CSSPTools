@@ -63,7 +63,7 @@ namespace EnumsCompareWithOldEnums
 
             if (!enumsCompareWithOldEnumsService.Run(args).GetAwaiter().GetResult())
             {
-                return AppRes.AbnormalCompletion;
+                return EnumsCompareWithOldEnumsServicesRes.AbnormalCompletion;
             }
 
             return "";
@@ -76,14 +76,14 @@ namespace EnumsCompareWithOldEnums
             string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
             if (Configuration.GetValue<string>(DBFileName) == null)
             {
-                return $"{ String.Format(AppRes.CouldNotFindParameter_InAppSettingsJSON, DBFileName) }";
+                return $"{ String.Format(EnumsCompareWithOldEnumsServicesRes.CouldNotFindParameter_InAppSettingsJSON, DBFileName) }";
             }
 
             FileInfo fiDB = new FileInfo(Configuration.GetValue<string>(DBFileName).Replace("{AppDataPath}", appDataPath));
 
             if (!fiDB.Exists)
             {
-                return $"{ String.Format(AppRes.CouldNotFindFile_, fiDB.FullName) }";
+                return $"{ String.Format(EnumsCompareWithOldEnumsServicesRes.CouldNotFindFile_, fiDB.FullName) }";
             }
 
             try

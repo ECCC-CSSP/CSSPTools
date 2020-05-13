@@ -21,7 +21,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace EnumsCompareWithOldEnumsServices.Services
 {
-    public class EnumsCompareWithOldEnumsService : IEnumsCompareWithOldEnumsService
+    public partial class EnumsCompareWithOldEnumsService : IEnumsCompareWithOldEnumsService
     {
         #region Variables
         #endregion Variables
@@ -47,9 +47,9 @@ namespace EnumsCompareWithOldEnumsServices.Services
         #region Functions public
         public async Task<bool> Run(string[] args)
         {
-            SetCulture(args);
+            await SetCultureWithArgs(args);
 
-            ConsoleWriteStart();
+            await actionCommandDBService.ConsoleWriteStart();
 
             if (!await Setup())
             {
@@ -67,120 +67,20 @@ namespace EnumsCompareWithOldEnumsServices.Services
                 return false;
             }
 
-            await ConsoleWriteEnd();
+            await actionCommandDBService.ConsoleWriteEnd();
 
             return true;
+        }
+        public async Task SetCulture(CultureInfo culture)
+        {
+            EnumsCompareWithOldEnumsServicesRes.Culture = culture;
+            await actionCommandDBService.SetCulture(culture);
+            await validateAppSettingsService.SetCulture(culture);
         }
         #endregion Functions public
 
         #region Functions private
-        private async Task<bool> CompareDLLs()
-        {
-            string NewEnumsDLL = "NewEnumsDLL";
-            string OldEnumsDLL = "OldEnumsDLL";
-
-            ActionResult<ActionCommand> actionActionCommand = await actionCommandDBService.GetOrCreate();
-
-            if (((ObjectResult)actionActionCommand.Result).StatusCode == 400)
-            {
-                await ConsoleWriteError("actionCommand == null");
-                return false;
-            }
-
-            actionCommandDBService.ExecutionStatusText.AppendLine("CompareDLLs Starting...");
-            actionCommandDBService.PercentCompleted = 0;
-            await actionCommandDBService.Update();
-
-
-            FileInfo fiDLL = new FileInfo(configuration.GetValue<string>(NewEnumsDLL));
-            FileInfo fiOldDLL = new FileInfo(configuration.GetValue<string>(OldEnumsDLL));
-
-            var importAssembly = Assembly.LoadFile(fiDLL.FullName);
-            List<Type> typeList = importAssembly.GetTypes().ToList();
-
-            var importAssemblyOld = Assembly.LoadFile(fiOldDLL.FullName);
-            List<Type> typeOldList = importAssemblyOld.GetTypes().ToList();
-
-            foreach (Type type in typeOldList)
-            {
-                if (type.Name.EndsWith("Service") || type.Name.EndsWith("Res") || type.Name.EndsWith("TextOrdered") || type.Name.StartsWith("<>"))
-                {
-                    continue;
-                }
-                Type typeExist = (from c in typeList
-                                  where c.Name == type.Name
-                                  select c).FirstOrDefault();
-
-                if (typeExist == null)
-                {
-                    await ConsoleWriteError($"{ String.Format(AppRes.Type_NotFound, type.Name) }");
-                    return false;
-                }
-                else
-                {
-                    List<string> EnumNameOldList = Enum.GetNames(type).ToList();
-                    List<string> EnumNameList = Enum.GetNames(typeExist).ToList();
-
-                    foreach (string EnumStr in EnumNameOldList)
-                    {
-                        if (EnumStr == "Error")
-                        {
-                            continue;
-                        }
-
-                        string EnumStrExist = (from c in EnumNameList
-                                               where c == EnumStr
-                                               select c).FirstOrDefault();
-
-                        if (string.IsNullOrWhiteSpace(EnumStrExist))
-                        {
-                            await ConsoleWriteError($"{ String.Format(AppRes.Type_Enum_NotFound, type.Name, EnumStr) }");
-                            return false;
-                        }
-                        else
-                        {
-                             // nothing
-                        }
-                    }
-                }
-            }
-
-            actionCommandDBService.ExecutionStatusText.AppendLine("CompareDLLs Finished...");
-
-            return true;
-        }
-        private async Task ConsoleWriteEnd()
-        {
-            actionCommandDBService.ExecutionStatusText.AppendLine("");
-            actionCommandDBService.ExecutionStatusText.AppendLine($"{ AppRes.Done } ...");
-            actionCommandDBService.ExecutionStatusText.AppendLine("");
-            actionCommandDBService.PercentCompleted = 100;
-            await actionCommandDBService.Update();
-
-            if (!string.IsNullOrWhiteSpace(actionCommandDBService.ErrorText.ToString()))
-            {
-                Console.WriteLine(actionCommandDBService.ErrorText.ToString());
-            }
-
-            Console.WriteLine(actionCommandDBService.ExecutionStatusText.ToString());
-        }
-        private async Task ConsoleWriteError(string errMessage)
-        {
-            actionCommandDBService.ErrorText.AppendLine(errMessage);
-            actionCommandDBService.PercentCompleted = 0;
-            await actionCommandDBService.Update();
-
-            Console.WriteLine(actionCommandDBService.ErrorText.ToString());
-            Console.WriteLine(actionCommandDBService.ExecutionStatusText.ToString());
-        }
-        private void ConsoleWriteStart()
-        {
-            Console.WriteLine($"{ AppRes.Running } { AppRes.Application } { AppDomain.CurrentDomain.FriendlyName }");
-            Console.WriteLine("");
-            Console.WriteLine($"{ AppRes.Starting } ...");
-            Console.WriteLine("");
-        }
-        private void SetCulture(string[] args)
+        private async Task SetCultureWithArgs(string[] args)
         {
             string culture = AllowableCultures[0];
 
@@ -192,7 +92,7 @@ namespace EnumsCompareWithOldEnumsServices.Services
                 }
             }
 
-            AppRes.Culture = new CultureInfo(culture);
+            await SetCulture(new CultureInfo(culture));
         }
         private async Task<bool> Setup()
         {
@@ -212,6 +112,7 @@ namespace EnumsCompareWithOldEnumsServices.Services
 
             validateAppSettingsService.AppSettingParameterList = new List<AppSettingParameter>()
             {
+                new AppSettingParameter() { Parameter = "Action", ExpectedValue = "run" },
                 new AppSettingParameter() { Parameter = "Command", ExpectedValue = "EnumsCompareWithOldEnums" },
                 new AppSettingParameter() { Parameter = "Culture", ExpectedValue = "", IsCulture = true },
                 new AppSettingParameter() { Parameter = "DBFileName", ExpectedValue = "{AppDataPath}\\CSSP\\ActionCommandDB.db", IsFile = true, CheckExist = true },
@@ -222,7 +123,7 @@ namespace EnumsCompareWithOldEnumsServices.Services
             await validateAppSettingsService.VerifyAppSettings();
             if (!string.IsNullOrWhiteSpace(actionCommandDBService.ErrorText.ToString()))
             {
-                await ConsoleWriteError("");
+                await actionCommandDBService.ConsoleWriteError("");
                 return false;
             }
 

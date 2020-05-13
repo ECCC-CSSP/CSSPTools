@@ -76,82 +76,12 @@ namespace ValidateAppSettingsServices.Services
         }
         public async Task SetCulture(CultureInfo culture)
         {
-            actionCommandDBService.SetCulture(culture);
-            AppRes.Culture = culture;
+            ValidateAppSettingsServicesRes.Culture = culture;
+            await actionCommandDBService.SetCulture(culture);
         }
         #endregion Functions public
 
         #region Functions private
-        private async Task<bool> CheckParameterExist()
-        {
-            bool retBool = true;
-
-            foreach (AppSettingParameter appSettingParameter in AppSettingParameterList)
-            {
-                string retConf = configuration.GetValue<string>(appSettingParameter.Parameter);
-
-                if (string.IsNullOrWhiteSpace(retConf))
-                {
-                    retBool = false;
-                    actionCommandDBService.ErrorText.AppendLine($"{ AppRes.Error }\t{ appSettingParameter.Parameter } != { AppRes.CouldNotFindParameter }");
-                }
-            }
-
-            return retBool;
-        }
-        private async Task<bool> CheckParameterValue(string param, string shouldHaveValue)
-        {
-            bool retBool = true;
-
-            string retValue = configuration.GetValue<string>(param);
-            if (retValue != shouldHaveValue)
-            {
-                retBool = false;
-                actionCommandDBService.ErrorText.AppendLine($"{ AppRes.Error }\t{ param } != { shouldHaveValue }");
-            }
-
-            return retBool;
-        }
-        private async Task<bool> CheckCultureParameterValue(string param)
-        {
-            bool retBool = true;
-
-            string retValue = configuration.GetValue<string>(param);
-            if (!(retValue == "en-CA" || retValue == "fr-CA"))
-            {
-                retBool = false;
-                actionCommandDBService.ErrorText.AppendLine($"{ AppRes.Error }\t{ param } != en-CA || fr-CA");
-            }
-
-            return retBool;
-        }
-        private async Task<bool> CheckFileParameterValue(string param, string shouldHaveValue, bool CheckIfExist)
-        {
-            bool retBool = true;
-            string retValue = configuration.GetValue<string>(param);
-
-            if (retValue != shouldHaveValue)
-            {
-                retBool = false;
-                actionCommandDBService.ErrorText.AppendLine($"{ AppRes.Error }\t{ param } != { shouldHaveValue }");
-            }
-
-
-            if (CheckIfExist)
-            {
-                string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
-
-                FileInfo fiDB = new FileInfo(retValue.Replace("{AppDataPath}", appDataPath));
-
-                if (!fiDB.Exists)
-                {
-                    retBool = false;
-                    actionCommandDBService.ErrorText.AppendLine($"{ AppRes.Error }\t{ AppRes.DoesNotExist }\t{ fiDB.FullName }");
-                }
-            }
-
-            return retBool;
-        }
         #endregion Functions private
 
     }

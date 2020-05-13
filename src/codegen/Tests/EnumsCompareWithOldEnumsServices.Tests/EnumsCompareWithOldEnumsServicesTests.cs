@@ -15,6 +15,8 @@ using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 using ValidateAppSettingsServices.Services;
+using ActionCommandDBServices.Resources;
+using ValidateAppSettingsServices.Resources;
 
 namespace EnumsCompareWithOldEnumsServices.Tests
 {
@@ -27,6 +29,8 @@ namespace EnumsCompareWithOldEnumsServices.Tests
         private IConfiguration configuration { get; set; }
         private IServiceCollection serviceCollection { get; set; }
         private IEnumsCompareWithOldEnumsService enumsCompareWithOldEnumsService { get; set; }
+        private IActionCommandDBService actionCommandDBService { get; set; }
+        private IValidateAppSettingsService validateAppSettingsService { get; set; }
         private IServiceProvider provider { get; set; }
         private string DBFileName { get; set; } = "DBFileName";
         #endregion Properties
@@ -34,7 +38,6 @@ namespace EnumsCompareWithOldEnumsServices.Tests
         #region Constructors
         public EnumsCompareWithOldEnumsServiceTests()
         {
-            Init();
         }
         #endregion Constructors
 
@@ -42,9 +45,9 @@ namespace EnumsCompareWithOldEnumsServices.Tests
         [Theory]
         [InlineData("en-CA")]
         [InlineData("fr-CA")]
-        public void EnumsCompareWithOldEnumsServices_Constructor_Good_Test(string culture)
+        public async Task EnumsCompareWithOldEnumsServices_Constructor_Good_Test(string culture)
         {
-            Init();
+            await Setup(new CultureInfo(culture));
 
             Assert.NotNull(configuration);
             Assert.NotNull(serviceCollection);
@@ -60,9 +63,9 @@ namespace EnumsCompareWithOldEnumsServices.Tests
         [InlineData("fr-CA")] // good
         [InlineData("es-TU")] // good will default to en-CA
         [InlineData("en-GB")] // good will default to en-CA
-        public void EnumsCompareWithOldEnumsServices_Run_Good_Test(string culture)
+        public async Task EnumsCompareWithOldEnumsServices_Run_Good_Test(string culture)
         {
-            Init();
+            await Setup(new CultureInfo(culture));
 
             string[] args = new List<string>() { culture }.ToArray();
 
@@ -72,7 +75,7 @@ namespace EnumsCompareWithOldEnumsServices.Tests
         #endregion Functions public
 
         #region Functions private
-        private void Init()
+        private async Task Setup(CultureInfo culture)
         {
             configuration = new ConfigurationBuilder()
                .SetBasePath(Directory.GetParent(AppContext.BaseDirectory).FullName)
@@ -107,6 +110,22 @@ namespace EnumsCompareWithOldEnumsServices.Tests
 
             enumsCompareWithOldEnumsService = provider.GetService<IEnumsCompareWithOldEnumsService>();
             Assert.NotNull(enumsCompareWithOldEnumsService);
+
+            await enumsCompareWithOldEnumsService.SetCulture(culture);
+            Assert.Equal(culture, EnumsCompareWithOldEnumsServicesRes.Culture);
+
+            actionCommandDBService = provider.GetService<IActionCommandDBService>();
+            Assert.NotNull(actionCommandDBService);
+
+            await actionCommandDBService.SetCulture(culture);
+            Assert.Equal(culture, ActionCommandDBServicesRes.Culture);
+
+            validateAppSettingsService = provider.GetService<IValidateAppSettingsService>();
+            Assert.NotNull(validateAppSettingsService);
+
+            await validateAppSettingsService.SetCulture(culture);
+            Assert.Equal(culture, ValidateAppSettingsServicesRes.Culture);
+
         }
         #endregion Functions private
     }

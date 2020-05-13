@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace ValidateAppSettingsServices.Resources {
+namespace GenerateCodeBaseServices.Resources {
     using System;
     
     
@@ -22,14 +22,14 @@ namespace ValidateAppSettingsServices.Resources {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public class AppRes {
+    public class GenerateCodeBaseServicesRes {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal AppRes() {
+        internal GenerateCodeBaseServicesRes() {
         }
         
         /// <summary>
@@ -39,7 +39,7 @@ namespace ValidateAppSettingsServices.Resources {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("ValidateAppSettingsServices.Resources.AppRes", typeof(AppRes).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("GenerateCodeBaseServices.Resources.GenerateCodeBaseServicesRes", typeof(GenerateCodeBaseServicesRes).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -61,11 +61,11 @@ namespace ValidateAppSettingsServices.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Could not find file [{0}].
+        ///   Looks up a localized string similar to Class.
         /// </summary>
-        public static string CouldNotFindFile_ {
+        public static string Class {
             get {
-                return ResourceManager.GetString("CouldNotFindFile_", resourceCulture);
+                return ResourceManager.GetString("Class", resourceCulture);
             }
         }
         
@@ -79,11 +79,20 @@ namespace ValidateAppSettingsServices.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Could not find parameter [{0}] in appsettings.json.
+        ///   Looks up a localized string similar to CSSPAfterAttribute should only be user for DateTime Type.
         /// </summary>
-        public static string CouldNotFindParameter_InAppSettingsJSON {
+        public static string CSSPAfterAttributeShouldOnlyBeUsedForDateTimeType {
             get {
-                return ResourceManager.GetString("CouldNotFindParameter_InAppSettingsJSON", resourceCulture);
+                return ResourceManager.GetString("CSSPAfterAttributeShouldOnlyBeUsedForDateTimeType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to DataType.
+        /// </summary>
+        public static string DataType {
+            get {
+                return ResourceManager.GetString("DataType", resourceCulture);
             }
         }
         
@@ -93,6 +102,15 @@ namespace ValidateAppSettingsServices.Resources {
         public static string DoesNotExist {
             get {
                 return ResourceManager.GetString("DoesNotExist", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to does not exist for .
+        /// </summary>
+        public static string DoesNotExistFor {
+            get {
+                return ResourceManager.GetString("DoesNotExistFor", resourceCulture);
             }
         }
         
@@ -115,11 +133,92 @@ namespace ValidateAppSettingsServices.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to is not implemented yet.
+        /// </summary>
+        public static string IsNotImplementedYet {
+            get {
+                return ResourceManager.GetString("IsNotImplementedYet", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to member name.
+        /// </summary>
+        public static string MemberName {
+            get {
+                return ResourceManager.GetString("MemberName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to of type.
+        /// </summary>
+        public static string OfType {
+            get {
+                return ResourceManager.GetString("OfType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to OK.
         /// </summary>
         public static string OK {
             get {
                 return ResourceManager.GetString("OK", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Only types [Int,Single,Double] can use RangeAttributre.
+        /// </summary>
+        public static string OnlyTypesIntSingleDoubleCanUseRangeAttribute {
+            get {
+                return ResourceManager.GetString("OnlyTypesIntSingleDoubleCanUseRangeAttribute", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Property.
+        /// </summary>
+        public static string Property {
+            get {
+                return ResourceManager.GetString("Property", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to should not contain the string length attribute.
+        /// </summary>
+        public static string ShouldNotContainTheStringLengthAttribute {
+            get {
+                return ResourceManager.GetString("ShouldNotContainTheStringLengthAttribute", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to should not use RangeAttribute.
+        /// </summary>
+        public static string ShouldNotUseRangeAttribute {
+            get {
+                return ResourceManager.GetString("ShouldNotUseRangeAttribute", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to StringLength Attribute can only be set for System.String.
+        /// </summary>
+        public static string StringLengthAttributeCanOnlyBeSetForSystemDotString {
+            get {
+                return ResourceManager.GetString("StringLengthAttributeCanOnlyBeSetForSystemDotString", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Type.
+        /// </summary>
+        public static string Type {
+            get {
+                return ResourceManager.GetString("Type", resourceCulture);
             }
         }
         

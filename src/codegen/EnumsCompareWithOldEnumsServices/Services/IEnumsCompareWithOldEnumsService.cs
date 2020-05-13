@@ -14,5 +14,6 @@ namespace EnumsCompareWithOldEnumsServices.Services
     public interface IEnumsCompareWithOldEnumsService
     {
         Task<bool> Run(string[] args);
+        Task SetCulture(CultureInfo culture);
     }
 }

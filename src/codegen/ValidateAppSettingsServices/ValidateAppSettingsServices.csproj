@@ -29,21 +29,21 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="Resources\AppRes.Designer.cs">
+    <Compile Update="Resources\ValidateAppSettingsServicesRes.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
-      <DependentUpon>AppRes.resx</DependentUpon>
+      <DependentUpon>ValidateAppSettingsServicesRes.resx</DependentUpon>
     </Compile>
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Update="Resources\AppRes.fr.resx">
+    <EmbeddedResource Update="Resources\ValidateAppSettingsServicesRes.fr.resx">
       <LastGenOutput>AppRes.Designer.cs</LastGenOutput>
       <Generator>PublicResXFileCodeGenerator</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="Resources\AppRes.resx">
+    <EmbeddedResource Update="Resources\ValidateAppSettingsServicesRes.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>AppRes.Designer.cs</LastGenOutput>
+      <LastGenOutput>ValidateAppSettingsServicesRes.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
 

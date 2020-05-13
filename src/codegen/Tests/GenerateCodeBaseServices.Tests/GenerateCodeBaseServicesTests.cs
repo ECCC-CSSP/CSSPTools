@@ -15,6 +15,7 @@ using Microsoft.Extensions.Configuration;
 using Xunit;
 using ActionCommandDBServices.Resources;
 using Microsoft.AspNetCore.Mvc;
+using GenerateCodeBaseServices.Resources;
 
 namespace GenerateCodeBaseServices.Tests
 {
@@ -40,23 +41,23 @@ namespace GenerateCodeBaseServices.Tests
         [Theory]
         [InlineData("en-CA")]
         [InlineData("fr-CA")]
-        public void GenerateCodeBaseService_Constructors_Good_Test(string culture)
+        public async Task GenerateCodeBaseService_Constructors_Good_Test(string culture)
         {
-            Setup(new CultureInfo(culture));
+            await Setup(new CultureInfo(culture));
 
             Assert.NotNull(configuration);
             Assert.NotNull(serviceCollection);
             Assert.NotNull(actionCommandDBService);
             Assert.NotNull(generateCodeBaseService);
 
-            Assert.Equal(new CultureInfo(culture), AppRes.Culture);
+            Assert.Equal(new CultureInfo(culture), GenerateCodeBaseServicesRes.Culture);
         }
         #endregion Functions public
 
         #region Functions private
-        private void Setup(CultureInfo culture)
+        private async Task Setup(CultureInfo culture)
         {
-            AppRes.Culture = culture;
+            GenerateCodeBaseServicesRes.Culture = culture;
             serviceCollection = new ServiceCollection();
 
             configuration = new ConfigurationBuilder()
@@ -83,25 +84,19 @@ namespace GenerateCodeBaseServices.Tests
             serviceCollection.AddSingleton<IActionCommandDBService, ActionCommandDBService>();
 
             ServiceProvider provider = serviceCollection.BuildServiceProvider();
-
-            if (provider == null)
-            {
-                Assert.NotNull(provider);
-            }
+            Assert.NotNull(provider);
 
             actionCommandDBService = provider.GetService<IActionCommandDBService>();
-            if (actionCommandDBService == null)
-            {
-                Assert.NotNull(actionCommandDBService);
-            }
-            actionCommandDBService.SetCulture(culture);
+            Assert.NotNull(actionCommandDBService);
+
+            await actionCommandDBService.SetCulture(culture);
+            Assert.Equal(culture, ActionCommandDBServicesRes.Culture);
 
             generateCodeBaseService = provider.GetService<IGenerateCodeBaseService>();
-            if (generateCodeBaseService == null)
-            {
-                Assert.NotNull(generateCodeBaseService);
-            }
-            generateCodeBaseService.SetCulture(culture);
+            Assert.NotNull(generateCodeBaseService);
+
+            await generateCodeBaseService.SetCulture(culture);
+            Assert.Equal(culture, GenerateCodeBaseServicesRes.Culture);
         }
         #endregion Functions private
     }

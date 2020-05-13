@@ -15,6 +15,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 using ValidateAppSettingsServices.Services;
+using AngularInterfacesGeneratedServices.Resources;
 
 namespace AngularInterfacesGeneratedServices.Tests
 {
@@ -34,7 +35,6 @@ namespace AngularInterfacesGeneratedServices.Tests
         #region Constructors
         public AngularInterfacesGeneratedServicesTests()
         {
-            Init();
         }
         #endregion Constructors
 
@@ -42,9 +42,9 @@ namespace AngularInterfacesGeneratedServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public void AngularEnumsGeneratedService_Constructor_Good_Test(string culture)
+        public async Task AngularInterfacesGeneratedService_Constructor_Good_Test(string culture)
         {
-            Init();
+            await Setup(new CultureInfo(culture));
 
             Assert.NotNull(configuration);
             Assert.NotNull(serviceCollection);
@@ -60,9 +60,9 @@ namespace AngularInterfacesGeneratedServices.Tests
         //[InlineData("fr-CA")] // good
         //[InlineData("es-TU")] // good will default to en-CA
         //[InlineData("en-GB")] // good will default to en-CA
-        public void AngularEnumsGeneratedService_Run_Good_Test(string culture)
+        public async Task AngularInterfacesGeneratedService_Run_Good_Test(string culture)
         {
-            Init();
+            await Setup(new CultureInfo(culture));
 
             string[] args = new List<string>() { culture }.ToArray();
 
@@ -72,7 +72,7 @@ namespace AngularInterfacesGeneratedServices.Tests
         #endregion Functions public
 
         #region Functions private
-        private void Init()
+        private async Task Setup(CultureInfo culture)
         {
             configuration = new ConfigurationBuilder()
                .SetBasePath(Directory.GetParent(AppContext.BaseDirectory).FullName)
@@ -108,6 +108,7 @@ namespace AngularInterfacesGeneratedServices.Tests
 
             angularInterfacesGeneratedService = provider.GetService<IAngularInterfacesGeneratedService>();
             Assert.NotNull(angularInterfacesGeneratedService);
+            await angularInterfacesGeneratedService.SetCulture(AngularInterfacesGeneratedServicesRes.Culture);
         }
         #endregion Functions private
     }

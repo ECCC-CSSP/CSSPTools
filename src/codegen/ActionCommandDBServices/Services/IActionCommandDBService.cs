@@ -28,5 +28,9 @@ namespace ActionCommandDBServices.Services
         Task<ActionResult<ActionCommand>> GetOrCreate();
         Task<ActionResult<ActionCommand>> Update();
         Task SetCulture(CultureInfo culture);
+
+        Task ConsoleWriteEnd();
+        Task ConsoleWriteError(string errMessage);
+        Task ConsoleWriteStart();
     }
 }

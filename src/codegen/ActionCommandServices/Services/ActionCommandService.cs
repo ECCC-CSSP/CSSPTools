@@ -45,11 +45,11 @@ namespace ActionCommandServices.Services
                 actionCommandDBService.Command = actionCommand.Command;
 
                 string exePath = configuration.GetValue<string>("ExecuteDotNetCommandAppPath");
-                string args = $" { AppRes.Culture.Name } { actionCommand.Action } { actionCommand.FullFileName }";
+                string args = $" { ActionCommandServicesRes.Culture.Name } { actionCommand.Action } { actionCommand.FullFileName }";
 
                 if (string.IsNullOrWhiteSpace(exePath))
                 {
-                    actionCommandDBService.ErrorText.AppendLine(AppRes.ExePathIsEmpty);
+                    actionCommandDBService.ErrorText.AppendLine(ActionCommandServicesRes.ExePathIsEmpty);
                     actionCommandDBService.PercentCompleted = 0;
                     await actionCommandDBService.Update();
                     return BadRequest(actionCommandDBService.ErrorText.ToString());
@@ -58,7 +58,7 @@ namespace ActionCommandServices.Services
                 FileInfo fiApp = new FileInfo(exePath);
                 if (!fiApp.Exists)
                 {
-                    actionCommandDBService.ErrorText.AppendLine(string.Format(AppRes.CouldNotFindExePath_, exePath));
+                    actionCommandDBService.ErrorText.AppendLine(string.Format(ActionCommandServicesRes.CouldNotFindExePath_, exePath));
                     actionCommandDBService.PercentCompleted = 0;
                     await actionCommandDBService.Update();
                     return BadRequest(actionCommandDBService.ErrorText.ToString());
@@ -76,13 +76,13 @@ namespace ActionCommandServices.Services
             }
             catch (Exception ex)
             {
-                return BadRequest(string.Format(AppRes.UnmanagedServerError_, ex.Message));
+                return BadRequest(string.Format(ActionCommandServicesRes.UnmanagedServerError_, ex.Message));
             }
         }
         public async Task SetCulture(CultureInfo culture)
         {
+            ActionCommandServicesRes.Culture = culture;
             await actionCommandDBService.SetCulture(culture);
-            AppRes.Culture = culture;
         }
         #endregion Functions public
 

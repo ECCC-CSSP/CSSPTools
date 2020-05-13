@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace ActionCommandServices.Resources {
+namespace EnumsCompareWithOldEnumsServices.Resources {
     using System;
     
     
@@ -22,14 +22,14 @@ namespace ActionCommandServices.Resources {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public class AppRes {
+    public class EnumsCompareWithOldEnumsServicesRes {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal AppRes() {
+        internal EnumsCompareWithOldEnumsServicesRes() {
         }
         
         /// <summary>
@@ -39,7 +39,7 @@ namespace ActionCommandServices.Resources {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("ActionCommandServices.Resources.AppRes", typeof(AppRes).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("EnumsCompareWithOldEnumsServices.Resources.EnumsCompareWithOldEnumsServicesRes", typeof(EnumsCompareWithOldEnumsServicesRes).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -61,47 +61,29 @@ namespace ActionCommandServices.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to {0}: [{1}] could not be found.
+        ///   Looks up a localized string similar to Abnormal completion.
         /// </summary>
-        public static string @__CouldNotBeFound {
+        public static string AbnormalCompletion {
             get {
-                return ResourceManager.GetString("__CouldNotBeFound", resourceCulture);
+                return ResourceManager.GetString("AbnormalCompletion", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Command [{0}] is not implemented.
+        ///   Looks up a localized string similar to Allowable cultures [{0}].
         /// </summary>
-        public static string Command_IsNotImplemented {
+        public static string AllowableCultures_ {
             get {
-                return ResourceManager.GetString("Command_IsNotImplemented", resourceCulture);
+                return ResourceManager.GetString("AllowableCultures_", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Could not delete status file [{0}]. Error: [{1}].
+        ///   Looks up a localized string similar to Application.
         /// </summary>
-        public static string CouldNotDeleteStatusFile_Error_ {
+        public static string Application {
             get {
-                return ResourceManager.GetString("CouldNotDeleteStatusFile_Error_", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Could not find command [{0}] status in DB.
-        /// </summary>
-        public static string CouldNotFindCommand_StatusInDB {
-            get {
-                return ResourceManager.GetString("CouldNotFindCommand_StatusInDB", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Could not find exePath [{0}].
-        /// </summary>
-        public static string CouldNotFindExePath_ {
-            get {
-                return ResourceManager.GetString("CouldNotFindExePath_", resourceCulture);
+                return ResourceManager.GetString("Application", resourceCulture);
             }
         }
         
@@ -124,74 +106,74 @@ namespace ActionCommandServices.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Email.
+        ///   Looks up a localized string similar to Could not get or create object [{0}] in DB [{1}].
         /// </summary>
-        public static string Email {
+        public static string CouldNotGetOrCreateObject_InDB_ {
             get {
-                return ResourceManager.GetString("Email", resourceCulture);
+                return ResourceManager.GetString("CouldNotGetOrCreateObject_InDB_", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Error: {0}.
+        ///   Looks up a localized string similar to Done.
         /// </summary>
-        public static string Error_ {
+        public static string Done {
             get {
-                return ResourceManager.GetString("Error_", resourceCulture);
+                return ResourceManager.GetString("Done", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to exePath is empty.
+        ///   Looks up a localized string similar to is null.
         /// </summary>
-        public static string ExePathIsEmpty {
+        public static string IsNull {
             get {
-                return ResourceManager.GetString("ExePathIsEmpty", resourceCulture);
+                return ResourceManager.GetString("IsNull", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to File not found [{0}].
+        ///   Looks up a localized string similar to Parameter #{0} should be {1}.
         /// </summary>
-        public static string FileNotFound_ {
+        public static string Parameter_ShouldBe_ {
             get {
-                return ResourceManager.GetString("FileNotFound_", resourceCulture);
+                return ResourceManager.GetString("Parameter_ShouldBe_", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to No file to verify.
+        ///   Looks up a localized string similar to Running.
         /// </summary>
-        public static string NoFileToVerify {
+        public static string Running {
             get {
-                return ResourceManager.GetString("NoFileToVerify", resourceCulture);
+                return ResourceManager.GetString("Running", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Server command [{0}] Error: [{1}].
+        ///   Looks up a localized string similar to Starting.
         /// </summary>
-        public static string ServerCommand_Error_ {
+        public static string Starting {
             get {
-                return ResourceManager.GetString("ServerCommand_Error_", resourceCulture);
+                return ResourceManager.GetString("Starting", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Unable to login as [{0}] with provided password.
+        ///   Looks up a localized string similar to Type [{0}]\tEnum [{1}] -------------- not found.
         /// </summary>
-        public static string UnableToLoginAs_WithProvidedPassword {
+        public static string Type_Enum_NotFound {
             get {
-                return ResourceManager.GetString("UnableToLoginAs_WithProvidedPassword", resourceCulture);
+                return ResourceManager.GetString("Type_Enum_NotFound", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Unmanaged server error: [{0}].
+        ///   Looks up a localized string similar to Type [{0}] ---------------------- not found.
         /// </summary>
-        public static string UnmanagedServerError_ {
+        public static string Type_NotFound {
             get {
-                return ResourceManager.GetString("UnmanagedServerError_", resourceCulture);
+                return ResourceManager.GetString("Type_NotFound", resourceCulture);
             }
         }
     }

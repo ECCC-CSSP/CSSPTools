@@ -10,94 +10,138 @@ using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.IO;
 using ValidateAppSettingsServices.Services;
+using System.Threading.Tasks;
+using System.Collections.Generic;
+using System.Linq;
+using System.Globalization;
 
 namespace AngularEnumsGenerated
 {
-    public class Startup
+    public partial class Startup
     {
         #region Variables
         #endregion Variables
 
         #region Properties
-        private IConfiguration Configuration { get; set; }
+        private IConfiguration configuration { get; set; }
         private ServiceProvider provider { get; set; }
+        private IServiceCollection serviceCollection { get; set; }
         private IAngularEnumsGeneratedService angularEnumsGeneratedService { get; set; }
+        private IActionCommandDBService actionCommandDBService { get; set; }
         private string DBFileName { get; set; } = "DBFileName";
         #endregion Properties
 
         #region Constructors
         public Startup(IConfiguration configuration)
         {
-            Configuration = configuration;
+            this.configuration = configuration;
         }
-        public string ConfigureServices(IServiceCollection serviceCollection)
+        public async Task Run(string[] args)
         {
-            serviceCollection.AddSingleton<IConfiguration>(Configuration);
-            serviceCollection.AddSingleton<IAngularEnumsGeneratedService, AngularEnumsGeneratedService>();
-            serviceCollection.AddSingleton<IGenerateCodeBaseService, GenerateCodeBaseService>();
-            serviceCollection.AddSingleton<IActionCommandDBService, ActionCommandDBService>();
-            serviceCollection.AddSingleton<IValidateAppSettingsService, ValidateAppSettingsService>();
+            if (!await ConfigureServices()) return;
 
-            string retStr = ConfigureGenerateCodeStatusContext(serviceCollection);
-            if (!string.IsNullOrWhiteSpace(retStr))
-            {
-                return retStr;
-            }
-
-            provider = serviceCollection.BuildServiceProvider();
-            if (provider == null)
-            {
-                return $"{ AppDomain.CurrentDomain.FriendlyName } provider == null";
-            }
-
-            return "";
-        }
-        public string Run(string[] args)
-        {
-            angularEnumsGeneratedService = provider.GetService<IAngularEnumsGeneratedService>();
-            if (angularEnumsGeneratedService == null)
-            {
-                return $"{ AppDomain.CurrentDomain.FriendlyName } enumsGenerated_csService == null";
-            }
-
-            if (!angularEnumsGeneratedService.Run(args).GetAwaiter().GetResult())
-            {
-                return AppRes.AbnormalCompletion;
-            }
-
-            return "";
+            await angularEnumsGeneratedService.Run(args);
         }
         #endregion Constructors
 
+        #region Functions public
+        #endregion Functions public
+
         #region Functions private
-        private string ConfigureGenerateCodeStatusContext(IServiceCollection serviceCollection)
+        private async Task<bool> ConfigureServices()
         {
-            string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
-            if (Configuration.GetValue<string>(DBFileName) == null)
-            {
-                return $"{ String.Format(AppRes.CouldNotFindParameter_InAppSettingsJSON, DBFileName) }";
-            }
+            serviceCollection = new ServiceCollection();
 
-            FileInfo fiDB = new FileInfo(Configuration.GetValue<string>(DBFileName).Replace("{AppDataPath}", appDataPath));
+            serviceCollection.AddSingleton<IConfiguration>(configuration);
 
-            if (!fiDB.Exists)
-            {
-                return $"{ String.Format(AppRes.CouldNotFindFile_, fiDB.FullName) }";
-            }
+            if (!await ConfigureIActionCommandDBService()) return await Task.FromResult(false);
 
+            if (!await ConfigureIAllOtherServices()) return await Task.FromResult(false);
+
+            return await Task.FromResult(true);
+        }
+        private async Task<bool> ConfigureIActionCommandDBService()
+        {
             try
             {
+                serviceCollection.AddSingleton<IActionCommandDBService, ActionCommandDBService>();
+
+                string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+                if (configuration.GetValue<string>(DBFileName) == null)
+                {
+                    Console.WriteLine($"{ String.Format(AngularEnumsGeneratedServicesRes.CouldNotFindParameter_InAppSettingsJSON, DBFileName) }");
+                    return await Task.FromResult(false);
+                }
+
+                FileInfo fiDB = new FileInfo(configuration.GetValue<string>(DBFileName).Replace("{AppDataPath}", appDataPath));
+
+                if (!fiDB.Exists)
+                {
+                    Console.WriteLine($"{ String.Format(AngularEnumsGeneratedServicesRes.CouldNotFindFile_, fiDB.FullName) }");
+                    return await Task.FromResult(false);
+                }
+
                 serviceCollection.AddDbContext<ActionCommandContext>(options =>
                 {
                     options.UseSqlite($"DataSource={fiDB.FullName}");
                 });
+
+                provider = serviceCollection.BuildServiceProvider();
+                if (provider == null)
+                {
+                    Console.WriteLine($"{ AppDomain.CurrentDomain.FriendlyName } provider == null");
+                    return await Task.FromResult(false);
+                }
+
+                actionCommandDBService = provider.GetService<IActionCommandDBService>();
+                if (actionCommandDBService == null)
+                {
+                    Console.WriteLine($"{ AppDomain.CurrentDomain.FriendlyName } actionCommandDBService   == null");
+                    return await Task.FromResult(false);
+                }
+
+                actionCommandDBService.Action = configuration.GetValue<string>("Action");
+                actionCommandDBService.Command = configuration.GetValue<string>("Command");
+
+                await actionCommandDBService.Create();
             }
             catch (Exception ex)
             {
-                return ex.Message;
+                Console.WriteLine(ex.Message);
+                return await Task.FromResult(false);
             }
 
-            return "";
+            return await Task.FromResult(true);
+        }
+        private async Task<bool> ConfigureIAllOtherServices()
+        {
+            try
+            {
+                serviceCollection.AddSingleton<IGenerateCodeBaseService, GenerateCodeBaseService>();
+                serviceCollection.AddSingleton<IValidateAppSettingsService, ValidateAppSettingsService>();
+                serviceCollection.AddSingleton<IAngularEnumsGeneratedService, AngularEnumsGeneratedService>();
+
+                provider = serviceCollection.BuildServiceProvider();
+                if (provider == null)
+                {
+                    await actionCommandDBService.ConsoleWriteError($"{ AppDomain.CurrentDomain.FriendlyName } provider == null");
+                    return await Task.FromResult(false);
+                }
+
+                angularEnumsGeneratedService = provider.GetService<IAngularEnumsGeneratedService>();
+                if (angularEnumsGeneratedService == null)
+                {
+                    await actionCommandDBService.ConsoleWriteError($"{ AppDomain.CurrentDomain.FriendlyName } angularEnumsGeneratedService  == null");
+                    return await Task.FromResult(false);
+                }
+            }
+            catch (Exception ex)
+            {
+                await actionCommandDBService.ConsoleWriteError(ex.Message);
+                return await Task.FromResult(false);
+            }
+
+            return await Task.FromResult(true);
         }
         #endregion Functions private
 

@@ -41,16 +41,16 @@ namespace ActionCommandDBServices.Tests
         [InlineData("fr-CA")]
         public async Task ActionCommandDBService_Constructors_Good_Test(string culture)
         {
-            Setup(new CultureInfo(culture));
+            await Setup(new CultureInfo(culture));
 
             Assert.NotNull(configuration);
             Assert.NotNull(serviceCollection);
             Assert.NotNull(actionCommandDBService);
 
-            Assert.Equal(new CultureInfo(culture), AppRes.Culture);
+            Assert.Equal(new CultureInfo(culture), ActionCommandDBServicesRes.Culture);
 
             await actionCommandDBService.SetCulture(new CultureInfo(culture));
-            Assert.Equal(new CultureInfo(culture), AppRes.Culture);
+            Assert.Equal(new CultureInfo(culture), ActionCommandDBServicesRes.Culture);
 
             Assert.Equal(0, actionCommandDBService.ActionCommandID);
             Assert.Equal("", actionCommandDBService.Action);
@@ -68,7 +68,7 @@ namespace ActionCommandDBServices.Tests
         [InlineData("fr-CA")]
         public async Task ActionCommandDBService_CreateDeleteGetGetOrCreateUpdate_Good_Test(string culture)
         {
-            Setup(new CultureInfo(culture));
+            await Setup(new CultureInfo(culture));
 
             actionCommandDBService.ActionCommandID = 0;
             actionCommandDBService.Action = "TestingAction";
@@ -172,7 +172,7 @@ namespace ActionCommandDBServices.Tests
         [InlineData("fr-CA")]
         public async Task ActionCommandDBService_Create_BadRequests_Test(string culture)
         {
-            Setup(new CultureInfo(culture));
+            await Setup(new CultureInfo(culture));
 
             actionCommandDBService.ActionCommandID = 0;
             actionCommandDBService.Action = "TestingAction";
@@ -197,7 +197,7 @@ namespace ActionCommandDBServices.Tests
 
             actionActionCommand = await actionCommandDBService.Create();
             Assert.Equal(400, ((ObjectResult)actionActionCommand.Result).StatusCode);
-            Assert.Equal($"{ string.Format(AppRes._IsRequied, "Action") }", ((BadRequestObjectResult)actionActionCommand.Result).Value);
+            Assert.Equal($"{ string.Format(ActionCommandDBServicesRes._IsRequied, "Action") }", ((BadRequestObjectResult)actionActionCommand.Result).Value);
 
             // Creating object in DB
             actionCommandDBService.Action = "TestingAction";
@@ -205,14 +205,14 @@ namespace ActionCommandDBServices.Tests
 
             actionActionCommand = await actionCommandDBService.Create();
             Assert.Equal(400, ((ObjectResult)actionActionCommand.Result).StatusCode);
-            Assert.Equal($"{ string.Format(AppRes._IsRequied, "Command") }", ((BadRequestObjectResult)actionActionCommand.Result).Value);
+            Assert.Equal($"{ string.Format(ActionCommandDBServicesRes._IsRequied, "Command") }", ((BadRequestObjectResult)actionActionCommand.Result).Value);
         }
         [Theory]
         [InlineData("en-CA")]
         [InlineData("fr-CA")]
         public async Task ActionCommandDBService_Delete_BadRequests_Test(string culture)
         {
-            Setup(new CultureInfo(culture));
+            await Setup(new CultureInfo(culture));
 
             actionCommandDBService.ActionCommandID = 0;
             actionCommandDBService.Action = "TestingAction";
@@ -248,7 +248,7 @@ namespace ActionCommandDBServices.Tests
 
             actionActionCommand = await actionCommandDBService.Delete();
             Assert.Equal(400, ((ObjectResult)actionActionCommand.Result).StatusCode);
-            Assert.Equal($"{ string.Format(AppRes._IsRequied, "Command") }", ((BadRequestObjectResult)actionActionCommand.Result).Value);
+            Assert.Equal($"{ string.Format(ActionCommandDBServicesRes._IsRequied, "Command") }", ((BadRequestObjectResult)actionActionCommand.Result).Value);
 
             // Delete object in DB
             actionCommandDBService.Action = "";
@@ -256,7 +256,7 @@ namespace ActionCommandDBServices.Tests
 
             actionActionCommand = await actionCommandDBService.Delete();
             Assert.Equal(400, ((ObjectResult)actionActionCommand.Result).StatusCode);
-            Assert.Equal($"{ string.Format(AppRes._IsRequied, "Action") }", ((BadRequestObjectResult)actionActionCommand.Result).Value);
+            Assert.Equal($"{ string.Format(ActionCommandDBServicesRes._IsRequied, "Action") }", ((BadRequestObjectResult)actionActionCommand.Result).Value);
 
             actionCommandDBService.Action = "TestingAction";
             actionCommandDBService.Command = "TestingCommand";
@@ -269,7 +269,7 @@ namespace ActionCommandDBServices.Tests
         [InlineData("fr-CA")]
         public async Task ActionCommandDBService_Get_BadRequests_Test(string culture)
         {
-            Setup(new CultureInfo(culture));
+            await Setup(new CultureInfo(culture));
 
             actionCommandDBService.ActionCommandID = 0;
             actionCommandDBService.Action = "TestingAction";
@@ -298,7 +298,7 @@ namespace ActionCommandDBServices.Tests
             actionCommandDBService.Action = "TestingAction_NotExist";
             actionActionCommand = await actionCommandDBService.Get();
             Assert.Equal(400, ((ObjectResult)actionActionCommand.Result).StatusCode);
-            Assert.Equal($"{ string.Format(AppRes.CouldNotFindActionCommandToDeleteWithAction_AndCommand_, actionCommandDBService.Action, actionCommandDBService.Command) }", ((BadRequestObjectResult)actionActionCommand.Result).Value);
+            Assert.Equal($"{ string.Format(ActionCommandDBServicesRes.CouldNotFindActionCommandToDeleteWithAction_AndCommand_, actionCommandDBService.Action, actionCommandDBService.Command) }", ((BadRequestObjectResult)actionActionCommand.Result).Value);
 
             // Delete object in DB
             actionCommandDBService.Action = "TestingAction";
@@ -306,7 +306,7 @@ namespace ActionCommandDBServices.Tests
 
             actionActionCommand = await actionCommandDBService.Get();
             Assert.Equal(400, ((ObjectResult)actionActionCommand.Result).StatusCode);
-            Assert.Equal($"{ string.Format(AppRes._IsRequied, "Command") }", ((BadRequestObjectResult)actionActionCommand.Result).Value);
+            Assert.Equal($"{ string.Format(ActionCommandDBServicesRes._IsRequied, "Command") }", ((BadRequestObjectResult)actionActionCommand.Result).Value);
 
             // Delete object in DB
             actionCommandDBService.Action = "";
@@ -314,14 +314,14 @@ namespace ActionCommandDBServices.Tests
 
             actionActionCommand = await actionCommandDBService.Get();
             Assert.Equal(400, ((ObjectResult)actionActionCommand.Result).StatusCode);
-            Assert.Equal($"{ string.Format(AppRes._IsRequied, "Action") }", ((BadRequestObjectResult)actionActionCommand.Result).Value);
+            Assert.Equal($"{ string.Format(ActionCommandDBServicesRes._IsRequied, "Action") }", ((BadRequestObjectResult)actionActionCommand.Result).Value);
         }
         [Theory]
         [InlineData("en-CA")]
         [InlineData("fr-CA")]
         public async Task ActionCommandDBService_GetOrCreate_BadRequests_Test(string culture)
         {
-            Setup(new CultureInfo(culture));
+            await Setup(new CultureInfo(culture));
 
             actionCommandDBService.ActionCommandID = 0;
             actionCommandDBService.Action = "TestingAction";
@@ -353,7 +353,7 @@ namespace ActionCommandDBServices.Tests
 
             actionActionCommand = await actionCommandDBService.GetOrCreate();
             Assert.Equal(400, ((ObjectResult)actionActionCommand.Result).StatusCode);
-            Assert.Equal($"{ string.Format(AppRes._IsRequied, "Command") }", ((BadRequestObjectResult)actionActionCommand.Result).Value);
+            Assert.Equal($"{ string.Format(ActionCommandDBServicesRes._IsRequied, "Command") }", ((BadRequestObjectResult)actionActionCommand.Result).Value);
 
             // Delete object in DB
             actionCommandDBService.Action = "";
@@ -361,14 +361,14 @@ namespace ActionCommandDBServices.Tests
 
             actionActionCommand = await actionCommandDBService.GetOrCreate();
             Assert.Equal(400, ((ObjectResult)actionActionCommand.Result).StatusCode);
-            Assert.Equal($"{ string.Format(AppRes._IsRequied, "Action") }", ((BadRequestObjectResult)actionActionCommand.Result).Value);
+            Assert.Equal($"{ string.Format(ActionCommandDBServicesRes._IsRequied, "Action") }", ((BadRequestObjectResult)actionActionCommand.Result).Value);
         }
         [Theory]
         [InlineData("en-CA")]
         [InlineData("fr-CA")]
         public async Task ActionCommandDBService_Update_BadRequests_Test(string culture)
         {
-            Setup(new CultureInfo(culture));
+            await Setup(new CultureInfo(culture));
 
             actionCommandDBService.ActionCommandID = 0;
             actionCommandDBService.Action = "TestingAction";
@@ -400,7 +400,7 @@ namespace ActionCommandDBServices.Tests
 
             actionActionCommand = await actionCommandDBService.Update();
             Assert.Equal(400, ((ObjectResult)actionActionCommand.Result).StatusCode);
-            Assert.Equal($"{ string.Format(AppRes._IsRequied, "Command") }", ((BadRequestObjectResult)actionActionCommand.Result).Value);
+            Assert.Equal($"{ string.Format(ActionCommandDBServicesRes._IsRequied, "Command") }", ((BadRequestObjectResult)actionActionCommand.Result).Value);
 
             // Delete object in DB
             actionCommandDBService.Action = "";
@@ -408,24 +408,24 @@ namespace ActionCommandDBServices.Tests
 
             actionActionCommand = await actionCommandDBService.Update();
             Assert.Equal(400, ((ObjectResult)actionActionCommand.Result).StatusCode);
-            Assert.Equal($"{ string.Format(AppRes._IsRequied, "Action") }", ((BadRequestObjectResult)actionActionCommand.Result).Value);
+            Assert.Equal($"{ string.Format(ActionCommandDBServicesRes._IsRequied, "Action") }", ((BadRequestObjectResult)actionActionCommand.Result).Value);
         }
         [Theory]
         [InlineData("en-CA")]
         [InlineData("fr-CA")]
         public async Task ActionCommandDBService_SetCulture_Good_Test(string culture)
         {
-            Setup(new CultureInfo(culture));
+            await Setup(new CultureInfo(culture));
 
             await actionCommandDBService.SetCulture(new CultureInfo(culture));
-            Assert.Equal(new CultureInfo(culture), AppRes.Culture);
+            Assert.Equal(new CultureInfo(culture), ActionCommandDBServicesRes.Culture);
         }
         #endregion Functions public
 
         #region Functions private
-        private void Setup(CultureInfo culture)
+        private async Task Setup(CultureInfo culture)
         {
-            AppRes.Culture = culture;
+            ActionCommandDBServicesRes.Culture = culture;
 
             configuration = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetParent(AppContext.BaseDirectory).FullName)
@@ -462,11 +462,10 @@ namespace ActionCommandDBServices.Tests
             }
 
             actionCommandDBService = serviceProvider.GetService<IActionCommandDBService>();
-            if (actionCommandDBService == null)
-            {
-                Assert.NotNull(actionCommandDBService);
-            }
-            actionCommandDBService.SetCulture(culture);
+            Assert.NotNull(actionCommandDBService);
+
+            await actionCommandDBService.SetCulture(culture);
+            Assert.Equal(culture, ActionCommandDBServicesRes.Culture);
 
         }
         #endregion Functions private

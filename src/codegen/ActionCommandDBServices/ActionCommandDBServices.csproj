@@ -15,21 +15,21 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="Resources\AppRes.Designer.cs">
+    <Compile Update="Resources\ActionCommandDBServicesRes.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
-      <DependentUpon>AppRes.resx</DependentUpon>
+      <DependentUpon>ActionCommandDBServicesRes.resx</DependentUpon>
     </Compile>
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Update="Resources\AppRes.fr.resx">
+    <EmbeddedResource Update="Resources\ActionCommandDBServicesRes.fr.resx">
       <LastGenOutput>StatusAndResultsServiceRes.Designer.cs</LastGenOutput>
       <Generator>PublicResXFileCodeGenerator</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="Resources\AppRes.resx">
+    <EmbeddedResource Update="Resources\ActionCommandDBServicesRes.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>AppRes.Designer.cs</LastGenOutput>
+      <LastGenOutput>ActionCommandDBServicesRes.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
 

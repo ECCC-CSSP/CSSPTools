@@ -57,12 +57,12 @@ namespace AngularInterfacesGenerated
             angularInterfacesGeneratedService = provider.GetService<IAngularInterfacesGeneratedService>();
             if (angularInterfacesGeneratedService == null)
             {
-                return $"{ AppDomain.CurrentDomain.FriendlyName } enumsGenerated_csService == null";
+                return $"{ AppDomain.CurrentDomain.FriendlyName } angularInterfacesGeneratedService == null";
             }
 
             if (!angularInterfacesGeneratedService.Run(args).GetAwaiter().GetResult())
             {
-                return AppRes.AbnormalCompletion;
+                return AngularInterfacesGeneratedServicesRes.AbnormalCompletion;
             }
 
             return "";
@@ -75,14 +75,14 @@ namespace AngularInterfacesGenerated
             string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
             if (Configuration.GetValue<string>(DBFileName) == null)
             {
-                return $"{ String.Format(AppRes.CouldNotFindParameter_InAppSettingsJSON, DBFileName) }";
+                return $"{ String.Format(AngularInterfacesGeneratedServicesRes.CouldNotFindParameter_InAppSettingsJSON, DBFileName) }";
             }
 
             FileInfo fiDB = new FileInfo(Configuration.GetValue<string>(DBFileName).Replace("{AppDataPath}", appDataPath));
 
             if (!fiDB.Exists)
             {
-                return $"{ String.Format(AppRes.CouldNotFindFile_, fiDB.FullName) }";
+                return $"{ String.Format(AngularInterfacesGeneratedServicesRes.CouldNotFindFile_, fiDB.FullName) }";
             }
 
             try

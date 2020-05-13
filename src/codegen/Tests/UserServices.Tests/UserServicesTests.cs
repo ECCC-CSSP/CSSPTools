@@ -43,9 +43,9 @@ namespace UserServices.Tests
         [Theory]
         [InlineData("en-CA")]
         [InlineData("fr-CA")]
-        public void UserService_Constructors_Good_Test(string culture)
+        public async Task UserService_Constructors_Good_Test(string culture)
         {
-            Setup(new CultureInfo(culture));
+            await Setup(new CultureInfo(culture));
 
             Assert.NotNull(configuration);
             Assert.NotNull(serviceCollection);
@@ -56,7 +56,7 @@ namespace UserServices.Tests
         [InlineData("fr-CA")]
         public async Task UserService_CheckPassword_Good_Test(string culture)
         {
-            Setup(new CultureInfo(culture));
+            await Setup(new CultureInfo(culture));
 
             string LoginEmail = "Charles.LeBlanc2@canada.ca";
             string Password = "Charles2!";
@@ -76,7 +76,7 @@ namespace UserServices.Tests
         [InlineData("fr-CA")]
         public async Task UserService_CheckPassword_Good_Return_EmailCouldNotBeFound_Test(string culture)
         {
-            Setup(new CultureInfo(culture));
+            await Setup(new CultureInfo(culture));
 
             string LoginEmail = "NotFound_Charles.LeBlanc2@canada.ca";
             string Password = "Charles2!";
@@ -84,7 +84,7 @@ namespace UserServices.Tests
             var retValue = await userService.CheckPassword(new LoginModel() { LoginEmail = LoginEmail, Password = Password });
             Assert.Null(retValue.Value);
             Assert.Equal(400, ((BadRequestObjectResult)retValue.Result).StatusCode);
-            string expected = String.Format(AppRes.__CouldNotBeFound, AppRes.Email, LoginEmail);
+            string expected = String.Format(UserServicesRes.__CouldNotBeFound, UserServicesRes.Email, LoginEmail);
             var value = ((BadRequestObjectResult)retValue.Result).Value;
             Assert.Equal(expected, value);
 
@@ -94,7 +94,7 @@ namespace UserServices.Tests
         [InlineData("fr-CA")]
         public async Task UserService_CheckPassword_Good_Return_Error_UnableToLoginAs_WithProvidedPassword_Test(string culture)
         {
-            Setup(new CultureInfo(culture));
+            await Setup(new CultureInfo(culture));
 
             string LoginEmail = "Charles.LeBlanc2@canada.ca";
             string Password = "Not_Charles2!";
@@ -102,7 +102,7 @@ namespace UserServices.Tests
             var retValue = await userService.CheckPassword(new LoginModel() { LoginEmail = LoginEmail, Password = Password });
             Assert.Null(retValue.Value);
             Assert.Equal(400, ((BadRequestObjectResult)retValue.Result).StatusCode);
-            string expected = String.Format(AppRes.UnableToLoginAs_WithProvidedPassword, LoginEmail);
+            string expected = String.Format(UserServicesRes.UnableToLoginAs_WithProvidedPassword, LoginEmail);
             var value = ((BadRequestObjectResult)retValue.Result).Value;
             Assert.Equal(expected, value);
 
@@ -110,9 +110,9 @@ namespace UserServices.Tests
         #endregion Functions public
 
         #region Functions private
-        private void Setup(CultureInfo culture)
+        private async Task Setup(CultureInfo culture)
         {
-            AppRes.Culture = culture;
+            UserServicesRes.Culture = culture;
             configuration = new ConfigurationBuilder()
                .SetBasePath(Directory.GetParent(AppContext.BaseDirectory).FullName)
                .AddJsonFile("appsettings.json")
@@ -145,6 +145,10 @@ namespace UserServices.Tests
 
             userService = provider.GetService<IUserService>();
             Assert.NotNull(userService);
+
+            await userService.SetCulture(culture);
+            Assert.Equal(culture, UserServicesRes.Culture);
+
         }
         #endregion Functions private
     }
