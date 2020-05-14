@@ -23,7 +23,7 @@ namespace EnumsPolSourceInfoRelatedFilesServices.Services
         #endregion Functions public
 
         #region Functions private
-        private async Task Generate_EnumsPolSourceInfo()
+        private async Task<bool> Generate_EnumsPolSourceInfo()
         {
             StringBuilder sb = new StringBuilder();
 
@@ -168,14 +168,15 @@ namespace EnumsPolSourceInfoRelatedFilesServices.Services
             }
             catch (Exception ex)
             {
-                actionCommandDBService.ErrorText.AppendLine($"{ AppRes.Creating } [{ fi.FullName }] ...");
+                actionCommandDBService.ErrorText.AppendLine($"{ EnumsPolSourceInfoRelatedFilesServicesRes.Creating } [{ fi.FullName }] ...");
                 string InnerException = (ex.InnerException != null ? $"Inner: { ex.InnerException.Message }" : "");
-                actionCommandDBService.ErrorText.AppendLine($"{ AppRes.Error }: { ex.Message }{ InnerException  }");
+                actionCommandDBService.ErrorText.AppendLine($"{ EnumsPolSourceInfoRelatedFilesServicesRes.Error }: { ex.Message }{ InnerException  }");
 
-                return;
+                return await Task.FromResult(false);
             }
 
-            actionCommandDBService.ExecutionStatusText.AppendLine($"{ AppRes.Created }: { fi.FullName }");
+            actionCommandDBService.ExecutionStatusText.AppendLine($"{ EnumsPolSourceInfoRelatedFilesServicesRes.Created }: { fi.FullName }");
+            return await Task.FromResult(true);
         }
         #endregion Functions private
     }

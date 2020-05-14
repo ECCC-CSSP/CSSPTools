@@ -29,6 +29,7 @@ namespace EnumsPolSourceInfoRelatedFilesServices.Services
         private IActionCommandDBService actionCommandDBService { get; set; }
         private IValidateAppSettingsService validateAppSettingsService { get; set; }
         private IPolSourceGroupingExcelFileReadService polSourceGroupingExcelFileReadService { get; set; }
+        private IGenerateCodeBaseService generateCodeBaseService { get; set; }
         private List<string> AllowableCultures { get; set; } = new List<string>() { "en-CA", "fr-CA" };
         #endregion Properties
 
@@ -36,11 +37,13 @@ namespace EnumsPolSourceInfoRelatedFilesServices.Services
         public EnumsPolSourceInfoRelatedFilesService(IConfiguration configuration,
             IActionCommandDBService actionCommandDBService,
             IValidateAppSettingsService validateAppSettingsService,
+            IGenerateCodeBaseService generateCodeBaseService,
             IPolSourceGroupingExcelFileReadService polSourceGroupingExcelFileReadService)
         {
             this.configuration = configuration;
             this.actionCommandDBService = actionCommandDBService;
             this.validateAppSettingsService = validateAppSettingsService;
+            this.generateCodeBaseService = generateCodeBaseService;
             this.polSourceGroupingExcelFileReadService = polSourceGroupingExcelFileReadService;
         }
         #endregion Constructors
@@ -48,119 +51,40 @@ namespace EnumsPolSourceInfoRelatedFilesServices.Services
         #region Functions public
         public async Task<bool> Run(string[] args)
         {
-            SetCulture(args);
-
-            ConsoleWriteStart();
+            await actionCommandDBService.ConsoleWriteStart();
 
             if (!await Setup())
             {
-                Console.WriteLine(actionCommandDBService.ErrorText.ToString());
-                Console.WriteLine("");
-                Console.WriteLine(actionCommandDBService.ExecutionStatusText.ToString());
-                return false;
+                await actionCommandDBService.ConsoleWriteError("");
+                return await Task.FromResult(false);
             }
+
+            await SetCultureWithArgs(args);
+
+            await actionCommandDBService.Delete();
 
             if (!await Generate())
             {
-                Console.WriteLine(actionCommandDBService.ErrorText.ToString());
-                Console.WriteLine("");
-                Console.WriteLine(actionCommandDBService.ExecutionStatusText.ToString());
-                return false;
+                await actionCommandDBService.ConsoleWriteError("");
+                return await Task.FromResult(false);
             }
 
-            await ConsoleWriteEnd();
+            await actionCommandDBService.ConsoleWriteEnd();
 
-            return true;
+            return await Task.FromResult(true);
+        }
+        public async Task SetCulture(CultureInfo culture)
+        {
+            await actionCommandDBService.SetCulture(culture);
+            await validateAppSettingsService.SetCulture(culture);
+            await generateCodeBaseService.SetCulture(culture);
+            await polSourceGroupingExcelFileReadService.SetCulture(culture);
+            EnumsPolSourceInfoRelatedFilesServicesRes.Culture = culture;
         }
         #endregion Functions public
 
         #region Functions private
-        private async Task<bool> Generate()
-        {
-            ActionResult<ActionCommand> actionActionCommand = await actionCommandDBService.GetOrCreate();
-
-            if (((ObjectResult)actionActionCommand.Result).StatusCode == 400)
-            {
-                await ConsoleWriteError("actionCommand == null");
-                return false;
-            }
-
-            actionCommandDBService.ExecutionStatusText.AppendLine("Generate Starting ...");
-            actionCommandDBService.PercentCompleted = 10;
-            await actionCommandDBService.Update();
-
-
-            actionCommandDBService.ExecutionStatusText.AppendLine($"{ AppRes.ReadingExcelDocumentAndChecking }");
-
-            FileInfo fiExcel = new FileInfo(configuration.GetValue<string>("ExcelFileName"));
-
-            if (!await polSourceGroupingExcelFileReadService.ReadExcelSheet(fiExcel.FullName, false))
-            {
-                return false;
-            }
-
-            if (polSourceGroupingExcelFileReadService.groupChoiceChildLevelList.Count() == 0)
-            {
-                string ErrorText = String.Format(AppRes.ERROR_IsEqualTo0, "_groupChoiceChildLevelList");
-                actionCommandDBService.ErrorText.AppendLine($"{ ErrorText }");
-                actionCommandDBService.PercentCompleted = 0;
-                await actionCommandDBService.Update();
-
-
-                return false;
-            }
-
-            actionCommandDBService.ExecutionStatusText.AppendLine($"{ AppRes.ReadingExcelDocumentAndChecking } { AppRes.Done } ...");
-
-            await Generate_FillPolSourceObsInfoChildService();
-            await Generate_EnumsPolSourceInfo();
-            await Generate_PolSourceObsInfoEnum();
-            await Generate_EnumsPolSourceObsInfoEnumTest();
-            await Generate_PolSourceInfoEnumGeneratedRes_resx();
-            await Generate_PolSourceInfoEnumGeneratedResFR_resx();
-
-            actionCommandDBService.ExecutionStatusText.AppendLine($"{ AppRes.Done } ...");
-            actionCommandDBService.ExecutionStatusText.AppendLine("");
-            actionCommandDBService.ExecutionStatusText.AppendLine("Generate Finished ...");
-            actionCommandDBService.PercentCompleted = 100;
-            await actionCommandDBService.Update();
-
-
-            return true;
-        }
-        private async Task ConsoleWriteEnd()
-        {
-            actionCommandDBService.ExecutionStatusText.AppendLine("");
-            actionCommandDBService.ExecutionStatusText.AppendLine($"{ AppRes.Done } ...");
-            actionCommandDBService.ExecutionStatusText.AppendLine("");
-            actionCommandDBService.PercentCompleted = 100;
-            await actionCommandDBService.Update();
-
-
-            if (!string.IsNullOrWhiteSpace(actionCommandDBService.ErrorText.ToString()))
-            {
-                Console.WriteLine(actionCommandDBService.ErrorText.ToString());
-            }
-
-            Console.WriteLine(actionCommandDBService.ExecutionStatusText.ToString());
-        }
-        private async Task ConsoleWriteError(string errMessage)
-        {
-            actionCommandDBService.ErrorText.AppendLine(errMessage);
-            actionCommandDBService.PercentCompleted = 0;
-            await actionCommandDBService.Update();
-
-            Console.WriteLine(actionCommandDBService.ErrorText.ToString());
-            Console.WriteLine(actionCommandDBService.ExecutionStatusText.ToString());
-        }
-        private void ConsoleWriteStart()
-        {
-            Console.WriteLine($"{ AppRes.Running } { AppRes.Application } { AppDomain.CurrentDomain.FriendlyName }");
-            Console.WriteLine("");
-            Console.WriteLine($"{ AppRes.Starting } ...");
-            Console.WriteLine("");
-        }
-        private void SetCulture(string[] args)
+        private async Task SetCultureWithArgs(string[] args)
         {
             string culture = AllowableCultures[0];
 
@@ -172,46 +96,51 @@ namespace EnumsPolSourceInfoRelatedFilesServices.Services
                 }
             }
 
-            AppRes.Culture = new CultureInfo(culture);
+            await SetCulture(new CultureInfo(culture));
         }
         private async Task<bool> Setup()
         {
+            actionCommandDBService.Action = configuration.GetValue<string>("Action");
             actionCommandDBService.Command = configuration.GetValue<string>("Command");
             await actionCommandDBService.SetCulture(new CultureInfo(configuration.GetValue<string>("Culture")));
             await validateAppSettingsService.SetCulture(new CultureInfo(configuration.GetValue<string>("Culture")));
 
             try
             {
+                await actionCommandDBService.Delete();
+                actionCommandDBService.Action = configuration.GetValue<string>("Action");
+                actionCommandDBService.Command = configuration.GetValue<string>("Command");
                 await actionCommandDBService.GetOrCreate();
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
-                return false;
+                return await Task.FromResult(false);
             }
 
             validateAppSettingsService.AppSettingParameterList = new List<AppSettingParameter>()
             {
+                new AppSettingParameter() { Parameter = "Action", ExpectedValue = "run" },
                 new AppSettingParameter() { Parameter = "Command", ExpectedValue = "EnumsPolSourceInfoRelatedFiles" },
                 new AppSettingParameter() { Parameter = "Culture", ExpectedValue = "", IsCulture = true },
                 new AppSettingParameter() { Parameter = "DBFileName", ExpectedValue = "{AppDataPath}\\CSSP\\ActionCommandDB.db", IsFile = true, CheckExist = true },
                 new AppSettingParameter() { Parameter = "ExcelFileName", ExpectedValue = "C:\\CSSPTools\\src\\assets\\PolSourceGrouping.xlsm", IsFile = true, CheckExist = true },
-                new AppSettingParameter() { Parameter = "FillPolSourceObsInfoChildServiceGenerated_cs", ExpectedValue = "C:\\CSSPTools\\src\\dlls\\CSSPServices\\Generated\\FillPolSourceObsInfoChildServiceGenerated.cs", IsFile = true, CheckExist = true },
-                new AppSettingParameter() { Parameter = "EnumsPolSourceInfoGenerated_cs", ExpectedValue = "C:\\CSSPTools\\src\\dlls\\CSSPEnums\\Generated\\EnumsPolSourceInfoGenerated.cs", IsFile = true, CheckExist = true },
-                new AppSettingParameter() { Parameter = "PolSourceObsInfoEnumGenerated_cs", ExpectedValue = "C:\\CSSPTools\\src\\dlls\\CSSPEnums\\Generated\\PolSourceObsInfoEnumGenerated.cs", IsFile = true, CheckExist = true },
-                new AppSettingParameter() { Parameter = "EnumsPolSourceObsInfoEnumTestGenerated_cs", ExpectedValue = "C:\\CSSPTools\\src\\tests\\CSSPEnums.Tests\\tests\\Generated\\EnumsPolSourceObsInfoEnumTestGenerated.cs", IsFile = true, CheckExist = true },
-                new AppSettingParameter() { Parameter = "PolSourceInfoEnumGeneratedRes_resx", ExpectedValue = "C:\\CSSPTools\\src\\dlls\\CSSPEnums\\Resources\\Generated\\PolSourceInfoEnumGeneratedRes.resx", IsFile = true, CheckExist = true },
-                new AppSettingParameter() { Parameter = "PolSourceInfoEnumGeneratedResFR_resx", ExpectedValue = "C:\\CSSPTools\\src\\dlls\\CSSPEnums\\Resources\\Generated\\PolSourceInfoEnumGeneratedRes.fr.resx", IsFile = true, CheckExist = true },
+                new AppSettingParameter() { Parameter = "FillPolSourceObsInfoChildServiceGenerated_cs", ExpectedValue = "C:\\CSSPTools\\src\\dlls\\CSSPServices\\Generated\\FillPolSourceObsInfoChildServiceGenerated.cs" },
+                new AppSettingParameter() { Parameter = "EnumsPolSourceInfoGenerated_cs", ExpectedValue = "C:\\CSSPTools\\src\\dlls\\CSSPEnums\\Generated\\EnumsPolSourceInfoGenerated.cs" },
+                new AppSettingParameter() { Parameter = "PolSourceObsInfoEnumGenerated_cs", ExpectedValue = "C:\\CSSPTools\\src\\dlls\\CSSPEnums\\Generated\\PolSourceObsInfoEnumGenerated.cs" },
+                new AppSettingParameter() { Parameter = "EnumsPolSourceObsInfoEnumTestGenerated_cs", ExpectedValue = "C:\\CSSPTools\\src\\tests\\CSSPEnums.Tests\\tests\\Generated\\EnumsPolSourceObsInfoEnumTestGenerated.cs" },
+                new AppSettingParameter() { Parameter = "PolSourceInfoEnumGeneratedRes_resx", ExpectedValue = "C:\\CSSPTools\\src\\dlls\\CSSPEnums\\Resources\\Generated\\PolSourceInfoEnumGeneratedRes.resx" },
+                new AppSettingParameter() { Parameter = "PolSourceInfoEnumGeneratedResFR_resx", ExpectedValue = "C:\\CSSPTools\\src\\dlls\\CSSPEnums\\Resources\\Generated\\PolSourceInfoEnumGeneratedRes.fr.resx" },
             };
 
             await validateAppSettingsService.VerifyAppSettings();
             if (!string.IsNullOrWhiteSpace(actionCommandDBService.ErrorText.ToString()))
             {
-                await ConsoleWriteError("");
-                return false;
+                await actionCommandDBService.ConsoleWriteError("");
+                return await Task.FromResult(false);
             }
 
-            return true;
+            return await Task.FromResult(true);
         }
         #endregion Functions private
     }

@@ -15,6 +15,6 @@ namespace PolSourceGroupingExcelFileReadServices.Services
 
         Task<bool> ReadExcelSheet(string FullFileName, bool DoCheck);
         Task<bool> GetRecursiveForShowAllPaths(string s, List<string> textList, int Level, bool RaiseEvents, StringBuilder sb);
-        void SetCulture(CultureInfo Culture);
+        Task SetCulture(CultureInfo Culture);
     }
 }

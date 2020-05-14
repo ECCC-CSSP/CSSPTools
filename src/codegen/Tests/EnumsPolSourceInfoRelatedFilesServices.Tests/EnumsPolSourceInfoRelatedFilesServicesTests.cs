@@ -15,6 +15,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 using ValidateAppSettingsServices.Services;
+using EnumsPolSourceInfoRelatedFilesServices.Resources;
 
 namespace EnumsPolSourceInfoRelatedFilesServices.Tests
 {
@@ -28,6 +29,7 @@ namespace EnumsPolSourceInfoRelatedFilesServices.Tests
         private IServiceCollection serviceCollection { get; set; }
         private IEnumsPolSourceInfoRelatedFilesService enumsPolSourceInfoRelatedFilesService { get; set; }
         private IPolSourceGroupingExcelFileReadService polSourceGroupingExcelFileReadService { get; set; }
+        private IActionCommandDBService actionCommandDBService { get; set; }
         private IServiceProvider provider { get; set; }
         private string DBFileName { get; set; } = "DBFileName";
         #endregion Properties
@@ -35,17 +37,18 @@ namespace EnumsPolSourceInfoRelatedFilesServices.Tests
         #region Constructors
         public EnumsPolSourceInfoRelatedFilesServiceTests()
         {
-            Init();
         }
         #endregion Constructors
 
         #region Functions public
         [Theory]
-        [InlineData("en-CA")]
-        [InlineData("fr-CA")]
-        public void EnumsPolSourceInfoRelatedFilesServices_Constructor_Good_Test(string culture)
+        [InlineData("en-CA")] // good
+        [InlineData("fr-CA")] // good
+        [InlineData("es-TU")] // good will default to en-CA
+        [InlineData("en-GB")] // good will default to en-CA
+        public async Task AngularEnumsGeneratedService_Run_Good_Test(string culture)
         {
-            Init();
+            await Setup(new CultureInfo(culture), "appsettings.json");
 
             Assert.NotNull(configuration);
             Assert.NotNull(serviceCollection);
@@ -54,61 +57,135 @@ namespace EnumsPolSourceInfoRelatedFilesServices.Tests
 
             string[] args = new List<string>() { culture }.ToArray();
 
-            Assert.Equal(culture, args[0]);
+            bool retBool = await enumsPolSourceInfoRelatedFilesService.Run(args);
+            Assert.True(retBool);
+
+            // all culture other than "fr-CA" should default to "en-CA"
+            if (culture != "fr-CA")
+            {
+                culture = "en-CA";
+            }
+            CultureInfo Culture = new CultureInfo(culture);
+            Assert.Equal(Culture, EnumsPolSourceInfoRelatedFilesServicesRes.Culture);
         }
         [Theory]
         [InlineData("en-CA")] // good
         [InlineData("fr-CA")] // good
-        [InlineData("es-TU")] // good will default to en-CA
-        [InlineData("en-GB")] // good will default to en-CA
-        public void EnumsPolSourceInfoRelatedFilesServices_Run_Good_Test(string culture)
+        public async Task AngularEnumsGeneratedService_Run_SomeFileMissing_Test(string culture)
         {
-            Init();
+            await Setup(new CultureInfo(culture), "appsettings_bad1.json");
+
+            Assert.NotNull(configuration);
+            Assert.NotNull(serviceCollection);
+            Assert.NotNull(provider);
+            Assert.NotNull(enumsPolSourceInfoRelatedFilesService);
 
             string[] args = new List<string>() { culture }.ToArray();
 
-            bool retBool = enumsPolSourceInfoRelatedFilesService.Run(args).GetAwaiter().GetResult();
-            Assert.True(retBool);
+            bool retBool = await enumsPolSourceInfoRelatedFilesService.Run(args);
+            Assert.False(retBool);
         }
         #endregion Functions public
 
         #region Functions private
-        private void Init()
+        private async Task Setup(CultureInfo culture, string appsettingjsonFileName)
         {
             configuration = new ConfigurationBuilder()
                .SetBasePath(Directory.GetParent(AppContext.BaseDirectory).FullName)
-               .AddJsonFile("appsettings.json")
+               .AddJsonFile(appsettingjsonFileName)
                .Build();
 
             Assert.NotNull(configuration);
 
+            bool retBool = await ConfigureServices();
+            Assert.True(retBool);
+        }
+        private async Task<bool> ConfigureServices()
+        {
             serviceCollection = new ServiceCollection();
 
             serviceCollection.AddSingleton<IConfiguration>(configuration);
-            serviceCollection.AddSingleton<IActionCommandDBService, ActionCommandDBService>();
-            serviceCollection.AddSingleton<IValidateAppSettingsService, ValidateAppSettingsService>();
-            serviceCollection.AddSingleton<IPolSourceGroupingExcelFileReadService, PolSourceGroupingExcelFileReadService>();
-            serviceCollection.AddSingleton<IEnumsPolSourceInfoRelatedFilesService, EnumsPolSourceInfoRelatedFilesService>();
 
-            string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
-            Assert.False(string.IsNullOrWhiteSpace(appDataPath));
+            bool retBool = await ConfigureIActionCommandDBService();
+            Assert.True(retBool);
 
-            string fileName = configuration.GetValue<string>(DBFileName);
-            Assert.False(string.IsNullOrWhiteSpace(fileName));
+            retBool = await ConfigureIAllOtherServices();
+            Assert.True(retBool);
 
-            FileInfo fiDB = new FileInfo(fileName.Replace("{AppDataPath}", appDataPath));
-            Assert.True(fiDB.Exists);
-
-            serviceCollection.AddDbContext<ActionCommandContext>(options =>
+            return await Task.FromResult(true);
+        }
+        private async Task<bool> ConfigureIActionCommandDBService()
+        {
+            try
             {
-                options.UseSqlite($"DataSource={fiDB.FullName}");
-            });
+                serviceCollection.AddSingleton<IActionCommandDBService, ActionCommandDBService>();
 
-            provider = serviceCollection.BuildServiceProvider();
-            Assert.NotNull(provider);
+                string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+                Assert.NotNull(configuration.GetValue<string>(DBFileName));
 
-            enumsPolSourceInfoRelatedFilesService = provider.GetService<IEnumsPolSourceInfoRelatedFilesService>();
-            Assert.NotNull(enumsPolSourceInfoRelatedFilesService);
+                FileInfo fiDB = new FileInfo(configuration.GetValue<string>(DBFileName).Replace("{AppDataPath}", appDataPath));
+                Assert.True(fiDB.Exists);
+
+                serviceCollection.AddDbContext<ActionCommandContext>(options =>
+                {
+                    options.UseSqlite($"DataSource={fiDB.FullName}");
+                });
+
+                provider = serviceCollection.BuildServiceProvider();
+                Assert.NotNull(provider);
+
+                actionCommandDBService = provider.GetService<IActionCommandDBService>();
+                if (actionCommandDBService == null)
+                {
+                    Console.WriteLine($"{ AppDomain.CurrentDomain.FriendlyName } actionCommandDBService   == null");
+                    return await Task.FromResult(false);
+                }
+
+                actionCommandDBService.Action = configuration.GetValue<string>("Action");
+                actionCommandDBService.Command = configuration.GetValue<string>("Command");
+
+                await actionCommandDBService.Create();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                Assert.True(false);
+                return await Task.FromResult(false);
+            }
+
+            return await Task.FromResult(true);
+        }
+        private async Task<bool> ConfigureIAllOtherServices()
+        {
+            try
+            {
+                serviceCollection.AddSingleton<IGenerateCodeBaseService, GenerateCodeBaseService>();
+                serviceCollection.AddSingleton<IValidateAppSettingsService, ValidateAppSettingsService>();
+                serviceCollection.AddSingleton<IPolSourceGroupingExcelFileReadService, PolSourceGroupingExcelFileReadService>();
+                serviceCollection.AddSingleton<IEnumsPolSourceInfoRelatedFilesService, EnumsPolSourceInfoRelatedFilesService>();
+
+                provider = serviceCollection.BuildServiceProvider();
+                if (provider == null)
+                {
+                    await actionCommandDBService.ConsoleWriteError($"{ AppDomain.CurrentDomain.FriendlyName } provider == null");
+                    return await Task.FromResult(false);
+                }
+
+                enumsPolSourceInfoRelatedFilesService = provider.GetService<IEnumsPolSourceInfoRelatedFilesService>();
+                if (enumsPolSourceInfoRelatedFilesService == null)
+                {
+                    await actionCommandDBService.ConsoleWriteError($"{ AppDomain.CurrentDomain.FriendlyName } angularEnumsGeneratedService  == null");
+                    return await Task.FromResult(false);
+                }
+            }
+            catch (Exception ex)
+            {
+                await actionCommandDBService.ConsoleWriteError(ex.Message);
+                Assert.True(false);
+                return await Task.FromResult(false);
+            }
+
+            return await Task.FromResult(true);
         }
         #endregion Functions private
     }

@@ -23,7 +23,7 @@ namespace EnumsPolSourceInfoRelatedFilesServices.Services
         #endregion Functions public
 
         #region Functions private
-        private async Task Generate_FillPolSourceObsInfoChildService()
+        private async Task<bool> Generate_FillPolSourceObsInfoChildService()
         {
             StringBuilder sb = new StringBuilder();
 
@@ -95,16 +95,19 @@ namespace EnumsPolSourceInfoRelatedFilesServices.Services
             }
             catch (Exception ex)
             {
-                actionCommandDBService.ErrorText.AppendLine($"{ AppRes.Creating } [{ fi.FullName }] ...");
+                actionCommandDBService.ErrorText.AppendLine($"{ EnumsPolSourceInfoRelatedFilesServicesRes.Creating } [{ fi.FullName }] ...");
                 string InnerException = (ex.InnerException != null ? $"Inner: { ex.InnerException.Message }" : "");
-                actionCommandDBService.ErrorText.AppendLine($"{ AppRes.Error }: { ex.Message }{ InnerException  }");
-                //await actionCommandDBService.Update(command, sbError.ToString(), sbStatus.ToString(), 0);
+                actionCommandDBService.ErrorText.AppendLine($"{ EnumsPolSourceInfoRelatedFilesServicesRes.Error }: { ex.Message }{ InnerException  }");
 
-                return;
+                return await Task.FromResult(false);
             }
 
-            actionCommandDBService.ExecutionStatusText.AppendLine($"{ AppRes.Created }: { fi.FullName }");
-            //await actionCommandDBService.Update(command, sbError.ToString(), sbStatus.ToString(), 0);
+            actionCommandDBService.ExecutionStatusText.AppendLine($"{ EnumsPolSourceInfoRelatedFilesServicesRes.Created }: { fi.FullName }");
+            actionCommandDBService.PercentCompleted = 10;
+            await actionCommandDBService.Update();
+
+            return await Task.FromResult(false);
+
         }
         #endregion Functions private
     }

@@ -30,7 +30,6 @@ namespace EnumsCompareWithOldEnumsServices.Tests
         private IServiceCollection serviceCollection { get; set; }
         private IEnumsCompareWithOldEnumsService enumsCompareWithOldEnumsService { get; set; }
         private IActionCommandDBService actionCommandDBService { get; set; }
-        private IValidateAppSettingsService validateAppSettingsService { get; set; }
         private IServiceProvider provider { get; set; }
         private string DBFileName { get; set; } = "DBFileName";
         #endregion Properties
@@ -43,11 +42,13 @@ namespace EnumsCompareWithOldEnumsServices.Tests
 
         #region Functions public
         [Theory]
-        [InlineData("en-CA")]
-        [InlineData("fr-CA")]
-        public async Task EnumsCompareWithOldEnumsServices_Constructor_Good_Test(string culture)
+        [InlineData("en-CA")] // good
+        [InlineData("fr-CA")] // good
+        [InlineData("es-TU")] // good will default to en-CA
+        [InlineData("en-GB")] // good will default to en-CA
+        public async Task AngularEnumsGeneratedService_Run_Good_Test(string culture)
         {
-            await Setup(new CultureInfo(culture));
+            await Setup(new CultureInfo(culture), "appsettings.json");
 
             Assert.NotNull(configuration);
             Assert.NotNull(serviceCollection);
@@ -56,76 +57,134 @@ namespace EnumsCompareWithOldEnumsServices.Tests
 
             string[] args = new List<string>() { culture }.ToArray();
 
-            Assert.Equal(culture, args[0]);
+            bool retBool = await enumsCompareWithOldEnumsService.Run(args);
+            Assert.True(retBool);
+
+            // all culture other than "fr-CA" should default to "en-CA"
+            if (culture != "fr-CA")
+            {
+                culture = "en-CA";
+            }
+            CultureInfo Culture = new CultureInfo(culture);
+            Assert.Equal(Culture, EnumsCompareWithOldEnumsServicesRes.Culture);
         }
         [Theory]
         [InlineData("en-CA")] // good
         [InlineData("fr-CA")] // good
-        [InlineData("es-TU")] // good will default to en-CA
-        [InlineData("en-GB")] // good will default to en-CA
-        public async Task EnumsCompareWithOldEnumsServices_Run_Good_Test(string culture)
+        public async Task AngularEnumsGeneratedService_Run_SomeFileMissing_Test(string culture)
         {
-            await Setup(new CultureInfo(culture));
+            await Setup(new CultureInfo(culture), "appsettings_bad1.json");
+
+            Assert.NotNull(configuration);
+            Assert.NotNull(serviceCollection);
+            Assert.NotNull(provider);
+            Assert.NotNull(enumsCompareWithOldEnumsService);
 
             string[] args = new List<string>() { culture }.ToArray();
 
-            bool retBool = enumsCompareWithOldEnumsService.Run(args).GetAwaiter().GetResult();
-            Assert.True(retBool);
+            bool retBool = await enumsCompareWithOldEnumsService.Run(args);
+            Assert.False(retBool);
         }
         #endregion Functions public
 
         #region Functions private
-        private async Task Setup(CultureInfo culture)
+        private async Task Setup(CultureInfo culture, string appsettingjsonFileName)
         {
             configuration = new ConfigurationBuilder()
                .SetBasePath(Directory.GetParent(AppContext.BaseDirectory).FullName)
-               .AddJsonFile("appsettings.json")
+               .AddJsonFile(appsettingjsonFileName)
                .Build();
 
             Assert.NotNull(configuration);
 
+            bool retBool = await ConfigureServices();
+            Assert.True(retBool);
+        }
+        private async Task<bool> ConfigureServices()
+        {
             serviceCollection = new ServiceCollection();
 
             serviceCollection.AddSingleton<IConfiguration>(configuration);
-            serviceCollection.AddSingleton<IEnumsCompareWithOldEnumsService, EnumsCompareWithOldEnumsService>();
-            serviceCollection.AddSingleton<IActionCommandDBService, ActionCommandDBService>();
-            serviceCollection.AddSingleton<IValidateAppSettingsService, ValidateAppSettingsService>();
 
-            string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
-            Assert.False(string.IsNullOrWhiteSpace(appDataPath));
+            bool retBool = await ConfigureIActionCommandDBService();
+            Assert.True(retBool);
 
-            string fileName = configuration.GetValue<string>(DBFileName);
-            Assert.False(string.IsNullOrWhiteSpace(fileName));
+            retBool = await ConfigureIAllOtherServices();
+            Assert.True(retBool);
 
-            FileInfo fiDB = new FileInfo(fileName.Replace("{AppDataPath}", appDataPath));
-            Assert.True(fiDB.Exists);
-
-            serviceCollection.AddDbContext<ActionCommandContext>(options =>
+            return await Task.FromResult(true);
+        }
+        private async Task<bool> ConfigureIActionCommandDBService()
+        {
+            try
             {
-                options.UseSqlite($"DataSource={fiDB.FullName}");
-            });
+                serviceCollection.AddSingleton<IActionCommandDBService, ActionCommandDBService>();
 
-            provider = serviceCollection.BuildServiceProvider();
-            Assert.NotNull(provider);
+                string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+                Assert.NotNull(configuration.GetValue<string>(DBFileName));
 
-            enumsCompareWithOldEnumsService = provider.GetService<IEnumsCompareWithOldEnumsService>();
-            Assert.NotNull(enumsCompareWithOldEnumsService);
+                FileInfo fiDB = new FileInfo(configuration.GetValue<string>(DBFileName).Replace("{AppDataPath}", appDataPath));
+                Assert.True(fiDB.Exists);
 
-            await enumsCompareWithOldEnumsService.SetCulture(culture);
-            Assert.Equal(culture, EnumsCompareWithOldEnumsServicesRes.Culture);
+                serviceCollection.AddDbContext<ActionCommandContext>(options =>
+                {
+                    options.UseSqlite($"DataSource={fiDB.FullName}");
+                });
 
-            actionCommandDBService = provider.GetService<IActionCommandDBService>();
-            Assert.NotNull(actionCommandDBService);
+                provider = serviceCollection.BuildServiceProvider();
+                Assert.NotNull(provider);
 
-            await actionCommandDBService.SetCulture(culture);
-            Assert.Equal(culture, ActionCommandDBServicesRes.Culture);
+                actionCommandDBService = provider.GetService<IActionCommandDBService>();
+                if (actionCommandDBService == null)
+                {
+                    Console.WriteLine($"{ AppDomain.CurrentDomain.FriendlyName } actionCommandDBService   == null");
+                    return await Task.FromResult(false);
+                }
 
-            validateAppSettingsService = provider.GetService<IValidateAppSettingsService>();
-            Assert.NotNull(validateAppSettingsService);
+                actionCommandDBService.Action = configuration.GetValue<string>("Action");
+                actionCommandDBService.Command = configuration.GetValue<string>("Command");
 
-            await validateAppSettingsService.SetCulture(culture);
-            Assert.Equal(culture, ValidateAppSettingsServicesRes.Culture);
+                await actionCommandDBService.Create();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                Assert.True(false);
+                return await Task.FromResult(false);
+            }
 
+            return await Task.FromResult(true);
+        }
+        private async Task<bool> ConfigureIAllOtherServices()
+        {
+            try
+            {
+                serviceCollection.AddSingleton<IGenerateCodeBaseService, GenerateCodeBaseService>();
+                serviceCollection.AddSingleton<IValidateAppSettingsService, ValidateAppSettingsService>();
+                serviceCollection.AddSingleton<IEnumsCompareWithOldEnumsService, EnumsCompareWithOldEnumsService>();
+
+                provider = serviceCollection.BuildServiceProvider();
+                if (provider == null)
+                {
+                    await actionCommandDBService.ConsoleWriteError($"{ AppDomain.CurrentDomain.FriendlyName } provider == null");
+                    return await Task.FromResult(false);
+                }
+
+                enumsCompareWithOldEnumsService = provider.GetService<IEnumsCompareWithOldEnumsService>();
+                if (enumsCompareWithOldEnumsService == null)
+                {
+                    await actionCommandDBService.ConsoleWriteError($"{ AppDomain.CurrentDomain.FriendlyName } angularEnumsGeneratedService  == null");
+                    return await Task.FromResult(false);
+                }
+            }
+            catch (Exception ex)
+            {
+                await actionCommandDBService.ConsoleWriteError(ex.Message);
+                Assert.True(false);
+                return await Task.FromResult(false);
+            }
+
+            return await Task.FromResult(true);
         }
         #endregion Functions private
     }

@@ -36,15 +36,15 @@ namespace AngularEnumsGenerated
         {
             this.configuration = configuration;
         }
+        #endregion Constructors
+
+        #region Functions public
         public async Task Run(string[] args)
         {
             if (!await ConfigureServices()) return;
 
             await angularEnumsGeneratedService.Run(args);
         }
-        #endregion Constructors
-
-        #region Functions public
         #endregion Functions public
 
         #region Functions private

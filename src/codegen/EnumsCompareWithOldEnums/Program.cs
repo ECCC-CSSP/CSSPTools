@@ -23,21 +23,7 @@ namespace EnumsCompareWithOldEnums
 
             Startup startup = new Startup(Configuration);
 
-            IServiceCollection serviceCollection = new ServiceCollection();
-
-            string retStr = startup.ConfigureServices(serviceCollection);
-            if (retStr != "")
-            {
-                Console.WriteLine(retStr);
-                throw new Exception(retStr);
-            }
-
-            retStr = startup.Run(args);
-            if (retStr != "")
-            {
-                Console.WriteLine(retStr);
-                throw new Exception(retStr);
-            }
+            startup.Run(args).GetAwaiter().GetResult();
         }
         #endregion Entry
 

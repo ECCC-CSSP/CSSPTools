@@ -106,12 +106,15 @@ namespace AngularEnumsGeneratedServices.Services
 
             try
             {
+                await actionCommandDBService.Delete();
+                actionCommandDBService.Action = configuration.GetValue<string>("Action");
+                actionCommandDBService.Command = configuration.GetValue<string>("Command");
                 await actionCommandDBService.GetOrCreate();
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
-                return false;
+                return await Task.FromResult(false);
             }
 
             validateAppSettingsService.AppSettingParameterList = new List<AppSettingParameter>()
@@ -130,10 +133,10 @@ namespace AngularEnumsGeneratedServices.Services
             if (!string.IsNullOrWhiteSpace(actionCommandDBService.ErrorText.ToString()))
             {
                 await actionCommandDBService.ConsoleWriteError("");
-                return false;
+                return await Task.FromResult(false);
             }
 
-            return true;
+            return await Task.FromResult(true);
         }
         #endregion Functions private
     }

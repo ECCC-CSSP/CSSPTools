@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace EnumsGenerated_csServices.Resources {
+namespace EnumsPolSourceInfoRelatedFilesServices.Resources {
     using System;
     
     
@@ -22,14 +22,14 @@ namespace EnumsGenerated_csServices.Resources {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public class AppRes {
+    public class EnumsPolSourceInfoRelatedFilesServicesRes {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal AppRes() {
+        internal EnumsPolSourceInfoRelatedFilesServicesRes() {
         }
         
         /// <summary>
@@ -39,7 +39,8 @@ namespace EnumsGenerated_csServices.Resources {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("EnumsGenerated_csServices.Resources.AppRes", typeof(AppRes).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("EnumsPolSourceInfoRelatedFilesServices.Resources.EnumsPolSourceInfoRelatedFilesSe" +
+                            "rvicesRes", typeof(EnumsPolSourceInfoRelatedFilesServicesRes).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -124,11 +125,38 @@ namespace EnumsGenerated_csServices.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Creating.
+        /// </summary>
+        public static string Creating {
+            get {
+                return ResourceManager.GetString("Creating", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Done.
         /// </summary>
         public static string Done {
             get {
                 return ResourceManager.GetString("Done", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Error.
+        /// </summary>
+        public static string Error {
+            get {
+                return ResourceManager.GetString("Error", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ERROR [{0}] is equal to 0.
+        /// </summary>
+        public static string ERROR_IsEqualTo0 {
+            get {
+                return ResourceManager.GetString("ERROR_IsEqualTo0", resourceCulture);
             }
         }
         
@@ -147,6 +175,24 @@ namespace EnumsGenerated_csServices.Resources {
         public static string Exist {
             get {
                 return ResourceManager.GetString("Exist", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Parameter.
+        /// </summary>
+        public static string Parameter {
+            get {
+                return ResourceManager.GetString("Parameter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Reading Excel document and checking.
+        /// </summary>
+        public static string ReadingExcelDocumentAndChecking {
+            get {
+                return ResourceManager.GetString("ReadingExcelDocumentAndChecking", resourceCulture);
             }
         }
         

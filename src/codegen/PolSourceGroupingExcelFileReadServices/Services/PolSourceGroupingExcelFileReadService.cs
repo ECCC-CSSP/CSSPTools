@@ -177,7 +177,7 @@ namespace PolSourceGroupingExcelFileReadServices.Services
 
             return true;
         }
-        public void SetCulture(CultureInfo Culture)
+        public async Task SetCulture(CultureInfo Culture)
         {
             PolSourceGroupingExcelFileReadServicesRes.Culture = Culture;
         }

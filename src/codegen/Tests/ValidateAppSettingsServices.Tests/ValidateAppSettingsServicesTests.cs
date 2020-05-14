@@ -53,41 +53,6 @@ namespace ValidateAppSettingsServices.Tests
         [Theory]
         [InlineData("en-CA")]
         [InlineData("fr-CA")]
-        public async Task ValidateAppSettingsService_VerifyAppSettings_CheckParameterExist_Error_Test(string culture)
-        {
-            await Setup(new CultureInfo(culture));
-
-            string param = "Command_NotExist";
-
-            validateAppSettingsService.AppSettingParameterList[0].Parameter = param;
-
-            bool retBool = await validateAppSettingsService.VerifyAppSettings();
-            Assert.False(retBool);
-            string expected = (new StringBuilder()).AppendLine($"{ ValidateAppSettingsServicesRes.Error }\t{ param } != { ValidateAppSettingsServicesRes.CouldNotFindParameter }").ToString();
-            string value = actionCommandDBService.ErrorText.ToString();
-            Assert.Contains(expected, value);
-        }
-        [Theory]
-        [InlineData("en-CA")]
-        [InlineData("fr-CA")]
-        public async Task ValidateAppSettingsService_VerifyAppSettings_CheckParameterValue_Error_Test(string culture)
-        {
-            await Setup(new CultureInfo(culture));
-
-            string param = "Command";
-            string shouldHaveValue = "Error_ValidateAppSettingsServices.Tests";
-
-            validateAppSettingsService.AppSettingParameterList[0].ExpectedValue = shouldHaveValue;
-
-            bool retBool = await validateAppSettingsService.VerifyAppSettings();
-            Assert.False(retBool);
-            string expected = (new StringBuilder()).AppendLine($"{ ValidateAppSettingsServicesRes.Error }\t{ param } != { shouldHaveValue }").ToString();
-            string value = actionCommandDBService.ErrorText.ToString();
-            Assert.Equal(expected, value);
-        }
-        [Theory]
-        [InlineData("en-CA")]
-        [InlineData("fr-CA")]
         public async Task ValidateAppSettingsService_VerifyAppSettings_CheckFileParameterValue_Error_Test(string culture)
         {
             await Setup(new CultureInfo(culture));
@@ -95,7 +60,7 @@ namespace ValidateAppSettingsServices.Tests
             string param = "DBFileName";
             string shouldHaveValue = "{AppDataPath}\\CSSP\\ActionCommandDB_NotExist.db";
 
-            validateAppSettingsService.AppSettingParameterList[2].ExpectedValue = shouldHaveValue;
+            validateAppSettingsService.AppSettingParameterList[1].ExpectedValue = shouldHaveValue;
 
             bool retBool = await validateAppSettingsService.VerifyAppSettings();
             Assert.False(retBool);
@@ -162,7 +127,6 @@ namespace ValidateAppSettingsServices.Tests
 
             validateAppSettingsService.AppSettingParameterList = new List<AppSettingParameter>()
             {
-                new AppSettingParameter() { Parameter = "Command", ExpectedValue = "ValidateAppSettingsServices.Tests" },
                 new AppSettingParameter() { Parameter = "Culture", ExpectedValue = "", IsCulture = true },
                 new AppSettingParameter() { Parameter = "DBFileName", ExpectedValue = "{AppDataPath}\\CSSP\\ActionCommandDB.db", IsFile = true, CheckExist = true },
             };

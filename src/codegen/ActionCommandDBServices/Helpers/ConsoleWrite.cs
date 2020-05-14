@@ -21,16 +21,28 @@ namespace ActionCommandDBServices.Services
             PercentCompleted = 100;
             await Update();
 
-            Console.WriteLine(ErrorText.ToString());
+            if (!Console.IsOutputRedirected)
+            {
+                Console.Clear();
+            }
             Console.WriteLine(ExecutionStatusText.ToString());
+            Console.WriteLine(ErrorText.ToString());
         }
         public async Task ConsoleWriteError(string errMessage)
         {
             ErrorText.AppendLine(errMessage);
+            ErrorText.AppendLine("");
+            ErrorText.AppendLine(ActionCommandDBServicesRes.AbnormalCompletion);
+            ErrorText.AppendLine("");
             PercentCompleted = 0;
             await Update();
-            Console.WriteLine(ErrorText.ToString());
+
+            if (!Console.IsOutputRedirected)
+            {
+                Console.Clear();
+            }           
             Console.WriteLine(ExecutionStatusText.ToString());
+            Console.WriteLine(ErrorText.ToString());
         }
         public async Task ConsoleWriteStart()
         {
@@ -39,6 +51,11 @@ namespace ActionCommandDBServices.Services
             ExecutionStatusText.AppendLine($"{ ActionCommandDBServicesRes.Starting } ...");
             ExecutionStatusText.AppendLine("");
             PercentCompleted = 100;
+
+            if (!Console.IsOutputRedirected)
+            {
+                Console.Clear();
+            }
             Console.WriteLine($"{ ActionCommandDBServicesRes.Running } { ActionCommandDBServicesRes.Application } { AppDomain.CurrentDomain.FriendlyName }");
             Console.WriteLine("");
             Console.WriteLine($"{ ActionCommandDBServicesRes.Starting } ...");

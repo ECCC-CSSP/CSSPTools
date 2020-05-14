@@ -28,7 +28,7 @@ namespace ValidateAppSettingsServices.Services
                 if (string.IsNullOrWhiteSpace(retConf))
                 {
                     retBool = false;
-                    actionCommandDBService.ErrorText.AppendLine($"{ ValidateAppSettingsServicesRes.Error }\t{ appSettingParameter.Parameter } != { ValidateAppSettingsServicesRes.CouldNotFindParameter }");
+                    actionCommandDBService.ErrorText.AppendLine($"{ ValidateAppSettingsServicesRes.Error }\t{ appSettingParameter.Parameter }\t{ ValidateAppSettingsServicesRes.CouldNotFindParameter }");
                 }
             }
 

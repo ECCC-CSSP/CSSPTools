@@ -32,20 +32,20 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="Resources\AppRes.Designer.cs">
-      <DependentUpon>AppRes.resx</DependentUpon>
+    <Compile Update="Resources\EnumsPolSourceInfoRelatedFilesServicesRes.Designer.cs">
+      <DependentUpon>EnumsPolSourceInfoRelatedFilesServicesRes.resx</DependentUpon>
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
     </Compile>
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Update="Resources\AppRes.fr.resx">
+    <EmbeddedResource Update="Resources\EnumsPolSourceInfoRelatedFilesServicesRes.fr.resx">
       <LastGenOutput>AppRes.Designer.cs</LastGenOutput>
       <Generator>PublicResXFileCodeGenerator</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="Resources\AppRes.resx">
-      <LastGenOutput>AppRes.Designer.cs</LastGenOutput>
+    <EmbeddedResource Update="Resources\EnumsPolSourceInfoRelatedFilesServicesRes.resx">
+      <LastGenOutput>EnumsPolSourceInfoRelatedFilesServicesRes.Designer.cs</LastGenOutput>
       <Generator>PublicResXFileCodeGenerator</Generator>
     </EmbeddedResource>
   </ItemGroup>

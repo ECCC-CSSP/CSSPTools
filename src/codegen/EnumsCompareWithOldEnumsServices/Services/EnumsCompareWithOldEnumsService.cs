@@ -30,52 +30,52 @@ namespace EnumsCompareWithOldEnumsServices.Services
         private IConfiguration configuration { get; set; }
         private IActionCommandDBService actionCommandDBService { get; set; }
         private IValidateAppSettingsService validateAppSettingsService { get; set; }
+        private IGenerateCodeBaseService generateCodeBaseService { get; set; }
         private List<string> AllowableCultures { get; set; } = new List<string>() { "en-CA", "fr-CA" };
         #endregion Properties
 
         #region Constructors
         public EnumsCompareWithOldEnumsService(IConfiguration configuration,
             IActionCommandDBService actionCommandDBService,
-            IValidateAppSettingsService validateAppSettingsService)
+            IValidateAppSettingsService validateAppSettingsService,
+            IGenerateCodeBaseService generateCodeBaseService)
         {
             this.configuration = configuration;
             this.actionCommandDBService = actionCommandDBService;
             this.validateAppSettingsService = validateAppSettingsService;
+            this.generateCodeBaseService = generateCodeBaseService;
         }
         #endregion Constructors
 
         #region Functions public
         public async Task<bool> Run(string[] args)
         {
-            await SetCultureWithArgs(args);
-
             await actionCommandDBService.ConsoleWriteStart();
 
             if (!await Setup())
             {
-                Console.WriteLine(actionCommandDBService.ErrorText.ToString());
-                Console.WriteLine("");
-                Console.WriteLine(actionCommandDBService.ExecutionStatusText.ToString());
-                return false;
+                await actionCommandDBService.ConsoleWriteError("");
+                return await Task.FromResult(false);
             }
+
+            await SetCultureWithArgs(args);
 
             if (!await CompareDLLs())
             {
-                Console.WriteLine(actionCommandDBService.ErrorText.ToString());
-                Console.WriteLine("");
-                Console.WriteLine(actionCommandDBService.ExecutionStatusText.ToString());
-                return false;
+                await actionCommandDBService.ConsoleWriteError("");
+                return await Task.FromResult(false);
             }
 
             await actionCommandDBService.ConsoleWriteEnd();
 
-            return true;
+            return await Task.FromResult(true);
         }
         public async Task SetCulture(CultureInfo culture)
         {
-            EnumsCompareWithOldEnumsServicesRes.Culture = culture;
             await actionCommandDBService.SetCulture(culture);
             await validateAppSettingsService.SetCulture(culture);
+            await generateCodeBaseService.SetCulture(culture);
+            EnumsCompareWithOldEnumsServicesRes.Culture = culture;
         }
         #endregion Functions public
 
@@ -96,18 +96,22 @@ namespace EnumsCompareWithOldEnumsServices.Services
         }
         private async Task<bool> Setup()
         {
+            actionCommandDBService.Action = configuration.GetValue<string>("Action");
             actionCommandDBService.Command = configuration.GetValue<string>("Command");
             await actionCommandDBService.SetCulture(new CultureInfo(configuration.GetValue<string>("Culture")));
             await validateAppSettingsService.SetCulture(new CultureInfo(configuration.GetValue<string>("Culture")));
 
             try
             {
+                await actionCommandDBService.Delete();
+                actionCommandDBService.Action = configuration.GetValue<string>("Action");
+                actionCommandDBService.Command = configuration.GetValue<string>("Command");
                 await actionCommandDBService.GetOrCreate();
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
-                return false;
+                return await Task.FromResult(false);
             }
 
             validateAppSettingsService.AppSettingParameterList = new List<AppSettingParameter>()
@@ -124,10 +128,10 @@ namespace EnumsCompareWithOldEnumsServices.Services
             if (!string.IsNullOrWhiteSpace(actionCommandDBService.ErrorText.ToString()))
             {
                 await actionCommandDBService.ConsoleWriteError("");
-                return false;
+                return await Task.FromResult(false);
             }
 
-            return true;
+            return await Task.FromResult(true);
         }
         #endregion Functions private
     }
