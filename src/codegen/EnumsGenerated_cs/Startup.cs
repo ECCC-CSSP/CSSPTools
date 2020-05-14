@@ -141,6 +141,5 @@ namespace EnumsGenerated_cs
             return await Task.FromResult(true);
         }
         #endregion Functions private
-
     }
 }

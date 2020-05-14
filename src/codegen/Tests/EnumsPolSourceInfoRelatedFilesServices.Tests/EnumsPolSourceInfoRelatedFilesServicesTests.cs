@@ -44,9 +44,9 @@ namespace EnumsPolSourceInfoRelatedFilesServices.Tests
         [Theory]
         [InlineData("en-CA")] // good
         [InlineData("fr-CA")] // good
-        [InlineData("es-TU")] // good will default to en-CA
-        [InlineData("en-GB")] // good will default to en-CA
-        public async Task AngularEnumsGeneratedService_Run_Good_Test(string culture)
+        //[InlineData("es-TU")] // good will default to en-CA
+        //[InlineData("en-GB")] // good will default to en-CA
+        public async Task EnumsPolSourceInfoRelatedFilesService_Run_Good_Test(string culture)
         {
             await Setup(new CultureInfo(culture), "appsettings.json");
 
@@ -71,7 +71,7 @@ namespace EnumsPolSourceInfoRelatedFilesServices.Tests
         [Theory]
         [InlineData("en-CA")] // good
         [InlineData("fr-CA")] // good
-        public async Task AngularEnumsGeneratedService_Run_SomeFileMissing_Test(string culture)
+        public async Task EnumsPolSourceInfoRelatedFilesService_Run_SomeFileMissing_Test(string culture)
         {
             await Setup(new CultureInfo(culture), "appsettings_bad1.json");
 
@@ -135,11 +135,7 @@ namespace EnumsPolSourceInfoRelatedFilesServices.Tests
                 Assert.NotNull(provider);
 
                 actionCommandDBService = provider.GetService<IActionCommandDBService>();
-                if (actionCommandDBService == null)
-                {
-                    Console.WriteLine($"{ AppDomain.CurrentDomain.FriendlyName } actionCommandDBService   == null");
-                    return await Task.FromResult(false);
-                }
+                Assert.NotNull(actionCommandDBService);
 
                 actionCommandDBService.Action = configuration.GetValue<string>("Action");
                 actionCommandDBService.Command = configuration.GetValue<string>("Command");
@@ -165,18 +161,10 @@ namespace EnumsPolSourceInfoRelatedFilesServices.Tests
                 serviceCollection.AddSingleton<IEnumsPolSourceInfoRelatedFilesService, EnumsPolSourceInfoRelatedFilesService>();
 
                 provider = serviceCollection.BuildServiceProvider();
-                if (provider == null)
-                {
-                    await actionCommandDBService.ConsoleWriteError($"{ AppDomain.CurrentDomain.FriendlyName } provider == null");
-                    return await Task.FromResult(false);
-                }
+                Assert.NotNull(provider);
 
                 enumsPolSourceInfoRelatedFilesService = provider.GetService<IEnumsPolSourceInfoRelatedFilesService>();
-                if (enumsPolSourceInfoRelatedFilesService == null)
-                {
-                    await actionCommandDBService.ConsoleWriteError($"{ AppDomain.CurrentDomain.FriendlyName } angularEnumsGeneratedService  == null");
-                    return await Task.FromResult(false);
-                }
+                Assert.NotNull(enumsPolSourceInfoRelatedFilesService);
             }
             catch (Exception ex)
             {

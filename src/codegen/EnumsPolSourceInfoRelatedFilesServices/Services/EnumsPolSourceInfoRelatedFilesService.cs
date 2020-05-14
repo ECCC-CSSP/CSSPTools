@@ -61,8 +61,6 @@ namespace EnumsPolSourceInfoRelatedFilesServices.Services
 
             await SetCultureWithArgs(args);
 
-            await actionCommandDBService.Delete();
-
             if (!await Generate())
             {
                 await actionCommandDBService.ConsoleWriteError("");

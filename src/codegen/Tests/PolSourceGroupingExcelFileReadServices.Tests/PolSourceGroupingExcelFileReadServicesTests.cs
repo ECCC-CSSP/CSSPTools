@@ -1,5 +1,8 @@
 ﻿using ActionCommandDBServices.Models;
 using ActionCommandDBServices.Services;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -8,15 +11,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Xunit;
-using DocumentFormat.OpenXml.Packaging;
-using DocumentFormat.OpenXml.Spreadsheet;
-using PolSourceGroupingExcelFileReadServices.Resources;
+using ValidateAppSettingsServices.Services;
+using ActionCommandDBServices.Resources;
 using PolSourceGroupingExcelFileReadServices.Services;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.EntityFrameworkCore;
+using PolSourceGroupingExcelFileReadServices.Resources;
 
-namespace CSSPPolSourceGroupingExcelFileRead.Tests
+namespace PolSourceGroupingExcelFileReadServices.Tests
 {
     public class PolSourceGroupingExcelFileReadServiceTests
     {
@@ -27,24 +27,25 @@ namespace CSSPPolSourceGroupingExcelFileRead.Tests
         private IConfiguration configuration { get; set; }
         private IServiceCollection serviceCollection { get; set; }
         private IPolSourceGroupingExcelFileReadService polSourceGroupingExcelFileReadService { get; set; }
+        private IActionCommandDBService actionCommandDBService { get; set; }
         private IServiceProvider provider { get; set; }
         private string DBFileName { get; set; } = "DBFileName";
+        private string ExcelFileName { get; set; }
         #endregion Properties
 
         #region Constructors
         public PolSourceGroupingExcelFileReadServiceTests()
         {
-            Init();
         }
         #endregion Constructors
 
         #region Functions public
         [Theory]
-        [InlineData("en-CA")]
-        [InlineData("fr-CA")]
-        public void PolSourceGroupingExcelFileReadService_Constructor_Good_Test(string culture)
+        [InlineData("en-CA")] // good
+        [InlineData("fr-CA")] // good
+        public async Task PolSourceGroupingExcelFileReadService_ReadExcelSheet_Good_Test(string culture)
         {
-            Init();
+            await Setup(new CultureInfo(culture), "appsettings.json");
 
             Assert.NotNull(configuration);
             Assert.NotNull(serviceCollection);
@@ -53,45 +54,111 @@ namespace CSSPPolSourceGroupingExcelFileRead.Tests
 
             string[] args = new List<string>() { culture }.ToArray();
 
-            Assert.Equal(culture, args[0]);
+            CultureInfo Culture = new CultureInfo(culture);
+            await polSourceGroupingExcelFileReadService.SetCulture(Culture);
+
+            bool retBool = await polSourceGroupingExcelFileReadService.ReadExcelSheet(ExcelFileName, false);
+            Assert.True(retBool);
+
+            // all culture other than "fr-CA" should default to "en-CA"
+            if (culture != "fr-CA")
+            {
+                culture = "en-CA";
+            }
+
+            Assert.Equal(Culture, PolSourceGroupingExcelFileReadServicesRes.Culture);
         }
         #endregion Functions public
 
         #region Functions private
-        private void Init()
+        private async Task Setup(CultureInfo culture, string appsettingjsonFileName)
         {
             configuration = new ConfigurationBuilder()
                .SetBasePath(Directory.GetParent(AppContext.BaseDirectory).FullName)
-               .AddJsonFile("appsettings.json")
+               .AddJsonFile(appsettingjsonFileName)
                .Build();
 
             Assert.NotNull(configuration);
 
+            bool retBool = await ConfigureServices();
+            Assert.True(retBool);
+        }
+        private async Task<bool> ConfigureServices()
+        {
             serviceCollection = new ServiceCollection();
 
             serviceCollection.AddSingleton<IConfiguration>(configuration);
-            serviceCollection.AddSingleton<IPolSourceGroupingExcelFileReadService, PolSourceGroupingExcelFileReadService>();
-            serviceCollection.AddSingleton<IActionCommandDBService, ActionCommandDBService>();
 
-            string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
-            Assert.False(string.IsNullOrWhiteSpace(appDataPath));
+            bool retBool = await ConfigureIActionCommandDBService();
+            Assert.True(retBool);
 
-            string fileName = configuration.GetValue<string>(DBFileName);
-            Assert.False(string.IsNullOrWhiteSpace(fileName));
+            retBool = await ConfigureIAllOtherServices();
+            Assert.True(retBool);
 
-            FileInfo fiDB = new FileInfo(fileName.Replace("{AppDataPath}", appDataPath));
-            Assert.True(fiDB.Exists);
-
-            serviceCollection.AddDbContext<ActionCommandContext>(options =>
+            return await Task.FromResult(true);
+        }
+        private async Task<bool> ConfigureIActionCommandDBService()
+        {
+            try
             {
-                options.UseSqlite($"DataSource={fiDB.FullName}");
-            });
+                serviceCollection.AddSingleton<IActionCommandDBService, ActionCommandDBService>();
 
-            provider = serviceCollection.BuildServiceProvider();
-            Assert.NotNull(provider);
+                string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+                Assert.NotNull(configuration.GetValue<string>(DBFileName));
 
-            polSourceGroupingExcelFileReadService = provider.GetService<IPolSourceGroupingExcelFileReadService>();
-            Assert.NotNull(polSourceGroupingExcelFileReadService);
+                FileInfo fiDB = new FileInfo(configuration.GetValue<string>(DBFileName).Replace("{AppDataPath}", appDataPath));
+                Assert.True(fiDB.Exists);
+
+                serviceCollection.AddDbContext<ActionCommandContext>(options =>
+                {
+                    options.UseSqlite($"DataSource={fiDB.FullName}");
+                });
+
+                provider = serviceCollection.BuildServiceProvider();
+                Assert.NotNull(provider);
+
+                actionCommandDBService = provider.GetService<IActionCommandDBService>();
+                Assert.NotNull(actionCommandDBService);
+
+                actionCommandDBService.Action = configuration.GetValue<string>("Action");
+                actionCommandDBService.Command = configuration.GetValue<string>("Command");
+
+                await actionCommandDBService.Create();
+
+                ExcelFileName = configuration.GetValue<string>("ExcelFileName");
+                Assert.False(string.IsNullOrWhiteSpace(ExcelFileName));
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                Assert.True(false);
+                return await Task.FromResult(false);
+            }
+
+            return await Task.FromResult(true);
+        }
+        private async Task<bool> ConfigureIAllOtherServices()
+        {
+            try
+            {
+                serviceCollection.AddSingleton<IActionCommandDBService, ActionCommandDBService>();
+                serviceCollection.AddSingleton<IValidateAppSettingsService, ValidateAppSettingsService>();
+                serviceCollection.AddSingleton<IPolSourceGroupingExcelFileReadService, PolSourceGroupingExcelFileReadService>();
+
+                provider = serviceCollection.BuildServiceProvider();
+                Assert.NotNull(provider);
+
+                polSourceGroupingExcelFileReadService = provider.GetService<IPolSourceGroupingExcelFileReadService>();
+                Assert.NotNull(polSourceGroupingExcelFileReadService);
+            }
+            catch (Exception ex)
+            {
+                await actionCommandDBService.ConsoleWriteError(ex.Message);
+                Assert.True(false);
+                return await Task.FromResult(false);
+            }
+
+            return await Task.FromResult(true);
         }
         #endregion Functions private
     }

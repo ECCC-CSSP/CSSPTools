@@ -125,8 +125,6 @@ namespace EnumsPolSourceInfoRelatedFilesServices.Services
                 StreamWriter sw = fi.CreateText();
                 sw.Write(sb.ToString());
                 sw.Close();
-
-                throw new Exception("aaaaaaaaaaaaaaaa");
             }
             catch (Exception ex)
             {

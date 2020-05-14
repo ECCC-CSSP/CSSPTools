@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace ModelsCompareServices.Resources {
+namespace ModelsCSSPModelsResServices.Resources {
     using System;
     
     
@@ -22,14 +22,14 @@ namespace ModelsCompareServices.Resources {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public class AppRes {
+    public class ModelsCSSPModelsResServicesRes {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal AppRes() {
+        internal ModelsCSSPModelsResServicesRes() {
         }
         
         /// <summary>
@@ -39,7 +39,7 @@ namespace ModelsCompareServices.Resources {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("ModelsCompareServices.Resources.AppRes", typeof(AppRes).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("ModelsCSSPModelsResServices.Resources.ModelsCSSPModelsResServicesRes", typeof(ModelsCSSPModelsResServicesRes).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -79,29 +79,11 @@ namespace ModelsCompareServices.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Already created [{0}].
-        /// </summary>
-        public static string AlreadyCreated_ {
-            get {
-                return ResourceManager.GetString("AlreadyCreated_", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Application.
         /// </summary>
         public static string Application {
             get {
                 return ResourceManager.GetString("Application", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Compared OK.
-        /// </summary>
-        public static string ComparedOK {
-            get {
-                return ResourceManager.GetString("ComparedOK", resourceCulture);
             }
         }
         
@@ -133,29 +115,11 @@ namespace ModelsCompareServices.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Could not read file [{0}].
-        /// </summary>
-        public static string CouldNotReadFile_ {
-            get {
-                return ResourceManager.GetString("CouldNotReadFile_", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Created [{0}].
         /// </summary>
         public static string Created_ {
             get {
                 return ResourceManager.GetString("Created_", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Created new [{0}].
-        /// </summary>
-        public static string CreatedNew_ {
-            get {
-                return ResourceManager.GetString("CreatedNew_", resourceCulture);
             }
         }
         
@@ -192,15 +156,6 @@ namespace ModelsCompareServices.Resources {
         public static string Exist {
             get {
                 return ResourceManager.GetString("Exist", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to is not implemented.
-        /// </summary>
-        public static string IsNotImplemented {
-            get {
-                return ResourceManager.GetString("IsNotImplemented", resourceCulture);
             }
         }
         

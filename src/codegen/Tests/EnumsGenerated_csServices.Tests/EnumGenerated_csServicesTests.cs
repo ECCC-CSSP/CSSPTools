@@ -44,7 +44,7 @@ namespace EnumsGenerated_csServices.Tests
         [InlineData("fr-CA")] // good
         [InlineData("es-TU")] // good will default to en-CA
         [InlineData("en-GB")] // good will default to en-CA
-        public async Task AngularEnumsGeneratedService_Run_Good_Test(string culture)
+        public async Task EnumsGenerated_csService_Run_Good_Test(string culture)
         {
             await Setup(new CultureInfo(culture), "appsettings.json");
 
@@ -69,7 +69,7 @@ namespace EnumsGenerated_csServices.Tests
         [Theory]
         [InlineData("en-CA")] // good
         [InlineData("fr-CA")] // good
-        public async Task AngularEnumsGeneratedService_Run_SomeFileMissing_Test(string culture)
+        public async Task EnumsGenerated_csService_Run_SomeFileMissing_Test(string culture)
         {
             await Setup(new CultureInfo(culture), "appsettings_bad1.json");
 
@@ -133,11 +133,7 @@ namespace EnumsGenerated_csServices.Tests
                 Assert.NotNull(provider);
 
                 actionCommandDBService = provider.GetService<IActionCommandDBService>();
-                if (actionCommandDBService == null)
-                {
-                    Console.WriteLine($"{ AppDomain.CurrentDomain.FriendlyName } actionCommandDBService   == null");
-                    return await Task.FromResult(false);
-                }
+                Assert.NotNull(actionCommandDBService);
 
                 actionCommandDBService.Action = configuration.GetValue<string>("Action");
                 actionCommandDBService.Command = configuration.GetValue<string>("Command");
@@ -162,18 +158,10 @@ namespace EnumsGenerated_csServices.Tests
                 serviceCollection.AddSingleton<IEnumsGenerated_csService, EnumsGenerated_csService>();
 
                 provider = serviceCollection.BuildServiceProvider();
-                if (provider == null)
-                {
-                    await actionCommandDBService.ConsoleWriteError($"{ AppDomain.CurrentDomain.FriendlyName } provider == null");
-                    return await Task.FromResult(false);
-                }
+                Assert.NotNull(provider);
 
                 enumsGenerated_csService = provider.GetService<IEnumsGenerated_csService>();
-                if (enumsGenerated_csService == null)
-                {
-                    await actionCommandDBService.ConsoleWriteError($"{ AppDomain.CurrentDomain.FriendlyName } angularEnumsGeneratedService  == null");
-                    return await Task.FromResult(false);
-                }
+                Assert.NotNull(enumsGenerated_csService);
             }
             catch (Exception ex)
             {

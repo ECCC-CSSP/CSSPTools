@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace ModelsCSSPModelsResServices.Resources {
+namespace ModelsCompareDBFieldsAndCSSPModelsDLLPropServices.Resources {
     using System;
     
     
@@ -22,14 +22,14 @@ namespace ModelsCSSPModelsResServices.Resources {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public class AppRes {
+    public class ModelsCompareDBFieldsAndCSSPModelsDLLPropServicesRes {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal AppRes() {
+        internal ModelsCompareDBFieldsAndCSSPModelsDLLPropServicesRes() {
         }
         
         /// <summary>
@@ -39,7 +39,8 @@ namespace ModelsCSSPModelsResServices.Resources {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("ModelsCSSPModelsResServices.Resources.AppRes", typeof(AppRes).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("ModelsCompareDBFieldsAndCSSPModelsDLLPropServices.Resources.ModelsCompareDBFields" +
+                            "AndCSSPModelsDLLPropServicesRes", typeof(ModelsCompareDBFieldsAndCSSPModelsDLLPropServicesRes).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -75,6 +76,15 @@ namespace ModelsCSSPModelsResServices.Resources {
         public static string AllowableCultures_ {
             get {
                 return ResourceManager.GetString("AllowableCultures_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Already created [{0}].
+        /// </summary>
+        public static string AlreadyCreated_ {
+            get {
+                return ResourceManager.GetString("AlreadyCreated_", resourceCulture);
             }
         }
         
@@ -120,6 +130,15 @@ namespace ModelsCSSPModelsResServices.Resources {
         public static string Created_ {
             get {
                 return ResourceManager.GetString("Created_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Created new [{0}].
+        /// </summary>
+        public static string CreatedNew_ {
+            get {
+                return ResourceManager.GetString("CreatedNew_", resourceCulture);
             }
         }
         

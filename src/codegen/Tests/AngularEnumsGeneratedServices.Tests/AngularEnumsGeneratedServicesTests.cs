@@ -135,11 +135,7 @@ namespace AngularEnumsGeneratedServices.Tests
                 Assert.NotNull(provider);
 
                 actionCommandDBService = provider.GetService<IActionCommandDBService>();
-                if (actionCommandDBService == null)
-                {
-                    Console.WriteLine($"{ AppDomain.CurrentDomain.FriendlyName } actionCommandDBService   == null");
-                    return await Task.FromResult(false);
-                }
+                Assert.NotNull(actionCommandDBService);
 
                 actionCommandDBService.Action = configuration.GetValue<string>("Action");
                 actionCommandDBService.Command = configuration.GetValue<string>("Command");
@@ -164,18 +160,10 @@ namespace AngularEnumsGeneratedServices.Tests
                 serviceCollection.AddSingleton<IAngularEnumsGeneratedService, AngularEnumsGeneratedService>();
 
                 provider = serviceCollection.BuildServiceProvider();
-                if (provider == null)
-                {
-                    await actionCommandDBService.ConsoleWriteError($"{ AppDomain.CurrentDomain.FriendlyName } provider == null");
-                    return await Task.FromResult(false);
-                }
+                Assert.NotNull(provider);
 
                 angularEnumsGeneratedService = provider.GetService<IAngularEnumsGeneratedService>();
-                if (angularEnumsGeneratedService == null)
-                {
-                    await actionCommandDBService.ConsoleWriteError($"{ AppDomain.CurrentDomain.FriendlyName } angularEnumsGeneratedService  == null");
-                    return await Task.FromResult(false);
-                }
+                Assert.NotNull(angularEnumsGeneratedService);
             }
             catch (Exception ex)
             {
