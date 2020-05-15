@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace ServicesExtensionEnumCastingGeneratedServices.Resources {
+namespace WebAPIClassNameControllerTestGeneratedServices.Resources {
     using System;
     
     
@@ -22,14 +22,14 @@ namespace ServicesExtensionEnumCastingGeneratedServices.Resources {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public class AppRes {
+    public class WebAPIClassNameControllerTestGeneratedServicesRes {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal AppRes() {
+        internal WebAPIClassNameControllerTestGeneratedServicesRes() {
         }
         
         /// <summary>
@@ -39,7 +39,8 @@ namespace ServicesExtensionEnumCastingGeneratedServices.Resources {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("ServicesExtensionEnumCastingGeneratedServices.Resources.AppRes", typeof(AppRes).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("WebAPIClassNameControllerTestGeneratedServices.Resources.WebAPIClassNameControlle" +
+                            "rTestGeneratedServicesRes", typeof(WebAPIClassNameControllerTestGeneratedServicesRes).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;

@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace WebAPIClassNameControllerGeneratedServices.Resources {
+namespace ModelsModelClassNameTestServices.Resources {
     using System;
     
     
@@ -22,14 +22,14 @@ namespace WebAPIClassNameControllerGeneratedServices.Resources {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public class AppRes {
+    public class ModelModelClassNameTestServicesRes {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal AppRes() {
+        internal ModelModelClassNameTestServicesRes() {
         }
         
         /// <summary>
@@ -39,7 +39,7 @@ namespace WebAPIClassNameControllerGeneratedServices.Resources {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("WebAPIClassNameControllerGeneratedServices.Resources.AppRes", typeof(AppRes).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("ModelsModelClassNameTestServices.Resources.ModelModelClassNameTestServicesRes", typeof(ModelModelClassNameTestServicesRes).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -97,24 +97,6 @@ namespace WebAPIClassNameControllerGeneratedServices.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Compared OK.
-        /// </summary>
-        public static string ComparedOK {
-            get {
-                return ResourceManager.GetString("ComparedOK", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Could not create directory [{0}].
-        /// </summary>
-        public static string CouldNotCreateDirectory_ {
-            get {
-                return ResourceManager.GetString("CouldNotCreateDirectory_", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Could not find file [{0}].
         /// </summary>
         public static string CouldNotFindFile_ {
@@ -138,15 +120,6 @@ namespace WebAPIClassNameControllerGeneratedServices.Resources {
         public static string CouldNotFindParameter_InAppSettingsJSON {
             get {
                 return ResourceManager.GetString("CouldNotFindParameter_InAppSettingsJSON", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Could not read file [{0}].
-        /// </summary>
-        public static string CouldNotReadFile_ {
-            get {
-                return ResourceManager.GetString("CouldNotReadFile_", resourceCulture);
             }
         }
         
@@ -201,15 +174,6 @@ namespace WebAPIClassNameControllerGeneratedServices.Resources {
         public static string Exist {
             get {
                 return ResourceManager.GetString("Exist", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to is not implemented.
-        /// </summary>
-        public static string IsNotImplemented {
-            get {
-                return ResourceManager.GetString("IsNotImplemented", resourceCulture);
             }
         }
         

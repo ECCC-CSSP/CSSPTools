@@ -34,7 +34,6 @@ namespace EnumsGenerated_cs
         }
         #endregion Constructors
 
-
         #region Functions public
         public async Task Run(string[] args)
         {

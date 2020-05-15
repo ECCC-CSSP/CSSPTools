@@ -58,7 +58,6 @@ namespace ExecuteDotNetCommandServices.Tests
         [Theory]
         [InlineData("en-CA")] // good
         [InlineData("fr-CA")] // good
-        [InlineData("es-TU")] // good will default to en-CA
         [InlineData("en-GB")] // good will default to en-CA
         public void ExecuteDotNetCommandServices_Run_EnumsCompareWithOldEnums_Good_Test(string culture)
         {
@@ -72,7 +71,6 @@ namespace ExecuteDotNetCommandServices.Tests
         [Theory]
         [InlineData("en-CA")] // good
         [InlineData("fr-CA")] // good
-        [InlineData("es-TU")] // good will default to en-CA
         [InlineData("en-GB")] // good will default to en-CA
         public void ExecuteDotNetCommandServices_Build_CSSPEnums_Good_Test(string culture)
         {

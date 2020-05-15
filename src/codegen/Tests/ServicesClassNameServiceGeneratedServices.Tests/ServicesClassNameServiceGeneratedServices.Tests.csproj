@@ -54,6 +54,9 @@
   </ItemGroup>
   
   <ItemGroup>
+    <None Update="appsettings_bad1.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="appsettings.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

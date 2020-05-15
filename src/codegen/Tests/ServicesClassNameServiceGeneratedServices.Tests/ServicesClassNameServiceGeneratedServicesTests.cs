@@ -15,6 +15,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 using ValidateAppSettingsServices.Services;
+using ServicesClassNameServiceGeneratedServices.Resources;
 
 namespace ServicesClassNameServiceGeneratedServices.Tests
 {
@@ -27,6 +28,7 @@ namespace ServicesClassNameServiceGeneratedServices.Tests
         private IConfiguration configuration { get; set; }
         private IServiceCollection serviceCollection { get; set; }
         private IServicesClassNameServiceGeneratedService servicesClassNameServiceGeneratedService { get; set; }
+        private IActionCommandDBService actionCommandDBService { get; set; }
         private IServiceProvider provider { get; set; }
         private string DBFileName { get; set; } = "DBFileName";
         #endregion Properties
@@ -34,17 +36,17 @@ namespace ServicesClassNameServiceGeneratedServices.Tests
         #region Constructors
         public ServicesClassNameServiceGeneratedServicesTests()
         {
-            Init();
         }
         #endregion Constructors
 
         #region Functions public
         [Theory]
-        [InlineData("en-CA")]
-        //[InlineData("fr-CA")]
-        public void ServicesRepopulateTestDBServices_Constructor_Good_Test(string culture)
+        [InlineData("en-CA")] // good
+        [InlineData("fr-CA")] // good
+        [InlineData("en-GB")] // good will default to en-CA
+        public async Task ServicesClassNameServiceGeneratedService_Run_Good_Test(string culture)
         {
-            Init();
+            await Setup(new CultureInfo(culture), "appsettings.json");
 
             Assert.NotNull(configuration);
             Assert.NotNull(serviceCollection);
@@ -53,78 +55,176 @@ namespace ServicesClassNameServiceGeneratedServices.Tests
 
             string[] args = new List<string>() { culture }.ToArray();
 
-            Assert.Equal(culture, args[0]);
+            bool retBool = await servicesClassNameServiceGeneratedService.Run(args);
+            Assert.True(retBool);
+
+            // all culture other than "fr-CA" should default to "en-CA"
+            if (culture != "fr-CA")
+            {
+                culture = "en-CA";
+            }
+            CultureInfo Culture = new CultureInfo(culture);
+            Assert.Equal(Culture, ServicesClassNameServiceGeneratedServicesRes.Culture);
         }
         [Theory]
         [InlineData("en-CA")] // good
-        //[InlineData("fr-CA")] // good
-        //[InlineData("es-TU")] // good will default to en-CA
-        //[InlineData("en-GB")] // good will default to en-CA
-        public void ServicesRepopulateTestDBServices_Run_Good_Test(string culture)
+        [InlineData("fr-CA")] // good
+        public async Task ServicesClassNameServiceGeneratedService_Run_SomeFileMissing_Test(string culture)
         {
-            Init();
+            await Setup(new CultureInfo(culture), "appsettings_bad1.json");
+
+            Assert.NotNull(configuration);
+            Assert.NotNull(serviceCollection);
+            Assert.NotNull(provider);
+            Assert.NotNull(servicesClassNameServiceGeneratedService);
 
             string[] args = new List<string>() { culture }.ToArray();
 
-            bool retBool = servicesClassNameServiceGeneratedService.Run(args).GetAwaiter().GetResult();
-            Assert.True(retBool);
+            bool retBool = await servicesClassNameServiceGeneratedService.Run(args);
+            Assert.False(retBool);
         }
         #endregion Functions public
 
         #region Functions private
-        private void Init()
+        private async Task Setup(CultureInfo culture, string appsettingjsonFileName)
         {
             configuration = new ConfigurationBuilder()
                .SetBasePath(Directory.GetParent(AppContext.BaseDirectory).FullName)
-               .AddJsonFile("appsettings.json")
+               .AddJsonFile(appsettingjsonFileName)
                .Build();
 
             Assert.NotNull(configuration);
 
+            bool retBool = await ConfigureServices();
+            Assert.True(retBool);
+        }
+        private async Task<bool> ConfigureServices()
+        {
             serviceCollection = new ServiceCollection();
 
             serviceCollection.AddSingleton<IConfiguration>(configuration);
-            serviceCollection.AddSingleton<IGenerateCodeBaseService, GenerateCodeBaseService>();
-            serviceCollection.AddSingleton<IActionCommandDBService, ActionCommandDBService>();
-            serviceCollection.AddSingleton<IValidateAppSettingsService, ValidateAppSettingsService>();
-            serviceCollection.AddSingleton<IServicesClassNameServiceGeneratedService, ServicesClassNameServiceGeneratedService>();
 
-            string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
-            Assert.False(string.IsNullOrWhiteSpace(appDataPath));
+            bool retBool = await ConfigureCSSPDBContext(serviceCollection);
+            Assert.True(retBool);
 
-            string fileName = configuration.GetValue<string>(DBFileName);
-            Assert.False(string.IsNullOrWhiteSpace(fileName));
+            retBool = await ConfigureTestDBContext(serviceCollection);
+            Assert.True(retBool);
 
-            FileInfo fiDB = new FileInfo(fileName.Replace("{AppDataPath}", appDataPath));
-            Assert.True(fiDB.Exists);
+            retBool = await ConfigureIActionCommandDBService();
+            Assert.True(retBool);
 
-            serviceCollection.AddDbContext<ActionCommandContext>(options =>
-            {
-                options.UseSqlite($"DataSource={fiDB.FullName}");
-            });
+            retBool = await ConfigureIAllOtherServices();
+            Assert.True(retBool);
 
+            return await Task.FromResult(true);
+        }
+        private async Task<bool> ConfigureCSSPDBContext(IServiceCollection serviceCollection)
+        {
             string CSSPDBConnString = configuration.GetValue<string>("CSSPDBConnectionString");
-            Assert.NotNull(CSSPDBConnString);
-
-            serviceCollection.AddDbContext<CSSPDBContext>(options =>
+            if (CSSPDBConnString == null)
             {
-                options.UseSqlServer(CSSPDBConnString);
-            });
+                await actionCommandDBService.ConsoleWriteError($"{ String.Format(ServicesClassNameServiceGeneratedServicesRes.CouldNotFindParameter_InAppSettingsJSON, "CSSPDBConnectionString") }");
+                return await Task.FromResult(false);
+            }
 
+            try
+            {
+                serviceCollection.AddDbContext<CSSPDBContext>(options =>
+                {
+                    options.UseSqlServer(CSSPDBConnString);
+                });
+            }
+            catch (Exception ex)
+            {
+                await actionCommandDBService.ConsoleWriteError(ex.Message);
+                return await Task.FromResult(false);
+            }
+
+            return await Task.FromResult(true);
+        }
+        private async Task<bool> ConfigureTestDBContext(IServiceCollection serviceCollection)
+        {
             string TestDBConnString = configuration.GetValue<string>("TestDBConnectionString");
-            Assert.NotNull(TestDBConnString);
-
-            serviceCollection.AddDbContext<TestDBContext>(options =>
+            if (TestDBConnString == null)
             {
-                options.UseSqlServer(TestDBConnString);
-            });
+                await actionCommandDBService.ConsoleWriteError($"{ String.Format(ServicesClassNameServiceGeneratedServicesRes.CouldNotFindParameter_InAppSettingsJSON, "TestDBConnectionString") }");
+                return await Task.FromResult(false);
+            }
 
+            try
+            {
+                serviceCollection.AddDbContext<TestDBContext>(options =>
+                {
+                    options.UseSqlServer(TestDBConnString);
+                });
+            }
+            catch (Exception ex)
+            {
+                await actionCommandDBService.ConsoleWriteError(ex.Message);
+                return await Task.FromResult(false);
+            }
 
-            provider = serviceCollection.BuildServiceProvider();
-            Assert.NotNull(provider);
+            return await Task.FromResult(true);
+        }
+        private async Task<bool> ConfigureIActionCommandDBService()
+        {
+            try
+            {
+                serviceCollection.AddSingleton<IActionCommandDBService, ActionCommandDBService>();
 
-            servicesClassNameServiceGeneratedService = provider.GetService<IServicesClassNameServiceGeneratedService>();
-            Assert.NotNull(servicesClassNameServiceGeneratedService);
+                string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+                Assert.NotNull(configuration.GetValue<string>(DBFileName));
+
+                FileInfo fiDB = new FileInfo(configuration.GetValue<string>(DBFileName).Replace("{AppDataPath}", appDataPath));
+                Assert.True(fiDB.Exists);
+
+                serviceCollection.AddDbContext<ActionCommandContext>(options =>
+                {
+                    options.UseSqlite($"DataSource={fiDB.FullName}");
+                });
+
+                provider = serviceCollection.BuildServiceProvider();
+                Assert.NotNull(provider);
+
+                actionCommandDBService = provider.GetService<IActionCommandDBService>();
+                Assert.NotNull(actionCommandDBService);
+
+                actionCommandDBService.Action = configuration.GetValue<string>("Action");
+                actionCommandDBService.Command = configuration.GetValue<string>("Command");
+
+                await actionCommandDBService.Create();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                Assert.True(false);
+                return await Task.FromResult(false);
+            }
+
+            return await Task.FromResult(true);
+        }
+        private async Task<bool> ConfigureIAllOtherServices()
+        {
+            try
+            {
+                serviceCollection.AddSingleton<IGenerateCodeBaseService, GenerateCodeBaseService>();
+                serviceCollection.AddSingleton<IValidateAppSettingsService, ValidateAppSettingsService>();
+                serviceCollection.AddSingleton<IServicesClassNameServiceGeneratedService, ServicesClassNameServiceGeneratedService>();
+
+                provider = serviceCollection.BuildServiceProvider();
+                Assert.NotNull(provider);
+
+                servicesClassNameServiceGeneratedService = provider.GetService<IServicesClassNameServiceGeneratedService>();
+                Assert.NotNull(servicesClassNameServiceGeneratedService);
+            }
+            catch (Exception ex)
+            {
+                await actionCommandDBService.ConsoleWriteError(ex.Message);
+                Assert.True(false);
+                return await Task.FromResult(false);
+            }
+
+            return await Task.FromResult(true);
         }
         #endregion Functions private
     }

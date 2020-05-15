@@ -1,0 +1,216 @@
+﻿using CSSPEnums;
+using CSSPModels;
+using GenerateCodeBaseServices.Models;
+using GenerateCodeBaseServices.Services;
+using ActionCommandDBServices.Models;
+using ActionCommandDBServices.Services;
+using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using ServicesClassNameServiceGeneratedServices.Resources;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Data;
+using System.Globalization;
+using System.IO;
+using System.Linq;
+using System.Reflection;
+using System.Text;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
+using ValidateAppSettingsServices.Services;
+using ValidateAppSettingsServices.Models;
+
+namespace ServicesClassNameServiceGeneratedServices.Services
+{
+    public partial class ServicesClassNameServiceGeneratedService : IServicesClassNameServiceGeneratedService
+    {
+        private async Task<bool> CreateValidation_Length(PropertyInfo prop, CSSPProp csspProp, string TypeName, string TypeNameLower, StringBuilder sb)
+        {
+            if (!csspProp.IsKey)
+            {
+                switch (csspProp.PropType)
+                {
+                    case "Boolean":
+                        {
+                            // nothing
+                        }
+                        break;
+                    case "DateTime":
+                    case "DateTimeOffset":
+                        {
+                            // nothing
+                        }
+                        break;
+                    case "Int16":
+                    case "Int32":
+                    case "Int64":
+                    case "Single":
+                    case "Double":
+                        {
+                            if (csspProp.Min == null && csspProp.Max == null)
+                            {
+                                if (!csspProp.HasCSSPExistAttribute)
+                                {
+                                    sb.AppendLine($@"            //{ prop.Name } has no Range Attribute");
+                                    sb.AppendLine(@"");
+                                }
+                            }
+                            else if (csspProp.Min != null && csspProp.Max != null)
+                            {
+                                if (csspProp.Min > csspProp.Max)
+                                {
+                                    sb.AppendLine($@"            { prop.Name } = MinBiggerMaxPleaseFix,");
+                                }
+                                else
+                                {
+                                    if (csspProp.IsNullable)
+                                    {
+                                        sb.AppendLine($@"            if ({ TypeNameLower }.{ csspProp.PropName } != null)");
+                                        sb.AppendLine(@"            {");
+                                        sb.AppendLine($@"                if ({ TypeNameLower }.{ csspProp.PropName } < { csspProp.Min.ToString() } || { TypeNameLower }.{ csspProp.PropName } > { csspProp.Max.ToString() })");
+                                        sb.AppendLine(@"                {");
+                                        sb.AppendLine($@"                    { TypeNameLower }.HasErrors = true;");
+                                        sb.AppendLine($@"                    yield return new ValidationResult(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, ""{ csspProp.PropName }"", ""{ csspProp.Min.ToString() }"", ""{ csspProp.Max.ToString() }""), new[] {{ ""{ csspProp.PropName }"" }});");
+                                        sb.AppendLine(@"                }");
+                                        sb.AppendLine(@"            }");
+                                        sb.AppendLine(@"");
+                                    }
+                                    else
+                                    {
+                                        sb.AppendLine($@"            if ({ TypeNameLower }.{ csspProp.PropName } < { csspProp.Min.ToString() } || { TypeNameLower }.{ csspProp.PropName } > { csspProp.Max.ToString() })");
+                                        sb.AppendLine(@"            {");
+                                        sb.AppendLine($@"                { TypeNameLower }.HasErrors = true;");
+                                        sb.AppendLine($@"                yield return new ValidationResult(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, ""{ csspProp.PropName }"", ""{ csspProp.Min.ToString() }"", ""{ csspProp.Max.ToString() }""), new[] {{ ""{ csspProp.PropName }"" }});");
+                                        sb.AppendLine(@"            }");
+                                        sb.AppendLine(@"");
+                                    }
+                                }
+                            }
+                            else if (csspProp.Min != null)
+                            {
+                                if (csspProp.IsNullable)
+                                {
+                                    sb.AppendLine($@"            if ({ TypeNameLower }.{ csspProp.PropName } != null)");
+                                    sb.AppendLine(@"            {");
+                                    sb.AppendLine($@"                if ({ TypeNameLower }.{ csspProp.PropName } < { csspProp.Min.ToString() })");
+                                    sb.AppendLine(@"                {");
+                                    sb.AppendLine($@"                    { TypeNameLower }.HasErrors = true;");
+                                    sb.AppendLine($@"                    yield return new ValidationResult(string.Format(CSSPServicesRes._MinValueIs_, ""{ csspProp.PropName }"", ""{ csspProp.Min.ToString() }""), new[] {{ ""{ csspProp.PropName }"" }});");
+                                    sb.AppendLine(@"                }");
+                                    sb.AppendLine(@"            }");
+                                    sb.AppendLine(@"");
+                                }
+                                else
+                                {
+                                    sb.AppendLine($@"            if ({ TypeNameLower }.{ csspProp.PropName } < { csspProp.Min.ToString() })");
+                                    sb.AppendLine(@"            {");
+                                    sb.AppendLine($@"                { TypeNameLower }.HasErrors = true;");
+                                    sb.AppendLine($@"                yield return new ValidationResult(string.Format(CSSPServicesRes._MinValueIs_, ""{ csspProp.PropName }"", ""{ csspProp.Min.ToString() }""), new[] {{ ""{ csspProp.PropName }"" }});");
+                                    sb.AppendLine(@"            }");
+                                    sb.AppendLine(@"");
+                                }
+
+                            }
+                            else if (csspProp.Max != null)
+                            {
+                                if (csspProp.IsNullable)
+                                {
+                                    sb.AppendLine($@"            if ({ TypeNameLower }.{ csspProp.PropName } != null)");
+                                    sb.AppendLine(@"            {");
+                                    sb.AppendLine($@"                if ({ TypeNameLower }.{ csspProp.PropName } > { csspProp.Max.ToString() })");
+                                    sb.AppendLine(@"                {");
+                                    sb.AppendLine($@"                    { TypeNameLower }.HasErrors = true;");
+                                    sb.AppendLine($@"                    yield return new ValidationResult(string.Format(CSSPServicesRes._MaxValueIs_, ""{ csspProp.PropName }"", ""{ csspProp.Max.ToString() }""), new[] {{ ""{ csspProp.PropName }"" }});");
+                                    sb.AppendLine(@"                }");
+                                    sb.AppendLine(@"            }");
+                                    sb.AppendLine(@"");
+                                }
+                                else
+                                {
+                                    sb.AppendLine($@"            if ({ TypeNameLower }.{ csspProp.PropName } > { csspProp.Max.ToString() })");
+                                    sb.AppendLine(@"            {");
+                                    sb.AppendLine($@"                { TypeNameLower }.HasErrors = true;");
+                                    sb.AppendLine($@"                yield return new ValidationResult(string.Format(CSSPServicesRes._MaxValueIs_, ""{ csspProp.PropName }"", ""{ csspProp.Max.ToString() }""), new[] {{ ""{ csspProp.PropName }"" }});");
+                                    sb.AppendLine(@"            }");
+                                    sb.AppendLine(@"");
+                                }
+                            }
+                            else
+                            {
+                                sb.AppendLine($@"                { prop.Name } = CreateValidationNotRequiredLengths_ConditionShouldNotHappenIn_Int,");
+                                sb.AppendLine(@"");
+                            }
+                        }
+                        break;
+                    case "String":
+                        {
+                            if (csspProp.Min == null && csspProp.Max == null)
+                            {
+                                sb.AppendLine($@"            //{ prop.Name } has no StringLength Attribute");
+                                sb.AppendLine(@"");
+                            }
+                            else if (csspProp.Min != null && csspProp.Max != null)
+                            {
+                                if (csspProp.Min > csspProp.Max)
+                                {
+                                    sb.AppendLine($@"            { prop.Name } = MinBiggerMaxPleaseFix,");
+                                }
+                                else
+                                {
+                                    sb.AppendLine($@"            if (!string.IsNullOrWhiteSpace({ TypeNameLower }.{ prop.Name }) && ({ TypeNameLower }.{ csspProp.PropName }.Length < { csspProp.Min.ToString() } || { TypeNameLower }.{ csspProp.PropName }.Length > { csspProp.Max.ToString() }))");
+                                    sb.AppendLine(@"            {");
+                                    sb.AppendLine($@"                { TypeNameLower }.HasErrors = true;");
+                                    sb.AppendLine($@"                yield return new ValidationResult(string.Format(CSSPServicesRes._LengthShouldBeBetween_And_, ""{ csspProp.PropName }"", ""{ csspProp.Min.ToString() }"", ""{ csspProp.Max.ToString() }""), new[] {{ ""{ csspProp.PropName }"" }});");
+                                    sb.AppendLine(@"            }");
+                                    sb.AppendLine(@"");
+                                }
+                            }
+                            else if (csspProp.Min != null)
+                            {
+                                sb.AppendLine($@"            if (!string.IsNullOrWhiteSpace({ TypeNameLower }.{ prop.Name }) && { TypeNameLower }.{ csspProp.PropName }.Length < { csspProp.Min.ToString() })");
+                                sb.AppendLine(@"            {");
+                                sb.AppendLine($@"                { TypeNameLower }.HasErrors = true;");
+                                sb.AppendLine($@"                yield return new ValidationResult(string.Format(CSSPServicesRes._MinLengthIs_, ""{ csspProp.PropName }"", ""{ csspProp.Min.ToString() }""), new[] {{ ""{ csspProp.PropName }"" }});");
+                                sb.AppendLine(@"            }");
+                                sb.AppendLine(@"");
+                            }
+                            else if (csspProp.Max != null)
+                            {
+                                sb.AppendLine($@"            if (!string.IsNullOrWhiteSpace({ TypeNameLower }.{ prop.Name }) && { TypeNameLower }.{ csspProp.PropName }.Length > { csspProp.Max.ToString() })");
+                                sb.AppendLine(@"            {");
+                                sb.AppendLine($@"                { TypeNameLower }.HasErrors = true;");
+                                sb.AppendLine($@"                yield return new ValidationResult(string.Format(CSSPServicesRes._MaxLengthIs_, ""{ csspProp.PropName }"", ""{ csspProp.Max.ToString() }""), new[] {{ ""{ csspProp.PropName }"" }});");
+                                sb.AppendLine(@"            }");
+                                sb.AppendLine(@"");
+                            }
+                            else
+                            {
+                                sb.AppendLine($@"            // { prop.Name } has no validation");
+                                sb.AppendLine(@"");
+                            }
+                        }
+                        break;
+                    default:
+                        {
+                            if (csspProp.PropName.EndsWith("Web") || csspProp.PropName.EndsWith("Report"))
+                            {
+                                // nothing yet
+                            }
+                            else
+                            {
+                                if (!csspProp.HasCSSPEnumTypeAttribute)
+                                {
+                                    sb.AppendLine($@"                //CSSPError: Type not implemented [{ csspProp.PropName }] of type [{ csspProp.PropType }]");
+                                }
+                            }
+                        }
+                        break;
+                }
+            }
+
+            return await Task.FromResult(true);
+        }
+    }
+}

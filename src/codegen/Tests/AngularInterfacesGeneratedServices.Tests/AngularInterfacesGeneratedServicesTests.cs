@@ -43,7 +43,6 @@ namespace AngularInterfacesGeneratedServices.Tests
         [Theory]
         [InlineData("en-CA")] // good
         [InlineData("fr-CA")] // good
-        [InlineData("es-TU")] // good will default to en-CA
         [InlineData("en-GB")] // good will default to en-CA
         public async Task AngularInterfacesGeneratedServices_Run_Good_Test(string culture)
         {

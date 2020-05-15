@@ -45,11 +45,11 @@
     <Reference Include="ActionCommandDBServices">
       <HintPath>..\..\ActionCommandDBServices\bin\Debug\netcoreapp3.1\ActionCommandDBServices.dll</HintPath>
     </Reference>
-    <Reference Include="WebAPIClassNameControllerGeneratedServices">
-      <HintPath>..\..\WebAPIClassNameControllerGeneratedServices\bin\Debug\netcoreapp3.1\WebAPIClassNameControllerGeneratedServices.dll</HintPath>
-    </Reference>
     <Reference Include="ValidateAppSettingsServices">
       <HintPath>..\..\ValidateAppSettingsServices\bin\Debug\netcoreapp3.1\ValidateAppSettingsServices.dll</HintPath>
+    </Reference>
+    <Reference Include="WebAPIClassNameControllerGeneratedServices">
+      <HintPath>..\..\WebAPIClassNameControllerGeneratedServices\bin\Debug\netcoreapp3.1\WebAPIClassNameControllerGeneratedServices.dll</HintPath>
     </Reference>
   </ItemGroup>
 
@@ -61,6 +61,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="appsettings_bad1.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="appsettings.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

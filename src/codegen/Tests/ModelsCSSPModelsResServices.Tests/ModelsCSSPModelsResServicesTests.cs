@@ -42,9 +42,8 @@ namespace ModelsCSSPModelsResServices.Tests
         [Theory]
         [InlineData("en-CA")] // good
         [InlineData("fr-CA")] // good
-        [InlineData("es-TU")] // good will default to en-CA
         [InlineData("en-GB")] // good will default to en-CA
-        public async Task EnumsGenerated_csService_Run_Good_Test(string culture)
+        public async Task ModelsCSSPModelsResService_Run_Good_Test(string culture)
         {
             await Setup(new CultureInfo(culture), "appsettings.json");
 

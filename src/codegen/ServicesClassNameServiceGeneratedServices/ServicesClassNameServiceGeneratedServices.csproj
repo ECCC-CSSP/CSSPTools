@@ -40,7 +40,7 @@
   </ItemGroup>
   
   <ItemGroup>
-    <Compile Update="Resources\AppRes.Designer.cs">
+    <Compile Update="Resources\ServicesClassNameServiceGeneratedServicesRes.Designer.cs">
       <DependentUpon>AppRes.resx</DependentUpon>
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
@@ -48,20 +48,20 @@
   </ItemGroup>
   
   <ItemGroup>
-    <Compile Update="Resources\AppRes.Designer.cs">
-      <DependentUpon>AppRes.resx</DependentUpon>
+    <Compile Update="Resources\ServicesClassNameServiceGeneratedServicesRes.Designer.cs">
+      <DependentUpon>ServicesClassNameServiceGeneratedServicesRes.resx</DependentUpon>
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
     </Compile>
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Update="Resources\AppRes.fr.resx">
+    <EmbeddedResource Update="Resources\ServicesClassNameServiceGeneratedServicesRes.fr.resx">
       <LastGenOutput>AppRes.Designer.cs</LastGenOutput>
       <Generator>PublicResXFileCodeGenerator</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="Resources\AppRes.resx">
-      <LastGenOutput>AppRes.Designer.cs</LastGenOutput>
+    <EmbeddedResource Update="Resources\ServicesClassNameServiceGeneratedServicesRes.resx">
+      <LastGenOutput>ServicesClassNameServiceGeneratedServicesRes.Designer.cs</LastGenOutput>
       <Generator>PublicResXFileCodeGenerator</Generator>
     </EmbeddedResource>
   </ItemGroup>

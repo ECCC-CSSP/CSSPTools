@@ -10,6 +10,7 @@ using ServicesClassNameServiceTestGeneratedServices.Services;
 using System;
 using System.IO;
 using ValidateAppSettingsServices.Services;
+using System.Threading.Tasks;
 
 namespace ServicesClassNameServiceTestGenerated
 {
@@ -19,75 +20,107 @@ namespace ServicesClassNameServiceTestGenerated
         #endregion Variables
 
         #region Properties
-        private IConfiguration Configuration { get; set; }
+        private IConfiguration configuration { get; set; }
         private ServiceProvider provider { get; set; }
+        private IServiceCollection serviceCollection { get; set; }
         private IServicesClassNameServiceTestGeneratedService servicesClassNameServiceTestGeneratedService { get; set; }
+        private IActionCommandDBService actionCommandDBService { get; set; }
         private string DBFileName { get; set; } = "DBFileName";
         #endregion Properties
 
         #region Constructors
         public Startup(IConfiguration configuration)
         {
-            Configuration = configuration;
-        }
-        public string ConfigureServices(IServiceCollection serviceCollection)
-        {
-            serviceCollection.AddSingleton<IConfiguration>(Configuration);
-            serviceCollection.AddSingleton<IServicesClassNameServiceTestGeneratedService, ServicesClassNameServiceTestGeneratedService>();
-            serviceCollection.AddSingleton<IGenerateCodeBaseService, GenerateCodeBaseService>();
-            serviceCollection.AddSingleton<IActionCommandDBService, ActionCommandDBService>();
-            serviceCollection.AddSingleton<IValidateAppSettingsService, ValidateAppSettingsService>();
-
-            string retStr = ConfigureGenerateCodeStatusContext(serviceCollection);
-            if (!string.IsNullOrWhiteSpace(retStr))
-            {
-                return retStr;
-            }
-
-            retStr = ConfigureCSSPDBContext(serviceCollection);
-            if (!string.IsNullOrWhiteSpace(retStr))
-            {
-                return retStr;
-            }
-
-            retStr = ConfigureTestDBContext(serviceCollection);
-            if (!string.IsNullOrWhiteSpace(retStr))
-            {
-                return retStr;
-            }
-
-            provider = serviceCollection.BuildServiceProvider();
-            if (provider == null)
-            {
-                return $"{ AppDomain.CurrentDomain.FriendlyName } provider == null";
-            }
-
-            return "";
-        }
-        public string Run(string[] args)
-        {
-            servicesClassNameServiceTestGeneratedService = provider.GetService<IServicesClassNameServiceTestGeneratedService>();
-            if (servicesClassNameServiceTestGeneratedService == null)
-            {
-                return $"{ AppDomain.CurrentDomain.FriendlyName } enumsGenerated_csService == null";
-            }
-
-            if (!servicesClassNameServiceTestGeneratedService.Run(args).GetAwaiter().GetResult())
-            {
-                return AppRes.AbnormalCompletion;
-            }
-
-            return "";
+            this.configuration = configuration;
         }
         #endregion Constructors
 
-        #region Functions private
-        private string ConfigureCSSPDBContext(IServiceCollection serviceCollection)
+        #region Functions public
+        public async Task Run(string[] args)
         {
-            string CSSPDBConnString = Configuration.GetValue<string>("CSSPDBConnectionString");
+            if (!await ConfigureServices()) return;
+
+            await servicesClassNameServiceTestGeneratedService.Run(args);
+        }
+        #endregion Functions public
+
+        #region Functions private
+        private async Task<bool> ConfigureServices()
+        {
+            serviceCollection = new ServiceCollection();
+
+            serviceCollection.AddSingleton<IConfiguration>(configuration);
+
+            if (!await ConfigureIActionCommandDBService()) return await Task.FromResult(false);
+
+            if (!await ConfigureCSSPDBContext(serviceCollection)) return await Task.FromResult(false);
+
+            if (!await ConfigureTestDBContext(serviceCollection)) return await Task.FromResult(false);
+
+            if (!await ConfigureIAllOtherServices()) return await Task.FromResult(false);
+
+            return await Task.FromResult(true);
+        }
+        private async Task<bool> ConfigureIActionCommandDBService()
+        {
+            try
+            {
+                serviceCollection.AddSingleton<IActionCommandDBService, ActionCommandDBService>();
+
+                string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+                if (configuration.GetValue<string>(DBFileName) == null)
+                {
+                    Console.WriteLine($"{ String.Format(ServicesClassNameServiceTestGeneratedServicesRes.CouldNotFindParameter_InAppSettingsJSON, DBFileName) }");
+                    return await Task.FromResult(false);
+                }
+
+                FileInfo fiDB = new FileInfo(configuration.GetValue<string>(DBFileName).Replace("{AppDataPath}", appDataPath));
+
+                if (!fiDB.Exists)
+                {
+                    Console.WriteLine($"{ String.Format(ServicesClassNameServiceTestGeneratedServicesRes.CouldNotFindFile_, fiDB.FullName) }");
+                    return await Task.FromResult(false);
+                }
+
+                serviceCollection.AddDbContext<ActionCommandContext>(options =>
+                {
+                    options.UseSqlite($"DataSource={fiDB.FullName}");
+                });
+
+                provider = serviceCollection.BuildServiceProvider();
+                if (provider == null)
+                {
+                    Console.WriteLine($"{ AppDomain.CurrentDomain.FriendlyName } provider == null");
+                    return await Task.FromResult(false);
+                }
+
+                actionCommandDBService = provider.GetService<IActionCommandDBService>();
+                if (actionCommandDBService == null)
+                {
+                    Console.WriteLine($"{ AppDomain.CurrentDomain.FriendlyName } actionCommandDBService   == null");
+                    return await Task.FromResult(false);
+                }
+
+                actionCommandDBService.Action = configuration.GetValue<string>("Action");
+                actionCommandDBService.Command = configuration.GetValue<string>("Command");
+
+                await actionCommandDBService.Create();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return await Task.FromResult(false);
+            }
+
+            return await Task.FromResult(true);
+        }
+        private async Task<bool> ConfigureCSSPDBContext(IServiceCollection serviceCollection)
+        {
+            string CSSPDBConnString = configuration.GetValue<string>("CSSPDBConnectionString");
             if (CSSPDBConnString == null)
             {
-                return $"{ String.Format(AppRes.CouldNotFindParameter_InAppSettingsJSON, "CSSPDBConnectionString") }";
+                await actionCommandDBService.ConsoleWriteError($"{ String.Format(ServicesClassNameServiceTestGeneratedServicesRes.CouldNotFindParameter_InAppSettingsJSON, "CSSPDBConnectionString") }");
+                return await Task.FromResult(false);
             }
 
             try
@@ -99,17 +132,19 @@ namespace ServicesClassNameServiceTestGenerated
             }
             catch (Exception ex)
             {
-                return ex.Message;
+                await actionCommandDBService.ConsoleWriteError(ex.Message);
+                return await Task.FromResult(false);
             }
 
-            return "";
+            return await Task.FromResult(true);
         }
-        private string ConfigureTestDBContext(IServiceCollection serviceCollection)
+        private async Task<bool> ConfigureTestDBContext(IServiceCollection serviceCollection)
         {
-            string TestDBConnString = Configuration.GetValue<string>("TestDBConnectionString");
+            string TestDBConnString = configuration.GetValue<string>("TestDBConnectionString");
             if (TestDBConnString == null)
             {
-                return $"{ String.Format(AppRes.CouldNotFindParameter_InAppSettingsJSON, "TestDBConnectionString") }";
+                await actionCommandDBService.ConsoleWriteError($"{ String.Format(ServicesClassNameServiceTestGeneratedServicesRes.CouldNotFindParameter_InAppSettingsJSON, "TestDBConnectionString") }");
+                return await Task.FromResult(false);
             }
 
             try
@@ -121,41 +156,42 @@ namespace ServicesClassNameServiceTestGenerated
             }
             catch (Exception ex)
             {
-                return ex.Message;
+                await actionCommandDBService.ConsoleWriteError(ex.Message);
+                return await Task.FromResult(false);
             }
 
-            return "";
+            return await Task.FromResult(true);
         }
-        private string ConfigureGenerateCodeStatusContext(IServiceCollection serviceCollection)
+        private async Task<bool> ConfigureIAllOtherServices()
         {
-            string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
-            if (Configuration.GetValue<string>(DBFileName) == null)
-            {
-                return $"{ String.Format(AppRes.CouldNotFindParameter_InAppSettingsJSON, DBFileName) }";
-            }
-
-            FileInfo fiDB = new FileInfo(Configuration.GetValue<string>(DBFileName).Replace("{AppDataPath}", appDataPath));
-
-            if (!fiDB.Exists)
-            {
-                return $"{ String.Format(AppRes.CouldNotFindFile_, fiDB.FullName) }";
-            }
-
             try
             {
-                serviceCollection.AddDbContext<ActionCommandContext>(options =>
+                serviceCollection.AddSingleton<IGenerateCodeBaseService, GenerateCodeBaseService>();
+                serviceCollection.AddSingleton<IValidateAppSettingsService, ValidateAppSettingsService>();
+                serviceCollection.AddSingleton<IServicesClassNameServiceTestGeneratedService, ServicesClassNameServiceTestGeneratedService>();
+
+                provider = serviceCollection.BuildServiceProvider();
+                if (provider == null)
                 {
-                    options.UseSqlite($"DataSource={fiDB.FullName}");
-                });
+                    await actionCommandDBService.ConsoleWriteError($"{ AppDomain.CurrentDomain.FriendlyName } provider == null");
+                    return await Task.FromResult(false);
+                }
+
+                servicesClassNameServiceTestGeneratedService = provider.GetService<IServicesClassNameServiceTestGeneratedService>();
+                if (servicesClassNameServiceTestGeneratedService == null)
+                {
+                    await actionCommandDBService.ConsoleWriteError($"{ AppDomain.CurrentDomain.FriendlyName } angularEnumsGeneratedService  == null");
+                    return await Task.FromResult(false);
+                }
             }
             catch (Exception ex)
             {
-                return ex.Message;
+                await actionCommandDBService.ConsoleWriteError(ex.Message);
+                return await Task.FromResult(false);
             }
 
-            return "";
+            return await Task.FromResult(true);
         }
         #endregion Functions private
-
     }
 }

@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace ServicesRepopulateTestDBServices.Resources {
+namespace ExecuteDotNetCommandServices.Resources {
     using System;
     
     
@@ -22,14 +22,14 @@ namespace ServicesRepopulateTestDBServices.Resources {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public class AppRes {
+    public class ExecuteDotNetCommandServicesRes {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal AppRes() {
+        internal ExecuteDotNetCommandServicesRes() {
         }
         
         /// <summary>
@@ -39,7 +39,7 @@ namespace ServicesRepopulateTestDBServices.Resources {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("ServicesRepopulateTestDBServices.Resources.AppRes", typeof(AppRes).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("ExecuteDotNetCommandServices.Resources.ExecuteDotNetCommandServicesRes", typeof(ExecuteDotNetCommandServicesRes).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -70,20 +70,20 @@ namespace ServicesRepopulateTestDBServices.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Action - Options: run || test || build.
+        /// </summary>
+        public static string ActionOptionsRunTestBuild {
+            get {
+                return ResourceManager.GetString("ActionOptionsRunTestBuild", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Allowable cultures [{0}].
         /// </summary>
         public static string AllowableCultures_ {
             get {
                 return ResourceManager.GetString("AllowableCultures_", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Already created [{0}].
-        /// </summary>
-        public static string AlreadyCreated_ {
-            get {
-                return ResourceManager.GetString("AlreadyCreated_", resourceCulture);
             }
         }
         
@@ -97,11 +97,20 @@ namespace ServicesRepopulateTestDBServices.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Compared OK.
+        ///   Looks up a localized string similar to Application requires 3 parameters separated by space.
         /// </summary>
-        public static string ComparedOK {
+        public static string ApplicationRequires3ParametersSeparatedBySpace {
             get {
-                return ResourceManager.GetString("ComparedOK", resourceCulture);
+                return ResourceManager.GetString("ApplicationRequires3ParametersSeparatedBySpace", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Could not find directory of solution file [{0}].
+        /// </summary>
+        public static string CouldNotFindDirectoryOfSolutionFile_ {
+            get {
+                return ResourceManager.GetString("CouldNotFindDirectoryOfSolutionFile_", resourceCulture);
             }
         }
         
@@ -133,29 +142,29 @@ namespace ServicesRepopulateTestDBServices.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Could not read file [{0}].
+        ///   Looks up a localized string similar to Could not find solution file [{0}] to compile.
         /// </summary>
-        public static string CouldNotReadFile_ {
+        public static string CouldNotFindSolutionFile_ToCompile {
             get {
-                return ResourceManager.GetString("CouldNotReadFile_", resourceCulture);
+                return ResourceManager.GetString("CouldNotFindSolutionFile_ToCompile", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Created [{0}].
+        ///   Looks up a localized string similar to Created.
         /// </summary>
-        public static string Created_ {
+        public static string Created {
             get {
-                return ResourceManager.GetString("Created_", resourceCulture);
+                return ResourceManager.GetString("Created", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Created new [{0}].
+        ///   Looks up a localized string similar to Culture - Options:  en-CA || fr-CA.
         /// </summary>
-        public static string CreatedNew_ {
+        public static string CultureOptionsEnCAFrCA {
             get {
-                return ResourceManager.GetString("CreatedNew_", resourceCulture);
+                return ResourceManager.GetString("CultureOptionsEnCAFrCA", resourceCulture);
             }
         }
         
@@ -178,11 +187,20 @@ namespace ServicesRepopulateTestDBServices.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Error while creating code [{0}].
+        ///   Looks up a localized string similar to Error while running command [{0}] under directory [{1}].
         /// </summary>
-        public static string ErrorWhileCreatingCode_ {
+        public static string ErrorWhileRunningCommand_UnderDirectory_ {
             get {
-                return ResourceManager.GetString("ErrorWhileCreatingCode_", resourceCulture);
+                return ResourceManager.GetString("ErrorWhileRunningCommand_UnderDirectory_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Example.
+        /// </summary>
+        public static string Example {
+            get {
+                return ResourceManager.GetString("Example", resourceCulture);
             }
         }
         
@@ -196,11 +214,20 @@ namespace ServicesRepopulateTestDBServices.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to is not implemented.
+        ///   Looks up a localized string similar to is null.
         /// </summary>
-        public static string IsNotImplemented {
+        public static string IsNull {
             get {
-                return ResourceManager.GetString("IsNotImplemented", resourceCulture);
+                return ResourceManager.GetString("IsNull", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Parameter #{0} should be {1}.
+        /// </summary>
+        public static string Parameter_ShouldBe_ {
+            get {
+                return ResourceManager.GetString("Parameter_ShouldBe_", resourceCulture);
             }
         }
         
@@ -210,6 +237,24 @@ namespace ServicesRepopulateTestDBServices.Resources {
         public static string Running {
             get {
                 return ResourceManager.GetString("Running", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Running command [{0}] under directory [{1}].
+        /// </summary>
+        public static string RunningCommand_UnderDirectory_ {
+            get {
+                return ResourceManager.GetString("RunningCommand_UnderDirectory_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to SolutionFileName - Examples: CSSPEnums || CSSPModels || CSSPServices.
+        /// </summary>
+        public static string SolutionFileNameExampleCSSPRunsCSSPModelsCSSPServices {
+            get {
+                return ResourceManager.GetString("SolutionFileNameExampleCSSPRunsCSSPModelsCSSPServices", resourceCulture);
             }
         }
         

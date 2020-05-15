@@ -14,6 +14,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 using ValidateAppSettingsServices.Services;
+using ModelsModelClassNameTestGenerated_csServices.Resources;
 
 namespace ModelsModelClassNameTestGenerated_csServices.Tests
 {
@@ -26,6 +27,7 @@ namespace ModelsModelClassNameTestGenerated_csServices.Tests
         private IConfiguration configuration { get; set; }
         private IServiceCollection serviceCollection { get; set; }
         private IModelsModelClassNameTestGenerated_csService modelsModelClassNameTestGenerated_csService { get; set; }
+        private IActionCommandDBService actionCommandDBService { get; set; }
         private IServiceProvider provider { get; set; }
         private string DBFileName { get; set; } = "DBFileName";
         #endregion Properties
@@ -33,17 +35,17 @@ namespace ModelsModelClassNameTestGenerated_csServices.Tests
         #region Constructors
         public ModelsModelClassNameTestGenerated_csServiceTests()
         {
-            Init();
         }
         #endregion Constructors
 
         #region Functions public
         [Theory]
-        [InlineData("en-CA")]
-        [InlineData("fr-CA")]
-        public void ModelClassNameTestGenerated_csService_Constructor_Good_Test(string culture)
+        [InlineData("en-CA")] // good
+        [InlineData("fr-CA")] // good
+        [InlineData("en-GB")] // good will default to en-CA
+        public async Task ModelsModelClassNameTestGenerated_csService_Run_Good_Test(string culture)
         {
-            Init();
+            await Setup(new CultureInfo(culture), "appsettings.json");
 
             Assert.NotNull(configuration);
             Assert.NotNull(serviceCollection);
@@ -52,61 +54,122 @@ namespace ModelsModelClassNameTestGenerated_csServices.Tests
 
             string[] args = new List<string>() { culture }.ToArray();
 
-            Assert.Equal(culture, args[0]);
+            bool retBool = await modelsModelClassNameTestGenerated_csService.Run(args);
+            Assert.True(retBool);
+
+            // all culture other than "fr-CA" should default to "en-CA"
+            if (culture != "fr-CA")
+            {
+                culture = "en-CA";
+            }
+            CultureInfo Culture = new CultureInfo(culture);
+            Assert.Equal(Culture, ModelsModelClassNameTestGenerated_csServicesRes.Culture);
         }
         [Theory]
         [InlineData("en-CA")] // good
         [InlineData("fr-CA")] // good
-        [InlineData("es-TU")] // good will default to en-CA
-        [InlineData("en-GB")] // good will default to en-CA
-        public void ModelClassNameTestGenerated_csService_Run_Good_Test(string culture)
+        public async Task ModelsModelClassNameTestGenerated_csService_Run_SomeFileMissing_Test(string culture)
         {
-            Init();
+            await Setup(new CultureInfo(culture), "appsettings_bad1.json");
+
+            Assert.NotNull(configuration);
+            Assert.NotNull(serviceCollection);
+            Assert.NotNull(provider);
+            Assert.NotNull(modelsModelClassNameTestGenerated_csService);
 
             string[] args = new List<string>() { culture }.ToArray();
 
-            bool retBool = modelsModelClassNameTestGenerated_csService.Run(args).GetAwaiter().GetResult();
-            Assert.True(retBool);
+            bool retBool = await modelsModelClassNameTestGenerated_csService.Run(args);
+            Assert.False(retBool);
         }
         #endregion Functions public
 
         #region Functions private
-        private void Init()
+        private async Task Setup(CultureInfo culture, string appsettingjsonFileName)
         {
             configuration = new ConfigurationBuilder()
                .SetBasePath(Directory.GetParent(AppContext.BaseDirectory).FullName)
-               .AddJsonFile("appsettings.json")
+               .AddJsonFile(appsettingjsonFileName)
                .Build();
 
             Assert.NotNull(configuration);
 
+            bool retBool = await ConfigureServices();
+            Assert.True(retBool);
+        }
+        private async Task<bool> ConfigureServices()
+        {
             serviceCollection = new ServiceCollection();
 
             serviceCollection.AddSingleton<IConfiguration>(configuration);
-            serviceCollection.AddSingleton<IGenerateCodeBaseService, GenerateCodeBaseService>();
-            serviceCollection.AddSingleton<IActionCommandDBService, ActionCommandDBService>();
-            serviceCollection.AddSingleton<IValidateAppSettingsService, ValidateAppSettingsService>();
-            serviceCollection.AddSingleton<IModelsModelClassNameTestGenerated_csService, ModelsModelClassNameTestGenerated_csService>();
 
-            string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
-            Assert.False(string.IsNullOrWhiteSpace(appDataPath));
+            bool retBool = await ConfigureIActionCommandDBService();
+            Assert.True(retBool);
 
-            string fileName = configuration.GetValue<string>(DBFileName);
-            Assert.False(string.IsNullOrWhiteSpace(fileName));
+            retBool = await ConfigureIAllOtherServices();
+            Assert.True(retBool);
 
-            FileInfo fiDB = new FileInfo(fileName.Replace("{AppDataPath}", appDataPath));
-            Assert.True(fiDB.Exists);
-
-            serviceCollection.AddDbContext<ActionCommandContext>(options =>
+            return await Task.FromResult(true);
+        }
+        private async Task<bool> ConfigureIActionCommandDBService()
+        {
+            try
             {
-                options.UseSqlite($"DataSource={fiDB.FullName}");
-            });
+                serviceCollection.AddSingleton<IActionCommandDBService, ActionCommandDBService>();
 
-            provider = serviceCollection.BuildServiceProvider();
-            Assert.NotNull(provider);
+                string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+                Assert.NotNull(configuration.GetValue<string>(DBFileName));
 
-            modelsModelClassNameTestGenerated_csService = provider.GetService<IModelsModelClassNameTestGenerated_csService>();
-            Assert.NotNull(modelsModelClassNameTestGenerated_csService);
+                FileInfo fiDB = new FileInfo(configuration.GetValue<string>(DBFileName).Replace("{AppDataPath}", appDataPath));
+                Assert.True(fiDB.Exists);
+
+                serviceCollection.AddDbContext<ActionCommandContext>(options =>
+                {
+                    options.UseSqlite($"DataSource={fiDB.FullName}");
+                });
+
+                provider = serviceCollection.BuildServiceProvider();
+                Assert.NotNull(provider);
+
+                actionCommandDBService = provider.GetService<IActionCommandDBService>();
+                Assert.NotNull(actionCommandDBService);
+
+                actionCommandDBService.Action = configuration.GetValue<string>("Action");
+                actionCommandDBService.Command = configuration.GetValue<string>("Command");
+
+                await actionCommandDBService.Create();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                Assert.True(false);
+                return await Task.FromResult(false);
+            }
+
+            return await Task.FromResult(true);
+        }
+        private async Task<bool> ConfigureIAllOtherServices()
+        {
+            try
+            {
+                serviceCollection.AddSingleton<IGenerateCodeBaseService, GenerateCodeBaseService>();
+                serviceCollection.AddSingleton<IValidateAppSettingsService, ValidateAppSettingsService>();
+                serviceCollection.AddSingleton<IModelsModelClassNameTestGenerated_csService, ModelsModelClassNameTestGenerated_csService>();
+
+                provider = serviceCollection.BuildServiceProvider();
+                Assert.NotNull(provider);
+
+                modelsModelClassNameTestGenerated_csService = provider.GetService<IModelsModelClassNameTestGenerated_csService>();
+                Assert.NotNull(modelsModelClassNameTestGenerated_csService);
+            }
+            catch (Exception ex)
+            {
+                await actionCommandDBService.ConsoleWriteError(ex.Message);
+                Assert.True(false);
+                return await Task.FromResult(false);
+            }
+
+            return await Task.FromResult(true);
         }
         #endregion Functions private
     }
