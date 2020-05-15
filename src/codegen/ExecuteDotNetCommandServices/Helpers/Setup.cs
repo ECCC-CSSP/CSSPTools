@@ -27,7 +27,7 @@ namespace ExecuteDotNetCommandServices.Services
         private async Task<bool> Setup()
         {
             actionCommandDBService.Action = configuration.GetValue<string>("Action");
-            actionCommandDBService.Command = $"{ dotNetCommand.Action }:{ dotNetCommand.SolutionFileName}";
+            actionCommandDBService.Command = configuration.GetValue<string>("Command");
             await actionCommandDBService.SetCulture(new CultureInfo(configuration.GetValue<string>("Culture")));
             await validateAppSettingsService.SetCulture(new CultureInfo(configuration.GetValue<string>("Culture")));
 

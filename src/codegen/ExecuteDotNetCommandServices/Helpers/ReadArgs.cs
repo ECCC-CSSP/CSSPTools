@@ -83,7 +83,7 @@ namespace ExecuteDotNetCommandServices.Services
                     }
                     else
                     {
-                        dotNetCommand.SolutionFileName = args[2];
+                        dotNetCommand.Command = args[2];
                     }
                 }
                 if (args[1] == "test")
@@ -96,7 +96,7 @@ namespace ExecuteDotNetCommandServices.Services
                     }
                     else
                     {
-                        dotNetCommand.SolutionFileName = args[2];
+                        dotNetCommand.Command = args[2];
                     }
                 }
                 if (args[1] == "build")
@@ -109,7 +109,7 @@ namespace ExecuteDotNetCommandServices.Services
                     }
                     else
                     {
-                        dotNetCommand.SolutionFileName = args[2];
+                        dotNetCommand.Command = args[2];
                     }
                 }
             }

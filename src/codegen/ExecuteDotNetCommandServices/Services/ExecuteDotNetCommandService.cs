@@ -205,6 +205,12 @@ namespace ExecuteDotNetCommandServices.Services
 
             await SetCultureWithArgs(args);
 
+            if (!await ReadArgs(args))
+            {
+                await actionCommandDBService.ConsoleWriteError("");
+                return await Task.FromResult(false);
+            }
+
             if (!await ExecuteDotNet())
             {
                 await actionCommandDBService.ConsoleWriteError("");

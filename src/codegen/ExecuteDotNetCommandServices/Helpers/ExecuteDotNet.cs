@@ -28,13 +28,13 @@ namespace ExecuteDotNetCommandServices.Services
         {
             actionCommandDBService.ExecutionStatusText.AppendLine("ExecuteDotNet Starting...");
             actionCommandDBService.ExecutionStatusText.AppendLine("");
-            actionCommandDBService.ExecutionStatusText.AppendLine($"args = { dotNetCommand.CultureName }  { dotNetCommand.Action } { dotNetCommand.SolutionFileName }");
+            actionCommandDBService.ExecutionStatusText.AppendLine($"args = { dotNetCommand.CultureName }  { dotNetCommand.Action } { dotNetCommand.Command }");
             actionCommandDBService.ExecutionStatusText.AppendLine("");
             actionCommandDBService.PercentCompleted = 0;
             await actionCommandDBService.Update();
 
 
-            string FileName = configuration.GetValue<string>($"{ dotNetCommand.Action }:{ dotNetCommand.SolutionFileName }");
+            string FileName = configuration.GetValue<string>($"{ dotNetCommand.Action }:{ dotNetCommand.Command }");
 
             string LogFileName = "DotNetCommandLog.txt";
             FileInfo fi = new FileInfo(FileName);
