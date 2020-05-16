@@ -1,5 +1,4 @@
-﻿using EnumsCompareWithOldEnumsServices.Resources;
-using GenerateCodeBaseServices.Models;
+﻿using GenerateCodeBaseServices.Models;
 using GenerateCodeBaseServices.Services;
 using ActionCommandDBServices.Models;
 using ActionCommandDBServices.Services;
@@ -18,6 +17,7 @@ using System.Threading.Tasks;
 using ValidateAppSettingsServices.Services;
 using ValidateAppSettingsServices.Models;
 using Microsoft.AspNetCore.Mvc;
+using CultureServices.Resources;
 
 namespace EnumsCompareWithOldEnumsServices.Services
 {
@@ -75,7 +75,7 @@ namespace EnumsCompareWithOldEnumsServices.Services
             await actionCommandDBService.SetCulture(culture);
             await validateAppSettingsService.SetCulture(culture);
             await generateCodeBaseService.SetCulture(culture);
-            EnumsCompareWithOldEnumsServicesRes.Culture = culture;
+            CultureServicesRes.Culture = culture;
         }
         #endregion Functions public
 

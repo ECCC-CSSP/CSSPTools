@@ -7,7 +7,6 @@ using ActionCommandDBServices.Services;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
-using ServicesExtensionEnumCastingGeneratedServices.Resources;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -21,6 +20,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using ValidateAppSettingsServices.Services;
 using ValidateAppSettingsServices.Models;
+using CultureServices.Resources;
 
 namespace ServicesClassNameServiceGeneratedServices.Services
 {
@@ -78,7 +78,7 @@ namespace ServicesClassNameServiceGeneratedServices.Services
             await actionCommandDBService.SetCulture(culture);
             await validateAppSettingsService.SetCulture(culture);
             await generateCodeBaseService.SetCulture(culture);
-            ServicesExtensionEnumCastingGeneratedServicesRes.Culture = culture;
+            CultureServicesRes.Culture = culture;
         }
         #endregion Functions public
 

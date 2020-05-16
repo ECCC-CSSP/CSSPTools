@@ -13,9 +13,8 @@ using ActionCommandDBServices.Services;
 using System.Globalization;
 using Microsoft.Extensions.Configuration;
 using Xunit;
-using ActionCommandDBServices.Resources;
 using Microsoft.AspNetCore.Mvc;
-using GenerateCodeBaseServices.Resources;
+using CultureServices.Resources;
 
 namespace GenerateCodeBaseServices.Tests
 {
@@ -50,14 +49,14 @@ namespace GenerateCodeBaseServices.Tests
             Assert.NotNull(actionCommandDBService);
             Assert.NotNull(generateCodeBaseService);
 
-            Assert.Equal(new CultureInfo(culture), GenerateCodeBaseServicesRes.Culture);
+            Assert.Equal(new CultureInfo(culture), CultureServicesRes.Culture);
         }
         #endregion Functions public
 
         #region Functions private
         private async Task Setup(CultureInfo culture)
         {
-            GenerateCodeBaseServicesRes.Culture = culture;
+            CultureServicesRes.Culture = culture;
             serviceCollection = new ServiceCollection();
 
             configuration = new ConfigurationBuilder()
@@ -90,13 +89,13 @@ namespace GenerateCodeBaseServices.Tests
             Assert.NotNull(actionCommandDBService);
 
             await actionCommandDBService.SetCulture(culture);
-            Assert.Equal(culture, ActionCommandDBServicesRes.Culture);
+            Assert.Equal(culture, CultureServicesRes.Culture);
 
             generateCodeBaseService = provider.GetService<IGenerateCodeBaseService>();
             Assert.NotNull(generateCodeBaseService);
 
             await generateCodeBaseService.SetCulture(culture);
-            Assert.Equal(culture, GenerateCodeBaseServicesRes.Culture);
+            Assert.Equal(culture, CultureServicesRes.Culture);
         }
         #endregion Functions private
     }

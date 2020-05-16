@@ -17,6 +17,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Reference Include="CultureServices">
+      <HintPath>..\CultureServices\bin\Debug\netcoreapp3.1\CultureServices.dll</HintPath>
+    </Reference>
     <Reference Include="CSSPEnums">
       <HintPath>..\..\dlls\CSSPEnums\bin\Debug\netcoreapp3.1\CSSPEnums.dll</HintPath>
     </Reference>
@@ -29,25 +32,6 @@
     <Reference Include="ValidateAppSettingsServices">
       <HintPath>..\ValidateAppSettingsServices\bin\Debug\netcoreapp3.1\ValidateAppSettingsServices.dll</HintPath>
     </Reference>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Compile Update="Resources\ModelsCompareServicesRes.Designer.cs">
-      <DependentUpon>ModelsCompareServicesRes.resx</DependentUpon>
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-    </Compile>
-  </ItemGroup>
-
-  <ItemGroup>
-    <EmbeddedResource Update="Resources\ModelsCompareServicesRes.fr.resx">
-      <LastGenOutput>AppRes.Designer.cs</LastGenOutput>
-      <Generator>PublicResXFileCodeGenerator</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Resources\ModelsCompareServicesRes.resx">
-      <LastGenOutput>ModelsCompareServicesRes.Designer.cs</LastGenOutput>
-      <Generator>PublicResXFileCodeGenerator</Generator>
-    </EmbeddedResource>
   </ItemGroup>
 
 </Project>

@@ -4,7 +4,6 @@ using ActionCommandDBServices.Models;
 using ActionCommandDBServices.Services;
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
-using ModelsCompareDBFieldsAndCSSPModelsDLLPropServices.Resources;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -18,6 +17,7 @@ using System.Threading.Tasks;
 using ValidateAppSettingsServices.Services;
 using ValidateAppSettingsServices.Models;
 using Microsoft.AspNetCore.Mvc;
+using CultureServices.Resources;
 
 namespace ModelsCompareDBFieldsAndCSSPModelsDLLPropServices.Services
 {
@@ -78,7 +78,7 @@ namespace ModelsCompareDBFieldsAndCSSPModelsDLLPropServices.Services
             await actionCommandDBService.SetCulture(culture);
             await validateAppSettingsService.SetCulture(culture);
             await generateCodeBaseService.SetCulture(culture);
-            ModelsCompareDBFieldsAndCSSPModelsDLLPropServicesRes.Culture = culture;
+            CultureServicesRes.Culture = culture;
         }
         #endregion Functions public
 

@@ -1,5 +1,4 @@
-﻿using EnumsGenerated_csServices.Resources;
-using EnumsGenerated_csServices.Services;
+﻿using EnumsGenerated_csServices.Services;
 using GenerateCodeBaseServices.Services;
 using ActionCommandDBServices.Models;
 using ActionCommandDBServices.Services;
@@ -10,6 +9,7 @@ using System;
 using System.IO;
 using ValidateAppSettingsServices.Services;
 using System.Threading.Tasks;
+using CultureServices.Resources;
 
 namespace EnumsGenerated_cs
 {
@@ -65,7 +65,7 @@ namespace EnumsGenerated_cs
                 string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
                 if (configuration.GetValue<string>(DBFileName) == null)
                 {
-                    Console.WriteLine($"{ String.Format(EnumsGenerated_csServicesRes.CouldNotFindParameter_InAppSettingsJSON, DBFileName) }");
+                    Console.WriteLine($"{ String.Format(CultureServicesRes.CouldNotFindParameter_InAppSettingsJSON, DBFileName) }");
                     return await Task.FromResult(false);
                 }
 
@@ -73,7 +73,7 @@ namespace EnumsGenerated_cs
 
                 if (!fiDB.Exists)
                 {
-                    Console.WriteLine($"{ String.Format(EnumsGenerated_csServicesRes.CouldNotFindFile_, fiDB.FullName) }");
+                    Console.WriteLine($"{ String.Format(CultureServicesRes.CouldNotFindFile_, fiDB.FullName) }");
                     return await Task.FromResult(false);
                 }
 

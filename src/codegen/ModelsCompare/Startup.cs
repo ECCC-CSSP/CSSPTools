@@ -4,12 +4,12 @@ using ActionCommandDBServices.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using ModelsCompareServices.Resources;
 using ModelsCompareServices.Services;
 using System;
 using System.IO;
 using ValidateAppSettingsServices.Services;
 using System.Threading.Tasks;
+using CultureServices.Resources;
 
 namespace ModelsCompare
 {
@@ -65,7 +65,7 @@ namespace ModelsCompare
                 string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
                 if (configuration.GetValue<string>(DBFileName) == null)
                 {
-                    Console.WriteLine($"{ String.Format(ModelsCompareServicesRes.CouldNotFindParameter_InAppSettingsJSON, DBFileName) }");
+                    Console.WriteLine($"{ String.Format(CultureServicesRes.CouldNotFindParameter_InAppSettingsJSON, DBFileName) }");
                     return await Task.FromResult(false);
                 }
 
@@ -73,7 +73,7 @@ namespace ModelsCompare
 
                 if (!fiDB.Exists)
                 {
-                    Console.WriteLine($"{ String.Format(ModelsCompareServicesRes.CouldNotFindFile_, fiDB.FullName) }");
+                    Console.WriteLine($"{ String.Format(CultureServicesRes.CouldNotFindFile_, fiDB.FullName) }");
                     return await Task.FromResult(false);
                 }
 

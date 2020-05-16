@@ -6,11 +6,11 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using ServicesClassNameServiceGeneratedServices.Services;
-using ServicesExtensionEnumCastingGeneratedServices.Resources;
 using System;
 using System.IO;
 using ValidateAppSettingsServices.Services;
 using System.Threading.Tasks;
+using CultureServices.Resources;
 
 namespace ServicesExtensionEnumCastingGenerated
 {
@@ -66,7 +66,7 @@ namespace ServicesExtensionEnumCastingGenerated
                 string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
                 if (configuration.GetValue<string>(DBFileName) == null)
                 {
-                    Console.WriteLine($"{ String.Format(ServicesExtensionEnumCastingGeneratedServicesRes.CouldNotFindParameter_InAppSettingsJSON, DBFileName) }");
+                    Console.WriteLine($"{ String.Format(CultureServicesRes.CouldNotFindParameter_InAppSettingsJSON, DBFileName) }");
                     return await Task.FromResult(false);
                 }
 
@@ -74,7 +74,7 @@ namespace ServicesExtensionEnumCastingGenerated
 
                 if (!fiDB.Exists)
                 {
-                    Console.WriteLine($"{ String.Format(ServicesExtensionEnumCastingGeneratedServicesRes.CouldNotFindFile_, fiDB.FullName) }");
+                    Console.WriteLine($"{ String.Format(CultureServicesRes.CouldNotFindFile_, fiDB.FullName) }");
                     return await Task.FromResult(false);
                 }
 

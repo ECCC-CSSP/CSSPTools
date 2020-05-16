@@ -1,5 +1,4 @@
-﻿using AngularEnumsGeneratedServices.Resources;
-using AngularEnumsGeneratedServices.Services;
+﻿using AngularEnumsGeneratedServices.Services;
 using CSSPModels;
 using GenerateCodeBaseServices.Services;
 using ActionCommandDBServices.Models;
@@ -14,6 +13,7 @@ using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.Linq;
 using System.Globalization;
+using CultureServices.Resources;
 
 namespace AngularEnumsGenerated
 {
@@ -69,7 +69,7 @@ namespace AngularEnumsGenerated
                 string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
                 if (configuration.GetValue<string>(DBFileName) == null)
                 {
-                    Console.WriteLine($"{ String.Format(AngularEnumsGeneratedServicesRes.CouldNotFindParameter_InAppSettingsJSON, DBFileName) }");
+                    Console.WriteLine($"{ String.Format(CultureServicesRes.CouldNotFindParameter_InAppSettingsJSON, DBFileName) }");
                     return await Task.FromResult(false);
                 }
 
@@ -77,7 +77,7 @@ namespace AngularEnumsGenerated
 
                 if (!fiDB.Exists)
                 {
-                    Console.WriteLine($"{ String.Format(AngularEnumsGeneratedServicesRes.CouldNotFindFile_, fiDB.FullName) }");
+                    Console.WriteLine($"{ String.Format(CultureServicesRes.CouldNotFindFile_, fiDB.FullName) }");
                     return await Task.FromResult(false);
                 }
 

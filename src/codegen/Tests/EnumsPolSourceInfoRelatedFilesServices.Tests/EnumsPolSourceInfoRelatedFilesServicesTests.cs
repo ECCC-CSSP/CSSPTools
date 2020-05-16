@@ -15,7 +15,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 using ValidateAppSettingsServices.Services;
-using EnumsPolSourceInfoRelatedFilesServices.Resources;
+using CultureServices.Resources;
 
 namespace EnumsPolSourceInfoRelatedFilesServices.Tests
 {
@@ -65,7 +65,7 @@ namespace EnumsPolSourceInfoRelatedFilesServices.Tests
                 culture = "en-CA";
             }
             CultureInfo Culture = new CultureInfo(culture);
-            Assert.Equal(Culture, EnumsPolSourceInfoRelatedFilesServicesRes.Culture);
+            Assert.Equal(Culture, CultureServicesRes.Culture);
         }
         [Theory]
         [InlineData("en-CA")] // good

@@ -17,10 +17,10 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
-using WebAPIClassNameControllerTestGeneratedServices.Resources;
 using Microsoft.AspNetCore.Mvc;
 using ValidateAppSettingsServices.Services;
 using ValidateAppSettingsServices.Models;
+using CultureServices.Resources;
 
 namespace WebAPIClassNameControllerTestGeneratedServices.Services
 {
@@ -78,7 +78,7 @@ namespace WebAPIClassNameControllerTestGeneratedServices.Services
             await actionCommandDBService.SetCulture(culture);
             await validateAppSettingsService.SetCulture(culture);
             await generateCodeBaseService.SetCulture(culture);
-            WebAPIClassNameControllerTestGeneratedServicesRes.Culture = culture;
+            CultureServicesRes.Culture = culture;
         }
         #endregion Functions public
 

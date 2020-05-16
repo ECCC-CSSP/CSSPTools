@@ -11,8 +11,8 @@ using ActionCommandDBServices.Services;
 using System.Globalization;
 using Microsoft.Extensions.Configuration;
 using Xunit;
-using ActionCommandDBServices.Resources;
 using Microsoft.AspNetCore.Mvc;
+using CultureServices.Resources;
 
 namespace ActionCommandDBServices.Tests
 {
@@ -47,10 +47,10 @@ namespace ActionCommandDBServices.Tests
             Assert.NotNull(serviceCollection);
             Assert.NotNull(actionCommandDBService);
 
-            Assert.Equal(new CultureInfo(culture), ActionCommandDBServicesRes.Culture);
+            Assert.Equal(new CultureInfo(culture), CultureServicesRes.Culture);
 
             await actionCommandDBService.SetCulture(new CultureInfo(culture));
-            Assert.Equal(new CultureInfo(culture), ActionCommandDBServicesRes.Culture);
+            Assert.Equal(new CultureInfo(culture), CultureServicesRes.Culture);
 
             Assert.Equal(0, actionCommandDBService.ActionCommandID);
             Assert.Equal("", actionCommandDBService.Action);
@@ -197,7 +197,7 @@ namespace ActionCommandDBServices.Tests
 
             actionActionCommand = await actionCommandDBService.Create();
             Assert.Equal(400, ((ObjectResult)actionActionCommand.Result).StatusCode);
-            Assert.Equal($"{ string.Format(ActionCommandDBServicesRes._IsRequied, "Action") }", ((BadRequestObjectResult)actionActionCommand.Result).Value);
+            Assert.Equal($"{ string.Format(CultureServicesRes._IsRequied, "Action") }", ((BadRequestObjectResult)actionActionCommand.Result).Value);
 
             // Creating object in DB
             actionCommandDBService.Action = "TestingAction";
@@ -205,7 +205,7 @@ namespace ActionCommandDBServices.Tests
 
             actionActionCommand = await actionCommandDBService.Create();
             Assert.Equal(400, ((ObjectResult)actionActionCommand.Result).StatusCode);
-            Assert.Equal($"{ string.Format(ActionCommandDBServicesRes._IsRequied, "Command") }", ((BadRequestObjectResult)actionActionCommand.Result).Value);
+            Assert.Equal($"{ string.Format(CultureServicesRes._IsRequied, "Command") }", ((BadRequestObjectResult)actionActionCommand.Result).Value);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -248,7 +248,7 @@ namespace ActionCommandDBServices.Tests
 
             actionActionCommand = await actionCommandDBService.Delete();
             Assert.Equal(400, ((ObjectResult)actionActionCommand.Result).StatusCode);
-            Assert.Equal($"{ string.Format(ActionCommandDBServicesRes._IsRequied, "Command") }", ((BadRequestObjectResult)actionActionCommand.Result).Value);
+            Assert.Equal($"{ string.Format(CultureServicesRes._IsRequied, "Command") }", ((BadRequestObjectResult)actionActionCommand.Result).Value);
 
             // Delete object in DB
             actionCommandDBService.Action = "";
@@ -256,7 +256,7 @@ namespace ActionCommandDBServices.Tests
 
             actionActionCommand = await actionCommandDBService.Delete();
             Assert.Equal(400, ((ObjectResult)actionActionCommand.Result).StatusCode);
-            Assert.Equal($"{ string.Format(ActionCommandDBServicesRes._IsRequied, "Action") }", ((BadRequestObjectResult)actionActionCommand.Result).Value);
+            Assert.Equal($"{ string.Format(CultureServicesRes._IsRequied, "Action") }", ((BadRequestObjectResult)actionActionCommand.Result).Value);
 
             actionCommandDBService.Action = "TestingAction";
             actionCommandDBService.Command = "TestingCommand";
@@ -298,7 +298,7 @@ namespace ActionCommandDBServices.Tests
             actionCommandDBService.Action = "TestingAction_NotExist";
             actionActionCommand = await actionCommandDBService.Get();
             Assert.Equal(400, ((ObjectResult)actionActionCommand.Result).StatusCode);
-            Assert.Equal($"{ string.Format(ActionCommandDBServicesRes.CouldNotFindActionCommandToDeleteWithAction_AndCommand_, actionCommandDBService.Action, actionCommandDBService.Command) }", ((BadRequestObjectResult)actionActionCommand.Result).Value);
+            Assert.Equal($"{ string.Format(CultureServicesRes.CouldNotFindActionCommandToDeleteWithAction_AndCommand_, actionCommandDBService.Action, actionCommandDBService.Command) }", ((BadRequestObjectResult)actionActionCommand.Result).Value);
 
             // Delete object in DB
             actionCommandDBService.Action = "TestingAction";
@@ -306,7 +306,7 @@ namespace ActionCommandDBServices.Tests
 
             actionActionCommand = await actionCommandDBService.Get();
             Assert.Equal(400, ((ObjectResult)actionActionCommand.Result).StatusCode);
-            Assert.Equal($"{ string.Format(ActionCommandDBServicesRes._IsRequied, "Command") }", ((BadRequestObjectResult)actionActionCommand.Result).Value);
+            Assert.Equal($"{ string.Format(CultureServicesRes._IsRequied, "Command") }", ((BadRequestObjectResult)actionActionCommand.Result).Value);
 
             // Delete object in DB
             actionCommandDBService.Action = "";
@@ -314,7 +314,7 @@ namespace ActionCommandDBServices.Tests
 
             actionActionCommand = await actionCommandDBService.Get();
             Assert.Equal(400, ((ObjectResult)actionActionCommand.Result).StatusCode);
-            Assert.Equal($"{ string.Format(ActionCommandDBServicesRes._IsRequied, "Action") }", ((BadRequestObjectResult)actionActionCommand.Result).Value);
+            Assert.Equal($"{ string.Format(CultureServicesRes._IsRequied, "Action") }", ((BadRequestObjectResult)actionActionCommand.Result).Value);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -353,7 +353,7 @@ namespace ActionCommandDBServices.Tests
 
             actionActionCommand = await actionCommandDBService.GetOrCreate();
             Assert.Equal(400, ((ObjectResult)actionActionCommand.Result).StatusCode);
-            Assert.Equal($"{ string.Format(ActionCommandDBServicesRes._IsRequied, "Command") }", ((BadRequestObjectResult)actionActionCommand.Result).Value);
+            Assert.Equal($"{ string.Format(CultureServicesRes._IsRequied, "Command") }", ((BadRequestObjectResult)actionActionCommand.Result).Value);
 
             // Delete object in DB
             actionCommandDBService.Action = "";
@@ -361,7 +361,7 @@ namespace ActionCommandDBServices.Tests
 
             actionActionCommand = await actionCommandDBService.GetOrCreate();
             Assert.Equal(400, ((ObjectResult)actionActionCommand.Result).StatusCode);
-            Assert.Equal($"{ string.Format(ActionCommandDBServicesRes._IsRequied, "Action") }", ((BadRequestObjectResult)actionActionCommand.Result).Value);
+            Assert.Equal($"{ string.Format(CultureServicesRes._IsRequied, "Action") }", ((BadRequestObjectResult)actionActionCommand.Result).Value);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -400,7 +400,7 @@ namespace ActionCommandDBServices.Tests
 
             actionActionCommand = await actionCommandDBService.Update();
             Assert.Equal(400, ((ObjectResult)actionActionCommand.Result).StatusCode);
-            Assert.Equal($"{ string.Format(ActionCommandDBServicesRes._IsRequied, "Command") }", ((BadRequestObjectResult)actionActionCommand.Result).Value);
+            Assert.Equal($"{ string.Format(CultureServicesRes._IsRequied, "Command") }", ((BadRequestObjectResult)actionActionCommand.Result).Value);
 
             // Delete object in DB
             actionCommandDBService.Action = "";
@@ -408,7 +408,7 @@ namespace ActionCommandDBServices.Tests
 
             actionActionCommand = await actionCommandDBService.Update();
             Assert.Equal(400, ((ObjectResult)actionActionCommand.Result).StatusCode);
-            Assert.Equal($"{ string.Format(ActionCommandDBServicesRes._IsRequied, "Action") }", ((BadRequestObjectResult)actionActionCommand.Result).Value);
+            Assert.Equal($"{ string.Format(CultureServicesRes._IsRequied, "Action") }", ((BadRequestObjectResult)actionActionCommand.Result).Value);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -418,14 +418,14 @@ namespace ActionCommandDBServices.Tests
             await Setup(new CultureInfo(culture));
 
             await actionCommandDBService.SetCulture(new CultureInfo(culture));
-            Assert.Equal(new CultureInfo(culture), ActionCommandDBServicesRes.Culture);
+            Assert.Equal(new CultureInfo(culture), CultureServicesRes.Culture);
         }
         #endregion Functions public
 
         #region Functions private
         private async Task Setup(CultureInfo culture)
         {
-            ActionCommandDBServicesRes.Culture = culture;
+            CultureServicesRes.Culture = culture;
 
             configuration = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetParent(AppContext.BaseDirectory).FullName)
@@ -465,7 +465,7 @@ namespace ActionCommandDBServices.Tests
             Assert.NotNull(actionCommandDBService);
 
             await actionCommandDBService.SetCulture(culture);
-            Assert.Equal(culture, ActionCommandDBServicesRes.Culture);
+            Assert.Equal(culture, CultureServicesRes.Culture);
 
         }
         #endregion Functions private

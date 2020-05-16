@@ -1,6 +1,5 @@
 ﻿using CSSPEnums;
 using ValidateAppSettingsServices.Models;
-using ValidateAppSettingsServices.Resources;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
@@ -12,6 +11,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Globalization;
 using ActionCommandDBServices.Services;
+using CultureServices.Resources;
 
 namespace ValidateAppSettingsServices.Services
 {
@@ -76,7 +76,7 @@ namespace ValidateAppSettingsServices.Services
         }
         public async Task SetCulture(CultureInfo culture)
         {
-            ValidateAppSettingsServicesRes.Culture = culture;
+            CultureServicesRes.Culture = culture;
             await actionCommandDBService.SetCulture(culture);
         }
         #endregion Functions public

@@ -1,6 +1,5 @@
 ﻿using Microsoft.Extensions.Primitives;
 using ActionCommandDBServices.Models;
-using ActionCommandDBServices.Resources;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -8,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using CultureServices.Resources;
 
 namespace ActionCommandDBServices.Services
 {
@@ -42,8 +42,8 @@ namespace ActionCommandDBServices.Services
         #region Functions public
         public async Task<ActionResult<ActionCommand>> Create()
         {
-            if (Action == "") return BadRequest($"{ string.Format(ActionCommandDBServicesRes._IsRequied, "Action") }");
-            if (Command == "") return BadRequest($"{ string.Format(ActionCommandDBServicesRes._IsRequied, "Command") }");
+            if (Action == "") return BadRequest($"{ string.Format(CultureServicesRes._IsRequied, "Action") }");
+            if (Command == "") return BadRequest($"{ string.Format(CultureServicesRes._IsRequied, "Command") }");
 
             long? LastID = (from c in db.ActionCommands
                             orderby c.ActionCommandID descending
@@ -89,8 +89,8 @@ namespace ActionCommandDBServices.Services
         }
         public async Task<ActionResult<ActionCommand>> Delete()
         {
-            if (Action == "") return BadRequest($"{ string.Format(ActionCommandDBServicesRes._IsRequied, "Action") }");
-            if (Command == "") return BadRequest($"{ string.Format(ActionCommandDBServicesRes._IsRequied, "Command") }");
+            if (Action == "") return BadRequest($"{ string.Format(CultureServicesRes._IsRequied, "Action") }");
+            if (Command == "") return BadRequest($"{ string.Format(CultureServicesRes._IsRequied, "Command") }");
 
             ActionCommand actionCommand = GetActionCommand();
 
@@ -115,22 +115,22 @@ namespace ActionCommandDBServices.Services
         }
         public async Task<ActionResult<ActionCommand>> Get()
         {
-            if (Action == "") return BadRequest($"{ string.Format(ActionCommandDBServicesRes._IsRequied, "Action") }");
-            if (Command == "") return BadRequest($"{ string.Format(ActionCommandDBServicesRes._IsRequied, "Command") }");
+            if (Action == "") return BadRequest($"{ string.Format(CultureServicesRes._IsRequied, "Action") }");
+            if (Command == "") return BadRequest($"{ string.Format(CultureServicesRes._IsRequied, "Command") }");
 
             ActionCommand actionCommand = GetActionCommand();
 
             if (actionCommand == null)
             {
-                return BadRequest($"{ string.Format(ActionCommandDBServicesRes.CouldNotFindActionCommandToDeleteWithAction_AndCommand_, Action, Command) }");
+                return BadRequest($"{ string.Format(CultureServicesRes.CouldNotFindActionCommandToDeleteWithAction_AndCommand_, Action, Command) }");
             }
 
             return await Task.FromResult(Ok(actionCommand));
         }
         public async Task<ActionResult<ActionCommand>> GetOrCreate()
         {
-            if (Action == "") return BadRequest($"{ string.Format(ActionCommandDBServicesRes._IsRequied, "Action") }");
-            if (Command == "") return BadRequest($"{ string.Format(ActionCommandDBServicesRes._IsRequied, "Command") }");
+            if (Action == "") return BadRequest($"{ string.Format(CultureServicesRes._IsRequied, "Action") }");
+            if (Command == "") return BadRequest($"{ string.Format(CultureServicesRes._IsRequied, "Command") }");
 
             ActionCommand actionCommand = GetActionCommand();
             if (actionCommand == null)
@@ -142,8 +142,8 @@ namespace ActionCommandDBServices.Services
         }
         public async Task<ActionResult<ActionCommand>> Update()
         {
-            if (Action == "") return BadRequest($"{ string.Format(ActionCommandDBServicesRes._IsRequied, "Action") }");
-            if (Command == "") return BadRequest($"{ string.Format(ActionCommandDBServicesRes._IsRequied, "Command") }");
+            if (Action == "") return BadRequest($"{ string.Format(CultureServicesRes._IsRequied, "Action") }");
+            if (Command == "") return BadRequest($"{ string.Format(CultureServicesRes._IsRequied, "Command") }");
 
             ActionCommand actionCommand = GetActionCommand();
             if (actionCommand == null)
@@ -151,10 +151,6 @@ namespace ActionCommandDBServices.Services
                 return BadRequest(actionCommand);
             }
 
-
-            //actionCommand.ActionCommandID = ActionCommandID;
-            //actionCommand.Action = Action;
-            //actionCommand.Command = Command;
             actionCommand.FullFileName = FullFileName;
             actionCommand.Description = Description;
             actionCommand.TempStatusText = TempStatusText.ToString();
@@ -177,7 +173,7 @@ namespace ActionCommandDBServices.Services
         }
         public async Task SetCulture(CultureInfo culture)
         {
-            ActionCommandDBServicesRes.Culture = culture;
+            CultureServicesRes.Culture = culture;
         }
         #endregion Functions public
 

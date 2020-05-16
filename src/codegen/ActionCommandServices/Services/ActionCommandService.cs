@@ -9,12 +9,12 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using ActionCommandServices.Resources;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient.Server;
 using ActionCommandDBServices.Models;
+using CultureServices.Resources;
 
 namespace ActionCommandServices.Services
 {
@@ -45,11 +45,11 @@ namespace ActionCommandServices.Services
                 actionCommandDBService.Command = actionCommand.Command;
 
                 string exePath = configuration.GetValue<string>("ExecuteDotNetCommandAppPath");
-                string args = $" { ActionCommandServicesRes.Culture.Name } { actionCommand.Action } { actionCommand.FullFileName }";
+                string args = $" { CultureServicesRes.Culture.Name } { actionCommand.Action } { actionCommand.FullFileName }";
 
                 if (string.IsNullOrWhiteSpace(exePath))
                 {
-                    actionCommandDBService.ErrorText.AppendLine(ActionCommandServicesRes.ExePathIsEmpty);
+                    actionCommandDBService.ErrorText.AppendLine(CultureServicesRes.ExePathIsEmpty);
                     actionCommandDBService.PercentCompleted = 0;
                     await actionCommandDBService.Update();
                     return BadRequest(actionCommandDBService.ErrorText.ToString());
@@ -58,7 +58,7 @@ namespace ActionCommandServices.Services
                 FileInfo fiApp = new FileInfo(exePath);
                 if (!fiApp.Exists)
                 {
-                    actionCommandDBService.ErrorText.AppendLine(string.Format(ActionCommandServicesRes.CouldNotFindExePath_, exePath));
+                    actionCommandDBService.ErrorText.AppendLine(string.Format(CultureServicesRes.CouldNotFindExePath_, exePath));
                     actionCommandDBService.PercentCompleted = 0;
                     await actionCommandDBService.Update();
                     return BadRequest(actionCommandDBService.ErrorText.ToString());
@@ -76,12 +76,12 @@ namespace ActionCommandServices.Services
             }
             catch (Exception ex)
             {
-                return BadRequest(string.Format(ActionCommandServicesRes.UnmanagedServerError_, ex.Message));
+                return BadRequest(string.Format(CultureServicesRes.UnmanagedServerError_, ex.Message));
             }
         }
         public async Task SetCulture(CultureInfo culture)
         {
-            ActionCommandServicesRes.Culture = culture;
+            CultureServicesRes.Culture = culture;
             await actionCommandDBService.SetCulture(culture);
         }
         #endregion Functions public

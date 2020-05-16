@@ -7,7 +7,6 @@ using ActionCommandDBServices.Services;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
-using ServicesClassNameServiceGeneratedServices.Resources;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -21,6 +20,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using ValidateAppSettingsServices.Services;
 using ValidateAppSettingsServices.Models;
+using CultureServices.Resources;
 
 namespace ServicesClassNameServiceGeneratedServices.Services
 {
@@ -49,7 +49,7 @@ namespace ServicesClassNameServiceGeneratedServices.Services
             List<DLLTypeInfo> DLLTypeInfoCSSPModelsList = new List<DLLTypeInfo>();
             if (generateCodeBaseService.FillDLLTypeInfoList(fiCSSPModelsDLL, DLLTypeInfoCSSPModelsList))
             {
-                actionCommandDBService.ErrorText.AppendLine($"{ string.Format(ServicesClassNameServiceGeneratedServicesRes.CouldNotFindFile_, fiCSSPModelsDLL.FullName) }");
+                actionCommandDBService.ErrorText.AppendLine($"{ string.Format(CultureServicesRes.CouldNotFindFile_, fiCSSPModelsDLL.FullName) }");
                 return false;
             }
             #endregion Variables and loading DLL properties
@@ -232,11 +232,11 @@ namespace ServicesClassNameServiceGeneratedServices.Services
                     sw2.Write(sb.ToString());
                 }
 
-                actionCommandDBService.ExecutionStatusText.AppendLine($"{ string.Format(ServicesClassNameServiceGeneratedServicesRes.Created_, fiOutputGen.FullName) }");
+                actionCommandDBService.ExecutionStatusText.AppendLine($"{ string.Format(CultureServicesRes.Created_, fiOutputGen.FullName) }");
 
             }
             actionCommandDBService.ExecutionStatusText.AppendLine("");
-            actionCommandDBService.ExecutionStatusText.AppendLine($"{ ServicesClassNameServiceGeneratedServicesRes.Done } ...");
+            actionCommandDBService.ExecutionStatusText.AppendLine($"{ CultureServicesRes.Done } ...");
             actionCommandDBService.ExecutionStatusText.AppendLine("");
             actionCommandDBService.ExecutionStatusText.AppendLine("Generate Finished ...");
             actionCommandDBService.PercentCompleted = 100;

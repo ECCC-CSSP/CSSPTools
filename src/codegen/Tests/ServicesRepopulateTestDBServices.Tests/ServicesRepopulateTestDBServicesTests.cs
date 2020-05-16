@@ -15,7 +15,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 using ValidateAppSettingsServices.Services;
-using ServicesRepopulateTestDBServices.Resources;
+using CultureServices.Resources;
 
 namespace ServicesRepopulateTestDBServices.Tests
 {
@@ -64,7 +64,7 @@ namespace ServicesRepopulateTestDBServices.Tests
                 culture = "en-CA";
             }
             CultureInfo Culture = new CultureInfo(culture);
-            Assert.Equal(Culture, ServicesRepopulateTestDBServicesRes.Culture);
+            Assert.Equal(Culture, CultureServicesRes.Culture);
         }
         [Theory]
         [InlineData("en-CA")] // good
@@ -123,7 +123,7 @@ namespace ServicesRepopulateTestDBServices.Tests
             string CSSPDBConnString = configuration.GetValue<string>("CSSPDBConnectionString");
             if (CSSPDBConnString == null)
             {
-                await actionCommandDBService.ConsoleWriteError($"{ String.Format(ServicesRepopulateTestDBServicesRes.CouldNotFindParameter_InAppSettingsJSON, "CSSPDBConnectionString") }");
+                await actionCommandDBService.ConsoleWriteError($"{ String.Format(CultureServicesRes.CouldNotFindParameter_InAppSettingsJSON, "CSSPDBConnectionString") }");
                 return await Task.FromResult(false);
             }
 
@@ -147,7 +147,7 @@ namespace ServicesRepopulateTestDBServices.Tests
             string TestDBConnString = configuration.GetValue<string>("TestDBConnectionString");
             if (TestDBConnString == null)
             {
-                await actionCommandDBService.ConsoleWriteError($"{ String.Format(ServicesRepopulateTestDBServicesRes.CouldNotFindParameter_InAppSettingsJSON, "TestDBConnectionString") }");
+                await actionCommandDBService.ConsoleWriteError($"{ String.Format(CultureServicesRes.CouldNotFindParameter_InAppSettingsJSON, "TestDBConnectionString") }");
                 return await Task.FromResult(false);
             }
 

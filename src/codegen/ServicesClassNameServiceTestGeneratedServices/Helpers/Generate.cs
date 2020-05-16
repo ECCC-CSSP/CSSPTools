@@ -7,7 +7,6 @@ using ActionCommandDBServices.Services;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
-using ServicesClassNameServiceTestGeneratedServices.Resources;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -20,6 +19,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using ValidateAppSettingsServices.Services;
 using ValidateAppSettingsServices.Models;
+using CultureServices.Resources;
 
 namespace ServicesClassNameServiceTestGeneratedServices.Services
 {
@@ -318,7 +318,7 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
             }
 
             actionCommandDBService.ExecutionStatusText.AppendLine("");
-            actionCommandDBService.ExecutionStatusText.AppendLine($"{ ServicesClassNameServiceTestGeneratedServicesRes.Done } ...");
+            actionCommandDBService.ExecutionStatusText.AppendLine($"{ CultureServicesRes.Done } ...");
             actionCommandDBService.ExecutionStatusText.AppendLine("");
             actionCommandDBService.ExecutionStatusText.AppendLine("Generate Finished ...");
             actionCommandDBService.PercentCompleted = 100;

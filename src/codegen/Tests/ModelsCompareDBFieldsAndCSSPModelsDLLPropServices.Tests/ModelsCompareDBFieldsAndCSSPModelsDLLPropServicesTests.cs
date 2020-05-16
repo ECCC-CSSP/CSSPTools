@@ -14,7 +14,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 using ValidateAppSettingsServices.Services;
-using ModelsCompareDBFieldsAndCSSPModelsDLLPropServices.Resources;
+using CultureServices.Resources;
 
 namespace ModelsCompareDBFieldsAndCSSPModelsDLLPropServices.Tests
 {
@@ -63,7 +63,7 @@ namespace ModelsCompareDBFieldsAndCSSPModelsDLLPropServices.Tests
                 culture = "en-CA";
             }
             CultureInfo Culture = new CultureInfo(culture);
-            Assert.Equal(Culture, ModelsCompareDBFieldsAndCSSPModelsDLLPropServicesRes.Culture);
+            Assert.Equal(Culture, CultureServicesRes.Culture);
         }
         [Theory]
         [InlineData("en-CA")] // good

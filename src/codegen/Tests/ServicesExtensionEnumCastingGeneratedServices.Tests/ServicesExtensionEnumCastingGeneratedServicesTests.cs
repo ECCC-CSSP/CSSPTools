@@ -15,7 +15,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 using ValidateAppSettingsServices.Services;
-using ServicesExtensionEnumCastingGeneratedServices.Resources;
+using CultureServices.Resources;
 
 namespace ServicesClassNameServiceGeneratedServices.Tests
 {
@@ -64,7 +64,7 @@ namespace ServicesClassNameServiceGeneratedServices.Tests
                 culture = "en-CA";
             }
             CultureInfo Culture = new CultureInfo(culture);
-            Assert.Equal(Culture, ServicesExtensionEnumCastingGeneratedServicesRes.Culture);
+            Assert.Equal(Culture, CultureServicesRes.Culture);
         }
         [Theory]
         [InlineData("en-CA")] // good

@@ -1,5 +1,4 @@
-﻿using AngularInterfacesGeneratedServices.Resources;
-using AngularInterfacesGeneratedServices.Services;
+﻿using AngularInterfacesGeneratedServices.Services;
 using CSSPModels;
 using GenerateCodeBaseServices.Services;
 using ActionCommandDBServices.Models;
@@ -11,6 +10,7 @@ using System;
 using System.IO;
 using ValidateAppSettingsServices.Services;
 using System.Threading.Tasks;
+using CultureServices.Resources;
 
 namespace AngularInterfacesGenerated
 {
@@ -69,7 +69,7 @@ namespace AngularInterfacesGenerated
                 string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
                 if (configuration.GetValue<string>(DBFileName) == null)
                 {
-                    Console.WriteLine($"{ String.Format(AngularInterfacesGeneratedServicesRes.CouldNotFindParameter_InAppSettingsJSON, DBFileName) }");
+                    Console.WriteLine($"{ String.Format(CultureServicesRes.CouldNotFindParameter_InAppSettingsJSON, DBFileName) }");
                     return await Task.FromResult(false);
                 }
 
@@ -77,7 +77,7 @@ namespace AngularInterfacesGenerated
 
                 if (!fiDB.Exists)
                 {
-                    Console.WriteLine($"{ String.Format(AngularInterfacesGeneratedServicesRes.CouldNotFindFile_, fiDB.FullName) }");
+                    Console.WriteLine($"{ String.Format(CultureServicesRes.CouldNotFindFile_, fiDB.FullName) }");
                     return await Task.FromResult(false);
                 }
 

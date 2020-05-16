@@ -11,11 +11,10 @@ using ActionCommandDBServices.Services;
 using System.Globalization;
 using Microsoft.Extensions.Configuration;
 using Xunit;
-using ActionCommandServices.Resources;
+using Microsoft.AspNetCore.Mvc;
+using CultureServices.Resources;
 using ActionCommandServices.Services;
 using ActionCommandServices.Models;
-using Microsoft.AspNetCore.Mvc;
-using ActionCommandDBServices.Resources;
 
 namespace ActionCommandDBServices.Tests
 {
@@ -52,7 +51,7 @@ namespace ActionCommandDBServices.Tests
             Assert.NotNull(actionCommandDBService);
             Assert.NotNull(actionCommandService);
 
-            Assert.Equal(new CultureInfo(culture), ActionCommandServicesRes.Culture);
+            Assert.Equal(new CultureInfo(culture), CultureServicesRes.Culture);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -62,7 +61,7 @@ namespace ActionCommandDBServices.Tests
             await Setup(new CultureInfo(culture), "appsettings.json");
 
             await actionCommandService.SetCulture(new CultureInfo(culture));
-            Assert.Equal(new CultureInfo(culture), ActionCommandServicesRes.Culture);
+            Assert.Equal(new CultureInfo(culture), CultureServicesRes.Culture);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -103,7 +102,7 @@ namespace ActionCommandDBServices.Tests
             var actionActionCommand = await actionCommandService.RunActionCommand(actionCommand);
             Assert.Equal(400, ((ObjectResult)actionActionCommand.Result).StatusCode);
             Assert.NotNull(((BadRequestObjectResult)actionActionCommand.Result).Value);
-            Assert.Contains(ActionCommandServicesRes.ExePathIsEmpty, (string)((BadRequestObjectResult)actionActionCommand.Result).Value);
+            Assert.Contains(CultureServicesRes.ExePathIsEmpty, (string)((BadRequestObjectResult)actionActionCommand.Result).Value);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -124,14 +123,14 @@ namespace ActionCommandDBServices.Tests
             Assert.NotNull(((BadRequestObjectResult)actionActionCommand.Result).Value);
 
             string exePath = configuration.GetValue<string>("ExecuteDotNetCommandAppPath");
-            Assert.Contains(string.Format(ActionCommandServicesRes.CouldNotFindExePath_, exePath), (string)((BadRequestObjectResult)actionActionCommand.Result).Value);
+            Assert.Contains(string.Format(CultureServicesRes.CouldNotFindExePath_, exePath), (string)((BadRequestObjectResult)actionActionCommand.Result).Value);
         }
         #endregion Functions public
 
         #region Functions private
         private async Task Setup(CultureInfo culture, string appsettingfilename)
         {
-            ActionCommandServicesRes.Culture = culture;
+            CultureServicesRes.Culture = culture;
 
             configuration = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetParent(AppContext.BaseDirectory).FullName)
@@ -168,13 +167,13 @@ namespace ActionCommandDBServices.Tests
             Assert.NotNull(actionCommandDBService);
 
             await actionCommandDBService.SetCulture(culture);
-            Assert.Equal(culture, ActionCommandDBServicesRes.Culture);
+            Assert.Equal(culture, CultureServicesRes.Culture);
 
             actionCommandService = serviceProvider.GetService<IActionCommandService>();
             Assert.NotNull(actionCommandService);
 
             await actionCommandService.SetCulture(culture);
-            Assert.Equal(culture, ActionCommandServicesRes.Culture);
+            Assert.Equal(culture, CultureServicesRes.Culture);
         }
         #endregion Functions private
 

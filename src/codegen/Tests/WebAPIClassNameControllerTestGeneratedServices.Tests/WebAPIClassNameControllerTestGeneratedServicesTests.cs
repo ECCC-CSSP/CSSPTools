@@ -15,7 +15,7 @@ using System.Threading.Tasks;
 using WebAPIClassNameControllerTestGeneratedServices.Services;
 using Xunit;
 using ValidateAppSettingsServices.Services;
-using WebAPIClassNameControllerTestGeneratedServices.Resources;
+using CultureServices.Resources;
 
 namespace WebAPIClassNameControllerTestGeneratedServices.Tests
 {
@@ -64,7 +64,7 @@ namespace WebAPIClassNameControllerTestGeneratedServices.Tests
                 culture = "en-CA";
             }
             CultureInfo Culture = new CultureInfo(culture);
-            Assert.Equal(Culture, WebAPIClassNameControllerTestGeneratedServicesRes.Culture);
+            Assert.Equal(Culture, CultureServicesRes.Culture);
         }
         [Theory]
         [InlineData("en-CA")] // good

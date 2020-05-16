@@ -1,5 +1,4 @@
-﻿using EnumsCompareWithOldEnumsServices.Resources;
-using EnumsCompareWithOldEnumsServices.Services;
+﻿using EnumsCompareWithOldEnumsServices.Services;
 using GenerateCodeBaseServices.Services;
 using ActionCommandDBServices.Models;
 using ActionCommandDBServices.Services;
@@ -12,6 +11,7 @@ using System.Globalization;
 using System.IO;
 using System.Threading.Tasks;
 using ValidateAppSettingsServices.Services;
+using CultureServices.Resources;
 
 namespace EnumsCompareWithOldEnums
 {
@@ -67,7 +67,7 @@ namespace EnumsCompareWithOldEnums
                 string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
                 if (configuration.GetValue<string>(DBFileName) == null)
                 {
-                    Console.WriteLine($"{ String.Format(EnumsCompareWithOldEnumsServicesRes.CouldNotFindParameter_InAppSettingsJSON, DBFileName) }");
+                    Console.WriteLine($"{ String.Format(CultureServicesRes.CouldNotFindParameter_InAppSettingsJSON, DBFileName) }");
                     return await Task.FromResult(false);
                 }
 
@@ -75,7 +75,7 @@ namespace EnumsCompareWithOldEnums
 
                 if (!fiDB.Exists)
                 {
-                    Console.WriteLine($"{ String.Format(EnumsCompareWithOldEnumsServicesRes.CouldNotFindFile_, fiDB.FullName) }");
+                    Console.WriteLine($"{ String.Format(CultureServicesRes.CouldNotFindFile_, fiDB.FullName) }");
                     return await Task.FromResult(false);
                 }
 

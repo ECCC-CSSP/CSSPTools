@@ -1,5 +1,4 @@
-﻿using AngularInterfacesGeneratedServices.Resources;
-using CSSPEnums;
+﻿using CSSPEnums;
 using CSSPModels;
 using GenerateCodeBaseServices.Models;
 using GenerateCodeBaseServices.Services;
@@ -21,6 +20,7 @@ using System.Threading.Tasks;
 using ValidateAppSettingsServices.Services;
 using ValidateAppSettingsServices.Models;
 using Microsoft.AspNetCore.Mvc;
+using CultureServices.Resources;
 
 namespace AngularInterfacesGeneratedServices.Services
 {
@@ -49,7 +49,7 @@ namespace AngularInterfacesGeneratedServices.Services
                 }
                 catch (Exception)
                 {
-                    actionCommandDBService.ErrorText.AppendLine($"{ string.Format(AngularInterfacesGeneratedServicesRes.CouldNotCreateDirectory_, diOutputGen.FullName) }");
+                    actionCommandDBService.ErrorText.AppendLine($"{ string.Format(CultureServicesRes.CouldNotCreateDirectory_, diOutputGen.FullName) }");
                     return false;
                 }
             }
@@ -62,7 +62,7 @@ namespace AngularInterfacesGeneratedServices.Services
             List<DLLTypeInfo> DLLTypeInfoCSSPEnumsList = new List<DLLTypeInfo>();
             if (generateCodeBaseService.FillDLLTypeInfoList(fiCSSPEnumsDLL, DLLTypeInfoCSSPEnumsList))
             {
-                actionCommandDBService.ErrorText.AppendLine($"{ string.Format(AngularInterfacesGeneratedServicesRes.CouldNotReadFile_, diOutputGen.FullName) }");
+                actionCommandDBService.ErrorText.AppendLine($"{ string.Format(CultureServicesRes.CouldNotReadFile_, diOutputGen.FullName) }");
                 return false;
             }
             actionCommandDBService.ExecutionStatusText.AppendLine($"Loaded [{ fiCSSPEnumsDLL.FullName }] ...");
@@ -72,7 +72,7 @@ namespace AngularInterfacesGeneratedServices.Services
             List<DLLTypeInfo> DLLTypeInfoCSSPModelsList = new List<DLLTypeInfo>();
             if (generateCodeBaseService.FillDLLTypeInfoList(fiCSSPModelsDLL, DLLTypeInfoCSSPModelsList))
             {
-                actionCommandDBService.ErrorText.AppendLine($"{ string.Format(AngularInterfacesGeneratedServicesRes.CouldNotReadFile_, diOutputGen.FullName) }");
+                actionCommandDBService.ErrorText.AppendLine($"{ string.Format(CultureServicesRes.CouldNotReadFile_, diOutputGen.FullName) }");
                 return false;
             }
             actionCommandDBService.ExecutionStatusText.AppendLine($"Loaded [{ fiCSSPModelsDLL.FullName }] ...");
@@ -99,7 +99,7 @@ namespace AngularInterfacesGeneratedServices.Services
             }
 
             actionCommandDBService.ExecutionStatusText.AppendLine("");
-            actionCommandDBService.ExecutionStatusText.AppendLine($"{ AngularInterfacesGeneratedServicesRes.Done } ...");
+            actionCommandDBService.ExecutionStatusText.AppendLine($"{ CultureServicesRes.Done } ...");
             actionCommandDBService.ExecutionStatusText.AppendLine("");
             actionCommandDBService.ExecutionStatusText.AppendLine("Generate Finished ...");
             actionCommandDBService.PercentCompleted = 100;

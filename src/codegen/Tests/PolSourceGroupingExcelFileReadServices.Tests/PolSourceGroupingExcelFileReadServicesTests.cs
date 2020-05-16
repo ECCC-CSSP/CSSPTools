@@ -12,9 +12,8 @@ using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 using ValidateAppSettingsServices.Services;
-using ActionCommandDBServices.Resources;
 using PolSourceGroupingExcelFileReadServices.Services;
-using PolSourceGroupingExcelFileReadServices.Resources;
+using CultureServices.Resources;
 
 namespace PolSourceGroupingExcelFileReadServices.Tests
 {
@@ -66,7 +65,7 @@ namespace PolSourceGroupingExcelFileReadServices.Tests
                 culture = "en-CA";
             }
 
-            Assert.Equal(Culture, PolSourceGroupingExcelFileReadServicesRes.Culture);
+            Assert.Equal(Culture, CultureServicesRes.Culture);
         }
         #endregion Functions public
 

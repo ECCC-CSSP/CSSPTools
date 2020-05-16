@@ -59,11 +59,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ModelsModelClassNameTestGen
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ModelsModelClassNameTestGenerated_csServices.Tests", "Tests\ModelsModelClassNameTestGenerated_csServices.Tests\ModelsModelClassNameTestGenerated_csServices.Tests.csproj", "{F65519CE-9E9A-4DC2-A3B8-3C3904C608E1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ModelsCSSPModelsRes", "ModelsCSSPModelsRes\ModelsCSSPModelsRes.csproj", "{7AB3EC86-5048-4186-BDA8-6EA526F14E45}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ModelsCSSPModelsRes", "ModelsCSSPModelsRes\ModelsCSSPModelsRes.csproj", "{7AB3EC86-5048-4186-BDA8-6EA526F14E45}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ModelsCSSPModelsResServices", "ModelsCSSPModelsResServices\ModelsCSSPModelsResServices.csproj", "{A6641CD3-6F8F-41BE-9FF2-5B267BDF5EE6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ModelsCSSPModelsResServices", "ModelsCSSPModelsResServices\ModelsCSSPModelsResServices.csproj", "{A6641CD3-6F8F-41BE-9FF2-5B267BDF5EE6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ModelsCSSPModelsResServices.Tests", "tests\ModelsCSSPModelsResServices.Tests\ModelsCSSPModelsResServices.Tests.csproj", "{AC71E434-A268-498E-86C5-D65F698E4D13}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ModelsCSSPModelsResServices.Tests", "tests\ModelsCSSPModelsResServices.Tests\ModelsCSSPModelsResServices.Tests.csproj", "{AC71E434-A268-498E-86C5-D65F698E4D13}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ModelsModelClassNameTest", "ModelsModelClassNameTest\ModelsModelClassNameTest.csproj", "{62413835-3B28-4686-B4A6-E6E26D8F2A09}"
 EndProject
@@ -95,11 +95,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ServicesClassNameServiceTes
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ServicesClassNameServiceTestGeneratedServices.Tests", "tests\ServicesClassNameServiceTestGeneratedServices.Tests\ServicesClassNameServiceTestGeneratedServices.Tests.csproj", "{453575BD-C686-4230-9D96-AC9F6D01BB6A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServicesClassNameServiceGenerated", "ServicesClassNameServiceGenerated\ServicesClassNameServiceGenerated.csproj", "{9A7B853D-47EC-427B-9932-632ACB5E47A7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ServicesClassNameServiceGenerated", "ServicesClassNameServiceGenerated\ServicesClassNameServiceGenerated.csproj", "{9A7B853D-47EC-427B-9932-632ACB5E47A7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServicesClassNameServiceGeneratedServices", "ServicesClassNameServiceGeneratedServices\ServicesClassNameServiceGeneratedServices.csproj", "{9E22F934-FA80-41BA-80E0-8A7328A68414}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ServicesClassNameServiceGeneratedServices", "ServicesClassNameServiceGeneratedServices\ServicesClassNameServiceGeneratedServices.csproj", "{9E22F934-FA80-41BA-80E0-8A7328A68414}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServicesClassNameServiceGeneratedServices.Tests", "tests\ServicesClassNameServiceGeneratedServices.Tests\ServicesClassNameServiceGeneratedServices.Tests.csproj", "{965060CB-4A3E-42EE-B089-CCD2AD5330F2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ServicesClassNameServiceGeneratedServices.Tests", "tests\ServicesClassNameServiceGeneratedServices.Tests\ServicesClassNameServiceGeneratedServices.Tests.csproj", "{965060CB-4A3E-42EE-B089-CCD2AD5330F2}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ServicesExtensionEnumCastingGenerated", "ServicesExtensionEnumCastingGenerated\ServicesExtensionEnumCastingGenerated.csproj", "{7356E3DE-5B72-480D-B44B-E3AE588AF5AE}"
 EndProject
@@ -113,23 +113,23 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebAPIClassNameControllerTe
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebAPIClassNameControllerTestGeneratedServices.Tests", "Tests\WebAPIClassNameControllerTestGeneratedServices.Tests\WebAPIClassNameControllerTestGeneratedServices.Tests.csproj", "{1E99D60B-0F0A-485F-95D7-F8FAC915E77A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebAPIClassNameControllerGenerated", "WebAPIClassNameControllerGenerated\WebAPIClassNameControllerGenerated.csproj", "{BA8ABB07-C1D6-46A6-B0A5-ADE3078133D0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebAPIClassNameControllerGenerated", "WebAPIClassNameControllerGenerated\WebAPIClassNameControllerGenerated.csproj", "{BA8ABB07-C1D6-46A6-B0A5-ADE3078133D0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebAPIClassNameControllerGeneratedServices", "WebAPIClassNameControllerGeneratedServices\WebAPIClassNameControllerGeneratedServices.csproj", "{F471AD62-FD6E-406A-9FCE-922F912128C2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebAPIClassNameControllerGeneratedServices", "WebAPIClassNameControllerGeneratedServices\WebAPIClassNameControllerGeneratedServices.csproj", "{F471AD62-FD6E-406A-9FCE-922F912128C2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebAPIClassNameControllerGeneratedServices.Tests", "tests\WebAPIClassNameControllerGeneratedServices.Tests\WebAPIClassNameControllerGeneratedServices.Tests.csproj", "{D1E48C55-2BC1-4C5B-A8B6-73EF4D06951D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebAPIClassNameControllerGeneratedServices.Tests", "tests\WebAPIClassNameControllerGeneratedServices.Tests\WebAPIClassNameControllerGeneratedServices.Tests.csproj", "{D1E48C55-2BC1-4C5B-A8B6-73EF4D06951D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AngularEnumsGenerated", "AngularEnumsGenerated\AngularEnumsGenerated.csproj", "{3D0C6155-3968-4B16-9566-AB9EFFD5795A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AngularEnumsGenerated", "AngularEnumsGenerated\AngularEnumsGenerated.csproj", "{3D0C6155-3968-4B16-9566-AB9EFFD5795A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AngularEnumsGeneratedServices", "AngularEnumsGeneratedServices\AngularEnumsGeneratedServices.csproj", "{73B76588-6ED9-4075-8736-CD497E88645C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AngularEnumsGeneratedServices", "AngularEnumsGeneratedServices\AngularEnumsGeneratedServices.csproj", "{73B76588-6ED9-4075-8736-CD497E88645C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AngularEnumsGeneratedServices.Tests", "tests\AngularEnumsGeneratedServices.Tests\AngularEnumsGeneratedServices.Tests.csproj", "{D09E2EE3-4A81-4967-AA76-FFC0E6387F1E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AngularEnumsGeneratedServices.Tests", "tests\AngularEnumsGeneratedServices.Tests\AngularEnumsGeneratedServices.Tests.csproj", "{D09E2EE3-4A81-4967-AA76-FFC0E6387F1E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AngularInterfacesGenerated", "AngularInterfacesGenerated\AngularInterfacesGenerated.csproj", "{148A4997-CDC3-4F3F-8A85-53CC9DC1535F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AngularInterfacesGenerated", "AngularInterfacesGenerated\AngularInterfacesGenerated.csproj", "{148A4997-CDC3-4F3F-8A85-53CC9DC1535F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AngularInterfacesGeneratedServices", "AngularInterfacesGeneratedServices\AngularInterfacesGeneratedServices.csproj", "{56E1C5BA-D586-4796-80FB-D3F9717C1635}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AngularInterfacesGeneratedServices", "AngularInterfacesGeneratedServices\AngularInterfacesGeneratedServices.csproj", "{56E1C5BA-D586-4796-80FB-D3F9717C1635}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AngularInterfacesGeneratedServices.Tests", "tests\AngularInterfacesGeneratedServices.Tests\AngularInterfacesGeneratedServices.Tests.csproj", "{94823A83-500E-4703-A033-97F84783A548}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AngularInterfacesGeneratedServices.Tests", "tests\AngularInterfacesGeneratedServices.Tests\AngularInterfacesGeneratedServices.Tests.csproj", "{94823A83-500E-4703-A033-97F84783A548}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GenerateCodeBaseServices", "GenerateCodeBaseServices\GenerateCodeBaseServices.csproj", "{79C15B25-6DC5-4FB2-82AE-C81AC65242F0}"
 EndProject
@@ -150,6 +150,8 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ActionCommandServices", "ActionCommandServices\ActionCommandServices.csproj", "{03748399-3093-4AC8-9289-7356D1EE91C5}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ActionCommandServices.Tests", "tests\ActionCommandServices.Tests\ActionCommandServices.Tests.csproj", "{01AED1E8-ECED-440A-AA87-F557B1B077EF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CultureServices", "CultureServices\CultureServices.csproj", "{401B6C7E-1121-406C-A19E-2CD129C62F80}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -1049,6 +1051,18 @@ Global
 		{01AED1E8-ECED-440A-AA87-F557B1B077EF}.Release|x64.Build.0 = Release|Any CPU
 		{01AED1E8-ECED-440A-AA87-F557B1B077EF}.Release|x86.ActiveCfg = Release|Any CPU
 		{01AED1E8-ECED-440A-AA87-F557B1B077EF}.Release|x86.Build.0 = Release|Any CPU
+		{401B6C7E-1121-406C-A19E-2CD129C62F80}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{401B6C7E-1121-406C-A19E-2CD129C62F80}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{401B6C7E-1121-406C-A19E-2CD129C62F80}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{401B6C7E-1121-406C-A19E-2CD129C62F80}.Debug|x64.Build.0 = Debug|Any CPU
+		{401B6C7E-1121-406C-A19E-2CD129C62F80}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{401B6C7E-1121-406C-A19E-2CD129C62F80}.Debug|x86.Build.0 = Debug|Any CPU
+		{401B6C7E-1121-406C-A19E-2CD129C62F80}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{401B6C7E-1121-406C-A19E-2CD129C62F80}.Release|Any CPU.Build.0 = Release|Any CPU
+		{401B6C7E-1121-406C-A19E-2CD129C62F80}.Release|x64.ActiveCfg = Release|Any CPU
+		{401B6C7E-1121-406C-A19E-2CD129C62F80}.Release|x64.Build.0 = Release|Any CPU
+		{401B6C7E-1121-406C-A19E-2CD129C62F80}.Release|x86.ActiveCfg = Release|Any CPU
+		{401B6C7E-1121-406C-A19E-2CD129C62F80}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

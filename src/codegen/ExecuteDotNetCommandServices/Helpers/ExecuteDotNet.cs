@@ -1,5 +1,4 @@
 ﻿using ExecuteDotNetCommandServices.Models;
-using ExecuteDotNetCommandServices.Resources;
 using GenerateCodeBaseServices.Models;
 using GenerateCodeBaseServices.Services;
 using ActionCommandDBServices.Models;
@@ -19,6 +18,7 @@ using System.Threading.Tasks;
 using ValidateAppSettingsServices.Services;
 using ValidateAppSettingsServices.Models;
 using Microsoft.AspNetCore.Mvc;
+using CultureServices.Resources;
 
 namespace ExecuteDotNetCommandServices.Services
 {
@@ -42,14 +42,14 @@ namespace ExecuteDotNetCommandServices.Services
 
             if (!fi.Exists)
             {
-                actionCommandDBService.ErrorText.AppendLine($"{ string.Format(ExecuteDotNetCommandServicesRes.CouldNotFindSolutionFile_ToCompile, fi.FullName) }");
+                actionCommandDBService.ErrorText.AppendLine($"{ string.Format(CultureServicesRes.CouldNotFindSolutionFile_ToCompile, fi.FullName) }");
                 return await Task.FromResult(false);
             }
 
             DirectoryInfo di = fi.Directory;
             if (!di.Exists)
             {
-                actionCommandDBService.ErrorText.AppendLine($"{ string.Format(ExecuteDotNetCommandServicesRes.CouldNotFindDirectoryOfSolutionFile_, fi.Directory) }");
+                actionCommandDBService.ErrorText.AppendLine($"{ string.Format(CultureServicesRes.CouldNotFindDirectoryOfSolutionFile_, fi.Directory) }");
                 return await Task.FromResult(false);
             }
 
@@ -72,7 +72,7 @@ namespace ExecuteDotNetCommandServices.Services
             if (process.ExitCode != 0)
             {
                 actionCommandDBService.ErrorText.AppendLine("");
-                actionCommandDBService.ErrorText.AppendLine($"{ string.Format(ExecuteDotNetCommandServicesRes.ErrorWhileRunningCommand_UnderDirectory_, command + " " + arg, di.FullName) }");
+                actionCommandDBService.ErrorText.AppendLine($"{ string.Format(CultureServicesRes.ErrorWhileRunningCommand_UnderDirectory_, command + " " + arg, di.FullName) }");
                 return await Task.FromResult(false);
             }
 
@@ -82,7 +82,7 @@ namespace ExecuteDotNetCommandServices.Services
 
                 if (!fiLog.Exists)
                 {
-                    actionCommandDBService.ErrorText.AppendLine($"{ string.Format(ExecuteDotNetCommandServicesRes.CouldNotFindFile_, fiLog.FullName) }");
+                    actionCommandDBService.ErrorText.AppendLine($"{ string.Format(CultureServicesRes.CouldNotFindFile_, fiLog.FullName) }");
                     return await Task.FromResult(false);
                 }
 

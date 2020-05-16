@@ -1,4 +1,4 @@
-﻿using EnumsPolSourceInfoRelatedFilesServices.Resources;
+﻿using CultureServices.Resources;
 using Microsoft.Extensions.Configuration;
 using PolSourceGroupingExcelFileReadServices.Models;
 using System;
@@ -168,14 +168,14 @@ namespace EnumsPolSourceInfoRelatedFilesServices.Services
             }
             catch (Exception ex)
             {
-                actionCommandDBService.ErrorText.AppendLine($"{ EnumsPolSourceInfoRelatedFilesServicesRes.Creating } [{ fi.FullName }] ...");
+                actionCommandDBService.ErrorText.AppendLine($"{ CultureServicesRes.Creating } [{ fi.FullName }] ...");
                 string InnerException = (ex.InnerException != null ? $"Inner: { ex.InnerException.Message }" : "");
-                actionCommandDBService.ErrorText.AppendLine($"{ EnumsPolSourceInfoRelatedFilesServicesRes.Error }: { ex.Message }{ InnerException  }");
+                actionCommandDBService.ErrorText.AppendLine($"{ CultureServicesRes.Error }: { ex.Message }{ InnerException  }");
 
                 return await Task.FromResult(false);
             }
 
-            actionCommandDBService.ExecutionStatusText.AppendLine($"{ EnumsPolSourceInfoRelatedFilesServicesRes.Created }: { fi.FullName }");
+            actionCommandDBService.ExecutionStatusText.AppendLine($"{ CultureServicesRes.Created }: { fi.FullName }");
             return await Task.FromResult(true);
         }
         #endregion Functions private

@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
@@ -23,6 +23,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Reference Include="CultureServices">
+      <HintPath>..\CultureServices\bin\Debug\netcoreapp3.1\CultureServices.dll</HintPath>
+    </Reference>
+    <Reference Include="CultureServices">
+      <HintPath>..\..\CultureServices\bin\Debug\netcoreapp3.1\CultureServices.dll</HintPath>
+    </Reference>
     <Reference Include="GenerateCodeBaseServices">
       <HintPath>..\..\GenerateCodeBaseServices\bin\Debug\netcoreapp3.1\GenerateCodeBaseServices.dll</HintPath>
     </Reference>

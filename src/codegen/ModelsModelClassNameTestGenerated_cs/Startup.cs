@@ -7,9 +7,9 @@ using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.IO;
 using ModelsModelClassNameTestGenerated_csServices.Services;
-using ModelsModelClassNameTestGenerated_csServices.Resources;
 using ValidateAppSettingsServices.Services;
 using System.Threading.Tasks;
+using CultureServices.Resources;
 
 namespace ModelClassNameTestGenerated_cs
 {
@@ -65,7 +65,7 @@ namespace ModelClassNameTestGenerated_cs
                 string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
                 if (configuration.GetValue<string>(DBFileName) == null)
                 {
-                    Console.WriteLine($"{ String.Format(ModelsModelClassNameTestGenerated_csServicesRes.CouldNotFindParameter_InAppSettingsJSON, DBFileName) }");
+                    Console.WriteLine($"{ String.Format(CultureServicesRes.CouldNotFindParameter_InAppSettingsJSON, DBFileName) }");
                     return await Task.FromResult(false);
                 }
 
@@ -73,7 +73,7 @@ namespace ModelClassNameTestGenerated_cs
 
                 if (!fiDB.Exists)
                 {
-                    Console.WriteLine($"{ String.Format(ModelsModelClassNameTestGenerated_csServicesRes.CouldNotFindFile_, fiDB.FullName) }");
+                    Console.WriteLine($"{ String.Format(CultureServicesRes.CouldNotFindFile_, fiDB.FullName) }");
                     return await Task.FromResult(false);
                 }
 

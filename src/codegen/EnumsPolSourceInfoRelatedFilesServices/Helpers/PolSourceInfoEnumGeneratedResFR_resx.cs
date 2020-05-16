@@ -1,4 +1,4 @@
-﻿using EnumsPolSourceInfoRelatedFilesServices.Resources;
+﻿using CultureServices.Resources;
 using Microsoft.Extensions.Configuration;
 using PolSourceGroupingExcelFileReadServices.Models;
 using System;
@@ -29,7 +29,7 @@ namespace EnumsPolSourceInfoRelatedFilesServices.Services
 
             FileInfo fi = new FileInfo(configuration.GetValue<string>("PolSourceInfoEnumGeneratedResFR_resx"));
 
-            await ResxTopPart(sb);
+            if (!await ResxTopPart(sb)) return await Task.FromResult(false);
 
             sb.AppendLine(@"<data name=""___DoNotManuallyEditThisFile"" xml:space=""preserve"">");
             sb.AppendLine(@"  <value>SVP ne pas éditer ce document manuellement</value>");
@@ -108,14 +108,14 @@ namespace EnumsPolSourceInfoRelatedFilesServices.Services
             }
             catch (Exception ex)
             {
-                actionCommandDBService.ErrorText.AppendLine($"{ EnumsPolSourceInfoRelatedFilesServicesRes.Creating } [{ fi.FullName }] ...");
+                actionCommandDBService.ErrorText.AppendLine($"{ CultureServicesRes.Creating } [{ fi.FullName }] ...");
                 string InnerException = (ex.InnerException != null ? $"Inner: { ex.InnerException.Message }" : "");
-                actionCommandDBService.ErrorText.AppendLine($"{ EnumsPolSourceInfoRelatedFilesServicesRes.Error }: { ex.Message }{ InnerException  }");
+                actionCommandDBService.ErrorText.AppendLine($"{ CultureServicesRes.Error }: { ex.Message }{ InnerException  }");
 
                 return await Task.FromResult(false);
             }
 
-            actionCommandDBService.ExecutionStatusText.AppendLine($"{ EnumsPolSourceInfoRelatedFilesServicesRes.Created }: { fi.FullName }");
+            actionCommandDBService.ExecutionStatusText.AppendLine($"{ CultureServicesRes.Created }: { fi.FullName }");
 
             return await Task.FromResult(true);
         }

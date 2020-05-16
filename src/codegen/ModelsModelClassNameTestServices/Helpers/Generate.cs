@@ -3,7 +3,6 @@ using GenerateCodeBaseServices.Services;
 using ActionCommandDBServices.Models;
 using ActionCommandDBServices.Services;
 using Microsoft.Extensions.Configuration;
-using ModelsModelClassNameTestServices.Resources;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -15,6 +14,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using ValidateAppSettingsServices.Services;
 using ValidateAppSettingsServices.Models;
+using CultureServices.Resources;
 
 namespace ModelsCSSPModelsResServices.Services
 {
@@ -86,16 +86,16 @@ namespace ModelsCSSPModelsResServices.Services
                     {
                         sw2.Write(sb.ToString());
                     }
-                    actionCommandDBService.ExecutionStatusText.AppendLine($"{ string.Format(ModelModelClassNameTestServicesRes.CreatedNew_, fiOutputGen.FullName) }");
+                    actionCommandDBService.ExecutionStatusText.AppendLine($"{ string.Format(CultureServicesRes.CreatedNew_, fiOutputGen.FullName) }");
                 }
                 else
                 {
-                    actionCommandDBService.ExecutionStatusText.AppendLine($"{ string.Format(ModelModelClassNameTestServicesRes.AlreadyCreated_, fiOutputGen.FullName) }");
+                    actionCommandDBService.ExecutionStatusText.AppendLine($"{ string.Format(CultureServicesRes.AlreadyCreated_, fiOutputGen.FullName) }");
                 }
             }
 
             actionCommandDBService.ExecutionStatusText.AppendLine("");
-            actionCommandDBService.ExecutionStatusText.AppendLine($"{ ModelModelClassNameTestServicesRes.Done } ...");
+            actionCommandDBService.ExecutionStatusText.AppendLine($"{ CultureServicesRes.Done } ...");
             actionCommandDBService.ExecutionStatusText.AppendLine("");
             actionCommandDBService.ExecutionStatusText.AppendLine("Generate Finished ...");
             actionCommandDBService.PercentCompleted = 100;

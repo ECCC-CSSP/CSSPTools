@@ -1,5 +1,4 @@
-﻿using AngularInterfacesGeneratedServices.Resources;
-using CSSPEnums;
+﻿using CSSPEnums;
 using CSSPModels;
 using GenerateCodeBaseServices.Models;
 using GenerateCodeBaseServices.Services;
@@ -21,6 +20,7 @@ using System.Threading.Tasks;
 using ValidateAppSettingsServices.Services;
 using ValidateAppSettingsServices.Models;
 using Microsoft.AspNetCore.Mvc;
+using CultureServices.Resources;
 
 namespace AngularInterfacesGeneratedServices.Services
 {
@@ -311,7 +311,7 @@ namespace AngularInterfacesGeneratedServices.Services
             using (StreamWriter sw2 = fiOutputGen.CreateText())
             {
                 sw2.Write(sb.ToString());
-                actionCommandDBService.ExecutionStatusText.AppendLine($"{ string.Format(AngularInterfacesGeneratedServicesRes.Created_, fiOutputGen.FullName) }");
+                actionCommandDBService.ExecutionStatusText.AppendLine($"{ string.Format(CultureServicesRes.Created_, fiOutputGen.FullName) }");
             }
         }
     }

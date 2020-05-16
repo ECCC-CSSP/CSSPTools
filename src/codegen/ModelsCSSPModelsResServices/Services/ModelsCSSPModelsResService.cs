@@ -3,7 +3,6 @@ using GenerateCodeBaseServices.Services;
 using ActionCommandDBServices.Models;
 using ActionCommandDBServices.Services;
 using Microsoft.Extensions.Configuration;
-using ModelsCSSPModelsResServices.Resources;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -15,6 +14,7 @@ using System.Threading.Tasks;
 using ValidateAppSettingsServices.Services;
 using ValidateAppSettingsServices.Models;
 using Microsoft.AspNetCore.Mvc;
+using CultureServices.Resources;
 
 namespace ModelsCSSPModelsResServices.Services
 {
@@ -72,7 +72,7 @@ namespace ModelsCSSPModelsResServices.Services
             await actionCommandDBService.SetCulture(culture);
             await validateAppSettingsService.SetCulture(culture);
             await generateCodeBaseService.SetCulture(culture);
-            ModelsCSSPModelsResServicesRes.Culture = culture;
+            CultureServicesRes.Culture = culture;
         }
         #endregion Functions public
 

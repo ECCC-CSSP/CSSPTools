@@ -1,5 +1,4 @@
-﻿using ExecuteDotNetCommandServices.Resources;
-using ExecuteDotNetCommandServices.Services;
+﻿using ExecuteDotNetCommandServices.Services;
 using ActionCommandDBServices.Models;
 using ActionCommandDBServices.Services;
 using Microsoft.EntityFrameworkCore;
@@ -11,6 +10,7 @@ using System.Globalization;
 using System.IO;
 using System.Threading.Tasks;
 using ValidateAppSettingsServices.Services;
+using CultureServices.Resources;
 
 namespace ExecuteDotNetCommand
 {
@@ -66,7 +66,7 @@ namespace ExecuteDotNetCommand
                 string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
                 if (configuration.GetValue<string>(DBFileName) == null)
                 {
-                    Console.WriteLine($"{ String.Format(ExecuteDotNetCommandServicesRes.CouldNotFindParameter_InAppSettingsJSON, DBFileName) }");
+                    Console.WriteLine($"{ String.Format(CultureServicesRes.CouldNotFindParameter_InAppSettingsJSON, DBFileName) }");
                     return await Task.FromResult(false);
                 }
 
@@ -74,7 +74,7 @@ namespace ExecuteDotNetCommand
 
                 if (!fiDB.Exists)
                 {
-                    Console.WriteLine($"{ String.Format(ExecuteDotNetCommandServicesRes.CouldNotFindFile_, fiDB.FullName) }");
+                    Console.WriteLine($"{ String.Format(CultureServicesRes.CouldNotFindFile_, fiDB.FullName) }");
                     return await Task.FromResult(false);
                 }
 

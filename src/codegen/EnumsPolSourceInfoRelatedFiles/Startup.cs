@@ -1,5 +1,4 @@
-﻿using EnumsPolSourceInfoRelatedFilesServices.Resources;
-using EnumsPolSourceInfoRelatedFilesServices.Services;
+﻿using EnumsPolSourceInfoRelatedFilesServices.Services;
 using GenerateCodeBaseServices.Services;
 using ActionCommandDBServices.Models;
 using ActionCommandDBServices.Services;
@@ -11,6 +10,7 @@ using System;
 using System.IO;
 using ValidateAppSettingsServices.Services;
 using System.Threading.Tasks;
+using CultureServices.Resources;
 
 namespace EnumsPolSourceInfoRelatedFiles
 {
@@ -66,7 +66,7 @@ namespace EnumsPolSourceInfoRelatedFiles
                 string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
                 if (configuration.GetValue<string>(DBFileName) == null)
                 {
-                    Console.WriteLine($"{ String.Format(EnumsPolSourceInfoRelatedFilesServicesRes.CouldNotFindParameter_InAppSettingsJSON, DBFileName) }");
+                    Console.WriteLine($"{ String.Format(CultureServicesRes.CouldNotFindParameter_InAppSettingsJSON, DBFileName) }");
                     return await Task.FromResult(false);
                 }
 
@@ -74,7 +74,7 @@ namespace EnumsPolSourceInfoRelatedFiles
 
                 if (!fiDB.Exists)
                 {
-                    Console.WriteLine($"{ String.Format(EnumsPolSourceInfoRelatedFilesServicesRes.CouldNotFindFile_, fiDB.FullName) }");
+                    Console.WriteLine($"{ String.Format(CultureServicesRes.CouldNotFindFile_, fiDB.FullName) }");
                     return await Task.FromResult(false);
                 }
 

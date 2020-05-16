@@ -32,6 +32,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Reference Include="CultureServices">
+      <HintPath>..\..\CultureServices\bin\Debug\netcoreapp3.1\CultureServices.dll</HintPath>
+    </Reference>
     <Reference Include="ActionCommandDBServices">
       <HintPath>..\..\ActionCommandDBServices\bin\Debug\netcoreapp3.1\ActionCommandDBServices.dll</HintPath>
     </Reference>

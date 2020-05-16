@@ -1,5 +1,4 @@
-﻿using AngularEnumsGeneratedServices.Resources;
-using CSSPEnums;
+﻿using CSSPEnums;
 using CSSPModels;
 using GenerateCodeBaseServices.Models;
 using GenerateCodeBaseServices.Services;
@@ -21,6 +20,7 @@ using System.Threading.Tasks;
 using ValidateAppSettingsServices.Services;
 using ValidateAppSettingsServices.Models;
 using Microsoft.AspNetCore.Mvc;
+using CultureServices.Resources;
 
 namespace AngularEnumsGeneratedServices.Services
 {
@@ -78,7 +78,7 @@ namespace AngularEnumsGeneratedServices.Services
             await actionCommandDBService.SetCulture(culture);
             await validateAppSettingsService.SetCulture(culture);
             await generateCodeBaseService.SetCulture(culture);
-            AngularEnumsGeneratedServicesRes.Culture = culture;
+            CultureServicesRes.Culture = culture;
         }
         #endregion Functions public
 

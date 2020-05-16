@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace PolSourceGroupingExcelFileReadServices.Resources {
+namespace CultureServices.Resources {
     using System;
     
     
@@ -22,14 +22,14 @@ namespace PolSourceGroupingExcelFileReadServices.Resources {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public class PolSourceGroupingExcelFileReadServicesRes {
+    public class CultureServicesRes {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal PolSourceGroupingExcelFileReadServicesRes() {
+        internal CultureServicesRes() {
         }
         
         /// <summary>
@@ -39,8 +39,7 @@ namespace PolSourceGroupingExcelFileReadServices.Resources {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("PolSourceGroupingExcelFileReadServices.Resources.PolSourceGroupingExcelFileReadSe" +
-                            "rvicesRes", typeof(PolSourceGroupingExcelFileReadServicesRes).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("CultureServices.Resources.CultureServicesRes", typeof(CultureServicesRes).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -58,6 +57,42 @@ namespace PolSourceGroupingExcelFileReadServices.Resources {
             }
             set {
                 resourceCulture = value;
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0}: [{1}] could not be found.
+        /// </summary>
+        public static string @__CouldNotBeFound {
+            get {
+                return ResourceManager.GetString("__CouldNotBeFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} is required.
+        /// </summary>
+        public static string _IsRequied {
+            get {
+                return ResourceManager.GetString("_IsRequied", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Abnormal completion.
+        /// </summary>
+        public static string AbnormalCompletion {
+            get {
+                return ResourceManager.GetString("AbnormalCompletion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Action - Options: run || test || build.
+        /// </summary>
+        public static string ActionOptionsRunTestBuild {
+            get {
+                return ResourceManager.GetString("ActionOptionsRunTestBuild", resourceCulture);
             }
         }
         
@@ -98,6 +133,15 @@ namespace PolSourceGroupingExcelFileReadServices.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Allowable cultures [{0}].
+        /// </summary>
+        public static string AllowableCultures_ {
+            get {
+                return ResourceManager.GetString("AllowableCultures_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to All Text in CSSPID column does not contain space.
         /// </summary>
         public static string AllTextInCSSPIDColumnDoesNotContainSpace {
@@ -112,6 +156,33 @@ namespace PolSourceGroupingExcelFileReadServices.Resources {
         public static string AllTextInGroupAndChildColumnsDoesNotContainSpace {
             get {
                 return ResourceManager.GetString("AllTextInGroupAndChildColumnsDoesNotContainSpace", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Already created [{0}].
+        /// </summary>
+        public static string AlreadyCreated_ {
+            get {
+                return ResourceManager.GetString("AlreadyCreated_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Application.
+        /// </summary>
+        public static string Application {
+            get {
+                return ResourceManager.GetString("Application", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Application requires 3 parameters separated by space.
+        /// </summary>
+        public static string ApplicationRequires3ParametersSeparatedBySpace {
+            get {
+                return ResourceManager.GetString("ApplicationRequires3ParametersSeparatedBySpace", resourceCulture);
             }
         }
         
@@ -134,11 +205,191 @@ namespace PolSourceGroupingExcelFileReadServices.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Class.
+        /// </summary>
+        public static string Class {
+            get {
+                return ResourceManager.GetString("Class", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Column Group does not have duplicates.
         /// </summary>
         public static string ColumnGroupDoesNotHaveDuplicates {
             get {
                 return ResourceManager.GetString("ColumnGroupDoesNotHaveDuplicates", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Command [{0}] is not implemented.
+        /// </summary>
+        public static string Command_IsNotImplemented {
+            get {
+                return ResourceManager.GetString("Command_IsNotImplemented", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Compared OK.
+        /// </summary>
+        public static string ComparedOK {
+            get {
+                return ResourceManager.GetString("ComparedOK", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Could not create directory [{0}].
+        /// </summary>
+        public static string CouldNotCreateDirectory_ {
+            get {
+                return ResourceManager.GetString("CouldNotCreateDirectory_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Could not delete status file [{0}]. Error: [{1}].
+        /// </summary>
+        public static string CouldNotDeleteStatusFile_Error_ {
+            get {
+                return ResourceManager.GetString("CouldNotDeleteStatusFile_Error_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Could not find ActionCommand to delete with Action [{0}] and Command [{1}].
+        /// </summary>
+        public static string CouldNotFindActionCommandToDeleteWithAction_AndCommand_ {
+            get {
+                return ResourceManager.GetString("CouldNotFindActionCommandToDeleteWithAction_AndCommand_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Could not find command [{0}] status in DB.
+        /// </summary>
+        public static string CouldNotFindCommand_StatusInDB {
+            get {
+                return ResourceManager.GetString("CouldNotFindCommand_StatusInDB", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Could not find directory of solution file [{0}].
+        /// </summary>
+        public static string CouldNotFindDirectoryOfSolutionFile_ {
+            get {
+                return ResourceManager.GetString("CouldNotFindDirectoryOfSolutionFile_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Could not find exePath [{0}].
+        /// </summary>
+        public static string CouldNotFindExePath_ {
+            get {
+                return ResourceManager.GetString("CouldNotFindExePath_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Could not find file [{0}].
+        /// </summary>
+        public static string CouldNotFindFile_ {
+            get {
+                return ResourceManager.GetString("CouldNotFindFile_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Could not find parameter.
+        /// </summary>
+        public static string CouldNotFindParameter {
+            get {
+                return ResourceManager.GetString("CouldNotFindParameter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Could not find parameter [{0}] in appsettings.json.
+        /// </summary>
+        public static string CouldNotFindParameter_InAppSettingsJSON {
+            get {
+                return ResourceManager.GetString("CouldNotFindParameter_InAppSettingsJSON", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Could not find solution file [{0}] to compile.
+        /// </summary>
+        public static string CouldNotFindSolutionFile_ToCompile {
+            get {
+                return ResourceManager.GetString("CouldNotFindSolutionFile_ToCompile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Could not get or create object [{0}] in DB [{1}].
+        /// </summary>
+        public static string CouldNotGetOrCreateObject_InDB_ {
+            get {
+                return ResourceManager.GetString("CouldNotGetOrCreateObject_InDB_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Could not read file [{0}].
+        /// </summary>
+        public static string CouldNotReadFile_ {
+            get {
+                return ResourceManager.GetString("CouldNotReadFile_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Created.
+        /// </summary>
+        public static string Created {
+            get {
+                return ResourceManager.GetString("Created", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Created [{0}].
+        /// </summary>
+        public static string Created_ {
+            get {
+                return ResourceManager.GetString("Created_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Created new [{0}].
+        /// </summary>
+        public static string CreatedNew_ {
+            get {
+                return ResourceManager.GetString("CreatedNew_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Creating.
+        /// </summary>
+        public static string Creating {
+            get {
+                return ResourceManager.GetString("Creating", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to CSSPAfterAttribute should only be user for DateTime Type.
+        /// </summary>
+        public static string CSSPAfterAttributeShouldOnlyBeUsedForDateTimeType {
+            get {
+                return ResourceManager.GetString("CSSPAfterAttributeShouldOnlyBeUsedForDateTimeType", resourceCulture);
             }
         }
         
@@ -179,6 +430,24 @@ namespace PolSourceGroupingExcelFileReadServices.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Culture - Options:  en-CA || fr-CA.
+        /// </summary>
+        public static string CultureOptionsEnCAFrCA {
+            get {
+                return ResourceManager.GetString("CultureOptionsEnCAFrCA", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to DataType.
+        /// </summary>
+        public static string DataType {
+            get {
+                return ResourceManager.GetString("DataType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to does have DescEN and DescFR text.
         /// </summary>
         public static string DoesHaveDescENAndDescFRText {
@@ -202,6 +471,24 @@ namespace PolSourceGroupingExcelFileReadServices.Resources {
         public static string DoesNotContainSpace {
             get {
                 return ResourceManager.GetString("DoesNotContainSpace", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Does not exist.
+        /// </summary>
+        public static string DoesNotExist {
+            get {
+                return ResourceManager.GetString("DoesNotExist", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to does not exist for .
+        /// </summary>
+        public static string DoesNotExistFor {
+            get {
+                return ResourceManager.GetString("DoesNotExistFor", resourceCulture);
             }
         }
         
@@ -278,6 +565,15 @@ namespace PolSourceGroupingExcelFileReadServices.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Done.
+        /// </summary>
+        public static string Done {
+            get {
+                return ResourceManager.GetString("Done", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Each Choice does have EN and FR text.
         /// </summary>
         public static string EachChoiceDoesHaveENAndFRText {
@@ -305,11 +601,83 @@ namespace PolSourceGroupingExcelFileReadServices.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Email.
+        /// </summary>
+        public static string Email {
+            get {
+                return ResourceManager.GetString("Email", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Error.
+        /// </summary>
+        public static string Error {
+            get {
+                return ResourceManager.GetString("Error", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Error: {0}.
+        /// </summary>
+        public static string Error_ {
+            get {
+                return ResourceManager.GetString("Error_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ERROR [{0}] is equal to 0.
+        /// </summary>
+        public static string ERROR_IsEqualTo0 {
+            get {
+                return ResourceManager.GetString("ERROR_IsEqualTo0", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Error: File does not exist [{0}].
+        /// </summary>
+        public static string ErrorFileDoesNotExist_ {
+            get {
+                return ResourceManager.GetString("ErrorFileDoesNotExist_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Error while creating code [{0}].
+        /// </summary>
+        public static string ErrorWhileCreatingCode_ {
+            get {
+                return ResourceManager.GetString("ErrorWhileCreatingCode_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Error while running command [{0}] under directory [{1}].
+        /// </summary>
+        public static string ErrorWhileRunningCommand_UnderDirectory_ {
+            get {
+                return ResourceManager.GetString("ErrorWhileRunningCommand_UnderDirectory_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Everythiing is OK.
         /// </summary>
         public static string EverythingIsOK {
             get {
                 return ResourceManager.GetString("EverythingIsOK", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Example.
+        /// </summary>
+        public static string Example {
+            get {
+                return ResourceManager.GetString("Example", resourceCulture);
             }
         }
         
@@ -323,11 +691,38 @@ namespace PolSourceGroupingExcelFileReadServices.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to exePath is empty.
+        /// </summary>
+        public static string ExePathIsEmpty {
+            get {
+                return ResourceManager.GetString("ExePathIsEmpty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Exist.
+        /// </summary>
+        public static string Exist {
+            get {
+                return ResourceManager.GetString("Exist", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to exist on column group.
         /// </summary>
         public static string ExistOnColumnGroup {
             get {
                 return ResourceManager.GetString("ExistOnColumnGroup", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to File not found [{0}].
+        /// </summary>
+        public static string FileNotFound_ {
+            get {
+                return ResourceManager.GetString("FileNotFound_", resourceCulture);
             }
         }
         
@@ -449,11 +844,38 @@ namespace PolSourceGroupingExcelFileReadServices.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to is not implemented.
+        /// </summary>
+        public static string IsNotImplemented {
+            get {
+                return ResourceManager.GetString("IsNotImplemented", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to is not implemented yet.
+        /// </summary>
+        public static string IsNotImplementedYet {
+            get {
+                return ResourceManager.GetString("IsNotImplementedYet", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to is not unique.
         /// </summary>
         public static string IsNotUnique {
             get {
                 return ResourceManager.GetString("IsNotUnique", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to is null.
+        /// </summary>
+        public static string IsNull {
+            get {
+                return ResourceManager.GetString("IsNull", resourceCulture);
             }
         }
         
@@ -467,11 +889,74 @@ namespace PolSourceGroupingExcelFileReadServices.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to member name.
+        /// </summary>
+        public static string MemberName {
+            get {
+                return ResourceManager.GetString("MemberName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to missing end value.
         /// </summary>
         public static string MissingEndValue {
             get {
                 return ResourceManager.GetString("MissingEndValue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No file to verify.
+        /// </summary>
+        public static string NoFileToVerify {
+            get {
+                return ResourceManager.GetString("NoFileToVerify", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to of type.
+        /// </summary>
+        public static string OfType {
+            get {
+                return ResourceManager.GetString("OfType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to OK.
+        /// </summary>
+        public static string OK {
+            get {
+                return ResourceManager.GetString("OK", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Only types [Int,Single,Double] can use RangeAttributre.
+        /// </summary>
+        public static string OnlyTypesIntSingleDoubleCanUseRangeAttribute {
+            get {
+                return ResourceManager.GetString("OnlyTypesIntSingleDoubleCanUseRangeAttribute", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Parameter.
+        /// </summary>
+        public static string Parameter {
+            get {
+                return ResourceManager.GetString("Parameter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Parameter #{0} should be {1}.
+        /// </summary>
+        public static string Parameter_ShouldBe_ {
+            get {
+                return ResourceManager.GetString("Parameter_ShouldBe_", resourceCulture);
             }
         }
         
@@ -503,6 +988,24 @@ namespace PolSourceGroupingExcelFileReadServices.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Property.
+        /// </summary>
+        public static string Property {
+            get {
+                return ResourceManager.GetString("Property", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Reading Excel document and checking.
+        /// </summary>
+        public static string ReadingExcelDocumentAndChecking {
+            get {
+                return ResourceManager.GetString("ReadingExcelDocumentAndChecking", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Reading spreadsheet.
         /// </summary>
         public static string ReadingSpreadsheet {
@@ -530,6 +1033,33 @@ namespace PolSourceGroupingExcelFileReadServices.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Running.
+        /// </summary>
+        public static string Running {
+            get {
+                return ResourceManager.GetString("Running", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Running command [{0}] under directory [{1}].
+        /// </summary>
+        public static string RunningCommand_UnderDirectory_ {
+            get {
+                return ResourceManager.GetString("RunningCommand_UnderDirectory_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Server command [{0}] Error: [{1}].
+        /// </summary>
+        public static string ServerCommand_Error_ {
+            get {
+                return ResourceManager.GetString("ServerCommand_Error_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to should not contain.
         /// </summary>
         public static string ShouldNotContain {
@@ -548,11 +1078,56 @@ namespace PolSourceGroupingExcelFileReadServices.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to should not contain the string length attribute.
+        /// </summary>
+        public static string ShouldNotContainTheStringLengthAttribute {
+            get {
+                return ResourceManager.GetString("ShouldNotContainTheStringLengthAttribute", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to should not use RangeAttribute.
+        /// </summary>
+        public static string ShouldNotUseRangeAttribute {
+            get {
+                return ResourceManager.GetString("ShouldNotUseRangeAttribute", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to should only contain characters like.
         /// </summary>
         public static string ShouldOnlyContainCharactersLike {
             get {
                 return ResourceManager.GetString("ShouldOnlyContainCharactersLike", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to SolutionFileName - Examples: CSSPEnums || CSSPModels || CSSPServices.
+        /// </summary>
+        public static string SolutionFileNameExampleCSSPRunsCSSPModelsCSSPServices {
+            get {
+                return ResourceManager.GetString("SolutionFileNameExampleCSSPRunsCSSPModelsCSSPServices", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Starting.
+        /// </summary>
+        public static string Starting {
+            get {
+                return ResourceManager.GetString("Starting", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to StringLength Attribute can only be set for System.String.
+        /// </summary>
+        public static string StringLengthAttributeCanOnlyBeSetForSystemDotString {
+            get {
+                return ResourceManager.GetString("StringLengthAttributeCanOnlyBeSetForSystemDotString", resourceCulture);
             }
         }
         
@@ -607,6 +1182,60 @@ namespace PolSourceGroupingExcelFileReadServices.Resources {
         public static string ThatGroupCSSPID {
             get {
                 return ResourceManager.GetString("ThatGroupCSSPID", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Type.
+        /// </summary>
+        public static string Type {
+            get {
+                return ResourceManager.GetString("Type", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Type [{0}]\tEnum [{1}] -------------- not found.
+        /// </summary>
+        public static string Type_Enum_NotFound {
+            get {
+                return ResourceManager.GetString("Type_Enum_NotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Type [{0}] ---------------------- not found.
+        /// </summary>
+        public static string Type_NotFound {
+            get {
+                return ResourceManager.GetString("Type_NotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unable to login as [{0}] with provided password.
+        /// </summary>
+        public static string UnableToLoginAs_WithProvidedPassword {
+            get {
+                return ResourceManager.GetString("UnableToLoginAs_WithProvidedPassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unmanaged server error: [{0}].
+        /// </summary>
+        public static string UnmanagedServerError_ {
+            get {
+                return ResourceManager.GetString("UnmanagedServerError_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Verify appsettings.json file.
+        /// </summary>
+        public static string VerifyAppSettingsFile {
+            get {
+                return ResourceManager.GetString("VerifyAppSettingsFile", resourceCulture);
             }
         }
         

@@ -7,10 +7,10 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.IO;
-using WebAPIClassNameControllerGeneratedServices.Resources;
 using WebAPIClassNameControllerGeneratedServices.Services;
 using ValidateAppSettingsServices.Services;
 using System.Threading.Tasks;
+using CultureServices.Resources;
 
 namespace WebAPIClassNameControllerGeneratedServices
 {
@@ -66,7 +66,7 @@ namespace WebAPIClassNameControllerGeneratedServices
                 string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
                 if (configuration.GetValue<string>(DBFileName) == null)
                 {
-                    Console.WriteLine($"{ String.Format(WebAPIClassNameControllerGeneratedServicesRes.CouldNotFindParameter_InAppSettingsJSON, DBFileName) }");
+                    Console.WriteLine($"{ String.Format(CultureServicesRes.CouldNotFindParameter_InAppSettingsJSON, DBFileName) }");
                     return await Task.FromResult(false);
                 }
 
@@ -74,7 +74,7 @@ namespace WebAPIClassNameControllerGeneratedServices
 
                 if (!fiDB.Exists)
                 {
-                    Console.WriteLine($"{ String.Format(WebAPIClassNameControllerGeneratedServicesRes.CouldNotFindFile_, fiDB.FullName) }");
+                    Console.WriteLine($"{ String.Format(CultureServicesRes.CouldNotFindFile_, fiDB.FullName) }");
                     return await Task.FromResult(false);
                 }
 

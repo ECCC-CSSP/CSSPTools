@@ -15,8 +15,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 using ValidateAppSettingsServices.Services;
-using ActionCommandDBServices.Resources;
-using AngularEnumsGeneratedServices.Resources;
+using CultureServices.Resources;
 
 namespace AngularEnumsGeneratedServices.Tests
 {
@@ -65,7 +64,7 @@ namespace AngularEnumsGeneratedServices.Tests
                 culture = "en-CA";
             }
             CultureInfo Culture = new CultureInfo(culture);
-            Assert.Equal(Culture, AngularEnumsGeneratedServicesRes.Culture);
+            Assert.Equal(Culture, CultureServicesRes.Culture);
         }
         [Theory]
         [InlineData("en-CA")] // good

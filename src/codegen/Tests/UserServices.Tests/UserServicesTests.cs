@@ -1,4 +1,5 @@
 ﻿using CSSPModels;
+using CultureServices.Resources;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -14,7 +15,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using UserServices.Models;
-using UserServices.Resources;
 using UserServices.Services;
 using Xunit;
 
@@ -84,7 +84,7 @@ namespace UserServices.Tests
             var retValue = await userService.CheckPassword(new LoginModel() { LoginEmail = LoginEmail, Password = Password });
             Assert.Null(retValue.Value);
             Assert.Equal(400, ((BadRequestObjectResult)retValue.Result).StatusCode);
-            string expected = String.Format(UserServicesRes.__CouldNotBeFound, UserServicesRes.Email, LoginEmail);
+            string expected = String.Format(CultureServicesRes.__CouldNotBeFound, CultureServicesRes.Email, LoginEmail);
             var value = ((BadRequestObjectResult)retValue.Result).Value;
             Assert.Equal(expected, value);
 
@@ -102,7 +102,7 @@ namespace UserServices.Tests
             var retValue = await userService.CheckPassword(new LoginModel() { LoginEmail = LoginEmail, Password = Password });
             Assert.Null(retValue.Value);
             Assert.Equal(400, ((BadRequestObjectResult)retValue.Result).StatusCode);
-            string expected = String.Format(UserServicesRes.UnableToLoginAs_WithProvidedPassword, LoginEmail);
+            string expected = String.Format(CultureServicesRes.UnableToLoginAs_WithProvidedPassword, LoginEmail);
             var value = ((BadRequestObjectResult)retValue.Result).Value;
             Assert.Equal(expected, value);
 
@@ -112,7 +112,7 @@ namespace UserServices.Tests
         #region Functions private
         private async Task Setup(CultureInfo culture)
         {
-            UserServicesRes.Culture = culture;
+            CultureServicesRes.Culture = culture;
             configuration = new ConfigurationBuilder()
                .SetBasePath(Directory.GetParent(AppContext.BaseDirectory).FullName)
                .AddJsonFile("appsettings.json")
@@ -147,7 +147,7 @@ namespace UserServices.Tests
             Assert.NotNull(userService);
 
             await userService.SetCulture(culture);
-            Assert.Equal(culture, UserServicesRes.Culture);
+            Assert.Equal(culture, CultureServicesRes.Culture);
 
         }
         #endregion Functions private

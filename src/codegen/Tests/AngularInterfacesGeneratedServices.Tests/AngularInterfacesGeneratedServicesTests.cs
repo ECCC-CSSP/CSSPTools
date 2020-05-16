@@ -15,7 +15,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 using ValidateAppSettingsServices.Services;
-using AngularInterfacesGeneratedServices.Resources;
+using CultureServices.Resources;
 
 namespace AngularInterfacesGeneratedServices.Tests
 {
@@ -64,7 +64,7 @@ namespace AngularInterfacesGeneratedServices.Tests
                 culture = "en-CA";
             }
             CultureInfo Culture = new CultureInfo(culture);
-            Assert.Equal(Culture, AngularInterfacesGeneratedServicesRes.Culture);
+            Assert.Equal(Culture, CultureServicesRes.Culture);
         }
         [Theory]
         [InlineData("en-CA")] // good

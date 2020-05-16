@@ -1,5 +1,4 @@
-﻿using EnumsPolSourceInfoRelatedFilesServices.Resources;
-using GenerateCodeBaseServices.Models;
+﻿using GenerateCodeBaseServices.Models;
 using GenerateCodeBaseServices.Services;
 using ActionCommandDBServices.Models;
 using ActionCommandDBServices.Services;
@@ -16,6 +15,7 @@ using System.Threading.Tasks;
 using ValidateAppSettingsServices.Services;
 using Microsoft.AspNetCore.Mvc;
 using ValidateAppSettingsServices.Models;
+using CultureServices.Resources;
 
 namespace EnumsPolSourceInfoRelatedFilesServices.Services
 {
@@ -77,7 +77,7 @@ namespace EnumsPolSourceInfoRelatedFilesServices.Services
             await validateAppSettingsService.SetCulture(culture);
             await generateCodeBaseService.SetCulture(culture);
             await polSourceGroupingExcelFileReadService.SetCulture(culture);
-            EnumsPolSourceInfoRelatedFilesServicesRes.Culture = culture;
+            CultureServicesRes.Culture = culture;
         }
         #endregion Functions public
 

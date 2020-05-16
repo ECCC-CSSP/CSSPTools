@@ -1,6 +1,5 @@
 ﻿using CSSPEnums;
 using ValidateAppSettingsServices.Models;
-using ValidateAppSettingsServices.Resources;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
@@ -12,6 +11,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Globalization;
 using ActionCommandDBServices.Services;
+using CultureServices.Resources;
 
 namespace ValidateAppSettingsServices.Services
 {
@@ -28,7 +28,7 @@ namespace ValidateAppSettingsServices.Services
                 if (string.IsNullOrWhiteSpace(retConf))
                 {
                     retBool = false;
-                    actionCommandDBService.ErrorText.AppendLine($"{ ValidateAppSettingsServicesRes.Error }\t{ appSettingParameter.Parameter }\t{ ValidateAppSettingsServicesRes.CouldNotFindParameter }");
+                    actionCommandDBService.ErrorText.AppendLine($"{ CultureServicesRes.Error }\t{ appSettingParameter.Parameter }\t{ CultureServicesRes.CouldNotFindParameter }");
                 }
             }
 
@@ -42,7 +42,7 @@ namespace ValidateAppSettingsServices.Services
             if (retValue != shouldHaveValue)
             {
                 retBool = false;
-                actionCommandDBService.ErrorText.AppendLine($"{ ValidateAppSettingsServicesRes.Error }\t{ param } != { shouldHaveValue }");
+                actionCommandDBService.ErrorText.AppendLine($"{ CultureServicesRes.Error }\t{ param } != { shouldHaveValue }");
             }
 
             return await Task.FromResult(retBool);
@@ -55,7 +55,7 @@ namespace ValidateAppSettingsServices.Services
             if (!(retValue == "en-CA" || retValue == "fr-CA"))
             {
                 retBool = false;
-                actionCommandDBService.ErrorText.AppendLine($"{ ValidateAppSettingsServicesRes.Error }\t{ param } != en-CA || fr-CA");
+                actionCommandDBService.ErrorText.AppendLine($"{ CultureServicesRes.Error }\t{ param } != en-CA || fr-CA");
             }
 
             return await Task.FromResult(retBool);
@@ -68,7 +68,7 @@ namespace ValidateAppSettingsServices.Services
             if (retValue != shouldHaveValue)
             {
                 retBool = false;
-                actionCommandDBService.ErrorText.AppendLine($"{ ValidateAppSettingsServicesRes.Error }\t{ param } != { shouldHaveValue }");
+                actionCommandDBService.ErrorText.AppendLine($"{ CultureServicesRes.Error }\t{ param } != { shouldHaveValue }");
             }
 
 
@@ -81,7 +81,7 @@ namespace ValidateAppSettingsServices.Services
                 if (!fiDB.Exists)
                 {
                     retBool = false;
-                    actionCommandDBService.ErrorText.AppendLine($"{ ValidateAppSettingsServicesRes.Error }\t{ ValidateAppSettingsServicesRes.DoesNotExist }\t{ fiDB.FullName }");
+                    actionCommandDBService.ErrorText.AppendLine($"{ CultureServicesRes.Error }\t{ CultureServicesRes.DoesNotExist }\t{ fiDB.FullName }");
                 }
             }
 

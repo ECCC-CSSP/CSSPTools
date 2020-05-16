@@ -1,7 +1,6 @@
 ﻿using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Spreadsheet;
 using PolSourceGroupingExcelFileReadServices.Models;
-using PolSourceGroupingExcelFileReadServices.Resources;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -11,6 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using ActionCommandDBServices.Services;
 using ValidateAppSettingsServices.Services;
+using CultureServices.Resources;
 
 namespace PolSourceGroupingExcelFileReadServices.Services
 {
@@ -22,7 +22,7 @@ namespace PolSourceGroupingExcelFileReadServices.Services
 
             if (textList.Contains(s))
             {
-                actionCommandDBService.ErrorText.AppendLine($"{ PolSourceGroupingExcelFileReadServicesRes.RecursiveFound } ...");
+                actionCommandDBService.ErrorText.AppendLine($"{ CultureServicesRes.RecursiveFound } ...");
                 actionCommandDBService.ErrorText.AppendLine("");
                 actionCommandDBService.PercentCompleted = 0;
                 await actionCommandDBService.Update();
@@ -42,7 +42,7 @@ namespace PolSourceGroupingExcelFileReadServices.Services
                 return false;
             }
 
-            actionCommandDBService.ExecutionStatusText.AppendLine($"{ PolSourceGroupingExcelFileReadServicesRes.Doing } ... { s }");
+            actionCommandDBService.ExecutionStatusText.AppendLine($"{ CultureServicesRes.Doing } ... { s }");
             //await actionCommandDBService.Update( 0);
 
             if (RaiseEvents)

@@ -18,6 +18,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Reference Include="CultureServices">
+      <HintPath>..\CultureServices\bin\Debug\netcoreapp3.1\CultureServices.dll</HintPath>
+    </Reference>
     <Reference Include="EnumsGenerated_csServices">
       <HintPath>..\EnumsGenerated_csServices\bin\Debug\netcoreapp3.1\EnumsGenerated_csServices.dll</HintPath>
     </Reference>

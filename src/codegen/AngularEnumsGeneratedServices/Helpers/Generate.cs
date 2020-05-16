@@ -1,5 +1,4 @@
-﻿using AngularEnumsGeneratedServices.Resources;
-using CSSPEnums;
+﻿using CSSPEnums;
 using CSSPModels;
 using GenerateCodeBaseServices.Models;
 using GenerateCodeBaseServices.Services;
@@ -22,6 +21,7 @@ using ValidateAppSettingsServices.Services;
 using ValidateAppSettingsServices.Models;
 using Microsoft.AspNetCore.Mvc;
 using AngularEnumsGeneratedServices.Models;
+using CultureServices.Resources;
 
 namespace AngularEnumsGeneratedServices.Services
 {
@@ -49,7 +49,7 @@ namespace AngularEnumsGeneratedServices.Services
                 }
                 catch (Exception)
                 {
-                    actionCommandDBService.ErrorText.AppendLine($"{ string.Format(AngularEnumsGeneratedServicesRes.CouldNotCreateDirectory_, diOutputGen.FullName) }");
+                    actionCommandDBService.ErrorText.AppendLine($"{ string.Format(CultureServicesRes.CouldNotCreateDirectory_, diOutputGen.FullName) }");
                     return false;
                 }
             }
@@ -61,7 +61,7 @@ namespace AngularEnumsGeneratedServices.Services
             List<DLLTypeInfo> DLLTypeInfoCSSPEnumsList = new List<DLLTypeInfo>();
             if (generateCodeBaseService.FillDLLTypeInfoList(fiCSSPEnumsDLL, DLLTypeInfoCSSPEnumsList))
             {
-                actionCommandDBService.ErrorText.AppendLine($"{ string.Format(AngularEnumsGeneratedServicesRes.CouldNotReadFile_, diOutputGen.FullName) }");
+                actionCommandDBService.ErrorText.AppendLine($"{ string.Format(CultureServicesRes.CouldNotReadFile_, diOutputGen.FullName) }");
                 return false;
             }
             actionCommandDBService.ExecutionStatusText.AppendLine($"Loaded [{ fiCSSPEnumsDLL.FullName }] ...");
@@ -119,7 +119,7 @@ namespace AngularEnumsGeneratedServices.Services
             }
 
             actionCommandDBService.ExecutionStatusText.AppendLine("");
-            actionCommandDBService.ExecutionStatusText.AppendLine($"{ AngularEnumsGeneratedServicesRes.Done } ...");
+            actionCommandDBService.ExecutionStatusText.AppendLine($"{ CultureServicesRes.Done } ...");
             actionCommandDBService.ExecutionStatusText.AppendLine("");
             actionCommandDBService.ExecutionStatusText.AppendLine("Generate Finished ...");
             actionCommandDBService.PercentCompleted = 100;

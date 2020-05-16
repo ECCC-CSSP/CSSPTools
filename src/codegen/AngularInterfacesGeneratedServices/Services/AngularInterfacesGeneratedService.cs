@@ -1,5 +1,4 @@
-﻿using AngularInterfacesGeneratedServices.Resources;
-using CSSPEnums;
+﻿using CSSPEnums;
 using CSSPModels;
 using GenerateCodeBaseServices.Models;
 using GenerateCodeBaseServices.Services;
@@ -21,6 +20,7 @@ using System.Threading.Tasks;
 using ValidateAppSettingsServices.Services;
 using ValidateAppSettingsServices.Models;
 using Microsoft.AspNetCore.Mvc;
+using CultureServices.Resources;
 
 namespace AngularInterfacesGeneratedServices.Services
 {
@@ -75,7 +75,7 @@ namespace AngularInterfacesGeneratedServices.Services
         }
         public async Task SetCulture(CultureInfo culture)
         {
-            AngularInterfacesGeneratedServicesRes.Culture = culture;
+            CultureServicesRes.Culture = culture;
             await actionCommandDBService.SetCulture(culture);
             await validateAppSettingsService.SetCulture(culture);
             await generateCodeBaseService.SetCulture(culture);

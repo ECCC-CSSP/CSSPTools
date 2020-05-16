@@ -5,12 +5,12 @@ using ActionCommandDBServices.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using ServicesClassNameServiceGeneratedServices.Resources;
 using ServicesClassNameServiceGeneratedServices.Services;
 using System;
 using System.IO;
 using ValidateAppSettingsServices.Services;
 using System.Threading.Tasks;
+using CultureServices.Resources;
 
 namespace ServicesClassNameServiceGenerated
 {
@@ -70,7 +70,7 @@ namespace ServicesClassNameServiceGenerated
                 string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
                 if (configuration.GetValue<string>(DBFileName) == null)
                 {
-                    Console.WriteLine($"{ String.Format(ServicesClassNameServiceGeneratedServicesRes.CouldNotFindParameter_InAppSettingsJSON, DBFileName) }");
+                    Console.WriteLine($"{ String.Format(CultureServicesRes.CouldNotFindParameter_InAppSettingsJSON, DBFileName) }");
                     return await Task.FromResult(false);
                 }
 
@@ -78,7 +78,7 @@ namespace ServicesClassNameServiceGenerated
 
                 if (!fiDB.Exists)
                 {
-                    Console.WriteLine($"{ String.Format(ServicesClassNameServiceGeneratedServicesRes.CouldNotFindFile_, fiDB.FullName) }");
+                    Console.WriteLine($"{ String.Format(CultureServicesRes.CouldNotFindFile_, fiDB.FullName) }");
                     return await Task.FromResult(false);
                 }
 
@@ -119,7 +119,7 @@ namespace ServicesClassNameServiceGenerated
             string CSSPDBConnString = configuration.GetValue<string>("CSSPDBConnectionString");
             if (CSSPDBConnString == null)
             {
-                await actionCommandDBService.ConsoleWriteError($"{ String.Format(ServicesClassNameServiceGeneratedServicesRes.CouldNotFindParameter_InAppSettingsJSON, "CSSPDBConnectionString") }");
+                await actionCommandDBService.ConsoleWriteError($"{ String.Format(CultureServicesRes.CouldNotFindParameter_InAppSettingsJSON, "CSSPDBConnectionString") }");
                 return await Task.FromResult(false);
             }
 
@@ -143,7 +143,7 @@ namespace ServicesClassNameServiceGenerated
             string TestDBConnString = configuration.GetValue<string>("TestDBConnectionString");
             if (TestDBConnString == null)
             {
-                await actionCommandDBService.ConsoleWriteError($"{ String.Format(ServicesClassNameServiceGeneratedServicesRes.CouldNotFindParameter_InAppSettingsJSON, "TestDBConnectionString") }");
+                await actionCommandDBService.ConsoleWriteError($"{ String.Format(CultureServicesRes.CouldNotFindParameter_InAppSettingsJSON, "TestDBConnectionString") }");
                 return await Task.FromResult(false);
             }
 

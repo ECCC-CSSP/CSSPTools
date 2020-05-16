@@ -8,7 +8,6 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Linq;
 using UserServices.Models;
-using UserServices.Resources;
 using System.Diagnostics;
 using System.Globalization;
 using System.IO;
@@ -24,6 +23,7 @@ using System.IdentityModel.Tokens.Jwt;
 using Microsoft.IdentityModel.Tokens;
 using System.Security.Claims;
 using Microsoft.Extensions.Options;
+using CultureServices.Resources;
 
 namespace UserServices.Services
 {
@@ -76,13 +76,13 @@ namespace UserServices.Services
 
                 if (appUser == null)
                 {
-                    return BadRequest(String.Format(UserServicesRes.__CouldNotBeFound, UserServicesRes.Email, loginModel.LoginEmail));
+                    return BadRequest(String.Format(CultureServicesRes.__CouldNotBeFound, CultureServicesRes.Email, loginModel.LoginEmail));
                 }
 
                 bool HasPassword = await userManager.CheckPasswordAsync(appUser, loginModel.Password);
                 if (!HasPassword)
                 {
-                    return BadRequest(String.Format(UserServicesRes.UnableToLoginAs_WithProvidedPassword, loginModel.LoginEmail));
+                    return BadRequest(String.Format(CultureServicesRes.UnableToLoginAs_WithProvidedPassword, loginModel.LoginEmail));
                 }
 
                 if (HasPassword == true)
@@ -92,7 +92,7 @@ namespace UserServices.Services
                                        select c).AsNoTracking().FirstOrDefault();
                     if (contact == null)
                     {
-                        return BadRequest(String.Format(UserServicesRes.UnableToLoginAs_WithProvidedPassword, loginModel.LoginEmail));
+                        return BadRequest(String.Format(CultureServicesRes.UnableToLoginAs_WithProvidedPassword, loginModel.LoginEmail));
                     }
 
                     UserModel userModel = new UserModel()
@@ -126,14 +126,14 @@ namespace UserServices.Services
             }
             catch (Exception ex)
             {
-                return BadRequest(String.Format(UserServicesRes.Error_, ex.Message));
+                return BadRequest(String.Format(CultureServicesRes.Error_, ex.Message));
             }
 
-            return BadRequest(String.Format(UserServicesRes.UnableToLoginAs_WithProvidedPassword, loginModel.LoginEmail));
+            return BadRequest(String.Format(CultureServicesRes.UnableToLoginAs_WithProvidedPassword, loginModel.LoginEmail));
         }
         public async Task SetCulture(CultureInfo culture)
         {
-            UserServicesRes.Culture = culture;
+            CultureServicesRes.Culture = culture;
         }
         #endregion Functions public
 

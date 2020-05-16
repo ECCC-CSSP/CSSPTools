@@ -1,5 +1,4 @@
-﻿using EnumsCompareWithOldEnumsServices.Resources;
-using EnumsCompareWithOldEnumsServices.Services;
+﻿using EnumsCompareWithOldEnumsServices.Services;
 using GenerateCodeBaseServices.Services;
 using ActionCommandDBServices.Models;
 using ActionCommandDBServices.Services;
@@ -15,8 +14,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 using ValidateAppSettingsServices.Services;
-using ActionCommandDBServices.Resources;
-using ValidateAppSettingsServices.Resources;
+using CultureServices.Resources;
 
 namespace EnumsCompareWithOldEnumsServices.Tests
 {
@@ -65,7 +63,7 @@ namespace EnumsCompareWithOldEnumsServices.Tests
                 culture = "en-CA";
             }
             CultureInfo Culture = new CultureInfo(culture);
-            Assert.Equal(Culture, EnumsCompareWithOldEnumsServicesRes.Culture);
+            Assert.Equal(Culture, CultureServicesRes.Culture);
         }
         [Theory]
         [InlineData("en-CA")] // good

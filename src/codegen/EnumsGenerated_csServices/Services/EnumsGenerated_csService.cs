@@ -1,5 +1,4 @@
-﻿using EnumsGenerated_csServices.Resources;
-using GenerateCodeBaseServices.Models;
+﻿using GenerateCodeBaseServices.Models;
 using GenerateCodeBaseServices.Services;
 using ActionCommandDBServices.Models;
 using ActionCommandDBServices.Services;
@@ -18,6 +17,7 @@ using System.Threading.Tasks;
 using ValidateAppSettingsServices.Services;
 using ValidateAppSettingsServices.Models;
 using Microsoft.AspNetCore.Mvc;
+using CultureServices.Resources;
 
 namespace EnumsGenerated_csServices.Services
 {
@@ -72,7 +72,7 @@ namespace EnumsGenerated_csServices.Services
             await actionCommandDBService.SetCulture(culture);
             await validateAppSettingsService.SetCulture(culture);
             await generateCodeBaseService.SetCulture(culture);
-            EnumsGenerated_csServicesRes.Culture = culture;
+            CultureServicesRes.Culture = culture;
         }
         #endregion Functions public
 

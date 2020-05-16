@@ -14,7 +14,6 @@ using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using UserServices.Models;
 using UserServices.Services;
-using UserServices.Resources;
 
 namespace CSSPCodeGenWebAPI.Controllers
 {

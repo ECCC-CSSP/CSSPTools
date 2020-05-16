@@ -3,7 +3,6 @@ using GenerateCodeBaseServices.Services;
 using ActionCommandDBServices.Models;
 using ActionCommandDBServices.Services;
 using Microsoft.Extensions.Configuration;
-using ModelsCompareServices.Resources;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -15,6 +14,7 @@ using System.Threading.Tasks;
 using ValidateAppSettingsServices.Services;
 using ValidateAppSettingsServices.Models;
 using Microsoft.AspNetCore.Mvc;
+using CultureServices.Resources;
 
 namespace ModelsCompareServices.Services
 {
@@ -45,7 +45,7 @@ namespace ModelsCompareServices.Services
             List<DLLTypeInfo> DLLTypeInfoCSSPModelsList = new List<DLLTypeInfo>();
             if (generateCodeBaseService.FillDLLTypeInfoList(fiCSSPModelsDLL, DLLTypeInfoCSSPModelsList))
             {
-                actionCommandDBService.ErrorText.AppendLine($"{ string.Format(ModelsCompareServicesRes.CouldNotReadFile_, fiCSSPModelsDLL.FullName) }");
+                actionCommandDBService.ErrorText.AppendLine($"{ string.Format(CultureServicesRes.CouldNotReadFile_, fiCSSPModelsDLL.FullName) }");
                 return await Task.FromResult(false);
             }
             #endregion Variables and loading DLL properties
@@ -91,7 +91,7 @@ namespace ModelsCompareServices.Services
                     fiCodeFile = new FileInfo(configuration.GetValue<string>("CodeFileNotMapped").Replace("{TypeName}", dllTypeInfoModels.Type.Name));
                     if (!fiCodeFile.Exists)
                     {
-                        actionCommandDBService.ErrorText.AppendLine($"{ string.Format(ModelsCompareServicesRes.CouldNotFindFile_, dllTypeInfoModels.Type.Name) }");
+                        actionCommandDBService.ErrorText.AppendLine($"{ string.Format(CultureServicesRes.CouldNotFindFile_, dllTypeInfoModels.Type.Name) }");
                         return await Task.FromResult(false);
                     }
                 }
@@ -153,7 +153,7 @@ namespace ModelsCompareServices.Services
                         string PropTypeText = GetTypeText(dllPropertyInfo.CSSPProp.PropType);
                         if (string.IsNullOrWhiteSpace(PropTypeText))
                         {
-                            actionCommandDBService.ErrorText.AppendLine($"{ dllPropertyInfo.CSSPProp.PropType } { ModelsCompareServicesRes.IsNotImplemented }");
+                            actionCommandDBService.ErrorText.AppendLine($"{ dllPropertyInfo.CSSPProp.PropType } { CultureServicesRes.IsNotImplemented }");
                             return await Task.FromResult(false);
                         }
 
@@ -188,7 +188,7 @@ namespace ModelsCompareServices.Services
                         string PropTypeText = GetTypeText(dllPropertyInfo.CSSPProp.PropType);
                         if (string.IsNullOrWhiteSpace(PropTypeText))
                         {
-                            actionCommandDBService.ErrorText.AppendLine($"{ dllPropertyInfo.CSSPProp.PropType } { ModelsCompareServicesRes.IsNotImplemented }");
+                            actionCommandDBService.ErrorText.AppendLine($"{ dllPropertyInfo.CSSPProp.PropType } { CultureServicesRes.IsNotImplemented }");
                             return await Task.FromResult(false);
                         }
 
@@ -314,11 +314,11 @@ namespace ModelsCompareServices.Services
                 #region Comparing existing document with created document
                 #endregion Comparing existing document with created document
 
-                actionCommandDBService.ExecutionStatusText.AppendLine($"{ dllTypeInfoModels.Type.Name } { ModelsCompareServicesRes.ComparedOK } ...");
+                actionCommandDBService.ExecutionStatusText.AppendLine($"{ dllTypeInfoModels.Type.Name } { CultureServicesRes.ComparedOK } ...");
             }
 
             actionCommandDBService.ExecutionStatusText.AppendLine("");
-            actionCommandDBService.ExecutionStatusText.AppendLine($"{ ModelsCompareServicesRes.Done } ...");
+            actionCommandDBService.ExecutionStatusText.AppendLine($"{ CultureServicesRes.Done } ...");
             actionCommandDBService.ExecutionStatusText.AppendLine("");
             actionCommandDBService.ExecutionStatusText.AppendLine("Generate Finished ...");
             actionCommandDBService.PercentCompleted = 100;

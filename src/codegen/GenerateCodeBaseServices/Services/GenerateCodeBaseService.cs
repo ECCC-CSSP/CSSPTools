@@ -1,6 +1,5 @@
 ﻿using CSSPEnums;
 using GenerateCodeBaseServices.Models;
-using GenerateCodeBaseServices.Resources;
 using ActionCommandDBServices.Services;
 using Microsoft.Extensions.Configuration;
 using System;
@@ -12,6 +11,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using CultureServices.Resources;
 
 namespace GenerateCodeBaseServices.Services
 {
@@ -37,7 +37,7 @@ namespace GenerateCodeBaseServices.Services
         public async Task SetCulture(CultureInfo culture)
         {
             await actionCommandDBService.SetCulture(culture);
-            GenerateCodeBaseServicesRes.Culture = culture;
+            CultureServicesRes.Culture = culture;
         }
         #endregion Functions public
 

@@ -1,5 +1,4 @@
-﻿using EnumsTestGenerated_csServices.Resources;
-using GenerateCodeBaseServices.Models;
+﻿using GenerateCodeBaseServices.Models;
 using GenerateCodeBaseServices.Services;
 using ActionCommandDBServices.Models;
 using ActionCommandDBServices.Services;
@@ -15,6 +14,7 @@ using System.Threading.Tasks;
 using ValidateAppSettingsServices.Services;
 using ValidateAppSettingsServices.Models;
 using Microsoft.AspNetCore.Mvc;
+using CultureServices.Resources;
 
 namespace EnumsTestGenerated_cs.Services
 {
@@ -255,8 +255,8 @@ namespace EnumsTestGenerated_cs.Services
                 sw.Write(sb.ToString());
             }
 
-            actionCommandDBService.ExecutionStatusText.AppendLine($"{ EnumsTestGenerated_csServicesRes.Created } [{ fi.FullName }] ...");
-            actionCommandDBService.ExecutionStatusText.AppendLine($"{ EnumsTestGenerated_csServicesRes.Done } ...");
+            actionCommandDBService.ExecutionStatusText.AppendLine($"{ CultureServicesRes.Created } [{ fi.FullName }] ...");
+            actionCommandDBService.ExecutionStatusText.AppendLine($"{ CultureServicesRes.Done } ...");
             actionCommandDBService.ExecutionStatusText.AppendLine("");
             actionCommandDBService.ExecutionStatusText.AppendLine("Generate Finished ...");
             actionCommandDBService.PercentCompleted = 100;

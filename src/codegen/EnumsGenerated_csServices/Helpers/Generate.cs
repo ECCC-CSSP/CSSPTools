@@ -1,5 +1,4 @@
-﻿using EnumsGenerated_csServices.Resources;
-using GenerateCodeBaseServices.Models;
+﻿using GenerateCodeBaseServices.Models;
 using GenerateCodeBaseServices.Services;
 using ActionCommandDBServices.Models;
 using ActionCommandDBServices.Services;
@@ -15,6 +14,7 @@ using System.Threading.Tasks;
 using ValidateAppSettingsServices.Services;
 using ValidateAppSettingsServices.Models;
 using Microsoft.AspNetCore.Mvc;
+using CultureServices.Resources;
 
 namespace EnumsGenerated_csServices.Services
 {
@@ -99,7 +99,7 @@ namespace EnumsGenerated_csServices.Services
                 sw.Write(sb.ToString());
             }
 
-            actionCommandDBService.ExecutionStatusText.AppendLine($"{ EnumsGenerated_csServicesRes.Created } [{ fiInterface.FullName }] ...");
+            actionCommandDBService.ExecutionStatusText.AppendLine($"{ CultureServicesRes.Created } [{ fiInterface.FullName }] ...");
             actionCommandDBService.PercentCompleted = 50;
             await actionCommandDBService.Update();
 
@@ -331,8 +331,8 @@ namespace EnumsGenerated_csServices.Services
                 sw.Write(sb.ToString());
             }
 
-            actionCommandDBService.ExecutionStatusText.AppendLine($"{ EnumsGenerated_csServicesRes.Created } [{ fi.FullName }] ...");
-            actionCommandDBService.ExecutionStatusText.AppendLine($"{ EnumsGenerated_csServicesRes.Done } ...");
+            actionCommandDBService.ExecutionStatusText.AppendLine($"{ CultureServicesRes.Created } [{ fi.FullName }] ...");
+            actionCommandDBService.ExecutionStatusText.AppendLine($"{ CultureServicesRes.Done } ...");
             actionCommandDBService.ExecutionStatusText.AppendLine("");
             actionCommandDBService.ExecutionStatusText.AppendLine("Generate Finished ...");
             actionCommandDBService.PercentCompleted = 100;

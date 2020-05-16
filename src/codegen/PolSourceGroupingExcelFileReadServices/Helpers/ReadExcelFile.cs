@@ -1,7 +1,6 @@
 ﻿using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Spreadsheet;
 using PolSourceGroupingExcelFileReadServices.Models;
-using PolSourceGroupingExcelFileReadServices.Resources;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -10,6 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ActionCommandDBServices.Services;
+using CultureServices.Resources;
 
 namespace PolSourceGroupingExcelFileReadServices.Services
 {
@@ -19,7 +19,7 @@ namespace PolSourceGroupingExcelFileReadServices.Services
         {
             groupChoiceChildLevelList = new List<GroupChoiceChildLevel>();
 
-            actionCommandDBService.ExecutionStatusText.AppendLine($"{ PolSourceGroupingExcelFileReadServicesRes.ReadingSpreadsheet } [{ FullFileName }]");
+            actionCommandDBService.ExecutionStatusText.AppendLine($"{ CultureServicesRes.ReadingSpreadsheet } [{ FullFileName }]");
             actionCommandDBService.ExecutionStatusText.AppendLine("");
             //await actionCommandDBService.Update( 0);
 
@@ -83,7 +83,7 @@ namespace PolSourceGroupingExcelFileReadServices.Services
                                                     {
                                                         if ((item.Text.Text + "") != FieldNameList[cellcount])
                                                         {
-                                                            actionCommandDBService.ErrorText.AppendLine($"{ fi.FullName } { PolSourceGroupingExcelFileReadServicesRes.PolSourceGrouping } { item.Text } { PolSourceGroupingExcelFileReadServicesRes.IsNotEqualTo } { FieldNameList[cellcount] }");
+                                                            actionCommandDBService.ErrorText.AppendLine($"{ fi.FullName } { CultureServicesRes.PolSourceGrouping } { item.Text } { CultureServicesRes.IsNotEqualTo } { FieldNameList[cellcount] }");
                                                             actionCommandDBService.ErrorText.AppendLine("");
                                                             actionCommandDBService.PercentCompleted = 0;
                                                             await actionCommandDBService.Update();
@@ -96,7 +96,7 @@ namespace PolSourceGroupingExcelFileReadServices.Services
                                                         currentcellvalue = item.InnerText;
                                                         if (currentcellvalue != FieldNameList[cellcount])
                                                         {
-                                                            actionCommandDBService.ErrorText.AppendLine($"{ fi.FullName } { PolSourceGroupingExcelFileReadServicesRes.PolSourceGrouping } { item.Text } { PolSourceGroupingExcelFileReadServicesRes.IsNotEqualTo } { FieldNameList[cellcount] }");
+                                                            actionCommandDBService.ErrorText.AppendLine($"{ fi.FullName } { CultureServicesRes.PolSourceGrouping } { item.Text } { CultureServicesRes.IsNotEqualTo } { FieldNameList[cellcount] }");
                                                             actionCommandDBService.ErrorText.AppendLine("");
                                                             actionCommandDBService.PercentCompleted = 0;
                                                             await actionCommandDBService.Update();
@@ -109,7 +109,7 @@ namespace PolSourceGroupingExcelFileReadServices.Services
                                                         currentcellvalue = item.InnerXml;
                                                         if (currentcellvalue != FieldNameList[cellcount])
                                                         {
-                                                            actionCommandDBService.ErrorText.AppendLine($"{ fi.FullName } { PolSourceGroupingExcelFileReadServicesRes.PolSourceGrouping } { item.Text } { PolSourceGroupingExcelFileReadServicesRes.IsNotEqualTo } { FieldNameList[cellcount] }");
+                                                            actionCommandDBService.ErrorText.AppendLine($"{ fi.FullName } { CultureServicesRes.PolSourceGrouping } { item.Text } { CultureServicesRes.IsNotEqualTo } { FieldNameList[cellcount] }");
                                                             actionCommandDBService.ErrorText.AppendLine("");
                                                             actionCommandDBService.PercentCompleted = 0;
                                                             await actionCommandDBService.Update();
@@ -124,7 +124,7 @@ namespace PolSourceGroupingExcelFileReadServices.Services
                                         {
                                             if ((thecurrentcell.InnerText + " ") != FieldNameList[cellcount])
                                             {
-                                                actionCommandDBService.ErrorText.AppendLine($"{ fi.FullName } { PolSourceGroupingExcelFileReadServicesRes.PolSourceGrouping } { (thecurrentcell.InnerText + " ") } { PolSourceGroupingExcelFileReadServicesRes.IsNotEqualTo } { FieldNameList[cellcount] }");
+                                                actionCommandDBService.ErrorText.AppendLine($"{ fi.FullName } { CultureServicesRes.PolSourceGrouping } { (thecurrentcell.InnerText + " ") } { CultureServicesRes.IsNotEqualTo } { FieldNameList[cellcount] }");
                                                 actionCommandDBService.ErrorText.AppendLine("");
                                                 actionCommandDBService.PercentCompleted = 0;
                                                 await actionCommandDBService.Update();
@@ -381,7 +381,7 @@ namespace PolSourceGroupingExcelFileReadServices.Services
 
                                     if (rowCount % 200 == 0)
                                     {
-                                        actionCommandDBService.ExecutionStatusText.AppendLine($"{ PolSourceGroupingExcelFileReadServicesRes.ReadingSpreadsheet } ... { rowCount }");
+                                        actionCommandDBService.ExecutionStatusText.AppendLine($"{ CultureServicesRes.ReadingSpreadsheet } ... { rowCount }");
                                         actionCommandDBService.ExecutionStatusText.AppendLine("");
                                         //await actionCommandDBService.Update( 0);
                                     }

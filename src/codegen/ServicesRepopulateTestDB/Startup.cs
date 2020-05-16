@@ -5,12 +5,12 @@ using ActionCommandDBServices.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using ServicesRepopulateTestDBServices.Resources;
 using ServicesRepopulateTestDBServices.Services;
 using System;
 using System.IO;
 using ValidateAppSettingsServices.Services;
 using System.Threading.Tasks;
+using CultureServices.Resources;
 
 namespace ServicesRepopulateTestDB
 {
@@ -70,7 +70,7 @@ namespace ServicesRepopulateTestDB
                 string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
                 if (configuration.GetValue<string>(DBFileName) == null)
                 {
-                    Console.WriteLine($"{ String.Format(ServicesRepopulateTestDBServicesRes.CouldNotFindParameter_InAppSettingsJSON, DBFileName) }");
+                    Console.WriteLine($"{ String.Format(CultureServicesRes.CouldNotFindParameter_InAppSettingsJSON, DBFileName) }");
                     return await Task.FromResult(false);
                 }
 
@@ -78,7 +78,7 @@ namespace ServicesRepopulateTestDB
 
                 if (!fiDB.Exists)
                 {
-                    Console.WriteLine($"{ String.Format(ServicesRepopulateTestDBServicesRes.CouldNotFindFile_, fiDB.FullName) }");
+                    Console.WriteLine($"{ String.Format(CultureServicesRes.CouldNotFindFile_, fiDB.FullName) }");
                     return await Task.FromResult(false);
                 }
 
@@ -119,7 +119,7 @@ namespace ServicesRepopulateTestDB
             string CSSPDBConnString = configuration.GetValue<string>("CSSPDBConnectionString");
             if (CSSPDBConnString == null)
             {
-                await actionCommandDBService.ConsoleWriteError($"{ String.Format(ServicesRepopulateTestDBServicesRes.CouldNotFindParameter_InAppSettingsJSON, "CSSPDBConnectionString") }");
+                await actionCommandDBService.ConsoleWriteError($"{ String.Format(CultureServicesRes.CouldNotFindParameter_InAppSettingsJSON, "CSSPDBConnectionString") }");
                 return await Task.FromResult(false);
             }
 
@@ -143,7 +143,7 @@ namespace ServicesRepopulateTestDB
             string TestDBConnString = configuration.GetValue<string>("TestDBConnectionString");
             if (TestDBConnString == null)
             {
-                await actionCommandDBService.ConsoleWriteError($"{ String.Format(ServicesRepopulateTestDBServicesRes.CouldNotFindParameter_InAppSettingsJSON, "TestDBConnectionString") }");
+                await actionCommandDBService.ConsoleWriteError($"{ String.Format(CultureServicesRes.CouldNotFindParameter_InAppSettingsJSON, "TestDBConnectionString") }");
                 return await Task.FromResult(false);
             }
 

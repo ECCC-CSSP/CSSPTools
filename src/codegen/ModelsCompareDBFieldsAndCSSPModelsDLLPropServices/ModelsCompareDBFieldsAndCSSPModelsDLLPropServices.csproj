@@ -18,6 +18,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Reference Include="CultureServices">
+      <HintPath>..\CultureServices\bin\Debug\netcoreapp3.1\CultureServices.dll</HintPath>
+    </Reference>
     <Reference Include="GenerateCodeBaseServices">
       <HintPath>..\GenerateCodeBaseServices\bin\Debug\netcoreapp3.1\GenerateCodeBaseServices.dll</HintPath>
     </Reference>
@@ -27,25 +30,6 @@
     <Reference Include="ValidateAppSettingsServices">
       <HintPath>..\ValidateAppSettingsServices\bin\Debug\netcoreapp3.1\ValidateAppSettingsServices.dll</HintPath>
     </Reference>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Compile Update="Resources\ModelsCompareDBFieldsAndCSSPModelsDLLPropServicesRes.Designer.cs">
-      <DependentUpon>ModelsCompareDBFieldsAndCSSPModelsDLLPropServicesRes.resx</DependentUpon>
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-    </Compile>
-  </ItemGroup>
-
-  <ItemGroup>
-    <EmbeddedResource Update="Resources\ModelsCompareDBFieldsAndCSSPModelsDLLPropServicesRes.fr.resx">
-      <LastGenOutput>AppRes.Designer.cs</LastGenOutput>
-      <Generator>PublicResXFileCodeGenerator</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Resources\ModelsCompareDBFieldsAndCSSPModelsDLLPropServicesRes.resx">
-      <LastGenOutput>ModelsCompareDBFieldsAndCSSPModelsDLLPropServicesRes.Designer.cs</LastGenOutput>
-      <Generator>PublicResXFileCodeGenerator</Generator>
-    </EmbeddedResource>
   </ItemGroup>
 
 </Project>

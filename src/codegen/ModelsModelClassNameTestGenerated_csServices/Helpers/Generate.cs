@@ -3,7 +3,6 @@ using GenerateCodeBaseServices.Services;
 using ActionCommandDBServices.Models;
 using ActionCommandDBServices.Services;
 using Microsoft.Extensions.Configuration;
-using ModelsModelClassNameTestGenerated_csServices.Resources;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -15,6 +14,7 @@ using System.Threading.Tasks;
 using ValidateAppSettingsServices.Services;
 using ValidateAppSettingsServices.Models;
 using Microsoft.AspNetCore.Mvc;
+using CultureServices.Resources;
 
 namespace ModelsModelClassNameTestGenerated_csServices.Services
 {
@@ -480,11 +480,11 @@ namespace ModelsModelClassNameTestGenerated_csServices.Services
                 {
                     sw.Write(sb.ToString());
                 }
-                actionCommandDBService.ExecutionStatusText.AppendLine($"{ string.Format(ModelsModelClassNameTestGenerated_csServicesRes.Created_, fiOutput.FullName) }");
+                actionCommandDBService.ExecutionStatusText.AppendLine($"{ string.Format(CultureServicesRes.Created_, fiOutput.FullName) }");
             }
 
             actionCommandDBService.ExecutionStatusText.AppendLine("");
-            actionCommandDBService.ExecutionStatusText.AppendLine($"{ ModelsModelClassNameTestGenerated_csServicesRes.Done } ...");
+            actionCommandDBService.ExecutionStatusText.AppendLine($"{ CultureServicesRes.Done } ...");
             actionCommandDBService.ExecutionStatusText.AppendLine("");
             actionCommandDBService.ExecutionStatusText.AppendLine("Generate Finished ...");
             actionCommandDBService.PercentCompleted = 100;

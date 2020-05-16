@@ -14,7 +14,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 using ValidateAppSettingsServices.Services;
-using ModelsCSSPModelsResServices.Resources;
+using CultureServices.Resources;
 
 namespace ModelsCSSPModelsResServices.Tests
 {
@@ -63,7 +63,7 @@ namespace ModelsCSSPModelsResServices.Tests
                 culture = "en-CA";
             }
             CultureInfo Culture = new CultureInfo(culture);
-            Assert.Equal(Culture, ModelsCSSPModelsResServicesRes.Culture);
+            Assert.Equal(Culture, CultureServicesRes.Culture);
         }
         #endregion Functions public
 

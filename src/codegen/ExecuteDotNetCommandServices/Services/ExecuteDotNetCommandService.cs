@@ -1,5 +1,4 @@
 ﻿using ExecuteDotNetCommandServices.Models;
-using ExecuteDotNetCommandServices.Resources;
 using GenerateCodeBaseServices.Models;
 using GenerateCodeBaseServices.Services;
 using ActionCommandDBServices.Models;
@@ -19,6 +18,7 @@ using System.Threading.Tasks;
 using ValidateAppSettingsServices.Services;
 using ValidateAppSettingsServices.Models;
 using Microsoft.AspNetCore.Mvc;
+using CultureServices.Resources;
 
 namespace ExecuteDotNetCommandServices.Services
 {
@@ -225,7 +225,7 @@ namespace ExecuteDotNetCommandServices.Services
         {
             await actionCommandDBService.SetCulture(culture);
             await validateAppSettingsService.SetCulture(culture);
-            ExecuteDotNetCommandServicesRes.Culture = culture;
+            CultureServicesRes.Culture = culture;
         }
         #endregion Functions public
 

@@ -17,10 +17,10 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
-using WebAPIClassNameControllerGeneratedServices.Resources;
 using Microsoft.AspNetCore.Mvc;
 using ValidateAppSettingsServices.Services;
 using ValidateAppSettingsServices.Models;
+using CultureServices.Resources;
 
 namespace WebAPIClassNameControllerGeneratedServices.Services
 {
@@ -343,11 +343,11 @@ namespace WebAPIClassNameControllerGeneratedServices.Services
                         sw2.Write(sb.ToString());
                     }
 
-                    actionCommandDBService.ExecutionStatusText.AppendLine($"{ string.Format(WebAPIClassNameControllerGeneratedServicesRes.Created_, fiOutputGen.FullName) }");
+                    actionCommandDBService.ExecutionStatusText.AppendLine($"{ string.Format(CultureServicesRes.Created_, fiOutputGen.FullName) }");
                 }
             }
             actionCommandDBService.ExecutionStatusText.AppendLine("");
-            actionCommandDBService.ExecutionStatusText.AppendLine($"{ WebAPIClassNameControllerGeneratedServicesRes.Done } ...");
+            actionCommandDBService.ExecutionStatusText.AppendLine($"{ CultureServicesRes.Done } ...");
             actionCommandDBService.ExecutionStatusText.AppendLine("");
             actionCommandDBService.ExecutionStatusText.AppendLine("Generate Finished ...");
             actionCommandDBService.PercentCompleted = 100;

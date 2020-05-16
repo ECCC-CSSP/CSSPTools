@@ -7,7 +7,6 @@ using ActionCommandDBServices.Services;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
-using ServicesRepopulateTestDBServices.Resources;
 using System;
 using System.Collections.Generic;
 using System.Data;

@@ -1,6 +1,5 @@
 ﻿using Microsoft.Extensions.Primitives;
 using ActionCommandDBServices.Models;
-using ActionCommandDBServices.Resources;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -8,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using CultureServices.Resources;
 
 namespace ActionCommandDBServices.Services
 {
@@ -16,7 +16,7 @@ namespace ActionCommandDBServices.Services
         public async Task ConsoleWriteEnd()
         {
             ExecutionStatusText.AppendLine("");
-            ExecutionStatusText.AppendLine($"{ ActionCommandDBServicesRes.Done } ...");
+            ExecutionStatusText.AppendLine($"{ CultureServicesRes.Done } ...");
             ExecutionStatusText.AppendLine("");
             PercentCompleted = 100;
             await Update();
@@ -32,7 +32,7 @@ namespace ActionCommandDBServices.Services
         {
             ErrorText.AppendLine(errMessage);
             ErrorText.AppendLine("");
-            ErrorText.AppendLine(ActionCommandDBServicesRes.AbnormalCompletion);
+            ErrorText.AppendLine(CultureServicesRes.AbnormalCompletion);
             ErrorText.AppendLine("");
             PercentCompleted = 0;
             await Update();
@@ -46,19 +46,20 @@ namespace ActionCommandDBServices.Services
         }
         public async Task ConsoleWriteStart()
         {
-            ExecutionStatusText.AppendLine($"{ ActionCommandDBServicesRes.Running } { ActionCommandDBServicesRes.Application } { AppDomain.CurrentDomain.FriendlyName }");
+            ExecutionStatusText.AppendLine($"{ CultureServicesRes.Running } { CultureServicesRes.Application } { AppDomain.CurrentDomain.FriendlyName }");
             ExecutionStatusText.AppendLine("");
-            ExecutionStatusText.AppendLine($"{ ActionCommandDBServicesRes.Starting } ...");
+            ExecutionStatusText.AppendLine($"{ CultureServicesRes.Starting } ...");
             ExecutionStatusText.AppendLine("");
-            PercentCompleted = 100;
+            PercentCompleted = 0;
+            await Update();
 
             if (!Console.IsOutputRedirected)
             {
                 Console.Clear();
             }
-            Console.WriteLine($"{ ActionCommandDBServicesRes.Running } { ActionCommandDBServicesRes.Application } { AppDomain.CurrentDomain.FriendlyName }");
+            Console.WriteLine($"{ CultureServicesRes.Running } { CultureServicesRes.Application } { AppDomain.CurrentDomain.FriendlyName }");
             Console.WriteLine("");
-            Console.WriteLine($"{ ActionCommandDBServicesRes.Starting } ...");
+            Console.WriteLine($"{ CultureServicesRes.Starting } ...");
             Console.WriteLine("");
         }
     }

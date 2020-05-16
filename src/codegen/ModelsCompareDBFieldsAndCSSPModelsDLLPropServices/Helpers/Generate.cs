@@ -4,7 +4,6 @@ using ActionCommandDBServices.Models;
 using ActionCommandDBServices.Services;
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
-using ModelsCompareDBFieldsAndCSSPModelsDLLPropServices.Resources;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -18,6 +17,7 @@ using System.Threading.Tasks;
 using ValidateAppSettingsServices.Services;
 using ValidateAppSettingsServices.Models;
 using Microsoft.AspNetCore.Mvc;
+using CultureServices.Resources;
 
 namespace ModelsCompareDBFieldsAndCSSPModelsDLLPropServices.Services
 {
@@ -60,7 +60,7 @@ namespace ModelsCompareDBFieldsAndCSSPModelsDLLPropServices.Services
             if (!await CompareDBAndCSSPModelsDLL(tableCSSPWebList, typePropList)) return await Task.FromResult(false);
 
             actionCommandDBService.ExecutionStatusText.AppendLine("");
-            actionCommandDBService.ExecutionStatusText.AppendLine($"{ ModelsCompareDBFieldsAndCSSPModelsDLLPropServicesRes.Done } ...");
+            actionCommandDBService.ExecutionStatusText.AppendLine($"{ CultureServicesRes.Done } ...");
             actionCommandDBService.ExecutionStatusText.AppendLine("");
             actionCommandDBService.ExecutionStatusText.AppendLine("Generate Finished ...");
             actionCommandDBService.PercentCompleted = 100;

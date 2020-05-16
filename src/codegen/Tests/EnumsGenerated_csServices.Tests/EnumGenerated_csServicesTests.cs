@@ -1,5 +1,4 @@
-﻿using EnumsGenerated_csServices.Resources;
-using EnumsGenerated_csServices.Services;
+﻿using EnumsGenerated_csServices.Services;
 using GenerateCodeBaseServices.Services;
 using ActionCommandDBServices.Models;
 using ActionCommandDBServices.Services;
@@ -15,6 +14,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 using ValidateAppSettingsServices.Services;
+using CultureServices.Resources;
 
 namespace EnumsGenerated_csServices.Tests
 {
@@ -63,7 +63,7 @@ namespace EnumsGenerated_csServices.Tests
                 culture = "en-CA";
             }
             CultureInfo Culture = new CultureInfo(culture);
-            Assert.Equal(Culture, EnumsGenerated_csServicesRes.Culture);
+            Assert.Equal(Culture, CultureServicesRes.Culture);
         }
         [Theory]
         [InlineData("en-CA")] // good

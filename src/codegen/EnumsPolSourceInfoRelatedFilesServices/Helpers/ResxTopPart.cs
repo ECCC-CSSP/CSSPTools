@@ -1,5 +1,4 @@
-﻿using EnumsPolSourceInfoRelatedFilesServices.Resources;
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -22,7 +21,7 @@ namespace EnumsPolSourceInfoRelatedFilesServices.Services
         #endregion Functions public
 
         #region Functions private
-        private async Task ResxTopPart(StringBuilder sb)
+        private async Task<bool> ResxTopPart(StringBuilder sb)
         {
             sb.AppendLine(@"<?xml version=""1.0"" encoding=""utf-8""?>");
             sb.AppendLine(@"<root>");
@@ -149,6 +148,8 @@ namespace EnumsPolSourceInfoRelatedFilesServices.Services
             sb.AppendLine(@"  <resheader name=""writer"">");
             sb.AppendLine(@"    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>");
             sb.AppendLine(@"  </resheader>");
+
+            return await Task.FromResult(true);
         }
         #endregion Functions private
     }
