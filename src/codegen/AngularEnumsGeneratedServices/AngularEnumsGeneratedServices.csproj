@@ -19,6 +19,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Reference Include="BaseCodeGenerateServices">
+      <HintPath>..\BaseCodeGenerateServices\bin\Debug\netcoreapp3.1\BaseCodeGenerateServices.dll</HintPath>
+    </Reference>
     <Reference Include="CultureServices">
       <HintPath>..\CultureServices\bin\Debug\netcoreapp3.1\CultureServices.dll</HintPath>
     </Reference>

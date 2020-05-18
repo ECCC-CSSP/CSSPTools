@@ -331,6 +331,15 @@ namespace CultureServices.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Could not get or create Action [{0}] Command [{1}] in DB [{2}].
+        /// </summary>
+        public static string CouldNotGetOrCreateAction_Command_InDB_ {
+            get {
+                return ResourceManager.GetString("CouldNotGetOrCreateAction_Command_InDB_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Could not get or create object [{0}] in DB [{1}].
         /// </summary>
         public static string CouldNotGetOrCreateObject_InDB_ {

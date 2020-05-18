@@ -19,6 +19,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Reference Include="AngularEnumsGeneratedServices">
+      <HintPath>..\AngularEnumsGeneratedServices\bin\Debug\netcoreapp3.1\AngularEnumsGeneratedServices.dll</HintPath>
+    </Reference>
     <Reference Include="CultureServices">
       <HintPath>..\CultureServices\bin\Debug\netcoreapp3.1\CultureServices.dll</HintPath>
     </Reference>

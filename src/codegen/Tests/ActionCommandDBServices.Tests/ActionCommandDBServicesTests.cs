@@ -1,18 +1,16 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using ActionCommandDBServices.Models;
+using ActionCommandDBServices.Services;
+using CultureServices.Resources;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
-using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
-using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using ActionCommandDBServices.Models;
-using ActionCommandDBServices.Services;
-using System.Globalization;
-using Microsoft.Extensions.Configuration;
 using Xunit;
-using Microsoft.AspNetCore.Mvc;
-using CultureServices.Resources;
 
 namespace ActionCommandDBServices.Tests
 {
@@ -469,6 +467,5 @@ namespace ActionCommandDBServices.Tests
 
         }
         #endregion Functions private
-
     }
 }

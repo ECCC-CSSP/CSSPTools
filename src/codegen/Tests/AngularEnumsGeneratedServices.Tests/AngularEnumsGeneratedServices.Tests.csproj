@@ -10,6 +10,18 @@
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.3" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="3.1.3" />
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.5.0" />
+    <PackageReference Include="Microsoft.Data.SqlClient" Version="2.0.0-preview3.20122.2" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.3" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="3.1.3" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.3" />
+    <PackageReference Include="Microsoft.Extensions.Configuration" Version="3.1.3" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.FileExtensions" Version="3.1.3" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="3.1.3" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="3.1.3" />
+
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.3" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="3.1.3" />
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.5.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.3" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="3.1.3" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.3" />
@@ -30,6 +42,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Reference Include="BaseCodeGenerateServices">
+      <HintPath>..\..\BaseCodeGenerateServices\bin\Debug\netcoreapp3.1\BaseCodeGenerateServices.dll</HintPath>
+    </Reference>
+    <Reference Include="ConfigServices">
+      <HintPath>..\..\ConfigServices\bin\Debug\netcoreapp3.1\ConfigServices.dll</HintPath>
+    </Reference>
     <Reference Include="CultureServices">
       <HintPath>..\..\CultureServices\bin\Debug\netcoreapp3.1\CultureServices.dll</HintPath>
     </Reference>
@@ -44,9 +62,6 @@
     </Reference>
     <Reference Include="CSSPServices">
       <HintPath>..\..\..\dlls\CSSPServices\bin\Debug\netcoreapp3.1\CSSPServices.dll</HintPath>
-    </Reference>
-    <Reference Include="GenerateCodeBaseServices">
-      <HintPath>..\..\GenerateCodeBaseServices\bin\Debug\netcoreapp3.1\GenerateCodeBaseServices.dll</HintPath>
     </Reference>
     <Reference Include="ActionCommandDBServices">
       <HintPath>..\..\ActionCommandDBServices\bin\Debug\netcoreapp3.1\ActionCommandDBServices.dll</HintPath>

@@ -1,7 +1,6 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
 
@@ -20,20 +19,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Reference Include="BaseCodeGenerateServices">
-      <HintPath>..\BaseCodeGenerateServices\bin\Debug\netcoreapp3.1\BaseCodeGenerateServices.dll</HintPath>
-    </Reference>
-    <Reference Include="ConfigServices">
-      <HintPath>..\ConfigServices\bin\Debug\netcoreapp3.1\ConfigServices.dll</HintPath>
-    </Reference>
     <Reference Include="CultureServices">
       <HintPath>..\CultureServices\bin\Debug\netcoreapp3.1\CultureServices.dll</HintPath>
     </Reference>
     <Reference Include="ActionCommandDBServices">
       <HintPath>..\ActionCommandDBServices\bin\Debug\netcoreapp3.1\ActionCommandDBServices.dll</HintPath>
-    </Reference>
-    <Reference Include="AngularEnumsGeneratedServices">
-      <HintPath>..\AngularEnumsGeneratedServices\bin\Debug\netcoreapp3.1\AngularEnumsGeneratedServices.dll</HintPath>
     </Reference>
     <Reference Include="CSSPEnums">
       <HintPath>..\..\dlls\CSSPEnums\bin\Debug\netcoreapp3.1\CSSPEnums.dll</HintPath>
@@ -50,12 +40,6 @@
     <Reference Include="GenerateCodeBaseServices">
       <HintPath>..\GenerateCodeBaseServices\bin\Debug\netcoreapp3.1\GenerateCodeBaseServices.dll</HintPath>
     </Reference>
-  </ItemGroup>
-  
-  <ItemGroup>
-    <None Update="appsettings.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
   </ItemGroup>
 
 </Project>

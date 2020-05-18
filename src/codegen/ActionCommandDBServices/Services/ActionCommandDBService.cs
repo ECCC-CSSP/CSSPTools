@@ -1,13 +1,11 @@
-﻿using Microsoft.Extensions.Primitives;
-using ActionCommandDBServices.Models;
+﻿using ActionCommandDBServices.Models;
+using CultureServices.Resources;
+using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using CultureServices.Resources;
 
 namespace ActionCommandDBServices.Services
 {
@@ -29,6 +27,8 @@ namespace ActionCommandDBServices.Services
         public long PercentCompleted { get; set; }
 
         private ActionCommandContext db { get; }
+        private string ActionText = "Action";
+        private string CommandText = "Command";
         #endregion Properties
 
         #region Constructors
@@ -42,8 +42,8 @@ namespace ActionCommandDBServices.Services
         #region Functions public
         public async Task<ActionResult<ActionCommand>> Create()
         {
-            if (Action == "") return BadRequest($"{ string.Format(CultureServicesRes._IsRequied, "Action") }");
-            if (Command == "") return BadRequest($"{ string.Format(CultureServicesRes._IsRequied, "Command") }");
+            if (string.IsNullOrWhiteSpace(Action)) return BadRequest($"{ string.Format(CultureServicesRes._IsRequied, ActionText) }");
+            if (string.IsNullOrWhiteSpace(Command)) return BadRequest($"{ string.Format(CultureServicesRes._IsRequied, CommandText) }");
 
             long? LastID = (from c in db.ActionCommands
                             orderby c.ActionCommandID descending
@@ -89,8 +89,8 @@ namespace ActionCommandDBServices.Services
         }
         public async Task<ActionResult<ActionCommand>> Delete()
         {
-            if (Action == "") return BadRequest($"{ string.Format(CultureServicesRes._IsRequied, "Action") }");
-            if (Command == "") return BadRequest($"{ string.Format(CultureServicesRes._IsRequied, "Command") }");
+            if (string.IsNullOrWhiteSpace(Action)) return BadRequest($"{ string.Format(CultureServicesRes._IsRequied, ActionText) }");
+            if (string.IsNullOrWhiteSpace(Command)) return BadRequest($"{ string.Format(CultureServicesRes._IsRequied, CommandText) }");
 
             ActionCommand actionCommand = GetActionCommand();
 
@@ -115,8 +115,8 @@ namespace ActionCommandDBServices.Services
         }
         public async Task<ActionResult<ActionCommand>> Get()
         {
-            if (Action == "") return BadRequest($"{ string.Format(CultureServicesRes._IsRequied, "Action") }");
-            if (Command == "") return BadRequest($"{ string.Format(CultureServicesRes._IsRequied, "Command") }");
+            if (string.IsNullOrWhiteSpace(Action)) return BadRequest($"{ string.Format(CultureServicesRes._IsRequied, ActionText) }");
+            if (string.IsNullOrWhiteSpace(Command)) return BadRequest($"{ string.Format(CultureServicesRes._IsRequied, CommandText) }");
 
             ActionCommand actionCommand = GetActionCommand();
 
@@ -129,8 +129,8 @@ namespace ActionCommandDBServices.Services
         }
         public async Task<ActionResult<ActionCommand>> GetOrCreate()
         {
-            if (Action == "") return BadRequest($"{ string.Format(CultureServicesRes._IsRequied, "Action") }");
-            if (Command == "") return BadRequest($"{ string.Format(CultureServicesRes._IsRequied, "Command") }");
+            if (string.IsNullOrWhiteSpace(Action)) return BadRequest($"{ string.Format(CultureServicesRes._IsRequied, ActionText) }");
+            if (string.IsNullOrWhiteSpace(Command)) return BadRequest($"{ string.Format(CultureServicesRes._IsRequied, CommandText) }");
 
             ActionCommand actionCommand = GetActionCommand();
             if (actionCommand == null)
@@ -142,8 +142,8 @@ namespace ActionCommandDBServices.Services
         }
         public async Task<ActionResult<ActionCommand>> Update()
         {
-            if (Action == "") return BadRequest($"{ string.Format(CultureServicesRes._IsRequied, "Action") }");
-            if (Command == "") return BadRequest($"{ string.Format(CultureServicesRes._IsRequied, "Command") }");
+            if (string.IsNullOrWhiteSpace(Action)) return BadRequest($"{ string.Format(CultureServicesRes._IsRequied, ActionText) }");
+            if (string.IsNullOrWhiteSpace(Command)) return BadRequest($"{ string.Format(CultureServicesRes._IsRequied, CommandText) }");
 
             ActionCommand actionCommand = GetActionCommand();
             if (actionCommand == null)

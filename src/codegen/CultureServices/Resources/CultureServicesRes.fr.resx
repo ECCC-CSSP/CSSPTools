@@ -201,6 +201,9 @@
   <data name="CouldNotFindSolutionFile_ToCompile" xml:space="preserve">
     <value>Could not find solution file [{0}] to compile (fr)</value>
   </data>
+  <data name="CouldNotGetOrCreateAction_Command_InDB_" xml:space="preserve">
+    <value>Could not get or create Action [{0}] Command [{1}] in DB [{2}] (fr)</value>
+  </data>
   <data name="CouldNotGetOrCreateObject_InDB_" xml:space="preserve">
     <value>Could not get or create object [{0}] in DB [{1}] (fr)</value>
   </data>

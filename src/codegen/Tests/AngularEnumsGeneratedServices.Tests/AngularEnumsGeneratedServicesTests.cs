@@ -1,36 +1,24 @@
 ﻿using AngularEnumsGeneratedServices.Services;
-using CSSPModels;
-using GenerateCodeBaseServices.Services;
-using ActionCommandDBServices.Models;
-using ActionCommandDBServices.Services;
-using Microsoft.EntityFrameworkCore;
+using ConfigServices.Services;
+using CultureServices.Resources;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Xunit;
-using ValidateAppSettingsServices.Services;
-using CultureServices.Resources;
 
 namespace AngularEnumsGeneratedServices.Tests
 {
-    public class AngularEnumsGeneratedServicesTests
+    public class AngularEnumsGeneratedServicesTests : ConfigService
     {
         #region Variables
         #endregion Variables
 
         #region Properties
-        private IConfiguration configuration { get; set; }
-        private IServiceCollection serviceCollection { get; set; }
-        private IAngularEnumsGeneratedService angularEnumsGeneratedService { get; set; }
-        private IActionCommandDBService actionCommandDBService { get; set; }
-        private IServiceProvider provider { get; set; }
-        private string DBFileName { get; set; } = "DBFileName";
+        IAngularEnumsGeneratedService AngularEnumsGeneratedService { get; set; }
         #endregion Properties
 
         #region Constructors
@@ -46,17 +34,16 @@ namespace AngularEnumsGeneratedServices.Tests
         [InlineData("en-GB")] // good will default to en-CA
         public async Task AngularEnumsGeneratedService_Run_Good_Test(string culture)
         {
-            await Setup(new CultureInfo(culture), "appsettings.json");
+            Assert.True(await Setup(new CultureInfo(culture), "appsettings.json"));
 
-            Assert.NotNull(configuration);
-            Assert.NotNull(serviceCollection);
-            Assert.NotNull(provider);
-            Assert.NotNull(angularEnumsGeneratedService);
+            Assert.NotNull(Config);
+            Assert.NotNull(Services);
+            Assert.NotNull(Provider);
+            Assert.NotNull(AngularEnumsGeneratedService);
 
             string[] args = new List<string>() { culture }.ToArray();
 
-            bool retBool = await angularEnumsGeneratedService.Run(args);
-            Assert.True(retBool);
+            Assert.True(await AngularEnumsGeneratedService.Run(args));
 
             // all culture other than "fr-CA" should default to "en-CA"
             if (culture != "fr-CA")
@@ -71,104 +58,36 @@ namespace AngularEnumsGeneratedServices.Tests
         [InlineData("fr-CA")] // good
         public async Task AngularEnumsGeneratedService_Run_SomeFileMissing_Test(string culture)
         {
-            await Setup(new CultureInfo(culture), "appsettings_bad1.json");
+            Assert.True(await Setup(new CultureInfo(culture), "appsettings_bad1.json"));
 
-            Assert.NotNull(configuration);
-            Assert.NotNull(serviceCollection);
-            Assert.NotNull(provider);
-            Assert.NotNull(angularEnumsGeneratedService);
+            Assert.NotNull(Config);
+            Assert.NotNull(Services);
+            Assert.NotNull(Provider);
+            Assert.NotNull(AngularEnumsGeneratedService);
 
             string[] args = new List<string>() { culture }.ToArray();
 
-            bool retBool = await angularEnumsGeneratedService.Run(args);
-            Assert.False(retBool);
+            Assert.False(await AngularEnumsGeneratedService.Run(args));
         }
         #endregion Functions public
 
         #region Functions private
-        private async Task Setup(CultureInfo culture, string appsettingjsonFileName)
+        private async Task<bool> Setup(CultureInfo culture, string appsettingjsonFileName)
         {
-            configuration = new ConfigurationBuilder()
+            Config = new ConfigurationBuilder()
                .SetBasePath(Directory.GetParent(AppContext.BaseDirectory).FullName)
                .AddJsonFile(appsettingjsonFileName)
                .Build();
 
-            Assert.NotNull(configuration);
+            Services = new ServiceCollection();
+            Assert.True(await ConfigureBaseServices());
 
-            bool retBool = await ConfigureServices();
-            Assert.True(retBool);
-        }
-        private async Task<bool> ConfigureServices()
-        {
-            serviceCollection = new ServiceCollection();
+            Services.AddSingleton<IAngularEnumsGeneratedService, AngularEnumsGeneratedService>();
 
-            serviceCollection.AddSingleton<IConfiguration>(configuration);
+            Assert.True(await BuildServiceProvider());
 
-            bool retBool = await ConfigureIActionCommandDBService();
-            Assert.True(retBool);
-
-            retBool = await ConfigureIAllOtherServices();
-            Assert.True(retBool);
-
-            return await Task.FromResult(true);
-        }
-        private async Task<bool> ConfigureIActionCommandDBService()
-        {
-            try
-            {
-                serviceCollection.AddSingleton<IActionCommandDBService, ActionCommandDBService>();
-
-                string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
-                Assert.NotNull(configuration.GetValue<string>(DBFileName));
-
-                FileInfo fiDB = new FileInfo(configuration.GetValue<string>(DBFileName).Replace("{AppDataPath}", appDataPath));
-                Assert.True(fiDB.Exists);
-
-                serviceCollection.AddDbContext<ActionCommandContext>(options =>
-                {
-                    options.UseSqlite($"DataSource={fiDB.FullName}");
-                });
-
-                provider = serviceCollection.BuildServiceProvider();
-                Assert.NotNull(provider);
-
-                actionCommandDBService = provider.GetService<IActionCommandDBService>();
-                Assert.NotNull(actionCommandDBService);
-
-                actionCommandDBService.Action = configuration.GetValue<string>("Action");
-                actionCommandDBService.Command = configuration.GetValue<string>("Command");
-
-                await actionCommandDBService.Create();
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-                Assert.True(false);
-                return await Task.FromResult(false);
-            }
-
-            return await Task.FromResult(true);
-        }
-        private async Task<bool> ConfigureIAllOtherServices()
-        {
-            try
-            {
-                serviceCollection.AddSingleton<IGenerateCodeBaseService, GenerateCodeBaseService>();
-                serviceCollection.AddSingleton<IValidateAppSettingsService, ValidateAppSettingsService>();
-                serviceCollection.AddSingleton<IAngularEnumsGeneratedService, AngularEnumsGeneratedService>();
-
-                provider = serviceCollection.BuildServiceProvider();
-                Assert.NotNull(provider);
-
-                angularEnumsGeneratedService = provider.GetService<IAngularEnumsGeneratedService>();
-                Assert.NotNull(angularEnumsGeneratedService);
-            }
-            catch (Exception ex)
-            {
-                await actionCommandDBService.ConsoleWriteError(ex.Message);
-                Assert.True(false);
-                return await Task.FromResult(false);
-            }
+            AngularEnumsGeneratedService = Provider.GetService<IAngularEnumsGeneratedService>();
+            Assert.NotNull(AngularEnumsGeneratedService);
 
             return await Task.FromResult(true);
         }

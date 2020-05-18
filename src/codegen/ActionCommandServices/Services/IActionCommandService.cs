@@ -1,19 +1,7 @@
-﻿using Microsoft.Extensions.Configuration;
-using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Diagnostics;
-using System.IO;
-using System.Threading;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
+﻿using ActionCommandDBServices.Models;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Data.SqlClient.Server;
-using ActionCommandDBServices.Services;
-using ActionCommandDBServices.Models;
+using System.Globalization;
+using System.Threading.Tasks;
 
 namespace ActionCommandServices.Services
 {
