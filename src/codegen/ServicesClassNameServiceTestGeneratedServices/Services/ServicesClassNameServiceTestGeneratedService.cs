@@ -1,39 +1,21 @@
-﻿using CSSPEnums;
+﻿using ActionCommandDBServices.Services;
+using BaseCodeGenerateServices.Services;
 using CSSPModels;
-using GenerateCodeBaseServices.Models;
 using GenerateCodeBaseServices.Services;
-using ActionCommandDBServices.Models;
-using ActionCommandDBServices.Services;
-using Microsoft.Data.SqlClient;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
-using System;
 using System.Collections.Generic;
-using System.Data;
-using System.Globalization;
-using System.IO;
-using System.Linq;
-using System.Reflection;
-using System.Text;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using ValidateAppSettingsServices.Services;
 using ValidateAppSettingsServices.Models;
-using CultureServices.Resources;
+using ValidateAppSettingsServices.Services;
 
 namespace ServicesClassNameServiceTestGeneratedServices.Services
 {
-    public partial class ServicesClassNameServiceTestGeneratedService : IServicesClassNameServiceTestGeneratedService
+    public partial class ServicesClassNameServiceTestGeneratedService : BaseCodeGenerateService, IServicesClassNameServiceTestGeneratedService
     {
         #region Variables
         #endregion Variables
 
         #region Properties
-        private IConfiguration configuration { get; set; }
-        private IActionCommandDBService actionCommandDBService { get; set; }
-        private IValidateAppSettingsService validateAppSettingsService { get; set; }
-        private IGenerateCodeBaseService generateCodeBaseService { get; set; }
-        private List<string> AllowableCultures { get; set; } = new List<string>() { "en-CA", "fr-CA" };
         private CSSPDBContext dbCSSPDB { get; set; }
         private TestDBContext dbTestDB { get; set; }
         #endregion Properties
@@ -44,12 +26,11 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
             IValidateAppSettingsService validateAppSettingsService,
             IGenerateCodeBaseService generateCodeBaseService,
             CSSPDBContext dbCSSPDB,
-            TestDBContext dbTestDB)
+            TestDBContext dbTestDB) : base(configuration)
         {
-            this.configuration = configuration;
-            this.actionCommandDBService = actionCommandDBService;
-            this.validateAppSettingsService = validateAppSettingsService;
-            this.generateCodeBaseService = generateCodeBaseService;
+            ActionCommandDBService = actionCommandDBService;
+            ValidateAppSettingsService = validateAppSettingsService;
+            GenerateCodeBaseService = generateCodeBaseService;
             this.dbCSSPDB = dbCSSPDB;
             this.dbTestDB = dbTestDB;
         }
@@ -58,71 +39,32 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
         #region Functions public
         public async Task<bool> Run(string[] args)
         {
-            await actionCommandDBService.ConsoleWriteStart();
+            if (!await FillActionAndCommand()) return await Task.FromResult(false);
 
-            if (!await Setup())
-            {
-                await actionCommandDBService.ConsoleWriteError("");
-                return await Task.FromResult(false);
-            }
+            await ActionCommandDBService.ConsoleWriteStart();
 
-            await SetCultureWithArgs(args);
+            if (!await FillAppSettingsParameters()) return await Task.FromResult(false);
+
+            if (!await CheckAppSettingsParameters()) return await Task.FromResult(false);
+
+            if (!await SetCultureWithArgs(args)) return await Task.FromResult(false);
 
             if (!await Generate())
             {
-                await actionCommandDBService.ConsoleWriteError("");
+                await ActionCommandDBService.ConsoleWriteError("");
                 return await Task.FromResult(false);
             }
 
-            await actionCommandDBService.ConsoleWriteEnd();
+            await ActionCommandDBService.ConsoleWriteEnd();
 
             return await Task.FromResult(true);
-        }
-        public async Task SetCulture(CultureInfo culture)
-        {
-            await actionCommandDBService.SetCulture(culture);
-            await validateAppSettingsService.SetCulture(culture);
-            await generateCodeBaseService.SetCulture(culture);
-            CultureServicesRes.Culture = culture;
         }
         #endregion Functions public
 
         #region Functions private
-        private async Task SetCultureWithArgs(string[] args)
+        private async Task<bool> FillAppSettingsParameters()
         {
-            string culture = AllowableCultures[0];
-
-            if (args.Count() > 0)
-            {
-                if (AllowableCultures.Contains(args[0]))
-                {
-                    culture = args[0];
-                }
-            }
-
-            await SetCulture(new CultureInfo(culture));
-        }
-        private async Task<bool> Setup()
-        {
-            actionCommandDBService.Action = configuration.GetValue<string>("Action");
-            actionCommandDBService.Command = configuration.GetValue<string>("Command");
-            await actionCommandDBService.SetCulture(new CultureInfo(configuration.GetValue<string>("Culture")));
-            await validateAppSettingsService.SetCulture(new CultureInfo(configuration.GetValue<string>("Culture")));
-
-            try
-            {
-                await actionCommandDBService.Delete();
-                actionCommandDBService.Action = configuration.GetValue<string>("Action");
-                actionCommandDBService.Command = configuration.GetValue<string>("Command");
-                await actionCommandDBService.GetOrCreate();
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-                return await Task.FromResult(false);
-            }
-
-            validateAppSettingsService.AppSettingParameterList = new List<AppSettingParameter>()
+            ValidateAppSettingsService.AppSettingParameterList = new List<AppSettingParameter>()
             {
                 new AppSettingParameter() { Parameter = "Action", ExpectedValue = "run" },
                 new AppSettingParameter() { Parameter = "Command", ExpectedValue = "ServicesClassNameServiceTestGenerated" },
@@ -135,13 +77,6 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
                 new AppSettingParameter() { Parameter = "TestDBConnectionString", ExpectedValue = "Data Source=.\\sqlexpress;Initial Catalog=TestDB;Integrated Security=True" },
                 new AppSettingParameter() { Parameter = "ClassNameFile", ExpectedValue = "C:\\CSSPCode\\CSSPServices\\CSSPServices.Tests\\{TypeName}ServiceTestGenerated.cs" },
             };
-
-            await validateAppSettingsService.VerifyAppSettings();
-            if (!string.IsNullOrWhiteSpace(actionCommandDBService.ErrorText.ToString()))
-            {
-                await actionCommandDBService.ConsoleWriteError("");
-                return await Task.FromResult(false);
-            }
 
             return await Task.FromResult(true);
         }

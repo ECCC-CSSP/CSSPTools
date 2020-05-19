@@ -28,21 +28,21 @@ namespace EnumsCompareWithOldEnumsServices.Services
             string NewEnumsDLL = "NewEnumsDLL";
             string OldEnumsDLL = "OldEnumsDLL";
 
-            ActionResult<ActionCommand> actionActionCommand = await actionCommandDBService.GetOrCreate();
+            ActionResult<ActionCommand> actionActionCommand = await ActionCommandDBService.GetOrCreate();
 
             if (((ObjectResult)actionActionCommand.Result).StatusCode == 400)
             {
-                await actionCommandDBService.ConsoleWriteError("actionCommand == null");
+                await ActionCommandDBService.ConsoleWriteError("actionCommand == null");
                 return false;
             }
 
-            actionCommandDBService.ExecutionStatusText.AppendLine("CompareDLLs Starting...");
-            actionCommandDBService.PercentCompleted = 0;
-            await actionCommandDBService.Update();
+            ActionCommandDBService.ExecutionStatusText.AppendLine("CompareDLLs Starting...");
+            ActionCommandDBService.PercentCompleted = 0;
+            await ActionCommandDBService.Update();
 
 
-            FileInfo fiDLL = new FileInfo(configuration.GetValue<string>(NewEnumsDLL));
-            FileInfo fiOldDLL = new FileInfo(configuration.GetValue<string>(OldEnumsDLL));
+            FileInfo fiDLL = new FileInfo(Config.GetValue<string>(NewEnumsDLL));
+            FileInfo fiOldDLL = new FileInfo(Config.GetValue<string>(OldEnumsDLL));
 
             var importAssembly = Assembly.LoadFile(fiDLL.FullName);
             List<Type> typeList = importAssembly.GetTypes().ToList();
@@ -62,7 +62,7 @@ namespace EnumsCompareWithOldEnumsServices.Services
 
                 if (typeExist == null)
                 {
-                    await actionCommandDBService.ConsoleWriteError($"{ String.Format(CultureServicesRes.Type_NotFound, type.Name) }");
+                    await ActionCommandDBService.ConsoleWriteError($"{ String.Format(CultureServicesRes.Type_NotFound, type.Name) }");
                     return false;
                 }
                 else
@@ -83,7 +83,7 @@ namespace EnumsCompareWithOldEnumsServices.Services
 
                         if (string.IsNullOrWhiteSpace(EnumStrExist))
                         {
-                            await actionCommandDBService.ConsoleWriteError($"{ String.Format(CultureServicesRes.Type_Enum_NotFound, type.Name, EnumStr) }");
+                            await ActionCommandDBService.ConsoleWriteError($"{ String.Format(CultureServicesRes.Type_Enum_NotFound, type.Name, EnumStr) }");
                             return false;
                         }
                         else
@@ -94,7 +94,7 @@ namespace EnumsCompareWithOldEnumsServices.Services
                 }
             }
 
-            actionCommandDBService.ExecutionStatusText.AppendLine("CompareDLLs Finished...");
+            ActionCommandDBService.ExecutionStatusText.AppendLine("CompareDLLs Finished...");
 
             return true;
         }

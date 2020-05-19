@@ -1,20 +1,11 @@
-﻿using GenerateCodeBaseServices.Models;
-using GenerateCodeBaseServices.Services;
-using ActionCommandDBServices.Models;
-using ActionCommandDBServices.Services;
+﻿using ActionCommandDBServices.Models;
+using CultureServices.Resources;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
-using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.IO;
-using System.Linq;
-using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
-using ValidateAppSettingsServices.Services;
-using ValidateAppSettingsServices.Models;
-using Microsoft.AspNetCore.Mvc;
-using CultureServices.Resources;
 
 namespace ModelsCSSPModelsResServices.Services
 {
@@ -22,17 +13,17 @@ namespace ModelsCSSPModelsResServices.Services
     {
         private async Task<bool> Generate()
         {
-            ActionResult<ActionCommand> actionActionCommand = await actionCommandDBService.GetOrCreate();
+            ActionResult<ActionCommand> actionActionCommand = await ActionCommandDBService.GetOrCreate();
 
             if (((ObjectResult)actionActionCommand.Result).StatusCode == 400)
             {
-                await actionCommandDBService.ConsoleWriteError("actionCommand == null");
+                await ActionCommandDBService.ConsoleWriteError("actionCommand == null");
                 return false;
             }
 
-            actionCommandDBService.ExecutionStatusText.AppendLine("Generate Starting ...");
-            actionCommandDBService.PercentCompleted = 10;
-            await actionCommandDBService.Update();
+            ActionCommandDBService.ExecutionStatusText.AppendLine("Generate Starting ...");
+            ActionCommandDBService.PercentCompleted = 10;
+            await ActionCommandDBService.Update();
 
             foreach (string lang in new List<string>() { "", "fr" })
             {
@@ -46,34 +37,34 @@ namespace ModelsCSSPModelsResServices.Services
 
                 if (lang == "fr")
                 {
-                    FileInfo fiOutput = new FileInfo(configuration.GetValue<string>("CSSPModelsResFR"));
+                    FileInfo fiOutput = new FileInfo(Config.GetValue<string>("CSSPModelsResFR"));
 
                     using (StreamWriter sw = fiOutput.CreateText())
                     {
                         sw.Write(sb.ToString());
                     }
 
-                    actionCommandDBService.ExecutionStatusText.AppendLine($"{ string.Format(CultureServicesRes.Created_, fiOutput.FullName) }");
+                    ActionCommandDBService.ExecutionStatusText.AppendLine($"{ string.Format(CultureServicesRes.Created_, fiOutput.FullName) }");
                 }
                 else
                 {
-                    FileInfo fiOutput = new FileInfo(configuration.GetValue<string>("CSSPModelsRes"));
+                    FileInfo fiOutput = new FileInfo(Config.GetValue<string>("CSSPModelsRes"));
 
                     using (StreamWriter sw = fiOutput.CreateText())
                     {
                         sw.Write(sb.ToString());
                     }
 
-                    actionCommandDBService.ExecutionStatusText.AppendLine($"{ string.Format(CultureServicesRes.Created_, fiOutput.FullName) }");
+                    ActionCommandDBService.ExecutionStatusText.AppendLine($"{ string.Format(CultureServicesRes.Created_, fiOutput.FullName) }");
                 }
             }
 
-            actionCommandDBService.ExecutionStatusText.AppendLine("");
-            actionCommandDBService.ExecutionStatusText.AppendLine($"{ CultureServicesRes.Done } ...");
-            actionCommandDBService.ExecutionStatusText.AppendLine("");
-            actionCommandDBService.ExecutionStatusText.AppendLine("Generate Finished ...");
-            actionCommandDBService.PercentCompleted = 100;
-            await actionCommandDBService.Update();
+            ActionCommandDBService.ExecutionStatusText.AppendLine("");
+            ActionCommandDBService.ExecutionStatusText.AppendLine($"{ CultureServicesRes.Done } ...");
+            ActionCommandDBService.ExecutionStatusText.AppendLine("");
+            ActionCommandDBService.ExecutionStatusText.AppendLine("Generate Finished ...");
+            ActionCommandDBService.PercentCompleted = 100;
+            await ActionCommandDBService.Update();
 
             return true;
         }

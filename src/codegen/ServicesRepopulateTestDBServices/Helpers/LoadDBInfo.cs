@@ -1,24 +1,9 @@
-﻿using CSSPEnums;
-using CSSPModels;
-using GenerateCodeBaseServices.Models;
-using GenerateCodeBaseServices.Services;
-using ActionCommandDBServices.Models;
-using ActionCommandDBServices.Services;
+﻿using GenerateCodeBaseServices.Models;
 using Microsoft.Data.SqlClient;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Globalization;
-using System.IO;
-using System.Linq;
-using System.Reflection;
-using System.Text;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using ValidateAppSettingsServices.Services;
-using ValidateAppSettingsServices.Models;
 
 namespace ServicesRepopulateTestDBServices.Services
 {
@@ -61,7 +46,7 @@ namespace ServicesRepopulateTestDBServices.Services
             catch (Exception ex)
             {
                 string InnerException = (ex.InnerException != null ? $" Inner: [{ ex.InnerException.Message }]" : "");
-                actionCommandDBService.ErrorText.AppendLine($"{ ex.Message }{ InnerException }");
+                ActionCommandDBService.ErrorText.AppendLine($"{ ex.Message }{ InnerException }");
                 return await Task.FromResult(false);
             }
 

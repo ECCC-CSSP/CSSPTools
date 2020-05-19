@@ -1,24 +1,10 @@
-﻿using CSSPEnums;
-using CSSPModels;
-using GenerateCodeBaseServices.Models;
-using GenerateCodeBaseServices.Services;
-using ActionCommandDBServices.Models;
-using ActionCommandDBServices.Services;
+﻿using GenerateCodeBaseServices.Models;
 using Microsoft.Data.SqlClient;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Globalization;
-using System.IO;
 using System.Linq;
-using System.Reflection;
-using System.Text;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using ValidateAppSettingsServices.Services;
-using ValidateAppSettingsServices.Models;
 
 namespace ServicesRepopulateTestDBServices.Services
 {
@@ -34,7 +20,7 @@ namespace ServicesRepopulateTestDBServices.Services
                 {
                     if (!cnn.ConnectionString.Contains("TestDB"))
                     {
-                        actionCommandDBService.ErrorText.AppendLine("Only use this command for the TestDB as it remove all the information from the DB and Reseed all tables");
+                        ActionCommandDBService.ErrorText.AppendLine("Only use this command for the TestDB as it remove all the information from the DB and Reseed all tables");
                         return await Task.FromResult(false);
                     }
 
@@ -42,7 +28,7 @@ namespace ServicesRepopulateTestDBServices.Services
 
                     foreach (Table table in tableTestDBList.OrderBy(c => c.ordinalToDelete))
                     {
-                        //actionCommandDBService.ExecutionStatusText.AppendLine($"Deleting Table  [{ table.TableName }]");
+                        //ActionCommandDBService.ExecutionStatusText.AppendLine($"Deleting Table  [{ table.TableName }]");
 
                         string queryString = "";
 
@@ -87,7 +73,7 @@ namespace ServicesRepopulateTestDBServices.Services
             catch (Exception ex)
             {
                 string InnerExceptiion = (ex.InnerException != null ? $" Inner: [{ ex.InnerException.Message }]" : "");
-                actionCommandDBService.ErrorText.AppendLine($"{ ex.Message }{ InnerExceptiion }");
+                ActionCommandDBService.ErrorText.AppendLine($"{ ex.Message }{ InnerExceptiion }");
                 return await Task.FromResult(false);
             }
 

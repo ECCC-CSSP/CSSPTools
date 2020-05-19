@@ -1,23 +1,9 @@
-﻿using ExecuteDotNetCommandServices.Models;
-using GenerateCodeBaseServices.Models;
-using GenerateCodeBaseServices.Services;
-using ActionCommandDBServices.Models;
-using ActionCommandDBServices.Services;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Globalization;
-using System.IO;
-using System.Linq;
-using System.Reflection;
-using System.Text;
 using System.Threading.Tasks;
-using ValidateAppSettingsServices.Services;
 using ValidateAppSettingsServices.Models;
-using Microsoft.AspNetCore.Mvc;
 
 namespace ExecuteDotNetCommandServices.Services
 {
@@ -25,17 +11,17 @@ namespace ExecuteDotNetCommandServices.Services
     {
         private async Task<bool> Setup()
         {
-            actionCommandDBService.Action = configuration.GetValue<string>("Action");
-            actionCommandDBService.Command = configuration.GetValue<string>("Command");
-            await actionCommandDBService.SetCulture(new CultureInfo(configuration.GetValue<string>("Culture")));
-            await validateAppSettingsService.SetCulture(new CultureInfo(configuration.GetValue<string>("Culture")));
+            ActionCommandDBService.Action = Config.GetValue<string>("Action");
+            ActionCommandDBService.Command = Config.GetValue<string>("Command");
+            await ActionCommandDBService.SetCulture(new CultureInfo(Config.GetValue<string>("Culture")));
+            await ValidateAppSettingsService.SetCulture(new CultureInfo(Config.GetValue<string>("Culture")));
 
             try
             {
-                await actionCommandDBService.Delete();
-                actionCommandDBService.Action = configuration.GetValue<string>("Action");
-                actionCommandDBService.Command = configuration.GetValue<string>("Command");
-                await actionCommandDBService.GetOrCreate();
+                await ActionCommandDBService.Delete();
+                ActionCommandDBService.Action = Config.GetValue<string>("Action");
+                ActionCommandDBService.Command = Config.GetValue<string>("Command");
+                await ActionCommandDBService.GetOrCreate();
             }
             catch (Exception ex)
             {
@@ -43,7 +29,7 @@ namespace ExecuteDotNetCommandServices.Services
                 return await Task.FromResult(false);
             }
 
-            validateAppSettingsService.AppSettingParameterList = new List<AppSettingParameter>()
+            ValidateAppSettingsService.AppSettingParameterList = new List<AppSettingParameter>()
             {
                 new AppSettingParameter() { Parameter = "Action", ExpectedValue = "run" },
                 new AppSettingParameter() { Parameter = "Command", ExpectedValue = "ExecuteDotNetCommand" },
@@ -199,10 +185,10 @@ namespace ExecuteDotNetCommandServices.Services
                 new AppSettingParameter() { Parameter = "build:CSSPServices", ExpectedValue = "C:\\CSSPTools\\src\\dlls\\CSSPServices\\CSSPServices.csproj", IsFile = true, CheckExist = true },
             };
 
-            await validateAppSettingsService.VerifyAppSettings();
-            if (!string.IsNullOrWhiteSpace(actionCommandDBService.ErrorText.ToString()))
+            await ValidateAppSettingsService.VerifyAppSettings();
+            if (!string.IsNullOrWhiteSpace(ActionCommandDBService.ErrorText.ToString()))
             {
-                await actionCommandDBService.ConsoleWriteError("");
+                await ActionCommandDBService.ConsoleWriteError("");
                 return await Task.FromResult(false);
             }
 

@@ -1,24 +1,12 @@
 ﻿using CSSPEnums;
 using CSSPModels;
 using GenerateCodeBaseServices.Models;
-using GenerateCodeBaseServices.Services;
-using ActionCommandDBServices.Models;
-using ActionCommandDBServices.Services;
-using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Globalization;
-using System.IO;
 using System.Linq;
-using System.Reflection;
-using System.Text;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using ValidateAppSettingsServices.Services;
-using ValidateAppSettingsServices.Models;
 
 namespace ServicesRepopulateTestDBServices.Services
 {
@@ -30,7 +18,7 @@ namespace ServicesRepopulateTestDBServices.Services
             {
 
                 #region TVItem Root
-                actionCommandDBService.ExecutionStatusText.AppendLine($"doing ... root");
+                ActionCommandDBService.ExecutionStatusText.AppendLine($"doing ... root");
                 // TVItem Root TVItemID = 1
                 TVItem tvItemRoot = dbCSSPDB.TVItems.AsNoTracking().Where(c => c.TVItemID == c.ParentID && c.TVLevel == 0).FirstOrDefault();
                 int RootTVItemID = tvItemRoot.TVItemID;
@@ -47,7 +35,7 @@ namespace ServicesRepopulateTestDBServices.Services
                 if (!await AddObject("TVItemLanguage", tvItemLanguageFRRoot)) return await Task.FromResult(false);
                 #endregion  TVItem Root
                 #region Contact Charles with TVItem
-                actionCommandDBService.ExecutionStatusText.AppendLine($"doing ... Contact Charles with TVItem");
+                ActionCommandDBService.ExecutionStatusText.AppendLine($"doing ... Contact Charles with TVItem");
                 // TVItem Charles G. LeBlanc TVItemID = 2
                 TVItem tvItemContactCharles = dbCSSPDB.TVItems.AsNoTracking().Where(c => c.TVItemID == 2).FirstOrDefault();
                 tvItemContactCharles.ParentID = tvItemRoot.TVItemID;
@@ -64,7 +52,7 @@ namespace ServicesRepopulateTestDBServices.Services
                 tvItemLanguageFRContactCharles.TVItemID = tvItemContactCharles.TVItemID;
                 if (!await AddObject("TVItemLanguage", tvItemLanguageFRContactCharles)) return await Task.FromResult(false);
 
-                //actionCommandDBService.ExecutionStatusText.AppendLine($"doing ... Contact Charles with TVItem");
+                //ActionCommandDBService.ExecutionStatusText.AppendLine($"doing ... Contact Charles with TVItem");
 
                 //ContactService contactService = new ContactService(new Query(), dbTestDB, 2);
 
@@ -75,7 +63,7 @@ namespace ServicesRepopulateTestDBServices.Services
                 if (!await AddObject("Contact", contactCharles)) return await Task.FromResult(false);
                 #endregion Contact Charles with TVItem
                 #region Contact Test User 1 with TVItem
-                actionCommandDBService.ExecutionStatusText.AppendLine($"doing ... TVItem Contact and Contact Login test user 1");
+                ActionCommandDBService.ExecutionStatusText.AppendLine($"doing ... TVItem Contact and Contact Login test user 1");
                 // TVItem Test User 1 TVItemID = 3
                 TVItem tvItemContactTestUser1 = dbCSSPDB.TVItems.AsNoTracking().Where(c => c.TVItemID == 3).FirstOrDefault();
                 tvItemContactTestUser1.ParentID = tvItemRoot.TVItemID;
@@ -99,7 +87,7 @@ namespace ServicesRepopulateTestDBServices.Services
                 if (!await AddObject("Contact", contactTestUser1)) return await Task.FromResult(false);
                 #endregion Contact Test User 1 with TVItem
                 #region Contact Test User 2 with TVItem
-                actionCommandDBService.ExecutionStatusText.AppendLine($"doing ... TVItem Contact and Contact Login test user 1");
+                ActionCommandDBService.ExecutionStatusText.AppendLine($"doing ... TVItem Contact and Contact Login test user 1");
 
                 // TVItem Test User 2 TVItemID = 4
                 TVItem tvItemContactTestUser2 = dbCSSPDB.TVItems.AsNoTracking().Where(c => c.TVItemID == 4).FirstOrDefault();
@@ -124,7 +112,7 @@ namespace ServicesRepopulateTestDBServices.Services
                 if (!await AddObject("Contact", contactTestUser2)) return await Task.FromResult(false);
                 #endregion Contact Test User 2 with TVItem
                 #region TVItem Country Canada
-                actionCommandDBService.ExecutionStatusText.AppendLine($"doing ... Canada");
+                ActionCommandDBService.ExecutionStatusText.AppendLine($"doing ... Canada");
                 // TVItem Canada TVItemID = 5
                 TVItem tvItemCanada = dbCSSPDB.TVItems.AsNoTracking().Where(c => c.TVItemID == 5).FirstOrDefault();
                 tvItemCanada.ParentID = tvItemRoot.TVItemID;
@@ -143,7 +131,7 @@ namespace ServicesRepopulateTestDBServices.Services
                 if (!await AddObject("TVItemLanguage", tvItemLanguageFRCanada)) return await Task.FromResult(false);
                 #endregion TVItem Country Canada
                 #region TVItem Province NB
-                actionCommandDBService.ExecutionStatusText.AppendLine($"doing ... New Brunswick");
+                ActionCommandDBService.ExecutionStatusText.AppendLine($"doing ... New Brunswick");
                 // TVItem Province NB TVItemID = 7
                 TVItem tvItemNB = dbCSSPDB.TVItems.AsNoTracking().Where(c => c.TVItemID == 7).FirstOrDefault();
                 int NBTVItemID = tvItemNB.TVItemID;
@@ -163,7 +151,7 @@ namespace ServicesRepopulateTestDBServices.Services
                 if (!await AddObject("TVItemLanguage", tvItemLanguageFRNB)) return await Task.FromResult(false);
                 #endregion TVItem Province NB
                 #region TVItem ClimateSite Bouctouche CDA
-                actionCommandDBService.ExecutionStatusText.AppendLine($"doing ... Climate Site");
+                ActionCommandDBService.ExecutionStatusText.AppendLine($"doing ... Climate Site");
                 // TVItem ClimateSite Bouctouche CDA TVItemID = 229528
                 TVItem tvItemNBClimateSiteBouctoucheCDA = dbCSSPDB.TVItems.AsNoTracking().Where(c => c.TVItemID == 229528).FirstOrDefault();
                 tvItemNBClimateSiteBouctoucheCDA.ParentID = tvItemNB.TVItemID;
@@ -199,7 +187,7 @@ namespace ServicesRepopulateTestDBServices.Services
                 }
                 #endregion ClimateSite Bouctouche CDA
                 #region TVItem HydrometricSite Big Tracadie 01BL003 
-                actionCommandDBService.ExecutionStatusText.AppendLine($"doing ... Hydrometric Site");
+                ActionCommandDBService.ExecutionStatusText.AppendLine($"doing ... Hydrometric Site");
                 // TVItem HydrometricSite Big Tracadie 01BL003 TVItemID = 55401
                 TVItem tvItemNBHydrometricSiteBigTracadie = dbCSSPDB.TVItems.AsNoTracking().Where(c => c.TVItemID == 55401).FirstOrDefault();
                 tvItemNBHydrometricSiteBigTracadie.ParentID = tvItemNB.TVItemID;
@@ -240,7 +228,7 @@ namespace ServicesRepopulateTestDBServices.Services
                 if (!await AddObject("HydrometricDataValue", hydrometricDataValue)) return await Task.FromResult(false);
                 #endregion HydrometricSite Big Tracadie 01BL003 
                 #region RatingCurve Big Tracadie 01BL003 
-                actionCommandDBService.ExecutionStatusText.AppendLine($"doing ... Rating Curve");
+                ActionCommandDBService.ExecutionStatusText.AppendLine($"doing ... Rating Curve");
 
                 // NB Hydrometric site Big Tracadie where HydrometricSiteTVItemID = 55401
                 RatingCurve ratingCurve = dbCSSPDB.RatingCurves.AsNoTracking().Where(c => c.HydrometricSiteID == HydrometricSiteID).FirstOrDefault();
@@ -249,7 +237,7 @@ namespace ServicesRepopulateTestDBServices.Services
                 if (!await AddObject("RatingCurve", ratingCurve)) return await Task.FromResult(false);
                 #endregion RatingCurve Big Tracadie 01BL003 
                 #region RatingCurveValue Big Tracadie 01BL003 
-                actionCommandDBService.ExecutionStatusText.AppendLine($"doing ... Rating Curve");
+                ActionCommandDBService.ExecutionStatusText.AppendLine($"doing ... Rating Curve");
                 // NB Hydrometric site Big Tracadie where HydrometricSiteTVItemID = 55401
                 List<RatingCurveValue> ratingCurveValueList = dbCSSPDB.RatingCurveValues.AsNoTracking().Where(c => c.RatingCurveID == RatingCurveID).Take(5).ToList();
                 foreach (RatingCurveValue ratingCurveValue in ratingCurveValueList)
@@ -259,7 +247,7 @@ namespace ServicesRepopulateTestDBServices.Services
                 }
                 #endregion RatingCurve Big Tracadie 01BL003 
                 #region TVItem Area NB-06 
-                actionCommandDBService.ExecutionStatusText.AppendLine($"doing ... Area NB-06");
+                ActionCommandDBService.ExecutionStatusText.AppendLine($"doing ... Area NB-06");
                 // TVItem Area NB-06 TVItemID = 629
                 TVItem tvItemNB_06 = dbCSSPDB.TVItems.AsNoTracking().Where(c => c.TVItemID == 629).FirstOrDefault();
                 tvItemNB_06.ParentID = tvItemNB.TVItemID;
@@ -278,7 +266,7 @@ namespace ServicesRepopulateTestDBServices.Services
                 if (!await AddObject("TVItemLanguage", tvItemLanguageFRNB_06)) return await Task.FromResult(false);
                 #endregion TVItem Area NB-06 
                 #region TVItem Sector NB-06-020 
-                actionCommandDBService.ExecutionStatusText.AppendLine($"doing ... Sector NB-06-020");
+                ActionCommandDBService.ExecutionStatusText.AppendLine($"doing ... Sector NB-06-020");
                 // TVItem Sector NB-06_020 TVItemID = 633
                 TVItem tvItemNB_06_020 = dbCSSPDB.TVItems.AsNoTracking().Where(c => c.TVItemID == 633).FirstOrDefault();
                 tvItemNB_06_020.ParentID = tvItemNB_06.TVItemID;
@@ -297,7 +285,7 @@ namespace ServicesRepopulateTestDBServices.Services
                 if (!await AddObject("TVItemLanguage", tvItemLanguageFRNB_06_020)) return await Task.FromResult(false);
                 #endregion TVItem Sector NB-06-020 
                 #region TVItem Subsector NB-06_020_001 
-                actionCommandDBService.ExecutionStatusText.AppendLine($"doing ... Sector NB-06-020-001");
+                ActionCommandDBService.ExecutionStatusText.AppendLine($"doing ... Sector NB-06-020-001");
                 // TVItem Subsector NB-06_020_001 TVItemID = 634
                 TVItem tvItemNB_06_020_001 = dbCSSPDB.TVItems.AsNoTracking().Where(c => c.TVItemID == 634).FirstOrDefault();
                 tvItemNB_06_020_001.ParentID = tvItemNB_06_020.TVItemID;
@@ -316,7 +304,7 @@ namespace ServicesRepopulateTestDBServices.Services
                 if (!await AddObject("TVItemLanguage", tvItemLanguageFRNB_06_020_001)) return await Task.FromResult(false);
                 #endregion TVItem Subsector NB-06_020_001 
                 #region MWQMSubsector NB-06_020_001 and MWQMSubsectorLanguage
-                actionCommandDBService.ExecutionStatusText.AppendLine($"doing ... MWQM Subsector NB-06-020-001");
+                ActionCommandDBService.ExecutionStatusText.AppendLine($"doing ... MWQM Subsector NB-06-020-001");
                 // MWQMSubsector NB-06_020_001 TVItemID = 634
                 MWQMSubsector mwqmSubsector001 = dbCSSPDB.MWQMSubsectors.AsNoTracking().Where(c => c.MWQMSubsectorTVItemID == 634).FirstOrDefault();
                 int MWQMSubsector001ID = mwqmSubsector001.MWQMSubsectorID;
@@ -336,7 +324,7 @@ namespace ServicesRepopulateTestDBServices.Services
                 if (!await AddObject("MWQMSubsectorLanguage", mwqmSubsector001FR)) return await Task.FromResult(false);
                 #endregion TVItem Subsector NB-06_020_001 
                 #region TVItem Subsector NB-06_020_002 
-                actionCommandDBService.ExecutionStatusText.AppendLine($"doing ... Subsector NB-06-020-002");
+                ActionCommandDBService.ExecutionStatusText.AppendLine($"doing ... Subsector NB-06-020-002");
                 // TVItem Subsector NB-06_020_002 TVItemID = 635
                 TVItem tvItemNB_06_020_002 = dbCSSPDB.TVItems.AsNoTracking().Where(c => c.TVItemID == 635).FirstOrDefault();
                 tvItemNB_06_020_002.ParentID = tvItemNB_06_020.TVItemID;
@@ -355,7 +343,7 @@ namespace ServicesRepopulateTestDBServices.Services
                 if (!await AddObject("TVItemLanguage", tvItemLanguageFRNB_06_020_002)) return await Task.FromResult(false);
                 #endregion TVItem Subsector NB-06_020_001 
                 #region MWQMSubsector NB-06_020_002 and MWQMSubsectorLanguage
-                actionCommandDBService.ExecutionStatusText.AppendLine($"doing ... MWQM Subsector NB-06-020-002");
+                ActionCommandDBService.ExecutionStatusText.AppendLine($"doing ... MWQM Subsector NB-06-020-002");
                 // MWQMSubsector NB-06_020_002 TVItemID = 635
                 MWQMSubsector mwqmSubsector002 = dbCSSPDB.MWQMSubsectors.AsNoTracking().Where(c => c.MWQMSubsectorTVItemID == 635).FirstOrDefault();
                 int MWQMSubsector002ID = mwqmSubsector002.MWQMSubsectorID;
@@ -375,7 +363,7 @@ namespace ServicesRepopulateTestDBServices.Services
                 if (!await AddObject("MWQMSubsectorLanguage", mwqmSubsector002FR)) return await Task.FromResult(false);
                 #endregion TVItem Subsector NB-06_020_002 
                 #region TVItem Classification  and Classification
-                actionCommandDBService.ExecutionStatusText.AppendLine($"doing ... Classification");
+                ActionCommandDBService.ExecutionStatusText.AppendLine($"doing ... Classification");
                 // TVItem Classification where parent TVItemID = 635
                 List<TVItem> tvItemClassificationList = dbCSSPDB.TVItems.AsNoTracking().Where(c => c.ParentID == 635 && c.TVType == TVTypeEnum.Classification).ToList();
                 foreach (TVItem tvItem in tvItemClassificationList)
@@ -405,7 +393,7 @@ namespace ServicesRepopulateTestDBServices.Services
                 }
                 #endregion TVItem Classification and Classification
                 #region TideSites (Cap Pelé)
-                actionCommandDBService.ExecutionStatusText.AppendLine($"doing ... Cap Pelé");
+                ActionCommandDBService.ExecutionStatusText.AppendLine($"doing ... Cap Pelé");
                 // TVItem Cap Pelé TVItemID = 369979
                 TVItem tvItemCapPeleTideSite = dbCSSPDB.TVItems.AsNoTracking().Where(c => c.TVItemID == 369979).FirstOrDefault();
                 tvItemCapPeleTideSite.ParentID = tvItemNB.TVItemID;
@@ -423,7 +411,7 @@ namespace ServicesRepopulateTestDBServices.Services
                 tvItemLanguageFRCapPele.TVItemID = tvItemCapPeleTideSite.TVItemID;
                 if (!await AddObject("TVItemLanguage", tvItemLanguageFRCapPele)) return await Task.FromResult(false);
 
-                actionCommandDBService.ExecutionStatusText.AppendLine($"doing ... Tide Site");
+                ActionCommandDBService.ExecutionStatusText.AppendLine($"doing ... Tide Site");
                 // TideSite where TideSiteTVItemID = 369979
                 TideSite tideSite = dbCSSPDB.TideSites.AsNoTracking().Where(c => c.TideSiteTVItemID == 369979).FirstOrDefault();
                 tideSite.TideSiteTVItemID = tvItemCapPeleTideSite.TVItemID;
@@ -461,7 +449,7 @@ namespace ServicesRepopulateTestDBServices.Services
                 }
                 #endregion TideDataValues
                 #region TVItem Municipality Bouctouche
-                actionCommandDBService.ExecutionStatusText.AppendLine($"doing ... Bouctouche");
+                ActionCommandDBService.ExecutionStatusText.AppendLine($"doing ... Bouctouche");
                 // TVItem Municipality Bouctouche TVItemID = 27764
                 TVItem tvItemBouctouche = dbCSSPDB.TVItems.AsNoTracking().Where(c => c.TVItemID == 27764).FirstOrDefault();
                 tvItemBouctouche.ParentID = tvItemNB.TVItemID;
@@ -480,7 +468,7 @@ namespace ServicesRepopulateTestDBServices.Services
                 if (!await AddObject("TVItemLanguage", tvItemLanguageFRBouctouche)) return await Task.FromResult(false);
                 #endregion TVItem Municipality Bouctouche
                 #region TVItem Municipality Ste Marie de Kent 
-                actionCommandDBService.ExecutionStatusText.AppendLine($"doing ... Ste-Marie-de-Kent");
+                ActionCommandDBService.ExecutionStatusText.AppendLine($"doing ... Ste-Marie-de-Kent");
                 // TVItem Municipality Ste Marie de Kent TVItemID = 44855
                 TVItem tvItemSteMarieDeKent = dbCSSPDB.TVItems.AsNoTracking().Where(c => c.TVItemID == 44855).FirstOrDefault();
                 tvItemSteMarieDeKent.ParentID = tvItemNB.TVItemID;
@@ -499,7 +487,7 @@ namespace ServicesRepopulateTestDBServices.Services
                 if (!await AddObject("TVItemLanguage", tvItemLanguageFRSteMarieDeKent)) return await Task.FromResult(false);
                 #endregion TVItem Municipality Ste Marie de Kent 
                 #region TVItem Municipality Bouctouche WWTP 
-                actionCommandDBService.ExecutionStatusText.AppendLine($"doing ... Bouctouche WWTP");
+                ActionCommandDBService.ExecutionStatusText.AppendLine($"doing ... Bouctouche WWTP");
                 // TVItem Municipality Bouctouche WWTP TVItemID = 28689
                 TVItem tvItemBouctoucheWWTP = dbCSSPDB.TVItems.AsNoTracking().Where(c => c.TVItemID == 28689).FirstOrDefault();
                 tvItemBouctoucheWWTP.ParentID = tvItemBouctouche.TVItemID;
@@ -520,7 +508,7 @@ namespace ServicesRepopulateTestDBServices.Services
                 if (!await AddObject("TVItemLanguage", tvItemLanguageFRBouctoucheWWTP)) return await Task.FromResult(false);
                 #endregion TVItem Municipality Bouctouche WWTP 
                 #region ReportType and ReportTypeLanguage
-                actionCommandDBService.ExecutionStatusText.AppendLine($"doing ... ReportTypes and ReportTypeLanguages");
+                ActionCommandDBService.ExecutionStatusText.AppendLine($"doing ... ReportTypes and ReportTypeLanguages");
                 ReportType reportType = dbCSSPDB.ReportTypes.AsNoTracking().FirstOrDefault();
                 int ReportTypeIDOld = reportType.ReportTypeID;
                 reportType.ReportTypeID = 0;
@@ -539,7 +527,7 @@ namespace ServicesRepopulateTestDBServices.Services
                 //if (!await AddObject("ReportTypeLanguage", reportTypeLanguageFR)) return await Task.FromResult(false);
                 #endregion ReportType and ReportTypeLanguage
                 #region ReportSection and ReportSectionLanguage
-                actionCommandDBService.ExecutionStatusText.AppendLine($"doing ... ReportSections and ReportSectionLanguages");
+                ActionCommandDBService.ExecutionStatusText.AppendLine($"doing ... ReportSections and ReportSectionLanguages");
                 ReportSection reportSection = dbCSSPDB.ReportSections.AsNoTracking().Where(c => c.ReportTypeID == ReportTypeIDOld).FirstOrDefault();
                 int ReportSectionIDOld = reportSection.ReportSectionID;
                 reportSection.ReportSectionID = 0;
@@ -560,7 +548,7 @@ namespace ServicesRepopulateTestDBServices.Services
                 #endregion ReportSection and ReportSectionLanguage
 
                 #region TVItem TVFile Bouctouche WWTP 
-                actionCommandDBService.ExecutionStatusText.AppendLine($"doing ... Bouctouche WWTP TVFile");
+                ActionCommandDBService.ExecutionStatusText.AppendLine($"doing ... Bouctouche WWTP TVFile");
                 // TVItem TVFile Bouctouche WWTP TVItemID = 28689
                 TVItem TempBouctWWTP = dbCSSPDB.TVItems.AsNoTracking().Where(c => c.TVItemID == 28689).FirstOrDefault();
                 TVItem tvItemBouctoucheWWTPTVFile = dbCSSPDB.TVItems.AsNoTracking().Where(c => c.TVPath.StartsWith($"{ TempBouctWWTP.TVPath }p") && c.TVType == TVTypeEnum.File).FirstOrDefault();
@@ -581,7 +569,7 @@ namespace ServicesRepopulateTestDBServices.Services
                 if (!await AddObject("TVItemLanguage", tvItemBouctoucheWWTPTVFileImageFR)) return await Task.FromResult(false);
                 #endregion TVItem TVFile Bouctouche WWTP 
                 #region TVFile Bouctouche WWTP 
-                actionCommandDBService.ExecutionStatusText.AppendLine($"doing ... Bouctouche WWTP TVFile");
+                ActionCommandDBService.ExecutionStatusText.AppendLine($"doing ... Bouctouche WWTP TVFile");
                 // TVFile Bouctouche WWTP TVItemID = 28689
                 TVFile tvFileBouctoucheWWTP = dbCSSPDB.TVFiles.AsNoTracking().Where(c => c.TVFileTVItemID == TempTVItemID).FirstOrDefault();
                 int TVFileID = tvFileBouctoucheWWTP.TVFileID;
@@ -599,7 +587,7 @@ namespace ServicesRepopulateTestDBServices.Services
                 if (!await AddObject("TVFileLanguage", tvFileLanguageFRBouctoucheWWTP)) return await Task.FromResult(false);
                 #endregion TVFile Bouctouche WWTP 
                 #region Infrastructure Bouctouche WWTP
-                actionCommandDBService.ExecutionStatusText.AppendLine($"doing ... Bouctouche WWTP Infrastructure");
+                ActionCommandDBService.ExecutionStatusText.AppendLine($"doing ... Bouctouche WWTP Infrastructure");
                 // Infrastructure Bouctouche WWTP TVItemID = 28689
                 Infrastructure infrastructureBouctoucheWWTP = dbCSSPDB.Infrastructures.AsNoTracking().Where(c => c.InfrastructureTVItemID == 28689).FirstOrDefault();
                 int InfrastructureID = infrastructureBouctoucheWWTP.InfrastructureID;
@@ -617,7 +605,7 @@ namespace ServicesRepopulateTestDBServices.Services
                 if (!await AddObject("InfrastructureLanguage", infrastructureLanguageFRBouctoucheWWTP)) return await Task.FromResult(false);
                 #endregion Infrastructure Bouctouche WWTP
                 #region BoxModel Bouctouche WWTP
-                actionCommandDBService.ExecutionStatusText.AppendLine($"doing ... Bouctouche WWTP Infrastructure Box Model");
+                ActionCommandDBService.ExecutionStatusText.AppendLine($"doing ... Bouctouche WWTP Infrastructure Box Model");
                 // BoxModel Bouctouche WWTP TVItemID = 28689
                 BoxModel boxModel = dbCSSPDB.BoxModels.AsNoTracking().Where(c => c.InfrastructureTVItemID == 28689).FirstOrDefault();
                 int BoxModelID = boxModel.BoxModelID;
@@ -635,7 +623,7 @@ namespace ServicesRepopulateTestDBServices.Services
                 if (!await AddObject("BoxModelLanguage", boxModelLanguageFR)) return await Task.FromResult(false);
                 #endregion BoxModel Bouctouche WWTP
                 #region BoxModelResult Bouctouche WWTP
-                actionCommandDBService.ExecutionStatusText.AppendLine($"doing ... Bouctouche WWTP Infrastructure Box Model Result");
+                ActionCommandDBService.ExecutionStatusText.AppendLine($"doing ... Bouctouche WWTP Infrastructure Box Model Result");
 
                 // BoxModelResult Bouctouche WWTP TVItemID = 28689
                 for (int i = 1; i < 6; i++)
@@ -647,7 +635,7 @@ namespace ServicesRepopulateTestDBServices.Services
                 }
                 #endregion BoxModelResult Bouctouche WWTP
                 #region VPScenario Bouctouche WWTP 
-                actionCommandDBService.ExecutionStatusText.AppendLine($"doing ... Bouctouche WWTP Infrastructure VPScenario");
+                ActionCommandDBService.ExecutionStatusText.AppendLine($"doing ... Bouctouche WWTP Infrastructure VPScenario");
 
                 // VPScenario Bouctouche WWTP TVItemID = 28689
                 VPScenario VPScenario = dbCSSPDB.VPScenarios.AsNoTracking().Where(c => c.InfrastructureTVItemID == 28689).FirstOrDefault();
@@ -682,7 +670,7 @@ namespace ServicesRepopulateTestDBServices.Services
                 }
                 #endregion VPScenario Bouctouche WWTP 
                 #region TVItem Municipality Bouctouche LS 2 Rue Acadie
-                actionCommandDBService.ExecutionStatusText.AppendLine($"doing ... Bouctouche LS 2");
+                ActionCommandDBService.ExecutionStatusText.AppendLine($"doing ... Bouctouche LS 2");
 
                 // TVItem Municipality Bouctouche LS 2 Rue Acadie TVItemID = 28695
                 TVItem tvItemBouctoucheLS2RueAcadie = dbCSSPDB.TVItems.AsNoTracking().Where(c => c.TVItemID == 28695).FirstOrDefault();
@@ -704,7 +692,7 @@ namespace ServicesRepopulateTestDBServices.Services
                 if (!await AddObject("TVItemLanguage", tvItemLanguageFRBouctoucheLS2RueAcadie)) return await Task.FromResult(false);
                 #endregion TVItem Municipality Bouctouche LS 2 Rue Acadie
                 #region TVItem Subsector NB-06_020_002 MWQM Site 0001
-                actionCommandDBService.ExecutionStatusText.AppendLine($"doing ... Subsector NB-06-020-002 MWQM site 001");
+                ActionCommandDBService.ExecutionStatusText.AppendLine($"doing ... Subsector NB-06-020-002 MWQM site 001");
                 // TVItem Subsector NB-06_020_002 MWQM Site 0001 TVItemID = 7460
                 TVItem tvItemNB_06_020_002Site0001 = dbCSSPDB.TVItems.AsNoTracking().Where(c => c.TVItemID == 7460).FirstOrDefault();
                 int MWQMSiteID0001 = tvItemNB_06_020_002Site0001.TVItemID;
@@ -724,7 +712,7 @@ namespace ServicesRepopulateTestDBServices.Services
                 if (!await AddObject("TVItemLanguage", tvItemLanguageFRNB_06_020_002Site0001)) return await Task.FromResult(false);
                 #endregion TVItem Subsector NB-06_020_002 MWQM Site 0001
                 #region TVItem Subsector NB-06_020_002 MWQM Site 0002
-                actionCommandDBService.ExecutionStatusText.AppendLine($"doing ... Subsector NB-06-020-002 MWQM site 002");
+                ActionCommandDBService.ExecutionStatusText.AppendLine($"doing ... Subsector NB-06-020-002 MWQM site 002");
                 // TVItem Subsector NB-06_020_002 MWQM Site 0001 TVItemID = 7462
                 TVItem tvItemNB_06_020_002Site0002 = dbCSSPDB.TVItems.AsNoTracking().Where(c => c.TVItemID == 7462).FirstOrDefault();
                 int MWQMSiteID0002 = tvItemNB_06_020_002Site0002.TVItemID;
@@ -744,7 +732,7 @@ namespace ServicesRepopulateTestDBServices.Services
                 if (!await AddObject("TVItemLanguage", tvItemLanguageFRNB_06_020_002Site0002)) return await Task.FromResult(false);
                 #endregion TVItem Subsector NB-06_020_002 MWQM Site 0002
                 #region TVItem Address and Address
-                actionCommandDBService.ExecutionStatusText.AppendLine($"doing ... Address");
+                ActionCommandDBService.ExecutionStatusText.AppendLine($"doing ... Address");
                 // TVItem Address 730 Chemin de la Pointe, Richibouctou, NB E4W, Canada TVItemID = 232655
                 TVItem tvItemAddress = dbCSSPDB.TVItems.AsNoTracking().Where(c => c.TVItemID == 232655).FirstOrDefault();
                 tvItemAddress.ParentID = tvItemRoot.TVItemID;
@@ -778,7 +766,7 @@ namespace ServicesRepopulateTestDBServices.Services
                 if (!await AddObject("TVItemLanguage", tvItemLanguageFRAddress)) return await Task.FromResult(false);
                 #endregion TVItem Address and Address
                 #region TVItem Subsector NB-06_020_002 Pol Source Site 000023
-                actionCommandDBService.ExecutionStatusText.AppendLine($"doing ... Subsector NB-06-020-002 PolSource site 00023");
+                ActionCommandDBService.ExecutionStatusText.AppendLine($"doing ... Subsector NB-06-020-002 PolSource site 00023");
                 // TVItem Subsector NB-06_020_002 Pol Source Site 000023 TVItemID = 202466
                 TVItem tvItemNB_06_020_002PolSite000023 = dbCSSPDB.TVItems.AsNoTracking().Where(c => c.TVItemID == 202466).FirstOrDefault();
                 tvItemNB_06_020_002PolSite000023.ParentID = tvItemNB_06_020_002.TVItemID;
@@ -797,7 +785,7 @@ namespace ServicesRepopulateTestDBServices.Services
                 if (!await AddObject("TVItemLanguage", tvItemLanguageFRNB_06_020_002PolSite000023)) return await Task.FromResult(false);
                 #endregion TVItem Subsector NB-06_020_002 Pol Source Site 000023
                 #region PolSourceSite, PolSourceObservation, PolSourceObservationIssue Subsector NB-06_020_002 Pol Source Site 000023
-                actionCommandDBService.ExecutionStatusText.AppendLine($"doing ... Subsector NB-06-020-002 PolSource site 00023 Observation");
+                ActionCommandDBService.ExecutionStatusText.AppendLine($"doing ... Subsector NB-06-020-002 PolSource site 00023 Observation");
                 // PolSourceSite with PolSourceSiteTVItemID = 202466
                 PolSourceSite polSourceSitePolSite000023 = dbCSSPDB.PolSourceSites.AsNoTracking().Where(c => c.PolSourceSiteTVItemID == 202466).FirstOrDefault();
                 int PolSourceSiteID = polSourceSitePolSite000023.PolSourceSiteID;
@@ -822,7 +810,7 @@ namespace ServicesRepopulateTestDBServices.Services
                 if (!await AddObject("PolSourceObservationIssue", polSourceSitePolSite000023ObsIssue)) return await Task.FromResult(false);
                 #endregion PolSourceSite, PolSourceObservation, PolSourceObservationIssue Subsector NB-06_020_002 Pol Source Site 000023
                 #region PolSourceSite, PolSourceObservation, PolSourceObservationIssue Subsector NB-06_020_002 Pol Source Site 000024
-                actionCommandDBService.ExecutionStatusText.AppendLine($"doing ... Subsector NB-06-020-002 PolSource site 00024");
+                ActionCommandDBService.ExecutionStatusText.AppendLine($"doing ... Subsector NB-06-020-002 PolSource site 00024");
                 // TVItem Subsector NB-06_020_002 Pol Source Site 000024 TVItemID = 202467
                 TVItem tvItemNB_06_020_002PolSite000024 = dbCSSPDB.TVItems.AsNoTracking().Where(c => c.TVItemID == 202467).FirstOrDefault();
                 tvItemNB_06_020_002PolSite000024.ParentID = tvItemNB_06_020_002.TVItemID;
@@ -841,7 +829,7 @@ namespace ServicesRepopulateTestDBServices.Services
                 if (!await AddObject("TVItemLanguage", tvItemLanguageFRNB_06_020_002PolSite000024)) return await Task.FromResult(false);
                 #endregion PolSourceSite, PolSourceObservation, PolSourceObservationIssue Subsector NB-06_020_002 Pol Source Site 000024
                 #region DrogueRun, DrogueRunPositon Subsector NB-06_020_002
-                actionCommandDBService.ExecutionStatusText.AppendLine($"doing ... Subsector NB-06-020-002 DrogueRun");
+                ActionCommandDBService.ExecutionStatusText.AppendLine($"doing ... Subsector NB-06-020-002 DrogueRun");
                 DrogueRun drogueRun = dbCSSPDB.DrogueRuns.AsNoTracking().FirstOrDefault();
                 int DrogueRunID = drogueRun.DrogueRunID;
                 drogueRun.SubsectorTVItemID = tvItemNB_06_020_002.TVItemID;
@@ -857,13 +845,13 @@ namespace ServicesRepopulateTestDBServices.Services
                 }
                 #endregion DrogueRun, DrogueRunPositon Subsector NB-06_020_002
                 #region HelpDoc
-                actionCommandDBService.ExecutionStatusText.AppendLine($"doing ... HelpDoc");
+                ActionCommandDBService.ExecutionStatusText.AppendLine($"doing ... HelpDoc");
                 HelpDoc helpDoc = dbCSSPDB.HelpDocs.AsNoTracking().FirstOrDefault();
                 int HelpDocID = helpDoc.HelpDocID;
                 if (!await AddObject("HelpDoc", helpDoc)) return await Task.FromResult(false);
                 #endregion HelpDoc
                 //#region MWQMSitePolSourceSite
-                //actionCommandDBService.ExecutionStatusText.AppendLine($"doing ... MWQMSitePolSourceSite");
+                //ActionCommandDBService.ExecutionStatusText.AppendLine($"doing ... MWQMSitePolSourceSite");
                 //MWQMSitePolSourceSite mwqmSitePolSourceSite = new MWQMSitePolSourceSite()
                 //{
                 //    MWQMSiteTVItemID = tvItemNB_06_020_002Site0001.TVItemID,
@@ -876,7 +864,7 @@ namespace ServicesRepopulateTestDBServices.Services
                 //if (!await AddObject("MWQMSitePolSourceSite", mwqmSitePolSourceSite)) return await Task.FromResult(false);
                 //#endregion MWQMSitePolSourceSite
                 #region TVItem SamplingPlan, SamplingPlanSubsector, SamplingPlanSubsectorSite, SamplingPlanEmail
-                actionCommandDBService.ExecutionStatusText.AppendLine($"doing ... Sampling Plan");
+                ActionCommandDBService.ExecutionStatusText.AppendLine($"doing ... Sampling Plan");
                 // NB TVItem Sampling Plan with SamplingPlanID = 78 and TVFileTVItemID = 370708
                 TVItem tvItemNBSamplingPlanFileTVItem = dbCSSPDB.TVItems.AsNoTracking().Where(c => c.TVItemID == 370708).FirstOrDefault();
                 tvItemNBSamplingPlanFileTVItem.ParentID = tvItemNB.TVItemID;
@@ -934,7 +922,7 @@ namespace ServicesRepopulateTestDBServices.Services
                 if (!await AddObject("SamplingPlanEmail", samplingPlanEmail)) return await Task.FromResult(false);
                 #endregion TVItem SamplingPlan, SamplingPlanSubsector, SamplingPlanSubsectorSite, SamplingPlanEmail
                 #region TVItem MWQMRun with Subsector NB-06_020_002 and MWQMSite 0001
-                actionCommandDBService.ExecutionStatusText.AppendLine($"doing ... MWQM Run");
+                ActionCommandDBService.ExecutionStatusText.AppendLine($"doing ... MWQM Run");
                 // TVItem MWQMRun with Subsector NB-06_020_002 TVItemID = 635 MWQMSite 0001 TVItemID = 7460 MWQMRunTVItemID = 324152
                 TVItem tvItemRun = dbCSSPDB.TVItems.AsNoTracking().Where(c => c.TVItemID == 324152).FirstOrDefault();
                 tvItemRun.ParentID = tvItemNB_06_020_002.TVItemID;
@@ -971,7 +959,7 @@ namespace ServicesRepopulateTestDBServices.Services
                 if (!await AddObject("MWQMRunLanguage", MWQMRunLanguageFR)) return await Task.FromResult(false);
                 #endregion TVItem MWQMRun with Subsector NB-06_020_002 and MWQMSite 0001
                 #region UseOfSite
-                actionCommandDBService.ExecutionStatusText.AppendLine($"doing ... UseOfSite");
+                ActionCommandDBService.ExecutionStatusText.AppendLine($"doing ... UseOfSite");
                 // NB UseOfSite with SubsectorTVItemID = 635 ClimateSiteTVItemID = 229528
                 UseOfSite useOfSite = dbCSSPDB.UseOfSites.AsNoTracking().Where(c => c.SubsectorTVItemID == 635 && c.SiteTVItemID == 229528).FirstOrDefault();
                 useOfSite.SubsectorTVItemID = tvItemNB_06_020_002.TVItemID;
@@ -985,7 +973,7 @@ namespace ServicesRepopulateTestDBServices.Services
                 //if (!await AddObject("UseOfSite", useOfSite)) return await Task.FromResult(false);
                 #endregion UseOfSite
                 #region MWQMSamples
-                actionCommandDBService.ExecutionStatusText.AppendLine($"doing ... MWQMSamples");
+                ActionCommandDBService.ExecutionStatusText.AppendLine($"doing ... MWQMSamples");
                 // NB MWQMSamples with MWQMSiteTVItemID = 7460 and MWQMRunTVItemID = 324152
                 MWQMSample mwqmSample = dbCSSPDB.MWQMSamples.AsNoTracking().Where(c => c.MWQMSiteTVItemID == 7460 && c.MWQMRunTVItemID == 324152).FirstOrDefault();
                 int MWQMSampleID = mwqmSample.MWQMSampleID;
@@ -1004,7 +992,7 @@ namespace ServicesRepopulateTestDBServices.Services
                 if (!await AddObject("MWQMSampleLanguage", mwqmSampleLanguageFR)) return await Task.FromResult(false);
                 #endregion MWQMSamples
                 #region MWQMSite, MWQMSiteStartEndDate
-                actionCommandDBService.ExecutionStatusText.AppendLine($"doing ... MWQMSite and MWQMSiteStartEndDate");
+                ActionCommandDBService.ExecutionStatusText.AppendLine($"doing ... MWQMSite and MWQMSiteStartEndDate");
                 // NB MWQMSite with MWQMSiteTVItemID = 7460
                 MWQMSite mwqmSite0001 = dbCSSPDB.MWQMSites.AsNoTracking().Where(c => c.MWQMSiteTVItemID == 7460).FirstOrDefault();
                 mwqmSite0001.MWQMSiteTVItemID = tvItemNB_06_020_002Site0001.TVItemID;
@@ -1026,7 +1014,7 @@ namespace ServicesRepopulateTestDBServices.Services
                 if (!await AddObject("MWQMSiteStartEndDate", mwqmSiteStartEndDate0002)) return await Task.FromResult(false);
                 #endregion MWQMSite, MWQMSiteStartEndDate
                 #region MikeScenario, MikeScenarioResult, MikeBoundaryCondition, MikeSource, MikeSourceStartEnd
-                actionCommandDBService.ExecutionStatusText.AppendLine($"doing ... MikeScenario, MikeBoundaryCondition, MikeSource, MikeSourceStartEnd");
+                ActionCommandDBService.ExecutionStatusText.AppendLine($"doing ... MikeScenario, MikeBoundaryCondition, MikeSource, MikeSourceStartEnd");
                 // TVItem MikeScenario with MikeScenairoTVItemID = 28475 under Bouctouche
                 TVItem tvItemMikeScenario = dbCSSPDB.TVItems.AsNoTracking().Where(c => c.TVItemID == 28475).FirstOrDefault();
                 int MikeScenarioTVItemID = tvItemMikeScenario.TVItemID;
@@ -1109,7 +1097,7 @@ namespace ServicesRepopulateTestDBServices.Services
                 if (!await AddObject("MikeSourceStartEnd", mikeSourceStartEnd)) return await Task.FromResult(false);
                 #endregion MikeScenario, MikeBoundaryCondition, MikeSource, MikeSourceStartEnd
                 #region LabSheet, LabSheetDetail, LabSheetTubeMPNDetail
-                actionCommandDBService.ExecutionStatusText.AppendLine($"doing ... LabSheet, LabSheetDetail, LabSheetTubeMPNDetail");
+                ActionCommandDBService.ExecutionStatusText.AppendLine($"doing ... LabSheet, LabSheetDetail, LabSheetTubeMPNDetail");
                 // LabSheet with SubsectorTVItemID = 635 and MWQMRunTVItemID = 324152 under Bouctouche harbour subsector
                 LabSheet labSheet = dbCSSPDB.LabSheets.AsNoTracking().Where(c => c.SubsectorTVItemID == 635 && c.MWQMRunTVItemID == 324152).FirstOrDefault();
                 int LabSheetID = labSheet.LabSheetID;
@@ -1134,7 +1122,7 @@ namespace ServicesRepopulateTestDBServices.Services
                 if (!await AddObject("LabSheetTubeMPNDetail", labSheetTubeMPNDetail)) return await Task.FromResult(false);
                 #endregion LabSheet, LabSheetDetail, LabSheetTubeMPNDetail
                 #region TVItem Email and Email
-                actionCommandDBService.ExecutionStatusText.AppendLine($"doing ... Email");
+                ActionCommandDBService.ExecutionStatusText.AppendLine($"doing ... Email");
 
                 // Email Charles.LeBlanc@ec.gc.ca TVItemID = 110249
                 TVItem tvItemEmail = dbCSSPDB.TVItems.AsNoTracking().Where(c => c.TVItemID == 110249).FirstOrDefault();
@@ -1159,7 +1147,7 @@ namespace ServicesRepopulateTestDBServices.Services
                 if (!await AddObject("Email", email)) return await Task.FromResult(false);
                 #endregion TVItem Email and Email
                 #region TVItem Tel and Tel
-                actionCommandDBService.ExecutionStatusText.AppendLine($"doing ... Tel");
+                ActionCommandDBService.ExecutionStatusText.AppendLine($"doing ... Tel");
                 // Tel Charles.LeBlanc@ec.gc.ca TVItemID = 108984
                 TVItem tvItemTel = dbCSSPDB.TVItems.AsNoTracking().Where(c => c.TVItemID == 108984).FirstOrDefault();
                 tvItemTel.ParentID = tvItemRoot.TVItemID;
@@ -1183,7 +1171,7 @@ namespace ServicesRepopulateTestDBServices.Services
                 if (!await AddObject("Tel", tel)) return await Task.FromResult(false);
                 #endregion TVItem Tel and Tel
                 #region TVItemLink
-                actionCommandDBService.ExecutionStatusText.AppendLine($"doing ... TVItemLink");
+                ActionCommandDBService.ExecutionStatusText.AppendLine($"doing ... TVItemLink");
                 TVItemLink tvItemLinkMunicContact = dbCSSPDB.TVItemLinks.AsNoTracking().Where(c => c.FromTVItemID == 27764 && c.ToTVItemID == 305006).FirstOrDefault();
                 tvItemLinkMunicContact.FromTVItemID = tvItemBouctouche.TVItemID;
                 tvItemLinkMunicContact.ToTVItemID = tvItemContactCharles.TVItemID;
@@ -1203,7 +1191,7 @@ namespace ServicesRepopulateTestDBServices.Services
                 if (!await AddObject("TVItemLink", tvItemLinkContactEmail)) return await Task.FromResult(false);
                 #endregion TVItemLink
                 #region PolSourceSiteEffects and PolSourceSiteEffectTerms where PolSourceSiteEffectID = 36
-                actionCommandDBService.ExecutionStatusText.AppendLine($"doing ... TVItemLink");
+                ActionCommandDBService.ExecutionStatusText.AppendLine($"doing ... TVItemLink");
                 PolSourceSiteEffect polSourceSiteEffect36 = dbCSSPDB.PolSourceSiteEffects.AsNoTracking().Where(c => c.PolSourceSiteEffectID == 36).FirstOrDefault();
                 polSourceSiteEffect36.PolSourceSiteOrInfrastructureTVItemID = polSourceSitePolSite000023.PolSourceSiteTVItemID;
                 polSourceSiteEffect36.MWQMSiteTVItemID = mwqmSite0001.MWQMSiteTVItemID;
@@ -1225,7 +1213,7 @@ namespace ServicesRepopulateTestDBServices.Services
                 if (!await AddObject("PolSourceSiteEffect", polSourceSiteEffect36)) return await Task.FromResult(false);
                 #endregion  PolSourceSiteEffects and PolSourceSiteEffectTerms where PolSourceSiteEffectID = 36
                 #region Spill and SpillLanguage
-                actionCommandDBService.ExecutionStatusText.AppendLine($"doing ... Spill and SpillLanguage");
+                ActionCommandDBService.ExecutionStatusText.AppendLine($"doing ... Spill and SpillLanguage");
                 Spill spill = new Spill();
                 spill.MunicipalityTVItemID = tvItemBouctouche.TVItemID;
                 spill.InfrastructureTVItemID = tvItemBouctoucheWWTP.TVItemID;
@@ -1255,7 +1243,7 @@ namespace ServicesRepopulateTestDBServices.Services
                 if (!await AddObject("SpillLanguage", spillLanguageFR)) return await Task.FromResult(false);
                 #endregion Spill and SpillLanguage
                 #region EmailDistributionList and EmailDistributionListContact
-                actionCommandDBService.ExecutionStatusText.AppendLine($"doing ... EmailDistributionList and EmailDistributionListContact");
+                ActionCommandDBService.ExecutionStatusText.AppendLine($"doing ... EmailDistributionList and EmailDistributionListContact");
                 EmailDistributionList emailDistributionList = dbCSSPDB.EmailDistributionLists.AsNoTracking().FirstOrDefault();
                 int EmailDistributionListID = emailDistributionList.EmailDistributionListID;
                 emailDistributionList.ParentTVItemID = tvItemCanada.TVItemID;
@@ -1288,7 +1276,7 @@ namespace ServicesRepopulateTestDBServices.Services
                 }
                 #endregion EmailDistributionList and EmailDistributionListContact
                 #region AppTask and AppTaskLanguage
-                actionCommandDBService.ExecutionStatusText.AppendLine($"doing ... AppTask and AppTaskLanguage");
+                ActionCommandDBService.ExecutionStatusText.AppendLine($"doing ... AppTask and AppTaskLanguage");
                 AppTask appTask = new AppTask();
                 appTask.TVItemID = tvItemCanada.TVItemID;
                 appTask.TVItemID2 = tvItemCanada.TVItemID;
@@ -1326,7 +1314,7 @@ namespace ServicesRepopulateTestDBServices.Services
                 if (!await AddObject("AppTaskLanguage", appTaskLanguageFR)) return await Task.FromResult(false);
                 #endregion AppTask and AppTaskLanguage
                 #region AppErrLog
-                actionCommandDBService.ExecutionStatusText.AppendLine($"doing ... AppErrLog");
+                ActionCommandDBService.ExecutionStatusText.AppendLine($"doing ... AppErrLog");
                 AppErrLog appErrLog = new AppErrLog();
                 appErrLog.Tag = "SomeTag";
                 appErrLog.LineNumber = 234;
@@ -1338,7 +1326,7 @@ namespace ServicesRepopulateTestDBServices.Services
                 if (!await AddObject("AppErrLog", appErrLog)) return await Task.FromResult(false);
                 #endregion AppErrLog
                 #region ContactPreference
-                actionCommandDBService.ExecutionStatusText.AppendLine($"doing ... ContactPreference");
+                ActionCommandDBService.ExecutionStatusText.AppendLine($"doing ... ContactPreference");
                 ContactPreference contactPreference = new ContactPreference();
                 contactPreference.ContactID = contactCharles.ContactID;
                 contactPreference.TVType = TVTypeEnum.ClimateSite;
@@ -1348,7 +1336,7 @@ namespace ServicesRepopulateTestDBServices.Services
                 if (!await AddObject("ContactPreference", contactPreference)) return await Task.FromResult(false);
                 #endregion ContactPreference
                 #region ContactShortcut
-                actionCommandDBService.ExecutionStatusText.AppendLine($"doing ... ContactShortcut");
+                ActionCommandDBService.ExecutionStatusText.AppendLine($"doing ... ContactShortcut");
                 ContactShortcut contactShortcut = new ContactShortcut();
                 contactShortcut.ContactID = contactCharles.ContactID;
                 contactShortcut.ShortCutText = "Some shortcut text";
@@ -1358,7 +1346,7 @@ namespace ServicesRepopulateTestDBServices.Services
                 if (!await AddObject("ContactShortcut", contactShortcut)) return await Task.FromResult(false);
                 #endregion ContactShortcut
                 #region DocTemplate
-                actionCommandDBService.ExecutionStatusText.AppendLine($"doing ... DocTemplate");
+                ActionCommandDBService.ExecutionStatusText.AppendLine($"doing ... DocTemplate");
                 DocTemplate docTemplate = new DocTemplate();
                 docTemplate.Language = LanguageEnum.en;
                 docTemplate.TVType = TVTypeEnum.Subsector;
@@ -1369,7 +1357,7 @@ namespace ServicesRepopulateTestDBServices.Services
                 if (!await AddObject("DocTemplate", docTemplate)) return await Task.FromResult(false);
                 #endregion DocTemplate
                 #region Log
-                actionCommandDBService.ExecutionStatusText.AppendLine($"doing ... Log");
+                ActionCommandDBService.ExecutionStatusText.AppendLine($"doing ... Log");
                 Log log = new Log();
                 log.TableName = "TVItems";
                 log.ID = 20;
@@ -1380,7 +1368,7 @@ namespace ServicesRepopulateTestDBServices.Services
                 if (!await AddObject("Log", log)) return await Task.FromResult(false);
                 #endregion Log
                 #region MWQMLookupMPN
-                actionCommandDBService.ExecutionStatusText.AppendLine($"doing ... MWQMLookupMPN");
+                ActionCommandDBService.ExecutionStatusText.AppendLine($"doing ... MWQMLookupMPN");
                 List<MWQMLookupMPN> mwqmLookupMPNList = dbCSSPDB.MWQMLookupMPNs.AsNoTracking().Take(12).ToList();
                 foreach (MWQMLookupMPN mwqmLookupMPN2 in mwqmLookupMPNList)
                 {
@@ -1395,7 +1383,7 @@ namespace ServicesRepopulateTestDBServices.Services
                 }
                 #endregion MWQMLookupMPN
                 #region RainExceedance and RainExceedanceClimateSite
-                actionCommandDBService.ExecutionStatusText.AppendLine($"doing ... RainExceedance");
+                ActionCommandDBService.ExecutionStatusText.AppendLine($"doing ... RainExceedance");
 
                 TVItem tvItemRainExceedance = dbCSSPDB.TVItems.AsNoTracking().Where(c => c.TVItemID == 374858).FirstOrDefault();
                 tvItemEmail.ParentID = tvItemCanada.TVItemID;
@@ -1435,7 +1423,7 @@ namespace ServicesRepopulateTestDBServices.Services
                 if (!await AddObject("RainExceedanceClimateSite", rainExceedanceClimateSite)) return await Task.FromResult(false);
                 #endregion RainExceedance and RainExceedanceClimateSite
                 #region ResetPassword
-                actionCommandDBService.ExecutionStatusText.AppendLine($"doing ... ResetPassword");
+                ActionCommandDBService.ExecutionStatusText.AppendLine($"doing ... ResetPassword");
                 ResetPassword resetPassword = new ResetPassword();
                 resetPassword.Email = contactCharles.LoginEmail;
                 resetPassword.ExpireDate_Local = DateTime.Now;
@@ -1445,7 +1433,7 @@ namespace ServicesRepopulateTestDBServices.Services
                 if (!await AddObject("ResetPassword", resetPassword)) return await Task.FromResult(false);
                 #endregion ResetPassword
                 #region TideLocation
-                actionCommandDBService.ExecutionStatusText.AppendLine($"doing ... TideLocation");
+                ActionCommandDBService.ExecutionStatusText.AppendLine($"doing ... TideLocation");
                 foreach (int TideLocationSID in new List<int>() { 1815, 1812, 1810 })
                 {
                     TideLocation tideLocation = dbCSSPDB.TideLocations.AsNoTracking().Where(c => c.sid == TideLocationSID).FirstOrDefault();
@@ -1458,7 +1446,7 @@ namespace ServicesRepopulateTestDBServices.Services
                 }
                 #endregion TideLocation
                 #region TVItemStat
-                actionCommandDBService.ExecutionStatusText.AppendLine($"doing ... TVItemStat");
+                ActionCommandDBService.ExecutionStatusText.AppendLine($"doing ... TVItemStat");
                 TVItemStat tvItemStat = dbCSSPDB.TVItemStats.AsNoTracking().Where(c => c.TVItemID == RootTVItemID && c.TVType == TVTypeEnum.Municipality).FirstOrDefault();
 
                 if (tvItemStat != null)
@@ -1470,7 +1458,7 @@ namespace ServicesRepopulateTestDBServices.Services
                 }
                 #endregion TVItemStat
                 #region TVItemUserAuthorization
-                actionCommandDBService.ExecutionStatusText.AppendLine($"doing ... TVItemUserAuthorization");
+                ActionCommandDBService.ExecutionStatusText.AppendLine($"doing ... TVItemUserAuthorization");
                 TVItemUserAuthorization tvItemUserAuthorization = dbCSSPDB.TVItemUserAuthorizations.AsNoTracking().FirstOrDefault();
 
                 if (tvItemUserAuthorization != null)
@@ -1482,7 +1470,7 @@ namespace ServicesRepopulateTestDBServices.Services
                 }
                 #endregion TVItemUserAuthorization
                 #region TVTypeUserAuthorization
-                actionCommandDBService.ExecutionStatusText.AppendLine($"doing ... TVTypeUserAuthorization");
+                ActionCommandDBService.ExecutionStatusText.AppendLine($"doing ... TVTypeUserAuthorization");
                 TVTypeUserAuthorization tvTypeUserAuthorization = dbCSSPDB.TVTypeUserAuthorizations.AsNoTracking().FirstOrDefault();
 
                 if (tvTypeUserAuthorization != null)
@@ -1494,7 +1482,7 @@ namespace ServicesRepopulateTestDBServices.Services
                 }
                 #endregion TVTypeUserAuthorization
                 #region MWQMAnalysisReportParameter
-                actionCommandDBService.ExecutionStatusText.AppendLine($"doing ... MWQMAnalysisReportParameter");
+                ActionCommandDBService.ExecutionStatusText.AppendLine($"doing ... MWQMAnalysisReportParameter");
                 MWQMAnalysisReportParameter mwqmAnalysisReportParameter = new MWQMAnalysisReportParameter();
                 mwqmAnalysisReportParameter.SubsectorTVItemID = tvItemNB_06_020_002.TVItemID;
                 mwqmAnalysisReportParameter.AnalysisName = "Name of analysis report parameter";
@@ -1526,9 +1514,9 @@ namespace ServicesRepopulateTestDBServices.Services
             }
             catch (Exception ex)
             {
-                Console.WriteLine(actionCommandDBService.ErrorText.ToString());
+                Console.WriteLine(ActionCommandDBService.ErrorText.ToString());
                 Console.WriteLine("");
-                Console.WriteLine(actionCommandDBService.ExecutionStatusText.ToString());
+                Console.WriteLine(ActionCommandDBService.ExecutionStatusText.ToString());
                 Console.WriteLine("");
                 Console.WriteLine(ex.Message);
             }

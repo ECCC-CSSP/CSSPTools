@@ -1,23 +1,10 @@
-﻿using GenerateCodeBaseServices.Models;
-using GenerateCodeBaseServices.Services;
-using ActionCommandDBServices.Models;
-using ActionCommandDBServices.Services;
-using Microsoft.Data.SqlClient;
-using Microsoft.Extensions.Configuration;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Data;
-using System.Globalization;
-using System.IO;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
-using ValidateAppSettingsServices.Services;
-using ValidateAppSettingsServices.Models;
-using Microsoft.AspNetCore.Mvc;
+﻿using ActionCommandDBServices.Models;
 using CultureServices.Resources;
+using GenerateCodeBaseServices.Models;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace ModelsCompareDBFieldsAndCSSPModelsDLLPropServices.Services
 {
@@ -25,25 +12,25 @@ namespace ModelsCompareDBFieldsAndCSSPModelsDLLPropServices.Services
     {
         private async Task<bool> Generate()
         {
-            ActionResult<ActionCommand> actionActionCommand = await actionCommandDBService.GetOrCreate();
+            ActionResult<ActionCommand> actionActionCommand = await ActionCommandDBService.GetOrCreate();
 
             if (((ObjectResult)actionActionCommand.Result).StatusCode == 400)
             {
-                await actionCommandDBService.ConsoleWriteError("actionCommand == null");
+                await ActionCommandDBService.ConsoleWriteError("actionCommand == null");
                 return await Task.FromResult(false);
             }
 
-            CSSPDBConnectionString = configuration.GetValue<string>("CSSPDBConnectionString");
+            CSSPDBConnectionString = Config.GetValue<string>("CSSPDBConnectionString");
 
             if (CSSPDBConnectionString == null)
             {
-                await actionCommandDBService.ConsoleWriteError("CSSPDBConnectionString == null");
+                await ActionCommandDBService.ConsoleWriteError("CSSPDBConnectionString == null");
                 return await Task.FromResult(false);
             }
 
-            actionCommandDBService.ExecutionStatusText.AppendLine("Generate Starting ...");
-            actionCommandDBService.PercentCompleted = 10;
-            await actionCommandDBService.Update();
+            ActionCommandDBService.ExecutionStatusText.AppendLine("Generate Starting ...");
+            ActionCommandDBService.PercentCompleted = 10;
+            await ActionCommandDBService.Update();
 
             FillPublicList();
 
@@ -59,12 +46,12 @@ namespace ModelsCompareDBFieldsAndCSSPModelsDLLPropServices.Services
             // Compare DB and Compiled CSSPModels.DLL
             if (!await CompareDBAndCSSPModelsDLL(tableCSSPWebList, typePropList)) return await Task.FromResult(false);
 
-            actionCommandDBService.ExecutionStatusText.AppendLine("");
-            actionCommandDBService.ExecutionStatusText.AppendLine($"{ CultureServicesRes.Done } ...");
-            actionCommandDBService.ExecutionStatusText.AppendLine("");
-            actionCommandDBService.ExecutionStatusText.AppendLine("Generate Finished ...");
-            actionCommandDBService.PercentCompleted = 100;
-            await actionCommandDBService.Update();
+            ActionCommandDBService.ExecutionStatusText.AppendLine("");
+            ActionCommandDBService.ExecutionStatusText.AppendLine($"{ CultureServicesRes.Done } ...");
+            ActionCommandDBService.ExecutionStatusText.AppendLine("");
+            ActionCommandDBService.ExecutionStatusText.AppendLine("Generate Finished ...");
+            ActionCommandDBService.PercentCompleted = 100;
+            await ActionCommandDBService.Update();
 
             return await Task.FromResult(true);
         }

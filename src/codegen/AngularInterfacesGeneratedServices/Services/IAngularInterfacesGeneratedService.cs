@@ -9,6 +9,5 @@ namespace AngularInterfacesGeneratedServices.Services
     public interface IAngularInterfacesGeneratedService
     {
         Task<bool> Run(string[] args);
-        Task SetCulture(CultureInfo culture);
     }
 }

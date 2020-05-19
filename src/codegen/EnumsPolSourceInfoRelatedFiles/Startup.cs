@@ -1,146 +1,54 @@
-﻿using EnumsPolSourceInfoRelatedFilesServices.Services;
-using GenerateCodeBaseServices.Services;
-using ActionCommandDBServices.Models;
-using ActionCommandDBServices.Services;
-using Microsoft.EntityFrameworkCore;
+﻿using ConfigServices.Services;
+using EnumsPolSourceInfoRelatedFilesServices.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using PolSourceGroupingExcelFileReadServices.Services;
 using System;
-using System.IO;
-using ValidateAppSettingsServices.Services;
 using System.Threading.Tasks;
-using CultureServices.Resources;
 
 namespace EnumsPolSourceInfoRelatedFiles
 {
-    public class Startup
+    public class Startup : ConfigService
     {
         #region Variables
         #endregion Variables
 
         #region Properties
-        private IConfiguration configuration { get; set; }
-        private ServiceProvider provider { get; set; }
-        private IServiceCollection serviceCollection { get; set; }
-        private IEnumsPolSourceInfoRelatedFilesService enumsPolSourceInfoRelatedFilesService { get; set; }
-        private IActionCommandDBService actionCommandDBService { get; set; }
-        private string DBFileName { get; set; } = "DBFileName";
+        private IEnumsPolSourceInfoRelatedFilesService EnumsPolSourceInfoRelatedFilesService { get; set; }
         #endregion Properties
 
         #region Constructors
-        public Startup(IConfiguration configuration)
+        public Startup(IConfiguration configuration) : base(configuration)
         {
-            this.configuration = configuration;
         }
         #endregion Constructors
 
         #region Functions public
-        public async Task Run(string[] args)
+        public async Task<bool> Run(string[] args)
         {
-            if (!await ConfigureServices()) return;
+            if (!await ConfigureBaseServices()) return await Task.FromResult(false);
 
-            await enumsPolSourceInfoRelatedFilesService.Run(args);
+            Services.AddSingleton<IEnumsPolSourceInfoRelatedFilesService, EnumsPolSourceInfoRelatedFilesService>();
+
+            if (!await BuildServiceProvider())
+            {
+                await ActionCommandDBService.ConsoleWriteError("");
+                return await Task.FromResult(false);
+            }
+
+            EnumsPolSourceInfoRelatedFilesService = Provider.GetService<IEnumsPolSourceInfoRelatedFilesService>();
+            if (EnumsPolSourceInfoRelatedFilesService == null)
+            {
+                await ActionCommandDBService.ConsoleWriteError($"{ AppDomain.CurrentDomain.FriendlyName } EnumsGenerated_csService  == null");
+                return await Task.FromResult(false);
+            }
+
+            if (!await EnumsPolSourceInfoRelatedFilesService.Run(args)) return await Task.FromResult(false);
+
+            return await Task.FromResult(true);
         }
         #endregion Functions public
 
         #region Functions private
-        private async Task<bool> ConfigureServices()
-        {
-            serviceCollection = new ServiceCollection();
-
-            serviceCollection.AddSingleton<IConfiguration>(configuration);
-
-            if (!await ConfigureIActionCommandDBService()) return await Task.FromResult(false);
-
-            if (!await ConfigureIAllOtherServices()) return await Task.FromResult(false);
-
-            return await Task.FromResult(true);
-        }
-        private async Task<bool> ConfigureIActionCommandDBService()
-        {
-            try
-            {
-                serviceCollection.AddSingleton<IActionCommandDBService, ActionCommandDBService>();
-
-                string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
-                if (configuration.GetValue<string>(DBFileName) == null)
-                {
-                    Console.WriteLine($"{ String.Format(CultureServicesRes.CouldNotFindParameter_InAppSettingsJSON, DBFileName) }");
-                    return await Task.FromResult(false);
-                }
-
-                FileInfo fiDB = new FileInfo(configuration.GetValue<string>(DBFileName).Replace("{AppDataPath}", appDataPath));
-
-                if (!fiDB.Exists)
-                {
-                    Console.WriteLine($"{ String.Format(CultureServicesRes.CouldNotFindFile_, fiDB.FullName) }");
-                    return await Task.FromResult(false);
-                }
-
-                serviceCollection.AddDbContext<ActionCommandContext>(options =>
-                {
-                    options.UseSqlite($"DataSource={fiDB.FullName}");
-                });
-
-                provider = serviceCollection.BuildServiceProvider();
-                if (provider == null)
-                {
-                    Console.WriteLine($"{ AppDomain.CurrentDomain.FriendlyName } provider == null");
-                    return await Task.FromResult(false);
-                }
-
-                actionCommandDBService = provider.GetService<IActionCommandDBService>();
-                if (actionCommandDBService == null)
-                {
-                    Console.WriteLine($"{ AppDomain.CurrentDomain.FriendlyName } actionCommandDBService   == null");
-                    return await Task.FromResult(false);
-                }
-
-                actionCommandDBService.Action = configuration.GetValue<string>("Action");
-                actionCommandDBService.Command = configuration.GetValue<string>("Command");
-
-                await actionCommandDBService.Create();
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-                return await Task.FromResult(false);
-            }
-
-            return await Task.FromResult(true);
-        }
-        private async Task<bool> ConfigureIAllOtherServices()
-        {
-            try
-            {
-                serviceCollection.AddSingleton<IGenerateCodeBaseService, GenerateCodeBaseService>();
-                serviceCollection.AddSingleton<IValidateAppSettingsService, ValidateAppSettingsService>();
-                serviceCollection.AddSingleton<IPolSourceGroupingExcelFileReadService, PolSourceGroupingExcelFileReadService>();
-                serviceCollection.AddSingleton<IEnumsPolSourceInfoRelatedFilesService, EnumsPolSourceInfoRelatedFilesService>();
-
-                provider = serviceCollection.BuildServiceProvider();
-                if (provider == null)
-                {
-                    await actionCommandDBService.ConsoleWriteError($"{ AppDomain.CurrentDomain.FriendlyName } provider == null");
-                    return await Task.FromResult(false);
-                }
-
-                enumsPolSourceInfoRelatedFilesService = provider.GetService<IEnumsPolSourceInfoRelatedFilesService>();
-                if (enumsPolSourceInfoRelatedFilesService == null)
-                {
-                    await actionCommandDBService.ConsoleWriteError($"{ AppDomain.CurrentDomain.FriendlyName } enumsPolSourceInfoRelatedFilesService  == null");
-                    return await Task.FromResult(false);
-                }
-            }
-            catch (Exception ex)
-            {
-                await actionCommandDBService.ConsoleWriteError(ex.Message);
-                return await Task.FromResult(false);
-            }
-
-            return await Task.FromResult(true);
-        }
         #endregion Functions private
     }
 }

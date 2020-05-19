@@ -2,27 +2,27 @@
 using CultureServices.Resources;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using ModelsModelClassNameTestGenerated_csServices.Services;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Threading.Tasks;
-using WebAPIClassNameControllerTestGeneratedServices.Services;
 using Xunit;
 
-namespace WebAPIClassNameControllerTestGeneratedServices.Tests
+namespace ModelsModelClassNameTestGenerated_csServices.Tests
 {
-    public class WebAPIClassNameControllerTestGeneratedServicesTests : ConfigService
+    public class ModelsModelClassNameTestGenerated_csServiceTests : ConfigService
     {
         #region Variables
         #endregion Variables
 
         #region Properties
-        private IWebAPIClassNameControllerTestGeneratedService WebAPIClassNameControllerTestGeneratedService { get; set; }
+        private IModelsModelClassNameTestGenerated_csService ModelsModelClassNameTestGenerated_csService { get; set; }
         #endregion Properties
 
         #region Constructors
-        public WebAPIClassNameControllerTestGeneratedServicesTests()
+        public ModelsModelClassNameTestGenerated_csServiceTests()
         {
         }
         #endregion Constructors
@@ -32,18 +32,18 @@ namespace WebAPIClassNameControllerTestGeneratedServices.Tests
         [InlineData("en-CA")] // good
         [InlineData("fr-CA")] // good
         [InlineData("en-GB")] // good will default to en-CA
-        public async Task IWebAPIClassNameControllerTestGeneratedService_Run_Good_Test(string culture)
+        public async Task ModelsModelClassNameTestGenerated_csService_Run_Good_Test(string culture)
         {
             Assert.True(await Setup(new CultureInfo(culture), "appsettings.json"));
 
             Assert.NotNull(Config);
             Assert.NotNull(Services);
             Assert.NotNull(Provider);
-            Assert.NotNull(WebAPIClassNameControllerTestGeneratedService);
+            Assert.NotNull(ModelsModelClassNameTestGenerated_csService);
 
             string[] args = new List<string>() { culture }.ToArray();
 
-            Assert.True(await WebAPIClassNameControllerTestGeneratedService.Run(args));
+            Assert.True(await ModelsModelClassNameTestGenerated_csService.Run(args));
 
             // all culture other than "fr-CA" should default to "en-CA"
             if (culture != "fr-CA")
@@ -56,18 +56,18 @@ namespace WebAPIClassNameControllerTestGeneratedServices.Tests
         [Theory]
         [InlineData("en-CA")] // good
         [InlineData("fr-CA")] // good
-        public async Task IWebAPIClassNameControllerTestGeneratedService_Run_SomeFileMissing_Test(string culture)
+        public async Task ModelsModelClassNameTestGenerated_csService_Run_SomeFileMissing_Test(string culture)
         {
             Assert.True(await Setup(new CultureInfo(culture), "appsettings_bad1.json"));
 
             Assert.NotNull(Config);
             Assert.NotNull(Services);
             Assert.NotNull(Provider);
-            Assert.NotNull(WebAPIClassNameControllerTestGeneratedService);
+            Assert.NotNull(ModelsModelClassNameTestGenerated_csService);
 
             string[] args = new List<string>() { culture }.ToArray();
 
-            Assert.False(await WebAPIClassNameControllerTestGeneratedService.Run(args));
+            Assert.False(await ModelsModelClassNameTestGenerated_csService.Run(args));
         }
         #endregion Functions public
 
@@ -82,12 +82,12 @@ namespace WebAPIClassNameControllerTestGeneratedServices.Tests
             Services = new ServiceCollection();
             Assert.True(await ConfigureBaseServices());
 
-            Services.AddSingleton<IWebAPIClassNameControllerTestGeneratedService, WebAPIClassNameControllerTestGeneratedService>();
+            Services.AddSingleton<IModelsModelClassNameTestGenerated_csService, ModelsModelClassNameTestGenerated_csService>();
 
             Assert.True(await BuildServiceProvider());
 
-            WebAPIClassNameControllerTestGeneratedService = Provider.GetService<IWebAPIClassNameControllerTestGeneratedService>();
-            Assert.NotNull(WebAPIClassNameControllerTestGeneratedService);
+            ModelsModelClassNameTestGenerated_csService = Provider.GetService<IModelsModelClassNameTestGenerated_csService>();
+            Assert.NotNull(ModelsModelClassNameTestGenerated_csService);
 
             return await Task.FromResult(true);
         }

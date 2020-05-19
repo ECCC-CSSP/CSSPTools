@@ -5,7 +5,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -27,9 +26,9 @@ namespace EnumsPolSourceInfoRelatedFilesServices.Services
         {
             StringBuilder sb = new StringBuilder();
 
-            FileInfo fi = new FileInfo(configuration.GetValue<string>("PolSourceObsInfoEnumGenerated_cs"));
+            FileInfo fi = new FileInfo(Config.GetValue<string>("PolSourceObsInfoEnumGenerated_cs"));
 
-            List<string> groupList = (from c in polSourceGroupingExcelFileReadService.groupChoiceChildLevelList
+            List<string> groupList = (from c in PolSourceGroupingExcelFileReadService.groupChoiceChildLevelList
                                       select c.Group).Distinct().ToList();
 
             sb.AppendLine(@"/*");
@@ -44,7 +43,7 @@ namespace EnumsPolSourceInfoRelatedFilesServices.Services
             sb.AppendLine(@"    public enum PolSourceObsInfoEnum");
             sb.AppendLine(@"    {");
 
-            foreach (GroupChoiceChildLevel groupChoiceChildLevel in polSourceGroupingExcelFileReadService.groupChoiceChildLevelList)
+            foreach (GroupChoiceChildLevel groupChoiceChildLevel in PolSourceGroupingExcelFileReadService.groupChoiceChildLevelList)
             {
                 if (!string.IsNullOrWhiteSpace(groupChoiceChildLevel.Group))
                 {
@@ -71,14 +70,14 @@ namespace EnumsPolSourceInfoRelatedFilesServices.Services
             }
             catch (Exception ex)
             {
-                actionCommandDBService.ErrorText.AppendLine($"{ CultureServicesRes.Creating } [{ fi.FullName }] ...");
+                ActionCommandDBService.ErrorText.AppendLine($"{ CultureServicesRes.Creating } [{ fi.FullName }] ...");
                 string InnerException = (ex.InnerException != null ? $"Inner: { ex.InnerException.Message }" : "");
-                actionCommandDBService.ErrorText.AppendLine($"{ CultureServicesRes.Error }: { ex.Message }{ InnerException  }");
+                ActionCommandDBService.ErrorText.AppendLine($"{ CultureServicesRes.Error }: { ex.Message }{ InnerException  }");
 
                 return await Task.FromResult(false);
             }
 
-            actionCommandDBService.ExecutionStatusText.AppendLine($"{ CultureServicesRes.Created }: { fi.FullName }");
+            ActionCommandDBService.ExecutionStatusText.AppendLine($"{ CultureServicesRes.Created }: { fi.FullName }");
 
             return await Task.FromResult(true);
         }

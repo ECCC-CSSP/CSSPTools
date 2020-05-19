@@ -10,6 +10,5 @@ namespace EnumsGenerated_csServices.Services
     public interface IEnumsGenerated_csService
     {
         Task<bool> Run(string[] args);
-        Task SetCulture(CultureInfo culture);
     }
 }

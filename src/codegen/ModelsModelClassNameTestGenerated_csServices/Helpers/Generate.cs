@@ -1,20 +1,14 @@
-﻿using GenerateCodeBaseServices.Models;
-using GenerateCodeBaseServices.Services;
-using ActionCommandDBServices.Models;
-using ActionCommandDBServices.Services;
+﻿using ActionCommandDBServices.Models;
+using CultureServices.Resources;
+using GenerateCodeBaseServices.Models;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using System;
-using System.Collections.Generic;
-using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
-using ValidateAppSettingsServices.Services;
-using ValidateAppSettingsServices.Models;
-using Microsoft.AspNetCore.Mvc;
-using CultureServices.Resources;
 
 namespace ModelsModelClassNameTestGenerated_csServices.Services
 {
@@ -22,19 +16,19 @@ namespace ModelsModelClassNameTestGenerated_csServices.Services
     {
         private async Task<bool> Generate()
         {
-            ActionResult<ActionCommand> actionActionCommand = await actionCommandDBService.GetOrCreate();
+            ActionResult<ActionCommand> actionActionCommand = await ActionCommandDBService.GetOrCreate();
 
             if (((ObjectResult)actionActionCommand.Result).StatusCode == 400)
             {
-                await actionCommandDBService.ConsoleWriteError("actionCommand == null");
+                await ActionCommandDBService.ConsoleWriteError("actionCommand == null");
                 return await Task.FromResult(false);
             }
 
-            actionCommandDBService.ExecutionStatusText.AppendLine("Generate Starting ...");
-            actionCommandDBService.PercentCompleted = 10;
-            await actionCommandDBService.Update();
+            ActionCommandDBService.ExecutionStatusText.AppendLine("Generate Starting ...");
+            ActionCommandDBService.PercentCompleted = 10;
+            await ActionCommandDBService.Update();
 
-            FileInfo fiDLL = new FileInfo(configuration.GetValue<string>("CSSPModels"));
+            FileInfo fiDLL = new FileInfo(Config.GetValue<string>("CSSPModels"));
 
             var importAssembly = Assembly.LoadFile(fiDLL.FullName);
             Type[] types = importAssembly.GetTypes();
@@ -43,9 +37,9 @@ namespace ModelsModelClassNameTestGenerated_csServices.Services
                 bool ClassNotMapped = false;
                 StringBuilder sb = new StringBuilder();
 
-                //actionCommandDBService.ExecutionStatusText.AppendLine($"{ type.Name }");
+                //ActionCommandDBService.ExecutionStatusText.AppendLine($"{ type.Name }");
 
-                if (generateCodeBaseService.SkipType(type))
+                if (GenerateCodeBaseService.SkipType(type))
                 {
                     continue;
                 }
@@ -274,9 +268,9 @@ namespace ModelsModelClassNameTestGenerated_csServices.Services
                     if (!prop.GetGetMethod().IsVirtual && !prop.Name.Contains("ValidationResults"))
                     {
                         CSSPProp csspProp = new CSSPProp();
-                        if (!generateCodeBaseService.FillCSSPProp(prop, csspProp, currentType))
+                        if (!GenerateCodeBaseService.FillCSSPProp(prop, csspProp, currentType))
                         {
-                            //actionCommandDBService.ErrorText.AppendLine($"{ string.Format(AppRes.ErrorWhileCreatingCode_, csspProp.CSSPError) }");
+                            //ActionCommandDBService.ErrorText.AppendLine($"{ string.Format(AppRes.ErrorWhileCreatingCode_, csspProp.CSSPError) }");
                             return await Task.FromResult(false);
                         }
                         switch (csspProp.PropType)
@@ -428,9 +422,9 @@ namespace ModelsModelClassNameTestGenerated_csServices.Services
                     if (prop.GetGetMethod().IsVirtual)
                     {
                         CSSPProp csspProp = new CSSPProp();
-                        if (!generateCodeBaseService.FillCSSPProp(prop, csspProp, currentType))
+                        if (!GenerateCodeBaseService.FillCSSPProp(prop, csspProp, currentType))
                         {
-                            //actionCommandDBService.ErrorText.AppendLine($"{ string.Format(AppRes.ErrorWhileCreatingCode_, csspProp.CSSPError) }");
+                            //ActionCommandDBService.ErrorText.AppendLine($"{ string.Format(AppRes.ErrorWhileCreatingCode_, csspProp.CSSPError) }");
                             return await Task.FromResult(false);
                         }
                         if (csspProp.IsCollection)
@@ -457,9 +451,9 @@ namespace ModelsModelClassNameTestGenerated_csServices.Services
                     if (prop.Name.Contains("ValidationResults"))
                     {
                         CSSPProp csspProp = new CSSPProp();
-                        if (!generateCodeBaseService.FillCSSPProp(prop, csspProp, currentType))
+                        if (!GenerateCodeBaseService.FillCSSPProp(prop, csspProp, currentType))
                         {
-                            //actionCommandDBService.ErrorText.AppendLine($"{ string.Format(AppRes.ErrorWhileCreatingCode_, csspProp.CSSPError) }");
+                            //ActionCommandDBService.ErrorText.AppendLine($"{ string.Format(AppRes.ErrorWhileCreatingCode_, csspProp.CSSPError) }");
                             return await Task.FromResult(false);
                         }
                         sb.AppendLine($@"               IEnumerable<ValidationResult> val{ count.ToString() } = new List<ValidationResult>() {{ new ValidationResult(""First CSSPError Message"") }}.AsEnumerable();");
@@ -474,21 +468,21 @@ namespace ModelsModelClassNameTestGenerated_csServices.Services
                 sb.AppendLine(@"    }");
                 sb.AppendLine(@"}");
 
-                FileInfo fiOutput = new FileInfo(configuration.GetValue<string>("TypeNameTestGenerated").Replace("{TypeName}", type.Name));
+                FileInfo fiOutput = new FileInfo(Config.GetValue<string>("TypeNameTestGenerated").Replace("{TypeName}", type.Name));
 
                 using (StreamWriter sw = fiOutput.CreateText())
                 {
                     sw.Write(sb.ToString());
                 }
-                actionCommandDBService.ExecutionStatusText.AppendLine($"{ string.Format(CultureServicesRes.Created_, fiOutput.FullName) }");
+                ActionCommandDBService.ExecutionStatusText.AppendLine($"{ string.Format(CultureServicesRes.Created_, fiOutput.FullName) }");
             }
 
-            actionCommandDBService.ExecutionStatusText.AppendLine("");
-            actionCommandDBService.ExecutionStatusText.AppendLine($"{ CultureServicesRes.Done } ...");
-            actionCommandDBService.ExecutionStatusText.AppendLine("");
-            actionCommandDBService.ExecutionStatusText.AppendLine("Generate Finished ...");
-            actionCommandDBService.PercentCompleted = 100;
-            await actionCommandDBService.Update();
+            ActionCommandDBService.ExecutionStatusText.AppendLine("");
+            ActionCommandDBService.ExecutionStatusText.AppendLine($"{ CultureServicesRes.Done } ...");
+            ActionCommandDBService.ExecutionStatusText.AppendLine("");
+            ActionCommandDBService.ExecutionStatusText.AppendLine("Generate Finished ...");
+            ActionCommandDBService.PercentCompleted = 100;
+            await ActionCommandDBService.Update();
 
             return await Task.FromResult(true);
         }

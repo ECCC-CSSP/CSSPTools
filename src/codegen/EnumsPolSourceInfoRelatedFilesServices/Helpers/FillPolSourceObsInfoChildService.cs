@@ -5,7 +5,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -27,9 +26,9 @@ namespace EnumsPolSourceInfoRelatedFilesServices.Services
         {
             StringBuilder sb = new StringBuilder();
 
-            FileInfo fi = new FileInfo(configuration.GetValue<string>("FillPolSourceObsInfoChildServiceGenerated_cs"));
+            FileInfo fi = new FileInfo(Config.GetValue<string>("FillPolSourceObsInfoChildServiceGenerated_cs"));
 
-            List<string> groupList = (from c in polSourceGroupingExcelFileReadService.groupChoiceChildLevelList
+            List<string> groupList = (from c in PolSourceGroupingExcelFileReadService.groupChoiceChildLevelList
                                       select c.Group).Distinct().ToList();
 
             sb.AppendLine(@"/*");
@@ -65,7 +64,7 @@ namespace EnumsPolSourceInfoRelatedFilesServices.Services
             sb.AppendLine(@"        public void FillPolSourceObsInfoChild(List<PolSourceObsInfoChild> polSourceObsInfoChildList)");
             sb.AppendLine(@"        {");
             sb.AppendLine(@"            polSourceObsInfoChildList.Clear();");
-            foreach (GroupChoiceChildLevel groupChoiceChildLevel in polSourceGroupingExcelFileReadService.groupChoiceChildLevelList.Where(c => c.Group.Substring(c.Group.Length - 5) == "Start" && c.Choice == "").Distinct().ToList())
+            foreach (GroupChoiceChildLevel groupChoiceChildLevel in PolSourceGroupingExcelFileReadService.groupChoiceChildLevelList.Where(c => c.Group.Substring(c.Group.Length - 5) == "Start" && c.Choice == "").Distinct().ToList())
             {
                 sb.AppendLine(@"            polSourceObsInfoChildList.Add(new PolSourceObsInfoChild()");
                 sb.AppendLine(@"            {");
@@ -73,7 +72,7 @@ namespace EnumsPolSourceInfoRelatedFilesServices.Services
                 sb.AppendLine($@"                PolSourceObsInfoChildStart = PolSourceObsInfoEnum.{ groupChoiceChildLevel.Group.ToString() },");
                 sb.AppendLine(@"            });");
             }
-            foreach (GroupChoiceChildLevel groupChoiceChildLevel in polSourceGroupingExcelFileReadService.groupChoiceChildLevelList.Where(c => c.Child != ""))
+            foreach (GroupChoiceChildLevel groupChoiceChildLevel in PolSourceGroupingExcelFileReadService.groupChoiceChildLevelList.Where(c => c.Child != ""))
             {
                 sb.AppendLine(@"            polSourceObsInfoChildList.Add(new PolSourceObsInfoChild()");
                 sb.AppendLine(@"            {");
@@ -95,16 +94,16 @@ namespace EnumsPolSourceInfoRelatedFilesServices.Services
             }
             catch (Exception ex)
             {
-                actionCommandDBService.ErrorText.AppendLine($"{ CultureServicesRes.Creating } [{ fi.FullName }] ...");
+                ActionCommandDBService.ErrorText.AppendLine($"{ CultureServicesRes.Creating } [{ fi.FullName }] ...");
                 string InnerException = (ex.InnerException != null ? $"Inner: { ex.InnerException.Message }" : "");
-                actionCommandDBService.ErrorText.AppendLine($"{ CultureServicesRes.Error }: { ex.Message }{ InnerException  }");
+                ActionCommandDBService.ErrorText.AppendLine($"{ CultureServicesRes.Error }: { ex.Message }{ InnerException  }");
 
                 return await Task.FromResult(false);
             }
 
-            actionCommandDBService.ExecutionStatusText.AppendLine($"{ CultureServicesRes.Created }: { fi.FullName }");
-            actionCommandDBService.PercentCompleted = 10;
-            await actionCommandDBService.Update();
+            ActionCommandDBService.ExecutionStatusText.AppendLine($"{ CultureServicesRes.Created }: { fi.FullName }");
+            ActionCommandDBService.PercentCompleted = 10;
+            await ActionCommandDBService.Update();
 
             return await Task.FromResult(false);
 

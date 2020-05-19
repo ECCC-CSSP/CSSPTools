@@ -1,30 +1,19 @@
-﻿using CSSPEnums;
-using CSSPModels;
+﻿using ActionCommandDBServices.Models;
+using BaseCodeGenerateServices.Services;
+using CultureServices.Resources;
 using GenerateCodeBaseServices.Models;
-using GenerateCodeBaseServices.Services;
-using ActionCommandDBServices.Models;
-using ActionCommandDBServices.Services;
-using Microsoft.Data.SqlClient;
-using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Data;
-using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
-using ValidateAppSettingsServices.Services;
-using ValidateAppSettingsServices.Models;
-using Microsoft.AspNetCore.Mvc;
-using CultureServices.Resources;
 
 namespace AngularInterfacesGeneratedServices.Services
 {
-    public partial class AngularInterfacesGeneratedService : IAngularInterfacesGeneratedService
+    public partial class AngularInterfacesGeneratedService : BaseCodeGenerateService, IAngularInterfacesGeneratedService
     {
         private void CreateTypeFile(DLLTypeInfo dllTypeInfoModels, List<DLLTypeInfo> DLLTypeInfoCSSPModelsList)
         {
@@ -307,11 +296,11 @@ namespace AngularInterfacesGeneratedServices.Services
 
             sb.AppendLine(@"}");
 
-            FileInfo fiOutputGen = new FileInfo(configuration.GetValue<string>("InterfaceFileName").Replace("{TypeName}", dllTypeInfoModels.Name.ToLower()));
+            FileInfo fiOutputGen = new FileInfo(Config.GetValue<string>("InterfaceFileName").Replace("{TypeName}", dllTypeInfoModels.Name.ToLower()));
             using (StreamWriter sw2 = fiOutputGen.CreateText())
             {
                 sw2.Write(sb.ToString());
-                actionCommandDBService.ExecutionStatusText.AppendLine($"{ string.Format(CultureServicesRes.Created_, fiOutputGen.FullName) }");
+                ActionCommandDBService.ExecutionStatusText.AppendLine($"{ string.Format(CultureServicesRes.Created_, fiOutputGen.FullName) }");
             }
         }
     }

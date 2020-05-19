@@ -1,24 +1,9 @@
-﻿using ExecuteDotNetCommandServices.Models;
-using GenerateCodeBaseServices.Models;
-using GenerateCodeBaseServices.Services;
-using ActionCommandDBServices.Models;
-using ActionCommandDBServices.Services;
-using Microsoft.EntityFrameworkCore;
+﻿using CultureServices.Resources;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Globalization;
 using System.IO;
-using System.Linq;
-using System.Reflection;
-using System.Text;
 using System.Threading.Tasks;
-using ValidateAppSettingsServices.Services;
-using ValidateAppSettingsServices.Models;
-using Microsoft.AspNetCore.Mvc;
-using CultureServices.Resources;
 
 namespace ExecuteDotNetCommandServices.Services
 {
@@ -26,15 +11,15 @@ namespace ExecuteDotNetCommandServices.Services
     {
         private async Task<bool> ExecuteDotNet()
         {
-            actionCommandDBService.ExecutionStatusText.AppendLine("ExecuteDotNet Starting...");
-            actionCommandDBService.ExecutionStatusText.AppendLine("");
-            actionCommandDBService.ExecutionStatusText.AppendLine($"args = { dotNetCommand.CultureName }  { dotNetCommand.Action } { dotNetCommand.Command }");
-            actionCommandDBService.ExecutionStatusText.AppendLine("");
-            actionCommandDBService.PercentCompleted = 0;
-            await actionCommandDBService.Update();
+            ActionCommandDBService.ExecutionStatusText.AppendLine("ExecuteDotNet Starting...");
+            ActionCommandDBService.ExecutionStatusText.AppendLine("");
+            ActionCommandDBService.ExecutionStatusText.AppendLine($"args = { dotNetCommand.CultureName }  { dotNetCommand.Action } { dotNetCommand.Command }");
+            ActionCommandDBService.ExecutionStatusText.AppendLine("");
+            ActionCommandDBService.PercentCompleted = 0;
+            await ActionCommandDBService.Update();
 
 
-            string FileName = configuration.GetValue<string>($"{ dotNetCommand.Action }:{ dotNetCommand.Command }");
+            string FileName = Config.GetValue<string>($"{ dotNetCommand.Action }:{ dotNetCommand.Command }");
 
             string LogFileName = "DotNetCommandLog.txt";
             FileInfo fi = new FileInfo(FileName);
@@ -42,14 +27,14 @@ namespace ExecuteDotNetCommandServices.Services
 
             if (!fi.Exists)
             {
-                actionCommandDBService.ErrorText.AppendLine($"{ string.Format(CultureServicesRes.CouldNotFindSolutionFile_ToCompile, fi.FullName) }");
+                ActionCommandDBService.ErrorText.AppendLine($"{ string.Format(CultureServicesRes.CouldNotFindSolutionFile_ToCompile, fi.FullName) }");
                 return await Task.FromResult(false);
             }
 
             DirectoryInfo di = fi.Directory;
             if (!di.Exists)
             {
-                actionCommandDBService.ErrorText.AppendLine($"{ string.Format(CultureServicesRes.CouldNotFindDirectoryOfSolutionFile_, fi.Directory) }");
+                ActionCommandDBService.ErrorText.AppendLine($"{ string.Format(CultureServicesRes.CouldNotFindDirectoryOfSolutionFile_, fi.Directory) }");
                 return await Task.FromResult(false);
             }
 
@@ -69,10 +54,10 @@ namespace ExecuteDotNetCommandServices.Services
 
             Directory.SetCurrentDirectory(currentDirectory);
 
-            if (process.ExitCode != 0)
+            if (process.ExitCode == 0)
             {
-                actionCommandDBService.ErrorText.AppendLine("");
-                actionCommandDBService.ErrorText.AppendLine($"{ string.Format(CultureServicesRes.ErrorWhileRunningCommand_UnderDirectory_, command + " " + arg, di.FullName) }");
+                ActionCommandDBService.ErrorText.AppendLine("");
+                ActionCommandDBService.ErrorText.AppendLine($"{ string.Format(CultureServicesRes.ErrorWhileRunningCommand_UnderDirectory_, command + " " + arg, di.FullName) }");
                 return await Task.FromResult(false);
             }
 
@@ -82,7 +67,7 @@ namespace ExecuteDotNetCommandServices.Services
 
                 if (!fiLog.Exists)
                 {
-                    actionCommandDBService.ErrorText.AppendLine($"{ string.Format(CultureServicesRes.CouldNotFindFile_, fiLog.FullName) }");
+                    ActionCommandDBService.ErrorText.AppendLine($"{ string.Format(CultureServicesRes.CouldNotFindFile_, fiLog.FullName) }");
                     return await Task.FromResult(false);
                 }
 
@@ -90,9 +75,9 @@ namespace ExecuteDotNetCommandServices.Services
                 string logText = sr.ReadToEnd();
                 sr.Close();
 
-                actionCommandDBService.ExecutionStatusText.AppendLine($"");
-                actionCommandDBService.ExecutionStatusText.AppendLine($"{ logText }");
-                actionCommandDBService.ExecutionStatusText.AppendLine($"");
+                ActionCommandDBService.ExecutionStatusText.AppendLine($"");
+                ActionCommandDBService.ExecutionStatusText.AppendLine($"{ logText }");
+                ActionCommandDBService.ExecutionStatusText.AppendLine($"");
 
                 try
                 {
@@ -100,12 +85,12 @@ namespace ExecuteDotNetCommandServices.Services
                 }
                 catch (Exception ex)
                 {
-                    actionCommandDBService.ErrorText.AppendLine($"{ ex.Message }");
+                    ActionCommandDBService.ErrorText.AppendLine($"{ ex.Message }");
                     return await Task.FromResult(false);
                 }
             }
 
-            actionCommandDBService.ExecutionStatusText.AppendLine("ExecuteDotNet Finished...");
+            ActionCommandDBService.ExecutionStatusText.AppendLine("ExecuteDotNet Finished...");
 
             return await Task.FromResult(true);
         }

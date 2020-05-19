@@ -1,22 +1,10 @@
 ﻿using GenerateCodeBaseServices.Models;
-using GenerateCodeBaseServices.Services;
-using ActionCommandDBServices.Models;
-using ActionCommandDBServices.Services;
-using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Data;
-using System.Globalization;
 using System.IO;
-using System.Linq;
 using System.Reflection;
-using System.Text;
 using System.Threading.Tasks;
-using ValidateAppSettingsServices.Services;
-using ValidateAppSettingsServices.Models;
-using Microsoft.AspNetCore.Mvc;
 
 namespace ModelsCompareDBFieldsAndCSSPModelsDLLPropServices.Services
 {
@@ -25,7 +13,7 @@ namespace ModelsCompareDBFieldsAndCSSPModelsDLLPropServices.Services
         private async Task<bool> LoadCSSPModelsDLLInfo(List<TypeProp> typePropList)
         {
 
-            FileInfo fiDLL = new FileInfo(configuration.GetValue<string>("CSSPModels"));
+            FileInfo fiDLL = new FileInfo(Config.GetValue<string>("CSSPModels"));
 
             try
             {
@@ -46,7 +34,7 @@ namespace ModelsCompareDBFieldsAndCSSPModelsDLLPropServices.Services
                     //{
                     //    int seflij = 34;
                     //}
-                    if (generateCodeBaseService.SkipType(type))
+                    if (GenerateCodeBaseService.SkipType(type))
                     {
                         continue;
                     }
@@ -64,9 +52,9 @@ namespace ModelsCompareDBFieldsAndCSSPModelsDLLPropServices.Services
                         }
 
                         CSSPProp csspProp = new CSSPProp();
-                        if (!generateCodeBaseService.FillCSSPProp(propertyInfo, csspProp, type))
+                        if (!GenerateCodeBaseService.FillCSSPProp(propertyInfo, csspProp, type))
                         {
-                            //actionCommandDBService.ErrorText.AppendLine($"{ string.Format(AppRes.ErrorWhileCreatingCode_, csspProp.CSSPError) }");
+                            //ActionCommandDBService.ErrorText.AppendLine($"{ string.Format(AppRes.ErrorWhileCreatingCode_, csspProp.CSSPError) }");
                             return await Task.FromResult(false);
                         }
 
@@ -79,7 +67,7 @@ namespace ModelsCompareDBFieldsAndCSSPModelsDLLPropServices.Services
             }
             catch (Exception ex)
             {
-                actionCommandDBService.ErrorText.AppendLine(ex.Message);
+                ActionCommandDBService.ErrorText.AppendLine(ex.Message);
                 return await Task.FromResult(false);
             }
 

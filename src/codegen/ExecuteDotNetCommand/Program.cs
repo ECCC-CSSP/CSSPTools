@@ -1,16 +1,7 @@
-﻿using ExecuteDotNetCommandServices.Models;
-using ExecuteDotNetCommandServices.Services;
-using ActionCommandDBServices.Models;
-using ActionCommandDBServices.Services;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.Configuration;
 using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Globalization;
 using System.IO;
-using System.Linq;
+using System.Threading.Tasks;
 
 namespace ExecuteDotNetCommand
 {
@@ -19,11 +10,8 @@ namespace ExecuteDotNetCommand
         #region Variables
         #endregion Variables
 
-        #region Properties
-        #endregion Properties
-
         #region Entry
-        static void Main(string[] args)
+        static async Task<int> Main(string[] args)
         {
             IConfiguration Configuration = new ConfigurationBuilder()
                .SetBasePath(Directory.GetParent(AppContext.BaseDirectory).FullName)
@@ -32,11 +20,15 @@ namespace ExecuteDotNetCommand
 
             Startup startup = new Startup(Configuration);
 
-            startup.Run(args).GetAwaiter().GetResult();
+            if (!await startup.Run(args)) return await Task.FromResult(0);
+
+            return await Task.FromResult(1);
         }
         #endregion Entry
 
         #region Functions private
         #endregion Functions private
+
+
     }
 }

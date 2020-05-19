@@ -10,6 +10,5 @@ namespace EnumsPolSourceInfoRelatedFilesServices.Services
     public interface IEnumsPolSourceInfoRelatedFilesService
     {
         Task<bool> Run(string[] args);
-        Task SetCulture(CultureInfo culture);
     }
 }

@@ -1,24 +1,10 @@
-﻿using CSSPEnums;
-using CSSPModels;
-using GenerateCodeBaseServices.Models;
-using GenerateCodeBaseServices.Services;
-using ActionCommandDBServices.Models;
-using ActionCommandDBServices.Services;
-using Microsoft.Data.SqlClient;
+﻿using CSSPModels;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Globalization;
-using System.IO;
 using System.Linq;
-using System.Reflection;
-using System.Text;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using ValidateAppSettingsServices.Services;
-using ValidateAppSettingsServices.Models;
 
 namespace ServicesRepopulateTestDBServices.Services
 {
@@ -40,7 +26,7 @@ namespace ServicesRepopulateTestDBServices.Services
                 mapInfo.MapInfoID = 0;
                 if (mapInfo.ValidationResults.Count() > 0)
                 {
-                    actionCommandDBService.ErrorText.AppendLine(mapInfo.ValidationResults.First().ErrorMessage);
+                    ActionCommandDBService.ErrorText.AppendLine(mapInfo.ValidationResults.First().ErrorMessage);
                     return await Task.FromResult(false);
                 }
                 try
@@ -51,7 +37,7 @@ namespace ServicesRepopulateTestDBServices.Services
                 catch (Exception ex)
                 {
                     string InnerExceptiion = (ex.InnerException != null ? $" Inner: [{ ex.InnerException.Message }]" : "");
-                    actionCommandDBService.ErrorText.AppendLine($"{ ex.Message }{ InnerExceptiion }");
+                    ActionCommandDBService.ErrorText.AppendLine($"{ ex.Message }{ InnerExceptiion }");
                     return await Task.FromResult(false);
                 }
 
@@ -67,7 +53,7 @@ namespace ServicesRepopulateTestDBServices.Services
 
                     if (mapInfoPoint.ValidationResults.Count() > 0)
                     {
-                        actionCommandDBService.ErrorText.AppendLine(mapInfoPoint.ValidationResults.First().ErrorMessage);
+                        ActionCommandDBService.ErrorText.AppendLine(mapInfoPoint.ValidationResults.First().ErrorMessage);
                         return await Task.FromResult(false);
                     }
                     try
@@ -78,7 +64,7 @@ namespace ServicesRepopulateTestDBServices.Services
                     catch (Exception ex)
                     {
                         string InnerExceptiion = (ex.InnerException != null ? $" Inner: [{ ex.InnerException.Message }]" : "");
-                        actionCommandDBService.ErrorText.AppendLine($"{ ex.Message }{ InnerExceptiion }");
+                        ActionCommandDBService.ErrorText.AppendLine($"{ ex.Message }{ InnerExceptiion }");
                         return await Task.FromResult(false);
                     }
                 }

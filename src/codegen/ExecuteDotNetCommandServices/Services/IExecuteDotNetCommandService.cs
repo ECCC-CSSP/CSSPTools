@@ -12,6 +12,5 @@ namespace ExecuteDotNetCommandServices.Services
     public interface IExecuteDotNetCommandService
     {
         Task<bool> Run(string[] args);
-        Task SetCulture(CultureInfo culture);
     }
 }

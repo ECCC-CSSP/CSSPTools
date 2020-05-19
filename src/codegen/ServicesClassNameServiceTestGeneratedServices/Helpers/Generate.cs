@@ -1,25 +1,15 @@
-﻿using CSSPEnums;
-using CSSPModels;
+﻿using ActionCommandDBServices.Models;
+using CultureServices.Resources;
 using GenerateCodeBaseServices.Models;
-using GenerateCodeBaseServices.Services;
-using ActionCommandDBServices.Models;
-using ActionCommandDBServices.Services;
-using Microsoft.Data.SqlClient;
-using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
-using System.Data;
-using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using ValidateAppSettingsServices.Services;
-using ValidateAppSettingsServices.Models;
-using CultureServices.Resources;
 
 namespace ServicesClassNameServiceTestGeneratedServices.Services
 {
@@ -27,22 +17,22 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
     {
         private async Task<bool> Generate()
         {
-            ActionResult<ActionCommand> actionActionCommand = await actionCommandDBService.GetOrCreate();
+            ActionResult<ActionCommand> actionActionCommand = await ActionCommandDBService.GetOrCreate();
 
             if (((ObjectResult)actionActionCommand.Result).StatusCode == 400)
             {
-                await actionCommandDBService.ConsoleWriteError("actionCommand == null");
+                await ActionCommandDBService.ConsoleWriteError("actionCommand == null");
                 return await Task.FromResult(false);
             }
 
-            actionCommandDBService.ExecutionStatusText.AppendLine("Generate Starting ...");
-            actionCommandDBService.PercentCompleted = 10;
-            await actionCommandDBService.Update();
+            ActionCommandDBService.ExecutionStatusText.AppendLine("Generate Starting ...");
+            ActionCommandDBService.PercentCompleted = 10;
+            await ActionCommandDBService.Update();
 
-            string CSSPDBConnectionString = configuration.GetValue<string>("CSSPDBConnectionString");
-            string TestDBConnectionString = configuration.GetValue<string>("TestDBConnectionString");
+            string CSSPDBConnectionString = Config.GetValue<string>("CSSPDBConnectionString");
+            string TestDBConnectionString = Config.GetValue<string>("TestDBConnectionString");
 
-            FileInfo fiDLL = new FileInfo(configuration.GetValue<string>("CSSPModels"));
+            FileInfo fiDLL = new FileInfo(Config.GetValue<string>("CSSPModels"));
 
             var importAssembly = Assembly.LoadFile(fiDLL.FullName);
             List<Type> types = importAssembly.GetTypes().ToList();
@@ -67,7 +57,7 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
                     TypeNameLower = $"{ type.Name.Substring(0, 1).ToLower() }{ type.Name.Substring(1) }";
                 }
 
-                if (generateCodeBaseService.SkipType(type))
+                if (GenerateCodeBaseService.SkipType(type))
                 {
                     continue;
                 }
@@ -164,7 +154,7 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
                     foreach (PropertyInfo prop in type.GetProperties())
                     {
                         CSSPProp csspProp = new CSSPProp();
-                        if (!generateCodeBaseService.FillCSSPProp(prop, csspProp, type))
+                        if (!GenerateCodeBaseService.FillCSSPProp(prop, csspProp, type))
                         {
                             return await Task.FromResult(false);
                         }
@@ -232,7 +222,7 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
                         foreach (PropertyInfo prop in currentType.GetProperties())
                         {
                             CSSPProp csspProp = new CSSPProp();
-                            if (!generateCodeBaseService.FillCSSPProp(prop, csspProp, currentType))
+                            if (!GenerateCodeBaseService.FillCSSPProp(prop, csspProp, currentType))
                             {
                                 return await Task.FromResult(false);
                             }
@@ -288,7 +278,7 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
                 foreach (PropertyInfo prop in type.GetProperties())
                 {
                     CSSPProp csspProp = new CSSPProp();
-                    if (!generateCodeBaseService.FillCSSPProp(prop, csspProp, type))
+                    if (!GenerateCodeBaseService.FillCSSPProp(prop, csspProp, type))
                     {
                         return await Task.FromResult(false);
                     }
@@ -308,21 +298,21 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
                 sb.AppendLine(@"    }");
                 sb.AppendLine(@"}");
 
-                FileInfo fiOutputGen = new FileInfo(configuration.GetValue<string>("ClassNameFile").Replace("{TypeName}", TypeName));
+                FileInfo fiOutputGen = new FileInfo(Config.GetValue<string>("ClassNameFile").Replace("{TypeName}", TypeName));
                 using (StreamWriter sw2 = fiOutputGen.CreateText())
                 {
                     sw2.Write(sb.ToString());
                 }
 
-                actionCommandDBService.ExecutionStatusText.AppendLine($"Created [{ fiOutputGen.FullName }] ...");
+                ActionCommandDBService.ExecutionStatusText.AppendLine($"Created [{ fiOutputGen.FullName }] ...");
             }
 
-            actionCommandDBService.ExecutionStatusText.AppendLine("");
-            actionCommandDBService.ExecutionStatusText.AppendLine($"{ CultureServicesRes.Done } ...");
-            actionCommandDBService.ExecutionStatusText.AppendLine("");
-            actionCommandDBService.ExecutionStatusText.AppendLine("Generate Finished ...");
-            actionCommandDBService.PercentCompleted = 100;
-            await actionCommandDBService.Update();
+            ActionCommandDBService.ExecutionStatusText.AppendLine("");
+            ActionCommandDBService.ExecutionStatusText.AppendLine($"{ CultureServicesRes.Done } ...");
+            ActionCommandDBService.ExecutionStatusText.AppendLine("");
+            ActionCommandDBService.ExecutionStatusText.AppendLine("Generate Finished ...");
+            ActionCommandDBService.PercentCompleted = 100;
+            await ActionCommandDBService.Update();
 
             return await Task.FromResult(true);
         }

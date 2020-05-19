@@ -1,26 +1,10 @@
-﻿using CSSPEnums;
-using CSSPModels;
+﻿using CultureServices.Resources;
 using GenerateCodeBaseServices.Models;
-using GenerateCodeBaseServices.Services;
-using ActionCommandDBServices.Models;
-using ActionCommandDBServices.Services;
-using Microsoft.Data.SqlClient;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Data;
-using System.Globalization;
 using System.IO;
-using System.Linq;
-using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using ValidateAppSettingsServices.Services;
-using ValidateAppSettingsServices.Models;
-using CultureServices.Resources;
 
 namespace ServicesClassNameServiceGeneratedServices.Services
 {
@@ -91,9 +75,9 @@ namespace ServicesClassNameServiceGeneratedServices.Services
                 foreach (DLLPropertyInfo dllPropertyInfo in currentDLLTypeInfo.PropertyInfoList)
                 {
                     CSSPProp csspProp = new CSSPProp();
-                    if (!generateCodeBaseService.FillCSSPProp(dllPropertyInfo.PropertyInfo, csspProp, currentDLLTypeInfo.Type))
+                    if (!GenerateCodeBaseService.FillCSSPProp(dllPropertyInfo.PropertyInfo, csspProp, currentDLLTypeInfo.Type))
                     {
-                        //actionCommandDBService.ErrorText.AppendLine($"{ string.Format(AppRes.ErrorWhileCreatingCode_, csspProp.CSSPError) }");
+                        //ActionCommandDBService.ErrorText.AppendLine($"{ string.Format(AppRes.ErrorWhileCreatingCode_, csspProp.CSSPError) }");
                         return await Task.FromResult(false);
                     }
                     if (csspProp.HasCSSPEnumTypeAttribute)
@@ -121,9 +105,9 @@ namespace ServicesClassNameServiceGeneratedServices.Services
                         }
 
                         CSSPProp csspProp = new CSSPProp();
-                        if (!generateCodeBaseService.FillCSSPProp(dllPropertyInfo.PropertyInfo, csspProp, currentDLLTypeInfo.Type))
+                        if (!GenerateCodeBaseService.FillCSSPProp(dllPropertyInfo.PropertyInfo, csspProp, currentDLLTypeInfo.Type))
                         {
-                            //actionCommandDBService.ErrorText.AppendLine($"{ string.Format(AppRes.ErrorWhileCreatingCode_, csspProp.CSSPError) }");
+                            //ActionCommandDBService.ErrorText.AppendLine($"{ string.Format(AppRes.ErrorWhileCreatingCode_, csspProp.CSSPError) }");
                             return await Task.FromResult(false);
                         }
                         if (csspProp.HasCSSPEnumTypeTextAttribute)
@@ -162,9 +146,9 @@ namespace ServicesClassNameServiceGeneratedServices.Services
                     }
 
                     CSSPProp csspProp = new CSSPProp();
-                    if (!generateCodeBaseService.FillCSSPProp(dllPropertyInfo.PropertyInfo, csspProp, currentDLLTypeInfo.Type))
+                    if (!GenerateCodeBaseService.FillCSSPProp(dllPropertyInfo.PropertyInfo, csspProp, currentDLLTypeInfo.Type))
                     {
-                        //actionCommandDBService.ErrorText.AppendLine($"{ string.Format(AppRes.ErrorWhileCreatingCode_, csspProp.CSSPError) }");
+                        //ActionCommandDBService.ErrorText.AppendLine($"{ string.Format(AppRes.ErrorWhileCreatingCode_, csspProp.CSSPError) }");
                         return await Task.FromResult(false);
                     }
                     if (csspProp.HasCSSPEnumTypeAttribute)
@@ -219,9 +203,9 @@ namespace ServicesClassNameServiceGeneratedServices.Services
                     }
 
                     CSSPProp csspProp = new CSSPProp();
-                    if (!generateCodeBaseService.FillCSSPProp(dllPropertyInfo.PropertyInfo, csspProp, currentDLLTypeInfo.Type))
+                    if (!GenerateCodeBaseService.FillCSSPProp(dllPropertyInfo.PropertyInfo, csspProp, currentDLLTypeInfo.Type))
                     {
-                        //actionCommandDBService.ErrorText.AppendLine($"{ string.Format(AppRes.ErrorWhileCreatingCode_, csspProp.CSSPError) }");
+                        //ActionCommandDBService.ErrorText.AppendLine($"{ string.Format(AppRes.ErrorWhileCreatingCode_, csspProp.CSSPError) }");
                         return await Task.FromResult(false);
                     }
                     if (currentDLLTypeInfo.Name == "ContactLogin" && dllPropertyInfo.PropertyInfo.Name == "PasswordHash")
@@ -272,7 +256,7 @@ namespace ServicesClassNameServiceGeneratedServices.Services
                     }
                     catch (Exception)
                     {
-                        actionCommandDBService.ErrorText.AppendLine($"{ string.Format(CultureServicesRes.CouldNotCreateDirectory_, di.FullName) }");
+                        ActionCommandDBService.ErrorText.AppendLine($"{ string.Format(CultureServicesRes.CouldNotCreateDirectory_, di.FullName) }");
                         return await Task.FromResult(false);
                     }
                 }
@@ -284,7 +268,7 @@ namespace ServicesClassNameServiceGeneratedServices.Services
                     sw.Write(sb.ToString());
                 }
 
-                actionCommandDBService.ErrorText.AppendLine($"{ string.Format(CultureServicesRes.Created_, fiOutputGen.FullName) }");
+                ActionCommandDBService.ErrorText.AppendLine($"{ string.Format(CultureServicesRes.Created_, fiOutputGen.FullName) }");
             }
 
             return await Task.FromResult(true);

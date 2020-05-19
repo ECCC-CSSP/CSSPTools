@@ -1,10 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.Configuration;
 using System;
-using System.Globalization;
 using System.IO;
-using EnumsPolSourceInfoRelatedFilesServices.Services;
+using System.Threading.Tasks;
 
 namespace EnumsPolSourceInfoRelatedFiles
 {
@@ -14,7 +11,7 @@ namespace EnumsPolSourceInfoRelatedFiles
         #endregion Variables
 
         #region Entry
-        static void Main(string[] args)
+        static async Task<int> Main(string[] args)
         {
             IConfiguration Configuration = new ConfigurationBuilder()
                .SetBasePath(Directory.GetParent(AppContext.BaseDirectory).FullName)
@@ -23,12 +20,15 @@ namespace EnumsPolSourceInfoRelatedFiles
 
             Startup startup = new Startup(Configuration);
 
-            startup.Run(args).GetAwaiter().GetResult();
+            if (!await startup.Run(args)) return await Task.FromResult(0);
+
+            return await Task.FromResult(1);
         }
         #endregion Entry
 
         #region Functions private
         #endregion Functions private
+
 
     }
 }

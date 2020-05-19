@@ -1,34 +1,17 @@
-﻿using ExecuteDotNetCommandServices.Models;
-using GenerateCodeBaseServices.Models;
+﻿using ActionCommandDBServices.Services;
+using BaseCodeGenerateServices.Services;
+using ExecuteDotNetCommandServices.Models;
 using GenerateCodeBaseServices.Services;
-using ActionCommandDBServices.Models;
-using ActionCommandDBServices.Services;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Globalization;
-using System.IO;
-using System.Linq;
-using System.Reflection;
-using System.Text;
 using System.Threading.Tasks;
 using ValidateAppSettingsServices.Services;
-using ValidateAppSettingsServices.Models;
-using Microsoft.AspNetCore.Mvc;
-using CultureServices.Resources;
 
 namespace ExecuteDotNetCommandServices.Services
 {
-    public partial class ExecuteDotNetCommandService : IExecuteDotNetCommandService
+    public partial class ExecuteDotNetCommandService : BaseCodeGenerateService, IExecuteDotNetCommandService
     {
         #region Variables
-        private IConfiguration configuration { get; set; }
-        private IActionCommandDBService actionCommandDBService { get; set; }
-        private IValidateAppSettingsService validateAppSettingsService { get; set; }
-        private List<string> AllowableCultures { get; set; } = new List<string>() { "en-CA", "fr-CA" };
         #endregion Variables
 
         #region Properties
@@ -184,22 +167,27 @@ namespace ExecuteDotNetCommandServices.Services
         #endregion Properties
 
         #region Constructors
-        public ExecuteDotNetCommandService(IConfiguration configuration, IActionCommandDBService actionCommandDBService, IValidateAppSettingsService validateAppSettingsService)
+        public ExecuteDotNetCommandService(IConfiguration configuration, 
+            IActionCommandDBService actionCommandDBService,
+            IValidateAppSettingsService validateAppSettingsService,
+            IGenerateCodeBaseService generateCodeBaseService) : base(configuration)
         {
-            this.configuration = configuration;
-            this.actionCommandDBService = actionCommandDBService;
-            this.validateAppSettingsService = validateAppSettingsService;
+            ActionCommandDBService = actionCommandDBService;
+            ValidateAppSettingsService = validateAppSettingsService;
+            GenerateCodeBaseService = generateCodeBaseService;
         }
         #endregion Constructors
 
         #region Functions public
         public async Task<bool> Run(string[] args)
         {
-            await actionCommandDBService.ConsoleWriteStart();
+            if (!await FillActionAndCommand()) return await Task.FromResult(false);
+
+            await ActionCommandDBService.ConsoleWriteStart();
 
             if (!await Setup())
             {
-                await actionCommandDBService.ConsoleWriteError("");
+                await ActionCommandDBService.ConsoleWriteError("");
                 return await Task.FromResult(false);
             }
 
@@ -207,43 +195,23 @@ namespace ExecuteDotNetCommandServices.Services
 
             if (!await ReadArgs(args))
             {
-                await actionCommandDBService.ConsoleWriteError("");
+                await ActionCommandDBService.ConsoleWriteError("");
                 return await Task.FromResult(false);
             }
 
             if (!await ExecuteDotNet())
             {
-                await actionCommandDBService.ConsoleWriteError("");
+                await ActionCommandDBService.ConsoleWriteError("");
                 return await Task.FromResult(false);
             }
 
-            await actionCommandDBService.ConsoleWriteEnd();
+            await ActionCommandDBService.ConsoleWriteEnd();
 
             return await Task.FromResult(true);
-        }
-        public async Task SetCulture(CultureInfo culture)
-        {
-            await actionCommandDBService.SetCulture(culture);
-            await validateAppSettingsService.SetCulture(culture);
-            CultureServicesRes.Culture = culture;
         }
         #endregion Functions public
 
         #region Functions private
-        private async Task SetCultureWithArgs(string[] args)
-        {
-            string culture = AllowableCultures[0];
-
-            if (args.Count() > 0)
-            {
-                if (AllowableCultures.Contains(args[0]))
-                {
-                    culture = args[0];
-                }
-            }
-
-            await SetCulture(new CultureInfo(culture));
-        }
         #endregion Functions private
     }
 }

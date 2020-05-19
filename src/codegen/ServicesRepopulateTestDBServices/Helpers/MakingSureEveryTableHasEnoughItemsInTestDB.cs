@@ -1,24 +1,11 @@
 ﻿using CSSPEnums;
 using CSSPModels;
-using GenerateCodeBaseServices.Models;
-using GenerateCodeBaseServices.Services;
-using ActionCommandDBServices.Models;
-using ActionCommandDBServices.Services;
-using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Globalization;
-using System.IO;
 using System.Linq;
-using System.Reflection;
-using System.Text;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using ValidateAppSettingsServices.Services;
-using ValidateAppSettingsServices.Models;
 
 namespace ServicesRepopulateTestDBServices.Services
 {
@@ -28,7 +15,7 @@ namespace ServicesRepopulateTestDBServices.Services
         {
             int count = 0;
 
-            actionCommandDBService.ExecutionStatusText.AppendLine("doing ... Adding up to 10 items in Addresses");
+            ActionCommandDBService.ExecutionStatusText.AppendLine("doing ... Adding up to 10 items in Addresses");
 
             #region Addresses
             count = (from c in dbTestDB.Addresses.AsNoTracking() select c).Count();
@@ -46,14 +33,14 @@ namespace ServicesRepopulateTestDBServices.Services
                     catch (Exception ex)
                     {
                         string InnerException = (ex.InnerException != null ? $" Inner: [{ ex.InnerException.Message }]" : "");
-                        actionCommandDBService.ErrorText.AppendLine($"{ ex.Message }{ InnerException }");
+                        ActionCommandDBService.ErrorText.AppendLine($"{ ex.Message }{ InnerException }");
                         return await Task.FromResult(false);
                     }
                 }
             }
             #endregion Addresses
 
-            actionCommandDBService.ExecutionStatusText.AppendLine("doing ... Adding up to 10 items in AppErrLogs");
+            ActionCommandDBService.ExecutionStatusText.AppendLine("doing ... Adding up to 10 items in AppErrLogs");
 
             #region AppErrLogs
             count = (from c in dbTestDB.AppErrLogs.AsNoTracking() select c).Count();
@@ -71,14 +58,14 @@ namespace ServicesRepopulateTestDBServices.Services
                     catch (Exception ex)
                     {
                         string InnerException = (ex.InnerException != null ? $" Inner: [{ ex.InnerException.Message }]" : "");
-                        actionCommandDBService.ExecutionStatusText.AppendLine($"{ ex.Message }{ InnerException }");
+                        ActionCommandDBService.ExecutionStatusText.AppendLine($"{ ex.Message }{ InnerException }");
                         return await Task.FromResult(false);
                     }
                 }
             }
             #endregion AppErrLogs
 
-            actionCommandDBService.ExecutionStatusText.AppendLine("doing ... Adding up to 10 items in AppTasks");
+            ActionCommandDBService.ExecutionStatusText.AppendLine("doing ... Adding up to 10 items in AppTasks");
 
             #region AppTasks
             count = (from c in dbTestDB.AppTasks.AsNoTracking() select c).Count();
@@ -108,14 +95,14 @@ namespace ServicesRepopulateTestDBServices.Services
                     catch (Exception ex)
                     {
                         string InnerException = (ex.InnerException != null ? $" Inner: [{ ex.InnerException.Message }]" : "");
-                        actionCommandDBService.ExecutionStatusText.AppendLine($"{ ex.Message }{ InnerException }");
+                        ActionCommandDBService.ExecutionStatusText.AppendLine($"{ ex.Message }{ InnerException }");
                         return await Task.FromResult(false);
                     }
                 }
             }
             #endregion AppTasks
 
-            actionCommandDBService.ExecutionStatusText.AppendLine("doing ... Adding up to 10 items in BoxModels");
+            ActionCommandDBService.ExecutionStatusText.AppendLine("doing ... Adding up to 10 items in BoxModels");
 
             #region BoxModels
             count = (from c in dbTestDB.BoxModels.AsNoTracking() select c).Count();
@@ -154,14 +141,14 @@ namespace ServicesRepopulateTestDBServices.Services
                     catch (Exception ex)
                     {
                         string InnerException = (ex.InnerException != null ? $" Inner: [{ ex.InnerException.Message }]" : "");
-                        actionCommandDBService.ExecutionStatusText.AppendLine($"{ ex.Message }{ InnerException }");
+                        ActionCommandDBService.ExecutionStatusText.AppendLine($"{ ex.Message }{ InnerException }");
                         return await Task.FromResult(false);
                     }
                 }
             }
             #endregion BoxModels
 
-            actionCommandDBService.ExecutionStatusText.AppendLine("doing ... Adding up to 10 items in ClimateSites");
+            ActionCommandDBService.ExecutionStatusText.AppendLine("doing ... Adding up to 10 items in ClimateSites");
 
             #region ClimateSites
             count = (from c in dbTestDB.ClimateSites.AsNoTracking() select c).Count();
@@ -188,14 +175,14 @@ namespace ServicesRepopulateTestDBServices.Services
                     catch (Exception ex)
                     {
                         string InnerException = (ex.InnerException != null ? $" Inner: [{ ex.InnerException.Message }]" : "");
-                        actionCommandDBService.ExecutionStatusText.AppendLine($"{ ex.Message }{ InnerException }");
+                        ActionCommandDBService.ExecutionStatusText.AppendLine($"{ ex.Message }{ InnerException }");
                         return await Task.FromResult(false);
                     }
                 }
             }
             #endregion ClimateSites
 
-            actionCommandDBService.ExecutionStatusText.AppendLine("doing ... Adding up to 10 items in ContactPreferences");
+            ActionCommandDBService.ExecutionStatusText.AppendLine("doing ... Adding up to 10 items in ContactPreferences");
 
             #region ContactPreferences
             count = (from c in dbTestDB.ContactPreferences.AsNoTracking() select c).Count();
@@ -213,14 +200,14 @@ namespace ServicesRepopulateTestDBServices.Services
                     catch (Exception ex)
                     {
                         string InnerException = (ex.InnerException != null ? $" Inner: [{ ex.InnerException.Message }]" : "");
-                        actionCommandDBService.ExecutionStatusText.AppendLine($"{ ex.Message }{ InnerException }");
+                        ActionCommandDBService.ExecutionStatusText.AppendLine($"{ ex.Message }{ InnerException }");
                         return await Task.FromResult(false);
                     }
                 }
             }
             #endregion ContactPreferences
 
-            actionCommandDBService.ExecutionStatusText.AppendLine("doing ... Adding up to 10 items in Contacts");
+            ActionCommandDBService.ExecutionStatusText.AppendLine("doing ... Adding up to 10 items in Contacts");
 
             #region Contacts
             count = (from c in dbTestDB.Contacts.AsNoTracking() select c).Count();
@@ -238,14 +225,14 @@ namespace ServicesRepopulateTestDBServices.Services
                     catch (Exception ex)
                     {
                         string InnerException = (ex.InnerException != null ? $" Inner: [{ ex.InnerException.Message }]" : "");
-                        actionCommandDBService.ExecutionStatusText.AppendLine($"{ ex.Message }{ InnerException }");
+                        ActionCommandDBService.ExecutionStatusText.AppendLine($"{ ex.Message }{ InnerException }");
                         return await Task.FromResult(false);
                     }
                 }
             }
             #endregion Contacts
 
-            actionCommandDBService.ExecutionStatusText.AppendLine("doing ... Adding up to 10 items in ContactShortcuts");
+            ActionCommandDBService.ExecutionStatusText.AppendLine("doing ... Adding up to 10 items in ContactShortcuts");
 
             #region ContactShortcuts
             count = (from c in dbTestDB.ContactShortcuts.AsNoTracking() select c).Count();
@@ -263,14 +250,14 @@ namespace ServicesRepopulateTestDBServices.Services
                     catch (Exception ex)
                     {
                         string InnerException = (ex.InnerException != null ? $" Inner: [{ ex.InnerException.Message }]" : "");
-                        actionCommandDBService.ErrorText.AppendLine($"{ ex.Message }{ InnerException }");
+                        ActionCommandDBService.ErrorText.AppendLine($"{ ex.Message }{ InnerException }");
                         return await Task.FromResult(false);
                     }
                 }
             }
             #endregion ContactShortcuts
 
-            actionCommandDBService.ExecutionStatusText.AppendLine("doing ... Adding up to 10 items in DocTemplates");
+            ActionCommandDBService.ExecutionStatusText.AppendLine("doing ... Adding up to 10 items in DocTemplates");
 
             #region DocTemplates
             count = (from c in dbTestDB.DocTemplates.AsNoTracking() select c).Count();
@@ -288,14 +275,14 @@ namespace ServicesRepopulateTestDBServices.Services
                     catch (Exception ex)
                     {
                         string InnerException = (ex.InnerException != null ? $" Inner: [{ ex.InnerException.Message }]" : "");
-                        actionCommandDBService.ExecutionStatusText.AppendLine($"{ ex.Message }{ InnerException }");
+                        ActionCommandDBService.ExecutionStatusText.AppendLine($"{ ex.Message }{ InnerException }");
                         return await Task.FromResult(false);
                     }
                 }
             }
             #endregion DocTemplates
 
-            actionCommandDBService.ExecutionStatusText.AppendLine("doing ... Adding up to 10 items in DrogueRuns");
+            ActionCommandDBService.ExecutionStatusText.AppendLine("doing ... Adding up to 10 items in DrogueRuns");
 
             #region DrogueRuns
             count = (from c in dbTestDB.DrogueRuns.AsNoTracking() select c).Count();
@@ -321,14 +308,14 @@ namespace ServicesRepopulateTestDBServices.Services
                     catch (Exception ex)
                     {
                         string InnerException = (ex.InnerException != null ? $" Inner: [{ ex.InnerException.Message }]" : "");
-                        actionCommandDBService.ExecutionStatusText.AppendLine($"{ ex.Message }{ InnerException }");
+                        ActionCommandDBService.ExecutionStatusText.AppendLine($"{ ex.Message }{ InnerException }");
                         return await Task.FromResult(false);
                     }
                 }
             }
             #endregion DrogueRuns
 
-            actionCommandDBService.ExecutionStatusText.AppendLine("doing ... Adding up to 10 items in EmailDistributionListContactLanguages");
+            ActionCommandDBService.ExecutionStatusText.AppendLine("doing ... Adding up to 10 items in EmailDistributionListContactLanguages");
 
             #region EmailDistributionListContactLanguages
             count = (from c in dbTestDB.EmailDistributionLists.AsNoTracking() select c).Count();
@@ -374,14 +361,14 @@ namespace ServicesRepopulateTestDBServices.Services
                     catch (Exception ex)
                     {
                         string InnerException = (ex.InnerException != null ? $" Inner: [{ ex.InnerException.Message }]" : "");
-                        actionCommandDBService.ExecutionStatusText.AppendLine($"{ ex.Message }{ InnerException }");
+                        ActionCommandDBService.ExecutionStatusText.AppendLine($"{ ex.Message }{ InnerException }");
                         return await Task.FromResult(false);
                     }
                 }
             }
             #endregion EmailDistributionLists
 
-            actionCommandDBService.ExecutionStatusText.AppendLine("doing ... Adding up to 10 items in Emails");
+            ActionCommandDBService.ExecutionStatusText.AppendLine("doing ... Adding up to 10 items in Emails");
 
             #region Emails
             count = (from c in dbTestDB.Emails.AsNoTracking() select c).Count();
@@ -399,14 +386,14 @@ namespace ServicesRepopulateTestDBServices.Services
                     catch (Exception ex)
                     {
                         string InnerException = (ex.InnerException != null ? $" Inner: [{ ex.InnerException.Message }]" : "");
-                        actionCommandDBService.ErrorText.AppendLine($"{ ex.Message }{ InnerException }");
+                        ActionCommandDBService.ErrorText.AppendLine($"{ ex.Message }{ InnerException }");
                         return await Task.FromResult(false);
                     }
                 }
             }
             #endregion Emails
 
-            actionCommandDBService.ExecutionStatusText.AppendLine("doing ... Adding up to 10 items in HelpDoc");
+            ActionCommandDBService.ExecutionStatusText.AppendLine("doing ... Adding up to 10 items in HelpDoc");
 
             #region HelpDocs
             count = (from c in dbTestDB.HelpDocs.AsNoTracking() select c).Count();
@@ -423,14 +410,14 @@ namespace ServicesRepopulateTestDBServices.Services
                     catch (Exception ex)
                     {
                         string InnerException = (ex.InnerException != null ? $" Inner: [{ ex.InnerException.Message }]" : "");
-                        actionCommandDBService.ExecutionStatusText.AppendLine($"{ ex.Message }{ InnerException }");
+                        ActionCommandDBService.ExecutionStatusText.AppendLine($"{ ex.Message }{ InnerException }");
                         return await Task.FromResult(false);
                     }
                 }
             }
             #endregion HelpDocs
 
-            actionCommandDBService.ExecutionStatusText.AppendLine("doing ... Adding up to 10 items in HydrometricSites");
+            ActionCommandDBService.ExecutionStatusText.AppendLine("doing ... Adding up to 10 items in HydrometricSites");
 
             #region HydrometricSites
             count = (from c in dbTestDB.HydrometricSites.AsNoTracking() select c).Count();
@@ -458,14 +445,14 @@ namespace ServicesRepopulateTestDBServices.Services
                     catch (Exception ex)
                     {
                         string InnerException = (ex.InnerException != null ? $" Inner: [{ ex.InnerException.Message }]" : "");
-                        actionCommandDBService.ExecutionStatusText.AppendLine($"{ ex.Message }{ InnerException }");
+                        ActionCommandDBService.ExecutionStatusText.AppendLine($"{ ex.Message }{ InnerException }");
                         return await Task.FromResult(false);
                     }
                 }
             }
             #endregion HydrometricSites
 
-            actionCommandDBService.ExecutionStatusText.AppendLine("doing ... Adding up to 10 items in Infrastructures");
+            ActionCommandDBService.ExecutionStatusText.AppendLine("doing ... Adding up to 10 items in Infrastructures");
 
             #region Infrastructures
             count = (from c in dbTestDB.Infrastructures.AsNoTracking() select c).Count();
@@ -495,14 +482,14 @@ namespace ServicesRepopulateTestDBServices.Services
                     catch (Exception ex)
                     {
                         string InnerException = (ex.InnerException != null ? $" Inner: [{ ex.InnerException.Message }]" : "");
-                        actionCommandDBService.ExecutionStatusText.AppendLine($"{ ex.Message }{ InnerException }");
+                        ActionCommandDBService.ExecutionStatusText.AppendLine($"{ ex.Message }{ InnerException }");
                         return await Task.FromResult(false);
                     }
                 }
             }
             #endregion Infrastructures
 
-            actionCommandDBService.ExecutionStatusText.AppendLine("doing ... Adding up to 10 items in LabSheets");
+            ActionCommandDBService.ExecutionStatusText.AppendLine("doing ... Adding up to 10 items in LabSheets");
 
             #region LabSheets
             count = (from c in dbTestDB.LabSheets.AsNoTracking() select c).Count();
@@ -533,14 +520,14 @@ namespace ServicesRepopulateTestDBServices.Services
                     catch (Exception ex)
                     {
                         string InnerException = (ex.InnerException != null ? $" Inner: [{ ex.InnerException.Message }]" : "");
-                        actionCommandDBService.ExecutionStatusText.AppendLine($"{ ex.Message }{ InnerException }");
+                        ActionCommandDBService.ExecutionStatusText.AppendLine($"{ ex.Message }{ InnerException }");
                         return await Task.FromResult(false);
                     }
                 }
             }
             #endregion LabSheets
 
-            actionCommandDBService.ExecutionStatusText.AppendLine("doing ... Adding up to 10 items in Logs");
+            ActionCommandDBService.ExecutionStatusText.AppendLine("doing ... Adding up to 10 items in Logs");
 
             #region Logs
             count = (from c in dbTestDB.Logs.AsNoTracking() select c).Count();
@@ -558,14 +545,14 @@ namespace ServicesRepopulateTestDBServices.Services
                     catch (Exception ex)
                     {
                         string InnerException = (ex.InnerException != null ? $" Inner: [{ ex.InnerException.Message }]" : "");
-                        actionCommandDBService.ExecutionStatusText.AppendLine($"{ ex.Message }{ InnerException }");
+                        ActionCommandDBService.ExecutionStatusText.AppendLine($"{ ex.Message }{ InnerException }");
                         return await Task.FromResult(false);
                     }
                 }
             }
             #endregion Logs
 
-            actionCommandDBService.ExecutionStatusText.AppendLine("doing ... Adding up to 10 items in MikeBoundaryConditions");
+            ActionCommandDBService.ExecutionStatusText.AppendLine("doing ... Adding up to 10 items in MikeBoundaryConditions");
 
             #region MikeBoundaryConditions
             count = (from c in dbTestDB.MikeBoundaryConditions.AsNoTracking() select c).Count();
@@ -583,14 +570,14 @@ namespace ServicesRepopulateTestDBServices.Services
                     catch (Exception ex)
                     {
                         string InnerException = (ex.InnerException != null ? $" Inner: [{ ex.InnerException.Message }]" : "");
-                        actionCommandDBService.ExecutionStatusText.AppendLine($"{ ex.Message }{ InnerException }");
+                        ActionCommandDBService.ExecutionStatusText.AppendLine($"{ ex.Message }{ InnerException }");
                         return await Task.FromResult(false);
                     }
                 }
             }
             #endregion MikeBoundaryConditions
 
-            actionCommandDBService.ExecutionStatusText.AppendLine("doing ... Adding up to 10 items in MikeScenarios");
+            ActionCommandDBService.ExecutionStatusText.AppendLine("doing ... Adding up to 10 items in MikeScenarios");
 
             #region MikeScenarios
             count = (from c in dbTestDB.MikeScenarios.AsNoTracking() select c).Count();
@@ -608,14 +595,14 @@ namespace ServicesRepopulateTestDBServices.Services
                     catch (Exception ex)
                     {
                         string InnerException = (ex.InnerException != null ? $" Inner: [{ ex.InnerException.Message }]" : "");
-                        actionCommandDBService.ExecutionStatusText.AppendLine($"{ ex.Message }{ InnerException }");
+                        ActionCommandDBService.ExecutionStatusText.AppendLine($"{ ex.Message }{ InnerException }");
                         return await Task.FromResult(false);
                     }
                 }
             }
             #endregion MikeScenarios
 
-            actionCommandDBService.ExecutionStatusText.AppendLine("doing ... Adding up to 10 items in MikeScenarioResults");
+            ActionCommandDBService.ExecutionStatusText.AppendLine("doing ... Adding up to 10 items in MikeScenarioResults");
 
             #region MikeScenarioResults
             count = (from c in dbTestDB.MikeScenarioResults.AsNoTracking() select c).Count();
@@ -632,14 +619,14 @@ namespace ServicesRepopulateTestDBServices.Services
                     catch (Exception ex)
                     {
                         string InnerException = (ex.InnerException != null ? $" Inner: [{ ex.InnerException.Message }]" : "");
-                        actionCommandDBService.ErrorText.AppendLine($"{ ex.Message }{ InnerException }");
+                        ActionCommandDBService.ErrorText.AppendLine($"{ ex.Message }{ InnerException }");
                         return await Task.FromResult(false);
                     }
                 }
             }
             #endregion MikeScenarioResults
 
-            actionCommandDBService.ExecutionStatusText.AppendLine("doing ... Adding up to 10 items in MikeSources");
+            ActionCommandDBService.ExecutionStatusText.AppendLine("doing ... Adding up to 10 items in MikeSources");
 
             #region MikeSources
             count = (from c in dbTestDB.MikeSources.AsNoTracking() select c).Count();
@@ -664,14 +651,14 @@ namespace ServicesRepopulateTestDBServices.Services
                     catch (Exception ex)
                     {
                         string InnerException = (ex.InnerException != null ? $" Inner: [{ ex.InnerException.Message }]" : "");
-                        actionCommandDBService.ExecutionStatusText.AppendLine($"{ ex.Message }{ InnerException }");
+                        ActionCommandDBService.ExecutionStatusText.AppendLine($"{ ex.Message }{ InnerException }");
                         return await Task.FromResult(false);
                     }
                 }
             }
             #endregion MikeSources
 
-            actionCommandDBService.ExecutionStatusText.AppendLine("doing ... Adding up to 10 items in MWQMAnalysisReportParameters");
+            ActionCommandDBService.ExecutionStatusText.AppendLine("doing ... Adding up to 10 items in MWQMAnalysisReportParameters");
 
             #region MWQMAnalysisReportParameters
             count = (from c in dbTestDB.MWQMAnalysisReportParameters.AsNoTracking() select c).Count();
@@ -689,14 +676,14 @@ namespace ServicesRepopulateTestDBServices.Services
                     catch (Exception ex)
                     {
                         string InnerException = (ex.InnerException != null ? $" Inner: [{ ex.InnerException.Message }]" : "");
-                        actionCommandDBService.ErrorText.AppendLine($"{ ex.Message }{ InnerException }");
+                        ActionCommandDBService.ErrorText.AppendLine($"{ ex.Message }{ InnerException }");
                         return await Task.FromResult(false);
                     }
                 }
             }
             #endregion MWQMAnalysisReportParameters            
 
-            actionCommandDBService.ExecutionStatusText.AppendLine("doing ... Adding up to 10 items in MWQMRuns");
+            ActionCommandDBService.ExecutionStatusText.AppendLine("doing ... Adding up to 10 items in MWQMRuns");
 
             #region MWQMRuns
             count = (from c in dbTestDB.MWQMRuns.AsNoTracking() select c).Count();
@@ -722,14 +709,14 @@ namespace ServicesRepopulateTestDBServices.Services
                     catch (Exception ex)
                     {
                         string InnerException = (ex.InnerException != null ? $" Inner: [{ ex.InnerException.Message }]" : "");
-                        actionCommandDBService.ExecutionStatusText.AppendLine($"{ ex.Message }{ InnerException }");
+                        ActionCommandDBService.ExecutionStatusText.AppendLine($"{ ex.Message }{ InnerException }");
                         return await Task.FromResult(false);
                     }
                 }
             }
             #endregion MWQMRuns
 
-            actionCommandDBService.ExecutionStatusText.AppendLine("doing ... Adding up to 10 items in MWQMSamples");
+            ActionCommandDBService.ExecutionStatusText.AppendLine("doing ... Adding up to 10 items in MWQMSamples");
 
             #region MWQMSamples
             count = (from c in dbTestDB.MWQMSamples.AsNoTracking() select c).Count();
@@ -755,14 +742,14 @@ namespace ServicesRepopulateTestDBServices.Services
                     catch (Exception ex)
                     {
                         string InnerException = (ex.InnerException != null ? $" Inner: [{ ex.InnerException.Message }]" : "");
-                        actionCommandDBService.ExecutionStatusText.AppendLine($"{ ex.Message }{ InnerException }");
+                        ActionCommandDBService.ExecutionStatusText.AppendLine($"{ ex.Message }{ InnerException }");
                         return await Task.FromResult(false);
                     }
                 }
             }
             #endregion MWQMSamples
 
-            actionCommandDBService.ExecutionStatusText.AppendLine("doing ... Adding up to 10 items in MWQMSites");
+            ActionCommandDBService.ExecutionStatusText.AppendLine("doing ... Adding up to 10 items in MWQMSites");
 
             #region MWQMSites
             count = (from c in dbTestDB.MWQMSites.AsNoTracking() select c).Count();
@@ -786,14 +773,14 @@ namespace ServicesRepopulateTestDBServices.Services
                     catch (Exception ex)
                     {
                         string InnerException = (ex.InnerException != null ? $" Inner: [{ ex.InnerException.Message }]" : "");
-                        actionCommandDBService.ExecutionStatusText.AppendLine($"{ ex.Message }{ InnerException }");
+                        ActionCommandDBService.ExecutionStatusText.AppendLine($"{ ex.Message }{ InnerException }");
                         return await Task.FromResult(false);
                     }
                 }
             }
             #endregion MWQMSites
 
-            actionCommandDBService.ExecutionStatusText.AppendLine("doing ... Adding up to 10 items in MWQMSubsectors");
+            ActionCommandDBService.ExecutionStatusText.AppendLine("doing ... Adding up to 10 items in MWQMSubsectors");
 
             #region MWQMSubsectors
             count = (from c in dbTestDB.MWQMSubsectors.AsNoTracking() select c).Count();
@@ -819,14 +806,14 @@ namespace ServicesRepopulateTestDBServices.Services
                     catch (Exception ex)
                     {
                         string InnerException = (ex.InnerException != null ? $" Inner: [{ ex.InnerException.Message }]" : "");
-                        actionCommandDBService.ExecutionStatusText.AppendLine($"{ ex.Message }{ InnerException }");
+                        ActionCommandDBService.ExecutionStatusText.AppendLine($"{ ex.Message }{ InnerException }");
                         return await Task.FromResult(false);
                     }
                 }
             }
             #endregion MWQMSubsectors
 
-            actionCommandDBService.ExecutionStatusText.AppendLine("doing ... Adding up to 10 items in PolSourceSites");
+            ActionCommandDBService.ExecutionStatusText.AppendLine("doing ... Adding up to 10 items in PolSourceSites");
 
             #region PolSourceSites
             count = (from c in dbTestDB.PolSourceSites.AsNoTracking() select c).Count();
@@ -857,14 +844,14 @@ namespace ServicesRepopulateTestDBServices.Services
                     catch (Exception ex)
                     {
                         string InnerException = (ex.InnerException != null ? $" Inner: [{ ex.InnerException.Message }]" : "");
-                        actionCommandDBService.ExecutionStatusText.AppendLine($"{ ex.Message }{ InnerException }");
+                        ActionCommandDBService.ExecutionStatusText.AppendLine($"{ ex.Message }{ InnerException }");
                         return await Task.FromResult(false);
                     }
                 }
             }
             #endregion PolSourceSites
 
-            actionCommandDBService.ExecutionStatusText.AppendLine("doing ... Adding up to 10 items in MWQMSitePolSourceSites");
+            ActionCommandDBService.ExecutionStatusText.AppendLine("doing ... Adding up to 10 items in MWQMSitePolSourceSites");
 
             //#region MWQMSitePolSourceSites
             //using (TestDBContext db = new TestDBContext())
@@ -884,7 +871,7 @@ namespace ServicesRepopulateTestDBServices.Services
             //            catch (Exception ex)
             //            {
             //                string InnerException = (ex.InnerException != null ? $" Inner: [{ ex.InnerException.Message }]" : "");
-            //                actionCommandDBService.ExecutionStatusText.AppendLine($"{ ex.Message }{ InnerException }");
+            //                ActionCommandDBService.ExecutionStatusText.AppendLine($"{ ex.Message }{ InnerException }");
             //                return await Task.FromResult(false);
             //            }
             //        }
@@ -892,7 +879,7 @@ namespace ServicesRepopulateTestDBServices.Services
             //}
             //#endregion MWQMSitePolSourceSites
 
-            actionCommandDBService.ExecutionStatusText.AppendLine("doing ... Adding up to 10 items in RainExceedances");
+            ActionCommandDBService.ExecutionStatusText.AppendLine("doing ... Adding up to 10 items in RainExceedances");
 
             #region RainExceedances
             count = (from c in dbTestDB.RainExceedances.AsNoTracking() select c).Count();
@@ -910,7 +897,7 @@ namespace ServicesRepopulateTestDBServices.Services
                     catch (Exception ex)
                     {
                         string InnerException = (ex.InnerException != null ? $" Inner: [{ ex.InnerException.Message }]" : "");
-                        actionCommandDBService.ExecutionStatusText.AppendLine($"{ ex.Message }{ InnerException }");
+                        ActionCommandDBService.ExecutionStatusText.AppendLine($"{ ex.Message }{ InnerException }");
                         return await Task.FromResult(false);
                     }
                 }
@@ -935,14 +922,14 @@ namespace ServicesRepopulateTestDBServices.Services
                     catch (Exception ex)
                     {
                         string InnerException = (ex.InnerException != null ? $" Inner: [{ ex.InnerException.Message }]" : "");
-                        actionCommandDBService.ExecutionStatusText.AppendLine($"{ ex.Message }{ InnerException }");
+                        ActionCommandDBService.ExecutionStatusText.AppendLine($"{ ex.Message }{ InnerException }");
                         return await Task.FromResult(false);
                     }
                 }
             }
             #endregion RainExceedanceClimateSites
 
-            actionCommandDBService.ExecutionStatusText.AppendLine("doing ... Adding up to 10 items in RetingCurves");
+            ActionCommandDBService.ExecutionStatusText.AppendLine("doing ... Adding up to 10 items in RetingCurves");
 
             #region RatingCurves
             count = (from c in dbTestDB.RatingCurves.AsNoTracking() select c).Count();
@@ -966,14 +953,14 @@ namespace ServicesRepopulateTestDBServices.Services
                     catch (Exception ex)
                     {
                         string InnerException = (ex.InnerException != null ? $" Inner: [{ ex.InnerException.Message }]" : "");
-                        actionCommandDBService.ExecutionStatusText.AppendLine($"{ ex.Message }{ InnerException }");
+                        ActionCommandDBService.ExecutionStatusText.AppendLine($"{ ex.Message }{ InnerException }");
                         return await Task.FromResult(false);
                     }
                 }
             }
             #endregion RatingCurves
 
-            actionCommandDBService.ExecutionStatusText.AppendLine("doing ... Adding up to 10 items in ReportSections");
+            ActionCommandDBService.ExecutionStatusText.AppendLine("doing ... Adding up to 10 items in ReportSections");
 
             #region ReportSections
             count = (from c in dbTestDB.ReportSections.AsNoTracking() select c).Count();
@@ -1000,14 +987,14 @@ namespace ServicesRepopulateTestDBServices.Services
                     catch (Exception ex)
                     {
                         string InnerException = (ex.InnerException != null ? $" Inner: [{ ex.InnerException.Message }]" : "");
-                        actionCommandDBService.ExecutionStatusText.AppendLine($"{ ex.Message }{ InnerException }");
+                        ActionCommandDBService.ExecutionStatusText.AppendLine($"{ ex.Message }{ InnerException }");
                         return await Task.FromResult(false);
                     }
                 }
             }
             #endregion ReportSections
 
-            actionCommandDBService.ExecutionStatusText.AppendLine("doing ... Adding up to 10 items in ReportTypes");
+            ActionCommandDBService.ExecutionStatusText.AppendLine("doing ... Adding up to 10 items in ReportTypes");
 
             #region ReportTypes
             count = (from c in dbTestDB.ReportTypes.AsNoTracking() select c).Count();
@@ -1034,14 +1021,14 @@ namespace ServicesRepopulateTestDBServices.Services
                     catch (Exception ex)
                     {
                         string InnerException = (ex.InnerException != null ? $" Inner: [{ ex.InnerException.Message }]" : "");
-                        actionCommandDBService.ExecutionStatusText.AppendLine($"{ ex.Message }{ InnerException }");
+                        ActionCommandDBService.ExecutionStatusText.AppendLine($"{ ex.Message }{ InnerException }");
                         return await Task.FromResult(false);
                     }
                 }
             }
             #endregion ReportTypes
 
-            actionCommandDBService.ExecutionStatusText.AppendLine("doing ... Adding up to 10 items in ResetPasswords");
+            ActionCommandDBService.ExecutionStatusText.AppendLine("doing ... Adding up to 10 items in ResetPasswords");
 
             #region ResetPasswords
             count = (from c in dbTestDB.ResetPasswords.AsNoTracking() select c).Count();
@@ -1059,14 +1046,14 @@ namespace ServicesRepopulateTestDBServices.Services
                     catch (Exception ex)
                     {
                         string InnerException = (ex.InnerException != null ? $" Inner: [{ ex.InnerException.Message }]" : "");
-                        actionCommandDBService.ExecutionStatusText.AppendLine($"{ ex.Message }{ InnerException }");
+                        ActionCommandDBService.ExecutionStatusText.AppendLine($"{ ex.Message }{ InnerException }");
                         return await Task.FromResult(false);
                     }
                 }
             }
             #endregion ResetPasswords
 
-            actionCommandDBService.ExecutionStatusText.AppendLine("doing ... Adding up to 10 items in SamplingPlans");
+            ActionCommandDBService.ExecutionStatusText.AppendLine("doing ... Adding up to 10 items in SamplingPlans");
 
             #region SamplingPlans
             count = (from c in dbTestDB.SamplingPlans.AsNoTracking() select c).Count();
@@ -1101,14 +1088,14 @@ namespace ServicesRepopulateTestDBServices.Services
                     catch (Exception ex)
                     {
                         string InnerException = (ex.InnerException != null ? $" Inner: [{ ex.InnerException.Message }]" : "");
-                        actionCommandDBService.ExecutionStatusText.AppendLine($"{ ex.Message }{ InnerException }");
+                        ActionCommandDBService.ExecutionStatusText.AppendLine($"{ ex.Message }{ InnerException }");
                         return await Task.FromResult(false);
                     }
                 }
             }
             #endregion SamplingPlans
 
-            actionCommandDBService.ExecutionStatusText.AppendLine("doing ... Adding up to 10 items in Spills");
+            ActionCommandDBService.ExecutionStatusText.AppendLine("doing ... Adding up to 10 items in Spills");
 
             #region Spills
             count = (from c in dbTestDB.Spills.AsNoTracking() select c).Count();
@@ -1134,14 +1121,14 @@ namespace ServicesRepopulateTestDBServices.Services
                     catch (Exception ex)
                     {
                         string InnerException = (ex.InnerException != null ? $" Inner: [{ ex.InnerException.Message }]" : "");
-                        actionCommandDBService.ExecutionStatusText.AppendLine($"{ ex.Message }{ InnerException }");
+                        ActionCommandDBService.ExecutionStatusText.AppendLine($"{ ex.Message }{ InnerException }");
                         return await Task.FromResult(false);
                     }
                 }
             }
             #endregion Spills
 
-            actionCommandDBService.ExecutionStatusText.AppendLine("doing ... Adding up to 10 items in Tels");
+            ActionCommandDBService.ExecutionStatusText.AppendLine("doing ... Adding up to 10 items in Tels");
 
             #region Tels
             count = (from c in dbTestDB.Tels.AsNoTracking() select c).Count();
@@ -1159,14 +1146,14 @@ namespace ServicesRepopulateTestDBServices.Services
                     catch (Exception ex)
                     {
                         string InnerException = (ex.InnerException != null ? $" Inner: [{ ex.InnerException.Message }]" : "");
-                        actionCommandDBService.ExecutionStatusText.AppendLine($"{ ex.Message }{ InnerException }");
+                        ActionCommandDBService.ExecutionStatusText.AppendLine($"{ ex.Message }{ InnerException }");
                         return await Task.FromResult(false);
                     }
                 }
             }
             #endregion Tels
 
-            actionCommandDBService.ExecutionStatusText.AppendLine("doing ... Adding up to 10 items in TideDataValues");
+            ActionCommandDBService.ExecutionStatusText.AppendLine("doing ... Adding up to 10 items in TideDataValues");
 
             #region TideDataValues
             count = (from c in dbTestDB.TideDataValues.AsNoTracking() select c).Count();
@@ -1184,14 +1171,14 @@ namespace ServicesRepopulateTestDBServices.Services
                     catch (Exception ex)
                     {
                         string InnerException = (ex.InnerException != null ? $" Inner: [{ ex.InnerException.Message }]" : "");
-                        actionCommandDBService.ExecutionStatusText.AppendLine($"{ ex.Message }{ InnerException }");
+                        ActionCommandDBService.ExecutionStatusText.AppendLine($"{ ex.Message }{ InnerException }");
                         return await Task.FromResult(false);
                     }
                 }
             }
             #endregion TideDataValues
 
-            actionCommandDBService.ExecutionStatusText.AppendLine("doing ... Adding up to 10 items in TideLocations");
+            ActionCommandDBService.ExecutionStatusText.AppendLine("doing ... Adding up to 10 items in TideLocations");
 
             #region TideLocations
             count = (from c in dbTestDB.TideLocations.AsNoTracking() select c).Count();
@@ -1209,14 +1196,14 @@ namespace ServicesRepopulateTestDBServices.Services
                     catch (Exception ex)
                     {
                         string InnerException = (ex.InnerException != null ? $" Inner: [{ ex.InnerException.Message }]" : "");
-                        actionCommandDBService.ExecutionStatusText.AppendLine($"{ ex.Message }{ InnerException }");
+                        ActionCommandDBService.ExecutionStatusText.AppendLine($"{ ex.Message }{ InnerException }");
                         return await Task.FromResult(false);
                     }
                 }
             }
             #endregion TideLocations
 
-            actionCommandDBService.ExecutionStatusText.AppendLine("doing ... Adding up to 10 items in TideSites");
+            ActionCommandDBService.ExecutionStatusText.AppendLine("doing ... Adding up to 10 items in TideSites");
 
             #region TideSites
             count = (from c in dbTestDB.TideSites.AsNoTracking() select c).Count();
@@ -1234,14 +1221,14 @@ namespace ServicesRepopulateTestDBServices.Services
                     catch (Exception ex)
                     {
                         string InnerException = (ex.InnerException != null ? $" Inner: [{ ex.InnerException.Message }]" : "");
-                        actionCommandDBService.ExecutionStatusText.AppendLine($"{ ex.Message }{ InnerException }");
+                        ActionCommandDBService.ExecutionStatusText.AppendLine($"{ ex.Message }{ InnerException }");
                         return await Task.FromResult(false);
                     }
                 }
             }
             #endregion TideSites
 
-            actionCommandDBService.ExecutionStatusText.AppendLine("doing ... Adding up to 10 items in TVFiles");
+            ActionCommandDBService.ExecutionStatusText.AppendLine("doing ... Adding up to 10 items in TVFiles");
 
             #region TVFiles
             count = (from c in dbTestDB.TVFiles.AsNoTracking() select c).Count();
@@ -1267,14 +1254,14 @@ namespace ServicesRepopulateTestDBServices.Services
                     catch (Exception ex)
                     {
                         string InnerException = (ex.InnerException != null ? $" Inner: [{ ex.InnerException.Message }]" : "");
-                        actionCommandDBService.ExecutionStatusText.AppendLine($"{ ex.Message }{ InnerException }");
+                        ActionCommandDBService.ExecutionStatusText.AppendLine($"{ ex.Message }{ InnerException }");
                         return await Task.FromResult(false);
                     }
                 }
             }
             #endregion TVFiles
 
-            actionCommandDBService.ExecutionStatusText.AppendLine("doing ... Adding up to 10 items in TVItemLinks");
+            ActionCommandDBService.ExecutionStatusText.AppendLine("doing ... Adding up to 10 items in TVItemLinks");
 
             #region TVItemLinks
             count = (from c in dbTestDB.TVItemLinks.AsNoTracking() select c).Count();
@@ -1292,14 +1279,14 @@ namespace ServicesRepopulateTestDBServices.Services
                     catch (Exception ex)
                     {
                         string InnerException = (ex.InnerException != null ? $" Inner: [{ ex.InnerException.Message }]" : "");
-                        actionCommandDBService.ExecutionStatusText.AppendLine($"{ ex.Message }{ InnerException }");
+                        ActionCommandDBService.ExecutionStatusText.AppendLine($"{ ex.Message }{ InnerException }");
                         return await Task.FromResult(false);
                     }
                 }
             }
             #endregion TVItemLinks
 
-            actionCommandDBService.ExecutionStatusText.AppendLine("doing ... Adding up to 10 items in TVItemStats");
+            ActionCommandDBService.ExecutionStatusText.AppendLine("doing ... Adding up to 10 items in TVItemStats");
 
             #region TVItemStats
             count = (from c in dbTestDB.TVItemStats.AsNoTracking() select c).Count();
@@ -1317,14 +1304,14 @@ namespace ServicesRepopulateTestDBServices.Services
                     catch (Exception ex)
                     {
                         string InnerException = (ex.InnerException != null ? $" Inner: [{ ex.InnerException.Message }]" : "");
-                        actionCommandDBService.ExecutionStatusText.AppendLine($"{ ex.Message }{ InnerException }");
+                        ActionCommandDBService.ExecutionStatusText.AppendLine($"{ ex.Message }{ InnerException }");
                         return await Task.FromResult(false);
                     }
                 }
             }
             #endregion TVItemStats
 
-            actionCommandDBService.ExecutionStatusText.AppendLine("doing ... Adding up to 10 items in TVItemUserAuthorizations");
+            ActionCommandDBService.ExecutionStatusText.AppendLine("doing ... Adding up to 10 items in TVItemUserAuthorizations");
 
             #region TVItemUserAuthorizations
             count = (from c in dbTestDB.TVItemUserAuthorizations.AsNoTracking() select c).Count();
@@ -1341,14 +1328,14 @@ namespace ServicesRepopulateTestDBServices.Services
                     catch (Exception ex)
                     {
                         string InnerException = (ex.InnerException != null ? $" Inner: [{ ex.InnerException.Message }]" : "");
-                        actionCommandDBService.ExecutionStatusText.AppendLine($"{ ex.Message }{ InnerException }");
+                        ActionCommandDBService.ExecutionStatusText.AppendLine($"{ ex.Message }{ InnerException }");
                         return await Task.FromResult(false);
                     }
                 }
             }
             #endregion TVItemUserAuthorizations
 
-            actionCommandDBService.ExecutionStatusText.AppendLine("doing ... Adding up to 10 items in TVTypeUserAuthorizations");
+            ActionCommandDBService.ExecutionStatusText.AppendLine("doing ... Adding up to 10 items in TVTypeUserAuthorizations");
 
             #region TVTypeUserAuthorizations
             count = (from c in dbTestDB.TVTypeUserAuthorizations.AsNoTracking() select c).Count();
@@ -1365,14 +1352,14 @@ namespace ServicesRepopulateTestDBServices.Services
                     catch (Exception ex)
                     {
                         string InnerException = (ex.InnerException != null ? $" Inner: [{ ex.InnerException.Message }]" : "");
-                        actionCommandDBService.ExecutionStatusText.AppendLine($"{ ex.Message }{ InnerException }");
+                        ActionCommandDBService.ExecutionStatusText.AppendLine($"{ ex.Message }{ InnerException }");
                         return await Task.FromResult(false);
                     }
                 }
             }
             #endregion TVTypeUserAuthorizations
 
-            actionCommandDBService.ExecutionStatusText.AppendLine("doing ... Adding up to 10 items in UseOfSites");
+            ActionCommandDBService.ExecutionStatusText.AppendLine("doing ... Adding up to 10 items in UseOfSites");
 
             #region UseOfSites
             count = (from c in dbTestDB.UseOfSites.AsNoTracking() select c).Count();
@@ -1390,14 +1377,14 @@ namespace ServicesRepopulateTestDBServices.Services
                     catch (Exception ex)
                     {
                         string InnerException = (ex.InnerException != null ? $" Inner: [{ ex.InnerException.Message }]" : "");
-                        actionCommandDBService.ExecutionStatusText.AppendLine($"{ ex.Message }{ InnerException }");
+                        ActionCommandDBService.ExecutionStatusText.AppendLine($"{ ex.Message }{ InnerException }");
                         return await Task.FromResult(false);
                     }
                 }
             }
             #endregion UseOfSites
 
-            actionCommandDBService.ExecutionStatusText.AppendLine("doing ... Adding up to 10 items in VPScenarios");
+            ActionCommandDBService.ExecutionStatusText.AppendLine("doing ... Adding up to 10 items in VPScenarios");
 
             #region VPScenarios
             count = (from c in dbTestDB.VPScenarios.AsNoTracking() select c).Count();
@@ -1437,7 +1424,7 @@ namespace ServicesRepopulateTestDBServices.Services
                     catch (Exception ex)
                     {
                         string InnerException = (ex.InnerException != null ? $" Inner: [{ ex.InnerException.Message }]" : "");
-                        actionCommandDBService.ExecutionStatusText.AppendLine($"{ ex.Message }{ InnerException }");
+                        ActionCommandDBService.ExecutionStatusText.AppendLine($"{ ex.Message }{ InnerException }");
                         return await Task.FromResult(false);
                     }
                 }
@@ -1459,7 +1446,7 @@ namespace ServicesRepopulateTestDBServices.Services
                     catch (Exception ex)
                     {
                         string InnerException = (ex.InnerException != null ? $" Inner: [{ ex.InnerException.Message }]" : "");
-                        actionCommandDBService.ExecutionStatusText.AppendLine($"{ ex.Message }{ InnerException }");
+                        ActionCommandDBService.ExecutionStatusText.AppendLine($"{ ex.Message }{ InnerException }");
                         return await Task.FromResult(false);
                     }
                 }
@@ -1482,7 +1469,7 @@ namespace ServicesRepopulateTestDBServices.Services
                     catch (Exception ex)
                     {
                         string InnerException = (ex.InnerException != null ? $" Inner: [{ ex.InnerException.Message }]" : "");
-                        actionCommandDBService.ExecutionStatusText.AppendLine($"{ ex.Message }{ InnerException }");
+                        ActionCommandDBService.ExecutionStatusText.AppendLine($"{ ex.Message }{ InnerException }");
                         return await Task.FromResult(false);
                     }
                 }

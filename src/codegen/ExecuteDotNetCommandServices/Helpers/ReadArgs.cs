@@ -1,24 +1,7 @@
-﻿using ExecuteDotNetCommandServices.Models;
-using GenerateCodeBaseServices.Models;
-using GenerateCodeBaseServices.Services;
-using ActionCommandDBServices.Models;
-using ActionCommandDBServices.Services;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
+﻿using CultureServices.Resources;
 using System.Globalization;
-using System.IO;
 using System.Linq;
-using System.Reflection;
-using System.Text;
 using System.Threading.Tasks;
-using ValidateAppSettingsServices.Services;
-using ValidateAppSettingsServices.Models;
-using Microsoft.AspNetCore.Mvc;
-using CultureServices.Resources;
 
 namespace ExecuteDotNetCommandServices.Services
 {
@@ -28,16 +11,16 @@ namespace ExecuteDotNetCommandServices.Services
         {
             if (args.Count() != 3)
             {
-                actionCommandDBService.ErrorText.AppendLine($"{ CultureServicesRes.ApplicationRequires3ParametersSeparatedBySpace }");
-                actionCommandDBService.ErrorText.AppendLine("");
-                actionCommandDBService.ErrorText.AppendLine($"{ CultureServicesRes.Example } ExecuteDotNetCommand en-CA run CSSPEnums");
-                actionCommandDBService.ErrorText.AppendLine("");
-                actionCommandDBService.ErrorText.AppendLine($"\t#0:\t{ CultureServicesRes.CultureOptionsEnCAFrCA }");
-                actionCommandDBService.ErrorText.AppendLine("");
-                actionCommandDBService.ErrorText.AppendLine($"\t#1:\t{ CultureServicesRes.ActionOptionsRunTestBuild }");
-                actionCommandDBService.ErrorText.AppendLine("");
-                actionCommandDBService.ErrorText.AppendLine($"\t#2:\t{ CultureServicesRes.SolutionFileNameExampleCSSPRunsCSSPModelsCSSPServices }");
-                actionCommandDBService.ErrorText.AppendLine("");
+                ActionCommandDBService.ErrorText.AppendLine($"{ CultureServicesRes.ApplicationRequires3ParametersSeparatedBySpace }");
+                ActionCommandDBService.ErrorText.AppendLine("");
+                ActionCommandDBService.ErrorText.AppendLine($"{ CultureServicesRes.Example } ExecuteDotNetCommand en-CA run CSSPEnums");
+                ActionCommandDBService.ErrorText.AppendLine("");
+                ActionCommandDBService.ErrorText.AppendLine($"\t#0:\t{ CultureServicesRes.CultureOptionsEnCAFrCA }");
+                ActionCommandDBService.ErrorText.AppendLine("");
+                ActionCommandDBService.ErrorText.AppendLine($"\t#1:\t{ CultureServicesRes.ActionOptionsRunTestBuild }");
+                ActionCommandDBService.ErrorText.AppendLine("");
+                ActionCommandDBService.ErrorText.AppendLine($"\t#2:\t{ CultureServicesRes.SolutionFileNameExampleCSSPRunsCSSPModelsCSSPServices }");
+                ActionCommandDBService.ErrorText.AppendLine("");
                 return await Task.FromResult(false);
             }
             else
@@ -64,8 +47,8 @@ namespace ExecuteDotNetCommandServices.Services
 
                 if (!(Args1Allowables.Contains(args[1])))
                 {
-                    actionCommandDBService.ErrorText.AppendLine($"\t#1:\t{ string.Format(CultureServicesRes.Parameter_ShouldBe_, "1", string.Join(" || ", Args1Allowables)) }");
-                    actionCommandDBService.ErrorText.AppendLine("");
+                    ActionCommandDBService.ErrorText.AppendLine($"\t#1:\t{ string.Format(CultureServicesRes.Parameter_ShouldBe_, "1", string.Join(" || ", Args1Allowables)) }");
+                    ActionCommandDBService.ErrorText.AppendLine("");
                     return await Task.FromResult(false);
                 }
                 else
@@ -77,8 +60,8 @@ namespace ExecuteDotNetCommandServices.Services
                 {
                     if (!(ArgsRunAllowables.Contains(args[2])))
                     {
-                        actionCommandDBService.ErrorText.AppendLine($"\t#2:\t{ string.Format(CultureServicesRes.Parameter_ShouldBe_, "2", string.Join(" || ", ArgsRunAllowables)) }");
-                        actionCommandDBService.ErrorText.AppendLine("");
+                        ActionCommandDBService.ErrorText.AppendLine($"\t#2:\t{ string.Format(CultureServicesRes.Parameter_ShouldBe_, "2", string.Join(" || ", ArgsRunAllowables)) }");
+                        ActionCommandDBService.ErrorText.AppendLine("");
                         return await Task.FromResult(false);
                     }
                     else
@@ -90,8 +73,8 @@ namespace ExecuteDotNetCommandServices.Services
                 {
                     if (!(ArgsTestAllowables.Contains(args[2])))
                     {
-                        actionCommandDBService.ErrorText.AppendLine($"\t#2:\t{ string.Format(CultureServicesRes.Parameter_ShouldBe_, "2", string.Join(" || ", ArgsTestAllowables)) }");
-                        actionCommandDBService.ErrorText.AppendLine("");
+                        ActionCommandDBService.ErrorText.AppendLine($"\t#2:\t{ string.Format(CultureServicesRes.Parameter_ShouldBe_, "2", string.Join(" || ", ArgsTestAllowables)) }");
+                        ActionCommandDBService.ErrorText.AppendLine("");
                         return await Task.FromResult(false);
                     }
                     else
@@ -103,8 +86,8 @@ namespace ExecuteDotNetCommandServices.Services
                 {
                     if (!(ArgsBuildAllowables.Contains(args[2])))
                     {
-                        actionCommandDBService.ErrorText.AppendLine($"\t#2:\t{ string.Format(CultureServicesRes.Parameter_ShouldBe_, "2", string.Join(" || ", ArgsBuildAllowables)) }");
-                        actionCommandDBService.ErrorText.AppendLine("");
+                        ActionCommandDBService.ErrorText.AppendLine($"\t#2:\t{ string.Format(CultureServicesRes.Parameter_ShouldBe_, "2", string.Join(" || ", ArgsBuildAllowables)) }");
+                        ActionCommandDBService.ErrorText.AppendLine("");
                         return await Task.FromResult(false);
                     }
                     else

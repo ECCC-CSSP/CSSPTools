@@ -1,20 +1,14 @@
-﻿using GenerateCodeBaseServices.Models;
-using GenerateCodeBaseServices.Services;
-using ActionCommandDBServices.Models;
-using ActionCommandDBServices.Services;
+﻿using ActionCommandDBServices.Models;
+using CultureServices.Resources;
+using GenerateCodeBaseServices.Models;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
-using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
-using ValidateAppSettingsServices.Services;
-using ValidateAppSettingsServices.Models;
-using Microsoft.AspNetCore.Mvc;
-using CultureServices.Resources;
 
 namespace ModelsCompareServices.Services
 {
@@ -22,30 +16,30 @@ namespace ModelsCompareServices.Services
     {
         private async Task<bool> Generate()
         {
-            ActionResult<ActionCommand> actionActionCommand = await actionCommandDBService.GetOrCreate();
+            ActionResult<ActionCommand> actionActionCommand = await ActionCommandDBService.GetOrCreate();
 
             if (((ObjectResult)actionActionCommand.Result).StatusCode == 400)
             {
-                await actionCommandDBService.ConsoleWriteError("actionCommand == null");
+                await ActionCommandDBService.ConsoleWriteError("actionCommand == null");
                 return await Task.FromResult(false);
             }
 
-            actionCommandDBService.ExecutionStatusText.AppendLine("Generate Starting ...");
-            actionCommandDBService.PercentCompleted = 10;
-            await actionCommandDBService.Update();
+            ActionCommandDBService.ExecutionStatusText.AppendLine("Generate Starting ...");
+            ActionCommandDBService.PercentCompleted = 10;
+            await ActionCommandDBService.Update();
 
             List<string> UseQuestionMarkList = new List<string>() { "bool", "int", "long", "DateTime", "double", "float", "byte[]", "Type" };
 
             List<string> PropertiesToSkipList = new List<string>() { "ValidationResults", "HasErrors", "LastUpdateDate_UTC", "LastUpdateContactTVItemID" };
             #region Variables and loading DLL properties
-            FileInfo fiCSSPModelsDLL = new FileInfo(configuration.GetValue<string>("CSSPModels"));
+            FileInfo fiCSSPModelsDLL = new FileInfo(Config.GetValue<string>("CSSPModels"));
 
             List<DLLTypeInfo> DLLTypeInfoCSSPEnumsList = new List<DLLTypeInfo>();
 
             List<DLLTypeInfo> DLLTypeInfoCSSPModelsList = new List<DLLTypeInfo>();
-            if (generateCodeBaseService.FillDLLTypeInfoList(fiCSSPModelsDLL, DLLTypeInfoCSSPModelsList))
+            if (GenerateCodeBaseService.FillDLLTypeInfoList(fiCSSPModelsDLL, DLLTypeInfoCSSPModelsList))
             {
-                actionCommandDBService.ErrorText.AppendLine($"{ string.Format(CultureServicesRes.CouldNotReadFile_, fiCSSPModelsDLL.FullName) }");
+                ActionCommandDBService.ErrorText.AppendLine($"{ string.Format(CultureServicesRes.CouldNotReadFile_, fiCSSPModelsDLL.FullName) }");
                 return await Task.FromResult(false);
             }
             #endregion Variables and loading DLL properties
@@ -72,7 +66,7 @@ namespace ModelsCompareServices.Services
                 //bool PleaseStop = false;
                 bool NotMappedClass = false;
 
-                if (generateCodeBaseService.SkipType(dllTypeInfoModels.Type))
+                if (GenerateCodeBaseService.SkipType(dllTypeInfoModels.Type))
                 {
                     continue;
                 }
@@ -83,15 +77,15 @@ namespace ModelsCompareServices.Services
                 //}
 
                 #region Show type file in richTextBoxStatus
-                FileInfo fiCodeFile = new FileInfo(configuration.GetValue<string>("CodeFile").Replace("{TypeName}", dllTypeInfoModels.Type.Name));
+                FileInfo fiCodeFile = new FileInfo(Config.GetValue<string>("CodeFile").Replace("{TypeName}", dllTypeInfoModels.Type.Name));
 
                 if (!fiCodeFile.Exists)
                 {
                     NotMappedClass = true;
-                    fiCodeFile = new FileInfo(configuration.GetValue<string>("CodeFileNotMapped").Replace("{TypeName}", dllTypeInfoModels.Type.Name));
+                    fiCodeFile = new FileInfo(Config.GetValue<string>("CodeFileNotMapped").Replace("{TypeName}", dllTypeInfoModels.Type.Name));
                     if (!fiCodeFile.Exists)
                     {
-                        actionCommandDBService.ErrorText.AppendLine($"{ string.Format(CultureServicesRes.CouldNotFindFile_, dllTypeInfoModels.Type.Name) }");
+                        ActionCommandDBService.ErrorText.AppendLine($"{ string.Format(CultureServicesRes.CouldNotFindFile_, dllTypeInfoModels.Type.Name) }");
                         return await Task.FromResult(false);
                     }
                 }
@@ -153,7 +147,7 @@ namespace ModelsCompareServices.Services
                         string PropTypeText = GetTypeText(dllPropertyInfo.CSSPProp.PropType);
                         if (string.IsNullOrWhiteSpace(PropTypeText))
                         {
-                            actionCommandDBService.ErrorText.AppendLine($"{ dllPropertyInfo.CSSPProp.PropType } { CultureServicesRes.IsNotImplemented }");
+                            ActionCommandDBService.ErrorText.AppendLine($"{ dllPropertyInfo.CSSPProp.PropType } { CultureServicesRes.IsNotImplemented }");
                             return await Task.FromResult(false);
                         }
 
@@ -188,7 +182,7 @@ namespace ModelsCompareServices.Services
                         string PropTypeText = GetTypeText(dllPropertyInfo.CSSPProp.PropType);
                         if (string.IsNullOrWhiteSpace(PropTypeText))
                         {
-                            actionCommandDBService.ErrorText.AppendLine($"{ dllPropertyInfo.CSSPProp.PropType } { CultureServicesRes.IsNotImplemented }");
+                            ActionCommandDBService.ErrorText.AppendLine($"{ dllPropertyInfo.CSSPProp.PropType } { CultureServicesRes.IsNotImplemented }");
                             return await Task.FromResult(false);
                         }
 
@@ -314,15 +308,15 @@ namespace ModelsCompareServices.Services
                 #region Comparing existing document with created document
                 #endregion Comparing existing document with created document
 
-                actionCommandDBService.ExecutionStatusText.AppendLine($"{ dllTypeInfoModels.Type.Name } { CultureServicesRes.ComparedOK } ...");
+                ActionCommandDBService.ExecutionStatusText.AppendLine($"{ dllTypeInfoModels.Type.Name } { CultureServicesRes.ComparedOK } ...");
             }
 
-            actionCommandDBService.ExecutionStatusText.AppendLine("");
-            actionCommandDBService.ExecutionStatusText.AppendLine($"{ CultureServicesRes.Done } ...");
-            actionCommandDBService.ExecutionStatusText.AppendLine("");
-            actionCommandDBService.ExecutionStatusText.AppendLine("Generate Finished ...");
-            actionCommandDBService.PercentCompleted = 100;
-            await actionCommandDBService.Update();
+            ActionCommandDBService.ExecutionStatusText.AppendLine("");
+            ActionCommandDBService.ExecutionStatusText.AppendLine($"{ CultureServicesRes.Done } ...");
+            ActionCommandDBService.ExecutionStatusText.AppendLine("");
+            ActionCommandDBService.ExecutionStatusText.AppendLine("Generate Finished ...");
+            ActionCommandDBService.PercentCompleted = 100;
+            await ActionCommandDBService.Update();
 
             return await Task.FromResult(true);
         }

@@ -16,109 +16,89 @@ using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 using ValidateAppSettingsServices.Services;
+using ConfigServices.Services;
+using CultureServices.Resources;
 
 namespace ExecuteDotNetCommandServices.Tests
 {
-    public partial class ExecuteDotNetCommandServiceTests
+    public partial class ExecuteDotNetCommandServiceTests : ConfigService
     {
         #region Variables
         #endregion Variables
 
         #region Properties
-        private IConfiguration configuration { get; set; }
-        private IServiceCollection serviceCollection { get; set; }
-        private IExecuteDotNetCommandService executeDotNetCommandService { get; set; }
-        private IServiceProvider provider { get; set; }
-        private string DBFileName { get; set; } = "DBFileName";
+        private IExecuteDotNetCommandService ExecuteDotNetCommandService { get; set; }
         #endregion Properties
 
         #region Constructors
         public ExecuteDotNetCommandServiceTests()
         {
-            Init();
         }
         #endregion Constructors
 
         #region Functions public
         [Theory]
-        [InlineData("en-CA")]
-        [InlineData("fr-CA")]
-        public void ExecuteDotNetCommandServices_Constructors_Good_Test(string culture)
+        [InlineData("en-CA")] // good
+        [InlineData("fr-CA")] // good
+        [InlineData("en-GB")] // good will default to en-CA
+        public async Task EnumsTestGenerated_csService_Run_Good_Test(string culture)
         {
-            Init();
+            Assert.True(await Setup(new CultureInfo(culture), "appsettings.json"));
 
-            Assert.NotNull(configuration);
-            Assert.NotNull(serviceCollection);
-            Assert.NotNull(executeDotNetCommandService);
+            Assert.NotNull(Config);
+            Assert.NotNull(Services);
+            Assert.NotNull(Provider);
+            Assert.NotNull(ExecuteDotNetCommandService);
 
-            string[] args = new List<string>() { culture, "run", "EnumsCompareWithOldEnums" }.ToArray();
+            string[] args = new List<string>() { culture, "run", "AngularEnumsGenerated" }.ToArray();
 
-            Assert.Equal(culture, args[0]);
+            Assert.True(await ExecuteDotNetCommandService.Run(args));
+
+            // all culture other than "fr-CA" should default to "en-CA"
+            if (culture != "fr-CA")
+            {
+                culture = "en-CA";
+            }
+            CultureInfo Culture = new CultureInfo(culture);
+            Assert.Equal(Culture, CultureServicesRes.Culture);
         }
         [Theory]
         [InlineData("en-CA")] // good
         [InlineData("fr-CA")] // good
-        [InlineData("en-GB")] // good will default to en-CA
-        public void ExecuteDotNetCommandServices_Run_EnumsCompareWithOldEnums_Good_Test(string culture)
+        public async Task EnumsTestGenerated_csService_Run_SomeFileMissing_Test(string culture)
         {
-            Init();
+            Assert.True(await Setup(new CultureInfo(culture), "appsettings_bad1.json"));
 
-            string[] args = new List<string>() { culture, "run", "EnumsCompareWithOldEnums" }.ToArray();
+            Assert.NotNull(Config);
+            Assert.NotNull(Services);
+            Assert.NotNull(Provider);
+            Assert.NotNull(ExecuteDotNetCommandService);
 
-            bool retBool = executeDotNetCommandService.Run(args).GetAwaiter().GetResult();
-            Assert.True(retBool);
-        }
-        [Theory]
-        [InlineData("en-CA")] // good
-        [InlineData("fr-CA")] // good
-        [InlineData("en-GB")] // good will default to en-CA
-        public void ExecuteDotNetCommandServices_Build_CSSPEnums_Good_Test(string culture)
-        {
-            Init();
+            string[] args = new List<string>() { culture, "run", "AngularEnumsGenerated" }.ToArray();
 
-            string[] args = new List<string>() { culture, "build", "CSSPEnums" }.ToArray();
-
-            bool retBool = executeDotNetCommandService.Run(args).GetAwaiter().GetResult();
-            Assert.True(retBool);
+            Assert.False(await ExecuteDotNetCommandService.Run(args));
         }
         #endregion Functions public
 
         #region Functions private
-        private void Init()
+        private async Task<bool> Setup(CultureInfo culture, string appsettingjsonFileName)
         {
-            configuration = new ConfigurationBuilder()
+            Config = new ConfigurationBuilder()
                .SetBasePath(Directory.GetParent(AppContext.BaseDirectory).FullName)
-               .AddJsonFile("appsettings.json")
+               .AddJsonFile(appsettingjsonFileName)
                .Build();
 
-            Assert.NotNull(configuration);
+            Services = new ServiceCollection();
+            Assert.True(await ConfigureBaseServices());
 
-            serviceCollection = new ServiceCollection();
+            Services.AddSingleton<IExecuteDotNetCommandService, ExecuteDotNetCommandService>();
 
-            serviceCollection.AddSingleton<IConfiguration>(configuration);
-            serviceCollection.AddSingleton<IExecuteDotNetCommandService, ExecuteDotNetCommandService>();
-            serviceCollection.AddSingleton<IActionCommandDBService, ActionCommandDBService>();
-            serviceCollection.AddSingleton<IValidateAppSettingsService, ValidateAppSettingsService>();
+            Assert.True(await BuildServiceProvider());
 
-            string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
-            Assert.False(string.IsNullOrWhiteSpace(appDataPath));
+            ExecuteDotNetCommandService = Provider.GetService<IExecuteDotNetCommandService>();
+            Assert.NotNull(ExecuteDotNetCommandService);
 
-            string fileName = configuration.GetValue<string>(DBFileName);
-            Assert.False(string.IsNullOrWhiteSpace(fileName));
-
-            FileInfo fiDB = new FileInfo(fileName.Replace("{AppDataPath}", appDataPath));
-            Assert.True(fiDB.Exists);
-
-            serviceCollection.AddDbContext<ActionCommandContext>(options =>
-            {
-                options.UseSqlite($"DataSource={fiDB.FullName}");
-            });
-
-            provider = serviceCollection.BuildServiceProvider();
-            Assert.NotNull(provider);
-
-            executeDotNetCommandService = provider.GetService<IExecuteDotNetCommandService>();
-            Assert.NotNull(executeDotNetCommandService);
+            return await Task.FromResult(true);
         }
         #endregion Functions private
     }

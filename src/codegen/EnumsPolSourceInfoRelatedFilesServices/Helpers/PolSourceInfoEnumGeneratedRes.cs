@@ -5,7 +5,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -27,7 +26,7 @@ namespace EnumsPolSourceInfoRelatedFilesServices.Services
         {
             StringBuilder sb = new StringBuilder();
 
-            FileInfo fi = new FileInfo(configuration.GetValue<string>("PolSourceInfoEnumGeneratedRes_resx"));
+            FileInfo fi = new FileInfo(Config.GetValue<string>("PolSourceInfoEnumGeneratedRes_resx"));
 
             if (!await ResxTopPart(sb)) return await Task.FromResult(false);
 
@@ -35,7 +34,7 @@ namespace EnumsPolSourceInfoRelatedFilesServices.Services
             sb.AppendLine(@"  <value>Do not manually edit this file</value>");
             sb.AppendLine(@"</data>");
 
-            foreach (GroupChoiceChildLevel groupChoiceChildLevel in polSourceGroupingExcelFileReadService.groupChoiceChildLevelList.Where(c => c.Group.Substring(c.Group.Length - 5) == "Start" && c.Choice == "").Distinct().ToList())
+            foreach (GroupChoiceChildLevel groupChoiceChildLevel in PolSourceGroupingExcelFileReadService.groupChoiceChildLevelList.Where(c => c.Group.Substring(c.Group.Length - 5) == "Start" && c.Choice == "").Distinct().ToList())
             {
                 sb.AppendLine($@"<data name=""PolSourceInfoEnum{ groupChoiceChildLevel.Group }"" xml:space=""preserve"">");
                 sb.AppendLine($@"  <value>{ groupChoiceChildLevel.EN.Replace("<", "&lt;").Replace(">", "&gt;") }</value>");
@@ -44,7 +43,7 @@ namespace EnumsPolSourceInfoRelatedFilesServices.Services
                 sb.AppendLine($@"  <value>{ groupChoiceChildLevel.DescEN.Replace("<", "&lt;").Replace(">", "&gt;") }</value>");
                 sb.AppendLine(@"</data>");
             }
-            foreach (GroupChoiceChildLevel groupChoiceChildLevel in polSourceGroupingExcelFileReadService.groupChoiceChildLevelList)
+            foreach (GroupChoiceChildLevel groupChoiceChildLevel in PolSourceGroupingExcelFileReadService.groupChoiceChildLevelList)
             {
                 if (groupChoiceChildLevel.Choice.Length > 0)
                 {
@@ -108,14 +107,14 @@ namespace EnumsPolSourceInfoRelatedFilesServices.Services
             }
             catch (Exception ex)
             {
-                actionCommandDBService.ErrorText.AppendLine($"{ CultureServicesRes.Creating } [{ fi.FullName }] ...");
+                ActionCommandDBService.ErrorText.AppendLine($"{ CultureServicesRes.Creating } [{ fi.FullName }] ...");
                 string InnerException = (ex.InnerException != null ? $"Inner: { ex.InnerException.Message }" : "");
-                actionCommandDBService.ErrorText.AppendLine($"{ CultureServicesRes.Error }: { ex.Message }{ InnerException  }");
+                ActionCommandDBService.ErrorText.AppendLine($"{ CultureServicesRes.Error }: { ex.Message }{ InnerException  }");
 
                 return await Task.FromResult(false);
             }
 
-            actionCommandDBService.ExecutionStatusText.AppendLine($"{ CultureServicesRes.Created }: { fi.FullName }");
+            ActionCommandDBService.ExecutionStatusText.AppendLine($"{ CultureServicesRes.Created }: { fi.FullName }");
 
             return await Task.FromResult(true);
         }

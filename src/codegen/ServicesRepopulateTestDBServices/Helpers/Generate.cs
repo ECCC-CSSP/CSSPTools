@@ -1,25 +1,10 @@
-﻿using CSSPEnums;
-using CSSPModels;
-using GenerateCodeBaseServices.Models;
-using GenerateCodeBaseServices.Services;
-using ActionCommandDBServices.Models;
-using ActionCommandDBServices.Services;
-using Microsoft.Data.SqlClient;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Globalization;
-using System.IO;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using ValidateAppSettingsServices.Services;
-using ValidateAppSettingsServices.Models;
+﻿using ActionCommandDBServices.Models;
 using CultureServices.Resources;
+using GenerateCodeBaseServices.Models;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace ServicesRepopulateTestDBServices.Services
 {
@@ -27,55 +12,55 @@ namespace ServicesRepopulateTestDBServices.Services
     {
         private async Task<bool> Generate()
         {
-            ActionResult<ActionCommand> actionActionCommand = await actionCommandDBService.GetOrCreate();
+            ActionResult<ActionCommand> actionActionCommand = await ActionCommandDBService.GetOrCreate();
 
             if (((ObjectResult)actionActionCommand.Result).StatusCode == 400)
             {
-                await actionCommandDBService.ConsoleWriteError("actionCommand == null");
+                await ActionCommandDBService.ConsoleWriteError("actionCommand == null");
                 return await Task.FromResult(false);
             }
 
-            actionCommandDBService.ExecutionStatusText.AppendLine("Generate Starting ...");
-            actionCommandDBService.PercentCompleted = 10;
-            await actionCommandDBService.Update();
+            ActionCommandDBService.ExecutionStatusText.AppendLine("Generate Starting ...");
+            ActionCommandDBService.PercentCompleted = 10;
+            await ActionCommandDBService.Update();
 
-            string CSSPDBConnectionString = configuration.GetValue<string>("CSSPDBConnectionString");
-            string TestDBConnectionString = configuration.GetValue<string>("TestDBConnectionString");
+            string CSSPDBConnectionString = Config.GetValue<string>("CSSPDBConnectionString");
+            string TestDBConnectionString = Config.GetValue<string>("TestDBConnectionString");
 
             List<Table> tableCSSPDBList = new List<Table>();
             List<Table> tableTestDBList = new List<Table>();
 
-            actionCommandDBService.ExecutionStatusText.AppendLine("Loading CSSPDB table information ...");
+            ActionCommandDBService.ExecutionStatusText.AppendLine("Loading CSSPDB table information ...");
             if (!await LoadDBInfo(tableCSSPDBList, CSSPDBConnectionString)) return await Task.FromResult(false);
 
-            actionCommandDBService.ExecutionStatusText.AppendLine("Loading TestWeb table information ...");
+            ActionCommandDBService.ExecutionStatusText.AppendLine("Loading TestWeb table information ...");
             if (!await LoadDBInfo(tableTestDBList, TestDBConnectionString)) return await Task.FromResult(false);
 
-            actionCommandDBService.ExecutionStatusText.AppendLine("Comparing tables ...");
+            ActionCommandDBService.ExecutionStatusText.AppendLine("Comparing tables ...");
             if (!await CompareDBs(tableCSSPDBList, tableTestDBList)) return await Task.FromResult(false);
 
-            actionCommandDBService.ExecutionStatusText.AppendLine("Done comparing ... everything ok");
+            ActionCommandDBService.ExecutionStatusText.AppendLine("Done comparing ... everything ok");
 
-            actionCommandDBService.ExecutionStatusText.AppendLine("Cleaning TestDB ...");
+            ActionCommandDBService.ExecutionStatusText.AppendLine("Cleaning TestDB ...");
             if (!await CleanTestDB(tableTestDBList, TestDBConnectionString)) return await Task.FromResult(false);
 
-            actionCommandDBService.ExecutionStatusText.AppendLine("Done Cleaning TestDB ... everything ok");
+            ActionCommandDBService.ExecutionStatusText.AppendLine("Done Cleaning TestDB ... everything ok");
 
-            actionCommandDBService.ExecutionStatusText.AppendLine("Filling TestDB ...");
+            ActionCommandDBService.ExecutionStatusText.AppendLine("Filling TestDB ...");
             if (!await FillTestDB(tableTestDBList)) return await Task.FromResult(false);
-            actionCommandDBService.ExecutionStatusText.AppendLine("Done Filling TestDB ... everything ok");
+            ActionCommandDBService.ExecutionStatusText.AppendLine("Done Filling TestDB ... everything ok");
 
-            actionCommandDBService.ExecutionStatusText.AppendLine("Making sure every table within TestDB has at least 10 items ...");
+            ActionCommandDBService.ExecutionStatusText.AppendLine("Making sure every table within TestDB has at least 10 items ...");
             if (!await MakingSureEveryTableHasEnoughItemsInTestDB()) return await Task.FromResult(false);
 
-            actionCommandDBService.ExecutionStatusText.AppendLine("Done Making sure every table within TestDB has at least 10 items");
+            ActionCommandDBService.ExecutionStatusText.AppendLine("Done Making sure every table within TestDB has at least 10 items");
 
-            actionCommandDBService.ExecutionStatusText.AppendLine("");
-            actionCommandDBService.ExecutionStatusText.AppendLine($"{ CultureServicesRes.Done } ...");
-            actionCommandDBService.ExecutionStatusText.AppendLine("");
-            actionCommandDBService.ExecutionStatusText.AppendLine("Generate Finished ...");
-            actionCommandDBService.PercentCompleted = 100;
-            await actionCommandDBService.Update();
+            ActionCommandDBService.ExecutionStatusText.AppendLine("");
+            ActionCommandDBService.ExecutionStatusText.AppendLine($"{ CultureServicesRes.Done } ...");
+            ActionCommandDBService.ExecutionStatusText.AppendLine("");
+            ActionCommandDBService.ExecutionStatusText.AppendLine("Generate Finished ...");
+            ActionCommandDBService.PercentCompleted = 100;
+            await ActionCommandDBService.Update();
 
 
             return true;

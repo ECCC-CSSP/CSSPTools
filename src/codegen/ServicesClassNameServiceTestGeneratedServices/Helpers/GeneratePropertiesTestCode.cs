@@ -1,25 +1,8 @@
-﻿using CSSPEnums;
-using CSSPModels;
-using GenerateCodeBaseServices.Models;
-using GenerateCodeBaseServices.Services;
-using ActionCommandDBServices.Models;
-using ActionCommandDBServices.Services;
-using Microsoft.Data.SqlClient;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
+﻿using GenerateCodeBaseServices.Models;
 using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Globalization;
-using System.IO;
-using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using ValidateAppSettingsServices.Services;
-using ValidateAppSettingsServices.Models;
-using System.Reflection.Metadata.Ecma335;
 
 namespace ServicesClassNameServiceTestGeneratedServices.Services
 {
@@ -60,7 +43,7 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
             foreach (PropertyInfo prop in type.GetProperties())
             {
                 CSSPProp csspProp = new CSSPProp();
-                if (!generateCodeBaseService.FillCSSPProp(prop, csspProp, type))
+                if (!GenerateCodeBaseService.FillCSSPProp(prop, csspProp, type))
                 {
                     return await Task.FromResult(false);
                 }

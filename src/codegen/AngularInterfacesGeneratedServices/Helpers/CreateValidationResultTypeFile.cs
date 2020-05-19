@@ -1,29 +1,11 @@
-﻿using CSSPEnums;
-using CSSPModels;
-using GenerateCodeBaseServices.Models;
-using GenerateCodeBaseServices.Services;
-using ActionCommandDBServices.Models;
-using ActionCommandDBServices.Services;
-using Microsoft.Data.SqlClient;
-using Microsoft.EntityFrameworkCore;
+﻿using BaseCodeGenerateServices.Services;
 using Microsoft.Extensions.Configuration;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Data;
-using System.Globalization;
 using System.IO;
-using System.Linq;
-using System.Reflection;
 using System.Text;
-using System.Threading.Tasks;
-using ValidateAppSettingsServices.Services;
-using ValidateAppSettingsServices.Models;
-using Microsoft.AspNetCore.Mvc;
 
 namespace AngularInterfacesGeneratedServices.Services
 {
-    public partial class AngularInterfacesGeneratedService : IAngularInterfacesGeneratedService
+    public partial class AngularInterfacesGeneratedService : BaseCodeGenerateService, IAngularInterfacesGeneratedService
     {
         private void CreateValidationResultTypeFile()
         {
@@ -40,11 +22,11 @@ namespace AngularInterfacesGeneratedServices.Services
             sb.AppendLine($@"    ErrorMessage: string;");
             sb.AppendLine(@"}");
 
-            FileInfo fiOutputGen = new FileInfo(configuration.GetValue<string>("ValidateResultFileName"));
+            FileInfo fiOutputGen = new FileInfo(Config.GetValue<string>("ValidateResultFileName"));
             using (StreamWriter sw2 = fiOutputGen.CreateText())
             {
                 sw2.Write(sb.ToString());
-                actionCommandDBService.ExecutionStatusText.AppendLine($"Created [{ fiOutputGen }]");
+                ActionCommandDBService.ExecutionStatusText.AppendLine($"Created [{ fiOutputGen }]");
             }
         }
     }
