@@ -35,7 +35,7 @@ namespace ExecuteDotNetCommand
                 return await Task.FromResult(false);
             }
 
-            ExecuteDotNetCommandService = Provider.GetService<ExecuteDotNetCommandService>();
+            ExecuteDotNetCommandService = Provider.GetService<IExecuteDotNetCommandService>();
             if (ExecuteDotNetCommandService == null)
             {
                 await ActionCommandDBService.ConsoleWriteError($"{ AppDomain.CurrentDomain.FriendlyName } IExecuteDotNetCommandService  == null");

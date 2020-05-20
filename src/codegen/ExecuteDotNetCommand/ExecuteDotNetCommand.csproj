@@ -30,6 +30,9 @@
     <Reference Include="ExecuteDotNetCommandServices">
       <HintPath>..\ExecuteDotNetCommandServices\bin\Debug\netcoreapp3.1\ExecuteDotNetCommandServices.dll</HintPath>
     </Reference>
+    <Reference Include="GenerateCodeBaseServices">
+      <HintPath>..\GenerateCodeBaseServices\bin\Debug\netcoreapp3.1\GenerateCodeBaseServices.dll</HintPath>
+    </Reference>
     <Reference Include="ActionCommandDBServices">
       <HintPath>..\ActionCommandDBServices\bin\Debug\netcoreapp3.1\ActionCommandDBServices.dll</HintPath>
     </Reference>

@@ -2,6 +2,7 @@
 using EnumsPolSourceInfoRelatedFilesServices.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using PolSourceGroupingExcelFileReadServices.Services;
 using System;
 using System.Threading.Tasks;
 
@@ -28,6 +29,7 @@ namespace EnumsPolSourceInfoRelatedFiles
             if (!await ConfigureBaseServices()) return await Task.FromResult(false);
 
             Services.AddSingleton<IEnumsPolSourceInfoRelatedFilesService, EnumsPolSourceInfoRelatedFilesService>();
+            Services.AddSingleton<IPolSourceGroupingExcelFileReadService, PolSourceGroupingExcelFileReadService>();
 
             if (!await BuildServiceProvider())
             {

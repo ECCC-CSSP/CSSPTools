@@ -39,7 +39,7 @@ namespace ServicesRepopulateTestDB
                 return await Task.FromResult(false);
             }
 
-            ServicesRepopulateTestDBService = Provider.GetService<ServicesRepopulateTestDBService>();
+            ServicesRepopulateTestDBService = Provider.GetService<IServicesRepopulateTestDBService>();
             if (ServicesRepopulateTestDBService == null)
             {
                 await ActionCommandDBService.ConsoleWriteError($"{ AppDomain.CurrentDomain.FriendlyName } IServicesRepopulateTestDBService == null");
