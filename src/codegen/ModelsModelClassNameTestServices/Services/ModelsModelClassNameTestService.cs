@@ -1,5 +1,5 @@
 ﻿using ActionCommandDBServices.Services;
-using BaseCodeGenerateServices.Services;
+using ConfigServices.Services;
 using GenerateCodeBaseServices.Services;
 using Microsoft.Extensions.Configuration;
 using System.Collections.Generic;
@@ -9,7 +9,7 @@ using ValidateAppSettingsServices.Services;
 
 namespace ModelsCSSPModelsResServices.Services
 {
-    public partial class ModelsModelClassNameTestService : BaseCodeGenerateService, IModelsModelClassNameTestService
+    public partial class ModelsModelClassNameTestService : ConfigService, IModelsModelClassNameTestService
     {
         #region Variables
         #endregion Variables

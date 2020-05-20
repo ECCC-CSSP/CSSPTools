@@ -1,19 +1,15 @@
 ﻿using ActionCommandDBServices.Services;
-using BaseCodeGenerateServices.Services;
-using CultureServices.Resources;
+using ConfigServices.Services;
 using GenerateCodeBaseServices.Services;
 using Microsoft.Extensions.Configuration;
-using System;
 using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
 using System.Threading.Tasks;
 using ValidateAppSettingsServices.Models;
 using ValidateAppSettingsServices.Services;
 
 namespace AngularInterfacesGeneratedServices.Services
 {
-    public partial class AngularInterfacesGeneratedService : BaseCodeGenerateService, IAngularInterfacesGeneratedService
+    public partial class AngularInterfacesGeneratedService : ConfigService, IAngularInterfacesGeneratedService
     {
         #region Variables
         #endregion Variables

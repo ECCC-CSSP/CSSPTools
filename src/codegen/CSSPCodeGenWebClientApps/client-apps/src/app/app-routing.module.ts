@@ -8,14 +8,14 @@ const routes: Routes = [
     path: 'en-CA', component: ShellComponent, children: [
       { path: 'login', loadChildren: () => import('./components/auth/login/login.module').then(mod => mod.LoginModule) },
       { path: 'register', loadChildren: () => import('./components/auth/register/register.module').then(mod => mod.RegisterModule) },
-      { path: 'dotnet', loadChildren: () => import('./components/dotnet/dotnet.module').then(mod => mod.DotNetModule) },
+      { path: 'actioncommand', loadChildren: () => import('./components/action-command/action-command.module').then(mod => mod.ActionCommandModule) },
     ]
   },
   {
     path: 'fr-CA', component: ShellComponent, children: [
       { path: 'login', loadChildren: () => import('./components/auth/login/login.module').then(mod => mod.LoginModule) },
       { path: 'register', loadChildren: () => import('./components/auth/register/register.module').then(mod => mod.RegisterModule) },
-      { path: 'dotnet', loadChildren: () => import('./components/dotnet/dotnet.module').then(mod => mod.DotNetModule) },
+      { path: 'actioncommand', loadChildren: () => import('./components/action-command/action-command.module').then(mod => mod.ActionCommandModule) },
     ]
   },
   { path: '', redirectTo: 'en-CA', pathMatch: 'full' },

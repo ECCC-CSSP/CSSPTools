@@ -1,19 +1,15 @@
-﻿using ActionCommandDBServices.Models;
-using BaseCodeGenerateServices.Services;
+﻿using ConfigServices.Services;
 using CultureServices.Resources;
 using GenerateCodeBaseServices.Models;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace AngularInterfacesGeneratedServices.Services
 {
-    public partial class AngularInterfacesGeneratedService : BaseCodeGenerateService, IAngularInterfacesGeneratedService
+    public partial class AngularInterfacesGeneratedService : ConfigService, IAngularInterfacesGeneratedService
     {
         private void CreateTypeFile(DLLTypeInfo dllTypeInfoModels, List<DLLTypeInfo> DLLTypeInfoCSSPModelsList)
         {

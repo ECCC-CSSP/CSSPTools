@@ -1,5 +1,5 @@
 ﻿using ActionCommandDBServices.Services;
-using BaseCodeGenerateServices.Services;
+using ConfigServices.Services;
 using GenerateCodeBaseServices.Services;
 using Microsoft.Extensions.Configuration;
 using System.Collections.Generic;
@@ -9,7 +9,7 @@ using ValidateAppSettingsServices.Services;
 
 namespace ModelsCompareServices.Services
 {
-    public partial class ModelsCompareService : BaseCodeGenerateService, IModelsCompareService
+    public partial class ModelsCompareService : ConfigService, IModelsCompareService
     {
         #region Variables
         #endregion Variables

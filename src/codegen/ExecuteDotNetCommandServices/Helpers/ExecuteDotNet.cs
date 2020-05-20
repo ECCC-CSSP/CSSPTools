@@ -54,7 +54,7 @@ namespace ExecuteDotNetCommandServices.Services
 
             Directory.SetCurrentDirectory(currentDirectory);
 
-            if (process.ExitCode == 0)
+            if (process.ExitCode != 0)
             {
                 ActionCommandDBService.ErrorText.AppendLine("");
                 ActionCommandDBService.ErrorText.AppendLine($"{ string.Format(CultureServicesRes.ErrorWhileRunningCommand_UnderDirectory_, command + " " + arg, di.FullName) }");

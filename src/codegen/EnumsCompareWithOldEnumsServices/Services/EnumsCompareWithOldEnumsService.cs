@@ -1,5 +1,5 @@
 ﻿using ActionCommandDBServices.Services;
-using BaseCodeGenerateServices.Services;
+using ConfigServices.Services;
 using GenerateCodeBaseServices.Services;
 using Microsoft.Extensions.Configuration;
 using System.Collections.Generic;
@@ -9,7 +9,7 @@ using ValidateAppSettingsServices.Services;
 
 namespace EnumsCompareWithOldEnumsServices.Services
 {
-    public partial class EnumsCompareWithOldEnumsService : BaseCodeGenerateService, IEnumsCompareWithOldEnumsService
+    public partial class EnumsCompareWithOldEnumsService : ConfigService, IEnumsCompareWithOldEnumsService
     {
         #region Variables
         #endregion Variables

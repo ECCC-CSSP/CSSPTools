@@ -1,5 +1,5 @@
 ﻿using ActionCommandDBServices.Services;
-using BaseCodeGenerateServices.Services;
+using ConfigServices.Services;
 using GenerateCodeBaseServices.Models;
 using GenerateCodeBaseServices.Services;
 using Microsoft.Extensions.Configuration;
@@ -10,7 +10,7 @@ using ValidateAppSettingsServices.Services;
 
 namespace ModelsCompareDBFieldsAndCSSPModelsDLLPropServices.Services
 {
-    public partial class ModelsCompareDBFieldsAndCSSPModelsDLLPropService : BaseCodeGenerateService, IModelsCompareDBFieldsAndCSSPModelsDLLPropService
+    public partial class ModelsCompareDBFieldsAndCSSPModelsDLLPropService : ConfigService, IModelsCompareDBFieldsAndCSSPModelsDLLPropService
     {
         #region Variables
         #endregion Variables

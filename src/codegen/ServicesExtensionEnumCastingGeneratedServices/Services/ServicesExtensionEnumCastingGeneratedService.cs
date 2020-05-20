@@ -1,5 +1,5 @@
 ﻿using ActionCommandDBServices.Services;
-using BaseCodeGenerateServices.Services;
+using ConfigServices.Services;
 using GenerateCodeBaseServices.Services;
 using Microsoft.Extensions.Configuration;
 using System.Collections.Generic;
@@ -9,7 +9,7 @@ using ValidateAppSettingsServices.Services;
 
 namespace ServicesClassNameServiceGeneratedServices.Services
 {
-    public partial class ServicesExtensionEnumCastingGeneratedService : BaseCodeGenerateService, IServicesExtensionEnumCastingGeneratedService
+    public partial class ServicesExtensionEnumCastingGeneratedService : ConfigService, IServicesExtensionEnumCastingGeneratedService
     {
         #region Variables
         #endregion Variables

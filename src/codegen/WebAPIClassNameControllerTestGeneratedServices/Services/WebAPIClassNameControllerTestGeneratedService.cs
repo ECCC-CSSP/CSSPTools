@@ -1,19 +1,15 @@
 ﻿using ActionCommandDBServices.Services;
-using BaseCodeGenerateServices.Services;
-using CultureServices.Resources;
+using ConfigServices.Services;
 using GenerateCodeBaseServices.Services;
 using Microsoft.Extensions.Configuration;
-using System;
 using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
 using System.Threading.Tasks;
 using ValidateAppSettingsServices.Models;
 using ValidateAppSettingsServices.Services;
 
 namespace WebAPIClassNameControllerTestGeneratedServices.Services
 {
-    public partial class WebAPIClassNameControllerTestGeneratedService : BaseCodeGenerateService, IWebAPIClassNameControllerTestGeneratedService
+    public partial class WebAPIClassNameControllerTestGeneratedService : ConfigService, IWebAPIClassNameControllerTestGeneratedService
     {
         #region Variables
         #endregion Variables

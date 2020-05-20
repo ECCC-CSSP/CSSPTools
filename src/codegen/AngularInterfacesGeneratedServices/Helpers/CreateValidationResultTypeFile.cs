@@ -1,11 +1,11 @@
-﻿using BaseCodeGenerateServices.Services;
+﻿using ConfigServices.Services;
 using Microsoft.Extensions.Configuration;
 using System.IO;
 using System.Text;
 
 namespace AngularInterfacesGeneratedServices.Services
 {
-    public partial class AngularInterfacesGeneratedService : BaseCodeGenerateService, IAngularInterfacesGeneratedService
+    public partial class AngularInterfacesGeneratedService : ConfigService, IAngularInterfacesGeneratedService
     {
         private void CreateValidationResultTypeFile()
         {

@@ -1,5 +1,5 @@
 ﻿using ActionCommandDBServices.Services;
-using BaseCodeGenerateServices.Services;
+using ConfigServices.Services;
 using GenerateCodeBaseServices.Services;
 using Microsoft.Extensions.Configuration;
 using System.Collections.Generic;
@@ -9,7 +9,7 @@ using ValidateAppSettingsServices.Services;
 
 namespace AngularEnumsGeneratedServices.Services
 {
-    public partial class AngularEnumsGeneratedService : BaseCodeGenerateService, IAngularEnumsGeneratedService
+    public partial class AngularEnumsGeneratedService : ConfigService, IAngularEnumsGeneratedService
     {
         #region Variables
         #endregion Variables

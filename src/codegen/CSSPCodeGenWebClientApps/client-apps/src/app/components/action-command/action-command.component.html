@@ -1,0 +1,74 @@
+<h1>Action Commands</h1>
+
+<ul>
+    <li *ngFor="let actionCommand of actionCommandService.actionCommandList">
+        <button disabled="{{ actionCommand.Working }}"
+            (click)="RunActionCommand(actionCommand, false)" mat-button color="primary">
+            {{ actionCommand.Command }}
+        </button>
+        &nbsp;&nbsp;&nbsp;
+        <button class="status" disabled="{{ actionCommand.Working }}"
+            (click)="RunActionCommand(actionCommand, true)" mat-button color="primary">
+            Status
+        </button>
+
+        <mat-progress-bar *ngIf="actionCommand.Working" mode="indeterminate">
+        </mat-progress-bar>
+
+        <p *ngIf="actionCommand.Error">
+            <mat-error>{{ actionCommand.Error.error.ErrorText }} </mat-error>
+        </p>
+        <div *ngIf="actionCommand.Status">
+            <h1>{{ actionCommand.Status }}</h1>
+            <pre>
+        {{ actionCommandService.actionCommandModel$.value.CurrentStatus }}
+            </pre>
+        </div>
+    </li>
+</ul>
+
+<p>b</p>
+<p>b</p>
+<p>b</p>
+<p>b</p>
+<p>b</p>
+<p>b</p>
+<p>b</p>
+<p>b</p>
+<p>b</p>
+<p>b</p>
+<p>b</p>
+<p>b</p>
+<p>b</p>
+<p>b</p>
+<p>b</p>
+<p>b</p>
+<p>b</p>
+<p>b</p>
+<p>b</p>
+<p>b</p>
+<p>b</p>
+<p>b</p>
+<p>b</p>
+<p>b</p>
+<p>b</p>
+<p>b</p>
+<p>b</p>
+<p>b</p>
+<p>b</p>
+<p>b</p>
+<p>b</p>
+<p>b</p>
+<p>b</p>
+<p>b</p>
+<p>b</p>
+<p>b</p>
+<p>b</p>
+<p>b</p>
+<p>b</p>
+<p>b</p>
+<p>b</p>
+<p>b</p>
+<p>b</p>
+<p>b</p>
+<p>b</p>

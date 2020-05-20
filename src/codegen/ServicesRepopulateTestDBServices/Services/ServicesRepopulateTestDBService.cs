@@ -1,5 +1,5 @@
 ﻿using ActionCommandDBServices.Services;
-using BaseCodeGenerateServices.Services;
+using ConfigServices.Services;
 using CSSPModels;
 using GenerateCodeBaseServices.Services;
 using Microsoft.Extensions.Configuration;
@@ -10,7 +10,7 @@ using ValidateAppSettingsServices.Services;
 
 namespace ServicesRepopulateTestDBServices.Services
 {
-    public partial class ServicesRepopulateTestDBService : BaseCodeGenerateService, IServicesRepopulateTestDBService
+    public partial class ServicesRepopulateTestDBService : ConfigService, IServicesRepopulateTestDBService
     {
         #region Variables
         #endregion Variables

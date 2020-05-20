@@ -1,5 +1,5 @@
 ﻿using ActionCommandDBServices.Services;
-using BaseCodeGenerateServices.Services;
+using ConfigServices.Services;
 using ExecuteDotNetCommandServices.Models;
 using GenerateCodeBaseServices.Services;
 using Microsoft.Extensions.Configuration;
@@ -9,7 +9,7 @@ using ValidateAppSettingsServices.Services;
 
 namespace ExecuteDotNetCommandServices.Services
 {
-    public partial class ExecuteDotNetCommandService : BaseCodeGenerateService, IExecuteDotNetCommandService
+    public partial class ExecuteDotNetCommandService : ConfigService, IExecuteDotNetCommandService
     {
         #region Variables
         #endregion Variables

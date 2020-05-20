@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { DotNetService } from './dotnet.service';
+import { ActionCommandService } from './action-command.service';
 
-describe('DotNetService', () => {
-  let service: DotNetService;
+describe('ActionCommandService', () => {
+  let service: ActionCommandService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(DotNetService);
+    service = TestBed.inject(ActionCommandService);
   });
 
   it('should be created', () => {

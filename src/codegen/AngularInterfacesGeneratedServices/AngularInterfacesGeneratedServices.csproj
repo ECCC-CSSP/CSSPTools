@@ -19,8 +19,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Reference Include="BaseCodeGenerateServices">
-      <HintPath>..\BaseCodeGenerateServices\bin\Debug\netcoreapp3.1\BaseCodeGenerateServices.dll</HintPath>
+    <Reference Include="ConfigServices">
+      <HintPath>..\ConfigServices\bin\Debug\netcoreapp3.1\ConfigServices.dll</HintPath>
     </Reference>
     <Reference Include="AngularEnumsGeneratedServices">
       <HintPath>..\AngularEnumsGeneratedServices\bin\Debug\netcoreapp3.1\AngularEnumsGeneratedServices.dll</HintPath>

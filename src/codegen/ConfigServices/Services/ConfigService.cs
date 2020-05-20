@@ -8,12 +8,20 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
+using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using ValidateAppSettingsServices.Services;
 
 namespace ConfigServices.Services
 {
+    public enum ExitCode
+    {
+        Success = 0,
+        Error = 1,
+    }
     public class ConfigService : IConfigService
     {
         #region Variables
@@ -24,10 +32,10 @@ namespace ConfigServices.Services
         public IServiceProvider Provider { get; set; }
         public IServiceCollection Services { get; set; }
         public IActionCommandDBService ActionCommandDBService { get; set; }
+        public IGenerateCodeBaseService GenerateCodeBaseService { get; set; }
+        public IValidateAppSettingsService ValidateAppSettingsService { get; set; }
+        public List<string> AllowableCultures { get; set; } = new List<string>() { "en-CA", "fr-CA" };
         public string DBFileName { get; set; } = "DBFileName";
-        //public CSSPDBContext dbCSSPDB { get; set; }
-        //public TestDBContext dbTestDB { get; set; }
-
         private string ActionText = "Action";
         private string CommandText = "Command";
         private string CSSPDBConnectionString = "CSSPDBConnectionString";
@@ -55,6 +63,16 @@ namespace ConfigServices.Services
             if (Provider == null)
             {
                 await ActionCommandDBService.ConsoleWriteError($"{ AppDomain.CurrentDomain.FriendlyName } provider == null");
+                return await Task.FromResult(false);
+            }
+
+            return await Task.FromResult(true);
+        }
+        public async Task<bool> CheckAppSettingsParameters()
+        {
+            if (!await ValidateAppSettingsService.VerifyAppSettings())
+            {
+                await ActionCommandDBService.ConsoleWriteError("");
                 return await Task.FromResult(false);
             }
 
@@ -172,6 +190,67 @@ namespace ConfigServices.Services
                 await ActionCommandDBService.ConsoleWriteError(ex.Message);
                 return await Task.FromResult(false);
             }
+
+            return await Task.FromResult(true);
+        }
+        public async Task<bool> FillActionAndCommand()
+        {
+            try
+            {
+                ActionCommandDBService.Action = Config.GetValue<string>(ActionText);
+                if (ActionCommandDBService.Action == null)
+                {
+                    throw new Exception($"{ string.Format(CultureServicesRes.CouldNotFindParameter_InAppSettingsJSON, ActionText) }");
+                }
+
+                ActionCommandDBService.Command = Config.GetValue<string>(CommandText);
+                if (ActionCommandDBService.Command == null)
+                {
+                    throw new Exception($"{ string.Format(CultureServicesRes.CouldNotFindParameter_InAppSettingsJSON, CommandText) }");
+                }
+
+                await ActionCommandDBService.SetCulture(new CultureInfo(Config.GetValue<string>("Culture")));
+                await ValidateAppSettingsService.SetCulture(new CultureInfo(Config.GetValue<string>("Culture")));
+
+                await ActionCommandDBService.Delete();
+                ActionCommandDBService.Action = Config.GetValue<string>(ActionText);
+                ActionCommandDBService.Command = Config.GetValue<string>(CommandText);
+                var actionResult = await ActionCommandDBService.GetOrCreate();
+                if (actionResult.Value == null)
+                {
+
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return await Task.FromResult(false);
+            }
+
+            return await Task.FromResult(true);
+        }
+        public async Task<bool> SetCulture(CultureInfo culture)
+        {
+            await ActionCommandDBService.SetCulture(culture);
+            await ValidateAppSettingsService.SetCulture(culture);
+            await GenerateCodeBaseService.SetCulture(culture);
+            CultureServicesRes.Culture = culture;
+
+            return await Task.FromResult(true);
+        }
+        public async Task<bool> SetCultureWithArgs(string[] args)
+        {
+            string culture = AllowableCultures[0];
+
+            if (args.Count() > 0)
+            {
+                if (AllowableCultures.Contains(args[0]))
+                {
+                    culture = args[0];
+                }
+            }
+
+            if (!await SetCulture(new CultureInfo(culture))) return await Task.FromResult(false);
 
             return await Task.FromResult(true);
         }

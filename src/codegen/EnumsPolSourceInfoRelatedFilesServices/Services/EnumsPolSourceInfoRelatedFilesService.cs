@@ -1,5 +1,5 @@
 ﻿using ActionCommandDBServices.Services;
-using BaseCodeGenerateServices.Services;
+using ConfigServices.Services;
 using GenerateCodeBaseServices.Services;
 using Microsoft.Extensions.Configuration;
 using PolSourceGroupingExcelFileReadServices.Services;
@@ -10,7 +10,7 @@ using ValidateAppSettingsServices.Services;
 
 namespace EnumsPolSourceInfoRelatedFilesServices.Services
 {
-    public partial class EnumsPolSourceInfoRelatedFilesService : BaseCodeGenerateService, IEnumsPolSourceInfoRelatedFilesService
+    public partial class EnumsPolSourceInfoRelatedFilesService : ConfigService, IEnumsPolSourceInfoRelatedFilesService
     {
         #region Variables
         #endregion Variables

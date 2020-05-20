@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { DotNetComponent } from './dotnet.component';
+import { ActionCommandComponent } from './action-command.component';
 
-describe('DotNetComponent', () => {
-  let component: DotNetComponent;
-  let fixture: ComponentFixture<DotNetComponent>;
+describe('ActionCommandComponent', () => {
+  let component: ActionCommandComponent;
+  let fixture: ComponentFixture<ActionCommandComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ DotNetComponent ]
+      declarations: [ ActionCommandComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(DotNetComponent);
+    fixture = TestBed.createComponent(ActionCommandComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -1,8 +1,12 @@
 ﻿using ActionCommandDBServices.Services;
+using GenerateCodeBaseServices.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
+using System.Collections.Generic;
+using System.Globalization;
 using System.Threading.Tasks;
+using ValidateAppSettingsServices.Services;
 
 namespace ConfigServices.Services
 {
@@ -12,14 +16,19 @@ namespace ConfigServices.Services
         IServiceProvider Provider { get; set; }
         IServiceCollection Services { get; set; }
         IActionCommandDBService ActionCommandDBService { get; set; }
+        IGenerateCodeBaseService GenerateCodeBaseService { get; set; }
+        IValidateAppSettingsService ValidateAppSettingsService { get; set; }
+        List<string> AllowableCultures { get; set; }
         string DBFileName { get; set; }
-        //CSSPDBContext CSSPDBCtx { get; set; }
-        //TestDBContext TestDBCtx { get; set; }
 
 
         Task<bool> BuildServiceProvider();
+        Task<bool> CheckAppSettingsParameters();
         Task<bool> ConfigureBaseServices();
         Task<bool> ConfigureCSSPDBContext();
         Task<bool> ConfigureTestDBContext();
+        Task<bool> FillActionAndCommand();
+        Task<bool> SetCulture(CultureInfo culture);
+        Task<bool> SetCultureWithArgs(string[] args);
     }
 }

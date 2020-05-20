@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using ConfigServices.Services;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.IO;
@@ -21,9 +22,9 @@ namespace AngularInterfacesGenerated
 
             Startup startup = new Startup(Configuration);
 
-            if (!await startup.Run(args)) return await Task.FromResult(0);
+            if (!await startup.Run(args)) return await Task.FromResult((int)ExitCode.Error);
 
-            return await Task.FromResult(1);
+            return await Task.FromResult((int)ExitCode.Success);
         }
         #endregion Entry
 
