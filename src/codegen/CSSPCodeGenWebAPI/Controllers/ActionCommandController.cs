@@ -18,7 +18,6 @@ using Microsoft.Data.SqlClient.Server;
 using Microsoft.Extensions.Configuration;
 using ActionCommandDBServices.Services;
 using ActionCommandDBServices.Models;
-using ActionCommandServices.Services;
 
 namespace CSSPCodeGenWebAPI.Controllers
 {
@@ -32,28 +31,40 @@ namespace CSSPCodeGenWebAPI.Controllers
 
         #region Properties
         private IConfiguration configuration { get; set; }
-        private IActionCommandService actionCommandService { get; set; }
         private IActionCommandDBService actionCommandDBService { get; set; }
         #endregion Properties
 
         #region Constructors
-        public ActionCommandController(IConfiguration configuration, IActionCommandService actionCommandService, IActionCommandDBService actionCommandDBService)
+        public ActionCommandController(IConfiguration configuration, IActionCommandDBService actionCommandDBService)
         {
             this.configuration = configuration;
-            this.actionCommandService = actionCommandService;
             this.actionCommandDBService = actionCommandDBService;
+
+            //Thread.Sleep(1000);
         }
         #endregion Constructors
 
         #region Functions public
-        [HttpPost]
-        public async Task<ActionResult<ActionCommand>> post(ActionCommand actionCommand)
+        [Route("GetAll")]
+        [HttpGet]
+        public async Task<ActionResult<List<ActionCommand>>> GetAll()
         {
-            //Thread.Sleep(1000);
-
-            await actionCommandService.SetCulture(new CultureInfo(Request.RouteValues["culture"].ToString()));
-
-            return await actionCommandService.RunActionCommand(actionCommand);
+            await actionCommandDBService.SetCulture(new CultureInfo(Request.RouteValues["culture"].ToString()));
+            return await actionCommandDBService.GetAll();
+        }
+        [Route("ReFillAll")]
+        [HttpGet]
+        public async Task<ActionResult<List<ActionCommand>>> ReFillAll()
+        {
+            await actionCommandDBService.SetCulture(new CultureInfo(Request.RouteValues["culture"].ToString()));
+            return await actionCommandDBService.ReFillAll();
+        }
+        [Route("Run")]
+        [HttpPost]
+        public async Task<ActionResult<ActionCommand>> Run(ActionCommand actionCommand)
+        {
+            await actionCommandDBService.SetCulture(new CultureInfo(Request.RouteValues["culture"].ToString()));
+            return await actionCommandDBService.Run(actionCommand);
         }
         #endregion Functions public
 

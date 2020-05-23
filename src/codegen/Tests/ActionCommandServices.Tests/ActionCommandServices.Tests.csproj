@@ -60,5 +60,11 @@
       <HintPath>..\..\ActionCommandServices\bin\Debug\netcoreapp3.1\ActionCommandServices.dll</HintPath>
     </Reference>
   </ItemGroup>
+
+  <ItemGroup>
+    <None Update="ActionCommandList.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
   
 </Project>

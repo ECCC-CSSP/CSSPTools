@@ -1,9 +1,12 @@
 import { HttpErrorResponse } from '@angular/common/http';
 
-export interface ActionCommandModel {
+export interface ActionCommandTextModel {
     CurrentStatus?: string;
     WorkingText?: string;
-    DotNetActionCommandList?: ActionCommand[];
+}
+
+export interface ActionCommandModel {
+    ActionCommandList: ActionCommand[];
 }
 
 export interface ActionCommand
@@ -20,7 +23,7 @@ export interface ActionCommand
     PercentCompleted?: number;
     LastUpdateDate?: Date;
 
-    StatusOnly?: boolean;
+    ViewDetails?: boolean;
     Error?: HttpErrorResponse;
     Status?: string;
     Working?: boolean;

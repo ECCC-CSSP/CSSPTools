@@ -1,16 +1,16 @@
 import { ActionCommandService } from './action-command.service';
-import { ActionCommandModel } from './action-command.models';
+import { ActionCommandTextModel } from './action-command.models';
 
-export function LoadLocalesActionCommand(actionCommandService: ActionCommandService) {
-  let actionCommandModel: ActionCommandModel = { 
+export function LoadLocalesActionCommandText(actionCommandService: ActionCommandService) {
+  let actionCommandTextModel: ActionCommandTextModel = { 
     CurrentStatus: 'Current Status',
     WorkingText: 'Working...',
 }
 
   if ($localize.locale === 'fr-CA') {
-      actionCommandModel.CurrentStatus = 'États actuel';
-      actionCommandModel.WorkingText = 'Traitement en cour';
+      actionCommandTextModel.CurrentStatus = 'États actuel';
+      actionCommandTextModel.WorkingText = 'Traitement en cour';
     }
 
-  actionCommandService.UpdateActionCommand(actionCommandModel);
+  actionCommandService.UpdateActionCommandText(actionCommandTextModel);
 }

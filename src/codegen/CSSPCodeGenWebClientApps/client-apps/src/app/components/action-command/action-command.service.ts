@@ -1,15 +1,15 @@
 import { Injectable } from '@angular/core';
-import { ActionCommandModel, ActionCommand } from './action-command.models';
+import { ActionCommandModel, ActionCommand, ActionCommandTextModel } from './action-command.models';
 import { BehaviorSubject, of, Observable } from 'rxjs';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { map, catchError, finalize } from 'rxjs/operators';
 import { Router } from '@angular/router';
-import { ActionReturn } from 'src/app/app.models';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ActionCommandService {
+  actionCommandTextModel$: BehaviorSubject<ActionCommandTextModel> = new BehaviorSubject<ActionCommandTextModel>(<ActionCommandTextModel>{});
   actionCommandModel$: BehaviorSubject<ActionCommandModel> = new BehaviorSubject<ActionCommandModel>(<ActionCommandModel>{});
   actionCommandList: ActionCommand[] = [
     { Action: 'run', Command: 'AngularEnumsGenerated', Working: false },
@@ -31,56 +31,76 @@ export class ActionCommandService {
     { Action: 'run', Command: 'WebAPIClassNameControllerTestGenerated', Working: false },
   ];
   constructor(private httpClient: HttpClient) {
-    this.LoadLocalesActionCommand();
-    this.UpdateActionCommand(<ActionCommandModel>{ Working: false, ActionCommandList: this.actionCommandList });
+    this.LoadLocalesActionCommandText();
+    if (!this.actionCommandModel$.getValue()?.ActionCommandList?.length) {
+      this.UpdateActionCommand(<ActionCommandModel>{ ActionCommandList: this.actionCommandList });
+    }
+  }
+
+  UpdateActionCommandText(actionCommandTextModel: ActionCommandTextModel) {
+    this.actionCommandModel$.next(<ActionCommandModel>{ ...this.actionCommandTextModel$.getValue(), ...actionCommandTextModel });
   }
 
   UpdateActionCommand(actionCommandModel: ActionCommandModel) {
     this.actionCommandModel$.next(<ActionCommandModel>{ ...this.actionCommandModel$.getValue(), ...actionCommandModel });
   }
 
-  LoadLocalesActionCommand() {
-    let actionCommandModel: ActionCommandModel = {
+  LoadLocalesActionCommandText() {
+    let actionCommandTextModel: ActionCommandTextModel = {
       CurrentStatus: 'Current Status',
       WorkingText: 'Working ...',
     }
 
     if ($localize.locale === 'fr-CA') {
-      actionCommandModel.CurrentStatus = 'États actuel';
-      actionCommandModel.WorkingText = 'Traitement en cour ...';
+      actionCommandTextModel.CurrentStatus = 'États actuel';
+      actionCommandTextModel.WorkingText = 'Traitement en cour ...';
     }
   }
 
   ActionCommand(router: Router, actionCommand: ActionCommand) {
     let oldURL = router.url;
-    let currentActionCommand: ActionCommand;
-    for (let ac of this.actionCommandList) {
-      if (ac.Action == actionCommand.Action && ac.Command == actionCommand.Command) {
-        currentActionCommand = ac;
+    let actionCommandIndex: number = -1;
+    for (let i = 0, count = this.actionCommandList.length; i < count; i++) {
+      if (this.actionCommandList[i].Action == actionCommand.Action && this.actionCommandList[i].Command == actionCommand.Command) {
+        actionCommandIndex = i;
         break;
       }
     }
-    this.UpdateActionCommand(<ActionCommandModel>{ Working: true, Error: null, Status: this.actionCommandModel$.value.WorkingText });
-    return this.httpClient.post<ActionReturn>('/api/ActionCommand', { Action: actionCommand.Action, Command: actionCommand.Command }).pipe(
-      map((x: any) => {
-        console.debug(`${actionCommand.Action}:${actionCommand.Command} OK. Return: ${x}`);
-        this.UpdateActionCommand(<ActionCommandModel>{ Working: false, Error: null, Status: (<ActionReturn>x).OKText });
-        router.navigateByUrl('', { skipLocationChange: true }).then(() => {
-          router.navigate([`/${oldURL}`]);
-        });
-      }),
-      catchError(e => of(e).pipe(map(e => {
-        this.UpdateActionCommand(<ActionCommandModel>{ Working: false, Error: <HttpErrorResponse>e, Status: '' });
-        console.debug(`${actionCommand.Action}:${actionCommand.Command} ERROR. Return: ${this.actionCommandModel$.value}`);
-        router.navigateByUrl('', { skipLocationChange: true }).then(() => {
-          router.navigate([`/${oldURL}`]);
-        });
-      })))
-      //,
-      // finalize(() => {
-      //   this.UpdateDotNet(<DotNetModel>{ Working: false });
-      //   console.debug(`${command} COMPLETED`);
-      // })
-    );
+
+    if (actionCommandIndex != -1) {
+      this.actionCommandList[actionCommandIndex].Working = true;
+      this.actionCommandList[actionCommandIndex].Error = null;
+      this.actionCommandList[actionCommandIndex].Status = this.actionCommandTextModel$.value.WorkingText;
+      this.UpdateActionCommand(<ActionCommandModel>{ ActionCommandList: this.actionCommandList });
+      return this.httpClient.post<ActionCommand>('/api/ActionCommand', { Action: actionCommand.Action, Command: actionCommand.Command + "sef" }).pipe(
+        map((x: any) => {
+          console.debug(`${actionCommand.Action}:${actionCommand.Command} OK. Return: ${x}`);
+          this.actionCommandList[actionCommandIndex] = x;
+          this.actionCommandList[actionCommandIndex].Working = false;
+          this.actionCommandList[actionCommandIndex].Error = null;
+          this.actionCommandList[actionCommandIndex].Status = null;
+          this.actionCommandList[actionCommandIndex].ViewDetails = true;
+          this.UpdateActionCommand(<ActionCommandModel>{ ActionCommandList: this.actionCommandList });
+          router.navigateByUrl('', { skipLocationChange: true }).then(() => {
+            router.navigate([`/${oldURL}`]);
+          });
+        }),
+        catchError(e => of(e).pipe(map(e => {
+          this.actionCommandList[actionCommandIndex].Working = false;
+          this.actionCommandList[actionCommandIndex].Error = <HttpErrorResponse>e;
+          this.actionCommandList[actionCommandIndex].Status = null;
+          this.UpdateActionCommand(<ActionCommandModel>{ ActionCommandList: this.actionCommandList });
+          console.debug(`${actionCommand.Action}:${actionCommand.Command} ERROR. Return: ${this.actionCommandList[actionCommandIndex].Error}`);
+          router.navigateByUrl('', { skipLocationChange: true }).then(() => {
+            router.navigate([`/${oldURL}`]);
+          });
+        })))
+        //,
+        // finalize(() => {
+        //   this.UpdateDotNet(<DotNetModel>{ Working: false });
+        //   console.debug(`${command} COMPLETED`);
+        // })
+      );
+    }
   }
 }

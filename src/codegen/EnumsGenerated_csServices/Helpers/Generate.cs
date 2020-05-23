@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace EnumsGenerated_csServices.Services
 {
-    public partial class EnumsGenerated_csService : IEnumsGenerated_csService
+    public partial class EnumsGenerated_csService
     {
         private async Task<bool> Generate()
         {

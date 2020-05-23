@@ -177,6 +177,9 @@
   <data name="CouldNotDeleteStatusFile_Error_" xml:space="preserve">
     <value>Impossible d'effacer la filière status [{0}]. Erreur: [{1}]</value>
   </data>
+  <data name="CouldNotFindActionCommand" xml:space="preserve">
+    <value>Could not find ActionCommand (fr)</value>
+  </data>
   <data name="CouldNotFindActionCommandToDeleteWithAction_AndCommand_" xml:space="preserve">
     <value>Could not find ActionCommand to delete with Action [{0}] and Command [{1}] (fr)</value>
   </data>
@@ -207,8 +210,14 @@
   <data name="CouldNotGetOrCreateObject_InDB_" xml:space="preserve">
     <value>Could not get or create object [{0}] in DB [{1}] (fr)</value>
   </data>
+  <data name="CouldNotReadAppSettingsParameter_ShouldBeSomthingLike_" xml:space="preserve">
+    <value>Could not read appsettings.json parameter {0}. Should be somthing like [{1}] (fr)</value>
+  </data>
   <data name="CouldNotReadFile_" xml:space="preserve">
     <value>Could not read file [{0}] (fr)</value>
+  </data>
+  <data name="CouldNotReFillDB" xml:space="preserve">
+    <value>Could not refill ActionCommandDB (fr)</value>
   </data>
   <data name="Created" xml:space="preserve">
     <value>Created (fr)</value>
@@ -242,6 +251,9 @@
   </data>
   <data name="DataType" xml:space="preserve">
     <value>DataType</value>
+  </data>
+  <data name="Delete" xml:space="preserve">
+    <value>delete (fr)</value>
   </data>
   <data name="DoesHaveDescENAndDescFRText" xml:space="preserve">
     <value>does have DescEN and DescFR text (fr)</value>
@@ -489,6 +501,9 @@
   <data name="ThatGroupCSSPID" xml:space="preserve">
     <value>that Group CSSPID (fr)</value>
   </data>
+  <data name="To_" xml:space="preserve">
+    <value>to {0} (fr)</value>
+  </data>
   <data name="Type" xml:space="preserve">
     <value>Type (fr)</value>
   </data>
@@ -504,6 +519,9 @@
   <data name="UnmanagedServerError_" xml:space="preserve">
     <value>Unmanaged server error: [{0}] (fr)</value>
   </data>
+  <data name="Update" xml:space="preserve">
+    <value>update (fr)</value>
+  </data>
   <data name="VerifyAppSettingsFile" xml:space="preserve">
     <value>Verify appsettings.json file (fr)</value>
   </data>
@@ -518,6 +536,9 @@
   </data>
   <data name="WhichWillDuplicate" xml:space="preserve">
     <value>which will dupliate (fr)</value>
+  </data>
+  <data name="WithAction_AndCommand_" xml:space="preserve">
+    <value>with Action [{0}] and Command [{1}] (fr)</value>
   </data>
   <data name="YouCanAddASpaceToFixTheProblem" xml:space="preserve">
     <value>You can add a space to fix the problem (fr)</value>

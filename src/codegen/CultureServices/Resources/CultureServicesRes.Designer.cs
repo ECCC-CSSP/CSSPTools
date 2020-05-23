@@ -259,6 +259,15 @@ namespace CultureServices.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Could not find ActionCommand.
+        /// </summary>
+        public static string CouldNotFindActionCommand {
+            get {
+                return ResourceManager.GetString("CouldNotFindActionCommand", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Could not find ActionCommand to delete with Action [{0}] and Command [{1}].
         /// </summary>
         public static string CouldNotFindActionCommandToDeleteWithAction_AndCommand_ {
@@ -349,11 +358,29 @@ namespace CultureServices.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Could not read appsettings.json parameter {0}. Should be somthing like [{1}].
+        /// </summary>
+        public static string CouldNotReadAppSettingsParameter_ShouldBeSomthingLike_ {
+            get {
+                return ResourceManager.GetString("CouldNotReadAppSettingsParameter_ShouldBeSomthingLike_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Could not read file [{0}].
         /// </summary>
         public static string CouldNotReadFile_ {
             get {
                 return ResourceManager.GetString("CouldNotReadFile_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Could not refill ActionCommandDB.
+        /// </summary>
+        public static string CouldNotReFillDB {
+            get {
+                return ResourceManager.GetString("CouldNotReFillDB", resourceCulture);
             }
         }
         
@@ -453,6 +480,15 @@ namespace CultureServices.Resources {
         public static string DataType {
             get {
                 return ResourceManager.GetString("DataType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to delete.
+        /// </summary>
+        public static string Delete {
+            get {
+                return ResourceManager.GetString("Delete", resourceCulture);
             }
         }
         
@@ -1195,6 +1231,15 @@ namespace CultureServices.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to to {0}.
+        /// </summary>
+        public static string To_ {
+            get {
+                return ResourceManager.GetString("To_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Type.
         /// </summary>
         public static string Type {
@@ -1240,6 +1285,15 @@ namespace CultureServices.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to update.
+        /// </summary>
+        public static string Update {
+            get {
+                return ResourceManager.GetString("Update", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Verify appsettings.json file.
         /// </summary>
         public static string VerifyAppSettingsFile {
@@ -1281,6 +1335,15 @@ namespace CultureServices.Resources {
         public static string WhichWillDuplicate {
             get {
                 return ResourceManager.GetString("WhichWillDuplicate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to with Action [{0}] and Command [{1}].
+        /// </summary>
+        public static string WithAction_AndCommand_ {
+            get {
+                return ResourceManager.GetString("WithAction_AndCommand_", resourceCulture);
             }
         }
         

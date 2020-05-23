@@ -2,14 +2,12 @@
 
 <ul>
     <li *ngFor="let actionCommand of actionCommandService.actionCommandList">
-        <button disabled="{{ actionCommand.Working }}"
-            (click)="RunActionCommand(actionCommand, false)" mat-button color="primary">
-            {{ actionCommand.Command }}
+        <button (click)="ViewDetails(actionCommand)" mat-button color="primary">
+            <mat-icon>arrow_drop_down_circle</mat-icon>
         </button>
-        &nbsp;&nbsp;&nbsp;
-        <button class="status" disabled="{{ actionCommand.Working }}"
-            (click)="RunActionCommand(actionCommand, true)" mat-button color="primary">
-            Status
+        <button disabled="{{ actionCommand.Working }}" (click)="RunActionCommand(actionCommand)" mat-button
+            color="primary">
+            {{ actionCommand.Command }}
         </button>
 
         <mat-progress-bar *ngIf="actionCommand.Working" mode="indeterminate">
@@ -18,10 +16,28 @@
         <p *ngIf="actionCommand.Error">
             <mat-error>{{ actionCommand.Error.error.ErrorText }} </mat-error>
         </p>
-        <div *ngIf="actionCommand.Status">
-            <h1>{{ actionCommand.Status }}</h1>
+        <div *ngIf="actionCommand.ViewDetails">
+            <h1>{{ actionCommand.FullFileName }}</h1>
             <pre>
-        {{ actionCommandService.actionCommandModel$.value.CurrentStatus }}
+                {{ actionCommand.Description }}
+            </pre>
+            <pre>
+                {{ actionCommand.TempStatusText }}
+            </pre>
+            <pre>
+                {{ actionCommand.ExecutionStatusText }}
+            </pre>
+            <pre>
+                {{ actionCommand.FilesStatusText }}
+            </pre>
+            <pre>
+                {{ actionCommand.PercentCompleted }}
+            </pre>
+            <div>
+                {{ actionCommand.LastUpdateDate | date:'longDate' }}
+            </div>
+            <pre>
+                {{ actionCommandService.actionCommandTextModel$.value.CurrentStatus }}
             </pre>
         </div>
     </li>

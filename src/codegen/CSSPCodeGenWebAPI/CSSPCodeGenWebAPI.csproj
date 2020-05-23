@@ -35,9 +35,6 @@
     <Reference Include="ActionCommandDBServices">
       <HintPath>..\ActionCommandDBServices\bin\Debug\netcoreapp3.1\ActionCommandDBServices.dll</HintPath>
     </Reference>
-    <Reference Include="ActionCommandServices">
-      <HintPath>..\ActionCommandServices\bin\Debug\netcoreapp3.1\ActionCommandServices.dll</HintPath>
-    </Reference>
     <Reference Include="CSSPModels">
       <HintPath>..\..\dlls\CSSPModels\bin\Debug\netcoreapp3.1\CSSPModels.dll</HintPath>
     </Reference>
@@ -85,6 +82,12 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>ServicesRes.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="ActionCommandList.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 

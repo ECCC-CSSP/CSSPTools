@@ -1,28 +1,19 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using ActionCommandDBServices.Models;
+using ActionCommandDBServices.Services;
+using CSSPModels;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using System.Text;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
-using CSSPModels;
-using Microsoft.EntityFrameworkCore;
-using CSSPCodeGenWebAPI.Services;
+using System;
 using System.IO;
-using CSSPCodeGenWebAPI.Models;
-using ActionCommandDBServices.Models;
-using ActionCommandDBServices.Services;
+using System.Text;
 using UserServices.Models;
 using UserServices.Services;
-using ActionCommandServices.Services;
 
 namespace CSSPCodeGenWebAPI
 {
@@ -108,15 +99,7 @@ namespace CSSPCodeGenWebAPI
             });
 
             services.AddScoped<IUserService, UserService>();
-
-            services.AddScoped<IActionCommandService, ActionCommandService>();
-            //services.AddScoped<IStatusEnumsService, StatusEnumsService>();
-
-            //services.AddScoped<IGenerateModelsService, GenerateModelsService>();
-            //services.AddScoped<IStatusModelsService, StatusModelsService>();
-
             services.AddScoped<IActionCommandDBService, ActionCommandDBService>();
-
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

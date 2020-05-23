@@ -1,8 +1,12 @@
 ﻿using ActionCommandDBServices.Models;
 using CultureServices.Resources;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using System;
+using System.Collections.Generic;
+using System.Diagnostics;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -26,14 +30,16 @@ namespace ActionCommandDBServices.Services
         public StringBuilder FilesStatusText { get; set; }
         public long PercentCompleted { get; set; }
 
+        private IConfiguration Configuration { get; }
         private ActionCommandContext db { get; }
         private string ActionText = "Action";
         private string CommandText = "Command";
         #endregion Properties
 
         #region Constructors
-        public ActionCommandDBService(ActionCommandContext db)
+        public ActionCommandDBService(IConfiguration configuration, ActionCommandContext db)
         {
+            Configuration = configuration;
             this.db = db;
             Init();
         }
@@ -96,7 +102,7 @@ namespace ActionCommandDBServices.Services
 
             if (actionCommand == null)
             {
-                return BadRequest(actionCommand);
+                return BadRequest($"{ CultureServicesRes.CouldNotFindActionCommand } { string.Format(CultureServicesRes.To_, CultureServicesRes.Delete) }{ string.Format(CultureServicesRes.WithAction_AndCommand_, Action, Command) }");
             }
 
             db.ActionCommands.Remove(actionCommand);
@@ -106,12 +112,37 @@ namespace ActionCommandDBServices.Services
                 db.SaveChanges();
                 Init();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                return null;
+                return BadRequest(ex.Message);
             }
 
             return await Task.FromResult(Ok(actionCommand));
+        }
+        public async Task<ActionResult<bool>> DeleteAll()
+        {
+            if (string.IsNullOrWhiteSpace(Action)) return BadRequest($"{ string.Format(CultureServicesRes._IsRequied, ActionText) }");
+            if (string.IsNullOrWhiteSpace(Command)) return BadRequest($"{ string.Format(CultureServicesRes._IsRequied, CommandText) }");
+
+            List<ActionCommand> actionCommandToDeleteList = (from c in db.ActionCommands
+                                                             select c).ToList();
+
+            foreach (ActionCommand actionCommand in actionCommandToDeleteList)
+            {
+                db.ActionCommands.Remove(actionCommand);
+            }
+
+            try
+            {
+                db.SaveChanges();
+                Init();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
+            return await Task.FromResult(Ok(true));
         }
         public async Task<ActionResult<ActionCommand>> Get()
         {
@@ -122,10 +153,19 @@ namespace ActionCommandDBServices.Services
 
             if (actionCommand == null)
             {
-                return BadRequest($"{ string.Format(CultureServicesRes.CouldNotFindActionCommandToDeleteWithAction_AndCommand_, Action, Command) }");
+                return BadRequest($"{ CultureServicesRes.CouldNotFindActionCommand } { string.Format(CultureServicesRes.WithAction_AndCommand_, Action, Command) }");
             }
 
             return await Task.FromResult(Ok(actionCommand));
+        }
+        public async Task<ActionResult<List<ActionCommand>>> GetAll()
+        {
+            // clear everything in DB
+            List<ActionCommand> actionCommandList = (from c in db.ActionCommands
+                                                     select c).ToList();
+
+
+            return await Task.FromResult(Ok(actionCommandList));
         }
         public async Task<ActionResult<ActionCommand>> GetOrCreate()
         {
@@ -140,6 +180,117 @@ namespace ActionCommandDBServices.Services
 
             return await Task.FromResult(Ok(actionCommand));
         }
+        public async Task<ActionResult<List<ActionCommand>>> ReFillAll()
+        {
+            // clear everything in DB
+            List<ActionCommand> actionCommandToDeleteList = (from c in db.ActionCommands
+                                                             select c).ToList();
+
+            if (actionCommandToDeleteList.Count > 0)
+            {
+                foreach (ActionCommand actionCommand in actionCommandToDeleteList)
+                {
+                    db.ActionCommands.Remove(actionCommand);
+                }
+
+                try
+                {
+                    db.SaveChanges();
+                }
+                catch (Exception ex)
+                {
+                    return BadRequest(ex.Message);
+                }
+            }
+
+            string actionCommandCSVFileName = Configuration.GetValue<string>("ActionCommandCSVFileName");
+            if (string.IsNullOrWhiteSpace(actionCommandCSVFileName))
+            {
+                return BadRequest($"{ string.Format(CultureServicesRes.CouldNotReadAppSettingsParameter_ShouldBeSomthingLike_, "ActionCommandCSVFileName", "{ExePath}\\ActionCommandList.csv")}");
+            }
+
+            // refill DB
+            FileInfo fi = new FileInfo(actionCommandCSVFileName.Replace("{ExePath}", Environment.CurrentDirectory));
+
+            if (!fi.Exists)
+            {
+                return BadRequest($"{ string.Format(CultureServicesRes.CouldNotFindFile_, fi.FullName) }");
+            }
+
+            StreamReader str = fi.OpenText();
+            string fileText = str.ReadToEnd();
+            str.Close();
+
+            StringReader sr = new StringReader(fileText);
+            string LineStr = sr.ReadLine();
+            while (!string.IsNullOrWhiteSpace(LineStr))
+            {
+                List<string> strList = LineStr.Split(",".ToCharArray(), StringSplitOptions.RemoveEmptyEntries).ToList();
+
+                if (strList.Count == 3)
+                {
+                    Init();
+                    Action = strList[0];
+                    Command = strList[1];
+                    FullFileName = strList[2];
+
+                    var actionActionCommand = await Create();
+                    if (((ObjectResult)actionActionCommand.Result).StatusCode == 400)
+                    {
+                        return BadRequest($"{ CultureServicesRes.CouldNotReFillDB }");
+                    }
+                    LineStr = sr.ReadLine();
+                }
+                else
+                {
+                    break;
+                }
+            }
+
+            return await GetAll();
+        }
+        public async Task<ActionResult<ActionCommand>> Run(ActionCommand actionCommand)
+        {
+            try
+            {
+                Action = actionCommand.Action;
+                Command = actionCommand.Command;
+
+                string exePath = Configuration.GetValue<string>("ExecuteDotNetCommandAppPath");
+                string args = $" { CultureServicesRes.Culture.Name } { actionCommand.Action } { actionCommand.Command }";
+
+                if (string.IsNullOrWhiteSpace(exePath))
+                {
+                    ErrorText.AppendLine(CultureServicesRes.ExePathIsEmpty);
+                    PercentCompleted = 0;
+                    await Update();
+                    return BadRequest(ErrorText.ToString());
+                }
+
+                FileInfo fiApp = new FileInfo(exePath);
+                if (!fiApp.Exists)
+                {
+                    ErrorText.AppendLine(string.Format(CultureServicesRes.CouldNotFindExePath_, exePath));
+                    PercentCompleted = 0;
+                    await Update();
+                    return BadRequest(ErrorText.ToString());
+                }
+
+                Process process = new Process();
+                process = Process.Start(exePath, args);
+
+                while (!process.HasExited)
+                {
+                    // report progress is needed
+                }
+
+                return await GetOrCreate();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(string.Format(CultureServicesRes.UnmanagedServerError_, ex.Message));
+            }
+        }
         public async Task<ActionResult<ActionCommand>> Update()
         {
             if (string.IsNullOrWhiteSpace(Action)) return BadRequest($"{ string.Format(CultureServicesRes._IsRequied, ActionText) }");
@@ -148,7 +299,7 @@ namespace ActionCommandDBServices.Services
             ActionCommand actionCommand = GetActionCommand();
             if (actionCommand == null)
             {
-                return BadRequest(actionCommand);
+                return BadRequest($"{ CultureServicesRes.CouldNotFindActionCommand } { string.Format(CultureServicesRes.To_, CultureServicesRes.Update) }{ string.Format(CultureServicesRes.WithAction_AndCommand_, Action, Command) }");
             }
 
             actionCommand.FullFileName = FullFileName;
