@@ -1,8 +1,7 @@
-export interface RegisterModel {
+import { HttpRequestModel } from 'src/app/models/http.model';
+
+export interface RegisterModel extends HttpRequestModel {
     Language?: string;
-    Error?: string;
-    Loading?: boolean;
-    Submitted?: boolean;
     returnUrl?: string;
     //
     Register?: string;

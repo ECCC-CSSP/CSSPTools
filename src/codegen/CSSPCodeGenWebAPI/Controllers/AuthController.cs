@@ -17,9 +17,9 @@ using UserServices.Services;
 
 namespace CSSPCodeGenWebAPI.Controllers
 {
-    [Route("api/{culture}/Auth/[controller]")]
+    [Route("api/{culture}/[controller]")]
     [ApiController]
-    public class TokenController : ControllerBase
+    public class AuthController : ControllerBase
     {
         #region Variables
         #endregion Variables
@@ -29,22 +29,33 @@ namespace CSSPCodeGenWebAPI.Controllers
         #endregion Properties
 
         #region Constructors
-        public TokenController(IUserService userService)
+        public AuthController(IUserService userService)
         {
             this.userService = userService;
         }
         #endregion Constructors
 
         #region Functions public
+        [Route("Token")]
         [HttpPost]
-        public async Task<ActionResult<UserModel>> Post(LoginModel loginModel)
+        public async Task<ActionResult<UserModel>> Token(LoginModel loginModel)
         {
             //Thread.Sleep(1000);
 
             await userService.SetCulture(new CultureInfo(Request.RouteValues["culture"].ToString()));
 
-            return await userService.CheckPassword(loginModel);
+            return await userService.Login(loginModel);
         }
+        //[Route("Register")]
+        //[HttpPost]
+        //public async Task<ActionResult<bool>> Register(RegisterModel registerModel)
+        //{
+        //    //Thread.Sleep(1000);
+
+        //    await userService.SetCulture(new CultureInfo(Request.RouteValues["culture"].ToString()));
+
+        //    return await userService.Register(registerModel);
+        //}
         #endregion Functions public
 
         #region Functions private

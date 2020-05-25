@@ -54,14 +54,14 @@ namespace UserServices.Tests
         [Theory]
         [InlineData("en-CA")]
         [InlineData("fr-CA")]
-        public async Task UserService_CheckPassword_Good_Test(string culture)
+        public async Task UserService_Login_Good_Test(string culture)
         {
             await Setup(new CultureInfo(culture));
 
             string LoginEmail = "Charles.LeBlanc2@canada.ca";
             string Password = "Charles2!";
 
-            var retValue = await userService.CheckPassword(new LoginModel() { LoginEmail = LoginEmail, Password = Password });
+            var retValue = await userService.Login(new LoginModel() { LoginEmail = LoginEmail, Password = Password });
             Assert.IsType<UserModel>(retValue.Value);
             Assert.Null(retValue.Result);
             UserModel userModel = retValue.Value;
@@ -74,14 +74,14 @@ namespace UserServices.Tests
         [Theory]
         [InlineData("en-CA")]
         [InlineData("fr-CA")]
-        public async Task UserService_CheckPassword_Good_Return_EmailCouldNotBeFound_Test(string culture)
+        public async Task UserService_Login_Good_Return_EmailCouldNotBeFound_Test(string culture)
         {
             await Setup(new CultureInfo(culture));
 
             string LoginEmail = "NotFound_Charles.LeBlanc2@canada.ca";
             string Password = "Charles2!";
 
-            var retValue = await userService.CheckPassword(new LoginModel() { LoginEmail = LoginEmail, Password = Password });
+            var retValue = await userService.Login(new LoginModel() { LoginEmail = LoginEmail, Password = Password });
             Assert.Null(retValue.Value);
             Assert.Equal(400, ((BadRequestObjectResult)retValue.Result).StatusCode);
             string expected = String.Format(CultureServicesRes.__CouldNotBeFound, CultureServicesRes.Email, LoginEmail);
@@ -92,14 +92,14 @@ namespace UserServices.Tests
         [Theory]
         [InlineData("en-CA")]
         [InlineData("fr-CA")]
-        public async Task UserService_CheckPassword_Good_Return_Error_UnableToLoginAs_WithProvidedPassword_Test(string culture)
+        public async Task UserService_Login_Good_Return_Error_UnableToLoginAs_WithProvidedPassword_Test(string culture)
         {
             await Setup(new CultureInfo(culture));
 
             string LoginEmail = "Charles.LeBlanc2@canada.ca";
             string Password = "Not_Charles2!";
 
-            var retValue = await userService.CheckPassword(new LoginModel() { LoginEmail = LoginEmail, Password = Password });
+            var retValue = await userService.Login(new LoginModel() { LoginEmail = LoginEmail, Password = Password });
             Assert.Null(retValue.Value);
             Assert.Equal(400, ((BadRequestObjectResult)retValue.Result).StatusCode);
             string expected = String.Format(CultureServicesRes.UnableToLoginAs_WithProvidedPassword, LoginEmail);

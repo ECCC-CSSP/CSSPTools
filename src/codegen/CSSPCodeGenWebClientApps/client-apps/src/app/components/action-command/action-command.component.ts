@@ -16,19 +16,24 @@ export class ActionCommandComponent implements OnInit, OnDestroy {
 
   constructor(public actionCommandService: ActionCommandService, private router: Router) { }
 
+  GetOrRefillAllActionCommand(command: string)
+  {
+    this.sub = this.actionCommandService.GetOrRefillAllActionCommand(this.router, command).subscribe();
+  }
+
   RunActionCommand(actionCommand: ActionCommand) {
     this.sub = this.actionCommandService.ActionCommand(this.router, actionCommand).subscribe();
   }
 
   ViewDetails(actionCommand: ActionCommand) {
-    for (let i = 0, count = this.actionCommandService.actionCommandList.length; i < count; i++) {
-      if (actionCommand.Action == this.actionCommandService.actionCommandList[i].Action
-        && actionCommand.Command == this.actionCommandService.actionCommandList[i].Command) {
-        this.actionCommandService.actionCommandList[i].ViewDetails = !this.actionCommandService.actionCommandList[i].ViewDetails;
+    for (let i = 0, count = this.actionCommandService.actionCommandModel$.getValue().ActionCommandList.length; i < count; i++) {
+      if (actionCommand.Action == this.actionCommandService.actionCommandModel$.getValue().ActionCommandList[i].Action
+        && actionCommand.Command == this.actionCommandService.actionCommandModel$.getValue().ActionCommandList[i].Command) {
+        this.actionCommandService.actionCommandModel$.getValue().ActionCommandList[i].ViewDetails = !this.actionCommandService.actionCommandModel$.getValue().ActionCommandList[i].ViewDetails;
         break;
       }
     }
-    this.actionCommandService.UpdateActionCommand(<ActionCommandModel> { ActionCommandList: this.actionCommandService.actionCommandList });
+    this.actionCommandService.UpdateActionCommand(<ActionCommandModel> { ActionCommandList: this.actionCommandService.actionCommandModel$.getValue().ActionCommandList });
   }
 
   ngOnInit(): void {

@@ -1,17 +1,17 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { NoPageFoundComponent } from './no-page-found.component';
+import { WebApiNotFoundComponent } from './web-api-not-found.component';
 import { MaterialModule } from 'src/app/app-material.module';
 import { RouterModule } from '@angular/router';
-import { NoPageFoundRoutingModule } from './no-page-found-routing.module';
+import { WebApiNotFoundRoutingModule } from './web-api-not-found-routing.module';
 
 @NgModule({
-  declarations: [NoPageFoundComponent],
+  declarations: [WebApiNotFoundComponent],
   imports: [
     CommonModule,
     RouterModule,
-    NoPageFoundRoutingModule,
+    WebApiNotFoundRoutingModule,
     MaterialModule
   ]
 })
-export class NoPageFoundModule { }
+export class WebApiNotFoundModule { }

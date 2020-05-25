@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { ShellComponent } from './components/shell';
-import { NoPageFoundComponent } from './components/no-page-found/no-page-found.component';
 
 const routes: Routes = [
   {
@@ -9,6 +8,8 @@ const routes: Routes = [
       { path: 'login', loadChildren: () => import('./components/auth/login/login.module').then(mod => mod.LoginModule) },
       { path: 'register', loadChildren: () => import('./components/auth/register/register.module').then(mod => mod.RegisterModule) },
       { path: 'actioncommand', loadChildren: () => import('./components/action-command/action-command.module').then(mod => mod.ActionCommandModule) },
+      { path: 'webapinotfound', loadChildren: () => import('./components/web-api-not-found/web-api-not-found.module').then(mod => mod.WebApiNotFoundModule) },
+      { path: '**', loadChildren: () => import('./components/no-page-found/no-page-found.module').then(mod => mod.NoPageFoundModule) },
     ]
   },
   {
@@ -16,10 +17,12 @@ const routes: Routes = [
       { path: 'login', loadChildren: () => import('./components/auth/login/login.module').then(mod => mod.LoginModule) },
       { path: 'register', loadChildren: () => import('./components/auth/register/register.module').then(mod => mod.RegisterModule) },
       { path: 'actioncommand', loadChildren: () => import('./components/action-command/action-command.module').then(mod => mod.ActionCommandModule) },
+      { path: 'webapinotfound', loadChildren: () => import('./components/web-api-not-found/web-api-not-found.module').then(mod => mod.WebApiNotFoundModule) },
+      { path: '**', loadChildren: () => import('./components/no-page-found/no-page-found.module').then(mod => mod.NoPageFoundModule) },
     ]
   },
   { path: '', redirectTo: 'en-CA', pathMatch: 'full' },
-  { path: '**', component: NoPageFoundComponent }
+  { path: '**', loadChildren: () => import('./components/no-page-found/no-page-found.module').then(mod => mod.NoPageFoundModule) },
 ];
 
 @NgModule({

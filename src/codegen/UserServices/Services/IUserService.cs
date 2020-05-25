@@ -10,8 +10,8 @@ namespace UserServices.Services
 {
     public interface IUserService
     {
-        //Task CreateUser();
-        Task<ActionResult<UserModel>> CheckPassword(LoginModel loginModel);
+        //Task<ActionResult<bool>> RegisterUser(RegisterModel registerModel);
+        Task<ActionResult<UserModel>> Login(LoginModel loginModel);
         Task SetCulture(CultureInfo culture);
     }
 }

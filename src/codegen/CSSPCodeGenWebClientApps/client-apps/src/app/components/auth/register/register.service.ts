@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, of } from 'rxjs';
 import { RegisterModel } from './register.models';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { LoginModel } from '../login';
+import { map, catchError } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -20,16 +21,29 @@ export class RegisterService {
   }
 
   Register(registerModel: RegisterModel) {
-    this.registerModel$.next({...this.registerModel$.getValue(), ...{ Loading: true }});
-    this.httpClient.post<LoginModel>('/api/auth/register', { RegisterModel: registerModel }).subscribe((x) => {
-      this.registerModel$.next(x);
-    },
-    (e: any) => {
-      this.registerModel$.next({...this.registerModel$.getValue(), ...{ Error: (<HttpErrorResponse>e).message }});
-      console.debug(e);
-    }, () => {
-      this.registerModel$.next({...this.registerModel$.getValue(), ...{ Loading: false }});
-      console.debug("completed...");
-    });
+    this.UpdateRegister(<RegisterModel>{ Loading: true });
+    return this.httpClient.post<boolean>('/api/Auth/Register', { RegisterModel: registerModel }).pipe(
+      map((x: any) => {
+        console.debug(x);
+      }),
+      catchError(e => of(e).pipe(map(e => {
+        this.UpdateRegister(<RegisterModel>{ Loading: false, Error: <HttpErrorResponse>e });
+        console.debug(e);
+      })))
+    );
   }
+
+  // Register(registerModel: RegisterModel) {
+  //   this.registerModel$.next({...this.registerModel$.getValue(), ...{ Working: true }});
+  //   return this.httpClient.post<LoginModel>('/api/auth/register', { RegisterModel: registerModel }).subscribe((x) => {
+  //     this.registerModel$.next(x);
+  //   },
+  //   (e: any) => {
+  //     this.registerModel$.next({...this.registerModel$.getValue(), ...{ Error: <HttpErrorResponse>e }});
+  //     console.debug(e);
+  //   }, () => {
+  //     this.registerModel$.next({...this.registerModel$.getValue(), ...{ Working: false }});
+  //     console.debug("completed...");
+  //   });
+  // }
 }

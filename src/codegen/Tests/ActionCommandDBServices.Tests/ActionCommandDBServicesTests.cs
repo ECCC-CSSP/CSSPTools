@@ -229,12 +229,12 @@ namespace ActionCommandDBServices.Tests
         [Theory]
         [InlineData("en-CA")]
         [InlineData("fr-CA")]
-        public async Task ActionCommandDBService_ReFillAll_Good_Test(string culture)
+        public async Task ActionCommandDBService_RefillAll_Good_Test(string culture)
         {
             await Setup(new CultureInfo(culture));
 
             // Should Repopulate the ActionCommandDB.db database
-            var actionBool = await actionCommandDBService.ReFillAll();
+            var actionBool = await actionCommandDBService.RefillAll();
             Assert.Equal(200, ((ObjectResult)actionBool.Result).StatusCode);
 
             var actionActionCommandList = await actionCommandDBService.GetAll();

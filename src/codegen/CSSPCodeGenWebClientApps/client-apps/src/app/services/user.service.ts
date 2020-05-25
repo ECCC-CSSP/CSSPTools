@@ -1,8 +1,11 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, of, Observable } from 'rxjs';
 import { UserModel } from '../models/user.model';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
+import { map, catchError } from 'rxjs/operators';
+import { RegisterModel } from '../components/auth/register/register.models';
+import { LoginModel } from '../components/auth/login';
 
 @Injectable({
   providedIn: 'root'
@@ -21,28 +24,27 @@ export class UserService {
   ClearUser() {
     this.userModel$ = new BehaviorSubject<UserModel>(<UserModel>{});
   }
-
-  Login(loginEmail: string, password: string, router: Router, language: string): void {
+  
+  Login(loginEmail: string, password: string, router: Router, language: string, returnUrl: string) {
     this.UpdateUser(<UserModel>{ Loading: true });
-    this.httpClient.post<UserModel>('/api/Auth/Token', { LoginEmail: loginEmail, Password: password }).subscribe((x) => {
-      localStorage.setItem('currentUser', JSON.stringify(x));
-      this.UpdateUser(x)
-      this.UpdateUser(<UserModel>{ Loading: false });
-      console.debug(x);
-      router.navigateByUrl('', { skipLocationChange: true }).then(() => {
-        router.navigate([`/${language}/login`]);
-      });
-    },
-      (e: any) => {
-        this.UpdateUser(<UserModel>{ Loading: false, Error: (<HttpErrorResponse>e).error.message });
+    return this.httpClient.post<UserModel>('/api/Auth/Token', { LoginEmail: loginEmail, Password: password }).pipe(
+      map((x: any) => {
+        localStorage.setItem('currentUser', JSON.stringify(x));
+        this.UpdateUser(x);
+        this.UpdateUser(<UserModel>{ Loading: false });
+        console.debug(x);
+        router.navigateByUrl('', { skipLocationChange: true }).then(() => {
+          router.navigate([returnUrl]);
+        });
+      }),
+      catchError(e => of(e).pipe(map(e => {
+        this.UpdateUser(<UserModel>{ Loading: false, Error: <HttpErrorResponse>e });
         console.debug(e);
         router.navigateByUrl('', { skipLocationChange: true }).then(() => {
-          router.navigate([`/${language}/login`]);
+          router.navigate([returnUrl]);
         });
-      }, () => {
-        this.UpdateUser(<UserModel>{ Loading: false });
-        console.debug("completed...");
-      });
+      })))
+    );
   }
 
   Logout(router: Router, language: string) {
@@ -51,7 +53,5 @@ export class UserService {
     router.navigateByUrl(`${language}`, { skipLocationChange: true }).then(() => {
       router.navigateByUrl('');
     });
-
   }
-
 }

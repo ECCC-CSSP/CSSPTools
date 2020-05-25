@@ -1,4 +1,6 @@
-export interface LoginModel {
+import { HttpRequestModel } from 'src/app/models/http.model';
+
+export interface LoginModel extends HttpRequestModel {
     Language?: string;
     ReturnUrl?: string;
     LoginEmail?: string;

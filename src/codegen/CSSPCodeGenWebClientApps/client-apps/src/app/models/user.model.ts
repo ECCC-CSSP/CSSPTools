@@ -1,6 +1,6 @@
-import { HttpErrorResponse } from '@angular/common/http';
+import { HttpRequestModel } from './http.model';
 
-export interface UserModel {
+export interface UserModel extends HttpRequestModel {
     ContactID?: number,
     Id?: string,
     ContactTVItemID?: number,
@@ -9,8 +9,5 @@ export interface UserModel {
     LastName?: string,
     Initial?: string,
     Password?: string,
-    Token?: string,
-    Error?: string;
-    Loading?: boolean;
-    Submitted?: boolean;
+    Token?: string
 }

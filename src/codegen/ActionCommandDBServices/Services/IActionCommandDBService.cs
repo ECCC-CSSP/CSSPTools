@@ -26,7 +26,7 @@ namespace ActionCommandDBServices.Services
         Task<ActionResult<ActionCommand>> Get();
         Task<ActionResult<List<ActionCommand>>> GetAll();
         Task<ActionResult<ActionCommand>> GetOrCreate();
-        Task<ActionResult<List<ActionCommand>>> ReFillAll();
+        Task<ActionResult<List<ActionCommand>>> RefillAll();
         Task<ActionResult<ActionCommand>> Run(ActionCommand actionCommand);
         Task<ActionResult<ActionCommand>> Update();
         Task SetCulture(CultureInfo culture);

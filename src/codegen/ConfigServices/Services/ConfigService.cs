@@ -212,13 +212,10 @@ namespace ConfigServices.Services
                 await ActionCommandDBService.SetCulture(new CultureInfo(Config.GetValue<string>("Culture")));
                 await ValidateAppSettingsService.SetCulture(new CultureInfo(Config.GetValue<string>("Culture")));
 
-                await ActionCommandDBService.Delete();
-                ActionCommandDBService.Action = Config.GetValue<string>(ActionText);
-                ActionCommandDBService.Command = Config.GetValue<string>(CommandText);
                 var actionResult = await ActionCommandDBService.GetOrCreate();
-                if (actionResult.Value == null)
+                if (((ObjectResult)actionResult.Result).StatusCode == 400)
                 {
-
+                    return await Task.FromResult(false);
                 }
             }
             catch (Exception ex)

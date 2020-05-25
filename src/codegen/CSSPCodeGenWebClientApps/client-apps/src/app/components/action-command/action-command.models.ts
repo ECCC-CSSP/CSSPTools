@@ -1,15 +1,24 @@
-import { HttpErrorResponse } from '@angular/common/http';
+import { HttpRequestModel } from 'src/app/models/http.model';
 
 export interface ActionCommandTextModel {
     CurrentStatus?: string;
     WorkingText?: string;
 }
 
+export interface GetAllModel extends HttpRequestModel {
+
+}
+
+export interface RefillAllModel extends HttpRequestModel {
+    
+}
+
+
 export interface ActionCommandModel {
     ActionCommandList: ActionCommand[];
 }
 
-export interface ActionCommand
+export interface ActionCommand extends HttpRequestModel
 {
     ActionCommandID?: string;
     Action: string;
@@ -24,7 +33,4 @@ export interface ActionCommand
     LastUpdateDate?: Date;
 
     ViewDetails?: boolean;
-    Error?: HttpErrorResponse;
-    Status?: string;
-    Working?: boolean;
 }

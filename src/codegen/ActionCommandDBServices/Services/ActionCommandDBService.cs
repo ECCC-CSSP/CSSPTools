@@ -180,7 +180,7 @@ namespace ActionCommandDBServices.Services
 
             return await Task.FromResult(Ok(actionCommand));
         }
-        public async Task<ActionResult<List<ActionCommand>>> ReFillAll()
+        public async Task<ActionResult<List<ActionCommand>>> RefillAll()
         {
             // clear everything in DB
             List<ActionCommand> actionCommandToDeleteList = (from c in db.ActionCommands

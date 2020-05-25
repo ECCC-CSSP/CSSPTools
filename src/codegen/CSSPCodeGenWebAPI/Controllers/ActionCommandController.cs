@@ -52,12 +52,12 @@ namespace CSSPCodeGenWebAPI.Controllers
             await actionCommandDBService.SetCulture(new CultureInfo(Request.RouteValues["culture"].ToString()));
             return await actionCommandDBService.GetAll();
         }
-        [Route("ReFillAll")]
+        [Route("RefillAll")]
         [HttpGet]
-        public async Task<ActionResult<List<ActionCommand>>> ReFillAll()
+        public async Task<ActionResult<List<ActionCommand>>> RefillAll()
         {
             await actionCommandDBService.SetCulture(new CultureInfo(Request.RouteValues["culture"].ToString()));
-            return await actionCommandDBService.ReFillAll();
+            return await actionCommandDBService.RefillAll();
         }
         [Route("Run")]
         [HttpPost]
