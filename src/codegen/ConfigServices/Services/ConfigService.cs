@@ -131,10 +131,10 @@ namespace ConfigServices.Services
                     throw new Exception($"{ string.Format(CultureServicesRes.CouldNotFindParameter_InAppSettingsJSON, CommandText) }");
                 }
 
-                ActionResult<ActionCommand> actionActionCommand = await ActionCommandDBService.GetOrCreate();
+                ActionResult<ActionCommand> actionActionCommand = await ActionCommandDBService.Get();
                 if (((ObjectResult)actionActionCommand.Result).StatusCode == 400)
                 {
-                    throw new Exception($"{ string.Format(CultureServicesRes.CouldNotGetOrCreateAction_Command_InDB_, ActionText, CommandText, fiDB.FullName) }");
+                    throw new Exception($"{ string.Format(CultureServicesRes.CouldNotGetAction_Command_InDB_, ActionText, CommandText, fiDB.FullName) }");
                 }
             }
             catch (Exception ex)
@@ -212,7 +212,7 @@ namespace ConfigServices.Services
                 await ActionCommandDBService.SetCulture(new CultureInfo(Config.GetValue<string>("Culture")));
                 await ValidateAppSettingsService.SetCulture(new CultureInfo(Config.GetValue<string>("Culture")));
 
-                var actionResult = await ActionCommandDBService.GetOrCreate();
+                var actionResult = await ActionCommandDBService.Get();
                 if (((ObjectResult)actionResult.Result).StatusCode == 400)
                 {
                     return await Task.FromResult(false);

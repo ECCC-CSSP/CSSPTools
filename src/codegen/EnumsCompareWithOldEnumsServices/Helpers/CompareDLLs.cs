@@ -28,7 +28,7 @@ namespace EnumsCompareWithOldEnumsServices.Services
             string NewEnumsDLL = "NewEnumsDLL";
             string OldEnumsDLL = "OldEnumsDLL";
 
-            ActionResult<ActionCommand> actionActionCommand = await ActionCommandDBService.GetOrCreate();
+            ActionResult<ActionCommand> actionActionCommand = await ActionCommandDBService.Get();
 
             if (((ObjectResult)actionActionCommand.Result).StatusCode == 400)
             {

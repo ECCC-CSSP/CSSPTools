@@ -18,7 +18,7 @@ namespace AngularEnumsGeneratedServices.Services
     {
         private async Task<bool> Generate()
         {
-            ActionResult<ActionCommand> actionActionCommand = await ActionCommandDBService.GetOrCreate();
+            ActionResult<ActionCommand> actionActionCommand = await ActionCommandDBService.Get();
             if (((ObjectResult)actionActionCommand.Result).StatusCode == 400)
             {
                 await ActionCommandDBService.ConsoleWriteError("actionCommand == null");

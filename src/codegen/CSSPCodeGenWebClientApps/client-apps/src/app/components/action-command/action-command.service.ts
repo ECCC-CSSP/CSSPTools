@@ -62,6 +62,15 @@ export class ActionCommandService {
       map((x: any) => {
         console.debug(`${ command } OK. Return: ${x}`);
         this.actionCommandModel$.getValue().ActionCommandList = x;
+        for(let i = 0, count = x.length; i < count; i++)
+        {
+          let ac: ActionCommand = x[i]; 
+          if (ac.Action === 'run' && ac.Command === 'ExecuteDotNetCommand')
+          {
+            this.actionCommandModel$.getValue().ActionCommandList.splice(i, 1);
+            break;
+          }
+        }
         for(let i = 0, count = this.actionCommandModel$.getValue().ActionCommandList.length; i < count; i++)
         {
           this.actionCommandModel$.getValue().ActionCommandList[i].Working = false;

@@ -1,4 +1,6 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using ActionCommandDBServices.Models;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -16,17 +18,11 @@ namespace ExecuteDotNetCommandServices.Services
             await ActionCommandDBService.SetCulture(new CultureInfo(Config.GetValue<string>("Culture")));
             await ValidateAppSettingsService.SetCulture(new CultureInfo(Config.GetValue<string>("Culture")));
 
-            try
+            ActionResult<ActionCommand> actionActionCommand = await ActionCommandDBService.Get();
+            if (((ObjectResult)actionActionCommand.Result).StatusCode == 400)
             {
-                await ActionCommandDBService.Delete();
-                ActionCommandDBService.Action = Config.GetValue<string>("Action");
-                ActionCommandDBService.Command = Config.GetValue<string>("Command");
-                await ActionCommandDBService.GetOrCreate();
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-                return await Task.FromResult(false);
+                await ActionCommandDBService.ConsoleWriteError("actionCommand == null");
+                return false;
             }
 
             ValidateAppSettingsService.AppSettingParameterList = new List<AppSettingParameter>()

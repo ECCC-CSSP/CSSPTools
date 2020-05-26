@@ -20,12 +20,8 @@ namespace ActionCommandDBServices.Services
         public StringBuilder FilesStatusText { get; set; }
         public long PercentCompleted { get; set; }
 
-        Task<ActionResult<ActionCommand>> Create();
-        Task<ActionResult<ActionCommand>> Delete();
-        Task<ActionResult<bool>> DeleteAll();
         Task<ActionResult<ActionCommand>> Get();
         Task<ActionResult<List<ActionCommand>>> GetAll();
-        Task<ActionResult<ActionCommand>> GetOrCreate();
         Task<ActionResult<List<ActionCommand>>> RefillAll();
         Task<ActionResult<ActionCommand>> Run(ActionCommand actionCommand);
         Task<ActionResult<ActionCommand>> Update();

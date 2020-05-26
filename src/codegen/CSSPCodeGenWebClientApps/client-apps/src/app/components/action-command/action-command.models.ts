@@ -13,7 +13,6 @@ export interface RefillAllModel extends HttpRequestModel {
     
 }
 
-
 export interface ActionCommandModel {
     ActionCommandList: ActionCommand[];
 }

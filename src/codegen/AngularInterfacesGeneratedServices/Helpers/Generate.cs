@@ -15,7 +15,7 @@ namespace AngularInterfacesGeneratedServices.Services
     {
         private async Task<bool> Generate()
         {
-            ActionResult<ActionCommand> actionActionCommand = await ActionCommandDBService.GetOrCreate();
+            ActionResult<ActionCommand> actionActionCommand = await ActionCommandDBService.Get();
 
             if (((ObjectResult)actionActionCommand.Result).StatusCode == 400)
             {

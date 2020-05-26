@@ -122,7 +122,7 @@ namespace PolSourceGroupingExcelFileReadServices.Tests
                 actionCommandDBService.Action = configuration.GetValue<string>("Action");
                 actionCommandDBService.Command = configuration.GetValue<string>("Command");
 
-                await actionCommandDBService.Create();
+                await actionCommandDBService.Get();
 
                 ExcelFileName = configuration.GetValue<string>("ExcelFileName");
                 Assert.False(string.IsNullOrWhiteSpace(ExcelFileName));
