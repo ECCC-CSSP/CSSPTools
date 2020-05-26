@@ -1,0 +1,552 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="AbnormalCompletion" xml:space="preserve">
+    <value>Abnormal completion (fr)</value>
+  </data>
+  <data name="ActionOptionsRunTestBuild" xml:space="preserve">
+    <value>Action - Options: run || test || build (fr)</value>
+  </data>
+  <data name="AllChildDoExistOnColumnGroup" xml:space="preserve">
+    <value>All Child do exist on Column Group (fr)</value>
+  </data>
+  <data name="AllGroupsAndChoicesColumnsHaveAUniqueCSSPID" xml:space="preserve">
+    <value>All Groups and Choices Columns have a unique CSSPID (fr)</value>
+  </data>
+  <data name="AllHideColumnsWithInformationHasValidCSSPIDIEExistAndIsChild" xml:space="preserve">
+    <value>All Hide Columns with information has valid CSSPID (i.e. exist and is child) (fr)</value>
+  </data>
+  <data name="AllowableCharactersAre" xml:space="preserve">
+    <value>Allowable characters are (fr)</value>
+  </data>
+  <data name="AllowableCultures_" xml:space="preserve">
+    <value>Allowable cultures [{0}] (fr)</value>
+  </data>
+  <data name="AllTextInCSSPIDColumnDoesNotContainSpace" xml:space="preserve">
+    <value>All Text in CSSPID column does not contain space (fr)</value>
+  </data>
+  <data name="AllTextInGroupAndChildColumnsDoesNotContainSpace" xml:space="preserve">
+    <value>All Text in Group and Child Columns does not contain space (fr)</value>
+  </data>
+  <data name="AlreadyCreated_" xml:space="preserve">
+    <value>Already created [{0}] (fr)</value>
+  </data>
+  <data name="Application" xml:space="preserve">
+    <value>Application (fr)</value>
+  </data>
+  <data name="ApplicationRequires3ParametersSeparatedBySpace" xml:space="preserve">
+    <value>Application requires 3 parameters separated by space (fr)</value>
+  </data>
+  <data name="Checking" xml:space="preserve">
+    <value>Checking (fr)</value>
+  </data>
+  <data name="Child" xml:space="preserve">
+    <value>Child (fr)</value>
+  </data>
+  <data name="Class" xml:space="preserve">
+    <value>Class (fr)</value>
+  </data>
+  <data name="ColumnGroupDoesNotHaveDuplicates" xml:space="preserve">
+    <value>Column Group does not have duplicates (fr)</value>
+  </data>
+  <data name="Command_IsNotImplemented" xml:space="preserve">
+    <value>La commande [{0}] n'est pas encore implanté </value>
+  </data>
+  <data name="ComparedOK" xml:space="preserve">
+    <value>Compared OK (fr)</value>
+  </data>
+  <data name="CouldNotCreateDirectory_" xml:space="preserve">
+    <value>Could not create directory [{0}] (fr)</value>
+  </data>
+  <data name="CouldNotDeleteStatusFile_Error_" xml:space="preserve">
+    <value>Impossible d'effacer la filière status [{0}]. Erreur: [{1}]</value>
+  </data>
+  <data name="CouldNotFindActionCommand" xml:space="preserve">
+    <value>Could not find ActionCommand (fr)</value>
+  </data>
+  <data name="CouldNotFindActionCommandToDeleteWithAction_AndCommand_" xml:space="preserve">
+    <value>Could not find ActionCommand to delete with Action [{0}] and Command [{1}] (fr)</value>
+  </data>
+  <data name="CouldNotFindCommand_StatusInDB" xml:space="preserve">
+    <value>Could not find command [{0}] status in DB (fr)</value>
+  </data>
+  <data name="CouldNotFindDirectoryOfSolutionFile_" xml:space="preserve">
+    <value>Could not find directory of solution file [{0}] (fr)</value>
+  </data>
+  <data name="CouldNotFindExePath_" xml:space="preserve">
+    <value>Impossible de trouver exePath [{0}]</value>
+  </data>
+  <data name="CouldNotFindFile_" xml:space="preserve">
+    <value>Could not find file [{0}] (fr)</value>
+  </data>
+  <data name="CouldNotFindParameter" xml:space="preserve">
+    <value>Could not find parameter (fr)</value>
+  </data>
+  <data name="CouldNotFindParameter_InAppSettingsJSON" xml:space="preserve">
+    <value>Could not find parameter [{0}] in appsettings.json (fr)</value>
+  </data>
+  <data name="CouldNotFindSolutionFile_ToCompile" xml:space="preserve">
+    <value>Could not find solution file [{0}] to compile (fr)</value>
+  </data>
+  <data name="CouldNotGetAction_Command_InDB_" xml:space="preserve">
+    <value>Could not get or create Action [{0}] Command [{1}] in DB [{2}] (fr)</value>
+  </data>
+  <data name="CouldNotGetObject_InDB_" xml:space="preserve">
+    <value>Could not get or create object [{0}] in DB [{1}] (fr)</value>
+  </data>
+  <data name="CouldNotReadAppSettingsParameter_ShouldBeSomthingLike_" xml:space="preserve">
+    <value>Could not read appsettings.json parameter {0}. Should be somthing like [{1}] (fr)</value>
+  </data>
+  <data name="CouldNotReadFile_" xml:space="preserve">
+    <value>Could not read file [{0}] (fr)</value>
+  </data>
+  <data name="CouldNotReFillDB" xml:space="preserve">
+    <value>Could not refill ActionCommandDB (fr)</value>
+  </data>
+  <data name="Created" xml:space="preserve">
+    <value>Created (fr)</value>
+  </data>
+  <data name="CreatedNew_" xml:space="preserve">
+    <value>Created new [{0}] (fr)</value>
+  </data>
+  <data name="Created_" xml:space="preserve">
+    <value>Created [{0}] (fr)</value>
+  </data>
+  <data name="Creating" xml:space="preserve">
+    <value>Creating (fr)</value>
+  </data>
+  <data name="CSSPAfterAttributeShouldOnlyBeUsedForDateTimeType" xml:space="preserve">
+    <value>CSSPAfterAttribute should only be user for DateTime Type (fr)</value>
+  </data>
+  <data name="CSSPID" xml:space="preserve">
+    <value>CSSPID (fr)</value>
+  </data>
+  <data name="CSSPIDAreNotDupliate" xml:space="preserve">
+    <value>CSSPID are not duplicated (fr)</value>
+  </data>
+  <data name="CSSPIDIsRequiredForGroupOrChild" xml:space="preserve">
+    <value>CSSPID is required for Group or Child (fr)</value>
+  </data>
+  <data name="CSSPIDWithDashAreWellFormed" xml:space="preserve">
+    <value>CSSPID with '-' are well formed (fr)</value>
+  </data>
+  <data name="CultureOptionsEnCAFrCA" xml:space="preserve">
+    <value>Culture - Options:  en-CA || fr-CA (fr)</value>
+  </data>
+  <data name="DataType" xml:space="preserve">
+    <value>DataType</value>
+  </data>
+  <data name="Delete" xml:space="preserve">
+    <value>delete (fr)</value>
+  </data>
+  <data name="DoesHaveDescENAndDescFRText" xml:space="preserve">
+    <value>does have DescEN and DescFR text (fr)</value>
+  </data>
+  <data name="DoesHaveENandFRText" xml:space="preserve">
+    <value>does have EN and FR text (fr)</value>
+  </data>
+  <data name="DoesNotContainSpace" xml:space="preserve">
+    <value>does not contain space (fr)</value>
+  </data>
+  <data name="DoesNotExist" xml:space="preserve">
+    <value>Does not exist (fr)</value>
+  </data>
+  <data name="DoesNotExistFor" xml:space="preserve">
+    <value>does not exist for (fr)</value>
+  </data>
+  <data name="DoesNotExistOnColumnGroup" xml:space="preserve">
+    <value>does not exist on Column Group (fr)</value>
+  </data>
+  <data name="DoesNotHaveDescENText" xml:space="preserve">
+    <value>does not have DescEN text (fr)</value>
+  </data>
+  <data name="DoesNotHaveDescFRText" xml:space="preserve">
+    <value>does not have DescFR text (fr)</value>
+  </data>
+  <data name="DoesNotHaveENText" xml:space="preserve">
+    <value>does not have EN text (fr)</value>
+  </data>
+  <data name="DoesNotHaveFRText" xml:space="preserve">
+    <value>does not have FR text (fr)</value>
+  </data>
+  <data name="DoesNotHaveReportENText" xml:space="preserve">
+    <value>does not have ReportEN text (fr)</value>
+  </data>
+  <data name="DoesNotHaveReportFRText" xml:space="preserve">
+    <value>does not have ReportFR text (fr)</value>
+  </data>
+  <data name="Doing" xml:space="preserve">
+    <value>doing (fr)</value>
+  </data>
+  <data name="Done" xml:space="preserve">
+    <value>Done (fr)</value>
+  </data>
+  <data name="EachChoiceDoesHaveENAndFRText" xml:space="preserve">
+    <value>Each Choice does have EN and FR text (fr)</value>
+  </data>
+  <data name="EachChoiceDoesHaveReportENAndReportFRText" xml:space="preserve">
+    <value>Each Choice does have ReportEN and ReportFR text (fr)</value>
+  </data>
+  <data name="EachGroupWithEndingName" xml:space="preserve">
+    <value>Each Group with ending name (fr)</value>
+  </data>
+  <data name="Email" xml:space="preserve">
+    <value>Courriel</value>
+  </data>
+  <data name="Error" xml:space="preserve">
+    <value>Error (fr)</value>
+  </data>
+  <data name="ErrorFileDoesNotExist_" xml:space="preserve">
+    <value>Error: File does not exist [{0}] (fr)</value>
+  </data>
+  <data name="ErrorWhileCreatingCode_" xml:space="preserve">
+    <value>Error while creating code [{0}] (fr)</value>
+  </data>
+  <data name="ErrorWhileRunningCommand_UnderDirectory_" xml:space="preserve">
+    <value>Error while running command [{0}] under directory [{1}] (fr)</value>
+  </data>
+  <data name="Error_" xml:space="preserve">
+    <value>Erreur: {0}</value>
+  </data>
+  <data name="ERROR_IsEqualTo0" xml:space="preserve">
+    <value>ERROR [{0}] is equal to 0 (fr)</value>
+  </data>
+  <data name="EverythingIsOK" xml:space="preserve">
+    <value>Everythiing is OK (fr)</value>
+  </data>
+  <data name="Example" xml:space="preserve">
+    <value>Example (fr)</value>
+  </data>
+  <data name="ExcelDocReadCompleted" xml:space="preserve">
+    <value>Excel doc read completed (fr)</value>
+  </data>
+  <data name="ExePathIsEmpty" xml:space="preserve">
+    <value>exePath is empty (fr)</value>
+  </data>
+  <data name="Exist" xml:space="preserve">
+    <value>Exist (fr)</value>
+  </data>
+  <data name="ExistOnColumnGroup" xml:space="preserve">
+    <value>exist on column group (fr)</value>
+  </data>
+  <data name="FileNotFound_" xml:space="preserve">
+    <value>File not found [{0}] (fr)</value>
+  </data>
+  <data name="Group" xml:space="preserve">
+    <value>Group (fr)</value>
+  </data>
+  <data name="GroupChoiceChildLevelIsNullForStartCSSPID" xml:space="preserve">
+    <value>Group Choice child level is null for startCSSPID (fr)</value>
+  </data>
+  <data name="HasDescENDescFRText" xml:space="preserve">
+    <value>has DescEN/DescFR text (fr)</value>
+  </data>
+  <data name="HasDuplicates" xml:space="preserve">
+    <value>has duplicates (fr)</value>
+  </data>
+  <data name="HasENFRText" xml:space="preserve">
+    <value>has EN/FR text (fr)</value>
+  </data>
+  <data name="HasNoDuplicates" xml:space="preserve">
+    <value>has no duplicates (fr)</value>
+  </data>
+  <data name="HasReportENReportFRText" xml:space="preserve">
+    <value>has ReportEN/ReportFR text (fr)</value>
+  </data>
+  <data name="HideCellContains" xml:space="preserve">
+    <value>Hide cell contains (fr)</value>
+  </data>
+  <data name="HideCellContainsID" xml:space="preserve">
+    <value>Hide cell contains id (fr)</value>
+  </data>
+  <data name="HideCellHasDuplicate" xml:space="preserve">
+    <value>Hide cell has duplicate (fr)</value>
+  </data>
+  <data name="IsHidingAllPossibleSelection" xml:space="preserve">
+    <value>is hiding all possible selection (fr)</value>
+  </data>
+  <data name="IsNotEmpty" xml:space="preserve">
+    <value>is not empty (fr)</value>
+  </data>
+  <data name="IsNotEqualTo" xml:space="preserve">
+    <value>is not equal to (fr)</value>
+  </data>
+  <data name="IsNotImplemented" xml:space="preserve">
+    <value>is not implemented (fr)</value>
+  </data>
+  <data name="IsNotImplementedYet" xml:space="preserve">
+    <value>is not implemented yet (fr)</value>
+  </data>
+  <data name="IsNotUnique" xml:space="preserve">
+    <value>is not unique (fr)</value>
+  </data>
+  <data name="IsNull" xml:space="preserve">
+    <value>is null (fr)</value>
+  </data>
+  <data name="IsUnique" xml:space="preserve">
+    <value>is unique (fr)</value>
+  </data>
+  <data name="MemberName" xml:space="preserve">
+    <value>member name (fr)</value>
+  </data>
+  <data name="MissingEndValue" xml:space="preserve">
+    <value>missing end value (fr)</value>
+  </data>
+  <data name="NoFileToVerify" xml:space="preserve">
+    <value>No file to verify (fr)</value>
+  </data>
+  <data name="OfType" xml:space="preserve">
+    <value>of type (fr)</value>
+  </data>
+  <data name="OK" xml:space="preserve">
+    <value>OK (fr)</value>
+  </data>
+  <data name="OnlyTypesIntSingleDoubleCanUseRangeAttribute" xml:space="preserve">
+    <value>Only types [Int,Single,Double] can use RangeAttributre (fr)</value>
+  </data>
+  <data name="Parameter" xml:space="preserve">
+    <value>Parameter (fr)</value>
+  </data>
+  <data name="Parameter_ShouldBe_" xml:space="preserve">
+    <value>Parameter #{0} should be {1} (fr)</value>
+  </data>
+  <data name="PleaseRemoveADash" xml:space="preserve">
+    <value>please remove a '-' (fr)</value>
+  </data>
+  <data name="PolSourceGrouping" xml:space="preserve">
+    <value>PolSourceGrouping (fr)</value>
+  </data>
+  <data name="PotentialEmptyRowAbove" xml:space="preserve">
+    <value>potential empty row above (fr)</value>
+  </data>
+  <data name="Property" xml:space="preserve">
+    <value>Property (fr)</value>
+  </data>
+  <data name="ReadingExcelDocumentAndChecking" xml:space="preserve">
+    <value>Reading Excel document and checking (fr)</value>
+  </data>
+  <data name="ReadingSpreadsheet" xml:space="preserve">
+    <value>Reading spreadsheet (fr)</value>
+  </data>
+  <data name="RecursiveFound" xml:space="preserve">
+    <value>Recursive found (fr)</value>
+  </data>
+  <data name="RequiredAUniqueNumberInFirstColumn" xml:space="preserve">
+    <value>required a unique number in first column (fr)</value>
+  </data>
+  <data name="Running" xml:space="preserve">
+    <value>Running (fr)</value>
+  </data>
+  <data name="RunningCommand_UnderDirectory_" xml:space="preserve">
+    <value>Running command [{0}] under directory [{1}] (fr)</value>
+  </data>
+  <data name="ServerCommand_Error_" xml:space="preserve">
+    <value>La commande [{0}] a retournée un erreur: [{1}]</value>
+  </data>
+  <data name="ShouldNotContain" xml:space="preserve">
+    <value>should not contain (fr)</value>
+  </data>
+  <data name="ShouldNotContainSpace" xml:space="preserve">
+    <value>should not contain space (fr)</value>
+  </data>
+  <data name="ShouldNotContainTheStringLengthAttribute" xml:space="preserve">
+    <value>should not contain the string length attribute (fr)</value>
+  </data>
+  <data name="ShouldNotUseRangeAttribute" xml:space="preserve">
+    <value>should not use RangeAttribute (fr)</value>
+  </data>
+  <data name="ShouldOnlyContainCharactersLike" xml:space="preserve">
+    <value>should only contain characters like (fr)</value>
+  </data>
+  <data name="SolutionFileNameExampleCSSPRunsCSSPModelsCSSPServices" xml:space="preserve">
+    <value>SolutionFileName - Examples: CSSPEnums || CSSPModels || CSSPServices (fr)</value>
+  </data>
+  <data name="Starting" xml:space="preserve">
+    <value>Starting (fr)</value>
+  </data>
+  <data name="StringLengthAttributeCanOnlyBeSetForSystemDotString" xml:space="preserve">
+    <value>StringLength Attribute can only be set for System.String (fr)</value>
+  </data>
+  <data name="ThanTheLastValue" xml:space="preserve">
+    <value>then the last value (fr)</value>
+  </data>
+  <data name="That" xml:space="preserve">
+    <value>that (fr)</value>
+  </data>
+  <data name="ThatCSSPID" xml:space="preserve">
+    <value>That CSSPID (fr)</value>
+  </data>
+  <data name="ThatEachHideCellWithInformationContainsValidChildID" xml:space="preserve">
+    <value>that each Hide cell with information contains valid child id (fr)</value>
+  </data>
+  <data name="ThatGroup" xml:space="preserve">
+    <value>that group (fr)</value>
+  </data>
+  <data name="ThatGroupCSSPID" xml:space="preserve">
+    <value>that Group CSSPID (fr)</value>
+  </data>
+  <data name="To_" xml:space="preserve">
+    <value>to {0} (fr)</value>
+  </data>
+  <data name="Type" xml:space="preserve">
+    <value>Type (fr)</value>
+  </data>
+  <data name="Type_Enum_NotFound" xml:space="preserve">
+    <value>Type [{0}]\tEnum [{1}] -------------- not found (fr)</value>
+  </data>
+  <data name="Type_NotFound" xml:space="preserve">
+    <value>Type [{0}] ---------------------- not found (fr)</value>
+  </data>
+  <data name="UnableToLoginAs_WithProvidedPassword" xml:space="preserve">
+    <value>Impossible de se connecter en tant que [{0}] avec le mot de passe fourni</value>
+  </data>
+  <data name="UnmanagedServerError_" xml:space="preserve">
+    <value>Unmanaged server error: [{0}] (fr)</value>
+  </data>
+  <data name="Update" xml:space="preserve">
+    <value>update (fr)</value>
+  </data>
+  <data name="VerifyAppSettingsFile" xml:space="preserve">
+    <value>Verify appsettings.json file (fr)</value>
+  </data>
+  <data name="WhichDoesNotExist" xml:space="preserve">
+    <value>which does not exist (fr)</value>
+  </data>
+  <data name="WhichIsNotADirectChild" xml:space="preserve">
+    <value>which is not a direct child (fr)</value>
+  </data>
+  <data name="WhichTheFirstValueIs" xml:space="preserve">
+    <value>which the first value is (fr)</value>
+  </data>
+  <data name="WhichWillDuplicate" xml:space="preserve">
+    <value>which will dupliate (fr)</value>
+  </data>
+  <data name="WithAction_AndCommand_" xml:space="preserve">
+    <value>with Action [{0}] and Command [{1}] (fr)</value>
+  </data>
+  <data name="YouCanAddASpaceToFixTheProblem" xml:space="preserve">
+    <value>You can add a space to fix the problem (fr)</value>
+  </data>
+  <data name="_IsRequied" xml:space="preserve">
+    <value>{0} is required (fr)</value>
+  </data>
+  <data name="__CouldNotBeFound" xml:space="preserve">
+    <value>{0}: [{1}] n'a pu être trouvé</value>
+  </data>
+</root>

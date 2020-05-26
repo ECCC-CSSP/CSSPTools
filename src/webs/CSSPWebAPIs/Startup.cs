@@ -1,45 +1,44 @@
-﻿using Microsoft.AspNetCore.Builder;
+using CSSPModels;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using CSSPWebAPIs.Helpers;
-using CSSPWebAPIs.Services;
+using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
+using System;
+using System.IO;
 using System.Text;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.EntityFrameworkCore;
-using CSSPModels;
-using Microsoft.AspNet.OData.Extensions;
-using CSSPWebAPIs.Models;
-using Microsoft.AspNetCore.Identity;
-using CSSPWebAPIs.Resources;
-using System.Globalization;
-using Microsoft.AspNetCore.Localization;
+using UserServices.Models;
+using UserServices.Services;
 
-namespace CSSPWebAPIs
+namespace CSSPCodeGenWebAPI
 {
     public class Startup
     {
+        public IConfiguration Configuration { get; }
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
         }
 
-        public IConfiguration Configuration { get; }
-
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddCors();
-            services.AddControllers().AddNewtonsoftJson();
+            services.AddControllers()
+        .       AddJsonOptions(options => {
+                options.JsonSerializerOptions.PropertyNamingPolicy = null;
+            });
 
-            // configure strongly typed settings objects
-            var appSettingsSection = Configuration.GetSection("AppSettings");
-            services.Configure<AppSettings>(appSettingsSection);
+            IConfigurationSection apiSettingsSection = Configuration.GetSection("ApiSettings");
+            services.Configure<ApiSettingsModel>(apiSettingsSection);
 
-            // configure jwt authentication
-            var appSettings = appSettingsSection.Get<AppSettings>();
-            var key = Encoding.ASCII.GetBytes(appSettings.Secret);
+            ApiSettingsModel apiSettings = apiSettingsSection.Get<ApiSettingsModel>();
+            byte[] key = Encoding.ASCII.GetBytes(apiSettings.APISecret);
+
             services.AddAuthentication(x =>
             {
                 x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -58,41 +57,47 @@ namespace CSSPWebAPIs
                 };
             });
 
+            IConfigurationSection connectionStringsSection = Configuration.GetSection("ConnectionStrings");
+            services.Configure<ConnectionStringsModel>(connectionStringsSection);
+
+            ConnectionStringsModel connectionStrings = connectionStringsSection.Get<ConnectionStringsModel>();
 
             //// using CSSPDB
             //services.AddDbContext<CSSPDBContext>(options =>
-            //        options.UseSqlServer(Configuration.GetConnectionString("CSSPDB")));
+            //        options.UseSqlServer(connectionStrings.CSSPDB));
 
             // using CSSPDB2
             services.AddDbContext<CSSPDBContext>(options =>
-                    options.UseSqlServer(Configuration.GetConnectionString("CSSPDB2")));
+                    options.UseSqlServer(connectionStrings.CSSPDB2));
 
             //// using In Memory CSSPDB2
             //services.AddDbContext<CSSPDBContext>(options =>
-            //        options.UseInMemoryDatabase(Configuration.GetConnectionString("CSSPDB2")));
+            //        options.UseInMemoryDatabase(connectionStrings.CSSPDB2));
 
             //// using TestDB
             //services.AddDbContext<CSSPDBContext>(options =>
-            //        options.UseSqlServer(Configuration.GetConnectionString("TestDB")));
+            //        options.UseSqlServer(connectionStrings.TestDB));
 
             services.AddDbContext<ApplicationDbContext>(options =>
-                    options.UseSqlServer(Configuration.GetConnectionString("CSSPDB2")));
-            
+                    options.UseSqlServer(connectionStrings.CSSPDB2));
+
             //services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
             //    .AddEntityFrameworkStores<ApplicationDbContext>();
 
             services.AddIdentityCore<ApplicationUser>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
-            services.AddScoped<IContactService, ContactService>();
-
-            services.AddOData();
-
+            services.AddScoped<IUserService, UserService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            if (env.IsDevelopment())
+            {
+                app.UseDeveloperExceptionPage();
+            }
+
             app.UseRouting();
 
             // global cors policy
@@ -107,9 +112,9 @@ namespace CSSPWebAPIs
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
-                endpoints.EnableDependencyInjection();
-                endpoints.Select().Filter().OrderBy().Count().MaxTop(10);
             });
         }
     }
+
+
 }

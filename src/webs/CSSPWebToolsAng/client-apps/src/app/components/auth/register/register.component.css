@@ -1,0 +1,7 @@
+.registerCard {
+    margin: 20px;
+    text-align: center;
+    vertical-align: middle;
+    min-width: 300px;
+    max-width: 500px;
+}

@@ -1,0 +1,75 @@
+<div class="registerCard">
+    <mat-card>
+        <mat-card-content>
+            <h2>{{ registerModel.Register }}</h2>
+            <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+                <p>
+                    <mat-form-field>
+                        <mat-label for="FirstName">{{ registerModel.FirstName }}</mat-label>
+                        <input matInput type="text" formControlName="FirstName"
+                            [ngClass]="{ 'is-invalid': registerModel.Working && f.FirstName.errors }" />
+                        <mat-error *ngIf="registerModel.Working && f.FirstName.errors">
+                            <span *ngIf="f.FirstName.errors.required">{{ registerModel.FirstNameIsRequired }}</span>
+                        </mat-error>
+                    </mat-form-field>
+                </p>
+                <p>
+                    <mat-form-field>
+                        <mat-label for="Initial">{{ registerModel.Initial }}</mat-label>
+                        <input matInput type="text" formControlName="Initial"
+                            [ngClass]="{ 'is-invalid': registerModel.Working && f.Initial.errors }" />
+                        <mat-error *ngIf="registerModel.Working && f.Initial.errors">
+                            <span *ngIf="f.Initial.errors.required">{{ registerModel.InitialIsRequired }}</span>
+                        </mat-error>
+                    </mat-form-field>
+                </p>
+                <p>
+                    <mat-form-field>
+                        <mat-label for="LastName">{{ registerModel.LastName}}</mat-label>
+                        <input matInput type="text" formControlName="LastName"
+                            [ngClass]="{ 'is-invalid': registerModel.Working && f.LastName.errors }" />
+                        <mat-error *ngIf="registerModel.Working && f.LastName.errors">
+                            <span *ngIf="f.LastName.errors.required">{{ registerModel.LastNameIsRequired }}</span>
+                        </mat-error>
+                    </mat-form-field>
+                </p>
+                <p>
+                    <mat-form-field>
+                        <mat-label for="LoginEmail">{{ registerModel.LoginEmail }}</mat-label>
+                        <input matInput type="text" formControlName="LoginEmail"
+                            [ngClass]="{ 'is-invalid': registerModel.Working && f.LoginEmail.errors }" />
+                        <mat-error *ngIf="registerModel.Working && f.LoginEmail.errors">
+                            <span *ngIf="f.LoginEmail.errors.required">{{ registerModel.LoginEmailIsRequired }}</span>
+                        </mat-error>
+                    </mat-form-field>
+                </p>
+                <p>
+                    <mat-form-field>
+                        <mat-label for="Password">{{ registerModel.Password }}</mat-label>
+                        <input matInput type="password" formControlName="Password"
+                            [ngClass]="{ 'is-invalid': registerModel.Working && f.Password.errors }" />
+                        <mat-error *ngIf="registerModel.Working && f.Password.errors">
+                            <div *ngIf="f.Password.errors.required">{{ registerModel.PasswordIsRequired }}</div>
+                            <div *ngIf="f.Password.errors.minlength">{{ registerModel.PasswordMustBeAtLeast6Characters }}</div>
+                        </mat-error>
+                    </mat-form-field>
+                </p>
+                <p>
+                    <mat-form-field>
+                        <mat-label for="ConfirmPassword">{{ registerModel.ConfirmPassword }}</mat-label>
+                        <input matInput type="password" formControlName="ConfirmPassword"
+                            [ngClass]="{ 'is-invalid': registerModel.Working && f.ConfirmPassword.errors }" />
+                        <mat-error *ngIf="registerModel.Working && f.ConfirmPassword.errors">
+                            <div *ngIf="f.ConfirmPassword.errors.required">{{ registerModel.ConfirmPasswordIsRequired }}</div>
+                        </mat-error>
+                    </mat-form-field>
+                </p>
+                <button mat-raised-button [disabled]="registerModel.Working">
+                    <mat-progress-bar *ngIf="registerModel.Working" mode="indeterminate"></mat-progress-bar>
+                    Register
+                </button>
+                <a mat-button routerLink="/{{ registerModel.Language }}/login">Cancel</a>
+            </form>
+        </mat-card-content>
+    </mat-card>
+</div>

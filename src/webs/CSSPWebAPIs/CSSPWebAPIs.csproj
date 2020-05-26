@@ -1,80 +1,138 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Models\ApiSettingsModel.cs" />
+    <Compile Remove="Models\ApplicationDBContext.cs" />
+    <Compile Remove="Models\ApplicationUser.cs" />
+    <Compile Remove="Models\ConnectionStringsModel.cs" />
+    <Compile Remove="Models\DotNetActionOnFile.cs" />
+    <Compile Remove="Models\DotNetCommand.cs" />
+    <Compile Remove="Models\LoginModel.cs" />
+    <Compile Remove="Models\UserModel.cs" />
+    <Compile Remove="Services\DotNetService.cs" />
+    <Compile Remove="Services\IDotNetService.cs" />
+    <Compile Remove="Services\IUserService.cs" />
+    <Compile Remove="Services\UserService.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.3" />
-    <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="3.1.3" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="3.1.3" />
-    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.1.3" />
-    <PackageReference Include="Microsoft.AspNetCore.OData" Version="7.4.0-beta" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.3" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Abstractions" Version="3.1.3" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Analyzers" Version="3.1.3" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="3.1.3">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
     <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="3.1.3" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="3.1.3" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="3.1.3" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite.Core" Version="3.1.3" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.3" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.3">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
-    <PackageReference Include="Microsoft.Extensions.Options.DataAnnotations" Version="3.1.3" />
-    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.1" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="3.1.3" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="3.1.3" />
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.5.0" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\..\dlls\CSSPEnums\CSSPEnums.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Data\" />
   </ItemGroup>
 
   <ItemGroup>
     <Reference Include="CSSPModels">
       <HintPath>..\..\dlls\CSSPModels\bin\Debug\netcoreapp3.1\CSSPModels.dll</HintPath>
     </Reference>
+    <Reference Include="UserServices">
+      <HintPath>..\..\dlls\UserServices\bin\Debug\netcoreapp3.1\UserServices.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="Resources\LoginModelRes.Designer.cs">
+    <Compile Update="Controllers\Resources\ControllersRes.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
-      <DependentUpon>LoginModelRes.resx</DependentUpon>
+      <DependentUpon>ControllersRes.resx</DependentUpon>
     </Compile>
-    <Compile Update="Resources\WebSite.Designer.cs">
+    <Compile Update="Services\Resources\ServicesRes.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
-      <DependentUpon>WebSite.resx</DependentUpon>
+      <DependentUpon>ServicesRes.resx</DependentUpon>
     </Compile>
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Update="Resources\LoginModelRes.fr.resx">
-      <LastGenOutput>LoginModelRes.Designer.cs</LastGenOutput>
+    <Content Update="appsettings.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Controllers\Resources\ControllersRes.fr.resx">
+      <LastGenOutput>ControllersRes.Designer.cs</LastGenOutput>
       <Generator>PublicResXFileCodeGenerator</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="Resources\LoginModelRes.resx">
+    <EmbeddedResource Update="Controllers\Resources\ControllersRes.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>LoginModelRes.Designer.cs</LastGenOutput>
+      <LastGenOutput>ControllersRes.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Update="Resources\WebSite.fr.resx">
-      <LastGenOutput>WebSite.Designer.cs</LastGenOutput>
+    <EmbeddedResource Update="Services\Resources\ServicesRes.fr.resx">
+      <LastGenOutput>ServicesRes.Designer.cs</LastGenOutput>
       <Generator>PublicResXFileCodeGenerator</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="Resources\WebSite.resx">
+    <EmbeddedResource Update="Services\Resources\ServicesRes.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>WebSite.Designer.cs</LastGenOutput>
+      <LastGenOutput>ServicesRes.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="ActionCommandList.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="runAngularEnumsGenerated.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="runAngularInterfacesGenerated.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="runEnumsCompareWithOldEnums.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="runEnumsPolSourceInfoRelatedFiles.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="runEnumsTestGenerated_cs.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="runModelsCompare.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="runModelsCompareDBFieldsAndCSSPModelsDLLProp.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="runModelsCSSPModelsRes.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="runServicesClassNameServiceGenerated.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="runWebAPIClassNameControllerTestGenerated.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="runWebAPIClassNameControllerGenerated.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="runServicesRepopulateTestDB.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="runServicesExtensionEnumCastingGenerated.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="runServicesClassNameServiceTestGenerated.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="runModelsModelClassNameTest.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="runModelsModelClassNameTestGenerated_cs.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="runEnumsGenerated_cs.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 

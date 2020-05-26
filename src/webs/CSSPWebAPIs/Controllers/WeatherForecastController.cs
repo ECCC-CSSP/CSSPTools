@@ -2,29 +2,33 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
+using CSSPCodeGenWebAPI.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
-namespace CSSPWebAPIs.Controllers
+namespace CSSPCodeGenWebAPI.Controllers
 {
     [ApiController]
-    [Route(@"api/{culture}/[controller]")]
-    [Authorize]
+    [Route("api/{culture}/[controller]")]
     public class WeatherForecastController : ControllerBase
     {
+        #region Variables
         private static readonly string[] Summaries = new[]
         {
             "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
         };
 
         private readonly ILogger<WeatherForecastController> _logger;
+        #endregion Variables
 
+        #region Constructors
         public WeatherForecastController(ILogger<WeatherForecastController> logger)
         {
             _logger = logger;
         }
+        #endregion Constructors
 
+        #region Functions public
         [HttpGet]
         public IEnumerable<WeatherForecast> Get()
         {
@@ -37,5 +41,9 @@ namespace CSSPWebAPIs.Controllers
             })
             .ToArray();
         }
+        #endregion Functions public
+
+        #region Functions private
+        #endregion Functions private
     }
 }
