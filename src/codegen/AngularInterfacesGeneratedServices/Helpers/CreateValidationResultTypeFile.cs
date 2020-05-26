@@ -28,6 +28,19 @@ namespace AngularInterfacesGeneratedServices.Services
                 sw2.Write(sb.ToString());
                 ActionCommandDBService.ExecutionStatusText.AppendLine($"Created [{ fiOutputGen }]");
             }
+
+            fiOutputGen = new FileInfo(Config.GetValue<string>("ValidateResultFileName"));
+            if (fiOutputGen.Exists)
+            {
+                string fileLine = "Last Write Time [" + fiOutputGen.LastWriteTime.ToString("yyyy MMMM dd HH:mm:ss") + "] " + fiOutputGen.FullName;
+                ActionCommandDBService.FilesStatusText.AppendLine(fileLine);
+            }
+            else
+            {
+                string fileLine = "Not Created" + fiOutputGen.FullName;
+                ActionCommandDBService.FilesStatusText.AppendLine(fileLine);
+            }
+
         }
     }
 }

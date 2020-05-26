@@ -41,7 +41,7 @@ namespace ExecuteDotNetCommandServices.Services
             Directory.SetCurrentDirectory(di.FullName);
 
             string command = $"dotnet";
-            string arg = $" { dotNetCommand.Action } /flp:v=m; /flp:logfile={ LogFileName }";
+            string arg = $" { dotNetCommand.Action } /flp:v=n; /flp:logfile={ LogFileName }";
             if (dotNetCommand.Action == "run")
             {
                 command = fi.Name;
@@ -51,6 +51,26 @@ namespace ExecuteDotNetCommandServices.Services
             Process process = new Process();
             process = Process.Start($"{ command }", $" { arg }");
             process.WaitForExit();
+
+            if (dotNetCommand.Action == "build" || dotNetCommand.Action == "test")
+            {
+                string dllOrExeFileName = di.FullName + @"\bin\Debug\netcoreapp3.1\" + dotNetCommand.Command + ".dll";
+                if (dotNetCommand.Command.EndsWith("Services"))
+                {
+                    dllOrExeFileName.Replace(".dll", ".exe");
+                }
+                FileInfo fiExist = new FileInfo(dllOrExeFileName);
+                if (fiExist.Exists)
+                {
+                    string fileLine = "Last Write Time [" + fiExist.LastWriteTime.ToString("yyyy MMMM dd HH:mm:ss") + "] " + fiExist.FullName;
+                    ActionCommandDBService.FilesStatusText.AppendLine(fileLine);
+                }
+                else
+                {
+                    string fileLine = "Not Created" + fiExist.FullName;
+                    ActionCommandDBService.FilesStatusText.AppendLine(fileLine);
+                }
+            }
 
             Directory.SetCurrentDirectory(currentDirectory);
 

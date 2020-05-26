@@ -1,9 +1,12 @@
-﻿using ActionCommandDBServices.Services;
+﻿using ActionCommandDBServices.Models;
+using ActionCommandDBServices.Services;
 using ConfigServices.Services;
 using ExecuteDotNetCommandServices.Models;
 using GenerateCodeBaseServices.Services;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using System.Collections.Generic;
+using System.Text;
 using System.Threading.Tasks;
 using ValidateAppSettingsServices.Services;
 
@@ -206,6 +209,27 @@ namespace ExecuteDotNetCommandServices.Services
             }
 
             await ActionCommandDBService.ConsoleWriteEnd();
+
+            if (args[1] == "build" || args[1] == "test")
+            {
+                string ExecutionStatusText = ActionCommandDBService.ExecutionStatusText.ToString();
+
+                ActionCommandDBService.Action = args[1];
+                ActionCommandDBService.Command = args[2];
+
+                ActionResult<ActionCommand> actionActionCommand = await ActionCommandDBService.Get();
+                if (((ObjectResult)actionActionCommand.Result).StatusCode == 400)
+                {
+                    await ActionCommandDBService.ConsoleWriteError("actionCommand == null");
+                    return false;
+                }
+
+                await ActionCommandDBService.ConsoleWriteStart();
+
+                ActionCommandDBService.ExecutionStatusText = new StringBuilder(ExecutionStatusText);
+
+                await ActionCommandDBService.ConsoleWriteEnd();
+            }
 
             return await Task.FromResult(true);
         }

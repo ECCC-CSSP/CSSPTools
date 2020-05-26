@@ -101,6 +101,18 @@ namespace EnumsPolSourceInfoRelatedFilesServices.Services
                 return await Task.FromResult(false);
             }
 
+            fi = new FileInfo(Config.GetValue<string>("FillPolSourceObsInfoChildServiceGenerated_cs"));
+            if (fi.Exists)
+            {
+                string fileLine = "Last Write Time [" + fi.LastWriteTime.ToString("yyyy MMMM dd HH:mm:ss") + "] " + fi.FullName;
+                ActionCommandDBService.FilesStatusText.AppendLine(fileLine);
+            }
+            else
+            {
+                string fileLine = "Not Created" + fi.FullName;
+                ActionCommandDBService.FilesStatusText.AppendLine(fileLine);
+            }
+
             ActionCommandDBService.ExecutionStatusText.AppendLine($"{ CultureServicesRes.Created }: { fi.FullName }");
             ActionCommandDBService.PercentCompleted = 10;
             await ActionCommandDBService.Update();

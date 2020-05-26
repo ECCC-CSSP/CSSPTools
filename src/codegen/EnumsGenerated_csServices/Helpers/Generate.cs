@@ -91,6 +91,18 @@ namespace EnumsGenerated_csServices.Services
                 sw.Write(sb.ToString());
             }
 
+            fiInterface = new FileInfo(Config.GetValue<string>("IEnumsGenerated"));
+            if (fiInterface.Exists)
+            {
+                string fileLine = "Last Write Time [" + fiInterface.LastWriteTime.ToString("yyyy MMMM dd HH:mm:ss") + "] " + fiInterface.FullName;
+                ActionCommandDBService.FilesStatusText.AppendLine(fileLine);
+            }
+            else
+            {
+                string fileLine = "Not Created" + fiInterface.FullName;
+                ActionCommandDBService.FilesStatusText.AppendLine(fileLine);
+            }
+
             ActionCommandDBService.ExecutionStatusText.AppendLine($"{ CultureServicesRes.Created } [{ fiInterface.FullName }] ...");
             ActionCommandDBService.PercentCompleted = 50;
             await ActionCommandDBService.Update();
@@ -322,6 +334,19 @@ namespace EnumsGenerated_csServices.Services
             {
                 sw.Write(sb.ToString());
             }
+
+            fi = new FileInfo(Config.GetValue<string>("EnumsGenerated"));
+            if (fi.Exists)
+            {
+                string fileLine = "Last Write Time [" + fi.LastWriteTime.ToString("yyyy MMMM dd HH:mm:ss") + "] " + fi.FullName;
+                ActionCommandDBService.FilesStatusText.AppendLine(fileLine);
+            }
+            else
+            {
+                string fileLine = "Not Created" + fi.FullName;
+                ActionCommandDBService.FilesStatusText.AppendLine(fileLine);
+            }
+
 
             ActionCommandDBService.ExecutionStatusText.AppendLine($"{ CultureServicesRes.Created } [{ fi.FullName }] ...");
             ActionCommandDBService.ExecutionStatusText.AppendLine($"{ CultureServicesRes.Done } ...");

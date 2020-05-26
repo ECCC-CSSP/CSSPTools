@@ -78,6 +78,18 @@ namespace ServicesClassNameServiceGeneratedServices.Services
                 sw.Write(sb.ToString());
             }
 
+            fiOutputGen = new FileInfo(Config.GetValue<string>("ExtensionEnumCastingGenerated"));
+            if (fiOutputGen.Exists)
+            {
+                string fileLine = "Last Write Time [" + fiOutputGen.LastWriteTime.ToString("yyyy MMMM dd HH:mm:ss") + "] " + fiOutputGen.FullName;
+                ActionCommandDBService.FilesStatusText.AppendLine(fileLine);
+            }
+            else
+            {
+                string fileLine = "Not Created" + fiOutputGen.FullName;
+                ActionCommandDBService.FilesStatusText.AppendLine(fileLine);
+            }
+
             ActionCommandDBService.ExecutionStatusText.AppendLine("");
             ActionCommandDBService.ExecutionStatusText.AppendLine($"{ CultureServicesRes.Done } ...");
             ActionCommandDBService.ExecutionStatusText.AppendLine("");

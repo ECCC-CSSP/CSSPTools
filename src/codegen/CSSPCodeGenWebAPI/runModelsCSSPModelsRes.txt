@@ -1,0 +1,10 @@
+﻿Requirements: 
+none
+
+Files created:
+C:\\CSSPTools\\src\\dlls\\CSSPModels\\Resources\\CSSPModelsRes.resx
+C:\\CSSPTools\\src\\dlls\\CSSPModels\\Resources\\CSSPModelsRes.fr.resx
+
+Recompilation of project required
+
+C:\CSSPTools\src\dlls\CSSPModels\CSSPModels.csproj

@@ -474,6 +474,19 @@ namespace ModelsModelClassNameTestGenerated_csServices.Services
                 {
                     sw.Write(sb.ToString());
                 }
+
+                fiOutput = new FileInfo(Config.GetValue<string>("TypeNameTestGenerated").Replace("{TypeName}", type.Name));
+                if (fiOutput.Exists)
+                {
+                    string fileLine = "Last Write Time [" + fiOutput.LastWriteTime.ToString("yyyy MMMM dd HH:mm:ss") + "] " + fiOutput.FullName;
+                    ActionCommandDBService.FilesStatusText.AppendLine(fileLine);
+                }
+                else
+                {
+                    string fileLine = "Not Created" + fiOutput.FullName;
+                    ActionCommandDBService.FilesStatusText.AppendLine(fileLine);
+                }
+
                 ActionCommandDBService.ExecutionStatusText.AppendLine($"{ string.Format(CultureServicesRes.Created_, fiOutput.FullName) }");
             }
 

@@ -1,0 +1,11 @@
+﻿Requirements: 
+C:\CSSPTools\src\dlls\CSSPEnums\bin\Debug\netcoreapp3.1\CSSPEnums.dll
+C:\CSSPTools\src\dlls\CSSPModels\bin\Debug\netcoreapp3.1\CSSPModels.dll
+
+Files created:
+C:\CSSPCode\CSSPWebToolsAng\src\app\interfaces\generated\validationresult.interface.ts
+C:\CSSPCode\CSSPWebToolsAng\src\app\interfaces\generated\{TypeName}.interface.ts
+
+Recompilation of project required with ng build
+
+C:\CSSPCode\CSSPWebToolsAng\

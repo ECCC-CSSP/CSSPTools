@@ -1,0 +1,9 @@
+﻿Requirements: 
+C:\CSSPTools\src\dlls\CSSPEnums\bin\Debug\netcoreapp3.1\CSSPEnums.dll
+C:\CSSP Latest Code Old\CSSPEnumsDLL\CSSPEnumsDLL\bin\Debug\CSSPEnumsDLL.dll
+
+Files created:
+none
+
+No recompilation of project required
+

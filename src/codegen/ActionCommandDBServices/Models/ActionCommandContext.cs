@@ -41,7 +41,6 @@ namespace ActionCommandDBServices.Models
                 entity.Property(e => e.Command).IsRequired();
                 entity.Property(e => e.FullFileName).IsRequired();
                 entity.Property(e => e.Description);
-                entity.Property(e => e.TempStatusText);
                 entity.Property(e => e.ErrorText);
                 entity.Property(e => e.ExecutionStatusText);
                 entity.Property(e => e.FilesStatusText);

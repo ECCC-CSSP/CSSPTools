@@ -7,7 +7,6 @@
         public string Command { get; set; }
         public string FullFileName { get; set; }
         public string Description { get; set; }
-        public string TempStatusText { get; set; }
         public string ErrorText { get; set; }
         public string ExecutionStatusText { get; set; }
         public string FilesStatusText { get; set; }

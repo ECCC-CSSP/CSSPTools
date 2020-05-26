@@ -55,21 +55,25 @@
         </mat-error>
 
         <div *ngIf="actionCommand.ViewDetails">
-            <p>{{ actionCommand.FullFileName }}</p>
-            <mat-tab-group>
-                <mat-tab *ngIf="actionCommand.Description" label="Description">
-                    <pre>{{ actionCommand.Description }}</pre>
-                </mat-tab>
-                <mat-tab *ngIf="actionCommand.TempStatusText" label="Temp Status Text">
-                    <pre>{{ actionCommand.TempStatusText }}</pre>
-                </mat-tab>
-                <mat-tab *ngIf="actionCommand.ExecutionStatusText" label="Execution Status Text">
-                    <pre>{{ actionCommand.ExecutionStatusText }}</pre>
-                </mat-tab>
-                <mat-tab *ngIf="actionCommand.FilesStatusText" label="Files Status Text">
-                    <pre>{{ actionCommand.FilesStatusText }}</pre>
-                </mat-tab>
-            </mat-tab-group>
+            <mat-card>
+                <p>{{ actionCommand.FullFileName }}</p>
+                <mat-card-content>
+                    <mat-tab-group>
+                        <mat-tab *ngIf="actionCommand.Description" label="Description">
+                            <pre>{{ actionCommand.Description }}</pre>
+                        </mat-tab>
+                        <mat-tab *ngIf="actionCommand.TempStatusText" label="Temp Status Text">
+                            <pre>{{ actionCommand.TempStatusText }}</pre>
+                        </mat-tab>
+                        <mat-tab *ngIf="actionCommand.ExecutionStatusText" label="Execution Status Text">
+                            <pre>{{ actionCommand.ExecutionStatusText }}</pre>
+                        </mat-tab>
+                        <mat-tab *ngIf="actionCommand.FilesStatusText" label="Files Status Text">
+                            <pre>{{ actionCommand.FilesStatusText }}</pre>
+                        </mat-tab>
+                    </mat-tab-group>
+                </mat-card-content>
+            </mat-card>
         </div>
     </li>
 </ul>

@@ -103,6 +103,19 @@ namespace AngularEnumsGeneratedServices.Services
                         sw2.Write(sb.ToString());
                         ActionCommandDBService.ExecutionStatusText.AppendLine($"Created [{ dllTypeInfoEnums.Name.ToLower().Replace("enum", ".enum") }.ts]");
                     }
+
+                    fiOutputGen = new FileInfo(Config.GetValue<string>("EnumNameFile").Replace("{EnumName}", dllTypeInfoEnums.Name.ToLower().Replace("enum", ".enum")));
+                    if (fiOutputGen.Exists)
+                    {
+                        string fileLine = "Last Write Time [" + fiOutputGen.LastWriteTime.ToString("yyyy MMMM dd HH:mm:ss") + "] " + fiOutputGen.FullName;
+                        ActionCommandDBService.FilesStatusText.AppendLine(fileLine);
+                    }
+                    else
+                    {
+                        string fileLine = "Not Created" + fiOutputGen.FullName;
+                        ActionCommandDBService.FilesStatusText.AppendLine(fileLine);
+                    }
+
                 }
 
             }

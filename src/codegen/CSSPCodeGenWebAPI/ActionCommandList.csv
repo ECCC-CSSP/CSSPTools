@@ -17,7 +17,6 @@ run,WebAPIClassNameControllerGenerated,C:\CSSPTools\src\codegen\WebAPIClassNameC
 run,WebAPIClassNameControllerTestGenerated,C:\CSSPTools\src\codegen\WebAPIClassNameControllerTestGenerated\bin\Debug\netcoreapp3.1\WebAPIClassNameControllerTestGenerated.exe
 build,ActionCommandDBServices,C:\CSSPTools\src\codegen\ActionCommandDBServices\ActionCommandDBServices.csproj
 build,ActionCommandDBServices.Tests,C:\CSSPTools\src\codegen\Tests\ActionCommandDBServices.Tests\ActionCommandDBServices.Tests.csproj
-build,ActionCommandServices,C:\CSSPTools\src\codegen\ActionCommandServices\ActionCommandServices.csproj
 build,ActionCommandServices.Tests,C:\CSSPTools\src\codegen\Tests\ActionCommandServices.Tests\ActionCommandServices.Tests.csproj
 build,AngularEnumsGenerated,C:\CSSPTools\src\codegen\AngularEnumsGenerated\AngularEnumsGenerated.csproj
 build,AngularEnumsGeneratedServices,C:\CSSPTools\src\codegen\AngularEnumsGeneratedServices\AngularEnumsGeneratedServices.csproj
@@ -85,7 +84,6 @@ build,WebAPIClassNameControllerTestGenerated,C:\CSSPTools\src\codegen\WebAPIClas
 build,WebAPIClassNameControllerTestGeneratedServices,C:\CSSPTools\src\codegen\WebAPIClassNameControllerTestGeneratedServices\WebAPIClassNameControllerTestGeneratedServices.csproj
 build,WebAPIClassNameControllerTestGeneratedServices.Tests,C:\CSSPTools\src\codegen\Tests\WebAPIClassNameControllerTestGeneratedServices.Tests\WebAPIClassNameControllerTestGeneratedServices.Tests.csproj
 test,ActionCommandDBServices.Tests,C:\CSSPTools\src\codegen\Tests\ActionCommandDBServices.Tests\ActionCommandDBServices.Tests.csproj
-test,ActionCommandServices.Tests,C:\CSSPTools\src\codegen\tests\ActionCommandServices.Tests\ActionCommandServices.Tests.csproj
 test,AngularEnumsGeneratedServices.Tests,C:\CSSPTools\src\codegen\Tests\AngularEnumsGeneratedServices.Tests\AngularEnumsGeneratedServices.Tests.csproj
 test,AngularInterfacesGeneratedServices.Tests,C:\CSSPTools\src\codegen\Tests\AngularInterfacesGeneratedServices.Tests\AngularInterfacesGeneratedServices.Tests.csproj
 test,CSSPEnums,C:\CSSPTools\src\tests\CSSPEnums.Tests\CSSPEnums.Tests.csproj
@@ -110,3 +108,4 @@ test,ServicesRepopulateTestDBServices.Tests,C:\CSSPTools\src\codegen\Tests\Servi
 test,ValidateAppSettingsServices.Tests,C:\CSSPTools\src\codegen\Tests\ValidateAppSettingsServices.Tests\ValidateAppSettingsServices.Tests.csproj
 test,WebAPIClassNameControllerGeneratedServices.Tests,C:\CSSPTools\src\codegen\Tests\WebAPIClassNameControllerGeneratedServices.Tests\WebAPIClassNameControllerGeneratedServices.Tests.csproj
 test,WebAPIClassNameControllerTestGeneratedServices.Tests,C:\CSSPTools\src\codegen\Tests\WebAPIClassNameControllerTestGeneratedServices.Tests\WebAPIClassNameControllerTestGeneratedServices.Tests.csproj
+run,ExecuteDotNetCommand,C:\CSSPTools\src\codegen\ExecuteDotNetCommand\ExecuteDotNetCommand.csproj

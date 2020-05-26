@@ -24,7 +24,6 @@ namespace ActionCommandDBServices.Services
         public string Command { get; set; }
         public string FullFileName { get; set; }
         public string Description { get; set; }
-        public StringBuilder TempStatusText { get; set; }
         public StringBuilder ErrorText { get; set; }
         public StringBuilder ExecutionStatusText { get; set; }
         public StringBuilder FilesStatusText { get; set; }
@@ -120,20 +119,29 @@ namespace ActionCommandDBServices.Services
 
                 if (strList.Count == 3)
                 {
+                    LastID += 1;
                     Init();
                     Action = strList[0];
                     Command = strList[1];
                     FullFileName = strList[2];
                     Description = $"{ Action } - { Command } Description ToDo";
 
+                    FileInfo fiTxt = new FileInfo($"{ Environment.CurrentDirectory }\\{ Action }{ Command }.txt");
+
+                    if (fiTxt.Exists)
+                    {
+                        StreamReader srTxt = fiTxt.OpenText();
+                        Description = srTxt.ReadToEnd();
+                        srTxt.Close();
+                    }
+
                     ActionCommand actionCommand = new ActionCommand()
                     {
-                        ActionCommandID = (long)LastID + 1,
+                        ActionCommandID = LastID,
                         Action = Action,
                         Command = Command,
                         FullFileName = FullFileName,
                         Description = Description,
-                        TempStatusText = "",
                         ErrorText = "",
                         ExecutionStatusText = "",
                         FilesStatusText = "",
@@ -218,7 +226,6 @@ namespace ActionCommandDBServices.Services
 
             actionCommand.FullFileName = FullFileName;
             actionCommand.Description = Description;
-            actionCommand.TempStatusText = TempStatusText.ToString();
             actionCommand.ErrorText = ErrorText.ToString();
             actionCommand.ExecutionStatusText = ExecutionStatusText.ToString();
             actionCommand.FilesStatusText = FilesStatusText.ToString();
@@ -250,7 +257,6 @@ namespace ActionCommandDBServices.Services
             Command = "";
             FullFileName = "";
             Description = "";
-            TempStatusText = new StringBuilder();
             ErrorText = new StringBuilder();
             ExecutionStatusText = new StringBuilder();
             FilesStatusText = new StringBuilder();
@@ -273,11 +279,10 @@ namespace ActionCommandDBServices.Services
             Command = actionCommand.Command;
             FullFileName = actionCommand.FullFileName;
             Description = actionCommand.Description;
-            TempStatusText = new StringBuilder(actionCommand.TempStatusText);
-            ExecutionStatusText = new StringBuilder(actionCommand.ExecutionStatusText);
-            FilesStatusText = new StringBuilder(actionCommand.FilesStatusText);
-            PercentCompleted = actionCommand.PercentCompleted;
-            LastUpdateDate = DateTime.Parse(actionCommand.LastUpdateDate);
+            //ExecutionStatusText = new StringBuilder(actionCommand.ExecutionStatusText);
+            //FilesStatusText = new StringBuilder(actionCommand.FilesStatusText);
+            //PercentCompleted = actionCommand.PercentCompleted;
+            //LastUpdateDate = DateTime.Parse(actionCommand.LastUpdateDate);
 
             return actionCommand;
         }

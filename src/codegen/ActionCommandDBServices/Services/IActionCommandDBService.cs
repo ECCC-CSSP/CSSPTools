@@ -14,7 +14,6 @@ namespace ActionCommandDBServices.Services
         public string Command { get; set; }
         public string FullFileName { get; set; }
         public string Description { get; set; }
-        public StringBuilder TempStatusText { get; set; }
         public StringBuilder ErrorText { get; set; }
         public StringBuilder ExecutionStatusText { get; set; }
         public StringBuilder FilesStatusText { get; set; }

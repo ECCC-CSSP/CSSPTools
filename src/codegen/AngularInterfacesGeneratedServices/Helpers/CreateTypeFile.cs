@@ -298,6 +298,19 @@ namespace AngularInterfacesGeneratedServices.Services
                 sw2.Write(sb.ToString());
                 ActionCommandDBService.ExecutionStatusText.AppendLine($"{ string.Format(CultureServicesRes.Created_, fiOutputGen.FullName) }");
             }
+
+            fiOutputGen = new FileInfo(Config.GetValue<string>("InterfaceFileName").Replace("{TypeName}", dllTypeInfoModels.Name.ToLower()));
+            if (fiOutputGen.Exists)
+            {
+                string fileLine = "Last Write Time [" + fiOutputGen.LastWriteTime.ToString("yyyy MMMM dd HH:mm:ss") + "] " + fiOutputGen.FullName;
+                ActionCommandDBService.FilesStatusText.AppendLine(fileLine);
+            }
+            else
+            {
+                string fileLine = "Not Created" + fiOutputGen.FullName;
+                ActionCommandDBService.FilesStatusText.AppendLine(fileLine);
+            }
+
         }
     }
 }

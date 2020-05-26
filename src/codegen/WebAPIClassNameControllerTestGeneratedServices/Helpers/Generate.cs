@@ -115,6 +115,18 @@ namespace WebAPIClassNameControllerTestGeneratedServices.Services
                         sw2.Write(sb.ToString());
                     }
 
+                    fiOutputGen = new FileInfo(Config.GetValue<string>("TypeNameFile").Replace("{TypeName}", TypeName));
+                    if (fiOutputGen.Exists)
+                    {
+                        string fileLine = "Last Write Time [" + fiOutputGen.LastWriteTime.ToString("yyyy MMMM dd HH:mm:ss") + "] " + fiOutputGen.FullName;
+                        ActionCommandDBService.FilesStatusText.AppendLine(fileLine);
+                    }
+                    else
+                    {
+                        string fileLine = "Not Created" + fiOutputGen.FullName;
+                        ActionCommandDBService.FilesStatusText.AppendLine(fileLine);
+                    }
+
                     ActionCommandDBService.ExecutionStatusText.AppendLine($"{ string.Format(CultureServicesRes.Created_, fiOutputGen.FullName) }");
                 }
             }

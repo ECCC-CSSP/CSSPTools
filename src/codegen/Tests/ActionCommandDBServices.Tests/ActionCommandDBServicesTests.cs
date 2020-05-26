@@ -56,7 +56,6 @@ namespace ActionCommandDBServices.Tests
             Assert.Equal("", actionCommandDBService.Command);
             Assert.Equal("", actionCommandDBService.FullFileName);
             Assert.Equal("", actionCommandDBService.Description);
-            Assert.Equal("", actionCommandDBService.TempStatusText.ToString());
             Assert.Equal("", actionCommandDBService.ErrorText.ToString());
             Assert.Equal("", actionCommandDBService.ExecutionStatusText.ToString());
             Assert.Equal("", actionCommandDBService.FilesStatusText.ToString());
@@ -106,7 +105,6 @@ namespace ActionCommandDBServices.Tests
 
             // Should update the existing object with info
             actionCommandDBService.ErrorText = new StringBuilder("Testing");
-            actionCommandDBService.TempStatusText = new StringBuilder("Bonjour");
             actionCommandDBService.PercentCompleted = 33;
             actionActionCommand = await actionCommandDBService.Update();
             Assert.Equal(200, ((ObjectResult)actionActionCommand.Result).StatusCode);
@@ -116,7 +114,6 @@ namespace ActionCommandDBServices.Tests
             Assert.Equal(actionCommandDBService.Command, actionCommand.Command);
             Assert.True(actionCommand.ActionCommandID > 0);
             Assert.Equal("Testing", actionCommand.ErrorText);
-            Assert.Equal("Bonjour", actionCommand.TempStatusText);
             Assert.Equal(33, actionCommand.PercentCompleted);
         }
         [Theory]
@@ -149,7 +146,7 @@ namespace ActionCommandDBServices.Tests
 
             var actionActionCommand = await actionCommandDBService.Get();
             Assert.Equal(400, ((ObjectResult)actionActionCommand.Result).StatusCode);
-            Assert.Equal($"{ string.Format(CultureServicesRes._IsRequied, "Command") }", ((BadRequestObjectResult)actionActionCommand.Result).Value);
+            Assert.Equal($"{ CultureServicesRes.CouldNotFindActionCommand } { string.Format(CultureServicesRes.WithAction_AndCommand_, actionCommandDBService.Action, actionCommandDBService.Command) }", ((BadRequestObjectResult)actionActionCommand.Result).Value);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -175,7 +172,6 @@ namespace ActionCommandDBServices.Tests
             // Should update the existing object with info
             actionCommandDBService.Command = "";
             actionCommandDBService.ErrorText = new StringBuilder("Testing");
-            actionCommandDBService.TempStatusText = new StringBuilder("Bonjour");
             actionCommandDBService.PercentCompleted = 33;
             actionActionCommand = await actionCommandDBService.Update();
             Assert.Equal(400, ((ObjectResult)actionActionCommand.Result).StatusCode);
