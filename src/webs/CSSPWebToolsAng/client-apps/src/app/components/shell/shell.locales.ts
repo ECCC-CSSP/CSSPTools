@@ -1,9 +1,9 @@
-import { ShellService } from './shell.service';
-import { ShellModel } from './shell.models';
+import { ShellService } from 'src/app/components/shell/shell.service';
+import { ShellModel } from 'src/app/components/shell/shell.models';
 
 export function LoadLocalesShell(shellService: ShellService) {
   let shellModel: ShellModel = {
-    AppTitle: 'ACA - Shell',
+    AppTitle: 'CSSP Web Tools',
     ShowIcons: 'Show Icons',
     HideIcons: 'Hide Icons',
     Login: "Login",
@@ -12,7 +12,7 @@ export function LoadLocalesShell(shellService: ShellService) {
   }
 
   if ($localize.locale === 'fr-CA') {
-    shellModel.AppTitle = "ACA - Coquille";
+    shellModel.AppTitle = "PCCSM Outils Web";
     shellModel.ShowIcons = 'Voir Icons';
     shellModel.HideIcons = 'Cacher Icons';
     shellModel.Login = 'Connextion';

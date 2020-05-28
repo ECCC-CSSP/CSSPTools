@@ -1,3 +1,3 @@
-export * from './shell.component';
-export * from './shell.models';
-export * from './shell.service';
+export * from 'src/app/components/shell/shell.component';
+export * from 'src/app/components/shell/shell.models';
+export * from 'src/app/components/shell/shell.service';

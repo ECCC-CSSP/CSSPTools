@@ -1,0 +1,15 @@
+<p>grouping works!</p>
+<p>{{ groupingService.groupingTextModel$.getValue().Title }}</p>
+
+<button mat-button color="primary" (click)="groupingService.FillDBWithGrouping()"></button>
+
+<button mat-button color="primary" (click)="groupingService.FillDBWithGrouping()"></button>
+
+<hr />
+<ul *ngIf="groupingService.groupSourceGroupingModel$.getValue().PolSourceGroupingList" >
+    <li *ngFor="let grouping of groupingService.groupSourceGroupingModel$.getValue().PolSourceGroupingList">
+        {{ grouping.CSSPID }} {{ grouping.GroupName }} {{ grouping.Child }} {{ grouping.Hide }}
+    </li>
+</ul>
+<hr />
+

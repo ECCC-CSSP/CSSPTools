@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
-import { AppService } from './app.service';
-import { AppModel } from './app.models';
+import { AppService } from 'src/app/services';
+import { AppModel } from 'src/app/models';
 
 @Component({
   selector: 'app-root',
@@ -8,7 +8,7 @@ import { AppModel } from './app.models';
   styleUrls: ['./app.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AppComponent implements OnInit {
+export class AppComponent implements OnInit, OnDestroy {
   appModel: AppModel = {};
 
   constructor(public appService: AppService) {
@@ -16,5 +16,10 @@ export class AppComponent implements OnInit {
 
   ngOnInit() {
     this.appModel = this.appService.appModel$.getValue();
+  }
+
+  ngOnDestroy()
+  {
+    // nothing yet
   }
 }

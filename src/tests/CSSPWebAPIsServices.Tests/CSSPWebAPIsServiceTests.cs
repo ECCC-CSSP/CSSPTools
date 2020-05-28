@@ -1,9 +1,9 @@
 using System;
 using Xunit;
 
-namespace CSSPWebAPIs.Tests
+namespace CSSPWebAPIsServices.Tests
 {
-    public class UnitTest1
+    public class CSSPWebAPIsServiceTests
     {
         [Fact]
         public void Test1()

@@ -32,8 +32,14 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Reference Include="CSSPEnums">
+      <HintPath>..\..\dlls\CSSPEnums\bin\Debug\netcoreapp3.1\CSSPEnums.dll</HintPath>
+    </Reference>
     <Reference Include="CSSPModels">
       <HintPath>..\..\dlls\CSSPModels\bin\Debug\netcoreapp3.1\CSSPModels.dll</HintPath>
+    </Reference>
+    <Reference Include="PolSourceGroupingExcelFileReadServices">
+      <HintPath>..\..\codegen\PolSourceGroupingExcelFileReadServices\bin\Debug\netcoreapp3.1\PolSourceGroupingExcelFileReadServices.dll</HintPath>
     </Reference>
     <Reference Include="UserServices">
       <HintPath>..\..\dlls\UserServices\bin\Debug\netcoreapp3.1\UserServices.dll</HintPath>

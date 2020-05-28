@@ -7,18 +7,18 @@ const routes: Routes = [
     path: 'en-CA', component: ShellComponent, children: [
       { path: 'login', loadChildren: () => import('./components/auth/login/login.module').then(mod => mod.LoginModule) },
       { path: 'register', loadChildren: () => import('./components/auth/register/register.module').then(mod => mod.RegisterModule) },
-      { path: 'actioncommand', loadChildren: () => import('./components/action-command/action-command.module').then(mod => mod.ActionCommandModule) },
+      { path: 'home', loadChildren: () => import('./components/home/home.module').then(mod => mod.HomeModule) },
       { path: 'webapinotfound', loadChildren: () => import('./components/web-api-not-found/web-api-not-found.module').then(mod => mod.WebApiNotFoundModule) },
-      { path: '**', loadChildren: () => import('./components/no-page-found/no-page-found.module').then(mod => mod.NoPageFoundModule) },
+      //{ path: '**', loadChildren: () => import('./components/no-page-found/no-page-found.module').then(mod => mod.NoPageFoundModule) },
     ]
   },
   {
     path: 'fr-CA', component: ShellComponent, children: [
       { path: 'login', loadChildren: () => import('./components/auth/login/login.module').then(mod => mod.LoginModule) },
       { path: 'register', loadChildren: () => import('./components/auth/register/register.module').then(mod => mod.RegisterModule) },
-      { path: 'actioncommand', loadChildren: () => import('./components/action-command/action-command.module').then(mod => mod.ActionCommandModule) },
+      { path: 'home', loadChildren: () => import('./components/home/home.module').then(mod => mod.HomeModule) },
       { path: 'webapinotfound', loadChildren: () => import('./components/web-api-not-found/web-api-not-found.module').then(mod => mod.WebApiNotFoundModule) },
-      { path: '**', loadChildren: () => import('./components/no-page-found/no-page-found.module').then(mod => mod.NoPageFoundModule) },
+      //{ path: '**', loadChildren: () => import('./components/no-page-found/no-page-found.module').then(mod => mod.NoPageFoundModule) },
     ]
   },
   { path: '', redirectTo: 'en-CA', pathMatch: 'full' },

@@ -13,7 +13,7 @@ namespace CSSPModels
     {
 
         #region Variables
-        private string fullPath = @"C:\CSSPTools\src\appsettings.json";
+        //private string fullPath = @"C:\CSSPTools\src\appsettings.json";
         #endregion Variables
 
         #region Properties
@@ -68,6 +68,8 @@ namespace CSSPModels
         public virtual DbSet<MWQMSite> MWQMSites { get; set; }
         public virtual DbSet<MWQMSubsectorLanguage> MWQMSubsectorLanguages { get; set; }
         public virtual DbSet<MWQMSubsector> MWQMSubsectors { get; set; }
+        public virtual DbSet<PolSourceGrouping> PolSourceGroupings { get; set; }
+        public virtual DbSet<PolSourceGroupingLanguage> PolSourceGroupingLanguages { get; set; }
         public virtual DbSet<PolSourceObservationIssue> PolSourceObservationIssues { get; set; }
         public virtual DbSet<PolSourceObservation> PolSourceObservations { get; set; }
         public virtual DbSet<PolSourceSite> PolSourceSites { get; set; }
