@@ -64,7 +64,7 @@ namespace ServicesClassNameServiceGeneratedServices.Services
                 new AppSettingParameter() { Parameter = "Culture", ExpectedValue = "", IsCulture = true },
                 new AppSettingParameter() { Parameter = "DBFileName", ExpectedValue = "{AppDataPath}\\CSSP\\ActionCommandDB.db", IsFile = true, CheckExist = true },
                 new AppSettingParameter() { Parameter = "CSSPEnums", ExpectedValue = "C:\\CSSPTools\\src\\dlls\\CSSPEnums\\bin\\Debug\\netcoreapp3.1\\CSSPEnums.dll", IsFile = true, CheckExist = true },
-                new AppSettingParameter() { Parameter = "ExtensionEnumCastingGenerated", ExpectedValue = "C:\\CSSPCode\\CSSPServices\\CSSPServices\\_ExtensionEnumCastingGenerated.cs" },
+                new AppSettingParameter() { Parameter = "ExtensionEnumCastingGenerated", ExpectedValue = "C:\\CSSPTools\\src\\dlls\\CSSPServices\\src\\_ExtensionEnumCastingGenerated.cs" },
             };
 
             return await Task.FromResult(true);

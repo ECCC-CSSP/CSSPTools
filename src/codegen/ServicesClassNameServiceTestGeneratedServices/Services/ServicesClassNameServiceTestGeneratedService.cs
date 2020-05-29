@@ -75,7 +75,7 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
                 new AppSettingParameter() { Parameter = "CSSPServices", ExpectedValue = "C:\\CSSPTools\\src\\dlls\\CSSPServices\\bin\\Debug\\netcoreapp3.1\\CSSPServices.dll", IsFile = true, CheckExist = true },
                 new AppSettingParameter() { Parameter = "CSSPDBConnectionString", ExpectedValue = "Data Source=.\\sqlexpress;Initial Catalog=CSSPDB;Integrated Security=True" },
                 new AppSettingParameter() { Parameter = "TestDBConnectionString", ExpectedValue = "Data Source=.\\sqlexpress;Initial Catalog=TestDB;Integrated Security=True" },
-                new AppSettingParameter() { Parameter = "ClassNameFile", ExpectedValue = "C:\\CSSPCode\\CSSPServices\\CSSPServices.Tests\\{TypeName}ServiceTestGenerated.cs" },
+                new AppSettingParameter() { Parameter = "ClassNameFile", ExpectedValue = "C:\\CSSPTools\\src\\tests\\CSSPServices.Tests\\tests\\Generated\\{TypeName}ServiceTestGenerated.cs" },
             };
 
             return await Task.FromResult(true);

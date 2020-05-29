@@ -65,7 +65,7 @@ namespace WebAPIClassNameControllerGeneratedServices.Services
                 new AppSettingParameter() { Parameter = "DBFileName", ExpectedValue = "{AppDataPath}\\CSSP\\ActionCommandDB.db", IsFile = true, CheckExist = true },
                 new AppSettingParameter() { Parameter = "CSSPEnums", ExpectedValue = "C:\\CSSPTools\\src\\dlls\\CSSPEnums\\bin\\Debug\\netcoreapp3.1\\CSSPEnums.dll", IsFile = true, CheckExist = true },
                 new AppSettingParameter() { Parameter = "CSSPModels", ExpectedValue = "C:\\CSSPTools\\src\\dlls\\CSSPModels\\bin\\Debug\\netcoreapp3.1\\CSSPModels.dll", IsFile = true, CheckExist = true },
-                new AppSettingParameter() { Parameter = "TypeNameFile", ExpectedValue = "C:\\CSSPCode\\CSSPWebAPI\\CSSPWebAPI\\Controllers\\src\\{TypeName}ControllerGenerated.cs" },
+                new AppSettingParameter() { Parameter = "TypeNameFile", ExpectedValue = "C:\\CSSPTools\\src\\webs\\CSSPWebAPIs\\Controllers\\src\\{TypeName}ControllerGenerated.cs" },
             };
 
             return await Task.FromResult(true);

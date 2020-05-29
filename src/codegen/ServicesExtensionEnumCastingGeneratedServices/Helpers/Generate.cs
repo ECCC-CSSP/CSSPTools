@@ -78,6 +78,8 @@ namespace ServicesClassNameServiceGeneratedServices.Services
                 sw.Write(sb.ToString());
             }
 
+            ActionCommandDBService.ExecutionStatusText.AppendLine($"Created [{ fiOutputGen.FullName }] ...");
+
             fiOutputGen = new FileInfo(Config.GetValue<string>("ExtensionEnumCastingGenerated"));
             if (fiOutputGen.Exists)
             {

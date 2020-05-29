@@ -1,9 +1,0 @@
-﻿Requirements: 
-C:\CSSPTools\src\dlls\CSSPEnums\bin\Debug\netcoreapp3.1\CSSPEnums.dll
-
-Files created:
-C:\CSSPTools\src\dlls\CSSPEnums\Generated\EnumsGenerated.cs
-
-Recompilation of project required
-
-C:\CSSPTools\src\dlls\CSSPEnums\CSSPEnums.csproj

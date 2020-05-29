@@ -44,6 +44,10 @@ namespace CSSPServices
         #endregion Properties
 
         #region Constructors
+        public BaseService()
+        {
+
+        }
         #endregion Constructors  
 
         #region Validation

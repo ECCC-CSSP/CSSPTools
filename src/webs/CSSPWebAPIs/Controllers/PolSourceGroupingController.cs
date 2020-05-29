@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using CSSPCodeGenWebAPI.Models;
 using CSSPEnums;
 using CSSPModels;
+using LoggedInServices.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -31,14 +32,17 @@ namespace CSSPCodeGenWebAPI.Controllers
         #endregion Variables
 
         #region Properties
-        IPolSourceGroupingExcelFileReadService PolSourceGroupingExcelFileReadService { get; set; }
-        CSSPDBContext db { get; set; }
+        private IPolSourceGroupingExcelFileReadService PolSourceGroupingExcelFileReadService { get; }
+        private CSSPDBContext db { get; }
+        private ILoggedInService loggedInService { get; }
         #endregion Properties
 
         #region Constructors
-        public PolSourceGroupingController(IPolSourceGroupingExcelFileReadService polSourceGroupingExcelFileReadService, CSSPDBContext db)
+        public PolSourceGroupingController(IPolSourceGroupingExcelFileReadService polSourceGroupingExcelFileReadService, 
+            CSSPDBContext db, ILoggedInService loggedInService)
         {
             PolSourceGroupingExcelFileReadService = polSourceGroupingExcelFileReadService;
+            this.loggedInService = loggedInService;
             this.db = db;
         }
         #endregion Constructors
@@ -48,6 +52,8 @@ namespace CSSPCodeGenWebAPI.Controllers
         [HttpGet]
         public async Task<ActionResult<GroupSourceGroupingModel>> GetGrouping()
         {
+            await loggedInService.SetID(User.Identity.Name);
+
             GroupSourceGroupingModel groupSourceGroupingModel = new GroupSourceGroupingModel();
 
             List<PolSourceGrouping> polSourceGroupingList = (from c in db.PolSourceGroupings

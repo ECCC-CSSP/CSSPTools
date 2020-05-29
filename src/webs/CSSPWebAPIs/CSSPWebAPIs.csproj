@@ -5,6 +5,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Controllers\src\**" />
+    <Content Remove="Controllers\src\**" />
+    <EmbeddedResource Remove="Controllers\src\**" />
+    <None Remove="Controllers\src\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Compile Remove="Models\ApiSettingsModel.cs" />
     <Compile Remove="Models\ApplicationDBContext.cs" />
     <Compile Remove="Models\ApplicationUser.cs" />
@@ -32,17 +39,29 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Reference Include="ActionCommandDBServices">
+      <HintPath>..\..\codegen\ActionCommandDBServices\bin\Debug\netcoreapp3.1\ActionCommandDBServices.dll</HintPath>
+    </Reference>
     <Reference Include="CSSPEnums">
       <HintPath>..\..\dlls\CSSPEnums\bin\Debug\netcoreapp3.1\CSSPEnums.dll</HintPath>
     </Reference>
     <Reference Include="CSSPModels">
       <HintPath>..\..\dlls\CSSPModels\bin\Debug\netcoreapp3.1\CSSPModels.dll</HintPath>
     </Reference>
+    <Reference Include="CultureServices">
+      <HintPath>..\..\codegen\CultureServices\bin\Debug\netcoreapp3.1\CultureServices.dll</HintPath>
+    </Reference>
+    <Reference Include="LoggedInServices">
+      <HintPath>..\..\dlls\LoggedInServices\bin\Debug\netcoreapp3.1\LoggedInServices.dll</HintPath>
+    </Reference>
     <Reference Include="PolSourceGroupingExcelFileReadServices">
       <HintPath>..\..\codegen\PolSourceGroupingExcelFileReadServices\bin\Debug\netcoreapp3.1\PolSourceGroupingExcelFileReadServices.dll</HintPath>
     </Reference>
     <Reference Include="UserServices">
       <HintPath>..\..\dlls\UserServices\bin\Debug\netcoreapp3.1\UserServices.dll</HintPath>
+    </Reference>
+    <Reference Include="ValidateAppSettingsServices">
+      <HintPath>..\..\codegen\ValidateAppSettingsServices\bin\Debug\netcoreapp3.1\ValidateAppSettingsServices.dll</HintPath>
     </Reference>
   </ItemGroup>
 

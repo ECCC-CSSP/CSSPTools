@@ -34,7 +34,7 @@ namespace CSSPWebAPIs.Tests.Controllers
         {
             Assert.True(await Setup(new CultureInfo(culture)));
 
-            PolSourceGroupingController PolSourceGroupingController = new PolSourceGroupingController();
+            //PolSourceGroupingController polSourceGroupingController = new PolSourceGroupingController();
 
         }
         #endregion Functions public
