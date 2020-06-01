@@ -851,34 +851,6 @@ namespace ServicesRepopulateTestDBServices.Services
             }
             #endregion PolSourceSites
 
-            ActionCommandDBService.ExecutionStatusText.AppendLine("doing ... Adding up to 10 items in MWQMSitePolSourceSites");
-
-            //#region MWQMSitePolSourceSites
-            //using (TestDBContext db = new TestDBContext())
-            //{
-            //    count = (from c in dbTestDB.MWQMSitePolSourceSites.AsNoTracking() select c).Count();
-            //    if (count < 10)
-            //    {
-            //        for (int i = count; i < 10; i++)
-            //        {
-            //            MWQMSitePolSourceSite MWQMSitePolSourceSite = (from c in dbTestDB.MWQMSitePolSourceSites.AsNoTracking() select c).OrderByDescending(c => c.MWQMSitePolSourceSiteID).FirstOrDefault();
-            //            try
-            //            {
-            //                MWQMSitePolSourceSite.MWQMSitePolSourceSiteID = 0;
-            //                MWQMSitePolSourceSite.LinkReasons = $"{ MWQMSitePolSourceSite.LinkReasons }a";
-            //                if (!await AddObject("MWQMSitePolSourceSite", MWQMSitePolSourceSite)) return await Task.FromResult(false);
-            //            }
-            //            catch (Exception ex)
-            //            {
-            //                string InnerException = (ex.InnerException != null ? $" Inner: [{ ex.InnerException.Message }]" : "");
-            //                ActionCommandDBService.ExecutionStatusText.AppendLine($"{ ex.Message }{ InnerException }");
-            //                return await Task.FromResult(false);
-            //            }
-            //        }
-            //    }
-            //}
-            //#endregion MWQMSitePolSourceSites
-
             ActionCommandDBService.ExecutionStatusText.AppendLine("doing ... Adding up to 10 items in RainExceedances");
 
             #region RainExceedances
@@ -903,6 +875,8 @@ namespace ServicesRepopulateTestDBServices.Services
                 }
             }
             #endregion RainExceedances
+
+            ActionCommandDBService.ExecutionStatusText.AppendLine("doing ... Adding up to 10 items in RainExceedanceClimateSites");
 
             #region RainExceedanceClimateSites
             List<int> ClimateSiteTVItemIDList = (from c in dbTestDB.ClimateSites.AsNoTracking() where c.Province == "NB" select c.ClimateSiteTVItemID).Take(30).ToList();
@@ -1430,6 +1404,9 @@ namespace ServicesRepopulateTestDBServices.Services
                 }
             }
             #endregion VPScenarios
+
+            ActionCommandDBService.ExecutionStatusText.AppendLine("doing ... Adding up to 10 items in PolSourceSiteEffects");
+
             #region PolSourceSiteEffects
             count = (from c in dbTestDB.PolSourceSiteEffects.AsNoTracking() select c).Count();
             if (count < 10)
@@ -1452,6 +1429,9 @@ namespace ServicesRepopulateTestDBServices.Services
                 }
             }
             #endregion PolSourceSiteEffects
+
+            ActionCommandDBService.ExecutionStatusText.AppendLine("doing ... Adding up to 10 items in PolSourceSiteEffectTerms");
+
             #region PolSourceSiteEffectTerms
             count = (from c in dbTestDB.PolSourceSiteEffectTerms.AsNoTracking() select c).Count();
             if (count < 10)
@@ -1475,6 +1455,73 @@ namespace ServicesRepopulateTestDBServices.Services
                 }
             }
             #endregion PolSourceSiteEffects
+
+            ActionCommandDBService.ExecutionStatusText.AppendLine("doing ... Adding up to 10 items in PolSourceGroupings and PolSourceGroupingLanguages");
+
+            #region PolSourceGrouping and PolSourceGroupingLanguage
+            count = (from c in dbTestDB.PolSourceGroupings.AsNoTracking() select c).Count();
+            if (count < 10)
+            {
+                for (int i = count; i < 10; i++)
+                {
+                    PolSourceGrouping polSourceGrouping = (from c in dbTestDB.PolSourceGroupings.AsNoTracking() select c).OrderByDescending(c => c.PolSourceGroupingID).FirstOrDefault();
+                    PolSourceGroupingLanguage polSourceGroupingLanguage = (from c in dbTestDB.PolSourceGroupingLanguages.AsNoTracking() where c.PolSourceGroupingID == polSourceGrouping.PolSourceGroupingID && c.Language == LanguageEnum.en select c).OrderByDescending(c => c.PolSourceGroupingID).FirstOrDefault();
+                    PolSourceGroupingLanguage polSourceGroupingLanguageFR = (from c in dbTestDB.PolSourceGroupingLanguages.AsNoTracking() where c.PolSourceGroupingID == polSourceGrouping.PolSourceGroupingID && c.Language == LanguageEnum.fr select c).OrderByDescending(c => c.PolSourceGroupingID).FirstOrDefault();
+                    try
+                    {
+                        polSourceGrouping.PolSourceGroupingID = 0;
+                        polSourceGrouping.CSSPID = polSourceGrouping.CSSPID + 1;
+                        polSourceGrouping.GroupName = polSourceGrouping.GroupName + "a";
+                        polSourceGrouping.Child = polSourceGrouping.Child + "a";
+                        polSourceGrouping.Hide = polSourceGrouping.Hide + "a";
+                        if (!await AddObject("PolSourceGrouping", polSourceGrouping)) return await Task.FromResult(false);
+
+                        polSourceGroupingLanguage.PolSourceGroupingLanguageID = 0;
+                        polSourceGroupingLanguage.PolSourceGroupingID = polSourceGrouping.PolSourceGroupingID;
+                        polSourceGroupingLanguage.Language = LanguageEnum.en;
+                        polSourceGroupingLanguage.SourceName = polSourceGroupingLanguage.SourceName + "a";
+                        polSourceGroupingLanguage.SourceNameOrder = polSourceGroupingLanguage.SourceNameOrder + 1;
+                        polSourceGroupingLanguage.TranslationStatusSourceName = TranslationStatusEnum.Translated;
+                        polSourceGroupingLanguage.SourceName = polSourceGroupingLanguage.SourceName + "a";
+                        polSourceGroupingLanguage.TranslationStatusSourceName = TranslationStatusEnum.Translated;
+                        polSourceGroupingLanguage.Init = polSourceGroupingLanguage.Init + "a";
+                        polSourceGroupingLanguage.TranslationStatusInit = TranslationStatusEnum.Translated;
+                        polSourceGroupingLanguage.Description = polSourceGroupingLanguage.Description + "a";
+                        polSourceGroupingLanguage.TranslationStatusDescription = TranslationStatusEnum.Translated;
+                        polSourceGroupingLanguage.Report = polSourceGroupingLanguage.Report + "a";
+                        polSourceGroupingLanguage.TranslationStatusReport = TranslationStatusEnum.Translated;
+                        polSourceGroupingLanguage.Text = polSourceGroupingLanguage.Text + "a";
+                        polSourceGroupingLanguage.TranslationStatusText = TranslationStatusEnum.Translated;
+                        if (!await AddObject("PolSourceGroupingLanguage", polSourceGroupingLanguage)) return await Task.FromResult(false);
+
+                        polSourceGroupingLanguageFR.PolSourceGroupingLanguageID = 0;
+                        polSourceGroupingLanguageFR.PolSourceGroupingID = polSourceGrouping.PolSourceGroupingID;
+                        polSourceGroupingLanguageFR.Language = LanguageEnum.fr;
+                        polSourceGroupingLanguageFR.SourceName = polSourceGroupingLanguageFR.SourceName + "a";
+                        polSourceGroupingLanguageFR.SourceNameOrder = polSourceGroupingLanguageFR.SourceNameOrder + 1;
+                        polSourceGroupingLanguageFR.TranslationStatusSourceName = TranslationStatusEnum.Translated;
+                        polSourceGroupingLanguageFR.SourceName = polSourceGroupingLanguageFR.SourceName + "a";
+                        polSourceGroupingLanguageFR.TranslationStatusSourceName = TranslationStatusEnum.Translated;
+                        polSourceGroupingLanguageFR.Init = polSourceGroupingLanguageFR.Init + "a";
+                        polSourceGroupingLanguageFR.TranslationStatusInit = TranslationStatusEnum.Translated;
+                        polSourceGroupingLanguageFR.Description = polSourceGroupingLanguageFR.Description + "a";
+                        polSourceGroupingLanguageFR.TranslationStatusDescription = TranslationStatusEnum.Translated;
+                        polSourceGroupingLanguageFR.Report = polSourceGroupingLanguageFR.Report + "a";
+                        polSourceGroupingLanguageFR.TranslationStatusReport = TranslationStatusEnum.Translated;
+                        polSourceGroupingLanguageFR.Text = polSourceGroupingLanguageFR.Text + "a";
+                        polSourceGroupingLanguageFR.TranslationStatusText = TranslationStatusEnum.Translated;
+                        if (!await AddObject("PolSourceGroupingLanguage", polSourceGroupingLanguageFR)) return await Task.FromResult(false);
+
+                    }
+                    catch (Exception ex)
+                    {
+                        string InnerException = (ex.InnerException != null ? $" Inner: [{ ex.InnerException.Message }]" : "");
+                        ActionCommandDBService.ExecutionStatusText.AppendLine($"{ ex.Message }{ InnerException }");
+                        return await Task.FromResult(false);
+                    }
+                }
+            }
+            #endregion PolSourceGrouping and PolSourceGroupingLanguage
 
             return await Task.FromResult(true);
         }

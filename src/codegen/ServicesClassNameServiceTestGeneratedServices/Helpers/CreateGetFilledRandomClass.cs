@@ -100,6 +100,19 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
                                             }
                                         }
                                         break;
+                                    case "DrogueRun":
+                                        {
+                                            DrogueRun drogueRun = dbTestDB.DrogueRuns.AsNoTracking().FirstOrDefault();
+                                            if (drogueRun == null)
+                                            {
+                                                sb.AppendLine($@"            // Need to implement (no items found, would need to add at least one in the TestDB) [{ TypeName } { csspProp.PropName } { csspProp.ExistTypeName } { csspProp.ExistFieldID }]");
+                                            }
+                                            else
+                                            {
+                                                sb.AppendLine($@"            if (OmitPropName != ""{ prop.Name }"") { TypeNameLower }.{ prop.Name } = { drogueRun.DrogueRunID };");
+                                            }
+                                        }
+                                        break;
                                     case "EmailDistributionList":
                                         {
                                             EmailDistributionList emailDistributionList = dbTestDB.EmailDistributionLists.AsNoTracking().FirstOrDefault();
@@ -253,6 +266,19 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
                                             else
                                             {
                                                 sb.AppendLine($@"            if (OmitPropName != ""{ prop.Name }"") { TypeNameLower }.{ prop.Name } = { mwqmSubsector.MWQMSubsectorID };");
+                                            }
+                                        }
+                                        break;
+                                    case "PolSourceGrouping":
+                                        {
+                                            PolSourceGrouping polSourceGrouping = dbTestDB.PolSourceGroupings.AsNoTracking().FirstOrDefault();
+                                            if (polSourceGrouping == null)
+                                            {
+                                                sb.AppendLine($@"            // Need to implement (no items found, would need to add at least one in the TestDB) [{ TypeName } { csspProp.PropName } { csspProp.ExistTypeName } { csspProp.ExistFieldID }]");
+                                            }
+                                            else
+                                            {
+                                                sb.AppendLine($@"            if (OmitPropName != ""{ prop.Name }"") { TypeNameLower }.{ prop.Name } = { polSourceGrouping.PolSourceGroupingID };");
                                             }
                                         }
                                         break;

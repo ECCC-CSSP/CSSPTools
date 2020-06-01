@@ -546,7 +546,6 @@ namespace ServicesRepopulateTestDBServices.Services
                 //reportSectionLanguageFR.ReportSectionID = reportSection.ReportSectionID;
                 //if (!await AddObject("ReportSectionLanguage", reportSectionLanguageFR)) return await Task.FromResult(false);
                 #endregion ReportSection and ReportSectionLanguage
-
                 #region TVItem TVFile Bouctouche WWTP 
                 ActionCommandDBService.ExecutionStatusText.AppendLine($"doing ... Bouctouche WWTP TVFile");
                 // TVItem TVFile Bouctouche WWTP TVItemID = 28689
@@ -850,19 +849,6 @@ namespace ServicesRepopulateTestDBServices.Services
                 int HelpDocID = helpDoc.HelpDocID;
                 if (!await AddObject("HelpDoc", helpDoc)) return await Task.FromResult(false);
                 #endregion HelpDoc
-                //#region MWQMSitePolSourceSite
-                //ActionCommandDBService.ExecutionStatusText.AppendLine($"doing ... MWQMSitePolSourceSite");
-                //MWQMSitePolSourceSite mwqmSitePolSourceSite = new MWQMSitePolSourceSite()
-                //{
-                //    MWQMSiteTVItemID = tvItemNB_06_020_002Site0001.TVItemID,
-                //    PolSourceSiteTVItemID = polSourceSitePolSite000023.PolSourceSiteTVItemID,
-                //    TVType = TVTypeEnum.PolSourceSite,
-                //    LinkReasons = "The Link Reasons",
-                //    LastUpdateContactTVItemID = 2,
-                //    LastUpdateDate_UTC = DateTime.Now,
-                //};
-                //if (!await AddObject("MWQMSitePolSourceSite", mwqmSitePolSourceSite)) return await Task.FromResult(false);
-                //#endregion MWQMSitePolSourceSite
                 #region TVItem SamplingPlan, SamplingPlanSubsector, SamplingPlanSubsectorSite, SamplingPlanEmail
                 ActionCommandDBService.ExecutionStatusText.AppendLine($"doing ... Sampling Plan");
                 // NB TVItem Sampling Plan with SamplingPlanID = 78 and TVFileTVItemID = 370708
@@ -1510,7 +1496,55 @@ namespace ServicesRepopulateTestDBServices.Services
                 mwqmAnalysisReportParameter.LastUpdateContactTVItemID = tvItemContactCharles.TVItemID;
                 if (!await AddObject("MWQMAnalysisReportParameter", mwqmAnalysisReportParameter)) return await Task.FromResult(false);
                 #endregion MWQMAnalysisReportParameter
+                #region PolSourceGrouping and PolSourceGroupingLangauge
+                ActionCommandDBService.ExecutionStatusText.AppendLine($"doing ... PolSourceGrouping");
+                PolSourceGrouping polSourceGrouping = new PolSourceGrouping();
+                polSourceGrouping.CSSPID = 10003;
+                polSourceGrouping.GroupName = "FirstGroupName";
+                polSourceGrouping.Child = "FirstChild";
+                polSourceGrouping.Hide = "FirstHide";
+                polSourceGrouping.LastUpdateDate_UTC = DateTime.Now;
+                polSourceGrouping.LastUpdateContactTVItemID = tvItemContactCharles.TVItemID;
+                if (!await AddObject("PolSourceGrouping", polSourceGrouping)) return await Task.FromResult(false);
 
+                ActionCommandDBService.ExecutionStatusText.AppendLine($"doing ... PolSourceGrouping");
+                PolSourceGroupingLanguage polSourceGroupingLanguage = new PolSourceGroupingLanguage();
+                polSourceGroupingLanguage.PolSourceGroupingID = polSourceGrouping.PolSourceGroupingID;
+                polSourceGroupingLanguage.Language = LanguageEnum.en;
+                polSourceGroupingLanguage.SourceName = "FirstSourceName";
+                polSourceGroupingLanguage.SourceNameOrder = 1;
+                polSourceGroupingLanguage.TranslationStatusSourceName = TranslationStatusEnum.Translated;
+                polSourceGroupingLanguage.Init = "FirstInit";
+                polSourceGroupingLanguage.TranslationStatusInit = TranslationStatusEnum.Translated;
+                polSourceGroupingLanguage.Description = "FirstDescription";
+                polSourceGroupingLanguage.TranslationStatusDescription = TranslationStatusEnum.Translated;
+                polSourceGroupingLanguage.Report = "FirstReport";
+                polSourceGroupingLanguage.TranslationStatusReport = TranslationStatusEnum.Translated;
+                polSourceGroupingLanguage.Text = "FirstText";
+                polSourceGroupingLanguage.TranslationStatusText = TranslationStatusEnum.Translated;
+                polSourceGroupingLanguage.LastUpdateDate_UTC = DateTime.Now;
+                polSourceGroupingLanguage.LastUpdateContactTVItemID = tvItemContactCharles.TVItemID;               
+                if (!await AddObject("PolSourceGroupingLanguage", polSourceGroupingLanguage)) return await Task.FromResult(false);
+                
+                ActionCommandDBService.ExecutionStatusText.AppendLine($"doing ... PolSourceGrouping");
+                PolSourceGroupingLanguage polSourceGroupingLanguageFR = new PolSourceGroupingLanguage();
+                polSourceGroupingLanguageFR.PolSourceGroupingID = polSourceGrouping.PolSourceGroupingID;
+                polSourceGroupingLanguageFR.Language = LanguageEnum.fr;
+                polSourceGroupingLanguageFR.SourceName = "FirstSourceNameFR";
+                polSourceGroupingLanguageFR.SourceNameOrder = 1;
+                polSourceGroupingLanguageFR.TranslationStatusSourceName = TranslationStatusEnum.Translated;
+                polSourceGroupingLanguageFR.Init = "FirstInitFR";
+                polSourceGroupingLanguageFR.TranslationStatusInit = TranslationStatusEnum.Translated;
+                polSourceGroupingLanguageFR.Description = "FirstDescriptionFR";
+                polSourceGroupingLanguageFR.TranslationStatusDescription = TranslationStatusEnum.Translated;
+                polSourceGroupingLanguageFR.Report = "FirstReportFR";
+                polSourceGroupingLanguageFR.TranslationStatusReport = TranslationStatusEnum.Translated;
+                polSourceGroupingLanguageFR.Text = "FirstTextFR";
+                polSourceGroupingLanguageFR.TranslationStatusText = TranslationStatusEnum.Translated;
+                polSourceGroupingLanguageFR.LastUpdateDate_UTC = DateTime.Now;
+                polSourceGroupingLanguageFR.LastUpdateContactTVItemID = tvItemContactCharles.TVItemID;
+                if (!await AddObject("PolSourceGroupingLanguage", polSourceGroupingLanguageFR)) return await Task.FromResult(false);
+                #endregion PolSourceGrouping
             }
             catch (Exception ex)
             {

@@ -26,16 +26,19 @@ namespace CSSPModels
         [CSSPDescriptionEN(DescriptionEN = @"CSSP unique ID")]
         [CSSPDescriptionFR(DescriptionFR = @"Identifiant unique de CSSP")]
         public int CSSPID { get; set; }
+        [StringLength(150)]
         [CSSPDisplayEN(DisplayEN = "Group name")]
         [CSSPDisplayFR(DisplayFR = "Nom du groupe")]
         [CSSPDescriptionEN(DescriptionEN = @"Groupe name")]
         [CSSPDescriptionFR(DescriptionFR = @"Nom du groupe")]
         public string GroupName { get; set; }
+        [StringLength(150)]
         [CSSPDisplayEN(DisplayEN = "Group name")]
         [CSSPDisplayFR(DisplayFR = "Nom du groupe")]
         [CSSPDescriptionEN(DescriptionEN = @"Groupe name")]
         [CSSPDescriptionFR(DescriptionFR = @"Nom du groupe")]
         public string Child { get; set; }
+        [StringLength(150)]
         [CSSPDisplayEN(DisplayEN = "Group name")]
         [CSSPDisplayFR(DisplayFR = "Nom du groupe")]
         [CSSPDescriptionEN(DescriptionEN = @"Groupe name")]

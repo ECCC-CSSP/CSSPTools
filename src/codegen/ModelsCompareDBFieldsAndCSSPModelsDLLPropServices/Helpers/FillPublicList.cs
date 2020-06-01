@@ -21,6 +21,11 @@ namespace ModelsCompareDBFieldsAndCSSPModelsDLLPropServices.Services
                 new TableFieldEnumException() { TableName = "MWQMSubsectorLanguages", FieldName = "TranslationStatusSubsectorDesc", EnumText = "TranslationStatusEnum" },
                 new TableFieldEnumException() { TableName = "MWQMSubsectorLanguages", FieldName = "TranslationStatusLogBook", EnumText = "TranslationStatusEnum" },
                 new TableFieldEnumException() { TableName = "MWQMSamples", FieldName = "SampleType_old", EnumText = "SampleTypeEnum" },
+                new TableFieldEnumException() { TableName = "PolSourceGroupingLanguages", FieldName = "TranslationStatusSourceName", EnumText = "TranslationStatusEnum" },
+                new TableFieldEnumException() { TableName = "PolSourceGroupingLanguages", FieldName = "TranslationStatusInit", EnumText = "TranslationStatusEnum" },
+                new TableFieldEnumException() { TableName = "PolSourceGroupingLanguages", FieldName = "TranslationStatusDescription", EnumText = "TranslationStatusEnum" },
+                new TableFieldEnumException() { TableName = "PolSourceGroupingLanguages", FieldName = "TranslationStatusReport", EnumText = "TranslationStatusEnum" },
+                new TableFieldEnumException() { TableName = "PolSourceGroupingLanguages", FieldName = "TranslationStatusText", EnumText = "TranslationStatusEnum" },
                 new TableFieldEnumException() { TableName = "PolSourceSites", FieldName = "InactiveReason", EnumText = "PolSourceInactiveReasonEnum" },
                 new TableFieldEnumException() { TableName = "ReportTypeLanguages", FieldName = "TranslationStatusName", EnumText = "TranslationStatusEnum" },
                 new TableFieldEnumException() { TableName = "ReportTypeLanguages", FieldName = "TranslationStatusDescription", EnumText = "TranslationStatusEnum" },
@@ -57,6 +62,7 @@ namespace ModelsCompareDBFieldsAndCSSPModelsDLLPropServices.Services
                 new TableFieldIDException() { TableName = "LabSheets", FieldName = "OtherServerLabSheetID" },
                 new TableFieldIDException() { TableName = "Logs", FieldName = "ID" },
                 new TableFieldIDException() { TableName = "PolSourceSites", FieldName = "SiteID" },
+                new TableFieldIDException() { TableName = "PolSourceGroupings", FieldName = "CSSPID" },
             };
 
             return await Task.FromResult(true);

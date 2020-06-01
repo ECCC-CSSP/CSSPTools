@@ -8,39 +8,58 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
         private async Task<bool> GenerateCRUDTestCode(string TypeName, string TypeNameLower, StringBuilder sb)
         {
             sb.AppendLine(@"        #region Tests Generated CRUD");
-            sb.AppendLine(@"        [TestMethod]");
-            sb.AppendLine($@"        public void { TypeName }_CRUD_Test()");
+            sb.AppendLine(@"        [Theory]");
+            sb.AppendLine(@"        [InlineData(""en-CA"")]");
+            sb.AppendLine(@"        [InlineData(""fr-CA"")]");
+            sb.AppendLine($@"        public async Task { TypeName }_CRUD_Good_Test(string culture)");
             sb.AppendLine(@"        {");
-            sb.AppendLine(@"            foreach (CultureInfo culture in AllowableCulture)");
-            sb.AppendLine(@"            {");
-            sb.AppendLine(@"                ChangeCulture(culture);");
+            sb.AppendLine(@"            // -------------------------------");
+            sb.AppendLine(@"            // -------------------------------");
+            sb.AppendLine(@"            // CRUD testing");
+            sb.AppendLine(@"            // -------------------------------");
+            sb.AppendLine(@"            // -------------------------------");
             sb.AppendLine(@"");
-            sb.AppendLine(@"                using (CSSPDBContext dbTestDB = new CSSPDBContext(DatabaseTypeEnum.SqlServerTestDB))");
-            sb.AppendLine(@"                {");
-            sb.AppendLine($@"                    { TypeName }Service { TypeNameLower }Service = new { TypeName }Service(new Query() {{ Lang = culture.TwoLetterISOLanguageName }}, dbTestDB, ContactID);");
+            sb.AppendLine(@"            await Setup(new CultureInfo(culture));");
             sb.AppendLine(@"");
-            sb.AppendLine(@"                    int count = 0;");
-            sb.AppendLine(@"                    if (count == 1)");
-            sb.AppendLine(@"                    {");
-            sb.AppendLine(@"                        // just so we don't get a warning during compile [The variable 'count' is assigned but its value is never used]");
-            sb.AppendLine(@"                    }");
+            sb.AppendLine($@"            { TypeName } { TypeNameLower } = GetFilledRandom{ TypeName }(""""); ");
             sb.AppendLine(@"");
-            sb.AppendLine($@"                    { TypeName } { TypeNameLower } = GetFilledRandom{ TypeName }("""");");
+            sb.AppendLine($@"            // List<{ TypeName }>");
+            sb.AppendLine($@"            var action{ TypeName }List = await { TypeNameLower }Service.Get{ TypeName }List();");
+            sb.AppendLine($@"            Assert.Equal(200, ((ObjectResult)action{ TypeName }List.Result).StatusCode);");
+            sb.AppendLine($@"            Assert.NotNull(((OkObjectResult)action{ TypeName }List.Result).Value);");
+            sb.AppendLine($@"            List<{ TypeName }> { TypeNameLower }List = (List<{ TypeName }>)(((OkObjectResult)action{ TypeName }List.Result).Value);");
             sb.AppendLine(@"");
-
-            sb.AppendLine(@"                    // -------------------------------");
-            sb.AppendLine(@"                    // -------------------------------");
-            sb.AppendLine(@"                    // CRUD testing");
-            sb.AppendLine(@"                    // -------------------------------");
-            sb.AppendLine(@"                    // -------------------------------");
+            sb.AppendLine($@"            int count = ((List<{ TypeName }>)((OkObjectResult)action{ TypeName }List.Result).Value).Count();");
+            sb.AppendLine(@"            Assert.True(count > 0);");
             sb.AppendLine(@"");
-
-            if (!await CreateClass_CRUD_Testing(TypeName, TypeNameLower, sb)) return await Task.FromResult(false);
+            sb.AppendLine($@"            // Add { TypeName }");
+            if (TypeName == "Contact")
+            {
+                sb.AppendLine($@"            var action{ TypeName }Added = await { TypeNameLower }Service.Add({ TypeNameLower }, AddContactTypeEnum.Register);");
+            }
+            else
+            {
+                sb.AppendLine($@"            var action{ TypeName }Added = await { TypeNameLower }Service.Add({ TypeNameLower });");
+            }
+            sb.AppendLine($@"            Assert.Equal(200, ((ObjectResult)action{ TypeName }Added.Result).StatusCode);");
+            sb.AppendLine($@"            Assert.NotNull(((OkObjectResult)action{ TypeName }Added.Result).Value);");
+            sb.AppendLine($@"            { TypeName } { TypeNameLower }Added = ({ TypeName })(((OkObjectResult)action{ TypeName }Added.Result).Value);");
+            sb.AppendLine($@"            Assert.NotNull({ TypeNameLower }Added);");
             sb.AppendLine(@"");
-            sb.AppendLine(@"                }");
-            sb.AppendLine(@"            }");
+            sb.AppendLine($@"            // Update { TypeName }");
+            sb.AppendLine($@"            var action{ TypeName }Updated = await { TypeNameLower }Service.Update({ TypeNameLower });");
+            sb.AppendLine($@"            Assert.Equal(200, ((ObjectResult)action{ TypeName }Updated.Result).StatusCode);");
+            sb.AppendLine($@"            Assert.NotNull(((OkObjectResult)action{ TypeName }Updated.Result).Value);");
+            sb.AppendLine($@"            { TypeName } { TypeNameLower }Updated = ({ TypeName })(((OkObjectResult)action{ TypeName }Updated.Result).Value);");
+            sb.AppendLine($@"            Assert.NotNull({ TypeNameLower }Updated);");
+            sb.AppendLine(@"");
+            sb.AppendLine($@"            // Delete { TypeName }");
+            sb.AppendLine($@"            var action{ TypeName }Deleted = await { TypeNameLower }Service.Delete({ TypeNameLower });");
+            sb.AppendLine($@"            Assert.Equal(200, ((ObjectResult)action{ TypeName }Deleted.Result).StatusCode);");
+            sb.AppendLine($@"            Assert.NotNull(((OkObjectResult)action{ TypeName }Deleted.Result).Value);");
+            sb.AppendLine($@"            { TypeName } { TypeNameLower }Deleted = ({ TypeName })(((OkObjectResult)action{ TypeName }Deleted.Result).Value);");
+            sb.AppendLine($@"            Assert.NotNull({ TypeNameLower }Deleted);");
             sb.AppendLine(@"        }");
-
             sb.AppendLine(@"        #endregion Tests Generated CRUD");
             sb.AppendLine(@"");
 

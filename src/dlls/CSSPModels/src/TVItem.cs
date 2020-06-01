@@ -38,6 +38,7 @@ namespace CSSPModels
         [CSSPDescriptionEN(DescriptionEN = @"TV type")]
         [CSSPDescriptionFR(DescriptionFR = @"Type d'arbre visuel")]
         public TVTypeEnum TVType { get; set; }
+        [CSSPAllowNull]
         [CSSPExist(ExistTypeName = "TVItem", ExistPlurial = "s", ExistFieldID = "TVItemID", AllowableTVTypeList = "1,2,3,4,5,6,7,9,10,11,12,13,14,15,16,17,18,19,20,21,31,75,79")]
         [CSSPDisplayEN(DisplayEN = "Parent TV ID")]
         [CSSPDisplayFR(DisplayFR = "Parent de l'arbre visuel ID")]

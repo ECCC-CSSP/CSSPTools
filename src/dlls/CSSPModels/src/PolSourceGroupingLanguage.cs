@@ -32,6 +32,7 @@ namespace CSSPModels
         [CSSPDescriptionEN(DescriptionEN = @"Language of item")]
         [CSSPDescriptionFR(DescriptionFR = @"Langage de l'item")]
         public LanguageEnum Language { get; set; }
+        [StringLength(250)]
         [CSSPDisplayEN(DisplayEN = "Source Name")]
         [CSSPDisplayFR(DisplayFR = "Nom de source")]
         [CSSPDescriptionEN(DescriptionEN = @"Source Name")]
@@ -49,6 +50,7 @@ namespace CSSPModels
         [CSSPDescriptionEN(DescriptionEN = @"Translation status of the source name")]
         [CSSPDescriptionFR(DescriptionFR = @"Le statut de la traduction du nom de source")]
         public TranslationStatusEnum TranslationStatusSourceName { get; set; }
+        [StringLength(50)]
         [CSSPDisplayEN(DisplayEN = "Init")]
         [CSSPDisplayFR(DisplayFR = "Init")]
         [CSSPDescriptionEN(DescriptionEN = @"Initial")]
@@ -60,6 +62,7 @@ namespace CSSPModels
         [CSSPDescriptionEN(DescriptionEN = @"Translation status of Init")]
         [CSSPDescriptionFR(DescriptionFR = @"Le statut de la traduction de Init")]
         public TranslationStatusEnum TranslationStatusInit { get; set; }
+        [StringLength(250)]
         [CSSPDisplayEN(DisplayEN = "Description")]
         [CSSPDisplayFR(DisplayFR = "Description")]
         [CSSPDescriptionEN(DescriptionEN = @"Description")]
@@ -71,6 +74,7 @@ namespace CSSPModels
         [CSSPDescriptionEN(DescriptionEN = @"Translation status of Description")]
         [CSSPDescriptionFR(DescriptionFR = @"Le statut de la traduction de Description")]
         public TranslationStatusEnum TranslationStatusDescription { get; set; }
+        [StringLength(250)]
         [CSSPDisplayEN(DisplayEN = "Report")]
         [CSSPDisplayFR(DisplayFR = "Report")]
         [CSSPDescriptionEN(DescriptionEN = @"Report")]
@@ -82,6 +86,7 @@ namespace CSSPModels
         [CSSPDescriptionEN(DescriptionEN = @"Translation status of Report")]
         [CSSPDescriptionFR(DescriptionFR = @"Le statut de la traduction de Report")]
         public TranslationStatusEnum TranslationStatusReport { get; set; }
+        [StringLength(250)]
         [CSSPDisplayEN(DisplayEN = "Text")]
         [CSSPDisplayFR(DisplayFR = "Text")]
         [CSSPDescriptionEN(DescriptionEN = @"Text")]

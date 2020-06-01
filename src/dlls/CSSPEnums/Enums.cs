@@ -1,7 +1,12 @@
 ﻿/*
  * This document is manually edited. 
  * It's the only .cs document in CSSPEnums.proj the coder actually edits. 
- * Every other document is automatically generated using the CSSPCodeWriter.
+ * Every other document is automatically generated using the list of applications below
+ * 
+ * EnumsCompareWithOldEnums.exe
+ * EnumsGenerated_cs
+ * EnumsPolSourceInfoRelatedFiles
+ * EnumsTestGenerated_cs
  * 
  * You also need to edit the CSSPEnumsRes.resx and the CSSPEnumsRes.fr.resx for language
  * 
@@ -22,7 +27,7 @@ using System.Threading.Tasks;
 namespace CSSPEnums
 {
     #region Interfaces
-    partial interface IEnums
+    public partial interface IEnums
     {
         // will be generated in Generated\IEnumsGenerated.cs
     }

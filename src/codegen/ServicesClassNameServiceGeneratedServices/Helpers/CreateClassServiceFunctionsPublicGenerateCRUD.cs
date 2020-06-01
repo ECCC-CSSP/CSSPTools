@@ -17,15 +17,13 @@ namespace ServicesClassNameServiceGeneratedServices.Services
                 Plurial = "es";
             }
 
-            sb.AppendLine(@"        #region Functions public Generated CRUD");
-
             if (TypeName == "Contact")
             {
-                sb.AppendLine($@"        public bool Add({ TypeName } { TypeNameLower }, AddContactTypeEnum addContactType)");
+                sb.AppendLine($@"        public async Task<ActionResult<{ TypeName }>> Add({ TypeName } { TypeNameLower }, AddContactTypeEnum addContactType)");
             }
             else
             {
-                sb.AppendLine($@"        public bool Add({ TypeName } { TypeNameLower })");
+                sb.AppendLine($@"        public async Task<ActionResult<{ TypeName }>> Add({ TypeName } { TypeNameLower })");
             }
             sb.AppendLine(@"        {");
             if (TypeName == "Contact")
@@ -36,16 +34,25 @@ namespace ServicesClassNameServiceGeneratedServices.Services
             {
                 sb.AppendLine($@"            { TypeNameLower }.ValidationResults = Validate(new ValidationContext({ TypeNameLower }), ActionDBTypeEnum.Create);");
             }
-            sb.AppendLine($@"            if ({ TypeNameLower }.ValidationResults.Count() > 0) return false;");
+            sb.AppendLine($@"            if ({ TypeNameLower }.ValidationResults.Count() > 0)");
+            sb.AppendLine(@"            {");
+            sb.AppendLine($@"               return await Task.FromResult(BadRequest({ TypeNameLower }.ValidationResults));");
+            sb.AppendLine(@"            }");
             sb.AppendLine(@"");
-            sb.AppendLine($@"            db.{ TypeName }{ Plurial }.Add({ TypeNameLower });");
+            sb.AppendLine($@"            try");
+            sb.AppendLine(@"            {");
+            sb.AppendLine($@"               db.{ TypeName }{ Plurial }.Add({ TypeNameLower });");
+            sb.AppendLine($@"               db.SaveChanges();");
+            sb.AppendLine(@"            }");
+            sb.AppendLine($@"            catch (DbUpdateException ex)");
+            sb.AppendLine(@"            {");
+            sb.AppendLine($@"               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? "" Inner: "" + ex.InnerException.Message : """")));");
+            sb.AppendLine(@"            }");
             sb.AppendLine(@"");
-            sb.AppendLine($@"            if (!TryToSave({ TypeNameLower })) return false;");
-            sb.AppendLine(@"");
-            sb.AppendLine(@"            return true;");
+            sb.AppendLine($@"            return await Task.FromResult(Ok({ TypeNameLower }));");
             sb.AppendLine(@"        }");
 
-            sb.AppendLine($@"        public bool Delete({ TypeName } { TypeNameLower })");
+            sb.AppendLine($@"        public async Task<ActionResult<{ TypeName }>> Delete({ TypeName } { TypeNameLower })");
             sb.AppendLine(@"        {");
             if (TypeName == "Contact")
             {
@@ -55,16 +62,25 @@ namespace ServicesClassNameServiceGeneratedServices.Services
             {
                 sb.AppendLine($@"            { TypeNameLower }.ValidationResults = Validate(new ValidationContext({ TypeNameLower }), ActionDBTypeEnum.Delete);");
             }
-            sb.AppendLine($@"            if ({ TypeNameLower }.ValidationResults.Count() > 0) return false;");
+            sb.AppendLine($@"            if ({ TypeNameLower }.ValidationResults.Count() > 0)");
+            sb.AppendLine(@"            {");
+            sb.AppendLine($@"               return await Task.FromResult(BadRequest({ TypeNameLower }.ValidationResults));");
+            sb.AppendLine(@"            }");
             sb.AppendLine(@"");
-            sb.AppendLine($@"            db.{ TypeName }{ Plurial }.Remove({ TypeNameLower });");
+            sb.AppendLine($@"            try");
+            sb.AppendLine(@"            {");
+            sb.AppendLine($@"               db.{ TypeName }{ Plurial }.Remove({ TypeNameLower });");
+            sb.AppendLine($@"               db.SaveChanges();");
+            sb.AppendLine(@"            }");
+            sb.AppendLine($@"            catch (DbUpdateException ex)");
+            sb.AppendLine(@"            {");
+            sb.AppendLine($@"               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? "" Inner: "" + ex.InnerException.Message : """")));");
+            sb.AppendLine(@"            }");
             sb.AppendLine(@"");
-            sb.AppendLine($@"            if (!TryToSave({ TypeNameLower })) return false;");
-            sb.AppendLine(@"");
-            sb.AppendLine(@"            return true;");
+            sb.AppendLine($@"            return await Task.FromResult(Ok({ TypeNameLower }));");
             sb.AppendLine(@"        }");
 
-            sb.AppendLine($@"        public bool Update({ TypeName } { TypeNameLower })");
+            sb.AppendLine($@"        public async Task<ActionResult<{ TypeName }>> Update({ TypeName } { TypeNameLower })");
             sb.AppendLine(@"        {");
             if (TypeName == "Contact")
             {
@@ -74,16 +90,29 @@ namespace ServicesClassNameServiceGeneratedServices.Services
             {
                 sb.AppendLine($@"            { TypeNameLower }.ValidationResults = Validate(new ValidationContext({ TypeNameLower }), ActionDBTypeEnum.Update);");
             }
-            sb.AppendLine($@"            if ({ TypeNameLower }.ValidationResults.Count() > 0) return false;");
+            sb.AppendLine($@"            if ({ TypeNameLower }.ValidationResults.Count() > 0)");
+            sb.AppendLine(@"            {");
+            sb.AppendLine($@"               return await Task.FromResult(BadRequest({ TypeNameLower }.ValidationResults));");
+            sb.AppendLine(@"            }");
             sb.AppendLine(@"");
-            sb.AppendLine($@"            db.{ TypeName }{ Plurial }.Update({ TypeNameLower });");
+            sb.AppendLine($@"            try");
+            sb.AppendLine(@"            {");
+            sb.AppendLine($@"               db.{ TypeName }{ Plurial }.Update({ TypeNameLower });");
+            sb.AppendLine($@"               db.SaveChanges();");
+            sb.AppendLine(@"            }");
+            sb.AppendLine($@"            catch (DbUpdateException ex)");
+            sb.AppendLine(@"            {");
+            sb.AppendLine($@"               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? "" Inner: "" + ex.InnerException.Message : """")));");
+            sb.AppendLine(@"            }");
             sb.AppendLine(@"");
-            sb.AppendLine($@"            if (!TryToSave({ TypeNameLower })) return false;");
-            sb.AppendLine(@"");
-            sb.AppendLine(@"            return true;");
+            sb.AppendLine($@"            return await Task.FromResult(Ok({ TypeNameLower }));");
             sb.AppendLine(@"        }");
-            sb.AppendLine(@"        #endregion Functions public Generated CRUD");
-            sb.AppendLine(@"");
+
+            sb.AppendLine($@"        public async Task SetCulture(CultureInfo culture)");
+            sb.AppendLine(@"        {");
+            sb.AppendLine($@"            CSSPServicesRes.Culture = culture;");
+            sb.AppendLine(@"        }");
+
 
             return await Task.FromResult(true);
         }

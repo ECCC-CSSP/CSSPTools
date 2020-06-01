@@ -32,7 +32,6 @@
 
   <ItemGroup>
     <Folder Include="Generated\" />
-    <Folder Include="src\Generated\" />
   </ItemGroup>
 
   <ItemGroup>

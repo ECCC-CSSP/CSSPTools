@@ -330,6 +330,20 @@ namespace ServicesRepopulateTestDBServices.Services
                         dbTestDB.MWQMSubsectorLanguages.Add((MWQMSubsectorLanguage)objTarget);
                     }
                     break;
+                case "PolSourceGrouping":
+                    {
+                        ((PolSourceGrouping)objTarget).PolSourceGroupingID = 0;
+                        ((PolSourceGrouping)objTarget).LastUpdateContactTVItemID = 2;
+                        dbTestDB.PolSourceGroupings.Add((PolSourceGrouping)objTarget);
+                    }
+                    break;
+                case "PolSourceGroupingLanguage":
+                    {
+                        ((PolSourceGroupingLanguage)objTarget).PolSourceGroupingLanguageID = 0;
+                        ((PolSourceGroupingLanguage)objTarget).LastUpdateContactTVItemID = 2;
+                        dbTestDB.PolSourceGroupingLanguages.Add((PolSourceGroupingLanguage)objTarget);
+                    }
+                    break;
                 case "PolSourceSite":
                     {
                         ((PolSourceSite)objTarget).PolSourceSiteID = 0;
