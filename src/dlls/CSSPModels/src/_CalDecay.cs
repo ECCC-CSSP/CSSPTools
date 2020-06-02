@@ -12,7 +12,7 @@ using System.Linq;
 namespace CSSPModels
 {
     [NotMapped]
-    public partial class CalDecay : CSSPError
+    public partial class CalDecay
     {
         #region Properties in DB
         #endregion Properties in DB

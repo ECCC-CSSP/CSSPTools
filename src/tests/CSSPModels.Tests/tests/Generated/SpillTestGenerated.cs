@@ -40,7 +40,6 @@ namespace CSSPModels.Tests
         public void Spill_Properties_Test()
         {
             List<string> propNameList = new List<string>() { "SpillID", "MunicipalityTVItemID", "InfrastructureTVItemID", "StartDateTime_Local", "EndDateTime_Local", "AverageFlow_m3_day", "LastUpdateDate_UTC", "LastUpdateContactTVItemID",  }.OrderBy(c => c).ToList();
-            List<string> propNameNotMappedList = new List<string>() { "HasErrors",  }.OrderBy(c => c).ToList();
 
             int index = 0;
             foreach (PropertyInfo propertyInfo in typeof(Spill).GetProperties().OrderBy(c => c.Name))
@@ -63,13 +62,10 @@ namespace CSSPModels.Tests
                 {
                     if (customAttributeData.AttributeType.Name == "NotMappedAttribute")
                     {
-                        Assert.Equal(propertyInfo.Name, propNameNotMappedList[index]);
-                        index += 1;
                     }
                 }
             }
 
-            Assert.Equal(propNameNotMappedList.Count, index);
 
         }
         [Fact]
@@ -106,11 +102,6 @@ namespace CSSPModels.Tests
 
         }
         [Fact]
-        public void Spill_Has_ValidationResults_Test()
-        {
-             Assert.True(typeof(Spill).GetProperties().Where(c => c.Name == "ValidationResults").Any());
-        }
-        [Fact]
         public void Spill_Every_Property_Has_Get_Set_Test()
         {
                int val1 = 45;
@@ -137,12 +128,6 @@ namespace CSSPModels.Tests
                int val8 = 45;
                spill.LastUpdateContactTVItemID = val8;
                Assert.Equal(val8, spill.LastUpdateContactTVItemID);
-               bool val9 = true;
-               spill.HasErrors = val9;
-               Assert.Equal(val9, spill.HasErrors);
-               IEnumerable<ValidationResult> val30 = new List<ValidationResult>() { new ValidationResult("First CSSPError Message") }.AsEnumerable();
-               spill.ValidationResults = val30;
-               Assert.Equal(val30, spill.ValidationResults);
         }
         #endregion Tests Functions public
     }

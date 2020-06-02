@@ -40,7 +40,6 @@ namespace CSSPModels.Tests
         public void PolSourceSiteEffect_Properties_Test()
         {
             List<string> propNameList = new List<string>() { "PolSourceSiteEffectID", "PolSourceSiteOrInfrastructureTVItemID", "MWQMSiteTVItemID", "PolSourceSiteEffectTermIDs", "Comments", "AnalysisDocumentTVItemID", "LastUpdateDate_UTC", "LastUpdateContactTVItemID",  }.OrderBy(c => c).ToList();
-            List<string> propNameNotMappedList = new List<string>() { "HasErrors",  }.OrderBy(c => c).ToList();
 
             int index = 0;
             foreach (PropertyInfo propertyInfo in typeof(PolSourceSiteEffect).GetProperties().OrderBy(c => c.Name))
@@ -63,13 +62,10 @@ namespace CSSPModels.Tests
                 {
                     if (customAttributeData.AttributeType.Name == "NotMappedAttribute")
                     {
-                        Assert.Equal(propertyInfo.Name, propNameNotMappedList[index]);
-                        index += 1;
                     }
                 }
             }
 
-            Assert.Equal(propNameNotMappedList.Count, index);
 
         }
         [Fact]
@@ -106,11 +102,6 @@ namespace CSSPModels.Tests
 
         }
         [Fact]
-        public void PolSourceSiteEffect_Has_ValidationResults_Test()
-        {
-             Assert.True(typeof(PolSourceSiteEffect).GetProperties().Where(c => c.Name == "ValidationResults").Any());
-        }
-        [Fact]
         public void PolSourceSiteEffect_Every_Property_Has_Get_Set_Test()
         {
                int val1 = 45;
@@ -137,12 +128,6 @@ namespace CSSPModels.Tests
                int val8 = 45;
                polSourceSiteEffect.LastUpdateContactTVItemID = val8;
                Assert.Equal(val8, polSourceSiteEffect.LastUpdateContactTVItemID);
-               bool val9 = true;
-               polSourceSiteEffect.HasErrors = val9;
-               Assert.Equal(val9, polSourceSiteEffect.HasErrors);
-               IEnumerable<ValidationResult> val30 = new List<ValidationResult>() { new ValidationResult("First CSSPError Message") }.AsEnumerable();
-               polSourceSiteEffect.ValidationResults = val30;
-               Assert.Equal(val30, polSourceSiteEffect.ValidationResults);
         }
         #endregion Tests Functions public
     }

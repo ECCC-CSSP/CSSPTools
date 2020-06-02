@@ -40,7 +40,6 @@ namespace CSSPModels.Tests
         public void BoxModel_Properties_Test()
         {
             List<string> propNameList = new List<string>() { "BoxModelID", "InfrastructureTVItemID", "Discharge_m3_day", "Depth_m", "Temperature_C", "Dilution", "DecayRate_per_day", "FCUntreated_MPN_100ml", "FCPreDisinfection_MPN_100ml", "Concentration_MPN_100ml", "T90_hour", "DischargeDuration_hour", "LastUpdateDate_UTC", "LastUpdateContactTVItemID",  }.OrderBy(c => c).ToList();
-            List<string> propNameNotMappedList = new List<string>() { "HasErrors",  }.OrderBy(c => c).ToList();
 
             int index = 0;
             foreach (PropertyInfo propertyInfo in typeof(BoxModel).GetProperties().OrderBy(c => c.Name))
@@ -63,13 +62,10 @@ namespace CSSPModels.Tests
                 {
                     if (customAttributeData.AttributeType.Name == "NotMappedAttribute")
                     {
-                        Assert.Equal(propertyInfo.Name, propNameNotMappedList[index]);
-                        index += 1;
                     }
                 }
             }
 
-            Assert.Equal(propNameNotMappedList.Count, index);
 
         }
         [Fact]
@@ -104,11 +100,6 @@ namespace CSSPModels.Tests
 
             Assert.Equal(foreignNameCollectionList.Count, index);
 
-        }
-        [Fact]
-        public void BoxModel_Has_ValidationResults_Test()
-        {
-             Assert.True(typeof(BoxModel).GetProperties().Where(c => c.Name == "ValidationResults").Any());
         }
         [Fact]
         public void BoxModel_Every_Property_Has_Get_Set_Test()
@@ -155,12 +146,6 @@ namespace CSSPModels.Tests
                int val14 = 45;
                boxModel.LastUpdateContactTVItemID = val14;
                Assert.Equal(val14, boxModel.LastUpdateContactTVItemID);
-               bool val15 = true;
-               boxModel.HasErrors = val15;
-               Assert.Equal(val15, boxModel.HasErrors);
-               IEnumerable<ValidationResult> val48 = new List<ValidationResult>() { new ValidationResult("First CSSPError Message") }.AsEnumerable();
-               boxModel.ValidationResults = val48;
-               Assert.Equal(val48, boxModel.ValidationResults);
         }
         #endregion Tests Functions public
     }

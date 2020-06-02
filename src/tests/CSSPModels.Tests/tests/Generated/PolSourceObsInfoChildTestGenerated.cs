@@ -39,8 +39,7 @@ namespace CSSPModels.Tests
         [Fact]
         public void PolSourceObsInfoChild_Properties_Test()
         {
-            List<string> propNameList = new List<string>() { "PolSourceObsInfo", "PolSourceObsInfoChildStart", "PolSourceObsInfoText", "PolSourceObsInfoChildStartText", "HasErrors",  }.OrderBy(c => c).ToList();
-            List<string> propNameNotMappedList = new List<string>() {  }.OrderBy(c => c).ToList();
+            List<string> propNameList = new List<string>() { "PolSourceObsInfo", "PolSourceObsInfoChildStart", "PolSourceObsInfoText", "PolSourceObsInfoChildStartText",  }.OrderBy(c => c).ToList();
 
             int index = 0;
             foreach (PropertyInfo propertyInfo in typeof(PolSourceObsInfoChild).GetProperties().Where(c => c.Name != "ValidationResults").OrderBy(c => c.Name).ToList())
@@ -50,11 +49,6 @@ namespace CSSPModels.Tests
             }
 
             Assert.Equal(propNameList.Count, index);
-        }
-        [Fact]
-        public void PolSourceObsInfoChild_Has_ValidationResults_Test()
-        {
-             Assert.True(typeof(PolSourceObsInfoChild).GetProperties().Where(c => c.Name == "ValidationResults").Any());
         }
         [Fact]
         public void PolSourceObsInfoChild_Every_Property_Has_Get_Set_Test()
@@ -71,12 +65,6 @@ namespace CSSPModels.Tests
                string val4 = "Some text";
                polSourceObsInfoChild.PolSourceObsInfoChildStartText = val4;
                Assert.Equal(val4, polSourceObsInfoChild.PolSourceObsInfoChildStartText);
-               bool val5 = true;
-               polSourceObsInfoChild.HasErrors = val5;
-               Assert.Equal(val5, polSourceObsInfoChild.HasErrors);
-               IEnumerable<ValidationResult> val18 = new List<ValidationResult>() { new ValidationResult("First CSSPError Message") }.AsEnumerable();
-               polSourceObsInfoChild.ValidationResults = val18;
-               Assert.Equal(val18, polSourceObsInfoChild.ValidationResults);
         }
         #endregion Tests Functions public
     }

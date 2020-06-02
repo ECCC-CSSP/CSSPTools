@@ -37,6 +37,7 @@ namespace CSSPServices
         #region Properties
         private CSSPDBContext db { get; }
         private IEnums enums { get; }
+        private IEnumerable<ValidationResult> ValidationResults { get; set; }
         #endregion Properties
 
         #region Constructors
@@ -69,10 +70,10 @@ namespace CSSPServices
         }
         public async Task<ActionResult<DrogueRunPosition>> Add(DrogueRunPosition drogueRunPosition)
         {
-            drogueRunPosition.ValidationResults = Validate(new ValidationContext(drogueRunPosition), ActionDBTypeEnum.Create);
-            if (drogueRunPosition.ValidationResults.Count() > 0)
+            ValidationResults = Validate(new ValidationContext(drogueRunPosition), ActionDBTypeEnum.Create);
+            if (ValidationResults.Count() > 0)
             {
-               return await Task.FromResult(BadRequest(drogueRunPosition.ValidationResults));
+               return await Task.FromResult(BadRequest(ValidationResults));
             }
 
             try
@@ -89,10 +90,10 @@ namespace CSSPServices
         }
         public async Task<ActionResult<DrogueRunPosition>> Delete(DrogueRunPosition drogueRunPosition)
         {
-            drogueRunPosition.ValidationResults = Validate(new ValidationContext(drogueRunPosition), ActionDBTypeEnum.Delete);
-            if (drogueRunPosition.ValidationResults.Count() > 0)
+            ValidationResults = Validate(new ValidationContext(drogueRunPosition), ActionDBTypeEnum.Delete);
+            if (ValidationResults.Count() > 0)
             {
-               return await Task.FromResult(BadRequest(drogueRunPosition.ValidationResults));
+               return await Task.FromResult(BadRequest(ValidationResults));
             }
 
             try
@@ -109,10 +110,10 @@ namespace CSSPServices
         }
         public async Task<ActionResult<DrogueRunPosition>> Update(DrogueRunPosition drogueRunPosition)
         {
-            drogueRunPosition.ValidationResults = Validate(new ValidationContext(drogueRunPosition), ActionDBTypeEnum.Update);
-            if (drogueRunPosition.ValidationResults.Count() > 0)
+            ValidationResults = Validate(new ValidationContext(drogueRunPosition), ActionDBTypeEnum.Update);
+            if (ValidationResults.Count() > 0)
             {
-               return await Task.FromResult(BadRequest(drogueRunPosition.ValidationResults));
+               return await Task.FromResult(BadRequest(ValidationResults));
             }
 
             try
@@ -138,19 +139,16 @@ namespace CSSPServices
         {
             string retStr = "";
             DrogueRunPosition drogueRunPosition = validationContext.ObjectInstance as DrogueRunPosition;
-            drogueRunPosition.HasErrors = false;
 
             if (actionDBType == ActionDBTypeEnum.Update || actionDBType == ActionDBTypeEnum.Delete)
             {
                 if (drogueRunPosition.DrogueRunPositionID == 0)
                 {
-                    drogueRunPosition.HasErrors = true;
                     yield return new ValidationResult(string.Format(CSSPServicesRes._IsRequired, "DrogueRunPositionID"), new[] { "DrogueRunPositionID" });
                 }
 
                 if (!(from c in db.DrogueRunPositions select c).Where(c => c.DrogueRunPositionID == drogueRunPosition.DrogueRunPositionID).Any())
                 {
-                    drogueRunPosition.HasErrors = true;
                     yield return new ValidationResult(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "DrogueRunPosition", "DrogueRunPositionID", drogueRunPosition.DrogueRunPositionID.ToString()), new[] { "DrogueRunPositionID" });
                 }
             }
@@ -159,64 +157,54 @@ namespace CSSPServices
 
             if (DrogueRunDrogueRunID == null)
             {
-                drogueRunPosition.HasErrors = true;
                 yield return new ValidationResult(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "DrogueRun", "DrogueRunID", drogueRunPosition.DrogueRunID.ToString()), new[] { "DrogueRunID" });
             }
 
             if (drogueRunPosition.Ordinal < 0 || drogueRunPosition.Ordinal > 100000)
             {
-                drogueRunPosition.HasErrors = true;
                 yield return new ValidationResult(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "Ordinal", "0", "100000"), new[] { "Ordinal" });
             }
 
             if (drogueRunPosition.StepLat < -180 || drogueRunPosition.StepLat > 180)
             {
-                drogueRunPosition.HasErrors = true;
                 yield return new ValidationResult(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "StepLat", "-180", "180"), new[] { "StepLat" });
             }
 
             if (drogueRunPosition.StepLng < -90 || drogueRunPosition.StepLng > 90)
             {
-                drogueRunPosition.HasErrors = true;
                 yield return new ValidationResult(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "StepLng", "-90", "90"), new[] { "StepLng" });
             }
 
             if (drogueRunPosition.StepDateTime_Local.Year == 1)
             {
-                drogueRunPosition.HasErrors = true;
                 yield return new ValidationResult(string.Format(CSSPServicesRes._IsRequired, "StepDateTime_Local"), new[] { "StepDateTime_Local" });
             }
             else
             {
                 if (drogueRunPosition.StepDateTime_Local.Year < 1980)
                 {
-                drogueRunPosition.HasErrors = true;
                     yield return new ValidationResult(string.Format(CSSPServicesRes._YearShouldBeBiggerThan_, "StepDateTime_Local", "1980"), new[] { "StepDateTime_Local" });
                 }
             }
 
             if (drogueRunPosition.CalculatedSpeed_m_s < 0 || drogueRunPosition.CalculatedSpeed_m_s > 10)
             {
-                drogueRunPosition.HasErrors = true;
                 yield return new ValidationResult(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "CalculatedSpeed_m_s", "0", "10"), new[] { "CalculatedSpeed_m_s" });
             }
 
             if (drogueRunPosition.CalculatedDirection_deg < 0 || drogueRunPosition.CalculatedDirection_deg > 360)
             {
-                drogueRunPosition.HasErrors = true;
                 yield return new ValidationResult(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "CalculatedDirection_deg", "0", "360"), new[] { "CalculatedDirection_deg" });
             }
 
             if (drogueRunPosition.LastUpdateDate_UTC.Year == 1)
             {
-                drogueRunPosition.HasErrors = true;
                 yield return new ValidationResult(string.Format(CSSPServicesRes._IsRequired, "LastUpdateDate_UTC"), new[] { "LastUpdateDate_UTC" });
             }
             else
             {
                 if (drogueRunPosition.LastUpdateDate_UTC.Year < 1980)
                 {
-                drogueRunPosition.HasErrors = true;
                     yield return new ValidationResult(string.Format(CSSPServicesRes._YearShouldBeBiggerThan_, "LastUpdateDate_UTC", "1980"), new[] { "LastUpdateDate_UTC" });
                 }
             }
@@ -225,7 +213,6 @@ namespace CSSPServices
 
             if (TVItemLastUpdateContactTVItemID == null)
             {
-                drogueRunPosition.HasErrors = true;
                 yield return new ValidationResult(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "TVItem", "LastUpdateContactTVItemID", drogueRunPosition.LastUpdateContactTVItemID.ToString()), new[] { "LastUpdateContactTVItemID" });
             }
             else
@@ -236,7 +223,6 @@ namespace CSSPServices
                 };
                 if (!AllowableTVTypes.Contains(TVItemLastUpdateContactTVItemID.TVType))
                 {
-                    drogueRunPosition.HasErrors = true;
                     yield return new ValidationResult(string.Format(CSSPServicesRes._IsNotOfType_, "LastUpdateContactTVItemID", "Contact"), new[] { "LastUpdateContactTVItemID" });
                 }
             }
@@ -244,7 +230,6 @@ namespace CSSPServices
             retStr = ""; // added to stop compiling CSSPError
             if (retStr != "") // will never be true
             {
-                drogueRunPosition.HasErrors = true;
                 yield return new ValidationResult("AAA", new[] { "AAA" });
             }
 

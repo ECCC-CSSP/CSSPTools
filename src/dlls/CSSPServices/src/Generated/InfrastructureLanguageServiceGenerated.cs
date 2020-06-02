@@ -37,6 +37,7 @@ namespace CSSPServices
         #region Properties
         private CSSPDBContext db { get; }
         private IEnums enums { get; }
+        private IEnumerable<ValidationResult> ValidationResults { get; set; }
         #endregion Properties
 
         #region Constructors
@@ -69,10 +70,10 @@ namespace CSSPServices
         }
         public async Task<ActionResult<InfrastructureLanguage>> Add(InfrastructureLanguage infrastructureLanguage)
         {
-            infrastructureLanguage.ValidationResults = Validate(new ValidationContext(infrastructureLanguage), ActionDBTypeEnum.Create);
-            if (infrastructureLanguage.ValidationResults.Count() > 0)
+            ValidationResults = Validate(new ValidationContext(infrastructureLanguage), ActionDBTypeEnum.Create);
+            if (ValidationResults.Count() > 0)
             {
-               return await Task.FromResult(BadRequest(infrastructureLanguage.ValidationResults));
+               return await Task.FromResult(BadRequest(ValidationResults));
             }
 
             try
@@ -89,10 +90,10 @@ namespace CSSPServices
         }
         public async Task<ActionResult<InfrastructureLanguage>> Delete(InfrastructureLanguage infrastructureLanguage)
         {
-            infrastructureLanguage.ValidationResults = Validate(new ValidationContext(infrastructureLanguage), ActionDBTypeEnum.Delete);
-            if (infrastructureLanguage.ValidationResults.Count() > 0)
+            ValidationResults = Validate(new ValidationContext(infrastructureLanguage), ActionDBTypeEnum.Delete);
+            if (ValidationResults.Count() > 0)
             {
-               return await Task.FromResult(BadRequest(infrastructureLanguage.ValidationResults));
+               return await Task.FromResult(BadRequest(ValidationResults));
             }
 
             try
@@ -109,10 +110,10 @@ namespace CSSPServices
         }
         public async Task<ActionResult<InfrastructureLanguage>> Update(InfrastructureLanguage infrastructureLanguage)
         {
-            infrastructureLanguage.ValidationResults = Validate(new ValidationContext(infrastructureLanguage), ActionDBTypeEnum.Update);
-            if (infrastructureLanguage.ValidationResults.Count() > 0)
+            ValidationResults = Validate(new ValidationContext(infrastructureLanguage), ActionDBTypeEnum.Update);
+            if (ValidationResults.Count() > 0)
             {
-               return await Task.FromResult(BadRequest(infrastructureLanguage.ValidationResults));
+               return await Task.FromResult(BadRequest(ValidationResults));
             }
 
             try
@@ -138,19 +139,16 @@ namespace CSSPServices
         {
             string retStr = "";
             InfrastructureLanguage infrastructureLanguage = validationContext.ObjectInstance as InfrastructureLanguage;
-            infrastructureLanguage.HasErrors = false;
 
             if (actionDBType == ActionDBTypeEnum.Update || actionDBType == ActionDBTypeEnum.Delete)
             {
                 if (infrastructureLanguage.InfrastructureLanguageID == 0)
                 {
-                    infrastructureLanguage.HasErrors = true;
                     yield return new ValidationResult(string.Format(CSSPServicesRes._IsRequired, "InfrastructureLanguageID"), new[] { "InfrastructureLanguageID" });
                 }
 
                 if (!(from c in db.InfrastructureLanguages select c).Where(c => c.InfrastructureLanguageID == infrastructureLanguage.InfrastructureLanguageID).Any())
                 {
-                    infrastructureLanguage.HasErrors = true;
                     yield return new ValidationResult(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "InfrastructureLanguage", "InfrastructureLanguageID", infrastructureLanguage.InfrastructureLanguageID.ToString()), new[] { "InfrastructureLanguageID" });
                 }
             }
@@ -159,20 +157,17 @@ namespace CSSPServices
 
             if (InfrastructureInfrastructureID == null)
             {
-                infrastructureLanguage.HasErrors = true;
                 yield return new ValidationResult(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "Infrastructure", "InfrastructureID", infrastructureLanguage.InfrastructureID.ToString()), new[] { "InfrastructureID" });
             }
 
             retStr = enums.EnumTypeOK(typeof(LanguageEnum), (int?)infrastructureLanguage.Language);
             if (!string.IsNullOrWhiteSpace(retStr))
             {
-                infrastructureLanguage.HasErrors = true;
                 yield return new ValidationResult(string.Format(CSSPServicesRes._IsRequired, "Language"), new[] { "Language" });
             }
 
             if (string.IsNullOrWhiteSpace(infrastructureLanguage.Comment))
             {
-                infrastructureLanguage.HasErrors = true;
                 yield return new ValidationResult(string.Format(CSSPServicesRes._IsRequired, "Comment"), new[] { "Comment" });
             }
 
@@ -181,20 +176,17 @@ namespace CSSPServices
             retStr = enums.EnumTypeOK(typeof(TranslationStatusEnum), (int?)infrastructureLanguage.TranslationStatus);
             if (!string.IsNullOrWhiteSpace(retStr))
             {
-                infrastructureLanguage.HasErrors = true;
                 yield return new ValidationResult(string.Format(CSSPServicesRes._IsRequired, "TranslationStatus"), new[] { "TranslationStatus" });
             }
 
             if (infrastructureLanguage.LastUpdateDate_UTC.Year == 1)
             {
-                infrastructureLanguage.HasErrors = true;
                 yield return new ValidationResult(string.Format(CSSPServicesRes._IsRequired, "LastUpdateDate_UTC"), new[] { "LastUpdateDate_UTC" });
             }
             else
             {
                 if (infrastructureLanguage.LastUpdateDate_UTC.Year < 1980)
                 {
-                infrastructureLanguage.HasErrors = true;
                     yield return new ValidationResult(string.Format(CSSPServicesRes._YearShouldBeBiggerThan_, "LastUpdateDate_UTC", "1980"), new[] { "LastUpdateDate_UTC" });
                 }
             }
@@ -203,7 +195,6 @@ namespace CSSPServices
 
             if (TVItemLastUpdateContactTVItemID == null)
             {
-                infrastructureLanguage.HasErrors = true;
                 yield return new ValidationResult(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "TVItem", "LastUpdateContactTVItemID", infrastructureLanguage.LastUpdateContactTVItemID.ToString()), new[] { "LastUpdateContactTVItemID" });
             }
             else
@@ -214,7 +205,6 @@ namespace CSSPServices
                 };
                 if (!AllowableTVTypes.Contains(TVItemLastUpdateContactTVItemID.TVType))
                 {
-                    infrastructureLanguage.HasErrors = true;
                     yield return new ValidationResult(string.Format(CSSPServicesRes._IsNotOfType_, "LastUpdateContactTVItemID", "Contact"), new[] { "LastUpdateContactTVItemID" });
                 }
             }
@@ -222,7 +212,6 @@ namespace CSSPServices
             retStr = ""; // added to stop compiling CSSPError
             if (retStr != "") // will never be true
             {
-                infrastructureLanguage.HasErrors = true;
                 yield return new ValidationResult("AAA", new[] { "AAA" });
             }
 

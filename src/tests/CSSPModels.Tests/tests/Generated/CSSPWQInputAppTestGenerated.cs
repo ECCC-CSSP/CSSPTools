@@ -39,8 +39,7 @@ namespace CSSPModels.Tests
         [Fact]
         public void CSSPWQInputApp_Properties_Test()
         {
-            List<string> propNameList = new List<string>() { "AccessCode", "ActiveYear", "DailyDuplicatePrecisionCriteria", "IntertechDuplicatePrecisionCriteria", "IncludeLaboratoryQAQC", "ApprovalCode", "ApprovalDate", "HasErrors",  }.OrderBy(c => c).ToList();
-            List<string> propNameNotMappedList = new List<string>() {  }.OrderBy(c => c).ToList();
+            List<string> propNameList = new List<string>() { "AccessCode", "ActiveYear", "DailyDuplicatePrecisionCriteria", "IntertechDuplicatePrecisionCriteria", "IncludeLaboratoryQAQC", "ApprovalCode", "ApprovalDate",  }.OrderBy(c => c).ToList();
 
             int index = 0;
             foreach (PropertyInfo propertyInfo in typeof(CSSPWQInputApp).GetProperties().Where(c => c.Name != "ValidationResults").OrderBy(c => c.Name).ToList())
@@ -50,11 +49,6 @@ namespace CSSPModels.Tests
             }
 
             Assert.Equal(propNameList.Count, index);
-        }
-        [Fact]
-        public void CSSPWQInputApp_Has_ValidationResults_Test()
-        {
-             Assert.True(typeof(CSSPWQInputApp).GetProperties().Where(c => c.Name == "ValidationResults").Any());
         }
         [Fact]
         public void CSSPWQInputApp_Every_Property_Has_Get_Set_Test()
@@ -80,12 +74,6 @@ namespace CSSPModels.Tests
                DateTime val7 = new DateTime(2010, 3, 4);
                cSSPWQInputApp.ApprovalDate = val7;
                Assert.Equal(val7, cSSPWQInputApp.ApprovalDate);
-               bool val8 = true;
-               cSSPWQInputApp.HasErrors = val8;
-               Assert.Equal(val8, cSSPWQInputApp.HasErrors);
-               IEnumerable<ValidationResult> val27 = new List<ValidationResult>() { new ValidationResult("First CSSPError Message") }.AsEnumerable();
-               cSSPWQInputApp.ValidationResults = val27;
-               Assert.Equal(val27, cSSPWQInputApp.ValidationResults);
         }
         #endregion Tests Functions public
     }

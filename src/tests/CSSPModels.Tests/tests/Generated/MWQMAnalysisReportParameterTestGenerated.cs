@@ -40,7 +40,6 @@ namespace CSSPModels.Tests
         public void MWQMAnalysisReportParameter_Properties_Test()
         {
             List<string> propNameList = new List<string>() { "MWQMAnalysisReportParameterID", "SubsectorTVItemID", "AnalysisName", "AnalysisReportYear", "StartDate", "EndDate", "AnalysisCalculationType", "NumberOfRuns", "FullYear", "SalinityHighlightDeviationFromAverage", "ShortRangeNumberOfDays", "MidRangeNumberOfDays", "DryLimit24h", "DryLimit48h", "DryLimit72h", "DryLimit96h", "WetLimit24h", "WetLimit48h", "WetLimit72h", "WetLimit96h", "RunsToOmit", "ShowDataTypes", "ExcelTVFileTVItemID", "Command", "LastUpdateDate_UTC", "LastUpdateContactTVItemID",  }.OrderBy(c => c).ToList();
-            List<string> propNameNotMappedList = new List<string>() { "HasErrors",  }.OrderBy(c => c).ToList();
 
             int index = 0;
             foreach (PropertyInfo propertyInfo in typeof(MWQMAnalysisReportParameter).GetProperties().OrderBy(c => c.Name))
@@ -63,13 +62,10 @@ namespace CSSPModels.Tests
                 {
                     if (customAttributeData.AttributeType.Name == "NotMappedAttribute")
                     {
-                        Assert.Equal(propertyInfo.Name, propNameNotMappedList[index]);
-                        index += 1;
                     }
                 }
             }
 
-            Assert.Equal(propNameNotMappedList.Count, index);
 
         }
         [Fact]
@@ -104,11 +100,6 @@ namespace CSSPModels.Tests
 
             Assert.Equal(foreignNameCollectionList.Count, index);
 
-        }
-        [Fact]
-        public void MWQMAnalysisReportParameter_Has_ValidationResults_Test()
-        {
-             Assert.True(typeof(MWQMAnalysisReportParameter).GetProperties().Where(c => c.Name == "ValidationResults").Any());
         }
         [Fact]
         public void MWQMAnalysisReportParameter_Every_Property_Has_Get_Set_Test()
@@ -191,12 +182,6 @@ namespace CSSPModels.Tests
                int val26 = 45;
                mWQMAnalysisReportParameter.LastUpdateContactTVItemID = val26;
                Assert.Equal(val26, mWQMAnalysisReportParameter.LastUpdateContactTVItemID);
-               bool val27 = true;
-               mWQMAnalysisReportParameter.HasErrors = val27;
-               Assert.Equal(val27, mWQMAnalysisReportParameter.HasErrors);
-               IEnumerable<ValidationResult> val84 = new List<ValidationResult>() { new ValidationResult("First CSSPError Message") }.AsEnumerable();
-               mWQMAnalysisReportParameter.ValidationResults = val84;
-               Assert.Equal(val84, mWQMAnalysisReportParameter.ValidationResults);
         }
         #endregion Tests Functions public
     }

@@ -40,7 +40,6 @@ namespace CSSPModels.Tests
         public void PolSourceObservation_Properties_Test()
         {
             List<string> propNameList = new List<string>() { "PolSourceObservationID", "PolSourceSiteID", "ObservationDate_Local", "ContactTVItemID", "DesktopReviewed", "Observation_ToBeDeleted", "LastUpdateDate_UTC", "LastUpdateContactTVItemID",  }.OrderBy(c => c).ToList();
-            List<string> propNameNotMappedList = new List<string>() { "HasErrors",  }.OrderBy(c => c).ToList();
 
             int index = 0;
             foreach (PropertyInfo propertyInfo in typeof(PolSourceObservation).GetProperties().OrderBy(c => c.Name))
@@ -63,13 +62,10 @@ namespace CSSPModels.Tests
                 {
                     if (customAttributeData.AttributeType.Name == "NotMappedAttribute")
                     {
-                        Assert.Equal(propertyInfo.Name, propNameNotMappedList[index]);
-                        index += 1;
                     }
                 }
             }
 
-            Assert.Equal(propNameNotMappedList.Count, index);
 
         }
         [Fact]
@@ -106,11 +102,6 @@ namespace CSSPModels.Tests
 
         }
         [Fact]
-        public void PolSourceObservation_Has_ValidationResults_Test()
-        {
-             Assert.True(typeof(PolSourceObservation).GetProperties().Where(c => c.Name == "ValidationResults").Any());
-        }
-        [Fact]
         public void PolSourceObservation_Every_Property_Has_Get_Set_Test()
         {
                int val1 = 45;
@@ -137,12 +128,6 @@ namespace CSSPModels.Tests
                int val8 = 45;
                polSourceObservation.LastUpdateContactTVItemID = val8;
                Assert.Equal(val8, polSourceObservation.LastUpdateContactTVItemID);
-               bool val9 = true;
-               polSourceObservation.HasErrors = val9;
-               Assert.Equal(val9, polSourceObservation.HasErrors);
-               IEnumerable<ValidationResult> val30 = new List<ValidationResult>() { new ValidationResult("First CSSPError Message") }.AsEnumerable();
-               polSourceObservation.ValidationResults = val30;
-               Assert.Equal(val30, polSourceObservation.ValidationResults);
         }
         #endregion Tests Functions public
     }

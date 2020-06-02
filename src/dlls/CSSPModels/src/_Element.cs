@@ -12,7 +12,7 @@ using System.Linq;
 namespace CSSPModels
 {
     [NotMapped]
-    public partial class Element : CSSPError
+    public partial class Element
     {
         #region Properties in DB
         #endregion Properties in DB

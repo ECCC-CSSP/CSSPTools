@@ -40,7 +40,6 @@ namespace CSSPModels.Tests
         public void ResetPassword_Properties_Test()
         {
             List<string> propNameList = new List<string>() { "ResetPasswordID", "Email", "ExpireDate_Local", "Code", "LastUpdateDate_UTC", "LastUpdateContactTVItemID",  }.OrderBy(c => c).ToList();
-            List<string> propNameNotMappedList = new List<string>() { "HasErrors",  }.OrderBy(c => c).ToList();
 
             int index = 0;
             foreach (PropertyInfo propertyInfo in typeof(ResetPassword).GetProperties().OrderBy(c => c.Name))
@@ -63,13 +62,10 @@ namespace CSSPModels.Tests
                 {
                     if (customAttributeData.AttributeType.Name == "NotMappedAttribute")
                     {
-                        Assert.Equal(propertyInfo.Name, propNameNotMappedList[index]);
-                        index += 1;
                     }
                 }
             }
 
-            Assert.Equal(propNameNotMappedList.Count, index);
 
         }
         [Fact]
@@ -106,11 +102,6 @@ namespace CSSPModels.Tests
 
         }
         [Fact]
-        public void ResetPassword_Has_ValidationResults_Test()
-        {
-             Assert.True(typeof(ResetPassword).GetProperties().Where(c => c.Name == "ValidationResults").Any());
-        }
-        [Fact]
         public void ResetPassword_Every_Property_Has_Get_Set_Test()
         {
                int val1 = 45;
@@ -131,12 +122,6 @@ namespace CSSPModels.Tests
                int val6 = 45;
                resetPassword.LastUpdateContactTVItemID = val6;
                Assert.Equal(val6, resetPassword.LastUpdateContactTVItemID);
-               bool val7 = true;
-               resetPassword.HasErrors = val7;
-               Assert.Equal(val7, resetPassword.HasErrors);
-               IEnumerable<ValidationResult> val24 = new List<ValidationResult>() { new ValidationResult("First CSSPError Message") }.AsEnumerable();
-               resetPassword.ValidationResults = val24;
-               Assert.Equal(val24, resetPassword.ValidationResults);
         }
         #endregion Tests Functions public
     }

@@ -39,8 +39,7 @@ namespace CSSPModels.Tests
         [Fact]
         public void CSSPMPNTable_Properties_Test()
         {
-            List<string> propNameList = new List<string>() { "Tube10", "Tube1_0", "Tube0_1", "MPN", "HasErrors",  }.OrderBy(c => c).ToList();
-            List<string> propNameNotMappedList = new List<string>() {  }.OrderBy(c => c).ToList();
+            List<string> propNameList = new List<string>() { "Tube10", "Tube1_0", "Tube0_1", "MPN",  }.OrderBy(c => c).ToList();
 
             int index = 0;
             foreach (PropertyInfo propertyInfo in typeof(CSSPMPNTable).GetProperties().Where(c => c.Name != "ValidationResults").OrderBy(c => c.Name).ToList())
@@ -50,11 +49,6 @@ namespace CSSPModels.Tests
             }
 
             Assert.Equal(propNameList.Count, index);
-        }
-        [Fact]
-        public void CSSPMPNTable_Has_ValidationResults_Test()
-        {
-             Assert.True(typeof(CSSPMPNTable).GetProperties().Where(c => c.Name == "ValidationResults").Any());
         }
         [Fact]
         public void CSSPMPNTable_Every_Property_Has_Get_Set_Test()
@@ -71,12 +65,6 @@ namespace CSSPModels.Tests
                int val4 = 45;
                cSSPMPNTable.MPN = val4;
                Assert.Equal(val4, cSSPMPNTable.MPN);
-               bool val5 = true;
-               cSSPMPNTable.HasErrors = val5;
-               Assert.Equal(val5, cSSPMPNTable.HasErrors);
-               IEnumerable<ValidationResult> val18 = new List<ValidationResult>() { new ValidationResult("First CSSPError Message") }.AsEnumerable();
-               cSSPMPNTable.ValidationResults = val18;
-               Assert.Equal(val18, cSSPMPNTable.ValidationResults);
         }
         #endregion Tests Functions public
     }

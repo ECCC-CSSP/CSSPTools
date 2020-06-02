@@ -40,7 +40,6 @@ namespace CSSPModels.Tests
         public void TideLocation_Properties_Test()
         {
             List<string> propNameList = new List<string>() { "TideLocationID", "Zone", "Name", "Prov", "sid", "Lat", "Lng", "LastUpdateDate_UTC", "LastUpdateContactTVItemID",  }.OrderBy(c => c).ToList();
-            List<string> propNameNotMappedList = new List<string>() { "HasErrors",  }.OrderBy(c => c).ToList();
 
             int index = 0;
             foreach (PropertyInfo propertyInfo in typeof(TideLocation).GetProperties().OrderBy(c => c.Name))
@@ -63,13 +62,10 @@ namespace CSSPModels.Tests
                 {
                     if (customAttributeData.AttributeType.Name == "NotMappedAttribute")
                     {
-                        Assert.Equal(propertyInfo.Name, propNameNotMappedList[index]);
-                        index += 1;
                     }
                 }
             }
 
-            Assert.Equal(propNameNotMappedList.Count, index);
 
         }
         [Fact]
@@ -106,11 +102,6 @@ namespace CSSPModels.Tests
 
         }
         [Fact]
-        public void TideLocation_Has_ValidationResults_Test()
-        {
-             Assert.True(typeof(TideLocation).GetProperties().Where(c => c.Name == "ValidationResults").Any());
-        }
-        [Fact]
         public void TideLocation_Every_Property_Has_Get_Set_Test()
         {
                int val1 = 45;
@@ -140,12 +131,6 @@ namespace CSSPModels.Tests
                int val9 = 45;
                tideLocation.LastUpdateContactTVItemID = val9;
                Assert.Equal(val9, tideLocation.LastUpdateContactTVItemID);
-               bool val10 = true;
-               tideLocation.HasErrors = val10;
-               Assert.Equal(val10, tideLocation.HasErrors);
-               IEnumerable<ValidationResult> val33 = new List<ValidationResult>() { new ValidationResult("First CSSPError Message") }.AsEnumerable();
-               tideLocation.ValidationResults = val33;
-               Assert.Equal(val33, tideLocation.ValidationResults);
         }
         #endregion Tests Functions public
     }

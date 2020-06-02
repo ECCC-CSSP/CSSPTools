@@ -37,6 +37,7 @@ namespace CSSPServices
         #region Properties
         private CSSPDBContext db { get; }
         private IEnums enums { get; }
+        private IEnumerable<ValidationResult> ValidationResults { get; set; }
         #endregion Properties
 
         #region Constructors
@@ -69,10 +70,10 @@ namespace CSSPServices
         }
         public async Task<ActionResult<ClimateSite>> Add(ClimateSite climateSite)
         {
-            climateSite.ValidationResults = Validate(new ValidationContext(climateSite), ActionDBTypeEnum.Create);
-            if (climateSite.ValidationResults.Count() > 0)
+            ValidationResults = Validate(new ValidationContext(climateSite), ActionDBTypeEnum.Create);
+            if (ValidationResults.Count() > 0)
             {
-               return await Task.FromResult(BadRequest(climateSite.ValidationResults));
+               return await Task.FromResult(BadRequest(ValidationResults));
             }
 
             try
@@ -89,10 +90,10 @@ namespace CSSPServices
         }
         public async Task<ActionResult<ClimateSite>> Delete(ClimateSite climateSite)
         {
-            climateSite.ValidationResults = Validate(new ValidationContext(climateSite), ActionDBTypeEnum.Delete);
-            if (climateSite.ValidationResults.Count() > 0)
+            ValidationResults = Validate(new ValidationContext(climateSite), ActionDBTypeEnum.Delete);
+            if (ValidationResults.Count() > 0)
             {
-               return await Task.FromResult(BadRequest(climateSite.ValidationResults));
+               return await Task.FromResult(BadRequest(ValidationResults));
             }
 
             try
@@ -109,10 +110,10 @@ namespace CSSPServices
         }
         public async Task<ActionResult<ClimateSite>> Update(ClimateSite climateSite)
         {
-            climateSite.ValidationResults = Validate(new ValidationContext(climateSite), ActionDBTypeEnum.Update);
-            if (climateSite.ValidationResults.Count() > 0)
+            ValidationResults = Validate(new ValidationContext(climateSite), ActionDBTypeEnum.Update);
+            if (ValidationResults.Count() > 0)
             {
-               return await Task.FromResult(BadRequest(climateSite.ValidationResults));
+               return await Task.FromResult(BadRequest(ValidationResults));
             }
 
             try
@@ -138,19 +139,16 @@ namespace CSSPServices
         {
             string retStr = "";
             ClimateSite climateSite = validationContext.ObjectInstance as ClimateSite;
-            climateSite.HasErrors = false;
 
             if (actionDBType == ActionDBTypeEnum.Update || actionDBType == ActionDBTypeEnum.Delete)
             {
                 if (climateSite.ClimateSiteID == 0)
                 {
-                    climateSite.HasErrors = true;
                     yield return new ValidationResult(string.Format(CSSPServicesRes._IsRequired, "ClimateSiteID"), new[] { "ClimateSiteID" });
                 }
 
                 if (!(from c in db.ClimateSites select c).Where(c => c.ClimateSiteID == climateSite.ClimateSiteID).Any())
                 {
-                    climateSite.HasErrors = true;
                     yield return new ValidationResult(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "ClimateSite", "ClimateSiteID", climateSite.ClimateSiteID.ToString()), new[] { "ClimateSiteID" });
                 }
             }
@@ -159,7 +157,6 @@ namespace CSSPServices
 
             if (TVItemClimateSiteTVItemID == null)
             {
-                climateSite.HasErrors = true;
                 yield return new ValidationResult(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "TVItem", "ClimateSiteTVItemID", climateSite.ClimateSiteTVItemID.ToString()), new[] { "ClimateSiteTVItemID" });
             }
             else
@@ -170,7 +167,6 @@ namespace CSSPServices
                 };
                 if (!AllowableTVTypes.Contains(TVItemClimateSiteTVItemID.TVType))
                 {
-                    climateSite.HasErrors = true;
                     yield return new ValidationResult(string.Format(CSSPServicesRes._IsNotOfType_, "ClimateSiteTVItemID", "ClimateSite"), new[] { "ClimateSiteTVItemID" });
                 }
             }
@@ -179,32 +175,27 @@ namespace CSSPServices
             {
                 if (climateSite.ECDBID < 1 || climateSite.ECDBID > 100000)
                 {
-                    climateSite.HasErrors = true;
                     yield return new ValidationResult(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "ECDBID", "1", "100000"), new[] { "ECDBID" });
                 }
             }
 
             if (string.IsNullOrWhiteSpace(climateSite.ClimateSiteName))
             {
-                climateSite.HasErrors = true;
                 yield return new ValidationResult(string.Format(CSSPServicesRes._IsRequired, "ClimateSiteName"), new[] { "ClimateSiteName" });
             }
 
             if (!string.IsNullOrWhiteSpace(climateSite.ClimateSiteName) && climateSite.ClimateSiteName.Length > 100)
             {
-                climateSite.HasErrors = true;
                 yield return new ValidationResult(string.Format(CSSPServicesRes._MaxLengthIs_, "ClimateSiteName", "100"), new[] { "ClimateSiteName" });
             }
 
             if (string.IsNullOrWhiteSpace(climateSite.Province))
             {
-                climateSite.HasErrors = true;
                 yield return new ValidationResult(string.Format(CSSPServicesRes._IsRequired, "Province"), new[] { "Province" });
             }
 
             if (!string.IsNullOrWhiteSpace(climateSite.Province) && climateSite.Province.Length > 4)
             {
-                climateSite.HasErrors = true;
                 yield return new ValidationResult(string.Format(CSSPServicesRes._MaxLengthIs_, "Province", "4"), new[] { "Province" });
             }
 
@@ -212,14 +203,12 @@ namespace CSSPServices
             {
                 if (climateSite.Elevation_m < 0 || climateSite.Elevation_m > 10000)
                 {
-                    climateSite.HasErrors = true;
                     yield return new ValidationResult(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "Elevation_m", "0", "10000"), new[] { "Elevation_m" });
                 }
             }
 
             if (!string.IsNullOrWhiteSpace(climateSite.ClimateID) && climateSite.ClimateID.Length > 10)
             {
-                climateSite.HasErrors = true;
                 yield return new ValidationResult(string.Format(CSSPServicesRes._MaxLengthIs_, "ClimateID", "10"), new[] { "ClimateID" });
             }
 
@@ -227,14 +216,12 @@ namespace CSSPServices
             {
                 if (climateSite.WMOID < 1 || climateSite.WMOID > 100000)
                 {
-                    climateSite.HasErrors = true;
                     yield return new ValidationResult(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "WMOID", "1", "100000"), new[] { "WMOID" });
                 }
             }
 
             if (!string.IsNullOrWhiteSpace(climateSite.TCID) && climateSite.TCID.Length > 3)
             {
-                climateSite.HasErrors = true;
                 yield return new ValidationResult(string.Format(CSSPServicesRes._MaxLengthIs_, "TCID", "3"), new[] { "TCID" });
             }
 
@@ -242,63 +229,53 @@ namespace CSSPServices
             {
                 if (climateSite.TimeOffset_hour < -10 || climateSite.TimeOffset_hour > 0)
                 {
-                    climateSite.HasErrors = true;
                     yield return new ValidationResult(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "TimeOffset_hour", "-10", "0"), new[] { "TimeOffset_hour" });
                 }
             }
 
             if (!string.IsNullOrWhiteSpace(climateSite.File_desc) && climateSite.File_desc.Length > 50)
             {
-                climateSite.HasErrors = true;
                 yield return new ValidationResult(string.Format(CSSPServicesRes._MaxLengthIs_, "File_desc", "50"), new[] { "File_desc" });
             }
 
             if (climateSite.HourlyStartDate_Local != null && ((DateTime)climateSite.HourlyStartDate_Local).Year < 1980)
             {
-                climateSite.HasErrors = true;
                 yield return new ValidationResult(string.Format(CSSPServicesRes._YearShouldBeBiggerThan_, "HourlyStartDate_Local", "1980"), new[] { "HourlyStartDate_Local" });
             }
 
             if (climateSite.HourlyEndDate_Local != null && ((DateTime)climateSite.HourlyEndDate_Local).Year < 1980)
             {
-                climateSite.HasErrors = true;
                 yield return new ValidationResult(string.Format(CSSPServicesRes._YearShouldBeBiggerThan_, "HourlyEndDate_Local", "1980"), new[] { "HourlyEndDate_Local" });
             }
 
             if (climateSite.DailyStartDate_Local != null && ((DateTime)climateSite.DailyStartDate_Local).Year < 1980)
             {
-                climateSite.HasErrors = true;
                 yield return new ValidationResult(string.Format(CSSPServicesRes._YearShouldBeBiggerThan_, "DailyStartDate_Local", "1980"), new[] { "DailyStartDate_Local" });
             }
 
             if (climateSite.DailyEndDate_Local != null && ((DateTime)climateSite.DailyEndDate_Local).Year < 1980)
             {
-                climateSite.HasErrors = true;
                 yield return new ValidationResult(string.Format(CSSPServicesRes._YearShouldBeBiggerThan_, "DailyEndDate_Local", "1980"), new[] { "DailyEndDate_Local" });
             }
 
             if (climateSite.MonthlyStartDate_Local != null && ((DateTime)climateSite.MonthlyStartDate_Local).Year < 1980)
             {
-                climateSite.HasErrors = true;
                 yield return new ValidationResult(string.Format(CSSPServicesRes._YearShouldBeBiggerThan_, "MonthlyStartDate_Local", "1980"), new[] { "MonthlyStartDate_Local" });
             }
 
             if (climateSite.MonthlyEndDate_Local != null && ((DateTime)climateSite.MonthlyEndDate_Local).Year < 1980)
             {
-                climateSite.HasErrors = true;
                 yield return new ValidationResult(string.Format(CSSPServicesRes._YearShouldBeBiggerThan_, "MonthlyEndDate_Local", "1980"), new[] { "MonthlyEndDate_Local" });
             }
 
             if (climateSite.LastUpdateDate_UTC.Year == 1)
             {
-                climateSite.HasErrors = true;
                 yield return new ValidationResult(string.Format(CSSPServicesRes._IsRequired, "LastUpdateDate_UTC"), new[] { "LastUpdateDate_UTC" });
             }
             else
             {
                 if (climateSite.LastUpdateDate_UTC.Year < 1980)
                 {
-                climateSite.HasErrors = true;
                     yield return new ValidationResult(string.Format(CSSPServicesRes._YearShouldBeBiggerThan_, "LastUpdateDate_UTC", "1980"), new[] { "LastUpdateDate_UTC" });
                 }
             }
@@ -307,7 +284,6 @@ namespace CSSPServices
 
             if (TVItemLastUpdateContactTVItemID == null)
             {
-                climateSite.HasErrors = true;
                 yield return new ValidationResult(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "TVItem", "LastUpdateContactTVItemID", climateSite.LastUpdateContactTVItemID.ToString()), new[] { "LastUpdateContactTVItemID" });
             }
             else
@@ -318,7 +294,6 @@ namespace CSSPServices
                 };
                 if (!AllowableTVTypes.Contains(TVItemLastUpdateContactTVItemID.TVType))
                 {
-                    climateSite.HasErrors = true;
                     yield return new ValidationResult(string.Format(CSSPServicesRes._IsNotOfType_, "LastUpdateContactTVItemID", "Contact"), new[] { "LastUpdateContactTVItemID" });
                 }
             }
@@ -326,7 +301,6 @@ namespace CSSPServices
             retStr = ""; // added to stop compiling CSSPError
             if (retStr != "") // will never be true
             {
-                climateSite.HasErrors = true;
                 yield return new ValidationResult("AAA", new[] { "AAA" });
             }
 

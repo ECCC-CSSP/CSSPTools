@@ -40,7 +40,6 @@ namespace CSSPModels.Tests
         public void Contact_Properties_Test()
         {
             List<string> propNameList = new List<string>() { "ContactID", "Id", "ContactTVItemID", "LoginEmail", "FirstName", "LastName", "Initial", "WebName", "ContactTitle", "IsAdmin", "EmailValidated", "Disabled", "IsNew", "SamplingPlanner_ProvincesTVItemID", "Token", "LastUpdateDate_UTC", "LastUpdateContactTVItemID",  }.OrderBy(c => c).ToList();
-            List<string> propNameNotMappedList = new List<string>() { "HasErrors",  }.OrderBy(c => c).ToList();
 
             int index = 0;
             foreach (PropertyInfo propertyInfo in typeof(Contact).GetProperties().OrderBy(c => c.Name))
@@ -63,13 +62,10 @@ namespace CSSPModels.Tests
                 {
                     if (customAttributeData.AttributeType.Name == "NotMappedAttribute")
                     {
-                        Assert.Equal(propertyInfo.Name, propNameNotMappedList[index]);
-                        index += 1;
                     }
                 }
             }
 
-            Assert.Equal(propNameNotMappedList.Count, index);
 
         }
         [Fact]
@@ -104,11 +100,6 @@ namespace CSSPModels.Tests
 
             Assert.Equal(foreignNameCollectionList.Count, index);
 
-        }
-        [Fact]
-        public void Contact_Has_ValidationResults_Test()
-        {
-             Assert.True(typeof(Contact).GetProperties().Where(c => c.Name == "ValidationResults").Any());
         }
         [Fact]
         public void Contact_Every_Property_Has_Get_Set_Test()
@@ -164,12 +155,6 @@ namespace CSSPModels.Tests
                int val17 = 45;
                contact.LastUpdateContactTVItemID = val17;
                Assert.Equal(val17, contact.LastUpdateContactTVItemID);
-               bool val18 = true;
-               contact.HasErrors = val18;
-               Assert.Equal(val18, contact.HasErrors);
-               IEnumerable<ValidationResult> val57 = new List<ValidationResult>() { new ValidationResult("First CSSPError Message") }.AsEnumerable();
-               contact.ValidationResults = val57;
-               Assert.Equal(val57, contact.ValidationResults);
         }
         #endregion Tests Functions public
     }

@@ -40,7 +40,6 @@ namespace CSSPModels.Tests
         public void ClimateDataValue_Properties_Test()
         {
             List<string> propNameList = new List<string>() { "ClimateDataValueID", "ClimateSiteID", "DateTime_Local", "Keep", "StorageDataType", "HasBeenRead", "Snow_cm", "Rainfall_mm", "RainfallEntered_mm", "TotalPrecip_mm_cm", "MaxTemp_C", "MinTemp_C", "HeatDegDays_C", "CoolDegDays_C", "SnowOnGround_cm", "DirMaxGust_0North", "SpdMaxGust_kmh", "HourlyValues", "LastUpdateDate_UTC", "LastUpdateContactTVItemID",  }.OrderBy(c => c).ToList();
-            List<string> propNameNotMappedList = new List<string>() { "HasErrors",  }.OrderBy(c => c).ToList();
 
             int index = 0;
             foreach (PropertyInfo propertyInfo in typeof(ClimateDataValue).GetProperties().OrderBy(c => c.Name))
@@ -63,13 +62,10 @@ namespace CSSPModels.Tests
                 {
                     if (customAttributeData.AttributeType.Name == "NotMappedAttribute")
                     {
-                        Assert.Equal(propertyInfo.Name, propNameNotMappedList[index]);
-                        index += 1;
                     }
                 }
             }
 
-            Assert.Equal(propNameNotMappedList.Count, index);
 
         }
         [Fact]
@@ -104,11 +100,6 @@ namespace CSSPModels.Tests
 
             Assert.Equal(foreignNameCollectionList.Count, index);
 
-        }
-        [Fact]
-        public void ClimateDataValue_Has_ValidationResults_Test()
-        {
-             Assert.True(typeof(ClimateDataValue).GetProperties().Where(c => c.Name == "ValidationResults").Any());
         }
         [Fact]
         public void ClimateDataValue_Every_Property_Has_Get_Set_Test()
@@ -173,12 +164,6 @@ namespace CSSPModels.Tests
                int val20 = 45;
                climateDataValue.LastUpdateContactTVItemID = val20;
                Assert.Equal(val20, climateDataValue.LastUpdateContactTVItemID);
-               bool val21 = true;
-               climateDataValue.HasErrors = val21;
-               Assert.Equal(val21, climateDataValue.HasErrors);
-               IEnumerable<ValidationResult> val66 = new List<ValidationResult>() { new ValidationResult("First CSSPError Message") }.AsEnumerable();
-               climateDataValue.ValidationResults = val66;
-               Assert.Equal(val66, climateDataValue.ValidationResults);
         }
         #endregion Tests Functions public
     }

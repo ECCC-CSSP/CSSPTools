@@ -39,8 +39,7 @@ namespace CSSPModels.Tests
         [Fact]
         public void TVTextLanguage_Properties_Test()
         {
-            List<string> propNameList = new List<string>() { "TVText", "Language", "LanguageText", "HasErrors",  }.OrderBy(c => c).ToList();
-            List<string> propNameNotMappedList = new List<string>() {  }.OrderBy(c => c).ToList();
+            List<string> propNameList = new List<string>() { "TVText", "Language", "LanguageText",  }.OrderBy(c => c).ToList();
 
             int index = 0;
             foreach (PropertyInfo propertyInfo in typeof(TVTextLanguage).GetProperties().Where(c => c.Name != "ValidationResults").OrderBy(c => c.Name).ToList())
@@ -50,11 +49,6 @@ namespace CSSPModels.Tests
             }
 
             Assert.Equal(propNameList.Count, index);
-        }
-        [Fact]
-        public void TVTextLanguage_Has_ValidationResults_Test()
-        {
-             Assert.True(typeof(TVTextLanguage).GetProperties().Where(c => c.Name == "ValidationResults").Any());
         }
         [Fact]
         public void TVTextLanguage_Every_Property_Has_Get_Set_Test()
@@ -68,12 +62,6 @@ namespace CSSPModels.Tests
                string val3 = "Some text";
                tVTextLanguage.LanguageText = val3;
                Assert.Equal(val3, tVTextLanguage.LanguageText);
-               bool val4 = true;
-               tVTextLanguage.HasErrors = val4;
-               Assert.Equal(val4, tVTextLanguage.HasErrors);
-               IEnumerable<ValidationResult> val15 = new List<ValidationResult>() { new ValidationResult("First CSSPError Message") }.AsEnumerable();
-               tVTextLanguage.ValidationResults = val15;
-               Assert.Equal(val15, tVTextLanguage.ValidationResults);
         }
         #endregion Tests Functions public
     }

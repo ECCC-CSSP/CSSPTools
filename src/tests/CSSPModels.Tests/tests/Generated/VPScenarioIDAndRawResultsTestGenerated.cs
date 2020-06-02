@@ -39,8 +39,7 @@ namespace CSSPModels.Tests
         [Fact]
         public void VPScenarioIDAndRawResults_Properties_Test()
         {
-            List<string> propNameList = new List<string>() { "VPScenarioID", "RawResults", "HasErrors",  }.OrderBy(c => c).ToList();
-            List<string> propNameNotMappedList = new List<string>() {  }.OrderBy(c => c).ToList();
+            List<string> propNameList = new List<string>() { "VPScenarioID", "RawResults",  }.OrderBy(c => c).ToList();
 
             int index = 0;
             foreach (PropertyInfo propertyInfo in typeof(VPScenarioIDAndRawResults).GetProperties().Where(c => c.Name != "ValidationResults").OrderBy(c => c.Name).ToList())
@@ -52,11 +51,6 @@ namespace CSSPModels.Tests
             Assert.Equal(propNameList.Count, index);
         }
         [Fact]
-        public void VPScenarioIDAndRawResults_Has_ValidationResults_Test()
-        {
-             Assert.True(typeof(VPScenarioIDAndRawResults).GetProperties().Where(c => c.Name == "ValidationResults").Any());
-        }
-        [Fact]
         public void VPScenarioIDAndRawResults_Every_Property_Has_Get_Set_Test()
         {
                int val1 = 45;
@@ -65,12 +59,6 @@ namespace CSSPModels.Tests
                string val2 = "Some text";
                vPScenarioIDAndRawResults.RawResults = val2;
                Assert.Equal(val2, vPScenarioIDAndRawResults.RawResults);
-               bool val3 = true;
-               vPScenarioIDAndRawResults.HasErrors = val3;
-               Assert.Equal(val3, vPScenarioIDAndRawResults.HasErrors);
-               IEnumerable<ValidationResult> val12 = new List<ValidationResult>() { new ValidationResult("First CSSPError Message") }.AsEnumerable();
-               vPScenarioIDAndRawResults.ValidationResults = val12;
-               Assert.Equal(val12, vPScenarioIDAndRawResults.ValidationResults);
         }
         #endregion Tests Functions public
     }

@@ -40,7 +40,6 @@ namespace CSSPModels.Tests
         public void SamplingPlan_Properties_Test()
         {
             List<string> propNameList = new List<string>() { "SamplingPlanID", "IsActive", "SamplingPlanName", "ForGroupName", "SampleType", "SamplingPlanType", "LabSheetType", "ProvinceTVItemID", "CreatorTVItemID", "Year", "AccessCode", "DailyDuplicatePrecisionCriteria", "IntertechDuplicatePrecisionCriteria", "IncludeLaboratoryQAQC", "ApprovalCode", "SamplingPlanFileTVItemID", "AnalyzeMethodDefault", "SampleMatrixDefault", "LaboratoryDefault", "BackupDirectory", "LastUpdateDate_UTC", "LastUpdateContactTVItemID",  }.OrderBy(c => c).ToList();
-            List<string> propNameNotMappedList = new List<string>() { "HasErrors",  }.OrderBy(c => c).ToList();
 
             int index = 0;
             foreach (PropertyInfo propertyInfo in typeof(SamplingPlan).GetProperties().OrderBy(c => c.Name))
@@ -63,13 +62,10 @@ namespace CSSPModels.Tests
                 {
                     if (customAttributeData.AttributeType.Name == "NotMappedAttribute")
                     {
-                        Assert.Equal(propertyInfo.Name, propNameNotMappedList[index]);
-                        index += 1;
                     }
                 }
             }
 
-            Assert.Equal(propNameNotMappedList.Count, index);
 
         }
         [Fact]
@@ -104,11 +100,6 @@ namespace CSSPModels.Tests
 
             Assert.Equal(foreignNameCollectionList.Count, index);
 
-        }
-        [Fact]
-        public void SamplingPlan_Has_ValidationResults_Test()
-        {
-             Assert.True(typeof(SamplingPlan).GetProperties().Where(c => c.Name == "ValidationResults").Any());
         }
         [Fact]
         public void SamplingPlan_Every_Property_Has_Get_Set_Test()
@@ -179,12 +170,6 @@ namespace CSSPModels.Tests
                int val22 = 45;
                samplingPlan.LastUpdateContactTVItemID = val22;
                Assert.Equal(val22, samplingPlan.LastUpdateContactTVItemID);
-               bool val23 = true;
-               samplingPlan.HasErrors = val23;
-               Assert.Equal(val23, samplingPlan.HasErrors);
-               IEnumerable<ValidationResult> val72 = new List<ValidationResult>() { new ValidationResult("First CSSPError Message") }.AsEnumerable();
-               samplingPlan.ValidationResults = val72;
-               Assert.Equal(val72, samplingPlan.ValidationResults);
         }
         #endregion Tests Functions public
     }

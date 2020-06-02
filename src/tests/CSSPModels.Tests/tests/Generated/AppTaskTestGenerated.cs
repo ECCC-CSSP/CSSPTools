@@ -40,7 +40,6 @@ namespace CSSPModels.Tests
         public void AppTask_Properties_Test()
         {
             List<string> propNameList = new List<string>() { "AppTaskID", "TVItemID", "TVItemID2", "AppTaskCommand", "AppTaskStatus", "PercentCompleted", "Parameters", "Language", "StartDateTime_UTC", "EndDateTime_UTC", "EstimatedLength_second", "RemainingTime_second", "LastUpdateDate_UTC", "LastUpdateContactTVItemID",  }.OrderBy(c => c).ToList();
-            List<string> propNameNotMappedList = new List<string>() { "HasErrors",  }.OrderBy(c => c).ToList();
 
             int index = 0;
             foreach (PropertyInfo propertyInfo in typeof(AppTask).GetProperties().OrderBy(c => c.Name))
@@ -63,13 +62,10 @@ namespace CSSPModels.Tests
                 {
                     if (customAttributeData.AttributeType.Name == "NotMappedAttribute")
                     {
-                        Assert.Equal(propertyInfo.Name, propNameNotMappedList[index]);
-                        index += 1;
                     }
                 }
             }
 
-            Assert.Equal(propNameNotMappedList.Count, index);
 
         }
         [Fact]
@@ -104,11 +100,6 @@ namespace CSSPModels.Tests
 
             Assert.Equal(foreignNameCollectionList.Count, index);
 
-        }
-        [Fact]
-        public void AppTask_Has_ValidationResults_Test()
-        {
-             Assert.True(typeof(AppTask).GetProperties().Where(c => c.Name == "ValidationResults").Any());
         }
         [Fact]
         public void AppTask_Every_Property_Has_Get_Set_Test()
@@ -155,12 +146,6 @@ namespace CSSPModels.Tests
                int val14 = 45;
                appTask.LastUpdateContactTVItemID = val14;
                Assert.Equal(val14, appTask.LastUpdateContactTVItemID);
-               bool val15 = true;
-               appTask.HasErrors = val15;
-               Assert.Equal(val15, appTask.HasErrors);
-               IEnumerable<ValidationResult> val48 = new List<ValidationResult>() { new ValidationResult("First CSSPError Message") }.AsEnumerable();
-               appTask.ValidationResults = val48;
-               Assert.Equal(val48, appTask.ValidationResults);
         }
         #endregion Tests Functions public
     }

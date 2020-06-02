@@ -40,7 +40,6 @@ namespace CSSPModels.Tests
         public void TVItemStat_Properties_Test()
         {
             List<string> propNameList = new List<string>() { "TVItemStatID", "TVItemID", "TVType", "ChildCount", "LastUpdateDate_UTC", "LastUpdateContactTVItemID",  }.OrderBy(c => c).ToList();
-            List<string> propNameNotMappedList = new List<string>() { "HasErrors",  }.OrderBy(c => c).ToList();
 
             int index = 0;
             foreach (PropertyInfo propertyInfo in typeof(TVItemStat).GetProperties().OrderBy(c => c.Name))
@@ -63,13 +62,10 @@ namespace CSSPModels.Tests
                 {
                     if (customAttributeData.AttributeType.Name == "NotMappedAttribute")
                     {
-                        Assert.Equal(propertyInfo.Name, propNameNotMappedList[index]);
-                        index += 1;
                     }
                 }
             }
 
-            Assert.Equal(propNameNotMappedList.Count, index);
 
         }
         [Fact]
@@ -106,11 +102,6 @@ namespace CSSPModels.Tests
 
         }
         [Fact]
-        public void TVItemStat_Has_ValidationResults_Test()
-        {
-             Assert.True(typeof(TVItemStat).GetProperties().Where(c => c.Name == "ValidationResults").Any());
-        }
-        [Fact]
         public void TVItemStat_Every_Property_Has_Get_Set_Test()
         {
                int val1 = 45;
@@ -131,12 +122,6 @@ namespace CSSPModels.Tests
                int val6 = 45;
                tVItemStat.LastUpdateContactTVItemID = val6;
                Assert.Equal(val6, tVItemStat.LastUpdateContactTVItemID);
-               bool val7 = true;
-               tVItemStat.HasErrors = val7;
-               Assert.Equal(val7, tVItemStat.HasErrors);
-               IEnumerable<ValidationResult> val24 = new List<ValidationResult>() { new ValidationResult("First CSSPError Message") }.AsEnumerable();
-               tVItemStat.ValidationResults = val24;
-               Assert.Equal(val24, tVItemStat.ValidationResults);
         }
         #endregion Tests Functions public
     }

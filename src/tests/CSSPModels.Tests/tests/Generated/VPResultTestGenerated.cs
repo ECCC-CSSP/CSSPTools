@@ -40,7 +40,6 @@ namespace CSSPModels.Tests
         public void VPResult_Properties_Test()
         {
             List<string> propNameList = new List<string>() { "VPResultID", "VPScenarioID", "Ordinal", "Concentration_MPN_100ml", "Dilution", "FarFieldWidth_m", "DispersionDistance_m", "TravelTime_hour", "LastUpdateDate_UTC", "LastUpdateContactTVItemID",  }.OrderBy(c => c).ToList();
-            List<string> propNameNotMappedList = new List<string>() { "HasErrors",  }.OrderBy(c => c).ToList();
 
             int index = 0;
             foreach (PropertyInfo propertyInfo in typeof(VPResult).GetProperties().OrderBy(c => c.Name))
@@ -63,13 +62,10 @@ namespace CSSPModels.Tests
                 {
                     if (customAttributeData.AttributeType.Name == "NotMappedAttribute")
                     {
-                        Assert.Equal(propertyInfo.Name, propNameNotMappedList[index]);
-                        index += 1;
                     }
                 }
             }
 
-            Assert.Equal(propNameNotMappedList.Count, index);
 
         }
         [Fact]
@@ -106,11 +102,6 @@ namespace CSSPModels.Tests
 
         }
         [Fact]
-        public void VPResult_Has_ValidationResults_Test()
-        {
-             Assert.True(typeof(VPResult).GetProperties().Where(c => c.Name == "ValidationResults").Any());
-        }
-        [Fact]
         public void VPResult_Every_Property_Has_Get_Set_Test()
         {
                int val1 = 45;
@@ -143,12 +134,6 @@ namespace CSSPModels.Tests
                int val10 = 45;
                vPResult.LastUpdateContactTVItemID = val10;
                Assert.Equal(val10, vPResult.LastUpdateContactTVItemID);
-               bool val11 = true;
-               vPResult.HasErrors = val11;
-               Assert.Equal(val11, vPResult.HasErrors);
-               IEnumerable<ValidationResult> val36 = new List<ValidationResult>() { new ValidationResult("First CSSPError Message") }.AsEnumerable();
-               vPResult.ValidationResults = val36;
-               Assert.Equal(val36, vPResult.ValidationResults);
         }
         #endregion Tests Functions public
     }

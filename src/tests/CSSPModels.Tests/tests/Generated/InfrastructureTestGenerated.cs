@@ -40,7 +40,6 @@ namespace CSSPModels.Tests
         public void Infrastructure_Properties_Test()
         {
             List<string> propNameList = new List<string>() { "InfrastructureID", "InfrastructureTVItemID", "PrismID", "TPID", "LSID", "SiteID", "Site", "InfrastructureCategory", "InfrastructureType", "FacilityType", "HasBackupPower", "IsMechanicallyAerated", "NumberOfCells", "NumberOfAeratedCells", "AerationType", "PreliminaryTreatmentType", "PrimaryTreatmentType", "SecondaryTreatmentType", "TertiaryTreatmentType", "TreatmentType", "DisinfectionType", "CollectionSystemType", "AlarmSystemType", "DesignFlow_m3_day", "AverageFlow_m3_day", "PeakFlow_m3_day", "PopServed", "CanOverflow", "ValveType", "PercFlowOfTotal", "TimeOffset_hour", "TempCatchAllRemoveLater", "AverageDepth_m", "NumberOfPorts", "PortDiameter_m", "PortSpacing_m", "PortElevation_m", "VerticalAngle_deg", "HorizontalAngle_deg", "DecayRate_per_day", "NearFieldVelocity_m_s", "FarFieldVelocity_m_s", "ReceivingWaterSalinity_PSU", "ReceivingWaterTemperature_C", "ReceivingWater_MPN_per_100ml", "DistanceFromShore_m", "SeeOtherMunicipalityTVItemID", "CivicAddressTVItemID", "LastUpdateDate_UTC", "LastUpdateContactTVItemID",  }.OrderBy(c => c).ToList();
-            List<string> propNameNotMappedList = new List<string>() { "HasErrors",  }.OrderBy(c => c).ToList();
 
             int index = 0;
             foreach (PropertyInfo propertyInfo in typeof(Infrastructure).GetProperties().OrderBy(c => c.Name))
@@ -63,13 +62,10 @@ namespace CSSPModels.Tests
                 {
                     if (customAttributeData.AttributeType.Name == "NotMappedAttribute")
                     {
-                        Assert.Equal(propertyInfo.Name, propNameNotMappedList[index]);
-                        index += 1;
                     }
                 }
             }
 
-            Assert.Equal(propNameNotMappedList.Count, index);
 
         }
         [Fact]
@@ -104,11 +100,6 @@ namespace CSSPModels.Tests
 
             Assert.Equal(foreignNameCollectionList.Count, index);
 
-        }
-        [Fact]
-        public void Infrastructure_Has_ValidationResults_Test()
-        {
-             Assert.True(typeof(Infrastructure).GetProperties().Where(c => c.Name == "ValidationResults").Any());
         }
         [Fact]
         public void Infrastructure_Every_Property_Has_Get_Set_Test()
@@ -263,12 +254,6 @@ namespace CSSPModels.Tests
                int val50 = 45;
                infrastructure.LastUpdateContactTVItemID = val50;
                Assert.Equal(val50, infrastructure.LastUpdateContactTVItemID);
-               bool val51 = true;
-               infrastructure.HasErrors = val51;
-               Assert.Equal(val51, infrastructure.HasErrors);
-               IEnumerable<ValidationResult> val156 = new List<ValidationResult>() { new ValidationResult("First CSSPError Message") }.AsEnumerable();
-               infrastructure.ValidationResults = val156;
-               Assert.Equal(val156, infrastructure.ValidationResults);
         }
         #endregion Tests Functions public
     }

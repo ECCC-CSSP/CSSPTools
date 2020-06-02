@@ -40,7 +40,6 @@ namespace CSSPModels.Tests
         public void DrogueRunPosition_Properties_Test()
         {
             List<string> propNameList = new List<string>() { "DrogueRunPositionID", "DrogueRunID", "Ordinal", "StepLat", "StepLng", "StepDateTime_Local", "CalculatedSpeed_m_s", "CalculatedDirection_deg", "LastUpdateDate_UTC", "LastUpdateContactTVItemID",  }.OrderBy(c => c).ToList();
-            List<string> propNameNotMappedList = new List<string>() { "HasErrors",  }.OrderBy(c => c).ToList();
 
             int index = 0;
             foreach (PropertyInfo propertyInfo in typeof(DrogueRunPosition).GetProperties().OrderBy(c => c.Name))
@@ -63,13 +62,10 @@ namespace CSSPModels.Tests
                 {
                     if (customAttributeData.AttributeType.Name == "NotMappedAttribute")
                     {
-                        Assert.Equal(propertyInfo.Name, propNameNotMappedList[index]);
-                        index += 1;
                     }
                 }
             }
 
-            Assert.Equal(propNameNotMappedList.Count, index);
 
         }
         [Fact]
@@ -106,11 +102,6 @@ namespace CSSPModels.Tests
 
         }
         [Fact]
-        public void DrogueRunPosition_Has_ValidationResults_Test()
-        {
-             Assert.True(typeof(DrogueRunPosition).GetProperties().Where(c => c.Name == "ValidationResults").Any());
-        }
-        [Fact]
         public void DrogueRunPosition_Every_Property_Has_Get_Set_Test()
         {
                int val1 = 45;
@@ -143,12 +134,6 @@ namespace CSSPModels.Tests
                int val10 = 45;
                drogueRunPosition.LastUpdateContactTVItemID = val10;
                Assert.Equal(val10, drogueRunPosition.LastUpdateContactTVItemID);
-               bool val11 = true;
-               drogueRunPosition.HasErrors = val11;
-               Assert.Equal(val11, drogueRunPosition.HasErrors);
-               IEnumerable<ValidationResult> val36 = new List<ValidationResult>() { new ValidationResult("First CSSPError Message") }.AsEnumerable();
-               drogueRunPosition.ValidationResults = val36;
-               Assert.Equal(val36, drogueRunPosition.ValidationResults);
         }
         #endregion Tests Functions public
     }

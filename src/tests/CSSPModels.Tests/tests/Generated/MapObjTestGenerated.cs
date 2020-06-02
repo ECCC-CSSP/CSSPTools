@@ -39,8 +39,7 @@ namespace CSSPModels.Tests
         [Fact]
         public void MapObj_Properties_Test()
         {
-            List<string> propNameList = new List<string>() { "MapInfoID", "MapInfoDrawType", "MapInfoDrawTypeText", "CoordList", "HasErrors",  }.OrderBy(c => c).ToList();
-            List<string> propNameNotMappedList = new List<string>() {  }.OrderBy(c => c).ToList();
+            List<string> propNameList = new List<string>() { "MapInfoID", "MapInfoDrawType", "MapInfoDrawTypeText", "CoordList",  }.OrderBy(c => c).ToList();
 
             int index = 0;
             foreach (PropertyInfo propertyInfo in typeof(MapObj).GetProperties().Where(c => c.Name != "ValidationResults").OrderBy(c => c.Name).ToList())
@@ -50,11 +49,6 @@ namespace CSSPModels.Tests
             }
 
             Assert.Equal(propNameList.Count, index);
-        }
-        [Fact]
-        public void MapObj_Has_ValidationResults_Test()
-        {
-             Assert.True(typeof(MapObj).GetProperties().Where(c => c.Name == "ValidationResults").Any());
         }
         [Fact]
         public void MapObj_Every_Property_Has_Get_Set_Test()
@@ -71,12 +65,6 @@ namespace CSSPModels.Tests
                List<Coord> val4 = new List<Coord>() { new Coord(), new Coord() };
                mapObj.CoordList = val4;
                Assert.Equal(val4, mapObj.CoordList);
-               bool val5 = true;
-               mapObj.HasErrors = val5;
-               Assert.Equal(val5, mapObj.HasErrors);
-               IEnumerable<ValidationResult> val18 = new List<ValidationResult>() { new ValidationResult("First CSSPError Message") }.AsEnumerable();
-               mapObj.ValidationResults = val18;
-               Assert.Equal(val18, mapObj.ValidationResults);
         }
         #endregion Tests Functions public
     }

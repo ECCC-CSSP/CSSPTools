@@ -11,7 +11,7 @@ using System.Linq;
 
 namespace CSSPModels
 {
-    public partial class AspNetUser : CSSPError
+    public partial class AspNetUser
     {
         #region Properties in DB
         [Key]

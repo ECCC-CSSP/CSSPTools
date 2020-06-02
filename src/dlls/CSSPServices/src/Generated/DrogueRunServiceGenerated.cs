@@ -37,6 +37,7 @@ namespace CSSPServices
         #region Properties
         private CSSPDBContext db { get; }
         private IEnums enums { get; }
+        private IEnumerable<ValidationResult> ValidationResults { get; set; }
         #endregion Properties
 
         #region Constructors
@@ -69,10 +70,10 @@ namespace CSSPServices
         }
         public async Task<ActionResult<DrogueRun>> Add(DrogueRun drogueRun)
         {
-            drogueRun.ValidationResults = Validate(new ValidationContext(drogueRun), ActionDBTypeEnum.Create);
-            if (drogueRun.ValidationResults.Count() > 0)
+            ValidationResults = Validate(new ValidationContext(drogueRun), ActionDBTypeEnum.Create);
+            if (ValidationResults.Count() > 0)
             {
-               return await Task.FromResult(BadRequest(drogueRun.ValidationResults));
+               return await Task.FromResult(BadRequest(ValidationResults));
             }
 
             try
@@ -89,10 +90,10 @@ namespace CSSPServices
         }
         public async Task<ActionResult<DrogueRun>> Delete(DrogueRun drogueRun)
         {
-            drogueRun.ValidationResults = Validate(new ValidationContext(drogueRun), ActionDBTypeEnum.Delete);
-            if (drogueRun.ValidationResults.Count() > 0)
+            ValidationResults = Validate(new ValidationContext(drogueRun), ActionDBTypeEnum.Delete);
+            if (ValidationResults.Count() > 0)
             {
-               return await Task.FromResult(BadRequest(drogueRun.ValidationResults));
+               return await Task.FromResult(BadRequest(ValidationResults));
             }
 
             try
@@ -109,10 +110,10 @@ namespace CSSPServices
         }
         public async Task<ActionResult<DrogueRun>> Update(DrogueRun drogueRun)
         {
-            drogueRun.ValidationResults = Validate(new ValidationContext(drogueRun), ActionDBTypeEnum.Update);
-            if (drogueRun.ValidationResults.Count() > 0)
+            ValidationResults = Validate(new ValidationContext(drogueRun), ActionDBTypeEnum.Update);
+            if (ValidationResults.Count() > 0)
             {
-               return await Task.FromResult(BadRequest(drogueRun.ValidationResults));
+               return await Task.FromResult(BadRequest(ValidationResults));
             }
 
             try
@@ -138,19 +139,16 @@ namespace CSSPServices
         {
             string retStr = "";
             DrogueRun drogueRun = validationContext.ObjectInstance as DrogueRun;
-            drogueRun.HasErrors = false;
 
             if (actionDBType == ActionDBTypeEnum.Update || actionDBType == ActionDBTypeEnum.Delete)
             {
                 if (drogueRun.DrogueRunID == 0)
                 {
-                    drogueRun.HasErrors = true;
                     yield return new ValidationResult(string.Format(CSSPServicesRes._IsRequired, "DrogueRunID"), new[] { "DrogueRunID" });
                 }
 
                 if (!(from c in db.DrogueRuns select c).Where(c => c.DrogueRunID == drogueRun.DrogueRunID).Any())
                 {
-                    drogueRun.HasErrors = true;
                     yield return new ValidationResult(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "DrogueRun", "DrogueRunID", drogueRun.DrogueRunID.ToString()), new[] { "DrogueRunID" });
                 }
             }
@@ -159,7 +157,6 @@ namespace CSSPServices
 
             if (TVItemSubsectorTVItemID == null)
             {
-                drogueRun.HasErrors = true;
                 yield return new ValidationResult(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "TVItem", "SubsectorTVItemID", drogueRun.SubsectorTVItemID.ToString()), new[] { "SubsectorTVItemID" });
             }
             else
@@ -170,48 +167,41 @@ namespace CSSPServices
                 };
                 if (!AllowableTVTypes.Contains(TVItemSubsectorTVItemID.TVType))
                 {
-                    drogueRun.HasErrors = true;
                     yield return new ValidationResult(string.Format(CSSPServicesRes._IsNotOfType_, "SubsectorTVItemID", "Subsector"), new[] { "SubsectorTVItemID" });
                 }
             }
 
             if (drogueRun.DrogueNumber < 0 || drogueRun.DrogueNumber > 100)
             {
-                drogueRun.HasErrors = true;
                 yield return new ValidationResult(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "DrogueNumber", "0", "100"), new[] { "DrogueNumber" });
             }
 
             retStr = enums.EnumTypeOK(typeof(DrogueTypeEnum), (int?)drogueRun.DrogueType);
             if (!string.IsNullOrWhiteSpace(retStr))
             {
-                drogueRun.HasErrors = true;
                 yield return new ValidationResult(string.Format(CSSPServicesRes._IsRequired, "DrogueType"), new[] { "DrogueType" });
             }
 
             if (drogueRun.RunStartDateTime.Year == 1)
             {
-                drogueRun.HasErrors = true;
                 yield return new ValidationResult(string.Format(CSSPServicesRes._IsRequired, "RunStartDateTime"), new[] { "RunStartDateTime" });
             }
             else
             {
                 if (drogueRun.RunStartDateTime.Year < 1980)
                 {
-                drogueRun.HasErrors = true;
                     yield return new ValidationResult(string.Format(CSSPServicesRes._YearShouldBeBiggerThan_, "RunStartDateTime", "1980"), new[] { "RunStartDateTime" });
                 }
             }
 
             if (drogueRun.LastUpdateDate_UTC.Year == 1)
             {
-                drogueRun.HasErrors = true;
                 yield return new ValidationResult(string.Format(CSSPServicesRes._IsRequired, "LastUpdateDate_UTC"), new[] { "LastUpdateDate_UTC" });
             }
             else
             {
                 if (drogueRun.LastUpdateDate_UTC.Year < 1980)
                 {
-                drogueRun.HasErrors = true;
                     yield return new ValidationResult(string.Format(CSSPServicesRes._YearShouldBeBiggerThan_, "LastUpdateDate_UTC", "1980"), new[] { "LastUpdateDate_UTC" });
                 }
             }
@@ -220,7 +210,6 @@ namespace CSSPServices
 
             if (TVItemLastUpdateContactTVItemID == null)
             {
-                drogueRun.HasErrors = true;
                 yield return new ValidationResult(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "TVItem", "LastUpdateContactTVItemID", drogueRun.LastUpdateContactTVItemID.ToString()), new[] { "LastUpdateContactTVItemID" });
             }
             else
@@ -231,7 +220,6 @@ namespace CSSPServices
                 };
                 if (!AllowableTVTypes.Contains(TVItemLastUpdateContactTVItemID.TVType))
                 {
-                    drogueRun.HasErrors = true;
                     yield return new ValidationResult(string.Format(CSSPServicesRes._IsNotOfType_, "LastUpdateContactTVItemID", "Contact"), new[] { "LastUpdateContactTVItemID" });
                 }
             }
@@ -239,7 +227,6 @@ namespace CSSPServices
             retStr = ""; // added to stop compiling CSSPError
             if (retStr != "") // will never be true
             {
-                drogueRun.HasErrors = true;
                 yield return new ValidationResult("AAA", new[] { "AAA" });
             }
 

@@ -39,8 +39,7 @@ namespace CSSPModels.Tests
         [Fact]
         public void VPResValues_Properties_Test()
         {
-            List<string> propNameList = new List<string>() { "Conc", "Dilu", "FarfieldWidth", "Distance", "TheTime", "Decay", "HasErrors",  }.OrderBy(c => c).ToList();
-            List<string> propNameNotMappedList = new List<string>() {  }.OrderBy(c => c).ToList();
+            List<string> propNameList = new List<string>() { "Conc", "Dilu", "FarfieldWidth", "Distance", "TheTime", "Decay",  }.OrderBy(c => c).ToList();
 
             int index = 0;
             foreach (PropertyInfo propertyInfo in typeof(VPResValues).GetProperties().Where(c => c.Name != "ValidationResults").OrderBy(c => c.Name).ToList())
@@ -50,11 +49,6 @@ namespace CSSPModels.Tests
             }
 
             Assert.Equal(propNameList.Count, index);
-        }
-        [Fact]
-        public void VPResValues_Has_ValidationResults_Test()
-        {
-             Assert.True(typeof(VPResValues).GetProperties().Where(c => c.Name == "ValidationResults").Any());
         }
         [Fact]
         public void VPResValues_Every_Property_Has_Get_Set_Test()
@@ -77,12 +71,6 @@ namespace CSSPModels.Tests
                double val6 = 87.9D;
                vPResValues.Decay = val6;
                Assert.Equal(val6, vPResValues.Decay);
-               bool val7 = true;
-               vPResValues.HasErrors = val7;
-               Assert.Equal(val7, vPResValues.HasErrors);
-               IEnumerable<ValidationResult> val24 = new List<ValidationResult>() { new ValidationResult("First CSSPError Message") }.AsEnumerable();
-               vPResValues.ValidationResults = val24;
-               Assert.Equal(val24, vPResValues.ValidationResults);
         }
         #endregion Tests Functions public
     }

@@ -24,7 +24,7 @@ namespace ServicesClassNameServiceGeneratedServices.Services
                     sb.AppendLine($@"                if ({ TypeNameLower }.{ prop.Name } == 0)");
                 }
                 sb.AppendLine(@"                {");
-                sb.AppendLine($@"                    { TypeNameLower }.HasErrors = true;");
+                //sb.AppendLine($@"                    { TypeNameLower }.HasErrors = true;");
                 sb.AppendLine($@"                    yield return new ValidationResult(string.Format(CSSPServicesRes._IsRequired, ""{ prop.Name }""), new[] {{ ""{ csspProp.PropName }"" }});");
                 sb.AppendLine(@"                }");
                 sb.AppendLine(@"");
@@ -44,7 +44,7 @@ namespace ServicesClassNameServiceGeneratedServices.Services
                     }
                 }
                 sb.AppendLine(@"                {");
-                sb.AppendLine($@"                    { TypeNameLower }.HasErrors = true;");
+                //sb.AppendLine($@"                    { TypeNameLower }.HasErrors = true;");
                 if (TypeName == "AspNetUser")
                 {
                     sb.AppendLine($@"                    yield return new ValidationResult(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, ""{ TypeName }"", ""{ TypeName }Id"", ({ TypeNameLower }.Id == null ? """" : { TypeNameLower }.Id.ToString())), new[] {{ ""{ csspProp.PropName }"" }});");
@@ -70,7 +70,7 @@ namespace ServicesClassNameServiceGeneratedServices.Services
                         sb.AppendLine($@"                if ((from c in db.{ TypeName }s select c).Count() > 0)");
                     }
                     sb.AppendLine(@"                {");
-                    sb.AppendLine($@"                    { TypeNameLower }.HasErrors = true;");
+                    //sb.AppendLine($@"                    { TypeNameLower }.HasErrors = true;");
                     sb.AppendLine(@"                    yield return new ValidationResult(CSSPServicesRes.TVItemRootShouldBeTheFirstOneAdded, new[] { ""TVItemTVItemID"" });");
                     sb.AppendLine(@"                }");
                     sb.AppendLine(@"            }");

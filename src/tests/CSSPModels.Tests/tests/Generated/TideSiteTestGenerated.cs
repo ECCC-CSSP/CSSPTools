@@ -40,7 +40,6 @@ namespace CSSPModels.Tests
         public void TideSite_Properties_Test()
         {
             List<string> propNameList = new List<string>() { "TideSiteID", "TideSiteTVItemID", "TideSiteName", "Province", "sid", "Zone", "LastUpdateDate_UTC", "LastUpdateContactTVItemID",  }.OrderBy(c => c).ToList();
-            List<string> propNameNotMappedList = new List<string>() { "HasErrors",  }.OrderBy(c => c).ToList();
 
             int index = 0;
             foreach (PropertyInfo propertyInfo in typeof(TideSite).GetProperties().OrderBy(c => c.Name))
@@ -63,13 +62,10 @@ namespace CSSPModels.Tests
                 {
                     if (customAttributeData.AttributeType.Name == "NotMappedAttribute")
                     {
-                        Assert.Equal(propertyInfo.Name, propNameNotMappedList[index]);
-                        index += 1;
                     }
                 }
             }
 
-            Assert.Equal(propNameNotMappedList.Count, index);
 
         }
         [Fact]
@@ -106,11 +102,6 @@ namespace CSSPModels.Tests
 
         }
         [Fact]
-        public void TideSite_Has_ValidationResults_Test()
-        {
-             Assert.True(typeof(TideSite).GetProperties().Where(c => c.Name == "ValidationResults").Any());
-        }
-        [Fact]
         public void TideSite_Every_Property_Has_Get_Set_Test()
         {
                int val1 = 45;
@@ -137,12 +128,6 @@ namespace CSSPModels.Tests
                int val8 = 45;
                tideSite.LastUpdateContactTVItemID = val8;
                Assert.Equal(val8, tideSite.LastUpdateContactTVItemID);
-               bool val9 = true;
-               tideSite.HasErrors = val9;
-               Assert.Equal(val9, tideSite.HasErrors);
-               IEnumerable<ValidationResult> val30 = new List<ValidationResult>() { new ValidationResult("First CSSPError Message") }.AsEnumerable();
-               tideSite.ValidationResults = val30;
-               Assert.Equal(val30, tideSite.ValidationResults);
         }
         #endregion Tests Functions public
     }

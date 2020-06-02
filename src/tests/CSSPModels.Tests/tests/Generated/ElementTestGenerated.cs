@@ -39,8 +39,7 @@ namespace CSSPModels.Tests
         [Fact]
         public void Element_Properties_Test()
         {
-            List<string> propNameList = new List<string>() { "ID", "Type", "NumbOfNodes", "Value", "XNode0", "YNode0", "ZNode0", "NodeList", "HasErrors",  }.OrderBy(c => c).ToList();
-            List<string> propNameNotMappedList = new List<string>() {  }.OrderBy(c => c).ToList();
+            List<string> propNameList = new List<string>() { "ID", "Type", "NumbOfNodes", "Value", "XNode0", "YNode0", "ZNode0", "NodeList",  }.OrderBy(c => c).ToList();
 
             int index = 0;
             foreach (PropertyInfo propertyInfo in typeof(Element).GetProperties().Where(c => c.Name != "ValidationResults").OrderBy(c => c.Name).ToList())
@@ -50,11 +49,6 @@ namespace CSSPModels.Tests
             }
 
             Assert.Equal(propNameList.Count, index);
-        }
-        [Fact]
-        public void Element_Has_ValidationResults_Test()
-        {
-             Assert.True(typeof(Element).GetProperties().Where(c => c.Name == "ValidationResults").Any());
         }
         [Fact]
         public void Element_Every_Property_Has_Get_Set_Test()
@@ -83,12 +77,6 @@ namespace CSSPModels.Tests
                List<Node> val8 = new List<Node>() { new Node(), new Node() };
                element.NodeList = val8;
                Assert.Equal(val8, element.NodeList);
-               bool val9 = true;
-               element.HasErrors = val9;
-               Assert.Equal(val9, element.HasErrors);
-               IEnumerable<ValidationResult> val30 = new List<ValidationResult>() { new ValidationResult("First CSSPError Message") }.AsEnumerable();
-               element.ValidationResults = val30;
-               Assert.Equal(val30, element.ValidationResults);
         }
         #endregion Tests Functions public
     }

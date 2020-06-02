@@ -40,7 +40,6 @@ namespace CSSPModels.Tests
         public void Log_Properties_Test()
         {
             List<string> propNameList = new List<string>() { "LogID", "TableName", "ID", "LogCommand", "Information", "LastUpdateDate_UTC", "LastUpdateContactTVItemID",  }.OrderBy(c => c).ToList();
-            List<string> propNameNotMappedList = new List<string>() { "HasErrors",  }.OrderBy(c => c).ToList();
 
             int index = 0;
             foreach (PropertyInfo propertyInfo in typeof(Log).GetProperties().OrderBy(c => c.Name))
@@ -63,13 +62,10 @@ namespace CSSPModels.Tests
                 {
                     if (customAttributeData.AttributeType.Name == "NotMappedAttribute")
                     {
-                        Assert.Equal(propertyInfo.Name, propNameNotMappedList[index]);
-                        index += 1;
                     }
                 }
             }
 
-            Assert.Equal(propNameNotMappedList.Count, index);
 
         }
         [Fact]
@@ -106,11 +102,6 @@ namespace CSSPModels.Tests
 
         }
         [Fact]
-        public void Log_Has_ValidationResults_Test()
-        {
-             Assert.True(typeof(Log).GetProperties().Where(c => c.Name == "ValidationResults").Any());
-        }
-        [Fact]
         public void Log_Every_Property_Has_Get_Set_Test()
         {
                int val1 = 45;
@@ -134,12 +125,6 @@ namespace CSSPModels.Tests
                int val7 = 45;
                log.LastUpdateContactTVItemID = val7;
                Assert.Equal(val7, log.LastUpdateContactTVItemID);
-               bool val8 = true;
-               log.HasErrors = val8;
-               Assert.Equal(val8, log.HasErrors);
-               IEnumerable<ValidationResult> val27 = new List<ValidationResult>() { new ValidationResult("First CSSPError Message") }.AsEnumerable();
-               log.ValidationResults = val27;
-               Assert.Equal(val27, log.ValidationResults);
         }
         #endregion Tests Functions public
     }

@@ -40,7 +40,6 @@ namespace CSSPModels.Tests
         public void AppTaskLanguage_Properties_Test()
         {
             List<string> propNameList = new List<string>() { "AppTaskLanguageID", "AppTaskID", "Language", "StatusText", "ErrorText", "TranslationStatus", "LastUpdateDate_UTC", "LastUpdateContactTVItemID",  }.OrderBy(c => c).ToList();
-            List<string> propNameNotMappedList = new List<string>() { "HasErrors",  }.OrderBy(c => c).ToList();
 
             int index = 0;
             foreach (PropertyInfo propertyInfo in typeof(AppTaskLanguage).GetProperties().OrderBy(c => c.Name))
@@ -63,13 +62,10 @@ namespace CSSPModels.Tests
                 {
                     if (customAttributeData.AttributeType.Name == "NotMappedAttribute")
                     {
-                        Assert.Equal(propertyInfo.Name, propNameNotMappedList[index]);
-                        index += 1;
                     }
                 }
             }
 
-            Assert.Equal(propNameNotMappedList.Count, index);
 
         }
         [Fact]
@@ -106,11 +102,6 @@ namespace CSSPModels.Tests
 
         }
         [Fact]
-        public void AppTaskLanguage_Has_ValidationResults_Test()
-        {
-             Assert.True(typeof(AppTaskLanguage).GetProperties().Where(c => c.Name == "ValidationResults").Any());
-        }
-        [Fact]
         public void AppTaskLanguage_Every_Property_Has_Get_Set_Test()
         {
                int val1 = 45;
@@ -137,12 +128,6 @@ namespace CSSPModels.Tests
                int val8 = 45;
                appTaskLanguage.LastUpdateContactTVItemID = val8;
                Assert.Equal(val8, appTaskLanguage.LastUpdateContactTVItemID);
-               bool val9 = true;
-               appTaskLanguage.HasErrors = val9;
-               Assert.Equal(val9, appTaskLanguage.HasErrors);
-               IEnumerable<ValidationResult> val30 = new List<ValidationResult>() { new ValidationResult("First CSSPError Message") }.AsEnumerable();
-               appTaskLanguage.ValidationResults = val30;
-               Assert.Equal(val30, appTaskLanguage.ValidationResults);
         }
         #endregion Tests Functions public
     }

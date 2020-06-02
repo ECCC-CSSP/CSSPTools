@@ -39,8 +39,7 @@ namespace CSSPModels.Tests
         [Fact]
         public void ContactOK_Properties_Test()
         {
-            List<string> propNameList = new List<string>() { "ContactID", "ContactTVItemID", "HasErrors",  }.OrderBy(c => c).ToList();
-            List<string> propNameNotMappedList = new List<string>() {  }.OrderBy(c => c).ToList();
+            List<string> propNameList = new List<string>() { "ContactID", "ContactTVItemID",  }.OrderBy(c => c).ToList();
 
             int index = 0;
             foreach (PropertyInfo propertyInfo in typeof(ContactOK).GetProperties().Where(c => c.Name != "ValidationResults").OrderBy(c => c.Name).ToList())
@@ -52,11 +51,6 @@ namespace CSSPModels.Tests
             Assert.Equal(propNameList.Count, index);
         }
         [Fact]
-        public void ContactOK_Has_ValidationResults_Test()
-        {
-             Assert.True(typeof(ContactOK).GetProperties().Where(c => c.Name == "ValidationResults").Any());
-        }
-        [Fact]
         public void ContactOK_Every_Property_Has_Get_Set_Test()
         {
                int val1 = 45;
@@ -65,12 +59,6 @@ namespace CSSPModels.Tests
                int val2 = 45;
                contactOK.ContactTVItemID = val2;
                Assert.Equal(val2, contactOK.ContactTVItemID);
-               bool val3 = true;
-               contactOK.HasErrors = val3;
-               Assert.Equal(val3, contactOK.HasErrors);
-               IEnumerable<ValidationResult> val12 = new List<ValidationResult>() { new ValidationResult("First CSSPError Message") }.AsEnumerable();
-               contactOK.ValidationResults = val12;
-               Assert.Equal(val12, contactOK.ValidationResults);
         }
         #endregion Tests Functions public
     }

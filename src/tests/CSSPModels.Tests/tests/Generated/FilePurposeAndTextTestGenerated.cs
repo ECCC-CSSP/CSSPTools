@@ -39,8 +39,7 @@ namespace CSSPModels.Tests
         [Fact]
         public void FilePurposeAndText_Properties_Test()
         {
-            List<string> propNameList = new List<string>() { "FilePurpose", "FilePurposeText", "HasErrors",  }.OrderBy(c => c).ToList();
-            List<string> propNameNotMappedList = new List<string>() {  }.OrderBy(c => c).ToList();
+            List<string> propNameList = new List<string>() { "FilePurpose", "FilePurposeText",  }.OrderBy(c => c).ToList();
 
             int index = 0;
             foreach (PropertyInfo propertyInfo in typeof(FilePurposeAndText).GetProperties().Where(c => c.Name != "ValidationResults").OrderBy(c => c.Name).ToList())
@@ -52,11 +51,6 @@ namespace CSSPModels.Tests
             Assert.Equal(propNameList.Count, index);
         }
         [Fact]
-        public void FilePurposeAndText_Has_ValidationResults_Test()
-        {
-             Assert.True(typeof(FilePurposeAndText).GetProperties().Where(c => c.Name == "ValidationResults").Any());
-        }
-        [Fact]
         public void FilePurposeAndText_Every_Property_Has_Get_Set_Test()
         {
                FilePurposeEnum val1 = (FilePurposeEnum)3;
@@ -65,12 +59,6 @@ namespace CSSPModels.Tests
                string val2 = "Some text";
                filePurposeAndText.FilePurposeText = val2;
                Assert.Equal(val2, filePurposeAndText.FilePurposeText);
-               bool val3 = true;
-               filePurposeAndText.HasErrors = val3;
-               Assert.Equal(val3, filePurposeAndText.HasErrors);
-               IEnumerable<ValidationResult> val12 = new List<ValidationResult>() { new ValidationResult("First CSSPError Message") }.AsEnumerable();
-               filePurposeAndText.ValidationResults = val12;
-               Assert.Equal(val12, filePurposeAndText.ValidationResults);
         }
         #endregion Tests Functions public
     }

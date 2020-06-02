@@ -40,7 +40,6 @@ namespace CSSPModels.Tests
         public void LabSheet_Properties_Test()
         {
             List<string> propNameList = new List<string>() { "LabSheetID", "OtherServerLabSheetID", "SamplingPlanID", "SamplingPlanName", "Year", "Month", "Day", "RunNumber", "SubsectorTVItemID", "MWQMRunTVItemID", "SamplingPlanType", "SampleType", "LabSheetType", "LabSheetStatus", "FileName", "FileLastModifiedDate_Local", "FileContent", "AcceptedOrRejectedByContactTVItemID", "AcceptedOrRejectedDateTime", "RejectReason", "LastUpdateDate_UTC", "LastUpdateContactTVItemID",  }.OrderBy(c => c).ToList();
-            List<string> propNameNotMappedList = new List<string>() { "HasErrors",  }.OrderBy(c => c).ToList();
 
             int index = 0;
             foreach (PropertyInfo propertyInfo in typeof(LabSheet).GetProperties().OrderBy(c => c.Name))
@@ -63,13 +62,10 @@ namespace CSSPModels.Tests
                 {
                     if (customAttributeData.AttributeType.Name == "NotMappedAttribute")
                     {
-                        Assert.Equal(propertyInfo.Name, propNameNotMappedList[index]);
-                        index += 1;
                     }
                 }
             }
 
-            Assert.Equal(propNameNotMappedList.Count, index);
 
         }
         [Fact]
@@ -104,11 +100,6 @@ namespace CSSPModels.Tests
 
             Assert.Equal(foreignNameCollectionList.Count, index);
 
-        }
-        [Fact]
-        public void LabSheet_Has_ValidationResults_Test()
-        {
-             Assert.True(typeof(LabSheet).GetProperties().Where(c => c.Name == "ValidationResults").Any());
         }
         [Fact]
         public void LabSheet_Every_Property_Has_Get_Set_Test()
@@ -179,12 +170,6 @@ namespace CSSPModels.Tests
                int val22 = 45;
                labSheet.LastUpdateContactTVItemID = val22;
                Assert.Equal(val22, labSheet.LastUpdateContactTVItemID);
-               bool val23 = true;
-               labSheet.HasErrors = val23;
-               Assert.Equal(val23, labSheet.HasErrors);
-               IEnumerable<ValidationResult> val72 = new List<ValidationResult>() { new ValidationResult("First CSSPError Message") }.AsEnumerable();
-               labSheet.ValidationResults = val72;
-               Assert.Equal(val72, labSheet.ValidationResults);
         }
         #endregion Tests Functions public
     }

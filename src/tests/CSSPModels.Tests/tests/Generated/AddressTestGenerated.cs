@@ -40,7 +40,6 @@ namespace CSSPModels.Tests
         public void Address_Properties_Test()
         {
             List<string> propNameList = new List<string>() { "AddressID", "AddressTVItemID", "AddressType", "CountryTVItemID", "ProvinceTVItemID", "MunicipalityTVItemID", "StreetName", "StreetNumber", "StreetType", "PostalCode", "GoogleAddressText", "LastUpdateDate_UTC", "LastUpdateContactTVItemID",  }.OrderBy(c => c).ToList();
-            List<string> propNameNotMappedList = new List<string>() { "HasErrors",  }.OrderBy(c => c).ToList();
 
             int index = 0;
             foreach (PropertyInfo propertyInfo in typeof(Address).GetProperties().OrderBy(c => c.Name))
@@ -63,13 +62,10 @@ namespace CSSPModels.Tests
                 {
                     if (customAttributeData.AttributeType.Name == "NotMappedAttribute")
                     {
-                        Assert.Equal(propertyInfo.Name, propNameNotMappedList[index]);
-                        index += 1;
                     }
                 }
             }
 
-            Assert.Equal(propNameNotMappedList.Count, index);
 
         }
         [Fact]
@@ -104,11 +100,6 @@ namespace CSSPModels.Tests
 
             Assert.Equal(foreignNameCollectionList.Count, index);
 
-        }
-        [Fact]
-        public void Address_Has_ValidationResults_Test()
-        {
-             Assert.True(typeof(Address).GetProperties().Where(c => c.Name == "ValidationResults").Any());
         }
         [Fact]
         public void Address_Every_Property_Has_Get_Set_Test()
@@ -152,12 +143,6 @@ namespace CSSPModels.Tests
                int val13 = 45;
                address.LastUpdateContactTVItemID = val13;
                Assert.Equal(val13, address.LastUpdateContactTVItemID);
-               bool val14 = true;
-               address.HasErrors = val14;
-               Assert.Equal(val14, address.HasErrors);
-               IEnumerable<ValidationResult> val45 = new List<ValidationResult>() { new ValidationResult("First CSSPError Message") }.AsEnumerable();
-               address.ValidationResults = val45;
-               Assert.Equal(val45, address.ValidationResults);
         }
         #endregion Tests Functions public
     }

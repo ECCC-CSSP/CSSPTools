@@ -153,6 +153,7 @@ namespace ServicesClassNameServiceGeneratedServices.Services
                     sb.AppendLine(@"        #region Properties");
                     sb.AppendLine(@"        private CSSPDBContext db { get; }");
                     sb.AppendLine(@"        private IEnums enums { get; }");
+                    sb.AppendLine(@"        private IEnumerable<ValidationResult> ValidationResults { get; set; }");
                     sb.AppendLine(@"        #endregion Properties");
                     sb.AppendLine(@"");
                     sb.AppendLine(@"        #region Constructors");

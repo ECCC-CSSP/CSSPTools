@@ -39,8 +39,7 @@ namespace CSSPModels.Tests
         [Fact]
         public void SearchTagAndTerms_Properties_Test()
         {
-            List<string> propNameList = new List<string>() { "SearchTag", "SearchTagText", "SearchTermList", "HasErrors",  }.OrderBy(c => c).ToList();
-            List<string> propNameNotMappedList = new List<string>() {  }.OrderBy(c => c).ToList();
+            List<string> propNameList = new List<string>() { "SearchTag", "SearchTagText", "SearchTermList",  }.OrderBy(c => c).ToList();
 
             int index = 0;
             foreach (PropertyInfo propertyInfo in typeof(SearchTagAndTerms).GetProperties().Where(c => c.Name != "ValidationResults").OrderBy(c => c.Name).ToList())
@@ -50,11 +49,6 @@ namespace CSSPModels.Tests
             }
 
             Assert.Equal(propNameList.Count, index);
-        }
-        [Fact]
-        public void SearchTagAndTerms_Has_ValidationResults_Test()
-        {
-             Assert.True(typeof(SearchTagAndTerms).GetProperties().Where(c => c.Name == "ValidationResults").Any());
         }
         [Fact]
         public void SearchTagAndTerms_Every_Property_Has_Get_Set_Test()
@@ -68,12 +62,6 @@ namespace CSSPModels.Tests
                List<string> val3 = new List<string>() { "testing", "Bonjour Allo" };
                searchTagAndTerms.SearchTermList = val3;
                Assert.Equal(val3, searchTagAndTerms.SearchTermList);
-               bool val4 = true;
-               searchTagAndTerms.HasErrors = val4;
-               Assert.Equal(val4, searchTagAndTerms.HasErrors);
-               IEnumerable<ValidationResult> val15 = new List<ValidationResult>() { new ValidationResult("First CSSPError Message") }.AsEnumerable();
-               searchTagAndTerms.ValidationResults = val15;
-               Assert.Equal(val15, searchTagAndTerms.ValidationResults);
         }
         #endregion Tests Functions public
     }

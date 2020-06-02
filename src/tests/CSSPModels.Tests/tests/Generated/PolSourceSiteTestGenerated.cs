@@ -40,7 +40,6 @@ namespace CSSPModels.Tests
         public void PolSourceSite_Properties_Test()
         {
             List<string> propNameList = new List<string>() { "PolSourceSiteID", "PolSourceSiteTVItemID", "Temp_Locator_CanDelete", "Oldsiteid", "Site", "SiteID", "IsPointSource", "InactiveReason", "CivicAddressTVItemID", "LastUpdateDate_UTC", "LastUpdateContactTVItemID",  }.OrderBy(c => c).ToList();
-            List<string> propNameNotMappedList = new List<string>() { "HasErrors",  }.OrderBy(c => c).ToList();
 
             int index = 0;
             foreach (PropertyInfo propertyInfo in typeof(PolSourceSite).GetProperties().OrderBy(c => c.Name))
@@ -63,13 +62,10 @@ namespace CSSPModels.Tests
                 {
                     if (customAttributeData.AttributeType.Name == "NotMappedAttribute")
                     {
-                        Assert.Equal(propertyInfo.Name, propNameNotMappedList[index]);
-                        index += 1;
                     }
                 }
             }
 
-            Assert.Equal(propNameNotMappedList.Count, index);
 
         }
         [Fact]
@@ -104,11 +100,6 @@ namespace CSSPModels.Tests
 
             Assert.Equal(foreignNameCollectionList.Count, index);
 
-        }
-        [Fact]
-        public void PolSourceSite_Has_ValidationResults_Test()
-        {
-             Assert.True(typeof(PolSourceSite).GetProperties().Where(c => c.Name == "ValidationResults").Any());
         }
         [Fact]
         public void PolSourceSite_Every_Property_Has_Get_Set_Test()
@@ -146,12 +137,6 @@ namespace CSSPModels.Tests
                int val11 = 45;
                polSourceSite.LastUpdateContactTVItemID = val11;
                Assert.Equal(val11, polSourceSite.LastUpdateContactTVItemID);
-               bool val12 = true;
-               polSourceSite.HasErrors = val12;
-               Assert.Equal(val12, polSourceSite.HasErrors);
-               IEnumerable<ValidationResult> val39 = new List<ValidationResult>() { new ValidationResult("First CSSPError Message") }.AsEnumerable();
-               polSourceSite.ValidationResults = val39;
-               Assert.Equal(val39, polSourceSite.ValidationResults);
         }
         #endregion Tests Functions public
     }

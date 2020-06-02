@@ -15,7 +15,7 @@ namespace ServicesClassNameServiceGeneratedServices.Services
                 {
                     sb.AppendLine($@"            if ({ TypeNameLower }.{ csspProp.PropName } != null && ((DateTime){ TypeNameLower }.{ csspProp.PropName }).Year < { csspProp.Year })");
                     sb.AppendLine(@"            {");
-                    sb.AppendLine($@"                { TypeNameLower }.HasErrors = true;");
+                    //sb.AppendLine($@"                { TypeNameLower }.HasErrors = true;");
                     sb.AppendLine($@"                yield return new ValidationResult(string.Format(CSSPServicesRes._YearShouldBeBiggerThan_, ""{ csspProp.PropName }"", ""{ csspProp.Year }""), new[] {{ ""{ csspProp.PropName }"" }});");
                     sb.AppendLine(@"            }");
                     sb.AppendLine(@"");

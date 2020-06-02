@@ -39,8 +39,7 @@ namespace CSSPModels.Tests
         [Fact]
         public void RTBStringPos_Properties_Test()
         {
-            List<string> propNameList = new List<string>() { "StartPos", "EndPos", "Text", "TagText", "HasErrors",  }.OrderBy(c => c).ToList();
-            List<string> propNameNotMappedList = new List<string>() {  }.OrderBy(c => c).ToList();
+            List<string> propNameList = new List<string>() { "StartPos", "EndPos", "Text", "TagText",  }.OrderBy(c => c).ToList();
 
             int index = 0;
             foreach (PropertyInfo propertyInfo in typeof(RTBStringPos).GetProperties().Where(c => c.Name != "ValidationResults").OrderBy(c => c.Name).ToList())
@@ -50,11 +49,6 @@ namespace CSSPModels.Tests
             }
 
             Assert.Equal(propNameList.Count, index);
-        }
-        [Fact]
-        public void RTBStringPos_Has_ValidationResults_Test()
-        {
-             Assert.True(typeof(RTBStringPos).GetProperties().Where(c => c.Name == "ValidationResults").Any());
         }
         [Fact]
         public void RTBStringPos_Every_Property_Has_Get_Set_Test()
@@ -71,12 +65,6 @@ namespace CSSPModels.Tests
                string val4 = "Some text";
                rTBStringPos.TagText = val4;
                Assert.Equal(val4, rTBStringPos.TagText);
-               bool val5 = true;
-               rTBStringPos.HasErrors = val5;
-               Assert.Equal(val5, rTBStringPos.HasErrors);
-               IEnumerable<ValidationResult> val18 = new List<ValidationResult>() { new ValidationResult("First CSSPError Message") }.AsEnumerable();
-               rTBStringPos.ValidationResults = val18;
-               Assert.Equal(val18, rTBStringPos.ValidationResults);
         }
         #endregion Tests Functions public
     }

@@ -40,7 +40,6 @@ namespace CSSPModels.Tests
         public void LabSheetDetail_Properties_Test()
         {
             List<string> propNameList = new List<string>() { "LabSheetDetailID", "LabSheetID", "SamplingPlanID", "SubsectorTVItemID", "Version", "RunDate", "Tides", "SampleCrewInitials", "WaterBathCount", "IncubationBath1StartTime", "IncubationBath2StartTime", "IncubationBath3StartTime", "IncubationBath1EndTime", "IncubationBath2EndTime", "IncubationBath3EndTime", "IncubationBath1TimeCalculated_minutes", "IncubationBath2TimeCalculated_minutes", "IncubationBath3TimeCalculated_minutes", "WaterBath1", "WaterBath2", "WaterBath3", "TCField1", "TCLab1", "TCField2", "TCLab2", "TCFirst", "TCAverage", "ControlLot", "Positive35", "NonTarget35", "Negative35", "Bath1Positive44_5", "Bath2Positive44_5", "Bath3Positive44_5", "Bath1NonTarget44_5", "Bath2NonTarget44_5", "Bath3NonTarget44_5", "Bath1Negative44_5", "Bath2Negative44_5", "Bath3Negative44_5", "Blank35", "Bath1Blank44_5", "Bath2Blank44_5", "Bath3Blank44_5", "Lot35", "Lot44_5", "Weather", "RunComment", "RunWeatherComment", "SampleBottleLotNumber", "SalinitiesReadBy", "SalinitiesReadDate", "ResultsReadBy", "ResultsReadDate", "ResultsRecordedBy", "ResultsRecordedDate", "DailyDuplicateRLog", "DailyDuplicatePrecisionCriteria", "DailyDuplicateAcceptable", "IntertechDuplicateRLog", "IntertechDuplicatePrecisionCriteria", "IntertechDuplicateAcceptable", "IntertechReadAcceptable", "LastUpdateDate_UTC", "LastUpdateContactTVItemID",  }.OrderBy(c => c).ToList();
-            List<string> propNameNotMappedList = new List<string>() { "HasErrors",  }.OrderBy(c => c).ToList();
 
             int index = 0;
             foreach (PropertyInfo propertyInfo in typeof(LabSheetDetail).GetProperties().OrderBy(c => c.Name))
@@ -63,13 +62,10 @@ namespace CSSPModels.Tests
                 {
                     if (customAttributeData.AttributeType.Name == "NotMappedAttribute")
                     {
-                        Assert.Equal(propertyInfo.Name, propNameNotMappedList[index]);
-                        index += 1;
                     }
                 }
             }
 
-            Assert.Equal(propNameNotMappedList.Count, index);
 
         }
         [Fact]
@@ -104,11 +100,6 @@ namespace CSSPModels.Tests
 
             Assert.Equal(foreignNameCollectionList.Count, index);
 
-        }
-        [Fact]
-        public void LabSheetDetail_Has_ValidationResults_Test()
-        {
-             Assert.True(typeof(LabSheetDetail).GetProperties().Where(c => c.Name == "ValidationResults").Any());
         }
         [Fact]
         public void LabSheetDetail_Every_Property_Has_Get_Set_Test()
@@ -308,12 +299,6 @@ namespace CSSPModels.Tests
                int val65 = 45;
                labSheetDetail.LastUpdateContactTVItemID = val65;
                Assert.Equal(val65, labSheetDetail.LastUpdateContactTVItemID);
-               bool val66 = true;
-               labSheetDetail.HasErrors = val66;
-               Assert.Equal(val66, labSheetDetail.HasErrors);
-               IEnumerable<ValidationResult> val201 = new List<ValidationResult>() { new ValidationResult("First CSSPError Message") }.AsEnumerable();
-               labSheetDetail.ValidationResults = val201;
-               Assert.Equal(val201, labSheetDetail.ValidationResults);
         }
         #endregion Tests Functions public
     }

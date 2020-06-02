@@ -37,6 +37,7 @@ namespace CSSPServices
         #region Properties
         private CSSPDBContext db { get; }
         private IEnums enums { get; }
+        private IEnumerable<ValidationResult> ValidationResults { get; set; }
         #endregion Properties
 
         #region Constructors
@@ -69,10 +70,10 @@ namespace CSSPServices
         }
         public async Task<ActionResult<PolSourceGroupingLanguage>> Add(PolSourceGroupingLanguage polSourceGroupingLanguage)
         {
-            polSourceGroupingLanguage.ValidationResults = Validate(new ValidationContext(polSourceGroupingLanguage), ActionDBTypeEnum.Create);
-            if (polSourceGroupingLanguage.ValidationResults.Count() > 0)
+            ValidationResults = Validate(new ValidationContext(polSourceGroupingLanguage), ActionDBTypeEnum.Create);
+            if (ValidationResults.Count() > 0)
             {
-               return await Task.FromResult(BadRequest(polSourceGroupingLanguage.ValidationResults));
+               return await Task.FromResult(BadRequest(ValidationResults));
             }
 
             try
@@ -89,10 +90,10 @@ namespace CSSPServices
         }
         public async Task<ActionResult<PolSourceGroupingLanguage>> Delete(PolSourceGroupingLanguage polSourceGroupingLanguage)
         {
-            polSourceGroupingLanguage.ValidationResults = Validate(new ValidationContext(polSourceGroupingLanguage), ActionDBTypeEnum.Delete);
-            if (polSourceGroupingLanguage.ValidationResults.Count() > 0)
+            ValidationResults = Validate(new ValidationContext(polSourceGroupingLanguage), ActionDBTypeEnum.Delete);
+            if (ValidationResults.Count() > 0)
             {
-               return await Task.FromResult(BadRequest(polSourceGroupingLanguage.ValidationResults));
+               return await Task.FromResult(BadRequest(ValidationResults));
             }
 
             try
@@ -109,10 +110,10 @@ namespace CSSPServices
         }
         public async Task<ActionResult<PolSourceGroupingLanguage>> Update(PolSourceGroupingLanguage polSourceGroupingLanguage)
         {
-            polSourceGroupingLanguage.ValidationResults = Validate(new ValidationContext(polSourceGroupingLanguage), ActionDBTypeEnum.Update);
-            if (polSourceGroupingLanguage.ValidationResults.Count() > 0)
+            ValidationResults = Validate(new ValidationContext(polSourceGroupingLanguage), ActionDBTypeEnum.Update);
+            if (ValidationResults.Count() > 0)
             {
-               return await Task.FromResult(BadRequest(polSourceGroupingLanguage.ValidationResults));
+               return await Task.FromResult(BadRequest(ValidationResults));
             }
 
             try
@@ -138,19 +139,16 @@ namespace CSSPServices
         {
             string retStr = "";
             PolSourceGroupingLanguage polSourceGroupingLanguage = validationContext.ObjectInstance as PolSourceGroupingLanguage;
-            polSourceGroupingLanguage.HasErrors = false;
 
             if (actionDBType == ActionDBTypeEnum.Update || actionDBType == ActionDBTypeEnum.Delete)
             {
                 if (polSourceGroupingLanguage.PolSourceGroupingLanguageID == 0)
                 {
-                    polSourceGroupingLanguage.HasErrors = true;
                     yield return new ValidationResult(string.Format(CSSPServicesRes._IsRequired, "PolSourceGroupingLanguageID"), new[] { "PolSourceGroupingLanguageID" });
                 }
 
                 if (!(from c in db.PolSourceGroupingLanguages select c).Where(c => c.PolSourceGroupingLanguageID == polSourceGroupingLanguage.PolSourceGroupingLanguageID).Any())
                 {
-                    polSourceGroupingLanguage.HasErrors = true;
                     yield return new ValidationResult(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "PolSourceGroupingLanguage", "PolSourceGroupingLanguageID", polSourceGroupingLanguage.PolSourceGroupingLanguageID.ToString()), new[] { "PolSourceGroupingLanguageID" });
                 }
             }
@@ -159,128 +157,108 @@ namespace CSSPServices
 
             if (PolSourceGroupingPolSourceGroupingID == null)
             {
-                polSourceGroupingLanguage.HasErrors = true;
                 yield return new ValidationResult(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "PolSourceGrouping", "PolSourceGroupingID", polSourceGroupingLanguage.PolSourceGroupingID.ToString()), new[] { "PolSourceGroupingID" });
             }
 
             retStr = enums.EnumTypeOK(typeof(LanguageEnum), (int?)polSourceGroupingLanguage.Language);
             if (!string.IsNullOrWhiteSpace(retStr))
             {
-                polSourceGroupingLanguage.HasErrors = true;
                 yield return new ValidationResult(string.Format(CSSPServicesRes._IsRequired, "Language"), new[] { "Language" });
             }
 
             if (string.IsNullOrWhiteSpace(polSourceGroupingLanguage.SourceName))
             {
-                polSourceGroupingLanguage.HasErrors = true;
                 yield return new ValidationResult(string.Format(CSSPServicesRes._IsRequired, "SourceName"), new[] { "SourceName" });
             }
 
             if (!string.IsNullOrWhiteSpace(polSourceGroupingLanguage.SourceName) && polSourceGroupingLanguage.SourceName.Length > 250)
             {
-                polSourceGroupingLanguage.HasErrors = true;
                 yield return new ValidationResult(string.Format(CSSPServicesRes._MaxLengthIs_, "SourceName", "250"), new[] { "SourceName" });
             }
 
             if (polSourceGroupingLanguage.SourceNameOrder < 0 || polSourceGroupingLanguage.SourceNameOrder > 1000)
             {
-                polSourceGroupingLanguage.HasErrors = true;
                 yield return new ValidationResult(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "SourceNameOrder", "0", "1000"), new[] { "SourceNameOrder" });
             }
 
             retStr = enums.EnumTypeOK(typeof(TranslationStatusEnum), (int?)polSourceGroupingLanguage.TranslationStatusSourceName);
             if (!string.IsNullOrWhiteSpace(retStr))
             {
-                polSourceGroupingLanguage.HasErrors = true;
                 yield return new ValidationResult(string.Format(CSSPServicesRes._IsRequired, "TranslationStatusSourceName"), new[] { "TranslationStatusSourceName" });
             }
 
             if (string.IsNullOrWhiteSpace(polSourceGroupingLanguage.Init))
             {
-                polSourceGroupingLanguage.HasErrors = true;
                 yield return new ValidationResult(string.Format(CSSPServicesRes._IsRequired, "Init"), new[] { "Init" });
             }
 
             if (!string.IsNullOrWhiteSpace(polSourceGroupingLanguage.Init) && polSourceGroupingLanguage.Init.Length > 50)
             {
-                polSourceGroupingLanguage.HasErrors = true;
                 yield return new ValidationResult(string.Format(CSSPServicesRes._MaxLengthIs_, "Init", "50"), new[] { "Init" });
             }
 
             retStr = enums.EnumTypeOK(typeof(TranslationStatusEnum), (int?)polSourceGroupingLanguage.TranslationStatusInit);
             if (!string.IsNullOrWhiteSpace(retStr))
             {
-                polSourceGroupingLanguage.HasErrors = true;
                 yield return new ValidationResult(string.Format(CSSPServicesRes._IsRequired, "TranslationStatusInit"), new[] { "TranslationStatusInit" });
             }
 
             if (string.IsNullOrWhiteSpace(polSourceGroupingLanguage.Description))
             {
-                polSourceGroupingLanguage.HasErrors = true;
                 yield return new ValidationResult(string.Format(CSSPServicesRes._IsRequired, "Description"), new[] { "Description" });
             }
 
             if (!string.IsNullOrWhiteSpace(polSourceGroupingLanguage.Description) && polSourceGroupingLanguage.Description.Length > 250)
             {
-                polSourceGroupingLanguage.HasErrors = true;
                 yield return new ValidationResult(string.Format(CSSPServicesRes._MaxLengthIs_, "Description", "250"), new[] { "Description" });
             }
 
             retStr = enums.EnumTypeOK(typeof(TranslationStatusEnum), (int?)polSourceGroupingLanguage.TranslationStatusDescription);
             if (!string.IsNullOrWhiteSpace(retStr))
             {
-                polSourceGroupingLanguage.HasErrors = true;
                 yield return new ValidationResult(string.Format(CSSPServicesRes._IsRequired, "TranslationStatusDescription"), new[] { "TranslationStatusDescription" });
             }
 
             if (string.IsNullOrWhiteSpace(polSourceGroupingLanguage.Report))
             {
-                polSourceGroupingLanguage.HasErrors = true;
                 yield return new ValidationResult(string.Format(CSSPServicesRes._IsRequired, "Report"), new[] { "Report" });
             }
 
             if (!string.IsNullOrWhiteSpace(polSourceGroupingLanguage.Report) && polSourceGroupingLanguage.Report.Length > 250)
             {
-                polSourceGroupingLanguage.HasErrors = true;
                 yield return new ValidationResult(string.Format(CSSPServicesRes._MaxLengthIs_, "Report", "250"), new[] { "Report" });
             }
 
             retStr = enums.EnumTypeOK(typeof(TranslationStatusEnum), (int?)polSourceGroupingLanguage.TranslationStatusReport);
             if (!string.IsNullOrWhiteSpace(retStr))
             {
-                polSourceGroupingLanguage.HasErrors = true;
                 yield return new ValidationResult(string.Format(CSSPServicesRes._IsRequired, "TranslationStatusReport"), new[] { "TranslationStatusReport" });
             }
 
             if (string.IsNullOrWhiteSpace(polSourceGroupingLanguage.Text))
             {
-                polSourceGroupingLanguage.HasErrors = true;
                 yield return new ValidationResult(string.Format(CSSPServicesRes._IsRequired, "Text"), new[] { "Text" });
             }
 
             if (!string.IsNullOrWhiteSpace(polSourceGroupingLanguage.Text) && polSourceGroupingLanguage.Text.Length > 250)
             {
-                polSourceGroupingLanguage.HasErrors = true;
                 yield return new ValidationResult(string.Format(CSSPServicesRes._MaxLengthIs_, "Text", "250"), new[] { "Text" });
             }
 
             retStr = enums.EnumTypeOK(typeof(TranslationStatusEnum), (int?)polSourceGroupingLanguage.TranslationStatusText);
             if (!string.IsNullOrWhiteSpace(retStr))
             {
-                polSourceGroupingLanguage.HasErrors = true;
                 yield return new ValidationResult(string.Format(CSSPServicesRes._IsRequired, "TranslationStatusText"), new[] { "TranslationStatusText" });
             }
 
             if (polSourceGroupingLanguage.LastUpdateDate_UTC.Year == 1)
             {
-                polSourceGroupingLanguage.HasErrors = true;
                 yield return new ValidationResult(string.Format(CSSPServicesRes._IsRequired, "LastUpdateDate_UTC"), new[] { "LastUpdateDate_UTC" });
             }
             else
             {
                 if (polSourceGroupingLanguage.LastUpdateDate_UTC.Year < 1980)
                 {
-                polSourceGroupingLanguage.HasErrors = true;
                     yield return new ValidationResult(string.Format(CSSPServicesRes._YearShouldBeBiggerThan_, "LastUpdateDate_UTC", "1980"), new[] { "LastUpdateDate_UTC" });
                 }
             }
@@ -289,7 +267,6 @@ namespace CSSPServices
 
             if (TVItemLastUpdateContactTVItemID == null)
             {
-                polSourceGroupingLanguage.HasErrors = true;
                 yield return new ValidationResult(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "TVItem", "LastUpdateContactTVItemID", polSourceGroupingLanguage.LastUpdateContactTVItemID.ToString()), new[] { "LastUpdateContactTVItemID" });
             }
             else
@@ -300,7 +277,6 @@ namespace CSSPServices
                 };
                 if (!AllowableTVTypes.Contains(TVItemLastUpdateContactTVItemID.TVType))
                 {
-                    polSourceGroupingLanguage.HasErrors = true;
                     yield return new ValidationResult(string.Format(CSSPServicesRes._IsNotOfType_, "LastUpdateContactTVItemID", "Contact"), new[] { "LastUpdateContactTVItemID" });
                 }
             }
@@ -308,7 +284,6 @@ namespace CSSPServices
             retStr = ""; // added to stop compiling CSSPError
             if (retStr != "") // will never be true
             {
-                polSourceGroupingLanguage.HasErrors = true;
                 yield return new ValidationResult("AAA", new[] { "AAA" });
             }
 

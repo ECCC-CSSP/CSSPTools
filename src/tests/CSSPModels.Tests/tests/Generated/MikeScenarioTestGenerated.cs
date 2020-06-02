@@ -40,7 +40,6 @@ namespace CSSPModels.Tests
         public void MikeScenario_Properties_Test()
         {
             List<string> propNameList = new List<string>() { "MikeScenarioID", "MikeScenarioTVItemID", "ParentMikeScenarioID", "ScenarioStatus", "ErrorInfo", "MikeScenarioStartDateTime_Local", "MikeScenarioEndDateTime_Local", "MikeScenarioStartExecutionDateTime_Local", "MikeScenarioExecutionTime_min", "WindSpeed_km_h", "WindDirection_deg", "DecayFactor_per_day", "DecayIsConstant", "DecayFactorAmplitude", "ResultFrequency_min", "AmbientTemperature_C", "AmbientSalinity_PSU", "GenerateDecouplingFiles", "UseDecouplingFiles", "UseSalinityAndTemperatureInitialConditionFromTVFileTVItemID", "ForSimulatingMWQMRunTVItemID", "ManningNumber", "NumberOfElements", "NumberOfTimeSteps", "NumberOfSigmaLayers", "NumberOfZLayers", "NumberOfHydroOutputParameters", "NumberOfTransOutputParameters", "EstimatedHydroFileSize", "EstimatedTransFileSize", "LastUpdateDate_UTC", "LastUpdateContactTVItemID",  }.OrderBy(c => c).ToList();
-            List<string> propNameNotMappedList = new List<string>() { "HasErrors",  }.OrderBy(c => c).ToList();
 
             int index = 0;
             foreach (PropertyInfo propertyInfo in typeof(MikeScenario).GetProperties().OrderBy(c => c.Name))
@@ -63,13 +62,10 @@ namespace CSSPModels.Tests
                 {
                     if (customAttributeData.AttributeType.Name == "NotMappedAttribute")
                     {
-                        Assert.Equal(propertyInfo.Name, propNameNotMappedList[index]);
-                        index += 1;
                     }
                 }
             }
 
-            Assert.Equal(propNameNotMappedList.Count, index);
 
         }
         [Fact]
@@ -104,11 +100,6 @@ namespace CSSPModels.Tests
 
             Assert.Equal(foreignNameCollectionList.Count, index);
 
-        }
-        [Fact]
-        public void MikeScenario_Has_ValidationResults_Test()
-        {
-             Assert.True(typeof(MikeScenario).GetProperties().Where(c => c.Name == "ValidationResults").Any());
         }
         [Fact]
         public void MikeScenario_Every_Property_Has_Get_Set_Test()
@@ -209,12 +200,6 @@ namespace CSSPModels.Tests
                int val32 = 45;
                mikeScenario.LastUpdateContactTVItemID = val32;
                Assert.Equal(val32, mikeScenario.LastUpdateContactTVItemID);
-               bool val33 = true;
-               mikeScenario.HasErrors = val33;
-               Assert.Equal(val33, mikeScenario.HasErrors);
-               IEnumerable<ValidationResult> val102 = new List<ValidationResult>() { new ValidationResult("First CSSPError Message") }.AsEnumerable();
-               mikeScenario.ValidationResults = val102;
-               Assert.Equal(val102, mikeScenario.ValidationResults);
         }
         #endregion Tests Functions public
     }

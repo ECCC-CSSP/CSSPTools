@@ -39,8 +39,7 @@ namespace CSSPModels.Tests
         [Fact]
         public void DataPathOfTide_Properties_Test()
         {
-            List<string> propNameList = new List<string>() { "Text", "WebTideDataSet", "WebTideDataSetText", "HasErrors",  }.OrderBy(c => c).ToList();
-            List<string> propNameNotMappedList = new List<string>() {  }.OrderBy(c => c).ToList();
+            List<string> propNameList = new List<string>() { "Text", "WebTideDataSet", "WebTideDataSetText",  }.OrderBy(c => c).ToList();
 
             int index = 0;
             foreach (PropertyInfo propertyInfo in typeof(DataPathOfTide).GetProperties().Where(c => c.Name != "ValidationResults").OrderBy(c => c.Name).ToList())
@@ -50,11 +49,6 @@ namespace CSSPModels.Tests
             }
 
             Assert.Equal(propNameList.Count, index);
-        }
-        [Fact]
-        public void DataPathOfTide_Has_ValidationResults_Test()
-        {
-             Assert.True(typeof(DataPathOfTide).GetProperties().Where(c => c.Name == "ValidationResults").Any());
         }
         [Fact]
         public void DataPathOfTide_Every_Property_Has_Get_Set_Test()
@@ -68,12 +62,6 @@ namespace CSSPModels.Tests
                string val3 = "Some text";
                dataPathOfTide.WebTideDataSetText = val3;
                Assert.Equal(val3, dataPathOfTide.WebTideDataSetText);
-               bool val4 = true;
-               dataPathOfTide.HasErrors = val4;
-               Assert.Equal(val4, dataPathOfTide.HasErrors);
-               IEnumerable<ValidationResult> val15 = new List<ValidationResult>() { new ValidationResult("First CSSPError Message") }.AsEnumerable();
-               dataPathOfTide.ValidationResults = val15;
-               Assert.Equal(val15, dataPathOfTide.ValidationResults);
         }
         #endregion Tests Functions public
     }

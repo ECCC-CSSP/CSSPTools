@@ -39,8 +39,7 @@ namespace CSSPModels.Tests
         [Fact]
         public void LastUpdateAndTVText_Properties_Test()
         {
-            List<string> propNameList = new List<string>() { "LastUpdateAndTVTextDate_UTC", "LastUpdateDate_Local", "TVText", "HasErrors",  }.OrderBy(c => c).ToList();
-            List<string> propNameNotMappedList = new List<string>() {  }.OrderBy(c => c).ToList();
+            List<string> propNameList = new List<string>() { "LastUpdateAndTVTextDate_UTC", "LastUpdateDate_Local", "TVText",  }.OrderBy(c => c).ToList();
 
             int index = 0;
             foreach (PropertyInfo propertyInfo in typeof(LastUpdateAndTVText).GetProperties().Where(c => c.Name != "ValidationResults").OrderBy(c => c.Name).ToList())
@@ -50,11 +49,6 @@ namespace CSSPModels.Tests
             }
 
             Assert.Equal(propNameList.Count, index);
-        }
-        [Fact]
-        public void LastUpdateAndTVText_Has_ValidationResults_Test()
-        {
-             Assert.True(typeof(LastUpdateAndTVText).GetProperties().Where(c => c.Name == "ValidationResults").Any());
         }
         [Fact]
         public void LastUpdateAndTVText_Every_Property_Has_Get_Set_Test()
@@ -68,12 +62,6 @@ namespace CSSPModels.Tests
                string val3 = "Some text";
                lastUpdateAndTVText.TVText = val3;
                Assert.Equal(val3, lastUpdateAndTVText.TVText);
-               bool val4 = true;
-               lastUpdateAndTVText.HasErrors = val4;
-               Assert.Equal(val4, lastUpdateAndTVText.HasErrors);
-               IEnumerable<ValidationResult> val15 = new List<ValidationResult>() { new ValidationResult("First CSSPError Message") }.AsEnumerable();
-               lastUpdateAndTVText.ValidationResults = val15;
-               Assert.Equal(val15, lastUpdateAndTVText.ValidationResults);
         }
         #endregion Tests Functions public
     }

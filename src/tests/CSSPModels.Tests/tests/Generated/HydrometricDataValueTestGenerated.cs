@@ -40,7 +40,6 @@ namespace CSSPModels.Tests
         public void HydrometricDataValue_Properties_Test()
         {
             List<string> propNameList = new List<string>() { "HydrometricDataValueID", "HydrometricSiteID", "DateTime_Local", "Keep", "StorageDataType", "HasBeenRead", "Discharge_m3_s", "DischargeEntered_m3_s", "Level_m", "HourlyValues", "LastUpdateDate_UTC", "LastUpdateContactTVItemID",  }.OrderBy(c => c).ToList();
-            List<string> propNameNotMappedList = new List<string>() { "HasErrors",  }.OrderBy(c => c).ToList();
 
             int index = 0;
             foreach (PropertyInfo propertyInfo in typeof(HydrometricDataValue).GetProperties().OrderBy(c => c.Name))
@@ -63,13 +62,10 @@ namespace CSSPModels.Tests
                 {
                     if (customAttributeData.AttributeType.Name == "NotMappedAttribute")
                     {
-                        Assert.Equal(propertyInfo.Name, propNameNotMappedList[index]);
-                        index += 1;
                     }
                 }
             }
 
-            Assert.Equal(propNameNotMappedList.Count, index);
 
         }
         [Fact]
@@ -104,11 +100,6 @@ namespace CSSPModels.Tests
 
             Assert.Equal(foreignNameCollectionList.Count, index);
 
-        }
-        [Fact]
-        public void HydrometricDataValue_Has_ValidationResults_Test()
-        {
-             Assert.True(typeof(HydrometricDataValue).GetProperties().Where(c => c.Name == "ValidationResults").Any());
         }
         [Fact]
         public void HydrometricDataValue_Every_Property_Has_Get_Set_Test()
@@ -149,12 +140,6 @@ namespace CSSPModels.Tests
                int val12 = 45;
                hydrometricDataValue.LastUpdateContactTVItemID = val12;
                Assert.Equal(val12, hydrometricDataValue.LastUpdateContactTVItemID);
-               bool val13 = true;
-               hydrometricDataValue.HasErrors = val13;
-               Assert.Equal(val13, hydrometricDataValue.HasErrors);
-               IEnumerable<ValidationResult> val42 = new List<ValidationResult>() { new ValidationResult("First CSSPError Message") }.AsEnumerable();
-               hydrometricDataValue.ValidationResults = val42;
-               Assert.Equal(val42, hydrometricDataValue.ValidationResults);
         }
         #endregion Tests Functions public
     }

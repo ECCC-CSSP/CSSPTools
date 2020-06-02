@@ -40,7 +40,6 @@ namespace CSSPModels.Tests
         public void PolSourceGroupingLanguage_Properties_Test()
         {
             List<string> propNameList = new List<string>() { "PolSourceGroupingLanguageID", "PolSourceGroupingID", "Language", "SourceName", "SourceNameOrder", "TranslationStatusSourceName", "Init", "TranslationStatusInit", "Description", "TranslationStatusDescription", "Report", "TranslationStatusReport", "Text", "TranslationStatusText", "LastUpdateDate_UTC", "LastUpdateContactTVItemID",  }.OrderBy(c => c).ToList();
-            List<string> propNameNotMappedList = new List<string>() { "HasErrors",  }.OrderBy(c => c).ToList();
 
             int index = 0;
             foreach (PropertyInfo propertyInfo in typeof(PolSourceGroupingLanguage).GetProperties().OrderBy(c => c.Name))
@@ -63,13 +62,10 @@ namespace CSSPModels.Tests
                 {
                     if (customAttributeData.AttributeType.Name == "NotMappedAttribute")
                     {
-                        Assert.Equal(propertyInfo.Name, propNameNotMappedList[index]);
-                        index += 1;
                     }
                 }
             }
 
-            Assert.Equal(propNameNotMappedList.Count, index);
 
         }
         [Fact]
@@ -104,11 +100,6 @@ namespace CSSPModels.Tests
 
             Assert.Equal(foreignNameCollectionList.Count, index);
 
-        }
-        [Fact]
-        public void PolSourceGroupingLanguage_Has_ValidationResults_Test()
-        {
-             Assert.True(typeof(PolSourceGroupingLanguage).GetProperties().Where(c => c.Name == "ValidationResults").Any());
         }
         [Fact]
         public void PolSourceGroupingLanguage_Every_Property_Has_Get_Set_Test()
@@ -161,12 +152,6 @@ namespace CSSPModels.Tests
                int val16 = 45;
                polSourceGroupingLanguage.LastUpdateContactTVItemID = val16;
                Assert.Equal(val16, polSourceGroupingLanguage.LastUpdateContactTVItemID);
-               bool val17 = true;
-               polSourceGroupingLanguage.HasErrors = val17;
-               Assert.Equal(val17, polSourceGroupingLanguage.HasErrors);
-               IEnumerable<ValidationResult> val54 = new List<ValidationResult>() { new ValidationResult("First CSSPError Message") }.AsEnumerable();
-               polSourceGroupingLanguage.ValidationResults = val54;
-               Assert.Equal(val54, polSourceGroupingLanguage.ValidationResults);
         }
         #endregion Tests Functions public
     }

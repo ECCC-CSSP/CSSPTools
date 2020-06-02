@@ -37,6 +37,7 @@ namespace CSSPServices
         #region Properties
         private CSSPDBContext db { get; }
         private IEnums enums { get; }
+        private IEnumerable<ValidationResult> ValidationResults { get; set; }
         #endregion Properties
 
         #region Constructors
@@ -69,10 +70,10 @@ namespace CSSPServices
         }
         public async Task<ActionResult<BoxModelResult>> Add(BoxModelResult boxModelResult)
         {
-            boxModelResult.ValidationResults = Validate(new ValidationContext(boxModelResult), ActionDBTypeEnum.Create);
-            if (boxModelResult.ValidationResults.Count() > 0)
+            ValidationResults = Validate(new ValidationContext(boxModelResult), ActionDBTypeEnum.Create);
+            if (ValidationResults.Count() > 0)
             {
-               return await Task.FromResult(BadRequest(boxModelResult.ValidationResults));
+               return await Task.FromResult(BadRequest(ValidationResults));
             }
 
             try
@@ -89,10 +90,10 @@ namespace CSSPServices
         }
         public async Task<ActionResult<BoxModelResult>> Delete(BoxModelResult boxModelResult)
         {
-            boxModelResult.ValidationResults = Validate(new ValidationContext(boxModelResult), ActionDBTypeEnum.Delete);
-            if (boxModelResult.ValidationResults.Count() > 0)
+            ValidationResults = Validate(new ValidationContext(boxModelResult), ActionDBTypeEnum.Delete);
+            if (ValidationResults.Count() > 0)
             {
-               return await Task.FromResult(BadRequest(boxModelResult.ValidationResults));
+               return await Task.FromResult(BadRequest(ValidationResults));
             }
 
             try
@@ -109,10 +110,10 @@ namespace CSSPServices
         }
         public async Task<ActionResult<BoxModelResult>> Update(BoxModelResult boxModelResult)
         {
-            boxModelResult.ValidationResults = Validate(new ValidationContext(boxModelResult), ActionDBTypeEnum.Update);
-            if (boxModelResult.ValidationResults.Count() > 0)
+            ValidationResults = Validate(new ValidationContext(boxModelResult), ActionDBTypeEnum.Update);
+            if (ValidationResults.Count() > 0)
             {
-               return await Task.FromResult(BadRequest(boxModelResult.ValidationResults));
+               return await Task.FromResult(BadRequest(ValidationResults));
             }
 
             try
@@ -138,19 +139,16 @@ namespace CSSPServices
         {
             string retStr = "";
             BoxModelResult boxModelResult = validationContext.ObjectInstance as BoxModelResult;
-            boxModelResult.HasErrors = false;
 
             if (actionDBType == ActionDBTypeEnum.Update || actionDBType == ActionDBTypeEnum.Delete)
             {
                 if (boxModelResult.BoxModelResultID == 0)
                 {
-                    boxModelResult.HasErrors = true;
                     yield return new ValidationResult(string.Format(CSSPServicesRes._IsRequired, "BoxModelResultID"), new[] { "BoxModelResultID" });
                 }
 
                 if (!(from c in db.BoxModelResults select c).Where(c => c.BoxModelResultID == boxModelResult.BoxModelResultID).Any())
                 {
-                    boxModelResult.HasErrors = true;
                     yield return new ValidationResult(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "BoxModelResult", "BoxModelResultID", boxModelResult.BoxModelResultID.ToString()), new[] { "BoxModelResultID" });
                 }
             }
@@ -159,32 +157,27 @@ namespace CSSPServices
 
             if (BoxModelBoxModelID == null)
             {
-                boxModelResult.HasErrors = true;
                 yield return new ValidationResult(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "BoxModel", "BoxModelID", boxModelResult.BoxModelID.ToString()), new[] { "BoxModelID" });
             }
 
             retStr = enums.EnumTypeOK(typeof(BoxModelResultTypeEnum), (int?)boxModelResult.BoxModelResultType);
             if (!string.IsNullOrWhiteSpace(retStr))
             {
-                boxModelResult.HasErrors = true;
                 yield return new ValidationResult(string.Format(CSSPServicesRes._IsRequired, "BoxModelResultType"), new[] { "BoxModelResultType" });
             }
 
             if (boxModelResult.Volume_m3 < 0)
             {
-                boxModelResult.HasErrors = true;
                 yield return new ValidationResult(string.Format(CSSPServicesRes._MinValueIs_, "Volume_m3", "0"), new[] { "Volume_m3" });
             }
 
             if (boxModelResult.Surface_m2 < 0)
             {
-                boxModelResult.HasErrors = true;
                 yield return new ValidationResult(string.Format(CSSPServicesRes._MinValueIs_, "Surface_m2", "0"), new[] { "Surface_m2" });
             }
 
             if (boxModelResult.Radius_m < 0 || boxModelResult.Radius_m > 100000)
             {
-                boxModelResult.HasErrors = true;
                 yield return new ValidationResult(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "Radius_m", "0", "100000"), new[] { "Radius_m" });
             }
 
@@ -192,7 +185,6 @@ namespace CSSPServices
             {
                 if (boxModelResult.LeftSideDiameterLineAngle_deg < 0 || boxModelResult.LeftSideDiameterLineAngle_deg > 360)
                 {
-                    boxModelResult.HasErrors = true;
                     yield return new ValidationResult(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "LeftSideDiameterLineAngle_deg", "0", "360"), new[] { "LeftSideDiameterLineAngle_deg" });
                 }
             }
@@ -201,7 +193,6 @@ namespace CSSPServices
             {
                 if (boxModelResult.CircleCenterLatitude < -90 || boxModelResult.CircleCenterLatitude > 90)
                 {
-                    boxModelResult.HasErrors = true;
                     yield return new ValidationResult(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "CircleCenterLatitude", "-90", "90"), new[] { "CircleCenterLatitude" });
                 }
             }
@@ -210,20 +201,17 @@ namespace CSSPServices
             {
                 if (boxModelResult.CircleCenterLongitude < -180 || boxModelResult.CircleCenterLongitude > 180)
                 {
-                    boxModelResult.HasErrors = true;
                     yield return new ValidationResult(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "CircleCenterLongitude", "-180", "180"), new[] { "CircleCenterLongitude" });
                 }
             }
 
             if (boxModelResult.RectLength_m < 0 || boxModelResult.RectLength_m > 100000)
             {
-                boxModelResult.HasErrors = true;
                 yield return new ValidationResult(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "RectLength_m", "0", "100000"), new[] { "RectLength_m" });
             }
 
             if (boxModelResult.RectWidth_m < 0 || boxModelResult.RectWidth_m > 100000)
             {
-                boxModelResult.HasErrors = true;
                 yield return new ValidationResult(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "RectWidth_m", "0", "100000"), new[] { "RectWidth_m" });
             }
 
@@ -231,7 +219,6 @@ namespace CSSPServices
             {
                 if (boxModelResult.LeftSideLineAngle_deg < 0 || boxModelResult.LeftSideLineAngle_deg > 360)
                 {
-                    boxModelResult.HasErrors = true;
                     yield return new ValidationResult(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "LeftSideLineAngle_deg", "0", "360"), new[] { "LeftSideLineAngle_deg" });
                 }
             }
@@ -240,7 +227,6 @@ namespace CSSPServices
             {
                 if (boxModelResult.LeftSideLineStartLatitude < -90 || boxModelResult.LeftSideLineStartLatitude > 90)
                 {
-                    boxModelResult.HasErrors = true;
                     yield return new ValidationResult(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "LeftSideLineStartLatitude", "-90", "90"), new[] { "LeftSideLineStartLatitude" });
                 }
             }
@@ -249,21 +235,18 @@ namespace CSSPServices
             {
                 if (boxModelResult.LeftSideLineStartLongitude < -180 || boxModelResult.LeftSideLineStartLongitude > 180)
                 {
-                    boxModelResult.HasErrors = true;
                     yield return new ValidationResult(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "LeftSideLineStartLongitude", "-180", "180"), new[] { "LeftSideLineStartLongitude" });
                 }
             }
 
             if (boxModelResult.LastUpdateDate_UTC.Year == 1)
             {
-                boxModelResult.HasErrors = true;
                 yield return new ValidationResult(string.Format(CSSPServicesRes._IsRequired, "LastUpdateDate_UTC"), new[] { "LastUpdateDate_UTC" });
             }
             else
             {
                 if (boxModelResult.LastUpdateDate_UTC.Year < 1980)
                 {
-                boxModelResult.HasErrors = true;
                     yield return new ValidationResult(string.Format(CSSPServicesRes._YearShouldBeBiggerThan_, "LastUpdateDate_UTC", "1980"), new[] { "LastUpdateDate_UTC" });
                 }
             }
@@ -272,7 +255,6 @@ namespace CSSPServices
 
             if (TVItemLastUpdateContactTVItemID == null)
             {
-                boxModelResult.HasErrors = true;
                 yield return new ValidationResult(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "TVItem", "LastUpdateContactTVItemID", boxModelResult.LastUpdateContactTVItemID.ToString()), new[] { "LastUpdateContactTVItemID" });
             }
             else
@@ -283,7 +265,6 @@ namespace CSSPServices
                 };
                 if (!AllowableTVTypes.Contains(TVItemLastUpdateContactTVItemID.TVType))
                 {
-                    boxModelResult.HasErrors = true;
                     yield return new ValidationResult(string.Format(CSSPServicesRes._IsNotOfType_, "LastUpdateContactTVItemID", "Contact"), new[] { "LastUpdateContactTVItemID" });
                 }
             }
@@ -291,7 +272,6 @@ namespace CSSPServices
             retStr = ""; // added to stop compiling CSSPError
             if (retStr != "") // will never be true
             {
-                boxModelResult.HasErrors = true;
                 yield return new ValidationResult("AAA", new[] { "AAA" });
             }
 

@@ -28,15 +28,15 @@ namespace ServicesClassNameServiceGeneratedServices.Services
             sb.AppendLine(@"        {");
             if (TypeName == "Contact")
             {
-                sb.AppendLine($@"            { TypeNameLower }.ValidationResults = Validate(new ValidationContext({ TypeNameLower }), ActionDBTypeEnum.Create, addContactType);");
+                sb.AppendLine($@"            ValidationResults = Validate(new ValidationContext({ TypeNameLower }), ActionDBTypeEnum.Create, addContactType);");
             }
             else
             {
-                sb.AppendLine($@"            { TypeNameLower }.ValidationResults = Validate(new ValidationContext({ TypeNameLower }), ActionDBTypeEnum.Create);");
+                sb.AppendLine($@"            ValidationResults = Validate(new ValidationContext({ TypeNameLower }), ActionDBTypeEnum.Create);");
             }
-            sb.AppendLine($@"            if ({ TypeNameLower }.ValidationResults.Count() > 0)");
+            sb.AppendLine($@"            if (ValidationResults.Count() > 0)");
             sb.AppendLine(@"            {");
-            sb.AppendLine($@"               return await Task.FromResult(BadRequest({ TypeNameLower }.ValidationResults));");
+            sb.AppendLine($@"               return await Task.FromResult(BadRequest(ValidationResults));");
             sb.AppendLine(@"            }");
             sb.AppendLine(@"");
             sb.AppendLine($@"            try");
@@ -56,15 +56,15 @@ namespace ServicesClassNameServiceGeneratedServices.Services
             sb.AppendLine(@"        {");
             if (TypeName == "Contact")
             {
-                sb.AppendLine($@"            { TypeNameLower }.ValidationResults = Validate(new ValidationContext({ TypeNameLower }), ActionDBTypeEnum.Update, AddContactTypeEnum.LoggedIn);");
+                sb.AppendLine($@"            ValidationResults = Validate(new ValidationContext({ TypeNameLower }), ActionDBTypeEnum.Update, AddContactTypeEnum.LoggedIn);");
             }
             else
             {
-                sb.AppendLine($@"            { TypeNameLower }.ValidationResults = Validate(new ValidationContext({ TypeNameLower }), ActionDBTypeEnum.Delete);");
+                sb.AppendLine($@"            ValidationResults = Validate(new ValidationContext({ TypeNameLower }), ActionDBTypeEnum.Delete);");
             }
-            sb.AppendLine($@"            if ({ TypeNameLower }.ValidationResults.Count() > 0)");
+            sb.AppendLine($@"            if (ValidationResults.Count() > 0)");
             sb.AppendLine(@"            {");
-            sb.AppendLine($@"               return await Task.FromResult(BadRequest({ TypeNameLower }.ValidationResults));");
+            sb.AppendLine($@"               return await Task.FromResult(BadRequest(ValidationResults));");
             sb.AppendLine(@"            }");
             sb.AppendLine(@"");
             sb.AppendLine($@"            try");
@@ -84,15 +84,15 @@ namespace ServicesClassNameServiceGeneratedServices.Services
             sb.AppendLine(@"        {");
             if (TypeName == "Contact")
             {
-                sb.AppendLine($@"            { TypeNameLower }.ValidationResults = Validate(new ValidationContext({ TypeNameLower }), ActionDBTypeEnum.Update, AddContactTypeEnum.LoggedIn);");
+                sb.AppendLine($@"            ValidationResults = Validate(new ValidationContext({ TypeNameLower }), ActionDBTypeEnum.Update, AddContactTypeEnum.LoggedIn);");
             }
             else
             {
-                sb.AppendLine($@"            { TypeNameLower }.ValidationResults = Validate(new ValidationContext({ TypeNameLower }), ActionDBTypeEnum.Update);");
+                sb.AppendLine($@"            ValidationResults = Validate(new ValidationContext({ TypeNameLower }), ActionDBTypeEnum.Update);");
             }
-            sb.AppendLine($@"            if ({ TypeNameLower }.ValidationResults.Count() > 0)");
+            sb.AppendLine($@"            if (ValidationResults.Count() > 0)");
             sb.AppendLine(@"            {");
-            sb.AppendLine($@"               return await Task.FromResult(BadRequest({ TypeNameLower }.ValidationResults));");
+            sb.AppendLine($@"               return await Task.FromResult(BadRequest(ValidationResults));");
             sb.AppendLine(@"            }");
             sb.AppendLine(@"");
             sb.AppendLine($@"            try");

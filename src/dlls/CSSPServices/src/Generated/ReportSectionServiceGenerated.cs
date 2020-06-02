@@ -37,6 +37,7 @@ namespace CSSPServices
         #region Properties
         private CSSPDBContext db { get; }
         private IEnums enums { get; }
+        private IEnumerable<ValidationResult> ValidationResults { get; set; }
         #endregion Properties
 
         #region Constructors
@@ -69,10 +70,10 @@ namespace CSSPServices
         }
         public async Task<ActionResult<ReportSection>> Add(ReportSection reportSection)
         {
-            reportSection.ValidationResults = Validate(new ValidationContext(reportSection), ActionDBTypeEnum.Create);
-            if (reportSection.ValidationResults.Count() > 0)
+            ValidationResults = Validate(new ValidationContext(reportSection), ActionDBTypeEnum.Create);
+            if (ValidationResults.Count() > 0)
             {
-               return await Task.FromResult(BadRequest(reportSection.ValidationResults));
+               return await Task.FromResult(BadRequest(ValidationResults));
             }
 
             try
@@ -89,10 +90,10 @@ namespace CSSPServices
         }
         public async Task<ActionResult<ReportSection>> Delete(ReportSection reportSection)
         {
-            reportSection.ValidationResults = Validate(new ValidationContext(reportSection), ActionDBTypeEnum.Delete);
-            if (reportSection.ValidationResults.Count() > 0)
+            ValidationResults = Validate(new ValidationContext(reportSection), ActionDBTypeEnum.Delete);
+            if (ValidationResults.Count() > 0)
             {
-               return await Task.FromResult(BadRequest(reportSection.ValidationResults));
+               return await Task.FromResult(BadRequest(ValidationResults));
             }
 
             try
@@ -109,10 +110,10 @@ namespace CSSPServices
         }
         public async Task<ActionResult<ReportSection>> Update(ReportSection reportSection)
         {
-            reportSection.ValidationResults = Validate(new ValidationContext(reportSection), ActionDBTypeEnum.Update);
-            if (reportSection.ValidationResults.Count() > 0)
+            ValidationResults = Validate(new ValidationContext(reportSection), ActionDBTypeEnum.Update);
+            if (ValidationResults.Count() > 0)
             {
-               return await Task.FromResult(BadRequest(reportSection.ValidationResults));
+               return await Task.FromResult(BadRequest(ValidationResults));
             }
 
             try
@@ -138,19 +139,16 @@ namespace CSSPServices
         {
             string retStr = "";
             ReportSection reportSection = validationContext.ObjectInstance as ReportSection;
-            reportSection.HasErrors = false;
 
             if (actionDBType == ActionDBTypeEnum.Update || actionDBType == ActionDBTypeEnum.Delete)
             {
                 if (reportSection.ReportSectionID == 0)
                 {
-                    reportSection.HasErrors = true;
                     yield return new ValidationResult(string.Format(CSSPServicesRes._IsRequired, "ReportSectionID"), new[] { "ReportSectionID" });
                 }
 
                 if (!(from c in db.ReportSections select c).Where(c => c.ReportSectionID == reportSection.ReportSectionID).Any())
                 {
-                    reportSection.HasErrors = true;
                     yield return new ValidationResult(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "ReportSection", "ReportSectionID", reportSection.ReportSectionID.ToString()), new[] { "ReportSectionID" });
                 }
             }
@@ -159,7 +157,6 @@ namespace CSSPServices
 
             if (ReportTypeReportTypeID == null)
             {
-                reportSection.HasErrors = true;
                 yield return new ValidationResult(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "ReportType", "ReportTypeID", reportSection.ReportTypeID.ToString()), new[] { "ReportTypeID" });
             }
 
@@ -169,7 +166,6 @@ namespace CSSPServices
 
                 if (TVItemTVItemID == null)
                 {
-                    reportSection.HasErrors = true;
                     yield return new ValidationResult(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "TVItem", "TVItemID", (reportSection.TVItemID == null ? "" : reportSection.TVItemID.ToString())), new[] { "TVItemID" });
                 }
                 else
@@ -179,7 +175,6 @@ namespace CSSPServices
                     };
                     if (!AllowableTVTypes.Contains(TVItemTVItemID.TVType))
                     {
-                        reportSection.HasErrors = true;
                         yield return new ValidationResult(string.Format(CSSPServicesRes._IsNotOfType_, "TVItemID", ""), new[] { "TVItemID" });
                     }
                 }
@@ -190,14 +185,12 @@ namespace CSSPServices
                 retStr = enums.EnumTypeOK(typeof(LanguageEnum), (int?)reportSection.Language);
                 if (reportSection.Language == null || !string.IsNullOrWhiteSpace(retStr))
                 {
-                    reportSection.HasErrors = true;
                     yield return new ValidationResult(string.Format(CSSPServicesRes._IsRequired, "Language"), new[] { "Language" });
                 }
             }
 
             if (reportSection.Ordinal < 0 || reportSection.Ordinal > 1000)
             {
-                reportSection.HasErrors = true;
                 yield return new ValidationResult(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "Ordinal", "0", "1000"), new[] { "Ordinal" });
             }
 
@@ -207,7 +200,6 @@ namespace CSSPServices
 
                 if (ReportSectionParentReportSectionID == null)
                 {
-                    reportSection.HasErrors = true;
                     yield return new ValidationResult(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "ReportSection", "ParentReportSectionID", (reportSection.ParentReportSectionID == null ? "" : reportSection.ParentReportSectionID.ToString())), new[] { "ParentReportSectionID" });
                 }
             }
@@ -216,7 +208,6 @@ namespace CSSPServices
             {
                 if (reportSection.Year < 1979 || reportSection.Year > 2050)
                 {
-                    reportSection.HasErrors = true;
                     yield return new ValidationResult(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "Year", "1979", "2050"), new[] { "Year" });
                 }
             }
@@ -227,33 +218,28 @@ namespace CSSPServices
 
                 if (ReportSectionTemplateReportSectionID == null)
                 {
-                    reportSection.HasErrors = true;
                     yield return new ValidationResult(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "ReportSection", "TemplateReportSectionID", (reportSection.TemplateReportSectionID == null ? "" : reportSection.TemplateReportSectionID.ToString())), new[] { "TemplateReportSectionID" });
                 }
             }
 
             if (!string.IsNullOrWhiteSpace(reportSection.ReportSectionName) && reportSection.ReportSectionName.Length > 100)
             {
-                reportSection.HasErrors = true;
                 yield return new ValidationResult(string.Format(CSSPServicesRes._MaxLengthIs_, "ReportSectionName", "100"), new[] { "ReportSectionName" });
             }
 
             if (!string.IsNullOrWhiteSpace(reportSection.ReportSectionText) && reportSection.ReportSectionText.Length > 10000)
             {
-                reportSection.HasErrors = true;
                 yield return new ValidationResult(string.Format(CSSPServicesRes._MaxLengthIs_, "ReportSectionText", "10000"), new[] { "ReportSectionText" });
             }
 
             if (reportSection.LastUpdateDate_UTC.Year == 1)
             {
-                reportSection.HasErrors = true;
                 yield return new ValidationResult(string.Format(CSSPServicesRes._IsRequired, "LastUpdateDate_UTC"), new[] { "LastUpdateDate_UTC" });
             }
             else
             {
                 if (reportSection.LastUpdateDate_UTC.Year < 1980)
                 {
-                reportSection.HasErrors = true;
                     yield return new ValidationResult(string.Format(CSSPServicesRes._YearShouldBeBiggerThan_, "LastUpdateDate_UTC", "1980"), new[] { "LastUpdateDate_UTC" });
                 }
             }
@@ -262,7 +248,6 @@ namespace CSSPServices
 
             if (TVItemLastUpdateContactTVItemID == null)
             {
-                reportSection.HasErrors = true;
                 yield return new ValidationResult(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "TVItem", "LastUpdateContactTVItemID", reportSection.LastUpdateContactTVItemID.ToString()), new[] { "LastUpdateContactTVItemID" });
             }
             else
@@ -273,7 +258,6 @@ namespace CSSPServices
                 };
                 if (!AllowableTVTypes.Contains(TVItemLastUpdateContactTVItemID.TVType))
                 {
-                    reportSection.HasErrors = true;
                     yield return new ValidationResult(string.Format(CSSPServicesRes._IsNotOfType_, "LastUpdateContactTVItemID", "Contact"), new[] { "LastUpdateContactTVItemID" });
                 }
             }
@@ -281,7 +265,6 @@ namespace CSSPServices
             retStr = ""; // added to stop compiling CSSPError
             if (retStr != "") // will never be true
             {
-                reportSection.HasErrors = true;
                 yield return new ValidationResult("AAA", new[] { "AAA" });
             }
 

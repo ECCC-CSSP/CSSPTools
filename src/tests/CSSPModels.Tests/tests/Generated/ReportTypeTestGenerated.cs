@@ -40,7 +40,6 @@ namespace CSSPModels.Tests
         public void ReportType_Properties_Test()
         {
             List<string> propNameList = new List<string>() { "ReportTypeID", "TVType", "FileType", "UniqueCode", "Language", "Name", "Description", "StartOfFileName", "LastUpdateDate_UTC", "LastUpdateContactTVItemID",  }.OrderBy(c => c).ToList();
-            List<string> propNameNotMappedList = new List<string>() { "HasErrors",  }.OrderBy(c => c).ToList();
 
             int index = 0;
             foreach (PropertyInfo propertyInfo in typeof(ReportType).GetProperties().OrderBy(c => c.Name))
@@ -63,13 +62,10 @@ namespace CSSPModels.Tests
                 {
                     if (customAttributeData.AttributeType.Name == "NotMappedAttribute")
                     {
-                        Assert.Equal(propertyInfo.Name, propNameNotMappedList[index]);
-                        index += 1;
                     }
                 }
             }
 
-            Assert.Equal(propNameNotMappedList.Count, index);
 
         }
         [Fact]
@@ -106,11 +102,6 @@ namespace CSSPModels.Tests
 
         }
         [Fact]
-        public void ReportType_Has_ValidationResults_Test()
-        {
-             Assert.True(typeof(ReportType).GetProperties().Where(c => c.Name == "ValidationResults").Any());
-        }
-        [Fact]
         public void ReportType_Every_Property_Has_Get_Set_Test()
         {
                int val1 = 45;
@@ -143,12 +134,6 @@ namespace CSSPModels.Tests
                int val10 = 45;
                reportType.LastUpdateContactTVItemID = val10;
                Assert.Equal(val10, reportType.LastUpdateContactTVItemID);
-               bool val11 = true;
-               reportType.HasErrors = val11;
-               Assert.Equal(val11, reportType.HasErrors);
-               IEnumerable<ValidationResult> val36 = new List<ValidationResult>() { new ValidationResult("First CSSPError Message") }.AsEnumerable();
-               reportType.ValidationResults = val36;
-               Assert.Equal(val36, reportType.ValidationResults);
         }
         #endregion Tests Functions public
     }

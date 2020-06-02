@@ -39,8 +39,7 @@ namespace CSSPModels.Tests
         [Fact]
         public void TVItemInfrastructureTypeTVItemLink_Properties_Test()
         {
-            List<string> propNameList = new List<string>() { "InfrastructureType", "SeeOtherMunicipalityTVItemID", "InfrastructureTypeText", "TVItem", "TVItemLinkList", "FlowTo", "HasErrors",  }.OrderBy(c => c).ToList();
-            List<string> propNameNotMappedList = new List<string>() {  }.OrderBy(c => c).ToList();
+            List<string> propNameList = new List<string>() { "InfrastructureType", "SeeOtherMunicipalityTVItemID", "InfrastructureTypeText", "TVItem", "TVItemLinkList", "FlowTo",  }.OrderBy(c => c).ToList();
 
             int index = 0;
             foreach (PropertyInfo propertyInfo in typeof(TVItemInfrastructureTypeTVItemLink).GetProperties().Where(c => c.Name != "ValidationResults").OrderBy(c => c.Name).ToList())
@@ -50,11 +49,6 @@ namespace CSSPModels.Tests
             }
 
             Assert.Equal(propNameList.Count, index);
-        }
-        [Fact]
-        public void TVItemInfrastructureTypeTVItemLink_Has_ValidationResults_Test()
-        {
-             Assert.True(typeof(TVItemInfrastructureTypeTVItemLink).GetProperties().Where(c => c.Name == "ValidationResults").Any());
         }
         [Fact]
         public void TVItemInfrastructureTypeTVItemLink_Every_Property_Has_Get_Set_Test()
@@ -77,12 +71,6 @@ namespace CSSPModels.Tests
                TVItemInfrastructureTypeTVItemLink val6 = new TVItemInfrastructureTypeTVItemLink();
                tVItemInfrastructureTypeTVItemLink.FlowTo = val6;
                Assert.Equal(val6, tVItemInfrastructureTypeTVItemLink.FlowTo);
-               bool val7 = true;
-               tVItemInfrastructureTypeTVItemLink.HasErrors = val7;
-               Assert.Equal(val7, tVItemInfrastructureTypeTVItemLink.HasErrors);
-               IEnumerable<ValidationResult> val24 = new List<ValidationResult>() { new ValidationResult("First CSSPError Message") }.AsEnumerable();
-               tVItemInfrastructureTypeTVItemLink.ValidationResults = val24;
-               Assert.Equal(val24, tVItemInfrastructureTypeTVItemLink.ValidationResults);
         }
         #endregion Tests Functions public
     }

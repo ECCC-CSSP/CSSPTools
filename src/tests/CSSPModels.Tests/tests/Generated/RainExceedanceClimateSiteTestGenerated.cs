@@ -40,7 +40,6 @@ namespace CSSPModels.Tests
         public void RainExceedanceClimateSite_Properties_Test()
         {
             List<string> propNameList = new List<string>() { "RainExceedanceClimateSiteID", "RainExceedanceTVItemID", "ClimateSiteTVItemID", "LastUpdateDate_UTC", "LastUpdateContactTVItemID",  }.OrderBy(c => c).ToList();
-            List<string> propNameNotMappedList = new List<string>() { "HasErrors",  }.OrderBy(c => c).ToList();
 
             int index = 0;
             foreach (PropertyInfo propertyInfo in typeof(RainExceedanceClimateSite).GetProperties().OrderBy(c => c.Name))
@@ -63,13 +62,10 @@ namespace CSSPModels.Tests
                 {
                     if (customAttributeData.AttributeType.Name == "NotMappedAttribute")
                     {
-                        Assert.Equal(propertyInfo.Name, propNameNotMappedList[index]);
-                        index += 1;
                     }
                 }
             }
 
-            Assert.Equal(propNameNotMappedList.Count, index);
 
         }
         [Fact]
@@ -106,11 +102,6 @@ namespace CSSPModels.Tests
 
         }
         [Fact]
-        public void RainExceedanceClimateSite_Has_ValidationResults_Test()
-        {
-             Assert.True(typeof(RainExceedanceClimateSite).GetProperties().Where(c => c.Name == "ValidationResults").Any());
-        }
-        [Fact]
         public void RainExceedanceClimateSite_Every_Property_Has_Get_Set_Test()
         {
                int val1 = 45;
@@ -128,12 +119,6 @@ namespace CSSPModels.Tests
                int val5 = 45;
                rainExceedanceClimateSite.LastUpdateContactTVItemID = val5;
                Assert.Equal(val5, rainExceedanceClimateSite.LastUpdateContactTVItemID);
-               bool val6 = true;
-               rainExceedanceClimateSite.HasErrors = val6;
-               Assert.Equal(val6, rainExceedanceClimateSite.HasErrors);
-               IEnumerable<ValidationResult> val21 = new List<ValidationResult>() { new ValidationResult("First CSSPError Message") }.AsEnumerable();
-               rainExceedanceClimateSite.ValidationResults = val21;
-               Assert.Equal(val21, rainExceedanceClimateSite.ValidationResults);
         }
         #endregion Tests Functions public
     }

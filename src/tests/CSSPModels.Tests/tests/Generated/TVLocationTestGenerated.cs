@@ -39,8 +39,7 @@ namespace CSSPModels.Tests
         [Fact]
         public void TVLocation_Properties_Test()
         {
-            List<string> propNameList = new List<string>() { "TVItemID", "TVText", "TVType", "SubTVType", "TVTypeText", "SubTVTypeText", "MapObjList", "HasErrors",  }.OrderBy(c => c).ToList();
-            List<string> propNameNotMappedList = new List<string>() {  }.OrderBy(c => c).ToList();
+            List<string> propNameList = new List<string>() { "TVItemID", "TVText", "TVType", "SubTVType", "TVTypeText", "SubTVTypeText", "MapObjList",  }.OrderBy(c => c).ToList();
 
             int index = 0;
             foreach (PropertyInfo propertyInfo in typeof(TVLocation).GetProperties().Where(c => c.Name != "ValidationResults").OrderBy(c => c.Name).ToList())
@@ -50,11 +49,6 @@ namespace CSSPModels.Tests
             }
 
             Assert.Equal(propNameList.Count, index);
-        }
-        [Fact]
-        public void TVLocation_Has_ValidationResults_Test()
-        {
-             Assert.True(typeof(TVLocation).GetProperties().Where(c => c.Name == "ValidationResults").Any());
         }
         [Fact]
         public void TVLocation_Every_Property_Has_Get_Set_Test()
@@ -80,12 +74,6 @@ namespace CSSPModels.Tests
                List<MapObj> val7 = new List<MapObj>() { new MapObj(), new MapObj() };
                tVLocation.MapObjList = val7;
                Assert.Equal(val7, tVLocation.MapObjList);
-               bool val8 = true;
-               tVLocation.HasErrors = val8;
-               Assert.Equal(val8, tVLocation.HasErrors);
-               IEnumerable<ValidationResult> val27 = new List<ValidationResult>() { new ValidationResult("First CSSPError Message") }.AsEnumerable();
-               tVLocation.ValidationResults = val27;
-               Assert.Equal(val27, tVLocation.ValidationResults);
         }
         #endregion Tests Functions public
     }

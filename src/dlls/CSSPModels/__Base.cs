@@ -12,38 +12,7 @@ using System.Linq;
 namespace CSSPModels
 {
     #region Classes
-    /// <param name="HasErrors">true if an error has occured, false if everything is ok</param>
-    /// <param name="ValidationResults">Will contain the list of ValidationResults if an error has occured, otherwise the list will be empty</param>
-    public partial class CSSPError
-    {
-        #region Properties for error handling
-        /// <summary>
-        /// > [!NOTE]
-        /// > <para>Will be set to true if an error occurs during CRUD (Creating, Reading, Updating or Deleting)</para>
-        /// </summary>
-        [NotMapped]
-        public bool HasErrors { get; set; }
-        /// <summary>
-        /// > [!NOTE]
-        /// > <para>Will hold all errors which were detected prior or during CRUD (Creating, Reading, Updating or Deleting)</para>
-        /// </summary>
-        [NotMapped]
-        public IEnumerable<ValidationResult> ValidationResults { get; set; }
-        #endregion Properties for error handling
-
-        #region Constructors
-        /// <summary>
-        /// > [!NOTE]
-        /// > <para>Constructor will set the HasErrors field to false and ValidationResults with an empty list of ValidationResult)</para>
-        /// </summary>
-        public CSSPError()
-        {
-            HasErrors = false;
-            ValidationResults = new List<ValidationResult>();
-        }
-        #endregion Constructors
-    }
-    public partial class LastUpdate : CSSPError
+    public partial class LastUpdate //: CSSPError
     {
         #region Properties in DB all tables
         /// <summary>
@@ -67,12 +36,42 @@ namespace CSSPModels
         #endregion Properties in DB all tables
 
         #region Constructors
-        public LastUpdate() : base()
+        public LastUpdate() //: base()
         {
 
         }
         #endregion Constructors
     }
+    //public partial class LastUpdate2
+    //{
+    //    #region Properties in DB all tables
+    //    /// <summary>
+    //    /// > [!NOTE]
+    //    /// > <para>**Other custom attributes**</para>
+    //    /// > <para>[[CSSPAfter](CSSPModels.CSSPAfterAttribute.html)(Year = 1980)]</para>
+    //    /// </summary>
+    //    /// <param name="LastUpdateDate_UTC">Every table within the database contains a field called LastUpdateDate_UTC which holds the last time the row of information was changed</param>
+    //    [CSSPAfter(Year = 1980)]
+    //    public DateTime LastUpdateDate_UTC { get; set; }
+    //    /// <summary>
+    //    /// > [!NOTE]
+    //    /// > <para>**Other custom attributes**</para>
+    //    /// > <para>**AllowableTVTypeList is of type [CSSPEnums.TVTypeEnum](CSSPEnums.TVTypeEnum.html)**</para>
+    //    /// > <para>5 == Contact</para>
+    //    /// > <para>[[CSSPExist](CSSPModels.CSSPExistAttribute.html)(ExistTypeName = "TVItem", ExistPlurial = "s", ExistFieldID = "TVItemID", AllowableTVTypeList = "5")]</para>
+    //    /// </summary>
+    //    /// <param name="LastUpdateContactTVItemID">Every table within the database contains a field called LastUpdateContactTVItemID which holds the TVItemID of the last person who changed the row of information</param>
+    //    [CSSPExist(ExistTypeName = "TVItem", ExistPlurial = "s", ExistFieldID = "TVItemID", AllowableTVTypeList = "5")]
+    //    public int LastUpdateContactTVItemID { get; set; }
+    //    #endregion Properties in DB all tables
+
+    //    #region Constructors
+    //    public LastUpdate2()
+    //    {
+
+    //    }
+    //    #endregion Constructors
+    //}
     #endregion Classes
 
     #region Attributes
@@ -226,7 +225,6 @@ namespace CSSPModels
     ///     <code>
     ///         if (mwqmSample.StartDate.Year &lt; 1980)
     ///         {
-    ///             mwqmSample.HasErrors = true;
     ///             yield return new ValidationResult(string.Format(ServicesRes._YearShouldBeBiggerThan_, ModelsRes.MWQMSampleStartDate, "1980"), new[] { "StartDate" });
     ///         }
     ///     </code>
@@ -271,7 +269,6 @@ namespace CSSPModels
     ///     <code>
     ///         if (!string.IsNullOrWhiteSpace(address.StreetName) &amp;&amp; address.StreetName.Length > 200)
     ///         {
-    ///             address.HasErrors = true;
     ///             yield return new ValidationResult(string.Format(ServicesRes._MaxLengthIs_, ModelsRes.AddressStreetName, "200"), new[] { "StreetName" });
     ///         }    
     ///     </code>
@@ -312,7 +309,6 @@ namespace CSSPModels
     ///     <code>
     ///         if (appTask.StartDateTime_UTC > appTask.EndDateTime_UTC)
     ///         {
-    ///             appTask.HasErrors = true;
     ///             yield return new ValidationResult(string.Format(ServicesRes._DateIsBiggerThan_, ModelsRes.AppTaskEndDateTime_UTC, ModelsRes.AppTaskStartDateTime_UTC), new[] { ModelsRes.AppTaskEndDateTime_UTC });
     ///         }
     ///     </code>
@@ -362,7 +358,6 @@ namespace CSSPModels
     ///         retStr = enums.AddressTypeOK(address.AddressType);
     ///         if (address.AddressType == AddressTypeEnum.Error || !string.IsNullOrWhiteSpace(retStr))
     ///         {
-    ///             address.HasErrors = true;
     ///             yield return new ValidationResult(string.Format(ServicesRes._IsRequired, ModelsRes.AddressAddressType), new[] { "AddressType" });
     ///         }
     ///     </code>
@@ -404,7 +399,6 @@ namespace CSSPModels
     ///         retStr = enums.AddressTypeOK(address.AddressType);
     ///         if (address.AddressType == AddressTypeEnum.Error || !string.IsNullOrWhiteSpace(retStr))
     ///         {
-    ///             address.HasErrors = true;
     ///             yield return new ValidationResult(string.Format(ServicesRes._IsRequired, ModelsRes.AddressAddressType), new[] { "AddressType" });
     ///         }
     ///     </code>
@@ -459,7 +453,6 @@ namespace CSSPModels
     ///     
     ///     if (TVItemTVItemID == null)
     ///     {
-    ///         appTask.HasErrors = true;
     ///         yield return new ValidationResult(string.Format(ServicesRes.CouldNotFind_With_Equal_, ModelsRes.TVItem, ModelsRes.AppTaskTVItemID, appTask.TVItemID.ToString()), new[] { "TVItemID" });
     ///     }
     ///     else
@@ -492,7 +485,6 @@ namespace CSSPModels
     ///         };
     ///         if (!AllowableTVTypes.Contains(TVItemTVItemID.TVType))
     ///         {
-    ///             appTask.HasErrors = true;
     ///             yield return new ValidationResult(string.Format(ServicesRes._IsNotOfType_, ModelsRes.AppTaskTVItemID, "Root,Country,Province,Area,Sector,Subsector,ClimateSite,File,HydrometricSite,Infrastructure,MikeBoundaryConditionMesh,MikeBoundaryConditionWebTide,MikeScenario,MikeSource,Municipality,MWQMRun,MWQMSite,MWQMSiteSample,PolSourceSite,SamplingPlan,Spill,TideSite,VisualPlumesScenario"), new[] { "TVItemID" });
     ///         }
     ///     }

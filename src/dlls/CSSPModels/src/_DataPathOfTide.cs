@@ -12,7 +12,7 @@ using System.Linq;
 namespace CSSPModels
 {
     [NotMapped]
-    public partial class DataPathOfTide : CSSPError
+    public partial class DataPathOfTide
     {
         #region Properties in DB
         #endregion Properties in DB

@@ -40,7 +40,6 @@ namespace CSSPModels.Tests
         public void ReportSection_Properties_Test()
         {
             List<string> propNameList = new List<string>() { "ReportSectionID", "ReportTypeID", "TVItemID", "Language", "Ordinal", "IsStatic", "ParentReportSectionID", "Year", "Locked", "TemplateReportSectionID", "ReportSectionName", "ReportSectionText", "LastUpdateDate_UTC", "LastUpdateContactTVItemID",  }.OrderBy(c => c).ToList();
-            List<string> propNameNotMappedList = new List<string>() { "HasErrors",  }.OrderBy(c => c).ToList();
 
             int index = 0;
             foreach (PropertyInfo propertyInfo in typeof(ReportSection).GetProperties().OrderBy(c => c.Name))
@@ -63,13 +62,10 @@ namespace CSSPModels.Tests
                 {
                     if (customAttributeData.AttributeType.Name == "NotMappedAttribute")
                     {
-                        Assert.Equal(propertyInfo.Name, propNameNotMappedList[index]);
-                        index += 1;
                     }
                 }
             }
 
-            Assert.Equal(propNameNotMappedList.Count, index);
 
         }
         [Fact]
@@ -104,11 +100,6 @@ namespace CSSPModels.Tests
 
             Assert.Equal(foreignNameCollectionList.Count, index);
 
-        }
-        [Fact]
-        public void ReportSection_Has_ValidationResults_Test()
-        {
-             Assert.True(typeof(ReportSection).GetProperties().Where(c => c.Name == "ValidationResults").Any());
         }
         [Fact]
         public void ReportSection_Every_Property_Has_Get_Set_Test()
@@ -155,12 +146,6 @@ namespace CSSPModels.Tests
                int val14 = 45;
                reportSection.LastUpdateContactTVItemID = val14;
                Assert.Equal(val14, reportSection.LastUpdateContactTVItemID);
-               bool val15 = true;
-               reportSection.HasErrors = val15;
-               Assert.Equal(val15, reportSection.HasErrors);
-               IEnumerable<ValidationResult> val48 = new List<ValidationResult>() { new ValidationResult("First CSSPError Message") }.AsEnumerable();
-               reportSection.ValidationResults = val48;
-               Assert.Equal(val48, reportSection.ValidationResults);
         }
         #endregion Tests Functions public
     }

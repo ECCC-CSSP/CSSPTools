@@ -39,8 +39,7 @@ namespace CSSPModels.Tests
         [Fact]
         public void BoxModelCalNumb_Properties_Test()
         {
-            List<string> propNameList = new List<string>() { "BoxModelResultType", "CalLength_m", "CalRadius_m", "CalSurface_m2", "CalVolume_m3", "CalWidth_m", "FixLength", "FixWidth", "BoxModelResultTypeText", "HasErrors",  }.OrderBy(c => c).ToList();
-            List<string> propNameNotMappedList = new List<string>() {  }.OrderBy(c => c).ToList();
+            List<string> propNameList = new List<string>() { "BoxModelResultType", "CalLength_m", "CalRadius_m", "CalSurface_m2", "CalVolume_m3", "CalWidth_m", "FixLength", "FixWidth", "BoxModelResultTypeText",  }.OrderBy(c => c).ToList();
 
             int index = 0;
             foreach (PropertyInfo propertyInfo in typeof(BoxModelCalNumb).GetProperties().Where(c => c.Name != "ValidationResults").OrderBy(c => c.Name).ToList())
@@ -50,11 +49,6 @@ namespace CSSPModels.Tests
             }
 
             Assert.Equal(propNameList.Count, index);
-        }
-        [Fact]
-        public void BoxModelCalNumb_Has_ValidationResults_Test()
-        {
-             Assert.True(typeof(BoxModelCalNumb).GetProperties().Where(c => c.Name == "ValidationResults").Any());
         }
         [Fact]
         public void BoxModelCalNumb_Every_Property_Has_Get_Set_Test()
@@ -86,12 +80,6 @@ namespace CSSPModels.Tests
                string val9 = "Some text";
                boxModelCalNumb.BoxModelResultTypeText = val9;
                Assert.Equal(val9, boxModelCalNumb.BoxModelResultTypeText);
-               bool val10 = true;
-               boxModelCalNumb.HasErrors = val10;
-               Assert.Equal(val10, boxModelCalNumb.HasErrors);
-               IEnumerable<ValidationResult> val33 = new List<ValidationResult>() { new ValidationResult("First CSSPError Message") }.AsEnumerable();
-               boxModelCalNumb.ValidationResults = val33;
-               Assert.Equal(val33, boxModelCalNumb.ValidationResults);
         }
         #endregion Tests Functions public
     }

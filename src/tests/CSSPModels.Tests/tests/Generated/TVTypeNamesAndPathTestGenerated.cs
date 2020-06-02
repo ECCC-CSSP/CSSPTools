@@ -39,8 +39,7 @@ namespace CSSPModels.Tests
         [Fact]
         public void TVTypeNamesAndPath_Properties_Test()
         {
-            List<string> propNameList = new List<string>() { "TVTypeName", "Index", "TVPath", "HasErrors",  }.OrderBy(c => c).ToList();
-            List<string> propNameNotMappedList = new List<string>() {  }.OrderBy(c => c).ToList();
+            List<string> propNameList = new List<string>() { "TVTypeName", "Index", "TVPath",  }.OrderBy(c => c).ToList();
 
             int index = 0;
             foreach (PropertyInfo propertyInfo in typeof(TVTypeNamesAndPath).GetProperties().Where(c => c.Name != "ValidationResults").OrderBy(c => c.Name).ToList())
@@ -50,11 +49,6 @@ namespace CSSPModels.Tests
             }
 
             Assert.Equal(propNameList.Count, index);
-        }
-        [Fact]
-        public void TVTypeNamesAndPath_Has_ValidationResults_Test()
-        {
-             Assert.True(typeof(TVTypeNamesAndPath).GetProperties().Where(c => c.Name == "ValidationResults").Any());
         }
         [Fact]
         public void TVTypeNamesAndPath_Every_Property_Has_Get_Set_Test()
@@ -68,12 +62,6 @@ namespace CSSPModels.Tests
                string val3 = "Some text";
                tVTypeNamesAndPath.TVPath = val3;
                Assert.Equal(val3, tVTypeNamesAndPath.TVPath);
-               bool val4 = true;
-               tVTypeNamesAndPath.HasErrors = val4;
-               Assert.Equal(val4, tVTypeNamesAndPath.HasErrors);
-               IEnumerable<ValidationResult> val15 = new List<ValidationResult>() { new ValidationResult("First CSSPError Message") }.AsEnumerable();
-               tVTypeNamesAndPath.ValidationResults = val15;
-               Assert.Equal(val15, tVTypeNamesAndPath.ValidationResults);
         }
         #endregion Tests Functions public
     }

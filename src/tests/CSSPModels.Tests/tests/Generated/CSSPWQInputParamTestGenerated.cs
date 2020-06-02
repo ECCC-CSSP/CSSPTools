@@ -39,8 +39,7 @@ namespace CSSPModels.Tests
         [Fact]
         public void CSSPWQInputParam_Properties_Test()
         {
-            List<string> propNameList = new List<string>() { "CSSPWQInputType", "Name", "TVItemID", "CSSPWQInputTypeText", "sidList", "MWQMSiteList", "MWQMSiteTVItemIDList", "DailyDuplicateMWQMSiteList", "DailyDuplicateMWQMSiteTVItemIDList", "InfrastructureList", "InfrastructureTVItemIDList", "HasErrors",  }.OrderBy(c => c).ToList();
-            List<string> propNameNotMappedList = new List<string>() {  }.OrderBy(c => c).ToList();
+            List<string> propNameList = new List<string>() { "CSSPWQInputType", "Name", "TVItemID", "CSSPWQInputTypeText", "sidList", "MWQMSiteList", "MWQMSiteTVItemIDList", "DailyDuplicateMWQMSiteList", "DailyDuplicateMWQMSiteTVItemIDList", "InfrastructureList", "InfrastructureTVItemIDList",  }.OrderBy(c => c).ToList();
 
             int index = 0;
             foreach (PropertyInfo propertyInfo in typeof(CSSPWQInputParam).GetProperties().Where(c => c.Name != "ValidationResults").OrderBy(c => c.Name).ToList())
@@ -50,11 +49,6 @@ namespace CSSPModels.Tests
             }
 
             Assert.Equal(propNameList.Count, index);
-        }
-        [Fact]
-        public void CSSPWQInputParam_Has_ValidationResults_Test()
-        {
-             Assert.True(typeof(CSSPWQInputParam).GetProperties().Where(c => c.Name == "ValidationResults").Any());
         }
         [Fact]
         public void CSSPWQInputParam_Every_Property_Has_Get_Set_Test()
@@ -92,12 +86,6 @@ namespace CSSPModels.Tests
                List<int> val11 = new List<int>() { 34, 45, 56 };
                cSSPWQInputParam.InfrastructureTVItemIDList = val11;
                Assert.Equal(val11, cSSPWQInputParam.InfrastructureTVItemIDList);
-               bool val12 = true;
-               cSSPWQInputParam.HasErrors = val12;
-               Assert.Equal(val12, cSSPWQInputParam.HasErrors);
-               IEnumerable<ValidationResult> val39 = new List<ValidationResult>() { new ValidationResult("First CSSPError Message") }.AsEnumerable();
-               cSSPWQInputParam.ValidationResults = val39;
-               Assert.Equal(val39, cSSPWQInputParam.ValidationResults);
         }
         #endregion Tests Functions public
     }

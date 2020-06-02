@@ -40,7 +40,6 @@ namespace CSSPModels.Tests
         public void SamplingPlanSubsector_Properties_Test()
         {
             List<string> propNameList = new List<string>() { "SamplingPlanSubsectorID", "SamplingPlanID", "SubsectorTVItemID", "LastUpdateDate_UTC", "LastUpdateContactTVItemID",  }.OrderBy(c => c).ToList();
-            List<string> propNameNotMappedList = new List<string>() { "HasErrors",  }.OrderBy(c => c).ToList();
 
             int index = 0;
             foreach (PropertyInfo propertyInfo in typeof(SamplingPlanSubsector).GetProperties().OrderBy(c => c.Name))
@@ -63,13 +62,10 @@ namespace CSSPModels.Tests
                 {
                     if (customAttributeData.AttributeType.Name == "NotMappedAttribute")
                     {
-                        Assert.Equal(propertyInfo.Name, propNameNotMappedList[index]);
-                        index += 1;
                     }
                 }
             }
 
-            Assert.Equal(propNameNotMappedList.Count, index);
 
         }
         [Fact]
@@ -106,11 +102,6 @@ namespace CSSPModels.Tests
 
         }
         [Fact]
-        public void SamplingPlanSubsector_Has_ValidationResults_Test()
-        {
-             Assert.True(typeof(SamplingPlanSubsector).GetProperties().Where(c => c.Name == "ValidationResults").Any());
-        }
-        [Fact]
         public void SamplingPlanSubsector_Every_Property_Has_Get_Set_Test()
         {
                int val1 = 45;
@@ -128,12 +119,6 @@ namespace CSSPModels.Tests
                int val5 = 45;
                samplingPlanSubsector.LastUpdateContactTVItemID = val5;
                Assert.Equal(val5, samplingPlanSubsector.LastUpdateContactTVItemID);
-               bool val6 = true;
-               samplingPlanSubsector.HasErrors = val6;
-               Assert.Equal(val6, samplingPlanSubsector.HasErrors);
-               IEnumerable<ValidationResult> val21 = new List<ValidationResult>() { new ValidationResult("First CSSPError Message") }.AsEnumerable();
-               samplingPlanSubsector.ValidationResults = val21;
-               Assert.Equal(val21, samplingPlanSubsector.ValidationResults);
         }
         #endregion Tests Functions public
     }

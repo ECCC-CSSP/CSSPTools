@@ -39,8 +39,7 @@ namespace CSSPModels.Tests
         [Fact]
         public void TVFullText_Properties_Test()
         {
-            List<string> propNameList = new List<string>() { "TVPath", "FullText", "HasErrors",  }.OrderBy(c => c).ToList();
-            List<string> propNameNotMappedList = new List<string>() {  }.OrderBy(c => c).ToList();
+            List<string> propNameList = new List<string>() { "TVPath", "FullText",  }.OrderBy(c => c).ToList();
 
             int index = 0;
             foreach (PropertyInfo propertyInfo in typeof(TVFullText).GetProperties().Where(c => c.Name != "ValidationResults").OrderBy(c => c.Name).ToList())
@@ -52,11 +51,6 @@ namespace CSSPModels.Tests
             Assert.Equal(propNameList.Count, index);
         }
         [Fact]
-        public void TVFullText_Has_ValidationResults_Test()
-        {
-             Assert.True(typeof(TVFullText).GetProperties().Where(c => c.Name == "ValidationResults").Any());
-        }
-        [Fact]
         public void TVFullText_Every_Property_Has_Get_Set_Test()
         {
                string val1 = "Some text";
@@ -65,12 +59,6 @@ namespace CSSPModels.Tests
                string val2 = "Some text";
                tVFullText.FullText = val2;
                Assert.Equal(val2, tVFullText.FullText);
-               bool val3 = true;
-               tVFullText.HasErrors = val3;
-               Assert.Equal(val3, tVFullText.HasErrors);
-               IEnumerable<ValidationResult> val12 = new List<ValidationResult>() { new ValidationResult("First CSSPError Message") }.AsEnumerable();
-               tVFullText.ValidationResults = val12;
-               Assert.Equal(val12, tVFullText.ValidationResults);
         }
         #endregion Tests Functions public
     }

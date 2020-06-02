@@ -39,8 +39,7 @@ namespace CSSPModels.Tests
         [Fact]
         public void LabSheetA1Sheet_Properties_Test()
         {
-            List<string> propNameList = new List<string>() { "Version", "SamplingPlanType", "SampleType", "LabSheetType", "SubsectorName", "SubsectorLocation", "SubsectorTVItemID", "RunYear", "RunMonth", "RunDay", "RunNumber", "Tides", "SampleCrewInitials", "IncubationStartSameDay", "WaterBathCount", "IncubationBath1StartTime", "IncubationBath2StartTime", "IncubationBath3StartTime", "IncubationBath1EndTime", "IncubationBath2EndTime", "IncubationBath3EndTime", "IncubationBath1TimeCalculated", "IncubationBath2TimeCalculated", "IncubationBath3TimeCalculated", "WaterBath1", "WaterBath2", "WaterBath3", "TCField1", "TCLab1", "TCHas2Coolers", "TCField2", "TCLab2", "TCFirst", "TCAverage", "ControlLot", "Positive35", "NonTarget35", "Negative35", "Bath1Positive44_5", "Bath2Positive44_5", "Bath3Positive44_5", "Bath1NonTarget44_5", "Bath2NonTarget44_5", "Bath3NonTarget44_5", "Bath1Negative44_5", "Bath2Negative44_5", "Bath3Negative44_5", "Blank35", "Bath1Blank44_5", "Bath2Blank44_5", "Bath3Blank44_5", "Lot35", "Lot44_5", "RunComment", "RunWeatherComment", "SampleBottleLotNumber", "SalinitiesReadBy", "SalinitiesReadYear", "SalinitiesReadMonth", "SalinitiesReadDay", "ResultsReadBy", "ResultsReadYear", "ResultsReadMonth", "ResultsReadDay", "ResultsRecordedBy", "ResultsRecordedYear", "ResultsRecordedMonth", "ResultsRecordedDay", "DailyDuplicateRLog", "DailyDuplicatePrecisionCriteria", "DailyDuplicateAcceptableOrUnacceptable", "IntertechDuplicateRLog", "IntertechDuplicatePrecisionCriteria", "IntertechDuplicateAcceptableOrUnacceptable", "IntertechReadAcceptableOrUnacceptable", "ApprovalYear", "ApprovalMonth", "ApprovalDay", "ApprovedBySupervisorInitials", "IncludeLaboratoryQAQC", "BackupDirectory", "Log", "SamplingPlanTypeText", "SampleTypeText", "LabSheetTypeText", "LabSheetA1MeasurementList", "HasErrors",  }.OrderBy(c => c).ToList();
-            List<string> propNameNotMappedList = new List<string>() {  }.OrderBy(c => c).ToList();
+            List<string> propNameList = new List<string>() { "Version", "SamplingPlanType", "SampleType", "LabSheetType", "SubsectorName", "SubsectorLocation", "SubsectorTVItemID", "RunYear", "RunMonth", "RunDay", "RunNumber", "Tides", "SampleCrewInitials", "IncubationStartSameDay", "WaterBathCount", "IncubationBath1StartTime", "IncubationBath2StartTime", "IncubationBath3StartTime", "IncubationBath1EndTime", "IncubationBath2EndTime", "IncubationBath3EndTime", "IncubationBath1TimeCalculated", "IncubationBath2TimeCalculated", "IncubationBath3TimeCalculated", "WaterBath1", "WaterBath2", "WaterBath3", "TCField1", "TCLab1", "TCHas2Coolers", "TCField2", "TCLab2", "TCFirst", "TCAverage", "ControlLot", "Positive35", "NonTarget35", "Negative35", "Bath1Positive44_5", "Bath2Positive44_5", "Bath3Positive44_5", "Bath1NonTarget44_5", "Bath2NonTarget44_5", "Bath3NonTarget44_5", "Bath1Negative44_5", "Bath2Negative44_5", "Bath3Negative44_5", "Blank35", "Bath1Blank44_5", "Bath2Blank44_5", "Bath3Blank44_5", "Lot35", "Lot44_5", "RunComment", "RunWeatherComment", "SampleBottleLotNumber", "SalinitiesReadBy", "SalinitiesReadYear", "SalinitiesReadMonth", "SalinitiesReadDay", "ResultsReadBy", "ResultsReadYear", "ResultsReadMonth", "ResultsReadDay", "ResultsRecordedBy", "ResultsRecordedYear", "ResultsRecordedMonth", "ResultsRecordedDay", "DailyDuplicateRLog", "DailyDuplicatePrecisionCriteria", "DailyDuplicateAcceptableOrUnacceptable", "IntertechDuplicateRLog", "IntertechDuplicatePrecisionCriteria", "IntertechDuplicateAcceptableOrUnacceptable", "IntertechReadAcceptableOrUnacceptable", "ApprovalYear", "ApprovalMonth", "ApprovalDay", "ApprovedBySupervisorInitials", "IncludeLaboratoryQAQC", "BackupDirectory", "Log", "SamplingPlanTypeText", "SampleTypeText", "LabSheetTypeText", "LabSheetA1MeasurementList",  }.OrderBy(c => c).ToList();
 
             int index = 0;
             foreach (PropertyInfo propertyInfo in typeof(LabSheetA1Sheet).GetProperties().Where(c => c.Name != "ValidationResults").OrderBy(c => c.Name).ToList())
@@ -50,11 +49,6 @@ namespace CSSPModels.Tests
             }
 
             Assert.Equal(propNameList.Count, index);
-        }
-        [Fact]
-        public void LabSheetA1Sheet_Has_ValidationResults_Test()
-        {
-             Assert.True(typeof(LabSheetA1Sheet).GetProperties().Where(c => c.Name == "ValidationResults").Any());
         }
         [Fact]
         public void LabSheetA1Sheet_Every_Property_Has_Get_Set_Test()
@@ -317,12 +311,6 @@ namespace CSSPModels.Tests
                List<LabSheetA1Measurement> val86 = new List<LabSheetA1Measurement>() { new LabSheetA1Measurement(), new LabSheetA1Measurement() };
                labSheetA1Sheet.LabSheetA1MeasurementList = val86;
                Assert.Equal(val86, labSheetA1Sheet.LabSheetA1MeasurementList);
-               bool val87 = true;
-               labSheetA1Sheet.HasErrors = val87;
-               Assert.Equal(val87, labSheetA1Sheet.HasErrors);
-               IEnumerable<ValidationResult> val264 = new List<ValidationResult>() { new ValidationResult("First CSSPError Message") }.AsEnumerable();
-               labSheetA1Sheet.ValidationResults = val264;
-               Assert.Equal(val264, labSheetA1Sheet.ValidationResults);
         }
         #endregion Tests Functions public
     }

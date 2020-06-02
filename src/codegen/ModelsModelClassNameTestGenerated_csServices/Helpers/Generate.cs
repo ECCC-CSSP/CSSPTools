@@ -144,7 +144,7 @@ namespace ModelsModelClassNameTestGenerated_csServices.Services
                 }
 
                 sb.AppendLine($@"            List<string> propNameList = new List<string>() {{ { sbVar.ToString() } }}.OrderBy(c => c).ToList();");
-                sb.AppendLine($@"            List<string> propNameNotMappedList = new List<string>() {{ { sbPropNotMapped.ToString() } }}.OrderBy(c => c).ToList();");
+                //sb.AppendLine($@"            List<string> propNameNotMappedList = new List<string>() {{ { sbPropNotMapped.ToString() } }}.OrderBy(c => c).ToList();");
                 sb.AppendLine(@"");
                 if (!ClassNotMapped)
                 {
@@ -169,13 +169,13 @@ namespace ModelsModelClassNameTestGenerated_csServices.Services
                     sb.AppendLine(@"                {");
                     sb.AppendLine(@"                    if (customAttributeData.AttributeType.Name == ""NotMappedAttribute"")");
                     sb.AppendLine(@"                    {");
-                    sb.AppendLine(@"                        Assert.Equal(propertyInfo.Name, propNameNotMappedList[index]);");
-                    sb.AppendLine(@"                        index += 1;");
+                    //sb.AppendLine(@"                        Assert.Equal(propertyInfo.Name, propNameNotMappedList[index]);");
+                    //sb.AppendLine(@"                        index += 1;");
                     sb.AppendLine(@"                    }");
                     sb.AppendLine(@"                }");
                     sb.AppendLine(@"            }");
                     sb.AppendLine(@"");
-                    sb.AppendLine(@"            Assert.Equal(propNameNotMappedList.Count, index);");
+                    //sb.AppendLine(@"            Assert.Equal(propNameNotMappedList.Count, index);");
                     sb.AppendLine(@"");
 
                 }
@@ -249,11 +249,11 @@ namespace ModelsModelClassNameTestGenerated_csServices.Services
 
                 }
 
-                sb.AppendLine(@"        [Fact]");
-                sb.AppendLine($@"        public void { currentType.Name }_Has_ValidationResults_Test()");
-                sb.AppendLine(@"        {");
-                sb.AppendLine($@"             Assert.True(typeof({ currentType.Name }).GetProperties().Where(c => c.Name == ""ValidationResults"").Any());");
-                sb.AppendLine(@"        }");
+                //sb.AppendLine(@"        [Fact]");
+                //sb.AppendLine($@"        public void { currentType.Name }_Has_ValidationResults_Test()");
+                //sb.AppendLine(@"        {");
+                //sb.AppendLine($@"             Assert.True(typeof({ currentType.Name }).GetProperties().Where(c => c.Name == ""ValidationResults"").Any());");
+                //sb.AppendLine(@"        }");
 
                 sb.AppendLine(@"        [Fact]");
                 sb.AppendLine($@"        public void { currentType.Name }_Every_Property_Has_Get_Set_Test()");

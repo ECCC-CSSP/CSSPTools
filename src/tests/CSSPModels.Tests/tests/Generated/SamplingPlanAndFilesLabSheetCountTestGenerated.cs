@@ -39,8 +39,7 @@ namespace CSSPModels.Tests
         [Fact]
         public void SamplingPlanAndFilesLabSheetCount_Properties_Test()
         {
-            List<string> propNameList = new List<string>() { "LabSheetHistoryCount", "LabSheetTransferredCount", "SamplingPlan", "TVFileSamplingPlanFileTXT", "HasErrors",  }.OrderBy(c => c).ToList();
-            List<string> propNameNotMappedList = new List<string>() {  }.OrderBy(c => c).ToList();
+            List<string> propNameList = new List<string>() { "LabSheetHistoryCount", "LabSheetTransferredCount", "SamplingPlan", "TVFileSamplingPlanFileTXT",  }.OrderBy(c => c).ToList();
 
             int index = 0;
             foreach (PropertyInfo propertyInfo in typeof(SamplingPlanAndFilesLabSheetCount).GetProperties().Where(c => c.Name != "ValidationResults").OrderBy(c => c.Name).ToList())
@@ -50,11 +49,6 @@ namespace CSSPModels.Tests
             }
 
             Assert.Equal(propNameList.Count, index);
-        }
-        [Fact]
-        public void SamplingPlanAndFilesLabSheetCount_Has_ValidationResults_Test()
-        {
-             Assert.True(typeof(SamplingPlanAndFilesLabSheetCount).GetProperties().Where(c => c.Name == "ValidationResults").Any());
         }
         [Fact]
         public void SamplingPlanAndFilesLabSheetCount_Every_Property_Has_Get_Set_Test()
@@ -71,12 +65,6 @@ namespace CSSPModels.Tests
                TVFile val4 = new TVFile();
                samplingPlanAndFilesLabSheetCount.TVFileSamplingPlanFileTXT = val4;
                Assert.Equal(val4, samplingPlanAndFilesLabSheetCount.TVFileSamplingPlanFileTXT);
-               bool val5 = true;
-               samplingPlanAndFilesLabSheetCount.HasErrors = val5;
-               Assert.Equal(val5, samplingPlanAndFilesLabSheetCount.HasErrors);
-               IEnumerable<ValidationResult> val18 = new List<ValidationResult>() { new ValidationResult("First CSSPError Message") }.AsEnumerable();
-               samplingPlanAndFilesLabSheetCount.ValidationResults = val18;
-               Assert.Equal(val18, samplingPlanAndFilesLabSheetCount.ValidationResults);
         }
         #endregion Tests Functions public
     }

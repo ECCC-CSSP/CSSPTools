@@ -37,6 +37,7 @@ namespace CSSPServices
         #region Properties
         private CSSPDBContext db { get; }
         private IEnums enums { get; }
+        private IEnumerable<ValidationResult> ValidationResults { get; set; }
         #endregion Properties
 
         #region Constructors
@@ -69,10 +70,10 @@ namespace CSSPServices
         }
         public async Task<ActionResult<PolSourceSiteEffect>> Add(PolSourceSiteEffect polSourceSiteEffect)
         {
-            polSourceSiteEffect.ValidationResults = Validate(new ValidationContext(polSourceSiteEffect), ActionDBTypeEnum.Create);
-            if (polSourceSiteEffect.ValidationResults.Count() > 0)
+            ValidationResults = Validate(new ValidationContext(polSourceSiteEffect), ActionDBTypeEnum.Create);
+            if (ValidationResults.Count() > 0)
             {
-               return await Task.FromResult(BadRequest(polSourceSiteEffect.ValidationResults));
+               return await Task.FromResult(BadRequest(ValidationResults));
             }
 
             try
@@ -89,10 +90,10 @@ namespace CSSPServices
         }
         public async Task<ActionResult<PolSourceSiteEffect>> Delete(PolSourceSiteEffect polSourceSiteEffect)
         {
-            polSourceSiteEffect.ValidationResults = Validate(new ValidationContext(polSourceSiteEffect), ActionDBTypeEnum.Delete);
-            if (polSourceSiteEffect.ValidationResults.Count() > 0)
+            ValidationResults = Validate(new ValidationContext(polSourceSiteEffect), ActionDBTypeEnum.Delete);
+            if (ValidationResults.Count() > 0)
             {
-               return await Task.FromResult(BadRequest(polSourceSiteEffect.ValidationResults));
+               return await Task.FromResult(BadRequest(ValidationResults));
             }
 
             try
@@ -109,10 +110,10 @@ namespace CSSPServices
         }
         public async Task<ActionResult<PolSourceSiteEffect>> Update(PolSourceSiteEffect polSourceSiteEffect)
         {
-            polSourceSiteEffect.ValidationResults = Validate(new ValidationContext(polSourceSiteEffect), ActionDBTypeEnum.Update);
-            if (polSourceSiteEffect.ValidationResults.Count() > 0)
+            ValidationResults = Validate(new ValidationContext(polSourceSiteEffect), ActionDBTypeEnum.Update);
+            if (ValidationResults.Count() > 0)
             {
-               return await Task.FromResult(BadRequest(polSourceSiteEffect.ValidationResults));
+               return await Task.FromResult(BadRequest(ValidationResults));
             }
 
             try
@@ -138,19 +139,16 @@ namespace CSSPServices
         {
             string retStr = "";
             PolSourceSiteEffect polSourceSiteEffect = validationContext.ObjectInstance as PolSourceSiteEffect;
-            polSourceSiteEffect.HasErrors = false;
 
             if (actionDBType == ActionDBTypeEnum.Update || actionDBType == ActionDBTypeEnum.Delete)
             {
                 if (polSourceSiteEffect.PolSourceSiteEffectID == 0)
                 {
-                    polSourceSiteEffect.HasErrors = true;
                     yield return new ValidationResult(string.Format(CSSPServicesRes._IsRequired, "PolSourceSiteEffectID"), new[] { "PolSourceSiteEffectID" });
                 }
 
                 if (!(from c in db.PolSourceSiteEffects select c).Where(c => c.PolSourceSiteEffectID == polSourceSiteEffect.PolSourceSiteEffectID).Any())
                 {
-                    polSourceSiteEffect.HasErrors = true;
                     yield return new ValidationResult(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "PolSourceSiteEffect", "PolSourceSiteEffectID", polSourceSiteEffect.PolSourceSiteEffectID.ToString()), new[] { "PolSourceSiteEffectID" });
                 }
             }
@@ -159,7 +157,6 @@ namespace CSSPServices
 
             if (TVItemPolSourceSiteOrInfrastructureTVItemID == null)
             {
-                polSourceSiteEffect.HasErrors = true;
                 yield return new ValidationResult(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "TVItem", "PolSourceSiteOrInfrastructureTVItemID", polSourceSiteEffect.PolSourceSiteOrInfrastructureTVItemID.ToString()), new[] { "PolSourceSiteOrInfrastructureTVItemID" });
             }
             else
@@ -171,7 +168,6 @@ namespace CSSPServices
                 };
                 if (!AllowableTVTypes.Contains(TVItemPolSourceSiteOrInfrastructureTVItemID.TVType))
                 {
-                    polSourceSiteEffect.HasErrors = true;
                     yield return new ValidationResult(string.Format(CSSPServicesRes._IsNotOfType_, "PolSourceSiteOrInfrastructureTVItemID", "Infrastructure,PolSourceSite"), new[] { "PolSourceSiteOrInfrastructureTVItemID" });
                 }
             }
@@ -180,7 +176,6 @@ namespace CSSPServices
 
             if (TVItemMWQMSiteTVItemID == null)
             {
-                polSourceSiteEffect.HasErrors = true;
                 yield return new ValidationResult(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "TVItem", "MWQMSiteTVItemID", polSourceSiteEffect.MWQMSiteTVItemID.ToString()), new[] { "MWQMSiteTVItemID" });
             }
             else
@@ -191,14 +186,12 @@ namespace CSSPServices
                 };
                 if (!AllowableTVTypes.Contains(TVItemMWQMSiteTVItemID.TVType))
                 {
-                    polSourceSiteEffect.HasErrors = true;
                     yield return new ValidationResult(string.Format(CSSPServicesRes._IsNotOfType_, "MWQMSiteTVItemID", "MWQMSite"), new[] { "MWQMSiteTVItemID" });
                 }
             }
 
             if (!string.IsNullOrWhiteSpace(polSourceSiteEffect.PolSourceSiteEffectTermIDs) && polSourceSiteEffect.PolSourceSiteEffectTermIDs.Length > 250)
             {
-                polSourceSiteEffect.HasErrors = true;
                 yield return new ValidationResult(string.Format(CSSPServicesRes._MaxLengthIs_, "PolSourceSiteEffectTermIDs", "250"), new[] { "PolSourceSiteEffectTermIDs" });
             }
 
@@ -210,7 +203,6 @@ namespace CSSPServices
 
                 if (TVItemAnalysisDocumentTVItemID == null)
                 {
-                    polSourceSiteEffect.HasErrors = true;
                     yield return new ValidationResult(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "TVItem", "AnalysisDocumentTVItemID", (polSourceSiteEffect.AnalysisDocumentTVItemID == null ? "" : polSourceSiteEffect.AnalysisDocumentTVItemID.ToString())), new[] { "AnalysisDocumentTVItemID" });
                 }
                 else
@@ -221,7 +213,6 @@ namespace CSSPServices
                     };
                     if (!AllowableTVTypes.Contains(TVItemAnalysisDocumentTVItemID.TVType))
                     {
-                        polSourceSiteEffect.HasErrors = true;
                         yield return new ValidationResult(string.Format(CSSPServicesRes._IsNotOfType_, "AnalysisDocumentTVItemID", "File"), new[] { "AnalysisDocumentTVItemID" });
                     }
                 }
@@ -229,14 +220,12 @@ namespace CSSPServices
 
             if (polSourceSiteEffect.LastUpdateDate_UTC.Year == 1)
             {
-                polSourceSiteEffect.HasErrors = true;
                 yield return new ValidationResult(string.Format(CSSPServicesRes._IsRequired, "LastUpdateDate_UTC"), new[] { "LastUpdateDate_UTC" });
             }
             else
             {
                 if (polSourceSiteEffect.LastUpdateDate_UTC.Year < 1980)
                 {
-                polSourceSiteEffect.HasErrors = true;
                     yield return new ValidationResult(string.Format(CSSPServicesRes._YearShouldBeBiggerThan_, "LastUpdateDate_UTC", "1980"), new[] { "LastUpdateDate_UTC" });
                 }
             }
@@ -245,7 +234,6 @@ namespace CSSPServices
 
             if (TVItemLastUpdateContactTVItemID == null)
             {
-                polSourceSiteEffect.HasErrors = true;
                 yield return new ValidationResult(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "TVItem", "LastUpdateContactTVItemID", polSourceSiteEffect.LastUpdateContactTVItemID.ToString()), new[] { "LastUpdateContactTVItemID" });
             }
             else
@@ -256,7 +244,6 @@ namespace CSSPServices
                 };
                 if (!AllowableTVTypes.Contains(TVItemLastUpdateContactTVItemID.TVType))
                 {
-                    polSourceSiteEffect.HasErrors = true;
                     yield return new ValidationResult(string.Format(CSSPServicesRes._IsNotOfType_, "LastUpdateContactTVItemID", "Contact"), new[] { "LastUpdateContactTVItemID" });
                 }
             }
@@ -264,7 +251,6 @@ namespace CSSPServices
             retStr = ""; // added to stop compiling CSSPError
             if (retStr != "") // will never be true
             {
-                polSourceSiteEffect.HasErrors = true;
                 yield return new ValidationResult("AAA", new[] { "AAA" });
             }
 

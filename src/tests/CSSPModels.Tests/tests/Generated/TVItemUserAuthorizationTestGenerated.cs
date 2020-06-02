@@ -40,7 +40,6 @@ namespace CSSPModels.Tests
         public void TVItemUserAuthorization_Properties_Test()
         {
             List<string> propNameList = new List<string>() { "TVItemUserAuthorizationID", "ContactTVItemID", "TVItemID1", "TVItemID2", "TVItemID3", "TVItemID4", "TVAuth", "LastUpdateDate_UTC", "LastUpdateContactTVItemID",  }.OrderBy(c => c).ToList();
-            List<string> propNameNotMappedList = new List<string>() { "HasErrors",  }.OrderBy(c => c).ToList();
 
             int index = 0;
             foreach (PropertyInfo propertyInfo in typeof(TVItemUserAuthorization).GetProperties().OrderBy(c => c.Name))
@@ -63,13 +62,10 @@ namespace CSSPModels.Tests
                 {
                     if (customAttributeData.AttributeType.Name == "NotMappedAttribute")
                     {
-                        Assert.Equal(propertyInfo.Name, propNameNotMappedList[index]);
-                        index += 1;
                     }
                 }
             }
 
-            Assert.Equal(propNameNotMappedList.Count, index);
 
         }
         [Fact]
@@ -106,11 +102,6 @@ namespace CSSPModels.Tests
 
         }
         [Fact]
-        public void TVItemUserAuthorization_Has_ValidationResults_Test()
-        {
-             Assert.True(typeof(TVItemUserAuthorization).GetProperties().Where(c => c.Name == "ValidationResults").Any());
-        }
-        [Fact]
         public void TVItemUserAuthorization_Every_Property_Has_Get_Set_Test()
         {
                int val1 = 45;
@@ -140,12 +131,6 @@ namespace CSSPModels.Tests
                int val9 = 45;
                tVItemUserAuthorization.LastUpdateContactTVItemID = val9;
                Assert.Equal(val9, tVItemUserAuthorization.LastUpdateContactTVItemID);
-               bool val10 = true;
-               tVItemUserAuthorization.HasErrors = val10;
-               Assert.Equal(val10, tVItemUserAuthorization.HasErrors);
-               IEnumerable<ValidationResult> val33 = new List<ValidationResult>() { new ValidationResult("First CSSPError Message") }.AsEnumerable();
-               tVItemUserAuthorization.ValidationResults = val33;
-               Assert.Equal(val33, tVItemUserAuthorization.ValidationResults);
         }
         #endregion Tests Functions public
     }

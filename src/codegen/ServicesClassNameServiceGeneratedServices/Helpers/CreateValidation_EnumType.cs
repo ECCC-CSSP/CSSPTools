@@ -18,7 +18,7 @@ namespace ServicesClassNameServiceGeneratedServices.Services
                     sb.AppendLine($@"                retStr = enums.EnumTypeOK(typeof({ csspProp.PropType }), (int?){ TypeNameLower }.{ prop.Name });");
                     sb.AppendLine($@"                if ({ TypeNameLower }.{ prop.Name } == null || !string.IsNullOrWhiteSpace(retStr))");
                     sb.AppendLine(@"                {");
-                    sb.AppendLine($@"                    { TypeNameLower }.HasErrors = true;");
+                    //sb.AppendLine($@"                    { TypeNameLower }.HasErrors = true;");
                     sb.AppendLine($@"                    yield return new ValidationResult(string.Format(CSSPServicesRes._IsRequired, ""{ prop.Name }""), new[] {{ ""{ csspProp.PropName }"" }});");
                     sb.AppendLine(@"                }");
                     sb.AppendLine(@"            }");
@@ -29,7 +29,7 @@ namespace ServicesClassNameServiceGeneratedServices.Services
                     sb.AppendLine($@"            retStr = enums.EnumTypeOK(typeof({ csspProp.PropType }), (int?){ TypeNameLower }.{ prop.Name });");
                     sb.AppendLine($@"            if (!string.IsNullOrWhiteSpace(retStr))");
                     sb.AppendLine(@"            {");
-                    sb.AppendLine($@"                { TypeNameLower }.HasErrors = true;");
+                    //sb.AppendLine($@"                { TypeNameLower }.HasErrors = true;");
                     sb.AppendLine($@"                yield return new ValidationResult(string.Format(CSSPServicesRes._IsRequired, ""{ prop.Name }""), new[] {{ ""{ csspProp.PropName }"" }});");
                     sb.AppendLine(@"            }");
                     sb.AppendLine(@"");

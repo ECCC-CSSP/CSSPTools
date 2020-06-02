@@ -40,7 +40,6 @@ namespace CSSPModels.Tests
         public void BoxModelResult_Properties_Test()
         {
             List<string> propNameList = new List<string>() { "BoxModelResultID", "BoxModelID", "BoxModelResultType", "Volume_m3", "Surface_m2", "Radius_m", "LeftSideDiameterLineAngle_deg", "CircleCenterLatitude", "CircleCenterLongitude", "FixLength", "FixWidth", "RectLength_m", "RectWidth_m", "LeftSideLineAngle_deg", "LeftSideLineStartLatitude", "LeftSideLineStartLongitude", "LastUpdateDate_UTC", "LastUpdateContactTVItemID",  }.OrderBy(c => c).ToList();
-            List<string> propNameNotMappedList = new List<string>() { "HasErrors",  }.OrderBy(c => c).ToList();
 
             int index = 0;
             foreach (PropertyInfo propertyInfo in typeof(BoxModelResult).GetProperties().OrderBy(c => c.Name))
@@ -63,13 +62,10 @@ namespace CSSPModels.Tests
                 {
                     if (customAttributeData.AttributeType.Name == "NotMappedAttribute")
                     {
-                        Assert.Equal(propertyInfo.Name, propNameNotMappedList[index]);
-                        index += 1;
                     }
                 }
             }
 
-            Assert.Equal(propNameNotMappedList.Count, index);
 
         }
         [Fact]
@@ -104,11 +100,6 @@ namespace CSSPModels.Tests
 
             Assert.Equal(foreignNameCollectionList.Count, index);
 
-        }
-        [Fact]
-        public void BoxModelResult_Has_ValidationResults_Test()
-        {
-             Assert.True(typeof(BoxModelResult).GetProperties().Where(c => c.Name == "ValidationResults").Any());
         }
         [Fact]
         public void BoxModelResult_Every_Property_Has_Get_Set_Test()
@@ -167,12 +158,6 @@ namespace CSSPModels.Tests
                int val18 = 45;
                boxModelResult.LastUpdateContactTVItemID = val18;
                Assert.Equal(val18, boxModelResult.LastUpdateContactTVItemID);
-               bool val19 = true;
-               boxModelResult.HasErrors = val19;
-               Assert.Equal(val19, boxModelResult.HasErrors);
-               IEnumerable<ValidationResult> val60 = new List<ValidationResult>() { new ValidationResult("First CSSPError Message") }.AsEnumerable();
-               boxModelResult.ValidationResults = val60;
-               Assert.Equal(val60, boxModelResult.ValidationResults);
         }
         #endregion Tests Functions public
     }

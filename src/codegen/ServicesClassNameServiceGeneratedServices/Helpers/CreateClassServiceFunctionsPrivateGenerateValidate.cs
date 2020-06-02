@@ -21,7 +21,7 @@ namespace ServicesClassNameServiceGeneratedServices.Services
             sb.AppendLine(@"        {");
             sb.AppendLine(@"            string retStr = """";");
             sb.AppendLine($@"            { dllTypeInfoModels.Type.Name } { TypeNameLower } = validationContext.ObjectInstance as { dllTypeInfoModels.Type.Name };");
-            sb.AppendLine($@"            { TypeNameLower }.HasErrors = false;");
+            //sb.AppendLine($@"            { TypeNameLower }.HasErrors = false;");
             sb.AppendLine(@"");
 
             foreach (PropertyInfo prop in dllTypeInfoModels.Type.GetProperties())
@@ -60,7 +60,7 @@ namespace ServicesClassNameServiceGeneratedServices.Services
             sb.AppendLine(@"            retStr = """"; // added to stop compiling CSSPError");
             sb.AppendLine(@"            if (retStr != """") // will never be true");
             sb.AppendLine(@"            {");
-            sb.AppendLine($@"                { TypeNameLower }.HasErrors = true;");
+            //sb.AppendLine($@"                { TypeNameLower }.HasErrors = true;");
             sb.AppendLine(@"                yield return new ValidationResult(""AAA"", new[] { ""AAA"" });");
             sb.AppendLine(@"            }");
             sb.AppendLine(@"");

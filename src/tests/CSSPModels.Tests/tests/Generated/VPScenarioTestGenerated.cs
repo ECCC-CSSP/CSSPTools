@@ -40,7 +40,6 @@ namespace CSSPModels.Tests
         public void VPScenario_Properties_Test()
         {
             List<string> propNameList = new List<string>() { "VPScenarioID", "InfrastructureTVItemID", "VPScenarioStatus", "UseAsBestEstimate", "EffluentFlow_m3_s", "EffluentConcentration_MPN_100ml", "FroudeNumber", "PortDiameter_m", "PortDepth_m", "PortElevation_m", "VerticalAngle_deg", "HorizontalAngle_deg", "NumberOfPorts", "PortSpacing_m", "AcuteMixZone_m", "ChronicMixZone_m", "EffluentSalinity_PSU", "EffluentTemperature_C", "EffluentVelocity_m_s", "RawResults", "LastUpdateDate_UTC", "LastUpdateContactTVItemID",  }.OrderBy(c => c).ToList();
-            List<string> propNameNotMappedList = new List<string>() { "HasErrors",  }.OrderBy(c => c).ToList();
 
             int index = 0;
             foreach (PropertyInfo propertyInfo in typeof(VPScenario).GetProperties().OrderBy(c => c.Name))
@@ -63,13 +62,10 @@ namespace CSSPModels.Tests
                 {
                     if (customAttributeData.AttributeType.Name == "NotMappedAttribute")
                     {
-                        Assert.Equal(propertyInfo.Name, propNameNotMappedList[index]);
-                        index += 1;
                     }
                 }
             }
 
-            Assert.Equal(propNameNotMappedList.Count, index);
 
         }
         [Fact]
@@ -104,11 +100,6 @@ namespace CSSPModels.Tests
 
             Assert.Equal(foreignNameCollectionList.Count, index);
 
-        }
-        [Fact]
-        public void VPScenario_Has_ValidationResults_Test()
-        {
-             Assert.True(typeof(VPScenario).GetProperties().Where(c => c.Name == "ValidationResults").Any());
         }
         [Fact]
         public void VPScenario_Every_Property_Has_Get_Set_Test()
@@ -179,12 +170,6 @@ namespace CSSPModels.Tests
                int val22 = 45;
                vPScenario.LastUpdateContactTVItemID = val22;
                Assert.Equal(val22, vPScenario.LastUpdateContactTVItemID);
-               bool val23 = true;
-               vPScenario.HasErrors = val23;
-               Assert.Equal(val23, vPScenario.HasErrors);
-               IEnumerable<ValidationResult> val72 = new List<ValidationResult>() { new ValidationResult("First CSSPError Message") }.AsEnumerable();
-               vPScenario.ValidationResults = val72;
-               Assert.Equal(val72, vPScenario.ValidationResults);
         }
         #endregion Tests Functions public
     }

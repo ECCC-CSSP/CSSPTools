@@ -40,7 +40,6 @@ namespace CSSPModels.Tests
         public void MWQMSample_Properties_Test()
         {
             List<string> propNameList = new List<string>() { "MWQMSampleID", "MWQMSiteTVItemID", "MWQMRunTVItemID", "SampleDateTime_Local", "TimeText", "Depth_m", "FecCol_MPN_100ml", "Salinity_PPT", "WaterTemp_C", "PH", "SampleTypesText", "SampleType_old", "Tube_10", "Tube_1_0", "Tube_0_1", "ProcessedBy", "UseForOpenData", "LastUpdateDate_UTC", "LastUpdateContactTVItemID",  }.OrderBy(c => c).ToList();
-            List<string> propNameNotMappedList = new List<string>() { "HasErrors",  }.OrderBy(c => c).ToList();
 
             int index = 0;
             foreach (PropertyInfo propertyInfo in typeof(MWQMSample).GetProperties().OrderBy(c => c.Name))
@@ -63,13 +62,10 @@ namespace CSSPModels.Tests
                 {
                     if (customAttributeData.AttributeType.Name == "NotMappedAttribute")
                     {
-                        Assert.Equal(propertyInfo.Name, propNameNotMappedList[index]);
-                        index += 1;
                     }
                 }
             }
 
-            Assert.Equal(propNameNotMappedList.Count, index);
 
         }
         [Fact]
@@ -104,11 +100,6 @@ namespace CSSPModels.Tests
 
             Assert.Equal(foreignNameCollectionList.Count, index);
 
-        }
-        [Fact]
-        public void MWQMSample_Has_ValidationResults_Test()
-        {
-             Assert.True(typeof(MWQMSample).GetProperties().Where(c => c.Name == "ValidationResults").Any());
         }
         [Fact]
         public void MWQMSample_Every_Property_Has_Get_Set_Test()
@@ -170,12 +161,6 @@ namespace CSSPModels.Tests
                int val19 = 45;
                mWQMSample.LastUpdateContactTVItemID = val19;
                Assert.Equal(val19, mWQMSample.LastUpdateContactTVItemID);
-               bool val20 = true;
-               mWQMSample.HasErrors = val20;
-               Assert.Equal(val20, mWQMSample.HasErrors);
-               IEnumerable<ValidationResult> val63 = new List<ValidationResult>() { new ValidationResult("First CSSPError Message") }.AsEnumerable();
-               mWQMSample.ValidationResults = val63;
-               Assert.Equal(val63, mWQMSample.ValidationResults);
         }
         #endregion Tests Functions public
     }

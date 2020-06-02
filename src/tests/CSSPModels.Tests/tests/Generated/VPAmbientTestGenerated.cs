@@ -40,7 +40,6 @@ namespace CSSPModels.Tests
         public void VPAmbient_Properties_Test()
         {
             List<string> propNameList = new List<string>() { "VPAmbientID", "VPScenarioID", "Row", "MeasurementDepth_m", "CurrentSpeed_m_s", "CurrentDirection_deg", "AmbientSalinity_PSU", "AmbientTemperature_C", "BackgroundConcentration_MPN_100ml", "PollutantDecayRate_per_day", "FarFieldCurrentSpeed_m_s", "FarFieldCurrentDirection_deg", "FarFieldDiffusionCoefficient", "LastUpdateDate_UTC", "LastUpdateContactTVItemID",  }.OrderBy(c => c).ToList();
-            List<string> propNameNotMappedList = new List<string>() { "HasErrors",  }.OrderBy(c => c).ToList();
 
             int index = 0;
             foreach (PropertyInfo propertyInfo in typeof(VPAmbient).GetProperties().OrderBy(c => c.Name))
@@ -63,13 +62,10 @@ namespace CSSPModels.Tests
                 {
                     if (customAttributeData.AttributeType.Name == "NotMappedAttribute")
                     {
-                        Assert.Equal(propertyInfo.Name, propNameNotMappedList[index]);
-                        index += 1;
                     }
                 }
             }
 
-            Assert.Equal(propNameNotMappedList.Count, index);
 
         }
         [Fact]
@@ -104,11 +100,6 @@ namespace CSSPModels.Tests
 
             Assert.Equal(foreignNameCollectionList.Count, index);
 
-        }
-        [Fact]
-        public void VPAmbient_Has_ValidationResults_Test()
-        {
-             Assert.True(typeof(VPAmbient).GetProperties().Where(c => c.Name == "ValidationResults").Any());
         }
         [Fact]
         public void VPAmbient_Every_Property_Has_Get_Set_Test()
@@ -158,12 +149,6 @@ namespace CSSPModels.Tests
                int val15 = 45;
                vPAmbient.LastUpdateContactTVItemID = val15;
                Assert.Equal(val15, vPAmbient.LastUpdateContactTVItemID);
-               bool val16 = true;
-               vPAmbient.HasErrors = val16;
-               Assert.Equal(val16, vPAmbient.HasErrors);
-               IEnumerable<ValidationResult> val51 = new List<ValidationResult>() { new ValidationResult("First CSSPError Message") }.AsEnumerable();
-               vPAmbient.ValidationResults = val51;
-               Assert.Equal(val51, vPAmbient.ValidationResults);
         }
         #endregion Tests Functions public
     }

@@ -12,7 +12,7 @@ using System.Linq;
 namespace CSSPModels
 {
     [NotMapped]
-    public partial class TVFullText : CSSPError
+    public partial class TVFullText
     {
         #region Properties in DB
         #endregion Properties in DB

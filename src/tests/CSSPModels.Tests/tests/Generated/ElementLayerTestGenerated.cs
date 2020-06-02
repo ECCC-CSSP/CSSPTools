@@ -39,8 +39,7 @@ namespace CSSPModels.Tests
         [Fact]
         public void ElementLayer_Properties_Test()
         {
-            List<string> propNameList = new List<string>() { "Layer", "ZMin", "ZMax", "Element", "HasErrors",  }.OrderBy(c => c).ToList();
-            List<string> propNameNotMappedList = new List<string>() {  }.OrderBy(c => c).ToList();
+            List<string> propNameList = new List<string>() { "Layer", "ZMin", "ZMax", "Element",  }.OrderBy(c => c).ToList();
 
             int index = 0;
             foreach (PropertyInfo propertyInfo in typeof(ElementLayer).GetProperties().Where(c => c.Name != "ValidationResults").OrderBy(c => c.Name).ToList())
@@ -50,11 +49,6 @@ namespace CSSPModels.Tests
             }
 
             Assert.Equal(propNameList.Count, index);
-        }
-        [Fact]
-        public void ElementLayer_Has_ValidationResults_Test()
-        {
-             Assert.True(typeof(ElementLayer).GetProperties().Where(c => c.Name == "ValidationResults").Any());
         }
         [Fact]
         public void ElementLayer_Every_Property_Has_Get_Set_Test()
@@ -71,12 +65,6 @@ namespace CSSPModels.Tests
                Element val4 = new Element();
                elementLayer.Element = val4;
                Assert.Equal(val4, elementLayer.Element);
-               bool val5 = true;
-               elementLayer.HasErrors = val5;
-               Assert.Equal(val5, elementLayer.HasErrors);
-               IEnumerable<ValidationResult> val18 = new List<ValidationResult>() { new ValidationResult("First CSSPError Message") }.AsEnumerable();
-               elementLayer.ValidationResults = val18;
-               Assert.Equal(val18, elementLayer.ValidationResults);
         }
         #endregion Tests Functions public
     }

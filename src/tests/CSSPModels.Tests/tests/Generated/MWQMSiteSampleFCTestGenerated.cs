@@ -39,8 +39,7 @@ namespace CSSPModels.Tests
         [Fact]
         public void MWQMSiteSampleFC_Properties_Test()
         {
-            List<string> propNameList = new List<string>() { "SampleDate", "FC", "Sal", "Temp", "PH", "DO", "Depth", "SampCount", "MinFC", "MaxFC", "GeoMean", "Median", "P90", "PercOver43", "PercOver260", "HasErrors",  }.OrderBy(c => c).ToList();
-            List<string> propNameNotMappedList = new List<string>() {  }.OrderBy(c => c).ToList();
+            List<string> propNameList = new List<string>() { "SampleDate", "FC", "Sal", "Temp", "PH", "DO", "Depth", "SampCount", "MinFC", "MaxFC", "GeoMean", "Median", "P90", "PercOver43", "PercOver260",  }.OrderBy(c => c).ToList();
 
             int index = 0;
             foreach (PropertyInfo propertyInfo in typeof(MWQMSiteSampleFC).GetProperties().Where(c => c.Name != "ValidationResults").OrderBy(c => c.Name).ToList())
@@ -50,11 +49,6 @@ namespace CSSPModels.Tests
             }
 
             Assert.Equal(propNameList.Count, index);
-        }
-        [Fact]
-        public void MWQMSiteSampleFC_Has_ValidationResults_Test()
-        {
-             Assert.True(typeof(MWQMSiteSampleFC).GetProperties().Where(c => c.Name == "ValidationResults").Any());
         }
         [Fact]
         public void MWQMSiteSampleFC_Every_Property_Has_Get_Set_Test()
@@ -104,12 +98,6 @@ namespace CSSPModels.Tests
                double val15 = 87.9D;
                mWQMSiteSampleFC.PercOver260 = val15;
                Assert.Equal(val15, mWQMSiteSampleFC.PercOver260);
-               bool val16 = true;
-               mWQMSiteSampleFC.HasErrors = val16;
-               Assert.Equal(val16, mWQMSiteSampleFC.HasErrors);
-               IEnumerable<ValidationResult> val51 = new List<ValidationResult>() { new ValidationResult("First CSSPError Message") }.AsEnumerable();
-               mWQMSiteSampleFC.ValidationResults = val51;
-               Assert.Equal(val51, mWQMSiteSampleFC.ValidationResults);
         }
         #endregion Tests Functions public
     }

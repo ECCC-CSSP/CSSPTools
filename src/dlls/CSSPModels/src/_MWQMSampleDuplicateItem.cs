@@ -12,7 +12,7 @@ using System.Linq;
 namespace CSSPModels
 {
     [NotMapped]
-    public partial class MWQMSampleDuplicateItem : CSSPError
+    public partial class MWQMSampleDuplicateItem
     {
         #region Properties in DB
         #endregion Properties in DB

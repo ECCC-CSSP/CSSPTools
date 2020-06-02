@@ -40,7 +40,6 @@ namespace CSSPModels.Tests
         public void InfrastructureLanguage_Properties_Test()
         {
             List<string> propNameList = new List<string>() { "InfrastructureLanguageID", "InfrastructureID", "Language", "Comment", "TranslationStatus", "LastUpdateDate_UTC", "LastUpdateContactTVItemID",  }.OrderBy(c => c).ToList();
-            List<string> propNameNotMappedList = new List<string>() { "HasErrors",  }.OrderBy(c => c).ToList();
 
             int index = 0;
             foreach (PropertyInfo propertyInfo in typeof(InfrastructureLanguage).GetProperties().OrderBy(c => c.Name))
@@ -63,13 +62,10 @@ namespace CSSPModels.Tests
                 {
                     if (customAttributeData.AttributeType.Name == "NotMappedAttribute")
                     {
-                        Assert.Equal(propertyInfo.Name, propNameNotMappedList[index]);
-                        index += 1;
                     }
                 }
             }
 
-            Assert.Equal(propNameNotMappedList.Count, index);
 
         }
         [Fact]
@@ -106,11 +102,6 @@ namespace CSSPModels.Tests
 
         }
         [Fact]
-        public void InfrastructureLanguage_Has_ValidationResults_Test()
-        {
-             Assert.True(typeof(InfrastructureLanguage).GetProperties().Where(c => c.Name == "ValidationResults").Any());
-        }
-        [Fact]
         public void InfrastructureLanguage_Every_Property_Has_Get_Set_Test()
         {
                int val1 = 45;
@@ -134,12 +125,6 @@ namespace CSSPModels.Tests
                int val7 = 45;
                infrastructureLanguage.LastUpdateContactTVItemID = val7;
                Assert.Equal(val7, infrastructureLanguage.LastUpdateContactTVItemID);
-               bool val8 = true;
-               infrastructureLanguage.HasErrors = val8;
-               Assert.Equal(val8, infrastructureLanguage.HasErrors);
-               IEnumerable<ValidationResult> val27 = new List<ValidationResult>() { new ValidationResult("First CSSPError Message") }.AsEnumerable();
-               infrastructureLanguage.ValidationResults = val27;
-               Assert.Equal(val27, infrastructureLanguage.ValidationResults);
         }
         #endregion Tests Functions public
     }

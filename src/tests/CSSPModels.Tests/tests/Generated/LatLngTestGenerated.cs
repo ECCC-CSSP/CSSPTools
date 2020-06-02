@@ -39,8 +39,7 @@ namespace CSSPModels.Tests
         [Fact]
         public void LatLng_Properties_Test()
         {
-            List<string> propNameList = new List<string>() { "Lat", "Lng", "HasErrors",  }.OrderBy(c => c).ToList();
-            List<string> propNameNotMappedList = new List<string>() {  }.OrderBy(c => c).ToList();
+            List<string> propNameList = new List<string>() { "Lat", "Lng",  }.OrderBy(c => c).ToList();
 
             int index = 0;
             foreach (PropertyInfo propertyInfo in typeof(LatLng).GetProperties().Where(c => c.Name != "ValidationResults").OrderBy(c => c.Name).ToList())
@@ -52,11 +51,6 @@ namespace CSSPModels.Tests
             Assert.Equal(propNameList.Count, index);
         }
         [Fact]
-        public void LatLng_Has_ValidationResults_Test()
-        {
-             Assert.True(typeof(LatLng).GetProperties().Where(c => c.Name == "ValidationResults").Any());
-        }
-        [Fact]
         public void LatLng_Every_Property_Has_Get_Set_Test()
         {
                double val1 = 87.9D;
@@ -65,12 +59,6 @@ namespace CSSPModels.Tests
                double val2 = 87.9D;
                latLng.Lng = val2;
                Assert.Equal(val2, latLng.Lng);
-               bool val3 = true;
-               latLng.HasErrors = val3;
-               Assert.Equal(val3, latLng.HasErrors);
-               IEnumerable<ValidationResult> val12 = new List<ValidationResult>() { new ValidationResult("First CSSPError Message") }.AsEnumerable();
-               latLng.ValidationResults = val12;
-               Assert.Equal(val12, latLng.ValidationResults);
         }
         #endregion Tests Functions public
     }

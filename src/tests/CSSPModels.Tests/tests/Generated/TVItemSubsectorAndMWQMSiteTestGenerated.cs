@@ -39,8 +39,7 @@ namespace CSSPModels.Tests
         [Fact]
         public void TVItemSubsectorAndMWQMSite_Properties_Test()
         {
-            List<string> propNameList = new List<string>() { "TVItemSubsector", "TVItemMWQMSiteList", "TVItemMWQMSiteDuplicate", "HasErrors",  }.OrderBy(c => c).ToList();
-            List<string> propNameNotMappedList = new List<string>() {  }.OrderBy(c => c).ToList();
+            List<string> propNameList = new List<string>() { "TVItemSubsector", "TVItemMWQMSiteList", "TVItemMWQMSiteDuplicate",  }.OrderBy(c => c).ToList();
 
             int index = 0;
             foreach (PropertyInfo propertyInfo in typeof(TVItemSubsectorAndMWQMSite).GetProperties().Where(c => c.Name != "ValidationResults").OrderBy(c => c.Name).ToList())
@@ -50,11 +49,6 @@ namespace CSSPModels.Tests
             }
 
             Assert.Equal(propNameList.Count, index);
-        }
-        [Fact]
-        public void TVItemSubsectorAndMWQMSite_Has_ValidationResults_Test()
-        {
-             Assert.True(typeof(TVItemSubsectorAndMWQMSite).GetProperties().Where(c => c.Name == "ValidationResults").Any());
         }
         [Fact]
         public void TVItemSubsectorAndMWQMSite_Every_Property_Has_Get_Set_Test()
@@ -68,12 +62,6 @@ namespace CSSPModels.Tests
                TVItem val3 = new TVItem();
                tVItemSubsectorAndMWQMSite.TVItemMWQMSiteDuplicate = val3;
                Assert.Equal(val3, tVItemSubsectorAndMWQMSite.TVItemMWQMSiteDuplicate);
-               bool val4 = true;
-               tVItemSubsectorAndMWQMSite.HasErrors = val4;
-               Assert.Equal(val4, tVItemSubsectorAndMWQMSite.HasErrors);
-               IEnumerable<ValidationResult> val15 = new List<ValidationResult>() { new ValidationResult("First CSSPError Message") }.AsEnumerable();
-               tVItemSubsectorAndMWQMSite.ValidationResults = val15;
-               Assert.Equal(val15, tVItemSubsectorAndMWQMSite.ValidationResults);
         }
         #endregion Tests Functions public
     }

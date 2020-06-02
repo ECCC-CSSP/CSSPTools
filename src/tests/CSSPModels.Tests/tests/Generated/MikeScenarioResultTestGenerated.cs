@@ -40,7 +40,6 @@ namespace CSSPModels.Tests
         public void MikeScenarioResult_Properties_Test()
         {
             List<string> propNameList = new List<string>() { "MikeScenarioResultID", "MikeScenarioTVItemID", "MikeResultsJSON", "LastUpdateDate_UTC", "LastUpdateContactTVItemID",  }.OrderBy(c => c).ToList();
-            List<string> propNameNotMappedList = new List<string>() { "HasErrors",  }.OrderBy(c => c).ToList();
 
             int index = 0;
             foreach (PropertyInfo propertyInfo in typeof(MikeScenarioResult).GetProperties().OrderBy(c => c.Name))
@@ -63,13 +62,10 @@ namespace CSSPModels.Tests
                 {
                     if (customAttributeData.AttributeType.Name == "NotMappedAttribute")
                     {
-                        Assert.Equal(propertyInfo.Name, propNameNotMappedList[index]);
-                        index += 1;
                     }
                 }
             }
 
-            Assert.Equal(propNameNotMappedList.Count, index);
 
         }
         [Fact]
@@ -106,11 +102,6 @@ namespace CSSPModels.Tests
 
         }
         [Fact]
-        public void MikeScenarioResult_Has_ValidationResults_Test()
-        {
-             Assert.True(typeof(MikeScenarioResult).GetProperties().Where(c => c.Name == "ValidationResults").Any());
-        }
-        [Fact]
         public void MikeScenarioResult_Every_Property_Has_Get_Set_Test()
         {
                int val1 = 45;
@@ -128,12 +119,6 @@ namespace CSSPModels.Tests
                int val5 = 45;
                mikeScenarioResult.LastUpdateContactTVItemID = val5;
                Assert.Equal(val5, mikeScenarioResult.LastUpdateContactTVItemID);
-               bool val6 = true;
-               mikeScenarioResult.HasErrors = val6;
-               Assert.Equal(val6, mikeScenarioResult.HasErrors);
-               IEnumerable<ValidationResult> val21 = new List<ValidationResult>() { new ValidationResult("First CSSPError Message") }.AsEnumerable();
-               mikeScenarioResult.ValidationResults = val21;
-               Assert.Equal(val21, mikeScenarioResult.ValidationResults);
         }
         #endregion Tests Functions public
     }

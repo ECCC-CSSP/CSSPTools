@@ -40,7 +40,6 @@ namespace CSSPModels.Tests
         public void MikeBoundaryCondition_Properties_Test()
         {
             List<string> propNameList = new List<string>() { "MikeBoundaryConditionID", "MikeBoundaryConditionTVItemID", "MikeBoundaryConditionCode", "MikeBoundaryConditionName", "MikeBoundaryConditionLength_m", "MikeBoundaryConditionFormat", "MikeBoundaryConditionLevelOrVelocity", "WebTideDataSet", "NumberOfWebTideNodes", "WebTideDataFromStartToEndDate", "TVType", "LastUpdateDate_UTC", "LastUpdateContactTVItemID",  }.OrderBy(c => c).ToList();
-            List<string> propNameNotMappedList = new List<string>() { "HasErrors",  }.OrderBy(c => c).ToList();
 
             int index = 0;
             foreach (PropertyInfo propertyInfo in typeof(MikeBoundaryCondition).GetProperties().OrderBy(c => c.Name))
@@ -63,13 +62,10 @@ namespace CSSPModels.Tests
                 {
                     if (customAttributeData.AttributeType.Name == "NotMappedAttribute")
                     {
-                        Assert.Equal(propertyInfo.Name, propNameNotMappedList[index]);
-                        index += 1;
                     }
                 }
             }
 
-            Assert.Equal(propNameNotMappedList.Count, index);
 
         }
         [Fact]
@@ -104,11 +100,6 @@ namespace CSSPModels.Tests
 
             Assert.Equal(foreignNameCollectionList.Count, index);
 
-        }
-        [Fact]
-        public void MikeBoundaryCondition_Has_ValidationResults_Test()
-        {
-             Assert.True(typeof(MikeBoundaryCondition).GetProperties().Where(c => c.Name == "ValidationResults").Any());
         }
         [Fact]
         public void MikeBoundaryCondition_Every_Property_Has_Get_Set_Test()
@@ -152,12 +143,6 @@ namespace CSSPModels.Tests
                int val13 = 45;
                mikeBoundaryCondition.LastUpdateContactTVItemID = val13;
                Assert.Equal(val13, mikeBoundaryCondition.LastUpdateContactTVItemID);
-               bool val14 = true;
-               mikeBoundaryCondition.HasErrors = val14;
-               Assert.Equal(val14, mikeBoundaryCondition.HasErrors);
-               IEnumerable<ValidationResult> val45 = new List<ValidationResult>() { new ValidationResult("First CSSPError Message") }.AsEnumerable();
-               mikeBoundaryCondition.ValidationResults = val45;
-               Assert.Equal(val45, mikeBoundaryCondition.ValidationResults);
         }
         #endregion Tests Functions public
     }

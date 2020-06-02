@@ -12,7 +12,7 @@ using System.Linq;
 namespace CSSPModels
 {
     [NotMapped]
-    public partial class ContourPolygon : CSSPError
+    public partial class ContourPolygon
     {
         #region Properties in DB
         #endregion Properties in DB

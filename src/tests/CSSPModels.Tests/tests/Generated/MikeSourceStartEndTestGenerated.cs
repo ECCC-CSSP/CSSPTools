@@ -40,7 +40,6 @@ namespace CSSPModels.Tests
         public void MikeSourceStartEnd_Properties_Test()
         {
             List<string> propNameList = new List<string>() { "MikeSourceStartEndID", "MikeSourceID", "StartDateAndTime_Local", "EndDateAndTime_Local", "SourceFlowStart_m3_day", "SourceFlowEnd_m3_day", "SourcePollutionStart_MPN_100ml", "SourcePollutionEnd_MPN_100ml", "SourceTemperatureStart_C", "SourceTemperatureEnd_C", "SourceSalinityStart_PSU", "SourceSalinityEnd_PSU", "LastUpdateDate_UTC", "LastUpdateContactTVItemID",  }.OrderBy(c => c).ToList();
-            List<string> propNameNotMappedList = new List<string>() { "HasErrors",  }.OrderBy(c => c).ToList();
 
             int index = 0;
             foreach (PropertyInfo propertyInfo in typeof(MikeSourceStartEnd).GetProperties().OrderBy(c => c.Name))
@@ -63,13 +62,10 @@ namespace CSSPModels.Tests
                 {
                     if (customAttributeData.AttributeType.Name == "NotMappedAttribute")
                     {
-                        Assert.Equal(propertyInfo.Name, propNameNotMappedList[index]);
-                        index += 1;
                     }
                 }
             }
 
-            Assert.Equal(propNameNotMappedList.Count, index);
 
         }
         [Fact]
@@ -104,11 +100,6 @@ namespace CSSPModels.Tests
 
             Assert.Equal(foreignNameCollectionList.Count, index);
 
-        }
-        [Fact]
-        public void MikeSourceStartEnd_Has_ValidationResults_Test()
-        {
-             Assert.True(typeof(MikeSourceStartEnd).GetProperties().Where(c => c.Name == "ValidationResults").Any());
         }
         [Fact]
         public void MikeSourceStartEnd_Every_Property_Has_Get_Set_Test()
@@ -155,12 +146,6 @@ namespace CSSPModels.Tests
                int val14 = 45;
                mikeSourceStartEnd.LastUpdateContactTVItemID = val14;
                Assert.Equal(val14, mikeSourceStartEnd.LastUpdateContactTVItemID);
-               bool val15 = true;
-               mikeSourceStartEnd.HasErrors = val15;
-               Assert.Equal(val15, mikeSourceStartEnd.HasErrors);
-               IEnumerable<ValidationResult> val48 = new List<ValidationResult>() { new ValidationResult("First CSSPError Message") }.AsEnumerable();
-               mikeSourceStartEnd.ValidationResults = val48;
-               Assert.Equal(val48, mikeSourceStartEnd.ValidationResults);
         }
         #endregion Tests Functions public
     }

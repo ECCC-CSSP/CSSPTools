@@ -12,7 +12,7 @@ using System.Linq;
 namespace CSSPModels
 {
     [NotMapped]
-    public partial class TVTypeNamesAndPath : CSSPError
+    public partial class TVTypeNamesAndPath
     {
         #region Properties in DB
         #endregion Properties in DB

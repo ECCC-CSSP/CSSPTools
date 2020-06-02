@@ -52,7 +52,7 @@ namespace ServicesClassNameServiceGeneratedServices.Services
                                         sb.AppendLine(@"            {");
                                         sb.AppendLine($@"                if ({ TypeNameLower }.{ csspProp.PropName } < { csspProp.Min.ToString() } || { TypeNameLower }.{ csspProp.PropName } > { csspProp.Max.ToString() })");
                                         sb.AppendLine(@"                {");
-                                        sb.AppendLine($@"                    { TypeNameLower }.HasErrors = true;");
+                                        //sb.AppendLine($@"                    { TypeNameLower }.HasErrors = true;");
                                         sb.AppendLine($@"                    yield return new ValidationResult(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, ""{ csspProp.PropName }"", ""{ csspProp.Min.ToString() }"", ""{ csspProp.Max.ToString() }""), new[] {{ ""{ csspProp.PropName }"" }});");
                                         sb.AppendLine(@"                }");
                                         sb.AppendLine(@"            }");
@@ -62,7 +62,7 @@ namespace ServicesClassNameServiceGeneratedServices.Services
                                     {
                                         sb.AppendLine($@"            if ({ TypeNameLower }.{ csspProp.PropName } < { csspProp.Min.ToString() } || { TypeNameLower }.{ csspProp.PropName } > { csspProp.Max.ToString() })");
                                         sb.AppendLine(@"            {");
-                                        sb.AppendLine($@"                { TypeNameLower }.HasErrors = true;");
+                                        //sb.AppendLine($@"                { TypeNameLower }.HasErrors = true;");
                                         sb.AppendLine($@"                yield return new ValidationResult(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, ""{ csspProp.PropName }"", ""{ csspProp.Min.ToString() }"", ""{ csspProp.Max.ToString() }""), new[] {{ ""{ csspProp.PropName }"" }});");
                                         sb.AppendLine(@"            }");
                                         sb.AppendLine(@"");
@@ -77,7 +77,7 @@ namespace ServicesClassNameServiceGeneratedServices.Services
                                     sb.AppendLine(@"            {");
                                     sb.AppendLine($@"                if ({ TypeNameLower }.{ csspProp.PropName } < { csspProp.Min.ToString() })");
                                     sb.AppendLine(@"                {");
-                                    sb.AppendLine($@"                    { TypeNameLower }.HasErrors = true;");
+                                    //sb.AppendLine($@"                    { TypeNameLower }.HasErrors = true;");
                                     sb.AppendLine($@"                    yield return new ValidationResult(string.Format(CSSPServicesRes._MinValueIs_, ""{ csspProp.PropName }"", ""{ csspProp.Min.ToString() }""), new[] {{ ""{ csspProp.PropName }"" }});");
                                     sb.AppendLine(@"                }");
                                     sb.AppendLine(@"            }");
@@ -87,7 +87,7 @@ namespace ServicesClassNameServiceGeneratedServices.Services
                                 {
                                     sb.AppendLine($@"            if ({ TypeNameLower }.{ csspProp.PropName } < { csspProp.Min.ToString() })");
                                     sb.AppendLine(@"            {");
-                                    sb.AppendLine($@"                { TypeNameLower }.HasErrors = true;");
+                                    //sb.AppendLine($@"                { TypeNameLower }.HasErrors = true;");
                                     sb.AppendLine($@"                yield return new ValidationResult(string.Format(CSSPServicesRes._MinValueIs_, ""{ csspProp.PropName }"", ""{ csspProp.Min.ToString() }""), new[] {{ ""{ csspProp.PropName }"" }});");
                                     sb.AppendLine(@"            }");
                                     sb.AppendLine(@"");
@@ -102,7 +102,7 @@ namespace ServicesClassNameServiceGeneratedServices.Services
                                     sb.AppendLine(@"            {");
                                     sb.AppendLine($@"                if ({ TypeNameLower }.{ csspProp.PropName } > { csspProp.Max.ToString() })");
                                     sb.AppendLine(@"                {");
-                                    sb.AppendLine($@"                    { TypeNameLower }.HasErrors = true;");
+                                    //sb.AppendLine($@"                    { TypeNameLower }.HasErrors = true;");
                                     sb.AppendLine($@"                    yield return new ValidationResult(string.Format(CSSPServicesRes._MaxValueIs_, ""{ csspProp.PropName }"", ""{ csspProp.Max.ToString() }""), new[] {{ ""{ csspProp.PropName }"" }});");
                                     sb.AppendLine(@"                }");
                                     sb.AppendLine(@"            }");
@@ -112,7 +112,7 @@ namespace ServicesClassNameServiceGeneratedServices.Services
                                 {
                                     sb.AppendLine($@"            if ({ TypeNameLower }.{ csspProp.PropName } > { csspProp.Max.ToString() })");
                                     sb.AppendLine(@"            {");
-                                    sb.AppendLine($@"                { TypeNameLower }.HasErrors = true;");
+                                    //sb.AppendLine($@"                { TypeNameLower }.HasErrors = true;");
                                     sb.AppendLine($@"                yield return new ValidationResult(string.Format(CSSPServicesRes._MaxValueIs_, ""{ csspProp.PropName }"", ""{ csspProp.Max.ToString() }""), new[] {{ ""{ csspProp.PropName }"" }});");
                                     sb.AppendLine(@"            }");
                                     sb.AppendLine(@"");
@@ -142,7 +142,7 @@ namespace ServicesClassNameServiceGeneratedServices.Services
                                 {
                                     sb.AppendLine($@"            if (!string.IsNullOrWhiteSpace({ TypeNameLower }.{ prop.Name }) && ({ TypeNameLower }.{ csspProp.PropName }.Length < { csspProp.Min.ToString() } || { TypeNameLower }.{ csspProp.PropName }.Length > { csspProp.Max.ToString() }))");
                                     sb.AppendLine(@"            {");
-                                    sb.AppendLine($@"                { TypeNameLower }.HasErrors = true;");
+                                    //sb.AppendLine($@"                { TypeNameLower }.HasErrors = true;");
                                     sb.AppendLine($@"                yield return new ValidationResult(string.Format(CSSPServicesRes._LengthShouldBeBetween_And_, ""{ csspProp.PropName }"", ""{ csspProp.Min.ToString() }"", ""{ csspProp.Max.ToString() }""), new[] {{ ""{ csspProp.PropName }"" }});");
                                     sb.AppendLine(@"            }");
                                     sb.AppendLine(@"");
@@ -152,7 +152,7 @@ namespace ServicesClassNameServiceGeneratedServices.Services
                             {
                                 sb.AppendLine($@"            if (!string.IsNullOrWhiteSpace({ TypeNameLower }.{ prop.Name }) && { TypeNameLower }.{ csspProp.PropName }.Length < { csspProp.Min.ToString() })");
                                 sb.AppendLine(@"            {");
-                                sb.AppendLine($@"                { TypeNameLower }.HasErrors = true;");
+                                //sb.AppendLine($@"                { TypeNameLower }.HasErrors = true;");
                                 sb.AppendLine($@"                yield return new ValidationResult(string.Format(CSSPServicesRes._MinLengthIs_, ""{ csspProp.PropName }"", ""{ csspProp.Min.ToString() }""), new[] {{ ""{ csspProp.PropName }"" }});");
                                 sb.AppendLine(@"            }");
                                 sb.AppendLine(@"");
@@ -161,7 +161,7 @@ namespace ServicesClassNameServiceGeneratedServices.Services
                             {
                                 sb.AppendLine($@"            if (!string.IsNullOrWhiteSpace({ TypeNameLower }.{ prop.Name }) && { TypeNameLower }.{ csspProp.PropName }.Length > { csspProp.Max.ToString() })");
                                 sb.AppendLine(@"            {");
-                                sb.AppendLine($@"                { TypeNameLower }.HasErrors = true;");
+                                //sb.AppendLine($@"                { TypeNameLower }.HasErrors = true;");
                                 sb.AppendLine($@"                yield return new ValidationResult(string.Format(CSSPServicesRes._MaxLengthIs_, ""{ csspProp.PropName }"", ""{ csspProp.Max.ToString() }""), new[] {{ ""{ csspProp.PropName }"" }});");
                                 sb.AppendLine(@"            }");
                                 sb.AppendLine(@"");
