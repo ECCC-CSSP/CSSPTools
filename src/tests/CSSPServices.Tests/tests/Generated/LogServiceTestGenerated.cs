@@ -16,6 +16,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Transactions;
 using Xunit;
 
 namespace CSSPServices.Tests
@@ -54,37 +55,40 @@ namespace CSSPServices.Tests
 
             await Setup(new CultureInfo(culture));
 
-            Log log = GetFilledRandomLog(""); 
+            using (TransactionScope ts = new TransactionScope())
+            {
+               Log log = GetFilledRandomLog(""); 
 
-            // List<Log>
-            var actionLogList = await logService.GetLogList();
-            Assert.Equal(200, ((ObjectResult)actionLogList.Result).StatusCode);
-            Assert.NotNull(((OkObjectResult)actionLogList.Result).Value);
-            List<Log> logList = (List<Log>)(((OkObjectResult)actionLogList.Result).Value);
+               // List<Log>
+               var actionLogList = await logService.GetLogList();
+               Assert.Equal(200, ((ObjectResult)actionLogList.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionLogList.Result).Value);
+               List<Log> logList = (List<Log>)(((OkObjectResult)actionLogList.Result).Value);
 
-            int count = ((List<Log>)((OkObjectResult)actionLogList.Result).Value).Count();
-            Assert.True(count > 0);
+               int count = ((List<Log>)((OkObjectResult)actionLogList.Result).Value).Count();
+                Assert.True(count > 0);
 
-            // Add Log
-            var actionLogAdded = await logService.Add(log);
-            Assert.Equal(200, ((ObjectResult)actionLogAdded.Result).StatusCode);
-            Assert.NotNull(((OkObjectResult)actionLogAdded.Result).Value);
-            Log logAdded = (Log)(((OkObjectResult)actionLogAdded.Result).Value);
-            Assert.NotNull(logAdded);
+               // Add Log
+               var actionLogAdded = await logService.Add(log);
+               Assert.Equal(200, ((ObjectResult)actionLogAdded.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionLogAdded.Result).Value);
+               Log logAdded = (Log)(((OkObjectResult)actionLogAdded.Result).Value);
+               Assert.NotNull(logAdded);
 
-            // Update Log
-            var actionLogUpdated = await logService.Update(log);
-            Assert.Equal(200, ((ObjectResult)actionLogUpdated.Result).StatusCode);
-            Assert.NotNull(((OkObjectResult)actionLogUpdated.Result).Value);
-            Log logUpdated = (Log)(((OkObjectResult)actionLogUpdated.Result).Value);
-            Assert.NotNull(logUpdated);
+               // Update Log
+               var actionLogUpdated = await logService.Update(log);
+               Assert.Equal(200, ((ObjectResult)actionLogUpdated.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionLogUpdated.Result).Value);
+               Log logUpdated = (Log)(((OkObjectResult)actionLogUpdated.Result).Value);
+               Assert.NotNull(logUpdated);
 
-            // Delete Log
-            var actionLogDeleted = await logService.Delete(log);
-            Assert.Equal(200, ((ObjectResult)actionLogDeleted.Result).StatusCode);
-            Assert.NotNull(((OkObjectResult)actionLogDeleted.Result).Value);
-            Log logDeleted = (Log)(((OkObjectResult)actionLogDeleted.Result).Value);
-            Assert.NotNull(logDeleted);
+               // Delete Log
+               var actionLogDeleted = await logService.Delete(log);
+               Assert.Equal(200, ((ObjectResult)actionLogDeleted.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionLogDeleted.Result).Value);
+               Log logDeleted = (Log)(((OkObjectResult)actionLogDeleted.Result).Value);
+               Assert.NotNull(logDeleted);
+            }
         }
         #endregion Tests Generated CRUD
 

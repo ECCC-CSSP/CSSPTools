@@ -1,143 +1,70 @@
-using CSSPEnums;
 using CSSPModels;
 using CSSPServices;
-using System;
+using LoggedInServices.Services;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web.Http;
+using System.Threading.Tasks;
 
 namespace CSSPWebAPI.Controllers
 {
-    [RoutePrefix("api/samplingPlanSubsectorSite")]
-    public partial class SamplingPlanSubsectorSiteController : BaseController
+    public partial interface ISamplingPlanSubsectorSiteController
+    {
+        Task<ActionResult<List<SamplingPlanSubsectorSite>>> Get();
+        Task<ActionResult<SamplingPlanSubsectorSite>> Get(int SamplingPlanSubsectorSiteID);
+        Task<ActionResult<SamplingPlanSubsectorSite>> Post(SamplingPlanSubsectorSite samplingPlanSubsectorSite);
+        Task<ActionResult<SamplingPlanSubsectorSite>> Put(SamplingPlanSubsectorSite samplingPlanSubsectorSite);
+        Task<ActionResult<SamplingPlanSubsectorSite>> Delete(SamplingPlanSubsectorSite samplingPlanSubsectorSite);
+    }
+
+    [Route("api/{culture}/[controller]")]
+    [ApiController]
+    [Authorize]
+    public partial class SamplingPlanSubsectorSiteController : ControllerBase, ISamplingPlanSubsectorSiteController
     {
         #region Variables
         #endregion Variables
 
         #region Properties
+        private ISamplingPlanSubsectorSiteService samplingPlanSubsectorSiteService { get; }
+        private CSSPDBContext db { get; }
+        private ILoggedInService loggedInService { get; }
         #endregion Properties
 
         #region Constructors
-        public SamplingPlanSubsectorSiteController() : base()
+        public SamplingPlanSubsectorSiteController(ISamplingPlanSubsectorSiteService samplingPlanSubsectorSiteService, CSSPDBContext db, ILoggedInService loggedInService)
         {
-        }
-        public SamplingPlanSubsectorSiteController(DatabaseTypeEnum dbt = DatabaseTypeEnum.SqlServerTestDB) : base(dbt)
-        {
+            this.samplingPlanSubsectorSiteService = samplingPlanSubsectorSiteService;
+            this.db = db;
+            this.loggedInService = loggedInService;
         }
         #endregion Constructors
 
         #region Functions public
-        // GET api/samplingPlanSubsectorSite
-        [Route("")]
-        public IHttpActionResult GetSamplingPlanSubsectorSiteList([FromUri]string lang = "en", [FromUri]int skip = 0, [FromUri]int take = 200,
-            [FromUri]string asc = "", [FromUri]string desc = "", [FromUri]string where = "", [FromUri]string extra = "")
+        [HttpGet]
+        public async Task<ActionResult<List<SamplingPlanSubsectorSite>>> Get()
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                SamplingPlanSubsectorSiteService samplingPlanSubsectorSiteService = new SamplingPlanSubsectorSiteService(new Query() { Lang = lang }, db, ContactID);
-
-                else // QueryString has no parameter [extra] or extra is empty
-                {
-                   samplingPlanSubsectorSiteService.Query = samplingPlanSubsectorSiteService.FillQuery(typeof(SamplingPlanSubsectorSite), lang, skip, take, asc, desc, where, extra);
-
-                    if (samplingPlanSubsectorSiteService.Query.HasErrors)
-                    {
-                        return Ok(new List<SamplingPlanSubsectorSite>()
-                        {
-                            new SamplingPlanSubsectorSite()
-                            {
-                                HasErrors = samplingPlanSubsectorSiteService.Query.HasErrors,
-                                ValidationResults = samplingPlanSubsectorSiteService.Query.ValidationResults,
-                            },
-                        }.ToList());
-                    }
-                    else
-                    {
-                        return Ok(samplingPlanSubsectorSiteService.GetSamplingPlanSubsectorSiteList().ToList());
-                    }
-                }
-            }
+            return await samplingPlanSubsectorSiteService.GetSamplingPlanSubsectorSiteList();
         }
-        // GET api/samplingPlanSubsectorSite/1
-        [Route("{SamplingPlanSubsectorSiteID:int}")]
-        public IHttpActionResult GetSamplingPlanSubsectorSiteWithID([FromUri]int SamplingPlanSubsectorSiteID, [FromUri]string lang = "en", [FromUri]string extra = "")
+        [HttpGet("{SamplingPlanSubsectorSiteID}")]
+        public async Task<ActionResult<SamplingPlanSubsectorSite>> Get(int SamplingPlanSubsectorSiteID)
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                SamplingPlanSubsectorSiteService samplingPlanSubsectorSiteService = new SamplingPlanSubsectorSiteService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
-
-                samplingPlanSubsectorSiteService.Query = samplingPlanSubsectorSiteService.FillQuery(typeof(SamplingPlanSubsectorSite), lang, 0, 1, "", "", extra);
-
-                else
-                {
-                    SamplingPlanSubsectorSite samplingPlanSubsectorSite = new SamplingPlanSubsectorSite();
-                    samplingPlanSubsectorSite = samplingPlanSubsectorSiteService.GetSamplingPlanSubsectorSiteWithSamplingPlanSubsectorSiteID(SamplingPlanSubsectorSiteID);
-
-                    if (samplingPlanSubsectorSite == null)
-                    {
-                        return NotFound();
-                    }
-
-                    return Ok(samplingPlanSubsectorSite);
-                }
-            }
+            return await samplingPlanSubsectorSiteService.GetSamplingPlanSubsectorSiteWithSamplingPlanSubsectorSiteID(SamplingPlanSubsectorSiteID);
         }
-        // POST api/samplingPlanSubsectorSite
-        [Route("")]
-        public IHttpActionResult Post([FromBody]SamplingPlanSubsectorSite samplingPlanSubsectorSite, [FromUri]string lang = "en")
+        [HttpPost]
+        public async Task<ActionResult<SamplingPlanSubsectorSite>> Post(SamplingPlanSubsectorSite samplingPlanSubsectorSite)
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                SamplingPlanSubsectorSiteService samplingPlanSubsectorSiteService = new SamplingPlanSubsectorSiteService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
-
-                if (!samplingPlanSubsectorSiteService.Add(samplingPlanSubsectorSite))
-                {
-                    return BadRequest(String.Join("|||", samplingPlanSubsectorSite.ValidationResults));
-                }
-                else
-                {
-                    samplingPlanSubsectorSite.ValidationResults = null;
-                    return Created<SamplingPlanSubsectorSite>(new Uri(Request.RequestUri, samplingPlanSubsectorSite.SamplingPlanSubsectorSiteID.ToString()), samplingPlanSubsectorSite);
-                }
-            }
+            return await samplingPlanSubsectorSiteService.Add(samplingPlanSubsectorSite);
         }
-        // PUT api/samplingPlanSubsectorSite
-        [Route("")]
-        public IHttpActionResult Put([FromBody]SamplingPlanSubsectorSite samplingPlanSubsectorSite, [FromUri]string lang = "en")
+        [HttpPut]
+        public async Task<ActionResult<SamplingPlanSubsectorSite>> Put(SamplingPlanSubsectorSite samplingPlanSubsectorSite)
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                SamplingPlanSubsectorSiteService samplingPlanSubsectorSiteService = new SamplingPlanSubsectorSiteService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
-
-                if (!samplingPlanSubsectorSiteService.Update(samplingPlanSubsectorSite))
-                {
-                    return BadRequest(String.Join("|||", samplingPlanSubsectorSite.ValidationResults));
-                }
-                else
-                {
-                    samplingPlanSubsectorSite.ValidationResults = null;
-                    return Ok(samplingPlanSubsectorSite);
-                }
-            }
+            return await samplingPlanSubsectorSiteService.Update(samplingPlanSubsectorSite);
         }
-        // DELETE api/samplingPlanSubsectorSite
-        [Route("")]
-        public IHttpActionResult Delete([FromBody]SamplingPlanSubsectorSite samplingPlanSubsectorSite, [FromUri]string lang = "en")
+        [HttpDelete]
+        public async Task<ActionResult<SamplingPlanSubsectorSite>> Delete(SamplingPlanSubsectorSite samplingPlanSubsectorSite)
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                SamplingPlanSubsectorSiteService samplingPlanSubsectorSiteService = new SamplingPlanSubsectorSiteService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
-
-                if (!samplingPlanSubsectorSiteService.Delete(samplingPlanSubsectorSite))
-                {
-                    return BadRequest(String.Join("|||", samplingPlanSubsectorSite.ValidationResults));
-                }
-                else
-                {
-                    samplingPlanSubsectorSite.ValidationResults = null;
-                    return Ok(samplingPlanSubsectorSite);
-                }
-            }
+            return await samplingPlanSubsectorSiteService.Delete(samplingPlanSubsectorSite);
         }
         #endregion Functions public
 

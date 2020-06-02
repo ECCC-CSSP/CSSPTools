@@ -1,143 +1,70 @@
-using CSSPEnums;
 using CSSPModels;
 using CSSPServices;
-using System;
+using LoggedInServices.Services;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web.Http;
+using System.Threading.Tasks;
 
 namespace CSSPWebAPI.Controllers
 {
-    [RoutePrefix("api/log")]
-    public partial class LogController : BaseController
+    public partial interface ILogController
+    {
+        Task<ActionResult<List<Log>>> Get();
+        Task<ActionResult<Log>> Get(int LogID);
+        Task<ActionResult<Log>> Post(Log log);
+        Task<ActionResult<Log>> Put(Log log);
+        Task<ActionResult<Log>> Delete(Log log);
+    }
+
+    [Route("api/{culture}/[controller]")]
+    [ApiController]
+    [Authorize]
+    public partial class LogController : ControllerBase, ILogController
     {
         #region Variables
         #endregion Variables
 
         #region Properties
+        private ILogService logService { get; }
+        private CSSPDBContext db { get; }
+        private ILoggedInService loggedInService { get; }
         #endregion Properties
 
         #region Constructors
-        public LogController() : base()
+        public LogController(ILogService logService, CSSPDBContext db, ILoggedInService loggedInService)
         {
-        }
-        public LogController(DatabaseTypeEnum dbt = DatabaseTypeEnum.SqlServerTestDB) : base(dbt)
-        {
+            this.logService = logService;
+            this.db = db;
+            this.loggedInService = loggedInService;
         }
         #endregion Constructors
 
         #region Functions public
-        // GET api/log
-        [Route("")]
-        public IHttpActionResult GetLogList([FromUri]string lang = "en", [FromUri]int skip = 0, [FromUri]int take = 200,
-            [FromUri]string asc = "", [FromUri]string desc = "", [FromUri]string where = "", [FromUri]string extra = "")
+        [HttpGet]
+        public async Task<ActionResult<List<Log>>> Get()
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                LogService logService = new LogService(new Query() { Lang = lang }, db, ContactID);
-
-                else // QueryString has no parameter [extra] or extra is empty
-                {
-                   logService.Query = logService.FillQuery(typeof(Log), lang, skip, take, asc, desc, where, extra);
-
-                    if (logService.Query.HasErrors)
-                    {
-                        return Ok(new List<Log>()
-                        {
-                            new Log()
-                            {
-                                HasErrors = logService.Query.HasErrors,
-                                ValidationResults = logService.Query.ValidationResults,
-                            },
-                        }.ToList());
-                    }
-                    else
-                    {
-                        return Ok(logService.GetLogList().ToList());
-                    }
-                }
-            }
+            return await logService.GetLogList();
         }
-        // GET api/log/1
-        [Route("{LogID:int}")]
-        public IHttpActionResult GetLogWithID([FromUri]int LogID, [FromUri]string lang = "en", [FromUri]string extra = "")
+        [HttpGet("{LogID}")]
+        public async Task<ActionResult<Log>> Get(int LogID)
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                LogService logService = new LogService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
-
-                logService.Query = logService.FillQuery(typeof(Log), lang, 0, 1, "", "", extra);
-
-                else
-                {
-                    Log log = new Log();
-                    log = logService.GetLogWithLogID(LogID);
-
-                    if (log == null)
-                    {
-                        return NotFound();
-                    }
-
-                    return Ok(log);
-                }
-            }
+            return await logService.GetLogWithLogID(LogID);
         }
-        // POST api/log
-        [Route("")]
-        public IHttpActionResult Post([FromBody]Log log, [FromUri]string lang = "en")
+        [HttpPost]
+        public async Task<ActionResult<Log>> Post(Log log)
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                LogService logService = new LogService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
-
-                if (!logService.Add(log))
-                {
-                    return BadRequest(String.Join("|||", log.ValidationResults));
-                }
-                else
-                {
-                    log.ValidationResults = null;
-                    return Created<Log>(new Uri(Request.RequestUri, log.LogID.ToString()), log);
-                }
-            }
+            return await logService.Add(log);
         }
-        // PUT api/log
-        [Route("")]
-        public IHttpActionResult Put([FromBody]Log log, [FromUri]string lang = "en")
+        [HttpPut]
+        public async Task<ActionResult<Log>> Put(Log log)
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                LogService logService = new LogService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
-
-                if (!logService.Update(log))
-                {
-                    return BadRequest(String.Join("|||", log.ValidationResults));
-                }
-                else
-                {
-                    log.ValidationResults = null;
-                    return Ok(log);
-                }
-            }
+            return await logService.Update(log);
         }
-        // DELETE api/log
-        [Route("")]
-        public IHttpActionResult Delete([FromBody]Log log, [FromUri]string lang = "en")
+        [HttpDelete]
+        public async Task<ActionResult<Log>> Delete(Log log)
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                LogService logService = new LogService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
-
-                if (!logService.Delete(log))
-                {
-                    return BadRequest(String.Join("|||", log.ValidationResults));
-                }
-                else
-                {
-                    log.ValidationResults = null;
-                    return Ok(log);
-                }
-            }
+            return await logService.Delete(log);
         }
         #endregion Functions public
 

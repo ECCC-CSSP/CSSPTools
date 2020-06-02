@@ -1,143 +1,70 @@
-using CSSPEnums;
 using CSSPModels;
 using CSSPServices;
-using System;
+using LoggedInServices.Services;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web.Http;
+using System.Threading.Tasks;
 
 namespace CSSPWebAPI.Controllers
 {
-    [RoutePrefix("api/mikeSourceStartEnd")]
-    public partial class MikeSourceStartEndController : BaseController
+    public partial interface IMikeSourceStartEndController
+    {
+        Task<ActionResult<List<MikeSourceStartEnd>>> Get();
+        Task<ActionResult<MikeSourceStartEnd>> Get(int MikeSourceStartEndID);
+        Task<ActionResult<MikeSourceStartEnd>> Post(MikeSourceStartEnd mikeSourceStartEnd);
+        Task<ActionResult<MikeSourceStartEnd>> Put(MikeSourceStartEnd mikeSourceStartEnd);
+        Task<ActionResult<MikeSourceStartEnd>> Delete(MikeSourceStartEnd mikeSourceStartEnd);
+    }
+
+    [Route("api/{culture}/[controller]")]
+    [ApiController]
+    [Authorize]
+    public partial class MikeSourceStartEndController : ControllerBase, IMikeSourceStartEndController
     {
         #region Variables
         #endregion Variables
 
         #region Properties
+        private IMikeSourceStartEndService mikeSourceStartEndService { get; }
+        private CSSPDBContext db { get; }
+        private ILoggedInService loggedInService { get; }
         #endregion Properties
 
         #region Constructors
-        public MikeSourceStartEndController() : base()
+        public MikeSourceStartEndController(IMikeSourceStartEndService mikeSourceStartEndService, CSSPDBContext db, ILoggedInService loggedInService)
         {
-        }
-        public MikeSourceStartEndController(DatabaseTypeEnum dbt = DatabaseTypeEnum.SqlServerTestDB) : base(dbt)
-        {
+            this.mikeSourceStartEndService = mikeSourceStartEndService;
+            this.db = db;
+            this.loggedInService = loggedInService;
         }
         #endregion Constructors
 
         #region Functions public
-        // GET api/mikeSourceStartEnd
-        [Route("")]
-        public IHttpActionResult GetMikeSourceStartEndList([FromUri]string lang = "en", [FromUri]int skip = 0, [FromUri]int take = 200,
-            [FromUri]string asc = "", [FromUri]string desc = "", [FromUri]string where = "", [FromUri]string extra = "")
+        [HttpGet]
+        public async Task<ActionResult<List<MikeSourceStartEnd>>> Get()
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                MikeSourceStartEndService mikeSourceStartEndService = new MikeSourceStartEndService(new Query() { Lang = lang }, db, ContactID);
-
-                else // QueryString has no parameter [extra] or extra is empty
-                {
-                   mikeSourceStartEndService.Query = mikeSourceStartEndService.FillQuery(typeof(MikeSourceStartEnd), lang, skip, take, asc, desc, where, extra);
-
-                    if (mikeSourceStartEndService.Query.HasErrors)
-                    {
-                        return Ok(new List<MikeSourceStartEnd>()
-                        {
-                            new MikeSourceStartEnd()
-                            {
-                                HasErrors = mikeSourceStartEndService.Query.HasErrors,
-                                ValidationResults = mikeSourceStartEndService.Query.ValidationResults,
-                            },
-                        }.ToList());
-                    }
-                    else
-                    {
-                        return Ok(mikeSourceStartEndService.GetMikeSourceStartEndList().ToList());
-                    }
-                }
-            }
+            return await mikeSourceStartEndService.GetMikeSourceStartEndList();
         }
-        // GET api/mikeSourceStartEnd/1
-        [Route("{MikeSourceStartEndID:int}")]
-        public IHttpActionResult GetMikeSourceStartEndWithID([FromUri]int MikeSourceStartEndID, [FromUri]string lang = "en", [FromUri]string extra = "")
+        [HttpGet("{MikeSourceStartEndID}")]
+        public async Task<ActionResult<MikeSourceStartEnd>> Get(int MikeSourceStartEndID)
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                MikeSourceStartEndService mikeSourceStartEndService = new MikeSourceStartEndService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
-
-                mikeSourceStartEndService.Query = mikeSourceStartEndService.FillQuery(typeof(MikeSourceStartEnd), lang, 0, 1, "", "", extra);
-
-                else
-                {
-                    MikeSourceStartEnd mikeSourceStartEnd = new MikeSourceStartEnd();
-                    mikeSourceStartEnd = mikeSourceStartEndService.GetMikeSourceStartEndWithMikeSourceStartEndID(MikeSourceStartEndID);
-
-                    if (mikeSourceStartEnd == null)
-                    {
-                        return NotFound();
-                    }
-
-                    return Ok(mikeSourceStartEnd);
-                }
-            }
+            return await mikeSourceStartEndService.GetMikeSourceStartEndWithMikeSourceStartEndID(MikeSourceStartEndID);
         }
-        // POST api/mikeSourceStartEnd
-        [Route("")]
-        public IHttpActionResult Post([FromBody]MikeSourceStartEnd mikeSourceStartEnd, [FromUri]string lang = "en")
+        [HttpPost]
+        public async Task<ActionResult<MikeSourceStartEnd>> Post(MikeSourceStartEnd mikeSourceStartEnd)
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                MikeSourceStartEndService mikeSourceStartEndService = new MikeSourceStartEndService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
-
-                if (!mikeSourceStartEndService.Add(mikeSourceStartEnd))
-                {
-                    return BadRequest(String.Join("|||", mikeSourceStartEnd.ValidationResults));
-                }
-                else
-                {
-                    mikeSourceStartEnd.ValidationResults = null;
-                    return Created<MikeSourceStartEnd>(new Uri(Request.RequestUri, mikeSourceStartEnd.MikeSourceStartEndID.ToString()), mikeSourceStartEnd);
-                }
-            }
+            return await mikeSourceStartEndService.Add(mikeSourceStartEnd);
         }
-        // PUT api/mikeSourceStartEnd
-        [Route("")]
-        public IHttpActionResult Put([FromBody]MikeSourceStartEnd mikeSourceStartEnd, [FromUri]string lang = "en")
+        [HttpPut]
+        public async Task<ActionResult<MikeSourceStartEnd>> Put(MikeSourceStartEnd mikeSourceStartEnd)
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                MikeSourceStartEndService mikeSourceStartEndService = new MikeSourceStartEndService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
-
-                if (!mikeSourceStartEndService.Update(mikeSourceStartEnd))
-                {
-                    return BadRequest(String.Join("|||", mikeSourceStartEnd.ValidationResults));
-                }
-                else
-                {
-                    mikeSourceStartEnd.ValidationResults = null;
-                    return Ok(mikeSourceStartEnd);
-                }
-            }
+            return await mikeSourceStartEndService.Update(mikeSourceStartEnd);
         }
-        // DELETE api/mikeSourceStartEnd
-        [Route("")]
-        public IHttpActionResult Delete([FromBody]MikeSourceStartEnd mikeSourceStartEnd, [FromUri]string lang = "en")
+        [HttpDelete]
+        public async Task<ActionResult<MikeSourceStartEnd>> Delete(MikeSourceStartEnd mikeSourceStartEnd)
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                MikeSourceStartEndService mikeSourceStartEndService = new MikeSourceStartEndService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
-
-                if (!mikeSourceStartEndService.Delete(mikeSourceStartEnd))
-                {
-                    return BadRequest(String.Join("|||", mikeSourceStartEnd.ValidationResults));
-                }
-                else
-                {
-                    mikeSourceStartEnd.ValidationResults = null;
-                    return Ok(mikeSourceStartEnd);
-                }
-            }
+            return await mikeSourceStartEndService.Delete(mikeSourceStartEnd);
         }
         #endregion Functions public
 

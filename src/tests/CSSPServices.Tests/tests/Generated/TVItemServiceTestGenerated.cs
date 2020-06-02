@@ -16,6 +16,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Transactions;
 using Xunit;
 
 namespace CSSPServices.Tests
@@ -54,37 +55,40 @@ namespace CSSPServices.Tests
 
             await Setup(new CultureInfo(culture));
 
-            TVItem tvItem = GetFilledRandomTVItem(""); 
+            using (TransactionScope ts = new TransactionScope())
+            {
+               TVItem tvItem = GetFilledRandomTVItem(""); 
 
-            // List<TVItem>
-            var actionTVItemList = await tvItemService.GetTVItemList();
-            Assert.Equal(200, ((ObjectResult)actionTVItemList.Result).StatusCode);
-            Assert.NotNull(((OkObjectResult)actionTVItemList.Result).Value);
-            List<TVItem> tvItemList = (List<TVItem>)(((OkObjectResult)actionTVItemList.Result).Value);
+               // List<TVItem>
+               var actionTVItemList = await tvItemService.GetTVItemList();
+               Assert.Equal(200, ((ObjectResult)actionTVItemList.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionTVItemList.Result).Value);
+               List<TVItem> tvItemList = (List<TVItem>)(((OkObjectResult)actionTVItemList.Result).Value);
 
-            int count = ((List<TVItem>)((OkObjectResult)actionTVItemList.Result).Value).Count();
-            Assert.True(count > 0);
+               int count = ((List<TVItem>)((OkObjectResult)actionTVItemList.Result).Value).Count();
+                Assert.True(count > 0);
 
-            // Add TVItem
-            var actionTVItemAdded = await tvItemService.Add(tvItem);
-            Assert.Equal(200, ((ObjectResult)actionTVItemAdded.Result).StatusCode);
-            Assert.NotNull(((OkObjectResult)actionTVItemAdded.Result).Value);
-            TVItem tvItemAdded = (TVItem)(((OkObjectResult)actionTVItemAdded.Result).Value);
-            Assert.NotNull(tvItemAdded);
+               // Add TVItem
+               var actionTVItemAdded = await tvItemService.Add(tvItem);
+               Assert.Equal(200, ((ObjectResult)actionTVItemAdded.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionTVItemAdded.Result).Value);
+               TVItem tvItemAdded = (TVItem)(((OkObjectResult)actionTVItemAdded.Result).Value);
+               Assert.NotNull(tvItemAdded);
 
-            // Update TVItem
-            var actionTVItemUpdated = await tvItemService.Update(tvItem);
-            Assert.Equal(200, ((ObjectResult)actionTVItemUpdated.Result).StatusCode);
-            Assert.NotNull(((OkObjectResult)actionTVItemUpdated.Result).Value);
-            TVItem tvItemUpdated = (TVItem)(((OkObjectResult)actionTVItemUpdated.Result).Value);
-            Assert.NotNull(tvItemUpdated);
+               // Update TVItem
+               var actionTVItemUpdated = await tvItemService.Update(tvItem);
+               Assert.Equal(200, ((ObjectResult)actionTVItemUpdated.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionTVItemUpdated.Result).Value);
+               TVItem tvItemUpdated = (TVItem)(((OkObjectResult)actionTVItemUpdated.Result).Value);
+               Assert.NotNull(tvItemUpdated);
 
-            // Delete TVItem
-            var actionTVItemDeleted = await tvItemService.Delete(tvItem);
-            Assert.Equal(200, ((ObjectResult)actionTVItemDeleted.Result).StatusCode);
-            Assert.NotNull(((OkObjectResult)actionTVItemDeleted.Result).Value);
-            TVItem tvItemDeleted = (TVItem)(((OkObjectResult)actionTVItemDeleted.Result).Value);
-            Assert.NotNull(tvItemDeleted);
+               // Delete TVItem
+               var actionTVItemDeleted = await tvItemService.Delete(tvItem);
+               Assert.Equal(200, ((ObjectResult)actionTVItemDeleted.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionTVItemDeleted.Result).Value);
+               TVItem tvItemDeleted = (TVItem)(((OkObjectResult)actionTVItemDeleted.Result).Value);
+               Assert.NotNull(tvItemDeleted);
+            }
         }
         #endregion Tests Generated CRUD
 

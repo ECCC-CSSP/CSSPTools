@@ -1,143 +1,70 @@
-using CSSPEnums;
 using CSSPModels;
 using CSSPServices;
-using System;
+using LoggedInServices.Services;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web.Http;
+using System.Threading.Tasks;
 
 namespace CSSPWebAPI.Controllers
 {
-    [RoutePrefix("api/mwqmLookupMPN")]
-    public partial class MWQMLookupMPNController : BaseController
+    public partial interface IMWQMLookupMPNController
+    {
+        Task<ActionResult<List<MWQMLookupMPN>>> Get();
+        Task<ActionResult<MWQMLookupMPN>> Get(int MWQMLookupMPNID);
+        Task<ActionResult<MWQMLookupMPN>> Post(MWQMLookupMPN mwqmLookupMPN);
+        Task<ActionResult<MWQMLookupMPN>> Put(MWQMLookupMPN mwqmLookupMPN);
+        Task<ActionResult<MWQMLookupMPN>> Delete(MWQMLookupMPN mwqmLookupMPN);
+    }
+
+    [Route("api/{culture}/[controller]")]
+    [ApiController]
+    [Authorize]
+    public partial class MWQMLookupMPNController : ControllerBase, IMWQMLookupMPNController
     {
         #region Variables
         #endregion Variables
 
         #region Properties
+        private IMWQMLookupMPNService mwqmLookupMPNService { get; }
+        private CSSPDBContext db { get; }
+        private ILoggedInService loggedInService { get; }
         #endregion Properties
 
         #region Constructors
-        public MWQMLookupMPNController() : base()
+        public MWQMLookupMPNController(IMWQMLookupMPNService mwqmLookupMPNService, CSSPDBContext db, ILoggedInService loggedInService)
         {
-        }
-        public MWQMLookupMPNController(DatabaseTypeEnum dbt = DatabaseTypeEnum.SqlServerTestDB) : base(dbt)
-        {
+            this.mwqmLookupMPNService = mwqmLookupMPNService;
+            this.db = db;
+            this.loggedInService = loggedInService;
         }
         #endregion Constructors
 
         #region Functions public
-        // GET api/mwqmLookupMPN
-        [Route("")]
-        public IHttpActionResult GetMWQMLookupMPNList([FromUri]string lang = "en", [FromUri]int skip = 0, [FromUri]int take = 200,
-            [FromUri]string asc = "", [FromUri]string desc = "", [FromUri]string where = "", [FromUri]string extra = "")
+        [HttpGet]
+        public async Task<ActionResult<List<MWQMLookupMPN>>> Get()
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                MWQMLookupMPNService mwqmLookupMPNService = new MWQMLookupMPNService(new Query() { Lang = lang }, db, ContactID);
-
-                else // QueryString has no parameter [extra] or extra is empty
-                {
-                   mwqmLookupMPNService.Query = mwqmLookupMPNService.FillQuery(typeof(MWQMLookupMPN), lang, skip, take, asc, desc, where, extra);
-
-                    if (mwqmLookupMPNService.Query.HasErrors)
-                    {
-                        return Ok(new List<MWQMLookupMPN>()
-                        {
-                            new MWQMLookupMPN()
-                            {
-                                HasErrors = mwqmLookupMPNService.Query.HasErrors,
-                                ValidationResults = mwqmLookupMPNService.Query.ValidationResults,
-                            },
-                        }.ToList());
-                    }
-                    else
-                    {
-                        return Ok(mwqmLookupMPNService.GetMWQMLookupMPNList().ToList());
-                    }
-                }
-            }
+            return await mwqmLookupMPNService.GetMWQMLookupMPNList();
         }
-        // GET api/mwqmLookupMPN/1
-        [Route("{MWQMLookupMPNID:int}")]
-        public IHttpActionResult GetMWQMLookupMPNWithID([FromUri]int MWQMLookupMPNID, [FromUri]string lang = "en", [FromUri]string extra = "")
+        [HttpGet("{MWQMLookupMPNID}")]
+        public async Task<ActionResult<MWQMLookupMPN>> Get(int MWQMLookupMPNID)
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                MWQMLookupMPNService mwqmLookupMPNService = new MWQMLookupMPNService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
-
-                mwqmLookupMPNService.Query = mwqmLookupMPNService.FillQuery(typeof(MWQMLookupMPN), lang, 0, 1, "", "", extra);
-
-                else
-                {
-                    MWQMLookupMPN mwqmLookupMPN = new MWQMLookupMPN();
-                    mwqmLookupMPN = mwqmLookupMPNService.GetMWQMLookupMPNWithMWQMLookupMPNID(MWQMLookupMPNID);
-
-                    if (mwqmLookupMPN == null)
-                    {
-                        return NotFound();
-                    }
-
-                    return Ok(mwqmLookupMPN);
-                }
-            }
+            return await mwqmLookupMPNService.GetMWQMLookupMPNWithMWQMLookupMPNID(MWQMLookupMPNID);
         }
-        // POST api/mwqmLookupMPN
-        [Route("")]
-        public IHttpActionResult Post([FromBody]MWQMLookupMPN mwqmLookupMPN, [FromUri]string lang = "en")
+        [HttpPost]
+        public async Task<ActionResult<MWQMLookupMPN>> Post(MWQMLookupMPN mwqmLookupMPN)
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                MWQMLookupMPNService mwqmLookupMPNService = new MWQMLookupMPNService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
-
-                if (!mwqmLookupMPNService.Add(mwqmLookupMPN))
-                {
-                    return BadRequest(String.Join("|||", mwqmLookupMPN.ValidationResults));
-                }
-                else
-                {
-                    mwqmLookupMPN.ValidationResults = null;
-                    return Created<MWQMLookupMPN>(new Uri(Request.RequestUri, mwqmLookupMPN.MWQMLookupMPNID.ToString()), mwqmLookupMPN);
-                }
-            }
+            return await mwqmLookupMPNService.Add(mwqmLookupMPN);
         }
-        // PUT api/mwqmLookupMPN
-        [Route("")]
-        public IHttpActionResult Put([FromBody]MWQMLookupMPN mwqmLookupMPN, [FromUri]string lang = "en")
+        [HttpPut]
+        public async Task<ActionResult<MWQMLookupMPN>> Put(MWQMLookupMPN mwqmLookupMPN)
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                MWQMLookupMPNService mwqmLookupMPNService = new MWQMLookupMPNService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
-
-                if (!mwqmLookupMPNService.Update(mwqmLookupMPN))
-                {
-                    return BadRequest(String.Join("|||", mwqmLookupMPN.ValidationResults));
-                }
-                else
-                {
-                    mwqmLookupMPN.ValidationResults = null;
-                    return Ok(mwqmLookupMPN);
-                }
-            }
+            return await mwqmLookupMPNService.Update(mwqmLookupMPN);
         }
-        // DELETE api/mwqmLookupMPN
-        [Route("")]
-        public IHttpActionResult Delete([FromBody]MWQMLookupMPN mwqmLookupMPN, [FromUri]string lang = "en")
+        [HttpDelete]
+        public async Task<ActionResult<MWQMLookupMPN>> Delete(MWQMLookupMPN mwqmLookupMPN)
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                MWQMLookupMPNService mwqmLookupMPNService = new MWQMLookupMPNService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
-
-                if (!mwqmLookupMPNService.Delete(mwqmLookupMPN))
-                {
-                    return BadRequest(String.Join("|||", mwqmLookupMPN.ValidationResults));
-                }
-                else
-                {
-                    mwqmLookupMPN.ValidationResults = null;
-                    return Ok(mwqmLookupMPN);
-                }
-            }
+            return await mwqmLookupMPNService.Delete(mwqmLookupMPN);
         }
         #endregion Functions public
 

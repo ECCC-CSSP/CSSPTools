@@ -1,143 +1,70 @@
-using CSSPEnums;
 using CSSPModels;
 using CSSPServices;
-using System;
+using LoggedInServices.Services;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web.Http;
+using System.Threading.Tasks;
 
 namespace CSSPWebAPI.Controllers
 {
-    [RoutePrefix("api/reportType")]
-    public partial class ReportTypeController : BaseController
+    public partial interface IReportTypeController
+    {
+        Task<ActionResult<List<ReportType>>> Get();
+        Task<ActionResult<ReportType>> Get(int ReportTypeID);
+        Task<ActionResult<ReportType>> Post(ReportType reportType);
+        Task<ActionResult<ReportType>> Put(ReportType reportType);
+        Task<ActionResult<ReportType>> Delete(ReportType reportType);
+    }
+
+    [Route("api/{culture}/[controller]")]
+    [ApiController]
+    [Authorize]
+    public partial class ReportTypeController : ControllerBase, IReportTypeController
     {
         #region Variables
         #endregion Variables
 
         #region Properties
+        private IReportTypeService reportTypeService { get; }
+        private CSSPDBContext db { get; }
+        private ILoggedInService loggedInService { get; }
         #endregion Properties
 
         #region Constructors
-        public ReportTypeController() : base()
+        public ReportTypeController(IReportTypeService reportTypeService, CSSPDBContext db, ILoggedInService loggedInService)
         {
-        }
-        public ReportTypeController(DatabaseTypeEnum dbt = DatabaseTypeEnum.SqlServerTestDB) : base(dbt)
-        {
+            this.reportTypeService = reportTypeService;
+            this.db = db;
+            this.loggedInService = loggedInService;
         }
         #endregion Constructors
 
         #region Functions public
-        // GET api/reportType
-        [Route("")]
-        public IHttpActionResult GetReportTypeList([FromUri]string lang = "en", [FromUri]int skip = 0, [FromUri]int take = 200,
-            [FromUri]string asc = "", [FromUri]string desc = "", [FromUri]string where = "", [FromUri]string extra = "")
+        [HttpGet]
+        public async Task<ActionResult<List<ReportType>>> Get()
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                ReportTypeService reportTypeService = new ReportTypeService(new Query() { Lang = lang }, db, ContactID);
-
-                else // QueryString has no parameter [extra] or extra is empty
-                {
-                   reportTypeService.Query = reportTypeService.FillQuery(typeof(ReportType), lang, skip, take, asc, desc, where, extra);
-
-                    if (reportTypeService.Query.HasErrors)
-                    {
-                        return Ok(new List<ReportType>()
-                        {
-                            new ReportType()
-                            {
-                                HasErrors = reportTypeService.Query.HasErrors,
-                                ValidationResults = reportTypeService.Query.ValidationResults,
-                            },
-                        }.ToList());
-                    }
-                    else
-                    {
-                        return Ok(reportTypeService.GetReportTypeList().ToList());
-                    }
-                }
-            }
+            return await reportTypeService.GetReportTypeList();
         }
-        // GET api/reportType/1
-        [Route("{ReportTypeID:int}")]
-        public IHttpActionResult GetReportTypeWithID([FromUri]int ReportTypeID, [FromUri]string lang = "en", [FromUri]string extra = "")
+        [HttpGet("{ReportTypeID}")]
+        public async Task<ActionResult<ReportType>> Get(int ReportTypeID)
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                ReportTypeService reportTypeService = new ReportTypeService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
-
-                reportTypeService.Query = reportTypeService.FillQuery(typeof(ReportType), lang, 0, 1, "", "", extra);
-
-                else
-                {
-                    ReportType reportType = new ReportType();
-                    reportType = reportTypeService.GetReportTypeWithReportTypeID(ReportTypeID);
-
-                    if (reportType == null)
-                    {
-                        return NotFound();
-                    }
-
-                    return Ok(reportType);
-                }
-            }
+            return await reportTypeService.GetReportTypeWithReportTypeID(ReportTypeID);
         }
-        // POST api/reportType
-        [Route("")]
-        public IHttpActionResult Post([FromBody]ReportType reportType, [FromUri]string lang = "en")
+        [HttpPost]
+        public async Task<ActionResult<ReportType>> Post(ReportType reportType)
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                ReportTypeService reportTypeService = new ReportTypeService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
-
-                if (!reportTypeService.Add(reportType))
-                {
-                    return BadRequest(String.Join("|||", reportType.ValidationResults));
-                }
-                else
-                {
-                    reportType.ValidationResults = null;
-                    return Created<ReportType>(new Uri(Request.RequestUri, reportType.ReportTypeID.ToString()), reportType);
-                }
-            }
+            return await reportTypeService.Add(reportType);
         }
-        // PUT api/reportType
-        [Route("")]
-        public IHttpActionResult Put([FromBody]ReportType reportType, [FromUri]string lang = "en")
+        [HttpPut]
+        public async Task<ActionResult<ReportType>> Put(ReportType reportType)
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                ReportTypeService reportTypeService = new ReportTypeService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
-
-                if (!reportTypeService.Update(reportType))
-                {
-                    return BadRequest(String.Join("|||", reportType.ValidationResults));
-                }
-                else
-                {
-                    reportType.ValidationResults = null;
-                    return Ok(reportType);
-                }
-            }
+            return await reportTypeService.Update(reportType);
         }
-        // DELETE api/reportType
-        [Route("")]
-        public IHttpActionResult Delete([FromBody]ReportType reportType, [FromUri]string lang = "en")
+        [HttpDelete]
+        public async Task<ActionResult<ReportType>> Delete(ReportType reportType)
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                ReportTypeService reportTypeService = new ReportTypeService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
-
-                if (!reportTypeService.Delete(reportType))
-                {
-                    return BadRequest(String.Join("|||", reportType.ValidationResults));
-                }
-                else
-                {
-                    reportType.ValidationResults = null;
-                    return Ok(reportType);
-                }
-            }
+            return await reportTypeService.Delete(reportType);
         }
         #endregion Functions public
 

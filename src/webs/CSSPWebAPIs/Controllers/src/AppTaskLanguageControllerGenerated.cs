@@ -1,143 +1,70 @@
-using CSSPEnums;
 using CSSPModels;
 using CSSPServices;
-using System;
+using LoggedInServices.Services;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web.Http;
+using System.Threading.Tasks;
 
 namespace CSSPWebAPI.Controllers
 {
-    [RoutePrefix("api/appTaskLanguage")]
-    public partial class AppTaskLanguageController : BaseController
+    public partial interface IAppTaskLanguageController
+    {
+        Task<ActionResult<List<AppTaskLanguage>>> Get();
+        Task<ActionResult<AppTaskLanguage>> Get(int AppTaskLanguageID);
+        Task<ActionResult<AppTaskLanguage>> Post(AppTaskLanguage appTaskLanguage);
+        Task<ActionResult<AppTaskLanguage>> Put(AppTaskLanguage appTaskLanguage);
+        Task<ActionResult<AppTaskLanguage>> Delete(AppTaskLanguage appTaskLanguage);
+    }
+
+    [Route("api/{culture}/[controller]")]
+    [ApiController]
+    [Authorize]
+    public partial class AppTaskLanguageController : ControllerBase, IAppTaskLanguageController
     {
         #region Variables
         #endregion Variables
 
         #region Properties
+        private IAppTaskLanguageService appTaskLanguageService { get; }
+        private CSSPDBContext db { get; }
+        private ILoggedInService loggedInService { get; }
         #endregion Properties
 
         #region Constructors
-        public AppTaskLanguageController() : base()
+        public AppTaskLanguageController(IAppTaskLanguageService appTaskLanguageService, CSSPDBContext db, ILoggedInService loggedInService)
         {
-        }
-        public AppTaskLanguageController(DatabaseTypeEnum dbt = DatabaseTypeEnum.SqlServerTestDB) : base(dbt)
-        {
+            this.appTaskLanguageService = appTaskLanguageService;
+            this.db = db;
+            this.loggedInService = loggedInService;
         }
         #endregion Constructors
 
         #region Functions public
-        // GET api/appTaskLanguage
-        [Route("")]
-        public IHttpActionResult GetAppTaskLanguageList([FromUri]string lang = "en", [FromUri]int skip = 0, [FromUri]int take = 200,
-            [FromUri]string asc = "", [FromUri]string desc = "", [FromUri]string where = "", [FromUri]string extra = "")
+        [HttpGet]
+        public async Task<ActionResult<List<AppTaskLanguage>>> Get()
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                AppTaskLanguageService appTaskLanguageService = new AppTaskLanguageService(new Query() { Lang = lang }, db, ContactID);
-
-                else // QueryString has no parameter [extra] or extra is empty
-                {
-                   appTaskLanguageService.Query = appTaskLanguageService.FillQuery(typeof(AppTaskLanguage), lang, skip, take, asc, desc, where, extra);
-
-                    if (appTaskLanguageService.Query.HasErrors)
-                    {
-                        return Ok(new List<AppTaskLanguage>()
-                        {
-                            new AppTaskLanguage()
-                            {
-                                HasErrors = appTaskLanguageService.Query.HasErrors,
-                                ValidationResults = appTaskLanguageService.Query.ValidationResults,
-                            },
-                        }.ToList());
-                    }
-                    else
-                    {
-                        return Ok(appTaskLanguageService.GetAppTaskLanguageList().ToList());
-                    }
-                }
-            }
+            return await appTaskLanguageService.GetAppTaskLanguageList();
         }
-        // GET api/appTaskLanguage/1
-        [Route("{AppTaskLanguageID:int}")]
-        public IHttpActionResult GetAppTaskLanguageWithID([FromUri]int AppTaskLanguageID, [FromUri]string lang = "en", [FromUri]string extra = "")
+        [HttpGet("{AppTaskLanguageID}")]
+        public async Task<ActionResult<AppTaskLanguage>> Get(int AppTaskLanguageID)
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                AppTaskLanguageService appTaskLanguageService = new AppTaskLanguageService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
-
-                appTaskLanguageService.Query = appTaskLanguageService.FillQuery(typeof(AppTaskLanguage), lang, 0, 1, "", "", extra);
-
-                else
-                {
-                    AppTaskLanguage appTaskLanguage = new AppTaskLanguage();
-                    appTaskLanguage = appTaskLanguageService.GetAppTaskLanguageWithAppTaskLanguageID(AppTaskLanguageID);
-
-                    if (appTaskLanguage == null)
-                    {
-                        return NotFound();
-                    }
-
-                    return Ok(appTaskLanguage);
-                }
-            }
+            return await appTaskLanguageService.GetAppTaskLanguageWithAppTaskLanguageID(AppTaskLanguageID);
         }
-        // POST api/appTaskLanguage
-        [Route("")]
-        public IHttpActionResult Post([FromBody]AppTaskLanguage appTaskLanguage, [FromUri]string lang = "en")
+        [HttpPost]
+        public async Task<ActionResult<AppTaskLanguage>> Post(AppTaskLanguage appTaskLanguage)
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                AppTaskLanguageService appTaskLanguageService = new AppTaskLanguageService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
-
-                if (!appTaskLanguageService.Add(appTaskLanguage))
-                {
-                    return BadRequest(String.Join("|||", appTaskLanguage.ValidationResults));
-                }
-                else
-                {
-                    appTaskLanguage.ValidationResults = null;
-                    return Created<AppTaskLanguage>(new Uri(Request.RequestUri, appTaskLanguage.AppTaskLanguageID.ToString()), appTaskLanguage);
-                }
-            }
+            return await appTaskLanguageService.Add(appTaskLanguage);
         }
-        // PUT api/appTaskLanguage
-        [Route("")]
-        public IHttpActionResult Put([FromBody]AppTaskLanguage appTaskLanguage, [FromUri]string lang = "en")
+        [HttpPut]
+        public async Task<ActionResult<AppTaskLanguage>> Put(AppTaskLanguage appTaskLanguage)
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                AppTaskLanguageService appTaskLanguageService = new AppTaskLanguageService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
-
-                if (!appTaskLanguageService.Update(appTaskLanguage))
-                {
-                    return BadRequest(String.Join("|||", appTaskLanguage.ValidationResults));
-                }
-                else
-                {
-                    appTaskLanguage.ValidationResults = null;
-                    return Ok(appTaskLanguage);
-                }
-            }
+            return await appTaskLanguageService.Update(appTaskLanguage);
         }
-        // DELETE api/appTaskLanguage
-        [Route("")]
-        public IHttpActionResult Delete([FromBody]AppTaskLanguage appTaskLanguage, [FromUri]string lang = "en")
+        [HttpDelete]
+        public async Task<ActionResult<AppTaskLanguage>> Delete(AppTaskLanguage appTaskLanguage)
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                AppTaskLanguageService appTaskLanguageService = new AppTaskLanguageService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
-
-                if (!appTaskLanguageService.Delete(appTaskLanguage))
-                {
-                    return BadRequest(String.Join("|||", appTaskLanguage.ValidationResults));
-                }
-                else
-                {
-                    appTaskLanguage.ValidationResults = null;
-                    return Ok(appTaskLanguage);
-                }
-            }
+            return await appTaskLanguageService.Delete(appTaskLanguage);
         }
         #endregion Functions public
 

@@ -1,143 +1,70 @@
-using CSSPEnums;
 using CSSPModels;
 using CSSPServices;
-using System;
+using LoggedInServices.Services;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web.Http;
+using System.Threading.Tasks;
 
 namespace CSSPWebAPI.Controllers
 {
-    [RoutePrefix("api/climateSite")]
-    public partial class ClimateSiteController : BaseController
+    public partial interface IClimateSiteController
+    {
+        Task<ActionResult<List<ClimateSite>>> Get();
+        Task<ActionResult<ClimateSite>> Get(int ClimateSiteID);
+        Task<ActionResult<ClimateSite>> Post(ClimateSite climateSite);
+        Task<ActionResult<ClimateSite>> Put(ClimateSite climateSite);
+        Task<ActionResult<ClimateSite>> Delete(ClimateSite climateSite);
+    }
+
+    [Route("api/{culture}/[controller]")]
+    [ApiController]
+    [Authorize]
+    public partial class ClimateSiteController : ControllerBase, IClimateSiteController
     {
         #region Variables
         #endregion Variables
 
         #region Properties
+        private IClimateSiteService climateSiteService { get; }
+        private CSSPDBContext db { get; }
+        private ILoggedInService loggedInService { get; }
         #endregion Properties
 
         #region Constructors
-        public ClimateSiteController() : base()
+        public ClimateSiteController(IClimateSiteService climateSiteService, CSSPDBContext db, ILoggedInService loggedInService)
         {
-        }
-        public ClimateSiteController(DatabaseTypeEnum dbt = DatabaseTypeEnum.SqlServerTestDB) : base(dbt)
-        {
+            this.climateSiteService = climateSiteService;
+            this.db = db;
+            this.loggedInService = loggedInService;
         }
         #endregion Constructors
 
         #region Functions public
-        // GET api/climateSite
-        [Route("")]
-        public IHttpActionResult GetClimateSiteList([FromUri]string lang = "en", [FromUri]int skip = 0, [FromUri]int take = 200,
-            [FromUri]string asc = "", [FromUri]string desc = "", [FromUri]string where = "", [FromUri]string extra = "")
+        [HttpGet]
+        public async Task<ActionResult<List<ClimateSite>>> Get()
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                ClimateSiteService climateSiteService = new ClimateSiteService(new Query() { Lang = lang }, db, ContactID);
-
-                else // QueryString has no parameter [extra] or extra is empty
-                {
-                   climateSiteService.Query = climateSiteService.FillQuery(typeof(ClimateSite), lang, skip, take, asc, desc, where, extra);
-
-                    if (climateSiteService.Query.HasErrors)
-                    {
-                        return Ok(new List<ClimateSite>()
-                        {
-                            new ClimateSite()
-                            {
-                                HasErrors = climateSiteService.Query.HasErrors,
-                                ValidationResults = climateSiteService.Query.ValidationResults,
-                            },
-                        }.ToList());
-                    }
-                    else
-                    {
-                        return Ok(climateSiteService.GetClimateSiteList().ToList());
-                    }
-                }
-            }
+            return await climateSiteService.GetClimateSiteList();
         }
-        // GET api/climateSite/1
-        [Route("{ClimateSiteID:int}")]
-        public IHttpActionResult GetClimateSiteWithID([FromUri]int ClimateSiteID, [FromUri]string lang = "en", [FromUri]string extra = "")
+        [HttpGet("{ClimateSiteID}")]
+        public async Task<ActionResult<ClimateSite>> Get(int ClimateSiteID)
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                ClimateSiteService climateSiteService = new ClimateSiteService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
-
-                climateSiteService.Query = climateSiteService.FillQuery(typeof(ClimateSite), lang, 0, 1, "", "", extra);
-
-                else
-                {
-                    ClimateSite climateSite = new ClimateSite();
-                    climateSite = climateSiteService.GetClimateSiteWithClimateSiteID(ClimateSiteID);
-
-                    if (climateSite == null)
-                    {
-                        return NotFound();
-                    }
-
-                    return Ok(climateSite);
-                }
-            }
+            return await climateSiteService.GetClimateSiteWithClimateSiteID(ClimateSiteID);
         }
-        // POST api/climateSite
-        [Route("")]
-        public IHttpActionResult Post([FromBody]ClimateSite climateSite, [FromUri]string lang = "en")
+        [HttpPost]
+        public async Task<ActionResult<ClimateSite>> Post(ClimateSite climateSite)
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                ClimateSiteService climateSiteService = new ClimateSiteService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
-
-                if (!climateSiteService.Add(climateSite))
-                {
-                    return BadRequest(String.Join("|||", climateSite.ValidationResults));
-                }
-                else
-                {
-                    climateSite.ValidationResults = null;
-                    return Created<ClimateSite>(new Uri(Request.RequestUri, climateSite.ClimateSiteID.ToString()), climateSite);
-                }
-            }
+            return await climateSiteService.Add(climateSite);
         }
-        // PUT api/climateSite
-        [Route("")]
-        public IHttpActionResult Put([FromBody]ClimateSite climateSite, [FromUri]string lang = "en")
+        [HttpPut]
+        public async Task<ActionResult<ClimateSite>> Put(ClimateSite climateSite)
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                ClimateSiteService climateSiteService = new ClimateSiteService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
-
-                if (!climateSiteService.Update(climateSite))
-                {
-                    return BadRequest(String.Join("|||", climateSite.ValidationResults));
-                }
-                else
-                {
-                    climateSite.ValidationResults = null;
-                    return Ok(climateSite);
-                }
-            }
+            return await climateSiteService.Update(climateSite);
         }
-        // DELETE api/climateSite
-        [Route("")]
-        public IHttpActionResult Delete([FromBody]ClimateSite climateSite, [FromUri]string lang = "en")
+        [HttpDelete]
+        public async Task<ActionResult<ClimateSite>> Delete(ClimateSite climateSite)
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                ClimateSiteService climateSiteService = new ClimateSiteService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
-
-                if (!climateSiteService.Delete(climateSite))
-                {
-                    return BadRequest(String.Join("|||", climateSite.ValidationResults));
-                }
-                else
-                {
-                    climateSite.ValidationResults = null;
-                    return Ok(climateSite);
-                }
-            }
+            return await climateSiteService.Delete(climateSite);
         }
         #endregion Functions public
 

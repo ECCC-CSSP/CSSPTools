@@ -1,143 +1,70 @@
-using CSSPEnums;
 using CSSPModels;
 using CSSPServices;
-using System;
+using LoggedInServices.Services;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web.Http;
+using System.Threading.Tasks;
 
 namespace CSSPWebAPI.Controllers
 {
-    [RoutePrefix("api/emailDistributionList")]
-    public partial class EmailDistributionListController : BaseController
+    public partial interface IEmailDistributionListController
+    {
+        Task<ActionResult<List<EmailDistributionList>>> Get();
+        Task<ActionResult<EmailDistributionList>> Get(int EmailDistributionListID);
+        Task<ActionResult<EmailDistributionList>> Post(EmailDistributionList emailDistributionList);
+        Task<ActionResult<EmailDistributionList>> Put(EmailDistributionList emailDistributionList);
+        Task<ActionResult<EmailDistributionList>> Delete(EmailDistributionList emailDistributionList);
+    }
+
+    [Route("api/{culture}/[controller]")]
+    [ApiController]
+    [Authorize]
+    public partial class EmailDistributionListController : ControllerBase, IEmailDistributionListController
     {
         #region Variables
         #endregion Variables
 
         #region Properties
+        private IEmailDistributionListService emailDistributionListService { get; }
+        private CSSPDBContext db { get; }
+        private ILoggedInService loggedInService { get; }
         #endregion Properties
 
         #region Constructors
-        public EmailDistributionListController() : base()
+        public EmailDistributionListController(IEmailDistributionListService emailDistributionListService, CSSPDBContext db, ILoggedInService loggedInService)
         {
-        }
-        public EmailDistributionListController(DatabaseTypeEnum dbt = DatabaseTypeEnum.SqlServerTestDB) : base(dbt)
-        {
+            this.emailDistributionListService = emailDistributionListService;
+            this.db = db;
+            this.loggedInService = loggedInService;
         }
         #endregion Constructors
 
         #region Functions public
-        // GET api/emailDistributionList
-        [Route("")]
-        public IHttpActionResult GetEmailDistributionListList([FromUri]string lang = "en", [FromUri]int skip = 0, [FromUri]int take = 200,
-            [FromUri]string asc = "", [FromUri]string desc = "", [FromUri]string where = "", [FromUri]string extra = "")
+        [HttpGet]
+        public async Task<ActionResult<List<EmailDistributionList>>> Get()
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                EmailDistributionListService emailDistributionListService = new EmailDistributionListService(new Query() { Lang = lang }, db, ContactID);
-
-                else // QueryString has no parameter [extra] or extra is empty
-                {
-                   emailDistributionListService.Query = emailDistributionListService.FillQuery(typeof(EmailDistributionList), lang, skip, take, asc, desc, where, extra);
-
-                    if (emailDistributionListService.Query.HasErrors)
-                    {
-                        return Ok(new List<EmailDistributionList>()
-                        {
-                            new EmailDistributionList()
-                            {
-                                HasErrors = emailDistributionListService.Query.HasErrors,
-                                ValidationResults = emailDistributionListService.Query.ValidationResults,
-                            },
-                        }.ToList());
-                    }
-                    else
-                    {
-                        return Ok(emailDistributionListService.GetEmailDistributionListList().ToList());
-                    }
-                }
-            }
+            return await emailDistributionListService.GetEmailDistributionListList();
         }
-        // GET api/emailDistributionList/1
-        [Route("{EmailDistributionListID:int}")]
-        public IHttpActionResult GetEmailDistributionListWithID([FromUri]int EmailDistributionListID, [FromUri]string lang = "en", [FromUri]string extra = "")
+        [HttpGet("{EmailDistributionListID}")]
+        public async Task<ActionResult<EmailDistributionList>> Get(int EmailDistributionListID)
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                EmailDistributionListService emailDistributionListService = new EmailDistributionListService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
-
-                emailDistributionListService.Query = emailDistributionListService.FillQuery(typeof(EmailDistributionList), lang, 0, 1, "", "", extra);
-
-                else
-                {
-                    EmailDistributionList emailDistributionList = new EmailDistributionList();
-                    emailDistributionList = emailDistributionListService.GetEmailDistributionListWithEmailDistributionListID(EmailDistributionListID);
-
-                    if (emailDistributionList == null)
-                    {
-                        return NotFound();
-                    }
-
-                    return Ok(emailDistributionList);
-                }
-            }
+            return await emailDistributionListService.GetEmailDistributionListWithEmailDistributionListID(EmailDistributionListID);
         }
-        // POST api/emailDistributionList
-        [Route("")]
-        public IHttpActionResult Post([FromBody]EmailDistributionList emailDistributionList, [FromUri]string lang = "en")
+        [HttpPost]
+        public async Task<ActionResult<EmailDistributionList>> Post(EmailDistributionList emailDistributionList)
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                EmailDistributionListService emailDistributionListService = new EmailDistributionListService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
-
-                if (!emailDistributionListService.Add(emailDistributionList))
-                {
-                    return BadRequest(String.Join("|||", emailDistributionList.ValidationResults));
-                }
-                else
-                {
-                    emailDistributionList.ValidationResults = null;
-                    return Created<EmailDistributionList>(new Uri(Request.RequestUri, emailDistributionList.EmailDistributionListID.ToString()), emailDistributionList);
-                }
-            }
+            return await emailDistributionListService.Add(emailDistributionList);
         }
-        // PUT api/emailDistributionList
-        [Route("")]
-        public IHttpActionResult Put([FromBody]EmailDistributionList emailDistributionList, [FromUri]string lang = "en")
+        [HttpPut]
+        public async Task<ActionResult<EmailDistributionList>> Put(EmailDistributionList emailDistributionList)
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                EmailDistributionListService emailDistributionListService = new EmailDistributionListService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
-
-                if (!emailDistributionListService.Update(emailDistributionList))
-                {
-                    return BadRequest(String.Join("|||", emailDistributionList.ValidationResults));
-                }
-                else
-                {
-                    emailDistributionList.ValidationResults = null;
-                    return Ok(emailDistributionList);
-                }
-            }
+            return await emailDistributionListService.Update(emailDistributionList);
         }
-        // DELETE api/emailDistributionList
-        [Route("")]
-        public IHttpActionResult Delete([FromBody]EmailDistributionList emailDistributionList, [FromUri]string lang = "en")
+        [HttpDelete]
+        public async Task<ActionResult<EmailDistributionList>> Delete(EmailDistributionList emailDistributionList)
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                EmailDistributionListService emailDistributionListService = new EmailDistributionListService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
-
-                if (!emailDistributionListService.Delete(emailDistributionList))
-                {
-                    return BadRequest(String.Join("|||", emailDistributionList.ValidationResults));
-                }
-                else
-                {
-                    emailDistributionList.ValidationResults = null;
-                    return Ok(emailDistributionList);
-                }
-            }
+            return await emailDistributionListService.Delete(emailDistributionList);
         }
         #endregion Functions public
 

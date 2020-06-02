@@ -1,143 +1,70 @@
-using CSSPEnums;
 using CSSPModels;
 using CSSPServices;
-using System;
+using LoggedInServices.Services;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web.Http;
+using System.Threading.Tasks;
 
 namespace CSSPWebAPI.Controllers
 {
-    [RoutePrefix("api/polSourceGroupingLanguage")]
-    public partial class PolSourceGroupingLanguageController : BaseController
+    public partial interface IPolSourceGroupingLanguageController
+    {
+        Task<ActionResult<List<PolSourceGroupingLanguage>>> Get();
+        Task<ActionResult<PolSourceGroupingLanguage>> Get(int PolSourceGroupingLanguageID);
+        Task<ActionResult<PolSourceGroupingLanguage>> Post(PolSourceGroupingLanguage polSourceGroupingLanguage);
+        Task<ActionResult<PolSourceGroupingLanguage>> Put(PolSourceGroupingLanguage polSourceGroupingLanguage);
+        Task<ActionResult<PolSourceGroupingLanguage>> Delete(PolSourceGroupingLanguage polSourceGroupingLanguage);
+    }
+
+    [Route("api/{culture}/[controller]")]
+    [ApiController]
+    [Authorize]
+    public partial class PolSourceGroupingLanguageController : ControllerBase, IPolSourceGroupingLanguageController
     {
         #region Variables
         #endregion Variables
 
         #region Properties
+        private IPolSourceGroupingLanguageService polSourceGroupingLanguageService { get; }
+        private CSSPDBContext db { get; }
+        private ILoggedInService loggedInService { get; }
         #endregion Properties
 
         #region Constructors
-        public PolSourceGroupingLanguageController() : base()
+        public PolSourceGroupingLanguageController(IPolSourceGroupingLanguageService polSourceGroupingLanguageService, CSSPDBContext db, ILoggedInService loggedInService)
         {
-        }
-        public PolSourceGroupingLanguageController(DatabaseTypeEnum dbt = DatabaseTypeEnum.SqlServerTestDB) : base(dbt)
-        {
+            this.polSourceGroupingLanguageService = polSourceGroupingLanguageService;
+            this.db = db;
+            this.loggedInService = loggedInService;
         }
         #endregion Constructors
 
         #region Functions public
-        // GET api/polSourceGroupingLanguage
-        [Route("")]
-        public IHttpActionResult GetPolSourceGroupingLanguageList([FromUri]string lang = "en", [FromUri]int skip = 0, [FromUri]int take = 200,
-            [FromUri]string asc = "", [FromUri]string desc = "", [FromUri]string where = "", [FromUri]string extra = "")
+        [HttpGet]
+        public async Task<ActionResult<List<PolSourceGroupingLanguage>>> Get()
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                PolSourceGroupingLanguageService polSourceGroupingLanguageService = new PolSourceGroupingLanguageService(new Query() { Lang = lang }, db, ContactID);
-
-                else // QueryString has no parameter [extra] or extra is empty
-                {
-                   polSourceGroupingLanguageService.Query = polSourceGroupingLanguageService.FillQuery(typeof(PolSourceGroupingLanguage), lang, skip, take, asc, desc, where, extra);
-
-                    if (polSourceGroupingLanguageService.Query.HasErrors)
-                    {
-                        return Ok(new List<PolSourceGroupingLanguage>()
-                        {
-                            new PolSourceGroupingLanguage()
-                            {
-                                HasErrors = polSourceGroupingLanguageService.Query.HasErrors,
-                                ValidationResults = polSourceGroupingLanguageService.Query.ValidationResults,
-                            },
-                        }.ToList());
-                    }
-                    else
-                    {
-                        return Ok(polSourceGroupingLanguageService.GetPolSourceGroupingLanguageList().ToList());
-                    }
-                }
-            }
+            return await polSourceGroupingLanguageService.GetPolSourceGroupingLanguageList();
         }
-        // GET api/polSourceGroupingLanguage/1
-        [Route("{PolSourceGroupingLanguageID:int}")]
-        public IHttpActionResult GetPolSourceGroupingLanguageWithID([FromUri]int PolSourceGroupingLanguageID, [FromUri]string lang = "en", [FromUri]string extra = "")
+        [HttpGet("{PolSourceGroupingLanguageID}")]
+        public async Task<ActionResult<PolSourceGroupingLanguage>> Get(int PolSourceGroupingLanguageID)
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                PolSourceGroupingLanguageService polSourceGroupingLanguageService = new PolSourceGroupingLanguageService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
-
-                polSourceGroupingLanguageService.Query = polSourceGroupingLanguageService.FillQuery(typeof(PolSourceGroupingLanguage), lang, 0, 1, "", "", extra);
-
-                else
-                {
-                    PolSourceGroupingLanguage polSourceGroupingLanguage = new PolSourceGroupingLanguage();
-                    polSourceGroupingLanguage = polSourceGroupingLanguageService.GetPolSourceGroupingLanguageWithPolSourceGroupingLanguageID(PolSourceGroupingLanguageID);
-
-                    if (polSourceGroupingLanguage == null)
-                    {
-                        return NotFound();
-                    }
-
-                    return Ok(polSourceGroupingLanguage);
-                }
-            }
+            return await polSourceGroupingLanguageService.GetPolSourceGroupingLanguageWithPolSourceGroupingLanguageID(PolSourceGroupingLanguageID);
         }
-        // POST api/polSourceGroupingLanguage
-        [Route("")]
-        public IHttpActionResult Post([FromBody]PolSourceGroupingLanguage polSourceGroupingLanguage, [FromUri]string lang = "en")
+        [HttpPost]
+        public async Task<ActionResult<PolSourceGroupingLanguage>> Post(PolSourceGroupingLanguage polSourceGroupingLanguage)
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                PolSourceGroupingLanguageService polSourceGroupingLanguageService = new PolSourceGroupingLanguageService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
-
-                if (!polSourceGroupingLanguageService.Add(polSourceGroupingLanguage))
-                {
-                    return BadRequest(String.Join("|||", polSourceGroupingLanguage.ValidationResults));
-                }
-                else
-                {
-                    polSourceGroupingLanguage.ValidationResults = null;
-                    return Created<PolSourceGroupingLanguage>(new Uri(Request.RequestUri, polSourceGroupingLanguage.PolSourceGroupingLanguageID.ToString()), polSourceGroupingLanguage);
-                }
-            }
+            return await polSourceGroupingLanguageService.Add(polSourceGroupingLanguage);
         }
-        // PUT api/polSourceGroupingLanguage
-        [Route("")]
-        public IHttpActionResult Put([FromBody]PolSourceGroupingLanguage polSourceGroupingLanguage, [FromUri]string lang = "en")
+        [HttpPut]
+        public async Task<ActionResult<PolSourceGroupingLanguage>> Put(PolSourceGroupingLanguage polSourceGroupingLanguage)
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                PolSourceGroupingLanguageService polSourceGroupingLanguageService = new PolSourceGroupingLanguageService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
-
-                if (!polSourceGroupingLanguageService.Update(polSourceGroupingLanguage))
-                {
-                    return BadRequest(String.Join("|||", polSourceGroupingLanguage.ValidationResults));
-                }
-                else
-                {
-                    polSourceGroupingLanguage.ValidationResults = null;
-                    return Ok(polSourceGroupingLanguage);
-                }
-            }
+            return await polSourceGroupingLanguageService.Update(polSourceGroupingLanguage);
         }
-        // DELETE api/polSourceGroupingLanguage
-        [Route("")]
-        public IHttpActionResult Delete([FromBody]PolSourceGroupingLanguage polSourceGroupingLanguage, [FromUri]string lang = "en")
+        [HttpDelete]
+        public async Task<ActionResult<PolSourceGroupingLanguage>> Delete(PolSourceGroupingLanguage polSourceGroupingLanguage)
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                PolSourceGroupingLanguageService polSourceGroupingLanguageService = new PolSourceGroupingLanguageService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
-
-                if (!polSourceGroupingLanguageService.Delete(polSourceGroupingLanguage))
-                {
-                    return BadRequest(String.Join("|||", polSourceGroupingLanguage.ValidationResults));
-                }
-                else
-                {
-                    polSourceGroupingLanguage.ValidationResults = null;
-                    return Ok(polSourceGroupingLanguage);
-                }
-            }
+            return await polSourceGroupingLanguageService.Delete(polSourceGroupingLanguage);
         }
         #endregion Functions public
 

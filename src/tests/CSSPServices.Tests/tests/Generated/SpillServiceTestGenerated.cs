@@ -16,6 +16,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Transactions;
 using Xunit;
 
 namespace CSSPServices.Tests
@@ -54,37 +55,40 @@ namespace CSSPServices.Tests
 
             await Setup(new CultureInfo(culture));
 
-            Spill spill = GetFilledRandomSpill(""); 
+            using (TransactionScope ts = new TransactionScope())
+            {
+               Spill spill = GetFilledRandomSpill(""); 
 
-            // List<Spill>
-            var actionSpillList = await spillService.GetSpillList();
-            Assert.Equal(200, ((ObjectResult)actionSpillList.Result).StatusCode);
-            Assert.NotNull(((OkObjectResult)actionSpillList.Result).Value);
-            List<Spill> spillList = (List<Spill>)(((OkObjectResult)actionSpillList.Result).Value);
+               // List<Spill>
+               var actionSpillList = await spillService.GetSpillList();
+               Assert.Equal(200, ((ObjectResult)actionSpillList.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionSpillList.Result).Value);
+               List<Spill> spillList = (List<Spill>)(((OkObjectResult)actionSpillList.Result).Value);
 
-            int count = ((List<Spill>)((OkObjectResult)actionSpillList.Result).Value).Count();
-            Assert.True(count > 0);
+               int count = ((List<Spill>)((OkObjectResult)actionSpillList.Result).Value).Count();
+                Assert.True(count > 0);
 
-            // Add Spill
-            var actionSpillAdded = await spillService.Add(spill);
-            Assert.Equal(200, ((ObjectResult)actionSpillAdded.Result).StatusCode);
-            Assert.NotNull(((OkObjectResult)actionSpillAdded.Result).Value);
-            Spill spillAdded = (Spill)(((OkObjectResult)actionSpillAdded.Result).Value);
-            Assert.NotNull(spillAdded);
+               // Add Spill
+               var actionSpillAdded = await spillService.Add(spill);
+               Assert.Equal(200, ((ObjectResult)actionSpillAdded.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionSpillAdded.Result).Value);
+               Spill spillAdded = (Spill)(((OkObjectResult)actionSpillAdded.Result).Value);
+               Assert.NotNull(spillAdded);
 
-            // Update Spill
-            var actionSpillUpdated = await spillService.Update(spill);
-            Assert.Equal(200, ((ObjectResult)actionSpillUpdated.Result).StatusCode);
-            Assert.NotNull(((OkObjectResult)actionSpillUpdated.Result).Value);
-            Spill spillUpdated = (Spill)(((OkObjectResult)actionSpillUpdated.Result).Value);
-            Assert.NotNull(spillUpdated);
+               // Update Spill
+               var actionSpillUpdated = await spillService.Update(spill);
+               Assert.Equal(200, ((ObjectResult)actionSpillUpdated.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionSpillUpdated.Result).Value);
+               Spill spillUpdated = (Spill)(((OkObjectResult)actionSpillUpdated.Result).Value);
+               Assert.NotNull(spillUpdated);
 
-            // Delete Spill
-            var actionSpillDeleted = await spillService.Delete(spill);
-            Assert.Equal(200, ((ObjectResult)actionSpillDeleted.Result).StatusCode);
-            Assert.NotNull(((OkObjectResult)actionSpillDeleted.Result).Value);
-            Spill spillDeleted = (Spill)(((OkObjectResult)actionSpillDeleted.Result).Value);
-            Assert.NotNull(spillDeleted);
+               // Delete Spill
+               var actionSpillDeleted = await spillService.Delete(spill);
+               Assert.Equal(200, ((ObjectResult)actionSpillDeleted.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionSpillDeleted.Result).Value);
+               Spill spillDeleted = (Spill)(((OkObjectResult)actionSpillDeleted.Result).Value);
+               Assert.NotNull(spillDeleted);
+            }
         }
         #endregion Tests Generated CRUD
 

@@ -2,350 +2,157 @@ using CSSPEnums;
 using CSSPModels;
 using CSSPServices;
 using CSSPWebAPI.Controllers;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using LoggedInServices.Services;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using System;
 using System.Collections.Generic;
+using System.Globalization;
+using System.IO;
 using System.Linq;
-using System.Web.Http;
-using System.Web.Http.Results;
+using System.Threading.Tasks;
+using System.Transactions;
+using UserServices.Models;
+using Xunit;
 
-namespace CSSPWebAPI.Tests.Controllers
+namespace CSSPWebAPIs.Tests.Controllers
 {
-    [TestClass]
-    public partial class MikeSourceStartEndControllerTest : BaseControllerTest
+    public partial class MikeSourceStartEndControllerTest
     {
         #region Variables
         #endregion Variables
 
         #region Properties
+        private IConfiguration Config { get; set; }
+        private IServiceProvider Provider { get; set; }
+        private IServiceCollection Services { get; set; }
+        private CSSPDBContext db { get; set; }
+        private ILoggedInService loggedInService { get; set; }
+        private IMikeSourceStartEndService mikeSourceStartEndService { get; set; }
+        private IMikeSourceStartEndController mikeSourceStartEndController { get; set; }
         #endregion Properties
 
         #region Constructors
-        public MikeSourceStartEndControllerTest() : base()
+        public MikeSourceStartEndControllerTest()
         {
         }
         #endregion Constructors
 
-        #region Tests Generated for Class Controller GetList Command
-        [TestMethod]
-        public void MikeSourceStartEnd_Controller_GetMikeSourceStartEndList_Test()
+        #region Functions public
+        [Theory]
+        [InlineData("en-CA")]
+        [InlineData("fr-CA")]
+        public async Task MikeSourceStartEndController_Constructor_Good_Test(string culture)
         {
-            foreach (LanguageEnum LanguageRequest in AllowableLanguages)
+            bool retBool = await Setup(new CultureInfo(culture));
+            Assert.True(retBool);
+            Assert.NotNull(loggedInService);
+            Assert.NotNull(mikeSourceStartEndService);
+            Assert.NotNull(mikeSourceStartEndController);
+        }
+        [Theory]
+        [InlineData("en-CA")]
+        [InlineData("fr-CA")]
+        public async Task MikeSourceStartEndController_CRUD_Good_Test(string culture)
+        {
+            bool retBool = await Setup(new CultureInfo(culture));
+            Assert.True(retBool);
+
+            using (TransactionScope ts = new TransactionScope())
             {
-                foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
-                {
-                    MikeSourceStartEndController mikeSourceStartEndController = new MikeSourceStartEndController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(mikeSourceStartEndController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, mikeSourceStartEndController.DatabaseType);
+                // testing Get
+               var actionMikeSourceStartEndList = await mikeSourceStartEndController.Get();
+               Assert.Equal(200, ((ObjectResult)actionMikeSourceStartEndList.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionMikeSourceStartEndList.Result).Value);
+               List<MikeSourceStartEnd> mikeSourceStartEndList = (List<MikeSourceStartEnd>)(((OkObjectResult)actionMikeSourceStartEndList.Result).Value);
 
-                    MikeSourceStartEnd mikeSourceStartEndFirst = new MikeSourceStartEnd();
-                    int count = -1;
-                    Query query = new Query();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseTypeEnum.SqlServerTestDB))
-                    {
-                        MikeSourceStartEndService mikeSourceStartEndService = new MikeSourceStartEndService(query, db, ContactID);
-                        mikeSourceStartEndFirst = (from c in db.MikeSourceStartEnds select c).FirstOrDefault();
-                        count = (from c in db.MikeSourceStartEnds select c).Count();
-                        count = (query.Take > count ? count : query.Take);
-                    }
+               int count = ((List<MikeSourceStartEnd>)((OkObjectResult)actionMikeSourceStartEndList.Result).Value).Count();
+                Assert.True(count > 0);
 
-                    // ok with MikeSourceStartEnd info
-                    IHttpActionResult jsonRet = mikeSourceStartEndController.GetMikeSourceStartEndList();
-                    Assert.IsNotNull(jsonRet);
+               // testing Get(MikeSourceStartEndID)
+               var actionMikeSourceStartEnd = await mikeSourceStartEndController.Get(mikeSourceStartEndList[0].MikeSourceStartEndID);
+               Assert.Equal(200, ((ObjectResult)actionMikeSourceStartEnd.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionMikeSourceStartEnd.Result).Value);
+               MikeSourceStartEnd mikeSourceStartEnd = (MikeSourceStartEnd)(((OkObjectResult)actionMikeSourceStartEnd.Result).Value);
+               Assert.NotNull(mikeSourceStartEnd);
+               Assert.Equal(mikeSourceStartEndList[0].MikeSourceStartEndID, mikeSourceStartEnd.MikeSourceStartEndID);
 
-                    OkNegotiatedContentResult<List<MikeSourceStartEnd>> ret = jsonRet as OkNegotiatedContentResult<List<MikeSourceStartEnd>>;
-                    Assert.AreEqual(mikeSourceStartEndFirst.MikeSourceStartEndID, ret.Content[0].MikeSourceStartEndID);
-                    Assert.AreEqual((count > query.Take ? query.Take : count), ret.Content.Count);
+               // testing Post(MikeSourceStartEnd mikeSourceStartEnd)
+               mikeSourceStartEnd.MikeSourceStartEndID = 0;
+               var actionMikeSourceStartEndNew = await mikeSourceStartEndController.Post(mikeSourceStartEnd);
+               Assert.Equal(200, ((ObjectResult)actionMikeSourceStartEndNew.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionMikeSourceStartEndNew.Result).Value);
+               MikeSourceStartEnd mikeSourceStartEndNew = (MikeSourceStartEnd)(((OkObjectResult)actionMikeSourceStartEndNew.Result).Value);
+               Assert.NotNull(mikeSourceStartEndNew);
 
-                    List<MikeSourceStartEnd> mikeSourceStartEndList = new List<MikeSourceStartEnd>();
-                    count = -1;
-                    query = new Query();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseTypeEnum.SqlServerTestDB))
-                    {
-                        MikeSourceStartEndService mikeSourceStartEndService = new MikeSourceStartEndService(query, db, ContactID);
-                        mikeSourceStartEndList = (from c in db.MikeSourceStartEnds select c).OrderBy(c => c.MikeSourceStartEndID).Skip(0).Take(2).ToList();
-                        count = (from c in db.MikeSourceStartEnds select c).Count();
-                    }
+               // testing Put(MikeSourceStartEnd mikeSourceStartEnd)
+               var actionMikeSourceStartEndUpdate = await mikeSourceStartEndController.Put(mikeSourceStartEndNew);
+               Assert.Equal(200, ((ObjectResult)actionMikeSourceStartEndUpdate.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionMikeSourceStartEndUpdate.Result).Value);
+               MikeSourceStartEnd mikeSourceStartEndUpdate = (MikeSourceStartEnd)(((OkObjectResult)actionMikeSourceStartEndUpdate.Result).Value);
+               Assert.NotNull(mikeSourceStartEndUpdate);
 
-                    if (count > 0)
-                    {
-                        query.Skip = 0;
-                        query.Take = 5;
-                        count = (query.Take > count ? query.Take : count);
-
-                        // ok with MikeSourceStartEnd info
-                        jsonRet = mikeSourceStartEndController.GetMikeSourceStartEndList(query.Language.ToString(), query.Skip, query.Take);
-                        Assert.IsNotNull(jsonRet);
-
-                        ret = jsonRet as OkNegotiatedContentResult<List<MikeSourceStartEnd>>;
-                        Assert.AreEqual(mikeSourceStartEndList[0].MikeSourceStartEndID, ret.Content[0].MikeSourceStartEndID);
-                        Assert.AreEqual((count > query.Take ? query.Take : count), ret.Content.Count);
-
-                       if (count > 1)
-                       {
-                           query.Skip = 1;
-                           query.Take = 5;
-                           count = (query.Take > count ? query.Take : count);
-
-                           // ok with MikeSourceStartEnd info
-                           IHttpActionResult jsonRet2 = mikeSourceStartEndController.GetMikeSourceStartEndList(query.Language.ToString(), query.Skip, query.Take);
-                           Assert.IsNotNull(jsonRet2);
-
-                           OkNegotiatedContentResult<List<MikeSourceStartEnd>> ret2 = jsonRet2 as OkNegotiatedContentResult<List<MikeSourceStartEnd>>;
-                           Assert.AreEqual(mikeSourceStartEndList[1].MikeSourceStartEndID, ret2.Content[0].MikeSourceStartEndID);
-                           Assert.AreEqual((count > query.Take ? query.Take : count), ret2.Content.Count);
-                       }
-                    }
-                }
+               // testing Delete(MikeSourceStartEnd mikeSourceStartEnd)
+               var actionMikeSourceStartEndDelete = await mikeSourceStartEndController.Delete(mikeSourceStartEndUpdate);
+               Assert.Equal(200, ((ObjectResult)actionMikeSourceStartEndDelete.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionMikeSourceStartEndDelete.Result).Value);
+               MikeSourceStartEnd mikeSourceStartEndDelete = (MikeSourceStartEnd)(((OkObjectResult)actionMikeSourceStartEndDelete.Result).Value);
+               Assert.NotNull(mikeSourceStartEndDelete);
             }
         }
-        #endregion Tests Generated for Class Controller GetList Command
+        #endregion Functions public
 
-        #region Tests Generated for Class Controller GetWithID Command
-        [TestMethod]
-        public void MikeSourceStartEnd_Controller_GetMikeSourceStartEndWithID_Test()
+        #region Functions private
+        private async Task<bool> Setup(CultureInfo culture)
         {
-            foreach (LanguageEnum LanguageRequest in AllowableLanguages)
+            Config = new ConfigurationBuilder()
+               .SetBasePath(Directory.GetParent(AppContext.BaseDirectory).FullName)
+               .AddJsonFile("appsettings.json")
+               .Build();
+        
+            Services = new ServiceCollection();
+        
+            IConfigurationSection connectionStringsSection = Config.GetSection("ConnectionStrings");
+            Services.Configure<ConnectionStringsModel>(connectionStringsSection);
+        
+            ConnectionStringsModel connectionStrings = connectionStringsSection.Get<ConnectionStringsModel>();
+        
+            Services.AddSingleton<IConfiguration>(Config);
+        
+            Services.AddDbContext<CSSPDBContext>(options =>
             {
-                foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
-                {
-                    MikeSourceStartEndController mikeSourceStartEndController = new MikeSourceStartEndController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(mikeSourceStartEndController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, mikeSourceStartEndController.DatabaseType);
-
-                    MikeSourceStartEnd mikeSourceStartEndFirst = new MikeSourceStartEnd();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-                    {
-                        MikeSourceStartEndService mikeSourceStartEndService = new MikeSourceStartEndService(new Query(), db, ContactID);
-                        mikeSourceStartEndFirst = (from c in db.MikeSourceStartEnds select c).FirstOrDefault();
-                    }
-
-                    // ok with MikeSourceStartEnd info
-                    IHttpActionResult jsonRet = mikeSourceStartEndController.GetMikeSourceStartEndWithID(mikeSourceStartEndFirst.MikeSourceStartEndID);
-                    Assert.IsNotNull(jsonRet);
-
-                    OkNegotiatedContentResult<MikeSourceStartEnd> Ret = jsonRet as OkNegotiatedContentResult<MikeSourceStartEnd>;
-                    MikeSourceStartEnd mikeSourceStartEndRet = Ret.Content;
-                    Assert.AreEqual(mikeSourceStartEndFirst.MikeSourceStartEndID, mikeSourceStartEndRet.MikeSourceStartEndID);
-
-                    BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
-
-                    // Not Found
-                    IHttpActionResult jsonRet2 = mikeSourceStartEndController.GetMikeSourceStartEndWithID(0);
-                    Assert.IsNotNull(jsonRet2);
-
-                    OkNegotiatedContentResult<MikeSourceStartEnd> mikeSourceStartEndRet2 = jsonRet2 as OkNegotiatedContentResult<MikeSourceStartEnd>;
-                    Assert.IsNull(mikeSourceStartEndRet2);
-
-                    NotFoundResult notFoundRequest = jsonRet2 as NotFoundResult;
-                    Assert.IsNotNull(notFoundRequest);
-                }
-            }
+                options.UseSqlServer(connectionStrings.TestDB);
+            });
+        
+            Services.AddDbContext<ApplicationDbContext>(options =>
+                options.UseSqlServer(connectionStrings.TestDB));
+        
+            Services.AddIdentityCore<ApplicationUser>()
+                .AddEntityFrameworkStores<ApplicationDbContext>();
+        
+            Services.AddSingleton<IEnums, Enums>();
+            Services.AddSingleton<ILoggedInService, LoggedInService>();
+            Services.AddSingleton<IMikeSourceStartEndService, MikeSourceStartEndService>();
+            Services.AddSingleton<IMikeSourceStartEndController, MikeSourceStartEndController>();
+        
+            Provider = Services.BuildServiceProvider();
+            Assert.NotNull(Provider);
+        
+            loggedInService = Provider.GetService<ILoggedInService>();
+            Assert.NotNull(loggedInService);
+        
+            mikeSourceStartEndService = Provider.GetService<IMikeSourceStartEndService>();
+            Assert.NotNull(mikeSourceStartEndService);
+        
+            await mikeSourceStartEndService.SetCulture(culture);
+        
+            mikeSourceStartEndController = Provider.GetService<IMikeSourceStartEndController>();
+            Assert.NotNull(mikeSourceStartEndController);
+        
+            return await Task.FromResult(true);
         }
-        #endregion Tests Generated for Class Controller GetWithID Command
-
-        #region Tests Generated for Class Controller Post Command
-        [TestMethod]
-        public void MikeSourceStartEnd_Controller_Post_Test()
-        {
-            foreach (LanguageEnum LanguageRequest in AllowableLanguages)
-            {
-                foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
-                {
-                    MikeSourceStartEndController mikeSourceStartEndController = new MikeSourceStartEndController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(mikeSourceStartEndController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, mikeSourceStartEndController.DatabaseType);
-
-                    MikeSourceStartEnd mikeSourceStartEndLast = new MikeSourceStartEnd();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-                    {
-                        Query query = new Query();
-                        query.Language = LanguageRequest;
-                        query.Asc = "";
-                        query.Desc = "";
-
-                        MikeSourceStartEndService mikeSourceStartEndService = new MikeSourceStartEndService(query, db, ContactID);
-                        mikeSourceStartEndLast = (from c in db.MikeSourceStartEnds select c).FirstOrDefault();
-                    }
-
-                    // ok with MikeSourceStartEnd info
-                    IHttpActionResult jsonRet = mikeSourceStartEndController.GetMikeSourceStartEndWithID(mikeSourceStartEndLast.MikeSourceStartEndID);
-                    Assert.IsNotNull(jsonRet);
-
-                    OkNegotiatedContentResult<MikeSourceStartEnd> Ret = jsonRet as OkNegotiatedContentResult<MikeSourceStartEnd>;
-                    MikeSourceStartEnd mikeSourceStartEndRet = Ret.Content;
-                    Assert.AreEqual(mikeSourceStartEndLast.MikeSourceStartEndID, mikeSourceStartEndRet.MikeSourceStartEndID);
-
-                    BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
-
-                    // Post to return CSSPError because MikeSourceStartEndID exist
-                    IHttpActionResult jsonRet2 = mikeSourceStartEndController.Post(mikeSourceStartEndRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet2);
-
-                    OkNegotiatedContentResult<MikeSourceStartEnd> mikeSourceStartEndRet2 = jsonRet2 as OkNegotiatedContentResult<MikeSourceStartEnd>;
-                    Assert.IsNull(mikeSourceStartEndRet2);
-
-                    BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
-                    Assert.IsNotNull(badRequest2);
-
-                    // Post to return newly added MikeSourceStartEnd
-                    mikeSourceStartEndRet.MikeSourceStartEndID = 0;
-                    mikeSourceStartEndController.Request = new System.Net.Http.HttpRequestMessage();
-                    mikeSourceStartEndController.Request.RequestUri = new System.Uri("http://localhost:5000/api/mikeSourceStartEnd");
-                    IHttpActionResult jsonRet3 = mikeSourceStartEndController.Post(mikeSourceStartEndRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet3);
-
-                    CreatedNegotiatedContentResult<MikeSourceStartEnd> mikeSourceStartEndRet3 = jsonRet3 as CreatedNegotiatedContentResult<MikeSourceStartEnd>;
-                    Assert.IsNotNull(mikeSourceStartEndRet3);
-
-                    BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest3);
-
-                    IHttpActionResult jsonRet4 = mikeSourceStartEndController.Delete(mikeSourceStartEndRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet4);
-
-                    OkNegotiatedContentResult<MikeSourceStartEnd> mikeSourceStartEndRet4 = jsonRet4 as OkNegotiatedContentResult<MikeSourceStartEnd>;
-                    Assert.IsNotNull(mikeSourceStartEndRet4);
-
-                    BadRequestErrorMessageResult badRequest4 = jsonRet4 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest4);
-                }
-            }
-        }
-        #endregion Tests Generated for Class Controller Post Command
-
-        #region Tests Generated for Class Controller Put Command
-        [TestMethod]
-        public void MikeSourceStartEnd_Controller_Put_Test()
-        {
-            foreach (LanguageEnum LanguageRequest in AllowableLanguages)
-            {
-                foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
-                {
-                    MikeSourceStartEndController mikeSourceStartEndController = new MikeSourceStartEndController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(mikeSourceStartEndController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, mikeSourceStartEndController.DatabaseType);
-
-                    MikeSourceStartEnd mikeSourceStartEndLast = new MikeSourceStartEnd();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-                    {
-                        Query query = new Query();
-                        query.Language = LanguageRequest;
-
-                        MikeSourceStartEndService mikeSourceStartEndService = new MikeSourceStartEndService(query, db, ContactID);
-                        mikeSourceStartEndLast = (from c in db.MikeSourceStartEnds select c).FirstOrDefault();
-                    }
-
-                    // ok with MikeSourceStartEnd info
-                    IHttpActionResult jsonRet = mikeSourceStartEndController.GetMikeSourceStartEndWithID(mikeSourceStartEndLast.MikeSourceStartEndID);
-                    Assert.IsNotNull(jsonRet);
-
-                    OkNegotiatedContentResult<MikeSourceStartEnd> Ret = jsonRet as OkNegotiatedContentResult<MikeSourceStartEnd>;
-                    MikeSourceStartEnd mikeSourceStartEndRet = Ret.Content;
-                    Assert.AreEqual(mikeSourceStartEndLast.MikeSourceStartEndID, mikeSourceStartEndRet.MikeSourceStartEndID);
-
-                    BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
-
-                    // Put to return success
-                    IHttpActionResult jsonRet2 = mikeSourceStartEndController.Put(mikeSourceStartEndRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet2);
-
-                    OkNegotiatedContentResult<MikeSourceStartEnd> mikeSourceStartEndRet2 = jsonRet2 as OkNegotiatedContentResult<MikeSourceStartEnd>;
-                    Assert.IsNotNull(mikeSourceStartEndRet2);
-
-                    BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest2);
-
-                    // Put to return CSSPError because MikeSourceStartEndID of 0 does not exist
-                    mikeSourceStartEndRet.MikeSourceStartEndID = 0;
-                    IHttpActionResult jsonRet3 = mikeSourceStartEndController.Put(mikeSourceStartEndRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet3);
-
-                    OkNegotiatedContentResult<MikeSourceStartEnd> mikeSourceStartEndRet3 = jsonRet3 as OkNegotiatedContentResult<MikeSourceStartEnd>;
-                    Assert.IsNull(mikeSourceStartEndRet3);
-
-                    BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
-                    Assert.IsNotNull(badRequest3);
-                }
-            }
-        }
-        #endregion Tests Generated for Class Controller Put Command
-
-        #region Tests Generated for Class Controller Delete Command
-        [TestMethod]
-        public void MikeSourceStartEnd_Controller_Delete_Test()
-        {
-            foreach (LanguageEnum LanguageRequest in AllowableLanguages)
-            {
-                foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
-                {
-                    MikeSourceStartEndController mikeSourceStartEndController = new MikeSourceStartEndController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(mikeSourceStartEndController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, mikeSourceStartEndController.DatabaseType);
-
-                    MikeSourceStartEnd mikeSourceStartEndLast = new MikeSourceStartEnd();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-                    {
-                        Query query = new Query();
-                        query.Language = LanguageRequest;
-                        query.Asc = "";
-                        query.Desc = "";
-
-                        MikeSourceStartEndService mikeSourceStartEndService = new MikeSourceStartEndService(query, db, ContactID);
-                        mikeSourceStartEndLast = (from c in db.MikeSourceStartEnds select c).FirstOrDefault();
-                    }
-
-                    // ok with MikeSourceStartEnd info
-                    IHttpActionResult jsonRet = mikeSourceStartEndController.GetMikeSourceStartEndWithID(mikeSourceStartEndLast.MikeSourceStartEndID);
-                    Assert.IsNotNull(jsonRet);
-
-                    OkNegotiatedContentResult<MikeSourceStartEnd> Ret = jsonRet as OkNegotiatedContentResult<MikeSourceStartEnd>;
-                    MikeSourceStartEnd mikeSourceStartEndRet = Ret.Content;
-                    Assert.AreEqual(mikeSourceStartEndLast.MikeSourceStartEndID, mikeSourceStartEndRet.MikeSourceStartEndID);
-
-                    BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
-
-                    // Post to return newly added MikeSourceStartEnd
-                    mikeSourceStartEndRet.MikeSourceStartEndID = 0;
-                    mikeSourceStartEndController.Request = new System.Net.Http.HttpRequestMessage();
-                    mikeSourceStartEndController.Request.RequestUri = new System.Uri("http://localhost:5000/api/mikeSourceStartEnd");
-                    IHttpActionResult jsonRet3 = mikeSourceStartEndController.Post(mikeSourceStartEndRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet3);
-
-                    CreatedNegotiatedContentResult<MikeSourceStartEnd> mikeSourceStartEndRet3 = jsonRet3 as CreatedNegotiatedContentResult<MikeSourceStartEnd>;
-                    Assert.IsNotNull(mikeSourceStartEndRet3);
-                    MikeSourceStartEnd mikeSourceStartEnd = mikeSourceStartEndRet3.Content;
-
-                    BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest3);
-
-                    // Delete to return success
-                    IHttpActionResult jsonRet2 = mikeSourceStartEndController.Delete(mikeSourceStartEndRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet2);
-
-                    OkNegotiatedContentResult<MikeSourceStartEnd> mikeSourceStartEndRet2 = jsonRet2 as OkNegotiatedContentResult<MikeSourceStartEnd>;
-                    Assert.IsNotNull(mikeSourceStartEndRet2);
-
-                    BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest2);
-
-                    // Delete to return CSSPError because MikeSourceStartEndID of 0 does not exist
-                    mikeSourceStartEndRet.MikeSourceStartEndID = 0;
-                    IHttpActionResult jsonRet4 = mikeSourceStartEndController.Delete(mikeSourceStartEndRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet4);
-
-                    OkNegotiatedContentResult<MikeSourceStartEnd> mikeSourceStartEndRet4 = jsonRet4 as OkNegotiatedContentResult<MikeSourceStartEnd>;
-                    Assert.IsNull(mikeSourceStartEndRet4);
-
-                    BadRequestErrorMessageResult badRequest4 = jsonRet4 as BadRequestErrorMessageResult;
-                    Assert.IsNotNull(badRequest4);
-                }
-            }
-        }
-        #endregion Tests Generated for Class Controller Delete Command
-
+        #endregion Functions private
     }
 }

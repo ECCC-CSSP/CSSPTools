@@ -2,350 +2,157 @@ using CSSPEnums;
 using CSSPModels;
 using CSSPServices;
 using CSSPWebAPI.Controllers;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using LoggedInServices.Services;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using System;
 using System.Collections.Generic;
+using System.Globalization;
+using System.IO;
 using System.Linq;
-using System.Web.Http;
-using System.Web.Http.Results;
+using System.Threading.Tasks;
+using System.Transactions;
+using UserServices.Models;
+using Xunit;
 
-namespace CSSPWebAPI.Tests.Controllers
+namespace CSSPWebAPIs.Tests.Controllers
 {
-    [TestClass]
-    public partial class AddressControllerTest : BaseControllerTest
+    public partial class AddressControllerTest
     {
         #region Variables
         #endregion Variables
 
         #region Properties
+        private IConfiguration Config { get; set; }
+        private IServiceProvider Provider { get; set; }
+        private IServiceCollection Services { get; set; }
+        private CSSPDBContext db { get; set; }
+        private ILoggedInService loggedInService { get; set; }
+        private IAddressService addressService { get; set; }
+        private IAddressController addressController { get; set; }
         #endregion Properties
 
         #region Constructors
-        public AddressControllerTest() : base()
+        public AddressControllerTest()
         {
         }
         #endregion Constructors
 
-        #region Tests Generated for Class Controller GetList Command
-        [TestMethod]
-        public void Address_Controller_GetAddressList_Test()
+        #region Functions public
+        [Theory]
+        [InlineData("en-CA")]
+        [InlineData("fr-CA")]
+        public async Task AddressController_Constructor_Good_Test(string culture)
         {
-            foreach (LanguageEnum LanguageRequest in AllowableLanguages)
+            bool retBool = await Setup(new CultureInfo(culture));
+            Assert.True(retBool);
+            Assert.NotNull(loggedInService);
+            Assert.NotNull(addressService);
+            Assert.NotNull(addressController);
+        }
+        [Theory]
+        [InlineData("en-CA")]
+        [InlineData("fr-CA")]
+        public async Task AddressController_CRUD_Good_Test(string culture)
+        {
+            bool retBool = await Setup(new CultureInfo(culture));
+            Assert.True(retBool);
+
+            using (TransactionScope ts = new TransactionScope())
             {
-                foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
-                {
-                    AddressController addressController = new AddressController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(addressController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, addressController.DatabaseType);
+                // testing Get
+               var actionAddressList = await addressController.Get();
+               Assert.Equal(200, ((ObjectResult)actionAddressList.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionAddressList.Result).Value);
+               List<Address> addressList = (List<Address>)(((OkObjectResult)actionAddressList.Result).Value);
 
-                    Address addressFirst = new Address();
-                    int count = -1;
-                    Query query = new Query();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseTypeEnum.SqlServerTestDB))
-                    {
-                        AddressService addressService = new AddressService(query, db, ContactID);
-                        addressFirst = (from c in db.Addresses select c).FirstOrDefault();
-                        count = (from c in db.Addresses select c).Count();
-                        count = (query.Take > count ? count : query.Take);
-                    }
+               int count = ((List<Address>)((OkObjectResult)actionAddressList.Result).Value).Count();
+                Assert.True(count > 0);
 
-                    // ok with Address info
-                    IHttpActionResult jsonRet = addressController.GetAddressList();
-                    Assert.IsNotNull(jsonRet);
+               // testing Get(AddressID)
+               var actionAddress = await addressController.Get(addressList[0].AddressID);
+               Assert.Equal(200, ((ObjectResult)actionAddress.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionAddress.Result).Value);
+               Address address = (Address)(((OkObjectResult)actionAddress.Result).Value);
+               Assert.NotNull(address);
+               Assert.Equal(addressList[0].AddressID, address.AddressID);
 
-                    OkNegotiatedContentResult<List<Address>> ret = jsonRet as OkNegotiatedContentResult<List<Address>>;
-                    Assert.AreEqual(addressFirst.AddressID, ret.Content[0].AddressID);
-                    Assert.AreEqual((count > query.Take ? query.Take : count), ret.Content.Count);
+               // testing Post(Address address)
+               address.AddressID = 0;
+               var actionAddressNew = await addressController.Post(address);
+               Assert.Equal(200, ((ObjectResult)actionAddressNew.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionAddressNew.Result).Value);
+               Address addressNew = (Address)(((OkObjectResult)actionAddressNew.Result).Value);
+               Assert.NotNull(addressNew);
 
-                    List<Address> addressList = new List<Address>();
-                    count = -1;
-                    query = new Query();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseTypeEnum.SqlServerTestDB))
-                    {
-                        AddressService addressService = new AddressService(query, db, ContactID);
-                        addressList = (from c in db.Addresses select c).OrderBy(c => c.AddressID).Skip(0).Take(2).ToList();
-                        count = (from c in db.Addresses select c).Count();
-                    }
+               // testing Put(Address address)
+               var actionAddressUpdate = await addressController.Put(addressNew);
+               Assert.Equal(200, ((ObjectResult)actionAddressUpdate.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionAddressUpdate.Result).Value);
+               Address addressUpdate = (Address)(((OkObjectResult)actionAddressUpdate.Result).Value);
+               Assert.NotNull(addressUpdate);
 
-                    if (count > 0)
-                    {
-                        query.Skip = 0;
-                        query.Take = 5;
-                        count = (query.Take > count ? query.Take : count);
-
-                        // ok with Address info
-                        jsonRet = addressController.GetAddressList(query.Language.ToString(), query.Skip, query.Take);
-                        Assert.IsNotNull(jsonRet);
-
-                        ret = jsonRet as OkNegotiatedContentResult<List<Address>>;
-                        Assert.AreEqual(addressList[0].AddressID, ret.Content[0].AddressID);
-                        Assert.AreEqual((count > query.Take ? query.Take : count), ret.Content.Count);
-
-                       if (count > 1)
-                       {
-                           query.Skip = 1;
-                           query.Take = 5;
-                           count = (query.Take > count ? query.Take : count);
-
-                           // ok with Address info
-                           IHttpActionResult jsonRet2 = addressController.GetAddressList(query.Language.ToString(), query.Skip, query.Take);
-                           Assert.IsNotNull(jsonRet2);
-
-                           OkNegotiatedContentResult<List<Address>> ret2 = jsonRet2 as OkNegotiatedContentResult<List<Address>>;
-                           Assert.AreEqual(addressList[1].AddressID, ret2.Content[0].AddressID);
-                           Assert.AreEqual((count > query.Take ? query.Take : count), ret2.Content.Count);
-                       }
-                    }
-                }
+               // testing Delete(Address address)
+               var actionAddressDelete = await addressController.Delete(addressUpdate);
+               Assert.Equal(200, ((ObjectResult)actionAddressDelete.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionAddressDelete.Result).Value);
+               Address addressDelete = (Address)(((OkObjectResult)actionAddressDelete.Result).Value);
+               Assert.NotNull(addressDelete);
             }
         }
-        #endregion Tests Generated for Class Controller GetList Command
+        #endregion Functions public
 
-        #region Tests Generated for Class Controller GetWithID Command
-        [TestMethod]
-        public void Address_Controller_GetAddressWithID_Test()
+        #region Functions private
+        private async Task<bool> Setup(CultureInfo culture)
         {
-            foreach (LanguageEnum LanguageRequest in AllowableLanguages)
+            Config = new ConfigurationBuilder()
+               .SetBasePath(Directory.GetParent(AppContext.BaseDirectory).FullName)
+               .AddJsonFile("appsettings.json")
+               .Build();
+        
+            Services = new ServiceCollection();
+        
+            IConfigurationSection connectionStringsSection = Config.GetSection("ConnectionStrings");
+            Services.Configure<ConnectionStringsModel>(connectionStringsSection);
+        
+            ConnectionStringsModel connectionStrings = connectionStringsSection.Get<ConnectionStringsModel>();
+        
+            Services.AddSingleton<IConfiguration>(Config);
+        
+            Services.AddDbContext<CSSPDBContext>(options =>
             {
-                foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
-                {
-                    AddressController addressController = new AddressController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(addressController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, addressController.DatabaseType);
-
-                    Address addressFirst = new Address();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-                    {
-                        AddressService addressService = new AddressService(new Query(), db, ContactID);
-                        addressFirst = (from c in db.Addresses select c).FirstOrDefault();
-                    }
-
-                    // ok with Address info
-                    IHttpActionResult jsonRet = addressController.GetAddressWithID(addressFirst.AddressID);
-                    Assert.IsNotNull(jsonRet);
-
-                    OkNegotiatedContentResult<Address> Ret = jsonRet as OkNegotiatedContentResult<Address>;
-                    Address addressRet = Ret.Content;
-                    Assert.AreEqual(addressFirst.AddressID, addressRet.AddressID);
-
-                    BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
-
-                    // Not Found
-                    IHttpActionResult jsonRet2 = addressController.GetAddressWithID(0);
-                    Assert.IsNotNull(jsonRet2);
-
-                    OkNegotiatedContentResult<Address> addressRet2 = jsonRet2 as OkNegotiatedContentResult<Address>;
-                    Assert.IsNull(addressRet2);
-
-                    NotFoundResult notFoundRequest = jsonRet2 as NotFoundResult;
-                    Assert.IsNotNull(notFoundRequest);
-                }
-            }
+                options.UseSqlServer(connectionStrings.TestDB);
+            });
+        
+            Services.AddDbContext<ApplicationDbContext>(options =>
+                options.UseSqlServer(connectionStrings.TestDB));
+        
+            Services.AddIdentityCore<ApplicationUser>()
+                .AddEntityFrameworkStores<ApplicationDbContext>();
+        
+            Services.AddSingleton<IEnums, Enums>();
+            Services.AddSingleton<ILoggedInService, LoggedInService>();
+            Services.AddSingleton<IAddressService, AddressService>();
+            Services.AddSingleton<IAddressController, AddressController>();
+        
+            Provider = Services.BuildServiceProvider();
+            Assert.NotNull(Provider);
+        
+            loggedInService = Provider.GetService<ILoggedInService>();
+            Assert.NotNull(loggedInService);
+        
+            addressService = Provider.GetService<IAddressService>();
+            Assert.NotNull(addressService);
+        
+            await addressService.SetCulture(culture);
+        
+            addressController = Provider.GetService<IAddressController>();
+            Assert.NotNull(addressController);
+        
+            return await Task.FromResult(true);
         }
-        #endregion Tests Generated for Class Controller GetWithID Command
-
-        #region Tests Generated for Class Controller Post Command
-        [TestMethod]
-        public void Address_Controller_Post_Test()
-        {
-            foreach (LanguageEnum LanguageRequest in AllowableLanguages)
-            {
-                foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
-                {
-                    AddressController addressController = new AddressController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(addressController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, addressController.DatabaseType);
-
-                    Address addressLast = new Address();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-                    {
-                        Query query = new Query();
-                        query.Language = LanguageRequest;
-                        query.Asc = "";
-                        query.Desc = "";
-
-                        AddressService addressService = new AddressService(query, db, ContactID);
-                        addressLast = (from c in db.Addresses select c).FirstOrDefault();
-                    }
-
-                    // ok with Address info
-                    IHttpActionResult jsonRet = addressController.GetAddressWithID(addressLast.AddressID);
-                    Assert.IsNotNull(jsonRet);
-
-                    OkNegotiatedContentResult<Address> Ret = jsonRet as OkNegotiatedContentResult<Address>;
-                    Address addressRet = Ret.Content;
-                    Assert.AreEqual(addressLast.AddressID, addressRet.AddressID);
-
-                    BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
-
-                    // Post to return CSSPError because AddressID exist
-                    IHttpActionResult jsonRet2 = addressController.Post(addressRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet2);
-
-                    OkNegotiatedContentResult<Address> addressRet2 = jsonRet2 as OkNegotiatedContentResult<Address>;
-                    Assert.IsNull(addressRet2);
-
-                    BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
-                    Assert.IsNotNull(badRequest2);
-
-                    // Post to return newly added Address
-                    addressRet.AddressID = 0;
-                    addressController.Request = new System.Net.Http.HttpRequestMessage();
-                    addressController.Request.RequestUri = new System.Uri("http://localhost:5000/api/address");
-                    IHttpActionResult jsonRet3 = addressController.Post(addressRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet3);
-
-                    CreatedNegotiatedContentResult<Address> addressRet3 = jsonRet3 as CreatedNegotiatedContentResult<Address>;
-                    Assert.IsNotNull(addressRet3);
-
-                    BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest3);
-
-                    IHttpActionResult jsonRet4 = addressController.Delete(addressRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet4);
-
-                    OkNegotiatedContentResult<Address> addressRet4 = jsonRet4 as OkNegotiatedContentResult<Address>;
-                    Assert.IsNotNull(addressRet4);
-
-                    BadRequestErrorMessageResult badRequest4 = jsonRet4 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest4);
-                }
-            }
-        }
-        #endregion Tests Generated for Class Controller Post Command
-
-        #region Tests Generated for Class Controller Put Command
-        [TestMethod]
-        public void Address_Controller_Put_Test()
-        {
-            foreach (LanguageEnum LanguageRequest in AllowableLanguages)
-            {
-                foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
-                {
-                    AddressController addressController = new AddressController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(addressController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, addressController.DatabaseType);
-
-                    Address addressLast = new Address();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-                    {
-                        Query query = new Query();
-                        query.Language = LanguageRequest;
-
-                        AddressService addressService = new AddressService(query, db, ContactID);
-                        addressLast = (from c in db.Addresses select c).FirstOrDefault();
-                    }
-
-                    // ok with Address info
-                    IHttpActionResult jsonRet = addressController.GetAddressWithID(addressLast.AddressID);
-                    Assert.IsNotNull(jsonRet);
-
-                    OkNegotiatedContentResult<Address> Ret = jsonRet as OkNegotiatedContentResult<Address>;
-                    Address addressRet = Ret.Content;
-                    Assert.AreEqual(addressLast.AddressID, addressRet.AddressID);
-
-                    BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
-
-                    // Put to return success
-                    IHttpActionResult jsonRet2 = addressController.Put(addressRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet2);
-
-                    OkNegotiatedContentResult<Address> addressRet2 = jsonRet2 as OkNegotiatedContentResult<Address>;
-                    Assert.IsNotNull(addressRet2);
-
-                    BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest2);
-
-                    // Put to return CSSPError because AddressID of 0 does not exist
-                    addressRet.AddressID = 0;
-                    IHttpActionResult jsonRet3 = addressController.Put(addressRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet3);
-
-                    OkNegotiatedContentResult<Address> addressRet3 = jsonRet3 as OkNegotiatedContentResult<Address>;
-                    Assert.IsNull(addressRet3);
-
-                    BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
-                    Assert.IsNotNull(badRequest3);
-                }
-            }
-        }
-        #endregion Tests Generated for Class Controller Put Command
-
-        #region Tests Generated for Class Controller Delete Command
-        [TestMethod]
-        public void Address_Controller_Delete_Test()
-        {
-            foreach (LanguageEnum LanguageRequest in AllowableLanguages)
-            {
-                foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
-                {
-                    AddressController addressController = new AddressController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(addressController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, addressController.DatabaseType);
-
-                    Address addressLast = new Address();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-                    {
-                        Query query = new Query();
-                        query.Language = LanguageRequest;
-                        query.Asc = "";
-                        query.Desc = "";
-
-                        AddressService addressService = new AddressService(query, db, ContactID);
-                        addressLast = (from c in db.Addresses select c).FirstOrDefault();
-                    }
-
-                    // ok with Address info
-                    IHttpActionResult jsonRet = addressController.GetAddressWithID(addressLast.AddressID);
-                    Assert.IsNotNull(jsonRet);
-
-                    OkNegotiatedContentResult<Address> Ret = jsonRet as OkNegotiatedContentResult<Address>;
-                    Address addressRet = Ret.Content;
-                    Assert.AreEqual(addressLast.AddressID, addressRet.AddressID);
-
-                    BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
-
-                    // Post to return newly added Address
-                    addressRet.AddressID = 0;
-                    addressController.Request = new System.Net.Http.HttpRequestMessage();
-                    addressController.Request.RequestUri = new System.Uri("http://localhost:5000/api/address");
-                    IHttpActionResult jsonRet3 = addressController.Post(addressRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet3);
-
-                    CreatedNegotiatedContentResult<Address> addressRet3 = jsonRet3 as CreatedNegotiatedContentResult<Address>;
-                    Assert.IsNotNull(addressRet3);
-                    Address address = addressRet3.Content;
-
-                    BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest3);
-
-                    // Delete to return success
-                    IHttpActionResult jsonRet2 = addressController.Delete(addressRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet2);
-
-                    OkNegotiatedContentResult<Address> addressRet2 = jsonRet2 as OkNegotiatedContentResult<Address>;
-                    Assert.IsNotNull(addressRet2);
-
-                    BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest2);
-
-                    // Delete to return CSSPError because AddressID of 0 does not exist
-                    addressRet.AddressID = 0;
-                    IHttpActionResult jsonRet4 = addressController.Delete(addressRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet4);
-
-                    OkNegotiatedContentResult<Address> addressRet4 = jsonRet4 as OkNegotiatedContentResult<Address>;
-                    Assert.IsNull(addressRet4);
-
-                    BadRequestErrorMessageResult badRequest4 = jsonRet4 as BadRequestErrorMessageResult;
-                    Assert.IsNotNull(badRequest4);
-                }
-            }
-        }
-        #endregion Tests Generated for Class Controller Delete Command
-
+        #endregion Functions private
     }
 }

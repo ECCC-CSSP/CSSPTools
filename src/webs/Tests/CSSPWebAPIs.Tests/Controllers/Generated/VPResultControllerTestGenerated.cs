@@ -2,350 +2,157 @@ using CSSPEnums;
 using CSSPModels;
 using CSSPServices;
 using CSSPWebAPI.Controllers;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using LoggedInServices.Services;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using System;
 using System.Collections.Generic;
+using System.Globalization;
+using System.IO;
 using System.Linq;
-using System.Web.Http;
-using System.Web.Http.Results;
+using System.Threading.Tasks;
+using System.Transactions;
+using UserServices.Models;
+using Xunit;
 
-namespace CSSPWebAPI.Tests.Controllers
+namespace CSSPWebAPIs.Tests.Controllers
 {
-    [TestClass]
-    public partial class VPResultControllerTest : BaseControllerTest
+    public partial class VPResultControllerTest
     {
         #region Variables
         #endregion Variables
 
         #region Properties
+        private IConfiguration Config { get; set; }
+        private IServiceProvider Provider { get; set; }
+        private IServiceCollection Services { get; set; }
+        private CSSPDBContext db { get; set; }
+        private ILoggedInService loggedInService { get; set; }
+        private IVPResultService vpResultService { get; set; }
+        private IVPResultController vpResultController { get; set; }
         #endregion Properties
 
         #region Constructors
-        public VPResultControllerTest() : base()
+        public VPResultControllerTest()
         {
         }
         #endregion Constructors
 
-        #region Tests Generated for Class Controller GetList Command
-        [TestMethod]
-        public void VPResult_Controller_GetVPResultList_Test()
+        #region Functions public
+        [Theory]
+        [InlineData("en-CA")]
+        [InlineData("fr-CA")]
+        public async Task VPResultController_Constructor_Good_Test(string culture)
         {
-            foreach (LanguageEnum LanguageRequest in AllowableLanguages)
+            bool retBool = await Setup(new CultureInfo(culture));
+            Assert.True(retBool);
+            Assert.NotNull(loggedInService);
+            Assert.NotNull(vpResultService);
+            Assert.NotNull(vpResultController);
+        }
+        [Theory]
+        [InlineData("en-CA")]
+        [InlineData("fr-CA")]
+        public async Task VPResultController_CRUD_Good_Test(string culture)
+        {
+            bool retBool = await Setup(new CultureInfo(culture));
+            Assert.True(retBool);
+
+            using (TransactionScope ts = new TransactionScope())
             {
-                foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
-                {
-                    VPResultController vpResultController = new VPResultController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(vpResultController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, vpResultController.DatabaseType);
+                // testing Get
+               var actionVPResultList = await vpResultController.Get();
+               Assert.Equal(200, ((ObjectResult)actionVPResultList.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionVPResultList.Result).Value);
+               List<VPResult> vpResultList = (List<VPResult>)(((OkObjectResult)actionVPResultList.Result).Value);
 
-                    VPResult vpResultFirst = new VPResult();
-                    int count = -1;
-                    Query query = new Query();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseTypeEnum.SqlServerTestDB))
-                    {
-                        VPResultService vpResultService = new VPResultService(query, db, ContactID);
-                        vpResultFirst = (from c in db.VPResults select c).FirstOrDefault();
-                        count = (from c in db.VPResults select c).Count();
-                        count = (query.Take > count ? count : query.Take);
-                    }
+               int count = ((List<VPResult>)((OkObjectResult)actionVPResultList.Result).Value).Count();
+                Assert.True(count > 0);
 
-                    // ok with VPResult info
-                    IHttpActionResult jsonRet = vpResultController.GetVPResultList();
-                    Assert.IsNotNull(jsonRet);
+               // testing Get(VPResultID)
+               var actionVPResult = await vpResultController.Get(vpResultList[0].VPResultID);
+               Assert.Equal(200, ((ObjectResult)actionVPResult.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionVPResult.Result).Value);
+               VPResult vpResult = (VPResult)(((OkObjectResult)actionVPResult.Result).Value);
+               Assert.NotNull(vpResult);
+               Assert.Equal(vpResultList[0].VPResultID, vpResult.VPResultID);
 
-                    OkNegotiatedContentResult<List<VPResult>> ret = jsonRet as OkNegotiatedContentResult<List<VPResult>>;
-                    Assert.AreEqual(vpResultFirst.VPResultID, ret.Content[0].VPResultID);
-                    Assert.AreEqual((count > query.Take ? query.Take : count), ret.Content.Count);
+               // testing Post(VPResult vpResult)
+               vpResult.VPResultID = 0;
+               var actionVPResultNew = await vpResultController.Post(vpResult);
+               Assert.Equal(200, ((ObjectResult)actionVPResultNew.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionVPResultNew.Result).Value);
+               VPResult vpResultNew = (VPResult)(((OkObjectResult)actionVPResultNew.Result).Value);
+               Assert.NotNull(vpResultNew);
 
-                    List<VPResult> vpResultList = new List<VPResult>();
-                    count = -1;
-                    query = new Query();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseTypeEnum.SqlServerTestDB))
-                    {
-                        VPResultService vpResultService = new VPResultService(query, db, ContactID);
-                        vpResultList = (from c in db.VPResults select c).OrderBy(c => c.VPResultID).Skip(0).Take(2).ToList();
-                        count = (from c in db.VPResults select c).Count();
-                    }
+               // testing Put(VPResult vpResult)
+               var actionVPResultUpdate = await vpResultController.Put(vpResultNew);
+               Assert.Equal(200, ((ObjectResult)actionVPResultUpdate.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionVPResultUpdate.Result).Value);
+               VPResult vpResultUpdate = (VPResult)(((OkObjectResult)actionVPResultUpdate.Result).Value);
+               Assert.NotNull(vpResultUpdate);
 
-                    if (count > 0)
-                    {
-                        query.Skip = 0;
-                        query.Take = 5;
-                        count = (query.Take > count ? query.Take : count);
-
-                        // ok with VPResult info
-                        jsonRet = vpResultController.GetVPResultList(query.Language.ToString(), query.Skip, query.Take);
-                        Assert.IsNotNull(jsonRet);
-
-                        ret = jsonRet as OkNegotiatedContentResult<List<VPResult>>;
-                        Assert.AreEqual(vpResultList[0].VPResultID, ret.Content[0].VPResultID);
-                        Assert.AreEqual((count > query.Take ? query.Take : count), ret.Content.Count);
-
-                       if (count > 1)
-                       {
-                           query.Skip = 1;
-                           query.Take = 5;
-                           count = (query.Take > count ? query.Take : count);
-
-                           // ok with VPResult info
-                           IHttpActionResult jsonRet2 = vpResultController.GetVPResultList(query.Language.ToString(), query.Skip, query.Take);
-                           Assert.IsNotNull(jsonRet2);
-
-                           OkNegotiatedContentResult<List<VPResult>> ret2 = jsonRet2 as OkNegotiatedContentResult<List<VPResult>>;
-                           Assert.AreEqual(vpResultList[1].VPResultID, ret2.Content[0].VPResultID);
-                           Assert.AreEqual((count > query.Take ? query.Take : count), ret2.Content.Count);
-                       }
-                    }
-                }
+               // testing Delete(VPResult vpResult)
+               var actionVPResultDelete = await vpResultController.Delete(vpResultUpdate);
+               Assert.Equal(200, ((ObjectResult)actionVPResultDelete.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionVPResultDelete.Result).Value);
+               VPResult vpResultDelete = (VPResult)(((OkObjectResult)actionVPResultDelete.Result).Value);
+               Assert.NotNull(vpResultDelete);
             }
         }
-        #endregion Tests Generated for Class Controller GetList Command
+        #endregion Functions public
 
-        #region Tests Generated for Class Controller GetWithID Command
-        [TestMethod]
-        public void VPResult_Controller_GetVPResultWithID_Test()
+        #region Functions private
+        private async Task<bool> Setup(CultureInfo culture)
         {
-            foreach (LanguageEnum LanguageRequest in AllowableLanguages)
+            Config = new ConfigurationBuilder()
+               .SetBasePath(Directory.GetParent(AppContext.BaseDirectory).FullName)
+               .AddJsonFile("appsettings.json")
+               .Build();
+        
+            Services = new ServiceCollection();
+        
+            IConfigurationSection connectionStringsSection = Config.GetSection("ConnectionStrings");
+            Services.Configure<ConnectionStringsModel>(connectionStringsSection);
+        
+            ConnectionStringsModel connectionStrings = connectionStringsSection.Get<ConnectionStringsModel>();
+        
+            Services.AddSingleton<IConfiguration>(Config);
+        
+            Services.AddDbContext<CSSPDBContext>(options =>
             {
-                foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
-                {
-                    VPResultController vpResultController = new VPResultController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(vpResultController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, vpResultController.DatabaseType);
-
-                    VPResult vpResultFirst = new VPResult();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-                    {
-                        VPResultService vpResultService = new VPResultService(new Query(), db, ContactID);
-                        vpResultFirst = (from c in db.VPResults select c).FirstOrDefault();
-                    }
-
-                    // ok with VPResult info
-                    IHttpActionResult jsonRet = vpResultController.GetVPResultWithID(vpResultFirst.VPResultID);
-                    Assert.IsNotNull(jsonRet);
-
-                    OkNegotiatedContentResult<VPResult> Ret = jsonRet as OkNegotiatedContentResult<VPResult>;
-                    VPResult vpResultRet = Ret.Content;
-                    Assert.AreEqual(vpResultFirst.VPResultID, vpResultRet.VPResultID);
-
-                    BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
-
-                    // Not Found
-                    IHttpActionResult jsonRet2 = vpResultController.GetVPResultWithID(0);
-                    Assert.IsNotNull(jsonRet2);
-
-                    OkNegotiatedContentResult<VPResult> vpResultRet2 = jsonRet2 as OkNegotiatedContentResult<VPResult>;
-                    Assert.IsNull(vpResultRet2);
-
-                    NotFoundResult notFoundRequest = jsonRet2 as NotFoundResult;
-                    Assert.IsNotNull(notFoundRequest);
-                }
-            }
+                options.UseSqlServer(connectionStrings.TestDB);
+            });
+        
+            Services.AddDbContext<ApplicationDbContext>(options =>
+                options.UseSqlServer(connectionStrings.TestDB));
+        
+            Services.AddIdentityCore<ApplicationUser>()
+                .AddEntityFrameworkStores<ApplicationDbContext>();
+        
+            Services.AddSingleton<IEnums, Enums>();
+            Services.AddSingleton<ILoggedInService, LoggedInService>();
+            Services.AddSingleton<IVPResultService, VPResultService>();
+            Services.AddSingleton<IVPResultController, VPResultController>();
+        
+            Provider = Services.BuildServiceProvider();
+            Assert.NotNull(Provider);
+        
+            loggedInService = Provider.GetService<ILoggedInService>();
+            Assert.NotNull(loggedInService);
+        
+            vpResultService = Provider.GetService<IVPResultService>();
+            Assert.NotNull(vpResultService);
+        
+            await vpResultService.SetCulture(culture);
+        
+            vpResultController = Provider.GetService<IVPResultController>();
+            Assert.NotNull(vpResultController);
+        
+            return await Task.FromResult(true);
         }
-        #endregion Tests Generated for Class Controller GetWithID Command
-
-        #region Tests Generated for Class Controller Post Command
-        [TestMethod]
-        public void VPResult_Controller_Post_Test()
-        {
-            foreach (LanguageEnum LanguageRequest in AllowableLanguages)
-            {
-                foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
-                {
-                    VPResultController vpResultController = new VPResultController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(vpResultController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, vpResultController.DatabaseType);
-
-                    VPResult vpResultLast = new VPResult();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-                    {
-                        Query query = new Query();
-                        query.Language = LanguageRequest;
-                        query.Asc = "";
-                        query.Desc = "";
-
-                        VPResultService vpResultService = new VPResultService(query, db, ContactID);
-                        vpResultLast = (from c in db.VPResults select c).FirstOrDefault();
-                    }
-
-                    // ok with VPResult info
-                    IHttpActionResult jsonRet = vpResultController.GetVPResultWithID(vpResultLast.VPResultID);
-                    Assert.IsNotNull(jsonRet);
-
-                    OkNegotiatedContentResult<VPResult> Ret = jsonRet as OkNegotiatedContentResult<VPResult>;
-                    VPResult vpResultRet = Ret.Content;
-                    Assert.AreEqual(vpResultLast.VPResultID, vpResultRet.VPResultID);
-
-                    BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
-
-                    // Post to return CSSPError because VPResultID exist
-                    IHttpActionResult jsonRet2 = vpResultController.Post(vpResultRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet2);
-
-                    OkNegotiatedContentResult<VPResult> vpResultRet2 = jsonRet2 as OkNegotiatedContentResult<VPResult>;
-                    Assert.IsNull(vpResultRet2);
-
-                    BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
-                    Assert.IsNotNull(badRequest2);
-
-                    // Post to return newly added VPResult
-                    vpResultRet.VPResultID = 0;
-                    vpResultController.Request = new System.Net.Http.HttpRequestMessage();
-                    vpResultController.Request.RequestUri = new System.Uri("http://localhost:5000/api/vpResult");
-                    IHttpActionResult jsonRet3 = vpResultController.Post(vpResultRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet3);
-
-                    CreatedNegotiatedContentResult<VPResult> vpResultRet3 = jsonRet3 as CreatedNegotiatedContentResult<VPResult>;
-                    Assert.IsNotNull(vpResultRet3);
-
-                    BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest3);
-
-                    IHttpActionResult jsonRet4 = vpResultController.Delete(vpResultRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet4);
-
-                    OkNegotiatedContentResult<VPResult> vpResultRet4 = jsonRet4 as OkNegotiatedContentResult<VPResult>;
-                    Assert.IsNotNull(vpResultRet4);
-
-                    BadRequestErrorMessageResult badRequest4 = jsonRet4 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest4);
-                }
-            }
-        }
-        #endregion Tests Generated for Class Controller Post Command
-
-        #region Tests Generated for Class Controller Put Command
-        [TestMethod]
-        public void VPResult_Controller_Put_Test()
-        {
-            foreach (LanguageEnum LanguageRequest in AllowableLanguages)
-            {
-                foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
-                {
-                    VPResultController vpResultController = new VPResultController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(vpResultController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, vpResultController.DatabaseType);
-
-                    VPResult vpResultLast = new VPResult();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-                    {
-                        Query query = new Query();
-                        query.Language = LanguageRequest;
-
-                        VPResultService vpResultService = new VPResultService(query, db, ContactID);
-                        vpResultLast = (from c in db.VPResults select c).FirstOrDefault();
-                    }
-
-                    // ok with VPResult info
-                    IHttpActionResult jsonRet = vpResultController.GetVPResultWithID(vpResultLast.VPResultID);
-                    Assert.IsNotNull(jsonRet);
-
-                    OkNegotiatedContentResult<VPResult> Ret = jsonRet as OkNegotiatedContentResult<VPResult>;
-                    VPResult vpResultRet = Ret.Content;
-                    Assert.AreEqual(vpResultLast.VPResultID, vpResultRet.VPResultID);
-
-                    BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
-
-                    // Put to return success
-                    IHttpActionResult jsonRet2 = vpResultController.Put(vpResultRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet2);
-
-                    OkNegotiatedContentResult<VPResult> vpResultRet2 = jsonRet2 as OkNegotiatedContentResult<VPResult>;
-                    Assert.IsNotNull(vpResultRet2);
-
-                    BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest2);
-
-                    // Put to return CSSPError because VPResultID of 0 does not exist
-                    vpResultRet.VPResultID = 0;
-                    IHttpActionResult jsonRet3 = vpResultController.Put(vpResultRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet3);
-
-                    OkNegotiatedContentResult<VPResult> vpResultRet3 = jsonRet3 as OkNegotiatedContentResult<VPResult>;
-                    Assert.IsNull(vpResultRet3);
-
-                    BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
-                    Assert.IsNotNull(badRequest3);
-                }
-            }
-        }
-        #endregion Tests Generated for Class Controller Put Command
-
-        #region Tests Generated for Class Controller Delete Command
-        [TestMethod]
-        public void VPResult_Controller_Delete_Test()
-        {
-            foreach (LanguageEnum LanguageRequest in AllowableLanguages)
-            {
-                foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
-                {
-                    VPResultController vpResultController = new VPResultController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(vpResultController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, vpResultController.DatabaseType);
-
-                    VPResult vpResultLast = new VPResult();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-                    {
-                        Query query = new Query();
-                        query.Language = LanguageRequest;
-                        query.Asc = "";
-                        query.Desc = "";
-
-                        VPResultService vpResultService = new VPResultService(query, db, ContactID);
-                        vpResultLast = (from c in db.VPResults select c).FirstOrDefault();
-                    }
-
-                    // ok with VPResult info
-                    IHttpActionResult jsonRet = vpResultController.GetVPResultWithID(vpResultLast.VPResultID);
-                    Assert.IsNotNull(jsonRet);
-
-                    OkNegotiatedContentResult<VPResult> Ret = jsonRet as OkNegotiatedContentResult<VPResult>;
-                    VPResult vpResultRet = Ret.Content;
-                    Assert.AreEqual(vpResultLast.VPResultID, vpResultRet.VPResultID);
-
-                    BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
-
-                    // Post to return newly added VPResult
-                    vpResultRet.VPResultID = 0;
-                    vpResultController.Request = new System.Net.Http.HttpRequestMessage();
-                    vpResultController.Request.RequestUri = new System.Uri("http://localhost:5000/api/vpResult");
-                    IHttpActionResult jsonRet3 = vpResultController.Post(vpResultRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet3);
-
-                    CreatedNegotiatedContentResult<VPResult> vpResultRet3 = jsonRet3 as CreatedNegotiatedContentResult<VPResult>;
-                    Assert.IsNotNull(vpResultRet3);
-                    VPResult vpResult = vpResultRet3.Content;
-
-                    BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest3);
-
-                    // Delete to return success
-                    IHttpActionResult jsonRet2 = vpResultController.Delete(vpResultRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet2);
-
-                    OkNegotiatedContentResult<VPResult> vpResultRet2 = jsonRet2 as OkNegotiatedContentResult<VPResult>;
-                    Assert.IsNotNull(vpResultRet2);
-
-                    BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest2);
-
-                    // Delete to return CSSPError because VPResultID of 0 does not exist
-                    vpResultRet.VPResultID = 0;
-                    IHttpActionResult jsonRet4 = vpResultController.Delete(vpResultRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet4);
-
-                    OkNegotiatedContentResult<VPResult> vpResultRet4 = jsonRet4 as OkNegotiatedContentResult<VPResult>;
-                    Assert.IsNull(vpResultRet4);
-
-                    BadRequestErrorMessageResult badRequest4 = jsonRet4 as BadRequestErrorMessageResult;
-                    Assert.IsNotNull(badRequest4);
-                }
-            }
-        }
-        #endregion Tests Generated for Class Controller Delete Command
-
+        #endregion Functions private
     }
 }

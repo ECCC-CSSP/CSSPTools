@@ -1,143 +1,70 @@
-using CSSPEnums;
 using CSSPModels;
 using CSSPServices;
-using System;
+using LoggedInServices.Services;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web.Http;
+using System.Threading.Tasks;
 
 namespace CSSPWebAPI.Controllers
 {
-    [RoutePrefix("api/infrastructureLanguage")]
-    public partial class InfrastructureLanguageController : BaseController
+    public partial interface IInfrastructureLanguageController
+    {
+        Task<ActionResult<List<InfrastructureLanguage>>> Get();
+        Task<ActionResult<InfrastructureLanguage>> Get(int InfrastructureLanguageID);
+        Task<ActionResult<InfrastructureLanguage>> Post(InfrastructureLanguage infrastructureLanguage);
+        Task<ActionResult<InfrastructureLanguage>> Put(InfrastructureLanguage infrastructureLanguage);
+        Task<ActionResult<InfrastructureLanguage>> Delete(InfrastructureLanguage infrastructureLanguage);
+    }
+
+    [Route("api/{culture}/[controller]")]
+    [ApiController]
+    [Authorize]
+    public partial class InfrastructureLanguageController : ControllerBase, IInfrastructureLanguageController
     {
         #region Variables
         #endregion Variables
 
         #region Properties
+        private IInfrastructureLanguageService infrastructureLanguageService { get; }
+        private CSSPDBContext db { get; }
+        private ILoggedInService loggedInService { get; }
         #endregion Properties
 
         #region Constructors
-        public InfrastructureLanguageController() : base()
+        public InfrastructureLanguageController(IInfrastructureLanguageService infrastructureLanguageService, CSSPDBContext db, ILoggedInService loggedInService)
         {
-        }
-        public InfrastructureLanguageController(DatabaseTypeEnum dbt = DatabaseTypeEnum.SqlServerTestDB) : base(dbt)
-        {
+            this.infrastructureLanguageService = infrastructureLanguageService;
+            this.db = db;
+            this.loggedInService = loggedInService;
         }
         #endregion Constructors
 
         #region Functions public
-        // GET api/infrastructureLanguage
-        [Route("")]
-        public IHttpActionResult GetInfrastructureLanguageList([FromUri]string lang = "en", [FromUri]int skip = 0, [FromUri]int take = 200,
-            [FromUri]string asc = "", [FromUri]string desc = "", [FromUri]string where = "", [FromUri]string extra = "")
+        [HttpGet]
+        public async Task<ActionResult<List<InfrastructureLanguage>>> Get()
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                InfrastructureLanguageService infrastructureLanguageService = new InfrastructureLanguageService(new Query() { Lang = lang }, db, ContactID);
-
-                else // QueryString has no parameter [extra] or extra is empty
-                {
-                   infrastructureLanguageService.Query = infrastructureLanguageService.FillQuery(typeof(InfrastructureLanguage), lang, skip, take, asc, desc, where, extra);
-
-                    if (infrastructureLanguageService.Query.HasErrors)
-                    {
-                        return Ok(new List<InfrastructureLanguage>()
-                        {
-                            new InfrastructureLanguage()
-                            {
-                                HasErrors = infrastructureLanguageService.Query.HasErrors,
-                                ValidationResults = infrastructureLanguageService.Query.ValidationResults,
-                            },
-                        }.ToList());
-                    }
-                    else
-                    {
-                        return Ok(infrastructureLanguageService.GetInfrastructureLanguageList().ToList());
-                    }
-                }
-            }
+            return await infrastructureLanguageService.GetInfrastructureLanguageList();
         }
-        // GET api/infrastructureLanguage/1
-        [Route("{InfrastructureLanguageID:int}")]
-        public IHttpActionResult GetInfrastructureLanguageWithID([FromUri]int InfrastructureLanguageID, [FromUri]string lang = "en", [FromUri]string extra = "")
+        [HttpGet("{InfrastructureLanguageID}")]
+        public async Task<ActionResult<InfrastructureLanguage>> Get(int InfrastructureLanguageID)
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                InfrastructureLanguageService infrastructureLanguageService = new InfrastructureLanguageService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
-
-                infrastructureLanguageService.Query = infrastructureLanguageService.FillQuery(typeof(InfrastructureLanguage), lang, 0, 1, "", "", extra);
-
-                else
-                {
-                    InfrastructureLanguage infrastructureLanguage = new InfrastructureLanguage();
-                    infrastructureLanguage = infrastructureLanguageService.GetInfrastructureLanguageWithInfrastructureLanguageID(InfrastructureLanguageID);
-
-                    if (infrastructureLanguage == null)
-                    {
-                        return NotFound();
-                    }
-
-                    return Ok(infrastructureLanguage);
-                }
-            }
+            return await infrastructureLanguageService.GetInfrastructureLanguageWithInfrastructureLanguageID(InfrastructureLanguageID);
         }
-        // POST api/infrastructureLanguage
-        [Route("")]
-        public IHttpActionResult Post([FromBody]InfrastructureLanguage infrastructureLanguage, [FromUri]string lang = "en")
+        [HttpPost]
+        public async Task<ActionResult<InfrastructureLanguage>> Post(InfrastructureLanguage infrastructureLanguage)
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                InfrastructureLanguageService infrastructureLanguageService = new InfrastructureLanguageService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
-
-                if (!infrastructureLanguageService.Add(infrastructureLanguage))
-                {
-                    return BadRequest(String.Join("|||", infrastructureLanguage.ValidationResults));
-                }
-                else
-                {
-                    infrastructureLanguage.ValidationResults = null;
-                    return Created<InfrastructureLanguage>(new Uri(Request.RequestUri, infrastructureLanguage.InfrastructureLanguageID.ToString()), infrastructureLanguage);
-                }
-            }
+            return await infrastructureLanguageService.Add(infrastructureLanguage);
         }
-        // PUT api/infrastructureLanguage
-        [Route("")]
-        public IHttpActionResult Put([FromBody]InfrastructureLanguage infrastructureLanguage, [FromUri]string lang = "en")
+        [HttpPut]
+        public async Task<ActionResult<InfrastructureLanguage>> Put(InfrastructureLanguage infrastructureLanguage)
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                InfrastructureLanguageService infrastructureLanguageService = new InfrastructureLanguageService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
-
-                if (!infrastructureLanguageService.Update(infrastructureLanguage))
-                {
-                    return BadRequest(String.Join("|||", infrastructureLanguage.ValidationResults));
-                }
-                else
-                {
-                    infrastructureLanguage.ValidationResults = null;
-                    return Ok(infrastructureLanguage);
-                }
-            }
+            return await infrastructureLanguageService.Update(infrastructureLanguage);
         }
-        // DELETE api/infrastructureLanguage
-        [Route("")]
-        public IHttpActionResult Delete([FromBody]InfrastructureLanguage infrastructureLanguage, [FromUri]string lang = "en")
+        [HttpDelete]
+        public async Task<ActionResult<InfrastructureLanguage>> Delete(InfrastructureLanguage infrastructureLanguage)
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                InfrastructureLanguageService infrastructureLanguageService = new InfrastructureLanguageService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
-
-                if (!infrastructureLanguageService.Delete(infrastructureLanguage))
-                {
-                    return BadRequest(String.Join("|||", infrastructureLanguage.ValidationResults));
-                }
-                else
-                {
-                    infrastructureLanguage.ValidationResults = null;
-                    return Ok(infrastructureLanguage);
-                }
-            }
+            return await infrastructureLanguageService.Delete(infrastructureLanguage);
         }
         #endregion Functions public
 

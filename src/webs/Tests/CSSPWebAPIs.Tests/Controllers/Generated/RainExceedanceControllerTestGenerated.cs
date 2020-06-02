@@ -2,350 +2,157 @@ using CSSPEnums;
 using CSSPModels;
 using CSSPServices;
 using CSSPWebAPI.Controllers;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using LoggedInServices.Services;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using System;
 using System.Collections.Generic;
+using System.Globalization;
+using System.IO;
 using System.Linq;
-using System.Web.Http;
-using System.Web.Http.Results;
+using System.Threading.Tasks;
+using System.Transactions;
+using UserServices.Models;
+using Xunit;
 
-namespace CSSPWebAPI.Tests.Controllers
+namespace CSSPWebAPIs.Tests.Controllers
 {
-    [TestClass]
-    public partial class RainExceedanceControllerTest : BaseControllerTest
+    public partial class RainExceedanceControllerTest
     {
         #region Variables
         #endregion Variables
 
         #region Properties
+        private IConfiguration Config { get; set; }
+        private IServiceProvider Provider { get; set; }
+        private IServiceCollection Services { get; set; }
+        private CSSPDBContext db { get; set; }
+        private ILoggedInService loggedInService { get; set; }
+        private IRainExceedanceService rainExceedanceService { get; set; }
+        private IRainExceedanceController rainExceedanceController { get; set; }
         #endregion Properties
 
         #region Constructors
-        public RainExceedanceControllerTest() : base()
+        public RainExceedanceControllerTest()
         {
         }
         #endregion Constructors
 
-        #region Tests Generated for Class Controller GetList Command
-        [TestMethod]
-        public void RainExceedance_Controller_GetRainExceedanceList_Test()
+        #region Functions public
+        [Theory]
+        [InlineData("en-CA")]
+        [InlineData("fr-CA")]
+        public async Task RainExceedanceController_Constructor_Good_Test(string culture)
         {
-            foreach (LanguageEnum LanguageRequest in AllowableLanguages)
+            bool retBool = await Setup(new CultureInfo(culture));
+            Assert.True(retBool);
+            Assert.NotNull(loggedInService);
+            Assert.NotNull(rainExceedanceService);
+            Assert.NotNull(rainExceedanceController);
+        }
+        [Theory]
+        [InlineData("en-CA")]
+        [InlineData("fr-CA")]
+        public async Task RainExceedanceController_CRUD_Good_Test(string culture)
+        {
+            bool retBool = await Setup(new CultureInfo(culture));
+            Assert.True(retBool);
+
+            using (TransactionScope ts = new TransactionScope())
             {
-                foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
-                {
-                    RainExceedanceController rainExceedanceController = new RainExceedanceController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(rainExceedanceController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, rainExceedanceController.DatabaseType);
+                // testing Get
+               var actionRainExceedanceList = await rainExceedanceController.Get();
+               Assert.Equal(200, ((ObjectResult)actionRainExceedanceList.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionRainExceedanceList.Result).Value);
+               List<RainExceedance> rainExceedanceList = (List<RainExceedance>)(((OkObjectResult)actionRainExceedanceList.Result).Value);
 
-                    RainExceedance rainExceedanceFirst = new RainExceedance();
-                    int count = -1;
-                    Query query = new Query();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseTypeEnum.SqlServerTestDB))
-                    {
-                        RainExceedanceService rainExceedanceService = new RainExceedanceService(query, db, ContactID);
-                        rainExceedanceFirst = (from c in db.RainExceedances select c).FirstOrDefault();
-                        count = (from c in db.RainExceedances select c).Count();
-                        count = (query.Take > count ? count : query.Take);
-                    }
+               int count = ((List<RainExceedance>)((OkObjectResult)actionRainExceedanceList.Result).Value).Count();
+                Assert.True(count > 0);
 
-                    // ok with RainExceedance info
-                    IHttpActionResult jsonRet = rainExceedanceController.GetRainExceedanceList();
-                    Assert.IsNotNull(jsonRet);
+               // testing Get(RainExceedanceID)
+               var actionRainExceedance = await rainExceedanceController.Get(rainExceedanceList[0].RainExceedanceID);
+               Assert.Equal(200, ((ObjectResult)actionRainExceedance.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionRainExceedance.Result).Value);
+               RainExceedance rainExceedance = (RainExceedance)(((OkObjectResult)actionRainExceedance.Result).Value);
+               Assert.NotNull(rainExceedance);
+               Assert.Equal(rainExceedanceList[0].RainExceedanceID, rainExceedance.RainExceedanceID);
 
-                    OkNegotiatedContentResult<List<RainExceedance>> ret = jsonRet as OkNegotiatedContentResult<List<RainExceedance>>;
-                    Assert.AreEqual(rainExceedanceFirst.RainExceedanceID, ret.Content[0].RainExceedanceID);
-                    Assert.AreEqual((count > query.Take ? query.Take : count), ret.Content.Count);
+               // testing Post(RainExceedance rainExceedance)
+               rainExceedance.RainExceedanceID = 0;
+               var actionRainExceedanceNew = await rainExceedanceController.Post(rainExceedance);
+               Assert.Equal(200, ((ObjectResult)actionRainExceedanceNew.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionRainExceedanceNew.Result).Value);
+               RainExceedance rainExceedanceNew = (RainExceedance)(((OkObjectResult)actionRainExceedanceNew.Result).Value);
+               Assert.NotNull(rainExceedanceNew);
 
-                    List<RainExceedance> rainExceedanceList = new List<RainExceedance>();
-                    count = -1;
-                    query = new Query();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseTypeEnum.SqlServerTestDB))
-                    {
-                        RainExceedanceService rainExceedanceService = new RainExceedanceService(query, db, ContactID);
-                        rainExceedanceList = (from c in db.RainExceedances select c).OrderBy(c => c.RainExceedanceID).Skip(0).Take(2).ToList();
-                        count = (from c in db.RainExceedances select c).Count();
-                    }
+               // testing Put(RainExceedance rainExceedance)
+               var actionRainExceedanceUpdate = await rainExceedanceController.Put(rainExceedanceNew);
+               Assert.Equal(200, ((ObjectResult)actionRainExceedanceUpdate.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionRainExceedanceUpdate.Result).Value);
+               RainExceedance rainExceedanceUpdate = (RainExceedance)(((OkObjectResult)actionRainExceedanceUpdate.Result).Value);
+               Assert.NotNull(rainExceedanceUpdate);
 
-                    if (count > 0)
-                    {
-                        query.Skip = 0;
-                        query.Take = 5;
-                        count = (query.Take > count ? query.Take : count);
-
-                        // ok with RainExceedance info
-                        jsonRet = rainExceedanceController.GetRainExceedanceList(query.Language.ToString(), query.Skip, query.Take);
-                        Assert.IsNotNull(jsonRet);
-
-                        ret = jsonRet as OkNegotiatedContentResult<List<RainExceedance>>;
-                        Assert.AreEqual(rainExceedanceList[0].RainExceedanceID, ret.Content[0].RainExceedanceID);
-                        Assert.AreEqual((count > query.Take ? query.Take : count), ret.Content.Count);
-
-                       if (count > 1)
-                       {
-                           query.Skip = 1;
-                           query.Take = 5;
-                           count = (query.Take > count ? query.Take : count);
-
-                           // ok with RainExceedance info
-                           IHttpActionResult jsonRet2 = rainExceedanceController.GetRainExceedanceList(query.Language.ToString(), query.Skip, query.Take);
-                           Assert.IsNotNull(jsonRet2);
-
-                           OkNegotiatedContentResult<List<RainExceedance>> ret2 = jsonRet2 as OkNegotiatedContentResult<List<RainExceedance>>;
-                           Assert.AreEqual(rainExceedanceList[1].RainExceedanceID, ret2.Content[0].RainExceedanceID);
-                           Assert.AreEqual((count > query.Take ? query.Take : count), ret2.Content.Count);
-                       }
-                    }
-                }
+               // testing Delete(RainExceedance rainExceedance)
+               var actionRainExceedanceDelete = await rainExceedanceController.Delete(rainExceedanceUpdate);
+               Assert.Equal(200, ((ObjectResult)actionRainExceedanceDelete.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionRainExceedanceDelete.Result).Value);
+               RainExceedance rainExceedanceDelete = (RainExceedance)(((OkObjectResult)actionRainExceedanceDelete.Result).Value);
+               Assert.NotNull(rainExceedanceDelete);
             }
         }
-        #endregion Tests Generated for Class Controller GetList Command
+        #endregion Functions public
 
-        #region Tests Generated for Class Controller GetWithID Command
-        [TestMethod]
-        public void RainExceedance_Controller_GetRainExceedanceWithID_Test()
+        #region Functions private
+        private async Task<bool> Setup(CultureInfo culture)
         {
-            foreach (LanguageEnum LanguageRequest in AllowableLanguages)
+            Config = new ConfigurationBuilder()
+               .SetBasePath(Directory.GetParent(AppContext.BaseDirectory).FullName)
+               .AddJsonFile("appsettings.json")
+               .Build();
+        
+            Services = new ServiceCollection();
+        
+            IConfigurationSection connectionStringsSection = Config.GetSection("ConnectionStrings");
+            Services.Configure<ConnectionStringsModel>(connectionStringsSection);
+        
+            ConnectionStringsModel connectionStrings = connectionStringsSection.Get<ConnectionStringsModel>();
+        
+            Services.AddSingleton<IConfiguration>(Config);
+        
+            Services.AddDbContext<CSSPDBContext>(options =>
             {
-                foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
-                {
-                    RainExceedanceController rainExceedanceController = new RainExceedanceController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(rainExceedanceController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, rainExceedanceController.DatabaseType);
-
-                    RainExceedance rainExceedanceFirst = new RainExceedance();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-                    {
-                        RainExceedanceService rainExceedanceService = new RainExceedanceService(new Query(), db, ContactID);
-                        rainExceedanceFirst = (from c in db.RainExceedances select c).FirstOrDefault();
-                    }
-
-                    // ok with RainExceedance info
-                    IHttpActionResult jsonRet = rainExceedanceController.GetRainExceedanceWithID(rainExceedanceFirst.RainExceedanceID);
-                    Assert.IsNotNull(jsonRet);
-
-                    OkNegotiatedContentResult<RainExceedance> Ret = jsonRet as OkNegotiatedContentResult<RainExceedance>;
-                    RainExceedance rainExceedanceRet = Ret.Content;
-                    Assert.AreEqual(rainExceedanceFirst.RainExceedanceID, rainExceedanceRet.RainExceedanceID);
-
-                    BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
-
-                    // Not Found
-                    IHttpActionResult jsonRet2 = rainExceedanceController.GetRainExceedanceWithID(0);
-                    Assert.IsNotNull(jsonRet2);
-
-                    OkNegotiatedContentResult<RainExceedance> rainExceedanceRet2 = jsonRet2 as OkNegotiatedContentResult<RainExceedance>;
-                    Assert.IsNull(rainExceedanceRet2);
-
-                    NotFoundResult notFoundRequest = jsonRet2 as NotFoundResult;
-                    Assert.IsNotNull(notFoundRequest);
-                }
-            }
+                options.UseSqlServer(connectionStrings.TestDB);
+            });
+        
+            Services.AddDbContext<ApplicationDbContext>(options =>
+                options.UseSqlServer(connectionStrings.TestDB));
+        
+            Services.AddIdentityCore<ApplicationUser>()
+                .AddEntityFrameworkStores<ApplicationDbContext>();
+        
+            Services.AddSingleton<IEnums, Enums>();
+            Services.AddSingleton<ILoggedInService, LoggedInService>();
+            Services.AddSingleton<IRainExceedanceService, RainExceedanceService>();
+            Services.AddSingleton<IRainExceedanceController, RainExceedanceController>();
+        
+            Provider = Services.BuildServiceProvider();
+            Assert.NotNull(Provider);
+        
+            loggedInService = Provider.GetService<ILoggedInService>();
+            Assert.NotNull(loggedInService);
+        
+            rainExceedanceService = Provider.GetService<IRainExceedanceService>();
+            Assert.NotNull(rainExceedanceService);
+        
+            await rainExceedanceService.SetCulture(culture);
+        
+            rainExceedanceController = Provider.GetService<IRainExceedanceController>();
+            Assert.NotNull(rainExceedanceController);
+        
+            return await Task.FromResult(true);
         }
-        #endregion Tests Generated for Class Controller GetWithID Command
-
-        #region Tests Generated for Class Controller Post Command
-        [TestMethod]
-        public void RainExceedance_Controller_Post_Test()
-        {
-            foreach (LanguageEnum LanguageRequest in AllowableLanguages)
-            {
-                foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
-                {
-                    RainExceedanceController rainExceedanceController = new RainExceedanceController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(rainExceedanceController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, rainExceedanceController.DatabaseType);
-
-                    RainExceedance rainExceedanceLast = new RainExceedance();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-                    {
-                        Query query = new Query();
-                        query.Language = LanguageRequest;
-                        query.Asc = "";
-                        query.Desc = "";
-
-                        RainExceedanceService rainExceedanceService = new RainExceedanceService(query, db, ContactID);
-                        rainExceedanceLast = (from c in db.RainExceedances select c).FirstOrDefault();
-                    }
-
-                    // ok with RainExceedance info
-                    IHttpActionResult jsonRet = rainExceedanceController.GetRainExceedanceWithID(rainExceedanceLast.RainExceedanceID);
-                    Assert.IsNotNull(jsonRet);
-
-                    OkNegotiatedContentResult<RainExceedance> Ret = jsonRet as OkNegotiatedContentResult<RainExceedance>;
-                    RainExceedance rainExceedanceRet = Ret.Content;
-                    Assert.AreEqual(rainExceedanceLast.RainExceedanceID, rainExceedanceRet.RainExceedanceID);
-
-                    BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
-
-                    // Post to return CSSPError because RainExceedanceID exist
-                    IHttpActionResult jsonRet2 = rainExceedanceController.Post(rainExceedanceRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet2);
-
-                    OkNegotiatedContentResult<RainExceedance> rainExceedanceRet2 = jsonRet2 as OkNegotiatedContentResult<RainExceedance>;
-                    Assert.IsNull(rainExceedanceRet2);
-
-                    BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
-                    Assert.IsNotNull(badRequest2);
-
-                    // Post to return newly added RainExceedance
-                    rainExceedanceRet.RainExceedanceID = 0;
-                    rainExceedanceController.Request = new System.Net.Http.HttpRequestMessage();
-                    rainExceedanceController.Request.RequestUri = new System.Uri("http://localhost:5000/api/rainExceedance");
-                    IHttpActionResult jsonRet3 = rainExceedanceController.Post(rainExceedanceRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet3);
-
-                    CreatedNegotiatedContentResult<RainExceedance> rainExceedanceRet3 = jsonRet3 as CreatedNegotiatedContentResult<RainExceedance>;
-                    Assert.IsNotNull(rainExceedanceRet3);
-
-                    BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest3);
-
-                    IHttpActionResult jsonRet4 = rainExceedanceController.Delete(rainExceedanceRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet4);
-
-                    OkNegotiatedContentResult<RainExceedance> rainExceedanceRet4 = jsonRet4 as OkNegotiatedContentResult<RainExceedance>;
-                    Assert.IsNotNull(rainExceedanceRet4);
-
-                    BadRequestErrorMessageResult badRequest4 = jsonRet4 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest4);
-                }
-            }
-        }
-        #endregion Tests Generated for Class Controller Post Command
-
-        #region Tests Generated for Class Controller Put Command
-        [TestMethod]
-        public void RainExceedance_Controller_Put_Test()
-        {
-            foreach (LanguageEnum LanguageRequest in AllowableLanguages)
-            {
-                foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
-                {
-                    RainExceedanceController rainExceedanceController = new RainExceedanceController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(rainExceedanceController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, rainExceedanceController.DatabaseType);
-
-                    RainExceedance rainExceedanceLast = new RainExceedance();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-                    {
-                        Query query = new Query();
-                        query.Language = LanguageRequest;
-
-                        RainExceedanceService rainExceedanceService = new RainExceedanceService(query, db, ContactID);
-                        rainExceedanceLast = (from c in db.RainExceedances select c).FirstOrDefault();
-                    }
-
-                    // ok with RainExceedance info
-                    IHttpActionResult jsonRet = rainExceedanceController.GetRainExceedanceWithID(rainExceedanceLast.RainExceedanceID);
-                    Assert.IsNotNull(jsonRet);
-
-                    OkNegotiatedContentResult<RainExceedance> Ret = jsonRet as OkNegotiatedContentResult<RainExceedance>;
-                    RainExceedance rainExceedanceRet = Ret.Content;
-                    Assert.AreEqual(rainExceedanceLast.RainExceedanceID, rainExceedanceRet.RainExceedanceID);
-
-                    BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
-
-                    // Put to return success
-                    IHttpActionResult jsonRet2 = rainExceedanceController.Put(rainExceedanceRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet2);
-
-                    OkNegotiatedContentResult<RainExceedance> rainExceedanceRet2 = jsonRet2 as OkNegotiatedContentResult<RainExceedance>;
-                    Assert.IsNotNull(rainExceedanceRet2);
-
-                    BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest2);
-
-                    // Put to return CSSPError because RainExceedanceID of 0 does not exist
-                    rainExceedanceRet.RainExceedanceID = 0;
-                    IHttpActionResult jsonRet3 = rainExceedanceController.Put(rainExceedanceRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet3);
-
-                    OkNegotiatedContentResult<RainExceedance> rainExceedanceRet3 = jsonRet3 as OkNegotiatedContentResult<RainExceedance>;
-                    Assert.IsNull(rainExceedanceRet3);
-
-                    BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
-                    Assert.IsNotNull(badRequest3);
-                }
-            }
-        }
-        #endregion Tests Generated for Class Controller Put Command
-
-        #region Tests Generated for Class Controller Delete Command
-        [TestMethod]
-        public void RainExceedance_Controller_Delete_Test()
-        {
-            foreach (LanguageEnum LanguageRequest in AllowableLanguages)
-            {
-                foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
-                {
-                    RainExceedanceController rainExceedanceController = new RainExceedanceController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(rainExceedanceController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, rainExceedanceController.DatabaseType);
-
-                    RainExceedance rainExceedanceLast = new RainExceedance();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-                    {
-                        Query query = new Query();
-                        query.Language = LanguageRequest;
-                        query.Asc = "";
-                        query.Desc = "";
-
-                        RainExceedanceService rainExceedanceService = new RainExceedanceService(query, db, ContactID);
-                        rainExceedanceLast = (from c in db.RainExceedances select c).FirstOrDefault();
-                    }
-
-                    // ok with RainExceedance info
-                    IHttpActionResult jsonRet = rainExceedanceController.GetRainExceedanceWithID(rainExceedanceLast.RainExceedanceID);
-                    Assert.IsNotNull(jsonRet);
-
-                    OkNegotiatedContentResult<RainExceedance> Ret = jsonRet as OkNegotiatedContentResult<RainExceedance>;
-                    RainExceedance rainExceedanceRet = Ret.Content;
-                    Assert.AreEqual(rainExceedanceLast.RainExceedanceID, rainExceedanceRet.RainExceedanceID);
-
-                    BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
-
-                    // Post to return newly added RainExceedance
-                    rainExceedanceRet.RainExceedanceID = 0;
-                    rainExceedanceController.Request = new System.Net.Http.HttpRequestMessage();
-                    rainExceedanceController.Request.RequestUri = new System.Uri("http://localhost:5000/api/rainExceedance");
-                    IHttpActionResult jsonRet3 = rainExceedanceController.Post(rainExceedanceRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet3);
-
-                    CreatedNegotiatedContentResult<RainExceedance> rainExceedanceRet3 = jsonRet3 as CreatedNegotiatedContentResult<RainExceedance>;
-                    Assert.IsNotNull(rainExceedanceRet3);
-                    RainExceedance rainExceedance = rainExceedanceRet3.Content;
-
-                    BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest3);
-
-                    // Delete to return success
-                    IHttpActionResult jsonRet2 = rainExceedanceController.Delete(rainExceedanceRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet2);
-
-                    OkNegotiatedContentResult<RainExceedance> rainExceedanceRet2 = jsonRet2 as OkNegotiatedContentResult<RainExceedance>;
-                    Assert.IsNotNull(rainExceedanceRet2);
-
-                    BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest2);
-
-                    // Delete to return CSSPError because RainExceedanceID of 0 does not exist
-                    rainExceedanceRet.RainExceedanceID = 0;
-                    IHttpActionResult jsonRet4 = rainExceedanceController.Delete(rainExceedanceRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet4);
-
-                    OkNegotiatedContentResult<RainExceedance> rainExceedanceRet4 = jsonRet4 as OkNegotiatedContentResult<RainExceedance>;
-                    Assert.IsNull(rainExceedanceRet4);
-
-                    BadRequestErrorMessageResult badRequest4 = jsonRet4 as BadRequestErrorMessageResult;
-                    Assert.IsNotNull(badRequest4);
-                }
-            }
-        }
-        #endregion Tests Generated for Class Controller Delete Command
-
+        #endregion Functions private
     }
 }

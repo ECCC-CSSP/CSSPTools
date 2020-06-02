@@ -5,13 +5,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Controllers\src\**" />
-    <Content Remove="Controllers\src\**" />
-    <EmbeddedResource Remove="Controllers\src\**" />
-    <None Remove="Controllers\src\**" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Compile Remove="Models\ApiSettingsModel.cs" />
     <Compile Remove="Models\ApplicationDBContext.cs" />
     <Compile Remove="Models\ApplicationUser.cs" />
@@ -47,6 +40,9 @@
     </Reference>
     <Reference Include="CSSPModels">
       <HintPath>..\..\dlls\CSSPModels\bin\Debug\netcoreapp3.1\CSSPModels.dll</HintPath>
+    </Reference>
+    <Reference Include="CSSPServices">
+      <HintPath>..\..\dlls\CSSPServices\bin\Debug\netcoreapp3.1\CSSPServices.dll</HintPath>
     </Reference>
     <Reference Include="CultureServices">
       <HintPath>..\..\codegen\CultureServices\bin\Debug\netcoreapp3.1\CultureServices.dll</HintPath>

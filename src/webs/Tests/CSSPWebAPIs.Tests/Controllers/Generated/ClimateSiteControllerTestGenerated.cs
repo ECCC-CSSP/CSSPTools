@@ -2,350 +2,157 @@ using CSSPEnums;
 using CSSPModels;
 using CSSPServices;
 using CSSPWebAPI.Controllers;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using LoggedInServices.Services;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using System;
 using System.Collections.Generic;
+using System.Globalization;
+using System.IO;
 using System.Linq;
-using System.Web.Http;
-using System.Web.Http.Results;
+using System.Threading.Tasks;
+using System.Transactions;
+using UserServices.Models;
+using Xunit;
 
-namespace CSSPWebAPI.Tests.Controllers
+namespace CSSPWebAPIs.Tests.Controllers
 {
-    [TestClass]
-    public partial class ClimateSiteControllerTest : BaseControllerTest
+    public partial class ClimateSiteControllerTest
     {
         #region Variables
         #endregion Variables
 
         #region Properties
+        private IConfiguration Config { get; set; }
+        private IServiceProvider Provider { get; set; }
+        private IServiceCollection Services { get; set; }
+        private CSSPDBContext db { get; set; }
+        private ILoggedInService loggedInService { get; set; }
+        private IClimateSiteService climateSiteService { get; set; }
+        private IClimateSiteController climateSiteController { get; set; }
         #endregion Properties
 
         #region Constructors
-        public ClimateSiteControllerTest() : base()
+        public ClimateSiteControllerTest()
         {
         }
         #endregion Constructors
 
-        #region Tests Generated for Class Controller GetList Command
-        [TestMethod]
-        public void ClimateSite_Controller_GetClimateSiteList_Test()
+        #region Functions public
+        [Theory]
+        [InlineData("en-CA")]
+        [InlineData("fr-CA")]
+        public async Task ClimateSiteController_Constructor_Good_Test(string culture)
         {
-            foreach (LanguageEnum LanguageRequest in AllowableLanguages)
+            bool retBool = await Setup(new CultureInfo(culture));
+            Assert.True(retBool);
+            Assert.NotNull(loggedInService);
+            Assert.NotNull(climateSiteService);
+            Assert.NotNull(climateSiteController);
+        }
+        [Theory]
+        [InlineData("en-CA")]
+        [InlineData("fr-CA")]
+        public async Task ClimateSiteController_CRUD_Good_Test(string culture)
+        {
+            bool retBool = await Setup(new CultureInfo(culture));
+            Assert.True(retBool);
+
+            using (TransactionScope ts = new TransactionScope())
             {
-                foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
-                {
-                    ClimateSiteController climateSiteController = new ClimateSiteController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(climateSiteController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, climateSiteController.DatabaseType);
+                // testing Get
+               var actionClimateSiteList = await climateSiteController.Get();
+               Assert.Equal(200, ((ObjectResult)actionClimateSiteList.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionClimateSiteList.Result).Value);
+               List<ClimateSite> climateSiteList = (List<ClimateSite>)(((OkObjectResult)actionClimateSiteList.Result).Value);
 
-                    ClimateSite climateSiteFirst = new ClimateSite();
-                    int count = -1;
-                    Query query = new Query();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseTypeEnum.SqlServerTestDB))
-                    {
-                        ClimateSiteService climateSiteService = new ClimateSiteService(query, db, ContactID);
-                        climateSiteFirst = (from c in db.ClimateSites select c).FirstOrDefault();
-                        count = (from c in db.ClimateSites select c).Count();
-                        count = (query.Take > count ? count : query.Take);
-                    }
+               int count = ((List<ClimateSite>)((OkObjectResult)actionClimateSiteList.Result).Value).Count();
+                Assert.True(count > 0);
 
-                    // ok with ClimateSite info
-                    IHttpActionResult jsonRet = climateSiteController.GetClimateSiteList();
-                    Assert.IsNotNull(jsonRet);
+               // testing Get(ClimateSiteID)
+               var actionClimateSite = await climateSiteController.Get(climateSiteList[0].ClimateSiteID);
+               Assert.Equal(200, ((ObjectResult)actionClimateSite.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionClimateSite.Result).Value);
+               ClimateSite climateSite = (ClimateSite)(((OkObjectResult)actionClimateSite.Result).Value);
+               Assert.NotNull(climateSite);
+               Assert.Equal(climateSiteList[0].ClimateSiteID, climateSite.ClimateSiteID);
 
-                    OkNegotiatedContentResult<List<ClimateSite>> ret = jsonRet as OkNegotiatedContentResult<List<ClimateSite>>;
-                    Assert.AreEqual(climateSiteFirst.ClimateSiteID, ret.Content[0].ClimateSiteID);
-                    Assert.AreEqual((count > query.Take ? query.Take : count), ret.Content.Count);
+               // testing Post(ClimateSite climateSite)
+               climateSite.ClimateSiteID = 0;
+               var actionClimateSiteNew = await climateSiteController.Post(climateSite);
+               Assert.Equal(200, ((ObjectResult)actionClimateSiteNew.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionClimateSiteNew.Result).Value);
+               ClimateSite climateSiteNew = (ClimateSite)(((OkObjectResult)actionClimateSiteNew.Result).Value);
+               Assert.NotNull(climateSiteNew);
 
-                    List<ClimateSite> climateSiteList = new List<ClimateSite>();
-                    count = -1;
-                    query = new Query();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseTypeEnum.SqlServerTestDB))
-                    {
-                        ClimateSiteService climateSiteService = new ClimateSiteService(query, db, ContactID);
-                        climateSiteList = (from c in db.ClimateSites select c).OrderBy(c => c.ClimateSiteID).Skip(0).Take(2).ToList();
-                        count = (from c in db.ClimateSites select c).Count();
-                    }
+               // testing Put(ClimateSite climateSite)
+               var actionClimateSiteUpdate = await climateSiteController.Put(climateSiteNew);
+               Assert.Equal(200, ((ObjectResult)actionClimateSiteUpdate.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionClimateSiteUpdate.Result).Value);
+               ClimateSite climateSiteUpdate = (ClimateSite)(((OkObjectResult)actionClimateSiteUpdate.Result).Value);
+               Assert.NotNull(climateSiteUpdate);
 
-                    if (count > 0)
-                    {
-                        query.Skip = 0;
-                        query.Take = 5;
-                        count = (query.Take > count ? query.Take : count);
-
-                        // ok with ClimateSite info
-                        jsonRet = climateSiteController.GetClimateSiteList(query.Language.ToString(), query.Skip, query.Take);
-                        Assert.IsNotNull(jsonRet);
-
-                        ret = jsonRet as OkNegotiatedContentResult<List<ClimateSite>>;
-                        Assert.AreEqual(climateSiteList[0].ClimateSiteID, ret.Content[0].ClimateSiteID);
-                        Assert.AreEqual((count > query.Take ? query.Take : count), ret.Content.Count);
-
-                       if (count > 1)
-                       {
-                           query.Skip = 1;
-                           query.Take = 5;
-                           count = (query.Take > count ? query.Take : count);
-
-                           // ok with ClimateSite info
-                           IHttpActionResult jsonRet2 = climateSiteController.GetClimateSiteList(query.Language.ToString(), query.Skip, query.Take);
-                           Assert.IsNotNull(jsonRet2);
-
-                           OkNegotiatedContentResult<List<ClimateSite>> ret2 = jsonRet2 as OkNegotiatedContentResult<List<ClimateSite>>;
-                           Assert.AreEqual(climateSiteList[1].ClimateSiteID, ret2.Content[0].ClimateSiteID);
-                           Assert.AreEqual((count > query.Take ? query.Take : count), ret2.Content.Count);
-                       }
-                    }
-                }
+               // testing Delete(ClimateSite climateSite)
+               var actionClimateSiteDelete = await climateSiteController.Delete(climateSiteUpdate);
+               Assert.Equal(200, ((ObjectResult)actionClimateSiteDelete.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionClimateSiteDelete.Result).Value);
+               ClimateSite climateSiteDelete = (ClimateSite)(((OkObjectResult)actionClimateSiteDelete.Result).Value);
+               Assert.NotNull(climateSiteDelete);
             }
         }
-        #endregion Tests Generated for Class Controller GetList Command
+        #endregion Functions public
 
-        #region Tests Generated for Class Controller GetWithID Command
-        [TestMethod]
-        public void ClimateSite_Controller_GetClimateSiteWithID_Test()
+        #region Functions private
+        private async Task<bool> Setup(CultureInfo culture)
         {
-            foreach (LanguageEnum LanguageRequest in AllowableLanguages)
+            Config = new ConfigurationBuilder()
+               .SetBasePath(Directory.GetParent(AppContext.BaseDirectory).FullName)
+               .AddJsonFile("appsettings.json")
+               .Build();
+        
+            Services = new ServiceCollection();
+        
+            IConfigurationSection connectionStringsSection = Config.GetSection("ConnectionStrings");
+            Services.Configure<ConnectionStringsModel>(connectionStringsSection);
+        
+            ConnectionStringsModel connectionStrings = connectionStringsSection.Get<ConnectionStringsModel>();
+        
+            Services.AddSingleton<IConfiguration>(Config);
+        
+            Services.AddDbContext<CSSPDBContext>(options =>
             {
-                foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
-                {
-                    ClimateSiteController climateSiteController = new ClimateSiteController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(climateSiteController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, climateSiteController.DatabaseType);
-
-                    ClimateSite climateSiteFirst = new ClimateSite();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-                    {
-                        ClimateSiteService climateSiteService = new ClimateSiteService(new Query(), db, ContactID);
-                        climateSiteFirst = (from c in db.ClimateSites select c).FirstOrDefault();
-                    }
-
-                    // ok with ClimateSite info
-                    IHttpActionResult jsonRet = climateSiteController.GetClimateSiteWithID(climateSiteFirst.ClimateSiteID);
-                    Assert.IsNotNull(jsonRet);
-
-                    OkNegotiatedContentResult<ClimateSite> Ret = jsonRet as OkNegotiatedContentResult<ClimateSite>;
-                    ClimateSite climateSiteRet = Ret.Content;
-                    Assert.AreEqual(climateSiteFirst.ClimateSiteID, climateSiteRet.ClimateSiteID);
-
-                    BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
-
-                    // Not Found
-                    IHttpActionResult jsonRet2 = climateSiteController.GetClimateSiteWithID(0);
-                    Assert.IsNotNull(jsonRet2);
-
-                    OkNegotiatedContentResult<ClimateSite> climateSiteRet2 = jsonRet2 as OkNegotiatedContentResult<ClimateSite>;
-                    Assert.IsNull(climateSiteRet2);
-
-                    NotFoundResult notFoundRequest = jsonRet2 as NotFoundResult;
-                    Assert.IsNotNull(notFoundRequest);
-                }
-            }
+                options.UseSqlServer(connectionStrings.TestDB);
+            });
+        
+            Services.AddDbContext<ApplicationDbContext>(options =>
+                options.UseSqlServer(connectionStrings.TestDB));
+        
+            Services.AddIdentityCore<ApplicationUser>()
+                .AddEntityFrameworkStores<ApplicationDbContext>();
+        
+            Services.AddSingleton<IEnums, Enums>();
+            Services.AddSingleton<ILoggedInService, LoggedInService>();
+            Services.AddSingleton<IClimateSiteService, ClimateSiteService>();
+            Services.AddSingleton<IClimateSiteController, ClimateSiteController>();
+        
+            Provider = Services.BuildServiceProvider();
+            Assert.NotNull(Provider);
+        
+            loggedInService = Provider.GetService<ILoggedInService>();
+            Assert.NotNull(loggedInService);
+        
+            climateSiteService = Provider.GetService<IClimateSiteService>();
+            Assert.NotNull(climateSiteService);
+        
+            await climateSiteService.SetCulture(culture);
+        
+            climateSiteController = Provider.GetService<IClimateSiteController>();
+            Assert.NotNull(climateSiteController);
+        
+            return await Task.FromResult(true);
         }
-        #endregion Tests Generated for Class Controller GetWithID Command
-
-        #region Tests Generated for Class Controller Post Command
-        [TestMethod]
-        public void ClimateSite_Controller_Post_Test()
-        {
-            foreach (LanguageEnum LanguageRequest in AllowableLanguages)
-            {
-                foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
-                {
-                    ClimateSiteController climateSiteController = new ClimateSiteController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(climateSiteController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, climateSiteController.DatabaseType);
-
-                    ClimateSite climateSiteLast = new ClimateSite();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-                    {
-                        Query query = new Query();
-                        query.Language = LanguageRequest;
-                        query.Asc = "";
-                        query.Desc = "";
-
-                        ClimateSiteService climateSiteService = new ClimateSiteService(query, db, ContactID);
-                        climateSiteLast = (from c in db.ClimateSites select c).FirstOrDefault();
-                    }
-
-                    // ok with ClimateSite info
-                    IHttpActionResult jsonRet = climateSiteController.GetClimateSiteWithID(climateSiteLast.ClimateSiteID);
-                    Assert.IsNotNull(jsonRet);
-
-                    OkNegotiatedContentResult<ClimateSite> Ret = jsonRet as OkNegotiatedContentResult<ClimateSite>;
-                    ClimateSite climateSiteRet = Ret.Content;
-                    Assert.AreEqual(climateSiteLast.ClimateSiteID, climateSiteRet.ClimateSiteID);
-
-                    BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
-
-                    // Post to return CSSPError because ClimateSiteID exist
-                    IHttpActionResult jsonRet2 = climateSiteController.Post(climateSiteRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet2);
-
-                    OkNegotiatedContentResult<ClimateSite> climateSiteRet2 = jsonRet2 as OkNegotiatedContentResult<ClimateSite>;
-                    Assert.IsNull(climateSiteRet2);
-
-                    BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
-                    Assert.IsNotNull(badRequest2);
-
-                    // Post to return newly added ClimateSite
-                    climateSiteRet.ClimateSiteID = 0;
-                    climateSiteController.Request = new System.Net.Http.HttpRequestMessage();
-                    climateSiteController.Request.RequestUri = new System.Uri("http://localhost:5000/api/climateSite");
-                    IHttpActionResult jsonRet3 = climateSiteController.Post(climateSiteRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet3);
-
-                    CreatedNegotiatedContentResult<ClimateSite> climateSiteRet3 = jsonRet3 as CreatedNegotiatedContentResult<ClimateSite>;
-                    Assert.IsNotNull(climateSiteRet3);
-
-                    BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest3);
-
-                    IHttpActionResult jsonRet4 = climateSiteController.Delete(climateSiteRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet4);
-
-                    OkNegotiatedContentResult<ClimateSite> climateSiteRet4 = jsonRet4 as OkNegotiatedContentResult<ClimateSite>;
-                    Assert.IsNotNull(climateSiteRet4);
-
-                    BadRequestErrorMessageResult badRequest4 = jsonRet4 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest4);
-                }
-            }
-        }
-        #endregion Tests Generated for Class Controller Post Command
-
-        #region Tests Generated for Class Controller Put Command
-        [TestMethod]
-        public void ClimateSite_Controller_Put_Test()
-        {
-            foreach (LanguageEnum LanguageRequest in AllowableLanguages)
-            {
-                foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
-                {
-                    ClimateSiteController climateSiteController = new ClimateSiteController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(climateSiteController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, climateSiteController.DatabaseType);
-
-                    ClimateSite climateSiteLast = new ClimateSite();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-                    {
-                        Query query = new Query();
-                        query.Language = LanguageRequest;
-
-                        ClimateSiteService climateSiteService = new ClimateSiteService(query, db, ContactID);
-                        climateSiteLast = (from c in db.ClimateSites select c).FirstOrDefault();
-                    }
-
-                    // ok with ClimateSite info
-                    IHttpActionResult jsonRet = climateSiteController.GetClimateSiteWithID(climateSiteLast.ClimateSiteID);
-                    Assert.IsNotNull(jsonRet);
-
-                    OkNegotiatedContentResult<ClimateSite> Ret = jsonRet as OkNegotiatedContentResult<ClimateSite>;
-                    ClimateSite climateSiteRet = Ret.Content;
-                    Assert.AreEqual(climateSiteLast.ClimateSiteID, climateSiteRet.ClimateSiteID);
-
-                    BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
-
-                    // Put to return success
-                    IHttpActionResult jsonRet2 = climateSiteController.Put(climateSiteRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet2);
-
-                    OkNegotiatedContentResult<ClimateSite> climateSiteRet2 = jsonRet2 as OkNegotiatedContentResult<ClimateSite>;
-                    Assert.IsNotNull(climateSiteRet2);
-
-                    BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest2);
-
-                    // Put to return CSSPError because ClimateSiteID of 0 does not exist
-                    climateSiteRet.ClimateSiteID = 0;
-                    IHttpActionResult jsonRet3 = climateSiteController.Put(climateSiteRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet3);
-
-                    OkNegotiatedContentResult<ClimateSite> climateSiteRet3 = jsonRet3 as OkNegotiatedContentResult<ClimateSite>;
-                    Assert.IsNull(climateSiteRet3);
-
-                    BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
-                    Assert.IsNotNull(badRequest3);
-                }
-            }
-        }
-        #endregion Tests Generated for Class Controller Put Command
-
-        #region Tests Generated for Class Controller Delete Command
-        [TestMethod]
-        public void ClimateSite_Controller_Delete_Test()
-        {
-            foreach (LanguageEnum LanguageRequest in AllowableLanguages)
-            {
-                foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
-                {
-                    ClimateSiteController climateSiteController = new ClimateSiteController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(climateSiteController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, climateSiteController.DatabaseType);
-
-                    ClimateSite climateSiteLast = new ClimateSite();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-                    {
-                        Query query = new Query();
-                        query.Language = LanguageRequest;
-                        query.Asc = "";
-                        query.Desc = "";
-
-                        ClimateSiteService climateSiteService = new ClimateSiteService(query, db, ContactID);
-                        climateSiteLast = (from c in db.ClimateSites select c).FirstOrDefault();
-                    }
-
-                    // ok with ClimateSite info
-                    IHttpActionResult jsonRet = climateSiteController.GetClimateSiteWithID(climateSiteLast.ClimateSiteID);
-                    Assert.IsNotNull(jsonRet);
-
-                    OkNegotiatedContentResult<ClimateSite> Ret = jsonRet as OkNegotiatedContentResult<ClimateSite>;
-                    ClimateSite climateSiteRet = Ret.Content;
-                    Assert.AreEqual(climateSiteLast.ClimateSiteID, climateSiteRet.ClimateSiteID);
-
-                    BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
-
-                    // Post to return newly added ClimateSite
-                    climateSiteRet.ClimateSiteID = 0;
-                    climateSiteController.Request = new System.Net.Http.HttpRequestMessage();
-                    climateSiteController.Request.RequestUri = new System.Uri("http://localhost:5000/api/climateSite");
-                    IHttpActionResult jsonRet3 = climateSiteController.Post(climateSiteRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet3);
-
-                    CreatedNegotiatedContentResult<ClimateSite> climateSiteRet3 = jsonRet3 as CreatedNegotiatedContentResult<ClimateSite>;
-                    Assert.IsNotNull(climateSiteRet3);
-                    ClimateSite climateSite = climateSiteRet3.Content;
-
-                    BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest3);
-
-                    // Delete to return success
-                    IHttpActionResult jsonRet2 = climateSiteController.Delete(climateSiteRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet2);
-
-                    OkNegotiatedContentResult<ClimateSite> climateSiteRet2 = jsonRet2 as OkNegotiatedContentResult<ClimateSite>;
-                    Assert.IsNotNull(climateSiteRet2);
-
-                    BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest2);
-
-                    // Delete to return CSSPError because ClimateSiteID of 0 does not exist
-                    climateSiteRet.ClimateSiteID = 0;
-                    IHttpActionResult jsonRet4 = climateSiteController.Delete(climateSiteRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet4);
-
-                    OkNegotiatedContentResult<ClimateSite> climateSiteRet4 = jsonRet4 as OkNegotiatedContentResult<ClimateSite>;
-                    Assert.IsNull(climateSiteRet4);
-
-                    BadRequestErrorMessageResult badRequest4 = jsonRet4 as BadRequestErrorMessageResult;
-                    Assert.IsNotNull(badRequest4);
-                }
-            }
-        }
-        #endregion Tests Generated for Class Controller Delete Command
-
+        #endregion Functions private
     }
 }

@@ -1,143 +1,70 @@
-using CSSPEnums;
 using CSSPModels;
 using CSSPServices;
-using System;
+using LoggedInServices.Services;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web.Http;
+using System.Threading.Tasks;
 
 namespace CSSPWebAPI.Controllers
 {
-    [RoutePrefix("api/mapInfo")]
-    public partial class MapInfoController : BaseController
+    public partial interface IMapInfoController
+    {
+        Task<ActionResult<List<MapInfo>>> Get();
+        Task<ActionResult<MapInfo>> Get(int MapInfoID);
+        Task<ActionResult<MapInfo>> Post(MapInfo mapInfo);
+        Task<ActionResult<MapInfo>> Put(MapInfo mapInfo);
+        Task<ActionResult<MapInfo>> Delete(MapInfo mapInfo);
+    }
+
+    [Route("api/{culture}/[controller]")]
+    [ApiController]
+    [Authorize]
+    public partial class MapInfoController : ControllerBase, IMapInfoController
     {
         #region Variables
         #endregion Variables
 
         #region Properties
+        private IMapInfoService mapInfoService { get; }
+        private CSSPDBContext db { get; }
+        private ILoggedInService loggedInService { get; }
         #endregion Properties
 
         #region Constructors
-        public MapInfoController() : base()
+        public MapInfoController(IMapInfoService mapInfoService, CSSPDBContext db, ILoggedInService loggedInService)
         {
-        }
-        public MapInfoController(DatabaseTypeEnum dbt = DatabaseTypeEnum.SqlServerTestDB) : base(dbt)
-        {
+            this.mapInfoService = mapInfoService;
+            this.db = db;
+            this.loggedInService = loggedInService;
         }
         #endregion Constructors
 
         #region Functions public
-        // GET api/mapInfo
-        [Route("")]
-        public IHttpActionResult GetMapInfoList([FromUri]string lang = "en", [FromUri]int skip = 0, [FromUri]int take = 200,
-            [FromUri]string asc = "", [FromUri]string desc = "", [FromUri]string where = "", [FromUri]string extra = "")
+        [HttpGet]
+        public async Task<ActionResult<List<MapInfo>>> Get()
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                MapInfoService mapInfoService = new MapInfoService(new Query() { Lang = lang }, db, ContactID);
-
-                else // QueryString has no parameter [extra] or extra is empty
-                {
-                   mapInfoService.Query = mapInfoService.FillQuery(typeof(MapInfo), lang, skip, take, asc, desc, where, extra);
-
-                    if (mapInfoService.Query.HasErrors)
-                    {
-                        return Ok(new List<MapInfo>()
-                        {
-                            new MapInfo()
-                            {
-                                HasErrors = mapInfoService.Query.HasErrors,
-                                ValidationResults = mapInfoService.Query.ValidationResults,
-                            },
-                        }.ToList());
-                    }
-                    else
-                    {
-                        return Ok(mapInfoService.GetMapInfoList().ToList());
-                    }
-                }
-            }
+            return await mapInfoService.GetMapInfoList();
         }
-        // GET api/mapInfo/1
-        [Route("{MapInfoID:int}")]
-        public IHttpActionResult GetMapInfoWithID([FromUri]int MapInfoID, [FromUri]string lang = "en", [FromUri]string extra = "")
+        [HttpGet("{MapInfoID}")]
+        public async Task<ActionResult<MapInfo>> Get(int MapInfoID)
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                MapInfoService mapInfoService = new MapInfoService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
-
-                mapInfoService.Query = mapInfoService.FillQuery(typeof(MapInfo), lang, 0, 1, "", "", extra);
-
-                else
-                {
-                    MapInfo mapInfo = new MapInfo();
-                    mapInfo = mapInfoService.GetMapInfoWithMapInfoID(MapInfoID);
-
-                    if (mapInfo == null)
-                    {
-                        return NotFound();
-                    }
-
-                    return Ok(mapInfo);
-                }
-            }
+            return await mapInfoService.GetMapInfoWithMapInfoID(MapInfoID);
         }
-        // POST api/mapInfo
-        [Route("")]
-        public IHttpActionResult Post([FromBody]MapInfo mapInfo, [FromUri]string lang = "en")
+        [HttpPost]
+        public async Task<ActionResult<MapInfo>> Post(MapInfo mapInfo)
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                MapInfoService mapInfoService = new MapInfoService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
-
-                if (!mapInfoService.Add(mapInfo))
-                {
-                    return BadRequest(String.Join("|||", mapInfo.ValidationResults));
-                }
-                else
-                {
-                    mapInfo.ValidationResults = null;
-                    return Created<MapInfo>(new Uri(Request.RequestUri, mapInfo.MapInfoID.ToString()), mapInfo);
-                }
-            }
+            return await mapInfoService.Add(mapInfo);
         }
-        // PUT api/mapInfo
-        [Route("")]
-        public IHttpActionResult Put([FromBody]MapInfo mapInfo, [FromUri]string lang = "en")
+        [HttpPut]
+        public async Task<ActionResult<MapInfo>> Put(MapInfo mapInfo)
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                MapInfoService mapInfoService = new MapInfoService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
-
-                if (!mapInfoService.Update(mapInfo))
-                {
-                    return BadRequest(String.Join("|||", mapInfo.ValidationResults));
-                }
-                else
-                {
-                    mapInfo.ValidationResults = null;
-                    return Ok(mapInfo);
-                }
-            }
+            return await mapInfoService.Update(mapInfo);
         }
-        // DELETE api/mapInfo
-        [Route("")]
-        public IHttpActionResult Delete([FromBody]MapInfo mapInfo, [FromUri]string lang = "en")
+        [HttpDelete]
+        public async Task<ActionResult<MapInfo>> Delete(MapInfo mapInfo)
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                MapInfoService mapInfoService = new MapInfoService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
-
-                if (!mapInfoService.Delete(mapInfo))
-                {
-                    return BadRequest(String.Join("|||", mapInfo.ValidationResults));
-                }
-                else
-                {
-                    mapInfo.ValidationResults = null;
-                    return Ok(mapInfo);
-                }
-            }
+            return await mapInfoService.Delete(mapInfo);
         }
         #endregion Functions public
 

@@ -1,143 +1,70 @@
-using CSSPEnums;
 using CSSPModels;
 using CSSPServices;
-using System;
+using LoggedInServices.Services;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web.Http;
+using System.Threading.Tasks;
 
 namespace CSSPWebAPI.Controllers
 {
-    [RoutePrefix("api/rainExceedanceClimateSite")]
-    public partial class RainExceedanceClimateSiteController : BaseController
+    public partial interface IRainExceedanceClimateSiteController
+    {
+        Task<ActionResult<List<RainExceedanceClimateSite>>> Get();
+        Task<ActionResult<RainExceedanceClimateSite>> Get(int RainExceedanceClimateSiteID);
+        Task<ActionResult<RainExceedanceClimateSite>> Post(RainExceedanceClimateSite rainExceedanceClimateSite);
+        Task<ActionResult<RainExceedanceClimateSite>> Put(RainExceedanceClimateSite rainExceedanceClimateSite);
+        Task<ActionResult<RainExceedanceClimateSite>> Delete(RainExceedanceClimateSite rainExceedanceClimateSite);
+    }
+
+    [Route("api/{culture}/[controller]")]
+    [ApiController]
+    [Authorize]
+    public partial class RainExceedanceClimateSiteController : ControllerBase, IRainExceedanceClimateSiteController
     {
         #region Variables
         #endregion Variables
 
         #region Properties
+        private IRainExceedanceClimateSiteService rainExceedanceClimateSiteService { get; }
+        private CSSPDBContext db { get; }
+        private ILoggedInService loggedInService { get; }
         #endregion Properties
 
         #region Constructors
-        public RainExceedanceClimateSiteController() : base()
+        public RainExceedanceClimateSiteController(IRainExceedanceClimateSiteService rainExceedanceClimateSiteService, CSSPDBContext db, ILoggedInService loggedInService)
         {
-        }
-        public RainExceedanceClimateSiteController(DatabaseTypeEnum dbt = DatabaseTypeEnum.SqlServerTestDB) : base(dbt)
-        {
+            this.rainExceedanceClimateSiteService = rainExceedanceClimateSiteService;
+            this.db = db;
+            this.loggedInService = loggedInService;
         }
         #endregion Constructors
 
         #region Functions public
-        // GET api/rainExceedanceClimateSite
-        [Route("")]
-        public IHttpActionResult GetRainExceedanceClimateSiteList([FromUri]string lang = "en", [FromUri]int skip = 0, [FromUri]int take = 200,
-            [FromUri]string asc = "", [FromUri]string desc = "", [FromUri]string where = "", [FromUri]string extra = "")
+        [HttpGet]
+        public async Task<ActionResult<List<RainExceedanceClimateSite>>> Get()
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                RainExceedanceClimateSiteService rainExceedanceClimateSiteService = new RainExceedanceClimateSiteService(new Query() { Lang = lang }, db, ContactID);
-
-                else // QueryString has no parameter [extra] or extra is empty
-                {
-                   rainExceedanceClimateSiteService.Query = rainExceedanceClimateSiteService.FillQuery(typeof(RainExceedanceClimateSite), lang, skip, take, asc, desc, where, extra);
-
-                    if (rainExceedanceClimateSiteService.Query.HasErrors)
-                    {
-                        return Ok(new List<RainExceedanceClimateSite>()
-                        {
-                            new RainExceedanceClimateSite()
-                            {
-                                HasErrors = rainExceedanceClimateSiteService.Query.HasErrors,
-                                ValidationResults = rainExceedanceClimateSiteService.Query.ValidationResults,
-                            },
-                        }.ToList());
-                    }
-                    else
-                    {
-                        return Ok(rainExceedanceClimateSiteService.GetRainExceedanceClimateSiteList().ToList());
-                    }
-                }
-            }
+            return await rainExceedanceClimateSiteService.GetRainExceedanceClimateSiteList();
         }
-        // GET api/rainExceedanceClimateSite/1
-        [Route("{RainExceedanceClimateSiteID:int}")]
-        public IHttpActionResult GetRainExceedanceClimateSiteWithID([FromUri]int RainExceedanceClimateSiteID, [FromUri]string lang = "en", [FromUri]string extra = "")
+        [HttpGet("{RainExceedanceClimateSiteID}")]
+        public async Task<ActionResult<RainExceedanceClimateSite>> Get(int RainExceedanceClimateSiteID)
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                RainExceedanceClimateSiteService rainExceedanceClimateSiteService = new RainExceedanceClimateSiteService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
-
-                rainExceedanceClimateSiteService.Query = rainExceedanceClimateSiteService.FillQuery(typeof(RainExceedanceClimateSite), lang, 0, 1, "", "", extra);
-
-                else
-                {
-                    RainExceedanceClimateSite rainExceedanceClimateSite = new RainExceedanceClimateSite();
-                    rainExceedanceClimateSite = rainExceedanceClimateSiteService.GetRainExceedanceClimateSiteWithRainExceedanceClimateSiteID(RainExceedanceClimateSiteID);
-
-                    if (rainExceedanceClimateSite == null)
-                    {
-                        return NotFound();
-                    }
-
-                    return Ok(rainExceedanceClimateSite);
-                }
-            }
+            return await rainExceedanceClimateSiteService.GetRainExceedanceClimateSiteWithRainExceedanceClimateSiteID(RainExceedanceClimateSiteID);
         }
-        // POST api/rainExceedanceClimateSite
-        [Route("")]
-        public IHttpActionResult Post([FromBody]RainExceedanceClimateSite rainExceedanceClimateSite, [FromUri]string lang = "en")
+        [HttpPost]
+        public async Task<ActionResult<RainExceedanceClimateSite>> Post(RainExceedanceClimateSite rainExceedanceClimateSite)
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                RainExceedanceClimateSiteService rainExceedanceClimateSiteService = new RainExceedanceClimateSiteService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
-
-                if (!rainExceedanceClimateSiteService.Add(rainExceedanceClimateSite))
-                {
-                    return BadRequest(String.Join("|||", rainExceedanceClimateSite.ValidationResults));
-                }
-                else
-                {
-                    rainExceedanceClimateSite.ValidationResults = null;
-                    return Created<RainExceedanceClimateSite>(new Uri(Request.RequestUri, rainExceedanceClimateSite.RainExceedanceClimateSiteID.ToString()), rainExceedanceClimateSite);
-                }
-            }
+            return await rainExceedanceClimateSiteService.Add(rainExceedanceClimateSite);
         }
-        // PUT api/rainExceedanceClimateSite
-        [Route("")]
-        public IHttpActionResult Put([FromBody]RainExceedanceClimateSite rainExceedanceClimateSite, [FromUri]string lang = "en")
+        [HttpPut]
+        public async Task<ActionResult<RainExceedanceClimateSite>> Put(RainExceedanceClimateSite rainExceedanceClimateSite)
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                RainExceedanceClimateSiteService rainExceedanceClimateSiteService = new RainExceedanceClimateSiteService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
-
-                if (!rainExceedanceClimateSiteService.Update(rainExceedanceClimateSite))
-                {
-                    return BadRequest(String.Join("|||", rainExceedanceClimateSite.ValidationResults));
-                }
-                else
-                {
-                    rainExceedanceClimateSite.ValidationResults = null;
-                    return Ok(rainExceedanceClimateSite);
-                }
-            }
+            return await rainExceedanceClimateSiteService.Update(rainExceedanceClimateSite);
         }
-        // DELETE api/rainExceedanceClimateSite
-        [Route("")]
-        public IHttpActionResult Delete([FromBody]RainExceedanceClimateSite rainExceedanceClimateSite, [FromUri]string lang = "en")
+        [HttpDelete]
+        public async Task<ActionResult<RainExceedanceClimateSite>> Delete(RainExceedanceClimateSite rainExceedanceClimateSite)
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                RainExceedanceClimateSiteService rainExceedanceClimateSiteService = new RainExceedanceClimateSiteService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
-
-                if (!rainExceedanceClimateSiteService.Delete(rainExceedanceClimateSite))
-                {
-                    return BadRequest(String.Join("|||", rainExceedanceClimateSite.ValidationResults));
-                }
-                else
-                {
-                    rainExceedanceClimateSite.ValidationResults = null;
-                    return Ok(rainExceedanceClimateSite);
-                }
-            }
+            return await rainExceedanceClimateSiteService.Delete(rainExceedanceClimateSite);
         }
         #endregion Functions public
 

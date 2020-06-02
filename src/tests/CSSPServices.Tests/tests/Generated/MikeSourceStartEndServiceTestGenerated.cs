@@ -16,6 +16,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Transactions;
 using Xunit;
 
 namespace CSSPServices.Tests
@@ -54,37 +55,40 @@ namespace CSSPServices.Tests
 
             await Setup(new CultureInfo(culture));
 
-            MikeSourceStartEnd mikeSourceStartEnd = GetFilledRandomMikeSourceStartEnd(""); 
+            using (TransactionScope ts = new TransactionScope())
+            {
+               MikeSourceStartEnd mikeSourceStartEnd = GetFilledRandomMikeSourceStartEnd(""); 
 
-            // List<MikeSourceStartEnd>
-            var actionMikeSourceStartEndList = await mikeSourceStartEndService.GetMikeSourceStartEndList();
-            Assert.Equal(200, ((ObjectResult)actionMikeSourceStartEndList.Result).StatusCode);
-            Assert.NotNull(((OkObjectResult)actionMikeSourceStartEndList.Result).Value);
-            List<MikeSourceStartEnd> mikeSourceStartEndList = (List<MikeSourceStartEnd>)(((OkObjectResult)actionMikeSourceStartEndList.Result).Value);
+               // List<MikeSourceStartEnd>
+               var actionMikeSourceStartEndList = await mikeSourceStartEndService.GetMikeSourceStartEndList();
+               Assert.Equal(200, ((ObjectResult)actionMikeSourceStartEndList.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionMikeSourceStartEndList.Result).Value);
+               List<MikeSourceStartEnd> mikeSourceStartEndList = (List<MikeSourceStartEnd>)(((OkObjectResult)actionMikeSourceStartEndList.Result).Value);
 
-            int count = ((List<MikeSourceStartEnd>)((OkObjectResult)actionMikeSourceStartEndList.Result).Value).Count();
-            Assert.True(count > 0);
+               int count = ((List<MikeSourceStartEnd>)((OkObjectResult)actionMikeSourceStartEndList.Result).Value).Count();
+                Assert.True(count > 0);
 
-            // Add MikeSourceStartEnd
-            var actionMikeSourceStartEndAdded = await mikeSourceStartEndService.Add(mikeSourceStartEnd);
-            Assert.Equal(200, ((ObjectResult)actionMikeSourceStartEndAdded.Result).StatusCode);
-            Assert.NotNull(((OkObjectResult)actionMikeSourceStartEndAdded.Result).Value);
-            MikeSourceStartEnd mikeSourceStartEndAdded = (MikeSourceStartEnd)(((OkObjectResult)actionMikeSourceStartEndAdded.Result).Value);
-            Assert.NotNull(mikeSourceStartEndAdded);
+               // Add MikeSourceStartEnd
+               var actionMikeSourceStartEndAdded = await mikeSourceStartEndService.Add(mikeSourceStartEnd);
+               Assert.Equal(200, ((ObjectResult)actionMikeSourceStartEndAdded.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionMikeSourceStartEndAdded.Result).Value);
+               MikeSourceStartEnd mikeSourceStartEndAdded = (MikeSourceStartEnd)(((OkObjectResult)actionMikeSourceStartEndAdded.Result).Value);
+               Assert.NotNull(mikeSourceStartEndAdded);
 
-            // Update MikeSourceStartEnd
-            var actionMikeSourceStartEndUpdated = await mikeSourceStartEndService.Update(mikeSourceStartEnd);
-            Assert.Equal(200, ((ObjectResult)actionMikeSourceStartEndUpdated.Result).StatusCode);
-            Assert.NotNull(((OkObjectResult)actionMikeSourceStartEndUpdated.Result).Value);
-            MikeSourceStartEnd mikeSourceStartEndUpdated = (MikeSourceStartEnd)(((OkObjectResult)actionMikeSourceStartEndUpdated.Result).Value);
-            Assert.NotNull(mikeSourceStartEndUpdated);
+               // Update MikeSourceStartEnd
+               var actionMikeSourceStartEndUpdated = await mikeSourceStartEndService.Update(mikeSourceStartEnd);
+               Assert.Equal(200, ((ObjectResult)actionMikeSourceStartEndUpdated.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionMikeSourceStartEndUpdated.Result).Value);
+               MikeSourceStartEnd mikeSourceStartEndUpdated = (MikeSourceStartEnd)(((OkObjectResult)actionMikeSourceStartEndUpdated.Result).Value);
+               Assert.NotNull(mikeSourceStartEndUpdated);
 
-            // Delete MikeSourceStartEnd
-            var actionMikeSourceStartEndDeleted = await mikeSourceStartEndService.Delete(mikeSourceStartEnd);
-            Assert.Equal(200, ((ObjectResult)actionMikeSourceStartEndDeleted.Result).StatusCode);
-            Assert.NotNull(((OkObjectResult)actionMikeSourceStartEndDeleted.Result).Value);
-            MikeSourceStartEnd mikeSourceStartEndDeleted = (MikeSourceStartEnd)(((OkObjectResult)actionMikeSourceStartEndDeleted.Result).Value);
-            Assert.NotNull(mikeSourceStartEndDeleted);
+               // Delete MikeSourceStartEnd
+               var actionMikeSourceStartEndDeleted = await mikeSourceStartEndService.Delete(mikeSourceStartEnd);
+               Assert.Equal(200, ((ObjectResult)actionMikeSourceStartEndDeleted.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionMikeSourceStartEndDeleted.Result).Value);
+               MikeSourceStartEnd mikeSourceStartEndDeleted = (MikeSourceStartEnd)(((OkObjectResult)actionMikeSourceStartEndDeleted.Result).Value);
+               Assert.NotNull(mikeSourceStartEndDeleted);
+            }
         }
         #endregion Tests Generated CRUD
 

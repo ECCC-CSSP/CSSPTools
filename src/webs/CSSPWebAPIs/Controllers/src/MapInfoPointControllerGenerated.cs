@@ -1,143 +1,70 @@
-using CSSPEnums;
 using CSSPModels;
 using CSSPServices;
-using System;
+using LoggedInServices.Services;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web.Http;
+using System.Threading.Tasks;
 
 namespace CSSPWebAPI.Controllers
 {
-    [RoutePrefix("api/mapInfoPoint")]
-    public partial class MapInfoPointController : BaseController
+    public partial interface IMapInfoPointController
+    {
+        Task<ActionResult<List<MapInfoPoint>>> Get();
+        Task<ActionResult<MapInfoPoint>> Get(int MapInfoPointID);
+        Task<ActionResult<MapInfoPoint>> Post(MapInfoPoint mapInfoPoint);
+        Task<ActionResult<MapInfoPoint>> Put(MapInfoPoint mapInfoPoint);
+        Task<ActionResult<MapInfoPoint>> Delete(MapInfoPoint mapInfoPoint);
+    }
+
+    [Route("api/{culture}/[controller]")]
+    [ApiController]
+    [Authorize]
+    public partial class MapInfoPointController : ControllerBase, IMapInfoPointController
     {
         #region Variables
         #endregion Variables
 
         #region Properties
+        private IMapInfoPointService mapInfoPointService { get; }
+        private CSSPDBContext db { get; }
+        private ILoggedInService loggedInService { get; }
         #endregion Properties
 
         #region Constructors
-        public MapInfoPointController() : base()
+        public MapInfoPointController(IMapInfoPointService mapInfoPointService, CSSPDBContext db, ILoggedInService loggedInService)
         {
-        }
-        public MapInfoPointController(DatabaseTypeEnum dbt = DatabaseTypeEnum.SqlServerTestDB) : base(dbt)
-        {
+            this.mapInfoPointService = mapInfoPointService;
+            this.db = db;
+            this.loggedInService = loggedInService;
         }
         #endregion Constructors
 
         #region Functions public
-        // GET api/mapInfoPoint
-        [Route("")]
-        public IHttpActionResult GetMapInfoPointList([FromUri]string lang = "en", [FromUri]int skip = 0, [FromUri]int take = 200,
-            [FromUri]string asc = "", [FromUri]string desc = "", [FromUri]string where = "", [FromUri]string extra = "")
+        [HttpGet]
+        public async Task<ActionResult<List<MapInfoPoint>>> Get()
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                MapInfoPointService mapInfoPointService = new MapInfoPointService(new Query() { Lang = lang }, db, ContactID);
-
-                else // QueryString has no parameter [extra] or extra is empty
-                {
-                   mapInfoPointService.Query = mapInfoPointService.FillQuery(typeof(MapInfoPoint), lang, skip, take, asc, desc, where, extra);
-
-                    if (mapInfoPointService.Query.HasErrors)
-                    {
-                        return Ok(new List<MapInfoPoint>()
-                        {
-                            new MapInfoPoint()
-                            {
-                                HasErrors = mapInfoPointService.Query.HasErrors,
-                                ValidationResults = mapInfoPointService.Query.ValidationResults,
-                            },
-                        }.ToList());
-                    }
-                    else
-                    {
-                        return Ok(mapInfoPointService.GetMapInfoPointList().ToList());
-                    }
-                }
-            }
+            return await mapInfoPointService.GetMapInfoPointList();
         }
-        // GET api/mapInfoPoint/1
-        [Route("{MapInfoPointID:int}")]
-        public IHttpActionResult GetMapInfoPointWithID([FromUri]int MapInfoPointID, [FromUri]string lang = "en", [FromUri]string extra = "")
+        [HttpGet("{MapInfoPointID}")]
+        public async Task<ActionResult<MapInfoPoint>> Get(int MapInfoPointID)
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                MapInfoPointService mapInfoPointService = new MapInfoPointService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
-
-                mapInfoPointService.Query = mapInfoPointService.FillQuery(typeof(MapInfoPoint), lang, 0, 1, "", "", extra);
-
-                else
-                {
-                    MapInfoPoint mapInfoPoint = new MapInfoPoint();
-                    mapInfoPoint = mapInfoPointService.GetMapInfoPointWithMapInfoPointID(MapInfoPointID);
-
-                    if (mapInfoPoint == null)
-                    {
-                        return NotFound();
-                    }
-
-                    return Ok(mapInfoPoint);
-                }
-            }
+            return await mapInfoPointService.GetMapInfoPointWithMapInfoPointID(MapInfoPointID);
         }
-        // POST api/mapInfoPoint
-        [Route("")]
-        public IHttpActionResult Post([FromBody]MapInfoPoint mapInfoPoint, [FromUri]string lang = "en")
+        [HttpPost]
+        public async Task<ActionResult<MapInfoPoint>> Post(MapInfoPoint mapInfoPoint)
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                MapInfoPointService mapInfoPointService = new MapInfoPointService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
-
-                if (!mapInfoPointService.Add(mapInfoPoint))
-                {
-                    return BadRequest(String.Join("|||", mapInfoPoint.ValidationResults));
-                }
-                else
-                {
-                    mapInfoPoint.ValidationResults = null;
-                    return Created<MapInfoPoint>(new Uri(Request.RequestUri, mapInfoPoint.MapInfoPointID.ToString()), mapInfoPoint);
-                }
-            }
+            return await mapInfoPointService.Add(mapInfoPoint);
         }
-        // PUT api/mapInfoPoint
-        [Route("")]
-        public IHttpActionResult Put([FromBody]MapInfoPoint mapInfoPoint, [FromUri]string lang = "en")
+        [HttpPut]
+        public async Task<ActionResult<MapInfoPoint>> Put(MapInfoPoint mapInfoPoint)
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                MapInfoPointService mapInfoPointService = new MapInfoPointService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
-
-                if (!mapInfoPointService.Update(mapInfoPoint))
-                {
-                    return BadRequest(String.Join("|||", mapInfoPoint.ValidationResults));
-                }
-                else
-                {
-                    mapInfoPoint.ValidationResults = null;
-                    return Ok(mapInfoPoint);
-                }
-            }
+            return await mapInfoPointService.Update(mapInfoPoint);
         }
-        // DELETE api/mapInfoPoint
-        [Route("")]
-        public IHttpActionResult Delete([FromBody]MapInfoPoint mapInfoPoint, [FromUri]string lang = "en")
+        [HttpDelete]
+        public async Task<ActionResult<MapInfoPoint>> Delete(MapInfoPoint mapInfoPoint)
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                MapInfoPointService mapInfoPointService = new MapInfoPointService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
-
-                if (!mapInfoPointService.Delete(mapInfoPoint))
-                {
-                    return BadRequest(String.Join("|||", mapInfoPoint.ValidationResults));
-                }
-                else
-                {
-                    mapInfoPoint.ValidationResults = null;
-                    return Ok(mapInfoPoint);
-                }
-            }
+            return await mapInfoPointService.Delete(mapInfoPoint);
         }
         #endregion Functions public
 

@@ -2,350 +2,157 @@ using CSSPEnums;
 using CSSPModels;
 using CSSPServices;
 using CSSPWebAPI.Controllers;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using LoggedInServices.Services;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using System;
 using System.Collections.Generic;
+using System.Globalization;
+using System.IO;
 using System.Linq;
-using System.Web.Http;
-using System.Web.Http.Results;
+using System.Threading.Tasks;
+using System.Transactions;
+using UserServices.Models;
+using Xunit;
 
-namespace CSSPWebAPI.Tests.Controllers
+namespace CSSPWebAPIs.Tests.Controllers
 {
-    [TestClass]
-    public partial class LabSheetControllerTest : BaseControllerTest
+    public partial class LabSheetControllerTest
     {
         #region Variables
         #endregion Variables
 
         #region Properties
+        private IConfiguration Config { get; set; }
+        private IServiceProvider Provider { get; set; }
+        private IServiceCollection Services { get; set; }
+        private CSSPDBContext db { get; set; }
+        private ILoggedInService loggedInService { get; set; }
+        private ILabSheetService labSheetService { get; set; }
+        private ILabSheetController labSheetController { get; set; }
         #endregion Properties
 
         #region Constructors
-        public LabSheetControllerTest() : base()
+        public LabSheetControllerTest()
         {
         }
         #endregion Constructors
 
-        #region Tests Generated for Class Controller GetList Command
-        [TestMethod]
-        public void LabSheet_Controller_GetLabSheetList_Test()
+        #region Functions public
+        [Theory]
+        [InlineData("en-CA")]
+        [InlineData("fr-CA")]
+        public async Task LabSheetController_Constructor_Good_Test(string culture)
         {
-            foreach (LanguageEnum LanguageRequest in AllowableLanguages)
+            bool retBool = await Setup(new CultureInfo(culture));
+            Assert.True(retBool);
+            Assert.NotNull(loggedInService);
+            Assert.NotNull(labSheetService);
+            Assert.NotNull(labSheetController);
+        }
+        [Theory]
+        [InlineData("en-CA")]
+        [InlineData("fr-CA")]
+        public async Task LabSheetController_CRUD_Good_Test(string culture)
+        {
+            bool retBool = await Setup(new CultureInfo(culture));
+            Assert.True(retBool);
+
+            using (TransactionScope ts = new TransactionScope())
             {
-                foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
-                {
-                    LabSheetController labSheetController = new LabSheetController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(labSheetController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, labSheetController.DatabaseType);
+                // testing Get
+               var actionLabSheetList = await labSheetController.Get();
+               Assert.Equal(200, ((ObjectResult)actionLabSheetList.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionLabSheetList.Result).Value);
+               List<LabSheet> labSheetList = (List<LabSheet>)(((OkObjectResult)actionLabSheetList.Result).Value);
 
-                    LabSheet labSheetFirst = new LabSheet();
-                    int count = -1;
-                    Query query = new Query();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseTypeEnum.SqlServerTestDB))
-                    {
-                        LabSheetService labSheetService = new LabSheetService(query, db, ContactID);
-                        labSheetFirst = (from c in db.LabSheets select c).FirstOrDefault();
-                        count = (from c in db.LabSheets select c).Count();
-                        count = (query.Take > count ? count : query.Take);
-                    }
+               int count = ((List<LabSheet>)((OkObjectResult)actionLabSheetList.Result).Value).Count();
+                Assert.True(count > 0);
 
-                    // ok with LabSheet info
-                    IHttpActionResult jsonRet = labSheetController.GetLabSheetList();
-                    Assert.IsNotNull(jsonRet);
+               // testing Get(LabSheetID)
+               var actionLabSheet = await labSheetController.Get(labSheetList[0].LabSheetID);
+               Assert.Equal(200, ((ObjectResult)actionLabSheet.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionLabSheet.Result).Value);
+               LabSheet labSheet = (LabSheet)(((OkObjectResult)actionLabSheet.Result).Value);
+               Assert.NotNull(labSheet);
+               Assert.Equal(labSheetList[0].LabSheetID, labSheet.LabSheetID);
 
-                    OkNegotiatedContentResult<List<LabSheet>> ret = jsonRet as OkNegotiatedContentResult<List<LabSheet>>;
-                    Assert.AreEqual(labSheetFirst.LabSheetID, ret.Content[0].LabSheetID);
-                    Assert.AreEqual((count > query.Take ? query.Take : count), ret.Content.Count);
+               // testing Post(LabSheet labSheet)
+               labSheet.LabSheetID = 0;
+               var actionLabSheetNew = await labSheetController.Post(labSheet);
+               Assert.Equal(200, ((ObjectResult)actionLabSheetNew.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionLabSheetNew.Result).Value);
+               LabSheet labSheetNew = (LabSheet)(((OkObjectResult)actionLabSheetNew.Result).Value);
+               Assert.NotNull(labSheetNew);
 
-                    List<LabSheet> labSheetList = new List<LabSheet>();
-                    count = -1;
-                    query = new Query();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseTypeEnum.SqlServerTestDB))
-                    {
-                        LabSheetService labSheetService = new LabSheetService(query, db, ContactID);
-                        labSheetList = (from c in db.LabSheets select c).OrderBy(c => c.LabSheetID).Skip(0).Take(2).ToList();
-                        count = (from c in db.LabSheets select c).Count();
-                    }
+               // testing Put(LabSheet labSheet)
+               var actionLabSheetUpdate = await labSheetController.Put(labSheetNew);
+               Assert.Equal(200, ((ObjectResult)actionLabSheetUpdate.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionLabSheetUpdate.Result).Value);
+               LabSheet labSheetUpdate = (LabSheet)(((OkObjectResult)actionLabSheetUpdate.Result).Value);
+               Assert.NotNull(labSheetUpdate);
 
-                    if (count > 0)
-                    {
-                        query.Skip = 0;
-                        query.Take = 5;
-                        count = (query.Take > count ? query.Take : count);
-
-                        // ok with LabSheet info
-                        jsonRet = labSheetController.GetLabSheetList(query.Language.ToString(), query.Skip, query.Take);
-                        Assert.IsNotNull(jsonRet);
-
-                        ret = jsonRet as OkNegotiatedContentResult<List<LabSheet>>;
-                        Assert.AreEqual(labSheetList[0].LabSheetID, ret.Content[0].LabSheetID);
-                        Assert.AreEqual((count > query.Take ? query.Take : count), ret.Content.Count);
-
-                       if (count > 1)
-                       {
-                           query.Skip = 1;
-                           query.Take = 5;
-                           count = (query.Take > count ? query.Take : count);
-
-                           // ok with LabSheet info
-                           IHttpActionResult jsonRet2 = labSheetController.GetLabSheetList(query.Language.ToString(), query.Skip, query.Take);
-                           Assert.IsNotNull(jsonRet2);
-
-                           OkNegotiatedContentResult<List<LabSheet>> ret2 = jsonRet2 as OkNegotiatedContentResult<List<LabSheet>>;
-                           Assert.AreEqual(labSheetList[1].LabSheetID, ret2.Content[0].LabSheetID);
-                           Assert.AreEqual((count > query.Take ? query.Take : count), ret2.Content.Count);
-                       }
-                    }
-                }
+               // testing Delete(LabSheet labSheet)
+               var actionLabSheetDelete = await labSheetController.Delete(labSheetUpdate);
+               Assert.Equal(200, ((ObjectResult)actionLabSheetDelete.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionLabSheetDelete.Result).Value);
+               LabSheet labSheetDelete = (LabSheet)(((OkObjectResult)actionLabSheetDelete.Result).Value);
+               Assert.NotNull(labSheetDelete);
             }
         }
-        #endregion Tests Generated for Class Controller GetList Command
+        #endregion Functions public
 
-        #region Tests Generated for Class Controller GetWithID Command
-        [TestMethod]
-        public void LabSheet_Controller_GetLabSheetWithID_Test()
+        #region Functions private
+        private async Task<bool> Setup(CultureInfo culture)
         {
-            foreach (LanguageEnum LanguageRequest in AllowableLanguages)
+            Config = new ConfigurationBuilder()
+               .SetBasePath(Directory.GetParent(AppContext.BaseDirectory).FullName)
+               .AddJsonFile("appsettings.json")
+               .Build();
+        
+            Services = new ServiceCollection();
+        
+            IConfigurationSection connectionStringsSection = Config.GetSection("ConnectionStrings");
+            Services.Configure<ConnectionStringsModel>(connectionStringsSection);
+        
+            ConnectionStringsModel connectionStrings = connectionStringsSection.Get<ConnectionStringsModel>();
+        
+            Services.AddSingleton<IConfiguration>(Config);
+        
+            Services.AddDbContext<CSSPDBContext>(options =>
             {
-                foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
-                {
-                    LabSheetController labSheetController = new LabSheetController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(labSheetController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, labSheetController.DatabaseType);
-
-                    LabSheet labSheetFirst = new LabSheet();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-                    {
-                        LabSheetService labSheetService = new LabSheetService(new Query(), db, ContactID);
-                        labSheetFirst = (from c in db.LabSheets select c).FirstOrDefault();
-                    }
-
-                    // ok with LabSheet info
-                    IHttpActionResult jsonRet = labSheetController.GetLabSheetWithID(labSheetFirst.LabSheetID);
-                    Assert.IsNotNull(jsonRet);
-
-                    OkNegotiatedContentResult<LabSheet> Ret = jsonRet as OkNegotiatedContentResult<LabSheet>;
-                    LabSheet labSheetRet = Ret.Content;
-                    Assert.AreEqual(labSheetFirst.LabSheetID, labSheetRet.LabSheetID);
-
-                    BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
-
-                    // Not Found
-                    IHttpActionResult jsonRet2 = labSheetController.GetLabSheetWithID(0);
-                    Assert.IsNotNull(jsonRet2);
-
-                    OkNegotiatedContentResult<LabSheet> labSheetRet2 = jsonRet2 as OkNegotiatedContentResult<LabSheet>;
-                    Assert.IsNull(labSheetRet2);
-
-                    NotFoundResult notFoundRequest = jsonRet2 as NotFoundResult;
-                    Assert.IsNotNull(notFoundRequest);
-                }
-            }
+                options.UseSqlServer(connectionStrings.TestDB);
+            });
+        
+            Services.AddDbContext<ApplicationDbContext>(options =>
+                options.UseSqlServer(connectionStrings.TestDB));
+        
+            Services.AddIdentityCore<ApplicationUser>()
+                .AddEntityFrameworkStores<ApplicationDbContext>();
+        
+            Services.AddSingleton<IEnums, Enums>();
+            Services.AddSingleton<ILoggedInService, LoggedInService>();
+            Services.AddSingleton<ILabSheetService, LabSheetService>();
+            Services.AddSingleton<ILabSheetController, LabSheetController>();
+        
+            Provider = Services.BuildServiceProvider();
+            Assert.NotNull(Provider);
+        
+            loggedInService = Provider.GetService<ILoggedInService>();
+            Assert.NotNull(loggedInService);
+        
+            labSheetService = Provider.GetService<ILabSheetService>();
+            Assert.NotNull(labSheetService);
+        
+            await labSheetService.SetCulture(culture);
+        
+            labSheetController = Provider.GetService<ILabSheetController>();
+            Assert.NotNull(labSheetController);
+        
+            return await Task.FromResult(true);
         }
-        #endregion Tests Generated for Class Controller GetWithID Command
-
-        #region Tests Generated for Class Controller Post Command
-        [TestMethod]
-        public void LabSheet_Controller_Post_Test()
-        {
-            foreach (LanguageEnum LanguageRequest in AllowableLanguages)
-            {
-                foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
-                {
-                    LabSheetController labSheetController = new LabSheetController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(labSheetController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, labSheetController.DatabaseType);
-
-                    LabSheet labSheetLast = new LabSheet();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-                    {
-                        Query query = new Query();
-                        query.Language = LanguageRequest;
-                        query.Asc = "";
-                        query.Desc = "";
-
-                        LabSheetService labSheetService = new LabSheetService(query, db, ContactID);
-                        labSheetLast = (from c in db.LabSheets select c).FirstOrDefault();
-                    }
-
-                    // ok with LabSheet info
-                    IHttpActionResult jsonRet = labSheetController.GetLabSheetWithID(labSheetLast.LabSheetID);
-                    Assert.IsNotNull(jsonRet);
-
-                    OkNegotiatedContentResult<LabSheet> Ret = jsonRet as OkNegotiatedContentResult<LabSheet>;
-                    LabSheet labSheetRet = Ret.Content;
-                    Assert.AreEqual(labSheetLast.LabSheetID, labSheetRet.LabSheetID);
-
-                    BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
-
-                    // Post to return CSSPError because LabSheetID exist
-                    IHttpActionResult jsonRet2 = labSheetController.Post(labSheetRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet2);
-
-                    OkNegotiatedContentResult<LabSheet> labSheetRet2 = jsonRet2 as OkNegotiatedContentResult<LabSheet>;
-                    Assert.IsNull(labSheetRet2);
-
-                    BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
-                    Assert.IsNotNull(badRequest2);
-
-                    // Post to return newly added LabSheet
-                    labSheetRet.LabSheetID = 0;
-                    labSheetController.Request = new System.Net.Http.HttpRequestMessage();
-                    labSheetController.Request.RequestUri = new System.Uri("http://localhost:5000/api/labSheet");
-                    IHttpActionResult jsonRet3 = labSheetController.Post(labSheetRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet3);
-
-                    CreatedNegotiatedContentResult<LabSheet> labSheetRet3 = jsonRet3 as CreatedNegotiatedContentResult<LabSheet>;
-                    Assert.IsNotNull(labSheetRet3);
-
-                    BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest3);
-
-                    IHttpActionResult jsonRet4 = labSheetController.Delete(labSheetRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet4);
-
-                    OkNegotiatedContentResult<LabSheet> labSheetRet4 = jsonRet4 as OkNegotiatedContentResult<LabSheet>;
-                    Assert.IsNotNull(labSheetRet4);
-
-                    BadRequestErrorMessageResult badRequest4 = jsonRet4 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest4);
-                }
-            }
-        }
-        #endregion Tests Generated for Class Controller Post Command
-
-        #region Tests Generated for Class Controller Put Command
-        [TestMethod]
-        public void LabSheet_Controller_Put_Test()
-        {
-            foreach (LanguageEnum LanguageRequest in AllowableLanguages)
-            {
-                foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
-                {
-                    LabSheetController labSheetController = new LabSheetController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(labSheetController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, labSheetController.DatabaseType);
-
-                    LabSheet labSheetLast = new LabSheet();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-                    {
-                        Query query = new Query();
-                        query.Language = LanguageRequest;
-
-                        LabSheetService labSheetService = new LabSheetService(query, db, ContactID);
-                        labSheetLast = (from c in db.LabSheets select c).FirstOrDefault();
-                    }
-
-                    // ok with LabSheet info
-                    IHttpActionResult jsonRet = labSheetController.GetLabSheetWithID(labSheetLast.LabSheetID);
-                    Assert.IsNotNull(jsonRet);
-
-                    OkNegotiatedContentResult<LabSheet> Ret = jsonRet as OkNegotiatedContentResult<LabSheet>;
-                    LabSheet labSheetRet = Ret.Content;
-                    Assert.AreEqual(labSheetLast.LabSheetID, labSheetRet.LabSheetID);
-
-                    BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
-
-                    // Put to return success
-                    IHttpActionResult jsonRet2 = labSheetController.Put(labSheetRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet2);
-
-                    OkNegotiatedContentResult<LabSheet> labSheetRet2 = jsonRet2 as OkNegotiatedContentResult<LabSheet>;
-                    Assert.IsNotNull(labSheetRet2);
-
-                    BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest2);
-
-                    // Put to return CSSPError because LabSheetID of 0 does not exist
-                    labSheetRet.LabSheetID = 0;
-                    IHttpActionResult jsonRet3 = labSheetController.Put(labSheetRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet3);
-
-                    OkNegotiatedContentResult<LabSheet> labSheetRet3 = jsonRet3 as OkNegotiatedContentResult<LabSheet>;
-                    Assert.IsNull(labSheetRet3);
-
-                    BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
-                    Assert.IsNotNull(badRequest3);
-                }
-            }
-        }
-        #endregion Tests Generated for Class Controller Put Command
-
-        #region Tests Generated for Class Controller Delete Command
-        [TestMethod]
-        public void LabSheet_Controller_Delete_Test()
-        {
-            foreach (LanguageEnum LanguageRequest in AllowableLanguages)
-            {
-                foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
-                {
-                    LabSheetController labSheetController = new LabSheetController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(labSheetController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, labSheetController.DatabaseType);
-
-                    LabSheet labSheetLast = new LabSheet();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-                    {
-                        Query query = new Query();
-                        query.Language = LanguageRequest;
-                        query.Asc = "";
-                        query.Desc = "";
-
-                        LabSheetService labSheetService = new LabSheetService(query, db, ContactID);
-                        labSheetLast = (from c in db.LabSheets select c).FirstOrDefault();
-                    }
-
-                    // ok with LabSheet info
-                    IHttpActionResult jsonRet = labSheetController.GetLabSheetWithID(labSheetLast.LabSheetID);
-                    Assert.IsNotNull(jsonRet);
-
-                    OkNegotiatedContentResult<LabSheet> Ret = jsonRet as OkNegotiatedContentResult<LabSheet>;
-                    LabSheet labSheetRet = Ret.Content;
-                    Assert.AreEqual(labSheetLast.LabSheetID, labSheetRet.LabSheetID);
-
-                    BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
-
-                    // Post to return newly added LabSheet
-                    labSheetRet.LabSheetID = 0;
-                    labSheetController.Request = new System.Net.Http.HttpRequestMessage();
-                    labSheetController.Request.RequestUri = new System.Uri("http://localhost:5000/api/labSheet");
-                    IHttpActionResult jsonRet3 = labSheetController.Post(labSheetRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet3);
-
-                    CreatedNegotiatedContentResult<LabSheet> labSheetRet3 = jsonRet3 as CreatedNegotiatedContentResult<LabSheet>;
-                    Assert.IsNotNull(labSheetRet3);
-                    LabSheet labSheet = labSheetRet3.Content;
-
-                    BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest3);
-
-                    // Delete to return success
-                    IHttpActionResult jsonRet2 = labSheetController.Delete(labSheetRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet2);
-
-                    OkNegotiatedContentResult<LabSheet> labSheetRet2 = jsonRet2 as OkNegotiatedContentResult<LabSheet>;
-                    Assert.IsNotNull(labSheetRet2);
-
-                    BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest2);
-
-                    // Delete to return CSSPError because LabSheetID of 0 does not exist
-                    labSheetRet.LabSheetID = 0;
-                    IHttpActionResult jsonRet4 = labSheetController.Delete(labSheetRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet4);
-
-                    OkNegotiatedContentResult<LabSheet> labSheetRet4 = jsonRet4 as OkNegotiatedContentResult<LabSheet>;
-                    Assert.IsNull(labSheetRet4);
-
-                    BadRequestErrorMessageResult badRequest4 = jsonRet4 as BadRequestErrorMessageResult;
-                    Assert.IsNotNull(badRequest4);
-                }
-            }
-        }
-        #endregion Tests Generated for Class Controller Delete Command
-
+        #endregion Functions private
     }
 }

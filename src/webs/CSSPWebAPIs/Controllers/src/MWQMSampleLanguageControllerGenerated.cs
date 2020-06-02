@@ -1,143 +1,70 @@
-using CSSPEnums;
 using CSSPModels;
 using CSSPServices;
-using System;
+using LoggedInServices.Services;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web.Http;
+using System.Threading.Tasks;
 
 namespace CSSPWebAPI.Controllers
 {
-    [RoutePrefix("api/mwqmSampleLanguage")]
-    public partial class MWQMSampleLanguageController : BaseController
+    public partial interface IMWQMSampleLanguageController
+    {
+        Task<ActionResult<List<MWQMSampleLanguage>>> Get();
+        Task<ActionResult<MWQMSampleLanguage>> Get(int MWQMSampleLanguageID);
+        Task<ActionResult<MWQMSampleLanguage>> Post(MWQMSampleLanguage mwqmSampleLanguage);
+        Task<ActionResult<MWQMSampleLanguage>> Put(MWQMSampleLanguage mwqmSampleLanguage);
+        Task<ActionResult<MWQMSampleLanguage>> Delete(MWQMSampleLanguage mwqmSampleLanguage);
+    }
+
+    [Route("api/{culture}/[controller]")]
+    [ApiController]
+    [Authorize]
+    public partial class MWQMSampleLanguageController : ControllerBase, IMWQMSampleLanguageController
     {
         #region Variables
         #endregion Variables
 
         #region Properties
+        private IMWQMSampleLanguageService mwqmSampleLanguageService { get; }
+        private CSSPDBContext db { get; }
+        private ILoggedInService loggedInService { get; }
         #endregion Properties
 
         #region Constructors
-        public MWQMSampleLanguageController() : base()
+        public MWQMSampleLanguageController(IMWQMSampleLanguageService mwqmSampleLanguageService, CSSPDBContext db, ILoggedInService loggedInService)
         {
-        }
-        public MWQMSampleLanguageController(DatabaseTypeEnum dbt = DatabaseTypeEnum.SqlServerTestDB) : base(dbt)
-        {
+            this.mwqmSampleLanguageService = mwqmSampleLanguageService;
+            this.db = db;
+            this.loggedInService = loggedInService;
         }
         #endregion Constructors
 
         #region Functions public
-        // GET api/mwqmSampleLanguage
-        [Route("")]
-        public IHttpActionResult GetMWQMSampleLanguageList([FromUri]string lang = "en", [FromUri]int skip = 0, [FromUri]int take = 200,
-            [FromUri]string asc = "", [FromUri]string desc = "", [FromUri]string where = "", [FromUri]string extra = "")
+        [HttpGet]
+        public async Task<ActionResult<List<MWQMSampleLanguage>>> Get()
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                MWQMSampleLanguageService mwqmSampleLanguageService = new MWQMSampleLanguageService(new Query() { Lang = lang }, db, ContactID);
-
-                else // QueryString has no parameter [extra] or extra is empty
-                {
-                   mwqmSampleLanguageService.Query = mwqmSampleLanguageService.FillQuery(typeof(MWQMSampleLanguage), lang, skip, take, asc, desc, where, extra);
-
-                    if (mwqmSampleLanguageService.Query.HasErrors)
-                    {
-                        return Ok(new List<MWQMSampleLanguage>()
-                        {
-                            new MWQMSampleLanguage()
-                            {
-                                HasErrors = mwqmSampleLanguageService.Query.HasErrors,
-                                ValidationResults = mwqmSampleLanguageService.Query.ValidationResults,
-                            },
-                        }.ToList());
-                    }
-                    else
-                    {
-                        return Ok(mwqmSampleLanguageService.GetMWQMSampleLanguageList().ToList());
-                    }
-                }
-            }
+            return await mwqmSampleLanguageService.GetMWQMSampleLanguageList();
         }
-        // GET api/mwqmSampleLanguage/1
-        [Route("{MWQMSampleLanguageID:int}")]
-        public IHttpActionResult GetMWQMSampleLanguageWithID([FromUri]int MWQMSampleLanguageID, [FromUri]string lang = "en", [FromUri]string extra = "")
+        [HttpGet("{MWQMSampleLanguageID}")]
+        public async Task<ActionResult<MWQMSampleLanguage>> Get(int MWQMSampleLanguageID)
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                MWQMSampleLanguageService mwqmSampleLanguageService = new MWQMSampleLanguageService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
-
-                mwqmSampleLanguageService.Query = mwqmSampleLanguageService.FillQuery(typeof(MWQMSampleLanguage), lang, 0, 1, "", "", extra);
-
-                else
-                {
-                    MWQMSampleLanguage mwqmSampleLanguage = new MWQMSampleLanguage();
-                    mwqmSampleLanguage = mwqmSampleLanguageService.GetMWQMSampleLanguageWithMWQMSampleLanguageID(MWQMSampleLanguageID);
-
-                    if (mwqmSampleLanguage == null)
-                    {
-                        return NotFound();
-                    }
-
-                    return Ok(mwqmSampleLanguage);
-                }
-            }
+            return await mwqmSampleLanguageService.GetMWQMSampleLanguageWithMWQMSampleLanguageID(MWQMSampleLanguageID);
         }
-        // POST api/mwqmSampleLanguage
-        [Route("")]
-        public IHttpActionResult Post([FromBody]MWQMSampleLanguage mwqmSampleLanguage, [FromUri]string lang = "en")
+        [HttpPost]
+        public async Task<ActionResult<MWQMSampleLanguage>> Post(MWQMSampleLanguage mwqmSampleLanguage)
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                MWQMSampleLanguageService mwqmSampleLanguageService = new MWQMSampleLanguageService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
-
-                if (!mwqmSampleLanguageService.Add(mwqmSampleLanguage))
-                {
-                    return BadRequest(String.Join("|||", mwqmSampleLanguage.ValidationResults));
-                }
-                else
-                {
-                    mwqmSampleLanguage.ValidationResults = null;
-                    return Created<MWQMSampleLanguage>(new Uri(Request.RequestUri, mwqmSampleLanguage.MWQMSampleLanguageID.ToString()), mwqmSampleLanguage);
-                }
-            }
+            return await mwqmSampleLanguageService.Add(mwqmSampleLanguage);
         }
-        // PUT api/mwqmSampleLanguage
-        [Route("")]
-        public IHttpActionResult Put([FromBody]MWQMSampleLanguage mwqmSampleLanguage, [FromUri]string lang = "en")
+        [HttpPut]
+        public async Task<ActionResult<MWQMSampleLanguage>> Put(MWQMSampleLanguage mwqmSampleLanguage)
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                MWQMSampleLanguageService mwqmSampleLanguageService = new MWQMSampleLanguageService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
-
-                if (!mwqmSampleLanguageService.Update(mwqmSampleLanguage))
-                {
-                    return BadRequest(String.Join("|||", mwqmSampleLanguage.ValidationResults));
-                }
-                else
-                {
-                    mwqmSampleLanguage.ValidationResults = null;
-                    return Ok(mwqmSampleLanguage);
-                }
-            }
+            return await mwqmSampleLanguageService.Update(mwqmSampleLanguage);
         }
-        // DELETE api/mwqmSampleLanguage
-        [Route("")]
-        public IHttpActionResult Delete([FromBody]MWQMSampleLanguage mwqmSampleLanguage, [FromUri]string lang = "en")
+        [HttpDelete]
+        public async Task<ActionResult<MWQMSampleLanguage>> Delete(MWQMSampleLanguage mwqmSampleLanguage)
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                MWQMSampleLanguageService mwqmSampleLanguageService = new MWQMSampleLanguageService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
-
-                if (!mwqmSampleLanguageService.Delete(mwqmSampleLanguage))
-                {
-                    return BadRequest(String.Join("|||", mwqmSampleLanguage.ValidationResults));
-                }
-                else
-                {
-                    mwqmSampleLanguage.ValidationResults = null;
-                    return Ok(mwqmSampleLanguage);
-                }
-            }
+            return await mwqmSampleLanguageService.Delete(mwqmSampleLanguage);
         }
         #endregion Functions public
 

@@ -1,143 +1,70 @@
-using CSSPEnums;
 using CSSPModels;
 using CSSPServices;
-using System;
+using LoggedInServices.Services;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web.Http;
+using System.Threading.Tasks;
 
 namespace CSSPWebAPI.Controllers
 {
-    [RoutePrefix("api/tvItemLink")]
-    public partial class TVItemLinkController : BaseController
+    public partial interface ITVItemLinkController
+    {
+        Task<ActionResult<List<TVItemLink>>> Get();
+        Task<ActionResult<TVItemLink>> Get(int TVItemLinkID);
+        Task<ActionResult<TVItemLink>> Post(TVItemLink tvItemLink);
+        Task<ActionResult<TVItemLink>> Put(TVItemLink tvItemLink);
+        Task<ActionResult<TVItemLink>> Delete(TVItemLink tvItemLink);
+    }
+
+    [Route("api/{culture}/[controller]")]
+    [ApiController]
+    [Authorize]
+    public partial class TVItemLinkController : ControllerBase, ITVItemLinkController
     {
         #region Variables
         #endregion Variables
 
         #region Properties
+        private ITVItemLinkService tvItemLinkService { get; }
+        private CSSPDBContext db { get; }
+        private ILoggedInService loggedInService { get; }
         #endregion Properties
 
         #region Constructors
-        public TVItemLinkController() : base()
+        public TVItemLinkController(ITVItemLinkService tvItemLinkService, CSSPDBContext db, ILoggedInService loggedInService)
         {
-        }
-        public TVItemLinkController(DatabaseTypeEnum dbt = DatabaseTypeEnum.SqlServerTestDB) : base(dbt)
-        {
+            this.tvItemLinkService = tvItemLinkService;
+            this.db = db;
+            this.loggedInService = loggedInService;
         }
         #endregion Constructors
 
         #region Functions public
-        // GET api/tvItemLink
-        [Route("")]
-        public IHttpActionResult GetTVItemLinkList([FromUri]string lang = "en", [FromUri]int skip = 0, [FromUri]int take = 200,
-            [FromUri]string asc = "", [FromUri]string desc = "", [FromUri]string where = "", [FromUri]string extra = "")
+        [HttpGet]
+        public async Task<ActionResult<List<TVItemLink>>> Get()
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                TVItemLinkService tvItemLinkService = new TVItemLinkService(new Query() { Lang = lang }, db, ContactID);
-
-                else // QueryString has no parameter [extra] or extra is empty
-                {
-                   tvItemLinkService.Query = tvItemLinkService.FillQuery(typeof(TVItemLink), lang, skip, take, asc, desc, where, extra);
-
-                    if (tvItemLinkService.Query.HasErrors)
-                    {
-                        return Ok(new List<TVItemLink>()
-                        {
-                            new TVItemLink()
-                            {
-                                HasErrors = tvItemLinkService.Query.HasErrors,
-                                ValidationResults = tvItemLinkService.Query.ValidationResults,
-                            },
-                        }.ToList());
-                    }
-                    else
-                    {
-                        return Ok(tvItemLinkService.GetTVItemLinkList().ToList());
-                    }
-                }
-            }
+            return await tvItemLinkService.GetTVItemLinkList();
         }
-        // GET api/tvItemLink/1
-        [Route("{TVItemLinkID:int}")]
-        public IHttpActionResult GetTVItemLinkWithID([FromUri]int TVItemLinkID, [FromUri]string lang = "en", [FromUri]string extra = "")
+        [HttpGet("{TVItemLinkID}")]
+        public async Task<ActionResult<TVItemLink>> Get(int TVItemLinkID)
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                TVItemLinkService tvItemLinkService = new TVItemLinkService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
-
-                tvItemLinkService.Query = tvItemLinkService.FillQuery(typeof(TVItemLink), lang, 0, 1, "", "", extra);
-
-                else
-                {
-                    TVItemLink tvItemLink = new TVItemLink();
-                    tvItemLink = tvItemLinkService.GetTVItemLinkWithTVItemLinkID(TVItemLinkID);
-
-                    if (tvItemLink == null)
-                    {
-                        return NotFound();
-                    }
-
-                    return Ok(tvItemLink);
-                }
-            }
+            return await tvItemLinkService.GetTVItemLinkWithTVItemLinkID(TVItemLinkID);
         }
-        // POST api/tvItemLink
-        [Route("")]
-        public IHttpActionResult Post([FromBody]TVItemLink tvItemLink, [FromUri]string lang = "en")
+        [HttpPost]
+        public async Task<ActionResult<TVItemLink>> Post(TVItemLink tvItemLink)
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                TVItemLinkService tvItemLinkService = new TVItemLinkService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
-
-                if (!tvItemLinkService.Add(tvItemLink))
-                {
-                    return BadRequest(String.Join("|||", tvItemLink.ValidationResults));
-                }
-                else
-                {
-                    tvItemLink.ValidationResults = null;
-                    return Created<TVItemLink>(new Uri(Request.RequestUri, tvItemLink.TVItemLinkID.ToString()), tvItemLink);
-                }
-            }
+            return await tvItemLinkService.Add(tvItemLink);
         }
-        // PUT api/tvItemLink
-        [Route("")]
-        public IHttpActionResult Put([FromBody]TVItemLink tvItemLink, [FromUri]string lang = "en")
+        [HttpPut]
+        public async Task<ActionResult<TVItemLink>> Put(TVItemLink tvItemLink)
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                TVItemLinkService tvItemLinkService = new TVItemLinkService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
-
-                if (!tvItemLinkService.Update(tvItemLink))
-                {
-                    return BadRequest(String.Join("|||", tvItemLink.ValidationResults));
-                }
-                else
-                {
-                    tvItemLink.ValidationResults = null;
-                    return Ok(tvItemLink);
-                }
-            }
+            return await tvItemLinkService.Update(tvItemLink);
         }
-        // DELETE api/tvItemLink
-        [Route("")]
-        public IHttpActionResult Delete([FromBody]TVItemLink tvItemLink, [FromUri]string lang = "en")
+        [HttpDelete]
+        public async Task<ActionResult<TVItemLink>> Delete(TVItemLink tvItemLink)
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                TVItemLinkService tvItemLinkService = new TVItemLinkService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
-
-                if (!tvItemLinkService.Delete(tvItemLink))
-                {
-                    return BadRequest(String.Join("|||", tvItemLink.ValidationResults));
-                }
-                else
-                {
-                    tvItemLink.ValidationResults = null;
-                    return Ok(tvItemLink);
-                }
-            }
+            return await tvItemLinkService.Delete(tvItemLink);
         }
         #endregion Functions public
 

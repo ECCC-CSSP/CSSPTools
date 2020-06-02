@@ -54,7 +54,7 @@ namespace ServicesRepopulateTestDBServices.Services
                             }
                         }
 
-                        if (table.TableName == "AspNetRoles" || table.TableName == "AspNetUserLogins" || table.TableName == "AspNetUserRoles" || table.TableName == "AspNetUsers")
+                        if (table.TableName.StartsWith("AspNet") || table.TableName == "PersistedGrants" || table.TableName == "DeviceCodes")
                         {
                             continue;
                         }

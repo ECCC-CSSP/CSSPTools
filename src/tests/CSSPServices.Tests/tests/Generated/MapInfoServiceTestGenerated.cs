@@ -16,6 +16,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Transactions;
 using Xunit;
 
 namespace CSSPServices.Tests
@@ -54,37 +55,40 @@ namespace CSSPServices.Tests
 
             await Setup(new CultureInfo(culture));
 
-            MapInfo mapInfo = GetFilledRandomMapInfo(""); 
+            using (TransactionScope ts = new TransactionScope())
+            {
+               MapInfo mapInfo = GetFilledRandomMapInfo(""); 
 
-            // List<MapInfo>
-            var actionMapInfoList = await mapInfoService.GetMapInfoList();
-            Assert.Equal(200, ((ObjectResult)actionMapInfoList.Result).StatusCode);
-            Assert.NotNull(((OkObjectResult)actionMapInfoList.Result).Value);
-            List<MapInfo> mapInfoList = (List<MapInfo>)(((OkObjectResult)actionMapInfoList.Result).Value);
+               // List<MapInfo>
+               var actionMapInfoList = await mapInfoService.GetMapInfoList();
+               Assert.Equal(200, ((ObjectResult)actionMapInfoList.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionMapInfoList.Result).Value);
+               List<MapInfo> mapInfoList = (List<MapInfo>)(((OkObjectResult)actionMapInfoList.Result).Value);
 
-            int count = ((List<MapInfo>)((OkObjectResult)actionMapInfoList.Result).Value).Count();
-            Assert.True(count > 0);
+               int count = ((List<MapInfo>)((OkObjectResult)actionMapInfoList.Result).Value).Count();
+                Assert.True(count > 0);
 
-            // Add MapInfo
-            var actionMapInfoAdded = await mapInfoService.Add(mapInfo);
-            Assert.Equal(200, ((ObjectResult)actionMapInfoAdded.Result).StatusCode);
-            Assert.NotNull(((OkObjectResult)actionMapInfoAdded.Result).Value);
-            MapInfo mapInfoAdded = (MapInfo)(((OkObjectResult)actionMapInfoAdded.Result).Value);
-            Assert.NotNull(mapInfoAdded);
+               // Add MapInfo
+               var actionMapInfoAdded = await mapInfoService.Add(mapInfo);
+               Assert.Equal(200, ((ObjectResult)actionMapInfoAdded.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionMapInfoAdded.Result).Value);
+               MapInfo mapInfoAdded = (MapInfo)(((OkObjectResult)actionMapInfoAdded.Result).Value);
+               Assert.NotNull(mapInfoAdded);
 
-            // Update MapInfo
-            var actionMapInfoUpdated = await mapInfoService.Update(mapInfo);
-            Assert.Equal(200, ((ObjectResult)actionMapInfoUpdated.Result).StatusCode);
-            Assert.NotNull(((OkObjectResult)actionMapInfoUpdated.Result).Value);
-            MapInfo mapInfoUpdated = (MapInfo)(((OkObjectResult)actionMapInfoUpdated.Result).Value);
-            Assert.NotNull(mapInfoUpdated);
+               // Update MapInfo
+               var actionMapInfoUpdated = await mapInfoService.Update(mapInfo);
+               Assert.Equal(200, ((ObjectResult)actionMapInfoUpdated.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionMapInfoUpdated.Result).Value);
+               MapInfo mapInfoUpdated = (MapInfo)(((OkObjectResult)actionMapInfoUpdated.Result).Value);
+               Assert.NotNull(mapInfoUpdated);
 
-            // Delete MapInfo
-            var actionMapInfoDeleted = await mapInfoService.Delete(mapInfo);
-            Assert.Equal(200, ((ObjectResult)actionMapInfoDeleted.Result).StatusCode);
-            Assert.NotNull(((OkObjectResult)actionMapInfoDeleted.Result).Value);
-            MapInfo mapInfoDeleted = (MapInfo)(((OkObjectResult)actionMapInfoDeleted.Result).Value);
-            Assert.NotNull(mapInfoDeleted);
+               // Delete MapInfo
+               var actionMapInfoDeleted = await mapInfoService.Delete(mapInfo);
+               Assert.Equal(200, ((ObjectResult)actionMapInfoDeleted.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionMapInfoDeleted.Result).Value);
+               MapInfo mapInfoDeleted = (MapInfo)(((OkObjectResult)actionMapInfoDeleted.Result).Value);
+               Assert.NotNull(mapInfoDeleted);
+            }
         }
         #endregion Tests Generated CRUD
 

@@ -1,143 +1,70 @@
-using CSSPEnums;
 using CSSPModels;
 using CSSPServices;
-using System;
+using LoggedInServices.Services;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web.Http;
+using System.Threading.Tasks;
 
 namespace CSSPWebAPI.Controllers
 {
-    [RoutePrefix("api/labSheetDetail")]
-    public partial class LabSheetDetailController : BaseController
+    public partial interface ILabSheetDetailController
+    {
+        Task<ActionResult<List<LabSheetDetail>>> Get();
+        Task<ActionResult<LabSheetDetail>> Get(int LabSheetDetailID);
+        Task<ActionResult<LabSheetDetail>> Post(LabSheetDetail labSheetDetail);
+        Task<ActionResult<LabSheetDetail>> Put(LabSheetDetail labSheetDetail);
+        Task<ActionResult<LabSheetDetail>> Delete(LabSheetDetail labSheetDetail);
+    }
+
+    [Route("api/{culture}/[controller]")]
+    [ApiController]
+    [Authorize]
+    public partial class LabSheetDetailController : ControllerBase, ILabSheetDetailController
     {
         #region Variables
         #endregion Variables
 
         #region Properties
+        private ILabSheetDetailService labSheetDetailService { get; }
+        private CSSPDBContext db { get; }
+        private ILoggedInService loggedInService { get; }
         #endregion Properties
 
         #region Constructors
-        public LabSheetDetailController() : base()
+        public LabSheetDetailController(ILabSheetDetailService labSheetDetailService, CSSPDBContext db, ILoggedInService loggedInService)
         {
-        }
-        public LabSheetDetailController(DatabaseTypeEnum dbt = DatabaseTypeEnum.SqlServerTestDB) : base(dbt)
-        {
+            this.labSheetDetailService = labSheetDetailService;
+            this.db = db;
+            this.loggedInService = loggedInService;
         }
         #endregion Constructors
 
         #region Functions public
-        // GET api/labSheetDetail
-        [Route("")]
-        public IHttpActionResult GetLabSheetDetailList([FromUri]string lang = "en", [FromUri]int skip = 0, [FromUri]int take = 200,
-            [FromUri]string asc = "", [FromUri]string desc = "", [FromUri]string where = "", [FromUri]string extra = "")
+        [HttpGet]
+        public async Task<ActionResult<List<LabSheetDetail>>> Get()
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                LabSheetDetailService labSheetDetailService = new LabSheetDetailService(new Query() { Lang = lang }, db, ContactID);
-
-                else // QueryString has no parameter [extra] or extra is empty
-                {
-                   labSheetDetailService.Query = labSheetDetailService.FillQuery(typeof(LabSheetDetail), lang, skip, take, asc, desc, where, extra);
-
-                    if (labSheetDetailService.Query.HasErrors)
-                    {
-                        return Ok(new List<LabSheetDetail>()
-                        {
-                            new LabSheetDetail()
-                            {
-                                HasErrors = labSheetDetailService.Query.HasErrors,
-                                ValidationResults = labSheetDetailService.Query.ValidationResults,
-                            },
-                        }.ToList());
-                    }
-                    else
-                    {
-                        return Ok(labSheetDetailService.GetLabSheetDetailList().ToList());
-                    }
-                }
-            }
+            return await labSheetDetailService.GetLabSheetDetailList();
         }
-        // GET api/labSheetDetail/1
-        [Route("{LabSheetDetailID:int}")]
-        public IHttpActionResult GetLabSheetDetailWithID([FromUri]int LabSheetDetailID, [FromUri]string lang = "en", [FromUri]string extra = "")
+        [HttpGet("{LabSheetDetailID}")]
+        public async Task<ActionResult<LabSheetDetail>> Get(int LabSheetDetailID)
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                LabSheetDetailService labSheetDetailService = new LabSheetDetailService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
-
-                labSheetDetailService.Query = labSheetDetailService.FillQuery(typeof(LabSheetDetail), lang, 0, 1, "", "", extra);
-
-                else
-                {
-                    LabSheetDetail labSheetDetail = new LabSheetDetail();
-                    labSheetDetail = labSheetDetailService.GetLabSheetDetailWithLabSheetDetailID(LabSheetDetailID);
-
-                    if (labSheetDetail == null)
-                    {
-                        return NotFound();
-                    }
-
-                    return Ok(labSheetDetail);
-                }
-            }
+            return await labSheetDetailService.GetLabSheetDetailWithLabSheetDetailID(LabSheetDetailID);
         }
-        // POST api/labSheetDetail
-        [Route("")]
-        public IHttpActionResult Post([FromBody]LabSheetDetail labSheetDetail, [FromUri]string lang = "en")
+        [HttpPost]
+        public async Task<ActionResult<LabSheetDetail>> Post(LabSheetDetail labSheetDetail)
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                LabSheetDetailService labSheetDetailService = new LabSheetDetailService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
-
-                if (!labSheetDetailService.Add(labSheetDetail))
-                {
-                    return BadRequest(String.Join("|||", labSheetDetail.ValidationResults));
-                }
-                else
-                {
-                    labSheetDetail.ValidationResults = null;
-                    return Created<LabSheetDetail>(new Uri(Request.RequestUri, labSheetDetail.LabSheetDetailID.ToString()), labSheetDetail);
-                }
-            }
+            return await labSheetDetailService.Add(labSheetDetail);
         }
-        // PUT api/labSheetDetail
-        [Route("")]
-        public IHttpActionResult Put([FromBody]LabSheetDetail labSheetDetail, [FromUri]string lang = "en")
+        [HttpPut]
+        public async Task<ActionResult<LabSheetDetail>> Put(LabSheetDetail labSheetDetail)
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                LabSheetDetailService labSheetDetailService = new LabSheetDetailService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
-
-                if (!labSheetDetailService.Update(labSheetDetail))
-                {
-                    return BadRequest(String.Join("|||", labSheetDetail.ValidationResults));
-                }
-                else
-                {
-                    labSheetDetail.ValidationResults = null;
-                    return Ok(labSheetDetail);
-                }
-            }
+            return await labSheetDetailService.Update(labSheetDetail);
         }
-        // DELETE api/labSheetDetail
-        [Route("")]
-        public IHttpActionResult Delete([FromBody]LabSheetDetail labSheetDetail, [FromUri]string lang = "en")
+        [HttpDelete]
+        public async Task<ActionResult<LabSheetDetail>> Delete(LabSheetDetail labSheetDetail)
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                LabSheetDetailService labSheetDetailService = new LabSheetDetailService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
-
-                if (!labSheetDetailService.Delete(labSheetDetail))
-                {
-                    return BadRequest(String.Join("|||", labSheetDetail.ValidationResults));
-                }
-                else
-                {
-                    labSheetDetail.ValidationResults = null;
-                    return Ok(labSheetDetail);
-                }
-            }
+            return await labSheetDetailService.Delete(labSheetDetail);
         }
         #endregion Functions public
 

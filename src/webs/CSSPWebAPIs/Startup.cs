@@ -1,6 +1,8 @@
 using ActionCommandDBServices.Models;
 using ActionCommandDBServices.Services;
+using CSSPEnums;
 using CSSPModels;
+using CSSPServices;
 using LoggedInServices.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -71,20 +73,25 @@ namespace CSSPCodeGenWebAPI
             //services.AddDbContext<CSSPDBContext>(options =>
             //        options.UseSqlServer(connectionStrings.CSSPDB));
 
-            // using CSSPDB2
-            services.AddDbContext<CSSPDBContext>(options =>
-                    options.UseSqlServer(connectionStrings.CSSPDB2));
+            //// using CSSPDB2
+            //services.AddDbContext<CSSPDBContext>(options =>
+            //        options.UseSqlServer(connectionStrings.CSSPDB2));
 
             //// using In Memory CSSPDB2
             //services.AddDbContext<CSSPDBContext>(options =>
             //        options.UseInMemoryDatabase(connectionStrings.CSSPDB2));
 
-            //// using TestDB
-            //services.AddDbContext<CSSPDBContext>(options =>
-            //        options.UseSqlServer(connectionStrings.TestDB));
+            // using TestDB
+            services.AddDbContext<CSSPDBContext>(options =>
+                    options.UseSqlServer(connectionStrings.TestDB));
 
+            //// using CSSPDB2
+            //services.AddDbContext<ApplicationDbContext>(options =>
+            //        options.UseSqlServer(connectionStrings.CSSPDB2));
+
+            // using TestDB
             services.AddDbContext<ApplicationDbContext>(options =>
-                    options.UseSqlServer(connectionStrings.CSSPDB2));
+                    options.UseSqlServer(connectionStrings.TestDB));
 
             //services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
             //    .AddEntityFrameworkStores<ApplicationDbContext>();
@@ -101,11 +108,16 @@ namespace CSSPCodeGenWebAPI
                 options.UseSqlite($"DataSource={fiDB.FullName}");
             });
 
+            services.AddScoped<IEnums, Enums>();
+
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<ILoggedInService, LoggedInService>();
             services.AddScoped<IActionCommandDBService, ActionCommandDBService>();
             services.AddScoped<IValidateAppSettingsService, ValidateAppSettingsService>();
             services.AddScoped<IPolSourceGroupingExcelFileReadService, PolSourceGroupingExcelFileReadService>();
+
+            services.AddScoped<IAddressService, AddressService>();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

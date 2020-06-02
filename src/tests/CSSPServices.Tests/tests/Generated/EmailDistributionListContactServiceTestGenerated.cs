@@ -16,6 +16,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Transactions;
 using Xunit;
 
 namespace CSSPServices.Tests
@@ -54,37 +55,40 @@ namespace CSSPServices.Tests
 
             await Setup(new CultureInfo(culture));
 
-            EmailDistributionListContact emailDistributionListContact = GetFilledRandomEmailDistributionListContact(""); 
+            using (TransactionScope ts = new TransactionScope())
+            {
+               EmailDistributionListContact emailDistributionListContact = GetFilledRandomEmailDistributionListContact(""); 
 
-            // List<EmailDistributionListContact>
-            var actionEmailDistributionListContactList = await emailDistributionListContactService.GetEmailDistributionListContactList();
-            Assert.Equal(200, ((ObjectResult)actionEmailDistributionListContactList.Result).StatusCode);
-            Assert.NotNull(((OkObjectResult)actionEmailDistributionListContactList.Result).Value);
-            List<EmailDistributionListContact> emailDistributionListContactList = (List<EmailDistributionListContact>)(((OkObjectResult)actionEmailDistributionListContactList.Result).Value);
+               // List<EmailDistributionListContact>
+               var actionEmailDistributionListContactList = await emailDistributionListContactService.GetEmailDistributionListContactList();
+               Assert.Equal(200, ((ObjectResult)actionEmailDistributionListContactList.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionEmailDistributionListContactList.Result).Value);
+               List<EmailDistributionListContact> emailDistributionListContactList = (List<EmailDistributionListContact>)(((OkObjectResult)actionEmailDistributionListContactList.Result).Value);
 
-            int count = ((List<EmailDistributionListContact>)((OkObjectResult)actionEmailDistributionListContactList.Result).Value).Count();
-            Assert.True(count > 0);
+               int count = ((List<EmailDistributionListContact>)((OkObjectResult)actionEmailDistributionListContactList.Result).Value).Count();
+                Assert.True(count > 0);
 
-            // Add EmailDistributionListContact
-            var actionEmailDistributionListContactAdded = await emailDistributionListContactService.Add(emailDistributionListContact);
-            Assert.Equal(200, ((ObjectResult)actionEmailDistributionListContactAdded.Result).StatusCode);
-            Assert.NotNull(((OkObjectResult)actionEmailDistributionListContactAdded.Result).Value);
-            EmailDistributionListContact emailDistributionListContactAdded = (EmailDistributionListContact)(((OkObjectResult)actionEmailDistributionListContactAdded.Result).Value);
-            Assert.NotNull(emailDistributionListContactAdded);
+               // Add EmailDistributionListContact
+               var actionEmailDistributionListContactAdded = await emailDistributionListContactService.Add(emailDistributionListContact);
+               Assert.Equal(200, ((ObjectResult)actionEmailDistributionListContactAdded.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionEmailDistributionListContactAdded.Result).Value);
+               EmailDistributionListContact emailDistributionListContactAdded = (EmailDistributionListContact)(((OkObjectResult)actionEmailDistributionListContactAdded.Result).Value);
+               Assert.NotNull(emailDistributionListContactAdded);
 
-            // Update EmailDistributionListContact
-            var actionEmailDistributionListContactUpdated = await emailDistributionListContactService.Update(emailDistributionListContact);
-            Assert.Equal(200, ((ObjectResult)actionEmailDistributionListContactUpdated.Result).StatusCode);
-            Assert.NotNull(((OkObjectResult)actionEmailDistributionListContactUpdated.Result).Value);
-            EmailDistributionListContact emailDistributionListContactUpdated = (EmailDistributionListContact)(((OkObjectResult)actionEmailDistributionListContactUpdated.Result).Value);
-            Assert.NotNull(emailDistributionListContactUpdated);
+               // Update EmailDistributionListContact
+               var actionEmailDistributionListContactUpdated = await emailDistributionListContactService.Update(emailDistributionListContact);
+               Assert.Equal(200, ((ObjectResult)actionEmailDistributionListContactUpdated.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionEmailDistributionListContactUpdated.Result).Value);
+               EmailDistributionListContact emailDistributionListContactUpdated = (EmailDistributionListContact)(((OkObjectResult)actionEmailDistributionListContactUpdated.Result).Value);
+               Assert.NotNull(emailDistributionListContactUpdated);
 
-            // Delete EmailDistributionListContact
-            var actionEmailDistributionListContactDeleted = await emailDistributionListContactService.Delete(emailDistributionListContact);
-            Assert.Equal(200, ((ObjectResult)actionEmailDistributionListContactDeleted.Result).StatusCode);
-            Assert.NotNull(((OkObjectResult)actionEmailDistributionListContactDeleted.Result).Value);
-            EmailDistributionListContact emailDistributionListContactDeleted = (EmailDistributionListContact)(((OkObjectResult)actionEmailDistributionListContactDeleted.Result).Value);
-            Assert.NotNull(emailDistributionListContactDeleted);
+               // Delete EmailDistributionListContact
+               var actionEmailDistributionListContactDeleted = await emailDistributionListContactService.Delete(emailDistributionListContact);
+               Assert.Equal(200, ((ObjectResult)actionEmailDistributionListContactDeleted.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionEmailDistributionListContactDeleted.Result).Value);
+               EmailDistributionListContact emailDistributionListContactDeleted = (EmailDistributionListContact)(((OkObjectResult)actionEmailDistributionListContactDeleted.Result).Value);
+               Assert.NotNull(emailDistributionListContactDeleted);
+            }
         }
         #endregion Tests Generated CRUD
 

@@ -1,143 +1,70 @@
-using CSSPEnums;
 using CSSPModels;
 using CSSPServices;
-using System;
+using LoggedInServices.Services;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web.Http;
+using System.Threading.Tasks;
 
 namespace CSSPWebAPI.Controllers
 {
-    [RoutePrefix("api/labSheet")]
-    public partial class LabSheetController : BaseController
+    public partial interface ILabSheetController
+    {
+        Task<ActionResult<List<LabSheet>>> Get();
+        Task<ActionResult<LabSheet>> Get(int LabSheetID);
+        Task<ActionResult<LabSheet>> Post(LabSheet labSheet);
+        Task<ActionResult<LabSheet>> Put(LabSheet labSheet);
+        Task<ActionResult<LabSheet>> Delete(LabSheet labSheet);
+    }
+
+    [Route("api/{culture}/[controller]")]
+    [ApiController]
+    [Authorize]
+    public partial class LabSheetController : ControllerBase, ILabSheetController
     {
         #region Variables
         #endregion Variables
 
         #region Properties
+        private ILabSheetService labSheetService { get; }
+        private CSSPDBContext db { get; }
+        private ILoggedInService loggedInService { get; }
         #endregion Properties
 
         #region Constructors
-        public LabSheetController() : base()
+        public LabSheetController(ILabSheetService labSheetService, CSSPDBContext db, ILoggedInService loggedInService)
         {
-        }
-        public LabSheetController(DatabaseTypeEnum dbt = DatabaseTypeEnum.SqlServerTestDB) : base(dbt)
-        {
+            this.labSheetService = labSheetService;
+            this.db = db;
+            this.loggedInService = loggedInService;
         }
         #endregion Constructors
 
         #region Functions public
-        // GET api/labSheet
-        [Route("")]
-        public IHttpActionResult GetLabSheetList([FromUri]string lang = "en", [FromUri]int skip = 0, [FromUri]int take = 200,
-            [FromUri]string asc = "", [FromUri]string desc = "", [FromUri]string where = "", [FromUri]string extra = "")
+        [HttpGet]
+        public async Task<ActionResult<List<LabSheet>>> Get()
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                LabSheetService labSheetService = new LabSheetService(new Query() { Lang = lang }, db, ContactID);
-
-                else // QueryString has no parameter [extra] or extra is empty
-                {
-                   labSheetService.Query = labSheetService.FillQuery(typeof(LabSheet), lang, skip, take, asc, desc, where, extra);
-
-                    if (labSheetService.Query.HasErrors)
-                    {
-                        return Ok(new List<LabSheet>()
-                        {
-                            new LabSheet()
-                            {
-                                HasErrors = labSheetService.Query.HasErrors,
-                                ValidationResults = labSheetService.Query.ValidationResults,
-                            },
-                        }.ToList());
-                    }
-                    else
-                    {
-                        return Ok(labSheetService.GetLabSheetList().ToList());
-                    }
-                }
-            }
+            return await labSheetService.GetLabSheetList();
         }
-        // GET api/labSheet/1
-        [Route("{LabSheetID:int}")]
-        public IHttpActionResult GetLabSheetWithID([FromUri]int LabSheetID, [FromUri]string lang = "en", [FromUri]string extra = "")
+        [HttpGet("{LabSheetID}")]
+        public async Task<ActionResult<LabSheet>> Get(int LabSheetID)
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                LabSheetService labSheetService = new LabSheetService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
-
-                labSheetService.Query = labSheetService.FillQuery(typeof(LabSheet), lang, 0, 1, "", "", extra);
-
-                else
-                {
-                    LabSheet labSheet = new LabSheet();
-                    labSheet = labSheetService.GetLabSheetWithLabSheetID(LabSheetID);
-
-                    if (labSheet == null)
-                    {
-                        return NotFound();
-                    }
-
-                    return Ok(labSheet);
-                }
-            }
+            return await labSheetService.GetLabSheetWithLabSheetID(LabSheetID);
         }
-        // POST api/labSheet
-        [Route("")]
-        public IHttpActionResult Post([FromBody]LabSheet labSheet, [FromUri]string lang = "en")
+        [HttpPost]
+        public async Task<ActionResult<LabSheet>> Post(LabSheet labSheet)
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                LabSheetService labSheetService = new LabSheetService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
-
-                if (!labSheetService.Add(labSheet))
-                {
-                    return BadRequest(String.Join("|||", labSheet.ValidationResults));
-                }
-                else
-                {
-                    labSheet.ValidationResults = null;
-                    return Created<LabSheet>(new Uri(Request.RequestUri, labSheet.LabSheetID.ToString()), labSheet);
-                }
-            }
+            return await labSheetService.Add(labSheet);
         }
-        // PUT api/labSheet
-        [Route("")]
-        public IHttpActionResult Put([FromBody]LabSheet labSheet, [FromUri]string lang = "en")
+        [HttpPut]
+        public async Task<ActionResult<LabSheet>> Put(LabSheet labSheet)
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                LabSheetService labSheetService = new LabSheetService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
-
-                if (!labSheetService.Update(labSheet))
-                {
-                    return BadRequest(String.Join("|||", labSheet.ValidationResults));
-                }
-                else
-                {
-                    labSheet.ValidationResults = null;
-                    return Ok(labSheet);
-                }
-            }
+            return await labSheetService.Update(labSheet);
         }
-        // DELETE api/labSheet
-        [Route("")]
-        public IHttpActionResult Delete([FromBody]LabSheet labSheet, [FromUri]string lang = "en")
+        [HttpDelete]
+        public async Task<ActionResult<LabSheet>> Delete(LabSheet labSheet)
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                LabSheetService labSheetService = new LabSheetService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
-
-                if (!labSheetService.Delete(labSheet))
-                {
-                    return BadRequest(String.Join("|||", labSheet.ValidationResults));
-                }
-                else
-                {
-                    labSheet.ValidationResults = null;
-                    return Ok(labSheet);
-                }
-            }
+            return await labSheetService.Delete(labSheet);
         }
         #endregion Functions public
 

@@ -1,143 +1,70 @@
-using CSSPEnums;
 using CSSPModels;
 using CSSPServices;
-using System;
+using LoggedInServices.Services;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web.Http;
+using System.Threading.Tasks;
 
 namespace CSSPWebAPI.Controllers
 {
-    [RoutePrefix("api/emailDistributionListLanguage")]
-    public partial class EmailDistributionListLanguageController : BaseController
+    public partial interface IEmailDistributionListLanguageController
+    {
+        Task<ActionResult<List<EmailDistributionListLanguage>>> Get();
+        Task<ActionResult<EmailDistributionListLanguage>> Get(int EmailDistributionListLanguageID);
+        Task<ActionResult<EmailDistributionListLanguage>> Post(EmailDistributionListLanguage emailDistributionListLanguage);
+        Task<ActionResult<EmailDistributionListLanguage>> Put(EmailDistributionListLanguage emailDistributionListLanguage);
+        Task<ActionResult<EmailDistributionListLanguage>> Delete(EmailDistributionListLanguage emailDistributionListLanguage);
+    }
+
+    [Route("api/{culture}/[controller]")]
+    [ApiController]
+    [Authorize]
+    public partial class EmailDistributionListLanguageController : ControllerBase, IEmailDistributionListLanguageController
     {
         #region Variables
         #endregion Variables
 
         #region Properties
+        private IEmailDistributionListLanguageService emailDistributionListLanguageService { get; }
+        private CSSPDBContext db { get; }
+        private ILoggedInService loggedInService { get; }
         #endregion Properties
 
         #region Constructors
-        public EmailDistributionListLanguageController() : base()
+        public EmailDistributionListLanguageController(IEmailDistributionListLanguageService emailDistributionListLanguageService, CSSPDBContext db, ILoggedInService loggedInService)
         {
-        }
-        public EmailDistributionListLanguageController(DatabaseTypeEnum dbt = DatabaseTypeEnum.SqlServerTestDB) : base(dbt)
-        {
+            this.emailDistributionListLanguageService = emailDistributionListLanguageService;
+            this.db = db;
+            this.loggedInService = loggedInService;
         }
         #endregion Constructors
 
         #region Functions public
-        // GET api/emailDistributionListLanguage
-        [Route("")]
-        public IHttpActionResult GetEmailDistributionListLanguageList([FromUri]string lang = "en", [FromUri]int skip = 0, [FromUri]int take = 200,
-            [FromUri]string asc = "", [FromUri]string desc = "", [FromUri]string where = "", [FromUri]string extra = "")
+        [HttpGet]
+        public async Task<ActionResult<List<EmailDistributionListLanguage>>> Get()
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                EmailDistributionListLanguageService emailDistributionListLanguageService = new EmailDistributionListLanguageService(new Query() { Lang = lang }, db, ContactID);
-
-                else // QueryString has no parameter [extra] or extra is empty
-                {
-                   emailDistributionListLanguageService.Query = emailDistributionListLanguageService.FillQuery(typeof(EmailDistributionListLanguage), lang, skip, take, asc, desc, where, extra);
-
-                    if (emailDistributionListLanguageService.Query.HasErrors)
-                    {
-                        return Ok(new List<EmailDistributionListLanguage>()
-                        {
-                            new EmailDistributionListLanguage()
-                            {
-                                HasErrors = emailDistributionListLanguageService.Query.HasErrors,
-                                ValidationResults = emailDistributionListLanguageService.Query.ValidationResults,
-                            },
-                        }.ToList());
-                    }
-                    else
-                    {
-                        return Ok(emailDistributionListLanguageService.GetEmailDistributionListLanguageList().ToList());
-                    }
-                }
-            }
+            return await emailDistributionListLanguageService.GetEmailDistributionListLanguageList();
         }
-        // GET api/emailDistributionListLanguage/1
-        [Route("{EmailDistributionListLanguageID:int}")]
-        public IHttpActionResult GetEmailDistributionListLanguageWithID([FromUri]int EmailDistributionListLanguageID, [FromUri]string lang = "en", [FromUri]string extra = "")
+        [HttpGet("{EmailDistributionListLanguageID}")]
+        public async Task<ActionResult<EmailDistributionListLanguage>> Get(int EmailDistributionListLanguageID)
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                EmailDistributionListLanguageService emailDistributionListLanguageService = new EmailDistributionListLanguageService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
-
-                emailDistributionListLanguageService.Query = emailDistributionListLanguageService.FillQuery(typeof(EmailDistributionListLanguage), lang, 0, 1, "", "", extra);
-
-                else
-                {
-                    EmailDistributionListLanguage emailDistributionListLanguage = new EmailDistributionListLanguage();
-                    emailDistributionListLanguage = emailDistributionListLanguageService.GetEmailDistributionListLanguageWithEmailDistributionListLanguageID(EmailDistributionListLanguageID);
-
-                    if (emailDistributionListLanguage == null)
-                    {
-                        return NotFound();
-                    }
-
-                    return Ok(emailDistributionListLanguage);
-                }
-            }
+            return await emailDistributionListLanguageService.GetEmailDistributionListLanguageWithEmailDistributionListLanguageID(EmailDistributionListLanguageID);
         }
-        // POST api/emailDistributionListLanguage
-        [Route("")]
-        public IHttpActionResult Post([FromBody]EmailDistributionListLanguage emailDistributionListLanguage, [FromUri]string lang = "en")
+        [HttpPost]
+        public async Task<ActionResult<EmailDistributionListLanguage>> Post(EmailDistributionListLanguage emailDistributionListLanguage)
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                EmailDistributionListLanguageService emailDistributionListLanguageService = new EmailDistributionListLanguageService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
-
-                if (!emailDistributionListLanguageService.Add(emailDistributionListLanguage))
-                {
-                    return BadRequest(String.Join("|||", emailDistributionListLanguage.ValidationResults));
-                }
-                else
-                {
-                    emailDistributionListLanguage.ValidationResults = null;
-                    return Created<EmailDistributionListLanguage>(new Uri(Request.RequestUri, emailDistributionListLanguage.EmailDistributionListLanguageID.ToString()), emailDistributionListLanguage);
-                }
-            }
+            return await emailDistributionListLanguageService.Add(emailDistributionListLanguage);
         }
-        // PUT api/emailDistributionListLanguage
-        [Route("")]
-        public IHttpActionResult Put([FromBody]EmailDistributionListLanguage emailDistributionListLanguage, [FromUri]string lang = "en")
+        [HttpPut]
+        public async Task<ActionResult<EmailDistributionListLanguage>> Put(EmailDistributionListLanguage emailDistributionListLanguage)
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                EmailDistributionListLanguageService emailDistributionListLanguageService = new EmailDistributionListLanguageService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
-
-                if (!emailDistributionListLanguageService.Update(emailDistributionListLanguage))
-                {
-                    return BadRequest(String.Join("|||", emailDistributionListLanguage.ValidationResults));
-                }
-                else
-                {
-                    emailDistributionListLanguage.ValidationResults = null;
-                    return Ok(emailDistributionListLanguage);
-                }
-            }
+            return await emailDistributionListLanguageService.Update(emailDistributionListLanguage);
         }
-        // DELETE api/emailDistributionListLanguage
-        [Route("")]
-        public IHttpActionResult Delete([FromBody]EmailDistributionListLanguage emailDistributionListLanguage, [FromUri]string lang = "en")
+        [HttpDelete]
+        public async Task<ActionResult<EmailDistributionListLanguage>> Delete(EmailDistributionListLanguage emailDistributionListLanguage)
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                EmailDistributionListLanguageService emailDistributionListLanguageService = new EmailDistributionListLanguageService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
-
-                if (!emailDistributionListLanguageService.Delete(emailDistributionListLanguage))
-                {
-                    return BadRequest(String.Join("|||", emailDistributionListLanguage.ValidationResults));
-                }
-                else
-                {
-                    emailDistributionListLanguage.ValidationResults = null;
-                    return Ok(emailDistributionListLanguage);
-                }
-            }
+            return await emailDistributionListLanguageService.Delete(emailDistributionListLanguage);
         }
         #endregion Functions public
 

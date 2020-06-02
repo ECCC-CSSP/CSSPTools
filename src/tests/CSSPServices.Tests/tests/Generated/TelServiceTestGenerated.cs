@@ -16,6 +16,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Transactions;
 using Xunit;
 
 namespace CSSPServices.Tests
@@ -54,37 +55,40 @@ namespace CSSPServices.Tests
 
             await Setup(new CultureInfo(culture));
 
-            Tel tel = GetFilledRandomTel(""); 
+            using (TransactionScope ts = new TransactionScope())
+            {
+               Tel tel = GetFilledRandomTel(""); 
 
-            // List<Tel>
-            var actionTelList = await telService.GetTelList();
-            Assert.Equal(200, ((ObjectResult)actionTelList.Result).StatusCode);
-            Assert.NotNull(((OkObjectResult)actionTelList.Result).Value);
-            List<Tel> telList = (List<Tel>)(((OkObjectResult)actionTelList.Result).Value);
+               // List<Tel>
+               var actionTelList = await telService.GetTelList();
+               Assert.Equal(200, ((ObjectResult)actionTelList.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionTelList.Result).Value);
+               List<Tel> telList = (List<Tel>)(((OkObjectResult)actionTelList.Result).Value);
 
-            int count = ((List<Tel>)((OkObjectResult)actionTelList.Result).Value).Count();
-            Assert.True(count > 0);
+               int count = ((List<Tel>)((OkObjectResult)actionTelList.Result).Value).Count();
+                Assert.True(count > 0);
 
-            // Add Tel
-            var actionTelAdded = await telService.Add(tel);
-            Assert.Equal(200, ((ObjectResult)actionTelAdded.Result).StatusCode);
-            Assert.NotNull(((OkObjectResult)actionTelAdded.Result).Value);
-            Tel telAdded = (Tel)(((OkObjectResult)actionTelAdded.Result).Value);
-            Assert.NotNull(telAdded);
+               // Add Tel
+               var actionTelAdded = await telService.Add(tel);
+               Assert.Equal(200, ((ObjectResult)actionTelAdded.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionTelAdded.Result).Value);
+               Tel telAdded = (Tel)(((OkObjectResult)actionTelAdded.Result).Value);
+               Assert.NotNull(telAdded);
 
-            // Update Tel
-            var actionTelUpdated = await telService.Update(tel);
-            Assert.Equal(200, ((ObjectResult)actionTelUpdated.Result).StatusCode);
-            Assert.NotNull(((OkObjectResult)actionTelUpdated.Result).Value);
-            Tel telUpdated = (Tel)(((OkObjectResult)actionTelUpdated.Result).Value);
-            Assert.NotNull(telUpdated);
+               // Update Tel
+               var actionTelUpdated = await telService.Update(tel);
+               Assert.Equal(200, ((ObjectResult)actionTelUpdated.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionTelUpdated.Result).Value);
+               Tel telUpdated = (Tel)(((OkObjectResult)actionTelUpdated.Result).Value);
+               Assert.NotNull(telUpdated);
 
-            // Delete Tel
-            var actionTelDeleted = await telService.Delete(tel);
-            Assert.Equal(200, ((ObjectResult)actionTelDeleted.Result).StatusCode);
-            Assert.NotNull(((OkObjectResult)actionTelDeleted.Result).Value);
-            Tel telDeleted = (Tel)(((OkObjectResult)actionTelDeleted.Result).Value);
-            Assert.NotNull(telDeleted);
+               // Delete Tel
+               var actionTelDeleted = await telService.Delete(tel);
+               Assert.Equal(200, ((ObjectResult)actionTelDeleted.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionTelDeleted.Result).Value);
+               Tel telDeleted = (Tel)(((OkObjectResult)actionTelDeleted.Result).Value);
+               Assert.NotNull(telDeleted);
+            }
         }
         #endregion Tests Generated CRUD
 

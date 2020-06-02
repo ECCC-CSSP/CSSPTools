@@ -1,143 +1,70 @@
-using CSSPEnums;
 using CSSPModels;
 using CSSPServices;
-using System;
+using LoggedInServices.Services;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web.Http;
+using System.Threading.Tasks;
 
 namespace CSSPWebAPI.Controllers
 {
-    [RoutePrefix("api/polSourceObservation")]
-    public partial class PolSourceObservationController : BaseController
+    public partial interface IPolSourceObservationController
+    {
+        Task<ActionResult<List<PolSourceObservation>>> Get();
+        Task<ActionResult<PolSourceObservation>> Get(int PolSourceObservationID);
+        Task<ActionResult<PolSourceObservation>> Post(PolSourceObservation polSourceObservation);
+        Task<ActionResult<PolSourceObservation>> Put(PolSourceObservation polSourceObservation);
+        Task<ActionResult<PolSourceObservation>> Delete(PolSourceObservation polSourceObservation);
+    }
+
+    [Route("api/{culture}/[controller]")]
+    [ApiController]
+    [Authorize]
+    public partial class PolSourceObservationController : ControllerBase, IPolSourceObservationController
     {
         #region Variables
         #endregion Variables
 
         #region Properties
+        private IPolSourceObservationService polSourceObservationService { get; }
+        private CSSPDBContext db { get; }
+        private ILoggedInService loggedInService { get; }
         #endregion Properties
 
         #region Constructors
-        public PolSourceObservationController() : base()
+        public PolSourceObservationController(IPolSourceObservationService polSourceObservationService, CSSPDBContext db, ILoggedInService loggedInService)
         {
-        }
-        public PolSourceObservationController(DatabaseTypeEnum dbt = DatabaseTypeEnum.SqlServerTestDB) : base(dbt)
-        {
+            this.polSourceObservationService = polSourceObservationService;
+            this.db = db;
+            this.loggedInService = loggedInService;
         }
         #endregion Constructors
 
         #region Functions public
-        // GET api/polSourceObservation
-        [Route("")]
-        public IHttpActionResult GetPolSourceObservationList([FromUri]string lang = "en", [FromUri]int skip = 0, [FromUri]int take = 200,
-            [FromUri]string asc = "", [FromUri]string desc = "", [FromUri]string where = "", [FromUri]string extra = "")
+        [HttpGet]
+        public async Task<ActionResult<List<PolSourceObservation>>> Get()
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                PolSourceObservationService polSourceObservationService = new PolSourceObservationService(new Query() { Lang = lang }, db, ContactID);
-
-                else // QueryString has no parameter [extra] or extra is empty
-                {
-                   polSourceObservationService.Query = polSourceObservationService.FillQuery(typeof(PolSourceObservation), lang, skip, take, asc, desc, where, extra);
-
-                    if (polSourceObservationService.Query.HasErrors)
-                    {
-                        return Ok(new List<PolSourceObservation>()
-                        {
-                            new PolSourceObservation()
-                            {
-                                HasErrors = polSourceObservationService.Query.HasErrors,
-                                ValidationResults = polSourceObservationService.Query.ValidationResults,
-                            },
-                        }.ToList());
-                    }
-                    else
-                    {
-                        return Ok(polSourceObservationService.GetPolSourceObservationList().ToList());
-                    }
-                }
-            }
+            return await polSourceObservationService.GetPolSourceObservationList();
         }
-        // GET api/polSourceObservation/1
-        [Route("{PolSourceObservationID:int}")]
-        public IHttpActionResult GetPolSourceObservationWithID([FromUri]int PolSourceObservationID, [FromUri]string lang = "en", [FromUri]string extra = "")
+        [HttpGet("{PolSourceObservationID}")]
+        public async Task<ActionResult<PolSourceObservation>> Get(int PolSourceObservationID)
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                PolSourceObservationService polSourceObservationService = new PolSourceObservationService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
-
-                polSourceObservationService.Query = polSourceObservationService.FillQuery(typeof(PolSourceObservation), lang, 0, 1, "", "", extra);
-
-                else
-                {
-                    PolSourceObservation polSourceObservation = new PolSourceObservation();
-                    polSourceObservation = polSourceObservationService.GetPolSourceObservationWithPolSourceObservationID(PolSourceObservationID);
-
-                    if (polSourceObservation == null)
-                    {
-                        return NotFound();
-                    }
-
-                    return Ok(polSourceObservation);
-                }
-            }
+            return await polSourceObservationService.GetPolSourceObservationWithPolSourceObservationID(PolSourceObservationID);
         }
-        // POST api/polSourceObservation
-        [Route("")]
-        public IHttpActionResult Post([FromBody]PolSourceObservation polSourceObservation, [FromUri]string lang = "en")
+        [HttpPost]
+        public async Task<ActionResult<PolSourceObservation>> Post(PolSourceObservation polSourceObservation)
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                PolSourceObservationService polSourceObservationService = new PolSourceObservationService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
-
-                if (!polSourceObservationService.Add(polSourceObservation))
-                {
-                    return BadRequest(String.Join("|||", polSourceObservation.ValidationResults));
-                }
-                else
-                {
-                    polSourceObservation.ValidationResults = null;
-                    return Created<PolSourceObservation>(new Uri(Request.RequestUri, polSourceObservation.PolSourceObservationID.ToString()), polSourceObservation);
-                }
-            }
+            return await polSourceObservationService.Add(polSourceObservation);
         }
-        // PUT api/polSourceObservation
-        [Route("")]
-        public IHttpActionResult Put([FromBody]PolSourceObservation polSourceObservation, [FromUri]string lang = "en")
+        [HttpPut]
+        public async Task<ActionResult<PolSourceObservation>> Put(PolSourceObservation polSourceObservation)
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                PolSourceObservationService polSourceObservationService = new PolSourceObservationService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
-
-                if (!polSourceObservationService.Update(polSourceObservation))
-                {
-                    return BadRequest(String.Join("|||", polSourceObservation.ValidationResults));
-                }
-                else
-                {
-                    polSourceObservation.ValidationResults = null;
-                    return Ok(polSourceObservation);
-                }
-            }
+            return await polSourceObservationService.Update(polSourceObservation);
         }
-        // DELETE api/polSourceObservation
-        [Route("")]
-        public IHttpActionResult Delete([FromBody]PolSourceObservation polSourceObservation, [FromUri]string lang = "en")
+        [HttpDelete]
+        public async Task<ActionResult<PolSourceObservation>> Delete(PolSourceObservation polSourceObservation)
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                PolSourceObservationService polSourceObservationService = new PolSourceObservationService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
-
-                if (!polSourceObservationService.Delete(polSourceObservation))
-                {
-                    return BadRequest(String.Join("|||", polSourceObservation.ValidationResults));
-                }
-                else
-                {
-                    polSourceObservation.ValidationResults = null;
-                    return Ok(polSourceObservation);
-                }
-            }
+            return await polSourceObservationService.Delete(polSourceObservation);
         }
         #endregion Functions public
 

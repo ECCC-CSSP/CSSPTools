@@ -1,143 +1,70 @@
-using CSSPEnums;
 using CSSPModels;
 using CSSPServices;
-using System;
+using LoggedInServices.Services;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web.Http;
+using System.Threading.Tasks;
 
 namespace CSSPWebAPI.Controllers
 {
-    [RoutePrefix("api/ratingCurve")]
-    public partial class RatingCurveController : BaseController
+    public partial interface IRatingCurveController
+    {
+        Task<ActionResult<List<RatingCurve>>> Get();
+        Task<ActionResult<RatingCurve>> Get(int RatingCurveID);
+        Task<ActionResult<RatingCurve>> Post(RatingCurve ratingCurve);
+        Task<ActionResult<RatingCurve>> Put(RatingCurve ratingCurve);
+        Task<ActionResult<RatingCurve>> Delete(RatingCurve ratingCurve);
+    }
+
+    [Route("api/{culture}/[controller]")]
+    [ApiController]
+    [Authorize]
+    public partial class RatingCurveController : ControllerBase, IRatingCurveController
     {
         #region Variables
         #endregion Variables
 
         #region Properties
+        private IRatingCurveService ratingCurveService { get; }
+        private CSSPDBContext db { get; }
+        private ILoggedInService loggedInService { get; }
         #endregion Properties
 
         #region Constructors
-        public RatingCurveController() : base()
+        public RatingCurveController(IRatingCurveService ratingCurveService, CSSPDBContext db, ILoggedInService loggedInService)
         {
-        }
-        public RatingCurveController(DatabaseTypeEnum dbt = DatabaseTypeEnum.SqlServerTestDB) : base(dbt)
-        {
+            this.ratingCurveService = ratingCurveService;
+            this.db = db;
+            this.loggedInService = loggedInService;
         }
         #endregion Constructors
 
         #region Functions public
-        // GET api/ratingCurve
-        [Route("")]
-        public IHttpActionResult GetRatingCurveList([FromUri]string lang = "en", [FromUri]int skip = 0, [FromUri]int take = 200,
-            [FromUri]string asc = "", [FromUri]string desc = "", [FromUri]string where = "", [FromUri]string extra = "")
+        [HttpGet]
+        public async Task<ActionResult<List<RatingCurve>>> Get()
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                RatingCurveService ratingCurveService = new RatingCurveService(new Query() { Lang = lang }, db, ContactID);
-
-                else // QueryString has no parameter [extra] or extra is empty
-                {
-                   ratingCurveService.Query = ratingCurveService.FillQuery(typeof(RatingCurve), lang, skip, take, asc, desc, where, extra);
-
-                    if (ratingCurveService.Query.HasErrors)
-                    {
-                        return Ok(new List<RatingCurve>()
-                        {
-                            new RatingCurve()
-                            {
-                                HasErrors = ratingCurveService.Query.HasErrors,
-                                ValidationResults = ratingCurveService.Query.ValidationResults,
-                            },
-                        }.ToList());
-                    }
-                    else
-                    {
-                        return Ok(ratingCurveService.GetRatingCurveList().ToList());
-                    }
-                }
-            }
+            return await ratingCurveService.GetRatingCurveList();
         }
-        // GET api/ratingCurve/1
-        [Route("{RatingCurveID:int}")]
-        public IHttpActionResult GetRatingCurveWithID([FromUri]int RatingCurveID, [FromUri]string lang = "en", [FromUri]string extra = "")
+        [HttpGet("{RatingCurveID}")]
+        public async Task<ActionResult<RatingCurve>> Get(int RatingCurveID)
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                RatingCurveService ratingCurveService = new RatingCurveService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
-
-                ratingCurveService.Query = ratingCurveService.FillQuery(typeof(RatingCurve), lang, 0, 1, "", "", extra);
-
-                else
-                {
-                    RatingCurve ratingCurve = new RatingCurve();
-                    ratingCurve = ratingCurveService.GetRatingCurveWithRatingCurveID(RatingCurveID);
-
-                    if (ratingCurve == null)
-                    {
-                        return NotFound();
-                    }
-
-                    return Ok(ratingCurve);
-                }
-            }
+            return await ratingCurveService.GetRatingCurveWithRatingCurveID(RatingCurveID);
         }
-        // POST api/ratingCurve
-        [Route("")]
-        public IHttpActionResult Post([FromBody]RatingCurve ratingCurve, [FromUri]string lang = "en")
+        [HttpPost]
+        public async Task<ActionResult<RatingCurve>> Post(RatingCurve ratingCurve)
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                RatingCurveService ratingCurveService = new RatingCurveService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
-
-                if (!ratingCurveService.Add(ratingCurve))
-                {
-                    return BadRequest(String.Join("|||", ratingCurve.ValidationResults));
-                }
-                else
-                {
-                    ratingCurve.ValidationResults = null;
-                    return Created<RatingCurve>(new Uri(Request.RequestUri, ratingCurve.RatingCurveID.ToString()), ratingCurve);
-                }
-            }
+            return await ratingCurveService.Add(ratingCurve);
         }
-        // PUT api/ratingCurve
-        [Route("")]
-        public IHttpActionResult Put([FromBody]RatingCurve ratingCurve, [FromUri]string lang = "en")
+        [HttpPut]
+        public async Task<ActionResult<RatingCurve>> Put(RatingCurve ratingCurve)
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                RatingCurveService ratingCurveService = new RatingCurveService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
-
-                if (!ratingCurveService.Update(ratingCurve))
-                {
-                    return BadRequest(String.Join("|||", ratingCurve.ValidationResults));
-                }
-                else
-                {
-                    ratingCurve.ValidationResults = null;
-                    return Ok(ratingCurve);
-                }
-            }
+            return await ratingCurveService.Update(ratingCurve);
         }
-        // DELETE api/ratingCurve
-        [Route("")]
-        public IHttpActionResult Delete([FromBody]RatingCurve ratingCurve, [FromUri]string lang = "en")
+        [HttpDelete]
+        public async Task<ActionResult<RatingCurve>> Delete(RatingCurve ratingCurve)
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                RatingCurveService ratingCurveService = new RatingCurveService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
-
-                if (!ratingCurveService.Delete(ratingCurve))
-                {
-                    return BadRequest(String.Join("|||", ratingCurve.ValidationResults));
-                }
-                else
-                {
-                    ratingCurve.ValidationResults = null;
-                    return Ok(ratingCurve);
-                }
-            }
+            return await ratingCurveService.Delete(ratingCurve);
         }
         #endregion Functions public
 

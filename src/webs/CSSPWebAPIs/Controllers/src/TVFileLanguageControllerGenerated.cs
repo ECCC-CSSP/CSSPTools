@@ -1,143 +1,70 @@
-using CSSPEnums;
 using CSSPModels;
 using CSSPServices;
-using System;
+using LoggedInServices.Services;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web.Http;
+using System.Threading.Tasks;
 
 namespace CSSPWebAPI.Controllers
 {
-    [RoutePrefix("api/tvFileLanguage")]
-    public partial class TVFileLanguageController : BaseController
+    public partial interface ITVFileLanguageController
+    {
+        Task<ActionResult<List<TVFileLanguage>>> Get();
+        Task<ActionResult<TVFileLanguage>> Get(int TVFileLanguageID);
+        Task<ActionResult<TVFileLanguage>> Post(TVFileLanguage tvFileLanguage);
+        Task<ActionResult<TVFileLanguage>> Put(TVFileLanguage tvFileLanguage);
+        Task<ActionResult<TVFileLanguage>> Delete(TVFileLanguage tvFileLanguage);
+    }
+
+    [Route("api/{culture}/[controller]")]
+    [ApiController]
+    [Authorize]
+    public partial class TVFileLanguageController : ControllerBase, ITVFileLanguageController
     {
         #region Variables
         #endregion Variables
 
         #region Properties
+        private ITVFileLanguageService tvFileLanguageService { get; }
+        private CSSPDBContext db { get; }
+        private ILoggedInService loggedInService { get; }
         #endregion Properties
 
         #region Constructors
-        public TVFileLanguageController() : base()
+        public TVFileLanguageController(ITVFileLanguageService tvFileLanguageService, CSSPDBContext db, ILoggedInService loggedInService)
         {
-        }
-        public TVFileLanguageController(DatabaseTypeEnum dbt = DatabaseTypeEnum.SqlServerTestDB) : base(dbt)
-        {
+            this.tvFileLanguageService = tvFileLanguageService;
+            this.db = db;
+            this.loggedInService = loggedInService;
         }
         #endregion Constructors
 
         #region Functions public
-        // GET api/tvFileLanguage
-        [Route("")]
-        public IHttpActionResult GetTVFileLanguageList([FromUri]string lang = "en", [FromUri]int skip = 0, [FromUri]int take = 200,
-            [FromUri]string asc = "", [FromUri]string desc = "", [FromUri]string where = "", [FromUri]string extra = "")
+        [HttpGet]
+        public async Task<ActionResult<List<TVFileLanguage>>> Get()
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                TVFileLanguageService tvFileLanguageService = new TVFileLanguageService(new Query() { Lang = lang }, db, ContactID);
-
-                else // QueryString has no parameter [extra] or extra is empty
-                {
-                   tvFileLanguageService.Query = tvFileLanguageService.FillQuery(typeof(TVFileLanguage), lang, skip, take, asc, desc, where, extra);
-
-                    if (tvFileLanguageService.Query.HasErrors)
-                    {
-                        return Ok(new List<TVFileLanguage>()
-                        {
-                            new TVFileLanguage()
-                            {
-                                HasErrors = tvFileLanguageService.Query.HasErrors,
-                                ValidationResults = tvFileLanguageService.Query.ValidationResults,
-                            },
-                        }.ToList());
-                    }
-                    else
-                    {
-                        return Ok(tvFileLanguageService.GetTVFileLanguageList().ToList());
-                    }
-                }
-            }
+            return await tvFileLanguageService.GetTVFileLanguageList();
         }
-        // GET api/tvFileLanguage/1
-        [Route("{TVFileLanguageID:int}")]
-        public IHttpActionResult GetTVFileLanguageWithID([FromUri]int TVFileLanguageID, [FromUri]string lang = "en", [FromUri]string extra = "")
+        [HttpGet("{TVFileLanguageID}")]
+        public async Task<ActionResult<TVFileLanguage>> Get(int TVFileLanguageID)
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                TVFileLanguageService tvFileLanguageService = new TVFileLanguageService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
-
-                tvFileLanguageService.Query = tvFileLanguageService.FillQuery(typeof(TVFileLanguage), lang, 0, 1, "", "", extra);
-
-                else
-                {
-                    TVFileLanguage tvFileLanguage = new TVFileLanguage();
-                    tvFileLanguage = tvFileLanguageService.GetTVFileLanguageWithTVFileLanguageID(TVFileLanguageID);
-
-                    if (tvFileLanguage == null)
-                    {
-                        return NotFound();
-                    }
-
-                    return Ok(tvFileLanguage);
-                }
-            }
+            return await tvFileLanguageService.GetTVFileLanguageWithTVFileLanguageID(TVFileLanguageID);
         }
-        // POST api/tvFileLanguage
-        [Route("")]
-        public IHttpActionResult Post([FromBody]TVFileLanguage tvFileLanguage, [FromUri]string lang = "en")
+        [HttpPost]
+        public async Task<ActionResult<TVFileLanguage>> Post(TVFileLanguage tvFileLanguage)
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                TVFileLanguageService tvFileLanguageService = new TVFileLanguageService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
-
-                if (!tvFileLanguageService.Add(tvFileLanguage))
-                {
-                    return BadRequest(String.Join("|||", tvFileLanguage.ValidationResults));
-                }
-                else
-                {
-                    tvFileLanguage.ValidationResults = null;
-                    return Created<TVFileLanguage>(new Uri(Request.RequestUri, tvFileLanguage.TVFileLanguageID.ToString()), tvFileLanguage);
-                }
-            }
+            return await tvFileLanguageService.Add(tvFileLanguage);
         }
-        // PUT api/tvFileLanguage
-        [Route("")]
-        public IHttpActionResult Put([FromBody]TVFileLanguage tvFileLanguage, [FromUri]string lang = "en")
+        [HttpPut]
+        public async Task<ActionResult<TVFileLanguage>> Put(TVFileLanguage tvFileLanguage)
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                TVFileLanguageService tvFileLanguageService = new TVFileLanguageService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
-
-                if (!tvFileLanguageService.Update(tvFileLanguage))
-                {
-                    return BadRequest(String.Join("|||", tvFileLanguage.ValidationResults));
-                }
-                else
-                {
-                    tvFileLanguage.ValidationResults = null;
-                    return Ok(tvFileLanguage);
-                }
-            }
+            return await tvFileLanguageService.Update(tvFileLanguage);
         }
-        // DELETE api/tvFileLanguage
-        [Route("")]
-        public IHttpActionResult Delete([FromBody]TVFileLanguage tvFileLanguage, [FromUri]string lang = "en")
+        [HttpDelete]
+        public async Task<ActionResult<TVFileLanguage>> Delete(TVFileLanguage tvFileLanguage)
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                TVFileLanguageService tvFileLanguageService = new TVFileLanguageService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
-
-                if (!tvFileLanguageService.Delete(tvFileLanguage))
-                {
-                    return BadRequest(String.Join("|||", tvFileLanguage.ValidationResults));
-                }
-                else
-                {
-                    tvFileLanguage.ValidationResults = null;
-                    return Ok(tvFileLanguage);
-                }
-            }
+            return await tvFileLanguageService.Delete(tvFileLanguage);
         }
         #endregion Functions public
 

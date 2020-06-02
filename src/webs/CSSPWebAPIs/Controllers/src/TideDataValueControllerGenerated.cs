@@ -1,143 +1,70 @@
-using CSSPEnums;
 using CSSPModels;
 using CSSPServices;
-using System;
+using LoggedInServices.Services;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web.Http;
+using System.Threading.Tasks;
 
 namespace CSSPWebAPI.Controllers
 {
-    [RoutePrefix("api/tideDataValue")]
-    public partial class TideDataValueController : BaseController
+    public partial interface ITideDataValueController
+    {
+        Task<ActionResult<List<TideDataValue>>> Get();
+        Task<ActionResult<TideDataValue>> Get(int TideDataValueID);
+        Task<ActionResult<TideDataValue>> Post(TideDataValue tideDataValue);
+        Task<ActionResult<TideDataValue>> Put(TideDataValue tideDataValue);
+        Task<ActionResult<TideDataValue>> Delete(TideDataValue tideDataValue);
+    }
+
+    [Route("api/{culture}/[controller]")]
+    [ApiController]
+    [Authorize]
+    public partial class TideDataValueController : ControllerBase, ITideDataValueController
     {
         #region Variables
         #endregion Variables
 
         #region Properties
+        private ITideDataValueService tideDataValueService { get; }
+        private CSSPDBContext db { get; }
+        private ILoggedInService loggedInService { get; }
         #endregion Properties
 
         #region Constructors
-        public TideDataValueController() : base()
+        public TideDataValueController(ITideDataValueService tideDataValueService, CSSPDBContext db, ILoggedInService loggedInService)
         {
-        }
-        public TideDataValueController(DatabaseTypeEnum dbt = DatabaseTypeEnum.SqlServerTestDB) : base(dbt)
-        {
+            this.tideDataValueService = tideDataValueService;
+            this.db = db;
+            this.loggedInService = loggedInService;
         }
         #endregion Constructors
 
         #region Functions public
-        // GET api/tideDataValue
-        [Route("")]
-        public IHttpActionResult GetTideDataValueList([FromUri]string lang = "en", [FromUri]int skip = 0, [FromUri]int take = 200,
-            [FromUri]string asc = "", [FromUri]string desc = "", [FromUri]string where = "", [FromUri]string extra = "")
+        [HttpGet]
+        public async Task<ActionResult<List<TideDataValue>>> Get()
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                TideDataValueService tideDataValueService = new TideDataValueService(new Query() { Lang = lang }, db, ContactID);
-
-                else // QueryString has no parameter [extra] or extra is empty
-                {
-                   tideDataValueService.Query = tideDataValueService.FillQuery(typeof(TideDataValue), lang, skip, take, asc, desc, where, extra);
-
-                    if (tideDataValueService.Query.HasErrors)
-                    {
-                        return Ok(new List<TideDataValue>()
-                        {
-                            new TideDataValue()
-                            {
-                                HasErrors = tideDataValueService.Query.HasErrors,
-                                ValidationResults = tideDataValueService.Query.ValidationResults,
-                            },
-                        }.ToList());
-                    }
-                    else
-                    {
-                        return Ok(tideDataValueService.GetTideDataValueList().ToList());
-                    }
-                }
-            }
+            return await tideDataValueService.GetTideDataValueList();
         }
-        // GET api/tideDataValue/1
-        [Route("{TideDataValueID:int}")]
-        public IHttpActionResult GetTideDataValueWithID([FromUri]int TideDataValueID, [FromUri]string lang = "en", [FromUri]string extra = "")
+        [HttpGet("{TideDataValueID}")]
+        public async Task<ActionResult<TideDataValue>> Get(int TideDataValueID)
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                TideDataValueService tideDataValueService = new TideDataValueService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
-
-                tideDataValueService.Query = tideDataValueService.FillQuery(typeof(TideDataValue), lang, 0, 1, "", "", extra);
-
-                else
-                {
-                    TideDataValue tideDataValue = new TideDataValue();
-                    tideDataValue = tideDataValueService.GetTideDataValueWithTideDataValueID(TideDataValueID);
-
-                    if (tideDataValue == null)
-                    {
-                        return NotFound();
-                    }
-
-                    return Ok(tideDataValue);
-                }
-            }
+            return await tideDataValueService.GetTideDataValueWithTideDataValueID(TideDataValueID);
         }
-        // POST api/tideDataValue
-        [Route("")]
-        public IHttpActionResult Post([FromBody]TideDataValue tideDataValue, [FromUri]string lang = "en")
+        [HttpPost]
+        public async Task<ActionResult<TideDataValue>> Post(TideDataValue tideDataValue)
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                TideDataValueService tideDataValueService = new TideDataValueService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
-
-                if (!tideDataValueService.Add(tideDataValue))
-                {
-                    return BadRequest(String.Join("|||", tideDataValue.ValidationResults));
-                }
-                else
-                {
-                    tideDataValue.ValidationResults = null;
-                    return Created<TideDataValue>(new Uri(Request.RequestUri, tideDataValue.TideDataValueID.ToString()), tideDataValue);
-                }
-            }
+            return await tideDataValueService.Add(tideDataValue);
         }
-        // PUT api/tideDataValue
-        [Route("")]
-        public IHttpActionResult Put([FromBody]TideDataValue tideDataValue, [FromUri]string lang = "en")
+        [HttpPut]
+        public async Task<ActionResult<TideDataValue>> Put(TideDataValue tideDataValue)
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                TideDataValueService tideDataValueService = new TideDataValueService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
-
-                if (!tideDataValueService.Update(tideDataValue))
-                {
-                    return BadRequest(String.Join("|||", tideDataValue.ValidationResults));
-                }
-                else
-                {
-                    tideDataValue.ValidationResults = null;
-                    return Ok(tideDataValue);
-                }
-            }
+            return await tideDataValueService.Update(tideDataValue);
         }
-        // DELETE api/tideDataValue
-        [Route("")]
-        public IHttpActionResult Delete([FromBody]TideDataValue tideDataValue, [FromUri]string lang = "en")
+        [HttpDelete]
+        public async Task<ActionResult<TideDataValue>> Delete(TideDataValue tideDataValue)
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                TideDataValueService tideDataValueService = new TideDataValueService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
-
-                if (!tideDataValueService.Delete(tideDataValue))
-                {
-                    return BadRequest(String.Join("|||", tideDataValue.ValidationResults));
-                }
-                else
-                {
-                    tideDataValue.ValidationResults = null;
-                    return Ok(tideDataValue);
-                }
-            }
+            return await tideDataValueService.Delete(tideDataValue);
         }
         #endregion Functions public
 

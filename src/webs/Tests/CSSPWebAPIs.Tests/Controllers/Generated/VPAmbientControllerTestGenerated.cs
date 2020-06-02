@@ -2,350 +2,157 @@ using CSSPEnums;
 using CSSPModels;
 using CSSPServices;
 using CSSPWebAPI.Controllers;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using LoggedInServices.Services;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using System;
 using System.Collections.Generic;
+using System.Globalization;
+using System.IO;
 using System.Linq;
-using System.Web.Http;
-using System.Web.Http.Results;
+using System.Threading.Tasks;
+using System.Transactions;
+using UserServices.Models;
+using Xunit;
 
-namespace CSSPWebAPI.Tests.Controllers
+namespace CSSPWebAPIs.Tests.Controllers
 {
-    [TestClass]
-    public partial class VPAmbientControllerTest : BaseControllerTest
+    public partial class VPAmbientControllerTest
     {
         #region Variables
         #endregion Variables
 
         #region Properties
+        private IConfiguration Config { get; set; }
+        private IServiceProvider Provider { get; set; }
+        private IServiceCollection Services { get; set; }
+        private CSSPDBContext db { get; set; }
+        private ILoggedInService loggedInService { get; set; }
+        private IVPAmbientService vpAmbientService { get; set; }
+        private IVPAmbientController vpAmbientController { get; set; }
         #endregion Properties
 
         #region Constructors
-        public VPAmbientControllerTest() : base()
+        public VPAmbientControllerTest()
         {
         }
         #endregion Constructors
 
-        #region Tests Generated for Class Controller GetList Command
-        [TestMethod]
-        public void VPAmbient_Controller_GetVPAmbientList_Test()
+        #region Functions public
+        [Theory]
+        [InlineData("en-CA")]
+        [InlineData("fr-CA")]
+        public async Task VPAmbientController_Constructor_Good_Test(string culture)
         {
-            foreach (LanguageEnum LanguageRequest in AllowableLanguages)
+            bool retBool = await Setup(new CultureInfo(culture));
+            Assert.True(retBool);
+            Assert.NotNull(loggedInService);
+            Assert.NotNull(vpAmbientService);
+            Assert.NotNull(vpAmbientController);
+        }
+        [Theory]
+        [InlineData("en-CA")]
+        [InlineData("fr-CA")]
+        public async Task VPAmbientController_CRUD_Good_Test(string culture)
+        {
+            bool retBool = await Setup(new CultureInfo(culture));
+            Assert.True(retBool);
+
+            using (TransactionScope ts = new TransactionScope())
             {
-                foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
-                {
-                    VPAmbientController vpAmbientController = new VPAmbientController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(vpAmbientController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, vpAmbientController.DatabaseType);
+                // testing Get
+               var actionVPAmbientList = await vpAmbientController.Get();
+               Assert.Equal(200, ((ObjectResult)actionVPAmbientList.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionVPAmbientList.Result).Value);
+               List<VPAmbient> vpAmbientList = (List<VPAmbient>)(((OkObjectResult)actionVPAmbientList.Result).Value);
 
-                    VPAmbient vpAmbientFirst = new VPAmbient();
-                    int count = -1;
-                    Query query = new Query();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseTypeEnum.SqlServerTestDB))
-                    {
-                        VPAmbientService vpAmbientService = new VPAmbientService(query, db, ContactID);
-                        vpAmbientFirst = (from c in db.VPAmbients select c).FirstOrDefault();
-                        count = (from c in db.VPAmbients select c).Count();
-                        count = (query.Take > count ? count : query.Take);
-                    }
+               int count = ((List<VPAmbient>)((OkObjectResult)actionVPAmbientList.Result).Value).Count();
+                Assert.True(count > 0);
 
-                    // ok with VPAmbient info
-                    IHttpActionResult jsonRet = vpAmbientController.GetVPAmbientList();
-                    Assert.IsNotNull(jsonRet);
+               // testing Get(VPAmbientID)
+               var actionVPAmbient = await vpAmbientController.Get(vpAmbientList[0].VPAmbientID);
+               Assert.Equal(200, ((ObjectResult)actionVPAmbient.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionVPAmbient.Result).Value);
+               VPAmbient vpAmbient = (VPAmbient)(((OkObjectResult)actionVPAmbient.Result).Value);
+               Assert.NotNull(vpAmbient);
+               Assert.Equal(vpAmbientList[0].VPAmbientID, vpAmbient.VPAmbientID);
 
-                    OkNegotiatedContentResult<List<VPAmbient>> ret = jsonRet as OkNegotiatedContentResult<List<VPAmbient>>;
-                    Assert.AreEqual(vpAmbientFirst.VPAmbientID, ret.Content[0].VPAmbientID);
-                    Assert.AreEqual((count > query.Take ? query.Take : count), ret.Content.Count);
+               // testing Post(VPAmbient vpAmbient)
+               vpAmbient.VPAmbientID = 0;
+               var actionVPAmbientNew = await vpAmbientController.Post(vpAmbient);
+               Assert.Equal(200, ((ObjectResult)actionVPAmbientNew.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionVPAmbientNew.Result).Value);
+               VPAmbient vpAmbientNew = (VPAmbient)(((OkObjectResult)actionVPAmbientNew.Result).Value);
+               Assert.NotNull(vpAmbientNew);
 
-                    List<VPAmbient> vpAmbientList = new List<VPAmbient>();
-                    count = -1;
-                    query = new Query();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseTypeEnum.SqlServerTestDB))
-                    {
-                        VPAmbientService vpAmbientService = new VPAmbientService(query, db, ContactID);
-                        vpAmbientList = (from c in db.VPAmbients select c).OrderBy(c => c.VPAmbientID).Skip(0).Take(2).ToList();
-                        count = (from c in db.VPAmbients select c).Count();
-                    }
+               // testing Put(VPAmbient vpAmbient)
+               var actionVPAmbientUpdate = await vpAmbientController.Put(vpAmbientNew);
+               Assert.Equal(200, ((ObjectResult)actionVPAmbientUpdate.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionVPAmbientUpdate.Result).Value);
+               VPAmbient vpAmbientUpdate = (VPAmbient)(((OkObjectResult)actionVPAmbientUpdate.Result).Value);
+               Assert.NotNull(vpAmbientUpdate);
 
-                    if (count > 0)
-                    {
-                        query.Skip = 0;
-                        query.Take = 5;
-                        count = (query.Take > count ? query.Take : count);
-
-                        // ok with VPAmbient info
-                        jsonRet = vpAmbientController.GetVPAmbientList(query.Language.ToString(), query.Skip, query.Take);
-                        Assert.IsNotNull(jsonRet);
-
-                        ret = jsonRet as OkNegotiatedContentResult<List<VPAmbient>>;
-                        Assert.AreEqual(vpAmbientList[0].VPAmbientID, ret.Content[0].VPAmbientID);
-                        Assert.AreEqual((count > query.Take ? query.Take : count), ret.Content.Count);
-
-                       if (count > 1)
-                       {
-                           query.Skip = 1;
-                           query.Take = 5;
-                           count = (query.Take > count ? query.Take : count);
-
-                           // ok with VPAmbient info
-                           IHttpActionResult jsonRet2 = vpAmbientController.GetVPAmbientList(query.Language.ToString(), query.Skip, query.Take);
-                           Assert.IsNotNull(jsonRet2);
-
-                           OkNegotiatedContentResult<List<VPAmbient>> ret2 = jsonRet2 as OkNegotiatedContentResult<List<VPAmbient>>;
-                           Assert.AreEqual(vpAmbientList[1].VPAmbientID, ret2.Content[0].VPAmbientID);
-                           Assert.AreEqual((count > query.Take ? query.Take : count), ret2.Content.Count);
-                       }
-                    }
-                }
+               // testing Delete(VPAmbient vpAmbient)
+               var actionVPAmbientDelete = await vpAmbientController.Delete(vpAmbientUpdate);
+               Assert.Equal(200, ((ObjectResult)actionVPAmbientDelete.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionVPAmbientDelete.Result).Value);
+               VPAmbient vpAmbientDelete = (VPAmbient)(((OkObjectResult)actionVPAmbientDelete.Result).Value);
+               Assert.NotNull(vpAmbientDelete);
             }
         }
-        #endregion Tests Generated for Class Controller GetList Command
+        #endregion Functions public
 
-        #region Tests Generated for Class Controller GetWithID Command
-        [TestMethod]
-        public void VPAmbient_Controller_GetVPAmbientWithID_Test()
+        #region Functions private
+        private async Task<bool> Setup(CultureInfo culture)
         {
-            foreach (LanguageEnum LanguageRequest in AllowableLanguages)
+            Config = new ConfigurationBuilder()
+               .SetBasePath(Directory.GetParent(AppContext.BaseDirectory).FullName)
+               .AddJsonFile("appsettings.json")
+               .Build();
+        
+            Services = new ServiceCollection();
+        
+            IConfigurationSection connectionStringsSection = Config.GetSection("ConnectionStrings");
+            Services.Configure<ConnectionStringsModel>(connectionStringsSection);
+        
+            ConnectionStringsModel connectionStrings = connectionStringsSection.Get<ConnectionStringsModel>();
+        
+            Services.AddSingleton<IConfiguration>(Config);
+        
+            Services.AddDbContext<CSSPDBContext>(options =>
             {
-                foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
-                {
-                    VPAmbientController vpAmbientController = new VPAmbientController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(vpAmbientController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, vpAmbientController.DatabaseType);
-
-                    VPAmbient vpAmbientFirst = new VPAmbient();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-                    {
-                        VPAmbientService vpAmbientService = new VPAmbientService(new Query(), db, ContactID);
-                        vpAmbientFirst = (from c in db.VPAmbients select c).FirstOrDefault();
-                    }
-
-                    // ok with VPAmbient info
-                    IHttpActionResult jsonRet = vpAmbientController.GetVPAmbientWithID(vpAmbientFirst.VPAmbientID);
-                    Assert.IsNotNull(jsonRet);
-
-                    OkNegotiatedContentResult<VPAmbient> Ret = jsonRet as OkNegotiatedContentResult<VPAmbient>;
-                    VPAmbient vpAmbientRet = Ret.Content;
-                    Assert.AreEqual(vpAmbientFirst.VPAmbientID, vpAmbientRet.VPAmbientID);
-
-                    BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
-
-                    // Not Found
-                    IHttpActionResult jsonRet2 = vpAmbientController.GetVPAmbientWithID(0);
-                    Assert.IsNotNull(jsonRet2);
-
-                    OkNegotiatedContentResult<VPAmbient> vpAmbientRet2 = jsonRet2 as OkNegotiatedContentResult<VPAmbient>;
-                    Assert.IsNull(vpAmbientRet2);
-
-                    NotFoundResult notFoundRequest = jsonRet2 as NotFoundResult;
-                    Assert.IsNotNull(notFoundRequest);
-                }
-            }
+                options.UseSqlServer(connectionStrings.TestDB);
+            });
+        
+            Services.AddDbContext<ApplicationDbContext>(options =>
+                options.UseSqlServer(connectionStrings.TestDB));
+        
+            Services.AddIdentityCore<ApplicationUser>()
+                .AddEntityFrameworkStores<ApplicationDbContext>();
+        
+            Services.AddSingleton<IEnums, Enums>();
+            Services.AddSingleton<ILoggedInService, LoggedInService>();
+            Services.AddSingleton<IVPAmbientService, VPAmbientService>();
+            Services.AddSingleton<IVPAmbientController, VPAmbientController>();
+        
+            Provider = Services.BuildServiceProvider();
+            Assert.NotNull(Provider);
+        
+            loggedInService = Provider.GetService<ILoggedInService>();
+            Assert.NotNull(loggedInService);
+        
+            vpAmbientService = Provider.GetService<IVPAmbientService>();
+            Assert.NotNull(vpAmbientService);
+        
+            await vpAmbientService.SetCulture(culture);
+        
+            vpAmbientController = Provider.GetService<IVPAmbientController>();
+            Assert.NotNull(vpAmbientController);
+        
+            return await Task.FromResult(true);
         }
-        #endregion Tests Generated for Class Controller GetWithID Command
-
-        #region Tests Generated for Class Controller Post Command
-        [TestMethod]
-        public void VPAmbient_Controller_Post_Test()
-        {
-            foreach (LanguageEnum LanguageRequest in AllowableLanguages)
-            {
-                foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
-                {
-                    VPAmbientController vpAmbientController = new VPAmbientController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(vpAmbientController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, vpAmbientController.DatabaseType);
-
-                    VPAmbient vpAmbientLast = new VPAmbient();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-                    {
-                        Query query = new Query();
-                        query.Language = LanguageRequest;
-                        query.Asc = "";
-                        query.Desc = "";
-
-                        VPAmbientService vpAmbientService = new VPAmbientService(query, db, ContactID);
-                        vpAmbientLast = (from c in db.VPAmbients select c).FirstOrDefault();
-                    }
-
-                    // ok with VPAmbient info
-                    IHttpActionResult jsonRet = vpAmbientController.GetVPAmbientWithID(vpAmbientLast.VPAmbientID);
-                    Assert.IsNotNull(jsonRet);
-
-                    OkNegotiatedContentResult<VPAmbient> Ret = jsonRet as OkNegotiatedContentResult<VPAmbient>;
-                    VPAmbient vpAmbientRet = Ret.Content;
-                    Assert.AreEqual(vpAmbientLast.VPAmbientID, vpAmbientRet.VPAmbientID);
-
-                    BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
-
-                    // Post to return CSSPError because VPAmbientID exist
-                    IHttpActionResult jsonRet2 = vpAmbientController.Post(vpAmbientRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet2);
-
-                    OkNegotiatedContentResult<VPAmbient> vpAmbientRet2 = jsonRet2 as OkNegotiatedContentResult<VPAmbient>;
-                    Assert.IsNull(vpAmbientRet2);
-
-                    BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
-                    Assert.IsNotNull(badRequest2);
-
-                    // Post to return newly added VPAmbient
-                    vpAmbientRet.VPAmbientID = 0;
-                    vpAmbientController.Request = new System.Net.Http.HttpRequestMessage();
-                    vpAmbientController.Request.RequestUri = new System.Uri("http://localhost:5000/api/vpAmbient");
-                    IHttpActionResult jsonRet3 = vpAmbientController.Post(vpAmbientRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet3);
-
-                    CreatedNegotiatedContentResult<VPAmbient> vpAmbientRet3 = jsonRet3 as CreatedNegotiatedContentResult<VPAmbient>;
-                    Assert.IsNotNull(vpAmbientRet3);
-
-                    BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest3);
-
-                    IHttpActionResult jsonRet4 = vpAmbientController.Delete(vpAmbientRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet4);
-
-                    OkNegotiatedContentResult<VPAmbient> vpAmbientRet4 = jsonRet4 as OkNegotiatedContentResult<VPAmbient>;
-                    Assert.IsNotNull(vpAmbientRet4);
-
-                    BadRequestErrorMessageResult badRequest4 = jsonRet4 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest4);
-                }
-            }
-        }
-        #endregion Tests Generated for Class Controller Post Command
-
-        #region Tests Generated for Class Controller Put Command
-        [TestMethod]
-        public void VPAmbient_Controller_Put_Test()
-        {
-            foreach (LanguageEnum LanguageRequest in AllowableLanguages)
-            {
-                foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
-                {
-                    VPAmbientController vpAmbientController = new VPAmbientController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(vpAmbientController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, vpAmbientController.DatabaseType);
-
-                    VPAmbient vpAmbientLast = new VPAmbient();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-                    {
-                        Query query = new Query();
-                        query.Language = LanguageRequest;
-
-                        VPAmbientService vpAmbientService = new VPAmbientService(query, db, ContactID);
-                        vpAmbientLast = (from c in db.VPAmbients select c).FirstOrDefault();
-                    }
-
-                    // ok with VPAmbient info
-                    IHttpActionResult jsonRet = vpAmbientController.GetVPAmbientWithID(vpAmbientLast.VPAmbientID);
-                    Assert.IsNotNull(jsonRet);
-
-                    OkNegotiatedContentResult<VPAmbient> Ret = jsonRet as OkNegotiatedContentResult<VPAmbient>;
-                    VPAmbient vpAmbientRet = Ret.Content;
-                    Assert.AreEqual(vpAmbientLast.VPAmbientID, vpAmbientRet.VPAmbientID);
-
-                    BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
-
-                    // Put to return success
-                    IHttpActionResult jsonRet2 = vpAmbientController.Put(vpAmbientRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet2);
-
-                    OkNegotiatedContentResult<VPAmbient> vpAmbientRet2 = jsonRet2 as OkNegotiatedContentResult<VPAmbient>;
-                    Assert.IsNotNull(vpAmbientRet2);
-
-                    BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest2);
-
-                    // Put to return CSSPError because VPAmbientID of 0 does not exist
-                    vpAmbientRet.VPAmbientID = 0;
-                    IHttpActionResult jsonRet3 = vpAmbientController.Put(vpAmbientRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet3);
-
-                    OkNegotiatedContentResult<VPAmbient> vpAmbientRet3 = jsonRet3 as OkNegotiatedContentResult<VPAmbient>;
-                    Assert.IsNull(vpAmbientRet3);
-
-                    BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
-                    Assert.IsNotNull(badRequest3);
-                }
-            }
-        }
-        #endregion Tests Generated for Class Controller Put Command
-
-        #region Tests Generated for Class Controller Delete Command
-        [TestMethod]
-        public void VPAmbient_Controller_Delete_Test()
-        {
-            foreach (LanguageEnum LanguageRequest in AllowableLanguages)
-            {
-                foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
-                {
-                    VPAmbientController vpAmbientController = new VPAmbientController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(vpAmbientController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, vpAmbientController.DatabaseType);
-
-                    VPAmbient vpAmbientLast = new VPAmbient();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-                    {
-                        Query query = new Query();
-                        query.Language = LanguageRequest;
-                        query.Asc = "";
-                        query.Desc = "";
-
-                        VPAmbientService vpAmbientService = new VPAmbientService(query, db, ContactID);
-                        vpAmbientLast = (from c in db.VPAmbients select c).FirstOrDefault();
-                    }
-
-                    // ok with VPAmbient info
-                    IHttpActionResult jsonRet = vpAmbientController.GetVPAmbientWithID(vpAmbientLast.VPAmbientID);
-                    Assert.IsNotNull(jsonRet);
-
-                    OkNegotiatedContentResult<VPAmbient> Ret = jsonRet as OkNegotiatedContentResult<VPAmbient>;
-                    VPAmbient vpAmbientRet = Ret.Content;
-                    Assert.AreEqual(vpAmbientLast.VPAmbientID, vpAmbientRet.VPAmbientID);
-
-                    BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
-
-                    // Post to return newly added VPAmbient
-                    vpAmbientRet.VPAmbientID = 0;
-                    vpAmbientController.Request = new System.Net.Http.HttpRequestMessage();
-                    vpAmbientController.Request.RequestUri = new System.Uri("http://localhost:5000/api/vpAmbient");
-                    IHttpActionResult jsonRet3 = vpAmbientController.Post(vpAmbientRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet3);
-
-                    CreatedNegotiatedContentResult<VPAmbient> vpAmbientRet3 = jsonRet3 as CreatedNegotiatedContentResult<VPAmbient>;
-                    Assert.IsNotNull(vpAmbientRet3);
-                    VPAmbient vpAmbient = vpAmbientRet3.Content;
-
-                    BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest3);
-
-                    // Delete to return success
-                    IHttpActionResult jsonRet2 = vpAmbientController.Delete(vpAmbientRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet2);
-
-                    OkNegotiatedContentResult<VPAmbient> vpAmbientRet2 = jsonRet2 as OkNegotiatedContentResult<VPAmbient>;
-                    Assert.IsNotNull(vpAmbientRet2);
-
-                    BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest2);
-
-                    // Delete to return CSSPError because VPAmbientID of 0 does not exist
-                    vpAmbientRet.VPAmbientID = 0;
-                    IHttpActionResult jsonRet4 = vpAmbientController.Delete(vpAmbientRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet4);
-
-                    OkNegotiatedContentResult<VPAmbient> vpAmbientRet4 = jsonRet4 as OkNegotiatedContentResult<VPAmbient>;
-                    Assert.IsNull(vpAmbientRet4);
-
-                    BadRequestErrorMessageResult badRequest4 = jsonRet4 as BadRequestErrorMessageResult;
-                    Assert.IsNotNull(badRequest4);
-                }
-            }
-        }
-        #endregion Tests Generated for Class Controller Delete Command
-
+        #endregion Functions private
     }
 }

@@ -16,6 +16,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Transactions;
 using Xunit;
 
 namespace CSSPServices.Tests
@@ -54,37 +55,40 @@ namespace CSSPServices.Tests
 
             await Setup(new CultureInfo(culture));
 
-            Address address = GetFilledRandomAddress(""); 
+            using (TransactionScope ts = new TransactionScope())
+            {
+               Address address = GetFilledRandomAddress(""); 
 
-            // List<Address>
-            var actionAddressList = await addressService.GetAddressList();
-            Assert.Equal(200, ((ObjectResult)actionAddressList.Result).StatusCode);
-            Assert.NotNull(((OkObjectResult)actionAddressList.Result).Value);
-            List<Address> addressList = (List<Address>)(((OkObjectResult)actionAddressList.Result).Value);
+               // List<Address>
+               var actionAddressList = await addressService.GetAddressList();
+               Assert.Equal(200, ((ObjectResult)actionAddressList.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionAddressList.Result).Value);
+               List<Address> addressList = (List<Address>)(((OkObjectResult)actionAddressList.Result).Value);
 
-            int count = ((List<Address>)((OkObjectResult)actionAddressList.Result).Value).Count();
-            Assert.True(count > 0);
+               int count = ((List<Address>)((OkObjectResult)actionAddressList.Result).Value).Count();
+                Assert.True(count > 0);
 
-            // Add Address
-            var actionAddressAdded = await addressService.Add(address);
-            Assert.Equal(200, ((ObjectResult)actionAddressAdded.Result).StatusCode);
-            Assert.NotNull(((OkObjectResult)actionAddressAdded.Result).Value);
-            Address addressAdded = (Address)(((OkObjectResult)actionAddressAdded.Result).Value);
-            Assert.NotNull(addressAdded);
+               // Add Address
+               var actionAddressAdded = await addressService.Add(address);
+               Assert.Equal(200, ((ObjectResult)actionAddressAdded.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionAddressAdded.Result).Value);
+               Address addressAdded = (Address)(((OkObjectResult)actionAddressAdded.Result).Value);
+               Assert.NotNull(addressAdded);
 
-            // Update Address
-            var actionAddressUpdated = await addressService.Update(address);
-            Assert.Equal(200, ((ObjectResult)actionAddressUpdated.Result).StatusCode);
-            Assert.NotNull(((OkObjectResult)actionAddressUpdated.Result).Value);
-            Address addressUpdated = (Address)(((OkObjectResult)actionAddressUpdated.Result).Value);
-            Assert.NotNull(addressUpdated);
+               // Update Address
+               var actionAddressUpdated = await addressService.Update(address);
+               Assert.Equal(200, ((ObjectResult)actionAddressUpdated.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionAddressUpdated.Result).Value);
+               Address addressUpdated = (Address)(((OkObjectResult)actionAddressUpdated.Result).Value);
+               Assert.NotNull(addressUpdated);
 
-            // Delete Address
-            var actionAddressDeleted = await addressService.Delete(address);
-            Assert.Equal(200, ((ObjectResult)actionAddressDeleted.Result).StatusCode);
-            Assert.NotNull(((OkObjectResult)actionAddressDeleted.Result).Value);
-            Address addressDeleted = (Address)(((OkObjectResult)actionAddressDeleted.Result).Value);
-            Assert.NotNull(addressDeleted);
+               // Delete Address
+               var actionAddressDeleted = await addressService.Delete(address);
+               Assert.Equal(200, ((ObjectResult)actionAddressDeleted.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionAddressDeleted.Result).Value);
+               Address addressDeleted = (Address)(((OkObjectResult)actionAddressDeleted.Result).Value);
+               Assert.NotNull(addressDeleted);
+            }
         }
         #endregion Tests Generated CRUD
 

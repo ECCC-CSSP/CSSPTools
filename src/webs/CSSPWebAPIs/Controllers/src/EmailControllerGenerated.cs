@@ -1,143 +1,70 @@
-using CSSPEnums;
 using CSSPModels;
 using CSSPServices;
-using System;
+using LoggedInServices.Services;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web.Http;
+using System.Threading.Tasks;
 
 namespace CSSPWebAPI.Controllers
 {
-    [RoutePrefix("api/email")]
-    public partial class EmailController : BaseController
+    public partial interface IEmailController
+    {
+        Task<ActionResult<List<Email>>> Get();
+        Task<ActionResult<Email>> Get(int EmailID);
+        Task<ActionResult<Email>> Post(Email email);
+        Task<ActionResult<Email>> Put(Email email);
+        Task<ActionResult<Email>> Delete(Email email);
+    }
+
+    [Route("api/{culture}/[controller]")]
+    [ApiController]
+    [Authorize]
+    public partial class EmailController : ControllerBase, IEmailController
     {
         #region Variables
         #endregion Variables
 
         #region Properties
+        private IEmailService emailService { get; }
+        private CSSPDBContext db { get; }
+        private ILoggedInService loggedInService { get; }
         #endregion Properties
 
         #region Constructors
-        public EmailController() : base()
+        public EmailController(IEmailService emailService, CSSPDBContext db, ILoggedInService loggedInService)
         {
-        }
-        public EmailController(DatabaseTypeEnum dbt = DatabaseTypeEnum.SqlServerTestDB) : base(dbt)
-        {
+            this.emailService = emailService;
+            this.db = db;
+            this.loggedInService = loggedInService;
         }
         #endregion Constructors
 
         #region Functions public
-        // GET api/email
-        [Route("")]
-        public IHttpActionResult GetEmailList([FromUri]string lang = "en", [FromUri]int skip = 0, [FromUri]int take = 200,
-            [FromUri]string asc = "", [FromUri]string desc = "", [FromUri]string where = "", [FromUri]string extra = "")
+        [HttpGet]
+        public async Task<ActionResult<List<Email>>> Get()
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                EmailService emailService = new EmailService(new Query() { Lang = lang }, db, ContactID);
-
-                else // QueryString has no parameter [extra] or extra is empty
-                {
-                   emailService.Query = emailService.FillQuery(typeof(Email), lang, skip, take, asc, desc, where, extra);
-
-                    if (emailService.Query.HasErrors)
-                    {
-                        return Ok(new List<Email>()
-                        {
-                            new Email()
-                            {
-                                HasErrors = emailService.Query.HasErrors,
-                                ValidationResults = emailService.Query.ValidationResults,
-                            },
-                        }.ToList());
-                    }
-                    else
-                    {
-                        return Ok(emailService.GetEmailList().ToList());
-                    }
-                }
-            }
+            return await emailService.GetEmailList();
         }
-        // GET api/email/1
-        [Route("{EmailID:int}")]
-        public IHttpActionResult GetEmailWithID([FromUri]int EmailID, [FromUri]string lang = "en", [FromUri]string extra = "")
+        [HttpGet("{EmailID}")]
+        public async Task<ActionResult<Email>> Get(int EmailID)
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                EmailService emailService = new EmailService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
-
-                emailService.Query = emailService.FillQuery(typeof(Email), lang, 0, 1, "", "", extra);
-
-                else
-                {
-                    Email email = new Email();
-                    email = emailService.GetEmailWithEmailID(EmailID);
-
-                    if (email == null)
-                    {
-                        return NotFound();
-                    }
-
-                    return Ok(email);
-                }
-            }
+            return await emailService.GetEmailWithEmailID(EmailID);
         }
-        // POST api/email
-        [Route("")]
-        public IHttpActionResult Post([FromBody]Email email, [FromUri]string lang = "en")
+        [HttpPost]
+        public async Task<ActionResult<Email>> Post(Email email)
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                EmailService emailService = new EmailService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
-
-                if (!emailService.Add(email))
-                {
-                    return BadRequest(String.Join("|||", email.ValidationResults));
-                }
-                else
-                {
-                    email.ValidationResults = null;
-                    return Created<Email>(new Uri(Request.RequestUri, email.EmailID.ToString()), email);
-                }
-            }
+            return await emailService.Add(email);
         }
-        // PUT api/email
-        [Route("")]
-        public IHttpActionResult Put([FromBody]Email email, [FromUri]string lang = "en")
+        [HttpPut]
+        public async Task<ActionResult<Email>> Put(Email email)
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                EmailService emailService = new EmailService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
-
-                if (!emailService.Update(email))
-                {
-                    return BadRequest(String.Join("|||", email.ValidationResults));
-                }
-                else
-                {
-                    email.ValidationResults = null;
-                    return Ok(email);
-                }
-            }
+            return await emailService.Update(email);
         }
-        // DELETE api/email
-        [Route("")]
-        public IHttpActionResult Delete([FromBody]Email email, [FromUri]string lang = "en")
+        [HttpDelete]
+        public async Task<ActionResult<Email>> Delete(Email email)
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                EmailService emailService = new EmailService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
-
-                if (!emailService.Delete(email))
-                {
-                    return BadRequest(String.Join("|||", email.ValidationResults));
-                }
-                else
-                {
-                    email.ValidationResults = null;
-                    return Ok(email);
-                }
-            }
+            return await emailService.Delete(email);
         }
         #endregion Functions public
 

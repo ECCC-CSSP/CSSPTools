@@ -1,143 +1,70 @@
-using CSSPEnums;
 using CSSPModels;
 using CSSPServices;
-using System;
+using LoggedInServices.Services;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web.Http;
+using System.Threading.Tasks;
 
 namespace CSSPWebAPI.Controllers
 {
-    [RoutePrefix("api/address")]
-    public partial class AddressController : BaseController
+    public partial interface IAddressController
+    {
+        Task<ActionResult<List<Address>>> Get();
+        Task<ActionResult<Address>> Get(int AddressID);
+        Task<ActionResult<Address>> Post(Address address);
+        Task<ActionResult<Address>> Put(Address address);
+        Task<ActionResult<Address>> Delete(Address address);
+    }
+
+    [Route("api/{culture}/[controller]")]
+    [ApiController]
+    [Authorize]
+    public partial class AddressController : ControllerBase, IAddressController
     {
         #region Variables
         #endregion Variables
 
         #region Properties
+        private IAddressService addressService { get; }
+        private CSSPDBContext db { get; }
+        private ILoggedInService loggedInService { get; }
         #endregion Properties
 
         #region Constructors
-        public AddressController() : base()
+        public AddressController(IAddressService addressService, CSSPDBContext db, ILoggedInService loggedInService)
         {
-        }
-        public AddressController(DatabaseTypeEnum dbt = DatabaseTypeEnum.SqlServerTestDB) : base(dbt)
-        {
+            this.addressService = addressService;
+            this.db = db;
+            this.loggedInService = loggedInService;
         }
         #endregion Constructors
 
         #region Functions public
-        // GET api/address
-        [Route("")]
-        public IHttpActionResult GetAddressList([FromUri]string lang = "en", [FromUri]int skip = 0, [FromUri]int take = 200,
-            [FromUri]string asc = "", [FromUri]string desc = "", [FromUri]string where = "", [FromUri]string extra = "")
+        [HttpGet]
+        public async Task<ActionResult<List<Address>>> Get()
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                AddressService addressService = new AddressService(new Query() { Lang = lang }, db, ContactID);
-
-                else // QueryString has no parameter [extra] or extra is empty
-                {
-                   addressService.Query = addressService.FillQuery(typeof(Address), lang, skip, take, asc, desc, where, extra);
-
-                    if (addressService.Query.HasErrors)
-                    {
-                        return Ok(new List<Address>()
-                        {
-                            new Address()
-                            {
-                                HasErrors = addressService.Query.HasErrors,
-                                ValidationResults = addressService.Query.ValidationResults,
-                            },
-                        }.ToList());
-                    }
-                    else
-                    {
-                        return Ok(addressService.GetAddressList().ToList());
-                    }
-                }
-            }
+            return await addressService.GetAddressList();
         }
-        // GET api/address/1
-        [Route("{AddressID:int}")]
-        public IHttpActionResult GetAddressWithID([FromUri]int AddressID, [FromUri]string lang = "en", [FromUri]string extra = "")
+        [HttpGet("{AddressID}")]
+        public async Task<ActionResult<Address>> Get(int AddressID)
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                AddressService addressService = new AddressService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
-
-                addressService.Query = addressService.FillQuery(typeof(Address), lang, 0, 1, "", "", extra);
-
-                else
-                {
-                    Address address = new Address();
-                    address = addressService.GetAddressWithAddressID(AddressID);
-
-                    if (address == null)
-                    {
-                        return NotFound();
-                    }
-
-                    return Ok(address);
-                }
-            }
+            return await addressService.GetAddressWithAddressID(AddressID);
         }
-        // POST api/address
-        [Route("")]
-        public IHttpActionResult Post([FromBody]Address address, [FromUri]string lang = "en")
+        [HttpPost]
+        public async Task<ActionResult<Address>> Post(Address address)
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                AddressService addressService = new AddressService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
-
-                if (!addressService.Add(address))
-                {
-                    return BadRequest(String.Join("|||", address.ValidationResults));
-                }
-                else
-                {
-                    address.ValidationResults = null;
-                    return Created<Address>(new Uri(Request.RequestUri, address.AddressID.ToString()), address);
-                }
-            }
+            return await addressService.Add(address);
         }
-        // PUT api/address
-        [Route("")]
-        public IHttpActionResult Put([FromBody]Address address, [FromUri]string lang = "en")
+        [HttpPut]
+        public async Task<ActionResult<Address>> Put(Address address)
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                AddressService addressService = new AddressService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
-
-                if (!addressService.Update(address))
-                {
-                    return BadRequest(String.Join("|||", address.ValidationResults));
-                }
-                else
-                {
-                    address.ValidationResults = null;
-                    return Ok(address);
-                }
-            }
+            return await addressService.Update(address);
         }
-        // DELETE api/address
-        [Route("")]
-        public IHttpActionResult Delete([FromBody]Address address, [FromUri]string lang = "en")
+        [HttpDelete]
+        public async Task<ActionResult<Address>> Delete(Address address)
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                AddressService addressService = new AddressService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
-
-                if (!addressService.Delete(address))
-                {
-                    return BadRequest(String.Join("|||", address.ValidationResults));
-                }
-                else
-                {
-                    address.ValidationResults = null;
-                    return Ok(address);
-                }
-            }
+            return await addressService.Delete(address);
         }
         #endregion Functions public
 

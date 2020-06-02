@@ -1,143 +1,70 @@
-using CSSPEnums;
 using CSSPModels;
 using CSSPServices;
-using System;
+using LoggedInServices.Services;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web.Http;
+using System.Threading.Tasks;
 
 namespace CSSPWebAPI.Controllers
 {
-    [RoutePrefix("api/boxModel")]
-    public partial class BoxModelController : BaseController
+    public partial interface IBoxModelController
+    {
+        Task<ActionResult<List<BoxModel>>> Get();
+        Task<ActionResult<BoxModel>> Get(int BoxModelID);
+        Task<ActionResult<BoxModel>> Post(BoxModel boxModel);
+        Task<ActionResult<BoxModel>> Put(BoxModel boxModel);
+        Task<ActionResult<BoxModel>> Delete(BoxModel boxModel);
+    }
+
+    [Route("api/{culture}/[controller]")]
+    [ApiController]
+    [Authorize]
+    public partial class BoxModelController : ControllerBase, IBoxModelController
     {
         #region Variables
         #endregion Variables
 
         #region Properties
+        private IBoxModelService boxModelService { get; }
+        private CSSPDBContext db { get; }
+        private ILoggedInService loggedInService { get; }
         #endregion Properties
 
         #region Constructors
-        public BoxModelController() : base()
+        public BoxModelController(IBoxModelService boxModelService, CSSPDBContext db, ILoggedInService loggedInService)
         {
-        }
-        public BoxModelController(DatabaseTypeEnum dbt = DatabaseTypeEnum.SqlServerTestDB) : base(dbt)
-        {
+            this.boxModelService = boxModelService;
+            this.db = db;
+            this.loggedInService = loggedInService;
         }
         #endregion Constructors
 
         #region Functions public
-        // GET api/boxModel
-        [Route("")]
-        public IHttpActionResult GetBoxModelList([FromUri]string lang = "en", [FromUri]int skip = 0, [FromUri]int take = 200,
-            [FromUri]string asc = "", [FromUri]string desc = "", [FromUri]string where = "", [FromUri]string extra = "")
+        [HttpGet]
+        public async Task<ActionResult<List<BoxModel>>> Get()
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                BoxModelService boxModelService = new BoxModelService(new Query() { Lang = lang }, db, ContactID);
-
-                else // QueryString has no parameter [extra] or extra is empty
-                {
-                   boxModelService.Query = boxModelService.FillQuery(typeof(BoxModel), lang, skip, take, asc, desc, where, extra);
-
-                    if (boxModelService.Query.HasErrors)
-                    {
-                        return Ok(new List<BoxModel>()
-                        {
-                            new BoxModel()
-                            {
-                                HasErrors = boxModelService.Query.HasErrors,
-                                ValidationResults = boxModelService.Query.ValidationResults,
-                            },
-                        }.ToList());
-                    }
-                    else
-                    {
-                        return Ok(boxModelService.GetBoxModelList().ToList());
-                    }
-                }
-            }
+            return await boxModelService.GetBoxModelList();
         }
-        // GET api/boxModel/1
-        [Route("{BoxModelID:int}")]
-        public IHttpActionResult GetBoxModelWithID([FromUri]int BoxModelID, [FromUri]string lang = "en", [FromUri]string extra = "")
+        [HttpGet("{BoxModelID}")]
+        public async Task<ActionResult<BoxModel>> Get(int BoxModelID)
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                BoxModelService boxModelService = new BoxModelService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
-
-                boxModelService.Query = boxModelService.FillQuery(typeof(BoxModel), lang, 0, 1, "", "", extra);
-
-                else
-                {
-                    BoxModel boxModel = new BoxModel();
-                    boxModel = boxModelService.GetBoxModelWithBoxModelID(BoxModelID);
-
-                    if (boxModel == null)
-                    {
-                        return NotFound();
-                    }
-
-                    return Ok(boxModel);
-                }
-            }
+            return await boxModelService.GetBoxModelWithBoxModelID(BoxModelID);
         }
-        // POST api/boxModel
-        [Route("")]
-        public IHttpActionResult Post([FromBody]BoxModel boxModel, [FromUri]string lang = "en")
+        [HttpPost]
+        public async Task<ActionResult<BoxModel>> Post(BoxModel boxModel)
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                BoxModelService boxModelService = new BoxModelService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
-
-                if (!boxModelService.Add(boxModel))
-                {
-                    return BadRequest(String.Join("|||", boxModel.ValidationResults));
-                }
-                else
-                {
-                    boxModel.ValidationResults = null;
-                    return Created<BoxModel>(new Uri(Request.RequestUri, boxModel.BoxModelID.ToString()), boxModel);
-                }
-            }
+            return await boxModelService.Add(boxModel);
         }
-        // PUT api/boxModel
-        [Route("")]
-        public IHttpActionResult Put([FromBody]BoxModel boxModel, [FromUri]string lang = "en")
+        [HttpPut]
+        public async Task<ActionResult<BoxModel>> Put(BoxModel boxModel)
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                BoxModelService boxModelService = new BoxModelService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
-
-                if (!boxModelService.Update(boxModel))
-                {
-                    return BadRequest(String.Join("|||", boxModel.ValidationResults));
-                }
-                else
-                {
-                    boxModel.ValidationResults = null;
-                    return Ok(boxModel);
-                }
-            }
+            return await boxModelService.Update(boxModel);
         }
-        // DELETE api/boxModel
-        [Route("")]
-        public IHttpActionResult Delete([FromBody]BoxModel boxModel, [FromUri]string lang = "en")
+        [HttpDelete]
+        public async Task<ActionResult<BoxModel>> Delete(BoxModel boxModel)
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                BoxModelService boxModelService = new BoxModelService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
-
-                if (!boxModelService.Delete(boxModel))
-                {
-                    return BadRequest(String.Join("|||", boxModel.ValidationResults));
-                }
-                else
-                {
-                    boxModel.ValidationResults = null;
-                    return Ok(boxModel);
-                }
-            }
+            return await boxModelService.Delete(boxModel);
         }
         #endregion Functions public
 

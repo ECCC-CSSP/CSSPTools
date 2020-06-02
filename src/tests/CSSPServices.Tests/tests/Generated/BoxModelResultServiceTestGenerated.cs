@@ -16,6 +16,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Transactions;
 using Xunit;
 
 namespace CSSPServices.Tests
@@ -54,37 +55,40 @@ namespace CSSPServices.Tests
 
             await Setup(new CultureInfo(culture));
 
-            BoxModelResult boxModelResult = GetFilledRandomBoxModelResult(""); 
+            using (TransactionScope ts = new TransactionScope())
+            {
+               BoxModelResult boxModelResult = GetFilledRandomBoxModelResult(""); 
 
-            // List<BoxModelResult>
-            var actionBoxModelResultList = await boxModelResultService.GetBoxModelResultList();
-            Assert.Equal(200, ((ObjectResult)actionBoxModelResultList.Result).StatusCode);
-            Assert.NotNull(((OkObjectResult)actionBoxModelResultList.Result).Value);
-            List<BoxModelResult> boxModelResultList = (List<BoxModelResult>)(((OkObjectResult)actionBoxModelResultList.Result).Value);
+               // List<BoxModelResult>
+               var actionBoxModelResultList = await boxModelResultService.GetBoxModelResultList();
+               Assert.Equal(200, ((ObjectResult)actionBoxModelResultList.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionBoxModelResultList.Result).Value);
+               List<BoxModelResult> boxModelResultList = (List<BoxModelResult>)(((OkObjectResult)actionBoxModelResultList.Result).Value);
 
-            int count = ((List<BoxModelResult>)((OkObjectResult)actionBoxModelResultList.Result).Value).Count();
-            Assert.True(count > 0);
+               int count = ((List<BoxModelResult>)((OkObjectResult)actionBoxModelResultList.Result).Value).Count();
+                Assert.True(count > 0);
 
-            // Add BoxModelResult
-            var actionBoxModelResultAdded = await boxModelResultService.Add(boxModelResult);
-            Assert.Equal(200, ((ObjectResult)actionBoxModelResultAdded.Result).StatusCode);
-            Assert.NotNull(((OkObjectResult)actionBoxModelResultAdded.Result).Value);
-            BoxModelResult boxModelResultAdded = (BoxModelResult)(((OkObjectResult)actionBoxModelResultAdded.Result).Value);
-            Assert.NotNull(boxModelResultAdded);
+               // Add BoxModelResult
+               var actionBoxModelResultAdded = await boxModelResultService.Add(boxModelResult);
+               Assert.Equal(200, ((ObjectResult)actionBoxModelResultAdded.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionBoxModelResultAdded.Result).Value);
+               BoxModelResult boxModelResultAdded = (BoxModelResult)(((OkObjectResult)actionBoxModelResultAdded.Result).Value);
+               Assert.NotNull(boxModelResultAdded);
 
-            // Update BoxModelResult
-            var actionBoxModelResultUpdated = await boxModelResultService.Update(boxModelResult);
-            Assert.Equal(200, ((ObjectResult)actionBoxModelResultUpdated.Result).StatusCode);
-            Assert.NotNull(((OkObjectResult)actionBoxModelResultUpdated.Result).Value);
-            BoxModelResult boxModelResultUpdated = (BoxModelResult)(((OkObjectResult)actionBoxModelResultUpdated.Result).Value);
-            Assert.NotNull(boxModelResultUpdated);
+               // Update BoxModelResult
+               var actionBoxModelResultUpdated = await boxModelResultService.Update(boxModelResult);
+               Assert.Equal(200, ((ObjectResult)actionBoxModelResultUpdated.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionBoxModelResultUpdated.Result).Value);
+               BoxModelResult boxModelResultUpdated = (BoxModelResult)(((OkObjectResult)actionBoxModelResultUpdated.Result).Value);
+               Assert.NotNull(boxModelResultUpdated);
 
-            // Delete BoxModelResult
-            var actionBoxModelResultDeleted = await boxModelResultService.Delete(boxModelResult);
-            Assert.Equal(200, ((ObjectResult)actionBoxModelResultDeleted.Result).StatusCode);
-            Assert.NotNull(((OkObjectResult)actionBoxModelResultDeleted.Result).Value);
-            BoxModelResult boxModelResultDeleted = (BoxModelResult)(((OkObjectResult)actionBoxModelResultDeleted.Result).Value);
-            Assert.NotNull(boxModelResultDeleted);
+               // Delete BoxModelResult
+               var actionBoxModelResultDeleted = await boxModelResultService.Delete(boxModelResult);
+               Assert.Equal(200, ((ObjectResult)actionBoxModelResultDeleted.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionBoxModelResultDeleted.Result).Value);
+               BoxModelResult boxModelResultDeleted = (BoxModelResult)(((OkObjectResult)actionBoxModelResultDeleted.Result).Value);
+               Assert.NotNull(boxModelResultDeleted);
+            }
         }
         #endregion Tests Generated CRUD
 

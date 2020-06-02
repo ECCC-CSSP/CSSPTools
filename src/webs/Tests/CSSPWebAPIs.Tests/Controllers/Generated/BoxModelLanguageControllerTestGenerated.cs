@@ -2,350 +2,157 @@ using CSSPEnums;
 using CSSPModels;
 using CSSPServices;
 using CSSPWebAPI.Controllers;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using LoggedInServices.Services;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using System;
 using System.Collections.Generic;
+using System.Globalization;
+using System.IO;
 using System.Linq;
-using System.Web.Http;
-using System.Web.Http.Results;
+using System.Threading.Tasks;
+using System.Transactions;
+using UserServices.Models;
+using Xunit;
 
-namespace CSSPWebAPI.Tests.Controllers
+namespace CSSPWebAPIs.Tests.Controllers
 {
-    [TestClass]
-    public partial class BoxModelLanguageControllerTest : BaseControllerTest
+    public partial class BoxModelLanguageControllerTest
     {
         #region Variables
         #endregion Variables
 
         #region Properties
+        private IConfiguration Config { get; set; }
+        private IServiceProvider Provider { get; set; }
+        private IServiceCollection Services { get; set; }
+        private CSSPDBContext db { get; set; }
+        private ILoggedInService loggedInService { get; set; }
+        private IBoxModelLanguageService boxModelLanguageService { get; set; }
+        private IBoxModelLanguageController boxModelLanguageController { get; set; }
         #endregion Properties
 
         #region Constructors
-        public BoxModelLanguageControllerTest() : base()
+        public BoxModelLanguageControllerTest()
         {
         }
         #endregion Constructors
 
-        #region Tests Generated for Class Controller GetList Command
-        [TestMethod]
-        public void BoxModelLanguage_Controller_GetBoxModelLanguageList_Test()
+        #region Functions public
+        [Theory]
+        [InlineData("en-CA")]
+        [InlineData("fr-CA")]
+        public async Task BoxModelLanguageController_Constructor_Good_Test(string culture)
         {
-            foreach (LanguageEnum LanguageRequest in AllowableLanguages)
+            bool retBool = await Setup(new CultureInfo(culture));
+            Assert.True(retBool);
+            Assert.NotNull(loggedInService);
+            Assert.NotNull(boxModelLanguageService);
+            Assert.NotNull(boxModelLanguageController);
+        }
+        [Theory]
+        [InlineData("en-CA")]
+        [InlineData("fr-CA")]
+        public async Task BoxModelLanguageController_CRUD_Good_Test(string culture)
+        {
+            bool retBool = await Setup(new CultureInfo(culture));
+            Assert.True(retBool);
+
+            using (TransactionScope ts = new TransactionScope())
             {
-                foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
-                {
-                    BoxModelLanguageController boxModelLanguageController = new BoxModelLanguageController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(boxModelLanguageController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, boxModelLanguageController.DatabaseType);
+                // testing Get
+               var actionBoxModelLanguageList = await boxModelLanguageController.Get();
+               Assert.Equal(200, ((ObjectResult)actionBoxModelLanguageList.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionBoxModelLanguageList.Result).Value);
+               List<BoxModelLanguage> boxModelLanguageList = (List<BoxModelLanguage>)(((OkObjectResult)actionBoxModelLanguageList.Result).Value);
 
-                    BoxModelLanguage boxModelLanguageFirst = new BoxModelLanguage();
-                    int count = -1;
-                    Query query = new Query();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseTypeEnum.SqlServerTestDB))
-                    {
-                        BoxModelLanguageService boxModelLanguageService = new BoxModelLanguageService(query, db, ContactID);
-                        boxModelLanguageFirst = (from c in db.BoxModelLanguages select c).FirstOrDefault();
-                        count = (from c in db.BoxModelLanguages select c).Count();
-                        count = (query.Take > count ? count : query.Take);
-                    }
+               int count = ((List<BoxModelLanguage>)((OkObjectResult)actionBoxModelLanguageList.Result).Value).Count();
+                Assert.True(count > 0);
 
-                    // ok with BoxModelLanguage info
-                    IHttpActionResult jsonRet = boxModelLanguageController.GetBoxModelLanguageList();
-                    Assert.IsNotNull(jsonRet);
+               // testing Get(BoxModelLanguageID)
+               var actionBoxModelLanguage = await boxModelLanguageController.Get(boxModelLanguageList[0].BoxModelLanguageID);
+               Assert.Equal(200, ((ObjectResult)actionBoxModelLanguage.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionBoxModelLanguage.Result).Value);
+               BoxModelLanguage boxModelLanguage = (BoxModelLanguage)(((OkObjectResult)actionBoxModelLanguage.Result).Value);
+               Assert.NotNull(boxModelLanguage);
+               Assert.Equal(boxModelLanguageList[0].BoxModelLanguageID, boxModelLanguage.BoxModelLanguageID);
 
-                    OkNegotiatedContentResult<List<BoxModelLanguage>> ret = jsonRet as OkNegotiatedContentResult<List<BoxModelLanguage>>;
-                    Assert.AreEqual(boxModelLanguageFirst.BoxModelLanguageID, ret.Content[0].BoxModelLanguageID);
-                    Assert.AreEqual((count > query.Take ? query.Take : count), ret.Content.Count);
+               // testing Post(BoxModelLanguage boxModelLanguage)
+               boxModelLanguage.BoxModelLanguageID = 0;
+               var actionBoxModelLanguageNew = await boxModelLanguageController.Post(boxModelLanguage);
+               Assert.Equal(200, ((ObjectResult)actionBoxModelLanguageNew.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionBoxModelLanguageNew.Result).Value);
+               BoxModelLanguage boxModelLanguageNew = (BoxModelLanguage)(((OkObjectResult)actionBoxModelLanguageNew.Result).Value);
+               Assert.NotNull(boxModelLanguageNew);
 
-                    List<BoxModelLanguage> boxModelLanguageList = new List<BoxModelLanguage>();
-                    count = -1;
-                    query = new Query();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseTypeEnum.SqlServerTestDB))
-                    {
-                        BoxModelLanguageService boxModelLanguageService = new BoxModelLanguageService(query, db, ContactID);
-                        boxModelLanguageList = (from c in db.BoxModelLanguages select c).OrderBy(c => c.BoxModelLanguageID).Skip(0).Take(2).ToList();
-                        count = (from c in db.BoxModelLanguages select c).Count();
-                    }
+               // testing Put(BoxModelLanguage boxModelLanguage)
+               var actionBoxModelLanguageUpdate = await boxModelLanguageController.Put(boxModelLanguageNew);
+               Assert.Equal(200, ((ObjectResult)actionBoxModelLanguageUpdate.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionBoxModelLanguageUpdate.Result).Value);
+               BoxModelLanguage boxModelLanguageUpdate = (BoxModelLanguage)(((OkObjectResult)actionBoxModelLanguageUpdate.Result).Value);
+               Assert.NotNull(boxModelLanguageUpdate);
 
-                    if (count > 0)
-                    {
-                        query.Skip = 0;
-                        query.Take = 5;
-                        count = (query.Take > count ? query.Take : count);
-
-                        // ok with BoxModelLanguage info
-                        jsonRet = boxModelLanguageController.GetBoxModelLanguageList(query.Language.ToString(), query.Skip, query.Take);
-                        Assert.IsNotNull(jsonRet);
-
-                        ret = jsonRet as OkNegotiatedContentResult<List<BoxModelLanguage>>;
-                        Assert.AreEqual(boxModelLanguageList[0].BoxModelLanguageID, ret.Content[0].BoxModelLanguageID);
-                        Assert.AreEqual((count > query.Take ? query.Take : count), ret.Content.Count);
-
-                       if (count > 1)
-                       {
-                           query.Skip = 1;
-                           query.Take = 5;
-                           count = (query.Take > count ? query.Take : count);
-
-                           // ok with BoxModelLanguage info
-                           IHttpActionResult jsonRet2 = boxModelLanguageController.GetBoxModelLanguageList(query.Language.ToString(), query.Skip, query.Take);
-                           Assert.IsNotNull(jsonRet2);
-
-                           OkNegotiatedContentResult<List<BoxModelLanguage>> ret2 = jsonRet2 as OkNegotiatedContentResult<List<BoxModelLanguage>>;
-                           Assert.AreEqual(boxModelLanguageList[1].BoxModelLanguageID, ret2.Content[0].BoxModelLanguageID);
-                           Assert.AreEqual((count > query.Take ? query.Take : count), ret2.Content.Count);
-                       }
-                    }
-                }
+               // testing Delete(BoxModelLanguage boxModelLanguage)
+               var actionBoxModelLanguageDelete = await boxModelLanguageController.Delete(boxModelLanguageUpdate);
+               Assert.Equal(200, ((ObjectResult)actionBoxModelLanguageDelete.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionBoxModelLanguageDelete.Result).Value);
+               BoxModelLanguage boxModelLanguageDelete = (BoxModelLanguage)(((OkObjectResult)actionBoxModelLanguageDelete.Result).Value);
+               Assert.NotNull(boxModelLanguageDelete);
             }
         }
-        #endregion Tests Generated for Class Controller GetList Command
+        #endregion Functions public
 
-        #region Tests Generated for Class Controller GetWithID Command
-        [TestMethod]
-        public void BoxModelLanguage_Controller_GetBoxModelLanguageWithID_Test()
+        #region Functions private
+        private async Task<bool> Setup(CultureInfo culture)
         {
-            foreach (LanguageEnum LanguageRequest in AllowableLanguages)
+            Config = new ConfigurationBuilder()
+               .SetBasePath(Directory.GetParent(AppContext.BaseDirectory).FullName)
+               .AddJsonFile("appsettings.json")
+               .Build();
+        
+            Services = new ServiceCollection();
+        
+            IConfigurationSection connectionStringsSection = Config.GetSection("ConnectionStrings");
+            Services.Configure<ConnectionStringsModel>(connectionStringsSection);
+        
+            ConnectionStringsModel connectionStrings = connectionStringsSection.Get<ConnectionStringsModel>();
+        
+            Services.AddSingleton<IConfiguration>(Config);
+        
+            Services.AddDbContext<CSSPDBContext>(options =>
             {
-                foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
-                {
-                    BoxModelLanguageController boxModelLanguageController = new BoxModelLanguageController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(boxModelLanguageController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, boxModelLanguageController.DatabaseType);
-
-                    BoxModelLanguage boxModelLanguageFirst = new BoxModelLanguage();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-                    {
-                        BoxModelLanguageService boxModelLanguageService = new BoxModelLanguageService(new Query(), db, ContactID);
-                        boxModelLanguageFirst = (from c in db.BoxModelLanguages select c).FirstOrDefault();
-                    }
-
-                    // ok with BoxModelLanguage info
-                    IHttpActionResult jsonRet = boxModelLanguageController.GetBoxModelLanguageWithID(boxModelLanguageFirst.BoxModelLanguageID);
-                    Assert.IsNotNull(jsonRet);
-
-                    OkNegotiatedContentResult<BoxModelLanguage> Ret = jsonRet as OkNegotiatedContentResult<BoxModelLanguage>;
-                    BoxModelLanguage boxModelLanguageRet = Ret.Content;
-                    Assert.AreEqual(boxModelLanguageFirst.BoxModelLanguageID, boxModelLanguageRet.BoxModelLanguageID);
-
-                    BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
-
-                    // Not Found
-                    IHttpActionResult jsonRet2 = boxModelLanguageController.GetBoxModelLanguageWithID(0);
-                    Assert.IsNotNull(jsonRet2);
-
-                    OkNegotiatedContentResult<BoxModelLanguage> boxModelLanguageRet2 = jsonRet2 as OkNegotiatedContentResult<BoxModelLanguage>;
-                    Assert.IsNull(boxModelLanguageRet2);
-
-                    NotFoundResult notFoundRequest = jsonRet2 as NotFoundResult;
-                    Assert.IsNotNull(notFoundRequest);
-                }
-            }
+                options.UseSqlServer(connectionStrings.TestDB);
+            });
+        
+            Services.AddDbContext<ApplicationDbContext>(options =>
+                options.UseSqlServer(connectionStrings.TestDB));
+        
+            Services.AddIdentityCore<ApplicationUser>()
+                .AddEntityFrameworkStores<ApplicationDbContext>();
+        
+            Services.AddSingleton<IEnums, Enums>();
+            Services.AddSingleton<ILoggedInService, LoggedInService>();
+            Services.AddSingleton<IBoxModelLanguageService, BoxModelLanguageService>();
+            Services.AddSingleton<IBoxModelLanguageController, BoxModelLanguageController>();
+        
+            Provider = Services.BuildServiceProvider();
+            Assert.NotNull(Provider);
+        
+            loggedInService = Provider.GetService<ILoggedInService>();
+            Assert.NotNull(loggedInService);
+        
+            boxModelLanguageService = Provider.GetService<IBoxModelLanguageService>();
+            Assert.NotNull(boxModelLanguageService);
+        
+            await boxModelLanguageService.SetCulture(culture);
+        
+            boxModelLanguageController = Provider.GetService<IBoxModelLanguageController>();
+            Assert.NotNull(boxModelLanguageController);
+        
+            return await Task.FromResult(true);
         }
-        #endregion Tests Generated for Class Controller GetWithID Command
-
-        #region Tests Generated for Class Controller Post Command
-        [TestMethod]
-        public void BoxModelLanguage_Controller_Post_Test()
-        {
-            foreach (LanguageEnum LanguageRequest in AllowableLanguages)
-            {
-                foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
-                {
-                    BoxModelLanguageController boxModelLanguageController = new BoxModelLanguageController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(boxModelLanguageController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, boxModelLanguageController.DatabaseType);
-
-                    BoxModelLanguage boxModelLanguageLast = new BoxModelLanguage();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-                    {
-                        Query query = new Query();
-                        query.Language = LanguageRequest;
-                        query.Asc = "";
-                        query.Desc = "";
-
-                        BoxModelLanguageService boxModelLanguageService = new BoxModelLanguageService(query, db, ContactID);
-                        boxModelLanguageLast = (from c in db.BoxModelLanguages select c).FirstOrDefault();
-                    }
-
-                    // ok with BoxModelLanguage info
-                    IHttpActionResult jsonRet = boxModelLanguageController.GetBoxModelLanguageWithID(boxModelLanguageLast.BoxModelLanguageID);
-                    Assert.IsNotNull(jsonRet);
-
-                    OkNegotiatedContentResult<BoxModelLanguage> Ret = jsonRet as OkNegotiatedContentResult<BoxModelLanguage>;
-                    BoxModelLanguage boxModelLanguageRet = Ret.Content;
-                    Assert.AreEqual(boxModelLanguageLast.BoxModelLanguageID, boxModelLanguageRet.BoxModelLanguageID);
-
-                    BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
-
-                    // Post to return CSSPError because BoxModelLanguageID exist
-                    IHttpActionResult jsonRet2 = boxModelLanguageController.Post(boxModelLanguageRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet2);
-
-                    OkNegotiatedContentResult<BoxModelLanguage> boxModelLanguageRet2 = jsonRet2 as OkNegotiatedContentResult<BoxModelLanguage>;
-                    Assert.IsNull(boxModelLanguageRet2);
-
-                    BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
-                    Assert.IsNotNull(badRequest2);
-
-                    // Post to return newly added BoxModelLanguage
-                    boxModelLanguageRet.BoxModelLanguageID = 0;
-                    boxModelLanguageController.Request = new System.Net.Http.HttpRequestMessage();
-                    boxModelLanguageController.Request.RequestUri = new System.Uri("http://localhost:5000/api/boxModelLanguage");
-                    IHttpActionResult jsonRet3 = boxModelLanguageController.Post(boxModelLanguageRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet3);
-
-                    CreatedNegotiatedContentResult<BoxModelLanguage> boxModelLanguageRet3 = jsonRet3 as CreatedNegotiatedContentResult<BoxModelLanguage>;
-                    Assert.IsNotNull(boxModelLanguageRet3);
-
-                    BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest3);
-
-                    IHttpActionResult jsonRet4 = boxModelLanguageController.Delete(boxModelLanguageRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet4);
-
-                    OkNegotiatedContentResult<BoxModelLanguage> boxModelLanguageRet4 = jsonRet4 as OkNegotiatedContentResult<BoxModelLanguage>;
-                    Assert.IsNotNull(boxModelLanguageRet4);
-
-                    BadRequestErrorMessageResult badRequest4 = jsonRet4 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest4);
-                }
-            }
-        }
-        #endregion Tests Generated for Class Controller Post Command
-
-        #region Tests Generated for Class Controller Put Command
-        [TestMethod]
-        public void BoxModelLanguage_Controller_Put_Test()
-        {
-            foreach (LanguageEnum LanguageRequest in AllowableLanguages)
-            {
-                foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
-                {
-                    BoxModelLanguageController boxModelLanguageController = new BoxModelLanguageController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(boxModelLanguageController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, boxModelLanguageController.DatabaseType);
-
-                    BoxModelLanguage boxModelLanguageLast = new BoxModelLanguage();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-                    {
-                        Query query = new Query();
-                        query.Language = LanguageRequest;
-
-                        BoxModelLanguageService boxModelLanguageService = new BoxModelLanguageService(query, db, ContactID);
-                        boxModelLanguageLast = (from c in db.BoxModelLanguages select c).FirstOrDefault();
-                    }
-
-                    // ok with BoxModelLanguage info
-                    IHttpActionResult jsonRet = boxModelLanguageController.GetBoxModelLanguageWithID(boxModelLanguageLast.BoxModelLanguageID);
-                    Assert.IsNotNull(jsonRet);
-
-                    OkNegotiatedContentResult<BoxModelLanguage> Ret = jsonRet as OkNegotiatedContentResult<BoxModelLanguage>;
-                    BoxModelLanguage boxModelLanguageRet = Ret.Content;
-                    Assert.AreEqual(boxModelLanguageLast.BoxModelLanguageID, boxModelLanguageRet.BoxModelLanguageID);
-
-                    BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
-
-                    // Put to return success
-                    IHttpActionResult jsonRet2 = boxModelLanguageController.Put(boxModelLanguageRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet2);
-
-                    OkNegotiatedContentResult<BoxModelLanguage> boxModelLanguageRet2 = jsonRet2 as OkNegotiatedContentResult<BoxModelLanguage>;
-                    Assert.IsNotNull(boxModelLanguageRet2);
-
-                    BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest2);
-
-                    // Put to return CSSPError because BoxModelLanguageID of 0 does not exist
-                    boxModelLanguageRet.BoxModelLanguageID = 0;
-                    IHttpActionResult jsonRet3 = boxModelLanguageController.Put(boxModelLanguageRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet3);
-
-                    OkNegotiatedContentResult<BoxModelLanguage> boxModelLanguageRet3 = jsonRet3 as OkNegotiatedContentResult<BoxModelLanguage>;
-                    Assert.IsNull(boxModelLanguageRet3);
-
-                    BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
-                    Assert.IsNotNull(badRequest3);
-                }
-            }
-        }
-        #endregion Tests Generated for Class Controller Put Command
-
-        #region Tests Generated for Class Controller Delete Command
-        [TestMethod]
-        public void BoxModelLanguage_Controller_Delete_Test()
-        {
-            foreach (LanguageEnum LanguageRequest in AllowableLanguages)
-            {
-                foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
-                {
-                    BoxModelLanguageController boxModelLanguageController = new BoxModelLanguageController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(boxModelLanguageController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, boxModelLanguageController.DatabaseType);
-
-                    BoxModelLanguage boxModelLanguageLast = new BoxModelLanguage();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-                    {
-                        Query query = new Query();
-                        query.Language = LanguageRequest;
-                        query.Asc = "";
-                        query.Desc = "";
-
-                        BoxModelLanguageService boxModelLanguageService = new BoxModelLanguageService(query, db, ContactID);
-                        boxModelLanguageLast = (from c in db.BoxModelLanguages select c).FirstOrDefault();
-                    }
-
-                    // ok with BoxModelLanguage info
-                    IHttpActionResult jsonRet = boxModelLanguageController.GetBoxModelLanguageWithID(boxModelLanguageLast.BoxModelLanguageID);
-                    Assert.IsNotNull(jsonRet);
-
-                    OkNegotiatedContentResult<BoxModelLanguage> Ret = jsonRet as OkNegotiatedContentResult<BoxModelLanguage>;
-                    BoxModelLanguage boxModelLanguageRet = Ret.Content;
-                    Assert.AreEqual(boxModelLanguageLast.BoxModelLanguageID, boxModelLanguageRet.BoxModelLanguageID);
-
-                    BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
-
-                    // Post to return newly added BoxModelLanguage
-                    boxModelLanguageRet.BoxModelLanguageID = 0;
-                    boxModelLanguageController.Request = new System.Net.Http.HttpRequestMessage();
-                    boxModelLanguageController.Request.RequestUri = new System.Uri("http://localhost:5000/api/boxModelLanguage");
-                    IHttpActionResult jsonRet3 = boxModelLanguageController.Post(boxModelLanguageRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet3);
-
-                    CreatedNegotiatedContentResult<BoxModelLanguage> boxModelLanguageRet3 = jsonRet3 as CreatedNegotiatedContentResult<BoxModelLanguage>;
-                    Assert.IsNotNull(boxModelLanguageRet3);
-                    BoxModelLanguage boxModelLanguage = boxModelLanguageRet3.Content;
-
-                    BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest3);
-
-                    // Delete to return success
-                    IHttpActionResult jsonRet2 = boxModelLanguageController.Delete(boxModelLanguageRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet2);
-
-                    OkNegotiatedContentResult<BoxModelLanguage> boxModelLanguageRet2 = jsonRet2 as OkNegotiatedContentResult<BoxModelLanguage>;
-                    Assert.IsNotNull(boxModelLanguageRet2);
-
-                    BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest2);
-
-                    // Delete to return CSSPError because BoxModelLanguageID of 0 does not exist
-                    boxModelLanguageRet.BoxModelLanguageID = 0;
-                    IHttpActionResult jsonRet4 = boxModelLanguageController.Delete(boxModelLanguageRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet4);
-
-                    OkNegotiatedContentResult<BoxModelLanguage> boxModelLanguageRet4 = jsonRet4 as OkNegotiatedContentResult<BoxModelLanguage>;
-                    Assert.IsNull(boxModelLanguageRet4);
-
-                    BadRequestErrorMessageResult badRequest4 = jsonRet4 as BadRequestErrorMessageResult;
-                    Assert.IsNotNull(badRequest4);
-                }
-            }
-        }
-        #endregion Tests Generated for Class Controller Delete Command
-
+        #endregion Functions private
     }
 }

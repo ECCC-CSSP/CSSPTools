@@ -1,143 +1,70 @@
-using CSSPEnums;
 using CSSPModels;
 using CSSPServices;
-using System;
+using LoggedInServices.Services;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web.Http;
+using System.Threading.Tasks;
 
 namespace CSSPWebAPI.Controllers
 {
-    [RoutePrefix("api/tvFile")]
-    public partial class TVFileController : BaseController
+    public partial interface ITVFileController
+    {
+        Task<ActionResult<List<TVFile>>> Get();
+        Task<ActionResult<TVFile>> Get(int TVFileID);
+        Task<ActionResult<TVFile>> Post(TVFile tvFile);
+        Task<ActionResult<TVFile>> Put(TVFile tvFile);
+        Task<ActionResult<TVFile>> Delete(TVFile tvFile);
+    }
+
+    [Route("api/{culture}/[controller]")]
+    [ApiController]
+    [Authorize]
+    public partial class TVFileController : ControllerBase, ITVFileController
     {
         #region Variables
         #endregion Variables
 
         #region Properties
+        private ITVFileService tvFileService { get; }
+        private CSSPDBContext db { get; }
+        private ILoggedInService loggedInService { get; }
         #endregion Properties
 
         #region Constructors
-        public TVFileController() : base()
+        public TVFileController(ITVFileService tvFileService, CSSPDBContext db, ILoggedInService loggedInService)
         {
-        }
-        public TVFileController(DatabaseTypeEnum dbt = DatabaseTypeEnum.SqlServerTestDB) : base(dbt)
-        {
+            this.tvFileService = tvFileService;
+            this.db = db;
+            this.loggedInService = loggedInService;
         }
         #endregion Constructors
 
         #region Functions public
-        // GET api/tvFile
-        [Route("")]
-        public IHttpActionResult GetTVFileList([FromUri]string lang = "en", [FromUri]int skip = 0, [FromUri]int take = 200,
-            [FromUri]string asc = "", [FromUri]string desc = "", [FromUri]string where = "", [FromUri]string extra = "")
+        [HttpGet]
+        public async Task<ActionResult<List<TVFile>>> Get()
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                TVFileService tvFileService = new TVFileService(new Query() { Lang = lang }, db, ContactID);
-
-                else // QueryString has no parameter [extra] or extra is empty
-                {
-                   tvFileService.Query = tvFileService.FillQuery(typeof(TVFile), lang, skip, take, asc, desc, where, extra);
-
-                    if (tvFileService.Query.HasErrors)
-                    {
-                        return Ok(new List<TVFile>()
-                        {
-                            new TVFile()
-                            {
-                                HasErrors = tvFileService.Query.HasErrors,
-                                ValidationResults = tvFileService.Query.ValidationResults,
-                            },
-                        }.ToList());
-                    }
-                    else
-                    {
-                        return Ok(tvFileService.GetTVFileList().ToList());
-                    }
-                }
-            }
+            return await tvFileService.GetTVFileList();
         }
-        // GET api/tvFile/1
-        [Route("{TVFileID:int}")]
-        public IHttpActionResult GetTVFileWithID([FromUri]int TVFileID, [FromUri]string lang = "en", [FromUri]string extra = "")
+        [HttpGet("{TVFileID}")]
+        public async Task<ActionResult<TVFile>> Get(int TVFileID)
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                TVFileService tvFileService = new TVFileService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
-
-                tvFileService.Query = tvFileService.FillQuery(typeof(TVFile), lang, 0, 1, "", "", extra);
-
-                else
-                {
-                    TVFile tvFile = new TVFile();
-                    tvFile = tvFileService.GetTVFileWithTVFileID(TVFileID);
-
-                    if (tvFile == null)
-                    {
-                        return NotFound();
-                    }
-
-                    return Ok(tvFile);
-                }
-            }
+            return await tvFileService.GetTVFileWithTVFileID(TVFileID);
         }
-        // POST api/tvFile
-        [Route("")]
-        public IHttpActionResult Post([FromBody]TVFile tvFile, [FromUri]string lang = "en")
+        [HttpPost]
+        public async Task<ActionResult<TVFile>> Post(TVFile tvFile)
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                TVFileService tvFileService = new TVFileService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
-
-                if (!tvFileService.Add(tvFile))
-                {
-                    return BadRequest(String.Join("|||", tvFile.ValidationResults));
-                }
-                else
-                {
-                    tvFile.ValidationResults = null;
-                    return Created<TVFile>(new Uri(Request.RequestUri, tvFile.TVFileID.ToString()), tvFile);
-                }
-            }
+            return await tvFileService.Add(tvFile);
         }
-        // PUT api/tvFile
-        [Route("")]
-        public IHttpActionResult Put([FromBody]TVFile tvFile, [FromUri]string lang = "en")
+        [HttpPut]
+        public async Task<ActionResult<TVFile>> Put(TVFile tvFile)
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                TVFileService tvFileService = new TVFileService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
-
-                if (!tvFileService.Update(tvFile))
-                {
-                    return BadRequest(String.Join("|||", tvFile.ValidationResults));
-                }
-                else
-                {
-                    tvFile.ValidationResults = null;
-                    return Ok(tvFile);
-                }
-            }
+            return await tvFileService.Update(tvFile);
         }
-        // DELETE api/tvFile
-        [Route("")]
-        public IHttpActionResult Delete([FromBody]TVFile tvFile, [FromUri]string lang = "en")
+        [HttpDelete]
+        public async Task<ActionResult<TVFile>> Delete(TVFile tvFile)
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                TVFileService tvFileService = new TVFileService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
-
-                if (!tvFileService.Delete(tvFile))
-                {
-                    return BadRequest(String.Join("|||", tvFile.ValidationResults));
-                }
-                else
-                {
-                    tvFile.ValidationResults = null;
-                    return Ok(tvFile);
-                }
-            }
+            return await tvFileService.Delete(tvFile);
         }
         #endregion Functions public
 

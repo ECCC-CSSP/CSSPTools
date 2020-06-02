@@ -16,6 +16,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Transactions;
 using Xunit;
 
 namespace CSSPServices.Tests
@@ -54,37 +55,40 @@ namespace CSSPServices.Tests
 
             await Setup(new CultureInfo(culture));
 
-            MapInfoPoint mapInfoPoint = GetFilledRandomMapInfoPoint(""); 
+            using (TransactionScope ts = new TransactionScope())
+            {
+               MapInfoPoint mapInfoPoint = GetFilledRandomMapInfoPoint(""); 
 
-            // List<MapInfoPoint>
-            var actionMapInfoPointList = await mapInfoPointService.GetMapInfoPointList();
-            Assert.Equal(200, ((ObjectResult)actionMapInfoPointList.Result).StatusCode);
-            Assert.NotNull(((OkObjectResult)actionMapInfoPointList.Result).Value);
-            List<MapInfoPoint> mapInfoPointList = (List<MapInfoPoint>)(((OkObjectResult)actionMapInfoPointList.Result).Value);
+               // List<MapInfoPoint>
+               var actionMapInfoPointList = await mapInfoPointService.GetMapInfoPointList();
+               Assert.Equal(200, ((ObjectResult)actionMapInfoPointList.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionMapInfoPointList.Result).Value);
+               List<MapInfoPoint> mapInfoPointList = (List<MapInfoPoint>)(((OkObjectResult)actionMapInfoPointList.Result).Value);
 
-            int count = ((List<MapInfoPoint>)((OkObjectResult)actionMapInfoPointList.Result).Value).Count();
-            Assert.True(count > 0);
+               int count = ((List<MapInfoPoint>)((OkObjectResult)actionMapInfoPointList.Result).Value).Count();
+                Assert.True(count > 0);
 
-            // Add MapInfoPoint
-            var actionMapInfoPointAdded = await mapInfoPointService.Add(mapInfoPoint);
-            Assert.Equal(200, ((ObjectResult)actionMapInfoPointAdded.Result).StatusCode);
-            Assert.NotNull(((OkObjectResult)actionMapInfoPointAdded.Result).Value);
-            MapInfoPoint mapInfoPointAdded = (MapInfoPoint)(((OkObjectResult)actionMapInfoPointAdded.Result).Value);
-            Assert.NotNull(mapInfoPointAdded);
+               // Add MapInfoPoint
+               var actionMapInfoPointAdded = await mapInfoPointService.Add(mapInfoPoint);
+               Assert.Equal(200, ((ObjectResult)actionMapInfoPointAdded.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionMapInfoPointAdded.Result).Value);
+               MapInfoPoint mapInfoPointAdded = (MapInfoPoint)(((OkObjectResult)actionMapInfoPointAdded.Result).Value);
+               Assert.NotNull(mapInfoPointAdded);
 
-            // Update MapInfoPoint
-            var actionMapInfoPointUpdated = await mapInfoPointService.Update(mapInfoPoint);
-            Assert.Equal(200, ((ObjectResult)actionMapInfoPointUpdated.Result).StatusCode);
-            Assert.NotNull(((OkObjectResult)actionMapInfoPointUpdated.Result).Value);
-            MapInfoPoint mapInfoPointUpdated = (MapInfoPoint)(((OkObjectResult)actionMapInfoPointUpdated.Result).Value);
-            Assert.NotNull(mapInfoPointUpdated);
+               // Update MapInfoPoint
+               var actionMapInfoPointUpdated = await mapInfoPointService.Update(mapInfoPoint);
+               Assert.Equal(200, ((ObjectResult)actionMapInfoPointUpdated.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionMapInfoPointUpdated.Result).Value);
+               MapInfoPoint mapInfoPointUpdated = (MapInfoPoint)(((OkObjectResult)actionMapInfoPointUpdated.Result).Value);
+               Assert.NotNull(mapInfoPointUpdated);
 
-            // Delete MapInfoPoint
-            var actionMapInfoPointDeleted = await mapInfoPointService.Delete(mapInfoPoint);
-            Assert.Equal(200, ((ObjectResult)actionMapInfoPointDeleted.Result).StatusCode);
-            Assert.NotNull(((OkObjectResult)actionMapInfoPointDeleted.Result).Value);
-            MapInfoPoint mapInfoPointDeleted = (MapInfoPoint)(((OkObjectResult)actionMapInfoPointDeleted.Result).Value);
-            Assert.NotNull(mapInfoPointDeleted);
+               // Delete MapInfoPoint
+               var actionMapInfoPointDeleted = await mapInfoPointService.Delete(mapInfoPoint);
+               Assert.Equal(200, ((ObjectResult)actionMapInfoPointDeleted.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionMapInfoPointDeleted.Result).Value);
+               MapInfoPoint mapInfoPointDeleted = (MapInfoPoint)(((OkObjectResult)actionMapInfoPointDeleted.Result).Value);
+               Assert.NotNull(mapInfoPointDeleted);
+            }
         }
         #endregion Tests Generated CRUD
 

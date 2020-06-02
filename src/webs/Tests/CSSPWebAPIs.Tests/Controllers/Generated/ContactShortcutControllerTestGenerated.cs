@@ -2,350 +2,157 @@ using CSSPEnums;
 using CSSPModels;
 using CSSPServices;
 using CSSPWebAPI.Controllers;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using LoggedInServices.Services;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using System;
 using System.Collections.Generic;
+using System.Globalization;
+using System.IO;
 using System.Linq;
-using System.Web.Http;
-using System.Web.Http.Results;
+using System.Threading.Tasks;
+using System.Transactions;
+using UserServices.Models;
+using Xunit;
 
-namespace CSSPWebAPI.Tests.Controllers
+namespace CSSPWebAPIs.Tests.Controllers
 {
-    [TestClass]
-    public partial class ContactShortcutControllerTest : BaseControllerTest
+    public partial class ContactShortcutControllerTest
     {
         #region Variables
         #endregion Variables
 
         #region Properties
+        private IConfiguration Config { get; set; }
+        private IServiceProvider Provider { get; set; }
+        private IServiceCollection Services { get; set; }
+        private CSSPDBContext db { get; set; }
+        private ILoggedInService loggedInService { get; set; }
+        private IContactShortcutService contactShortcutService { get; set; }
+        private IContactShortcutController contactShortcutController { get; set; }
         #endregion Properties
 
         #region Constructors
-        public ContactShortcutControllerTest() : base()
+        public ContactShortcutControllerTest()
         {
         }
         #endregion Constructors
 
-        #region Tests Generated for Class Controller GetList Command
-        [TestMethod]
-        public void ContactShortcut_Controller_GetContactShortcutList_Test()
+        #region Functions public
+        [Theory]
+        [InlineData("en-CA")]
+        [InlineData("fr-CA")]
+        public async Task ContactShortcutController_Constructor_Good_Test(string culture)
         {
-            foreach (LanguageEnum LanguageRequest in AllowableLanguages)
+            bool retBool = await Setup(new CultureInfo(culture));
+            Assert.True(retBool);
+            Assert.NotNull(loggedInService);
+            Assert.NotNull(contactShortcutService);
+            Assert.NotNull(contactShortcutController);
+        }
+        [Theory]
+        [InlineData("en-CA")]
+        [InlineData("fr-CA")]
+        public async Task ContactShortcutController_CRUD_Good_Test(string culture)
+        {
+            bool retBool = await Setup(new CultureInfo(culture));
+            Assert.True(retBool);
+
+            using (TransactionScope ts = new TransactionScope())
             {
-                foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
-                {
-                    ContactShortcutController contactShortcutController = new ContactShortcutController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(contactShortcutController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, contactShortcutController.DatabaseType);
+                // testing Get
+               var actionContactShortcutList = await contactShortcutController.Get();
+               Assert.Equal(200, ((ObjectResult)actionContactShortcutList.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionContactShortcutList.Result).Value);
+               List<ContactShortcut> contactShortcutList = (List<ContactShortcut>)(((OkObjectResult)actionContactShortcutList.Result).Value);
 
-                    ContactShortcut contactShortcutFirst = new ContactShortcut();
-                    int count = -1;
-                    Query query = new Query();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseTypeEnum.SqlServerTestDB))
-                    {
-                        ContactShortcutService contactShortcutService = new ContactShortcutService(query, db, ContactID);
-                        contactShortcutFirst = (from c in db.ContactShortcuts select c).FirstOrDefault();
-                        count = (from c in db.ContactShortcuts select c).Count();
-                        count = (query.Take > count ? count : query.Take);
-                    }
+               int count = ((List<ContactShortcut>)((OkObjectResult)actionContactShortcutList.Result).Value).Count();
+                Assert.True(count > 0);
 
-                    // ok with ContactShortcut info
-                    IHttpActionResult jsonRet = contactShortcutController.GetContactShortcutList();
-                    Assert.IsNotNull(jsonRet);
+               // testing Get(ContactShortcutID)
+               var actionContactShortcut = await contactShortcutController.Get(contactShortcutList[0].ContactShortcutID);
+               Assert.Equal(200, ((ObjectResult)actionContactShortcut.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionContactShortcut.Result).Value);
+               ContactShortcut contactShortcut = (ContactShortcut)(((OkObjectResult)actionContactShortcut.Result).Value);
+               Assert.NotNull(contactShortcut);
+               Assert.Equal(contactShortcutList[0].ContactShortcutID, contactShortcut.ContactShortcutID);
 
-                    OkNegotiatedContentResult<List<ContactShortcut>> ret = jsonRet as OkNegotiatedContentResult<List<ContactShortcut>>;
-                    Assert.AreEqual(contactShortcutFirst.ContactShortcutID, ret.Content[0].ContactShortcutID);
-                    Assert.AreEqual((count > query.Take ? query.Take : count), ret.Content.Count);
+               // testing Post(ContactShortcut contactShortcut)
+               contactShortcut.ContactShortcutID = 0;
+               var actionContactShortcutNew = await contactShortcutController.Post(contactShortcut);
+               Assert.Equal(200, ((ObjectResult)actionContactShortcutNew.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionContactShortcutNew.Result).Value);
+               ContactShortcut contactShortcutNew = (ContactShortcut)(((OkObjectResult)actionContactShortcutNew.Result).Value);
+               Assert.NotNull(contactShortcutNew);
 
-                    List<ContactShortcut> contactShortcutList = new List<ContactShortcut>();
-                    count = -1;
-                    query = new Query();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseTypeEnum.SqlServerTestDB))
-                    {
-                        ContactShortcutService contactShortcutService = new ContactShortcutService(query, db, ContactID);
-                        contactShortcutList = (from c in db.ContactShortcuts select c).OrderBy(c => c.ContactShortcutID).Skip(0).Take(2).ToList();
-                        count = (from c in db.ContactShortcuts select c).Count();
-                    }
+               // testing Put(ContactShortcut contactShortcut)
+               var actionContactShortcutUpdate = await contactShortcutController.Put(contactShortcutNew);
+               Assert.Equal(200, ((ObjectResult)actionContactShortcutUpdate.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionContactShortcutUpdate.Result).Value);
+               ContactShortcut contactShortcutUpdate = (ContactShortcut)(((OkObjectResult)actionContactShortcutUpdate.Result).Value);
+               Assert.NotNull(contactShortcutUpdate);
 
-                    if (count > 0)
-                    {
-                        query.Skip = 0;
-                        query.Take = 5;
-                        count = (query.Take > count ? query.Take : count);
-
-                        // ok with ContactShortcut info
-                        jsonRet = contactShortcutController.GetContactShortcutList(query.Language.ToString(), query.Skip, query.Take);
-                        Assert.IsNotNull(jsonRet);
-
-                        ret = jsonRet as OkNegotiatedContentResult<List<ContactShortcut>>;
-                        Assert.AreEqual(contactShortcutList[0].ContactShortcutID, ret.Content[0].ContactShortcutID);
-                        Assert.AreEqual((count > query.Take ? query.Take : count), ret.Content.Count);
-
-                       if (count > 1)
-                       {
-                           query.Skip = 1;
-                           query.Take = 5;
-                           count = (query.Take > count ? query.Take : count);
-
-                           // ok with ContactShortcut info
-                           IHttpActionResult jsonRet2 = contactShortcutController.GetContactShortcutList(query.Language.ToString(), query.Skip, query.Take);
-                           Assert.IsNotNull(jsonRet2);
-
-                           OkNegotiatedContentResult<List<ContactShortcut>> ret2 = jsonRet2 as OkNegotiatedContentResult<List<ContactShortcut>>;
-                           Assert.AreEqual(contactShortcutList[1].ContactShortcutID, ret2.Content[0].ContactShortcutID);
-                           Assert.AreEqual((count > query.Take ? query.Take : count), ret2.Content.Count);
-                       }
-                    }
-                }
+               // testing Delete(ContactShortcut contactShortcut)
+               var actionContactShortcutDelete = await contactShortcutController.Delete(contactShortcutUpdate);
+               Assert.Equal(200, ((ObjectResult)actionContactShortcutDelete.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionContactShortcutDelete.Result).Value);
+               ContactShortcut contactShortcutDelete = (ContactShortcut)(((OkObjectResult)actionContactShortcutDelete.Result).Value);
+               Assert.NotNull(contactShortcutDelete);
             }
         }
-        #endregion Tests Generated for Class Controller GetList Command
+        #endregion Functions public
 
-        #region Tests Generated for Class Controller GetWithID Command
-        [TestMethod]
-        public void ContactShortcut_Controller_GetContactShortcutWithID_Test()
+        #region Functions private
+        private async Task<bool> Setup(CultureInfo culture)
         {
-            foreach (LanguageEnum LanguageRequest in AllowableLanguages)
+            Config = new ConfigurationBuilder()
+               .SetBasePath(Directory.GetParent(AppContext.BaseDirectory).FullName)
+               .AddJsonFile("appsettings.json")
+               .Build();
+        
+            Services = new ServiceCollection();
+        
+            IConfigurationSection connectionStringsSection = Config.GetSection("ConnectionStrings");
+            Services.Configure<ConnectionStringsModel>(connectionStringsSection);
+        
+            ConnectionStringsModel connectionStrings = connectionStringsSection.Get<ConnectionStringsModel>();
+        
+            Services.AddSingleton<IConfiguration>(Config);
+        
+            Services.AddDbContext<CSSPDBContext>(options =>
             {
-                foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
-                {
-                    ContactShortcutController contactShortcutController = new ContactShortcutController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(contactShortcutController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, contactShortcutController.DatabaseType);
-
-                    ContactShortcut contactShortcutFirst = new ContactShortcut();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-                    {
-                        ContactShortcutService contactShortcutService = new ContactShortcutService(new Query(), db, ContactID);
-                        contactShortcutFirst = (from c in db.ContactShortcuts select c).FirstOrDefault();
-                    }
-
-                    // ok with ContactShortcut info
-                    IHttpActionResult jsonRet = contactShortcutController.GetContactShortcutWithID(contactShortcutFirst.ContactShortcutID);
-                    Assert.IsNotNull(jsonRet);
-
-                    OkNegotiatedContentResult<ContactShortcut> Ret = jsonRet as OkNegotiatedContentResult<ContactShortcut>;
-                    ContactShortcut contactShortcutRet = Ret.Content;
-                    Assert.AreEqual(contactShortcutFirst.ContactShortcutID, contactShortcutRet.ContactShortcutID);
-
-                    BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
-
-                    // Not Found
-                    IHttpActionResult jsonRet2 = contactShortcutController.GetContactShortcutWithID(0);
-                    Assert.IsNotNull(jsonRet2);
-
-                    OkNegotiatedContentResult<ContactShortcut> contactShortcutRet2 = jsonRet2 as OkNegotiatedContentResult<ContactShortcut>;
-                    Assert.IsNull(contactShortcutRet2);
-
-                    NotFoundResult notFoundRequest = jsonRet2 as NotFoundResult;
-                    Assert.IsNotNull(notFoundRequest);
-                }
-            }
+                options.UseSqlServer(connectionStrings.TestDB);
+            });
+        
+            Services.AddDbContext<ApplicationDbContext>(options =>
+                options.UseSqlServer(connectionStrings.TestDB));
+        
+            Services.AddIdentityCore<ApplicationUser>()
+                .AddEntityFrameworkStores<ApplicationDbContext>();
+        
+            Services.AddSingleton<IEnums, Enums>();
+            Services.AddSingleton<ILoggedInService, LoggedInService>();
+            Services.AddSingleton<IContactShortcutService, ContactShortcutService>();
+            Services.AddSingleton<IContactShortcutController, ContactShortcutController>();
+        
+            Provider = Services.BuildServiceProvider();
+            Assert.NotNull(Provider);
+        
+            loggedInService = Provider.GetService<ILoggedInService>();
+            Assert.NotNull(loggedInService);
+        
+            contactShortcutService = Provider.GetService<IContactShortcutService>();
+            Assert.NotNull(contactShortcutService);
+        
+            await contactShortcutService.SetCulture(culture);
+        
+            contactShortcutController = Provider.GetService<IContactShortcutController>();
+            Assert.NotNull(contactShortcutController);
+        
+            return await Task.FromResult(true);
         }
-        #endregion Tests Generated for Class Controller GetWithID Command
-
-        #region Tests Generated for Class Controller Post Command
-        [TestMethod]
-        public void ContactShortcut_Controller_Post_Test()
-        {
-            foreach (LanguageEnum LanguageRequest in AllowableLanguages)
-            {
-                foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
-                {
-                    ContactShortcutController contactShortcutController = new ContactShortcutController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(contactShortcutController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, contactShortcutController.DatabaseType);
-
-                    ContactShortcut contactShortcutLast = new ContactShortcut();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-                    {
-                        Query query = new Query();
-                        query.Language = LanguageRequest;
-                        query.Asc = "";
-                        query.Desc = "";
-
-                        ContactShortcutService contactShortcutService = new ContactShortcutService(query, db, ContactID);
-                        contactShortcutLast = (from c in db.ContactShortcuts select c).FirstOrDefault();
-                    }
-
-                    // ok with ContactShortcut info
-                    IHttpActionResult jsonRet = contactShortcutController.GetContactShortcutWithID(contactShortcutLast.ContactShortcutID);
-                    Assert.IsNotNull(jsonRet);
-
-                    OkNegotiatedContentResult<ContactShortcut> Ret = jsonRet as OkNegotiatedContentResult<ContactShortcut>;
-                    ContactShortcut contactShortcutRet = Ret.Content;
-                    Assert.AreEqual(contactShortcutLast.ContactShortcutID, contactShortcutRet.ContactShortcutID);
-
-                    BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
-
-                    // Post to return CSSPError because ContactShortcutID exist
-                    IHttpActionResult jsonRet2 = contactShortcutController.Post(contactShortcutRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet2);
-
-                    OkNegotiatedContentResult<ContactShortcut> contactShortcutRet2 = jsonRet2 as OkNegotiatedContentResult<ContactShortcut>;
-                    Assert.IsNull(contactShortcutRet2);
-
-                    BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
-                    Assert.IsNotNull(badRequest2);
-
-                    // Post to return newly added ContactShortcut
-                    contactShortcutRet.ContactShortcutID = 0;
-                    contactShortcutController.Request = new System.Net.Http.HttpRequestMessage();
-                    contactShortcutController.Request.RequestUri = new System.Uri("http://localhost:5000/api/contactShortcut");
-                    IHttpActionResult jsonRet3 = contactShortcutController.Post(contactShortcutRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet3);
-
-                    CreatedNegotiatedContentResult<ContactShortcut> contactShortcutRet3 = jsonRet3 as CreatedNegotiatedContentResult<ContactShortcut>;
-                    Assert.IsNotNull(contactShortcutRet3);
-
-                    BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest3);
-
-                    IHttpActionResult jsonRet4 = contactShortcutController.Delete(contactShortcutRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet4);
-
-                    OkNegotiatedContentResult<ContactShortcut> contactShortcutRet4 = jsonRet4 as OkNegotiatedContentResult<ContactShortcut>;
-                    Assert.IsNotNull(contactShortcutRet4);
-
-                    BadRequestErrorMessageResult badRequest4 = jsonRet4 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest4);
-                }
-            }
-        }
-        #endregion Tests Generated for Class Controller Post Command
-
-        #region Tests Generated for Class Controller Put Command
-        [TestMethod]
-        public void ContactShortcut_Controller_Put_Test()
-        {
-            foreach (LanguageEnum LanguageRequest in AllowableLanguages)
-            {
-                foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
-                {
-                    ContactShortcutController contactShortcutController = new ContactShortcutController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(contactShortcutController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, contactShortcutController.DatabaseType);
-
-                    ContactShortcut contactShortcutLast = new ContactShortcut();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-                    {
-                        Query query = new Query();
-                        query.Language = LanguageRequest;
-
-                        ContactShortcutService contactShortcutService = new ContactShortcutService(query, db, ContactID);
-                        contactShortcutLast = (from c in db.ContactShortcuts select c).FirstOrDefault();
-                    }
-
-                    // ok with ContactShortcut info
-                    IHttpActionResult jsonRet = contactShortcutController.GetContactShortcutWithID(contactShortcutLast.ContactShortcutID);
-                    Assert.IsNotNull(jsonRet);
-
-                    OkNegotiatedContentResult<ContactShortcut> Ret = jsonRet as OkNegotiatedContentResult<ContactShortcut>;
-                    ContactShortcut contactShortcutRet = Ret.Content;
-                    Assert.AreEqual(contactShortcutLast.ContactShortcutID, contactShortcutRet.ContactShortcutID);
-
-                    BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
-
-                    // Put to return success
-                    IHttpActionResult jsonRet2 = contactShortcutController.Put(contactShortcutRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet2);
-
-                    OkNegotiatedContentResult<ContactShortcut> contactShortcutRet2 = jsonRet2 as OkNegotiatedContentResult<ContactShortcut>;
-                    Assert.IsNotNull(contactShortcutRet2);
-
-                    BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest2);
-
-                    // Put to return CSSPError because ContactShortcutID of 0 does not exist
-                    contactShortcutRet.ContactShortcutID = 0;
-                    IHttpActionResult jsonRet3 = contactShortcutController.Put(contactShortcutRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet3);
-
-                    OkNegotiatedContentResult<ContactShortcut> contactShortcutRet3 = jsonRet3 as OkNegotiatedContentResult<ContactShortcut>;
-                    Assert.IsNull(contactShortcutRet3);
-
-                    BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
-                    Assert.IsNotNull(badRequest3);
-                }
-            }
-        }
-        #endregion Tests Generated for Class Controller Put Command
-
-        #region Tests Generated for Class Controller Delete Command
-        [TestMethod]
-        public void ContactShortcut_Controller_Delete_Test()
-        {
-            foreach (LanguageEnum LanguageRequest in AllowableLanguages)
-            {
-                foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
-                {
-                    ContactShortcutController contactShortcutController = new ContactShortcutController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(contactShortcutController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, contactShortcutController.DatabaseType);
-
-                    ContactShortcut contactShortcutLast = new ContactShortcut();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-                    {
-                        Query query = new Query();
-                        query.Language = LanguageRequest;
-                        query.Asc = "";
-                        query.Desc = "";
-
-                        ContactShortcutService contactShortcutService = new ContactShortcutService(query, db, ContactID);
-                        contactShortcutLast = (from c in db.ContactShortcuts select c).FirstOrDefault();
-                    }
-
-                    // ok with ContactShortcut info
-                    IHttpActionResult jsonRet = contactShortcutController.GetContactShortcutWithID(contactShortcutLast.ContactShortcutID);
-                    Assert.IsNotNull(jsonRet);
-
-                    OkNegotiatedContentResult<ContactShortcut> Ret = jsonRet as OkNegotiatedContentResult<ContactShortcut>;
-                    ContactShortcut contactShortcutRet = Ret.Content;
-                    Assert.AreEqual(contactShortcutLast.ContactShortcutID, contactShortcutRet.ContactShortcutID);
-
-                    BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
-
-                    // Post to return newly added ContactShortcut
-                    contactShortcutRet.ContactShortcutID = 0;
-                    contactShortcutController.Request = new System.Net.Http.HttpRequestMessage();
-                    contactShortcutController.Request.RequestUri = new System.Uri("http://localhost:5000/api/contactShortcut");
-                    IHttpActionResult jsonRet3 = contactShortcutController.Post(contactShortcutRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet3);
-
-                    CreatedNegotiatedContentResult<ContactShortcut> contactShortcutRet3 = jsonRet3 as CreatedNegotiatedContentResult<ContactShortcut>;
-                    Assert.IsNotNull(contactShortcutRet3);
-                    ContactShortcut contactShortcut = contactShortcutRet3.Content;
-
-                    BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest3);
-
-                    // Delete to return success
-                    IHttpActionResult jsonRet2 = contactShortcutController.Delete(contactShortcutRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet2);
-
-                    OkNegotiatedContentResult<ContactShortcut> contactShortcutRet2 = jsonRet2 as OkNegotiatedContentResult<ContactShortcut>;
-                    Assert.IsNotNull(contactShortcutRet2);
-
-                    BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest2);
-
-                    // Delete to return CSSPError because ContactShortcutID of 0 does not exist
-                    contactShortcutRet.ContactShortcutID = 0;
-                    IHttpActionResult jsonRet4 = contactShortcutController.Delete(contactShortcutRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet4);
-
-                    OkNegotiatedContentResult<ContactShortcut> contactShortcutRet4 = jsonRet4 as OkNegotiatedContentResult<ContactShortcut>;
-                    Assert.IsNull(contactShortcutRet4);
-
-                    BadRequestErrorMessageResult badRequest4 = jsonRet4 as BadRequestErrorMessageResult;
-                    Assert.IsNotNull(badRequest4);
-                }
-            }
-        }
-        #endregion Tests Generated for Class Controller Delete Command
-
+        #endregion Functions private
     }
 }

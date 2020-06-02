@@ -2,350 +2,157 @@ using CSSPEnums;
 using CSSPModels;
 using CSSPServices;
 using CSSPWebAPI.Controllers;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using LoggedInServices.Services;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using System;
 using System.Collections.Generic;
+using System.Globalization;
+using System.IO;
 using System.Linq;
-using System.Web.Http;
-using System.Web.Http.Results;
+using System.Threading.Tasks;
+using System.Transactions;
+using UserServices.Models;
+using Xunit;
 
-namespace CSSPWebAPI.Tests.Controllers
+namespace CSSPWebAPIs.Tests.Controllers
 {
-    [TestClass]
-    public partial class MWQMSampleLanguageControllerTest : BaseControllerTest
+    public partial class MWQMSampleLanguageControllerTest
     {
         #region Variables
         #endregion Variables
 
         #region Properties
+        private IConfiguration Config { get; set; }
+        private IServiceProvider Provider { get; set; }
+        private IServiceCollection Services { get; set; }
+        private CSSPDBContext db { get; set; }
+        private ILoggedInService loggedInService { get; set; }
+        private IMWQMSampleLanguageService mwqmSampleLanguageService { get; set; }
+        private IMWQMSampleLanguageController mwqmSampleLanguageController { get; set; }
         #endregion Properties
 
         #region Constructors
-        public MWQMSampleLanguageControllerTest() : base()
+        public MWQMSampleLanguageControllerTest()
         {
         }
         #endregion Constructors
 
-        #region Tests Generated for Class Controller GetList Command
-        [TestMethod]
-        public void MWQMSampleLanguage_Controller_GetMWQMSampleLanguageList_Test()
+        #region Functions public
+        [Theory]
+        [InlineData("en-CA")]
+        [InlineData("fr-CA")]
+        public async Task MWQMSampleLanguageController_Constructor_Good_Test(string culture)
         {
-            foreach (LanguageEnum LanguageRequest in AllowableLanguages)
+            bool retBool = await Setup(new CultureInfo(culture));
+            Assert.True(retBool);
+            Assert.NotNull(loggedInService);
+            Assert.NotNull(mwqmSampleLanguageService);
+            Assert.NotNull(mwqmSampleLanguageController);
+        }
+        [Theory]
+        [InlineData("en-CA")]
+        [InlineData("fr-CA")]
+        public async Task MWQMSampleLanguageController_CRUD_Good_Test(string culture)
+        {
+            bool retBool = await Setup(new CultureInfo(culture));
+            Assert.True(retBool);
+
+            using (TransactionScope ts = new TransactionScope())
             {
-                foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
-                {
-                    MWQMSampleLanguageController mwqmSampleLanguageController = new MWQMSampleLanguageController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(mwqmSampleLanguageController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, mwqmSampleLanguageController.DatabaseType);
+                // testing Get
+               var actionMWQMSampleLanguageList = await mwqmSampleLanguageController.Get();
+               Assert.Equal(200, ((ObjectResult)actionMWQMSampleLanguageList.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionMWQMSampleLanguageList.Result).Value);
+               List<MWQMSampleLanguage> mwqmSampleLanguageList = (List<MWQMSampleLanguage>)(((OkObjectResult)actionMWQMSampleLanguageList.Result).Value);
 
-                    MWQMSampleLanguage mwqmSampleLanguageFirst = new MWQMSampleLanguage();
-                    int count = -1;
-                    Query query = new Query();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseTypeEnum.SqlServerTestDB))
-                    {
-                        MWQMSampleLanguageService mwqmSampleLanguageService = new MWQMSampleLanguageService(query, db, ContactID);
-                        mwqmSampleLanguageFirst = (from c in db.MWQMSampleLanguages select c).FirstOrDefault();
-                        count = (from c in db.MWQMSampleLanguages select c).Count();
-                        count = (query.Take > count ? count : query.Take);
-                    }
+               int count = ((List<MWQMSampleLanguage>)((OkObjectResult)actionMWQMSampleLanguageList.Result).Value).Count();
+                Assert.True(count > 0);
 
-                    // ok with MWQMSampleLanguage info
-                    IHttpActionResult jsonRet = mwqmSampleLanguageController.GetMWQMSampleLanguageList();
-                    Assert.IsNotNull(jsonRet);
+               // testing Get(MWQMSampleLanguageID)
+               var actionMWQMSampleLanguage = await mwqmSampleLanguageController.Get(mwqmSampleLanguageList[0].MWQMSampleLanguageID);
+               Assert.Equal(200, ((ObjectResult)actionMWQMSampleLanguage.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionMWQMSampleLanguage.Result).Value);
+               MWQMSampleLanguage mwqmSampleLanguage = (MWQMSampleLanguage)(((OkObjectResult)actionMWQMSampleLanguage.Result).Value);
+               Assert.NotNull(mwqmSampleLanguage);
+               Assert.Equal(mwqmSampleLanguageList[0].MWQMSampleLanguageID, mwqmSampleLanguage.MWQMSampleLanguageID);
 
-                    OkNegotiatedContentResult<List<MWQMSampleLanguage>> ret = jsonRet as OkNegotiatedContentResult<List<MWQMSampleLanguage>>;
-                    Assert.AreEqual(mwqmSampleLanguageFirst.MWQMSampleLanguageID, ret.Content[0].MWQMSampleLanguageID);
-                    Assert.AreEqual((count > query.Take ? query.Take : count), ret.Content.Count);
+               // testing Post(MWQMSampleLanguage mwqmSampleLanguage)
+               mwqmSampleLanguage.MWQMSampleLanguageID = 0;
+               var actionMWQMSampleLanguageNew = await mwqmSampleLanguageController.Post(mwqmSampleLanguage);
+               Assert.Equal(200, ((ObjectResult)actionMWQMSampleLanguageNew.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionMWQMSampleLanguageNew.Result).Value);
+               MWQMSampleLanguage mwqmSampleLanguageNew = (MWQMSampleLanguage)(((OkObjectResult)actionMWQMSampleLanguageNew.Result).Value);
+               Assert.NotNull(mwqmSampleLanguageNew);
 
-                    List<MWQMSampleLanguage> mwqmSampleLanguageList = new List<MWQMSampleLanguage>();
-                    count = -1;
-                    query = new Query();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseTypeEnum.SqlServerTestDB))
-                    {
-                        MWQMSampleLanguageService mwqmSampleLanguageService = new MWQMSampleLanguageService(query, db, ContactID);
-                        mwqmSampleLanguageList = (from c in db.MWQMSampleLanguages select c).OrderBy(c => c.MWQMSampleLanguageID).Skip(0).Take(2).ToList();
-                        count = (from c in db.MWQMSampleLanguages select c).Count();
-                    }
+               // testing Put(MWQMSampleLanguage mwqmSampleLanguage)
+               var actionMWQMSampleLanguageUpdate = await mwqmSampleLanguageController.Put(mwqmSampleLanguageNew);
+               Assert.Equal(200, ((ObjectResult)actionMWQMSampleLanguageUpdate.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionMWQMSampleLanguageUpdate.Result).Value);
+               MWQMSampleLanguage mwqmSampleLanguageUpdate = (MWQMSampleLanguage)(((OkObjectResult)actionMWQMSampleLanguageUpdate.Result).Value);
+               Assert.NotNull(mwqmSampleLanguageUpdate);
 
-                    if (count > 0)
-                    {
-                        query.Skip = 0;
-                        query.Take = 5;
-                        count = (query.Take > count ? query.Take : count);
-
-                        // ok with MWQMSampleLanguage info
-                        jsonRet = mwqmSampleLanguageController.GetMWQMSampleLanguageList(query.Language.ToString(), query.Skip, query.Take);
-                        Assert.IsNotNull(jsonRet);
-
-                        ret = jsonRet as OkNegotiatedContentResult<List<MWQMSampleLanguage>>;
-                        Assert.AreEqual(mwqmSampleLanguageList[0].MWQMSampleLanguageID, ret.Content[0].MWQMSampleLanguageID);
-                        Assert.AreEqual((count > query.Take ? query.Take : count), ret.Content.Count);
-
-                       if (count > 1)
-                       {
-                           query.Skip = 1;
-                           query.Take = 5;
-                           count = (query.Take > count ? query.Take : count);
-
-                           // ok with MWQMSampleLanguage info
-                           IHttpActionResult jsonRet2 = mwqmSampleLanguageController.GetMWQMSampleLanguageList(query.Language.ToString(), query.Skip, query.Take);
-                           Assert.IsNotNull(jsonRet2);
-
-                           OkNegotiatedContentResult<List<MWQMSampleLanguage>> ret2 = jsonRet2 as OkNegotiatedContentResult<List<MWQMSampleLanguage>>;
-                           Assert.AreEqual(mwqmSampleLanguageList[1].MWQMSampleLanguageID, ret2.Content[0].MWQMSampleLanguageID);
-                           Assert.AreEqual((count > query.Take ? query.Take : count), ret2.Content.Count);
-                       }
-                    }
-                }
+               // testing Delete(MWQMSampleLanguage mwqmSampleLanguage)
+               var actionMWQMSampleLanguageDelete = await mwqmSampleLanguageController.Delete(mwqmSampleLanguageUpdate);
+               Assert.Equal(200, ((ObjectResult)actionMWQMSampleLanguageDelete.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionMWQMSampleLanguageDelete.Result).Value);
+               MWQMSampleLanguage mwqmSampleLanguageDelete = (MWQMSampleLanguage)(((OkObjectResult)actionMWQMSampleLanguageDelete.Result).Value);
+               Assert.NotNull(mwqmSampleLanguageDelete);
             }
         }
-        #endregion Tests Generated for Class Controller GetList Command
+        #endregion Functions public
 
-        #region Tests Generated for Class Controller GetWithID Command
-        [TestMethod]
-        public void MWQMSampleLanguage_Controller_GetMWQMSampleLanguageWithID_Test()
+        #region Functions private
+        private async Task<bool> Setup(CultureInfo culture)
         {
-            foreach (LanguageEnum LanguageRequest in AllowableLanguages)
+            Config = new ConfigurationBuilder()
+               .SetBasePath(Directory.GetParent(AppContext.BaseDirectory).FullName)
+               .AddJsonFile("appsettings.json")
+               .Build();
+        
+            Services = new ServiceCollection();
+        
+            IConfigurationSection connectionStringsSection = Config.GetSection("ConnectionStrings");
+            Services.Configure<ConnectionStringsModel>(connectionStringsSection);
+        
+            ConnectionStringsModel connectionStrings = connectionStringsSection.Get<ConnectionStringsModel>();
+        
+            Services.AddSingleton<IConfiguration>(Config);
+        
+            Services.AddDbContext<CSSPDBContext>(options =>
             {
-                foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
-                {
-                    MWQMSampleLanguageController mwqmSampleLanguageController = new MWQMSampleLanguageController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(mwqmSampleLanguageController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, mwqmSampleLanguageController.DatabaseType);
-
-                    MWQMSampleLanguage mwqmSampleLanguageFirst = new MWQMSampleLanguage();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-                    {
-                        MWQMSampleLanguageService mwqmSampleLanguageService = new MWQMSampleLanguageService(new Query(), db, ContactID);
-                        mwqmSampleLanguageFirst = (from c in db.MWQMSampleLanguages select c).FirstOrDefault();
-                    }
-
-                    // ok with MWQMSampleLanguage info
-                    IHttpActionResult jsonRet = mwqmSampleLanguageController.GetMWQMSampleLanguageWithID(mwqmSampleLanguageFirst.MWQMSampleLanguageID);
-                    Assert.IsNotNull(jsonRet);
-
-                    OkNegotiatedContentResult<MWQMSampleLanguage> Ret = jsonRet as OkNegotiatedContentResult<MWQMSampleLanguage>;
-                    MWQMSampleLanguage mwqmSampleLanguageRet = Ret.Content;
-                    Assert.AreEqual(mwqmSampleLanguageFirst.MWQMSampleLanguageID, mwqmSampleLanguageRet.MWQMSampleLanguageID);
-
-                    BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
-
-                    // Not Found
-                    IHttpActionResult jsonRet2 = mwqmSampleLanguageController.GetMWQMSampleLanguageWithID(0);
-                    Assert.IsNotNull(jsonRet2);
-
-                    OkNegotiatedContentResult<MWQMSampleLanguage> mwqmSampleLanguageRet2 = jsonRet2 as OkNegotiatedContentResult<MWQMSampleLanguage>;
-                    Assert.IsNull(mwqmSampleLanguageRet2);
-
-                    NotFoundResult notFoundRequest = jsonRet2 as NotFoundResult;
-                    Assert.IsNotNull(notFoundRequest);
-                }
-            }
+                options.UseSqlServer(connectionStrings.TestDB);
+            });
+        
+            Services.AddDbContext<ApplicationDbContext>(options =>
+                options.UseSqlServer(connectionStrings.TestDB));
+        
+            Services.AddIdentityCore<ApplicationUser>()
+                .AddEntityFrameworkStores<ApplicationDbContext>();
+        
+            Services.AddSingleton<IEnums, Enums>();
+            Services.AddSingleton<ILoggedInService, LoggedInService>();
+            Services.AddSingleton<IMWQMSampleLanguageService, MWQMSampleLanguageService>();
+            Services.AddSingleton<IMWQMSampleLanguageController, MWQMSampleLanguageController>();
+        
+            Provider = Services.BuildServiceProvider();
+            Assert.NotNull(Provider);
+        
+            loggedInService = Provider.GetService<ILoggedInService>();
+            Assert.NotNull(loggedInService);
+        
+            mwqmSampleLanguageService = Provider.GetService<IMWQMSampleLanguageService>();
+            Assert.NotNull(mwqmSampleLanguageService);
+        
+            await mwqmSampleLanguageService.SetCulture(culture);
+        
+            mwqmSampleLanguageController = Provider.GetService<IMWQMSampleLanguageController>();
+            Assert.NotNull(mwqmSampleLanguageController);
+        
+            return await Task.FromResult(true);
         }
-        #endregion Tests Generated for Class Controller GetWithID Command
-
-        #region Tests Generated for Class Controller Post Command
-        [TestMethod]
-        public void MWQMSampleLanguage_Controller_Post_Test()
-        {
-            foreach (LanguageEnum LanguageRequest in AllowableLanguages)
-            {
-                foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
-                {
-                    MWQMSampleLanguageController mwqmSampleLanguageController = new MWQMSampleLanguageController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(mwqmSampleLanguageController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, mwqmSampleLanguageController.DatabaseType);
-
-                    MWQMSampleLanguage mwqmSampleLanguageLast = new MWQMSampleLanguage();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-                    {
-                        Query query = new Query();
-                        query.Language = LanguageRequest;
-                        query.Asc = "";
-                        query.Desc = "";
-
-                        MWQMSampleLanguageService mwqmSampleLanguageService = new MWQMSampleLanguageService(query, db, ContactID);
-                        mwqmSampleLanguageLast = (from c in db.MWQMSampleLanguages select c).FirstOrDefault();
-                    }
-
-                    // ok with MWQMSampleLanguage info
-                    IHttpActionResult jsonRet = mwqmSampleLanguageController.GetMWQMSampleLanguageWithID(mwqmSampleLanguageLast.MWQMSampleLanguageID);
-                    Assert.IsNotNull(jsonRet);
-
-                    OkNegotiatedContentResult<MWQMSampleLanguage> Ret = jsonRet as OkNegotiatedContentResult<MWQMSampleLanguage>;
-                    MWQMSampleLanguage mwqmSampleLanguageRet = Ret.Content;
-                    Assert.AreEqual(mwqmSampleLanguageLast.MWQMSampleLanguageID, mwqmSampleLanguageRet.MWQMSampleLanguageID);
-
-                    BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
-
-                    // Post to return CSSPError because MWQMSampleLanguageID exist
-                    IHttpActionResult jsonRet2 = mwqmSampleLanguageController.Post(mwqmSampleLanguageRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet2);
-
-                    OkNegotiatedContentResult<MWQMSampleLanguage> mwqmSampleLanguageRet2 = jsonRet2 as OkNegotiatedContentResult<MWQMSampleLanguage>;
-                    Assert.IsNull(mwqmSampleLanguageRet2);
-
-                    BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
-                    Assert.IsNotNull(badRequest2);
-
-                    // Post to return newly added MWQMSampleLanguage
-                    mwqmSampleLanguageRet.MWQMSampleLanguageID = 0;
-                    mwqmSampleLanguageController.Request = new System.Net.Http.HttpRequestMessage();
-                    mwqmSampleLanguageController.Request.RequestUri = new System.Uri("http://localhost:5000/api/mwqmSampleLanguage");
-                    IHttpActionResult jsonRet3 = mwqmSampleLanguageController.Post(mwqmSampleLanguageRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet3);
-
-                    CreatedNegotiatedContentResult<MWQMSampleLanguage> mwqmSampleLanguageRet3 = jsonRet3 as CreatedNegotiatedContentResult<MWQMSampleLanguage>;
-                    Assert.IsNotNull(mwqmSampleLanguageRet3);
-
-                    BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest3);
-
-                    IHttpActionResult jsonRet4 = mwqmSampleLanguageController.Delete(mwqmSampleLanguageRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet4);
-
-                    OkNegotiatedContentResult<MWQMSampleLanguage> mwqmSampleLanguageRet4 = jsonRet4 as OkNegotiatedContentResult<MWQMSampleLanguage>;
-                    Assert.IsNotNull(mwqmSampleLanguageRet4);
-
-                    BadRequestErrorMessageResult badRequest4 = jsonRet4 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest4);
-                }
-            }
-        }
-        #endregion Tests Generated for Class Controller Post Command
-
-        #region Tests Generated for Class Controller Put Command
-        [TestMethod]
-        public void MWQMSampleLanguage_Controller_Put_Test()
-        {
-            foreach (LanguageEnum LanguageRequest in AllowableLanguages)
-            {
-                foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
-                {
-                    MWQMSampleLanguageController mwqmSampleLanguageController = new MWQMSampleLanguageController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(mwqmSampleLanguageController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, mwqmSampleLanguageController.DatabaseType);
-
-                    MWQMSampleLanguage mwqmSampleLanguageLast = new MWQMSampleLanguage();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-                    {
-                        Query query = new Query();
-                        query.Language = LanguageRequest;
-
-                        MWQMSampleLanguageService mwqmSampleLanguageService = new MWQMSampleLanguageService(query, db, ContactID);
-                        mwqmSampleLanguageLast = (from c in db.MWQMSampleLanguages select c).FirstOrDefault();
-                    }
-
-                    // ok with MWQMSampleLanguage info
-                    IHttpActionResult jsonRet = mwqmSampleLanguageController.GetMWQMSampleLanguageWithID(mwqmSampleLanguageLast.MWQMSampleLanguageID);
-                    Assert.IsNotNull(jsonRet);
-
-                    OkNegotiatedContentResult<MWQMSampleLanguage> Ret = jsonRet as OkNegotiatedContentResult<MWQMSampleLanguage>;
-                    MWQMSampleLanguage mwqmSampleLanguageRet = Ret.Content;
-                    Assert.AreEqual(mwqmSampleLanguageLast.MWQMSampleLanguageID, mwqmSampleLanguageRet.MWQMSampleLanguageID);
-
-                    BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
-
-                    // Put to return success
-                    IHttpActionResult jsonRet2 = mwqmSampleLanguageController.Put(mwqmSampleLanguageRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet2);
-
-                    OkNegotiatedContentResult<MWQMSampleLanguage> mwqmSampleLanguageRet2 = jsonRet2 as OkNegotiatedContentResult<MWQMSampleLanguage>;
-                    Assert.IsNotNull(mwqmSampleLanguageRet2);
-
-                    BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest2);
-
-                    // Put to return CSSPError because MWQMSampleLanguageID of 0 does not exist
-                    mwqmSampleLanguageRet.MWQMSampleLanguageID = 0;
-                    IHttpActionResult jsonRet3 = mwqmSampleLanguageController.Put(mwqmSampleLanguageRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet3);
-
-                    OkNegotiatedContentResult<MWQMSampleLanguage> mwqmSampleLanguageRet3 = jsonRet3 as OkNegotiatedContentResult<MWQMSampleLanguage>;
-                    Assert.IsNull(mwqmSampleLanguageRet3);
-
-                    BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
-                    Assert.IsNotNull(badRequest3);
-                }
-            }
-        }
-        #endregion Tests Generated for Class Controller Put Command
-
-        #region Tests Generated for Class Controller Delete Command
-        [TestMethod]
-        public void MWQMSampleLanguage_Controller_Delete_Test()
-        {
-            foreach (LanguageEnum LanguageRequest in AllowableLanguages)
-            {
-                foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
-                {
-                    MWQMSampleLanguageController mwqmSampleLanguageController = new MWQMSampleLanguageController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(mwqmSampleLanguageController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, mwqmSampleLanguageController.DatabaseType);
-
-                    MWQMSampleLanguage mwqmSampleLanguageLast = new MWQMSampleLanguage();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-                    {
-                        Query query = new Query();
-                        query.Language = LanguageRequest;
-                        query.Asc = "";
-                        query.Desc = "";
-
-                        MWQMSampleLanguageService mwqmSampleLanguageService = new MWQMSampleLanguageService(query, db, ContactID);
-                        mwqmSampleLanguageLast = (from c in db.MWQMSampleLanguages select c).FirstOrDefault();
-                    }
-
-                    // ok with MWQMSampleLanguage info
-                    IHttpActionResult jsonRet = mwqmSampleLanguageController.GetMWQMSampleLanguageWithID(mwqmSampleLanguageLast.MWQMSampleLanguageID);
-                    Assert.IsNotNull(jsonRet);
-
-                    OkNegotiatedContentResult<MWQMSampleLanguage> Ret = jsonRet as OkNegotiatedContentResult<MWQMSampleLanguage>;
-                    MWQMSampleLanguage mwqmSampleLanguageRet = Ret.Content;
-                    Assert.AreEqual(mwqmSampleLanguageLast.MWQMSampleLanguageID, mwqmSampleLanguageRet.MWQMSampleLanguageID);
-
-                    BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
-
-                    // Post to return newly added MWQMSampleLanguage
-                    mwqmSampleLanguageRet.MWQMSampleLanguageID = 0;
-                    mwqmSampleLanguageController.Request = new System.Net.Http.HttpRequestMessage();
-                    mwqmSampleLanguageController.Request.RequestUri = new System.Uri("http://localhost:5000/api/mwqmSampleLanguage");
-                    IHttpActionResult jsonRet3 = mwqmSampleLanguageController.Post(mwqmSampleLanguageRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet3);
-
-                    CreatedNegotiatedContentResult<MWQMSampleLanguage> mwqmSampleLanguageRet3 = jsonRet3 as CreatedNegotiatedContentResult<MWQMSampleLanguage>;
-                    Assert.IsNotNull(mwqmSampleLanguageRet3);
-                    MWQMSampleLanguage mwqmSampleLanguage = mwqmSampleLanguageRet3.Content;
-
-                    BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest3);
-
-                    // Delete to return success
-                    IHttpActionResult jsonRet2 = mwqmSampleLanguageController.Delete(mwqmSampleLanguageRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet2);
-
-                    OkNegotiatedContentResult<MWQMSampleLanguage> mwqmSampleLanguageRet2 = jsonRet2 as OkNegotiatedContentResult<MWQMSampleLanguage>;
-                    Assert.IsNotNull(mwqmSampleLanguageRet2);
-
-                    BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest2);
-
-                    // Delete to return CSSPError because MWQMSampleLanguageID of 0 does not exist
-                    mwqmSampleLanguageRet.MWQMSampleLanguageID = 0;
-                    IHttpActionResult jsonRet4 = mwqmSampleLanguageController.Delete(mwqmSampleLanguageRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet4);
-
-                    OkNegotiatedContentResult<MWQMSampleLanguage> mwqmSampleLanguageRet4 = jsonRet4 as OkNegotiatedContentResult<MWQMSampleLanguage>;
-                    Assert.IsNull(mwqmSampleLanguageRet4);
-
-                    BadRequestErrorMessageResult badRequest4 = jsonRet4 as BadRequestErrorMessageResult;
-                    Assert.IsNotNull(badRequest4);
-                }
-            }
-        }
-        #endregion Tests Generated for Class Controller Delete Command
-
+        #endregion Functions private
     }
 }

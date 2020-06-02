@@ -2,350 +2,157 @@ using CSSPEnums;
 using CSSPModels;
 using CSSPServices;
 using CSSPWebAPI.Controllers;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using LoggedInServices.Services;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using System;
 using System.Collections.Generic;
+using System.Globalization;
+using System.IO;
 using System.Linq;
-using System.Web.Http;
-using System.Web.Http.Results;
+using System.Threading.Tasks;
+using System.Transactions;
+using UserServices.Models;
+using Xunit;
 
-namespace CSSPWebAPI.Tests.Controllers
+namespace CSSPWebAPIs.Tests.Controllers
 {
-    [TestClass]
-    public partial class TVItemUserAuthorizationControllerTest : BaseControllerTest
+    public partial class TVItemUserAuthorizationControllerTest
     {
         #region Variables
         #endregion Variables
 
         #region Properties
+        private IConfiguration Config { get; set; }
+        private IServiceProvider Provider { get; set; }
+        private IServiceCollection Services { get; set; }
+        private CSSPDBContext db { get; set; }
+        private ILoggedInService loggedInService { get; set; }
+        private ITVItemUserAuthorizationService tvItemUserAuthorizationService { get; set; }
+        private ITVItemUserAuthorizationController tvItemUserAuthorizationController { get; set; }
         #endregion Properties
 
         #region Constructors
-        public TVItemUserAuthorizationControllerTest() : base()
+        public TVItemUserAuthorizationControllerTest()
         {
         }
         #endregion Constructors
 
-        #region Tests Generated for Class Controller GetList Command
-        [TestMethod]
-        public void TVItemUserAuthorization_Controller_GetTVItemUserAuthorizationList_Test()
+        #region Functions public
+        [Theory]
+        [InlineData("en-CA")]
+        [InlineData("fr-CA")]
+        public async Task TVItemUserAuthorizationController_Constructor_Good_Test(string culture)
         {
-            foreach (LanguageEnum LanguageRequest in AllowableLanguages)
+            bool retBool = await Setup(new CultureInfo(culture));
+            Assert.True(retBool);
+            Assert.NotNull(loggedInService);
+            Assert.NotNull(tvItemUserAuthorizationService);
+            Assert.NotNull(tvItemUserAuthorizationController);
+        }
+        [Theory]
+        [InlineData("en-CA")]
+        [InlineData("fr-CA")]
+        public async Task TVItemUserAuthorizationController_CRUD_Good_Test(string culture)
+        {
+            bool retBool = await Setup(new CultureInfo(culture));
+            Assert.True(retBool);
+
+            using (TransactionScope ts = new TransactionScope())
             {
-                foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
-                {
-                    TVItemUserAuthorizationController tvItemUserAuthorizationController = new TVItemUserAuthorizationController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(tvItemUserAuthorizationController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, tvItemUserAuthorizationController.DatabaseType);
+                // testing Get
+               var actionTVItemUserAuthorizationList = await tvItemUserAuthorizationController.Get();
+               Assert.Equal(200, ((ObjectResult)actionTVItemUserAuthorizationList.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionTVItemUserAuthorizationList.Result).Value);
+               List<TVItemUserAuthorization> tvItemUserAuthorizationList = (List<TVItemUserAuthorization>)(((OkObjectResult)actionTVItemUserAuthorizationList.Result).Value);
 
-                    TVItemUserAuthorization tvItemUserAuthorizationFirst = new TVItemUserAuthorization();
-                    int count = -1;
-                    Query query = new Query();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseTypeEnum.SqlServerTestDB))
-                    {
-                        TVItemUserAuthorizationService tvItemUserAuthorizationService = new TVItemUserAuthorizationService(query, db, ContactID);
-                        tvItemUserAuthorizationFirst = (from c in db.TVItemUserAuthorizations select c).FirstOrDefault();
-                        count = (from c in db.TVItemUserAuthorizations select c).Count();
-                        count = (query.Take > count ? count : query.Take);
-                    }
+               int count = ((List<TVItemUserAuthorization>)((OkObjectResult)actionTVItemUserAuthorizationList.Result).Value).Count();
+                Assert.True(count > 0);
 
-                    // ok with TVItemUserAuthorization info
-                    IHttpActionResult jsonRet = tvItemUserAuthorizationController.GetTVItemUserAuthorizationList();
-                    Assert.IsNotNull(jsonRet);
+               // testing Get(TVItemUserAuthorizationID)
+               var actionTVItemUserAuthorization = await tvItemUserAuthorizationController.Get(tvItemUserAuthorizationList[0].TVItemUserAuthorizationID);
+               Assert.Equal(200, ((ObjectResult)actionTVItemUserAuthorization.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionTVItemUserAuthorization.Result).Value);
+               TVItemUserAuthorization tvItemUserAuthorization = (TVItemUserAuthorization)(((OkObjectResult)actionTVItemUserAuthorization.Result).Value);
+               Assert.NotNull(tvItemUserAuthorization);
+               Assert.Equal(tvItemUserAuthorizationList[0].TVItemUserAuthorizationID, tvItemUserAuthorization.TVItemUserAuthorizationID);
 
-                    OkNegotiatedContentResult<List<TVItemUserAuthorization>> ret = jsonRet as OkNegotiatedContentResult<List<TVItemUserAuthorization>>;
-                    Assert.AreEqual(tvItemUserAuthorizationFirst.TVItemUserAuthorizationID, ret.Content[0].TVItemUserAuthorizationID);
-                    Assert.AreEqual((count > query.Take ? query.Take : count), ret.Content.Count);
+               // testing Post(TVItemUserAuthorization tvItemUserAuthorization)
+               tvItemUserAuthorization.TVItemUserAuthorizationID = 0;
+               var actionTVItemUserAuthorizationNew = await tvItemUserAuthorizationController.Post(tvItemUserAuthorization);
+               Assert.Equal(200, ((ObjectResult)actionTVItemUserAuthorizationNew.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionTVItemUserAuthorizationNew.Result).Value);
+               TVItemUserAuthorization tvItemUserAuthorizationNew = (TVItemUserAuthorization)(((OkObjectResult)actionTVItemUserAuthorizationNew.Result).Value);
+               Assert.NotNull(tvItemUserAuthorizationNew);
 
-                    List<TVItemUserAuthorization> tvItemUserAuthorizationList = new List<TVItemUserAuthorization>();
-                    count = -1;
-                    query = new Query();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseTypeEnum.SqlServerTestDB))
-                    {
-                        TVItemUserAuthorizationService tvItemUserAuthorizationService = new TVItemUserAuthorizationService(query, db, ContactID);
-                        tvItemUserAuthorizationList = (from c in db.TVItemUserAuthorizations select c).OrderBy(c => c.TVItemUserAuthorizationID).Skip(0).Take(2).ToList();
-                        count = (from c in db.TVItemUserAuthorizations select c).Count();
-                    }
+               // testing Put(TVItemUserAuthorization tvItemUserAuthorization)
+               var actionTVItemUserAuthorizationUpdate = await tvItemUserAuthorizationController.Put(tvItemUserAuthorizationNew);
+               Assert.Equal(200, ((ObjectResult)actionTVItemUserAuthorizationUpdate.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionTVItemUserAuthorizationUpdate.Result).Value);
+               TVItemUserAuthorization tvItemUserAuthorizationUpdate = (TVItemUserAuthorization)(((OkObjectResult)actionTVItemUserAuthorizationUpdate.Result).Value);
+               Assert.NotNull(tvItemUserAuthorizationUpdate);
 
-                    if (count > 0)
-                    {
-                        query.Skip = 0;
-                        query.Take = 5;
-                        count = (query.Take > count ? query.Take : count);
-
-                        // ok with TVItemUserAuthorization info
-                        jsonRet = tvItemUserAuthorizationController.GetTVItemUserAuthorizationList(query.Language.ToString(), query.Skip, query.Take);
-                        Assert.IsNotNull(jsonRet);
-
-                        ret = jsonRet as OkNegotiatedContentResult<List<TVItemUserAuthorization>>;
-                        Assert.AreEqual(tvItemUserAuthorizationList[0].TVItemUserAuthorizationID, ret.Content[0].TVItemUserAuthorizationID);
-                        Assert.AreEqual((count > query.Take ? query.Take : count), ret.Content.Count);
-
-                       if (count > 1)
-                       {
-                           query.Skip = 1;
-                           query.Take = 5;
-                           count = (query.Take > count ? query.Take : count);
-
-                           // ok with TVItemUserAuthorization info
-                           IHttpActionResult jsonRet2 = tvItemUserAuthorizationController.GetTVItemUserAuthorizationList(query.Language.ToString(), query.Skip, query.Take);
-                           Assert.IsNotNull(jsonRet2);
-
-                           OkNegotiatedContentResult<List<TVItemUserAuthorization>> ret2 = jsonRet2 as OkNegotiatedContentResult<List<TVItemUserAuthorization>>;
-                           Assert.AreEqual(tvItemUserAuthorizationList[1].TVItemUserAuthorizationID, ret2.Content[0].TVItemUserAuthorizationID);
-                           Assert.AreEqual((count > query.Take ? query.Take : count), ret2.Content.Count);
-                       }
-                    }
-                }
+               // testing Delete(TVItemUserAuthorization tvItemUserAuthorization)
+               var actionTVItemUserAuthorizationDelete = await tvItemUserAuthorizationController.Delete(tvItemUserAuthorizationUpdate);
+               Assert.Equal(200, ((ObjectResult)actionTVItemUserAuthorizationDelete.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionTVItemUserAuthorizationDelete.Result).Value);
+               TVItemUserAuthorization tvItemUserAuthorizationDelete = (TVItemUserAuthorization)(((OkObjectResult)actionTVItemUserAuthorizationDelete.Result).Value);
+               Assert.NotNull(tvItemUserAuthorizationDelete);
             }
         }
-        #endregion Tests Generated for Class Controller GetList Command
+        #endregion Functions public
 
-        #region Tests Generated for Class Controller GetWithID Command
-        [TestMethod]
-        public void TVItemUserAuthorization_Controller_GetTVItemUserAuthorizationWithID_Test()
+        #region Functions private
+        private async Task<bool> Setup(CultureInfo culture)
         {
-            foreach (LanguageEnum LanguageRequest in AllowableLanguages)
+            Config = new ConfigurationBuilder()
+               .SetBasePath(Directory.GetParent(AppContext.BaseDirectory).FullName)
+               .AddJsonFile("appsettings.json")
+               .Build();
+        
+            Services = new ServiceCollection();
+        
+            IConfigurationSection connectionStringsSection = Config.GetSection("ConnectionStrings");
+            Services.Configure<ConnectionStringsModel>(connectionStringsSection);
+        
+            ConnectionStringsModel connectionStrings = connectionStringsSection.Get<ConnectionStringsModel>();
+        
+            Services.AddSingleton<IConfiguration>(Config);
+        
+            Services.AddDbContext<CSSPDBContext>(options =>
             {
-                foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
-                {
-                    TVItemUserAuthorizationController tvItemUserAuthorizationController = new TVItemUserAuthorizationController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(tvItemUserAuthorizationController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, tvItemUserAuthorizationController.DatabaseType);
-
-                    TVItemUserAuthorization tvItemUserAuthorizationFirst = new TVItemUserAuthorization();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-                    {
-                        TVItemUserAuthorizationService tvItemUserAuthorizationService = new TVItemUserAuthorizationService(new Query(), db, ContactID);
-                        tvItemUserAuthorizationFirst = (from c in db.TVItemUserAuthorizations select c).FirstOrDefault();
-                    }
-
-                    // ok with TVItemUserAuthorization info
-                    IHttpActionResult jsonRet = tvItemUserAuthorizationController.GetTVItemUserAuthorizationWithID(tvItemUserAuthorizationFirst.TVItemUserAuthorizationID);
-                    Assert.IsNotNull(jsonRet);
-
-                    OkNegotiatedContentResult<TVItemUserAuthorization> Ret = jsonRet as OkNegotiatedContentResult<TVItemUserAuthorization>;
-                    TVItemUserAuthorization tvItemUserAuthorizationRet = Ret.Content;
-                    Assert.AreEqual(tvItemUserAuthorizationFirst.TVItemUserAuthorizationID, tvItemUserAuthorizationRet.TVItemUserAuthorizationID);
-
-                    BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
-
-                    // Not Found
-                    IHttpActionResult jsonRet2 = tvItemUserAuthorizationController.GetTVItemUserAuthorizationWithID(0);
-                    Assert.IsNotNull(jsonRet2);
-
-                    OkNegotiatedContentResult<TVItemUserAuthorization> tvItemUserAuthorizationRet2 = jsonRet2 as OkNegotiatedContentResult<TVItemUserAuthorization>;
-                    Assert.IsNull(tvItemUserAuthorizationRet2);
-
-                    NotFoundResult notFoundRequest = jsonRet2 as NotFoundResult;
-                    Assert.IsNotNull(notFoundRequest);
-                }
-            }
+                options.UseSqlServer(connectionStrings.TestDB);
+            });
+        
+            Services.AddDbContext<ApplicationDbContext>(options =>
+                options.UseSqlServer(connectionStrings.TestDB));
+        
+            Services.AddIdentityCore<ApplicationUser>()
+                .AddEntityFrameworkStores<ApplicationDbContext>();
+        
+            Services.AddSingleton<IEnums, Enums>();
+            Services.AddSingleton<ILoggedInService, LoggedInService>();
+            Services.AddSingleton<ITVItemUserAuthorizationService, TVItemUserAuthorizationService>();
+            Services.AddSingleton<ITVItemUserAuthorizationController, TVItemUserAuthorizationController>();
+        
+            Provider = Services.BuildServiceProvider();
+            Assert.NotNull(Provider);
+        
+            loggedInService = Provider.GetService<ILoggedInService>();
+            Assert.NotNull(loggedInService);
+        
+            tvItemUserAuthorizationService = Provider.GetService<ITVItemUserAuthorizationService>();
+            Assert.NotNull(tvItemUserAuthorizationService);
+        
+            await tvItemUserAuthorizationService.SetCulture(culture);
+        
+            tvItemUserAuthorizationController = Provider.GetService<ITVItemUserAuthorizationController>();
+            Assert.NotNull(tvItemUserAuthorizationController);
+        
+            return await Task.FromResult(true);
         }
-        #endregion Tests Generated for Class Controller GetWithID Command
-
-        #region Tests Generated for Class Controller Post Command
-        [TestMethod]
-        public void TVItemUserAuthorization_Controller_Post_Test()
-        {
-            foreach (LanguageEnum LanguageRequest in AllowableLanguages)
-            {
-                foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
-                {
-                    TVItemUserAuthorizationController tvItemUserAuthorizationController = new TVItemUserAuthorizationController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(tvItemUserAuthorizationController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, tvItemUserAuthorizationController.DatabaseType);
-
-                    TVItemUserAuthorization tvItemUserAuthorizationLast = new TVItemUserAuthorization();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-                    {
-                        Query query = new Query();
-                        query.Language = LanguageRequest;
-                        query.Asc = "";
-                        query.Desc = "";
-
-                        TVItemUserAuthorizationService tvItemUserAuthorizationService = new TVItemUserAuthorizationService(query, db, ContactID);
-                        tvItemUserAuthorizationLast = (from c in db.TVItemUserAuthorizations select c).FirstOrDefault();
-                    }
-
-                    // ok with TVItemUserAuthorization info
-                    IHttpActionResult jsonRet = tvItemUserAuthorizationController.GetTVItemUserAuthorizationWithID(tvItemUserAuthorizationLast.TVItemUserAuthorizationID);
-                    Assert.IsNotNull(jsonRet);
-
-                    OkNegotiatedContentResult<TVItemUserAuthorization> Ret = jsonRet as OkNegotiatedContentResult<TVItemUserAuthorization>;
-                    TVItemUserAuthorization tvItemUserAuthorizationRet = Ret.Content;
-                    Assert.AreEqual(tvItemUserAuthorizationLast.TVItemUserAuthorizationID, tvItemUserAuthorizationRet.TVItemUserAuthorizationID);
-
-                    BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
-
-                    // Post to return CSSPError because TVItemUserAuthorizationID exist
-                    IHttpActionResult jsonRet2 = tvItemUserAuthorizationController.Post(tvItemUserAuthorizationRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet2);
-
-                    OkNegotiatedContentResult<TVItemUserAuthorization> tvItemUserAuthorizationRet2 = jsonRet2 as OkNegotiatedContentResult<TVItemUserAuthorization>;
-                    Assert.IsNull(tvItemUserAuthorizationRet2);
-
-                    BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
-                    Assert.IsNotNull(badRequest2);
-
-                    // Post to return newly added TVItemUserAuthorization
-                    tvItemUserAuthorizationRet.TVItemUserAuthorizationID = 0;
-                    tvItemUserAuthorizationController.Request = new System.Net.Http.HttpRequestMessage();
-                    tvItemUserAuthorizationController.Request.RequestUri = new System.Uri("http://localhost:5000/api/tvItemUserAuthorization");
-                    IHttpActionResult jsonRet3 = tvItemUserAuthorizationController.Post(tvItemUserAuthorizationRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet3);
-
-                    CreatedNegotiatedContentResult<TVItemUserAuthorization> tvItemUserAuthorizationRet3 = jsonRet3 as CreatedNegotiatedContentResult<TVItemUserAuthorization>;
-                    Assert.IsNotNull(tvItemUserAuthorizationRet3);
-
-                    BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest3);
-
-                    IHttpActionResult jsonRet4 = tvItemUserAuthorizationController.Delete(tvItemUserAuthorizationRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet4);
-
-                    OkNegotiatedContentResult<TVItemUserAuthorization> tvItemUserAuthorizationRet4 = jsonRet4 as OkNegotiatedContentResult<TVItemUserAuthorization>;
-                    Assert.IsNotNull(tvItemUserAuthorizationRet4);
-
-                    BadRequestErrorMessageResult badRequest4 = jsonRet4 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest4);
-                }
-            }
-        }
-        #endregion Tests Generated for Class Controller Post Command
-
-        #region Tests Generated for Class Controller Put Command
-        [TestMethod]
-        public void TVItemUserAuthorization_Controller_Put_Test()
-        {
-            foreach (LanguageEnum LanguageRequest in AllowableLanguages)
-            {
-                foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
-                {
-                    TVItemUserAuthorizationController tvItemUserAuthorizationController = new TVItemUserAuthorizationController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(tvItemUserAuthorizationController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, tvItemUserAuthorizationController.DatabaseType);
-
-                    TVItemUserAuthorization tvItemUserAuthorizationLast = new TVItemUserAuthorization();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-                    {
-                        Query query = new Query();
-                        query.Language = LanguageRequest;
-
-                        TVItemUserAuthorizationService tvItemUserAuthorizationService = new TVItemUserAuthorizationService(query, db, ContactID);
-                        tvItemUserAuthorizationLast = (from c in db.TVItemUserAuthorizations select c).FirstOrDefault();
-                    }
-
-                    // ok with TVItemUserAuthorization info
-                    IHttpActionResult jsonRet = tvItemUserAuthorizationController.GetTVItemUserAuthorizationWithID(tvItemUserAuthorizationLast.TVItemUserAuthorizationID);
-                    Assert.IsNotNull(jsonRet);
-
-                    OkNegotiatedContentResult<TVItemUserAuthorization> Ret = jsonRet as OkNegotiatedContentResult<TVItemUserAuthorization>;
-                    TVItemUserAuthorization tvItemUserAuthorizationRet = Ret.Content;
-                    Assert.AreEqual(tvItemUserAuthorizationLast.TVItemUserAuthorizationID, tvItemUserAuthorizationRet.TVItemUserAuthorizationID);
-
-                    BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
-
-                    // Put to return success
-                    IHttpActionResult jsonRet2 = tvItemUserAuthorizationController.Put(tvItemUserAuthorizationRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet2);
-
-                    OkNegotiatedContentResult<TVItemUserAuthorization> tvItemUserAuthorizationRet2 = jsonRet2 as OkNegotiatedContentResult<TVItemUserAuthorization>;
-                    Assert.IsNotNull(tvItemUserAuthorizationRet2);
-
-                    BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest2);
-
-                    // Put to return CSSPError because TVItemUserAuthorizationID of 0 does not exist
-                    tvItemUserAuthorizationRet.TVItemUserAuthorizationID = 0;
-                    IHttpActionResult jsonRet3 = tvItemUserAuthorizationController.Put(tvItemUserAuthorizationRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet3);
-
-                    OkNegotiatedContentResult<TVItemUserAuthorization> tvItemUserAuthorizationRet3 = jsonRet3 as OkNegotiatedContentResult<TVItemUserAuthorization>;
-                    Assert.IsNull(tvItemUserAuthorizationRet3);
-
-                    BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
-                    Assert.IsNotNull(badRequest3);
-                }
-            }
-        }
-        #endregion Tests Generated for Class Controller Put Command
-
-        #region Tests Generated for Class Controller Delete Command
-        [TestMethod]
-        public void TVItemUserAuthorization_Controller_Delete_Test()
-        {
-            foreach (LanguageEnum LanguageRequest in AllowableLanguages)
-            {
-                foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
-                {
-                    TVItemUserAuthorizationController tvItemUserAuthorizationController = new TVItemUserAuthorizationController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(tvItemUserAuthorizationController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, tvItemUserAuthorizationController.DatabaseType);
-
-                    TVItemUserAuthorization tvItemUserAuthorizationLast = new TVItemUserAuthorization();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-                    {
-                        Query query = new Query();
-                        query.Language = LanguageRequest;
-                        query.Asc = "";
-                        query.Desc = "";
-
-                        TVItemUserAuthorizationService tvItemUserAuthorizationService = new TVItemUserAuthorizationService(query, db, ContactID);
-                        tvItemUserAuthorizationLast = (from c in db.TVItemUserAuthorizations select c).FirstOrDefault();
-                    }
-
-                    // ok with TVItemUserAuthorization info
-                    IHttpActionResult jsonRet = tvItemUserAuthorizationController.GetTVItemUserAuthorizationWithID(tvItemUserAuthorizationLast.TVItemUserAuthorizationID);
-                    Assert.IsNotNull(jsonRet);
-
-                    OkNegotiatedContentResult<TVItemUserAuthorization> Ret = jsonRet as OkNegotiatedContentResult<TVItemUserAuthorization>;
-                    TVItemUserAuthorization tvItemUserAuthorizationRet = Ret.Content;
-                    Assert.AreEqual(tvItemUserAuthorizationLast.TVItemUserAuthorizationID, tvItemUserAuthorizationRet.TVItemUserAuthorizationID);
-
-                    BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
-
-                    // Post to return newly added TVItemUserAuthorization
-                    tvItemUserAuthorizationRet.TVItemUserAuthorizationID = 0;
-                    tvItemUserAuthorizationController.Request = new System.Net.Http.HttpRequestMessage();
-                    tvItemUserAuthorizationController.Request.RequestUri = new System.Uri("http://localhost:5000/api/tvItemUserAuthorization");
-                    IHttpActionResult jsonRet3 = tvItemUserAuthorizationController.Post(tvItemUserAuthorizationRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet3);
-
-                    CreatedNegotiatedContentResult<TVItemUserAuthorization> tvItemUserAuthorizationRet3 = jsonRet3 as CreatedNegotiatedContentResult<TVItemUserAuthorization>;
-                    Assert.IsNotNull(tvItemUserAuthorizationRet3);
-                    TVItemUserAuthorization tvItemUserAuthorization = tvItemUserAuthorizationRet3.Content;
-
-                    BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest3);
-
-                    // Delete to return success
-                    IHttpActionResult jsonRet2 = tvItemUserAuthorizationController.Delete(tvItemUserAuthorizationRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet2);
-
-                    OkNegotiatedContentResult<TVItemUserAuthorization> tvItemUserAuthorizationRet2 = jsonRet2 as OkNegotiatedContentResult<TVItemUserAuthorization>;
-                    Assert.IsNotNull(tvItemUserAuthorizationRet2);
-
-                    BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest2);
-
-                    // Delete to return CSSPError because TVItemUserAuthorizationID of 0 does not exist
-                    tvItemUserAuthorizationRet.TVItemUserAuthorizationID = 0;
-                    IHttpActionResult jsonRet4 = tvItemUserAuthorizationController.Delete(tvItemUserAuthorizationRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet4);
-
-                    OkNegotiatedContentResult<TVItemUserAuthorization> tvItemUserAuthorizationRet4 = jsonRet4 as OkNegotiatedContentResult<TVItemUserAuthorization>;
-                    Assert.IsNull(tvItemUserAuthorizationRet4);
-
-                    BadRequestErrorMessageResult badRequest4 = jsonRet4 as BadRequestErrorMessageResult;
-                    Assert.IsNotNull(badRequest4);
-                }
-            }
-        }
-        #endregion Tests Generated for Class Controller Delete Command
-
+        #endregion Functions private
     }
 }

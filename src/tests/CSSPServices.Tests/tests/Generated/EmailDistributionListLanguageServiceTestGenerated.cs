@@ -16,6 +16,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Transactions;
 using Xunit;
 
 namespace CSSPServices.Tests
@@ -54,37 +55,40 @@ namespace CSSPServices.Tests
 
             await Setup(new CultureInfo(culture));
 
-            EmailDistributionListLanguage emailDistributionListLanguage = GetFilledRandomEmailDistributionListLanguage(""); 
+            using (TransactionScope ts = new TransactionScope())
+            {
+               EmailDistributionListLanguage emailDistributionListLanguage = GetFilledRandomEmailDistributionListLanguage(""); 
 
-            // List<EmailDistributionListLanguage>
-            var actionEmailDistributionListLanguageList = await emailDistributionListLanguageService.GetEmailDistributionListLanguageList();
-            Assert.Equal(200, ((ObjectResult)actionEmailDistributionListLanguageList.Result).StatusCode);
-            Assert.NotNull(((OkObjectResult)actionEmailDistributionListLanguageList.Result).Value);
-            List<EmailDistributionListLanguage> emailDistributionListLanguageList = (List<EmailDistributionListLanguage>)(((OkObjectResult)actionEmailDistributionListLanguageList.Result).Value);
+               // List<EmailDistributionListLanguage>
+               var actionEmailDistributionListLanguageList = await emailDistributionListLanguageService.GetEmailDistributionListLanguageList();
+               Assert.Equal(200, ((ObjectResult)actionEmailDistributionListLanguageList.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionEmailDistributionListLanguageList.Result).Value);
+               List<EmailDistributionListLanguage> emailDistributionListLanguageList = (List<EmailDistributionListLanguage>)(((OkObjectResult)actionEmailDistributionListLanguageList.Result).Value);
 
-            int count = ((List<EmailDistributionListLanguage>)((OkObjectResult)actionEmailDistributionListLanguageList.Result).Value).Count();
-            Assert.True(count > 0);
+               int count = ((List<EmailDistributionListLanguage>)((OkObjectResult)actionEmailDistributionListLanguageList.Result).Value).Count();
+                Assert.True(count > 0);
 
-            // Add EmailDistributionListLanguage
-            var actionEmailDistributionListLanguageAdded = await emailDistributionListLanguageService.Add(emailDistributionListLanguage);
-            Assert.Equal(200, ((ObjectResult)actionEmailDistributionListLanguageAdded.Result).StatusCode);
-            Assert.NotNull(((OkObjectResult)actionEmailDistributionListLanguageAdded.Result).Value);
-            EmailDistributionListLanguage emailDistributionListLanguageAdded = (EmailDistributionListLanguage)(((OkObjectResult)actionEmailDistributionListLanguageAdded.Result).Value);
-            Assert.NotNull(emailDistributionListLanguageAdded);
+               // Add EmailDistributionListLanguage
+               var actionEmailDistributionListLanguageAdded = await emailDistributionListLanguageService.Add(emailDistributionListLanguage);
+               Assert.Equal(200, ((ObjectResult)actionEmailDistributionListLanguageAdded.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionEmailDistributionListLanguageAdded.Result).Value);
+               EmailDistributionListLanguage emailDistributionListLanguageAdded = (EmailDistributionListLanguage)(((OkObjectResult)actionEmailDistributionListLanguageAdded.Result).Value);
+               Assert.NotNull(emailDistributionListLanguageAdded);
 
-            // Update EmailDistributionListLanguage
-            var actionEmailDistributionListLanguageUpdated = await emailDistributionListLanguageService.Update(emailDistributionListLanguage);
-            Assert.Equal(200, ((ObjectResult)actionEmailDistributionListLanguageUpdated.Result).StatusCode);
-            Assert.NotNull(((OkObjectResult)actionEmailDistributionListLanguageUpdated.Result).Value);
-            EmailDistributionListLanguage emailDistributionListLanguageUpdated = (EmailDistributionListLanguage)(((OkObjectResult)actionEmailDistributionListLanguageUpdated.Result).Value);
-            Assert.NotNull(emailDistributionListLanguageUpdated);
+               // Update EmailDistributionListLanguage
+               var actionEmailDistributionListLanguageUpdated = await emailDistributionListLanguageService.Update(emailDistributionListLanguage);
+               Assert.Equal(200, ((ObjectResult)actionEmailDistributionListLanguageUpdated.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionEmailDistributionListLanguageUpdated.Result).Value);
+               EmailDistributionListLanguage emailDistributionListLanguageUpdated = (EmailDistributionListLanguage)(((OkObjectResult)actionEmailDistributionListLanguageUpdated.Result).Value);
+               Assert.NotNull(emailDistributionListLanguageUpdated);
 
-            // Delete EmailDistributionListLanguage
-            var actionEmailDistributionListLanguageDeleted = await emailDistributionListLanguageService.Delete(emailDistributionListLanguage);
-            Assert.Equal(200, ((ObjectResult)actionEmailDistributionListLanguageDeleted.Result).StatusCode);
-            Assert.NotNull(((OkObjectResult)actionEmailDistributionListLanguageDeleted.Result).Value);
-            EmailDistributionListLanguage emailDistributionListLanguageDeleted = (EmailDistributionListLanguage)(((OkObjectResult)actionEmailDistributionListLanguageDeleted.Result).Value);
-            Assert.NotNull(emailDistributionListLanguageDeleted);
+               // Delete EmailDistributionListLanguage
+               var actionEmailDistributionListLanguageDeleted = await emailDistributionListLanguageService.Delete(emailDistributionListLanguage);
+               Assert.Equal(200, ((ObjectResult)actionEmailDistributionListLanguageDeleted.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionEmailDistributionListLanguageDeleted.Result).Value);
+               EmailDistributionListLanguage emailDistributionListLanguageDeleted = (EmailDistributionListLanguage)(((OkObjectResult)actionEmailDistributionListLanguageDeleted.Result).Value);
+               Assert.NotNull(emailDistributionListLanguageDeleted);
+            }
         }
         #endregion Tests Generated CRUD
 

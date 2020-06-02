@@ -16,6 +16,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Transactions;
 using Xunit;
 
 namespace CSSPServices.Tests
@@ -54,37 +55,40 @@ namespace CSSPServices.Tests
 
             await Setup(new CultureInfo(culture));
 
-            PolSourceSiteEffectTerm polSourceSiteEffectTerm = GetFilledRandomPolSourceSiteEffectTerm(""); 
+            using (TransactionScope ts = new TransactionScope())
+            {
+               PolSourceSiteEffectTerm polSourceSiteEffectTerm = GetFilledRandomPolSourceSiteEffectTerm(""); 
 
-            // List<PolSourceSiteEffectTerm>
-            var actionPolSourceSiteEffectTermList = await polSourceSiteEffectTermService.GetPolSourceSiteEffectTermList();
-            Assert.Equal(200, ((ObjectResult)actionPolSourceSiteEffectTermList.Result).StatusCode);
-            Assert.NotNull(((OkObjectResult)actionPolSourceSiteEffectTermList.Result).Value);
-            List<PolSourceSiteEffectTerm> polSourceSiteEffectTermList = (List<PolSourceSiteEffectTerm>)(((OkObjectResult)actionPolSourceSiteEffectTermList.Result).Value);
+               // List<PolSourceSiteEffectTerm>
+               var actionPolSourceSiteEffectTermList = await polSourceSiteEffectTermService.GetPolSourceSiteEffectTermList();
+               Assert.Equal(200, ((ObjectResult)actionPolSourceSiteEffectTermList.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionPolSourceSiteEffectTermList.Result).Value);
+               List<PolSourceSiteEffectTerm> polSourceSiteEffectTermList = (List<PolSourceSiteEffectTerm>)(((OkObjectResult)actionPolSourceSiteEffectTermList.Result).Value);
 
-            int count = ((List<PolSourceSiteEffectTerm>)((OkObjectResult)actionPolSourceSiteEffectTermList.Result).Value).Count();
-            Assert.True(count > 0);
+               int count = ((List<PolSourceSiteEffectTerm>)((OkObjectResult)actionPolSourceSiteEffectTermList.Result).Value).Count();
+                Assert.True(count > 0);
 
-            // Add PolSourceSiteEffectTerm
-            var actionPolSourceSiteEffectTermAdded = await polSourceSiteEffectTermService.Add(polSourceSiteEffectTerm);
-            Assert.Equal(200, ((ObjectResult)actionPolSourceSiteEffectTermAdded.Result).StatusCode);
-            Assert.NotNull(((OkObjectResult)actionPolSourceSiteEffectTermAdded.Result).Value);
-            PolSourceSiteEffectTerm polSourceSiteEffectTermAdded = (PolSourceSiteEffectTerm)(((OkObjectResult)actionPolSourceSiteEffectTermAdded.Result).Value);
-            Assert.NotNull(polSourceSiteEffectTermAdded);
+               // Add PolSourceSiteEffectTerm
+               var actionPolSourceSiteEffectTermAdded = await polSourceSiteEffectTermService.Add(polSourceSiteEffectTerm);
+               Assert.Equal(200, ((ObjectResult)actionPolSourceSiteEffectTermAdded.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionPolSourceSiteEffectTermAdded.Result).Value);
+               PolSourceSiteEffectTerm polSourceSiteEffectTermAdded = (PolSourceSiteEffectTerm)(((OkObjectResult)actionPolSourceSiteEffectTermAdded.Result).Value);
+               Assert.NotNull(polSourceSiteEffectTermAdded);
 
-            // Update PolSourceSiteEffectTerm
-            var actionPolSourceSiteEffectTermUpdated = await polSourceSiteEffectTermService.Update(polSourceSiteEffectTerm);
-            Assert.Equal(200, ((ObjectResult)actionPolSourceSiteEffectTermUpdated.Result).StatusCode);
-            Assert.NotNull(((OkObjectResult)actionPolSourceSiteEffectTermUpdated.Result).Value);
-            PolSourceSiteEffectTerm polSourceSiteEffectTermUpdated = (PolSourceSiteEffectTerm)(((OkObjectResult)actionPolSourceSiteEffectTermUpdated.Result).Value);
-            Assert.NotNull(polSourceSiteEffectTermUpdated);
+               // Update PolSourceSiteEffectTerm
+               var actionPolSourceSiteEffectTermUpdated = await polSourceSiteEffectTermService.Update(polSourceSiteEffectTerm);
+               Assert.Equal(200, ((ObjectResult)actionPolSourceSiteEffectTermUpdated.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionPolSourceSiteEffectTermUpdated.Result).Value);
+               PolSourceSiteEffectTerm polSourceSiteEffectTermUpdated = (PolSourceSiteEffectTerm)(((OkObjectResult)actionPolSourceSiteEffectTermUpdated.Result).Value);
+               Assert.NotNull(polSourceSiteEffectTermUpdated);
 
-            // Delete PolSourceSiteEffectTerm
-            var actionPolSourceSiteEffectTermDeleted = await polSourceSiteEffectTermService.Delete(polSourceSiteEffectTerm);
-            Assert.Equal(200, ((ObjectResult)actionPolSourceSiteEffectTermDeleted.Result).StatusCode);
-            Assert.NotNull(((OkObjectResult)actionPolSourceSiteEffectTermDeleted.Result).Value);
-            PolSourceSiteEffectTerm polSourceSiteEffectTermDeleted = (PolSourceSiteEffectTerm)(((OkObjectResult)actionPolSourceSiteEffectTermDeleted.Result).Value);
-            Assert.NotNull(polSourceSiteEffectTermDeleted);
+               // Delete PolSourceSiteEffectTerm
+               var actionPolSourceSiteEffectTermDeleted = await polSourceSiteEffectTermService.Delete(polSourceSiteEffectTerm);
+               Assert.Equal(200, ((ObjectResult)actionPolSourceSiteEffectTermDeleted.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionPolSourceSiteEffectTermDeleted.Result).Value);
+               PolSourceSiteEffectTerm polSourceSiteEffectTermDeleted = (PolSourceSiteEffectTerm)(((OkObjectResult)actionPolSourceSiteEffectTermDeleted.Result).Value);
+               Assert.NotNull(polSourceSiteEffectTermDeleted);
+            }
         }
         #endregion Tests Generated CRUD
 

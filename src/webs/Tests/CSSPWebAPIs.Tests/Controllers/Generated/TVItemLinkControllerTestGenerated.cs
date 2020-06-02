@@ -2,350 +2,157 @@ using CSSPEnums;
 using CSSPModels;
 using CSSPServices;
 using CSSPWebAPI.Controllers;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using LoggedInServices.Services;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using System;
 using System.Collections.Generic;
+using System.Globalization;
+using System.IO;
 using System.Linq;
-using System.Web.Http;
-using System.Web.Http.Results;
+using System.Threading.Tasks;
+using System.Transactions;
+using UserServices.Models;
+using Xunit;
 
-namespace CSSPWebAPI.Tests.Controllers
+namespace CSSPWebAPIs.Tests.Controllers
 {
-    [TestClass]
-    public partial class TVItemLinkControllerTest : BaseControllerTest
+    public partial class TVItemLinkControllerTest
     {
         #region Variables
         #endregion Variables
 
         #region Properties
+        private IConfiguration Config { get; set; }
+        private IServiceProvider Provider { get; set; }
+        private IServiceCollection Services { get; set; }
+        private CSSPDBContext db { get; set; }
+        private ILoggedInService loggedInService { get; set; }
+        private ITVItemLinkService tvItemLinkService { get; set; }
+        private ITVItemLinkController tvItemLinkController { get; set; }
         #endregion Properties
 
         #region Constructors
-        public TVItemLinkControllerTest() : base()
+        public TVItemLinkControllerTest()
         {
         }
         #endregion Constructors
 
-        #region Tests Generated for Class Controller GetList Command
-        [TestMethod]
-        public void TVItemLink_Controller_GetTVItemLinkList_Test()
+        #region Functions public
+        [Theory]
+        [InlineData("en-CA")]
+        [InlineData("fr-CA")]
+        public async Task TVItemLinkController_Constructor_Good_Test(string culture)
         {
-            foreach (LanguageEnum LanguageRequest in AllowableLanguages)
+            bool retBool = await Setup(new CultureInfo(culture));
+            Assert.True(retBool);
+            Assert.NotNull(loggedInService);
+            Assert.NotNull(tvItemLinkService);
+            Assert.NotNull(tvItemLinkController);
+        }
+        [Theory]
+        [InlineData("en-CA")]
+        [InlineData("fr-CA")]
+        public async Task TVItemLinkController_CRUD_Good_Test(string culture)
+        {
+            bool retBool = await Setup(new CultureInfo(culture));
+            Assert.True(retBool);
+
+            using (TransactionScope ts = new TransactionScope())
             {
-                foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
-                {
-                    TVItemLinkController tvItemLinkController = new TVItemLinkController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(tvItemLinkController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, tvItemLinkController.DatabaseType);
+                // testing Get
+               var actionTVItemLinkList = await tvItemLinkController.Get();
+               Assert.Equal(200, ((ObjectResult)actionTVItemLinkList.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionTVItemLinkList.Result).Value);
+               List<TVItemLink> tvItemLinkList = (List<TVItemLink>)(((OkObjectResult)actionTVItemLinkList.Result).Value);
 
-                    TVItemLink tvItemLinkFirst = new TVItemLink();
-                    int count = -1;
-                    Query query = new Query();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseTypeEnum.SqlServerTestDB))
-                    {
-                        TVItemLinkService tvItemLinkService = new TVItemLinkService(query, db, ContactID);
-                        tvItemLinkFirst = (from c in db.TVItemLinks select c).FirstOrDefault();
-                        count = (from c in db.TVItemLinks select c).Count();
-                        count = (query.Take > count ? count : query.Take);
-                    }
+               int count = ((List<TVItemLink>)((OkObjectResult)actionTVItemLinkList.Result).Value).Count();
+                Assert.True(count > 0);
 
-                    // ok with TVItemLink info
-                    IHttpActionResult jsonRet = tvItemLinkController.GetTVItemLinkList();
-                    Assert.IsNotNull(jsonRet);
+               // testing Get(TVItemLinkID)
+               var actionTVItemLink = await tvItemLinkController.Get(tvItemLinkList[0].TVItemLinkID);
+               Assert.Equal(200, ((ObjectResult)actionTVItemLink.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionTVItemLink.Result).Value);
+               TVItemLink tvItemLink = (TVItemLink)(((OkObjectResult)actionTVItemLink.Result).Value);
+               Assert.NotNull(tvItemLink);
+               Assert.Equal(tvItemLinkList[0].TVItemLinkID, tvItemLink.TVItemLinkID);
 
-                    OkNegotiatedContentResult<List<TVItemLink>> ret = jsonRet as OkNegotiatedContentResult<List<TVItemLink>>;
-                    Assert.AreEqual(tvItemLinkFirst.TVItemLinkID, ret.Content[0].TVItemLinkID);
-                    Assert.AreEqual((count > query.Take ? query.Take : count), ret.Content.Count);
+               // testing Post(TVItemLink tvItemLink)
+               tvItemLink.TVItemLinkID = 0;
+               var actionTVItemLinkNew = await tvItemLinkController.Post(tvItemLink);
+               Assert.Equal(200, ((ObjectResult)actionTVItemLinkNew.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionTVItemLinkNew.Result).Value);
+               TVItemLink tvItemLinkNew = (TVItemLink)(((OkObjectResult)actionTVItemLinkNew.Result).Value);
+               Assert.NotNull(tvItemLinkNew);
 
-                    List<TVItemLink> tvItemLinkList = new List<TVItemLink>();
-                    count = -1;
-                    query = new Query();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseTypeEnum.SqlServerTestDB))
-                    {
-                        TVItemLinkService tvItemLinkService = new TVItemLinkService(query, db, ContactID);
-                        tvItemLinkList = (from c in db.TVItemLinks select c).OrderBy(c => c.TVItemLinkID).Skip(0).Take(2).ToList();
-                        count = (from c in db.TVItemLinks select c).Count();
-                    }
+               // testing Put(TVItemLink tvItemLink)
+               var actionTVItemLinkUpdate = await tvItemLinkController.Put(tvItemLinkNew);
+               Assert.Equal(200, ((ObjectResult)actionTVItemLinkUpdate.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionTVItemLinkUpdate.Result).Value);
+               TVItemLink tvItemLinkUpdate = (TVItemLink)(((OkObjectResult)actionTVItemLinkUpdate.Result).Value);
+               Assert.NotNull(tvItemLinkUpdate);
 
-                    if (count > 0)
-                    {
-                        query.Skip = 0;
-                        query.Take = 5;
-                        count = (query.Take > count ? query.Take : count);
-
-                        // ok with TVItemLink info
-                        jsonRet = tvItemLinkController.GetTVItemLinkList(query.Language.ToString(), query.Skip, query.Take);
-                        Assert.IsNotNull(jsonRet);
-
-                        ret = jsonRet as OkNegotiatedContentResult<List<TVItemLink>>;
-                        Assert.AreEqual(tvItemLinkList[0].TVItemLinkID, ret.Content[0].TVItemLinkID);
-                        Assert.AreEqual((count > query.Take ? query.Take : count), ret.Content.Count);
-
-                       if (count > 1)
-                       {
-                           query.Skip = 1;
-                           query.Take = 5;
-                           count = (query.Take > count ? query.Take : count);
-
-                           // ok with TVItemLink info
-                           IHttpActionResult jsonRet2 = tvItemLinkController.GetTVItemLinkList(query.Language.ToString(), query.Skip, query.Take);
-                           Assert.IsNotNull(jsonRet2);
-
-                           OkNegotiatedContentResult<List<TVItemLink>> ret2 = jsonRet2 as OkNegotiatedContentResult<List<TVItemLink>>;
-                           Assert.AreEqual(tvItemLinkList[1].TVItemLinkID, ret2.Content[0].TVItemLinkID);
-                           Assert.AreEqual((count > query.Take ? query.Take : count), ret2.Content.Count);
-                       }
-                    }
-                }
+               // testing Delete(TVItemLink tvItemLink)
+               var actionTVItemLinkDelete = await tvItemLinkController.Delete(tvItemLinkUpdate);
+               Assert.Equal(200, ((ObjectResult)actionTVItemLinkDelete.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionTVItemLinkDelete.Result).Value);
+               TVItemLink tvItemLinkDelete = (TVItemLink)(((OkObjectResult)actionTVItemLinkDelete.Result).Value);
+               Assert.NotNull(tvItemLinkDelete);
             }
         }
-        #endregion Tests Generated for Class Controller GetList Command
+        #endregion Functions public
 
-        #region Tests Generated for Class Controller GetWithID Command
-        [TestMethod]
-        public void TVItemLink_Controller_GetTVItemLinkWithID_Test()
+        #region Functions private
+        private async Task<bool> Setup(CultureInfo culture)
         {
-            foreach (LanguageEnum LanguageRequest in AllowableLanguages)
+            Config = new ConfigurationBuilder()
+               .SetBasePath(Directory.GetParent(AppContext.BaseDirectory).FullName)
+               .AddJsonFile("appsettings.json")
+               .Build();
+        
+            Services = new ServiceCollection();
+        
+            IConfigurationSection connectionStringsSection = Config.GetSection("ConnectionStrings");
+            Services.Configure<ConnectionStringsModel>(connectionStringsSection);
+        
+            ConnectionStringsModel connectionStrings = connectionStringsSection.Get<ConnectionStringsModel>();
+        
+            Services.AddSingleton<IConfiguration>(Config);
+        
+            Services.AddDbContext<CSSPDBContext>(options =>
             {
-                foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
-                {
-                    TVItemLinkController tvItemLinkController = new TVItemLinkController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(tvItemLinkController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, tvItemLinkController.DatabaseType);
-
-                    TVItemLink tvItemLinkFirst = new TVItemLink();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-                    {
-                        TVItemLinkService tvItemLinkService = new TVItemLinkService(new Query(), db, ContactID);
-                        tvItemLinkFirst = (from c in db.TVItemLinks select c).FirstOrDefault();
-                    }
-
-                    // ok with TVItemLink info
-                    IHttpActionResult jsonRet = tvItemLinkController.GetTVItemLinkWithID(tvItemLinkFirst.TVItemLinkID);
-                    Assert.IsNotNull(jsonRet);
-
-                    OkNegotiatedContentResult<TVItemLink> Ret = jsonRet as OkNegotiatedContentResult<TVItemLink>;
-                    TVItemLink tvItemLinkRet = Ret.Content;
-                    Assert.AreEqual(tvItemLinkFirst.TVItemLinkID, tvItemLinkRet.TVItemLinkID);
-
-                    BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
-
-                    // Not Found
-                    IHttpActionResult jsonRet2 = tvItemLinkController.GetTVItemLinkWithID(0);
-                    Assert.IsNotNull(jsonRet2);
-
-                    OkNegotiatedContentResult<TVItemLink> tvItemLinkRet2 = jsonRet2 as OkNegotiatedContentResult<TVItemLink>;
-                    Assert.IsNull(tvItemLinkRet2);
-
-                    NotFoundResult notFoundRequest = jsonRet2 as NotFoundResult;
-                    Assert.IsNotNull(notFoundRequest);
-                }
-            }
+                options.UseSqlServer(connectionStrings.TestDB);
+            });
+        
+            Services.AddDbContext<ApplicationDbContext>(options =>
+                options.UseSqlServer(connectionStrings.TestDB));
+        
+            Services.AddIdentityCore<ApplicationUser>()
+                .AddEntityFrameworkStores<ApplicationDbContext>();
+        
+            Services.AddSingleton<IEnums, Enums>();
+            Services.AddSingleton<ILoggedInService, LoggedInService>();
+            Services.AddSingleton<ITVItemLinkService, TVItemLinkService>();
+            Services.AddSingleton<ITVItemLinkController, TVItemLinkController>();
+        
+            Provider = Services.BuildServiceProvider();
+            Assert.NotNull(Provider);
+        
+            loggedInService = Provider.GetService<ILoggedInService>();
+            Assert.NotNull(loggedInService);
+        
+            tvItemLinkService = Provider.GetService<ITVItemLinkService>();
+            Assert.NotNull(tvItemLinkService);
+        
+            await tvItemLinkService.SetCulture(culture);
+        
+            tvItemLinkController = Provider.GetService<ITVItemLinkController>();
+            Assert.NotNull(tvItemLinkController);
+        
+            return await Task.FromResult(true);
         }
-        #endregion Tests Generated for Class Controller GetWithID Command
-
-        #region Tests Generated for Class Controller Post Command
-        [TestMethod]
-        public void TVItemLink_Controller_Post_Test()
-        {
-            foreach (LanguageEnum LanguageRequest in AllowableLanguages)
-            {
-                foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
-                {
-                    TVItemLinkController tvItemLinkController = new TVItemLinkController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(tvItemLinkController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, tvItemLinkController.DatabaseType);
-
-                    TVItemLink tvItemLinkLast = new TVItemLink();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-                    {
-                        Query query = new Query();
-                        query.Language = LanguageRequest;
-                        query.Asc = "";
-                        query.Desc = "";
-
-                        TVItemLinkService tvItemLinkService = new TVItemLinkService(query, db, ContactID);
-                        tvItemLinkLast = (from c in db.TVItemLinks select c).FirstOrDefault();
-                    }
-
-                    // ok with TVItemLink info
-                    IHttpActionResult jsonRet = tvItemLinkController.GetTVItemLinkWithID(tvItemLinkLast.TVItemLinkID);
-                    Assert.IsNotNull(jsonRet);
-
-                    OkNegotiatedContentResult<TVItemLink> Ret = jsonRet as OkNegotiatedContentResult<TVItemLink>;
-                    TVItemLink tvItemLinkRet = Ret.Content;
-                    Assert.AreEqual(tvItemLinkLast.TVItemLinkID, tvItemLinkRet.TVItemLinkID);
-
-                    BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
-
-                    // Post to return CSSPError because TVItemLinkID exist
-                    IHttpActionResult jsonRet2 = tvItemLinkController.Post(tvItemLinkRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet2);
-
-                    OkNegotiatedContentResult<TVItemLink> tvItemLinkRet2 = jsonRet2 as OkNegotiatedContentResult<TVItemLink>;
-                    Assert.IsNull(tvItemLinkRet2);
-
-                    BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
-                    Assert.IsNotNull(badRequest2);
-
-                    // Post to return newly added TVItemLink
-                    tvItemLinkRet.TVItemLinkID = 0;
-                    tvItemLinkController.Request = new System.Net.Http.HttpRequestMessage();
-                    tvItemLinkController.Request.RequestUri = new System.Uri("http://localhost:5000/api/tvItemLink");
-                    IHttpActionResult jsonRet3 = tvItemLinkController.Post(tvItemLinkRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet3);
-
-                    CreatedNegotiatedContentResult<TVItemLink> tvItemLinkRet3 = jsonRet3 as CreatedNegotiatedContentResult<TVItemLink>;
-                    Assert.IsNotNull(tvItemLinkRet3);
-
-                    BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest3);
-
-                    IHttpActionResult jsonRet4 = tvItemLinkController.Delete(tvItemLinkRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet4);
-
-                    OkNegotiatedContentResult<TVItemLink> tvItemLinkRet4 = jsonRet4 as OkNegotiatedContentResult<TVItemLink>;
-                    Assert.IsNotNull(tvItemLinkRet4);
-
-                    BadRequestErrorMessageResult badRequest4 = jsonRet4 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest4);
-                }
-            }
-        }
-        #endregion Tests Generated for Class Controller Post Command
-
-        #region Tests Generated for Class Controller Put Command
-        [TestMethod]
-        public void TVItemLink_Controller_Put_Test()
-        {
-            foreach (LanguageEnum LanguageRequest in AllowableLanguages)
-            {
-                foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
-                {
-                    TVItemLinkController tvItemLinkController = new TVItemLinkController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(tvItemLinkController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, tvItemLinkController.DatabaseType);
-
-                    TVItemLink tvItemLinkLast = new TVItemLink();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-                    {
-                        Query query = new Query();
-                        query.Language = LanguageRequest;
-
-                        TVItemLinkService tvItemLinkService = new TVItemLinkService(query, db, ContactID);
-                        tvItemLinkLast = (from c in db.TVItemLinks select c).FirstOrDefault();
-                    }
-
-                    // ok with TVItemLink info
-                    IHttpActionResult jsonRet = tvItemLinkController.GetTVItemLinkWithID(tvItemLinkLast.TVItemLinkID);
-                    Assert.IsNotNull(jsonRet);
-
-                    OkNegotiatedContentResult<TVItemLink> Ret = jsonRet as OkNegotiatedContentResult<TVItemLink>;
-                    TVItemLink tvItemLinkRet = Ret.Content;
-                    Assert.AreEqual(tvItemLinkLast.TVItemLinkID, tvItemLinkRet.TVItemLinkID);
-
-                    BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
-
-                    // Put to return success
-                    IHttpActionResult jsonRet2 = tvItemLinkController.Put(tvItemLinkRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet2);
-
-                    OkNegotiatedContentResult<TVItemLink> tvItemLinkRet2 = jsonRet2 as OkNegotiatedContentResult<TVItemLink>;
-                    Assert.IsNotNull(tvItemLinkRet2);
-
-                    BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest2);
-
-                    // Put to return CSSPError because TVItemLinkID of 0 does not exist
-                    tvItemLinkRet.TVItemLinkID = 0;
-                    IHttpActionResult jsonRet3 = tvItemLinkController.Put(tvItemLinkRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet3);
-
-                    OkNegotiatedContentResult<TVItemLink> tvItemLinkRet3 = jsonRet3 as OkNegotiatedContentResult<TVItemLink>;
-                    Assert.IsNull(tvItemLinkRet3);
-
-                    BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
-                    Assert.IsNotNull(badRequest3);
-                }
-            }
-        }
-        #endregion Tests Generated for Class Controller Put Command
-
-        #region Tests Generated for Class Controller Delete Command
-        [TestMethod]
-        public void TVItemLink_Controller_Delete_Test()
-        {
-            foreach (LanguageEnum LanguageRequest in AllowableLanguages)
-            {
-                foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
-                {
-                    TVItemLinkController tvItemLinkController = new TVItemLinkController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(tvItemLinkController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, tvItemLinkController.DatabaseType);
-
-                    TVItemLink tvItemLinkLast = new TVItemLink();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-                    {
-                        Query query = new Query();
-                        query.Language = LanguageRequest;
-                        query.Asc = "";
-                        query.Desc = "";
-
-                        TVItemLinkService tvItemLinkService = new TVItemLinkService(query, db, ContactID);
-                        tvItemLinkLast = (from c in db.TVItemLinks select c).FirstOrDefault();
-                    }
-
-                    // ok with TVItemLink info
-                    IHttpActionResult jsonRet = tvItemLinkController.GetTVItemLinkWithID(tvItemLinkLast.TVItemLinkID);
-                    Assert.IsNotNull(jsonRet);
-
-                    OkNegotiatedContentResult<TVItemLink> Ret = jsonRet as OkNegotiatedContentResult<TVItemLink>;
-                    TVItemLink tvItemLinkRet = Ret.Content;
-                    Assert.AreEqual(tvItemLinkLast.TVItemLinkID, tvItemLinkRet.TVItemLinkID);
-
-                    BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
-
-                    // Post to return newly added TVItemLink
-                    tvItemLinkRet.TVItemLinkID = 0;
-                    tvItemLinkController.Request = new System.Net.Http.HttpRequestMessage();
-                    tvItemLinkController.Request.RequestUri = new System.Uri("http://localhost:5000/api/tvItemLink");
-                    IHttpActionResult jsonRet3 = tvItemLinkController.Post(tvItemLinkRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet3);
-
-                    CreatedNegotiatedContentResult<TVItemLink> tvItemLinkRet3 = jsonRet3 as CreatedNegotiatedContentResult<TVItemLink>;
-                    Assert.IsNotNull(tvItemLinkRet3);
-                    TVItemLink tvItemLink = tvItemLinkRet3.Content;
-
-                    BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest3);
-
-                    // Delete to return success
-                    IHttpActionResult jsonRet2 = tvItemLinkController.Delete(tvItemLinkRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet2);
-
-                    OkNegotiatedContentResult<TVItemLink> tvItemLinkRet2 = jsonRet2 as OkNegotiatedContentResult<TVItemLink>;
-                    Assert.IsNotNull(tvItemLinkRet2);
-
-                    BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest2);
-
-                    // Delete to return CSSPError because TVItemLinkID of 0 does not exist
-                    tvItemLinkRet.TVItemLinkID = 0;
-                    IHttpActionResult jsonRet4 = tvItemLinkController.Delete(tvItemLinkRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet4);
-
-                    OkNegotiatedContentResult<TVItemLink> tvItemLinkRet4 = jsonRet4 as OkNegotiatedContentResult<TVItemLink>;
-                    Assert.IsNull(tvItemLinkRet4);
-
-                    BadRequestErrorMessageResult badRequest4 = jsonRet4 as BadRequestErrorMessageResult;
-                    Assert.IsNotNull(badRequest4);
-                }
-            }
-        }
-        #endregion Tests Generated for Class Controller Delete Command
-
+        #endregion Functions private
     }
 }

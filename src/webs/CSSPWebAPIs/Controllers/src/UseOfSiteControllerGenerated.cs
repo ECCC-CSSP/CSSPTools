@@ -1,143 +1,70 @@
-using CSSPEnums;
 using CSSPModels;
 using CSSPServices;
-using System;
+using LoggedInServices.Services;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web.Http;
+using System.Threading.Tasks;
 
 namespace CSSPWebAPI.Controllers
 {
-    [RoutePrefix("api/useOfSite")]
-    public partial class UseOfSiteController : BaseController
+    public partial interface IUseOfSiteController
+    {
+        Task<ActionResult<List<UseOfSite>>> Get();
+        Task<ActionResult<UseOfSite>> Get(int UseOfSiteID);
+        Task<ActionResult<UseOfSite>> Post(UseOfSite useOfSite);
+        Task<ActionResult<UseOfSite>> Put(UseOfSite useOfSite);
+        Task<ActionResult<UseOfSite>> Delete(UseOfSite useOfSite);
+    }
+
+    [Route("api/{culture}/[controller]")]
+    [ApiController]
+    [Authorize]
+    public partial class UseOfSiteController : ControllerBase, IUseOfSiteController
     {
         #region Variables
         #endregion Variables
 
         #region Properties
+        private IUseOfSiteService useOfSiteService { get; }
+        private CSSPDBContext db { get; }
+        private ILoggedInService loggedInService { get; }
         #endregion Properties
 
         #region Constructors
-        public UseOfSiteController() : base()
+        public UseOfSiteController(IUseOfSiteService useOfSiteService, CSSPDBContext db, ILoggedInService loggedInService)
         {
-        }
-        public UseOfSiteController(DatabaseTypeEnum dbt = DatabaseTypeEnum.SqlServerTestDB) : base(dbt)
-        {
+            this.useOfSiteService = useOfSiteService;
+            this.db = db;
+            this.loggedInService = loggedInService;
         }
         #endregion Constructors
 
         #region Functions public
-        // GET api/useOfSite
-        [Route("")]
-        public IHttpActionResult GetUseOfSiteList([FromUri]string lang = "en", [FromUri]int skip = 0, [FromUri]int take = 200,
-            [FromUri]string asc = "", [FromUri]string desc = "", [FromUri]string where = "", [FromUri]string extra = "")
+        [HttpGet]
+        public async Task<ActionResult<List<UseOfSite>>> Get()
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                UseOfSiteService useOfSiteService = new UseOfSiteService(new Query() { Lang = lang }, db, ContactID);
-
-                else // QueryString has no parameter [extra] or extra is empty
-                {
-                   useOfSiteService.Query = useOfSiteService.FillQuery(typeof(UseOfSite), lang, skip, take, asc, desc, where, extra);
-
-                    if (useOfSiteService.Query.HasErrors)
-                    {
-                        return Ok(new List<UseOfSite>()
-                        {
-                            new UseOfSite()
-                            {
-                                HasErrors = useOfSiteService.Query.HasErrors,
-                                ValidationResults = useOfSiteService.Query.ValidationResults,
-                            },
-                        }.ToList());
-                    }
-                    else
-                    {
-                        return Ok(useOfSiteService.GetUseOfSiteList().ToList());
-                    }
-                }
-            }
+            return await useOfSiteService.GetUseOfSiteList();
         }
-        // GET api/useOfSite/1
-        [Route("{UseOfSiteID:int}")]
-        public IHttpActionResult GetUseOfSiteWithID([FromUri]int UseOfSiteID, [FromUri]string lang = "en", [FromUri]string extra = "")
+        [HttpGet("{UseOfSiteID}")]
+        public async Task<ActionResult<UseOfSite>> Get(int UseOfSiteID)
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                UseOfSiteService useOfSiteService = new UseOfSiteService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
-
-                useOfSiteService.Query = useOfSiteService.FillQuery(typeof(UseOfSite), lang, 0, 1, "", "", extra);
-
-                else
-                {
-                    UseOfSite useOfSite = new UseOfSite();
-                    useOfSite = useOfSiteService.GetUseOfSiteWithUseOfSiteID(UseOfSiteID);
-
-                    if (useOfSite == null)
-                    {
-                        return NotFound();
-                    }
-
-                    return Ok(useOfSite);
-                }
-            }
+            return await useOfSiteService.GetUseOfSiteWithUseOfSiteID(UseOfSiteID);
         }
-        // POST api/useOfSite
-        [Route("")]
-        public IHttpActionResult Post([FromBody]UseOfSite useOfSite, [FromUri]string lang = "en")
+        [HttpPost]
+        public async Task<ActionResult<UseOfSite>> Post(UseOfSite useOfSite)
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                UseOfSiteService useOfSiteService = new UseOfSiteService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
-
-                if (!useOfSiteService.Add(useOfSite))
-                {
-                    return BadRequest(String.Join("|||", useOfSite.ValidationResults));
-                }
-                else
-                {
-                    useOfSite.ValidationResults = null;
-                    return Created<UseOfSite>(new Uri(Request.RequestUri, useOfSite.UseOfSiteID.ToString()), useOfSite);
-                }
-            }
+            return await useOfSiteService.Add(useOfSite);
         }
-        // PUT api/useOfSite
-        [Route("")]
-        public IHttpActionResult Put([FromBody]UseOfSite useOfSite, [FromUri]string lang = "en")
+        [HttpPut]
+        public async Task<ActionResult<UseOfSite>> Put(UseOfSite useOfSite)
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                UseOfSiteService useOfSiteService = new UseOfSiteService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
-
-                if (!useOfSiteService.Update(useOfSite))
-                {
-                    return BadRequest(String.Join("|||", useOfSite.ValidationResults));
-                }
-                else
-                {
-                    useOfSite.ValidationResults = null;
-                    return Ok(useOfSite);
-                }
-            }
+            return await useOfSiteService.Update(useOfSite);
         }
-        // DELETE api/useOfSite
-        [Route("")]
-        public IHttpActionResult Delete([FromBody]UseOfSite useOfSite, [FromUri]string lang = "en")
+        [HttpDelete]
+        public async Task<ActionResult<UseOfSite>> Delete(UseOfSite useOfSite)
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                UseOfSiteService useOfSiteService = new UseOfSiteService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
-
-                if (!useOfSiteService.Delete(useOfSite))
-                {
-                    return BadRequest(String.Join("|||", useOfSite.ValidationResults));
-                }
-                else
-                {
-                    useOfSite.ValidationResults = null;
-                    return Ok(useOfSite);
-                }
-            }
+            return await useOfSiteService.Delete(useOfSite);
         }
         #endregion Functions public
 

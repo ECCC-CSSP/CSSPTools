@@ -1,143 +1,70 @@
-using CSSPEnums;
 using CSSPModels;
 using CSSPServices;
-using System;
+using LoggedInServices.Services;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web.Http;
+using System.Threading.Tasks;
 
 namespace CSSPWebAPI.Controllers
 {
-    [RoutePrefix("api/tideLocation")]
-    public partial class TideLocationController : BaseController
+    public partial interface ITideLocationController
+    {
+        Task<ActionResult<List<TideLocation>>> Get();
+        Task<ActionResult<TideLocation>> Get(int TideLocationID);
+        Task<ActionResult<TideLocation>> Post(TideLocation tideLocation);
+        Task<ActionResult<TideLocation>> Put(TideLocation tideLocation);
+        Task<ActionResult<TideLocation>> Delete(TideLocation tideLocation);
+    }
+
+    [Route("api/{culture}/[controller]")]
+    [ApiController]
+    [Authorize]
+    public partial class TideLocationController : ControllerBase, ITideLocationController
     {
         #region Variables
         #endregion Variables
 
         #region Properties
+        private ITideLocationService tideLocationService { get; }
+        private CSSPDBContext db { get; }
+        private ILoggedInService loggedInService { get; }
         #endregion Properties
 
         #region Constructors
-        public TideLocationController() : base()
+        public TideLocationController(ITideLocationService tideLocationService, CSSPDBContext db, ILoggedInService loggedInService)
         {
-        }
-        public TideLocationController(DatabaseTypeEnum dbt = DatabaseTypeEnum.SqlServerTestDB) : base(dbt)
-        {
+            this.tideLocationService = tideLocationService;
+            this.db = db;
+            this.loggedInService = loggedInService;
         }
         #endregion Constructors
 
         #region Functions public
-        // GET api/tideLocation
-        [Route("")]
-        public IHttpActionResult GetTideLocationList([FromUri]string lang = "en", [FromUri]int skip = 0, [FromUri]int take = 200,
-            [FromUri]string asc = "", [FromUri]string desc = "", [FromUri]string where = "", [FromUri]string extra = "")
+        [HttpGet]
+        public async Task<ActionResult<List<TideLocation>>> Get()
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                TideLocationService tideLocationService = new TideLocationService(new Query() { Lang = lang }, db, ContactID);
-
-                else // QueryString has no parameter [extra] or extra is empty
-                {
-                   tideLocationService.Query = tideLocationService.FillQuery(typeof(TideLocation), lang, skip, take, asc, desc, where, extra);
-
-                    if (tideLocationService.Query.HasErrors)
-                    {
-                        return Ok(new List<TideLocation>()
-                        {
-                            new TideLocation()
-                            {
-                                HasErrors = tideLocationService.Query.HasErrors,
-                                ValidationResults = tideLocationService.Query.ValidationResults,
-                            },
-                        }.ToList());
-                    }
-                    else
-                    {
-                        return Ok(tideLocationService.GetTideLocationList().ToList());
-                    }
-                }
-            }
+            return await tideLocationService.GetTideLocationList();
         }
-        // GET api/tideLocation/1
-        [Route("{TideLocationID:int}")]
-        public IHttpActionResult GetTideLocationWithID([FromUri]int TideLocationID, [FromUri]string lang = "en", [FromUri]string extra = "")
+        [HttpGet("{TideLocationID}")]
+        public async Task<ActionResult<TideLocation>> Get(int TideLocationID)
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                TideLocationService tideLocationService = new TideLocationService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
-
-                tideLocationService.Query = tideLocationService.FillQuery(typeof(TideLocation), lang, 0, 1, "", "", extra);
-
-                else
-                {
-                    TideLocation tideLocation = new TideLocation();
-                    tideLocation = tideLocationService.GetTideLocationWithTideLocationID(TideLocationID);
-
-                    if (tideLocation == null)
-                    {
-                        return NotFound();
-                    }
-
-                    return Ok(tideLocation);
-                }
-            }
+            return await tideLocationService.GetTideLocationWithTideLocationID(TideLocationID);
         }
-        // POST api/tideLocation
-        [Route("")]
-        public IHttpActionResult Post([FromBody]TideLocation tideLocation, [FromUri]string lang = "en")
+        [HttpPost]
+        public async Task<ActionResult<TideLocation>> Post(TideLocation tideLocation)
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                TideLocationService tideLocationService = new TideLocationService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
-
-                if (!tideLocationService.Add(tideLocation))
-                {
-                    return BadRequest(String.Join("|||", tideLocation.ValidationResults));
-                }
-                else
-                {
-                    tideLocation.ValidationResults = null;
-                    return Created<TideLocation>(new Uri(Request.RequestUri, tideLocation.TideLocationID.ToString()), tideLocation);
-                }
-            }
+            return await tideLocationService.Add(tideLocation);
         }
-        // PUT api/tideLocation
-        [Route("")]
-        public IHttpActionResult Put([FromBody]TideLocation tideLocation, [FromUri]string lang = "en")
+        [HttpPut]
+        public async Task<ActionResult<TideLocation>> Put(TideLocation tideLocation)
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                TideLocationService tideLocationService = new TideLocationService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
-
-                if (!tideLocationService.Update(tideLocation))
-                {
-                    return BadRequest(String.Join("|||", tideLocation.ValidationResults));
-                }
-                else
-                {
-                    tideLocation.ValidationResults = null;
-                    return Ok(tideLocation);
-                }
-            }
+            return await tideLocationService.Update(tideLocation);
         }
-        // DELETE api/tideLocation
-        [Route("")]
-        public IHttpActionResult Delete([FromBody]TideLocation tideLocation, [FromUri]string lang = "en")
+        [HttpDelete]
+        public async Task<ActionResult<TideLocation>> Delete(TideLocation tideLocation)
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                TideLocationService tideLocationService = new TideLocationService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
-
-                if (!tideLocationService.Delete(tideLocation))
-                {
-                    return BadRequest(String.Join("|||", tideLocation.ValidationResults));
-                }
-                else
-                {
-                    tideLocation.ValidationResults = null;
-                    return Ok(tideLocation);
-                }
-            }
+            return await tideLocationService.Delete(tideLocation);
         }
         #endregion Functions public
 

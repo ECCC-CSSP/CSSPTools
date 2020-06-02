@@ -1,143 +1,70 @@
-using CSSPEnums;
 using CSSPModels;
 using CSSPServices;
-using System;
+using LoggedInServices.Services;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web.Http;
+using System.Threading.Tasks;
 
 namespace CSSPWebAPI.Controllers
 {
-    [RoutePrefix("api/spillLanguage")]
-    public partial class SpillLanguageController : BaseController
+    public partial interface ISpillLanguageController
+    {
+        Task<ActionResult<List<SpillLanguage>>> Get();
+        Task<ActionResult<SpillLanguage>> Get(int SpillLanguageID);
+        Task<ActionResult<SpillLanguage>> Post(SpillLanguage spillLanguage);
+        Task<ActionResult<SpillLanguage>> Put(SpillLanguage spillLanguage);
+        Task<ActionResult<SpillLanguage>> Delete(SpillLanguage spillLanguage);
+    }
+
+    [Route("api/{culture}/[controller]")]
+    [ApiController]
+    [Authorize]
+    public partial class SpillLanguageController : ControllerBase, ISpillLanguageController
     {
         #region Variables
         #endregion Variables
 
         #region Properties
+        private ISpillLanguageService spillLanguageService { get; }
+        private CSSPDBContext db { get; }
+        private ILoggedInService loggedInService { get; }
         #endregion Properties
 
         #region Constructors
-        public SpillLanguageController() : base()
+        public SpillLanguageController(ISpillLanguageService spillLanguageService, CSSPDBContext db, ILoggedInService loggedInService)
         {
-        }
-        public SpillLanguageController(DatabaseTypeEnum dbt = DatabaseTypeEnum.SqlServerTestDB) : base(dbt)
-        {
+            this.spillLanguageService = spillLanguageService;
+            this.db = db;
+            this.loggedInService = loggedInService;
         }
         #endregion Constructors
 
         #region Functions public
-        // GET api/spillLanguage
-        [Route("")]
-        public IHttpActionResult GetSpillLanguageList([FromUri]string lang = "en", [FromUri]int skip = 0, [FromUri]int take = 200,
-            [FromUri]string asc = "", [FromUri]string desc = "", [FromUri]string where = "", [FromUri]string extra = "")
+        [HttpGet]
+        public async Task<ActionResult<List<SpillLanguage>>> Get()
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                SpillLanguageService spillLanguageService = new SpillLanguageService(new Query() { Lang = lang }, db, ContactID);
-
-                else // QueryString has no parameter [extra] or extra is empty
-                {
-                   spillLanguageService.Query = spillLanguageService.FillQuery(typeof(SpillLanguage), lang, skip, take, asc, desc, where, extra);
-
-                    if (spillLanguageService.Query.HasErrors)
-                    {
-                        return Ok(new List<SpillLanguage>()
-                        {
-                            new SpillLanguage()
-                            {
-                                HasErrors = spillLanguageService.Query.HasErrors,
-                                ValidationResults = spillLanguageService.Query.ValidationResults,
-                            },
-                        }.ToList());
-                    }
-                    else
-                    {
-                        return Ok(spillLanguageService.GetSpillLanguageList().ToList());
-                    }
-                }
-            }
+            return await spillLanguageService.GetSpillLanguageList();
         }
-        // GET api/spillLanguage/1
-        [Route("{SpillLanguageID:int}")]
-        public IHttpActionResult GetSpillLanguageWithID([FromUri]int SpillLanguageID, [FromUri]string lang = "en", [FromUri]string extra = "")
+        [HttpGet("{SpillLanguageID}")]
+        public async Task<ActionResult<SpillLanguage>> Get(int SpillLanguageID)
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                SpillLanguageService spillLanguageService = new SpillLanguageService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
-
-                spillLanguageService.Query = spillLanguageService.FillQuery(typeof(SpillLanguage), lang, 0, 1, "", "", extra);
-
-                else
-                {
-                    SpillLanguage spillLanguage = new SpillLanguage();
-                    spillLanguage = spillLanguageService.GetSpillLanguageWithSpillLanguageID(SpillLanguageID);
-
-                    if (spillLanguage == null)
-                    {
-                        return NotFound();
-                    }
-
-                    return Ok(spillLanguage);
-                }
-            }
+            return await spillLanguageService.GetSpillLanguageWithSpillLanguageID(SpillLanguageID);
         }
-        // POST api/spillLanguage
-        [Route("")]
-        public IHttpActionResult Post([FromBody]SpillLanguage spillLanguage, [FromUri]string lang = "en")
+        [HttpPost]
+        public async Task<ActionResult<SpillLanguage>> Post(SpillLanguage spillLanguage)
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                SpillLanguageService spillLanguageService = new SpillLanguageService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
-
-                if (!spillLanguageService.Add(spillLanguage))
-                {
-                    return BadRequest(String.Join("|||", spillLanguage.ValidationResults));
-                }
-                else
-                {
-                    spillLanguage.ValidationResults = null;
-                    return Created<SpillLanguage>(new Uri(Request.RequestUri, spillLanguage.SpillLanguageID.ToString()), spillLanguage);
-                }
-            }
+            return await spillLanguageService.Add(spillLanguage);
         }
-        // PUT api/spillLanguage
-        [Route("")]
-        public IHttpActionResult Put([FromBody]SpillLanguage spillLanguage, [FromUri]string lang = "en")
+        [HttpPut]
+        public async Task<ActionResult<SpillLanguage>> Put(SpillLanguage spillLanguage)
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                SpillLanguageService spillLanguageService = new SpillLanguageService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
-
-                if (!spillLanguageService.Update(spillLanguage))
-                {
-                    return BadRequest(String.Join("|||", spillLanguage.ValidationResults));
-                }
-                else
-                {
-                    spillLanguage.ValidationResults = null;
-                    return Ok(spillLanguage);
-                }
-            }
+            return await spillLanguageService.Update(spillLanguage);
         }
-        // DELETE api/spillLanguage
-        [Route("")]
-        public IHttpActionResult Delete([FromBody]SpillLanguage spillLanguage, [FromUri]string lang = "en")
+        [HttpDelete]
+        public async Task<ActionResult<SpillLanguage>> Delete(SpillLanguage spillLanguage)
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                SpillLanguageService spillLanguageService = new SpillLanguageService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
-
-                if (!spillLanguageService.Delete(spillLanguage))
-                {
-                    return BadRequest(String.Join("|||", spillLanguage.ValidationResults));
-                }
-                else
-                {
-                    spillLanguage.ValidationResults = null;
-                    return Ok(spillLanguage);
-                }
-            }
+            return await spillLanguageService.Delete(spillLanguage);
         }
         #endregion Functions public
 

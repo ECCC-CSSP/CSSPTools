@@ -1,143 +1,70 @@
-using CSSPEnums;
 using CSSPModels;
 using CSSPServices;
-using System;
+using LoggedInServices.Services;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web.Http;
+using System.Threading.Tasks;
 
 namespace CSSPWebAPI.Controllers
 {
-    [RoutePrefix("api/samplingPlanEmail")]
-    public partial class SamplingPlanEmailController : BaseController
+    public partial interface ISamplingPlanEmailController
+    {
+        Task<ActionResult<List<SamplingPlanEmail>>> Get();
+        Task<ActionResult<SamplingPlanEmail>> Get(int SamplingPlanEmailID);
+        Task<ActionResult<SamplingPlanEmail>> Post(SamplingPlanEmail samplingPlanEmail);
+        Task<ActionResult<SamplingPlanEmail>> Put(SamplingPlanEmail samplingPlanEmail);
+        Task<ActionResult<SamplingPlanEmail>> Delete(SamplingPlanEmail samplingPlanEmail);
+    }
+
+    [Route("api/{culture}/[controller]")]
+    [ApiController]
+    [Authorize]
+    public partial class SamplingPlanEmailController : ControllerBase, ISamplingPlanEmailController
     {
         #region Variables
         #endregion Variables
 
         #region Properties
+        private ISamplingPlanEmailService samplingPlanEmailService { get; }
+        private CSSPDBContext db { get; }
+        private ILoggedInService loggedInService { get; }
         #endregion Properties
 
         #region Constructors
-        public SamplingPlanEmailController() : base()
+        public SamplingPlanEmailController(ISamplingPlanEmailService samplingPlanEmailService, CSSPDBContext db, ILoggedInService loggedInService)
         {
-        }
-        public SamplingPlanEmailController(DatabaseTypeEnum dbt = DatabaseTypeEnum.SqlServerTestDB) : base(dbt)
-        {
+            this.samplingPlanEmailService = samplingPlanEmailService;
+            this.db = db;
+            this.loggedInService = loggedInService;
         }
         #endregion Constructors
 
         #region Functions public
-        // GET api/samplingPlanEmail
-        [Route("")]
-        public IHttpActionResult GetSamplingPlanEmailList([FromUri]string lang = "en", [FromUri]int skip = 0, [FromUri]int take = 200,
-            [FromUri]string asc = "", [FromUri]string desc = "", [FromUri]string where = "", [FromUri]string extra = "")
+        [HttpGet]
+        public async Task<ActionResult<List<SamplingPlanEmail>>> Get()
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                SamplingPlanEmailService samplingPlanEmailService = new SamplingPlanEmailService(new Query() { Lang = lang }, db, ContactID);
-
-                else // QueryString has no parameter [extra] or extra is empty
-                {
-                   samplingPlanEmailService.Query = samplingPlanEmailService.FillQuery(typeof(SamplingPlanEmail), lang, skip, take, asc, desc, where, extra);
-
-                    if (samplingPlanEmailService.Query.HasErrors)
-                    {
-                        return Ok(new List<SamplingPlanEmail>()
-                        {
-                            new SamplingPlanEmail()
-                            {
-                                HasErrors = samplingPlanEmailService.Query.HasErrors,
-                                ValidationResults = samplingPlanEmailService.Query.ValidationResults,
-                            },
-                        }.ToList());
-                    }
-                    else
-                    {
-                        return Ok(samplingPlanEmailService.GetSamplingPlanEmailList().ToList());
-                    }
-                }
-            }
+            return await samplingPlanEmailService.GetSamplingPlanEmailList();
         }
-        // GET api/samplingPlanEmail/1
-        [Route("{SamplingPlanEmailID:int}")]
-        public IHttpActionResult GetSamplingPlanEmailWithID([FromUri]int SamplingPlanEmailID, [FromUri]string lang = "en", [FromUri]string extra = "")
+        [HttpGet("{SamplingPlanEmailID}")]
+        public async Task<ActionResult<SamplingPlanEmail>> Get(int SamplingPlanEmailID)
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                SamplingPlanEmailService samplingPlanEmailService = new SamplingPlanEmailService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
-
-                samplingPlanEmailService.Query = samplingPlanEmailService.FillQuery(typeof(SamplingPlanEmail), lang, 0, 1, "", "", extra);
-
-                else
-                {
-                    SamplingPlanEmail samplingPlanEmail = new SamplingPlanEmail();
-                    samplingPlanEmail = samplingPlanEmailService.GetSamplingPlanEmailWithSamplingPlanEmailID(SamplingPlanEmailID);
-
-                    if (samplingPlanEmail == null)
-                    {
-                        return NotFound();
-                    }
-
-                    return Ok(samplingPlanEmail);
-                }
-            }
+            return await samplingPlanEmailService.GetSamplingPlanEmailWithSamplingPlanEmailID(SamplingPlanEmailID);
         }
-        // POST api/samplingPlanEmail
-        [Route("")]
-        public IHttpActionResult Post([FromBody]SamplingPlanEmail samplingPlanEmail, [FromUri]string lang = "en")
+        [HttpPost]
+        public async Task<ActionResult<SamplingPlanEmail>> Post(SamplingPlanEmail samplingPlanEmail)
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                SamplingPlanEmailService samplingPlanEmailService = new SamplingPlanEmailService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
-
-                if (!samplingPlanEmailService.Add(samplingPlanEmail))
-                {
-                    return BadRequest(String.Join("|||", samplingPlanEmail.ValidationResults));
-                }
-                else
-                {
-                    samplingPlanEmail.ValidationResults = null;
-                    return Created<SamplingPlanEmail>(new Uri(Request.RequestUri, samplingPlanEmail.SamplingPlanEmailID.ToString()), samplingPlanEmail);
-                }
-            }
+            return await samplingPlanEmailService.Add(samplingPlanEmail);
         }
-        // PUT api/samplingPlanEmail
-        [Route("")]
-        public IHttpActionResult Put([FromBody]SamplingPlanEmail samplingPlanEmail, [FromUri]string lang = "en")
+        [HttpPut]
+        public async Task<ActionResult<SamplingPlanEmail>> Put(SamplingPlanEmail samplingPlanEmail)
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                SamplingPlanEmailService samplingPlanEmailService = new SamplingPlanEmailService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
-
-                if (!samplingPlanEmailService.Update(samplingPlanEmail))
-                {
-                    return BadRequest(String.Join("|||", samplingPlanEmail.ValidationResults));
-                }
-                else
-                {
-                    samplingPlanEmail.ValidationResults = null;
-                    return Ok(samplingPlanEmail);
-                }
-            }
+            return await samplingPlanEmailService.Update(samplingPlanEmail);
         }
-        // DELETE api/samplingPlanEmail
-        [Route("")]
-        public IHttpActionResult Delete([FromBody]SamplingPlanEmail samplingPlanEmail, [FromUri]string lang = "en")
+        [HttpDelete]
+        public async Task<ActionResult<SamplingPlanEmail>> Delete(SamplingPlanEmail samplingPlanEmail)
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                SamplingPlanEmailService samplingPlanEmailService = new SamplingPlanEmailService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
-
-                if (!samplingPlanEmailService.Delete(samplingPlanEmail))
-                {
-                    return BadRequest(String.Join("|||", samplingPlanEmail.ValidationResults));
-                }
-                else
-                {
-                    samplingPlanEmail.ValidationResults = null;
-                    return Ok(samplingPlanEmail);
-                }
-            }
+            return await samplingPlanEmailService.Delete(samplingPlanEmail);
         }
         #endregion Functions public
 

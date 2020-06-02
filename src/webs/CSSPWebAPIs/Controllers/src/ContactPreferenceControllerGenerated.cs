@@ -1,143 +1,70 @@
-using CSSPEnums;
 using CSSPModels;
 using CSSPServices;
-using System;
+using LoggedInServices.Services;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web.Http;
+using System.Threading.Tasks;
 
 namespace CSSPWebAPI.Controllers
 {
-    [RoutePrefix("api/contactPreference")]
-    public partial class ContactPreferenceController : BaseController
+    public partial interface IContactPreferenceController
+    {
+        Task<ActionResult<List<ContactPreference>>> Get();
+        Task<ActionResult<ContactPreference>> Get(int ContactPreferenceID);
+        Task<ActionResult<ContactPreference>> Post(ContactPreference contactPreference);
+        Task<ActionResult<ContactPreference>> Put(ContactPreference contactPreference);
+        Task<ActionResult<ContactPreference>> Delete(ContactPreference contactPreference);
+    }
+
+    [Route("api/{culture}/[controller]")]
+    [ApiController]
+    [Authorize]
+    public partial class ContactPreferenceController : ControllerBase, IContactPreferenceController
     {
         #region Variables
         #endregion Variables
 
         #region Properties
+        private IContactPreferenceService contactPreferenceService { get; }
+        private CSSPDBContext db { get; }
+        private ILoggedInService loggedInService { get; }
         #endregion Properties
 
         #region Constructors
-        public ContactPreferenceController() : base()
+        public ContactPreferenceController(IContactPreferenceService contactPreferenceService, CSSPDBContext db, ILoggedInService loggedInService)
         {
-        }
-        public ContactPreferenceController(DatabaseTypeEnum dbt = DatabaseTypeEnum.SqlServerTestDB) : base(dbt)
-        {
+            this.contactPreferenceService = contactPreferenceService;
+            this.db = db;
+            this.loggedInService = loggedInService;
         }
         #endregion Constructors
 
         #region Functions public
-        // GET api/contactPreference
-        [Route("")]
-        public IHttpActionResult GetContactPreferenceList([FromUri]string lang = "en", [FromUri]int skip = 0, [FromUri]int take = 200,
-            [FromUri]string asc = "", [FromUri]string desc = "", [FromUri]string where = "", [FromUri]string extra = "")
+        [HttpGet]
+        public async Task<ActionResult<List<ContactPreference>>> Get()
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                ContactPreferenceService contactPreferenceService = new ContactPreferenceService(new Query() { Lang = lang }, db, ContactID);
-
-                else // QueryString has no parameter [extra] or extra is empty
-                {
-                   contactPreferenceService.Query = contactPreferenceService.FillQuery(typeof(ContactPreference), lang, skip, take, asc, desc, where, extra);
-
-                    if (contactPreferenceService.Query.HasErrors)
-                    {
-                        return Ok(new List<ContactPreference>()
-                        {
-                            new ContactPreference()
-                            {
-                                HasErrors = contactPreferenceService.Query.HasErrors,
-                                ValidationResults = contactPreferenceService.Query.ValidationResults,
-                            },
-                        }.ToList());
-                    }
-                    else
-                    {
-                        return Ok(contactPreferenceService.GetContactPreferenceList().ToList());
-                    }
-                }
-            }
+            return await contactPreferenceService.GetContactPreferenceList();
         }
-        // GET api/contactPreference/1
-        [Route("{ContactPreferenceID:int}")]
-        public IHttpActionResult GetContactPreferenceWithID([FromUri]int ContactPreferenceID, [FromUri]string lang = "en", [FromUri]string extra = "")
+        [HttpGet("{ContactPreferenceID}")]
+        public async Task<ActionResult<ContactPreference>> Get(int ContactPreferenceID)
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                ContactPreferenceService contactPreferenceService = new ContactPreferenceService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
-
-                contactPreferenceService.Query = contactPreferenceService.FillQuery(typeof(ContactPreference), lang, 0, 1, "", "", extra);
-
-                else
-                {
-                    ContactPreference contactPreference = new ContactPreference();
-                    contactPreference = contactPreferenceService.GetContactPreferenceWithContactPreferenceID(ContactPreferenceID);
-
-                    if (contactPreference == null)
-                    {
-                        return NotFound();
-                    }
-
-                    return Ok(contactPreference);
-                }
-            }
+            return await contactPreferenceService.GetContactPreferenceWithContactPreferenceID(ContactPreferenceID);
         }
-        // POST api/contactPreference
-        [Route("")]
-        public IHttpActionResult Post([FromBody]ContactPreference contactPreference, [FromUri]string lang = "en")
+        [HttpPost]
+        public async Task<ActionResult<ContactPreference>> Post(ContactPreference contactPreference)
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                ContactPreferenceService contactPreferenceService = new ContactPreferenceService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
-
-                if (!contactPreferenceService.Add(contactPreference))
-                {
-                    return BadRequest(String.Join("|||", contactPreference.ValidationResults));
-                }
-                else
-                {
-                    contactPreference.ValidationResults = null;
-                    return Created<ContactPreference>(new Uri(Request.RequestUri, contactPreference.ContactPreferenceID.ToString()), contactPreference);
-                }
-            }
+            return await contactPreferenceService.Add(contactPreference);
         }
-        // PUT api/contactPreference
-        [Route("")]
-        public IHttpActionResult Put([FromBody]ContactPreference contactPreference, [FromUri]string lang = "en")
+        [HttpPut]
+        public async Task<ActionResult<ContactPreference>> Put(ContactPreference contactPreference)
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                ContactPreferenceService contactPreferenceService = new ContactPreferenceService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
-
-                if (!contactPreferenceService.Update(contactPreference))
-                {
-                    return BadRequest(String.Join("|||", contactPreference.ValidationResults));
-                }
-                else
-                {
-                    contactPreference.ValidationResults = null;
-                    return Ok(contactPreference);
-                }
-            }
+            return await contactPreferenceService.Update(contactPreference);
         }
-        // DELETE api/contactPreference
-        [Route("")]
-        public IHttpActionResult Delete([FromBody]ContactPreference contactPreference, [FromUri]string lang = "en")
+        [HttpDelete]
+        public async Task<ActionResult<ContactPreference>> Delete(ContactPreference contactPreference)
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                ContactPreferenceService contactPreferenceService = new ContactPreferenceService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
-
-                if (!contactPreferenceService.Delete(contactPreference))
-                {
-                    return BadRequest(String.Join("|||", contactPreference.ValidationResults));
-                }
-                else
-                {
-                    contactPreference.ValidationResults = null;
-                    return Ok(contactPreference);
-                }
-            }
+            return await contactPreferenceService.Delete(contactPreference);
         }
         #endregion Functions public
 

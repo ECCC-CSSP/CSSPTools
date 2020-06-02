@@ -2,350 +2,157 @@ using CSSPEnums;
 using CSSPModels;
 using CSSPServices;
 using CSSPWebAPI.Controllers;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using LoggedInServices.Services;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using System;
 using System.Collections.Generic;
+using System.Globalization;
+using System.IO;
 using System.Linq;
-using System.Web.Http;
-using System.Web.Http.Results;
+using System.Threading.Tasks;
+using System.Transactions;
+using UserServices.Models;
+using Xunit;
 
-namespace CSSPWebAPI.Tests.Controllers
+namespace CSSPWebAPIs.Tests.Controllers
 {
-    [TestClass]
-    public partial class AppErrLogControllerTest : BaseControllerTest
+    public partial class AppErrLogControllerTest
     {
         #region Variables
         #endregion Variables
 
         #region Properties
+        private IConfiguration Config { get; set; }
+        private IServiceProvider Provider { get; set; }
+        private IServiceCollection Services { get; set; }
+        private CSSPDBContext db { get; set; }
+        private ILoggedInService loggedInService { get; set; }
+        private IAppErrLogService appErrLogService { get; set; }
+        private IAppErrLogController appErrLogController { get; set; }
         #endregion Properties
 
         #region Constructors
-        public AppErrLogControllerTest() : base()
+        public AppErrLogControllerTest()
         {
         }
         #endregion Constructors
 
-        #region Tests Generated for Class Controller GetList Command
-        [TestMethod]
-        public void AppErrLog_Controller_GetAppErrLogList_Test()
+        #region Functions public
+        [Theory]
+        [InlineData("en-CA")]
+        [InlineData("fr-CA")]
+        public async Task AppErrLogController_Constructor_Good_Test(string culture)
         {
-            foreach (LanguageEnum LanguageRequest in AllowableLanguages)
+            bool retBool = await Setup(new CultureInfo(culture));
+            Assert.True(retBool);
+            Assert.NotNull(loggedInService);
+            Assert.NotNull(appErrLogService);
+            Assert.NotNull(appErrLogController);
+        }
+        [Theory]
+        [InlineData("en-CA")]
+        [InlineData("fr-CA")]
+        public async Task AppErrLogController_CRUD_Good_Test(string culture)
+        {
+            bool retBool = await Setup(new CultureInfo(culture));
+            Assert.True(retBool);
+
+            using (TransactionScope ts = new TransactionScope())
             {
-                foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
-                {
-                    AppErrLogController appErrLogController = new AppErrLogController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(appErrLogController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, appErrLogController.DatabaseType);
+                // testing Get
+               var actionAppErrLogList = await appErrLogController.Get();
+               Assert.Equal(200, ((ObjectResult)actionAppErrLogList.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionAppErrLogList.Result).Value);
+               List<AppErrLog> appErrLogList = (List<AppErrLog>)(((OkObjectResult)actionAppErrLogList.Result).Value);
 
-                    AppErrLog appErrLogFirst = new AppErrLog();
-                    int count = -1;
-                    Query query = new Query();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseTypeEnum.SqlServerTestDB))
-                    {
-                        AppErrLogService appErrLogService = new AppErrLogService(query, db, ContactID);
-                        appErrLogFirst = (from c in db.AppErrLogs select c).FirstOrDefault();
-                        count = (from c in db.AppErrLogs select c).Count();
-                        count = (query.Take > count ? count : query.Take);
-                    }
+               int count = ((List<AppErrLog>)((OkObjectResult)actionAppErrLogList.Result).Value).Count();
+                Assert.True(count > 0);
 
-                    // ok with AppErrLog info
-                    IHttpActionResult jsonRet = appErrLogController.GetAppErrLogList();
-                    Assert.IsNotNull(jsonRet);
+               // testing Get(AppErrLogID)
+               var actionAppErrLog = await appErrLogController.Get(appErrLogList[0].AppErrLogID);
+               Assert.Equal(200, ((ObjectResult)actionAppErrLog.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionAppErrLog.Result).Value);
+               AppErrLog appErrLog = (AppErrLog)(((OkObjectResult)actionAppErrLog.Result).Value);
+               Assert.NotNull(appErrLog);
+               Assert.Equal(appErrLogList[0].AppErrLogID, appErrLog.AppErrLogID);
 
-                    OkNegotiatedContentResult<List<AppErrLog>> ret = jsonRet as OkNegotiatedContentResult<List<AppErrLog>>;
-                    Assert.AreEqual(appErrLogFirst.AppErrLogID, ret.Content[0].AppErrLogID);
-                    Assert.AreEqual((count > query.Take ? query.Take : count), ret.Content.Count);
+               // testing Post(AppErrLog appErrLog)
+               appErrLog.AppErrLogID = 0;
+               var actionAppErrLogNew = await appErrLogController.Post(appErrLog);
+               Assert.Equal(200, ((ObjectResult)actionAppErrLogNew.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionAppErrLogNew.Result).Value);
+               AppErrLog appErrLogNew = (AppErrLog)(((OkObjectResult)actionAppErrLogNew.Result).Value);
+               Assert.NotNull(appErrLogNew);
 
-                    List<AppErrLog> appErrLogList = new List<AppErrLog>();
-                    count = -1;
-                    query = new Query();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseTypeEnum.SqlServerTestDB))
-                    {
-                        AppErrLogService appErrLogService = new AppErrLogService(query, db, ContactID);
-                        appErrLogList = (from c in db.AppErrLogs select c).OrderBy(c => c.AppErrLogID).Skip(0).Take(2).ToList();
-                        count = (from c in db.AppErrLogs select c).Count();
-                    }
+               // testing Put(AppErrLog appErrLog)
+               var actionAppErrLogUpdate = await appErrLogController.Put(appErrLogNew);
+               Assert.Equal(200, ((ObjectResult)actionAppErrLogUpdate.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionAppErrLogUpdate.Result).Value);
+               AppErrLog appErrLogUpdate = (AppErrLog)(((OkObjectResult)actionAppErrLogUpdate.Result).Value);
+               Assert.NotNull(appErrLogUpdate);
 
-                    if (count > 0)
-                    {
-                        query.Skip = 0;
-                        query.Take = 5;
-                        count = (query.Take > count ? query.Take : count);
-
-                        // ok with AppErrLog info
-                        jsonRet = appErrLogController.GetAppErrLogList(query.Language.ToString(), query.Skip, query.Take);
-                        Assert.IsNotNull(jsonRet);
-
-                        ret = jsonRet as OkNegotiatedContentResult<List<AppErrLog>>;
-                        Assert.AreEqual(appErrLogList[0].AppErrLogID, ret.Content[0].AppErrLogID);
-                        Assert.AreEqual((count > query.Take ? query.Take : count), ret.Content.Count);
-
-                       if (count > 1)
-                       {
-                           query.Skip = 1;
-                           query.Take = 5;
-                           count = (query.Take > count ? query.Take : count);
-
-                           // ok with AppErrLog info
-                           IHttpActionResult jsonRet2 = appErrLogController.GetAppErrLogList(query.Language.ToString(), query.Skip, query.Take);
-                           Assert.IsNotNull(jsonRet2);
-
-                           OkNegotiatedContentResult<List<AppErrLog>> ret2 = jsonRet2 as OkNegotiatedContentResult<List<AppErrLog>>;
-                           Assert.AreEqual(appErrLogList[1].AppErrLogID, ret2.Content[0].AppErrLogID);
-                           Assert.AreEqual((count > query.Take ? query.Take : count), ret2.Content.Count);
-                       }
-                    }
-                }
+               // testing Delete(AppErrLog appErrLog)
+               var actionAppErrLogDelete = await appErrLogController.Delete(appErrLogUpdate);
+               Assert.Equal(200, ((ObjectResult)actionAppErrLogDelete.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionAppErrLogDelete.Result).Value);
+               AppErrLog appErrLogDelete = (AppErrLog)(((OkObjectResult)actionAppErrLogDelete.Result).Value);
+               Assert.NotNull(appErrLogDelete);
             }
         }
-        #endregion Tests Generated for Class Controller GetList Command
+        #endregion Functions public
 
-        #region Tests Generated for Class Controller GetWithID Command
-        [TestMethod]
-        public void AppErrLog_Controller_GetAppErrLogWithID_Test()
+        #region Functions private
+        private async Task<bool> Setup(CultureInfo culture)
         {
-            foreach (LanguageEnum LanguageRequest in AllowableLanguages)
+            Config = new ConfigurationBuilder()
+               .SetBasePath(Directory.GetParent(AppContext.BaseDirectory).FullName)
+               .AddJsonFile("appsettings.json")
+               .Build();
+        
+            Services = new ServiceCollection();
+        
+            IConfigurationSection connectionStringsSection = Config.GetSection("ConnectionStrings");
+            Services.Configure<ConnectionStringsModel>(connectionStringsSection);
+        
+            ConnectionStringsModel connectionStrings = connectionStringsSection.Get<ConnectionStringsModel>();
+        
+            Services.AddSingleton<IConfiguration>(Config);
+        
+            Services.AddDbContext<CSSPDBContext>(options =>
             {
-                foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
-                {
-                    AppErrLogController appErrLogController = new AppErrLogController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(appErrLogController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, appErrLogController.DatabaseType);
-
-                    AppErrLog appErrLogFirst = new AppErrLog();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-                    {
-                        AppErrLogService appErrLogService = new AppErrLogService(new Query(), db, ContactID);
-                        appErrLogFirst = (from c in db.AppErrLogs select c).FirstOrDefault();
-                    }
-
-                    // ok with AppErrLog info
-                    IHttpActionResult jsonRet = appErrLogController.GetAppErrLogWithID(appErrLogFirst.AppErrLogID);
-                    Assert.IsNotNull(jsonRet);
-
-                    OkNegotiatedContentResult<AppErrLog> Ret = jsonRet as OkNegotiatedContentResult<AppErrLog>;
-                    AppErrLog appErrLogRet = Ret.Content;
-                    Assert.AreEqual(appErrLogFirst.AppErrLogID, appErrLogRet.AppErrLogID);
-
-                    BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
-
-                    // Not Found
-                    IHttpActionResult jsonRet2 = appErrLogController.GetAppErrLogWithID(0);
-                    Assert.IsNotNull(jsonRet2);
-
-                    OkNegotiatedContentResult<AppErrLog> appErrLogRet2 = jsonRet2 as OkNegotiatedContentResult<AppErrLog>;
-                    Assert.IsNull(appErrLogRet2);
-
-                    NotFoundResult notFoundRequest = jsonRet2 as NotFoundResult;
-                    Assert.IsNotNull(notFoundRequest);
-                }
-            }
+                options.UseSqlServer(connectionStrings.TestDB);
+            });
+        
+            Services.AddDbContext<ApplicationDbContext>(options =>
+                options.UseSqlServer(connectionStrings.TestDB));
+        
+            Services.AddIdentityCore<ApplicationUser>()
+                .AddEntityFrameworkStores<ApplicationDbContext>();
+        
+            Services.AddSingleton<IEnums, Enums>();
+            Services.AddSingleton<ILoggedInService, LoggedInService>();
+            Services.AddSingleton<IAppErrLogService, AppErrLogService>();
+            Services.AddSingleton<IAppErrLogController, AppErrLogController>();
+        
+            Provider = Services.BuildServiceProvider();
+            Assert.NotNull(Provider);
+        
+            loggedInService = Provider.GetService<ILoggedInService>();
+            Assert.NotNull(loggedInService);
+        
+            appErrLogService = Provider.GetService<IAppErrLogService>();
+            Assert.NotNull(appErrLogService);
+        
+            await appErrLogService.SetCulture(culture);
+        
+            appErrLogController = Provider.GetService<IAppErrLogController>();
+            Assert.NotNull(appErrLogController);
+        
+            return await Task.FromResult(true);
         }
-        #endregion Tests Generated for Class Controller GetWithID Command
-
-        #region Tests Generated for Class Controller Post Command
-        [TestMethod]
-        public void AppErrLog_Controller_Post_Test()
-        {
-            foreach (LanguageEnum LanguageRequest in AllowableLanguages)
-            {
-                foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
-                {
-                    AppErrLogController appErrLogController = new AppErrLogController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(appErrLogController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, appErrLogController.DatabaseType);
-
-                    AppErrLog appErrLogLast = new AppErrLog();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-                    {
-                        Query query = new Query();
-                        query.Language = LanguageRequest;
-                        query.Asc = "";
-                        query.Desc = "";
-
-                        AppErrLogService appErrLogService = new AppErrLogService(query, db, ContactID);
-                        appErrLogLast = (from c in db.AppErrLogs select c).FirstOrDefault();
-                    }
-
-                    // ok with AppErrLog info
-                    IHttpActionResult jsonRet = appErrLogController.GetAppErrLogWithID(appErrLogLast.AppErrLogID);
-                    Assert.IsNotNull(jsonRet);
-
-                    OkNegotiatedContentResult<AppErrLog> Ret = jsonRet as OkNegotiatedContentResult<AppErrLog>;
-                    AppErrLog appErrLogRet = Ret.Content;
-                    Assert.AreEqual(appErrLogLast.AppErrLogID, appErrLogRet.AppErrLogID);
-
-                    BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
-
-                    // Post to return CSSPError because AppErrLogID exist
-                    IHttpActionResult jsonRet2 = appErrLogController.Post(appErrLogRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet2);
-
-                    OkNegotiatedContentResult<AppErrLog> appErrLogRet2 = jsonRet2 as OkNegotiatedContentResult<AppErrLog>;
-                    Assert.IsNull(appErrLogRet2);
-
-                    BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
-                    Assert.IsNotNull(badRequest2);
-
-                    // Post to return newly added AppErrLog
-                    appErrLogRet.AppErrLogID = 0;
-                    appErrLogController.Request = new System.Net.Http.HttpRequestMessage();
-                    appErrLogController.Request.RequestUri = new System.Uri("http://localhost:5000/api/appErrLog");
-                    IHttpActionResult jsonRet3 = appErrLogController.Post(appErrLogRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet3);
-
-                    CreatedNegotiatedContentResult<AppErrLog> appErrLogRet3 = jsonRet3 as CreatedNegotiatedContentResult<AppErrLog>;
-                    Assert.IsNotNull(appErrLogRet3);
-
-                    BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest3);
-
-                    IHttpActionResult jsonRet4 = appErrLogController.Delete(appErrLogRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet4);
-
-                    OkNegotiatedContentResult<AppErrLog> appErrLogRet4 = jsonRet4 as OkNegotiatedContentResult<AppErrLog>;
-                    Assert.IsNotNull(appErrLogRet4);
-
-                    BadRequestErrorMessageResult badRequest4 = jsonRet4 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest4);
-                }
-            }
-        }
-        #endregion Tests Generated for Class Controller Post Command
-
-        #region Tests Generated for Class Controller Put Command
-        [TestMethod]
-        public void AppErrLog_Controller_Put_Test()
-        {
-            foreach (LanguageEnum LanguageRequest in AllowableLanguages)
-            {
-                foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
-                {
-                    AppErrLogController appErrLogController = new AppErrLogController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(appErrLogController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, appErrLogController.DatabaseType);
-
-                    AppErrLog appErrLogLast = new AppErrLog();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-                    {
-                        Query query = new Query();
-                        query.Language = LanguageRequest;
-
-                        AppErrLogService appErrLogService = new AppErrLogService(query, db, ContactID);
-                        appErrLogLast = (from c in db.AppErrLogs select c).FirstOrDefault();
-                    }
-
-                    // ok with AppErrLog info
-                    IHttpActionResult jsonRet = appErrLogController.GetAppErrLogWithID(appErrLogLast.AppErrLogID);
-                    Assert.IsNotNull(jsonRet);
-
-                    OkNegotiatedContentResult<AppErrLog> Ret = jsonRet as OkNegotiatedContentResult<AppErrLog>;
-                    AppErrLog appErrLogRet = Ret.Content;
-                    Assert.AreEqual(appErrLogLast.AppErrLogID, appErrLogRet.AppErrLogID);
-
-                    BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
-
-                    // Put to return success
-                    IHttpActionResult jsonRet2 = appErrLogController.Put(appErrLogRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet2);
-
-                    OkNegotiatedContentResult<AppErrLog> appErrLogRet2 = jsonRet2 as OkNegotiatedContentResult<AppErrLog>;
-                    Assert.IsNotNull(appErrLogRet2);
-
-                    BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest2);
-
-                    // Put to return CSSPError because AppErrLogID of 0 does not exist
-                    appErrLogRet.AppErrLogID = 0;
-                    IHttpActionResult jsonRet3 = appErrLogController.Put(appErrLogRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet3);
-
-                    OkNegotiatedContentResult<AppErrLog> appErrLogRet3 = jsonRet3 as OkNegotiatedContentResult<AppErrLog>;
-                    Assert.IsNull(appErrLogRet3);
-
-                    BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
-                    Assert.IsNotNull(badRequest3);
-                }
-            }
-        }
-        #endregion Tests Generated for Class Controller Put Command
-
-        #region Tests Generated for Class Controller Delete Command
-        [TestMethod]
-        public void AppErrLog_Controller_Delete_Test()
-        {
-            foreach (LanguageEnum LanguageRequest in AllowableLanguages)
-            {
-                foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
-                {
-                    AppErrLogController appErrLogController = new AppErrLogController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(appErrLogController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, appErrLogController.DatabaseType);
-
-                    AppErrLog appErrLogLast = new AppErrLog();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-                    {
-                        Query query = new Query();
-                        query.Language = LanguageRequest;
-                        query.Asc = "";
-                        query.Desc = "";
-
-                        AppErrLogService appErrLogService = new AppErrLogService(query, db, ContactID);
-                        appErrLogLast = (from c in db.AppErrLogs select c).FirstOrDefault();
-                    }
-
-                    // ok with AppErrLog info
-                    IHttpActionResult jsonRet = appErrLogController.GetAppErrLogWithID(appErrLogLast.AppErrLogID);
-                    Assert.IsNotNull(jsonRet);
-
-                    OkNegotiatedContentResult<AppErrLog> Ret = jsonRet as OkNegotiatedContentResult<AppErrLog>;
-                    AppErrLog appErrLogRet = Ret.Content;
-                    Assert.AreEqual(appErrLogLast.AppErrLogID, appErrLogRet.AppErrLogID);
-
-                    BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
-
-                    // Post to return newly added AppErrLog
-                    appErrLogRet.AppErrLogID = 0;
-                    appErrLogController.Request = new System.Net.Http.HttpRequestMessage();
-                    appErrLogController.Request.RequestUri = new System.Uri("http://localhost:5000/api/appErrLog");
-                    IHttpActionResult jsonRet3 = appErrLogController.Post(appErrLogRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet3);
-
-                    CreatedNegotiatedContentResult<AppErrLog> appErrLogRet3 = jsonRet3 as CreatedNegotiatedContentResult<AppErrLog>;
-                    Assert.IsNotNull(appErrLogRet3);
-                    AppErrLog appErrLog = appErrLogRet3.Content;
-
-                    BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest3);
-
-                    // Delete to return success
-                    IHttpActionResult jsonRet2 = appErrLogController.Delete(appErrLogRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet2);
-
-                    OkNegotiatedContentResult<AppErrLog> appErrLogRet2 = jsonRet2 as OkNegotiatedContentResult<AppErrLog>;
-                    Assert.IsNotNull(appErrLogRet2);
-
-                    BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest2);
-
-                    // Delete to return CSSPError because AppErrLogID of 0 does not exist
-                    appErrLogRet.AppErrLogID = 0;
-                    IHttpActionResult jsonRet4 = appErrLogController.Delete(appErrLogRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet4);
-
-                    OkNegotiatedContentResult<AppErrLog> appErrLogRet4 = jsonRet4 as OkNegotiatedContentResult<AppErrLog>;
-                    Assert.IsNull(appErrLogRet4);
-
-                    BadRequestErrorMessageResult badRequest4 = jsonRet4 as BadRequestErrorMessageResult;
-                    Assert.IsNotNull(badRequest4);
-                }
-            }
-        }
-        #endregion Tests Generated for Class Controller Delete Command
-
+        #endregion Functions private
     }
 }

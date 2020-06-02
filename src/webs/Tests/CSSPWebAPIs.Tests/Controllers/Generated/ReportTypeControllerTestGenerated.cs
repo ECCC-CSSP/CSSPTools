@@ -2,350 +2,157 @@ using CSSPEnums;
 using CSSPModels;
 using CSSPServices;
 using CSSPWebAPI.Controllers;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using LoggedInServices.Services;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using System;
 using System.Collections.Generic;
+using System.Globalization;
+using System.IO;
 using System.Linq;
-using System.Web.Http;
-using System.Web.Http.Results;
+using System.Threading.Tasks;
+using System.Transactions;
+using UserServices.Models;
+using Xunit;
 
-namespace CSSPWebAPI.Tests.Controllers
+namespace CSSPWebAPIs.Tests.Controllers
 {
-    [TestClass]
-    public partial class ReportTypeControllerTest : BaseControllerTest
+    public partial class ReportTypeControllerTest
     {
         #region Variables
         #endregion Variables
 
         #region Properties
+        private IConfiguration Config { get; set; }
+        private IServiceProvider Provider { get; set; }
+        private IServiceCollection Services { get; set; }
+        private CSSPDBContext db { get; set; }
+        private ILoggedInService loggedInService { get; set; }
+        private IReportTypeService reportTypeService { get; set; }
+        private IReportTypeController reportTypeController { get; set; }
         #endregion Properties
 
         #region Constructors
-        public ReportTypeControllerTest() : base()
+        public ReportTypeControllerTest()
         {
         }
         #endregion Constructors
 
-        #region Tests Generated for Class Controller GetList Command
-        [TestMethod]
-        public void ReportType_Controller_GetReportTypeList_Test()
+        #region Functions public
+        [Theory]
+        [InlineData("en-CA")]
+        [InlineData("fr-CA")]
+        public async Task ReportTypeController_Constructor_Good_Test(string culture)
         {
-            foreach (LanguageEnum LanguageRequest in AllowableLanguages)
+            bool retBool = await Setup(new CultureInfo(culture));
+            Assert.True(retBool);
+            Assert.NotNull(loggedInService);
+            Assert.NotNull(reportTypeService);
+            Assert.NotNull(reportTypeController);
+        }
+        [Theory]
+        [InlineData("en-CA")]
+        [InlineData("fr-CA")]
+        public async Task ReportTypeController_CRUD_Good_Test(string culture)
+        {
+            bool retBool = await Setup(new CultureInfo(culture));
+            Assert.True(retBool);
+
+            using (TransactionScope ts = new TransactionScope())
             {
-                foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
-                {
-                    ReportTypeController reportTypeController = new ReportTypeController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(reportTypeController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, reportTypeController.DatabaseType);
+                // testing Get
+               var actionReportTypeList = await reportTypeController.Get();
+               Assert.Equal(200, ((ObjectResult)actionReportTypeList.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionReportTypeList.Result).Value);
+               List<ReportType> reportTypeList = (List<ReportType>)(((OkObjectResult)actionReportTypeList.Result).Value);
 
-                    ReportType reportTypeFirst = new ReportType();
-                    int count = -1;
-                    Query query = new Query();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseTypeEnum.SqlServerTestDB))
-                    {
-                        ReportTypeService reportTypeService = new ReportTypeService(query, db, ContactID);
-                        reportTypeFirst = (from c in db.ReportTypes select c).FirstOrDefault();
-                        count = (from c in db.ReportTypes select c).Count();
-                        count = (query.Take > count ? count : query.Take);
-                    }
+               int count = ((List<ReportType>)((OkObjectResult)actionReportTypeList.Result).Value).Count();
+                Assert.True(count > 0);
 
-                    // ok with ReportType info
-                    IHttpActionResult jsonRet = reportTypeController.GetReportTypeList();
-                    Assert.IsNotNull(jsonRet);
+               // testing Get(ReportTypeID)
+               var actionReportType = await reportTypeController.Get(reportTypeList[0].ReportTypeID);
+               Assert.Equal(200, ((ObjectResult)actionReportType.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionReportType.Result).Value);
+               ReportType reportType = (ReportType)(((OkObjectResult)actionReportType.Result).Value);
+               Assert.NotNull(reportType);
+               Assert.Equal(reportTypeList[0].ReportTypeID, reportType.ReportTypeID);
 
-                    OkNegotiatedContentResult<List<ReportType>> ret = jsonRet as OkNegotiatedContentResult<List<ReportType>>;
-                    Assert.AreEqual(reportTypeFirst.ReportTypeID, ret.Content[0].ReportTypeID);
-                    Assert.AreEqual((count > query.Take ? query.Take : count), ret.Content.Count);
+               // testing Post(ReportType reportType)
+               reportType.ReportTypeID = 0;
+               var actionReportTypeNew = await reportTypeController.Post(reportType);
+               Assert.Equal(200, ((ObjectResult)actionReportTypeNew.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionReportTypeNew.Result).Value);
+               ReportType reportTypeNew = (ReportType)(((OkObjectResult)actionReportTypeNew.Result).Value);
+               Assert.NotNull(reportTypeNew);
 
-                    List<ReportType> reportTypeList = new List<ReportType>();
-                    count = -1;
-                    query = new Query();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseTypeEnum.SqlServerTestDB))
-                    {
-                        ReportTypeService reportTypeService = new ReportTypeService(query, db, ContactID);
-                        reportTypeList = (from c in db.ReportTypes select c).OrderBy(c => c.ReportTypeID).Skip(0).Take(2).ToList();
-                        count = (from c in db.ReportTypes select c).Count();
-                    }
+               // testing Put(ReportType reportType)
+               var actionReportTypeUpdate = await reportTypeController.Put(reportTypeNew);
+               Assert.Equal(200, ((ObjectResult)actionReportTypeUpdate.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionReportTypeUpdate.Result).Value);
+               ReportType reportTypeUpdate = (ReportType)(((OkObjectResult)actionReportTypeUpdate.Result).Value);
+               Assert.NotNull(reportTypeUpdate);
 
-                    if (count > 0)
-                    {
-                        query.Skip = 0;
-                        query.Take = 5;
-                        count = (query.Take > count ? query.Take : count);
-
-                        // ok with ReportType info
-                        jsonRet = reportTypeController.GetReportTypeList(query.Language.ToString(), query.Skip, query.Take);
-                        Assert.IsNotNull(jsonRet);
-
-                        ret = jsonRet as OkNegotiatedContentResult<List<ReportType>>;
-                        Assert.AreEqual(reportTypeList[0].ReportTypeID, ret.Content[0].ReportTypeID);
-                        Assert.AreEqual((count > query.Take ? query.Take : count), ret.Content.Count);
-
-                       if (count > 1)
-                       {
-                           query.Skip = 1;
-                           query.Take = 5;
-                           count = (query.Take > count ? query.Take : count);
-
-                           // ok with ReportType info
-                           IHttpActionResult jsonRet2 = reportTypeController.GetReportTypeList(query.Language.ToString(), query.Skip, query.Take);
-                           Assert.IsNotNull(jsonRet2);
-
-                           OkNegotiatedContentResult<List<ReportType>> ret2 = jsonRet2 as OkNegotiatedContentResult<List<ReportType>>;
-                           Assert.AreEqual(reportTypeList[1].ReportTypeID, ret2.Content[0].ReportTypeID);
-                           Assert.AreEqual((count > query.Take ? query.Take : count), ret2.Content.Count);
-                       }
-                    }
-                }
+               // testing Delete(ReportType reportType)
+               var actionReportTypeDelete = await reportTypeController.Delete(reportTypeUpdate);
+               Assert.Equal(200, ((ObjectResult)actionReportTypeDelete.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionReportTypeDelete.Result).Value);
+               ReportType reportTypeDelete = (ReportType)(((OkObjectResult)actionReportTypeDelete.Result).Value);
+               Assert.NotNull(reportTypeDelete);
             }
         }
-        #endregion Tests Generated for Class Controller GetList Command
+        #endregion Functions public
 
-        #region Tests Generated for Class Controller GetWithID Command
-        [TestMethod]
-        public void ReportType_Controller_GetReportTypeWithID_Test()
+        #region Functions private
+        private async Task<bool> Setup(CultureInfo culture)
         {
-            foreach (LanguageEnum LanguageRequest in AllowableLanguages)
+            Config = new ConfigurationBuilder()
+               .SetBasePath(Directory.GetParent(AppContext.BaseDirectory).FullName)
+               .AddJsonFile("appsettings.json")
+               .Build();
+        
+            Services = new ServiceCollection();
+        
+            IConfigurationSection connectionStringsSection = Config.GetSection("ConnectionStrings");
+            Services.Configure<ConnectionStringsModel>(connectionStringsSection);
+        
+            ConnectionStringsModel connectionStrings = connectionStringsSection.Get<ConnectionStringsModel>();
+        
+            Services.AddSingleton<IConfiguration>(Config);
+        
+            Services.AddDbContext<CSSPDBContext>(options =>
             {
-                foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
-                {
-                    ReportTypeController reportTypeController = new ReportTypeController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(reportTypeController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, reportTypeController.DatabaseType);
-
-                    ReportType reportTypeFirst = new ReportType();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-                    {
-                        ReportTypeService reportTypeService = new ReportTypeService(new Query(), db, ContactID);
-                        reportTypeFirst = (from c in db.ReportTypes select c).FirstOrDefault();
-                    }
-
-                    // ok with ReportType info
-                    IHttpActionResult jsonRet = reportTypeController.GetReportTypeWithID(reportTypeFirst.ReportTypeID);
-                    Assert.IsNotNull(jsonRet);
-
-                    OkNegotiatedContentResult<ReportType> Ret = jsonRet as OkNegotiatedContentResult<ReportType>;
-                    ReportType reportTypeRet = Ret.Content;
-                    Assert.AreEqual(reportTypeFirst.ReportTypeID, reportTypeRet.ReportTypeID);
-
-                    BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
-
-                    // Not Found
-                    IHttpActionResult jsonRet2 = reportTypeController.GetReportTypeWithID(0);
-                    Assert.IsNotNull(jsonRet2);
-
-                    OkNegotiatedContentResult<ReportType> reportTypeRet2 = jsonRet2 as OkNegotiatedContentResult<ReportType>;
-                    Assert.IsNull(reportTypeRet2);
-
-                    NotFoundResult notFoundRequest = jsonRet2 as NotFoundResult;
-                    Assert.IsNotNull(notFoundRequest);
-                }
-            }
+                options.UseSqlServer(connectionStrings.TestDB);
+            });
+        
+            Services.AddDbContext<ApplicationDbContext>(options =>
+                options.UseSqlServer(connectionStrings.TestDB));
+        
+            Services.AddIdentityCore<ApplicationUser>()
+                .AddEntityFrameworkStores<ApplicationDbContext>();
+        
+            Services.AddSingleton<IEnums, Enums>();
+            Services.AddSingleton<ILoggedInService, LoggedInService>();
+            Services.AddSingleton<IReportTypeService, ReportTypeService>();
+            Services.AddSingleton<IReportTypeController, ReportTypeController>();
+        
+            Provider = Services.BuildServiceProvider();
+            Assert.NotNull(Provider);
+        
+            loggedInService = Provider.GetService<ILoggedInService>();
+            Assert.NotNull(loggedInService);
+        
+            reportTypeService = Provider.GetService<IReportTypeService>();
+            Assert.NotNull(reportTypeService);
+        
+            await reportTypeService.SetCulture(culture);
+        
+            reportTypeController = Provider.GetService<IReportTypeController>();
+            Assert.NotNull(reportTypeController);
+        
+            return await Task.FromResult(true);
         }
-        #endregion Tests Generated for Class Controller GetWithID Command
-
-        #region Tests Generated for Class Controller Post Command
-        [TestMethod]
-        public void ReportType_Controller_Post_Test()
-        {
-            foreach (LanguageEnum LanguageRequest in AllowableLanguages)
-            {
-                foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
-                {
-                    ReportTypeController reportTypeController = new ReportTypeController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(reportTypeController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, reportTypeController.DatabaseType);
-
-                    ReportType reportTypeLast = new ReportType();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-                    {
-                        Query query = new Query();
-                        query.Language = LanguageRequest;
-                        query.Asc = "";
-                        query.Desc = "";
-
-                        ReportTypeService reportTypeService = new ReportTypeService(query, db, ContactID);
-                        reportTypeLast = (from c in db.ReportTypes select c).FirstOrDefault();
-                    }
-
-                    // ok with ReportType info
-                    IHttpActionResult jsonRet = reportTypeController.GetReportTypeWithID(reportTypeLast.ReportTypeID);
-                    Assert.IsNotNull(jsonRet);
-
-                    OkNegotiatedContentResult<ReportType> Ret = jsonRet as OkNegotiatedContentResult<ReportType>;
-                    ReportType reportTypeRet = Ret.Content;
-                    Assert.AreEqual(reportTypeLast.ReportTypeID, reportTypeRet.ReportTypeID);
-
-                    BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
-
-                    // Post to return CSSPError because ReportTypeID exist
-                    IHttpActionResult jsonRet2 = reportTypeController.Post(reportTypeRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet2);
-
-                    OkNegotiatedContentResult<ReportType> reportTypeRet2 = jsonRet2 as OkNegotiatedContentResult<ReportType>;
-                    Assert.IsNull(reportTypeRet2);
-
-                    BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
-                    Assert.IsNotNull(badRequest2);
-
-                    // Post to return newly added ReportType
-                    reportTypeRet.ReportTypeID = 0;
-                    reportTypeController.Request = new System.Net.Http.HttpRequestMessage();
-                    reportTypeController.Request.RequestUri = new System.Uri("http://localhost:5000/api/reportType");
-                    IHttpActionResult jsonRet3 = reportTypeController.Post(reportTypeRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet3);
-
-                    CreatedNegotiatedContentResult<ReportType> reportTypeRet3 = jsonRet3 as CreatedNegotiatedContentResult<ReportType>;
-                    Assert.IsNotNull(reportTypeRet3);
-
-                    BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest3);
-
-                    IHttpActionResult jsonRet4 = reportTypeController.Delete(reportTypeRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet4);
-
-                    OkNegotiatedContentResult<ReportType> reportTypeRet4 = jsonRet4 as OkNegotiatedContentResult<ReportType>;
-                    Assert.IsNotNull(reportTypeRet4);
-
-                    BadRequestErrorMessageResult badRequest4 = jsonRet4 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest4);
-                }
-            }
-        }
-        #endregion Tests Generated for Class Controller Post Command
-
-        #region Tests Generated for Class Controller Put Command
-        [TestMethod]
-        public void ReportType_Controller_Put_Test()
-        {
-            foreach (LanguageEnum LanguageRequest in AllowableLanguages)
-            {
-                foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
-                {
-                    ReportTypeController reportTypeController = new ReportTypeController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(reportTypeController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, reportTypeController.DatabaseType);
-
-                    ReportType reportTypeLast = new ReportType();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-                    {
-                        Query query = new Query();
-                        query.Language = LanguageRequest;
-
-                        ReportTypeService reportTypeService = new ReportTypeService(query, db, ContactID);
-                        reportTypeLast = (from c in db.ReportTypes select c).FirstOrDefault();
-                    }
-
-                    // ok with ReportType info
-                    IHttpActionResult jsonRet = reportTypeController.GetReportTypeWithID(reportTypeLast.ReportTypeID);
-                    Assert.IsNotNull(jsonRet);
-
-                    OkNegotiatedContentResult<ReportType> Ret = jsonRet as OkNegotiatedContentResult<ReportType>;
-                    ReportType reportTypeRet = Ret.Content;
-                    Assert.AreEqual(reportTypeLast.ReportTypeID, reportTypeRet.ReportTypeID);
-
-                    BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
-
-                    // Put to return success
-                    IHttpActionResult jsonRet2 = reportTypeController.Put(reportTypeRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet2);
-
-                    OkNegotiatedContentResult<ReportType> reportTypeRet2 = jsonRet2 as OkNegotiatedContentResult<ReportType>;
-                    Assert.IsNotNull(reportTypeRet2);
-
-                    BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest2);
-
-                    // Put to return CSSPError because ReportTypeID of 0 does not exist
-                    reportTypeRet.ReportTypeID = 0;
-                    IHttpActionResult jsonRet3 = reportTypeController.Put(reportTypeRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet3);
-
-                    OkNegotiatedContentResult<ReportType> reportTypeRet3 = jsonRet3 as OkNegotiatedContentResult<ReportType>;
-                    Assert.IsNull(reportTypeRet3);
-
-                    BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
-                    Assert.IsNotNull(badRequest3);
-                }
-            }
-        }
-        #endregion Tests Generated for Class Controller Put Command
-
-        #region Tests Generated for Class Controller Delete Command
-        [TestMethod]
-        public void ReportType_Controller_Delete_Test()
-        {
-            foreach (LanguageEnum LanguageRequest in AllowableLanguages)
-            {
-                foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
-                {
-                    ReportTypeController reportTypeController = new ReportTypeController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(reportTypeController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, reportTypeController.DatabaseType);
-
-                    ReportType reportTypeLast = new ReportType();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-                    {
-                        Query query = new Query();
-                        query.Language = LanguageRequest;
-                        query.Asc = "";
-                        query.Desc = "";
-
-                        ReportTypeService reportTypeService = new ReportTypeService(query, db, ContactID);
-                        reportTypeLast = (from c in db.ReportTypes select c).FirstOrDefault();
-                    }
-
-                    // ok with ReportType info
-                    IHttpActionResult jsonRet = reportTypeController.GetReportTypeWithID(reportTypeLast.ReportTypeID);
-                    Assert.IsNotNull(jsonRet);
-
-                    OkNegotiatedContentResult<ReportType> Ret = jsonRet as OkNegotiatedContentResult<ReportType>;
-                    ReportType reportTypeRet = Ret.Content;
-                    Assert.AreEqual(reportTypeLast.ReportTypeID, reportTypeRet.ReportTypeID);
-
-                    BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
-
-                    // Post to return newly added ReportType
-                    reportTypeRet.ReportTypeID = 0;
-                    reportTypeController.Request = new System.Net.Http.HttpRequestMessage();
-                    reportTypeController.Request.RequestUri = new System.Uri("http://localhost:5000/api/reportType");
-                    IHttpActionResult jsonRet3 = reportTypeController.Post(reportTypeRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet3);
-
-                    CreatedNegotiatedContentResult<ReportType> reportTypeRet3 = jsonRet3 as CreatedNegotiatedContentResult<ReportType>;
-                    Assert.IsNotNull(reportTypeRet3);
-                    ReportType reportType = reportTypeRet3.Content;
-
-                    BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest3);
-
-                    // Delete to return success
-                    IHttpActionResult jsonRet2 = reportTypeController.Delete(reportTypeRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet2);
-
-                    OkNegotiatedContentResult<ReportType> reportTypeRet2 = jsonRet2 as OkNegotiatedContentResult<ReportType>;
-                    Assert.IsNotNull(reportTypeRet2);
-
-                    BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest2);
-
-                    // Delete to return CSSPError because ReportTypeID of 0 does not exist
-                    reportTypeRet.ReportTypeID = 0;
-                    IHttpActionResult jsonRet4 = reportTypeController.Delete(reportTypeRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet4);
-
-                    OkNegotiatedContentResult<ReportType> reportTypeRet4 = jsonRet4 as OkNegotiatedContentResult<ReportType>;
-                    Assert.IsNull(reportTypeRet4);
-
-                    BadRequestErrorMessageResult badRequest4 = jsonRet4 as BadRequestErrorMessageResult;
-                    Assert.IsNotNull(badRequest4);
-                }
-            }
-        }
-        #endregion Tests Generated for Class Controller Delete Command
-
+        #endregion Functions private
     }
 }

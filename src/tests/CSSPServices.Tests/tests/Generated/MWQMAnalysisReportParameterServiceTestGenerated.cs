@@ -16,6 +16,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Transactions;
 using Xunit;
 
 namespace CSSPServices.Tests
@@ -54,37 +55,40 @@ namespace CSSPServices.Tests
 
             await Setup(new CultureInfo(culture));
 
-            MWQMAnalysisReportParameter mwqmAnalysisReportParameter = GetFilledRandomMWQMAnalysisReportParameter(""); 
+            using (TransactionScope ts = new TransactionScope())
+            {
+               MWQMAnalysisReportParameter mwqmAnalysisReportParameter = GetFilledRandomMWQMAnalysisReportParameter(""); 
 
-            // List<MWQMAnalysisReportParameter>
-            var actionMWQMAnalysisReportParameterList = await mwqmAnalysisReportParameterService.GetMWQMAnalysisReportParameterList();
-            Assert.Equal(200, ((ObjectResult)actionMWQMAnalysisReportParameterList.Result).StatusCode);
-            Assert.NotNull(((OkObjectResult)actionMWQMAnalysisReportParameterList.Result).Value);
-            List<MWQMAnalysisReportParameter> mwqmAnalysisReportParameterList = (List<MWQMAnalysisReportParameter>)(((OkObjectResult)actionMWQMAnalysisReportParameterList.Result).Value);
+               // List<MWQMAnalysisReportParameter>
+               var actionMWQMAnalysisReportParameterList = await mwqmAnalysisReportParameterService.GetMWQMAnalysisReportParameterList();
+               Assert.Equal(200, ((ObjectResult)actionMWQMAnalysisReportParameterList.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionMWQMAnalysisReportParameterList.Result).Value);
+               List<MWQMAnalysisReportParameter> mwqmAnalysisReportParameterList = (List<MWQMAnalysisReportParameter>)(((OkObjectResult)actionMWQMAnalysisReportParameterList.Result).Value);
 
-            int count = ((List<MWQMAnalysisReportParameter>)((OkObjectResult)actionMWQMAnalysisReportParameterList.Result).Value).Count();
-            Assert.True(count > 0);
+               int count = ((List<MWQMAnalysisReportParameter>)((OkObjectResult)actionMWQMAnalysisReportParameterList.Result).Value).Count();
+                Assert.True(count > 0);
 
-            // Add MWQMAnalysisReportParameter
-            var actionMWQMAnalysisReportParameterAdded = await mwqmAnalysisReportParameterService.Add(mwqmAnalysisReportParameter);
-            Assert.Equal(200, ((ObjectResult)actionMWQMAnalysisReportParameterAdded.Result).StatusCode);
-            Assert.NotNull(((OkObjectResult)actionMWQMAnalysisReportParameterAdded.Result).Value);
-            MWQMAnalysisReportParameter mwqmAnalysisReportParameterAdded = (MWQMAnalysisReportParameter)(((OkObjectResult)actionMWQMAnalysisReportParameterAdded.Result).Value);
-            Assert.NotNull(mwqmAnalysisReportParameterAdded);
+               // Add MWQMAnalysisReportParameter
+               var actionMWQMAnalysisReportParameterAdded = await mwqmAnalysisReportParameterService.Add(mwqmAnalysisReportParameter);
+               Assert.Equal(200, ((ObjectResult)actionMWQMAnalysisReportParameterAdded.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionMWQMAnalysisReportParameterAdded.Result).Value);
+               MWQMAnalysisReportParameter mwqmAnalysisReportParameterAdded = (MWQMAnalysisReportParameter)(((OkObjectResult)actionMWQMAnalysisReportParameterAdded.Result).Value);
+               Assert.NotNull(mwqmAnalysisReportParameterAdded);
 
-            // Update MWQMAnalysisReportParameter
-            var actionMWQMAnalysisReportParameterUpdated = await mwqmAnalysisReportParameterService.Update(mwqmAnalysisReportParameter);
-            Assert.Equal(200, ((ObjectResult)actionMWQMAnalysisReportParameterUpdated.Result).StatusCode);
-            Assert.NotNull(((OkObjectResult)actionMWQMAnalysisReportParameterUpdated.Result).Value);
-            MWQMAnalysisReportParameter mwqmAnalysisReportParameterUpdated = (MWQMAnalysisReportParameter)(((OkObjectResult)actionMWQMAnalysisReportParameterUpdated.Result).Value);
-            Assert.NotNull(mwqmAnalysisReportParameterUpdated);
+               // Update MWQMAnalysisReportParameter
+               var actionMWQMAnalysisReportParameterUpdated = await mwqmAnalysisReportParameterService.Update(mwqmAnalysisReportParameter);
+               Assert.Equal(200, ((ObjectResult)actionMWQMAnalysisReportParameterUpdated.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionMWQMAnalysisReportParameterUpdated.Result).Value);
+               MWQMAnalysisReportParameter mwqmAnalysisReportParameterUpdated = (MWQMAnalysisReportParameter)(((OkObjectResult)actionMWQMAnalysisReportParameterUpdated.Result).Value);
+               Assert.NotNull(mwqmAnalysisReportParameterUpdated);
 
-            // Delete MWQMAnalysisReportParameter
-            var actionMWQMAnalysisReportParameterDeleted = await mwqmAnalysisReportParameterService.Delete(mwqmAnalysisReportParameter);
-            Assert.Equal(200, ((ObjectResult)actionMWQMAnalysisReportParameterDeleted.Result).StatusCode);
-            Assert.NotNull(((OkObjectResult)actionMWQMAnalysisReportParameterDeleted.Result).Value);
-            MWQMAnalysisReportParameter mwqmAnalysisReportParameterDeleted = (MWQMAnalysisReportParameter)(((OkObjectResult)actionMWQMAnalysisReportParameterDeleted.Result).Value);
-            Assert.NotNull(mwqmAnalysisReportParameterDeleted);
+               // Delete MWQMAnalysisReportParameter
+               var actionMWQMAnalysisReportParameterDeleted = await mwqmAnalysisReportParameterService.Delete(mwqmAnalysisReportParameter);
+               Assert.Equal(200, ((ObjectResult)actionMWQMAnalysisReportParameterDeleted.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionMWQMAnalysisReportParameterDeleted.Result).Value);
+               MWQMAnalysisReportParameter mwqmAnalysisReportParameterDeleted = (MWQMAnalysisReportParameter)(((OkObjectResult)actionMWQMAnalysisReportParameterDeleted.Result).Value);
+               Assert.NotNull(mwqmAnalysisReportParameterDeleted);
+            }
         }
         #endregion Tests Generated CRUD
 

@@ -16,6 +16,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Transactions;
 using Xunit;
 
 namespace CSSPServices.Tests
@@ -54,37 +55,40 @@ namespace CSSPServices.Tests
 
             await Setup(new CultureInfo(culture));
 
-            RatingCurveValue ratingCurveValue = GetFilledRandomRatingCurveValue(""); 
+            using (TransactionScope ts = new TransactionScope())
+            {
+               RatingCurveValue ratingCurveValue = GetFilledRandomRatingCurveValue(""); 
 
-            // List<RatingCurveValue>
-            var actionRatingCurveValueList = await ratingCurveValueService.GetRatingCurveValueList();
-            Assert.Equal(200, ((ObjectResult)actionRatingCurveValueList.Result).StatusCode);
-            Assert.NotNull(((OkObjectResult)actionRatingCurveValueList.Result).Value);
-            List<RatingCurveValue> ratingCurveValueList = (List<RatingCurveValue>)(((OkObjectResult)actionRatingCurveValueList.Result).Value);
+               // List<RatingCurveValue>
+               var actionRatingCurveValueList = await ratingCurveValueService.GetRatingCurveValueList();
+               Assert.Equal(200, ((ObjectResult)actionRatingCurveValueList.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionRatingCurveValueList.Result).Value);
+               List<RatingCurveValue> ratingCurveValueList = (List<RatingCurveValue>)(((OkObjectResult)actionRatingCurveValueList.Result).Value);
 
-            int count = ((List<RatingCurveValue>)((OkObjectResult)actionRatingCurveValueList.Result).Value).Count();
-            Assert.True(count > 0);
+               int count = ((List<RatingCurveValue>)((OkObjectResult)actionRatingCurveValueList.Result).Value).Count();
+                Assert.True(count > 0);
 
-            // Add RatingCurveValue
-            var actionRatingCurveValueAdded = await ratingCurveValueService.Add(ratingCurveValue);
-            Assert.Equal(200, ((ObjectResult)actionRatingCurveValueAdded.Result).StatusCode);
-            Assert.NotNull(((OkObjectResult)actionRatingCurveValueAdded.Result).Value);
-            RatingCurveValue ratingCurveValueAdded = (RatingCurveValue)(((OkObjectResult)actionRatingCurveValueAdded.Result).Value);
-            Assert.NotNull(ratingCurveValueAdded);
+               // Add RatingCurveValue
+               var actionRatingCurveValueAdded = await ratingCurveValueService.Add(ratingCurveValue);
+               Assert.Equal(200, ((ObjectResult)actionRatingCurveValueAdded.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionRatingCurveValueAdded.Result).Value);
+               RatingCurveValue ratingCurveValueAdded = (RatingCurveValue)(((OkObjectResult)actionRatingCurveValueAdded.Result).Value);
+               Assert.NotNull(ratingCurveValueAdded);
 
-            // Update RatingCurveValue
-            var actionRatingCurveValueUpdated = await ratingCurveValueService.Update(ratingCurveValue);
-            Assert.Equal(200, ((ObjectResult)actionRatingCurveValueUpdated.Result).StatusCode);
-            Assert.NotNull(((OkObjectResult)actionRatingCurveValueUpdated.Result).Value);
-            RatingCurveValue ratingCurveValueUpdated = (RatingCurveValue)(((OkObjectResult)actionRatingCurveValueUpdated.Result).Value);
-            Assert.NotNull(ratingCurveValueUpdated);
+               // Update RatingCurveValue
+               var actionRatingCurveValueUpdated = await ratingCurveValueService.Update(ratingCurveValue);
+               Assert.Equal(200, ((ObjectResult)actionRatingCurveValueUpdated.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionRatingCurveValueUpdated.Result).Value);
+               RatingCurveValue ratingCurveValueUpdated = (RatingCurveValue)(((OkObjectResult)actionRatingCurveValueUpdated.Result).Value);
+               Assert.NotNull(ratingCurveValueUpdated);
 
-            // Delete RatingCurveValue
-            var actionRatingCurveValueDeleted = await ratingCurveValueService.Delete(ratingCurveValue);
-            Assert.Equal(200, ((ObjectResult)actionRatingCurveValueDeleted.Result).StatusCode);
-            Assert.NotNull(((OkObjectResult)actionRatingCurveValueDeleted.Result).Value);
-            RatingCurveValue ratingCurveValueDeleted = (RatingCurveValue)(((OkObjectResult)actionRatingCurveValueDeleted.Result).Value);
-            Assert.NotNull(ratingCurveValueDeleted);
+               // Delete RatingCurveValue
+               var actionRatingCurveValueDeleted = await ratingCurveValueService.Delete(ratingCurveValue);
+               Assert.Equal(200, ((ObjectResult)actionRatingCurveValueDeleted.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionRatingCurveValueDeleted.Result).Value);
+               RatingCurveValue ratingCurveValueDeleted = (RatingCurveValue)(((OkObjectResult)actionRatingCurveValueDeleted.Result).Value);
+               Assert.NotNull(ratingCurveValueDeleted);
+            }
         }
         #endregion Tests Generated CRUD
 

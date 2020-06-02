@@ -2,350 +2,157 @@ using CSSPEnums;
 using CSSPModels;
 using CSSPServices;
 using CSSPWebAPI.Controllers;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using LoggedInServices.Services;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using System;
 using System.Collections.Generic;
+using System.Globalization;
+using System.IO;
 using System.Linq;
-using System.Web.Http;
-using System.Web.Http.Results;
+using System.Threading.Tasks;
+using System.Transactions;
+using UserServices.Models;
+using Xunit;
 
-namespace CSSPWebAPI.Tests.Controllers
+namespace CSSPWebAPIs.Tests.Controllers
 {
-    [TestClass]
-    public partial class HelpDocControllerTest : BaseControllerTest
+    public partial class HelpDocControllerTest
     {
         #region Variables
         #endregion Variables
 
         #region Properties
+        private IConfiguration Config { get; set; }
+        private IServiceProvider Provider { get; set; }
+        private IServiceCollection Services { get; set; }
+        private CSSPDBContext db { get; set; }
+        private ILoggedInService loggedInService { get; set; }
+        private IHelpDocService helpDocService { get; set; }
+        private IHelpDocController helpDocController { get; set; }
         #endregion Properties
 
         #region Constructors
-        public HelpDocControllerTest() : base()
+        public HelpDocControllerTest()
         {
         }
         #endregion Constructors
 
-        #region Tests Generated for Class Controller GetList Command
-        [TestMethod]
-        public void HelpDoc_Controller_GetHelpDocList_Test()
+        #region Functions public
+        [Theory]
+        [InlineData("en-CA")]
+        [InlineData("fr-CA")]
+        public async Task HelpDocController_Constructor_Good_Test(string culture)
         {
-            foreach (LanguageEnum LanguageRequest in AllowableLanguages)
+            bool retBool = await Setup(new CultureInfo(culture));
+            Assert.True(retBool);
+            Assert.NotNull(loggedInService);
+            Assert.NotNull(helpDocService);
+            Assert.NotNull(helpDocController);
+        }
+        [Theory]
+        [InlineData("en-CA")]
+        [InlineData("fr-CA")]
+        public async Task HelpDocController_CRUD_Good_Test(string culture)
+        {
+            bool retBool = await Setup(new CultureInfo(culture));
+            Assert.True(retBool);
+
+            using (TransactionScope ts = new TransactionScope())
             {
-                foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
-                {
-                    HelpDocController helpDocController = new HelpDocController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(helpDocController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, helpDocController.DatabaseType);
+                // testing Get
+               var actionHelpDocList = await helpDocController.Get();
+               Assert.Equal(200, ((ObjectResult)actionHelpDocList.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionHelpDocList.Result).Value);
+               List<HelpDoc> helpDocList = (List<HelpDoc>)(((OkObjectResult)actionHelpDocList.Result).Value);
 
-                    HelpDoc helpDocFirst = new HelpDoc();
-                    int count = -1;
-                    Query query = new Query();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseTypeEnum.SqlServerTestDB))
-                    {
-                        HelpDocService helpDocService = new HelpDocService(query, db, ContactID);
-                        helpDocFirst = (from c in db.HelpDocs select c).FirstOrDefault();
-                        count = (from c in db.HelpDocs select c).Count();
-                        count = (query.Take > count ? count : query.Take);
-                    }
+               int count = ((List<HelpDoc>)((OkObjectResult)actionHelpDocList.Result).Value).Count();
+                Assert.True(count > 0);
 
-                    // ok with HelpDoc info
-                    IHttpActionResult jsonRet = helpDocController.GetHelpDocList();
-                    Assert.IsNotNull(jsonRet);
+               // testing Get(HelpDocID)
+               var actionHelpDoc = await helpDocController.Get(helpDocList[0].HelpDocID);
+               Assert.Equal(200, ((ObjectResult)actionHelpDoc.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionHelpDoc.Result).Value);
+               HelpDoc helpDoc = (HelpDoc)(((OkObjectResult)actionHelpDoc.Result).Value);
+               Assert.NotNull(helpDoc);
+               Assert.Equal(helpDocList[0].HelpDocID, helpDoc.HelpDocID);
 
-                    OkNegotiatedContentResult<List<HelpDoc>> ret = jsonRet as OkNegotiatedContentResult<List<HelpDoc>>;
-                    Assert.AreEqual(helpDocFirst.HelpDocID, ret.Content[0].HelpDocID);
-                    Assert.AreEqual((count > query.Take ? query.Take : count), ret.Content.Count);
+               // testing Post(HelpDoc helpDoc)
+               helpDoc.HelpDocID = 0;
+               var actionHelpDocNew = await helpDocController.Post(helpDoc);
+               Assert.Equal(200, ((ObjectResult)actionHelpDocNew.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionHelpDocNew.Result).Value);
+               HelpDoc helpDocNew = (HelpDoc)(((OkObjectResult)actionHelpDocNew.Result).Value);
+               Assert.NotNull(helpDocNew);
 
-                    List<HelpDoc> helpDocList = new List<HelpDoc>();
-                    count = -1;
-                    query = new Query();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseTypeEnum.SqlServerTestDB))
-                    {
-                        HelpDocService helpDocService = new HelpDocService(query, db, ContactID);
-                        helpDocList = (from c in db.HelpDocs select c).OrderBy(c => c.HelpDocID).Skip(0).Take(2).ToList();
-                        count = (from c in db.HelpDocs select c).Count();
-                    }
+               // testing Put(HelpDoc helpDoc)
+               var actionHelpDocUpdate = await helpDocController.Put(helpDocNew);
+               Assert.Equal(200, ((ObjectResult)actionHelpDocUpdate.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionHelpDocUpdate.Result).Value);
+               HelpDoc helpDocUpdate = (HelpDoc)(((OkObjectResult)actionHelpDocUpdate.Result).Value);
+               Assert.NotNull(helpDocUpdate);
 
-                    if (count > 0)
-                    {
-                        query.Skip = 0;
-                        query.Take = 5;
-                        count = (query.Take > count ? query.Take : count);
-
-                        // ok with HelpDoc info
-                        jsonRet = helpDocController.GetHelpDocList(query.Language.ToString(), query.Skip, query.Take);
-                        Assert.IsNotNull(jsonRet);
-
-                        ret = jsonRet as OkNegotiatedContentResult<List<HelpDoc>>;
-                        Assert.AreEqual(helpDocList[0].HelpDocID, ret.Content[0].HelpDocID);
-                        Assert.AreEqual((count > query.Take ? query.Take : count), ret.Content.Count);
-
-                       if (count > 1)
-                       {
-                           query.Skip = 1;
-                           query.Take = 5;
-                           count = (query.Take > count ? query.Take : count);
-
-                           // ok with HelpDoc info
-                           IHttpActionResult jsonRet2 = helpDocController.GetHelpDocList(query.Language.ToString(), query.Skip, query.Take);
-                           Assert.IsNotNull(jsonRet2);
-
-                           OkNegotiatedContentResult<List<HelpDoc>> ret2 = jsonRet2 as OkNegotiatedContentResult<List<HelpDoc>>;
-                           Assert.AreEqual(helpDocList[1].HelpDocID, ret2.Content[0].HelpDocID);
-                           Assert.AreEqual((count > query.Take ? query.Take : count), ret2.Content.Count);
-                       }
-                    }
-                }
+               // testing Delete(HelpDoc helpDoc)
+               var actionHelpDocDelete = await helpDocController.Delete(helpDocUpdate);
+               Assert.Equal(200, ((ObjectResult)actionHelpDocDelete.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionHelpDocDelete.Result).Value);
+               HelpDoc helpDocDelete = (HelpDoc)(((OkObjectResult)actionHelpDocDelete.Result).Value);
+               Assert.NotNull(helpDocDelete);
             }
         }
-        #endregion Tests Generated for Class Controller GetList Command
+        #endregion Functions public
 
-        #region Tests Generated for Class Controller GetWithID Command
-        [TestMethod]
-        public void HelpDoc_Controller_GetHelpDocWithID_Test()
+        #region Functions private
+        private async Task<bool> Setup(CultureInfo culture)
         {
-            foreach (LanguageEnum LanguageRequest in AllowableLanguages)
+            Config = new ConfigurationBuilder()
+               .SetBasePath(Directory.GetParent(AppContext.BaseDirectory).FullName)
+               .AddJsonFile("appsettings.json")
+               .Build();
+        
+            Services = new ServiceCollection();
+        
+            IConfigurationSection connectionStringsSection = Config.GetSection("ConnectionStrings");
+            Services.Configure<ConnectionStringsModel>(connectionStringsSection);
+        
+            ConnectionStringsModel connectionStrings = connectionStringsSection.Get<ConnectionStringsModel>();
+        
+            Services.AddSingleton<IConfiguration>(Config);
+        
+            Services.AddDbContext<CSSPDBContext>(options =>
             {
-                foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
-                {
-                    HelpDocController helpDocController = new HelpDocController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(helpDocController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, helpDocController.DatabaseType);
-
-                    HelpDoc helpDocFirst = new HelpDoc();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-                    {
-                        HelpDocService helpDocService = new HelpDocService(new Query(), db, ContactID);
-                        helpDocFirst = (from c in db.HelpDocs select c).FirstOrDefault();
-                    }
-
-                    // ok with HelpDoc info
-                    IHttpActionResult jsonRet = helpDocController.GetHelpDocWithID(helpDocFirst.HelpDocID);
-                    Assert.IsNotNull(jsonRet);
-
-                    OkNegotiatedContentResult<HelpDoc> Ret = jsonRet as OkNegotiatedContentResult<HelpDoc>;
-                    HelpDoc helpDocRet = Ret.Content;
-                    Assert.AreEqual(helpDocFirst.HelpDocID, helpDocRet.HelpDocID);
-
-                    BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
-
-                    // Not Found
-                    IHttpActionResult jsonRet2 = helpDocController.GetHelpDocWithID(0);
-                    Assert.IsNotNull(jsonRet2);
-
-                    OkNegotiatedContentResult<HelpDoc> helpDocRet2 = jsonRet2 as OkNegotiatedContentResult<HelpDoc>;
-                    Assert.IsNull(helpDocRet2);
-
-                    NotFoundResult notFoundRequest = jsonRet2 as NotFoundResult;
-                    Assert.IsNotNull(notFoundRequest);
-                }
-            }
+                options.UseSqlServer(connectionStrings.TestDB);
+            });
+        
+            Services.AddDbContext<ApplicationDbContext>(options =>
+                options.UseSqlServer(connectionStrings.TestDB));
+        
+            Services.AddIdentityCore<ApplicationUser>()
+                .AddEntityFrameworkStores<ApplicationDbContext>();
+        
+            Services.AddSingleton<IEnums, Enums>();
+            Services.AddSingleton<ILoggedInService, LoggedInService>();
+            Services.AddSingleton<IHelpDocService, HelpDocService>();
+            Services.AddSingleton<IHelpDocController, HelpDocController>();
+        
+            Provider = Services.BuildServiceProvider();
+            Assert.NotNull(Provider);
+        
+            loggedInService = Provider.GetService<ILoggedInService>();
+            Assert.NotNull(loggedInService);
+        
+            helpDocService = Provider.GetService<IHelpDocService>();
+            Assert.NotNull(helpDocService);
+        
+            await helpDocService.SetCulture(culture);
+        
+            helpDocController = Provider.GetService<IHelpDocController>();
+            Assert.NotNull(helpDocController);
+        
+            return await Task.FromResult(true);
         }
-        #endregion Tests Generated for Class Controller GetWithID Command
-
-        #region Tests Generated for Class Controller Post Command
-        [TestMethod]
-        public void HelpDoc_Controller_Post_Test()
-        {
-            foreach (LanguageEnum LanguageRequest in AllowableLanguages)
-            {
-                foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
-                {
-                    HelpDocController helpDocController = new HelpDocController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(helpDocController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, helpDocController.DatabaseType);
-
-                    HelpDoc helpDocLast = new HelpDoc();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-                    {
-                        Query query = new Query();
-                        query.Language = LanguageRequest;
-                        query.Asc = "";
-                        query.Desc = "";
-
-                        HelpDocService helpDocService = new HelpDocService(query, db, ContactID);
-                        helpDocLast = (from c in db.HelpDocs select c).FirstOrDefault();
-                    }
-
-                    // ok with HelpDoc info
-                    IHttpActionResult jsonRet = helpDocController.GetHelpDocWithID(helpDocLast.HelpDocID);
-                    Assert.IsNotNull(jsonRet);
-
-                    OkNegotiatedContentResult<HelpDoc> Ret = jsonRet as OkNegotiatedContentResult<HelpDoc>;
-                    HelpDoc helpDocRet = Ret.Content;
-                    Assert.AreEqual(helpDocLast.HelpDocID, helpDocRet.HelpDocID);
-
-                    BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
-
-                    // Post to return CSSPError because HelpDocID exist
-                    IHttpActionResult jsonRet2 = helpDocController.Post(helpDocRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet2);
-
-                    OkNegotiatedContentResult<HelpDoc> helpDocRet2 = jsonRet2 as OkNegotiatedContentResult<HelpDoc>;
-                    Assert.IsNull(helpDocRet2);
-
-                    BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
-                    Assert.IsNotNull(badRequest2);
-
-                    // Post to return newly added HelpDoc
-                    helpDocRet.HelpDocID = 0;
-                    helpDocController.Request = new System.Net.Http.HttpRequestMessage();
-                    helpDocController.Request.RequestUri = new System.Uri("http://localhost:5000/api/helpDoc");
-                    IHttpActionResult jsonRet3 = helpDocController.Post(helpDocRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet3);
-
-                    CreatedNegotiatedContentResult<HelpDoc> helpDocRet3 = jsonRet3 as CreatedNegotiatedContentResult<HelpDoc>;
-                    Assert.IsNotNull(helpDocRet3);
-
-                    BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest3);
-
-                    IHttpActionResult jsonRet4 = helpDocController.Delete(helpDocRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet4);
-
-                    OkNegotiatedContentResult<HelpDoc> helpDocRet4 = jsonRet4 as OkNegotiatedContentResult<HelpDoc>;
-                    Assert.IsNotNull(helpDocRet4);
-
-                    BadRequestErrorMessageResult badRequest4 = jsonRet4 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest4);
-                }
-            }
-        }
-        #endregion Tests Generated for Class Controller Post Command
-
-        #region Tests Generated for Class Controller Put Command
-        [TestMethod]
-        public void HelpDoc_Controller_Put_Test()
-        {
-            foreach (LanguageEnum LanguageRequest in AllowableLanguages)
-            {
-                foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
-                {
-                    HelpDocController helpDocController = new HelpDocController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(helpDocController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, helpDocController.DatabaseType);
-
-                    HelpDoc helpDocLast = new HelpDoc();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-                    {
-                        Query query = new Query();
-                        query.Language = LanguageRequest;
-
-                        HelpDocService helpDocService = new HelpDocService(query, db, ContactID);
-                        helpDocLast = (from c in db.HelpDocs select c).FirstOrDefault();
-                    }
-
-                    // ok with HelpDoc info
-                    IHttpActionResult jsonRet = helpDocController.GetHelpDocWithID(helpDocLast.HelpDocID);
-                    Assert.IsNotNull(jsonRet);
-
-                    OkNegotiatedContentResult<HelpDoc> Ret = jsonRet as OkNegotiatedContentResult<HelpDoc>;
-                    HelpDoc helpDocRet = Ret.Content;
-                    Assert.AreEqual(helpDocLast.HelpDocID, helpDocRet.HelpDocID);
-
-                    BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
-
-                    // Put to return success
-                    IHttpActionResult jsonRet2 = helpDocController.Put(helpDocRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet2);
-
-                    OkNegotiatedContentResult<HelpDoc> helpDocRet2 = jsonRet2 as OkNegotiatedContentResult<HelpDoc>;
-                    Assert.IsNotNull(helpDocRet2);
-
-                    BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest2);
-
-                    // Put to return CSSPError because HelpDocID of 0 does not exist
-                    helpDocRet.HelpDocID = 0;
-                    IHttpActionResult jsonRet3 = helpDocController.Put(helpDocRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet3);
-
-                    OkNegotiatedContentResult<HelpDoc> helpDocRet3 = jsonRet3 as OkNegotiatedContentResult<HelpDoc>;
-                    Assert.IsNull(helpDocRet3);
-
-                    BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
-                    Assert.IsNotNull(badRequest3);
-                }
-            }
-        }
-        #endregion Tests Generated for Class Controller Put Command
-
-        #region Tests Generated for Class Controller Delete Command
-        [TestMethod]
-        public void HelpDoc_Controller_Delete_Test()
-        {
-            foreach (LanguageEnum LanguageRequest in AllowableLanguages)
-            {
-                foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
-                {
-                    HelpDocController helpDocController = new HelpDocController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(helpDocController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, helpDocController.DatabaseType);
-
-                    HelpDoc helpDocLast = new HelpDoc();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-                    {
-                        Query query = new Query();
-                        query.Language = LanguageRequest;
-                        query.Asc = "";
-                        query.Desc = "";
-
-                        HelpDocService helpDocService = new HelpDocService(query, db, ContactID);
-                        helpDocLast = (from c in db.HelpDocs select c).FirstOrDefault();
-                    }
-
-                    // ok with HelpDoc info
-                    IHttpActionResult jsonRet = helpDocController.GetHelpDocWithID(helpDocLast.HelpDocID);
-                    Assert.IsNotNull(jsonRet);
-
-                    OkNegotiatedContentResult<HelpDoc> Ret = jsonRet as OkNegotiatedContentResult<HelpDoc>;
-                    HelpDoc helpDocRet = Ret.Content;
-                    Assert.AreEqual(helpDocLast.HelpDocID, helpDocRet.HelpDocID);
-
-                    BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
-
-                    // Post to return newly added HelpDoc
-                    helpDocRet.HelpDocID = 0;
-                    helpDocController.Request = new System.Net.Http.HttpRequestMessage();
-                    helpDocController.Request.RequestUri = new System.Uri("http://localhost:5000/api/helpDoc");
-                    IHttpActionResult jsonRet3 = helpDocController.Post(helpDocRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet3);
-
-                    CreatedNegotiatedContentResult<HelpDoc> helpDocRet3 = jsonRet3 as CreatedNegotiatedContentResult<HelpDoc>;
-                    Assert.IsNotNull(helpDocRet3);
-                    HelpDoc helpDoc = helpDocRet3.Content;
-
-                    BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest3);
-
-                    // Delete to return success
-                    IHttpActionResult jsonRet2 = helpDocController.Delete(helpDocRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet2);
-
-                    OkNegotiatedContentResult<HelpDoc> helpDocRet2 = jsonRet2 as OkNegotiatedContentResult<HelpDoc>;
-                    Assert.IsNotNull(helpDocRet2);
-
-                    BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest2);
-
-                    // Delete to return CSSPError because HelpDocID of 0 does not exist
-                    helpDocRet.HelpDocID = 0;
-                    IHttpActionResult jsonRet4 = helpDocController.Delete(helpDocRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet4);
-
-                    OkNegotiatedContentResult<HelpDoc> helpDocRet4 = jsonRet4 as OkNegotiatedContentResult<HelpDoc>;
-                    Assert.IsNull(helpDocRet4);
-
-                    BadRequestErrorMessageResult badRequest4 = jsonRet4 as BadRequestErrorMessageResult;
-                    Assert.IsNotNull(badRequest4);
-                }
-            }
-        }
-        #endregion Tests Generated for Class Controller Delete Command
-
+        #endregion Functions private
     }
 }

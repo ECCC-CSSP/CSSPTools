@@ -16,6 +16,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Transactions;
 using Xunit;
 
 namespace CSSPServices.Tests
@@ -54,37 +55,40 @@ namespace CSSPServices.Tests
 
             await Setup(new CultureInfo(culture));
 
-            SamplingPlanEmail samplingPlanEmail = GetFilledRandomSamplingPlanEmail(""); 
+            using (TransactionScope ts = new TransactionScope())
+            {
+               SamplingPlanEmail samplingPlanEmail = GetFilledRandomSamplingPlanEmail(""); 
 
-            // List<SamplingPlanEmail>
-            var actionSamplingPlanEmailList = await samplingPlanEmailService.GetSamplingPlanEmailList();
-            Assert.Equal(200, ((ObjectResult)actionSamplingPlanEmailList.Result).StatusCode);
-            Assert.NotNull(((OkObjectResult)actionSamplingPlanEmailList.Result).Value);
-            List<SamplingPlanEmail> samplingPlanEmailList = (List<SamplingPlanEmail>)(((OkObjectResult)actionSamplingPlanEmailList.Result).Value);
+               // List<SamplingPlanEmail>
+               var actionSamplingPlanEmailList = await samplingPlanEmailService.GetSamplingPlanEmailList();
+               Assert.Equal(200, ((ObjectResult)actionSamplingPlanEmailList.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionSamplingPlanEmailList.Result).Value);
+               List<SamplingPlanEmail> samplingPlanEmailList = (List<SamplingPlanEmail>)(((OkObjectResult)actionSamplingPlanEmailList.Result).Value);
 
-            int count = ((List<SamplingPlanEmail>)((OkObjectResult)actionSamplingPlanEmailList.Result).Value).Count();
-            Assert.True(count > 0);
+               int count = ((List<SamplingPlanEmail>)((OkObjectResult)actionSamplingPlanEmailList.Result).Value).Count();
+                Assert.True(count > 0);
 
-            // Add SamplingPlanEmail
-            var actionSamplingPlanEmailAdded = await samplingPlanEmailService.Add(samplingPlanEmail);
-            Assert.Equal(200, ((ObjectResult)actionSamplingPlanEmailAdded.Result).StatusCode);
-            Assert.NotNull(((OkObjectResult)actionSamplingPlanEmailAdded.Result).Value);
-            SamplingPlanEmail samplingPlanEmailAdded = (SamplingPlanEmail)(((OkObjectResult)actionSamplingPlanEmailAdded.Result).Value);
-            Assert.NotNull(samplingPlanEmailAdded);
+               // Add SamplingPlanEmail
+               var actionSamplingPlanEmailAdded = await samplingPlanEmailService.Add(samplingPlanEmail);
+               Assert.Equal(200, ((ObjectResult)actionSamplingPlanEmailAdded.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionSamplingPlanEmailAdded.Result).Value);
+               SamplingPlanEmail samplingPlanEmailAdded = (SamplingPlanEmail)(((OkObjectResult)actionSamplingPlanEmailAdded.Result).Value);
+               Assert.NotNull(samplingPlanEmailAdded);
 
-            // Update SamplingPlanEmail
-            var actionSamplingPlanEmailUpdated = await samplingPlanEmailService.Update(samplingPlanEmail);
-            Assert.Equal(200, ((ObjectResult)actionSamplingPlanEmailUpdated.Result).StatusCode);
-            Assert.NotNull(((OkObjectResult)actionSamplingPlanEmailUpdated.Result).Value);
-            SamplingPlanEmail samplingPlanEmailUpdated = (SamplingPlanEmail)(((OkObjectResult)actionSamplingPlanEmailUpdated.Result).Value);
-            Assert.NotNull(samplingPlanEmailUpdated);
+               // Update SamplingPlanEmail
+               var actionSamplingPlanEmailUpdated = await samplingPlanEmailService.Update(samplingPlanEmail);
+               Assert.Equal(200, ((ObjectResult)actionSamplingPlanEmailUpdated.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionSamplingPlanEmailUpdated.Result).Value);
+               SamplingPlanEmail samplingPlanEmailUpdated = (SamplingPlanEmail)(((OkObjectResult)actionSamplingPlanEmailUpdated.Result).Value);
+               Assert.NotNull(samplingPlanEmailUpdated);
 
-            // Delete SamplingPlanEmail
-            var actionSamplingPlanEmailDeleted = await samplingPlanEmailService.Delete(samplingPlanEmail);
-            Assert.Equal(200, ((ObjectResult)actionSamplingPlanEmailDeleted.Result).StatusCode);
-            Assert.NotNull(((OkObjectResult)actionSamplingPlanEmailDeleted.Result).Value);
-            SamplingPlanEmail samplingPlanEmailDeleted = (SamplingPlanEmail)(((OkObjectResult)actionSamplingPlanEmailDeleted.Result).Value);
-            Assert.NotNull(samplingPlanEmailDeleted);
+               // Delete SamplingPlanEmail
+               var actionSamplingPlanEmailDeleted = await samplingPlanEmailService.Delete(samplingPlanEmail);
+               Assert.Equal(200, ((ObjectResult)actionSamplingPlanEmailDeleted.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionSamplingPlanEmailDeleted.Result).Value);
+               SamplingPlanEmail samplingPlanEmailDeleted = (SamplingPlanEmail)(((OkObjectResult)actionSamplingPlanEmailDeleted.Result).Value);
+               Assert.NotNull(samplingPlanEmailDeleted);
+            }
         }
         #endregion Tests Generated CRUD
 

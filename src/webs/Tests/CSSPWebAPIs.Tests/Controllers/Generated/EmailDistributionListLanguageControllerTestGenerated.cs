@@ -2,350 +2,157 @@ using CSSPEnums;
 using CSSPModels;
 using CSSPServices;
 using CSSPWebAPI.Controllers;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using LoggedInServices.Services;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using System;
 using System.Collections.Generic;
+using System.Globalization;
+using System.IO;
 using System.Linq;
-using System.Web.Http;
-using System.Web.Http.Results;
+using System.Threading.Tasks;
+using System.Transactions;
+using UserServices.Models;
+using Xunit;
 
-namespace CSSPWebAPI.Tests.Controllers
+namespace CSSPWebAPIs.Tests.Controllers
 {
-    [TestClass]
-    public partial class EmailDistributionListLanguageControllerTest : BaseControllerTest
+    public partial class EmailDistributionListLanguageControllerTest
     {
         #region Variables
         #endregion Variables
 
         #region Properties
+        private IConfiguration Config { get; set; }
+        private IServiceProvider Provider { get; set; }
+        private IServiceCollection Services { get; set; }
+        private CSSPDBContext db { get; set; }
+        private ILoggedInService loggedInService { get; set; }
+        private IEmailDistributionListLanguageService emailDistributionListLanguageService { get; set; }
+        private IEmailDistributionListLanguageController emailDistributionListLanguageController { get; set; }
         #endregion Properties
 
         #region Constructors
-        public EmailDistributionListLanguageControllerTest() : base()
+        public EmailDistributionListLanguageControllerTest()
         {
         }
         #endregion Constructors
 
-        #region Tests Generated for Class Controller GetList Command
-        [TestMethod]
-        public void EmailDistributionListLanguage_Controller_GetEmailDistributionListLanguageList_Test()
+        #region Functions public
+        [Theory]
+        [InlineData("en-CA")]
+        [InlineData("fr-CA")]
+        public async Task EmailDistributionListLanguageController_Constructor_Good_Test(string culture)
         {
-            foreach (LanguageEnum LanguageRequest in AllowableLanguages)
+            bool retBool = await Setup(new CultureInfo(culture));
+            Assert.True(retBool);
+            Assert.NotNull(loggedInService);
+            Assert.NotNull(emailDistributionListLanguageService);
+            Assert.NotNull(emailDistributionListLanguageController);
+        }
+        [Theory]
+        [InlineData("en-CA")]
+        [InlineData("fr-CA")]
+        public async Task EmailDistributionListLanguageController_CRUD_Good_Test(string culture)
+        {
+            bool retBool = await Setup(new CultureInfo(culture));
+            Assert.True(retBool);
+
+            using (TransactionScope ts = new TransactionScope())
             {
-                foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
-                {
-                    EmailDistributionListLanguageController emailDistributionListLanguageController = new EmailDistributionListLanguageController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(emailDistributionListLanguageController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, emailDistributionListLanguageController.DatabaseType);
+                // testing Get
+               var actionEmailDistributionListLanguageList = await emailDistributionListLanguageController.Get();
+               Assert.Equal(200, ((ObjectResult)actionEmailDistributionListLanguageList.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionEmailDistributionListLanguageList.Result).Value);
+               List<EmailDistributionListLanguage> emailDistributionListLanguageList = (List<EmailDistributionListLanguage>)(((OkObjectResult)actionEmailDistributionListLanguageList.Result).Value);
 
-                    EmailDistributionListLanguage emailDistributionListLanguageFirst = new EmailDistributionListLanguage();
-                    int count = -1;
-                    Query query = new Query();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseTypeEnum.SqlServerTestDB))
-                    {
-                        EmailDistributionListLanguageService emailDistributionListLanguageService = new EmailDistributionListLanguageService(query, db, ContactID);
-                        emailDistributionListLanguageFirst = (from c in db.EmailDistributionListLanguages select c).FirstOrDefault();
-                        count = (from c in db.EmailDistributionListLanguages select c).Count();
-                        count = (query.Take > count ? count : query.Take);
-                    }
+               int count = ((List<EmailDistributionListLanguage>)((OkObjectResult)actionEmailDistributionListLanguageList.Result).Value).Count();
+                Assert.True(count > 0);
 
-                    // ok with EmailDistributionListLanguage info
-                    IHttpActionResult jsonRet = emailDistributionListLanguageController.GetEmailDistributionListLanguageList();
-                    Assert.IsNotNull(jsonRet);
+               // testing Get(EmailDistributionListLanguageID)
+               var actionEmailDistributionListLanguage = await emailDistributionListLanguageController.Get(emailDistributionListLanguageList[0].EmailDistributionListLanguageID);
+               Assert.Equal(200, ((ObjectResult)actionEmailDistributionListLanguage.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionEmailDistributionListLanguage.Result).Value);
+               EmailDistributionListLanguage emailDistributionListLanguage = (EmailDistributionListLanguage)(((OkObjectResult)actionEmailDistributionListLanguage.Result).Value);
+               Assert.NotNull(emailDistributionListLanguage);
+               Assert.Equal(emailDistributionListLanguageList[0].EmailDistributionListLanguageID, emailDistributionListLanguage.EmailDistributionListLanguageID);
 
-                    OkNegotiatedContentResult<List<EmailDistributionListLanguage>> ret = jsonRet as OkNegotiatedContentResult<List<EmailDistributionListLanguage>>;
-                    Assert.AreEqual(emailDistributionListLanguageFirst.EmailDistributionListLanguageID, ret.Content[0].EmailDistributionListLanguageID);
-                    Assert.AreEqual((count > query.Take ? query.Take : count), ret.Content.Count);
+               // testing Post(EmailDistributionListLanguage emailDistributionListLanguage)
+               emailDistributionListLanguage.EmailDistributionListLanguageID = 0;
+               var actionEmailDistributionListLanguageNew = await emailDistributionListLanguageController.Post(emailDistributionListLanguage);
+               Assert.Equal(200, ((ObjectResult)actionEmailDistributionListLanguageNew.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionEmailDistributionListLanguageNew.Result).Value);
+               EmailDistributionListLanguage emailDistributionListLanguageNew = (EmailDistributionListLanguage)(((OkObjectResult)actionEmailDistributionListLanguageNew.Result).Value);
+               Assert.NotNull(emailDistributionListLanguageNew);
 
-                    List<EmailDistributionListLanguage> emailDistributionListLanguageList = new List<EmailDistributionListLanguage>();
-                    count = -1;
-                    query = new Query();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseTypeEnum.SqlServerTestDB))
-                    {
-                        EmailDistributionListLanguageService emailDistributionListLanguageService = new EmailDistributionListLanguageService(query, db, ContactID);
-                        emailDistributionListLanguageList = (from c in db.EmailDistributionListLanguages select c).OrderBy(c => c.EmailDistributionListLanguageID).Skip(0).Take(2).ToList();
-                        count = (from c in db.EmailDistributionListLanguages select c).Count();
-                    }
+               // testing Put(EmailDistributionListLanguage emailDistributionListLanguage)
+               var actionEmailDistributionListLanguageUpdate = await emailDistributionListLanguageController.Put(emailDistributionListLanguageNew);
+               Assert.Equal(200, ((ObjectResult)actionEmailDistributionListLanguageUpdate.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionEmailDistributionListLanguageUpdate.Result).Value);
+               EmailDistributionListLanguage emailDistributionListLanguageUpdate = (EmailDistributionListLanguage)(((OkObjectResult)actionEmailDistributionListLanguageUpdate.Result).Value);
+               Assert.NotNull(emailDistributionListLanguageUpdate);
 
-                    if (count > 0)
-                    {
-                        query.Skip = 0;
-                        query.Take = 5;
-                        count = (query.Take > count ? query.Take : count);
-
-                        // ok with EmailDistributionListLanguage info
-                        jsonRet = emailDistributionListLanguageController.GetEmailDistributionListLanguageList(query.Language.ToString(), query.Skip, query.Take);
-                        Assert.IsNotNull(jsonRet);
-
-                        ret = jsonRet as OkNegotiatedContentResult<List<EmailDistributionListLanguage>>;
-                        Assert.AreEqual(emailDistributionListLanguageList[0].EmailDistributionListLanguageID, ret.Content[0].EmailDistributionListLanguageID);
-                        Assert.AreEqual((count > query.Take ? query.Take : count), ret.Content.Count);
-
-                       if (count > 1)
-                       {
-                           query.Skip = 1;
-                           query.Take = 5;
-                           count = (query.Take > count ? query.Take : count);
-
-                           // ok with EmailDistributionListLanguage info
-                           IHttpActionResult jsonRet2 = emailDistributionListLanguageController.GetEmailDistributionListLanguageList(query.Language.ToString(), query.Skip, query.Take);
-                           Assert.IsNotNull(jsonRet2);
-
-                           OkNegotiatedContentResult<List<EmailDistributionListLanguage>> ret2 = jsonRet2 as OkNegotiatedContentResult<List<EmailDistributionListLanguage>>;
-                           Assert.AreEqual(emailDistributionListLanguageList[1].EmailDistributionListLanguageID, ret2.Content[0].EmailDistributionListLanguageID);
-                           Assert.AreEqual((count > query.Take ? query.Take : count), ret2.Content.Count);
-                       }
-                    }
-                }
+               // testing Delete(EmailDistributionListLanguage emailDistributionListLanguage)
+               var actionEmailDistributionListLanguageDelete = await emailDistributionListLanguageController.Delete(emailDistributionListLanguageUpdate);
+               Assert.Equal(200, ((ObjectResult)actionEmailDistributionListLanguageDelete.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionEmailDistributionListLanguageDelete.Result).Value);
+               EmailDistributionListLanguage emailDistributionListLanguageDelete = (EmailDistributionListLanguage)(((OkObjectResult)actionEmailDistributionListLanguageDelete.Result).Value);
+               Assert.NotNull(emailDistributionListLanguageDelete);
             }
         }
-        #endregion Tests Generated for Class Controller GetList Command
+        #endregion Functions public
 
-        #region Tests Generated for Class Controller GetWithID Command
-        [TestMethod]
-        public void EmailDistributionListLanguage_Controller_GetEmailDistributionListLanguageWithID_Test()
+        #region Functions private
+        private async Task<bool> Setup(CultureInfo culture)
         {
-            foreach (LanguageEnum LanguageRequest in AllowableLanguages)
+            Config = new ConfigurationBuilder()
+               .SetBasePath(Directory.GetParent(AppContext.BaseDirectory).FullName)
+               .AddJsonFile("appsettings.json")
+               .Build();
+        
+            Services = new ServiceCollection();
+        
+            IConfigurationSection connectionStringsSection = Config.GetSection("ConnectionStrings");
+            Services.Configure<ConnectionStringsModel>(connectionStringsSection);
+        
+            ConnectionStringsModel connectionStrings = connectionStringsSection.Get<ConnectionStringsModel>();
+        
+            Services.AddSingleton<IConfiguration>(Config);
+        
+            Services.AddDbContext<CSSPDBContext>(options =>
             {
-                foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
-                {
-                    EmailDistributionListLanguageController emailDistributionListLanguageController = new EmailDistributionListLanguageController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(emailDistributionListLanguageController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, emailDistributionListLanguageController.DatabaseType);
-
-                    EmailDistributionListLanguage emailDistributionListLanguageFirst = new EmailDistributionListLanguage();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-                    {
-                        EmailDistributionListLanguageService emailDistributionListLanguageService = new EmailDistributionListLanguageService(new Query(), db, ContactID);
-                        emailDistributionListLanguageFirst = (from c in db.EmailDistributionListLanguages select c).FirstOrDefault();
-                    }
-
-                    // ok with EmailDistributionListLanguage info
-                    IHttpActionResult jsonRet = emailDistributionListLanguageController.GetEmailDistributionListLanguageWithID(emailDistributionListLanguageFirst.EmailDistributionListLanguageID);
-                    Assert.IsNotNull(jsonRet);
-
-                    OkNegotiatedContentResult<EmailDistributionListLanguage> Ret = jsonRet as OkNegotiatedContentResult<EmailDistributionListLanguage>;
-                    EmailDistributionListLanguage emailDistributionListLanguageRet = Ret.Content;
-                    Assert.AreEqual(emailDistributionListLanguageFirst.EmailDistributionListLanguageID, emailDistributionListLanguageRet.EmailDistributionListLanguageID);
-
-                    BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
-
-                    // Not Found
-                    IHttpActionResult jsonRet2 = emailDistributionListLanguageController.GetEmailDistributionListLanguageWithID(0);
-                    Assert.IsNotNull(jsonRet2);
-
-                    OkNegotiatedContentResult<EmailDistributionListLanguage> emailDistributionListLanguageRet2 = jsonRet2 as OkNegotiatedContentResult<EmailDistributionListLanguage>;
-                    Assert.IsNull(emailDistributionListLanguageRet2);
-
-                    NotFoundResult notFoundRequest = jsonRet2 as NotFoundResult;
-                    Assert.IsNotNull(notFoundRequest);
-                }
-            }
+                options.UseSqlServer(connectionStrings.TestDB);
+            });
+        
+            Services.AddDbContext<ApplicationDbContext>(options =>
+                options.UseSqlServer(connectionStrings.TestDB));
+        
+            Services.AddIdentityCore<ApplicationUser>()
+                .AddEntityFrameworkStores<ApplicationDbContext>();
+        
+            Services.AddSingleton<IEnums, Enums>();
+            Services.AddSingleton<ILoggedInService, LoggedInService>();
+            Services.AddSingleton<IEmailDistributionListLanguageService, EmailDistributionListLanguageService>();
+            Services.AddSingleton<IEmailDistributionListLanguageController, EmailDistributionListLanguageController>();
+        
+            Provider = Services.BuildServiceProvider();
+            Assert.NotNull(Provider);
+        
+            loggedInService = Provider.GetService<ILoggedInService>();
+            Assert.NotNull(loggedInService);
+        
+            emailDistributionListLanguageService = Provider.GetService<IEmailDistributionListLanguageService>();
+            Assert.NotNull(emailDistributionListLanguageService);
+        
+            await emailDistributionListLanguageService.SetCulture(culture);
+        
+            emailDistributionListLanguageController = Provider.GetService<IEmailDistributionListLanguageController>();
+            Assert.NotNull(emailDistributionListLanguageController);
+        
+            return await Task.FromResult(true);
         }
-        #endregion Tests Generated for Class Controller GetWithID Command
-
-        #region Tests Generated for Class Controller Post Command
-        [TestMethod]
-        public void EmailDistributionListLanguage_Controller_Post_Test()
-        {
-            foreach (LanguageEnum LanguageRequest in AllowableLanguages)
-            {
-                foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
-                {
-                    EmailDistributionListLanguageController emailDistributionListLanguageController = new EmailDistributionListLanguageController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(emailDistributionListLanguageController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, emailDistributionListLanguageController.DatabaseType);
-
-                    EmailDistributionListLanguage emailDistributionListLanguageLast = new EmailDistributionListLanguage();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-                    {
-                        Query query = new Query();
-                        query.Language = LanguageRequest;
-                        query.Asc = "";
-                        query.Desc = "";
-
-                        EmailDistributionListLanguageService emailDistributionListLanguageService = new EmailDistributionListLanguageService(query, db, ContactID);
-                        emailDistributionListLanguageLast = (from c in db.EmailDistributionListLanguages select c).FirstOrDefault();
-                    }
-
-                    // ok with EmailDistributionListLanguage info
-                    IHttpActionResult jsonRet = emailDistributionListLanguageController.GetEmailDistributionListLanguageWithID(emailDistributionListLanguageLast.EmailDistributionListLanguageID);
-                    Assert.IsNotNull(jsonRet);
-
-                    OkNegotiatedContentResult<EmailDistributionListLanguage> Ret = jsonRet as OkNegotiatedContentResult<EmailDistributionListLanguage>;
-                    EmailDistributionListLanguage emailDistributionListLanguageRet = Ret.Content;
-                    Assert.AreEqual(emailDistributionListLanguageLast.EmailDistributionListLanguageID, emailDistributionListLanguageRet.EmailDistributionListLanguageID);
-
-                    BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
-
-                    // Post to return CSSPError because EmailDistributionListLanguageID exist
-                    IHttpActionResult jsonRet2 = emailDistributionListLanguageController.Post(emailDistributionListLanguageRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet2);
-
-                    OkNegotiatedContentResult<EmailDistributionListLanguage> emailDistributionListLanguageRet2 = jsonRet2 as OkNegotiatedContentResult<EmailDistributionListLanguage>;
-                    Assert.IsNull(emailDistributionListLanguageRet2);
-
-                    BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
-                    Assert.IsNotNull(badRequest2);
-
-                    // Post to return newly added EmailDistributionListLanguage
-                    emailDistributionListLanguageRet.EmailDistributionListLanguageID = 0;
-                    emailDistributionListLanguageController.Request = new System.Net.Http.HttpRequestMessage();
-                    emailDistributionListLanguageController.Request.RequestUri = new System.Uri("http://localhost:5000/api/emailDistributionListLanguage");
-                    IHttpActionResult jsonRet3 = emailDistributionListLanguageController.Post(emailDistributionListLanguageRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet3);
-
-                    CreatedNegotiatedContentResult<EmailDistributionListLanguage> emailDistributionListLanguageRet3 = jsonRet3 as CreatedNegotiatedContentResult<EmailDistributionListLanguage>;
-                    Assert.IsNotNull(emailDistributionListLanguageRet3);
-
-                    BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest3);
-
-                    IHttpActionResult jsonRet4 = emailDistributionListLanguageController.Delete(emailDistributionListLanguageRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet4);
-
-                    OkNegotiatedContentResult<EmailDistributionListLanguage> emailDistributionListLanguageRet4 = jsonRet4 as OkNegotiatedContentResult<EmailDistributionListLanguage>;
-                    Assert.IsNotNull(emailDistributionListLanguageRet4);
-
-                    BadRequestErrorMessageResult badRequest4 = jsonRet4 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest4);
-                }
-            }
-        }
-        #endregion Tests Generated for Class Controller Post Command
-
-        #region Tests Generated for Class Controller Put Command
-        [TestMethod]
-        public void EmailDistributionListLanguage_Controller_Put_Test()
-        {
-            foreach (LanguageEnum LanguageRequest in AllowableLanguages)
-            {
-                foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
-                {
-                    EmailDistributionListLanguageController emailDistributionListLanguageController = new EmailDistributionListLanguageController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(emailDistributionListLanguageController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, emailDistributionListLanguageController.DatabaseType);
-
-                    EmailDistributionListLanguage emailDistributionListLanguageLast = new EmailDistributionListLanguage();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-                    {
-                        Query query = new Query();
-                        query.Language = LanguageRequest;
-
-                        EmailDistributionListLanguageService emailDistributionListLanguageService = new EmailDistributionListLanguageService(query, db, ContactID);
-                        emailDistributionListLanguageLast = (from c in db.EmailDistributionListLanguages select c).FirstOrDefault();
-                    }
-
-                    // ok with EmailDistributionListLanguage info
-                    IHttpActionResult jsonRet = emailDistributionListLanguageController.GetEmailDistributionListLanguageWithID(emailDistributionListLanguageLast.EmailDistributionListLanguageID);
-                    Assert.IsNotNull(jsonRet);
-
-                    OkNegotiatedContentResult<EmailDistributionListLanguage> Ret = jsonRet as OkNegotiatedContentResult<EmailDistributionListLanguage>;
-                    EmailDistributionListLanguage emailDistributionListLanguageRet = Ret.Content;
-                    Assert.AreEqual(emailDistributionListLanguageLast.EmailDistributionListLanguageID, emailDistributionListLanguageRet.EmailDistributionListLanguageID);
-
-                    BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
-
-                    // Put to return success
-                    IHttpActionResult jsonRet2 = emailDistributionListLanguageController.Put(emailDistributionListLanguageRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet2);
-
-                    OkNegotiatedContentResult<EmailDistributionListLanguage> emailDistributionListLanguageRet2 = jsonRet2 as OkNegotiatedContentResult<EmailDistributionListLanguage>;
-                    Assert.IsNotNull(emailDistributionListLanguageRet2);
-
-                    BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest2);
-
-                    // Put to return CSSPError because EmailDistributionListLanguageID of 0 does not exist
-                    emailDistributionListLanguageRet.EmailDistributionListLanguageID = 0;
-                    IHttpActionResult jsonRet3 = emailDistributionListLanguageController.Put(emailDistributionListLanguageRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet3);
-
-                    OkNegotiatedContentResult<EmailDistributionListLanguage> emailDistributionListLanguageRet3 = jsonRet3 as OkNegotiatedContentResult<EmailDistributionListLanguage>;
-                    Assert.IsNull(emailDistributionListLanguageRet3);
-
-                    BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
-                    Assert.IsNotNull(badRequest3);
-                }
-            }
-        }
-        #endregion Tests Generated for Class Controller Put Command
-
-        #region Tests Generated for Class Controller Delete Command
-        [TestMethod]
-        public void EmailDistributionListLanguage_Controller_Delete_Test()
-        {
-            foreach (LanguageEnum LanguageRequest in AllowableLanguages)
-            {
-                foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
-                {
-                    EmailDistributionListLanguageController emailDistributionListLanguageController = new EmailDistributionListLanguageController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(emailDistributionListLanguageController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, emailDistributionListLanguageController.DatabaseType);
-
-                    EmailDistributionListLanguage emailDistributionListLanguageLast = new EmailDistributionListLanguage();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-                    {
-                        Query query = new Query();
-                        query.Language = LanguageRequest;
-                        query.Asc = "";
-                        query.Desc = "";
-
-                        EmailDistributionListLanguageService emailDistributionListLanguageService = new EmailDistributionListLanguageService(query, db, ContactID);
-                        emailDistributionListLanguageLast = (from c in db.EmailDistributionListLanguages select c).FirstOrDefault();
-                    }
-
-                    // ok with EmailDistributionListLanguage info
-                    IHttpActionResult jsonRet = emailDistributionListLanguageController.GetEmailDistributionListLanguageWithID(emailDistributionListLanguageLast.EmailDistributionListLanguageID);
-                    Assert.IsNotNull(jsonRet);
-
-                    OkNegotiatedContentResult<EmailDistributionListLanguage> Ret = jsonRet as OkNegotiatedContentResult<EmailDistributionListLanguage>;
-                    EmailDistributionListLanguage emailDistributionListLanguageRet = Ret.Content;
-                    Assert.AreEqual(emailDistributionListLanguageLast.EmailDistributionListLanguageID, emailDistributionListLanguageRet.EmailDistributionListLanguageID);
-
-                    BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
-
-                    // Post to return newly added EmailDistributionListLanguage
-                    emailDistributionListLanguageRet.EmailDistributionListLanguageID = 0;
-                    emailDistributionListLanguageController.Request = new System.Net.Http.HttpRequestMessage();
-                    emailDistributionListLanguageController.Request.RequestUri = new System.Uri("http://localhost:5000/api/emailDistributionListLanguage");
-                    IHttpActionResult jsonRet3 = emailDistributionListLanguageController.Post(emailDistributionListLanguageRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet3);
-
-                    CreatedNegotiatedContentResult<EmailDistributionListLanguage> emailDistributionListLanguageRet3 = jsonRet3 as CreatedNegotiatedContentResult<EmailDistributionListLanguage>;
-                    Assert.IsNotNull(emailDistributionListLanguageRet3);
-                    EmailDistributionListLanguage emailDistributionListLanguage = emailDistributionListLanguageRet3.Content;
-
-                    BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest3);
-
-                    // Delete to return success
-                    IHttpActionResult jsonRet2 = emailDistributionListLanguageController.Delete(emailDistributionListLanguageRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet2);
-
-                    OkNegotiatedContentResult<EmailDistributionListLanguage> emailDistributionListLanguageRet2 = jsonRet2 as OkNegotiatedContentResult<EmailDistributionListLanguage>;
-                    Assert.IsNotNull(emailDistributionListLanguageRet2);
-
-                    BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest2);
-
-                    // Delete to return CSSPError because EmailDistributionListLanguageID of 0 does not exist
-                    emailDistributionListLanguageRet.EmailDistributionListLanguageID = 0;
-                    IHttpActionResult jsonRet4 = emailDistributionListLanguageController.Delete(emailDistributionListLanguageRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet4);
-
-                    OkNegotiatedContentResult<EmailDistributionListLanguage> emailDistributionListLanguageRet4 = jsonRet4 as OkNegotiatedContentResult<EmailDistributionListLanguage>;
-                    Assert.IsNull(emailDistributionListLanguageRet4);
-
-                    BadRequestErrorMessageResult badRequest4 = jsonRet4 as BadRequestErrorMessageResult;
-                    Assert.IsNotNull(badRequest4);
-                }
-            }
-        }
-        #endregion Tests Generated for Class Controller Delete Command
-
+        #endregion Functions private
     }
 }

@@ -1,143 +1,70 @@
-using CSSPEnums;
 using CSSPModels;
 using CSSPServices;
-using System;
+using LoggedInServices.Services;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web.Http;
+using System.Threading.Tasks;
 
 namespace CSSPWebAPI.Controllers
 {
-    [RoutePrefix("api/mikeScenarioResult")]
-    public partial class MikeScenarioResultController : BaseController
+    public partial interface IMikeScenarioResultController
+    {
+        Task<ActionResult<List<MikeScenarioResult>>> Get();
+        Task<ActionResult<MikeScenarioResult>> Get(int MikeScenarioResultID);
+        Task<ActionResult<MikeScenarioResult>> Post(MikeScenarioResult mikeScenarioResult);
+        Task<ActionResult<MikeScenarioResult>> Put(MikeScenarioResult mikeScenarioResult);
+        Task<ActionResult<MikeScenarioResult>> Delete(MikeScenarioResult mikeScenarioResult);
+    }
+
+    [Route("api/{culture}/[controller]")]
+    [ApiController]
+    [Authorize]
+    public partial class MikeScenarioResultController : ControllerBase, IMikeScenarioResultController
     {
         #region Variables
         #endregion Variables
 
         #region Properties
+        private IMikeScenarioResultService mikeScenarioResultService { get; }
+        private CSSPDBContext db { get; }
+        private ILoggedInService loggedInService { get; }
         #endregion Properties
 
         #region Constructors
-        public MikeScenarioResultController() : base()
+        public MikeScenarioResultController(IMikeScenarioResultService mikeScenarioResultService, CSSPDBContext db, ILoggedInService loggedInService)
         {
-        }
-        public MikeScenarioResultController(DatabaseTypeEnum dbt = DatabaseTypeEnum.SqlServerTestDB) : base(dbt)
-        {
+            this.mikeScenarioResultService = mikeScenarioResultService;
+            this.db = db;
+            this.loggedInService = loggedInService;
         }
         #endregion Constructors
 
         #region Functions public
-        // GET api/mikeScenarioResult
-        [Route("")]
-        public IHttpActionResult GetMikeScenarioResultList([FromUri]string lang = "en", [FromUri]int skip = 0, [FromUri]int take = 200,
-            [FromUri]string asc = "", [FromUri]string desc = "", [FromUri]string where = "", [FromUri]string extra = "")
+        [HttpGet]
+        public async Task<ActionResult<List<MikeScenarioResult>>> Get()
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                MikeScenarioResultService mikeScenarioResultService = new MikeScenarioResultService(new Query() { Lang = lang }, db, ContactID);
-
-                else // QueryString has no parameter [extra] or extra is empty
-                {
-                   mikeScenarioResultService.Query = mikeScenarioResultService.FillQuery(typeof(MikeScenarioResult), lang, skip, take, asc, desc, where, extra);
-
-                    if (mikeScenarioResultService.Query.HasErrors)
-                    {
-                        return Ok(new List<MikeScenarioResult>()
-                        {
-                            new MikeScenarioResult()
-                            {
-                                HasErrors = mikeScenarioResultService.Query.HasErrors,
-                                ValidationResults = mikeScenarioResultService.Query.ValidationResults,
-                            },
-                        }.ToList());
-                    }
-                    else
-                    {
-                        return Ok(mikeScenarioResultService.GetMikeScenarioResultList().ToList());
-                    }
-                }
-            }
+            return await mikeScenarioResultService.GetMikeScenarioResultList();
         }
-        // GET api/mikeScenarioResult/1
-        [Route("{MikeScenarioResultID:int}")]
-        public IHttpActionResult GetMikeScenarioResultWithID([FromUri]int MikeScenarioResultID, [FromUri]string lang = "en", [FromUri]string extra = "")
+        [HttpGet("{MikeScenarioResultID}")]
+        public async Task<ActionResult<MikeScenarioResult>> Get(int MikeScenarioResultID)
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                MikeScenarioResultService mikeScenarioResultService = new MikeScenarioResultService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
-
-                mikeScenarioResultService.Query = mikeScenarioResultService.FillQuery(typeof(MikeScenarioResult), lang, 0, 1, "", "", extra);
-
-                else
-                {
-                    MikeScenarioResult mikeScenarioResult = new MikeScenarioResult();
-                    mikeScenarioResult = mikeScenarioResultService.GetMikeScenarioResultWithMikeScenarioResultID(MikeScenarioResultID);
-
-                    if (mikeScenarioResult == null)
-                    {
-                        return NotFound();
-                    }
-
-                    return Ok(mikeScenarioResult);
-                }
-            }
+            return await mikeScenarioResultService.GetMikeScenarioResultWithMikeScenarioResultID(MikeScenarioResultID);
         }
-        // POST api/mikeScenarioResult
-        [Route("")]
-        public IHttpActionResult Post([FromBody]MikeScenarioResult mikeScenarioResult, [FromUri]string lang = "en")
+        [HttpPost]
+        public async Task<ActionResult<MikeScenarioResult>> Post(MikeScenarioResult mikeScenarioResult)
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                MikeScenarioResultService mikeScenarioResultService = new MikeScenarioResultService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
-
-                if (!mikeScenarioResultService.Add(mikeScenarioResult))
-                {
-                    return BadRequest(String.Join("|||", mikeScenarioResult.ValidationResults));
-                }
-                else
-                {
-                    mikeScenarioResult.ValidationResults = null;
-                    return Created<MikeScenarioResult>(new Uri(Request.RequestUri, mikeScenarioResult.MikeScenarioResultID.ToString()), mikeScenarioResult);
-                }
-            }
+            return await mikeScenarioResultService.Add(mikeScenarioResult);
         }
-        // PUT api/mikeScenarioResult
-        [Route("")]
-        public IHttpActionResult Put([FromBody]MikeScenarioResult mikeScenarioResult, [FromUri]string lang = "en")
+        [HttpPut]
+        public async Task<ActionResult<MikeScenarioResult>> Put(MikeScenarioResult mikeScenarioResult)
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                MikeScenarioResultService mikeScenarioResultService = new MikeScenarioResultService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
-
-                if (!mikeScenarioResultService.Update(mikeScenarioResult))
-                {
-                    return BadRequest(String.Join("|||", mikeScenarioResult.ValidationResults));
-                }
-                else
-                {
-                    mikeScenarioResult.ValidationResults = null;
-                    return Ok(mikeScenarioResult);
-                }
-            }
+            return await mikeScenarioResultService.Update(mikeScenarioResult);
         }
-        // DELETE api/mikeScenarioResult
-        [Route("")]
-        public IHttpActionResult Delete([FromBody]MikeScenarioResult mikeScenarioResult, [FromUri]string lang = "en")
+        [HttpDelete]
+        public async Task<ActionResult<MikeScenarioResult>> Delete(MikeScenarioResult mikeScenarioResult)
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                MikeScenarioResultService mikeScenarioResultService = new MikeScenarioResultService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
-
-                if (!mikeScenarioResultService.Delete(mikeScenarioResult))
-                {
-                    return BadRequest(String.Join("|||", mikeScenarioResult.ValidationResults));
-                }
-                else
-                {
-                    mikeScenarioResult.ValidationResults = null;
-                    return Ok(mikeScenarioResult);
-                }
-            }
+            return await mikeScenarioResultService.Delete(mikeScenarioResult);
         }
         #endregion Functions public
 

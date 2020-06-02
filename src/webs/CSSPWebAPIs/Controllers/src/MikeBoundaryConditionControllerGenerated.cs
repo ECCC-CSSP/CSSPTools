@@ -1,143 +1,70 @@
-using CSSPEnums;
 using CSSPModels;
 using CSSPServices;
-using System;
+using LoggedInServices.Services;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web.Http;
+using System.Threading.Tasks;
 
 namespace CSSPWebAPI.Controllers
 {
-    [RoutePrefix("api/mikeBoundaryCondition")]
-    public partial class MikeBoundaryConditionController : BaseController
+    public partial interface IMikeBoundaryConditionController
+    {
+        Task<ActionResult<List<MikeBoundaryCondition>>> Get();
+        Task<ActionResult<MikeBoundaryCondition>> Get(int MikeBoundaryConditionID);
+        Task<ActionResult<MikeBoundaryCondition>> Post(MikeBoundaryCondition mikeBoundaryCondition);
+        Task<ActionResult<MikeBoundaryCondition>> Put(MikeBoundaryCondition mikeBoundaryCondition);
+        Task<ActionResult<MikeBoundaryCondition>> Delete(MikeBoundaryCondition mikeBoundaryCondition);
+    }
+
+    [Route("api/{culture}/[controller]")]
+    [ApiController]
+    [Authorize]
+    public partial class MikeBoundaryConditionController : ControllerBase, IMikeBoundaryConditionController
     {
         #region Variables
         #endregion Variables
 
         #region Properties
+        private IMikeBoundaryConditionService mikeBoundaryConditionService { get; }
+        private CSSPDBContext db { get; }
+        private ILoggedInService loggedInService { get; }
         #endregion Properties
 
         #region Constructors
-        public MikeBoundaryConditionController() : base()
+        public MikeBoundaryConditionController(IMikeBoundaryConditionService mikeBoundaryConditionService, CSSPDBContext db, ILoggedInService loggedInService)
         {
-        }
-        public MikeBoundaryConditionController(DatabaseTypeEnum dbt = DatabaseTypeEnum.SqlServerTestDB) : base(dbt)
-        {
+            this.mikeBoundaryConditionService = mikeBoundaryConditionService;
+            this.db = db;
+            this.loggedInService = loggedInService;
         }
         #endregion Constructors
 
         #region Functions public
-        // GET api/mikeBoundaryCondition
-        [Route("")]
-        public IHttpActionResult GetMikeBoundaryConditionList([FromUri]string lang = "en", [FromUri]int skip = 0, [FromUri]int take = 200,
-            [FromUri]string asc = "", [FromUri]string desc = "", [FromUri]string where = "", [FromUri]string extra = "")
+        [HttpGet]
+        public async Task<ActionResult<List<MikeBoundaryCondition>>> Get()
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                MikeBoundaryConditionService mikeBoundaryConditionService = new MikeBoundaryConditionService(new Query() { Lang = lang }, db, ContactID);
-
-                else // QueryString has no parameter [extra] or extra is empty
-                {
-                   mikeBoundaryConditionService.Query = mikeBoundaryConditionService.FillQuery(typeof(MikeBoundaryCondition), lang, skip, take, asc, desc, where, extra);
-
-                    if (mikeBoundaryConditionService.Query.HasErrors)
-                    {
-                        return Ok(new List<MikeBoundaryCondition>()
-                        {
-                            new MikeBoundaryCondition()
-                            {
-                                HasErrors = mikeBoundaryConditionService.Query.HasErrors,
-                                ValidationResults = mikeBoundaryConditionService.Query.ValidationResults,
-                            },
-                        }.ToList());
-                    }
-                    else
-                    {
-                        return Ok(mikeBoundaryConditionService.GetMikeBoundaryConditionList().ToList());
-                    }
-                }
-            }
+            return await mikeBoundaryConditionService.GetMikeBoundaryConditionList();
         }
-        // GET api/mikeBoundaryCondition/1
-        [Route("{MikeBoundaryConditionID:int}")]
-        public IHttpActionResult GetMikeBoundaryConditionWithID([FromUri]int MikeBoundaryConditionID, [FromUri]string lang = "en", [FromUri]string extra = "")
+        [HttpGet("{MikeBoundaryConditionID}")]
+        public async Task<ActionResult<MikeBoundaryCondition>> Get(int MikeBoundaryConditionID)
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                MikeBoundaryConditionService mikeBoundaryConditionService = new MikeBoundaryConditionService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
-
-                mikeBoundaryConditionService.Query = mikeBoundaryConditionService.FillQuery(typeof(MikeBoundaryCondition), lang, 0, 1, "", "", extra);
-
-                else
-                {
-                    MikeBoundaryCondition mikeBoundaryCondition = new MikeBoundaryCondition();
-                    mikeBoundaryCondition = mikeBoundaryConditionService.GetMikeBoundaryConditionWithMikeBoundaryConditionID(MikeBoundaryConditionID);
-
-                    if (mikeBoundaryCondition == null)
-                    {
-                        return NotFound();
-                    }
-
-                    return Ok(mikeBoundaryCondition);
-                }
-            }
+            return await mikeBoundaryConditionService.GetMikeBoundaryConditionWithMikeBoundaryConditionID(MikeBoundaryConditionID);
         }
-        // POST api/mikeBoundaryCondition
-        [Route("")]
-        public IHttpActionResult Post([FromBody]MikeBoundaryCondition mikeBoundaryCondition, [FromUri]string lang = "en")
+        [HttpPost]
+        public async Task<ActionResult<MikeBoundaryCondition>> Post(MikeBoundaryCondition mikeBoundaryCondition)
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                MikeBoundaryConditionService mikeBoundaryConditionService = new MikeBoundaryConditionService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
-
-                if (!mikeBoundaryConditionService.Add(mikeBoundaryCondition))
-                {
-                    return BadRequest(String.Join("|||", mikeBoundaryCondition.ValidationResults));
-                }
-                else
-                {
-                    mikeBoundaryCondition.ValidationResults = null;
-                    return Created<MikeBoundaryCondition>(new Uri(Request.RequestUri, mikeBoundaryCondition.MikeBoundaryConditionID.ToString()), mikeBoundaryCondition);
-                }
-            }
+            return await mikeBoundaryConditionService.Add(mikeBoundaryCondition);
         }
-        // PUT api/mikeBoundaryCondition
-        [Route("")]
-        public IHttpActionResult Put([FromBody]MikeBoundaryCondition mikeBoundaryCondition, [FromUri]string lang = "en")
+        [HttpPut]
+        public async Task<ActionResult<MikeBoundaryCondition>> Put(MikeBoundaryCondition mikeBoundaryCondition)
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                MikeBoundaryConditionService mikeBoundaryConditionService = new MikeBoundaryConditionService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
-
-                if (!mikeBoundaryConditionService.Update(mikeBoundaryCondition))
-                {
-                    return BadRequest(String.Join("|||", mikeBoundaryCondition.ValidationResults));
-                }
-                else
-                {
-                    mikeBoundaryCondition.ValidationResults = null;
-                    return Ok(mikeBoundaryCondition);
-                }
-            }
+            return await mikeBoundaryConditionService.Update(mikeBoundaryCondition);
         }
-        // DELETE api/mikeBoundaryCondition
-        [Route("")]
-        public IHttpActionResult Delete([FromBody]MikeBoundaryCondition mikeBoundaryCondition, [FromUri]string lang = "en")
+        [HttpDelete]
+        public async Task<ActionResult<MikeBoundaryCondition>> Delete(MikeBoundaryCondition mikeBoundaryCondition)
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                MikeBoundaryConditionService mikeBoundaryConditionService = new MikeBoundaryConditionService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
-
-                if (!mikeBoundaryConditionService.Delete(mikeBoundaryCondition))
-                {
-                    return BadRequest(String.Join("|||", mikeBoundaryCondition.ValidationResults));
-                }
-                else
-                {
-                    mikeBoundaryCondition.ValidationResults = null;
-                    return Ok(mikeBoundaryCondition);
-                }
-            }
+            return await mikeBoundaryConditionService.Delete(mikeBoundaryCondition);
         }
         #endregion Functions public
 

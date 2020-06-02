@@ -2,350 +2,157 @@ using CSSPEnums;
 using CSSPModels;
 using CSSPServices;
 using CSSPWebAPI.Controllers;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using LoggedInServices.Services;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using System;
 using System.Collections.Generic;
+using System.Globalization;
+using System.IO;
 using System.Linq;
-using System.Web.Http;
-using System.Web.Http.Results;
+using System.Threading.Tasks;
+using System.Transactions;
+using UserServices.Models;
+using Xunit;
 
-namespace CSSPWebAPI.Tests.Controllers
+namespace CSSPWebAPIs.Tests.Controllers
 {
-    [TestClass]
-    public partial class ContactControllerTest : BaseControllerTest
+    public partial class ContactControllerTest
     {
         #region Variables
         #endregion Variables
 
         #region Properties
+        private IConfiguration Config { get; set; }
+        private IServiceProvider Provider { get; set; }
+        private IServiceCollection Services { get; set; }
+        private CSSPDBContext db { get; set; }
+        private ILoggedInService loggedInService { get; set; }
+        private IContactService contactService { get; set; }
+        private IContactController contactController { get; set; }
         #endregion Properties
 
         #region Constructors
-        public ContactControllerTest() : base()
+        public ContactControllerTest()
         {
         }
         #endregion Constructors
 
-        #region Tests Generated for Class Controller GetList Command
-        [TestMethod]
-        public void Contact_Controller_GetContactList_Test()
+        #region Functions public
+        [Theory]
+        [InlineData("en-CA")]
+        [InlineData("fr-CA")]
+        public async Task ContactController_Constructor_Good_Test(string culture)
         {
-            foreach (LanguageEnum LanguageRequest in AllowableLanguages)
+            bool retBool = await Setup(new CultureInfo(culture));
+            Assert.True(retBool);
+            Assert.NotNull(loggedInService);
+            Assert.NotNull(contactService);
+            Assert.NotNull(contactController);
+        }
+        [Theory]
+        [InlineData("en-CA")]
+        [InlineData("fr-CA")]
+        public async Task ContactController_CRUD_Good_Test(string culture)
+        {
+            bool retBool = await Setup(new CultureInfo(culture));
+            Assert.True(retBool);
+
+            using (TransactionScope ts = new TransactionScope())
             {
-                foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
-                {
-                    ContactController contactController = new ContactController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(contactController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, contactController.DatabaseType);
+                // testing Get
+               var actionContactList = await contactController.Get();
+               Assert.Equal(200, ((ObjectResult)actionContactList.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionContactList.Result).Value);
+               List<Contact> contactList = (List<Contact>)(((OkObjectResult)actionContactList.Result).Value);
 
-                    Contact contactFirst = new Contact();
-                    int count = -1;
-                    Query query = new Query();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseTypeEnum.SqlServerTestDB))
-                    {
-                        ContactService contactService = new ContactService(query, db, ContactID);
-                        contactFirst = (from c in db.Contacts select c).FirstOrDefault();
-                        count = (from c in db.Contacts select c).Count();
-                        count = (query.Take > count ? count : query.Take);
-                    }
+               int count = ((List<Contact>)((OkObjectResult)actionContactList.Result).Value).Count();
+                Assert.True(count > 0);
 
-                    // ok with Contact info
-                    IHttpActionResult jsonRet = contactController.GetContactList();
-                    Assert.IsNotNull(jsonRet);
+               // testing Get(ContactID)
+               var actionContact = await contactController.Get(contactList[0].ContactID);
+               Assert.Equal(200, ((ObjectResult)actionContact.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionContact.Result).Value);
+               Contact contact = (Contact)(((OkObjectResult)actionContact.Result).Value);
+               Assert.NotNull(contact);
+               Assert.Equal(contactList[0].ContactID, contact.ContactID);
 
-                    OkNegotiatedContentResult<List<Contact>> ret = jsonRet as OkNegotiatedContentResult<List<Contact>>;
-                    Assert.AreEqual(contactFirst.ContactID, ret.Content[0].ContactID);
-                    Assert.AreEqual((count > query.Take ? query.Take : count), ret.Content.Count);
+               // testing Post(Contact contact)
+               contact.ContactID = 0;
+               var actionContactNew = await contactController.Post(contact);
+               Assert.Equal(200, ((ObjectResult)actionContactNew.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionContactNew.Result).Value);
+               Contact contactNew = (Contact)(((OkObjectResult)actionContactNew.Result).Value);
+               Assert.NotNull(contactNew);
 
-                    List<Contact> contactList = new List<Contact>();
-                    count = -1;
-                    query = new Query();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseTypeEnum.SqlServerTestDB))
-                    {
-                        ContactService contactService = new ContactService(query, db, ContactID);
-                        contactList = (from c in db.Contacts select c).OrderBy(c => c.ContactID).Skip(0).Take(2).ToList();
-                        count = (from c in db.Contacts select c).Count();
-                    }
+               // testing Put(Contact contact)
+               var actionContactUpdate = await contactController.Put(contactNew);
+               Assert.Equal(200, ((ObjectResult)actionContactUpdate.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionContactUpdate.Result).Value);
+               Contact contactUpdate = (Contact)(((OkObjectResult)actionContactUpdate.Result).Value);
+               Assert.NotNull(contactUpdate);
 
-                    if (count > 0)
-                    {
-                        query.Skip = 0;
-                        query.Take = 5;
-                        count = (query.Take > count ? query.Take : count);
-
-                        // ok with Contact info
-                        jsonRet = contactController.GetContactList(query.Language.ToString(), query.Skip, query.Take);
-                        Assert.IsNotNull(jsonRet);
-
-                        ret = jsonRet as OkNegotiatedContentResult<List<Contact>>;
-                        Assert.AreEqual(contactList[0].ContactID, ret.Content[0].ContactID);
-                        Assert.AreEqual((count > query.Take ? query.Take : count), ret.Content.Count);
-
-                       if (count > 1)
-                       {
-                           query.Skip = 1;
-                           query.Take = 5;
-                           count = (query.Take > count ? query.Take : count);
-
-                           // ok with Contact info
-                           IHttpActionResult jsonRet2 = contactController.GetContactList(query.Language.ToString(), query.Skip, query.Take);
-                           Assert.IsNotNull(jsonRet2);
-
-                           OkNegotiatedContentResult<List<Contact>> ret2 = jsonRet2 as OkNegotiatedContentResult<List<Contact>>;
-                           Assert.AreEqual(contactList[1].ContactID, ret2.Content[0].ContactID);
-                           Assert.AreEqual((count > query.Take ? query.Take : count), ret2.Content.Count);
-                       }
-                    }
-                }
+               // testing Delete(Contact contact)
+               var actionContactDelete = await contactController.Delete(contactUpdate);
+               Assert.Equal(200, ((ObjectResult)actionContactDelete.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionContactDelete.Result).Value);
+               Contact contactDelete = (Contact)(((OkObjectResult)actionContactDelete.Result).Value);
+               Assert.NotNull(contactDelete);
             }
         }
-        #endregion Tests Generated for Class Controller GetList Command
+        #endregion Functions public
 
-        #region Tests Generated for Class Controller GetWithID Command
-        [TestMethod]
-        public void Contact_Controller_GetContactWithID_Test()
+        #region Functions private
+        private async Task<bool> Setup(CultureInfo culture)
         {
-            foreach (LanguageEnum LanguageRequest in AllowableLanguages)
+            Config = new ConfigurationBuilder()
+               .SetBasePath(Directory.GetParent(AppContext.BaseDirectory).FullName)
+               .AddJsonFile("appsettings.json")
+               .Build();
+        
+            Services = new ServiceCollection();
+        
+            IConfigurationSection connectionStringsSection = Config.GetSection("ConnectionStrings");
+            Services.Configure<ConnectionStringsModel>(connectionStringsSection);
+        
+            ConnectionStringsModel connectionStrings = connectionStringsSection.Get<ConnectionStringsModel>();
+        
+            Services.AddSingleton<IConfiguration>(Config);
+        
+            Services.AddDbContext<CSSPDBContext>(options =>
             {
-                foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
-                {
-                    ContactController contactController = new ContactController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(contactController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, contactController.DatabaseType);
-
-                    Contact contactFirst = new Contact();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-                    {
-                        ContactService contactService = new ContactService(new Query(), db, ContactID);
-                        contactFirst = (from c in db.Contacts select c).FirstOrDefault();
-                    }
-
-                    // ok with Contact info
-                    IHttpActionResult jsonRet = contactController.GetContactWithID(contactFirst.ContactID);
-                    Assert.IsNotNull(jsonRet);
-
-                    OkNegotiatedContentResult<Contact> Ret = jsonRet as OkNegotiatedContentResult<Contact>;
-                    Contact contactRet = Ret.Content;
-                    Assert.AreEqual(contactFirst.ContactID, contactRet.ContactID);
-
-                    BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
-
-                    // Not Found
-                    IHttpActionResult jsonRet2 = contactController.GetContactWithID(0);
-                    Assert.IsNotNull(jsonRet2);
-
-                    OkNegotiatedContentResult<Contact> contactRet2 = jsonRet2 as OkNegotiatedContentResult<Contact>;
-                    Assert.IsNull(contactRet2);
-
-                    NotFoundResult notFoundRequest = jsonRet2 as NotFoundResult;
-                    Assert.IsNotNull(notFoundRequest);
-                }
-            }
+                options.UseSqlServer(connectionStrings.TestDB);
+            });
+        
+            Services.AddDbContext<ApplicationDbContext>(options =>
+                options.UseSqlServer(connectionStrings.TestDB));
+        
+            Services.AddIdentityCore<ApplicationUser>()
+                .AddEntityFrameworkStores<ApplicationDbContext>();
+        
+            Services.AddSingleton<IEnums, Enums>();
+            Services.AddSingleton<ILoggedInService, LoggedInService>();
+            Services.AddSingleton<IContactService, ContactService>();
+            Services.AddSingleton<IContactController, ContactController>();
+        
+            Provider = Services.BuildServiceProvider();
+            Assert.NotNull(Provider);
+        
+            loggedInService = Provider.GetService<ILoggedInService>();
+            Assert.NotNull(loggedInService);
+        
+            contactService = Provider.GetService<IContactService>();
+            Assert.NotNull(contactService);
+        
+            await contactService.SetCulture(culture);
+        
+            contactController = Provider.GetService<IContactController>();
+            Assert.NotNull(contactController);
+        
+            return await Task.FromResult(true);
         }
-        #endregion Tests Generated for Class Controller GetWithID Command
-
-        #region Tests Generated for Class Controller Post Command
-        [TestMethod]
-        public void Contact_Controller_Post_Test()
-        {
-            foreach (LanguageEnum LanguageRequest in AllowableLanguages)
-            {
-                foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
-                {
-                    ContactController contactController = new ContactController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(contactController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, contactController.DatabaseType);
-
-                    Contact contactLast = new Contact();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-                    {
-                        Query query = new Query();
-                        query.Language = LanguageRequest;
-                        query.Asc = "";
-                        query.Desc = "";
-
-                        ContactService contactService = new ContactService(query, db, ContactID);
-                        contactLast = (from c in db.Contacts select c).FirstOrDefault();
-                    }
-
-                    // ok with Contact info
-                    IHttpActionResult jsonRet = contactController.GetContactWithID(contactLast.ContactID);
-                    Assert.IsNotNull(jsonRet);
-
-                    OkNegotiatedContentResult<Contact> Ret = jsonRet as OkNegotiatedContentResult<Contact>;
-                    Contact contactRet = Ret.Content;
-                    Assert.AreEqual(contactLast.ContactID, contactRet.ContactID);
-
-                    BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
-
-                    // Post to return CSSPError because ContactID exist
-                    IHttpActionResult jsonRet2 = contactController.Post(contactRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet2);
-
-                    OkNegotiatedContentResult<Contact> contactRet2 = jsonRet2 as OkNegotiatedContentResult<Contact>;
-                    Assert.IsNull(contactRet2);
-
-                    BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
-                    Assert.IsNotNull(badRequest2);
-
-                    // Post to return newly added Contact
-                    contactRet.ContactID = 0;
-                    contactController.Request = new System.Net.Http.HttpRequestMessage();
-                    contactController.Request.RequestUri = new System.Uri("http://localhost:5000/api/contact");
-                    IHttpActionResult jsonRet3 = contactController.Post(contactRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet3);
-
-                    CreatedNegotiatedContentResult<Contact> contactRet3 = jsonRet3 as CreatedNegotiatedContentResult<Contact>;
-                    Assert.IsNotNull(contactRet3);
-
-                    BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest3);
-
-                    IHttpActionResult jsonRet4 = contactController.Delete(contactRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet4);
-
-                    OkNegotiatedContentResult<Contact> contactRet4 = jsonRet4 as OkNegotiatedContentResult<Contact>;
-                    Assert.IsNotNull(contactRet4);
-
-                    BadRequestErrorMessageResult badRequest4 = jsonRet4 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest4);
-                }
-            }
-        }
-        #endregion Tests Generated for Class Controller Post Command
-
-        #region Tests Generated for Class Controller Put Command
-        [TestMethod]
-        public void Contact_Controller_Put_Test()
-        {
-            foreach (LanguageEnum LanguageRequest in AllowableLanguages)
-            {
-                foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
-                {
-                    ContactController contactController = new ContactController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(contactController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, contactController.DatabaseType);
-
-                    Contact contactLast = new Contact();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-                    {
-                        Query query = new Query();
-                        query.Language = LanguageRequest;
-
-                        ContactService contactService = new ContactService(query, db, ContactID);
-                        contactLast = (from c in db.Contacts select c).FirstOrDefault();
-                    }
-
-                    // ok with Contact info
-                    IHttpActionResult jsonRet = contactController.GetContactWithID(contactLast.ContactID);
-                    Assert.IsNotNull(jsonRet);
-
-                    OkNegotiatedContentResult<Contact> Ret = jsonRet as OkNegotiatedContentResult<Contact>;
-                    Contact contactRet = Ret.Content;
-                    Assert.AreEqual(contactLast.ContactID, contactRet.ContactID);
-
-                    BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
-
-                    // Put to return success
-                    IHttpActionResult jsonRet2 = contactController.Put(contactRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet2);
-
-                    OkNegotiatedContentResult<Contact> contactRet2 = jsonRet2 as OkNegotiatedContentResult<Contact>;
-                    Assert.IsNotNull(contactRet2);
-
-                    BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest2);
-
-                    // Put to return CSSPError because ContactID of 0 does not exist
-                    contactRet.ContactID = 0;
-                    IHttpActionResult jsonRet3 = contactController.Put(contactRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet3);
-
-                    OkNegotiatedContentResult<Contact> contactRet3 = jsonRet3 as OkNegotiatedContentResult<Contact>;
-                    Assert.IsNull(contactRet3);
-
-                    BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
-                    Assert.IsNotNull(badRequest3);
-                }
-            }
-        }
-        #endregion Tests Generated for Class Controller Put Command
-
-        #region Tests Generated for Class Controller Delete Command
-        [TestMethod]
-        public void Contact_Controller_Delete_Test()
-        {
-            foreach (LanguageEnum LanguageRequest in AllowableLanguages)
-            {
-                foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
-                {
-                    ContactController contactController = new ContactController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(contactController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, contactController.DatabaseType);
-
-                    Contact contactLast = new Contact();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-                    {
-                        Query query = new Query();
-                        query.Language = LanguageRequest;
-                        query.Asc = "";
-                        query.Desc = "";
-
-                        ContactService contactService = new ContactService(query, db, ContactID);
-                        contactLast = (from c in db.Contacts select c).FirstOrDefault();
-                    }
-
-                    // ok with Contact info
-                    IHttpActionResult jsonRet = contactController.GetContactWithID(contactLast.ContactID);
-                    Assert.IsNotNull(jsonRet);
-
-                    OkNegotiatedContentResult<Contact> Ret = jsonRet as OkNegotiatedContentResult<Contact>;
-                    Contact contactRet = Ret.Content;
-                    Assert.AreEqual(contactLast.ContactID, contactRet.ContactID);
-
-                    BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
-
-                    // Post to return newly added Contact
-                    contactRet.ContactID = 0;
-                    contactController.Request = new System.Net.Http.HttpRequestMessage();
-                    contactController.Request.RequestUri = new System.Uri("http://localhost:5000/api/contact");
-                    IHttpActionResult jsonRet3 = contactController.Post(contactRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet3);
-
-                    CreatedNegotiatedContentResult<Contact> contactRet3 = jsonRet3 as CreatedNegotiatedContentResult<Contact>;
-                    Assert.IsNotNull(contactRet3);
-                    Contact contact = contactRet3.Content;
-
-                    BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest3);
-
-                    // Delete to return success
-                    IHttpActionResult jsonRet2 = contactController.Delete(contactRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet2);
-
-                    OkNegotiatedContentResult<Contact> contactRet2 = jsonRet2 as OkNegotiatedContentResult<Contact>;
-                    Assert.IsNotNull(contactRet2);
-
-                    BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest2);
-
-                    // Delete to return CSSPError because ContactID of 0 does not exist
-                    contactRet.ContactID = 0;
-                    IHttpActionResult jsonRet4 = contactController.Delete(contactRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet4);
-
-                    OkNegotiatedContentResult<Contact> contactRet4 = jsonRet4 as OkNegotiatedContentResult<Contact>;
-                    Assert.IsNull(contactRet4);
-
-                    BadRequestErrorMessageResult badRequest4 = jsonRet4 as BadRequestErrorMessageResult;
-                    Assert.IsNotNull(badRequest4);
-                }
-            }
-        }
-        #endregion Tests Generated for Class Controller Delete Command
-
+        #endregion Functions private
     }
 }

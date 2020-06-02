@@ -2,350 +2,157 @@ using CSSPEnums;
 using CSSPModels;
 using CSSPServices;
 using CSSPWebAPI.Controllers;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using LoggedInServices.Services;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using System;
 using System.Collections.Generic;
+using System.Globalization;
+using System.IO;
 using System.Linq;
-using System.Web.Http;
-using System.Web.Http.Results;
+using System.Threading.Tasks;
+using System.Transactions;
+using UserServices.Models;
+using Xunit;
 
-namespace CSSPWebAPI.Tests.Controllers
+namespace CSSPWebAPIs.Tests.Controllers
 {
-    [TestClass]
-    public partial class EmailControllerTest : BaseControllerTest
+    public partial class EmailControllerTest
     {
         #region Variables
         #endregion Variables
 
         #region Properties
+        private IConfiguration Config { get; set; }
+        private IServiceProvider Provider { get; set; }
+        private IServiceCollection Services { get; set; }
+        private CSSPDBContext db { get; set; }
+        private ILoggedInService loggedInService { get; set; }
+        private IEmailService emailService { get; set; }
+        private IEmailController emailController { get; set; }
         #endregion Properties
 
         #region Constructors
-        public EmailControllerTest() : base()
+        public EmailControllerTest()
         {
         }
         #endregion Constructors
 
-        #region Tests Generated for Class Controller GetList Command
-        [TestMethod]
-        public void Email_Controller_GetEmailList_Test()
+        #region Functions public
+        [Theory]
+        [InlineData("en-CA")]
+        [InlineData("fr-CA")]
+        public async Task EmailController_Constructor_Good_Test(string culture)
         {
-            foreach (LanguageEnum LanguageRequest in AllowableLanguages)
+            bool retBool = await Setup(new CultureInfo(culture));
+            Assert.True(retBool);
+            Assert.NotNull(loggedInService);
+            Assert.NotNull(emailService);
+            Assert.NotNull(emailController);
+        }
+        [Theory]
+        [InlineData("en-CA")]
+        [InlineData("fr-CA")]
+        public async Task EmailController_CRUD_Good_Test(string culture)
+        {
+            bool retBool = await Setup(new CultureInfo(culture));
+            Assert.True(retBool);
+
+            using (TransactionScope ts = new TransactionScope())
             {
-                foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
-                {
-                    EmailController emailController = new EmailController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(emailController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, emailController.DatabaseType);
+                // testing Get
+               var actionEmailList = await emailController.Get();
+               Assert.Equal(200, ((ObjectResult)actionEmailList.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionEmailList.Result).Value);
+               List<Email> emailList = (List<Email>)(((OkObjectResult)actionEmailList.Result).Value);
 
-                    Email emailFirst = new Email();
-                    int count = -1;
-                    Query query = new Query();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseTypeEnum.SqlServerTestDB))
-                    {
-                        EmailService emailService = new EmailService(query, db, ContactID);
-                        emailFirst = (from c in db.Emails select c).FirstOrDefault();
-                        count = (from c in db.Emails select c).Count();
-                        count = (query.Take > count ? count : query.Take);
-                    }
+               int count = ((List<Email>)((OkObjectResult)actionEmailList.Result).Value).Count();
+                Assert.True(count > 0);
 
-                    // ok with Email info
-                    IHttpActionResult jsonRet = emailController.GetEmailList();
-                    Assert.IsNotNull(jsonRet);
+               // testing Get(EmailID)
+               var actionEmail = await emailController.Get(emailList[0].EmailID);
+               Assert.Equal(200, ((ObjectResult)actionEmail.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionEmail.Result).Value);
+               Email email = (Email)(((OkObjectResult)actionEmail.Result).Value);
+               Assert.NotNull(email);
+               Assert.Equal(emailList[0].EmailID, email.EmailID);
 
-                    OkNegotiatedContentResult<List<Email>> ret = jsonRet as OkNegotiatedContentResult<List<Email>>;
-                    Assert.AreEqual(emailFirst.EmailID, ret.Content[0].EmailID);
-                    Assert.AreEqual((count > query.Take ? query.Take : count), ret.Content.Count);
+               // testing Post(Email email)
+               email.EmailID = 0;
+               var actionEmailNew = await emailController.Post(email);
+               Assert.Equal(200, ((ObjectResult)actionEmailNew.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionEmailNew.Result).Value);
+               Email emailNew = (Email)(((OkObjectResult)actionEmailNew.Result).Value);
+               Assert.NotNull(emailNew);
 
-                    List<Email> emailList = new List<Email>();
-                    count = -1;
-                    query = new Query();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseTypeEnum.SqlServerTestDB))
-                    {
-                        EmailService emailService = new EmailService(query, db, ContactID);
-                        emailList = (from c in db.Emails select c).OrderBy(c => c.EmailID).Skip(0).Take(2).ToList();
-                        count = (from c in db.Emails select c).Count();
-                    }
+               // testing Put(Email email)
+               var actionEmailUpdate = await emailController.Put(emailNew);
+               Assert.Equal(200, ((ObjectResult)actionEmailUpdate.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionEmailUpdate.Result).Value);
+               Email emailUpdate = (Email)(((OkObjectResult)actionEmailUpdate.Result).Value);
+               Assert.NotNull(emailUpdate);
 
-                    if (count > 0)
-                    {
-                        query.Skip = 0;
-                        query.Take = 5;
-                        count = (query.Take > count ? query.Take : count);
-
-                        // ok with Email info
-                        jsonRet = emailController.GetEmailList(query.Language.ToString(), query.Skip, query.Take);
-                        Assert.IsNotNull(jsonRet);
-
-                        ret = jsonRet as OkNegotiatedContentResult<List<Email>>;
-                        Assert.AreEqual(emailList[0].EmailID, ret.Content[0].EmailID);
-                        Assert.AreEqual((count > query.Take ? query.Take : count), ret.Content.Count);
-
-                       if (count > 1)
-                       {
-                           query.Skip = 1;
-                           query.Take = 5;
-                           count = (query.Take > count ? query.Take : count);
-
-                           // ok with Email info
-                           IHttpActionResult jsonRet2 = emailController.GetEmailList(query.Language.ToString(), query.Skip, query.Take);
-                           Assert.IsNotNull(jsonRet2);
-
-                           OkNegotiatedContentResult<List<Email>> ret2 = jsonRet2 as OkNegotiatedContentResult<List<Email>>;
-                           Assert.AreEqual(emailList[1].EmailID, ret2.Content[0].EmailID);
-                           Assert.AreEqual((count > query.Take ? query.Take : count), ret2.Content.Count);
-                       }
-                    }
-                }
+               // testing Delete(Email email)
+               var actionEmailDelete = await emailController.Delete(emailUpdate);
+               Assert.Equal(200, ((ObjectResult)actionEmailDelete.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionEmailDelete.Result).Value);
+               Email emailDelete = (Email)(((OkObjectResult)actionEmailDelete.Result).Value);
+               Assert.NotNull(emailDelete);
             }
         }
-        #endregion Tests Generated for Class Controller GetList Command
+        #endregion Functions public
 
-        #region Tests Generated for Class Controller GetWithID Command
-        [TestMethod]
-        public void Email_Controller_GetEmailWithID_Test()
+        #region Functions private
+        private async Task<bool> Setup(CultureInfo culture)
         {
-            foreach (LanguageEnum LanguageRequest in AllowableLanguages)
+            Config = new ConfigurationBuilder()
+               .SetBasePath(Directory.GetParent(AppContext.BaseDirectory).FullName)
+               .AddJsonFile("appsettings.json")
+               .Build();
+        
+            Services = new ServiceCollection();
+        
+            IConfigurationSection connectionStringsSection = Config.GetSection("ConnectionStrings");
+            Services.Configure<ConnectionStringsModel>(connectionStringsSection);
+        
+            ConnectionStringsModel connectionStrings = connectionStringsSection.Get<ConnectionStringsModel>();
+        
+            Services.AddSingleton<IConfiguration>(Config);
+        
+            Services.AddDbContext<CSSPDBContext>(options =>
             {
-                foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
-                {
-                    EmailController emailController = new EmailController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(emailController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, emailController.DatabaseType);
-
-                    Email emailFirst = new Email();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-                    {
-                        EmailService emailService = new EmailService(new Query(), db, ContactID);
-                        emailFirst = (from c in db.Emails select c).FirstOrDefault();
-                    }
-
-                    // ok with Email info
-                    IHttpActionResult jsonRet = emailController.GetEmailWithID(emailFirst.EmailID);
-                    Assert.IsNotNull(jsonRet);
-
-                    OkNegotiatedContentResult<Email> Ret = jsonRet as OkNegotiatedContentResult<Email>;
-                    Email emailRet = Ret.Content;
-                    Assert.AreEqual(emailFirst.EmailID, emailRet.EmailID);
-
-                    BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
-
-                    // Not Found
-                    IHttpActionResult jsonRet2 = emailController.GetEmailWithID(0);
-                    Assert.IsNotNull(jsonRet2);
-
-                    OkNegotiatedContentResult<Email> emailRet2 = jsonRet2 as OkNegotiatedContentResult<Email>;
-                    Assert.IsNull(emailRet2);
-
-                    NotFoundResult notFoundRequest = jsonRet2 as NotFoundResult;
-                    Assert.IsNotNull(notFoundRequest);
-                }
-            }
+                options.UseSqlServer(connectionStrings.TestDB);
+            });
+        
+            Services.AddDbContext<ApplicationDbContext>(options =>
+                options.UseSqlServer(connectionStrings.TestDB));
+        
+            Services.AddIdentityCore<ApplicationUser>()
+                .AddEntityFrameworkStores<ApplicationDbContext>();
+        
+            Services.AddSingleton<IEnums, Enums>();
+            Services.AddSingleton<ILoggedInService, LoggedInService>();
+            Services.AddSingleton<IEmailService, EmailService>();
+            Services.AddSingleton<IEmailController, EmailController>();
+        
+            Provider = Services.BuildServiceProvider();
+            Assert.NotNull(Provider);
+        
+            loggedInService = Provider.GetService<ILoggedInService>();
+            Assert.NotNull(loggedInService);
+        
+            emailService = Provider.GetService<IEmailService>();
+            Assert.NotNull(emailService);
+        
+            await emailService.SetCulture(culture);
+        
+            emailController = Provider.GetService<IEmailController>();
+            Assert.NotNull(emailController);
+        
+            return await Task.FromResult(true);
         }
-        #endregion Tests Generated for Class Controller GetWithID Command
-
-        #region Tests Generated for Class Controller Post Command
-        [TestMethod]
-        public void Email_Controller_Post_Test()
-        {
-            foreach (LanguageEnum LanguageRequest in AllowableLanguages)
-            {
-                foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
-                {
-                    EmailController emailController = new EmailController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(emailController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, emailController.DatabaseType);
-
-                    Email emailLast = new Email();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-                    {
-                        Query query = new Query();
-                        query.Language = LanguageRequest;
-                        query.Asc = "";
-                        query.Desc = "";
-
-                        EmailService emailService = new EmailService(query, db, ContactID);
-                        emailLast = (from c in db.Emails select c).FirstOrDefault();
-                    }
-
-                    // ok with Email info
-                    IHttpActionResult jsonRet = emailController.GetEmailWithID(emailLast.EmailID);
-                    Assert.IsNotNull(jsonRet);
-
-                    OkNegotiatedContentResult<Email> Ret = jsonRet as OkNegotiatedContentResult<Email>;
-                    Email emailRet = Ret.Content;
-                    Assert.AreEqual(emailLast.EmailID, emailRet.EmailID);
-
-                    BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
-
-                    // Post to return CSSPError because EmailID exist
-                    IHttpActionResult jsonRet2 = emailController.Post(emailRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet2);
-
-                    OkNegotiatedContentResult<Email> emailRet2 = jsonRet2 as OkNegotiatedContentResult<Email>;
-                    Assert.IsNull(emailRet2);
-
-                    BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
-                    Assert.IsNotNull(badRequest2);
-
-                    // Post to return newly added Email
-                    emailRet.EmailID = 0;
-                    emailController.Request = new System.Net.Http.HttpRequestMessage();
-                    emailController.Request.RequestUri = new System.Uri("http://localhost:5000/api/email");
-                    IHttpActionResult jsonRet3 = emailController.Post(emailRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet3);
-
-                    CreatedNegotiatedContentResult<Email> emailRet3 = jsonRet3 as CreatedNegotiatedContentResult<Email>;
-                    Assert.IsNotNull(emailRet3);
-
-                    BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest3);
-
-                    IHttpActionResult jsonRet4 = emailController.Delete(emailRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet4);
-
-                    OkNegotiatedContentResult<Email> emailRet4 = jsonRet4 as OkNegotiatedContentResult<Email>;
-                    Assert.IsNotNull(emailRet4);
-
-                    BadRequestErrorMessageResult badRequest4 = jsonRet4 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest4);
-                }
-            }
-        }
-        #endregion Tests Generated for Class Controller Post Command
-
-        #region Tests Generated for Class Controller Put Command
-        [TestMethod]
-        public void Email_Controller_Put_Test()
-        {
-            foreach (LanguageEnum LanguageRequest in AllowableLanguages)
-            {
-                foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
-                {
-                    EmailController emailController = new EmailController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(emailController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, emailController.DatabaseType);
-
-                    Email emailLast = new Email();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-                    {
-                        Query query = new Query();
-                        query.Language = LanguageRequest;
-
-                        EmailService emailService = new EmailService(query, db, ContactID);
-                        emailLast = (from c in db.Emails select c).FirstOrDefault();
-                    }
-
-                    // ok with Email info
-                    IHttpActionResult jsonRet = emailController.GetEmailWithID(emailLast.EmailID);
-                    Assert.IsNotNull(jsonRet);
-
-                    OkNegotiatedContentResult<Email> Ret = jsonRet as OkNegotiatedContentResult<Email>;
-                    Email emailRet = Ret.Content;
-                    Assert.AreEqual(emailLast.EmailID, emailRet.EmailID);
-
-                    BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
-
-                    // Put to return success
-                    IHttpActionResult jsonRet2 = emailController.Put(emailRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet2);
-
-                    OkNegotiatedContentResult<Email> emailRet2 = jsonRet2 as OkNegotiatedContentResult<Email>;
-                    Assert.IsNotNull(emailRet2);
-
-                    BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest2);
-
-                    // Put to return CSSPError because EmailID of 0 does not exist
-                    emailRet.EmailID = 0;
-                    IHttpActionResult jsonRet3 = emailController.Put(emailRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet3);
-
-                    OkNegotiatedContentResult<Email> emailRet3 = jsonRet3 as OkNegotiatedContentResult<Email>;
-                    Assert.IsNull(emailRet3);
-
-                    BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
-                    Assert.IsNotNull(badRequest3);
-                }
-            }
-        }
-        #endregion Tests Generated for Class Controller Put Command
-
-        #region Tests Generated for Class Controller Delete Command
-        [TestMethod]
-        public void Email_Controller_Delete_Test()
-        {
-            foreach (LanguageEnum LanguageRequest in AllowableLanguages)
-            {
-                foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
-                {
-                    EmailController emailController = new EmailController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(emailController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, emailController.DatabaseType);
-
-                    Email emailLast = new Email();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-                    {
-                        Query query = new Query();
-                        query.Language = LanguageRequest;
-                        query.Asc = "";
-                        query.Desc = "";
-
-                        EmailService emailService = new EmailService(query, db, ContactID);
-                        emailLast = (from c in db.Emails select c).FirstOrDefault();
-                    }
-
-                    // ok with Email info
-                    IHttpActionResult jsonRet = emailController.GetEmailWithID(emailLast.EmailID);
-                    Assert.IsNotNull(jsonRet);
-
-                    OkNegotiatedContentResult<Email> Ret = jsonRet as OkNegotiatedContentResult<Email>;
-                    Email emailRet = Ret.Content;
-                    Assert.AreEqual(emailLast.EmailID, emailRet.EmailID);
-
-                    BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
-
-                    // Post to return newly added Email
-                    emailRet.EmailID = 0;
-                    emailController.Request = new System.Net.Http.HttpRequestMessage();
-                    emailController.Request.RequestUri = new System.Uri("http://localhost:5000/api/email");
-                    IHttpActionResult jsonRet3 = emailController.Post(emailRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet3);
-
-                    CreatedNegotiatedContentResult<Email> emailRet3 = jsonRet3 as CreatedNegotiatedContentResult<Email>;
-                    Assert.IsNotNull(emailRet3);
-                    Email email = emailRet3.Content;
-
-                    BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest3);
-
-                    // Delete to return success
-                    IHttpActionResult jsonRet2 = emailController.Delete(emailRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet2);
-
-                    OkNegotiatedContentResult<Email> emailRet2 = jsonRet2 as OkNegotiatedContentResult<Email>;
-                    Assert.IsNotNull(emailRet2);
-
-                    BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest2);
-
-                    // Delete to return CSSPError because EmailID of 0 does not exist
-                    emailRet.EmailID = 0;
-                    IHttpActionResult jsonRet4 = emailController.Delete(emailRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet4);
-
-                    OkNegotiatedContentResult<Email> emailRet4 = jsonRet4 as OkNegotiatedContentResult<Email>;
-                    Assert.IsNull(emailRet4);
-
-                    BadRequestErrorMessageResult badRequest4 = jsonRet4 as BadRequestErrorMessageResult;
-                    Assert.IsNotNull(badRequest4);
-                }
-            }
-        }
-        #endregion Tests Generated for Class Controller Delete Command
-
+        #endregion Functions private
     }
 }

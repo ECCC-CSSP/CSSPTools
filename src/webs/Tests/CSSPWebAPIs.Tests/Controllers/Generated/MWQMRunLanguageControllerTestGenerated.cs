@@ -2,350 +2,157 @@ using CSSPEnums;
 using CSSPModels;
 using CSSPServices;
 using CSSPWebAPI.Controllers;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using LoggedInServices.Services;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using System;
 using System.Collections.Generic;
+using System.Globalization;
+using System.IO;
 using System.Linq;
-using System.Web.Http;
-using System.Web.Http.Results;
+using System.Threading.Tasks;
+using System.Transactions;
+using UserServices.Models;
+using Xunit;
 
-namespace CSSPWebAPI.Tests.Controllers
+namespace CSSPWebAPIs.Tests.Controllers
 {
-    [TestClass]
-    public partial class MWQMRunLanguageControllerTest : BaseControllerTest
+    public partial class MWQMRunLanguageControllerTest
     {
         #region Variables
         #endregion Variables
 
         #region Properties
+        private IConfiguration Config { get; set; }
+        private IServiceProvider Provider { get; set; }
+        private IServiceCollection Services { get; set; }
+        private CSSPDBContext db { get; set; }
+        private ILoggedInService loggedInService { get; set; }
+        private IMWQMRunLanguageService mwqmRunLanguageService { get; set; }
+        private IMWQMRunLanguageController mwqmRunLanguageController { get; set; }
         #endregion Properties
 
         #region Constructors
-        public MWQMRunLanguageControllerTest() : base()
+        public MWQMRunLanguageControllerTest()
         {
         }
         #endregion Constructors
 
-        #region Tests Generated for Class Controller GetList Command
-        [TestMethod]
-        public void MWQMRunLanguage_Controller_GetMWQMRunLanguageList_Test()
+        #region Functions public
+        [Theory]
+        [InlineData("en-CA")]
+        [InlineData("fr-CA")]
+        public async Task MWQMRunLanguageController_Constructor_Good_Test(string culture)
         {
-            foreach (LanguageEnum LanguageRequest in AllowableLanguages)
+            bool retBool = await Setup(new CultureInfo(culture));
+            Assert.True(retBool);
+            Assert.NotNull(loggedInService);
+            Assert.NotNull(mwqmRunLanguageService);
+            Assert.NotNull(mwqmRunLanguageController);
+        }
+        [Theory]
+        [InlineData("en-CA")]
+        [InlineData("fr-CA")]
+        public async Task MWQMRunLanguageController_CRUD_Good_Test(string culture)
+        {
+            bool retBool = await Setup(new CultureInfo(culture));
+            Assert.True(retBool);
+
+            using (TransactionScope ts = new TransactionScope())
             {
-                foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
-                {
-                    MWQMRunLanguageController mwqmRunLanguageController = new MWQMRunLanguageController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(mwqmRunLanguageController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, mwqmRunLanguageController.DatabaseType);
+                // testing Get
+               var actionMWQMRunLanguageList = await mwqmRunLanguageController.Get();
+               Assert.Equal(200, ((ObjectResult)actionMWQMRunLanguageList.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionMWQMRunLanguageList.Result).Value);
+               List<MWQMRunLanguage> mwqmRunLanguageList = (List<MWQMRunLanguage>)(((OkObjectResult)actionMWQMRunLanguageList.Result).Value);
 
-                    MWQMRunLanguage mwqmRunLanguageFirst = new MWQMRunLanguage();
-                    int count = -1;
-                    Query query = new Query();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseTypeEnum.SqlServerTestDB))
-                    {
-                        MWQMRunLanguageService mwqmRunLanguageService = new MWQMRunLanguageService(query, db, ContactID);
-                        mwqmRunLanguageFirst = (from c in db.MWQMRunLanguages select c).FirstOrDefault();
-                        count = (from c in db.MWQMRunLanguages select c).Count();
-                        count = (query.Take > count ? count : query.Take);
-                    }
+               int count = ((List<MWQMRunLanguage>)((OkObjectResult)actionMWQMRunLanguageList.Result).Value).Count();
+                Assert.True(count > 0);
 
-                    // ok with MWQMRunLanguage info
-                    IHttpActionResult jsonRet = mwqmRunLanguageController.GetMWQMRunLanguageList();
-                    Assert.IsNotNull(jsonRet);
+               // testing Get(MWQMRunLanguageID)
+               var actionMWQMRunLanguage = await mwqmRunLanguageController.Get(mwqmRunLanguageList[0].MWQMRunLanguageID);
+               Assert.Equal(200, ((ObjectResult)actionMWQMRunLanguage.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionMWQMRunLanguage.Result).Value);
+               MWQMRunLanguage mwqmRunLanguage = (MWQMRunLanguage)(((OkObjectResult)actionMWQMRunLanguage.Result).Value);
+               Assert.NotNull(mwqmRunLanguage);
+               Assert.Equal(mwqmRunLanguageList[0].MWQMRunLanguageID, mwqmRunLanguage.MWQMRunLanguageID);
 
-                    OkNegotiatedContentResult<List<MWQMRunLanguage>> ret = jsonRet as OkNegotiatedContentResult<List<MWQMRunLanguage>>;
-                    Assert.AreEqual(mwqmRunLanguageFirst.MWQMRunLanguageID, ret.Content[0].MWQMRunLanguageID);
-                    Assert.AreEqual((count > query.Take ? query.Take : count), ret.Content.Count);
+               // testing Post(MWQMRunLanguage mwqmRunLanguage)
+               mwqmRunLanguage.MWQMRunLanguageID = 0;
+               var actionMWQMRunLanguageNew = await mwqmRunLanguageController.Post(mwqmRunLanguage);
+               Assert.Equal(200, ((ObjectResult)actionMWQMRunLanguageNew.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionMWQMRunLanguageNew.Result).Value);
+               MWQMRunLanguage mwqmRunLanguageNew = (MWQMRunLanguage)(((OkObjectResult)actionMWQMRunLanguageNew.Result).Value);
+               Assert.NotNull(mwqmRunLanguageNew);
 
-                    List<MWQMRunLanguage> mwqmRunLanguageList = new List<MWQMRunLanguage>();
-                    count = -1;
-                    query = new Query();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseTypeEnum.SqlServerTestDB))
-                    {
-                        MWQMRunLanguageService mwqmRunLanguageService = new MWQMRunLanguageService(query, db, ContactID);
-                        mwqmRunLanguageList = (from c in db.MWQMRunLanguages select c).OrderBy(c => c.MWQMRunLanguageID).Skip(0).Take(2).ToList();
-                        count = (from c in db.MWQMRunLanguages select c).Count();
-                    }
+               // testing Put(MWQMRunLanguage mwqmRunLanguage)
+               var actionMWQMRunLanguageUpdate = await mwqmRunLanguageController.Put(mwqmRunLanguageNew);
+               Assert.Equal(200, ((ObjectResult)actionMWQMRunLanguageUpdate.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionMWQMRunLanguageUpdate.Result).Value);
+               MWQMRunLanguage mwqmRunLanguageUpdate = (MWQMRunLanguage)(((OkObjectResult)actionMWQMRunLanguageUpdate.Result).Value);
+               Assert.NotNull(mwqmRunLanguageUpdate);
 
-                    if (count > 0)
-                    {
-                        query.Skip = 0;
-                        query.Take = 5;
-                        count = (query.Take > count ? query.Take : count);
-
-                        // ok with MWQMRunLanguage info
-                        jsonRet = mwqmRunLanguageController.GetMWQMRunLanguageList(query.Language.ToString(), query.Skip, query.Take);
-                        Assert.IsNotNull(jsonRet);
-
-                        ret = jsonRet as OkNegotiatedContentResult<List<MWQMRunLanguage>>;
-                        Assert.AreEqual(mwqmRunLanguageList[0].MWQMRunLanguageID, ret.Content[0].MWQMRunLanguageID);
-                        Assert.AreEqual((count > query.Take ? query.Take : count), ret.Content.Count);
-
-                       if (count > 1)
-                       {
-                           query.Skip = 1;
-                           query.Take = 5;
-                           count = (query.Take > count ? query.Take : count);
-
-                           // ok with MWQMRunLanguage info
-                           IHttpActionResult jsonRet2 = mwqmRunLanguageController.GetMWQMRunLanguageList(query.Language.ToString(), query.Skip, query.Take);
-                           Assert.IsNotNull(jsonRet2);
-
-                           OkNegotiatedContentResult<List<MWQMRunLanguage>> ret2 = jsonRet2 as OkNegotiatedContentResult<List<MWQMRunLanguage>>;
-                           Assert.AreEqual(mwqmRunLanguageList[1].MWQMRunLanguageID, ret2.Content[0].MWQMRunLanguageID);
-                           Assert.AreEqual((count > query.Take ? query.Take : count), ret2.Content.Count);
-                       }
-                    }
-                }
+               // testing Delete(MWQMRunLanguage mwqmRunLanguage)
+               var actionMWQMRunLanguageDelete = await mwqmRunLanguageController.Delete(mwqmRunLanguageUpdate);
+               Assert.Equal(200, ((ObjectResult)actionMWQMRunLanguageDelete.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionMWQMRunLanguageDelete.Result).Value);
+               MWQMRunLanguage mwqmRunLanguageDelete = (MWQMRunLanguage)(((OkObjectResult)actionMWQMRunLanguageDelete.Result).Value);
+               Assert.NotNull(mwqmRunLanguageDelete);
             }
         }
-        #endregion Tests Generated for Class Controller GetList Command
+        #endregion Functions public
 
-        #region Tests Generated for Class Controller GetWithID Command
-        [TestMethod]
-        public void MWQMRunLanguage_Controller_GetMWQMRunLanguageWithID_Test()
+        #region Functions private
+        private async Task<bool> Setup(CultureInfo culture)
         {
-            foreach (LanguageEnum LanguageRequest in AllowableLanguages)
+            Config = new ConfigurationBuilder()
+               .SetBasePath(Directory.GetParent(AppContext.BaseDirectory).FullName)
+               .AddJsonFile("appsettings.json")
+               .Build();
+        
+            Services = new ServiceCollection();
+        
+            IConfigurationSection connectionStringsSection = Config.GetSection("ConnectionStrings");
+            Services.Configure<ConnectionStringsModel>(connectionStringsSection);
+        
+            ConnectionStringsModel connectionStrings = connectionStringsSection.Get<ConnectionStringsModel>();
+        
+            Services.AddSingleton<IConfiguration>(Config);
+        
+            Services.AddDbContext<CSSPDBContext>(options =>
             {
-                foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
-                {
-                    MWQMRunLanguageController mwqmRunLanguageController = new MWQMRunLanguageController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(mwqmRunLanguageController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, mwqmRunLanguageController.DatabaseType);
-
-                    MWQMRunLanguage mwqmRunLanguageFirst = new MWQMRunLanguage();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-                    {
-                        MWQMRunLanguageService mwqmRunLanguageService = new MWQMRunLanguageService(new Query(), db, ContactID);
-                        mwqmRunLanguageFirst = (from c in db.MWQMRunLanguages select c).FirstOrDefault();
-                    }
-
-                    // ok with MWQMRunLanguage info
-                    IHttpActionResult jsonRet = mwqmRunLanguageController.GetMWQMRunLanguageWithID(mwqmRunLanguageFirst.MWQMRunLanguageID);
-                    Assert.IsNotNull(jsonRet);
-
-                    OkNegotiatedContentResult<MWQMRunLanguage> Ret = jsonRet as OkNegotiatedContentResult<MWQMRunLanguage>;
-                    MWQMRunLanguage mwqmRunLanguageRet = Ret.Content;
-                    Assert.AreEqual(mwqmRunLanguageFirst.MWQMRunLanguageID, mwqmRunLanguageRet.MWQMRunLanguageID);
-
-                    BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
-
-                    // Not Found
-                    IHttpActionResult jsonRet2 = mwqmRunLanguageController.GetMWQMRunLanguageWithID(0);
-                    Assert.IsNotNull(jsonRet2);
-
-                    OkNegotiatedContentResult<MWQMRunLanguage> mwqmRunLanguageRet2 = jsonRet2 as OkNegotiatedContentResult<MWQMRunLanguage>;
-                    Assert.IsNull(mwqmRunLanguageRet2);
-
-                    NotFoundResult notFoundRequest = jsonRet2 as NotFoundResult;
-                    Assert.IsNotNull(notFoundRequest);
-                }
-            }
+                options.UseSqlServer(connectionStrings.TestDB);
+            });
+        
+            Services.AddDbContext<ApplicationDbContext>(options =>
+                options.UseSqlServer(connectionStrings.TestDB));
+        
+            Services.AddIdentityCore<ApplicationUser>()
+                .AddEntityFrameworkStores<ApplicationDbContext>();
+        
+            Services.AddSingleton<IEnums, Enums>();
+            Services.AddSingleton<ILoggedInService, LoggedInService>();
+            Services.AddSingleton<IMWQMRunLanguageService, MWQMRunLanguageService>();
+            Services.AddSingleton<IMWQMRunLanguageController, MWQMRunLanguageController>();
+        
+            Provider = Services.BuildServiceProvider();
+            Assert.NotNull(Provider);
+        
+            loggedInService = Provider.GetService<ILoggedInService>();
+            Assert.NotNull(loggedInService);
+        
+            mwqmRunLanguageService = Provider.GetService<IMWQMRunLanguageService>();
+            Assert.NotNull(mwqmRunLanguageService);
+        
+            await mwqmRunLanguageService.SetCulture(culture);
+        
+            mwqmRunLanguageController = Provider.GetService<IMWQMRunLanguageController>();
+            Assert.NotNull(mwqmRunLanguageController);
+        
+            return await Task.FromResult(true);
         }
-        #endregion Tests Generated for Class Controller GetWithID Command
-
-        #region Tests Generated for Class Controller Post Command
-        [TestMethod]
-        public void MWQMRunLanguage_Controller_Post_Test()
-        {
-            foreach (LanguageEnum LanguageRequest in AllowableLanguages)
-            {
-                foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
-                {
-                    MWQMRunLanguageController mwqmRunLanguageController = new MWQMRunLanguageController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(mwqmRunLanguageController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, mwqmRunLanguageController.DatabaseType);
-
-                    MWQMRunLanguage mwqmRunLanguageLast = new MWQMRunLanguage();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-                    {
-                        Query query = new Query();
-                        query.Language = LanguageRequest;
-                        query.Asc = "";
-                        query.Desc = "";
-
-                        MWQMRunLanguageService mwqmRunLanguageService = new MWQMRunLanguageService(query, db, ContactID);
-                        mwqmRunLanguageLast = (from c in db.MWQMRunLanguages select c).FirstOrDefault();
-                    }
-
-                    // ok with MWQMRunLanguage info
-                    IHttpActionResult jsonRet = mwqmRunLanguageController.GetMWQMRunLanguageWithID(mwqmRunLanguageLast.MWQMRunLanguageID);
-                    Assert.IsNotNull(jsonRet);
-
-                    OkNegotiatedContentResult<MWQMRunLanguage> Ret = jsonRet as OkNegotiatedContentResult<MWQMRunLanguage>;
-                    MWQMRunLanguage mwqmRunLanguageRet = Ret.Content;
-                    Assert.AreEqual(mwqmRunLanguageLast.MWQMRunLanguageID, mwqmRunLanguageRet.MWQMRunLanguageID);
-
-                    BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
-
-                    // Post to return CSSPError because MWQMRunLanguageID exist
-                    IHttpActionResult jsonRet2 = mwqmRunLanguageController.Post(mwqmRunLanguageRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet2);
-
-                    OkNegotiatedContentResult<MWQMRunLanguage> mwqmRunLanguageRet2 = jsonRet2 as OkNegotiatedContentResult<MWQMRunLanguage>;
-                    Assert.IsNull(mwqmRunLanguageRet2);
-
-                    BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
-                    Assert.IsNotNull(badRequest2);
-
-                    // Post to return newly added MWQMRunLanguage
-                    mwqmRunLanguageRet.MWQMRunLanguageID = 0;
-                    mwqmRunLanguageController.Request = new System.Net.Http.HttpRequestMessage();
-                    mwqmRunLanguageController.Request.RequestUri = new System.Uri("http://localhost:5000/api/mwqmRunLanguage");
-                    IHttpActionResult jsonRet3 = mwqmRunLanguageController.Post(mwqmRunLanguageRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet3);
-
-                    CreatedNegotiatedContentResult<MWQMRunLanguage> mwqmRunLanguageRet3 = jsonRet3 as CreatedNegotiatedContentResult<MWQMRunLanguage>;
-                    Assert.IsNotNull(mwqmRunLanguageRet3);
-
-                    BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest3);
-
-                    IHttpActionResult jsonRet4 = mwqmRunLanguageController.Delete(mwqmRunLanguageRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet4);
-
-                    OkNegotiatedContentResult<MWQMRunLanguage> mwqmRunLanguageRet4 = jsonRet4 as OkNegotiatedContentResult<MWQMRunLanguage>;
-                    Assert.IsNotNull(mwqmRunLanguageRet4);
-
-                    BadRequestErrorMessageResult badRequest4 = jsonRet4 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest4);
-                }
-            }
-        }
-        #endregion Tests Generated for Class Controller Post Command
-
-        #region Tests Generated for Class Controller Put Command
-        [TestMethod]
-        public void MWQMRunLanguage_Controller_Put_Test()
-        {
-            foreach (LanguageEnum LanguageRequest in AllowableLanguages)
-            {
-                foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
-                {
-                    MWQMRunLanguageController mwqmRunLanguageController = new MWQMRunLanguageController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(mwqmRunLanguageController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, mwqmRunLanguageController.DatabaseType);
-
-                    MWQMRunLanguage mwqmRunLanguageLast = new MWQMRunLanguage();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-                    {
-                        Query query = new Query();
-                        query.Language = LanguageRequest;
-
-                        MWQMRunLanguageService mwqmRunLanguageService = new MWQMRunLanguageService(query, db, ContactID);
-                        mwqmRunLanguageLast = (from c in db.MWQMRunLanguages select c).FirstOrDefault();
-                    }
-
-                    // ok with MWQMRunLanguage info
-                    IHttpActionResult jsonRet = mwqmRunLanguageController.GetMWQMRunLanguageWithID(mwqmRunLanguageLast.MWQMRunLanguageID);
-                    Assert.IsNotNull(jsonRet);
-
-                    OkNegotiatedContentResult<MWQMRunLanguage> Ret = jsonRet as OkNegotiatedContentResult<MWQMRunLanguage>;
-                    MWQMRunLanguage mwqmRunLanguageRet = Ret.Content;
-                    Assert.AreEqual(mwqmRunLanguageLast.MWQMRunLanguageID, mwqmRunLanguageRet.MWQMRunLanguageID);
-
-                    BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
-
-                    // Put to return success
-                    IHttpActionResult jsonRet2 = mwqmRunLanguageController.Put(mwqmRunLanguageRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet2);
-
-                    OkNegotiatedContentResult<MWQMRunLanguage> mwqmRunLanguageRet2 = jsonRet2 as OkNegotiatedContentResult<MWQMRunLanguage>;
-                    Assert.IsNotNull(mwqmRunLanguageRet2);
-
-                    BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest2);
-
-                    // Put to return CSSPError because MWQMRunLanguageID of 0 does not exist
-                    mwqmRunLanguageRet.MWQMRunLanguageID = 0;
-                    IHttpActionResult jsonRet3 = mwqmRunLanguageController.Put(mwqmRunLanguageRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet3);
-
-                    OkNegotiatedContentResult<MWQMRunLanguage> mwqmRunLanguageRet3 = jsonRet3 as OkNegotiatedContentResult<MWQMRunLanguage>;
-                    Assert.IsNull(mwqmRunLanguageRet3);
-
-                    BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
-                    Assert.IsNotNull(badRequest3);
-                }
-            }
-        }
-        #endregion Tests Generated for Class Controller Put Command
-
-        #region Tests Generated for Class Controller Delete Command
-        [TestMethod]
-        public void MWQMRunLanguage_Controller_Delete_Test()
-        {
-            foreach (LanguageEnum LanguageRequest in AllowableLanguages)
-            {
-                foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
-                {
-                    MWQMRunLanguageController mwqmRunLanguageController = new MWQMRunLanguageController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(mwqmRunLanguageController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, mwqmRunLanguageController.DatabaseType);
-
-                    MWQMRunLanguage mwqmRunLanguageLast = new MWQMRunLanguage();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-                    {
-                        Query query = new Query();
-                        query.Language = LanguageRequest;
-                        query.Asc = "";
-                        query.Desc = "";
-
-                        MWQMRunLanguageService mwqmRunLanguageService = new MWQMRunLanguageService(query, db, ContactID);
-                        mwqmRunLanguageLast = (from c in db.MWQMRunLanguages select c).FirstOrDefault();
-                    }
-
-                    // ok with MWQMRunLanguage info
-                    IHttpActionResult jsonRet = mwqmRunLanguageController.GetMWQMRunLanguageWithID(mwqmRunLanguageLast.MWQMRunLanguageID);
-                    Assert.IsNotNull(jsonRet);
-
-                    OkNegotiatedContentResult<MWQMRunLanguage> Ret = jsonRet as OkNegotiatedContentResult<MWQMRunLanguage>;
-                    MWQMRunLanguage mwqmRunLanguageRet = Ret.Content;
-                    Assert.AreEqual(mwqmRunLanguageLast.MWQMRunLanguageID, mwqmRunLanguageRet.MWQMRunLanguageID);
-
-                    BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
-
-                    // Post to return newly added MWQMRunLanguage
-                    mwqmRunLanguageRet.MWQMRunLanguageID = 0;
-                    mwqmRunLanguageController.Request = new System.Net.Http.HttpRequestMessage();
-                    mwqmRunLanguageController.Request.RequestUri = new System.Uri("http://localhost:5000/api/mwqmRunLanguage");
-                    IHttpActionResult jsonRet3 = mwqmRunLanguageController.Post(mwqmRunLanguageRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet3);
-
-                    CreatedNegotiatedContentResult<MWQMRunLanguage> mwqmRunLanguageRet3 = jsonRet3 as CreatedNegotiatedContentResult<MWQMRunLanguage>;
-                    Assert.IsNotNull(mwqmRunLanguageRet3);
-                    MWQMRunLanguage mwqmRunLanguage = mwqmRunLanguageRet3.Content;
-
-                    BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest3);
-
-                    // Delete to return success
-                    IHttpActionResult jsonRet2 = mwqmRunLanguageController.Delete(mwqmRunLanguageRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet2);
-
-                    OkNegotiatedContentResult<MWQMRunLanguage> mwqmRunLanguageRet2 = jsonRet2 as OkNegotiatedContentResult<MWQMRunLanguage>;
-                    Assert.IsNotNull(mwqmRunLanguageRet2);
-
-                    BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest2);
-
-                    // Delete to return CSSPError because MWQMRunLanguageID of 0 does not exist
-                    mwqmRunLanguageRet.MWQMRunLanguageID = 0;
-                    IHttpActionResult jsonRet4 = mwqmRunLanguageController.Delete(mwqmRunLanguageRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet4);
-
-                    OkNegotiatedContentResult<MWQMRunLanguage> mwqmRunLanguageRet4 = jsonRet4 as OkNegotiatedContentResult<MWQMRunLanguage>;
-                    Assert.IsNull(mwqmRunLanguageRet4);
-
-                    BadRequestErrorMessageResult badRequest4 = jsonRet4 as BadRequestErrorMessageResult;
-                    Assert.IsNotNull(badRequest4);
-                }
-            }
-        }
-        #endregion Tests Generated for Class Controller Delete Command
-
+        #endregion Functions private
     }
 }

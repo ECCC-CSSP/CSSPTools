@@ -2,350 +2,157 @@ using CSSPEnums;
 using CSSPModels;
 using CSSPServices;
 using CSSPWebAPI.Controllers;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using LoggedInServices.Services;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using System;
 using System.Collections.Generic;
+using System.Globalization;
+using System.IO;
 using System.Linq;
-using System.Web.Http;
-using System.Web.Http.Results;
+using System.Threading.Tasks;
+using System.Transactions;
+using UserServices.Models;
+using Xunit;
 
-namespace CSSPWebAPI.Tests.Controllers
+namespace CSSPWebAPIs.Tests.Controllers
 {
-    [TestClass]
-    public partial class SpillControllerTest : BaseControllerTest
+    public partial class SpillControllerTest
     {
         #region Variables
         #endregion Variables
 
         #region Properties
+        private IConfiguration Config { get; set; }
+        private IServiceProvider Provider { get; set; }
+        private IServiceCollection Services { get; set; }
+        private CSSPDBContext db { get; set; }
+        private ILoggedInService loggedInService { get; set; }
+        private ISpillService spillService { get; set; }
+        private ISpillController spillController { get; set; }
         #endregion Properties
 
         #region Constructors
-        public SpillControllerTest() : base()
+        public SpillControllerTest()
         {
         }
         #endregion Constructors
 
-        #region Tests Generated for Class Controller GetList Command
-        [TestMethod]
-        public void Spill_Controller_GetSpillList_Test()
+        #region Functions public
+        [Theory]
+        [InlineData("en-CA")]
+        [InlineData("fr-CA")]
+        public async Task SpillController_Constructor_Good_Test(string culture)
         {
-            foreach (LanguageEnum LanguageRequest in AllowableLanguages)
+            bool retBool = await Setup(new CultureInfo(culture));
+            Assert.True(retBool);
+            Assert.NotNull(loggedInService);
+            Assert.NotNull(spillService);
+            Assert.NotNull(spillController);
+        }
+        [Theory]
+        [InlineData("en-CA")]
+        [InlineData("fr-CA")]
+        public async Task SpillController_CRUD_Good_Test(string culture)
+        {
+            bool retBool = await Setup(new CultureInfo(culture));
+            Assert.True(retBool);
+
+            using (TransactionScope ts = new TransactionScope())
             {
-                foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
-                {
-                    SpillController spillController = new SpillController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(spillController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, spillController.DatabaseType);
+                // testing Get
+               var actionSpillList = await spillController.Get();
+               Assert.Equal(200, ((ObjectResult)actionSpillList.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionSpillList.Result).Value);
+               List<Spill> spillList = (List<Spill>)(((OkObjectResult)actionSpillList.Result).Value);
 
-                    Spill spillFirst = new Spill();
-                    int count = -1;
-                    Query query = new Query();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseTypeEnum.SqlServerTestDB))
-                    {
-                        SpillService spillService = new SpillService(query, db, ContactID);
-                        spillFirst = (from c in db.Spills select c).FirstOrDefault();
-                        count = (from c in db.Spills select c).Count();
-                        count = (query.Take > count ? count : query.Take);
-                    }
+               int count = ((List<Spill>)((OkObjectResult)actionSpillList.Result).Value).Count();
+                Assert.True(count > 0);
 
-                    // ok with Spill info
-                    IHttpActionResult jsonRet = spillController.GetSpillList();
-                    Assert.IsNotNull(jsonRet);
+               // testing Get(SpillID)
+               var actionSpill = await spillController.Get(spillList[0].SpillID);
+               Assert.Equal(200, ((ObjectResult)actionSpill.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionSpill.Result).Value);
+               Spill spill = (Spill)(((OkObjectResult)actionSpill.Result).Value);
+               Assert.NotNull(spill);
+               Assert.Equal(spillList[0].SpillID, spill.SpillID);
 
-                    OkNegotiatedContentResult<List<Spill>> ret = jsonRet as OkNegotiatedContentResult<List<Spill>>;
-                    Assert.AreEqual(spillFirst.SpillID, ret.Content[0].SpillID);
-                    Assert.AreEqual((count > query.Take ? query.Take : count), ret.Content.Count);
+               // testing Post(Spill spill)
+               spill.SpillID = 0;
+               var actionSpillNew = await spillController.Post(spill);
+               Assert.Equal(200, ((ObjectResult)actionSpillNew.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionSpillNew.Result).Value);
+               Spill spillNew = (Spill)(((OkObjectResult)actionSpillNew.Result).Value);
+               Assert.NotNull(spillNew);
 
-                    List<Spill> spillList = new List<Spill>();
-                    count = -1;
-                    query = new Query();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseTypeEnum.SqlServerTestDB))
-                    {
-                        SpillService spillService = new SpillService(query, db, ContactID);
-                        spillList = (from c in db.Spills select c).OrderBy(c => c.SpillID).Skip(0).Take(2).ToList();
-                        count = (from c in db.Spills select c).Count();
-                    }
+               // testing Put(Spill spill)
+               var actionSpillUpdate = await spillController.Put(spillNew);
+               Assert.Equal(200, ((ObjectResult)actionSpillUpdate.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionSpillUpdate.Result).Value);
+               Spill spillUpdate = (Spill)(((OkObjectResult)actionSpillUpdate.Result).Value);
+               Assert.NotNull(spillUpdate);
 
-                    if (count > 0)
-                    {
-                        query.Skip = 0;
-                        query.Take = 5;
-                        count = (query.Take > count ? query.Take : count);
-
-                        // ok with Spill info
-                        jsonRet = spillController.GetSpillList(query.Language.ToString(), query.Skip, query.Take);
-                        Assert.IsNotNull(jsonRet);
-
-                        ret = jsonRet as OkNegotiatedContentResult<List<Spill>>;
-                        Assert.AreEqual(spillList[0].SpillID, ret.Content[0].SpillID);
-                        Assert.AreEqual((count > query.Take ? query.Take : count), ret.Content.Count);
-
-                       if (count > 1)
-                       {
-                           query.Skip = 1;
-                           query.Take = 5;
-                           count = (query.Take > count ? query.Take : count);
-
-                           // ok with Spill info
-                           IHttpActionResult jsonRet2 = spillController.GetSpillList(query.Language.ToString(), query.Skip, query.Take);
-                           Assert.IsNotNull(jsonRet2);
-
-                           OkNegotiatedContentResult<List<Spill>> ret2 = jsonRet2 as OkNegotiatedContentResult<List<Spill>>;
-                           Assert.AreEqual(spillList[1].SpillID, ret2.Content[0].SpillID);
-                           Assert.AreEqual((count > query.Take ? query.Take : count), ret2.Content.Count);
-                       }
-                    }
-                }
+               // testing Delete(Spill spill)
+               var actionSpillDelete = await spillController.Delete(spillUpdate);
+               Assert.Equal(200, ((ObjectResult)actionSpillDelete.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionSpillDelete.Result).Value);
+               Spill spillDelete = (Spill)(((OkObjectResult)actionSpillDelete.Result).Value);
+               Assert.NotNull(spillDelete);
             }
         }
-        #endregion Tests Generated for Class Controller GetList Command
+        #endregion Functions public
 
-        #region Tests Generated for Class Controller GetWithID Command
-        [TestMethod]
-        public void Spill_Controller_GetSpillWithID_Test()
+        #region Functions private
+        private async Task<bool> Setup(CultureInfo culture)
         {
-            foreach (LanguageEnum LanguageRequest in AllowableLanguages)
+            Config = new ConfigurationBuilder()
+               .SetBasePath(Directory.GetParent(AppContext.BaseDirectory).FullName)
+               .AddJsonFile("appsettings.json")
+               .Build();
+        
+            Services = new ServiceCollection();
+        
+            IConfigurationSection connectionStringsSection = Config.GetSection("ConnectionStrings");
+            Services.Configure<ConnectionStringsModel>(connectionStringsSection);
+        
+            ConnectionStringsModel connectionStrings = connectionStringsSection.Get<ConnectionStringsModel>();
+        
+            Services.AddSingleton<IConfiguration>(Config);
+        
+            Services.AddDbContext<CSSPDBContext>(options =>
             {
-                foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
-                {
-                    SpillController spillController = new SpillController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(spillController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, spillController.DatabaseType);
-
-                    Spill spillFirst = new Spill();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-                    {
-                        SpillService spillService = new SpillService(new Query(), db, ContactID);
-                        spillFirst = (from c in db.Spills select c).FirstOrDefault();
-                    }
-
-                    // ok with Spill info
-                    IHttpActionResult jsonRet = spillController.GetSpillWithID(spillFirst.SpillID);
-                    Assert.IsNotNull(jsonRet);
-
-                    OkNegotiatedContentResult<Spill> Ret = jsonRet as OkNegotiatedContentResult<Spill>;
-                    Spill spillRet = Ret.Content;
-                    Assert.AreEqual(spillFirst.SpillID, spillRet.SpillID);
-
-                    BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
-
-                    // Not Found
-                    IHttpActionResult jsonRet2 = spillController.GetSpillWithID(0);
-                    Assert.IsNotNull(jsonRet2);
-
-                    OkNegotiatedContentResult<Spill> spillRet2 = jsonRet2 as OkNegotiatedContentResult<Spill>;
-                    Assert.IsNull(spillRet2);
-
-                    NotFoundResult notFoundRequest = jsonRet2 as NotFoundResult;
-                    Assert.IsNotNull(notFoundRequest);
-                }
-            }
+                options.UseSqlServer(connectionStrings.TestDB);
+            });
+        
+            Services.AddDbContext<ApplicationDbContext>(options =>
+                options.UseSqlServer(connectionStrings.TestDB));
+        
+            Services.AddIdentityCore<ApplicationUser>()
+                .AddEntityFrameworkStores<ApplicationDbContext>();
+        
+            Services.AddSingleton<IEnums, Enums>();
+            Services.AddSingleton<ILoggedInService, LoggedInService>();
+            Services.AddSingleton<ISpillService, SpillService>();
+            Services.AddSingleton<ISpillController, SpillController>();
+        
+            Provider = Services.BuildServiceProvider();
+            Assert.NotNull(Provider);
+        
+            loggedInService = Provider.GetService<ILoggedInService>();
+            Assert.NotNull(loggedInService);
+        
+            spillService = Provider.GetService<ISpillService>();
+            Assert.NotNull(spillService);
+        
+            await spillService.SetCulture(culture);
+        
+            spillController = Provider.GetService<ISpillController>();
+            Assert.NotNull(spillController);
+        
+            return await Task.FromResult(true);
         }
-        #endregion Tests Generated for Class Controller GetWithID Command
-
-        #region Tests Generated for Class Controller Post Command
-        [TestMethod]
-        public void Spill_Controller_Post_Test()
-        {
-            foreach (LanguageEnum LanguageRequest in AllowableLanguages)
-            {
-                foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
-                {
-                    SpillController spillController = new SpillController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(spillController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, spillController.DatabaseType);
-
-                    Spill spillLast = new Spill();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-                    {
-                        Query query = new Query();
-                        query.Language = LanguageRequest;
-                        query.Asc = "";
-                        query.Desc = "";
-
-                        SpillService spillService = new SpillService(query, db, ContactID);
-                        spillLast = (from c in db.Spills select c).FirstOrDefault();
-                    }
-
-                    // ok with Spill info
-                    IHttpActionResult jsonRet = spillController.GetSpillWithID(spillLast.SpillID);
-                    Assert.IsNotNull(jsonRet);
-
-                    OkNegotiatedContentResult<Spill> Ret = jsonRet as OkNegotiatedContentResult<Spill>;
-                    Spill spillRet = Ret.Content;
-                    Assert.AreEqual(spillLast.SpillID, spillRet.SpillID);
-
-                    BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
-
-                    // Post to return CSSPError because SpillID exist
-                    IHttpActionResult jsonRet2 = spillController.Post(spillRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet2);
-
-                    OkNegotiatedContentResult<Spill> spillRet2 = jsonRet2 as OkNegotiatedContentResult<Spill>;
-                    Assert.IsNull(spillRet2);
-
-                    BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
-                    Assert.IsNotNull(badRequest2);
-
-                    // Post to return newly added Spill
-                    spillRet.SpillID = 0;
-                    spillController.Request = new System.Net.Http.HttpRequestMessage();
-                    spillController.Request.RequestUri = new System.Uri("http://localhost:5000/api/spill");
-                    IHttpActionResult jsonRet3 = spillController.Post(spillRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet3);
-
-                    CreatedNegotiatedContentResult<Spill> spillRet3 = jsonRet3 as CreatedNegotiatedContentResult<Spill>;
-                    Assert.IsNotNull(spillRet3);
-
-                    BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest3);
-
-                    IHttpActionResult jsonRet4 = spillController.Delete(spillRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet4);
-
-                    OkNegotiatedContentResult<Spill> spillRet4 = jsonRet4 as OkNegotiatedContentResult<Spill>;
-                    Assert.IsNotNull(spillRet4);
-
-                    BadRequestErrorMessageResult badRequest4 = jsonRet4 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest4);
-                }
-            }
-        }
-        #endregion Tests Generated for Class Controller Post Command
-
-        #region Tests Generated for Class Controller Put Command
-        [TestMethod]
-        public void Spill_Controller_Put_Test()
-        {
-            foreach (LanguageEnum LanguageRequest in AllowableLanguages)
-            {
-                foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
-                {
-                    SpillController spillController = new SpillController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(spillController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, spillController.DatabaseType);
-
-                    Spill spillLast = new Spill();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-                    {
-                        Query query = new Query();
-                        query.Language = LanguageRequest;
-
-                        SpillService spillService = new SpillService(query, db, ContactID);
-                        spillLast = (from c in db.Spills select c).FirstOrDefault();
-                    }
-
-                    // ok with Spill info
-                    IHttpActionResult jsonRet = spillController.GetSpillWithID(spillLast.SpillID);
-                    Assert.IsNotNull(jsonRet);
-
-                    OkNegotiatedContentResult<Spill> Ret = jsonRet as OkNegotiatedContentResult<Spill>;
-                    Spill spillRet = Ret.Content;
-                    Assert.AreEqual(spillLast.SpillID, spillRet.SpillID);
-
-                    BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
-
-                    // Put to return success
-                    IHttpActionResult jsonRet2 = spillController.Put(spillRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet2);
-
-                    OkNegotiatedContentResult<Spill> spillRet2 = jsonRet2 as OkNegotiatedContentResult<Spill>;
-                    Assert.IsNotNull(spillRet2);
-
-                    BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest2);
-
-                    // Put to return CSSPError because SpillID of 0 does not exist
-                    spillRet.SpillID = 0;
-                    IHttpActionResult jsonRet3 = spillController.Put(spillRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet3);
-
-                    OkNegotiatedContentResult<Spill> spillRet3 = jsonRet3 as OkNegotiatedContentResult<Spill>;
-                    Assert.IsNull(spillRet3);
-
-                    BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
-                    Assert.IsNotNull(badRequest3);
-                }
-            }
-        }
-        #endregion Tests Generated for Class Controller Put Command
-
-        #region Tests Generated for Class Controller Delete Command
-        [TestMethod]
-        public void Spill_Controller_Delete_Test()
-        {
-            foreach (LanguageEnum LanguageRequest in AllowableLanguages)
-            {
-                foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
-                {
-                    SpillController spillController = new SpillController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(spillController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, spillController.DatabaseType);
-
-                    Spill spillLast = new Spill();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-                    {
-                        Query query = new Query();
-                        query.Language = LanguageRequest;
-                        query.Asc = "";
-                        query.Desc = "";
-
-                        SpillService spillService = new SpillService(query, db, ContactID);
-                        spillLast = (from c in db.Spills select c).FirstOrDefault();
-                    }
-
-                    // ok with Spill info
-                    IHttpActionResult jsonRet = spillController.GetSpillWithID(spillLast.SpillID);
-                    Assert.IsNotNull(jsonRet);
-
-                    OkNegotiatedContentResult<Spill> Ret = jsonRet as OkNegotiatedContentResult<Spill>;
-                    Spill spillRet = Ret.Content;
-                    Assert.AreEqual(spillLast.SpillID, spillRet.SpillID);
-
-                    BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
-
-                    // Post to return newly added Spill
-                    spillRet.SpillID = 0;
-                    spillController.Request = new System.Net.Http.HttpRequestMessage();
-                    spillController.Request.RequestUri = new System.Uri("http://localhost:5000/api/spill");
-                    IHttpActionResult jsonRet3 = spillController.Post(spillRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet3);
-
-                    CreatedNegotiatedContentResult<Spill> spillRet3 = jsonRet3 as CreatedNegotiatedContentResult<Spill>;
-                    Assert.IsNotNull(spillRet3);
-                    Spill spill = spillRet3.Content;
-
-                    BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest3);
-
-                    // Delete to return success
-                    IHttpActionResult jsonRet2 = spillController.Delete(spillRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet2);
-
-                    OkNegotiatedContentResult<Spill> spillRet2 = jsonRet2 as OkNegotiatedContentResult<Spill>;
-                    Assert.IsNotNull(spillRet2);
-
-                    BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest2);
-
-                    // Delete to return CSSPError because SpillID of 0 does not exist
-                    spillRet.SpillID = 0;
-                    IHttpActionResult jsonRet4 = spillController.Delete(spillRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet4);
-
-                    OkNegotiatedContentResult<Spill> spillRet4 = jsonRet4 as OkNegotiatedContentResult<Spill>;
-                    Assert.IsNull(spillRet4);
-
-                    BadRequestErrorMessageResult badRequest4 = jsonRet4 as BadRequestErrorMessageResult;
-                    Assert.IsNotNull(badRequest4);
-                }
-            }
-        }
-        #endregion Tests Generated for Class Controller Delete Command
-
+        #endregion Functions private
     }
 }

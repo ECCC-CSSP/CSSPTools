@@ -16,6 +16,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Transactions;
 using Xunit;
 
 namespace CSSPServices.Tests
@@ -54,37 +55,40 @@ namespace CSSPServices.Tests
 
             await Setup(new CultureInfo(culture));
 
-            AppTask appTask = GetFilledRandomAppTask(""); 
+            using (TransactionScope ts = new TransactionScope())
+            {
+               AppTask appTask = GetFilledRandomAppTask(""); 
 
-            // List<AppTask>
-            var actionAppTaskList = await appTaskService.GetAppTaskList();
-            Assert.Equal(200, ((ObjectResult)actionAppTaskList.Result).StatusCode);
-            Assert.NotNull(((OkObjectResult)actionAppTaskList.Result).Value);
-            List<AppTask> appTaskList = (List<AppTask>)(((OkObjectResult)actionAppTaskList.Result).Value);
+               // List<AppTask>
+               var actionAppTaskList = await appTaskService.GetAppTaskList();
+               Assert.Equal(200, ((ObjectResult)actionAppTaskList.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionAppTaskList.Result).Value);
+               List<AppTask> appTaskList = (List<AppTask>)(((OkObjectResult)actionAppTaskList.Result).Value);
 
-            int count = ((List<AppTask>)((OkObjectResult)actionAppTaskList.Result).Value).Count();
-            Assert.True(count > 0);
+               int count = ((List<AppTask>)((OkObjectResult)actionAppTaskList.Result).Value).Count();
+                Assert.True(count > 0);
 
-            // Add AppTask
-            var actionAppTaskAdded = await appTaskService.Add(appTask);
-            Assert.Equal(200, ((ObjectResult)actionAppTaskAdded.Result).StatusCode);
-            Assert.NotNull(((OkObjectResult)actionAppTaskAdded.Result).Value);
-            AppTask appTaskAdded = (AppTask)(((OkObjectResult)actionAppTaskAdded.Result).Value);
-            Assert.NotNull(appTaskAdded);
+               // Add AppTask
+               var actionAppTaskAdded = await appTaskService.Add(appTask);
+               Assert.Equal(200, ((ObjectResult)actionAppTaskAdded.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionAppTaskAdded.Result).Value);
+               AppTask appTaskAdded = (AppTask)(((OkObjectResult)actionAppTaskAdded.Result).Value);
+               Assert.NotNull(appTaskAdded);
 
-            // Update AppTask
-            var actionAppTaskUpdated = await appTaskService.Update(appTask);
-            Assert.Equal(200, ((ObjectResult)actionAppTaskUpdated.Result).StatusCode);
-            Assert.NotNull(((OkObjectResult)actionAppTaskUpdated.Result).Value);
-            AppTask appTaskUpdated = (AppTask)(((OkObjectResult)actionAppTaskUpdated.Result).Value);
-            Assert.NotNull(appTaskUpdated);
+               // Update AppTask
+               var actionAppTaskUpdated = await appTaskService.Update(appTask);
+               Assert.Equal(200, ((ObjectResult)actionAppTaskUpdated.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionAppTaskUpdated.Result).Value);
+               AppTask appTaskUpdated = (AppTask)(((OkObjectResult)actionAppTaskUpdated.Result).Value);
+               Assert.NotNull(appTaskUpdated);
 
-            // Delete AppTask
-            var actionAppTaskDeleted = await appTaskService.Delete(appTask);
-            Assert.Equal(200, ((ObjectResult)actionAppTaskDeleted.Result).StatusCode);
-            Assert.NotNull(((OkObjectResult)actionAppTaskDeleted.Result).Value);
-            AppTask appTaskDeleted = (AppTask)(((OkObjectResult)actionAppTaskDeleted.Result).Value);
-            Assert.NotNull(appTaskDeleted);
+               // Delete AppTask
+               var actionAppTaskDeleted = await appTaskService.Delete(appTask);
+               Assert.Equal(200, ((ObjectResult)actionAppTaskDeleted.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionAppTaskDeleted.Result).Value);
+               AppTask appTaskDeleted = (AppTask)(((OkObjectResult)actionAppTaskDeleted.Result).Value);
+               Assert.NotNull(appTaskDeleted);
+            }
         }
         #endregion Tests Generated CRUD
 

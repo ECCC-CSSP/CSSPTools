@@ -2,350 +2,157 @@ using CSSPEnums;
 using CSSPModels;
 using CSSPServices;
 using CSSPWebAPI.Controllers;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using LoggedInServices.Services;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using System;
 using System.Collections.Generic;
+using System.Globalization;
+using System.IO;
 using System.Linq;
-using System.Web.Http;
-using System.Web.Http.Results;
+using System.Threading.Tasks;
+using System.Transactions;
+using UserServices.Models;
+using Xunit;
 
-namespace CSSPWebAPI.Tests.Controllers
+namespace CSSPWebAPIs.Tests.Controllers
 {
-    [TestClass]
-    public partial class MWQMSiteControllerTest : BaseControllerTest
+    public partial class MWQMSiteControllerTest
     {
         #region Variables
         #endregion Variables
 
         #region Properties
+        private IConfiguration Config { get; set; }
+        private IServiceProvider Provider { get; set; }
+        private IServiceCollection Services { get; set; }
+        private CSSPDBContext db { get; set; }
+        private ILoggedInService loggedInService { get; set; }
+        private IMWQMSiteService mwqmSiteService { get; set; }
+        private IMWQMSiteController mwqmSiteController { get; set; }
         #endregion Properties
 
         #region Constructors
-        public MWQMSiteControllerTest() : base()
+        public MWQMSiteControllerTest()
         {
         }
         #endregion Constructors
 
-        #region Tests Generated for Class Controller GetList Command
-        [TestMethod]
-        public void MWQMSite_Controller_GetMWQMSiteList_Test()
+        #region Functions public
+        [Theory]
+        [InlineData("en-CA")]
+        [InlineData("fr-CA")]
+        public async Task MWQMSiteController_Constructor_Good_Test(string culture)
         {
-            foreach (LanguageEnum LanguageRequest in AllowableLanguages)
+            bool retBool = await Setup(new CultureInfo(culture));
+            Assert.True(retBool);
+            Assert.NotNull(loggedInService);
+            Assert.NotNull(mwqmSiteService);
+            Assert.NotNull(mwqmSiteController);
+        }
+        [Theory]
+        [InlineData("en-CA")]
+        [InlineData("fr-CA")]
+        public async Task MWQMSiteController_CRUD_Good_Test(string culture)
+        {
+            bool retBool = await Setup(new CultureInfo(culture));
+            Assert.True(retBool);
+
+            using (TransactionScope ts = new TransactionScope())
             {
-                foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
-                {
-                    MWQMSiteController mwqmSiteController = new MWQMSiteController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(mwqmSiteController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, mwqmSiteController.DatabaseType);
+                // testing Get
+               var actionMWQMSiteList = await mwqmSiteController.Get();
+               Assert.Equal(200, ((ObjectResult)actionMWQMSiteList.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionMWQMSiteList.Result).Value);
+               List<MWQMSite> mwqmSiteList = (List<MWQMSite>)(((OkObjectResult)actionMWQMSiteList.Result).Value);
 
-                    MWQMSite mwqmSiteFirst = new MWQMSite();
-                    int count = -1;
-                    Query query = new Query();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseTypeEnum.SqlServerTestDB))
-                    {
-                        MWQMSiteService mwqmSiteService = new MWQMSiteService(query, db, ContactID);
-                        mwqmSiteFirst = (from c in db.MWQMSites select c).FirstOrDefault();
-                        count = (from c in db.MWQMSites select c).Count();
-                        count = (query.Take > count ? count : query.Take);
-                    }
+               int count = ((List<MWQMSite>)((OkObjectResult)actionMWQMSiteList.Result).Value).Count();
+                Assert.True(count > 0);
 
-                    // ok with MWQMSite info
-                    IHttpActionResult jsonRet = mwqmSiteController.GetMWQMSiteList();
-                    Assert.IsNotNull(jsonRet);
+               // testing Get(MWQMSiteID)
+               var actionMWQMSite = await mwqmSiteController.Get(mwqmSiteList[0].MWQMSiteID);
+               Assert.Equal(200, ((ObjectResult)actionMWQMSite.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionMWQMSite.Result).Value);
+               MWQMSite mwqmSite = (MWQMSite)(((OkObjectResult)actionMWQMSite.Result).Value);
+               Assert.NotNull(mwqmSite);
+               Assert.Equal(mwqmSiteList[0].MWQMSiteID, mwqmSite.MWQMSiteID);
 
-                    OkNegotiatedContentResult<List<MWQMSite>> ret = jsonRet as OkNegotiatedContentResult<List<MWQMSite>>;
-                    Assert.AreEqual(mwqmSiteFirst.MWQMSiteID, ret.Content[0].MWQMSiteID);
-                    Assert.AreEqual((count > query.Take ? query.Take : count), ret.Content.Count);
+               // testing Post(MWQMSite mwqmSite)
+               mwqmSite.MWQMSiteID = 0;
+               var actionMWQMSiteNew = await mwqmSiteController.Post(mwqmSite);
+               Assert.Equal(200, ((ObjectResult)actionMWQMSiteNew.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionMWQMSiteNew.Result).Value);
+               MWQMSite mwqmSiteNew = (MWQMSite)(((OkObjectResult)actionMWQMSiteNew.Result).Value);
+               Assert.NotNull(mwqmSiteNew);
 
-                    List<MWQMSite> mwqmSiteList = new List<MWQMSite>();
-                    count = -1;
-                    query = new Query();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseTypeEnum.SqlServerTestDB))
-                    {
-                        MWQMSiteService mwqmSiteService = new MWQMSiteService(query, db, ContactID);
-                        mwqmSiteList = (from c in db.MWQMSites select c).OrderBy(c => c.MWQMSiteID).Skip(0).Take(2).ToList();
-                        count = (from c in db.MWQMSites select c).Count();
-                    }
+               // testing Put(MWQMSite mwqmSite)
+               var actionMWQMSiteUpdate = await mwqmSiteController.Put(mwqmSiteNew);
+               Assert.Equal(200, ((ObjectResult)actionMWQMSiteUpdate.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionMWQMSiteUpdate.Result).Value);
+               MWQMSite mwqmSiteUpdate = (MWQMSite)(((OkObjectResult)actionMWQMSiteUpdate.Result).Value);
+               Assert.NotNull(mwqmSiteUpdate);
 
-                    if (count > 0)
-                    {
-                        query.Skip = 0;
-                        query.Take = 5;
-                        count = (query.Take > count ? query.Take : count);
-
-                        // ok with MWQMSite info
-                        jsonRet = mwqmSiteController.GetMWQMSiteList(query.Language.ToString(), query.Skip, query.Take);
-                        Assert.IsNotNull(jsonRet);
-
-                        ret = jsonRet as OkNegotiatedContentResult<List<MWQMSite>>;
-                        Assert.AreEqual(mwqmSiteList[0].MWQMSiteID, ret.Content[0].MWQMSiteID);
-                        Assert.AreEqual((count > query.Take ? query.Take : count), ret.Content.Count);
-
-                       if (count > 1)
-                       {
-                           query.Skip = 1;
-                           query.Take = 5;
-                           count = (query.Take > count ? query.Take : count);
-
-                           // ok with MWQMSite info
-                           IHttpActionResult jsonRet2 = mwqmSiteController.GetMWQMSiteList(query.Language.ToString(), query.Skip, query.Take);
-                           Assert.IsNotNull(jsonRet2);
-
-                           OkNegotiatedContentResult<List<MWQMSite>> ret2 = jsonRet2 as OkNegotiatedContentResult<List<MWQMSite>>;
-                           Assert.AreEqual(mwqmSiteList[1].MWQMSiteID, ret2.Content[0].MWQMSiteID);
-                           Assert.AreEqual((count > query.Take ? query.Take : count), ret2.Content.Count);
-                       }
-                    }
-                }
+               // testing Delete(MWQMSite mwqmSite)
+               var actionMWQMSiteDelete = await mwqmSiteController.Delete(mwqmSiteUpdate);
+               Assert.Equal(200, ((ObjectResult)actionMWQMSiteDelete.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionMWQMSiteDelete.Result).Value);
+               MWQMSite mwqmSiteDelete = (MWQMSite)(((OkObjectResult)actionMWQMSiteDelete.Result).Value);
+               Assert.NotNull(mwqmSiteDelete);
             }
         }
-        #endregion Tests Generated for Class Controller GetList Command
+        #endregion Functions public
 
-        #region Tests Generated for Class Controller GetWithID Command
-        [TestMethod]
-        public void MWQMSite_Controller_GetMWQMSiteWithID_Test()
+        #region Functions private
+        private async Task<bool> Setup(CultureInfo culture)
         {
-            foreach (LanguageEnum LanguageRequest in AllowableLanguages)
+            Config = new ConfigurationBuilder()
+               .SetBasePath(Directory.GetParent(AppContext.BaseDirectory).FullName)
+               .AddJsonFile("appsettings.json")
+               .Build();
+        
+            Services = new ServiceCollection();
+        
+            IConfigurationSection connectionStringsSection = Config.GetSection("ConnectionStrings");
+            Services.Configure<ConnectionStringsModel>(connectionStringsSection);
+        
+            ConnectionStringsModel connectionStrings = connectionStringsSection.Get<ConnectionStringsModel>();
+        
+            Services.AddSingleton<IConfiguration>(Config);
+        
+            Services.AddDbContext<CSSPDBContext>(options =>
             {
-                foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
-                {
-                    MWQMSiteController mwqmSiteController = new MWQMSiteController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(mwqmSiteController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, mwqmSiteController.DatabaseType);
-
-                    MWQMSite mwqmSiteFirst = new MWQMSite();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-                    {
-                        MWQMSiteService mwqmSiteService = new MWQMSiteService(new Query(), db, ContactID);
-                        mwqmSiteFirst = (from c in db.MWQMSites select c).FirstOrDefault();
-                    }
-
-                    // ok with MWQMSite info
-                    IHttpActionResult jsonRet = mwqmSiteController.GetMWQMSiteWithID(mwqmSiteFirst.MWQMSiteID);
-                    Assert.IsNotNull(jsonRet);
-
-                    OkNegotiatedContentResult<MWQMSite> Ret = jsonRet as OkNegotiatedContentResult<MWQMSite>;
-                    MWQMSite mwqmSiteRet = Ret.Content;
-                    Assert.AreEqual(mwqmSiteFirst.MWQMSiteID, mwqmSiteRet.MWQMSiteID);
-
-                    BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
-
-                    // Not Found
-                    IHttpActionResult jsonRet2 = mwqmSiteController.GetMWQMSiteWithID(0);
-                    Assert.IsNotNull(jsonRet2);
-
-                    OkNegotiatedContentResult<MWQMSite> mwqmSiteRet2 = jsonRet2 as OkNegotiatedContentResult<MWQMSite>;
-                    Assert.IsNull(mwqmSiteRet2);
-
-                    NotFoundResult notFoundRequest = jsonRet2 as NotFoundResult;
-                    Assert.IsNotNull(notFoundRequest);
-                }
-            }
+                options.UseSqlServer(connectionStrings.TestDB);
+            });
+        
+            Services.AddDbContext<ApplicationDbContext>(options =>
+                options.UseSqlServer(connectionStrings.TestDB));
+        
+            Services.AddIdentityCore<ApplicationUser>()
+                .AddEntityFrameworkStores<ApplicationDbContext>();
+        
+            Services.AddSingleton<IEnums, Enums>();
+            Services.AddSingleton<ILoggedInService, LoggedInService>();
+            Services.AddSingleton<IMWQMSiteService, MWQMSiteService>();
+            Services.AddSingleton<IMWQMSiteController, MWQMSiteController>();
+        
+            Provider = Services.BuildServiceProvider();
+            Assert.NotNull(Provider);
+        
+            loggedInService = Provider.GetService<ILoggedInService>();
+            Assert.NotNull(loggedInService);
+        
+            mwqmSiteService = Provider.GetService<IMWQMSiteService>();
+            Assert.NotNull(mwqmSiteService);
+        
+            await mwqmSiteService.SetCulture(culture);
+        
+            mwqmSiteController = Provider.GetService<IMWQMSiteController>();
+            Assert.NotNull(mwqmSiteController);
+        
+            return await Task.FromResult(true);
         }
-        #endregion Tests Generated for Class Controller GetWithID Command
-
-        #region Tests Generated for Class Controller Post Command
-        [TestMethod]
-        public void MWQMSite_Controller_Post_Test()
-        {
-            foreach (LanguageEnum LanguageRequest in AllowableLanguages)
-            {
-                foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
-                {
-                    MWQMSiteController mwqmSiteController = new MWQMSiteController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(mwqmSiteController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, mwqmSiteController.DatabaseType);
-
-                    MWQMSite mwqmSiteLast = new MWQMSite();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-                    {
-                        Query query = new Query();
-                        query.Language = LanguageRequest;
-                        query.Asc = "";
-                        query.Desc = "";
-
-                        MWQMSiteService mwqmSiteService = new MWQMSiteService(query, db, ContactID);
-                        mwqmSiteLast = (from c in db.MWQMSites select c).FirstOrDefault();
-                    }
-
-                    // ok with MWQMSite info
-                    IHttpActionResult jsonRet = mwqmSiteController.GetMWQMSiteWithID(mwqmSiteLast.MWQMSiteID);
-                    Assert.IsNotNull(jsonRet);
-
-                    OkNegotiatedContentResult<MWQMSite> Ret = jsonRet as OkNegotiatedContentResult<MWQMSite>;
-                    MWQMSite mwqmSiteRet = Ret.Content;
-                    Assert.AreEqual(mwqmSiteLast.MWQMSiteID, mwqmSiteRet.MWQMSiteID);
-
-                    BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
-
-                    // Post to return CSSPError because MWQMSiteID exist
-                    IHttpActionResult jsonRet2 = mwqmSiteController.Post(mwqmSiteRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet2);
-
-                    OkNegotiatedContentResult<MWQMSite> mwqmSiteRet2 = jsonRet2 as OkNegotiatedContentResult<MWQMSite>;
-                    Assert.IsNull(mwqmSiteRet2);
-
-                    BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
-                    Assert.IsNotNull(badRequest2);
-
-                    // Post to return newly added MWQMSite
-                    mwqmSiteRet.MWQMSiteID = 0;
-                    mwqmSiteController.Request = new System.Net.Http.HttpRequestMessage();
-                    mwqmSiteController.Request.RequestUri = new System.Uri("http://localhost:5000/api/mwqmSite");
-                    IHttpActionResult jsonRet3 = mwqmSiteController.Post(mwqmSiteRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet3);
-
-                    CreatedNegotiatedContentResult<MWQMSite> mwqmSiteRet3 = jsonRet3 as CreatedNegotiatedContentResult<MWQMSite>;
-                    Assert.IsNotNull(mwqmSiteRet3);
-
-                    BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest3);
-
-                    IHttpActionResult jsonRet4 = mwqmSiteController.Delete(mwqmSiteRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet4);
-
-                    OkNegotiatedContentResult<MWQMSite> mwqmSiteRet4 = jsonRet4 as OkNegotiatedContentResult<MWQMSite>;
-                    Assert.IsNotNull(mwqmSiteRet4);
-
-                    BadRequestErrorMessageResult badRequest4 = jsonRet4 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest4);
-                }
-            }
-        }
-        #endregion Tests Generated for Class Controller Post Command
-
-        #region Tests Generated for Class Controller Put Command
-        [TestMethod]
-        public void MWQMSite_Controller_Put_Test()
-        {
-            foreach (LanguageEnum LanguageRequest in AllowableLanguages)
-            {
-                foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
-                {
-                    MWQMSiteController mwqmSiteController = new MWQMSiteController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(mwqmSiteController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, mwqmSiteController.DatabaseType);
-
-                    MWQMSite mwqmSiteLast = new MWQMSite();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-                    {
-                        Query query = new Query();
-                        query.Language = LanguageRequest;
-
-                        MWQMSiteService mwqmSiteService = new MWQMSiteService(query, db, ContactID);
-                        mwqmSiteLast = (from c in db.MWQMSites select c).FirstOrDefault();
-                    }
-
-                    // ok with MWQMSite info
-                    IHttpActionResult jsonRet = mwqmSiteController.GetMWQMSiteWithID(mwqmSiteLast.MWQMSiteID);
-                    Assert.IsNotNull(jsonRet);
-
-                    OkNegotiatedContentResult<MWQMSite> Ret = jsonRet as OkNegotiatedContentResult<MWQMSite>;
-                    MWQMSite mwqmSiteRet = Ret.Content;
-                    Assert.AreEqual(mwqmSiteLast.MWQMSiteID, mwqmSiteRet.MWQMSiteID);
-
-                    BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
-
-                    // Put to return success
-                    IHttpActionResult jsonRet2 = mwqmSiteController.Put(mwqmSiteRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet2);
-
-                    OkNegotiatedContentResult<MWQMSite> mwqmSiteRet2 = jsonRet2 as OkNegotiatedContentResult<MWQMSite>;
-                    Assert.IsNotNull(mwqmSiteRet2);
-
-                    BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest2);
-
-                    // Put to return CSSPError because MWQMSiteID of 0 does not exist
-                    mwqmSiteRet.MWQMSiteID = 0;
-                    IHttpActionResult jsonRet3 = mwqmSiteController.Put(mwqmSiteRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet3);
-
-                    OkNegotiatedContentResult<MWQMSite> mwqmSiteRet3 = jsonRet3 as OkNegotiatedContentResult<MWQMSite>;
-                    Assert.IsNull(mwqmSiteRet3);
-
-                    BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
-                    Assert.IsNotNull(badRequest3);
-                }
-            }
-        }
-        #endregion Tests Generated for Class Controller Put Command
-
-        #region Tests Generated for Class Controller Delete Command
-        [TestMethod]
-        public void MWQMSite_Controller_Delete_Test()
-        {
-            foreach (LanguageEnum LanguageRequest in AllowableLanguages)
-            {
-                foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
-                {
-                    MWQMSiteController mwqmSiteController = new MWQMSiteController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(mwqmSiteController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, mwqmSiteController.DatabaseType);
-
-                    MWQMSite mwqmSiteLast = new MWQMSite();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-                    {
-                        Query query = new Query();
-                        query.Language = LanguageRequest;
-                        query.Asc = "";
-                        query.Desc = "";
-
-                        MWQMSiteService mwqmSiteService = new MWQMSiteService(query, db, ContactID);
-                        mwqmSiteLast = (from c in db.MWQMSites select c).FirstOrDefault();
-                    }
-
-                    // ok with MWQMSite info
-                    IHttpActionResult jsonRet = mwqmSiteController.GetMWQMSiteWithID(mwqmSiteLast.MWQMSiteID);
-                    Assert.IsNotNull(jsonRet);
-
-                    OkNegotiatedContentResult<MWQMSite> Ret = jsonRet as OkNegotiatedContentResult<MWQMSite>;
-                    MWQMSite mwqmSiteRet = Ret.Content;
-                    Assert.AreEqual(mwqmSiteLast.MWQMSiteID, mwqmSiteRet.MWQMSiteID);
-
-                    BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
-
-                    // Post to return newly added MWQMSite
-                    mwqmSiteRet.MWQMSiteID = 0;
-                    mwqmSiteController.Request = new System.Net.Http.HttpRequestMessage();
-                    mwqmSiteController.Request.RequestUri = new System.Uri("http://localhost:5000/api/mwqmSite");
-                    IHttpActionResult jsonRet3 = mwqmSiteController.Post(mwqmSiteRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet3);
-
-                    CreatedNegotiatedContentResult<MWQMSite> mwqmSiteRet3 = jsonRet3 as CreatedNegotiatedContentResult<MWQMSite>;
-                    Assert.IsNotNull(mwqmSiteRet3);
-                    MWQMSite mwqmSite = mwqmSiteRet3.Content;
-
-                    BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest3);
-
-                    // Delete to return success
-                    IHttpActionResult jsonRet2 = mwqmSiteController.Delete(mwqmSiteRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet2);
-
-                    OkNegotiatedContentResult<MWQMSite> mwqmSiteRet2 = jsonRet2 as OkNegotiatedContentResult<MWQMSite>;
-                    Assert.IsNotNull(mwqmSiteRet2);
-
-                    BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest2);
-
-                    // Delete to return CSSPError because MWQMSiteID of 0 does not exist
-                    mwqmSiteRet.MWQMSiteID = 0;
-                    IHttpActionResult jsonRet4 = mwqmSiteController.Delete(mwqmSiteRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet4);
-
-                    OkNegotiatedContentResult<MWQMSite> mwqmSiteRet4 = jsonRet4 as OkNegotiatedContentResult<MWQMSite>;
-                    Assert.IsNull(mwqmSiteRet4);
-
-                    BadRequestErrorMessageResult badRequest4 = jsonRet4 as BadRequestErrorMessageResult;
-                    Assert.IsNotNull(badRequest4);
-                }
-            }
-        }
-        #endregion Tests Generated for Class Controller Delete Command
-
+        #endregion Functions private
     }
 }

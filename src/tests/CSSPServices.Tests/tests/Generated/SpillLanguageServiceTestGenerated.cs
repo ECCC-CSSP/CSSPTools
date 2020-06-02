@@ -16,6 +16,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Transactions;
 using Xunit;
 
 namespace CSSPServices.Tests
@@ -54,37 +55,40 @@ namespace CSSPServices.Tests
 
             await Setup(new CultureInfo(culture));
 
-            SpillLanguage spillLanguage = GetFilledRandomSpillLanguage(""); 
+            using (TransactionScope ts = new TransactionScope())
+            {
+               SpillLanguage spillLanguage = GetFilledRandomSpillLanguage(""); 
 
-            // List<SpillLanguage>
-            var actionSpillLanguageList = await spillLanguageService.GetSpillLanguageList();
-            Assert.Equal(200, ((ObjectResult)actionSpillLanguageList.Result).StatusCode);
-            Assert.NotNull(((OkObjectResult)actionSpillLanguageList.Result).Value);
-            List<SpillLanguage> spillLanguageList = (List<SpillLanguage>)(((OkObjectResult)actionSpillLanguageList.Result).Value);
+               // List<SpillLanguage>
+               var actionSpillLanguageList = await spillLanguageService.GetSpillLanguageList();
+               Assert.Equal(200, ((ObjectResult)actionSpillLanguageList.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionSpillLanguageList.Result).Value);
+               List<SpillLanguage> spillLanguageList = (List<SpillLanguage>)(((OkObjectResult)actionSpillLanguageList.Result).Value);
 
-            int count = ((List<SpillLanguage>)((OkObjectResult)actionSpillLanguageList.Result).Value).Count();
-            Assert.True(count > 0);
+               int count = ((List<SpillLanguage>)((OkObjectResult)actionSpillLanguageList.Result).Value).Count();
+                Assert.True(count > 0);
 
-            // Add SpillLanguage
-            var actionSpillLanguageAdded = await spillLanguageService.Add(spillLanguage);
-            Assert.Equal(200, ((ObjectResult)actionSpillLanguageAdded.Result).StatusCode);
-            Assert.NotNull(((OkObjectResult)actionSpillLanguageAdded.Result).Value);
-            SpillLanguage spillLanguageAdded = (SpillLanguage)(((OkObjectResult)actionSpillLanguageAdded.Result).Value);
-            Assert.NotNull(spillLanguageAdded);
+               // Add SpillLanguage
+               var actionSpillLanguageAdded = await spillLanguageService.Add(spillLanguage);
+               Assert.Equal(200, ((ObjectResult)actionSpillLanguageAdded.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionSpillLanguageAdded.Result).Value);
+               SpillLanguage spillLanguageAdded = (SpillLanguage)(((OkObjectResult)actionSpillLanguageAdded.Result).Value);
+               Assert.NotNull(spillLanguageAdded);
 
-            // Update SpillLanguage
-            var actionSpillLanguageUpdated = await spillLanguageService.Update(spillLanguage);
-            Assert.Equal(200, ((ObjectResult)actionSpillLanguageUpdated.Result).StatusCode);
-            Assert.NotNull(((OkObjectResult)actionSpillLanguageUpdated.Result).Value);
-            SpillLanguage spillLanguageUpdated = (SpillLanguage)(((OkObjectResult)actionSpillLanguageUpdated.Result).Value);
-            Assert.NotNull(spillLanguageUpdated);
+               // Update SpillLanguage
+               var actionSpillLanguageUpdated = await spillLanguageService.Update(spillLanguage);
+               Assert.Equal(200, ((ObjectResult)actionSpillLanguageUpdated.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionSpillLanguageUpdated.Result).Value);
+               SpillLanguage spillLanguageUpdated = (SpillLanguage)(((OkObjectResult)actionSpillLanguageUpdated.Result).Value);
+               Assert.NotNull(spillLanguageUpdated);
 
-            // Delete SpillLanguage
-            var actionSpillLanguageDeleted = await spillLanguageService.Delete(spillLanguage);
-            Assert.Equal(200, ((ObjectResult)actionSpillLanguageDeleted.Result).StatusCode);
-            Assert.NotNull(((OkObjectResult)actionSpillLanguageDeleted.Result).Value);
-            SpillLanguage spillLanguageDeleted = (SpillLanguage)(((OkObjectResult)actionSpillLanguageDeleted.Result).Value);
-            Assert.NotNull(spillLanguageDeleted);
+               // Delete SpillLanguage
+               var actionSpillLanguageDeleted = await spillLanguageService.Delete(spillLanguage);
+               Assert.Equal(200, ((ObjectResult)actionSpillLanguageDeleted.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionSpillLanguageDeleted.Result).Value);
+               SpillLanguage spillLanguageDeleted = (SpillLanguage)(((OkObjectResult)actionSpillLanguageDeleted.Result).Value);
+               Assert.NotNull(spillLanguageDeleted);
+            }
         }
         #endregion Tests Generated CRUD
 

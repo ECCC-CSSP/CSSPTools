@@ -1,143 +1,70 @@
-using CSSPEnums;
 using CSSPModels;
 using CSSPServices;
-using System;
+using LoggedInServices.Services;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web.Http;
+using System.Threading.Tasks;
 
 namespace CSSPWebAPI.Controllers
 {
-    [RoutePrefix("api/rainExceedance")]
-    public partial class RainExceedanceController : BaseController
+    public partial interface IRainExceedanceController
+    {
+        Task<ActionResult<List<RainExceedance>>> Get();
+        Task<ActionResult<RainExceedance>> Get(int RainExceedanceID);
+        Task<ActionResult<RainExceedance>> Post(RainExceedance rainExceedance);
+        Task<ActionResult<RainExceedance>> Put(RainExceedance rainExceedance);
+        Task<ActionResult<RainExceedance>> Delete(RainExceedance rainExceedance);
+    }
+
+    [Route("api/{culture}/[controller]")]
+    [ApiController]
+    [Authorize]
+    public partial class RainExceedanceController : ControllerBase, IRainExceedanceController
     {
         #region Variables
         #endregion Variables
 
         #region Properties
+        private IRainExceedanceService rainExceedanceService { get; }
+        private CSSPDBContext db { get; }
+        private ILoggedInService loggedInService { get; }
         #endregion Properties
 
         #region Constructors
-        public RainExceedanceController() : base()
+        public RainExceedanceController(IRainExceedanceService rainExceedanceService, CSSPDBContext db, ILoggedInService loggedInService)
         {
-        }
-        public RainExceedanceController(DatabaseTypeEnum dbt = DatabaseTypeEnum.SqlServerTestDB) : base(dbt)
-        {
+            this.rainExceedanceService = rainExceedanceService;
+            this.db = db;
+            this.loggedInService = loggedInService;
         }
         #endregion Constructors
 
         #region Functions public
-        // GET api/rainExceedance
-        [Route("")]
-        public IHttpActionResult GetRainExceedanceList([FromUri]string lang = "en", [FromUri]int skip = 0, [FromUri]int take = 200,
-            [FromUri]string asc = "", [FromUri]string desc = "", [FromUri]string where = "", [FromUri]string extra = "")
+        [HttpGet]
+        public async Task<ActionResult<List<RainExceedance>>> Get()
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                RainExceedanceService rainExceedanceService = new RainExceedanceService(new Query() { Lang = lang }, db, ContactID);
-
-                else // QueryString has no parameter [extra] or extra is empty
-                {
-                   rainExceedanceService.Query = rainExceedanceService.FillQuery(typeof(RainExceedance), lang, skip, take, asc, desc, where, extra);
-
-                    if (rainExceedanceService.Query.HasErrors)
-                    {
-                        return Ok(new List<RainExceedance>()
-                        {
-                            new RainExceedance()
-                            {
-                                HasErrors = rainExceedanceService.Query.HasErrors,
-                                ValidationResults = rainExceedanceService.Query.ValidationResults,
-                            },
-                        }.ToList());
-                    }
-                    else
-                    {
-                        return Ok(rainExceedanceService.GetRainExceedanceList().ToList());
-                    }
-                }
-            }
+            return await rainExceedanceService.GetRainExceedanceList();
         }
-        // GET api/rainExceedance/1
-        [Route("{RainExceedanceID:int}")]
-        public IHttpActionResult GetRainExceedanceWithID([FromUri]int RainExceedanceID, [FromUri]string lang = "en", [FromUri]string extra = "")
+        [HttpGet("{RainExceedanceID}")]
+        public async Task<ActionResult<RainExceedance>> Get(int RainExceedanceID)
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                RainExceedanceService rainExceedanceService = new RainExceedanceService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
-
-                rainExceedanceService.Query = rainExceedanceService.FillQuery(typeof(RainExceedance), lang, 0, 1, "", "", extra);
-
-                else
-                {
-                    RainExceedance rainExceedance = new RainExceedance();
-                    rainExceedance = rainExceedanceService.GetRainExceedanceWithRainExceedanceID(RainExceedanceID);
-
-                    if (rainExceedance == null)
-                    {
-                        return NotFound();
-                    }
-
-                    return Ok(rainExceedance);
-                }
-            }
+            return await rainExceedanceService.GetRainExceedanceWithRainExceedanceID(RainExceedanceID);
         }
-        // POST api/rainExceedance
-        [Route("")]
-        public IHttpActionResult Post([FromBody]RainExceedance rainExceedance, [FromUri]string lang = "en")
+        [HttpPost]
+        public async Task<ActionResult<RainExceedance>> Post(RainExceedance rainExceedance)
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                RainExceedanceService rainExceedanceService = new RainExceedanceService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
-
-                if (!rainExceedanceService.Add(rainExceedance))
-                {
-                    return BadRequest(String.Join("|||", rainExceedance.ValidationResults));
-                }
-                else
-                {
-                    rainExceedance.ValidationResults = null;
-                    return Created<RainExceedance>(new Uri(Request.RequestUri, rainExceedance.RainExceedanceID.ToString()), rainExceedance);
-                }
-            }
+            return await rainExceedanceService.Add(rainExceedance);
         }
-        // PUT api/rainExceedance
-        [Route("")]
-        public IHttpActionResult Put([FromBody]RainExceedance rainExceedance, [FromUri]string lang = "en")
+        [HttpPut]
+        public async Task<ActionResult<RainExceedance>> Put(RainExceedance rainExceedance)
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                RainExceedanceService rainExceedanceService = new RainExceedanceService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
-
-                if (!rainExceedanceService.Update(rainExceedance))
-                {
-                    return BadRequest(String.Join("|||", rainExceedance.ValidationResults));
-                }
-                else
-                {
-                    rainExceedance.ValidationResults = null;
-                    return Ok(rainExceedance);
-                }
-            }
+            return await rainExceedanceService.Update(rainExceedance);
         }
-        // DELETE api/rainExceedance
-        [Route("")]
-        public IHttpActionResult Delete([FromBody]RainExceedance rainExceedance, [FromUri]string lang = "en")
+        [HttpDelete]
+        public async Task<ActionResult<RainExceedance>> Delete(RainExceedance rainExceedance)
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                RainExceedanceService rainExceedanceService = new RainExceedanceService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
-
-                if (!rainExceedanceService.Delete(rainExceedance))
-                {
-                    return BadRequest(String.Join("|||", rainExceedance.ValidationResults));
-                }
-                else
-                {
-                    rainExceedance.ValidationResults = null;
-                    return Ok(rainExceedance);
-                }
-            }
+            return await rainExceedanceService.Delete(rainExceedance);
         }
         #endregion Functions public
 

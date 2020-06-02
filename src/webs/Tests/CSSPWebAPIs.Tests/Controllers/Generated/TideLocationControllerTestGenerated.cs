@@ -2,350 +2,157 @@ using CSSPEnums;
 using CSSPModels;
 using CSSPServices;
 using CSSPWebAPI.Controllers;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using LoggedInServices.Services;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using System;
 using System.Collections.Generic;
+using System.Globalization;
+using System.IO;
 using System.Linq;
-using System.Web.Http;
-using System.Web.Http.Results;
+using System.Threading.Tasks;
+using System.Transactions;
+using UserServices.Models;
+using Xunit;
 
-namespace CSSPWebAPI.Tests.Controllers
+namespace CSSPWebAPIs.Tests.Controllers
 {
-    [TestClass]
-    public partial class TideLocationControllerTest : BaseControllerTest
+    public partial class TideLocationControllerTest
     {
         #region Variables
         #endregion Variables
 
         #region Properties
+        private IConfiguration Config { get; set; }
+        private IServiceProvider Provider { get; set; }
+        private IServiceCollection Services { get; set; }
+        private CSSPDBContext db { get; set; }
+        private ILoggedInService loggedInService { get; set; }
+        private ITideLocationService tideLocationService { get; set; }
+        private ITideLocationController tideLocationController { get; set; }
         #endregion Properties
 
         #region Constructors
-        public TideLocationControllerTest() : base()
+        public TideLocationControllerTest()
         {
         }
         #endregion Constructors
 
-        #region Tests Generated for Class Controller GetList Command
-        [TestMethod]
-        public void TideLocation_Controller_GetTideLocationList_Test()
+        #region Functions public
+        [Theory]
+        [InlineData("en-CA")]
+        [InlineData("fr-CA")]
+        public async Task TideLocationController_Constructor_Good_Test(string culture)
         {
-            foreach (LanguageEnum LanguageRequest in AllowableLanguages)
+            bool retBool = await Setup(new CultureInfo(culture));
+            Assert.True(retBool);
+            Assert.NotNull(loggedInService);
+            Assert.NotNull(tideLocationService);
+            Assert.NotNull(tideLocationController);
+        }
+        [Theory]
+        [InlineData("en-CA")]
+        [InlineData("fr-CA")]
+        public async Task TideLocationController_CRUD_Good_Test(string culture)
+        {
+            bool retBool = await Setup(new CultureInfo(culture));
+            Assert.True(retBool);
+
+            using (TransactionScope ts = new TransactionScope())
             {
-                foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
-                {
-                    TideLocationController tideLocationController = new TideLocationController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(tideLocationController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, tideLocationController.DatabaseType);
+                // testing Get
+               var actionTideLocationList = await tideLocationController.Get();
+               Assert.Equal(200, ((ObjectResult)actionTideLocationList.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionTideLocationList.Result).Value);
+               List<TideLocation> tideLocationList = (List<TideLocation>)(((OkObjectResult)actionTideLocationList.Result).Value);
 
-                    TideLocation tideLocationFirst = new TideLocation();
-                    int count = -1;
-                    Query query = new Query();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseTypeEnum.SqlServerTestDB))
-                    {
-                        TideLocationService tideLocationService = new TideLocationService(query, db, ContactID);
-                        tideLocationFirst = (from c in db.TideLocations select c).FirstOrDefault();
-                        count = (from c in db.TideLocations select c).Count();
-                        count = (query.Take > count ? count : query.Take);
-                    }
+               int count = ((List<TideLocation>)((OkObjectResult)actionTideLocationList.Result).Value).Count();
+                Assert.True(count > 0);
 
-                    // ok with TideLocation info
-                    IHttpActionResult jsonRet = tideLocationController.GetTideLocationList();
-                    Assert.IsNotNull(jsonRet);
+               // testing Get(TideLocationID)
+               var actionTideLocation = await tideLocationController.Get(tideLocationList[0].TideLocationID);
+               Assert.Equal(200, ((ObjectResult)actionTideLocation.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionTideLocation.Result).Value);
+               TideLocation tideLocation = (TideLocation)(((OkObjectResult)actionTideLocation.Result).Value);
+               Assert.NotNull(tideLocation);
+               Assert.Equal(tideLocationList[0].TideLocationID, tideLocation.TideLocationID);
 
-                    OkNegotiatedContentResult<List<TideLocation>> ret = jsonRet as OkNegotiatedContentResult<List<TideLocation>>;
-                    Assert.AreEqual(tideLocationFirst.TideLocationID, ret.Content[0].TideLocationID);
-                    Assert.AreEqual((count > query.Take ? query.Take : count), ret.Content.Count);
+               // testing Post(TideLocation tideLocation)
+               tideLocation.TideLocationID = 0;
+               var actionTideLocationNew = await tideLocationController.Post(tideLocation);
+               Assert.Equal(200, ((ObjectResult)actionTideLocationNew.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionTideLocationNew.Result).Value);
+               TideLocation tideLocationNew = (TideLocation)(((OkObjectResult)actionTideLocationNew.Result).Value);
+               Assert.NotNull(tideLocationNew);
 
-                    List<TideLocation> tideLocationList = new List<TideLocation>();
-                    count = -1;
-                    query = new Query();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseTypeEnum.SqlServerTestDB))
-                    {
-                        TideLocationService tideLocationService = new TideLocationService(query, db, ContactID);
-                        tideLocationList = (from c in db.TideLocations select c).OrderBy(c => c.TideLocationID).Skip(0).Take(2).ToList();
-                        count = (from c in db.TideLocations select c).Count();
-                    }
+               // testing Put(TideLocation tideLocation)
+               var actionTideLocationUpdate = await tideLocationController.Put(tideLocationNew);
+               Assert.Equal(200, ((ObjectResult)actionTideLocationUpdate.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionTideLocationUpdate.Result).Value);
+               TideLocation tideLocationUpdate = (TideLocation)(((OkObjectResult)actionTideLocationUpdate.Result).Value);
+               Assert.NotNull(tideLocationUpdate);
 
-                    if (count > 0)
-                    {
-                        query.Skip = 0;
-                        query.Take = 5;
-                        count = (query.Take > count ? query.Take : count);
-
-                        // ok with TideLocation info
-                        jsonRet = tideLocationController.GetTideLocationList(query.Language.ToString(), query.Skip, query.Take);
-                        Assert.IsNotNull(jsonRet);
-
-                        ret = jsonRet as OkNegotiatedContentResult<List<TideLocation>>;
-                        Assert.AreEqual(tideLocationList[0].TideLocationID, ret.Content[0].TideLocationID);
-                        Assert.AreEqual((count > query.Take ? query.Take : count), ret.Content.Count);
-
-                       if (count > 1)
-                       {
-                           query.Skip = 1;
-                           query.Take = 5;
-                           count = (query.Take > count ? query.Take : count);
-
-                           // ok with TideLocation info
-                           IHttpActionResult jsonRet2 = tideLocationController.GetTideLocationList(query.Language.ToString(), query.Skip, query.Take);
-                           Assert.IsNotNull(jsonRet2);
-
-                           OkNegotiatedContentResult<List<TideLocation>> ret2 = jsonRet2 as OkNegotiatedContentResult<List<TideLocation>>;
-                           Assert.AreEqual(tideLocationList[1].TideLocationID, ret2.Content[0].TideLocationID);
-                           Assert.AreEqual((count > query.Take ? query.Take : count), ret2.Content.Count);
-                       }
-                    }
-                }
+               // testing Delete(TideLocation tideLocation)
+               var actionTideLocationDelete = await tideLocationController.Delete(tideLocationUpdate);
+               Assert.Equal(200, ((ObjectResult)actionTideLocationDelete.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionTideLocationDelete.Result).Value);
+               TideLocation tideLocationDelete = (TideLocation)(((OkObjectResult)actionTideLocationDelete.Result).Value);
+               Assert.NotNull(tideLocationDelete);
             }
         }
-        #endregion Tests Generated for Class Controller GetList Command
+        #endregion Functions public
 
-        #region Tests Generated for Class Controller GetWithID Command
-        [TestMethod]
-        public void TideLocation_Controller_GetTideLocationWithID_Test()
+        #region Functions private
+        private async Task<bool> Setup(CultureInfo culture)
         {
-            foreach (LanguageEnum LanguageRequest in AllowableLanguages)
+            Config = new ConfigurationBuilder()
+               .SetBasePath(Directory.GetParent(AppContext.BaseDirectory).FullName)
+               .AddJsonFile("appsettings.json")
+               .Build();
+        
+            Services = new ServiceCollection();
+        
+            IConfigurationSection connectionStringsSection = Config.GetSection("ConnectionStrings");
+            Services.Configure<ConnectionStringsModel>(connectionStringsSection);
+        
+            ConnectionStringsModel connectionStrings = connectionStringsSection.Get<ConnectionStringsModel>();
+        
+            Services.AddSingleton<IConfiguration>(Config);
+        
+            Services.AddDbContext<CSSPDBContext>(options =>
             {
-                foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
-                {
-                    TideLocationController tideLocationController = new TideLocationController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(tideLocationController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, tideLocationController.DatabaseType);
-
-                    TideLocation tideLocationFirst = new TideLocation();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-                    {
-                        TideLocationService tideLocationService = new TideLocationService(new Query(), db, ContactID);
-                        tideLocationFirst = (from c in db.TideLocations select c).FirstOrDefault();
-                    }
-
-                    // ok with TideLocation info
-                    IHttpActionResult jsonRet = tideLocationController.GetTideLocationWithID(tideLocationFirst.TideLocationID);
-                    Assert.IsNotNull(jsonRet);
-
-                    OkNegotiatedContentResult<TideLocation> Ret = jsonRet as OkNegotiatedContentResult<TideLocation>;
-                    TideLocation tideLocationRet = Ret.Content;
-                    Assert.AreEqual(tideLocationFirst.TideLocationID, tideLocationRet.TideLocationID);
-
-                    BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
-
-                    // Not Found
-                    IHttpActionResult jsonRet2 = tideLocationController.GetTideLocationWithID(0);
-                    Assert.IsNotNull(jsonRet2);
-
-                    OkNegotiatedContentResult<TideLocation> tideLocationRet2 = jsonRet2 as OkNegotiatedContentResult<TideLocation>;
-                    Assert.IsNull(tideLocationRet2);
-
-                    NotFoundResult notFoundRequest = jsonRet2 as NotFoundResult;
-                    Assert.IsNotNull(notFoundRequest);
-                }
-            }
+                options.UseSqlServer(connectionStrings.TestDB);
+            });
+        
+            Services.AddDbContext<ApplicationDbContext>(options =>
+                options.UseSqlServer(connectionStrings.TestDB));
+        
+            Services.AddIdentityCore<ApplicationUser>()
+                .AddEntityFrameworkStores<ApplicationDbContext>();
+        
+            Services.AddSingleton<IEnums, Enums>();
+            Services.AddSingleton<ILoggedInService, LoggedInService>();
+            Services.AddSingleton<ITideLocationService, TideLocationService>();
+            Services.AddSingleton<ITideLocationController, TideLocationController>();
+        
+            Provider = Services.BuildServiceProvider();
+            Assert.NotNull(Provider);
+        
+            loggedInService = Provider.GetService<ILoggedInService>();
+            Assert.NotNull(loggedInService);
+        
+            tideLocationService = Provider.GetService<ITideLocationService>();
+            Assert.NotNull(tideLocationService);
+        
+            await tideLocationService.SetCulture(culture);
+        
+            tideLocationController = Provider.GetService<ITideLocationController>();
+            Assert.NotNull(tideLocationController);
+        
+            return await Task.FromResult(true);
         }
-        #endregion Tests Generated for Class Controller GetWithID Command
-
-        #region Tests Generated for Class Controller Post Command
-        [TestMethod]
-        public void TideLocation_Controller_Post_Test()
-        {
-            foreach (LanguageEnum LanguageRequest in AllowableLanguages)
-            {
-                foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
-                {
-                    TideLocationController tideLocationController = new TideLocationController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(tideLocationController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, tideLocationController.DatabaseType);
-
-                    TideLocation tideLocationLast = new TideLocation();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-                    {
-                        Query query = new Query();
-                        query.Language = LanguageRequest;
-                        query.Asc = "";
-                        query.Desc = "";
-
-                        TideLocationService tideLocationService = new TideLocationService(query, db, ContactID);
-                        tideLocationLast = (from c in db.TideLocations select c).FirstOrDefault();
-                    }
-
-                    // ok with TideLocation info
-                    IHttpActionResult jsonRet = tideLocationController.GetTideLocationWithID(tideLocationLast.TideLocationID);
-                    Assert.IsNotNull(jsonRet);
-
-                    OkNegotiatedContentResult<TideLocation> Ret = jsonRet as OkNegotiatedContentResult<TideLocation>;
-                    TideLocation tideLocationRet = Ret.Content;
-                    Assert.AreEqual(tideLocationLast.TideLocationID, tideLocationRet.TideLocationID);
-
-                    BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
-
-                    // Post to return CSSPError because TideLocationID exist
-                    IHttpActionResult jsonRet2 = tideLocationController.Post(tideLocationRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet2);
-
-                    OkNegotiatedContentResult<TideLocation> tideLocationRet2 = jsonRet2 as OkNegotiatedContentResult<TideLocation>;
-                    Assert.IsNull(tideLocationRet2);
-
-                    BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
-                    Assert.IsNotNull(badRequest2);
-
-                    // Post to return newly added TideLocation
-                    tideLocationRet.TideLocationID = 0;
-                    tideLocationController.Request = new System.Net.Http.HttpRequestMessage();
-                    tideLocationController.Request.RequestUri = new System.Uri("http://localhost:5000/api/tideLocation");
-                    IHttpActionResult jsonRet3 = tideLocationController.Post(tideLocationRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet3);
-
-                    CreatedNegotiatedContentResult<TideLocation> tideLocationRet3 = jsonRet3 as CreatedNegotiatedContentResult<TideLocation>;
-                    Assert.IsNotNull(tideLocationRet3);
-
-                    BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest3);
-
-                    IHttpActionResult jsonRet4 = tideLocationController.Delete(tideLocationRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet4);
-
-                    OkNegotiatedContentResult<TideLocation> tideLocationRet4 = jsonRet4 as OkNegotiatedContentResult<TideLocation>;
-                    Assert.IsNotNull(tideLocationRet4);
-
-                    BadRequestErrorMessageResult badRequest4 = jsonRet4 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest4);
-                }
-            }
-        }
-        #endregion Tests Generated for Class Controller Post Command
-
-        #region Tests Generated for Class Controller Put Command
-        [TestMethod]
-        public void TideLocation_Controller_Put_Test()
-        {
-            foreach (LanguageEnum LanguageRequest in AllowableLanguages)
-            {
-                foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
-                {
-                    TideLocationController tideLocationController = new TideLocationController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(tideLocationController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, tideLocationController.DatabaseType);
-
-                    TideLocation tideLocationLast = new TideLocation();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-                    {
-                        Query query = new Query();
-                        query.Language = LanguageRequest;
-
-                        TideLocationService tideLocationService = new TideLocationService(query, db, ContactID);
-                        tideLocationLast = (from c in db.TideLocations select c).FirstOrDefault();
-                    }
-
-                    // ok with TideLocation info
-                    IHttpActionResult jsonRet = tideLocationController.GetTideLocationWithID(tideLocationLast.TideLocationID);
-                    Assert.IsNotNull(jsonRet);
-
-                    OkNegotiatedContentResult<TideLocation> Ret = jsonRet as OkNegotiatedContentResult<TideLocation>;
-                    TideLocation tideLocationRet = Ret.Content;
-                    Assert.AreEqual(tideLocationLast.TideLocationID, tideLocationRet.TideLocationID);
-
-                    BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
-
-                    // Put to return success
-                    IHttpActionResult jsonRet2 = tideLocationController.Put(tideLocationRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet2);
-
-                    OkNegotiatedContentResult<TideLocation> tideLocationRet2 = jsonRet2 as OkNegotiatedContentResult<TideLocation>;
-                    Assert.IsNotNull(tideLocationRet2);
-
-                    BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest2);
-
-                    // Put to return CSSPError because TideLocationID of 0 does not exist
-                    tideLocationRet.TideLocationID = 0;
-                    IHttpActionResult jsonRet3 = tideLocationController.Put(tideLocationRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet3);
-
-                    OkNegotiatedContentResult<TideLocation> tideLocationRet3 = jsonRet3 as OkNegotiatedContentResult<TideLocation>;
-                    Assert.IsNull(tideLocationRet3);
-
-                    BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
-                    Assert.IsNotNull(badRequest3);
-                }
-            }
-        }
-        #endregion Tests Generated for Class Controller Put Command
-
-        #region Tests Generated for Class Controller Delete Command
-        [TestMethod]
-        public void TideLocation_Controller_Delete_Test()
-        {
-            foreach (LanguageEnum LanguageRequest in AllowableLanguages)
-            {
-                foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
-                {
-                    TideLocationController tideLocationController = new TideLocationController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(tideLocationController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, tideLocationController.DatabaseType);
-
-                    TideLocation tideLocationLast = new TideLocation();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-                    {
-                        Query query = new Query();
-                        query.Language = LanguageRequest;
-                        query.Asc = "";
-                        query.Desc = "";
-
-                        TideLocationService tideLocationService = new TideLocationService(query, db, ContactID);
-                        tideLocationLast = (from c in db.TideLocations select c).FirstOrDefault();
-                    }
-
-                    // ok with TideLocation info
-                    IHttpActionResult jsonRet = tideLocationController.GetTideLocationWithID(tideLocationLast.TideLocationID);
-                    Assert.IsNotNull(jsonRet);
-
-                    OkNegotiatedContentResult<TideLocation> Ret = jsonRet as OkNegotiatedContentResult<TideLocation>;
-                    TideLocation tideLocationRet = Ret.Content;
-                    Assert.AreEqual(tideLocationLast.TideLocationID, tideLocationRet.TideLocationID);
-
-                    BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
-
-                    // Post to return newly added TideLocation
-                    tideLocationRet.TideLocationID = 0;
-                    tideLocationController.Request = new System.Net.Http.HttpRequestMessage();
-                    tideLocationController.Request.RequestUri = new System.Uri("http://localhost:5000/api/tideLocation");
-                    IHttpActionResult jsonRet3 = tideLocationController.Post(tideLocationRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet3);
-
-                    CreatedNegotiatedContentResult<TideLocation> tideLocationRet3 = jsonRet3 as CreatedNegotiatedContentResult<TideLocation>;
-                    Assert.IsNotNull(tideLocationRet3);
-                    TideLocation tideLocation = tideLocationRet3.Content;
-
-                    BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest3);
-
-                    // Delete to return success
-                    IHttpActionResult jsonRet2 = tideLocationController.Delete(tideLocationRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet2);
-
-                    OkNegotiatedContentResult<TideLocation> tideLocationRet2 = jsonRet2 as OkNegotiatedContentResult<TideLocation>;
-                    Assert.IsNotNull(tideLocationRet2);
-
-                    BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest2);
-
-                    // Delete to return CSSPError because TideLocationID of 0 does not exist
-                    tideLocationRet.TideLocationID = 0;
-                    IHttpActionResult jsonRet4 = tideLocationController.Delete(tideLocationRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet4);
-
-                    OkNegotiatedContentResult<TideLocation> tideLocationRet4 = jsonRet4 as OkNegotiatedContentResult<TideLocation>;
-                    Assert.IsNull(tideLocationRet4);
-
-                    BadRequestErrorMessageResult badRequest4 = jsonRet4 as BadRequestErrorMessageResult;
-                    Assert.IsNotNull(badRequest4);
-                }
-            }
-        }
-        #endregion Tests Generated for Class Controller Delete Command
-
+        #endregion Functions private
     }
 }

@@ -2,350 +2,157 @@ using CSSPEnums;
 using CSSPModels;
 using CSSPServices;
 using CSSPWebAPI.Controllers;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using LoggedInServices.Services;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using System;
 using System.Collections.Generic;
+using System.Globalization;
+using System.IO;
 using System.Linq;
-using System.Web.Http;
-using System.Web.Http.Results;
+using System.Threading.Tasks;
+using System.Transactions;
+using UserServices.Models;
+using Xunit;
 
-namespace CSSPWebAPI.Tests.Controllers
+namespace CSSPWebAPIs.Tests.Controllers
 {
-    [TestClass]
-    public partial class PolSourceSiteControllerTest : BaseControllerTest
+    public partial class PolSourceSiteControllerTest
     {
         #region Variables
         #endregion Variables
 
         #region Properties
+        private IConfiguration Config { get; set; }
+        private IServiceProvider Provider { get; set; }
+        private IServiceCollection Services { get; set; }
+        private CSSPDBContext db { get; set; }
+        private ILoggedInService loggedInService { get; set; }
+        private IPolSourceSiteService polSourceSiteService { get; set; }
+        private IPolSourceSiteController polSourceSiteController { get; set; }
         #endregion Properties
 
         #region Constructors
-        public PolSourceSiteControllerTest() : base()
+        public PolSourceSiteControllerTest()
         {
         }
         #endregion Constructors
 
-        #region Tests Generated for Class Controller GetList Command
-        [TestMethod]
-        public void PolSourceSite_Controller_GetPolSourceSiteList_Test()
+        #region Functions public
+        [Theory]
+        [InlineData("en-CA")]
+        [InlineData("fr-CA")]
+        public async Task PolSourceSiteController_Constructor_Good_Test(string culture)
         {
-            foreach (LanguageEnum LanguageRequest in AllowableLanguages)
+            bool retBool = await Setup(new CultureInfo(culture));
+            Assert.True(retBool);
+            Assert.NotNull(loggedInService);
+            Assert.NotNull(polSourceSiteService);
+            Assert.NotNull(polSourceSiteController);
+        }
+        [Theory]
+        [InlineData("en-CA")]
+        [InlineData("fr-CA")]
+        public async Task PolSourceSiteController_CRUD_Good_Test(string culture)
+        {
+            bool retBool = await Setup(new CultureInfo(culture));
+            Assert.True(retBool);
+
+            using (TransactionScope ts = new TransactionScope())
             {
-                foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
-                {
-                    PolSourceSiteController polSourceSiteController = new PolSourceSiteController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(polSourceSiteController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, polSourceSiteController.DatabaseType);
+                // testing Get
+               var actionPolSourceSiteList = await polSourceSiteController.Get();
+               Assert.Equal(200, ((ObjectResult)actionPolSourceSiteList.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionPolSourceSiteList.Result).Value);
+               List<PolSourceSite> polSourceSiteList = (List<PolSourceSite>)(((OkObjectResult)actionPolSourceSiteList.Result).Value);
 
-                    PolSourceSite polSourceSiteFirst = new PolSourceSite();
-                    int count = -1;
-                    Query query = new Query();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseTypeEnum.SqlServerTestDB))
-                    {
-                        PolSourceSiteService polSourceSiteService = new PolSourceSiteService(query, db, ContactID);
-                        polSourceSiteFirst = (from c in db.PolSourceSites select c).FirstOrDefault();
-                        count = (from c in db.PolSourceSites select c).Count();
-                        count = (query.Take > count ? count : query.Take);
-                    }
+               int count = ((List<PolSourceSite>)((OkObjectResult)actionPolSourceSiteList.Result).Value).Count();
+                Assert.True(count > 0);
 
-                    // ok with PolSourceSite info
-                    IHttpActionResult jsonRet = polSourceSiteController.GetPolSourceSiteList();
-                    Assert.IsNotNull(jsonRet);
+               // testing Get(PolSourceSiteID)
+               var actionPolSourceSite = await polSourceSiteController.Get(polSourceSiteList[0].PolSourceSiteID);
+               Assert.Equal(200, ((ObjectResult)actionPolSourceSite.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionPolSourceSite.Result).Value);
+               PolSourceSite polSourceSite = (PolSourceSite)(((OkObjectResult)actionPolSourceSite.Result).Value);
+               Assert.NotNull(polSourceSite);
+               Assert.Equal(polSourceSiteList[0].PolSourceSiteID, polSourceSite.PolSourceSiteID);
 
-                    OkNegotiatedContentResult<List<PolSourceSite>> ret = jsonRet as OkNegotiatedContentResult<List<PolSourceSite>>;
-                    Assert.AreEqual(polSourceSiteFirst.PolSourceSiteID, ret.Content[0].PolSourceSiteID);
-                    Assert.AreEqual((count > query.Take ? query.Take : count), ret.Content.Count);
+               // testing Post(PolSourceSite polSourceSite)
+               polSourceSite.PolSourceSiteID = 0;
+               var actionPolSourceSiteNew = await polSourceSiteController.Post(polSourceSite);
+               Assert.Equal(200, ((ObjectResult)actionPolSourceSiteNew.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionPolSourceSiteNew.Result).Value);
+               PolSourceSite polSourceSiteNew = (PolSourceSite)(((OkObjectResult)actionPolSourceSiteNew.Result).Value);
+               Assert.NotNull(polSourceSiteNew);
 
-                    List<PolSourceSite> polSourceSiteList = new List<PolSourceSite>();
-                    count = -1;
-                    query = new Query();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseTypeEnum.SqlServerTestDB))
-                    {
-                        PolSourceSiteService polSourceSiteService = new PolSourceSiteService(query, db, ContactID);
-                        polSourceSiteList = (from c in db.PolSourceSites select c).OrderBy(c => c.PolSourceSiteID).Skip(0).Take(2).ToList();
-                        count = (from c in db.PolSourceSites select c).Count();
-                    }
+               // testing Put(PolSourceSite polSourceSite)
+               var actionPolSourceSiteUpdate = await polSourceSiteController.Put(polSourceSiteNew);
+               Assert.Equal(200, ((ObjectResult)actionPolSourceSiteUpdate.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionPolSourceSiteUpdate.Result).Value);
+               PolSourceSite polSourceSiteUpdate = (PolSourceSite)(((OkObjectResult)actionPolSourceSiteUpdate.Result).Value);
+               Assert.NotNull(polSourceSiteUpdate);
 
-                    if (count > 0)
-                    {
-                        query.Skip = 0;
-                        query.Take = 5;
-                        count = (query.Take > count ? query.Take : count);
-
-                        // ok with PolSourceSite info
-                        jsonRet = polSourceSiteController.GetPolSourceSiteList(query.Language.ToString(), query.Skip, query.Take);
-                        Assert.IsNotNull(jsonRet);
-
-                        ret = jsonRet as OkNegotiatedContentResult<List<PolSourceSite>>;
-                        Assert.AreEqual(polSourceSiteList[0].PolSourceSiteID, ret.Content[0].PolSourceSiteID);
-                        Assert.AreEqual((count > query.Take ? query.Take : count), ret.Content.Count);
-
-                       if (count > 1)
-                       {
-                           query.Skip = 1;
-                           query.Take = 5;
-                           count = (query.Take > count ? query.Take : count);
-
-                           // ok with PolSourceSite info
-                           IHttpActionResult jsonRet2 = polSourceSiteController.GetPolSourceSiteList(query.Language.ToString(), query.Skip, query.Take);
-                           Assert.IsNotNull(jsonRet2);
-
-                           OkNegotiatedContentResult<List<PolSourceSite>> ret2 = jsonRet2 as OkNegotiatedContentResult<List<PolSourceSite>>;
-                           Assert.AreEqual(polSourceSiteList[1].PolSourceSiteID, ret2.Content[0].PolSourceSiteID);
-                           Assert.AreEqual((count > query.Take ? query.Take : count), ret2.Content.Count);
-                       }
-                    }
-                }
+               // testing Delete(PolSourceSite polSourceSite)
+               var actionPolSourceSiteDelete = await polSourceSiteController.Delete(polSourceSiteUpdate);
+               Assert.Equal(200, ((ObjectResult)actionPolSourceSiteDelete.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionPolSourceSiteDelete.Result).Value);
+               PolSourceSite polSourceSiteDelete = (PolSourceSite)(((OkObjectResult)actionPolSourceSiteDelete.Result).Value);
+               Assert.NotNull(polSourceSiteDelete);
             }
         }
-        #endregion Tests Generated for Class Controller GetList Command
+        #endregion Functions public
 
-        #region Tests Generated for Class Controller GetWithID Command
-        [TestMethod]
-        public void PolSourceSite_Controller_GetPolSourceSiteWithID_Test()
+        #region Functions private
+        private async Task<bool> Setup(CultureInfo culture)
         {
-            foreach (LanguageEnum LanguageRequest in AllowableLanguages)
+            Config = new ConfigurationBuilder()
+               .SetBasePath(Directory.GetParent(AppContext.BaseDirectory).FullName)
+               .AddJsonFile("appsettings.json")
+               .Build();
+        
+            Services = new ServiceCollection();
+        
+            IConfigurationSection connectionStringsSection = Config.GetSection("ConnectionStrings");
+            Services.Configure<ConnectionStringsModel>(connectionStringsSection);
+        
+            ConnectionStringsModel connectionStrings = connectionStringsSection.Get<ConnectionStringsModel>();
+        
+            Services.AddSingleton<IConfiguration>(Config);
+        
+            Services.AddDbContext<CSSPDBContext>(options =>
             {
-                foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
-                {
-                    PolSourceSiteController polSourceSiteController = new PolSourceSiteController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(polSourceSiteController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, polSourceSiteController.DatabaseType);
-
-                    PolSourceSite polSourceSiteFirst = new PolSourceSite();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-                    {
-                        PolSourceSiteService polSourceSiteService = new PolSourceSiteService(new Query(), db, ContactID);
-                        polSourceSiteFirst = (from c in db.PolSourceSites select c).FirstOrDefault();
-                    }
-
-                    // ok with PolSourceSite info
-                    IHttpActionResult jsonRet = polSourceSiteController.GetPolSourceSiteWithID(polSourceSiteFirst.PolSourceSiteID);
-                    Assert.IsNotNull(jsonRet);
-
-                    OkNegotiatedContentResult<PolSourceSite> Ret = jsonRet as OkNegotiatedContentResult<PolSourceSite>;
-                    PolSourceSite polSourceSiteRet = Ret.Content;
-                    Assert.AreEqual(polSourceSiteFirst.PolSourceSiteID, polSourceSiteRet.PolSourceSiteID);
-
-                    BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
-
-                    // Not Found
-                    IHttpActionResult jsonRet2 = polSourceSiteController.GetPolSourceSiteWithID(0);
-                    Assert.IsNotNull(jsonRet2);
-
-                    OkNegotiatedContentResult<PolSourceSite> polSourceSiteRet2 = jsonRet2 as OkNegotiatedContentResult<PolSourceSite>;
-                    Assert.IsNull(polSourceSiteRet2);
-
-                    NotFoundResult notFoundRequest = jsonRet2 as NotFoundResult;
-                    Assert.IsNotNull(notFoundRequest);
-                }
-            }
+                options.UseSqlServer(connectionStrings.TestDB);
+            });
+        
+            Services.AddDbContext<ApplicationDbContext>(options =>
+                options.UseSqlServer(connectionStrings.TestDB));
+        
+            Services.AddIdentityCore<ApplicationUser>()
+                .AddEntityFrameworkStores<ApplicationDbContext>();
+        
+            Services.AddSingleton<IEnums, Enums>();
+            Services.AddSingleton<ILoggedInService, LoggedInService>();
+            Services.AddSingleton<IPolSourceSiteService, PolSourceSiteService>();
+            Services.AddSingleton<IPolSourceSiteController, PolSourceSiteController>();
+        
+            Provider = Services.BuildServiceProvider();
+            Assert.NotNull(Provider);
+        
+            loggedInService = Provider.GetService<ILoggedInService>();
+            Assert.NotNull(loggedInService);
+        
+            polSourceSiteService = Provider.GetService<IPolSourceSiteService>();
+            Assert.NotNull(polSourceSiteService);
+        
+            await polSourceSiteService.SetCulture(culture);
+        
+            polSourceSiteController = Provider.GetService<IPolSourceSiteController>();
+            Assert.NotNull(polSourceSiteController);
+        
+            return await Task.FromResult(true);
         }
-        #endregion Tests Generated for Class Controller GetWithID Command
-
-        #region Tests Generated for Class Controller Post Command
-        [TestMethod]
-        public void PolSourceSite_Controller_Post_Test()
-        {
-            foreach (LanguageEnum LanguageRequest in AllowableLanguages)
-            {
-                foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
-                {
-                    PolSourceSiteController polSourceSiteController = new PolSourceSiteController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(polSourceSiteController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, polSourceSiteController.DatabaseType);
-
-                    PolSourceSite polSourceSiteLast = new PolSourceSite();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-                    {
-                        Query query = new Query();
-                        query.Language = LanguageRequest;
-                        query.Asc = "";
-                        query.Desc = "";
-
-                        PolSourceSiteService polSourceSiteService = new PolSourceSiteService(query, db, ContactID);
-                        polSourceSiteLast = (from c in db.PolSourceSites select c).FirstOrDefault();
-                    }
-
-                    // ok with PolSourceSite info
-                    IHttpActionResult jsonRet = polSourceSiteController.GetPolSourceSiteWithID(polSourceSiteLast.PolSourceSiteID);
-                    Assert.IsNotNull(jsonRet);
-
-                    OkNegotiatedContentResult<PolSourceSite> Ret = jsonRet as OkNegotiatedContentResult<PolSourceSite>;
-                    PolSourceSite polSourceSiteRet = Ret.Content;
-                    Assert.AreEqual(polSourceSiteLast.PolSourceSiteID, polSourceSiteRet.PolSourceSiteID);
-
-                    BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
-
-                    // Post to return CSSPError because PolSourceSiteID exist
-                    IHttpActionResult jsonRet2 = polSourceSiteController.Post(polSourceSiteRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet2);
-
-                    OkNegotiatedContentResult<PolSourceSite> polSourceSiteRet2 = jsonRet2 as OkNegotiatedContentResult<PolSourceSite>;
-                    Assert.IsNull(polSourceSiteRet2);
-
-                    BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
-                    Assert.IsNotNull(badRequest2);
-
-                    // Post to return newly added PolSourceSite
-                    polSourceSiteRet.PolSourceSiteID = 0;
-                    polSourceSiteController.Request = new System.Net.Http.HttpRequestMessage();
-                    polSourceSiteController.Request.RequestUri = new System.Uri("http://localhost:5000/api/polSourceSite");
-                    IHttpActionResult jsonRet3 = polSourceSiteController.Post(polSourceSiteRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet3);
-
-                    CreatedNegotiatedContentResult<PolSourceSite> polSourceSiteRet3 = jsonRet3 as CreatedNegotiatedContentResult<PolSourceSite>;
-                    Assert.IsNotNull(polSourceSiteRet3);
-
-                    BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest3);
-
-                    IHttpActionResult jsonRet4 = polSourceSiteController.Delete(polSourceSiteRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet4);
-
-                    OkNegotiatedContentResult<PolSourceSite> polSourceSiteRet4 = jsonRet4 as OkNegotiatedContentResult<PolSourceSite>;
-                    Assert.IsNotNull(polSourceSiteRet4);
-
-                    BadRequestErrorMessageResult badRequest4 = jsonRet4 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest4);
-                }
-            }
-        }
-        #endregion Tests Generated for Class Controller Post Command
-
-        #region Tests Generated for Class Controller Put Command
-        [TestMethod]
-        public void PolSourceSite_Controller_Put_Test()
-        {
-            foreach (LanguageEnum LanguageRequest in AllowableLanguages)
-            {
-                foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
-                {
-                    PolSourceSiteController polSourceSiteController = new PolSourceSiteController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(polSourceSiteController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, polSourceSiteController.DatabaseType);
-
-                    PolSourceSite polSourceSiteLast = new PolSourceSite();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-                    {
-                        Query query = new Query();
-                        query.Language = LanguageRequest;
-
-                        PolSourceSiteService polSourceSiteService = new PolSourceSiteService(query, db, ContactID);
-                        polSourceSiteLast = (from c in db.PolSourceSites select c).FirstOrDefault();
-                    }
-
-                    // ok with PolSourceSite info
-                    IHttpActionResult jsonRet = polSourceSiteController.GetPolSourceSiteWithID(polSourceSiteLast.PolSourceSiteID);
-                    Assert.IsNotNull(jsonRet);
-
-                    OkNegotiatedContentResult<PolSourceSite> Ret = jsonRet as OkNegotiatedContentResult<PolSourceSite>;
-                    PolSourceSite polSourceSiteRet = Ret.Content;
-                    Assert.AreEqual(polSourceSiteLast.PolSourceSiteID, polSourceSiteRet.PolSourceSiteID);
-
-                    BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
-
-                    // Put to return success
-                    IHttpActionResult jsonRet2 = polSourceSiteController.Put(polSourceSiteRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet2);
-
-                    OkNegotiatedContentResult<PolSourceSite> polSourceSiteRet2 = jsonRet2 as OkNegotiatedContentResult<PolSourceSite>;
-                    Assert.IsNotNull(polSourceSiteRet2);
-
-                    BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest2);
-
-                    // Put to return CSSPError because PolSourceSiteID of 0 does not exist
-                    polSourceSiteRet.PolSourceSiteID = 0;
-                    IHttpActionResult jsonRet3 = polSourceSiteController.Put(polSourceSiteRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet3);
-
-                    OkNegotiatedContentResult<PolSourceSite> polSourceSiteRet3 = jsonRet3 as OkNegotiatedContentResult<PolSourceSite>;
-                    Assert.IsNull(polSourceSiteRet3);
-
-                    BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
-                    Assert.IsNotNull(badRequest3);
-                }
-            }
-        }
-        #endregion Tests Generated for Class Controller Put Command
-
-        #region Tests Generated for Class Controller Delete Command
-        [TestMethod]
-        public void PolSourceSite_Controller_Delete_Test()
-        {
-            foreach (LanguageEnum LanguageRequest in AllowableLanguages)
-            {
-                foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
-                {
-                    PolSourceSiteController polSourceSiteController = new PolSourceSiteController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(polSourceSiteController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, polSourceSiteController.DatabaseType);
-
-                    PolSourceSite polSourceSiteLast = new PolSourceSite();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-                    {
-                        Query query = new Query();
-                        query.Language = LanguageRequest;
-                        query.Asc = "";
-                        query.Desc = "";
-
-                        PolSourceSiteService polSourceSiteService = new PolSourceSiteService(query, db, ContactID);
-                        polSourceSiteLast = (from c in db.PolSourceSites select c).FirstOrDefault();
-                    }
-
-                    // ok with PolSourceSite info
-                    IHttpActionResult jsonRet = polSourceSiteController.GetPolSourceSiteWithID(polSourceSiteLast.PolSourceSiteID);
-                    Assert.IsNotNull(jsonRet);
-
-                    OkNegotiatedContentResult<PolSourceSite> Ret = jsonRet as OkNegotiatedContentResult<PolSourceSite>;
-                    PolSourceSite polSourceSiteRet = Ret.Content;
-                    Assert.AreEqual(polSourceSiteLast.PolSourceSiteID, polSourceSiteRet.PolSourceSiteID);
-
-                    BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
-
-                    // Post to return newly added PolSourceSite
-                    polSourceSiteRet.PolSourceSiteID = 0;
-                    polSourceSiteController.Request = new System.Net.Http.HttpRequestMessage();
-                    polSourceSiteController.Request.RequestUri = new System.Uri("http://localhost:5000/api/polSourceSite");
-                    IHttpActionResult jsonRet3 = polSourceSiteController.Post(polSourceSiteRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet3);
-
-                    CreatedNegotiatedContentResult<PolSourceSite> polSourceSiteRet3 = jsonRet3 as CreatedNegotiatedContentResult<PolSourceSite>;
-                    Assert.IsNotNull(polSourceSiteRet3);
-                    PolSourceSite polSourceSite = polSourceSiteRet3.Content;
-
-                    BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest3);
-
-                    // Delete to return success
-                    IHttpActionResult jsonRet2 = polSourceSiteController.Delete(polSourceSiteRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet2);
-
-                    OkNegotiatedContentResult<PolSourceSite> polSourceSiteRet2 = jsonRet2 as OkNegotiatedContentResult<PolSourceSite>;
-                    Assert.IsNotNull(polSourceSiteRet2);
-
-                    BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest2);
-
-                    // Delete to return CSSPError because PolSourceSiteID of 0 does not exist
-                    polSourceSiteRet.PolSourceSiteID = 0;
-                    IHttpActionResult jsonRet4 = polSourceSiteController.Delete(polSourceSiteRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet4);
-
-                    OkNegotiatedContentResult<PolSourceSite> polSourceSiteRet4 = jsonRet4 as OkNegotiatedContentResult<PolSourceSite>;
-                    Assert.IsNull(polSourceSiteRet4);
-
-                    BadRequestErrorMessageResult badRequest4 = jsonRet4 as BadRequestErrorMessageResult;
-                    Assert.IsNotNull(badRequest4);
-                }
-            }
-        }
-        #endregion Tests Generated for Class Controller Delete Command
-
+        #endregion Functions private
     }
 }

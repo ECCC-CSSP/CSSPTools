@@ -1,25 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
-using System.Security.Claims;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-using CSSPCodeGenWebAPI.Models;
-using CSSPEnums;
+﻿using CSSPEnums;
 using CSSPModels;
 using LoggedInServices.Services;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Options;
-using Microsoft.IdentityModel.Tokens;
 using PolSourceGroupingExcelFileReadServices.Models;
 using PolSourceGroupingExcelFileReadServices.Services;
-using UserServices.Models;
-using UserServices.Services;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace CSSPCodeGenWebAPI.Controllers
 {

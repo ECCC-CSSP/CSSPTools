@@ -1,143 +1,70 @@
-using CSSPEnums;
 using CSSPModels;
 using CSSPServices;
-using System;
+using LoggedInServices.Services;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web.Http;
+using System.Threading.Tasks;
 
 namespace CSSPWebAPI.Controllers
 {
-    [RoutePrefix("api/tvTypeUserAuthorization")]
-    public partial class TVTypeUserAuthorizationController : BaseController
+    public partial interface ITVTypeUserAuthorizationController
+    {
+        Task<ActionResult<List<TVTypeUserAuthorization>>> Get();
+        Task<ActionResult<TVTypeUserAuthorization>> Get(int TVTypeUserAuthorizationID);
+        Task<ActionResult<TVTypeUserAuthorization>> Post(TVTypeUserAuthorization tvTypeUserAuthorization);
+        Task<ActionResult<TVTypeUserAuthorization>> Put(TVTypeUserAuthorization tvTypeUserAuthorization);
+        Task<ActionResult<TVTypeUserAuthorization>> Delete(TVTypeUserAuthorization tvTypeUserAuthorization);
+    }
+
+    [Route("api/{culture}/[controller]")]
+    [ApiController]
+    [Authorize]
+    public partial class TVTypeUserAuthorizationController : ControllerBase, ITVTypeUserAuthorizationController
     {
         #region Variables
         #endregion Variables
 
         #region Properties
+        private ITVTypeUserAuthorizationService tvTypeUserAuthorizationService { get; }
+        private CSSPDBContext db { get; }
+        private ILoggedInService loggedInService { get; }
         #endregion Properties
 
         #region Constructors
-        public TVTypeUserAuthorizationController() : base()
+        public TVTypeUserAuthorizationController(ITVTypeUserAuthorizationService tvTypeUserAuthorizationService, CSSPDBContext db, ILoggedInService loggedInService)
         {
-        }
-        public TVTypeUserAuthorizationController(DatabaseTypeEnum dbt = DatabaseTypeEnum.SqlServerTestDB) : base(dbt)
-        {
+            this.tvTypeUserAuthorizationService = tvTypeUserAuthorizationService;
+            this.db = db;
+            this.loggedInService = loggedInService;
         }
         #endregion Constructors
 
         #region Functions public
-        // GET api/tvTypeUserAuthorization
-        [Route("")]
-        public IHttpActionResult GetTVTypeUserAuthorizationList([FromUri]string lang = "en", [FromUri]int skip = 0, [FromUri]int take = 200,
-            [FromUri]string asc = "", [FromUri]string desc = "", [FromUri]string where = "", [FromUri]string extra = "")
+        [HttpGet]
+        public async Task<ActionResult<List<TVTypeUserAuthorization>>> Get()
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                TVTypeUserAuthorizationService tvTypeUserAuthorizationService = new TVTypeUserAuthorizationService(new Query() { Lang = lang }, db, ContactID);
-
-                else // QueryString has no parameter [extra] or extra is empty
-                {
-                   tvTypeUserAuthorizationService.Query = tvTypeUserAuthorizationService.FillQuery(typeof(TVTypeUserAuthorization), lang, skip, take, asc, desc, where, extra);
-
-                    if (tvTypeUserAuthorizationService.Query.HasErrors)
-                    {
-                        return Ok(new List<TVTypeUserAuthorization>()
-                        {
-                            new TVTypeUserAuthorization()
-                            {
-                                HasErrors = tvTypeUserAuthorizationService.Query.HasErrors,
-                                ValidationResults = tvTypeUserAuthorizationService.Query.ValidationResults,
-                            },
-                        }.ToList());
-                    }
-                    else
-                    {
-                        return Ok(tvTypeUserAuthorizationService.GetTVTypeUserAuthorizationList().ToList());
-                    }
-                }
-            }
+            return await tvTypeUserAuthorizationService.GetTVTypeUserAuthorizationList();
         }
-        // GET api/tvTypeUserAuthorization/1
-        [Route("{TVTypeUserAuthorizationID:int}")]
-        public IHttpActionResult GetTVTypeUserAuthorizationWithID([FromUri]int TVTypeUserAuthorizationID, [FromUri]string lang = "en", [FromUri]string extra = "")
+        [HttpGet("{TVTypeUserAuthorizationID}")]
+        public async Task<ActionResult<TVTypeUserAuthorization>> Get(int TVTypeUserAuthorizationID)
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                TVTypeUserAuthorizationService tvTypeUserAuthorizationService = new TVTypeUserAuthorizationService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
-
-                tvTypeUserAuthorizationService.Query = tvTypeUserAuthorizationService.FillQuery(typeof(TVTypeUserAuthorization), lang, 0, 1, "", "", extra);
-
-                else
-                {
-                    TVTypeUserAuthorization tvTypeUserAuthorization = new TVTypeUserAuthorization();
-                    tvTypeUserAuthorization = tvTypeUserAuthorizationService.GetTVTypeUserAuthorizationWithTVTypeUserAuthorizationID(TVTypeUserAuthorizationID);
-
-                    if (tvTypeUserAuthorization == null)
-                    {
-                        return NotFound();
-                    }
-
-                    return Ok(tvTypeUserAuthorization);
-                }
-            }
+            return await tvTypeUserAuthorizationService.GetTVTypeUserAuthorizationWithTVTypeUserAuthorizationID(TVTypeUserAuthorizationID);
         }
-        // POST api/tvTypeUserAuthorization
-        [Route("")]
-        public IHttpActionResult Post([FromBody]TVTypeUserAuthorization tvTypeUserAuthorization, [FromUri]string lang = "en")
+        [HttpPost]
+        public async Task<ActionResult<TVTypeUserAuthorization>> Post(TVTypeUserAuthorization tvTypeUserAuthorization)
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                TVTypeUserAuthorizationService tvTypeUserAuthorizationService = new TVTypeUserAuthorizationService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
-
-                if (!tvTypeUserAuthorizationService.Add(tvTypeUserAuthorization))
-                {
-                    return BadRequest(String.Join("|||", tvTypeUserAuthorization.ValidationResults));
-                }
-                else
-                {
-                    tvTypeUserAuthorization.ValidationResults = null;
-                    return Created<TVTypeUserAuthorization>(new Uri(Request.RequestUri, tvTypeUserAuthorization.TVTypeUserAuthorizationID.ToString()), tvTypeUserAuthorization);
-                }
-            }
+            return await tvTypeUserAuthorizationService.Add(tvTypeUserAuthorization);
         }
-        // PUT api/tvTypeUserAuthorization
-        [Route("")]
-        public IHttpActionResult Put([FromBody]TVTypeUserAuthorization tvTypeUserAuthorization, [FromUri]string lang = "en")
+        [HttpPut]
+        public async Task<ActionResult<TVTypeUserAuthorization>> Put(TVTypeUserAuthorization tvTypeUserAuthorization)
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                TVTypeUserAuthorizationService tvTypeUserAuthorizationService = new TVTypeUserAuthorizationService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
-
-                if (!tvTypeUserAuthorizationService.Update(tvTypeUserAuthorization))
-                {
-                    return BadRequest(String.Join("|||", tvTypeUserAuthorization.ValidationResults));
-                }
-                else
-                {
-                    tvTypeUserAuthorization.ValidationResults = null;
-                    return Ok(tvTypeUserAuthorization);
-                }
-            }
+            return await tvTypeUserAuthorizationService.Update(tvTypeUserAuthorization);
         }
-        // DELETE api/tvTypeUserAuthorization
-        [Route("")]
-        public IHttpActionResult Delete([FromBody]TVTypeUserAuthorization tvTypeUserAuthorization, [FromUri]string lang = "en")
+        [HttpDelete]
+        public async Task<ActionResult<TVTypeUserAuthorization>> Delete(TVTypeUserAuthorization tvTypeUserAuthorization)
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                TVTypeUserAuthorizationService tvTypeUserAuthorizationService = new TVTypeUserAuthorizationService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
-
-                if (!tvTypeUserAuthorizationService.Delete(tvTypeUserAuthorization))
-                {
-                    return BadRequest(String.Join("|||", tvTypeUserAuthorization.ValidationResults));
-                }
-                else
-                {
-                    tvTypeUserAuthorization.ValidationResults = null;
-                    return Ok(tvTypeUserAuthorization);
-                }
-            }
+            return await tvTypeUserAuthorizationService.Delete(tvTypeUserAuthorization);
         }
         #endregion Functions public
 

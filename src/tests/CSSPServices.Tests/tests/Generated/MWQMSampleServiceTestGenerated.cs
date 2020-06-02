@@ -16,6 +16,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Transactions;
 using Xunit;
 
 namespace CSSPServices.Tests
@@ -54,37 +55,40 @@ namespace CSSPServices.Tests
 
             await Setup(new CultureInfo(culture));
 
-            MWQMSample mwqmSample = GetFilledRandomMWQMSample(""); 
+            using (TransactionScope ts = new TransactionScope())
+            {
+               MWQMSample mwqmSample = GetFilledRandomMWQMSample(""); 
 
-            // List<MWQMSample>
-            var actionMWQMSampleList = await mwqmSampleService.GetMWQMSampleList();
-            Assert.Equal(200, ((ObjectResult)actionMWQMSampleList.Result).StatusCode);
-            Assert.NotNull(((OkObjectResult)actionMWQMSampleList.Result).Value);
-            List<MWQMSample> mwqmSampleList = (List<MWQMSample>)(((OkObjectResult)actionMWQMSampleList.Result).Value);
+               // List<MWQMSample>
+               var actionMWQMSampleList = await mwqmSampleService.GetMWQMSampleList();
+               Assert.Equal(200, ((ObjectResult)actionMWQMSampleList.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionMWQMSampleList.Result).Value);
+               List<MWQMSample> mwqmSampleList = (List<MWQMSample>)(((OkObjectResult)actionMWQMSampleList.Result).Value);
 
-            int count = ((List<MWQMSample>)((OkObjectResult)actionMWQMSampleList.Result).Value).Count();
-            Assert.True(count > 0);
+               int count = ((List<MWQMSample>)((OkObjectResult)actionMWQMSampleList.Result).Value).Count();
+                Assert.True(count > 0);
 
-            // Add MWQMSample
-            var actionMWQMSampleAdded = await mwqmSampleService.Add(mwqmSample);
-            Assert.Equal(200, ((ObjectResult)actionMWQMSampleAdded.Result).StatusCode);
-            Assert.NotNull(((OkObjectResult)actionMWQMSampleAdded.Result).Value);
-            MWQMSample mwqmSampleAdded = (MWQMSample)(((OkObjectResult)actionMWQMSampleAdded.Result).Value);
-            Assert.NotNull(mwqmSampleAdded);
+               // Add MWQMSample
+               var actionMWQMSampleAdded = await mwqmSampleService.Add(mwqmSample);
+               Assert.Equal(200, ((ObjectResult)actionMWQMSampleAdded.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionMWQMSampleAdded.Result).Value);
+               MWQMSample mwqmSampleAdded = (MWQMSample)(((OkObjectResult)actionMWQMSampleAdded.Result).Value);
+               Assert.NotNull(mwqmSampleAdded);
 
-            // Update MWQMSample
-            var actionMWQMSampleUpdated = await mwqmSampleService.Update(mwqmSample);
-            Assert.Equal(200, ((ObjectResult)actionMWQMSampleUpdated.Result).StatusCode);
-            Assert.NotNull(((OkObjectResult)actionMWQMSampleUpdated.Result).Value);
-            MWQMSample mwqmSampleUpdated = (MWQMSample)(((OkObjectResult)actionMWQMSampleUpdated.Result).Value);
-            Assert.NotNull(mwqmSampleUpdated);
+               // Update MWQMSample
+               var actionMWQMSampleUpdated = await mwqmSampleService.Update(mwqmSample);
+               Assert.Equal(200, ((ObjectResult)actionMWQMSampleUpdated.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionMWQMSampleUpdated.Result).Value);
+               MWQMSample mwqmSampleUpdated = (MWQMSample)(((OkObjectResult)actionMWQMSampleUpdated.Result).Value);
+               Assert.NotNull(mwqmSampleUpdated);
 
-            // Delete MWQMSample
-            var actionMWQMSampleDeleted = await mwqmSampleService.Delete(mwqmSample);
-            Assert.Equal(200, ((ObjectResult)actionMWQMSampleDeleted.Result).StatusCode);
-            Assert.NotNull(((OkObjectResult)actionMWQMSampleDeleted.Result).Value);
-            MWQMSample mwqmSampleDeleted = (MWQMSample)(((OkObjectResult)actionMWQMSampleDeleted.Result).Value);
-            Assert.NotNull(mwqmSampleDeleted);
+               // Delete MWQMSample
+               var actionMWQMSampleDeleted = await mwqmSampleService.Delete(mwqmSample);
+               Assert.Equal(200, ((ObjectResult)actionMWQMSampleDeleted.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionMWQMSampleDeleted.Result).Value);
+               MWQMSample mwqmSampleDeleted = (MWQMSample)(((OkObjectResult)actionMWQMSampleDeleted.Result).Value);
+               Assert.NotNull(mwqmSampleDeleted);
+            }
         }
         #endregion Tests Generated CRUD
 

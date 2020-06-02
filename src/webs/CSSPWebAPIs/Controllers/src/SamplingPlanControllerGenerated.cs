@@ -1,143 +1,70 @@
-using CSSPEnums;
 using CSSPModels;
 using CSSPServices;
-using System;
+using LoggedInServices.Services;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web.Http;
+using System.Threading.Tasks;
 
 namespace CSSPWebAPI.Controllers
 {
-    [RoutePrefix("api/samplingPlan")]
-    public partial class SamplingPlanController : BaseController
+    public partial interface ISamplingPlanController
+    {
+        Task<ActionResult<List<SamplingPlan>>> Get();
+        Task<ActionResult<SamplingPlan>> Get(int SamplingPlanID);
+        Task<ActionResult<SamplingPlan>> Post(SamplingPlan samplingPlan);
+        Task<ActionResult<SamplingPlan>> Put(SamplingPlan samplingPlan);
+        Task<ActionResult<SamplingPlan>> Delete(SamplingPlan samplingPlan);
+    }
+
+    [Route("api/{culture}/[controller]")]
+    [ApiController]
+    [Authorize]
+    public partial class SamplingPlanController : ControllerBase, ISamplingPlanController
     {
         #region Variables
         #endregion Variables
 
         #region Properties
+        private ISamplingPlanService samplingPlanService { get; }
+        private CSSPDBContext db { get; }
+        private ILoggedInService loggedInService { get; }
         #endregion Properties
 
         #region Constructors
-        public SamplingPlanController() : base()
+        public SamplingPlanController(ISamplingPlanService samplingPlanService, CSSPDBContext db, ILoggedInService loggedInService)
         {
-        }
-        public SamplingPlanController(DatabaseTypeEnum dbt = DatabaseTypeEnum.SqlServerTestDB) : base(dbt)
-        {
+            this.samplingPlanService = samplingPlanService;
+            this.db = db;
+            this.loggedInService = loggedInService;
         }
         #endregion Constructors
 
         #region Functions public
-        // GET api/samplingPlan
-        [Route("")]
-        public IHttpActionResult GetSamplingPlanList([FromUri]string lang = "en", [FromUri]int skip = 0, [FromUri]int take = 200,
-            [FromUri]string asc = "", [FromUri]string desc = "", [FromUri]string where = "", [FromUri]string extra = "")
+        [HttpGet]
+        public async Task<ActionResult<List<SamplingPlan>>> Get()
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                SamplingPlanService samplingPlanService = new SamplingPlanService(new Query() { Lang = lang }, db, ContactID);
-
-                else // QueryString has no parameter [extra] or extra is empty
-                {
-                   samplingPlanService.Query = samplingPlanService.FillQuery(typeof(SamplingPlan), lang, skip, take, asc, desc, where, extra);
-
-                    if (samplingPlanService.Query.HasErrors)
-                    {
-                        return Ok(new List<SamplingPlan>()
-                        {
-                            new SamplingPlan()
-                            {
-                                HasErrors = samplingPlanService.Query.HasErrors,
-                                ValidationResults = samplingPlanService.Query.ValidationResults,
-                            },
-                        }.ToList());
-                    }
-                    else
-                    {
-                        return Ok(samplingPlanService.GetSamplingPlanList().ToList());
-                    }
-                }
-            }
+            return await samplingPlanService.GetSamplingPlanList();
         }
-        // GET api/samplingPlan/1
-        [Route("{SamplingPlanID:int}")]
-        public IHttpActionResult GetSamplingPlanWithID([FromUri]int SamplingPlanID, [FromUri]string lang = "en", [FromUri]string extra = "")
+        [HttpGet("{SamplingPlanID}")]
+        public async Task<ActionResult<SamplingPlan>> Get(int SamplingPlanID)
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                SamplingPlanService samplingPlanService = new SamplingPlanService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
-
-                samplingPlanService.Query = samplingPlanService.FillQuery(typeof(SamplingPlan), lang, 0, 1, "", "", extra);
-
-                else
-                {
-                    SamplingPlan samplingPlan = new SamplingPlan();
-                    samplingPlan = samplingPlanService.GetSamplingPlanWithSamplingPlanID(SamplingPlanID);
-
-                    if (samplingPlan == null)
-                    {
-                        return NotFound();
-                    }
-
-                    return Ok(samplingPlan);
-                }
-            }
+            return await samplingPlanService.GetSamplingPlanWithSamplingPlanID(SamplingPlanID);
         }
-        // POST api/samplingPlan
-        [Route("")]
-        public IHttpActionResult Post([FromBody]SamplingPlan samplingPlan, [FromUri]string lang = "en")
+        [HttpPost]
+        public async Task<ActionResult<SamplingPlan>> Post(SamplingPlan samplingPlan)
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                SamplingPlanService samplingPlanService = new SamplingPlanService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
-
-                if (!samplingPlanService.Add(samplingPlan))
-                {
-                    return BadRequest(String.Join("|||", samplingPlan.ValidationResults));
-                }
-                else
-                {
-                    samplingPlan.ValidationResults = null;
-                    return Created<SamplingPlan>(new Uri(Request.RequestUri, samplingPlan.SamplingPlanID.ToString()), samplingPlan);
-                }
-            }
+            return await samplingPlanService.Add(samplingPlan);
         }
-        // PUT api/samplingPlan
-        [Route("")]
-        public IHttpActionResult Put([FromBody]SamplingPlan samplingPlan, [FromUri]string lang = "en")
+        [HttpPut]
+        public async Task<ActionResult<SamplingPlan>> Put(SamplingPlan samplingPlan)
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                SamplingPlanService samplingPlanService = new SamplingPlanService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
-
-                if (!samplingPlanService.Update(samplingPlan))
-                {
-                    return BadRequest(String.Join("|||", samplingPlan.ValidationResults));
-                }
-                else
-                {
-                    samplingPlan.ValidationResults = null;
-                    return Ok(samplingPlan);
-                }
-            }
+            return await samplingPlanService.Update(samplingPlan);
         }
-        // DELETE api/samplingPlan
-        [Route("")]
-        public IHttpActionResult Delete([FromBody]SamplingPlan samplingPlan, [FromUri]string lang = "en")
+        [HttpDelete]
+        public async Task<ActionResult<SamplingPlan>> Delete(SamplingPlan samplingPlan)
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                SamplingPlanService samplingPlanService = new SamplingPlanService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
-
-                if (!samplingPlanService.Delete(samplingPlan))
-                {
-                    return BadRequest(String.Join("|||", samplingPlan.ValidationResults));
-                }
-                else
-                {
-                    samplingPlan.ValidationResults = null;
-                    return Ok(samplingPlan);
-                }
-            }
+            return await samplingPlanService.Delete(samplingPlan);
         }
         #endregion Functions public
 

@@ -1,143 +1,70 @@
-using CSSPEnums;
 using CSSPModels;
 using CSSPServices;
-using System;
+using LoggedInServices.Services;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web.Http;
+using System.Threading.Tasks;
 
 namespace CSSPWebAPI.Controllers
 {
-    [RoutePrefix("api/hydrometricSite")]
-    public partial class HydrometricSiteController : BaseController
+    public partial interface IHydrometricSiteController
+    {
+        Task<ActionResult<List<HydrometricSite>>> Get();
+        Task<ActionResult<HydrometricSite>> Get(int HydrometricSiteID);
+        Task<ActionResult<HydrometricSite>> Post(HydrometricSite hydrometricSite);
+        Task<ActionResult<HydrometricSite>> Put(HydrometricSite hydrometricSite);
+        Task<ActionResult<HydrometricSite>> Delete(HydrometricSite hydrometricSite);
+    }
+
+    [Route("api/{culture}/[controller]")]
+    [ApiController]
+    [Authorize]
+    public partial class HydrometricSiteController : ControllerBase, IHydrometricSiteController
     {
         #region Variables
         #endregion Variables
 
         #region Properties
+        private IHydrometricSiteService hydrometricSiteService { get; }
+        private CSSPDBContext db { get; }
+        private ILoggedInService loggedInService { get; }
         #endregion Properties
 
         #region Constructors
-        public HydrometricSiteController() : base()
+        public HydrometricSiteController(IHydrometricSiteService hydrometricSiteService, CSSPDBContext db, ILoggedInService loggedInService)
         {
-        }
-        public HydrometricSiteController(DatabaseTypeEnum dbt = DatabaseTypeEnum.SqlServerTestDB) : base(dbt)
-        {
+            this.hydrometricSiteService = hydrometricSiteService;
+            this.db = db;
+            this.loggedInService = loggedInService;
         }
         #endregion Constructors
 
         #region Functions public
-        // GET api/hydrometricSite
-        [Route("")]
-        public IHttpActionResult GetHydrometricSiteList([FromUri]string lang = "en", [FromUri]int skip = 0, [FromUri]int take = 200,
-            [FromUri]string asc = "", [FromUri]string desc = "", [FromUri]string where = "", [FromUri]string extra = "")
+        [HttpGet]
+        public async Task<ActionResult<List<HydrometricSite>>> Get()
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                HydrometricSiteService hydrometricSiteService = new HydrometricSiteService(new Query() { Lang = lang }, db, ContactID);
-
-                else // QueryString has no parameter [extra] or extra is empty
-                {
-                   hydrometricSiteService.Query = hydrometricSiteService.FillQuery(typeof(HydrometricSite), lang, skip, take, asc, desc, where, extra);
-
-                    if (hydrometricSiteService.Query.HasErrors)
-                    {
-                        return Ok(new List<HydrometricSite>()
-                        {
-                            new HydrometricSite()
-                            {
-                                HasErrors = hydrometricSiteService.Query.HasErrors,
-                                ValidationResults = hydrometricSiteService.Query.ValidationResults,
-                            },
-                        }.ToList());
-                    }
-                    else
-                    {
-                        return Ok(hydrometricSiteService.GetHydrometricSiteList().ToList());
-                    }
-                }
-            }
+            return await hydrometricSiteService.GetHydrometricSiteList();
         }
-        // GET api/hydrometricSite/1
-        [Route("{HydrometricSiteID:int}")]
-        public IHttpActionResult GetHydrometricSiteWithID([FromUri]int HydrometricSiteID, [FromUri]string lang = "en", [FromUri]string extra = "")
+        [HttpGet("{HydrometricSiteID}")]
+        public async Task<ActionResult<HydrometricSite>> Get(int HydrometricSiteID)
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                HydrometricSiteService hydrometricSiteService = new HydrometricSiteService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
-
-                hydrometricSiteService.Query = hydrometricSiteService.FillQuery(typeof(HydrometricSite), lang, 0, 1, "", "", extra);
-
-                else
-                {
-                    HydrometricSite hydrometricSite = new HydrometricSite();
-                    hydrometricSite = hydrometricSiteService.GetHydrometricSiteWithHydrometricSiteID(HydrometricSiteID);
-
-                    if (hydrometricSite == null)
-                    {
-                        return NotFound();
-                    }
-
-                    return Ok(hydrometricSite);
-                }
-            }
+            return await hydrometricSiteService.GetHydrometricSiteWithHydrometricSiteID(HydrometricSiteID);
         }
-        // POST api/hydrometricSite
-        [Route("")]
-        public IHttpActionResult Post([FromBody]HydrometricSite hydrometricSite, [FromUri]string lang = "en")
+        [HttpPost]
+        public async Task<ActionResult<HydrometricSite>> Post(HydrometricSite hydrometricSite)
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                HydrometricSiteService hydrometricSiteService = new HydrometricSiteService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
-
-                if (!hydrometricSiteService.Add(hydrometricSite))
-                {
-                    return BadRequest(String.Join("|||", hydrometricSite.ValidationResults));
-                }
-                else
-                {
-                    hydrometricSite.ValidationResults = null;
-                    return Created<HydrometricSite>(new Uri(Request.RequestUri, hydrometricSite.HydrometricSiteID.ToString()), hydrometricSite);
-                }
-            }
+            return await hydrometricSiteService.Add(hydrometricSite);
         }
-        // PUT api/hydrometricSite
-        [Route("")]
-        public IHttpActionResult Put([FromBody]HydrometricSite hydrometricSite, [FromUri]string lang = "en")
+        [HttpPut]
+        public async Task<ActionResult<HydrometricSite>> Put(HydrometricSite hydrometricSite)
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                HydrometricSiteService hydrometricSiteService = new HydrometricSiteService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
-
-                if (!hydrometricSiteService.Update(hydrometricSite))
-                {
-                    return BadRequest(String.Join("|||", hydrometricSite.ValidationResults));
-                }
-                else
-                {
-                    hydrometricSite.ValidationResults = null;
-                    return Ok(hydrometricSite);
-                }
-            }
+            return await hydrometricSiteService.Update(hydrometricSite);
         }
-        // DELETE api/hydrometricSite
-        [Route("")]
-        public IHttpActionResult Delete([FromBody]HydrometricSite hydrometricSite, [FromUri]string lang = "en")
+        [HttpDelete]
+        public async Task<ActionResult<HydrometricSite>> Delete(HydrometricSite hydrometricSite)
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                HydrometricSiteService hydrometricSiteService = new HydrometricSiteService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
-
-                if (!hydrometricSiteService.Delete(hydrometricSite))
-                {
-                    return BadRequest(String.Join("|||", hydrometricSite.ValidationResults));
-                }
-                else
-                {
-                    hydrometricSite.ValidationResults = null;
-                    return Ok(hydrometricSite);
-                }
-            }
+            return await hydrometricSiteService.Delete(hydrometricSite);
         }
         #endregion Functions public
 

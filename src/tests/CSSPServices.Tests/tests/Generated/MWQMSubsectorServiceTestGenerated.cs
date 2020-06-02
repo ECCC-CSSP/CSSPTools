@@ -16,6 +16,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Transactions;
 using Xunit;
 
 namespace CSSPServices.Tests
@@ -54,37 +55,40 @@ namespace CSSPServices.Tests
 
             await Setup(new CultureInfo(culture));
 
-            MWQMSubsector mwqmSubsector = GetFilledRandomMWQMSubsector(""); 
+            using (TransactionScope ts = new TransactionScope())
+            {
+               MWQMSubsector mwqmSubsector = GetFilledRandomMWQMSubsector(""); 
 
-            // List<MWQMSubsector>
-            var actionMWQMSubsectorList = await mwqmSubsectorService.GetMWQMSubsectorList();
-            Assert.Equal(200, ((ObjectResult)actionMWQMSubsectorList.Result).StatusCode);
-            Assert.NotNull(((OkObjectResult)actionMWQMSubsectorList.Result).Value);
-            List<MWQMSubsector> mwqmSubsectorList = (List<MWQMSubsector>)(((OkObjectResult)actionMWQMSubsectorList.Result).Value);
+               // List<MWQMSubsector>
+               var actionMWQMSubsectorList = await mwqmSubsectorService.GetMWQMSubsectorList();
+               Assert.Equal(200, ((ObjectResult)actionMWQMSubsectorList.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionMWQMSubsectorList.Result).Value);
+               List<MWQMSubsector> mwqmSubsectorList = (List<MWQMSubsector>)(((OkObjectResult)actionMWQMSubsectorList.Result).Value);
 
-            int count = ((List<MWQMSubsector>)((OkObjectResult)actionMWQMSubsectorList.Result).Value).Count();
-            Assert.True(count > 0);
+               int count = ((List<MWQMSubsector>)((OkObjectResult)actionMWQMSubsectorList.Result).Value).Count();
+                Assert.True(count > 0);
 
-            // Add MWQMSubsector
-            var actionMWQMSubsectorAdded = await mwqmSubsectorService.Add(mwqmSubsector);
-            Assert.Equal(200, ((ObjectResult)actionMWQMSubsectorAdded.Result).StatusCode);
-            Assert.NotNull(((OkObjectResult)actionMWQMSubsectorAdded.Result).Value);
-            MWQMSubsector mwqmSubsectorAdded = (MWQMSubsector)(((OkObjectResult)actionMWQMSubsectorAdded.Result).Value);
-            Assert.NotNull(mwqmSubsectorAdded);
+               // Add MWQMSubsector
+               var actionMWQMSubsectorAdded = await mwqmSubsectorService.Add(mwqmSubsector);
+               Assert.Equal(200, ((ObjectResult)actionMWQMSubsectorAdded.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionMWQMSubsectorAdded.Result).Value);
+               MWQMSubsector mwqmSubsectorAdded = (MWQMSubsector)(((OkObjectResult)actionMWQMSubsectorAdded.Result).Value);
+               Assert.NotNull(mwqmSubsectorAdded);
 
-            // Update MWQMSubsector
-            var actionMWQMSubsectorUpdated = await mwqmSubsectorService.Update(mwqmSubsector);
-            Assert.Equal(200, ((ObjectResult)actionMWQMSubsectorUpdated.Result).StatusCode);
-            Assert.NotNull(((OkObjectResult)actionMWQMSubsectorUpdated.Result).Value);
-            MWQMSubsector mwqmSubsectorUpdated = (MWQMSubsector)(((OkObjectResult)actionMWQMSubsectorUpdated.Result).Value);
-            Assert.NotNull(mwqmSubsectorUpdated);
+               // Update MWQMSubsector
+               var actionMWQMSubsectorUpdated = await mwqmSubsectorService.Update(mwqmSubsector);
+               Assert.Equal(200, ((ObjectResult)actionMWQMSubsectorUpdated.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionMWQMSubsectorUpdated.Result).Value);
+               MWQMSubsector mwqmSubsectorUpdated = (MWQMSubsector)(((OkObjectResult)actionMWQMSubsectorUpdated.Result).Value);
+               Assert.NotNull(mwqmSubsectorUpdated);
 
-            // Delete MWQMSubsector
-            var actionMWQMSubsectorDeleted = await mwqmSubsectorService.Delete(mwqmSubsector);
-            Assert.Equal(200, ((ObjectResult)actionMWQMSubsectorDeleted.Result).StatusCode);
-            Assert.NotNull(((OkObjectResult)actionMWQMSubsectorDeleted.Result).Value);
-            MWQMSubsector mwqmSubsectorDeleted = (MWQMSubsector)(((OkObjectResult)actionMWQMSubsectorDeleted.Result).Value);
-            Assert.NotNull(mwqmSubsectorDeleted);
+               // Delete MWQMSubsector
+               var actionMWQMSubsectorDeleted = await mwqmSubsectorService.Delete(mwqmSubsector);
+               Assert.Equal(200, ((ObjectResult)actionMWQMSubsectorDeleted.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionMWQMSubsectorDeleted.Result).Value);
+               MWQMSubsector mwqmSubsectorDeleted = (MWQMSubsector)(((OkObjectResult)actionMWQMSubsectorDeleted.Result).Value);
+               Assert.NotNull(mwqmSubsectorDeleted);
+            }
         }
         #endregion Tests Generated CRUD
 

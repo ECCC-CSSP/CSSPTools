@@ -1,143 +1,70 @@
-using CSSPEnums;
 using CSSPModels;
 using CSSPServices;
-using System;
+using LoggedInServices.Services;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web.Http;
+using System.Threading.Tasks;
 
 namespace CSSPWebAPI.Controllers
 {
-    [RoutePrefix("api/tvItemUserAuthorization")]
-    public partial class TVItemUserAuthorizationController : BaseController
+    public partial interface ITVItemUserAuthorizationController
+    {
+        Task<ActionResult<List<TVItemUserAuthorization>>> Get();
+        Task<ActionResult<TVItemUserAuthorization>> Get(int TVItemUserAuthorizationID);
+        Task<ActionResult<TVItemUserAuthorization>> Post(TVItemUserAuthorization tvItemUserAuthorization);
+        Task<ActionResult<TVItemUserAuthorization>> Put(TVItemUserAuthorization tvItemUserAuthorization);
+        Task<ActionResult<TVItemUserAuthorization>> Delete(TVItemUserAuthorization tvItemUserAuthorization);
+    }
+
+    [Route("api/{culture}/[controller]")]
+    [ApiController]
+    [Authorize]
+    public partial class TVItemUserAuthorizationController : ControllerBase, ITVItemUserAuthorizationController
     {
         #region Variables
         #endregion Variables
 
         #region Properties
+        private ITVItemUserAuthorizationService tvItemUserAuthorizationService { get; }
+        private CSSPDBContext db { get; }
+        private ILoggedInService loggedInService { get; }
         #endregion Properties
 
         #region Constructors
-        public TVItemUserAuthorizationController() : base()
+        public TVItemUserAuthorizationController(ITVItemUserAuthorizationService tvItemUserAuthorizationService, CSSPDBContext db, ILoggedInService loggedInService)
         {
-        }
-        public TVItemUserAuthorizationController(DatabaseTypeEnum dbt = DatabaseTypeEnum.SqlServerTestDB) : base(dbt)
-        {
+            this.tvItemUserAuthorizationService = tvItemUserAuthorizationService;
+            this.db = db;
+            this.loggedInService = loggedInService;
         }
         #endregion Constructors
 
         #region Functions public
-        // GET api/tvItemUserAuthorization
-        [Route("")]
-        public IHttpActionResult GetTVItemUserAuthorizationList([FromUri]string lang = "en", [FromUri]int skip = 0, [FromUri]int take = 200,
-            [FromUri]string asc = "", [FromUri]string desc = "", [FromUri]string where = "", [FromUri]string extra = "")
+        [HttpGet]
+        public async Task<ActionResult<List<TVItemUserAuthorization>>> Get()
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                TVItemUserAuthorizationService tvItemUserAuthorizationService = new TVItemUserAuthorizationService(new Query() { Lang = lang }, db, ContactID);
-
-                else // QueryString has no parameter [extra] or extra is empty
-                {
-                   tvItemUserAuthorizationService.Query = tvItemUserAuthorizationService.FillQuery(typeof(TVItemUserAuthorization), lang, skip, take, asc, desc, where, extra);
-
-                    if (tvItemUserAuthorizationService.Query.HasErrors)
-                    {
-                        return Ok(new List<TVItemUserAuthorization>()
-                        {
-                            new TVItemUserAuthorization()
-                            {
-                                HasErrors = tvItemUserAuthorizationService.Query.HasErrors,
-                                ValidationResults = tvItemUserAuthorizationService.Query.ValidationResults,
-                            },
-                        }.ToList());
-                    }
-                    else
-                    {
-                        return Ok(tvItemUserAuthorizationService.GetTVItemUserAuthorizationList().ToList());
-                    }
-                }
-            }
+            return await tvItemUserAuthorizationService.GetTVItemUserAuthorizationList();
         }
-        // GET api/tvItemUserAuthorization/1
-        [Route("{TVItemUserAuthorizationID:int}")]
-        public IHttpActionResult GetTVItemUserAuthorizationWithID([FromUri]int TVItemUserAuthorizationID, [FromUri]string lang = "en", [FromUri]string extra = "")
+        [HttpGet("{TVItemUserAuthorizationID}")]
+        public async Task<ActionResult<TVItemUserAuthorization>> Get(int TVItemUserAuthorizationID)
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                TVItemUserAuthorizationService tvItemUserAuthorizationService = new TVItemUserAuthorizationService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
-
-                tvItemUserAuthorizationService.Query = tvItemUserAuthorizationService.FillQuery(typeof(TVItemUserAuthorization), lang, 0, 1, "", "", extra);
-
-                else
-                {
-                    TVItemUserAuthorization tvItemUserAuthorization = new TVItemUserAuthorization();
-                    tvItemUserAuthorization = tvItemUserAuthorizationService.GetTVItemUserAuthorizationWithTVItemUserAuthorizationID(TVItemUserAuthorizationID);
-
-                    if (tvItemUserAuthorization == null)
-                    {
-                        return NotFound();
-                    }
-
-                    return Ok(tvItemUserAuthorization);
-                }
-            }
+            return await tvItemUserAuthorizationService.GetTVItemUserAuthorizationWithTVItemUserAuthorizationID(TVItemUserAuthorizationID);
         }
-        // POST api/tvItemUserAuthorization
-        [Route("")]
-        public IHttpActionResult Post([FromBody]TVItemUserAuthorization tvItemUserAuthorization, [FromUri]string lang = "en")
+        [HttpPost]
+        public async Task<ActionResult<TVItemUserAuthorization>> Post(TVItemUserAuthorization tvItemUserAuthorization)
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                TVItemUserAuthorizationService tvItemUserAuthorizationService = new TVItemUserAuthorizationService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
-
-                if (!tvItemUserAuthorizationService.Add(tvItemUserAuthorization))
-                {
-                    return BadRequest(String.Join("|||", tvItemUserAuthorization.ValidationResults));
-                }
-                else
-                {
-                    tvItemUserAuthorization.ValidationResults = null;
-                    return Created<TVItemUserAuthorization>(new Uri(Request.RequestUri, tvItemUserAuthorization.TVItemUserAuthorizationID.ToString()), tvItemUserAuthorization);
-                }
-            }
+            return await tvItemUserAuthorizationService.Add(tvItemUserAuthorization);
         }
-        // PUT api/tvItemUserAuthorization
-        [Route("")]
-        public IHttpActionResult Put([FromBody]TVItemUserAuthorization tvItemUserAuthorization, [FromUri]string lang = "en")
+        [HttpPut]
+        public async Task<ActionResult<TVItemUserAuthorization>> Put(TVItemUserAuthorization tvItemUserAuthorization)
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                TVItemUserAuthorizationService tvItemUserAuthorizationService = new TVItemUserAuthorizationService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
-
-                if (!tvItemUserAuthorizationService.Update(tvItemUserAuthorization))
-                {
-                    return BadRequest(String.Join("|||", tvItemUserAuthorization.ValidationResults));
-                }
-                else
-                {
-                    tvItemUserAuthorization.ValidationResults = null;
-                    return Ok(tvItemUserAuthorization);
-                }
-            }
+            return await tvItemUserAuthorizationService.Update(tvItemUserAuthorization);
         }
-        // DELETE api/tvItemUserAuthorization
-        [Route("")]
-        public IHttpActionResult Delete([FromBody]TVItemUserAuthorization tvItemUserAuthorization, [FromUri]string lang = "en")
+        [HttpDelete]
+        public async Task<ActionResult<TVItemUserAuthorization>> Delete(TVItemUserAuthorization tvItemUserAuthorization)
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                TVItemUserAuthorizationService tvItemUserAuthorizationService = new TVItemUserAuthorizationService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
-
-                if (!tvItemUserAuthorizationService.Delete(tvItemUserAuthorization))
-                {
-                    return BadRequest(String.Join("|||", tvItemUserAuthorization.ValidationResults));
-                }
-                else
-                {
-                    tvItemUserAuthorization.ValidationResults = null;
-                    return Ok(tvItemUserAuthorization);
-                }
-            }
+            return await tvItemUserAuthorizationService.Delete(tvItemUserAuthorization);
         }
         #endregion Functions public
 

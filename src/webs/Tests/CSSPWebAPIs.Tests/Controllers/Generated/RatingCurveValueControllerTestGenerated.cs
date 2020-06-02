@@ -2,350 +2,157 @@ using CSSPEnums;
 using CSSPModels;
 using CSSPServices;
 using CSSPWebAPI.Controllers;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using LoggedInServices.Services;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using System;
 using System.Collections.Generic;
+using System.Globalization;
+using System.IO;
 using System.Linq;
-using System.Web.Http;
-using System.Web.Http.Results;
+using System.Threading.Tasks;
+using System.Transactions;
+using UserServices.Models;
+using Xunit;
 
-namespace CSSPWebAPI.Tests.Controllers
+namespace CSSPWebAPIs.Tests.Controllers
 {
-    [TestClass]
-    public partial class RatingCurveValueControllerTest : BaseControllerTest
+    public partial class RatingCurveValueControllerTest
     {
         #region Variables
         #endregion Variables
 
         #region Properties
+        private IConfiguration Config { get; set; }
+        private IServiceProvider Provider { get; set; }
+        private IServiceCollection Services { get; set; }
+        private CSSPDBContext db { get; set; }
+        private ILoggedInService loggedInService { get; set; }
+        private IRatingCurveValueService ratingCurveValueService { get; set; }
+        private IRatingCurveValueController ratingCurveValueController { get; set; }
         #endregion Properties
 
         #region Constructors
-        public RatingCurveValueControllerTest() : base()
+        public RatingCurveValueControllerTest()
         {
         }
         #endregion Constructors
 
-        #region Tests Generated for Class Controller GetList Command
-        [TestMethod]
-        public void RatingCurveValue_Controller_GetRatingCurveValueList_Test()
+        #region Functions public
+        [Theory]
+        [InlineData("en-CA")]
+        [InlineData("fr-CA")]
+        public async Task RatingCurveValueController_Constructor_Good_Test(string culture)
         {
-            foreach (LanguageEnum LanguageRequest in AllowableLanguages)
+            bool retBool = await Setup(new CultureInfo(culture));
+            Assert.True(retBool);
+            Assert.NotNull(loggedInService);
+            Assert.NotNull(ratingCurveValueService);
+            Assert.NotNull(ratingCurveValueController);
+        }
+        [Theory]
+        [InlineData("en-CA")]
+        [InlineData("fr-CA")]
+        public async Task RatingCurveValueController_CRUD_Good_Test(string culture)
+        {
+            bool retBool = await Setup(new CultureInfo(culture));
+            Assert.True(retBool);
+
+            using (TransactionScope ts = new TransactionScope())
             {
-                foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
-                {
-                    RatingCurveValueController ratingCurveValueController = new RatingCurveValueController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(ratingCurveValueController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, ratingCurveValueController.DatabaseType);
+                // testing Get
+               var actionRatingCurveValueList = await ratingCurveValueController.Get();
+               Assert.Equal(200, ((ObjectResult)actionRatingCurveValueList.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionRatingCurveValueList.Result).Value);
+               List<RatingCurveValue> ratingCurveValueList = (List<RatingCurveValue>)(((OkObjectResult)actionRatingCurveValueList.Result).Value);
 
-                    RatingCurveValue ratingCurveValueFirst = new RatingCurveValue();
-                    int count = -1;
-                    Query query = new Query();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseTypeEnum.SqlServerTestDB))
-                    {
-                        RatingCurveValueService ratingCurveValueService = new RatingCurveValueService(query, db, ContactID);
-                        ratingCurveValueFirst = (from c in db.RatingCurveValues select c).FirstOrDefault();
-                        count = (from c in db.RatingCurveValues select c).Count();
-                        count = (query.Take > count ? count : query.Take);
-                    }
+               int count = ((List<RatingCurveValue>)((OkObjectResult)actionRatingCurveValueList.Result).Value).Count();
+                Assert.True(count > 0);
 
-                    // ok with RatingCurveValue info
-                    IHttpActionResult jsonRet = ratingCurveValueController.GetRatingCurveValueList();
-                    Assert.IsNotNull(jsonRet);
+               // testing Get(RatingCurveValueID)
+               var actionRatingCurveValue = await ratingCurveValueController.Get(ratingCurveValueList[0].RatingCurveValueID);
+               Assert.Equal(200, ((ObjectResult)actionRatingCurveValue.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionRatingCurveValue.Result).Value);
+               RatingCurveValue ratingCurveValue = (RatingCurveValue)(((OkObjectResult)actionRatingCurveValue.Result).Value);
+               Assert.NotNull(ratingCurveValue);
+               Assert.Equal(ratingCurveValueList[0].RatingCurveValueID, ratingCurveValue.RatingCurveValueID);
 
-                    OkNegotiatedContentResult<List<RatingCurveValue>> ret = jsonRet as OkNegotiatedContentResult<List<RatingCurveValue>>;
-                    Assert.AreEqual(ratingCurveValueFirst.RatingCurveValueID, ret.Content[0].RatingCurveValueID);
-                    Assert.AreEqual((count > query.Take ? query.Take : count), ret.Content.Count);
+               // testing Post(RatingCurveValue ratingCurveValue)
+               ratingCurveValue.RatingCurveValueID = 0;
+               var actionRatingCurveValueNew = await ratingCurveValueController.Post(ratingCurveValue);
+               Assert.Equal(200, ((ObjectResult)actionRatingCurveValueNew.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionRatingCurveValueNew.Result).Value);
+               RatingCurveValue ratingCurveValueNew = (RatingCurveValue)(((OkObjectResult)actionRatingCurveValueNew.Result).Value);
+               Assert.NotNull(ratingCurveValueNew);
 
-                    List<RatingCurveValue> ratingCurveValueList = new List<RatingCurveValue>();
-                    count = -1;
-                    query = new Query();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseTypeEnum.SqlServerTestDB))
-                    {
-                        RatingCurveValueService ratingCurveValueService = new RatingCurveValueService(query, db, ContactID);
-                        ratingCurveValueList = (from c in db.RatingCurveValues select c).OrderBy(c => c.RatingCurveValueID).Skip(0).Take(2).ToList();
-                        count = (from c in db.RatingCurveValues select c).Count();
-                    }
+               // testing Put(RatingCurveValue ratingCurveValue)
+               var actionRatingCurveValueUpdate = await ratingCurveValueController.Put(ratingCurveValueNew);
+               Assert.Equal(200, ((ObjectResult)actionRatingCurveValueUpdate.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionRatingCurveValueUpdate.Result).Value);
+               RatingCurveValue ratingCurveValueUpdate = (RatingCurveValue)(((OkObjectResult)actionRatingCurveValueUpdate.Result).Value);
+               Assert.NotNull(ratingCurveValueUpdate);
 
-                    if (count > 0)
-                    {
-                        query.Skip = 0;
-                        query.Take = 5;
-                        count = (query.Take > count ? query.Take : count);
-
-                        // ok with RatingCurveValue info
-                        jsonRet = ratingCurveValueController.GetRatingCurveValueList(query.Language.ToString(), query.Skip, query.Take);
-                        Assert.IsNotNull(jsonRet);
-
-                        ret = jsonRet as OkNegotiatedContentResult<List<RatingCurveValue>>;
-                        Assert.AreEqual(ratingCurveValueList[0].RatingCurveValueID, ret.Content[0].RatingCurveValueID);
-                        Assert.AreEqual((count > query.Take ? query.Take : count), ret.Content.Count);
-
-                       if (count > 1)
-                       {
-                           query.Skip = 1;
-                           query.Take = 5;
-                           count = (query.Take > count ? query.Take : count);
-
-                           // ok with RatingCurveValue info
-                           IHttpActionResult jsonRet2 = ratingCurveValueController.GetRatingCurveValueList(query.Language.ToString(), query.Skip, query.Take);
-                           Assert.IsNotNull(jsonRet2);
-
-                           OkNegotiatedContentResult<List<RatingCurveValue>> ret2 = jsonRet2 as OkNegotiatedContentResult<List<RatingCurveValue>>;
-                           Assert.AreEqual(ratingCurveValueList[1].RatingCurveValueID, ret2.Content[0].RatingCurveValueID);
-                           Assert.AreEqual((count > query.Take ? query.Take : count), ret2.Content.Count);
-                       }
-                    }
-                }
+               // testing Delete(RatingCurveValue ratingCurveValue)
+               var actionRatingCurveValueDelete = await ratingCurveValueController.Delete(ratingCurveValueUpdate);
+               Assert.Equal(200, ((ObjectResult)actionRatingCurveValueDelete.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionRatingCurveValueDelete.Result).Value);
+               RatingCurveValue ratingCurveValueDelete = (RatingCurveValue)(((OkObjectResult)actionRatingCurveValueDelete.Result).Value);
+               Assert.NotNull(ratingCurveValueDelete);
             }
         }
-        #endregion Tests Generated for Class Controller GetList Command
+        #endregion Functions public
 
-        #region Tests Generated for Class Controller GetWithID Command
-        [TestMethod]
-        public void RatingCurveValue_Controller_GetRatingCurveValueWithID_Test()
+        #region Functions private
+        private async Task<bool> Setup(CultureInfo culture)
         {
-            foreach (LanguageEnum LanguageRequest in AllowableLanguages)
+            Config = new ConfigurationBuilder()
+               .SetBasePath(Directory.GetParent(AppContext.BaseDirectory).FullName)
+               .AddJsonFile("appsettings.json")
+               .Build();
+        
+            Services = new ServiceCollection();
+        
+            IConfigurationSection connectionStringsSection = Config.GetSection("ConnectionStrings");
+            Services.Configure<ConnectionStringsModel>(connectionStringsSection);
+        
+            ConnectionStringsModel connectionStrings = connectionStringsSection.Get<ConnectionStringsModel>();
+        
+            Services.AddSingleton<IConfiguration>(Config);
+        
+            Services.AddDbContext<CSSPDBContext>(options =>
             {
-                foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
-                {
-                    RatingCurveValueController ratingCurveValueController = new RatingCurveValueController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(ratingCurveValueController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, ratingCurveValueController.DatabaseType);
-
-                    RatingCurveValue ratingCurveValueFirst = new RatingCurveValue();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-                    {
-                        RatingCurveValueService ratingCurveValueService = new RatingCurveValueService(new Query(), db, ContactID);
-                        ratingCurveValueFirst = (from c in db.RatingCurveValues select c).FirstOrDefault();
-                    }
-
-                    // ok with RatingCurveValue info
-                    IHttpActionResult jsonRet = ratingCurveValueController.GetRatingCurveValueWithID(ratingCurveValueFirst.RatingCurveValueID);
-                    Assert.IsNotNull(jsonRet);
-
-                    OkNegotiatedContentResult<RatingCurveValue> Ret = jsonRet as OkNegotiatedContentResult<RatingCurveValue>;
-                    RatingCurveValue ratingCurveValueRet = Ret.Content;
-                    Assert.AreEqual(ratingCurveValueFirst.RatingCurveValueID, ratingCurveValueRet.RatingCurveValueID);
-
-                    BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
-
-                    // Not Found
-                    IHttpActionResult jsonRet2 = ratingCurveValueController.GetRatingCurveValueWithID(0);
-                    Assert.IsNotNull(jsonRet2);
-
-                    OkNegotiatedContentResult<RatingCurveValue> ratingCurveValueRet2 = jsonRet2 as OkNegotiatedContentResult<RatingCurveValue>;
-                    Assert.IsNull(ratingCurveValueRet2);
-
-                    NotFoundResult notFoundRequest = jsonRet2 as NotFoundResult;
-                    Assert.IsNotNull(notFoundRequest);
-                }
-            }
+                options.UseSqlServer(connectionStrings.TestDB);
+            });
+        
+            Services.AddDbContext<ApplicationDbContext>(options =>
+                options.UseSqlServer(connectionStrings.TestDB));
+        
+            Services.AddIdentityCore<ApplicationUser>()
+                .AddEntityFrameworkStores<ApplicationDbContext>();
+        
+            Services.AddSingleton<IEnums, Enums>();
+            Services.AddSingleton<ILoggedInService, LoggedInService>();
+            Services.AddSingleton<IRatingCurveValueService, RatingCurveValueService>();
+            Services.AddSingleton<IRatingCurveValueController, RatingCurveValueController>();
+        
+            Provider = Services.BuildServiceProvider();
+            Assert.NotNull(Provider);
+        
+            loggedInService = Provider.GetService<ILoggedInService>();
+            Assert.NotNull(loggedInService);
+        
+            ratingCurveValueService = Provider.GetService<IRatingCurveValueService>();
+            Assert.NotNull(ratingCurveValueService);
+        
+            await ratingCurveValueService.SetCulture(culture);
+        
+            ratingCurveValueController = Provider.GetService<IRatingCurveValueController>();
+            Assert.NotNull(ratingCurveValueController);
+        
+            return await Task.FromResult(true);
         }
-        #endregion Tests Generated for Class Controller GetWithID Command
-
-        #region Tests Generated for Class Controller Post Command
-        [TestMethod]
-        public void RatingCurveValue_Controller_Post_Test()
-        {
-            foreach (LanguageEnum LanguageRequest in AllowableLanguages)
-            {
-                foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
-                {
-                    RatingCurveValueController ratingCurveValueController = new RatingCurveValueController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(ratingCurveValueController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, ratingCurveValueController.DatabaseType);
-
-                    RatingCurveValue ratingCurveValueLast = new RatingCurveValue();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-                    {
-                        Query query = new Query();
-                        query.Language = LanguageRequest;
-                        query.Asc = "";
-                        query.Desc = "";
-
-                        RatingCurveValueService ratingCurveValueService = new RatingCurveValueService(query, db, ContactID);
-                        ratingCurveValueLast = (from c in db.RatingCurveValues select c).FirstOrDefault();
-                    }
-
-                    // ok with RatingCurveValue info
-                    IHttpActionResult jsonRet = ratingCurveValueController.GetRatingCurveValueWithID(ratingCurveValueLast.RatingCurveValueID);
-                    Assert.IsNotNull(jsonRet);
-
-                    OkNegotiatedContentResult<RatingCurveValue> Ret = jsonRet as OkNegotiatedContentResult<RatingCurveValue>;
-                    RatingCurveValue ratingCurveValueRet = Ret.Content;
-                    Assert.AreEqual(ratingCurveValueLast.RatingCurveValueID, ratingCurveValueRet.RatingCurveValueID);
-
-                    BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
-
-                    // Post to return CSSPError because RatingCurveValueID exist
-                    IHttpActionResult jsonRet2 = ratingCurveValueController.Post(ratingCurveValueRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet2);
-
-                    OkNegotiatedContentResult<RatingCurveValue> ratingCurveValueRet2 = jsonRet2 as OkNegotiatedContentResult<RatingCurveValue>;
-                    Assert.IsNull(ratingCurveValueRet2);
-
-                    BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
-                    Assert.IsNotNull(badRequest2);
-
-                    // Post to return newly added RatingCurveValue
-                    ratingCurveValueRet.RatingCurveValueID = 0;
-                    ratingCurveValueController.Request = new System.Net.Http.HttpRequestMessage();
-                    ratingCurveValueController.Request.RequestUri = new System.Uri("http://localhost:5000/api/ratingCurveValue");
-                    IHttpActionResult jsonRet3 = ratingCurveValueController.Post(ratingCurveValueRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet3);
-
-                    CreatedNegotiatedContentResult<RatingCurveValue> ratingCurveValueRet3 = jsonRet3 as CreatedNegotiatedContentResult<RatingCurveValue>;
-                    Assert.IsNotNull(ratingCurveValueRet3);
-
-                    BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest3);
-
-                    IHttpActionResult jsonRet4 = ratingCurveValueController.Delete(ratingCurveValueRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet4);
-
-                    OkNegotiatedContentResult<RatingCurveValue> ratingCurveValueRet4 = jsonRet4 as OkNegotiatedContentResult<RatingCurveValue>;
-                    Assert.IsNotNull(ratingCurveValueRet4);
-
-                    BadRequestErrorMessageResult badRequest4 = jsonRet4 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest4);
-                }
-            }
-        }
-        #endregion Tests Generated for Class Controller Post Command
-
-        #region Tests Generated for Class Controller Put Command
-        [TestMethod]
-        public void RatingCurveValue_Controller_Put_Test()
-        {
-            foreach (LanguageEnum LanguageRequest in AllowableLanguages)
-            {
-                foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
-                {
-                    RatingCurveValueController ratingCurveValueController = new RatingCurveValueController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(ratingCurveValueController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, ratingCurveValueController.DatabaseType);
-
-                    RatingCurveValue ratingCurveValueLast = new RatingCurveValue();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-                    {
-                        Query query = new Query();
-                        query.Language = LanguageRequest;
-
-                        RatingCurveValueService ratingCurveValueService = new RatingCurveValueService(query, db, ContactID);
-                        ratingCurveValueLast = (from c in db.RatingCurveValues select c).FirstOrDefault();
-                    }
-
-                    // ok with RatingCurveValue info
-                    IHttpActionResult jsonRet = ratingCurveValueController.GetRatingCurveValueWithID(ratingCurveValueLast.RatingCurveValueID);
-                    Assert.IsNotNull(jsonRet);
-
-                    OkNegotiatedContentResult<RatingCurveValue> Ret = jsonRet as OkNegotiatedContentResult<RatingCurveValue>;
-                    RatingCurveValue ratingCurveValueRet = Ret.Content;
-                    Assert.AreEqual(ratingCurveValueLast.RatingCurveValueID, ratingCurveValueRet.RatingCurveValueID);
-
-                    BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
-
-                    // Put to return success
-                    IHttpActionResult jsonRet2 = ratingCurveValueController.Put(ratingCurveValueRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet2);
-
-                    OkNegotiatedContentResult<RatingCurveValue> ratingCurveValueRet2 = jsonRet2 as OkNegotiatedContentResult<RatingCurveValue>;
-                    Assert.IsNotNull(ratingCurveValueRet2);
-
-                    BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest2);
-
-                    // Put to return CSSPError because RatingCurveValueID of 0 does not exist
-                    ratingCurveValueRet.RatingCurveValueID = 0;
-                    IHttpActionResult jsonRet3 = ratingCurveValueController.Put(ratingCurveValueRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet3);
-
-                    OkNegotiatedContentResult<RatingCurveValue> ratingCurveValueRet3 = jsonRet3 as OkNegotiatedContentResult<RatingCurveValue>;
-                    Assert.IsNull(ratingCurveValueRet3);
-
-                    BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
-                    Assert.IsNotNull(badRequest3);
-                }
-            }
-        }
-        #endregion Tests Generated for Class Controller Put Command
-
-        #region Tests Generated for Class Controller Delete Command
-        [TestMethod]
-        public void RatingCurveValue_Controller_Delete_Test()
-        {
-            foreach (LanguageEnum LanguageRequest in AllowableLanguages)
-            {
-                foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
-                {
-                    RatingCurveValueController ratingCurveValueController = new RatingCurveValueController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(ratingCurveValueController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, ratingCurveValueController.DatabaseType);
-
-                    RatingCurveValue ratingCurveValueLast = new RatingCurveValue();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-                    {
-                        Query query = new Query();
-                        query.Language = LanguageRequest;
-                        query.Asc = "";
-                        query.Desc = "";
-
-                        RatingCurveValueService ratingCurveValueService = new RatingCurveValueService(query, db, ContactID);
-                        ratingCurveValueLast = (from c in db.RatingCurveValues select c).FirstOrDefault();
-                    }
-
-                    // ok with RatingCurveValue info
-                    IHttpActionResult jsonRet = ratingCurveValueController.GetRatingCurveValueWithID(ratingCurveValueLast.RatingCurveValueID);
-                    Assert.IsNotNull(jsonRet);
-
-                    OkNegotiatedContentResult<RatingCurveValue> Ret = jsonRet as OkNegotiatedContentResult<RatingCurveValue>;
-                    RatingCurveValue ratingCurveValueRet = Ret.Content;
-                    Assert.AreEqual(ratingCurveValueLast.RatingCurveValueID, ratingCurveValueRet.RatingCurveValueID);
-
-                    BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
-
-                    // Post to return newly added RatingCurveValue
-                    ratingCurveValueRet.RatingCurveValueID = 0;
-                    ratingCurveValueController.Request = new System.Net.Http.HttpRequestMessage();
-                    ratingCurveValueController.Request.RequestUri = new System.Uri("http://localhost:5000/api/ratingCurveValue");
-                    IHttpActionResult jsonRet3 = ratingCurveValueController.Post(ratingCurveValueRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet3);
-
-                    CreatedNegotiatedContentResult<RatingCurveValue> ratingCurveValueRet3 = jsonRet3 as CreatedNegotiatedContentResult<RatingCurveValue>;
-                    Assert.IsNotNull(ratingCurveValueRet3);
-                    RatingCurveValue ratingCurveValue = ratingCurveValueRet3.Content;
-
-                    BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest3);
-
-                    // Delete to return success
-                    IHttpActionResult jsonRet2 = ratingCurveValueController.Delete(ratingCurveValueRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet2);
-
-                    OkNegotiatedContentResult<RatingCurveValue> ratingCurveValueRet2 = jsonRet2 as OkNegotiatedContentResult<RatingCurveValue>;
-                    Assert.IsNotNull(ratingCurveValueRet2);
-
-                    BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest2);
-
-                    // Delete to return CSSPError because RatingCurveValueID of 0 does not exist
-                    ratingCurveValueRet.RatingCurveValueID = 0;
-                    IHttpActionResult jsonRet4 = ratingCurveValueController.Delete(ratingCurveValueRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet4);
-
-                    OkNegotiatedContentResult<RatingCurveValue> ratingCurveValueRet4 = jsonRet4 as OkNegotiatedContentResult<RatingCurveValue>;
-                    Assert.IsNull(ratingCurveValueRet4);
-
-                    BadRequestErrorMessageResult badRequest4 = jsonRet4 as BadRequestErrorMessageResult;
-                    Assert.IsNotNull(badRequest4);
-                }
-            }
-        }
-        #endregion Tests Generated for Class Controller Delete Command
-
+        #endregion Functions private
     }
 }

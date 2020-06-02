@@ -1,143 +1,70 @@
-using CSSPEnums;
 using CSSPModels;
 using CSSPServices;
-using System;
+using LoggedInServices.Services;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web.Http;
+using System.Threading.Tasks;
 
 namespace CSSPWebAPI.Controllers
 {
-    [RoutePrefix("api/polSourceSite")]
-    public partial class PolSourceSiteController : BaseController
+    public partial interface IPolSourceSiteController
+    {
+        Task<ActionResult<List<PolSourceSite>>> Get();
+        Task<ActionResult<PolSourceSite>> Get(int PolSourceSiteID);
+        Task<ActionResult<PolSourceSite>> Post(PolSourceSite polSourceSite);
+        Task<ActionResult<PolSourceSite>> Put(PolSourceSite polSourceSite);
+        Task<ActionResult<PolSourceSite>> Delete(PolSourceSite polSourceSite);
+    }
+
+    [Route("api/{culture}/[controller]")]
+    [ApiController]
+    [Authorize]
+    public partial class PolSourceSiteController : ControllerBase, IPolSourceSiteController
     {
         #region Variables
         #endregion Variables
 
         #region Properties
+        private IPolSourceSiteService polSourceSiteService { get; }
+        private CSSPDBContext db { get; }
+        private ILoggedInService loggedInService { get; }
         #endregion Properties
 
         #region Constructors
-        public PolSourceSiteController() : base()
+        public PolSourceSiteController(IPolSourceSiteService polSourceSiteService, CSSPDBContext db, ILoggedInService loggedInService)
         {
-        }
-        public PolSourceSiteController(DatabaseTypeEnum dbt = DatabaseTypeEnum.SqlServerTestDB) : base(dbt)
-        {
+            this.polSourceSiteService = polSourceSiteService;
+            this.db = db;
+            this.loggedInService = loggedInService;
         }
         #endregion Constructors
 
         #region Functions public
-        // GET api/polSourceSite
-        [Route("")]
-        public IHttpActionResult GetPolSourceSiteList([FromUri]string lang = "en", [FromUri]int skip = 0, [FromUri]int take = 200,
-            [FromUri]string asc = "", [FromUri]string desc = "", [FromUri]string where = "", [FromUri]string extra = "")
+        [HttpGet]
+        public async Task<ActionResult<List<PolSourceSite>>> Get()
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                PolSourceSiteService polSourceSiteService = new PolSourceSiteService(new Query() { Lang = lang }, db, ContactID);
-
-                else // QueryString has no parameter [extra] or extra is empty
-                {
-                   polSourceSiteService.Query = polSourceSiteService.FillQuery(typeof(PolSourceSite), lang, skip, take, asc, desc, where, extra);
-
-                    if (polSourceSiteService.Query.HasErrors)
-                    {
-                        return Ok(new List<PolSourceSite>()
-                        {
-                            new PolSourceSite()
-                            {
-                                HasErrors = polSourceSiteService.Query.HasErrors,
-                                ValidationResults = polSourceSiteService.Query.ValidationResults,
-                            },
-                        }.ToList());
-                    }
-                    else
-                    {
-                        return Ok(polSourceSiteService.GetPolSourceSiteList().ToList());
-                    }
-                }
-            }
+            return await polSourceSiteService.GetPolSourceSiteList();
         }
-        // GET api/polSourceSite/1
-        [Route("{PolSourceSiteID:int}")]
-        public IHttpActionResult GetPolSourceSiteWithID([FromUri]int PolSourceSiteID, [FromUri]string lang = "en", [FromUri]string extra = "")
+        [HttpGet("{PolSourceSiteID}")]
+        public async Task<ActionResult<PolSourceSite>> Get(int PolSourceSiteID)
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                PolSourceSiteService polSourceSiteService = new PolSourceSiteService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
-
-                polSourceSiteService.Query = polSourceSiteService.FillQuery(typeof(PolSourceSite), lang, 0, 1, "", "", extra);
-
-                else
-                {
-                    PolSourceSite polSourceSite = new PolSourceSite();
-                    polSourceSite = polSourceSiteService.GetPolSourceSiteWithPolSourceSiteID(PolSourceSiteID);
-
-                    if (polSourceSite == null)
-                    {
-                        return NotFound();
-                    }
-
-                    return Ok(polSourceSite);
-                }
-            }
+            return await polSourceSiteService.GetPolSourceSiteWithPolSourceSiteID(PolSourceSiteID);
         }
-        // POST api/polSourceSite
-        [Route("")]
-        public IHttpActionResult Post([FromBody]PolSourceSite polSourceSite, [FromUri]string lang = "en")
+        [HttpPost]
+        public async Task<ActionResult<PolSourceSite>> Post(PolSourceSite polSourceSite)
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                PolSourceSiteService polSourceSiteService = new PolSourceSiteService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
-
-                if (!polSourceSiteService.Add(polSourceSite))
-                {
-                    return BadRequest(String.Join("|||", polSourceSite.ValidationResults));
-                }
-                else
-                {
-                    polSourceSite.ValidationResults = null;
-                    return Created<PolSourceSite>(new Uri(Request.RequestUri, polSourceSite.PolSourceSiteID.ToString()), polSourceSite);
-                }
-            }
+            return await polSourceSiteService.Add(polSourceSite);
         }
-        // PUT api/polSourceSite
-        [Route("")]
-        public IHttpActionResult Put([FromBody]PolSourceSite polSourceSite, [FromUri]string lang = "en")
+        [HttpPut]
+        public async Task<ActionResult<PolSourceSite>> Put(PolSourceSite polSourceSite)
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                PolSourceSiteService polSourceSiteService = new PolSourceSiteService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
-
-                if (!polSourceSiteService.Update(polSourceSite))
-                {
-                    return BadRequest(String.Join("|||", polSourceSite.ValidationResults));
-                }
-                else
-                {
-                    polSourceSite.ValidationResults = null;
-                    return Ok(polSourceSite);
-                }
-            }
+            return await polSourceSiteService.Update(polSourceSite);
         }
-        // DELETE api/polSourceSite
-        [Route("")]
-        public IHttpActionResult Delete([FromBody]PolSourceSite polSourceSite, [FromUri]string lang = "en")
+        [HttpDelete]
+        public async Task<ActionResult<PolSourceSite>> Delete(PolSourceSite polSourceSite)
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                PolSourceSiteService polSourceSiteService = new PolSourceSiteService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
-
-                if (!polSourceSiteService.Delete(polSourceSite))
-                {
-                    return BadRequest(String.Join("|||", polSourceSite.ValidationResults));
-                }
-                else
-                {
-                    polSourceSite.ValidationResults = null;
-                    return Ok(polSourceSite);
-                }
-            }
+            return await polSourceSiteService.Delete(polSourceSite);
         }
         #endregion Functions public
 

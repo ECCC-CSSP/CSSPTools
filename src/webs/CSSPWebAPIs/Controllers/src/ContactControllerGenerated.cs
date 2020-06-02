@@ -1,143 +1,71 @@
 using CSSPEnums;
 using CSSPModels;
 using CSSPServices;
-using System;
+using LoggedInServices.Services;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web.Http;
+using System.Threading.Tasks;
 
 namespace CSSPWebAPI.Controllers
 {
-    [RoutePrefix("api/contact")]
-    public partial class ContactController : BaseController
+    public partial interface IContactController
+    {
+        Task<ActionResult<List<Contact>>> Get();
+        Task<ActionResult<Contact>> Get(int ContactID);
+        Task<ActionResult<Contact>> Post(Contact contact);
+        Task<ActionResult<Contact>> Put(Contact contact);
+        Task<ActionResult<Contact>> Delete(Contact contact);
+    }
+
+    [Route("api/{culture}/[controller]")]
+    [ApiController]
+    [Authorize]
+    public partial class ContactController : ControllerBase, IContactController
     {
         #region Variables
         #endregion Variables
 
         #region Properties
+        private IContactService contactService { get; }
+        private CSSPDBContext db { get; }
+        private ILoggedInService loggedInService { get; }
         #endregion Properties
 
         #region Constructors
-        public ContactController() : base()
+        public ContactController(IContactService contactService, CSSPDBContext db, ILoggedInService loggedInService)
         {
-        }
-        public ContactController(DatabaseTypeEnum dbt = DatabaseTypeEnum.SqlServerTestDB) : base(dbt)
-        {
+            this.contactService = contactService;
+            this.db = db;
+            this.loggedInService = loggedInService;
         }
         #endregion Constructors
 
         #region Functions public
-        // GET api/contact
-        [Route("")]
-        public IHttpActionResult GetContactList([FromUri]string lang = "en", [FromUri]int skip = 0, [FromUri]int take = 200,
-            [FromUri]string asc = "", [FromUri]string desc = "", [FromUri]string where = "", [FromUri]string extra = "")
+        [HttpGet]
+        public async Task<ActionResult<List<Contact>>> Get()
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                ContactService contactService = new ContactService(new Query() { Lang = lang }, db, ContactID);
-
-                else // QueryString has no parameter [extra] or extra is empty
-                {
-                   contactService.Query = contactService.FillQuery(typeof(Contact), lang, skip, take, asc, desc, where, extra);
-
-                    if (contactService.Query.HasErrors)
-                    {
-                        return Ok(new List<Contact>()
-                        {
-                            new Contact()
-                            {
-                                HasErrors = contactService.Query.HasErrors,
-                                ValidationResults = contactService.Query.ValidationResults,
-                            },
-                        }.ToList());
-                    }
-                    else
-                    {
-                        return Ok(contactService.GetContactList().ToList());
-                    }
-                }
-            }
+            return await contactService.GetContactList();
         }
-        // GET api/contact/1
-        [Route("{ContactID:int}")]
-        public IHttpActionResult GetContactWithID([FromUri]int ContactID, [FromUri]string lang = "en", [FromUri]string extra = "")
+        [HttpGet("{ContactID}")]
+        public async Task<ActionResult<Contact>> Get(int ContactID)
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                ContactService contactService = new ContactService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
-
-                contactService.Query = contactService.FillQuery(typeof(Contact), lang, 0, 1, "", "", extra);
-
-                else
-                {
-                    Contact contact = new Contact();
-                    contact = contactService.GetContactWithContactID(ContactID);
-
-                    if (contact == null)
-                    {
-                        return NotFound();
-                    }
-
-                    return Ok(contact);
-                }
-            }
+            return await contactService.GetContactWithContactID(ContactID);
         }
-        // POST api/contact
-        [Route("")]
-        public IHttpActionResult Post([FromBody]Contact contact, [FromUri]string lang = "en")
+        [HttpPost]
+        public async Task<ActionResult<Contact>> Post(Contact contact)
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                ContactService contactService = new ContactService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
-
-                if (!contactService.Add(contact, AddContactTypeEnum.LoggedIn))
-                {
-                    return BadRequest(String.Join("|||", contact.ValidationResults));
-                }
-                else
-                {
-                    contact.ValidationResults = null;
-                    return Created<Contact>(new Uri(Request.RequestUri, contact.ContactID.ToString()), contact);
-                }
-            }
+            return await contactService.Add(contact, AddContactTypeEnum.Register);
         }
-        // PUT api/contact
-        [Route("")]
-        public IHttpActionResult Put([FromBody]Contact contact, [FromUri]string lang = "en")
+        [HttpPut]
+        public async Task<ActionResult<Contact>> Put(Contact contact)
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                ContactService contactService = new ContactService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
-
-                if (!contactService.Update(contact))
-                {
-                    return BadRequest(String.Join("|||", contact.ValidationResults));
-                }
-                else
-                {
-                    contact.ValidationResults = null;
-                    return Ok(contact);
-                }
-            }
+            return await contactService.Update(contact);
         }
-        // DELETE api/contact
-        [Route("")]
-        public IHttpActionResult Delete([FromBody]Contact contact, [FromUri]string lang = "en")
+        [HttpDelete]
+        public async Task<ActionResult<Contact>> Delete(Contact contact)
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                ContactService contactService = new ContactService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
-
-                if (!contactService.Delete(contact))
-                {
-                    return BadRequest(String.Join("|||", contact.ValidationResults));
-                }
-                else
-                {
-                    contact.ValidationResults = null;
-                    return Ok(contact);
-                }
-            }
+            return await contactService.Delete(contact);
         }
         #endregion Functions public
 

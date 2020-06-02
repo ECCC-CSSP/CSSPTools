@@ -1,143 +1,70 @@
-using CSSPEnums;
 using CSSPModels;
 using CSSPServices;
-using System;
+using LoggedInServices.Services;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web.Http;
+using System.Threading.Tasks;
 
 namespace CSSPWebAPI.Controllers
 {
-    [RoutePrefix("api/hydrometricDataValue")]
-    public partial class HydrometricDataValueController : BaseController
+    public partial interface IHydrometricDataValueController
+    {
+        Task<ActionResult<List<HydrometricDataValue>>> Get();
+        Task<ActionResult<HydrometricDataValue>> Get(int HydrometricDataValueID);
+        Task<ActionResult<HydrometricDataValue>> Post(HydrometricDataValue hydrometricDataValue);
+        Task<ActionResult<HydrometricDataValue>> Put(HydrometricDataValue hydrometricDataValue);
+        Task<ActionResult<HydrometricDataValue>> Delete(HydrometricDataValue hydrometricDataValue);
+    }
+
+    [Route("api/{culture}/[controller]")]
+    [ApiController]
+    [Authorize]
+    public partial class HydrometricDataValueController : ControllerBase, IHydrometricDataValueController
     {
         #region Variables
         #endregion Variables
 
         #region Properties
+        private IHydrometricDataValueService hydrometricDataValueService { get; }
+        private CSSPDBContext db { get; }
+        private ILoggedInService loggedInService { get; }
         #endregion Properties
 
         #region Constructors
-        public HydrometricDataValueController() : base()
+        public HydrometricDataValueController(IHydrometricDataValueService hydrometricDataValueService, CSSPDBContext db, ILoggedInService loggedInService)
         {
-        }
-        public HydrometricDataValueController(DatabaseTypeEnum dbt = DatabaseTypeEnum.SqlServerTestDB) : base(dbt)
-        {
+            this.hydrometricDataValueService = hydrometricDataValueService;
+            this.db = db;
+            this.loggedInService = loggedInService;
         }
         #endregion Constructors
 
         #region Functions public
-        // GET api/hydrometricDataValue
-        [Route("")]
-        public IHttpActionResult GetHydrometricDataValueList([FromUri]string lang = "en", [FromUri]int skip = 0, [FromUri]int take = 200,
-            [FromUri]string asc = "", [FromUri]string desc = "", [FromUri]string where = "", [FromUri]string extra = "")
+        [HttpGet]
+        public async Task<ActionResult<List<HydrometricDataValue>>> Get()
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                HydrometricDataValueService hydrometricDataValueService = new HydrometricDataValueService(new Query() { Lang = lang }, db, ContactID);
-
-                else // QueryString has no parameter [extra] or extra is empty
-                {
-                   hydrometricDataValueService.Query = hydrometricDataValueService.FillQuery(typeof(HydrometricDataValue), lang, skip, take, asc, desc, where, extra);
-
-                    if (hydrometricDataValueService.Query.HasErrors)
-                    {
-                        return Ok(new List<HydrometricDataValue>()
-                        {
-                            new HydrometricDataValue()
-                            {
-                                HasErrors = hydrometricDataValueService.Query.HasErrors,
-                                ValidationResults = hydrometricDataValueService.Query.ValidationResults,
-                            },
-                        }.ToList());
-                    }
-                    else
-                    {
-                        return Ok(hydrometricDataValueService.GetHydrometricDataValueList().ToList());
-                    }
-                }
-            }
+            return await hydrometricDataValueService.GetHydrometricDataValueList();
         }
-        // GET api/hydrometricDataValue/1
-        [Route("{HydrometricDataValueID:int}")]
-        public IHttpActionResult GetHydrometricDataValueWithID([FromUri]int HydrometricDataValueID, [FromUri]string lang = "en", [FromUri]string extra = "")
+        [HttpGet("{HydrometricDataValueID}")]
+        public async Task<ActionResult<HydrometricDataValue>> Get(int HydrometricDataValueID)
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                HydrometricDataValueService hydrometricDataValueService = new HydrometricDataValueService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
-
-                hydrometricDataValueService.Query = hydrometricDataValueService.FillQuery(typeof(HydrometricDataValue), lang, 0, 1, "", "", extra);
-
-                else
-                {
-                    HydrometricDataValue hydrometricDataValue = new HydrometricDataValue();
-                    hydrometricDataValue = hydrometricDataValueService.GetHydrometricDataValueWithHydrometricDataValueID(HydrometricDataValueID);
-
-                    if (hydrometricDataValue == null)
-                    {
-                        return NotFound();
-                    }
-
-                    return Ok(hydrometricDataValue);
-                }
-            }
+            return await hydrometricDataValueService.GetHydrometricDataValueWithHydrometricDataValueID(HydrometricDataValueID);
         }
-        // POST api/hydrometricDataValue
-        [Route("")]
-        public IHttpActionResult Post([FromBody]HydrometricDataValue hydrometricDataValue, [FromUri]string lang = "en")
+        [HttpPost]
+        public async Task<ActionResult<HydrometricDataValue>> Post(HydrometricDataValue hydrometricDataValue)
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                HydrometricDataValueService hydrometricDataValueService = new HydrometricDataValueService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
-
-                if (!hydrometricDataValueService.Add(hydrometricDataValue))
-                {
-                    return BadRequest(String.Join("|||", hydrometricDataValue.ValidationResults));
-                }
-                else
-                {
-                    hydrometricDataValue.ValidationResults = null;
-                    return Created<HydrometricDataValue>(new Uri(Request.RequestUri, hydrometricDataValue.HydrometricDataValueID.ToString()), hydrometricDataValue);
-                }
-            }
+            return await hydrometricDataValueService.Add(hydrometricDataValue);
         }
-        // PUT api/hydrometricDataValue
-        [Route("")]
-        public IHttpActionResult Put([FromBody]HydrometricDataValue hydrometricDataValue, [FromUri]string lang = "en")
+        [HttpPut]
+        public async Task<ActionResult<HydrometricDataValue>> Put(HydrometricDataValue hydrometricDataValue)
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                HydrometricDataValueService hydrometricDataValueService = new HydrometricDataValueService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
-
-                if (!hydrometricDataValueService.Update(hydrometricDataValue))
-                {
-                    return BadRequest(String.Join("|||", hydrometricDataValue.ValidationResults));
-                }
-                else
-                {
-                    hydrometricDataValue.ValidationResults = null;
-                    return Ok(hydrometricDataValue);
-                }
-            }
+            return await hydrometricDataValueService.Update(hydrometricDataValue);
         }
-        // DELETE api/hydrometricDataValue
-        [Route("")]
-        public IHttpActionResult Delete([FromBody]HydrometricDataValue hydrometricDataValue, [FromUri]string lang = "en")
+        [HttpDelete]
+        public async Task<ActionResult<HydrometricDataValue>> Delete(HydrometricDataValue hydrometricDataValue)
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                HydrometricDataValueService hydrometricDataValueService = new HydrometricDataValueService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
-
-                if (!hydrometricDataValueService.Delete(hydrometricDataValue))
-                {
-                    return BadRequest(String.Join("|||", hydrometricDataValue.ValidationResults));
-                }
-                else
-                {
-                    hydrometricDataValue.ValidationResults = null;
-                    return Ok(hydrometricDataValue);
-                }
-            }
+            return await hydrometricDataValueService.Delete(hydrometricDataValue);
         }
         #endregion Functions public
 

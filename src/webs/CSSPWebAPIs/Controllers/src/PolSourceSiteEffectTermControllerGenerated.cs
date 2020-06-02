@@ -1,143 +1,70 @@
-using CSSPEnums;
 using CSSPModels;
 using CSSPServices;
-using System;
+using LoggedInServices.Services;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web.Http;
+using System.Threading.Tasks;
 
 namespace CSSPWebAPI.Controllers
 {
-    [RoutePrefix("api/polSourceSiteEffectTerm")]
-    public partial class PolSourceSiteEffectTermController : BaseController
+    public partial interface IPolSourceSiteEffectTermController
+    {
+        Task<ActionResult<List<PolSourceSiteEffectTerm>>> Get();
+        Task<ActionResult<PolSourceSiteEffectTerm>> Get(int PolSourceSiteEffectTermID);
+        Task<ActionResult<PolSourceSiteEffectTerm>> Post(PolSourceSiteEffectTerm polSourceSiteEffectTerm);
+        Task<ActionResult<PolSourceSiteEffectTerm>> Put(PolSourceSiteEffectTerm polSourceSiteEffectTerm);
+        Task<ActionResult<PolSourceSiteEffectTerm>> Delete(PolSourceSiteEffectTerm polSourceSiteEffectTerm);
+    }
+
+    [Route("api/{culture}/[controller]")]
+    [ApiController]
+    [Authorize]
+    public partial class PolSourceSiteEffectTermController : ControllerBase, IPolSourceSiteEffectTermController
     {
         #region Variables
         #endregion Variables
 
         #region Properties
+        private IPolSourceSiteEffectTermService polSourceSiteEffectTermService { get; }
+        private CSSPDBContext db { get; }
+        private ILoggedInService loggedInService { get; }
         #endregion Properties
 
         #region Constructors
-        public PolSourceSiteEffectTermController() : base()
+        public PolSourceSiteEffectTermController(IPolSourceSiteEffectTermService polSourceSiteEffectTermService, CSSPDBContext db, ILoggedInService loggedInService)
         {
-        }
-        public PolSourceSiteEffectTermController(DatabaseTypeEnum dbt = DatabaseTypeEnum.SqlServerTestDB) : base(dbt)
-        {
+            this.polSourceSiteEffectTermService = polSourceSiteEffectTermService;
+            this.db = db;
+            this.loggedInService = loggedInService;
         }
         #endregion Constructors
 
         #region Functions public
-        // GET api/polSourceSiteEffectTerm
-        [Route("")]
-        public IHttpActionResult GetPolSourceSiteEffectTermList([FromUri]string lang = "en", [FromUri]int skip = 0, [FromUri]int take = 200,
-            [FromUri]string asc = "", [FromUri]string desc = "", [FromUri]string where = "", [FromUri]string extra = "")
+        [HttpGet]
+        public async Task<ActionResult<List<PolSourceSiteEffectTerm>>> Get()
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                PolSourceSiteEffectTermService polSourceSiteEffectTermService = new PolSourceSiteEffectTermService(new Query() { Lang = lang }, db, ContactID);
-
-                else // QueryString has no parameter [extra] or extra is empty
-                {
-                   polSourceSiteEffectTermService.Query = polSourceSiteEffectTermService.FillQuery(typeof(PolSourceSiteEffectTerm), lang, skip, take, asc, desc, where, extra);
-
-                    if (polSourceSiteEffectTermService.Query.HasErrors)
-                    {
-                        return Ok(new List<PolSourceSiteEffectTerm>()
-                        {
-                            new PolSourceSiteEffectTerm()
-                            {
-                                HasErrors = polSourceSiteEffectTermService.Query.HasErrors,
-                                ValidationResults = polSourceSiteEffectTermService.Query.ValidationResults,
-                            },
-                        }.ToList());
-                    }
-                    else
-                    {
-                        return Ok(polSourceSiteEffectTermService.GetPolSourceSiteEffectTermList().ToList());
-                    }
-                }
-            }
+            return await polSourceSiteEffectTermService.GetPolSourceSiteEffectTermList();
         }
-        // GET api/polSourceSiteEffectTerm/1
-        [Route("{PolSourceSiteEffectTermID:int}")]
-        public IHttpActionResult GetPolSourceSiteEffectTermWithID([FromUri]int PolSourceSiteEffectTermID, [FromUri]string lang = "en", [FromUri]string extra = "")
+        [HttpGet("{PolSourceSiteEffectTermID}")]
+        public async Task<ActionResult<PolSourceSiteEffectTerm>> Get(int PolSourceSiteEffectTermID)
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                PolSourceSiteEffectTermService polSourceSiteEffectTermService = new PolSourceSiteEffectTermService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
-
-                polSourceSiteEffectTermService.Query = polSourceSiteEffectTermService.FillQuery(typeof(PolSourceSiteEffectTerm), lang, 0, 1, "", "", extra);
-
-                else
-                {
-                    PolSourceSiteEffectTerm polSourceSiteEffectTerm = new PolSourceSiteEffectTerm();
-                    polSourceSiteEffectTerm = polSourceSiteEffectTermService.GetPolSourceSiteEffectTermWithPolSourceSiteEffectTermID(PolSourceSiteEffectTermID);
-
-                    if (polSourceSiteEffectTerm == null)
-                    {
-                        return NotFound();
-                    }
-
-                    return Ok(polSourceSiteEffectTerm);
-                }
-            }
+            return await polSourceSiteEffectTermService.GetPolSourceSiteEffectTermWithPolSourceSiteEffectTermID(PolSourceSiteEffectTermID);
         }
-        // POST api/polSourceSiteEffectTerm
-        [Route("")]
-        public IHttpActionResult Post([FromBody]PolSourceSiteEffectTerm polSourceSiteEffectTerm, [FromUri]string lang = "en")
+        [HttpPost]
+        public async Task<ActionResult<PolSourceSiteEffectTerm>> Post(PolSourceSiteEffectTerm polSourceSiteEffectTerm)
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                PolSourceSiteEffectTermService polSourceSiteEffectTermService = new PolSourceSiteEffectTermService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
-
-                if (!polSourceSiteEffectTermService.Add(polSourceSiteEffectTerm))
-                {
-                    return BadRequest(String.Join("|||", polSourceSiteEffectTerm.ValidationResults));
-                }
-                else
-                {
-                    polSourceSiteEffectTerm.ValidationResults = null;
-                    return Created<PolSourceSiteEffectTerm>(new Uri(Request.RequestUri, polSourceSiteEffectTerm.PolSourceSiteEffectTermID.ToString()), polSourceSiteEffectTerm);
-                }
-            }
+            return await polSourceSiteEffectTermService.Add(polSourceSiteEffectTerm);
         }
-        // PUT api/polSourceSiteEffectTerm
-        [Route("")]
-        public IHttpActionResult Put([FromBody]PolSourceSiteEffectTerm polSourceSiteEffectTerm, [FromUri]string lang = "en")
+        [HttpPut]
+        public async Task<ActionResult<PolSourceSiteEffectTerm>> Put(PolSourceSiteEffectTerm polSourceSiteEffectTerm)
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                PolSourceSiteEffectTermService polSourceSiteEffectTermService = new PolSourceSiteEffectTermService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
-
-                if (!polSourceSiteEffectTermService.Update(polSourceSiteEffectTerm))
-                {
-                    return BadRequest(String.Join("|||", polSourceSiteEffectTerm.ValidationResults));
-                }
-                else
-                {
-                    polSourceSiteEffectTerm.ValidationResults = null;
-                    return Ok(polSourceSiteEffectTerm);
-                }
-            }
+            return await polSourceSiteEffectTermService.Update(polSourceSiteEffectTerm);
         }
-        // DELETE api/polSourceSiteEffectTerm
-        [Route("")]
-        public IHttpActionResult Delete([FromBody]PolSourceSiteEffectTerm polSourceSiteEffectTerm, [FromUri]string lang = "en")
+        [HttpDelete]
+        public async Task<ActionResult<PolSourceSiteEffectTerm>> Delete(PolSourceSiteEffectTerm polSourceSiteEffectTerm)
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                PolSourceSiteEffectTermService polSourceSiteEffectTermService = new PolSourceSiteEffectTermService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
-
-                if (!polSourceSiteEffectTermService.Delete(polSourceSiteEffectTerm))
-                {
-                    return BadRequest(String.Join("|||", polSourceSiteEffectTerm.ValidationResults));
-                }
-                else
-                {
-                    polSourceSiteEffectTerm.ValidationResults = null;
-                    return Ok(polSourceSiteEffectTerm);
-                }
-            }
+            return await polSourceSiteEffectTermService.Delete(polSourceSiteEffectTerm);
         }
         #endregion Functions public
 

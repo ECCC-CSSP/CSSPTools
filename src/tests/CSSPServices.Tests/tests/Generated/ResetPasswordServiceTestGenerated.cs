@@ -16,6 +16,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Transactions;
 using Xunit;
 
 namespace CSSPServices.Tests
@@ -54,37 +55,40 @@ namespace CSSPServices.Tests
 
             await Setup(new CultureInfo(culture));
 
-            ResetPassword resetPassword = GetFilledRandomResetPassword(""); 
+            using (TransactionScope ts = new TransactionScope())
+            {
+               ResetPassword resetPassword = GetFilledRandomResetPassword(""); 
 
-            // List<ResetPassword>
-            var actionResetPasswordList = await resetPasswordService.GetResetPasswordList();
-            Assert.Equal(200, ((ObjectResult)actionResetPasswordList.Result).StatusCode);
-            Assert.NotNull(((OkObjectResult)actionResetPasswordList.Result).Value);
-            List<ResetPassword> resetPasswordList = (List<ResetPassword>)(((OkObjectResult)actionResetPasswordList.Result).Value);
+               // List<ResetPassword>
+               var actionResetPasswordList = await resetPasswordService.GetResetPasswordList();
+               Assert.Equal(200, ((ObjectResult)actionResetPasswordList.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionResetPasswordList.Result).Value);
+               List<ResetPassword> resetPasswordList = (List<ResetPassword>)(((OkObjectResult)actionResetPasswordList.Result).Value);
 
-            int count = ((List<ResetPassword>)((OkObjectResult)actionResetPasswordList.Result).Value).Count();
-            Assert.True(count > 0);
+               int count = ((List<ResetPassword>)((OkObjectResult)actionResetPasswordList.Result).Value).Count();
+                Assert.True(count > 0);
 
-            // Add ResetPassword
-            var actionResetPasswordAdded = await resetPasswordService.Add(resetPassword);
-            Assert.Equal(200, ((ObjectResult)actionResetPasswordAdded.Result).StatusCode);
-            Assert.NotNull(((OkObjectResult)actionResetPasswordAdded.Result).Value);
-            ResetPassword resetPasswordAdded = (ResetPassword)(((OkObjectResult)actionResetPasswordAdded.Result).Value);
-            Assert.NotNull(resetPasswordAdded);
+               // Add ResetPassword
+               var actionResetPasswordAdded = await resetPasswordService.Add(resetPassword);
+               Assert.Equal(200, ((ObjectResult)actionResetPasswordAdded.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionResetPasswordAdded.Result).Value);
+               ResetPassword resetPasswordAdded = (ResetPassword)(((OkObjectResult)actionResetPasswordAdded.Result).Value);
+               Assert.NotNull(resetPasswordAdded);
 
-            // Update ResetPassword
-            var actionResetPasswordUpdated = await resetPasswordService.Update(resetPassword);
-            Assert.Equal(200, ((ObjectResult)actionResetPasswordUpdated.Result).StatusCode);
-            Assert.NotNull(((OkObjectResult)actionResetPasswordUpdated.Result).Value);
-            ResetPassword resetPasswordUpdated = (ResetPassword)(((OkObjectResult)actionResetPasswordUpdated.Result).Value);
-            Assert.NotNull(resetPasswordUpdated);
+               // Update ResetPassword
+               var actionResetPasswordUpdated = await resetPasswordService.Update(resetPassword);
+               Assert.Equal(200, ((ObjectResult)actionResetPasswordUpdated.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionResetPasswordUpdated.Result).Value);
+               ResetPassword resetPasswordUpdated = (ResetPassword)(((OkObjectResult)actionResetPasswordUpdated.Result).Value);
+               Assert.NotNull(resetPasswordUpdated);
 
-            // Delete ResetPassword
-            var actionResetPasswordDeleted = await resetPasswordService.Delete(resetPassword);
-            Assert.Equal(200, ((ObjectResult)actionResetPasswordDeleted.Result).StatusCode);
-            Assert.NotNull(((OkObjectResult)actionResetPasswordDeleted.Result).Value);
-            ResetPassword resetPasswordDeleted = (ResetPassword)(((OkObjectResult)actionResetPasswordDeleted.Result).Value);
-            Assert.NotNull(resetPasswordDeleted);
+               // Delete ResetPassword
+               var actionResetPasswordDeleted = await resetPasswordService.Delete(resetPassword);
+               Assert.Equal(200, ((ObjectResult)actionResetPasswordDeleted.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionResetPasswordDeleted.Result).Value);
+               ResetPassword resetPasswordDeleted = (ResetPassword)(((OkObjectResult)actionResetPasswordDeleted.Result).Value);
+               Assert.NotNull(resetPasswordDeleted);
+            }
         }
         #endregion Tests Generated CRUD
 

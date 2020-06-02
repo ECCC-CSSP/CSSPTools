@@ -16,6 +16,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Transactions;
 using Xunit;
 
 namespace CSSPServices.Tests
@@ -54,37 +55,40 @@ namespace CSSPServices.Tests
 
             await Setup(new CultureInfo(culture));
 
-            ContactShortcut contactShortcut = GetFilledRandomContactShortcut(""); 
+            using (TransactionScope ts = new TransactionScope())
+            {
+               ContactShortcut contactShortcut = GetFilledRandomContactShortcut(""); 
 
-            // List<ContactShortcut>
-            var actionContactShortcutList = await contactShortcutService.GetContactShortcutList();
-            Assert.Equal(200, ((ObjectResult)actionContactShortcutList.Result).StatusCode);
-            Assert.NotNull(((OkObjectResult)actionContactShortcutList.Result).Value);
-            List<ContactShortcut> contactShortcutList = (List<ContactShortcut>)(((OkObjectResult)actionContactShortcutList.Result).Value);
+               // List<ContactShortcut>
+               var actionContactShortcutList = await contactShortcutService.GetContactShortcutList();
+               Assert.Equal(200, ((ObjectResult)actionContactShortcutList.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionContactShortcutList.Result).Value);
+               List<ContactShortcut> contactShortcutList = (List<ContactShortcut>)(((OkObjectResult)actionContactShortcutList.Result).Value);
 
-            int count = ((List<ContactShortcut>)((OkObjectResult)actionContactShortcutList.Result).Value).Count();
-            Assert.True(count > 0);
+               int count = ((List<ContactShortcut>)((OkObjectResult)actionContactShortcutList.Result).Value).Count();
+                Assert.True(count > 0);
 
-            // Add ContactShortcut
-            var actionContactShortcutAdded = await contactShortcutService.Add(contactShortcut);
-            Assert.Equal(200, ((ObjectResult)actionContactShortcutAdded.Result).StatusCode);
-            Assert.NotNull(((OkObjectResult)actionContactShortcutAdded.Result).Value);
-            ContactShortcut contactShortcutAdded = (ContactShortcut)(((OkObjectResult)actionContactShortcutAdded.Result).Value);
-            Assert.NotNull(contactShortcutAdded);
+               // Add ContactShortcut
+               var actionContactShortcutAdded = await contactShortcutService.Add(contactShortcut);
+               Assert.Equal(200, ((ObjectResult)actionContactShortcutAdded.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionContactShortcutAdded.Result).Value);
+               ContactShortcut contactShortcutAdded = (ContactShortcut)(((OkObjectResult)actionContactShortcutAdded.Result).Value);
+               Assert.NotNull(contactShortcutAdded);
 
-            // Update ContactShortcut
-            var actionContactShortcutUpdated = await contactShortcutService.Update(contactShortcut);
-            Assert.Equal(200, ((ObjectResult)actionContactShortcutUpdated.Result).StatusCode);
-            Assert.NotNull(((OkObjectResult)actionContactShortcutUpdated.Result).Value);
-            ContactShortcut contactShortcutUpdated = (ContactShortcut)(((OkObjectResult)actionContactShortcutUpdated.Result).Value);
-            Assert.NotNull(contactShortcutUpdated);
+               // Update ContactShortcut
+               var actionContactShortcutUpdated = await contactShortcutService.Update(contactShortcut);
+               Assert.Equal(200, ((ObjectResult)actionContactShortcutUpdated.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionContactShortcutUpdated.Result).Value);
+               ContactShortcut contactShortcutUpdated = (ContactShortcut)(((OkObjectResult)actionContactShortcutUpdated.Result).Value);
+               Assert.NotNull(contactShortcutUpdated);
 
-            // Delete ContactShortcut
-            var actionContactShortcutDeleted = await contactShortcutService.Delete(contactShortcut);
-            Assert.Equal(200, ((ObjectResult)actionContactShortcutDeleted.Result).StatusCode);
-            Assert.NotNull(((OkObjectResult)actionContactShortcutDeleted.Result).Value);
-            ContactShortcut contactShortcutDeleted = (ContactShortcut)(((OkObjectResult)actionContactShortcutDeleted.Result).Value);
-            Assert.NotNull(contactShortcutDeleted);
+               // Delete ContactShortcut
+               var actionContactShortcutDeleted = await contactShortcutService.Delete(contactShortcut);
+               Assert.Equal(200, ((ObjectResult)actionContactShortcutDeleted.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionContactShortcutDeleted.Result).Value);
+               ContactShortcut contactShortcutDeleted = (ContactShortcut)(((OkObjectResult)actionContactShortcutDeleted.Result).Value);
+               Assert.NotNull(contactShortcutDeleted);
+            }
         }
         #endregion Tests Generated CRUD
 

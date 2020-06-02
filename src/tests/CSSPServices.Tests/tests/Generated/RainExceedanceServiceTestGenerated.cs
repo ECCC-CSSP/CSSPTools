@@ -16,6 +16,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Transactions;
 using Xunit;
 
 namespace CSSPServices.Tests
@@ -54,37 +55,40 @@ namespace CSSPServices.Tests
 
             await Setup(new CultureInfo(culture));
 
-            RainExceedance rainExceedance = GetFilledRandomRainExceedance(""); 
+            using (TransactionScope ts = new TransactionScope())
+            {
+               RainExceedance rainExceedance = GetFilledRandomRainExceedance(""); 
 
-            // List<RainExceedance>
-            var actionRainExceedanceList = await rainExceedanceService.GetRainExceedanceList();
-            Assert.Equal(200, ((ObjectResult)actionRainExceedanceList.Result).StatusCode);
-            Assert.NotNull(((OkObjectResult)actionRainExceedanceList.Result).Value);
-            List<RainExceedance> rainExceedanceList = (List<RainExceedance>)(((OkObjectResult)actionRainExceedanceList.Result).Value);
+               // List<RainExceedance>
+               var actionRainExceedanceList = await rainExceedanceService.GetRainExceedanceList();
+               Assert.Equal(200, ((ObjectResult)actionRainExceedanceList.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionRainExceedanceList.Result).Value);
+               List<RainExceedance> rainExceedanceList = (List<RainExceedance>)(((OkObjectResult)actionRainExceedanceList.Result).Value);
 
-            int count = ((List<RainExceedance>)((OkObjectResult)actionRainExceedanceList.Result).Value).Count();
-            Assert.True(count > 0);
+               int count = ((List<RainExceedance>)((OkObjectResult)actionRainExceedanceList.Result).Value).Count();
+                Assert.True(count > 0);
 
-            // Add RainExceedance
-            var actionRainExceedanceAdded = await rainExceedanceService.Add(rainExceedance);
-            Assert.Equal(200, ((ObjectResult)actionRainExceedanceAdded.Result).StatusCode);
-            Assert.NotNull(((OkObjectResult)actionRainExceedanceAdded.Result).Value);
-            RainExceedance rainExceedanceAdded = (RainExceedance)(((OkObjectResult)actionRainExceedanceAdded.Result).Value);
-            Assert.NotNull(rainExceedanceAdded);
+               // Add RainExceedance
+               var actionRainExceedanceAdded = await rainExceedanceService.Add(rainExceedance);
+               Assert.Equal(200, ((ObjectResult)actionRainExceedanceAdded.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionRainExceedanceAdded.Result).Value);
+               RainExceedance rainExceedanceAdded = (RainExceedance)(((OkObjectResult)actionRainExceedanceAdded.Result).Value);
+               Assert.NotNull(rainExceedanceAdded);
 
-            // Update RainExceedance
-            var actionRainExceedanceUpdated = await rainExceedanceService.Update(rainExceedance);
-            Assert.Equal(200, ((ObjectResult)actionRainExceedanceUpdated.Result).StatusCode);
-            Assert.NotNull(((OkObjectResult)actionRainExceedanceUpdated.Result).Value);
-            RainExceedance rainExceedanceUpdated = (RainExceedance)(((OkObjectResult)actionRainExceedanceUpdated.Result).Value);
-            Assert.NotNull(rainExceedanceUpdated);
+               // Update RainExceedance
+               var actionRainExceedanceUpdated = await rainExceedanceService.Update(rainExceedance);
+               Assert.Equal(200, ((ObjectResult)actionRainExceedanceUpdated.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionRainExceedanceUpdated.Result).Value);
+               RainExceedance rainExceedanceUpdated = (RainExceedance)(((OkObjectResult)actionRainExceedanceUpdated.Result).Value);
+               Assert.NotNull(rainExceedanceUpdated);
 
-            // Delete RainExceedance
-            var actionRainExceedanceDeleted = await rainExceedanceService.Delete(rainExceedance);
-            Assert.Equal(200, ((ObjectResult)actionRainExceedanceDeleted.Result).StatusCode);
-            Assert.NotNull(((OkObjectResult)actionRainExceedanceDeleted.Result).Value);
-            RainExceedance rainExceedanceDeleted = (RainExceedance)(((OkObjectResult)actionRainExceedanceDeleted.Result).Value);
-            Assert.NotNull(rainExceedanceDeleted);
+               // Delete RainExceedance
+               var actionRainExceedanceDeleted = await rainExceedanceService.Delete(rainExceedance);
+               Assert.Equal(200, ((ObjectResult)actionRainExceedanceDeleted.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionRainExceedanceDeleted.Result).Value);
+               RainExceedance rainExceedanceDeleted = (RainExceedance)(((OkObjectResult)actionRainExceedanceDeleted.Result).Value);
+               Assert.NotNull(rainExceedanceDeleted);
+            }
         }
         #endregion Tests Generated CRUD
 

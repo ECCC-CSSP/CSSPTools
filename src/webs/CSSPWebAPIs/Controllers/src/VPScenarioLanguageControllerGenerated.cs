@@ -1,143 +1,70 @@
-using CSSPEnums;
 using CSSPModels;
 using CSSPServices;
-using System;
+using LoggedInServices.Services;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web.Http;
+using System.Threading.Tasks;
 
 namespace CSSPWebAPI.Controllers
 {
-    [RoutePrefix("api/vpScenarioLanguage")]
-    public partial class VPScenarioLanguageController : BaseController
+    public partial interface IVPScenarioLanguageController
+    {
+        Task<ActionResult<List<VPScenarioLanguage>>> Get();
+        Task<ActionResult<VPScenarioLanguage>> Get(int VPScenarioLanguageID);
+        Task<ActionResult<VPScenarioLanguage>> Post(VPScenarioLanguage vpScenarioLanguage);
+        Task<ActionResult<VPScenarioLanguage>> Put(VPScenarioLanguage vpScenarioLanguage);
+        Task<ActionResult<VPScenarioLanguage>> Delete(VPScenarioLanguage vpScenarioLanguage);
+    }
+
+    [Route("api/{culture}/[controller]")]
+    [ApiController]
+    [Authorize]
+    public partial class VPScenarioLanguageController : ControllerBase, IVPScenarioLanguageController
     {
         #region Variables
         #endregion Variables
 
         #region Properties
+        private IVPScenarioLanguageService vpScenarioLanguageService { get; }
+        private CSSPDBContext db { get; }
+        private ILoggedInService loggedInService { get; }
         #endregion Properties
 
         #region Constructors
-        public VPScenarioLanguageController() : base()
+        public VPScenarioLanguageController(IVPScenarioLanguageService vpScenarioLanguageService, CSSPDBContext db, ILoggedInService loggedInService)
         {
-        }
-        public VPScenarioLanguageController(DatabaseTypeEnum dbt = DatabaseTypeEnum.SqlServerTestDB) : base(dbt)
-        {
+            this.vpScenarioLanguageService = vpScenarioLanguageService;
+            this.db = db;
+            this.loggedInService = loggedInService;
         }
         #endregion Constructors
 
         #region Functions public
-        // GET api/vpScenarioLanguage
-        [Route("")]
-        public IHttpActionResult GetVPScenarioLanguageList([FromUri]string lang = "en", [FromUri]int skip = 0, [FromUri]int take = 200,
-            [FromUri]string asc = "", [FromUri]string desc = "", [FromUri]string where = "", [FromUri]string extra = "")
+        [HttpGet]
+        public async Task<ActionResult<List<VPScenarioLanguage>>> Get()
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                VPScenarioLanguageService vpScenarioLanguageService = new VPScenarioLanguageService(new Query() { Lang = lang }, db, ContactID);
-
-                else // QueryString has no parameter [extra] or extra is empty
-                {
-                   vpScenarioLanguageService.Query = vpScenarioLanguageService.FillQuery(typeof(VPScenarioLanguage), lang, skip, take, asc, desc, where, extra);
-
-                    if (vpScenarioLanguageService.Query.HasErrors)
-                    {
-                        return Ok(new List<VPScenarioLanguage>()
-                        {
-                            new VPScenarioLanguage()
-                            {
-                                HasErrors = vpScenarioLanguageService.Query.HasErrors,
-                                ValidationResults = vpScenarioLanguageService.Query.ValidationResults,
-                            },
-                        }.ToList());
-                    }
-                    else
-                    {
-                        return Ok(vpScenarioLanguageService.GetVPScenarioLanguageList().ToList());
-                    }
-                }
-            }
+            return await vpScenarioLanguageService.GetVPScenarioLanguageList();
         }
-        // GET api/vpScenarioLanguage/1
-        [Route("{VPScenarioLanguageID:int}")]
-        public IHttpActionResult GetVPScenarioLanguageWithID([FromUri]int VPScenarioLanguageID, [FromUri]string lang = "en", [FromUri]string extra = "")
+        [HttpGet("{VPScenarioLanguageID}")]
+        public async Task<ActionResult<VPScenarioLanguage>> Get(int VPScenarioLanguageID)
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                VPScenarioLanguageService vpScenarioLanguageService = new VPScenarioLanguageService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
-
-                vpScenarioLanguageService.Query = vpScenarioLanguageService.FillQuery(typeof(VPScenarioLanguage), lang, 0, 1, "", "", extra);
-
-                else
-                {
-                    VPScenarioLanguage vpScenarioLanguage = new VPScenarioLanguage();
-                    vpScenarioLanguage = vpScenarioLanguageService.GetVPScenarioLanguageWithVPScenarioLanguageID(VPScenarioLanguageID);
-
-                    if (vpScenarioLanguage == null)
-                    {
-                        return NotFound();
-                    }
-
-                    return Ok(vpScenarioLanguage);
-                }
-            }
+            return await vpScenarioLanguageService.GetVPScenarioLanguageWithVPScenarioLanguageID(VPScenarioLanguageID);
         }
-        // POST api/vpScenarioLanguage
-        [Route("")]
-        public IHttpActionResult Post([FromBody]VPScenarioLanguage vpScenarioLanguage, [FromUri]string lang = "en")
+        [HttpPost]
+        public async Task<ActionResult<VPScenarioLanguage>> Post(VPScenarioLanguage vpScenarioLanguage)
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                VPScenarioLanguageService vpScenarioLanguageService = new VPScenarioLanguageService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
-
-                if (!vpScenarioLanguageService.Add(vpScenarioLanguage))
-                {
-                    return BadRequest(String.Join("|||", vpScenarioLanguage.ValidationResults));
-                }
-                else
-                {
-                    vpScenarioLanguage.ValidationResults = null;
-                    return Created<VPScenarioLanguage>(new Uri(Request.RequestUri, vpScenarioLanguage.VPScenarioLanguageID.ToString()), vpScenarioLanguage);
-                }
-            }
+            return await vpScenarioLanguageService.Add(vpScenarioLanguage);
         }
-        // PUT api/vpScenarioLanguage
-        [Route("")]
-        public IHttpActionResult Put([FromBody]VPScenarioLanguage vpScenarioLanguage, [FromUri]string lang = "en")
+        [HttpPut]
+        public async Task<ActionResult<VPScenarioLanguage>> Put(VPScenarioLanguage vpScenarioLanguage)
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                VPScenarioLanguageService vpScenarioLanguageService = new VPScenarioLanguageService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
-
-                if (!vpScenarioLanguageService.Update(vpScenarioLanguage))
-                {
-                    return BadRequest(String.Join("|||", vpScenarioLanguage.ValidationResults));
-                }
-                else
-                {
-                    vpScenarioLanguage.ValidationResults = null;
-                    return Ok(vpScenarioLanguage);
-                }
-            }
+            return await vpScenarioLanguageService.Update(vpScenarioLanguage);
         }
-        // DELETE api/vpScenarioLanguage
-        [Route("")]
-        public IHttpActionResult Delete([FromBody]VPScenarioLanguage vpScenarioLanguage, [FromUri]string lang = "en")
+        [HttpDelete]
+        public async Task<ActionResult<VPScenarioLanguage>> Delete(VPScenarioLanguage vpScenarioLanguage)
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                VPScenarioLanguageService vpScenarioLanguageService = new VPScenarioLanguageService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
-
-                if (!vpScenarioLanguageService.Delete(vpScenarioLanguage))
-                {
-                    return BadRequest(String.Join("|||", vpScenarioLanguage.ValidationResults));
-                }
-                else
-                {
-                    vpScenarioLanguage.ValidationResults = null;
-                    return Ok(vpScenarioLanguage);
-                }
-            }
+            return await vpScenarioLanguageService.Delete(vpScenarioLanguage);
         }
         #endregion Functions public
 

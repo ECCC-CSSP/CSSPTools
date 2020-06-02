@@ -16,6 +16,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Transactions;
 using Xunit;
 
 namespace CSSPServices.Tests
@@ -54,37 +55,40 @@ namespace CSSPServices.Tests
 
             await Setup(new CultureInfo(culture));
 
-            PolSourceGrouping polSourceGrouping = GetFilledRandomPolSourceGrouping(""); 
+            using (TransactionScope ts = new TransactionScope())
+            {
+               PolSourceGrouping polSourceGrouping = GetFilledRandomPolSourceGrouping(""); 
 
-            // List<PolSourceGrouping>
-            var actionPolSourceGroupingList = await polSourceGroupingService.GetPolSourceGroupingList();
-            Assert.Equal(200, ((ObjectResult)actionPolSourceGroupingList.Result).StatusCode);
-            Assert.NotNull(((OkObjectResult)actionPolSourceGroupingList.Result).Value);
-            List<PolSourceGrouping> polSourceGroupingList = (List<PolSourceGrouping>)(((OkObjectResult)actionPolSourceGroupingList.Result).Value);
+               // List<PolSourceGrouping>
+               var actionPolSourceGroupingList = await polSourceGroupingService.GetPolSourceGroupingList();
+               Assert.Equal(200, ((ObjectResult)actionPolSourceGroupingList.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionPolSourceGroupingList.Result).Value);
+               List<PolSourceGrouping> polSourceGroupingList = (List<PolSourceGrouping>)(((OkObjectResult)actionPolSourceGroupingList.Result).Value);
 
-            int count = ((List<PolSourceGrouping>)((OkObjectResult)actionPolSourceGroupingList.Result).Value).Count();
-            Assert.True(count > 0);
+               int count = ((List<PolSourceGrouping>)((OkObjectResult)actionPolSourceGroupingList.Result).Value).Count();
+                Assert.True(count > 0);
 
-            // Add PolSourceGrouping
-            var actionPolSourceGroupingAdded = await polSourceGroupingService.Add(polSourceGrouping);
-            Assert.Equal(200, ((ObjectResult)actionPolSourceGroupingAdded.Result).StatusCode);
-            Assert.NotNull(((OkObjectResult)actionPolSourceGroupingAdded.Result).Value);
-            PolSourceGrouping polSourceGroupingAdded = (PolSourceGrouping)(((OkObjectResult)actionPolSourceGroupingAdded.Result).Value);
-            Assert.NotNull(polSourceGroupingAdded);
+               // Add PolSourceGrouping
+               var actionPolSourceGroupingAdded = await polSourceGroupingService.Add(polSourceGrouping);
+               Assert.Equal(200, ((ObjectResult)actionPolSourceGroupingAdded.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionPolSourceGroupingAdded.Result).Value);
+               PolSourceGrouping polSourceGroupingAdded = (PolSourceGrouping)(((OkObjectResult)actionPolSourceGroupingAdded.Result).Value);
+               Assert.NotNull(polSourceGroupingAdded);
 
-            // Update PolSourceGrouping
-            var actionPolSourceGroupingUpdated = await polSourceGroupingService.Update(polSourceGrouping);
-            Assert.Equal(200, ((ObjectResult)actionPolSourceGroupingUpdated.Result).StatusCode);
-            Assert.NotNull(((OkObjectResult)actionPolSourceGroupingUpdated.Result).Value);
-            PolSourceGrouping polSourceGroupingUpdated = (PolSourceGrouping)(((OkObjectResult)actionPolSourceGroupingUpdated.Result).Value);
-            Assert.NotNull(polSourceGroupingUpdated);
+               // Update PolSourceGrouping
+               var actionPolSourceGroupingUpdated = await polSourceGroupingService.Update(polSourceGrouping);
+               Assert.Equal(200, ((ObjectResult)actionPolSourceGroupingUpdated.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionPolSourceGroupingUpdated.Result).Value);
+               PolSourceGrouping polSourceGroupingUpdated = (PolSourceGrouping)(((OkObjectResult)actionPolSourceGroupingUpdated.Result).Value);
+               Assert.NotNull(polSourceGroupingUpdated);
 
-            // Delete PolSourceGrouping
-            var actionPolSourceGroupingDeleted = await polSourceGroupingService.Delete(polSourceGrouping);
-            Assert.Equal(200, ((ObjectResult)actionPolSourceGroupingDeleted.Result).StatusCode);
-            Assert.NotNull(((OkObjectResult)actionPolSourceGroupingDeleted.Result).Value);
-            PolSourceGrouping polSourceGroupingDeleted = (PolSourceGrouping)(((OkObjectResult)actionPolSourceGroupingDeleted.Result).Value);
-            Assert.NotNull(polSourceGroupingDeleted);
+               // Delete PolSourceGrouping
+               var actionPolSourceGroupingDeleted = await polSourceGroupingService.Delete(polSourceGrouping);
+               Assert.Equal(200, ((ObjectResult)actionPolSourceGroupingDeleted.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionPolSourceGroupingDeleted.Result).Value);
+               PolSourceGrouping polSourceGroupingDeleted = (PolSourceGrouping)(((OkObjectResult)actionPolSourceGroupingDeleted.Result).Value);
+               Assert.NotNull(polSourceGroupingDeleted);
+            }
         }
         #endregion Tests Generated CRUD
 

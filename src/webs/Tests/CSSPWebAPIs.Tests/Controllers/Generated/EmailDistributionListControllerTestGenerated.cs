@@ -2,350 +2,157 @@ using CSSPEnums;
 using CSSPModels;
 using CSSPServices;
 using CSSPWebAPI.Controllers;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using LoggedInServices.Services;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using System;
 using System.Collections.Generic;
+using System.Globalization;
+using System.IO;
 using System.Linq;
-using System.Web.Http;
-using System.Web.Http.Results;
+using System.Threading.Tasks;
+using System.Transactions;
+using UserServices.Models;
+using Xunit;
 
-namespace CSSPWebAPI.Tests.Controllers
+namespace CSSPWebAPIs.Tests.Controllers
 {
-    [TestClass]
-    public partial class EmailDistributionListControllerTest : BaseControllerTest
+    public partial class EmailDistributionListControllerTest
     {
         #region Variables
         #endregion Variables
 
         #region Properties
+        private IConfiguration Config { get; set; }
+        private IServiceProvider Provider { get; set; }
+        private IServiceCollection Services { get; set; }
+        private CSSPDBContext db { get; set; }
+        private ILoggedInService loggedInService { get; set; }
+        private IEmailDistributionListService emailDistributionListService { get; set; }
+        private IEmailDistributionListController emailDistributionListController { get; set; }
         #endregion Properties
 
         #region Constructors
-        public EmailDistributionListControllerTest() : base()
+        public EmailDistributionListControllerTest()
         {
         }
         #endregion Constructors
 
-        #region Tests Generated for Class Controller GetList Command
-        [TestMethod]
-        public void EmailDistributionList_Controller_GetEmailDistributionListList_Test()
+        #region Functions public
+        [Theory]
+        [InlineData("en-CA")]
+        [InlineData("fr-CA")]
+        public async Task EmailDistributionListController_Constructor_Good_Test(string culture)
         {
-            foreach (LanguageEnum LanguageRequest in AllowableLanguages)
+            bool retBool = await Setup(new CultureInfo(culture));
+            Assert.True(retBool);
+            Assert.NotNull(loggedInService);
+            Assert.NotNull(emailDistributionListService);
+            Assert.NotNull(emailDistributionListController);
+        }
+        [Theory]
+        [InlineData("en-CA")]
+        [InlineData("fr-CA")]
+        public async Task EmailDistributionListController_CRUD_Good_Test(string culture)
+        {
+            bool retBool = await Setup(new CultureInfo(culture));
+            Assert.True(retBool);
+
+            using (TransactionScope ts = new TransactionScope())
             {
-                foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
-                {
-                    EmailDistributionListController emailDistributionListController = new EmailDistributionListController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(emailDistributionListController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, emailDistributionListController.DatabaseType);
+                // testing Get
+               var actionEmailDistributionListList = await emailDistributionListController.Get();
+               Assert.Equal(200, ((ObjectResult)actionEmailDistributionListList.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionEmailDistributionListList.Result).Value);
+               List<EmailDistributionList> emailDistributionListList = (List<EmailDistributionList>)(((OkObjectResult)actionEmailDistributionListList.Result).Value);
 
-                    EmailDistributionList emailDistributionListFirst = new EmailDistributionList();
-                    int count = -1;
-                    Query query = new Query();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseTypeEnum.SqlServerTestDB))
-                    {
-                        EmailDistributionListService emailDistributionListService = new EmailDistributionListService(query, db, ContactID);
-                        emailDistributionListFirst = (from c in db.EmailDistributionLists select c).FirstOrDefault();
-                        count = (from c in db.EmailDistributionLists select c).Count();
-                        count = (query.Take > count ? count : query.Take);
-                    }
+               int count = ((List<EmailDistributionList>)((OkObjectResult)actionEmailDistributionListList.Result).Value).Count();
+                Assert.True(count > 0);
 
-                    // ok with EmailDistributionList info
-                    IHttpActionResult jsonRet = emailDistributionListController.GetEmailDistributionListList();
-                    Assert.IsNotNull(jsonRet);
+               // testing Get(EmailDistributionListID)
+               var actionEmailDistributionList = await emailDistributionListController.Get(emailDistributionListList[0].EmailDistributionListID);
+               Assert.Equal(200, ((ObjectResult)actionEmailDistributionList.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionEmailDistributionList.Result).Value);
+               EmailDistributionList emailDistributionList = (EmailDistributionList)(((OkObjectResult)actionEmailDistributionList.Result).Value);
+               Assert.NotNull(emailDistributionList);
+               Assert.Equal(emailDistributionListList[0].EmailDistributionListID, emailDistributionList.EmailDistributionListID);
 
-                    OkNegotiatedContentResult<List<EmailDistributionList>> ret = jsonRet as OkNegotiatedContentResult<List<EmailDistributionList>>;
-                    Assert.AreEqual(emailDistributionListFirst.EmailDistributionListID, ret.Content[0].EmailDistributionListID);
-                    Assert.AreEqual((count > query.Take ? query.Take : count), ret.Content.Count);
+               // testing Post(EmailDistributionList emailDistributionList)
+               emailDistributionList.EmailDistributionListID = 0;
+               var actionEmailDistributionListNew = await emailDistributionListController.Post(emailDistributionList);
+               Assert.Equal(200, ((ObjectResult)actionEmailDistributionListNew.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionEmailDistributionListNew.Result).Value);
+               EmailDistributionList emailDistributionListNew = (EmailDistributionList)(((OkObjectResult)actionEmailDistributionListNew.Result).Value);
+               Assert.NotNull(emailDistributionListNew);
 
-                    List<EmailDistributionList> emailDistributionListList = new List<EmailDistributionList>();
-                    count = -1;
-                    query = new Query();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseTypeEnum.SqlServerTestDB))
-                    {
-                        EmailDistributionListService emailDistributionListService = new EmailDistributionListService(query, db, ContactID);
-                        emailDistributionListList = (from c in db.EmailDistributionLists select c).OrderBy(c => c.EmailDistributionListID).Skip(0).Take(2).ToList();
-                        count = (from c in db.EmailDistributionLists select c).Count();
-                    }
+               // testing Put(EmailDistributionList emailDistributionList)
+               var actionEmailDistributionListUpdate = await emailDistributionListController.Put(emailDistributionListNew);
+               Assert.Equal(200, ((ObjectResult)actionEmailDistributionListUpdate.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionEmailDistributionListUpdate.Result).Value);
+               EmailDistributionList emailDistributionListUpdate = (EmailDistributionList)(((OkObjectResult)actionEmailDistributionListUpdate.Result).Value);
+               Assert.NotNull(emailDistributionListUpdate);
 
-                    if (count > 0)
-                    {
-                        query.Skip = 0;
-                        query.Take = 5;
-                        count = (query.Take > count ? query.Take : count);
-
-                        // ok with EmailDistributionList info
-                        jsonRet = emailDistributionListController.GetEmailDistributionListList(query.Language.ToString(), query.Skip, query.Take);
-                        Assert.IsNotNull(jsonRet);
-
-                        ret = jsonRet as OkNegotiatedContentResult<List<EmailDistributionList>>;
-                        Assert.AreEqual(emailDistributionListList[0].EmailDistributionListID, ret.Content[0].EmailDistributionListID);
-                        Assert.AreEqual((count > query.Take ? query.Take : count), ret.Content.Count);
-
-                       if (count > 1)
-                       {
-                           query.Skip = 1;
-                           query.Take = 5;
-                           count = (query.Take > count ? query.Take : count);
-
-                           // ok with EmailDistributionList info
-                           IHttpActionResult jsonRet2 = emailDistributionListController.GetEmailDistributionListList(query.Language.ToString(), query.Skip, query.Take);
-                           Assert.IsNotNull(jsonRet2);
-
-                           OkNegotiatedContentResult<List<EmailDistributionList>> ret2 = jsonRet2 as OkNegotiatedContentResult<List<EmailDistributionList>>;
-                           Assert.AreEqual(emailDistributionListList[1].EmailDistributionListID, ret2.Content[0].EmailDistributionListID);
-                           Assert.AreEqual((count > query.Take ? query.Take : count), ret2.Content.Count);
-                       }
-                    }
-                }
+               // testing Delete(EmailDistributionList emailDistributionList)
+               var actionEmailDistributionListDelete = await emailDistributionListController.Delete(emailDistributionListUpdate);
+               Assert.Equal(200, ((ObjectResult)actionEmailDistributionListDelete.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionEmailDistributionListDelete.Result).Value);
+               EmailDistributionList emailDistributionListDelete = (EmailDistributionList)(((OkObjectResult)actionEmailDistributionListDelete.Result).Value);
+               Assert.NotNull(emailDistributionListDelete);
             }
         }
-        #endregion Tests Generated for Class Controller GetList Command
+        #endregion Functions public
 
-        #region Tests Generated for Class Controller GetWithID Command
-        [TestMethod]
-        public void EmailDistributionList_Controller_GetEmailDistributionListWithID_Test()
+        #region Functions private
+        private async Task<bool> Setup(CultureInfo culture)
         {
-            foreach (LanguageEnum LanguageRequest in AllowableLanguages)
+            Config = new ConfigurationBuilder()
+               .SetBasePath(Directory.GetParent(AppContext.BaseDirectory).FullName)
+               .AddJsonFile("appsettings.json")
+               .Build();
+        
+            Services = new ServiceCollection();
+        
+            IConfigurationSection connectionStringsSection = Config.GetSection("ConnectionStrings");
+            Services.Configure<ConnectionStringsModel>(connectionStringsSection);
+        
+            ConnectionStringsModel connectionStrings = connectionStringsSection.Get<ConnectionStringsModel>();
+        
+            Services.AddSingleton<IConfiguration>(Config);
+        
+            Services.AddDbContext<CSSPDBContext>(options =>
             {
-                foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
-                {
-                    EmailDistributionListController emailDistributionListController = new EmailDistributionListController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(emailDistributionListController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, emailDistributionListController.DatabaseType);
-
-                    EmailDistributionList emailDistributionListFirst = new EmailDistributionList();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-                    {
-                        EmailDistributionListService emailDistributionListService = new EmailDistributionListService(new Query(), db, ContactID);
-                        emailDistributionListFirst = (from c in db.EmailDistributionLists select c).FirstOrDefault();
-                    }
-
-                    // ok with EmailDistributionList info
-                    IHttpActionResult jsonRet = emailDistributionListController.GetEmailDistributionListWithID(emailDistributionListFirst.EmailDistributionListID);
-                    Assert.IsNotNull(jsonRet);
-
-                    OkNegotiatedContentResult<EmailDistributionList> Ret = jsonRet as OkNegotiatedContentResult<EmailDistributionList>;
-                    EmailDistributionList emailDistributionListRet = Ret.Content;
-                    Assert.AreEqual(emailDistributionListFirst.EmailDistributionListID, emailDistributionListRet.EmailDistributionListID);
-
-                    BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
-
-                    // Not Found
-                    IHttpActionResult jsonRet2 = emailDistributionListController.GetEmailDistributionListWithID(0);
-                    Assert.IsNotNull(jsonRet2);
-
-                    OkNegotiatedContentResult<EmailDistributionList> emailDistributionListRet2 = jsonRet2 as OkNegotiatedContentResult<EmailDistributionList>;
-                    Assert.IsNull(emailDistributionListRet2);
-
-                    NotFoundResult notFoundRequest = jsonRet2 as NotFoundResult;
-                    Assert.IsNotNull(notFoundRequest);
-                }
-            }
+                options.UseSqlServer(connectionStrings.TestDB);
+            });
+        
+            Services.AddDbContext<ApplicationDbContext>(options =>
+                options.UseSqlServer(connectionStrings.TestDB));
+        
+            Services.AddIdentityCore<ApplicationUser>()
+                .AddEntityFrameworkStores<ApplicationDbContext>();
+        
+            Services.AddSingleton<IEnums, Enums>();
+            Services.AddSingleton<ILoggedInService, LoggedInService>();
+            Services.AddSingleton<IEmailDistributionListService, EmailDistributionListService>();
+            Services.AddSingleton<IEmailDistributionListController, EmailDistributionListController>();
+        
+            Provider = Services.BuildServiceProvider();
+            Assert.NotNull(Provider);
+        
+            loggedInService = Provider.GetService<ILoggedInService>();
+            Assert.NotNull(loggedInService);
+        
+            emailDistributionListService = Provider.GetService<IEmailDistributionListService>();
+            Assert.NotNull(emailDistributionListService);
+        
+            await emailDistributionListService.SetCulture(culture);
+        
+            emailDistributionListController = Provider.GetService<IEmailDistributionListController>();
+            Assert.NotNull(emailDistributionListController);
+        
+            return await Task.FromResult(true);
         }
-        #endregion Tests Generated for Class Controller GetWithID Command
-
-        #region Tests Generated for Class Controller Post Command
-        [TestMethod]
-        public void EmailDistributionList_Controller_Post_Test()
-        {
-            foreach (LanguageEnum LanguageRequest in AllowableLanguages)
-            {
-                foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
-                {
-                    EmailDistributionListController emailDistributionListController = new EmailDistributionListController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(emailDistributionListController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, emailDistributionListController.DatabaseType);
-
-                    EmailDistributionList emailDistributionListLast = new EmailDistributionList();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-                    {
-                        Query query = new Query();
-                        query.Language = LanguageRequest;
-                        query.Asc = "";
-                        query.Desc = "";
-
-                        EmailDistributionListService emailDistributionListService = new EmailDistributionListService(query, db, ContactID);
-                        emailDistributionListLast = (from c in db.EmailDistributionLists select c).FirstOrDefault();
-                    }
-
-                    // ok with EmailDistributionList info
-                    IHttpActionResult jsonRet = emailDistributionListController.GetEmailDistributionListWithID(emailDistributionListLast.EmailDistributionListID);
-                    Assert.IsNotNull(jsonRet);
-
-                    OkNegotiatedContentResult<EmailDistributionList> Ret = jsonRet as OkNegotiatedContentResult<EmailDistributionList>;
-                    EmailDistributionList emailDistributionListRet = Ret.Content;
-                    Assert.AreEqual(emailDistributionListLast.EmailDistributionListID, emailDistributionListRet.EmailDistributionListID);
-
-                    BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
-
-                    // Post to return CSSPError because EmailDistributionListID exist
-                    IHttpActionResult jsonRet2 = emailDistributionListController.Post(emailDistributionListRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet2);
-
-                    OkNegotiatedContentResult<EmailDistributionList> emailDistributionListRet2 = jsonRet2 as OkNegotiatedContentResult<EmailDistributionList>;
-                    Assert.IsNull(emailDistributionListRet2);
-
-                    BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
-                    Assert.IsNotNull(badRequest2);
-
-                    // Post to return newly added EmailDistributionList
-                    emailDistributionListRet.EmailDistributionListID = 0;
-                    emailDistributionListController.Request = new System.Net.Http.HttpRequestMessage();
-                    emailDistributionListController.Request.RequestUri = new System.Uri("http://localhost:5000/api/emailDistributionList");
-                    IHttpActionResult jsonRet3 = emailDistributionListController.Post(emailDistributionListRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet3);
-
-                    CreatedNegotiatedContentResult<EmailDistributionList> emailDistributionListRet3 = jsonRet3 as CreatedNegotiatedContentResult<EmailDistributionList>;
-                    Assert.IsNotNull(emailDistributionListRet3);
-
-                    BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest3);
-
-                    IHttpActionResult jsonRet4 = emailDistributionListController.Delete(emailDistributionListRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet4);
-
-                    OkNegotiatedContentResult<EmailDistributionList> emailDistributionListRet4 = jsonRet4 as OkNegotiatedContentResult<EmailDistributionList>;
-                    Assert.IsNotNull(emailDistributionListRet4);
-
-                    BadRequestErrorMessageResult badRequest4 = jsonRet4 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest4);
-                }
-            }
-        }
-        #endregion Tests Generated for Class Controller Post Command
-
-        #region Tests Generated for Class Controller Put Command
-        [TestMethod]
-        public void EmailDistributionList_Controller_Put_Test()
-        {
-            foreach (LanguageEnum LanguageRequest in AllowableLanguages)
-            {
-                foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
-                {
-                    EmailDistributionListController emailDistributionListController = new EmailDistributionListController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(emailDistributionListController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, emailDistributionListController.DatabaseType);
-
-                    EmailDistributionList emailDistributionListLast = new EmailDistributionList();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-                    {
-                        Query query = new Query();
-                        query.Language = LanguageRequest;
-
-                        EmailDistributionListService emailDistributionListService = new EmailDistributionListService(query, db, ContactID);
-                        emailDistributionListLast = (from c in db.EmailDistributionLists select c).FirstOrDefault();
-                    }
-
-                    // ok with EmailDistributionList info
-                    IHttpActionResult jsonRet = emailDistributionListController.GetEmailDistributionListWithID(emailDistributionListLast.EmailDistributionListID);
-                    Assert.IsNotNull(jsonRet);
-
-                    OkNegotiatedContentResult<EmailDistributionList> Ret = jsonRet as OkNegotiatedContentResult<EmailDistributionList>;
-                    EmailDistributionList emailDistributionListRet = Ret.Content;
-                    Assert.AreEqual(emailDistributionListLast.EmailDistributionListID, emailDistributionListRet.EmailDistributionListID);
-
-                    BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
-
-                    // Put to return success
-                    IHttpActionResult jsonRet2 = emailDistributionListController.Put(emailDistributionListRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet2);
-
-                    OkNegotiatedContentResult<EmailDistributionList> emailDistributionListRet2 = jsonRet2 as OkNegotiatedContentResult<EmailDistributionList>;
-                    Assert.IsNotNull(emailDistributionListRet2);
-
-                    BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest2);
-
-                    // Put to return CSSPError because EmailDistributionListID of 0 does not exist
-                    emailDistributionListRet.EmailDistributionListID = 0;
-                    IHttpActionResult jsonRet3 = emailDistributionListController.Put(emailDistributionListRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet3);
-
-                    OkNegotiatedContentResult<EmailDistributionList> emailDistributionListRet3 = jsonRet3 as OkNegotiatedContentResult<EmailDistributionList>;
-                    Assert.IsNull(emailDistributionListRet3);
-
-                    BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
-                    Assert.IsNotNull(badRequest3);
-                }
-            }
-        }
-        #endregion Tests Generated for Class Controller Put Command
-
-        #region Tests Generated for Class Controller Delete Command
-        [TestMethod]
-        public void EmailDistributionList_Controller_Delete_Test()
-        {
-            foreach (LanguageEnum LanguageRequest in AllowableLanguages)
-            {
-                foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
-                {
-                    EmailDistributionListController emailDistributionListController = new EmailDistributionListController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(emailDistributionListController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, emailDistributionListController.DatabaseType);
-
-                    EmailDistributionList emailDistributionListLast = new EmailDistributionList();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-                    {
-                        Query query = new Query();
-                        query.Language = LanguageRequest;
-                        query.Asc = "";
-                        query.Desc = "";
-
-                        EmailDistributionListService emailDistributionListService = new EmailDistributionListService(query, db, ContactID);
-                        emailDistributionListLast = (from c in db.EmailDistributionLists select c).FirstOrDefault();
-                    }
-
-                    // ok with EmailDistributionList info
-                    IHttpActionResult jsonRet = emailDistributionListController.GetEmailDistributionListWithID(emailDistributionListLast.EmailDistributionListID);
-                    Assert.IsNotNull(jsonRet);
-
-                    OkNegotiatedContentResult<EmailDistributionList> Ret = jsonRet as OkNegotiatedContentResult<EmailDistributionList>;
-                    EmailDistributionList emailDistributionListRet = Ret.Content;
-                    Assert.AreEqual(emailDistributionListLast.EmailDistributionListID, emailDistributionListRet.EmailDistributionListID);
-
-                    BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
-
-                    // Post to return newly added EmailDistributionList
-                    emailDistributionListRet.EmailDistributionListID = 0;
-                    emailDistributionListController.Request = new System.Net.Http.HttpRequestMessage();
-                    emailDistributionListController.Request.RequestUri = new System.Uri("http://localhost:5000/api/emailDistributionList");
-                    IHttpActionResult jsonRet3 = emailDistributionListController.Post(emailDistributionListRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet3);
-
-                    CreatedNegotiatedContentResult<EmailDistributionList> emailDistributionListRet3 = jsonRet3 as CreatedNegotiatedContentResult<EmailDistributionList>;
-                    Assert.IsNotNull(emailDistributionListRet3);
-                    EmailDistributionList emailDistributionList = emailDistributionListRet3.Content;
-
-                    BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest3);
-
-                    // Delete to return success
-                    IHttpActionResult jsonRet2 = emailDistributionListController.Delete(emailDistributionListRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet2);
-
-                    OkNegotiatedContentResult<EmailDistributionList> emailDistributionListRet2 = jsonRet2 as OkNegotiatedContentResult<EmailDistributionList>;
-                    Assert.IsNotNull(emailDistributionListRet2);
-
-                    BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest2);
-
-                    // Delete to return CSSPError because EmailDistributionListID of 0 does not exist
-                    emailDistributionListRet.EmailDistributionListID = 0;
-                    IHttpActionResult jsonRet4 = emailDistributionListController.Delete(emailDistributionListRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet4);
-
-                    OkNegotiatedContentResult<EmailDistributionList> emailDistributionListRet4 = jsonRet4 as OkNegotiatedContentResult<EmailDistributionList>;
-                    Assert.IsNull(emailDistributionListRet4);
-
-                    BadRequestErrorMessageResult badRequest4 = jsonRet4 as BadRequestErrorMessageResult;
-                    Assert.IsNotNull(badRequest4);
-                }
-            }
-        }
-        #endregion Tests Generated for Class Controller Delete Command
-
+        #endregion Functions private
     }
 }

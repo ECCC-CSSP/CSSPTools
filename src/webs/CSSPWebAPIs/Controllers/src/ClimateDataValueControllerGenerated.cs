@@ -1,143 +1,70 @@
-using CSSPEnums;
 using CSSPModels;
 using CSSPServices;
-using System;
+using LoggedInServices.Services;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web.Http;
+using System.Threading.Tasks;
 
 namespace CSSPWebAPI.Controllers
 {
-    [RoutePrefix("api/climateDataValue")]
-    public partial class ClimateDataValueController : BaseController
+    public partial interface IClimateDataValueController
+    {
+        Task<ActionResult<List<ClimateDataValue>>> Get();
+        Task<ActionResult<ClimateDataValue>> Get(int ClimateDataValueID);
+        Task<ActionResult<ClimateDataValue>> Post(ClimateDataValue climateDataValue);
+        Task<ActionResult<ClimateDataValue>> Put(ClimateDataValue climateDataValue);
+        Task<ActionResult<ClimateDataValue>> Delete(ClimateDataValue climateDataValue);
+    }
+
+    [Route("api/{culture}/[controller]")]
+    [ApiController]
+    [Authorize]
+    public partial class ClimateDataValueController : ControllerBase, IClimateDataValueController
     {
         #region Variables
         #endregion Variables
 
         #region Properties
+        private IClimateDataValueService climateDataValueService { get; }
+        private CSSPDBContext db { get; }
+        private ILoggedInService loggedInService { get; }
         #endregion Properties
 
         #region Constructors
-        public ClimateDataValueController() : base()
+        public ClimateDataValueController(IClimateDataValueService climateDataValueService, CSSPDBContext db, ILoggedInService loggedInService)
         {
-        }
-        public ClimateDataValueController(DatabaseTypeEnum dbt = DatabaseTypeEnum.SqlServerTestDB) : base(dbt)
-        {
+            this.climateDataValueService = climateDataValueService;
+            this.db = db;
+            this.loggedInService = loggedInService;
         }
         #endregion Constructors
 
         #region Functions public
-        // GET api/climateDataValue
-        [Route("")]
-        public IHttpActionResult GetClimateDataValueList([FromUri]string lang = "en", [FromUri]int skip = 0, [FromUri]int take = 200,
-            [FromUri]string asc = "", [FromUri]string desc = "", [FromUri]string where = "", [FromUri]string extra = "")
+        [HttpGet]
+        public async Task<ActionResult<List<ClimateDataValue>>> Get()
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                ClimateDataValueService climateDataValueService = new ClimateDataValueService(new Query() { Lang = lang }, db, ContactID);
-
-                else // QueryString has no parameter [extra] or extra is empty
-                {
-                   climateDataValueService.Query = climateDataValueService.FillQuery(typeof(ClimateDataValue), lang, skip, take, asc, desc, where, extra);
-
-                    if (climateDataValueService.Query.HasErrors)
-                    {
-                        return Ok(new List<ClimateDataValue>()
-                        {
-                            new ClimateDataValue()
-                            {
-                                HasErrors = climateDataValueService.Query.HasErrors,
-                                ValidationResults = climateDataValueService.Query.ValidationResults,
-                            },
-                        }.ToList());
-                    }
-                    else
-                    {
-                        return Ok(climateDataValueService.GetClimateDataValueList().ToList());
-                    }
-                }
-            }
+            return await climateDataValueService.GetClimateDataValueList();
         }
-        // GET api/climateDataValue/1
-        [Route("{ClimateDataValueID:int}")]
-        public IHttpActionResult GetClimateDataValueWithID([FromUri]int ClimateDataValueID, [FromUri]string lang = "en", [FromUri]string extra = "")
+        [HttpGet("{ClimateDataValueID}")]
+        public async Task<ActionResult<ClimateDataValue>> Get(int ClimateDataValueID)
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                ClimateDataValueService climateDataValueService = new ClimateDataValueService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
-
-                climateDataValueService.Query = climateDataValueService.FillQuery(typeof(ClimateDataValue), lang, 0, 1, "", "", extra);
-
-                else
-                {
-                    ClimateDataValue climateDataValue = new ClimateDataValue();
-                    climateDataValue = climateDataValueService.GetClimateDataValueWithClimateDataValueID(ClimateDataValueID);
-
-                    if (climateDataValue == null)
-                    {
-                        return NotFound();
-                    }
-
-                    return Ok(climateDataValue);
-                }
-            }
+            return await climateDataValueService.GetClimateDataValueWithClimateDataValueID(ClimateDataValueID);
         }
-        // POST api/climateDataValue
-        [Route("")]
-        public IHttpActionResult Post([FromBody]ClimateDataValue climateDataValue, [FromUri]string lang = "en")
+        [HttpPost]
+        public async Task<ActionResult<ClimateDataValue>> Post(ClimateDataValue climateDataValue)
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                ClimateDataValueService climateDataValueService = new ClimateDataValueService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
-
-                if (!climateDataValueService.Add(climateDataValue))
-                {
-                    return BadRequest(String.Join("|||", climateDataValue.ValidationResults));
-                }
-                else
-                {
-                    climateDataValue.ValidationResults = null;
-                    return Created<ClimateDataValue>(new Uri(Request.RequestUri, climateDataValue.ClimateDataValueID.ToString()), climateDataValue);
-                }
-            }
+            return await climateDataValueService.Add(climateDataValue);
         }
-        // PUT api/climateDataValue
-        [Route("")]
-        public IHttpActionResult Put([FromBody]ClimateDataValue climateDataValue, [FromUri]string lang = "en")
+        [HttpPut]
+        public async Task<ActionResult<ClimateDataValue>> Put(ClimateDataValue climateDataValue)
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                ClimateDataValueService climateDataValueService = new ClimateDataValueService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
-
-                if (!climateDataValueService.Update(climateDataValue))
-                {
-                    return BadRequest(String.Join("|||", climateDataValue.ValidationResults));
-                }
-                else
-                {
-                    climateDataValue.ValidationResults = null;
-                    return Ok(climateDataValue);
-                }
-            }
+            return await climateDataValueService.Update(climateDataValue);
         }
-        // DELETE api/climateDataValue
-        [Route("")]
-        public IHttpActionResult Delete([FromBody]ClimateDataValue climateDataValue, [FromUri]string lang = "en")
+        [HttpDelete]
+        public async Task<ActionResult<ClimateDataValue>> Delete(ClimateDataValue climateDataValue)
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                ClimateDataValueService climateDataValueService = new ClimateDataValueService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
-
-                if (!climateDataValueService.Delete(climateDataValue))
-                {
-                    return BadRequest(String.Join("|||", climateDataValue.ValidationResults));
-                }
-                else
-                {
-                    climateDataValue.ValidationResults = null;
-                    return Ok(climateDataValue);
-                }
-            }
+            return await climateDataValueService.Delete(climateDataValue);
         }
         #endregion Functions public
 

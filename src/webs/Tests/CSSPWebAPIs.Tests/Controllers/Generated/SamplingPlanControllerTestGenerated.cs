@@ -2,352 +2,158 @@ using CSSPEnums;
 using CSSPModels;
 using CSSPServices;
 using CSSPWebAPI.Controllers;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using LoggedInServices.Services;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using System;
 using System.Collections.Generic;
+using System.Globalization;
+using System.IO;
 using System.Linq;
-using System.Web.Http;
-using System.Web.Http.Results;
+using System.Threading.Tasks;
+using System.Transactions;
+using UserServices.Models;
+using Xunit;
 
-namespace CSSPWebAPI.Tests.Controllers
+namespace CSSPWebAPIs.Tests.Controllers
 {
-    [TestClass]
-    public partial class SamplingPlanControllerTest : BaseControllerTest
+    public partial class SamplingPlanControllerTest
     {
         #region Variables
         #endregion Variables
 
         #region Properties
+        private IConfiguration Config { get; set; }
+        private IServiceProvider Provider { get; set; }
+        private IServiceCollection Services { get; set; }
+        private CSSPDBContext db { get; set; }
+        private ILoggedInService loggedInService { get; set; }
+        private ISamplingPlanService samplingPlanService { get; set; }
+        private ISamplingPlanController samplingPlanController { get; set; }
         #endregion Properties
 
         #region Constructors
-        public SamplingPlanControllerTest() : base()
+        public SamplingPlanControllerTest()
         {
         }
         #endregion Constructors
 
-        #region Tests Generated for Class Controller GetList Command
-        [TestMethod]
-        public void SamplingPlan_Controller_GetSamplingPlanList_Test()
+        #region Functions public
+        [Theory]
+        [InlineData("en-CA")]
+        [InlineData("fr-CA")]
+        public async Task SamplingPlanController_Constructor_Good_Test(string culture)
         {
-            foreach (LanguageEnum LanguageRequest in AllowableLanguages)
+            bool retBool = await Setup(new CultureInfo(culture));
+            Assert.True(retBool);
+            Assert.NotNull(loggedInService);
+            Assert.NotNull(samplingPlanService);
+            Assert.NotNull(samplingPlanController);
+        }
+        [Theory]
+        [InlineData("en-CA")]
+        [InlineData("fr-CA")]
+        public async Task SamplingPlanController_CRUD_Good_Test(string culture)
+        {
+            bool retBool = await Setup(new CultureInfo(culture));
+            Assert.True(retBool);
+
+            using (TransactionScope ts = new TransactionScope())
             {
-                foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
-                {
-                    SamplingPlanController samplingPlanController = new SamplingPlanController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(samplingPlanController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, samplingPlanController.DatabaseType);
+                // testing Get
+               var actionSamplingPlanList = await samplingPlanController.Get();
+               Assert.Equal(200, ((ObjectResult)actionSamplingPlanList.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionSamplingPlanList.Result).Value);
+               List<SamplingPlan> samplingPlanList = (List<SamplingPlan>)(((OkObjectResult)actionSamplingPlanList.Result).Value);
 
-                    SamplingPlan samplingPlanFirst = new SamplingPlan();
-                    int count = -1;
-                    Query query = new Query();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseTypeEnum.SqlServerTestDB))
-                    {
-                        SamplingPlanService samplingPlanService = new SamplingPlanService(query, db, ContactID);
-                        samplingPlanFirst = (from c in db.SamplingPlans select c).FirstOrDefault();
-                        count = (from c in db.SamplingPlans select c).Count();
-                        count = (query.Take > count ? count : query.Take);
-                    }
+               int count = ((List<SamplingPlan>)((OkObjectResult)actionSamplingPlanList.Result).Value).Count();
+                Assert.True(count > 0);
 
-                    // ok with SamplingPlan info
-                    IHttpActionResult jsonRet = samplingPlanController.GetSamplingPlanList();
-                    Assert.IsNotNull(jsonRet);
+               // testing Get(SamplingPlanID)
+               var actionSamplingPlan = await samplingPlanController.Get(samplingPlanList[0].SamplingPlanID);
+               Assert.Equal(200, ((ObjectResult)actionSamplingPlan.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionSamplingPlan.Result).Value);
+               SamplingPlan samplingPlan = (SamplingPlan)(((OkObjectResult)actionSamplingPlan.Result).Value);
+               Assert.NotNull(samplingPlan);
+               Assert.Equal(samplingPlanList[0].SamplingPlanID, samplingPlan.SamplingPlanID);
 
-                    OkNegotiatedContentResult<List<SamplingPlan>> ret = jsonRet as OkNegotiatedContentResult<List<SamplingPlan>>;
-                    Assert.AreEqual(samplingPlanFirst.SamplingPlanID, ret.Content[0].SamplingPlanID);
-                    Assert.AreEqual((count > query.Take ? query.Take : count), ret.Content.Count);
+               // testing Post(SamplingPlan samplingPlan)
+               samplingPlan.SamplingPlanID = 0;
+               samplingPlan.SamplingPlanName = samplingPlan.SamplingPlanName.Replace(samplingPlan.Year.ToString(), (samplingPlan.Year + 20).ToString());
+               var actionSamplingPlanNew = await samplingPlanController.Post(samplingPlan);
+               Assert.Equal(200, ((ObjectResult)actionSamplingPlanNew.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionSamplingPlanNew.Result).Value);
+               SamplingPlan samplingPlanNew = (SamplingPlan)(((OkObjectResult)actionSamplingPlanNew.Result).Value);
+               Assert.NotNull(samplingPlanNew);
 
-                    List<SamplingPlan> samplingPlanList = new List<SamplingPlan>();
-                    count = -1;
-                    query = new Query();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseTypeEnum.SqlServerTestDB))
-                    {
-                        SamplingPlanService samplingPlanService = new SamplingPlanService(query, db, ContactID);
-                        samplingPlanList = (from c in db.SamplingPlans select c).OrderBy(c => c.SamplingPlanID).Skip(0).Take(2).ToList();
-                        count = (from c in db.SamplingPlans select c).Count();
-                    }
+               // testing Put(SamplingPlan samplingPlan)
+               var actionSamplingPlanUpdate = await samplingPlanController.Put(samplingPlanNew);
+               Assert.Equal(200, ((ObjectResult)actionSamplingPlanUpdate.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionSamplingPlanUpdate.Result).Value);
+               SamplingPlan samplingPlanUpdate = (SamplingPlan)(((OkObjectResult)actionSamplingPlanUpdate.Result).Value);
+               Assert.NotNull(samplingPlanUpdate);
 
-                    if (count > 0)
-                    {
-                        query.Skip = 0;
-                        query.Take = 5;
-                        count = (query.Take > count ? query.Take : count);
-
-                        // ok with SamplingPlan info
-                        jsonRet = samplingPlanController.GetSamplingPlanList(query.Language.ToString(), query.Skip, query.Take);
-                        Assert.IsNotNull(jsonRet);
-
-                        ret = jsonRet as OkNegotiatedContentResult<List<SamplingPlan>>;
-                        Assert.AreEqual(samplingPlanList[0].SamplingPlanID, ret.Content[0].SamplingPlanID);
-                        Assert.AreEqual((count > query.Take ? query.Take : count), ret.Content.Count);
-
-                       if (count > 1)
-                       {
-                           query.Skip = 1;
-                           query.Take = 5;
-                           count = (query.Take > count ? query.Take : count);
-
-                           // ok with SamplingPlan info
-                           IHttpActionResult jsonRet2 = samplingPlanController.GetSamplingPlanList(query.Language.ToString(), query.Skip, query.Take);
-                           Assert.IsNotNull(jsonRet2);
-
-                           OkNegotiatedContentResult<List<SamplingPlan>> ret2 = jsonRet2 as OkNegotiatedContentResult<List<SamplingPlan>>;
-                           Assert.AreEqual(samplingPlanList[1].SamplingPlanID, ret2.Content[0].SamplingPlanID);
-                           Assert.AreEqual((count > query.Take ? query.Take : count), ret2.Content.Count);
-                       }
-                    }
-                }
+               // testing Delete(SamplingPlan samplingPlan)
+               var actionSamplingPlanDelete = await samplingPlanController.Delete(samplingPlanUpdate);
+               Assert.Equal(200, ((ObjectResult)actionSamplingPlanDelete.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionSamplingPlanDelete.Result).Value);
+               SamplingPlan samplingPlanDelete = (SamplingPlan)(((OkObjectResult)actionSamplingPlanDelete.Result).Value);
+               Assert.NotNull(samplingPlanDelete);
             }
         }
-        #endregion Tests Generated for Class Controller GetList Command
+        #endregion Functions public
 
-        #region Tests Generated for Class Controller GetWithID Command
-        [TestMethod]
-        public void SamplingPlan_Controller_GetSamplingPlanWithID_Test()
+        #region Functions private
+        private async Task<bool> Setup(CultureInfo culture)
         {
-            foreach (LanguageEnum LanguageRequest in AllowableLanguages)
+            Config = new ConfigurationBuilder()
+               .SetBasePath(Directory.GetParent(AppContext.BaseDirectory).FullName)
+               .AddJsonFile("appsettings.json")
+               .Build();
+        
+            Services = new ServiceCollection();
+        
+            IConfigurationSection connectionStringsSection = Config.GetSection("ConnectionStrings");
+            Services.Configure<ConnectionStringsModel>(connectionStringsSection);
+        
+            ConnectionStringsModel connectionStrings = connectionStringsSection.Get<ConnectionStringsModel>();
+        
+            Services.AddSingleton<IConfiguration>(Config);
+        
+            Services.AddDbContext<CSSPDBContext>(options =>
             {
-                foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
-                {
-                    SamplingPlanController samplingPlanController = new SamplingPlanController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(samplingPlanController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, samplingPlanController.DatabaseType);
-
-                    SamplingPlan samplingPlanFirst = new SamplingPlan();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-                    {
-                        SamplingPlanService samplingPlanService = new SamplingPlanService(new Query(), db, ContactID);
-                        samplingPlanFirst = (from c in db.SamplingPlans select c).FirstOrDefault();
-                    }
-
-                    // ok with SamplingPlan info
-                    IHttpActionResult jsonRet = samplingPlanController.GetSamplingPlanWithID(samplingPlanFirst.SamplingPlanID);
-                    Assert.IsNotNull(jsonRet);
-
-                    OkNegotiatedContentResult<SamplingPlan> Ret = jsonRet as OkNegotiatedContentResult<SamplingPlan>;
-                    SamplingPlan samplingPlanRet = Ret.Content;
-                    Assert.AreEqual(samplingPlanFirst.SamplingPlanID, samplingPlanRet.SamplingPlanID);
-
-                    BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
-
-                    // Not Found
-                    IHttpActionResult jsonRet2 = samplingPlanController.GetSamplingPlanWithID(0);
-                    Assert.IsNotNull(jsonRet2);
-
-                    OkNegotiatedContentResult<SamplingPlan> samplingPlanRet2 = jsonRet2 as OkNegotiatedContentResult<SamplingPlan>;
-                    Assert.IsNull(samplingPlanRet2);
-
-                    NotFoundResult notFoundRequest = jsonRet2 as NotFoundResult;
-                    Assert.IsNotNull(notFoundRequest);
-                }
-            }
+                options.UseSqlServer(connectionStrings.TestDB);
+            });
+        
+            Services.AddDbContext<ApplicationDbContext>(options =>
+                options.UseSqlServer(connectionStrings.TestDB));
+        
+            Services.AddIdentityCore<ApplicationUser>()
+                .AddEntityFrameworkStores<ApplicationDbContext>();
+        
+            Services.AddSingleton<IEnums, Enums>();
+            Services.AddSingleton<ILoggedInService, LoggedInService>();
+            Services.AddSingleton<ISamplingPlanService, SamplingPlanService>();
+            Services.AddSingleton<ISamplingPlanController, SamplingPlanController>();
+        
+            Provider = Services.BuildServiceProvider();
+            Assert.NotNull(Provider);
+        
+            loggedInService = Provider.GetService<ILoggedInService>();
+            Assert.NotNull(loggedInService);
+        
+            samplingPlanService = Provider.GetService<ISamplingPlanService>();
+            Assert.NotNull(samplingPlanService);
+        
+            await samplingPlanService.SetCulture(culture);
+        
+            samplingPlanController = Provider.GetService<ISamplingPlanController>();
+            Assert.NotNull(samplingPlanController);
+        
+            return await Task.FromResult(true);
         }
-        #endregion Tests Generated for Class Controller GetWithID Command
-
-        #region Tests Generated for Class Controller Post Command
-        [TestMethod]
-        public void SamplingPlan_Controller_Post_Test()
-        {
-            foreach (LanguageEnum LanguageRequest in AllowableLanguages)
-            {
-                foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
-                {
-                    SamplingPlanController samplingPlanController = new SamplingPlanController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(samplingPlanController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, samplingPlanController.DatabaseType);
-
-                    SamplingPlan samplingPlanLast = new SamplingPlan();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-                    {
-                        Query query = new Query();
-                        query.Language = LanguageRequest;
-                        query.Asc = "";
-                        query.Desc = "";
-
-                        SamplingPlanService samplingPlanService = new SamplingPlanService(query, db, ContactID);
-                        samplingPlanLast = (from c in db.SamplingPlans select c).FirstOrDefault();
-                    }
-
-                    // ok with SamplingPlan info
-                    IHttpActionResult jsonRet = samplingPlanController.GetSamplingPlanWithID(samplingPlanLast.SamplingPlanID);
-                    Assert.IsNotNull(jsonRet);
-
-                    OkNegotiatedContentResult<SamplingPlan> Ret = jsonRet as OkNegotiatedContentResult<SamplingPlan>;
-                    SamplingPlan samplingPlanRet = Ret.Content;
-                    Assert.AreEqual(samplingPlanLast.SamplingPlanID, samplingPlanRet.SamplingPlanID);
-
-                    BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
-
-                    // Post to return CSSPError because SamplingPlanID exist
-                    IHttpActionResult jsonRet2 = samplingPlanController.Post(samplingPlanRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet2);
-
-                    OkNegotiatedContentResult<SamplingPlan> samplingPlanRet2 = jsonRet2 as OkNegotiatedContentResult<SamplingPlan>;
-                    Assert.IsNull(samplingPlanRet2);
-
-                    BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
-                    Assert.IsNotNull(badRequest2);
-
-                    // Post to return newly added SamplingPlan
-                    samplingPlanRet.SamplingPlanID = 0;
-                    samplingPlanRet.SamplingPlanName = samplingPlanRet.SamplingPlanName.Replace(".txt", "_a.txt");
-                    samplingPlanController.Request = new System.Net.Http.HttpRequestMessage();
-                    samplingPlanController.Request.RequestUri = new System.Uri("http://localhost:5000/api/samplingPlan");
-                    IHttpActionResult jsonRet3 = samplingPlanController.Post(samplingPlanRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet3);
-
-                    CreatedNegotiatedContentResult<SamplingPlan> samplingPlanRet3 = jsonRet3 as CreatedNegotiatedContentResult<SamplingPlan>;
-                    Assert.IsNotNull(samplingPlanRet3);
-
-                    BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest3);
-
-                    IHttpActionResult jsonRet4 = samplingPlanController.Delete(samplingPlanRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet4);
-
-                    OkNegotiatedContentResult<SamplingPlan> samplingPlanRet4 = jsonRet4 as OkNegotiatedContentResult<SamplingPlan>;
-                    Assert.IsNotNull(samplingPlanRet4);
-
-                    BadRequestErrorMessageResult badRequest4 = jsonRet4 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest4);
-                }
-            }
-        }
-        #endregion Tests Generated for Class Controller Post Command
-
-        #region Tests Generated for Class Controller Put Command
-        [TestMethod]
-        public void SamplingPlan_Controller_Put_Test()
-        {
-            foreach (LanguageEnum LanguageRequest in AllowableLanguages)
-            {
-                foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
-                {
-                    SamplingPlanController samplingPlanController = new SamplingPlanController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(samplingPlanController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, samplingPlanController.DatabaseType);
-
-                    SamplingPlan samplingPlanLast = new SamplingPlan();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-                    {
-                        Query query = new Query();
-                        query.Language = LanguageRequest;
-
-                        SamplingPlanService samplingPlanService = new SamplingPlanService(query, db, ContactID);
-                        samplingPlanLast = (from c in db.SamplingPlans select c).FirstOrDefault();
-                    }
-
-                    // ok with SamplingPlan info
-                    IHttpActionResult jsonRet = samplingPlanController.GetSamplingPlanWithID(samplingPlanLast.SamplingPlanID);
-                    Assert.IsNotNull(jsonRet);
-
-                    OkNegotiatedContentResult<SamplingPlan> Ret = jsonRet as OkNegotiatedContentResult<SamplingPlan>;
-                    SamplingPlan samplingPlanRet = Ret.Content;
-                    Assert.AreEqual(samplingPlanLast.SamplingPlanID, samplingPlanRet.SamplingPlanID);
-
-                    BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
-
-                    // Put to return success
-                    IHttpActionResult jsonRet2 = samplingPlanController.Put(samplingPlanRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet2);
-
-                    OkNegotiatedContentResult<SamplingPlan> samplingPlanRet2 = jsonRet2 as OkNegotiatedContentResult<SamplingPlan>;
-                    Assert.IsNotNull(samplingPlanRet2);
-
-                    BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest2);
-
-                    // Put to return CSSPError because SamplingPlanID of 0 does not exist
-                    samplingPlanRet.SamplingPlanID = 0;
-                    IHttpActionResult jsonRet3 = samplingPlanController.Put(samplingPlanRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet3);
-
-                    OkNegotiatedContentResult<SamplingPlan> samplingPlanRet3 = jsonRet3 as OkNegotiatedContentResult<SamplingPlan>;
-                    Assert.IsNull(samplingPlanRet3);
-
-                    BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
-                    Assert.IsNotNull(badRequest3);
-                }
-            }
-        }
-        #endregion Tests Generated for Class Controller Put Command
-
-        #region Tests Generated for Class Controller Delete Command
-        [TestMethod]
-        public void SamplingPlan_Controller_Delete_Test()
-        {
-            foreach (LanguageEnum LanguageRequest in AllowableLanguages)
-            {
-                foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
-                {
-                    SamplingPlanController samplingPlanController = new SamplingPlanController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(samplingPlanController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, samplingPlanController.DatabaseType);
-
-                    SamplingPlan samplingPlanLast = new SamplingPlan();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-                    {
-                        Query query = new Query();
-                        query.Language = LanguageRequest;
-                        query.Asc = "";
-                        query.Desc = "";
-
-                        SamplingPlanService samplingPlanService = new SamplingPlanService(query, db, ContactID);
-                        samplingPlanLast = (from c in db.SamplingPlans select c).FirstOrDefault();
-                    }
-
-                    // ok with SamplingPlan info
-                    IHttpActionResult jsonRet = samplingPlanController.GetSamplingPlanWithID(samplingPlanLast.SamplingPlanID);
-                    Assert.IsNotNull(jsonRet);
-
-                    OkNegotiatedContentResult<SamplingPlan> Ret = jsonRet as OkNegotiatedContentResult<SamplingPlan>;
-                    SamplingPlan samplingPlanRet = Ret.Content;
-                    Assert.AreEqual(samplingPlanLast.SamplingPlanID, samplingPlanRet.SamplingPlanID);
-
-                    BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
-
-                    // Post to return newly added SamplingPlan
-                    samplingPlanRet.SamplingPlanID = 0;
-                    samplingPlanRet.SamplingPlanName = samplingPlanRet.SamplingPlanName.Replace(".txt", "_a.txt");
-                    samplingPlanController.Request = new System.Net.Http.HttpRequestMessage();
-                    samplingPlanController.Request.RequestUri = new System.Uri("http://localhost:5000/api/samplingPlan");
-                    IHttpActionResult jsonRet3 = samplingPlanController.Post(samplingPlanRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet3);
-
-                    CreatedNegotiatedContentResult<SamplingPlan> samplingPlanRet3 = jsonRet3 as CreatedNegotiatedContentResult<SamplingPlan>;
-                    Assert.IsNotNull(samplingPlanRet3);
-                    SamplingPlan samplingPlan = samplingPlanRet3.Content;
-
-                    BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest3);
-
-                    // Delete to return success
-                    IHttpActionResult jsonRet2 = samplingPlanController.Delete(samplingPlanRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet2);
-
-                    OkNegotiatedContentResult<SamplingPlan> samplingPlanRet2 = jsonRet2 as OkNegotiatedContentResult<SamplingPlan>;
-                    Assert.IsNotNull(samplingPlanRet2);
-
-                    BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest2);
-
-                    // Delete to return CSSPError because SamplingPlanID of 0 does not exist
-                    samplingPlanRet.SamplingPlanID = 0;
-                    IHttpActionResult jsonRet4 = samplingPlanController.Delete(samplingPlanRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet4);
-
-                    OkNegotiatedContentResult<SamplingPlan> samplingPlanRet4 = jsonRet4 as OkNegotiatedContentResult<SamplingPlan>;
-                    Assert.IsNull(samplingPlanRet4);
-
-                    BadRequestErrorMessageResult badRequest4 = jsonRet4 as BadRequestErrorMessageResult;
-                    Assert.IsNotNull(badRequest4);
-                }
-            }
-        }
-        #endregion Tests Generated for Class Controller Delete Command
-
+        #endregion Functions private
     }
 }

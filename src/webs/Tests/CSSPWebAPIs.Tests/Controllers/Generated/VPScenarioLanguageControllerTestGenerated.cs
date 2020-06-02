@@ -2,350 +2,157 @@ using CSSPEnums;
 using CSSPModels;
 using CSSPServices;
 using CSSPWebAPI.Controllers;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using LoggedInServices.Services;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using System;
 using System.Collections.Generic;
+using System.Globalization;
+using System.IO;
 using System.Linq;
-using System.Web.Http;
-using System.Web.Http.Results;
+using System.Threading.Tasks;
+using System.Transactions;
+using UserServices.Models;
+using Xunit;
 
-namespace CSSPWebAPI.Tests.Controllers
+namespace CSSPWebAPIs.Tests.Controllers
 {
-    [TestClass]
-    public partial class VPScenarioLanguageControllerTest : BaseControllerTest
+    public partial class VPScenarioLanguageControllerTest
     {
         #region Variables
         #endregion Variables
 
         #region Properties
+        private IConfiguration Config { get; set; }
+        private IServiceProvider Provider { get; set; }
+        private IServiceCollection Services { get; set; }
+        private CSSPDBContext db { get; set; }
+        private ILoggedInService loggedInService { get; set; }
+        private IVPScenarioLanguageService vpScenarioLanguageService { get; set; }
+        private IVPScenarioLanguageController vpScenarioLanguageController { get; set; }
         #endregion Properties
 
         #region Constructors
-        public VPScenarioLanguageControllerTest() : base()
+        public VPScenarioLanguageControllerTest()
         {
         }
         #endregion Constructors
 
-        #region Tests Generated for Class Controller GetList Command
-        [TestMethod]
-        public void VPScenarioLanguage_Controller_GetVPScenarioLanguageList_Test()
+        #region Functions public
+        [Theory]
+        [InlineData("en-CA")]
+        [InlineData("fr-CA")]
+        public async Task VPScenarioLanguageController_Constructor_Good_Test(string culture)
         {
-            foreach (LanguageEnum LanguageRequest in AllowableLanguages)
+            bool retBool = await Setup(new CultureInfo(culture));
+            Assert.True(retBool);
+            Assert.NotNull(loggedInService);
+            Assert.NotNull(vpScenarioLanguageService);
+            Assert.NotNull(vpScenarioLanguageController);
+        }
+        [Theory]
+        [InlineData("en-CA")]
+        [InlineData("fr-CA")]
+        public async Task VPScenarioLanguageController_CRUD_Good_Test(string culture)
+        {
+            bool retBool = await Setup(new CultureInfo(culture));
+            Assert.True(retBool);
+
+            using (TransactionScope ts = new TransactionScope())
             {
-                foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
-                {
-                    VPScenarioLanguageController vpScenarioLanguageController = new VPScenarioLanguageController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(vpScenarioLanguageController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, vpScenarioLanguageController.DatabaseType);
+                // testing Get
+               var actionVPScenarioLanguageList = await vpScenarioLanguageController.Get();
+               Assert.Equal(200, ((ObjectResult)actionVPScenarioLanguageList.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionVPScenarioLanguageList.Result).Value);
+               List<VPScenarioLanguage> vpScenarioLanguageList = (List<VPScenarioLanguage>)(((OkObjectResult)actionVPScenarioLanguageList.Result).Value);
 
-                    VPScenarioLanguage vpScenarioLanguageFirst = new VPScenarioLanguage();
-                    int count = -1;
-                    Query query = new Query();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseTypeEnum.SqlServerTestDB))
-                    {
-                        VPScenarioLanguageService vpScenarioLanguageService = new VPScenarioLanguageService(query, db, ContactID);
-                        vpScenarioLanguageFirst = (from c in db.VPScenarioLanguages select c).FirstOrDefault();
-                        count = (from c in db.VPScenarioLanguages select c).Count();
-                        count = (query.Take > count ? count : query.Take);
-                    }
+               int count = ((List<VPScenarioLanguage>)((OkObjectResult)actionVPScenarioLanguageList.Result).Value).Count();
+                Assert.True(count > 0);
 
-                    // ok with VPScenarioLanguage info
-                    IHttpActionResult jsonRet = vpScenarioLanguageController.GetVPScenarioLanguageList();
-                    Assert.IsNotNull(jsonRet);
+               // testing Get(VPScenarioLanguageID)
+               var actionVPScenarioLanguage = await vpScenarioLanguageController.Get(vpScenarioLanguageList[0].VPScenarioLanguageID);
+               Assert.Equal(200, ((ObjectResult)actionVPScenarioLanguage.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionVPScenarioLanguage.Result).Value);
+               VPScenarioLanguage vpScenarioLanguage = (VPScenarioLanguage)(((OkObjectResult)actionVPScenarioLanguage.Result).Value);
+               Assert.NotNull(vpScenarioLanguage);
+               Assert.Equal(vpScenarioLanguageList[0].VPScenarioLanguageID, vpScenarioLanguage.VPScenarioLanguageID);
 
-                    OkNegotiatedContentResult<List<VPScenarioLanguage>> ret = jsonRet as OkNegotiatedContentResult<List<VPScenarioLanguage>>;
-                    Assert.AreEqual(vpScenarioLanguageFirst.VPScenarioLanguageID, ret.Content[0].VPScenarioLanguageID);
-                    Assert.AreEqual((count > query.Take ? query.Take : count), ret.Content.Count);
+               // testing Post(VPScenarioLanguage vpScenarioLanguage)
+               vpScenarioLanguage.VPScenarioLanguageID = 0;
+               var actionVPScenarioLanguageNew = await vpScenarioLanguageController.Post(vpScenarioLanguage);
+               Assert.Equal(200, ((ObjectResult)actionVPScenarioLanguageNew.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionVPScenarioLanguageNew.Result).Value);
+               VPScenarioLanguage vpScenarioLanguageNew = (VPScenarioLanguage)(((OkObjectResult)actionVPScenarioLanguageNew.Result).Value);
+               Assert.NotNull(vpScenarioLanguageNew);
 
-                    List<VPScenarioLanguage> vpScenarioLanguageList = new List<VPScenarioLanguage>();
-                    count = -1;
-                    query = new Query();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseTypeEnum.SqlServerTestDB))
-                    {
-                        VPScenarioLanguageService vpScenarioLanguageService = new VPScenarioLanguageService(query, db, ContactID);
-                        vpScenarioLanguageList = (from c in db.VPScenarioLanguages select c).OrderBy(c => c.VPScenarioLanguageID).Skip(0).Take(2).ToList();
-                        count = (from c in db.VPScenarioLanguages select c).Count();
-                    }
+               // testing Put(VPScenarioLanguage vpScenarioLanguage)
+               var actionVPScenarioLanguageUpdate = await vpScenarioLanguageController.Put(vpScenarioLanguageNew);
+               Assert.Equal(200, ((ObjectResult)actionVPScenarioLanguageUpdate.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionVPScenarioLanguageUpdate.Result).Value);
+               VPScenarioLanguage vpScenarioLanguageUpdate = (VPScenarioLanguage)(((OkObjectResult)actionVPScenarioLanguageUpdate.Result).Value);
+               Assert.NotNull(vpScenarioLanguageUpdate);
 
-                    if (count > 0)
-                    {
-                        query.Skip = 0;
-                        query.Take = 5;
-                        count = (query.Take > count ? query.Take : count);
-
-                        // ok with VPScenarioLanguage info
-                        jsonRet = vpScenarioLanguageController.GetVPScenarioLanguageList(query.Language.ToString(), query.Skip, query.Take);
-                        Assert.IsNotNull(jsonRet);
-
-                        ret = jsonRet as OkNegotiatedContentResult<List<VPScenarioLanguage>>;
-                        Assert.AreEqual(vpScenarioLanguageList[0].VPScenarioLanguageID, ret.Content[0].VPScenarioLanguageID);
-                        Assert.AreEqual((count > query.Take ? query.Take : count), ret.Content.Count);
-
-                       if (count > 1)
-                       {
-                           query.Skip = 1;
-                           query.Take = 5;
-                           count = (query.Take > count ? query.Take : count);
-
-                           // ok with VPScenarioLanguage info
-                           IHttpActionResult jsonRet2 = vpScenarioLanguageController.GetVPScenarioLanguageList(query.Language.ToString(), query.Skip, query.Take);
-                           Assert.IsNotNull(jsonRet2);
-
-                           OkNegotiatedContentResult<List<VPScenarioLanguage>> ret2 = jsonRet2 as OkNegotiatedContentResult<List<VPScenarioLanguage>>;
-                           Assert.AreEqual(vpScenarioLanguageList[1].VPScenarioLanguageID, ret2.Content[0].VPScenarioLanguageID);
-                           Assert.AreEqual((count > query.Take ? query.Take : count), ret2.Content.Count);
-                       }
-                    }
-                }
+               // testing Delete(VPScenarioLanguage vpScenarioLanguage)
+               var actionVPScenarioLanguageDelete = await vpScenarioLanguageController.Delete(vpScenarioLanguageUpdate);
+               Assert.Equal(200, ((ObjectResult)actionVPScenarioLanguageDelete.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionVPScenarioLanguageDelete.Result).Value);
+               VPScenarioLanguage vpScenarioLanguageDelete = (VPScenarioLanguage)(((OkObjectResult)actionVPScenarioLanguageDelete.Result).Value);
+               Assert.NotNull(vpScenarioLanguageDelete);
             }
         }
-        #endregion Tests Generated for Class Controller GetList Command
+        #endregion Functions public
 
-        #region Tests Generated for Class Controller GetWithID Command
-        [TestMethod]
-        public void VPScenarioLanguage_Controller_GetVPScenarioLanguageWithID_Test()
+        #region Functions private
+        private async Task<bool> Setup(CultureInfo culture)
         {
-            foreach (LanguageEnum LanguageRequest in AllowableLanguages)
+            Config = new ConfigurationBuilder()
+               .SetBasePath(Directory.GetParent(AppContext.BaseDirectory).FullName)
+               .AddJsonFile("appsettings.json")
+               .Build();
+        
+            Services = new ServiceCollection();
+        
+            IConfigurationSection connectionStringsSection = Config.GetSection("ConnectionStrings");
+            Services.Configure<ConnectionStringsModel>(connectionStringsSection);
+        
+            ConnectionStringsModel connectionStrings = connectionStringsSection.Get<ConnectionStringsModel>();
+        
+            Services.AddSingleton<IConfiguration>(Config);
+        
+            Services.AddDbContext<CSSPDBContext>(options =>
             {
-                foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
-                {
-                    VPScenarioLanguageController vpScenarioLanguageController = new VPScenarioLanguageController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(vpScenarioLanguageController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, vpScenarioLanguageController.DatabaseType);
-
-                    VPScenarioLanguage vpScenarioLanguageFirst = new VPScenarioLanguage();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-                    {
-                        VPScenarioLanguageService vpScenarioLanguageService = new VPScenarioLanguageService(new Query(), db, ContactID);
-                        vpScenarioLanguageFirst = (from c in db.VPScenarioLanguages select c).FirstOrDefault();
-                    }
-
-                    // ok with VPScenarioLanguage info
-                    IHttpActionResult jsonRet = vpScenarioLanguageController.GetVPScenarioLanguageWithID(vpScenarioLanguageFirst.VPScenarioLanguageID);
-                    Assert.IsNotNull(jsonRet);
-
-                    OkNegotiatedContentResult<VPScenarioLanguage> Ret = jsonRet as OkNegotiatedContentResult<VPScenarioLanguage>;
-                    VPScenarioLanguage vpScenarioLanguageRet = Ret.Content;
-                    Assert.AreEqual(vpScenarioLanguageFirst.VPScenarioLanguageID, vpScenarioLanguageRet.VPScenarioLanguageID);
-
-                    BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
-
-                    // Not Found
-                    IHttpActionResult jsonRet2 = vpScenarioLanguageController.GetVPScenarioLanguageWithID(0);
-                    Assert.IsNotNull(jsonRet2);
-
-                    OkNegotiatedContentResult<VPScenarioLanguage> vpScenarioLanguageRet2 = jsonRet2 as OkNegotiatedContentResult<VPScenarioLanguage>;
-                    Assert.IsNull(vpScenarioLanguageRet2);
-
-                    NotFoundResult notFoundRequest = jsonRet2 as NotFoundResult;
-                    Assert.IsNotNull(notFoundRequest);
-                }
-            }
+                options.UseSqlServer(connectionStrings.TestDB);
+            });
+        
+            Services.AddDbContext<ApplicationDbContext>(options =>
+                options.UseSqlServer(connectionStrings.TestDB));
+        
+            Services.AddIdentityCore<ApplicationUser>()
+                .AddEntityFrameworkStores<ApplicationDbContext>();
+        
+            Services.AddSingleton<IEnums, Enums>();
+            Services.AddSingleton<ILoggedInService, LoggedInService>();
+            Services.AddSingleton<IVPScenarioLanguageService, VPScenarioLanguageService>();
+            Services.AddSingleton<IVPScenarioLanguageController, VPScenarioLanguageController>();
+        
+            Provider = Services.BuildServiceProvider();
+            Assert.NotNull(Provider);
+        
+            loggedInService = Provider.GetService<ILoggedInService>();
+            Assert.NotNull(loggedInService);
+        
+            vpScenarioLanguageService = Provider.GetService<IVPScenarioLanguageService>();
+            Assert.NotNull(vpScenarioLanguageService);
+        
+            await vpScenarioLanguageService.SetCulture(culture);
+        
+            vpScenarioLanguageController = Provider.GetService<IVPScenarioLanguageController>();
+            Assert.NotNull(vpScenarioLanguageController);
+        
+            return await Task.FromResult(true);
         }
-        #endregion Tests Generated for Class Controller GetWithID Command
-
-        #region Tests Generated for Class Controller Post Command
-        [TestMethod]
-        public void VPScenarioLanguage_Controller_Post_Test()
-        {
-            foreach (LanguageEnum LanguageRequest in AllowableLanguages)
-            {
-                foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
-                {
-                    VPScenarioLanguageController vpScenarioLanguageController = new VPScenarioLanguageController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(vpScenarioLanguageController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, vpScenarioLanguageController.DatabaseType);
-
-                    VPScenarioLanguage vpScenarioLanguageLast = new VPScenarioLanguage();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-                    {
-                        Query query = new Query();
-                        query.Language = LanguageRequest;
-                        query.Asc = "";
-                        query.Desc = "";
-
-                        VPScenarioLanguageService vpScenarioLanguageService = new VPScenarioLanguageService(query, db, ContactID);
-                        vpScenarioLanguageLast = (from c in db.VPScenarioLanguages select c).FirstOrDefault();
-                    }
-
-                    // ok with VPScenarioLanguage info
-                    IHttpActionResult jsonRet = vpScenarioLanguageController.GetVPScenarioLanguageWithID(vpScenarioLanguageLast.VPScenarioLanguageID);
-                    Assert.IsNotNull(jsonRet);
-
-                    OkNegotiatedContentResult<VPScenarioLanguage> Ret = jsonRet as OkNegotiatedContentResult<VPScenarioLanguage>;
-                    VPScenarioLanguage vpScenarioLanguageRet = Ret.Content;
-                    Assert.AreEqual(vpScenarioLanguageLast.VPScenarioLanguageID, vpScenarioLanguageRet.VPScenarioLanguageID);
-
-                    BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
-
-                    // Post to return CSSPError because VPScenarioLanguageID exist
-                    IHttpActionResult jsonRet2 = vpScenarioLanguageController.Post(vpScenarioLanguageRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet2);
-
-                    OkNegotiatedContentResult<VPScenarioLanguage> vpScenarioLanguageRet2 = jsonRet2 as OkNegotiatedContentResult<VPScenarioLanguage>;
-                    Assert.IsNull(vpScenarioLanguageRet2);
-
-                    BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
-                    Assert.IsNotNull(badRequest2);
-
-                    // Post to return newly added VPScenarioLanguage
-                    vpScenarioLanguageRet.VPScenarioLanguageID = 0;
-                    vpScenarioLanguageController.Request = new System.Net.Http.HttpRequestMessage();
-                    vpScenarioLanguageController.Request.RequestUri = new System.Uri("http://localhost:5000/api/vpScenarioLanguage");
-                    IHttpActionResult jsonRet3 = vpScenarioLanguageController.Post(vpScenarioLanguageRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet3);
-
-                    CreatedNegotiatedContentResult<VPScenarioLanguage> vpScenarioLanguageRet3 = jsonRet3 as CreatedNegotiatedContentResult<VPScenarioLanguage>;
-                    Assert.IsNotNull(vpScenarioLanguageRet3);
-
-                    BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest3);
-
-                    IHttpActionResult jsonRet4 = vpScenarioLanguageController.Delete(vpScenarioLanguageRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet4);
-
-                    OkNegotiatedContentResult<VPScenarioLanguage> vpScenarioLanguageRet4 = jsonRet4 as OkNegotiatedContentResult<VPScenarioLanguage>;
-                    Assert.IsNotNull(vpScenarioLanguageRet4);
-
-                    BadRequestErrorMessageResult badRequest4 = jsonRet4 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest4);
-                }
-            }
-        }
-        #endregion Tests Generated for Class Controller Post Command
-
-        #region Tests Generated for Class Controller Put Command
-        [TestMethod]
-        public void VPScenarioLanguage_Controller_Put_Test()
-        {
-            foreach (LanguageEnum LanguageRequest in AllowableLanguages)
-            {
-                foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
-                {
-                    VPScenarioLanguageController vpScenarioLanguageController = new VPScenarioLanguageController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(vpScenarioLanguageController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, vpScenarioLanguageController.DatabaseType);
-
-                    VPScenarioLanguage vpScenarioLanguageLast = new VPScenarioLanguage();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-                    {
-                        Query query = new Query();
-                        query.Language = LanguageRequest;
-
-                        VPScenarioLanguageService vpScenarioLanguageService = new VPScenarioLanguageService(query, db, ContactID);
-                        vpScenarioLanguageLast = (from c in db.VPScenarioLanguages select c).FirstOrDefault();
-                    }
-
-                    // ok with VPScenarioLanguage info
-                    IHttpActionResult jsonRet = vpScenarioLanguageController.GetVPScenarioLanguageWithID(vpScenarioLanguageLast.VPScenarioLanguageID);
-                    Assert.IsNotNull(jsonRet);
-
-                    OkNegotiatedContentResult<VPScenarioLanguage> Ret = jsonRet as OkNegotiatedContentResult<VPScenarioLanguage>;
-                    VPScenarioLanguage vpScenarioLanguageRet = Ret.Content;
-                    Assert.AreEqual(vpScenarioLanguageLast.VPScenarioLanguageID, vpScenarioLanguageRet.VPScenarioLanguageID);
-
-                    BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
-
-                    // Put to return success
-                    IHttpActionResult jsonRet2 = vpScenarioLanguageController.Put(vpScenarioLanguageRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet2);
-
-                    OkNegotiatedContentResult<VPScenarioLanguage> vpScenarioLanguageRet2 = jsonRet2 as OkNegotiatedContentResult<VPScenarioLanguage>;
-                    Assert.IsNotNull(vpScenarioLanguageRet2);
-
-                    BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest2);
-
-                    // Put to return CSSPError because VPScenarioLanguageID of 0 does not exist
-                    vpScenarioLanguageRet.VPScenarioLanguageID = 0;
-                    IHttpActionResult jsonRet3 = vpScenarioLanguageController.Put(vpScenarioLanguageRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet3);
-
-                    OkNegotiatedContentResult<VPScenarioLanguage> vpScenarioLanguageRet3 = jsonRet3 as OkNegotiatedContentResult<VPScenarioLanguage>;
-                    Assert.IsNull(vpScenarioLanguageRet3);
-
-                    BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
-                    Assert.IsNotNull(badRequest3);
-                }
-            }
-        }
-        #endregion Tests Generated for Class Controller Put Command
-
-        #region Tests Generated for Class Controller Delete Command
-        [TestMethod]
-        public void VPScenarioLanguage_Controller_Delete_Test()
-        {
-            foreach (LanguageEnum LanguageRequest in AllowableLanguages)
-            {
-                foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
-                {
-                    VPScenarioLanguageController vpScenarioLanguageController = new VPScenarioLanguageController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(vpScenarioLanguageController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, vpScenarioLanguageController.DatabaseType);
-
-                    VPScenarioLanguage vpScenarioLanguageLast = new VPScenarioLanguage();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-                    {
-                        Query query = new Query();
-                        query.Language = LanguageRequest;
-                        query.Asc = "";
-                        query.Desc = "";
-
-                        VPScenarioLanguageService vpScenarioLanguageService = new VPScenarioLanguageService(query, db, ContactID);
-                        vpScenarioLanguageLast = (from c in db.VPScenarioLanguages select c).FirstOrDefault();
-                    }
-
-                    // ok with VPScenarioLanguage info
-                    IHttpActionResult jsonRet = vpScenarioLanguageController.GetVPScenarioLanguageWithID(vpScenarioLanguageLast.VPScenarioLanguageID);
-                    Assert.IsNotNull(jsonRet);
-
-                    OkNegotiatedContentResult<VPScenarioLanguage> Ret = jsonRet as OkNegotiatedContentResult<VPScenarioLanguage>;
-                    VPScenarioLanguage vpScenarioLanguageRet = Ret.Content;
-                    Assert.AreEqual(vpScenarioLanguageLast.VPScenarioLanguageID, vpScenarioLanguageRet.VPScenarioLanguageID);
-
-                    BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
-
-                    // Post to return newly added VPScenarioLanguage
-                    vpScenarioLanguageRet.VPScenarioLanguageID = 0;
-                    vpScenarioLanguageController.Request = new System.Net.Http.HttpRequestMessage();
-                    vpScenarioLanguageController.Request.RequestUri = new System.Uri("http://localhost:5000/api/vpScenarioLanguage");
-                    IHttpActionResult jsonRet3 = vpScenarioLanguageController.Post(vpScenarioLanguageRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet3);
-
-                    CreatedNegotiatedContentResult<VPScenarioLanguage> vpScenarioLanguageRet3 = jsonRet3 as CreatedNegotiatedContentResult<VPScenarioLanguage>;
-                    Assert.IsNotNull(vpScenarioLanguageRet3);
-                    VPScenarioLanguage vpScenarioLanguage = vpScenarioLanguageRet3.Content;
-
-                    BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest3);
-
-                    // Delete to return success
-                    IHttpActionResult jsonRet2 = vpScenarioLanguageController.Delete(vpScenarioLanguageRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet2);
-
-                    OkNegotiatedContentResult<VPScenarioLanguage> vpScenarioLanguageRet2 = jsonRet2 as OkNegotiatedContentResult<VPScenarioLanguage>;
-                    Assert.IsNotNull(vpScenarioLanguageRet2);
-
-                    BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest2);
-
-                    // Delete to return CSSPError because VPScenarioLanguageID of 0 does not exist
-                    vpScenarioLanguageRet.VPScenarioLanguageID = 0;
-                    IHttpActionResult jsonRet4 = vpScenarioLanguageController.Delete(vpScenarioLanguageRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet4);
-
-                    OkNegotiatedContentResult<VPScenarioLanguage> vpScenarioLanguageRet4 = jsonRet4 as OkNegotiatedContentResult<VPScenarioLanguage>;
-                    Assert.IsNull(vpScenarioLanguageRet4);
-
-                    BadRequestErrorMessageResult badRequest4 = jsonRet4 as BadRequestErrorMessageResult;
-                    Assert.IsNotNull(badRequest4);
-                }
-            }
-        }
-        #endregion Tests Generated for Class Controller Delete Command
-
+        #endregion Functions private
     }
 }

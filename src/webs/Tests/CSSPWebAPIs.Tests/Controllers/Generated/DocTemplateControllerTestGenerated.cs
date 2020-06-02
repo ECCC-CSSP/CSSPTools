@@ -2,350 +2,157 @@ using CSSPEnums;
 using CSSPModels;
 using CSSPServices;
 using CSSPWebAPI.Controllers;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using LoggedInServices.Services;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using System;
 using System.Collections.Generic;
+using System.Globalization;
+using System.IO;
 using System.Linq;
-using System.Web.Http;
-using System.Web.Http.Results;
+using System.Threading.Tasks;
+using System.Transactions;
+using UserServices.Models;
+using Xunit;
 
-namespace CSSPWebAPI.Tests.Controllers
+namespace CSSPWebAPIs.Tests.Controllers
 {
-    [TestClass]
-    public partial class DocTemplateControllerTest : BaseControllerTest
+    public partial class DocTemplateControllerTest
     {
         #region Variables
         #endregion Variables
 
         #region Properties
+        private IConfiguration Config { get; set; }
+        private IServiceProvider Provider { get; set; }
+        private IServiceCollection Services { get; set; }
+        private CSSPDBContext db { get; set; }
+        private ILoggedInService loggedInService { get; set; }
+        private IDocTemplateService docTemplateService { get; set; }
+        private IDocTemplateController docTemplateController { get; set; }
         #endregion Properties
 
         #region Constructors
-        public DocTemplateControllerTest() : base()
+        public DocTemplateControllerTest()
         {
         }
         #endregion Constructors
 
-        #region Tests Generated for Class Controller GetList Command
-        [TestMethod]
-        public void DocTemplate_Controller_GetDocTemplateList_Test()
+        #region Functions public
+        [Theory]
+        [InlineData("en-CA")]
+        [InlineData("fr-CA")]
+        public async Task DocTemplateController_Constructor_Good_Test(string culture)
         {
-            foreach (LanguageEnum LanguageRequest in AllowableLanguages)
+            bool retBool = await Setup(new CultureInfo(culture));
+            Assert.True(retBool);
+            Assert.NotNull(loggedInService);
+            Assert.NotNull(docTemplateService);
+            Assert.NotNull(docTemplateController);
+        }
+        [Theory]
+        [InlineData("en-CA")]
+        [InlineData("fr-CA")]
+        public async Task DocTemplateController_CRUD_Good_Test(string culture)
+        {
+            bool retBool = await Setup(new CultureInfo(culture));
+            Assert.True(retBool);
+
+            using (TransactionScope ts = new TransactionScope())
             {
-                foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
-                {
-                    DocTemplateController docTemplateController = new DocTemplateController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(docTemplateController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, docTemplateController.DatabaseType);
+                // testing Get
+               var actionDocTemplateList = await docTemplateController.Get();
+               Assert.Equal(200, ((ObjectResult)actionDocTemplateList.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionDocTemplateList.Result).Value);
+               List<DocTemplate> docTemplateList = (List<DocTemplate>)(((OkObjectResult)actionDocTemplateList.Result).Value);
 
-                    DocTemplate docTemplateFirst = new DocTemplate();
-                    int count = -1;
-                    Query query = new Query();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseTypeEnum.SqlServerTestDB))
-                    {
-                        DocTemplateService docTemplateService = new DocTemplateService(query, db, ContactID);
-                        docTemplateFirst = (from c in db.DocTemplates select c).FirstOrDefault();
-                        count = (from c in db.DocTemplates select c).Count();
-                        count = (query.Take > count ? count : query.Take);
-                    }
+               int count = ((List<DocTemplate>)((OkObjectResult)actionDocTemplateList.Result).Value).Count();
+                Assert.True(count > 0);
 
-                    // ok with DocTemplate info
-                    IHttpActionResult jsonRet = docTemplateController.GetDocTemplateList();
-                    Assert.IsNotNull(jsonRet);
+               // testing Get(DocTemplateID)
+               var actionDocTemplate = await docTemplateController.Get(docTemplateList[0].DocTemplateID);
+               Assert.Equal(200, ((ObjectResult)actionDocTemplate.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionDocTemplate.Result).Value);
+               DocTemplate docTemplate = (DocTemplate)(((OkObjectResult)actionDocTemplate.Result).Value);
+               Assert.NotNull(docTemplate);
+               Assert.Equal(docTemplateList[0].DocTemplateID, docTemplate.DocTemplateID);
 
-                    OkNegotiatedContentResult<List<DocTemplate>> ret = jsonRet as OkNegotiatedContentResult<List<DocTemplate>>;
-                    Assert.AreEqual(docTemplateFirst.DocTemplateID, ret.Content[0].DocTemplateID);
-                    Assert.AreEqual((count > query.Take ? query.Take : count), ret.Content.Count);
+               // testing Post(DocTemplate docTemplate)
+               docTemplate.DocTemplateID = 0;
+               var actionDocTemplateNew = await docTemplateController.Post(docTemplate);
+               Assert.Equal(200, ((ObjectResult)actionDocTemplateNew.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionDocTemplateNew.Result).Value);
+               DocTemplate docTemplateNew = (DocTemplate)(((OkObjectResult)actionDocTemplateNew.Result).Value);
+               Assert.NotNull(docTemplateNew);
 
-                    List<DocTemplate> docTemplateList = new List<DocTemplate>();
-                    count = -1;
-                    query = new Query();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseTypeEnum.SqlServerTestDB))
-                    {
-                        DocTemplateService docTemplateService = new DocTemplateService(query, db, ContactID);
-                        docTemplateList = (from c in db.DocTemplates select c).OrderBy(c => c.DocTemplateID).Skip(0).Take(2).ToList();
-                        count = (from c in db.DocTemplates select c).Count();
-                    }
+               // testing Put(DocTemplate docTemplate)
+               var actionDocTemplateUpdate = await docTemplateController.Put(docTemplateNew);
+               Assert.Equal(200, ((ObjectResult)actionDocTemplateUpdate.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionDocTemplateUpdate.Result).Value);
+               DocTemplate docTemplateUpdate = (DocTemplate)(((OkObjectResult)actionDocTemplateUpdate.Result).Value);
+               Assert.NotNull(docTemplateUpdate);
 
-                    if (count > 0)
-                    {
-                        query.Skip = 0;
-                        query.Take = 5;
-                        count = (query.Take > count ? query.Take : count);
-
-                        // ok with DocTemplate info
-                        jsonRet = docTemplateController.GetDocTemplateList(query.Language.ToString(), query.Skip, query.Take);
-                        Assert.IsNotNull(jsonRet);
-
-                        ret = jsonRet as OkNegotiatedContentResult<List<DocTemplate>>;
-                        Assert.AreEqual(docTemplateList[0].DocTemplateID, ret.Content[0].DocTemplateID);
-                        Assert.AreEqual((count > query.Take ? query.Take : count), ret.Content.Count);
-
-                       if (count > 1)
-                       {
-                           query.Skip = 1;
-                           query.Take = 5;
-                           count = (query.Take > count ? query.Take : count);
-
-                           // ok with DocTemplate info
-                           IHttpActionResult jsonRet2 = docTemplateController.GetDocTemplateList(query.Language.ToString(), query.Skip, query.Take);
-                           Assert.IsNotNull(jsonRet2);
-
-                           OkNegotiatedContentResult<List<DocTemplate>> ret2 = jsonRet2 as OkNegotiatedContentResult<List<DocTemplate>>;
-                           Assert.AreEqual(docTemplateList[1].DocTemplateID, ret2.Content[0].DocTemplateID);
-                           Assert.AreEqual((count > query.Take ? query.Take : count), ret2.Content.Count);
-                       }
-                    }
-                }
+               // testing Delete(DocTemplate docTemplate)
+               var actionDocTemplateDelete = await docTemplateController.Delete(docTemplateUpdate);
+               Assert.Equal(200, ((ObjectResult)actionDocTemplateDelete.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionDocTemplateDelete.Result).Value);
+               DocTemplate docTemplateDelete = (DocTemplate)(((OkObjectResult)actionDocTemplateDelete.Result).Value);
+               Assert.NotNull(docTemplateDelete);
             }
         }
-        #endregion Tests Generated for Class Controller GetList Command
+        #endregion Functions public
 
-        #region Tests Generated for Class Controller GetWithID Command
-        [TestMethod]
-        public void DocTemplate_Controller_GetDocTemplateWithID_Test()
+        #region Functions private
+        private async Task<bool> Setup(CultureInfo culture)
         {
-            foreach (LanguageEnum LanguageRequest in AllowableLanguages)
+            Config = new ConfigurationBuilder()
+               .SetBasePath(Directory.GetParent(AppContext.BaseDirectory).FullName)
+               .AddJsonFile("appsettings.json")
+               .Build();
+        
+            Services = new ServiceCollection();
+        
+            IConfigurationSection connectionStringsSection = Config.GetSection("ConnectionStrings");
+            Services.Configure<ConnectionStringsModel>(connectionStringsSection);
+        
+            ConnectionStringsModel connectionStrings = connectionStringsSection.Get<ConnectionStringsModel>();
+        
+            Services.AddSingleton<IConfiguration>(Config);
+        
+            Services.AddDbContext<CSSPDBContext>(options =>
             {
-                foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
-                {
-                    DocTemplateController docTemplateController = new DocTemplateController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(docTemplateController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, docTemplateController.DatabaseType);
-
-                    DocTemplate docTemplateFirst = new DocTemplate();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-                    {
-                        DocTemplateService docTemplateService = new DocTemplateService(new Query(), db, ContactID);
-                        docTemplateFirst = (from c in db.DocTemplates select c).FirstOrDefault();
-                    }
-
-                    // ok with DocTemplate info
-                    IHttpActionResult jsonRet = docTemplateController.GetDocTemplateWithID(docTemplateFirst.DocTemplateID);
-                    Assert.IsNotNull(jsonRet);
-
-                    OkNegotiatedContentResult<DocTemplate> Ret = jsonRet as OkNegotiatedContentResult<DocTemplate>;
-                    DocTemplate docTemplateRet = Ret.Content;
-                    Assert.AreEqual(docTemplateFirst.DocTemplateID, docTemplateRet.DocTemplateID);
-
-                    BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
-
-                    // Not Found
-                    IHttpActionResult jsonRet2 = docTemplateController.GetDocTemplateWithID(0);
-                    Assert.IsNotNull(jsonRet2);
-
-                    OkNegotiatedContentResult<DocTemplate> docTemplateRet2 = jsonRet2 as OkNegotiatedContentResult<DocTemplate>;
-                    Assert.IsNull(docTemplateRet2);
-
-                    NotFoundResult notFoundRequest = jsonRet2 as NotFoundResult;
-                    Assert.IsNotNull(notFoundRequest);
-                }
-            }
+                options.UseSqlServer(connectionStrings.TestDB);
+            });
+        
+            Services.AddDbContext<ApplicationDbContext>(options =>
+                options.UseSqlServer(connectionStrings.TestDB));
+        
+            Services.AddIdentityCore<ApplicationUser>()
+                .AddEntityFrameworkStores<ApplicationDbContext>();
+        
+            Services.AddSingleton<IEnums, Enums>();
+            Services.AddSingleton<ILoggedInService, LoggedInService>();
+            Services.AddSingleton<IDocTemplateService, DocTemplateService>();
+            Services.AddSingleton<IDocTemplateController, DocTemplateController>();
+        
+            Provider = Services.BuildServiceProvider();
+            Assert.NotNull(Provider);
+        
+            loggedInService = Provider.GetService<ILoggedInService>();
+            Assert.NotNull(loggedInService);
+        
+            docTemplateService = Provider.GetService<IDocTemplateService>();
+            Assert.NotNull(docTemplateService);
+        
+            await docTemplateService.SetCulture(culture);
+        
+            docTemplateController = Provider.GetService<IDocTemplateController>();
+            Assert.NotNull(docTemplateController);
+        
+            return await Task.FromResult(true);
         }
-        #endregion Tests Generated for Class Controller GetWithID Command
-
-        #region Tests Generated for Class Controller Post Command
-        [TestMethod]
-        public void DocTemplate_Controller_Post_Test()
-        {
-            foreach (LanguageEnum LanguageRequest in AllowableLanguages)
-            {
-                foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
-                {
-                    DocTemplateController docTemplateController = new DocTemplateController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(docTemplateController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, docTemplateController.DatabaseType);
-
-                    DocTemplate docTemplateLast = new DocTemplate();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-                    {
-                        Query query = new Query();
-                        query.Language = LanguageRequest;
-                        query.Asc = "";
-                        query.Desc = "";
-
-                        DocTemplateService docTemplateService = new DocTemplateService(query, db, ContactID);
-                        docTemplateLast = (from c in db.DocTemplates select c).FirstOrDefault();
-                    }
-
-                    // ok with DocTemplate info
-                    IHttpActionResult jsonRet = docTemplateController.GetDocTemplateWithID(docTemplateLast.DocTemplateID);
-                    Assert.IsNotNull(jsonRet);
-
-                    OkNegotiatedContentResult<DocTemplate> Ret = jsonRet as OkNegotiatedContentResult<DocTemplate>;
-                    DocTemplate docTemplateRet = Ret.Content;
-                    Assert.AreEqual(docTemplateLast.DocTemplateID, docTemplateRet.DocTemplateID);
-
-                    BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
-
-                    // Post to return CSSPError because DocTemplateID exist
-                    IHttpActionResult jsonRet2 = docTemplateController.Post(docTemplateRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet2);
-
-                    OkNegotiatedContentResult<DocTemplate> docTemplateRet2 = jsonRet2 as OkNegotiatedContentResult<DocTemplate>;
-                    Assert.IsNull(docTemplateRet2);
-
-                    BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
-                    Assert.IsNotNull(badRequest2);
-
-                    // Post to return newly added DocTemplate
-                    docTemplateRet.DocTemplateID = 0;
-                    docTemplateController.Request = new System.Net.Http.HttpRequestMessage();
-                    docTemplateController.Request.RequestUri = new System.Uri("http://localhost:5000/api/docTemplate");
-                    IHttpActionResult jsonRet3 = docTemplateController.Post(docTemplateRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet3);
-
-                    CreatedNegotiatedContentResult<DocTemplate> docTemplateRet3 = jsonRet3 as CreatedNegotiatedContentResult<DocTemplate>;
-                    Assert.IsNotNull(docTemplateRet3);
-
-                    BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest3);
-
-                    IHttpActionResult jsonRet4 = docTemplateController.Delete(docTemplateRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet4);
-
-                    OkNegotiatedContentResult<DocTemplate> docTemplateRet4 = jsonRet4 as OkNegotiatedContentResult<DocTemplate>;
-                    Assert.IsNotNull(docTemplateRet4);
-
-                    BadRequestErrorMessageResult badRequest4 = jsonRet4 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest4);
-                }
-            }
-        }
-        #endregion Tests Generated for Class Controller Post Command
-
-        #region Tests Generated for Class Controller Put Command
-        [TestMethod]
-        public void DocTemplate_Controller_Put_Test()
-        {
-            foreach (LanguageEnum LanguageRequest in AllowableLanguages)
-            {
-                foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
-                {
-                    DocTemplateController docTemplateController = new DocTemplateController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(docTemplateController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, docTemplateController.DatabaseType);
-
-                    DocTemplate docTemplateLast = new DocTemplate();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-                    {
-                        Query query = new Query();
-                        query.Language = LanguageRequest;
-
-                        DocTemplateService docTemplateService = new DocTemplateService(query, db, ContactID);
-                        docTemplateLast = (from c in db.DocTemplates select c).FirstOrDefault();
-                    }
-
-                    // ok with DocTemplate info
-                    IHttpActionResult jsonRet = docTemplateController.GetDocTemplateWithID(docTemplateLast.DocTemplateID);
-                    Assert.IsNotNull(jsonRet);
-
-                    OkNegotiatedContentResult<DocTemplate> Ret = jsonRet as OkNegotiatedContentResult<DocTemplate>;
-                    DocTemplate docTemplateRet = Ret.Content;
-                    Assert.AreEqual(docTemplateLast.DocTemplateID, docTemplateRet.DocTemplateID);
-
-                    BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
-
-                    // Put to return success
-                    IHttpActionResult jsonRet2 = docTemplateController.Put(docTemplateRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet2);
-
-                    OkNegotiatedContentResult<DocTemplate> docTemplateRet2 = jsonRet2 as OkNegotiatedContentResult<DocTemplate>;
-                    Assert.IsNotNull(docTemplateRet2);
-
-                    BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest2);
-
-                    // Put to return CSSPError because DocTemplateID of 0 does not exist
-                    docTemplateRet.DocTemplateID = 0;
-                    IHttpActionResult jsonRet3 = docTemplateController.Put(docTemplateRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet3);
-
-                    OkNegotiatedContentResult<DocTemplate> docTemplateRet3 = jsonRet3 as OkNegotiatedContentResult<DocTemplate>;
-                    Assert.IsNull(docTemplateRet3);
-
-                    BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
-                    Assert.IsNotNull(badRequest3);
-                }
-            }
-        }
-        #endregion Tests Generated for Class Controller Put Command
-
-        #region Tests Generated for Class Controller Delete Command
-        [TestMethod]
-        public void DocTemplate_Controller_Delete_Test()
-        {
-            foreach (LanguageEnum LanguageRequest in AllowableLanguages)
-            {
-                foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
-                {
-                    DocTemplateController docTemplateController = new DocTemplateController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(docTemplateController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, docTemplateController.DatabaseType);
-
-                    DocTemplate docTemplateLast = new DocTemplate();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-                    {
-                        Query query = new Query();
-                        query.Language = LanguageRequest;
-                        query.Asc = "";
-                        query.Desc = "";
-
-                        DocTemplateService docTemplateService = new DocTemplateService(query, db, ContactID);
-                        docTemplateLast = (from c in db.DocTemplates select c).FirstOrDefault();
-                    }
-
-                    // ok with DocTemplate info
-                    IHttpActionResult jsonRet = docTemplateController.GetDocTemplateWithID(docTemplateLast.DocTemplateID);
-                    Assert.IsNotNull(jsonRet);
-
-                    OkNegotiatedContentResult<DocTemplate> Ret = jsonRet as OkNegotiatedContentResult<DocTemplate>;
-                    DocTemplate docTemplateRet = Ret.Content;
-                    Assert.AreEqual(docTemplateLast.DocTemplateID, docTemplateRet.DocTemplateID);
-
-                    BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
-
-                    // Post to return newly added DocTemplate
-                    docTemplateRet.DocTemplateID = 0;
-                    docTemplateController.Request = new System.Net.Http.HttpRequestMessage();
-                    docTemplateController.Request.RequestUri = new System.Uri("http://localhost:5000/api/docTemplate");
-                    IHttpActionResult jsonRet3 = docTemplateController.Post(docTemplateRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet3);
-
-                    CreatedNegotiatedContentResult<DocTemplate> docTemplateRet3 = jsonRet3 as CreatedNegotiatedContentResult<DocTemplate>;
-                    Assert.IsNotNull(docTemplateRet3);
-                    DocTemplate docTemplate = docTemplateRet3.Content;
-
-                    BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest3);
-
-                    // Delete to return success
-                    IHttpActionResult jsonRet2 = docTemplateController.Delete(docTemplateRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet2);
-
-                    OkNegotiatedContentResult<DocTemplate> docTemplateRet2 = jsonRet2 as OkNegotiatedContentResult<DocTemplate>;
-                    Assert.IsNotNull(docTemplateRet2);
-
-                    BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest2);
-
-                    // Delete to return CSSPError because DocTemplateID of 0 does not exist
-                    docTemplateRet.DocTemplateID = 0;
-                    IHttpActionResult jsonRet4 = docTemplateController.Delete(docTemplateRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet4);
-
-                    OkNegotiatedContentResult<DocTemplate> docTemplateRet4 = jsonRet4 as OkNegotiatedContentResult<DocTemplate>;
-                    Assert.IsNull(docTemplateRet4);
-
-                    BadRequestErrorMessageResult badRequest4 = jsonRet4 as BadRequestErrorMessageResult;
-                    Assert.IsNotNull(badRequest4);
-                }
-            }
-        }
-        #endregion Tests Generated for Class Controller Delete Command
-
+        #endregion Functions private
     }
 }

@@ -1,143 +1,70 @@
-using CSSPEnums;
 using CSSPModels;
 using CSSPServices;
-using System;
+using LoggedInServices.Services;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web.Http;
+using System.Threading.Tasks;
 
 namespace CSSPWebAPI.Controllers
 {
-    [RoutePrefix("api/contactShortcut")]
-    public partial class ContactShortcutController : BaseController
+    public partial interface IContactShortcutController
+    {
+        Task<ActionResult<List<ContactShortcut>>> Get();
+        Task<ActionResult<ContactShortcut>> Get(int ContactShortcutID);
+        Task<ActionResult<ContactShortcut>> Post(ContactShortcut contactShortcut);
+        Task<ActionResult<ContactShortcut>> Put(ContactShortcut contactShortcut);
+        Task<ActionResult<ContactShortcut>> Delete(ContactShortcut contactShortcut);
+    }
+
+    [Route("api/{culture}/[controller]")]
+    [ApiController]
+    [Authorize]
+    public partial class ContactShortcutController : ControllerBase, IContactShortcutController
     {
         #region Variables
         #endregion Variables
 
         #region Properties
+        private IContactShortcutService contactShortcutService { get; }
+        private CSSPDBContext db { get; }
+        private ILoggedInService loggedInService { get; }
         #endregion Properties
 
         #region Constructors
-        public ContactShortcutController() : base()
+        public ContactShortcutController(IContactShortcutService contactShortcutService, CSSPDBContext db, ILoggedInService loggedInService)
         {
-        }
-        public ContactShortcutController(DatabaseTypeEnum dbt = DatabaseTypeEnum.SqlServerTestDB) : base(dbt)
-        {
+            this.contactShortcutService = contactShortcutService;
+            this.db = db;
+            this.loggedInService = loggedInService;
         }
         #endregion Constructors
 
         #region Functions public
-        // GET api/contactShortcut
-        [Route("")]
-        public IHttpActionResult GetContactShortcutList([FromUri]string lang = "en", [FromUri]int skip = 0, [FromUri]int take = 200,
-            [FromUri]string asc = "", [FromUri]string desc = "", [FromUri]string where = "", [FromUri]string extra = "")
+        [HttpGet]
+        public async Task<ActionResult<List<ContactShortcut>>> Get()
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                ContactShortcutService contactShortcutService = new ContactShortcutService(new Query() { Lang = lang }, db, ContactID);
-
-                else // QueryString has no parameter [extra] or extra is empty
-                {
-                   contactShortcutService.Query = contactShortcutService.FillQuery(typeof(ContactShortcut), lang, skip, take, asc, desc, where, extra);
-
-                    if (contactShortcutService.Query.HasErrors)
-                    {
-                        return Ok(new List<ContactShortcut>()
-                        {
-                            new ContactShortcut()
-                            {
-                                HasErrors = contactShortcutService.Query.HasErrors,
-                                ValidationResults = contactShortcutService.Query.ValidationResults,
-                            },
-                        }.ToList());
-                    }
-                    else
-                    {
-                        return Ok(contactShortcutService.GetContactShortcutList().ToList());
-                    }
-                }
-            }
+            return await contactShortcutService.GetContactShortcutList();
         }
-        // GET api/contactShortcut/1
-        [Route("{ContactShortcutID:int}")]
-        public IHttpActionResult GetContactShortcutWithID([FromUri]int ContactShortcutID, [FromUri]string lang = "en", [FromUri]string extra = "")
+        [HttpGet("{ContactShortcutID}")]
+        public async Task<ActionResult<ContactShortcut>> Get(int ContactShortcutID)
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                ContactShortcutService contactShortcutService = new ContactShortcutService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
-
-                contactShortcutService.Query = contactShortcutService.FillQuery(typeof(ContactShortcut), lang, 0, 1, "", "", extra);
-
-                else
-                {
-                    ContactShortcut contactShortcut = new ContactShortcut();
-                    contactShortcut = contactShortcutService.GetContactShortcutWithContactShortcutID(ContactShortcutID);
-
-                    if (contactShortcut == null)
-                    {
-                        return NotFound();
-                    }
-
-                    return Ok(contactShortcut);
-                }
-            }
+            return await contactShortcutService.GetContactShortcutWithContactShortcutID(ContactShortcutID);
         }
-        // POST api/contactShortcut
-        [Route("")]
-        public IHttpActionResult Post([FromBody]ContactShortcut contactShortcut, [FromUri]string lang = "en")
+        [HttpPost]
+        public async Task<ActionResult<ContactShortcut>> Post(ContactShortcut contactShortcut)
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                ContactShortcutService contactShortcutService = new ContactShortcutService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
-
-                if (!contactShortcutService.Add(contactShortcut))
-                {
-                    return BadRequest(String.Join("|||", contactShortcut.ValidationResults));
-                }
-                else
-                {
-                    contactShortcut.ValidationResults = null;
-                    return Created<ContactShortcut>(new Uri(Request.RequestUri, contactShortcut.ContactShortcutID.ToString()), contactShortcut);
-                }
-            }
+            return await contactShortcutService.Add(contactShortcut);
         }
-        // PUT api/contactShortcut
-        [Route("")]
-        public IHttpActionResult Put([FromBody]ContactShortcut contactShortcut, [FromUri]string lang = "en")
+        [HttpPut]
+        public async Task<ActionResult<ContactShortcut>> Put(ContactShortcut contactShortcut)
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                ContactShortcutService contactShortcutService = new ContactShortcutService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
-
-                if (!contactShortcutService.Update(contactShortcut))
-                {
-                    return BadRequest(String.Join("|||", contactShortcut.ValidationResults));
-                }
-                else
-                {
-                    contactShortcut.ValidationResults = null;
-                    return Ok(contactShortcut);
-                }
-            }
+            return await contactShortcutService.Update(contactShortcut);
         }
-        // DELETE api/contactShortcut
-        [Route("")]
-        public IHttpActionResult Delete([FromBody]ContactShortcut contactShortcut, [FromUri]string lang = "en")
+        [HttpDelete]
+        public async Task<ActionResult<ContactShortcut>> Delete(ContactShortcut contactShortcut)
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                ContactShortcutService contactShortcutService = new ContactShortcutService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
-
-                if (!contactShortcutService.Delete(contactShortcut))
-                {
-                    return BadRequest(String.Join("|||", contactShortcut.ValidationResults));
-                }
-                else
-                {
-                    contactShortcut.ValidationResults = null;
-                    return Ok(contactShortcut);
-                }
-            }
+            return await contactShortcutService.Delete(contactShortcut);
         }
         #endregion Functions public
 

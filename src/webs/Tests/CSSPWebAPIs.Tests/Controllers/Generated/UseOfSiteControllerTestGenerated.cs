@@ -2,350 +2,157 @@ using CSSPEnums;
 using CSSPModels;
 using CSSPServices;
 using CSSPWebAPI.Controllers;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using LoggedInServices.Services;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using System;
 using System.Collections.Generic;
+using System.Globalization;
+using System.IO;
 using System.Linq;
-using System.Web.Http;
-using System.Web.Http.Results;
+using System.Threading.Tasks;
+using System.Transactions;
+using UserServices.Models;
+using Xunit;
 
-namespace CSSPWebAPI.Tests.Controllers
+namespace CSSPWebAPIs.Tests.Controllers
 {
-    [TestClass]
-    public partial class UseOfSiteControllerTest : BaseControllerTest
+    public partial class UseOfSiteControllerTest
     {
         #region Variables
         #endregion Variables
 
         #region Properties
+        private IConfiguration Config { get; set; }
+        private IServiceProvider Provider { get; set; }
+        private IServiceCollection Services { get; set; }
+        private CSSPDBContext db { get; set; }
+        private ILoggedInService loggedInService { get; set; }
+        private IUseOfSiteService useOfSiteService { get; set; }
+        private IUseOfSiteController useOfSiteController { get; set; }
         #endregion Properties
 
         #region Constructors
-        public UseOfSiteControllerTest() : base()
+        public UseOfSiteControllerTest()
         {
         }
         #endregion Constructors
 
-        #region Tests Generated for Class Controller GetList Command
-        [TestMethod]
-        public void UseOfSite_Controller_GetUseOfSiteList_Test()
+        #region Functions public
+        [Theory]
+        [InlineData("en-CA")]
+        [InlineData("fr-CA")]
+        public async Task UseOfSiteController_Constructor_Good_Test(string culture)
         {
-            foreach (LanguageEnum LanguageRequest in AllowableLanguages)
+            bool retBool = await Setup(new CultureInfo(culture));
+            Assert.True(retBool);
+            Assert.NotNull(loggedInService);
+            Assert.NotNull(useOfSiteService);
+            Assert.NotNull(useOfSiteController);
+        }
+        [Theory]
+        [InlineData("en-CA")]
+        [InlineData("fr-CA")]
+        public async Task UseOfSiteController_CRUD_Good_Test(string culture)
+        {
+            bool retBool = await Setup(new CultureInfo(culture));
+            Assert.True(retBool);
+
+            using (TransactionScope ts = new TransactionScope())
             {
-                foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
-                {
-                    UseOfSiteController useOfSiteController = new UseOfSiteController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(useOfSiteController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, useOfSiteController.DatabaseType);
+                // testing Get
+               var actionUseOfSiteList = await useOfSiteController.Get();
+               Assert.Equal(200, ((ObjectResult)actionUseOfSiteList.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionUseOfSiteList.Result).Value);
+               List<UseOfSite> useOfSiteList = (List<UseOfSite>)(((OkObjectResult)actionUseOfSiteList.Result).Value);
 
-                    UseOfSite useOfSiteFirst = new UseOfSite();
-                    int count = -1;
-                    Query query = new Query();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseTypeEnum.SqlServerTestDB))
-                    {
-                        UseOfSiteService useOfSiteService = new UseOfSiteService(query, db, ContactID);
-                        useOfSiteFirst = (from c in db.UseOfSites select c).FirstOrDefault();
-                        count = (from c in db.UseOfSites select c).Count();
-                        count = (query.Take > count ? count : query.Take);
-                    }
+               int count = ((List<UseOfSite>)((OkObjectResult)actionUseOfSiteList.Result).Value).Count();
+                Assert.True(count > 0);
 
-                    // ok with UseOfSite info
-                    IHttpActionResult jsonRet = useOfSiteController.GetUseOfSiteList();
-                    Assert.IsNotNull(jsonRet);
+               // testing Get(UseOfSiteID)
+               var actionUseOfSite = await useOfSiteController.Get(useOfSiteList[0].UseOfSiteID);
+               Assert.Equal(200, ((ObjectResult)actionUseOfSite.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionUseOfSite.Result).Value);
+               UseOfSite useOfSite = (UseOfSite)(((OkObjectResult)actionUseOfSite.Result).Value);
+               Assert.NotNull(useOfSite);
+               Assert.Equal(useOfSiteList[0].UseOfSiteID, useOfSite.UseOfSiteID);
 
-                    OkNegotiatedContentResult<List<UseOfSite>> ret = jsonRet as OkNegotiatedContentResult<List<UseOfSite>>;
-                    Assert.AreEqual(useOfSiteFirst.UseOfSiteID, ret.Content[0].UseOfSiteID);
-                    Assert.AreEqual((count > query.Take ? query.Take : count), ret.Content.Count);
+               // testing Post(UseOfSite useOfSite)
+               useOfSite.UseOfSiteID = 0;
+               var actionUseOfSiteNew = await useOfSiteController.Post(useOfSite);
+               Assert.Equal(200, ((ObjectResult)actionUseOfSiteNew.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionUseOfSiteNew.Result).Value);
+               UseOfSite useOfSiteNew = (UseOfSite)(((OkObjectResult)actionUseOfSiteNew.Result).Value);
+               Assert.NotNull(useOfSiteNew);
 
-                    List<UseOfSite> useOfSiteList = new List<UseOfSite>();
-                    count = -1;
-                    query = new Query();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseTypeEnum.SqlServerTestDB))
-                    {
-                        UseOfSiteService useOfSiteService = new UseOfSiteService(query, db, ContactID);
-                        useOfSiteList = (from c in db.UseOfSites select c).OrderBy(c => c.UseOfSiteID).Skip(0).Take(2).ToList();
-                        count = (from c in db.UseOfSites select c).Count();
-                    }
+               // testing Put(UseOfSite useOfSite)
+               var actionUseOfSiteUpdate = await useOfSiteController.Put(useOfSiteNew);
+               Assert.Equal(200, ((ObjectResult)actionUseOfSiteUpdate.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionUseOfSiteUpdate.Result).Value);
+               UseOfSite useOfSiteUpdate = (UseOfSite)(((OkObjectResult)actionUseOfSiteUpdate.Result).Value);
+               Assert.NotNull(useOfSiteUpdate);
 
-                    if (count > 0)
-                    {
-                        query.Skip = 0;
-                        query.Take = 5;
-                        count = (query.Take > count ? query.Take : count);
-
-                        // ok with UseOfSite info
-                        jsonRet = useOfSiteController.GetUseOfSiteList(query.Language.ToString(), query.Skip, query.Take);
-                        Assert.IsNotNull(jsonRet);
-
-                        ret = jsonRet as OkNegotiatedContentResult<List<UseOfSite>>;
-                        Assert.AreEqual(useOfSiteList[0].UseOfSiteID, ret.Content[0].UseOfSiteID);
-                        Assert.AreEqual((count > query.Take ? query.Take : count), ret.Content.Count);
-
-                       if (count > 1)
-                       {
-                           query.Skip = 1;
-                           query.Take = 5;
-                           count = (query.Take > count ? query.Take : count);
-
-                           // ok with UseOfSite info
-                           IHttpActionResult jsonRet2 = useOfSiteController.GetUseOfSiteList(query.Language.ToString(), query.Skip, query.Take);
-                           Assert.IsNotNull(jsonRet2);
-
-                           OkNegotiatedContentResult<List<UseOfSite>> ret2 = jsonRet2 as OkNegotiatedContentResult<List<UseOfSite>>;
-                           Assert.AreEqual(useOfSiteList[1].UseOfSiteID, ret2.Content[0].UseOfSiteID);
-                           Assert.AreEqual((count > query.Take ? query.Take : count), ret2.Content.Count);
-                       }
-                    }
-                }
+               // testing Delete(UseOfSite useOfSite)
+               var actionUseOfSiteDelete = await useOfSiteController.Delete(useOfSiteUpdate);
+               Assert.Equal(200, ((ObjectResult)actionUseOfSiteDelete.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionUseOfSiteDelete.Result).Value);
+               UseOfSite useOfSiteDelete = (UseOfSite)(((OkObjectResult)actionUseOfSiteDelete.Result).Value);
+               Assert.NotNull(useOfSiteDelete);
             }
         }
-        #endregion Tests Generated for Class Controller GetList Command
+        #endregion Functions public
 
-        #region Tests Generated for Class Controller GetWithID Command
-        [TestMethod]
-        public void UseOfSite_Controller_GetUseOfSiteWithID_Test()
+        #region Functions private
+        private async Task<bool> Setup(CultureInfo culture)
         {
-            foreach (LanguageEnum LanguageRequest in AllowableLanguages)
+            Config = new ConfigurationBuilder()
+               .SetBasePath(Directory.GetParent(AppContext.BaseDirectory).FullName)
+               .AddJsonFile("appsettings.json")
+               .Build();
+        
+            Services = new ServiceCollection();
+        
+            IConfigurationSection connectionStringsSection = Config.GetSection("ConnectionStrings");
+            Services.Configure<ConnectionStringsModel>(connectionStringsSection);
+        
+            ConnectionStringsModel connectionStrings = connectionStringsSection.Get<ConnectionStringsModel>();
+        
+            Services.AddSingleton<IConfiguration>(Config);
+        
+            Services.AddDbContext<CSSPDBContext>(options =>
             {
-                foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
-                {
-                    UseOfSiteController useOfSiteController = new UseOfSiteController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(useOfSiteController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, useOfSiteController.DatabaseType);
-
-                    UseOfSite useOfSiteFirst = new UseOfSite();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-                    {
-                        UseOfSiteService useOfSiteService = new UseOfSiteService(new Query(), db, ContactID);
-                        useOfSiteFirst = (from c in db.UseOfSites select c).FirstOrDefault();
-                    }
-
-                    // ok with UseOfSite info
-                    IHttpActionResult jsonRet = useOfSiteController.GetUseOfSiteWithID(useOfSiteFirst.UseOfSiteID);
-                    Assert.IsNotNull(jsonRet);
-
-                    OkNegotiatedContentResult<UseOfSite> Ret = jsonRet as OkNegotiatedContentResult<UseOfSite>;
-                    UseOfSite useOfSiteRet = Ret.Content;
-                    Assert.AreEqual(useOfSiteFirst.UseOfSiteID, useOfSiteRet.UseOfSiteID);
-
-                    BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
-
-                    // Not Found
-                    IHttpActionResult jsonRet2 = useOfSiteController.GetUseOfSiteWithID(0);
-                    Assert.IsNotNull(jsonRet2);
-
-                    OkNegotiatedContentResult<UseOfSite> useOfSiteRet2 = jsonRet2 as OkNegotiatedContentResult<UseOfSite>;
-                    Assert.IsNull(useOfSiteRet2);
-
-                    NotFoundResult notFoundRequest = jsonRet2 as NotFoundResult;
-                    Assert.IsNotNull(notFoundRequest);
-                }
-            }
+                options.UseSqlServer(connectionStrings.TestDB);
+            });
+        
+            Services.AddDbContext<ApplicationDbContext>(options =>
+                options.UseSqlServer(connectionStrings.TestDB));
+        
+            Services.AddIdentityCore<ApplicationUser>()
+                .AddEntityFrameworkStores<ApplicationDbContext>();
+        
+            Services.AddSingleton<IEnums, Enums>();
+            Services.AddSingleton<ILoggedInService, LoggedInService>();
+            Services.AddSingleton<IUseOfSiteService, UseOfSiteService>();
+            Services.AddSingleton<IUseOfSiteController, UseOfSiteController>();
+        
+            Provider = Services.BuildServiceProvider();
+            Assert.NotNull(Provider);
+        
+            loggedInService = Provider.GetService<ILoggedInService>();
+            Assert.NotNull(loggedInService);
+        
+            useOfSiteService = Provider.GetService<IUseOfSiteService>();
+            Assert.NotNull(useOfSiteService);
+        
+            await useOfSiteService.SetCulture(culture);
+        
+            useOfSiteController = Provider.GetService<IUseOfSiteController>();
+            Assert.NotNull(useOfSiteController);
+        
+            return await Task.FromResult(true);
         }
-        #endregion Tests Generated for Class Controller GetWithID Command
-
-        #region Tests Generated for Class Controller Post Command
-        [TestMethod]
-        public void UseOfSite_Controller_Post_Test()
-        {
-            foreach (LanguageEnum LanguageRequest in AllowableLanguages)
-            {
-                foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
-                {
-                    UseOfSiteController useOfSiteController = new UseOfSiteController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(useOfSiteController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, useOfSiteController.DatabaseType);
-
-                    UseOfSite useOfSiteLast = new UseOfSite();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-                    {
-                        Query query = new Query();
-                        query.Language = LanguageRequest;
-                        query.Asc = "";
-                        query.Desc = "";
-
-                        UseOfSiteService useOfSiteService = new UseOfSiteService(query, db, ContactID);
-                        useOfSiteLast = (from c in db.UseOfSites select c).FirstOrDefault();
-                    }
-
-                    // ok with UseOfSite info
-                    IHttpActionResult jsonRet = useOfSiteController.GetUseOfSiteWithID(useOfSiteLast.UseOfSiteID);
-                    Assert.IsNotNull(jsonRet);
-
-                    OkNegotiatedContentResult<UseOfSite> Ret = jsonRet as OkNegotiatedContentResult<UseOfSite>;
-                    UseOfSite useOfSiteRet = Ret.Content;
-                    Assert.AreEqual(useOfSiteLast.UseOfSiteID, useOfSiteRet.UseOfSiteID);
-
-                    BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
-
-                    // Post to return CSSPError because UseOfSiteID exist
-                    IHttpActionResult jsonRet2 = useOfSiteController.Post(useOfSiteRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet2);
-
-                    OkNegotiatedContentResult<UseOfSite> useOfSiteRet2 = jsonRet2 as OkNegotiatedContentResult<UseOfSite>;
-                    Assert.IsNull(useOfSiteRet2);
-
-                    BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
-                    Assert.IsNotNull(badRequest2);
-
-                    // Post to return newly added UseOfSite
-                    useOfSiteRet.UseOfSiteID = 0;
-                    useOfSiteController.Request = new System.Net.Http.HttpRequestMessage();
-                    useOfSiteController.Request.RequestUri = new System.Uri("http://localhost:5000/api/useOfSite");
-                    IHttpActionResult jsonRet3 = useOfSiteController.Post(useOfSiteRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet3);
-
-                    CreatedNegotiatedContentResult<UseOfSite> useOfSiteRet3 = jsonRet3 as CreatedNegotiatedContentResult<UseOfSite>;
-                    Assert.IsNotNull(useOfSiteRet3);
-
-                    BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest3);
-
-                    IHttpActionResult jsonRet4 = useOfSiteController.Delete(useOfSiteRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet4);
-
-                    OkNegotiatedContentResult<UseOfSite> useOfSiteRet4 = jsonRet4 as OkNegotiatedContentResult<UseOfSite>;
-                    Assert.IsNotNull(useOfSiteRet4);
-
-                    BadRequestErrorMessageResult badRequest4 = jsonRet4 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest4);
-                }
-            }
-        }
-        #endregion Tests Generated for Class Controller Post Command
-
-        #region Tests Generated for Class Controller Put Command
-        [TestMethod]
-        public void UseOfSite_Controller_Put_Test()
-        {
-            foreach (LanguageEnum LanguageRequest in AllowableLanguages)
-            {
-                foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
-                {
-                    UseOfSiteController useOfSiteController = new UseOfSiteController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(useOfSiteController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, useOfSiteController.DatabaseType);
-
-                    UseOfSite useOfSiteLast = new UseOfSite();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-                    {
-                        Query query = new Query();
-                        query.Language = LanguageRequest;
-
-                        UseOfSiteService useOfSiteService = new UseOfSiteService(query, db, ContactID);
-                        useOfSiteLast = (from c in db.UseOfSites select c).FirstOrDefault();
-                    }
-
-                    // ok with UseOfSite info
-                    IHttpActionResult jsonRet = useOfSiteController.GetUseOfSiteWithID(useOfSiteLast.UseOfSiteID);
-                    Assert.IsNotNull(jsonRet);
-
-                    OkNegotiatedContentResult<UseOfSite> Ret = jsonRet as OkNegotiatedContentResult<UseOfSite>;
-                    UseOfSite useOfSiteRet = Ret.Content;
-                    Assert.AreEqual(useOfSiteLast.UseOfSiteID, useOfSiteRet.UseOfSiteID);
-
-                    BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
-
-                    // Put to return success
-                    IHttpActionResult jsonRet2 = useOfSiteController.Put(useOfSiteRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet2);
-
-                    OkNegotiatedContentResult<UseOfSite> useOfSiteRet2 = jsonRet2 as OkNegotiatedContentResult<UseOfSite>;
-                    Assert.IsNotNull(useOfSiteRet2);
-
-                    BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest2);
-
-                    // Put to return CSSPError because UseOfSiteID of 0 does not exist
-                    useOfSiteRet.UseOfSiteID = 0;
-                    IHttpActionResult jsonRet3 = useOfSiteController.Put(useOfSiteRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet3);
-
-                    OkNegotiatedContentResult<UseOfSite> useOfSiteRet3 = jsonRet3 as OkNegotiatedContentResult<UseOfSite>;
-                    Assert.IsNull(useOfSiteRet3);
-
-                    BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
-                    Assert.IsNotNull(badRequest3);
-                }
-            }
-        }
-        #endregion Tests Generated for Class Controller Put Command
-
-        #region Tests Generated for Class Controller Delete Command
-        [TestMethod]
-        public void UseOfSite_Controller_Delete_Test()
-        {
-            foreach (LanguageEnum LanguageRequest in AllowableLanguages)
-            {
-                foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
-                {
-                    UseOfSiteController useOfSiteController = new UseOfSiteController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(useOfSiteController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, useOfSiteController.DatabaseType);
-
-                    UseOfSite useOfSiteLast = new UseOfSite();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-                    {
-                        Query query = new Query();
-                        query.Language = LanguageRequest;
-                        query.Asc = "";
-                        query.Desc = "";
-
-                        UseOfSiteService useOfSiteService = new UseOfSiteService(query, db, ContactID);
-                        useOfSiteLast = (from c in db.UseOfSites select c).FirstOrDefault();
-                    }
-
-                    // ok with UseOfSite info
-                    IHttpActionResult jsonRet = useOfSiteController.GetUseOfSiteWithID(useOfSiteLast.UseOfSiteID);
-                    Assert.IsNotNull(jsonRet);
-
-                    OkNegotiatedContentResult<UseOfSite> Ret = jsonRet as OkNegotiatedContentResult<UseOfSite>;
-                    UseOfSite useOfSiteRet = Ret.Content;
-                    Assert.AreEqual(useOfSiteLast.UseOfSiteID, useOfSiteRet.UseOfSiteID);
-
-                    BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
-
-                    // Post to return newly added UseOfSite
-                    useOfSiteRet.UseOfSiteID = 0;
-                    useOfSiteController.Request = new System.Net.Http.HttpRequestMessage();
-                    useOfSiteController.Request.RequestUri = new System.Uri("http://localhost:5000/api/useOfSite");
-                    IHttpActionResult jsonRet3 = useOfSiteController.Post(useOfSiteRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet3);
-
-                    CreatedNegotiatedContentResult<UseOfSite> useOfSiteRet3 = jsonRet3 as CreatedNegotiatedContentResult<UseOfSite>;
-                    Assert.IsNotNull(useOfSiteRet3);
-                    UseOfSite useOfSite = useOfSiteRet3.Content;
-
-                    BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest3);
-
-                    // Delete to return success
-                    IHttpActionResult jsonRet2 = useOfSiteController.Delete(useOfSiteRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet2);
-
-                    OkNegotiatedContentResult<UseOfSite> useOfSiteRet2 = jsonRet2 as OkNegotiatedContentResult<UseOfSite>;
-                    Assert.IsNotNull(useOfSiteRet2);
-
-                    BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest2);
-
-                    // Delete to return CSSPError because UseOfSiteID of 0 does not exist
-                    useOfSiteRet.UseOfSiteID = 0;
-                    IHttpActionResult jsonRet4 = useOfSiteController.Delete(useOfSiteRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet4);
-
-                    OkNegotiatedContentResult<UseOfSite> useOfSiteRet4 = jsonRet4 as OkNegotiatedContentResult<UseOfSite>;
-                    Assert.IsNull(useOfSiteRet4);
-
-                    BadRequestErrorMessageResult badRequest4 = jsonRet4 as BadRequestErrorMessageResult;
-                    Assert.IsNotNull(badRequest4);
-                }
-            }
-        }
-        #endregion Tests Generated for Class Controller Delete Command
-
+        #endregion Functions private
     }
 }

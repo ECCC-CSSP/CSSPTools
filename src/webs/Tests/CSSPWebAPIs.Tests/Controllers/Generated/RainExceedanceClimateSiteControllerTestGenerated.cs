@@ -2,350 +2,157 @@ using CSSPEnums;
 using CSSPModels;
 using CSSPServices;
 using CSSPWebAPI.Controllers;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using LoggedInServices.Services;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using System;
 using System.Collections.Generic;
+using System.Globalization;
+using System.IO;
 using System.Linq;
-using System.Web.Http;
-using System.Web.Http.Results;
+using System.Threading.Tasks;
+using System.Transactions;
+using UserServices.Models;
+using Xunit;
 
-namespace CSSPWebAPI.Tests.Controllers
+namespace CSSPWebAPIs.Tests.Controllers
 {
-    [TestClass]
-    public partial class RainExceedanceClimateSiteControllerTest : BaseControllerTest
+    public partial class RainExceedanceClimateSiteControllerTest
     {
         #region Variables
         #endregion Variables
 
         #region Properties
+        private IConfiguration Config { get; set; }
+        private IServiceProvider Provider { get; set; }
+        private IServiceCollection Services { get; set; }
+        private CSSPDBContext db { get; set; }
+        private ILoggedInService loggedInService { get; set; }
+        private IRainExceedanceClimateSiteService rainExceedanceClimateSiteService { get; set; }
+        private IRainExceedanceClimateSiteController rainExceedanceClimateSiteController { get; set; }
         #endregion Properties
 
         #region Constructors
-        public RainExceedanceClimateSiteControllerTest() : base()
+        public RainExceedanceClimateSiteControllerTest()
         {
         }
         #endregion Constructors
 
-        #region Tests Generated for Class Controller GetList Command
-        [TestMethod]
-        public void RainExceedanceClimateSite_Controller_GetRainExceedanceClimateSiteList_Test()
+        #region Functions public
+        [Theory]
+        [InlineData("en-CA")]
+        [InlineData("fr-CA")]
+        public async Task RainExceedanceClimateSiteController_Constructor_Good_Test(string culture)
         {
-            foreach (LanguageEnum LanguageRequest in AllowableLanguages)
+            bool retBool = await Setup(new CultureInfo(culture));
+            Assert.True(retBool);
+            Assert.NotNull(loggedInService);
+            Assert.NotNull(rainExceedanceClimateSiteService);
+            Assert.NotNull(rainExceedanceClimateSiteController);
+        }
+        [Theory]
+        [InlineData("en-CA")]
+        [InlineData("fr-CA")]
+        public async Task RainExceedanceClimateSiteController_CRUD_Good_Test(string culture)
+        {
+            bool retBool = await Setup(new CultureInfo(culture));
+            Assert.True(retBool);
+
+            using (TransactionScope ts = new TransactionScope())
             {
-                foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
-                {
-                    RainExceedanceClimateSiteController rainExceedanceClimateSiteController = new RainExceedanceClimateSiteController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(rainExceedanceClimateSiteController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, rainExceedanceClimateSiteController.DatabaseType);
+                // testing Get
+               var actionRainExceedanceClimateSiteList = await rainExceedanceClimateSiteController.Get();
+               Assert.Equal(200, ((ObjectResult)actionRainExceedanceClimateSiteList.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionRainExceedanceClimateSiteList.Result).Value);
+               List<RainExceedanceClimateSite> rainExceedanceClimateSiteList = (List<RainExceedanceClimateSite>)(((OkObjectResult)actionRainExceedanceClimateSiteList.Result).Value);
 
-                    RainExceedanceClimateSite rainExceedanceClimateSiteFirst = new RainExceedanceClimateSite();
-                    int count = -1;
-                    Query query = new Query();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseTypeEnum.SqlServerTestDB))
-                    {
-                        RainExceedanceClimateSiteService rainExceedanceClimateSiteService = new RainExceedanceClimateSiteService(query, db, ContactID);
-                        rainExceedanceClimateSiteFirst = (from c in db.RainExceedanceClimateSites select c).FirstOrDefault();
-                        count = (from c in db.RainExceedanceClimateSites select c).Count();
-                        count = (query.Take > count ? count : query.Take);
-                    }
+               int count = ((List<RainExceedanceClimateSite>)((OkObjectResult)actionRainExceedanceClimateSiteList.Result).Value).Count();
+                Assert.True(count > 0);
 
-                    // ok with RainExceedanceClimateSite info
-                    IHttpActionResult jsonRet = rainExceedanceClimateSiteController.GetRainExceedanceClimateSiteList();
-                    Assert.IsNotNull(jsonRet);
+               // testing Get(RainExceedanceClimateSiteID)
+               var actionRainExceedanceClimateSite = await rainExceedanceClimateSiteController.Get(rainExceedanceClimateSiteList[0].RainExceedanceClimateSiteID);
+               Assert.Equal(200, ((ObjectResult)actionRainExceedanceClimateSite.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionRainExceedanceClimateSite.Result).Value);
+               RainExceedanceClimateSite rainExceedanceClimateSite = (RainExceedanceClimateSite)(((OkObjectResult)actionRainExceedanceClimateSite.Result).Value);
+               Assert.NotNull(rainExceedanceClimateSite);
+               Assert.Equal(rainExceedanceClimateSiteList[0].RainExceedanceClimateSiteID, rainExceedanceClimateSite.RainExceedanceClimateSiteID);
 
-                    OkNegotiatedContentResult<List<RainExceedanceClimateSite>> ret = jsonRet as OkNegotiatedContentResult<List<RainExceedanceClimateSite>>;
-                    Assert.AreEqual(rainExceedanceClimateSiteFirst.RainExceedanceClimateSiteID, ret.Content[0].RainExceedanceClimateSiteID);
-                    Assert.AreEqual((count > query.Take ? query.Take : count), ret.Content.Count);
+               // testing Post(RainExceedanceClimateSite rainExceedanceClimateSite)
+               rainExceedanceClimateSite.RainExceedanceClimateSiteID = 0;
+               var actionRainExceedanceClimateSiteNew = await rainExceedanceClimateSiteController.Post(rainExceedanceClimateSite);
+               Assert.Equal(200, ((ObjectResult)actionRainExceedanceClimateSiteNew.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionRainExceedanceClimateSiteNew.Result).Value);
+               RainExceedanceClimateSite rainExceedanceClimateSiteNew = (RainExceedanceClimateSite)(((OkObjectResult)actionRainExceedanceClimateSiteNew.Result).Value);
+               Assert.NotNull(rainExceedanceClimateSiteNew);
 
-                    List<RainExceedanceClimateSite> rainExceedanceClimateSiteList = new List<RainExceedanceClimateSite>();
-                    count = -1;
-                    query = new Query();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseTypeEnum.SqlServerTestDB))
-                    {
-                        RainExceedanceClimateSiteService rainExceedanceClimateSiteService = new RainExceedanceClimateSiteService(query, db, ContactID);
-                        rainExceedanceClimateSiteList = (from c in db.RainExceedanceClimateSites select c).OrderBy(c => c.RainExceedanceClimateSiteID).Skip(0).Take(2).ToList();
-                        count = (from c in db.RainExceedanceClimateSites select c).Count();
-                    }
+               // testing Put(RainExceedanceClimateSite rainExceedanceClimateSite)
+               var actionRainExceedanceClimateSiteUpdate = await rainExceedanceClimateSiteController.Put(rainExceedanceClimateSiteNew);
+               Assert.Equal(200, ((ObjectResult)actionRainExceedanceClimateSiteUpdate.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionRainExceedanceClimateSiteUpdate.Result).Value);
+               RainExceedanceClimateSite rainExceedanceClimateSiteUpdate = (RainExceedanceClimateSite)(((OkObjectResult)actionRainExceedanceClimateSiteUpdate.Result).Value);
+               Assert.NotNull(rainExceedanceClimateSiteUpdate);
 
-                    if (count > 0)
-                    {
-                        query.Skip = 0;
-                        query.Take = 5;
-                        count = (query.Take > count ? query.Take : count);
-
-                        // ok with RainExceedanceClimateSite info
-                        jsonRet = rainExceedanceClimateSiteController.GetRainExceedanceClimateSiteList(query.Language.ToString(), query.Skip, query.Take);
-                        Assert.IsNotNull(jsonRet);
-
-                        ret = jsonRet as OkNegotiatedContentResult<List<RainExceedanceClimateSite>>;
-                        Assert.AreEqual(rainExceedanceClimateSiteList[0].RainExceedanceClimateSiteID, ret.Content[0].RainExceedanceClimateSiteID);
-                        Assert.AreEqual((count > query.Take ? query.Take : count), ret.Content.Count);
-
-                       if (count > 1)
-                       {
-                           query.Skip = 1;
-                           query.Take = 5;
-                           count = (query.Take > count ? query.Take : count);
-
-                           // ok with RainExceedanceClimateSite info
-                           IHttpActionResult jsonRet2 = rainExceedanceClimateSiteController.GetRainExceedanceClimateSiteList(query.Language.ToString(), query.Skip, query.Take);
-                           Assert.IsNotNull(jsonRet2);
-
-                           OkNegotiatedContentResult<List<RainExceedanceClimateSite>> ret2 = jsonRet2 as OkNegotiatedContentResult<List<RainExceedanceClimateSite>>;
-                           Assert.AreEqual(rainExceedanceClimateSiteList[1].RainExceedanceClimateSiteID, ret2.Content[0].RainExceedanceClimateSiteID);
-                           Assert.AreEqual((count > query.Take ? query.Take : count), ret2.Content.Count);
-                       }
-                    }
-                }
+               // testing Delete(RainExceedanceClimateSite rainExceedanceClimateSite)
+               var actionRainExceedanceClimateSiteDelete = await rainExceedanceClimateSiteController.Delete(rainExceedanceClimateSiteUpdate);
+               Assert.Equal(200, ((ObjectResult)actionRainExceedanceClimateSiteDelete.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionRainExceedanceClimateSiteDelete.Result).Value);
+               RainExceedanceClimateSite rainExceedanceClimateSiteDelete = (RainExceedanceClimateSite)(((OkObjectResult)actionRainExceedanceClimateSiteDelete.Result).Value);
+               Assert.NotNull(rainExceedanceClimateSiteDelete);
             }
         }
-        #endregion Tests Generated for Class Controller GetList Command
+        #endregion Functions public
 
-        #region Tests Generated for Class Controller GetWithID Command
-        [TestMethod]
-        public void RainExceedanceClimateSite_Controller_GetRainExceedanceClimateSiteWithID_Test()
+        #region Functions private
+        private async Task<bool> Setup(CultureInfo culture)
         {
-            foreach (LanguageEnum LanguageRequest in AllowableLanguages)
+            Config = new ConfigurationBuilder()
+               .SetBasePath(Directory.GetParent(AppContext.BaseDirectory).FullName)
+               .AddJsonFile("appsettings.json")
+               .Build();
+        
+            Services = new ServiceCollection();
+        
+            IConfigurationSection connectionStringsSection = Config.GetSection("ConnectionStrings");
+            Services.Configure<ConnectionStringsModel>(connectionStringsSection);
+        
+            ConnectionStringsModel connectionStrings = connectionStringsSection.Get<ConnectionStringsModel>();
+        
+            Services.AddSingleton<IConfiguration>(Config);
+        
+            Services.AddDbContext<CSSPDBContext>(options =>
             {
-                foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
-                {
-                    RainExceedanceClimateSiteController rainExceedanceClimateSiteController = new RainExceedanceClimateSiteController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(rainExceedanceClimateSiteController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, rainExceedanceClimateSiteController.DatabaseType);
-
-                    RainExceedanceClimateSite rainExceedanceClimateSiteFirst = new RainExceedanceClimateSite();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-                    {
-                        RainExceedanceClimateSiteService rainExceedanceClimateSiteService = new RainExceedanceClimateSiteService(new Query(), db, ContactID);
-                        rainExceedanceClimateSiteFirst = (from c in db.RainExceedanceClimateSites select c).FirstOrDefault();
-                    }
-
-                    // ok with RainExceedanceClimateSite info
-                    IHttpActionResult jsonRet = rainExceedanceClimateSiteController.GetRainExceedanceClimateSiteWithID(rainExceedanceClimateSiteFirst.RainExceedanceClimateSiteID);
-                    Assert.IsNotNull(jsonRet);
-
-                    OkNegotiatedContentResult<RainExceedanceClimateSite> Ret = jsonRet as OkNegotiatedContentResult<RainExceedanceClimateSite>;
-                    RainExceedanceClimateSite rainExceedanceClimateSiteRet = Ret.Content;
-                    Assert.AreEqual(rainExceedanceClimateSiteFirst.RainExceedanceClimateSiteID, rainExceedanceClimateSiteRet.RainExceedanceClimateSiteID);
-
-                    BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
-
-                    // Not Found
-                    IHttpActionResult jsonRet2 = rainExceedanceClimateSiteController.GetRainExceedanceClimateSiteWithID(0);
-                    Assert.IsNotNull(jsonRet2);
-
-                    OkNegotiatedContentResult<RainExceedanceClimateSite> rainExceedanceClimateSiteRet2 = jsonRet2 as OkNegotiatedContentResult<RainExceedanceClimateSite>;
-                    Assert.IsNull(rainExceedanceClimateSiteRet2);
-
-                    NotFoundResult notFoundRequest = jsonRet2 as NotFoundResult;
-                    Assert.IsNotNull(notFoundRequest);
-                }
-            }
+                options.UseSqlServer(connectionStrings.TestDB);
+            });
+        
+            Services.AddDbContext<ApplicationDbContext>(options =>
+                options.UseSqlServer(connectionStrings.TestDB));
+        
+            Services.AddIdentityCore<ApplicationUser>()
+                .AddEntityFrameworkStores<ApplicationDbContext>();
+        
+            Services.AddSingleton<IEnums, Enums>();
+            Services.AddSingleton<ILoggedInService, LoggedInService>();
+            Services.AddSingleton<IRainExceedanceClimateSiteService, RainExceedanceClimateSiteService>();
+            Services.AddSingleton<IRainExceedanceClimateSiteController, RainExceedanceClimateSiteController>();
+        
+            Provider = Services.BuildServiceProvider();
+            Assert.NotNull(Provider);
+        
+            loggedInService = Provider.GetService<ILoggedInService>();
+            Assert.NotNull(loggedInService);
+        
+            rainExceedanceClimateSiteService = Provider.GetService<IRainExceedanceClimateSiteService>();
+            Assert.NotNull(rainExceedanceClimateSiteService);
+        
+            await rainExceedanceClimateSiteService.SetCulture(culture);
+        
+            rainExceedanceClimateSiteController = Provider.GetService<IRainExceedanceClimateSiteController>();
+            Assert.NotNull(rainExceedanceClimateSiteController);
+        
+            return await Task.FromResult(true);
         }
-        #endregion Tests Generated for Class Controller GetWithID Command
-
-        #region Tests Generated for Class Controller Post Command
-        [TestMethod]
-        public void RainExceedanceClimateSite_Controller_Post_Test()
-        {
-            foreach (LanguageEnum LanguageRequest in AllowableLanguages)
-            {
-                foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
-                {
-                    RainExceedanceClimateSiteController rainExceedanceClimateSiteController = new RainExceedanceClimateSiteController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(rainExceedanceClimateSiteController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, rainExceedanceClimateSiteController.DatabaseType);
-
-                    RainExceedanceClimateSite rainExceedanceClimateSiteLast = new RainExceedanceClimateSite();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-                    {
-                        Query query = new Query();
-                        query.Language = LanguageRequest;
-                        query.Asc = "";
-                        query.Desc = "";
-
-                        RainExceedanceClimateSiteService rainExceedanceClimateSiteService = new RainExceedanceClimateSiteService(query, db, ContactID);
-                        rainExceedanceClimateSiteLast = (from c in db.RainExceedanceClimateSites select c).FirstOrDefault();
-                    }
-
-                    // ok with RainExceedanceClimateSite info
-                    IHttpActionResult jsonRet = rainExceedanceClimateSiteController.GetRainExceedanceClimateSiteWithID(rainExceedanceClimateSiteLast.RainExceedanceClimateSiteID);
-                    Assert.IsNotNull(jsonRet);
-
-                    OkNegotiatedContentResult<RainExceedanceClimateSite> Ret = jsonRet as OkNegotiatedContentResult<RainExceedanceClimateSite>;
-                    RainExceedanceClimateSite rainExceedanceClimateSiteRet = Ret.Content;
-                    Assert.AreEqual(rainExceedanceClimateSiteLast.RainExceedanceClimateSiteID, rainExceedanceClimateSiteRet.RainExceedanceClimateSiteID);
-
-                    BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
-
-                    // Post to return CSSPError because RainExceedanceClimateSiteID exist
-                    IHttpActionResult jsonRet2 = rainExceedanceClimateSiteController.Post(rainExceedanceClimateSiteRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet2);
-
-                    OkNegotiatedContentResult<RainExceedanceClimateSite> rainExceedanceClimateSiteRet2 = jsonRet2 as OkNegotiatedContentResult<RainExceedanceClimateSite>;
-                    Assert.IsNull(rainExceedanceClimateSiteRet2);
-
-                    BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
-                    Assert.IsNotNull(badRequest2);
-
-                    // Post to return newly added RainExceedanceClimateSite
-                    rainExceedanceClimateSiteRet.RainExceedanceClimateSiteID = 0;
-                    rainExceedanceClimateSiteController.Request = new System.Net.Http.HttpRequestMessage();
-                    rainExceedanceClimateSiteController.Request.RequestUri = new System.Uri("http://localhost:5000/api/rainExceedanceClimateSite");
-                    IHttpActionResult jsonRet3 = rainExceedanceClimateSiteController.Post(rainExceedanceClimateSiteRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet3);
-
-                    CreatedNegotiatedContentResult<RainExceedanceClimateSite> rainExceedanceClimateSiteRet3 = jsonRet3 as CreatedNegotiatedContentResult<RainExceedanceClimateSite>;
-                    Assert.IsNotNull(rainExceedanceClimateSiteRet3);
-
-                    BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest3);
-
-                    IHttpActionResult jsonRet4 = rainExceedanceClimateSiteController.Delete(rainExceedanceClimateSiteRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet4);
-
-                    OkNegotiatedContentResult<RainExceedanceClimateSite> rainExceedanceClimateSiteRet4 = jsonRet4 as OkNegotiatedContentResult<RainExceedanceClimateSite>;
-                    Assert.IsNotNull(rainExceedanceClimateSiteRet4);
-
-                    BadRequestErrorMessageResult badRequest4 = jsonRet4 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest4);
-                }
-            }
-        }
-        #endregion Tests Generated for Class Controller Post Command
-
-        #region Tests Generated for Class Controller Put Command
-        [TestMethod]
-        public void RainExceedanceClimateSite_Controller_Put_Test()
-        {
-            foreach (LanguageEnum LanguageRequest in AllowableLanguages)
-            {
-                foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
-                {
-                    RainExceedanceClimateSiteController rainExceedanceClimateSiteController = new RainExceedanceClimateSiteController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(rainExceedanceClimateSiteController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, rainExceedanceClimateSiteController.DatabaseType);
-
-                    RainExceedanceClimateSite rainExceedanceClimateSiteLast = new RainExceedanceClimateSite();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-                    {
-                        Query query = new Query();
-                        query.Language = LanguageRequest;
-
-                        RainExceedanceClimateSiteService rainExceedanceClimateSiteService = new RainExceedanceClimateSiteService(query, db, ContactID);
-                        rainExceedanceClimateSiteLast = (from c in db.RainExceedanceClimateSites select c).FirstOrDefault();
-                    }
-
-                    // ok with RainExceedanceClimateSite info
-                    IHttpActionResult jsonRet = rainExceedanceClimateSiteController.GetRainExceedanceClimateSiteWithID(rainExceedanceClimateSiteLast.RainExceedanceClimateSiteID);
-                    Assert.IsNotNull(jsonRet);
-
-                    OkNegotiatedContentResult<RainExceedanceClimateSite> Ret = jsonRet as OkNegotiatedContentResult<RainExceedanceClimateSite>;
-                    RainExceedanceClimateSite rainExceedanceClimateSiteRet = Ret.Content;
-                    Assert.AreEqual(rainExceedanceClimateSiteLast.RainExceedanceClimateSiteID, rainExceedanceClimateSiteRet.RainExceedanceClimateSiteID);
-
-                    BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
-
-                    // Put to return success
-                    IHttpActionResult jsonRet2 = rainExceedanceClimateSiteController.Put(rainExceedanceClimateSiteRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet2);
-
-                    OkNegotiatedContentResult<RainExceedanceClimateSite> rainExceedanceClimateSiteRet2 = jsonRet2 as OkNegotiatedContentResult<RainExceedanceClimateSite>;
-                    Assert.IsNotNull(rainExceedanceClimateSiteRet2);
-
-                    BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest2);
-
-                    // Put to return CSSPError because RainExceedanceClimateSiteID of 0 does not exist
-                    rainExceedanceClimateSiteRet.RainExceedanceClimateSiteID = 0;
-                    IHttpActionResult jsonRet3 = rainExceedanceClimateSiteController.Put(rainExceedanceClimateSiteRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet3);
-
-                    OkNegotiatedContentResult<RainExceedanceClimateSite> rainExceedanceClimateSiteRet3 = jsonRet3 as OkNegotiatedContentResult<RainExceedanceClimateSite>;
-                    Assert.IsNull(rainExceedanceClimateSiteRet3);
-
-                    BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
-                    Assert.IsNotNull(badRequest3);
-                }
-            }
-        }
-        #endregion Tests Generated for Class Controller Put Command
-
-        #region Tests Generated for Class Controller Delete Command
-        [TestMethod]
-        public void RainExceedanceClimateSite_Controller_Delete_Test()
-        {
-            foreach (LanguageEnum LanguageRequest in AllowableLanguages)
-            {
-                foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
-                {
-                    RainExceedanceClimateSiteController rainExceedanceClimateSiteController = new RainExceedanceClimateSiteController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(rainExceedanceClimateSiteController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, rainExceedanceClimateSiteController.DatabaseType);
-
-                    RainExceedanceClimateSite rainExceedanceClimateSiteLast = new RainExceedanceClimateSite();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-                    {
-                        Query query = new Query();
-                        query.Language = LanguageRequest;
-                        query.Asc = "";
-                        query.Desc = "";
-
-                        RainExceedanceClimateSiteService rainExceedanceClimateSiteService = new RainExceedanceClimateSiteService(query, db, ContactID);
-                        rainExceedanceClimateSiteLast = (from c in db.RainExceedanceClimateSites select c).FirstOrDefault();
-                    }
-
-                    // ok with RainExceedanceClimateSite info
-                    IHttpActionResult jsonRet = rainExceedanceClimateSiteController.GetRainExceedanceClimateSiteWithID(rainExceedanceClimateSiteLast.RainExceedanceClimateSiteID);
-                    Assert.IsNotNull(jsonRet);
-
-                    OkNegotiatedContentResult<RainExceedanceClimateSite> Ret = jsonRet as OkNegotiatedContentResult<RainExceedanceClimateSite>;
-                    RainExceedanceClimateSite rainExceedanceClimateSiteRet = Ret.Content;
-                    Assert.AreEqual(rainExceedanceClimateSiteLast.RainExceedanceClimateSiteID, rainExceedanceClimateSiteRet.RainExceedanceClimateSiteID);
-
-                    BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
-
-                    // Post to return newly added RainExceedanceClimateSite
-                    rainExceedanceClimateSiteRet.RainExceedanceClimateSiteID = 0;
-                    rainExceedanceClimateSiteController.Request = new System.Net.Http.HttpRequestMessage();
-                    rainExceedanceClimateSiteController.Request.RequestUri = new System.Uri("http://localhost:5000/api/rainExceedanceClimateSite");
-                    IHttpActionResult jsonRet3 = rainExceedanceClimateSiteController.Post(rainExceedanceClimateSiteRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet3);
-
-                    CreatedNegotiatedContentResult<RainExceedanceClimateSite> rainExceedanceClimateSiteRet3 = jsonRet3 as CreatedNegotiatedContentResult<RainExceedanceClimateSite>;
-                    Assert.IsNotNull(rainExceedanceClimateSiteRet3);
-                    RainExceedanceClimateSite rainExceedanceClimateSite = rainExceedanceClimateSiteRet3.Content;
-
-                    BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest3);
-
-                    // Delete to return success
-                    IHttpActionResult jsonRet2 = rainExceedanceClimateSiteController.Delete(rainExceedanceClimateSiteRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet2);
-
-                    OkNegotiatedContentResult<RainExceedanceClimateSite> rainExceedanceClimateSiteRet2 = jsonRet2 as OkNegotiatedContentResult<RainExceedanceClimateSite>;
-                    Assert.IsNotNull(rainExceedanceClimateSiteRet2);
-
-                    BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest2);
-
-                    // Delete to return CSSPError because RainExceedanceClimateSiteID of 0 does not exist
-                    rainExceedanceClimateSiteRet.RainExceedanceClimateSiteID = 0;
-                    IHttpActionResult jsonRet4 = rainExceedanceClimateSiteController.Delete(rainExceedanceClimateSiteRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet4);
-
-                    OkNegotiatedContentResult<RainExceedanceClimateSite> rainExceedanceClimateSiteRet4 = jsonRet4 as OkNegotiatedContentResult<RainExceedanceClimateSite>;
-                    Assert.IsNull(rainExceedanceClimateSiteRet4);
-
-                    BadRequestErrorMessageResult badRequest4 = jsonRet4 as BadRequestErrorMessageResult;
-                    Assert.IsNotNull(badRequest4);
-                }
-            }
-        }
-        #endregion Tests Generated for Class Controller Delete Command
-
+        #endregion Functions private
     }
 }

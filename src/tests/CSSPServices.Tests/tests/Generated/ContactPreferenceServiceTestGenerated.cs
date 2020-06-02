@@ -16,6 +16,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Transactions;
 using Xunit;
 
 namespace CSSPServices.Tests
@@ -54,37 +55,40 @@ namespace CSSPServices.Tests
 
             await Setup(new CultureInfo(culture));
 
-            ContactPreference contactPreference = GetFilledRandomContactPreference(""); 
+            using (TransactionScope ts = new TransactionScope())
+            {
+               ContactPreference contactPreference = GetFilledRandomContactPreference(""); 
 
-            // List<ContactPreference>
-            var actionContactPreferenceList = await contactPreferenceService.GetContactPreferenceList();
-            Assert.Equal(200, ((ObjectResult)actionContactPreferenceList.Result).StatusCode);
-            Assert.NotNull(((OkObjectResult)actionContactPreferenceList.Result).Value);
-            List<ContactPreference> contactPreferenceList = (List<ContactPreference>)(((OkObjectResult)actionContactPreferenceList.Result).Value);
+               // List<ContactPreference>
+               var actionContactPreferenceList = await contactPreferenceService.GetContactPreferenceList();
+               Assert.Equal(200, ((ObjectResult)actionContactPreferenceList.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionContactPreferenceList.Result).Value);
+               List<ContactPreference> contactPreferenceList = (List<ContactPreference>)(((OkObjectResult)actionContactPreferenceList.Result).Value);
 
-            int count = ((List<ContactPreference>)((OkObjectResult)actionContactPreferenceList.Result).Value).Count();
-            Assert.True(count > 0);
+               int count = ((List<ContactPreference>)((OkObjectResult)actionContactPreferenceList.Result).Value).Count();
+                Assert.True(count > 0);
 
-            // Add ContactPreference
-            var actionContactPreferenceAdded = await contactPreferenceService.Add(contactPreference);
-            Assert.Equal(200, ((ObjectResult)actionContactPreferenceAdded.Result).StatusCode);
-            Assert.NotNull(((OkObjectResult)actionContactPreferenceAdded.Result).Value);
-            ContactPreference contactPreferenceAdded = (ContactPreference)(((OkObjectResult)actionContactPreferenceAdded.Result).Value);
-            Assert.NotNull(contactPreferenceAdded);
+               // Add ContactPreference
+               var actionContactPreferenceAdded = await contactPreferenceService.Add(contactPreference);
+               Assert.Equal(200, ((ObjectResult)actionContactPreferenceAdded.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionContactPreferenceAdded.Result).Value);
+               ContactPreference contactPreferenceAdded = (ContactPreference)(((OkObjectResult)actionContactPreferenceAdded.Result).Value);
+               Assert.NotNull(contactPreferenceAdded);
 
-            // Update ContactPreference
-            var actionContactPreferenceUpdated = await contactPreferenceService.Update(contactPreference);
-            Assert.Equal(200, ((ObjectResult)actionContactPreferenceUpdated.Result).StatusCode);
-            Assert.NotNull(((OkObjectResult)actionContactPreferenceUpdated.Result).Value);
-            ContactPreference contactPreferenceUpdated = (ContactPreference)(((OkObjectResult)actionContactPreferenceUpdated.Result).Value);
-            Assert.NotNull(contactPreferenceUpdated);
+               // Update ContactPreference
+               var actionContactPreferenceUpdated = await contactPreferenceService.Update(contactPreference);
+               Assert.Equal(200, ((ObjectResult)actionContactPreferenceUpdated.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionContactPreferenceUpdated.Result).Value);
+               ContactPreference contactPreferenceUpdated = (ContactPreference)(((OkObjectResult)actionContactPreferenceUpdated.Result).Value);
+               Assert.NotNull(contactPreferenceUpdated);
 
-            // Delete ContactPreference
-            var actionContactPreferenceDeleted = await contactPreferenceService.Delete(contactPreference);
-            Assert.Equal(200, ((ObjectResult)actionContactPreferenceDeleted.Result).StatusCode);
-            Assert.NotNull(((OkObjectResult)actionContactPreferenceDeleted.Result).Value);
-            ContactPreference contactPreferenceDeleted = (ContactPreference)(((OkObjectResult)actionContactPreferenceDeleted.Result).Value);
-            Assert.NotNull(contactPreferenceDeleted);
+               // Delete ContactPreference
+               var actionContactPreferenceDeleted = await contactPreferenceService.Delete(contactPreference);
+               Assert.Equal(200, ((ObjectResult)actionContactPreferenceDeleted.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionContactPreferenceDeleted.Result).Value);
+               ContactPreference contactPreferenceDeleted = (ContactPreference)(((OkObjectResult)actionContactPreferenceDeleted.Result).Value);
+               Assert.NotNull(contactPreferenceDeleted);
+            }
         }
         #endregion Tests Generated CRUD
 

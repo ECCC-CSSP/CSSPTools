@@ -16,6 +16,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Transactions;
 using Xunit;
 
 namespace CSSPServices.Tests
@@ -54,37 +55,40 @@ namespace CSSPServices.Tests
 
             await Setup(new CultureInfo(culture));
 
-            ReportType reportType = GetFilledRandomReportType(""); 
+            using (TransactionScope ts = new TransactionScope())
+            {
+               ReportType reportType = GetFilledRandomReportType(""); 
 
-            // List<ReportType>
-            var actionReportTypeList = await reportTypeService.GetReportTypeList();
-            Assert.Equal(200, ((ObjectResult)actionReportTypeList.Result).StatusCode);
-            Assert.NotNull(((OkObjectResult)actionReportTypeList.Result).Value);
-            List<ReportType> reportTypeList = (List<ReportType>)(((OkObjectResult)actionReportTypeList.Result).Value);
+               // List<ReportType>
+               var actionReportTypeList = await reportTypeService.GetReportTypeList();
+               Assert.Equal(200, ((ObjectResult)actionReportTypeList.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionReportTypeList.Result).Value);
+               List<ReportType> reportTypeList = (List<ReportType>)(((OkObjectResult)actionReportTypeList.Result).Value);
 
-            int count = ((List<ReportType>)((OkObjectResult)actionReportTypeList.Result).Value).Count();
-            Assert.True(count > 0);
+               int count = ((List<ReportType>)((OkObjectResult)actionReportTypeList.Result).Value).Count();
+                Assert.True(count > 0);
 
-            // Add ReportType
-            var actionReportTypeAdded = await reportTypeService.Add(reportType);
-            Assert.Equal(200, ((ObjectResult)actionReportTypeAdded.Result).StatusCode);
-            Assert.NotNull(((OkObjectResult)actionReportTypeAdded.Result).Value);
-            ReportType reportTypeAdded = (ReportType)(((OkObjectResult)actionReportTypeAdded.Result).Value);
-            Assert.NotNull(reportTypeAdded);
+               // Add ReportType
+               var actionReportTypeAdded = await reportTypeService.Add(reportType);
+               Assert.Equal(200, ((ObjectResult)actionReportTypeAdded.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionReportTypeAdded.Result).Value);
+               ReportType reportTypeAdded = (ReportType)(((OkObjectResult)actionReportTypeAdded.Result).Value);
+               Assert.NotNull(reportTypeAdded);
 
-            // Update ReportType
-            var actionReportTypeUpdated = await reportTypeService.Update(reportType);
-            Assert.Equal(200, ((ObjectResult)actionReportTypeUpdated.Result).StatusCode);
-            Assert.NotNull(((OkObjectResult)actionReportTypeUpdated.Result).Value);
-            ReportType reportTypeUpdated = (ReportType)(((OkObjectResult)actionReportTypeUpdated.Result).Value);
-            Assert.NotNull(reportTypeUpdated);
+               // Update ReportType
+               var actionReportTypeUpdated = await reportTypeService.Update(reportType);
+               Assert.Equal(200, ((ObjectResult)actionReportTypeUpdated.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionReportTypeUpdated.Result).Value);
+               ReportType reportTypeUpdated = (ReportType)(((OkObjectResult)actionReportTypeUpdated.Result).Value);
+               Assert.NotNull(reportTypeUpdated);
 
-            // Delete ReportType
-            var actionReportTypeDeleted = await reportTypeService.Delete(reportType);
-            Assert.Equal(200, ((ObjectResult)actionReportTypeDeleted.Result).StatusCode);
-            Assert.NotNull(((OkObjectResult)actionReportTypeDeleted.Result).Value);
-            ReportType reportTypeDeleted = (ReportType)(((OkObjectResult)actionReportTypeDeleted.Result).Value);
-            Assert.NotNull(reportTypeDeleted);
+               // Delete ReportType
+               var actionReportTypeDeleted = await reportTypeService.Delete(reportType);
+               Assert.Equal(200, ((ObjectResult)actionReportTypeDeleted.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionReportTypeDeleted.Result).Value);
+               ReportType reportTypeDeleted = (ReportType)(((OkObjectResult)actionReportTypeDeleted.Result).Value);
+               Assert.NotNull(reportTypeDeleted);
+            }
         }
         #endregion Tests Generated CRUD
 

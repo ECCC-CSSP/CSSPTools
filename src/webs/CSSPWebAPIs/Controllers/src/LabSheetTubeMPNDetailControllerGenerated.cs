@@ -1,143 +1,70 @@
-using CSSPEnums;
 using CSSPModels;
 using CSSPServices;
-using System;
+using LoggedInServices.Services;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web.Http;
+using System.Threading.Tasks;
 
 namespace CSSPWebAPI.Controllers
 {
-    [RoutePrefix("api/labSheetTubeMPNDetail")]
-    public partial class LabSheetTubeMPNDetailController : BaseController
+    public partial interface ILabSheetTubeMPNDetailController
+    {
+        Task<ActionResult<List<LabSheetTubeMPNDetail>>> Get();
+        Task<ActionResult<LabSheetTubeMPNDetail>> Get(int LabSheetTubeMPNDetailID);
+        Task<ActionResult<LabSheetTubeMPNDetail>> Post(LabSheetTubeMPNDetail labSheetTubeMPNDetail);
+        Task<ActionResult<LabSheetTubeMPNDetail>> Put(LabSheetTubeMPNDetail labSheetTubeMPNDetail);
+        Task<ActionResult<LabSheetTubeMPNDetail>> Delete(LabSheetTubeMPNDetail labSheetTubeMPNDetail);
+    }
+
+    [Route("api/{culture}/[controller]")]
+    [ApiController]
+    [Authorize]
+    public partial class LabSheetTubeMPNDetailController : ControllerBase, ILabSheetTubeMPNDetailController
     {
         #region Variables
         #endregion Variables
 
         #region Properties
+        private ILabSheetTubeMPNDetailService labSheetTubeMPNDetailService { get; }
+        private CSSPDBContext db { get; }
+        private ILoggedInService loggedInService { get; }
         #endregion Properties
 
         #region Constructors
-        public LabSheetTubeMPNDetailController() : base()
+        public LabSheetTubeMPNDetailController(ILabSheetTubeMPNDetailService labSheetTubeMPNDetailService, CSSPDBContext db, ILoggedInService loggedInService)
         {
-        }
-        public LabSheetTubeMPNDetailController(DatabaseTypeEnum dbt = DatabaseTypeEnum.SqlServerTestDB) : base(dbt)
-        {
+            this.labSheetTubeMPNDetailService = labSheetTubeMPNDetailService;
+            this.db = db;
+            this.loggedInService = loggedInService;
         }
         #endregion Constructors
 
         #region Functions public
-        // GET api/labSheetTubeMPNDetail
-        [Route("")]
-        public IHttpActionResult GetLabSheetTubeMPNDetailList([FromUri]string lang = "en", [FromUri]int skip = 0, [FromUri]int take = 200,
-            [FromUri]string asc = "", [FromUri]string desc = "", [FromUri]string where = "", [FromUri]string extra = "")
+        [HttpGet]
+        public async Task<ActionResult<List<LabSheetTubeMPNDetail>>> Get()
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                LabSheetTubeMPNDetailService labSheetTubeMPNDetailService = new LabSheetTubeMPNDetailService(new Query() { Lang = lang }, db, ContactID);
-
-                else // QueryString has no parameter [extra] or extra is empty
-                {
-                   labSheetTubeMPNDetailService.Query = labSheetTubeMPNDetailService.FillQuery(typeof(LabSheetTubeMPNDetail), lang, skip, take, asc, desc, where, extra);
-
-                    if (labSheetTubeMPNDetailService.Query.HasErrors)
-                    {
-                        return Ok(new List<LabSheetTubeMPNDetail>()
-                        {
-                            new LabSheetTubeMPNDetail()
-                            {
-                                HasErrors = labSheetTubeMPNDetailService.Query.HasErrors,
-                                ValidationResults = labSheetTubeMPNDetailService.Query.ValidationResults,
-                            },
-                        }.ToList());
-                    }
-                    else
-                    {
-                        return Ok(labSheetTubeMPNDetailService.GetLabSheetTubeMPNDetailList().ToList());
-                    }
-                }
-            }
+            return await labSheetTubeMPNDetailService.GetLabSheetTubeMPNDetailList();
         }
-        // GET api/labSheetTubeMPNDetail/1
-        [Route("{LabSheetTubeMPNDetailID:int}")]
-        public IHttpActionResult GetLabSheetTubeMPNDetailWithID([FromUri]int LabSheetTubeMPNDetailID, [FromUri]string lang = "en", [FromUri]string extra = "")
+        [HttpGet("{LabSheetTubeMPNDetailID}")]
+        public async Task<ActionResult<LabSheetTubeMPNDetail>> Get(int LabSheetTubeMPNDetailID)
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                LabSheetTubeMPNDetailService labSheetTubeMPNDetailService = new LabSheetTubeMPNDetailService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
-
-                labSheetTubeMPNDetailService.Query = labSheetTubeMPNDetailService.FillQuery(typeof(LabSheetTubeMPNDetail), lang, 0, 1, "", "", extra);
-
-                else
-                {
-                    LabSheetTubeMPNDetail labSheetTubeMPNDetail = new LabSheetTubeMPNDetail();
-                    labSheetTubeMPNDetail = labSheetTubeMPNDetailService.GetLabSheetTubeMPNDetailWithLabSheetTubeMPNDetailID(LabSheetTubeMPNDetailID);
-
-                    if (labSheetTubeMPNDetail == null)
-                    {
-                        return NotFound();
-                    }
-
-                    return Ok(labSheetTubeMPNDetail);
-                }
-            }
+            return await labSheetTubeMPNDetailService.GetLabSheetTubeMPNDetailWithLabSheetTubeMPNDetailID(LabSheetTubeMPNDetailID);
         }
-        // POST api/labSheetTubeMPNDetail
-        [Route("")]
-        public IHttpActionResult Post([FromBody]LabSheetTubeMPNDetail labSheetTubeMPNDetail, [FromUri]string lang = "en")
+        [HttpPost]
+        public async Task<ActionResult<LabSheetTubeMPNDetail>> Post(LabSheetTubeMPNDetail labSheetTubeMPNDetail)
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                LabSheetTubeMPNDetailService labSheetTubeMPNDetailService = new LabSheetTubeMPNDetailService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
-
-                if (!labSheetTubeMPNDetailService.Add(labSheetTubeMPNDetail))
-                {
-                    return BadRequest(String.Join("|||", labSheetTubeMPNDetail.ValidationResults));
-                }
-                else
-                {
-                    labSheetTubeMPNDetail.ValidationResults = null;
-                    return Created<LabSheetTubeMPNDetail>(new Uri(Request.RequestUri, labSheetTubeMPNDetail.LabSheetTubeMPNDetailID.ToString()), labSheetTubeMPNDetail);
-                }
-            }
+            return await labSheetTubeMPNDetailService.Add(labSheetTubeMPNDetail);
         }
-        // PUT api/labSheetTubeMPNDetail
-        [Route("")]
-        public IHttpActionResult Put([FromBody]LabSheetTubeMPNDetail labSheetTubeMPNDetail, [FromUri]string lang = "en")
+        [HttpPut]
+        public async Task<ActionResult<LabSheetTubeMPNDetail>> Put(LabSheetTubeMPNDetail labSheetTubeMPNDetail)
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                LabSheetTubeMPNDetailService labSheetTubeMPNDetailService = new LabSheetTubeMPNDetailService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
-
-                if (!labSheetTubeMPNDetailService.Update(labSheetTubeMPNDetail))
-                {
-                    return BadRequest(String.Join("|||", labSheetTubeMPNDetail.ValidationResults));
-                }
-                else
-                {
-                    labSheetTubeMPNDetail.ValidationResults = null;
-                    return Ok(labSheetTubeMPNDetail);
-                }
-            }
+            return await labSheetTubeMPNDetailService.Update(labSheetTubeMPNDetail);
         }
-        // DELETE api/labSheetTubeMPNDetail
-        [Route("")]
-        public IHttpActionResult Delete([FromBody]LabSheetTubeMPNDetail labSheetTubeMPNDetail, [FromUri]string lang = "en")
+        [HttpDelete]
+        public async Task<ActionResult<LabSheetTubeMPNDetail>> Delete(LabSheetTubeMPNDetail labSheetTubeMPNDetail)
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                LabSheetTubeMPNDetailService labSheetTubeMPNDetailService = new LabSheetTubeMPNDetailService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
-
-                if (!labSheetTubeMPNDetailService.Delete(labSheetTubeMPNDetail))
-                {
-                    return BadRequest(String.Join("|||", labSheetTubeMPNDetail.ValidationResults));
-                }
-                else
-                {
-                    labSheetTubeMPNDetail.ValidationResults = null;
-                    return Ok(labSheetTubeMPNDetail);
-                }
-            }
+            return await labSheetTubeMPNDetailService.Delete(labSheetTubeMPNDetail);
         }
         #endregion Functions public
 

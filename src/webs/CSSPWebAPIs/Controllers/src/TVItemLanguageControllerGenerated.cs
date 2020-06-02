@@ -1,143 +1,70 @@
-using CSSPEnums;
 using CSSPModels;
 using CSSPServices;
-using System;
+using LoggedInServices.Services;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web.Http;
+using System.Threading.Tasks;
 
 namespace CSSPWebAPI.Controllers
 {
-    [RoutePrefix("api/tvItemLanguage")]
-    public partial class TVItemLanguageController : BaseController
+    public partial interface ITVItemLanguageController
+    {
+        Task<ActionResult<List<TVItemLanguage>>> Get();
+        Task<ActionResult<TVItemLanguage>> Get(int TVItemLanguageID);
+        Task<ActionResult<TVItemLanguage>> Post(TVItemLanguage tvItemLanguage);
+        Task<ActionResult<TVItemLanguage>> Put(TVItemLanguage tvItemLanguage);
+        Task<ActionResult<TVItemLanguage>> Delete(TVItemLanguage tvItemLanguage);
+    }
+
+    [Route("api/{culture}/[controller]")]
+    [ApiController]
+    [Authorize]
+    public partial class TVItemLanguageController : ControllerBase, ITVItemLanguageController
     {
         #region Variables
         #endregion Variables
 
         #region Properties
+        private ITVItemLanguageService tvItemLanguageService { get; }
+        private CSSPDBContext db { get; }
+        private ILoggedInService loggedInService { get; }
         #endregion Properties
 
         #region Constructors
-        public TVItemLanguageController() : base()
+        public TVItemLanguageController(ITVItemLanguageService tvItemLanguageService, CSSPDBContext db, ILoggedInService loggedInService)
         {
-        }
-        public TVItemLanguageController(DatabaseTypeEnum dbt = DatabaseTypeEnum.SqlServerTestDB) : base(dbt)
-        {
+            this.tvItemLanguageService = tvItemLanguageService;
+            this.db = db;
+            this.loggedInService = loggedInService;
         }
         #endregion Constructors
 
         #region Functions public
-        // GET api/tvItemLanguage
-        [Route("")]
-        public IHttpActionResult GetTVItemLanguageList([FromUri]string lang = "en", [FromUri]int skip = 0, [FromUri]int take = 200,
-            [FromUri]string asc = "", [FromUri]string desc = "", [FromUri]string where = "", [FromUri]string extra = "")
+        [HttpGet]
+        public async Task<ActionResult<List<TVItemLanguage>>> Get()
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                TVItemLanguageService tvItemLanguageService = new TVItemLanguageService(new Query() { Lang = lang }, db, ContactID);
-
-                else // QueryString has no parameter [extra] or extra is empty
-                {
-                   tvItemLanguageService.Query = tvItemLanguageService.FillQuery(typeof(TVItemLanguage), lang, skip, take, asc, desc, where, extra);
-
-                    if (tvItemLanguageService.Query.HasErrors)
-                    {
-                        return Ok(new List<TVItemLanguage>()
-                        {
-                            new TVItemLanguage()
-                            {
-                                HasErrors = tvItemLanguageService.Query.HasErrors,
-                                ValidationResults = tvItemLanguageService.Query.ValidationResults,
-                            },
-                        }.ToList());
-                    }
-                    else
-                    {
-                        return Ok(tvItemLanguageService.GetTVItemLanguageList().ToList());
-                    }
-                }
-            }
+            return await tvItemLanguageService.GetTVItemLanguageList();
         }
-        // GET api/tvItemLanguage/1
-        [Route("{TVItemLanguageID:int}")]
-        public IHttpActionResult GetTVItemLanguageWithID([FromUri]int TVItemLanguageID, [FromUri]string lang = "en", [FromUri]string extra = "")
+        [HttpGet("{TVItemLanguageID}")]
+        public async Task<ActionResult<TVItemLanguage>> Get(int TVItemLanguageID)
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                TVItemLanguageService tvItemLanguageService = new TVItemLanguageService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
-
-                tvItemLanguageService.Query = tvItemLanguageService.FillQuery(typeof(TVItemLanguage), lang, 0, 1, "", "", extra);
-
-                else
-                {
-                    TVItemLanguage tvItemLanguage = new TVItemLanguage();
-                    tvItemLanguage = tvItemLanguageService.GetTVItemLanguageWithTVItemLanguageID(TVItemLanguageID);
-
-                    if (tvItemLanguage == null)
-                    {
-                        return NotFound();
-                    }
-
-                    return Ok(tvItemLanguage);
-                }
-            }
+            return await tvItemLanguageService.GetTVItemLanguageWithTVItemLanguageID(TVItemLanguageID);
         }
-        // POST api/tvItemLanguage
-        [Route("")]
-        public IHttpActionResult Post([FromBody]TVItemLanguage tvItemLanguage, [FromUri]string lang = "en")
+        [HttpPost]
+        public async Task<ActionResult<TVItemLanguage>> Post(TVItemLanguage tvItemLanguage)
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                TVItemLanguageService tvItemLanguageService = new TVItemLanguageService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
-
-                if (!tvItemLanguageService.Add(tvItemLanguage))
-                {
-                    return BadRequest(String.Join("|||", tvItemLanguage.ValidationResults));
-                }
-                else
-                {
-                    tvItemLanguage.ValidationResults = null;
-                    return Created<TVItemLanguage>(new Uri(Request.RequestUri, tvItemLanguage.TVItemLanguageID.ToString()), tvItemLanguage);
-                }
-            }
+            return await tvItemLanguageService.Add(tvItemLanguage);
         }
-        // PUT api/tvItemLanguage
-        [Route("")]
-        public IHttpActionResult Put([FromBody]TVItemLanguage tvItemLanguage, [FromUri]string lang = "en")
+        [HttpPut]
+        public async Task<ActionResult<TVItemLanguage>> Put(TVItemLanguage tvItemLanguage)
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                TVItemLanguageService tvItemLanguageService = new TVItemLanguageService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
-
-                if (!tvItemLanguageService.Update(tvItemLanguage))
-                {
-                    return BadRequest(String.Join("|||", tvItemLanguage.ValidationResults));
-                }
-                else
-                {
-                    tvItemLanguage.ValidationResults = null;
-                    return Ok(tvItemLanguage);
-                }
-            }
+            return await tvItemLanguageService.Update(tvItemLanguage);
         }
-        // DELETE api/tvItemLanguage
-        [Route("")]
-        public IHttpActionResult Delete([FromBody]TVItemLanguage tvItemLanguage, [FromUri]string lang = "en")
+        [HttpDelete]
+        public async Task<ActionResult<TVItemLanguage>> Delete(TVItemLanguage tvItemLanguage)
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                TVItemLanguageService tvItemLanguageService = new TVItemLanguageService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
-
-                if (!tvItemLanguageService.Delete(tvItemLanguage))
-                {
-                    return BadRequest(String.Join("|||", tvItemLanguage.ValidationResults));
-                }
-                else
-                {
-                    tvItemLanguage.ValidationResults = null;
-                    return Ok(tvItemLanguage);
-                }
-            }
+            return await tvItemLanguageService.Delete(tvItemLanguage);
         }
         #endregion Functions public
 

@@ -2,350 +2,157 @@ using CSSPEnums;
 using CSSPModels;
 using CSSPServices;
 using CSSPWebAPI.Controllers;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using LoggedInServices.Services;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using System;
 using System.Collections.Generic;
+using System.Globalization;
+using System.IO;
 using System.Linq;
-using System.Web.Http;
-using System.Web.Http.Results;
+using System.Threading.Tasks;
+using System.Transactions;
+using UserServices.Models;
+using Xunit;
 
-namespace CSSPWebAPI.Tests.Controllers
+namespace CSSPWebAPIs.Tests.Controllers
 {
-    [TestClass]
-    public partial class ContactPreferenceControllerTest : BaseControllerTest
+    public partial class ContactPreferenceControllerTest
     {
         #region Variables
         #endregion Variables
 
         #region Properties
+        private IConfiguration Config { get; set; }
+        private IServiceProvider Provider { get; set; }
+        private IServiceCollection Services { get; set; }
+        private CSSPDBContext db { get; set; }
+        private ILoggedInService loggedInService { get; set; }
+        private IContactPreferenceService contactPreferenceService { get; set; }
+        private IContactPreferenceController contactPreferenceController { get; set; }
         #endregion Properties
 
         #region Constructors
-        public ContactPreferenceControllerTest() : base()
+        public ContactPreferenceControllerTest()
         {
         }
         #endregion Constructors
 
-        #region Tests Generated for Class Controller GetList Command
-        [TestMethod]
-        public void ContactPreference_Controller_GetContactPreferenceList_Test()
+        #region Functions public
+        [Theory]
+        [InlineData("en-CA")]
+        [InlineData("fr-CA")]
+        public async Task ContactPreferenceController_Constructor_Good_Test(string culture)
         {
-            foreach (LanguageEnum LanguageRequest in AllowableLanguages)
+            bool retBool = await Setup(new CultureInfo(culture));
+            Assert.True(retBool);
+            Assert.NotNull(loggedInService);
+            Assert.NotNull(contactPreferenceService);
+            Assert.NotNull(contactPreferenceController);
+        }
+        [Theory]
+        [InlineData("en-CA")]
+        [InlineData("fr-CA")]
+        public async Task ContactPreferenceController_CRUD_Good_Test(string culture)
+        {
+            bool retBool = await Setup(new CultureInfo(culture));
+            Assert.True(retBool);
+
+            using (TransactionScope ts = new TransactionScope())
             {
-                foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
-                {
-                    ContactPreferenceController contactPreferenceController = new ContactPreferenceController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(contactPreferenceController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, contactPreferenceController.DatabaseType);
+                // testing Get
+               var actionContactPreferenceList = await contactPreferenceController.Get();
+               Assert.Equal(200, ((ObjectResult)actionContactPreferenceList.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionContactPreferenceList.Result).Value);
+               List<ContactPreference> contactPreferenceList = (List<ContactPreference>)(((OkObjectResult)actionContactPreferenceList.Result).Value);
 
-                    ContactPreference contactPreferenceFirst = new ContactPreference();
-                    int count = -1;
-                    Query query = new Query();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseTypeEnum.SqlServerTestDB))
-                    {
-                        ContactPreferenceService contactPreferenceService = new ContactPreferenceService(query, db, ContactID);
-                        contactPreferenceFirst = (from c in db.ContactPreferences select c).FirstOrDefault();
-                        count = (from c in db.ContactPreferences select c).Count();
-                        count = (query.Take > count ? count : query.Take);
-                    }
+               int count = ((List<ContactPreference>)((OkObjectResult)actionContactPreferenceList.Result).Value).Count();
+                Assert.True(count > 0);
 
-                    // ok with ContactPreference info
-                    IHttpActionResult jsonRet = contactPreferenceController.GetContactPreferenceList();
-                    Assert.IsNotNull(jsonRet);
+               // testing Get(ContactPreferenceID)
+               var actionContactPreference = await contactPreferenceController.Get(contactPreferenceList[0].ContactPreferenceID);
+               Assert.Equal(200, ((ObjectResult)actionContactPreference.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionContactPreference.Result).Value);
+               ContactPreference contactPreference = (ContactPreference)(((OkObjectResult)actionContactPreference.Result).Value);
+               Assert.NotNull(contactPreference);
+               Assert.Equal(contactPreferenceList[0].ContactPreferenceID, contactPreference.ContactPreferenceID);
 
-                    OkNegotiatedContentResult<List<ContactPreference>> ret = jsonRet as OkNegotiatedContentResult<List<ContactPreference>>;
-                    Assert.AreEqual(contactPreferenceFirst.ContactPreferenceID, ret.Content[0].ContactPreferenceID);
-                    Assert.AreEqual((count > query.Take ? query.Take : count), ret.Content.Count);
+               // testing Post(ContactPreference contactPreference)
+               contactPreference.ContactPreferenceID = 0;
+               var actionContactPreferenceNew = await contactPreferenceController.Post(contactPreference);
+               Assert.Equal(200, ((ObjectResult)actionContactPreferenceNew.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionContactPreferenceNew.Result).Value);
+               ContactPreference contactPreferenceNew = (ContactPreference)(((OkObjectResult)actionContactPreferenceNew.Result).Value);
+               Assert.NotNull(contactPreferenceNew);
 
-                    List<ContactPreference> contactPreferenceList = new List<ContactPreference>();
-                    count = -1;
-                    query = new Query();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseTypeEnum.SqlServerTestDB))
-                    {
-                        ContactPreferenceService contactPreferenceService = new ContactPreferenceService(query, db, ContactID);
-                        contactPreferenceList = (from c in db.ContactPreferences select c).OrderBy(c => c.ContactPreferenceID).Skip(0).Take(2).ToList();
-                        count = (from c in db.ContactPreferences select c).Count();
-                    }
+               // testing Put(ContactPreference contactPreference)
+               var actionContactPreferenceUpdate = await contactPreferenceController.Put(contactPreferenceNew);
+               Assert.Equal(200, ((ObjectResult)actionContactPreferenceUpdate.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionContactPreferenceUpdate.Result).Value);
+               ContactPreference contactPreferenceUpdate = (ContactPreference)(((OkObjectResult)actionContactPreferenceUpdate.Result).Value);
+               Assert.NotNull(contactPreferenceUpdate);
 
-                    if (count > 0)
-                    {
-                        query.Skip = 0;
-                        query.Take = 5;
-                        count = (query.Take > count ? query.Take : count);
-
-                        // ok with ContactPreference info
-                        jsonRet = contactPreferenceController.GetContactPreferenceList(query.Language.ToString(), query.Skip, query.Take);
-                        Assert.IsNotNull(jsonRet);
-
-                        ret = jsonRet as OkNegotiatedContentResult<List<ContactPreference>>;
-                        Assert.AreEqual(contactPreferenceList[0].ContactPreferenceID, ret.Content[0].ContactPreferenceID);
-                        Assert.AreEqual((count > query.Take ? query.Take : count), ret.Content.Count);
-
-                       if (count > 1)
-                       {
-                           query.Skip = 1;
-                           query.Take = 5;
-                           count = (query.Take > count ? query.Take : count);
-
-                           // ok with ContactPreference info
-                           IHttpActionResult jsonRet2 = contactPreferenceController.GetContactPreferenceList(query.Language.ToString(), query.Skip, query.Take);
-                           Assert.IsNotNull(jsonRet2);
-
-                           OkNegotiatedContentResult<List<ContactPreference>> ret2 = jsonRet2 as OkNegotiatedContentResult<List<ContactPreference>>;
-                           Assert.AreEqual(contactPreferenceList[1].ContactPreferenceID, ret2.Content[0].ContactPreferenceID);
-                           Assert.AreEqual((count > query.Take ? query.Take : count), ret2.Content.Count);
-                       }
-                    }
-                }
+               // testing Delete(ContactPreference contactPreference)
+               var actionContactPreferenceDelete = await contactPreferenceController.Delete(contactPreferenceUpdate);
+               Assert.Equal(200, ((ObjectResult)actionContactPreferenceDelete.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionContactPreferenceDelete.Result).Value);
+               ContactPreference contactPreferenceDelete = (ContactPreference)(((OkObjectResult)actionContactPreferenceDelete.Result).Value);
+               Assert.NotNull(contactPreferenceDelete);
             }
         }
-        #endregion Tests Generated for Class Controller GetList Command
+        #endregion Functions public
 
-        #region Tests Generated for Class Controller GetWithID Command
-        [TestMethod]
-        public void ContactPreference_Controller_GetContactPreferenceWithID_Test()
+        #region Functions private
+        private async Task<bool> Setup(CultureInfo culture)
         {
-            foreach (LanguageEnum LanguageRequest in AllowableLanguages)
+            Config = new ConfigurationBuilder()
+               .SetBasePath(Directory.GetParent(AppContext.BaseDirectory).FullName)
+               .AddJsonFile("appsettings.json")
+               .Build();
+        
+            Services = new ServiceCollection();
+        
+            IConfigurationSection connectionStringsSection = Config.GetSection("ConnectionStrings");
+            Services.Configure<ConnectionStringsModel>(connectionStringsSection);
+        
+            ConnectionStringsModel connectionStrings = connectionStringsSection.Get<ConnectionStringsModel>();
+        
+            Services.AddSingleton<IConfiguration>(Config);
+        
+            Services.AddDbContext<CSSPDBContext>(options =>
             {
-                foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
-                {
-                    ContactPreferenceController contactPreferenceController = new ContactPreferenceController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(contactPreferenceController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, contactPreferenceController.DatabaseType);
-
-                    ContactPreference contactPreferenceFirst = new ContactPreference();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-                    {
-                        ContactPreferenceService contactPreferenceService = new ContactPreferenceService(new Query(), db, ContactID);
-                        contactPreferenceFirst = (from c in db.ContactPreferences select c).FirstOrDefault();
-                    }
-
-                    // ok with ContactPreference info
-                    IHttpActionResult jsonRet = contactPreferenceController.GetContactPreferenceWithID(contactPreferenceFirst.ContactPreferenceID);
-                    Assert.IsNotNull(jsonRet);
-
-                    OkNegotiatedContentResult<ContactPreference> Ret = jsonRet as OkNegotiatedContentResult<ContactPreference>;
-                    ContactPreference contactPreferenceRet = Ret.Content;
-                    Assert.AreEqual(contactPreferenceFirst.ContactPreferenceID, contactPreferenceRet.ContactPreferenceID);
-
-                    BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
-
-                    // Not Found
-                    IHttpActionResult jsonRet2 = contactPreferenceController.GetContactPreferenceWithID(0);
-                    Assert.IsNotNull(jsonRet2);
-
-                    OkNegotiatedContentResult<ContactPreference> contactPreferenceRet2 = jsonRet2 as OkNegotiatedContentResult<ContactPreference>;
-                    Assert.IsNull(contactPreferenceRet2);
-
-                    NotFoundResult notFoundRequest = jsonRet2 as NotFoundResult;
-                    Assert.IsNotNull(notFoundRequest);
-                }
-            }
+                options.UseSqlServer(connectionStrings.TestDB);
+            });
+        
+            Services.AddDbContext<ApplicationDbContext>(options =>
+                options.UseSqlServer(connectionStrings.TestDB));
+        
+            Services.AddIdentityCore<ApplicationUser>()
+                .AddEntityFrameworkStores<ApplicationDbContext>();
+        
+            Services.AddSingleton<IEnums, Enums>();
+            Services.AddSingleton<ILoggedInService, LoggedInService>();
+            Services.AddSingleton<IContactPreferenceService, ContactPreferenceService>();
+            Services.AddSingleton<IContactPreferenceController, ContactPreferenceController>();
+        
+            Provider = Services.BuildServiceProvider();
+            Assert.NotNull(Provider);
+        
+            loggedInService = Provider.GetService<ILoggedInService>();
+            Assert.NotNull(loggedInService);
+        
+            contactPreferenceService = Provider.GetService<IContactPreferenceService>();
+            Assert.NotNull(contactPreferenceService);
+        
+            await contactPreferenceService.SetCulture(culture);
+        
+            contactPreferenceController = Provider.GetService<IContactPreferenceController>();
+            Assert.NotNull(contactPreferenceController);
+        
+            return await Task.FromResult(true);
         }
-        #endregion Tests Generated for Class Controller GetWithID Command
-
-        #region Tests Generated for Class Controller Post Command
-        [TestMethod]
-        public void ContactPreference_Controller_Post_Test()
-        {
-            foreach (LanguageEnum LanguageRequest in AllowableLanguages)
-            {
-                foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
-                {
-                    ContactPreferenceController contactPreferenceController = new ContactPreferenceController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(contactPreferenceController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, contactPreferenceController.DatabaseType);
-
-                    ContactPreference contactPreferenceLast = new ContactPreference();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-                    {
-                        Query query = new Query();
-                        query.Language = LanguageRequest;
-                        query.Asc = "";
-                        query.Desc = "";
-
-                        ContactPreferenceService contactPreferenceService = new ContactPreferenceService(query, db, ContactID);
-                        contactPreferenceLast = (from c in db.ContactPreferences select c).FirstOrDefault();
-                    }
-
-                    // ok with ContactPreference info
-                    IHttpActionResult jsonRet = contactPreferenceController.GetContactPreferenceWithID(contactPreferenceLast.ContactPreferenceID);
-                    Assert.IsNotNull(jsonRet);
-
-                    OkNegotiatedContentResult<ContactPreference> Ret = jsonRet as OkNegotiatedContentResult<ContactPreference>;
-                    ContactPreference contactPreferenceRet = Ret.Content;
-                    Assert.AreEqual(contactPreferenceLast.ContactPreferenceID, contactPreferenceRet.ContactPreferenceID);
-
-                    BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
-
-                    // Post to return CSSPError because ContactPreferenceID exist
-                    IHttpActionResult jsonRet2 = contactPreferenceController.Post(contactPreferenceRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet2);
-
-                    OkNegotiatedContentResult<ContactPreference> contactPreferenceRet2 = jsonRet2 as OkNegotiatedContentResult<ContactPreference>;
-                    Assert.IsNull(contactPreferenceRet2);
-
-                    BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
-                    Assert.IsNotNull(badRequest2);
-
-                    // Post to return newly added ContactPreference
-                    contactPreferenceRet.ContactPreferenceID = 0;
-                    contactPreferenceController.Request = new System.Net.Http.HttpRequestMessage();
-                    contactPreferenceController.Request.RequestUri = new System.Uri("http://localhost:5000/api/contactPreference");
-                    IHttpActionResult jsonRet3 = contactPreferenceController.Post(contactPreferenceRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet3);
-
-                    CreatedNegotiatedContentResult<ContactPreference> contactPreferenceRet3 = jsonRet3 as CreatedNegotiatedContentResult<ContactPreference>;
-                    Assert.IsNotNull(contactPreferenceRet3);
-
-                    BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest3);
-
-                    IHttpActionResult jsonRet4 = contactPreferenceController.Delete(contactPreferenceRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet4);
-
-                    OkNegotiatedContentResult<ContactPreference> contactPreferenceRet4 = jsonRet4 as OkNegotiatedContentResult<ContactPreference>;
-                    Assert.IsNotNull(contactPreferenceRet4);
-
-                    BadRequestErrorMessageResult badRequest4 = jsonRet4 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest4);
-                }
-            }
-        }
-        #endregion Tests Generated for Class Controller Post Command
-
-        #region Tests Generated for Class Controller Put Command
-        [TestMethod]
-        public void ContactPreference_Controller_Put_Test()
-        {
-            foreach (LanguageEnum LanguageRequest in AllowableLanguages)
-            {
-                foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
-                {
-                    ContactPreferenceController contactPreferenceController = new ContactPreferenceController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(contactPreferenceController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, contactPreferenceController.DatabaseType);
-
-                    ContactPreference contactPreferenceLast = new ContactPreference();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-                    {
-                        Query query = new Query();
-                        query.Language = LanguageRequest;
-
-                        ContactPreferenceService contactPreferenceService = new ContactPreferenceService(query, db, ContactID);
-                        contactPreferenceLast = (from c in db.ContactPreferences select c).FirstOrDefault();
-                    }
-
-                    // ok with ContactPreference info
-                    IHttpActionResult jsonRet = contactPreferenceController.GetContactPreferenceWithID(contactPreferenceLast.ContactPreferenceID);
-                    Assert.IsNotNull(jsonRet);
-
-                    OkNegotiatedContentResult<ContactPreference> Ret = jsonRet as OkNegotiatedContentResult<ContactPreference>;
-                    ContactPreference contactPreferenceRet = Ret.Content;
-                    Assert.AreEqual(contactPreferenceLast.ContactPreferenceID, contactPreferenceRet.ContactPreferenceID);
-
-                    BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
-
-                    // Put to return success
-                    IHttpActionResult jsonRet2 = contactPreferenceController.Put(contactPreferenceRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet2);
-
-                    OkNegotiatedContentResult<ContactPreference> contactPreferenceRet2 = jsonRet2 as OkNegotiatedContentResult<ContactPreference>;
-                    Assert.IsNotNull(contactPreferenceRet2);
-
-                    BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest2);
-
-                    // Put to return CSSPError because ContactPreferenceID of 0 does not exist
-                    contactPreferenceRet.ContactPreferenceID = 0;
-                    IHttpActionResult jsonRet3 = contactPreferenceController.Put(contactPreferenceRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet3);
-
-                    OkNegotiatedContentResult<ContactPreference> contactPreferenceRet3 = jsonRet3 as OkNegotiatedContentResult<ContactPreference>;
-                    Assert.IsNull(contactPreferenceRet3);
-
-                    BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
-                    Assert.IsNotNull(badRequest3);
-                }
-            }
-        }
-        #endregion Tests Generated for Class Controller Put Command
-
-        #region Tests Generated for Class Controller Delete Command
-        [TestMethod]
-        public void ContactPreference_Controller_Delete_Test()
-        {
-            foreach (LanguageEnum LanguageRequest in AllowableLanguages)
-            {
-                foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
-                {
-                    ContactPreferenceController contactPreferenceController = new ContactPreferenceController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(contactPreferenceController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, contactPreferenceController.DatabaseType);
-
-                    ContactPreference contactPreferenceLast = new ContactPreference();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-                    {
-                        Query query = new Query();
-                        query.Language = LanguageRequest;
-                        query.Asc = "";
-                        query.Desc = "";
-
-                        ContactPreferenceService contactPreferenceService = new ContactPreferenceService(query, db, ContactID);
-                        contactPreferenceLast = (from c in db.ContactPreferences select c).FirstOrDefault();
-                    }
-
-                    // ok with ContactPreference info
-                    IHttpActionResult jsonRet = contactPreferenceController.GetContactPreferenceWithID(contactPreferenceLast.ContactPreferenceID);
-                    Assert.IsNotNull(jsonRet);
-
-                    OkNegotiatedContentResult<ContactPreference> Ret = jsonRet as OkNegotiatedContentResult<ContactPreference>;
-                    ContactPreference contactPreferenceRet = Ret.Content;
-                    Assert.AreEqual(contactPreferenceLast.ContactPreferenceID, contactPreferenceRet.ContactPreferenceID);
-
-                    BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
-
-                    // Post to return newly added ContactPreference
-                    contactPreferenceRet.ContactPreferenceID = 0;
-                    contactPreferenceController.Request = new System.Net.Http.HttpRequestMessage();
-                    contactPreferenceController.Request.RequestUri = new System.Uri("http://localhost:5000/api/contactPreference");
-                    IHttpActionResult jsonRet3 = contactPreferenceController.Post(contactPreferenceRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet3);
-
-                    CreatedNegotiatedContentResult<ContactPreference> contactPreferenceRet3 = jsonRet3 as CreatedNegotiatedContentResult<ContactPreference>;
-                    Assert.IsNotNull(contactPreferenceRet3);
-                    ContactPreference contactPreference = contactPreferenceRet3.Content;
-
-                    BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest3);
-
-                    // Delete to return success
-                    IHttpActionResult jsonRet2 = contactPreferenceController.Delete(contactPreferenceRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet2);
-
-                    OkNegotiatedContentResult<ContactPreference> contactPreferenceRet2 = jsonRet2 as OkNegotiatedContentResult<ContactPreference>;
-                    Assert.IsNotNull(contactPreferenceRet2);
-
-                    BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest2);
-
-                    // Delete to return CSSPError because ContactPreferenceID of 0 does not exist
-                    contactPreferenceRet.ContactPreferenceID = 0;
-                    IHttpActionResult jsonRet4 = contactPreferenceController.Delete(contactPreferenceRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet4);
-
-                    OkNegotiatedContentResult<ContactPreference> contactPreferenceRet4 = jsonRet4 as OkNegotiatedContentResult<ContactPreference>;
-                    Assert.IsNull(contactPreferenceRet4);
-
-                    BadRequestErrorMessageResult badRequest4 = jsonRet4 as BadRequestErrorMessageResult;
-                    Assert.IsNotNull(badRequest4);
-                }
-            }
-        }
-        #endregion Tests Generated for Class Controller Delete Command
-
+        #endregion Functions private
     }
 }

@@ -2,350 +2,157 @@ using CSSPEnums;
 using CSSPModels;
 using CSSPServices;
 using CSSPWebAPI.Controllers;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using LoggedInServices.Services;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using System;
 using System.Collections.Generic;
+using System.Globalization;
+using System.IO;
 using System.Linq;
-using System.Web.Http;
-using System.Web.Http.Results;
+using System.Threading.Tasks;
+using System.Transactions;
+using UserServices.Models;
+using Xunit;
 
-namespace CSSPWebAPI.Tests.Controllers
+namespace CSSPWebAPIs.Tests.Controllers
 {
-    [TestClass]
-    public partial class DrogueRunPositionControllerTest : BaseControllerTest
+    public partial class DrogueRunPositionControllerTest
     {
         #region Variables
         #endregion Variables
 
         #region Properties
+        private IConfiguration Config { get; set; }
+        private IServiceProvider Provider { get; set; }
+        private IServiceCollection Services { get; set; }
+        private CSSPDBContext db { get; set; }
+        private ILoggedInService loggedInService { get; set; }
+        private IDrogueRunPositionService drogueRunPositionService { get; set; }
+        private IDrogueRunPositionController drogueRunPositionController { get; set; }
         #endregion Properties
 
         #region Constructors
-        public DrogueRunPositionControllerTest() : base()
+        public DrogueRunPositionControllerTest()
         {
         }
         #endregion Constructors
 
-        #region Tests Generated for Class Controller GetList Command
-        [TestMethod]
-        public void DrogueRunPosition_Controller_GetDrogueRunPositionList_Test()
+        #region Functions public
+        [Theory]
+        [InlineData("en-CA")]
+        [InlineData("fr-CA")]
+        public async Task DrogueRunPositionController_Constructor_Good_Test(string culture)
         {
-            foreach (LanguageEnum LanguageRequest in AllowableLanguages)
+            bool retBool = await Setup(new CultureInfo(culture));
+            Assert.True(retBool);
+            Assert.NotNull(loggedInService);
+            Assert.NotNull(drogueRunPositionService);
+            Assert.NotNull(drogueRunPositionController);
+        }
+        [Theory]
+        [InlineData("en-CA")]
+        [InlineData("fr-CA")]
+        public async Task DrogueRunPositionController_CRUD_Good_Test(string culture)
+        {
+            bool retBool = await Setup(new CultureInfo(culture));
+            Assert.True(retBool);
+
+            using (TransactionScope ts = new TransactionScope())
             {
-                foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
-                {
-                    DrogueRunPositionController drogueRunPositionController = new DrogueRunPositionController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(drogueRunPositionController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, drogueRunPositionController.DatabaseType);
+                // testing Get
+               var actionDrogueRunPositionList = await drogueRunPositionController.Get();
+               Assert.Equal(200, ((ObjectResult)actionDrogueRunPositionList.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionDrogueRunPositionList.Result).Value);
+               List<DrogueRunPosition> drogueRunPositionList = (List<DrogueRunPosition>)(((OkObjectResult)actionDrogueRunPositionList.Result).Value);
 
-                    DrogueRunPosition drogueRunPositionFirst = new DrogueRunPosition();
-                    int count = -1;
-                    Query query = new Query();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseTypeEnum.SqlServerTestDB))
-                    {
-                        DrogueRunPositionService drogueRunPositionService = new DrogueRunPositionService(query, db, ContactID);
-                        drogueRunPositionFirst = (from c in db.DrogueRunPositions select c).FirstOrDefault();
-                        count = (from c in db.DrogueRunPositions select c).Count();
-                        count = (query.Take > count ? count : query.Take);
-                    }
+               int count = ((List<DrogueRunPosition>)((OkObjectResult)actionDrogueRunPositionList.Result).Value).Count();
+                Assert.True(count > 0);
 
-                    // ok with DrogueRunPosition info
-                    IHttpActionResult jsonRet = drogueRunPositionController.GetDrogueRunPositionList();
-                    Assert.IsNotNull(jsonRet);
+               // testing Get(DrogueRunPositionID)
+               var actionDrogueRunPosition = await drogueRunPositionController.Get(drogueRunPositionList[0].DrogueRunPositionID);
+               Assert.Equal(200, ((ObjectResult)actionDrogueRunPosition.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionDrogueRunPosition.Result).Value);
+               DrogueRunPosition drogueRunPosition = (DrogueRunPosition)(((OkObjectResult)actionDrogueRunPosition.Result).Value);
+               Assert.NotNull(drogueRunPosition);
+               Assert.Equal(drogueRunPositionList[0].DrogueRunPositionID, drogueRunPosition.DrogueRunPositionID);
 
-                    OkNegotiatedContentResult<List<DrogueRunPosition>> ret = jsonRet as OkNegotiatedContentResult<List<DrogueRunPosition>>;
-                    Assert.AreEqual(drogueRunPositionFirst.DrogueRunPositionID, ret.Content[0].DrogueRunPositionID);
-                    Assert.AreEqual((count > query.Take ? query.Take : count), ret.Content.Count);
+               // testing Post(DrogueRunPosition drogueRunPosition)
+               drogueRunPosition.DrogueRunPositionID = 0;
+               var actionDrogueRunPositionNew = await drogueRunPositionController.Post(drogueRunPosition);
+               Assert.Equal(200, ((ObjectResult)actionDrogueRunPositionNew.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionDrogueRunPositionNew.Result).Value);
+               DrogueRunPosition drogueRunPositionNew = (DrogueRunPosition)(((OkObjectResult)actionDrogueRunPositionNew.Result).Value);
+               Assert.NotNull(drogueRunPositionNew);
 
-                    List<DrogueRunPosition> drogueRunPositionList = new List<DrogueRunPosition>();
-                    count = -1;
-                    query = new Query();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseTypeEnum.SqlServerTestDB))
-                    {
-                        DrogueRunPositionService drogueRunPositionService = new DrogueRunPositionService(query, db, ContactID);
-                        drogueRunPositionList = (from c in db.DrogueRunPositions select c).OrderBy(c => c.DrogueRunPositionID).Skip(0).Take(2).ToList();
-                        count = (from c in db.DrogueRunPositions select c).Count();
-                    }
+               // testing Put(DrogueRunPosition drogueRunPosition)
+               var actionDrogueRunPositionUpdate = await drogueRunPositionController.Put(drogueRunPositionNew);
+               Assert.Equal(200, ((ObjectResult)actionDrogueRunPositionUpdate.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionDrogueRunPositionUpdate.Result).Value);
+               DrogueRunPosition drogueRunPositionUpdate = (DrogueRunPosition)(((OkObjectResult)actionDrogueRunPositionUpdate.Result).Value);
+               Assert.NotNull(drogueRunPositionUpdate);
 
-                    if (count > 0)
-                    {
-                        query.Skip = 0;
-                        query.Take = 5;
-                        count = (query.Take > count ? query.Take : count);
-
-                        // ok with DrogueRunPosition info
-                        jsonRet = drogueRunPositionController.GetDrogueRunPositionList(query.Language.ToString(), query.Skip, query.Take);
-                        Assert.IsNotNull(jsonRet);
-
-                        ret = jsonRet as OkNegotiatedContentResult<List<DrogueRunPosition>>;
-                        Assert.AreEqual(drogueRunPositionList[0].DrogueRunPositionID, ret.Content[0].DrogueRunPositionID);
-                        Assert.AreEqual((count > query.Take ? query.Take : count), ret.Content.Count);
-
-                       if (count > 1)
-                       {
-                           query.Skip = 1;
-                           query.Take = 5;
-                           count = (query.Take > count ? query.Take : count);
-
-                           // ok with DrogueRunPosition info
-                           IHttpActionResult jsonRet2 = drogueRunPositionController.GetDrogueRunPositionList(query.Language.ToString(), query.Skip, query.Take);
-                           Assert.IsNotNull(jsonRet2);
-
-                           OkNegotiatedContentResult<List<DrogueRunPosition>> ret2 = jsonRet2 as OkNegotiatedContentResult<List<DrogueRunPosition>>;
-                           Assert.AreEqual(drogueRunPositionList[1].DrogueRunPositionID, ret2.Content[0].DrogueRunPositionID);
-                           Assert.AreEqual((count > query.Take ? query.Take : count), ret2.Content.Count);
-                       }
-                    }
-                }
+               // testing Delete(DrogueRunPosition drogueRunPosition)
+               var actionDrogueRunPositionDelete = await drogueRunPositionController.Delete(drogueRunPositionUpdate);
+               Assert.Equal(200, ((ObjectResult)actionDrogueRunPositionDelete.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionDrogueRunPositionDelete.Result).Value);
+               DrogueRunPosition drogueRunPositionDelete = (DrogueRunPosition)(((OkObjectResult)actionDrogueRunPositionDelete.Result).Value);
+               Assert.NotNull(drogueRunPositionDelete);
             }
         }
-        #endregion Tests Generated for Class Controller GetList Command
+        #endregion Functions public
 
-        #region Tests Generated for Class Controller GetWithID Command
-        [TestMethod]
-        public void DrogueRunPosition_Controller_GetDrogueRunPositionWithID_Test()
+        #region Functions private
+        private async Task<bool> Setup(CultureInfo culture)
         {
-            foreach (LanguageEnum LanguageRequest in AllowableLanguages)
+            Config = new ConfigurationBuilder()
+               .SetBasePath(Directory.GetParent(AppContext.BaseDirectory).FullName)
+               .AddJsonFile("appsettings.json")
+               .Build();
+        
+            Services = new ServiceCollection();
+        
+            IConfigurationSection connectionStringsSection = Config.GetSection("ConnectionStrings");
+            Services.Configure<ConnectionStringsModel>(connectionStringsSection);
+        
+            ConnectionStringsModel connectionStrings = connectionStringsSection.Get<ConnectionStringsModel>();
+        
+            Services.AddSingleton<IConfiguration>(Config);
+        
+            Services.AddDbContext<CSSPDBContext>(options =>
             {
-                foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
-                {
-                    DrogueRunPositionController drogueRunPositionController = new DrogueRunPositionController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(drogueRunPositionController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, drogueRunPositionController.DatabaseType);
-
-                    DrogueRunPosition drogueRunPositionFirst = new DrogueRunPosition();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-                    {
-                        DrogueRunPositionService drogueRunPositionService = new DrogueRunPositionService(new Query(), db, ContactID);
-                        drogueRunPositionFirst = (from c in db.DrogueRunPositions select c).FirstOrDefault();
-                    }
-
-                    // ok with DrogueRunPosition info
-                    IHttpActionResult jsonRet = drogueRunPositionController.GetDrogueRunPositionWithID(drogueRunPositionFirst.DrogueRunPositionID);
-                    Assert.IsNotNull(jsonRet);
-
-                    OkNegotiatedContentResult<DrogueRunPosition> Ret = jsonRet as OkNegotiatedContentResult<DrogueRunPosition>;
-                    DrogueRunPosition drogueRunPositionRet = Ret.Content;
-                    Assert.AreEqual(drogueRunPositionFirst.DrogueRunPositionID, drogueRunPositionRet.DrogueRunPositionID);
-
-                    BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
-
-                    // Not Found
-                    IHttpActionResult jsonRet2 = drogueRunPositionController.GetDrogueRunPositionWithID(0);
-                    Assert.IsNotNull(jsonRet2);
-
-                    OkNegotiatedContentResult<DrogueRunPosition> drogueRunPositionRet2 = jsonRet2 as OkNegotiatedContentResult<DrogueRunPosition>;
-                    Assert.IsNull(drogueRunPositionRet2);
-
-                    NotFoundResult notFoundRequest = jsonRet2 as NotFoundResult;
-                    Assert.IsNotNull(notFoundRequest);
-                }
-            }
+                options.UseSqlServer(connectionStrings.TestDB);
+            });
+        
+            Services.AddDbContext<ApplicationDbContext>(options =>
+                options.UseSqlServer(connectionStrings.TestDB));
+        
+            Services.AddIdentityCore<ApplicationUser>()
+                .AddEntityFrameworkStores<ApplicationDbContext>();
+        
+            Services.AddSingleton<IEnums, Enums>();
+            Services.AddSingleton<ILoggedInService, LoggedInService>();
+            Services.AddSingleton<IDrogueRunPositionService, DrogueRunPositionService>();
+            Services.AddSingleton<IDrogueRunPositionController, DrogueRunPositionController>();
+        
+            Provider = Services.BuildServiceProvider();
+            Assert.NotNull(Provider);
+        
+            loggedInService = Provider.GetService<ILoggedInService>();
+            Assert.NotNull(loggedInService);
+        
+            drogueRunPositionService = Provider.GetService<IDrogueRunPositionService>();
+            Assert.NotNull(drogueRunPositionService);
+        
+            await drogueRunPositionService.SetCulture(culture);
+        
+            drogueRunPositionController = Provider.GetService<IDrogueRunPositionController>();
+            Assert.NotNull(drogueRunPositionController);
+        
+            return await Task.FromResult(true);
         }
-        #endregion Tests Generated for Class Controller GetWithID Command
-
-        #region Tests Generated for Class Controller Post Command
-        [TestMethod]
-        public void DrogueRunPosition_Controller_Post_Test()
-        {
-            foreach (LanguageEnum LanguageRequest in AllowableLanguages)
-            {
-                foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
-                {
-                    DrogueRunPositionController drogueRunPositionController = new DrogueRunPositionController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(drogueRunPositionController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, drogueRunPositionController.DatabaseType);
-
-                    DrogueRunPosition drogueRunPositionLast = new DrogueRunPosition();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-                    {
-                        Query query = new Query();
-                        query.Language = LanguageRequest;
-                        query.Asc = "";
-                        query.Desc = "";
-
-                        DrogueRunPositionService drogueRunPositionService = new DrogueRunPositionService(query, db, ContactID);
-                        drogueRunPositionLast = (from c in db.DrogueRunPositions select c).FirstOrDefault();
-                    }
-
-                    // ok with DrogueRunPosition info
-                    IHttpActionResult jsonRet = drogueRunPositionController.GetDrogueRunPositionWithID(drogueRunPositionLast.DrogueRunPositionID);
-                    Assert.IsNotNull(jsonRet);
-
-                    OkNegotiatedContentResult<DrogueRunPosition> Ret = jsonRet as OkNegotiatedContentResult<DrogueRunPosition>;
-                    DrogueRunPosition drogueRunPositionRet = Ret.Content;
-                    Assert.AreEqual(drogueRunPositionLast.DrogueRunPositionID, drogueRunPositionRet.DrogueRunPositionID);
-
-                    BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
-
-                    // Post to return CSSPError because DrogueRunPositionID exist
-                    IHttpActionResult jsonRet2 = drogueRunPositionController.Post(drogueRunPositionRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet2);
-
-                    OkNegotiatedContentResult<DrogueRunPosition> drogueRunPositionRet2 = jsonRet2 as OkNegotiatedContentResult<DrogueRunPosition>;
-                    Assert.IsNull(drogueRunPositionRet2);
-
-                    BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
-                    Assert.IsNotNull(badRequest2);
-
-                    // Post to return newly added DrogueRunPosition
-                    drogueRunPositionRet.DrogueRunPositionID = 0;
-                    drogueRunPositionController.Request = new System.Net.Http.HttpRequestMessage();
-                    drogueRunPositionController.Request.RequestUri = new System.Uri("http://localhost:5000/api/drogueRunPosition");
-                    IHttpActionResult jsonRet3 = drogueRunPositionController.Post(drogueRunPositionRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet3);
-
-                    CreatedNegotiatedContentResult<DrogueRunPosition> drogueRunPositionRet3 = jsonRet3 as CreatedNegotiatedContentResult<DrogueRunPosition>;
-                    Assert.IsNotNull(drogueRunPositionRet3);
-
-                    BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest3);
-
-                    IHttpActionResult jsonRet4 = drogueRunPositionController.Delete(drogueRunPositionRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet4);
-
-                    OkNegotiatedContentResult<DrogueRunPosition> drogueRunPositionRet4 = jsonRet4 as OkNegotiatedContentResult<DrogueRunPosition>;
-                    Assert.IsNotNull(drogueRunPositionRet4);
-
-                    BadRequestErrorMessageResult badRequest4 = jsonRet4 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest4);
-                }
-            }
-        }
-        #endregion Tests Generated for Class Controller Post Command
-
-        #region Tests Generated for Class Controller Put Command
-        [TestMethod]
-        public void DrogueRunPosition_Controller_Put_Test()
-        {
-            foreach (LanguageEnum LanguageRequest in AllowableLanguages)
-            {
-                foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
-                {
-                    DrogueRunPositionController drogueRunPositionController = new DrogueRunPositionController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(drogueRunPositionController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, drogueRunPositionController.DatabaseType);
-
-                    DrogueRunPosition drogueRunPositionLast = new DrogueRunPosition();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-                    {
-                        Query query = new Query();
-                        query.Language = LanguageRequest;
-
-                        DrogueRunPositionService drogueRunPositionService = new DrogueRunPositionService(query, db, ContactID);
-                        drogueRunPositionLast = (from c in db.DrogueRunPositions select c).FirstOrDefault();
-                    }
-
-                    // ok with DrogueRunPosition info
-                    IHttpActionResult jsonRet = drogueRunPositionController.GetDrogueRunPositionWithID(drogueRunPositionLast.DrogueRunPositionID);
-                    Assert.IsNotNull(jsonRet);
-
-                    OkNegotiatedContentResult<DrogueRunPosition> Ret = jsonRet as OkNegotiatedContentResult<DrogueRunPosition>;
-                    DrogueRunPosition drogueRunPositionRet = Ret.Content;
-                    Assert.AreEqual(drogueRunPositionLast.DrogueRunPositionID, drogueRunPositionRet.DrogueRunPositionID);
-
-                    BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
-
-                    // Put to return success
-                    IHttpActionResult jsonRet2 = drogueRunPositionController.Put(drogueRunPositionRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet2);
-
-                    OkNegotiatedContentResult<DrogueRunPosition> drogueRunPositionRet2 = jsonRet2 as OkNegotiatedContentResult<DrogueRunPosition>;
-                    Assert.IsNotNull(drogueRunPositionRet2);
-
-                    BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest2);
-
-                    // Put to return CSSPError because DrogueRunPositionID of 0 does not exist
-                    drogueRunPositionRet.DrogueRunPositionID = 0;
-                    IHttpActionResult jsonRet3 = drogueRunPositionController.Put(drogueRunPositionRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet3);
-
-                    OkNegotiatedContentResult<DrogueRunPosition> drogueRunPositionRet3 = jsonRet3 as OkNegotiatedContentResult<DrogueRunPosition>;
-                    Assert.IsNull(drogueRunPositionRet3);
-
-                    BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
-                    Assert.IsNotNull(badRequest3);
-                }
-            }
-        }
-        #endregion Tests Generated for Class Controller Put Command
-
-        #region Tests Generated for Class Controller Delete Command
-        [TestMethod]
-        public void DrogueRunPosition_Controller_Delete_Test()
-        {
-            foreach (LanguageEnum LanguageRequest in AllowableLanguages)
-            {
-                foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
-                {
-                    DrogueRunPositionController drogueRunPositionController = new DrogueRunPositionController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(drogueRunPositionController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, drogueRunPositionController.DatabaseType);
-
-                    DrogueRunPosition drogueRunPositionLast = new DrogueRunPosition();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-                    {
-                        Query query = new Query();
-                        query.Language = LanguageRequest;
-                        query.Asc = "";
-                        query.Desc = "";
-
-                        DrogueRunPositionService drogueRunPositionService = new DrogueRunPositionService(query, db, ContactID);
-                        drogueRunPositionLast = (from c in db.DrogueRunPositions select c).FirstOrDefault();
-                    }
-
-                    // ok with DrogueRunPosition info
-                    IHttpActionResult jsonRet = drogueRunPositionController.GetDrogueRunPositionWithID(drogueRunPositionLast.DrogueRunPositionID);
-                    Assert.IsNotNull(jsonRet);
-
-                    OkNegotiatedContentResult<DrogueRunPosition> Ret = jsonRet as OkNegotiatedContentResult<DrogueRunPosition>;
-                    DrogueRunPosition drogueRunPositionRet = Ret.Content;
-                    Assert.AreEqual(drogueRunPositionLast.DrogueRunPositionID, drogueRunPositionRet.DrogueRunPositionID);
-
-                    BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
-
-                    // Post to return newly added DrogueRunPosition
-                    drogueRunPositionRet.DrogueRunPositionID = 0;
-                    drogueRunPositionController.Request = new System.Net.Http.HttpRequestMessage();
-                    drogueRunPositionController.Request.RequestUri = new System.Uri("http://localhost:5000/api/drogueRunPosition");
-                    IHttpActionResult jsonRet3 = drogueRunPositionController.Post(drogueRunPositionRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet3);
-
-                    CreatedNegotiatedContentResult<DrogueRunPosition> drogueRunPositionRet3 = jsonRet3 as CreatedNegotiatedContentResult<DrogueRunPosition>;
-                    Assert.IsNotNull(drogueRunPositionRet3);
-                    DrogueRunPosition drogueRunPosition = drogueRunPositionRet3.Content;
-
-                    BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest3);
-
-                    // Delete to return success
-                    IHttpActionResult jsonRet2 = drogueRunPositionController.Delete(drogueRunPositionRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet2);
-
-                    OkNegotiatedContentResult<DrogueRunPosition> drogueRunPositionRet2 = jsonRet2 as OkNegotiatedContentResult<DrogueRunPosition>;
-                    Assert.IsNotNull(drogueRunPositionRet2);
-
-                    BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest2);
-
-                    // Delete to return CSSPError because DrogueRunPositionID of 0 does not exist
-                    drogueRunPositionRet.DrogueRunPositionID = 0;
-                    IHttpActionResult jsonRet4 = drogueRunPositionController.Delete(drogueRunPositionRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet4);
-
-                    OkNegotiatedContentResult<DrogueRunPosition> drogueRunPositionRet4 = jsonRet4 as OkNegotiatedContentResult<DrogueRunPosition>;
-                    Assert.IsNull(drogueRunPositionRet4);
-
-                    BadRequestErrorMessageResult badRequest4 = jsonRet4 as BadRequestErrorMessageResult;
-                    Assert.IsNotNull(badRequest4);
-                }
-            }
-        }
-        #endregion Tests Generated for Class Controller Delete Command
-
+        #endregion Functions private
     }
 }

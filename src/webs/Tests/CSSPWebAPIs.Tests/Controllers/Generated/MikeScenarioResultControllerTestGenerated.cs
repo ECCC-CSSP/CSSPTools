@@ -2,350 +2,157 @@ using CSSPEnums;
 using CSSPModels;
 using CSSPServices;
 using CSSPWebAPI.Controllers;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using LoggedInServices.Services;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using System;
 using System.Collections.Generic;
+using System.Globalization;
+using System.IO;
 using System.Linq;
-using System.Web.Http;
-using System.Web.Http.Results;
+using System.Threading.Tasks;
+using System.Transactions;
+using UserServices.Models;
+using Xunit;
 
-namespace CSSPWebAPI.Tests.Controllers
+namespace CSSPWebAPIs.Tests.Controllers
 {
-    [TestClass]
-    public partial class MikeScenarioResultControllerTest : BaseControllerTest
+    public partial class MikeScenarioResultControllerTest
     {
         #region Variables
         #endregion Variables
 
         #region Properties
+        private IConfiguration Config { get; set; }
+        private IServiceProvider Provider { get; set; }
+        private IServiceCollection Services { get; set; }
+        private CSSPDBContext db { get; set; }
+        private ILoggedInService loggedInService { get; set; }
+        private IMikeScenarioResultService mikeScenarioResultService { get; set; }
+        private IMikeScenarioResultController mikeScenarioResultController { get; set; }
         #endregion Properties
 
         #region Constructors
-        public MikeScenarioResultControllerTest() : base()
+        public MikeScenarioResultControllerTest()
         {
         }
         #endregion Constructors
 
-        #region Tests Generated for Class Controller GetList Command
-        [TestMethod]
-        public void MikeScenarioResult_Controller_GetMikeScenarioResultList_Test()
+        #region Functions public
+        [Theory]
+        [InlineData("en-CA")]
+        [InlineData("fr-CA")]
+        public async Task MikeScenarioResultController_Constructor_Good_Test(string culture)
         {
-            foreach (LanguageEnum LanguageRequest in AllowableLanguages)
+            bool retBool = await Setup(new CultureInfo(culture));
+            Assert.True(retBool);
+            Assert.NotNull(loggedInService);
+            Assert.NotNull(mikeScenarioResultService);
+            Assert.NotNull(mikeScenarioResultController);
+        }
+        [Theory]
+        [InlineData("en-CA")]
+        [InlineData("fr-CA")]
+        public async Task MikeScenarioResultController_CRUD_Good_Test(string culture)
+        {
+            bool retBool = await Setup(new CultureInfo(culture));
+            Assert.True(retBool);
+
+            using (TransactionScope ts = new TransactionScope())
             {
-                foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
-                {
-                    MikeScenarioResultController mikeScenarioResultController = new MikeScenarioResultController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(mikeScenarioResultController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, mikeScenarioResultController.DatabaseType);
+                // testing Get
+               var actionMikeScenarioResultList = await mikeScenarioResultController.Get();
+               Assert.Equal(200, ((ObjectResult)actionMikeScenarioResultList.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionMikeScenarioResultList.Result).Value);
+               List<MikeScenarioResult> mikeScenarioResultList = (List<MikeScenarioResult>)(((OkObjectResult)actionMikeScenarioResultList.Result).Value);
 
-                    MikeScenarioResult mikeScenarioResultFirst = new MikeScenarioResult();
-                    int count = -1;
-                    Query query = new Query();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseTypeEnum.SqlServerTestDB))
-                    {
-                        MikeScenarioResultService mikeScenarioResultService = new MikeScenarioResultService(query, db, ContactID);
-                        mikeScenarioResultFirst = (from c in db.MikeScenarioResults select c).FirstOrDefault();
-                        count = (from c in db.MikeScenarioResults select c).Count();
-                        count = (query.Take > count ? count : query.Take);
-                    }
+               int count = ((List<MikeScenarioResult>)((OkObjectResult)actionMikeScenarioResultList.Result).Value).Count();
+                Assert.True(count > 0);
 
-                    // ok with MikeScenarioResult info
-                    IHttpActionResult jsonRet = mikeScenarioResultController.GetMikeScenarioResultList();
-                    Assert.IsNotNull(jsonRet);
+               // testing Get(MikeScenarioResultID)
+               var actionMikeScenarioResult = await mikeScenarioResultController.Get(mikeScenarioResultList[0].MikeScenarioResultID);
+               Assert.Equal(200, ((ObjectResult)actionMikeScenarioResult.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionMikeScenarioResult.Result).Value);
+               MikeScenarioResult mikeScenarioResult = (MikeScenarioResult)(((OkObjectResult)actionMikeScenarioResult.Result).Value);
+               Assert.NotNull(mikeScenarioResult);
+               Assert.Equal(mikeScenarioResultList[0].MikeScenarioResultID, mikeScenarioResult.MikeScenarioResultID);
 
-                    OkNegotiatedContentResult<List<MikeScenarioResult>> ret = jsonRet as OkNegotiatedContentResult<List<MikeScenarioResult>>;
-                    Assert.AreEqual(mikeScenarioResultFirst.MikeScenarioResultID, ret.Content[0].MikeScenarioResultID);
-                    Assert.AreEqual((count > query.Take ? query.Take : count), ret.Content.Count);
+               // testing Post(MikeScenarioResult mikeScenarioResult)
+               mikeScenarioResult.MikeScenarioResultID = 0;
+               var actionMikeScenarioResultNew = await mikeScenarioResultController.Post(mikeScenarioResult);
+               Assert.Equal(200, ((ObjectResult)actionMikeScenarioResultNew.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionMikeScenarioResultNew.Result).Value);
+               MikeScenarioResult mikeScenarioResultNew = (MikeScenarioResult)(((OkObjectResult)actionMikeScenarioResultNew.Result).Value);
+               Assert.NotNull(mikeScenarioResultNew);
 
-                    List<MikeScenarioResult> mikeScenarioResultList = new List<MikeScenarioResult>();
-                    count = -1;
-                    query = new Query();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseTypeEnum.SqlServerTestDB))
-                    {
-                        MikeScenarioResultService mikeScenarioResultService = new MikeScenarioResultService(query, db, ContactID);
-                        mikeScenarioResultList = (from c in db.MikeScenarioResults select c).OrderBy(c => c.MikeScenarioResultID).Skip(0).Take(2).ToList();
-                        count = (from c in db.MikeScenarioResults select c).Count();
-                    }
+               // testing Put(MikeScenarioResult mikeScenarioResult)
+               var actionMikeScenarioResultUpdate = await mikeScenarioResultController.Put(mikeScenarioResultNew);
+               Assert.Equal(200, ((ObjectResult)actionMikeScenarioResultUpdate.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionMikeScenarioResultUpdate.Result).Value);
+               MikeScenarioResult mikeScenarioResultUpdate = (MikeScenarioResult)(((OkObjectResult)actionMikeScenarioResultUpdate.Result).Value);
+               Assert.NotNull(mikeScenarioResultUpdate);
 
-                    if (count > 0)
-                    {
-                        query.Skip = 0;
-                        query.Take = 5;
-                        count = (query.Take > count ? query.Take : count);
-
-                        // ok with MikeScenarioResult info
-                        jsonRet = mikeScenarioResultController.GetMikeScenarioResultList(query.Language.ToString(), query.Skip, query.Take);
-                        Assert.IsNotNull(jsonRet);
-
-                        ret = jsonRet as OkNegotiatedContentResult<List<MikeScenarioResult>>;
-                        Assert.AreEqual(mikeScenarioResultList[0].MikeScenarioResultID, ret.Content[0].MikeScenarioResultID);
-                        Assert.AreEqual((count > query.Take ? query.Take : count), ret.Content.Count);
-
-                       if (count > 1)
-                       {
-                           query.Skip = 1;
-                           query.Take = 5;
-                           count = (query.Take > count ? query.Take : count);
-
-                           // ok with MikeScenarioResult info
-                           IHttpActionResult jsonRet2 = mikeScenarioResultController.GetMikeScenarioResultList(query.Language.ToString(), query.Skip, query.Take);
-                           Assert.IsNotNull(jsonRet2);
-
-                           OkNegotiatedContentResult<List<MikeScenarioResult>> ret2 = jsonRet2 as OkNegotiatedContentResult<List<MikeScenarioResult>>;
-                           Assert.AreEqual(mikeScenarioResultList[1].MikeScenarioResultID, ret2.Content[0].MikeScenarioResultID);
-                           Assert.AreEqual((count > query.Take ? query.Take : count), ret2.Content.Count);
-                       }
-                    }
-                }
+               // testing Delete(MikeScenarioResult mikeScenarioResult)
+               var actionMikeScenarioResultDelete = await mikeScenarioResultController.Delete(mikeScenarioResultUpdate);
+               Assert.Equal(200, ((ObjectResult)actionMikeScenarioResultDelete.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionMikeScenarioResultDelete.Result).Value);
+               MikeScenarioResult mikeScenarioResultDelete = (MikeScenarioResult)(((OkObjectResult)actionMikeScenarioResultDelete.Result).Value);
+               Assert.NotNull(mikeScenarioResultDelete);
             }
         }
-        #endregion Tests Generated for Class Controller GetList Command
+        #endregion Functions public
 
-        #region Tests Generated for Class Controller GetWithID Command
-        [TestMethod]
-        public void MikeScenarioResult_Controller_GetMikeScenarioResultWithID_Test()
+        #region Functions private
+        private async Task<bool> Setup(CultureInfo culture)
         {
-            foreach (LanguageEnum LanguageRequest in AllowableLanguages)
+            Config = new ConfigurationBuilder()
+               .SetBasePath(Directory.GetParent(AppContext.BaseDirectory).FullName)
+               .AddJsonFile("appsettings.json")
+               .Build();
+        
+            Services = new ServiceCollection();
+        
+            IConfigurationSection connectionStringsSection = Config.GetSection("ConnectionStrings");
+            Services.Configure<ConnectionStringsModel>(connectionStringsSection);
+        
+            ConnectionStringsModel connectionStrings = connectionStringsSection.Get<ConnectionStringsModel>();
+        
+            Services.AddSingleton<IConfiguration>(Config);
+        
+            Services.AddDbContext<CSSPDBContext>(options =>
             {
-                foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
-                {
-                    MikeScenarioResultController mikeScenarioResultController = new MikeScenarioResultController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(mikeScenarioResultController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, mikeScenarioResultController.DatabaseType);
-
-                    MikeScenarioResult mikeScenarioResultFirst = new MikeScenarioResult();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-                    {
-                        MikeScenarioResultService mikeScenarioResultService = new MikeScenarioResultService(new Query(), db, ContactID);
-                        mikeScenarioResultFirst = (from c in db.MikeScenarioResults select c).FirstOrDefault();
-                    }
-
-                    // ok with MikeScenarioResult info
-                    IHttpActionResult jsonRet = mikeScenarioResultController.GetMikeScenarioResultWithID(mikeScenarioResultFirst.MikeScenarioResultID);
-                    Assert.IsNotNull(jsonRet);
-
-                    OkNegotiatedContentResult<MikeScenarioResult> Ret = jsonRet as OkNegotiatedContentResult<MikeScenarioResult>;
-                    MikeScenarioResult mikeScenarioResultRet = Ret.Content;
-                    Assert.AreEqual(mikeScenarioResultFirst.MikeScenarioResultID, mikeScenarioResultRet.MikeScenarioResultID);
-
-                    BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
-
-                    // Not Found
-                    IHttpActionResult jsonRet2 = mikeScenarioResultController.GetMikeScenarioResultWithID(0);
-                    Assert.IsNotNull(jsonRet2);
-
-                    OkNegotiatedContentResult<MikeScenarioResult> mikeScenarioResultRet2 = jsonRet2 as OkNegotiatedContentResult<MikeScenarioResult>;
-                    Assert.IsNull(mikeScenarioResultRet2);
-
-                    NotFoundResult notFoundRequest = jsonRet2 as NotFoundResult;
-                    Assert.IsNotNull(notFoundRequest);
-                }
-            }
+                options.UseSqlServer(connectionStrings.TestDB);
+            });
+        
+            Services.AddDbContext<ApplicationDbContext>(options =>
+                options.UseSqlServer(connectionStrings.TestDB));
+        
+            Services.AddIdentityCore<ApplicationUser>()
+                .AddEntityFrameworkStores<ApplicationDbContext>();
+        
+            Services.AddSingleton<IEnums, Enums>();
+            Services.AddSingleton<ILoggedInService, LoggedInService>();
+            Services.AddSingleton<IMikeScenarioResultService, MikeScenarioResultService>();
+            Services.AddSingleton<IMikeScenarioResultController, MikeScenarioResultController>();
+        
+            Provider = Services.BuildServiceProvider();
+            Assert.NotNull(Provider);
+        
+            loggedInService = Provider.GetService<ILoggedInService>();
+            Assert.NotNull(loggedInService);
+        
+            mikeScenarioResultService = Provider.GetService<IMikeScenarioResultService>();
+            Assert.NotNull(mikeScenarioResultService);
+        
+            await mikeScenarioResultService.SetCulture(culture);
+        
+            mikeScenarioResultController = Provider.GetService<IMikeScenarioResultController>();
+            Assert.NotNull(mikeScenarioResultController);
+        
+            return await Task.FromResult(true);
         }
-        #endregion Tests Generated for Class Controller GetWithID Command
-
-        #region Tests Generated for Class Controller Post Command
-        [TestMethod]
-        public void MikeScenarioResult_Controller_Post_Test()
-        {
-            foreach (LanguageEnum LanguageRequest in AllowableLanguages)
-            {
-                foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
-                {
-                    MikeScenarioResultController mikeScenarioResultController = new MikeScenarioResultController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(mikeScenarioResultController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, mikeScenarioResultController.DatabaseType);
-
-                    MikeScenarioResult mikeScenarioResultLast = new MikeScenarioResult();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-                    {
-                        Query query = new Query();
-                        query.Language = LanguageRequest;
-                        query.Asc = "";
-                        query.Desc = "";
-
-                        MikeScenarioResultService mikeScenarioResultService = new MikeScenarioResultService(query, db, ContactID);
-                        mikeScenarioResultLast = (from c in db.MikeScenarioResults select c).FirstOrDefault();
-                    }
-
-                    // ok with MikeScenarioResult info
-                    IHttpActionResult jsonRet = mikeScenarioResultController.GetMikeScenarioResultWithID(mikeScenarioResultLast.MikeScenarioResultID);
-                    Assert.IsNotNull(jsonRet);
-
-                    OkNegotiatedContentResult<MikeScenarioResult> Ret = jsonRet as OkNegotiatedContentResult<MikeScenarioResult>;
-                    MikeScenarioResult mikeScenarioResultRet = Ret.Content;
-                    Assert.AreEqual(mikeScenarioResultLast.MikeScenarioResultID, mikeScenarioResultRet.MikeScenarioResultID);
-
-                    BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
-
-                    // Post to return CSSPError because MikeScenarioResultID exist
-                    IHttpActionResult jsonRet2 = mikeScenarioResultController.Post(mikeScenarioResultRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet2);
-
-                    OkNegotiatedContentResult<MikeScenarioResult> mikeScenarioResultRet2 = jsonRet2 as OkNegotiatedContentResult<MikeScenarioResult>;
-                    Assert.IsNull(mikeScenarioResultRet2);
-
-                    BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
-                    Assert.IsNotNull(badRequest2);
-
-                    // Post to return newly added MikeScenarioResult
-                    mikeScenarioResultRet.MikeScenarioResultID = 0;
-                    mikeScenarioResultController.Request = new System.Net.Http.HttpRequestMessage();
-                    mikeScenarioResultController.Request.RequestUri = new System.Uri("http://localhost:5000/api/mikeScenarioResult");
-                    IHttpActionResult jsonRet3 = mikeScenarioResultController.Post(mikeScenarioResultRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet3);
-
-                    CreatedNegotiatedContentResult<MikeScenarioResult> mikeScenarioResultRet3 = jsonRet3 as CreatedNegotiatedContentResult<MikeScenarioResult>;
-                    Assert.IsNotNull(mikeScenarioResultRet3);
-
-                    BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest3);
-
-                    IHttpActionResult jsonRet4 = mikeScenarioResultController.Delete(mikeScenarioResultRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet4);
-
-                    OkNegotiatedContentResult<MikeScenarioResult> mikeScenarioResultRet4 = jsonRet4 as OkNegotiatedContentResult<MikeScenarioResult>;
-                    Assert.IsNotNull(mikeScenarioResultRet4);
-
-                    BadRequestErrorMessageResult badRequest4 = jsonRet4 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest4);
-                }
-            }
-        }
-        #endregion Tests Generated for Class Controller Post Command
-
-        #region Tests Generated for Class Controller Put Command
-        [TestMethod]
-        public void MikeScenarioResult_Controller_Put_Test()
-        {
-            foreach (LanguageEnum LanguageRequest in AllowableLanguages)
-            {
-                foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
-                {
-                    MikeScenarioResultController mikeScenarioResultController = new MikeScenarioResultController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(mikeScenarioResultController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, mikeScenarioResultController.DatabaseType);
-
-                    MikeScenarioResult mikeScenarioResultLast = new MikeScenarioResult();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-                    {
-                        Query query = new Query();
-                        query.Language = LanguageRequest;
-
-                        MikeScenarioResultService mikeScenarioResultService = new MikeScenarioResultService(query, db, ContactID);
-                        mikeScenarioResultLast = (from c in db.MikeScenarioResults select c).FirstOrDefault();
-                    }
-
-                    // ok with MikeScenarioResult info
-                    IHttpActionResult jsonRet = mikeScenarioResultController.GetMikeScenarioResultWithID(mikeScenarioResultLast.MikeScenarioResultID);
-                    Assert.IsNotNull(jsonRet);
-
-                    OkNegotiatedContentResult<MikeScenarioResult> Ret = jsonRet as OkNegotiatedContentResult<MikeScenarioResult>;
-                    MikeScenarioResult mikeScenarioResultRet = Ret.Content;
-                    Assert.AreEqual(mikeScenarioResultLast.MikeScenarioResultID, mikeScenarioResultRet.MikeScenarioResultID);
-
-                    BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
-
-                    // Put to return success
-                    IHttpActionResult jsonRet2 = mikeScenarioResultController.Put(mikeScenarioResultRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet2);
-
-                    OkNegotiatedContentResult<MikeScenarioResult> mikeScenarioResultRet2 = jsonRet2 as OkNegotiatedContentResult<MikeScenarioResult>;
-                    Assert.IsNotNull(mikeScenarioResultRet2);
-
-                    BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest2);
-
-                    // Put to return CSSPError because MikeScenarioResultID of 0 does not exist
-                    mikeScenarioResultRet.MikeScenarioResultID = 0;
-                    IHttpActionResult jsonRet3 = mikeScenarioResultController.Put(mikeScenarioResultRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet3);
-
-                    OkNegotiatedContentResult<MikeScenarioResult> mikeScenarioResultRet3 = jsonRet3 as OkNegotiatedContentResult<MikeScenarioResult>;
-                    Assert.IsNull(mikeScenarioResultRet3);
-
-                    BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
-                    Assert.IsNotNull(badRequest3);
-                }
-            }
-        }
-        #endregion Tests Generated for Class Controller Put Command
-
-        #region Tests Generated for Class Controller Delete Command
-        [TestMethod]
-        public void MikeScenarioResult_Controller_Delete_Test()
-        {
-            foreach (LanguageEnum LanguageRequest in AllowableLanguages)
-            {
-                foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
-                {
-                    MikeScenarioResultController mikeScenarioResultController = new MikeScenarioResultController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(mikeScenarioResultController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, mikeScenarioResultController.DatabaseType);
-
-                    MikeScenarioResult mikeScenarioResultLast = new MikeScenarioResult();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-                    {
-                        Query query = new Query();
-                        query.Language = LanguageRequest;
-                        query.Asc = "";
-                        query.Desc = "";
-
-                        MikeScenarioResultService mikeScenarioResultService = new MikeScenarioResultService(query, db, ContactID);
-                        mikeScenarioResultLast = (from c in db.MikeScenarioResults select c).FirstOrDefault();
-                    }
-
-                    // ok with MikeScenarioResult info
-                    IHttpActionResult jsonRet = mikeScenarioResultController.GetMikeScenarioResultWithID(mikeScenarioResultLast.MikeScenarioResultID);
-                    Assert.IsNotNull(jsonRet);
-
-                    OkNegotiatedContentResult<MikeScenarioResult> Ret = jsonRet as OkNegotiatedContentResult<MikeScenarioResult>;
-                    MikeScenarioResult mikeScenarioResultRet = Ret.Content;
-                    Assert.AreEqual(mikeScenarioResultLast.MikeScenarioResultID, mikeScenarioResultRet.MikeScenarioResultID);
-
-                    BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
-
-                    // Post to return newly added MikeScenarioResult
-                    mikeScenarioResultRet.MikeScenarioResultID = 0;
-                    mikeScenarioResultController.Request = new System.Net.Http.HttpRequestMessage();
-                    mikeScenarioResultController.Request.RequestUri = new System.Uri("http://localhost:5000/api/mikeScenarioResult");
-                    IHttpActionResult jsonRet3 = mikeScenarioResultController.Post(mikeScenarioResultRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet3);
-
-                    CreatedNegotiatedContentResult<MikeScenarioResult> mikeScenarioResultRet3 = jsonRet3 as CreatedNegotiatedContentResult<MikeScenarioResult>;
-                    Assert.IsNotNull(mikeScenarioResultRet3);
-                    MikeScenarioResult mikeScenarioResult = mikeScenarioResultRet3.Content;
-
-                    BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest3);
-
-                    // Delete to return success
-                    IHttpActionResult jsonRet2 = mikeScenarioResultController.Delete(mikeScenarioResultRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet2);
-
-                    OkNegotiatedContentResult<MikeScenarioResult> mikeScenarioResultRet2 = jsonRet2 as OkNegotiatedContentResult<MikeScenarioResult>;
-                    Assert.IsNotNull(mikeScenarioResultRet2);
-
-                    BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest2);
-
-                    // Delete to return CSSPError because MikeScenarioResultID of 0 does not exist
-                    mikeScenarioResultRet.MikeScenarioResultID = 0;
-                    IHttpActionResult jsonRet4 = mikeScenarioResultController.Delete(mikeScenarioResultRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet4);
-
-                    OkNegotiatedContentResult<MikeScenarioResult> mikeScenarioResultRet4 = jsonRet4 as OkNegotiatedContentResult<MikeScenarioResult>;
-                    Assert.IsNull(mikeScenarioResultRet4);
-
-                    BadRequestErrorMessageResult badRequest4 = jsonRet4 as BadRequestErrorMessageResult;
-                    Assert.IsNotNull(badRequest4);
-                }
-            }
-        }
-        #endregion Tests Generated for Class Controller Delete Command
-
+        #endregion Functions private
     }
 }

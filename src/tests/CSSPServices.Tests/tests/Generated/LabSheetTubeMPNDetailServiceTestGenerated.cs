@@ -16,6 +16,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Transactions;
 using Xunit;
 
 namespace CSSPServices.Tests
@@ -54,37 +55,40 @@ namespace CSSPServices.Tests
 
             await Setup(new CultureInfo(culture));
 
-            LabSheetTubeMPNDetail labSheetTubeMPNDetail = GetFilledRandomLabSheetTubeMPNDetail(""); 
+            using (TransactionScope ts = new TransactionScope())
+            {
+               LabSheetTubeMPNDetail labSheetTubeMPNDetail = GetFilledRandomLabSheetTubeMPNDetail(""); 
 
-            // List<LabSheetTubeMPNDetail>
-            var actionLabSheetTubeMPNDetailList = await labSheetTubeMPNDetailService.GetLabSheetTubeMPNDetailList();
-            Assert.Equal(200, ((ObjectResult)actionLabSheetTubeMPNDetailList.Result).StatusCode);
-            Assert.NotNull(((OkObjectResult)actionLabSheetTubeMPNDetailList.Result).Value);
-            List<LabSheetTubeMPNDetail> labSheetTubeMPNDetailList = (List<LabSheetTubeMPNDetail>)(((OkObjectResult)actionLabSheetTubeMPNDetailList.Result).Value);
+               // List<LabSheetTubeMPNDetail>
+               var actionLabSheetTubeMPNDetailList = await labSheetTubeMPNDetailService.GetLabSheetTubeMPNDetailList();
+               Assert.Equal(200, ((ObjectResult)actionLabSheetTubeMPNDetailList.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionLabSheetTubeMPNDetailList.Result).Value);
+               List<LabSheetTubeMPNDetail> labSheetTubeMPNDetailList = (List<LabSheetTubeMPNDetail>)(((OkObjectResult)actionLabSheetTubeMPNDetailList.Result).Value);
 
-            int count = ((List<LabSheetTubeMPNDetail>)((OkObjectResult)actionLabSheetTubeMPNDetailList.Result).Value).Count();
-            Assert.True(count > 0);
+               int count = ((List<LabSheetTubeMPNDetail>)((OkObjectResult)actionLabSheetTubeMPNDetailList.Result).Value).Count();
+                Assert.True(count > 0);
 
-            // Add LabSheetTubeMPNDetail
-            var actionLabSheetTubeMPNDetailAdded = await labSheetTubeMPNDetailService.Add(labSheetTubeMPNDetail);
-            Assert.Equal(200, ((ObjectResult)actionLabSheetTubeMPNDetailAdded.Result).StatusCode);
-            Assert.NotNull(((OkObjectResult)actionLabSheetTubeMPNDetailAdded.Result).Value);
-            LabSheetTubeMPNDetail labSheetTubeMPNDetailAdded = (LabSheetTubeMPNDetail)(((OkObjectResult)actionLabSheetTubeMPNDetailAdded.Result).Value);
-            Assert.NotNull(labSheetTubeMPNDetailAdded);
+               // Add LabSheetTubeMPNDetail
+               var actionLabSheetTubeMPNDetailAdded = await labSheetTubeMPNDetailService.Add(labSheetTubeMPNDetail);
+               Assert.Equal(200, ((ObjectResult)actionLabSheetTubeMPNDetailAdded.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionLabSheetTubeMPNDetailAdded.Result).Value);
+               LabSheetTubeMPNDetail labSheetTubeMPNDetailAdded = (LabSheetTubeMPNDetail)(((OkObjectResult)actionLabSheetTubeMPNDetailAdded.Result).Value);
+               Assert.NotNull(labSheetTubeMPNDetailAdded);
 
-            // Update LabSheetTubeMPNDetail
-            var actionLabSheetTubeMPNDetailUpdated = await labSheetTubeMPNDetailService.Update(labSheetTubeMPNDetail);
-            Assert.Equal(200, ((ObjectResult)actionLabSheetTubeMPNDetailUpdated.Result).StatusCode);
-            Assert.NotNull(((OkObjectResult)actionLabSheetTubeMPNDetailUpdated.Result).Value);
-            LabSheetTubeMPNDetail labSheetTubeMPNDetailUpdated = (LabSheetTubeMPNDetail)(((OkObjectResult)actionLabSheetTubeMPNDetailUpdated.Result).Value);
-            Assert.NotNull(labSheetTubeMPNDetailUpdated);
+               // Update LabSheetTubeMPNDetail
+               var actionLabSheetTubeMPNDetailUpdated = await labSheetTubeMPNDetailService.Update(labSheetTubeMPNDetail);
+               Assert.Equal(200, ((ObjectResult)actionLabSheetTubeMPNDetailUpdated.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionLabSheetTubeMPNDetailUpdated.Result).Value);
+               LabSheetTubeMPNDetail labSheetTubeMPNDetailUpdated = (LabSheetTubeMPNDetail)(((OkObjectResult)actionLabSheetTubeMPNDetailUpdated.Result).Value);
+               Assert.NotNull(labSheetTubeMPNDetailUpdated);
 
-            // Delete LabSheetTubeMPNDetail
-            var actionLabSheetTubeMPNDetailDeleted = await labSheetTubeMPNDetailService.Delete(labSheetTubeMPNDetail);
-            Assert.Equal(200, ((ObjectResult)actionLabSheetTubeMPNDetailDeleted.Result).StatusCode);
-            Assert.NotNull(((OkObjectResult)actionLabSheetTubeMPNDetailDeleted.Result).Value);
-            LabSheetTubeMPNDetail labSheetTubeMPNDetailDeleted = (LabSheetTubeMPNDetail)(((OkObjectResult)actionLabSheetTubeMPNDetailDeleted.Result).Value);
-            Assert.NotNull(labSheetTubeMPNDetailDeleted);
+               // Delete LabSheetTubeMPNDetail
+               var actionLabSheetTubeMPNDetailDeleted = await labSheetTubeMPNDetailService.Delete(labSheetTubeMPNDetail);
+               Assert.Equal(200, ((ObjectResult)actionLabSheetTubeMPNDetailDeleted.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionLabSheetTubeMPNDetailDeleted.Result).Value);
+               LabSheetTubeMPNDetail labSheetTubeMPNDetailDeleted = (LabSheetTubeMPNDetail)(((OkObjectResult)actionLabSheetTubeMPNDetailDeleted.Result).Value);
+               Assert.NotNull(labSheetTubeMPNDetailDeleted);
+            }
         }
         #endregion Tests Generated CRUD
 

@@ -1,143 +1,70 @@
-using CSSPEnums;
 using CSSPModels;
 using CSSPServices;
-using System;
+using LoggedInServices.Services;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web.Http;
+using System.Threading.Tasks;
 
 namespace CSSPWebAPI.Controllers
 {
-    [RoutePrefix("api/mwqmSubsectorLanguage")]
-    public partial class MWQMSubsectorLanguageController : BaseController
+    public partial interface IMWQMSubsectorLanguageController
+    {
+        Task<ActionResult<List<MWQMSubsectorLanguage>>> Get();
+        Task<ActionResult<MWQMSubsectorLanguage>> Get(int MWQMSubsectorLanguageID);
+        Task<ActionResult<MWQMSubsectorLanguage>> Post(MWQMSubsectorLanguage mwqmSubsectorLanguage);
+        Task<ActionResult<MWQMSubsectorLanguage>> Put(MWQMSubsectorLanguage mwqmSubsectorLanguage);
+        Task<ActionResult<MWQMSubsectorLanguage>> Delete(MWQMSubsectorLanguage mwqmSubsectorLanguage);
+    }
+
+    [Route("api/{culture}/[controller]")]
+    [ApiController]
+    [Authorize]
+    public partial class MWQMSubsectorLanguageController : ControllerBase, IMWQMSubsectorLanguageController
     {
         #region Variables
         #endregion Variables
 
         #region Properties
+        private IMWQMSubsectorLanguageService mwqmSubsectorLanguageService { get; }
+        private CSSPDBContext db { get; }
+        private ILoggedInService loggedInService { get; }
         #endregion Properties
 
         #region Constructors
-        public MWQMSubsectorLanguageController() : base()
+        public MWQMSubsectorLanguageController(IMWQMSubsectorLanguageService mwqmSubsectorLanguageService, CSSPDBContext db, ILoggedInService loggedInService)
         {
-        }
-        public MWQMSubsectorLanguageController(DatabaseTypeEnum dbt = DatabaseTypeEnum.SqlServerTestDB) : base(dbt)
-        {
+            this.mwqmSubsectorLanguageService = mwqmSubsectorLanguageService;
+            this.db = db;
+            this.loggedInService = loggedInService;
         }
         #endregion Constructors
 
         #region Functions public
-        // GET api/mwqmSubsectorLanguage
-        [Route("")]
-        public IHttpActionResult GetMWQMSubsectorLanguageList([FromUri]string lang = "en", [FromUri]int skip = 0, [FromUri]int take = 200,
-            [FromUri]string asc = "", [FromUri]string desc = "", [FromUri]string where = "", [FromUri]string extra = "")
+        [HttpGet]
+        public async Task<ActionResult<List<MWQMSubsectorLanguage>>> Get()
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                MWQMSubsectorLanguageService mwqmSubsectorLanguageService = new MWQMSubsectorLanguageService(new Query() { Lang = lang }, db, ContactID);
-
-                else // QueryString has no parameter [extra] or extra is empty
-                {
-                   mwqmSubsectorLanguageService.Query = mwqmSubsectorLanguageService.FillQuery(typeof(MWQMSubsectorLanguage), lang, skip, take, asc, desc, where, extra);
-
-                    if (mwqmSubsectorLanguageService.Query.HasErrors)
-                    {
-                        return Ok(new List<MWQMSubsectorLanguage>()
-                        {
-                            new MWQMSubsectorLanguage()
-                            {
-                                HasErrors = mwqmSubsectorLanguageService.Query.HasErrors,
-                                ValidationResults = mwqmSubsectorLanguageService.Query.ValidationResults,
-                            },
-                        }.ToList());
-                    }
-                    else
-                    {
-                        return Ok(mwqmSubsectorLanguageService.GetMWQMSubsectorLanguageList().ToList());
-                    }
-                }
-            }
+            return await mwqmSubsectorLanguageService.GetMWQMSubsectorLanguageList();
         }
-        // GET api/mwqmSubsectorLanguage/1
-        [Route("{MWQMSubsectorLanguageID:int}")]
-        public IHttpActionResult GetMWQMSubsectorLanguageWithID([FromUri]int MWQMSubsectorLanguageID, [FromUri]string lang = "en", [FromUri]string extra = "")
+        [HttpGet("{MWQMSubsectorLanguageID}")]
+        public async Task<ActionResult<MWQMSubsectorLanguage>> Get(int MWQMSubsectorLanguageID)
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                MWQMSubsectorLanguageService mwqmSubsectorLanguageService = new MWQMSubsectorLanguageService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
-
-                mwqmSubsectorLanguageService.Query = mwqmSubsectorLanguageService.FillQuery(typeof(MWQMSubsectorLanguage), lang, 0, 1, "", "", extra);
-
-                else
-                {
-                    MWQMSubsectorLanguage mwqmSubsectorLanguage = new MWQMSubsectorLanguage();
-                    mwqmSubsectorLanguage = mwqmSubsectorLanguageService.GetMWQMSubsectorLanguageWithMWQMSubsectorLanguageID(MWQMSubsectorLanguageID);
-
-                    if (mwqmSubsectorLanguage == null)
-                    {
-                        return NotFound();
-                    }
-
-                    return Ok(mwqmSubsectorLanguage);
-                }
-            }
+            return await mwqmSubsectorLanguageService.GetMWQMSubsectorLanguageWithMWQMSubsectorLanguageID(MWQMSubsectorLanguageID);
         }
-        // POST api/mwqmSubsectorLanguage
-        [Route("")]
-        public IHttpActionResult Post([FromBody]MWQMSubsectorLanguage mwqmSubsectorLanguage, [FromUri]string lang = "en")
+        [HttpPost]
+        public async Task<ActionResult<MWQMSubsectorLanguage>> Post(MWQMSubsectorLanguage mwqmSubsectorLanguage)
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                MWQMSubsectorLanguageService mwqmSubsectorLanguageService = new MWQMSubsectorLanguageService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
-
-                if (!mwqmSubsectorLanguageService.Add(mwqmSubsectorLanguage))
-                {
-                    return BadRequest(String.Join("|||", mwqmSubsectorLanguage.ValidationResults));
-                }
-                else
-                {
-                    mwqmSubsectorLanguage.ValidationResults = null;
-                    return Created<MWQMSubsectorLanguage>(new Uri(Request.RequestUri, mwqmSubsectorLanguage.MWQMSubsectorLanguageID.ToString()), mwqmSubsectorLanguage);
-                }
-            }
+            return await mwqmSubsectorLanguageService.Add(mwqmSubsectorLanguage);
         }
-        // PUT api/mwqmSubsectorLanguage
-        [Route("")]
-        public IHttpActionResult Put([FromBody]MWQMSubsectorLanguage mwqmSubsectorLanguage, [FromUri]string lang = "en")
+        [HttpPut]
+        public async Task<ActionResult<MWQMSubsectorLanguage>> Put(MWQMSubsectorLanguage mwqmSubsectorLanguage)
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                MWQMSubsectorLanguageService mwqmSubsectorLanguageService = new MWQMSubsectorLanguageService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
-
-                if (!mwqmSubsectorLanguageService.Update(mwqmSubsectorLanguage))
-                {
-                    return BadRequest(String.Join("|||", mwqmSubsectorLanguage.ValidationResults));
-                }
-                else
-                {
-                    mwqmSubsectorLanguage.ValidationResults = null;
-                    return Ok(mwqmSubsectorLanguage);
-                }
-            }
+            return await mwqmSubsectorLanguageService.Update(mwqmSubsectorLanguage);
         }
-        // DELETE api/mwqmSubsectorLanguage
-        [Route("")]
-        public IHttpActionResult Delete([FromBody]MWQMSubsectorLanguage mwqmSubsectorLanguage, [FromUri]string lang = "en")
+        [HttpDelete]
+        public async Task<ActionResult<MWQMSubsectorLanguage>> Delete(MWQMSubsectorLanguage mwqmSubsectorLanguage)
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                MWQMSubsectorLanguageService mwqmSubsectorLanguageService = new MWQMSubsectorLanguageService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
-
-                if (!mwqmSubsectorLanguageService.Delete(mwqmSubsectorLanguage))
-                {
-                    return BadRequest(String.Join("|||", mwqmSubsectorLanguage.ValidationResults));
-                }
-                else
-                {
-                    mwqmSubsectorLanguage.ValidationResults = null;
-                    return Ok(mwqmSubsectorLanguage);
-                }
-            }
+            return await mwqmSubsectorLanguageService.Delete(mwqmSubsectorLanguage);
         }
         #endregion Functions public
 

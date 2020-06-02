@@ -2,350 +2,157 @@ using CSSPEnums;
 using CSSPModels;
 using CSSPServices;
 using CSSPWebAPI.Controllers;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using LoggedInServices.Services;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using System;
 using System.Collections.Generic;
+using System.Globalization;
+using System.IO;
 using System.Linq;
-using System.Web.Http;
-using System.Web.Http.Results;
+using System.Threading.Tasks;
+using System.Transactions;
+using UserServices.Models;
+using Xunit;
 
-namespace CSSPWebAPI.Tests.Controllers
+namespace CSSPWebAPIs.Tests.Controllers
 {
-    [TestClass]
-    public partial class InfrastructureLanguageControllerTest : BaseControllerTest
+    public partial class InfrastructureLanguageControllerTest
     {
         #region Variables
         #endregion Variables
 
         #region Properties
+        private IConfiguration Config { get; set; }
+        private IServiceProvider Provider { get; set; }
+        private IServiceCollection Services { get; set; }
+        private CSSPDBContext db { get; set; }
+        private ILoggedInService loggedInService { get; set; }
+        private IInfrastructureLanguageService infrastructureLanguageService { get; set; }
+        private IInfrastructureLanguageController infrastructureLanguageController { get; set; }
         #endregion Properties
 
         #region Constructors
-        public InfrastructureLanguageControllerTest() : base()
+        public InfrastructureLanguageControllerTest()
         {
         }
         #endregion Constructors
 
-        #region Tests Generated for Class Controller GetList Command
-        [TestMethod]
-        public void InfrastructureLanguage_Controller_GetInfrastructureLanguageList_Test()
+        #region Functions public
+        [Theory]
+        [InlineData("en-CA")]
+        [InlineData("fr-CA")]
+        public async Task InfrastructureLanguageController_Constructor_Good_Test(string culture)
         {
-            foreach (LanguageEnum LanguageRequest in AllowableLanguages)
+            bool retBool = await Setup(new CultureInfo(culture));
+            Assert.True(retBool);
+            Assert.NotNull(loggedInService);
+            Assert.NotNull(infrastructureLanguageService);
+            Assert.NotNull(infrastructureLanguageController);
+        }
+        [Theory]
+        [InlineData("en-CA")]
+        [InlineData("fr-CA")]
+        public async Task InfrastructureLanguageController_CRUD_Good_Test(string culture)
+        {
+            bool retBool = await Setup(new CultureInfo(culture));
+            Assert.True(retBool);
+
+            using (TransactionScope ts = new TransactionScope())
             {
-                foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
-                {
-                    InfrastructureLanguageController infrastructureLanguageController = new InfrastructureLanguageController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(infrastructureLanguageController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, infrastructureLanguageController.DatabaseType);
+                // testing Get
+               var actionInfrastructureLanguageList = await infrastructureLanguageController.Get();
+               Assert.Equal(200, ((ObjectResult)actionInfrastructureLanguageList.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionInfrastructureLanguageList.Result).Value);
+               List<InfrastructureLanguage> infrastructureLanguageList = (List<InfrastructureLanguage>)(((OkObjectResult)actionInfrastructureLanguageList.Result).Value);
 
-                    InfrastructureLanguage infrastructureLanguageFirst = new InfrastructureLanguage();
-                    int count = -1;
-                    Query query = new Query();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseTypeEnum.SqlServerTestDB))
-                    {
-                        InfrastructureLanguageService infrastructureLanguageService = new InfrastructureLanguageService(query, db, ContactID);
-                        infrastructureLanguageFirst = (from c in db.InfrastructureLanguages select c).FirstOrDefault();
-                        count = (from c in db.InfrastructureLanguages select c).Count();
-                        count = (query.Take > count ? count : query.Take);
-                    }
+               int count = ((List<InfrastructureLanguage>)((OkObjectResult)actionInfrastructureLanguageList.Result).Value).Count();
+                Assert.True(count > 0);
 
-                    // ok with InfrastructureLanguage info
-                    IHttpActionResult jsonRet = infrastructureLanguageController.GetInfrastructureLanguageList();
-                    Assert.IsNotNull(jsonRet);
+               // testing Get(InfrastructureLanguageID)
+               var actionInfrastructureLanguage = await infrastructureLanguageController.Get(infrastructureLanguageList[0].InfrastructureLanguageID);
+               Assert.Equal(200, ((ObjectResult)actionInfrastructureLanguage.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionInfrastructureLanguage.Result).Value);
+               InfrastructureLanguage infrastructureLanguage = (InfrastructureLanguage)(((OkObjectResult)actionInfrastructureLanguage.Result).Value);
+               Assert.NotNull(infrastructureLanguage);
+               Assert.Equal(infrastructureLanguageList[0].InfrastructureLanguageID, infrastructureLanguage.InfrastructureLanguageID);
 
-                    OkNegotiatedContentResult<List<InfrastructureLanguage>> ret = jsonRet as OkNegotiatedContentResult<List<InfrastructureLanguage>>;
-                    Assert.AreEqual(infrastructureLanguageFirst.InfrastructureLanguageID, ret.Content[0].InfrastructureLanguageID);
-                    Assert.AreEqual((count > query.Take ? query.Take : count), ret.Content.Count);
+               // testing Post(InfrastructureLanguage infrastructureLanguage)
+               infrastructureLanguage.InfrastructureLanguageID = 0;
+               var actionInfrastructureLanguageNew = await infrastructureLanguageController.Post(infrastructureLanguage);
+               Assert.Equal(200, ((ObjectResult)actionInfrastructureLanguageNew.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionInfrastructureLanguageNew.Result).Value);
+               InfrastructureLanguage infrastructureLanguageNew = (InfrastructureLanguage)(((OkObjectResult)actionInfrastructureLanguageNew.Result).Value);
+               Assert.NotNull(infrastructureLanguageNew);
 
-                    List<InfrastructureLanguage> infrastructureLanguageList = new List<InfrastructureLanguage>();
-                    count = -1;
-                    query = new Query();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseTypeEnum.SqlServerTestDB))
-                    {
-                        InfrastructureLanguageService infrastructureLanguageService = new InfrastructureLanguageService(query, db, ContactID);
-                        infrastructureLanguageList = (from c in db.InfrastructureLanguages select c).OrderBy(c => c.InfrastructureLanguageID).Skip(0).Take(2).ToList();
-                        count = (from c in db.InfrastructureLanguages select c).Count();
-                    }
+               // testing Put(InfrastructureLanguage infrastructureLanguage)
+               var actionInfrastructureLanguageUpdate = await infrastructureLanguageController.Put(infrastructureLanguageNew);
+               Assert.Equal(200, ((ObjectResult)actionInfrastructureLanguageUpdate.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionInfrastructureLanguageUpdate.Result).Value);
+               InfrastructureLanguage infrastructureLanguageUpdate = (InfrastructureLanguage)(((OkObjectResult)actionInfrastructureLanguageUpdate.Result).Value);
+               Assert.NotNull(infrastructureLanguageUpdate);
 
-                    if (count > 0)
-                    {
-                        query.Skip = 0;
-                        query.Take = 5;
-                        count = (query.Take > count ? query.Take : count);
-
-                        // ok with InfrastructureLanguage info
-                        jsonRet = infrastructureLanguageController.GetInfrastructureLanguageList(query.Language.ToString(), query.Skip, query.Take);
-                        Assert.IsNotNull(jsonRet);
-
-                        ret = jsonRet as OkNegotiatedContentResult<List<InfrastructureLanguage>>;
-                        Assert.AreEqual(infrastructureLanguageList[0].InfrastructureLanguageID, ret.Content[0].InfrastructureLanguageID);
-                        Assert.AreEqual((count > query.Take ? query.Take : count), ret.Content.Count);
-
-                       if (count > 1)
-                       {
-                           query.Skip = 1;
-                           query.Take = 5;
-                           count = (query.Take > count ? query.Take : count);
-
-                           // ok with InfrastructureLanguage info
-                           IHttpActionResult jsonRet2 = infrastructureLanguageController.GetInfrastructureLanguageList(query.Language.ToString(), query.Skip, query.Take);
-                           Assert.IsNotNull(jsonRet2);
-
-                           OkNegotiatedContentResult<List<InfrastructureLanguage>> ret2 = jsonRet2 as OkNegotiatedContentResult<List<InfrastructureLanguage>>;
-                           Assert.AreEqual(infrastructureLanguageList[1].InfrastructureLanguageID, ret2.Content[0].InfrastructureLanguageID);
-                           Assert.AreEqual((count > query.Take ? query.Take : count), ret2.Content.Count);
-                       }
-                    }
-                }
+               // testing Delete(InfrastructureLanguage infrastructureLanguage)
+               var actionInfrastructureLanguageDelete = await infrastructureLanguageController.Delete(infrastructureLanguageUpdate);
+               Assert.Equal(200, ((ObjectResult)actionInfrastructureLanguageDelete.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionInfrastructureLanguageDelete.Result).Value);
+               InfrastructureLanguage infrastructureLanguageDelete = (InfrastructureLanguage)(((OkObjectResult)actionInfrastructureLanguageDelete.Result).Value);
+               Assert.NotNull(infrastructureLanguageDelete);
             }
         }
-        #endregion Tests Generated for Class Controller GetList Command
+        #endregion Functions public
 
-        #region Tests Generated for Class Controller GetWithID Command
-        [TestMethod]
-        public void InfrastructureLanguage_Controller_GetInfrastructureLanguageWithID_Test()
+        #region Functions private
+        private async Task<bool> Setup(CultureInfo culture)
         {
-            foreach (LanguageEnum LanguageRequest in AllowableLanguages)
+            Config = new ConfigurationBuilder()
+               .SetBasePath(Directory.GetParent(AppContext.BaseDirectory).FullName)
+               .AddJsonFile("appsettings.json")
+               .Build();
+        
+            Services = new ServiceCollection();
+        
+            IConfigurationSection connectionStringsSection = Config.GetSection("ConnectionStrings");
+            Services.Configure<ConnectionStringsModel>(connectionStringsSection);
+        
+            ConnectionStringsModel connectionStrings = connectionStringsSection.Get<ConnectionStringsModel>();
+        
+            Services.AddSingleton<IConfiguration>(Config);
+        
+            Services.AddDbContext<CSSPDBContext>(options =>
             {
-                foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
-                {
-                    InfrastructureLanguageController infrastructureLanguageController = new InfrastructureLanguageController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(infrastructureLanguageController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, infrastructureLanguageController.DatabaseType);
-
-                    InfrastructureLanguage infrastructureLanguageFirst = new InfrastructureLanguage();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-                    {
-                        InfrastructureLanguageService infrastructureLanguageService = new InfrastructureLanguageService(new Query(), db, ContactID);
-                        infrastructureLanguageFirst = (from c in db.InfrastructureLanguages select c).FirstOrDefault();
-                    }
-
-                    // ok with InfrastructureLanguage info
-                    IHttpActionResult jsonRet = infrastructureLanguageController.GetInfrastructureLanguageWithID(infrastructureLanguageFirst.InfrastructureLanguageID);
-                    Assert.IsNotNull(jsonRet);
-
-                    OkNegotiatedContentResult<InfrastructureLanguage> Ret = jsonRet as OkNegotiatedContentResult<InfrastructureLanguage>;
-                    InfrastructureLanguage infrastructureLanguageRet = Ret.Content;
-                    Assert.AreEqual(infrastructureLanguageFirst.InfrastructureLanguageID, infrastructureLanguageRet.InfrastructureLanguageID);
-
-                    BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
-
-                    // Not Found
-                    IHttpActionResult jsonRet2 = infrastructureLanguageController.GetInfrastructureLanguageWithID(0);
-                    Assert.IsNotNull(jsonRet2);
-
-                    OkNegotiatedContentResult<InfrastructureLanguage> infrastructureLanguageRet2 = jsonRet2 as OkNegotiatedContentResult<InfrastructureLanguage>;
-                    Assert.IsNull(infrastructureLanguageRet2);
-
-                    NotFoundResult notFoundRequest = jsonRet2 as NotFoundResult;
-                    Assert.IsNotNull(notFoundRequest);
-                }
-            }
+                options.UseSqlServer(connectionStrings.TestDB);
+            });
+        
+            Services.AddDbContext<ApplicationDbContext>(options =>
+                options.UseSqlServer(connectionStrings.TestDB));
+        
+            Services.AddIdentityCore<ApplicationUser>()
+                .AddEntityFrameworkStores<ApplicationDbContext>();
+        
+            Services.AddSingleton<IEnums, Enums>();
+            Services.AddSingleton<ILoggedInService, LoggedInService>();
+            Services.AddSingleton<IInfrastructureLanguageService, InfrastructureLanguageService>();
+            Services.AddSingleton<IInfrastructureLanguageController, InfrastructureLanguageController>();
+        
+            Provider = Services.BuildServiceProvider();
+            Assert.NotNull(Provider);
+        
+            loggedInService = Provider.GetService<ILoggedInService>();
+            Assert.NotNull(loggedInService);
+        
+            infrastructureLanguageService = Provider.GetService<IInfrastructureLanguageService>();
+            Assert.NotNull(infrastructureLanguageService);
+        
+            await infrastructureLanguageService.SetCulture(culture);
+        
+            infrastructureLanguageController = Provider.GetService<IInfrastructureLanguageController>();
+            Assert.NotNull(infrastructureLanguageController);
+        
+            return await Task.FromResult(true);
         }
-        #endregion Tests Generated for Class Controller GetWithID Command
-
-        #region Tests Generated for Class Controller Post Command
-        [TestMethod]
-        public void InfrastructureLanguage_Controller_Post_Test()
-        {
-            foreach (LanguageEnum LanguageRequest in AllowableLanguages)
-            {
-                foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
-                {
-                    InfrastructureLanguageController infrastructureLanguageController = new InfrastructureLanguageController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(infrastructureLanguageController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, infrastructureLanguageController.DatabaseType);
-
-                    InfrastructureLanguage infrastructureLanguageLast = new InfrastructureLanguage();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-                    {
-                        Query query = new Query();
-                        query.Language = LanguageRequest;
-                        query.Asc = "";
-                        query.Desc = "";
-
-                        InfrastructureLanguageService infrastructureLanguageService = new InfrastructureLanguageService(query, db, ContactID);
-                        infrastructureLanguageLast = (from c in db.InfrastructureLanguages select c).FirstOrDefault();
-                    }
-
-                    // ok with InfrastructureLanguage info
-                    IHttpActionResult jsonRet = infrastructureLanguageController.GetInfrastructureLanguageWithID(infrastructureLanguageLast.InfrastructureLanguageID);
-                    Assert.IsNotNull(jsonRet);
-
-                    OkNegotiatedContentResult<InfrastructureLanguage> Ret = jsonRet as OkNegotiatedContentResult<InfrastructureLanguage>;
-                    InfrastructureLanguage infrastructureLanguageRet = Ret.Content;
-                    Assert.AreEqual(infrastructureLanguageLast.InfrastructureLanguageID, infrastructureLanguageRet.InfrastructureLanguageID);
-
-                    BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
-
-                    // Post to return CSSPError because InfrastructureLanguageID exist
-                    IHttpActionResult jsonRet2 = infrastructureLanguageController.Post(infrastructureLanguageRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet2);
-
-                    OkNegotiatedContentResult<InfrastructureLanguage> infrastructureLanguageRet2 = jsonRet2 as OkNegotiatedContentResult<InfrastructureLanguage>;
-                    Assert.IsNull(infrastructureLanguageRet2);
-
-                    BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
-                    Assert.IsNotNull(badRequest2);
-
-                    // Post to return newly added InfrastructureLanguage
-                    infrastructureLanguageRet.InfrastructureLanguageID = 0;
-                    infrastructureLanguageController.Request = new System.Net.Http.HttpRequestMessage();
-                    infrastructureLanguageController.Request.RequestUri = new System.Uri("http://localhost:5000/api/infrastructureLanguage");
-                    IHttpActionResult jsonRet3 = infrastructureLanguageController.Post(infrastructureLanguageRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet3);
-
-                    CreatedNegotiatedContentResult<InfrastructureLanguage> infrastructureLanguageRet3 = jsonRet3 as CreatedNegotiatedContentResult<InfrastructureLanguage>;
-                    Assert.IsNotNull(infrastructureLanguageRet3);
-
-                    BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest3);
-
-                    IHttpActionResult jsonRet4 = infrastructureLanguageController.Delete(infrastructureLanguageRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet4);
-
-                    OkNegotiatedContentResult<InfrastructureLanguage> infrastructureLanguageRet4 = jsonRet4 as OkNegotiatedContentResult<InfrastructureLanguage>;
-                    Assert.IsNotNull(infrastructureLanguageRet4);
-
-                    BadRequestErrorMessageResult badRequest4 = jsonRet4 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest4);
-                }
-            }
-        }
-        #endregion Tests Generated for Class Controller Post Command
-
-        #region Tests Generated for Class Controller Put Command
-        [TestMethod]
-        public void InfrastructureLanguage_Controller_Put_Test()
-        {
-            foreach (LanguageEnum LanguageRequest in AllowableLanguages)
-            {
-                foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
-                {
-                    InfrastructureLanguageController infrastructureLanguageController = new InfrastructureLanguageController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(infrastructureLanguageController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, infrastructureLanguageController.DatabaseType);
-
-                    InfrastructureLanguage infrastructureLanguageLast = new InfrastructureLanguage();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-                    {
-                        Query query = new Query();
-                        query.Language = LanguageRequest;
-
-                        InfrastructureLanguageService infrastructureLanguageService = new InfrastructureLanguageService(query, db, ContactID);
-                        infrastructureLanguageLast = (from c in db.InfrastructureLanguages select c).FirstOrDefault();
-                    }
-
-                    // ok with InfrastructureLanguage info
-                    IHttpActionResult jsonRet = infrastructureLanguageController.GetInfrastructureLanguageWithID(infrastructureLanguageLast.InfrastructureLanguageID);
-                    Assert.IsNotNull(jsonRet);
-
-                    OkNegotiatedContentResult<InfrastructureLanguage> Ret = jsonRet as OkNegotiatedContentResult<InfrastructureLanguage>;
-                    InfrastructureLanguage infrastructureLanguageRet = Ret.Content;
-                    Assert.AreEqual(infrastructureLanguageLast.InfrastructureLanguageID, infrastructureLanguageRet.InfrastructureLanguageID);
-
-                    BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
-
-                    // Put to return success
-                    IHttpActionResult jsonRet2 = infrastructureLanguageController.Put(infrastructureLanguageRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet2);
-
-                    OkNegotiatedContentResult<InfrastructureLanguage> infrastructureLanguageRet2 = jsonRet2 as OkNegotiatedContentResult<InfrastructureLanguage>;
-                    Assert.IsNotNull(infrastructureLanguageRet2);
-
-                    BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest2);
-
-                    // Put to return CSSPError because InfrastructureLanguageID of 0 does not exist
-                    infrastructureLanguageRet.InfrastructureLanguageID = 0;
-                    IHttpActionResult jsonRet3 = infrastructureLanguageController.Put(infrastructureLanguageRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet3);
-
-                    OkNegotiatedContentResult<InfrastructureLanguage> infrastructureLanguageRet3 = jsonRet3 as OkNegotiatedContentResult<InfrastructureLanguage>;
-                    Assert.IsNull(infrastructureLanguageRet3);
-
-                    BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
-                    Assert.IsNotNull(badRequest3);
-                }
-            }
-        }
-        #endregion Tests Generated for Class Controller Put Command
-
-        #region Tests Generated for Class Controller Delete Command
-        [TestMethod]
-        public void InfrastructureLanguage_Controller_Delete_Test()
-        {
-            foreach (LanguageEnum LanguageRequest in AllowableLanguages)
-            {
-                foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
-                {
-                    InfrastructureLanguageController infrastructureLanguageController = new InfrastructureLanguageController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(infrastructureLanguageController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, infrastructureLanguageController.DatabaseType);
-
-                    InfrastructureLanguage infrastructureLanguageLast = new InfrastructureLanguage();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-                    {
-                        Query query = new Query();
-                        query.Language = LanguageRequest;
-                        query.Asc = "";
-                        query.Desc = "";
-
-                        InfrastructureLanguageService infrastructureLanguageService = new InfrastructureLanguageService(query, db, ContactID);
-                        infrastructureLanguageLast = (from c in db.InfrastructureLanguages select c).FirstOrDefault();
-                    }
-
-                    // ok with InfrastructureLanguage info
-                    IHttpActionResult jsonRet = infrastructureLanguageController.GetInfrastructureLanguageWithID(infrastructureLanguageLast.InfrastructureLanguageID);
-                    Assert.IsNotNull(jsonRet);
-
-                    OkNegotiatedContentResult<InfrastructureLanguage> Ret = jsonRet as OkNegotiatedContentResult<InfrastructureLanguage>;
-                    InfrastructureLanguage infrastructureLanguageRet = Ret.Content;
-                    Assert.AreEqual(infrastructureLanguageLast.InfrastructureLanguageID, infrastructureLanguageRet.InfrastructureLanguageID);
-
-                    BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
-
-                    // Post to return newly added InfrastructureLanguage
-                    infrastructureLanguageRet.InfrastructureLanguageID = 0;
-                    infrastructureLanguageController.Request = new System.Net.Http.HttpRequestMessage();
-                    infrastructureLanguageController.Request.RequestUri = new System.Uri("http://localhost:5000/api/infrastructureLanguage");
-                    IHttpActionResult jsonRet3 = infrastructureLanguageController.Post(infrastructureLanguageRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet3);
-
-                    CreatedNegotiatedContentResult<InfrastructureLanguage> infrastructureLanguageRet3 = jsonRet3 as CreatedNegotiatedContentResult<InfrastructureLanguage>;
-                    Assert.IsNotNull(infrastructureLanguageRet3);
-                    InfrastructureLanguage infrastructureLanguage = infrastructureLanguageRet3.Content;
-
-                    BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest3);
-
-                    // Delete to return success
-                    IHttpActionResult jsonRet2 = infrastructureLanguageController.Delete(infrastructureLanguageRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet2);
-
-                    OkNegotiatedContentResult<InfrastructureLanguage> infrastructureLanguageRet2 = jsonRet2 as OkNegotiatedContentResult<InfrastructureLanguage>;
-                    Assert.IsNotNull(infrastructureLanguageRet2);
-
-                    BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest2);
-
-                    // Delete to return CSSPError because InfrastructureLanguageID of 0 does not exist
-                    infrastructureLanguageRet.InfrastructureLanguageID = 0;
-                    IHttpActionResult jsonRet4 = infrastructureLanguageController.Delete(infrastructureLanguageRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet4);
-
-                    OkNegotiatedContentResult<InfrastructureLanguage> infrastructureLanguageRet4 = jsonRet4 as OkNegotiatedContentResult<InfrastructureLanguage>;
-                    Assert.IsNull(infrastructureLanguageRet4);
-
-                    BadRequestErrorMessageResult badRequest4 = jsonRet4 as BadRequestErrorMessageResult;
-                    Assert.IsNotNull(badRequest4);
-                }
-            }
-        }
-        #endregion Tests Generated for Class Controller Delete Command
-
+        #endregion Functions private
     }
 }

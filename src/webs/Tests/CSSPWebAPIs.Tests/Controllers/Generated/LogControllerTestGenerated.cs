@@ -2,350 +2,157 @@ using CSSPEnums;
 using CSSPModels;
 using CSSPServices;
 using CSSPWebAPI.Controllers;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using LoggedInServices.Services;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using System;
 using System.Collections.Generic;
+using System.Globalization;
+using System.IO;
 using System.Linq;
-using System.Web.Http;
-using System.Web.Http.Results;
+using System.Threading.Tasks;
+using System.Transactions;
+using UserServices.Models;
+using Xunit;
 
-namespace CSSPWebAPI.Tests.Controllers
+namespace CSSPWebAPIs.Tests.Controllers
 {
-    [TestClass]
-    public partial class LogControllerTest : BaseControllerTest
+    public partial class LogControllerTest
     {
         #region Variables
         #endregion Variables
 
         #region Properties
+        private IConfiguration Config { get; set; }
+        private IServiceProvider Provider { get; set; }
+        private IServiceCollection Services { get; set; }
+        private CSSPDBContext db { get; set; }
+        private ILoggedInService loggedInService { get; set; }
+        private ILogService logService { get; set; }
+        private ILogController logController { get; set; }
         #endregion Properties
 
         #region Constructors
-        public LogControllerTest() : base()
+        public LogControllerTest()
         {
         }
         #endregion Constructors
 
-        #region Tests Generated for Class Controller GetList Command
-        [TestMethod]
-        public void Log_Controller_GetLogList_Test()
+        #region Functions public
+        [Theory]
+        [InlineData("en-CA")]
+        [InlineData("fr-CA")]
+        public async Task LogController_Constructor_Good_Test(string culture)
         {
-            foreach (LanguageEnum LanguageRequest in AllowableLanguages)
+            bool retBool = await Setup(new CultureInfo(culture));
+            Assert.True(retBool);
+            Assert.NotNull(loggedInService);
+            Assert.NotNull(logService);
+            Assert.NotNull(logController);
+        }
+        [Theory]
+        [InlineData("en-CA")]
+        [InlineData("fr-CA")]
+        public async Task LogController_CRUD_Good_Test(string culture)
+        {
+            bool retBool = await Setup(new CultureInfo(culture));
+            Assert.True(retBool);
+
+            using (TransactionScope ts = new TransactionScope())
             {
-                foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
-                {
-                    LogController logController = new LogController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(logController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, logController.DatabaseType);
+                // testing Get
+               var actionLogList = await logController.Get();
+               Assert.Equal(200, ((ObjectResult)actionLogList.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionLogList.Result).Value);
+               List<Log> logList = (List<Log>)(((OkObjectResult)actionLogList.Result).Value);
 
-                    Log logFirst = new Log();
-                    int count = -1;
-                    Query query = new Query();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseTypeEnum.SqlServerTestDB))
-                    {
-                        LogService logService = new LogService(query, db, ContactID);
-                        logFirst = (from c in db.Logs select c).FirstOrDefault();
-                        count = (from c in db.Logs select c).Count();
-                        count = (query.Take > count ? count : query.Take);
-                    }
+               int count = ((List<Log>)((OkObjectResult)actionLogList.Result).Value).Count();
+                Assert.True(count > 0);
 
-                    // ok with Log info
-                    IHttpActionResult jsonRet = logController.GetLogList();
-                    Assert.IsNotNull(jsonRet);
+               // testing Get(LogID)
+               var actionLog = await logController.Get(logList[0].LogID);
+               Assert.Equal(200, ((ObjectResult)actionLog.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionLog.Result).Value);
+               Log log = (Log)(((OkObjectResult)actionLog.Result).Value);
+               Assert.NotNull(log);
+               Assert.Equal(logList[0].LogID, log.LogID);
 
-                    OkNegotiatedContentResult<List<Log>> ret = jsonRet as OkNegotiatedContentResult<List<Log>>;
-                    Assert.AreEqual(logFirst.LogID, ret.Content[0].LogID);
-                    Assert.AreEqual((count > query.Take ? query.Take : count), ret.Content.Count);
+               // testing Post(Log log)
+               log.LogID = 0;
+               var actionLogNew = await logController.Post(log);
+               Assert.Equal(200, ((ObjectResult)actionLogNew.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionLogNew.Result).Value);
+               Log logNew = (Log)(((OkObjectResult)actionLogNew.Result).Value);
+               Assert.NotNull(logNew);
 
-                    List<Log> logList = new List<Log>();
-                    count = -1;
-                    query = new Query();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseTypeEnum.SqlServerTestDB))
-                    {
-                        LogService logService = new LogService(query, db, ContactID);
-                        logList = (from c in db.Logs select c).OrderBy(c => c.LogID).Skip(0).Take(2).ToList();
-                        count = (from c in db.Logs select c).Count();
-                    }
+               // testing Put(Log log)
+               var actionLogUpdate = await logController.Put(logNew);
+               Assert.Equal(200, ((ObjectResult)actionLogUpdate.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionLogUpdate.Result).Value);
+               Log logUpdate = (Log)(((OkObjectResult)actionLogUpdate.Result).Value);
+               Assert.NotNull(logUpdate);
 
-                    if (count > 0)
-                    {
-                        query.Skip = 0;
-                        query.Take = 5;
-                        count = (query.Take > count ? query.Take : count);
-
-                        // ok with Log info
-                        jsonRet = logController.GetLogList(query.Language.ToString(), query.Skip, query.Take);
-                        Assert.IsNotNull(jsonRet);
-
-                        ret = jsonRet as OkNegotiatedContentResult<List<Log>>;
-                        Assert.AreEqual(logList[0].LogID, ret.Content[0].LogID);
-                        Assert.AreEqual((count > query.Take ? query.Take : count), ret.Content.Count);
-
-                       if (count > 1)
-                       {
-                           query.Skip = 1;
-                           query.Take = 5;
-                           count = (query.Take > count ? query.Take : count);
-
-                           // ok with Log info
-                           IHttpActionResult jsonRet2 = logController.GetLogList(query.Language.ToString(), query.Skip, query.Take);
-                           Assert.IsNotNull(jsonRet2);
-
-                           OkNegotiatedContentResult<List<Log>> ret2 = jsonRet2 as OkNegotiatedContentResult<List<Log>>;
-                           Assert.AreEqual(logList[1].LogID, ret2.Content[0].LogID);
-                           Assert.AreEqual((count > query.Take ? query.Take : count), ret2.Content.Count);
-                       }
-                    }
-                }
+               // testing Delete(Log log)
+               var actionLogDelete = await logController.Delete(logUpdate);
+               Assert.Equal(200, ((ObjectResult)actionLogDelete.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionLogDelete.Result).Value);
+               Log logDelete = (Log)(((OkObjectResult)actionLogDelete.Result).Value);
+               Assert.NotNull(logDelete);
             }
         }
-        #endregion Tests Generated for Class Controller GetList Command
+        #endregion Functions public
 
-        #region Tests Generated for Class Controller GetWithID Command
-        [TestMethod]
-        public void Log_Controller_GetLogWithID_Test()
+        #region Functions private
+        private async Task<bool> Setup(CultureInfo culture)
         {
-            foreach (LanguageEnum LanguageRequest in AllowableLanguages)
+            Config = new ConfigurationBuilder()
+               .SetBasePath(Directory.GetParent(AppContext.BaseDirectory).FullName)
+               .AddJsonFile("appsettings.json")
+               .Build();
+        
+            Services = new ServiceCollection();
+        
+            IConfigurationSection connectionStringsSection = Config.GetSection("ConnectionStrings");
+            Services.Configure<ConnectionStringsModel>(connectionStringsSection);
+        
+            ConnectionStringsModel connectionStrings = connectionStringsSection.Get<ConnectionStringsModel>();
+        
+            Services.AddSingleton<IConfiguration>(Config);
+        
+            Services.AddDbContext<CSSPDBContext>(options =>
             {
-                foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
-                {
-                    LogController logController = new LogController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(logController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, logController.DatabaseType);
-
-                    Log logFirst = new Log();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-                    {
-                        LogService logService = new LogService(new Query(), db, ContactID);
-                        logFirst = (from c in db.Logs select c).FirstOrDefault();
-                    }
-
-                    // ok with Log info
-                    IHttpActionResult jsonRet = logController.GetLogWithID(logFirst.LogID);
-                    Assert.IsNotNull(jsonRet);
-
-                    OkNegotiatedContentResult<Log> Ret = jsonRet as OkNegotiatedContentResult<Log>;
-                    Log logRet = Ret.Content;
-                    Assert.AreEqual(logFirst.LogID, logRet.LogID);
-
-                    BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
-
-                    // Not Found
-                    IHttpActionResult jsonRet2 = logController.GetLogWithID(0);
-                    Assert.IsNotNull(jsonRet2);
-
-                    OkNegotiatedContentResult<Log> logRet2 = jsonRet2 as OkNegotiatedContentResult<Log>;
-                    Assert.IsNull(logRet2);
-
-                    NotFoundResult notFoundRequest = jsonRet2 as NotFoundResult;
-                    Assert.IsNotNull(notFoundRequest);
-                }
-            }
+                options.UseSqlServer(connectionStrings.TestDB);
+            });
+        
+            Services.AddDbContext<ApplicationDbContext>(options =>
+                options.UseSqlServer(connectionStrings.TestDB));
+        
+            Services.AddIdentityCore<ApplicationUser>()
+                .AddEntityFrameworkStores<ApplicationDbContext>();
+        
+            Services.AddSingleton<IEnums, Enums>();
+            Services.AddSingleton<ILoggedInService, LoggedInService>();
+            Services.AddSingleton<ILogService, LogService>();
+            Services.AddSingleton<ILogController, LogController>();
+        
+            Provider = Services.BuildServiceProvider();
+            Assert.NotNull(Provider);
+        
+            loggedInService = Provider.GetService<ILoggedInService>();
+            Assert.NotNull(loggedInService);
+        
+            logService = Provider.GetService<ILogService>();
+            Assert.NotNull(logService);
+        
+            await logService.SetCulture(culture);
+        
+            logController = Provider.GetService<ILogController>();
+            Assert.NotNull(logController);
+        
+            return await Task.FromResult(true);
         }
-        #endregion Tests Generated for Class Controller GetWithID Command
-
-        #region Tests Generated for Class Controller Post Command
-        [TestMethod]
-        public void Log_Controller_Post_Test()
-        {
-            foreach (LanguageEnum LanguageRequest in AllowableLanguages)
-            {
-                foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
-                {
-                    LogController logController = new LogController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(logController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, logController.DatabaseType);
-
-                    Log logLast = new Log();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-                    {
-                        Query query = new Query();
-                        query.Language = LanguageRequest;
-                        query.Asc = "";
-                        query.Desc = "";
-
-                        LogService logService = new LogService(query, db, ContactID);
-                        logLast = (from c in db.Logs select c).FirstOrDefault();
-                    }
-
-                    // ok with Log info
-                    IHttpActionResult jsonRet = logController.GetLogWithID(logLast.LogID);
-                    Assert.IsNotNull(jsonRet);
-
-                    OkNegotiatedContentResult<Log> Ret = jsonRet as OkNegotiatedContentResult<Log>;
-                    Log logRet = Ret.Content;
-                    Assert.AreEqual(logLast.LogID, logRet.LogID);
-
-                    BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
-
-                    // Post to return CSSPError because LogID exist
-                    IHttpActionResult jsonRet2 = logController.Post(logRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet2);
-
-                    OkNegotiatedContentResult<Log> logRet2 = jsonRet2 as OkNegotiatedContentResult<Log>;
-                    Assert.IsNull(logRet2);
-
-                    BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
-                    Assert.IsNotNull(badRequest2);
-
-                    // Post to return newly added Log
-                    logRet.LogID = 0;
-                    logController.Request = new System.Net.Http.HttpRequestMessage();
-                    logController.Request.RequestUri = new System.Uri("http://localhost:5000/api/log");
-                    IHttpActionResult jsonRet3 = logController.Post(logRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet3);
-
-                    CreatedNegotiatedContentResult<Log> logRet3 = jsonRet3 as CreatedNegotiatedContentResult<Log>;
-                    Assert.IsNotNull(logRet3);
-
-                    BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest3);
-
-                    IHttpActionResult jsonRet4 = logController.Delete(logRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet4);
-
-                    OkNegotiatedContentResult<Log> logRet4 = jsonRet4 as OkNegotiatedContentResult<Log>;
-                    Assert.IsNotNull(logRet4);
-
-                    BadRequestErrorMessageResult badRequest4 = jsonRet4 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest4);
-                }
-            }
-        }
-        #endregion Tests Generated for Class Controller Post Command
-
-        #region Tests Generated for Class Controller Put Command
-        [TestMethod]
-        public void Log_Controller_Put_Test()
-        {
-            foreach (LanguageEnum LanguageRequest in AllowableLanguages)
-            {
-                foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
-                {
-                    LogController logController = new LogController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(logController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, logController.DatabaseType);
-
-                    Log logLast = new Log();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-                    {
-                        Query query = new Query();
-                        query.Language = LanguageRequest;
-
-                        LogService logService = new LogService(query, db, ContactID);
-                        logLast = (from c in db.Logs select c).FirstOrDefault();
-                    }
-
-                    // ok with Log info
-                    IHttpActionResult jsonRet = logController.GetLogWithID(logLast.LogID);
-                    Assert.IsNotNull(jsonRet);
-
-                    OkNegotiatedContentResult<Log> Ret = jsonRet as OkNegotiatedContentResult<Log>;
-                    Log logRet = Ret.Content;
-                    Assert.AreEqual(logLast.LogID, logRet.LogID);
-
-                    BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
-
-                    // Put to return success
-                    IHttpActionResult jsonRet2 = logController.Put(logRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet2);
-
-                    OkNegotiatedContentResult<Log> logRet2 = jsonRet2 as OkNegotiatedContentResult<Log>;
-                    Assert.IsNotNull(logRet2);
-
-                    BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest2);
-
-                    // Put to return CSSPError because LogID of 0 does not exist
-                    logRet.LogID = 0;
-                    IHttpActionResult jsonRet3 = logController.Put(logRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet3);
-
-                    OkNegotiatedContentResult<Log> logRet3 = jsonRet3 as OkNegotiatedContentResult<Log>;
-                    Assert.IsNull(logRet3);
-
-                    BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
-                    Assert.IsNotNull(badRequest3);
-                }
-            }
-        }
-        #endregion Tests Generated for Class Controller Put Command
-
-        #region Tests Generated for Class Controller Delete Command
-        [TestMethod]
-        public void Log_Controller_Delete_Test()
-        {
-            foreach (LanguageEnum LanguageRequest in AllowableLanguages)
-            {
-                foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
-                {
-                    LogController logController = new LogController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(logController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, logController.DatabaseType);
-
-                    Log logLast = new Log();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-                    {
-                        Query query = new Query();
-                        query.Language = LanguageRequest;
-                        query.Asc = "";
-                        query.Desc = "";
-
-                        LogService logService = new LogService(query, db, ContactID);
-                        logLast = (from c in db.Logs select c).FirstOrDefault();
-                    }
-
-                    // ok with Log info
-                    IHttpActionResult jsonRet = logController.GetLogWithID(logLast.LogID);
-                    Assert.IsNotNull(jsonRet);
-
-                    OkNegotiatedContentResult<Log> Ret = jsonRet as OkNegotiatedContentResult<Log>;
-                    Log logRet = Ret.Content;
-                    Assert.AreEqual(logLast.LogID, logRet.LogID);
-
-                    BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
-
-                    // Post to return newly added Log
-                    logRet.LogID = 0;
-                    logController.Request = new System.Net.Http.HttpRequestMessage();
-                    logController.Request.RequestUri = new System.Uri("http://localhost:5000/api/log");
-                    IHttpActionResult jsonRet3 = logController.Post(logRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet3);
-
-                    CreatedNegotiatedContentResult<Log> logRet3 = jsonRet3 as CreatedNegotiatedContentResult<Log>;
-                    Assert.IsNotNull(logRet3);
-                    Log log = logRet3.Content;
-
-                    BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest3);
-
-                    // Delete to return success
-                    IHttpActionResult jsonRet2 = logController.Delete(logRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet2);
-
-                    OkNegotiatedContentResult<Log> logRet2 = jsonRet2 as OkNegotiatedContentResult<Log>;
-                    Assert.IsNotNull(logRet2);
-
-                    BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest2);
-
-                    // Delete to return CSSPError because LogID of 0 does not exist
-                    logRet.LogID = 0;
-                    IHttpActionResult jsonRet4 = logController.Delete(logRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet4);
-
-                    OkNegotiatedContentResult<Log> logRet4 = jsonRet4 as OkNegotiatedContentResult<Log>;
-                    Assert.IsNull(logRet4);
-
-                    BadRequestErrorMessageResult badRequest4 = jsonRet4 as BadRequestErrorMessageResult;
-                    Assert.IsNotNull(badRequest4);
-                }
-            }
-        }
-        #endregion Tests Generated for Class Controller Delete Command
-
+        #endregion Functions private
     }
 }

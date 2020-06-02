@@ -2,350 +2,157 @@ using CSSPEnums;
 using CSSPModels;
 using CSSPServices;
 using CSSPWebAPI.Controllers;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using LoggedInServices.Services;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using System;
 using System.Collections.Generic;
+using System.Globalization;
+using System.IO;
 using System.Linq;
-using System.Web.Http;
-using System.Web.Http.Results;
+using System.Threading.Tasks;
+using System.Transactions;
+using UserServices.Models;
+using Xunit;
 
-namespace CSSPWebAPI.Tests.Controllers
+namespace CSSPWebAPIs.Tests.Controllers
 {
-    [TestClass]
-    public partial class LabSheetTubeMPNDetailControllerTest : BaseControllerTest
+    public partial class LabSheetTubeMPNDetailControllerTest
     {
         #region Variables
         #endregion Variables
 
         #region Properties
+        private IConfiguration Config { get; set; }
+        private IServiceProvider Provider { get; set; }
+        private IServiceCollection Services { get; set; }
+        private CSSPDBContext db { get; set; }
+        private ILoggedInService loggedInService { get; set; }
+        private ILabSheetTubeMPNDetailService labSheetTubeMPNDetailService { get; set; }
+        private ILabSheetTubeMPNDetailController labSheetTubeMPNDetailController { get; set; }
         #endregion Properties
 
         #region Constructors
-        public LabSheetTubeMPNDetailControllerTest() : base()
+        public LabSheetTubeMPNDetailControllerTest()
         {
         }
         #endregion Constructors
 
-        #region Tests Generated for Class Controller GetList Command
-        [TestMethod]
-        public void LabSheetTubeMPNDetail_Controller_GetLabSheetTubeMPNDetailList_Test()
+        #region Functions public
+        [Theory]
+        [InlineData("en-CA")]
+        [InlineData("fr-CA")]
+        public async Task LabSheetTubeMPNDetailController_Constructor_Good_Test(string culture)
         {
-            foreach (LanguageEnum LanguageRequest in AllowableLanguages)
+            bool retBool = await Setup(new CultureInfo(culture));
+            Assert.True(retBool);
+            Assert.NotNull(loggedInService);
+            Assert.NotNull(labSheetTubeMPNDetailService);
+            Assert.NotNull(labSheetTubeMPNDetailController);
+        }
+        [Theory]
+        [InlineData("en-CA")]
+        [InlineData("fr-CA")]
+        public async Task LabSheetTubeMPNDetailController_CRUD_Good_Test(string culture)
+        {
+            bool retBool = await Setup(new CultureInfo(culture));
+            Assert.True(retBool);
+
+            using (TransactionScope ts = new TransactionScope())
             {
-                foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
-                {
-                    LabSheetTubeMPNDetailController labSheetTubeMPNDetailController = new LabSheetTubeMPNDetailController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(labSheetTubeMPNDetailController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, labSheetTubeMPNDetailController.DatabaseType);
+                // testing Get
+               var actionLabSheetTubeMPNDetailList = await labSheetTubeMPNDetailController.Get();
+               Assert.Equal(200, ((ObjectResult)actionLabSheetTubeMPNDetailList.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionLabSheetTubeMPNDetailList.Result).Value);
+               List<LabSheetTubeMPNDetail> labSheetTubeMPNDetailList = (List<LabSheetTubeMPNDetail>)(((OkObjectResult)actionLabSheetTubeMPNDetailList.Result).Value);
 
-                    LabSheetTubeMPNDetail labSheetTubeMPNDetailFirst = new LabSheetTubeMPNDetail();
-                    int count = -1;
-                    Query query = new Query();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseTypeEnum.SqlServerTestDB))
-                    {
-                        LabSheetTubeMPNDetailService labSheetTubeMPNDetailService = new LabSheetTubeMPNDetailService(query, db, ContactID);
-                        labSheetTubeMPNDetailFirst = (from c in db.LabSheetTubeMPNDetails select c).FirstOrDefault();
-                        count = (from c in db.LabSheetTubeMPNDetails select c).Count();
-                        count = (query.Take > count ? count : query.Take);
-                    }
+               int count = ((List<LabSheetTubeMPNDetail>)((OkObjectResult)actionLabSheetTubeMPNDetailList.Result).Value).Count();
+                Assert.True(count > 0);
 
-                    // ok with LabSheetTubeMPNDetail info
-                    IHttpActionResult jsonRet = labSheetTubeMPNDetailController.GetLabSheetTubeMPNDetailList();
-                    Assert.IsNotNull(jsonRet);
+               // testing Get(LabSheetTubeMPNDetailID)
+               var actionLabSheetTubeMPNDetail = await labSheetTubeMPNDetailController.Get(labSheetTubeMPNDetailList[0].LabSheetTubeMPNDetailID);
+               Assert.Equal(200, ((ObjectResult)actionLabSheetTubeMPNDetail.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionLabSheetTubeMPNDetail.Result).Value);
+               LabSheetTubeMPNDetail labSheetTubeMPNDetail = (LabSheetTubeMPNDetail)(((OkObjectResult)actionLabSheetTubeMPNDetail.Result).Value);
+               Assert.NotNull(labSheetTubeMPNDetail);
+               Assert.Equal(labSheetTubeMPNDetailList[0].LabSheetTubeMPNDetailID, labSheetTubeMPNDetail.LabSheetTubeMPNDetailID);
 
-                    OkNegotiatedContentResult<List<LabSheetTubeMPNDetail>> ret = jsonRet as OkNegotiatedContentResult<List<LabSheetTubeMPNDetail>>;
-                    Assert.AreEqual(labSheetTubeMPNDetailFirst.LabSheetTubeMPNDetailID, ret.Content[0].LabSheetTubeMPNDetailID);
-                    Assert.AreEqual((count > query.Take ? query.Take : count), ret.Content.Count);
+               // testing Post(LabSheetTubeMPNDetail labSheetTubeMPNDetail)
+               labSheetTubeMPNDetail.LabSheetTubeMPNDetailID = 0;
+               var actionLabSheetTubeMPNDetailNew = await labSheetTubeMPNDetailController.Post(labSheetTubeMPNDetail);
+               Assert.Equal(200, ((ObjectResult)actionLabSheetTubeMPNDetailNew.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionLabSheetTubeMPNDetailNew.Result).Value);
+               LabSheetTubeMPNDetail labSheetTubeMPNDetailNew = (LabSheetTubeMPNDetail)(((OkObjectResult)actionLabSheetTubeMPNDetailNew.Result).Value);
+               Assert.NotNull(labSheetTubeMPNDetailNew);
 
-                    List<LabSheetTubeMPNDetail> labSheetTubeMPNDetailList = new List<LabSheetTubeMPNDetail>();
-                    count = -1;
-                    query = new Query();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseTypeEnum.SqlServerTestDB))
-                    {
-                        LabSheetTubeMPNDetailService labSheetTubeMPNDetailService = new LabSheetTubeMPNDetailService(query, db, ContactID);
-                        labSheetTubeMPNDetailList = (from c in db.LabSheetTubeMPNDetails select c).OrderBy(c => c.LabSheetTubeMPNDetailID).Skip(0).Take(2).ToList();
-                        count = (from c in db.LabSheetTubeMPNDetails select c).Count();
-                    }
+               // testing Put(LabSheetTubeMPNDetail labSheetTubeMPNDetail)
+               var actionLabSheetTubeMPNDetailUpdate = await labSheetTubeMPNDetailController.Put(labSheetTubeMPNDetailNew);
+               Assert.Equal(200, ((ObjectResult)actionLabSheetTubeMPNDetailUpdate.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionLabSheetTubeMPNDetailUpdate.Result).Value);
+               LabSheetTubeMPNDetail labSheetTubeMPNDetailUpdate = (LabSheetTubeMPNDetail)(((OkObjectResult)actionLabSheetTubeMPNDetailUpdate.Result).Value);
+               Assert.NotNull(labSheetTubeMPNDetailUpdate);
 
-                    if (count > 0)
-                    {
-                        query.Skip = 0;
-                        query.Take = 5;
-                        count = (query.Take > count ? query.Take : count);
-
-                        // ok with LabSheetTubeMPNDetail info
-                        jsonRet = labSheetTubeMPNDetailController.GetLabSheetTubeMPNDetailList(query.Language.ToString(), query.Skip, query.Take);
-                        Assert.IsNotNull(jsonRet);
-
-                        ret = jsonRet as OkNegotiatedContentResult<List<LabSheetTubeMPNDetail>>;
-                        Assert.AreEqual(labSheetTubeMPNDetailList[0].LabSheetTubeMPNDetailID, ret.Content[0].LabSheetTubeMPNDetailID);
-                        Assert.AreEqual((count > query.Take ? query.Take : count), ret.Content.Count);
-
-                       if (count > 1)
-                       {
-                           query.Skip = 1;
-                           query.Take = 5;
-                           count = (query.Take > count ? query.Take : count);
-
-                           // ok with LabSheetTubeMPNDetail info
-                           IHttpActionResult jsonRet2 = labSheetTubeMPNDetailController.GetLabSheetTubeMPNDetailList(query.Language.ToString(), query.Skip, query.Take);
-                           Assert.IsNotNull(jsonRet2);
-
-                           OkNegotiatedContentResult<List<LabSheetTubeMPNDetail>> ret2 = jsonRet2 as OkNegotiatedContentResult<List<LabSheetTubeMPNDetail>>;
-                           Assert.AreEqual(labSheetTubeMPNDetailList[1].LabSheetTubeMPNDetailID, ret2.Content[0].LabSheetTubeMPNDetailID);
-                           Assert.AreEqual((count > query.Take ? query.Take : count), ret2.Content.Count);
-                       }
-                    }
-                }
+               // testing Delete(LabSheetTubeMPNDetail labSheetTubeMPNDetail)
+               var actionLabSheetTubeMPNDetailDelete = await labSheetTubeMPNDetailController.Delete(labSheetTubeMPNDetailUpdate);
+               Assert.Equal(200, ((ObjectResult)actionLabSheetTubeMPNDetailDelete.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionLabSheetTubeMPNDetailDelete.Result).Value);
+               LabSheetTubeMPNDetail labSheetTubeMPNDetailDelete = (LabSheetTubeMPNDetail)(((OkObjectResult)actionLabSheetTubeMPNDetailDelete.Result).Value);
+               Assert.NotNull(labSheetTubeMPNDetailDelete);
             }
         }
-        #endregion Tests Generated for Class Controller GetList Command
+        #endregion Functions public
 
-        #region Tests Generated for Class Controller GetWithID Command
-        [TestMethod]
-        public void LabSheetTubeMPNDetail_Controller_GetLabSheetTubeMPNDetailWithID_Test()
+        #region Functions private
+        private async Task<bool> Setup(CultureInfo culture)
         {
-            foreach (LanguageEnum LanguageRequest in AllowableLanguages)
+            Config = new ConfigurationBuilder()
+               .SetBasePath(Directory.GetParent(AppContext.BaseDirectory).FullName)
+               .AddJsonFile("appsettings.json")
+               .Build();
+        
+            Services = new ServiceCollection();
+        
+            IConfigurationSection connectionStringsSection = Config.GetSection("ConnectionStrings");
+            Services.Configure<ConnectionStringsModel>(connectionStringsSection);
+        
+            ConnectionStringsModel connectionStrings = connectionStringsSection.Get<ConnectionStringsModel>();
+        
+            Services.AddSingleton<IConfiguration>(Config);
+        
+            Services.AddDbContext<CSSPDBContext>(options =>
             {
-                foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
-                {
-                    LabSheetTubeMPNDetailController labSheetTubeMPNDetailController = new LabSheetTubeMPNDetailController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(labSheetTubeMPNDetailController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, labSheetTubeMPNDetailController.DatabaseType);
-
-                    LabSheetTubeMPNDetail labSheetTubeMPNDetailFirst = new LabSheetTubeMPNDetail();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-                    {
-                        LabSheetTubeMPNDetailService labSheetTubeMPNDetailService = new LabSheetTubeMPNDetailService(new Query(), db, ContactID);
-                        labSheetTubeMPNDetailFirst = (from c in db.LabSheetTubeMPNDetails select c).FirstOrDefault();
-                    }
-
-                    // ok with LabSheetTubeMPNDetail info
-                    IHttpActionResult jsonRet = labSheetTubeMPNDetailController.GetLabSheetTubeMPNDetailWithID(labSheetTubeMPNDetailFirst.LabSheetTubeMPNDetailID);
-                    Assert.IsNotNull(jsonRet);
-
-                    OkNegotiatedContentResult<LabSheetTubeMPNDetail> Ret = jsonRet as OkNegotiatedContentResult<LabSheetTubeMPNDetail>;
-                    LabSheetTubeMPNDetail labSheetTubeMPNDetailRet = Ret.Content;
-                    Assert.AreEqual(labSheetTubeMPNDetailFirst.LabSheetTubeMPNDetailID, labSheetTubeMPNDetailRet.LabSheetTubeMPNDetailID);
-
-                    BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
-
-                    // Not Found
-                    IHttpActionResult jsonRet2 = labSheetTubeMPNDetailController.GetLabSheetTubeMPNDetailWithID(0);
-                    Assert.IsNotNull(jsonRet2);
-
-                    OkNegotiatedContentResult<LabSheetTubeMPNDetail> labSheetTubeMPNDetailRet2 = jsonRet2 as OkNegotiatedContentResult<LabSheetTubeMPNDetail>;
-                    Assert.IsNull(labSheetTubeMPNDetailRet2);
-
-                    NotFoundResult notFoundRequest = jsonRet2 as NotFoundResult;
-                    Assert.IsNotNull(notFoundRequest);
-                }
-            }
+                options.UseSqlServer(connectionStrings.TestDB);
+            });
+        
+            Services.AddDbContext<ApplicationDbContext>(options =>
+                options.UseSqlServer(connectionStrings.TestDB));
+        
+            Services.AddIdentityCore<ApplicationUser>()
+                .AddEntityFrameworkStores<ApplicationDbContext>();
+        
+            Services.AddSingleton<IEnums, Enums>();
+            Services.AddSingleton<ILoggedInService, LoggedInService>();
+            Services.AddSingleton<ILabSheetTubeMPNDetailService, LabSheetTubeMPNDetailService>();
+            Services.AddSingleton<ILabSheetTubeMPNDetailController, LabSheetTubeMPNDetailController>();
+        
+            Provider = Services.BuildServiceProvider();
+            Assert.NotNull(Provider);
+        
+            loggedInService = Provider.GetService<ILoggedInService>();
+            Assert.NotNull(loggedInService);
+        
+            labSheetTubeMPNDetailService = Provider.GetService<ILabSheetTubeMPNDetailService>();
+            Assert.NotNull(labSheetTubeMPNDetailService);
+        
+            await labSheetTubeMPNDetailService.SetCulture(culture);
+        
+            labSheetTubeMPNDetailController = Provider.GetService<ILabSheetTubeMPNDetailController>();
+            Assert.NotNull(labSheetTubeMPNDetailController);
+        
+            return await Task.FromResult(true);
         }
-        #endregion Tests Generated for Class Controller GetWithID Command
-
-        #region Tests Generated for Class Controller Post Command
-        [TestMethod]
-        public void LabSheetTubeMPNDetail_Controller_Post_Test()
-        {
-            foreach (LanguageEnum LanguageRequest in AllowableLanguages)
-            {
-                foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
-                {
-                    LabSheetTubeMPNDetailController labSheetTubeMPNDetailController = new LabSheetTubeMPNDetailController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(labSheetTubeMPNDetailController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, labSheetTubeMPNDetailController.DatabaseType);
-
-                    LabSheetTubeMPNDetail labSheetTubeMPNDetailLast = new LabSheetTubeMPNDetail();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-                    {
-                        Query query = new Query();
-                        query.Language = LanguageRequest;
-                        query.Asc = "";
-                        query.Desc = "";
-
-                        LabSheetTubeMPNDetailService labSheetTubeMPNDetailService = new LabSheetTubeMPNDetailService(query, db, ContactID);
-                        labSheetTubeMPNDetailLast = (from c in db.LabSheetTubeMPNDetails select c).FirstOrDefault();
-                    }
-
-                    // ok with LabSheetTubeMPNDetail info
-                    IHttpActionResult jsonRet = labSheetTubeMPNDetailController.GetLabSheetTubeMPNDetailWithID(labSheetTubeMPNDetailLast.LabSheetTubeMPNDetailID);
-                    Assert.IsNotNull(jsonRet);
-
-                    OkNegotiatedContentResult<LabSheetTubeMPNDetail> Ret = jsonRet as OkNegotiatedContentResult<LabSheetTubeMPNDetail>;
-                    LabSheetTubeMPNDetail labSheetTubeMPNDetailRet = Ret.Content;
-                    Assert.AreEqual(labSheetTubeMPNDetailLast.LabSheetTubeMPNDetailID, labSheetTubeMPNDetailRet.LabSheetTubeMPNDetailID);
-
-                    BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
-
-                    // Post to return CSSPError because LabSheetTubeMPNDetailID exist
-                    IHttpActionResult jsonRet2 = labSheetTubeMPNDetailController.Post(labSheetTubeMPNDetailRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet2);
-
-                    OkNegotiatedContentResult<LabSheetTubeMPNDetail> labSheetTubeMPNDetailRet2 = jsonRet2 as OkNegotiatedContentResult<LabSheetTubeMPNDetail>;
-                    Assert.IsNull(labSheetTubeMPNDetailRet2);
-
-                    BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
-                    Assert.IsNotNull(badRequest2);
-
-                    // Post to return newly added LabSheetTubeMPNDetail
-                    labSheetTubeMPNDetailRet.LabSheetTubeMPNDetailID = 0;
-                    labSheetTubeMPNDetailController.Request = new System.Net.Http.HttpRequestMessage();
-                    labSheetTubeMPNDetailController.Request.RequestUri = new System.Uri("http://localhost:5000/api/labSheetTubeMPNDetail");
-                    IHttpActionResult jsonRet3 = labSheetTubeMPNDetailController.Post(labSheetTubeMPNDetailRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet3);
-
-                    CreatedNegotiatedContentResult<LabSheetTubeMPNDetail> labSheetTubeMPNDetailRet3 = jsonRet3 as CreatedNegotiatedContentResult<LabSheetTubeMPNDetail>;
-                    Assert.IsNotNull(labSheetTubeMPNDetailRet3);
-
-                    BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest3);
-
-                    IHttpActionResult jsonRet4 = labSheetTubeMPNDetailController.Delete(labSheetTubeMPNDetailRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet4);
-
-                    OkNegotiatedContentResult<LabSheetTubeMPNDetail> labSheetTubeMPNDetailRet4 = jsonRet4 as OkNegotiatedContentResult<LabSheetTubeMPNDetail>;
-                    Assert.IsNotNull(labSheetTubeMPNDetailRet4);
-
-                    BadRequestErrorMessageResult badRequest4 = jsonRet4 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest4);
-                }
-            }
-        }
-        #endregion Tests Generated for Class Controller Post Command
-
-        #region Tests Generated for Class Controller Put Command
-        [TestMethod]
-        public void LabSheetTubeMPNDetail_Controller_Put_Test()
-        {
-            foreach (LanguageEnum LanguageRequest in AllowableLanguages)
-            {
-                foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
-                {
-                    LabSheetTubeMPNDetailController labSheetTubeMPNDetailController = new LabSheetTubeMPNDetailController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(labSheetTubeMPNDetailController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, labSheetTubeMPNDetailController.DatabaseType);
-
-                    LabSheetTubeMPNDetail labSheetTubeMPNDetailLast = new LabSheetTubeMPNDetail();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-                    {
-                        Query query = new Query();
-                        query.Language = LanguageRequest;
-
-                        LabSheetTubeMPNDetailService labSheetTubeMPNDetailService = new LabSheetTubeMPNDetailService(query, db, ContactID);
-                        labSheetTubeMPNDetailLast = (from c in db.LabSheetTubeMPNDetails select c).FirstOrDefault();
-                    }
-
-                    // ok with LabSheetTubeMPNDetail info
-                    IHttpActionResult jsonRet = labSheetTubeMPNDetailController.GetLabSheetTubeMPNDetailWithID(labSheetTubeMPNDetailLast.LabSheetTubeMPNDetailID);
-                    Assert.IsNotNull(jsonRet);
-
-                    OkNegotiatedContentResult<LabSheetTubeMPNDetail> Ret = jsonRet as OkNegotiatedContentResult<LabSheetTubeMPNDetail>;
-                    LabSheetTubeMPNDetail labSheetTubeMPNDetailRet = Ret.Content;
-                    Assert.AreEqual(labSheetTubeMPNDetailLast.LabSheetTubeMPNDetailID, labSheetTubeMPNDetailRet.LabSheetTubeMPNDetailID);
-
-                    BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
-
-                    // Put to return success
-                    IHttpActionResult jsonRet2 = labSheetTubeMPNDetailController.Put(labSheetTubeMPNDetailRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet2);
-
-                    OkNegotiatedContentResult<LabSheetTubeMPNDetail> labSheetTubeMPNDetailRet2 = jsonRet2 as OkNegotiatedContentResult<LabSheetTubeMPNDetail>;
-                    Assert.IsNotNull(labSheetTubeMPNDetailRet2);
-
-                    BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest2);
-
-                    // Put to return CSSPError because LabSheetTubeMPNDetailID of 0 does not exist
-                    labSheetTubeMPNDetailRet.LabSheetTubeMPNDetailID = 0;
-                    IHttpActionResult jsonRet3 = labSheetTubeMPNDetailController.Put(labSheetTubeMPNDetailRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet3);
-
-                    OkNegotiatedContentResult<LabSheetTubeMPNDetail> labSheetTubeMPNDetailRet3 = jsonRet3 as OkNegotiatedContentResult<LabSheetTubeMPNDetail>;
-                    Assert.IsNull(labSheetTubeMPNDetailRet3);
-
-                    BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
-                    Assert.IsNotNull(badRequest3);
-                }
-            }
-        }
-        #endregion Tests Generated for Class Controller Put Command
-
-        #region Tests Generated for Class Controller Delete Command
-        [TestMethod]
-        public void LabSheetTubeMPNDetail_Controller_Delete_Test()
-        {
-            foreach (LanguageEnum LanguageRequest in AllowableLanguages)
-            {
-                foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
-                {
-                    LabSheetTubeMPNDetailController labSheetTubeMPNDetailController = new LabSheetTubeMPNDetailController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(labSheetTubeMPNDetailController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, labSheetTubeMPNDetailController.DatabaseType);
-
-                    LabSheetTubeMPNDetail labSheetTubeMPNDetailLast = new LabSheetTubeMPNDetail();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-                    {
-                        Query query = new Query();
-                        query.Language = LanguageRequest;
-                        query.Asc = "";
-                        query.Desc = "";
-
-                        LabSheetTubeMPNDetailService labSheetTubeMPNDetailService = new LabSheetTubeMPNDetailService(query, db, ContactID);
-                        labSheetTubeMPNDetailLast = (from c in db.LabSheetTubeMPNDetails select c).FirstOrDefault();
-                    }
-
-                    // ok with LabSheetTubeMPNDetail info
-                    IHttpActionResult jsonRet = labSheetTubeMPNDetailController.GetLabSheetTubeMPNDetailWithID(labSheetTubeMPNDetailLast.LabSheetTubeMPNDetailID);
-                    Assert.IsNotNull(jsonRet);
-
-                    OkNegotiatedContentResult<LabSheetTubeMPNDetail> Ret = jsonRet as OkNegotiatedContentResult<LabSheetTubeMPNDetail>;
-                    LabSheetTubeMPNDetail labSheetTubeMPNDetailRet = Ret.Content;
-                    Assert.AreEqual(labSheetTubeMPNDetailLast.LabSheetTubeMPNDetailID, labSheetTubeMPNDetailRet.LabSheetTubeMPNDetailID);
-
-                    BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
-
-                    // Post to return newly added LabSheetTubeMPNDetail
-                    labSheetTubeMPNDetailRet.LabSheetTubeMPNDetailID = 0;
-                    labSheetTubeMPNDetailController.Request = new System.Net.Http.HttpRequestMessage();
-                    labSheetTubeMPNDetailController.Request.RequestUri = new System.Uri("http://localhost:5000/api/labSheetTubeMPNDetail");
-                    IHttpActionResult jsonRet3 = labSheetTubeMPNDetailController.Post(labSheetTubeMPNDetailRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet3);
-
-                    CreatedNegotiatedContentResult<LabSheetTubeMPNDetail> labSheetTubeMPNDetailRet3 = jsonRet3 as CreatedNegotiatedContentResult<LabSheetTubeMPNDetail>;
-                    Assert.IsNotNull(labSheetTubeMPNDetailRet3);
-                    LabSheetTubeMPNDetail labSheetTubeMPNDetail = labSheetTubeMPNDetailRet3.Content;
-
-                    BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest3);
-
-                    // Delete to return success
-                    IHttpActionResult jsonRet2 = labSheetTubeMPNDetailController.Delete(labSheetTubeMPNDetailRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet2);
-
-                    OkNegotiatedContentResult<LabSheetTubeMPNDetail> labSheetTubeMPNDetailRet2 = jsonRet2 as OkNegotiatedContentResult<LabSheetTubeMPNDetail>;
-                    Assert.IsNotNull(labSheetTubeMPNDetailRet2);
-
-                    BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest2);
-
-                    // Delete to return CSSPError because LabSheetTubeMPNDetailID of 0 does not exist
-                    labSheetTubeMPNDetailRet.LabSheetTubeMPNDetailID = 0;
-                    IHttpActionResult jsonRet4 = labSheetTubeMPNDetailController.Delete(labSheetTubeMPNDetailRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet4);
-
-                    OkNegotiatedContentResult<LabSheetTubeMPNDetail> labSheetTubeMPNDetailRet4 = jsonRet4 as OkNegotiatedContentResult<LabSheetTubeMPNDetail>;
-                    Assert.IsNull(labSheetTubeMPNDetailRet4);
-
-                    BadRequestErrorMessageResult badRequest4 = jsonRet4 as BadRequestErrorMessageResult;
-                    Assert.IsNotNull(badRequest4);
-                }
-            }
-        }
-        #endregion Tests Generated for Class Controller Delete Command
-
+        #endregion Functions private
     }
 }

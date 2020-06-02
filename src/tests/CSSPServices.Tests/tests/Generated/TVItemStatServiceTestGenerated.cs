@@ -16,6 +16,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Transactions;
 using Xunit;
 
 namespace CSSPServices.Tests
@@ -54,37 +55,40 @@ namespace CSSPServices.Tests
 
             await Setup(new CultureInfo(culture));
 
-            TVItemStat tvItemStat = GetFilledRandomTVItemStat(""); 
+            using (TransactionScope ts = new TransactionScope())
+            {
+               TVItemStat tvItemStat = GetFilledRandomTVItemStat(""); 
 
-            // List<TVItemStat>
-            var actionTVItemStatList = await tvItemStatService.GetTVItemStatList();
-            Assert.Equal(200, ((ObjectResult)actionTVItemStatList.Result).StatusCode);
-            Assert.NotNull(((OkObjectResult)actionTVItemStatList.Result).Value);
-            List<TVItemStat> tvItemStatList = (List<TVItemStat>)(((OkObjectResult)actionTVItemStatList.Result).Value);
+               // List<TVItemStat>
+               var actionTVItemStatList = await tvItemStatService.GetTVItemStatList();
+               Assert.Equal(200, ((ObjectResult)actionTVItemStatList.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionTVItemStatList.Result).Value);
+               List<TVItemStat> tvItemStatList = (List<TVItemStat>)(((OkObjectResult)actionTVItemStatList.Result).Value);
 
-            int count = ((List<TVItemStat>)((OkObjectResult)actionTVItemStatList.Result).Value).Count();
-            Assert.True(count > 0);
+               int count = ((List<TVItemStat>)((OkObjectResult)actionTVItemStatList.Result).Value).Count();
+                Assert.True(count > 0);
 
-            // Add TVItemStat
-            var actionTVItemStatAdded = await tvItemStatService.Add(tvItemStat);
-            Assert.Equal(200, ((ObjectResult)actionTVItemStatAdded.Result).StatusCode);
-            Assert.NotNull(((OkObjectResult)actionTVItemStatAdded.Result).Value);
-            TVItemStat tvItemStatAdded = (TVItemStat)(((OkObjectResult)actionTVItemStatAdded.Result).Value);
-            Assert.NotNull(tvItemStatAdded);
+               // Add TVItemStat
+               var actionTVItemStatAdded = await tvItemStatService.Add(tvItemStat);
+               Assert.Equal(200, ((ObjectResult)actionTVItemStatAdded.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionTVItemStatAdded.Result).Value);
+               TVItemStat tvItemStatAdded = (TVItemStat)(((OkObjectResult)actionTVItemStatAdded.Result).Value);
+               Assert.NotNull(tvItemStatAdded);
 
-            // Update TVItemStat
-            var actionTVItemStatUpdated = await tvItemStatService.Update(tvItemStat);
-            Assert.Equal(200, ((ObjectResult)actionTVItemStatUpdated.Result).StatusCode);
-            Assert.NotNull(((OkObjectResult)actionTVItemStatUpdated.Result).Value);
-            TVItemStat tvItemStatUpdated = (TVItemStat)(((OkObjectResult)actionTVItemStatUpdated.Result).Value);
-            Assert.NotNull(tvItemStatUpdated);
+               // Update TVItemStat
+               var actionTVItemStatUpdated = await tvItemStatService.Update(tvItemStat);
+               Assert.Equal(200, ((ObjectResult)actionTVItemStatUpdated.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionTVItemStatUpdated.Result).Value);
+               TVItemStat tvItemStatUpdated = (TVItemStat)(((OkObjectResult)actionTVItemStatUpdated.Result).Value);
+               Assert.NotNull(tvItemStatUpdated);
 
-            // Delete TVItemStat
-            var actionTVItemStatDeleted = await tvItemStatService.Delete(tvItemStat);
-            Assert.Equal(200, ((ObjectResult)actionTVItemStatDeleted.Result).StatusCode);
-            Assert.NotNull(((OkObjectResult)actionTVItemStatDeleted.Result).Value);
-            TVItemStat tvItemStatDeleted = (TVItemStat)(((OkObjectResult)actionTVItemStatDeleted.Result).Value);
-            Assert.NotNull(tvItemStatDeleted);
+               // Delete TVItemStat
+               var actionTVItemStatDeleted = await tvItemStatService.Delete(tvItemStat);
+               Assert.Equal(200, ((ObjectResult)actionTVItemStatDeleted.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionTVItemStatDeleted.Result).Value);
+               TVItemStat tvItemStatDeleted = (TVItemStat)(((OkObjectResult)actionTVItemStatDeleted.Result).Value);
+               Assert.NotNull(tvItemStatDeleted);
+            }
         }
         #endregion Tests Generated CRUD
 

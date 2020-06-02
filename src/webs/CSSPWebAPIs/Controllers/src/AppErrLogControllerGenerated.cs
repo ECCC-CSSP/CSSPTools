@@ -1,143 +1,70 @@
-using CSSPEnums;
 using CSSPModels;
 using CSSPServices;
-using System;
+using LoggedInServices.Services;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web.Http;
+using System.Threading.Tasks;
 
 namespace CSSPWebAPI.Controllers
 {
-    [RoutePrefix("api/appErrLog")]
-    public partial class AppErrLogController : BaseController
+    public partial interface IAppErrLogController
+    {
+        Task<ActionResult<List<AppErrLog>>> Get();
+        Task<ActionResult<AppErrLog>> Get(int AppErrLogID);
+        Task<ActionResult<AppErrLog>> Post(AppErrLog appErrLog);
+        Task<ActionResult<AppErrLog>> Put(AppErrLog appErrLog);
+        Task<ActionResult<AppErrLog>> Delete(AppErrLog appErrLog);
+    }
+
+    [Route("api/{culture}/[controller]")]
+    [ApiController]
+    [Authorize]
+    public partial class AppErrLogController : ControllerBase, IAppErrLogController
     {
         #region Variables
         #endregion Variables
 
         #region Properties
+        private IAppErrLogService appErrLogService { get; }
+        private CSSPDBContext db { get; }
+        private ILoggedInService loggedInService { get; }
         #endregion Properties
 
         #region Constructors
-        public AppErrLogController() : base()
+        public AppErrLogController(IAppErrLogService appErrLogService, CSSPDBContext db, ILoggedInService loggedInService)
         {
-        }
-        public AppErrLogController(DatabaseTypeEnum dbt = DatabaseTypeEnum.SqlServerTestDB) : base(dbt)
-        {
+            this.appErrLogService = appErrLogService;
+            this.db = db;
+            this.loggedInService = loggedInService;
         }
         #endregion Constructors
 
         #region Functions public
-        // GET api/appErrLog
-        [Route("")]
-        public IHttpActionResult GetAppErrLogList([FromUri]string lang = "en", [FromUri]int skip = 0, [FromUri]int take = 200,
-            [FromUri]string asc = "", [FromUri]string desc = "", [FromUri]string where = "", [FromUri]string extra = "")
+        [HttpGet]
+        public async Task<ActionResult<List<AppErrLog>>> Get()
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                AppErrLogService appErrLogService = new AppErrLogService(new Query() { Lang = lang }, db, ContactID);
-
-                else // QueryString has no parameter [extra] or extra is empty
-                {
-                   appErrLogService.Query = appErrLogService.FillQuery(typeof(AppErrLog), lang, skip, take, asc, desc, where, extra);
-
-                    if (appErrLogService.Query.HasErrors)
-                    {
-                        return Ok(new List<AppErrLog>()
-                        {
-                            new AppErrLog()
-                            {
-                                HasErrors = appErrLogService.Query.HasErrors,
-                                ValidationResults = appErrLogService.Query.ValidationResults,
-                            },
-                        }.ToList());
-                    }
-                    else
-                    {
-                        return Ok(appErrLogService.GetAppErrLogList().ToList());
-                    }
-                }
-            }
+            return await appErrLogService.GetAppErrLogList();
         }
-        // GET api/appErrLog/1
-        [Route("{AppErrLogID:int}")]
-        public IHttpActionResult GetAppErrLogWithID([FromUri]int AppErrLogID, [FromUri]string lang = "en", [FromUri]string extra = "")
+        [HttpGet("{AppErrLogID}")]
+        public async Task<ActionResult<AppErrLog>> Get(int AppErrLogID)
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                AppErrLogService appErrLogService = new AppErrLogService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
-
-                appErrLogService.Query = appErrLogService.FillQuery(typeof(AppErrLog), lang, 0, 1, "", "", extra);
-
-                else
-                {
-                    AppErrLog appErrLog = new AppErrLog();
-                    appErrLog = appErrLogService.GetAppErrLogWithAppErrLogID(AppErrLogID);
-
-                    if (appErrLog == null)
-                    {
-                        return NotFound();
-                    }
-
-                    return Ok(appErrLog);
-                }
-            }
+            return await appErrLogService.GetAppErrLogWithAppErrLogID(AppErrLogID);
         }
-        // POST api/appErrLog
-        [Route("")]
-        public IHttpActionResult Post([FromBody]AppErrLog appErrLog, [FromUri]string lang = "en")
+        [HttpPost]
+        public async Task<ActionResult<AppErrLog>> Post(AppErrLog appErrLog)
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                AppErrLogService appErrLogService = new AppErrLogService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
-
-                if (!appErrLogService.Add(appErrLog))
-                {
-                    return BadRequest(String.Join("|||", appErrLog.ValidationResults));
-                }
-                else
-                {
-                    appErrLog.ValidationResults = null;
-                    return Created<AppErrLog>(new Uri(Request.RequestUri, appErrLog.AppErrLogID.ToString()), appErrLog);
-                }
-            }
+            return await appErrLogService.Add(appErrLog);
         }
-        // PUT api/appErrLog
-        [Route("")]
-        public IHttpActionResult Put([FromBody]AppErrLog appErrLog, [FromUri]string lang = "en")
+        [HttpPut]
+        public async Task<ActionResult<AppErrLog>> Put(AppErrLog appErrLog)
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                AppErrLogService appErrLogService = new AppErrLogService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
-
-                if (!appErrLogService.Update(appErrLog))
-                {
-                    return BadRequest(String.Join("|||", appErrLog.ValidationResults));
-                }
-                else
-                {
-                    appErrLog.ValidationResults = null;
-                    return Ok(appErrLog);
-                }
-            }
+            return await appErrLogService.Update(appErrLog);
         }
-        // DELETE api/appErrLog
-        [Route("")]
-        public IHttpActionResult Delete([FromBody]AppErrLog appErrLog, [FromUri]string lang = "en")
+        [HttpDelete]
+        public async Task<ActionResult<AppErrLog>> Delete(AppErrLog appErrLog)
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                AppErrLogService appErrLogService = new AppErrLogService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
-
-                if (!appErrLogService.Delete(appErrLog))
-                {
-                    return BadRequest(String.Join("|||", appErrLog.ValidationResults));
-                }
-                else
-                {
-                    appErrLog.ValidationResults = null;
-                    return Ok(appErrLog);
-                }
-            }
+            return await appErrLogService.Delete(appErrLog);
         }
         #endregion Functions public
 

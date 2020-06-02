@@ -1,143 +1,70 @@
-using CSSPEnums;
 using CSSPModels;
 using CSSPServices;
-using System;
+using LoggedInServices.Services;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web.Http;
+using System.Threading.Tasks;
 
 namespace CSSPWebAPI.Controllers
 {
-    [RoutePrefix("api/classification")]
-    public partial class ClassificationController : BaseController
+    public partial interface IClassificationController
+    {
+        Task<ActionResult<List<Classification>>> Get();
+        Task<ActionResult<Classification>> Get(int ClassificationID);
+        Task<ActionResult<Classification>> Post(Classification classification);
+        Task<ActionResult<Classification>> Put(Classification classification);
+        Task<ActionResult<Classification>> Delete(Classification classification);
+    }
+
+    [Route("api/{culture}/[controller]")]
+    [ApiController]
+    [Authorize]
+    public partial class ClassificationController : ControllerBase, IClassificationController
     {
         #region Variables
         #endregion Variables
 
         #region Properties
+        private IClassificationService classificationService { get; }
+        private CSSPDBContext db { get; }
+        private ILoggedInService loggedInService { get; }
         #endregion Properties
 
         #region Constructors
-        public ClassificationController() : base()
+        public ClassificationController(IClassificationService classificationService, CSSPDBContext db, ILoggedInService loggedInService)
         {
-        }
-        public ClassificationController(DatabaseTypeEnum dbt = DatabaseTypeEnum.SqlServerTestDB) : base(dbt)
-        {
+            this.classificationService = classificationService;
+            this.db = db;
+            this.loggedInService = loggedInService;
         }
         #endregion Constructors
 
         #region Functions public
-        // GET api/classification
-        [Route("")]
-        public IHttpActionResult GetClassificationList([FromUri]string lang = "en", [FromUri]int skip = 0, [FromUri]int take = 200,
-            [FromUri]string asc = "", [FromUri]string desc = "", [FromUri]string where = "", [FromUri]string extra = "")
+        [HttpGet]
+        public async Task<ActionResult<List<Classification>>> Get()
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                ClassificationService classificationService = new ClassificationService(new Query() { Lang = lang }, db, ContactID);
-
-                else // QueryString has no parameter [extra] or extra is empty
-                {
-                   classificationService.Query = classificationService.FillQuery(typeof(Classification), lang, skip, take, asc, desc, where, extra);
-
-                    if (classificationService.Query.HasErrors)
-                    {
-                        return Ok(new List<Classification>()
-                        {
-                            new Classification()
-                            {
-                                HasErrors = classificationService.Query.HasErrors,
-                                ValidationResults = classificationService.Query.ValidationResults,
-                            },
-                        }.ToList());
-                    }
-                    else
-                    {
-                        return Ok(classificationService.GetClassificationList().ToList());
-                    }
-                }
-            }
+            return await classificationService.GetClassificationList();
         }
-        // GET api/classification/1
-        [Route("{ClassificationID:int}")]
-        public IHttpActionResult GetClassificationWithID([FromUri]int ClassificationID, [FromUri]string lang = "en", [FromUri]string extra = "")
+        [HttpGet("{ClassificationID}")]
+        public async Task<ActionResult<Classification>> Get(int ClassificationID)
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                ClassificationService classificationService = new ClassificationService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
-
-                classificationService.Query = classificationService.FillQuery(typeof(Classification), lang, 0, 1, "", "", extra);
-
-                else
-                {
-                    Classification classification = new Classification();
-                    classification = classificationService.GetClassificationWithClassificationID(ClassificationID);
-
-                    if (classification == null)
-                    {
-                        return NotFound();
-                    }
-
-                    return Ok(classification);
-                }
-            }
+            return await classificationService.GetClassificationWithClassificationID(ClassificationID);
         }
-        // POST api/classification
-        [Route("")]
-        public IHttpActionResult Post([FromBody]Classification classification, [FromUri]string lang = "en")
+        [HttpPost]
+        public async Task<ActionResult<Classification>> Post(Classification classification)
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                ClassificationService classificationService = new ClassificationService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
-
-                if (!classificationService.Add(classification))
-                {
-                    return BadRequest(String.Join("|||", classification.ValidationResults));
-                }
-                else
-                {
-                    classification.ValidationResults = null;
-                    return Created<Classification>(new Uri(Request.RequestUri, classification.ClassificationID.ToString()), classification);
-                }
-            }
+            return await classificationService.Add(classification);
         }
-        // PUT api/classification
-        [Route("")]
-        public IHttpActionResult Put([FromBody]Classification classification, [FromUri]string lang = "en")
+        [HttpPut]
+        public async Task<ActionResult<Classification>> Put(Classification classification)
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                ClassificationService classificationService = new ClassificationService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
-
-                if (!classificationService.Update(classification))
-                {
-                    return BadRequest(String.Join("|||", classification.ValidationResults));
-                }
-                else
-                {
-                    classification.ValidationResults = null;
-                    return Ok(classification);
-                }
-            }
+            return await classificationService.Update(classification);
         }
-        // DELETE api/classification
-        [Route("")]
-        public IHttpActionResult Delete([FromBody]Classification classification, [FromUri]string lang = "en")
+        [HttpDelete]
+        public async Task<ActionResult<Classification>> Delete(Classification classification)
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                ClassificationService classificationService = new ClassificationService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
-
-                if (!classificationService.Delete(classification))
-                {
-                    return BadRequest(String.Join("|||", classification.ValidationResults));
-                }
-                else
-                {
-                    classification.ValidationResults = null;
-                    return Ok(classification);
-                }
-            }
+            return await classificationService.Delete(classification);
         }
         #endregion Functions public
 

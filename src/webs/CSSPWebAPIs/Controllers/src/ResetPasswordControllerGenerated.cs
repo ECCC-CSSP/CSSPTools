@@ -1,143 +1,70 @@
-using CSSPEnums;
 using CSSPModels;
 using CSSPServices;
-using System;
+using LoggedInServices.Services;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web.Http;
+using System.Threading.Tasks;
 
 namespace CSSPWebAPI.Controllers
 {
-    [RoutePrefix("api/resetPassword")]
-    public partial class ResetPasswordController : BaseController
+    public partial interface IResetPasswordController
+    {
+        Task<ActionResult<List<ResetPassword>>> Get();
+        Task<ActionResult<ResetPassword>> Get(int ResetPasswordID);
+        Task<ActionResult<ResetPassword>> Post(ResetPassword resetPassword);
+        Task<ActionResult<ResetPassword>> Put(ResetPassword resetPassword);
+        Task<ActionResult<ResetPassword>> Delete(ResetPassword resetPassword);
+    }
+
+    [Route("api/{culture}/[controller]")]
+    [ApiController]
+    [Authorize]
+    public partial class ResetPasswordController : ControllerBase, IResetPasswordController
     {
         #region Variables
         #endregion Variables
 
         #region Properties
+        private IResetPasswordService resetPasswordService { get; }
+        private CSSPDBContext db { get; }
+        private ILoggedInService loggedInService { get; }
         #endregion Properties
 
         #region Constructors
-        public ResetPasswordController() : base()
+        public ResetPasswordController(IResetPasswordService resetPasswordService, CSSPDBContext db, ILoggedInService loggedInService)
         {
-        }
-        public ResetPasswordController(DatabaseTypeEnum dbt = DatabaseTypeEnum.SqlServerTestDB) : base(dbt)
-        {
+            this.resetPasswordService = resetPasswordService;
+            this.db = db;
+            this.loggedInService = loggedInService;
         }
         #endregion Constructors
 
         #region Functions public
-        // GET api/resetPassword
-        [Route("")]
-        public IHttpActionResult GetResetPasswordList([FromUri]string lang = "en", [FromUri]int skip = 0, [FromUri]int take = 200,
-            [FromUri]string asc = "", [FromUri]string desc = "", [FromUri]string where = "", [FromUri]string extra = "")
+        [HttpGet]
+        public async Task<ActionResult<List<ResetPassword>>> Get()
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                ResetPasswordService resetPasswordService = new ResetPasswordService(new Query() { Lang = lang }, db, ContactID);
-
-                else // QueryString has no parameter [extra] or extra is empty
-                {
-                   resetPasswordService.Query = resetPasswordService.FillQuery(typeof(ResetPassword), lang, skip, take, asc, desc, where, extra);
-
-                    if (resetPasswordService.Query.HasErrors)
-                    {
-                        return Ok(new List<ResetPassword>()
-                        {
-                            new ResetPassword()
-                            {
-                                HasErrors = resetPasswordService.Query.HasErrors,
-                                ValidationResults = resetPasswordService.Query.ValidationResults,
-                            },
-                        }.ToList());
-                    }
-                    else
-                    {
-                        return Ok(resetPasswordService.GetResetPasswordList().ToList());
-                    }
-                }
-            }
+            return await resetPasswordService.GetResetPasswordList();
         }
-        // GET api/resetPassword/1
-        [Route("{ResetPasswordID:int}")]
-        public IHttpActionResult GetResetPasswordWithID([FromUri]int ResetPasswordID, [FromUri]string lang = "en", [FromUri]string extra = "")
+        [HttpGet("{ResetPasswordID}")]
+        public async Task<ActionResult<ResetPassword>> Get(int ResetPasswordID)
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                ResetPasswordService resetPasswordService = new ResetPasswordService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
-
-                resetPasswordService.Query = resetPasswordService.FillQuery(typeof(ResetPassword), lang, 0, 1, "", "", extra);
-
-                else
-                {
-                    ResetPassword resetPassword = new ResetPassword();
-                    resetPassword = resetPasswordService.GetResetPasswordWithResetPasswordID(ResetPasswordID);
-
-                    if (resetPassword == null)
-                    {
-                        return NotFound();
-                    }
-
-                    return Ok(resetPassword);
-                }
-            }
+            return await resetPasswordService.GetResetPasswordWithResetPasswordID(ResetPasswordID);
         }
-        // POST api/resetPassword
-        [Route("")]
-        public IHttpActionResult Post([FromBody]ResetPassword resetPassword, [FromUri]string lang = "en")
+        [HttpPost]
+        public async Task<ActionResult<ResetPassword>> Post(ResetPassword resetPassword)
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                ResetPasswordService resetPasswordService = new ResetPasswordService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
-
-                if (!resetPasswordService.Add(resetPassword))
-                {
-                    return BadRequest(String.Join("|||", resetPassword.ValidationResults));
-                }
-                else
-                {
-                    resetPassword.ValidationResults = null;
-                    return Created<ResetPassword>(new Uri(Request.RequestUri, resetPassword.ResetPasswordID.ToString()), resetPassword);
-                }
-            }
+            return await resetPasswordService.Add(resetPassword);
         }
-        // PUT api/resetPassword
-        [Route("")]
-        public IHttpActionResult Put([FromBody]ResetPassword resetPassword, [FromUri]string lang = "en")
+        [HttpPut]
+        public async Task<ActionResult<ResetPassword>> Put(ResetPassword resetPassword)
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                ResetPasswordService resetPasswordService = new ResetPasswordService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
-
-                if (!resetPasswordService.Update(resetPassword))
-                {
-                    return BadRequest(String.Join("|||", resetPassword.ValidationResults));
-                }
-                else
-                {
-                    resetPassword.ValidationResults = null;
-                    return Ok(resetPassword);
-                }
-            }
+            return await resetPasswordService.Update(resetPassword);
         }
-        // DELETE api/resetPassword
-        [Route("")]
-        public IHttpActionResult Delete([FromBody]ResetPassword resetPassword, [FromUri]string lang = "en")
+        [HttpDelete]
+        public async Task<ActionResult<ResetPassword>> Delete(ResetPassword resetPassword)
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                ResetPasswordService resetPasswordService = new ResetPasswordService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
-
-                if (!resetPasswordService.Delete(resetPassword))
-                {
-                    return BadRequest(String.Join("|||", resetPassword.ValidationResults));
-                }
-                else
-                {
-                    resetPassword.ValidationResults = null;
-                    return Ok(resetPassword);
-                }
-            }
+            return await resetPasswordService.Delete(resetPassword);
         }
         #endregion Functions public
 

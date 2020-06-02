@@ -1,143 +1,70 @@
-using CSSPEnums;
 using CSSPModels;
 using CSSPServices;
-using System;
+using LoggedInServices.Services;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web.Http;
+using System.Threading.Tasks;
 
 namespace CSSPWebAPI.Controllers
 {
-    [RoutePrefix("api/mwqmAnalysisReportParameter")]
-    public partial class MWQMAnalysisReportParameterController : BaseController
+    public partial interface IMWQMAnalysisReportParameterController
+    {
+        Task<ActionResult<List<MWQMAnalysisReportParameter>>> Get();
+        Task<ActionResult<MWQMAnalysisReportParameter>> Get(int MWQMAnalysisReportParameterID);
+        Task<ActionResult<MWQMAnalysisReportParameter>> Post(MWQMAnalysisReportParameter mwqmAnalysisReportParameter);
+        Task<ActionResult<MWQMAnalysisReportParameter>> Put(MWQMAnalysisReportParameter mwqmAnalysisReportParameter);
+        Task<ActionResult<MWQMAnalysisReportParameter>> Delete(MWQMAnalysisReportParameter mwqmAnalysisReportParameter);
+    }
+
+    [Route("api/{culture}/[controller]")]
+    [ApiController]
+    [Authorize]
+    public partial class MWQMAnalysisReportParameterController : ControllerBase, IMWQMAnalysisReportParameterController
     {
         #region Variables
         #endregion Variables
 
         #region Properties
+        private IMWQMAnalysisReportParameterService mwqmAnalysisReportParameterService { get; }
+        private CSSPDBContext db { get; }
+        private ILoggedInService loggedInService { get; }
         #endregion Properties
 
         #region Constructors
-        public MWQMAnalysisReportParameterController() : base()
+        public MWQMAnalysisReportParameterController(IMWQMAnalysisReportParameterService mwqmAnalysisReportParameterService, CSSPDBContext db, ILoggedInService loggedInService)
         {
-        }
-        public MWQMAnalysisReportParameterController(DatabaseTypeEnum dbt = DatabaseTypeEnum.SqlServerTestDB) : base(dbt)
-        {
+            this.mwqmAnalysisReportParameterService = mwqmAnalysisReportParameterService;
+            this.db = db;
+            this.loggedInService = loggedInService;
         }
         #endregion Constructors
 
         #region Functions public
-        // GET api/mwqmAnalysisReportParameter
-        [Route("")]
-        public IHttpActionResult GetMWQMAnalysisReportParameterList([FromUri]string lang = "en", [FromUri]int skip = 0, [FromUri]int take = 200,
-            [FromUri]string asc = "", [FromUri]string desc = "", [FromUri]string where = "", [FromUri]string extra = "")
+        [HttpGet]
+        public async Task<ActionResult<List<MWQMAnalysisReportParameter>>> Get()
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                MWQMAnalysisReportParameterService mwqmAnalysisReportParameterService = new MWQMAnalysisReportParameterService(new Query() { Lang = lang }, db, ContactID);
-
-                else // QueryString has no parameter [extra] or extra is empty
-                {
-                   mwqmAnalysisReportParameterService.Query = mwqmAnalysisReportParameterService.FillQuery(typeof(MWQMAnalysisReportParameter), lang, skip, take, asc, desc, where, extra);
-
-                    if (mwqmAnalysisReportParameterService.Query.HasErrors)
-                    {
-                        return Ok(new List<MWQMAnalysisReportParameter>()
-                        {
-                            new MWQMAnalysisReportParameter()
-                            {
-                                HasErrors = mwqmAnalysisReportParameterService.Query.HasErrors,
-                                ValidationResults = mwqmAnalysisReportParameterService.Query.ValidationResults,
-                            },
-                        }.ToList());
-                    }
-                    else
-                    {
-                        return Ok(mwqmAnalysisReportParameterService.GetMWQMAnalysisReportParameterList().ToList());
-                    }
-                }
-            }
+            return await mwqmAnalysisReportParameterService.GetMWQMAnalysisReportParameterList();
         }
-        // GET api/mwqmAnalysisReportParameter/1
-        [Route("{MWQMAnalysisReportParameterID:int}")]
-        public IHttpActionResult GetMWQMAnalysisReportParameterWithID([FromUri]int MWQMAnalysisReportParameterID, [FromUri]string lang = "en", [FromUri]string extra = "")
+        [HttpGet("{MWQMAnalysisReportParameterID}")]
+        public async Task<ActionResult<MWQMAnalysisReportParameter>> Get(int MWQMAnalysisReportParameterID)
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                MWQMAnalysisReportParameterService mwqmAnalysisReportParameterService = new MWQMAnalysisReportParameterService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
-
-                mwqmAnalysisReportParameterService.Query = mwqmAnalysisReportParameterService.FillQuery(typeof(MWQMAnalysisReportParameter), lang, 0, 1, "", "", extra);
-
-                else
-                {
-                    MWQMAnalysisReportParameter mwqmAnalysisReportParameter = new MWQMAnalysisReportParameter();
-                    mwqmAnalysisReportParameter = mwqmAnalysisReportParameterService.GetMWQMAnalysisReportParameterWithMWQMAnalysisReportParameterID(MWQMAnalysisReportParameterID);
-
-                    if (mwqmAnalysisReportParameter == null)
-                    {
-                        return NotFound();
-                    }
-
-                    return Ok(mwqmAnalysisReportParameter);
-                }
-            }
+            return await mwqmAnalysisReportParameterService.GetMWQMAnalysisReportParameterWithMWQMAnalysisReportParameterID(MWQMAnalysisReportParameterID);
         }
-        // POST api/mwqmAnalysisReportParameter
-        [Route("")]
-        public IHttpActionResult Post([FromBody]MWQMAnalysisReportParameter mwqmAnalysisReportParameter, [FromUri]string lang = "en")
+        [HttpPost]
+        public async Task<ActionResult<MWQMAnalysisReportParameter>> Post(MWQMAnalysisReportParameter mwqmAnalysisReportParameter)
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                MWQMAnalysisReportParameterService mwqmAnalysisReportParameterService = new MWQMAnalysisReportParameterService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
-
-                if (!mwqmAnalysisReportParameterService.Add(mwqmAnalysisReportParameter))
-                {
-                    return BadRequest(String.Join("|||", mwqmAnalysisReportParameter.ValidationResults));
-                }
-                else
-                {
-                    mwqmAnalysisReportParameter.ValidationResults = null;
-                    return Created<MWQMAnalysisReportParameter>(new Uri(Request.RequestUri, mwqmAnalysisReportParameter.MWQMAnalysisReportParameterID.ToString()), mwqmAnalysisReportParameter);
-                }
-            }
+            return await mwqmAnalysisReportParameterService.Add(mwqmAnalysisReportParameter);
         }
-        // PUT api/mwqmAnalysisReportParameter
-        [Route("")]
-        public IHttpActionResult Put([FromBody]MWQMAnalysisReportParameter mwqmAnalysisReportParameter, [FromUri]string lang = "en")
+        [HttpPut]
+        public async Task<ActionResult<MWQMAnalysisReportParameter>> Put(MWQMAnalysisReportParameter mwqmAnalysisReportParameter)
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                MWQMAnalysisReportParameterService mwqmAnalysisReportParameterService = new MWQMAnalysisReportParameterService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
-
-                if (!mwqmAnalysisReportParameterService.Update(mwqmAnalysisReportParameter))
-                {
-                    return BadRequest(String.Join("|||", mwqmAnalysisReportParameter.ValidationResults));
-                }
-                else
-                {
-                    mwqmAnalysisReportParameter.ValidationResults = null;
-                    return Ok(mwqmAnalysisReportParameter);
-                }
-            }
+            return await mwqmAnalysisReportParameterService.Update(mwqmAnalysisReportParameter);
         }
-        // DELETE api/mwqmAnalysisReportParameter
-        [Route("")]
-        public IHttpActionResult Delete([FromBody]MWQMAnalysisReportParameter mwqmAnalysisReportParameter, [FromUri]string lang = "en")
+        [HttpDelete]
+        public async Task<ActionResult<MWQMAnalysisReportParameter>> Delete(MWQMAnalysisReportParameter mwqmAnalysisReportParameter)
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                MWQMAnalysisReportParameterService mwqmAnalysisReportParameterService = new MWQMAnalysisReportParameterService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
-
-                if (!mwqmAnalysisReportParameterService.Delete(mwqmAnalysisReportParameter))
-                {
-                    return BadRequest(String.Join("|||", mwqmAnalysisReportParameter.ValidationResults));
-                }
-                else
-                {
-                    mwqmAnalysisReportParameter.ValidationResults = null;
-                    return Ok(mwqmAnalysisReportParameter);
-                }
-            }
+            return await mwqmAnalysisReportParameterService.Delete(mwqmAnalysisReportParameter);
         }
         #endregion Functions public
 

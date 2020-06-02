@@ -1,143 +1,70 @@
-using CSSPEnums;
 using CSSPModels;
 using CSSPServices;
-using System;
+using LoggedInServices.Services;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web.Http;
+using System.Threading.Tasks;
 
 namespace CSSPWebAPI.Controllers
 {
-    [RoutePrefix("api/vpResult")]
-    public partial class VPResultController : BaseController
+    public partial interface IVPResultController
+    {
+        Task<ActionResult<List<VPResult>>> Get();
+        Task<ActionResult<VPResult>> Get(int VPResultID);
+        Task<ActionResult<VPResult>> Post(VPResult vpResult);
+        Task<ActionResult<VPResult>> Put(VPResult vpResult);
+        Task<ActionResult<VPResult>> Delete(VPResult vpResult);
+    }
+
+    [Route("api/{culture}/[controller]")]
+    [ApiController]
+    [Authorize]
+    public partial class VPResultController : ControllerBase, IVPResultController
     {
         #region Variables
         #endregion Variables
 
         #region Properties
+        private IVPResultService vpResultService { get; }
+        private CSSPDBContext db { get; }
+        private ILoggedInService loggedInService { get; }
         #endregion Properties
 
         #region Constructors
-        public VPResultController() : base()
+        public VPResultController(IVPResultService vpResultService, CSSPDBContext db, ILoggedInService loggedInService)
         {
-        }
-        public VPResultController(DatabaseTypeEnum dbt = DatabaseTypeEnum.SqlServerTestDB) : base(dbt)
-        {
+            this.vpResultService = vpResultService;
+            this.db = db;
+            this.loggedInService = loggedInService;
         }
         #endregion Constructors
 
         #region Functions public
-        // GET api/vpResult
-        [Route("")]
-        public IHttpActionResult GetVPResultList([FromUri]string lang = "en", [FromUri]int skip = 0, [FromUri]int take = 200,
-            [FromUri]string asc = "", [FromUri]string desc = "", [FromUri]string where = "", [FromUri]string extra = "")
+        [HttpGet]
+        public async Task<ActionResult<List<VPResult>>> Get()
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                VPResultService vpResultService = new VPResultService(new Query() { Lang = lang }, db, ContactID);
-
-                else // QueryString has no parameter [extra] or extra is empty
-                {
-                   vpResultService.Query = vpResultService.FillQuery(typeof(VPResult), lang, skip, take, asc, desc, where, extra);
-
-                    if (vpResultService.Query.HasErrors)
-                    {
-                        return Ok(new List<VPResult>()
-                        {
-                            new VPResult()
-                            {
-                                HasErrors = vpResultService.Query.HasErrors,
-                                ValidationResults = vpResultService.Query.ValidationResults,
-                            },
-                        }.ToList());
-                    }
-                    else
-                    {
-                        return Ok(vpResultService.GetVPResultList().ToList());
-                    }
-                }
-            }
+            return await vpResultService.GetVPResultList();
         }
-        // GET api/vpResult/1
-        [Route("{VPResultID:int}")]
-        public IHttpActionResult GetVPResultWithID([FromUri]int VPResultID, [FromUri]string lang = "en", [FromUri]string extra = "")
+        [HttpGet("{VPResultID}")]
+        public async Task<ActionResult<VPResult>> Get(int VPResultID)
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                VPResultService vpResultService = new VPResultService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
-
-                vpResultService.Query = vpResultService.FillQuery(typeof(VPResult), lang, 0, 1, "", "", extra);
-
-                else
-                {
-                    VPResult vpResult = new VPResult();
-                    vpResult = vpResultService.GetVPResultWithVPResultID(VPResultID);
-
-                    if (vpResult == null)
-                    {
-                        return NotFound();
-                    }
-
-                    return Ok(vpResult);
-                }
-            }
+            return await vpResultService.GetVPResultWithVPResultID(VPResultID);
         }
-        // POST api/vpResult
-        [Route("")]
-        public IHttpActionResult Post([FromBody]VPResult vpResult, [FromUri]string lang = "en")
+        [HttpPost]
+        public async Task<ActionResult<VPResult>> Post(VPResult vpResult)
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                VPResultService vpResultService = new VPResultService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
-
-                if (!vpResultService.Add(vpResult))
-                {
-                    return BadRequest(String.Join("|||", vpResult.ValidationResults));
-                }
-                else
-                {
-                    vpResult.ValidationResults = null;
-                    return Created<VPResult>(new Uri(Request.RequestUri, vpResult.VPResultID.ToString()), vpResult);
-                }
-            }
+            return await vpResultService.Add(vpResult);
         }
-        // PUT api/vpResult
-        [Route("")]
-        public IHttpActionResult Put([FromBody]VPResult vpResult, [FromUri]string lang = "en")
+        [HttpPut]
+        public async Task<ActionResult<VPResult>> Put(VPResult vpResult)
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                VPResultService vpResultService = new VPResultService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
-
-                if (!vpResultService.Update(vpResult))
-                {
-                    return BadRequest(String.Join("|||", vpResult.ValidationResults));
-                }
-                else
-                {
-                    vpResult.ValidationResults = null;
-                    return Ok(vpResult);
-                }
-            }
+            return await vpResultService.Update(vpResult);
         }
-        // DELETE api/vpResult
-        [Route("")]
-        public IHttpActionResult Delete([FromBody]VPResult vpResult, [FromUri]string lang = "en")
+        [HttpDelete]
+        public async Task<ActionResult<VPResult>> Delete(VPResult vpResult)
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                VPResultService vpResultService = new VPResultService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
-
-                if (!vpResultService.Delete(vpResult))
-                {
-                    return BadRequest(String.Join("|||", vpResult.ValidationResults));
-                }
-                else
-                {
-                    vpResult.ValidationResults = null;
-                    return Ok(vpResult);
-                }
-            }
+            return await vpResultService.Delete(vpResult);
         }
         #endregion Functions public
 

@@ -2,350 +2,157 @@ using CSSPEnums;
 using CSSPModels;
 using CSSPServices;
 using CSSPWebAPI.Controllers;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using LoggedInServices.Services;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using System;
 using System.Collections.Generic;
+using System.Globalization;
+using System.IO;
 using System.Linq;
-using System.Web.Http;
-using System.Web.Http.Results;
+using System.Threading.Tasks;
+using System.Transactions;
+using UserServices.Models;
+using Xunit;
 
-namespace CSSPWebAPI.Tests.Controllers
+namespace CSSPWebAPIs.Tests.Controllers
 {
-    [TestClass]
-    public partial class MWQMAnalysisReportParameterControllerTest : BaseControllerTest
+    public partial class MWQMAnalysisReportParameterControllerTest
     {
         #region Variables
         #endregion Variables
 
         #region Properties
+        private IConfiguration Config { get; set; }
+        private IServiceProvider Provider { get; set; }
+        private IServiceCollection Services { get; set; }
+        private CSSPDBContext db { get; set; }
+        private ILoggedInService loggedInService { get; set; }
+        private IMWQMAnalysisReportParameterService mwqmAnalysisReportParameterService { get; set; }
+        private IMWQMAnalysisReportParameterController mwqmAnalysisReportParameterController { get; set; }
         #endregion Properties
 
         #region Constructors
-        public MWQMAnalysisReportParameterControllerTest() : base()
+        public MWQMAnalysisReportParameterControllerTest()
         {
         }
         #endregion Constructors
 
-        #region Tests Generated for Class Controller GetList Command
-        [TestMethod]
-        public void MWQMAnalysisReportParameter_Controller_GetMWQMAnalysisReportParameterList_Test()
+        #region Functions public
+        [Theory]
+        [InlineData("en-CA")]
+        [InlineData("fr-CA")]
+        public async Task MWQMAnalysisReportParameterController_Constructor_Good_Test(string culture)
         {
-            foreach (LanguageEnum LanguageRequest in AllowableLanguages)
+            bool retBool = await Setup(new CultureInfo(culture));
+            Assert.True(retBool);
+            Assert.NotNull(loggedInService);
+            Assert.NotNull(mwqmAnalysisReportParameterService);
+            Assert.NotNull(mwqmAnalysisReportParameterController);
+        }
+        [Theory]
+        [InlineData("en-CA")]
+        [InlineData("fr-CA")]
+        public async Task MWQMAnalysisReportParameterController_CRUD_Good_Test(string culture)
+        {
+            bool retBool = await Setup(new CultureInfo(culture));
+            Assert.True(retBool);
+
+            using (TransactionScope ts = new TransactionScope())
             {
-                foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
-                {
-                    MWQMAnalysisReportParameterController mwqmAnalysisReportParameterController = new MWQMAnalysisReportParameterController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(mwqmAnalysisReportParameterController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, mwqmAnalysisReportParameterController.DatabaseType);
+                // testing Get
+               var actionMWQMAnalysisReportParameterList = await mwqmAnalysisReportParameterController.Get();
+               Assert.Equal(200, ((ObjectResult)actionMWQMAnalysisReportParameterList.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionMWQMAnalysisReportParameterList.Result).Value);
+               List<MWQMAnalysisReportParameter> mwqmAnalysisReportParameterList = (List<MWQMAnalysisReportParameter>)(((OkObjectResult)actionMWQMAnalysisReportParameterList.Result).Value);
 
-                    MWQMAnalysisReportParameter mwqmAnalysisReportParameterFirst = new MWQMAnalysisReportParameter();
-                    int count = -1;
-                    Query query = new Query();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseTypeEnum.SqlServerTestDB))
-                    {
-                        MWQMAnalysisReportParameterService mwqmAnalysisReportParameterService = new MWQMAnalysisReportParameterService(query, db, ContactID);
-                        mwqmAnalysisReportParameterFirst = (from c in db.MWQMAnalysisReportParameters select c).FirstOrDefault();
-                        count = (from c in db.MWQMAnalysisReportParameters select c).Count();
-                        count = (query.Take > count ? count : query.Take);
-                    }
+               int count = ((List<MWQMAnalysisReportParameter>)((OkObjectResult)actionMWQMAnalysisReportParameterList.Result).Value).Count();
+                Assert.True(count > 0);
 
-                    // ok with MWQMAnalysisReportParameter info
-                    IHttpActionResult jsonRet = mwqmAnalysisReportParameterController.GetMWQMAnalysisReportParameterList();
-                    Assert.IsNotNull(jsonRet);
+               // testing Get(MWQMAnalysisReportParameterID)
+               var actionMWQMAnalysisReportParameter = await mwqmAnalysisReportParameterController.Get(mwqmAnalysisReportParameterList[0].MWQMAnalysisReportParameterID);
+               Assert.Equal(200, ((ObjectResult)actionMWQMAnalysisReportParameter.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionMWQMAnalysisReportParameter.Result).Value);
+               MWQMAnalysisReportParameter mwqmAnalysisReportParameter = (MWQMAnalysisReportParameter)(((OkObjectResult)actionMWQMAnalysisReportParameter.Result).Value);
+               Assert.NotNull(mwqmAnalysisReportParameter);
+               Assert.Equal(mwqmAnalysisReportParameterList[0].MWQMAnalysisReportParameterID, mwqmAnalysisReportParameter.MWQMAnalysisReportParameterID);
 
-                    OkNegotiatedContentResult<List<MWQMAnalysisReportParameter>> ret = jsonRet as OkNegotiatedContentResult<List<MWQMAnalysisReportParameter>>;
-                    Assert.AreEqual(mwqmAnalysisReportParameterFirst.MWQMAnalysisReportParameterID, ret.Content[0].MWQMAnalysisReportParameterID);
-                    Assert.AreEqual((count > query.Take ? query.Take : count), ret.Content.Count);
+               // testing Post(MWQMAnalysisReportParameter mwqmAnalysisReportParameter)
+               mwqmAnalysisReportParameter.MWQMAnalysisReportParameterID = 0;
+               var actionMWQMAnalysisReportParameterNew = await mwqmAnalysisReportParameterController.Post(mwqmAnalysisReportParameter);
+               Assert.Equal(200, ((ObjectResult)actionMWQMAnalysisReportParameterNew.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionMWQMAnalysisReportParameterNew.Result).Value);
+               MWQMAnalysisReportParameter mwqmAnalysisReportParameterNew = (MWQMAnalysisReportParameter)(((OkObjectResult)actionMWQMAnalysisReportParameterNew.Result).Value);
+               Assert.NotNull(mwqmAnalysisReportParameterNew);
 
-                    List<MWQMAnalysisReportParameter> mwqmAnalysisReportParameterList = new List<MWQMAnalysisReportParameter>();
-                    count = -1;
-                    query = new Query();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseTypeEnum.SqlServerTestDB))
-                    {
-                        MWQMAnalysisReportParameterService mwqmAnalysisReportParameterService = new MWQMAnalysisReportParameterService(query, db, ContactID);
-                        mwqmAnalysisReportParameterList = (from c in db.MWQMAnalysisReportParameters select c).OrderBy(c => c.MWQMAnalysisReportParameterID).Skip(0).Take(2).ToList();
-                        count = (from c in db.MWQMAnalysisReportParameters select c).Count();
-                    }
+               // testing Put(MWQMAnalysisReportParameter mwqmAnalysisReportParameter)
+               var actionMWQMAnalysisReportParameterUpdate = await mwqmAnalysisReportParameterController.Put(mwqmAnalysisReportParameterNew);
+               Assert.Equal(200, ((ObjectResult)actionMWQMAnalysisReportParameterUpdate.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionMWQMAnalysisReportParameterUpdate.Result).Value);
+               MWQMAnalysisReportParameter mwqmAnalysisReportParameterUpdate = (MWQMAnalysisReportParameter)(((OkObjectResult)actionMWQMAnalysisReportParameterUpdate.Result).Value);
+               Assert.NotNull(mwqmAnalysisReportParameterUpdate);
 
-                    if (count > 0)
-                    {
-                        query.Skip = 0;
-                        query.Take = 5;
-                        count = (query.Take > count ? query.Take : count);
-
-                        // ok with MWQMAnalysisReportParameter info
-                        jsonRet = mwqmAnalysisReportParameterController.GetMWQMAnalysisReportParameterList(query.Language.ToString(), query.Skip, query.Take);
-                        Assert.IsNotNull(jsonRet);
-
-                        ret = jsonRet as OkNegotiatedContentResult<List<MWQMAnalysisReportParameter>>;
-                        Assert.AreEqual(mwqmAnalysisReportParameterList[0].MWQMAnalysisReportParameterID, ret.Content[0].MWQMAnalysisReportParameterID);
-                        Assert.AreEqual((count > query.Take ? query.Take : count), ret.Content.Count);
-
-                       if (count > 1)
-                       {
-                           query.Skip = 1;
-                           query.Take = 5;
-                           count = (query.Take > count ? query.Take : count);
-
-                           // ok with MWQMAnalysisReportParameter info
-                           IHttpActionResult jsonRet2 = mwqmAnalysisReportParameterController.GetMWQMAnalysisReportParameterList(query.Language.ToString(), query.Skip, query.Take);
-                           Assert.IsNotNull(jsonRet2);
-
-                           OkNegotiatedContentResult<List<MWQMAnalysisReportParameter>> ret2 = jsonRet2 as OkNegotiatedContentResult<List<MWQMAnalysisReportParameter>>;
-                           Assert.AreEqual(mwqmAnalysisReportParameterList[1].MWQMAnalysisReportParameterID, ret2.Content[0].MWQMAnalysisReportParameterID);
-                           Assert.AreEqual((count > query.Take ? query.Take : count), ret2.Content.Count);
-                       }
-                    }
-                }
+               // testing Delete(MWQMAnalysisReportParameter mwqmAnalysisReportParameter)
+               var actionMWQMAnalysisReportParameterDelete = await mwqmAnalysisReportParameterController.Delete(mwqmAnalysisReportParameterUpdate);
+               Assert.Equal(200, ((ObjectResult)actionMWQMAnalysisReportParameterDelete.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionMWQMAnalysisReportParameterDelete.Result).Value);
+               MWQMAnalysisReportParameter mwqmAnalysisReportParameterDelete = (MWQMAnalysisReportParameter)(((OkObjectResult)actionMWQMAnalysisReportParameterDelete.Result).Value);
+               Assert.NotNull(mwqmAnalysisReportParameterDelete);
             }
         }
-        #endregion Tests Generated for Class Controller GetList Command
+        #endregion Functions public
 
-        #region Tests Generated for Class Controller GetWithID Command
-        [TestMethod]
-        public void MWQMAnalysisReportParameter_Controller_GetMWQMAnalysisReportParameterWithID_Test()
+        #region Functions private
+        private async Task<bool> Setup(CultureInfo culture)
         {
-            foreach (LanguageEnum LanguageRequest in AllowableLanguages)
+            Config = new ConfigurationBuilder()
+               .SetBasePath(Directory.GetParent(AppContext.BaseDirectory).FullName)
+               .AddJsonFile("appsettings.json")
+               .Build();
+        
+            Services = new ServiceCollection();
+        
+            IConfigurationSection connectionStringsSection = Config.GetSection("ConnectionStrings");
+            Services.Configure<ConnectionStringsModel>(connectionStringsSection);
+        
+            ConnectionStringsModel connectionStrings = connectionStringsSection.Get<ConnectionStringsModel>();
+        
+            Services.AddSingleton<IConfiguration>(Config);
+        
+            Services.AddDbContext<CSSPDBContext>(options =>
             {
-                foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
-                {
-                    MWQMAnalysisReportParameterController mwqmAnalysisReportParameterController = new MWQMAnalysisReportParameterController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(mwqmAnalysisReportParameterController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, mwqmAnalysisReportParameterController.DatabaseType);
-
-                    MWQMAnalysisReportParameter mwqmAnalysisReportParameterFirst = new MWQMAnalysisReportParameter();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-                    {
-                        MWQMAnalysisReportParameterService mwqmAnalysisReportParameterService = new MWQMAnalysisReportParameterService(new Query(), db, ContactID);
-                        mwqmAnalysisReportParameterFirst = (from c in db.MWQMAnalysisReportParameters select c).FirstOrDefault();
-                    }
-
-                    // ok with MWQMAnalysisReportParameter info
-                    IHttpActionResult jsonRet = mwqmAnalysisReportParameterController.GetMWQMAnalysisReportParameterWithID(mwqmAnalysisReportParameterFirst.MWQMAnalysisReportParameterID);
-                    Assert.IsNotNull(jsonRet);
-
-                    OkNegotiatedContentResult<MWQMAnalysisReportParameter> Ret = jsonRet as OkNegotiatedContentResult<MWQMAnalysisReportParameter>;
-                    MWQMAnalysisReportParameter mwqmAnalysisReportParameterRet = Ret.Content;
-                    Assert.AreEqual(mwqmAnalysisReportParameterFirst.MWQMAnalysisReportParameterID, mwqmAnalysisReportParameterRet.MWQMAnalysisReportParameterID);
-
-                    BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
-
-                    // Not Found
-                    IHttpActionResult jsonRet2 = mwqmAnalysisReportParameterController.GetMWQMAnalysisReportParameterWithID(0);
-                    Assert.IsNotNull(jsonRet2);
-
-                    OkNegotiatedContentResult<MWQMAnalysisReportParameter> mwqmAnalysisReportParameterRet2 = jsonRet2 as OkNegotiatedContentResult<MWQMAnalysisReportParameter>;
-                    Assert.IsNull(mwqmAnalysisReportParameterRet2);
-
-                    NotFoundResult notFoundRequest = jsonRet2 as NotFoundResult;
-                    Assert.IsNotNull(notFoundRequest);
-                }
-            }
+                options.UseSqlServer(connectionStrings.TestDB);
+            });
+        
+            Services.AddDbContext<ApplicationDbContext>(options =>
+                options.UseSqlServer(connectionStrings.TestDB));
+        
+            Services.AddIdentityCore<ApplicationUser>()
+                .AddEntityFrameworkStores<ApplicationDbContext>();
+        
+            Services.AddSingleton<IEnums, Enums>();
+            Services.AddSingleton<ILoggedInService, LoggedInService>();
+            Services.AddSingleton<IMWQMAnalysisReportParameterService, MWQMAnalysisReportParameterService>();
+            Services.AddSingleton<IMWQMAnalysisReportParameterController, MWQMAnalysisReportParameterController>();
+        
+            Provider = Services.BuildServiceProvider();
+            Assert.NotNull(Provider);
+        
+            loggedInService = Provider.GetService<ILoggedInService>();
+            Assert.NotNull(loggedInService);
+        
+            mwqmAnalysisReportParameterService = Provider.GetService<IMWQMAnalysisReportParameterService>();
+            Assert.NotNull(mwqmAnalysisReportParameterService);
+        
+            await mwqmAnalysisReportParameterService.SetCulture(culture);
+        
+            mwqmAnalysisReportParameterController = Provider.GetService<IMWQMAnalysisReportParameterController>();
+            Assert.NotNull(mwqmAnalysisReportParameterController);
+        
+            return await Task.FromResult(true);
         }
-        #endregion Tests Generated for Class Controller GetWithID Command
-
-        #region Tests Generated for Class Controller Post Command
-        [TestMethod]
-        public void MWQMAnalysisReportParameter_Controller_Post_Test()
-        {
-            foreach (LanguageEnum LanguageRequest in AllowableLanguages)
-            {
-                foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
-                {
-                    MWQMAnalysisReportParameterController mwqmAnalysisReportParameterController = new MWQMAnalysisReportParameterController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(mwqmAnalysisReportParameterController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, mwqmAnalysisReportParameterController.DatabaseType);
-
-                    MWQMAnalysisReportParameter mwqmAnalysisReportParameterLast = new MWQMAnalysisReportParameter();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-                    {
-                        Query query = new Query();
-                        query.Language = LanguageRequest;
-                        query.Asc = "";
-                        query.Desc = "";
-
-                        MWQMAnalysisReportParameterService mwqmAnalysisReportParameterService = new MWQMAnalysisReportParameterService(query, db, ContactID);
-                        mwqmAnalysisReportParameterLast = (from c in db.MWQMAnalysisReportParameters select c).FirstOrDefault();
-                    }
-
-                    // ok with MWQMAnalysisReportParameter info
-                    IHttpActionResult jsonRet = mwqmAnalysisReportParameterController.GetMWQMAnalysisReportParameterWithID(mwqmAnalysisReportParameterLast.MWQMAnalysisReportParameterID);
-                    Assert.IsNotNull(jsonRet);
-
-                    OkNegotiatedContentResult<MWQMAnalysisReportParameter> Ret = jsonRet as OkNegotiatedContentResult<MWQMAnalysisReportParameter>;
-                    MWQMAnalysisReportParameter mwqmAnalysisReportParameterRet = Ret.Content;
-                    Assert.AreEqual(mwqmAnalysisReportParameterLast.MWQMAnalysisReportParameterID, mwqmAnalysisReportParameterRet.MWQMAnalysisReportParameterID);
-
-                    BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
-
-                    // Post to return CSSPError because MWQMAnalysisReportParameterID exist
-                    IHttpActionResult jsonRet2 = mwqmAnalysisReportParameterController.Post(mwqmAnalysisReportParameterRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet2);
-
-                    OkNegotiatedContentResult<MWQMAnalysisReportParameter> mwqmAnalysisReportParameterRet2 = jsonRet2 as OkNegotiatedContentResult<MWQMAnalysisReportParameter>;
-                    Assert.IsNull(mwqmAnalysisReportParameterRet2);
-
-                    BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
-                    Assert.IsNotNull(badRequest2);
-
-                    // Post to return newly added MWQMAnalysisReportParameter
-                    mwqmAnalysisReportParameterRet.MWQMAnalysisReportParameterID = 0;
-                    mwqmAnalysisReportParameterController.Request = new System.Net.Http.HttpRequestMessage();
-                    mwqmAnalysisReportParameterController.Request.RequestUri = new System.Uri("http://localhost:5000/api/mwqmAnalysisReportParameter");
-                    IHttpActionResult jsonRet3 = mwqmAnalysisReportParameterController.Post(mwqmAnalysisReportParameterRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet3);
-
-                    CreatedNegotiatedContentResult<MWQMAnalysisReportParameter> mwqmAnalysisReportParameterRet3 = jsonRet3 as CreatedNegotiatedContentResult<MWQMAnalysisReportParameter>;
-                    Assert.IsNotNull(mwqmAnalysisReportParameterRet3);
-
-                    BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest3);
-
-                    IHttpActionResult jsonRet4 = mwqmAnalysisReportParameterController.Delete(mwqmAnalysisReportParameterRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet4);
-
-                    OkNegotiatedContentResult<MWQMAnalysisReportParameter> mwqmAnalysisReportParameterRet4 = jsonRet4 as OkNegotiatedContentResult<MWQMAnalysisReportParameter>;
-                    Assert.IsNotNull(mwqmAnalysisReportParameterRet4);
-
-                    BadRequestErrorMessageResult badRequest4 = jsonRet4 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest4);
-                }
-            }
-        }
-        #endregion Tests Generated for Class Controller Post Command
-
-        #region Tests Generated for Class Controller Put Command
-        [TestMethod]
-        public void MWQMAnalysisReportParameter_Controller_Put_Test()
-        {
-            foreach (LanguageEnum LanguageRequest in AllowableLanguages)
-            {
-                foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
-                {
-                    MWQMAnalysisReportParameterController mwqmAnalysisReportParameterController = new MWQMAnalysisReportParameterController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(mwqmAnalysisReportParameterController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, mwqmAnalysisReportParameterController.DatabaseType);
-
-                    MWQMAnalysisReportParameter mwqmAnalysisReportParameterLast = new MWQMAnalysisReportParameter();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-                    {
-                        Query query = new Query();
-                        query.Language = LanguageRequest;
-
-                        MWQMAnalysisReportParameterService mwqmAnalysisReportParameterService = new MWQMAnalysisReportParameterService(query, db, ContactID);
-                        mwqmAnalysisReportParameterLast = (from c in db.MWQMAnalysisReportParameters select c).FirstOrDefault();
-                    }
-
-                    // ok with MWQMAnalysisReportParameter info
-                    IHttpActionResult jsonRet = mwqmAnalysisReportParameterController.GetMWQMAnalysisReportParameterWithID(mwqmAnalysisReportParameterLast.MWQMAnalysisReportParameterID);
-                    Assert.IsNotNull(jsonRet);
-
-                    OkNegotiatedContentResult<MWQMAnalysisReportParameter> Ret = jsonRet as OkNegotiatedContentResult<MWQMAnalysisReportParameter>;
-                    MWQMAnalysisReportParameter mwqmAnalysisReportParameterRet = Ret.Content;
-                    Assert.AreEqual(mwqmAnalysisReportParameterLast.MWQMAnalysisReportParameterID, mwqmAnalysisReportParameterRet.MWQMAnalysisReportParameterID);
-
-                    BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
-
-                    // Put to return success
-                    IHttpActionResult jsonRet2 = mwqmAnalysisReportParameterController.Put(mwqmAnalysisReportParameterRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet2);
-
-                    OkNegotiatedContentResult<MWQMAnalysisReportParameter> mwqmAnalysisReportParameterRet2 = jsonRet2 as OkNegotiatedContentResult<MWQMAnalysisReportParameter>;
-                    Assert.IsNotNull(mwqmAnalysisReportParameterRet2);
-
-                    BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest2);
-
-                    // Put to return CSSPError because MWQMAnalysisReportParameterID of 0 does not exist
-                    mwqmAnalysisReportParameterRet.MWQMAnalysisReportParameterID = 0;
-                    IHttpActionResult jsonRet3 = mwqmAnalysisReportParameterController.Put(mwqmAnalysisReportParameterRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet3);
-
-                    OkNegotiatedContentResult<MWQMAnalysisReportParameter> mwqmAnalysisReportParameterRet3 = jsonRet3 as OkNegotiatedContentResult<MWQMAnalysisReportParameter>;
-                    Assert.IsNull(mwqmAnalysisReportParameterRet3);
-
-                    BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
-                    Assert.IsNotNull(badRequest3);
-                }
-            }
-        }
-        #endregion Tests Generated for Class Controller Put Command
-
-        #region Tests Generated for Class Controller Delete Command
-        [TestMethod]
-        public void MWQMAnalysisReportParameter_Controller_Delete_Test()
-        {
-            foreach (LanguageEnum LanguageRequest in AllowableLanguages)
-            {
-                foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
-                {
-                    MWQMAnalysisReportParameterController mwqmAnalysisReportParameterController = new MWQMAnalysisReportParameterController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(mwqmAnalysisReportParameterController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, mwqmAnalysisReportParameterController.DatabaseType);
-
-                    MWQMAnalysisReportParameter mwqmAnalysisReportParameterLast = new MWQMAnalysisReportParameter();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-                    {
-                        Query query = new Query();
-                        query.Language = LanguageRequest;
-                        query.Asc = "";
-                        query.Desc = "";
-
-                        MWQMAnalysisReportParameterService mwqmAnalysisReportParameterService = new MWQMAnalysisReportParameterService(query, db, ContactID);
-                        mwqmAnalysisReportParameterLast = (from c in db.MWQMAnalysisReportParameters select c).FirstOrDefault();
-                    }
-
-                    // ok with MWQMAnalysisReportParameter info
-                    IHttpActionResult jsonRet = mwqmAnalysisReportParameterController.GetMWQMAnalysisReportParameterWithID(mwqmAnalysisReportParameterLast.MWQMAnalysisReportParameterID);
-                    Assert.IsNotNull(jsonRet);
-
-                    OkNegotiatedContentResult<MWQMAnalysisReportParameter> Ret = jsonRet as OkNegotiatedContentResult<MWQMAnalysisReportParameter>;
-                    MWQMAnalysisReportParameter mwqmAnalysisReportParameterRet = Ret.Content;
-                    Assert.AreEqual(mwqmAnalysisReportParameterLast.MWQMAnalysisReportParameterID, mwqmAnalysisReportParameterRet.MWQMAnalysisReportParameterID);
-
-                    BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
-
-                    // Post to return newly added MWQMAnalysisReportParameter
-                    mwqmAnalysisReportParameterRet.MWQMAnalysisReportParameterID = 0;
-                    mwqmAnalysisReportParameterController.Request = new System.Net.Http.HttpRequestMessage();
-                    mwqmAnalysisReportParameterController.Request.RequestUri = new System.Uri("http://localhost:5000/api/mwqmAnalysisReportParameter");
-                    IHttpActionResult jsonRet3 = mwqmAnalysisReportParameterController.Post(mwqmAnalysisReportParameterRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet3);
-
-                    CreatedNegotiatedContentResult<MWQMAnalysisReportParameter> mwqmAnalysisReportParameterRet3 = jsonRet3 as CreatedNegotiatedContentResult<MWQMAnalysisReportParameter>;
-                    Assert.IsNotNull(mwqmAnalysisReportParameterRet3);
-                    MWQMAnalysisReportParameter mwqmAnalysisReportParameter = mwqmAnalysisReportParameterRet3.Content;
-
-                    BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest3);
-
-                    // Delete to return success
-                    IHttpActionResult jsonRet2 = mwqmAnalysisReportParameterController.Delete(mwqmAnalysisReportParameterRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet2);
-
-                    OkNegotiatedContentResult<MWQMAnalysisReportParameter> mwqmAnalysisReportParameterRet2 = jsonRet2 as OkNegotiatedContentResult<MWQMAnalysisReportParameter>;
-                    Assert.IsNotNull(mwqmAnalysisReportParameterRet2);
-
-                    BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest2);
-
-                    // Delete to return CSSPError because MWQMAnalysisReportParameterID of 0 does not exist
-                    mwqmAnalysisReportParameterRet.MWQMAnalysisReportParameterID = 0;
-                    IHttpActionResult jsonRet4 = mwqmAnalysisReportParameterController.Delete(mwqmAnalysisReportParameterRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet4);
-
-                    OkNegotiatedContentResult<MWQMAnalysisReportParameter> mwqmAnalysisReportParameterRet4 = jsonRet4 as OkNegotiatedContentResult<MWQMAnalysisReportParameter>;
-                    Assert.IsNull(mwqmAnalysisReportParameterRet4);
-
-                    BadRequestErrorMessageResult badRequest4 = jsonRet4 as BadRequestErrorMessageResult;
-                    Assert.IsNotNull(badRequest4);
-                }
-            }
-        }
-        #endregion Tests Generated for Class Controller Delete Command
-
+        #endregion Functions private
     }
 }

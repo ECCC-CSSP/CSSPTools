@@ -16,6 +16,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Transactions;
 using Xunit;
 
 namespace CSSPServices.Tests
@@ -54,37 +55,40 @@ namespace CSSPServices.Tests
 
             await Setup(new CultureInfo(culture));
 
-            LabSheet labSheet = GetFilledRandomLabSheet(""); 
+            using (TransactionScope ts = new TransactionScope())
+            {
+               LabSheet labSheet = GetFilledRandomLabSheet(""); 
 
-            // List<LabSheet>
-            var actionLabSheetList = await labSheetService.GetLabSheetList();
-            Assert.Equal(200, ((ObjectResult)actionLabSheetList.Result).StatusCode);
-            Assert.NotNull(((OkObjectResult)actionLabSheetList.Result).Value);
-            List<LabSheet> labSheetList = (List<LabSheet>)(((OkObjectResult)actionLabSheetList.Result).Value);
+               // List<LabSheet>
+               var actionLabSheetList = await labSheetService.GetLabSheetList();
+               Assert.Equal(200, ((ObjectResult)actionLabSheetList.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionLabSheetList.Result).Value);
+               List<LabSheet> labSheetList = (List<LabSheet>)(((OkObjectResult)actionLabSheetList.Result).Value);
 
-            int count = ((List<LabSheet>)((OkObjectResult)actionLabSheetList.Result).Value).Count();
-            Assert.True(count > 0);
+               int count = ((List<LabSheet>)((OkObjectResult)actionLabSheetList.Result).Value).Count();
+                Assert.True(count > 0);
 
-            // Add LabSheet
-            var actionLabSheetAdded = await labSheetService.Add(labSheet);
-            Assert.Equal(200, ((ObjectResult)actionLabSheetAdded.Result).StatusCode);
-            Assert.NotNull(((OkObjectResult)actionLabSheetAdded.Result).Value);
-            LabSheet labSheetAdded = (LabSheet)(((OkObjectResult)actionLabSheetAdded.Result).Value);
-            Assert.NotNull(labSheetAdded);
+               // Add LabSheet
+               var actionLabSheetAdded = await labSheetService.Add(labSheet);
+               Assert.Equal(200, ((ObjectResult)actionLabSheetAdded.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionLabSheetAdded.Result).Value);
+               LabSheet labSheetAdded = (LabSheet)(((OkObjectResult)actionLabSheetAdded.Result).Value);
+               Assert.NotNull(labSheetAdded);
 
-            // Update LabSheet
-            var actionLabSheetUpdated = await labSheetService.Update(labSheet);
-            Assert.Equal(200, ((ObjectResult)actionLabSheetUpdated.Result).StatusCode);
-            Assert.NotNull(((OkObjectResult)actionLabSheetUpdated.Result).Value);
-            LabSheet labSheetUpdated = (LabSheet)(((OkObjectResult)actionLabSheetUpdated.Result).Value);
-            Assert.NotNull(labSheetUpdated);
+               // Update LabSheet
+               var actionLabSheetUpdated = await labSheetService.Update(labSheet);
+               Assert.Equal(200, ((ObjectResult)actionLabSheetUpdated.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionLabSheetUpdated.Result).Value);
+               LabSheet labSheetUpdated = (LabSheet)(((OkObjectResult)actionLabSheetUpdated.Result).Value);
+               Assert.NotNull(labSheetUpdated);
 
-            // Delete LabSheet
-            var actionLabSheetDeleted = await labSheetService.Delete(labSheet);
-            Assert.Equal(200, ((ObjectResult)actionLabSheetDeleted.Result).StatusCode);
-            Assert.NotNull(((OkObjectResult)actionLabSheetDeleted.Result).Value);
-            LabSheet labSheetDeleted = (LabSheet)(((OkObjectResult)actionLabSheetDeleted.Result).Value);
-            Assert.NotNull(labSheetDeleted);
+               // Delete LabSheet
+               var actionLabSheetDeleted = await labSheetService.Delete(labSheet);
+               Assert.Equal(200, ((ObjectResult)actionLabSheetDeleted.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionLabSheetDeleted.Result).Value);
+               LabSheet labSheetDeleted = (LabSheet)(((OkObjectResult)actionLabSheetDeleted.Result).Value);
+               Assert.NotNull(labSheetDeleted);
+            }
         }
         #endregion Tests Generated CRUD
 

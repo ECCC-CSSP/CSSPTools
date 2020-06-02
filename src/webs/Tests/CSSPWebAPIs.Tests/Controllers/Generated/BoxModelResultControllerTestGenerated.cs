@@ -2,350 +2,157 @@ using CSSPEnums;
 using CSSPModels;
 using CSSPServices;
 using CSSPWebAPI.Controllers;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using LoggedInServices.Services;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using System;
 using System.Collections.Generic;
+using System.Globalization;
+using System.IO;
 using System.Linq;
-using System.Web.Http;
-using System.Web.Http.Results;
+using System.Threading.Tasks;
+using System.Transactions;
+using UserServices.Models;
+using Xunit;
 
-namespace CSSPWebAPI.Tests.Controllers
+namespace CSSPWebAPIs.Tests.Controllers
 {
-    [TestClass]
-    public partial class BoxModelResultControllerTest : BaseControllerTest
+    public partial class BoxModelResultControllerTest
     {
         #region Variables
         #endregion Variables
 
         #region Properties
+        private IConfiguration Config { get; set; }
+        private IServiceProvider Provider { get; set; }
+        private IServiceCollection Services { get; set; }
+        private CSSPDBContext db { get; set; }
+        private ILoggedInService loggedInService { get; set; }
+        private IBoxModelResultService boxModelResultService { get; set; }
+        private IBoxModelResultController boxModelResultController { get; set; }
         #endregion Properties
 
         #region Constructors
-        public BoxModelResultControllerTest() : base()
+        public BoxModelResultControllerTest()
         {
         }
         #endregion Constructors
 
-        #region Tests Generated for Class Controller GetList Command
-        [TestMethod]
-        public void BoxModelResult_Controller_GetBoxModelResultList_Test()
+        #region Functions public
+        [Theory]
+        [InlineData("en-CA")]
+        [InlineData("fr-CA")]
+        public async Task BoxModelResultController_Constructor_Good_Test(string culture)
         {
-            foreach (LanguageEnum LanguageRequest in AllowableLanguages)
+            bool retBool = await Setup(new CultureInfo(culture));
+            Assert.True(retBool);
+            Assert.NotNull(loggedInService);
+            Assert.NotNull(boxModelResultService);
+            Assert.NotNull(boxModelResultController);
+        }
+        [Theory]
+        [InlineData("en-CA")]
+        [InlineData("fr-CA")]
+        public async Task BoxModelResultController_CRUD_Good_Test(string culture)
+        {
+            bool retBool = await Setup(new CultureInfo(culture));
+            Assert.True(retBool);
+
+            using (TransactionScope ts = new TransactionScope())
             {
-                foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
-                {
-                    BoxModelResultController boxModelResultController = new BoxModelResultController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(boxModelResultController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, boxModelResultController.DatabaseType);
+                // testing Get
+               var actionBoxModelResultList = await boxModelResultController.Get();
+               Assert.Equal(200, ((ObjectResult)actionBoxModelResultList.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionBoxModelResultList.Result).Value);
+               List<BoxModelResult> boxModelResultList = (List<BoxModelResult>)(((OkObjectResult)actionBoxModelResultList.Result).Value);
 
-                    BoxModelResult boxModelResultFirst = new BoxModelResult();
-                    int count = -1;
-                    Query query = new Query();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseTypeEnum.SqlServerTestDB))
-                    {
-                        BoxModelResultService boxModelResultService = new BoxModelResultService(query, db, ContactID);
-                        boxModelResultFirst = (from c in db.BoxModelResults select c).FirstOrDefault();
-                        count = (from c in db.BoxModelResults select c).Count();
-                        count = (query.Take > count ? count : query.Take);
-                    }
+               int count = ((List<BoxModelResult>)((OkObjectResult)actionBoxModelResultList.Result).Value).Count();
+                Assert.True(count > 0);
 
-                    // ok with BoxModelResult info
-                    IHttpActionResult jsonRet = boxModelResultController.GetBoxModelResultList();
-                    Assert.IsNotNull(jsonRet);
+               // testing Get(BoxModelResultID)
+               var actionBoxModelResult = await boxModelResultController.Get(boxModelResultList[0].BoxModelResultID);
+               Assert.Equal(200, ((ObjectResult)actionBoxModelResult.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionBoxModelResult.Result).Value);
+               BoxModelResult boxModelResult = (BoxModelResult)(((OkObjectResult)actionBoxModelResult.Result).Value);
+               Assert.NotNull(boxModelResult);
+               Assert.Equal(boxModelResultList[0].BoxModelResultID, boxModelResult.BoxModelResultID);
 
-                    OkNegotiatedContentResult<List<BoxModelResult>> ret = jsonRet as OkNegotiatedContentResult<List<BoxModelResult>>;
-                    Assert.AreEqual(boxModelResultFirst.BoxModelResultID, ret.Content[0].BoxModelResultID);
-                    Assert.AreEqual((count > query.Take ? query.Take : count), ret.Content.Count);
+               // testing Post(BoxModelResult boxModelResult)
+               boxModelResult.BoxModelResultID = 0;
+               var actionBoxModelResultNew = await boxModelResultController.Post(boxModelResult);
+               Assert.Equal(200, ((ObjectResult)actionBoxModelResultNew.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionBoxModelResultNew.Result).Value);
+               BoxModelResult boxModelResultNew = (BoxModelResult)(((OkObjectResult)actionBoxModelResultNew.Result).Value);
+               Assert.NotNull(boxModelResultNew);
 
-                    List<BoxModelResult> boxModelResultList = new List<BoxModelResult>();
-                    count = -1;
-                    query = new Query();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseTypeEnum.SqlServerTestDB))
-                    {
-                        BoxModelResultService boxModelResultService = new BoxModelResultService(query, db, ContactID);
-                        boxModelResultList = (from c in db.BoxModelResults select c).OrderBy(c => c.BoxModelResultID).Skip(0).Take(2).ToList();
-                        count = (from c in db.BoxModelResults select c).Count();
-                    }
+               // testing Put(BoxModelResult boxModelResult)
+               var actionBoxModelResultUpdate = await boxModelResultController.Put(boxModelResultNew);
+               Assert.Equal(200, ((ObjectResult)actionBoxModelResultUpdate.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionBoxModelResultUpdate.Result).Value);
+               BoxModelResult boxModelResultUpdate = (BoxModelResult)(((OkObjectResult)actionBoxModelResultUpdate.Result).Value);
+               Assert.NotNull(boxModelResultUpdate);
 
-                    if (count > 0)
-                    {
-                        query.Skip = 0;
-                        query.Take = 5;
-                        count = (query.Take > count ? query.Take : count);
-
-                        // ok with BoxModelResult info
-                        jsonRet = boxModelResultController.GetBoxModelResultList(query.Language.ToString(), query.Skip, query.Take);
-                        Assert.IsNotNull(jsonRet);
-
-                        ret = jsonRet as OkNegotiatedContentResult<List<BoxModelResult>>;
-                        Assert.AreEqual(boxModelResultList[0].BoxModelResultID, ret.Content[0].BoxModelResultID);
-                        Assert.AreEqual((count > query.Take ? query.Take : count), ret.Content.Count);
-
-                       if (count > 1)
-                       {
-                           query.Skip = 1;
-                           query.Take = 5;
-                           count = (query.Take > count ? query.Take : count);
-
-                           // ok with BoxModelResult info
-                           IHttpActionResult jsonRet2 = boxModelResultController.GetBoxModelResultList(query.Language.ToString(), query.Skip, query.Take);
-                           Assert.IsNotNull(jsonRet2);
-
-                           OkNegotiatedContentResult<List<BoxModelResult>> ret2 = jsonRet2 as OkNegotiatedContentResult<List<BoxModelResult>>;
-                           Assert.AreEqual(boxModelResultList[1].BoxModelResultID, ret2.Content[0].BoxModelResultID);
-                           Assert.AreEqual((count > query.Take ? query.Take : count), ret2.Content.Count);
-                       }
-                    }
-                }
+               // testing Delete(BoxModelResult boxModelResult)
+               var actionBoxModelResultDelete = await boxModelResultController.Delete(boxModelResultUpdate);
+               Assert.Equal(200, ((ObjectResult)actionBoxModelResultDelete.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionBoxModelResultDelete.Result).Value);
+               BoxModelResult boxModelResultDelete = (BoxModelResult)(((OkObjectResult)actionBoxModelResultDelete.Result).Value);
+               Assert.NotNull(boxModelResultDelete);
             }
         }
-        #endregion Tests Generated for Class Controller GetList Command
+        #endregion Functions public
 
-        #region Tests Generated for Class Controller GetWithID Command
-        [TestMethod]
-        public void BoxModelResult_Controller_GetBoxModelResultWithID_Test()
+        #region Functions private
+        private async Task<bool> Setup(CultureInfo culture)
         {
-            foreach (LanguageEnum LanguageRequest in AllowableLanguages)
+            Config = new ConfigurationBuilder()
+               .SetBasePath(Directory.GetParent(AppContext.BaseDirectory).FullName)
+               .AddJsonFile("appsettings.json")
+               .Build();
+        
+            Services = new ServiceCollection();
+        
+            IConfigurationSection connectionStringsSection = Config.GetSection("ConnectionStrings");
+            Services.Configure<ConnectionStringsModel>(connectionStringsSection);
+        
+            ConnectionStringsModel connectionStrings = connectionStringsSection.Get<ConnectionStringsModel>();
+        
+            Services.AddSingleton<IConfiguration>(Config);
+        
+            Services.AddDbContext<CSSPDBContext>(options =>
             {
-                foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
-                {
-                    BoxModelResultController boxModelResultController = new BoxModelResultController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(boxModelResultController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, boxModelResultController.DatabaseType);
-
-                    BoxModelResult boxModelResultFirst = new BoxModelResult();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-                    {
-                        BoxModelResultService boxModelResultService = new BoxModelResultService(new Query(), db, ContactID);
-                        boxModelResultFirst = (from c in db.BoxModelResults select c).FirstOrDefault();
-                    }
-
-                    // ok with BoxModelResult info
-                    IHttpActionResult jsonRet = boxModelResultController.GetBoxModelResultWithID(boxModelResultFirst.BoxModelResultID);
-                    Assert.IsNotNull(jsonRet);
-
-                    OkNegotiatedContentResult<BoxModelResult> Ret = jsonRet as OkNegotiatedContentResult<BoxModelResult>;
-                    BoxModelResult boxModelResultRet = Ret.Content;
-                    Assert.AreEqual(boxModelResultFirst.BoxModelResultID, boxModelResultRet.BoxModelResultID);
-
-                    BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
-
-                    // Not Found
-                    IHttpActionResult jsonRet2 = boxModelResultController.GetBoxModelResultWithID(0);
-                    Assert.IsNotNull(jsonRet2);
-
-                    OkNegotiatedContentResult<BoxModelResult> boxModelResultRet2 = jsonRet2 as OkNegotiatedContentResult<BoxModelResult>;
-                    Assert.IsNull(boxModelResultRet2);
-
-                    NotFoundResult notFoundRequest = jsonRet2 as NotFoundResult;
-                    Assert.IsNotNull(notFoundRequest);
-                }
-            }
+                options.UseSqlServer(connectionStrings.TestDB);
+            });
+        
+            Services.AddDbContext<ApplicationDbContext>(options =>
+                options.UseSqlServer(connectionStrings.TestDB));
+        
+            Services.AddIdentityCore<ApplicationUser>()
+                .AddEntityFrameworkStores<ApplicationDbContext>();
+        
+            Services.AddSingleton<IEnums, Enums>();
+            Services.AddSingleton<ILoggedInService, LoggedInService>();
+            Services.AddSingleton<IBoxModelResultService, BoxModelResultService>();
+            Services.AddSingleton<IBoxModelResultController, BoxModelResultController>();
+        
+            Provider = Services.BuildServiceProvider();
+            Assert.NotNull(Provider);
+        
+            loggedInService = Provider.GetService<ILoggedInService>();
+            Assert.NotNull(loggedInService);
+        
+            boxModelResultService = Provider.GetService<IBoxModelResultService>();
+            Assert.NotNull(boxModelResultService);
+        
+            await boxModelResultService.SetCulture(culture);
+        
+            boxModelResultController = Provider.GetService<IBoxModelResultController>();
+            Assert.NotNull(boxModelResultController);
+        
+            return await Task.FromResult(true);
         }
-        #endregion Tests Generated for Class Controller GetWithID Command
-
-        #region Tests Generated for Class Controller Post Command
-        [TestMethod]
-        public void BoxModelResult_Controller_Post_Test()
-        {
-            foreach (LanguageEnum LanguageRequest in AllowableLanguages)
-            {
-                foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
-                {
-                    BoxModelResultController boxModelResultController = new BoxModelResultController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(boxModelResultController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, boxModelResultController.DatabaseType);
-
-                    BoxModelResult boxModelResultLast = new BoxModelResult();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-                    {
-                        Query query = new Query();
-                        query.Language = LanguageRequest;
-                        query.Asc = "";
-                        query.Desc = "";
-
-                        BoxModelResultService boxModelResultService = new BoxModelResultService(query, db, ContactID);
-                        boxModelResultLast = (from c in db.BoxModelResults select c).FirstOrDefault();
-                    }
-
-                    // ok with BoxModelResult info
-                    IHttpActionResult jsonRet = boxModelResultController.GetBoxModelResultWithID(boxModelResultLast.BoxModelResultID);
-                    Assert.IsNotNull(jsonRet);
-
-                    OkNegotiatedContentResult<BoxModelResult> Ret = jsonRet as OkNegotiatedContentResult<BoxModelResult>;
-                    BoxModelResult boxModelResultRet = Ret.Content;
-                    Assert.AreEqual(boxModelResultLast.BoxModelResultID, boxModelResultRet.BoxModelResultID);
-
-                    BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
-
-                    // Post to return CSSPError because BoxModelResultID exist
-                    IHttpActionResult jsonRet2 = boxModelResultController.Post(boxModelResultRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet2);
-
-                    OkNegotiatedContentResult<BoxModelResult> boxModelResultRet2 = jsonRet2 as OkNegotiatedContentResult<BoxModelResult>;
-                    Assert.IsNull(boxModelResultRet2);
-
-                    BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
-                    Assert.IsNotNull(badRequest2);
-
-                    // Post to return newly added BoxModelResult
-                    boxModelResultRet.BoxModelResultID = 0;
-                    boxModelResultController.Request = new System.Net.Http.HttpRequestMessage();
-                    boxModelResultController.Request.RequestUri = new System.Uri("http://localhost:5000/api/boxModelResult");
-                    IHttpActionResult jsonRet3 = boxModelResultController.Post(boxModelResultRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet3);
-
-                    CreatedNegotiatedContentResult<BoxModelResult> boxModelResultRet3 = jsonRet3 as CreatedNegotiatedContentResult<BoxModelResult>;
-                    Assert.IsNotNull(boxModelResultRet3);
-
-                    BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest3);
-
-                    IHttpActionResult jsonRet4 = boxModelResultController.Delete(boxModelResultRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet4);
-
-                    OkNegotiatedContentResult<BoxModelResult> boxModelResultRet4 = jsonRet4 as OkNegotiatedContentResult<BoxModelResult>;
-                    Assert.IsNotNull(boxModelResultRet4);
-
-                    BadRequestErrorMessageResult badRequest4 = jsonRet4 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest4);
-                }
-            }
-        }
-        #endregion Tests Generated for Class Controller Post Command
-
-        #region Tests Generated for Class Controller Put Command
-        [TestMethod]
-        public void BoxModelResult_Controller_Put_Test()
-        {
-            foreach (LanguageEnum LanguageRequest in AllowableLanguages)
-            {
-                foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
-                {
-                    BoxModelResultController boxModelResultController = new BoxModelResultController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(boxModelResultController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, boxModelResultController.DatabaseType);
-
-                    BoxModelResult boxModelResultLast = new BoxModelResult();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-                    {
-                        Query query = new Query();
-                        query.Language = LanguageRequest;
-
-                        BoxModelResultService boxModelResultService = new BoxModelResultService(query, db, ContactID);
-                        boxModelResultLast = (from c in db.BoxModelResults select c).FirstOrDefault();
-                    }
-
-                    // ok with BoxModelResult info
-                    IHttpActionResult jsonRet = boxModelResultController.GetBoxModelResultWithID(boxModelResultLast.BoxModelResultID);
-                    Assert.IsNotNull(jsonRet);
-
-                    OkNegotiatedContentResult<BoxModelResult> Ret = jsonRet as OkNegotiatedContentResult<BoxModelResult>;
-                    BoxModelResult boxModelResultRet = Ret.Content;
-                    Assert.AreEqual(boxModelResultLast.BoxModelResultID, boxModelResultRet.BoxModelResultID);
-
-                    BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
-
-                    // Put to return success
-                    IHttpActionResult jsonRet2 = boxModelResultController.Put(boxModelResultRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet2);
-
-                    OkNegotiatedContentResult<BoxModelResult> boxModelResultRet2 = jsonRet2 as OkNegotiatedContentResult<BoxModelResult>;
-                    Assert.IsNotNull(boxModelResultRet2);
-
-                    BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest2);
-
-                    // Put to return CSSPError because BoxModelResultID of 0 does not exist
-                    boxModelResultRet.BoxModelResultID = 0;
-                    IHttpActionResult jsonRet3 = boxModelResultController.Put(boxModelResultRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet3);
-
-                    OkNegotiatedContentResult<BoxModelResult> boxModelResultRet3 = jsonRet3 as OkNegotiatedContentResult<BoxModelResult>;
-                    Assert.IsNull(boxModelResultRet3);
-
-                    BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
-                    Assert.IsNotNull(badRequest3);
-                }
-            }
-        }
-        #endregion Tests Generated for Class Controller Put Command
-
-        #region Tests Generated for Class Controller Delete Command
-        [TestMethod]
-        public void BoxModelResult_Controller_Delete_Test()
-        {
-            foreach (LanguageEnum LanguageRequest in AllowableLanguages)
-            {
-                foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
-                {
-                    BoxModelResultController boxModelResultController = new BoxModelResultController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(boxModelResultController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, boxModelResultController.DatabaseType);
-
-                    BoxModelResult boxModelResultLast = new BoxModelResult();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-                    {
-                        Query query = new Query();
-                        query.Language = LanguageRequest;
-                        query.Asc = "";
-                        query.Desc = "";
-
-                        BoxModelResultService boxModelResultService = new BoxModelResultService(query, db, ContactID);
-                        boxModelResultLast = (from c in db.BoxModelResults select c).FirstOrDefault();
-                    }
-
-                    // ok with BoxModelResult info
-                    IHttpActionResult jsonRet = boxModelResultController.GetBoxModelResultWithID(boxModelResultLast.BoxModelResultID);
-                    Assert.IsNotNull(jsonRet);
-
-                    OkNegotiatedContentResult<BoxModelResult> Ret = jsonRet as OkNegotiatedContentResult<BoxModelResult>;
-                    BoxModelResult boxModelResultRet = Ret.Content;
-                    Assert.AreEqual(boxModelResultLast.BoxModelResultID, boxModelResultRet.BoxModelResultID);
-
-                    BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
-
-                    // Post to return newly added BoxModelResult
-                    boxModelResultRet.BoxModelResultID = 0;
-                    boxModelResultController.Request = new System.Net.Http.HttpRequestMessage();
-                    boxModelResultController.Request.RequestUri = new System.Uri("http://localhost:5000/api/boxModelResult");
-                    IHttpActionResult jsonRet3 = boxModelResultController.Post(boxModelResultRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet3);
-
-                    CreatedNegotiatedContentResult<BoxModelResult> boxModelResultRet3 = jsonRet3 as CreatedNegotiatedContentResult<BoxModelResult>;
-                    Assert.IsNotNull(boxModelResultRet3);
-                    BoxModelResult boxModelResult = boxModelResultRet3.Content;
-
-                    BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest3);
-
-                    // Delete to return success
-                    IHttpActionResult jsonRet2 = boxModelResultController.Delete(boxModelResultRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet2);
-
-                    OkNegotiatedContentResult<BoxModelResult> boxModelResultRet2 = jsonRet2 as OkNegotiatedContentResult<BoxModelResult>;
-                    Assert.IsNotNull(boxModelResultRet2);
-
-                    BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest2);
-
-                    // Delete to return CSSPError because BoxModelResultID of 0 does not exist
-                    boxModelResultRet.BoxModelResultID = 0;
-                    IHttpActionResult jsonRet4 = boxModelResultController.Delete(boxModelResultRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet4);
-
-                    OkNegotiatedContentResult<BoxModelResult> boxModelResultRet4 = jsonRet4 as OkNegotiatedContentResult<BoxModelResult>;
-                    Assert.IsNull(boxModelResultRet4);
-
-                    BadRequestErrorMessageResult badRequest4 = jsonRet4 as BadRequestErrorMessageResult;
-                    Assert.IsNotNull(badRequest4);
-                }
-            }
-        }
-        #endregion Tests Generated for Class Controller Delete Command
-
+        #endregion Functions private
     }
 }

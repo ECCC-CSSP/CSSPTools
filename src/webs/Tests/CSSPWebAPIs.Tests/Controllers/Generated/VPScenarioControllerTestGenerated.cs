@@ -2,350 +2,157 @@ using CSSPEnums;
 using CSSPModels;
 using CSSPServices;
 using CSSPWebAPI.Controllers;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using LoggedInServices.Services;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using System;
 using System.Collections.Generic;
+using System.Globalization;
+using System.IO;
 using System.Linq;
-using System.Web.Http;
-using System.Web.Http.Results;
+using System.Threading.Tasks;
+using System.Transactions;
+using UserServices.Models;
+using Xunit;
 
-namespace CSSPWebAPI.Tests.Controllers
+namespace CSSPWebAPIs.Tests.Controllers
 {
-    [TestClass]
-    public partial class VPScenarioControllerTest : BaseControllerTest
+    public partial class VPScenarioControllerTest
     {
         #region Variables
         #endregion Variables
 
         #region Properties
+        private IConfiguration Config { get; set; }
+        private IServiceProvider Provider { get; set; }
+        private IServiceCollection Services { get; set; }
+        private CSSPDBContext db { get; set; }
+        private ILoggedInService loggedInService { get; set; }
+        private IVPScenarioService vpScenarioService { get; set; }
+        private IVPScenarioController vpScenarioController { get; set; }
         #endregion Properties
 
         #region Constructors
-        public VPScenarioControllerTest() : base()
+        public VPScenarioControllerTest()
         {
         }
         #endregion Constructors
 
-        #region Tests Generated for Class Controller GetList Command
-        [TestMethod]
-        public void VPScenario_Controller_GetVPScenarioList_Test()
+        #region Functions public
+        [Theory]
+        [InlineData("en-CA")]
+        [InlineData("fr-CA")]
+        public async Task VPScenarioController_Constructor_Good_Test(string culture)
         {
-            foreach (LanguageEnum LanguageRequest in AllowableLanguages)
+            bool retBool = await Setup(new CultureInfo(culture));
+            Assert.True(retBool);
+            Assert.NotNull(loggedInService);
+            Assert.NotNull(vpScenarioService);
+            Assert.NotNull(vpScenarioController);
+        }
+        [Theory]
+        [InlineData("en-CA")]
+        [InlineData("fr-CA")]
+        public async Task VPScenarioController_CRUD_Good_Test(string culture)
+        {
+            bool retBool = await Setup(new CultureInfo(culture));
+            Assert.True(retBool);
+
+            using (TransactionScope ts = new TransactionScope())
             {
-                foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
-                {
-                    VPScenarioController vpScenarioController = new VPScenarioController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(vpScenarioController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, vpScenarioController.DatabaseType);
+                // testing Get
+               var actionVPScenarioList = await vpScenarioController.Get();
+               Assert.Equal(200, ((ObjectResult)actionVPScenarioList.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionVPScenarioList.Result).Value);
+               List<VPScenario> vpScenarioList = (List<VPScenario>)(((OkObjectResult)actionVPScenarioList.Result).Value);
 
-                    VPScenario vpScenarioFirst = new VPScenario();
-                    int count = -1;
-                    Query query = new Query();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseTypeEnum.SqlServerTestDB))
-                    {
-                        VPScenarioService vpScenarioService = new VPScenarioService(query, db, ContactID);
-                        vpScenarioFirst = (from c in db.VPScenarios select c).FirstOrDefault();
-                        count = (from c in db.VPScenarios select c).Count();
-                        count = (query.Take > count ? count : query.Take);
-                    }
+               int count = ((List<VPScenario>)((OkObjectResult)actionVPScenarioList.Result).Value).Count();
+                Assert.True(count > 0);
 
-                    // ok with VPScenario info
-                    IHttpActionResult jsonRet = vpScenarioController.GetVPScenarioList();
-                    Assert.IsNotNull(jsonRet);
+               // testing Get(VPScenarioID)
+               var actionVPScenario = await vpScenarioController.Get(vpScenarioList[0].VPScenarioID);
+               Assert.Equal(200, ((ObjectResult)actionVPScenario.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionVPScenario.Result).Value);
+               VPScenario vpScenario = (VPScenario)(((OkObjectResult)actionVPScenario.Result).Value);
+               Assert.NotNull(vpScenario);
+               Assert.Equal(vpScenarioList[0].VPScenarioID, vpScenario.VPScenarioID);
 
-                    OkNegotiatedContentResult<List<VPScenario>> ret = jsonRet as OkNegotiatedContentResult<List<VPScenario>>;
-                    Assert.AreEqual(vpScenarioFirst.VPScenarioID, ret.Content[0].VPScenarioID);
-                    Assert.AreEqual((count > query.Take ? query.Take : count), ret.Content.Count);
+               // testing Post(VPScenario vpScenario)
+               vpScenario.VPScenarioID = 0;
+               var actionVPScenarioNew = await vpScenarioController.Post(vpScenario);
+               Assert.Equal(200, ((ObjectResult)actionVPScenarioNew.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionVPScenarioNew.Result).Value);
+               VPScenario vpScenarioNew = (VPScenario)(((OkObjectResult)actionVPScenarioNew.Result).Value);
+               Assert.NotNull(vpScenarioNew);
 
-                    List<VPScenario> vpScenarioList = new List<VPScenario>();
-                    count = -1;
-                    query = new Query();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseTypeEnum.SqlServerTestDB))
-                    {
-                        VPScenarioService vpScenarioService = new VPScenarioService(query, db, ContactID);
-                        vpScenarioList = (from c in db.VPScenarios select c).OrderBy(c => c.VPScenarioID).Skip(0).Take(2).ToList();
-                        count = (from c in db.VPScenarios select c).Count();
-                    }
+               // testing Put(VPScenario vpScenario)
+               var actionVPScenarioUpdate = await vpScenarioController.Put(vpScenarioNew);
+               Assert.Equal(200, ((ObjectResult)actionVPScenarioUpdate.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionVPScenarioUpdate.Result).Value);
+               VPScenario vpScenarioUpdate = (VPScenario)(((OkObjectResult)actionVPScenarioUpdate.Result).Value);
+               Assert.NotNull(vpScenarioUpdate);
 
-                    if (count > 0)
-                    {
-                        query.Skip = 0;
-                        query.Take = 5;
-                        count = (query.Take > count ? query.Take : count);
-
-                        // ok with VPScenario info
-                        jsonRet = vpScenarioController.GetVPScenarioList(query.Language.ToString(), query.Skip, query.Take);
-                        Assert.IsNotNull(jsonRet);
-
-                        ret = jsonRet as OkNegotiatedContentResult<List<VPScenario>>;
-                        Assert.AreEqual(vpScenarioList[0].VPScenarioID, ret.Content[0].VPScenarioID);
-                        Assert.AreEqual((count > query.Take ? query.Take : count), ret.Content.Count);
-
-                       if (count > 1)
-                       {
-                           query.Skip = 1;
-                           query.Take = 5;
-                           count = (query.Take > count ? query.Take : count);
-
-                           // ok with VPScenario info
-                           IHttpActionResult jsonRet2 = vpScenarioController.GetVPScenarioList(query.Language.ToString(), query.Skip, query.Take);
-                           Assert.IsNotNull(jsonRet2);
-
-                           OkNegotiatedContentResult<List<VPScenario>> ret2 = jsonRet2 as OkNegotiatedContentResult<List<VPScenario>>;
-                           Assert.AreEqual(vpScenarioList[1].VPScenarioID, ret2.Content[0].VPScenarioID);
-                           Assert.AreEqual((count > query.Take ? query.Take : count), ret2.Content.Count);
-                       }
-                    }
-                }
+               // testing Delete(VPScenario vpScenario)
+               var actionVPScenarioDelete = await vpScenarioController.Delete(vpScenarioUpdate);
+               Assert.Equal(200, ((ObjectResult)actionVPScenarioDelete.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionVPScenarioDelete.Result).Value);
+               VPScenario vpScenarioDelete = (VPScenario)(((OkObjectResult)actionVPScenarioDelete.Result).Value);
+               Assert.NotNull(vpScenarioDelete);
             }
         }
-        #endregion Tests Generated for Class Controller GetList Command
+        #endregion Functions public
 
-        #region Tests Generated for Class Controller GetWithID Command
-        [TestMethod]
-        public void VPScenario_Controller_GetVPScenarioWithID_Test()
+        #region Functions private
+        private async Task<bool> Setup(CultureInfo culture)
         {
-            foreach (LanguageEnum LanguageRequest in AllowableLanguages)
+            Config = new ConfigurationBuilder()
+               .SetBasePath(Directory.GetParent(AppContext.BaseDirectory).FullName)
+               .AddJsonFile("appsettings.json")
+               .Build();
+        
+            Services = new ServiceCollection();
+        
+            IConfigurationSection connectionStringsSection = Config.GetSection("ConnectionStrings");
+            Services.Configure<ConnectionStringsModel>(connectionStringsSection);
+        
+            ConnectionStringsModel connectionStrings = connectionStringsSection.Get<ConnectionStringsModel>();
+        
+            Services.AddSingleton<IConfiguration>(Config);
+        
+            Services.AddDbContext<CSSPDBContext>(options =>
             {
-                foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
-                {
-                    VPScenarioController vpScenarioController = new VPScenarioController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(vpScenarioController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, vpScenarioController.DatabaseType);
-
-                    VPScenario vpScenarioFirst = new VPScenario();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-                    {
-                        VPScenarioService vpScenarioService = new VPScenarioService(new Query(), db, ContactID);
-                        vpScenarioFirst = (from c in db.VPScenarios select c).FirstOrDefault();
-                    }
-
-                    // ok with VPScenario info
-                    IHttpActionResult jsonRet = vpScenarioController.GetVPScenarioWithID(vpScenarioFirst.VPScenarioID);
-                    Assert.IsNotNull(jsonRet);
-
-                    OkNegotiatedContentResult<VPScenario> Ret = jsonRet as OkNegotiatedContentResult<VPScenario>;
-                    VPScenario vpScenarioRet = Ret.Content;
-                    Assert.AreEqual(vpScenarioFirst.VPScenarioID, vpScenarioRet.VPScenarioID);
-
-                    BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
-
-                    // Not Found
-                    IHttpActionResult jsonRet2 = vpScenarioController.GetVPScenarioWithID(0);
-                    Assert.IsNotNull(jsonRet2);
-
-                    OkNegotiatedContentResult<VPScenario> vpScenarioRet2 = jsonRet2 as OkNegotiatedContentResult<VPScenario>;
-                    Assert.IsNull(vpScenarioRet2);
-
-                    NotFoundResult notFoundRequest = jsonRet2 as NotFoundResult;
-                    Assert.IsNotNull(notFoundRequest);
-                }
-            }
+                options.UseSqlServer(connectionStrings.TestDB);
+            });
+        
+            Services.AddDbContext<ApplicationDbContext>(options =>
+                options.UseSqlServer(connectionStrings.TestDB));
+        
+            Services.AddIdentityCore<ApplicationUser>()
+                .AddEntityFrameworkStores<ApplicationDbContext>();
+        
+            Services.AddSingleton<IEnums, Enums>();
+            Services.AddSingleton<ILoggedInService, LoggedInService>();
+            Services.AddSingleton<IVPScenarioService, VPScenarioService>();
+            Services.AddSingleton<IVPScenarioController, VPScenarioController>();
+        
+            Provider = Services.BuildServiceProvider();
+            Assert.NotNull(Provider);
+        
+            loggedInService = Provider.GetService<ILoggedInService>();
+            Assert.NotNull(loggedInService);
+        
+            vpScenarioService = Provider.GetService<IVPScenarioService>();
+            Assert.NotNull(vpScenarioService);
+        
+            await vpScenarioService.SetCulture(culture);
+        
+            vpScenarioController = Provider.GetService<IVPScenarioController>();
+            Assert.NotNull(vpScenarioController);
+        
+            return await Task.FromResult(true);
         }
-        #endregion Tests Generated for Class Controller GetWithID Command
-
-        #region Tests Generated for Class Controller Post Command
-        [TestMethod]
-        public void VPScenario_Controller_Post_Test()
-        {
-            foreach (LanguageEnum LanguageRequest in AllowableLanguages)
-            {
-                foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
-                {
-                    VPScenarioController vpScenarioController = new VPScenarioController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(vpScenarioController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, vpScenarioController.DatabaseType);
-
-                    VPScenario vpScenarioLast = new VPScenario();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-                    {
-                        Query query = new Query();
-                        query.Language = LanguageRequest;
-                        query.Asc = "";
-                        query.Desc = "";
-
-                        VPScenarioService vpScenarioService = new VPScenarioService(query, db, ContactID);
-                        vpScenarioLast = (from c in db.VPScenarios select c).FirstOrDefault();
-                    }
-
-                    // ok with VPScenario info
-                    IHttpActionResult jsonRet = vpScenarioController.GetVPScenarioWithID(vpScenarioLast.VPScenarioID);
-                    Assert.IsNotNull(jsonRet);
-
-                    OkNegotiatedContentResult<VPScenario> Ret = jsonRet as OkNegotiatedContentResult<VPScenario>;
-                    VPScenario vpScenarioRet = Ret.Content;
-                    Assert.AreEqual(vpScenarioLast.VPScenarioID, vpScenarioRet.VPScenarioID);
-
-                    BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
-
-                    // Post to return CSSPError because VPScenarioID exist
-                    IHttpActionResult jsonRet2 = vpScenarioController.Post(vpScenarioRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet2);
-
-                    OkNegotiatedContentResult<VPScenario> vpScenarioRet2 = jsonRet2 as OkNegotiatedContentResult<VPScenario>;
-                    Assert.IsNull(vpScenarioRet2);
-
-                    BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
-                    Assert.IsNotNull(badRequest2);
-
-                    // Post to return newly added VPScenario
-                    vpScenarioRet.VPScenarioID = 0;
-                    vpScenarioController.Request = new System.Net.Http.HttpRequestMessage();
-                    vpScenarioController.Request.RequestUri = new System.Uri("http://localhost:5000/api/vpScenario");
-                    IHttpActionResult jsonRet3 = vpScenarioController.Post(vpScenarioRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet3);
-
-                    CreatedNegotiatedContentResult<VPScenario> vpScenarioRet3 = jsonRet3 as CreatedNegotiatedContentResult<VPScenario>;
-                    Assert.IsNotNull(vpScenarioRet3);
-
-                    BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest3);
-
-                    IHttpActionResult jsonRet4 = vpScenarioController.Delete(vpScenarioRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet4);
-
-                    OkNegotiatedContentResult<VPScenario> vpScenarioRet4 = jsonRet4 as OkNegotiatedContentResult<VPScenario>;
-                    Assert.IsNotNull(vpScenarioRet4);
-
-                    BadRequestErrorMessageResult badRequest4 = jsonRet4 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest4);
-                }
-            }
-        }
-        #endregion Tests Generated for Class Controller Post Command
-
-        #region Tests Generated for Class Controller Put Command
-        [TestMethod]
-        public void VPScenario_Controller_Put_Test()
-        {
-            foreach (LanguageEnum LanguageRequest in AllowableLanguages)
-            {
-                foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
-                {
-                    VPScenarioController vpScenarioController = new VPScenarioController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(vpScenarioController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, vpScenarioController.DatabaseType);
-
-                    VPScenario vpScenarioLast = new VPScenario();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-                    {
-                        Query query = new Query();
-                        query.Language = LanguageRequest;
-
-                        VPScenarioService vpScenarioService = new VPScenarioService(query, db, ContactID);
-                        vpScenarioLast = (from c in db.VPScenarios select c).FirstOrDefault();
-                    }
-
-                    // ok with VPScenario info
-                    IHttpActionResult jsonRet = vpScenarioController.GetVPScenarioWithID(vpScenarioLast.VPScenarioID);
-                    Assert.IsNotNull(jsonRet);
-
-                    OkNegotiatedContentResult<VPScenario> Ret = jsonRet as OkNegotiatedContentResult<VPScenario>;
-                    VPScenario vpScenarioRet = Ret.Content;
-                    Assert.AreEqual(vpScenarioLast.VPScenarioID, vpScenarioRet.VPScenarioID);
-
-                    BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
-
-                    // Put to return success
-                    IHttpActionResult jsonRet2 = vpScenarioController.Put(vpScenarioRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet2);
-
-                    OkNegotiatedContentResult<VPScenario> vpScenarioRet2 = jsonRet2 as OkNegotiatedContentResult<VPScenario>;
-                    Assert.IsNotNull(vpScenarioRet2);
-
-                    BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest2);
-
-                    // Put to return CSSPError because VPScenarioID of 0 does not exist
-                    vpScenarioRet.VPScenarioID = 0;
-                    IHttpActionResult jsonRet3 = vpScenarioController.Put(vpScenarioRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet3);
-
-                    OkNegotiatedContentResult<VPScenario> vpScenarioRet3 = jsonRet3 as OkNegotiatedContentResult<VPScenario>;
-                    Assert.IsNull(vpScenarioRet3);
-
-                    BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
-                    Assert.IsNotNull(badRequest3);
-                }
-            }
-        }
-        #endregion Tests Generated for Class Controller Put Command
-
-        #region Tests Generated for Class Controller Delete Command
-        [TestMethod]
-        public void VPScenario_Controller_Delete_Test()
-        {
-            foreach (LanguageEnum LanguageRequest in AllowableLanguages)
-            {
-                foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
-                {
-                    VPScenarioController vpScenarioController = new VPScenarioController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(vpScenarioController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, vpScenarioController.DatabaseType);
-
-                    VPScenario vpScenarioLast = new VPScenario();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-                    {
-                        Query query = new Query();
-                        query.Language = LanguageRequest;
-                        query.Asc = "";
-                        query.Desc = "";
-
-                        VPScenarioService vpScenarioService = new VPScenarioService(query, db, ContactID);
-                        vpScenarioLast = (from c in db.VPScenarios select c).FirstOrDefault();
-                    }
-
-                    // ok with VPScenario info
-                    IHttpActionResult jsonRet = vpScenarioController.GetVPScenarioWithID(vpScenarioLast.VPScenarioID);
-                    Assert.IsNotNull(jsonRet);
-
-                    OkNegotiatedContentResult<VPScenario> Ret = jsonRet as OkNegotiatedContentResult<VPScenario>;
-                    VPScenario vpScenarioRet = Ret.Content;
-                    Assert.AreEqual(vpScenarioLast.VPScenarioID, vpScenarioRet.VPScenarioID);
-
-                    BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
-
-                    // Post to return newly added VPScenario
-                    vpScenarioRet.VPScenarioID = 0;
-                    vpScenarioController.Request = new System.Net.Http.HttpRequestMessage();
-                    vpScenarioController.Request.RequestUri = new System.Uri("http://localhost:5000/api/vpScenario");
-                    IHttpActionResult jsonRet3 = vpScenarioController.Post(vpScenarioRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet3);
-
-                    CreatedNegotiatedContentResult<VPScenario> vpScenarioRet3 = jsonRet3 as CreatedNegotiatedContentResult<VPScenario>;
-                    Assert.IsNotNull(vpScenarioRet3);
-                    VPScenario vpScenario = vpScenarioRet3.Content;
-
-                    BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest3);
-
-                    // Delete to return success
-                    IHttpActionResult jsonRet2 = vpScenarioController.Delete(vpScenarioRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet2);
-
-                    OkNegotiatedContentResult<VPScenario> vpScenarioRet2 = jsonRet2 as OkNegotiatedContentResult<VPScenario>;
-                    Assert.IsNotNull(vpScenarioRet2);
-
-                    BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest2);
-
-                    // Delete to return CSSPError because VPScenarioID of 0 does not exist
-                    vpScenarioRet.VPScenarioID = 0;
-                    IHttpActionResult jsonRet4 = vpScenarioController.Delete(vpScenarioRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet4);
-
-                    OkNegotiatedContentResult<VPScenario> vpScenarioRet4 = jsonRet4 as OkNegotiatedContentResult<VPScenario>;
-                    Assert.IsNull(vpScenarioRet4);
-
-                    BadRequestErrorMessageResult badRequest4 = jsonRet4 as BadRequestErrorMessageResult;
-                    Assert.IsNotNull(badRequest4);
-                }
-            }
-        }
-        #endregion Tests Generated for Class Controller Delete Command
-
+        #endregion Functions private
     }
 }

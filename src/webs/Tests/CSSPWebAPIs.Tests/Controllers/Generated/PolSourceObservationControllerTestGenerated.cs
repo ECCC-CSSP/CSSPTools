@@ -2,350 +2,157 @@ using CSSPEnums;
 using CSSPModels;
 using CSSPServices;
 using CSSPWebAPI.Controllers;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using LoggedInServices.Services;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using System;
 using System.Collections.Generic;
+using System.Globalization;
+using System.IO;
 using System.Linq;
-using System.Web.Http;
-using System.Web.Http.Results;
+using System.Threading.Tasks;
+using System.Transactions;
+using UserServices.Models;
+using Xunit;
 
-namespace CSSPWebAPI.Tests.Controllers
+namespace CSSPWebAPIs.Tests.Controllers
 {
-    [TestClass]
-    public partial class PolSourceObservationControllerTest : BaseControllerTest
+    public partial class PolSourceObservationControllerTest
     {
         #region Variables
         #endregion Variables
 
         #region Properties
+        private IConfiguration Config { get; set; }
+        private IServiceProvider Provider { get; set; }
+        private IServiceCollection Services { get; set; }
+        private CSSPDBContext db { get; set; }
+        private ILoggedInService loggedInService { get; set; }
+        private IPolSourceObservationService polSourceObservationService { get; set; }
+        private IPolSourceObservationController polSourceObservationController { get; set; }
         #endregion Properties
 
         #region Constructors
-        public PolSourceObservationControllerTest() : base()
+        public PolSourceObservationControllerTest()
         {
         }
         #endregion Constructors
 
-        #region Tests Generated for Class Controller GetList Command
-        [TestMethod]
-        public void PolSourceObservation_Controller_GetPolSourceObservationList_Test()
+        #region Functions public
+        [Theory]
+        [InlineData("en-CA")]
+        [InlineData("fr-CA")]
+        public async Task PolSourceObservationController_Constructor_Good_Test(string culture)
         {
-            foreach (LanguageEnum LanguageRequest in AllowableLanguages)
+            bool retBool = await Setup(new CultureInfo(culture));
+            Assert.True(retBool);
+            Assert.NotNull(loggedInService);
+            Assert.NotNull(polSourceObservationService);
+            Assert.NotNull(polSourceObservationController);
+        }
+        [Theory]
+        [InlineData("en-CA")]
+        [InlineData("fr-CA")]
+        public async Task PolSourceObservationController_CRUD_Good_Test(string culture)
+        {
+            bool retBool = await Setup(new CultureInfo(culture));
+            Assert.True(retBool);
+
+            using (TransactionScope ts = new TransactionScope())
             {
-                foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
-                {
-                    PolSourceObservationController polSourceObservationController = new PolSourceObservationController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(polSourceObservationController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, polSourceObservationController.DatabaseType);
+                // testing Get
+               var actionPolSourceObservationList = await polSourceObservationController.Get();
+               Assert.Equal(200, ((ObjectResult)actionPolSourceObservationList.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionPolSourceObservationList.Result).Value);
+               List<PolSourceObservation> polSourceObservationList = (List<PolSourceObservation>)(((OkObjectResult)actionPolSourceObservationList.Result).Value);
 
-                    PolSourceObservation polSourceObservationFirst = new PolSourceObservation();
-                    int count = -1;
-                    Query query = new Query();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseTypeEnum.SqlServerTestDB))
-                    {
-                        PolSourceObservationService polSourceObservationService = new PolSourceObservationService(query, db, ContactID);
-                        polSourceObservationFirst = (from c in db.PolSourceObservations select c).FirstOrDefault();
-                        count = (from c in db.PolSourceObservations select c).Count();
-                        count = (query.Take > count ? count : query.Take);
-                    }
+               int count = ((List<PolSourceObservation>)((OkObjectResult)actionPolSourceObservationList.Result).Value).Count();
+                Assert.True(count > 0);
 
-                    // ok with PolSourceObservation info
-                    IHttpActionResult jsonRet = polSourceObservationController.GetPolSourceObservationList();
-                    Assert.IsNotNull(jsonRet);
+               // testing Get(PolSourceObservationID)
+               var actionPolSourceObservation = await polSourceObservationController.Get(polSourceObservationList[0].PolSourceObservationID);
+               Assert.Equal(200, ((ObjectResult)actionPolSourceObservation.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionPolSourceObservation.Result).Value);
+               PolSourceObservation polSourceObservation = (PolSourceObservation)(((OkObjectResult)actionPolSourceObservation.Result).Value);
+               Assert.NotNull(polSourceObservation);
+               Assert.Equal(polSourceObservationList[0].PolSourceObservationID, polSourceObservation.PolSourceObservationID);
 
-                    OkNegotiatedContentResult<List<PolSourceObservation>> ret = jsonRet as OkNegotiatedContentResult<List<PolSourceObservation>>;
-                    Assert.AreEqual(polSourceObservationFirst.PolSourceObservationID, ret.Content[0].PolSourceObservationID);
-                    Assert.AreEqual((count > query.Take ? query.Take : count), ret.Content.Count);
+               // testing Post(PolSourceObservation polSourceObservation)
+               polSourceObservation.PolSourceObservationID = 0;
+               var actionPolSourceObservationNew = await polSourceObservationController.Post(polSourceObservation);
+               Assert.Equal(200, ((ObjectResult)actionPolSourceObservationNew.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionPolSourceObservationNew.Result).Value);
+               PolSourceObservation polSourceObservationNew = (PolSourceObservation)(((OkObjectResult)actionPolSourceObservationNew.Result).Value);
+               Assert.NotNull(polSourceObservationNew);
 
-                    List<PolSourceObservation> polSourceObservationList = new List<PolSourceObservation>();
-                    count = -1;
-                    query = new Query();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseTypeEnum.SqlServerTestDB))
-                    {
-                        PolSourceObservationService polSourceObservationService = new PolSourceObservationService(query, db, ContactID);
-                        polSourceObservationList = (from c in db.PolSourceObservations select c).OrderBy(c => c.PolSourceObservationID).Skip(0).Take(2).ToList();
-                        count = (from c in db.PolSourceObservations select c).Count();
-                    }
+               // testing Put(PolSourceObservation polSourceObservation)
+               var actionPolSourceObservationUpdate = await polSourceObservationController.Put(polSourceObservationNew);
+               Assert.Equal(200, ((ObjectResult)actionPolSourceObservationUpdate.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionPolSourceObservationUpdate.Result).Value);
+               PolSourceObservation polSourceObservationUpdate = (PolSourceObservation)(((OkObjectResult)actionPolSourceObservationUpdate.Result).Value);
+               Assert.NotNull(polSourceObservationUpdate);
 
-                    if (count > 0)
-                    {
-                        query.Skip = 0;
-                        query.Take = 5;
-                        count = (query.Take > count ? query.Take : count);
-
-                        // ok with PolSourceObservation info
-                        jsonRet = polSourceObservationController.GetPolSourceObservationList(query.Language.ToString(), query.Skip, query.Take);
-                        Assert.IsNotNull(jsonRet);
-
-                        ret = jsonRet as OkNegotiatedContentResult<List<PolSourceObservation>>;
-                        Assert.AreEqual(polSourceObservationList[0].PolSourceObservationID, ret.Content[0].PolSourceObservationID);
-                        Assert.AreEqual((count > query.Take ? query.Take : count), ret.Content.Count);
-
-                       if (count > 1)
-                       {
-                           query.Skip = 1;
-                           query.Take = 5;
-                           count = (query.Take > count ? query.Take : count);
-
-                           // ok with PolSourceObservation info
-                           IHttpActionResult jsonRet2 = polSourceObservationController.GetPolSourceObservationList(query.Language.ToString(), query.Skip, query.Take);
-                           Assert.IsNotNull(jsonRet2);
-
-                           OkNegotiatedContentResult<List<PolSourceObservation>> ret2 = jsonRet2 as OkNegotiatedContentResult<List<PolSourceObservation>>;
-                           Assert.AreEqual(polSourceObservationList[1].PolSourceObservationID, ret2.Content[0].PolSourceObservationID);
-                           Assert.AreEqual((count > query.Take ? query.Take : count), ret2.Content.Count);
-                       }
-                    }
-                }
+               // testing Delete(PolSourceObservation polSourceObservation)
+               var actionPolSourceObservationDelete = await polSourceObservationController.Delete(polSourceObservationUpdate);
+               Assert.Equal(200, ((ObjectResult)actionPolSourceObservationDelete.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionPolSourceObservationDelete.Result).Value);
+               PolSourceObservation polSourceObservationDelete = (PolSourceObservation)(((OkObjectResult)actionPolSourceObservationDelete.Result).Value);
+               Assert.NotNull(polSourceObservationDelete);
             }
         }
-        #endregion Tests Generated for Class Controller GetList Command
+        #endregion Functions public
 
-        #region Tests Generated for Class Controller GetWithID Command
-        [TestMethod]
-        public void PolSourceObservation_Controller_GetPolSourceObservationWithID_Test()
+        #region Functions private
+        private async Task<bool> Setup(CultureInfo culture)
         {
-            foreach (LanguageEnum LanguageRequest in AllowableLanguages)
+            Config = new ConfigurationBuilder()
+               .SetBasePath(Directory.GetParent(AppContext.BaseDirectory).FullName)
+               .AddJsonFile("appsettings.json")
+               .Build();
+        
+            Services = new ServiceCollection();
+        
+            IConfigurationSection connectionStringsSection = Config.GetSection("ConnectionStrings");
+            Services.Configure<ConnectionStringsModel>(connectionStringsSection);
+        
+            ConnectionStringsModel connectionStrings = connectionStringsSection.Get<ConnectionStringsModel>();
+        
+            Services.AddSingleton<IConfiguration>(Config);
+        
+            Services.AddDbContext<CSSPDBContext>(options =>
             {
-                foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
-                {
-                    PolSourceObservationController polSourceObservationController = new PolSourceObservationController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(polSourceObservationController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, polSourceObservationController.DatabaseType);
-
-                    PolSourceObservation polSourceObservationFirst = new PolSourceObservation();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-                    {
-                        PolSourceObservationService polSourceObservationService = new PolSourceObservationService(new Query(), db, ContactID);
-                        polSourceObservationFirst = (from c in db.PolSourceObservations select c).FirstOrDefault();
-                    }
-
-                    // ok with PolSourceObservation info
-                    IHttpActionResult jsonRet = polSourceObservationController.GetPolSourceObservationWithID(polSourceObservationFirst.PolSourceObservationID);
-                    Assert.IsNotNull(jsonRet);
-
-                    OkNegotiatedContentResult<PolSourceObservation> Ret = jsonRet as OkNegotiatedContentResult<PolSourceObservation>;
-                    PolSourceObservation polSourceObservationRet = Ret.Content;
-                    Assert.AreEqual(polSourceObservationFirst.PolSourceObservationID, polSourceObservationRet.PolSourceObservationID);
-
-                    BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
-
-                    // Not Found
-                    IHttpActionResult jsonRet2 = polSourceObservationController.GetPolSourceObservationWithID(0);
-                    Assert.IsNotNull(jsonRet2);
-
-                    OkNegotiatedContentResult<PolSourceObservation> polSourceObservationRet2 = jsonRet2 as OkNegotiatedContentResult<PolSourceObservation>;
-                    Assert.IsNull(polSourceObservationRet2);
-
-                    NotFoundResult notFoundRequest = jsonRet2 as NotFoundResult;
-                    Assert.IsNotNull(notFoundRequest);
-                }
-            }
+                options.UseSqlServer(connectionStrings.TestDB);
+            });
+        
+            Services.AddDbContext<ApplicationDbContext>(options =>
+                options.UseSqlServer(connectionStrings.TestDB));
+        
+            Services.AddIdentityCore<ApplicationUser>()
+                .AddEntityFrameworkStores<ApplicationDbContext>();
+        
+            Services.AddSingleton<IEnums, Enums>();
+            Services.AddSingleton<ILoggedInService, LoggedInService>();
+            Services.AddSingleton<IPolSourceObservationService, PolSourceObservationService>();
+            Services.AddSingleton<IPolSourceObservationController, PolSourceObservationController>();
+        
+            Provider = Services.BuildServiceProvider();
+            Assert.NotNull(Provider);
+        
+            loggedInService = Provider.GetService<ILoggedInService>();
+            Assert.NotNull(loggedInService);
+        
+            polSourceObservationService = Provider.GetService<IPolSourceObservationService>();
+            Assert.NotNull(polSourceObservationService);
+        
+            await polSourceObservationService.SetCulture(culture);
+        
+            polSourceObservationController = Provider.GetService<IPolSourceObservationController>();
+            Assert.NotNull(polSourceObservationController);
+        
+            return await Task.FromResult(true);
         }
-        #endregion Tests Generated for Class Controller GetWithID Command
-
-        #region Tests Generated for Class Controller Post Command
-        [TestMethod]
-        public void PolSourceObservation_Controller_Post_Test()
-        {
-            foreach (LanguageEnum LanguageRequest in AllowableLanguages)
-            {
-                foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
-                {
-                    PolSourceObservationController polSourceObservationController = new PolSourceObservationController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(polSourceObservationController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, polSourceObservationController.DatabaseType);
-
-                    PolSourceObservation polSourceObservationLast = new PolSourceObservation();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-                    {
-                        Query query = new Query();
-                        query.Language = LanguageRequest;
-                        query.Asc = "";
-                        query.Desc = "";
-
-                        PolSourceObservationService polSourceObservationService = new PolSourceObservationService(query, db, ContactID);
-                        polSourceObservationLast = (from c in db.PolSourceObservations select c).FirstOrDefault();
-                    }
-
-                    // ok with PolSourceObservation info
-                    IHttpActionResult jsonRet = polSourceObservationController.GetPolSourceObservationWithID(polSourceObservationLast.PolSourceObservationID);
-                    Assert.IsNotNull(jsonRet);
-
-                    OkNegotiatedContentResult<PolSourceObservation> Ret = jsonRet as OkNegotiatedContentResult<PolSourceObservation>;
-                    PolSourceObservation polSourceObservationRet = Ret.Content;
-                    Assert.AreEqual(polSourceObservationLast.PolSourceObservationID, polSourceObservationRet.PolSourceObservationID);
-
-                    BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
-
-                    // Post to return CSSPError because PolSourceObservationID exist
-                    IHttpActionResult jsonRet2 = polSourceObservationController.Post(polSourceObservationRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet2);
-
-                    OkNegotiatedContentResult<PolSourceObservation> polSourceObservationRet2 = jsonRet2 as OkNegotiatedContentResult<PolSourceObservation>;
-                    Assert.IsNull(polSourceObservationRet2);
-
-                    BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
-                    Assert.IsNotNull(badRequest2);
-
-                    // Post to return newly added PolSourceObservation
-                    polSourceObservationRet.PolSourceObservationID = 0;
-                    polSourceObservationController.Request = new System.Net.Http.HttpRequestMessage();
-                    polSourceObservationController.Request.RequestUri = new System.Uri("http://localhost:5000/api/polSourceObservation");
-                    IHttpActionResult jsonRet3 = polSourceObservationController.Post(polSourceObservationRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet3);
-
-                    CreatedNegotiatedContentResult<PolSourceObservation> polSourceObservationRet3 = jsonRet3 as CreatedNegotiatedContentResult<PolSourceObservation>;
-                    Assert.IsNotNull(polSourceObservationRet3);
-
-                    BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest3);
-
-                    IHttpActionResult jsonRet4 = polSourceObservationController.Delete(polSourceObservationRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet4);
-
-                    OkNegotiatedContentResult<PolSourceObservation> polSourceObservationRet4 = jsonRet4 as OkNegotiatedContentResult<PolSourceObservation>;
-                    Assert.IsNotNull(polSourceObservationRet4);
-
-                    BadRequestErrorMessageResult badRequest4 = jsonRet4 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest4);
-                }
-            }
-        }
-        #endregion Tests Generated for Class Controller Post Command
-
-        #region Tests Generated for Class Controller Put Command
-        [TestMethod]
-        public void PolSourceObservation_Controller_Put_Test()
-        {
-            foreach (LanguageEnum LanguageRequest in AllowableLanguages)
-            {
-                foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
-                {
-                    PolSourceObservationController polSourceObservationController = new PolSourceObservationController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(polSourceObservationController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, polSourceObservationController.DatabaseType);
-
-                    PolSourceObservation polSourceObservationLast = new PolSourceObservation();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-                    {
-                        Query query = new Query();
-                        query.Language = LanguageRequest;
-
-                        PolSourceObservationService polSourceObservationService = new PolSourceObservationService(query, db, ContactID);
-                        polSourceObservationLast = (from c in db.PolSourceObservations select c).FirstOrDefault();
-                    }
-
-                    // ok with PolSourceObservation info
-                    IHttpActionResult jsonRet = polSourceObservationController.GetPolSourceObservationWithID(polSourceObservationLast.PolSourceObservationID);
-                    Assert.IsNotNull(jsonRet);
-
-                    OkNegotiatedContentResult<PolSourceObservation> Ret = jsonRet as OkNegotiatedContentResult<PolSourceObservation>;
-                    PolSourceObservation polSourceObservationRet = Ret.Content;
-                    Assert.AreEqual(polSourceObservationLast.PolSourceObservationID, polSourceObservationRet.PolSourceObservationID);
-
-                    BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
-
-                    // Put to return success
-                    IHttpActionResult jsonRet2 = polSourceObservationController.Put(polSourceObservationRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet2);
-
-                    OkNegotiatedContentResult<PolSourceObservation> polSourceObservationRet2 = jsonRet2 as OkNegotiatedContentResult<PolSourceObservation>;
-                    Assert.IsNotNull(polSourceObservationRet2);
-
-                    BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest2);
-
-                    // Put to return CSSPError because PolSourceObservationID of 0 does not exist
-                    polSourceObservationRet.PolSourceObservationID = 0;
-                    IHttpActionResult jsonRet3 = polSourceObservationController.Put(polSourceObservationRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet3);
-
-                    OkNegotiatedContentResult<PolSourceObservation> polSourceObservationRet3 = jsonRet3 as OkNegotiatedContentResult<PolSourceObservation>;
-                    Assert.IsNull(polSourceObservationRet3);
-
-                    BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
-                    Assert.IsNotNull(badRequest3);
-                }
-            }
-        }
-        #endregion Tests Generated for Class Controller Put Command
-
-        #region Tests Generated for Class Controller Delete Command
-        [TestMethod]
-        public void PolSourceObservation_Controller_Delete_Test()
-        {
-            foreach (LanguageEnum LanguageRequest in AllowableLanguages)
-            {
-                foreach (int ContactID in new List<int>() { AdminContactID })  //, TestEmailValidatedContactID, TestEmailNotValidatedContactID })
-                {
-                    PolSourceObservationController polSourceObservationController = new PolSourceObservationController(DatabaseTypeEnum.SqlServerTestDB);
-                    Assert.IsNotNull(polSourceObservationController);
-                    Assert.AreEqual(DatabaseTypeEnum.SqlServerTestDB, polSourceObservationController.DatabaseType);
-
-                    PolSourceObservation polSourceObservationLast = new PolSourceObservation();
-                    using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-                    {
-                        Query query = new Query();
-                        query.Language = LanguageRequest;
-                        query.Asc = "";
-                        query.Desc = "";
-
-                        PolSourceObservationService polSourceObservationService = new PolSourceObservationService(query, db, ContactID);
-                        polSourceObservationLast = (from c in db.PolSourceObservations select c).FirstOrDefault();
-                    }
-
-                    // ok with PolSourceObservation info
-                    IHttpActionResult jsonRet = polSourceObservationController.GetPolSourceObservationWithID(polSourceObservationLast.PolSourceObservationID);
-                    Assert.IsNotNull(jsonRet);
-
-                    OkNegotiatedContentResult<PolSourceObservation> Ret = jsonRet as OkNegotiatedContentResult<PolSourceObservation>;
-                    PolSourceObservation polSourceObservationRet = Ret.Content;
-                    Assert.AreEqual(polSourceObservationLast.PolSourceObservationID, polSourceObservationRet.PolSourceObservationID);
-
-                    BadRequestErrorMessageResult badRequest = jsonRet as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest);
-
-                    // Post to return newly added PolSourceObservation
-                    polSourceObservationRet.PolSourceObservationID = 0;
-                    polSourceObservationController.Request = new System.Net.Http.HttpRequestMessage();
-                    polSourceObservationController.Request.RequestUri = new System.Uri("http://localhost:5000/api/polSourceObservation");
-                    IHttpActionResult jsonRet3 = polSourceObservationController.Post(polSourceObservationRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet3);
-
-                    CreatedNegotiatedContentResult<PolSourceObservation> polSourceObservationRet3 = jsonRet3 as CreatedNegotiatedContentResult<PolSourceObservation>;
-                    Assert.IsNotNull(polSourceObservationRet3);
-                    PolSourceObservation polSourceObservation = polSourceObservationRet3.Content;
-
-                    BadRequestErrorMessageResult badRequest3 = jsonRet3 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest3);
-
-                    // Delete to return success
-                    IHttpActionResult jsonRet2 = polSourceObservationController.Delete(polSourceObservationRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet2);
-
-                    OkNegotiatedContentResult<PolSourceObservation> polSourceObservationRet2 = jsonRet2 as OkNegotiatedContentResult<PolSourceObservation>;
-                    Assert.IsNotNull(polSourceObservationRet2);
-
-                    BadRequestErrorMessageResult badRequest2 = jsonRet2 as BadRequestErrorMessageResult;
-                    Assert.IsNull(badRequest2);
-
-                    // Delete to return CSSPError because PolSourceObservationID of 0 does not exist
-                    polSourceObservationRet.PolSourceObservationID = 0;
-                    IHttpActionResult jsonRet4 = polSourceObservationController.Delete(polSourceObservationRet, LanguageRequest.ToString());
-                    Assert.IsNotNull(jsonRet4);
-
-                    OkNegotiatedContentResult<PolSourceObservation> polSourceObservationRet4 = jsonRet4 as OkNegotiatedContentResult<PolSourceObservation>;
-                    Assert.IsNull(polSourceObservationRet4);
-
-                    BadRequestErrorMessageResult badRequest4 = jsonRet4 as BadRequestErrorMessageResult;
-                    Assert.IsNotNull(badRequest4);
-                }
-            }
-        }
-        #endregion Tests Generated for Class Controller Delete Command
-
+        #endregion Functions private
     }
 }

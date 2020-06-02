@@ -27,15 +27,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSSPServices.Tests", "src\t
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PolSourceGroupingExcelFileReadServices", "src\codegen\PolSourceGroupingExcelFileReadServices\PolSourceGroupingExcelFileReadServices.csproj", "{7D7DEC90-B5CB-4E56-9652-F5FAF4C3A8FE}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSSPWebAPIsServices", "src\dlls\CSSPWebAPIsServices\CSSPWebAPIsServices.csproj", "{143141B3-157E-4767-9E65-1954D74CA1AA}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSSPWebAPIsServices.Tests", "src\tests\CSSPWebAPIsServices.Tests\CSSPWebAPIsServices.Tests.csproj", "{BE8C95C6-A98B-40F8-888A-FB1A68E6AF37}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AddressServices", "src\dlls\AddressServices\AddressServices.csproj", "{5F37DD3E-570A-42F6-BF84-C93EB20FA098}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LoggedInServices", "src\dlls\LoggedInServices\LoggedInServices.csproj", "{5E7A988B-47D2-4DE5-B519-AC5B0C28F727}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LoggedInServices", "src\dlls\LoggedInServices\LoggedInServices.csproj", "{5E7A988B-47D2-4DE5-B519-AC5B0C28F727}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LoggedInServices.Tests", "src\tests\LoggedInServices.Tests\LoggedInServices.Tests.csproj", "{EE97C53F-2F79-41D5-A23C-0DC37812B811}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LoggedInServices.Tests", "src\tests\LoggedInServices.Tests\LoggedInServices.Tests.csproj", "{EE97C53F-2F79-41D5-A23C-0DC37812B811}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -91,14 +87,6 @@ Global
 		{7D7DEC90-B5CB-4E56-9652-F5FAF4C3A8FE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7D7DEC90-B5CB-4E56-9652-F5FAF4C3A8FE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7D7DEC90-B5CB-4E56-9652-F5FAF4C3A8FE}.Release|Any CPU.Build.0 = Release|Any CPU
-		{143141B3-157E-4767-9E65-1954D74CA1AA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{143141B3-157E-4767-9E65-1954D74CA1AA}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{143141B3-157E-4767-9E65-1954D74CA1AA}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{143141B3-157E-4767-9E65-1954D74CA1AA}.Release|Any CPU.Build.0 = Release|Any CPU
-		{BE8C95C6-A98B-40F8-888A-FB1A68E6AF37}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{BE8C95C6-A98B-40F8-888A-FB1A68E6AF37}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{BE8C95C6-A98B-40F8-888A-FB1A68E6AF37}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{BE8C95C6-A98B-40F8-888A-FB1A68E6AF37}.Release|Any CPU.Build.0 = Release|Any CPU
 		{5F37DD3E-570A-42F6-BF84-C93EB20FA098}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{5F37DD3E-570A-42F6-BF84-C93EB20FA098}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5F37DD3E-570A-42F6-BF84-C93EB20FA098}.Release|Any CPU.ActiveCfg = Release|Any CPU

@@ -16,6 +16,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Transactions;
 using Xunit;
 
 namespace CSSPServices.Tests
@@ -54,37 +55,40 @@ namespace CSSPServices.Tests
 
             await Setup(new CultureInfo(culture));
 
-            VPScenario vpScenario = GetFilledRandomVPScenario(""); 
+            using (TransactionScope ts = new TransactionScope())
+            {
+               VPScenario vpScenario = GetFilledRandomVPScenario(""); 
 
-            // List<VPScenario>
-            var actionVPScenarioList = await vpScenarioService.GetVPScenarioList();
-            Assert.Equal(200, ((ObjectResult)actionVPScenarioList.Result).StatusCode);
-            Assert.NotNull(((OkObjectResult)actionVPScenarioList.Result).Value);
-            List<VPScenario> vpScenarioList = (List<VPScenario>)(((OkObjectResult)actionVPScenarioList.Result).Value);
+               // List<VPScenario>
+               var actionVPScenarioList = await vpScenarioService.GetVPScenarioList();
+               Assert.Equal(200, ((ObjectResult)actionVPScenarioList.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionVPScenarioList.Result).Value);
+               List<VPScenario> vpScenarioList = (List<VPScenario>)(((OkObjectResult)actionVPScenarioList.Result).Value);
 
-            int count = ((List<VPScenario>)((OkObjectResult)actionVPScenarioList.Result).Value).Count();
-            Assert.True(count > 0);
+               int count = ((List<VPScenario>)((OkObjectResult)actionVPScenarioList.Result).Value).Count();
+                Assert.True(count > 0);
 
-            // Add VPScenario
-            var actionVPScenarioAdded = await vpScenarioService.Add(vpScenario);
-            Assert.Equal(200, ((ObjectResult)actionVPScenarioAdded.Result).StatusCode);
-            Assert.NotNull(((OkObjectResult)actionVPScenarioAdded.Result).Value);
-            VPScenario vpScenarioAdded = (VPScenario)(((OkObjectResult)actionVPScenarioAdded.Result).Value);
-            Assert.NotNull(vpScenarioAdded);
+               // Add VPScenario
+               var actionVPScenarioAdded = await vpScenarioService.Add(vpScenario);
+               Assert.Equal(200, ((ObjectResult)actionVPScenarioAdded.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionVPScenarioAdded.Result).Value);
+               VPScenario vpScenarioAdded = (VPScenario)(((OkObjectResult)actionVPScenarioAdded.Result).Value);
+               Assert.NotNull(vpScenarioAdded);
 
-            // Update VPScenario
-            var actionVPScenarioUpdated = await vpScenarioService.Update(vpScenario);
-            Assert.Equal(200, ((ObjectResult)actionVPScenarioUpdated.Result).StatusCode);
-            Assert.NotNull(((OkObjectResult)actionVPScenarioUpdated.Result).Value);
-            VPScenario vpScenarioUpdated = (VPScenario)(((OkObjectResult)actionVPScenarioUpdated.Result).Value);
-            Assert.NotNull(vpScenarioUpdated);
+               // Update VPScenario
+               var actionVPScenarioUpdated = await vpScenarioService.Update(vpScenario);
+               Assert.Equal(200, ((ObjectResult)actionVPScenarioUpdated.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionVPScenarioUpdated.Result).Value);
+               VPScenario vpScenarioUpdated = (VPScenario)(((OkObjectResult)actionVPScenarioUpdated.Result).Value);
+               Assert.NotNull(vpScenarioUpdated);
 
-            // Delete VPScenario
-            var actionVPScenarioDeleted = await vpScenarioService.Delete(vpScenario);
-            Assert.Equal(200, ((ObjectResult)actionVPScenarioDeleted.Result).StatusCode);
-            Assert.NotNull(((OkObjectResult)actionVPScenarioDeleted.Result).Value);
-            VPScenario vpScenarioDeleted = (VPScenario)(((OkObjectResult)actionVPScenarioDeleted.Result).Value);
-            Assert.NotNull(vpScenarioDeleted);
+               // Delete VPScenario
+               var actionVPScenarioDeleted = await vpScenarioService.Delete(vpScenario);
+               Assert.Equal(200, ((ObjectResult)actionVPScenarioDeleted.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionVPScenarioDeleted.Result).Value);
+               VPScenario vpScenarioDeleted = (VPScenario)(((OkObjectResult)actionVPScenarioDeleted.Result).Value);
+               Assert.NotNull(vpScenarioDeleted);
+            }
         }
         #endregion Tests Generated CRUD
 

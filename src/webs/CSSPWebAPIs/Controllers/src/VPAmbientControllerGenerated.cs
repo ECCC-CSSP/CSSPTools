@@ -1,143 +1,70 @@
-using CSSPEnums;
 using CSSPModels;
 using CSSPServices;
-using System;
+using LoggedInServices.Services;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web.Http;
+using System.Threading.Tasks;
 
 namespace CSSPWebAPI.Controllers
 {
-    [RoutePrefix("api/vpAmbient")]
-    public partial class VPAmbientController : BaseController
+    public partial interface IVPAmbientController
+    {
+        Task<ActionResult<List<VPAmbient>>> Get();
+        Task<ActionResult<VPAmbient>> Get(int VPAmbientID);
+        Task<ActionResult<VPAmbient>> Post(VPAmbient vpAmbient);
+        Task<ActionResult<VPAmbient>> Put(VPAmbient vpAmbient);
+        Task<ActionResult<VPAmbient>> Delete(VPAmbient vpAmbient);
+    }
+
+    [Route("api/{culture}/[controller]")]
+    [ApiController]
+    [Authorize]
+    public partial class VPAmbientController : ControllerBase, IVPAmbientController
     {
         #region Variables
         #endregion Variables
 
         #region Properties
+        private IVPAmbientService vpAmbientService { get; }
+        private CSSPDBContext db { get; }
+        private ILoggedInService loggedInService { get; }
         #endregion Properties
 
         #region Constructors
-        public VPAmbientController() : base()
+        public VPAmbientController(IVPAmbientService vpAmbientService, CSSPDBContext db, ILoggedInService loggedInService)
         {
-        }
-        public VPAmbientController(DatabaseTypeEnum dbt = DatabaseTypeEnum.SqlServerTestDB) : base(dbt)
-        {
+            this.vpAmbientService = vpAmbientService;
+            this.db = db;
+            this.loggedInService = loggedInService;
         }
         #endregion Constructors
 
         #region Functions public
-        // GET api/vpAmbient
-        [Route("")]
-        public IHttpActionResult GetVPAmbientList([FromUri]string lang = "en", [FromUri]int skip = 0, [FromUri]int take = 200,
-            [FromUri]string asc = "", [FromUri]string desc = "", [FromUri]string where = "", [FromUri]string extra = "")
+        [HttpGet]
+        public async Task<ActionResult<List<VPAmbient>>> Get()
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                VPAmbientService vpAmbientService = new VPAmbientService(new Query() { Lang = lang }, db, ContactID);
-
-                else // QueryString has no parameter [extra] or extra is empty
-                {
-                   vpAmbientService.Query = vpAmbientService.FillQuery(typeof(VPAmbient), lang, skip, take, asc, desc, where, extra);
-
-                    if (vpAmbientService.Query.HasErrors)
-                    {
-                        return Ok(new List<VPAmbient>()
-                        {
-                            new VPAmbient()
-                            {
-                                HasErrors = vpAmbientService.Query.HasErrors,
-                                ValidationResults = vpAmbientService.Query.ValidationResults,
-                            },
-                        }.ToList());
-                    }
-                    else
-                    {
-                        return Ok(vpAmbientService.GetVPAmbientList().ToList());
-                    }
-                }
-            }
+            return await vpAmbientService.GetVPAmbientList();
         }
-        // GET api/vpAmbient/1
-        [Route("{VPAmbientID:int}")]
-        public IHttpActionResult GetVPAmbientWithID([FromUri]int VPAmbientID, [FromUri]string lang = "en", [FromUri]string extra = "")
+        [HttpGet("{VPAmbientID}")]
+        public async Task<ActionResult<VPAmbient>> Get(int VPAmbientID)
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                VPAmbientService vpAmbientService = new VPAmbientService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
-
-                vpAmbientService.Query = vpAmbientService.FillQuery(typeof(VPAmbient), lang, 0, 1, "", "", extra);
-
-                else
-                {
-                    VPAmbient vpAmbient = new VPAmbient();
-                    vpAmbient = vpAmbientService.GetVPAmbientWithVPAmbientID(VPAmbientID);
-
-                    if (vpAmbient == null)
-                    {
-                        return NotFound();
-                    }
-
-                    return Ok(vpAmbient);
-                }
-            }
+            return await vpAmbientService.GetVPAmbientWithVPAmbientID(VPAmbientID);
         }
-        // POST api/vpAmbient
-        [Route("")]
-        public IHttpActionResult Post([FromBody]VPAmbient vpAmbient, [FromUri]string lang = "en")
+        [HttpPost]
+        public async Task<ActionResult<VPAmbient>> Post(VPAmbient vpAmbient)
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                VPAmbientService vpAmbientService = new VPAmbientService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
-
-                if (!vpAmbientService.Add(vpAmbient))
-                {
-                    return BadRequest(String.Join("|||", vpAmbient.ValidationResults));
-                }
-                else
-                {
-                    vpAmbient.ValidationResults = null;
-                    return Created<VPAmbient>(new Uri(Request.RequestUri, vpAmbient.VPAmbientID.ToString()), vpAmbient);
-                }
-            }
+            return await vpAmbientService.Add(vpAmbient);
         }
-        // PUT api/vpAmbient
-        [Route("")]
-        public IHttpActionResult Put([FromBody]VPAmbient vpAmbient, [FromUri]string lang = "en")
+        [HttpPut]
+        public async Task<ActionResult<VPAmbient>> Put(VPAmbient vpAmbient)
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                VPAmbientService vpAmbientService = new VPAmbientService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
-
-                if (!vpAmbientService.Update(vpAmbient))
-                {
-                    return BadRequest(String.Join("|||", vpAmbient.ValidationResults));
-                }
-                else
-                {
-                    vpAmbient.ValidationResults = null;
-                    return Ok(vpAmbient);
-                }
-            }
+            return await vpAmbientService.Update(vpAmbient);
         }
-        // DELETE api/vpAmbient
-        [Route("")]
-        public IHttpActionResult Delete([FromBody]VPAmbient vpAmbient, [FromUri]string lang = "en")
+        [HttpDelete]
+        public async Task<ActionResult<VPAmbient>> Delete(VPAmbient vpAmbient)
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                VPAmbientService vpAmbientService = new VPAmbientService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
-
-                if (!vpAmbientService.Delete(vpAmbient))
-                {
-                    return BadRequest(String.Join("|||", vpAmbient.ValidationResults));
-                }
-                else
-                {
-                    vpAmbient.ValidationResults = null;
-                    return Ok(vpAmbient);
-                }
-            }
+            return await vpAmbientService.Delete(vpAmbient);
         }
         #endregion Functions public
 

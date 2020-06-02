@@ -1,143 +1,70 @@
-using CSSPEnums;
 using CSSPModels;
 using CSSPServices;
-using System;
+using LoggedInServices.Services;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web.Http;
+using System.Threading.Tasks;
 
 namespace CSSPWebAPI.Controllers
 {
-    [RoutePrefix("api/polSourceGrouping")]
-    public partial class PolSourceGroupingController : BaseController
+    public partial interface IPolSourceGroupingController
+    {
+        Task<ActionResult<List<PolSourceGrouping>>> Get();
+        Task<ActionResult<PolSourceGrouping>> Get(int PolSourceGroupingID);
+        Task<ActionResult<PolSourceGrouping>> Post(PolSourceGrouping polSourceGrouping);
+        Task<ActionResult<PolSourceGrouping>> Put(PolSourceGrouping polSourceGrouping);
+        Task<ActionResult<PolSourceGrouping>> Delete(PolSourceGrouping polSourceGrouping);
+    }
+
+    [Route("api/{culture}/[controller]")]
+    [ApiController]
+    [Authorize]
+    public partial class PolSourceGroupingController : ControllerBase, IPolSourceGroupingController
     {
         #region Variables
         #endregion Variables
 
         #region Properties
+        private IPolSourceGroupingService polSourceGroupingService { get; }
+        private CSSPDBContext db { get; }
+        private ILoggedInService loggedInService { get; }
         #endregion Properties
 
         #region Constructors
-        public PolSourceGroupingController() : base()
+        public PolSourceGroupingController(IPolSourceGroupingService polSourceGroupingService, CSSPDBContext db, ILoggedInService loggedInService)
         {
-        }
-        public PolSourceGroupingController(DatabaseTypeEnum dbt = DatabaseTypeEnum.SqlServerTestDB) : base(dbt)
-        {
+            this.polSourceGroupingService = polSourceGroupingService;
+            this.db = db;
+            this.loggedInService = loggedInService;
         }
         #endregion Constructors
 
         #region Functions public
-        // GET api/polSourceGrouping
-        [Route("")]
-        public IHttpActionResult GetPolSourceGroupingList([FromUri]string lang = "en", [FromUri]int skip = 0, [FromUri]int take = 200,
-            [FromUri]string asc = "", [FromUri]string desc = "", [FromUri]string where = "", [FromUri]string extra = "")
+        [HttpGet]
+        public async Task<ActionResult<List<PolSourceGrouping>>> Get()
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                PolSourceGroupingService polSourceGroupingService = new PolSourceGroupingService(new Query() { Lang = lang }, db, ContactID);
-
-                else // QueryString has no parameter [extra] or extra is empty
-                {
-                   polSourceGroupingService.Query = polSourceGroupingService.FillQuery(typeof(PolSourceGrouping), lang, skip, take, asc, desc, where, extra);
-
-                    if (polSourceGroupingService.Query.HasErrors)
-                    {
-                        return Ok(new List<PolSourceGrouping>()
-                        {
-                            new PolSourceGrouping()
-                            {
-                                HasErrors = polSourceGroupingService.Query.HasErrors,
-                                ValidationResults = polSourceGroupingService.Query.ValidationResults,
-                            },
-                        }.ToList());
-                    }
-                    else
-                    {
-                        return Ok(polSourceGroupingService.GetPolSourceGroupingList().ToList());
-                    }
-                }
-            }
+            return await polSourceGroupingService.GetPolSourceGroupingList();
         }
-        // GET api/polSourceGrouping/1
-        [Route("{PolSourceGroupingID:int}")]
-        public IHttpActionResult GetPolSourceGroupingWithID([FromUri]int PolSourceGroupingID, [FromUri]string lang = "en", [FromUri]string extra = "")
+        [HttpGet("{PolSourceGroupingID}")]
+        public async Task<ActionResult<PolSourceGrouping>> Get(int PolSourceGroupingID)
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                PolSourceGroupingService polSourceGroupingService = new PolSourceGroupingService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
-
-                polSourceGroupingService.Query = polSourceGroupingService.FillQuery(typeof(PolSourceGrouping), lang, 0, 1, "", "", extra);
-
-                else
-                {
-                    PolSourceGrouping polSourceGrouping = new PolSourceGrouping();
-                    polSourceGrouping = polSourceGroupingService.GetPolSourceGroupingWithPolSourceGroupingID(PolSourceGroupingID);
-
-                    if (polSourceGrouping == null)
-                    {
-                        return NotFound();
-                    }
-
-                    return Ok(polSourceGrouping);
-                }
-            }
+            return await polSourceGroupingService.GetPolSourceGroupingWithPolSourceGroupingID(PolSourceGroupingID);
         }
-        // POST api/polSourceGrouping
-        [Route("")]
-        public IHttpActionResult Post([FromBody]PolSourceGrouping polSourceGrouping, [FromUri]string lang = "en")
+        [HttpPost]
+        public async Task<ActionResult<PolSourceGrouping>> Post(PolSourceGrouping polSourceGrouping)
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                PolSourceGroupingService polSourceGroupingService = new PolSourceGroupingService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
-
-                if (!polSourceGroupingService.Add(polSourceGrouping))
-                {
-                    return BadRequest(String.Join("|||", polSourceGrouping.ValidationResults));
-                }
-                else
-                {
-                    polSourceGrouping.ValidationResults = null;
-                    return Created<PolSourceGrouping>(new Uri(Request.RequestUri, polSourceGrouping.PolSourceGroupingID.ToString()), polSourceGrouping);
-                }
-            }
+            return await polSourceGroupingService.Add(polSourceGrouping);
         }
-        // PUT api/polSourceGrouping
-        [Route("")]
-        public IHttpActionResult Put([FromBody]PolSourceGrouping polSourceGrouping, [FromUri]string lang = "en")
+        [HttpPut]
+        public async Task<ActionResult<PolSourceGrouping>> Put(PolSourceGrouping polSourceGrouping)
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                PolSourceGroupingService polSourceGroupingService = new PolSourceGroupingService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
-
-                if (!polSourceGroupingService.Update(polSourceGrouping))
-                {
-                    return BadRequest(String.Join("|||", polSourceGrouping.ValidationResults));
-                }
-                else
-                {
-                    polSourceGrouping.ValidationResults = null;
-                    return Ok(polSourceGrouping);
-                }
-            }
+            return await polSourceGroupingService.Update(polSourceGrouping);
         }
-        // DELETE api/polSourceGrouping
-        [Route("")]
-        public IHttpActionResult Delete([FromBody]PolSourceGrouping polSourceGrouping, [FromUri]string lang = "en")
+        [HttpDelete]
+        public async Task<ActionResult<PolSourceGrouping>> Delete(PolSourceGrouping polSourceGrouping)
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                PolSourceGroupingService polSourceGroupingService = new PolSourceGroupingService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
-
-                if (!polSourceGroupingService.Delete(polSourceGrouping))
-                {
-                    return BadRequest(String.Join("|||", polSourceGrouping.ValidationResults));
-                }
-                else
-                {
-                    polSourceGrouping.ValidationResults = null;
-                    return Ok(polSourceGrouping);
-                }
-            }
+            return await polSourceGroupingService.Delete(polSourceGrouping);
         }
         #endregion Functions public
 

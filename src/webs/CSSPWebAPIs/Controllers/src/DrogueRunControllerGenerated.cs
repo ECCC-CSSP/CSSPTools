@@ -1,143 +1,70 @@
-using CSSPEnums;
 using CSSPModels;
 using CSSPServices;
-using System;
+using LoggedInServices.Services;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web.Http;
+using System.Threading.Tasks;
 
 namespace CSSPWebAPI.Controllers
 {
-    [RoutePrefix("api/drogueRun")]
-    public partial class DrogueRunController : BaseController
+    public partial interface IDrogueRunController
+    {
+        Task<ActionResult<List<DrogueRun>>> Get();
+        Task<ActionResult<DrogueRun>> Get(int DrogueRunID);
+        Task<ActionResult<DrogueRun>> Post(DrogueRun drogueRun);
+        Task<ActionResult<DrogueRun>> Put(DrogueRun drogueRun);
+        Task<ActionResult<DrogueRun>> Delete(DrogueRun drogueRun);
+    }
+
+    [Route("api/{culture}/[controller]")]
+    [ApiController]
+    [Authorize]
+    public partial class DrogueRunController : ControllerBase, IDrogueRunController
     {
         #region Variables
         #endregion Variables
 
         #region Properties
+        private IDrogueRunService drogueRunService { get; }
+        private CSSPDBContext db { get; }
+        private ILoggedInService loggedInService { get; }
         #endregion Properties
 
         #region Constructors
-        public DrogueRunController() : base()
+        public DrogueRunController(IDrogueRunService drogueRunService, CSSPDBContext db, ILoggedInService loggedInService)
         {
-        }
-        public DrogueRunController(DatabaseTypeEnum dbt = DatabaseTypeEnum.SqlServerTestDB) : base(dbt)
-        {
+            this.drogueRunService = drogueRunService;
+            this.db = db;
+            this.loggedInService = loggedInService;
         }
         #endregion Constructors
 
         #region Functions public
-        // GET api/drogueRun
-        [Route("")]
-        public IHttpActionResult GetDrogueRunList([FromUri]string lang = "en", [FromUri]int skip = 0, [FromUri]int take = 200,
-            [FromUri]string asc = "", [FromUri]string desc = "", [FromUri]string where = "", [FromUri]string extra = "")
+        [HttpGet]
+        public async Task<ActionResult<List<DrogueRun>>> Get()
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                DrogueRunService drogueRunService = new DrogueRunService(new Query() { Lang = lang }, db, ContactID);
-
-                else // QueryString has no parameter [extra] or extra is empty
-                {
-                   drogueRunService.Query = drogueRunService.FillQuery(typeof(DrogueRun), lang, skip, take, asc, desc, where, extra);
-
-                    if (drogueRunService.Query.HasErrors)
-                    {
-                        return Ok(new List<DrogueRun>()
-                        {
-                            new DrogueRun()
-                            {
-                                HasErrors = drogueRunService.Query.HasErrors,
-                                ValidationResults = drogueRunService.Query.ValidationResults,
-                            },
-                        }.ToList());
-                    }
-                    else
-                    {
-                        return Ok(drogueRunService.GetDrogueRunList().ToList());
-                    }
-                }
-            }
+            return await drogueRunService.GetDrogueRunList();
         }
-        // GET api/drogueRun/1
-        [Route("{DrogueRunID:int}")]
-        public IHttpActionResult GetDrogueRunWithID([FromUri]int DrogueRunID, [FromUri]string lang = "en", [FromUri]string extra = "")
+        [HttpGet("{DrogueRunID}")]
+        public async Task<ActionResult<DrogueRun>> Get(int DrogueRunID)
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                DrogueRunService drogueRunService = new DrogueRunService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
-
-                drogueRunService.Query = drogueRunService.FillQuery(typeof(DrogueRun), lang, 0, 1, "", "", extra);
-
-                else
-                {
-                    DrogueRun drogueRun = new DrogueRun();
-                    drogueRun = drogueRunService.GetDrogueRunWithDrogueRunID(DrogueRunID);
-
-                    if (drogueRun == null)
-                    {
-                        return NotFound();
-                    }
-
-                    return Ok(drogueRun);
-                }
-            }
+            return await drogueRunService.GetDrogueRunWithDrogueRunID(DrogueRunID);
         }
-        // POST api/drogueRun
-        [Route("")]
-        public IHttpActionResult Post([FromBody]DrogueRun drogueRun, [FromUri]string lang = "en")
+        [HttpPost]
+        public async Task<ActionResult<DrogueRun>> Post(DrogueRun drogueRun)
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                DrogueRunService drogueRunService = new DrogueRunService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
-
-                if (!drogueRunService.Add(drogueRun))
-                {
-                    return BadRequest(String.Join("|||", drogueRun.ValidationResults));
-                }
-                else
-                {
-                    drogueRun.ValidationResults = null;
-                    return Created<DrogueRun>(new Uri(Request.RequestUri, drogueRun.DrogueRunID.ToString()), drogueRun);
-                }
-            }
+            return await drogueRunService.Add(drogueRun);
         }
-        // PUT api/drogueRun
-        [Route("")]
-        public IHttpActionResult Put([FromBody]DrogueRun drogueRun, [FromUri]string lang = "en")
+        [HttpPut]
+        public async Task<ActionResult<DrogueRun>> Put(DrogueRun drogueRun)
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                DrogueRunService drogueRunService = new DrogueRunService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
-
-                if (!drogueRunService.Update(drogueRun))
-                {
-                    return BadRequest(String.Join("|||", drogueRun.ValidationResults));
-                }
-                else
-                {
-                    drogueRun.ValidationResults = null;
-                    return Ok(drogueRun);
-                }
-            }
+            return await drogueRunService.Update(drogueRun);
         }
-        // DELETE api/drogueRun
-        [Route("")]
-        public IHttpActionResult Delete([FromBody]DrogueRun drogueRun, [FromUri]string lang = "en")
+        [HttpDelete]
+        public async Task<ActionResult<DrogueRun>> Delete(DrogueRun drogueRun)
         {
-            using (CSSPDBContext db = new CSSPDBContext(DatabaseType))
-            {
-                DrogueRunService drogueRunService = new DrogueRunService(new Query() { Language = (lang == "fr" ? LanguageEnum.fr : LanguageEnum.en) }, db, ContactID);
-
-                if (!drogueRunService.Delete(drogueRun))
-                {
-                    return BadRequest(String.Join("|||", drogueRun.ValidationResults));
-                }
-                else
-                {
-                    drogueRun.ValidationResults = null;
-                    return Ok(drogueRun);
-                }
-            }
+            return await drogueRunService.Delete(drogueRun);
         }
         #endregion Functions public
 

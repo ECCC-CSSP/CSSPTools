@@ -16,6 +16,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Transactions;
 using Xunit;
 
 namespace CSSPServices.Tests
@@ -54,37 +55,40 @@ namespace CSSPServices.Tests
 
             await Setup(new CultureInfo(culture));
 
-            Infrastructure infrastructure = GetFilledRandomInfrastructure(""); 
+            using (TransactionScope ts = new TransactionScope())
+            {
+               Infrastructure infrastructure = GetFilledRandomInfrastructure(""); 
 
-            // List<Infrastructure>
-            var actionInfrastructureList = await infrastructureService.GetInfrastructureList();
-            Assert.Equal(200, ((ObjectResult)actionInfrastructureList.Result).StatusCode);
-            Assert.NotNull(((OkObjectResult)actionInfrastructureList.Result).Value);
-            List<Infrastructure> infrastructureList = (List<Infrastructure>)(((OkObjectResult)actionInfrastructureList.Result).Value);
+               // List<Infrastructure>
+               var actionInfrastructureList = await infrastructureService.GetInfrastructureList();
+               Assert.Equal(200, ((ObjectResult)actionInfrastructureList.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionInfrastructureList.Result).Value);
+               List<Infrastructure> infrastructureList = (List<Infrastructure>)(((OkObjectResult)actionInfrastructureList.Result).Value);
 
-            int count = ((List<Infrastructure>)((OkObjectResult)actionInfrastructureList.Result).Value).Count();
-            Assert.True(count > 0);
+               int count = ((List<Infrastructure>)((OkObjectResult)actionInfrastructureList.Result).Value).Count();
+                Assert.True(count > 0);
 
-            // Add Infrastructure
-            var actionInfrastructureAdded = await infrastructureService.Add(infrastructure);
-            Assert.Equal(200, ((ObjectResult)actionInfrastructureAdded.Result).StatusCode);
-            Assert.NotNull(((OkObjectResult)actionInfrastructureAdded.Result).Value);
-            Infrastructure infrastructureAdded = (Infrastructure)(((OkObjectResult)actionInfrastructureAdded.Result).Value);
-            Assert.NotNull(infrastructureAdded);
+               // Add Infrastructure
+               var actionInfrastructureAdded = await infrastructureService.Add(infrastructure);
+               Assert.Equal(200, ((ObjectResult)actionInfrastructureAdded.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionInfrastructureAdded.Result).Value);
+               Infrastructure infrastructureAdded = (Infrastructure)(((OkObjectResult)actionInfrastructureAdded.Result).Value);
+               Assert.NotNull(infrastructureAdded);
 
-            // Update Infrastructure
-            var actionInfrastructureUpdated = await infrastructureService.Update(infrastructure);
-            Assert.Equal(200, ((ObjectResult)actionInfrastructureUpdated.Result).StatusCode);
-            Assert.NotNull(((OkObjectResult)actionInfrastructureUpdated.Result).Value);
-            Infrastructure infrastructureUpdated = (Infrastructure)(((OkObjectResult)actionInfrastructureUpdated.Result).Value);
-            Assert.NotNull(infrastructureUpdated);
+               // Update Infrastructure
+               var actionInfrastructureUpdated = await infrastructureService.Update(infrastructure);
+               Assert.Equal(200, ((ObjectResult)actionInfrastructureUpdated.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionInfrastructureUpdated.Result).Value);
+               Infrastructure infrastructureUpdated = (Infrastructure)(((OkObjectResult)actionInfrastructureUpdated.Result).Value);
+               Assert.NotNull(infrastructureUpdated);
 
-            // Delete Infrastructure
-            var actionInfrastructureDeleted = await infrastructureService.Delete(infrastructure);
-            Assert.Equal(200, ((ObjectResult)actionInfrastructureDeleted.Result).StatusCode);
-            Assert.NotNull(((OkObjectResult)actionInfrastructureDeleted.Result).Value);
-            Infrastructure infrastructureDeleted = (Infrastructure)(((OkObjectResult)actionInfrastructureDeleted.Result).Value);
-            Assert.NotNull(infrastructureDeleted);
+               // Delete Infrastructure
+               var actionInfrastructureDeleted = await infrastructureService.Delete(infrastructure);
+               Assert.Equal(200, ((ObjectResult)actionInfrastructureDeleted.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionInfrastructureDeleted.Result).Value);
+               Infrastructure infrastructureDeleted = (Infrastructure)(((OkObjectResult)actionInfrastructureDeleted.Result).Value);
+               Assert.NotNull(infrastructureDeleted);
+            }
         }
         #endregion Tests Generated CRUD
 

@@ -94,6 +94,7 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
                 sb.AppendLine(@"using System.IO;");
                 sb.AppendLine(@"using System.Linq;");
                 sb.AppendLine(@"using System.Threading.Tasks;");
+                sb.AppendLine(@"using System.Transactions;");
                 sb.AppendLine(@"using Xunit;");
                 sb.AppendLine(@"");
                 sb.AppendLine(@"namespace CSSPServices.Tests");

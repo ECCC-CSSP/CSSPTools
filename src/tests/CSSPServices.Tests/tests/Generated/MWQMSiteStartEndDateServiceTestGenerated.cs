@@ -16,6 +16,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Transactions;
 using Xunit;
 
 namespace CSSPServices.Tests
@@ -54,37 +55,40 @@ namespace CSSPServices.Tests
 
             await Setup(new CultureInfo(culture));
 
-            MWQMSiteStartEndDate mwqmSiteStartEndDate = GetFilledRandomMWQMSiteStartEndDate(""); 
+            using (TransactionScope ts = new TransactionScope())
+            {
+               MWQMSiteStartEndDate mwqmSiteStartEndDate = GetFilledRandomMWQMSiteStartEndDate(""); 
 
-            // List<MWQMSiteStartEndDate>
-            var actionMWQMSiteStartEndDateList = await mwqmSiteStartEndDateService.GetMWQMSiteStartEndDateList();
-            Assert.Equal(200, ((ObjectResult)actionMWQMSiteStartEndDateList.Result).StatusCode);
-            Assert.NotNull(((OkObjectResult)actionMWQMSiteStartEndDateList.Result).Value);
-            List<MWQMSiteStartEndDate> mwqmSiteStartEndDateList = (List<MWQMSiteStartEndDate>)(((OkObjectResult)actionMWQMSiteStartEndDateList.Result).Value);
+               // List<MWQMSiteStartEndDate>
+               var actionMWQMSiteStartEndDateList = await mwqmSiteStartEndDateService.GetMWQMSiteStartEndDateList();
+               Assert.Equal(200, ((ObjectResult)actionMWQMSiteStartEndDateList.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionMWQMSiteStartEndDateList.Result).Value);
+               List<MWQMSiteStartEndDate> mwqmSiteStartEndDateList = (List<MWQMSiteStartEndDate>)(((OkObjectResult)actionMWQMSiteStartEndDateList.Result).Value);
 
-            int count = ((List<MWQMSiteStartEndDate>)((OkObjectResult)actionMWQMSiteStartEndDateList.Result).Value).Count();
-            Assert.True(count > 0);
+               int count = ((List<MWQMSiteStartEndDate>)((OkObjectResult)actionMWQMSiteStartEndDateList.Result).Value).Count();
+                Assert.True(count > 0);
 
-            // Add MWQMSiteStartEndDate
-            var actionMWQMSiteStartEndDateAdded = await mwqmSiteStartEndDateService.Add(mwqmSiteStartEndDate);
-            Assert.Equal(200, ((ObjectResult)actionMWQMSiteStartEndDateAdded.Result).StatusCode);
-            Assert.NotNull(((OkObjectResult)actionMWQMSiteStartEndDateAdded.Result).Value);
-            MWQMSiteStartEndDate mwqmSiteStartEndDateAdded = (MWQMSiteStartEndDate)(((OkObjectResult)actionMWQMSiteStartEndDateAdded.Result).Value);
-            Assert.NotNull(mwqmSiteStartEndDateAdded);
+               // Add MWQMSiteStartEndDate
+               var actionMWQMSiteStartEndDateAdded = await mwqmSiteStartEndDateService.Add(mwqmSiteStartEndDate);
+               Assert.Equal(200, ((ObjectResult)actionMWQMSiteStartEndDateAdded.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionMWQMSiteStartEndDateAdded.Result).Value);
+               MWQMSiteStartEndDate mwqmSiteStartEndDateAdded = (MWQMSiteStartEndDate)(((OkObjectResult)actionMWQMSiteStartEndDateAdded.Result).Value);
+               Assert.NotNull(mwqmSiteStartEndDateAdded);
 
-            // Update MWQMSiteStartEndDate
-            var actionMWQMSiteStartEndDateUpdated = await mwqmSiteStartEndDateService.Update(mwqmSiteStartEndDate);
-            Assert.Equal(200, ((ObjectResult)actionMWQMSiteStartEndDateUpdated.Result).StatusCode);
-            Assert.NotNull(((OkObjectResult)actionMWQMSiteStartEndDateUpdated.Result).Value);
-            MWQMSiteStartEndDate mwqmSiteStartEndDateUpdated = (MWQMSiteStartEndDate)(((OkObjectResult)actionMWQMSiteStartEndDateUpdated.Result).Value);
-            Assert.NotNull(mwqmSiteStartEndDateUpdated);
+               // Update MWQMSiteStartEndDate
+               var actionMWQMSiteStartEndDateUpdated = await mwqmSiteStartEndDateService.Update(mwqmSiteStartEndDate);
+               Assert.Equal(200, ((ObjectResult)actionMWQMSiteStartEndDateUpdated.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionMWQMSiteStartEndDateUpdated.Result).Value);
+               MWQMSiteStartEndDate mwqmSiteStartEndDateUpdated = (MWQMSiteStartEndDate)(((OkObjectResult)actionMWQMSiteStartEndDateUpdated.Result).Value);
+               Assert.NotNull(mwqmSiteStartEndDateUpdated);
 
-            // Delete MWQMSiteStartEndDate
-            var actionMWQMSiteStartEndDateDeleted = await mwqmSiteStartEndDateService.Delete(mwqmSiteStartEndDate);
-            Assert.Equal(200, ((ObjectResult)actionMWQMSiteStartEndDateDeleted.Result).StatusCode);
-            Assert.NotNull(((OkObjectResult)actionMWQMSiteStartEndDateDeleted.Result).Value);
-            MWQMSiteStartEndDate mwqmSiteStartEndDateDeleted = (MWQMSiteStartEndDate)(((OkObjectResult)actionMWQMSiteStartEndDateDeleted.Result).Value);
-            Assert.NotNull(mwqmSiteStartEndDateDeleted);
+               // Delete MWQMSiteStartEndDate
+               var actionMWQMSiteStartEndDateDeleted = await mwqmSiteStartEndDateService.Delete(mwqmSiteStartEndDate);
+               Assert.Equal(200, ((ObjectResult)actionMWQMSiteStartEndDateDeleted.Result).StatusCode);
+               Assert.NotNull(((OkObjectResult)actionMWQMSiteStartEndDateDeleted.Result).Value);
+               MWQMSiteStartEndDate mwqmSiteStartEndDateDeleted = (MWQMSiteStartEndDate)(((OkObjectResult)actionMWQMSiteStartEndDateDeleted.Result).Value);
+               Assert.NotNull(mwqmSiteStartEndDateDeleted);
+            }
         }
         #endregion Tests Generated CRUD
 
