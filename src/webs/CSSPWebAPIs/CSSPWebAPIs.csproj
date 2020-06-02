@@ -156,5 +156,9 @@
     </None>
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Controllers\src\Generated\" />
+  </ItemGroup>
+
 
 </Project>

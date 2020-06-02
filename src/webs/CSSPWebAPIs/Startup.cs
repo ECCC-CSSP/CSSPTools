@@ -1,8 +1,5 @@
-using ActionCommandDBServices.Models;
-using ActionCommandDBServices.Services;
 using CSSPEnums;
 using CSSPModels;
-using CSSPServices;
 using LoggedInServices.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -12,17 +9,13 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
-using PolSourceGroupingExcelFileReadServices.Services;
-using System;
-using System.IO;
 using System.Text;
 using UserServices.Models;
 using UserServices.Services;
-using ValidateAppSettingsServices.Services;
 
 namespace CSSPCodeGenWebAPI
 {
-    public class Startup
+    public partial class Startup
     {
         public IConfiguration Configuration { get; }
 
@@ -99,25 +92,24 @@ namespace CSSPCodeGenWebAPI
             services.AddIdentityCore<ApplicationUser>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
-            string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+            //string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
 
-            FileInfo fiDB = new FileInfo(Configuration.GetValue<string>("DBFileName").Replace("{AppDataPath}", appDataPath));
+            //FileInfo fiDB = new FileInfo(Configuration.GetValue<string>("DBFileName").Replace("{AppDataPath}", appDataPath));
 
-            services.AddDbContext<ActionCommandContext>(options =>
-            {
-                options.UseSqlite($"DataSource={fiDB.FullName}");
-            });
+            //services.AddDbContext<ActionCommandContext>(options =>
+            //{
+            //    options.UseSqlite($"DataSource={fiDB.FullName}");
+            //});
 
             services.AddScoped<IEnums, Enums>();
 
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<ILoggedInService, LoggedInService>();
-            services.AddScoped<IActionCommandDBService, ActionCommandDBService>();
-            services.AddScoped<IValidateAppSettingsService, ValidateAppSettingsService>();
-            services.AddScoped<IPolSourceGroupingExcelFileReadService, PolSourceGroupingExcelFileReadService>();
+            //services.AddScoped<IActionCommandDBService, ActionCommandDBService>();
+            //services.AddScoped<IValidateAppSettingsService, ValidateAppSettingsService>();
+            //services.AddScoped<IPolSourceGroupingExcelFileReadService, PolSourceGroupingExcelFileReadService>();
 
-            services.AddScoped<IAddressService, AddressService>();
-
+            LoadAllDBServices(services);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
