@@ -64,21 +64,14 @@ namespace AngularInterfacesGeneratedServices.Services
             }
             ActionCommandDBService.ExecutionStatusText.AppendLine($"Loaded [{ fiCSSPModelsDLL.FullName }] ...");
 
-            CreateValidationResultTypeFile();
-
             List<string> removeClass = new List<string>()
             {
                 "CSSPAfterAttribute", "CSSPAllowNullAttribute", "CSSPBiggerAttribute", "CSSPDBContext", "CSSPDescriptionENAttribute",
                 "CSSPDescriptionFRAttribute", "CSSPDisplayENAttribute", "CSSPDisplayFRAttribute", "CSSPEnumTypeAttribute",
-                "CSSPEnumTypeTextAttribute", "CSSPExistAttribute", "CSSPFillAttribute", "CSSPModelsRes", "Query"
+                "CSSPEnumTypeTextAttribute", "CSSPExistAttribute", "CSSPFillAttribute", "CSSPModelsRes", "TestDBContext",
             };
             foreach (DLLTypeInfo dllTypeInfoModels in DLLTypeInfoCSSPModelsList)
             {
-                //if (!(dllTypeInfoModels.Name == "Address" || dllTypeInfoModels.Name == "LastUpdate" || dllTypeInfoModels.Name == "CSSPError"))
-                //{
-                //    continue;
-                //}
-
                 if (!removeClass.Contains(dllTypeInfoModels.Name))
                 {
                     CreateTypeFile(dllTypeInfoModels, DLLTypeInfoCSSPModelsList);

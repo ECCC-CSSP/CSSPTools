@@ -65,9 +65,8 @@ namespace AngularInterfacesGeneratedServices.Services
                 new AppSettingParameter() { Parameter = "DBFileName", ExpectedValue = "{AppDataPath}\\CSSP\\ActionCommandDB.db", IsFile = true, CheckExist = true },
                 new AppSettingParameter() { Parameter = "CSSPEnums", ExpectedValue = "C:\\CSSPTools\\src\\dlls\\CSSPEnums\\bin\\Debug\\netcoreapp3.1\\CSSPEnums.dll", IsFile = true, CheckExist = true },
                 new AppSettingParameter() { Parameter = "CSSPModels", ExpectedValue = "C:\\CSSPTools\\src\\dlls\\CSSPModels\\bin\\Debug\\netcoreapp3.1\\CSSPModels.dll", IsFile = true, CheckExist = true },
-                new AppSettingParameter() { Parameter = "OutputDir", ExpectedValue = "C:\\CSSPCode\\CSSPWebToolsAng\\src\\app\\interfaces\\generated\\" },
-                new AppSettingParameter() { Parameter = "ValidateResultFileName", ExpectedValue = "C:\\CSSPCode\\CSSPWebToolsAng\\src\\app\\interfaces\\generated\\validationresult.interface.ts" },
-                new AppSettingParameter() { Parameter = "InterfaceFileName", ExpectedValue = "C:\\CSSPCode\\CSSPWebToolsAng\\src\\app\\interfaces\\generated\\{TypeName}.interface.ts" },
+                new AppSettingParameter() { Parameter = "OutputDir", ExpectedValue = "C:\\CSSPTools\\src\\webs\\CSSPWebToolsAng\\client-apps\\src\\app\\interfaces\\generated\\" },
+                new AppSettingParameter() { Parameter = "InterfaceFileName", ExpectedValue = "C:\\CSSPTools\\src\\webs\\CSSPWebToolsAng\\client-apps\\src\\app\\interfaces\\generated\\{TypeName}.interface.ts" },
             };
 
             return await Task.FromResult(true);

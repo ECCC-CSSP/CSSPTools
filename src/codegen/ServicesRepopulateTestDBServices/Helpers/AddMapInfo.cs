@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
@@ -24,11 +25,7 @@ namespace ServicesRepopulateTestDBServices.Services
                 mapInfo.LastUpdateContactTVItemID = ContactTVItemID;
 
                 mapInfo.MapInfoID = 0;
-                if (mapInfo.ValidationResults.Count() > 0)
-                {
-                    ActionCommandDBService.ErrorText.AppendLine(mapInfo.ValidationResults.First().ErrorMessage);
-                    return await Task.FromResult(false);
-                }
+
                 try
                 {
                     dbTestDB.MapInfos.Add(mapInfo);
@@ -51,11 +48,6 @@ namespace ServicesRepopulateTestDBServices.Services
                     mapInfoPoint.MapInfoID = mapInfo.MapInfoID;
                     mapInfoPoint.LastUpdateContactTVItemID = ContactTVItemID;
 
-                    if (mapInfoPoint.ValidationResults.Count() > 0)
-                    {
-                        ActionCommandDBService.ErrorText.AppendLine(mapInfoPoint.ValidationResults.First().ErrorMessage);
-                        return await Task.FromResult(false);
-                    }
                     try
                     {
                         dbTestDB.MapInfoPoints.Add(mapInfoPoint);
