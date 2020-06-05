@@ -5,7 +5,7 @@
  *
  */
 
-import { EnumIDAndText } from 'src/app/models/enumidandtext.models';
+import { EnumIDAndText } from 'src/app/models/enumidandtext.model';
 
 export enum AddressTypeEnum {
     Mailing = 1,
@@ -16,16 +16,27 @@ export enum AddressTypeEnum {
 export function AddressTypeEnum_GetOrderedText(): EnumIDAndText[] {
     let enumTextOrderedList: EnumIDAndText[] = [];
     if ($localize.locale === 'fr-CA') {
-       enumTextOrderedList.push({ EnumID: 1, EnumText: 'Postale' });
-       enumTextOrderedList.push({ EnumID: 2, EnumText: 'Livraison' });
-       enumTextOrderedList.push({ EnumID: 3, EnumText: 'Civic (fr)' });
+        enumTextOrderedList.push({ EnumID: 1, EnumText: 'Postale' });
+        enumTextOrderedList.push({ EnumID: 2, EnumText: 'Livraison' });
+        enumTextOrderedList.push({ EnumID: 3, EnumText: 'Civic (fr)' });
     }
     else {
-       enumTextOrderedList.push({ EnumID: 1, EnumText: 'Mailing' });
-       enumTextOrderedList.push({ EnumID: 2, EnumText: 'Shipping' });
-       enumTextOrderedList.push({ EnumID: 3, EnumText: 'Civic' });
+        enumTextOrderedList.push({ EnumID: 1, EnumText: 'Mailing' });
+        enumTextOrderedList.push({ EnumID: 2, EnumText: 'Shipping' });
+        enumTextOrderedList.push({ EnumID: 3, EnumText: 'Civic' });
     }
 
-    return enumTextOrderedList.sort((a,b) => a.EnumText.localeCompare(b.EnumText));
+    return enumTextOrderedList.sort((a, b) => a.EnumText.localeCompare(b.EnumText));
+}
 
+export function AddressTypeEnum_GetIDText(enumID: number): string {
+    let addressTypeEnunText: string;
+    AddressTypeEnum_GetOrderedText().forEach(e => {
+        if (e.EnumID == enumID) {
+            addressTypeEnunText = e.EnumText;
+            return false;
+        }
+    });
+
+    return addressTypeEnunText;
 }

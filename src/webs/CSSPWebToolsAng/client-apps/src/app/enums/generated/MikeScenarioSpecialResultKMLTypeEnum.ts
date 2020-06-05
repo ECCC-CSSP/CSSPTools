@@ -5,7 +5,7 @@
  *
  */
 
-import { EnumIDAndText } from 'src/app/models/enumidandtext.models';
+import { EnumIDAndText } from 'src/app/models/enumidandtext.model';
 
 export enum MikeScenarioSpecialResultKMLTypeEnum {
     Mesh = 1,
@@ -18,20 +18,31 @@ export enum MikeScenarioSpecialResultKMLTypeEnum {
 export function MikeScenarioSpecialResultKMLTypeEnum_GetOrderedText(): EnumIDAndText[] {
     let enumTextOrderedList: EnumIDAndText[] = [];
     if ($localize.locale === 'fr-CA') {
-       enumTextOrderedList.push({ EnumID: 1, EnumText: 'Grillage' });
-       enumTextOrderedList.push({ EnumID: 2, EnumText: 'Région d\'étude' });
-       enumTextOrderedList.push({ EnumID: 3, EnumText: 'Conditions aux limits' });
-       enumTextOrderedList.push({ EnumID: 4, EnumText: 'Limit de pollution' });
-       enumTextOrderedList.push({ EnumID: 5, EnumText: 'Animation de pollution' });
+        enumTextOrderedList.push({ EnumID: 1, EnumText: 'Grillage' });
+        enumTextOrderedList.push({ EnumID: 2, EnumText: 'Région d\'étude' });
+        enumTextOrderedList.push({ EnumID: 3, EnumText: 'Conditions aux limits' });
+        enumTextOrderedList.push({ EnumID: 4, EnumText: 'Limit de pollution' });
+        enumTextOrderedList.push({ EnumID: 5, EnumText: 'Animation de pollution' });
     }
     else {
-       enumTextOrderedList.push({ EnumID: 1, EnumText: 'Mesh' });
-       enumTextOrderedList.push({ EnumID: 2, EnumText: 'Study area' });
-       enumTextOrderedList.push({ EnumID: 3, EnumText: 'Boundary conditions' });
-       enumTextOrderedList.push({ EnumID: 4, EnumText: 'Pollution limit' });
-       enumTextOrderedList.push({ EnumID: 5, EnumText: 'Pollution animation' });
+        enumTextOrderedList.push({ EnumID: 1, EnumText: 'Mesh' });
+        enumTextOrderedList.push({ EnumID: 2, EnumText: 'Study area' });
+        enumTextOrderedList.push({ EnumID: 3, EnumText: 'Boundary conditions' });
+        enumTextOrderedList.push({ EnumID: 4, EnumText: 'Pollution limit' });
+        enumTextOrderedList.push({ EnumID: 5, EnumText: 'Pollution animation' });
     }
 
-    return enumTextOrderedList.sort((a,b) => a.EnumText.localeCompare(b.EnumText));
+    return enumTextOrderedList.sort((a, b) => a.EnumText.localeCompare(b.EnumText));
+}
 
+export function MikeScenarioSpecialResultKMLTypeEnum_GetIDText(enumID: number): string {
+    let addressTypeEnunText: string;
+    MikeScenarioSpecialResultKMLTypeEnum_GetOrderedText().forEach(e => {
+        if (e.EnumID == enumID) {
+            addressTypeEnunText = e.EnumText;
+            return false;
+        }
+    });
+
+    return addressTypeEnunText;
 }

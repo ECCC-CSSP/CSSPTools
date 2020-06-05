@@ -5,7 +5,7 @@
  *
  */
 
-import { EnumIDAndText } from 'src/app/models/enumidandtext.models';
+import { EnumIDAndText } from 'src/app/models/enumidandtext.model';
 
 export enum InfrastructureTypeEnum {
     WWTP = 1,
@@ -18,20 +18,31 @@ export enum InfrastructureTypeEnum {
 export function InfrastructureTypeEnum_GetOrderedText(): EnumIDAndText[] {
     let enumTextOrderedList: EnumIDAndText[] = [];
     if ($localize.locale === 'fr-CA') {
-       enumTextOrderedList.push({ EnumID: 1, EnumText: 'WWTP (fr)' });
-       enumTextOrderedList.push({ EnumID: 2, EnumText: 'Lift Station (fr)' });
-       enumTextOrderedList.push({ EnumID: 3, EnumText: 'Other (fr)' });
-       enumTextOrderedList.push({ EnumID: 4, EnumText: 'See other municipality (fr)' });
-       enumTextOrderedList.push({ EnumID: 5, EnumText: 'Line overflow (fr)' });
+        enumTextOrderedList.push({ EnumID: 1, EnumText: 'WWTP (fr)' });
+        enumTextOrderedList.push({ EnumID: 2, EnumText: 'Lift Station (fr)' });
+        enumTextOrderedList.push({ EnumID: 3, EnumText: 'Other (fr)' });
+        enumTextOrderedList.push({ EnumID: 4, EnumText: 'See other municipality (fr)' });
+        enumTextOrderedList.push({ EnumID: 5, EnumText: 'Line overflow (fr)' });
     }
     else {
-       enumTextOrderedList.push({ EnumID: 1, EnumText: 'WWTP' });
-       enumTextOrderedList.push({ EnumID: 2, EnumText: 'Lift Station' });
-       enumTextOrderedList.push({ EnumID: 3, EnumText: 'Other' });
-       enumTextOrderedList.push({ EnumID: 4, EnumText: 'See other municipality' });
-       enumTextOrderedList.push({ EnumID: 5, EnumText: 'Line overflow' });
+        enumTextOrderedList.push({ EnumID: 1, EnumText: 'WWTP' });
+        enumTextOrderedList.push({ EnumID: 2, EnumText: 'Lift Station' });
+        enumTextOrderedList.push({ EnumID: 3, EnumText: 'Other' });
+        enumTextOrderedList.push({ EnumID: 4, EnumText: 'See other municipality' });
+        enumTextOrderedList.push({ EnumID: 5, EnumText: 'Line overflow' });
     }
 
-    return enumTextOrderedList.sort((a,b) => a.EnumText.localeCompare(b.EnumText));
+    return enumTextOrderedList.sort((a, b) => a.EnumText.localeCompare(b.EnumText));
+}
 
+export function InfrastructureTypeEnum_GetIDText(enumID: number): string {
+    let addressTypeEnunText: string;
+    InfrastructureTypeEnum_GetOrderedText().forEach(e => {
+        if (e.EnumID == enumID) {
+            addressTypeEnunText = e.EnumText;
+            return false;
+        }
+    });
+
+    return addressTypeEnunText;
 }

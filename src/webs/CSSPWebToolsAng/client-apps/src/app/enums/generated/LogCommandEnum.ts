@@ -5,7 +5,7 @@
  *
  */
 
-import { EnumIDAndText } from 'src/app/models/enumidandtext.models';
+import { EnumIDAndText } from 'src/app/models/enumidandtext.model';
 
 export enum LogCommandEnum {
     Add = 1,
@@ -16,16 +16,27 @@ export enum LogCommandEnum {
 export function LogCommandEnum_GetOrderedText(): EnumIDAndText[] {
     let enumTextOrderedList: EnumIDAndText[] = [];
     if ($localize.locale === 'fr-CA') {
-       enumTextOrderedList.push({ EnumID: 1, EnumText: 'Add (fr)' });
-       enumTextOrderedList.push({ EnumID: 2, EnumText: 'Change (fr)' });
-       enumTextOrderedList.push({ EnumID: 3, EnumText: 'Delete (fr)' });
+        enumTextOrderedList.push({ EnumID: 1, EnumText: 'Add (fr)' });
+        enumTextOrderedList.push({ EnumID: 2, EnumText: 'Change (fr)' });
+        enumTextOrderedList.push({ EnumID: 3, EnumText: 'Delete (fr)' });
     }
     else {
-       enumTextOrderedList.push({ EnumID: 1, EnumText: 'Add' });
-       enumTextOrderedList.push({ EnumID: 2, EnumText: 'Change' });
-       enumTextOrderedList.push({ EnumID: 3, EnumText: 'Delete' });
+        enumTextOrderedList.push({ EnumID: 1, EnumText: 'Add' });
+        enumTextOrderedList.push({ EnumID: 2, EnumText: 'Change' });
+        enumTextOrderedList.push({ EnumID: 3, EnumText: 'Delete' });
     }
 
-    return enumTextOrderedList.sort((a,b) => a.EnumText.localeCompare(b.EnumText));
+    return enumTextOrderedList.sort((a, b) => a.EnumText.localeCompare(b.EnumText));
+}
 
+export function LogCommandEnum_GetIDText(enumID: number): string {
+    let addressTypeEnunText: string;
+    LogCommandEnum_GetOrderedText().forEach(e => {
+        if (e.EnumID == enumID) {
+            addressTypeEnunText = e.EnumText;
+            return false;
+        }
+    });
+
+    return addressTypeEnunText;
 }

@@ -5,7 +5,7 @@
  *
  */
 
-import { EnumIDAndText } from 'src/app/models/enumidandtext.models';
+import { EnumIDAndText } from 'src/app/models/enumidandtext.model';
 
 export enum PreliminaryTreatmentTypeEnum {
     NotApplicable = 1,
@@ -17,18 +17,29 @@ export enum PreliminaryTreatmentTypeEnum {
 export function PreliminaryTreatmentTypeEnum_GetOrderedText(): EnumIDAndText[] {
     let enumTextOrderedList: EnumIDAndText[] = [];
     if ($localize.locale === 'fr-CA') {
-       enumTextOrderedList.push({ EnumID: 1, EnumText: 'Not applicable (fr)' });
-       enumTextOrderedList.push({ EnumID: 2, EnumText: 'Bar screen (fr)' });
-       enumTextOrderedList.push({ EnumID: 3, EnumText: 'Grinder (fr)' });
-       enumTextOrderedList.push({ EnumID: 4, EnumText: 'Mechanical screening (fr)' });
+        enumTextOrderedList.push({ EnumID: 1, EnumText: 'Not applicable (fr)' });
+        enumTextOrderedList.push({ EnumID: 2, EnumText: 'Bar screen (fr)' });
+        enumTextOrderedList.push({ EnumID: 3, EnumText: 'Grinder (fr)' });
+        enumTextOrderedList.push({ EnumID: 4, EnumText: 'Mechanical screening (fr)' });
     }
     else {
-       enumTextOrderedList.push({ EnumID: 1, EnumText: 'Not applicable' });
-       enumTextOrderedList.push({ EnumID: 2, EnumText: 'Bar screen' });
-       enumTextOrderedList.push({ EnumID: 3, EnumText: 'Grinder' });
-       enumTextOrderedList.push({ EnumID: 4, EnumText: 'Mechanical screening' });
+        enumTextOrderedList.push({ EnumID: 1, EnumText: 'Not applicable' });
+        enumTextOrderedList.push({ EnumID: 2, EnumText: 'Bar screen' });
+        enumTextOrderedList.push({ EnumID: 3, EnumText: 'Grinder' });
+        enumTextOrderedList.push({ EnumID: 4, EnumText: 'Mechanical screening' });
     }
 
-    return enumTextOrderedList.sort((a,b) => a.EnumText.localeCompare(b.EnumText));
+    return enumTextOrderedList.sort((a, b) => a.EnumText.localeCompare(b.EnumText));
+}
 
+export function PreliminaryTreatmentTypeEnum_GetIDText(enumID: number): string {
+    let addressTypeEnunText: string;
+    PreliminaryTreatmentTypeEnum_GetOrderedText().forEach(e => {
+        if (e.EnumID == enumID) {
+            addressTypeEnunText = e.EnumText;
+            return false;
+        }
+    });
+
+    return addressTypeEnunText;
 }

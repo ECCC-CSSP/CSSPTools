@@ -5,7 +5,7 @@
  *
  */
 
-import { EnumIDAndText } from 'src/app/models/enumidandtext.models';
+import { EnumIDAndText } from 'src/app/models/enumidandtext.model';
 
 export enum StreetTypeEnum {
     Street = 1,
@@ -23,30 +23,41 @@ export enum StreetTypeEnum {
 export function StreetTypeEnum_GetOrderedText(): EnumIDAndText[] {
     let enumTextOrderedList: EnumIDAndText[] = [];
     if ($localize.locale === 'fr-CA') {
-       enumTextOrderedList.push({ EnumID: 1, EnumText: 'Rue' });
-       enumTextOrderedList.push({ EnumID: 2, EnumText: 'Chemin' });
-       enumTextOrderedList.push({ EnumID: 3, EnumText: 'Avenue' });
-       enumTextOrderedList.push({ EnumID: 4, EnumText: 'Croissant' });
-       enumTextOrderedList.push({ EnumID: 5, EnumText: 'Ruelle' });
-       enumTextOrderedList.push({ EnumID: 6, EnumText: 'Allée' });
-       enumTextOrderedList.push({ EnumID: 7, EnumText: 'Promenade' });
-       enumTextOrderedList.push({ EnumID: 8, EnumText: 'Boulevard' });
-       enumTextOrderedList.push({ EnumID: 9, EnumText: 'Route (fr)' });
-       enumTextOrderedList.push({ EnumID: 10, EnumText: 'Voie' });
+        enumTextOrderedList.push({ EnumID: 1, EnumText: 'Rue' });
+        enumTextOrderedList.push({ EnumID: 2, EnumText: 'Chemin' });
+        enumTextOrderedList.push({ EnumID: 3, EnumText: 'Avenue' });
+        enumTextOrderedList.push({ EnumID: 4, EnumText: 'Croissant' });
+        enumTextOrderedList.push({ EnumID: 5, EnumText: 'Ruelle' });
+        enumTextOrderedList.push({ EnumID: 6, EnumText: 'Allée' });
+        enumTextOrderedList.push({ EnumID: 7, EnumText: 'Promenade' });
+        enumTextOrderedList.push({ EnumID: 8, EnumText: 'Boulevard' });
+        enumTextOrderedList.push({ EnumID: 9, EnumText: 'Route (fr)' });
+        enumTextOrderedList.push({ EnumID: 10, EnumText: 'Voie' });
     }
     else {
-       enumTextOrderedList.push({ EnumID: 1, EnumText: 'Street' });
-       enumTextOrderedList.push({ EnumID: 2, EnumText: 'Road' });
-       enumTextOrderedList.push({ EnumID: 3, EnumText: 'Avenue' });
-       enumTextOrderedList.push({ EnumID: 4, EnumText: 'Crescent' });
-       enumTextOrderedList.push({ EnumID: 5, EnumText: 'Court' });
-       enumTextOrderedList.push({ EnumID: 6, EnumText: 'Alley' });
-       enumTextOrderedList.push({ EnumID: 7, EnumText: 'Drive' });
-       enumTextOrderedList.push({ EnumID: 8, EnumText: 'Boulevard' });
-       enumTextOrderedList.push({ EnumID: 9, EnumText: 'Route' });
-       enumTextOrderedList.push({ EnumID: 10, EnumText: 'Lane' });
+        enumTextOrderedList.push({ EnumID: 1, EnumText: 'Street' });
+        enumTextOrderedList.push({ EnumID: 2, EnumText: 'Road' });
+        enumTextOrderedList.push({ EnumID: 3, EnumText: 'Avenue' });
+        enumTextOrderedList.push({ EnumID: 4, EnumText: 'Crescent' });
+        enumTextOrderedList.push({ EnumID: 5, EnumText: 'Court' });
+        enumTextOrderedList.push({ EnumID: 6, EnumText: 'Alley' });
+        enumTextOrderedList.push({ EnumID: 7, EnumText: 'Drive' });
+        enumTextOrderedList.push({ EnumID: 8, EnumText: 'Boulevard' });
+        enumTextOrderedList.push({ EnumID: 9, EnumText: 'Route' });
+        enumTextOrderedList.push({ EnumID: 10, EnumText: 'Lane' });
     }
 
-    return enumTextOrderedList.sort((a,b) => a.EnumText.localeCompare(b.EnumText));
+    return enumTextOrderedList.sort((a, b) => a.EnumText.localeCompare(b.EnumText));
+}
 
+export function StreetTypeEnum_GetIDText(enumID: number): string {
+    let addressTypeEnunText: string;
+    StreetTypeEnum_GetOrderedText().forEach(e => {
+        if (e.EnumID == enumID) {
+            addressTypeEnunText = e.EnumText;
+            return false;
+        }
+    });
+
+    return addressTypeEnunText;
 }

@@ -5,7 +5,7 @@
  *
  */
 
-import { EnumIDAndText } from 'src/app/models/enumidandtext.models';
+import { EnumIDAndText } from 'src/app/models/enumidandtext.model';
 
 export enum FacilityTypeEnum {
     Lagoon = 1,
@@ -15,14 +15,25 @@ export enum FacilityTypeEnum {
 export function FacilityTypeEnum_GetOrderedText(): EnumIDAndText[] {
     let enumTextOrderedList: EnumIDAndText[] = [];
     if ($localize.locale === 'fr-CA') {
-       enumTextOrderedList.push({ EnumID: 1, EnumText: 'Lagoon (fr)' });
-       enumTextOrderedList.push({ EnumID: 2, EnumText: 'Plant (fr)' });
+        enumTextOrderedList.push({ EnumID: 1, EnumText: 'Lagoon (fr)' });
+        enumTextOrderedList.push({ EnumID: 2, EnumText: 'Plant (fr)' });
     }
     else {
-       enumTextOrderedList.push({ EnumID: 1, EnumText: 'Lagoon' });
-       enumTextOrderedList.push({ EnumID: 2, EnumText: 'Plant' });
+        enumTextOrderedList.push({ EnumID: 1, EnumText: 'Lagoon' });
+        enumTextOrderedList.push({ EnumID: 2, EnumText: 'Plant' });
     }
 
-    return enumTextOrderedList.sort((a,b) => a.EnumText.localeCompare(b.EnumText));
+    return enumTextOrderedList.sort((a, b) => a.EnumText.localeCompare(b.EnumText));
+}
 
+export function FacilityTypeEnum_GetIDText(enumID: number): string {
+    let addressTypeEnunText: string;
+    FacilityTypeEnum_GetOrderedText().forEach(e => {
+        if (e.EnumID == enumID) {
+            addressTypeEnunText = e.EnumText;
+            return false;
+        }
+    });
+
+    return addressTypeEnunText;
 }

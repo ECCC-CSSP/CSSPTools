@@ -5,7 +5,7 @@
  *
  */
 
-import { EnumIDAndText } from 'src/app/models/enumidandtext.models';
+import { EnumIDAndText } from 'src/app/models/enumidandtext.model';
 
 export enum AerationTypeEnum {
     MechanicalAirLines = 1,
@@ -15,14 +15,25 @@ export enum AerationTypeEnum {
 export function AerationTypeEnum_GetOrderedText(): EnumIDAndText[] {
     let enumTextOrderedList: EnumIDAndText[] = [];
     if ($localize.locale === 'fr-CA') {
-       enumTextOrderedList.push({ EnumID: 1, EnumText: 'Ligne d\'air méchanique' });
-       enumTextOrderedList.push({ EnumID: 2, EnumText: 'Mélangeurs de surface mécaniques' });
+        enumTextOrderedList.push({ EnumID: 1, EnumText: 'Ligne d\'air méchanique' });
+        enumTextOrderedList.push({ EnumID: 2, EnumText: 'Mélangeurs de surface mécaniques' });
     }
     else {
-       enumTextOrderedList.push({ EnumID: 1, EnumText: 'Mechanical Air Lines' });
-       enumTextOrderedList.push({ EnumID: 2, EnumText: 'Mechanical Surface Mixers' });
+        enumTextOrderedList.push({ EnumID: 1, EnumText: 'Mechanical Air Lines' });
+        enumTextOrderedList.push({ EnumID: 2, EnumText: 'Mechanical Surface Mixers' });
     }
 
-    return enumTextOrderedList.sort((a,b) => a.EnumText.localeCompare(b.EnumText));
+    return enumTextOrderedList.sort((a, b) => a.EnumText.localeCompare(b.EnumText));
+}
 
+export function AerationTypeEnum_GetIDText(enumID: number): string {
+    let addressTypeEnunText: string;
+    AerationTypeEnum_GetOrderedText().forEach(e => {
+        if (e.EnumID == enumID) {
+            addressTypeEnunText = e.EnumText;
+            return false;
+        }
+    });
+
+    return addressTypeEnunText;
 }

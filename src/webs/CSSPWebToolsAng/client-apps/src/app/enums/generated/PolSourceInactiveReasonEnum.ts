@@ -5,7 +5,7 @@
  *
  */
 
-import { EnumIDAndText } from 'src/app/models/enumidandtext.models';
+import { EnumIDAndText } from 'src/app/models/enumidandtext.model';
 
 export enum PolSourceInactiveReasonEnum {
     Abandoned = 1,
@@ -16,16 +16,27 @@ export enum PolSourceInactiveReasonEnum {
 export function PolSourceInactiveReasonEnum_GetOrderedText(): EnumIDAndText[] {
     let enumTextOrderedList: EnumIDAndText[] = [];
     if ($localize.locale === 'fr-CA') {
-       enumTextOrderedList.push({ EnumID: 1, EnumText: 'Abandoned (fr)' });
-       enumTextOrderedList.push({ EnumID: 2, EnumText: 'Closed (fr)' });
-       enumTextOrderedList.push({ EnumID: 3, EnumText: 'Removed (fr)' });
+        enumTextOrderedList.push({ EnumID: 1, EnumText: 'Abandoned (fr)' });
+        enumTextOrderedList.push({ EnumID: 2, EnumText: 'Closed (fr)' });
+        enumTextOrderedList.push({ EnumID: 3, EnumText: 'Removed (fr)' });
     }
     else {
-       enumTextOrderedList.push({ EnumID: 1, EnumText: 'Abandoned' });
-       enumTextOrderedList.push({ EnumID: 2, EnumText: 'Closed' });
-       enumTextOrderedList.push({ EnumID: 3, EnumText: 'Removed' });
+        enumTextOrderedList.push({ EnumID: 1, EnumText: 'Abandoned' });
+        enumTextOrderedList.push({ EnumID: 2, EnumText: 'Closed' });
+        enumTextOrderedList.push({ EnumID: 3, EnumText: 'Removed' });
     }
 
-    return enumTextOrderedList.sort((a,b) => a.EnumText.localeCompare(b.EnumText));
+    return enumTextOrderedList.sort((a, b) => a.EnumText.localeCompare(b.EnumText));
+}
 
+export function PolSourceInactiveReasonEnum_GetIDText(enumID: number): string {
+    let addressTypeEnunText: string;
+    PolSourceInactiveReasonEnum_GetOrderedText().forEach(e => {
+        if (e.EnumID == enumID) {
+            addressTypeEnunText = e.EnumText;
+            return false;
+        }
+    });
+
+    return addressTypeEnunText;
 }

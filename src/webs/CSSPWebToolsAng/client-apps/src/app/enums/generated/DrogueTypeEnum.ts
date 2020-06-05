@@ -5,7 +5,7 @@
  *
  */
 
-import { EnumIDAndText } from 'src/app/models/enumidandtext.models';
+import { EnumIDAndText } from 'src/app/models/enumidandtext.model';
 
 export enum DrogueTypeEnum {
     SmallDrogue = 1,
@@ -15,14 +15,25 @@ export enum DrogueTypeEnum {
 export function DrogueTypeEnum_GetOrderedText(): EnumIDAndText[] {
     let enumTextOrderedList: EnumIDAndText[] = [];
     if ($localize.locale === 'fr-CA') {
-       enumTextOrderedList.push({ EnumID: 1, EnumText: 'Small drogue (fr)' });
-       enumTextOrderedList.push({ EnumID: 2, EnumText: 'Large drogue (fr)' });
+        enumTextOrderedList.push({ EnumID: 1, EnumText: 'Small drogue (fr)' });
+        enumTextOrderedList.push({ EnumID: 2, EnumText: 'Large drogue (fr)' });
     }
     else {
-       enumTextOrderedList.push({ EnumID: 1, EnumText: 'Small drogue' });
-       enumTextOrderedList.push({ EnumID: 2, EnumText: 'Large drogue' });
+        enumTextOrderedList.push({ EnumID: 1, EnumText: 'Small drogue' });
+        enumTextOrderedList.push({ EnumID: 2, EnumText: 'Large drogue' });
     }
 
-    return enumTextOrderedList.sort((a,b) => a.EnumText.localeCompare(b.EnumText));
+    return enumTextOrderedList.sort((a, b) => a.EnumText.localeCompare(b.EnumText));
+}
 
+export function DrogueTypeEnum_GetIDText(enumID: number): string {
+    let addressTypeEnunText: string;
+    DrogueTypeEnum_GetOrderedText().forEach(e => {
+        if (e.EnumID == enumID) {
+            addressTypeEnunText = e.EnumText;
+            return false;
+        }
+    });
+
+    return addressTypeEnunText;
 }

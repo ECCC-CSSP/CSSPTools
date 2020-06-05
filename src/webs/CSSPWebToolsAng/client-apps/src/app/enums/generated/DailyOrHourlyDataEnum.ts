@@ -5,7 +5,7 @@
  *
  */
 
-import { EnumIDAndText } from 'src/app/models/enumidandtext.models';
+import { EnumIDAndText } from 'src/app/models/enumidandtext.model';
 
 export enum DailyOrHourlyDataEnum {
     Daily = 1,
@@ -15,14 +15,25 @@ export enum DailyOrHourlyDataEnum {
 export function DailyOrHourlyDataEnum_GetOrderedText(): EnumIDAndText[] {
     let enumTextOrderedList: EnumIDAndText[] = [];
     if ($localize.locale === 'fr-CA') {
-       enumTextOrderedList.push({ EnumID: 1, EnumText: 'Daily (fr)' });
-       enumTextOrderedList.push({ EnumID: 2, EnumText: 'Hourly (fr)' });
+        enumTextOrderedList.push({ EnumID: 1, EnumText: 'Daily (fr)' });
+        enumTextOrderedList.push({ EnumID: 2, EnumText: 'Hourly (fr)' });
     }
     else {
-       enumTextOrderedList.push({ EnumID: 1, EnumText: 'Daily' });
-       enumTextOrderedList.push({ EnumID: 2, EnumText: 'Hourly' });
+        enumTextOrderedList.push({ EnumID: 1, EnumText: 'Daily' });
+        enumTextOrderedList.push({ EnumID: 2, EnumText: 'Hourly' });
     }
 
-    return enumTextOrderedList.sort((a,b) => a.EnumText.localeCompare(b.EnumText));
+    return enumTextOrderedList.sort((a, b) => a.EnumText.localeCompare(b.EnumText));
+}
 
+export function DailyOrHourlyDataEnum_GetIDText(enumID: number): string {
+    let addressTypeEnunText: string;
+    DailyOrHourlyDataEnum_GetOrderedText().forEach(e => {
+        if (e.EnumID == enumID) {
+            addressTypeEnunText = e.EnumText;
+            return false;
+        }
+    });
+
+    return addressTypeEnunText;
 }

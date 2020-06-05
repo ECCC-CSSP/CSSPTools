@@ -5,7 +5,7 @@
  *
  */
 
-import { EnumIDAndText } from 'src/app/models/enumidandtext.models';
+import { EnumIDAndText } from 'src/app/models/enumidandtext.model';
 
 export enum TelTypeEnum {
     Personal = 1,
@@ -19,22 +19,33 @@ export enum TelTypeEnum {
 export function TelTypeEnum_GetOrderedText(): EnumIDAndText[] {
     let enumTextOrderedList: EnumIDAndText[] = [];
     if ($localize.locale === 'fr-CA') {
-       enumTextOrderedList.push({ EnumID: 1, EnumText: 'Personnel' });
-       enumTextOrderedList.push({ EnumID: 2, EnumText: 'Travail' });
-       enumTextOrderedList.push({ EnumID: 3, EnumText: 'Cellulaire' });
-       enumTextOrderedList.push({ EnumID: 4, EnumText: 'Personnel-2' });
-       enumTextOrderedList.push({ EnumID: 5, EnumText: 'Travail-2' });
-       enumTextOrderedList.push({ EnumID: 6, EnumText: 'Cellulaire-2' });
+        enumTextOrderedList.push({ EnumID: 1, EnumText: 'Personnel' });
+        enumTextOrderedList.push({ EnumID: 2, EnumText: 'Travail' });
+        enumTextOrderedList.push({ EnumID: 3, EnumText: 'Cellulaire' });
+        enumTextOrderedList.push({ EnumID: 4, EnumText: 'Personnel-2' });
+        enumTextOrderedList.push({ EnumID: 5, EnumText: 'Travail-2' });
+        enumTextOrderedList.push({ EnumID: 6, EnumText: 'Cellulaire-2' });
     }
     else {
-       enumTextOrderedList.push({ EnumID: 1, EnumText: 'Personal' });
-       enumTextOrderedList.push({ EnumID: 2, EnumText: 'Work' });
-       enumTextOrderedList.push({ EnumID: 3, EnumText: 'Mobile' });
-       enumTextOrderedList.push({ EnumID: 4, EnumText: 'Personal-2' });
-       enumTextOrderedList.push({ EnumID: 5, EnumText: 'Work-2' });
-       enumTextOrderedList.push({ EnumID: 6, EnumText: 'Mobile-2' });
+        enumTextOrderedList.push({ EnumID: 1, EnumText: 'Personal' });
+        enumTextOrderedList.push({ EnumID: 2, EnumText: 'Work' });
+        enumTextOrderedList.push({ EnumID: 3, EnumText: 'Mobile' });
+        enumTextOrderedList.push({ EnumID: 4, EnumText: 'Personal-2' });
+        enumTextOrderedList.push({ EnumID: 5, EnumText: 'Work-2' });
+        enumTextOrderedList.push({ EnumID: 6, EnumText: 'Mobile-2' });
     }
 
-    return enumTextOrderedList.sort((a,b) => a.EnumText.localeCompare(b.EnumText));
+    return enumTextOrderedList.sort((a, b) => a.EnumText.localeCompare(b.EnumText));
+}
 
+export function TelTypeEnum_GetIDText(enumID: number): string {
+    let addressTypeEnunText: string;
+    TelTypeEnum_GetOrderedText().forEach(e => {
+        if (e.EnumID == enumID) {
+            addressTypeEnunText = e.EnumText;
+            return false;
+        }
+    });
+
+    return addressTypeEnunText;
 }

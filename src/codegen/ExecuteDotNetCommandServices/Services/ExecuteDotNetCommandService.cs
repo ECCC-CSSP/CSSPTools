@@ -24,7 +24,7 @@ namespace ExecuteDotNetCommandServices.Services
         private List<string> ArgsRunAllowables { get; set; } = new List<string>()
         {
             "AngularEnumsGenerated",
-            "AngularInterfacesGenerated",
+            "AngularModelsGenerated",
             "EnumsCompareWithOldEnums",
             "EnumsGenerated_cs",
             "EnumsPolSourceInfoRelatedFiles",
@@ -46,7 +46,7 @@ namespace ExecuteDotNetCommandServices.Services
             "ActionCommandDBServices.Tests",
             "ActionCommandServices.Tests",
             "AngularEnumsGeneratedServices.Tests",
-            "AngularInterfacesGeneratedServices.Tests",
+            "AngularModelsGeneratedServices.Tests",
             "EnumsCompareWithOldEnumsServices.Tests",
             "EnumsGenerated_csServices.Tests",
             "EnumsPolSourceInfoRelatedFilesServices.Tests",
@@ -83,9 +83,9 @@ namespace ExecuteDotNetCommandServices.Services
             "AngularEnumsGeneratedServices",
             "AngularEnumsGeneratedServices.Tests",
 
-            "AngularInterfacesGenerated",
-            "AngularInterfacesGeneratedServices",
-            "AngularInterfacesGeneratedServices.Tests",
+            "AngularModelsGenerated",
+            "AngularModelsGeneratedServices",
+            "AngularModelsGeneratedServices.Tests",
 
             "EnumsCompareWithOldEnums",
             "EnumsCompareWithOldEnumsServices",

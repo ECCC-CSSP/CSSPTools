@@ -5,7 +5,7 @@
  *
  */
 
-import { EnumIDAndText } from 'src/app/models/enumidandtext.models';
+import { EnumIDAndText } from 'src/app/models/enumidandtext.model';
 
 export enum DisinfectionTypeEnum {
     None = 1,
@@ -20,24 +20,35 @@ export enum DisinfectionTypeEnum {
 export function DisinfectionTypeEnum_GetOrderedText(): EnumIDAndText[] {
     let enumTextOrderedList: EnumIDAndText[] = [];
     if ($localize.locale === 'fr-CA') {
-       enumTextOrderedList.push({ EnumID: 1, EnumText: 'Aucun' });
-       enumTextOrderedList.push({ EnumID: 2, EnumText: 'UV ' });
-       enumTextOrderedList.push({ EnumID: 3, EnumText: 'Chlorination No Dechlorination (fr)' });
-       enumTextOrderedList.push({ EnumID: 4, EnumText: 'Chlorination With Dechlorination (fr)' });
-       enumTextOrderedList.push({ EnumID: 5, EnumText: 'UV Seasonal (fr)' });
-       enumTextOrderedList.push({ EnumID: 6, EnumText: 'Chlorination No Dechlorination Seasonal (fr)' });
-       enumTextOrderedList.push({ EnumID: 7, EnumText: 'Chlorination With Dechlorination Seasonal (fr)' });
+        enumTextOrderedList.push({ EnumID: 1, EnumText: 'Aucun' });
+        enumTextOrderedList.push({ EnumID: 2, EnumText: 'UV ' });
+        enumTextOrderedList.push({ EnumID: 3, EnumText: 'Chlorination No Dechlorination (fr)' });
+        enumTextOrderedList.push({ EnumID: 4, EnumText: 'Chlorination With Dechlorination (fr)' });
+        enumTextOrderedList.push({ EnumID: 5, EnumText: 'UV Seasonal (fr)' });
+        enumTextOrderedList.push({ EnumID: 6, EnumText: 'Chlorination No Dechlorination Seasonal (fr)' });
+        enumTextOrderedList.push({ EnumID: 7, EnumText: 'Chlorination With Dechlorination Seasonal (fr)' });
     }
     else {
-       enumTextOrderedList.push({ EnumID: 1, EnumText: 'None' });
-       enumTextOrderedList.push({ EnumID: 2, EnumText: 'UV' });
-       enumTextOrderedList.push({ EnumID: 3, EnumText: 'Chlorination No Dechlorination' });
-       enumTextOrderedList.push({ EnumID: 4, EnumText: 'Chlorination With Dechlorination' });
-       enumTextOrderedList.push({ EnumID: 5, EnumText: 'UV Seasonal' });
-       enumTextOrderedList.push({ EnumID: 6, EnumText: 'Chlorination No Dechlorination Seasonal' });
-       enumTextOrderedList.push({ EnumID: 7, EnumText: 'Chlorination With Dechlorination Seasonal' });
+        enumTextOrderedList.push({ EnumID: 1, EnumText: 'None' });
+        enumTextOrderedList.push({ EnumID: 2, EnumText: 'UV' });
+        enumTextOrderedList.push({ EnumID: 3, EnumText: 'Chlorination No Dechlorination' });
+        enumTextOrderedList.push({ EnumID: 4, EnumText: 'Chlorination With Dechlorination' });
+        enumTextOrderedList.push({ EnumID: 5, EnumText: 'UV Seasonal' });
+        enumTextOrderedList.push({ EnumID: 6, EnumText: 'Chlorination No Dechlorination Seasonal' });
+        enumTextOrderedList.push({ EnumID: 7, EnumText: 'Chlorination With Dechlorination Seasonal' });
     }
 
-    return enumTextOrderedList.sort((a,b) => a.EnumText.localeCompare(b.EnumText));
+    return enumTextOrderedList.sort((a, b) => a.EnumText.localeCompare(b.EnumText));
+}
 
+export function DisinfectionTypeEnum_GetIDText(enumID: number): string {
+    let addressTypeEnunText: string;
+    DisinfectionTypeEnum_GetOrderedText().forEach(e => {
+        if (e.EnumID == enumID) {
+            addressTypeEnunText = e.EnumText;
+            return false;
+        }
+    });
+
+    return addressTypeEnunText;
 }

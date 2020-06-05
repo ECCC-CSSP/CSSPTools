@@ -5,7 +5,7 @@
  *
  */
 
-import { EnumIDAndText } from 'src/app/models/enumidandtext.models';
+import { EnumIDAndText } from 'src/app/models/enumidandtext.model';
 
 export enum ValveTypeEnum {
     Manually = 1,
@@ -16,16 +16,27 @@ export enum ValveTypeEnum {
 export function ValveTypeEnum_GetOrderedText(): EnumIDAndText[] {
     let enumTextOrderedList: EnumIDAndText[] = [];
     if ($localize.locale === 'fr-CA') {
-       enumTextOrderedList.push({ EnumID: 1, EnumText: 'Manually (fr)' });
-       enumTextOrderedList.push({ EnumID: 2, EnumText: 'Automatically (fr)' });
-       enumTextOrderedList.push({ EnumID: 3, EnumText: 'None (fr)' });
+        enumTextOrderedList.push({ EnumID: 1, EnumText: 'Manually (fr)' });
+        enumTextOrderedList.push({ EnumID: 2, EnumText: 'Automatically (fr)' });
+        enumTextOrderedList.push({ EnumID: 3, EnumText: 'None (fr)' });
     }
     else {
-       enumTextOrderedList.push({ EnumID: 1, EnumText: 'Manually' });
-       enumTextOrderedList.push({ EnumID: 2, EnumText: 'Automatically' });
-       enumTextOrderedList.push({ EnumID: 3, EnumText: 'None' });
+        enumTextOrderedList.push({ EnumID: 1, EnumText: 'Manually' });
+        enumTextOrderedList.push({ EnumID: 2, EnumText: 'Automatically' });
+        enumTextOrderedList.push({ EnumID: 3, EnumText: 'None' });
     }
 
-    return enumTextOrderedList.sort((a,b) => a.EnumText.localeCompare(b.EnumText));
+    return enumTextOrderedList.sort((a, b) => a.EnumText.localeCompare(b.EnumText));
+}
 
+export function ValveTypeEnum_GetIDText(enumID: number): string {
+    let addressTypeEnunText: string;
+    ValveTypeEnum_GetOrderedText().forEach(e => {
+        if (e.EnumID == enumID) {
+            addressTypeEnunText = e.EnumText;
+            return false;
+        }
+    });
+
+    return addressTypeEnunText;
 }

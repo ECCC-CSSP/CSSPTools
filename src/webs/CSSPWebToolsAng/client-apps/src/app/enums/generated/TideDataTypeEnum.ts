@@ -5,7 +5,7 @@
  *
  */
 
-import { EnumIDAndText } from 'src/app/models/enumidandtext.models';
+import { EnumIDAndText } from 'src/app/models/enumidandtext.model';
 
 export enum TideDataTypeEnum {
     Min15 = 1,
@@ -15,14 +15,25 @@ export enum TideDataTypeEnum {
 export function TideDataTypeEnum_GetOrderedText(): EnumIDAndText[] {
     let enumTextOrderedList: EnumIDAndText[] = [];
     if ($localize.locale === 'fr-CA') {
-       enumTextOrderedList.push({ EnumID: 1, EnumText: 'Min15' });
-       enumTextOrderedList.push({ EnumID: 2, EnumText: 'Min60' });
+        enumTextOrderedList.push({ EnumID: 1, EnumText: 'Min15' });
+        enumTextOrderedList.push({ EnumID: 2, EnumText: 'Min60' });
     }
     else {
-       enumTextOrderedList.push({ EnumID: 1, EnumText: 'Min15' });
-       enumTextOrderedList.push({ EnumID: 2, EnumText: 'Min60' });
+        enumTextOrderedList.push({ EnumID: 1, EnumText: 'Min15' });
+        enumTextOrderedList.push({ EnumID: 2, EnumText: 'Min60' });
     }
 
-    return enumTextOrderedList.sort((a,b) => a.EnumText.localeCompare(b.EnumText));
+    return enumTextOrderedList.sort((a, b) => a.EnumText.localeCompare(b.EnumText));
+}
 
+export function TideDataTypeEnum_GetIDText(enumID: number): string {
+    let addressTypeEnunText: string;
+    TideDataTypeEnum_GetOrderedText().forEach(e => {
+        if (e.EnumID == enumID) {
+            addressTypeEnunText = e.EnumText;
+            return false;
+        }
+    });
+
+    return addressTypeEnunText;
 }

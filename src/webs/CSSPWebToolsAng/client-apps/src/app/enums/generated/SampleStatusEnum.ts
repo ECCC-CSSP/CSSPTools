@@ -5,7 +5,7 @@
  *
  */
 
-import { EnumIDAndText } from 'src/app/models/enumidandtext.models';
+import { EnumIDAndText } from 'src/app/models/enumidandtext.model';
 
 export enum SampleStatusEnum {
     Active = 1,
@@ -18,20 +18,31 @@ export enum SampleStatusEnum {
 export function SampleStatusEnum_GetOrderedText(): EnumIDAndText[] {
     let enumTextOrderedList: EnumIDAndText[] = [];
     if ($localize.locale === 'fr-CA') {
-       enumTextOrderedList.push({ EnumID: 1, EnumText: 'Active (fr)' });
-       enumTextOrderedList.push({ EnumID: 2, EnumText: 'Archived (fr)' });
-       enumTextOrderedList.push({ EnumID: 3, EnumText: 'Sample Status 3 (fr)' });
-       enumTextOrderedList.push({ EnumID: 4, EnumText: 'Sample Status 4 (fr)' });
-       enumTextOrderedList.push({ EnumID: 5, EnumText: 'Sample Status 5 (fr)' });
+        enumTextOrderedList.push({ EnumID: 1, EnumText: 'Active (fr)' });
+        enumTextOrderedList.push({ EnumID: 2, EnumText: 'Archived (fr)' });
+        enumTextOrderedList.push({ EnumID: 3, EnumText: 'Sample Status 3 (fr)' });
+        enumTextOrderedList.push({ EnumID: 4, EnumText: 'Sample Status 4 (fr)' });
+        enumTextOrderedList.push({ EnumID: 5, EnumText: 'Sample Status 5 (fr)' });
     }
     else {
-       enumTextOrderedList.push({ EnumID: 1, EnumText: 'Active' });
-       enumTextOrderedList.push({ EnumID: 2, EnumText: 'Archived' });
-       enumTextOrderedList.push({ EnumID: 3, EnumText: 'Sample Status 3' });
-       enumTextOrderedList.push({ EnumID: 4, EnumText: 'Sample Status 4' });
-       enumTextOrderedList.push({ EnumID: 5, EnumText: 'Sample Status 5' });
+        enumTextOrderedList.push({ EnumID: 1, EnumText: 'Active' });
+        enumTextOrderedList.push({ EnumID: 2, EnumText: 'Archived' });
+        enumTextOrderedList.push({ EnumID: 3, EnumText: 'Sample Status 3' });
+        enumTextOrderedList.push({ EnumID: 4, EnumText: 'Sample Status 4' });
+        enumTextOrderedList.push({ EnumID: 5, EnumText: 'Sample Status 5' });
     }
 
-    return enumTextOrderedList.sort((a,b) => a.EnumText.localeCompare(b.EnumText));
+    return enumTextOrderedList.sort((a, b) => a.EnumText.localeCompare(b.EnumText));
+}
 
+export function SampleStatusEnum_GetIDText(enumID: number): string {
+    let addressTypeEnunText: string;
+    SampleStatusEnum_GetOrderedText().forEach(e => {
+        if (e.EnumID == enumID) {
+            addressTypeEnunText = e.EnumText;
+            return false;
+        }
+    });
+
+    return addressTypeEnunText;
 }

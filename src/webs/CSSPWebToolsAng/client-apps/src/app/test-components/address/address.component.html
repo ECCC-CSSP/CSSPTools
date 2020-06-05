@@ -6,9 +6,10 @@
 <hr />
 <ul *ngIf="addressService.addressModel$.getValue().AddressList">
     <li *ngFor="let address of addressService.addressModel$.getValue().AddressList">
-        <ul *ngFor="let k of addressService.addressModel$.getValue().ObjKeys">
-            <li>{{ k }}: {{  address[k] }}</li>
-        </ul>
+        AddressID: {{ address.AddressID }}<br />
+        AddressTVItemID: {{ address.AddressTVItemID }}<br />
+        AddressType: {{ GetAddressTypeEnumText(address.AddressType) }}<br />
+
     </li>
 </ul>
 <hr />

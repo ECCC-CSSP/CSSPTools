@@ -5,7 +5,7 @@
  *
  */
 
-import { EnumIDAndText } from 'src/app/models/enumidandtext.models';
+import { EnumIDAndText } from 'src/app/models/enumidandtext.model';
 
 export enum ReportFormatingDateEnum {
     ReportFormatingDateYearOnly = 1,
@@ -26,36 +26,47 @@ export enum ReportFormatingDateEnum {
 export function ReportFormatingDateEnum_GetOrderedText(): EnumIDAndText[] {
     let enumTextOrderedList: EnumIDAndText[] = [];
     if ($localize.locale === 'fr-CA') {
-       enumTextOrderedList.push({ EnumID: 1, EnumText: 'ReportFormatingDateYearOnly' });
-       enumTextOrderedList.push({ EnumID: 2, EnumText: 'ReportFormatingDateMonthDecimalOnly' });
-       enumTextOrderedList.push({ EnumID: 3, EnumText: 'ReportFormatingDateMonthShortTextOnly' });
-       enumTextOrderedList.push({ EnumID: 4, EnumText: 'ReportFormatingDateMonthFullTextOnly' });
-       enumTextOrderedList.push({ EnumID: 5, EnumText: 'ReportFormatingDateDayOnly' });
-       enumTextOrderedList.push({ EnumID: 6, EnumText: 'ReportFormatingDateHourOnly' });
-       enumTextOrderedList.push({ EnumID: 7, EnumText: 'ReportFormatingDateMinuteOnly' });
-       enumTextOrderedList.push({ EnumID: 8, EnumText: 'ReportFormatingDateYearMonthDecimalDay' });
-       enumTextOrderedList.push({ EnumID: 9, EnumText: 'ReportFormatingDateYearMonthShortTextDay' });
-       enumTextOrderedList.push({ EnumID: 10, EnumText: 'ReportFormatingDateYearMonthFullTextDay' });
-       enumTextOrderedList.push({ EnumID: 11, EnumText: 'ReportFormatingDateYearMonthDecimalDayHourMinute' });
-       enumTextOrderedList.push({ EnumID: 12, EnumText: 'ReportFormatingDateYearMonthShortTextDayHourMinute' });
-       enumTextOrderedList.push({ EnumID: 13, EnumText: 'ReportFormatingDateYearMonthFullTextDayHourMinute' });
+        enumTextOrderedList.push({ EnumID: 1, EnumText: 'ReportFormatingDateYearOnly' });
+        enumTextOrderedList.push({ EnumID: 2, EnumText: 'ReportFormatingDateMonthDecimalOnly' });
+        enumTextOrderedList.push({ EnumID: 3, EnumText: 'ReportFormatingDateMonthShortTextOnly' });
+        enumTextOrderedList.push({ EnumID: 4, EnumText: 'ReportFormatingDateMonthFullTextOnly' });
+        enumTextOrderedList.push({ EnumID: 5, EnumText: 'ReportFormatingDateDayOnly' });
+        enumTextOrderedList.push({ EnumID: 6, EnumText: 'ReportFormatingDateHourOnly' });
+        enumTextOrderedList.push({ EnumID: 7, EnumText: 'ReportFormatingDateMinuteOnly' });
+        enumTextOrderedList.push({ EnumID: 8, EnumText: 'ReportFormatingDateYearMonthDecimalDay' });
+        enumTextOrderedList.push({ EnumID: 9, EnumText: 'ReportFormatingDateYearMonthShortTextDay' });
+        enumTextOrderedList.push({ EnumID: 10, EnumText: 'ReportFormatingDateYearMonthFullTextDay' });
+        enumTextOrderedList.push({ EnumID: 11, EnumText: 'ReportFormatingDateYearMonthDecimalDayHourMinute' });
+        enumTextOrderedList.push({ EnumID: 12, EnumText: 'ReportFormatingDateYearMonthShortTextDayHourMinute' });
+        enumTextOrderedList.push({ EnumID: 13, EnumText: 'ReportFormatingDateYearMonthFullTextDayHourMinute' });
     }
     else {
-       enumTextOrderedList.push({ EnumID: 1, EnumText: 'ReportFormatingDateYearOnly' });
-       enumTextOrderedList.push({ EnumID: 2, EnumText: 'ReportFormatingDateMonthDecimalOnly' });
-       enumTextOrderedList.push({ EnumID: 3, EnumText: 'ReportFormatingDateMonthShortTextOnly' });
-       enumTextOrderedList.push({ EnumID: 4, EnumText: 'ReportFormatingDateMonthFullTextOnly' });
-       enumTextOrderedList.push({ EnumID: 5, EnumText: 'ReportFormatingDateDayOnly' });
-       enumTextOrderedList.push({ EnumID: 6, EnumText: 'ReportFormatingDateHourOnly' });
-       enumTextOrderedList.push({ EnumID: 7, EnumText: 'ReportFormatingDateMinuteOnly' });
-       enumTextOrderedList.push({ EnumID: 8, EnumText: 'ReportFormatingDateYearMonthDecimalDay' });
-       enumTextOrderedList.push({ EnumID: 9, EnumText: 'ReportFormatingDateYearMonthShortTextDay' });
-       enumTextOrderedList.push({ EnumID: 10, EnumText: 'ReportFormatingDateYearMonthFullTextDay' });
-       enumTextOrderedList.push({ EnumID: 11, EnumText: 'ReportFormatingDateYearMonthDecimalDayHourMinute' });
-       enumTextOrderedList.push({ EnumID: 12, EnumText: 'ReportFormatingDateYearMonthShortTextDayHourMinute' });
-       enumTextOrderedList.push({ EnumID: 13, EnumText: 'ReportFormatingDateYearMonthFullTextDayHourMinute' });
+        enumTextOrderedList.push({ EnumID: 1, EnumText: 'ReportFormatingDateYearOnly' });
+        enumTextOrderedList.push({ EnumID: 2, EnumText: 'ReportFormatingDateMonthDecimalOnly' });
+        enumTextOrderedList.push({ EnumID: 3, EnumText: 'ReportFormatingDateMonthShortTextOnly' });
+        enumTextOrderedList.push({ EnumID: 4, EnumText: 'ReportFormatingDateMonthFullTextOnly' });
+        enumTextOrderedList.push({ EnumID: 5, EnumText: 'ReportFormatingDateDayOnly' });
+        enumTextOrderedList.push({ EnumID: 6, EnumText: 'ReportFormatingDateHourOnly' });
+        enumTextOrderedList.push({ EnumID: 7, EnumText: 'ReportFormatingDateMinuteOnly' });
+        enumTextOrderedList.push({ EnumID: 8, EnumText: 'ReportFormatingDateYearMonthDecimalDay' });
+        enumTextOrderedList.push({ EnumID: 9, EnumText: 'ReportFormatingDateYearMonthShortTextDay' });
+        enumTextOrderedList.push({ EnumID: 10, EnumText: 'ReportFormatingDateYearMonthFullTextDay' });
+        enumTextOrderedList.push({ EnumID: 11, EnumText: 'ReportFormatingDateYearMonthDecimalDayHourMinute' });
+        enumTextOrderedList.push({ EnumID: 12, EnumText: 'ReportFormatingDateYearMonthShortTextDayHourMinute' });
+        enumTextOrderedList.push({ EnumID: 13, EnumText: 'ReportFormatingDateYearMonthFullTextDayHourMinute' });
     }
 
-    return enumTextOrderedList.sort((a,b) => a.EnumText.localeCompare(b.EnumText));
+    return enumTextOrderedList.sort((a, b) => a.EnumText.localeCompare(b.EnumText));
+}
 
+export function ReportFormatingDateEnum_GetIDText(enumID: number): string {
+    let addressTypeEnunText: string;
+    ReportFormatingDateEnum_GetOrderedText().forEach(e => {
+        if (e.EnumID == enumID) {
+            addressTypeEnunText = e.EnumText;
+            return false;
+        }
+    });
+
+    return addressTypeEnunText;
 }

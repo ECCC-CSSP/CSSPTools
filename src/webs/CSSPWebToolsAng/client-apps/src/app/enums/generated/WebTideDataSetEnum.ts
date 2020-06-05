@@ -5,7 +5,7 @@
  *
  */
 
-import { EnumIDAndText } from 'src/app/models/enumidandtext.models';
+import { EnumIDAndText } from 'src/app/models/enumidandtext.model';
 
 export enum WebTideDataSetEnum {
     arctic9 = 1,
@@ -24,32 +24,43 @@ export enum WebTideDataSetEnum {
 export function WebTideDataSetEnum_GetOrderedText(): EnumIDAndText[] {
     let enumTextOrderedList: EnumIDAndText[] = [];
     if ($localize.locale === 'fr-CA') {
-       enumTextOrderedList.push({ EnumID: 1, EnumText: 'Arctic (fr)' });
-       enumTextOrderedList.push({ EnumID: 2, EnumText: 'Brador (fr)' });
-       enumTextOrderedList.push({ EnumID: 3, EnumText: 'Global (LEGOS France) (fr)' });
-       enumTextOrderedList.push({ EnumID: 4, EnumText: 'Halifax Harbour (fr)' });
-       enumTextOrderedList.push({ EnumID: 5, EnumText: 'Hudson Bay (IML) (fr)' });
-       enumTextOrderedList.push({ EnumID: 6, EnumText: 'North East Pacific (IOS) (fr)' });
-       enumTextOrderedList.push({ EnumID: 7, EnumText: 'North West Atlantic (fr)' });
-       enumTextOrderedList.push({ EnumID: 8, EnumText: 'Quatsino Sound (fr)' });
-       enumTextOrderedList.push({ EnumID: 9, EnumText: 'Scotian Fundy Maine (fr)' });
-       enumTextOrderedList.push({ EnumID: 10, EnumText: 'Upper Bay of Fundy (fr)' });
-       enumTextOrderedList.push({ EnumID: 11, EnumText: 'Vancouver Island (Mike Foreman) (fr)' });
+        enumTextOrderedList.push({ EnumID: 1, EnumText: 'Arctic (fr)' });
+        enumTextOrderedList.push({ EnumID: 2, EnumText: 'Brador (fr)' });
+        enumTextOrderedList.push({ EnumID: 3, EnumText: 'Global (LEGOS France) (fr)' });
+        enumTextOrderedList.push({ EnumID: 4, EnumText: 'Halifax Harbour (fr)' });
+        enumTextOrderedList.push({ EnumID: 5, EnumText: 'Hudson Bay (IML) (fr)' });
+        enumTextOrderedList.push({ EnumID: 6, EnumText: 'North East Pacific (IOS) (fr)' });
+        enumTextOrderedList.push({ EnumID: 7, EnumText: 'North West Atlantic (fr)' });
+        enumTextOrderedList.push({ EnumID: 8, EnumText: 'Quatsino Sound (fr)' });
+        enumTextOrderedList.push({ EnumID: 9, EnumText: 'Scotian Fundy Maine (fr)' });
+        enumTextOrderedList.push({ EnumID: 10, EnumText: 'Upper Bay of Fundy (fr)' });
+        enumTextOrderedList.push({ EnumID: 11, EnumText: 'Vancouver Island (Mike Foreman) (fr)' });
     }
     else {
-       enumTextOrderedList.push({ EnumID: 1, EnumText: 'Arctic' });
-       enumTextOrderedList.push({ EnumID: 2, EnumText: 'Brador' });
-       enumTextOrderedList.push({ EnumID: 3, EnumText: 'Global (LEGOS France)' });
-       enumTextOrderedList.push({ EnumID: 4, EnumText: 'Halifax Harbour' });
-       enumTextOrderedList.push({ EnumID: 5, EnumText: 'Hudson Bay (IML)' });
-       enumTextOrderedList.push({ EnumID: 6, EnumText: 'North East Pacific (IOS)' });
-       enumTextOrderedList.push({ EnumID: 7, EnumText: 'North West Atlantic' });
-       enumTextOrderedList.push({ EnumID: 8, EnumText: 'Quatsino Sound' });
-       enumTextOrderedList.push({ EnumID: 9, EnumText: 'Scotian Fundy Maine' });
-       enumTextOrderedList.push({ EnumID: 10, EnumText: 'Upper Bay of Fundy' });
-       enumTextOrderedList.push({ EnumID: 11, EnumText: 'Vancouver Island (Mike Foreman)' });
+        enumTextOrderedList.push({ EnumID: 1, EnumText: 'Arctic' });
+        enumTextOrderedList.push({ EnumID: 2, EnumText: 'Brador' });
+        enumTextOrderedList.push({ EnumID: 3, EnumText: 'Global (LEGOS France)' });
+        enumTextOrderedList.push({ EnumID: 4, EnumText: 'Halifax Harbour' });
+        enumTextOrderedList.push({ EnumID: 5, EnumText: 'Hudson Bay (IML)' });
+        enumTextOrderedList.push({ EnumID: 6, EnumText: 'North East Pacific (IOS)' });
+        enumTextOrderedList.push({ EnumID: 7, EnumText: 'North West Atlantic' });
+        enumTextOrderedList.push({ EnumID: 8, EnumText: 'Quatsino Sound' });
+        enumTextOrderedList.push({ EnumID: 9, EnumText: 'Scotian Fundy Maine' });
+        enumTextOrderedList.push({ EnumID: 10, EnumText: 'Upper Bay of Fundy' });
+        enumTextOrderedList.push({ EnumID: 11, EnumText: 'Vancouver Island (Mike Foreman)' });
     }
 
-    return enumTextOrderedList.sort((a,b) => a.EnumText.localeCompare(b.EnumText));
+    return enumTextOrderedList.sort((a, b) => a.EnumText.localeCompare(b.EnumText));
+}
 
+export function WebTideDataSetEnum_GetIDText(enumID: number): string {
+    let addressTypeEnunText: string;
+    WebTideDataSetEnum_GetOrderedText().forEach(e => {
+        if (e.EnumID == enumID) {
+            addressTypeEnunText = e.EnumText;
+            return false;
+        }
+    });
+
+    return addressTypeEnunText;
 }

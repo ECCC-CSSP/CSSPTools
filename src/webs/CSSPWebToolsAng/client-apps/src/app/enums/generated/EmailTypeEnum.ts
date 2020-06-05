@@ -5,7 +5,7 @@
  *
  */
 
-import { EnumIDAndText } from 'src/app/models/enumidandtext.models';
+import { EnumIDAndText } from 'src/app/models/enumidandtext.model';
 
 export enum EmailTypeEnum {
     Personal = 1,
@@ -17,18 +17,29 @@ export enum EmailTypeEnum {
 export function EmailTypeEnum_GetOrderedText(): EnumIDAndText[] {
     let enumTextOrderedList: EnumIDAndText[] = [];
     if ($localize.locale === 'fr-CA') {
-       enumTextOrderedList.push({ EnumID: 1, EnumText: 'Personnel' });
-       enumTextOrderedList.push({ EnumID: 2, EnumText: 'Travail' });
-       enumTextOrderedList.push({ EnumID: 3, EnumText: 'Personnel-2' });
-       enumTextOrderedList.push({ EnumID: 4, EnumText: 'Travail-2' });
+        enumTextOrderedList.push({ EnumID: 1, EnumText: 'Personnel' });
+        enumTextOrderedList.push({ EnumID: 2, EnumText: 'Travail' });
+        enumTextOrderedList.push({ EnumID: 3, EnumText: 'Personnel-2' });
+        enumTextOrderedList.push({ EnumID: 4, EnumText: 'Travail-2' });
     }
     else {
-       enumTextOrderedList.push({ EnumID: 1, EnumText: 'Personal' });
-       enumTextOrderedList.push({ EnumID: 2, EnumText: 'Work' });
-       enumTextOrderedList.push({ EnumID: 3, EnumText: 'Personal-2' });
-       enumTextOrderedList.push({ EnumID: 4, EnumText: 'Work-2' });
+        enumTextOrderedList.push({ EnumID: 1, EnumText: 'Personal' });
+        enumTextOrderedList.push({ EnumID: 2, EnumText: 'Work' });
+        enumTextOrderedList.push({ EnumID: 3, EnumText: 'Personal-2' });
+        enumTextOrderedList.push({ EnumID: 4, EnumText: 'Work-2' });
     }
 
-    return enumTextOrderedList.sort((a,b) => a.EnumText.localeCompare(b.EnumText));
+    return enumTextOrderedList.sort((a, b) => a.EnumText.localeCompare(b.EnumText));
+}
 
+export function EmailTypeEnum_GetIDText(enumID: number): string {
+    let addressTypeEnunText: string;
+    EmailTypeEnum_GetOrderedText().forEach(e => {
+        if (e.EnumID == enumID) {
+            addressTypeEnunText = e.EnumText;
+            return false;
+        }
+    });
+
+    return addressTypeEnunText;
 }

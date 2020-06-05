@@ -103,6 +103,10 @@ namespace AngularEnumsGeneratedServices.Services
 
                     sb.AppendLine(@"}");
                     sb.AppendLine(@"");
+
+                    // ---------------------------------
+                    // doing {EnumName}_GetOrderedText()
+                    // ---------------------------------
                     sb.AppendLine($@"export function { dllTypeInfoEnums.Name }_GetOrderedText(): EnumIDAndText[] {{");
                     sb.AppendLine(@"    let enumTextOrderedList: EnumIDAndText[] = [];");
                     sb.AppendLine(@"    if ($localize.locale === 'fr-CA') {");
@@ -112,7 +116,7 @@ namespace AngularEnumsGeneratedServices.Services
                     foreach (EnumIDAndText enumIDAndText in enumIDAndTextList.OrderBy(c => c.EnumID))
                     {
                         string EnumText = enumIDAndText.EnumText.Replace("'", "\\'");
-                        sb.AppendLine($@"       enumTextOrderedList.push({{ EnumID: { enumIDAndText.EnumID }, EnumText: '{ EnumText }' }});");
+                        sb.AppendLine($@"        enumTextOrderedList.push({{ EnumID: { enumIDAndText.EnumID }, EnumText: '{ EnumText }' }});");
                     }
 
                     sb.AppendLine(@"    }");
@@ -123,15 +127,29 @@ namespace AngularEnumsGeneratedServices.Services
                     foreach (EnumIDAndText enumIDAndText in enumIDAndTextList.OrderBy(c => c.EnumID))
                     {
                         string EnumText = enumIDAndText.EnumText.Replace("'", "\\'");
-                        sb.AppendLine($@"       enumTextOrderedList.push({{ EnumID: { enumIDAndText.EnumID }, EnumText: '{ EnumText }' }});");
+                        sb.AppendLine($@"        enumTextOrderedList.push({{ EnumID: { enumIDAndText.EnumID }, EnumText: '{ EnumText }' }});");
                     }
 
                     sb.AppendLine(@"    }");
                     sb.AppendLine(@"");
-                    sb.AppendLine(@"    return enumTextOrderedList.sort((a,b) => a.EnumText.localeCompare(b.EnumText));");
-                    sb.AppendLine(@"");
+                    sb.AppendLine(@"    return enumTextOrderedList.sort((a, b) => a.EnumText.localeCompare(b.EnumText));");
                     sb.AppendLine(@"}");
 
+                    // ---------------------------------
+                    // doing {EnumName}_GetIDText(enumID: number)
+                    // ---------------------------------
+                    sb.AppendLine(@"");
+                    sb.AppendLine($@"export function { dllTypeInfoEnums.Name }_GetIDText(enumID: number): string {{");
+                    sb.AppendLine(@"    let addressTypeEnunText: string;");
+                    sb.AppendLine($@"    { dllTypeInfoEnums.Name }_GetOrderedText().forEach(e => {{");
+                    sb.AppendLine($@"        if (e.EnumID == enumID) {{");
+                    sb.AppendLine($@"            addressTypeEnunText = e.EnumText;");
+                    sb.AppendLine($@"            return false;");
+                    sb.AppendLine(@"        }");
+                    sb.AppendLine(@"    });");
+                    sb.AppendLine(@"");
+                    sb.AppendLine(@"    return addressTypeEnunText;");
+                    sb.AppendLine(@"}");
 
                     FileInfo fiOutputGen = new FileInfo(Config.GetValue<string>("EnumNameFile").Replace("{EnumName}", dllTypeInfoEnums.Name.Replace("enum", ".enum")));
 

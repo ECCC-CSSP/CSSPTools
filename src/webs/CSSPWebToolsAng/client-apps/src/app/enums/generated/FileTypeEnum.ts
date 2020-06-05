@@ -5,7 +5,7 @@
  *
  */
 
-import { EnumIDAndText } from 'src/app/models/enumidandtext.models';
+import { EnumIDAndText } from 'src/app/models/enumidandtext.model';
 
 export enum FileTypeEnum {
     DFS0 = 1,
@@ -35,54 +35,65 @@ export enum FileTypeEnum {
 export function FileTypeEnum_GetOrderedText(): EnumIDAndText[] {
     let enumTextOrderedList: EnumIDAndText[] = [];
     if ($localize.locale === 'fr-CA') {
-       enumTextOrderedList.push({ EnumID: 1, EnumText: 'DFS0 (fr)' });
-       enumTextOrderedList.push({ EnumID: 2, EnumText: 'DFS1 (fr)' });
-       enumTextOrderedList.push({ EnumID: 3, EnumText: 'DFSU (fr)' });
-       enumTextOrderedList.push({ EnumID: 4, EnumText: 'KMZ (fr)' });
-       enumTextOrderedList.push({ EnumID: 5, EnumText: 'LOG (fr)' });
-       enumTextOrderedList.push({ EnumID: 6, EnumText: 'M21FM (fr)' });
-       enumTextOrderedList.push({ EnumID: 7, EnumText: 'M3FM (fr)' });
-       enumTextOrderedList.push({ EnumID: 8, EnumText: 'MDF (fr)' });
-       enumTextOrderedList.push({ EnumID: 9, EnumText: 'MESH (fr)' });
-       enumTextOrderedList.push({ EnumID: 10, EnumText: 'XLSX (fr)' });
-       enumTextOrderedList.push({ EnumID: 11, EnumText: 'DOCX (fr)' });
-       enumTextOrderedList.push({ EnumID: 12, EnumText: 'PDF (fr)' });
-       enumTextOrderedList.push({ EnumID: 13, EnumText: 'JPG (fr)' });
-       enumTextOrderedList.push({ EnumID: 14, EnumText: 'JPEG (fr)' });
-       enumTextOrderedList.push({ EnumID: 15, EnumText: 'GIF (fr)' });
-       enumTextOrderedList.push({ EnumID: 16, EnumText: 'PNG (fr)' });
-       enumTextOrderedList.push({ EnumID: 17, EnumText: 'HTML (fr)' });
-       enumTextOrderedList.push({ EnumID: 18, EnumText: 'TXT (fr)' });
-       enumTextOrderedList.push({ EnumID: 19, EnumText: 'XYZ (fr)' });
-       enumTextOrderedList.push({ EnumID: 20, EnumText: 'KML (fr)' });
-       enumTextOrderedList.push({ EnumID: 21, EnumText: 'CSV' });
-       enumTextOrderedList.push({ EnumID: 22, EnumText: 'WMV' });
+        enumTextOrderedList.push({ EnumID: 1, EnumText: 'DFS0 (fr)' });
+        enumTextOrderedList.push({ EnumID: 2, EnumText: 'DFS1 (fr)' });
+        enumTextOrderedList.push({ EnumID: 3, EnumText: 'DFSU (fr)' });
+        enumTextOrderedList.push({ EnumID: 4, EnumText: 'KMZ (fr)' });
+        enumTextOrderedList.push({ EnumID: 5, EnumText: 'LOG (fr)' });
+        enumTextOrderedList.push({ EnumID: 6, EnumText: 'M21FM (fr)' });
+        enumTextOrderedList.push({ EnumID: 7, EnumText: 'M3FM (fr)' });
+        enumTextOrderedList.push({ EnumID: 8, EnumText: 'MDF (fr)' });
+        enumTextOrderedList.push({ EnumID: 9, EnumText: 'MESH (fr)' });
+        enumTextOrderedList.push({ EnumID: 10, EnumText: 'XLSX (fr)' });
+        enumTextOrderedList.push({ EnumID: 11, EnumText: 'DOCX (fr)' });
+        enumTextOrderedList.push({ EnumID: 12, EnumText: 'PDF (fr)' });
+        enumTextOrderedList.push({ EnumID: 13, EnumText: 'JPG (fr)' });
+        enumTextOrderedList.push({ EnumID: 14, EnumText: 'JPEG (fr)' });
+        enumTextOrderedList.push({ EnumID: 15, EnumText: 'GIF (fr)' });
+        enumTextOrderedList.push({ EnumID: 16, EnumText: 'PNG (fr)' });
+        enumTextOrderedList.push({ EnumID: 17, EnumText: 'HTML (fr)' });
+        enumTextOrderedList.push({ EnumID: 18, EnumText: 'TXT (fr)' });
+        enumTextOrderedList.push({ EnumID: 19, EnumText: 'XYZ (fr)' });
+        enumTextOrderedList.push({ EnumID: 20, EnumText: 'KML (fr)' });
+        enumTextOrderedList.push({ EnumID: 21, EnumText: 'CSV' });
+        enumTextOrderedList.push({ EnumID: 22, EnumText: 'WMV' });
     }
     else {
-       enumTextOrderedList.push({ EnumID: 1, EnumText: 'DFS0' });
-       enumTextOrderedList.push({ EnumID: 2, EnumText: 'DFS1' });
-       enumTextOrderedList.push({ EnumID: 3, EnumText: 'DFSU' });
-       enumTextOrderedList.push({ EnumID: 4, EnumText: 'KMZ' });
-       enumTextOrderedList.push({ EnumID: 5, EnumText: 'LOG' });
-       enumTextOrderedList.push({ EnumID: 6, EnumText: 'M21FM' });
-       enumTextOrderedList.push({ EnumID: 7, EnumText: 'M3FM' });
-       enumTextOrderedList.push({ EnumID: 8, EnumText: 'MDF' });
-       enumTextOrderedList.push({ EnumID: 9, EnumText: 'MESH' });
-       enumTextOrderedList.push({ EnumID: 10, EnumText: 'XLSX' });
-       enumTextOrderedList.push({ EnumID: 11, EnumText: 'DOCX' });
-       enumTextOrderedList.push({ EnumID: 12, EnumText: 'PDF' });
-       enumTextOrderedList.push({ EnumID: 13, EnumText: 'JPG' });
-       enumTextOrderedList.push({ EnumID: 14, EnumText: 'JPEG' });
-       enumTextOrderedList.push({ EnumID: 15, EnumText: 'GIF' });
-       enumTextOrderedList.push({ EnumID: 16, EnumText: 'PNG' });
-       enumTextOrderedList.push({ EnumID: 17, EnumText: 'HTML' });
-       enumTextOrderedList.push({ EnumID: 18, EnumText: 'TXT' });
-       enumTextOrderedList.push({ EnumID: 19, EnumText: 'XYZ' });
-       enumTextOrderedList.push({ EnumID: 20, EnumText: 'KML' });
-       enumTextOrderedList.push({ EnumID: 21, EnumText: 'CSV' });
-       enumTextOrderedList.push({ EnumID: 22, EnumText: 'WMV' });
+        enumTextOrderedList.push({ EnumID: 1, EnumText: 'DFS0' });
+        enumTextOrderedList.push({ EnumID: 2, EnumText: 'DFS1' });
+        enumTextOrderedList.push({ EnumID: 3, EnumText: 'DFSU' });
+        enumTextOrderedList.push({ EnumID: 4, EnumText: 'KMZ' });
+        enumTextOrderedList.push({ EnumID: 5, EnumText: 'LOG' });
+        enumTextOrderedList.push({ EnumID: 6, EnumText: 'M21FM' });
+        enumTextOrderedList.push({ EnumID: 7, EnumText: 'M3FM' });
+        enumTextOrderedList.push({ EnumID: 8, EnumText: 'MDF' });
+        enumTextOrderedList.push({ EnumID: 9, EnumText: 'MESH' });
+        enumTextOrderedList.push({ EnumID: 10, EnumText: 'XLSX' });
+        enumTextOrderedList.push({ EnumID: 11, EnumText: 'DOCX' });
+        enumTextOrderedList.push({ EnumID: 12, EnumText: 'PDF' });
+        enumTextOrderedList.push({ EnumID: 13, EnumText: 'JPG' });
+        enumTextOrderedList.push({ EnumID: 14, EnumText: 'JPEG' });
+        enumTextOrderedList.push({ EnumID: 15, EnumText: 'GIF' });
+        enumTextOrderedList.push({ EnumID: 16, EnumText: 'PNG' });
+        enumTextOrderedList.push({ EnumID: 17, EnumText: 'HTML' });
+        enumTextOrderedList.push({ EnumID: 18, EnumText: 'TXT' });
+        enumTextOrderedList.push({ EnumID: 19, EnumText: 'XYZ' });
+        enumTextOrderedList.push({ EnumID: 20, EnumText: 'KML' });
+        enumTextOrderedList.push({ EnumID: 21, EnumText: 'CSV' });
+        enumTextOrderedList.push({ EnumID: 22, EnumText: 'WMV' });
     }
 
-    return enumTextOrderedList.sort((a,b) => a.EnumText.localeCompare(b.EnumText));
+    return enumTextOrderedList.sort((a, b) => a.EnumText.localeCompare(b.EnumText));
+}
 
+export function FileTypeEnum_GetIDText(enumID: number): string {
+    let addressTypeEnunText: string;
+    FileTypeEnum_GetOrderedText().forEach(e => {
+        if (e.EnumID == enumID) {
+            addressTypeEnunText = e.EnumText;
+            return false;
+        }
+    });
+
+    return addressTypeEnunText;
 }

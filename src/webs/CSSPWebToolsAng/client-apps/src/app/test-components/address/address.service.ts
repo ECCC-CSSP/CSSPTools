@@ -5,7 +5,7 @@ import { LoadLocalesAddressText } from './address.locales';
 import { Router } from '@angular/router';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { map, catchError } from 'rxjs/operators';
-import { Address } from 'src/app/interfaces/generated/Address.interface';
+import { Address } from 'src/app/models/generated/Address.model';
 
 @Injectable({
   providedIn: 'root'
@@ -35,9 +35,6 @@ export class AddressService {
       map((x: any) => {
         console.debug(`Address OK. Return: ${x}`);
         this.addressModel$.getValue().AddressList = <Address[]>x;
-        if (this.addressModel$.getValue().AddressList.length > 0) {
-          this.addressModel$.getValue().ObjKeys = Object.keys(this.addressModel$.getValue().AddressList[0]);
-        }
         this.UpdateAddressModel(this.addressModel$.getValue());
         this.UpdateAddressModel(<AddressModel>{ Working: false, Error: null });
         router.navigateByUrl('', { skipLocationChange: true }).then(() => {

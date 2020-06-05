@@ -5,7 +5,7 @@
  *
  */
 
-import { EnumIDAndText } from 'src/app/models/enumidandtext.models';
+import { EnumIDAndText } from 'src/app/models/enumidandtext.model';
 
 export enum KMZActionEnum {
     DoNothing = 1,
@@ -21,26 +21,37 @@ export enum KMZActionEnum {
 export function KMZActionEnum_GetOrderedText(): EnumIDAndText[] {
     let enumTextOrderedList: EnumIDAndText[] = [];
     if ($localize.locale === 'fr-CA') {
-       enumTextOrderedList.push({ EnumID: 1, EnumText: 'DoNothing (fr)' });
-       enumTextOrderedList.push({ EnumID: 2, EnumText: 'GenerateKMZContourAnimation (fr)' });
-       enumTextOrderedList.push({ EnumID: 3, EnumText: 'GenerateKMZContourLimit (fr)' });
-       enumTextOrderedList.push({ EnumID: 4, EnumText: 'GenerateKMZCurrentAnimation (fr)' });
-       enumTextOrderedList.push({ EnumID: 5, EnumText: 'GenerateKMZCurrentMaximum (fr)' });
-       enumTextOrderedList.push({ EnumID: 6, EnumText: 'GenerateKMZMesh (fr)' });
-       enumTextOrderedList.push({ EnumID: 7, EnumText: 'GenerateKMZStudyArea (fr)' });
-       enumTextOrderedList.push({ EnumID: 8, EnumText: 'GenerateKMZBoundaryConditionNodes (fr)' });
+        enumTextOrderedList.push({ EnumID: 1, EnumText: 'DoNothing (fr)' });
+        enumTextOrderedList.push({ EnumID: 2, EnumText: 'GenerateKMZContourAnimation (fr)' });
+        enumTextOrderedList.push({ EnumID: 3, EnumText: 'GenerateKMZContourLimit (fr)' });
+        enumTextOrderedList.push({ EnumID: 4, EnumText: 'GenerateKMZCurrentAnimation (fr)' });
+        enumTextOrderedList.push({ EnumID: 5, EnumText: 'GenerateKMZCurrentMaximum (fr)' });
+        enumTextOrderedList.push({ EnumID: 6, EnumText: 'GenerateKMZMesh (fr)' });
+        enumTextOrderedList.push({ EnumID: 7, EnumText: 'GenerateKMZStudyArea (fr)' });
+        enumTextOrderedList.push({ EnumID: 8, EnumText: 'GenerateKMZBoundaryConditionNodes (fr)' });
     }
     else {
-       enumTextOrderedList.push({ EnumID: 1, EnumText: 'DoNothing' });
-       enumTextOrderedList.push({ EnumID: 2, EnumText: 'GenerateKMZContourAnimation' });
-       enumTextOrderedList.push({ EnumID: 3, EnumText: 'GenerateKMZContourLimit' });
-       enumTextOrderedList.push({ EnumID: 4, EnumText: 'GenerateKMZCurrentAnimation' });
-       enumTextOrderedList.push({ EnumID: 5, EnumText: 'GenerateKMZCurrentMaximum' });
-       enumTextOrderedList.push({ EnumID: 6, EnumText: 'GenerateKMZMesh' });
-       enumTextOrderedList.push({ EnumID: 7, EnumText: 'GenerateKMZStudyArea' });
-       enumTextOrderedList.push({ EnumID: 8, EnumText: 'GenerateKMZBoundaryConditionNodes' });
+        enumTextOrderedList.push({ EnumID: 1, EnumText: 'DoNothing' });
+        enumTextOrderedList.push({ EnumID: 2, EnumText: 'GenerateKMZContourAnimation' });
+        enumTextOrderedList.push({ EnumID: 3, EnumText: 'GenerateKMZContourLimit' });
+        enumTextOrderedList.push({ EnumID: 4, EnumText: 'GenerateKMZCurrentAnimation' });
+        enumTextOrderedList.push({ EnumID: 5, EnumText: 'GenerateKMZCurrentMaximum' });
+        enumTextOrderedList.push({ EnumID: 6, EnumText: 'GenerateKMZMesh' });
+        enumTextOrderedList.push({ EnumID: 7, EnumText: 'GenerateKMZStudyArea' });
+        enumTextOrderedList.push({ EnumID: 8, EnumText: 'GenerateKMZBoundaryConditionNodes' });
     }
 
-    return enumTextOrderedList.sort((a,b) => a.EnumText.localeCompare(b.EnumText));
+    return enumTextOrderedList.sort((a, b) => a.EnumText.localeCompare(b.EnumText));
+}
 
+export function KMZActionEnum_GetIDText(enumID: number): string {
+    let addressTypeEnunText: string;
+    KMZActionEnum_GetOrderedText().forEach(e => {
+        if (e.EnumID == enumID) {
+            addressTypeEnunText = e.EnumText;
+            return false;
+        }
+    });
+
+    return addressTypeEnunText;
 }

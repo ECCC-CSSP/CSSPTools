@@ -5,7 +5,7 @@
  *
  */
 
-import { EnumIDAndText } from 'src/app/models/enumidandtext.models';
+import { EnumIDAndText } from 'src/app/models/enumidandtext.model';
 
 export enum BeaufortScaleEnum {
     Calm = 0,
@@ -26,36 +26,47 @@ export enum BeaufortScaleEnum {
 export function BeaufortScaleEnum_GetOrderedText(): EnumIDAndText[] {
     let enumTextOrderedList: EnumIDAndText[] = [];
     if ($localize.locale === 'fr-CA') {
-       enumTextOrderedList.push({ EnumID: 0, EnumText: 'Calm (fr)' });
-       enumTextOrderedList.push({ EnumID: 1, EnumText: 'Light air (fr)' });
-       enumTextOrderedList.push({ EnumID: 2, EnumText: 'Light breeze (fr)' });
-       enumTextOrderedList.push({ EnumID: 3, EnumText: 'Gentle breeze (fr)' });
-       enumTextOrderedList.push({ EnumID: 4, EnumText: 'Moderate breeze (fr)' });
-       enumTextOrderedList.push({ EnumID: 5, EnumText: 'Fresh breeze (fr)' });
-       enumTextOrderedList.push({ EnumID: 6, EnumText: 'Strong breeze (fr)' });
-       enumTextOrderedList.push({ EnumID: 7, EnumText: 'High wind, moderate gale, near gale (fr)' });
-       enumTextOrderedList.push({ EnumID: 8, EnumText: 'Gale, fresh gale (fr)' });
-       enumTextOrderedList.push({ EnumID: 9, EnumText: 'Strong, severe gale (fr)' });
-       enumTextOrderedList.push({ EnumID: 10, EnumText: 'Storm, whole gale (fr)' });
-       enumTextOrderedList.push({ EnumID: 11, EnumText: 'Violent storm (fr)' });
-       enumTextOrderedList.push({ EnumID: 12, EnumText: 'Hurricane force (fr)' });
+        enumTextOrderedList.push({ EnumID: 0, EnumText: 'Calm (fr)' });
+        enumTextOrderedList.push({ EnumID: 1, EnumText: 'Light air (fr)' });
+        enumTextOrderedList.push({ EnumID: 2, EnumText: 'Light breeze (fr)' });
+        enumTextOrderedList.push({ EnumID: 3, EnumText: 'Gentle breeze (fr)' });
+        enumTextOrderedList.push({ EnumID: 4, EnumText: 'Moderate breeze (fr)' });
+        enumTextOrderedList.push({ EnumID: 5, EnumText: 'Fresh breeze (fr)' });
+        enumTextOrderedList.push({ EnumID: 6, EnumText: 'Strong breeze (fr)' });
+        enumTextOrderedList.push({ EnumID: 7, EnumText: 'High wind, moderate gale, near gale (fr)' });
+        enumTextOrderedList.push({ EnumID: 8, EnumText: 'Gale, fresh gale (fr)' });
+        enumTextOrderedList.push({ EnumID: 9, EnumText: 'Strong, severe gale (fr)' });
+        enumTextOrderedList.push({ EnumID: 10, EnumText: 'Storm, whole gale (fr)' });
+        enumTextOrderedList.push({ EnumID: 11, EnumText: 'Violent storm (fr)' });
+        enumTextOrderedList.push({ EnumID: 12, EnumText: 'Hurricane force (fr)' });
     }
     else {
-       enumTextOrderedList.push({ EnumID: 0, EnumText: 'Calm' });
-       enumTextOrderedList.push({ EnumID: 1, EnumText: 'Light air' });
-       enumTextOrderedList.push({ EnumID: 2, EnumText: 'Light breeze' });
-       enumTextOrderedList.push({ EnumID: 3, EnumText: 'Gentle breeze' });
-       enumTextOrderedList.push({ EnumID: 4, EnumText: 'Moderate breeze' });
-       enumTextOrderedList.push({ EnumID: 5, EnumText: 'Fresh breeze' });
-       enumTextOrderedList.push({ EnumID: 6, EnumText: 'Strong breeze' });
-       enumTextOrderedList.push({ EnumID: 7, EnumText: 'High wind, moderate gale, near gale' });
-       enumTextOrderedList.push({ EnumID: 8, EnumText: 'Gale, fresh gale' });
-       enumTextOrderedList.push({ EnumID: 9, EnumText: 'Strong, severe gale' });
-       enumTextOrderedList.push({ EnumID: 10, EnumText: 'Storm, whole gale' });
-       enumTextOrderedList.push({ EnumID: 11, EnumText: 'Violent storm' });
-       enumTextOrderedList.push({ EnumID: 12, EnumText: 'Hurricane force' });
+        enumTextOrderedList.push({ EnumID: 0, EnumText: 'Calm' });
+        enumTextOrderedList.push({ EnumID: 1, EnumText: 'Light air' });
+        enumTextOrderedList.push({ EnumID: 2, EnumText: 'Light breeze' });
+        enumTextOrderedList.push({ EnumID: 3, EnumText: 'Gentle breeze' });
+        enumTextOrderedList.push({ EnumID: 4, EnumText: 'Moderate breeze' });
+        enumTextOrderedList.push({ EnumID: 5, EnumText: 'Fresh breeze' });
+        enumTextOrderedList.push({ EnumID: 6, EnumText: 'Strong breeze' });
+        enumTextOrderedList.push({ EnumID: 7, EnumText: 'High wind, moderate gale, near gale' });
+        enumTextOrderedList.push({ EnumID: 8, EnumText: 'Gale, fresh gale' });
+        enumTextOrderedList.push({ EnumID: 9, EnumText: 'Strong, severe gale' });
+        enumTextOrderedList.push({ EnumID: 10, EnumText: 'Storm, whole gale' });
+        enumTextOrderedList.push({ EnumID: 11, EnumText: 'Violent storm' });
+        enumTextOrderedList.push({ EnumID: 12, EnumText: 'Hurricane force' });
     }
 
-    return enumTextOrderedList.sort((a,b) => a.EnumText.localeCompare(b.EnumText));
+    return enumTextOrderedList.sort((a, b) => a.EnumText.localeCompare(b.EnumText));
+}
 
+export function BeaufortScaleEnum_GetIDText(enumID: number): string {
+    let addressTypeEnunText: string;
+    BeaufortScaleEnum_GetOrderedText().forEach(e => {
+        if (e.EnumID == enumID) {
+            addressTypeEnunText = e.EnumText;
+            return false;
+        }
+    });
+
+    return addressTypeEnunText;
 }

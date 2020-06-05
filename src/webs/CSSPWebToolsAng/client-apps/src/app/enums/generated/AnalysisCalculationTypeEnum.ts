@@ -5,7 +5,7 @@
  *
  */
 
-import { EnumIDAndText } from 'src/app/models/enumidandtext.models';
+import { EnumIDAndText } from 'src/app/models/enumidandtext.model';
 
 export enum AnalysisCalculationTypeEnum {
     AllAllAll = 1,
@@ -20,24 +20,35 @@ export enum AnalysisCalculationTypeEnum {
 export function AnalysisCalculationTypeEnum_GetOrderedText(): EnumIDAndText[] {
     let enumTextOrderedList: EnumIDAndText[] = [];
     if ($localize.locale === 'fr-CA') {
-       enumTextOrderedList.push({ EnumID: 1, EnumText: 'All - All - All' });
-       enumTextOrderedList.push({ EnumID: 2, EnumText: 'Wet - All - All (fr)' });
-       enumTextOrderedList.push({ EnumID: 3, EnumText: 'Dry - All - All (fr)' });
-       enumTextOrderedList.push({ EnumID: 4, EnumText: 'Wet - Wet - All (fr)' });
-       enumTextOrderedList.push({ EnumID: 5, EnumText: 'Dry - Dry - All (fr)' });
-       enumTextOrderedList.push({ EnumID: 6, EnumText: 'Wet - Dry - All (fr)' });
-       enumTextOrderedList.push({ EnumID: 7, EnumText: 'Dry - Wet - All (fr)' });
+        enumTextOrderedList.push({ EnumID: 1, EnumText: 'All - All - All' });
+        enumTextOrderedList.push({ EnumID: 2, EnumText: 'Wet - All - All (fr)' });
+        enumTextOrderedList.push({ EnumID: 3, EnumText: 'Dry - All - All (fr)' });
+        enumTextOrderedList.push({ EnumID: 4, EnumText: 'Wet - Wet - All (fr)' });
+        enumTextOrderedList.push({ EnumID: 5, EnumText: 'Dry - Dry - All (fr)' });
+        enumTextOrderedList.push({ EnumID: 6, EnumText: 'Wet - Dry - All (fr)' });
+        enumTextOrderedList.push({ EnumID: 7, EnumText: 'Dry - Wet - All (fr)' });
     }
     else {
-       enumTextOrderedList.push({ EnumID: 1, EnumText: 'All - All - All' });
-       enumTextOrderedList.push({ EnumID: 2, EnumText: 'Wet - All - All' });
-       enumTextOrderedList.push({ EnumID: 3, EnumText: 'Dry - All - All' });
-       enumTextOrderedList.push({ EnumID: 4, EnumText: 'Wet - Wet - All' });
-       enumTextOrderedList.push({ EnumID: 5, EnumText: 'Dry - Dry - All' });
-       enumTextOrderedList.push({ EnumID: 6, EnumText: 'Wet - Dry - All' });
-       enumTextOrderedList.push({ EnumID: 7, EnumText: 'Dry - Wet - All' });
+        enumTextOrderedList.push({ EnumID: 1, EnumText: 'All - All - All' });
+        enumTextOrderedList.push({ EnumID: 2, EnumText: 'Wet - All - All' });
+        enumTextOrderedList.push({ EnumID: 3, EnumText: 'Dry - All - All' });
+        enumTextOrderedList.push({ EnumID: 4, EnumText: 'Wet - Wet - All' });
+        enumTextOrderedList.push({ EnumID: 5, EnumText: 'Dry - Dry - All' });
+        enumTextOrderedList.push({ EnumID: 6, EnumText: 'Wet - Dry - All' });
+        enumTextOrderedList.push({ EnumID: 7, EnumText: 'Dry - Wet - All' });
     }
 
-    return enumTextOrderedList.sort((a,b) => a.EnumText.localeCompare(b.EnumText));
+    return enumTextOrderedList.sort((a, b) => a.EnumText.localeCompare(b.EnumText));
+}
 
+export function AnalysisCalculationTypeEnum_GetIDText(enumID: number): string {
+    let addressTypeEnunText: string;
+    AnalysisCalculationTypeEnum_GetOrderedText().forEach(e => {
+        if (e.EnumID == enumID) {
+            addressTypeEnunText = e.EnumText;
+            return false;
+        }
+    });
+
+    return addressTypeEnunText;
 }

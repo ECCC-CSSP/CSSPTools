@@ -5,7 +5,7 @@
  *
  */
 
-import { EnumIDAndText } from 'src/app/models/enumidandtext.models';
+import { EnumIDAndText } from 'src/app/models/enumidandtext.model';
 
 export enum ReportConditionEnum {
     ReportConditionTrue = 1,
@@ -21,26 +21,37 @@ export enum ReportConditionEnum {
 export function ReportConditionEnum_GetOrderedText(): EnumIDAndText[] {
     let enumTextOrderedList: EnumIDAndText[] = [];
     if ($localize.locale === 'fr-CA') {
-       enumTextOrderedList.push({ EnumID: 1, EnumText: 'TRUE' });
-       enumTextOrderedList.push({ EnumID: 2, EnumText: 'FALSE' });
-       enumTextOrderedList.push({ EnumID: 3, EnumText: 'CONTAIN' });
-       enumTextOrderedList.push({ EnumID: 4, EnumText: 'START' });
-       enumTextOrderedList.push({ EnumID: 5, EnumText: 'END' });
-       enumTextOrderedList.push({ EnumID: 6, EnumText: 'BIGGER' });
-       enumTextOrderedList.push({ EnumID: 7, EnumText: 'SMALLER' });
-       enumTextOrderedList.push({ EnumID: 8, EnumText: 'EQUAL' });
+        enumTextOrderedList.push({ EnumID: 1, EnumText: 'TRUE' });
+        enumTextOrderedList.push({ EnumID: 2, EnumText: 'FALSE' });
+        enumTextOrderedList.push({ EnumID: 3, EnumText: 'CONTAIN' });
+        enumTextOrderedList.push({ EnumID: 4, EnumText: 'START' });
+        enumTextOrderedList.push({ EnumID: 5, EnumText: 'END' });
+        enumTextOrderedList.push({ EnumID: 6, EnumText: 'BIGGER' });
+        enumTextOrderedList.push({ EnumID: 7, EnumText: 'SMALLER' });
+        enumTextOrderedList.push({ EnumID: 8, EnumText: 'EQUAL' });
     }
     else {
-       enumTextOrderedList.push({ EnumID: 1, EnumText: 'TRUE' });
-       enumTextOrderedList.push({ EnumID: 2, EnumText: 'FALSE' });
-       enumTextOrderedList.push({ EnumID: 3, EnumText: 'CONTAIN' });
-       enumTextOrderedList.push({ EnumID: 4, EnumText: 'START' });
-       enumTextOrderedList.push({ EnumID: 5, EnumText: 'END' });
-       enumTextOrderedList.push({ EnumID: 6, EnumText: 'BIGGER' });
-       enumTextOrderedList.push({ EnumID: 7, EnumText: 'SMALLER' });
-       enumTextOrderedList.push({ EnumID: 8, EnumText: 'EQUAL' });
+        enumTextOrderedList.push({ EnumID: 1, EnumText: 'TRUE' });
+        enumTextOrderedList.push({ EnumID: 2, EnumText: 'FALSE' });
+        enumTextOrderedList.push({ EnumID: 3, EnumText: 'CONTAIN' });
+        enumTextOrderedList.push({ EnumID: 4, EnumText: 'START' });
+        enumTextOrderedList.push({ EnumID: 5, EnumText: 'END' });
+        enumTextOrderedList.push({ EnumID: 6, EnumText: 'BIGGER' });
+        enumTextOrderedList.push({ EnumID: 7, EnumText: 'SMALLER' });
+        enumTextOrderedList.push({ EnumID: 8, EnumText: 'EQUAL' });
     }
 
-    return enumTextOrderedList.sort((a,b) => a.EnumText.localeCompare(b.EnumText));
+    return enumTextOrderedList.sort((a, b) => a.EnumText.localeCompare(b.EnumText));
+}
 
+export function ReportConditionEnum_GetIDText(enumID: number): string {
+    let addressTypeEnunText: string;
+    ReportConditionEnum_GetOrderedText().forEach(e => {
+        if (e.EnumID == enumID) {
+            addressTypeEnunText = e.EnumText;
+            return false;
+        }
+    });
+
+    return addressTypeEnunText;
 }

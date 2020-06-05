@@ -5,7 +5,7 @@
  *
  */
 
-import { EnumIDAndText } from 'src/app/models/enumidandtext.models';
+import { EnumIDAndText } from 'src/app/models/enumidandtext.model';
 
 export enum CanOverflowTypeEnum {
     Yes = 1,
@@ -16,16 +16,27 @@ export enum CanOverflowTypeEnum {
 export function CanOverflowTypeEnum_GetOrderedText(): EnumIDAndText[] {
     let enumTextOrderedList: EnumIDAndText[] = [];
     if ($localize.locale === 'fr-CA') {
-       enumTextOrderedList.push({ EnumID: 1, EnumText: 'Oui' });
-       enumTextOrderedList.push({ EnumID: 2, EnumText: 'Non' });
-       enumTextOrderedList.push({ EnumID: 3, EnumText: 'Inconnu' });
+        enumTextOrderedList.push({ EnumID: 1, EnumText: 'Oui' });
+        enumTextOrderedList.push({ EnumID: 2, EnumText: 'Non' });
+        enumTextOrderedList.push({ EnumID: 3, EnumText: 'Inconnu' });
     }
     else {
-       enumTextOrderedList.push({ EnumID: 1, EnumText: 'Yes' });
-       enumTextOrderedList.push({ EnumID: 2, EnumText: 'No' });
-       enumTextOrderedList.push({ EnumID: 3, EnumText: 'Unknown' });
+        enumTextOrderedList.push({ EnumID: 1, EnumText: 'Yes' });
+        enumTextOrderedList.push({ EnumID: 2, EnumText: 'No' });
+        enumTextOrderedList.push({ EnumID: 3, EnumText: 'Unknown' });
     }
 
-    return enumTextOrderedList.sort((a,b) => a.EnumText.localeCompare(b.EnumText));
+    return enumTextOrderedList.sort((a, b) => a.EnumText.localeCompare(b.EnumText));
+}
 
+export function CanOverflowTypeEnum_GetIDText(enumID: number): string {
+    let addressTypeEnunText: string;
+    CanOverflowTypeEnum_GetOrderedText().forEach(e => {
+        if (e.EnumID == enumID) {
+            addressTypeEnunText = e.EnumText;
+            return false;
+        }
+    });
+
+    return addressTypeEnunText;
 }

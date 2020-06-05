@@ -68,7 +68,7 @@ build,    WebAPIClassNameControllerTestGenerated,C:\CSSPTools\src\codegen\WebAPI
 build,    WebAPIClassNameControllerTestGeneratedServices,C:\CSSPTools\src\codegen\WebAPIClassNameControllerTestGeneratedServices\WebAPIClassNameControllerTestGeneratedServices.csproj
 build,    WebAPIClassNameControllerTestGeneratedServices.Tests,C:\CSSPTools\src\codegen\Tests\WebAPIClassNameControllerTestGeneratedServices.Tests\WebAPIClassNameControllerTestGeneratedServices.Tests.csproj
 run,    AngularEnumsGenerated,C:\CSSPTools\src\codegen\AngularEnumsGenerated\bin\Debug\netcoreapp3.1\AngularEnumsGenerated.exe
-run,    AngularInterfacesGenerated,C:\CSSPTools\src\codegen\AngularInterfacesGenerated\bin\Debug\netcoreapp3.1\AngularInterfacesGenerated.exe
+run,    AngularModelsGenerated,C:\CSSPTools\src\codegen\AngularModelsGenerated\bin\Debug\netcoreapp3.1\AngularModelsGenerated.exe
 run,    EnumsCompareWithOldEnums,C:\CSSPTools\src\codegen\EnumsCompareWithOldEnums\bin\Debug\netcoreapp3.1\EnumsCompareWithOldEnums.exe
 run,    EnumsGenerated_cs,C:\CSSPTools\src\codegen\EnumsGenerated_cs\bin\Debug\netcoreapp3.1\EnumsGenerated_cs.exe
 run,    EnumsPolSourceInfoRelatedFiles,C:\CSSPTools\src\codegen\EnumsPolSourceInfoRelatedFiles\bin\Debug\netcoreapp3.1\EnumsPolSourceInfoRelatedFiles.exe

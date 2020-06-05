@@ -5,7 +5,7 @@
  *
  */
 
-import { EnumIDAndText } from 'src/app/models/enumidandtext.models';
+import { EnumIDAndText } from 'src/app/models/enumidandtext.model';
 
 export enum CollectionSystemTypeEnum {
     CompletelySeparated = 1,
@@ -24,32 +24,43 @@ export enum CollectionSystemTypeEnum {
 export function CollectionSystemTypeEnum_GetOrderedText(): EnumIDAndText[] {
     let enumTextOrderedList: EnumIDAndText[] = [];
     if ($localize.locale === 'fr-CA') {
-       enumTextOrderedList.push({ EnumID: 1, EnumText: 'Completely Separated (fr)' });
-       enumTextOrderedList.push({ EnumID: 2, EnumText: 'Completely Combined (fr)' });
-       enumTextOrderedList.push({ EnumID: 3, EnumText: 'Combined 90% Separated 10% (fr)' });
-       enumTextOrderedList.push({ EnumID: 4, EnumText: 'Combined 80% Separated 20% (fr)' });
-       enumTextOrderedList.push({ EnumID: 5, EnumText: 'Combined 70% Separated 30% (fr)' });
-       enumTextOrderedList.push({ EnumID: 6, EnumText: 'Combined 60% Separated 40% (fr)' });
-       enumTextOrderedList.push({ EnumID: 7, EnumText: 'Combined 50% Separated 50% (fr)' });
-       enumTextOrderedList.push({ EnumID: 8, EnumText: 'Combined 40% Separated 60% (fr)' });
-       enumTextOrderedList.push({ EnumID: 9, EnumText: 'Combined 30% Separated 70% (fr)' });
-       enumTextOrderedList.push({ EnumID: 10, EnumText: 'Combined 20% Separated 80% (fr)' });
-       enumTextOrderedList.push({ EnumID: 11, EnumText: 'Combined 10% Separated 90% (fr)' });
+        enumTextOrderedList.push({ EnumID: 1, EnumText: 'Completely Separated (fr)' });
+        enumTextOrderedList.push({ EnumID: 2, EnumText: 'Completely Combined (fr)' });
+        enumTextOrderedList.push({ EnumID: 3, EnumText: 'Combined 90% Separated 10% (fr)' });
+        enumTextOrderedList.push({ EnumID: 4, EnumText: 'Combined 80% Separated 20% (fr)' });
+        enumTextOrderedList.push({ EnumID: 5, EnumText: 'Combined 70% Separated 30% (fr)' });
+        enumTextOrderedList.push({ EnumID: 6, EnumText: 'Combined 60% Separated 40% (fr)' });
+        enumTextOrderedList.push({ EnumID: 7, EnumText: 'Combined 50% Separated 50% (fr)' });
+        enumTextOrderedList.push({ EnumID: 8, EnumText: 'Combined 40% Separated 60% (fr)' });
+        enumTextOrderedList.push({ EnumID: 9, EnumText: 'Combined 30% Separated 70% (fr)' });
+        enumTextOrderedList.push({ EnumID: 10, EnumText: 'Combined 20% Separated 80% (fr)' });
+        enumTextOrderedList.push({ EnumID: 11, EnumText: 'Combined 10% Separated 90% (fr)' });
     }
     else {
-       enumTextOrderedList.push({ EnumID: 1, EnumText: 'Completely Separated' });
-       enumTextOrderedList.push({ EnumID: 2, EnumText: 'Completely Combined' });
-       enumTextOrderedList.push({ EnumID: 3, EnumText: 'Combined 90% Separated 10%' });
-       enumTextOrderedList.push({ EnumID: 4, EnumText: 'Combined 80% Separated 20%' });
-       enumTextOrderedList.push({ EnumID: 5, EnumText: 'Combined 70% Separated 30%' });
-       enumTextOrderedList.push({ EnumID: 6, EnumText: 'Combined 60% Separated 40%' });
-       enumTextOrderedList.push({ EnumID: 7, EnumText: '' });
-       enumTextOrderedList.push({ EnumID: 8, EnumText: 'Combined 40% Separated 60%' });
-       enumTextOrderedList.push({ EnumID: 9, EnumText: 'Combined 30% Separated 70%' });
-       enumTextOrderedList.push({ EnumID: 10, EnumText: 'Combined 20% Separated 80%' });
-       enumTextOrderedList.push({ EnumID: 11, EnumText: 'Combined 10% Separated 90%' });
+        enumTextOrderedList.push({ EnumID: 1, EnumText: 'Completely Separated' });
+        enumTextOrderedList.push({ EnumID: 2, EnumText: 'Completely Combined' });
+        enumTextOrderedList.push({ EnumID: 3, EnumText: 'Combined 90% Separated 10%' });
+        enumTextOrderedList.push({ EnumID: 4, EnumText: 'Combined 80% Separated 20%' });
+        enumTextOrderedList.push({ EnumID: 5, EnumText: 'Combined 70% Separated 30%' });
+        enumTextOrderedList.push({ EnumID: 6, EnumText: 'Combined 60% Separated 40%' });
+        enumTextOrderedList.push({ EnumID: 7, EnumText: '' });
+        enumTextOrderedList.push({ EnumID: 8, EnumText: 'Combined 40% Separated 60%' });
+        enumTextOrderedList.push({ EnumID: 9, EnumText: 'Combined 30% Separated 70%' });
+        enumTextOrderedList.push({ EnumID: 10, EnumText: 'Combined 20% Separated 80%' });
+        enumTextOrderedList.push({ EnumID: 11, EnumText: 'Combined 10% Separated 90%' });
     }
 
-    return enumTextOrderedList.sort((a,b) => a.EnumText.localeCompare(b.EnumText));
+    return enumTextOrderedList.sort((a, b) => a.EnumText.localeCompare(b.EnumText));
+}
 
+export function CollectionSystemTypeEnum_GetIDText(enumID: number): string {
+    let addressTypeEnunText: string;
+    CollectionSystemTypeEnum_GetOrderedText().forEach(e => {
+        if (e.EnumID == enumID) {
+            addressTypeEnunText = e.EnumText;
+            return false;
+        }
+    });
+
+    return addressTypeEnunText;
 }
