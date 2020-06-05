@@ -32,7 +32,10 @@ namespace AngularInterfacesGeneratedServices.Services
 
             if (!dllTypeInfoModels.HasNotMappedAttribute)
             {
-                sb.AppendLine($"import {{ LastUpdate }} from './LastUpdate.interface';");
+                if (!(dllTypeInfoModels.Name == "LastUpdate"))
+                {
+                    sb.AppendLine($"import {{ LastUpdate }} from './LastUpdate.interface';");
+                }
             }
 
             foreach (DLLPropertyInfo dllPropertyInfo in dllTypeInfoModels.PropertyInfoList.OrderBy(c => c.CSSPProp.PropName))

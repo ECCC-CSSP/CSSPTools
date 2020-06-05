@@ -49,8 +49,11 @@
 <!-- Drawer With Commands-->
 <mat-drawer-container>
     <mat-drawer #drawer mode="over">
-        <p>Allo -------- Bonjour</p>
-    </mat-drawer>
+        <a mat-button routerLink="address"
+        routerLinkActive="active-link">
+        address
+    </a>
+</mat-drawer>
     <div class="margin20">
         <router-outlet></router-outlet>
     </div>

@@ -13,7 +13,7 @@ namespace CSSPModels
     {
 
         #region Variables
-        private string fullPath = @"C:\CSSPTools\src\appsettings.json";
+        //private string fullPath = @"C:\CSSPTools\src\appsettings.json";
         #endregion Variables
 
         #region Properties

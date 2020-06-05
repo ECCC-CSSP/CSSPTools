@@ -1,0 +1,14 @@
+<p>address works!</p>
+<p>{{ addressService.addressTextModel$.getValue().Title }}</p>
+
+<button mat-button color="primary" (click)="GetAddress()">Get Address</button>
+
+<hr />
+<ul *ngIf="addressService.addressModel$.getValue().AddressList">
+    <li *ngFor="let address of addressService.addressModel$.getValue().AddressList">
+        <ul *ngFor="let k of addressService.addressModel$.getValue().ObjKeys">
+            <li>{{ k }}: {{  address[k] }}</li>
+        </ul>
+    </li>
+</ul>
+<hr />

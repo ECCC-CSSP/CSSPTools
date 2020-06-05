@@ -5,7 +5,6 @@
  *
  */
 
-import { LastUpdate } from './LastUpdate.interface';
 
 export interface LastUpdate {
     LastUpdateContactTVItemID: number;

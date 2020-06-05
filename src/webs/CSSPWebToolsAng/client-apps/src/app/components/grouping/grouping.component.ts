@@ -4,7 +4,7 @@ import { LoadLocalesGroupingText } from './grouping.locales';
 import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-home',
+  selector: 'app-grouping',
   templateUrl: './grouping.component.html',
   styleUrls: ['./grouping.component.css']
 })
