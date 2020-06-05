@@ -49,12 +49,16 @@
 <!-- Drawer With Commands-->
 <mat-drawer-container>
     <mat-drawer #drawer mode="over">
-        <a mat-button routerLink="address"
+        <a mat-button routerLink="home"
         routerLinkActive="active-link">
-        address
+        home
     </a>
 </mat-drawer>
     <div class="margin20">
+        <a mat-button routerLink="home"
+        routerLinkActive="active-link">
+        home
+    </a>
         <router-outlet></router-outlet>
     </div>
 </mat-drawer-container>

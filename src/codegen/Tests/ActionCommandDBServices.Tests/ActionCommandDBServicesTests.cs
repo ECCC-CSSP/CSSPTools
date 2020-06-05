@@ -129,7 +129,7 @@ namespace ActionCommandDBServices.Tests
 
             var actionActionCommandList = await actionCommandDBService.GetAll();
             Assert.Equal(200, ((ObjectResult)actionActionCommandList.Result).StatusCode);
-            Assert.Equal(112, ((List<ActionCommand>)((OkObjectResult)actionActionCommandList.Result).Value).Count);
+            Assert.Equal(113, ((List<ActionCommand>)((OkObjectResult)actionActionCommandList.Result).Value).Count);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -214,7 +214,7 @@ namespace ActionCommandDBServices.Tests
             {
                 serviceCollection.AddDbContext<ActionCommandContext>(options =>
                 {
-                    options.UseInMemoryDatabase($"DataSource={fiDB.FullName}");
+                    options.UseSqlite($"DataSource={fiDB.FullName}");
                 });
             }
             catch (Exception ex)

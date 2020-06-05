@@ -1,5 +1,6 @@
 ﻿run,AngularEnumsGenerated,C:\CSSPTools\src\codegen\AngularEnumsGenerated\bin\Debug\netcoreapp3.1\AngularEnumsGenerated.exe
 run,AngularModelsGenerated,C:\CSSPTools\src\codegen\AngularModelsGenerated\bin\Debug\netcoreapp3.1\AngularModelsGenerated.exe
+run,AngularComponentsGenerated,C:\CSSPTools\src\codegen\AngularComponentsGenerated\bin\Debug\netcoreapp3.1\AngularComponentsGenerated.exe
 run,EnumsCompareWithOldEnums,C:\CSSPTools\src\codegen\EnumsCompareWithOldEnums\bin\Debug\netcoreapp3.1\EnumsCompareWithOldEnums.exe
 run,EnumsGenerated_cs,C:\CSSPTools\src\codegen\EnumsGenerated_cs\bin\Debug\netcoreapp3.1\EnumsGenerated_cs.exe
 run,EnumsPolSourceInfoRelatedFiles,C:\CSSPTools\src\codegen\EnumsPolSourceInfoRelatedFiles\bin\Debug\netcoreapp3.1\EnumsPolSourceInfoRelatedFiles.exe
@@ -17,6 +18,7 @@ run,WebAPIClassNameControllerGenerated,C:\CSSPTools\src\codegen\WebAPIClassNameC
 run,WebAPIClassNameControllerTestGenerated,C:\CSSPTools\src\codegen\WebAPIClassNameControllerTestGenerated\bin\Debug\netcoreapp3.1\WebAPIClassNameControllerTestGenerated.exe
 build,ActionCommandDBServices,C:\CSSPTools\src\codegen\ActionCommandDBServices\ActionCommandDBServices.csproj
 build,ActionCommandDBServices.Tests,C:\CSSPTools\src\codegen\Tests\ActionCommandDBServices.Tests\ActionCommandDBServices.Tests.csproj
+build,ActionCommandServices,C:\CSSPTools\src\codegen\ActionCommandServices\ActionCommandServices.csproj
 build,ActionCommandServices.Tests,C:\CSSPTools\src\codegen\Tests\ActionCommandServices.Tests\ActionCommandServices.Tests.csproj
 build,AngularEnumsGenerated,C:\CSSPTools\src\codegen\AngularEnumsGenerated\AngularEnumsGenerated.csproj
 build,AngularEnumsGeneratedServices,C:\CSSPTools\src\codegen\AngularEnumsGeneratedServices\AngularEnumsGeneratedServices.csproj
@@ -84,6 +86,7 @@ build,WebAPIClassNameControllerTestGenerated,C:\CSSPTools\src\codegen\WebAPIClas
 build,WebAPIClassNameControllerTestGeneratedServices,C:\CSSPTools\src\codegen\WebAPIClassNameControllerTestGeneratedServices\WebAPIClassNameControllerTestGeneratedServices.csproj
 build,WebAPIClassNameControllerTestGeneratedServices.Tests,C:\CSSPTools\src\codegen\Tests\WebAPIClassNameControllerTestGeneratedServices.Tests\WebAPIClassNameControllerTestGeneratedServices.Tests.csproj
 test,ActionCommandDBServices.Tests,C:\CSSPTools\src\codegen\Tests\ActionCommandDBServices.Tests\ActionCommandDBServices.Tests.csproj
+test,ActionCommandServices.Tests,C:\CSSPTools\src\codegen\tests\ActionCommandServices.Tests\ActionCommandServices.Tests.csproj
 test,AngularEnumsGeneratedServices.Tests,C:\CSSPTools\src\codegen\Tests\AngularEnumsGeneratedServices.Tests\AngularEnumsGeneratedServices.Tests.csproj
 test,AngularModelsGeneratedServices.Tests,C:\CSSPTools\src\codegen\Tests\AngularModelsGeneratedServices.Tests\AngularModelsGeneratedServices.Tests.csproj
 test,CSSPEnums,C:\CSSPTools\src\tests\CSSPEnums.Tests\CSSPEnums.Tests.csproj
@@ -108,4 +111,3 @@ test,ServicesRepopulateTestDBServices.Tests,C:\CSSPTools\src\codegen\Tests\Servi
 test,ValidateAppSettingsServices.Tests,C:\CSSPTools\src\codegen\Tests\ValidateAppSettingsServices.Tests\ValidateAppSettingsServices.Tests.csproj
 test,WebAPIClassNameControllerGeneratedServices.Tests,C:\CSSPTools\src\codegen\Tests\WebAPIClassNameControllerGeneratedServices.Tests\WebAPIClassNameControllerGeneratedServices.Tests.csproj
 test,WebAPIClassNameControllerTestGeneratedServices.Tests,C:\CSSPTools\src\codegen\Tests\WebAPIClassNameControllerTestGeneratedServices.Tests\WebAPIClassNameControllerTestGeneratedServices.Tests.csproj
-run,ExecuteDotNetCommand,C:\CSSPTools\src\codegen\ExecuteDotNetCommand\ExecuteDotNetCommand.csproj

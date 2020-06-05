@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { GroupingService } from './grouping.service';
 import { LoadLocalesGroupingText } from './grouping.locales';
 import { Router } from '@angular/router';
@@ -6,7 +6,8 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'app-grouping',
   templateUrl: './grouping.component.html',
-  styleUrls: ['./grouping.component.css']
+  styleUrls: ['./grouping.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class GroupingComponent implements OnInit {
 
