@@ -3117,8 +3117,7 @@ export function PolSourceObsInfoEnum_GetOrderedText(): EnumIDAndText[] {
         enumTextOrderedList.push({ EnumID: 22002, EnumText: 'Potentiel' });
         enumTextOrderedList.push({ EnumID: 22003, EnumText: 'Non' });
         enumTextOrderedList.push({ EnumID: 22004, EnumText: 'Pas certain' });
-        enumTextOrderedList.push({ EnumID: 23000, EnumText: 'Y a-t-il une zone riveraine ou de la 
-pelouse au bord de l\'eau' });
+        enumTextOrderedList.push({ EnumID: 23000, EnumText: 'Y a-t-il une zone riveraine ou de la pelouse au bord de l\'eau' });
         enumTextOrderedList.push({ EnumID: 23001, EnumText: 'Riverain présent | (H)' });
         enumTextOrderedList.push({ EnumID: 23002, EnumText: '                     Zone végétale absente | (H)' });
         enumTextOrderedList.push({ EnumID: 23003, EnumText: 'Aucune donnée | (H)' });

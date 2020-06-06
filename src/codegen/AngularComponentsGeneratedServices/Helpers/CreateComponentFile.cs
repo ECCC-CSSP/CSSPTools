@@ -14,6 +14,7 @@ namespace AngularComponentsGeneratedServices.Services
     {
         private void CreateComponentFile(DLLTypeInfo dllTypeInfoModels, List<DLLTypeInfo> DLLTypeInfoCSSPModelsList)
         {
+            List<string> usedPropTypeList = new List<string>();
             StringBuilder sb = new StringBuilder();
 
             sb.AppendLine(@"/*");
@@ -29,7 +30,17 @@ namespace AngularComponentsGeneratedServices.Services
             sb.AppendLine($@"import {{ LoadLocales{ dllTypeInfoModels.Name }Text }} from './{ dllTypeInfoModels.Name.ToLower() }.locales';");
             sb.AppendLine(@"import { Router } from '@angular/router';");
             sb.AppendLine(@"import { Subscription } from 'rxjs';");
-            sb.AppendLine($@"import {{ { dllTypeInfoModels.Name }TypeEnum_GetIDText }} from 'src/app/enums/generated/{ dllTypeInfoModels.Name }TypeEnum';");
+            foreach (DLLPropertyInfo dllPropertyInfo in dllTypeInfoModels.PropertyInfoList)
+            {
+                if (dllPropertyInfo.CSSPProp.HasCSSPEnumTypeAttribute)
+                {
+                    if (!usedPropTypeList.Contains(dllPropertyInfo.CSSPProp.PropType))
+                    {
+                        sb.AppendLine($@"import {{ { dllPropertyInfo.CSSPProp.PropType }_GetIDText }} from 'src/app/enums/generated/{ dllPropertyInfo.CSSPProp.PropType }';");
+                        usedPropTypeList.Add(dllPropertyInfo.CSSPProp.PropType);
+                    }
+                }
+            }
             sb.AppendLine(@"");
             sb.AppendLine(@"@Component({");
             sb.AppendLine($@"  selector: 'app-{ dllTypeInfoModels.Name.ToLower() }',");
@@ -46,10 +57,23 @@ namespace AngularComponentsGeneratedServices.Services
             sb.AppendLine($@"    this.sub = this.{ dllTypeInfoModels.Name.ToLower() }Service.Get{ dllTypeInfoModels.Name }(this.router).subscribe();");
             sb.AppendLine(@"  }");
             sb.AppendLine(@"");
-            sb.AppendLine($@"  Get{ dllTypeInfoModels.Name }TypeEnumText(enumID: number) {{");
-            sb.AppendLine($@"    return { dllTypeInfoModels.Name }TypeEnum_GetIDText(enumID)");
-            sb.AppendLine(@"  }");
-            sb.AppendLine(@"");
+
+            usedPropTypeList = new List<string>();
+            foreach (DLLPropertyInfo dllPropertyInfo in dllTypeInfoModels.PropertyInfoList)
+            {
+                if (dllPropertyInfo.CSSPProp.HasCSSPEnumTypeAttribute)
+                {
+                    if (!usedPropTypeList.Contains(dllPropertyInfo.CSSPProp.PropType))
+                    {
+                        sb.AppendLine($@"  Get{ dllPropertyInfo.CSSPProp.PropType }Text(enumID: number) {{");
+                        sb.AppendLine($@"    return { dllPropertyInfo.CSSPProp.PropType }_GetIDText(enumID)");
+                        sb.AppendLine(@"  }");
+                        sb.AppendLine(@"");
+
+                        usedPropTypeList.Add(dllPropertyInfo.CSSPProp.PropType);
+                    }
+                }
+                }
             sb.AppendLine(@"  ngOnInit(): void {");
             sb.AppendLine($@"    LoadLocales{ dllTypeInfoModels.Name }Text(this.{ dllTypeInfoModels.Name.ToLower() }Service);");
             sb.AppendLine(@"  }");

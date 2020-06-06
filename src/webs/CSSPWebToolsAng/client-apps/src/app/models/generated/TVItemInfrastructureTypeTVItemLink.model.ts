@@ -5,7 +5,6 @@
  *
  */
 
-import { TVItemInfrastructureTypeTVItemLink } from './TVItemInfrastructureTypeTVItemLink.model';
 import { InfrastructureTypeEnum } from '../../enums/generated/InfrastructureTypeEnum';
 import { TVItem } from './TVItem.model';
 import { TVItemLink } from './TVItemLink.model';

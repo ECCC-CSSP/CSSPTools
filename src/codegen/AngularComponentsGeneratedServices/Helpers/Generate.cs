@@ -56,7 +56,7 @@ namespace AngularComponentsGeneratedServices.Services
                 "CSSPEnumTypeTextAttribute", "CSSPExistAttribute", "CSSPFillAttribute", "CSSPModelsRes", "TestDBContext",
             };
 
-            int max = 2;
+            int max = 277;
             int count = 0;
             foreach (DLLTypeInfo dllTypeInfoModels in DLLTypeInfoCSSPModelsList)
             {
@@ -65,18 +65,18 @@ namespace AngularComponentsGeneratedServices.Services
                     count += 1;
                     if (count > max) break;
 
-                    //CreateRoutingModuleFile(dllTypeInfoModels, DLLTypeInfoCSSPModelsList);
-                    //CreateComponentCSSFile(dllTypeInfoModels, DLLTypeInfoCSSPModelsList);
-                    //CreateComponentHTMLFile(dllTypeInfoModels, DLLTypeInfoCSSPModelsList);
-                    //CreateComponentSpecFile(dllTypeInfoModels, DLLTypeInfoCSSPModelsList);
-                    //CreateComponentFile(dllTypeInfoModels, DLLTypeInfoCSSPModelsList);
-                    //CreateLocalesFile(dllTypeInfoModels, DLLTypeInfoCSSPModelsList);
-                    //CreateModelsFile(dllTypeInfoModels, DLLTypeInfoCSSPModelsList);
-                    //CreateModuleFile(dllTypeInfoModels, DLLTypeInfoCSSPModelsList);
-                    //CreateServiceSpecFile(dllTypeInfoModels, DLLTypeInfoCSSPModelsList);
-                    //CreateServiceFile(dllTypeInfoModels, DLLTypeInfoCSSPModelsList);
-                    //CreateIndexFile(dllTypeInfoModels, DLLTypeInfoCSSPModelsList);
-                    ////CreateTypeFile(dllTypeInfoModels, DLLTypeInfoCSSPModelsList);
+                    CreateRoutingModuleFile(dllTypeInfoModels, DLLTypeInfoCSSPModelsList);
+                    CreateComponentCSSFile(dllTypeInfoModels, DLLTypeInfoCSSPModelsList);
+                    CreateComponentHTMLFile(dllTypeInfoModels, DLLTypeInfoCSSPModelsList);
+                    CreateComponentSpecFile(dllTypeInfoModels, DLLTypeInfoCSSPModelsList);
+                    CreateComponentFile(dllTypeInfoModels, DLLTypeInfoCSSPModelsList);
+                    CreateLocalesFile(dllTypeInfoModels, DLLTypeInfoCSSPModelsList);
+                    CreateModelsFile(dllTypeInfoModels, DLLTypeInfoCSSPModelsList);
+                    CreateModuleFile(dllTypeInfoModels, DLLTypeInfoCSSPModelsList);
+                    CreateServiceSpecFile(dllTypeInfoModels, DLLTypeInfoCSSPModelsList);
+                    CreateServiceFile(dllTypeInfoModels, DLLTypeInfoCSSPModelsList);
+                    CreateIndexFile(dllTypeInfoModels, DLLTypeInfoCSSPModelsList);
+                    //CreateTypeFile(dllTypeInfoModels, DLLTypeInfoCSSPModelsList);
 
                 }
             }

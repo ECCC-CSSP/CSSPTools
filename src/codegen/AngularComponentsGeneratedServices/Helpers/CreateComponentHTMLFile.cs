@@ -33,9 +33,34 @@ namespace AngularComponentsGeneratedServices.Services
             sb.AppendLine($@"        <mat-card-subtitle>{{{{ { dllTypeInfoModels.Name.ToLower() }Service.{ dllTypeInfoModels.Name.ToLower() }TextModel$.getValue().Title }}}}</mat-card-subtitle>");
             sb.AppendLine(@"    </mat-card-header>");
             sb.AppendLine(@"    <mat-card-content>");
-            sb.AppendLine(@"        <mat-list #shoes>");
+            sb.AppendLine(@"        <mat-list>");
             sb.AppendLine($@"            <mat-list-item *ngFor=""let { dllTypeInfoModels.Name.ToLower() } of { dllTypeInfoModels.Name.ToLower() }Service.{ dllTypeInfoModels.Name.ToLower() }Model$.getValue().{ dllTypeInfoModels.Name }List"">");
-            sb.AppendLine($@"                <p mat-line>{ dllTypeInfoModels.Name }ID: [{{{{ { dllTypeInfoModels.Name.ToLower() }.{ dllTypeInfoModels.Name }ID }}}}]</p>");
+            sb.AppendLine($@"            <span mat-line>");
+            int objCount = 0;
+            string space = " --- ";
+            foreach (DLLPropertyInfo dllPropertyInfo in dllTypeInfoModels.PropertyInfoList)
+            {
+                objCount += 1;
+                if (objCount == dllTypeInfoModels.PropertyInfoList.Count - 1)
+                {
+                    space = "";
+                }
+                if (objCount % 4 == 0)
+                {
+                    sb.AppendLine($@"                </span>");
+                    sb.AppendLine($@"                <span mat-line>");
+                    space = "";
+                }
+                if (dllPropertyInfo.CSSPProp.HasCSSPEnumTypeAttribute)
+                {
+                    sb.AppendLine($@"                <span>{ dllPropertyInfo.CSSPProp.PropName }: [{{{{ Get{ dllPropertyInfo.CSSPProp.PropType }Text({ dllTypeInfoModels.Name.ToLower() }.{ dllPropertyInfo.CSSPProp.PropName }) }}}}]{ space }</span>");
+                }
+                else
+                {
+                    sb.AppendLine($@"                <span>{ dllPropertyInfo.CSSPProp.PropName }: [{{{{ { dllTypeInfoModels.Name.ToLower() }.{ dllPropertyInfo.CSSPProp.PropName } }}}}]{ space }</span>");
+                }
+            }
+            sb.AppendLine($@"            </span>");
             sb.AppendLine(@"            </mat-list-item>");
             sb.AppendLine(@"        </mat-list>");
             sb.AppendLine(@"    </mat-card-content>");

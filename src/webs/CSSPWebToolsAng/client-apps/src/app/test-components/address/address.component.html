@@ -14,9 +14,29 @@
         <mat-card-subtitle>{{ addressService.addressTextModel$.getValue().Title }}</mat-card-subtitle>
     </mat-card-header>
     <mat-card-content>
-        <mat-list #shoes>
+        <mat-list>
             <mat-list-item *ngFor="let address of addressService.addressModel$.getValue().AddressList">
-                <p mat-line>AddressID: [{{ address.AddressID }}]</p>
+            <span mat-line>
+                <span>AddressID: [{{ address.AddressID }}] --- </span>
+                <span>AddressTVItemID: [{{ address.AddressTVItemID }}] --- </span>
+                <span>AddressType: [{{ GetAddressTypeEnumText(address.AddressType) }}] --- </span>
+                </span>
+                <span mat-line>
+                <span>CountryTVItemID: [{{ address.CountryTVItemID }}]</span>
+                <span>ProvinceTVItemID: [{{ address.ProvinceTVItemID }}]</span>
+                <span>MunicipalityTVItemID: [{{ address.MunicipalityTVItemID }}]</span>
+                <span>StreetName: [{{ address.StreetName }}]</span>
+                </span>
+                <span mat-line>
+                <span>StreetNumber: [{{ address.StreetNumber }}]</span>
+                <span>StreetType: [{{ GetStreetTypeEnumText(address.StreetType) }}]</span>
+                <span>PostalCode: [{{ address.PostalCode }}]</span>
+                <span>GoogleAddressText: [{{ address.GoogleAddressText }}]</span>
+                </span>
+                <span mat-line>
+                <span>LastUpdateDate_UTC: [{{ address.LastUpdateDate_UTC }}]</span>
+                <span>LastUpdateContactTVItemID: [{{ address.LastUpdateContactTVItemID }}]</span>
+            </span>
             </mat-list-item>
         </mat-list>
     </mat-card-content>

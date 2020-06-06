@@ -11,6 +11,7 @@ import { LoadLocalesAddressText } from './address.locales';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { AddressTypeEnum_GetIDText } from 'src/app/enums/generated/AddressTypeEnum';
+import { StreetTypeEnum_GetIDText } from 'src/app/enums/generated/StreetTypeEnum';
 
 @Component({
   selector: 'app-address',
@@ -29,6 +30,10 @@ export class AddressComponent implements OnInit, OnDestroy {
 
   GetAddressTypeEnumText(enumID: number) {
     return AddressTypeEnum_GetIDText(enumID)
+  }
+
+  GetStreetTypeEnumText(enumID: number) {
+    return StreetTypeEnum_GetIDText(enumID)
   }
 
   ngOnInit(): void {

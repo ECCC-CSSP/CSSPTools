@@ -5,7 +5,6 @@
  *
  */
 
-import { Node } from './Node.model';
 import { Element } from './Element.model';
 
 export class Node {
