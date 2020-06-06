@@ -36,7 +36,7 @@ namespace AngularComponentsGeneratedServices.Services
                         count += 1;
                         if (count > max) break;
 
-                        sb.AppendLine($@"<a mat-button routerLink=""{ dllTypeInfoModels.Name.ToLower() }"" routerLinkActive=""active-link"">{ dllTypeInfoModels.Name }</a>");
+                        sb.AppendLine($@"<a mat-button routerLink=""{ dllTypeInfoModels.Name.ToLower() }"" routerLinkActive=""active-link"">{ dllTypeInfoModels.Name }({ count })</a>");
                     }
                 }
             }

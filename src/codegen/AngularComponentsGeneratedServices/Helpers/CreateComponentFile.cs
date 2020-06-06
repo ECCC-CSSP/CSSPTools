@@ -79,7 +79,9 @@ namespace AngularComponentsGeneratedServices.Services
             sb.AppendLine(@"  }");
             sb.AppendLine(@"");
             sb.AppendLine(@"  ngOnDestroy() {");
-            sb.AppendLine(@"    this.sub.unsubscribe();");
+            sb.AppendLine(@"    if (this.sub) {");
+            sb.AppendLine(@"      this.sub.unsubscribe();");
+            sb.AppendLine(@"    }");
             sb.AppendLine(@"  }");
             sb.AppendLine(@"");
             sb.AppendLine(@"}");

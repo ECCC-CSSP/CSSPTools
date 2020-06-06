@@ -51,6 +51,10 @@ namespace AngularComponentsGeneratedServices.Services
                     sb.AppendLine($@"                <span mat-line>");
                     space = "";
                 }
+                else
+                {
+                    space = " --- ";
+                }
                 if (dllPropertyInfo.CSSPProp.HasCSSPEnumTypeAttribute)
                 {
                     sb.AppendLine($@"                <span>{ dllPropertyInfo.CSSPProp.PropName }: [{{{{ Get{ dllPropertyInfo.CSSPProp.PropType }Text({ dllTypeInfoModels.Name.ToLower() }.{ dllPropertyInfo.CSSPProp.PropName }) }}}}]{ space }</span>");
