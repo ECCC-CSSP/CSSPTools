@@ -31,10 +31,13 @@ namespace AngularComponentsGeneratedServices.Services
             {
                 if (!removeClass.Contains(dllTypeInfoModels.Name))
                 {
-                    count += 1;
-                    if (count > max) break;
+                    if (!dllTypeInfoModels.HasNotMappedAttribute)
+                    {
+                        count += 1;
+                        if (count > max) break;
 
-                    sb.AppendLine($@"<a mat-button routerLink=""{ dllTypeInfoModels.Name.ToLower() }"" routerLinkActive=""active-link"">{ dllTypeInfoModels.Name }</a>");
+                        sb.AppendLine($@"<a mat-button routerLink=""{ dllTypeInfoModels.Name.ToLower() }"" routerLinkActive=""active-link"">{ dllTypeInfoModels.Name }</a>");
+                    }
                 }
             }
 

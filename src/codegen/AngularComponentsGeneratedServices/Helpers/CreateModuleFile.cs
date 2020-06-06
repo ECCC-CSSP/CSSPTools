@@ -28,7 +28,7 @@ namespace AngularComponentsGeneratedServices.Services
             sb.AppendLine(@"import { CommonModule } from '@angular/common';");
             sb.AppendLine(@"import { RouterModule } from '@angular/router';");
             sb.AppendLine($@"import {{ { dllTypeInfoModels.Name }RoutingModule }} from './{ dllTypeInfoModels.Name.ToLower() }-routing.module';");
-            sb.AppendLine(@"import { MaterialModule } from '../../app-material.module';");
+            sb.AppendLine(@"import { MaterialModule } from '../../../app-material.module';");
             sb.AppendLine($@"import {{ { dllTypeInfoModels.Name }Component }} from './{ dllTypeInfoModels.Name.ToLower() }.component';");
             sb.AppendLine(@"");
             sb.AppendLine(@"@NgModule({");

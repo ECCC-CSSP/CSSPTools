@@ -24,7 +24,7 @@ namespace AngularComponentsGeneratedServices.Services
             sb.AppendLine(@" */");
             sb.AppendLine(@"");
 
-            sb.AppendLine(@"import { HttpRequestModel } from '../../models/http.model';");
+            sb.AppendLine(@"import { HttpRequestModel } from '../../../models/http.model';");
             sb.AppendLine($@"import {{ { dllTypeInfoModels.Name } }} from 'src/app/models/generated/{ dllTypeInfoModels.Name }.model';");
             sb.AppendLine(@"");
             sb.AppendLine($@"export interface { dllTypeInfoModels.Name }TextModel {{");

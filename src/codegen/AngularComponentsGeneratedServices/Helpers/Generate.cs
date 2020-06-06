@@ -62,22 +62,24 @@ namespace AngularComponentsGeneratedServices.Services
             {
                 if (!removeClass.Contains(dllTypeInfoModels.Name))
                 {
-                    count += 1;
-                    if (count > max) break;
+                    if (!dllTypeInfoModels.HasNotMappedAttribute)
+                    {
+                        count += 1;
+                        if (count > max) break;
 
-                    CreateRoutingModuleFile(dllTypeInfoModels, DLLTypeInfoCSSPModelsList);
-                    CreateComponentCSSFile(dllTypeInfoModels, DLLTypeInfoCSSPModelsList);
-                    CreateComponentHTMLFile(dllTypeInfoModels, DLLTypeInfoCSSPModelsList);
-                    CreateComponentSpecFile(dllTypeInfoModels, DLLTypeInfoCSSPModelsList);
-                    CreateComponentFile(dllTypeInfoModels, DLLTypeInfoCSSPModelsList);
-                    CreateLocalesFile(dllTypeInfoModels, DLLTypeInfoCSSPModelsList);
-                    CreateModelsFile(dllTypeInfoModels, DLLTypeInfoCSSPModelsList);
-                    CreateModuleFile(dllTypeInfoModels, DLLTypeInfoCSSPModelsList);
-                    CreateServiceSpecFile(dllTypeInfoModels, DLLTypeInfoCSSPModelsList);
-                    CreateServiceFile(dllTypeInfoModels, DLLTypeInfoCSSPModelsList);
-                    CreateIndexFile(dllTypeInfoModels, DLLTypeInfoCSSPModelsList);
-                    //CreateTypeFile(dllTypeInfoModels, DLLTypeInfoCSSPModelsList);
-
+                        CreateRoutingModuleFile(dllTypeInfoModels, DLLTypeInfoCSSPModelsList);
+                        CreateComponentCSSFile(dllTypeInfoModels, DLLTypeInfoCSSPModelsList);
+                        CreateComponentHTMLFile(dllTypeInfoModels, DLLTypeInfoCSSPModelsList);
+                        CreateComponentSpecFile(dllTypeInfoModels, DLLTypeInfoCSSPModelsList);
+                        CreateComponentFile(dllTypeInfoModels, DLLTypeInfoCSSPModelsList);
+                        CreateLocalesFile(dllTypeInfoModels, DLLTypeInfoCSSPModelsList);
+                        CreateModelsFile(dllTypeInfoModels, DLLTypeInfoCSSPModelsList);
+                        CreateModuleFile(dllTypeInfoModels, DLLTypeInfoCSSPModelsList);
+                        CreateServiceSpecFile(dllTypeInfoModels, DLLTypeInfoCSSPModelsList);
+                        CreateServiceFile(dllTypeInfoModels, DLLTypeInfoCSSPModelsList);
+                        CreateIndexFile(dllTypeInfoModels, DLLTypeInfoCSSPModelsList);
+                        //CreateTypeFile(dllTypeInfoModels, DLLTypeInfoCSSPModelsList);
+                    }
                 }
             }
 

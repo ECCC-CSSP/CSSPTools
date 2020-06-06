@@ -38,10 +38,14 @@ namespace AngularComponentsGeneratedServices.Services
             {
                 if (!removeClass.Contains(dllTypeInfoModels.Name))
                 {
-                    count += 1;
-                    if (count > max) break;
+                    if (!dllTypeInfoModels.HasNotMappedAttribute)
+                    {
 
-                    sb.AppendLine($@"      {{ path: '{ dllTypeInfoModels.Name.ToLower() }', loadChildren: () => import('../../test-components/{ dllTypeInfoModels.Name.ToLower() }/{ dllTypeInfoModels.Name.ToLower() }.module').then(mod => mod.{ dllTypeInfoModels.Name }Module) }},");
+                        count += 1;
+                        if (count > max) break;
+
+                        sb.AppendLine($@"      {{ path: '{ dllTypeInfoModels.Name.ToLower() }', loadChildren: () => import('../../test-components/generated/{ dllTypeInfoModels.Name.ToLower() }/{ dllTypeInfoModels.Name.ToLower() }.module').then(mod => mod.{ dllTypeInfoModels.Name }Module) }},");
+                    }
                 }
             }
 

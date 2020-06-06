@@ -27,7 +27,7 @@ namespace AngularComponentsGeneratedServices.Services
             sb.AppendLine(@"import { NgModule } from '@angular/core';");
             sb.AppendLine(@"import { Routes, RouterModule } from '@angular/router';");
             sb.AppendLine($@"import {{ { dllTypeInfoModels.Name }Component }} from './{ dllTypeInfoModels.Name.ToLower() }.component';");
-            sb.AppendLine(@"import { AuthGuard } from '../../guards';");
+            sb.AppendLine(@"import { AuthGuard } from '../../../guards';");
             sb.AppendLine(@"");
             sb.AppendLine(@"const routes: Routes = [");
             sb.AppendLine($@"  {{ path: '', component: { dllTypeInfoModels.Name }Component, canActivate: [AuthGuard]  }}");
