@@ -6,41 +6,252 @@
 -->
 
 <mat-card>
-    <mat-card-header>
-        <mat-card-title>
-            Address works!
-            <button mat-button color="primary" (click)="GetAddress()">Get Address</button>
-        </mat-card-title>
-        <mat-card-subtitle>{{ addressService.addressTextModel$.getValue().Title }}</mat-card-subtitle>
-    </mat-card-header>
-    <mat-card-content>
-        <mat-list>
-            <mat-list-item *ngFor="let address of addressService.addressModel$.getValue().AddressList">
-            <span mat-line>
-                <span>AddressID: [{{ address.AddressID }}] --- </span>
-                <span>AddressTVItemID: [{{ address.AddressTVItemID }}] --- </span>
-                <span>AddressType: [{{ GetAddressTypeEnumText(address.AddressType) }}] --- </span>
-                </span>
-                <span mat-line>
-                <span>CountryTVItemID: [{{ address.CountryTVItemID }}]</span>
-                <span>ProvinceTVItemID: [{{ address.ProvinceTVItemID }}] --- </span>
-                <span>MunicipalityTVItemID: [{{ address.MunicipalityTVItemID }}] --- </span>
-                <span>StreetName: [{{ address.StreetName }}] --- </span>
-                </span>
-                <span mat-line>
-                <span>StreetNumber: [{{ address.StreetNumber }}]</span>
-                <span>StreetType: [{{ GetStreetTypeEnumText(address.StreetType) }}] --- </span>
-                <span>PostalCode: [{{ address.PostalCode }}] --- </span>
-                <span>GoogleAddressText: [{{ address.GoogleAddressText }}] --- </span>
-                </span>
-                <span mat-line>
-                <span>LastUpdateDate_UTC: [{{ address.LastUpdateDate_UTC }}]</span>
-                <span>LastUpdateContactTVItemID: [{{ address.LastUpdateContactTVItemID }}] --- </span>
-            </span>
-            </mat-list-item>
-        </mat-list>
-    </mat-card-content>
-    <mat-card-actions>
-        <button mat-button>Allo</button>
-    </mat-card-actions>
+  <mat-card-header>
+    <mat-card-title>
+      Address works!
+      <button mat-button color="primary" (click)="GetAddress()">Get Address</button>
+    </mat-card-title>
+    <mat-card-subtitle>{{ addressService.addressTextModel$.getValue().Title }}</mat-card-subtitle>
+  </mat-card-header>
+  <mat-card-content>
+    <mat-list>
+      <mat-list-item *ngFor="let address of addressService.addressModel$.getValue().AddressList">
+        <button mat-line mat-raised-button (click)="DeleteAddress(address)">Delete</button>
+        <span mat-line>
+          <span>AddressID: [{{ address.AddressID }}]</span>
+          <span> --- AddressTVItemID: [{{ address.AddressTVItemID }}]</span>
+          <span> --- AddressType: [{{ GetAddressTypeEnumText(address.AddressType) }}]</span>
+          <span> --- CountryTVItemID: [{{ address.CountryTVItemID }}]</span>
+        </span>
+        <span mat-line>
+          <span>ProvinceTVItemID: [{{ address.ProvinceTVItemID }}]</span>
+          <span> --- MunicipalityTVItemID: [{{ address.MunicipalityTVItemID }}]</span>
+          <span> --- StreetName: [{{ address.StreetName }}]</span>
+          <span> --- StreetNumber: [{{ address.StreetNumber }}]</span>
+        </span>
+        <span mat-line>
+          <span>StreetType: [{{ GetStreetTypeEnumText(address.StreetType) }}]</span>
+          <span> --- PostalCode: [{{ address.PostalCode }}]</span>
+          <span> --- GoogleAddressText: [{{ address.GoogleAddressText }}]</span>
+          <span> --- LastUpdateDate_UTC: [{{ address.LastUpdateDate_UTC }}]</span>
+        </span>
+        <span mat-line>
+          <span>LastUpdateContactTVItemID: [{{ address.LastUpdateContactTVItemID }}]</span>
+        </span>
+      </mat-list-item>
+    </mat-list>
+  </mat-card-content>
+  <mat-card-actions>
+    <button mat-button>Allo</button>
+  </mat-card-actions>
+</mat-card>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<mat-card>
+  <mat-card-header>
+    <mat-card-title>Edit Address testing</mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <div *ngIf="addressService.addressUpdateModel$.getValue().address">
+      <blockquote>
+        <form [formGroup]="addressFormPut" (ngSubmit)="PutAddress()">
+          <h3>Address</h3>
+          <p>
+            <mat-form-field>
+              <mat-label>AddressID</mat-label>
+              <input matInput type="number" formControlName="AddressID">
+            </mat-form-field>
+          </p>
+          <p>
+            <mat-form-field>
+              <mat-label>AddressTVItemID</mat-label>
+              <input matInput type="number" formControlName="AddressTVItemID">
+            </mat-form-field>
+          </p>
+          <p>
+            <mat-form-field>
+              <mat-label>AddressType</mat-label>
+              <mat-select formControlName="AddressType">
+                <mat-option *ngFor="let a of addressTypeList" [value]="a.EnumID">
+                  {{ a.EnumText }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </p>
+          <p>
+            <mat-form-field>
+              <mat-label>CountryTVItemID</mat-label>
+              <input matInput type="text" formControlName="CountryTVItemID">
+            </mat-form-field>
+          </p>
+          <p>
+            <mat-form-field>
+              <mat-label>ProvinceTVItemID</mat-label>
+              <input matInput type="text" formControlName="ProvinceTVItemID">
+            </mat-form-field>
+          </p>
+          <p>
+            <mat-form-field>
+              <mat-label>MunicipalityTVItemID</mat-label>
+              <input matInput type="text" formControlName="MunicipalityTVItemID">
+            </mat-form-field>
+          </p>
+          <p>
+            <mat-form-field>
+              <mat-label>StreetName</mat-label>
+              <input matInput type="text" formControlName="StreetName">
+            </mat-form-field>
+          </p>
+          <p>
+            <mat-form-field>
+              <mat-label>StreetNumber</mat-label>
+              <input matInput type="text" formControlName="StreetNumber">
+            </mat-form-field>
+          </p>
+          <p>
+            <mat-form-field>
+              <mat-label>StreetType</mat-label>
+              <mat-select formControlName="StreetType">
+                <mat-option *ngFor="let a of streetTypeList" [value]="a.EnumID">
+                  {{ a.EnumText }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </p>
+          <p>
+            <mat-form-field>
+              <mat-label>PostalCode</mat-label>
+              <input matInput type="text" formControlName="PostalCode">
+            </mat-form-field>
+          </p>
+          <p>
+            <mat-form-field>
+              <mat-label>GoogleAddressText</mat-label>
+              <input matInput type="text" formControlName="GoogleAddressText">
+            </mat-form-field>
+          </p>
+          <p>
+            <mat-form-field>
+              <mat-label>LastUpdateDate_UTC</mat-label>
+              <input matInput type="text" formControlName="LastUpdateDate_UTC">
+            </mat-form-field>
+          </p>
+          <p>
+            <mat-form-field>
+              <mat-label>LastUpdateContactTVItemID</mat-label>
+              <input matInput type="text" formControlName="LastUpdateContactTVItemID">
+            </mat-form-field>
+          </p>
+          <p>
+            <button mat-raised-button type="submit">Update Address</button>
+          </p>
+        </form>
+      </blockquote>
+    </div>
+  </mat-card-content>
+</mat-card>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<mat-card>
+  <mat-card-header>
+    <mat-card-title>Add Address testing</mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <div *ngIf="addressService.addressUpdateModel$.getValue().address">
+      <blockquote>
+        <form [formGroup]="addressFormPost" (ngSubmit)="PostAddress()">
+          <h3>Address</h3>
+          <p>
+            <mat-form-field>
+              <mat-label>AddressID</mat-label>
+              <input matInput type="number" formControlName="AddressID">
+            </mat-form-field>
+          </p>
+          <p>
+            <mat-form-field>
+              <mat-label>AddressTVItemID</mat-label>
+              <input matInput type="number" formControlName="AddressTVItemID">
+            </mat-form-field>
+          </p>
+          <p>
+            <mat-form-field>
+              <mat-label>AddressType</mat-label>
+              <mat-select formControlName="AddressType">
+                <mat-option *ngFor="let a of addressTypeList" [value]="a.EnumID">
+                  {{ a.EnumText }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </p>
+          <p>
+            <mat-form-field>
+              <mat-label>CountryTVItemID</mat-label>
+              <input matInput type="text" formControlName="CountryTVItemID">
+            </mat-form-field>
+          </p>
+          <p>
+            <mat-form-field>
+              <mat-label>ProvinceTVItemID</mat-label>
+              <input matInput type="text" formControlName="ProvinceTVItemID">
+            </mat-form-field>
+          </p>
+          <p>
+            <mat-form-field>
+              <mat-label>MunicipalityTVItemID</mat-label>
+              <input matInput type="text" formControlName="MunicipalityTVItemID">
+            </mat-form-field>
+          </p>
+          <p>
+            <mat-form-field>
+              <mat-label>StreetName</mat-label>
+              <input matInput type="text" formControlName="StreetName">
+            </mat-form-field>
+          </p>
+          <p>
+            <mat-form-field>
+              <mat-label>StreetNumber</mat-label>
+              <input matInput type="text" formControlName="StreetNumber">
+            </mat-form-field>
+          </p>
+          <p>
+            <mat-form-field>
+              <mat-label>StreetType</mat-label>
+              <mat-select formControlName="StreetType">
+                <mat-option *ngFor="let a of streetTypeList" [value]="a.EnumID">
+                  {{ a.EnumText }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </p>
+          <p>
+            <mat-form-field>
+              <mat-label>PostalCode</mat-label>
+              <input matInput type="text" formControlName="PostalCode">
+            </mat-form-field>
+          </p>
+          <p>
+            <mat-form-field>
+              <mat-label>GoogleAddressText</mat-label>
+              <input matInput type="text" formControlName="GoogleAddressText">
+            </mat-form-field>
+          </p>
+          <p>
+            <mat-form-field>
+              <mat-label>LastUpdateDate_UTC</mat-label>
+              <input matInput type="text" formControlName="LastUpdateDate_UTC">
+            </mat-form-field>
+          </p>
+          <p>
+            <mat-form-field>
+              <mat-label>LastUpdateContactTVItemID</mat-label>
+              <input matInput type="text" formControlName="LastUpdateContactTVItemID">
+            </mat-form-field>
+          </p>
+          <p>
+            <button mat-raised-button type="submit">Add Address</button>
+          </p>
+        </form>
+      </blockquote>
+    </div>
+  </mat-card-content>
 </mat-card>

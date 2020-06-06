@@ -15,3 +15,15 @@ export interface AddressTextModel {
 export interface AddressModel extends HttpRequestModel {
     AddressList: Address[];
 }
+
+export interface AddressUpdateModel extends HttpRequestModel {
+    address: Address;
+}
+
+export interface AddressAddModel extends HttpRequestModel {
+    address: Address;
+}
+
+export interface AddressDeleteModel extends HttpRequestModel {
+    address: Address;
+}

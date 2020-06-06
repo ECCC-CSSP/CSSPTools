@@ -11,6 +11,7 @@ import { RouterModule } from '@angular/router';
 import { AddressRoutingModule } from './address-routing.module';
 import { MaterialModule } from '../../../app-material.module';
 import { AddressComponent } from './address.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [ AddressComponent ],
@@ -18,7 +19,9 @@ import { AddressComponent } from './address.component';
     CommonModule,
     RouterModule,
     AddressRoutingModule,
-    MaterialModule
+    MaterialModule,
+    FormsModule,
+    ReactiveFormsModule
   ]
 })
 export class AddressModule { }

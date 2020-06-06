@@ -25,7 +25,7 @@ namespace CSSPServices
        Task<ActionResult<Address>> GetAddressWithAddressID(int AddressID);
        Task<ActionResult<List<Address>>> GetAddressList();
        Task<ActionResult<Address>> Add(Address address);
-       Task<ActionResult<Address>> Delete(Address address);
+       Task<ActionResult<bool>> Delete(int AddressID);
        Task<ActionResult<Address>> Update(Address address);
        Task SetCulture(CultureInfo culture);
     }
@@ -88,12 +88,15 @@ namespace CSSPServices
 
             return await Task.FromResult(Ok(address));
         }
-        public async Task<ActionResult<Address>> Delete(Address address)
+        public async Task<ActionResult<bool>> Delete(int AddressID)
         {
-            ValidationResults = Validate(new ValidationContext(address), ActionDBTypeEnum.Delete);
-            if (ValidationResults.Count() > 0)
+            Address address = (from c in db.Addresses
+                               where c.AddressID == AddressID
+                               select c).FirstOrDefault();
+
+            if (address == null)
             {
-               return await Task.FromResult(BadRequest(ValidationResults));
+               return await Task.FromResult(BadRequest($"Could not find Address with AddressID = [{ AddressID }]"));
             }
 
             try
@@ -106,7 +109,7 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
 
-            return await Task.FromResult(Ok(address));
+            return await Task.FromResult(Ok(true));
         }
         public async Task<ActionResult<Address>> Update(Address address)
         {
