@@ -63,7 +63,7 @@ namespace CSSPServices.Tests
                var actionClassificationList = await classificationService.GetClassificationList();
                Assert.Equal(200, ((ObjectResult)actionClassificationList.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionClassificationList.Result).Value);
-               List<Classification> classificationList = (List<Classification>)(((OkObjectResult)actionClassificationList.Result).Value);
+               List<Classification> classificationList = (List<Classification>)((OkObjectResult)actionClassificationList.Result).Value;
 
                int count = ((List<Classification>)((OkObjectResult)actionClassificationList.Result).Value).Count();
                 Assert.True(count > 0);
@@ -72,22 +72,22 @@ namespace CSSPServices.Tests
                var actionClassificationAdded = await classificationService.Add(classification);
                Assert.Equal(200, ((ObjectResult)actionClassificationAdded.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionClassificationAdded.Result).Value);
-               Classification classificationAdded = (Classification)(((OkObjectResult)actionClassificationAdded.Result).Value);
+               Classification classificationAdded = (Classification)((OkObjectResult)actionClassificationAdded.Result).Value;
                Assert.NotNull(classificationAdded);
 
                // Update Classification
                var actionClassificationUpdated = await classificationService.Update(classification);
                Assert.Equal(200, ((ObjectResult)actionClassificationUpdated.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionClassificationUpdated.Result).Value);
-               Classification classificationUpdated = (Classification)(((OkObjectResult)actionClassificationUpdated.Result).Value);
+               Classification classificationUpdated = (Classification)((OkObjectResult)actionClassificationUpdated.Result).Value;
                Assert.NotNull(classificationUpdated);
 
                // Delete Classification
-               var actionClassificationDeleted = await classificationService.Delete(classification);
+               var actionClassificationDeleted = await classificationService.Delete(classification.ClassificationID);
                Assert.Equal(200, ((ObjectResult)actionClassificationDeleted.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionClassificationDeleted.Result).Value);
-               Classification classificationDeleted = (Classification)(((OkObjectResult)actionClassificationDeleted.Result).Value);
-               Assert.NotNull(classificationDeleted);
+               bool retBool = (bool)((OkObjectResult)actionClassificationDeleted.Result).Value;
+               Assert.True(retBool);
             }
         }
         #endregion Tests Generated CRUD

@@ -63,7 +63,7 @@ namespace CSSPServices.Tests
                var actionMikeSourceList = await mikeSourceService.GetMikeSourceList();
                Assert.Equal(200, ((ObjectResult)actionMikeSourceList.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionMikeSourceList.Result).Value);
-               List<MikeSource> mikeSourceList = (List<MikeSource>)(((OkObjectResult)actionMikeSourceList.Result).Value);
+               List<MikeSource> mikeSourceList = (List<MikeSource>)((OkObjectResult)actionMikeSourceList.Result).Value;
 
                int count = ((List<MikeSource>)((OkObjectResult)actionMikeSourceList.Result).Value).Count();
                 Assert.True(count > 0);
@@ -72,22 +72,22 @@ namespace CSSPServices.Tests
                var actionMikeSourceAdded = await mikeSourceService.Add(mikeSource);
                Assert.Equal(200, ((ObjectResult)actionMikeSourceAdded.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionMikeSourceAdded.Result).Value);
-               MikeSource mikeSourceAdded = (MikeSource)(((OkObjectResult)actionMikeSourceAdded.Result).Value);
+               MikeSource mikeSourceAdded = (MikeSource)((OkObjectResult)actionMikeSourceAdded.Result).Value;
                Assert.NotNull(mikeSourceAdded);
 
                // Update MikeSource
                var actionMikeSourceUpdated = await mikeSourceService.Update(mikeSource);
                Assert.Equal(200, ((ObjectResult)actionMikeSourceUpdated.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionMikeSourceUpdated.Result).Value);
-               MikeSource mikeSourceUpdated = (MikeSource)(((OkObjectResult)actionMikeSourceUpdated.Result).Value);
+               MikeSource mikeSourceUpdated = (MikeSource)((OkObjectResult)actionMikeSourceUpdated.Result).Value;
                Assert.NotNull(mikeSourceUpdated);
 
                // Delete MikeSource
-               var actionMikeSourceDeleted = await mikeSourceService.Delete(mikeSource);
+               var actionMikeSourceDeleted = await mikeSourceService.Delete(mikeSource.MikeSourceID);
                Assert.Equal(200, ((ObjectResult)actionMikeSourceDeleted.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionMikeSourceDeleted.Result).Value);
-               MikeSource mikeSourceDeleted = (MikeSource)(((OkObjectResult)actionMikeSourceDeleted.Result).Value);
-               Assert.NotNull(mikeSourceDeleted);
+               bool retBool = (bool)((OkObjectResult)actionMikeSourceDeleted.Result).Value;
+               Assert.True(retBool);
             }
         }
         #endregion Tests Generated CRUD

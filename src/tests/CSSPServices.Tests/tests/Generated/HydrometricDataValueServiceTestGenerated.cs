@@ -63,7 +63,7 @@ namespace CSSPServices.Tests
                var actionHydrometricDataValueList = await hydrometricDataValueService.GetHydrometricDataValueList();
                Assert.Equal(200, ((ObjectResult)actionHydrometricDataValueList.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionHydrometricDataValueList.Result).Value);
-               List<HydrometricDataValue> hydrometricDataValueList = (List<HydrometricDataValue>)(((OkObjectResult)actionHydrometricDataValueList.Result).Value);
+               List<HydrometricDataValue> hydrometricDataValueList = (List<HydrometricDataValue>)((OkObjectResult)actionHydrometricDataValueList.Result).Value;
 
                int count = ((List<HydrometricDataValue>)((OkObjectResult)actionHydrometricDataValueList.Result).Value).Count();
                 Assert.True(count > 0);
@@ -72,22 +72,22 @@ namespace CSSPServices.Tests
                var actionHydrometricDataValueAdded = await hydrometricDataValueService.Add(hydrometricDataValue);
                Assert.Equal(200, ((ObjectResult)actionHydrometricDataValueAdded.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionHydrometricDataValueAdded.Result).Value);
-               HydrometricDataValue hydrometricDataValueAdded = (HydrometricDataValue)(((OkObjectResult)actionHydrometricDataValueAdded.Result).Value);
+               HydrometricDataValue hydrometricDataValueAdded = (HydrometricDataValue)((OkObjectResult)actionHydrometricDataValueAdded.Result).Value;
                Assert.NotNull(hydrometricDataValueAdded);
 
                // Update HydrometricDataValue
                var actionHydrometricDataValueUpdated = await hydrometricDataValueService.Update(hydrometricDataValue);
                Assert.Equal(200, ((ObjectResult)actionHydrometricDataValueUpdated.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionHydrometricDataValueUpdated.Result).Value);
-               HydrometricDataValue hydrometricDataValueUpdated = (HydrometricDataValue)(((OkObjectResult)actionHydrometricDataValueUpdated.Result).Value);
+               HydrometricDataValue hydrometricDataValueUpdated = (HydrometricDataValue)((OkObjectResult)actionHydrometricDataValueUpdated.Result).Value;
                Assert.NotNull(hydrometricDataValueUpdated);
 
                // Delete HydrometricDataValue
-               var actionHydrometricDataValueDeleted = await hydrometricDataValueService.Delete(hydrometricDataValue);
+               var actionHydrometricDataValueDeleted = await hydrometricDataValueService.Delete(hydrometricDataValue.HydrometricDataValueID);
                Assert.Equal(200, ((ObjectResult)actionHydrometricDataValueDeleted.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionHydrometricDataValueDeleted.Result).Value);
-               HydrometricDataValue hydrometricDataValueDeleted = (HydrometricDataValue)(((OkObjectResult)actionHydrometricDataValueDeleted.Result).Value);
-               Assert.NotNull(hydrometricDataValueDeleted);
+               bool retBool = (bool)((OkObjectResult)actionHydrometricDataValueDeleted.Result).Value;
+               Assert.True(retBool);
             }
         }
         #endregion Tests Generated CRUD

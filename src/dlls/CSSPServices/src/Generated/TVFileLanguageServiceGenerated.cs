@@ -25,7 +25,7 @@ namespace CSSPServices
        Task<ActionResult<TVFileLanguage>> GetTVFileLanguageWithTVFileLanguageID(int TVFileLanguageID);
        Task<ActionResult<List<TVFileLanguage>>> GetTVFileLanguageList();
        Task<ActionResult<TVFileLanguage>> Add(TVFileLanguage tvfilelanguage);
-       Task<ActionResult<TVFileLanguage>> Delete(TVFileLanguage tvfilelanguage);
+       Task<ActionResult<bool>> Delete(int TVFileLanguageID);
        Task<ActionResult<TVFileLanguage>> Update(TVFileLanguage tvfilelanguage);
        Task SetCulture(CultureInfo culture);
     }
@@ -88,12 +88,15 @@ namespace CSSPServices
 
             return await Task.FromResult(Ok(tvFileLanguage));
         }
-        public async Task<ActionResult<TVFileLanguage>> Delete(TVFileLanguage tvFileLanguage)
+        public async Task<ActionResult<bool>> Delete(int TVFileLanguageID)
         {
-            ValidationResults = Validate(new ValidationContext(tvFileLanguage), ActionDBTypeEnum.Delete);
-            if (ValidationResults.Count() > 0)
+            TVFileLanguage tvFileLanguage = (from c in db.TVFileLanguages
+                               where c.TVFileLanguageID == TVFileLanguageID
+                               select c).FirstOrDefault();
+            
+            if (tvFileLanguage == null)
             {
-               return await Task.FromResult(BadRequest(ValidationResults));
+                return await Task.FromResult(BadRequest(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "TVFileLanguage", "TVFileLanguageID", TVFileLanguageID.ToString())));
             }
 
             try
@@ -106,7 +109,7 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
 
-            return await Task.FromResult(Ok(tvFileLanguage));
+            return await Task.FromResult(Ok(true));
         }
         public async Task<ActionResult<TVFileLanguage>> Update(TVFileLanguage tvFileLanguage)
         {

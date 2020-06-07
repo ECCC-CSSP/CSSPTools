@@ -72,7 +72,7 @@ namespace CSSPWebAPIs.Tests.Controllers
                 var actionEmailList = await emailController.Get();
                 Assert.Equal(200, ((ObjectResult)actionEmailList.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionEmailList.Result).Value);
-                List<Email> emailList = (List<Email>)(((OkObjectResult)actionEmailList.Result).Value);
+                List<Email> emailList = (List<Email>)((OkObjectResult)actionEmailList.Result).Value;
 
                 int count = ((List<Email>)((OkObjectResult)actionEmailList.Result).Value).Count();
                 Assert.True(count > 0);
@@ -81,7 +81,7 @@ namespace CSSPWebAPIs.Tests.Controllers
                 var actionEmail = await emailController.Get(emailList[0].EmailID);
                 Assert.Equal(200, ((ObjectResult)actionEmail.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionEmail.Result).Value);
-                Email email = (Email)(((OkObjectResult)actionEmail.Result).Value);
+                Email email = (Email)((OkObjectResult)actionEmail.Result).Value;
                 Assert.NotNull(email);
                 Assert.Equal(emailList[0].EmailID, email.EmailID);
 
@@ -90,22 +90,22 @@ namespace CSSPWebAPIs.Tests.Controllers
                 var actionEmailNew = await emailController.Post(email);
                 Assert.Equal(200, ((ObjectResult)actionEmailNew.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionEmailNew.Result).Value);
-                Email emailNew = (Email)(((OkObjectResult)actionEmailNew.Result).Value);
+                Email emailNew = (Email)((OkObjectResult)actionEmailNew.Result).Value;
                 Assert.NotNull(emailNew);
 
                 // testing Put(Email email)
                 var actionEmailUpdate = await emailController.Put(emailNew);
                 Assert.Equal(200, ((ObjectResult)actionEmailUpdate.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionEmailUpdate.Result).Value);
-                Email emailUpdate = (Email)(((OkObjectResult)actionEmailUpdate.Result).Value);
+                Email emailUpdate = (Email)((OkObjectResult)actionEmailUpdate.Result).Value;
                 Assert.NotNull(emailUpdate);
 
-                // testing Delete(Email email)
-                var actionEmailDelete = await emailController.Delete(emailUpdate);
+                // testing Delete(int email.EmailID)
+                var actionEmailDelete = await emailController.Delete(emailUpdate.EmailID);
                 Assert.Equal(200, ((ObjectResult)actionEmailDelete.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionEmailDelete.Result).Value);
-                Email emailDelete = (Email)(((OkObjectResult)actionEmailDelete.Result).Value);
-                Assert.NotNull(emailDelete);
+                bool retBool2 = (bool)((OkObjectResult)actionEmailDelete.Result).Value;
+                Assert.True(retBool2);
             }
         }
         #endregion Functions public

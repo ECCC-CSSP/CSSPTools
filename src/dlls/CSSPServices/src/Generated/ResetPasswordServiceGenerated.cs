@@ -25,7 +25,7 @@ namespace CSSPServices
        Task<ActionResult<ResetPassword>> GetResetPasswordWithResetPasswordID(int ResetPasswordID);
        Task<ActionResult<List<ResetPassword>>> GetResetPasswordList();
        Task<ActionResult<ResetPassword>> Add(ResetPassword resetpassword);
-       Task<ActionResult<ResetPassword>> Delete(ResetPassword resetpassword);
+       Task<ActionResult<bool>> Delete(int ResetPasswordID);
        Task<ActionResult<ResetPassword>> Update(ResetPassword resetpassword);
        Task SetCulture(CultureInfo culture);
     }
@@ -88,12 +88,15 @@ namespace CSSPServices
 
             return await Task.FromResult(Ok(resetPassword));
         }
-        public async Task<ActionResult<ResetPassword>> Delete(ResetPassword resetPassword)
+        public async Task<ActionResult<bool>> Delete(int ResetPasswordID)
         {
-            ValidationResults = Validate(new ValidationContext(resetPassword), ActionDBTypeEnum.Delete);
-            if (ValidationResults.Count() > 0)
+            ResetPassword resetPassword = (from c in db.ResetPasswords
+                               where c.ResetPasswordID == ResetPasswordID
+                               select c).FirstOrDefault();
+            
+            if (resetPassword == null)
             {
-               return await Task.FromResult(BadRequest(ValidationResults));
+                return await Task.FromResult(BadRequest(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "ResetPassword", "ResetPasswordID", ResetPasswordID.ToString())));
             }
 
             try
@@ -106,7 +109,7 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
 
-            return await Task.FromResult(Ok(resetPassword));
+            return await Task.FromResult(Ok(true));
         }
         public async Task<ActionResult<ResetPassword>> Update(ResetPassword resetPassword)
         {

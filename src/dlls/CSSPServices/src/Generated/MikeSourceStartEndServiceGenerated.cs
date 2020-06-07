@@ -25,7 +25,7 @@ namespace CSSPServices
        Task<ActionResult<MikeSourceStartEnd>> GetMikeSourceStartEndWithMikeSourceStartEndID(int MikeSourceStartEndID);
        Task<ActionResult<List<MikeSourceStartEnd>>> GetMikeSourceStartEndList();
        Task<ActionResult<MikeSourceStartEnd>> Add(MikeSourceStartEnd mikesourcestartend);
-       Task<ActionResult<MikeSourceStartEnd>> Delete(MikeSourceStartEnd mikesourcestartend);
+       Task<ActionResult<bool>> Delete(int MikeSourceStartEndID);
        Task<ActionResult<MikeSourceStartEnd>> Update(MikeSourceStartEnd mikesourcestartend);
        Task SetCulture(CultureInfo culture);
     }
@@ -88,12 +88,15 @@ namespace CSSPServices
 
             return await Task.FromResult(Ok(mikeSourceStartEnd));
         }
-        public async Task<ActionResult<MikeSourceStartEnd>> Delete(MikeSourceStartEnd mikeSourceStartEnd)
+        public async Task<ActionResult<bool>> Delete(int MikeSourceStartEndID)
         {
-            ValidationResults = Validate(new ValidationContext(mikeSourceStartEnd), ActionDBTypeEnum.Delete);
-            if (ValidationResults.Count() > 0)
+            MikeSourceStartEnd mikeSourceStartEnd = (from c in db.MikeSourceStartEnds
+                               where c.MikeSourceStartEndID == MikeSourceStartEndID
+                               select c).FirstOrDefault();
+            
+            if (mikeSourceStartEnd == null)
             {
-               return await Task.FromResult(BadRequest(ValidationResults));
+                return await Task.FromResult(BadRequest(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "MikeSourceStartEnd", "MikeSourceStartEndID", MikeSourceStartEndID.ToString())));
             }
 
             try
@@ -106,7 +109,7 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
 
-            return await Task.FromResult(Ok(mikeSourceStartEnd));
+            return await Task.FromResult(Ok(true));
         }
         public async Task<ActionResult<MikeSourceStartEnd>> Update(MikeSourceStartEnd mikeSourceStartEnd)
         {

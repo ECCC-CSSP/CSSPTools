@@ -63,7 +63,7 @@ namespace CSSPServices.Tests
                var actionDocTemplateList = await docTemplateService.GetDocTemplateList();
                Assert.Equal(200, ((ObjectResult)actionDocTemplateList.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionDocTemplateList.Result).Value);
-               List<DocTemplate> docTemplateList = (List<DocTemplate>)(((OkObjectResult)actionDocTemplateList.Result).Value);
+               List<DocTemplate> docTemplateList = (List<DocTemplate>)((OkObjectResult)actionDocTemplateList.Result).Value;
 
                int count = ((List<DocTemplate>)((OkObjectResult)actionDocTemplateList.Result).Value).Count();
                 Assert.True(count > 0);
@@ -72,22 +72,22 @@ namespace CSSPServices.Tests
                var actionDocTemplateAdded = await docTemplateService.Add(docTemplate);
                Assert.Equal(200, ((ObjectResult)actionDocTemplateAdded.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionDocTemplateAdded.Result).Value);
-               DocTemplate docTemplateAdded = (DocTemplate)(((OkObjectResult)actionDocTemplateAdded.Result).Value);
+               DocTemplate docTemplateAdded = (DocTemplate)((OkObjectResult)actionDocTemplateAdded.Result).Value;
                Assert.NotNull(docTemplateAdded);
 
                // Update DocTemplate
                var actionDocTemplateUpdated = await docTemplateService.Update(docTemplate);
                Assert.Equal(200, ((ObjectResult)actionDocTemplateUpdated.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionDocTemplateUpdated.Result).Value);
-               DocTemplate docTemplateUpdated = (DocTemplate)(((OkObjectResult)actionDocTemplateUpdated.Result).Value);
+               DocTemplate docTemplateUpdated = (DocTemplate)((OkObjectResult)actionDocTemplateUpdated.Result).Value;
                Assert.NotNull(docTemplateUpdated);
 
                // Delete DocTemplate
-               var actionDocTemplateDeleted = await docTemplateService.Delete(docTemplate);
+               var actionDocTemplateDeleted = await docTemplateService.Delete(docTemplate.DocTemplateID);
                Assert.Equal(200, ((ObjectResult)actionDocTemplateDeleted.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionDocTemplateDeleted.Result).Value);
-               DocTemplate docTemplateDeleted = (DocTemplate)(((OkObjectResult)actionDocTemplateDeleted.Result).Value);
-               Assert.NotNull(docTemplateDeleted);
+               bool retBool = (bool)((OkObjectResult)actionDocTemplateDeleted.Result).Value;
+               Assert.True(retBool);
             }
         }
         #endregion Tests Generated CRUD

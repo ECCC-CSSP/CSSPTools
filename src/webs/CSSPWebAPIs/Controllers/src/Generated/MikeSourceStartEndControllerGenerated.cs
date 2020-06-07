@@ -20,7 +20,7 @@ namespace CSSPWebAPI.Controllers
         Task<ActionResult<MikeSourceStartEnd>> Get(int MikeSourceStartEndID);
         Task<ActionResult<MikeSourceStartEnd>> Post(MikeSourceStartEnd mikeSourceStartEnd);
         Task<ActionResult<MikeSourceStartEnd>> Put(MikeSourceStartEnd mikeSourceStartEnd);
-        Task<ActionResult<MikeSourceStartEnd>> Delete(MikeSourceStartEnd mikeSourceStartEnd);
+        Task<ActionResult<bool>> Delete(int MikeSourceStartEndID);
     }
 
     [Route("api/{culture}/[controller]")]
@@ -67,10 +67,10 @@ namespace CSSPWebAPI.Controllers
         {
             return await mikeSourceStartEndService.Update(mikeSourceStartEnd);
         }
-        [HttpDelete]
-        public async Task<ActionResult<MikeSourceStartEnd>> Delete(MikeSourceStartEnd mikeSourceStartEnd)
+        [HttpDelete("{MikeSourceStartEndID}")]
+        public async Task<ActionResult<bool>> Delete(int MikeSourceStartEndID)
         {
-            return await mikeSourceStartEndService.Delete(mikeSourceStartEnd);
+            return await mikeSourceStartEndService.Delete(MikeSourceStartEndID);
         }
         #endregion Functions public
 

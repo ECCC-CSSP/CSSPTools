@@ -63,7 +63,7 @@ namespace CSSPServices.Tests
                var actionVPResultList = await vpResultService.GetVPResultList();
                Assert.Equal(200, ((ObjectResult)actionVPResultList.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionVPResultList.Result).Value);
-               List<VPResult> vpResultList = (List<VPResult>)(((OkObjectResult)actionVPResultList.Result).Value);
+               List<VPResult> vpResultList = (List<VPResult>)((OkObjectResult)actionVPResultList.Result).Value;
 
                int count = ((List<VPResult>)((OkObjectResult)actionVPResultList.Result).Value).Count();
                 Assert.True(count > 0);
@@ -72,22 +72,22 @@ namespace CSSPServices.Tests
                var actionVPResultAdded = await vpResultService.Add(vpResult);
                Assert.Equal(200, ((ObjectResult)actionVPResultAdded.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionVPResultAdded.Result).Value);
-               VPResult vpResultAdded = (VPResult)(((OkObjectResult)actionVPResultAdded.Result).Value);
+               VPResult vpResultAdded = (VPResult)((OkObjectResult)actionVPResultAdded.Result).Value;
                Assert.NotNull(vpResultAdded);
 
                // Update VPResult
                var actionVPResultUpdated = await vpResultService.Update(vpResult);
                Assert.Equal(200, ((ObjectResult)actionVPResultUpdated.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionVPResultUpdated.Result).Value);
-               VPResult vpResultUpdated = (VPResult)(((OkObjectResult)actionVPResultUpdated.Result).Value);
+               VPResult vpResultUpdated = (VPResult)((OkObjectResult)actionVPResultUpdated.Result).Value;
                Assert.NotNull(vpResultUpdated);
 
                // Delete VPResult
-               var actionVPResultDeleted = await vpResultService.Delete(vpResult);
+               var actionVPResultDeleted = await vpResultService.Delete(vpResult.VPResultID);
                Assert.Equal(200, ((ObjectResult)actionVPResultDeleted.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionVPResultDeleted.Result).Value);
-               VPResult vpResultDeleted = (VPResult)(((OkObjectResult)actionVPResultDeleted.Result).Value);
-               Assert.NotNull(vpResultDeleted);
+               bool retBool = (bool)((OkObjectResult)actionVPResultDeleted.Result).Value;
+               Assert.True(retBool);
             }
         }
         #endregion Tests Generated CRUD

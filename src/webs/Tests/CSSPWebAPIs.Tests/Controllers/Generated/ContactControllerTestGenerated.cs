@@ -72,7 +72,7 @@ namespace CSSPWebAPIs.Tests.Controllers
                 var actionContactList = await contactController.Get();
                 Assert.Equal(200, ((ObjectResult)actionContactList.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionContactList.Result).Value);
-                List<Contact> contactList = (List<Contact>)(((OkObjectResult)actionContactList.Result).Value);
+                List<Contact> contactList = (List<Contact>)((OkObjectResult)actionContactList.Result).Value;
 
                 int count = ((List<Contact>)((OkObjectResult)actionContactList.Result).Value).Count();
                 Assert.True(count > 0);
@@ -81,7 +81,7 @@ namespace CSSPWebAPIs.Tests.Controllers
                 var actionContact = await contactController.Get(contactList[0].ContactID);
                 Assert.Equal(200, ((ObjectResult)actionContact.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionContact.Result).Value);
-                Contact contact = (Contact)(((OkObjectResult)actionContact.Result).Value);
+                Contact contact = (Contact)((OkObjectResult)actionContact.Result).Value;
                 Assert.NotNull(contact);
                 Assert.Equal(contactList[0].ContactID, contact.ContactID);
 
@@ -90,22 +90,22 @@ namespace CSSPWebAPIs.Tests.Controllers
                 var actionContactNew = await contactController.Post(contact);
                 Assert.Equal(200, ((ObjectResult)actionContactNew.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionContactNew.Result).Value);
-                Contact contactNew = (Contact)(((OkObjectResult)actionContactNew.Result).Value);
+                Contact contactNew = (Contact)((OkObjectResult)actionContactNew.Result).Value;
                 Assert.NotNull(contactNew);
 
                 // testing Put(Contact contact)
                 var actionContactUpdate = await contactController.Put(contactNew);
                 Assert.Equal(200, ((ObjectResult)actionContactUpdate.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionContactUpdate.Result).Value);
-                Contact contactUpdate = (Contact)(((OkObjectResult)actionContactUpdate.Result).Value);
+                Contact contactUpdate = (Contact)((OkObjectResult)actionContactUpdate.Result).Value;
                 Assert.NotNull(contactUpdate);
 
-                // testing Delete(Contact contact)
-                var actionContactDelete = await contactController.Delete(contactUpdate);
+                // testing Delete(int contact.ContactID)
+                var actionContactDelete = await contactController.Delete(contactUpdate.ContactID);
                 Assert.Equal(200, ((ObjectResult)actionContactDelete.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionContactDelete.Result).Value);
-                Contact contactDelete = (Contact)(((OkObjectResult)actionContactDelete.Result).Value);
-                Assert.NotNull(contactDelete);
+                bool retBool2 = (bool)((OkObjectResult)actionContactDelete.Result).Value;
+                Assert.True(retBool2);
             }
         }
         #endregion Functions public

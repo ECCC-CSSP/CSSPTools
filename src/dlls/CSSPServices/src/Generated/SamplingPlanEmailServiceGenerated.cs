@@ -25,7 +25,7 @@ namespace CSSPServices
        Task<ActionResult<SamplingPlanEmail>> GetSamplingPlanEmailWithSamplingPlanEmailID(int SamplingPlanEmailID);
        Task<ActionResult<List<SamplingPlanEmail>>> GetSamplingPlanEmailList();
        Task<ActionResult<SamplingPlanEmail>> Add(SamplingPlanEmail samplingplanemail);
-       Task<ActionResult<SamplingPlanEmail>> Delete(SamplingPlanEmail samplingplanemail);
+       Task<ActionResult<bool>> Delete(int SamplingPlanEmailID);
        Task<ActionResult<SamplingPlanEmail>> Update(SamplingPlanEmail samplingplanemail);
        Task SetCulture(CultureInfo culture);
     }
@@ -88,12 +88,15 @@ namespace CSSPServices
 
             return await Task.FromResult(Ok(samplingPlanEmail));
         }
-        public async Task<ActionResult<SamplingPlanEmail>> Delete(SamplingPlanEmail samplingPlanEmail)
+        public async Task<ActionResult<bool>> Delete(int SamplingPlanEmailID)
         {
-            ValidationResults = Validate(new ValidationContext(samplingPlanEmail), ActionDBTypeEnum.Delete);
-            if (ValidationResults.Count() > 0)
+            SamplingPlanEmail samplingPlanEmail = (from c in db.SamplingPlanEmails
+                               where c.SamplingPlanEmailID == SamplingPlanEmailID
+                               select c).FirstOrDefault();
+            
+            if (samplingPlanEmail == null)
             {
-               return await Task.FromResult(BadRequest(ValidationResults));
+                return await Task.FromResult(BadRequest(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "SamplingPlanEmail", "SamplingPlanEmailID", SamplingPlanEmailID.ToString())));
             }
 
             try
@@ -106,7 +109,7 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
 
-            return await Task.FromResult(Ok(samplingPlanEmail));
+            return await Task.FromResult(Ok(true));
         }
         public async Task<ActionResult<SamplingPlanEmail>> Update(SamplingPlanEmail samplingPlanEmail)
         {

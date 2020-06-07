@@ -20,7 +20,7 @@ namespace CSSPWebAPI.Controllers
         Task<ActionResult<AppErrLog>> Get(int AppErrLogID);
         Task<ActionResult<AppErrLog>> Post(AppErrLog appErrLog);
         Task<ActionResult<AppErrLog>> Put(AppErrLog appErrLog);
-        Task<ActionResult<AppErrLog>> Delete(AppErrLog appErrLog);
+        Task<ActionResult<bool>> Delete(int AppErrLogID);
     }
 
     [Route("api/{culture}/[controller]")]
@@ -67,10 +67,10 @@ namespace CSSPWebAPI.Controllers
         {
             return await appErrLogService.Update(appErrLog);
         }
-        [HttpDelete]
-        public async Task<ActionResult<AppErrLog>> Delete(AppErrLog appErrLog)
+        [HttpDelete("{AppErrLogID}")]
+        public async Task<ActionResult<bool>> Delete(int AppErrLogID)
         {
-            return await appErrLogService.Delete(appErrLog);
+            return await appErrLogService.Delete(AppErrLogID);
         }
         #endregion Functions public
 

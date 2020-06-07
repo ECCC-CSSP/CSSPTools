@@ -25,7 +25,7 @@ namespace CSSPServices
        Task<ActionResult<MikeScenario>> GetMikeScenarioWithMikeScenarioID(int MikeScenarioID);
        Task<ActionResult<List<MikeScenario>>> GetMikeScenarioList();
        Task<ActionResult<MikeScenario>> Add(MikeScenario mikescenario);
-       Task<ActionResult<MikeScenario>> Delete(MikeScenario mikescenario);
+       Task<ActionResult<bool>> Delete(int MikeScenarioID);
        Task<ActionResult<MikeScenario>> Update(MikeScenario mikescenario);
        Task SetCulture(CultureInfo culture);
     }
@@ -88,12 +88,15 @@ namespace CSSPServices
 
             return await Task.FromResult(Ok(mikeScenario));
         }
-        public async Task<ActionResult<MikeScenario>> Delete(MikeScenario mikeScenario)
+        public async Task<ActionResult<bool>> Delete(int MikeScenarioID)
         {
-            ValidationResults = Validate(new ValidationContext(mikeScenario), ActionDBTypeEnum.Delete);
-            if (ValidationResults.Count() > 0)
+            MikeScenario mikeScenario = (from c in db.MikeScenarios
+                               where c.MikeScenarioID == MikeScenarioID
+                               select c).FirstOrDefault();
+            
+            if (mikeScenario == null)
             {
-               return await Task.FromResult(BadRequest(ValidationResults));
+                return await Task.FromResult(BadRequest(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "MikeScenario", "MikeScenarioID", MikeScenarioID.ToString())));
             }
 
             try
@@ -106,7 +109,7 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
 
-            return await Task.FromResult(Ok(mikeScenario));
+            return await Task.FromResult(Ok(true));
         }
         public async Task<ActionResult<MikeScenario>> Update(MikeScenario mikeScenario)
         {

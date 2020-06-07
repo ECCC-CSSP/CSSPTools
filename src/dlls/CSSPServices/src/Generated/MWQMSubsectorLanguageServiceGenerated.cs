@@ -25,7 +25,7 @@ namespace CSSPServices
        Task<ActionResult<MWQMSubsectorLanguage>> GetMWQMSubsectorLanguageWithMWQMSubsectorLanguageID(int MWQMSubsectorLanguageID);
        Task<ActionResult<List<MWQMSubsectorLanguage>>> GetMWQMSubsectorLanguageList();
        Task<ActionResult<MWQMSubsectorLanguage>> Add(MWQMSubsectorLanguage mwqmsubsectorlanguage);
-       Task<ActionResult<MWQMSubsectorLanguage>> Delete(MWQMSubsectorLanguage mwqmsubsectorlanguage);
+       Task<ActionResult<bool>> Delete(int MWQMSubsectorLanguageID);
        Task<ActionResult<MWQMSubsectorLanguage>> Update(MWQMSubsectorLanguage mwqmsubsectorlanguage);
        Task SetCulture(CultureInfo culture);
     }
@@ -88,12 +88,15 @@ namespace CSSPServices
 
             return await Task.FromResult(Ok(mwqmSubsectorLanguage));
         }
-        public async Task<ActionResult<MWQMSubsectorLanguage>> Delete(MWQMSubsectorLanguage mwqmSubsectorLanguage)
+        public async Task<ActionResult<bool>> Delete(int MWQMSubsectorLanguageID)
         {
-            ValidationResults = Validate(new ValidationContext(mwqmSubsectorLanguage), ActionDBTypeEnum.Delete);
-            if (ValidationResults.Count() > 0)
+            MWQMSubsectorLanguage mwqmSubsectorLanguage = (from c in db.MWQMSubsectorLanguages
+                               where c.MWQMSubsectorLanguageID == MWQMSubsectorLanguageID
+                               select c).FirstOrDefault();
+            
+            if (mwqmSubsectorLanguage == null)
             {
-               return await Task.FromResult(BadRequest(ValidationResults));
+                return await Task.FromResult(BadRequest(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "MWQMSubsectorLanguage", "MWQMSubsectorLanguageID", MWQMSubsectorLanguageID.ToString())));
             }
 
             try
@@ -106,7 +109,7 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
 
-            return await Task.FromResult(Ok(mwqmSubsectorLanguage));
+            return await Task.FromResult(Ok(true));
         }
         public async Task<ActionResult<MWQMSubsectorLanguage>> Update(MWQMSubsectorLanguage mwqmSubsectorLanguage)
         {

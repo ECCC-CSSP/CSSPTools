@@ -72,7 +72,7 @@ namespace CSSPWebAPIs.Tests.Controllers
                 var actionEmailDistributionListContactList = await emailDistributionListContactController.Get();
                 Assert.Equal(200, ((ObjectResult)actionEmailDistributionListContactList.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionEmailDistributionListContactList.Result).Value);
-                List<EmailDistributionListContact> emailDistributionListContactList = (List<EmailDistributionListContact>)(((OkObjectResult)actionEmailDistributionListContactList.Result).Value);
+                List<EmailDistributionListContact> emailDistributionListContactList = (List<EmailDistributionListContact>)((OkObjectResult)actionEmailDistributionListContactList.Result).Value;
 
                 int count = ((List<EmailDistributionListContact>)((OkObjectResult)actionEmailDistributionListContactList.Result).Value).Count();
                 Assert.True(count > 0);
@@ -81,7 +81,7 @@ namespace CSSPWebAPIs.Tests.Controllers
                 var actionEmailDistributionListContact = await emailDistributionListContactController.Get(emailDistributionListContactList[0].EmailDistributionListContactID);
                 Assert.Equal(200, ((ObjectResult)actionEmailDistributionListContact.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionEmailDistributionListContact.Result).Value);
-                EmailDistributionListContact emailDistributionListContact = (EmailDistributionListContact)(((OkObjectResult)actionEmailDistributionListContact.Result).Value);
+                EmailDistributionListContact emailDistributionListContact = (EmailDistributionListContact)((OkObjectResult)actionEmailDistributionListContact.Result).Value;
                 Assert.NotNull(emailDistributionListContact);
                 Assert.Equal(emailDistributionListContactList[0].EmailDistributionListContactID, emailDistributionListContact.EmailDistributionListContactID);
 
@@ -90,22 +90,22 @@ namespace CSSPWebAPIs.Tests.Controllers
                 var actionEmailDistributionListContactNew = await emailDistributionListContactController.Post(emailDistributionListContact);
                 Assert.Equal(200, ((ObjectResult)actionEmailDistributionListContactNew.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionEmailDistributionListContactNew.Result).Value);
-                EmailDistributionListContact emailDistributionListContactNew = (EmailDistributionListContact)(((OkObjectResult)actionEmailDistributionListContactNew.Result).Value);
+                EmailDistributionListContact emailDistributionListContactNew = (EmailDistributionListContact)((OkObjectResult)actionEmailDistributionListContactNew.Result).Value;
                 Assert.NotNull(emailDistributionListContactNew);
 
                 // testing Put(EmailDistributionListContact emailDistributionListContact)
                 var actionEmailDistributionListContactUpdate = await emailDistributionListContactController.Put(emailDistributionListContactNew);
                 Assert.Equal(200, ((ObjectResult)actionEmailDistributionListContactUpdate.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionEmailDistributionListContactUpdate.Result).Value);
-                EmailDistributionListContact emailDistributionListContactUpdate = (EmailDistributionListContact)(((OkObjectResult)actionEmailDistributionListContactUpdate.Result).Value);
+                EmailDistributionListContact emailDistributionListContactUpdate = (EmailDistributionListContact)((OkObjectResult)actionEmailDistributionListContactUpdate.Result).Value;
                 Assert.NotNull(emailDistributionListContactUpdate);
 
-                // testing Delete(EmailDistributionListContact emailDistributionListContact)
-                var actionEmailDistributionListContactDelete = await emailDistributionListContactController.Delete(emailDistributionListContactUpdate);
+                // testing Delete(int emailDistributionListContact.EmailDistributionListContactID)
+                var actionEmailDistributionListContactDelete = await emailDistributionListContactController.Delete(emailDistributionListContactUpdate.EmailDistributionListContactID);
                 Assert.Equal(200, ((ObjectResult)actionEmailDistributionListContactDelete.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionEmailDistributionListContactDelete.Result).Value);
-                EmailDistributionListContact emailDistributionListContactDelete = (EmailDistributionListContact)(((OkObjectResult)actionEmailDistributionListContactDelete.Result).Value);
-                Assert.NotNull(emailDistributionListContactDelete);
+                bool retBool2 = (bool)((OkObjectResult)actionEmailDistributionListContactDelete.Result).Value;
+                Assert.True(retBool2);
             }
         }
         #endregion Functions public

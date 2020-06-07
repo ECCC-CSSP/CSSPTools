@@ -25,7 +25,7 @@ namespace CSSPServices
        Task<ActionResult<HydrometricSite>> GetHydrometricSiteWithHydrometricSiteID(int HydrometricSiteID);
        Task<ActionResult<List<HydrometricSite>>> GetHydrometricSiteList();
        Task<ActionResult<HydrometricSite>> Add(HydrometricSite hydrometricsite);
-       Task<ActionResult<HydrometricSite>> Delete(HydrometricSite hydrometricsite);
+       Task<ActionResult<bool>> Delete(int HydrometricSiteID);
        Task<ActionResult<HydrometricSite>> Update(HydrometricSite hydrometricsite);
        Task SetCulture(CultureInfo culture);
     }
@@ -88,12 +88,15 @@ namespace CSSPServices
 
             return await Task.FromResult(Ok(hydrometricSite));
         }
-        public async Task<ActionResult<HydrometricSite>> Delete(HydrometricSite hydrometricSite)
+        public async Task<ActionResult<bool>> Delete(int HydrometricSiteID)
         {
-            ValidationResults = Validate(new ValidationContext(hydrometricSite), ActionDBTypeEnum.Delete);
-            if (ValidationResults.Count() > 0)
+            HydrometricSite hydrometricSite = (from c in db.HydrometricSites
+                               where c.HydrometricSiteID == HydrometricSiteID
+                               select c).FirstOrDefault();
+            
+            if (hydrometricSite == null)
             {
-               return await Task.FromResult(BadRequest(ValidationResults));
+                return await Task.FromResult(BadRequest(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "HydrometricSite", "HydrometricSiteID", HydrometricSiteID.ToString())));
             }
 
             try
@@ -106,7 +109,7 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
 
-            return await Task.FromResult(Ok(hydrometricSite));
+            return await Task.FromResult(Ok(true));
         }
         public async Task<ActionResult<HydrometricSite>> Update(HydrometricSite hydrometricSite)
         {

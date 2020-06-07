@@ -72,7 +72,7 @@ namespace CSSPWebAPIs.Tests.Controllers
                 var actionAddressList = await addressController.Get();
                 Assert.Equal(200, ((ObjectResult)actionAddressList.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionAddressList.Result).Value);
-                List<Address> addressList = (List<Address>)(((OkObjectResult)actionAddressList.Result).Value);
+                List<Address> addressList = (List<Address>)((OkObjectResult)actionAddressList.Result).Value;
 
                 int count = ((List<Address>)((OkObjectResult)actionAddressList.Result).Value).Count();
                 Assert.True(count > 0);
@@ -81,7 +81,7 @@ namespace CSSPWebAPIs.Tests.Controllers
                 var actionAddress = await addressController.Get(addressList[0].AddressID);
                 Assert.Equal(200, ((ObjectResult)actionAddress.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionAddress.Result).Value);
-                Address address = (Address)(((OkObjectResult)actionAddress.Result).Value);
+                Address address = (Address)((OkObjectResult)actionAddress.Result).Value;
                 Assert.NotNull(address);
                 Assert.Equal(addressList[0].AddressID, address.AddressID);
 
@@ -90,22 +90,22 @@ namespace CSSPWebAPIs.Tests.Controllers
                 var actionAddressNew = await addressController.Post(address);
                 Assert.Equal(200, ((ObjectResult)actionAddressNew.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionAddressNew.Result).Value);
-                Address addressNew = (Address)(((OkObjectResult)actionAddressNew.Result).Value);
+                Address addressNew = (Address)((OkObjectResult)actionAddressNew.Result).Value;
                 Assert.NotNull(addressNew);
 
                 // testing Put(Address address)
                 var actionAddressUpdate = await addressController.Put(addressNew);
                 Assert.Equal(200, ((ObjectResult)actionAddressUpdate.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionAddressUpdate.Result).Value);
-                Address addressUpdate = (Address)(((OkObjectResult)actionAddressUpdate.Result).Value);
+                Address addressUpdate = (Address)((OkObjectResult)actionAddressUpdate.Result).Value;
                 Assert.NotNull(addressUpdate);
 
-                // testing Delete(Address address)
-                var actionAddressDelete = await addressController.Delete(addressUpdate);
+                // testing Delete(int address.AddressID)
+                var actionAddressDelete = await addressController.Delete(addressUpdate.AddressID);
                 Assert.Equal(200, ((ObjectResult)actionAddressDelete.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionAddressDelete.Result).Value);
-                Address addressDelete = (Address)(((OkObjectResult)actionAddressDelete.Result).Value);
-                Assert.NotNull(addressDelete);
+                bool retBool2 = (bool)((OkObjectResult)actionAddressDelete.Result).Value;
+                Assert.True(retBool2);
             }
         }
         #endregion Functions public

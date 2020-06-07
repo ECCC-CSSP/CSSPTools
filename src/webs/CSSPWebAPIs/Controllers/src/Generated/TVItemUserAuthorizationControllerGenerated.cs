@@ -20,7 +20,7 @@ namespace CSSPWebAPI.Controllers
         Task<ActionResult<TVItemUserAuthorization>> Get(int TVItemUserAuthorizationID);
         Task<ActionResult<TVItemUserAuthorization>> Post(TVItemUserAuthorization tvItemUserAuthorization);
         Task<ActionResult<TVItemUserAuthorization>> Put(TVItemUserAuthorization tvItemUserAuthorization);
-        Task<ActionResult<TVItemUserAuthorization>> Delete(TVItemUserAuthorization tvItemUserAuthorization);
+        Task<ActionResult<bool>> Delete(int TVItemUserAuthorizationID);
     }
 
     [Route("api/{culture}/[controller]")]
@@ -67,10 +67,10 @@ namespace CSSPWebAPI.Controllers
         {
             return await tvItemUserAuthorizationService.Update(tvItemUserAuthorization);
         }
-        [HttpDelete]
-        public async Task<ActionResult<TVItemUserAuthorization>> Delete(TVItemUserAuthorization tvItemUserAuthorization)
+        [HttpDelete("{TVItemUserAuthorizationID}")]
+        public async Task<ActionResult<bool>> Delete(int TVItemUserAuthorizationID)
         {
-            return await tvItemUserAuthorizationService.Delete(tvItemUserAuthorization);
+            return await tvItemUserAuthorizationService.Delete(TVItemUserAuthorizationID);
         }
         #endregion Functions public
 

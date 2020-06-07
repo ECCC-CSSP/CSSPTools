@@ -25,7 +25,7 @@ namespace CSSPServices
        Task<ActionResult<UseOfSite>> GetUseOfSiteWithUseOfSiteID(int UseOfSiteID);
        Task<ActionResult<List<UseOfSite>>> GetUseOfSiteList();
        Task<ActionResult<UseOfSite>> Add(UseOfSite useofsite);
-       Task<ActionResult<UseOfSite>> Delete(UseOfSite useofsite);
+       Task<ActionResult<bool>> Delete(int UseOfSiteID);
        Task<ActionResult<UseOfSite>> Update(UseOfSite useofsite);
        Task SetCulture(CultureInfo culture);
     }
@@ -88,12 +88,15 @@ namespace CSSPServices
 
             return await Task.FromResult(Ok(useOfSite));
         }
-        public async Task<ActionResult<UseOfSite>> Delete(UseOfSite useOfSite)
+        public async Task<ActionResult<bool>> Delete(int UseOfSiteID)
         {
-            ValidationResults = Validate(new ValidationContext(useOfSite), ActionDBTypeEnum.Delete);
-            if (ValidationResults.Count() > 0)
+            UseOfSite useOfSite = (from c in db.UseOfSites
+                               where c.UseOfSiteID == UseOfSiteID
+                               select c).FirstOrDefault();
+            
+            if (useOfSite == null)
             {
-               return await Task.FromResult(BadRequest(ValidationResults));
+                return await Task.FromResult(BadRequest(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "UseOfSite", "UseOfSiteID", UseOfSiteID.ToString())));
             }
 
             try
@@ -106,7 +109,7 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
 
-            return await Task.FromResult(Ok(useOfSite));
+            return await Task.FromResult(Ok(true));
         }
         public async Task<ActionResult<UseOfSite>> Update(UseOfSite useOfSite)
         {

@@ -25,7 +25,7 @@ namespace CSSPServices
        Task<ActionResult<LabSheetTubeMPNDetail>> GetLabSheetTubeMPNDetailWithLabSheetTubeMPNDetailID(int LabSheetTubeMPNDetailID);
        Task<ActionResult<List<LabSheetTubeMPNDetail>>> GetLabSheetTubeMPNDetailList();
        Task<ActionResult<LabSheetTubeMPNDetail>> Add(LabSheetTubeMPNDetail labsheettubempndetail);
-       Task<ActionResult<LabSheetTubeMPNDetail>> Delete(LabSheetTubeMPNDetail labsheettubempndetail);
+       Task<ActionResult<bool>> Delete(int LabSheetTubeMPNDetailID);
        Task<ActionResult<LabSheetTubeMPNDetail>> Update(LabSheetTubeMPNDetail labsheettubempndetail);
        Task SetCulture(CultureInfo culture);
     }
@@ -88,12 +88,15 @@ namespace CSSPServices
 
             return await Task.FromResult(Ok(labSheetTubeMPNDetail));
         }
-        public async Task<ActionResult<LabSheetTubeMPNDetail>> Delete(LabSheetTubeMPNDetail labSheetTubeMPNDetail)
+        public async Task<ActionResult<bool>> Delete(int LabSheetTubeMPNDetailID)
         {
-            ValidationResults = Validate(new ValidationContext(labSheetTubeMPNDetail), ActionDBTypeEnum.Delete);
-            if (ValidationResults.Count() > 0)
+            LabSheetTubeMPNDetail labSheetTubeMPNDetail = (from c in db.LabSheetTubeMPNDetails
+                               where c.LabSheetTubeMPNDetailID == LabSheetTubeMPNDetailID
+                               select c).FirstOrDefault();
+            
+            if (labSheetTubeMPNDetail == null)
             {
-               return await Task.FromResult(BadRequest(ValidationResults));
+                return await Task.FromResult(BadRequest(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "LabSheetTubeMPNDetail", "LabSheetTubeMPNDetailID", LabSheetTubeMPNDetailID.ToString())));
             }
 
             try
@@ -106,7 +109,7 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
 
-            return await Task.FromResult(Ok(labSheetTubeMPNDetail));
+            return await Task.FromResult(Ok(true));
         }
         public async Task<ActionResult<LabSheetTubeMPNDetail>> Update(LabSheetTubeMPNDetail labSheetTubeMPNDetail)
         {

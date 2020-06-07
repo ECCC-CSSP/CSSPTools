@@ -25,7 +25,7 @@ namespace CSSPServices
        Task<ActionResult<VPAmbient>> GetVPAmbientWithVPAmbientID(int VPAmbientID);
        Task<ActionResult<List<VPAmbient>>> GetVPAmbientList();
        Task<ActionResult<VPAmbient>> Add(VPAmbient vpambient);
-       Task<ActionResult<VPAmbient>> Delete(VPAmbient vpambient);
+       Task<ActionResult<bool>> Delete(int VPAmbientID);
        Task<ActionResult<VPAmbient>> Update(VPAmbient vpambient);
        Task SetCulture(CultureInfo culture);
     }
@@ -88,12 +88,15 @@ namespace CSSPServices
 
             return await Task.FromResult(Ok(vpAmbient));
         }
-        public async Task<ActionResult<VPAmbient>> Delete(VPAmbient vpAmbient)
+        public async Task<ActionResult<bool>> Delete(int VPAmbientID)
         {
-            ValidationResults = Validate(new ValidationContext(vpAmbient), ActionDBTypeEnum.Delete);
-            if (ValidationResults.Count() > 0)
+            VPAmbient vpAmbient = (from c in db.VPAmbients
+                               where c.VPAmbientID == VPAmbientID
+                               select c).FirstOrDefault();
+            
+            if (vpAmbient == null)
             {
-               return await Task.FromResult(BadRequest(ValidationResults));
+                return await Task.FromResult(BadRequest(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "VPAmbient", "VPAmbientID", VPAmbientID.ToString())));
             }
 
             try
@@ -106,7 +109,7 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
 
-            return await Task.FromResult(Ok(vpAmbient));
+            return await Task.FromResult(Ok(true));
         }
         public async Task<ActionResult<VPAmbient>> Update(VPAmbient vpAmbient)
         {

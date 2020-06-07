@@ -72,7 +72,7 @@ namespace CSSPWebAPIs.Tests.Controllers
                 var actionMikeSourceStartEndList = await mikeSourceStartEndController.Get();
                 Assert.Equal(200, ((ObjectResult)actionMikeSourceStartEndList.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionMikeSourceStartEndList.Result).Value);
-                List<MikeSourceStartEnd> mikeSourceStartEndList = (List<MikeSourceStartEnd>)(((OkObjectResult)actionMikeSourceStartEndList.Result).Value);
+                List<MikeSourceStartEnd> mikeSourceStartEndList = (List<MikeSourceStartEnd>)((OkObjectResult)actionMikeSourceStartEndList.Result).Value;
 
                 int count = ((List<MikeSourceStartEnd>)((OkObjectResult)actionMikeSourceStartEndList.Result).Value).Count();
                 Assert.True(count > 0);
@@ -81,7 +81,7 @@ namespace CSSPWebAPIs.Tests.Controllers
                 var actionMikeSourceStartEnd = await mikeSourceStartEndController.Get(mikeSourceStartEndList[0].MikeSourceStartEndID);
                 Assert.Equal(200, ((ObjectResult)actionMikeSourceStartEnd.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionMikeSourceStartEnd.Result).Value);
-                MikeSourceStartEnd mikeSourceStartEnd = (MikeSourceStartEnd)(((OkObjectResult)actionMikeSourceStartEnd.Result).Value);
+                MikeSourceStartEnd mikeSourceStartEnd = (MikeSourceStartEnd)((OkObjectResult)actionMikeSourceStartEnd.Result).Value;
                 Assert.NotNull(mikeSourceStartEnd);
                 Assert.Equal(mikeSourceStartEndList[0].MikeSourceStartEndID, mikeSourceStartEnd.MikeSourceStartEndID);
 
@@ -90,22 +90,22 @@ namespace CSSPWebAPIs.Tests.Controllers
                 var actionMikeSourceStartEndNew = await mikeSourceStartEndController.Post(mikeSourceStartEnd);
                 Assert.Equal(200, ((ObjectResult)actionMikeSourceStartEndNew.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionMikeSourceStartEndNew.Result).Value);
-                MikeSourceStartEnd mikeSourceStartEndNew = (MikeSourceStartEnd)(((OkObjectResult)actionMikeSourceStartEndNew.Result).Value);
+                MikeSourceStartEnd mikeSourceStartEndNew = (MikeSourceStartEnd)((OkObjectResult)actionMikeSourceStartEndNew.Result).Value;
                 Assert.NotNull(mikeSourceStartEndNew);
 
                 // testing Put(MikeSourceStartEnd mikeSourceStartEnd)
                 var actionMikeSourceStartEndUpdate = await mikeSourceStartEndController.Put(mikeSourceStartEndNew);
                 Assert.Equal(200, ((ObjectResult)actionMikeSourceStartEndUpdate.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionMikeSourceStartEndUpdate.Result).Value);
-                MikeSourceStartEnd mikeSourceStartEndUpdate = (MikeSourceStartEnd)(((OkObjectResult)actionMikeSourceStartEndUpdate.Result).Value);
+                MikeSourceStartEnd mikeSourceStartEndUpdate = (MikeSourceStartEnd)((OkObjectResult)actionMikeSourceStartEndUpdate.Result).Value;
                 Assert.NotNull(mikeSourceStartEndUpdate);
 
-                // testing Delete(MikeSourceStartEnd mikeSourceStartEnd)
-                var actionMikeSourceStartEndDelete = await mikeSourceStartEndController.Delete(mikeSourceStartEndUpdate);
+                // testing Delete(int mikeSourceStartEnd.MikeSourceStartEndID)
+                var actionMikeSourceStartEndDelete = await mikeSourceStartEndController.Delete(mikeSourceStartEndUpdate.MikeSourceStartEndID);
                 Assert.Equal(200, ((ObjectResult)actionMikeSourceStartEndDelete.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionMikeSourceStartEndDelete.Result).Value);
-                MikeSourceStartEnd mikeSourceStartEndDelete = (MikeSourceStartEnd)(((OkObjectResult)actionMikeSourceStartEndDelete.Result).Value);
-                Assert.NotNull(mikeSourceStartEndDelete);
+                bool retBool2 = (bool)((OkObjectResult)actionMikeSourceStartEndDelete.Result).Value;
+                Assert.True(retBool2);
             }
         }
         #endregion Functions public

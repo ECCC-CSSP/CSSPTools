@@ -72,7 +72,7 @@ namespace CSSPWebAPIs.Tests.Controllers
                 var actionMikeSourceList = await mikeSourceController.Get();
                 Assert.Equal(200, ((ObjectResult)actionMikeSourceList.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionMikeSourceList.Result).Value);
-                List<MikeSource> mikeSourceList = (List<MikeSource>)(((OkObjectResult)actionMikeSourceList.Result).Value);
+                List<MikeSource> mikeSourceList = (List<MikeSource>)((OkObjectResult)actionMikeSourceList.Result).Value;
 
                 int count = ((List<MikeSource>)((OkObjectResult)actionMikeSourceList.Result).Value).Count();
                 Assert.True(count > 0);
@@ -81,7 +81,7 @@ namespace CSSPWebAPIs.Tests.Controllers
                 var actionMikeSource = await mikeSourceController.Get(mikeSourceList[0].MikeSourceID);
                 Assert.Equal(200, ((ObjectResult)actionMikeSource.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionMikeSource.Result).Value);
-                MikeSource mikeSource = (MikeSource)(((OkObjectResult)actionMikeSource.Result).Value);
+                MikeSource mikeSource = (MikeSource)((OkObjectResult)actionMikeSource.Result).Value;
                 Assert.NotNull(mikeSource);
                 Assert.Equal(mikeSourceList[0].MikeSourceID, mikeSource.MikeSourceID);
 
@@ -90,22 +90,22 @@ namespace CSSPWebAPIs.Tests.Controllers
                 var actionMikeSourceNew = await mikeSourceController.Post(mikeSource);
                 Assert.Equal(200, ((ObjectResult)actionMikeSourceNew.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionMikeSourceNew.Result).Value);
-                MikeSource mikeSourceNew = (MikeSource)(((OkObjectResult)actionMikeSourceNew.Result).Value);
+                MikeSource mikeSourceNew = (MikeSource)((OkObjectResult)actionMikeSourceNew.Result).Value;
                 Assert.NotNull(mikeSourceNew);
 
                 // testing Put(MikeSource mikeSource)
                 var actionMikeSourceUpdate = await mikeSourceController.Put(mikeSourceNew);
                 Assert.Equal(200, ((ObjectResult)actionMikeSourceUpdate.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionMikeSourceUpdate.Result).Value);
-                MikeSource mikeSourceUpdate = (MikeSource)(((OkObjectResult)actionMikeSourceUpdate.Result).Value);
+                MikeSource mikeSourceUpdate = (MikeSource)((OkObjectResult)actionMikeSourceUpdate.Result).Value;
                 Assert.NotNull(mikeSourceUpdate);
 
-                // testing Delete(MikeSource mikeSource)
-                var actionMikeSourceDelete = await mikeSourceController.Delete(mikeSourceUpdate);
+                // testing Delete(int mikeSource.MikeSourceID)
+                var actionMikeSourceDelete = await mikeSourceController.Delete(mikeSourceUpdate.MikeSourceID);
                 Assert.Equal(200, ((ObjectResult)actionMikeSourceDelete.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionMikeSourceDelete.Result).Value);
-                MikeSource mikeSourceDelete = (MikeSource)(((OkObjectResult)actionMikeSourceDelete.Result).Value);
-                Assert.NotNull(mikeSourceDelete);
+                bool retBool2 = (bool)((OkObjectResult)actionMikeSourceDelete.Result).Value;
+                Assert.True(retBool2);
             }
         }
         #endregion Functions public

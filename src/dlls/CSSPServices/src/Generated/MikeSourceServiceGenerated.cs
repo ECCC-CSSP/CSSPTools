@@ -25,7 +25,7 @@ namespace CSSPServices
        Task<ActionResult<MikeSource>> GetMikeSourceWithMikeSourceID(int MikeSourceID);
        Task<ActionResult<List<MikeSource>>> GetMikeSourceList();
        Task<ActionResult<MikeSource>> Add(MikeSource mikesource);
-       Task<ActionResult<MikeSource>> Delete(MikeSource mikesource);
+       Task<ActionResult<bool>> Delete(int MikeSourceID);
        Task<ActionResult<MikeSource>> Update(MikeSource mikesource);
        Task SetCulture(CultureInfo culture);
     }
@@ -88,12 +88,15 @@ namespace CSSPServices
 
             return await Task.FromResult(Ok(mikeSource));
         }
-        public async Task<ActionResult<MikeSource>> Delete(MikeSource mikeSource)
+        public async Task<ActionResult<bool>> Delete(int MikeSourceID)
         {
-            ValidationResults = Validate(new ValidationContext(mikeSource), ActionDBTypeEnum.Delete);
-            if (ValidationResults.Count() > 0)
+            MikeSource mikeSource = (from c in db.MikeSources
+                               where c.MikeSourceID == MikeSourceID
+                               select c).FirstOrDefault();
+            
+            if (mikeSource == null)
             {
-               return await Task.FromResult(BadRequest(ValidationResults));
+                return await Task.FromResult(BadRequest(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "MikeSource", "MikeSourceID", MikeSourceID.ToString())));
             }
 
             try
@@ -106,7 +109,7 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
 
-            return await Task.FromResult(Ok(mikeSource));
+            return await Task.FromResult(Ok(true));
         }
         public async Task<ActionResult<MikeSource>> Update(MikeSource mikeSource)
         {

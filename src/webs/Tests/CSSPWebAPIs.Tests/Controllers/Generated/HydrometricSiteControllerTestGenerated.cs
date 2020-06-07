@@ -72,7 +72,7 @@ namespace CSSPWebAPIs.Tests.Controllers
                 var actionHydrometricSiteList = await hydrometricSiteController.Get();
                 Assert.Equal(200, ((ObjectResult)actionHydrometricSiteList.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionHydrometricSiteList.Result).Value);
-                List<HydrometricSite> hydrometricSiteList = (List<HydrometricSite>)(((OkObjectResult)actionHydrometricSiteList.Result).Value);
+                List<HydrometricSite> hydrometricSiteList = (List<HydrometricSite>)((OkObjectResult)actionHydrometricSiteList.Result).Value;
 
                 int count = ((List<HydrometricSite>)((OkObjectResult)actionHydrometricSiteList.Result).Value).Count();
                 Assert.True(count > 0);
@@ -81,7 +81,7 @@ namespace CSSPWebAPIs.Tests.Controllers
                 var actionHydrometricSite = await hydrometricSiteController.Get(hydrometricSiteList[0].HydrometricSiteID);
                 Assert.Equal(200, ((ObjectResult)actionHydrometricSite.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionHydrometricSite.Result).Value);
-                HydrometricSite hydrometricSite = (HydrometricSite)(((OkObjectResult)actionHydrometricSite.Result).Value);
+                HydrometricSite hydrometricSite = (HydrometricSite)((OkObjectResult)actionHydrometricSite.Result).Value;
                 Assert.NotNull(hydrometricSite);
                 Assert.Equal(hydrometricSiteList[0].HydrometricSiteID, hydrometricSite.HydrometricSiteID);
 
@@ -90,22 +90,22 @@ namespace CSSPWebAPIs.Tests.Controllers
                 var actionHydrometricSiteNew = await hydrometricSiteController.Post(hydrometricSite);
                 Assert.Equal(200, ((ObjectResult)actionHydrometricSiteNew.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionHydrometricSiteNew.Result).Value);
-                HydrometricSite hydrometricSiteNew = (HydrometricSite)(((OkObjectResult)actionHydrometricSiteNew.Result).Value);
+                HydrometricSite hydrometricSiteNew = (HydrometricSite)((OkObjectResult)actionHydrometricSiteNew.Result).Value;
                 Assert.NotNull(hydrometricSiteNew);
 
                 // testing Put(HydrometricSite hydrometricSite)
                 var actionHydrometricSiteUpdate = await hydrometricSiteController.Put(hydrometricSiteNew);
                 Assert.Equal(200, ((ObjectResult)actionHydrometricSiteUpdate.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionHydrometricSiteUpdate.Result).Value);
-                HydrometricSite hydrometricSiteUpdate = (HydrometricSite)(((OkObjectResult)actionHydrometricSiteUpdate.Result).Value);
+                HydrometricSite hydrometricSiteUpdate = (HydrometricSite)((OkObjectResult)actionHydrometricSiteUpdate.Result).Value;
                 Assert.NotNull(hydrometricSiteUpdate);
 
-                // testing Delete(HydrometricSite hydrometricSite)
-                var actionHydrometricSiteDelete = await hydrometricSiteController.Delete(hydrometricSiteUpdate);
+                // testing Delete(int hydrometricSite.HydrometricSiteID)
+                var actionHydrometricSiteDelete = await hydrometricSiteController.Delete(hydrometricSiteUpdate.HydrometricSiteID);
                 Assert.Equal(200, ((ObjectResult)actionHydrometricSiteDelete.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionHydrometricSiteDelete.Result).Value);
-                HydrometricSite hydrometricSiteDelete = (HydrometricSite)(((OkObjectResult)actionHydrometricSiteDelete.Result).Value);
-                Assert.NotNull(hydrometricSiteDelete);
+                bool retBool2 = (bool)((OkObjectResult)actionHydrometricSiteDelete.Result).Value;
+                Assert.True(retBool2);
             }
         }
         #endregion Functions public

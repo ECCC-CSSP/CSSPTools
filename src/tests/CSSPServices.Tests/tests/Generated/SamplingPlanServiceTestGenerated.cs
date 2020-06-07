@@ -63,7 +63,7 @@ namespace CSSPServices.Tests
                var actionSamplingPlanList = await samplingPlanService.GetSamplingPlanList();
                Assert.Equal(200, ((ObjectResult)actionSamplingPlanList.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionSamplingPlanList.Result).Value);
-               List<SamplingPlan> samplingPlanList = (List<SamplingPlan>)(((OkObjectResult)actionSamplingPlanList.Result).Value);
+               List<SamplingPlan> samplingPlanList = (List<SamplingPlan>)((OkObjectResult)actionSamplingPlanList.Result).Value;
 
                int count = ((List<SamplingPlan>)((OkObjectResult)actionSamplingPlanList.Result).Value).Count();
                 Assert.True(count > 0);
@@ -72,22 +72,22 @@ namespace CSSPServices.Tests
                var actionSamplingPlanAdded = await samplingPlanService.Add(samplingPlan);
                Assert.Equal(200, ((ObjectResult)actionSamplingPlanAdded.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionSamplingPlanAdded.Result).Value);
-               SamplingPlan samplingPlanAdded = (SamplingPlan)(((OkObjectResult)actionSamplingPlanAdded.Result).Value);
+               SamplingPlan samplingPlanAdded = (SamplingPlan)((OkObjectResult)actionSamplingPlanAdded.Result).Value;
                Assert.NotNull(samplingPlanAdded);
 
                // Update SamplingPlan
                var actionSamplingPlanUpdated = await samplingPlanService.Update(samplingPlan);
                Assert.Equal(200, ((ObjectResult)actionSamplingPlanUpdated.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionSamplingPlanUpdated.Result).Value);
-               SamplingPlan samplingPlanUpdated = (SamplingPlan)(((OkObjectResult)actionSamplingPlanUpdated.Result).Value);
+               SamplingPlan samplingPlanUpdated = (SamplingPlan)((OkObjectResult)actionSamplingPlanUpdated.Result).Value;
                Assert.NotNull(samplingPlanUpdated);
 
                // Delete SamplingPlan
-               var actionSamplingPlanDeleted = await samplingPlanService.Delete(samplingPlan);
+               var actionSamplingPlanDeleted = await samplingPlanService.Delete(samplingPlan.SamplingPlanID);
                Assert.Equal(200, ((ObjectResult)actionSamplingPlanDeleted.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionSamplingPlanDeleted.Result).Value);
-               SamplingPlan samplingPlanDeleted = (SamplingPlan)(((OkObjectResult)actionSamplingPlanDeleted.Result).Value);
-               Assert.NotNull(samplingPlanDeleted);
+               bool retBool = (bool)((OkObjectResult)actionSamplingPlanDeleted.Result).Value;
+               Assert.True(retBool);
             }
         }
         #endregion Tests Generated CRUD

@@ -20,7 +20,7 @@ namespace CSSPWebAPI.Controllers
         Task<ActionResult<MWQMLookupMPN>> Get(int MWQMLookupMPNID);
         Task<ActionResult<MWQMLookupMPN>> Post(MWQMLookupMPN mwqmLookupMPN);
         Task<ActionResult<MWQMLookupMPN>> Put(MWQMLookupMPN mwqmLookupMPN);
-        Task<ActionResult<MWQMLookupMPN>> Delete(MWQMLookupMPN mwqmLookupMPN);
+        Task<ActionResult<bool>> Delete(int MWQMLookupMPNID);
     }
 
     [Route("api/{culture}/[controller]")]
@@ -67,10 +67,10 @@ namespace CSSPWebAPI.Controllers
         {
             return await mwqmLookupMPNService.Update(mwqmLookupMPN);
         }
-        [HttpDelete]
-        public async Task<ActionResult<MWQMLookupMPN>> Delete(MWQMLookupMPN mwqmLookupMPN)
+        [HttpDelete("{MWQMLookupMPNID}")]
+        public async Task<ActionResult<bool>> Delete(int MWQMLookupMPNID)
         {
-            return await mwqmLookupMPNService.Delete(mwqmLookupMPN);
+            return await mwqmLookupMPNService.Delete(MWQMLookupMPNID);
         }
         #endregion Functions public
 

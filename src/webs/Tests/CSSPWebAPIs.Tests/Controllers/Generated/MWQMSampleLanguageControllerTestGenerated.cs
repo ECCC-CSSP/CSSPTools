@@ -72,7 +72,7 @@ namespace CSSPWebAPIs.Tests.Controllers
                 var actionMWQMSampleLanguageList = await mwqmSampleLanguageController.Get();
                 Assert.Equal(200, ((ObjectResult)actionMWQMSampleLanguageList.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionMWQMSampleLanguageList.Result).Value);
-                List<MWQMSampleLanguage> mwqmSampleLanguageList = (List<MWQMSampleLanguage>)(((OkObjectResult)actionMWQMSampleLanguageList.Result).Value);
+                List<MWQMSampleLanguage> mwqmSampleLanguageList = (List<MWQMSampleLanguage>)((OkObjectResult)actionMWQMSampleLanguageList.Result).Value;
 
                 int count = ((List<MWQMSampleLanguage>)((OkObjectResult)actionMWQMSampleLanguageList.Result).Value).Count();
                 Assert.True(count > 0);
@@ -81,7 +81,7 @@ namespace CSSPWebAPIs.Tests.Controllers
                 var actionMWQMSampleLanguage = await mwqmSampleLanguageController.Get(mwqmSampleLanguageList[0].MWQMSampleLanguageID);
                 Assert.Equal(200, ((ObjectResult)actionMWQMSampleLanguage.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionMWQMSampleLanguage.Result).Value);
-                MWQMSampleLanguage mwqmSampleLanguage = (MWQMSampleLanguage)(((OkObjectResult)actionMWQMSampleLanguage.Result).Value);
+                MWQMSampleLanguage mwqmSampleLanguage = (MWQMSampleLanguage)((OkObjectResult)actionMWQMSampleLanguage.Result).Value;
                 Assert.NotNull(mwqmSampleLanguage);
                 Assert.Equal(mwqmSampleLanguageList[0].MWQMSampleLanguageID, mwqmSampleLanguage.MWQMSampleLanguageID);
 
@@ -90,22 +90,22 @@ namespace CSSPWebAPIs.Tests.Controllers
                 var actionMWQMSampleLanguageNew = await mwqmSampleLanguageController.Post(mwqmSampleLanguage);
                 Assert.Equal(200, ((ObjectResult)actionMWQMSampleLanguageNew.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionMWQMSampleLanguageNew.Result).Value);
-                MWQMSampleLanguage mwqmSampleLanguageNew = (MWQMSampleLanguage)(((OkObjectResult)actionMWQMSampleLanguageNew.Result).Value);
+                MWQMSampleLanguage mwqmSampleLanguageNew = (MWQMSampleLanguage)((OkObjectResult)actionMWQMSampleLanguageNew.Result).Value;
                 Assert.NotNull(mwqmSampleLanguageNew);
 
                 // testing Put(MWQMSampleLanguage mwqmSampleLanguage)
                 var actionMWQMSampleLanguageUpdate = await mwqmSampleLanguageController.Put(mwqmSampleLanguageNew);
                 Assert.Equal(200, ((ObjectResult)actionMWQMSampleLanguageUpdate.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionMWQMSampleLanguageUpdate.Result).Value);
-                MWQMSampleLanguage mwqmSampleLanguageUpdate = (MWQMSampleLanguage)(((OkObjectResult)actionMWQMSampleLanguageUpdate.Result).Value);
+                MWQMSampleLanguage mwqmSampleLanguageUpdate = (MWQMSampleLanguage)((OkObjectResult)actionMWQMSampleLanguageUpdate.Result).Value;
                 Assert.NotNull(mwqmSampleLanguageUpdate);
 
-                // testing Delete(MWQMSampleLanguage mwqmSampleLanguage)
-                var actionMWQMSampleLanguageDelete = await mwqmSampleLanguageController.Delete(mwqmSampleLanguageUpdate);
+                // testing Delete(int mwqmSampleLanguage.MWQMSampleLanguageID)
+                var actionMWQMSampleLanguageDelete = await mwqmSampleLanguageController.Delete(mwqmSampleLanguageUpdate.MWQMSampleLanguageID);
                 Assert.Equal(200, ((ObjectResult)actionMWQMSampleLanguageDelete.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionMWQMSampleLanguageDelete.Result).Value);
-                MWQMSampleLanguage mwqmSampleLanguageDelete = (MWQMSampleLanguage)(((OkObjectResult)actionMWQMSampleLanguageDelete.Result).Value);
-                Assert.NotNull(mwqmSampleLanguageDelete);
+                bool retBool2 = (bool)((OkObjectResult)actionMWQMSampleLanguageDelete.Result).Value;
+                Assert.True(retBool2);
             }
         }
         #endregion Functions public

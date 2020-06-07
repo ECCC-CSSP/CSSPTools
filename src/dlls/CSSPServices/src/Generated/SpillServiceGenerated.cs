@@ -25,7 +25,7 @@ namespace CSSPServices
        Task<ActionResult<Spill>> GetSpillWithSpillID(int SpillID);
        Task<ActionResult<List<Spill>>> GetSpillList();
        Task<ActionResult<Spill>> Add(Spill spill);
-       Task<ActionResult<Spill>> Delete(Spill spill);
+       Task<ActionResult<bool>> Delete(int SpillID);
        Task<ActionResult<Spill>> Update(Spill spill);
        Task SetCulture(CultureInfo culture);
     }
@@ -88,12 +88,15 @@ namespace CSSPServices
 
             return await Task.FromResult(Ok(spill));
         }
-        public async Task<ActionResult<Spill>> Delete(Spill spill)
+        public async Task<ActionResult<bool>> Delete(int SpillID)
         {
-            ValidationResults = Validate(new ValidationContext(spill), ActionDBTypeEnum.Delete);
-            if (ValidationResults.Count() > 0)
+            Spill spill = (from c in db.Spills
+                               where c.SpillID == SpillID
+                               select c).FirstOrDefault();
+            
+            if (spill == null)
             {
-               return await Task.FromResult(BadRequest(ValidationResults));
+                return await Task.FromResult(BadRequest(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "Spill", "SpillID", SpillID.ToString())));
             }
 
             try
@@ -106,7 +109,7 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
 
-            return await Task.FromResult(Ok(spill));
+            return await Task.FromResult(Ok(true));
         }
         public async Task<ActionResult<Spill>> Update(Spill spill)
         {

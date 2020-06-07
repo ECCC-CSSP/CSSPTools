@@ -72,7 +72,7 @@ namespace CSSPWebAPIs.Tests.Controllers
                 var actionClimateSiteList = await climateSiteController.Get();
                 Assert.Equal(200, ((ObjectResult)actionClimateSiteList.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionClimateSiteList.Result).Value);
-                List<ClimateSite> climateSiteList = (List<ClimateSite>)(((OkObjectResult)actionClimateSiteList.Result).Value);
+                List<ClimateSite> climateSiteList = (List<ClimateSite>)((OkObjectResult)actionClimateSiteList.Result).Value;
 
                 int count = ((List<ClimateSite>)((OkObjectResult)actionClimateSiteList.Result).Value).Count();
                 Assert.True(count > 0);
@@ -81,7 +81,7 @@ namespace CSSPWebAPIs.Tests.Controllers
                 var actionClimateSite = await climateSiteController.Get(climateSiteList[0].ClimateSiteID);
                 Assert.Equal(200, ((ObjectResult)actionClimateSite.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionClimateSite.Result).Value);
-                ClimateSite climateSite = (ClimateSite)(((OkObjectResult)actionClimateSite.Result).Value);
+                ClimateSite climateSite = (ClimateSite)((OkObjectResult)actionClimateSite.Result).Value;
                 Assert.NotNull(climateSite);
                 Assert.Equal(climateSiteList[0].ClimateSiteID, climateSite.ClimateSiteID);
 
@@ -90,22 +90,22 @@ namespace CSSPWebAPIs.Tests.Controllers
                 var actionClimateSiteNew = await climateSiteController.Post(climateSite);
                 Assert.Equal(200, ((ObjectResult)actionClimateSiteNew.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionClimateSiteNew.Result).Value);
-                ClimateSite climateSiteNew = (ClimateSite)(((OkObjectResult)actionClimateSiteNew.Result).Value);
+                ClimateSite climateSiteNew = (ClimateSite)((OkObjectResult)actionClimateSiteNew.Result).Value;
                 Assert.NotNull(climateSiteNew);
 
                 // testing Put(ClimateSite climateSite)
                 var actionClimateSiteUpdate = await climateSiteController.Put(climateSiteNew);
                 Assert.Equal(200, ((ObjectResult)actionClimateSiteUpdate.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionClimateSiteUpdate.Result).Value);
-                ClimateSite climateSiteUpdate = (ClimateSite)(((OkObjectResult)actionClimateSiteUpdate.Result).Value);
+                ClimateSite climateSiteUpdate = (ClimateSite)((OkObjectResult)actionClimateSiteUpdate.Result).Value;
                 Assert.NotNull(climateSiteUpdate);
 
-                // testing Delete(ClimateSite climateSite)
-                var actionClimateSiteDelete = await climateSiteController.Delete(climateSiteUpdate);
+                // testing Delete(int climateSite.ClimateSiteID)
+                var actionClimateSiteDelete = await climateSiteController.Delete(climateSiteUpdate.ClimateSiteID);
                 Assert.Equal(200, ((ObjectResult)actionClimateSiteDelete.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionClimateSiteDelete.Result).Value);
-                ClimateSite climateSiteDelete = (ClimateSite)(((OkObjectResult)actionClimateSiteDelete.Result).Value);
-                Assert.NotNull(climateSiteDelete);
+                bool retBool2 = (bool)((OkObjectResult)actionClimateSiteDelete.Result).Value;
+                Assert.True(retBool2);
             }
         }
         #endregion Functions public

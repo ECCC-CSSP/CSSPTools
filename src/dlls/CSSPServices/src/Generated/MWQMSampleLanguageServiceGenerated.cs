@@ -25,7 +25,7 @@ namespace CSSPServices
        Task<ActionResult<MWQMSampleLanguage>> GetMWQMSampleLanguageWithMWQMSampleLanguageID(int MWQMSampleLanguageID);
        Task<ActionResult<List<MWQMSampleLanguage>>> GetMWQMSampleLanguageList();
        Task<ActionResult<MWQMSampleLanguage>> Add(MWQMSampleLanguage mwqmsamplelanguage);
-       Task<ActionResult<MWQMSampleLanguage>> Delete(MWQMSampleLanguage mwqmsamplelanguage);
+       Task<ActionResult<bool>> Delete(int MWQMSampleLanguageID);
        Task<ActionResult<MWQMSampleLanguage>> Update(MWQMSampleLanguage mwqmsamplelanguage);
        Task SetCulture(CultureInfo culture);
     }
@@ -88,12 +88,15 @@ namespace CSSPServices
 
             return await Task.FromResult(Ok(mwqmSampleLanguage));
         }
-        public async Task<ActionResult<MWQMSampleLanguage>> Delete(MWQMSampleLanguage mwqmSampleLanguage)
+        public async Task<ActionResult<bool>> Delete(int MWQMSampleLanguageID)
         {
-            ValidationResults = Validate(new ValidationContext(mwqmSampleLanguage), ActionDBTypeEnum.Delete);
-            if (ValidationResults.Count() > 0)
+            MWQMSampleLanguage mwqmSampleLanguage = (from c in db.MWQMSampleLanguages
+                               where c.MWQMSampleLanguageID == MWQMSampleLanguageID
+                               select c).FirstOrDefault();
+            
+            if (mwqmSampleLanguage == null)
             {
-               return await Task.FromResult(BadRequest(ValidationResults));
+                return await Task.FromResult(BadRequest(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "MWQMSampleLanguage", "MWQMSampleLanguageID", MWQMSampleLanguageID.ToString())));
             }
 
             try
@@ -106,7 +109,7 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
 
-            return await Task.FromResult(Ok(mwqmSampleLanguage));
+            return await Task.FromResult(Ok(true));
         }
         public async Task<ActionResult<MWQMSampleLanguage>> Update(MWQMSampleLanguage mwqmSampleLanguage)
         {

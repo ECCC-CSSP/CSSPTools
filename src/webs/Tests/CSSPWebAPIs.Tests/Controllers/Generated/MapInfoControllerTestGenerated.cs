@@ -72,7 +72,7 @@ namespace CSSPWebAPIs.Tests.Controllers
                 var actionMapInfoList = await mapInfoController.Get();
                 Assert.Equal(200, ((ObjectResult)actionMapInfoList.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionMapInfoList.Result).Value);
-                List<MapInfo> mapInfoList = (List<MapInfo>)(((OkObjectResult)actionMapInfoList.Result).Value);
+                List<MapInfo> mapInfoList = (List<MapInfo>)((OkObjectResult)actionMapInfoList.Result).Value;
 
                 int count = ((List<MapInfo>)((OkObjectResult)actionMapInfoList.Result).Value).Count();
                 Assert.True(count > 0);
@@ -81,7 +81,7 @@ namespace CSSPWebAPIs.Tests.Controllers
                 var actionMapInfo = await mapInfoController.Get(mapInfoList[0].MapInfoID);
                 Assert.Equal(200, ((ObjectResult)actionMapInfo.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionMapInfo.Result).Value);
-                MapInfo mapInfo = (MapInfo)(((OkObjectResult)actionMapInfo.Result).Value);
+                MapInfo mapInfo = (MapInfo)((OkObjectResult)actionMapInfo.Result).Value;
                 Assert.NotNull(mapInfo);
                 Assert.Equal(mapInfoList[0].MapInfoID, mapInfo.MapInfoID);
 
@@ -90,22 +90,22 @@ namespace CSSPWebAPIs.Tests.Controllers
                 var actionMapInfoNew = await mapInfoController.Post(mapInfo);
                 Assert.Equal(200, ((ObjectResult)actionMapInfoNew.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionMapInfoNew.Result).Value);
-                MapInfo mapInfoNew = (MapInfo)(((OkObjectResult)actionMapInfoNew.Result).Value);
+                MapInfo mapInfoNew = (MapInfo)((OkObjectResult)actionMapInfoNew.Result).Value;
                 Assert.NotNull(mapInfoNew);
 
                 // testing Put(MapInfo mapInfo)
                 var actionMapInfoUpdate = await mapInfoController.Put(mapInfoNew);
                 Assert.Equal(200, ((ObjectResult)actionMapInfoUpdate.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionMapInfoUpdate.Result).Value);
-                MapInfo mapInfoUpdate = (MapInfo)(((OkObjectResult)actionMapInfoUpdate.Result).Value);
+                MapInfo mapInfoUpdate = (MapInfo)((OkObjectResult)actionMapInfoUpdate.Result).Value;
                 Assert.NotNull(mapInfoUpdate);
 
-                // testing Delete(MapInfo mapInfo)
-                var actionMapInfoDelete = await mapInfoController.Delete(mapInfoUpdate);
+                // testing Delete(int mapInfo.MapInfoID)
+                var actionMapInfoDelete = await mapInfoController.Delete(mapInfoUpdate.MapInfoID);
                 Assert.Equal(200, ((ObjectResult)actionMapInfoDelete.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionMapInfoDelete.Result).Value);
-                MapInfo mapInfoDelete = (MapInfo)(((OkObjectResult)actionMapInfoDelete.Result).Value);
-                Assert.NotNull(mapInfoDelete);
+                bool retBool2 = (bool)((OkObjectResult)actionMapInfoDelete.Result).Value;
+                Assert.True(retBool2);
             }
         }
         #endregion Functions public

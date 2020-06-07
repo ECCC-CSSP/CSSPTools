@@ -20,7 +20,7 @@ namespace CSSPWebAPI.Controllers
         Task<ActionResult<HydrometricSite>> Get(int HydrometricSiteID);
         Task<ActionResult<HydrometricSite>> Post(HydrometricSite hydrometricSite);
         Task<ActionResult<HydrometricSite>> Put(HydrometricSite hydrometricSite);
-        Task<ActionResult<HydrometricSite>> Delete(HydrometricSite hydrometricSite);
+        Task<ActionResult<bool>> Delete(int HydrometricSiteID);
     }
 
     [Route("api/{culture}/[controller]")]
@@ -67,10 +67,10 @@ namespace CSSPWebAPI.Controllers
         {
             return await hydrometricSiteService.Update(hydrometricSite);
         }
-        [HttpDelete]
-        public async Task<ActionResult<HydrometricSite>> Delete(HydrometricSite hydrometricSite)
+        [HttpDelete("{HydrometricSiteID}")]
+        public async Task<ActionResult<bool>> Delete(int HydrometricSiteID)
         {
-            return await hydrometricSiteService.Delete(hydrometricSite);
+            return await hydrometricSiteService.Delete(HydrometricSiteID);
         }
         #endregion Functions public
 

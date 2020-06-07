@@ -25,7 +25,7 @@ namespace CSSPServices
        Task<ActionResult<LabSheetDetail>> GetLabSheetDetailWithLabSheetDetailID(int LabSheetDetailID);
        Task<ActionResult<List<LabSheetDetail>>> GetLabSheetDetailList();
        Task<ActionResult<LabSheetDetail>> Add(LabSheetDetail labsheetdetail);
-       Task<ActionResult<LabSheetDetail>> Delete(LabSheetDetail labsheetdetail);
+       Task<ActionResult<bool>> Delete(int LabSheetDetailID);
        Task<ActionResult<LabSheetDetail>> Update(LabSheetDetail labsheetdetail);
        Task SetCulture(CultureInfo culture);
     }
@@ -88,12 +88,15 @@ namespace CSSPServices
 
             return await Task.FromResult(Ok(labSheetDetail));
         }
-        public async Task<ActionResult<LabSheetDetail>> Delete(LabSheetDetail labSheetDetail)
+        public async Task<ActionResult<bool>> Delete(int LabSheetDetailID)
         {
-            ValidationResults = Validate(new ValidationContext(labSheetDetail), ActionDBTypeEnum.Delete);
-            if (ValidationResults.Count() > 0)
+            LabSheetDetail labSheetDetail = (from c in db.LabSheetDetails
+                               where c.LabSheetDetailID == LabSheetDetailID
+                               select c).FirstOrDefault();
+            
+            if (labSheetDetail == null)
             {
-               return await Task.FromResult(BadRequest(ValidationResults));
+                return await Task.FromResult(BadRequest(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "LabSheetDetail", "LabSheetDetailID", LabSheetDetailID.ToString())));
             }
 
             try
@@ -106,7 +109,7 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
 
-            return await Task.FromResult(Ok(labSheetDetail));
+            return await Task.FromResult(Ok(true));
         }
         public async Task<ActionResult<LabSheetDetail>> Update(LabSheetDetail labSheetDetail)
         {

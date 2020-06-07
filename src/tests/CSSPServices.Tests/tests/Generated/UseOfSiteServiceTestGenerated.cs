@@ -63,7 +63,7 @@ namespace CSSPServices.Tests
                var actionUseOfSiteList = await useOfSiteService.GetUseOfSiteList();
                Assert.Equal(200, ((ObjectResult)actionUseOfSiteList.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionUseOfSiteList.Result).Value);
-               List<UseOfSite> useOfSiteList = (List<UseOfSite>)(((OkObjectResult)actionUseOfSiteList.Result).Value);
+               List<UseOfSite> useOfSiteList = (List<UseOfSite>)((OkObjectResult)actionUseOfSiteList.Result).Value;
 
                int count = ((List<UseOfSite>)((OkObjectResult)actionUseOfSiteList.Result).Value).Count();
                 Assert.True(count > 0);
@@ -72,22 +72,22 @@ namespace CSSPServices.Tests
                var actionUseOfSiteAdded = await useOfSiteService.Add(useOfSite);
                Assert.Equal(200, ((ObjectResult)actionUseOfSiteAdded.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionUseOfSiteAdded.Result).Value);
-               UseOfSite useOfSiteAdded = (UseOfSite)(((OkObjectResult)actionUseOfSiteAdded.Result).Value);
+               UseOfSite useOfSiteAdded = (UseOfSite)((OkObjectResult)actionUseOfSiteAdded.Result).Value;
                Assert.NotNull(useOfSiteAdded);
 
                // Update UseOfSite
                var actionUseOfSiteUpdated = await useOfSiteService.Update(useOfSite);
                Assert.Equal(200, ((ObjectResult)actionUseOfSiteUpdated.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionUseOfSiteUpdated.Result).Value);
-               UseOfSite useOfSiteUpdated = (UseOfSite)(((OkObjectResult)actionUseOfSiteUpdated.Result).Value);
+               UseOfSite useOfSiteUpdated = (UseOfSite)((OkObjectResult)actionUseOfSiteUpdated.Result).Value;
                Assert.NotNull(useOfSiteUpdated);
 
                // Delete UseOfSite
-               var actionUseOfSiteDeleted = await useOfSiteService.Delete(useOfSite);
+               var actionUseOfSiteDeleted = await useOfSiteService.Delete(useOfSite.UseOfSiteID);
                Assert.Equal(200, ((ObjectResult)actionUseOfSiteDeleted.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionUseOfSiteDeleted.Result).Value);
-               UseOfSite useOfSiteDeleted = (UseOfSite)(((OkObjectResult)actionUseOfSiteDeleted.Result).Value);
-               Assert.NotNull(useOfSiteDeleted);
+               bool retBool = (bool)((OkObjectResult)actionUseOfSiteDeleted.Result).Value;
+               Assert.True(retBool);
             }
         }
         #endregion Tests Generated CRUD

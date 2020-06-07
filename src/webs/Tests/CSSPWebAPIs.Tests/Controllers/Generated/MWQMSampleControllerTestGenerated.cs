@@ -72,7 +72,7 @@ namespace CSSPWebAPIs.Tests.Controllers
                 var actionMWQMSampleList = await mwqmSampleController.Get();
                 Assert.Equal(200, ((ObjectResult)actionMWQMSampleList.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionMWQMSampleList.Result).Value);
-                List<MWQMSample> mwqmSampleList = (List<MWQMSample>)(((OkObjectResult)actionMWQMSampleList.Result).Value);
+                List<MWQMSample> mwqmSampleList = (List<MWQMSample>)((OkObjectResult)actionMWQMSampleList.Result).Value;
 
                 int count = ((List<MWQMSample>)((OkObjectResult)actionMWQMSampleList.Result).Value).Count();
                 Assert.True(count > 0);
@@ -81,7 +81,7 @@ namespace CSSPWebAPIs.Tests.Controllers
                 var actionMWQMSample = await mwqmSampleController.Get(mwqmSampleList[0].MWQMSampleID);
                 Assert.Equal(200, ((ObjectResult)actionMWQMSample.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionMWQMSample.Result).Value);
-                MWQMSample mwqmSample = (MWQMSample)(((OkObjectResult)actionMWQMSample.Result).Value);
+                MWQMSample mwqmSample = (MWQMSample)((OkObjectResult)actionMWQMSample.Result).Value;
                 Assert.NotNull(mwqmSample);
                 Assert.Equal(mwqmSampleList[0].MWQMSampleID, mwqmSample.MWQMSampleID);
 
@@ -90,22 +90,22 @@ namespace CSSPWebAPIs.Tests.Controllers
                 var actionMWQMSampleNew = await mwqmSampleController.Post(mwqmSample);
                 Assert.Equal(200, ((ObjectResult)actionMWQMSampleNew.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionMWQMSampleNew.Result).Value);
-                MWQMSample mwqmSampleNew = (MWQMSample)(((OkObjectResult)actionMWQMSampleNew.Result).Value);
+                MWQMSample mwqmSampleNew = (MWQMSample)((OkObjectResult)actionMWQMSampleNew.Result).Value;
                 Assert.NotNull(mwqmSampleNew);
 
                 // testing Put(MWQMSample mwqmSample)
                 var actionMWQMSampleUpdate = await mwqmSampleController.Put(mwqmSampleNew);
                 Assert.Equal(200, ((ObjectResult)actionMWQMSampleUpdate.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionMWQMSampleUpdate.Result).Value);
-                MWQMSample mwqmSampleUpdate = (MWQMSample)(((OkObjectResult)actionMWQMSampleUpdate.Result).Value);
+                MWQMSample mwqmSampleUpdate = (MWQMSample)((OkObjectResult)actionMWQMSampleUpdate.Result).Value;
                 Assert.NotNull(mwqmSampleUpdate);
 
-                // testing Delete(MWQMSample mwqmSample)
-                var actionMWQMSampleDelete = await mwqmSampleController.Delete(mwqmSampleUpdate);
+                // testing Delete(int mwqmSample.MWQMSampleID)
+                var actionMWQMSampleDelete = await mwqmSampleController.Delete(mwqmSampleUpdate.MWQMSampleID);
                 Assert.Equal(200, ((ObjectResult)actionMWQMSampleDelete.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionMWQMSampleDelete.Result).Value);
-                MWQMSample mwqmSampleDelete = (MWQMSample)(((OkObjectResult)actionMWQMSampleDelete.Result).Value);
-                Assert.NotNull(mwqmSampleDelete);
+                bool retBool2 = (bool)((OkObjectResult)actionMWQMSampleDelete.Result).Value;
+                Assert.True(retBool2);
             }
         }
         #endregion Functions public

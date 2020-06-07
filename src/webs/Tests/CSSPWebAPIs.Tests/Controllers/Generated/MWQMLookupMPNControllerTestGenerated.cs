@@ -72,7 +72,7 @@ namespace CSSPWebAPIs.Tests.Controllers
                 var actionMWQMLookupMPNList = await mwqmLookupMPNController.Get();
                 Assert.Equal(200, ((ObjectResult)actionMWQMLookupMPNList.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionMWQMLookupMPNList.Result).Value);
-                List<MWQMLookupMPN> mwqmLookupMPNList = (List<MWQMLookupMPN>)(((OkObjectResult)actionMWQMLookupMPNList.Result).Value);
+                List<MWQMLookupMPN> mwqmLookupMPNList = (List<MWQMLookupMPN>)((OkObjectResult)actionMWQMLookupMPNList.Result).Value;
 
                 int count = ((List<MWQMLookupMPN>)((OkObjectResult)actionMWQMLookupMPNList.Result).Value).Count();
                 Assert.True(count > 0);
@@ -81,30 +81,30 @@ namespace CSSPWebAPIs.Tests.Controllers
                 var actionMWQMLookupMPN = await mwqmLookupMPNController.Get(mwqmLookupMPNList[0].MWQMLookupMPNID);
                 Assert.Equal(200, ((ObjectResult)actionMWQMLookupMPN.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionMWQMLookupMPN.Result).Value);
-                MWQMLookupMPN mwqmLookupMPN = (MWQMLookupMPN)(((OkObjectResult)actionMWQMLookupMPN.Result).Value);
+                MWQMLookupMPN mwqmLookupMPN = (MWQMLookupMPN)((OkObjectResult)actionMWQMLookupMPN.Result).Value;
                 Assert.NotNull(mwqmLookupMPN);
                 Assert.Equal(mwqmLookupMPNList[0].MWQMLookupMPNID, mwqmLookupMPN.MWQMLookupMPNID);
 
-                // testing Delete(MWQMLookupMPN mwqmLookupMPN)
-                var actionMWQMLookupMPNDelete = await mwqmLookupMPNController.Delete(mwqmLookupMPN);
+                // testing Delete(int mwqmLookupMPN.MWQMLookupMPNID )
+                var actionMWQMLookupMPNDelete = await mwqmLookupMPNController.Delete(mwqmLookupMPN.MWQMLookupMPNID);
                 Assert.Equal(200, ((ObjectResult)actionMWQMLookupMPNDelete.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionMWQMLookupMPNDelete.Result).Value);
-                MWQMLookupMPN mwqmLookupMPNDelete = (MWQMLookupMPN)(((OkObjectResult)actionMWQMLookupMPNDelete.Result).Value);
-                Assert.NotNull(mwqmLookupMPNDelete);
+                bool retBool2 = (bool)((OkObjectResult)actionMWQMLookupMPNDelete.Result).Value;
+                Assert.True(retBool2);
 
                 // testing Post(MWQMLookupMPN mwqmLookupMPN)
                 mwqmLookupMPN.MWQMLookupMPNID = 0;
                 var actionMWQMLookupMPNNew = await mwqmLookupMPNController.Post(mwqmLookupMPN);
                 Assert.Equal(200, ((ObjectResult)actionMWQMLookupMPNNew.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionMWQMLookupMPNNew.Result).Value);
-                MWQMLookupMPN mwqmLookupMPNNew = (MWQMLookupMPN)(((OkObjectResult)actionMWQMLookupMPNNew.Result).Value);
+                MWQMLookupMPN mwqmLookupMPNNew = (MWQMLookupMPN)((OkObjectResult)actionMWQMLookupMPNNew.Result).Value;
                 Assert.NotNull(mwqmLookupMPNNew);
 
                 // testing Put(MWQMLookupMPN mwqmLookupMPN)
                 var actionMWQMLookupMPNUpdate = await mwqmLookupMPNController.Put(mwqmLookupMPNNew);
                 Assert.Equal(200, ((ObjectResult)actionMWQMLookupMPNUpdate.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionMWQMLookupMPNUpdate.Result).Value);
-                MWQMLookupMPN mwqmLookupMPNUpdate = (MWQMLookupMPN)(((OkObjectResult)actionMWQMLookupMPNUpdate.Result).Value);
+                MWQMLookupMPN mwqmLookupMPNUpdate = (MWQMLookupMPN)((OkObjectResult)actionMWQMLookupMPNUpdate.Result).Value;
                 Assert.NotNull(mwqmLookupMPNUpdate);
 
             }

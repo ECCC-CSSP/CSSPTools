@@ -63,7 +63,7 @@ namespace CSSPServices.Tests
                var actionClimateDataValueList = await climateDataValueService.GetClimateDataValueList();
                Assert.Equal(200, ((ObjectResult)actionClimateDataValueList.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionClimateDataValueList.Result).Value);
-               List<ClimateDataValue> climateDataValueList = (List<ClimateDataValue>)(((OkObjectResult)actionClimateDataValueList.Result).Value);
+               List<ClimateDataValue> climateDataValueList = (List<ClimateDataValue>)((OkObjectResult)actionClimateDataValueList.Result).Value;
 
                int count = ((List<ClimateDataValue>)((OkObjectResult)actionClimateDataValueList.Result).Value).Count();
                 Assert.True(count > 0);
@@ -72,22 +72,22 @@ namespace CSSPServices.Tests
                var actionClimateDataValueAdded = await climateDataValueService.Add(climateDataValue);
                Assert.Equal(200, ((ObjectResult)actionClimateDataValueAdded.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionClimateDataValueAdded.Result).Value);
-               ClimateDataValue climateDataValueAdded = (ClimateDataValue)(((OkObjectResult)actionClimateDataValueAdded.Result).Value);
+               ClimateDataValue climateDataValueAdded = (ClimateDataValue)((OkObjectResult)actionClimateDataValueAdded.Result).Value;
                Assert.NotNull(climateDataValueAdded);
 
                // Update ClimateDataValue
                var actionClimateDataValueUpdated = await climateDataValueService.Update(climateDataValue);
                Assert.Equal(200, ((ObjectResult)actionClimateDataValueUpdated.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionClimateDataValueUpdated.Result).Value);
-               ClimateDataValue climateDataValueUpdated = (ClimateDataValue)(((OkObjectResult)actionClimateDataValueUpdated.Result).Value);
+               ClimateDataValue climateDataValueUpdated = (ClimateDataValue)((OkObjectResult)actionClimateDataValueUpdated.Result).Value;
                Assert.NotNull(climateDataValueUpdated);
 
                // Delete ClimateDataValue
-               var actionClimateDataValueDeleted = await climateDataValueService.Delete(climateDataValue);
+               var actionClimateDataValueDeleted = await climateDataValueService.Delete(climateDataValue.ClimateDataValueID);
                Assert.Equal(200, ((ObjectResult)actionClimateDataValueDeleted.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionClimateDataValueDeleted.Result).Value);
-               ClimateDataValue climateDataValueDeleted = (ClimateDataValue)(((OkObjectResult)actionClimateDataValueDeleted.Result).Value);
-               Assert.NotNull(climateDataValueDeleted);
+               bool retBool = (bool)((OkObjectResult)actionClimateDataValueDeleted.Result).Value;
+               Assert.True(retBool);
             }
         }
         #endregion Tests Generated CRUD

@@ -25,7 +25,7 @@ namespace CSSPServices
        Task<ActionResult<SamplingPlan>> GetSamplingPlanWithSamplingPlanID(int SamplingPlanID);
        Task<ActionResult<List<SamplingPlan>>> GetSamplingPlanList();
        Task<ActionResult<SamplingPlan>> Add(SamplingPlan samplingplan);
-       Task<ActionResult<SamplingPlan>> Delete(SamplingPlan samplingplan);
+       Task<ActionResult<bool>> Delete(int SamplingPlanID);
        Task<ActionResult<SamplingPlan>> Update(SamplingPlan samplingplan);
        Task SetCulture(CultureInfo culture);
     }
@@ -88,12 +88,15 @@ namespace CSSPServices
 
             return await Task.FromResult(Ok(samplingPlan));
         }
-        public async Task<ActionResult<SamplingPlan>> Delete(SamplingPlan samplingPlan)
+        public async Task<ActionResult<bool>> Delete(int SamplingPlanID)
         {
-            ValidationResults = Validate(new ValidationContext(samplingPlan), ActionDBTypeEnum.Delete);
-            if (ValidationResults.Count() > 0)
+            SamplingPlan samplingPlan = (from c in db.SamplingPlans
+                               where c.SamplingPlanID == SamplingPlanID
+                               select c).FirstOrDefault();
+            
+            if (samplingPlan == null)
             {
-               return await Task.FromResult(BadRequest(ValidationResults));
+                return await Task.FromResult(BadRequest(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "SamplingPlan", "SamplingPlanID", SamplingPlanID.ToString())));
             }
 
             try
@@ -106,7 +109,7 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
 
-            return await Task.FromResult(Ok(samplingPlan));
+            return await Task.FromResult(Ok(true));
         }
         public async Task<ActionResult<SamplingPlan>> Update(SamplingPlan samplingPlan)
         {

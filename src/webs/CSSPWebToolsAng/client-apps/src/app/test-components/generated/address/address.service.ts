@@ -6,169 +6,130 @@
  */
 
 import { Injectable } from '@angular/core';
-import { AddressTextModel, AddressModel, AddressUpdateModel, AddressAddModel, AddressDeleteModel } from './address.models';
+import { AddressTextModel } from './address.models';
 import { BehaviorSubject, of } from 'rxjs';
 import { LoadLocalesAddressText } from './address.locales';
 import { Router } from '@angular/router';
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { map, catchError } from 'rxjs/operators';
 import { Address } from 'src/app/models/generated/Address.model';
+import { HttpRequestModel } from 'src/app/models';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AddressService {
+  /* Variables */
   addressTextModel$: BehaviorSubject<AddressTextModel> = new BehaviorSubject<AddressTextModel>(<AddressTextModel>{});
-  addressModel$: BehaviorSubject<AddressModel> = new BehaviorSubject<AddressModel>(<AddressModel>{});
-  addressUpdateModel$: BehaviorSubject<AddressUpdateModel> = new BehaviorSubject<AddressUpdateModel>(<AddressUpdateModel>{});
-  addressAddModel$: BehaviorSubject<AddressAddModel> = new BehaviorSubject<AddressAddModel>(<AddressAddModel>{});
-  addressDeleteModel$: BehaviorSubject<AddressDeleteModel> = new BehaviorSubject<AddressDeleteModel>(<AddressDeleteModel>{});
+  addressListModel$: BehaviorSubject<Address[]> = new BehaviorSubject<Address[]>(<Address[]>{});
+  addressGetModel$: BehaviorSubject<HttpRequestModel> = new BehaviorSubject<HttpRequestModel>(<HttpRequestModel>{});
+  addressPutModel$: BehaviorSubject<HttpRequestModel> = new BehaviorSubject<HttpRequestModel>(<HttpRequestModel>{});
+  addressPostModel$: BehaviorSubject<HttpRequestModel> = new BehaviorSubject<HttpRequestModel>(<HttpRequestModel>{});
+  addressDeleteModel$: BehaviorSubject<HttpRequestModel> = new BehaviorSubject<HttpRequestModel>(<HttpRequestModel>{});
+  addressList: Address[] = [];
+  private oldURL: string;
+  private router: Router;
 
+  /* Constructors */
   constructor(private httpClient: HttpClient) {
     LoadLocalesAddressText(this);
-    this.UpdateAddressText(<AddressTextModel>{ Title: "Something2 for text" });
+    this.addressTextModel$.next(<AddressTextModel>{ Title: "Something2 for text" });
   }
 
-  UpdateAddressText(addressTextModel: AddressTextModel) {
-    this.addressTextModel$.next(<AddressTextModel>{ ...this.addressTextModel$.getValue(), ...addressTextModel });
-  }
-
-  UpdateAddressModel(addressModel: AddressModel) {
-    this.addressModel$.next(<AddressModel>{ ...this.addressModel$.getValue(), ...addressModel });
-  }
-
-  UpdateAddressUpdateModel(addressUpdateModel: AddressUpdateModel) {
-    this.addressUpdateModel$.next(<AddressUpdateModel>{ ...this.addressUpdateModel$.getValue(), ...addressUpdateModel });
-  }
-
-  UpdateAddressAddModel(addressAddModel: AddressAddModel) {
-    this.addressAddModel$.next(<AddressAddModel>{ ...this.addressAddModel$.getValue(), ...addressAddModel });
-  }
-
-  UpdateAddressDeleteModel(addressDeleteModel: AddressDeleteModel) {
-    this.addressDeleteModel$.next(<AddressDeleteModel>{ ...this.addressDeleteModel$.getValue(), ...addressDeleteModel });
-  }
-
-  GetAddress(router: Router) {
-    let oldURL = router.url;
-    this.UpdateAddressModel(<AddressModel>{ Working: true, Error: null });
+  /* Functions public */
+  GetAddressList(router: Router) {
+    this.BeforeHttpClient(this.addressGetModel$, router);
 
     return this.httpClient.get<Address[]>('/api/Address').pipe(
       map((x: any) => {
-        console.debug(`Address OK. Return: ${x}`);
-        this.addressModel$.getValue().AddressList = <Address[]>x;
-        this.UpdateAddressModel(this.addressModel$.getValue());
-        this.UpdateAddressModel(<AddressModel>{ Working: false, Error: null });
-        this.UpdateAddressUpdateModel(<AddressUpdateModel> { address: this.addressModel$.getValue().AddressList[0], Working: false, Error: null });
-        router.navigateByUrl('', { skipLocationChange: true }).then(() => {
-          router.navigate([`/${oldURL}`]);
-        });
+        this.DoSuccess(this.addressGetModel$, x, 'Get', null);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.UpdateAddressModel(<AddressModel>{ Working: false, Error: <HttpErrorResponse>e });
-        console.debug(`Address ERROR. Return: ${<HttpErrorResponse>e}`);
-        router.navigateByUrl('', { skipLocationChange: true }).then(() => {
-          router.navigate([`/${oldURL}`]);
-        });
+        this.DoCatchError(this.addressGetModel$, e, 'Get');
       })))
     );
   }
 
   PutAddress(address: Address, router: Router) {
-    let oldURL = router.url;
-    this.UpdateAddressUpdateModel(<AddressUpdateModel>{ Working: true, Error: null });
+    this.BeforeHttpClient(this.addressPutModel$, router);
 
-    const httpOptions = {
-      headers: new HttpHeaders(
-        //{ 'Content-Type': 'application/json' }
-      )
-    };
-
-    return this.httpClient.put<Address>('/api/Address', address, httpOptions).pipe(
+    return this.httpClient.put<Address>('/api/Address', address, { headers: new HttpHeaders() }).pipe(
       map((x: any) => {
-        console.debug(`Address Update OK. Return: ${x}`);
-        this.addressUpdateModel$.getValue().address = <Address>x;
-        this.addressModel$.getValue().AddressList[0] = <Address>x;
-        this.UpdateAddressModel(this.addressModel$.getValue());
-        this.UpdateAddressUpdateModel(this.addressUpdateModel$.getValue());
-        router.navigateByUrl('', { skipLocationChange: true }).then(() => {
-          router.navigate([`/${oldURL}`]);
-        });
+        this.DoSuccess(this.addressPutModel$, x, 'Put', address);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.UpdateAddressUpdateModel(<AddressUpdateModel>{ Working: false, Error: <HttpErrorResponse>e });
-        console.debug(`Address Update ERROR. Return: ${<HttpErrorResponse>e}`);
-        router.navigateByUrl('', { skipLocationChange: true }).then(() => {
-          router.navigate([`/${oldURL}`]);
-        });
+        this.DoCatchError(this.addressPutModel$, e, 'Put');
       })))
     );
   }
 
   PostAddress(address: Address, router: Router) {
-    let oldURL = router.url;
-    this.UpdateAddressUpdateModel(<AddressUpdateModel>{ Working: true, Error: null });
+    this.BeforeHttpClient(this.addressPostModel$, router);
 
-    const httpOptions = {
-      headers: new HttpHeaders(
-        //{ 'Content-Type': 'application/json' }
-      )
-    };
-
-    return this.httpClient.post<Address>('/api/Address', address, httpOptions).pipe(
+    return this.httpClient.post<Address>('/api/Address', address, { headers: new HttpHeaders() }).pipe(
       map((x: any) => {
-        console.debug(`Address Added OK. Return: ${x}`);
-        this.addressAddModel$.getValue().address = <Address>x;
-        this.addressModel$.getValue().AddressList.push(<Address>x);
-        this.UpdateAddressModel(this.addressModel$.getValue());
-        this.UpdateAddressAddModel(this.addressAddModel$.getValue());
-        router.navigateByUrl('', { skipLocationChange: true }).then(() => {
-          router.navigate([`/${oldURL}`]);
-        });
+        this.DoSuccess(this.addressPostModel$, x, 'Post', address);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.UpdateAddressAddModel(<AddressAddModel>{ Working: false, Error: <HttpErrorResponse>e });
-        console.debug(`Address Added ERROR. Return: ${<HttpErrorResponse>e}`);
-        router.navigateByUrl('', { skipLocationChange: true }).then(() => {
-          router.navigate([`/${oldURL}`]);
-        });
+        this.DoCatchError(this.addressPostModel$, e, 'Post');
       })))
     );
   }
 
   DeleteAddress(address: Address, router: Router) {
-    let oldURL = router.url;
-    this.UpdateAddressUpdateModel(<AddressUpdateModel>{ Working: true, Error: null });
-
-    const httpOptions = {
-      headers: new HttpHeaders(
-        //{ 'Content-Type': 'application/json' }
-      )
-    };
+    this.BeforeHttpClient(this.addressDeleteModel$, router);
 
     return this.httpClient.delete<boolean>(`/api/Address/${address.AddressID}`).pipe(
       map((x: any) => {
-        console.debug(`Address Delete OK. Return: ${x}`);
-        this.addressAddModel$.getValue().address = null;
-        const index = this.addressModel$.getValue().AddressList.indexOf(address);
-        this.addressModel$.getValue().AddressList.splice(index, 1);
-        this.addressAddModel$.getValue().address = this.addressModel$.getValue().AddressList[0];
-        this.addressUpdateModel$.getValue().address = this.addressModel$.getValue().AddressList[0];
-        this.UpdateAddressModel(this.addressModel$.getValue());
-        this.UpdateAddressAddModel(this.addressAddModel$.getValue());
-        this.UpdateAddressUpdateModel(this.addressUpdateModel$.getValue());
-        router.navigateByUrl('', { skipLocationChange: true }).then(() => {
-          router.navigate([`/${oldURL}`]);
-        });
+        this.DoSuccess(this.addressDeleteModel$, x, 'Delete', address);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.UpdateAddressAddModel(<AddressDeleteModel>{ Working: false, Error: <HttpErrorResponse>e });
-        console.debug(`Address Delete ERROR. Return: ${<HttpErrorResponse>e}`);
-        router.navigateByUrl('', { skipLocationChange: true }).then(() => {
-          router.navigate([`/${oldURL}`]);
-        });
+        this.DoCatchError(this.addressDeleteModel$, e, 'Delete');
       })))
     );
   }
 
+  /* Functions private */
+  private BeforeHttpClient(httpRequestModel$: BehaviorSubject<HttpRequestModel>, router: Router) {
+    this.router = router;
+    this.oldURL = router.url;
+    httpRequestModel$.next(<HttpRequestModel>{ Working: true, Error: null, Status: null });
+  }
+
+  private DoCatchError(httpRequestModel$: BehaviorSubject<HttpRequestModel>, e: any, command: string) {
+    this.addressListModel$.next(null);
+    httpRequestModel$.next(<HttpRequestModel>{ Working: false, Error: <HttpErrorResponse>e, Status: 'Error' });
+
+    this.addressList = [];
+    console.debug(`Address ${command} ERROR. Return: ${<HttpErrorResponse>e}`);
+    this.DoReload();
+  }
+
+  private DoReload() {
+    this.router.navigateByUrl('', { skipLocationChange: true }).then(() => {
+      this.router.navigate([`/${this.oldURL}`]);
+    });
+  }
+
+  private DoSuccess(httpRequestModel$: BehaviorSubject<HttpRequestModel>, x: any, command: string, address?: Address) {
+    console.debug(`Address ${command} OK. Return: ${x}`);
+    if (command === 'Get') {
+      this.addressListModel$.next(<Address[]>x);
+    }
+    if (command === 'Put') {
+      this.addressListModel$.getValue()[0] = <Address>x;
+    }
+    if (command === 'Post') {
+      this.addressListModel$.getValue().push(<Address>x);
+    }
+    if (command === 'Delete') {
+      const index = this.addressListModel$.getValue().indexOf(address);
+      this.addressListModel$.getValue().splice(index, 1);
+    }
+
+    this.addressListModel$.next(this.addressListModel$.getValue());
+    httpRequestModel$.next(<HttpRequestModel>{ Working: false, Error: null, Status: 'ok' });
+    this.addressList = this.addressListModel$.getValue();
+    this.DoReload();
+  }
 }

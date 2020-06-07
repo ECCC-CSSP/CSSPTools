@@ -25,7 +25,7 @@ namespace CSSPServices
        Task<ActionResult<TVFile>> GetTVFileWithTVFileID(int TVFileID);
        Task<ActionResult<List<TVFile>>> GetTVFileList();
        Task<ActionResult<TVFile>> Add(TVFile tvfile);
-       Task<ActionResult<TVFile>> Delete(TVFile tvfile);
+       Task<ActionResult<bool>> Delete(int TVFileID);
        Task<ActionResult<TVFile>> Update(TVFile tvfile);
        Task SetCulture(CultureInfo culture);
     }
@@ -88,12 +88,15 @@ namespace CSSPServices
 
             return await Task.FromResult(Ok(tvFile));
         }
-        public async Task<ActionResult<TVFile>> Delete(TVFile tvFile)
+        public async Task<ActionResult<bool>> Delete(int TVFileID)
         {
-            ValidationResults = Validate(new ValidationContext(tvFile), ActionDBTypeEnum.Delete);
-            if (ValidationResults.Count() > 0)
+            TVFile tvFile = (from c in db.TVFiles
+                               where c.TVFileID == TVFileID
+                               select c).FirstOrDefault();
+            
+            if (tvFile == null)
             {
-               return await Task.FromResult(BadRequest(ValidationResults));
+                return await Task.FromResult(BadRequest(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "TVFile", "TVFileID", TVFileID.ToString())));
             }
 
             try
@@ -106,7 +109,7 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
 
-            return await Task.FromResult(Ok(tvFile));
+            return await Task.FromResult(Ok(true));
         }
         public async Task<ActionResult<TVFile>> Update(TVFile tvFile)
         {

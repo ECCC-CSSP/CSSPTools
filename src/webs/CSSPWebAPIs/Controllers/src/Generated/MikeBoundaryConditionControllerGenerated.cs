@@ -20,7 +20,7 @@ namespace CSSPWebAPI.Controllers
         Task<ActionResult<MikeBoundaryCondition>> Get(int MikeBoundaryConditionID);
         Task<ActionResult<MikeBoundaryCondition>> Post(MikeBoundaryCondition mikeBoundaryCondition);
         Task<ActionResult<MikeBoundaryCondition>> Put(MikeBoundaryCondition mikeBoundaryCondition);
-        Task<ActionResult<MikeBoundaryCondition>> Delete(MikeBoundaryCondition mikeBoundaryCondition);
+        Task<ActionResult<bool>> Delete(int MikeBoundaryConditionID);
     }
 
     [Route("api/{culture}/[controller]")]
@@ -67,10 +67,10 @@ namespace CSSPWebAPI.Controllers
         {
             return await mikeBoundaryConditionService.Update(mikeBoundaryCondition);
         }
-        [HttpDelete]
-        public async Task<ActionResult<MikeBoundaryCondition>> Delete(MikeBoundaryCondition mikeBoundaryCondition)
+        [HttpDelete("{MikeBoundaryConditionID}")]
+        public async Task<ActionResult<bool>> Delete(int MikeBoundaryConditionID)
         {
-            return await mikeBoundaryConditionService.Delete(mikeBoundaryCondition);
+            return await mikeBoundaryConditionService.Delete(MikeBoundaryConditionID);
         }
         #endregion Functions public
 

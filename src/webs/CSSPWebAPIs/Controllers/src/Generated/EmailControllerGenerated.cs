@@ -20,7 +20,7 @@ namespace CSSPWebAPI.Controllers
         Task<ActionResult<Email>> Get(int EmailID);
         Task<ActionResult<Email>> Post(Email email);
         Task<ActionResult<Email>> Put(Email email);
-        Task<ActionResult<Email>> Delete(Email email);
+        Task<ActionResult<bool>> Delete(int EmailID);
     }
 
     [Route("api/{culture}/[controller]")]
@@ -67,10 +67,10 @@ namespace CSSPWebAPI.Controllers
         {
             return await emailService.Update(email);
         }
-        [HttpDelete]
-        public async Task<ActionResult<Email>> Delete(Email email)
+        [HttpDelete("{EmailID}")]
+        public async Task<ActionResult<bool>> Delete(int EmailID)
         {
-            return await emailService.Delete(email);
+            return await emailService.Delete(EmailID);
         }
         #endregion Functions public
 

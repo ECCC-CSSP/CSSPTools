@@ -93,10 +93,10 @@ namespace CSSPServices
             Address address = (from c in db.Addresses
                                where c.AddressID == AddressID
                                select c).FirstOrDefault();
-
+            
             if (address == null)
             {
-               return await Task.FromResult(BadRequest($"Could not find Address with AddressID = [{ AddressID }]"));
+                return await Task.FromResult(BadRequest(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "Address", "AddressID", AddressID.ToString())));
             }
 
             try

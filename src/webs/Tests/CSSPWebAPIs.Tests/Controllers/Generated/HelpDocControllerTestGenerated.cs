@@ -72,7 +72,7 @@ namespace CSSPWebAPIs.Tests.Controllers
                 var actionHelpDocList = await helpDocController.Get();
                 Assert.Equal(200, ((ObjectResult)actionHelpDocList.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionHelpDocList.Result).Value);
-                List<HelpDoc> helpDocList = (List<HelpDoc>)(((OkObjectResult)actionHelpDocList.Result).Value);
+                List<HelpDoc> helpDocList = (List<HelpDoc>)((OkObjectResult)actionHelpDocList.Result).Value;
 
                 int count = ((List<HelpDoc>)((OkObjectResult)actionHelpDocList.Result).Value).Count();
                 Assert.True(count > 0);
@@ -81,7 +81,7 @@ namespace CSSPWebAPIs.Tests.Controllers
                 var actionHelpDoc = await helpDocController.Get(helpDocList[0].HelpDocID);
                 Assert.Equal(200, ((ObjectResult)actionHelpDoc.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionHelpDoc.Result).Value);
-                HelpDoc helpDoc = (HelpDoc)(((OkObjectResult)actionHelpDoc.Result).Value);
+                HelpDoc helpDoc = (HelpDoc)((OkObjectResult)actionHelpDoc.Result).Value;
                 Assert.NotNull(helpDoc);
                 Assert.Equal(helpDocList[0].HelpDocID, helpDoc.HelpDocID);
 
@@ -90,22 +90,22 @@ namespace CSSPWebAPIs.Tests.Controllers
                 var actionHelpDocNew = await helpDocController.Post(helpDoc);
                 Assert.Equal(200, ((ObjectResult)actionHelpDocNew.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionHelpDocNew.Result).Value);
-                HelpDoc helpDocNew = (HelpDoc)(((OkObjectResult)actionHelpDocNew.Result).Value);
+                HelpDoc helpDocNew = (HelpDoc)((OkObjectResult)actionHelpDocNew.Result).Value;
                 Assert.NotNull(helpDocNew);
 
                 // testing Put(HelpDoc helpDoc)
                 var actionHelpDocUpdate = await helpDocController.Put(helpDocNew);
                 Assert.Equal(200, ((ObjectResult)actionHelpDocUpdate.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionHelpDocUpdate.Result).Value);
-                HelpDoc helpDocUpdate = (HelpDoc)(((OkObjectResult)actionHelpDocUpdate.Result).Value);
+                HelpDoc helpDocUpdate = (HelpDoc)((OkObjectResult)actionHelpDocUpdate.Result).Value;
                 Assert.NotNull(helpDocUpdate);
 
-                // testing Delete(HelpDoc helpDoc)
-                var actionHelpDocDelete = await helpDocController.Delete(helpDocUpdate);
+                // testing Delete(int helpDoc.HelpDocID)
+                var actionHelpDocDelete = await helpDocController.Delete(helpDocUpdate.HelpDocID);
                 Assert.Equal(200, ((ObjectResult)actionHelpDocDelete.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionHelpDocDelete.Result).Value);
-                HelpDoc helpDocDelete = (HelpDoc)(((OkObjectResult)actionHelpDocDelete.Result).Value);
-                Assert.NotNull(helpDocDelete);
+                bool retBool2 = (bool)((OkObjectResult)actionHelpDocDelete.Result).Value;
+                Assert.True(retBool2);
             }
         }
         #endregion Functions public

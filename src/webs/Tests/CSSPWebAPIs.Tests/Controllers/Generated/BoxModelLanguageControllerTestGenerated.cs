@@ -72,7 +72,7 @@ namespace CSSPWebAPIs.Tests.Controllers
                 var actionBoxModelLanguageList = await boxModelLanguageController.Get();
                 Assert.Equal(200, ((ObjectResult)actionBoxModelLanguageList.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionBoxModelLanguageList.Result).Value);
-                List<BoxModelLanguage> boxModelLanguageList = (List<BoxModelLanguage>)(((OkObjectResult)actionBoxModelLanguageList.Result).Value);
+                List<BoxModelLanguage> boxModelLanguageList = (List<BoxModelLanguage>)((OkObjectResult)actionBoxModelLanguageList.Result).Value;
 
                 int count = ((List<BoxModelLanguage>)((OkObjectResult)actionBoxModelLanguageList.Result).Value).Count();
                 Assert.True(count > 0);
@@ -81,7 +81,7 @@ namespace CSSPWebAPIs.Tests.Controllers
                 var actionBoxModelLanguage = await boxModelLanguageController.Get(boxModelLanguageList[0].BoxModelLanguageID);
                 Assert.Equal(200, ((ObjectResult)actionBoxModelLanguage.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionBoxModelLanguage.Result).Value);
-                BoxModelLanguage boxModelLanguage = (BoxModelLanguage)(((OkObjectResult)actionBoxModelLanguage.Result).Value);
+                BoxModelLanguage boxModelLanguage = (BoxModelLanguage)((OkObjectResult)actionBoxModelLanguage.Result).Value;
                 Assert.NotNull(boxModelLanguage);
                 Assert.Equal(boxModelLanguageList[0].BoxModelLanguageID, boxModelLanguage.BoxModelLanguageID);
 
@@ -90,22 +90,22 @@ namespace CSSPWebAPIs.Tests.Controllers
                 var actionBoxModelLanguageNew = await boxModelLanguageController.Post(boxModelLanguage);
                 Assert.Equal(200, ((ObjectResult)actionBoxModelLanguageNew.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionBoxModelLanguageNew.Result).Value);
-                BoxModelLanguage boxModelLanguageNew = (BoxModelLanguage)(((OkObjectResult)actionBoxModelLanguageNew.Result).Value);
+                BoxModelLanguage boxModelLanguageNew = (BoxModelLanguage)((OkObjectResult)actionBoxModelLanguageNew.Result).Value;
                 Assert.NotNull(boxModelLanguageNew);
 
                 // testing Put(BoxModelLanguage boxModelLanguage)
                 var actionBoxModelLanguageUpdate = await boxModelLanguageController.Put(boxModelLanguageNew);
                 Assert.Equal(200, ((ObjectResult)actionBoxModelLanguageUpdate.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionBoxModelLanguageUpdate.Result).Value);
-                BoxModelLanguage boxModelLanguageUpdate = (BoxModelLanguage)(((OkObjectResult)actionBoxModelLanguageUpdate.Result).Value);
+                BoxModelLanguage boxModelLanguageUpdate = (BoxModelLanguage)((OkObjectResult)actionBoxModelLanguageUpdate.Result).Value;
                 Assert.NotNull(boxModelLanguageUpdate);
 
-                // testing Delete(BoxModelLanguage boxModelLanguage)
-                var actionBoxModelLanguageDelete = await boxModelLanguageController.Delete(boxModelLanguageUpdate);
+                // testing Delete(int boxModelLanguage.BoxModelLanguageID)
+                var actionBoxModelLanguageDelete = await boxModelLanguageController.Delete(boxModelLanguageUpdate.BoxModelLanguageID);
                 Assert.Equal(200, ((ObjectResult)actionBoxModelLanguageDelete.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionBoxModelLanguageDelete.Result).Value);
-                BoxModelLanguage boxModelLanguageDelete = (BoxModelLanguage)(((OkObjectResult)actionBoxModelLanguageDelete.Result).Value);
-                Assert.NotNull(boxModelLanguageDelete);
+                bool retBool2 = (bool)((OkObjectResult)actionBoxModelLanguageDelete.Result).Value;
+                Assert.True(retBool2);
             }
         }
         #endregion Functions public

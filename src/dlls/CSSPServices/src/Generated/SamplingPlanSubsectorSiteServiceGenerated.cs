@@ -25,7 +25,7 @@ namespace CSSPServices
        Task<ActionResult<SamplingPlanSubsectorSite>> GetSamplingPlanSubsectorSiteWithSamplingPlanSubsectorSiteID(int SamplingPlanSubsectorSiteID);
        Task<ActionResult<List<SamplingPlanSubsectorSite>>> GetSamplingPlanSubsectorSiteList();
        Task<ActionResult<SamplingPlanSubsectorSite>> Add(SamplingPlanSubsectorSite samplingplansubsectorsite);
-       Task<ActionResult<SamplingPlanSubsectorSite>> Delete(SamplingPlanSubsectorSite samplingplansubsectorsite);
+       Task<ActionResult<bool>> Delete(int SamplingPlanSubsectorSiteID);
        Task<ActionResult<SamplingPlanSubsectorSite>> Update(SamplingPlanSubsectorSite samplingplansubsectorsite);
        Task SetCulture(CultureInfo culture);
     }
@@ -88,12 +88,15 @@ namespace CSSPServices
 
             return await Task.FromResult(Ok(samplingPlanSubsectorSite));
         }
-        public async Task<ActionResult<SamplingPlanSubsectorSite>> Delete(SamplingPlanSubsectorSite samplingPlanSubsectorSite)
+        public async Task<ActionResult<bool>> Delete(int SamplingPlanSubsectorSiteID)
         {
-            ValidationResults = Validate(new ValidationContext(samplingPlanSubsectorSite), ActionDBTypeEnum.Delete);
-            if (ValidationResults.Count() > 0)
+            SamplingPlanSubsectorSite samplingPlanSubsectorSite = (from c in db.SamplingPlanSubsectorSites
+                               where c.SamplingPlanSubsectorSiteID == SamplingPlanSubsectorSiteID
+                               select c).FirstOrDefault();
+            
+            if (samplingPlanSubsectorSite == null)
             {
-               return await Task.FromResult(BadRequest(ValidationResults));
+                return await Task.FromResult(BadRequest(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "SamplingPlanSubsectorSite", "SamplingPlanSubsectorSiteID", SamplingPlanSubsectorSiteID.ToString())));
             }
 
             try
@@ -106,7 +109,7 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
 
-            return await Task.FromResult(Ok(samplingPlanSubsectorSite));
+            return await Task.FromResult(Ok(true));
         }
         public async Task<ActionResult<SamplingPlanSubsectorSite>> Update(SamplingPlanSubsectorSite samplingPlanSubsectorSite)
         {

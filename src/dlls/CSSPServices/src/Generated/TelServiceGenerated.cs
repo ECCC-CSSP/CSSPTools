@@ -25,7 +25,7 @@ namespace CSSPServices
        Task<ActionResult<Tel>> GetTelWithTelID(int TelID);
        Task<ActionResult<List<Tel>>> GetTelList();
        Task<ActionResult<Tel>> Add(Tel tel);
-       Task<ActionResult<Tel>> Delete(Tel tel);
+       Task<ActionResult<bool>> Delete(int TelID);
        Task<ActionResult<Tel>> Update(Tel tel);
        Task SetCulture(CultureInfo culture);
     }
@@ -88,12 +88,15 @@ namespace CSSPServices
 
             return await Task.FromResult(Ok(tel));
         }
-        public async Task<ActionResult<Tel>> Delete(Tel tel)
+        public async Task<ActionResult<bool>> Delete(int TelID)
         {
-            ValidationResults = Validate(new ValidationContext(tel), ActionDBTypeEnum.Delete);
-            if (ValidationResults.Count() > 0)
+            Tel tel = (from c in db.Tels
+                               where c.TelID == TelID
+                               select c).FirstOrDefault();
+            
+            if (tel == null)
             {
-               return await Task.FromResult(BadRequest(ValidationResults));
+                return await Task.FromResult(BadRequest(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "Tel", "TelID", TelID.ToString())));
             }
 
             try
@@ -106,7 +109,7 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
 
-            return await Task.FromResult(Ok(tel));
+            return await Task.FromResult(Ok(true));
         }
         public async Task<ActionResult<Tel>> Update(Tel tel)
         {

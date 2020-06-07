@@ -20,7 +20,7 @@ namespace CSSPWebAPI.Controllers
         Task<ActionResult<RainExceedance>> Get(int RainExceedanceID);
         Task<ActionResult<RainExceedance>> Post(RainExceedance rainExceedance);
         Task<ActionResult<RainExceedance>> Put(RainExceedance rainExceedance);
-        Task<ActionResult<RainExceedance>> Delete(RainExceedance rainExceedance);
+        Task<ActionResult<bool>> Delete(int RainExceedanceID);
     }
 
     [Route("api/{culture}/[controller]")]
@@ -67,10 +67,10 @@ namespace CSSPWebAPI.Controllers
         {
             return await rainExceedanceService.Update(rainExceedance);
         }
-        [HttpDelete]
-        public async Task<ActionResult<RainExceedance>> Delete(RainExceedance rainExceedance)
+        [HttpDelete("{RainExceedanceID}")]
+        public async Task<ActionResult<bool>> Delete(int RainExceedanceID)
         {
-            return await rainExceedanceService.Delete(rainExceedance);
+            return await rainExceedanceService.Delete(RainExceedanceID);
         }
         #endregion Functions public
 

@@ -25,7 +25,7 @@ namespace CSSPServices
        Task<ActionResult<ContactPreference>> GetContactPreferenceWithContactPreferenceID(int ContactPreferenceID);
        Task<ActionResult<List<ContactPreference>>> GetContactPreferenceList();
        Task<ActionResult<ContactPreference>> Add(ContactPreference contactpreference);
-       Task<ActionResult<ContactPreference>> Delete(ContactPreference contactpreference);
+       Task<ActionResult<bool>> Delete(int ContactPreferenceID);
        Task<ActionResult<ContactPreference>> Update(ContactPreference contactpreference);
        Task SetCulture(CultureInfo culture);
     }
@@ -88,12 +88,15 @@ namespace CSSPServices
 
             return await Task.FromResult(Ok(contactPreference));
         }
-        public async Task<ActionResult<ContactPreference>> Delete(ContactPreference contactPreference)
+        public async Task<ActionResult<bool>> Delete(int ContactPreferenceID)
         {
-            ValidationResults = Validate(new ValidationContext(contactPreference), ActionDBTypeEnum.Delete);
-            if (ValidationResults.Count() > 0)
+            ContactPreference contactPreference = (from c in db.ContactPreferences
+                               where c.ContactPreferenceID == ContactPreferenceID
+                               select c).FirstOrDefault();
+            
+            if (contactPreference == null)
             {
-               return await Task.FromResult(BadRequest(ValidationResults));
+                return await Task.FromResult(BadRequest(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "ContactPreference", "ContactPreferenceID", ContactPreferenceID.ToString())));
             }
 
             try
@@ -106,7 +109,7 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
 
-            return await Task.FromResult(Ok(contactPreference));
+            return await Task.FromResult(Ok(true));
         }
         public async Task<ActionResult<ContactPreference>> Update(ContactPreference contactPreference)
         {

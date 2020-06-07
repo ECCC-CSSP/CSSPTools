@@ -25,7 +25,7 @@ namespace CSSPServices
        Task<ActionResult<PolSourceObservation>> GetPolSourceObservationWithPolSourceObservationID(int PolSourceObservationID);
        Task<ActionResult<List<PolSourceObservation>>> GetPolSourceObservationList();
        Task<ActionResult<PolSourceObservation>> Add(PolSourceObservation polsourceobservation);
-       Task<ActionResult<PolSourceObservation>> Delete(PolSourceObservation polsourceobservation);
+       Task<ActionResult<bool>> Delete(int PolSourceObservationID);
        Task<ActionResult<PolSourceObservation>> Update(PolSourceObservation polsourceobservation);
        Task SetCulture(CultureInfo culture);
     }
@@ -88,12 +88,15 @@ namespace CSSPServices
 
             return await Task.FromResult(Ok(polSourceObservation));
         }
-        public async Task<ActionResult<PolSourceObservation>> Delete(PolSourceObservation polSourceObservation)
+        public async Task<ActionResult<bool>> Delete(int PolSourceObservationID)
         {
-            ValidationResults = Validate(new ValidationContext(polSourceObservation), ActionDBTypeEnum.Delete);
-            if (ValidationResults.Count() > 0)
+            PolSourceObservation polSourceObservation = (from c in db.PolSourceObservations
+                               where c.PolSourceObservationID == PolSourceObservationID
+                               select c).FirstOrDefault();
+            
+            if (polSourceObservation == null)
             {
-               return await Task.FromResult(BadRequest(ValidationResults));
+                return await Task.FromResult(BadRequest(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "PolSourceObservation", "PolSourceObservationID", PolSourceObservationID.ToString())));
             }
 
             try
@@ -106,7 +109,7 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
 
-            return await Task.FromResult(Ok(polSourceObservation));
+            return await Task.FromResult(Ok(true));
         }
         public async Task<ActionResult<PolSourceObservation>> Update(PolSourceObservation polSourceObservation)
         {

@@ -72,7 +72,7 @@ namespace CSSPWebAPIs.Tests.Controllers
                 var actionPolSourceObservationIssueList = await polSourceObservationIssueController.Get();
                 Assert.Equal(200, ((ObjectResult)actionPolSourceObservationIssueList.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionPolSourceObservationIssueList.Result).Value);
-                List<PolSourceObservationIssue> polSourceObservationIssueList = (List<PolSourceObservationIssue>)(((OkObjectResult)actionPolSourceObservationIssueList.Result).Value);
+                List<PolSourceObservationIssue> polSourceObservationIssueList = (List<PolSourceObservationIssue>)((OkObjectResult)actionPolSourceObservationIssueList.Result).Value;
 
                 int count = ((List<PolSourceObservationIssue>)((OkObjectResult)actionPolSourceObservationIssueList.Result).Value).Count();
                 Assert.True(count > 0);
@@ -81,7 +81,7 @@ namespace CSSPWebAPIs.Tests.Controllers
                 var actionPolSourceObservationIssue = await polSourceObservationIssueController.Get(polSourceObservationIssueList[0].PolSourceObservationIssueID);
                 Assert.Equal(200, ((ObjectResult)actionPolSourceObservationIssue.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionPolSourceObservationIssue.Result).Value);
-                PolSourceObservationIssue polSourceObservationIssue = (PolSourceObservationIssue)(((OkObjectResult)actionPolSourceObservationIssue.Result).Value);
+                PolSourceObservationIssue polSourceObservationIssue = (PolSourceObservationIssue)((OkObjectResult)actionPolSourceObservationIssue.Result).Value;
                 Assert.NotNull(polSourceObservationIssue);
                 Assert.Equal(polSourceObservationIssueList[0].PolSourceObservationIssueID, polSourceObservationIssue.PolSourceObservationIssueID);
 
@@ -90,22 +90,22 @@ namespace CSSPWebAPIs.Tests.Controllers
                 var actionPolSourceObservationIssueNew = await polSourceObservationIssueController.Post(polSourceObservationIssue);
                 Assert.Equal(200, ((ObjectResult)actionPolSourceObservationIssueNew.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionPolSourceObservationIssueNew.Result).Value);
-                PolSourceObservationIssue polSourceObservationIssueNew = (PolSourceObservationIssue)(((OkObjectResult)actionPolSourceObservationIssueNew.Result).Value);
+                PolSourceObservationIssue polSourceObservationIssueNew = (PolSourceObservationIssue)((OkObjectResult)actionPolSourceObservationIssueNew.Result).Value;
                 Assert.NotNull(polSourceObservationIssueNew);
 
                 // testing Put(PolSourceObservationIssue polSourceObservationIssue)
                 var actionPolSourceObservationIssueUpdate = await polSourceObservationIssueController.Put(polSourceObservationIssueNew);
                 Assert.Equal(200, ((ObjectResult)actionPolSourceObservationIssueUpdate.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionPolSourceObservationIssueUpdate.Result).Value);
-                PolSourceObservationIssue polSourceObservationIssueUpdate = (PolSourceObservationIssue)(((OkObjectResult)actionPolSourceObservationIssueUpdate.Result).Value);
+                PolSourceObservationIssue polSourceObservationIssueUpdate = (PolSourceObservationIssue)((OkObjectResult)actionPolSourceObservationIssueUpdate.Result).Value;
                 Assert.NotNull(polSourceObservationIssueUpdate);
 
-                // testing Delete(PolSourceObservationIssue polSourceObservationIssue)
-                var actionPolSourceObservationIssueDelete = await polSourceObservationIssueController.Delete(polSourceObservationIssueUpdate);
+                // testing Delete(int polSourceObservationIssue.PolSourceObservationIssueID)
+                var actionPolSourceObservationIssueDelete = await polSourceObservationIssueController.Delete(polSourceObservationIssueUpdate.PolSourceObservationIssueID);
                 Assert.Equal(200, ((ObjectResult)actionPolSourceObservationIssueDelete.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionPolSourceObservationIssueDelete.Result).Value);
-                PolSourceObservationIssue polSourceObservationIssueDelete = (PolSourceObservationIssue)(((OkObjectResult)actionPolSourceObservationIssueDelete.Result).Value);
-                Assert.NotNull(polSourceObservationIssueDelete);
+                bool retBool2 = (bool)((OkObjectResult)actionPolSourceObservationIssueDelete.Result).Value;
+                Assert.True(retBool2);
             }
         }
         #endregion Functions public

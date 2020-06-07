@@ -25,7 +25,7 @@ namespace CSSPServices
        Task<ActionResult<TideDataValue>> GetTideDataValueWithTideDataValueID(int TideDataValueID);
        Task<ActionResult<List<TideDataValue>>> GetTideDataValueList();
        Task<ActionResult<TideDataValue>> Add(TideDataValue tidedatavalue);
-       Task<ActionResult<TideDataValue>> Delete(TideDataValue tidedatavalue);
+       Task<ActionResult<bool>> Delete(int TideDataValueID);
        Task<ActionResult<TideDataValue>> Update(TideDataValue tidedatavalue);
        Task SetCulture(CultureInfo culture);
     }
@@ -88,12 +88,15 @@ namespace CSSPServices
 
             return await Task.FromResult(Ok(tideDataValue));
         }
-        public async Task<ActionResult<TideDataValue>> Delete(TideDataValue tideDataValue)
+        public async Task<ActionResult<bool>> Delete(int TideDataValueID)
         {
-            ValidationResults = Validate(new ValidationContext(tideDataValue), ActionDBTypeEnum.Delete);
-            if (ValidationResults.Count() > 0)
+            TideDataValue tideDataValue = (from c in db.TideDataValues
+                               where c.TideDataValueID == TideDataValueID
+                               select c).FirstOrDefault();
+            
+            if (tideDataValue == null)
             {
-               return await Task.FromResult(BadRequest(ValidationResults));
+                return await Task.FromResult(BadRequest(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "TideDataValue", "TideDataValueID", TideDataValueID.ToString())));
             }
 
             try
@@ -106,7 +109,7 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
 
-            return await Task.FromResult(Ok(tideDataValue));
+            return await Task.FromResult(Ok(true));
         }
         public async Task<ActionResult<TideDataValue>> Update(TideDataValue tideDataValue)
         {

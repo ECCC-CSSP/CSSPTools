@@ -72,7 +72,7 @@ namespace CSSPWebAPIs.Tests.Controllers
                 var actionResetPasswordList = await resetPasswordController.Get();
                 Assert.Equal(200, ((ObjectResult)actionResetPasswordList.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionResetPasswordList.Result).Value);
-                List<ResetPassword> resetPasswordList = (List<ResetPassword>)(((OkObjectResult)actionResetPasswordList.Result).Value);
+                List<ResetPassword> resetPasswordList = (List<ResetPassword>)((OkObjectResult)actionResetPasswordList.Result).Value;
 
                 int count = ((List<ResetPassword>)((OkObjectResult)actionResetPasswordList.Result).Value).Count();
                 Assert.True(count > 0);
@@ -81,7 +81,7 @@ namespace CSSPWebAPIs.Tests.Controllers
                 var actionResetPassword = await resetPasswordController.Get(resetPasswordList[0].ResetPasswordID);
                 Assert.Equal(200, ((ObjectResult)actionResetPassword.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionResetPassword.Result).Value);
-                ResetPassword resetPassword = (ResetPassword)(((OkObjectResult)actionResetPassword.Result).Value);
+                ResetPassword resetPassword = (ResetPassword)((OkObjectResult)actionResetPassword.Result).Value;
                 Assert.NotNull(resetPassword);
                 Assert.Equal(resetPasswordList[0].ResetPasswordID, resetPassword.ResetPasswordID);
 
@@ -90,22 +90,22 @@ namespace CSSPWebAPIs.Tests.Controllers
                 var actionResetPasswordNew = await resetPasswordController.Post(resetPassword);
                 Assert.Equal(200, ((ObjectResult)actionResetPasswordNew.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionResetPasswordNew.Result).Value);
-                ResetPassword resetPasswordNew = (ResetPassword)(((OkObjectResult)actionResetPasswordNew.Result).Value);
+                ResetPassword resetPasswordNew = (ResetPassword)((OkObjectResult)actionResetPasswordNew.Result).Value;
                 Assert.NotNull(resetPasswordNew);
 
                 // testing Put(ResetPassword resetPassword)
                 var actionResetPasswordUpdate = await resetPasswordController.Put(resetPasswordNew);
                 Assert.Equal(200, ((ObjectResult)actionResetPasswordUpdate.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionResetPasswordUpdate.Result).Value);
-                ResetPassword resetPasswordUpdate = (ResetPassword)(((OkObjectResult)actionResetPasswordUpdate.Result).Value);
+                ResetPassword resetPasswordUpdate = (ResetPassword)((OkObjectResult)actionResetPasswordUpdate.Result).Value;
                 Assert.NotNull(resetPasswordUpdate);
 
-                // testing Delete(ResetPassword resetPassword)
-                var actionResetPasswordDelete = await resetPasswordController.Delete(resetPasswordUpdate);
+                // testing Delete(int resetPassword.ResetPasswordID)
+                var actionResetPasswordDelete = await resetPasswordController.Delete(resetPasswordUpdate.ResetPasswordID);
                 Assert.Equal(200, ((ObjectResult)actionResetPasswordDelete.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionResetPasswordDelete.Result).Value);
-                ResetPassword resetPasswordDelete = (ResetPassword)(((OkObjectResult)actionResetPasswordDelete.Result).Value);
-                Assert.NotNull(resetPasswordDelete);
+                bool retBool2 = (bool)((OkObjectResult)actionResetPasswordDelete.Result).Value;
+                Assert.True(retBool2);
             }
         }
         #endregion Functions public

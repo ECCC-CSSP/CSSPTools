@@ -25,7 +25,7 @@ namespace CSSPServices
        Task<ActionResult<AppErrLog>> GetAppErrLogWithAppErrLogID(int AppErrLogID);
        Task<ActionResult<List<AppErrLog>>> GetAppErrLogList();
        Task<ActionResult<AppErrLog>> Add(AppErrLog apperrlog);
-       Task<ActionResult<AppErrLog>> Delete(AppErrLog apperrlog);
+       Task<ActionResult<bool>> Delete(int AppErrLogID);
        Task<ActionResult<AppErrLog>> Update(AppErrLog apperrlog);
        Task SetCulture(CultureInfo culture);
     }
@@ -88,12 +88,15 @@ namespace CSSPServices
 
             return await Task.FromResult(Ok(appErrLog));
         }
-        public async Task<ActionResult<AppErrLog>> Delete(AppErrLog appErrLog)
+        public async Task<ActionResult<bool>> Delete(int AppErrLogID)
         {
-            ValidationResults = Validate(new ValidationContext(appErrLog), ActionDBTypeEnum.Delete);
-            if (ValidationResults.Count() > 0)
+            AppErrLog appErrLog = (from c in db.AppErrLogs
+                               where c.AppErrLogID == AppErrLogID
+                               select c).FirstOrDefault();
+            
+            if (appErrLog == null)
             {
-               return await Task.FromResult(BadRequest(ValidationResults));
+                return await Task.FromResult(BadRequest(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "AppErrLog", "AppErrLogID", AppErrLogID.ToString())));
             }
 
             try
@@ -106,7 +109,7 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
 
-            return await Task.FromResult(Ok(appErrLog));
+            return await Task.FromResult(Ok(true));
         }
         public async Task<ActionResult<AppErrLog>> Update(AppErrLog appErrLog)
         {

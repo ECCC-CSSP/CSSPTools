@@ -20,7 +20,7 @@ namespace CSSPWebAPI.Controllers
         Task<ActionResult<ContactPreference>> Get(int ContactPreferenceID);
         Task<ActionResult<ContactPreference>> Post(ContactPreference contactPreference);
         Task<ActionResult<ContactPreference>> Put(ContactPreference contactPreference);
-        Task<ActionResult<ContactPreference>> Delete(ContactPreference contactPreference);
+        Task<ActionResult<bool>> Delete(int ContactPreferenceID);
     }
 
     [Route("api/{culture}/[controller]")]
@@ -67,10 +67,10 @@ namespace CSSPWebAPI.Controllers
         {
             return await contactPreferenceService.Update(contactPreference);
         }
-        [HttpDelete]
-        public async Task<ActionResult<ContactPreference>> Delete(ContactPreference contactPreference)
+        [HttpDelete("{ContactPreferenceID}")]
+        public async Task<ActionResult<bool>> Delete(int ContactPreferenceID)
         {
-            return await contactPreferenceService.Delete(contactPreference);
+            return await contactPreferenceService.Delete(ContactPreferenceID);
         }
         #endregion Functions public
 

@@ -25,7 +25,7 @@ namespace CSSPServices
        Task<ActionResult<Contact>> GetContactWithContactID(int ContactID);
        Task<ActionResult<List<Contact>>> GetContactList();
        Task<ActionResult<Contact>> Add(Contact contact, AddContactTypeEnum addContactType);
-       Task<ActionResult<Contact>> Delete(Contact contact);
+       Task<ActionResult<bool>> Delete(int ContactID);
        Task<ActionResult<Contact>> Update(Contact contact);
        Task SetCulture(CultureInfo culture);
     }
@@ -88,12 +88,15 @@ namespace CSSPServices
 
             return await Task.FromResult(Ok(contact));
         }
-        public async Task<ActionResult<Contact>> Delete(Contact contact)
+        public async Task<ActionResult<bool>> Delete(int ContactID)
         {
-            ValidationResults = Validate(new ValidationContext(contact), ActionDBTypeEnum.Update, AddContactTypeEnum.LoggedIn);
-            if (ValidationResults.Count() > 0)
+            Contact contact = (from c in db.Contacts
+                               where c.ContactID == ContactID
+                               select c).FirstOrDefault();
+            
+            if (contact == null)
             {
-               return await Task.FromResult(BadRequest(ValidationResults));
+                return await Task.FromResult(BadRequest(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "Contact", "ContactID", ContactID.ToString())));
             }
 
             try
@@ -106,7 +109,7 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
 
-            return await Task.FromResult(Ok(contact));
+            return await Task.FromResult(Ok(true));
         }
         public async Task<ActionResult<Contact>> Update(Contact contact)
         {

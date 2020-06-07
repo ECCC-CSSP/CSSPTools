@@ -25,7 +25,7 @@ namespace CSSPServices
        Task<ActionResult<Log>> GetLogWithLogID(int LogID);
        Task<ActionResult<List<Log>>> GetLogList();
        Task<ActionResult<Log>> Add(Log log);
-       Task<ActionResult<Log>> Delete(Log log);
+       Task<ActionResult<bool>> Delete(int LogID);
        Task<ActionResult<Log>> Update(Log log);
        Task SetCulture(CultureInfo culture);
     }
@@ -88,12 +88,15 @@ namespace CSSPServices
 
             return await Task.FromResult(Ok(log));
         }
-        public async Task<ActionResult<Log>> Delete(Log log)
+        public async Task<ActionResult<bool>> Delete(int LogID)
         {
-            ValidationResults = Validate(new ValidationContext(log), ActionDBTypeEnum.Delete);
-            if (ValidationResults.Count() > 0)
+            Log log = (from c in db.Logs
+                               where c.LogID == LogID
+                               select c).FirstOrDefault();
+            
+            if (log == null)
             {
-               return await Task.FromResult(BadRequest(ValidationResults));
+                return await Task.FromResult(BadRequest(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "Log", "LogID", LogID.ToString())));
             }
 
             try
@@ -106,7 +109,7 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
 
-            return await Task.FromResult(Ok(log));
+            return await Task.FromResult(Ok(true));
         }
         public async Task<ActionResult<Log>> Update(Log log)
         {

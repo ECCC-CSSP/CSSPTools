@@ -25,7 +25,7 @@ namespace CSSPServices
        Task<ActionResult<TideLocation>> GetTideLocationWithTideLocationID(int TideLocationID);
        Task<ActionResult<List<TideLocation>>> GetTideLocationList();
        Task<ActionResult<TideLocation>> Add(TideLocation tidelocation);
-       Task<ActionResult<TideLocation>> Delete(TideLocation tidelocation);
+       Task<ActionResult<bool>> Delete(int TideLocationID);
        Task<ActionResult<TideLocation>> Update(TideLocation tidelocation);
        Task SetCulture(CultureInfo culture);
     }
@@ -88,12 +88,15 @@ namespace CSSPServices
 
             return await Task.FromResult(Ok(tideLocation));
         }
-        public async Task<ActionResult<TideLocation>> Delete(TideLocation tideLocation)
+        public async Task<ActionResult<bool>> Delete(int TideLocationID)
         {
-            ValidationResults = Validate(new ValidationContext(tideLocation), ActionDBTypeEnum.Delete);
-            if (ValidationResults.Count() > 0)
+            TideLocation tideLocation = (from c in db.TideLocations
+                               where c.TideLocationID == TideLocationID
+                               select c).FirstOrDefault();
+            
+            if (tideLocation == null)
             {
-               return await Task.FromResult(BadRequest(ValidationResults));
+                return await Task.FromResult(BadRequest(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "TideLocation", "TideLocationID", TideLocationID.ToString())));
             }
 
             try
@@ -106,7 +109,7 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
 
-            return await Task.FromResult(Ok(tideLocation));
+            return await Task.FromResult(Ok(true));
         }
         public async Task<ActionResult<TideLocation>> Update(TideLocation tideLocation)
         {

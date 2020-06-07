@@ -63,7 +63,7 @@ namespace CSSPServices.Tests
                var actionInfrastructureLanguageList = await infrastructureLanguageService.GetInfrastructureLanguageList();
                Assert.Equal(200, ((ObjectResult)actionInfrastructureLanguageList.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionInfrastructureLanguageList.Result).Value);
-               List<InfrastructureLanguage> infrastructureLanguageList = (List<InfrastructureLanguage>)(((OkObjectResult)actionInfrastructureLanguageList.Result).Value);
+               List<InfrastructureLanguage> infrastructureLanguageList = (List<InfrastructureLanguage>)((OkObjectResult)actionInfrastructureLanguageList.Result).Value;
 
                int count = ((List<InfrastructureLanguage>)((OkObjectResult)actionInfrastructureLanguageList.Result).Value).Count();
                 Assert.True(count > 0);
@@ -72,22 +72,22 @@ namespace CSSPServices.Tests
                var actionInfrastructureLanguageAdded = await infrastructureLanguageService.Add(infrastructureLanguage);
                Assert.Equal(200, ((ObjectResult)actionInfrastructureLanguageAdded.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionInfrastructureLanguageAdded.Result).Value);
-               InfrastructureLanguage infrastructureLanguageAdded = (InfrastructureLanguage)(((OkObjectResult)actionInfrastructureLanguageAdded.Result).Value);
+               InfrastructureLanguage infrastructureLanguageAdded = (InfrastructureLanguage)((OkObjectResult)actionInfrastructureLanguageAdded.Result).Value;
                Assert.NotNull(infrastructureLanguageAdded);
 
                // Update InfrastructureLanguage
                var actionInfrastructureLanguageUpdated = await infrastructureLanguageService.Update(infrastructureLanguage);
                Assert.Equal(200, ((ObjectResult)actionInfrastructureLanguageUpdated.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionInfrastructureLanguageUpdated.Result).Value);
-               InfrastructureLanguage infrastructureLanguageUpdated = (InfrastructureLanguage)(((OkObjectResult)actionInfrastructureLanguageUpdated.Result).Value);
+               InfrastructureLanguage infrastructureLanguageUpdated = (InfrastructureLanguage)((OkObjectResult)actionInfrastructureLanguageUpdated.Result).Value;
                Assert.NotNull(infrastructureLanguageUpdated);
 
                // Delete InfrastructureLanguage
-               var actionInfrastructureLanguageDeleted = await infrastructureLanguageService.Delete(infrastructureLanguage);
+               var actionInfrastructureLanguageDeleted = await infrastructureLanguageService.Delete(infrastructureLanguage.InfrastructureLanguageID);
                Assert.Equal(200, ((ObjectResult)actionInfrastructureLanguageDeleted.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionInfrastructureLanguageDeleted.Result).Value);
-               InfrastructureLanguage infrastructureLanguageDeleted = (InfrastructureLanguage)(((OkObjectResult)actionInfrastructureLanguageDeleted.Result).Value);
-               Assert.NotNull(infrastructureLanguageDeleted);
+               bool retBool = (bool)((OkObjectResult)actionInfrastructureLanguageDeleted.Result).Value;
+               Assert.True(retBool);
             }
         }
         #endregion Tests Generated CRUD

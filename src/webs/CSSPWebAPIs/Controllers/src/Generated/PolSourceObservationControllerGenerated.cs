@@ -20,7 +20,7 @@ namespace CSSPWebAPI.Controllers
         Task<ActionResult<PolSourceObservation>> Get(int PolSourceObservationID);
         Task<ActionResult<PolSourceObservation>> Post(PolSourceObservation polSourceObservation);
         Task<ActionResult<PolSourceObservation>> Put(PolSourceObservation polSourceObservation);
-        Task<ActionResult<PolSourceObservation>> Delete(PolSourceObservation polSourceObservation);
+        Task<ActionResult<bool>> Delete(int PolSourceObservationID);
     }
 
     [Route("api/{culture}/[controller]")]
@@ -67,10 +67,10 @@ namespace CSSPWebAPI.Controllers
         {
             return await polSourceObservationService.Update(polSourceObservation);
         }
-        [HttpDelete]
-        public async Task<ActionResult<PolSourceObservation>> Delete(PolSourceObservation polSourceObservation)
+        [HttpDelete("{PolSourceObservationID}")]
+        public async Task<ActionResult<bool>> Delete(int PolSourceObservationID)
         {
-            return await polSourceObservationService.Delete(polSourceObservation);
+            return await polSourceObservationService.Delete(PolSourceObservationID);
         }
         #endregion Functions public
 

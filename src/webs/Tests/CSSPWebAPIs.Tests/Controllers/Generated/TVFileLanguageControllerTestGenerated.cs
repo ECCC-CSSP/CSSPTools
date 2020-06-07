@@ -72,7 +72,7 @@ namespace CSSPWebAPIs.Tests.Controllers
                 var actionTVFileLanguageList = await tvFileLanguageController.Get();
                 Assert.Equal(200, ((ObjectResult)actionTVFileLanguageList.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionTVFileLanguageList.Result).Value);
-                List<TVFileLanguage> tvFileLanguageList = (List<TVFileLanguage>)(((OkObjectResult)actionTVFileLanguageList.Result).Value);
+                List<TVFileLanguage> tvFileLanguageList = (List<TVFileLanguage>)((OkObjectResult)actionTVFileLanguageList.Result).Value;
 
                 int count = ((List<TVFileLanguage>)((OkObjectResult)actionTVFileLanguageList.Result).Value).Count();
                 Assert.True(count > 0);
@@ -81,7 +81,7 @@ namespace CSSPWebAPIs.Tests.Controllers
                 var actionTVFileLanguage = await tvFileLanguageController.Get(tvFileLanguageList[0].TVFileLanguageID);
                 Assert.Equal(200, ((ObjectResult)actionTVFileLanguage.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionTVFileLanguage.Result).Value);
-                TVFileLanguage tvFileLanguage = (TVFileLanguage)(((OkObjectResult)actionTVFileLanguage.Result).Value);
+                TVFileLanguage tvFileLanguage = (TVFileLanguage)((OkObjectResult)actionTVFileLanguage.Result).Value;
                 Assert.NotNull(tvFileLanguage);
                 Assert.Equal(tvFileLanguageList[0].TVFileLanguageID, tvFileLanguage.TVFileLanguageID);
 
@@ -90,22 +90,22 @@ namespace CSSPWebAPIs.Tests.Controllers
                 var actionTVFileLanguageNew = await tvFileLanguageController.Post(tvFileLanguage);
                 Assert.Equal(200, ((ObjectResult)actionTVFileLanguageNew.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionTVFileLanguageNew.Result).Value);
-                TVFileLanguage tvFileLanguageNew = (TVFileLanguage)(((OkObjectResult)actionTVFileLanguageNew.Result).Value);
+                TVFileLanguage tvFileLanguageNew = (TVFileLanguage)((OkObjectResult)actionTVFileLanguageNew.Result).Value;
                 Assert.NotNull(tvFileLanguageNew);
 
                 // testing Put(TVFileLanguage tvFileLanguage)
                 var actionTVFileLanguageUpdate = await tvFileLanguageController.Put(tvFileLanguageNew);
                 Assert.Equal(200, ((ObjectResult)actionTVFileLanguageUpdate.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionTVFileLanguageUpdate.Result).Value);
-                TVFileLanguage tvFileLanguageUpdate = (TVFileLanguage)(((OkObjectResult)actionTVFileLanguageUpdate.Result).Value);
+                TVFileLanguage tvFileLanguageUpdate = (TVFileLanguage)((OkObjectResult)actionTVFileLanguageUpdate.Result).Value;
                 Assert.NotNull(tvFileLanguageUpdate);
 
-                // testing Delete(TVFileLanguage tvFileLanguage)
-                var actionTVFileLanguageDelete = await tvFileLanguageController.Delete(tvFileLanguageUpdate);
+                // testing Delete(int tvFileLanguage.TVFileLanguageID)
+                var actionTVFileLanguageDelete = await tvFileLanguageController.Delete(tvFileLanguageUpdate.TVFileLanguageID);
                 Assert.Equal(200, ((ObjectResult)actionTVFileLanguageDelete.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionTVFileLanguageDelete.Result).Value);
-                TVFileLanguage tvFileLanguageDelete = (TVFileLanguage)(((OkObjectResult)actionTVFileLanguageDelete.Result).Value);
-                Assert.NotNull(tvFileLanguageDelete);
+                bool retBool2 = (bool)((OkObjectResult)actionTVFileLanguageDelete.Result).Value;
+                Assert.True(retBool2);
             }
         }
         #endregion Functions public

@@ -20,7 +20,7 @@ namespace CSSPWebAPI.Controllers
         Task<ActionResult<Log>> Get(int LogID);
         Task<ActionResult<Log>> Post(Log log);
         Task<ActionResult<Log>> Put(Log log);
-        Task<ActionResult<Log>> Delete(Log log);
+        Task<ActionResult<bool>> Delete(int LogID);
     }
 
     [Route("api/{culture}/[controller]")]
@@ -67,10 +67,10 @@ namespace CSSPWebAPI.Controllers
         {
             return await logService.Update(log);
         }
-        [HttpDelete]
-        public async Task<ActionResult<Log>> Delete(Log log)
+        [HttpDelete("{LogID}")]
+        public async Task<ActionResult<bool>> Delete(int LogID)
         {
-            return await logService.Delete(log);
+            return await logService.Delete(LogID);
         }
         #endregion Functions public
 

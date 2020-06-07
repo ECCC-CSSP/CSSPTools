@@ -72,7 +72,7 @@ namespace CSSPWebAPIs.Tests.Controllers
                 var actionLogList = await logController.Get();
                 Assert.Equal(200, ((ObjectResult)actionLogList.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionLogList.Result).Value);
-                List<Log> logList = (List<Log>)(((OkObjectResult)actionLogList.Result).Value);
+                List<Log> logList = (List<Log>)((OkObjectResult)actionLogList.Result).Value;
 
                 int count = ((List<Log>)((OkObjectResult)actionLogList.Result).Value).Count();
                 Assert.True(count > 0);
@@ -81,7 +81,7 @@ namespace CSSPWebAPIs.Tests.Controllers
                 var actionLog = await logController.Get(logList[0].LogID);
                 Assert.Equal(200, ((ObjectResult)actionLog.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionLog.Result).Value);
-                Log log = (Log)(((OkObjectResult)actionLog.Result).Value);
+                Log log = (Log)((OkObjectResult)actionLog.Result).Value;
                 Assert.NotNull(log);
                 Assert.Equal(logList[0].LogID, log.LogID);
 
@@ -90,22 +90,22 @@ namespace CSSPWebAPIs.Tests.Controllers
                 var actionLogNew = await logController.Post(log);
                 Assert.Equal(200, ((ObjectResult)actionLogNew.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionLogNew.Result).Value);
-                Log logNew = (Log)(((OkObjectResult)actionLogNew.Result).Value);
+                Log logNew = (Log)((OkObjectResult)actionLogNew.Result).Value;
                 Assert.NotNull(logNew);
 
                 // testing Put(Log log)
                 var actionLogUpdate = await logController.Put(logNew);
                 Assert.Equal(200, ((ObjectResult)actionLogUpdate.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionLogUpdate.Result).Value);
-                Log logUpdate = (Log)(((OkObjectResult)actionLogUpdate.Result).Value);
+                Log logUpdate = (Log)((OkObjectResult)actionLogUpdate.Result).Value;
                 Assert.NotNull(logUpdate);
 
-                // testing Delete(Log log)
-                var actionLogDelete = await logController.Delete(logUpdate);
+                // testing Delete(int log.LogID)
+                var actionLogDelete = await logController.Delete(logUpdate.LogID);
                 Assert.Equal(200, ((ObjectResult)actionLogDelete.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionLogDelete.Result).Value);
-                Log logDelete = (Log)(((OkObjectResult)actionLogDelete.Result).Value);
-                Assert.NotNull(logDelete);
+                bool retBool2 = (bool)((OkObjectResult)actionLogDelete.Result).Value;
+                Assert.True(retBool2);
             }
         }
         #endregion Functions public

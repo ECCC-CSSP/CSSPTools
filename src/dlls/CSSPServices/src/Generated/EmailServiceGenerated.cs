@@ -25,7 +25,7 @@ namespace CSSPServices
        Task<ActionResult<Email>> GetEmailWithEmailID(int EmailID);
        Task<ActionResult<List<Email>>> GetEmailList();
        Task<ActionResult<Email>> Add(Email email);
-       Task<ActionResult<Email>> Delete(Email email);
+       Task<ActionResult<bool>> Delete(int EmailID);
        Task<ActionResult<Email>> Update(Email email);
        Task SetCulture(CultureInfo culture);
     }
@@ -88,12 +88,15 @@ namespace CSSPServices
 
             return await Task.FromResult(Ok(email));
         }
-        public async Task<ActionResult<Email>> Delete(Email email)
+        public async Task<ActionResult<bool>> Delete(int EmailID)
         {
-            ValidationResults = Validate(new ValidationContext(email), ActionDBTypeEnum.Delete);
-            if (ValidationResults.Count() > 0)
+            Email email = (from c in db.Emails
+                               where c.EmailID == EmailID
+                               select c).FirstOrDefault();
+            
+            if (email == null)
             {
-               return await Task.FromResult(BadRequest(ValidationResults));
+                return await Task.FromResult(BadRequest(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "Email", "EmailID", EmailID.ToString())));
             }
 
             try
@@ -106,7 +109,7 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
 
-            return await Task.FromResult(Ok(email));
+            return await Task.FromResult(Ok(true));
         }
         public async Task<ActionResult<Email>> Update(Email email)
         {

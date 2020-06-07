@@ -25,7 +25,7 @@ namespace CSSPServices
        Task<ActionResult<ReportType>> GetReportTypeWithReportTypeID(int ReportTypeID);
        Task<ActionResult<List<ReportType>>> GetReportTypeList();
        Task<ActionResult<ReportType>> Add(ReportType reporttype);
-       Task<ActionResult<ReportType>> Delete(ReportType reporttype);
+       Task<ActionResult<bool>> Delete(int ReportTypeID);
        Task<ActionResult<ReportType>> Update(ReportType reporttype);
        Task SetCulture(CultureInfo culture);
     }
@@ -88,12 +88,15 @@ namespace CSSPServices
 
             return await Task.FromResult(Ok(reportType));
         }
-        public async Task<ActionResult<ReportType>> Delete(ReportType reportType)
+        public async Task<ActionResult<bool>> Delete(int ReportTypeID)
         {
-            ValidationResults = Validate(new ValidationContext(reportType), ActionDBTypeEnum.Delete);
-            if (ValidationResults.Count() > 0)
+            ReportType reportType = (from c in db.ReportTypes
+                               where c.ReportTypeID == ReportTypeID
+                               select c).FirstOrDefault();
+            
+            if (reportType == null)
             {
-               return await Task.FromResult(BadRequest(ValidationResults));
+                return await Task.FromResult(BadRequest(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "ReportType", "ReportTypeID", ReportTypeID.ToString())));
             }
 
             try
@@ -106,7 +109,7 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
 
-            return await Task.FromResult(Ok(reportType));
+            return await Task.FromResult(Ok(true));
         }
         public async Task<ActionResult<ReportType>> Update(ReportType reportType)
         {

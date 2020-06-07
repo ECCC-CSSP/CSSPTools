@@ -25,7 +25,7 @@ namespace CSSPServices
        Task<ActionResult<MikeBoundaryCondition>> GetMikeBoundaryConditionWithMikeBoundaryConditionID(int MikeBoundaryConditionID);
        Task<ActionResult<List<MikeBoundaryCondition>>> GetMikeBoundaryConditionList();
        Task<ActionResult<MikeBoundaryCondition>> Add(MikeBoundaryCondition mikeboundarycondition);
-       Task<ActionResult<MikeBoundaryCondition>> Delete(MikeBoundaryCondition mikeboundarycondition);
+       Task<ActionResult<bool>> Delete(int MikeBoundaryConditionID);
        Task<ActionResult<MikeBoundaryCondition>> Update(MikeBoundaryCondition mikeboundarycondition);
        Task SetCulture(CultureInfo culture);
     }
@@ -88,12 +88,15 @@ namespace CSSPServices
 
             return await Task.FromResult(Ok(mikeBoundaryCondition));
         }
-        public async Task<ActionResult<MikeBoundaryCondition>> Delete(MikeBoundaryCondition mikeBoundaryCondition)
+        public async Task<ActionResult<bool>> Delete(int MikeBoundaryConditionID)
         {
-            ValidationResults = Validate(new ValidationContext(mikeBoundaryCondition), ActionDBTypeEnum.Delete);
-            if (ValidationResults.Count() > 0)
+            MikeBoundaryCondition mikeBoundaryCondition = (from c in db.MikeBoundaryConditions
+                               where c.MikeBoundaryConditionID == MikeBoundaryConditionID
+                               select c).FirstOrDefault();
+            
+            if (mikeBoundaryCondition == null)
             {
-               return await Task.FromResult(BadRequest(ValidationResults));
+                return await Task.FromResult(BadRequest(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "MikeBoundaryCondition", "MikeBoundaryConditionID", MikeBoundaryConditionID.ToString())));
             }
 
             try
@@ -106,7 +109,7 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
 
-            return await Task.FromResult(Ok(mikeBoundaryCondition));
+            return await Task.FromResult(Ok(true));
         }
         public async Task<ActionResult<MikeBoundaryCondition>> Update(MikeBoundaryCondition mikeBoundaryCondition)
         {

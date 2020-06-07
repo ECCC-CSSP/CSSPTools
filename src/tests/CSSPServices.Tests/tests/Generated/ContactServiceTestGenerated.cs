@@ -63,7 +63,7 @@ namespace CSSPServices.Tests
                var actionContactList = await contactService.GetContactList();
                Assert.Equal(200, ((ObjectResult)actionContactList.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionContactList.Result).Value);
-               List<Contact> contactList = (List<Contact>)(((OkObjectResult)actionContactList.Result).Value);
+               List<Contact> contactList = (List<Contact>)((OkObjectResult)actionContactList.Result).Value;
 
                int count = ((List<Contact>)((OkObjectResult)actionContactList.Result).Value).Count();
                 Assert.True(count > 0);
@@ -72,22 +72,22 @@ namespace CSSPServices.Tests
                var actionContactAdded = await contactService.Add(contact, AddContactTypeEnum.Register);
                Assert.Equal(200, ((ObjectResult)actionContactAdded.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionContactAdded.Result).Value);
-               Contact contactAdded = (Contact)(((OkObjectResult)actionContactAdded.Result).Value);
+               Contact contactAdded = (Contact)((OkObjectResult)actionContactAdded.Result).Value;
                Assert.NotNull(contactAdded);
 
                // Update Contact
                var actionContactUpdated = await contactService.Update(contact);
                Assert.Equal(200, ((ObjectResult)actionContactUpdated.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionContactUpdated.Result).Value);
-               Contact contactUpdated = (Contact)(((OkObjectResult)actionContactUpdated.Result).Value);
+               Contact contactUpdated = (Contact)((OkObjectResult)actionContactUpdated.Result).Value;
                Assert.NotNull(contactUpdated);
 
                // Delete Contact
-               var actionContactDeleted = await contactService.Delete(contact);
+               var actionContactDeleted = await contactService.Delete(contact.ContactID);
                Assert.Equal(200, ((ObjectResult)actionContactDeleted.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionContactDeleted.Result).Value);
-               Contact contactDeleted = (Contact)(((OkObjectResult)actionContactDeleted.Result).Value);
-               Assert.NotNull(contactDeleted);
+               bool retBool = (bool)((OkObjectResult)actionContactDeleted.Result).Value;
+               Assert.True(retBool);
             }
         }
         #endregion Tests Generated CRUD

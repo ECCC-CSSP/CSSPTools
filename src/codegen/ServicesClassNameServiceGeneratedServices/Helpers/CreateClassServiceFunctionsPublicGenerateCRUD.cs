@@ -52,19 +52,15 @@ namespace ServicesClassNameServiceGeneratedServices.Services
             sb.AppendLine($@"            return await Task.FromResult(Ok({ TypeNameLower }));");
             sb.AppendLine(@"        }");
 
-            sb.AppendLine($@"        public async Task<ActionResult<{ TypeName }>> Delete({ TypeName } { TypeNameLower })");
+            sb.AppendLine($@"        public async Task<ActionResult<bool>> Delete(int { TypeName }ID)");
             sb.AppendLine(@"        {");
-            if (TypeName == "Contact")
-            {
-                sb.AppendLine($@"            ValidationResults = Validate(new ValidationContext({ TypeNameLower }), ActionDBTypeEnum.Update, AddContactTypeEnum.LoggedIn);");
-            }
-            else
-            {
-                sb.AppendLine($@"            ValidationResults = Validate(new ValidationContext({ TypeNameLower }), ActionDBTypeEnum.Delete);");
-            }
-            sb.AppendLine($@"            if (ValidationResults.Count() > 0)");
+            sb.AppendLine($@"            { TypeName } { TypeNameLower } = (from c in db.{ TypeName }{ Plurial }");
+            sb.AppendLine($@"                               where c.{ TypeName }ID == { TypeName }ID");
+            sb.AppendLine(@"                               select c).FirstOrDefault();");
+            sb.AppendLine(@"            ");
+            sb.AppendLine($@"            if ({ TypeNameLower } == null)");
             sb.AppendLine(@"            {");
-            sb.AppendLine($@"               return await Task.FromResult(BadRequest(ValidationResults));");
+            sb.AppendLine($@"                return await Task.FromResult(BadRequest(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, ""{ TypeName }"", ""{ TypeName }ID"", { TypeName }ID.ToString())));");
             sb.AppendLine(@"            }");
             sb.AppendLine(@"");
             sb.AppendLine($@"            try");
@@ -77,7 +73,7 @@ namespace ServicesClassNameServiceGeneratedServices.Services
             sb.AppendLine($@"               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? "" Inner: "" + ex.InnerException.Message : """")));");
             sb.AppendLine(@"            }");
             sb.AppendLine(@"");
-            sb.AppendLine($@"            return await Task.FromResult(Ok({ TypeNameLower }));");
+            sb.AppendLine($@"            return await Task.FromResult(Ok(true));");
             sb.AppendLine(@"        }");
 
             sb.AppendLine($@"        public async Task<ActionResult<{ TypeName }>> Update({ TypeName } { TypeNameLower })");

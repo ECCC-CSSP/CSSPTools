@@ -25,7 +25,7 @@ namespace CSSPServices
        Task<ActionResult<BoxModelLanguage>> GetBoxModelLanguageWithBoxModelLanguageID(int BoxModelLanguageID);
        Task<ActionResult<List<BoxModelLanguage>>> GetBoxModelLanguageList();
        Task<ActionResult<BoxModelLanguage>> Add(BoxModelLanguage boxmodellanguage);
-       Task<ActionResult<BoxModelLanguage>> Delete(BoxModelLanguage boxmodellanguage);
+       Task<ActionResult<bool>> Delete(int BoxModelLanguageID);
        Task<ActionResult<BoxModelLanguage>> Update(BoxModelLanguage boxmodellanguage);
        Task SetCulture(CultureInfo culture);
     }
@@ -88,12 +88,15 @@ namespace CSSPServices
 
             return await Task.FromResult(Ok(boxModelLanguage));
         }
-        public async Task<ActionResult<BoxModelLanguage>> Delete(BoxModelLanguage boxModelLanguage)
+        public async Task<ActionResult<bool>> Delete(int BoxModelLanguageID)
         {
-            ValidationResults = Validate(new ValidationContext(boxModelLanguage), ActionDBTypeEnum.Delete);
-            if (ValidationResults.Count() > 0)
+            BoxModelLanguage boxModelLanguage = (from c in db.BoxModelLanguages
+                               where c.BoxModelLanguageID == BoxModelLanguageID
+                               select c).FirstOrDefault();
+            
+            if (boxModelLanguage == null)
             {
-               return await Task.FromResult(BadRequest(ValidationResults));
+                return await Task.FromResult(BadRequest(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "BoxModelLanguage", "BoxModelLanguageID", BoxModelLanguageID.ToString())));
             }
 
             try
@@ -106,7 +109,7 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
 
-            return await Task.FromResult(Ok(boxModelLanguage));
+            return await Task.FromResult(Ok(true));
         }
         public async Task<ActionResult<BoxModelLanguage>> Update(BoxModelLanguage boxModelLanguage)
         {

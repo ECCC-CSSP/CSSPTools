@@ -25,7 +25,7 @@ namespace CSSPServices
        Task<ActionResult<TVItemUserAuthorization>> GetTVItemUserAuthorizationWithTVItemUserAuthorizationID(int TVItemUserAuthorizationID);
        Task<ActionResult<List<TVItemUserAuthorization>>> GetTVItemUserAuthorizationList();
        Task<ActionResult<TVItemUserAuthorization>> Add(TVItemUserAuthorization tvitemuserauthorization);
-       Task<ActionResult<TVItemUserAuthorization>> Delete(TVItemUserAuthorization tvitemuserauthorization);
+       Task<ActionResult<bool>> Delete(int TVItemUserAuthorizationID);
        Task<ActionResult<TVItemUserAuthorization>> Update(TVItemUserAuthorization tvitemuserauthorization);
        Task SetCulture(CultureInfo culture);
     }
@@ -88,12 +88,15 @@ namespace CSSPServices
 
             return await Task.FromResult(Ok(tvItemUserAuthorization));
         }
-        public async Task<ActionResult<TVItemUserAuthorization>> Delete(TVItemUserAuthorization tvItemUserAuthorization)
+        public async Task<ActionResult<bool>> Delete(int TVItemUserAuthorizationID)
         {
-            ValidationResults = Validate(new ValidationContext(tvItemUserAuthorization), ActionDBTypeEnum.Delete);
-            if (ValidationResults.Count() > 0)
+            TVItemUserAuthorization tvItemUserAuthorization = (from c in db.TVItemUserAuthorizations
+                               where c.TVItemUserAuthorizationID == TVItemUserAuthorizationID
+                               select c).FirstOrDefault();
+            
+            if (tvItemUserAuthorization == null)
             {
-               return await Task.FromResult(BadRequest(ValidationResults));
+                return await Task.FromResult(BadRequest(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "TVItemUserAuthorization", "TVItemUserAuthorizationID", TVItemUserAuthorizationID.ToString())));
             }
 
             try
@@ -106,7 +109,7 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
 
-            return await Task.FromResult(Ok(tvItemUserAuthorization));
+            return await Task.FromResult(Ok(true));
         }
         public async Task<ActionResult<TVItemUserAuthorization>> Update(TVItemUserAuthorization tvItemUserAuthorization)
         {

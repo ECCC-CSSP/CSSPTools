@@ -72,7 +72,7 @@ namespace CSSPWebAPIs.Tests.Controllers
                 var actionTVTypeUserAuthorizationList = await tvTypeUserAuthorizationController.Get();
                 Assert.Equal(200, ((ObjectResult)actionTVTypeUserAuthorizationList.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionTVTypeUserAuthorizationList.Result).Value);
-                List<TVTypeUserAuthorization> tvTypeUserAuthorizationList = (List<TVTypeUserAuthorization>)(((OkObjectResult)actionTVTypeUserAuthorizationList.Result).Value);
+                List<TVTypeUserAuthorization> tvTypeUserAuthorizationList = (List<TVTypeUserAuthorization>)((OkObjectResult)actionTVTypeUserAuthorizationList.Result).Value;
 
                 int count = ((List<TVTypeUserAuthorization>)((OkObjectResult)actionTVTypeUserAuthorizationList.Result).Value).Count();
                 Assert.True(count > 0);
@@ -81,7 +81,7 @@ namespace CSSPWebAPIs.Tests.Controllers
                 var actionTVTypeUserAuthorization = await tvTypeUserAuthorizationController.Get(tvTypeUserAuthorizationList[0].TVTypeUserAuthorizationID);
                 Assert.Equal(200, ((ObjectResult)actionTVTypeUserAuthorization.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionTVTypeUserAuthorization.Result).Value);
-                TVTypeUserAuthorization tvTypeUserAuthorization = (TVTypeUserAuthorization)(((OkObjectResult)actionTVTypeUserAuthorization.Result).Value);
+                TVTypeUserAuthorization tvTypeUserAuthorization = (TVTypeUserAuthorization)((OkObjectResult)actionTVTypeUserAuthorization.Result).Value;
                 Assert.NotNull(tvTypeUserAuthorization);
                 Assert.Equal(tvTypeUserAuthorizationList[0].TVTypeUserAuthorizationID, tvTypeUserAuthorization.TVTypeUserAuthorizationID);
 
@@ -90,22 +90,22 @@ namespace CSSPWebAPIs.Tests.Controllers
                 var actionTVTypeUserAuthorizationNew = await tvTypeUserAuthorizationController.Post(tvTypeUserAuthorization);
                 Assert.Equal(200, ((ObjectResult)actionTVTypeUserAuthorizationNew.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionTVTypeUserAuthorizationNew.Result).Value);
-                TVTypeUserAuthorization tvTypeUserAuthorizationNew = (TVTypeUserAuthorization)(((OkObjectResult)actionTVTypeUserAuthorizationNew.Result).Value);
+                TVTypeUserAuthorization tvTypeUserAuthorizationNew = (TVTypeUserAuthorization)((OkObjectResult)actionTVTypeUserAuthorizationNew.Result).Value;
                 Assert.NotNull(tvTypeUserAuthorizationNew);
 
                 // testing Put(TVTypeUserAuthorization tvTypeUserAuthorization)
                 var actionTVTypeUserAuthorizationUpdate = await tvTypeUserAuthorizationController.Put(tvTypeUserAuthorizationNew);
                 Assert.Equal(200, ((ObjectResult)actionTVTypeUserAuthorizationUpdate.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionTVTypeUserAuthorizationUpdate.Result).Value);
-                TVTypeUserAuthorization tvTypeUserAuthorizationUpdate = (TVTypeUserAuthorization)(((OkObjectResult)actionTVTypeUserAuthorizationUpdate.Result).Value);
+                TVTypeUserAuthorization tvTypeUserAuthorizationUpdate = (TVTypeUserAuthorization)((OkObjectResult)actionTVTypeUserAuthorizationUpdate.Result).Value;
                 Assert.NotNull(tvTypeUserAuthorizationUpdate);
 
-                // testing Delete(TVTypeUserAuthorization tvTypeUserAuthorization)
-                var actionTVTypeUserAuthorizationDelete = await tvTypeUserAuthorizationController.Delete(tvTypeUserAuthorizationUpdate);
+                // testing Delete(int tvTypeUserAuthorization.TVTypeUserAuthorizationID)
+                var actionTVTypeUserAuthorizationDelete = await tvTypeUserAuthorizationController.Delete(tvTypeUserAuthorizationUpdate.TVTypeUserAuthorizationID);
                 Assert.Equal(200, ((ObjectResult)actionTVTypeUserAuthorizationDelete.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionTVTypeUserAuthorizationDelete.Result).Value);
-                TVTypeUserAuthorization tvTypeUserAuthorizationDelete = (TVTypeUserAuthorization)(((OkObjectResult)actionTVTypeUserAuthorizationDelete.Result).Value);
-                Assert.NotNull(tvTypeUserAuthorizationDelete);
+                bool retBool2 = (bool)((OkObjectResult)actionTVTypeUserAuthorizationDelete.Result).Value;
+                Assert.True(retBool2);
             }
         }
         #endregion Functions public

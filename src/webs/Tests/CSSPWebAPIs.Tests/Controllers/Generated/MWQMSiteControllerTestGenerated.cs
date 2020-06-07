@@ -72,7 +72,7 @@ namespace CSSPWebAPIs.Tests.Controllers
                 var actionMWQMSiteList = await mwqmSiteController.Get();
                 Assert.Equal(200, ((ObjectResult)actionMWQMSiteList.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionMWQMSiteList.Result).Value);
-                List<MWQMSite> mwqmSiteList = (List<MWQMSite>)(((OkObjectResult)actionMWQMSiteList.Result).Value);
+                List<MWQMSite> mwqmSiteList = (List<MWQMSite>)((OkObjectResult)actionMWQMSiteList.Result).Value;
 
                 int count = ((List<MWQMSite>)((OkObjectResult)actionMWQMSiteList.Result).Value).Count();
                 Assert.True(count > 0);
@@ -81,7 +81,7 @@ namespace CSSPWebAPIs.Tests.Controllers
                 var actionMWQMSite = await mwqmSiteController.Get(mwqmSiteList[0].MWQMSiteID);
                 Assert.Equal(200, ((ObjectResult)actionMWQMSite.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionMWQMSite.Result).Value);
-                MWQMSite mwqmSite = (MWQMSite)(((OkObjectResult)actionMWQMSite.Result).Value);
+                MWQMSite mwqmSite = (MWQMSite)((OkObjectResult)actionMWQMSite.Result).Value;
                 Assert.NotNull(mwqmSite);
                 Assert.Equal(mwqmSiteList[0].MWQMSiteID, mwqmSite.MWQMSiteID);
 
@@ -90,22 +90,22 @@ namespace CSSPWebAPIs.Tests.Controllers
                 var actionMWQMSiteNew = await mwqmSiteController.Post(mwqmSite);
                 Assert.Equal(200, ((ObjectResult)actionMWQMSiteNew.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionMWQMSiteNew.Result).Value);
-                MWQMSite mwqmSiteNew = (MWQMSite)(((OkObjectResult)actionMWQMSiteNew.Result).Value);
+                MWQMSite mwqmSiteNew = (MWQMSite)((OkObjectResult)actionMWQMSiteNew.Result).Value;
                 Assert.NotNull(mwqmSiteNew);
 
                 // testing Put(MWQMSite mwqmSite)
                 var actionMWQMSiteUpdate = await mwqmSiteController.Put(mwqmSiteNew);
                 Assert.Equal(200, ((ObjectResult)actionMWQMSiteUpdate.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionMWQMSiteUpdate.Result).Value);
-                MWQMSite mwqmSiteUpdate = (MWQMSite)(((OkObjectResult)actionMWQMSiteUpdate.Result).Value);
+                MWQMSite mwqmSiteUpdate = (MWQMSite)((OkObjectResult)actionMWQMSiteUpdate.Result).Value;
                 Assert.NotNull(mwqmSiteUpdate);
 
-                // testing Delete(MWQMSite mwqmSite)
-                var actionMWQMSiteDelete = await mwqmSiteController.Delete(mwqmSiteUpdate);
+                // testing Delete(int mwqmSite.MWQMSiteID)
+                var actionMWQMSiteDelete = await mwqmSiteController.Delete(mwqmSiteUpdate.MWQMSiteID);
                 Assert.Equal(200, ((ObjectResult)actionMWQMSiteDelete.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionMWQMSiteDelete.Result).Value);
-                MWQMSite mwqmSiteDelete = (MWQMSite)(((OkObjectResult)actionMWQMSiteDelete.Result).Value);
-                Assert.NotNull(mwqmSiteDelete);
+                bool retBool2 = (bool)((OkObjectResult)actionMWQMSiteDelete.Result).Value;
+                Assert.True(retBool2);
             }
         }
         #endregion Functions public

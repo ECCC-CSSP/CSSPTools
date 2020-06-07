@@ -25,7 +25,7 @@ namespace CSSPServices
        Task<ActionResult<PolSourceSite>> GetPolSourceSiteWithPolSourceSiteID(int PolSourceSiteID);
        Task<ActionResult<List<PolSourceSite>>> GetPolSourceSiteList();
        Task<ActionResult<PolSourceSite>> Add(PolSourceSite polsourcesite);
-       Task<ActionResult<PolSourceSite>> Delete(PolSourceSite polsourcesite);
+       Task<ActionResult<bool>> Delete(int PolSourceSiteID);
        Task<ActionResult<PolSourceSite>> Update(PolSourceSite polsourcesite);
        Task SetCulture(CultureInfo culture);
     }
@@ -88,12 +88,15 @@ namespace CSSPServices
 
             return await Task.FromResult(Ok(polSourceSite));
         }
-        public async Task<ActionResult<PolSourceSite>> Delete(PolSourceSite polSourceSite)
+        public async Task<ActionResult<bool>> Delete(int PolSourceSiteID)
         {
-            ValidationResults = Validate(new ValidationContext(polSourceSite), ActionDBTypeEnum.Delete);
-            if (ValidationResults.Count() > 0)
+            PolSourceSite polSourceSite = (from c in db.PolSourceSites
+                               where c.PolSourceSiteID == PolSourceSiteID
+                               select c).FirstOrDefault();
+            
+            if (polSourceSite == null)
             {
-               return await Task.FromResult(BadRequest(ValidationResults));
+                return await Task.FromResult(BadRequest(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "PolSourceSite", "PolSourceSiteID", PolSourceSiteID.ToString())));
             }
 
             try
@@ -106,7 +109,7 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
 
-            return await Task.FromResult(Ok(polSourceSite));
+            return await Task.FromResult(Ok(true));
         }
         public async Task<ActionResult<PolSourceSite>> Update(PolSourceSite polSourceSite)
         {

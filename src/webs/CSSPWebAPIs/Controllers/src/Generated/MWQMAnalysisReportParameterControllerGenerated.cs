@@ -20,7 +20,7 @@ namespace CSSPWebAPI.Controllers
         Task<ActionResult<MWQMAnalysisReportParameter>> Get(int MWQMAnalysisReportParameterID);
         Task<ActionResult<MWQMAnalysisReportParameter>> Post(MWQMAnalysisReportParameter mwqmAnalysisReportParameter);
         Task<ActionResult<MWQMAnalysisReportParameter>> Put(MWQMAnalysisReportParameter mwqmAnalysisReportParameter);
-        Task<ActionResult<MWQMAnalysisReportParameter>> Delete(MWQMAnalysisReportParameter mwqmAnalysisReportParameter);
+        Task<ActionResult<bool>> Delete(int MWQMAnalysisReportParameterID);
     }
 
     [Route("api/{culture}/[controller]")]
@@ -67,10 +67,10 @@ namespace CSSPWebAPI.Controllers
         {
             return await mwqmAnalysisReportParameterService.Update(mwqmAnalysisReportParameter);
         }
-        [HttpDelete]
-        public async Task<ActionResult<MWQMAnalysisReportParameter>> Delete(MWQMAnalysisReportParameter mwqmAnalysisReportParameter)
+        [HttpDelete("{MWQMAnalysisReportParameterID}")]
+        public async Task<ActionResult<bool>> Delete(int MWQMAnalysisReportParameterID)
         {
-            return await mwqmAnalysisReportParameterService.Delete(mwqmAnalysisReportParameter);
+            return await mwqmAnalysisReportParameterService.Delete(MWQMAnalysisReportParameterID);
         }
         #endregion Functions public
 

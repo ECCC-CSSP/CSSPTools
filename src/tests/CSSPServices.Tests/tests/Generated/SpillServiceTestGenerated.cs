@@ -63,7 +63,7 @@ namespace CSSPServices.Tests
                var actionSpillList = await spillService.GetSpillList();
                Assert.Equal(200, ((ObjectResult)actionSpillList.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionSpillList.Result).Value);
-               List<Spill> spillList = (List<Spill>)(((OkObjectResult)actionSpillList.Result).Value);
+               List<Spill> spillList = (List<Spill>)((OkObjectResult)actionSpillList.Result).Value;
 
                int count = ((List<Spill>)((OkObjectResult)actionSpillList.Result).Value).Count();
                 Assert.True(count > 0);
@@ -72,22 +72,22 @@ namespace CSSPServices.Tests
                var actionSpillAdded = await spillService.Add(spill);
                Assert.Equal(200, ((ObjectResult)actionSpillAdded.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionSpillAdded.Result).Value);
-               Spill spillAdded = (Spill)(((OkObjectResult)actionSpillAdded.Result).Value);
+               Spill spillAdded = (Spill)((OkObjectResult)actionSpillAdded.Result).Value;
                Assert.NotNull(spillAdded);
 
                // Update Spill
                var actionSpillUpdated = await spillService.Update(spill);
                Assert.Equal(200, ((ObjectResult)actionSpillUpdated.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionSpillUpdated.Result).Value);
-               Spill spillUpdated = (Spill)(((OkObjectResult)actionSpillUpdated.Result).Value);
+               Spill spillUpdated = (Spill)((OkObjectResult)actionSpillUpdated.Result).Value;
                Assert.NotNull(spillUpdated);
 
                // Delete Spill
-               var actionSpillDeleted = await spillService.Delete(spill);
+               var actionSpillDeleted = await spillService.Delete(spill.SpillID);
                Assert.Equal(200, ((ObjectResult)actionSpillDeleted.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionSpillDeleted.Result).Value);
-               Spill spillDeleted = (Spill)(((OkObjectResult)actionSpillDeleted.Result).Value);
-               Assert.NotNull(spillDeleted);
+               bool retBool = (bool)((OkObjectResult)actionSpillDeleted.Result).Value;
+               Assert.True(retBool);
             }
         }
         #endregion Tests Generated CRUD

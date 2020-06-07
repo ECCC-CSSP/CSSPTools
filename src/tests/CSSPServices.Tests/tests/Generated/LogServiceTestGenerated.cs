@@ -63,7 +63,7 @@ namespace CSSPServices.Tests
                var actionLogList = await logService.GetLogList();
                Assert.Equal(200, ((ObjectResult)actionLogList.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionLogList.Result).Value);
-               List<Log> logList = (List<Log>)(((OkObjectResult)actionLogList.Result).Value);
+               List<Log> logList = (List<Log>)((OkObjectResult)actionLogList.Result).Value;
 
                int count = ((List<Log>)((OkObjectResult)actionLogList.Result).Value).Count();
                 Assert.True(count > 0);
@@ -72,22 +72,22 @@ namespace CSSPServices.Tests
                var actionLogAdded = await logService.Add(log);
                Assert.Equal(200, ((ObjectResult)actionLogAdded.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionLogAdded.Result).Value);
-               Log logAdded = (Log)(((OkObjectResult)actionLogAdded.Result).Value);
+               Log logAdded = (Log)((OkObjectResult)actionLogAdded.Result).Value;
                Assert.NotNull(logAdded);
 
                // Update Log
                var actionLogUpdated = await logService.Update(log);
                Assert.Equal(200, ((ObjectResult)actionLogUpdated.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionLogUpdated.Result).Value);
-               Log logUpdated = (Log)(((OkObjectResult)actionLogUpdated.Result).Value);
+               Log logUpdated = (Log)((OkObjectResult)actionLogUpdated.Result).Value;
                Assert.NotNull(logUpdated);
 
                // Delete Log
-               var actionLogDeleted = await logService.Delete(log);
+               var actionLogDeleted = await logService.Delete(log.LogID);
                Assert.Equal(200, ((ObjectResult)actionLogDeleted.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionLogDeleted.Result).Value);
-               Log logDeleted = (Log)(((OkObjectResult)actionLogDeleted.Result).Value);
-               Assert.NotNull(logDeleted);
+               bool retBool = (bool)((OkObjectResult)actionLogDeleted.Result).Value;
+               Assert.True(retBool);
             }
         }
         #endregion Tests Generated CRUD

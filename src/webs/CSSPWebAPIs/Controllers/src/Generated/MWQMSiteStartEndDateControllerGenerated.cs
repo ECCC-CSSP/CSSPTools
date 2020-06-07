@@ -20,7 +20,7 @@ namespace CSSPWebAPI.Controllers
         Task<ActionResult<MWQMSiteStartEndDate>> Get(int MWQMSiteStartEndDateID);
         Task<ActionResult<MWQMSiteStartEndDate>> Post(MWQMSiteStartEndDate mwqmSiteStartEndDate);
         Task<ActionResult<MWQMSiteStartEndDate>> Put(MWQMSiteStartEndDate mwqmSiteStartEndDate);
-        Task<ActionResult<MWQMSiteStartEndDate>> Delete(MWQMSiteStartEndDate mwqmSiteStartEndDate);
+        Task<ActionResult<bool>> Delete(int MWQMSiteStartEndDateID);
     }
 
     [Route("api/{culture}/[controller]")]
@@ -67,10 +67,10 @@ namespace CSSPWebAPI.Controllers
         {
             return await mwqmSiteStartEndDateService.Update(mwqmSiteStartEndDate);
         }
-        [HttpDelete]
-        public async Task<ActionResult<MWQMSiteStartEndDate>> Delete(MWQMSiteStartEndDate mwqmSiteStartEndDate)
+        [HttpDelete("{MWQMSiteStartEndDateID}")]
+        public async Task<ActionResult<bool>> Delete(int MWQMSiteStartEndDateID)
         {
-            return await mwqmSiteStartEndDateService.Delete(mwqmSiteStartEndDate);
+            return await mwqmSiteStartEndDateService.Delete(MWQMSiteStartEndDateID);
         }
         #endregion Functions public
 

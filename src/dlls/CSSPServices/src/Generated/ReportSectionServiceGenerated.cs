@@ -25,7 +25,7 @@ namespace CSSPServices
        Task<ActionResult<ReportSection>> GetReportSectionWithReportSectionID(int ReportSectionID);
        Task<ActionResult<List<ReportSection>>> GetReportSectionList();
        Task<ActionResult<ReportSection>> Add(ReportSection reportsection);
-       Task<ActionResult<ReportSection>> Delete(ReportSection reportsection);
+       Task<ActionResult<bool>> Delete(int ReportSectionID);
        Task<ActionResult<ReportSection>> Update(ReportSection reportsection);
        Task SetCulture(CultureInfo culture);
     }
@@ -88,12 +88,15 @@ namespace CSSPServices
 
             return await Task.FromResult(Ok(reportSection));
         }
-        public async Task<ActionResult<ReportSection>> Delete(ReportSection reportSection)
+        public async Task<ActionResult<bool>> Delete(int ReportSectionID)
         {
-            ValidationResults = Validate(new ValidationContext(reportSection), ActionDBTypeEnum.Delete);
-            if (ValidationResults.Count() > 0)
+            ReportSection reportSection = (from c in db.ReportSections
+                               where c.ReportSectionID == ReportSectionID
+                               select c).FirstOrDefault();
+            
+            if (reportSection == null)
             {
-               return await Task.FromResult(BadRequest(ValidationResults));
+                return await Task.FromResult(BadRequest(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "ReportSection", "ReportSectionID", ReportSectionID.ToString())));
             }
 
             try
@@ -106,7 +109,7 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
 
-            return await Task.FromResult(Ok(reportSection));
+            return await Task.FromResult(Ok(true));
         }
         public async Task<ActionResult<ReportSection>> Update(ReportSection reportSection)
         {

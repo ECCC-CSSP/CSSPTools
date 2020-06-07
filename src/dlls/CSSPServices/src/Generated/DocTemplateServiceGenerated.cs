@@ -25,7 +25,7 @@ namespace CSSPServices
        Task<ActionResult<DocTemplate>> GetDocTemplateWithDocTemplateID(int DocTemplateID);
        Task<ActionResult<List<DocTemplate>>> GetDocTemplateList();
        Task<ActionResult<DocTemplate>> Add(DocTemplate doctemplate);
-       Task<ActionResult<DocTemplate>> Delete(DocTemplate doctemplate);
+       Task<ActionResult<bool>> Delete(int DocTemplateID);
        Task<ActionResult<DocTemplate>> Update(DocTemplate doctemplate);
        Task SetCulture(CultureInfo culture);
     }
@@ -88,12 +88,15 @@ namespace CSSPServices
 
             return await Task.FromResult(Ok(docTemplate));
         }
-        public async Task<ActionResult<DocTemplate>> Delete(DocTemplate docTemplate)
+        public async Task<ActionResult<bool>> Delete(int DocTemplateID)
         {
-            ValidationResults = Validate(new ValidationContext(docTemplate), ActionDBTypeEnum.Delete);
-            if (ValidationResults.Count() > 0)
+            DocTemplate docTemplate = (from c in db.DocTemplates
+                               where c.DocTemplateID == DocTemplateID
+                               select c).FirstOrDefault();
+            
+            if (docTemplate == null)
             {
-               return await Task.FromResult(BadRequest(ValidationResults));
+                return await Task.FromResult(BadRequest(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "DocTemplate", "DocTemplateID", DocTemplateID.ToString())));
             }
 
             try
@@ -106,7 +109,7 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
 
-            return await Task.FromResult(Ok(docTemplate));
+            return await Task.FromResult(Ok(true));
         }
         public async Task<ActionResult<DocTemplate>> Update(DocTemplate docTemplate)
         {

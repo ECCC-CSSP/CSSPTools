@@ -25,7 +25,7 @@ namespace CSSPServices
        Task<ActionResult<VPScenarioLanguage>> GetVPScenarioLanguageWithVPScenarioLanguageID(int VPScenarioLanguageID);
        Task<ActionResult<List<VPScenarioLanguage>>> GetVPScenarioLanguageList();
        Task<ActionResult<VPScenarioLanguage>> Add(VPScenarioLanguage vpscenariolanguage);
-       Task<ActionResult<VPScenarioLanguage>> Delete(VPScenarioLanguage vpscenariolanguage);
+       Task<ActionResult<bool>> Delete(int VPScenarioLanguageID);
        Task<ActionResult<VPScenarioLanguage>> Update(VPScenarioLanguage vpscenariolanguage);
        Task SetCulture(CultureInfo culture);
     }
@@ -88,12 +88,15 @@ namespace CSSPServices
 
             return await Task.FromResult(Ok(vpScenarioLanguage));
         }
-        public async Task<ActionResult<VPScenarioLanguage>> Delete(VPScenarioLanguage vpScenarioLanguage)
+        public async Task<ActionResult<bool>> Delete(int VPScenarioLanguageID)
         {
-            ValidationResults = Validate(new ValidationContext(vpScenarioLanguage), ActionDBTypeEnum.Delete);
-            if (ValidationResults.Count() > 0)
+            VPScenarioLanguage vpScenarioLanguage = (from c in db.VPScenarioLanguages
+                               where c.VPScenarioLanguageID == VPScenarioLanguageID
+                               select c).FirstOrDefault();
+            
+            if (vpScenarioLanguage == null)
             {
-               return await Task.FromResult(BadRequest(ValidationResults));
+                return await Task.FromResult(BadRequest(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "VPScenarioLanguage", "VPScenarioLanguageID", VPScenarioLanguageID.ToString())));
             }
 
             try
@@ -106,7 +109,7 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
 
-            return await Task.FromResult(Ok(vpScenarioLanguage));
+            return await Task.FromResult(Ok(true));
         }
         public async Task<ActionResult<VPScenarioLanguage>> Update(VPScenarioLanguage vpScenarioLanguage)
         {

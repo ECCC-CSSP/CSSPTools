@@ -63,7 +63,7 @@ namespace CSSPServices.Tests
                var actionEmailDistributionListList = await emailDistributionListService.GetEmailDistributionListList();
                Assert.Equal(200, ((ObjectResult)actionEmailDistributionListList.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionEmailDistributionListList.Result).Value);
-               List<EmailDistributionList> emailDistributionListList = (List<EmailDistributionList>)(((OkObjectResult)actionEmailDistributionListList.Result).Value);
+               List<EmailDistributionList> emailDistributionListList = (List<EmailDistributionList>)((OkObjectResult)actionEmailDistributionListList.Result).Value;
 
                int count = ((List<EmailDistributionList>)((OkObjectResult)actionEmailDistributionListList.Result).Value).Count();
                 Assert.True(count > 0);
@@ -72,22 +72,22 @@ namespace CSSPServices.Tests
                var actionEmailDistributionListAdded = await emailDistributionListService.Add(emailDistributionList);
                Assert.Equal(200, ((ObjectResult)actionEmailDistributionListAdded.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionEmailDistributionListAdded.Result).Value);
-               EmailDistributionList emailDistributionListAdded = (EmailDistributionList)(((OkObjectResult)actionEmailDistributionListAdded.Result).Value);
+               EmailDistributionList emailDistributionListAdded = (EmailDistributionList)((OkObjectResult)actionEmailDistributionListAdded.Result).Value;
                Assert.NotNull(emailDistributionListAdded);
 
                // Update EmailDistributionList
                var actionEmailDistributionListUpdated = await emailDistributionListService.Update(emailDistributionList);
                Assert.Equal(200, ((ObjectResult)actionEmailDistributionListUpdated.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionEmailDistributionListUpdated.Result).Value);
-               EmailDistributionList emailDistributionListUpdated = (EmailDistributionList)(((OkObjectResult)actionEmailDistributionListUpdated.Result).Value);
+               EmailDistributionList emailDistributionListUpdated = (EmailDistributionList)((OkObjectResult)actionEmailDistributionListUpdated.Result).Value;
                Assert.NotNull(emailDistributionListUpdated);
 
                // Delete EmailDistributionList
-               var actionEmailDistributionListDeleted = await emailDistributionListService.Delete(emailDistributionList);
+               var actionEmailDistributionListDeleted = await emailDistributionListService.Delete(emailDistributionList.EmailDistributionListID);
                Assert.Equal(200, ((ObjectResult)actionEmailDistributionListDeleted.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionEmailDistributionListDeleted.Result).Value);
-               EmailDistributionList emailDistributionListDeleted = (EmailDistributionList)(((OkObjectResult)actionEmailDistributionListDeleted.Result).Value);
-               Assert.NotNull(emailDistributionListDeleted);
+               bool retBool = (bool)((OkObjectResult)actionEmailDistributionListDeleted.Result).Value;
+               Assert.True(retBool);
             }
         }
         #endregion Tests Generated CRUD

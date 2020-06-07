@@ -72,7 +72,7 @@ namespace CSSPWebAPIs.Tests.Controllers
                 var actionReportSectionList = await reportSectionController.Get();
                 Assert.Equal(200, ((ObjectResult)actionReportSectionList.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionReportSectionList.Result).Value);
-                List<ReportSection> reportSectionList = (List<ReportSection>)(((OkObjectResult)actionReportSectionList.Result).Value);
+                List<ReportSection> reportSectionList = (List<ReportSection>)((OkObjectResult)actionReportSectionList.Result).Value;
 
                 int count = ((List<ReportSection>)((OkObjectResult)actionReportSectionList.Result).Value).Count();
                 Assert.True(count > 0);
@@ -81,7 +81,7 @@ namespace CSSPWebAPIs.Tests.Controllers
                 var actionReportSection = await reportSectionController.Get(reportSectionList[0].ReportSectionID);
                 Assert.Equal(200, ((ObjectResult)actionReportSection.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionReportSection.Result).Value);
-                ReportSection reportSection = (ReportSection)(((OkObjectResult)actionReportSection.Result).Value);
+                ReportSection reportSection = (ReportSection)((OkObjectResult)actionReportSection.Result).Value;
                 Assert.NotNull(reportSection);
                 Assert.Equal(reportSectionList[0].ReportSectionID, reportSection.ReportSectionID);
 
@@ -90,22 +90,22 @@ namespace CSSPWebAPIs.Tests.Controllers
                 var actionReportSectionNew = await reportSectionController.Post(reportSection);
                 Assert.Equal(200, ((ObjectResult)actionReportSectionNew.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionReportSectionNew.Result).Value);
-                ReportSection reportSectionNew = (ReportSection)(((OkObjectResult)actionReportSectionNew.Result).Value);
+                ReportSection reportSectionNew = (ReportSection)((OkObjectResult)actionReportSectionNew.Result).Value;
                 Assert.NotNull(reportSectionNew);
 
                 // testing Put(ReportSection reportSection)
                 var actionReportSectionUpdate = await reportSectionController.Put(reportSectionNew);
                 Assert.Equal(200, ((ObjectResult)actionReportSectionUpdate.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionReportSectionUpdate.Result).Value);
-                ReportSection reportSectionUpdate = (ReportSection)(((OkObjectResult)actionReportSectionUpdate.Result).Value);
+                ReportSection reportSectionUpdate = (ReportSection)((OkObjectResult)actionReportSectionUpdate.Result).Value;
                 Assert.NotNull(reportSectionUpdate);
 
-                // testing Delete(ReportSection reportSection)
-                var actionReportSectionDelete = await reportSectionController.Delete(reportSectionUpdate);
+                // testing Delete(int reportSection.ReportSectionID)
+                var actionReportSectionDelete = await reportSectionController.Delete(reportSectionUpdate.ReportSectionID);
                 Assert.Equal(200, ((ObjectResult)actionReportSectionDelete.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionReportSectionDelete.Result).Value);
-                ReportSection reportSectionDelete = (ReportSection)(((OkObjectResult)actionReportSectionDelete.Result).Value);
-                Assert.NotNull(reportSectionDelete);
+                bool retBool2 = (bool)((OkObjectResult)actionReportSectionDelete.Result).Value;
+                Assert.True(retBool2);
             }
         }
         #endregion Functions public

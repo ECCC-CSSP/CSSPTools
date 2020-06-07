@@ -20,7 +20,7 @@ namespace CSSPWebAPI.Controllers
         Task<ActionResult<VPScenario>> Get(int VPScenarioID);
         Task<ActionResult<VPScenario>> Post(VPScenario vpScenario);
         Task<ActionResult<VPScenario>> Put(VPScenario vpScenario);
-        Task<ActionResult<VPScenario>> Delete(VPScenario vpScenario);
+        Task<ActionResult<bool>> Delete(int VPScenarioID);
     }
 
     [Route("api/{culture}/[controller]")]
@@ -67,10 +67,10 @@ namespace CSSPWebAPI.Controllers
         {
             return await vpScenarioService.Update(vpScenario);
         }
-        [HttpDelete]
-        public async Task<ActionResult<VPScenario>> Delete(VPScenario vpScenario)
+        [HttpDelete("{VPScenarioID}")]
+        public async Task<ActionResult<bool>> Delete(int VPScenarioID)
         {
-            return await vpScenarioService.Delete(vpScenario);
+            return await vpScenarioService.Delete(VPScenarioID);
         }
         #endregion Functions public
 

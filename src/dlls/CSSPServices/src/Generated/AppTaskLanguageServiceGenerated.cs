@@ -25,7 +25,7 @@ namespace CSSPServices
        Task<ActionResult<AppTaskLanguage>> GetAppTaskLanguageWithAppTaskLanguageID(int AppTaskLanguageID);
        Task<ActionResult<List<AppTaskLanguage>>> GetAppTaskLanguageList();
        Task<ActionResult<AppTaskLanguage>> Add(AppTaskLanguage apptasklanguage);
-       Task<ActionResult<AppTaskLanguage>> Delete(AppTaskLanguage apptasklanguage);
+       Task<ActionResult<bool>> Delete(int AppTaskLanguageID);
        Task<ActionResult<AppTaskLanguage>> Update(AppTaskLanguage apptasklanguage);
        Task SetCulture(CultureInfo culture);
     }
@@ -88,12 +88,15 @@ namespace CSSPServices
 
             return await Task.FromResult(Ok(appTaskLanguage));
         }
-        public async Task<ActionResult<AppTaskLanguage>> Delete(AppTaskLanguage appTaskLanguage)
+        public async Task<ActionResult<bool>> Delete(int AppTaskLanguageID)
         {
-            ValidationResults = Validate(new ValidationContext(appTaskLanguage), ActionDBTypeEnum.Delete);
-            if (ValidationResults.Count() > 0)
+            AppTaskLanguage appTaskLanguage = (from c in db.AppTaskLanguages
+                               where c.AppTaskLanguageID == AppTaskLanguageID
+                               select c).FirstOrDefault();
+            
+            if (appTaskLanguage == null)
             {
-               return await Task.FromResult(BadRequest(ValidationResults));
+                return await Task.FromResult(BadRequest(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "AppTaskLanguage", "AppTaskLanguageID", AppTaskLanguageID.ToString())));
             }
 
             try
@@ -106,7 +109,7 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
 
-            return await Task.FromResult(Ok(appTaskLanguage));
+            return await Task.FromResult(Ok(true));
         }
         public async Task<ActionResult<AppTaskLanguage>> Update(AppTaskLanguage appTaskLanguage)
         {

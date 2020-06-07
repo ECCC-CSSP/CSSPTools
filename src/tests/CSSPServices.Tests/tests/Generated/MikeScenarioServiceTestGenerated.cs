@@ -63,7 +63,7 @@ namespace CSSPServices.Tests
                var actionMikeScenarioList = await mikeScenarioService.GetMikeScenarioList();
                Assert.Equal(200, ((ObjectResult)actionMikeScenarioList.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionMikeScenarioList.Result).Value);
-               List<MikeScenario> mikeScenarioList = (List<MikeScenario>)(((OkObjectResult)actionMikeScenarioList.Result).Value);
+               List<MikeScenario> mikeScenarioList = (List<MikeScenario>)((OkObjectResult)actionMikeScenarioList.Result).Value;
 
                int count = ((List<MikeScenario>)((OkObjectResult)actionMikeScenarioList.Result).Value).Count();
                 Assert.True(count > 0);
@@ -72,22 +72,22 @@ namespace CSSPServices.Tests
                var actionMikeScenarioAdded = await mikeScenarioService.Add(mikeScenario);
                Assert.Equal(200, ((ObjectResult)actionMikeScenarioAdded.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionMikeScenarioAdded.Result).Value);
-               MikeScenario mikeScenarioAdded = (MikeScenario)(((OkObjectResult)actionMikeScenarioAdded.Result).Value);
+               MikeScenario mikeScenarioAdded = (MikeScenario)((OkObjectResult)actionMikeScenarioAdded.Result).Value;
                Assert.NotNull(mikeScenarioAdded);
 
                // Update MikeScenario
                var actionMikeScenarioUpdated = await mikeScenarioService.Update(mikeScenario);
                Assert.Equal(200, ((ObjectResult)actionMikeScenarioUpdated.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionMikeScenarioUpdated.Result).Value);
-               MikeScenario mikeScenarioUpdated = (MikeScenario)(((OkObjectResult)actionMikeScenarioUpdated.Result).Value);
+               MikeScenario mikeScenarioUpdated = (MikeScenario)((OkObjectResult)actionMikeScenarioUpdated.Result).Value;
                Assert.NotNull(mikeScenarioUpdated);
 
                // Delete MikeScenario
-               var actionMikeScenarioDeleted = await mikeScenarioService.Delete(mikeScenario);
+               var actionMikeScenarioDeleted = await mikeScenarioService.Delete(mikeScenario.MikeScenarioID);
                Assert.Equal(200, ((ObjectResult)actionMikeScenarioDeleted.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionMikeScenarioDeleted.Result).Value);
-               MikeScenario mikeScenarioDeleted = (MikeScenario)(((OkObjectResult)actionMikeScenarioDeleted.Result).Value);
-               Assert.NotNull(mikeScenarioDeleted);
+               bool retBool = (bool)((OkObjectResult)actionMikeScenarioDeleted.Result).Value;
+               Assert.True(retBool);
             }
         }
         #endregion Tests Generated CRUD

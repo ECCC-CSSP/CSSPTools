@@ -25,7 +25,7 @@ namespace CSSPServices
        Task<ActionResult<InfrastructureLanguage>> GetInfrastructureLanguageWithInfrastructureLanguageID(int InfrastructureLanguageID);
        Task<ActionResult<List<InfrastructureLanguage>>> GetInfrastructureLanguageList();
        Task<ActionResult<InfrastructureLanguage>> Add(InfrastructureLanguage infrastructurelanguage);
-       Task<ActionResult<InfrastructureLanguage>> Delete(InfrastructureLanguage infrastructurelanguage);
+       Task<ActionResult<bool>> Delete(int InfrastructureLanguageID);
        Task<ActionResult<InfrastructureLanguage>> Update(InfrastructureLanguage infrastructurelanguage);
        Task SetCulture(CultureInfo culture);
     }
@@ -88,12 +88,15 @@ namespace CSSPServices
 
             return await Task.FromResult(Ok(infrastructureLanguage));
         }
-        public async Task<ActionResult<InfrastructureLanguage>> Delete(InfrastructureLanguage infrastructureLanguage)
+        public async Task<ActionResult<bool>> Delete(int InfrastructureLanguageID)
         {
-            ValidationResults = Validate(new ValidationContext(infrastructureLanguage), ActionDBTypeEnum.Delete);
-            if (ValidationResults.Count() > 0)
+            InfrastructureLanguage infrastructureLanguage = (from c in db.InfrastructureLanguages
+                               where c.InfrastructureLanguageID == InfrastructureLanguageID
+                               select c).FirstOrDefault();
+            
+            if (infrastructureLanguage == null)
             {
-               return await Task.FromResult(BadRequest(ValidationResults));
+                return await Task.FromResult(BadRequest(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "InfrastructureLanguage", "InfrastructureLanguageID", InfrastructureLanguageID.ToString())));
             }
 
             try
@@ -106,7 +109,7 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
 
-            return await Task.FromResult(Ok(infrastructureLanguage));
+            return await Task.FromResult(Ok(true));
         }
         public async Task<ActionResult<InfrastructureLanguage>> Update(InfrastructureLanguage infrastructureLanguage)
         {

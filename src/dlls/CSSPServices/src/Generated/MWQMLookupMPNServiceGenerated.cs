@@ -25,7 +25,7 @@ namespace CSSPServices
        Task<ActionResult<MWQMLookupMPN>> GetMWQMLookupMPNWithMWQMLookupMPNID(int MWQMLookupMPNID);
        Task<ActionResult<List<MWQMLookupMPN>>> GetMWQMLookupMPNList();
        Task<ActionResult<MWQMLookupMPN>> Add(MWQMLookupMPN mwqmlookupmpn);
-       Task<ActionResult<MWQMLookupMPN>> Delete(MWQMLookupMPN mwqmlookupmpn);
+       Task<ActionResult<bool>> Delete(int MWQMLookupMPNID);
        Task<ActionResult<MWQMLookupMPN>> Update(MWQMLookupMPN mwqmlookupmpn);
        Task SetCulture(CultureInfo culture);
     }
@@ -88,12 +88,15 @@ namespace CSSPServices
 
             return await Task.FromResult(Ok(mwqmLookupMPN));
         }
-        public async Task<ActionResult<MWQMLookupMPN>> Delete(MWQMLookupMPN mwqmLookupMPN)
+        public async Task<ActionResult<bool>> Delete(int MWQMLookupMPNID)
         {
-            ValidationResults = Validate(new ValidationContext(mwqmLookupMPN), ActionDBTypeEnum.Delete);
-            if (ValidationResults.Count() > 0)
+            MWQMLookupMPN mwqmLookupMPN = (from c in db.MWQMLookupMPNs
+                               where c.MWQMLookupMPNID == MWQMLookupMPNID
+                               select c).FirstOrDefault();
+            
+            if (mwqmLookupMPN == null)
             {
-               return await Task.FromResult(BadRequest(ValidationResults));
+                return await Task.FromResult(BadRequest(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "MWQMLookupMPN", "MWQMLookupMPNID", MWQMLookupMPNID.ToString())));
             }
 
             try
@@ -106,7 +109,7 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
 
-            return await Task.FromResult(Ok(mwqmLookupMPN));
+            return await Task.FromResult(Ok(true));
         }
         public async Task<ActionResult<MWQMLookupMPN>> Update(MWQMLookupMPN mwqmLookupMPN)
         {

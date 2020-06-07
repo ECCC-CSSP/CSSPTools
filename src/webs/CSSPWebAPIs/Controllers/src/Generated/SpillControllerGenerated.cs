@@ -20,7 +20,7 @@ namespace CSSPWebAPI.Controllers
         Task<ActionResult<Spill>> Get(int SpillID);
         Task<ActionResult<Spill>> Post(Spill spill);
         Task<ActionResult<Spill>> Put(Spill spill);
-        Task<ActionResult<Spill>> Delete(Spill spill);
+        Task<ActionResult<bool>> Delete(int SpillID);
     }
 
     [Route("api/{culture}/[controller]")]
@@ -67,10 +67,10 @@ namespace CSSPWebAPI.Controllers
         {
             return await spillService.Update(spill);
         }
-        [HttpDelete]
-        public async Task<ActionResult<Spill>> Delete(Spill spill)
+        [HttpDelete("{SpillID}")]
+        public async Task<ActionResult<bool>> Delete(int SpillID)
         {
-            return await spillService.Delete(spill);
+            return await spillService.Delete(SpillID);
         }
         #endregion Functions public
 

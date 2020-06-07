@@ -72,7 +72,7 @@ namespace CSSPWebAPIs.Tests.Controllers
                 var actionContactPreferenceList = await contactPreferenceController.Get();
                 Assert.Equal(200, ((ObjectResult)actionContactPreferenceList.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionContactPreferenceList.Result).Value);
-                List<ContactPreference> contactPreferenceList = (List<ContactPreference>)(((OkObjectResult)actionContactPreferenceList.Result).Value);
+                List<ContactPreference> contactPreferenceList = (List<ContactPreference>)((OkObjectResult)actionContactPreferenceList.Result).Value;
 
                 int count = ((List<ContactPreference>)((OkObjectResult)actionContactPreferenceList.Result).Value).Count();
                 Assert.True(count > 0);
@@ -81,7 +81,7 @@ namespace CSSPWebAPIs.Tests.Controllers
                 var actionContactPreference = await contactPreferenceController.Get(contactPreferenceList[0].ContactPreferenceID);
                 Assert.Equal(200, ((ObjectResult)actionContactPreference.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionContactPreference.Result).Value);
-                ContactPreference contactPreference = (ContactPreference)(((OkObjectResult)actionContactPreference.Result).Value);
+                ContactPreference contactPreference = (ContactPreference)((OkObjectResult)actionContactPreference.Result).Value;
                 Assert.NotNull(contactPreference);
                 Assert.Equal(contactPreferenceList[0].ContactPreferenceID, contactPreference.ContactPreferenceID);
 
@@ -90,22 +90,22 @@ namespace CSSPWebAPIs.Tests.Controllers
                 var actionContactPreferenceNew = await contactPreferenceController.Post(contactPreference);
                 Assert.Equal(200, ((ObjectResult)actionContactPreferenceNew.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionContactPreferenceNew.Result).Value);
-                ContactPreference contactPreferenceNew = (ContactPreference)(((OkObjectResult)actionContactPreferenceNew.Result).Value);
+                ContactPreference contactPreferenceNew = (ContactPreference)((OkObjectResult)actionContactPreferenceNew.Result).Value;
                 Assert.NotNull(contactPreferenceNew);
 
                 // testing Put(ContactPreference contactPreference)
                 var actionContactPreferenceUpdate = await contactPreferenceController.Put(contactPreferenceNew);
                 Assert.Equal(200, ((ObjectResult)actionContactPreferenceUpdate.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionContactPreferenceUpdate.Result).Value);
-                ContactPreference contactPreferenceUpdate = (ContactPreference)(((OkObjectResult)actionContactPreferenceUpdate.Result).Value);
+                ContactPreference contactPreferenceUpdate = (ContactPreference)((OkObjectResult)actionContactPreferenceUpdate.Result).Value;
                 Assert.NotNull(contactPreferenceUpdate);
 
-                // testing Delete(ContactPreference contactPreference)
-                var actionContactPreferenceDelete = await contactPreferenceController.Delete(contactPreferenceUpdate);
+                // testing Delete(int contactPreference.ContactPreferenceID)
+                var actionContactPreferenceDelete = await contactPreferenceController.Delete(contactPreferenceUpdate.ContactPreferenceID);
                 Assert.Equal(200, ((ObjectResult)actionContactPreferenceDelete.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionContactPreferenceDelete.Result).Value);
-                ContactPreference contactPreferenceDelete = (ContactPreference)(((OkObjectResult)actionContactPreferenceDelete.Result).Value);
-                Assert.NotNull(contactPreferenceDelete);
+                bool retBool2 = (bool)((OkObjectResult)actionContactPreferenceDelete.Result).Value;
+                Assert.True(retBool2);
             }
         }
         #endregion Functions public

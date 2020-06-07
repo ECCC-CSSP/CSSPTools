@@ -72,7 +72,7 @@ namespace CSSPWebAPIs.Tests.Controllers
                 var actionAppErrLogList = await appErrLogController.Get();
                 Assert.Equal(200, ((ObjectResult)actionAppErrLogList.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionAppErrLogList.Result).Value);
-                List<AppErrLog> appErrLogList = (List<AppErrLog>)(((OkObjectResult)actionAppErrLogList.Result).Value);
+                List<AppErrLog> appErrLogList = (List<AppErrLog>)((OkObjectResult)actionAppErrLogList.Result).Value;
 
                 int count = ((List<AppErrLog>)((OkObjectResult)actionAppErrLogList.Result).Value).Count();
                 Assert.True(count > 0);
@@ -81,7 +81,7 @@ namespace CSSPWebAPIs.Tests.Controllers
                 var actionAppErrLog = await appErrLogController.Get(appErrLogList[0].AppErrLogID);
                 Assert.Equal(200, ((ObjectResult)actionAppErrLog.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionAppErrLog.Result).Value);
-                AppErrLog appErrLog = (AppErrLog)(((OkObjectResult)actionAppErrLog.Result).Value);
+                AppErrLog appErrLog = (AppErrLog)((OkObjectResult)actionAppErrLog.Result).Value;
                 Assert.NotNull(appErrLog);
                 Assert.Equal(appErrLogList[0].AppErrLogID, appErrLog.AppErrLogID);
 
@@ -90,22 +90,22 @@ namespace CSSPWebAPIs.Tests.Controllers
                 var actionAppErrLogNew = await appErrLogController.Post(appErrLog);
                 Assert.Equal(200, ((ObjectResult)actionAppErrLogNew.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionAppErrLogNew.Result).Value);
-                AppErrLog appErrLogNew = (AppErrLog)(((OkObjectResult)actionAppErrLogNew.Result).Value);
+                AppErrLog appErrLogNew = (AppErrLog)((OkObjectResult)actionAppErrLogNew.Result).Value;
                 Assert.NotNull(appErrLogNew);
 
                 // testing Put(AppErrLog appErrLog)
                 var actionAppErrLogUpdate = await appErrLogController.Put(appErrLogNew);
                 Assert.Equal(200, ((ObjectResult)actionAppErrLogUpdate.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionAppErrLogUpdate.Result).Value);
-                AppErrLog appErrLogUpdate = (AppErrLog)(((OkObjectResult)actionAppErrLogUpdate.Result).Value);
+                AppErrLog appErrLogUpdate = (AppErrLog)((OkObjectResult)actionAppErrLogUpdate.Result).Value;
                 Assert.NotNull(appErrLogUpdate);
 
-                // testing Delete(AppErrLog appErrLog)
-                var actionAppErrLogDelete = await appErrLogController.Delete(appErrLogUpdate);
+                // testing Delete(int appErrLog.AppErrLogID)
+                var actionAppErrLogDelete = await appErrLogController.Delete(appErrLogUpdate.AppErrLogID);
                 Assert.Equal(200, ((ObjectResult)actionAppErrLogDelete.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionAppErrLogDelete.Result).Value);
-                AppErrLog appErrLogDelete = (AppErrLog)(((OkObjectResult)actionAppErrLogDelete.Result).Value);
-                Assert.NotNull(appErrLogDelete);
+                bool retBool2 = (bool)((OkObjectResult)actionAppErrLogDelete.Result).Value;
+                Assert.True(retBool2);
             }
         }
         #endregion Functions public

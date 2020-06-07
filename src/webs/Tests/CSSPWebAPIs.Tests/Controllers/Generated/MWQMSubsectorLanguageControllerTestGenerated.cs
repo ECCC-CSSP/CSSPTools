@@ -72,7 +72,7 @@ namespace CSSPWebAPIs.Tests.Controllers
                 var actionMWQMSubsectorLanguageList = await mwqmSubsectorLanguageController.Get();
                 Assert.Equal(200, ((ObjectResult)actionMWQMSubsectorLanguageList.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionMWQMSubsectorLanguageList.Result).Value);
-                List<MWQMSubsectorLanguage> mwqmSubsectorLanguageList = (List<MWQMSubsectorLanguage>)(((OkObjectResult)actionMWQMSubsectorLanguageList.Result).Value);
+                List<MWQMSubsectorLanguage> mwqmSubsectorLanguageList = (List<MWQMSubsectorLanguage>)((OkObjectResult)actionMWQMSubsectorLanguageList.Result).Value;
 
                 int count = ((List<MWQMSubsectorLanguage>)((OkObjectResult)actionMWQMSubsectorLanguageList.Result).Value).Count();
                 Assert.True(count > 0);
@@ -81,7 +81,7 @@ namespace CSSPWebAPIs.Tests.Controllers
                 var actionMWQMSubsectorLanguage = await mwqmSubsectorLanguageController.Get(mwqmSubsectorLanguageList[0].MWQMSubsectorLanguageID);
                 Assert.Equal(200, ((ObjectResult)actionMWQMSubsectorLanguage.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionMWQMSubsectorLanguage.Result).Value);
-                MWQMSubsectorLanguage mwqmSubsectorLanguage = (MWQMSubsectorLanguage)(((OkObjectResult)actionMWQMSubsectorLanguage.Result).Value);
+                MWQMSubsectorLanguage mwqmSubsectorLanguage = (MWQMSubsectorLanguage)((OkObjectResult)actionMWQMSubsectorLanguage.Result).Value;
                 Assert.NotNull(mwqmSubsectorLanguage);
                 Assert.Equal(mwqmSubsectorLanguageList[0].MWQMSubsectorLanguageID, mwqmSubsectorLanguage.MWQMSubsectorLanguageID);
 
@@ -90,22 +90,22 @@ namespace CSSPWebAPIs.Tests.Controllers
                 var actionMWQMSubsectorLanguageNew = await mwqmSubsectorLanguageController.Post(mwqmSubsectorLanguage);
                 Assert.Equal(200, ((ObjectResult)actionMWQMSubsectorLanguageNew.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionMWQMSubsectorLanguageNew.Result).Value);
-                MWQMSubsectorLanguage mwqmSubsectorLanguageNew = (MWQMSubsectorLanguage)(((OkObjectResult)actionMWQMSubsectorLanguageNew.Result).Value);
+                MWQMSubsectorLanguage mwqmSubsectorLanguageNew = (MWQMSubsectorLanguage)((OkObjectResult)actionMWQMSubsectorLanguageNew.Result).Value;
                 Assert.NotNull(mwqmSubsectorLanguageNew);
 
                 // testing Put(MWQMSubsectorLanguage mwqmSubsectorLanguage)
                 var actionMWQMSubsectorLanguageUpdate = await mwqmSubsectorLanguageController.Put(mwqmSubsectorLanguageNew);
                 Assert.Equal(200, ((ObjectResult)actionMWQMSubsectorLanguageUpdate.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionMWQMSubsectorLanguageUpdate.Result).Value);
-                MWQMSubsectorLanguage mwqmSubsectorLanguageUpdate = (MWQMSubsectorLanguage)(((OkObjectResult)actionMWQMSubsectorLanguageUpdate.Result).Value);
+                MWQMSubsectorLanguage mwqmSubsectorLanguageUpdate = (MWQMSubsectorLanguage)((OkObjectResult)actionMWQMSubsectorLanguageUpdate.Result).Value;
                 Assert.NotNull(mwqmSubsectorLanguageUpdate);
 
-                // testing Delete(MWQMSubsectorLanguage mwqmSubsectorLanguage)
-                var actionMWQMSubsectorLanguageDelete = await mwqmSubsectorLanguageController.Delete(mwqmSubsectorLanguageUpdate);
+                // testing Delete(int mwqmSubsectorLanguage.MWQMSubsectorLanguageID)
+                var actionMWQMSubsectorLanguageDelete = await mwqmSubsectorLanguageController.Delete(mwqmSubsectorLanguageUpdate.MWQMSubsectorLanguageID);
                 Assert.Equal(200, ((ObjectResult)actionMWQMSubsectorLanguageDelete.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionMWQMSubsectorLanguageDelete.Result).Value);
-                MWQMSubsectorLanguage mwqmSubsectorLanguageDelete = (MWQMSubsectorLanguage)(((OkObjectResult)actionMWQMSubsectorLanguageDelete.Result).Value);
-                Assert.NotNull(mwqmSubsectorLanguageDelete);
+                bool retBool2 = (bool)((OkObjectResult)actionMWQMSubsectorLanguageDelete.Result).Value;
+                Assert.True(retBool2);
             }
         }
         #endregion Functions public

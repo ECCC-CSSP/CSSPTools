@@ -63,7 +63,7 @@ namespace CSSPServices.Tests
                var actionBoxModelLanguageList = await boxModelLanguageService.GetBoxModelLanguageList();
                Assert.Equal(200, ((ObjectResult)actionBoxModelLanguageList.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionBoxModelLanguageList.Result).Value);
-               List<BoxModelLanguage> boxModelLanguageList = (List<BoxModelLanguage>)(((OkObjectResult)actionBoxModelLanguageList.Result).Value);
+               List<BoxModelLanguage> boxModelLanguageList = (List<BoxModelLanguage>)((OkObjectResult)actionBoxModelLanguageList.Result).Value;
 
                int count = ((List<BoxModelLanguage>)((OkObjectResult)actionBoxModelLanguageList.Result).Value).Count();
                 Assert.True(count > 0);
@@ -72,22 +72,22 @@ namespace CSSPServices.Tests
                var actionBoxModelLanguageAdded = await boxModelLanguageService.Add(boxModelLanguage);
                Assert.Equal(200, ((ObjectResult)actionBoxModelLanguageAdded.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionBoxModelLanguageAdded.Result).Value);
-               BoxModelLanguage boxModelLanguageAdded = (BoxModelLanguage)(((OkObjectResult)actionBoxModelLanguageAdded.Result).Value);
+               BoxModelLanguage boxModelLanguageAdded = (BoxModelLanguage)((OkObjectResult)actionBoxModelLanguageAdded.Result).Value;
                Assert.NotNull(boxModelLanguageAdded);
 
                // Update BoxModelLanguage
                var actionBoxModelLanguageUpdated = await boxModelLanguageService.Update(boxModelLanguage);
                Assert.Equal(200, ((ObjectResult)actionBoxModelLanguageUpdated.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionBoxModelLanguageUpdated.Result).Value);
-               BoxModelLanguage boxModelLanguageUpdated = (BoxModelLanguage)(((OkObjectResult)actionBoxModelLanguageUpdated.Result).Value);
+               BoxModelLanguage boxModelLanguageUpdated = (BoxModelLanguage)((OkObjectResult)actionBoxModelLanguageUpdated.Result).Value;
                Assert.NotNull(boxModelLanguageUpdated);
 
                // Delete BoxModelLanguage
-               var actionBoxModelLanguageDeleted = await boxModelLanguageService.Delete(boxModelLanguage);
+               var actionBoxModelLanguageDeleted = await boxModelLanguageService.Delete(boxModelLanguage.BoxModelLanguageID);
                Assert.Equal(200, ((ObjectResult)actionBoxModelLanguageDeleted.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionBoxModelLanguageDeleted.Result).Value);
-               BoxModelLanguage boxModelLanguageDeleted = (BoxModelLanguage)(((OkObjectResult)actionBoxModelLanguageDeleted.Result).Value);
-               Assert.NotNull(boxModelLanguageDeleted);
+               bool retBool = (bool)((OkObjectResult)actionBoxModelLanguageDeleted.Result).Value;
+               Assert.True(retBool);
             }
         }
         #endregion Tests Generated CRUD

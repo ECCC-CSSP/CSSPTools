@@ -25,7 +25,7 @@ namespace CSSPServices
        Task<ActionResult<RatingCurveValue>> GetRatingCurveValueWithRatingCurveValueID(int RatingCurveValueID);
        Task<ActionResult<List<RatingCurveValue>>> GetRatingCurveValueList();
        Task<ActionResult<RatingCurveValue>> Add(RatingCurveValue ratingcurvevalue);
-       Task<ActionResult<RatingCurveValue>> Delete(RatingCurveValue ratingcurvevalue);
+       Task<ActionResult<bool>> Delete(int RatingCurveValueID);
        Task<ActionResult<RatingCurveValue>> Update(RatingCurveValue ratingcurvevalue);
        Task SetCulture(CultureInfo culture);
     }
@@ -88,12 +88,15 @@ namespace CSSPServices
 
             return await Task.FromResult(Ok(ratingCurveValue));
         }
-        public async Task<ActionResult<RatingCurveValue>> Delete(RatingCurveValue ratingCurveValue)
+        public async Task<ActionResult<bool>> Delete(int RatingCurveValueID)
         {
-            ValidationResults = Validate(new ValidationContext(ratingCurveValue), ActionDBTypeEnum.Delete);
-            if (ValidationResults.Count() > 0)
+            RatingCurveValue ratingCurveValue = (from c in db.RatingCurveValues
+                               where c.RatingCurveValueID == RatingCurveValueID
+                               select c).FirstOrDefault();
+            
+            if (ratingCurveValue == null)
             {
-               return await Task.FromResult(BadRequest(ValidationResults));
+                return await Task.FromResult(BadRequest(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "RatingCurveValue", "RatingCurveValueID", RatingCurveValueID.ToString())));
             }
 
             try
@@ -106,7 +109,7 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
 
-            return await Task.FromResult(Ok(ratingCurveValue));
+            return await Task.FromResult(Ok(true));
         }
         public async Task<ActionResult<RatingCurveValue>> Update(RatingCurveValue ratingCurveValue)
         {

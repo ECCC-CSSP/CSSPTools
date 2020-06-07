@@ -20,7 +20,7 @@ namespace CSSPWebAPI.Controllers
         Task<ActionResult<Tel>> Get(int TelID);
         Task<ActionResult<Tel>> Post(Tel tel);
         Task<ActionResult<Tel>> Put(Tel tel);
-        Task<ActionResult<Tel>> Delete(Tel tel);
+        Task<ActionResult<bool>> Delete(int TelID);
     }
 
     [Route("api/{culture}/[controller]")]
@@ -67,10 +67,10 @@ namespace CSSPWebAPI.Controllers
         {
             return await telService.Update(tel);
         }
-        [HttpDelete]
-        public async Task<ActionResult<Tel>> Delete(Tel tel)
+        [HttpDelete("{TelID}")]
+        public async Task<ActionResult<bool>> Delete(int TelID)
         {
-            return await telService.Delete(tel);
+            return await telService.Delete(TelID);
         }
         #endregion Functions public
 

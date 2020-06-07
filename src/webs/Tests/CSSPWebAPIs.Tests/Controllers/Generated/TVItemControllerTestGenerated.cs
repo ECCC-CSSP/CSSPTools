@@ -72,7 +72,7 @@ namespace CSSPWebAPIs.Tests.Controllers
                 var actionTVItemList = await tvItemController.Get();
                 Assert.Equal(200, ((ObjectResult)actionTVItemList.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionTVItemList.Result).Value);
-                List<TVItem> tvItemList = (List<TVItem>)(((OkObjectResult)actionTVItemList.Result).Value);
+                List<TVItem> tvItemList = (List<TVItem>)((OkObjectResult)actionTVItemList.Result).Value;
 
                 int count = ((List<TVItem>)((OkObjectResult)actionTVItemList.Result).Value).Count();
                 Assert.True(count > 0);
@@ -81,7 +81,7 @@ namespace CSSPWebAPIs.Tests.Controllers
                 var actionTVItem = await tvItemController.Get(tvItemList[0].TVItemID);
                 Assert.Equal(200, ((ObjectResult)actionTVItem.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionTVItem.Result).Value);
-                TVItem tvItem = (TVItem)(((OkObjectResult)actionTVItem.Result).Value);
+                TVItem tvItem = (TVItem)((OkObjectResult)actionTVItem.Result).Value;
                 Assert.NotNull(tvItem);
                 Assert.Equal(tvItemList[0].TVItemID, tvItem.TVItemID);
 
@@ -94,22 +94,22 @@ namespace CSSPWebAPIs.Tests.Controllers
                 var actionTVItemNew = await tvItemController.Post(tvItem);
                 Assert.Equal(200, ((ObjectResult)actionTVItemNew.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionTVItemNew.Result).Value);
-                TVItem tvItemNew = (TVItem)(((OkObjectResult)actionTVItemNew.Result).Value);
+                TVItem tvItemNew = (TVItem)((OkObjectResult)actionTVItemNew.Result).Value;
                 Assert.NotNull(tvItemNew);
 
                 // testing Put(TVItem tvItem)
                 var actionTVItemUpdate = await tvItemController.Put(tvItemNew);
                 Assert.Equal(200, ((ObjectResult)actionTVItemUpdate.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionTVItemUpdate.Result).Value);
-                TVItem tvItemUpdate = (TVItem)(((OkObjectResult)actionTVItemUpdate.Result).Value);
+                TVItem tvItemUpdate = (TVItem)((OkObjectResult)actionTVItemUpdate.Result).Value;
                 Assert.NotNull(tvItemUpdate);
 
-                // testing Delete(TVItem tvItem)
-                var actionTVItemDelete = await tvItemController.Delete(tvItemUpdate);
+                // testing Delete(int tvItem.TVItemID)
+                var actionTVItemDelete = await tvItemController.Delete(tvItemUpdate.TVItemID);
                 Assert.Equal(200, ((ObjectResult)actionTVItemDelete.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionTVItemDelete.Result).Value);
-                TVItem tvItemDelete = (TVItem)(((OkObjectResult)actionTVItemDelete.Result).Value);
-                Assert.NotNull(tvItemDelete);
+                bool retBool2 = (bool)((OkObjectResult)actionTVItemDelete.Result).Value;
+                Assert.True(retBool2);
             }
         }
         #endregion Functions public

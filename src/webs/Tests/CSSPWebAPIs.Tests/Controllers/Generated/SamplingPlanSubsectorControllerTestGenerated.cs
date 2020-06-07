@@ -72,7 +72,7 @@ namespace CSSPWebAPIs.Tests.Controllers
                 var actionSamplingPlanSubsectorList = await samplingPlanSubsectorController.Get();
                 Assert.Equal(200, ((ObjectResult)actionSamplingPlanSubsectorList.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionSamplingPlanSubsectorList.Result).Value);
-                List<SamplingPlanSubsector> samplingPlanSubsectorList = (List<SamplingPlanSubsector>)(((OkObjectResult)actionSamplingPlanSubsectorList.Result).Value);
+                List<SamplingPlanSubsector> samplingPlanSubsectorList = (List<SamplingPlanSubsector>)((OkObjectResult)actionSamplingPlanSubsectorList.Result).Value;
 
                 int count = ((List<SamplingPlanSubsector>)((OkObjectResult)actionSamplingPlanSubsectorList.Result).Value).Count();
                 Assert.True(count > 0);
@@ -81,7 +81,7 @@ namespace CSSPWebAPIs.Tests.Controllers
                 var actionSamplingPlanSubsector = await samplingPlanSubsectorController.Get(samplingPlanSubsectorList[0].SamplingPlanSubsectorID);
                 Assert.Equal(200, ((ObjectResult)actionSamplingPlanSubsector.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionSamplingPlanSubsector.Result).Value);
-                SamplingPlanSubsector samplingPlanSubsector = (SamplingPlanSubsector)(((OkObjectResult)actionSamplingPlanSubsector.Result).Value);
+                SamplingPlanSubsector samplingPlanSubsector = (SamplingPlanSubsector)((OkObjectResult)actionSamplingPlanSubsector.Result).Value;
                 Assert.NotNull(samplingPlanSubsector);
                 Assert.Equal(samplingPlanSubsectorList[0].SamplingPlanSubsectorID, samplingPlanSubsector.SamplingPlanSubsectorID);
 
@@ -90,22 +90,22 @@ namespace CSSPWebAPIs.Tests.Controllers
                 var actionSamplingPlanSubsectorNew = await samplingPlanSubsectorController.Post(samplingPlanSubsector);
                 Assert.Equal(200, ((ObjectResult)actionSamplingPlanSubsectorNew.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionSamplingPlanSubsectorNew.Result).Value);
-                SamplingPlanSubsector samplingPlanSubsectorNew = (SamplingPlanSubsector)(((OkObjectResult)actionSamplingPlanSubsectorNew.Result).Value);
+                SamplingPlanSubsector samplingPlanSubsectorNew = (SamplingPlanSubsector)((OkObjectResult)actionSamplingPlanSubsectorNew.Result).Value;
                 Assert.NotNull(samplingPlanSubsectorNew);
 
                 // testing Put(SamplingPlanSubsector samplingPlanSubsector)
                 var actionSamplingPlanSubsectorUpdate = await samplingPlanSubsectorController.Put(samplingPlanSubsectorNew);
                 Assert.Equal(200, ((ObjectResult)actionSamplingPlanSubsectorUpdate.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionSamplingPlanSubsectorUpdate.Result).Value);
-                SamplingPlanSubsector samplingPlanSubsectorUpdate = (SamplingPlanSubsector)(((OkObjectResult)actionSamplingPlanSubsectorUpdate.Result).Value);
+                SamplingPlanSubsector samplingPlanSubsectorUpdate = (SamplingPlanSubsector)((OkObjectResult)actionSamplingPlanSubsectorUpdate.Result).Value;
                 Assert.NotNull(samplingPlanSubsectorUpdate);
 
-                // testing Delete(SamplingPlanSubsector samplingPlanSubsector)
-                var actionSamplingPlanSubsectorDelete = await samplingPlanSubsectorController.Delete(samplingPlanSubsectorUpdate);
+                // testing Delete(int samplingPlanSubsector.SamplingPlanSubsectorID)
+                var actionSamplingPlanSubsectorDelete = await samplingPlanSubsectorController.Delete(samplingPlanSubsectorUpdate.SamplingPlanSubsectorID);
                 Assert.Equal(200, ((ObjectResult)actionSamplingPlanSubsectorDelete.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionSamplingPlanSubsectorDelete.Result).Value);
-                SamplingPlanSubsector samplingPlanSubsectorDelete = (SamplingPlanSubsector)(((OkObjectResult)actionSamplingPlanSubsectorDelete.Result).Value);
-                Assert.NotNull(samplingPlanSubsectorDelete);
+                bool retBool2 = (bool)((OkObjectResult)actionSamplingPlanSubsectorDelete.Result).Value;
+                Assert.True(retBool2);
             }
         }
         #endregion Functions public

@@ -72,7 +72,7 @@ namespace CSSPWebAPIs.Tests.Controllers
                 var actionVPResultList = await vpResultController.Get();
                 Assert.Equal(200, ((ObjectResult)actionVPResultList.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionVPResultList.Result).Value);
-                List<VPResult> vpResultList = (List<VPResult>)(((OkObjectResult)actionVPResultList.Result).Value);
+                List<VPResult> vpResultList = (List<VPResult>)((OkObjectResult)actionVPResultList.Result).Value;
 
                 int count = ((List<VPResult>)((OkObjectResult)actionVPResultList.Result).Value).Count();
                 Assert.True(count > 0);
@@ -81,7 +81,7 @@ namespace CSSPWebAPIs.Tests.Controllers
                 var actionVPResult = await vpResultController.Get(vpResultList[0].VPResultID);
                 Assert.Equal(200, ((ObjectResult)actionVPResult.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionVPResult.Result).Value);
-                VPResult vpResult = (VPResult)(((OkObjectResult)actionVPResult.Result).Value);
+                VPResult vpResult = (VPResult)((OkObjectResult)actionVPResult.Result).Value;
                 Assert.NotNull(vpResult);
                 Assert.Equal(vpResultList[0].VPResultID, vpResult.VPResultID);
 
@@ -90,22 +90,22 @@ namespace CSSPWebAPIs.Tests.Controllers
                 var actionVPResultNew = await vpResultController.Post(vpResult);
                 Assert.Equal(200, ((ObjectResult)actionVPResultNew.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionVPResultNew.Result).Value);
-                VPResult vpResultNew = (VPResult)(((OkObjectResult)actionVPResultNew.Result).Value);
+                VPResult vpResultNew = (VPResult)((OkObjectResult)actionVPResultNew.Result).Value;
                 Assert.NotNull(vpResultNew);
 
                 // testing Put(VPResult vpResult)
                 var actionVPResultUpdate = await vpResultController.Put(vpResultNew);
                 Assert.Equal(200, ((ObjectResult)actionVPResultUpdate.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionVPResultUpdate.Result).Value);
-                VPResult vpResultUpdate = (VPResult)(((OkObjectResult)actionVPResultUpdate.Result).Value);
+                VPResult vpResultUpdate = (VPResult)((OkObjectResult)actionVPResultUpdate.Result).Value;
                 Assert.NotNull(vpResultUpdate);
 
-                // testing Delete(VPResult vpResult)
-                var actionVPResultDelete = await vpResultController.Delete(vpResultUpdate);
+                // testing Delete(int vpResult.VPResultID)
+                var actionVPResultDelete = await vpResultController.Delete(vpResultUpdate.VPResultID);
                 Assert.Equal(200, ((ObjectResult)actionVPResultDelete.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionVPResultDelete.Result).Value);
-                VPResult vpResultDelete = (VPResult)(((OkObjectResult)actionVPResultDelete.Result).Value);
-                Assert.NotNull(vpResultDelete);
+                bool retBool2 = (bool)((OkObjectResult)actionVPResultDelete.Result).Value;
+                Assert.True(retBool2);
             }
         }
         #endregion Functions public

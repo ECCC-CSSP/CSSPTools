@@ -63,7 +63,7 @@ namespace CSSPServices.Tests
                var actionMWQMSiteList = await mwqmSiteService.GetMWQMSiteList();
                Assert.Equal(200, ((ObjectResult)actionMWQMSiteList.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionMWQMSiteList.Result).Value);
-               List<MWQMSite> mwqmSiteList = (List<MWQMSite>)(((OkObjectResult)actionMWQMSiteList.Result).Value);
+               List<MWQMSite> mwqmSiteList = (List<MWQMSite>)((OkObjectResult)actionMWQMSiteList.Result).Value;
 
                int count = ((List<MWQMSite>)((OkObjectResult)actionMWQMSiteList.Result).Value).Count();
                 Assert.True(count > 0);
@@ -72,22 +72,22 @@ namespace CSSPServices.Tests
                var actionMWQMSiteAdded = await mwqmSiteService.Add(mwqmSite);
                Assert.Equal(200, ((ObjectResult)actionMWQMSiteAdded.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionMWQMSiteAdded.Result).Value);
-               MWQMSite mwqmSiteAdded = (MWQMSite)(((OkObjectResult)actionMWQMSiteAdded.Result).Value);
+               MWQMSite mwqmSiteAdded = (MWQMSite)((OkObjectResult)actionMWQMSiteAdded.Result).Value;
                Assert.NotNull(mwqmSiteAdded);
 
                // Update MWQMSite
                var actionMWQMSiteUpdated = await mwqmSiteService.Update(mwqmSite);
                Assert.Equal(200, ((ObjectResult)actionMWQMSiteUpdated.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionMWQMSiteUpdated.Result).Value);
-               MWQMSite mwqmSiteUpdated = (MWQMSite)(((OkObjectResult)actionMWQMSiteUpdated.Result).Value);
+               MWQMSite mwqmSiteUpdated = (MWQMSite)((OkObjectResult)actionMWQMSiteUpdated.Result).Value;
                Assert.NotNull(mwqmSiteUpdated);
 
                // Delete MWQMSite
-               var actionMWQMSiteDeleted = await mwqmSiteService.Delete(mwqmSite);
+               var actionMWQMSiteDeleted = await mwqmSiteService.Delete(mwqmSite.MWQMSiteID);
                Assert.Equal(200, ((ObjectResult)actionMWQMSiteDeleted.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionMWQMSiteDeleted.Result).Value);
-               MWQMSite mwqmSiteDeleted = (MWQMSite)(((OkObjectResult)actionMWQMSiteDeleted.Result).Value);
-               Assert.NotNull(mwqmSiteDeleted);
+               bool retBool = (bool)((OkObjectResult)actionMWQMSiteDeleted.Result).Value;
+               Assert.True(retBool);
             }
         }
         #endregion Tests Generated CRUD

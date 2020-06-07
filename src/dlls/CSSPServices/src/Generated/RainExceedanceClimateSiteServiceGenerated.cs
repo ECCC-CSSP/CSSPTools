@@ -25,7 +25,7 @@ namespace CSSPServices
        Task<ActionResult<RainExceedanceClimateSite>> GetRainExceedanceClimateSiteWithRainExceedanceClimateSiteID(int RainExceedanceClimateSiteID);
        Task<ActionResult<List<RainExceedanceClimateSite>>> GetRainExceedanceClimateSiteList();
        Task<ActionResult<RainExceedanceClimateSite>> Add(RainExceedanceClimateSite rainexceedanceclimatesite);
-       Task<ActionResult<RainExceedanceClimateSite>> Delete(RainExceedanceClimateSite rainexceedanceclimatesite);
+       Task<ActionResult<bool>> Delete(int RainExceedanceClimateSiteID);
        Task<ActionResult<RainExceedanceClimateSite>> Update(RainExceedanceClimateSite rainexceedanceclimatesite);
        Task SetCulture(CultureInfo culture);
     }
@@ -88,12 +88,15 @@ namespace CSSPServices
 
             return await Task.FromResult(Ok(rainExceedanceClimateSite));
         }
-        public async Task<ActionResult<RainExceedanceClimateSite>> Delete(RainExceedanceClimateSite rainExceedanceClimateSite)
+        public async Task<ActionResult<bool>> Delete(int RainExceedanceClimateSiteID)
         {
-            ValidationResults = Validate(new ValidationContext(rainExceedanceClimateSite), ActionDBTypeEnum.Delete);
-            if (ValidationResults.Count() > 0)
+            RainExceedanceClimateSite rainExceedanceClimateSite = (from c in db.RainExceedanceClimateSites
+                               where c.RainExceedanceClimateSiteID == RainExceedanceClimateSiteID
+                               select c).FirstOrDefault();
+            
+            if (rainExceedanceClimateSite == null)
             {
-               return await Task.FromResult(BadRequest(ValidationResults));
+                return await Task.FromResult(BadRequest(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "RainExceedanceClimateSite", "RainExceedanceClimateSiteID", RainExceedanceClimateSiteID.ToString())));
             }
 
             try
@@ -106,7 +109,7 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
 
-            return await Task.FromResult(Ok(rainExceedanceClimateSite));
+            return await Task.FromResult(Ok(true));
         }
         public async Task<ActionResult<RainExceedanceClimateSite>> Update(RainExceedanceClimateSite rainExceedanceClimateSite)
         {

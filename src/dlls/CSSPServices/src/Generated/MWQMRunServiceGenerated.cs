@@ -25,7 +25,7 @@ namespace CSSPServices
        Task<ActionResult<MWQMRun>> GetMWQMRunWithMWQMRunID(int MWQMRunID);
        Task<ActionResult<List<MWQMRun>>> GetMWQMRunList();
        Task<ActionResult<MWQMRun>> Add(MWQMRun mwqmrun);
-       Task<ActionResult<MWQMRun>> Delete(MWQMRun mwqmrun);
+       Task<ActionResult<bool>> Delete(int MWQMRunID);
        Task<ActionResult<MWQMRun>> Update(MWQMRun mwqmrun);
        Task SetCulture(CultureInfo culture);
     }
@@ -88,12 +88,15 @@ namespace CSSPServices
 
             return await Task.FromResult(Ok(mwqmRun));
         }
-        public async Task<ActionResult<MWQMRun>> Delete(MWQMRun mwqmRun)
+        public async Task<ActionResult<bool>> Delete(int MWQMRunID)
         {
-            ValidationResults = Validate(new ValidationContext(mwqmRun), ActionDBTypeEnum.Delete);
-            if (ValidationResults.Count() > 0)
+            MWQMRun mwqmRun = (from c in db.MWQMRuns
+                               where c.MWQMRunID == MWQMRunID
+                               select c).FirstOrDefault();
+            
+            if (mwqmRun == null)
             {
-               return await Task.FromResult(BadRequest(ValidationResults));
+                return await Task.FromResult(BadRequest(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "MWQMRun", "MWQMRunID", MWQMRunID.ToString())));
             }
 
             try
@@ -106,7 +109,7 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
 
-            return await Task.FromResult(Ok(mwqmRun));
+            return await Task.FromResult(Ok(true));
         }
         public async Task<ActionResult<MWQMRun>> Update(MWQMRun mwqmRun)
         {

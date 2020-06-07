@@ -139,7 +139,7 @@ namespace ServicesClassNameServiceGeneratedServices.Services
                     {
                         sb.AppendLine($@"       Task<ActionResult<{ dllTypeInfoModels.Type.Name }>> Add({ dllTypeInfoModels.Type.Name } { dllTypeInfoModels.Type.Name.ToLower() });");
                     }
-                    sb.AppendLine($@"       Task<ActionResult<{ dllTypeInfoModels.Type.Name }>> Delete({ dllTypeInfoModels.Type.Name } { dllTypeInfoModels.Type.Name.ToLower() });");
+                    sb.AppendLine($@"       Task<ActionResult<bool>> Delete(int { dllTypeInfoModels.Type.Name }ID);");
                     sb.AppendLine($@"       Task<ActionResult<{ dllTypeInfoModels.Type.Name }>> Update({ dllTypeInfoModels.Type.Name } { dllTypeInfoModels.Type.Name.ToLower() });");
                     sb.AppendLine($@"       Task SetCulture(CultureInfo culture);");
                     sb.AppendLine(@"    }");

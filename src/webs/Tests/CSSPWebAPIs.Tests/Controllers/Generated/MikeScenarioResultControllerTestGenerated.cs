@@ -72,7 +72,7 @@ namespace CSSPWebAPIs.Tests.Controllers
                 var actionMikeScenarioResultList = await mikeScenarioResultController.Get();
                 Assert.Equal(200, ((ObjectResult)actionMikeScenarioResultList.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionMikeScenarioResultList.Result).Value);
-                List<MikeScenarioResult> mikeScenarioResultList = (List<MikeScenarioResult>)(((OkObjectResult)actionMikeScenarioResultList.Result).Value);
+                List<MikeScenarioResult> mikeScenarioResultList = (List<MikeScenarioResult>)((OkObjectResult)actionMikeScenarioResultList.Result).Value;
 
                 int count = ((List<MikeScenarioResult>)((OkObjectResult)actionMikeScenarioResultList.Result).Value).Count();
                 Assert.True(count > 0);
@@ -81,7 +81,7 @@ namespace CSSPWebAPIs.Tests.Controllers
                 var actionMikeScenarioResult = await mikeScenarioResultController.Get(mikeScenarioResultList[0].MikeScenarioResultID);
                 Assert.Equal(200, ((ObjectResult)actionMikeScenarioResult.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionMikeScenarioResult.Result).Value);
-                MikeScenarioResult mikeScenarioResult = (MikeScenarioResult)(((OkObjectResult)actionMikeScenarioResult.Result).Value);
+                MikeScenarioResult mikeScenarioResult = (MikeScenarioResult)((OkObjectResult)actionMikeScenarioResult.Result).Value;
                 Assert.NotNull(mikeScenarioResult);
                 Assert.Equal(mikeScenarioResultList[0].MikeScenarioResultID, mikeScenarioResult.MikeScenarioResultID);
 
@@ -90,22 +90,22 @@ namespace CSSPWebAPIs.Tests.Controllers
                 var actionMikeScenarioResultNew = await mikeScenarioResultController.Post(mikeScenarioResult);
                 Assert.Equal(200, ((ObjectResult)actionMikeScenarioResultNew.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionMikeScenarioResultNew.Result).Value);
-                MikeScenarioResult mikeScenarioResultNew = (MikeScenarioResult)(((OkObjectResult)actionMikeScenarioResultNew.Result).Value);
+                MikeScenarioResult mikeScenarioResultNew = (MikeScenarioResult)((OkObjectResult)actionMikeScenarioResultNew.Result).Value;
                 Assert.NotNull(mikeScenarioResultNew);
 
                 // testing Put(MikeScenarioResult mikeScenarioResult)
                 var actionMikeScenarioResultUpdate = await mikeScenarioResultController.Put(mikeScenarioResultNew);
                 Assert.Equal(200, ((ObjectResult)actionMikeScenarioResultUpdate.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionMikeScenarioResultUpdate.Result).Value);
-                MikeScenarioResult mikeScenarioResultUpdate = (MikeScenarioResult)(((OkObjectResult)actionMikeScenarioResultUpdate.Result).Value);
+                MikeScenarioResult mikeScenarioResultUpdate = (MikeScenarioResult)((OkObjectResult)actionMikeScenarioResultUpdate.Result).Value;
                 Assert.NotNull(mikeScenarioResultUpdate);
 
-                // testing Delete(MikeScenarioResult mikeScenarioResult)
-                var actionMikeScenarioResultDelete = await mikeScenarioResultController.Delete(mikeScenarioResultUpdate);
+                // testing Delete(int mikeScenarioResult.MikeScenarioResultID)
+                var actionMikeScenarioResultDelete = await mikeScenarioResultController.Delete(mikeScenarioResultUpdate.MikeScenarioResultID);
                 Assert.Equal(200, ((ObjectResult)actionMikeScenarioResultDelete.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionMikeScenarioResultDelete.Result).Value);
-                MikeScenarioResult mikeScenarioResultDelete = (MikeScenarioResult)(((OkObjectResult)actionMikeScenarioResultDelete.Result).Value);
-                Assert.NotNull(mikeScenarioResultDelete);
+                bool retBool2 = (bool)((OkObjectResult)actionMikeScenarioResultDelete.Result).Value;
+                Assert.True(retBool2);
             }
         }
         #endregion Functions public

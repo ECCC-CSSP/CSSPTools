@@ -25,7 +25,7 @@ namespace CSSPServices
        Task<ActionResult<ClimateDataValue>> GetClimateDataValueWithClimateDataValueID(int ClimateDataValueID);
        Task<ActionResult<List<ClimateDataValue>>> GetClimateDataValueList();
        Task<ActionResult<ClimateDataValue>> Add(ClimateDataValue climatedatavalue);
-       Task<ActionResult<ClimateDataValue>> Delete(ClimateDataValue climatedatavalue);
+       Task<ActionResult<bool>> Delete(int ClimateDataValueID);
        Task<ActionResult<ClimateDataValue>> Update(ClimateDataValue climatedatavalue);
        Task SetCulture(CultureInfo culture);
     }
@@ -88,12 +88,15 @@ namespace CSSPServices
 
             return await Task.FromResult(Ok(climateDataValue));
         }
-        public async Task<ActionResult<ClimateDataValue>> Delete(ClimateDataValue climateDataValue)
+        public async Task<ActionResult<bool>> Delete(int ClimateDataValueID)
         {
-            ValidationResults = Validate(new ValidationContext(climateDataValue), ActionDBTypeEnum.Delete);
-            if (ValidationResults.Count() > 0)
+            ClimateDataValue climateDataValue = (from c in db.ClimateDataValues
+                               where c.ClimateDataValueID == ClimateDataValueID
+                               select c).FirstOrDefault();
+            
+            if (climateDataValue == null)
             {
-               return await Task.FromResult(BadRequest(ValidationResults));
+                return await Task.FromResult(BadRequest(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "ClimateDataValue", "ClimateDataValueID", ClimateDataValueID.ToString())));
             }
 
             try
@@ -106,7 +109,7 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
 
-            return await Task.FromResult(Ok(climateDataValue));
+            return await Task.FromResult(Ok(true));
         }
         public async Task<ActionResult<ClimateDataValue>> Update(ClimateDataValue climateDataValue)
         {

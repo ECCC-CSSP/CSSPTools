@@ -20,7 +20,7 @@ namespace CSSPWebAPI.Controllers
         Task<ActionResult<MWQMSample>> Get(int MWQMSampleID);
         Task<ActionResult<MWQMSample>> Post(MWQMSample mwqmSample);
         Task<ActionResult<MWQMSample>> Put(MWQMSample mwqmSample);
-        Task<ActionResult<MWQMSample>> Delete(MWQMSample mwqmSample);
+        Task<ActionResult<bool>> Delete(int MWQMSampleID);
     }
 
     [Route("api/{culture}/[controller]")]
@@ -67,10 +67,10 @@ namespace CSSPWebAPI.Controllers
         {
             return await mwqmSampleService.Update(mwqmSample);
         }
-        [HttpDelete]
-        public async Task<ActionResult<MWQMSample>> Delete(MWQMSample mwqmSample)
+        [HttpDelete("{MWQMSampleID}")]
+        public async Task<ActionResult<bool>> Delete(int MWQMSampleID)
         {
-            return await mwqmSampleService.Delete(mwqmSample);
+            return await mwqmSampleService.Delete(MWQMSampleID);
         }
         #endregion Functions public
 

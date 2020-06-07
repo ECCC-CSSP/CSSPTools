@@ -104,7 +104,7 @@ namespace WebAPIClassNameControllerGeneratedServices.Services
                     sb.AppendLine($@"        Task<ActionResult<{ TypeName }>> Get(int { TypeName }ID);");
                     sb.AppendLine($@"        Task<ActionResult<{ TypeName }>> Post({ TypeName } { TypeNameLower });");
                     sb.AppendLine($@"        Task<ActionResult<{ TypeName }>> Put({ TypeName } { TypeNameLower });");
-                    sb.AppendLine($@"        Task<ActionResult<{ TypeName }>> Delete({ TypeName } { TypeNameLower });");
+                    sb.AppendLine($@"        Task<ActionResult<bool>> Delete(int { TypeName }ID);");
                     sb.AppendLine(@"    }");
                     sb.AppendLine(@"");
                     sb.AppendLine(@"    [Route(""api/{culture}/[controller]"")]");
@@ -163,10 +163,10 @@ namespace WebAPIClassNameControllerGeneratedServices.Services
                     sb.AppendLine($@"            return await { TypeNameLower }Service.Update({ TypeNameLower });");
                     sb.AppendLine(@"        }");
 
-                    sb.AppendLine(@"        [HttpDelete]");
-                    sb.AppendLine($@"        public async Task<ActionResult<{ TypeName }>> Delete({ TypeName } { TypeNameLower })");
+                    sb.AppendLine($@"        [HttpDelete(""{{{ TypeName }ID}}"")]");
+                    sb.AppendLine($@"        public async Task<ActionResult<bool>> Delete(int { TypeName }ID)");
                     sb.AppendLine(@"        {");
-                    sb.AppendLine($@"            return await { TypeNameLower }Service.Delete({ TypeNameLower });");
+                    sb.AppendLine($@"            return await { TypeNameLower }Service.Delete({ TypeName }ID);");
                     sb.AppendLine(@"        }");
 
                     sb.AppendLine(@"        #endregion Functions public");

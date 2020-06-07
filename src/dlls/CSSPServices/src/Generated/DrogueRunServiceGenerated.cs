@@ -25,7 +25,7 @@ namespace CSSPServices
        Task<ActionResult<DrogueRun>> GetDrogueRunWithDrogueRunID(int DrogueRunID);
        Task<ActionResult<List<DrogueRun>>> GetDrogueRunList();
        Task<ActionResult<DrogueRun>> Add(DrogueRun droguerun);
-       Task<ActionResult<DrogueRun>> Delete(DrogueRun droguerun);
+       Task<ActionResult<bool>> Delete(int DrogueRunID);
        Task<ActionResult<DrogueRun>> Update(DrogueRun droguerun);
        Task SetCulture(CultureInfo culture);
     }
@@ -88,12 +88,15 @@ namespace CSSPServices
 
             return await Task.FromResult(Ok(drogueRun));
         }
-        public async Task<ActionResult<DrogueRun>> Delete(DrogueRun drogueRun)
+        public async Task<ActionResult<bool>> Delete(int DrogueRunID)
         {
-            ValidationResults = Validate(new ValidationContext(drogueRun), ActionDBTypeEnum.Delete);
-            if (ValidationResults.Count() > 0)
+            DrogueRun drogueRun = (from c in db.DrogueRuns
+                               where c.DrogueRunID == DrogueRunID
+                               select c).FirstOrDefault();
+            
+            if (drogueRun == null)
             {
-               return await Task.FromResult(BadRequest(ValidationResults));
+                return await Task.FromResult(BadRequest(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "DrogueRun", "DrogueRunID", DrogueRunID.ToString())));
             }
 
             try
@@ -106,7 +109,7 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
 
-            return await Task.FromResult(Ok(drogueRun));
+            return await Task.FromResult(Ok(true));
         }
         public async Task<ActionResult<DrogueRun>> Update(DrogueRun drogueRun)
         {

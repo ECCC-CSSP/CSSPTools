@@ -72,7 +72,7 @@ namespace CSSPWebAPIs.Tests.Controllers
                 var actionTVFileList = await tvFileController.Get();
                 Assert.Equal(200, ((ObjectResult)actionTVFileList.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionTVFileList.Result).Value);
-                List<TVFile> tvFileList = (List<TVFile>)(((OkObjectResult)actionTVFileList.Result).Value);
+                List<TVFile> tvFileList = (List<TVFile>)((OkObjectResult)actionTVFileList.Result).Value;
 
                 int count = ((List<TVFile>)((OkObjectResult)actionTVFileList.Result).Value).Count();
                 Assert.True(count > 0);
@@ -81,7 +81,7 @@ namespace CSSPWebAPIs.Tests.Controllers
                 var actionTVFile = await tvFileController.Get(tvFileList[0].TVFileID);
                 Assert.Equal(200, ((ObjectResult)actionTVFile.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionTVFile.Result).Value);
-                TVFile tvFile = (TVFile)(((OkObjectResult)actionTVFile.Result).Value);
+                TVFile tvFile = (TVFile)((OkObjectResult)actionTVFile.Result).Value;
                 Assert.NotNull(tvFile);
                 Assert.Equal(tvFileList[0].TVFileID, tvFile.TVFileID);
 
@@ -90,22 +90,22 @@ namespace CSSPWebAPIs.Tests.Controllers
                 var actionTVFileNew = await tvFileController.Post(tvFile);
                 Assert.Equal(200, ((ObjectResult)actionTVFileNew.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionTVFileNew.Result).Value);
-                TVFile tvFileNew = (TVFile)(((OkObjectResult)actionTVFileNew.Result).Value);
+                TVFile tvFileNew = (TVFile)((OkObjectResult)actionTVFileNew.Result).Value;
                 Assert.NotNull(tvFileNew);
 
                 // testing Put(TVFile tvFile)
                 var actionTVFileUpdate = await tvFileController.Put(tvFileNew);
                 Assert.Equal(200, ((ObjectResult)actionTVFileUpdate.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionTVFileUpdate.Result).Value);
-                TVFile tvFileUpdate = (TVFile)(((OkObjectResult)actionTVFileUpdate.Result).Value);
+                TVFile tvFileUpdate = (TVFile)((OkObjectResult)actionTVFileUpdate.Result).Value;
                 Assert.NotNull(tvFileUpdate);
 
-                // testing Delete(TVFile tvFile)
-                var actionTVFileDelete = await tvFileController.Delete(tvFileUpdate);
+                // testing Delete(int tvFile.TVFileID)
+                var actionTVFileDelete = await tvFileController.Delete(tvFileUpdate.TVFileID);
                 Assert.Equal(200, ((ObjectResult)actionTVFileDelete.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionTVFileDelete.Result).Value);
-                TVFile tvFileDelete = (TVFile)(((OkObjectResult)actionTVFileDelete.Result).Value);
-                Assert.NotNull(tvFileDelete);
+                bool retBool2 = (bool)((OkObjectResult)actionTVFileDelete.Result).Value;
+                Assert.True(retBool2);
             }
         }
         #endregion Functions public

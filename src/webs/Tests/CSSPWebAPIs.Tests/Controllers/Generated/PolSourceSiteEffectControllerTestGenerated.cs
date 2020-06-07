@@ -72,7 +72,7 @@ namespace CSSPWebAPIs.Tests.Controllers
                 var actionPolSourceSiteEffectList = await polSourceSiteEffectController.Get();
                 Assert.Equal(200, ((ObjectResult)actionPolSourceSiteEffectList.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionPolSourceSiteEffectList.Result).Value);
-                List<PolSourceSiteEffect> polSourceSiteEffectList = (List<PolSourceSiteEffect>)(((OkObjectResult)actionPolSourceSiteEffectList.Result).Value);
+                List<PolSourceSiteEffect> polSourceSiteEffectList = (List<PolSourceSiteEffect>)((OkObjectResult)actionPolSourceSiteEffectList.Result).Value;
 
                 int count = ((List<PolSourceSiteEffect>)((OkObjectResult)actionPolSourceSiteEffectList.Result).Value).Count();
                 Assert.True(count > 0);
@@ -81,7 +81,7 @@ namespace CSSPWebAPIs.Tests.Controllers
                 var actionPolSourceSiteEffect = await polSourceSiteEffectController.Get(polSourceSiteEffectList[0].PolSourceSiteEffectID);
                 Assert.Equal(200, ((ObjectResult)actionPolSourceSiteEffect.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionPolSourceSiteEffect.Result).Value);
-                PolSourceSiteEffect polSourceSiteEffect = (PolSourceSiteEffect)(((OkObjectResult)actionPolSourceSiteEffect.Result).Value);
+                PolSourceSiteEffect polSourceSiteEffect = (PolSourceSiteEffect)((OkObjectResult)actionPolSourceSiteEffect.Result).Value;
                 Assert.NotNull(polSourceSiteEffect);
                 Assert.Equal(polSourceSiteEffectList[0].PolSourceSiteEffectID, polSourceSiteEffect.PolSourceSiteEffectID);
 
@@ -90,22 +90,22 @@ namespace CSSPWebAPIs.Tests.Controllers
                 var actionPolSourceSiteEffectNew = await polSourceSiteEffectController.Post(polSourceSiteEffect);
                 Assert.Equal(200, ((ObjectResult)actionPolSourceSiteEffectNew.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionPolSourceSiteEffectNew.Result).Value);
-                PolSourceSiteEffect polSourceSiteEffectNew = (PolSourceSiteEffect)(((OkObjectResult)actionPolSourceSiteEffectNew.Result).Value);
+                PolSourceSiteEffect polSourceSiteEffectNew = (PolSourceSiteEffect)((OkObjectResult)actionPolSourceSiteEffectNew.Result).Value;
                 Assert.NotNull(polSourceSiteEffectNew);
 
                 // testing Put(PolSourceSiteEffect polSourceSiteEffect)
                 var actionPolSourceSiteEffectUpdate = await polSourceSiteEffectController.Put(polSourceSiteEffectNew);
                 Assert.Equal(200, ((ObjectResult)actionPolSourceSiteEffectUpdate.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionPolSourceSiteEffectUpdate.Result).Value);
-                PolSourceSiteEffect polSourceSiteEffectUpdate = (PolSourceSiteEffect)(((OkObjectResult)actionPolSourceSiteEffectUpdate.Result).Value);
+                PolSourceSiteEffect polSourceSiteEffectUpdate = (PolSourceSiteEffect)((OkObjectResult)actionPolSourceSiteEffectUpdate.Result).Value;
                 Assert.NotNull(polSourceSiteEffectUpdate);
 
-                // testing Delete(PolSourceSiteEffect polSourceSiteEffect)
-                var actionPolSourceSiteEffectDelete = await polSourceSiteEffectController.Delete(polSourceSiteEffectUpdate);
+                // testing Delete(int polSourceSiteEffect.PolSourceSiteEffectID)
+                var actionPolSourceSiteEffectDelete = await polSourceSiteEffectController.Delete(polSourceSiteEffectUpdate.PolSourceSiteEffectID);
                 Assert.Equal(200, ((ObjectResult)actionPolSourceSiteEffectDelete.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionPolSourceSiteEffectDelete.Result).Value);
-                PolSourceSiteEffect polSourceSiteEffectDelete = (PolSourceSiteEffect)(((OkObjectResult)actionPolSourceSiteEffectDelete.Result).Value);
-                Assert.NotNull(polSourceSiteEffectDelete);
+                bool retBool2 = (bool)((OkObjectResult)actionPolSourceSiteEffectDelete.Result).Value;
+                Assert.True(retBool2);
             }
         }
         #endregion Functions public

@@ -72,7 +72,7 @@ namespace CSSPWebAPIs.Tests.Controllers
                 var actionReportTypeList = await reportTypeController.Get();
                 Assert.Equal(200, ((ObjectResult)actionReportTypeList.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionReportTypeList.Result).Value);
-                List<ReportType> reportTypeList = (List<ReportType>)(((OkObjectResult)actionReportTypeList.Result).Value);
+                List<ReportType> reportTypeList = (List<ReportType>)((OkObjectResult)actionReportTypeList.Result).Value;
 
                 int count = ((List<ReportType>)((OkObjectResult)actionReportTypeList.Result).Value).Count();
                 Assert.True(count > 0);
@@ -81,7 +81,7 @@ namespace CSSPWebAPIs.Tests.Controllers
                 var actionReportType = await reportTypeController.Get(reportTypeList[0].ReportTypeID);
                 Assert.Equal(200, ((ObjectResult)actionReportType.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionReportType.Result).Value);
-                ReportType reportType = (ReportType)(((OkObjectResult)actionReportType.Result).Value);
+                ReportType reportType = (ReportType)((OkObjectResult)actionReportType.Result).Value;
                 Assert.NotNull(reportType);
                 Assert.Equal(reportTypeList[0].ReportTypeID, reportType.ReportTypeID);
 
@@ -90,22 +90,22 @@ namespace CSSPWebAPIs.Tests.Controllers
                 var actionReportTypeNew = await reportTypeController.Post(reportType);
                 Assert.Equal(200, ((ObjectResult)actionReportTypeNew.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionReportTypeNew.Result).Value);
-                ReportType reportTypeNew = (ReportType)(((OkObjectResult)actionReportTypeNew.Result).Value);
+                ReportType reportTypeNew = (ReportType)((OkObjectResult)actionReportTypeNew.Result).Value;
                 Assert.NotNull(reportTypeNew);
 
                 // testing Put(ReportType reportType)
                 var actionReportTypeUpdate = await reportTypeController.Put(reportTypeNew);
                 Assert.Equal(200, ((ObjectResult)actionReportTypeUpdate.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionReportTypeUpdate.Result).Value);
-                ReportType reportTypeUpdate = (ReportType)(((OkObjectResult)actionReportTypeUpdate.Result).Value);
+                ReportType reportTypeUpdate = (ReportType)((OkObjectResult)actionReportTypeUpdate.Result).Value;
                 Assert.NotNull(reportTypeUpdate);
 
-                // testing Delete(ReportType reportType)
-                var actionReportTypeDelete = await reportTypeController.Delete(reportTypeUpdate);
+                // testing Delete(int reportType.ReportTypeID)
+                var actionReportTypeDelete = await reportTypeController.Delete(reportTypeUpdate.ReportTypeID);
                 Assert.Equal(200, ((ObjectResult)actionReportTypeDelete.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionReportTypeDelete.Result).Value);
-                ReportType reportTypeDelete = (ReportType)(((OkObjectResult)actionReportTypeDelete.Result).Value);
-                Assert.NotNull(reportTypeDelete);
+                bool retBool2 = (bool)((OkObjectResult)actionReportTypeDelete.Result).Value;
+                Assert.True(retBool2);
             }
         }
         #endregion Functions public

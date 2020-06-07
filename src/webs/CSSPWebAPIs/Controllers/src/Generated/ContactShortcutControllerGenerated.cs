@@ -20,7 +20,7 @@ namespace CSSPWebAPI.Controllers
         Task<ActionResult<ContactShortcut>> Get(int ContactShortcutID);
         Task<ActionResult<ContactShortcut>> Post(ContactShortcut contactShortcut);
         Task<ActionResult<ContactShortcut>> Put(ContactShortcut contactShortcut);
-        Task<ActionResult<ContactShortcut>> Delete(ContactShortcut contactShortcut);
+        Task<ActionResult<bool>> Delete(int ContactShortcutID);
     }
 
     [Route("api/{culture}/[controller]")]
@@ -67,10 +67,10 @@ namespace CSSPWebAPI.Controllers
         {
             return await contactShortcutService.Update(contactShortcut);
         }
-        [HttpDelete]
-        public async Task<ActionResult<ContactShortcut>> Delete(ContactShortcut contactShortcut)
+        [HttpDelete("{ContactShortcutID}")]
+        public async Task<ActionResult<bool>> Delete(int ContactShortcutID)
         {
-            return await contactShortcutService.Delete(contactShortcut);
+            return await contactShortcutService.Delete(ContactShortcutID);
         }
         #endregion Functions public
 

@@ -72,7 +72,7 @@ namespace CSSPWebAPIs.Tests.Controllers
                 var actionSpillList = await spillController.Get();
                 Assert.Equal(200, ((ObjectResult)actionSpillList.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionSpillList.Result).Value);
-                List<Spill> spillList = (List<Spill>)(((OkObjectResult)actionSpillList.Result).Value);
+                List<Spill> spillList = (List<Spill>)((OkObjectResult)actionSpillList.Result).Value;
 
                 int count = ((List<Spill>)((OkObjectResult)actionSpillList.Result).Value).Count();
                 Assert.True(count > 0);
@@ -81,7 +81,7 @@ namespace CSSPWebAPIs.Tests.Controllers
                 var actionSpill = await spillController.Get(spillList[0].SpillID);
                 Assert.Equal(200, ((ObjectResult)actionSpill.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionSpill.Result).Value);
-                Spill spill = (Spill)(((OkObjectResult)actionSpill.Result).Value);
+                Spill spill = (Spill)((OkObjectResult)actionSpill.Result).Value;
                 Assert.NotNull(spill);
                 Assert.Equal(spillList[0].SpillID, spill.SpillID);
 
@@ -90,22 +90,22 @@ namespace CSSPWebAPIs.Tests.Controllers
                 var actionSpillNew = await spillController.Post(spill);
                 Assert.Equal(200, ((ObjectResult)actionSpillNew.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionSpillNew.Result).Value);
-                Spill spillNew = (Spill)(((OkObjectResult)actionSpillNew.Result).Value);
+                Spill spillNew = (Spill)((OkObjectResult)actionSpillNew.Result).Value;
                 Assert.NotNull(spillNew);
 
                 // testing Put(Spill spill)
                 var actionSpillUpdate = await spillController.Put(spillNew);
                 Assert.Equal(200, ((ObjectResult)actionSpillUpdate.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionSpillUpdate.Result).Value);
-                Spill spillUpdate = (Spill)(((OkObjectResult)actionSpillUpdate.Result).Value);
+                Spill spillUpdate = (Spill)((OkObjectResult)actionSpillUpdate.Result).Value;
                 Assert.NotNull(spillUpdate);
 
-                // testing Delete(Spill spill)
-                var actionSpillDelete = await spillController.Delete(spillUpdate);
+                // testing Delete(int spill.SpillID)
+                var actionSpillDelete = await spillController.Delete(spillUpdate.SpillID);
                 Assert.Equal(200, ((ObjectResult)actionSpillDelete.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionSpillDelete.Result).Value);
-                Spill spillDelete = (Spill)(((OkObjectResult)actionSpillDelete.Result).Value);
-                Assert.NotNull(spillDelete);
+                bool retBool2 = (bool)((OkObjectResult)actionSpillDelete.Result).Value;
+                Assert.True(retBool2);
             }
         }
         #endregion Functions public

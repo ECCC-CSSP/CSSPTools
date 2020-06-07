@@ -72,7 +72,7 @@ namespace CSSPWebAPIs.Tests.Controllers
                 var actionPolSourceGroupingLanguageList = await polSourceGroupingLanguageController.Get();
                 Assert.Equal(200, ((ObjectResult)actionPolSourceGroupingLanguageList.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionPolSourceGroupingLanguageList.Result).Value);
-                List<PolSourceGroupingLanguage> polSourceGroupingLanguageList = (List<PolSourceGroupingLanguage>)(((OkObjectResult)actionPolSourceGroupingLanguageList.Result).Value);
+                List<PolSourceGroupingLanguage> polSourceGroupingLanguageList = (List<PolSourceGroupingLanguage>)((OkObjectResult)actionPolSourceGroupingLanguageList.Result).Value;
 
                 int count = ((List<PolSourceGroupingLanguage>)((OkObjectResult)actionPolSourceGroupingLanguageList.Result).Value).Count();
                 Assert.True(count > 0);
@@ -81,7 +81,7 @@ namespace CSSPWebAPIs.Tests.Controllers
                 var actionPolSourceGroupingLanguage = await polSourceGroupingLanguageController.Get(polSourceGroupingLanguageList[0].PolSourceGroupingLanguageID);
                 Assert.Equal(200, ((ObjectResult)actionPolSourceGroupingLanguage.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionPolSourceGroupingLanguage.Result).Value);
-                PolSourceGroupingLanguage polSourceGroupingLanguage = (PolSourceGroupingLanguage)(((OkObjectResult)actionPolSourceGroupingLanguage.Result).Value);
+                PolSourceGroupingLanguage polSourceGroupingLanguage = (PolSourceGroupingLanguage)((OkObjectResult)actionPolSourceGroupingLanguage.Result).Value;
                 Assert.NotNull(polSourceGroupingLanguage);
                 Assert.Equal(polSourceGroupingLanguageList[0].PolSourceGroupingLanguageID, polSourceGroupingLanguage.PolSourceGroupingLanguageID);
 
@@ -90,22 +90,22 @@ namespace CSSPWebAPIs.Tests.Controllers
                 var actionPolSourceGroupingLanguageNew = await polSourceGroupingLanguageController.Post(polSourceGroupingLanguage);
                 Assert.Equal(200, ((ObjectResult)actionPolSourceGroupingLanguageNew.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionPolSourceGroupingLanguageNew.Result).Value);
-                PolSourceGroupingLanguage polSourceGroupingLanguageNew = (PolSourceGroupingLanguage)(((OkObjectResult)actionPolSourceGroupingLanguageNew.Result).Value);
+                PolSourceGroupingLanguage polSourceGroupingLanguageNew = (PolSourceGroupingLanguage)((OkObjectResult)actionPolSourceGroupingLanguageNew.Result).Value;
                 Assert.NotNull(polSourceGroupingLanguageNew);
 
                 // testing Put(PolSourceGroupingLanguage polSourceGroupingLanguage)
                 var actionPolSourceGroupingLanguageUpdate = await polSourceGroupingLanguageController.Put(polSourceGroupingLanguageNew);
                 Assert.Equal(200, ((ObjectResult)actionPolSourceGroupingLanguageUpdate.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionPolSourceGroupingLanguageUpdate.Result).Value);
-                PolSourceGroupingLanguage polSourceGroupingLanguageUpdate = (PolSourceGroupingLanguage)(((OkObjectResult)actionPolSourceGroupingLanguageUpdate.Result).Value);
+                PolSourceGroupingLanguage polSourceGroupingLanguageUpdate = (PolSourceGroupingLanguage)((OkObjectResult)actionPolSourceGroupingLanguageUpdate.Result).Value;
                 Assert.NotNull(polSourceGroupingLanguageUpdate);
 
-                // testing Delete(PolSourceGroupingLanguage polSourceGroupingLanguage)
-                var actionPolSourceGroupingLanguageDelete = await polSourceGroupingLanguageController.Delete(polSourceGroupingLanguageUpdate);
+                // testing Delete(int polSourceGroupingLanguage.PolSourceGroupingLanguageID)
+                var actionPolSourceGroupingLanguageDelete = await polSourceGroupingLanguageController.Delete(polSourceGroupingLanguageUpdate.PolSourceGroupingLanguageID);
                 Assert.Equal(200, ((ObjectResult)actionPolSourceGroupingLanguageDelete.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionPolSourceGroupingLanguageDelete.Result).Value);
-                PolSourceGroupingLanguage polSourceGroupingLanguageDelete = (PolSourceGroupingLanguage)(((OkObjectResult)actionPolSourceGroupingLanguageDelete.Result).Value);
-                Assert.NotNull(polSourceGroupingLanguageDelete);
+                bool retBool2 = (bool)((OkObjectResult)actionPolSourceGroupingLanguageDelete.Result).Value;
+                Assert.True(retBool2);
             }
         }
         #endregion Functions public

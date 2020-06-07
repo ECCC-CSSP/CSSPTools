@@ -25,7 +25,7 @@ namespace CSSPServices
        Task<ActionResult<EmailDistributionListContact>> GetEmailDistributionListContactWithEmailDistributionListContactID(int EmailDistributionListContactID);
        Task<ActionResult<List<EmailDistributionListContact>>> GetEmailDistributionListContactList();
        Task<ActionResult<EmailDistributionListContact>> Add(EmailDistributionListContact emaildistributionlistcontact);
-       Task<ActionResult<EmailDistributionListContact>> Delete(EmailDistributionListContact emaildistributionlistcontact);
+       Task<ActionResult<bool>> Delete(int EmailDistributionListContactID);
        Task<ActionResult<EmailDistributionListContact>> Update(EmailDistributionListContact emaildistributionlistcontact);
        Task SetCulture(CultureInfo culture);
     }
@@ -88,12 +88,15 @@ namespace CSSPServices
 
             return await Task.FromResult(Ok(emailDistributionListContact));
         }
-        public async Task<ActionResult<EmailDistributionListContact>> Delete(EmailDistributionListContact emailDistributionListContact)
+        public async Task<ActionResult<bool>> Delete(int EmailDistributionListContactID)
         {
-            ValidationResults = Validate(new ValidationContext(emailDistributionListContact), ActionDBTypeEnum.Delete);
-            if (ValidationResults.Count() > 0)
+            EmailDistributionListContact emailDistributionListContact = (from c in db.EmailDistributionListContacts
+                               where c.EmailDistributionListContactID == EmailDistributionListContactID
+                               select c).FirstOrDefault();
+            
+            if (emailDistributionListContact == null)
             {
-               return await Task.FromResult(BadRequest(ValidationResults));
+                return await Task.FromResult(BadRequest(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "EmailDistributionListContact", "EmailDistributionListContactID", EmailDistributionListContactID.ToString())));
             }
 
             try
@@ -106,7 +109,7 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
 
-            return await Task.FromResult(Ok(emailDistributionListContact));
+            return await Task.FromResult(Ok(true));
         }
         public async Task<ActionResult<EmailDistributionListContact>> Update(EmailDistributionListContact emailDistributionListContact)
         {

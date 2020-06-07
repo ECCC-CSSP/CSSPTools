@@ -63,7 +63,7 @@ namespace CSSPServices.Tests
                var actionEmailList = await emailService.GetEmailList();
                Assert.Equal(200, ((ObjectResult)actionEmailList.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionEmailList.Result).Value);
-               List<Email> emailList = (List<Email>)(((OkObjectResult)actionEmailList.Result).Value);
+               List<Email> emailList = (List<Email>)((OkObjectResult)actionEmailList.Result).Value;
 
                int count = ((List<Email>)((OkObjectResult)actionEmailList.Result).Value).Count();
                 Assert.True(count > 0);
@@ -72,22 +72,22 @@ namespace CSSPServices.Tests
                var actionEmailAdded = await emailService.Add(email);
                Assert.Equal(200, ((ObjectResult)actionEmailAdded.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionEmailAdded.Result).Value);
-               Email emailAdded = (Email)(((OkObjectResult)actionEmailAdded.Result).Value);
+               Email emailAdded = (Email)((OkObjectResult)actionEmailAdded.Result).Value;
                Assert.NotNull(emailAdded);
 
                // Update Email
                var actionEmailUpdated = await emailService.Update(email);
                Assert.Equal(200, ((ObjectResult)actionEmailUpdated.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionEmailUpdated.Result).Value);
-               Email emailUpdated = (Email)(((OkObjectResult)actionEmailUpdated.Result).Value);
+               Email emailUpdated = (Email)((OkObjectResult)actionEmailUpdated.Result).Value;
                Assert.NotNull(emailUpdated);
 
                // Delete Email
-               var actionEmailDeleted = await emailService.Delete(email);
+               var actionEmailDeleted = await emailService.Delete(email.EmailID);
                Assert.Equal(200, ((ObjectResult)actionEmailDeleted.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionEmailDeleted.Result).Value);
-               Email emailDeleted = (Email)(((OkObjectResult)actionEmailDeleted.Result).Value);
-               Assert.NotNull(emailDeleted);
+               bool retBool = (bool)((OkObjectResult)actionEmailDeleted.Result).Value;
+               Assert.True(retBool);
             }
         }
         #endregion Tests Generated CRUD

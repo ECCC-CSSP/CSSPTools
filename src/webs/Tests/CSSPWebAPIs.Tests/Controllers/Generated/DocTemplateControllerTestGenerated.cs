@@ -72,7 +72,7 @@ namespace CSSPWebAPIs.Tests.Controllers
                 var actionDocTemplateList = await docTemplateController.Get();
                 Assert.Equal(200, ((ObjectResult)actionDocTemplateList.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionDocTemplateList.Result).Value);
-                List<DocTemplate> docTemplateList = (List<DocTemplate>)(((OkObjectResult)actionDocTemplateList.Result).Value);
+                List<DocTemplate> docTemplateList = (List<DocTemplate>)((OkObjectResult)actionDocTemplateList.Result).Value;
 
                 int count = ((List<DocTemplate>)((OkObjectResult)actionDocTemplateList.Result).Value).Count();
                 Assert.True(count > 0);
@@ -81,7 +81,7 @@ namespace CSSPWebAPIs.Tests.Controllers
                 var actionDocTemplate = await docTemplateController.Get(docTemplateList[0].DocTemplateID);
                 Assert.Equal(200, ((ObjectResult)actionDocTemplate.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionDocTemplate.Result).Value);
-                DocTemplate docTemplate = (DocTemplate)(((OkObjectResult)actionDocTemplate.Result).Value);
+                DocTemplate docTemplate = (DocTemplate)((OkObjectResult)actionDocTemplate.Result).Value;
                 Assert.NotNull(docTemplate);
                 Assert.Equal(docTemplateList[0].DocTemplateID, docTemplate.DocTemplateID);
 
@@ -90,22 +90,22 @@ namespace CSSPWebAPIs.Tests.Controllers
                 var actionDocTemplateNew = await docTemplateController.Post(docTemplate);
                 Assert.Equal(200, ((ObjectResult)actionDocTemplateNew.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionDocTemplateNew.Result).Value);
-                DocTemplate docTemplateNew = (DocTemplate)(((OkObjectResult)actionDocTemplateNew.Result).Value);
+                DocTemplate docTemplateNew = (DocTemplate)((OkObjectResult)actionDocTemplateNew.Result).Value;
                 Assert.NotNull(docTemplateNew);
 
                 // testing Put(DocTemplate docTemplate)
                 var actionDocTemplateUpdate = await docTemplateController.Put(docTemplateNew);
                 Assert.Equal(200, ((ObjectResult)actionDocTemplateUpdate.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionDocTemplateUpdate.Result).Value);
-                DocTemplate docTemplateUpdate = (DocTemplate)(((OkObjectResult)actionDocTemplateUpdate.Result).Value);
+                DocTemplate docTemplateUpdate = (DocTemplate)((OkObjectResult)actionDocTemplateUpdate.Result).Value;
                 Assert.NotNull(docTemplateUpdate);
 
-                // testing Delete(DocTemplate docTemplate)
-                var actionDocTemplateDelete = await docTemplateController.Delete(docTemplateUpdate);
+                // testing Delete(int docTemplate.DocTemplateID)
+                var actionDocTemplateDelete = await docTemplateController.Delete(docTemplateUpdate.DocTemplateID);
                 Assert.Equal(200, ((ObjectResult)actionDocTemplateDelete.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionDocTemplateDelete.Result).Value);
-                DocTemplate docTemplateDelete = (DocTemplate)(((OkObjectResult)actionDocTemplateDelete.Result).Value);
-                Assert.NotNull(docTemplateDelete);
+                bool retBool2 = (bool)((OkObjectResult)actionDocTemplateDelete.Result).Value;
+                Assert.True(retBool2);
             }
         }
         #endregion Functions public

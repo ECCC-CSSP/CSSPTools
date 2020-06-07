@@ -72,7 +72,7 @@ namespace CSSPWebAPIs.Tests.Controllers
                 var actionUseOfSiteList = await useOfSiteController.Get();
                 Assert.Equal(200, ((ObjectResult)actionUseOfSiteList.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionUseOfSiteList.Result).Value);
-                List<UseOfSite> useOfSiteList = (List<UseOfSite>)(((OkObjectResult)actionUseOfSiteList.Result).Value);
+                List<UseOfSite> useOfSiteList = (List<UseOfSite>)((OkObjectResult)actionUseOfSiteList.Result).Value;
 
                 int count = ((List<UseOfSite>)((OkObjectResult)actionUseOfSiteList.Result).Value).Count();
                 Assert.True(count > 0);
@@ -81,7 +81,7 @@ namespace CSSPWebAPIs.Tests.Controllers
                 var actionUseOfSite = await useOfSiteController.Get(useOfSiteList[0].UseOfSiteID);
                 Assert.Equal(200, ((ObjectResult)actionUseOfSite.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionUseOfSite.Result).Value);
-                UseOfSite useOfSite = (UseOfSite)(((OkObjectResult)actionUseOfSite.Result).Value);
+                UseOfSite useOfSite = (UseOfSite)((OkObjectResult)actionUseOfSite.Result).Value;
                 Assert.NotNull(useOfSite);
                 Assert.Equal(useOfSiteList[0].UseOfSiteID, useOfSite.UseOfSiteID);
 
@@ -90,22 +90,22 @@ namespace CSSPWebAPIs.Tests.Controllers
                 var actionUseOfSiteNew = await useOfSiteController.Post(useOfSite);
                 Assert.Equal(200, ((ObjectResult)actionUseOfSiteNew.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionUseOfSiteNew.Result).Value);
-                UseOfSite useOfSiteNew = (UseOfSite)(((OkObjectResult)actionUseOfSiteNew.Result).Value);
+                UseOfSite useOfSiteNew = (UseOfSite)((OkObjectResult)actionUseOfSiteNew.Result).Value;
                 Assert.NotNull(useOfSiteNew);
 
                 // testing Put(UseOfSite useOfSite)
                 var actionUseOfSiteUpdate = await useOfSiteController.Put(useOfSiteNew);
                 Assert.Equal(200, ((ObjectResult)actionUseOfSiteUpdate.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionUseOfSiteUpdate.Result).Value);
-                UseOfSite useOfSiteUpdate = (UseOfSite)(((OkObjectResult)actionUseOfSiteUpdate.Result).Value);
+                UseOfSite useOfSiteUpdate = (UseOfSite)((OkObjectResult)actionUseOfSiteUpdate.Result).Value;
                 Assert.NotNull(useOfSiteUpdate);
 
-                // testing Delete(UseOfSite useOfSite)
-                var actionUseOfSiteDelete = await useOfSiteController.Delete(useOfSiteUpdate);
+                // testing Delete(int useOfSite.UseOfSiteID)
+                var actionUseOfSiteDelete = await useOfSiteController.Delete(useOfSiteUpdate.UseOfSiteID);
                 Assert.Equal(200, ((ObjectResult)actionUseOfSiteDelete.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionUseOfSiteDelete.Result).Value);
-                UseOfSite useOfSiteDelete = (UseOfSite)(((OkObjectResult)actionUseOfSiteDelete.Result).Value);
-                Assert.NotNull(useOfSiteDelete);
+                bool retBool2 = (bool)((OkObjectResult)actionUseOfSiteDelete.Result).Value;
+                Assert.True(retBool2);
             }
         }
         #endregion Functions public

@@ -20,7 +20,7 @@ namespace CSSPWebAPI.Controllers
         Task<ActionResult<LabSheetTubeMPNDetail>> Get(int LabSheetTubeMPNDetailID);
         Task<ActionResult<LabSheetTubeMPNDetail>> Post(LabSheetTubeMPNDetail labSheetTubeMPNDetail);
         Task<ActionResult<LabSheetTubeMPNDetail>> Put(LabSheetTubeMPNDetail labSheetTubeMPNDetail);
-        Task<ActionResult<LabSheetTubeMPNDetail>> Delete(LabSheetTubeMPNDetail labSheetTubeMPNDetail);
+        Task<ActionResult<bool>> Delete(int LabSheetTubeMPNDetailID);
     }
 
     [Route("api/{culture}/[controller]")]
@@ -67,10 +67,10 @@ namespace CSSPWebAPI.Controllers
         {
             return await labSheetTubeMPNDetailService.Update(labSheetTubeMPNDetail);
         }
-        [HttpDelete]
-        public async Task<ActionResult<LabSheetTubeMPNDetail>> Delete(LabSheetTubeMPNDetail labSheetTubeMPNDetail)
+        [HttpDelete("{LabSheetTubeMPNDetailID}")]
+        public async Task<ActionResult<bool>> Delete(int LabSheetTubeMPNDetailID)
         {
-            return await labSheetTubeMPNDetailService.Delete(labSheetTubeMPNDetail);
+            return await labSheetTubeMPNDetailService.Delete(LabSheetTubeMPNDetailID);
         }
         #endregion Functions public
 

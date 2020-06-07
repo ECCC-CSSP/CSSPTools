@@ -25,7 +25,7 @@ namespace CSSPServices
        Task<ActionResult<ClimateSite>> GetClimateSiteWithClimateSiteID(int ClimateSiteID);
        Task<ActionResult<List<ClimateSite>>> GetClimateSiteList();
        Task<ActionResult<ClimateSite>> Add(ClimateSite climatesite);
-       Task<ActionResult<ClimateSite>> Delete(ClimateSite climatesite);
+       Task<ActionResult<bool>> Delete(int ClimateSiteID);
        Task<ActionResult<ClimateSite>> Update(ClimateSite climatesite);
        Task SetCulture(CultureInfo culture);
     }
@@ -88,12 +88,15 @@ namespace CSSPServices
 
             return await Task.FromResult(Ok(climateSite));
         }
-        public async Task<ActionResult<ClimateSite>> Delete(ClimateSite climateSite)
+        public async Task<ActionResult<bool>> Delete(int ClimateSiteID)
         {
-            ValidationResults = Validate(new ValidationContext(climateSite), ActionDBTypeEnum.Delete);
-            if (ValidationResults.Count() > 0)
+            ClimateSite climateSite = (from c in db.ClimateSites
+                               where c.ClimateSiteID == ClimateSiteID
+                               select c).FirstOrDefault();
+            
+            if (climateSite == null)
             {
-               return await Task.FromResult(BadRequest(ValidationResults));
+                return await Task.FromResult(BadRequest(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "ClimateSite", "ClimateSiteID", ClimateSiteID.ToString())));
             }
 
             try
@@ -106,7 +109,7 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
 
-            return await Task.FromResult(Ok(climateSite));
+            return await Task.FromResult(Ok(true));
         }
         public async Task<ActionResult<ClimateSite>> Update(ClimateSite climateSite)
         {

@@ -25,7 +25,7 @@ namespace CSSPServices
        Task<ActionResult<PolSourceGroupingLanguage>> GetPolSourceGroupingLanguageWithPolSourceGroupingLanguageID(int PolSourceGroupingLanguageID);
        Task<ActionResult<List<PolSourceGroupingLanguage>>> GetPolSourceGroupingLanguageList();
        Task<ActionResult<PolSourceGroupingLanguage>> Add(PolSourceGroupingLanguage polsourcegroupinglanguage);
-       Task<ActionResult<PolSourceGroupingLanguage>> Delete(PolSourceGroupingLanguage polsourcegroupinglanguage);
+       Task<ActionResult<bool>> Delete(int PolSourceGroupingLanguageID);
        Task<ActionResult<PolSourceGroupingLanguage>> Update(PolSourceGroupingLanguage polsourcegroupinglanguage);
        Task SetCulture(CultureInfo culture);
     }
@@ -88,12 +88,15 @@ namespace CSSPServices
 
             return await Task.FromResult(Ok(polSourceGroupingLanguage));
         }
-        public async Task<ActionResult<PolSourceGroupingLanguage>> Delete(PolSourceGroupingLanguage polSourceGroupingLanguage)
+        public async Task<ActionResult<bool>> Delete(int PolSourceGroupingLanguageID)
         {
-            ValidationResults = Validate(new ValidationContext(polSourceGroupingLanguage), ActionDBTypeEnum.Delete);
-            if (ValidationResults.Count() > 0)
+            PolSourceGroupingLanguage polSourceGroupingLanguage = (from c in db.PolSourceGroupingLanguages
+                               where c.PolSourceGroupingLanguageID == PolSourceGroupingLanguageID
+                               select c).FirstOrDefault();
+            
+            if (polSourceGroupingLanguage == null)
             {
-               return await Task.FromResult(BadRequest(ValidationResults));
+                return await Task.FromResult(BadRequest(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "PolSourceGroupingLanguage", "PolSourceGroupingLanguageID", PolSourceGroupingLanguageID.ToString())));
             }
 
             try
@@ -106,7 +109,7 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
 
-            return await Task.FromResult(Ok(polSourceGroupingLanguage));
+            return await Task.FromResult(Ok(true));
         }
         public async Task<ActionResult<PolSourceGroupingLanguage>> Update(PolSourceGroupingLanguage polSourceGroupingLanguage)
         {

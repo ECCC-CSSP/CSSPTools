@@ -63,7 +63,7 @@ namespace CSSPServices.Tests
                var actionReportSectionList = await reportSectionService.GetReportSectionList();
                Assert.Equal(200, ((ObjectResult)actionReportSectionList.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionReportSectionList.Result).Value);
-               List<ReportSection> reportSectionList = (List<ReportSection>)(((OkObjectResult)actionReportSectionList.Result).Value);
+               List<ReportSection> reportSectionList = (List<ReportSection>)((OkObjectResult)actionReportSectionList.Result).Value;
 
                int count = ((List<ReportSection>)((OkObjectResult)actionReportSectionList.Result).Value).Count();
                 Assert.True(count > 0);
@@ -72,22 +72,22 @@ namespace CSSPServices.Tests
                var actionReportSectionAdded = await reportSectionService.Add(reportSection);
                Assert.Equal(200, ((ObjectResult)actionReportSectionAdded.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionReportSectionAdded.Result).Value);
-               ReportSection reportSectionAdded = (ReportSection)(((OkObjectResult)actionReportSectionAdded.Result).Value);
+               ReportSection reportSectionAdded = (ReportSection)((OkObjectResult)actionReportSectionAdded.Result).Value;
                Assert.NotNull(reportSectionAdded);
 
                // Update ReportSection
                var actionReportSectionUpdated = await reportSectionService.Update(reportSection);
                Assert.Equal(200, ((ObjectResult)actionReportSectionUpdated.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionReportSectionUpdated.Result).Value);
-               ReportSection reportSectionUpdated = (ReportSection)(((OkObjectResult)actionReportSectionUpdated.Result).Value);
+               ReportSection reportSectionUpdated = (ReportSection)((OkObjectResult)actionReportSectionUpdated.Result).Value;
                Assert.NotNull(reportSectionUpdated);
 
                // Delete ReportSection
-               var actionReportSectionDeleted = await reportSectionService.Delete(reportSection);
+               var actionReportSectionDeleted = await reportSectionService.Delete(reportSection.ReportSectionID);
                Assert.Equal(200, ((ObjectResult)actionReportSectionDeleted.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionReportSectionDeleted.Result).Value);
-               ReportSection reportSectionDeleted = (ReportSection)(((OkObjectResult)actionReportSectionDeleted.Result).Value);
-               Assert.NotNull(reportSectionDeleted);
+               bool retBool = (bool)((OkObjectResult)actionReportSectionDeleted.Result).Value;
+               Assert.True(retBool);
             }
         }
         #endregion Tests Generated CRUD

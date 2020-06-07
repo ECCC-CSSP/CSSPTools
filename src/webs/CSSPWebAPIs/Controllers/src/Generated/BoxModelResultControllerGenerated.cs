@@ -20,7 +20,7 @@ namespace CSSPWebAPI.Controllers
         Task<ActionResult<BoxModelResult>> Get(int BoxModelResultID);
         Task<ActionResult<BoxModelResult>> Post(BoxModelResult boxModelResult);
         Task<ActionResult<BoxModelResult>> Put(BoxModelResult boxModelResult);
-        Task<ActionResult<BoxModelResult>> Delete(BoxModelResult boxModelResult);
+        Task<ActionResult<bool>> Delete(int BoxModelResultID);
     }
 
     [Route("api/{culture}/[controller]")]
@@ -67,10 +67,10 @@ namespace CSSPWebAPI.Controllers
         {
             return await boxModelResultService.Update(boxModelResult);
         }
-        [HttpDelete]
-        public async Task<ActionResult<BoxModelResult>> Delete(BoxModelResult boxModelResult)
+        [HttpDelete("{BoxModelResultID}")]
+        public async Task<ActionResult<bool>> Delete(int BoxModelResultID)
         {
-            return await boxModelResultService.Delete(boxModelResult);
+            return await boxModelResultService.Delete(BoxModelResultID);
         }
         #endregion Functions public
 

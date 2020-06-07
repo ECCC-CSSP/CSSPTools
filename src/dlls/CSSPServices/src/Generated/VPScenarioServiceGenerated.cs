@@ -25,7 +25,7 @@ namespace CSSPServices
        Task<ActionResult<VPScenario>> GetVPScenarioWithVPScenarioID(int VPScenarioID);
        Task<ActionResult<List<VPScenario>>> GetVPScenarioList();
        Task<ActionResult<VPScenario>> Add(VPScenario vpscenario);
-       Task<ActionResult<VPScenario>> Delete(VPScenario vpscenario);
+       Task<ActionResult<bool>> Delete(int VPScenarioID);
        Task<ActionResult<VPScenario>> Update(VPScenario vpscenario);
        Task SetCulture(CultureInfo culture);
     }
@@ -88,12 +88,15 @@ namespace CSSPServices
 
             return await Task.FromResult(Ok(vpScenario));
         }
-        public async Task<ActionResult<VPScenario>> Delete(VPScenario vpScenario)
+        public async Task<ActionResult<bool>> Delete(int VPScenarioID)
         {
-            ValidationResults = Validate(new ValidationContext(vpScenario), ActionDBTypeEnum.Delete);
-            if (ValidationResults.Count() > 0)
+            VPScenario vpScenario = (from c in db.VPScenarios
+                               where c.VPScenarioID == VPScenarioID
+                               select c).FirstOrDefault();
+            
+            if (vpScenario == null)
             {
-               return await Task.FromResult(BadRequest(ValidationResults));
+                return await Task.FromResult(BadRequest(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "VPScenario", "VPScenarioID", VPScenarioID.ToString())));
             }
 
             try
@@ -106,7 +109,7 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
 
-            return await Task.FromResult(Ok(vpScenario));
+            return await Task.FromResult(Ok(true));
         }
         public async Task<ActionResult<VPScenario>> Update(VPScenario vpScenario)
         {

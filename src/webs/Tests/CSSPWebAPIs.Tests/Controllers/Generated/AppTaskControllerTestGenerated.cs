@@ -72,7 +72,7 @@ namespace CSSPWebAPIs.Tests.Controllers
                 var actionAppTaskList = await appTaskController.Get();
                 Assert.Equal(200, ((ObjectResult)actionAppTaskList.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionAppTaskList.Result).Value);
-                List<AppTask> appTaskList = (List<AppTask>)(((OkObjectResult)actionAppTaskList.Result).Value);
+                List<AppTask> appTaskList = (List<AppTask>)((OkObjectResult)actionAppTaskList.Result).Value;
 
                 int count = ((List<AppTask>)((OkObjectResult)actionAppTaskList.Result).Value).Count();
                 Assert.True(count > 0);
@@ -81,7 +81,7 @@ namespace CSSPWebAPIs.Tests.Controllers
                 var actionAppTask = await appTaskController.Get(appTaskList[0].AppTaskID);
                 Assert.Equal(200, ((ObjectResult)actionAppTask.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionAppTask.Result).Value);
-                AppTask appTask = (AppTask)(((OkObjectResult)actionAppTask.Result).Value);
+                AppTask appTask = (AppTask)((OkObjectResult)actionAppTask.Result).Value;
                 Assert.NotNull(appTask);
                 Assert.Equal(appTaskList[0].AppTaskID, appTask.AppTaskID);
 
@@ -90,22 +90,22 @@ namespace CSSPWebAPIs.Tests.Controllers
                 var actionAppTaskNew = await appTaskController.Post(appTask);
                 Assert.Equal(200, ((ObjectResult)actionAppTaskNew.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionAppTaskNew.Result).Value);
-                AppTask appTaskNew = (AppTask)(((OkObjectResult)actionAppTaskNew.Result).Value);
+                AppTask appTaskNew = (AppTask)((OkObjectResult)actionAppTaskNew.Result).Value;
                 Assert.NotNull(appTaskNew);
 
                 // testing Put(AppTask appTask)
                 var actionAppTaskUpdate = await appTaskController.Put(appTaskNew);
                 Assert.Equal(200, ((ObjectResult)actionAppTaskUpdate.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionAppTaskUpdate.Result).Value);
-                AppTask appTaskUpdate = (AppTask)(((OkObjectResult)actionAppTaskUpdate.Result).Value);
+                AppTask appTaskUpdate = (AppTask)((OkObjectResult)actionAppTaskUpdate.Result).Value;
                 Assert.NotNull(appTaskUpdate);
 
-                // testing Delete(AppTask appTask)
-                var actionAppTaskDelete = await appTaskController.Delete(appTaskUpdate);
+                // testing Delete(int appTask.AppTaskID)
+                var actionAppTaskDelete = await appTaskController.Delete(appTaskUpdate.AppTaskID);
                 Assert.Equal(200, ((ObjectResult)actionAppTaskDelete.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionAppTaskDelete.Result).Value);
-                AppTask appTaskDelete = (AppTask)(((OkObjectResult)actionAppTaskDelete.Result).Value);
-                Assert.NotNull(appTaskDelete);
+                bool retBool2 = (bool)((OkObjectResult)actionAppTaskDelete.Result).Value;
+                Assert.True(retBool2);
             }
         }
         #endregion Functions public

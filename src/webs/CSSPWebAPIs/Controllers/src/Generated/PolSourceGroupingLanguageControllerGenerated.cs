@@ -20,7 +20,7 @@ namespace CSSPWebAPI.Controllers
         Task<ActionResult<PolSourceGroupingLanguage>> Get(int PolSourceGroupingLanguageID);
         Task<ActionResult<PolSourceGroupingLanguage>> Post(PolSourceGroupingLanguage polSourceGroupingLanguage);
         Task<ActionResult<PolSourceGroupingLanguage>> Put(PolSourceGroupingLanguage polSourceGroupingLanguage);
-        Task<ActionResult<PolSourceGroupingLanguage>> Delete(PolSourceGroupingLanguage polSourceGroupingLanguage);
+        Task<ActionResult<bool>> Delete(int PolSourceGroupingLanguageID);
     }
 
     [Route("api/{culture}/[controller]")]
@@ -67,10 +67,10 @@ namespace CSSPWebAPI.Controllers
         {
             return await polSourceGroupingLanguageService.Update(polSourceGroupingLanguage);
         }
-        [HttpDelete]
-        public async Task<ActionResult<PolSourceGroupingLanguage>> Delete(PolSourceGroupingLanguage polSourceGroupingLanguage)
+        [HttpDelete("{PolSourceGroupingLanguageID}")]
+        public async Task<ActionResult<bool>> Delete(int PolSourceGroupingLanguageID)
         {
-            return await polSourceGroupingLanguageService.Delete(polSourceGroupingLanguage);
+            return await polSourceGroupingLanguageService.Delete(PolSourceGroupingLanguageID);
         }
         #endregion Functions public
 

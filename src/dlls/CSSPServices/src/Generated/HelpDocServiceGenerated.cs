@@ -25,7 +25,7 @@ namespace CSSPServices
        Task<ActionResult<HelpDoc>> GetHelpDocWithHelpDocID(int HelpDocID);
        Task<ActionResult<List<HelpDoc>>> GetHelpDocList();
        Task<ActionResult<HelpDoc>> Add(HelpDoc helpdoc);
-       Task<ActionResult<HelpDoc>> Delete(HelpDoc helpdoc);
+       Task<ActionResult<bool>> Delete(int HelpDocID);
        Task<ActionResult<HelpDoc>> Update(HelpDoc helpdoc);
        Task SetCulture(CultureInfo culture);
     }
@@ -88,12 +88,15 @@ namespace CSSPServices
 
             return await Task.FromResult(Ok(helpDoc));
         }
-        public async Task<ActionResult<HelpDoc>> Delete(HelpDoc helpDoc)
+        public async Task<ActionResult<bool>> Delete(int HelpDocID)
         {
-            ValidationResults = Validate(new ValidationContext(helpDoc), ActionDBTypeEnum.Delete);
-            if (ValidationResults.Count() > 0)
+            HelpDoc helpDoc = (from c in db.HelpDocs
+                               where c.HelpDocID == HelpDocID
+                               select c).FirstOrDefault();
+            
+            if (helpDoc == null)
             {
-               return await Task.FromResult(BadRequest(ValidationResults));
+                return await Task.FromResult(BadRequest(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "HelpDoc", "HelpDocID", HelpDocID.ToString())));
             }
 
             try
@@ -106,7 +109,7 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
 
-            return await Task.FromResult(Ok(helpDoc));
+            return await Task.FromResult(Ok(true));
         }
         public async Task<ActionResult<HelpDoc>> Update(HelpDoc helpDoc)
         {

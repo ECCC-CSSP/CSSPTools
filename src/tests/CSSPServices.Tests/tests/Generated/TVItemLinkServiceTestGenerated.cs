@@ -63,7 +63,7 @@ namespace CSSPServices.Tests
                var actionTVItemLinkList = await tvItemLinkService.GetTVItemLinkList();
                Assert.Equal(200, ((ObjectResult)actionTVItemLinkList.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionTVItemLinkList.Result).Value);
-               List<TVItemLink> tvItemLinkList = (List<TVItemLink>)(((OkObjectResult)actionTVItemLinkList.Result).Value);
+               List<TVItemLink> tvItemLinkList = (List<TVItemLink>)((OkObjectResult)actionTVItemLinkList.Result).Value;
 
                int count = ((List<TVItemLink>)((OkObjectResult)actionTVItemLinkList.Result).Value).Count();
                 Assert.True(count > 0);
@@ -72,22 +72,22 @@ namespace CSSPServices.Tests
                var actionTVItemLinkAdded = await tvItemLinkService.Add(tvItemLink);
                Assert.Equal(200, ((ObjectResult)actionTVItemLinkAdded.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionTVItemLinkAdded.Result).Value);
-               TVItemLink tvItemLinkAdded = (TVItemLink)(((OkObjectResult)actionTVItemLinkAdded.Result).Value);
+               TVItemLink tvItemLinkAdded = (TVItemLink)((OkObjectResult)actionTVItemLinkAdded.Result).Value;
                Assert.NotNull(tvItemLinkAdded);
 
                // Update TVItemLink
                var actionTVItemLinkUpdated = await tvItemLinkService.Update(tvItemLink);
                Assert.Equal(200, ((ObjectResult)actionTVItemLinkUpdated.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionTVItemLinkUpdated.Result).Value);
-               TVItemLink tvItemLinkUpdated = (TVItemLink)(((OkObjectResult)actionTVItemLinkUpdated.Result).Value);
+               TVItemLink tvItemLinkUpdated = (TVItemLink)((OkObjectResult)actionTVItemLinkUpdated.Result).Value;
                Assert.NotNull(tvItemLinkUpdated);
 
                // Delete TVItemLink
-               var actionTVItemLinkDeleted = await tvItemLinkService.Delete(tvItemLink);
+               var actionTVItemLinkDeleted = await tvItemLinkService.Delete(tvItemLink.TVItemLinkID);
                Assert.Equal(200, ((ObjectResult)actionTVItemLinkDeleted.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionTVItemLinkDeleted.Result).Value);
-               TVItemLink tvItemLinkDeleted = (TVItemLink)(((OkObjectResult)actionTVItemLinkDeleted.Result).Value);
-               Assert.NotNull(tvItemLinkDeleted);
+               bool retBool = (bool)((OkObjectResult)actionTVItemLinkDeleted.Result).Value;
+               Assert.True(retBool);
             }
         }
         #endregion Tests Generated CRUD

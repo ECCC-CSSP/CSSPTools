@@ -72,7 +72,7 @@ namespace CSSPWebAPIs.Tests.Controllers
                 var actionSpillLanguageList = await spillLanguageController.Get();
                 Assert.Equal(200, ((ObjectResult)actionSpillLanguageList.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionSpillLanguageList.Result).Value);
-                List<SpillLanguage> spillLanguageList = (List<SpillLanguage>)(((OkObjectResult)actionSpillLanguageList.Result).Value);
+                List<SpillLanguage> spillLanguageList = (List<SpillLanguage>)((OkObjectResult)actionSpillLanguageList.Result).Value;
 
                 int count = ((List<SpillLanguage>)((OkObjectResult)actionSpillLanguageList.Result).Value).Count();
                 Assert.True(count > 0);
@@ -81,7 +81,7 @@ namespace CSSPWebAPIs.Tests.Controllers
                 var actionSpillLanguage = await spillLanguageController.Get(spillLanguageList[0].SpillLanguageID);
                 Assert.Equal(200, ((ObjectResult)actionSpillLanguage.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionSpillLanguage.Result).Value);
-                SpillLanguage spillLanguage = (SpillLanguage)(((OkObjectResult)actionSpillLanguage.Result).Value);
+                SpillLanguage spillLanguage = (SpillLanguage)((OkObjectResult)actionSpillLanguage.Result).Value;
                 Assert.NotNull(spillLanguage);
                 Assert.Equal(spillLanguageList[0].SpillLanguageID, spillLanguage.SpillLanguageID);
 
@@ -90,22 +90,22 @@ namespace CSSPWebAPIs.Tests.Controllers
                 var actionSpillLanguageNew = await spillLanguageController.Post(spillLanguage);
                 Assert.Equal(200, ((ObjectResult)actionSpillLanguageNew.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionSpillLanguageNew.Result).Value);
-                SpillLanguage spillLanguageNew = (SpillLanguage)(((OkObjectResult)actionSpillLanguageNew.Result).Value);
+                SpillLanguage spillLanguageNew = (SpillLanguage)((OkObjectResult)actionSpillLanguageNew.Result).Value;
                 Assert.NotNull(spillLanguageNew);
 
                 // testing Put(SpillLanguage spillLanguage)
                 var actionSpillLanguageUpdate = await spillLanguageController.Put(spillLanguageNew);
                 Assert.Equal(200, ((ObjectResult)actionSpillLanguageUpdate.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionSpillLanguageUpdate.Result).Value);
-                SpillLanguage spillLanguageUpdate = (SpillLanguage)(((OkObjectResult)actionSpillLanguageUpdate.Result).Value);
+                SpillLanguage spillLanguageUpdate = (SpillLanguage)((OkObjectResult)actionSpillLanguageUpdate.Result).Value;
                 Assert.NotNull(spillLanguageUpdate);
 
-                // testing Delete(SpillLanguage spillLanguage)
-                var actionSpillLanguageDelete = await spillLanguageController.Delete(spillLanguageUpdate);
+                // testing Delete(int spillLanguage.SpillLanguageID)
+                var actionSpillLanguageDelete = await spillLanguageController.Delete(spillLanguageUpdate.SpillLanguageID);
                 Assert.Equal(200, ((ObjectResult)actionSpillLanguageDelete.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionSpillLanguageDelete.Result).Value);
-                SpillLanguage spillLanguageDelete = (SpillLanguage)(((OkObjectResult)actionSpillLanguageDelete.Result).Value);
-                Assert.NotNull(spillLanguageDelete);
+                bool retBool2 = (bool)((OkObjectResult)actionSpillLanguageDelete.Result).Value;
+                Assert.True(retBool2);
             }
         }
         #endregion Functions public

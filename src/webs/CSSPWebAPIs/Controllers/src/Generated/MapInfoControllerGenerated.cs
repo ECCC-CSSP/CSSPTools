@@ -20,7 +20,7 @@ namespace CSSPWebAPI.Controllers
         Task<ActionResult<MapInfo>> Get(int MapInfoID);
         Task<ActionResult<MapInfo>> Post(MapInfo mapInfo);
         Task<ActionResult<MapInfo>> Put(MapInfo mapInfo);
-        Task<ActionResult<MapInfo>> Delete(MapInfo mapInfo);
+        Task<ActionResult<bool>> Delete(int MapInfoID);
     }
 
     [Route("api/{culture}/[controller]")]
@@ -67,10 +67,10 @@ namespace CSSPWebAPI.Controllers
         {
             return await mapInfoService.Update(mapInfo);
         }
-        [HttpDelete]
-        public async Task<ActionResult<MapInfo>> Delete(MapInfo mapInfo)
+        [HttpDelete("{MapInfoID}")]
+        public async Task<ActionResult<bool>> Delete(int MapInfoID)
         {
-            return await mapInfoService.Delete(mapInfo);
+            return await mapInfoService.Delete(MapInfoID);
         }
         #endregion Functions public
 

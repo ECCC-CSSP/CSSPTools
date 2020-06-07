@@ -72,7 +72,7 @@ namespace CSSPWebAPIs.Tests.Controllers
                 var actionMWQMRunList = await mwqmRunController.Get();
                 Assert.Equal(200, ((ObjectResult)actionMWQMRunList.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionMWQMRunList.Result).Value);
-                List<MWQMRun> mwqmRunList = (List<MWQMRun>)(((OkObjectResult)actionMWQMRunList.Result).Value);
+                List<MWQMRun> mwqmRunList = (List<MWQMRun>)((OkObjectResult)actionMWQMRunList.Result).Value;
 
                 int count = ((List<MWQMRun>)((OkObjectResult)actionMWQMRunList.Result).Value).Count();
                 Assert.True(count > 0);
@@ -81,7 +81,7 @@ namespace CSSPWebAPIs.Tests.Controllers
                 var actionMWQMRun = await mwqmRunController.Get(mwqmRunList[0].MWQMRunID);
                 Assert.Equal(200, ((ObjectResult)actionMWQMRun.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionMWQMRun.Result).Value);
-                MWQMRun mwqmRun = (MWQMRun)(((OkObjectResult)actionMWQMRun.Result).Value);
+                MWQMRun mwqmRun = (MWQMRun)((OkObjectResult)actionMWQMRun.Result).Value;
                 Assert.NotNull(mwqmRun);
                 Assert.Equal(mwqmRunList[0].MWQMRunID, mwqmRun.MWQMRunID);
 
@@ -90,22 +90,22 @@ namespace CSSPWebAPIs.Tests.Controllers
                 var actionMWQMRunNew = await mwqmRunController.Post(mwqmRun);
                 Assert.Equal(200, ((ObjectResult)actionMWQMRunNew.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionMWQMRunNew.Result).Value);
-                MWQMRun mwqmRunNew = (MWQMRun)(((OkObjectResult)actionMWQMRunNew.Result).Value);
+                MWQMRun mwqmRunNew = (MWQMRun)((OkObjectResult)actionMWQMRunNew.Result).Value;
                 Assert.NotNull(mwqmRunNew);
 
                 // testing Put(MWQMRun mwqmRun)
                 var actionMWQMRunUpdate = await mwqmRunController.Put(mwqmRunNew);
                 Assert.Equal(200, ((ObjectResult)actionMWQMRunUpdate.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionMWQMRunUpdate.Result).Value);
-                MWQMRun mwqmRunUpdate = (MWQMRun)(((OkObjectResult)actionMWQMRunUpdate.Result).Value);
+                MWQMRun mwqmRunUpdate = (MWQMRun)((OkObjectResult)actionMWQMRunUpdate.Result).Value;
                 Assert.NotNull(mwqmRunUpdate);
 
-                // testing Delete(MWQMRun mwqmRun)
-                var actionMWQMRunDelete = await mwqmRunController.Delete(mwqmRunUpdate);
+                // testing Delete(int mwqmRun.MWQMRunID)
+                var actionMWQMRunDelete = await mwqmRunController.Delete(mwqmRunUpdate.MWQMRunID);
                 Assert.Equal(200, ((ObjectResult)actionMWQMRunDelete.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionMWQMRunDelete.Result).Value);
-                MWQMRun mwqmRunDelete = (MWQMRun)(((OkObjectResult)actionMWQMRunDelete.Result).Value);
-                Assert.NotNull(mwqmRunDelete);
+                bool retBool2 = (bool)((OkObjectResult)actionMWQMRunDelete.Result).Value;
+                Assert.True(retBool2);
             }
         }
         #endregion Functions public

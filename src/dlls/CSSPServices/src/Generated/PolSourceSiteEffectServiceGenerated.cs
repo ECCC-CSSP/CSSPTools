@@ -25,7 +25,7 @@ namespace CSSPServices
        Task<ActionResult<PolSourceSiteEffect>> GetPolSourceSiteEffectWithPolSourceSiteEffectID(int PolSourceSiteEffectID);
        Task<ActionResult<List<PolSourceSiteEffect>>> GetPolSourceSiteEffectList();
        Task<ActionResult<PolSourceSiteEffect>> Add(PolSourceSiteEffect polsourcesiteeffect);
-       Task<ActionResult<PolSourceSiteEffect>> Delete(PolSourceSiteEffect polsourcesiteeffect);
+       Task<ActionResult<bool>> Delete(int PolSourceSiteEffectID);
        Task<ActionResult<PolSourceSiteEffect>> Update(PolSourceSiteEffect polsourcesiteeffect);
        Task SetCulture(CultureInfo culture);
     }
@@ -88,12 +88,15 @@ namespace CSSPServices
 
             return await Task.FromResult(Ok(polSourceSiteEffect));
         }
-        public async Task<ActionResult<PolSourceSiteEffect>> Delete(PolSourceSiteEffect polSourceSiteEffect)
+        public async Task<ActionResult<bool>> Delete(int PolSourceSiteEffectID)
         {
-            ValidationResults = Validate(new ValidationContext(polSourceSiteEffect), ActionDBTypeEnum.Delete);
-            if (ValidationResults.Count() > 0)
+            PolSourceSiteEffect polSourceSiteEffect = (from c in db.PolSourceSiteEffects
+                               where c.PolSourceSiteEffectID == PolSourceSiteEffectID
+                               select c).FirstOrDefault();
+            
+            if (polSourceSiteEffect == null)
             {
-               return await Task.FromResult(BadRequest(ValidationResults));
+                return await Task.FromResult(BadRequest(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "PolSourceSiteEffect", "PolSourceSiteEffectID", PolSourceSiteEffectID.ToString())));
             }
 
             try
@@ -106,7 +109,7 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
 
-            return await Task.FromResult(Ok(polSourceSiteEffect));
+            return await Task.FromResult(Ok(true));
         }
         public async Task<ActionResult<PolSourceSiteEffect>> Update(PolSourceSiteEffect polSourceSiteEffect)
         {

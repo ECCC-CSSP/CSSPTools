@@ -25,7 +25,7 @@ namespace CSSPServices
        Task<ActionResult<DrogueRunPosition>> GetDrogueRunPositionWithDrogueRunPositionID(int DrogueRunPositionID);
        Task<ActionResult<List<DrogueRunPosition>>> GetDrogueRunPositionList();
        Task<ActionResult<DrogueRunPosition>> Add(DrogueRunPosition droguerunposition);
-       Task<ActionResult<DrogueRunPosition>> Delete(DrogueRunPosition droguerunposition);
+       Task<ActionResult<bool>> Delete(int DrogueRunPositionID);
        Task<ActionResult<DrogueRunPosition>> Update(DrogueRunPosition droguerunposition);
        Task SetCulture(CultureInfo culture);
     }
@@ -88,12 +88,15 @@ namespace CSSPServices
 
             return await Task.FromResult(Ok(drogueRunPosition));
         }
-        public async Task<ActionResult<DrogueRunPosition>> Delete(DrogueRunPosition drogueRunPosition)
+        public async Task<ActionResult<bool>> Delete(int DrogueRunPositionID)
         {
-            ValidationResults = Validate(new ValidationContext(drogueRunPosition), ActionDBTypeEnum.Delete);
-            if (ValidationResults.Count() > 0)
+            DrogueRunPosition drogueRunPosition = (from c in db.DrogueRunPositions
+                               where c.DrogueRunPositionID == DrogueRunPositionID
+                               select c).FirstOrDefault();
+            
+            if (drogueRunPosition == null)
             {
-               return await Task.FromResult(BadRequest(ValidationResults));
+                return await Task.FromResult(BadRequest(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "DrogueRunPosition", "DrogueRunPositionID", DrogueRunPositionID.ToString())));
             }
 
             try
@@ -106,7 +109,7 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
 
-            return await Task.FromResult(Ok(drogueRunPosition));
+            return await Task.FromResult(Ok(true));
         }
         public async Task<ActionResult<DrogueRunPosition>> Update(DrogueRunPosition drogueRunPosition)
         {

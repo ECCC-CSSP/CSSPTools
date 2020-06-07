@@ -63,7 +63,7 @@ namespace CSSPServices.Tests
                var actionMWQMSampleLanguageList = await mwqmSampleLanguageService.GetMWQMSampleLanguageList();
                Assert.Equal(200, ((ObjectResult)actionMWQMSampleLanguageList.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionMWQMSampleLanguageList.Result).Value);
-               List<MWQMSampleLanguage> mwqmSampleLanguageList = (List<MWQMSampleLanguage>)(((OkObjectResult)actionMWQMSampleLanguageList.Result).Value);
+               List<MWQMSampleLanguage> mwqmSampleLanguageList = (List<MWQMSampleLanguage>)((OkObjectResult)actionMWQMSampleLanguageList.Result).Value;
 
                int count = ((List<MWQMSampleLanguage>)((OkObjectResult)actionMWQMSampleLanguageList.Result).Value).Count();
                 Assert.True(count > 0);
@@ -72,22 +72,22 @@ namespace CSSPServices.Tests
                var actionMWQMSampleLanguageAdded = await mwqmSampleLanguageService.Add(mwqmSampleLanguage);
                Assert.Equal(200, ((ObjectResult)actionMWQMSampleLanguageAdded.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionMWQMSampleLanguageAdded.Result).Value);
-               MWQMSampleLanguage mwqmSampleLanguageAdded = (MWQMSampleLanguage)(((OkObjectResult)actionMWQMSampleLanguageAdded.Result).Value);
+               MWQMSampleLanguage mwqmSampleLanguageAdded = (MWQMSampleLanguage)((OkObjectResult)actionMWQMSampleLanguageAdded.Result).Value;
                Assert.NotNull(mwqmSampleLanguageAdded);
 
                // Update MWQMSampleLanguage
                var actionMWQMSampleLanguageUpdated = await mwqmSampleLanguageService.Update(mwqmSampleLanguage);
                Assert.Equal(200, ((ObjectResult)actionMWQMSampleLanguageUpdated.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionMWQMSampleLanguageUpdated.Result).Value);
-               MWQMSampleLanguage mwqmSampleLanguageUpdated = (MWQMSampleLanguage)(((OkObjectResult)actionMWQMSampleLanguageUpdated.Result).Value);
+               MWQMSampleLanguage mwqmSampleLanguageUpdated = (MWQMSampleLanguage)((OkObjectResult)actionMWQMSampleLanguageUpdated.Result).Value;
                Assert.NotNull(mwqmSampleLanguageUpdated);
 
                // Delete MWQMSampleLanguage
-               var actionMWQMSampleLanguageDeleted = await mwqmSampleLanguageService.Delete(mwqmSampleLanguage);
+               var actionMWQMSampleLanguageDeleted = await mwqmSampleLanguageService.Delete(mwqmSampleLanguage.MWQMSampleLanguageID);
                Assert.Equal(200, ((ObjectResult)actionMWQMSampleLanguageDeleted.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionMWQMSampleLanguageDeleted.Result).Value);
-               MWQMSampleLanguage mwqmSampleLanguageDeleted = (MWQMSampleLanguage)(((OkObjectResult)actionMWQMSampleLanguageDeleted.Result).Value);
-               Assert.NotNull(mwqmSampleLanguageDeleted);
+               bool retBool = (bool)((OkObjectResult)actionMWQMSampleLanguageDeleted.Result).Value;
+               Assert.True(retBool);
             }
         }
         #endregion Tests Generated CRUD

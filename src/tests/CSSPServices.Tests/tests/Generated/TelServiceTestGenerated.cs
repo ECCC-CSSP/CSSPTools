@@ -63,7 +63,7 @@ namespace CSSPServices.Tests
                var actionTelList = await telService.GetTelList();
                Assert.Equal(200, ((ObjectResult)actionTelList.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionTelList.Result).Value);
-               List<Tel> telList = (List<Tel>)(((OkObjectResult)actionTelList.Result).Value);
+               List<Tel> telList = (List<Tel>)((OkObjectResult)actionTelList.Result).Value;
 
                int count = ((List<Tel>)((OkObjectResult)actionTelList.Result).Value).Count();
                 Assert.True(count > 0);
@@ -72,22 +72,22 @@ namespace CSSPServices.Tests
                var actionTelAdded = await telService.Add(tel);
                Assert.Equal(200, ((ObjectResult)actionTelAdded.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionTelAdded.Result).Value);
-               Tel telAdded = (Tel)(((OkObjectResult)actionTelAdded.Result).Value);
+               Tel telAdded = (Tel)((OkObjectResult)actionTelAdded.Result).Value;
                Assert.NotNull(telAdded);
 
                // Update Tel
                var actionTelUpdated = await telService.Update(tel);
                Assert.Equal(200, ((ObjectResult)actionTelUpdated.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionTelUpdated.Result).Value);
-               Tel telUpdated = (Tel)(((OkObjectResult)actionTelUpdated.Result).Value);
+               Tel telUpdated = (Tel)((OkObjectResult)actionTelUpdated.Result).Value;
                Assert.NotNull(telUpdated);
 
                // Delete Tel
-               var actionTelDeleted = await telService.Delete(tel);
+               var actionTelDeleted = await telService.Delete(tel.TelID);
                Assert.Equal(200, ((ObjectResult)actionTelDeleted.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionTelDeleted.Result).Value);
-               Tel telDeleted = (Tel)(((OkObjectResult)actionTelDeleted.Result).Value);
-               Assert.NotNull(telDeleted);
+               bool retBool = (bool)((OkObjectResult)actionTelDeleted.Result).Value;
+               Assert.True(retBool);
             }
         }
         #endregion Tests Generated CRUD

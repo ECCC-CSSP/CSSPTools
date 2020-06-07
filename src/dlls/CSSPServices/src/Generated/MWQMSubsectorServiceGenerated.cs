@@ -25,7 +25,7 @@ namespace CSSPServices
        Task<ActionResult<MWQMSubsector>> GetMWQMSubsectorWithMWQMSubsectorID(int MWQMSubsectorID);
        Task<ActionResult<List<MWQMSubsector>>> GetMWQMSubsectorList();
        Task<ActionResult<MWQMSubsector>> Add(MWQMSubsector mwqmsubsector);
-       Task<ActionResult<MWQMSubsector>> Delete(MWQMSubsector mwqmsubsector);
+       Task<ActionResult<bool>> Delete(int MWQMSubsectorID);
        Task<ActionResult<MWQMSubsector>> Update(MWQMSubsector mwqmsubsector);
        Task SetCulture(CultureInfo culture);
     }
@@ -88,12 +88,15 @@ namespace CSSPServices
 
             return await Task.FromResult(Ok(mwqmSubsector));
         }
-        public async Task<ActionResult<MWQMSubsector>> Delete(MWQMSubsector mwqmSubsector)
+        public async Task<ActionResult<bool>> Delete(int MWQMSubsectorID)
         {
-            ValidationResults = Validate(new ValidationContext(mwqmSubsector), ActionDBTypeEnum.Delete);
-            if (ValidationResults.Count() > 0)
+            MWQMSubsector mwqmSubsector = (from c in db.MWQMSubsectors
+                               where c.MWQMSubsectorID == MWQMSubsectorID
+                               select c).FirstOrDefault();
+            
+            if (mwqmSubsector == null)
             {
-               return await Task.FromResult(BadRequest(ValidationResults));
+                return await Task.FromResult(BadRequest(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "MWQMSubsector", "MWQMSubsectorID", MWQMSubsectorID.ToString())));
             }
 
             try
@@ -106,7 +109,7 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
 
-            return await Task.FromResult(Ok(mwqmSubsector));
+            return await Task.FromResult(Ok(true));
         }
         public async Task<ActionResult<MWQMSubsector>> Update(MWQMSubsector mwqmSubsector)
         {

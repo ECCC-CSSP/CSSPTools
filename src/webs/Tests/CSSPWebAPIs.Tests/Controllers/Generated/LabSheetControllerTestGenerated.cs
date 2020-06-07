@@ -72,7 +72,7 @@ namespace CSSPWebAPIs.Tests.Controllers
                 var actionLabSheetList = await labSheetController.Get();
                 Assert.Equal(200, ((ObjectResult)actionLabSheetList.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionLabSheetList.Result).Value);
-                List<LabSheet> labSheetList = (List<LabSheet>)(((OkObjectResult)actionLabSheetList.Result).Value);
+                List<LabSheet> labSheetList = (List<LabSheet>)((OkObjectResult)actionLabSheetList.Result).Value;
 
                 int count = ((List<LabSheet>)((OkObjectResult)actionLabSheetList.Result).Value).Count();
                 Assert.True(count > 0);
@@ -81,7 +81,7 @@ namespace CSSPWebAPIs.Tests.Controllers
                 var actionLabSheet = await labSheetController.Get(labSheetList[0].LabSheetID);
                 Assert.Equal(200, ((ObjectResult)actionLabSheet.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionLabSheet.Result).Value);
-                LabSheet labSheet = (LabSheet)(((OkObjectResult)actionLabSheet.Result).Value);
+                LabSheet labSheet = (LabSheet)((OkObjectResult)actionLabSheet.Result).Value;
                 Assert.NotNull(labSheet);
                 Assert.Equal(labSheetList[0].LabSheetID, labSheet.LabSheetID);
 
@@ -90,22 +90,22 @@ namespace CSSPWebAPIs.Tests.Controllers
                 var actionLabSheetNew = await labSheetController.Post(labSheet);
                 Assert.Equal(200, ((ObjectResult)actionLabSheetNew.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionLabSheetNew.Result).Value);
-                LabSheet labSheetNew = (LabSheet)(((OkObjectResult)actionLabSheetNew.Result).Value);
+                LabSheet labSheetNew = (LabSheet)((OkObjectResult)actionLabSheetNew.Result).Value;
                 Assert.NotNull(labSheetNew);
 
                 // testing Put(LabSheet labSheet)
                 var actionLabSheetUpdate = await labSheetController.Put(labSheetNew);
                 Assert.Equal(200, ((ObjectResult)actionLabSheetUpdate.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionLabSheetUpdate.Result).Value);
-                LabSheet labSheetUpdate = (LabSheet)(((OkObjectResult)actionLabSheetUpdate.Result).Value);
+                LabSheet labSheetUpdate = (LabSheet)((OkObjectResult)actionLabSheetUpdate.Result).Value;
                 Assert.NotNull(labSheetUpdate);
 
-                // testing Delete(LabSheet labSheet)
-                var actionLabSheetDelete = await labSheetController.Delete(labSheetUpdate);
+                // testing Delete(int labSheet.LabSheetID)
+                var actionLabSheetDelete = await labSheetController.Delete(labSheetUpdate.LabSheetID);
                 Assert.Equal(200, ((ObjectResult)actionLabSheetDelete.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionLabSheetDelete.Result).Value);
-                LabSheet labSheetDelete = (LabSheet)(((OkObjectResult)actionLabSheetDelete.Result).Value);
-                Assert.NotNull(labSheetDelete);
+                bool retBool2 = (bool)((OkObjectResult)actionLabSheetDelete.Result).Value;
+                Assert.True(retBool2);
             }
         }
         #endregion Functions public

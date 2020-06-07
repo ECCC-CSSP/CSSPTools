@@ -72,7 +72,7 @@ namespace CSSPWebAPIs.Tests.Controllers
                 var actionTideLocationList = await tideLocationController.Get();
                 Assert.Equal(200, ((ObjectResult)actionTideLocationList.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionTideLocationList.Result).Value);
-                List<TideLocation> tideLocationList = (List<TideLocation>)(((OkObjectResult)actionTideLocationList.Result).Value);
+                List<TideLocation> tideLocationList = (List<TideLocation>)((OkObjectResult)actionTideLocationList.Result).Value;
 
                 int count = ((List<TideLocation>)((OkObjectResult)actionTideLocationList.Result).Value).Count();
                 Assert.True(count > 0);
@@ -81,7 +81,7 @@ namespace CSSPWebAPIs.Tests.Controllers
                 var actionTideLocation = await tideLocationController.Get(tideLocationList[0].TideLocationID);
                 Assert.Equal(200, ((ObjectResult)actionTideLocation.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionTideLocation.Result).Value);
-                TideLocation tideLocation = (TideLocation)(((OkObjectResult)actionTideLocation.Result).Value);
+                TideLocation tideLocation = (TideLocation)((OkObjectResult)actionTideLocation.Result).Value;
                 Assert.NotNull(tideLocation);
                 Assert.Equal(tideLocationList[0].TideLocationID, tideLocation.TideLocationID);
 
@@ -90,22 +90,22 @@ namespace CSSPWebAPIs.Tests.Controllers
                 var actionTideLocationNew = await tideLocationController.Post(tideLocation);
                 Assert.Equal(200, ((ObjectResult)actionTideLocationNew.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionTideLocationNew.Result).Value);
-                TideLocation tideLocationNew = (TideLocation)(((OkObjectResult)actionTideLocationNew.Result).Value);
+                TideLocation tideLocationNew = (TideLocation)((OkObjectResult)actionTideLocationNew.Result).Value;
                 Assert.NotNull(tideLocationNew);
 
                 // testing Put(TideLocation tideLocation)
                 var actionTideLocationUpdate = await tideLocationController.Put(tideLocationNew);
                 Assert.Equal(200, ((ObjectResult)actionTideLocationUpdate.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionTideLocationUpdate.Result).Value);
-                TideLocation tideLocationUpdate = (TideLocation)(((OkObjectResult)actionTideLocationUpdate.Result).Value);
+                TideLocation tideLocationUpdate = (TideLocation)((OkObjectResult)actionTideLocationUpdate.Result).Value;
                 Assert.NotNull(tideLocationUpdate);
 
-                // testing Delete(TideLocation tideLocation)
-                var actionTideLocationDelete = await tideLocationController.Delete(tideLocationUpdate);
+                // testing Delete(int tideLocation.TideLocationID)
+                var actionTideLocationDelete = await tideLocationController.Delete(tideLocationUpdate.TideLocationID);
                 Assert.Equal(200, ((ObjectResult)actionTideLocationDelete.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionTideLocationDelete.Result).Value);
-                TideLocation tideLocationDelete = (TideLocation)(((OkObjectResult)actionTideLocationDelete.Result).Value);
-                Assert.NotNull(tideLocationDelete);
+                bool retBool2 = (bool)((OkObjectResult)actionTideLocationDelete.Result).Value;
+                Assert.True(retBool2);
             }
         }
         #endregion Functions public

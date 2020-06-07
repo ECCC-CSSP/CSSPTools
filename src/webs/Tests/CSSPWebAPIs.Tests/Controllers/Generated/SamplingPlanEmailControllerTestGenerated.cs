@@ -72,7 +72,7 @@ namespace CSSPWebAPIs.Tests.Controllers
                 var actionSamplingPlanEmailList = await samplingPlanEmailController.Get();
                 Assert.Equal(200, ((ObjectResult)actionSamplingPlanEmailList.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionSamplingPlanEmailList.Result).Value);
-                List<SamplingPlanEmail> samplingPlanEmailList = (List<SamplingPlanEmail>)(((OkObjectResult)actionSamplingPlanEmailList.Result).Value);
+                List<SamplingPlanEmail> samplingPlanEmailList = (List<SamplingPlanEmail>)((OkObjectResult)actionSamplingPlanEmailList.Result).Value;
 
                 int count = ((List<SamplingPlanEmail>)((OkObjectResult)actionSamplingPlanEmailList.Result).Value).Count();
                 Assert.True(count > 0);
@@ -81,7 +81,7 @@ namespace CSSPWebAPIs.Tests.Controllers
                 var actionSamplingPlanEmail = await samplingPlanEmailController.Get(samplingPlanEmailList[0].SamplingPlanEmailID);
                 Assert.Equal(200, ((ObjectResult)actionSamplingPlanEmail.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionSamplingPlanEmail.Result).Value);
-                SamplingPlanEmail samplingPlanEmail = (SamplingPlanEmail)(((OkObjectResult)actionSamplingPlanEmail.Result).Value);
+                SamplingPlanEmail samplingPlanEmail = (SamplingPlanEmail)((OkObjectResult)actionSamplingPlanEmail.Result).Value;
                 Assert.NotNull(samplingPlanEmail);
                 Assert.Equal(samplingPlanEmailList[0].SamplingPlanEmailID, samplingPlanEmail.SamplingPlanEmailID);
 
@@ -90,22 +90,22 @@ namespace CSSPWebAPIs.Tests.Controllers
                 var actionSamplingPlanEmailNew = await samplingPlanEmailController.Post(samplingPlanEmail);
                 Assert.Equal(200, ((ObjectResult)actionSamplingPlanEmailNew.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionSamplingPlanEmailNew.Result).Value);
-                SamplingPlanEmail samplingPlanEmailNew = (SamplingPlanEmail)(((OkObjectResult)actionSamplingPlanEmailNew.Result).Value);
+                SamplingPlanEmail samplingPlanEmailNew = (SamplingPlanEmail)((OkObjectResult)actionSamplingPlanEmailNew.Result).Value;
                 Assert.NotNull(samplingPlanEmailNew);
 
                 // testing Put(SamplingPlanEmail samplingPlanEmail)
                 var actionSamplingPlanEmailUpdate = await samplingPlanEmailController.Put(samplingPlanEmailNew);
                 Assert.Equal(200, ((ObjectResult)actionSamplingPlanEmailUpdate.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionSamplingPlanEmailUpdate.Result).Value);
-                SamplingPlanEmail samplingPlanEmailUpdate = (SamplingPlanEmail)(((OkObjectResult)actionSamplingPlanEmailUpdate.Result).Value);
+                SamplingPlanEmail samplingPlanEmailUpdate = (SamplingPlanEmail)((OkObjectResult)actionSamplingPlanEmailUpdate.Result).Value;
                 Assert.NotNull(samplingPlanEmailUpdate);
 
-                // testing Delete(SamplingPlanEmail samplingPlanEmail)
-                var actionSamplingPlanEmailDelete = await samplingPlanEmailController.Delete(samplingPlanEmailUpdate);
+                // testing Delete(int samplingPlanEmail.SamplingPlanEmailID)
+                var actionSamplingPlanEmailDelete = await samplingPlanEmailController.Delete(samplingPlanEmailUpdate.SamplingPlanEmailID);
                 Assert.Equal(200, ((ObjectResult)actionSamplingPlanEmailDelete.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionSamplingPlanEmailDelete.Result).Value);
-                SamplingPlanEmail samplingPlanEmailDelete = (SamplingPlanEmail)(((OkObjectResult)actionSamplingPlanEmailDelete.Result).Value);
-                Assert.NotNull(samplingPlanEmailDelete);
+                bool retBool2 = (bool)((OkObjectResult)actionSamplingPlanEmailDelete.Result).Value;
+                Assert.True(retBool2);
             }
         }
         #endregion Functions public

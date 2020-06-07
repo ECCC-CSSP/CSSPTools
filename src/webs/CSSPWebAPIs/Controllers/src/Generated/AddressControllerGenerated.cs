@@ -10,6 +10,7 @@ using LoggedInServices.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace CSSPWebAPI.Controllers
@@ -40,6 +41,8 @@ namespace CSSPWebAPI.Controllers
         #region Constructors
         public AddressController(IAddressService addressService, CSSPDBContext db, ILoggedInService loggedInService)
         {
+            //Thread.Sleep(3000);
+
             this.addressService = addressService;
             this.db = db;
             this.loggedInService = loggedInService;

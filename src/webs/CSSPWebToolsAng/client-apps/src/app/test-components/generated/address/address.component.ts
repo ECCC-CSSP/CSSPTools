@@ -25,22 +25,22 @@ import { EnumIDAndText } from 'src/app/models/enumidandtext.model';
 export class AddressComponent implements OnInit, OnDestroy {
   sub: Subscription;
   addressTypeList: EnumIDAndText[];
-  streetTypeList: EnumIDAndText[]; 
+  streetTypeList: EnumIDAndText[];
   addressFormPut: FormGroup;
   addressFormPost: FormGroup;
 
   constructor(public addressService: AddressService, public router: Router, public fb: FormBuilder) { }
 
-  GetAddress() {
-    this.sub = this.addressService.GetAddress(this.router).subscribe();
+  GetAddressList() {
+    this.sub = this.addressService.GetAddressList(this.router).subscribe();
   }
 
-  PutAddress() {
-    this.sub = this.addressService.PutAddress(this.addressFormPut.value, this.router).subscribe();
+  PutAddress(address: Address) {
+    this.sub = this.addressService.PutAddress(address, this.router).subscribe();
   }
 
-  PostAddress() {
-    this.sub = this.addressService.PostAddress(this.addressFormPost.value, this.router).subscribe();
+  PostAddress(address) {
+    this.sub = this.addressService.PostAddress(address, this.router).subscribe();
   }
 
   DeleteAddress(address: Address) {
@@ -59,8 +59,8 @@ export class AddressComponent implements OnInit, OnDestroy {
     LoadLocalesAddressText(this.addressService);
     this.addressTypeList = AddressTypeEnum_GetOrderedText();
     this.streetTypeList = StreetTypeEnum_GetOrderedText();
-    this.FillAddFormBuilderGroup();
-    this.FillUpdateFormBuilderGroup();
+    this.FillFormBuilderGroup('Add');
+    this.FillFormBuilderGroup('Update');
   }
 
   ngOnDestroy() {
@@ -69,151 +69,158 @@ export class AddressComponent implements OnInit, OnDestroy {
     }
   }
 
-  FillAddFormBuilderGroup()
-  {
-    this.addressFormPost = this.fb.group(
-      {
-        AddressID: [
-          {
-            value: 0,
-            disabled: false
-          }, Validators.required],
-        AddressTVItemID: [
-          {
-            value: this.addressService.addressModel$.getValue() ? this.addressService.addressModel$.getValue()?.AddressList[0]?.AddressTVItemID : '',
-            disabled: false
-          }, Validators.required],
-        AddressType: [
-          {
-            value: this.addressService.addressModel$.getValue() ? this.addressService.addressModel$.getValue()?.AddressList[0]?.AddressType : '',
-            disabled: false
-          }, Validators.required],
-        CountryTVItemID: [
-          {
-            value: this.addressService.addressModel$.getValue() ? this.addressService.addressModel$.getValue()?.AddressList[0]?.CountryTVItemID : '',
-            disabled: false
-          }, Validators.required],
-        ProvinceTVItemID: [
-          {
-            value: this.addressService.addressModel$.getValue() ? this.addressService.addressModel$.getValue()?.AddressList[0]?.ProvinceTVItemID : '',
-            disabled: false
-          }, Validators.required],
-        MunicipalityTVItemID: [
-          {
-            value: this.addressService.addressModel$.getValue() ? this.addressService.addressModel$.getValue()?.AddressList[0]?.MunicipalityTVItemID : '',
-            disabled: false
-          }, Validators.required],
-        StreetName: [
-          {
-            value: this.addressService.addressModel$.getValue() ? this.addressService.addressModel$.getValue()?.AddressList[0]?.StreetName : '',
-            disabled: false
-          }, Validators.required],
-        StreetNumber: [
-          {
-            value: this.addressService.addressModel$.getValue() ? this.addressService.addressModel$.getValue()?.AddressList[0]?.StreetNumber : '',
-            disabled: false
-          }, Validators.required],
-        StreetType: [
-          {
-            value: this.addressService.addressModel$.getValue() ? this.addressService.addressModel$.getValue()?.AddressList[0]?.StreetType : '',
-            disabled: false
-          }, Validators.required],
-        PostalCode: [
-          {
-            value: this.addressService.addressModel$.getValue() ? this.addressService.addressModel$.getValue()?.AddressList[0]?.PostalCode : '',
-            disabled: false
-          }, [ Validators.required ]],
-        GoogleAddressText: [
-          {
-            value: this.addressService.addressModel$.getValue() ? this.addressService.addressModel$.getValue()?.AddressList[0]?.GoogleAddressText : '',
-            disabled: false
-          }, Validators.required],
-        LastUpdateDate_UTC: [
-          {
-            value: this.addressService.addressModel$.getValue() ? this.addressService.addressModel$.getValue()?.AddressList[0]?.LastUpdateDate_UTC : '',
-            disabled: false
-          }, Validators.required],
-        LastUpdateContactTVItemID: [
-          {
-            value: this.addressService.addressModel$.getValue() ? this.addressService.addressModel$.getValue()?.AddressList[0]?.LastUpdateContactTVItemID : '',
-            disabled: false
-          }, Validators.required],
-      }
-    );
-  
-  }
-
-  FillUpdateFormBuilderGroup()
-  {
-    this.addressFormPut = this.fb.group(
-      {
-        AddressID: [
-          {
-            value: this.addressService.addressModel$.getValue() ? this.addressService.addressModel$.getValue()?.AddressList[0]?.AddressID : '',
-            disabled: false
-          }, Validators.required],
+  FillFormBuilderGroup(AddOrUpdate: string) {
+    if (this.addressService.addressList.length) {
+      let formGroup: FormGroup = this.fb.group(
+        {
+          AddressID: [
+            {
+              value: (AddOrUpdate === 'Add' ? 0 : (this.addressService.addressList[0]?.AddressID ?? '')),
+              disabled: false
+            }, Validators.required],
           AddressTVItemID: [
             {
-              value: this.addressService.addressModel$.getValue() ? this.addressService.addressModel$.getValue()?.AddressList[0]?.AddressTVItemID : '',
+              value: this.addressService.addressList[0]?.AddressTVItemID ?? '',
               disabled: false
             }, Validators.required],
           AddressType: [
             {
-              value: this.addressService.addressModel$.getValue() ? this.addressService.addressModel$.getValue()?.AddressList[0]?.AddressType : '',
+              value: this.addressService.addressList[0]?.AddressType ?? '',
               disabled: false
             }, Validators.required],
           CountryTVItemID: [
             {
-              value: this.addressService.addressModel$.getValue() ? this.addressService.addressModel$.getValue()?.AddressList[0]?.CountryTVItemID : '',
+              value: this.addressService.addressList[0]?.CountryTVItemID ?? '',
               disabled: false
             }, Validators.required],
           ProvinceTVItemID: [
             {
-              value: this.addressService.addressModel$.getValue() ? this.addressService.addressModel$.getValue()?.AddressList[0]?.ProvinceTVItemID : '',
+              value: this.addressService.addressList[0]?.ProvinceTVItemID ?? '',
               disabled: false
             }, Validators.required],
           MunicipalityTVItemID: [
             {
-              value: this.addressService.addressModel$.getValue() ? this.addressService.addressModel$.getValue()?.AddressList[0]?.MunicipalityTVItemID : '',
+              value: this.addressService.addressList[0]?.MunicipalityTVItemID ?? '',
               disabled: false
             }, Validators.required],
           StreetName: [
             {
-              value: this.addressService.addressModel$.getValue() ? this.addressService.addressModel$.getValue()?.AddressList[0]?.StreetName : '',
+              value: this.addressService.addressList[0]?.StreetName ?? '',
               disabled: false
             }, Validators.required],
           StreetNumber: [
             {
-              value: this.addressService.addressModel$.getValue() ? this.addressService.addressModel$.getValue()?.AddressList[0]?.StreetNumber : '',
+              value: this.addressService.addressList[0]?.StreetNumber ?? '',
               disabled: false
             }, Validators.required],
           StreetType: [
             {
-              value: this.addressService.addressModel$.getValue() ? this.addressService.addressModel$.getValue()?.AddressList[0]?.StreetType : '',
+              value: this.addressService.addressList[0]?.StreetType ?? '',
               disabled: false
             }, Validators.required],
           PostalCode: [
             {
-              value: this.addressService.addressModel$.getValue() ? this.addressService.addressModel$.getValue()?.AddressList[0]?.PostalCode : '',
+              value: this.addressService.addressList[0]?.PostalCode ?? '',
               disabled: false
-            }, [ Validators.required ]],
+            }, Validators.required],
           GoogleAddressText: [
             {
-              value: this.addressService.addressModel$.getValue() ? this.addressService.addressModel$.getValue()?.AddressList[0]?.GoogleAddressText : '',
+              value: this.addressService.addressList[0]?.GoogleAddressText ?? '',
               disabled: false
             }, Validators.required],
           LastUpdateDate_UTC: [
             {
-              value: this.addressService.addressModel$.getValue() ? this.addressService.addressModel$.getValue()?.AddressList[0]?.LastUpdateDate_UTC : '',
+              value: this.addressService.addressList[0]?.LastUpdateDate_UTC ?? '',
               disabled: false
             }, Validators.required],
           LastUpdateContactTVItemID: [
             {
-              value: this.addressService.addressModel$.getValue() ? this.addressService.addressModel$.getValue()?.AddressList[0]?.LastUpdateContactTVItemID : '',
+              value: this.addressService.addressList[0]?.LastUpdateContactTVItemID ?? '',
               disabled: false
             }, Validators.required],
         }
-    );
-  
+      );
+
+      if (AddOrUpdate === 'Add') {
+        this.addressFormPost = formGroup
+      }
+      else {
+        this.addressFormPut = formGroup;
+      }
+    }
+  }
+
+  FillUpdateFormBuilderGroup() {
+    if (this.addressService.addressList.length) {
+      this.addressFormPut = this.fb.group(
+        {
+          AddressID: [
+            {
+              value: this.addressService.addressList[0]?.AddressID ?? '',
+              disabled: false
+            }, Validators.required],
+          AddressTVItemID: [
+            {
+              value: this.addressService.addressList[0]?.AddressTVItemID ?? '',
+              disabled: false
+            }, Validators.required],
+          AddressType: [
+            {
+              value: this.addressService.addressList[0]?.AddressType ?? '',
+              disabled: false
+            }, Validators.required],
+          CountryTVItemID: [
+            {
+              value: this.addressService.addressList[0]?.CountryTVItemID ?? '',
+              disabled: false
+            }, Validators.required],
+          ProvinceTVItemID: [
+            {
+              value: this.addressService.addressList[0]?.ProvinceTVItemID ?? '',
+              disabled: false
+            }, Validators.required],
+          MunicipalityTVItemID: [
+            {
+              value: this.addressService.addressList[0]?.MunicipalityTVItemID ?? '',
+              disabled: false
+            }, Validators.required],
+          StreetName: [
+            {
+              value: this.addressService.addressList[0]?.StreetName ?? '',
+              disabled: false
+            }, Validators.required],
+          StreetNumber: [
+            {
+              value: this.addressService.addressList[0]?.StreetNumber ?? '',
+              disabled: false
+            }, Validators.required],
+          StreetType: [
+            {
+              value: this.addressService.addressList[0]?.StreetType ?? '',
+              disabled: false
+            }, Validators.required],
+          PostalCode: [
+            {
+              value: this.addressService.addressList[0]?.PostalCode ?? '',
+              disabled: false
+            }, Validators.required],
+          GoogleAddressText: [
+            {
+              value: this.addressService.addressList[0]?.GoogleAddressText ?? '',
+              disabled: false
+            }, Validators.required],
+          LastUpdateDate_UTC: [
+            {
+              value: this.addressService.addressList[0]?.LastUpdateDate_UTC ?? '',
+              disabled: false
+            }, Validators.required],
+          LastUpdateContactTVItemID: [
+            {
+              value: this.addressService.addressList[0]?.LastUpdateContactTVItemID ?? '',
+              disabled: false
+            }, Validators.required],
+        }
+      );
+    }
   }
 }

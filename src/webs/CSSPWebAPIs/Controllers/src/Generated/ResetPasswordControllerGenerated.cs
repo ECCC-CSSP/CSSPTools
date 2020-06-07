@@ -20,7 +20,7 @@ namespace CSSPWebAPI.Controllers
         Task<ActionResult<ResetPassword>> Get(int ResetPasswordID);
         Task<ActionResult<ResetPassword>> Post(ResetPassword resetPassword);
         Task<ActionResult<ResetPassword>> Put(ResetPassword resetPassword);
-        Task<ActionResult<ResetPassword>> Delete(ResetPassword resetPassword);
+        Task<ActionResult<bool>> Delete(int ResetPasswordID);
     }
 
     [Route("api/{culture}/[controller]")]
@@ -67,10 +67,10 @@ namespace CSSPWebAPI.Controllers
         {
             return await resetPasswordService.Update(resetPassword);
         }
-        [HttpDelete]
-        public async Task<ActionResult<ResetPassword>> Delete(ResetPassword resetPassword)
+        [HttpDelete("{ResetPasswordID}")]
+        public async Task<ActionResult<bool>> Delete(int ResetPasswordID)
         {
-            return await resetPasswordService.Delete(resetPassword);
+            return await resetPasswordService.Delete(ResetPasswordID);
         }
         #endregion Functions public
 

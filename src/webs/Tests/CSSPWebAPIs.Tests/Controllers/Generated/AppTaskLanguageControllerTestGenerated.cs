@@ -72,7 +72,7 @@ namespace CSSPWebAPIs.Tests.Controllers
                 var actionAppTaskLanguageList = await appTaskLanguageController.Get();
                 Assert.Equal(200, ((ObjectResult)actionAppTaskLanguageList.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionAppTaskLanguageList.Result).Value);
-                List<AppTaskLanguage> appTaskLanguageList = (List<AppTaskLanguage>)(((OkObjectResult)actionAppTaskLanguageList.Result).Value);
+                List<AppTaskLanguage> appTaskLanguageList = (List<AppTaskLanguage>)((OkObjectResult)actionAppTaskLanguageList.Result).Value;
 
                 int count = ((List<AppTaskLanguage>)((OkObjectResult)actionAppTaskLanguageList.Result).Value).Count();
                 Assert.True(count > 0);
@@ -81,7 +81,7 @@ namespace CSSPWebAPIs.Tests.Controllers
                 var actionAppTaskLanguage = await appTaskLanguageController.Get(appTaskLanguageList[0].AppTaskLanguageID);
                 Assert.Equal(200, ((ObjectResult)actionAppTaskLanguage.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionAppTaskLanguage.Result).Value);
-                AppTaskLanguage appTaskLanguage = (AppTaskLanguage)(((OkObjectResult)actionAppTaskLanguage.Result).Value);
+                AppTaskLanguage appTaskLanguage = (AppTaskLanguage)((OkObjectResult)actionAppTaskLanguage.Result).Value;
                 Assert.NotNull(appTaskLanguage);
                 Assert.Equal(appTaskLanguageList[0].AppTaskLanguageID, appTaskLanguage.AppTaskLanguageID);
 
@@ -90,22 +90,22 @@ namespace CSSPWebAPIs.Tests.Controllers
                 var actionAppTaskLanguageNew = await appTaskLanguageController.Post(appTaskLanguage);
                 Assert.Equal(200, ((ObjectResult)actionAppTaskLanguageNew.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionAppTaskLanguageNew.Result).Value);
-                AppTaskLanguage appTaskLanguageNew = (AppTaskLanguage)(((OkObjectResult)actionAppTaskLanguageNew.Result).Value);
+                AppTaskLanguage appTaskLanguageNew = (AppTaskLanguage)((OkObjectResult)actionAppTaskLanguageNew.Result).Value;
                 Assert.NotNull(appTaskLanguageNew);
 
                 // testing Put(AppTaskLanguage appTaskLanguage)
                 var actionAppTaskLanguageUpdate = await appTaskLanguageController.Put(appTaskLanguageNew);
                 Assert.Equal(200, ((ObjectResult)actionAppTaskLanguageUpdate.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionAppTaskLanguageUpdate.Result).Value);
-                AppTaskLanguage appTaskLanguageUpdate = (AppTaskLanguage)(((OkObjectResult)actionAppTaskLanguageUpdate.Result).Value);
+                AppTaskLanguage appTaskLanguageUpdate = (AppTaskLanguage)((OkObjectResult)actionAppTaskLanguageUpdate.Result).Value;
                 Assert.NotNull(appTaskLanguageUpdate);
 
-                // testing Delete(AppTaskLanguage appTaskLanguage)
-                var actionAppTaskLanguageDelete = await appTaskLanguageController.Delete(appTaskLanguageUpdate);
+                // testing Delete(int appTaskLanguage.AppTaskLanguageID)
+                var actionAppTaskLanguageDelete = await appTaskLanguageController.Delete(appTaskLanguageUpdate.AppTaskLanguageID);
                 Assert.Equal(200, ((ObjectResult)actionAppTaskLanguageDelete.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionAppTaskLanguageDelete.Result).Value);
-                AppTaskLanguage appTaskLanguageDelete = (AppTaskLanguage)(((OkObjectResult)actionAppTaskLanguageDelete.Result).Value);
-                Assert.NotNull(appTaskLanguageDelete);
+                bool retBool2 = (bool)((OkObjectResult)actionAppTaskLanguageDelete.Result).Value;
+                Assert.True(retBool2);
             }
         }
         #endregion Functions public

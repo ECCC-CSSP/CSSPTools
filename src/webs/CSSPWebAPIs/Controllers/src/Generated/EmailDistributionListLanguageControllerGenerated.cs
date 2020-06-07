@@ -20,7 +20,7 @@ namespace CSSPWebAPI.Controllers
         Task<ActionResult<EmailDistributionListLanguage>> Get(int EmailDistributionListLanguageID);
         Task<ActionResult<EmailDistributionListLanguage>> Post(EmailDistributionListLanguage emailDistributionListLanguage);
         Task<ActionResult<EmailDistributionListLanguage>> Put(EmailDistributionListLanguage emailDistributionListLanguage);
-        Task<ActionResult<EmailDistributionListLanguage>> Delete(EmailDistributionListLanguage emailDistributionListLanguage);
+        Task<ActionResult<bool>> Delete(int EmailDistributionListLanguageID);
     }
 
     [Route("api/{culture}/[controller]")]
@@ -67,10 +67,10 @@ namespace CSSPWebAPI.Controllers
         {
             return await emailDistributionListLanguageService.Update(emailDistributionListLanguage);
         }
-        [HttpDelete]
-        public async Task<ActionResult<EmailDistributionListLanguage>> Delete(EmailDistributionListLanguage emailDistributionListLanguage)
+        [HttpDelete("{EmailDistributionListLanguageID}")]
+        public async Task<ActionResult<bool>> Delete(int EmailDistributionListLanguageID)
         {
-            return await emailDistributionListLanguageService.Delete(emailDistributionListLanguage);
+            return await emailDistributionListLanguageService.Delete(EmailDistributionListLanguageID);
         }
         #endregion Functions public
 

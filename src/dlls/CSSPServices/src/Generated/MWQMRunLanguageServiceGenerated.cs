@@ -25,7 +25,7 @@ namespace CSSPServices
        Task<ActionResult<MWQMRunLanguage>> GetMWQMRunLanguageWithMWQMRunLanguageID(int MWQMRunLanguageID);
        Task<ActionResult<List<MWQMRunLanguage>>> GetMWQMRunLanguageList();
        Task<ActionResult<MWQMRunLanguage>> Add(MWQMRunLanguage mwqmrunlanguage);
-       Task<ActionResult<MWQMRunLanguage>> Delete(MWQMRunLanguage mwqmrunlanguage);
+       Task<ActionResult<bool>> Delete(int MWQMRunLanguageID);
        Task<ActionResult<MWQMRunLanguage>> Update(MWQMRunLanguage mwqmrunlanguage);
        Task SetCulture(CultureInfo culture);
     }
@@ -88,12 +88,15 @@ namespace CSSPServices
 
             return await Task.FromResult(Ok(mwqmRunLanguage));
         }
-        public async Task<ActionResult<MWQMRunLanguage>> Delete(MWQMRunLanguage mwqmRunLanguage)
+        public async Task<ActionResult<bool>> Delete(int MWQMRunLanguageID)
         {
-            ValidationResults = Validate(new ValidationContext(mwqmRunLanguage), ActionDBTypeEnum.Delete);
-            if (ValidationResults.Count() > 0)
+            MWQMRunLanguage mwqmRunLanguage = (from c in db.MWQMRunLanguages
+                               where c.MWQMRunLanguageID == MWQMRunLanguageID
+                               select c).FirstOrDefault();
+            
+            if (mwqmRunLanguage == null)
             {
-               return await Task.FromResult(BadRequest(ValidationResults));
+                return await Task.FromResult(BadRequest(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "MWQMRunLanguage", "MWQMRunLanguageID", MWQMRunLanguageID.ToString())));
             }
 
             try
@@ -106,7 +109,7 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
 
-            return await Task.FromResult(Ok(mwqmRunLanguage));
+            return await Task.FromResult(Ok(true));
         }
         public async Task<ActionResult<MWQMRunLanguage>> Update(MWQMRunLanguage mwqmRunLanguage)
         {

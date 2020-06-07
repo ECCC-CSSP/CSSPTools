@@ -20,7 +20,7 @@ namespace CSSPWebAPI.Controllers
         Task<ActionResult<TVItemStat>> Get(int TVItemStatID);
         Task<ActionResult<TVItemStat>> Post(TVItemStat tvItemStat);
         Task<ActionResult<TVItemStat>> Put(TVItemStat tvItemStat);
-        Task<ActionResult<TVItemStat>> Delete(TVItemStat tvItemStat);
+        Task<ActionResult<bool>> Delete(int TVItemStatID);
     }
 
     [Route("api/{culture}/[controller]")]
@@ -67,10 +67,10 @@ namespace CSSPWebAPI.Controllers
         {
             return await tvItemStatService.Update(tvItemStat);
         }
-        [HttpDelete]
-        public async Task<ActionResult<TVItemStat>> Delete(TVItemStat tvItemStat)
+        [HttpDelete("{TVItemStatID}")]
+        public async Task<ActionResult<bool>> Delete(int TVItemStatID)
         {
-            return await tvItemStatService.Delete(tvItemStat);
+            return await tvItemStatService.Delete(TVItemStatID);
         }
         #endregion Functions public
 

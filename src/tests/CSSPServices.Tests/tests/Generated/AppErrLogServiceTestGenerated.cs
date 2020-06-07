@@ -63,7 +63,7 @@ namespace CSSPServices.Tests
                var actionAppErrLogList = await appErrLogService.GetAppErrLogList();
                Assert.Equal(200, ((ObjectResult)actionAppErrLogList.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionAppErrLogList.Result).Value);
-               List<AppErrLog> appErrLogList = (List<AppErrLog>)(((OkObjectResult)actionAppErrLogList.Result).Value);
+               List<AppErrLog> appErrLogList = (List<AppErrLog>)((OkObjectResult)actionAppErrLogList.Result).Value;
 
                int count = ((List<AppErrLog>)((OkObjectResult)actionAppErrLogList.Result).Value).Count();
                 Assert.True(count > 0);
@@ -72,22 +72,22 @@ namespace CSSPServices.Tests
                var actionAppErrLogAdded = await appErrLogService.Add(appErrLog);
                Assert.Equal(200, ((ObjectResult)actionAppErrLogAdded.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionAppErrLogAdded.Result).Value);
-               AppErrLog appErrLogAdded = (AppErrLog)(((OkObjectResult)actionAppErrLogAdded.Result).Value);
+               AppErrLog appErrLogAdded = (AppErrLog)((OkObjectResult)actionAppErrLogAdded.Result).Value;
                Assert.NotNull(appErrLogAdded);
 
                // Update AppErrLog
                var actionAppErrLogUpdated = await appErrLogService.Update(appErrLog);
                Assert.Equal(200, ((ObjectResult)actionAppErrLogUpdated.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionAppErrLogUpdated.Result).Value);
-               AppErrLog appErrLogUpdated = (AppErrLog)(((OkObjectResult)actionAppErrLogUpdated.Result).Value);
+               AppErrLog appErrLogUpdated = (AppErrLog)((OkObjectResult)actionAppErrLogUpdated.Result).Value;
                Assert.NotNull(appErrLogUpdated);
 
                // Delete AppErrLog
-               var actionAppErrLogDeleted = await appErrLogService.Delete(appErrLog);
+               var actionAppErrLogDeleted = await appErrLogService.Delete(appErrLog.AppErrLogID);
                Assert.Equal(200, ((ObjectResult)actionAppErrLogDeleted.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionAppErrLogDeleted.Result).Value);
-               AppErrLog appErrLogDeleted = (AppErrLog)(((OkObjectResult)actionAppErrLogDeleted.Result).Value);
-               Assert.NotNull(appErrLogDeleted);
+               bool retBool = (bool)((OkObjectResult)actionAppErrLogDeleted.Result).Value;
+               Assert.True(retBool);
             }
         }
         #endregion Tests Generated CRUD

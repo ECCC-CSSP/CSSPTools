@@ -63,7 +63,7 @@ namespace CSSPServices.Tests
                var actionTVItemLanguageList = await tvItemLanguageService.GetTVItemLanguageList();
                Assert.Equal(200, ((ObjectResult)actionTVItemLanguageList.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionTVItemLanguageList.Result).Value);
-               List<TVItemLanguage> tvItemLanguageList = (List<TVItemLanguage>)(((OkObjectResult)actionTVItemLanguageList.Result).Value);
+               List<TVItemLanguage> tvItemLanguageList = (List<TVItemLanguage>)((OkObjectResult)actionTVItemLanguageList.Result).Value;
 
                int count = ((List<TVItemLanguage>)((OkObjectResult)actionTVItemLanguageList.Result).Value).Count();
                 Assert.True(count > 0);
@@ -72,22 +72,22 @@ namespace CSSPServices.Tests
                var actionTVItemLanguageAdded = await tvItemLanguageService.Add(tvItemLanguage);
                Assert.Equal(200, ((ObjectResult)actionTVItemLanguageAdded.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionTVItemLanguageAdded.Result).Value);
-               TVItemLanguage tvItemLanguageAdded = (TVItemLanguage)(((OkObjectResult)actionTVItemLanguageAdded.Result).Value);
+               TVItemLanguage tvItemLanguageAdded = (TVItemLanguage)((OkObjectResult)actionTVItemLanguageAdded.Result).Value;
                Assert.NotNull(tvItemLanguageAdded);
 
                // Update TVItemLanguage
                var actionTVItemLanguageUpdated = await tvItemLanguageService.Update(tvItemLanguage);
                Assert.Equal(200, ((ObjectResult)actionTVItemLanguageUpdated.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionTVItemLanguageUpdated.Result).Value);
-               TVItemLanguage tvItemLanguageUpdated = (TVItemLanguage)(((OkObjectResult)actionTVItemLanguageUpdated.Result).Value);
+               TVItemLanguage tvItemLanguageUpdated = (TVItemLanguage)((OkObjectResult)actionTVItemLanguageUpdated.Result).Value;
                Assert.NotNull(tvItemLanguageUpdated);
 
                // Delete TVItemLanguage
-               var actionTVItemLanguageDeleted = await tvItemLanguageService.Delete(tvItemLanguage);
+               var actionTVItemLanguageDeleted = await tvItemLanguageService.Delete(tvItemLanguage.TVItemLanguageID);
                Assert.Equal(200, ((ObjectResult)actionTVItemLanguageDeleted.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionTVItemLanguageDeleted.Result).Value);
-               TVItemLanguage tvItemLanguageDeleted = (TVItemLanguage)(((OkObjectResult)actionTVItemLanguageDeleted.Result).Value);
-               Assert.NotNull(tvItemLanguageDeleted);
+               bool retBool = (bool)((OkObjectResult)actionTVItemLanguageDeleted.Result).Value;
+               Assert.True(retBool);
             }
         }
         #endregion Tests Generated CRUD

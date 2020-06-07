@@ -63,7 +63,7 @@ namespace CSSPServices.Tests
                var actionMWQMSampleList = await mwqmSampleService.GetMWQMSampleList();
                Assert.Equal(200, ((ObjectResult)actionMWQMSampleList.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionMWQMSampleList.Result).Value);
-               List<MWQMSample> mwqmSampleList = (List<MWQMSample>)(((OkObjectResult)actionMWQMSampleList.Result).Value);
+               List<MWQMSample> mwqmSampleList = (List<MWQMSample>)((OkObjectResult)actionMWQMSampleList.Result).Value;
 
                int count = ((List<MWQMSample>)((OkObjectResult)actionMWQMSampleList.Result).Value).Count();
                 Assert.True(count > 0);
@@ -72,22 +72,22 @@ namespace CSSPServices.Tests
                var actionMWQMSampleAdded = await mwqmSampleService.Add(mwqmSample);
                Assert.Equal(200, ((ObjectResult)actionMWQMSampleAdded.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionMWQMSampleAdded.Result).Value);
-               MWQMSample mwqmSampleAdded = (MWQMSample)(((OkObjectResult)actionMWQMSampleAdded.Result).Value);
+               MWQMSample mwqmSampleAdded = (MWQMSample)((OkObjectResult)actionMWQMSampleAdded.Result).Value;
                Assert.NotNull(mwqmSampleAdded);
 
                // Update MWQMSample
                var actionMWQMSampleUpdated = await mwqmSampleService.Update(mwqmSample);
                Assert.Equal(200, ((ObjectResult)actionMWQMSampleUpdated.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionMWQMSampleUpdated.Result).Value);
-               MWQMSample mwqmSampleUpdated = (MWQMSample)(((OkObjectResult)actionMWQMSampleUpdated.Result).Value);
+               MWQMSample mwqmSampleUpdated = (MWQMSample)((OkObjectResult)actionMWQMSampleUpdated.Result).Value;
                Assert.NotNull(mwqmSampleUpdated);
 
                // Delete MWQMSample
-               var actionMWQMSampleDeleted = await mwqmSampleService.Delete(mwqmSample);
+               var actionMWQMSampleDeleted = await mwqmSampleService.Delete(mwqmSample.MWQMSampleID);
                Assert.Equal(200, ((ObjectResult)actionMWQMSampleDeleted.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionMWQMSampleDeleted.Result).Value);
-               MWQMSample mwqmSampleDeleted = (MWQMSample)(((OkObjectResult)actionMWQMSampleDeleted.Result).Value);
-               Assert.NotNull(mwqmSampleDeleted);
+               bool retBool = (bool)((OkObjectResult)actionMWQMSampleDeleted.Result).Value;
+               Assert.True(retBool);
             }
         }
         #endregion Tests Generated CRUD

@@ -72,7 +72,7 @@ namespace CSSPWebAPIs.Tests.Controllers
                 var actionContactShortcutList = await contactShortcutController.Get();
                 Assert.Equal(200, ((ObjectResult)actionContactShortcutList.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionContactShortcutList.Result).Value);
-                List<ContactShortcut> contactShortcutList = (List<ContactShortcut>)(((OkObjectResult)actionContactShortcutList.Result).Value);
+                List<ContactShortcut> contactShortcutList = (List<ContactShortcut>)((OkObjectResult)actionContactShortcutList.Result).Value;
 
                 int count = ((List<ContactShortcut>)((OkObjectResult)actionContactShortcutList.Result).Value).Count();
                 Assert.True(count > 0);
@@ -81,7 +81,7 @@ namespace CSSPWebAPIs.Tests.Controllers
                 var actionContactShortcut = await contactShortcutController.Get(contactShortcutList[0].ContactShortcutID);
                 Assert.Equal(200, ((ObjectResult)actionContactShortcut.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionContactShortcut.Result).Value);
-                ContactShortcut contactShortcut = (ContactShortcut)(((OkObjectResult)actionContactShortcut.Result).Value);
+                ContactShortcut contactShortcut = (ContactShortcut)((OkObjectResult)actionContactShortcut.Result).Value;
                 Assert.NotNull(contactShortcut);
                 Assert.Equal(contactShortcutList[0].ContactShortcutID, contactShortcut.ContactShortcutID);
 
@@ -90,22 +90,22 @@ namespace CSSPWebAPIs.Tests.Controllers
                 var actionContactShortcutNew = await contactShortcutController.Post(contactShortcut);
                 Assert.Equal(200, ((ObjectResult)actionContactShortcutNew.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionContactShortcutNew.Result).Value);
-                ContactShortcut contactShortcutNew = (ContactShortcut)(((OkObjectResult)actionContactShortcutNew.Result).Value);
+                ContactShortcut contactShortcutNew = (ContactShortcut)((OkObjectResult)actionContactShortcutNew.Result).Value;
                 Assert.NotNull(contactShortcutNew);
 
                 // testing Put(ContactShortcut contactShortcut)
                 var actionContactShortcutUpdate = await contactShortcutController.Put(contactShortcutNew);
                 Assert.Equal(200, ((ObjectResult)actionContactShortcutUpdate.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionContactShortcutUpdate.Result).Value);
-                ContactShortcut contactShortcutUpdate = (ContactShortcut)(((OkObjectResult)actionContactShortcutUpdate.Result).Value);
+                ContactShortcut contactShortcutUpdate = (ContactShortcut)((OkObjectResult)actionContactShortcutUpdate.Result).Value;
                 Assert.NotNull(contactShortcutUpdate);
 
-                // testing Delete(ContactShortcut contactShortcut)
-                var actionContactShortcutDelete = await contactShortcutController.Delete(contactShortcutUpdate);
+                // testing Delete(int contactShortcut.ContactShortcutID)
+                var actionContactShortcutDelete = await contactShortcutController.Delete(contactShortcutUpdate.ContactShortcutID);
                 Assert.Equal(200, ((ObjectResult)actionContactShortcutDelete.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionContactShortcutDelete.Result).Value);
-                ContactShortcut contactShortcutDelete = (ContactShortcut)(((OkObjectResult)actionContactShortcutDelete.Result).Value);
-                Assert.NotNull(contactShortcutDelete);
+                bool retBool2 = (bool)((OkObjectResult)actionContactShortcutDelete.Result).Value;
+                Assert.True(retBool2);
             }
         }
         #endregion Functions public

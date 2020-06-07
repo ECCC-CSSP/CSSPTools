@@ -25,7 +25,7 @@ namespace CSSPServices
        Task<ActionResult<PolSourceSiteEffectTerm>> GetPolSourceSiteEffectTermWithPolSourceSiteEffectTermID(int PolSourceSiteEffectTermID);
        Task<ActionResult<List<PolSourceSiteEffectTerm>>> GetPolSourceSiteEffectTermList();
        Task<ActionResult<PolSourceSiteEffectTerm>> Add(PolSourceSiteEffectTerm polsourcesiteeffectterm);
-       Task<ActionResult<PolSourceSiteEffectTerm>> Delete(PolSourceSiteEffectTerm polsourcesiteeffectterm);
+       Task<ActionResult<bool>> Delete(int PolSourceSiteEffectTermID);
        Task<ActionResult<PolSourceSiteEffectTerm>> Update(PolSourceSiteEffectTerm polsourcesiteeffectterm);
        Task SetCulture(CultureInfo culture);
     }
@@ -88,12 +88,15 @@ namespace CSSPServices
 
             return await Task.FromResult(Ok(polSourceSiteEffectTerm));
         }
-        public async Task<ActionResult<PolSourceSiteEffectTerm>> Delete(PolSourceSiteEffectTerm polSourceSiteEffectTerm)
+        public async Task<ActionResult<bool>> Delete(int PolSourceSiteEffectTermID)
         {
-            ValidationResults = Validate(new ValidationContext(polSourceSiteEffectTerm), ActionDBTypeEnum.Delete);
-            if (ValidationResults.Count() > 0)
+            PolSourceSiteEffectTerm polSourceSiteEffectTerm = (from c in db.PolSourceSiteEffectTerms
+                               where c.PolSourceSiteEffectTermID == PolSourceSiteEffectTermID
+                               select c).FirstOrDefault();
+            
+            if (polSourceSiteEffectTerm == null)
             {
-               return await Task.FromResult(BadRequest(ValidationResults));
+                return await Task.FromResult(BadRequest(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "PolSourceSiteEffectTerm", "PolSourceSiteEffectTermID", PolSourceSiteEffectTermID.ToString())));
             }
 
             try
@@ -106,7 +109,7 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
 
-            return await Task.FromResult(Ok(polSourceSiteEffectTerm));
+            return await Task.FromResult(Ok(true));
         }
         public async Task<ActionResult<PolSourceSiteEffectTerm>> Update(PolSourceSiteEffectTerm polSourceSiteEffectTerm)
         {

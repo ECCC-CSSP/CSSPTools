@@ -72,7 +72,7 @@ namespace CSSPWebAPIs.Tests.Controllers
                 var actionMikeBoundaryConditionList = await mikeBoundaryConditionController.Get();
                 Assert.Equal(200, ((ObjectResult)actionMikeBoundaryConditionList.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionMikeBoundaryConditionList.Result).Value);
-                List<MikeBoundaryCondition> mikeBoundaryConditionList = (List<MikeBoundaryCondition>)(((OkObjectResult)actionMikeBoundaryConditionList.Result).Value);
+                List<MikeBoundaryCondition> mikeBoundaryConditionList = (List<MikeBoundaryCondition>)((OkObjectResult)actionMikeBoundaryConditionList.Result).Value;
 
                 int count = ((List<MikeBoundaryCondition>)((OkObjectResult)actionMikeBoundaryConditionList.Result).Value).Count();
                 Assert.True(count > 0);
@@ -81,7 +81,7 @@ namespace CSSPWebAPIs.Tests.Controllers
                 var actionMikeBoundaryCondition = await mikeBoundaryConditionController.Get(mikeBoundaryConditionList[0].MikeBoundaryConditionID);
                 Assert.Equal(200, ((ObjectResult)actionMikeBoundaryCondition.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionMikeBoundaryCondition.Result).Value);
-                MikeBoundaryCondition mikeBoundaryCondition = (MikeBoundaryCondition)(((OkObjectResult)actionMikeBoundaryCondition.Result).Value);
+                MikeBoundaryCondition mikeBoundaryCondition = (MikeBoundaryCondition)((OkObjectResult)actionMikeBoundaryCondition.Result).Value;
                 Assert.NotNull(mikeBoundaryCondition);
                 Assert.Equal(mikeBoundaryConditionList[0].MikeBoundaryConditionID, mikeBoundaryCondition.MikeBoundaryConditionID);
 
@@ -90,22 +90,22 @@ namespace CSSPWebAPIs.Tests.Controllers
                 var actionMikeBoundaryConditionNew = await mikeBoundaryConditionController.Post(mikeBoundaryCondition);
                 Assert.Equal(200, ((ObjectResult)actionMikeBoundaryConditionNew.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionMikeBoundaryConditionNew.Result).Value);
-                MikeBoundaryCondition mikeBoundaryConditionNew = (MikeBoundaryCondition)(((OkObjectResult)actionMikeBoundaryConditionNew.Result).Value);
+                MikeBoundaryCondition mikeBoundaryConditionNew = (MikeBoundaryCondition)((OkObjectResult)actionMikeBoundaryConditionNew.Result).Value;
                 Assert.NotNull(mikeBoundaryConditionNew);
 
                 // testing Put(MikeBoundaryCondition mikeBoundaryCondition)
                 var actionMikeBoundaryConditionUpdate = await mikeBoundaryConditionController.Put(mikeBoundaryConditionNew);
                 Assert.Equal(200, ((ObjectResult)actionMikeBoundaryConditionUpdate.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionMikeBoundaryConditionUpdate.Result).Value);
-                MikeBoundaryCondition mikeBoundaryConditionUpdate = (MikeBoundaryCondition)(((OkObjectResult)actionMikeBoundaryConditionUpdate.Result).Value);
+                MikeBoundaryCondition mikeBoundaryConditionUpdate = (MikeBoundaryCondition)((OkObjectResult)actionMikeBoundaryConditionUpdate.Result).Value;
                 Assert.NotNull(mikeBoundaryConditionUpdate);
 
-                // testing Delete(MikeBoundaryCondition mikeBoundaryCondition)
-                var actionMikeBoundaryConditionDelete = await mikeBoundaryConditionController.Delete(mikeBoundaryConditionUpdate);
+                // testing Delete(int mikeBoundaryCondition.MikeBoundaryConditionID)
+                var actionMikeBoundaryConditionDelete = await mikeBoundaryConditionController.Delete(mikeBoundaryConditionUpdate.MikeBoundaryConditionID);
                 Assert.Equal(200, ((ObjectResult)actionMikeBoundaryConditionDelete.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionMikeBoundaryConditionDelete.Result).Value);
-                MikeBoundaryCondition mikeBoundaryConditionDelete = (MikeBoundaryCondition)(((OkObjectResult)actionMikeBoundaryConditionDelete.Result).Value);
-                Assert.NotNull(mikeBoundaryConditionDelete);
+                bool retBool2 = (bool)((OkObjectResult)actionMikeBoundaryConditionDelete.Result).Value;
+                Assert.True(retBool2);
             }
         }
         #endregion Functions public

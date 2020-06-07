@@ -63,7 +63,7 @@ namespace CSSPServices.Tests
                var actionPolSourceSiteEffectList = await polSourceSiteEffectService.GetPolSourceSiteEffectList();
                Assert.Equal(200, ((ObjectResult)actionPolSourceSiteEffectList.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionPolSourceSiteEffectList.Result).Value);
-               List<PolSourceSiteEffect> polSourceSiteEffectList = (List<PolSourceSiteEffect>)(((OkObjectResult)actionPolSourceSiteEffectList.Result).Value);
+               List<PolSourceSiteEffect> polSourceSiteEffectList = (List<PolSourceSiteEffect>)((OkObjectResult)actionPolSourceSiteEffectList.Result).Value;
 
                int count = ((List<PolSourceSiteEffect>)((OkObjectResult)actionPolSourceSiteEffectList.Result).Value).Count();
                 Assert.True(count > 0);
@@ -72,22 +72,22 @@ namespace CSSPServices.Tests
                var actionPolSourceSiteEffectAdded = await polSourceSiteEffectService.Add(polSourceSiteEffect);
                Assert.Equal(200, ((ObjectResult)actionPolSourceSiteEffectAdded.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionPolSourceSiteEffectAdded.Result).Value);
-               PolSourceSiteEffect polSourceSiteEffectAdded = (PolSourceSiteEffect)(((OkObjectResult)actionPolSourceSiteEffectAdded.Result).Value);
+               PolSourceSiteEffect polSourceSiteEffectAdded = (PolSourceSiteEffect)((OkObjectResult)actionPolSourceSiteEffectAdded.Result).Value;
                Assert.NotNull(polSourceSiteEffectAdded);
 
                // Update PolSourceSiteEffect
                var actionPolSourceSiteEffectUpdated = await polSourceSiteEffectService.Update(polSourceSiteEffect);
                Assert.Equal(200, ((ObjectResult)actionPolSourceSiteEffectUpdated.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionPolSourceSiteEffectUpdated.Result).Value);
-               PolSourceSiteEffect polSourceSiteEffectUpdated = (PolSourceSiteEffect)(((OkObjectResult)actionPolSourceSiteEffectUpdated.Result).Value);
+               PolSourceSiteEffect polSourceSiteEffectUpdated = (PolSourceSiteEffect)((OkObjectResult)actionPolSourceSiteEffectUpdated.Result).Value;
                Assert.NotNull(polSourceSiteEffectUpdated);
 
                // Delete PolSourceSiteEffect
-               var actionPolSourceSiteEffectDeleted = await polSourceSiteEffectService.Delete(polSourceSiteEffect);
+               var actionPolSourceSiteEffectDeleted = await polSourceSiteEffectService.Delete(polSourceSiteEffect.PolSourceSiteEffectID);
                Assert.Equal(200, ((ObjectResult)actionPolSourceSiteEffectDeleted.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionPolSourceSiteEffectDeleted.Result).Value);
-               PolSourceSiteEffect polSourceSiteEffectDeleted = (PolSourceSiteEffect)(((OkObjectResult)actionPolSourceSiteEffectDeleted.Result).Value);
-               Assert.NotNull(polSourceSiteEffectDeleted);
+               bool retBool = (bool)((OkObjectResult)actionPolSourceSiteEffectDeleted.Result).Value;
+               Assert.True(retBool);
             }
         }
         #endregion Tests Generated CRUD

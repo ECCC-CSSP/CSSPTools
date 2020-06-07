@@ -25,7 +25,7 @@ namespace CSSPServices
        Task<ActionResult<TVItemStat>> GetTVItemStatWithTVItemStatID(int TVItemStatID);
        Task<ActionResult<List<TVItemStat>>> GetTVItemStatList();
        Task<ActionResult<TVItemStat>> Add(TVItemStat tvitemstat);
-       Task<ActionResult<TVItemStat>> Delete(TVItemStat tvitemstat);
+       Task<ActionResult<bool>> Delete(int TVItemStatID);
        Task<ActionResult<TVItemStat>> Update(TVItemStat tvitemstat);
        Task SetCulture(CultureInfo culture);
     }
@@ -88,12 +88,15 @@ namespace CSSPServices
 
             return await Task.FromResult(Ok(tvItemStat));
         }
-        public async Task<ActionResult<TVItemStat>> Delete(TVItemStat tvItemStat)
+        public async Task<ActionResult<bool>> Delete(int TVItemStatID)
         {
-            ValidationResults = Validate(new ValidationContext(tvItemStat), ActionDBTypeEnum.Delete);
-            if (ValidationResults.Count() > 0)
+            TVItemStat tvItemStat = (from c in db.TVItemStats
+                               where c.TVItemStatID == TVItemStatID
+                               select c).FirstOrDefault();
+            
+            if (tvItemStat == null)
             {
-               return await Task.FromResult(BadRequest(ValidationResults));
+                return await Task.FromResult(BadRequest(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "TVItemStat", "TVItemStatID", TVItemStatID.ToString())));
             }
 
             try
@@ -106,7 +109,7 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
 
-            return await Task.FromResult(Ok(tvItemStat));
+            return await Task.FromResult(Ok(true));
         }
         public async Task<ActionResult<TVItemStat>> Update(TVItemStat tvItemStat)
         {

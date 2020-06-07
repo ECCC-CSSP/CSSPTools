@@ -20,7 +20,7 @@ namespace CSSPWebAPI.Controllers
         Task<ActionResult<RatingCurve>> Get(int RatingCurveID);
         Task<ActionResult<RatingCurve>> Post(RatingCurve ratingCurve);
         Task<ActionResult<RatingCurve>> Put(RatingCurve ratingCurve);
-        Task<ActionResult<RatingCurve>> Delete(RatingCurve ratingCurve);
+        Task<ActionResult<bool>> Delete(int RatingCurveID);
     }
 
     [Route("api/{culture}/[controller]")]
@@ -67,10 +67,10 @@ namespace CSSPWebAPI.Controllers
         {
             return await ratingCurveService.Update(ratingCurve);
         }
-        [HttpDelete]
-        public async Task<ActionResult<RatingCurve>> Delete(RatingCurve ratingCurve)
+        [HttpDelete("{RatingCurveID}")]
+        public async Task<ActionResult<bool>> Delete(int RatingCurveID)
         {
-            return await ratingCurveService.Delete(ratingCurve);
+            return await ratingCurveService.Delete(RatingCurveID);
         }
         #endregion Functions public
 

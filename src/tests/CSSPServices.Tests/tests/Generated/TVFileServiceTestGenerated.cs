@@ -63,7 +63,7 @@ namespace CSSPServices.Tests
                var actionTVFileList = await tvFileService.GetTVFileList();
                Assert.Equal(200, ((ObjectResult)actionTVFileList.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionTVFileList.Result).Value);
-               List<TVFile> tvFileList = (List<TVFile>)(((OkObjectResult)actionTVFileList.Result).Value);
+               List<TVFile> tvFileList = (List<TVFile>)((OkObjectResult)actionTVFileList.Result).Value;
 
                int count = ((List<TVFile>)((OkObjectResult)actionTVFileList.Result).Value).Count();
                 Assert.True(count > 0);
@@ -72,22 +72,22 @@ namespace CSSPServices.Tests
                var actionTVFileAdded = await tvFileService.Add(tvFile);
                Assert.Equal(200, ((ObjectResult)actionTVFileAdded.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionTVFileAdded.Result).Value);
-               TVFile tvFileAdded = (TVFile)(((OkObjectResult)actionTVFileAdded.Result).Value);
+               TVFile tvFileAdded = (TVFile)((OkObjectResult)actionTVFileAdded.Result).Value;
                Assert.NotNull(tvFileAdded);
 
                // Update TVFile
                var actionTVFileUpdated = await tvFileService.Update(tvFile);
                Assert.Equal(200, ((ObjectResult)actionTVFileUpdated.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionTVFileUpdated.Result).Value);
-               TVFile tvFileUpdated = (TVFile)(((OkObjectResult)actionTVFileUpdated.Result).Value);
+               TVFile tvFileUpdated = (TVFile)((OkObjectResult)actionTVFileUpdated.Result).Value;
                Assert.NotNull(tvFileUpdated);
 
                // Delete TVFile
-               var actionTVFileDeleted = await tvFileService.Delete(tvFile);
+               var actionTVFileDeleted = await tvFileService.Delete(tvFile.TVFileID);
                Assert.Equal(200, ((ObjectResult)actionTVFileDeleted.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionTVFileDeleted.Result).Value);
-               TVFile tvFileDeleted = (TVFile)(((OkObjectResult)actionTVFileDeleted.Result).Value);
-               Assert.NotNull(tvFileDeleted);
+               bool retBool = (bool)((OkObjectResult)actionTVFileDeleted.Result).Value;
+               Assert.True(retBool);
             }
         }
         #endregion Tests Generated CRUD

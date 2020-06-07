@@ -20,7 +20,7 @@ namespace CSSPWebAPI.Controllers
         Task<ActionResult<MWQMSampleLanguage>> Get(int MWQMSampleLanguageID);
         Task<ActionResult<MWQMSampleLanguage>> Post(MWQMSampleLanguage mwqmSampleLanguage);
         Task<ActionResult<MWQMSampleLanguage>> Put(MWQMSampleLanguage mwqmSampleLanguage);
-        Task<ActionResult<MWQMSampleLanguage>> Delete(MWQMSampleLanguage mwqmSampleLanguage);
+        Task<ActionResult<bool>> Delete(int MWQMSampleLanguageID);
     }
 
     [Route("api/{culture}/[controller]")]
@@ -67,10 +67,10 @@ namespace CSSPWebAPI.Controllers
         {
             return await mwqmSampleLanguageService.Update(mwqmSampleLanguage);
         }
-        [HttpDelete]
-        public async Task<ActionResult<MWQMSampleLanguage>> Delete(MWQMSampleLanguage mwqmSampleLanguage)
+        [HttpDelete("{MWQMSampleLanguageID}")]
+        public async Task<ActionResult<bool>> Delete(int MWQMSampleLanguageID)
         {
-            return await mwqmSampleLanguageService.Delete(mwqmSampleLanguage);
+            return await mwqmSampleLanguageService.Delete(MWQMSampleLanguageID);
         }
         #endregion Functions public
 

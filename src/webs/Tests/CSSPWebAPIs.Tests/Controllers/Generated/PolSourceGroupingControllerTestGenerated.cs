@@ -72,7 +72,7 @@ namespace CSSPWebAPIs.Tests.Controllers
                 var actionPolSourceGroupingList = await polSourceGroupingController.Get();
                 Assert.Equal(200, ((ObjectResult)actionPolSourceGroupingList.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionPolSourceGroupingList.Result).Value);
-                List<PolSourceGrouping> polSourceGroupingList = (List<PolSourceGrouping>)(((OkObjectResult)actionPolSourceGroupingList.Result).Value);
+                List<PolSourceGrouping> polSourceGroupingList = (List<PolSourceGrouping>)((OkObjectResult)actionPolSourceGroupingList.Result).Value;
 
                 int count = ((List<PolSourceGrouping>)((OkObjectResult)actionPolSourceGroupingList.Result).Value).Count();
                 Assert.True(count > 0);
@@ -81,7 +81,7 @@ namespace CSSPWebAPIs.Tests.Controllers
                 var actionPolSourceGrouping = await polSourceGroupingController.Get(polSourceGroupingList[0].PolSourceGroupingID);
                 Assert.Equal(200, ((ObjectResult)actionPolSourceGrouping.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionPolSourceGrouping.Result).Value);
-                PolSourceGrouping polSourceGrouping = (PolSourceGrouping)(((OkObjectResult)actionPolSourceGrouping.Result).Value);
+                PolSourceGrouping polSourceGrouping = (PolSourceGrouping)((OkObjectResult)actionPolSourceGrouping.Result).Value;
                 Assert.NotNull(polSourceGrouping);
                 Assert.Equal(polSourceGroupingList[0].PolSourceGroupingID, polSourceGrouping.PolSourceGroupingID);
 
@@ -90,22 +90,22 @@ namespace CSSPWebAPIs.Tests.Controllers
                 var actionPolSourceGroupingNew = await polSourceGroupingController.Post(polSourceGrouping);
                 Assert.Equal(200, ((ObjectResult)actionPolSourceGroupingNew.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionPolSourceGroupingNew.Result).Value);
-                PolSourceGrouping polSourceGroupingNew = (PolSourceGrouping)(((OkObjectResult)actionPolSourceGroupingNew.Result).Value);
+                PolSourceGrouping polSourceGroupingNew = (PolSourceGrouping)((OkObjectResult)actionPolSourceGroupingNew.Result).Value;
                 Assert.NotNull(polSourceGroupingNew);
 
                 // testing Put(PolSourceGrouping polSourceGrouping)
                 var actionPolSourceGroupingUpdate = await polSourceGroupingController.Put(polSourceGroupingNew);
                 Assert.Equal(200, ((ObjectResult)actionPolSourceGroupingUpdate.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionPolSourceGroupingUpdate.Result).Value);
-                PolSourceGrouping polSourceGroupingUpdate = (PolSourceGrouping)(((OkObjectResult)actionPolSourceGroupingUpdate.Result).Value);
+                PolSourceGrouping polSourceGroupingUpdate = (PolSourceGrouping)((OkObjectResult)actionPolSourceGroupingUpdate.Result).Value;
                 Assert.NotNull(polSourceGroupingUpdate);
 
-                // testing Delete(PolSourceGrouping polSourceGrouping)
-                var actionPolSourceGroupingDelete = await polSourceGroupingController.Delete(polSourceGroupingUpdate);
+                // testing Delete(int polSourceGrouping.PolSourceGroupingID)
+                var actionPolSourceGroupingDelete = await polSourceGroupingController.Delete(polSourceGroupingUpdate.PolSourceGroupingID);
                 Assert.Equal(200, ((ObjectResult)actionPolSourceGroupingDelete.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionPolSourceGroupingDelete.Result).Value);
-                PolSourceGrouping polSourceGroupingDelete = (PolSourceGrouping)(((OkObjectResult)actionPolSourceGroupingDelete.Result).Value);
-                Assert.NotNull(polSourceGroupingDelete);
+                bool retBool2 = (bool)((OkObjectResult)actionPolSourceGroupingDelete.Result).Value;
+                Assert.True(retBool2);
             }
         }
         #endregion Functions public

@@ -25,7 +25,7 @@ namespace CSSPServices
        Task<ActionResult<MWQMAnalysisReportParameter>> GetMWQMAnalysisReportParameterWithMWQMAnalysisReportParameterID(int MWQMAnalysisReportParameterID);
        Task<ActionResult<List<MWQMAnalysisReportParameter>>> GetMWQMAnalysisReportParameterList();
        Task<ActionResult<MWQMAnalysisReportParameter>> Add(MWQMAnalysisReportParameter mwqmanalysisreportparameter);
-       Task<ActionResult<MWQMAnalysisReportParameter>> Delete(MWQMAnalysisReportParameter mwqmanalysisreportparameter);
+       Task<ActionResult<bool>> Delete(int MWQMAnalysisReportParameterID);
        Task<ActionResult<MWQMAnalysisReportParameter>> Update(MWQMAnalysisReportParameter mwqmanalysisreportparameter);
        Task SetCulture(CultureInfo culture);
     }
@@ -88,12 +88,15 @@ namespace CSSPServices
 
             return await Task.FromResult(Ok(mwqmAnalysisReportParameter));
         }
-        public async Task<ActionResult<MWQMAnalysisReportParameter>> Delete(MWQMAnalysisReportParameter mwqmAnalysisReportParameter)
+        public async Task<ActionResult<bool>> Delete(int MWQMAnalysisReportParameterID)
         {
-            ValidationResults = Validate(new ValidationContext(mwqmAnalysisReportParameter), ActionDBTypeEnum.Delete);
-            if (ValidationResults.Count() > 0)
+            MWQMAnalysisReportParameter mwqmAnalysisReportParameter = (from c in db.MWQMAnalysisReportParameters
+                               where c.MWQMAnalysisReportParameterID == MWQMAnalysisReportParameterID
+                               select c).FirstOrDefault();
+            
+            if (mwqmAnalysisReportParameter == null)
             {
-               return await Task.FromResult(BadRequest(ValidationResults));
+                return await Task.FromResult(BadRequest(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "MWQMAnalysisReportParameter", "MWQMAnalysisReportParameterID", MWQMAnalysisReportParameterID.ToString())));
             }
 
             try
@@ -106,7 +109,7 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
 
-            return await Task.FromResult(Ok(mwqmAnalysisReportParameter));
+            return await Task.FromResult(Ok(true));
         }
         public async Task<ActionResult<MWQMAnalysisReportParameter>> Update(MWQMAnalysisReportParameter mwqmAnalysisReportParameter)
         {

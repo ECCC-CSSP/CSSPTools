@@ -72,7 +72,7 @@ namespace CSSPWebAPIs.Tests.Controllers
                 var actionRainExceedanceClimateSiteList = await rainExceedanceClimateSiteController.Get();
                 Assert.Equal(200, ((ObjectResult)actionRainExceedanceClimateSiteList.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionRainExceedanceClimateSiteList.Result).Value);
-                List<RainExceedanceClimateSite> rainExceedanceClimateSiteList = (List<RainExceedanceClimateSite>)(((OkObjectResult)actionRainExceedanceClimateSiteList.Result).Value);
+                List<RainExceedanceClimateSite> rainExceedanceClimateSiteList = (List<RainExceedanceClimateSite>)((OkObjectResult)actionRainExceedanceClimateSiteList.Result).Value;
 
                 int count = ((List<RainExceedanceClimateSite>)((OkObjectResult)actionRainExceedanceClimateSiteList.Result).Value).Count();
                 Assert.True(count > 0);
@@ -81,7 +81,7 @@ namespace CSSPWebAPIs.Tests.Controllers
                 var actionRainExceedanceClimateSite = await rainExceedanceClimateSiteController.Get(rainExceedanceClimateSiteList[0].RainExceedanceClimateSiteID);
                 Assert.Equal(200, ((ObjectResult)actionRainExceedanceClimateSite.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionRainExceedanceClimateSite.Result).Value);
-                RainExceedanceClimateSite rainExceedanceClimateSite = (RainExceedanceClimateSite)(((OkObjectResult)actionRainExceedanceClimateSite.Result).Value);
+                RainExceedanceClimateSite rainExceedanceClimateSite = (RainExceedanceClimateSite)((OkObjectResult)actionRainExceedanceClimateSite.Result).Value;
                 Assert.NotNull(rainExceedanceClimateSite);
                 Assert.Equal(rainExceedanceClimateSiteList[0].RainExceedanceClimateSiteID, rainExceedanceClimateSite.RainExceedanceClimateSiteID);
 
@@ -90,22 +90,22 @@ namespace CSSPWebAPIs.Tests.Controllers
                 var actionRainExceedanceClimateSiteNew = await rainExceedanceClimateSiteController.Post(rainExceedanceClimateSite);
                 Assert.Equal(200, ((ObjectResult)actionRainExceedanceClimateSiteNew.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionRainExceedanceClimateSiteNew.Result).Value);
-                RainExceedanceClimateSite rainExceedanceClimateSiteNew = (RainExceedanceClimateSite)(((OkObjectResult)actionRainExceedanceClimateSiteNew.Result).Value);
+                RainExceedanceClimateSite rainExceedanceClimateSiteNew = (RainExceedanceClimateSite)((OkObjectResult)actionRainExceedanceClimateSiteNew.Result).Value;
                 Assert.NotNull(rainExceedanceClimateSiteNew);
 
                 // testing Put(RainExceedanceClimateSite rainExceedanceClimateSite)
                 var actionRainExceedanceClimateSiteUpdate = await rainExceedanceClimateSiteController.Put(rainExceedanceClimateSiteNew);
                 Assert.Equal(200, ((ObjectResult)actionRainExceedanceClimateSiteUpdate.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionRainExceedanceClimateSiteUpdate.Result).Value);
-                RainExceedanceClimateSite rainExceedanceClimateSiteUpdate = (RainExceedanceClimateSite)(((OkObjectResult)actionRainExceedanceClimateSiteUpdate.Result).Value);
+                RainExceedanceClimateSite rainExceedanceClimateSiteUpdate = (RainExceedanceClimateSite)((OkObjectResult)actionRainExceedanceClimateSiteUpdate.Result).Value;
                 Assert.NotNull(rainExceedanceClimateSiteUpdate);
 
-                // testing Delete(RainExceedanceClimateSite rainExceedanceClimateSite)
-                var actionRainExceedanceClimateSiteDelete = await rainExceedanceClimateSiteController.Delete(rainExceedanceClimateSiteUpdate);
+                // testing Delete(int rainExceedanceClimateSite.RainExceedanceClimateSiteID)
+                var actionRainExceedanceClimateSiteDelete = await rainExceedanceClimateSiteController.Delete(rainExceedanceClimateSiteUpdate.RainExceedanceClimateSiteID);
                 Assert.Equal(200, ((ObjectResult)actionRainExceedanceClimateSiteDelete.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionRainExceedanceClimateSiteDelete.Result).Value);
-                RainExceedanceClimateSite rainExceedanceClimateSiteDelete = (RainExceedanceClimateSite)(((OkObjectResult)actionRainExceedanceClimateSiteDelete.Result).Value);
-                Assert.NotNull(rainExceedanceClimateSiteDelete);
+                bool retBool2 = (bool)((OkObjectResult)actionRainExceedanceClimateSiteDelete.Result).Value;
+                Assert.True(retBool2);
             }
         }
         #endregion Functions public

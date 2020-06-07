@@ -25,7 +25,7 @@ namespace CSSPServices
        Task<ActionResult<EmailDistributionList>> GetEmailDistributionListWithEmailDistributionListID(int EmailDistributionListID);
        Task<ActionResult<List<EmailDistributionList>>> GetEmailDistributionListList();
        Task<ActionResult<EmailDistributionList>> Add(EmailDistributionList emaildistributionlist);
-       Task<ActionResult<EmailDistributionList>> Delete(EmailDistributionList emaildistributionlist);
+       Task<ActionResult<bool>> Delete(int EmailDistributionListID);
        Task<ActionResult<EmailDistributionList>> Update(EmailDistributionList emaildistributionlist);
        Task SetCulture(CultureInfo culture);
     }
@@ -88,12 +88,15 @@ namespace CSSPServices
 
             return await Task.FromResult(Ok(emailDistributionList));
         }
-        public async Task<ActionResult<EmailDistributionList>> Delete(EmailDistributionList emailDistributionList)
+        public async Task<ActionResult<bool>> Delete(int EmailDistributionListID)
         {
-            ValidationResults = Validate(new ValidationContext(emailDistributionList), ActionDBTypeEnum.Delete);
-            if (ValidationResults.Count() > 0)
+            EmailDistributionList emailDistributionList = (from c in db.EmailDistributionLists
+                               where c.EmailDistributionListID == EmailDistributionListID
+                               select c).FirstOrDefault();
+            
+            if (emailDistributionList == null)
             {
-               return await Task.FromResult(BadRequest(ValidationResults));
+                return await Task.FromResult(BadRequest(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "EmailDistributionList", "EmailDistributionListID", EmailDistributionListID.ToString())));
             }
 
             try
@@ -106,7 +109,7 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
 
-            return await Task.FromResult(Ok(emailDistributionList));
+            return await Task.FromResult(Ok(true));
         }
         public async Task<ActionResult<EmailDistributionList>> Update(EmailDistributionList emailDistributionList)
         {

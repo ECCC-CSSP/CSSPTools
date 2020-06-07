@@ -72,7 +72,7 @@ namespace CSSPWebAPIs.Tests.Controllers
                 var actionPolSourceSiteList = await polSourceSiteController.Get();
                 Assert.Equal(200, ((ObjectResult)actionPolSourceSiteList.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionPolSourceSiteList.Result).Value);
-                List<PolSourceSite> polSourceSiteList = (List<PolSourceSite>)(((OkObjectResult)actionPolSourceSiteList.Result).Value);
+                List<PolSourceSite> polSourceSiteList = (List<PolSourceSite>)((OkObjectResult)actionPolSourceSiteList.Result).Value;
 
                 int count = ((List<PolSourceSite>)((OkObjectResult)actionPolSourceSiteList.Result).Value).Count();
                 Assert.True(count > 0);
@@ -81,7 +81,7 @@ namespace CSSPWebAPIs.Tests.Controllers
                 var actionPolSourceSite = await polSourceSiteController.Get(polSourceSiteList[0].PolSourceSiteID);
                 Assert.Equal(200, ((ObjectResult)actionPolSourceSite.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionPolSourceSite.Result).Value);
-                PolSourceSite polSourceSite = (PolSourceSite)(((OkObjectResult)actionPolSourceSite.Result).Value);
+                PolSourceSite polSourceSite = (PolSourceSite)((OkObjectResult)actionPolSourceSite.Result).Value;
                 Assert.NotNull(polSourceSite);
                 Assert.Equal(polSourceSiteList[0].PolSourceSiteID, polSourceSite.PolSourceSiteID);
 
@@ -90,22 +90,22 @@ namespace CSSPWebAPIs.Tests.Controllers
                 var actionPolSourceSiteNew = await polSourceSiteController.Post(polSourceSite);
                 Assert.Equal(200, ((ObjectResult)actionPolSourceSiteNew.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionPolSourceSiteNew.Result).Value);
-                PolSourceSite polSourceSiteNew = (PolSourceSite)(((OkObjectResult)actionPolSourceSiteNew.Result).Value);
+                PolSourceSite polSourceSiteNew = (PolSourceSite)((OkObjectResult)actionPolSourceSiteNew.Result).Value;
                 Assert.NotNull(polSourceSiteNew);
 
                 // testing Put(PolSourceSite polSourceSite)
                 var actionPolSourceSiteUpdate = await polSourceSiteController.Put(polSourceSiteNew);
                 Assert.Equal(200, ((ObjectResult)actionPolSourceSiteUpdate.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionPolSourceSiteUpdate.Result).Value);
-                PolSourceSite polSourceSiteUpdate = (PolSourceSite)(((OkObjectResult)actionPolSourceSiteUpdate.Result).Value);
+                PolSourceSite polSourceSiteUpdate = (PolSourceSite)((OkObjectResult)actionPolSourceSiteUpdate.Result).Value;
                 Assert.NotNull(polSourceSiteUpdate);
 
-                // testing Delete(PolSourceSite polSourceSite)
-                var actionPolSourceSiteDelete = await polSourceSiteController.Delete(polSourceSiteUpdate);
+                // testing Delete(int polSourceSite.PolSourceSiteID)
+                var actionPolSourceSiteDelete = await polSourceSiteController.Delete(polSourceSiteUpdate.PolSourceSiteID);
                 Assert.Equal(200, ((ObjectResult)actionPolSourceSiteDelete.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionPolSourceSiteDelete.Result).Value);
-                PolSourceSite polSourceSiteDelete = (PolSourceSite)(((OkObjectResult)actionPolSourceSiteDelete.Result).Value);
-                Assert.NotNull(polSourceSiteDelete);
+                bool retBool2 = (bool)((OkObjectResult)actionPolSourceSiteDelete.Result).Value;
+                Assert.True(retBool2);
             }
         }
         #endregion Functions public

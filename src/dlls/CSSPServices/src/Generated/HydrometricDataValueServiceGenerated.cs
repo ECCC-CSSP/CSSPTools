@@ -25,7 +25,7 @@ namespace CSSPServices
        Task<ActionResult<HydrometricDataValue>> GetHydrometricDataValueWithHydrometricDataValueID(int HydrometricDataValueID);
        Task<ActionResult<List<HydrometricDataValue>>> GetHydrometricDataValueList();
        Task<ActionResult<HydrometricDataValue>> Add(HydrometricDataValue hydrometricdatavalue);
-       Task<ActionResult<HydrometricDataValue>> Delete(HydrometricDataValue hydrometricdatavalue);
+       Task<ActionResult<bool>> Delete(int HydrometricDataValueID);
        Task<ActionResult<HydrometricDataValue>> Update(HydrometricDataValue hydrometricdatavalue);
        Task SetCulture(CultureInfo culture);
     }
@@ -88,12 +88,15 @@ namespace CSSPServices
 
             return await Task.FromResult(Ok(hydrometricDataValue));
         }
-        public async Task<ActionResult<HydrometricDataValue>> Delete(HydrometricDataValue hydrometricDataValue)
+        public async Task<ActionResult<bool>> Delete(int HydrometricDataValueID)
         {
-            ValidationResults = Validate(new ValidationContext(hydrometricDataValue), ActionDBTypeEnum.Delete);
-            if (ValidationResults.Count() > 0)
+            HydrometricDataValue hydrometricDataValue = (from c in db.HydrometricDataValues
+                               where c.HydrometricDataValueID == HydrometricDataValueID
+                               select c).FirstOrDefault();
+            
+            if (hydrometricDataValue == null)
             {
-               return await Task.FromResult(BadRequest(ValidationResults));
+                return await Task.FromResult(BadRequest(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "HydrometricDataValue", "HydrometricDataValueID", HydrometricDataValueID.ToString())));
             }
 
             try
@@ -106,7 +109,7 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
 
-            return await Task.FromResult(Ok(hydrometricDataValue));
+            return await Task.FromResult(Ok(true));
         }
         public async Task<ActionResult<HydrometricDataValue>> Update(HydrometricDataValue hydrometricDataValue)
         {

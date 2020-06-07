@@ -63,7 +63,7 @@ namespace CSSPServices.Tests
                var actionDrogueRunPositionList = await drogueRunPositionService.GetDrogueRunPositionList();
                Assert.Equal(200, ((ObjectResult)actionDrogueRunPositionList.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionDrogueRunPositionList.Result).Value);
-               List<DrogueRunPosition> drogueRunPositionList = (List<DrogueRunPosition>)(((OkObjectResult)actionDrogueRunPositionList.Result).Value);
+               List<DrogueRunPosition> drogueRunPositionList = (List<DrogueRunPosition>)((OkObjectResult)actionDrogueRunPositionList.Result).Value;
 
                int count = ((List<DrogueRunPosition>)((OkObjectResult)actionDrogueRunPositionList.Result).Value).Count();
                 Assert.True(count > 0);
@@ -72,22 +72,22 @@ namespace CSSPServices.Tests
                var actionDrogueRunPositionAdded = await drogueRunPositionService.Add(drogueRunPosition);
                Assert.Equal(200, ((ObjectResult)actionDrogueRunPositionAdded.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionDrogueRunPositionAdded.Result).Value);
-               DrogueRunPosition drogueRunPositionAdded = (DrogueRunPosition)(((OkObjectResult)actionDrogueRunPositionAdded.Result).Value);
+               DrogueRunPosition drogueRunPositionAdded = (DrogueRunPosition)((OkObjectResult)actionDrogueRunPositionAdded.Result).Value;
                Assert.NotNull(drogueRunPositionAdded);
 
                // Update DrogueRunPosition
                var actionDrogueRunPositionUpdated = await drogueRunPositionService.Update(drogueRunPosition);
                Assert.Equal(200, ((ObjectResult)actionDrogueRunPositionUpdated.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionDrogueRunPositionUpdated.Result).Value);
-               DrogueRunPosition drogueRunPositionUpdated = (DrogueRunPosition)(((OkObjectResult)actionDrogueRunPositionUpdated.Result).Value);
+               DrogueRunPosition drogueRunPositionUpdated = (DrogueRunPosition)((OkObjectResult)actionDrogueRunPositionUpdated.Result).Value;
                Assert.NotNull(drogueRunPositionUpdated);
 
                // Delete DrogueRunPosition
-               var actionDrogueRunPositionDeleted = await drogueRunPositionService.Delete(drogueRunPosition);
+               var actionDrogueRunPositionDeleted = await drogueRunPositionService.Delete(drogueRunPosition.DrogueRunPositionID);
                Assert.Equal(200, ((ObjectResult)actionDrogueRunPositionDeleted.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionDrogueRunPositionDeleted.Result).Value);
-               DrogueRunPosition drogueRunPositionDeleted = (DrogueRunPosition)(((OkObjectResult)actionDrogueRunPositionDeleted.Result).Value);
-               Assert.NotNull(drogueRunPositionDeleted);
+               bool retBool = (bool)((OkObjectResult)actionDrogueRunPositionDeleted.Result).Value;
+               Assert.True(retBool);
             }
         }
         #endregion Tests Generated CRUD

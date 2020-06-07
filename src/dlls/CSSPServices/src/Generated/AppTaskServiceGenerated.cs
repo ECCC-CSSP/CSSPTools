@@ -25,7 +25,7 @@ namespace CSSPServices
        Task<ActionResult<AppTask>> GetAppTaskWithAppTaskID(int AppTaskID);
        Task<ActionResult<List<AppTask>>> GetAppTaskList();
        Task<ActionResult<AppTask>> Add(AppTask apptask);
-       Task<ActionResult<AppTask>> Delete(AppTask apptask);
+       Task<ActionResult<bool>> Delete(int AppTaskID);
        Task<ActionResult<AppTask>> Update(AppTask apptask);
        Task SetCulture(CultureInfo culture);
     }
@@ -88,12 +88,15 @@ namespace CSSPServices
 
             return await Task.FromResult(Ok(appTask));
         }
-        public async Task<ActionResult<AppTask>> Delete(AppTask appTask)
+        public async Task<ActionResult<bool>> Delete(int AppTaskID)
         {
-            ValidationResults = Validate(new ValidationContext(appTask), ActionDBTypeEnum.Delete);
-            if (ValidationResults.Count() > 0)
+            AppTask appTask = (from c in db.AppTasks
+                               where c.AppTaskID == AppTaskID
+                               select c).FirstOrDefault();
+            
+            if (appTask == null)
             {
-               return await Task.FromResult(BadRequest(ValidationResults));
+                return await Task.FromResult(BadRequest(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "AppTask", "AppTaskID", AppTaskID.ToString())));
             }
 
             try
@@ -106,7 +109,7 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
 
-            return await Task.FromResult(Ok(appTask));
+            return await Task.FromResult(Ok(true));
         }
         public async Task<ActionResult<AppTask>> Update(AppTask appTask)
         {

@@ -63,7 +63,7 @@ namespace CSSPServices.Tests
                var actionMWQMRunList = await mwqmRunService.GetMWQMRunList();
                Assert.Equal(200, ((ObjectResult)actionMWQMRunList.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionMWQMRunList.Result).Value);
-               List<MWQMRun> mwqmRunList = (List<MWQMRun>)(((OkObjectResult)actionMWQMRunList.Result).Value);
+               List<MWQMRun> mwqmRunList = (List<MWQMRun>)((OkObjectResult)actionMWQMRunList.Result).Value;
 
                int count = ((List<MWQMRun>)((OkObjectResult)actionMWQMRunList.Result).Value).Count();
                 Assert.True(count > 0);
@@ -72,22 +72,22 @@ namespace CSSPServices.Tests
                var actionMWQMRunAdded = await mwqmRunService.Add(mwqmRun);
                Assert.Equal(200, ((ObjectResult)actionMWQMRunAdded.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionMWQMRunAdded.Result).Value);
-               MWQMRun mwqmRunAdded = (MWQMRun)(((OkObjectResult)actionMWQMRunAdded.Result).Value);
+               MWQMRun mwqmRunAdded = (MWQMRun)((OkObjectResult)actionMWQMRunAdded.Result).Value;
                Assert.NotNull(mwqmRunAdded);
 
                // Update MWQMRun
                var actionMWQMRunUpdated = await mwqmRunService.Update(mwqmRun);
                Assert.Equal(200, ((ObjectResult)actionMWQMRunUpdated.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionMWQMRunUpdated.Result).Value);
-               MWQMRun mwqmRunUpdated = (MWQMRun)(((OkObjectResult)actionMWQMRunUpdated.Result).Value);
+               MWQMRun mwqmRunUpdated = (MWQMRun)((OkObjectResult)actionMWQMRunUpdated.Result).Value;
                Assert.NotNull(mwqmRunUpdated);
 
                // Delete MWQMRun
-               var actionMWQMRunDeleted = await mwqmRunService.Delete(mwqmRun);
+               var actionMWQMRunDeleted = await mwqmRunService.Delete(mwqmRun.MWQMRunID);
                Assert.Equal(200, ((ObjectResult)actionMWQMRunDeleted.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionMWQMRunDeleted.Result).Value);
-               MWQMRun mwqmRunDeleted = (MWQMRun)(((OkObjectResult)actionMWQMRunDeleted.Result).Value);
-               Assert.NotNull(mwqmRunDeleted);
+               bool retBool = (bool)((OkObjectResult)actionMWQMRunDeleted.Result).Value;
+               Assert.True(retBool);
             }
         }
         #endregion Tests Generated CRUD

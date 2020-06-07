@@ -25,7 +25,7 @@ namespace CSSPServices
        Task<ActionResult<MikeScenarioResult>> GetMikeScenarioResultWithMikeScenarioResultID(int MikeScenarioResultID);
        Task<ActionResult<List<MikeScenarioResult>>> GetMikeScenarioResultList();
        Task<ActionResult<MikeScenarioResult>> Add(MikeScenarioResult mikescenarioresult);
-       Task<ActionResult<MikeScenarioResult>> Delete(MikeScenarioResult mikescenarioresult);
+       Task<ActionResult<bool>> Delete(int MikeScenarioResultID);
        Task<ActionResult<MikeScenarioResult>> Update(MikeScenarioResult mikescenarioresult);
        Task SetCulture(CultureInfo culture);
     }
@@ -88,12 +88,15 @@ namespace CSSPServices
 
             return await Task.FromResult(Ok(mikeScenarioResult));
         }
-        public async Task<ActionResult<MikeScenarioResult>> Delete(MikeScenarioResult mikeScenarioResult)
+        public async Task<ActionResult<bool>> Delete(int MikeScenarioResultID)
         {
-            ValidationResults = Validate(new ValidationContext(mikeScenarioResult), ActionDBTypeEnum.Delete);
-            if (ValidationResults.Count() > 0)
+            MikeScenarioResult mikeScenarioResult = (from c in db.MikeScenarioResults
+                               where c.MikeScenarioResultID == MikeScenarioResultID
+                               select c).FirstOrDefault();
+            
+            if (mikeScenarioResult == null)
             {
-               return await Task.FromResult(BadRequest(ValidationResults));
+                return await Task.FromResult(BadRequest(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "MikeScenarioResult", "MikeScenarioResultID", MikeScenarioResultID.ToString())));
             }
 
             try
@@ -106,7 +109,7 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
 
-            return await Task.FromResult(Ok(mikeScenarioResult));
+            return await Task.FromResult(Ok(true));
         }
         public async Task<ActionResult<MikeScenarioResult>> Update(MikeScenarioResult mikeScenarioResult)
         {

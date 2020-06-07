@@ -20,7 +20,7 @@ namespace CSSPWebAPI.Controllers
         Task<ActionResult<AppTaskLanguage>> Get(int AppTaskLanguageID);
         Task<ActionResult<AppTaskLanguage>> Post(AppTaskLanguage appTaskLanguage);
         Task<ActionResult<AppTaskLanguage>> Put(AppTaskLanguage appTaskLanguage);
-        Task<ActionResult<AppTaskLanguage>> Delete(AppTaskLanguage appTaskLanguage);
+        Task<ActionResult<bool>> Delete(int AppTaskLanguageID);
     }
 
     [Route("api/{culture}/[controller]")]
@@ -67,10 +67,10 @@ namespace CSSPWebAPI.Controllers
         {
             return await appTaskLanguageService.Update(appTaskLanguage);
         }
-        [HttpDelete]
-        public async Task<ActionResult<AppTaskLanguage>> Delete(AppTaskLanguage appTaskLanguage)
+        [HttpDelete("{AppTaskLanguageID}")]
+        public async Task<ActionResult<bool>> Delete(int AppTaskLanguageID)
         {
-            return await appTaskLanguageService.Delete(appTaskLanguage);
+            return await appTaskLanguageService.Delete(AppTaskLanguageID);
         }
         #endregion Functions public
 

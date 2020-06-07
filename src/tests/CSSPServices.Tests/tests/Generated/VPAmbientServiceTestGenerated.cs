@@ -63,7 +63,7 @@ namespace CSSPServices.Tests
                var actionVPAmbientList = await vpAmbientService.GetVPAmbientList();
                Assert.Equal(200, ((ObjectResult)actionVPAmbientList.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionVPAmbientList.Result).Value);
-               List<VPAmbient> vpAmbientList = (List<VPAmbient>)(((OkObjectResult)actionVPAmbientList.Result).Value);
+               List<VPAmbient> vpAmbientList = (List<VPAmbient>)((OkObjectResult)actionVPAmbientList.Result).Value;
 
                int count = ((List<VPAmbient>)((OkObjectResult)actionVPAmbientList.Result).Value).Count();
                 Assert.True(count > 0);
@@ -72,22 +72,22 @@ namespace CSSPServices.Tests
                var actionVPAmbientAdded = await vpAmbientService.Add(vpAmbient);
                Assert.Equal(200, ((ObjectResult)actionVPAmbientAdded.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionVPAmbientAdded.Result).Value);
-               VPAmbient vpAmbientAdded = (VPAmbient)(((OkObjectResult)actionVPAmbientAdded.Result).Value);
+               VPAmbient vpAmbientAdded = (VPAmbient)((OkObjectResult)actionVPAmbientAdded.Result).Value;
                Assert.NotNull(vpAmbientAdded);
 
                // Update VPAmbient
                var actionVPAmbientUpdated = await vpAmbientService.Update(vpAmbient);
                Assert.Equal(200, ((ObjectResult)actionVPAmbientUpdated.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionVPAmbientUpdated.Result).Value);
-               VPAmbient vpAmbientUpdated = (VPAmbient)(((OkObjectResult)actionVPAmbientUpdated.Result).Value);
+               VPAmbient vpAmbientUpdated = (VPAmbient)((OkObjectResult)actionVPAmbientUpdated.Result).Value;
                Assert.NotNull(vpAmbientUpdated);
 
                // Delete VPAmbient
-               var actionVPAmbientDeleted = await vpAmbientService.Delete(vpAmbient);
+               var actionVPAmbientDeleted = await vpAmbientService.Delete(vpAmbient.VPAmbientID);
                Assert.Equal(200, ((ObjectResult)actionVPAmbientDeleted.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionVPAmbientDeleted.Result).Value);
-               VPAmbient vpAmbientDeleted = (VPAmbient)(((OkObjectResult)actionVPAmbientDeleted.Result).Value);
-               Assert.NotNull(vpAmbientDeleted);
+               bool retBool = (bool)((OkObjectResult)actionVPAmbientDeleted.Result).Value;
+               Assert.True(retBool);
             }
         }
         #endregion Tests Generated CRUD

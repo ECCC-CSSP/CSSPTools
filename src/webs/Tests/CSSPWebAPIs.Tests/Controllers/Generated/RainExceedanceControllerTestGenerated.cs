@@ -72,7 +72,7 @@ namespace CSSPWebAPIs.Tests.Controllers
                 var actionRainExceedanceList = await rainExceedanceController.Get();
                 Assert.Equal(200, ((ObjectResult)actionRainExceedanceList.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionRainExceedanceList.Result).Value);
-                List<RainExceedance> rainExceedanceList = (List<RainExceedance>)(((OkObjectResult)actionRainExceedanceList.Result).Value);
+                List<RainExceedance> rainExceedanceList = (List<RainExceedance>)((OkObjectResult)actionRainExceedanceList.Result).Value;
 
                 int count = ((List<RainExceedance>)((OkObjectResult)actionRainExceedanceList.Result).Value).Count();
                 Assert.True(count > 0);
@@ -81,7 +81,7 @@ namespace CSSPWebAPIs.Tests.Controllers
                 var actionRainExceedance = await rainExceedanceController.Get(rainExceedanceList[0].RainExceedanceID);
                 Assert.Equal(200, ((ObjectResult)actionRainExceedance.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionRainExceedance.Result).Value);
-                RainExceedance rainExceedance = (RainExceedance)(((OkObjectResult)actionRainExceedance.Result).Value);
+                RainExceedance rainExceedance = (RainExceedance)((OkObjectResult)actionRainExceedance.Result).Value;
                 Assert.NotNull(rainExceedance);
                 Assert.Equal(rainExceedanceList[0].RainExceedanceID, rainExceedance.RainExceedanceID);
 
@@ -90,22 +90,22 @@ namespace CSSPWebAPIs.Tests.Controllers
                 var actionRainExceedanceNew = await rainExceedanceController.Post(rainExceedance);
                 Assert.Equal(200, ((ObjectResult)actionRainExceedanceNew.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionRainExceedanceNew.Result).Value);
-                RainExceedance rainExceedanceNew = (RainExceedance)(((OkObjectResult)actionRainExceedanceNew.Result).Value);
+                RainExceedance rainExceedanceNew = (RainExceedance)((OkObjectResult)actionRainExceedanceNew.Result).Value;
                 Assert.NotNull(rainExceedanceNew);
 
                 // testing Put(RainExceedance rainExceedance)
                 var actionRainExceedanceUpdate = await rainExceedanceController.Put(rainExceedanceNew);
                 Assert.Equal(200, ((ObjectResult)actionRainExceedanceUpdate.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionRainExceedanceUpdate.Result).Value);
-                RainExceedance rainExceedanceUpdate = (RainExceedance)(((OkObjectResult)actionRainExceedanceUpdate.Result).Value);
+                RainExceedance rainExceedanceUpdate = (RainExceedance)((OkObjectResult)actionRainExceedanceUpdate.Result).Value;
                 Assert.NotNull(rainExceedanceUpdate);
 
-                // testing Delete(RainExceedance rainExceedance)
-                var actionRainExceedanceDelete = await rainExceedanceController.Delete(rainExceedanceUpdate);
+                // testing Delete(int rainExceedance.RainExceedanceID)
+                var actionRainExceedanceDelete = await rainExceedanceController.Delete(rainExceedanceUpdate.RainExceedanceID);
                 Assert.Equal(200, ((ObjectResult)actionRainExceedanceDelete.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionRainExceedanceDelete.Result).Value);
-                RainExceedance rainExceedanceDelete = (RainExceedance)(((OkObjectResult)actionRainExceedanceDelete.Result).Value);
-                Assert.NotNull(rainExceedanceDelete);
+                bool retBool2 = (bool)((OkObjectResult)actionRainExceedanceDelete.Result).Value;
+                Assert.True(retBool2);
             }
         }
         #endregion Functions public

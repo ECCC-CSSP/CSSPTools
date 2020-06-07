@@ -72,7 +72,7 @@ namespace CSSPWebAPIs.Tests.Controllers
                 var actionDrogueRunList = await drogueRunController.Get();
                 Assert.Equal(200, ((ObjectResult)actionDrogueRunList.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionDrogueRunList.Result).Value);
-                List<DrogueRun> drogueRunList = (List<DrogueRun>)(((OkObjectResult)actionDrogueRunList.Result).Value);
+                List<DrogueRun> drogueRunList = (List<DrogueRun>)((OkObjectResult)actionDrogueRunList.Result).Value;
 
                 int count = ((List<DrogueRun>)((OkObjectResult)actionDrogueRunList.Result).Value).Count();
                 Assert.True(count > 0);
@@ -81,7 +81,7 @@ namespace CSSPWebAPIs.Tests.Controllers
                 var actionDrogueRun = await drogueRunController.Get(drogueRunList[0].DrogueRunID);
                 Assert.Equal(200, ((ObjectResult)actionDrogueRun.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionDrogueRun.Result).Value);
-                DrogueRun drogueRun = (DrogueRun)(((OkObjectResult)actionDrogueRun.Result).Value);
+                DrogueRun drogueRun = (DrogueRun)((OkObjectResult)actionDrogueRun.Result).Value;
                 Assert.NotNull(drogueRun);
                 Assert.Equal(drogueRunList[0].DrogueRunID, drogueRun.DrogueRunID);
 
@@ -90,22 +90,22 @@ namespace CSSPWebAPIs.Tests.Controllers
                 var actionDrogueRunNew = await drogueRunController.Post(drogueRun);
                 Assert.Equal(200, ((ObjectResult)actionDrogueRunNew.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionDrogueRunNew.Result).Value);
-                DrogueRun drogueRunNew = (DrogueRun)(((OkObjectResult)actionDrogueRunNew.Result).Value);
+                DrogueRun drogueRunNew = (DrogueRun)((OkObjectResult)actionDrogueRunNew.Result).Value;
                 Assert.NotNull(drogueRunNew);
 
                 // testing Put(DrogueRun drogueRun)
                 var actionDrogueRunUpdate = await drogueRunController.Put(drogueRunNew);
                 Assert.Equal(200, ((ObjectResult)actionDrogueRunUpdate.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionDrogueRunUpdate.Result).Value);
-                DrogueRun drogueRunUpdate = (DrogueRun)(((OkObjectResult)actionDrogueRunUpdate.Result).Value);
+                DrogueRun drogueRunUpdate = (DrogueRun)((OkObjectResult)actionDrogueRunUpdate.Result).Value;
                 Assert.NotNull(drogueRunUpdate);
 
-                // testing Delete(DrogueRun drogueRun)
-                var actionDrogueRunDelete = await drogueRunController.Delete(drogueRunUpdate);
+                // testing Delete(int drogueRun.DrogueRunID)
+                var actionDrogueRunDelete = await drogueRunController.Delete(drogueRunUpdate.DrogueRunID);
                 Assert.Equal(200, ((ObjectResult)actionDrogueRunDelete.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionDrogueRunDelete.Result).Value);
-                DrogueRun drogueRunDelete = (DrogueRun)(((OkObjectResult)actionDrogueRunDelete.Result).Value);
-                Assert.NotNull(drogueRunDelete);
+                bool retBool2 = (bool)((OkObjectResult)actionDrogueRunDelete.Result).Value;
+                Assert.True(retBool2);
             }
         }
         #endregion Functions public

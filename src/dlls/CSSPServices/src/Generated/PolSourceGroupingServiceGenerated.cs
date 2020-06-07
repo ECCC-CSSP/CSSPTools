@@ -25,7 +25,7 @@ namespace CSSPServices
        Task<ActionResult<PolSourceGrouping>> GetPolSourceGroupingWithPolSourceGroupingID(int PolSourceGroupingID);
        Task<ActionResult<List<PolSourceGrouping>>> GetPolSourceGroupingList();
        Task<ActionResult<PolSourceGrouping>> Add(PolSourceGrouping polsourcegrouping);
-       Task<ActionResult<PolSourceGrouping>> Delete(PolSourceGrouping polsourcegrouping);
+       Task<ActionResult<bool>> Delete(int PolSourceGroupingID);
        Task<ActionResult<PolSourceGrouping>> Update(PolSourceGrouping polsourcegrouping);
        Task SetCulture(CultureInfo culture);
     }
@@ -88,12 +88,15 @@ namespace CSSPServices
 
             return await Task.FromResult(Ok(polSourceGrouping));
         }
-        public async Task<ActionResult<PolSourceGrouping>> Delete(PolSourceGrouping polSourceGrouping)
+        public async Task<ActionResult<bool>> Delete(int PolSourceGroupingID)
         {
-            ValidationResults = Validate(new ValidationContext(polSourceGrouping), ActionDBTypeEnum.Delete);
-            if (ValidationResults.Count() > 0)
+            PolSourceGrouping polSourceGrouping = (from c in db.PolSourceGroupings
+                               where c.PolSourceGroupingID == PolSourceGroupingID
+                               select c).FirstOrDefault();
+            
+            if (polSourceGrouping == null)
             {
-               return await Task.FromResult(BadRequest(ValidationResults));
+                return await Task.FromResult(BadRequest(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "PolSourceGrouping", "PolSourceGroupingID", PolSourceGroupingID.ToString())));
             }
 
             try
@@ -106,7 +109,7 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
 
-            return await Task.FromResult(Ok(polSourceGrouping));
+            return await Task.FromResult(Ok(true));
         }
         public async Task<ActionResult<PolSourceGrouping>> Update(PolSourceGrouping polSourceGrouping)
         {

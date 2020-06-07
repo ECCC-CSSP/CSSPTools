@@ -25,7 +25,7 @@ namespace CSSPServices
        Task<ActionResult<ContactShortcut>> GetContactShortcutWithContactShortcutID(int ContactShortcutID);
        Task<ActionResult<List<ContactShortcut>>> GetContactShortcutList();
        Task<ActionResult<ContactShortcut>> Add(ContactShortcut contactshortcut);
-       Task<ActionResult<ContactShortcut>> Delete(ContactShortcut contactshortcut);
+       Task<ActionResult<bool>> Delete(int ContactShortcutID);
        Task<ActionResult<ContactShortcut>> Update(ContactShortcut contactshortcut);
        Task SetCulture(CultureInfo culture);
     }
@@ -88,12 +88,15 @@ namespace CSSPServices
 
             return await Task.FromResult(Ok(contactShortcut));
         }
-        public async Task<ActionResult<ContactShortcut>> Delete(ContactShortcut contactShortcut)
+        public async Task<ActionResult<bool>> Delete(int ContactShortcutID)
         {
-            ValidationResults = Validate(new ValidationContext(contactShortcut), ActionDBTypeEnum.Delete);
-            if (ValidationResults.Count() > 0)
+            ContactShortcut contactShortcut = (from c in db.ContactShortcuts
+                               where c.ContactShortcutID == ContactShortcutID
+                               select c).FirstOrDefault();
+            
+            if (contactShortcut == null)
             {
-               return await Task.FromResult(BadRequest(ValidationResults));
+                return await Task.FromResult(BadRequest(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "ContactShortcut", "ContactShortcutID", ContactShortcutID.ToString())));
             }
 
             try
@@ -106,7 +109,7 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
 
-            return await Task.FromResult(Ok(contactShortcut));
+            return await Task.FromResult(Ok(true));
         }
         public async Task<ActionResult<ContactShortcut>> Update(ContactShortcut contactShortcut)
         {

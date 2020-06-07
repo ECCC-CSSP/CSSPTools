@@ -72,7 +72,7 @@ namespace CSSPWebAPIs.Tests.Controllers
                 var actionMWQMRunLanguageList = await mwqmRunLanguageController.Get();
                 Assert.Equal(200, ((ObjectResult)actionMWQMRunLanguageList.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionMWQMRunLanguageList.Result).Value);
-                List<MWQMRunLanguage> mwqmRunLanguageList = (List<MWQMRunLanguage>)(((OkObjectResult)actionMWQMRunLanguageList.Result).Value);
+                List<MWQMRunLanguage> mwqmRunLanguageList = (List<MWQMRunLanguage>)((OkObjectResult)actionMWQMRunLanguageList.Result).Value;
 
                 int count = ((List<MWQMRunLanguage>)((OkObjectResult)actionMWQMRunLanguageList.Result).Value).Count();
                 Assert.True(count > 0);
@@ -81,7 +81,7 @@ namespace CSSPWebAPIs.Tests.Controllers
                 var actionMWQMRunLanguage = await mwqmRunLanguageController.Get(mwqmRunLanguageList[0].MWQMRunLanguageID);
                 Assert.Equal(200, ((ObjectResult)actionMWQMRunLanguage.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionMWQMRunLanguage.Result).Value);
-                MWQMRunLanguage mwqmRunLanguage = (MWQMRunLanguage)(((OkObjectResult)actionMWQMRunLanguage.Result).Value);
+                MWQMRunLanguage mwqmRunLanguage = (MWQMRunLanguage)((OkObjectResult)actionMWQMRunLanguage.Result).Value;
                 Assert.NotNull(mwqmRunLanguage);
                 Assert.Equal(mwqmRunLanguageList[0].MWQMRunLanguageID, mwqmRunLanguage.MWQMRunLanguageID);
 
@@ -90,22 +90,22 @@ namespace CSSPWebAPIs.Tests.Controllers
                 var actionMWQMRunLanguageNew = await mwqmRunLanguageController.Post(mwqmRunLanguage);
                 Assert.Equal(200, ((ObjectResult)actionMWQMRunLanguageNew.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionMWQMRunLanguageNew.Result).Value);
-                MWQMRunLanguage mwqmRunLanguageNew = (MWQMRunLanguage)(((OkObjectResult)actionMWQMRunLanguageNew.Result).Value);
+                MWQMRunLanguage mwqmRunLanguageNew = (MWQMRunLanguage)((OkObjectResult)actionMWQMRunLanguageNew.Result).Value;
                 Assert.NotNull(mwqmRunLanguageNew);
 
                 // testing Put(MWQMRunLanguage mwqmRunLanguage)
                 var actionMWQMRunLanguageUpdate = await mwqmRunLanguageController.Put(mwqmRunLanguageNew);
                 Assert.Equal(200, ((ObjectResult)actionMWQMRunLanguageUpdate.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionMWQMRunLanguageUpdate.Result).Value);
-                MWQMRunLanguage mwqmRunLanguageUpdate = (MWQMRunLanguage)(((OkObjectResult)actionMWQMRunLanguageUpdate.Result).Value);
+                MWQMRunLanguage mwqmRunLanguageUpdate = (MWQMRunLanguage)((OkObjectResult)actionMWQMRunLanguageUpdate.Result).Value;
                 Assert.NotNull(mwqmRunLanguageUpdate);
 
-                // testing Delete(MWQMRunLanguage mwqmRunLanguage)
-                var actionMWQMRunLanguageDelete = await mwqmRunLanguageController.Delete(mwqmRunLanguageUpdate);
+                // testing Delete(int mwqmRunLanguage.MWQMRunLanguageID)
+                var actionMWQMRunLanguageDelete = await mwqmRunLanguageController.Delete(mwqmRunLanguageUpdate.MWQMRunLanguageID);
                 Assert.Equal(200, ((ObjectResult)actionMWQMRunLanguageDelete.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionMWQMRunLanguageDelete.Result).Value);
-                MWQMRunLanguage mwqmRunLanguageDelete = (MWQMRunLanguage)(((OkObjectResult)actionMWQMRunLanguageDelete.Result).Value);
-                Assert.NotNull(mwqmRunLanguageDelete);
+                bool retBool2 = (bool)((OkObjectResult)actionMWQMRunLanguageDelete.Result).Value;
+                Assert.True(retBool2);
             }
         }
         #endregion Functions public

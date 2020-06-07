@@ -63,7 +63,7 @@ namespace CSSPServices.Tests
                var actionPolSourceSiteList = await polSourceSiteService.GetPolSourceSiteList();
                Assert.Equal(200, ((ObjectResult)actionPolSourceSiteList.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionPolSourceSiteList.Result).Value);
-               List<PolSourceSite> polSourceSiteList = (List<PolSourceSite>)(((OkObjectResult)actionPolSourceSiteList.Result).Value);
+               List<PolSourceSite> polSourceSiteList = (List<PolSourceSite>)((OkObjectResult)actionPolSourceSiteList.Result).Value;
 
                int count = ((List<PolSourceSite>)((OkObjectResult)actionPolSourceSiteList.Result).Value).Count();
                 Assert.True(count > 0);
@@ -72,22 +72,22 @@ namespace CSSPServices.Tests
                var actionPolSourceSiteAdded = await polSourceSiteService.Add(polSourceSite);
                Assert.Equal(200, ((ObjectResult)actionPolSourceSiteAdded.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionPolSourceSiteAdded.Result).Value);
-               PolSourceSite polSourceSiteAdded = (PolSourceSite)(((OkObjectResult)actionPolSourceSiteAdded.Result).Value);
+               PolSourceSite polSourceSiteAdded = (PolSourceSite)((OkObjectResult)actionPolSourceSiteAdded.Result).Value;
                Assert.NotNull(polSourceSiteAdded);
 
                // Update PolSourceSite
                var actionPolSourceSiteUpdated = await polSourceSiteService.Update(polSourceSite);
                Assert.Equal(200, ((ObjectResult)actionPolSourceSiteUpdated.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionPolSourceSiteUpdated.Result).Value);
-               PolSourceSite polSourceSiteUpdated = (PolSourceSite)(((OkObjectResult)actionPolSourceSiteUpdated.Result).Value);
+               PolSourceSite polSourceSiteUpdated = (PolSourceSite)((OkObjectResult)actionPolSourceSiteUpdated.Result).Value;
                Assert.NotNull(polSourceSiteUpdated);
 
                // Delete PolSourceSite
-               var actionPolSourceSiteDeleted = await polSourceSiteService.Delete(polSourceSite);
+               var actionPolSourceSiteDeleted = await polSourceSiteService.Delete(polSourceSite.PolSourceSiteID);
                Assert.Equal(200, ((ObjectResult)actionPolSourceSiteDeleted.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionPolSourceSiteDeleted.Result).Value);
-               PolSourceSite polSourceSiteDeleted = (PolSourceSite)(((OkObjectResult)actionPolSourceSiteDeleted.Result).Value);
-               Assert.NotNull(polSourceSiteDeleted);
+               bool retBool = (bool)((OkObjectResult)actionPolSourceSiteDeleted.Result).Value;
+               Assert.True(retBool);
             }
         }
         #endregion Tests Generated CRUD

@@ -63,7 +63,7 @@ namespace CSSPServices.Tests
                var actionDrogueRunList = await drogueRunService.GetDrogueRunList();
                Assert.Equal(200, ((ObjectResult)actionDrogueRunList.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionDrogueRunList.Result).Value);
-               List<DrogueRun> drogueRunList = (List<DrogueRun>)(((OkObjectResult)actionDrogueRunList.Result).Value);
+               List<DrogueRun> drogueRunList = (List<DrogueRun>)((OkObjectResult)actionDrogueRunList.Result).Value;
 
                int count = ((List<DrogueRun>)((OkObjectResult)actionDrogueRunList.Result).Value).Count();
                 Assert.True(count > 0);
@@ -72,22 +72,22 @@ namespace CSSPServices.Tests
                var actionDrogueRunAdded = await drogueRunService.Add(drogueRun);
                Assert.Equal(200, ((ObjectResult)actionDrogueRunAdded.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionDrogueRunAdded.Result).Value);
-               DrogueRun drogueRunAdded = (DrogueRun)(((OkObjectResult)actionDrogueRunAdded.Result).Value);
+               DrogueRun drogueRunAdded = (DrogueRun)((OkObjectResult)actionDrogueRunAdded.Result).Value;
                Assert.NotNull(drogueRunAdded);
 
                // Update DrogueRun
                var actionDrogueRunUpdated = await drogueRunService.Update(drogueRun);
                Assert.Equal(200, ((ObjectResult)actionDrogueRunUpdated.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionDrogueRunUpdated.Result).Value);
-               DrogueRun drogueRunUpdated = (DrogueRun)(((OkObjectResult)actionDrogueRunUpdated.Result).Value);
+               DrogueRun drogueRunUpdated = (DrogueRun)((OkObjectResult)actionDrogueRunUpdated.Result).Value;
                Assert.NotNull(drogueRunUpdated);
 
                // Delete DrogueRun
-               var actionDrogueRunDeleted = await drogueRunService.Delete(drogueRun);
+               var actionDrogueRunDeleted = await drogueRunService.Delete(drogueRun.DrogueRunID);
                Assert.Equal(200, ((ObjectResult)actionDrogueRunDeleted.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionDrogueRunDeleted.Result).Value);
-               DrogueRun drogueRunDeleted = (DrogueRun)(((OkObjectResult)actionDrogueRunDeleted.Result).Value);
-               Assert.NotNull(drogueRunDeleted);
+               bool retBool = (bool)((OkObjectResult)actionDrogueRunDeleted.Result).Value;
+               Assert.True(retBool);
             }
         }
         #endregion Tests Generated CRUD

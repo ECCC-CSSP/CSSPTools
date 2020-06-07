@@ -25,7 +25,7 @@ namespace CSSPServices
        Task<ActionResult<EmailDistributionListLanguage>> GetEmailDistributionListLanguageWithEmailDistributionListLanguageID(int EmailDistributionListLanguageID);
        Task<ActionResult<List<EmailDistributionListLanguage>>> GetEmailDistributionListLanguageList();
        Task<ActionResult<EmailDistributionListLanguage>> Add(EmailDistributionListLanguage emaildistributionlistlanguage);
-       Task<ActionResult<EmailDistributionListLanguage>> Delete(EmailDistributionListLanguage emaildistributionlistlanguage);
+       Task<ActionResult<bool>> Delete(int EmailDistributionListLanguageID);
        Task<ActionResult<EmailDistributionListLanguage>> Update(EmailDistributionListLanguage emaildistributionlistlanguage);
        Task SetCulture(CultureInfo culture);
     }
@@ -88,12 +88,15 @@ namespace CSSPServices
 
             return await Task.FromResult(Ok(emailDistributionListLanguage));
         }
-        public async Task<ActionResult<EmailDistributionListLanguage>> Delete(EmailDistributionListLanguage emailDistributionListLanguage)
+        public async Task<ActionResult<bool>> Delete(int EmailDistributionListLanguageID)
         {
-            ValidationResults = Validate(new ValidationContext(emailDistributionListLanguage), ActionDBTypeEnum.Delete);
-            if (ValidationResults.Count() > 0)
+            EmailDistributionListLanguage emailDistributionListLanguage = (from c in db.EmailDistributionListLanguages
+                               where c.EmailDistributionListLanguageID == EmailDistributionListLanguageID
+                               select c).FirstOrDefault();
+            
+            if (emailDistributionListLanguage == null)
             {
-               return await Task.FromResult(BadRequest(ValidationResults));
+                return await Task.FromResult(BadRequest(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "EmailDistributionListLanguage", "EmailDistributionListLanguageID", EmailDistributionListLanguageID.ToString())));
             }
 
             try
@@ -106,7 +109,7 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
 
-            return await Task.FromResult(Ok(emailDistributionListLanguage));
+            return await Task.FromResult(Ok(true));
         }
         public async Task<ActionResult<EmailDistributionListLanguage>> Update(EmailDistributionListLanguage emailDistributionListLanguage)
         {

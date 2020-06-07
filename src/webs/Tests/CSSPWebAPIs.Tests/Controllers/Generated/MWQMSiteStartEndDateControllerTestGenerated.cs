@@ -72,7 +72,7 @@ namespace CSSPWebAPIs.Tests.Controllers
                 var actionMWQMSiteStartEndDateList = await mwqmSiteStartEndDateController.Get();
                 Assert.Equal(200, ((ObjectResult)actionMWQMSiteStartEndDateList.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionMWQMSiteStartEndDateList.Result).Value);
-                List<MWQMSiteStartEndDate> mwqmSiteStartEndDateList = (List<MWQMSiteStartEndDate>)(((OkObjectResult)actionMWQMSiteStartEndDateList.Result).Value);
+                List<MWQMSiteStartEndDate> mwqmSiteStartEndDateList = (List<MWQMSiteStartEndDate>)((OkObjectResult)actionMWQMSiteStartEndDateList.Result).Value;
 
                 int count = ((List<MWQMSiteStartEndDate>)((OkObjectResult)actionMWQMSiteStartEndDateList.Result).Value).Count();
                 Assert.True(count > 0);
@@ -81,7 +81,7 @@ namespace CSSPWebAPIs.Tests.Controllers
                 var actionMWQMSiteStartEndDate = await mwqmSiteStartEndDateController.Get(mwqmSiteStartEndDateList[0].MWQMSiteStartEndDateID);
                 Assert.Equal(200, ((ObjectResult)actionMWQMSiteStartEndDate.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionMWQMSiteStartEndDate.Result).Value);
-                MWQMSiteStartEndDate mwqmSiteStartEndDate = (MWQMSiteStartEndDate)(((OkObjectResult)actionMWQMSiteStartEndDate.Result).Value);
+                MWQMSiteStartEndDate mwqmSiteStartEndDate = (MWQMSiteStartEndDate)((OkObjectResult)actionMWQMSiteStartEndDate.Result).Value;
                 Assert.NotNull(mwqmSiteStartEndDate);
                 Assert.Equal(mwqmSiteStartEndDateList[0].MWQMSiteStartEndDateID, mwqmSiteStartEndDate.MWQMSiteStartEndDateID);
 
@@ -90,22 +90,22 @@ namespace CSSPWebAPIs.Tests.Controllers
                 var actionMWQMSiteStartEndDateNew = await mwqmSiteStartEndDateController.Post(mwqmSiteStartEndDate);
                 Assert.Equal(200, ((ObjectResult)actionMWQMSiteStartEndDateNew.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionMWQMSiteStartEndDateNew.Result).Value);
-                MWQMSiteStartEndDate mwqmSiteStartEndDateNew = (MWQMSiteStartEndDate)(((OkObjectResult)actionMWQMSiteStartEndDateNew.Result).Value);
+                MWQMSiteStartEndDate mwqmSiteStartEndDateNew = (MWQMSiteStartEndDate)((OkObjectResult)actionMWQMSiteStartEndDateNew.Result).Value;
                 Assert.NotNull(mwqmSiteStartEndDateNew);
 
                 // testing Put(MWQMSiteStartEndDate mwqmSiteStartEndDate)
                 var actionMWQMSiteStartEndDateUpdate = await mwqmSiteStartEndDateController.Put(mwqmSiteStartEndDateNew);
                 Assert.Equal(200, ((ObjectResult)actionMWQMSiteStartEndDateUpdate.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionMWQMSiteStartEndDateUpdate.Result).Value);
-                MWQMSiteStartEndDate mwqmSiteStartEndDateUpdate = (MWQMSiteStartEndDate)(((OkObjectResult)actionMWQMSiteStartEndDateUpdate.Result).Value);
+                MWQMSiteStartEndDate mwqmSiteStartEndDateUpdate = (MWQMSiteStartEndDate)((OkObjectResult)actionMWQMSiteStartEndDateUpdate.Result).Value;
                 Assert.NotNull(mwqmSiteStartEndDateUpdate);
 
-                // testing Delete(MWQMSiteStartEndDate mwqmSiteStartEndDate)
-                var actionMWQMSiteStartEndDateDelete = await mwqmSiteStartEndDateController.Delete(mwqmSiteStartEndDateUpdate);
+                // testing Delete(int mwqmSiteStartEndDate.MWQMSiteStartEndDateID)
+                var actionMWQMSiteStartEndDateDelete = await mwqmSiteStartEndDateController.Delete(mwqmSiteStartEndDateUpdate.MWQMSiteStartEndDateID);
                 Assert.Equal(200, ((ObjectResult)actionMWQMSiteStartEndDateDelete.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionMWQMSiteStartEndDateDelete.Result).Value);
-                MWQMSiteStartEndDate mwqmSiteStartEndDateDelete = (MWQMSiteStartEndDate)(((OkObjectResult)actionMWQMSiteStartEndDateDelete.Result).Value);
-                Assert.NotNull(mwqmSiteStartEndDateDelete);
+                bool retBool2 = (bool)((OkObjectResult)actionMWQMSiteStartEndDateDelete.Result).Value;
+                Assert.True(retBool2);
             }
         }
         #endregion Functions public

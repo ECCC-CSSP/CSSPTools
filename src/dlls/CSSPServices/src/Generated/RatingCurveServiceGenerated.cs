@@ -25,7 +25,7 @@ namespace CSSPServices
        Task<ActionResult<RatingCurve>> GetRatingCurveWithRatingCurveID(int RatingCurveID);
        Task<ActionResult<List<RatingCurve>>> GetRatingCurveList();
        Task<ActionResult<RatingCurve>> Add(RatingCurve ratingcurve);
-       Task<ActionResult<RatingCurve>> Delete(RatingCurve ratingcurve);
+       Task<ActionResult<bool>> Delete(int RatingCurveID);
        Task<ActionResult<RatingCurve>> Update(RatingCurve ratingcurve);
        Task SetCulture(CultureInfo culture);
     }
@@ -88,12 +88,15 @@ namespace CSSPServices
 
             return await Task.FromResult(Ok(ratingCurve));
         }
-        public async Task<ActionResult<RatingCurve>> Delete(RatingCurve ratingCurve)
+        public async Task<ActionResult<bool>> Delete(int RatingCurveID)
         {
-            ValidationResults = Validate(new ValidationContext(ratingCurve), ActionDBTypeEnum.Delete);
-            if (ValidationResults.Count() > 0)
+            RatingCurve ratingCurve = (from c in db.RatingCurves
+                               where c.RatingCurveID == RatingCurveID
+                               select c).FirstOrDefault();
+            
+            if (ratingCurve == null)
             {
-               return await Task.FromResult(BadRequest(ValidationResults));
+                return await Task.FromResult(BadRequest(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "RatingCurve", "RatingCurveID", RatingCurveID.ToString())));
             }
 
             try
@@ -106,7 +109,7 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
 
-            return await Task.FromResult(Ok(ratingCurve));
+            return await Task.FromResult(Ok(true));
         }
         public async Task<ActionResult<RatingCurve>> Update(RatingCurve ratingCurve)
         {

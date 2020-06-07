@@ -25,7 +25,7 @@ namespace CSSPServices
        Task<ActionResult<SpillLanguage>> GetSpillLanguageWithSpillLanguageID(int SpillLanguageID);
        Task<ActionResult<List<SpillLanguage>>> GetSpillLanguageList();
        Task<ActionResult<SpillLanguage>> Add(SpillLanguage spilllanguage);
-       Task<ActionResult<SpillLanguage>> Delete(SpillLanguage spilllanguage);
+       Task<ActionResult<bool>> Delete(int SpillLanguageID);
        Task<ActionResult<SpillLanguage>> Update(SpillLanguage spilllanguage);
        Task SetCulture(CultureInfo culture);
     }
@@ -88,12 +88,15 @@ namespace CSSPServices
 
             return await Task.FromResult(Ok(spillLanguage));
         }
-        public async Task<ActionResult<SpillLanguage>> Delete(SpillLanguage spillLanguage)
+        public async Task<ActionResult<bool>> Delete(int SpillLanguageID)
         {
-            ValidationResults = Validate(new ValidationContext(spillLanguage), ActionDBTypeEnum.Delete);
-            if (ValidationResults.Count() > 0)
+            SpillLanguage spillLanguage = (from c in db.SpillLanguages
+                               where c.SpillLanguageID == SpillLanguageID
+                               select c).FirstOrDefault();
+            
+            if (spillLanguage == null)
             {
-               return await Task.FromResult(BadRequest(ValidationResults));
+                return await Task.FromResult(BadRequest(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "SpillLanguage", "SpillLanguageID", SpillLanguageID.ToString())));
             }
 
             try
@@ -106,7 +109,7 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
 
-            return await Task.FromResult(Ok(spillLanguage));
+            return await Task.FromResult(Ok(true));
         }
         public async Task<ActionResult<SpillLanguage>> Update(SpillLanguage spillLanguage)
         {

@@ -72,7 +72,7 @@ namespace CSSPWebAPIs.Tests.Controllers
                 var actionVPScenarioLanguageList = await vpScenarioLanguageController.Get();
                 Assert.Equal(200, ((ObjectResult)actionVPScenarioLanguageList.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionVPScenarioLanguageList.Result).Value);
-                List<VPScenarioLanguage> vpScenarioLanguageList = (List<VPScenarioLanguage>)(((OkObjectResult)actionVPScenarioLanguageList.Result).Value);
+                List<VPScenarioLanguage> vpScenarioLanguageList = (List<VPScenarioLanguage>)((OkObjectResult)actionVPScenarioLanguageList.Result).Value;
 
                 int count = ((List<VPScenarioLanguage>)((OkObjectResult)actionVPScenarioLanguageList.Result).Value).Count();
                 Assert.True(count > 0);
@@ -81,7 +81,7 @@ namespace CSSPWebAPIs.Tests.Controllers
                 var actionVPScenarioLanguage = await vpScenarioLanguageController.Get(vpScenarioLanguageList[0].VPScenarioLanguageID);
                 Assert.Equal(200, ((ObjectResult)actionVPScenarioLanguage.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionVPScenarioLanguage.Result).Value);
-                VPScenarioLanguage vpScenarioLanguage = (VPScenarioLanguage)(((OkObjectResult)actionVPScenarioLanguage.Result).Value);
+                VPScenarioLanguage vpScenarioLanguage = (VPScenarioLanguage)((OkObjectResult)actionVPScenarioLanguage.Result).Value;
                 Assert.NotNull(vpScenarioLanguage);
                 Assert.Equal(vpScenarioLanguageList[0].VPScenarioLanguageID, vpScenarioLanguage.VPScenarioLanguageID);
 
@@ -90,22 +90,22 @@ namespace CSSPWebAPIs.Tests.Controllers
                 var actionVPScenarioLanguageNew = await vpScenarioLanguageController.Post(vpScenarioLanguage);
                 Assert.Equal(200, ((ObjectResult)actionVPScenarioLanguageNew.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionVPScenarioLanguageNew.Result).Value);
-                VPScenarioLanguage vpScenarioLanguageNew = (VPScenarioLanguage)(((OkObjectResult)actionVPScenarioLanguageNew.Result).Value);
+                VPScenarioLanguage vpScenarioLanguageNew = (VPScenarioLanguage)((OkObjectResult)actionVPScenarioLanguageNew.Result).Value;
                 Assert.NotNull(vpScenarioLanguageNew);
 
                 // testing Put(VPScenarioLanguage vpScenarioLanguage)
                 var actionVPScenarioLanguageUpdate = await vpScenarioLanguageController.Put(vpScenarioLanguageNew);
                 Assert.Equal(200, ((ObjectResult)actionVPScenarioLanguageUpdate.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionVPScenarioLanguageUpdate.Result).Value);
-                VPScenarioLanguage vpScenarioLanguageUpdate = (VPScenarioLanguage)(((OkObjectResult)actionVPScenarioLanguageUpdate.Result).Value);
+                VPScenarioLanguage vpScenarioLanguageUpdate = (VPScenarioLanguage)((OkObjectResult)actionVPScenarioLanguageUpdate.Result).Value;
                 Assert.NotNull(vpScenarioLanguageUpdate);
 
-                // testing Delete(VPScenarioLanguage vpScenarioLanguage)
-                var actionVPScenarioLanguageDelete = await vpScenarioLanguageController.Delete(vpScenarioLanguageUpdate);
+                // testing Delete(int vpScenarioLanguage.VPScenarioLanguageID)
+                var actionVPScenarioLanguageDelete = await vpScenarioLanguageController.Delete(vpScenarioLanguageUpdate.VPScenarioLanguageID);
                 Assert.Equal(200, ((ObjectResult)actionVPScenarioLanguageDelete.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionVPScenarioLanguageDelete.Result).Value);
-                VPScenarioLanguage vpScenarioLanguageDelete = (VPScenarioLanguage)(((OkObjectResult)actionVPScenarioLanguageDelete.Result).Value);
-                Assert.NotNull(vpScenarioLanguageDelete);
+                bool retBool2 = (bool)((OkObjectResult)actionVPScenarioLanguageDelete.Result).Value;
+                Assert.True(retBool2);
             }
         }
         #endregion Functions public

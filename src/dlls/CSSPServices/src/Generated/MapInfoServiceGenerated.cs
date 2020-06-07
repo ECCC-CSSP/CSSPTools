@@ -25,7 +25,7 @@ namespace CSSPServices
        Task<ActionResult<MapInfo>> GetMapInfoWithMapInfoID(int MapInfoID);
        Task<ActionResult<List<MapInfo>>> GetMapInfoList();
        Task<ActionResult<MapInfo>> Add(MapInfo mapinfo);
-       Task<ActionResult<MapInfo>> Delete(MapInfo mapinfo);
+       Task<ActionResult<bool>> Delete(int MapInfoID);
        Task<ActionResult<MapInfo>> Update(MapInfo mapinfo);
        Task SetCulture(CultureInfo culture);
     }
@@ -88,12 +88,15 @@ namespace CSSPServices
 
             return await Task.FromResult(Ok(mapInfo));
         }
-        public async Task<ActionResult<MapInfo>> Delete(MapInfo mapInfo)
+        public async Task<ActionResult<bool>> Delete(int MapInfoID)
         {
-            ValidationResults = Validate(new ValidationContext(mapInfo), ActionDBTypeEnum.Delete);
-            if (ValidationResults.Count() > 0)
+            MapInfo mapInfo = (from c in db.MapInfos
+                               where c.MapInfoID == MapInfoID
+                               select c).FirstOrDefault();
+            
+            if (mapInfo == null)
             {
-               return await Task.FromResult(BadRequest(ValidationResults));
+                return await Task.FromResult(BadRequest(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "MapInfo", "MapInfoID", MapInfoID.ToString())));
             }
 
             try
@@ -106,7 +109,7 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
 
-            return await Task.FromResult(Ok(mapInfo));
+            return await Task.FromResult(Ok(true));
         }
         public async Task<ActionResult<MapInfo>> Update(MapInfo mapInfo)
         {

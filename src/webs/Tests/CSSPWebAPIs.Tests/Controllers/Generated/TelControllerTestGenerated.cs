@@ -72,7 +72,7 @@ namespace CSSPWebAPIs.Tests.Controllers
                 var actionTelList = await telController.Get();
                 Assert.Equal(200, ((ObjectResult)actionTelList.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionTelList.Result).Value);
-                List<Tel> telList = (List<Tel>)(((OkObjectResult)actionTelList.Result).Value);
+                List<Tel> telList = (List<Tel>)((OkObjectResult)actionTelList.Result).Value;
 
                 int count = ((List<Tel>)((OkObjectResult)actionTelList.Result).Value).Count();
                 Assert.True(count > 0);
@@ -81,7 +81,7 @@ namespace CSSPWebAPIs.Tests.Controllers
                 var actionTel = await telController.Get(telList[0].TelID);
                 Assert.Equal(200, ((ObjectResult)actionTel.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionTel.Result).Value);
-                Tel tel = (Tel)(((OkObjectResult)actionTel.Result).Value);
+                Tel tel = (Tel)((OkObjectResult)actionTel.Result).Value;
                 Assert.NotNull(tel);
                 Assert.Equal(telList[0].TelID, tel.TelID);
 
@@ -90,22 +90,22 @@ namespace CSSPWebAPIs.Tests.Controllers
                 var actionTelNew = await telController.Post(tel);
                 Assert.Equal(200, ((ObjectResult)actionTelNew.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionTelNew.Result).Value);
-                Tel telNew = (Tel)(((OkObjectResult)actionTelNew.Result).Value);
+                Tel telNew = (Tel)((OkObjectResult)actionTelNew.Result).Value;
                 Assert.NotNull(telNew);
 
                 // testing Put(Tel tel)
                 var actionTelUpdate = await telController.Put(telNew);
                 Assert.Equal(200, ((ObjectResult)actionTelUpdate.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionTelUpdate.Result).Value);
-                Tel telUpdate = (Tel)(((OkObjectResult)actionTelUpdate.Result).Value);
+                Tel telUpdate = (Tel)((OkObjectResult)actionTelUpdate.Result).Value;
                 Assert.NotNull(telUpdate);
 
-                // testing Delete(Tel tel)
-                var actionTelDelete = await telController.Delete(telUpdate);
+                // testing Delete(int tel.TelID)
+                var actionTelDelete = await telController.Delete(telUpdate.TelID);
                 Assert.Equal(200, ((ObjectResult)actionTelDelete.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionTelDelete.Result).Value);
-                Tel telDelete = (Tel)(((OkObjectResult)actionTelDelete.Result).Value);
-                Assert.NotNull(telDelete);
+                bool retBool2 = (bool)((OkObjectResult)actionTelDelete.Result).Value;
+                Assert.True(retBool2);
             }
         }
         #endregion Functions public
